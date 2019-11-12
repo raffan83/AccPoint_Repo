@@ -16,6 +16,7 @@ public class MilestoneOperatoreDTO {
 	BigDecimal prezzo_totale;
 	BigDecimal presso_assegnato;
 	String note;
+	int abilitato;
 	
 	
 	public int getId() {
@@ -84,6 +85,14 @@ public class MilestoneOperatoreDTO {
 	public void setData(Date data) {
 		this.data = data;
 	}
+	public int getAbilitato() {
+		return abilitato;
+	}
+	public void setAbilitato(int abilitato) {
+		this.abilitato = abilitato;
+	}
+	
+	
 
 	
 }

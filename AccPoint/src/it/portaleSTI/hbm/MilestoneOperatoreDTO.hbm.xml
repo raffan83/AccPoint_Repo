@@ -49,5 +49,9 @@
             <column name="note" />
         </property>
         
+         <property name="abilitato" type="int">
+            <column name="abilitato" />
+        </property>
+        
         </class>
 </hibernate-mapping>

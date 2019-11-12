@@ -2053,29 +2053,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
         		  valid = false;
         	  }
       }
-//      corrispondenze = 0;
-//      $('#tblAppendGrid tbody tr').each(function(){
-//			var td = $(this).find('td').eq(1);
-//			attr = td.attr('id');
-//		    valore = $("#" + attr  + " input").val();
-//		    
-//		    $('#tblAppendGrid tbody tr').each(function(){
-//				var td2 = $(this).find('td').eq(1);
-//				attr2 = td2.attr('id');
-//			    valore2 = $("#" + attr2  + " input").val();
-//
-//			    if(valore == valore2){
-//			    	corrispondenze++;
-//			    }
-//			    	
-//			});
-//
-//		});
-//      validCorr = true;
-//	  if(corrispondenze >0 && $('#interpolato').val()==0){
-//		  validCorr = false;
-//	  }
-	  
+
 	  var jsonMap = {};
 	  
 	  
@@ -11427,5 +11405,334 @@ function esportaCampioniScadenzario(tipo){
 	}
 	});
 	   
+	
+}
+
+
+
+
+
+function chiudiVerIntervento(idIntervento,datatable,index){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  var dataObj = {};
+	  dataObj.id_intervento = idIntervento;
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneVerIntervento.do?action=chiudi",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		  $(".ui-tooltip").remove();
+	    		  if(data.success)
+	    		  { 
+	    			  if(datatable == 1){
+	    				  var oTable = $('#tabPM').dataTable();
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriVerIntervento(\''+idIntervento+'\',1,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 4 );
+	    			  }else if(datatable == 2){
+	    				  var oTable = $('#tabPM').dataTable();
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriVerIntervento(\''+idIntervento+'\',2,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 5 );
+	    			  }else{
+	    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriVerIntervento(\''+idIntervento+'\',0,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>');
+	    			  }
+	    			 
+	    			 
+	    			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  $("#boxPacchetti").html("");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+
+	    		
+	    		  }else{
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#report_button').show();
+  	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+						
+	    	  }
+    });
+}
+
+function apriVerIntervento(idIntervento,datatable,index){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  var dataObj = {};
+	  dataObj.id_intervento = idIntervento;
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneVerIntervento.do?action=apri",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		  $(".ui-tooltip").remove();
+	    		  if(data.success)
+	    		  { 
+	    			  if(datatable == 1){
+	    				  var oTable = $('#tabPM').dataTable();
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiVerIntervento(\''+idIntervento+'\',1,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>', index, 4 );
+	    			  }else if(datatable == 2){
+	    				  var oTable = $('#tabPM').dataTable();
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiVerIntervento(\''+idIntervento+'\',2,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>', index, 5 );
+	    			  }else{
+	    				
+	    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiVerIntervento(\''+idIntervento+'\',0,'+index+')" id="statoa_'+data.id_intervento+'"><span  class="label label-success">APERTO</span></a>');
+	    			  }
+	    			 
+	    			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  $("#boxPacchetti").html("");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+
+	    		
+	    		  }else{
+	    			 
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#report_button').show();
+  	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');				
+	
+	    	  }
+    });
+}
+
+
+
+function cambaPasswordUtente(password, id_utente){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  var dataObj = {};
+	  dataObj.password = password;
+	  dataObj.id_utente = id_utente;
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneUtenti.do?action=cambia_password",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		
+	    		  if(data.success)
+	    		  { 
+	    				    			 
+	    			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  $("#boxPacchetti").html("");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+
+	    		
+	    		  }else{
+	    			 
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#report_button').show();
+ 	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');				
+	
+	    	  }
+   });
+	
+	
+}
+
+
+
+function modificaAssegnazioneAdmin(){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  var dataObj = {};
+	  dataObj.prezzo_unitario = $('#prezzo_unitario').val();
+	  dataObj.prezzo_assegnato = $('#prezzo_assegnato').val();
+	  dataObj.quantita_totale = $('#quantita_totale').val();
+	  dataObj.quantita_assegnata = $('#quantita_assegnata').val();	  
+	  dataObj.note = $('#note').val();
+	  dataObj.id_assegnazione = $('#id_assegnazione').val();
+	  
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneAssegnazioneAttivita.do?action=modifica",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		
+	    		  if(data.success)
+	    		  { 
+	    				 
+	    			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  $("#myModalModificaAssegnazione").modal("hide");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+	    				
+	    				$('#myModalError').on('hidden.bs.modal', function(){
+	    					
+	    					if($('#myModalError').hasClass('modal-success')){
+	    						location.reload();
+	    					}
+	    					
+	    				});
+
+	    		
+	    		  }else{
+	    			 
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#report_button').show();
+ 	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');				
+	
+	    	  }
+   });
+	
+	
+}
+
+function eliminaAssegnazioneAdmin(){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  var dataObj = {};
+
+	  dataObj.id_assegnazione = $('#id_assegnazione_elimina').val();
+	  
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneAssegnazioneAttivita.do?action=elimina",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		
+	    		  if(data.success)
+	    		  { 
+	    				    			 
+	    			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  $("#myModalYesOrNo").modal("hide");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+	    				
+	    				$('#myModalError').on('hidden.bs.modal', function(){
+	    					
+	    					if($('#myModalError').hasClass('modal-success')){
+	    						location.reload();
+	    					}
+	    					
+	    				});
+
+	    		
+	    		  }else{
+	    			 
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#report_button').show();
+	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');				
+	
+	    	  }
+  });
+	
 	
 }

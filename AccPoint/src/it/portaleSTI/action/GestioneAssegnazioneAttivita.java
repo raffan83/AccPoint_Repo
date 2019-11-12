@@ -196,6 +196,50 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				
 				
 			}
+			else if(action.equals("modifica")) {
+				
+				String id_assegnazione = request.getParameter("id_assegnazione");
+				String prezzo_unitario = request.getParameter("prezzo_unitario");
+				String prezzo_assegnato = request.getParameter("prezzo_assegnato");
+				String quantita_totale = request.getParameter("quantita_totale");
+				String quantita_assegnata = request.getParameter("quantita_assegnata");
+				String note = request.getParameter("note");
+				
+				MilestoneOperatoreDTO assegnazione = GestioneAssegnazioneAttivitaBO.getMilestone(Integer.parseInt(id_assegnazione),session);
+				
+				assegnazione.setPresso_assegnato(new BigDecimal(prezzo_assegnato));
+				assegnazione.setPrezzo_un(new BigDecimal(prezzo_unitario));
+				assegnazione.setQuantitaAssegnata(new BigDecimal(quantita_totale));
+				assegnazione.setQuantitaTotale(new BigDecimal(quantita_assegnata));
+				assegnazione.setNote(note);
+				
+				session.update(assegnazione);
+				session.getTransaction().commit();
+				session.close();
+				PrintWriter out = response.getWriter();
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvataggio effettuato con successo!");				
+	        	out.print(myObj);
+			}
+			
+			else if(action.equals("elimina")) {
+				
+				String id_assegnazione = request.getParameter("id_assegnazione");
+								
+				MilestoneOperatoreDTO assegnazione = GestioneAssegnazioneAttivitaBO.getMilestone(Integer.parseInt(id_assegnazione),session);
+				
+				assegnazione.setAbilitato(0);				
+				
+				session.update(assegnazione);
+				session.getTransaction().commit();
+				session.close();
+				PrintWriter out = response.getWriter();
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Assegnazione eliminata con successo!");				
+	        	out.print(myObj);
+			}
 			
 		}catch (Exception e) {
 			session.getTransaction().rollback();

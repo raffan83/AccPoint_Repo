@@ -172,7 +172,7 @@ function formatDate(data){
 	   
 	   if(!isNaN(mydate.getTime())){
 	   
-		   str = mydate.toString("dd/MM/yyyy");
+		   str = mydate.toString("yyyy-MM-dd");
 	   }
 	}else{
 		
@@ -194,7 +194,9 @@ function cercaAssegnazioni(){
 	if(startDatePicker!= '' && endDatePicker!=''){
 		var startDatePicker = $("#datarange").data('daterangepicker').startDate;
 		var endDatePicker = $("#datarange").data('daterangepicker').endDate;
-		dataString = "action=cerca&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&commessa="+commessa +"&utente="+utente+"&admin=1";	
+		/* var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+		var endDatePicker = $("#datarange").data('daterangepicker').endDate; */
+		dataString = "action=cerca&dateFrom=" + formatDate(startDatePicker) + "&dateTo=" + formatDate(endDatePicker)+"&commessa="+commessa +"&utente="+utente+"&admin=1";	
 	}else{
 		dataString = "action=cerca&dateFrom=" + startDatePicker + "&dateTo=" + endDatePicker+"&commessa="+commessa +"&utente="+utente+"&admin=1";
 		

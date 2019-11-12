@@ -39,6 +39,7 @@
 <th>Q.ta Assegnata</th>
 <th>Note</th>
 <th>ID Intervento</th>
+<th>Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -51,15 +52,18 @@
 	<td>${milestone.intervento.nome_cliente }</td>	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${milestone.data}" /></td>
 	<td>${milestone.user.nominativo }</td>
-	<td onClick="showText('${milestone.descrizioneMilestone }', '${loop.index}','5')">${utl:maxChar(milestone.descrizioneMilestone, 50)}</td>
+	<td onClick="showText('${milestone.descrizioneMilestone.replace('\'','#') }', '${loop.index}','5')">${utl:maxChar(milestone.descrizioneMilestone, 50)}</td>
 	<td>${milestone.prezzo_un }</td>	
 	<td>${milestone.presso_assegnato }</td>
 	<td>${milestone.quantitaTotale }</td>
 	<td>${milestone.quantitaAssegnata }</td>
 	<td >${milestone.note}</td>
 	<%-- <td onClick="showText('${milestone.note }', '${loop.index}','7')">${utl:maxChar(milestone.note, 10)}</td> --%>
-<td><a class="btn customTooltip customlink" onClicK="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(milestone.intervento.id)}')" >${milestone.intervento.id }</a></td>
-
+	<td><a class="btn customTooltip customlink" onClicK="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(milestone.intervento.id)}')" >${milestone.intervento.id }</a></td>
+	<td>
+		<a class="btn btn-warning" onClicK="modalModificaAssegnazione('${milestone.prezzo_un}','${milestone.presso_assegnato}','${milestone.quantitaTotale}','${milestone.quantitaAssegnata}','${milestone.note}','${milestone.id}')" ><i class="fa fa-edit"></i></a>
+		<a class="btn btn-danger" onClicK="modalYesOrNo('${milestone.id}')" ><i class="fa fa-trash"></i></a>
+	</td>
 	</tr>
 	</c:forEach>
 	 
@@ -70,6 +74,90 @@
 </div>
 
 
+  <div id="myModalModificaAssegnazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Assegnazione</h4>
+      </div>
+       <div class="modal-body">       
+       <div class="row">
+		<div class="col-md-9" >
+        <label>Prezzo Unitario:</label>
+        </div>
+        <div class="col-md-12">
+       <input class="form-control" id="prezzo_unitario" type="text" name="prezzo_unitario"/>
+    </div>
+      
+     	<div class="col-md-9" >
+        <label  >Prezzo Assegnato:</label>
+        </div>
+        <div class="col-md-12">
+                      <input class="form-control" id="prezzo_assegnato" type="text" name="prezzo_assegnato"/>
+    </div>
+       
+            	<div class="col-md-9" >
+        <label  >Quantità Totale:</label>
+        </div>
+        <div class="col-md-12">
+                      <input class="form-control" id="quantita_totale" type="text" name="quantita_totale"/>
+    </div>
+         	<div class="col-md-9" >
+        <label  >Quantità Assegnata:</label>
+        </div>
+        <div class="col-md-12">
+                      <input class="form-control" id="quantita_assegnata" type="text" name="quantita_assegnata"/>
+    </div>
+         	<div class="col-md-9" >
+        <label  >Note:</label>
+        </div>
+        <div class="col-md-12">
+        <textarea id="note" name="note" style="width:100%" rows="3"></textarea>
+                     
+    </div>
+      	
+
+      	</div>
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_assegnazione">
+      <a class="btn btn-primary" onclick="modificaAssegnazioneAdmin()" >Salva</a>
+		
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare l'assegnazione?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_assegnazione_elimina">
+      <a class="btn btn-primary" onclick="eliminaAssegnazioneAdmin()" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
 
 <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
@@ -77,6 +165,25 @@
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <script type="text/javascript">
+
+
+function modalYesOrNo(id){
+	$('#id_assegnazione_elimina').val(id);
+	$('#myModalYesOrNo').modal();
+}
+
+function modalModificaAssegnazione(prezzo_unitario, prezzo_assegnato, quantita_totale, quantita_assegnata, note, id){
+	
+	$('#id_assegnazione').val(id);
+	$('#prezzo_unitario').val(prezzo_unitario);
+	$('#prezzo_assegnato').val(prezzo_assegnato);
+	$('#quantita_totale').val(quantita_totale);
+	$('#quantita_assegnata').val(quantita_assegnata);
+	$('#note').val(note);	
+	
+	
+	$('#myModalModificaAssegnazione').modal();
+}
 
 
 var columsDatatables = [];
@@ -107,6 +214,8 @@ $("#tabAssegnazioneAttivita").on( 'init.dt', function ( e, settings ) {
 
  function showText(text, riga, cella){
 	
+	 text = text.replace('#','\'')
+	 
 	table = $('#tabAssegnazioneAttivita').DataTable();
 	
 	
@@ -179,6 +288,7 @@ $(document).ready(function(){
 		      columnDefs: [
 		    	 
 		    	  { responsivePriority: 1, targets: 1 },
+		    	  { responsivePriority: 2, targets: 12 },
 		    	 
 		               ], 	        
 	  	      buttons: [   

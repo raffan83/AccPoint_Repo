@@ -19,7 +19,7 @@ public class GestioneAssegnazioneAttivitaDAO {
 		
 		ArrayList<MilestoneOperatoreDTO> lista = null;
 		
-		Query query = session.createQuery("from MilestoneOperatoreDTO");
+		Query query = session.createQuery("from MilestoneOperatoreDTO where abilitato = 1");
 		
 		lista = (ArrayList<MilestoneOperatoreDTO>) query.list();
 		
@@ -51,16 +51,16 @@ public class GestioneAssegnazioneAttivitaDAO {
 		
 		ArrayList<MilestoneOperatoreDTO> lista = null;
 		
-		String str_query = "from MilestoneOperatoreDTO where ";
+		String str_query = "from MilestoneOperatoreDTO where abilitato = 1";
 		
 		if(!id_utente.equals("")) {
-			str_query = str_query + " user.id = :_utente";
+			str_query = str_query + " and user.id = :_utente";
 		}
 		if(!commessa.equals("")) {
 			if(id_utente!=null && !id_utente.equals("")) {
 				str_query = str_query + " and intervento.idCommessa = :_commessa";
 			}else {
-				str_query = str_query + " intervento.idCommessa = :_commessa";
+				str_query = str_query + " and intervento.idCommessa = :_commessa";
 			}
 		}
 		
@@ -68,7 +68,7 @@ public class GestioneAssegnazioneAttivitaDAO {
 			if((id_utente!=null && !id_utente.equals("")) || (commessa!=null && !commessa.equals(""))) {
 				str_query = str_query + " and data between :dateFrom and :dateTo";
 			}else {
-				str_query = str_query + " data between :dateFrom and :dateTo";
+				str_query = str_query + " and data between :dateFrom and :dateTo";
 			}
 		}
 		
@@ -87,6 +87,24 @@ public class GestioneAssegnazioneAttivitaDAO {
 		lista = (ArrayList<MilestoneOperatoreDTO>) query.list();
 		
 		return lista;
+	}
+
+	public static MilestoneOperatoreDTO getMilestone(int id_assegnazione, Session session) {
+		
+		ArrayList<MilestoneOperatoreDTO> lista = null;
+		MilestoneOperatoreDTO result = null;
+		
+		Query query = session.createQuery("from MilestoneOperatoreDTO where id = :_id");
+		
+		query.setParameter("_id", id_assegnazione);
+	
+		lista = (ArrayList<MilestoneOperatoreDTO>) query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
 	}
 
 }

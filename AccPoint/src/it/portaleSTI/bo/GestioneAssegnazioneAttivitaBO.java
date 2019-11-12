@@ -27,6 +27,11 @@ public class GestioneAssegnazioneAttivitaBO {
 		return GestioneAssegnazioneAttivitaDAO.getListaMilestoneFiltrata(id_utente, commessa, dateFrom, dateTo, session);
 	}
 
+	public static MilestoneOperatoreDTO getMilestone(int id_assegnazione, Session session) {
+		// 
+		return GestioneAssegnazioneAttivitaDAO.getMilestone(id_assegnazione,session);
+	}
+
 
 	
 

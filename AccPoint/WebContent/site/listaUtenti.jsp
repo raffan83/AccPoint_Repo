@@ -170,7 +170,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Nuovo Utente</h4>
       </div>
-      <form class="form-horizontal"  id="formNuovoUtente">
+      <form class="form-horizontal"  id="formNuovoUtente" autocomplete="off">
        <div class="modal-body">
        
 <div class="nav-tabs-custom">
@@ -205,7 +205,7 @@
      	 <label for="passw" class="col-sm-2 control-label">Password:</label>
 
          <div class="col-sm-4">
-         			<input class="form-control" id="passw" type="text" name="passw" value="" required />
+         			<input class="form-control" id="passw" type="text" name="passw" value="" required autocomplete="off" />
      	</div>
    </div>
     
@@ -367,14 +367,14 @@
 </div>
 
 
-<div id="modalModificaUtente" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="modalModificaUtente" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel" >
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Modifica Utente</h4>
       </div>
-      <form class="form-horizontal"  id="formModificaUtente">
+      <form class="form-horizontal"  id="formModificaUtente" >
        <div class="modal-body">
        
 <div class="nav-tabs-custom">
@@ -407,11 +407,12 @@
          <div class="col-sm-4">
          			<input class="form-control" id="moduser" type="text" name="moduser" value=""  />
      	</div>
-     	 <label for="modpassw" class="col-sm-2 control-label">Password:</label>
+     	<!--  <label for="modpassw" class="col-sm-2 control-label">Password:</label>
 
-         <div class="col-sm-4">
-         			<input class="form-control" id="modpassw" type="password" name="modpassw" value=""  />
-     	</div>
+          <div class="col-sm-4">
+         			<input class="form-control" id="modpassw" type="password" name="modpassw" value=""  autocomplete="off"/>
+     	</div>  -->
+     	 <a class="btn btn-primary" onClick="modalCambioPassword()">Cambia Password</a> 
    </div>
     
  <div class="form-group">
@@ -591,6 +592,40 @@
 
 </div>
 
+
+
+<div id="myModalCambiaPassword" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Password </h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="">
+		     <label>Nuova Password</label>
+			<input class="form-control" id="mod_passw" name="mod_passw" value="" type="password" autocomplete="new-password"/>
+		
+			 <label>Conferma Nuova Password</label>
+			<input class="form-control" id="conf_modpassw" name="conf_modpassw" value="" type="password" />
+        
+        
+  		 </div>
+      
+    </div>
+    <div class="modal-footer">
+    <label id="label_conferma_pass" style="display:none;color:red" class="pull-left"></label>
+    	<a  class="btn btn-default pull-right" onClick="controllaPassword()">Salva</a>
+    
+    </div>
+  </div>
+    </div>
+
+</div>
+
+
+
 <!-- <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -650,6 +685,34 @@
 
   <script type="text/javascript">
 
+  function controllaPassword(){
+	  
+	  $('#label_conferma_pass').hide();
+	  
+	  var password = $('#mod_passw').val();
+	  var conf_password = $('#conf_modpassw').val();
+	  var id_utente = $('#modid').val();
+	  
+	  if(password==conf_password){
+		  if(validPassword(password)){
+			  cambaPasswordUtente(password, id_utente);
+		  }else{
+			  $('#label_conferma_pass').html("Attenzione! La password deve contenere solo lettere maiuscole,minuscole e numeri, ed avere una lunghezza superiore a 8 caratteri")
+			  $('#label_conferma_pass').show();
+		  }
+		  
+	  }else{
+		  $('#label_conferma_pass').html("Errore Conferma Password, accertarsi di aver inserito la stessa Password")
+		  $('#label_conferma_pass').show();
+	  }
+  }
+  
+  
+  function modalCambioPassword(){
+	  $('#myModalCambiaPassword').modal()
+  }
+  
+  
 	var columsDatatables = [];
 	 
 	$("#tabPM").on( 'init.dt', function ( e, settings ) {
@@ -664,7 +727,7 @@
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabPM thead th').eq( $(this).index() -1 ).text();
-	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
+	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" autocomplete="new-password"/></div>');
 	    } );
 
 	} );

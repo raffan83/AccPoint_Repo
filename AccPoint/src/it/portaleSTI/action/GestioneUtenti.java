@@ -386,6 +386,24 @@ public class GestioneUtenti extends HttpServlet {
 	    				out.println(myObj.toString());
 	    	 		}
 	    	 	
+	    	 	if(action.equals("cambia_password")) {
+	    	 		
+	    	 		PrintWriter out = response.getWriter();
+	        		JsonObject myObj = new JsonObject();
+	    	 		
+	    	 		String passw = request.getParameter("password");
+	    	 		String id_utente = request.getParameter("id_utente");
+	    	 		UtenteDTO utente = GestioneUtenteBO.getUtenteById(id_utente, session);
+	    	 		
+	    	 		if(passw!=null && !passw.equals("")) {
+    	 				DirectMySqlDAO.savePwdutente(utente.getId(), passw);
+	    	 		}
+	    	 		myObj.addProperty("success", true);
+					myObj.addProperty("messaggio","Salvato con Successo");
+					out.print(myObj);
+					
+	    	 	}
+	    	 	
 	    	 	if(action.equals("clientisedi")){
 	    	 		
 	    	 		PrintWriter out = response.getWriter();

@@ -34,6 +34,8 @@ public class MagPaccoDTO  implements Serializable{
 	private int hasAllegato;
 	private String nome_cliente_util;
 	private String nome_sede_util;
+	private Integer id_cliente_util;
+	private Integer id_sede_util;
 
 	
 	public int getId() {
@@ -193,6 +195,18 @@ public class MagPaccoDTO  implements Serializable{
 	}
 	public void setNome_sede_util(String nome_sede_util) {
 		this.nome_sede_util = nome_sede_util;
+	}
+	public int getId_sede_util() {
+		return id_sede_util;
+	}
+	public void setId_sede_util(int id_sede_util) {
+		this.id_sede_util = id_sede_util;
+	}
+	public int getId_cliente_util() {
+		return id_cliente_util;
+	}
+	public void setId_cliente_util(int id_cliente_util) {
+		this.id_cliente_util = id_cliente_util;
 	}
 
 

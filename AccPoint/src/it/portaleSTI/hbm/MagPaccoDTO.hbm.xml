@@ -96,6 +96,12 @@
          <property name="nome_sede_util" type="java.lang.String">
             <column name="nome_sede_util" />
         </property> 
+        <property name="id_cliente_util" type="int">
+            <column name="id_cliente_util" />
+        </property> 
+         <property name="id_sede_util" type="int">
+            <column name="id_sede_util" />
+        </property> 
 	        
 	</class>
 </hibernate-mapping>

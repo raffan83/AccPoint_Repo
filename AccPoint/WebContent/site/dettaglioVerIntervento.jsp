@@ -99,12 +99,12 @@
                   
 					<c:if test="${interventover.id_stato_intervento == 0}">
 						<%-- <a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a> --%>
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"   id="statoa_${interventover.id}"> <span class="label label-success">APERTO</span></a>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiVerIntervento('${utl:encryptData(interventover.id)}',0,0)" id="statoa_${interventover.id}"> <span class="label label-success">APERTO</span></a>
 						
 					</c:if>
 					
 					<c:if test="${interventover.id_stato_intervento == 1}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${interventover.id}"> <span class="label label-waring">CHIUSO</span></a>
+						<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriVerIntervento('${utl:encryptData(interventover.id)}',0,0)" id="statoa_${interventover.id}"> <span class="label label-warning">CHIUSO</span></a>
 						
 					</c:if>
 					
@@ -1229,11 +1229,11 @@
 	
 	
 	
-	       	 $('#myModalError').on('hidden.bs.modal', function (e) {
+ 	       	 $('#myModalError').on('hidden.bs.modal', function (e) {
 	       		if($('#myModalError').hasClass('modal-success')){
-	     			callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');
+	     			location.reload();
 	     		 }
-	        	});
+	        	}); 
 
 	       	 
 

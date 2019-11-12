@@ -574,7 +574,8 @@ public class GestionePacco extends HttpServlet {
 			}
 			
 			pacco.setNome_cliente_util(util.getNome());	
-			
+			pacco.setId_cliente_util(Integer.parseInt(cliente_util));
+			pacco.setId_sede_util(Integer.parseInt(sede_util.split("_")[0]));
 			pacco.setCompany(company);
 			pacco.setUtente(utente);	
 			pacco.setCodice_pacco(codice_pacco);

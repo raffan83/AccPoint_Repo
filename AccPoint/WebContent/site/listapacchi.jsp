@@ -837,13 +837,13 @@ ${pacco.id}
  <th>ID Item</th>
  <th>Tipo</th>
  <th>Denominazione</th>
- <th>Quantit�</th>
+ <th>Quantit&agrave;</th>
  <th>Stato</th>
  <th>Matr.</th>
  <th>Cod. Int.</th>
- <th>Attivit�</th>
+ <th>Attivit&agrave;</th>
  <th>Destinazione</th>
- <th>Priorit�</th>
+ <th>Priorit&agrave;</th>
  <th>Note</th>
  <td><label>Action</label></td>
 

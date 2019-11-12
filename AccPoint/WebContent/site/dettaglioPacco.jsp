@@ -178,8 +178,8 @@ String permesso = "0";
  <th>Cod. Interno</th>
  <th>Stato</th>
  <th>Tipo</th>
- <th>Quantità</th>
- <th>Attività</th>
+ <th>Quantit&agrave;</th>
+ <th>Attivit&agrave;</th>
  <th>Destinazione</th>
  <th>Priorità</th>
  <th>Note</th>
@@ -985,13 +985,13 @@ String permesso = "0";
  <th>ID Item</th>
  <th>Tipo</th>
  <th>Denominazione</th>
- <th>Quantità</th>
+ <th>Quantit&agrave;</th>
  <th>Stato</th>
  <th>Matr.</th>
  <th>Cod. Int.</th>
- <th>Attività</th> 
+ <th>Attivit&agrave;</th> 
  <th>Destinazione</th>
- <th>Priorità</th>
+ <th>Priorit&agrave;</th>
  <th>Note</th> 
  <th>Action</th>
  </tr></thead>
@@ -1160,7 +1160,7 @@ String permesso = "0";
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      	È stato modificato l'utilizzatore, spostare gli strumenti sotto il nuovo utilizzatore? 
+      	&Egrave; stato modificato l'utilizzatore, spostare gli strumenti sotto il nuovo utilizzatore? 
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_util">
@@ -1734,13 +1734,26 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 	 $('#select1').change();
 	 
 	 
-	 var commessa ="${commessa}";
-	 if(commessa!=''){
+ 	 var commessa ="${commessa}";
+ 	/*	 if(commessa!=''){
 		 var utilizzatore = "${commessa.ID_ANAGEN_UTIL}";
 		 var sede_utilizzatore = "${commessa.getK2_ANAGEN_INDR_UTIL()}";
 	 }else{
 		 var utilizzatore = id_cliente;
 		 var sede_utilizzatore = id_sede;
+	 } */
+	 
+	 var utilizzatore = "${pacco.id_cliente_util}";
+	 var sede_utilizzatore = "${pacco.id_sede_util}";
+	 
+	 if(utilizzatore == '0' && sede_utilizzatore == '0'){
+		 if(commessa!=''){
+			 utilizzatore = "${commessa.ID_ANAGEN_UTIL}";
+			 sede_utilizzatore = "${commessa.getK2_ANAGEN_INDR_UTIL()}"; 
+		 }else{
+			 utilizzatore = id_cliente;
+			 sede_utilizzatore = id_sede;
+		 } 
 	 }
 	
 	 $('#cliente_utilizzatore').val(utilizzatore);

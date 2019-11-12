@@ -325,6 +325,42 @@ public class GestioneVerIntervento extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioVerIntervento.jsp");
 		  	    dispatcher.forward(request,response);
 			}
+			else if(action.equals("chiudi")) {
+				String id_intervento = request.getParameter("id_intervento");
+				id_intervento = Utility.decryptData(id_intervento);
+				VerInterventoDTO interventover = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);	
+				interventover.setId_stato_intervento(1);
+				interventover.setData_chiusura(new Date());
+				
+				session.update(interventover);
+				session.getTransaction().commit();
+				session.close();
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Intervento chiuso con successo!");
+				myObj.addProperty("id_intervento", id_intervento);
+				PrintWriter out = response.getWriter();
+				out.print(myObj);
+			}
+			else if(action.equals("apri")) {
+				
+				String id_intervento = request.getParameter("id_intervento");
+				id_intervento = Utility.decryptData(id_intervento);
+				VerInterventoDTO interventover = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);	
+				interventover.setId_stato_intervento(0);
+				interventover.setData_chiusura(null);
+				
+				session.update(interventover);				
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Intervento aperto con successo!");
+				myObj.addProperty("id_intervento", id_intervento);
+				PrintWriter out = response.getWriter();
+				out.print(myObj);
+			}
 			
 		}catch (Exception e) {
 			session.getTransaction().rollback();

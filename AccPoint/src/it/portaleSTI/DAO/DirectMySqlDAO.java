@@ -1828,7 +1828,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 	public static void updateStatoCampioneScheduler() throws Exception {
 
 		
-		String query = "update campione set stato_campione='N' where campione.data_Scadenza<now() or campione.data_scadenza is null";
+		String query = "update campione set stato_campione='N' where stato_campione!='F' and (campione.data_Scadenza<now() or campione.data_scadenza is null)";
 		
 		Connection con=null;
 		PreparedStatement pst=null;

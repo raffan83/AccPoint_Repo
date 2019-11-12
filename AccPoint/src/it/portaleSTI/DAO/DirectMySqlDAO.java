@@ -2174,6 +2174,58 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		
 	}
 
+	
+	public static void insert_massa_amb_sonde(Connection conSQLLite) throws Exception {
+	
+		Connection con=null;
+		PreparedStatement pst=null;
+		PreparedStatement pstINS=null;
+		ResultSet rs= null;
+		
+		try
+		{
+			con=getConnection();
+			conSQLLite.setAutoCommit(false);
+			pst=con.prepareStatement("SELECT * FROM lat_massa_amb_sonde");
+			
+			rs=pst.executeQuery();
+		
+			
+		while(rs.next())
+			{
+
+				String sqlInsert="INSERT INTO lat_massa_amb_sonde VALUES(?,?,?,?,?,?)";
+
+				pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+				pstINS.setInt(1, rs.getInt("id_tipo"));
+				pstINS.setInt(2, rs.getInt("numero"));
+				pstINS.setBigDecimal(3, rs.getBigDecimal("indicazione"));
+				pstINS.setBigDecimal(4, rs.getBigDecimal("errore"));
+				pstINS.setBigDecimal(5, rs.getBigDecimal("reg_lin_m"));
+				pstINS.setBigDecimal(6, rs.getBigDecimal("reg_lin_q"));
+				
+				pstINS.execute();
+			}
+
+			conSQLLite.commit();
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			throw ex;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+			
+		}
+		
+		
+	}
+	
+	
 	public static void insert_massa_scarti_tipo(Connection conSQLLite) throws Exception {
 		
 		Connection con=null;
@@ -2437,5 +2489,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		}	
 		return lista;
 	}
+
+
 	
 }

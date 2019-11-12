@@ -5,23 +5,26 @@
 <hibernate-mapping>
     <class name="it.portaleSTI.DTO.LatMassaAMB_SONDE" table="LAT_MASSA_AMB_SONDE">
         <id name="id" type="int">
-            <column name="ID" />
-            <generator class="assigned" />
+            <column name="ID" />  
+            <generator class="native" />
         </id>
-        <property name="id_misura" type="int">
-            <column name="ID_MISURA" />
-        </property>
         <property name="id_tipo" type="int">
             <column name="ID_TIPO" />
         </property>
         <property name="numero" type="int">
             <column name="NUMERO" />
         </property>
-        <property name="temperatura" type="java.math.BigDecimal">
-            <column name="TEMPERATURA" />
+        <property name="indicazione" type="java.math.BigDecimal">
+            <column name="INDICAZIONE" />
         </property>
         <property name="errore" type="java.math.BigDecimal">
             <column name="ERRORE" />
+        </property>
+         <property name="reg_lin_m" type="java.math.BigDecimal">
+            <column name="REG_LIN_M" />
+        </property>
+         <property name="reg_lin_q" type="java.math.BigDecimal">
+            <column name="REG_LIN_Q" />
         </property>
     </class>
 </hibernate-mapping>

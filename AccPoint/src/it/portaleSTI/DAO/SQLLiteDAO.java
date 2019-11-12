@@ -410,11 +410,12 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 			"PRESSIONE decimal(19,10) ," + 
 			"PRESSIONE_CORRETTA decimal(19,10))";
 	
-	private static String sqlMassaAMB_SONDE="CREATE TABLE lat_massa_amb_sonde (ID Integer primary key autoincrement,ID_MISURA int(11),"+ 
-											  "ID_TIPO int(11),"+
-											  "NUMERO int(11) ,"+
-											  "TEMPERATURA decimal(19,10) ,"+
-											  "ERRORE decimal(19,10))";
+	private static String sqlMassaAMB_SONDE="CREATE TABLE lat_massa_amb_sonde (ID_TIPO int(11),"
+											+ "NUMERO int(11) ,"+
+											  "INDICAZIONE decimal(19,10) ,"+
+											  "ERRORE decimal(19,10) ,"+
+											  "REG_LIN_M decimal(19,10) ,"+
+											  "REG_LIN_Q decimal(19,10))";
 	
 	private static String sqlMassa_CLASSE="CREATE TABLE lat_massa_classe (ID Integer primary key, "+
 											 "val_nominale varchar(50), "+

@@ -92,9 +92,11 @@ public class GestioneUtenteBO {
 			  String subject = "Calver.it Password Reset";
 			  	
 			  SecureRandom random = new SecureRandom();
-		      byte bytes[] = new byte[20];
-		      random.nextBytes(bytes);
-		      String token = bytes.toString();
+		     
+			  int rand_int1 = random.nextInt(1000000000); 
+			  
+		      
+		      String token = ""+rand_int1;
 		        
 		      String hmtlMex = "<h3>Salve "+utente.getNominativo()+", <br /> Per recuperare la tua password fare click sul link seguente<br /><a href='"+url+"?action=resetPass&token="+token+"'>Reset Password</a></h3><br />Se hai ricevuto per sbaglio questa mail ignora il contenuto.<br />Grazie<br /><br />AccPoint";
 

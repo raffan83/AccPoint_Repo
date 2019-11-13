@@ -37,9 +37,10 @@
 <th>Prezzo Ass</th>
 <th>Q.ta Totale</th>
 <th>Q.ta Assegnata</th>
+<th>Luogo</th>
 <th>Note</th>
 <th>ID Intervento</th>
-<th>Azioni</th>
+<%-- <th>Azioni</th> --%>
  </tr></thead>
  
  <tbody>
@@ -57,13 +58,29 @@
 	<td>${milestone.presso_assegnato }</td>
 	<td>${milestone.quantitaTotale }</td>
 	<td>${milestone.quantitaAssegnata }</td>
+	<td>
+		<c:choose>
+		  <c:when test="${milestone.intervento.pressoDestinatario == 0}">
+				<span class="label label-success">IN SEDE</span>
+		  </c:when>
+		  <c:when test="${milestone.intervento.pressoDestinatario == 1}">
+				<span class="label label-info">PRESSO CLIENTE</span>
+		  </c:when>
+		    <c:when test="${milestone.intervento.pressoDestinatario == 2}">
+				<span class="label label-warning">MISTO CLIENTE - SEDE</span>
+		  </c:when>
+		  <c:otherwise>
+		    <span class="label label-info">-</span>
+		  </c:otherwise>
+		</c:choose> 
+	</td>
 	<td >${milestone.note}</td>
 	<%-- <td onClick="showText('${milestone.note }', '${loop.index}','7')">${utl:maxChar(milestone.note, 10)}</td> --%>
 	<td><a class="btn customTooltip customlink" onClicK="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(milestone.intervento.id)}')" >${milestone.intervento.id }</a></td>
-	<td>
+<%-- 	<td>
 		<a class="btn btn-warning" onClicK="modalModificaAssegnazione('${milestone.prezzo_un}','${milestone.presso_assegnato}','${milestone.quantitaTotale}','${milestone.quantitaAssegnata}','${milestone.note}','${milestone.id}')" ><i class="fa fa-edit"></i></a>
 		<a class="btn btn-danger" onClicK="modalYesOrNo('${milestone.id}')" ><i class="fa fa-trash"></i></a>
-	</td>
+	</td> --%>
 	</tr>
 	</c:forEach>
 	 
@@ -288,11 +305,20 @@ $(document).ready(function(){
 		      columnDefs: [
 		    	 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 12 },
+		    	  { responsivePriority: 2, targets: 10 },
 		    	 
 		               ], 	        
 	  	      buttons: [   
-	  	          {
+	  	    	{
+	                extend: 'excel',
+	                text: 'Esporta Excel',
+	                 exportOptions: {
+	                    modifier: {
+	                        page: 'current'
+	                    }
+	                } 
+	            },
+	  	    	  {
 	  	            extend: 'colvis',
 	  	            text: 'Nascondi Colonne'  	                   
 	 			  } ]

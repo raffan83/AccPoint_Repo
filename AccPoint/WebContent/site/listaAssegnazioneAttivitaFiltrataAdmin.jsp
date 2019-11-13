@@ -40,7 +40,7 @@
 <th>Luogo</th>
 <th>Note</th>
 <th>ID Intervento</th>
-<%-- <th>Azioni</th> --%>
+ <th>Azioni</th> 
  </tr></thead>
  
  <tbody>
@@ -77,10 +77,10 @@
 	<td >${milestone.note}</td>
 	<%-- <td onClick="showText('${milestone.note }', '${loop.index}','7')">${utl:maxChar(milestone.note, 10)}</td> --%>
 	<td><a class="btn customTooltip customlink" onClicK="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(milestone.intervento.id)}')" >${milestone.intervento.id }</a></td>
-<%-- 	<td>
+ 	<td>
 		<a class="btn btn-warning" onClicK="modalModificaAssegnazione('${milestone.prezzo_un}','${milestone.presso_assegnato}','${milestone.quantitaTotale}','${milestone.quantitaAssegnata}','${milestone.note}','${milestone.id}')" ><i class="fa fa-edit"></i></a>
 		<a class="btn btn-danger" onClicK="modalYesOrNo('${milestone.id}')" ><i class="fa fa-trash"></i></a>
-	</td> --%>
+	</td> 
 	</tr>
 	</c:forEach>
 	 

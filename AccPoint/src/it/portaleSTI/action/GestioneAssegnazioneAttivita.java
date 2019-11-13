@@ -207,10 +207,19 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				
 				MilestoneOperatoreDTO assegnazione = GestioneAssegnazioneAttivitaBO.getMilestone(Integer.parseInt(id_assegnazione),session);
 				
-				assegnazione.setPresso_assegnato(new BigDecimal(prezzo_assegnato));
-				assegnazione.setPrezzo_un(new BigDecimal(prezzo_unitario));
-				assegnazione.setQuantitaAssegnata(new BigDecimal(quantita_totale));
-				assegnazione.setQuantitaTotale(new BigDecimal(quantita_assegnata));
+				if(prezzo_assegnato!=null && !prezzo_assegnato.equals("")) {
+					assegnazione.setPresso_assegnato(new BigDecimal(prezzo_assegnato));
+				}
+				if(prezzo_unitario!=null && !prezzo_unitario.equals("")) {
+					assegnazione.setPrezzo_un(new BigDecimal(prezzo_unitario));
+				}
+				if(quantita_assegnata!=null && !quantita_assegnata.equals("")) {
+					assegnazione.setQuantitaAssegnata(new BigDecimal(quantita_assegnata));
+				}
+				if(quantita_totale!=null && !quantita_totale.equals("")) {
+					assegnazione.setQuantitaTotale(new BigDecimal(quantita_totale));
+				}
+				
 				assegnazione.setNote(note);
 				
 				session.update(assegnazione);

@@ -514,11 +514,22 @@
     	
     	 $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q='+address, function(data){
     	       console.log(data);
-    	     //  alert(JSON.stringify(data));
+  
     	     if(data[0]!=null){
     	       lat = data[0].lat;
     	       lon = data[0].lon;
     	       mapping(lat, lon);
+    	     }else{
+    	    	 address = address.split("-");
+    	    	 
+    	    	 $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q='+address[1], function(data){
+    	    	       console.log(data);    	    	
+    	    	     if(data[0]!=null){
+    	    	       lat = data[0].lat;
+    	    	       lon = data[0].lon;
+    	    	       mapping(lat, lon);
+    	    	     }
+    	    	    });
     	     }
     	    });
     	

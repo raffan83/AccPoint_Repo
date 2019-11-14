@@ -103,6 +103,7 @@
  	<mapping class="LatMassaAMB" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMassaAMB.hbm.xml"/>
  	<mapping class="LatMassaAMB_DATA" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMassaAMB_DATA.hbm.xml"/>
  	<mapping class="LatMassaAMB_SONDE" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMassaAMB_SONDE.hbm.xml"/>
+ 	<mapping class="LatMassaEffMag" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMassaEffMag.hbm.xml"/>
  	
  	<!-- Documentazione Campione -->
  	<mapping class="DocumentoCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumentoCampioneDTO.hbm.xml"/>

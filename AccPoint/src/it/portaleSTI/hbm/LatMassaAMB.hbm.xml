@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.LatMassaAMB" table="LAT_MASSA_AMB">
         <id name="id" type="int">
             <column name="ID" />
-            <generator class="assigned" />
+            <generator class="native" />
         </id>
         <property name="id_misura" type="int">
             <column name="ID_MISURA" />

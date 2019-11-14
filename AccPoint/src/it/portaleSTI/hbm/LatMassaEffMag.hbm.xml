@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 14-nov-2019 11.43.29 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.LatMassaEffMag" table="LAT_MASSA_EFF_MAG">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="id_misura" type="int">
+            <column name="ID_MISURA" />
+        </property>
+        <property name="comparatore" type="java.lang.String">
+            <column name="COMPARATORE" />
+        </property>
+        <property name="campione" type="java.lang.String">
+            <column name="CAMPIONE" />
+        </property>
+        <property name="valore_nominale_campione" type="java.math.BigDecimal">
+            <column name="VALORE_NOMINALE_CAMPIONE" />
+        </property>
+        <property name="segno_distintivo" type="java.lang.String">
+            <column name="SEGNO_DISTINTIVO" />
+        </property>
+        <property name="eff_mag_L1" type="java.math.BigDecimal">
+            <column name="EFF_MAG_L1" />
+        </property>
+        <property name="eff_mag_L2" type="java.math.BigDecimal">
+            <column name="EFF_MAG_L2" />
+        </property>
+        <property name="eff_mag_esito" type="java.lang.String">
+            <column name="EFF_MAG_ESITO" />
+        </property>
+        <property name="classe_campione" type="java.lang.String">
+            <column name="CLASSE_CAMPIONE" />
+        </property>
+        <property name="classe_campione_u" type="java.math.BigDecimal">
+            <column name="CLASSE_CAMPIONE_U" />
+        </property>
+        <property name="classe_campione_min" type="java.math.BigDecimal">
+            <column name="CLASSE_CAMPIONE_MIN" />
+        </property>
+        <property name="classe_campione_pc" type="java.math.BigDecimal">
+            <column name="CLASSE_CAMPIONE_PC" />
+        </property>
+        <property name="classe_campione_max" type="java.math.BigDecimal">
+            <column name="CLASSE_CAMPIONE_MAX" />
+        </property>
+        <property name="classe_taratura" type="java.lang.String">
+            <column name="CLASSE_TARATURA" />
+        </property>
+        <property name="classe_taratura_u" type="java.math.BigDecimal">
+            <column name="CLASSE_TARATURA_U" />
+        </property>
+        <property name="classe_taratura_min" type="java.math.BigDecimal">
+            <column name="CLASSE_TARATURA_MIN" />
+        </property>
+        <property name="classe_taratura_pc" type="java.math.BigDecimal">
+            <column name="CLASSE_TARATURA_PC" />
+        </property>
+        <property name="classe_taratura_max" type="java.math.BigDecimal">
+            <column name="CLASSE_TARATURA_MAX" />
+        </property>
+    </class>
+</hibernate-mapping>

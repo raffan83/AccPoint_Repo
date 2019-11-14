@@ -107,6 +107,7 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 					milestone.setPrezzo_totale(qta_tot.multiply(importo_unitario));
 					milestone.setPrezzo_un(importo_unitario);
 					milestone.setNote(note);
+					milestone.setAbilitato(1);
 					
 					session.save(milestone);
 				}

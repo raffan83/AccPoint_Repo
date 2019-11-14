@@ -101,7 +101,7 @@
 
 	</div>
 </div>
-<div class="box-body">
+<div class="box-body" id="body_map" style="height:369px">
        		<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
                   <b>Cliente Utilizzatore</b> <a class="pull-right">${commessa.NOME_UTILIZZATORE}</a>
@@ -115,8 +115,8 @@
                 <!--      <b class="">${commessa.NOME_UTILIZZATORE} - </b><a class=""> ${commessa.INDIRIZZO_UTILIZZATORE}</a> -->
                
                 
-
-	<!--  <div class="map"></div> -->
+		
+	 <div class="map" id="map" ></div> 
 </div>
 </div>
 </div>
@@ -398,9 +398,12 @@
 
 <jsp:attribute name="extra_js_footer">
 
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDssNibshh7Dy58qH70-1ooKXu5z9Ybk-o&region=IT"></script>
-
-<script src="plugins/jbdemonte-gmap3/dist/gmap3.min.js"></script>
+ <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDssNibshh7Dy58qH70-1ooKXu5z9Ybk-o&region=IT"></script> -->
+ <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyCuBQxPwqQMTjowOqSX4z-7wZtgZDXNaVI&sensor=false"></script> -->
+ <!-- <script src="http://www.openlayers.org/api/OpenLayers.js"></script>  -->
+ <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js"></script>
+ 
+<!-- <script src="plugins/jbdemonte-gmap3/dist/gmap3.min.js"></script> -->
  
  <script type="text/javascript">
  
@@ -442,8 +445,94 @@
 
 	} );
 	
-    $(document).ready(function() {
+	
+	function mapping(lat, lon){
+		
+		var iconFeature = new ol.Feature({
+			  geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
+			  name: 'Null Island',
+			  population: 4000,
+			  rainfall: 500
+			});
+		
+		var iconStyle = new ol.style.Style({
+			  image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+			    anchor: [0.5, 0.96],			 
+			    scale: 0.03,
+			    anchorXUnits: 'fraction',
+			    anchorYUnits: 'fraction',
+			    opacity: 0.8,
+			    src: 'images/marker.png'			  
+			  }))
+			});
+	
+		iconFeature.setStyle(iconStyle);
+		
+		var vectorSource = new ol.source.Vector({
+			  features: [iconFeature]
+			});
+
+			var vectorLayer = new ol.layer.Vector({
+			  source: vectorSource
+			});
+		
+		   var map = new ol.Map({			
+			  controls : ol.control.defaults({
+       		  attribution : false,
+       		  rotate: false,       		 
+  		  }),
+			    target: 'map',
+			    layers: [
+			      new ol.layer.Tile({
+			        source: new ol.source.OSM()
+			      })
+			    ],
+			    view: new ol.View({
+			      center: ol.proj.fromLonLat([lon, lat]),
+			      zoom: 16
+			    })
+			 
+		   	
+			  });
+		
+			 map.addLayer(vectorLayer); 
+			 
+		   $('#map').css("height","250px");
+		   $('#map').css("width","100%");
+
+	}
+	
+	
+	
+    function init() {
     	
+
+    	var address = "${commessa.INDIRIZZO_UTILIZZATORE}";
+    	
+ 	   var lat;
+       var lon;
+    	
+    	 $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q='+address, function(data){
+    	       console.log(data);
+    	     //  alert(JSON.stringify(data));
+    	     if(data[0]!=null){
+    	       lat = data[0].lat;
+    	       lon = data[0].lon;
+    	       mapping(lat, lon);
+    	     }
+    	    });
+    	
+ }
+
+    
+    
+    $(document).ready(function() {
+    	    	
+    	
+		init();
+
+		
+		
     	$('.select2').select2();
     	
     	table = $('#tabPM').DataTable({
@@ -657,7 +746,7 @@ tableAttiìvita.columns.adjust().draw();
     
     });
     var indirizzoutilizzatore = "${commessa.INDIRIZZO_UTILIZZATORE}";
-    $('.map')
+/*     $('.map')
       .gmap3({
     	  address:indirizzoutilizzatore,
         zoom:10
@@ -667,7 +756,7 @@ tableAttiìvita.columns.adjust().draw();
       ])
       .on('click', function (marker) {
         marker.setIcon('http://maps.google.com/mapfiles/marker_green.png');
-      });
+      }); */
  
     
   </script>

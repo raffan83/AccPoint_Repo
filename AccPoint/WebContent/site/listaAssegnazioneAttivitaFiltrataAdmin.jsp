@@ -140,7 +140,7 @@
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_assegnazione">
-      <a class="btn btn-primary" onclick="modificaAssegnazioneAdmin()" >Salva</a>
+      <a class="btn btn-primary" onclick="submitModifica()" >Salva</a>
 		
       </div>
     </div>
@@ -200,6 +200,45 @@ function modalModificaAssegnazione(prezzo_unitario, prezzo_assegnato, quantita_t
 	
 	
 	$('#myModalModificaAssegnazione').modal();
+}
+
+
+function submitModifica(){
+	 var prezzo_unitario = $('#prezzo_unitario').val();
+	 var prezzo_assegnato = $('#prezzo_assegnato').val();
+	 var quantita_totale = $('#quantita_totale').val();
+	 var quantita_assegnata = $('#quantita_assegnata').val();	  
+	 var note = $('#note').val();
+	 var id_assegnazione = $('#id_assegnazione').val();
+	 
+	 $('#prezzo_unitario').css('border', '1px solid #d2d6de');
+	 $('#prezzo_assegnato').css('border', '1px solid #d2d6de');
+	 $('#quantita_totale').css('border', '1px solid #d2d6de');
+	 $('#quantita_assegnata').css('border', '1px solid #d2d6de');
+	 
+	 var esito = true;
+	 
+	 if(isNaN(prezzo_unitario)){
+		 esito = false;
+		 $('#prezzo_unitario').css('border', '1px solid #f00');
+	 }
+	 if(isNaN(prezzo_assegnato)){
+		 esito = false;
+		 $('#prezzo_assegnato').css('border', '1px solid #f00');
+	 }
+	 if(isNaN(quantita_totale)){
+		 esito = false;
+		 $('#quantita_totale').css('border', '1px solid #f00');
+	 }
+	 if(isNaN(quantita_assegnata)){
+		 esito = false;
+		 $('#quantita_assegnata').css('border', '1px solid #f00');
+	 }
+	 
+	 if(esito){
+		 modificaAssegnazioneAdmin(prezzo_unitario, prezzo_assegnato,quantita_totale,quantita_assegnata);
+	 }
+	 
 }
 
 

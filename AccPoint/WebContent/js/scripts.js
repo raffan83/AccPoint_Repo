@@ -2049,9 +2049,12 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 
         	  var elem1 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_assoluta', z);
         	  var elem2 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_relativa', z);
-        	  if(elem1.value=="" && elem2.value==""){
-        		  valid = false;
+        	  if(elem1.required){
+        		  if(elem1.value=="" && elem2.value==""){
+            		  valid = false;
+            	  }
         	  }
+        	  
       }
 
 	  var jsonMap = {};
@@ -3402,6 +3405,7 @@ function eliminaCompany(){
 		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	  	        }
 	        },
+	        pageLength: 100,
 		        data: dataSet,
 		        bDestroy: true,
 		        columns: [
@@ -11635,7 +11639,8 @@ function modificaAssegnazioneAdmin(){
 	    				$('#myModalError').on('hidden.bs.modal', function(){
 	    					
 	    					if($('#myModalError').hasClass('modal-success')){
-	    						location.reload();
+	    						//location.reload();
+	    						cercaAssegnazioni();
 	    					}
 	    					
 	    				});
@@ -11702,7 +11707,8 @@ function eliminaAssegnazioneAdmin(){
 	    				$('#myModalError').on('hidden.bs.modal', function(){
 	    					
 	    					if($('#myModalError').hasClass('modal-success')){
-	    						location.reload();
+	    						//location.reload();
+	    						cercaAssegnazioni();
 	    					}
 	    					
 	    				});

@@ -700,29 +700,12 @@ public class GestionePacco extends HttpServlet {
 	   	     //dispatcher.forward(request,response);	
 			
 			
-		
-//		} catch (Exception e) {
-//			
-//			session.getTransaction().rollback();
-//			session.close();
-//			File f = new File(link_pdf);
-//			if(f.exists()) {
-//				f.delete();
-//			}
-//			
-//			e.printStackTrace();
-//			request.setAttribute("error",STIException.callException(e));
-//	  	     request.getSession().setAttribute("exception", e);
-//			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-//		     dispatcher.forward(request,response);	
-//		}
 	}
 		
 		else if(action.equals("dettaglio")) {
 			
 			String id_pacco = request.getParameter("id_pacco");
 		
-			//try {
 				
 				id_pacco = Utility.decryptData(id_pacco);
 				
@@ -749,14 +732,6 @@ public class GestionePacco extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPacco.jsp");
 		     	dispatcher.forward(request,response);
 				
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//				request.setAttribute("error",STIException.callException(e));
-//		  	     request.getSession().setAttribute("exception", e);
-//				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-//			     dispatcher.forward(request,response);	
-//			}
 			
 		}
 		
@@ -770,8 +745,7 @@ public class GestionePacco extends HttpServlet {
 			
 			JsonObject myObj = new JsonObject();
 			PrintWriter  out = response.getWriter();
-	//		try {
-			
+
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
 				MagTipoNotaPaccoDTO tipo_nota = null;
 				if(!nota.equals("0")) {
@@ -791,15 +765,6 @@ public class GestionePacco extends HttpServlet {
 				
 				out.print(myObj);
 		
-//			} catch (Exception e) {
-//
-//				e.printStackTrace();
-//				request.getSession().setAttribute("exception", e);
-//				session.getTransaction().rollback();
-//				session.close();
-//				myObj= STIException.getException(e);
-//				out.print(myObj);
-//			}
 			
 		}
 		
@@ -813,7 +778,7 @@ public class GestionePacco extends HttpServlet {
 			request.getParameter("ddt");
 			String strumenti_json = request.getParameter("strumenti_json");
 			String sede_fornitore = request.getParameter("sede_fornitore");
-		//	try {
+		
 				
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
 				MagStatoLavorazioneDTO stato = new MagStatoLavorazioneDTO(Integer.parseInt(stato_pacco), "");
@@ -934,6 +899,8 @@ public class GestionePacco extends HttpServlet {
 					newPacco.setNome_sede(pacco.getNome_sede());
 					newPacco.setNome_cliente_util(pacco.getNome_cliente_util());
 					newPacco.setNome_sede_util(pacco.getNome_sede_util());
+					newPacco.setId_cliente_util(pacco.getId_cliente_util());
+					newPacco.setId_sede_util(pacco.getId_sede_util());
 					
 					//newPacco.setTipo_nota_pacco(pacco.getTipo_nota_pacco());
 					MagDdtDTO ddt = new MagDdtDTO();
@@ -944,29 +911,7 @@ public class GestionePacco extends HttpServlet {
 						ddt.setId_destinazione(pacco.getDdt().getId_destinazione());
 						ddt.setId_sede_destinazione(pacco.getDdt().getId_sede_destinazione());
 						
-//						if(pacco.getDdt().getId_destinatario()!=0) {
-//							ddt.setId_destinatario(pacco.getDdt().getId_destinatario());
-//							ddt.setId_sede_destinatario(pacco.getDdt().getId_sede_destinatario());
-//							//ddt.setId_destinazione(pacco.getDdt().getId_destinatario());
-//							//ddt.setId_sede_destinazione(pacco.getDdt().getId_sede_destinatario());
-//						}else {
-//							ddt.setId_destinatario(pacco.getId_cliente());
-//							ddt.setId_sede_destinatario(pacco.getId_sede());
-//							//ddt.setId_destinazione(pacco.getId_cliente());
-//							//ddt.setId_sede_destinazione(pacco.getId_sede());
-//						}
-//												
-//						if(pacco.getDdt().getId_destinazione()!=null && pacco.getDdt().getId_destinazione()!=0) {
-//							ddt.setId_destinazione(pacco.getDdt().getId_destinazione());
-//						}else {
-//							ddt.setId_destinazione(ddt.getId_destinatario());	
-//						}
-//						
-//						if(pacco.getDdt().getId_destinazione()!=null && pacco.getDdt().getId_destinazione()!=0) {
-//							ddt.setId_sede_destinazione(pacco.getDdt().getId_sede_destinazione());
-//						}else {
-//							ddt.setId_sede_destinazione(ddt.getId_sede_destinatario());
-//						}
+
 					}
 					
 					newPacco.setUtente(utente);
@@ -1034,23 +979,13 @@ public class GestionePacco extends HttpServlet {
 				session.getTransaction().commit();
 				
 				
-				ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(utente.getCompany().getId(), session);
+				ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(utente.getCompany().getId(),0, session);
 				session.close();
 				request.getSession().setAttribute("lista_pacchi",lista_pacchi);
 				
 				response.sendRedirect(request.getHeader("referer"));
 
-			
-//			} catch (Exception e) {
-//				session.getTransaction().rollback();
-//				session.close();
-//				e.printStackTrace();
-//				request.setAttribute("error",STIException.callException(e));
-//		  	     request.getSession().setAttribute("exception", e);
-//				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-//			     dispatcher.forward(request,response);	
-//
-//			}
+
 		}
 		
 	
@@ -1062,7 +997,7 @@ public class GestionePacco extends HttpServlet {
 			JsonObject myObj = new JsonObject();
 			PrintWriter  out = response.getWriter();
 		
-	//		try {
+
 				if(origine!=null && !origine.equals("")) {
 				GestioneMagazzinoBO.chiudiPacchiCommessa(origine, session);
 				session.getTransaction().commit();
@@ -1073,20 +1008,7 @@ public class GestionePacco extends HttpServlet {
 				out.print(myObj);
 				}
 
-				
-//			} catch (Exception e) {
-//			
-//				e.printStackTrace();
-//				request.getSession().setAttribute("exception", e);
-//				session.getTransaction().rollback();
-//				session.close();
-//
-//				myObj = STIException.getException(e);
-//			
-//				out.print(myObj);
-//			}
-//			
-			
+	
 		}
 		
 		else if (action.equals("accettazione")) {
@@ -1117,15 +1039,7 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Accettazione effettuata con successo!");
 			out.print(myObj);
-//			}catch(Exception e){
-//				session.getTransaction().rollback();
-//				session.close();
-//				e.printStackTrace();
-//				
-//				request.getSession().setAttribute("exception", e);
-//				myObj = STIException.getException(e);
-//				out.print(myObj);
-//			}
+
 		}
 		
 			
@@ -1136,7 +1050,7 @@ public class GestionePacco extends HttpServlet {
 			String id_pacco = request.getParameter("id_pacco");
 			JsonObject myObj = new JsonObject();
 			PrintWriter  out = response.getWriter();
-	//		try {
+
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
 				
 				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
@@ -1155,23 +1069,13 @@ public class GestionePacco extends HttpServlet {
 				session.close();
 				out.print(myObj);
 
-//		} catch (Exception e) {
-//			session.getTransaction().rollback();
-//			session.close();
-//			e.printStackTrace();
-//			
-//			request.getSession().setAttribute("exception", e);
-//			myObj = STIException.getException(e);
-//			out.print(myObj);
-//
-//		}
 	
 	}
 		else if(action.equals("dettaglio_commessa")) {
 			
 			String id_commessa = request.getParameter("id_commessa");
 			
-	//		try {
+	
 				CommessaDTO comm=GestioneCommesseBO.getCommessaById(id_commessa);
 				
 				ArrayList<AttivitaMilestoneDTO> lista_attivita = comm.getListaAttivita();
@@ -1183,22 +1087,12 @@ public class GestionePacco extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioCommessaPacchi.jsp");
 		     	dispatcher.forward(request,response);
 				
-//			} catch (Exception e) {
-//
-//			
-//				e.printStackTrace();
-//				request.setAttribute("error",STIException.callException(e));
-//				request.getSession().setAttribute("exception", e);
-//		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-//		   	     dispatcher.forward(request,response);	
-//				
-//			}
-			
+
 		}
 		
 		else if(action.equals("download_testa_pacco")) {
 			
-		//	try {
+		
 				String filename= request.getParameter("filename");
 				filename = Utility.decryptData(filename);
 				String path = Costanti.PATH_FOLDER+"//"+"Magazzino" + "//"+ "testa_pacco//"+ filename +".pdf";
@@ -1224,15 +1118,7 @@ public class GestionePacco extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 				    
-//				}catch(Exception ex)
-//		    	{
-//					session.close();
-//			   		request.setAttribute("error",STIException.callException(ex));
-//					request.getSession().setAttribute("exception", ex);
-//			   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-//			   	     dispatcher.forward(request,response);	
-//			   	  ex.printStackTrace();
-//				}
+
 			
 		}
 		
@@ -1250,7 +1136,7 @@ public class GestionePacco extends HttpServlet {
 			boolean esito=false;
 			
 				List<FileItem> items;
-			//	try {
+			
 					items = uploadHandler.parseRequest(request);
 					MagPaccoDTO pacco=GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
 				for (FileItem item : items) {
@@ -1287,25 +1173,12 @@ public class GestionePacco extends HttpServlet {
 				out.print(myObj);
 				
 
-//				} catch (Exception e) {
-//							
-//					e.printStackTrace();
-//					
-//					request.getSession().setAttribute("exception", e);
-//					
-//					session.getTransaction().rollback();
-//					session.close();
-//					myObj = STIException.getException(e);
-//					writer.print(myObj);
-//					writer.close();
-//
-//				}
 
 		}
 		
 		else if(action.equals("download_allegato")) {
 			
-		//	try {
+		
 				String filename= request.getParameter("allegato");
 				String codice_pacco = request.getParameter("codice_pacco");
 				String path = Costanti.PATH_FOLDER+"//"+"Magazzino" + "//"+ "Allegati//"+ codice_pacco+ "//"+filename;
@@ -1331,17 +1204,7 @@ public class GestionePacco extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 				    session.close();
-				    
-//				}catch(Exception ex)
-//		    	{
-//					
-//			   		request.setAttribute("error",STIException.callException(ex));
-//			   		request.getSession().setAttribute("exception", ex);
-//			   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-//			   	     dispatcher.forward(request,response);	
-//			   	  ex.printStackTrace();
-//				}
-			
+
 			
 		}
 		
@@ -1350,7 +1213,7 @@ public class GestionePacco extends HttpServlet {
 			ajax = true;
 			JsonObject myObj = new JsonObject();
 			PrintWriter  out = response.getWriter();
-		//	try {
+		
 			String id_allegato = request.getParameter("id_allegato");
 			String id_pacco = request.getParameter("id_pacco");
 			
@@ -1374,15 +1237,7 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Allegato eliminato con successo!");
 			out.print(myObj);
-//			
-//			}catch(Exception e) {
-//				e.printStackTrace();
-//				
-//				request.getSession().setAttribute("exception", e);
-//				myObj = STIException.getException(e);
-//				out.print(myObj);
-//				out.close();
-//			}
+
 		}
 		
 		else if(action.equals("note_commessa")) {
@@ -1418,7 +1273,7 @@ public class GestionePacco extends HttpServlet {
 			String id_strumento = request.getParameter("id");
 			String stato_attuale = request.getParameter("stato_attuale");
 			int new_stato=1;
-		//	try {
+		
 				if(stato_attuale.equals("1")) {
 					new_stato=2;
 				}
@@ -1433,23 +1288,13 @@ public class GestionePacco extends HttpServlet {
 				
 				out.print(myObj);
 				
-//			} catch (Exception e) {
-//				session.getTransaction().rollback();
-//				session.close();
-//				e.printStackTrace();
-//				request.getSession().setAttribute("exception", e);
-//				myObj = STIException.getException(e);
-//				out.print(myObj);
-//			}
-			
 
-			
 		}
 		
 		else if(action.equals("item_uscita")) {
 			
 			String id_pacco = request.getParameter("id_pacco");
-			//try {
+			
 			ArrayList<MagItemPaccoDTO> item_pacco_fornitore = GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
 			ArrayList<MagItemDTO> item_spediti = GestioneMagazzinoBO.getListaItemSpediti(Integer.parseInt(id_pacco), session);
 			session.close();
@@ -1461,16 +1306,7 @@ public class GestionePacco extends HttpServlet {
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/itemUscita.jsp");
 	     	dispatcher.forward(request,response);
-			
-//			}catch(Exception ex)
-//	    	{
-//				session.close();
-//		   		request.setAttribute("error",STIException.callException(ex));
-//		   		request.getSession().setAttribute("exception", ex);
-//		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-//		   	     dispatcher.forward(request,response);	
-//		   	  ex.printStackTrace();
-//			}
+
 		}
 		
 		else if(action.equals("importa_da_commessa")) {
@@ -1479,7 +1315,7 @@ public class GestionePacco extends HttpServlet {
 			PrintWriter  out = response.getWriter();
 			String id_commessa = request.getParameter("id_commessa");
 			List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
-		//	try {
+		
 			if(id_commessa == null || id_commessa.equals("")) {
 				myObj.addProperty("success", false);
 				myObj.addProperty("messaggio", "Attenzione! Nessuna commessa associata al pacco!");
@@ -1523,15 +1359,7 @@ public class GestionePacco extends HttpServlet {
 			
 			out.print(myObj);
 			
-//			} catch (Exception e) {
-//				
-//				e.printStackTrace();
-//				request.getSession().setAttribute("exception", e);
-//				myObj = STIException.getException(e);
-//				out.print(myObj);
-//
-//			}
-			
+
 		}
 		
 		
@@ -1543,7 +1371,7 @@ public class GestionePacco extends HttpServlet {
 			String matricola = request.getParameter("matricola");
 			String codice_interno = request.getParameter("codice_interno");
 			String denominazione = request.getParameter("denominazione");
-		//	try {
+		
 			MagItemDTO item = GestioneMagazzinoBO.getItemById(Integer.parseInt(id_item), session);
 			item.setMatricola(matricola);
 			item.setCodice_interno(codice_interno);
@@ -1560,15 +1388,7 @@ public class GestionePacco extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Strumento modificato con successo!");
 				out.print(myObj);
-//			} catch (Exception e) {
-//				
-//				e.printStackTrace();
-//				session.getTransaction().rollback();
-//				session.close();
-//				request.getSession().setAttribute("exception", e);
-//				myObj = STIException.getException(e);
-//				out.print(myObj);
-//			}
+
 			
 		}
 		

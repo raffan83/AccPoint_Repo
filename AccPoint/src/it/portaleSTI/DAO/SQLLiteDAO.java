@@ -53,6 +53,8 @@ public class SQLLiteDAO {
 
 
 
+
+
 private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integer primary key autoincrement , " +
 																		"indirizzo varchar(255),"+
 																		"denominazione varchar(255),"+
@@ -431,6 +433,27 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 												 "gradi_lib int(3),"+
 												 "uf decimal(12,10))";
 	
+	private static final String sqlMassa_EFF_MAG = "CREATE TABLE lat_massa_eff_mag (" + 
+			"  id Integer primary key autoincrement," + 
+			"  id_misura int(11) ," + 
+			"  comparatore varchar(50) ," + 
+			"  campione varchar(50) ," + 
+			"  valore_nominale_campione decimal(19,10) ," + 
+			"  segno_distintivo varchar(1) ," + 
+			"  eff_mag_L1 decimal(19,10) ," + 
+			"  eff_mag_L2 decimal(19,10) ," + 
+			"  eff_mag_esito varchar(50) ," + 
+			"  classe_campione varchar(50) ," + 
+			"  classe_campione_u decimal(19,10) ," + 
+			"  classe_campione_min decimal(10,2) ," + 
+			"  classe_campione_pc decimal(10,2) ," + 
+			"  classe_campione_max decimal(10,2) ," + 
+			"  classe_taratura varchar(50) ," + 
+			"  classe_taratura_u decimal(19,10) ," + 
+			"  classe_taratura_min decimal(10,2) ," + 
+			"  classe_taratura_pc decimal(10,2) ," + 
+			"  classe_taratura_max decimal(10,2))";
+	
 	
 	private static String sqlCreateSicurezzaElettrica="CREATE TABLE tblMisuraSicurezzaElettrica(id Integer primary key, "+ 
 													 "  id_strumento int(11),"+
@@ -722,6 +745,9 @@ public static void createDBLAT(Connection con) throws SQLException {
 	
 	PreparedStatement pstMassa_SCARTI_TIPO=con.prepareStatement(sqlMassa_SCARTI_TIPO);
 	pstMassa_SCARTI_TIPO.execute();
+	
+	PreparedStatement pstMassa_EFF_MAG=con.prepareStatement(sqlMassa_EFF_MAG);
+	pstMassa_EFF_MAG.execute();
 	
 	}
 	

@@ -43,10 +43,17 @@ public class Registrazione extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-		 
+			String action = request.getParameter("action");
+			
+			if(action!=null && action.equals("informativa_privacy")) {
+				
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/informativaPrivacy.jsp");
+		            dispatcher.forward(request,response);
+			}else {
+				
 	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/registrazione.jsp");
 				dispatcher.forward(request,response);
-	   
+			}
 	    	} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -64,7 +71,11 @@ public class Registrazione extends HttpServlet {
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 
+		String action = request.getParameter("action");
+		
 		try{
+			
+				
 			
 		    response.setContentType("text/html");
 	        
@@ -82,6 +93,7 @@ public class Registrazione extends HttpServlet {
  			String email = request.getParameter("email");
  			String telefono = request.getParameter("telefono");
  			String descrizioneCompany = request.getParameter("descrizioneCompany");
+ 			String check_consenso = request.getParameter("check_consenso");
  			
  			if(!passw.equals(cpassw)) {
  				
@@ -119,7 +131,9 @@ public class Registrazione extends HttpServlet {
 	 			utente.setTelefono(telefono);
 	 			utente.setCompany(company);
 	 			utente.setNominativo(nome+" "+cognome);
-	 			utente.setContatoreUtente(new ContatoreUtenteDTO(1));
+	 			utente.setContatoreUtente(new ContatoreUtenteDTO(1));	 			
+	 			utente.setConsenso_commerciale(check_consenso);
+	 			
 	 				utente.setIdCliente(0);
 	 	 
 	 		 
@@ -175,7 +189,9 @@ public class Registrazione extends HttpServlet {
 	            dispatcher.forward(request,response);
 	             
 	        }
-			}
+			
+		}
+		
 		catch(Exception ex)
     	{
 			session.getTransaction().rollback();

@@ -34,7 +34,11 @@ function Registrazione() {
 	var company = $("#descrizioneCompany").val();
 	var email = $("#email").val();
 	var telefono = $("#telefono").val();
+	var check_consenso = "N";
 	
+	if($('#check3').is( ':checked' )){
+		check_consenso = "S";
+	}
 	
 	if(!login.test(user))
 	{
@@ -58,9 +62,9 @@ function Registrazione() {
 		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Indirizzo non pu&ograve; essere vuoto e non pu&ograve; contenere caratteri speciali</label>');
 		return;
 	}
-	if(!letter_num.test(comune))
+	if(comune=="")
 	{
-		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Comune non pu&ograve; essere vuoto e non pu&ograve; contenere caratteri speciali</label>');
+		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Comune non pu&ograve; essere vuoto');
 		return;
 	}
 	
@@ -91,7 +95,7 @@ function Registrazione() {
 		
 		if(validPassword(pass))
 		{
-			callAction("registrazione.do","#registrazione");
+			callAction("registrazione.do?check_consenso="+check_consenso,"#registrazione");
 		}
 		else
 		{
@@ -3339,7 +3343,7 @@ function eliminaCompany(){
 //  				$('#myModalError').modal('show');
 
     			  $("#codiceError").html("* Codice: "+codice+" gi&agrave; utilizzato.");
-    			  $("#codice").val("");
+    			  //$("#codice").val("");
     		  }else{
     			  $("#codiceError").html("");
     		  }

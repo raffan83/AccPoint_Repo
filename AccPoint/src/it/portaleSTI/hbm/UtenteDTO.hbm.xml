@@ -93,5 +93,8 @@
                <many-to-one name="contatoreUtente" class="it.portaleSTI.DTO.ContatoreUtenteDTO" fetch="join" lazy="false" >
             <column name="id_user_contatore" />
         </many-to-one>
+         <property name="consenso_commerciale" type="java.lang.String">
+            <column name="consenso_commerciale" />
+         </property>
     </class>
 </hibernate-mapping>

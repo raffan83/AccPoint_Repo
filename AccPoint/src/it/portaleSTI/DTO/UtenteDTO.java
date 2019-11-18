@@ -42,6 +42,7 @@ public class UtenteDTO implements Serializable {
 	private String file_firma;
 	private ContatoreUtenteDTO contatoreUtente;
 	private String codiceTecnicoVerificazione;
+	private String consenso_commerciale;
 	/*
 	 * Non Abilitato = 0
 	 * Abilitato = 1
@@ -410,6 +411,20 @@ public class UtenteDTO implements Serializable {
 
 	public void setCodiceTecnicoVerificazione(String codiceTecnicoVerificazione) {
 		this.codiceTecnicoVerificazione = codiceTecnicoVerificazione;
+	}
+
+
+
+
+	public String getConsenso_commerciale() {
+		return consenso_commerciale;
+	}
+
+
+
+
+	public void setConsenso_commerciale(String consenso_commerciale) {
+		this.consenso_commerciale = consenso_commerciale;
 	}
 	
 	

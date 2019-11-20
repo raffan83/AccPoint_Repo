@@ -269,7 +269,9 @@
     </div>
      
         </li>
-        <c:if test="${intervento.nStrumentiMisurati > 0 || intervento.nStrumentiNuovi > 0}">
+        
+        <c:choose>
+        <c:when test="${intervento.nStrumentiMisurati > 0 || intervento.nStrumentiNuovi > 0}">
  				   <li class="list-group-item">
  				   <h4>Download Schede</h4>
  				<button class="btn btn-default " onClick="scaricaSchedaConsegnaModal()"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
@@ -287,7 +289,15 @@
        
        
        
-      </c:if>
+      </c:when>
+      <c:otherwise >
+      <li class="list-group-item">
+ 				   <h4>Schede di Consegna</h4>
+ 				
+ 				<button class="btn btn-info customTooltip " title="Click per aprire le schede di consegna" onClick="showSchedeConsegna('${utl:encryptData(intervento.id)}')"><i class="fa fa-file-text-o"></i> </button>
+   				</li>
+      </c:otherwise>
+      </c:choose>
      </ul>
     </div>
 	</div>

@@ -117,7 +117,13 @@
 	                  </select>
     
                   <label>Cliente</label>
-                  <input  name="select1" id="select1"  class="form-control" style="width:100%" required>
+                  <c:if test="${userObj.idCliente != 0}">
+                  <input  name="select1" id="select1"  class="form-control" style="width:100%" value="${userObj.idCliente }">
+                  </c:if>
+                  <c:if test="${userObj.idCliente == 0 }">
+                  <input  name="select1" id="select1"  class="form-control" style="width:100%" >
+                  </c:if>
+                  
                  <%--  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
                   <c:if test="${userObj.idCliente != 0}">
                   
@@ -549,6 +555,10 @@ function spd()
     	
     	if(idCliente != 0 && idSede != 0){
     		 $("#select1").prop("disabled", true);
+    		// $('#select1').val(idCliente);
+    		// $('#select2').val(idSede+"_"+idCliente);
+    		// $("#select1").change();
+    		 $('#select2').val(idSede+"_"+idCliente);
     		$("#select2").change();
     	}else if(idCliente != 0 && idSede == 0){
     		 $("#select1").prop("disabled", true);

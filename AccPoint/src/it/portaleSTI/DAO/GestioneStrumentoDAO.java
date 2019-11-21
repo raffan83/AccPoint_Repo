@@ -313,13 +313,15 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 				
 		
 				
-				query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo");
+				//query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo");
+				query  = session.createQuery( "from StrumentoDTO where dataProssimaVerifica = :dateTo");
 				query.setParameter("dateTo",df.parse(dateTo));
 			}
 			
 			else
 			{
-				query=session.createQuery("select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo");
+				//query=session.createQuery("select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo");
+				query=session.createQuery("from StrumentoDTO  where dataProssimaVerifica BETWEEN :dateFrom AND :dateTo");
 				query.setParameter("dateFrom",df.parse(dateFrom));
 				query.setParameter("dateTo",df.parse(dateTo));
 			}
@@ -333,20 +335,23 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 			{
 				if(user.getIdCliente()==0 && user.getIdSede()==0)
 				{
-					query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where strumentodto.company.id=:_idCmp AND lista.dataProssimaVerifica = :dateTo ");
+					//query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where strumentodto.company.id=:_idCmp AND lista.dataProssimaVerifica = :dateTo ");
+					query  = session.createQuery( "from StrumentoDTO where company.id=:_idCmp AND dataProssimaVerifica = :dateTo ");
 					query.setParameter("_idCmp", user.getCompany().getId());
 					query.setParameter("dateTo",df.parse(dateTo));
 				}
 				else if(user.getIdCliente()!=0 && user.getIdSede()==0)
 				{
-					query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where strumentodto.company.id=:_idCmp AND lista.dataProssimaVerifica = :dateTo  AND strumentodto.id_cliente=:idCliente");
+					//query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where strumentodto.company.id=:_idCmp AND lista.dataProssimaVerifica = :dateTo  AND strumentodto.id_cliente=:idCliente");
+					query  = session.createQuery( "from StrumentoDTO where company.id=:_idCmp AND dataProssimaVerifica = :dateTo  AND id_cliente=:idCliente");
 					query.setParameter("_idCmp", user.getCompany().getId());
 					query.setParameter("idCliente", user.getIdCliente());
 					query.setParameter("dateTo",df.parse(dateTo));
 				}
 				else
 				{
-					query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo AND strumentodto.company.id=:_idCmp AND strumentodto.id_cliente=:idCliente AND strumentodto.id__sede_=:idSede");
+					//query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo AND strumentodto.company.id=:_idCmp AND strumentodto.id_cliente=:idCliente AND strumentodto.id__sede_=:idSede");
+					query  = session.createQuery( "from StrumentoDTO where dataProssimaVerifica = :dateTo AND company.id=:_idCmp AND id_cliente=:idCliente AND id__sede_=:idSede");
 					query.setParameter("_idCmp", user.getCompany().getId());
 					query.setParameter("idCliente", user.getIdCliente());
 					query.setParameter("idSede", user.getIdSede());
@@ -356,14 +361,16 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 			{
 				if(user.getIdCliente()==0 && user.getIdSede()==0)
 				{
-					query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where strumentodto.company.id=:_idCmp AND lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo");
+					//query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where strumentodto.company.id=:_idCmp AND lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo");
+					query  = session.createQuery( "from StrumentoDTO  where company.id=:_idCmp AND dataProssimaVerifica BETWEEN :dateFrom AND :dateTo");
 					query.setParameter("_idCmp", user.getCompany().getId());
 					query.setParameter("dateTo",df.parse(dateTo));
 					query.setParameter("dateFrom",df.parse(dateFrom));
 				}
 				else if(user.getIdCliente()!=0 && user.getIdSede()==0)
 				{
-					query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND company.id=:_idCmp AND strumentodto.id_cliente=:idCliente");
+					//query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND company.id=:_idCmp AND strumentodto.id_cliente=:idCliente");
+					query  = session.createQuery( "from StrumentoDTO where dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND company.id=:_idCmp AND id_cliente=:idCliente");
 					query.setParameter("_idCmp", user.getCompany().getId());
 					query.setParameter("idCliente", user.getIdCliente());
 					query.setParameter("dateTo",df.parse(dateTo));
@@ -371,7 +378,8 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 				}
 				else
 				{
-					query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND company.id=:_idCmp AND strumentodto.id_cliente=:idCliente AND strumentodto.id__sede_=:idSede");
+					//query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND company.id=:_idCmp AND strumentodto.id_cliente=:idCliente AND strumentodto.id__sede_=:idSede");
+					query  = session.createQuery( "from StrumentoDTO where dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND company.id=:_idCmp AND id_cliente=:idCliente AND id__sede_=:idSede");
 					query.setParameter("_idCmp", user.getCompany().getId());
 					query.setParameter("idCliente", user.getIdCliente());
 					query.setParameter("idSede", user.getIdSede());

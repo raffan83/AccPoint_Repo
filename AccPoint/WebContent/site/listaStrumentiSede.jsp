@@ -27,10 +27,10 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <% 
-JsonObject json = (JsonObject)session.getAttribute("myObj");
-JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");
-Gson gson = new Gson();
-Type listType = new TypeToken<ArrayList<StrumentoDTO>>(){}.getType();
+//JsonObject json = (JsonObject)session.getAttribute("myObj");
+//JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");
+//Gson gson = new Gson();
+//Type listType = new TypeToken<ArrayList<StrumentoDTO>>(){}.getType();
 //ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType);
 
 
@@ -96,7 +96,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  				            
  				                      	<button type="button" class="btn btn-info" onclick="filtraStrumentiInScadenza('ultima')">Filtra Ultima Verifica</button>
 				                     
-				                   		 <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')">Reset</button>
+				                   		 <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti(7226,<%=idCliente %>,<%=idSede %>)">Reset</button>
  				                
  								</div>
   								</div>
@@ -303,8 +303,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	               <button  class="btn btn-primary" onClick="checkMisure('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>')">Misure</button>	 									
 	 									
 	 									<button  class="btn btn-danger" onClick="openDownloadDocumenti('<%=strumento.get__id()%>')"><i class="fa fa-file-text-o"></i></button>
+	 									<%if(idCliente.equals("0") && idSede.equals("0")){ %>
 	 									<button class="btn btn-info" title="Sposta strumento"onClick="modalSposta('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')"><i class="fa fa-exchange"></i></button>
-	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">Cambia Stato</button> 
+	 									
+	 									<%} %>
+	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Cambia Stato</button> 
 	 								</td>   
 	
 	</tr>

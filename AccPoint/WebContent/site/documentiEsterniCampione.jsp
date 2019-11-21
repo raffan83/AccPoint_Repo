@@ -42,7 +42,7 @@
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
 		        <!-- The file input field used as target for the file upload widget -->
-		        		<input accept="application/pdf" id="fileupload" type="file" name="files">
+		        		<input accept="application/pdf,.p7m" id="fileupload" type="file" name="files">
 		   	 </span>
 		       
 		    <!-- The container for the uploaded files -->
@@ -203,12 +203,12 @@
         },
         add: function(e, data) {
             var uploadErrors = [];
-            var acceptFileTypes = /(\.|\/)(pdf)$/i;
+            var acceptFileTypes = /(\.|\/)(pdf|p7m)$/i;
             if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
                 uploadErrors.push('Tipo File non accettato. ');
             }
-            if(data.originalFiles[0]['size'] > 10000000) {
-                uploadErrors.push('File troppo grande, dimensione massima 10mb');
+            if(data.originalFiles[0]['size'] > 30000000) {
+                uploadErrors.push('File troppo grande, dimensione massima 30mb');
             }
             if(uploadErrors.length > 0) {
             	//$('#files').html(uploadErrors.join("\n"));
@@ -289,12 +289,12 @@
         .parent().addClass($.support.fileInput ? undefined : 'disabled');
 	
 	
-	$('#fileupload').bind('fileuploadsubmit', function (e, data) {
+ 	$('#fileupload').bind('fileuploadsubmit', function (e, data) {
 	    // The example input, doesn't have to be part of the upload form:
 	    var date = $('#dataVerifica');
-	    data.formData = {dataVerifica: date.val(), id_campione: campione_id};
+	    data.formData = { id_campione: campione_id};
 	    
-	    if (!data.formData.dataVerifica) {
+	  /*   if (!data.formData.dataVerifica) {
 	        
 	        $('#myModalErrorContent').html("INSERIRE DATA DI VERIFICA");
 			$('#myModalError').removeClass();
@@ -306,9 +306,9 @@
                 );
 	        
 	        return false;
-	      }
+	      } */
 	   
-	});
+	}); 
 	
  	
     	

@@ -4,7 +4,7 @@
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonElement"%>
 <%@page import="it.portaleSTI.DTO.StrumentoDTO"%>
-<%@page import="it.portaleSTI.DTO.ScadenzaDTO" %>
+
 <% 
 JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonElement jsonElem = (JsonElement)json.getAsJsonObject("dataInfo");
@@ -149,14 +149,14 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
 
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Freq verifica:</label>
-        <%if(strumento.getScadenzaDTO()!=null) {%>
+        <%if(strumento.getFrequenza()!=0) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="freq_mesi" type="text" name="freq_mesi" disabled="disabled"  value="<%
-                   			if(strumento.getScadenzaDTO()!=null){	 
-                    		  if(strumento.getScadenzaDTO().getFreq_mesi() != 0){
-                   	 			  out.println(strumento.getScadenzaDTO().getFreq_mesi());
-                    			 }
-                    		  }
+                   			 
+                    		  
+                   	 			  out.println(strumento.getFrequenza());
+                    			
+                    		  
                     			  %>"/>
     </div>
     <%}else{ %>    
@@ -169,14 +169,13 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
 
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Ultima Verifica:</label>
-        <%if(strumento.getScadenzaDTO()!=null) {%>    
+        <%if(strumento.getDataUltimaVerifica()!=null) {%>    
         <div class="col-sm-10">
                       <input class="form-control" id="dataUltimaVerifica" type="text" name="dataUltimaVerifica" disabled="disabled"  value="<%
-                    		  if(strumento.getScadenzaDTO()!=null){
-                      if(strumento.getScadenzaDTO().getDataUltimaVerifica()!=null){
-                    	  out.println(sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica())); 
-                      }
-                    		  }
+                    		  
+                    
+                    	  out.println(sdf.format(strumento.getDataUltimaVerifica())); 
+                     
                        %>"/>
     </div>
     <%}else{ %>
@@ -189,14 +188,12 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
 
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Prossima Verifica:</label>
-        <%if(strumento.getScadenzaDTO()!=null) {%>  
+        <%if(strumento.getDataProssimaVerifica()!=null) {%>  
         <div class="col-sm-10">
                       <input class="form-control" id="dataProssimaVerifica" type="text" name="dataProssimaVerifica" disabled="disabled"  value="<%
-                    		  if(strumento.getScadenzaDTO()!=null){
-                    		  if(strumento.getScadenzaDTO().getDataProssimaVerifica()!=null){
-                    			  out.println(sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
-                              }
-                    		  }
+                    		 
+                    			  out.println(sdf.format(strumento.getDataProssimaVerifica()));
+                              
                                %>"/>
     </div>
     <%}else {%>
@@ -209,14 +206,12 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
     
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Tipo Rapporto:</label>
-        <%if(strumento.getScadenzaDTO()!=null) {%> 
+        <%if(strumento.getTipoRapporto()!=null) {%> 
         <div class="col-sm-10">
                       <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%
-                    		  if(strumento.getScadenzaDTO()!=null){
-                    			  if(strumento.getScadenzaDTO().getTipo_rapporto()!=null){
-                    			  out.println(strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto());
-                    			  }
-                      }
+                    		 
+                    			  out.println(strumento.getTipoRapporto().getNoneRapporto());
+                    	
                       %>"/>
     </div>
      <%}else{ %>

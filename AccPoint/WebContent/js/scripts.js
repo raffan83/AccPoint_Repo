@@ -5249,33 +5249,75 @@ function eliminaCompany(){
 		 	callAction('listaStrumentiCalendario.do?dateFrom='+dateFrom.format('YYYY-MM-DD')+'&dateTo='+dateTo.format('YYYY-MM-DD')+'&idCliente='+idCliente);
 	  }
   
-	  function filtraStrumenti(filtro,idFiltro){
-		 // $("#divFiltroDate").hide();
-		  minDateFilter = "";
-		  maxDateFilter = "";
-		  dataType = "";
-		  table.draw();
-		  if(filtro=="tutti"){
-			  table
-		        .columns( 2 )
-		        .search( "" )
-		        .draw();
-			  $(".btnFiltri").prop("disabled",false);
-			  $("#btnTutti").prop("disabled",true);
-			  $("#inputsearchtable_2").val("");
-		  }else {
-			  table
-		        .columns( 2 )
-		        .search( filtro )
-		        .draw();
-			  $(".btnFiltri").prop("disabled",false);
-			  $("#btnFiltri_"+idFiltro).prop("disabled",true);
-//			  if(idFiltro == 7226){
-//				  $("#divFiltroDate").show();
-//				  
-//			  }
-			  $("#inputsearchtable_2").val(filtro);
+//	  function filtraStrumenti(filtro,idFiltro){
+//		 // $("#divFiltroDate").hide();
+//		  minDateFilter = "";
+//		  maxDateFilter = "";
+//		  dataType = "";
+//		  table.draw();
+//		  if(filtro=="tutti"){
+//			  table
+//		        .columns( 2 )
+//		        .search( "" )
+//		        .draw();
+//			  $(".btnFiltri").prop("disabled",false);
+//			  $("#btnTutti").prop("disabled",true);
+//			  $("#inputsearchtable_2").val("");
+//		  }else {
+//			  table
+//		        .columns( 2 )
+//		        .search( filtro )
+//		        .draw();
+//			  $(".btnFiltri").prop("disabled",false);
+//			  $("#btnFiltri_"+idFiltro).prop("disabled",true);
+////			  if(idFiltro == 7226){
+////				  $("#divFiltroDate").show();
+////				  
+////			  }
+//			  $("#inputsearchtable_2").val(filtro);
+//		  }
+//	  }
+	  
+	  function filtraStrumenti(filtro, id_cliente, id_sede){
+		  var action = "in_servizio";
+		  if(filtro==7225){
+			  action = "fuori_servizio"
 		  }
+		  
+		  var dataString = "action="+action+"&id_cliente="+id_cliente+"&id_sede="+id_sede;
+		  exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(data,textStatus){
+        	  $('#myModal').on('hidden.bs.modal', function (e) {
+             	  	$('#noteApp').val("");
+             	 	$('#empty').html("");
+             	 	$('body').removeClass('noScroll');
+             	 	$(document.body).css('padding-right', '0px');
+             	});
+        	  
+ 			
+        	  $('#myModalError').on('hidden.bs.modal', function (e) {
+        		  
+        		  var input = $("#uploadSuccess").val();
+        		  if(input){
+        			  $('#myModal').modal("hide");
+				
+        		  }
+
+        	   	 
+        	   	 	
+        	   	});
+
+
+        		if(filtro==7226){
+    	   	 		$('#in_servizio').attr('disabled', true);
+    	   	 		$('#fuori_servizio').attr('disabled', false);
+    	   	 	}else{
+    	   	 		$('#fuori_servizio').attr('disabled', true);
+    	   	 		$('#in_servizio').attr('disabled', false);
+    	   	 	}
+        	  
+          });
+		  
+		  
 	  }
 	  
 	     function filtraStrumentiInScadenza(dataTypeStr){

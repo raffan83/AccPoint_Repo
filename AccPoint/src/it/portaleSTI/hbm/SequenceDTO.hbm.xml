@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+<class name="it.portaleSTI.DTO.SequenceDTO" table="sequence">
+
+    <composite-id >
+        <key-property name="seq_sti_campione" column="seq_sti_campione" type="int"/>    
+        
+		<key-property name="seq_cdt_campione" column="seq_cdt_campione" type="int" />    
+      
+    </composite-id>
+    
+    
+
+</class>
+
+
+</hibernate-mapping>

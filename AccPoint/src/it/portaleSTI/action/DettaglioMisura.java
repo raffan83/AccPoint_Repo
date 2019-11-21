@@ -3,7 +3,10 @@ package it.portaleSTI.action;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,6 +31,7 @@ import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
+
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -84,7 +88,15 @@ public class DettaglioMisura extends HttpServlet {
 			if(action==null || action.equals("")) {
 				
 			idMisura = Utility.decryptData(idMisura);
-			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(idMisura));			
+			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(idMisura));	
+			
+//			Set<ScadenzaDTO> listaScadenzeDTO= new HashSet<>();
+//			ScadenzaDTO scadenza = new ScadenzaDTO();
+//			scadenza.setDataEmissione(new Date(System.currentTimeMillis()));
+//			scadenza.setDataProssimaVerifica(new Date(System.currentTimeMillis()));
+//			scadenza.setDataUltimaVerifica(new Date(System.currentTimeMillis()));
+//			listaScadenzeDTO.add(scadenza);
+//			misura.getStrumento().setListaScadenzeDTO(listaScadenzeDTO);
 			
 			request.getSession().setAttribute("misura", misura);
 			

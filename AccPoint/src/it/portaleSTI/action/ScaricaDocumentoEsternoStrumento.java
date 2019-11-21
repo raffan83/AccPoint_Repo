@@ -28,7 +28,7 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
+
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
@@ -113,10 +113,8 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 				 
 					if(esito.getEsito() == 1) {
 	
-						ScadenzaDTO scadenza = new ScadenzaDTO();
-						scadenza.setIdStrumento(strumento.get__id());
-						scadenza.setFreq_mesi(strumento.getScadenzaDTO().getFreq_mesi());
-						scadenza.setTipo_rapporto(strumento.getScadenzaDTO().getTipo_rapporto());
+						
+					
 						{
 
 							SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -125,25 +123,19 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 					        					        
 							java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 							
-							scadenza.setDataUltimaVerifica(sqlDate);
-							scadenza.setDataEmissione(sqlDate);
-							
+													
 							Calendar data = Calendar.getInstance();
 							
 							data.setTime(date);
-							data.add(Calendar.MONTH,scadenza.getFreq_mesi());
+							data.add(Calendar.MONTH,strumento.getFrequenza());
 							
 							java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
 								
-							scadenza.setDataProssimaVerifica(sqlDateProssimaVerifica);
+							strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
 							
 						}
-						Set<ScadenzaDTO> listaScadenze = strumento.getListaScadenzeDTO();
-						listaScadenze.add(scadenza);
-						strumento.setListaScadenzeDTO(listaScadenze);
 						
-						
-						GestioneStrumentoBO.saveScadenza(scadenza, session);						
+										
 						GestioneStrumentoBO.update(strumento, session);
 						
 						

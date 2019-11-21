@@ -31,7 +31,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
+
 import it.portaleSTI.DTO.StatoPackDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -257,34 +257,25 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				StrumentoDTO strumento = listaStrumentiPerSede.get(j);
 				int id=strumento.get__id();
 				int tipoStrumento=strumento.getTipo_strumento().getId();
+				
 				String dataUltimaVerifica="";
-				String dataProssimaVerifica="";
+				String dataProssimaVerifica = "";
 				
 				
-				if(strumento.getScadenzaDTO()!=null)
-				{
 				
-						if(strumento.getScadenzaDTO().getDataUltimaVerifica()!=null)
+				
+				
+				if(strumento.getDataUltimaVerifica()!=null)
 						{
-							dataUltimaVerifica=sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica());
+							dataUltimaVerifica=sdf.format(strumento.getDataUltimaVerifica());
 						}
 						
-						if(strumento.getScadenzaDTO().getDataProssimaVerifica()!=null)
+						if(strumento.getDataProssimaVerifica()!=null)
 						{
-							dataProssimaVerifica=sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica());
+							dataProssimaVerifica=sdf.format(strumento.getDataProssimaVerifica());
 						}
 					
-				}else 
-				{
-					ScadenzaDTO scadenza= new ScadenzaDTO();
-					scadenza.setFreq_mesi(0);
-					scadenza.setTipo_rapporto(new TipoRapportoDTO(Costanti.ID_TIPO_RAPPORTO_SVT,""));
-					
-					Set<ScadenzaDTO> listaScadenza = new HashSet<>();
-					
-					listaScadenza.add(scadenza);
-					strumento.setListaScadenzeDTO(listaScadenza);
-				}
+				
 				
 				String luogo="";
 				
@@ -305,8 +296,8 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 															Utility.getVarchar(strumento.getMatricola())+"\",\""+
 															Utility.getVarchar(strumento.getRisoluzione())+"\",\""+
 															Utility.getVarchar(strumento.getCampo_misura())+"\",\""+
-															strumento.getScadenzaDTO().getFreq_mesi()+"\",\""+
-															strumento.getScadenzaDTO().getTipo_rapporto().getId()+"\",\""+
+															strumento.getFrequenza()+"\",\""+
+															strumento.getTipoRapporto().getId()+"\",\""+
 															strumento.getStato_strumento().getId()+"\",\""+
 															Utility.getVarchar(strumento.getReparto())+"\",\""+
 															Utility.getVarchar(strumento.getUtilizzatore())+"\",\""+

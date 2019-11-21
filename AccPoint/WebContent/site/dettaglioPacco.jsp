@@ -181,7 +181,7 @@ String permesso = "0";
  <th>Quantit&agrave;</th>
  <th>Attivit&agrave;</th>
  <th>Destinazione</th>
- <th>Priorità</th>
+ <th>Priorit&agrave;</th>
  <th>Note</th>
  <th>Action</th>
 

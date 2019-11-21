@@ -215,7 +215,7 @@ public class CreateSchedaConsegnaMetrologia {
 				arrayPs.add(strumento.getDenominazione());
 				arrayPs.add(strumento.getCodice_interno());
 				arrayPs.add(strumento.getMatricola());
-				arrayPs.add(""+sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica()));
+				arrayPs.add(""+sdf.format(strumento.getDataUltimaVerifica()));
 				arrayPs.add(strumento.getNote());
 				
 		         Object[] listaValori = arrayPs.toArray();

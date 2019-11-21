@@ -62,7 +62,7 @@ public class CreateCertificatoSE {
 		
 		File imageHeader = null;
 		//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+misura.getIntervento().getCompany());
-		ConfigurazioneClienteDTO conf = GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromId(certificato.getMisura().getIntervento().getId_cliente(), certificato.getMisura().getIntervento().getIdSede(), certificato.getMisura().getStrumento().getScadenzaDTO().getTipo_rapporto().getId(), session);
+		ConfigurazioneClienteDTO conf = GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromId(certificato.getMisura().getIntervento().getId_cliente(), certificato.getMisura().getIntervento().getIdSede(), certificato.getMisura().getStrumento().getTipoRapporto().getId(), session);
 				if(conf != null && conf.getNome_file_logo()!=null && !conf.getNome_file_logo().equals("")) {
 					imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+ "\\ConfigurazioneClienti\\"+certificato.getMisura().getIntervento().getId_cliente()+"\\"+certificato.getMisura().getIntervento().getIdSede()+"\\"+conf.getNome_file_logo());
 				}else {
@@ -189,11 +189,11 @@ public class CreateCertificatoSE {
 		report.addParameter("guasto_l_n", "");
 		
 
-		report.addParameter("periodicita_verifica", certificato.getMisura().getStrumento().getScadenzaDTO().getFreq_mesi() + " mesi");
+		report.addParameter("periodicita_verifica", certificato.getMisura().getStrumento().getFrequenza() + " mesi");
 		
-		if(certificato.getMisura().getStrumento().getScadenzaDTO().getDataProssimaVerifica()!=null) {		
+		if(certificato.getMisura().getStrumento().getDataProssimaVerifica()!=null) {		
 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-			report.addParameter("prossima_verifica", df.format(certificato.getMisura().getStrumento().getScadenzaDTO().getDataProssimaVerifica()));	
+			report.addParameter("prossima_verifica", df.format(certificato.getMisura().getStrumento().getDataProssimaVerifica()));	
 		}else {
 			report.addParameter("prossima_verifica", "");
 		}		

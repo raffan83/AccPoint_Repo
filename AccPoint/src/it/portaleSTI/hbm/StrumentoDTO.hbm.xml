@@ -79,13 +79,21 @@
     <many-to-one name="userCreation" class="it.portaleSTI.DTO.UtenteDTO" lazy="false" fetch="join">
    <column name="user_creation" />
    </many-to-one>
- <set name="listaScadenzeDTO" table="scadenza_dto"
-				inverse="true" lazy="false" fetch="select" >
-            <key>
-                <column name="id__strumento_" not-null="true" />
-            </key>
-            <one-to-many class="it.portaleSTI.DTO.ScadenzaDTO" />
-   </set>
+   
+   <many-to-one name="tipoRapporto" class="it.portaleSTI.DTO.TipoRapportoDTO" lazy="false" fetch="join">
+   <column name="id_tipo_rapporto" />
+   </many-to-one>
+
+
+  <property name="dataProssimaVerifica" type="java.sql.Date">
+   <column name="data_prossima_verifica"/>
+  </property>
+    <property  name="dataUltimaVerifica" type="java.sql.Date">
+   <column name="data_ultima_verifica"/>
+  </property>
+    <property name="frequenza" type="int">
+   <column name="frequenza"/>
+  </property>
          <set name="listaDocumentiEsterni" table="documenti_esterni"
 				inverse="true" lazy="false" fetch="select" >
             <key>

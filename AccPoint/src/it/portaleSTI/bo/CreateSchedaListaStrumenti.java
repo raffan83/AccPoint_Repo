@@ -221,21 +221,21 @@ public class CreateSchedaListaStrumenti {
  	 				arrayPs.add(strumento.getRisoluzione());
  	 				arrayPs.add(strumento.getReparto());
  	 				arrayPs.add(strumento.getUtilizzatore());
- 	 				if(strumento.getScadenzaDTO()!=null) 
+ 	 				if(strumento.getFrequenza()!=0) 
  	 				{
- 	 					arrayPs.add(""+strumento.getScadenzaDTO().getFreq_mesi());
+ 	 					arrayPs.add(""+strumento.getFrequenza());
  	 				}else 
  	 				{
  	 					arrayPs.add("/");
  	 				}
  	 				
-	 				if(strumento.getScadenzaDTO().getDataUltimaVerifica() != null){
-	 					arrayPs.add(sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica()));
+	 				if(strumento.getDataUltimaVerifica() != null){
+	 					arrayPs.add(sdf.format(strumento.getDataUltimaVerifica()));
 	 				}else {
 	 					arrayPs.add("/");
 	 				}
-	 				if(strumento.getScadenzaDTO().getDataProssimaVerifica() != null){
-	 					arrayPs.add(sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
+	 				if(strumento.getDataProssimaVerifica() != null){
+	 					arrayPs.add(sdf.format(strumento.getDataProssimaVerifica()));
 	 				}else {
 	 					arrayPs.add("/");
 	 				}

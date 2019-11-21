@@ -24,7 +24,7 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
+
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
@@ -122,21 +122,20 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setClassificazione(new ClassificazioneDTO(Integer.parseInt(classificazione),""));
 				
 				
-				ScadenzaDTO scadenza = new ScadenzaDTO();
+			
 				if(freq_mesi.length()>0){
-					scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));
+					strumento.setFrequenza(Integer.parseInt(freq_mesi));
 				}
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
-				scadenza.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
+				strumento.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
 				if(dataProssimaVerifica.length()>0){
-					scadenza.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
+					strumento.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
 				}
-				scadenza.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
+				strumento.setTipoRapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
 				
-				Set<ScadenzaDTO> listaScadenze = new HashSet<ScadenzaDTO>();
-				listaScadenze.add(scadenza);
-				strumento.setListaScadenzeDTO(listaScadenze);
+				
+			
 				/*
 				 * Save Hibernate abnd return strumento
 				 */
@@ -230,21 +229,19 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setCompany(new CompanyDTO(Integer.parseInt(company),"","","","","","","",""));
 				strumento.setUserCreation((UtenteDTO)request.getSession().getAttribute("userObj"));
 				strumento.setStato_strumento(new StatoStrumentoDTO(7226, "In servizio"));
-				ScadenzaDTO scadenza = new ScadenzaDTO();
+			
 				if(freq_mesi.length()>0){
-					scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));
+					strumento.setFrequenza(Integer.parseInt(freq_mesi));
 				}
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
-				scadenza.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
+				strumento.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
 				if(dataProssimaVerifica.length()>0){
-					scadenza.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
+					strumento.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
 				}
-				scadenza.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
+				strumento.setTipoRapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
 				
-				Set<ScadenzaDTO> listaScadenze = new HashSet<ScadenzaDTO>();
-				listaScadenze.add(scadenza);
-				strumento.setListaScadenzeDTO(listaScadenze);				
+							
 				
 				GestioneStrumentoBO.saveStrumento(strumento, session);
 				

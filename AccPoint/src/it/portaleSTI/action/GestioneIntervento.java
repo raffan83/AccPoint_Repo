@@ -44,7 +44,7 @@ import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
+
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.StatoPackDTO;

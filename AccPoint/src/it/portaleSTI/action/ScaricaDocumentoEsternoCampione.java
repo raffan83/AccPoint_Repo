@@ -32,7 +32,7 @@ import it.portaleSTI.DTO.CategoriaDocumentoDTO;
 import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
 import it.portaleSTI.DTO.DocumentoCampioneDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
+
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;

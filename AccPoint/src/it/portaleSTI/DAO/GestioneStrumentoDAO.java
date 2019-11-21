@@ -161,6 +161,38 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(String idCliente,String 
 	return lista;
 }
 
+
+
+public static ArrayList<StrumentoDTO> getListaStrumentiInFuoriServizio(String idCliente,String idSede, Integer idCompany, Session session,UtenteDTO utente, int stato) throws Exception {
+	
+	ArrayList<StrumentoDTO> lista =null;
+	Query query=null;
+	if(utente.isTras()) 
+	{
+		 query  = session.createQuery( "from StrumentoDTO WHERE id__sede_= :_idSede AND id_cliente=:_idcliente and stato_strumento.id =:_stato");
+			query.setParameter("_idSede", Integer.parseInt(idSede));
+			query.setParameter("_idcliente",  Integer.parseInt(idCliente));
+			query.setParameter("_stato",  stato);
+			
+	}
+	else 
+	{
+		 query  = session.createQuery( "from StrumentoDTO WHERE id__sede_= :_idSede AND company.id=:_idCompany AND id_cliente=:_idcliente and stato_strumento.id =:_stato");
+			query.setParameter("_idSede", Integer.parseInt(idSede));
+			query.setParameter("_idCompany", idCompany);
+			query.setParameter("_idcliente",  Integer.parseInt(idCliente));
+			query.setParameter("_stato",  stato);
+	}
+	
+	
+		
+			
+	
+	lista=(ArrayList<StrumentoDTO>) query.list();
+	
+	return lista;
+}
+
 public static ArrayList<MisuraDTO> getListaMirureByStrumento(int idStrumento) {
 
 		Query query=null;
@@ -233,16 +265,16 @@ public static HashMap<String, Integer> getListaStrumentiScadenziario(UtenteDTO u
 	
 	for (StrumentoDTO str: lista) {
 		
-		if(str.getScadenzaDTO()!=null && str.getScadenzaDTO().getDataProssimaVerifica()!=null)
+		if(str.getDataProssimaVerifica()!=null)
 		{
 			int i=1;
 			
-			if(listMap.get(sdf.format(str.getScadenzaDTO().getDataProssimaVerifica()))!=null)
+			if(listMap.get(sdf.format(str.getDataProssimaVerifica()))!=null)
 			{
-				i= listMap.get(sdf.format(str.getScadenzaDTO().getDataProssimaVerifica()))+1;
+				i= listMap.get(sdf.format(str.getDataProssimaVerifica()))+1;
 			}
 			
-				listMap.put(sdf.format(str.getScadenzaDTO().getDataProssimaVerifica()),i);
+				listMap.put(sdf.format(str.getDataProssimaVerifica()),i);
 				
 		}
 	}

@@ -19,7 +19,7 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
+
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -182,7 +182,7 @@ public class CreateCertificato {
 		try {
 			File imageHeader = null;
 			//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+misura.getIntervento().getCompany());
-			ConfigurazioneClienteDTO conf = GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromId(misura.getIntervento().getId_cliente(), misura.getIntervento().getIdSede(), misura.getStrumento().getScadenzaDTO().getTipo_rapporto().getId(), session);
+			ConfigurazioneClienteDTO conf = GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromId(misura.getIntervento().getId_cliente(), misura.getIntervento().getIdSede(), misura.getStrumento().getTipoRapporto().getId(), session);
 					if(conf != null && conf.getNome_file_logo()!=null && !conf.getNome_file_logo().equals("")) {
 						imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+ "\\ConfigurazioneClienti\\"+misura.getIntervento().getId_cliente()+"\\"+misura.getIntervento().getIdSede()+"\\"+conf.getNome_file_logo());
 					}else {
@@ -203,22 +203,21 @@ public class CreateCertificato {
 			 * Aggiornata data Emissione su scadenzaDTO
 			 */
 		
-				ScadenzaDTO scadenza =strumento.getScadenzaDTO();
-				scadenza.setIdStrumento(strumento.get__id());
-				scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
-				scadenza.setDataEmissione(new java.sql.Date(System.currentTimeMillis()));
+				
+				strumento.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
+			//	scadenza.setDataEmissione(new java.sql.Date(System.currentTimeMillis()));
 				
 				if(tipoScheda.equals("SVT"))
 				{
 					Calendar c = Calendar.getInstance(); 
 					c.setTime(misura.getDataMisura()); 
-					c.add(Calendar.MONTH,scadenza.getFreq_mesi());
+					c.add(Calendar.MONTH,strumento.getFrequenza());
 					c.getTime();
 					
-					scadenza.setDataProssimaVerifica(new java.sql.Date(c.getTime().getTime()));
+					strumento.setDataProssimaVerifica(new java.sql.Date(c.getTime().getTime()));
 				
 					
-					GestioneStrumentoBO.updateScadenza(scadenza, session);
+					GestioneStrumentoBO.update(strumento, session);
 					
 					
 					
@@ -229,8 +228,8 @@ public class CreateCertificato {
 					}
 					
 				
-					if(scadenza.getDataProssimaVerifica()!=null){
-						report.addParameter("dataProssimaVerifica",""+sdf.format(scadenza.getDataProssimaVerifica()));
+					if(strumento.getDataProssimaVerifica()!=null){
+						report.addParameter("dataProssimaVerifica",""+sdf.format(strumento.getDataProssimaVerifica()));
 					}else {
 						report.addParameter("dataProssimaVerifica"," ");			
 					}
@@ -259,9 +258,9 @@ public class CreateCertificato {
 					c.add(Calendar.MONTH,12);
 					c.getTime();
 					
-					scadenza.setDataProssimaVerifica(new java.sql.Date(c.getTime().getTime()));
+					strumento.setDataProssimaVerifica(new java.sql.Date(c.getTime().getTime()));
 					
-					GestioneStrumentoBO.updateScadenza(scadenza, session);
+					GestioneStrumentoBO.update(strumento, session);
 					
 					report.addParameter("dataEmissione",""+sdf.format(new Date()));
 					if(misura.getDataMisura() !=null){
@@ -280,7 +279,7 @@ public class CreateCertificato {
 			
 				if(tipoScheda.equals("RDP"))
 				{
-					GestioneStrumentoBO.updateScadenza(scadenza, session);
+					GestioneStrumentoBO.update(strumento, session);
 					
 					report.addParameter("dataEmissione",""+sdf.format(new Date()));
 					if(misura.getDataMisura() !=null){
@@ -359,8 +358,8 @@ public class CreateCertificato {
 				report.addParameter("classificazione","/");
 			}
 			
-			if(strumento.getScadenzaDTO()!=null){
-				report.addParameter("frequenza",""+strumento.getScadenzaDTO().getFreq_mesi());
+			if(strumento.getFrequenza()!=0){
+				report.addParameter("frequenza",""+strumento.getFrequenza());
 			}else {
 				report.addParameter("frequenza","/");
 			}
@@ -912,7 +911,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  }
 			  
 			  if(appenCertificati) {
-				  addCertificatiCampioni(file,misura,strumento.getScadenzaDTO().getTipo_rapporto());
+				  addCertificatiCampioni(file,misura,strumento.getTipoRapporto());
 			  }
 			  
 			  System.out.println("Generato Certificato: "+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");

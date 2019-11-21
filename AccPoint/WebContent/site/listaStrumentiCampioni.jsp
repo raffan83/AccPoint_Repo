@@ -118,10 +118,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             
                     	             <td><%
 
-                    	             if(strumento.getScadenzaDTO() != null){
-                    	            	 if(strumento.getScadenzaDTO().getFreq_mesi() != 0){
-                    	            		 out.println(strumento.getScadenzaDTO().getFreq_mesi());
-                    	            	 }
+                    	             
+                    	            	 if(strumento.getFrequenza() != 0){
+                    	            		 out.println(strumento.getFrequenza());
+                    	            	 
                    	            	 
                    	            		 }else{
                    	            	 	%> 
@@ -131,10 +131,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             
                     	             %></td>
                     	             <td><%
-                    	             if(strumento.getScadenzaDTO()!= null){
-                    	            	 if(strumento.getScadenzaDTO().getDataUltimaVerifica() != null){
-                    	            		 out.println(sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica()));
-                    	            	 }
+                    	            
+                    	            	 if(strumento.getDataUltimaVerifica() != null){
+                    	            		 out.println(sdf.format(strumento.getDataUltimaVerifica()));
+                    	            	 
                     	            	 
                     	             }else{
                     	            	 %> 
@@ -145,10 +145,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             %></td>
                     	             
                     	             <td><%
-                    	             if(strumento.getScadenzaDTO() != null){
-                    	            	 if(strumento.getScadenzaDTO().getDataProssimaVerifica() != null){
-                    	            		 out.println(sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
-                    	            	 }
+                    	            
+                    	            	 if(strumento.getDataProssimaVerifica() != null){
+                    	            		 out.println(sdf.format(strumento.getDataProssimaVerifica()));
+                    	            	 
                     	            	 
                     	             }else{
                     	            	 %> 
@@ -160,9 +160,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             <td><%=strumento.getReparto()%></td>
                     	             
                     	             <td><%
-                    	             if(strumento.getScadenzaDTO() != null){
-                    	            	 if(strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto() != null){
-                    	            		 out.println(strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto());
+                    	             if(strumento.getTipoRapporto() != null){
+                    	            	 if(strumento.getTipoRapporto().getNoneRapporto() != null){
+                    	            		 out.println(strumento.getTipoRapporto().getNoneRapporto());
                     	            	 }
                     	            	 
                     	             }else{

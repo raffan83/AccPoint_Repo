@@ -12,7 +12,7 @@ import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
+
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
@@ -144,30 +144,30 @@ public class GestioneStrumentoBO {
 		try{
 			Integer id_strumento = (Integer) session.save(strumento);
 			
-			if(id_strumento != 0){
-				 
-					Iterator<ScadenzaDTO> iterator = strumento.getListaScadenzeDTO().iterator(); 
-			      
-				   // check values
-				   while (iterator.hasNext()){
-
-					   ScadenzaDTO scadenza = iterator.next();
-						scadenza.setIdStrumento(id_strumento);
-						Integer id_scadenza = (Integer) session.save(scadenza);
-						
-						if(id_scadenza == 0){
-							session.getTransaction().rollback();
-					 		session.close();
-							return 0;
-						}
-				   }
-				    
-				
-			}else{
-				session.getTransaction().rollback();
-		 		session.close();
-				return 0;
-			}
+//			if(id_strumento != 0){
+//				 
+//					Iterator<ScadenzaDTO> iterator = strumento.getListaScadenzeDTO().iterator(); 
+//			      
+//				   // check values
+//				   while (iterator.hasNext()){
+//
+//					   ScadenzaDTO scadenza = iterator.next();
+//						scadenza.setIdStrumento(id_strumento);
+//						Integer id_scadenza = (Integer) session.save(scadenza);
+//						
+//						if(id_scadenza == 0){
+//							session.getTransaction().rollback();
+//					 		session.close();
+//							return 0;
+//						}
+//				   }
+//				    
+//				
+//			}else{
+//				session.getTransaction().rollback();
+//		 		session.close();
+//				return 0;
+//			}
 			
 			return id_strumento;
 		}catch (Exception ex){
@@ -228,16 +228,16 @@ public class GestioneStrumentoBO {
 		return strumento;
 	}
 
-	public static void updateScadenza(ScadenzaDTO scadenza, Session session)throws Exception {
-	
-		session.update(scadenza);
-		
-	}
+//	public static void updateScadenza(ScadenzaDTO scadenza, Session session)throws Exception {
+//	
+//		session.update(scadenza);
+//		
+//	}
 
-	public static void saveScadenza(ScadenzaDTO scadenza, Session session) {
-	
-		session.save(scadenza);
-	}
+//	public static void saveScadenza(ScadenzaDTO scadenza, Session session) {
+//	
+//		session.save(scadenza);
+//	}
 	
 	public static String creaPacchettoConNome(int idCliente,int idSede, CompanyDTO cmp,String nomeCliente, Session session,InterventoDTO intervento) throws Exception, SQLException {
 
@@ -363,9 +363,9 @@ public class GestioneStrumentoBO {
 		
 			for (StrumentoDTO strumento : lista) 
 			{
-				if(strumento.getScadenzaDTO()!=null && strumento.getScadenzaDTO().getDataProssimaVerifica()!=null)
+				if(strumento!=null && strumento.getDataProssimaVerifica()!=null)
 				{
-					Date prossimaVerifica=strumento.getScadenzaDTO().getDataProssimaVerifica();
+					Date prossimaVerifica=strumento.getDataProssimaVerifica();
 					if(prossimaVerifica!=null && sdf.format(prossimaVerifica).equals(dateTo))
 					{
 						listaFiltrata.add(strumento);
@@ -378,9 +378,9 @@ public class GestioneStrumentoBO {
 		
 			for (StrumentoDTO strumento : lista) 
 			{
-				if(strumento.getScadenzaDTO()!=null && strumento.getScadenzaDTO().getDataProssimaVerifica()!=null)
+				if(strumento!=null && strumento.getDataProssimaVerifica()!=null)
 				{
-					Date prossimaVerifica=strumento.getScadenzaDTO().getDataProssimaVerifica();
+					Date prossimaVerifica=strumento.getDataProssimaVerifica();
 					if(prossimaVerifica!=null && prossimaVerifica.after(sdf.parse(dateFrom))&& prossimaVerifica.before(sdf.parse(dateTo)))
 					{
 						if(nonContieneStrumento(listaFiltrata,strumento))
@@ -469,6 +469,12 @@ public class GestioneStrumentoBO {
 	public static ArrayList<StrumentoDTO> getlistaStrumentiFromCompany(Integer id_company, Session session) {
 		
 		return GestioneStrumentoDAO.getlistaStrumentiFromCompany(id_company, session);
+	}
+
+	public static ArrayList<StrumentoDTO> getListaStrumentiInFuoriServizio(String idCliente, String idSede, Integer idCompany,
+			Session session, UtenteDTO utente, int stato) throws Exception {
+		
+		return GestioneStrumentoDAO.getListaStrumentiInFuoriServizio(idCliente, idSede, idCompany, session,utente, stato);
 	}
 
 

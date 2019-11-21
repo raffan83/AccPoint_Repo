@@ -36,6 +36,10 @@ public class StrumentoDTO {
 			 private Date dataModifica;
 			 private UtenteDTO userModifica;
 			 private MisuraDTO ultimaMisura;
+			 private Date dataProssimaVerifica;
+			 private Date dataUltimaVerifica;
+			 private TipoRapportoDTO TipoRapporto;
+			
 				 
 			 
 			 //Parte recuperata da File SQLLite
@@ -47,7 +51,7 @@ public class StrumentoDTO {
 			 //------
 			 
 			 
-			 private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
+//			 private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
 			
 			 private Set<DocumentiEsterniStrumentoDTO> listaDocumentiEsterni = new HashSet<DocumentiEsterniStrumentoDTO>(0);
 			 
@@ -133,14 +137,7 @@ public class StrumentoDTO {
 			}
 
 
-			public Set<ScadenzaDTO> getListaScadenzeDTO() {
-				return listaScadenzeDTO;
-			}
-
-
-			public void setListaScadenzeDTO(Set<ScadenzaDTO> listaScadenzeDTO) {
-				this.listaScadenzeDTO = listaScadenzeDTO;
-			}
+		
 
 
 
@@ -289,32 +286,6 @@ public class StrumentoDTO {
 
 
 
-		public ScadenzaDTO getScadenzaDTO()
-		{
-			ScadenzaDTO scadenza=null;
-			ScadenzaDTO nuovaScadenza=null; 
-			Iterator<ScadenzaDTO> iterator = listaScadenzeDTO.iterator();
-			 
-			 
-			 while (iterator.hasNext())
-			 {
-				 if(scadenza==null)
-				 {
-					 scadenza=iterator.next();
-					
-					 
-				 }else
-				 {
-					 nuovaScadenza=iterator.next();
-					 if(nuovaScadenza.getId()>scadenza.getId())
-					 {
-						 scadenza=nuovaScadenza;
-					 }
-					 
-				 }
-			 }
-			 return scadenza;
-		}
 
 
 		public UtenteDTO getUserCreation() {
@@ -418,4 +389,31 @@ public class StrumentoDTO {
 
 
 
+
+		 public Date getDataProssimaVerifica() {
+				return dataProssimaVerifica;
+			}
+
+			public void setDataProssimaVerifica(Date dataProssimaVerifica) {
+				this.dataProssimaVerifica = dataProssimaVerifica;
+			}
+
+			public Date getDataUltimaVerifica() {
+				return dataUltimaVerifica;
+			}
+
+			public void setDataUltimaVerifica(Date dataUltimaVerifica) {
+				this.dataUltimaVerifica = dataUltimaVerifica;
+			}
+
+			
+			public TipoRapportoDTO getTipoRapporto() {
+				return TipoRapporto;
+			}
+
+			public void setTipoRapporto(TipoRapportoDTO tipoRapporto) {
+				TipoRapporto = tipoRapporto;
+			}
+
+			
 }

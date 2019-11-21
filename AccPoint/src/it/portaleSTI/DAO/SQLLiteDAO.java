@@ -26,7 +26,7 @@ import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
+
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoRicezioneStrumentoDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
@@ -817,32 +817,30 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		strumento.setRisoluzione(rs.getString("risoluzione"));
 		strumento.setCampo_misura(rs.getString("campo_misura"));
 		strumento.setLuogo(new LuogoVerificaDTO(rs.getInt("luogo_verifica"),""));
-		ScadenzaDTO scadenza = new ScadenzaDTO();
 		
-		scadenza.setFreq_mesi(rs.getInt("freq_verifica_mesi"));
-		scadenza.setTipo_rapporto(new TipoRapportoDTO(rs.getInt("tipoRapporto"), ""));
 		
-		if(scadenza.getTipo_rapporto().getId()==Costanti.ID_TIPO_RAPPORTO_SVT)
+		strumento.setFrequenza(rs.getInt("freq_verifica_mesi"));
+		strumento.setTipoRapporto(new TipoRapportoDTO(rs.getInt("tipoRapporto"), ""));
+		
+		if(strumento.getTipoRapporto().getId()==Costanti.ID_TIPO_RAPPORTO_SVT)
 		{
 			Date date = new Date();
 			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 			
-			scadenza.setDataUltimaVerifica(sqlDate);
+			strumento.setDataUltimaVerifica(sqlDate);
 			
 			Calendar data = Calendar.getInstance();
 			
 			data.setTime(date);
-			data.add(Calendar.MONTH,scadenza.getFreq_mesi());
+			data.add(Calendar.MONTH,strumento.getFrequenza());
 			
 			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
 				
-			scadenza.setDataProssimaVerifica(sqlDateProssimaVerifica);
+			strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
 			
 		}
 		
-		Set<ScadenzaDTO> listaScadenze =new HashSet<ScadenzaDTO>();
-		listaScadenze.add(scadenza);
-		strumento.setListaScadenzeDTO(listaScadenze);
+	
 		strumento.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
 		strumento.setReparto(rs.getString("reparto"));
 		strumento.setUtilizzatore(rs.getString("utilizzatore"));
@@ -907,32 +905,29 @@ public static ArrayList<SicurezzaElettricaDTO> getListaMisureElettriche(Connecti
 		strumento.setRisoluzione(rs.getString("risoluzione"));
 		strumento.setCampo_misura(rs.getString("campo_misura"));
 		strumento.setLuogo(new LuogoVerificaDTO(rs.getInt("luogo_verifica"),""));
-		ScadenzaDTO scadenza = new ScadenzaDTO();
+				
+		strumento.setFrequenza(rs.getInt("freq_verifica_mesi"));
+		strumento.setTipoRapporto(new TipoRapportoDTO(rs.getInt("tipoRapporto"), ""));
 		
-		scadenza.setFreq_mesi(rs.getInt("freq_verifica_mesi"));
-		scadenza.setTipo_rapporto(new TipoRapportoDTO(rs.getInt("tipoRapporto"), ""));
-		
-		if(scadenza.getTipo_rapporto().getId()==Costanti.ID_TIPO_RAPPORTO_SVT)
+		if(strumento.getTipoRapporto().getId()==Costanti.ID_TIPO_RAPPORTO_SVT)
 		{
 			Date date = new Date();
 			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 			
-			scadenza.setDataUltimaVerifica(sqlDate);
+			strumento.setDataUltimaVerifica(sqlDate);
 			
 			Calendar data = Calendar.getInstance();
 			
 			data.setTime(date);
-			data.add(Calendar.MONTH,scadenza.getFreq_mesi());
+			data.add(Calendar.MONTH,strumento.getFrequenza());
 			
 			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
 				
-			scadenza.setDataProssimaVerifica(sqlDateProssimaVerifica);
+			strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
 			
 		}
 		
-		Set<ScadenzaDTO> listaScadenze =new HashSet<ScadenzaDTO>();
-		listaScadenze.add(scadenza);
-		strumento.setListaScadenzeDTO(listaScadenze);
+		
 		strumento.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
 		strumento.setReparto(rs.getString("reparto"));
 		strumento.setUtilizzatore(rs.getString("utilizzatore"));

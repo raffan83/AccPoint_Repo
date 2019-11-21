@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -94,17 +95,21 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 					
 					if(idCompany!=null)
 					{
-						
+					System.out.println("Inizio query tot"+new Date());	
 					ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
 					ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
 					ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
 					ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
 					ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
 	
-					ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente, idSede, idCompany.getId(), session,utente); 
+		//			ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente, idSede, idCompany.getId(), session,utente);
+					
+					ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiInFuoriServizio(idCliente, idSede, idCompany.getId(), session,utente, 7226);
+					
+					request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 					ArrayList<StrumentoDTO> listaStrumentiPerSedeGrafici=GestioneStrumentoBO.getListaStrumentiPerGrafici(idCliente,idSede,idCompany.getId(),utente); 
 	
-					
+					System.out.println("fine query tot"+new Date());	
 					HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
 					HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();
 					HashMap<String,Integer> tipoStrumenti = new HashMap<String,Integer>();
@@ -203,8 +208,10 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 					request.getSession().setAttribute("repartoStrumentiJson", gson.toJsonTree(repartoStrumenti).toString());
 					request.getSession().setAttribute("utilizzatoreStrumentiJson", gson.toJsonTree(utilizzatoreStrumenti).toString());
 					
+					
 					request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 	
+					
 					
 					
 					PrintWriter out = response.getWriter();
@@ -212,6 +219,8 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 					
 			        JsonObject myObj = new JsonObject();
 	
+			        listaStrumentiPerSede= new ArrayList<>();
+			      
 			        JsonElement obj = gson.toJsonTree(listaStrumentiPerSede);
 			       
 			        if(listaStrumentiPerSede!=null && listaStrumentiPerSede.size()>0){
@@ -232,6 +241,9 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
 			        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
 			        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
+			        request.getSession().setAttribute("listaStrumentiTemp",null);
+			        
+			        System.out.println("query tot fine action "+new Date());	
 					 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
 				     dispatcher.forward(request,response);
 			        
@@ -267,12 +279,68 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 	        
 	        request.getSession().setAttribute("myObjStr",myObj);
 	       
-			//request.getSession().setAttribute("lista_strumenti", lista_strumenti);
+
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiCampioni.jsp");
 		     dispatcher.forward(request,response);
 		     session.close();
 		}
+		else if(action.equals("in_servizio")) {
+			
+			String id_cliente = request.getParameter("id_cliente");
+			String id_sede = request.getParameter("id_sede");
+			
+			CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+			ArrayList<StrumentoDTO> listaStrumentiTemp = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumentiTemp");
+			ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumenti");
+		
+			if(listaStrumentiTemp!=null) {
+				System.out.println("in servizio inizio"+new Date());	
+				request.getSession().setAttribute("listaStrumentiTemp", listaStrumenti);
+				request.getSession().setAttribute("listaStrumenti", listaStrumentiTemp);
+				
+			}else {
+				ArrayList<StrumentoDTO> listaStrumentiFiltrata=GestioneStrumentoBO.getListaStrumentiInFuoriServizio(id_cliente, id_sede, idCompany.getId(), session,utente, 7226);
+				request.getSession().setAttribute("listaStrumenti", listaStrumentiFiltrata);				
+			}
 
+			System.out.println("in servizio fine"+new Date());	
+			
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
+		     dispatcher.forward(request,response);
+			
+		}
+		else if(action.equals("fuori_servizio")) {
+			
+			String id_cliente = request.getParameter("id_cliente");
+			String id_sede = request.getParameter("id_sede");
+			
+			CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+		
+			ArrayList<StrumentoDTO> listaStrumentiTemp = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumentiTemp");
+			ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumenti");
+	
+			System.out.println("fuori servizio inizio"+new Date());	
+			
+			if(listaStrumentiTemp!=null) {
+				request.getSession().setAttribute("listaStrumenti", listaStrumentiTemp);			
+				request.getSession().setAttribute("listaStrumentiTemp", listaStrumenti);
+				
+			}else {
+				request.getSession().setAttribute("listaStrumentiTemp", listaStrumenti);				
+				ArrayList<StrumentoDTO> listaStrumentiFiltrata=GestioneStrumentoBO.getListaStrumentiInFuoriServizio(id_cliente, id_sede, idCompany.getId(), session,utente, 7225);
+				request.getSession().setAttribute("listaStrumenti", listaStrumentiFiltrata);
+				
+			}
+			System.out.println("fuori servizio fine"+new Date());	
+			
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
+		    dispatcher.forward(request,response);
+
+		}
+			
+			 
 		}
 
 		catch(Exception ex)

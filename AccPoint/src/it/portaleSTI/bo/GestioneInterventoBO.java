@@ -25,7 +25,7 @@ import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
+
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
@@ -218,11 +218,11 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setDataModifica(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
 		   		
 		   		TipoRapportoDTO tipoRapp = new TipoRapportoDTO(strumentoDaFile.getIdTipoRapporto(),"");
-		   		strumentoModificato.getScadenzaDTO().setTipo_rapporto(tipoRapp);
+		   		strumentoModificato.setTipoRapporto(tipoRapp);
 		   		
 		   		ClassificazioneDTO classificazione = new ClassificazioneDTO(strumentoDaFile.getIdClassificazione(),"");		   		
 		   		strumentoModificato.setClassificazione(classificazione);
-		   		strumentoModificato.getScadenzaDTO().setFreq_mesi(strumentoDaFile.getFrequenza());
+		   		strumentoModificato.setFrequenza(strumentoDaFile.getFrequenza());
 		   		strumentoModificato.setDenominazione(strumentoDaFile.getDenominazione());   	
 		   		strumentoModificato.setCodice_interno(strumentoDaFile.getCodice_interno());
 		   		strumentoModificato.setCostruttore(strumentoDaFile.getCostruttore());
@@ -235,8 +235,21 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setNote(strumentoDaFile.getNote());
 		   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
 		   		strumentoModificato.setProcedura(strumentoDaFile.getProcedura());
+		   		strumentoModificato.setDataProssimaVerifica(strumentoDaFile.getDataProssimaVerifica());
+		   		strumentoModificato.setDataUltimaVerifica(strumentoDaFile.getDataUltimaVerifica());
+		   		
 		   		
 		   		GestioneStrumentoBO.update(strumentoModificato, session);
+		   	}
+		   	
+		   	else 
+		   	{
+		   	StrumentoDTO	strumentoAggiormanentoScadenza = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
+		   	strumentoAggiormanentoScadenza.setDataProssimaVerifica(misura.getStrumento().getDataProssimaVerifica());
+		   	strumentoAggiormanentoScadenza.setDataUltimaVerifica(misura.getStrumento().getDataUltimaVerifica());
+	   		
+	   		
+	   		GestioneStrumentoBO.update(strumentoAggiormanentoScadenza, session);
 		   	}
 		   	
 		    
@@ -251,10 +264,10 @@ public class GestioneInterventoBO {
 		    		/*
 		    		 * Salvo scadenza 
 		    		 */
-		    		ScadenzaDTO scadenza =misura.getStrumento().getScadenzaDTO();
-		    		scadenza.setIdStrumento(misura.getStrumento().get__id());
-			    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
-		    		GestioneStrumentoBO.saveScadenza(scadenza,session);
+//		    		ScadenzaDTO scadenza =misura.getStrumento().getScadenzaDTO();
+//		    		scadenza.setIdStrumento(misura.getStrumento().get__id());
+//			    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
+//		    		GestioneStrumentoBO.saveScadenza(scadenza,session);
 		    		
 		    		ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
 		    		
@@ -403,11 +416,11 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setDataModifica(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
 		   		
 		   		TipoRapportoDTO tipoRapp = new TipoRapportoDTO(strumentoDaFile.getIdTipoRapporto(),"");
-		   		strumentoModificato.getScadenzaDTO().setTipo_rapporto(tipoRapp);
+		   		strumentoModificato.setTipoRapporto(tipoRapp);
 		   		
 		   		ClassificazioneDTO classificazione = new ClassificazioneDTO(strumentoDaFile.getIdClassificazione(),"");		   		
 		   		strumentoModificato.setClassificazione(classificazione);
-		   		strumentoModificato.getScadenzaDTO().setFreq_mesi(strumentoDaFile.getFrequenza());
+		   		strumentoModificato.setFrequenza(strumentoDaFile.getFrequenza());
 		   		strumentoModificato.setDenominazione(strumentoDaFile.getDenominazione());   	
 		   		strumentoModificato.setCodice_interno(strumentoDaFile.getCodice_interno());
 		   		strumentoModificato.setCostruttore(strumentoDaFile.getCostruttore());
@@ -420,9 +433,21 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setNote(strumentoDaFile.getNote());
 		   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
 		   		strumentoModificato.setProcedura(strumentoDaFile.getProcedura());
+		   		strumentoModificato.setDataProssimaVerifica(strumentoDaFile.getDataProssimaVerifica());
+		   		strumentoModificato.setDataUltimaVerifica(strumentoDaFile.getDataUltimaVerifica());
 		   		
 		   		GestioneStrumentoBO.update(strumentoModificato, session);
 		   		strumento=strumentoModificato;
+		   	}
+		   	
+		   	else 
+		   	{
+		   	StrumentoDTO	strumentoAggiormanentoScadenza = GestioneStrumentoBO.getStrumentoById(""+sicurezza.getStrumento().get__id(),session);
+		   	strumentoAggiormanentoScadenza.setDataProssimaVerifica(sicurezza.getStrumento().getDataProssimaVerifica());
+		   	strumentoAggiormanentoScadenza.setDataUltimaVerifica(sicurezza.getStrumento().getDataUltimaVerifica());
+	   		
+	   		
+	   		GestioneStrumentoBO.update(strumentoAggiormanentoScadenza, session);
 		   	}
 		   	
 		    MisuraDTO misura= new MisuraDTO();
@@ -460,10 +485,10 @@ public class GestioneInterventoBO {
 		    		/*
 		    		 * Salvo scadenza 
 		    		 */
-		    		ScadenzaDTO scadenza =sicurezza.getStrumento().getScadenzaDTO();
-		    		scadenza.setIdStrumento(misura.getStrumento().get__id());
-			    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
-		    		GestioneStrumentoBO.saveScadenza(scadenza,session);
+//		    		ScadenzaDTO scadenza =sicurezza.getStrumento().getScadenzaDTO();
+//		    		scadenza.setIdStrumento(misura.getStrumento().get__id());
+//			    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
+//		    		GestioneStrumentoBO.saveScadenza(scadenza,session);
 		    		
 		    		
 		    		saveSicurezza(sicurezza,session);
@@ -578,11 +603,11 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setDataModifica(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
 		   		
 		   		TipoRapportoDTO tipoRapp = new TipoRapportoDTO(strumentoDaFile.getIdTipoRapporto(),"");
-		   		strumentoModificato.getScadenzaDTO().setTipo_rapporto(tipoRapp);
+		   		strumentoModificato.setTipoRapporto(tipoRapp);
 		   		
 		   		ClassificazioneDTO classificazione = new ClassificazioneDTO(strumentoDaFile.getIdClassificazione(),"");		   		
 		   		strumentoModificato.setClassificazione(classificazione);
-		   		strumentoModificato.getScadenzaDTO().setFreq_mesi(strumentoDaFile.getFrequenza());
+		   		strumentoModificato.setFrequenza(strumentoDaFile.getFrequenza());
 		   		strumentoModificato.setDenominazione(strumentoDaFile.getDenominazione());   	
 		   		strumentoModificato.setCodice_interno(strumentoDaFile.getCodice_interno());
 		   		strumentoModificato.setCostruttore(strumentoDaFile.getCostruttore());
@@ -595,9 +620,21 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setNote(strumentoDaFile.getNote());
 		   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
 		   		strumentoModificato.setProcedura(strumentoDaFile.getProcedura());
+		   		strumentoModificato.setDataProssimaVerifica(strumentoDaFile.getDataProssimaVerifica());
+		   		strumentoModificato.setDataUltimaVerifica(strumentoDaFile.getDataUltimaVerifica());
 		   		
 		   		GestioneStrumentoBO.update(strumentoModificato, session);
 		   	}
+		   	else 
+		   	{
+		   	StrumentoDTO	strumentoAggiormanentoScadenza = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
+		   	strumentoAggiormanentoScadenza.setDataProssimaVerifica(misura.getStrumento().getDataProssimaVerifica());
+		   	strumentoAggiormanentoScadenza.setDataUltimaVerifica(misura.getStrumento().getDataUltimaVerifica());
+	   		
+	   		
+	   		GestioneStrumentoBO.update(strumentoAggiormanentoScadenza, session);
+		   	}
+		   	
 		   	
 		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
 			
@@ -621,10 +658,10 @@ public class GestioneInterventoBO {
 		    		/*
 		    		 * Salvo scadenza 
 		    		 */
-		    		ScadenzaDTO scadenza =misura.getStrumento().getScadenzaDTO();
-		    		scadenza.setIdStrumento(misura.getStrumento().get__id());
-			    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
-		    		GestioneStrumentoBO.saveScadenza(scadenza,session);
+//		    		ScadenzaDTO scadenza =misura.getStrumento().getScadenzaDTO();
+//		    		scadenza.setIdStrumento(misura.getStrumento().get__id());
+//			    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
+//		    		GestioneStrumentoBO.saveScadenza(scadenza,session);
 		    	
 		    		/*Livella a Bolla*/
 		    		if(misuraLAT.getMisura_lat().getId()==1) 
@@ -796,11 +833,11 @@ public class GestioneInterventoBO {
 			   		strumentoModificato.setDataModifica(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
 			   		
 			   		TipoRapportoDTO tipoRapp = new TipoRapportoDTO(strumentoDaFile.getIdTipoRapporto(),"");
-			   		strumentoModificato.getScadenzaDTO().setTipo_rapporto(tipoRapp);
+			   		strumentoModificato.setTipoRapporto(tipoRapp);
 			   		
 			   		ClassificazioneDTO classificazione = new ClassificazioneDTO(strumentoDaFile.getIdClassificazione(),"");		   		
 			   		strumentoModificato.setClassificazione(classificazione);
-			   		strumentoModificato.getScadenzaDTO().setFreq_mesi(strumentoDaFile.getFrequenza());
+			   		strumentoModificato.setFrequenza(strumentoDaFile.getFrequenza());
 			   		strumentoModificato.setDenominazione(strumentoDaFile.getDenominazione());   	
 			   		strumentoModificato.setCodice_interno(strumentoDaFile.getCodice_interno());
 			   		strumentoModificato.setCostruttore(strumentoDaFile.getCostruttore());
@@ -813,15 +850,17 @@ public class GestioneInterventoBO {
 			   		strumentoModificato.setNote(strumentoDaFile.getNote());
 			   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
 			   		strumentoModificato.setProcedura(strumentoDaFile.getProcedura());
+			   		strumentoModificato.setDataProssimaVerifica(strumentoDaFile.getDataProssimaVerifica());
+			   		strumentoModificato.setDataUltimaVerifica(strumentoDaFile.getDataUltimaVerifica());
 			   		
 			   		GestioneStrumentoBO.update(strumentoModificato, session);
 			   	}
 				
-				ScadenzaDTO scadenza =misura.getStrumento().getScadenzaDTO();
-	    		scadenza.setIdStrumento(misura.getStrumento().get__id());
-		    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
-	    		GestioneStrumentoBO.saveScadenza(scadenza,session);
-				
+//				ScadenzaDTO scadenza =misura.getStrumento().getScadenzaDTO();
+//	    		scadenza.setIdStrumento(misura.getStrumento().get__id());
+//		    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
+//	    		GestioneStrumentoBO.saveScadenza(scadenza,session);
+//				
 
 				if(listaMisure.get(i).getStrumento().get__id()==Integer.parseInt(idStr))
 				{

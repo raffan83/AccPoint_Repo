@@ -92,8 +92,33 @@
 
 
     <div class="form-group">
+    
+    	                  <select name="cliente_appoggio" id="cliente_appoggio"  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
+							<c:if test="${userObj.idCliente != 0}">
+                  
+                      <c:forEach items="${listaClienti}" var="cliente">
+                       <c:if test="${userObj.idCliente == cliente.__id}">
+                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                        </c:if>
+                     </c:forEach>
+                  
+                  
+                  </c:if>
+                 
+                  <c:if test="${userObj.idCliente == 0}">
+                  <option value=""></option>
+                      <c:forEach items="${listaClienti}" var="cliente">
+                           <option value="${cliente.__id}">${cliente.nome} </option> 
+                     </c:forEach>
+                  
+                  
+                  </c:if>
+	         
+	                  </select>
+    
                   <label>Cliente</label>
-                  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+                  <input  name="select1" id="select1"  class="form-control" style="width:100%" required>
+                 <%--  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
                   <c:if test="${userObj.idCliente != 0}">
                   
                       <c:forEach items="${listaClienti}" var="cliente">
@@ -114,7 +139,7 @@
                   
                   </c:if>
                     
-                  </select>
+                  </select> --%>
         </div>
 
   </div>
@@ -372,6 +397,53 @@
  
 
   <script type="text/javascript">
+
+  
+  var options =  $('#cliente_appoggio option').clone();
+  function mockData() {
+  	  return _.map(options, function(i) {		  
+  	    return {
+  	      id: i.value,
+  	      text: i.text,
+  	    };
+  	  });
+  	}
+  
+  
+  function initSelect2(id_input, placeholder) {
+	  if(placeholder==null){
+		  placeholder = "Seleziona Cliente...";
+	  }
+
+  	$(id_input).select2({
+  	    data: mockData(),
+  	    placeholder: placeholder,
+  	    multiple: false,
+  	    // query with pagination
+  	    query: function(q) {
+  	      var pageSize,
+  	        results,
+  	        that = this;
+  	      pageSize = 20; // or whatever pagesize
+  	      results = [];
+  	      if (q.term && q.term !== '') {
+  	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+  	        results = _.filter(x, function(e) {
+  	        	
+  	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+  	        });
+  	      } else if (q.term === '') {
+  	        results = that.data;
+  	      }
+  	      q.callback({
+  	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+  	        more: results.length >= q.page * pageSize,
+  	      });
+  	    },
+  	  });
+  	  	
+  }
+  
   
   function filtra(){
 	  
@@ -469,9 +541,11 @@ function spd()
     $(document).ready(function() {
     
 
-    	$(".select2").select2();
+    	//$(".select2").select2();
     	
- 
+    	initSelect2('#select1');
+    	
+    	$("#select2").select2();
     	
     	if(idCliente != 0 && idSede != 0){
     		 $("#select1").prop("disabled", true);

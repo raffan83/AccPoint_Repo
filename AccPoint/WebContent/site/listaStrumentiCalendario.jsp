@@ -136,20 +136,20 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
                     	             <td><c:out value="${listaSediStrumenti[idSede]}" /> </td>
                     	             
                     	             <td>
-<c:if test="${not empty strumento.scadenzaDTO}">
-<c:if test="${not empty strumento.scadenzaDTO.dataUltimaVerifica}">
+
+<c:if test="${not empty strumento.dataUltimaVerifica}">
    <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${strumento.scadenzaDTO.dataUltimaVerifica}" />
+         value="${strumento.dataUltimaVerifica}" />
 </c:if>
-</c:if></td>
+</td>
 
 <td>
-<c:if test="${not empty strumento.scadenzaDTO}">
-<c:if test="${not empty strumento.scadenzaDTO.dataProssimaVerifica}">
+
+<c:if test="${not empty strumento.dataProssimaVerifica}">
    <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${strumento.scadenzaDTO.dataProssimaVerifica}" />
+         value="${strumento.dataProssimaVerifica}" />
 </c:if>
-</c:if></td>
+</td>
              
                     	             <td>${strumento.costruttore}</td>
                     	             <td>${strumento.modello}</td>
@@ -159,19 +159,19 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
                     	             <td>${strumento.tipo_strumento.nome}</td>
 
 <td>
-<c:if test="${not empty strumento.scadenzaDTO}">
-<c:if test="${strumento.scadenzaDTO.freq_mesi != 0}">
+
+<c:if test="${strumento.frequenza != 0}">
     
-         ${strumento.scadenzaDTO.freq_mesi} 
+         ${strumento.frequenza} 
 </c:if>
-</c:if></td>
+</td>
 
  <td>${strumento.getReparto() }</td> 
 <td>
-<c:if test="${not empty strumento.getScadenzaDTO()}">
-<c:if test="${strumento.getScadenzaDTO().tipo_rapporto.noneRapporto != ''}">
+<c:if test="${not empty strumento.getTipoRapporto()}">
+<c:if test="${strumento.tipoRapporto.noneRapporto != ''}">
 
-    ${strumento.getScadenzaDTO().tipo_rapporto.noneRapporto} 
+    ${strumento.tipoRapporto.noneRapporto } 
 
 </c:if>
 </c:if></td>

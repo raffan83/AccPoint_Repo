@@ -3,6 +3,7 @@
 <%@page import="it.portaleSTI.DTO.LuogoVerificaDTO"%>
 <%@page import="it.portaleSTI.DTO.StatoStrumentoDTO"%>
 <%@page import="it.portaleSTI.DTO.TipoStrumentoDTO"%>
+
 <%@page import="it.portaleSTI.DTO.TipoRapportoDTO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="it.portaleSTI.DTO.StrumentoDTO"%>
@@ -15,6 +16,7 @@
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonElement"%>
+<%@page import="java.util.Date"%>
 <%@page import="it.portaleSTI.Util.Utility" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -29,7 +31,7 @@ JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");
 Gson gson = new Gson();
 Type listType = new TypeToken<ArrayList<StrumentoDTO>>(){}.getType();
-ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType);
+//ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType);
 
 
 UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
@@ -39,7 +41,7 @@ String idSede = (String)session.getAttribute("id_Sede");
 String idCliente = (String)session.getAttribute("id_Cliente");
 
 
-
+ArrayList<StrumentoDTO> listaStrumenti=(ArrayList)session.getAttribute("listaStrumenti");
 ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)session.getAttribute("listaTipoRapporto");
 ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute("listaTipoStrumento");
 ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribute("listaStatoStrumento");
@@ -62,16 +64,19 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <div class="col-xs-12">
  
  
-<button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')" disabled>Visualizza Tutti</button>
+<!-- <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')" disabled>Visualizza Tutti</button> -->
 
- 	<%
+<%--  	<%
      for(StatoStrumentoDTO str :listaStatoStrumento)
      {
      	 %> 
      	 <button class="btn btn-primary btnFiltri" id="btnFiltri_<%=str.getId() %>" onClick="filtraStrumenti('<%=str.getNome() %>','<%=str.getId() %>')" ><%=str.getNome() %></button>
   	 <%	 
      }
-     %>
+     %> --%>
+     
+     <button class="btn btn-primary" onClick="filtraStrumenti(7226,<%=idCliente %>,<%=idSede %>)" disabled id="in_servizio">In Servizio</button>
+     <button class="btn btn-primary" onClick="filtraStrumenti(7225,<%=idCliente %>,<%=idSede %>)" id="fuori_servizio">Fuori Servizio</button>
 	<button class="btn btn-warning" id="downloadfiltrati" onClick="downloadStrumentiFiltrati()" >Download PDF</button>
  
 </div>
@@ -109,7 +114,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        
                        <th></th>
  						<th>ID</th>
- 						<th>Stato Strumento</th>
+  						<th>Stato Strumento</th>
  						  <th>Codice Interno</th>
  						  <th>Matricola</th>
  						  <th>Denominazione</th>
@@ -119,20 +124,20 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
             	       <th>Divisione</th>
             	        <th>Reparto</th>
             	          <th>Utilizzatore</th>
-            	              <th>Freq. Verifica</th>
+            	               <th>Freq. Verifica</th> 
                    
                        <th>Data Ultima Verifica</th>
-                       <th>Data Prossima Verifica</th>     
+                       <th>Data Prossima Verifica</th>    
                           <th>Tipo Strumento</th>
-                        <th>Tipo Rapporto</th>
+                         <th>Tipo Rapporto</th>
                           <th>Luogo Verifica</th>
-                            <!-- <th>Interpolazione</th>  -->
+                            <th>Interpolazione</th> 
                             <th>Classificazione</th>
                              <th>Company</th>
                               <th>Data Modifica</th>
                              <th>Utente Modifica</th> 
                        <th>Note</th>
-                       <td style="min-width:135px;">Azioni</td>
+                        <td style="min-width:135px;">Azioni</td>  
                        
  </tr></thead>
  
@@ -140,6 +145,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
  <%
  SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+ 
  for(StrumentoDTO strumento :listaStrumenti)
  {
 	 String classValue="";
@@ -156,7 +162,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								
 
 	 								 <td><%=strumento.get__id()%></td>
-	 								  <td id="stato_<%=strumento.get__id() %>"><span class="label
+	 								   <td id="stato_<%=strumento.get__id() %>"><span class="label
 	 								 <% if(strumento.getStato_strumento().getId()==7225){
 	 									 out.print("label-warning");
 	 								}else if(strumento.getStato_strumento().getId()==7226){
@@ -181,29 +187,51 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             
                     	                <td><%=strumento.getUtilizzatore()%></td>
                     	                
-                    	                 <td><%
-
-                    	             if(strumento.getScadenzaDTO() != null){
-                    	            	 if(strumento.getScadenzaDTO().getFreq_mesi() != 0){
-                    	            		 out.println(strumento.getScadenzaDTO().getFreq_mesi());
-                    	            	 }
-                   	            	 
+                     	                 <td>
+                     	                 
+                     	                   <%
+                     	             
+                    	             if(strumento.getFrequenza() != 0){                    	            	 
+                    	            		
+                    	            		 out.println(strumento.getFrequenza());
+                    	            	 
                    	            		 }else{
                    	            	 	%> 
                    	            	 		-
                    	            	 	<%	 
                    	             	  }
                     	             
-                    	             %></td>
+                    	             %> 
+                    	              
+                    	             </td> 
                     	            
                     	           
                     	             
                     	            
-                    	             <td><%
-                    	             if(strumento.getScadenzaDTO()!= null){
-                    	            	 if(strumento.getScadenzaDTO().getDataUltimaVerifica() != null){
-                    	            		 out.println(sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica()));
-                    	            	 }
+                    	             <td>
+                    	             
+                    	              <%
+                    	             if(strumento.getDataUltimaVerifica()!= null){
+                    	            	
+                    	            	 out.println(sdf.format(strumento.getDataUltimaVerifica()));
+                    	            	
+                    	            	 
+                    	             }else{
+                    	            	 %> 
+                    	            	 -
+                    	            	 <%	 
+                    	             }
+                    	             %>
+                    	              
+                    	             </td>
+                    	             
+                    	             <td>
+                    	             
+                    	               <%
+                    	             if(strumento.getDataProssimaVerifica() != null){
+                    	            	
+                    	            	out.println(sdf.format(strumento.getDataProssimaVerifica()));
+                    	            	
                     	            	 
                     	             }else{
                     	            	 %> 
@@ -211,35 +239,26 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	            	 <%	 
                     	             }
                     	             
-                    	             %></td>
+                    	             %>   
                     	             
-                    	             <td><%
-                    	             if(strumento.getScadenzaDTO() != null){
-                    	            	 if(strumento.getScadenzaDTO().getDataProssimaVerifica() != null){
-                    	            		 out.println(sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
-                    	            	 }
-                    	            	 
-                    	             }else{
-                    	            	 %> 
-                    	            	 -
-                    	            	 <%	 
-                    	             }
-                    	             
-                    	             %></td>
+                    	             </td>
                     	               <td><%=strumento.getTipo_strumento().getNome() %></td>
                     	             
-                    	             <td><%
-                    	             if(strumento.getScadenzaDTO() != null){
-                    	            	 if(strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto() != null){
-                    	            		 out.println(strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto());
-                    	            	 }
+                    	              <td>
+                    	                 <%
+                    	             if(strumento.getTipoRapporto() != null){
+                    	            	
+                    	            	 out.println(strumento.getTipoRapporto().getNoneRapporto());
+                    	            
                     	            	 
                     	             }else{
                     	            	 %> 
                     	            	 -
                     	            	 <%	 
                     	             }
-                    	             %></td>
+                    	             %> 
+                    	             
+                    	             </td> 
                     	             
                     	          
                     	             <td><% 
@@ -248,11 +267,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	            	 
                     	             }
                     	             %></td>
-                    	           <%-- <td><%
+                    	           <td><%
                     	             if(strumento.getInterpolazione()!=null){
                     	            	 out.println(strumento.getInterpolazione());
                     	             }
-                    	             %></td>  --%>
+                    	             %></td> 
                     	             <td><%=strumento.getClassificazione().getDescrizione()%></td>
                     	             <td><%=strumento.getCompany().getDenominazione()%></td>
 								 <td><%
@@ -280,17 +299,19 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             
                     	           
                     	             <td><%=strumento.getNote() %></td>
-                    	               <td>
-                    	              <button  class="btn btn-primary" onClick="checkMisure('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>')">Misure</button>	 									
-	 									<%-- <button  class="btn btn-primary" onClick="checkMisure('<%=strumento.get__id()%>')">Misure</button> --%>
+                    	                <td>
+                    	               <button  class="btn btn-primary" onClick="checkMisure('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>')">Misure</button>	 									
+	 									
 	 									<button  class="btn btn-danger" onClick="openDownloadDocumenti('<%=strumento.get__id()%>')"><i class="fa fa-file-text-o"></i></button>
 	 									<button class="btn btn-info" title="Sposta strumento"onClick="modalSposta('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')"><i class="fa fa-exchange"></i></button>
-	 									<%-- <button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">Cambia Stato</button> --%>
-	 								</td>  
+	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">Cambia Stato</button> 
+	 								</td>   
 	
 	</tr>
 <% 	 
  } 
+ 
+ System.out.println("fine jsp"+new Date());	
  %>
  </tbody>
  </table>  
@@ -609,7 +630,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    var state = api.state.loaded();
 	 
 	    if(state != null && state.columns!=null){
-	    		console.log(state.columns);
+	    		//console.log(state.columns);
 	    
 	    columsDatatables = state.columns;
 	    }
@@ -622,12 +643,15 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    	  
 	    	} );
 
+	    //console.log(new Date());
 	} );
 
  $(function(){
 	
-	 $('.select2').select2();
+	 //$('.select2').select2();
  
+	 $('#cliente').select2();
+	 $('#sede').select2();
 	 table = $('#tabPM').DataTable({
 		 language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -663,13 +687,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      stateSave: true,
 	      order:[[1, "desc"]],
 	      columnDefs: [
-					 /*   { responsivePriority: 1, targets: 1 },
-	                   { responsivePriority: 3, targets: 3 },
-	                   { responsivePriority: 4, targets: 4 },
-	                   { responsivePriority: 2, targets: 7 },
-	                   { responsivePriority: 5, targets: 12 },
-	                   { responsivePriority: 6, targets: 22 },
-	                   { responsivePriority: 7, targets: 13 }, */
+					 /* 
 	                   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
 	                   { responsivePriority: 3, targets: 2 },

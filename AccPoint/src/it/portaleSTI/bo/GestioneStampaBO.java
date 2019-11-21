@@ -193,7 +193,7 @@ protected static double fromCMToPPI(double cm) {
 	    {
 	    	Calendar c = Calendar.getInstance(); 
 			c.setTime(dataMisura); 
-	    	c.add(Calendar.MONTH,strumento.getScadenzaDTO().getFreq_mesi());
+	    	c.add(Calendar.MONTH,strumento.getFrequenza());
 		    c.getTime();
 	    g2d.setFont(new Font("Arial", Font.BOLD, 5));
 	    corAscent=corAscent+incrementRow;

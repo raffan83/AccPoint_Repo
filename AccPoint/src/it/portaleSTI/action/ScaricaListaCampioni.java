@@ -87,7 +87,7 @@ public class ScaricaListaCampioni extends HttpServlet {
 			HashMap<String,String> hmap = new HashMap<String,String>();
 
 			for (MisuraDTO misura : listaMisure) {
-				ArrayList<CampioneDTO> listaCampioniMisura = (ArrayList<CampioneDTO>) GestioneMisuraBO.getListaCampioni(misura.getListaPunti(),misura.getStrumento().getScadenzaDTO().getTipo_rapporto());
+				ArrayList<CampioneDTO> listaCampioniMisura = (ArrayList<CampioneDTO>) GestioneMisuraBO.getListaCampioni(misura.getListaPunti(),misura.getStrumento().getTipoRapporto());
 				for (CampioneDTO camp : listaCampioniMisura) {
 					if(camp != null && !hmap.containsKey(""+camp.getId())) {
 						hmap.put(""+camp.getId(), camp.getCodice());

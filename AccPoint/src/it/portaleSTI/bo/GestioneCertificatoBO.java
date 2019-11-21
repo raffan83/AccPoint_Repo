@@ -13,7 +13,7 @@ import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
+
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -68,12 +68,12 @@ public class GestioneCertificatoBO {
 				LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();
 				
 				
-				listaTabelle= getListaTabelle(misura,strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto());
+				listaTabelle= getListaTabelle(misura,strumento.getTipoRapporto().getNoneRapporto());
 				
   	
-				List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti(),strumento.getScadenzaDTO().getTipo_rapporto());
+				List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti(),strumento.getTipoRapporto());
 				String idoneo;
-				if(!strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto().equals("RDP")) {
+				if(!strumento.getTipoRapporto().getNoneRapporto().equals("RDP")) {
 					idoneo = getIsIdoneo(misura);
 				}else {
 					idoneo = null;
@@ -88,11 +88,11 @@ public class GestioneCertificatoBO {
 					 * Aggiornata data Emissione su scadenzaDTO
 					 */
 				
-						ScadenzaDTO scadenza =strumento.getScadenzaDTO();
-						
-						scadenza.setDataEmissione(new Date(System.currentTimeMillis()));
-						
-						GestioneStrumentoBO.updateScadenza(scadenza,session);
+//						ScadenzaDTO scadenza =strumento.getScadenzaDTO();
+//						
+//						scadenza.setDataEmissione(new Date(System.currentTimeMillis()));
+//						
+//						GestioneStrumentoBO.update(strumento,session);
 					
 						
 					/*
@@ -524,7 +524,7 @@ public class GestioneCertificatoBO {
 				if(dataSource.get(j).size()>0)
 				{
 			  	
-				if(misura.getStrumento().getScadenzaDTO().getTipo_rapporto().getNoneRapporto().equals("RDT"))
+				if(misura.getStrumento().getTipoRapporto().getNoneRapporto().equals("RDT"))
 				{
 					if(dataSource.get(j).get(0).getTipoProva().startsWith("L"))
 					{
@@ -536,7 +536,7 @@ public class GestioneCertificatoBO {
 					}	
 				}
 			
-			if(misura.getStrumento().getScadenzaDTO().getTipo_rapporto().getNoneRapporto().equals("SVT"))
+			if(misura.getStrumento().getTipoRapporto().getNoneRapporto().equals("SVT"))
 				{
 					if(dataSource.get(j).get(0).getTipoProva().startsWith("L"))
 					{
@@ -548,7 +548,7 @@ public class GestioneCertificatoBO {
 					}	
 				
 				}
-				if(misura.getStrumento().getScadenzaDTO().getTipo_rapporto().getNoneRapporto().equals("RDP")) 
+				if(misura.getStrumento().getTipoRapporto().getNoneRapporto().equals("RDP")) 
 				{
 					listaTabelle.put("RDP",dataSource.get(j));
 				}
@@ -674,14 +674,14 @@ public class GestioneCertificatoBO {
 			LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();
 			
 			
-			listaTabelle= getListaTabelle(misura,strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto());
+			listaTabelle= getListaTabelle(misura,strumento.getTipoRapporto().getNoneRapporto());
 			
 	
-			List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti(),strumento.getScadenzaDTO().getTipo_rapporto());
+			List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti(),strumento.getTipoRapporto());
 			
 		//	String idoneo = getIsIdoneo(misura);
 			String idoneo;
-			if(!strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto().equals("RDP")) {
+			if(!strumento.getTipoRapporto().getNoneRapporto().equals("RDP")) {
 				idoneo = getIsIdoneo(misura);
 			}else {
 				idoneo = null;

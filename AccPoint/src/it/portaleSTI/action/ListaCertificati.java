@@ -350,7 +350,7 @@ public class ListaCertificati extends HttpServlet {
 							
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
 				
-				new CreateCertificatoSE(certificato,session);
+				new CreateCertificatoSE(certificato,utente,session);
 				
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
@@ -441,7 +441,7 @@ public class ListaCertificati extends HttpServlet {
 					ServletContext context =getServletContext();
 					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id);
 					if(certificato.getMisura().getLat().equals("E")) {
-						new CreateCertificatoSE(certificato,session);
+						new CreateCertificatoSE(certificato,utente,session);
 					}
 //					else if(certificato.getMisura().getMisuraLAT()!=null && certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
 //						new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(),null, session);
@@ -506,7 +506,7 @@ public class ListaCertificati extends HttpServlet {
 					CertificatoDTO cert = GestioneCertificatoBO.getCertificatoById(id);
 					File certificato = null;
 					if(cert.getMisura().getLat().equals("E")) {
-						CreateCertificatoSE c = new CreateCertificatoSE(cert, session);
+						CreateCertificatoSE c = new CreateCertificatoSE(cert, utente,session);
 						certificato = c.file;
 					}
 					else if(cert.getMisura().getMisuraLAT()!=null && cert.getMisura().getMisuraLAT().getMisura_lat().getId()==2) {

@@ -26,6 +26,7 @@ import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
@@ -48,13 +49,13 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 public class CreateCertificatoSE {
 	
 	public File file;
-	public CreateCertificatoSE(CertificatoDTO certificato, Session session) throws Exception {
+	public CreateCertificatoSE(CertificatoDTO certificato,UtenteDTO utente, Session session) throws Exception {
 		
-		build(certificato, session);
+		build(certificato,utente, session);
 	}
 
 	
-	void build(CertificatoDTO certificato, Session session) throws Exception {
+	void build(CertificatoDTO certificato,UtenteDTO utente, Session session) throws Exception {
 		
 		InputStream is =  PivotTemplate.class.getResourceAsStream("certificatoSE.jrxml");
 		
@@ -233,6 +234,7 @@ public class CreateCertificatoSE {
 		certificato.setNomeCertificato(certificato.getMisura().getIntervento().getNomePack()+"_"+certificato.getMisura().getInterventoDati().getId()+""+certificato.getMisura().getStrumento().get__id()+".pdf");
 		certificato.setDataCreazione(new Date());
 		certificato.setStato(new StatoCertificatoDTO(2));		
+		certificato.setUtenteApprovazione(utente);
 		session.update(certificato);
 
 		

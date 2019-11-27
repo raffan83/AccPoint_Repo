@@ -83,8 +83,10 @@
 		 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'intervento"  href="gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(certificato.misura.verIntervento.id)}" ><i class="fa fa-file-text-o"></i></a>
 				<%-- <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
 				<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento ${certificato.misura.intervento.nomePack}"   onClick="openDettaglioInterventoModal('intervento',${loop.index})"><i class="fa fa-file-text-o"></i>  </a> --%>
-	
-			<button class="btn btn-success  customTooltip" title="Click per generare il Certificato" onClick="creaVerCertificato('${utl:encryptData(certificato.misura.id)}')"><i class="fa fa-check"></i></button>
+		
+		 <button class="btn btn-success  customTooltip" title="Click per generare il Certificato" onClick="creaVerCertificato('${utl:encryptData(certificato.misura.id)}')"><i class="fa fa-check"></i></button>
+		 
+			<%-- <button class="btn btn-success  customTooltip" title="Click per generare il Certificato" onClick="creaVerCertificato('${utl:encryptData(certificato.misura.id)}')"><i class="fa fa-check"></i></button> --%>
 			
 			 
 		</td>

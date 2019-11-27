@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
 import it.portaleSTI.DTO.VerCodiceDocumentoDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
@@ -92,11 +93,19 @@ public class GestioneVerMisuraDAO {
 		return lista;
 	}
 
-	public static ArrayList<VerMisuraDTO> getListaMisure(Session session) {
+	public static ArrayList<VerMisuraDTO> getListaMisure(UtenteDTO utente,Session session) {
 
 		ArrayList<VerMisuraDTO> lista = null;
 		
-		Query query = session.createQuery("from VerMisuraDTO");
+		Query query = null;
+		
+		if(utente.isTras()) {
+			
+			query = session.createQuery("from VerMisuraDTO"); 
+		}else {
+			query = session.createQuery("from VerMisuraDTO where verIntervento.id_company = :_id_company");
+			query.setParameter("_id_company", utente.getCompany().getId());
+		}
 				
 		lista = (ArrayList<VerMisuraDTO>) query.list();
 		

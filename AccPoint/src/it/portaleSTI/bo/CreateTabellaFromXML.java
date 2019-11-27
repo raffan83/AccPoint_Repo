@@ -136,7 +136,7 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 						}
 					}
 					else {
-						simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(2).replace("Ã", "A").replace("À","A").replace(" ", "_").toUpperCase(), session);
+						simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(2).replace("Ã", "A").replace("À","A").replace("¶"," ").replace(" ", "_").replace(" ","").toUpperCase(), session);
 					}
 					 
 					quota.setSimbolo(simbolo);

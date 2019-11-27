@@ -486,7 +486,7 @@ public class CreateVerCertificato {
 			reportP2.addParameter("nome_operatore", "");
 		}
 		
-		reportP2.addParameter("responsabile", "");
+		reportP2.addParameter("responsabile", "Ing. Antonio Accettola");
 		
 		JasperPrint jasperPrint2 = reportP2.toJasperPrint();
 		jasperPrintList.add(jasperPrint2);

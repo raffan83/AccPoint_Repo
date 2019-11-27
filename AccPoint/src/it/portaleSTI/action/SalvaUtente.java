@@ -84,14 +84,17 @@ public class SalvaUtente extends HttpServlet {
 			
 			UtenteDTO usr = (UtenteDTO)request.getSession().getAttribute("userObj");
 			UtenteDTO utente = GestioneUtenteBO.getUtenteById(String.valueOf(usr.getId()), session);
-			session.close();
+		
 			utente.setIndirizzo(jobject.get("indirizzoUsr").getAsString());
 			utente.setComune(jobject.get("comuneUsr").getAsString());
 			utente.setCap(jobject.get("capUsr").getAsString());
 			utente.setEMail(jobject.get("emailUsr").getAsString());
 			utente.setTelefono(jobject.get("telUsr").getAsString());
 			
-			GestioneAccessoDAO.updateUser(utente);
+			session.update(utente);
+			//GestioneAccessoDAO.updateUser(utente);
+			session.getTransaction().commit();
+			session.close();
 
 			request.getSession().setAttribute("userObj", utente);
 			
@@ -100,6 +103,7 @@ public class SalvaUtente extends HttpServlet {
 			out.println(myObj.toString());
 		   
 		out.close();
+		
 		}
 		else if(action.equals("modifica_pin")) {
 

@@ -180,7 +180,7 @@ public class GestioneVerMisura extends HttpServlet {
 		}
 		else if(action.equals("lista")) {
 			
-			ArrayList<VerMisuraDTO> lista_misure = GestioneVerMisuraBO.getListaMisure(session);
+			ArrayList<VerMisuraDTO> lista_misure = GestioneVerMisuraBO.getListaMisure(utente, session);
 			session.close();
 			
 			request.getSession().setAttribute("lista_misure", lista_misure);

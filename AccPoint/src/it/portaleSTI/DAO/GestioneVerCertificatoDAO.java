@@ -55,14 +55,19 @@ public class GestioneVerCertificatoDAO {
 	}
 	
 	
-public static LinkedHashMap<String, String> getClientiPerVerCertificato(Session session)throws Exception {
+public static LinkedHashMap<String, String> getClientiPerVerCertificato(UtenteDTO utente, Session session)throws Exception {
 		
 		Query query=null;
 		LinkedHashMap<String, String> lista= new LinkedHashMap<>();
-			
-		String  s_query = "select DISTINCT(int.misura.verIntervento.nome_sede),int.misura.verIntervento.nome_cliente,int.misura.verIntervento.id_cliente,int.misura.verIntervento.id_sede from VerCertificatoDTO as int order by int.misura.verIntervento.nome_cliente asc";
-		query = session.createQuery(s_query);
-
+		String  s_query = "";
+		if(utente.isTras()) {
+			s_query = "select DISTINCT(int.misura.verIntervento.nome_sede),int.misura.verIntervento.nome_cliente,int.misura.verIntervento.id_cliente,int.misura.verIntervento.id_sede from VerCertificatoDTO as int order by int.misura.verIntervento.nome_cliente asc";
+			query = session.createQuery(s_query);
+		}else {
+			s_query = "select DISTINCT(int.misura.verIntervento.nome_sede),int.misura.verIntervento.nome_cliente,int.misura.verIntervento.id_cliente,int.misura.verIntervento.id_sede from VerCertificatoDTO as int where int.misura.verIntervento.id_company = :_id_company order by int.misura.verIntervento.nome_cliente asc";
+			query = session.createQuery(s_query);
+			query.setParameter("_id_company", utente.getCompany().getId());
+		}
 	    
 			 List<Object> listaCert =query.list();
 	   

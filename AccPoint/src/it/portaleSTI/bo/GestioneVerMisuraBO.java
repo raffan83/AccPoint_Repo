@@ -9,6 +9,7 @@ import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneVerCertificatoDAO;
 import it.portaleSTI.DAO.GestioneVerMisuraDAO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.DTO.VerCodiceDocumentoDTO;
@@ -87,9 +88,9 @@ public class GestioneVerMisuraBO {
 		return listaMisure;
 	}
 
-	public static ArrayList<VerMisuraDTO> getListaMisure(Session session) {
+	public static ArrayList<VerMisuraDTO> getListaMisure(UtenteDTO utente, Session session) {
 		
-		return GestioneVerMisuraDAO.getListaMisure(session);
+		return GestioneVerMisuraDAO.getListaMisure(utente, session);
 	}
 
 	public static int getEsito(VerMisuraDTO misura) {

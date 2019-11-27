@@ -32,9 +32,9 @@ import it.portaleSTI.Util.Utility;
 
 public class GestioneVerInterventoBO {
 
-	public static ArrayList<VerInterventoDTO> getListaVerInterventi(Session session) {
+	public static ArrayList<VerInterventoDTO> getListaVerInterventi(UtenteDTO utente,Session session) {
 		
-		return GestioneVerInterventoDAO.getListaVerInterventi(session);
+		return GestioneVerInterventoDAO.getListaVerInterventi(utente, session);
 	}
 
 	public static VerInterventoDTO getInterventoFromId(int id_intervento, Session session) {

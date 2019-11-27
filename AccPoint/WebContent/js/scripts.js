@@ -1146,7 +1146,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 
    		        	//explore('listaCampioni.do?date='+moment(calEvent.start).format());
    		        	if(calEvent.backgroundColor=="#00a65a"){
-   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&lat=1');	
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&manutenzione=1');	
    		        	}else{
    		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format());
    		        	}
@@ -11337,12 +11337,13 @@ $.ajax({
 	  
 	           eventClick: function(calEvent, jsEvent, view) {
 	        	var tipo_data;
+	        
 	        	   if(calEvent.backgroundColor=="#00a65a"){
-	        		   tipo_data = "1";
+	        		   tipo_data = "1";	        		  
 	        	   }else if(calEvent.backgroundColor=="#777"){
-	        		   tipo_data = "2";
-	        	   }else if(calEvent.backgroundColor=="#9d201d"){
 	        		   tipo_data = "3";
+	        	   }else if(calEvent.backgroundColor=="#9d201d"){
+	        		   tipo_data = "2";
 	        	   }
 	        	   
 	        //	callAction('listaAttrezzature.do?action=scadenzario&data='+moment(calEvent.start).format()+'&tipo_data='+tipo_data);
@@ -11787,4 +11788,75 @@ function eliminaAssegnazioneAdmin(){
   });
 	
 	
+}
+
+
+function firmaVerCertificato(pin, idCertificato){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  $.ajax({
+  	  type: "POST",
+  	  url: "gestioneVerCertificati.do?action=firmaCertificato&idCertificato="+idCertificato+"&pin="+pin,
+  	  dataType: "json",
+
+  	  success: function( data, textStatus) {
+  		  pleaseWaitDiv.modal('hide');
+  		  if(data.success)
+  		  { 
+
+  			  $('#report_button').hide();
+  				$('#visualizza_report').hide();
+     	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+  				  $('#myModalErrorContent').html(data.messaggio);
+
+     	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+  				//  $('#myModalErrorContent').html(data.messaggio);
+
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');
+    				$('#myModalError').on('hidden.bs.modal', function(){
+    					filtraVerCertificati();
+    				});
+  		
+  		  }else{
+  			  
+  			  if(data.messaggio=="Attenzione! PIN errato!"){
+  				  $('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').hide();
+    				$('#visualizza_report').hide();
+    				$('#myModalError').modal('show');
+  			  }else{
+  				  if(data.errorType!=null){
+  					  $('#myModalErrorContent').html(data.messaggio);
+  	    			  	$('#myModalError').removeClass();
+  	    				$('#myModalError').addClass("modal modal-danger");    	    				
+  	    				$('#myModalError').modal('show');
+  				  }else{
+  				  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+    				$('#visualizza_report').show();
+  				$('#myModalError').modal('show');
+  				  }
+  			  }    				
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+ 
+ 			$('#myModalErrorContent').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+				$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+			
+  
+  	  }
+    });
 }

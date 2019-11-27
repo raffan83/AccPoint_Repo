@@ -49,10 +49,11 @@
 <div class="row">
 <div class="col-xs-12">
 
+<c:if test="${userObj.isTras() }">
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
 <a class="btn btn-primary pull-right" onClick="callAction('gestioneVerComunicazionePreventiva.do',null,true)"><i class="fa fa-plus"></i> Nuovo Intervento</a> 
 <a class="btn btn-primary pull-right" onClick="comunicazionePreventiva()" style="margin-right:5px"><i class="fa fa-plus"></i> Comunicazione Preventiva</a>
-
+</c:if>
 
 </div>
 

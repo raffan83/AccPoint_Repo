@@ -49,9 +49,11 @@
 		              <div class="col-sm-6">
 		              
 		                <div class="form-group">
-		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."   onchange="filtraCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true">
+		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."   onchange="filtraVerCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true">
 		                       <option></option>
+		                       <c:if test="${userObj.isTras() }">
 		                        <option value="0_0">Tutti i clienti</option>
+		                        </c:if>
 		                      <c:forEach items="${listaClienti}" var="cliente">
 		                           <option value="${cliente.key}">${cliente.value}</option>                   
 		                     </c:forEach>
@@ -68,7 +70,7 @@
 		                            <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_TUTTI_METROLOGIA')}"> 
 		         					 	<option value="tutti">Tutte le tipologie</option>
 		         					 	</c:if>		   
-		         					 	 <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_METROLOGIA')}">       					 	
+		         					 	 <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_VERIFICAZIONE')}">       					 	
 								          <option value="lavorazione">In lavorazione</option>
 								          </c:if>		
 								           <option value="chiusi">Chiusi</option>					          

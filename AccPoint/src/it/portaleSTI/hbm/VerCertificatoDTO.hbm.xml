@@ -23,7 +23,7 @@
         <property name="dataCreazione" type="java.util.Date" >
             <column name="DATA_CREAZIONE" />
         </property>
-         <property name="firmato" type="java.lang.Boolean">
+         <property name="firmato" type="int">
             <column name="firmato" sql-type="tinyint"/>
         </property>
         <property name="nomeRapporto" type="java.lang.String" >

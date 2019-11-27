@@ -5,12 +5,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -27,30 +25,24 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
-import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.DTO.VerAccuratezzaDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
-import it.portaleSTI.DTO.VerDecentramentoDTO;
-import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
-import it.portaleSTI.DTO.VerMobilitaDTO;
-import it.portaleSTI.DTO.VerRipetibilitaDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.CreateCertificatoSE;
 import it.portaleSTI.bo.CreateVerCertificato;
 import it.portaleSTI.bo.CreateVerRapporto;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.GestioneVerCertificatoBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;
-import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaElettronica;
 
 /**
  * Servlet implementation class GestioneVerCertificati
@@ -93,7 +85,7 @@ public class GestioneVerCertificati extends HttpServlet {
         response.setContentType("application/json");
 		try {
 			
-			LinkedHashMap<String, String> listaClienti =  GestioneVerCertificatoBO.getClientiPerVerCertificato(session);
+			LinkedHashMap<String, String> listaClienti =  GestioneVerCertificatoBO.getClientiPerVerCertificato(utente, session);
 			request.getSession().setAttribute("listaClienti",listaClienti);				
 			
 			if(action == null || action.equals("")){
@@ -208,7 +200,7 @@ public class GestioneVerCertificati extends HttpServlet {
 				String filename=misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()+".pdf";
 				
 				if(motivo != 3) {
-					new CreateVerRapporto(misura, listaSedi, esito_globale, motivo, session);	
+					new CreateVerRapporto(misura, listaSedi, esito_globale, motivo,utente, session);	
 				}
 								
 				VerCertificatoDTO cert=GestioneVerCertificatoBO.getCertificatoByMisura(misura);
@@ -262,7 +254,7 @@ public class GestioneVerCertificati extends HttpServlet {
 					String filename=certificato.getMisura().getVerIntervento().getNome_pack()+"_"+certificato.getMisura().getId()+""+certificato.getMisura().getVerStrumento().getId()+".pdf";
 					
 					if(motivo != 3) {
-						new CreateVerRapporto(certificato.getMisura(), listaSedi, esito_globale, motivo, session);	
+						new CreateVerRapporto(certificato.getMisura(), listaSedi, esito_globale, motivo, utente,session);	
 					}								
 									
 					certificato.setNomeCertificato(filename);
@@ -290,6 +282,7 @@ public class GestioneVerCertificati extends HttpServlet {
 				id_certificato = Utility.decryptData(id_certificato);
 				
 				String cert_rap = request.getParameter("cert_rap");
+				String p7m = request.getParameter("p7m");
 				
 				VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id_certificato), session);
 							
@@ -297,7 +290,12 @@ public class GestioneVerCertificati extends HttpServlet {
 				String path= "";
 				if(cert_rap.equals("1")) {
 					filename = certificato.getNomeCertificato();
-					path = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\"+filename;
+					if(p7m!= null && p7m.equals("1")) {
+						path = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\"+filename+".p7m";
+					}else {
+						path = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\"+filename;	
+					}
+					
 				}else if(cert_rap.equals("2")) {
 					filename = certificato.getNomeRapporto();
 					path = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\Rapporto\\"+filename;					
@@ -330,8 +328,11 @@ public class GestioneVerCertificati extends HttpServlet {
 				 
 				// response.setContentType("application/octet-stream");
 				 response.setContentType("application/pdf");
-								 
-			//	 response.setHeader("Content-Disposition","attachment;filename="+filename);
+				
+				 if(p7m!= null && p7m.equals("1")) {
+					 response.setHeader("Content-Disposition","attachment;filename="+filename+".p7m");
+				 }
+				 
 				 
 				 ServletOutputStream outp = response.getOutputStream();
 				     
@@ -351,7 +352,38 @@ public class GestioneVerCertificati extends HttpServlet {
 				    outp.close();
 				
 			}
-			
+			else if(action.equals("firmaCertificato")) {
+				
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+ 				ajax = true;
+				String idCertificato = request.getParameter("idCertificato");
+				String pin = request.getParameter("pin");				
+				
+				boolean esito = GestioneUtenteBO.checkPINFirma(utente.getId(),pin, session);
+				if(esito) {
+					VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(idCertificato),session);
+					
+					UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);
+
+					myObj = ArubaSignService.signVerificazione(utente_firma.getIdFirma(),certificato);
+					
+					//myObj.addProperty("success", true);
+	
+					if(myObj.get("success").getAsBoolean()) {
+						certificato.setFirmato(1);
+						session.update(certificato);
+					}
+					
+				}else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Attenzione! PIN errato!");
+				}
+				
+				session.getTransaction().commit();
+				session.close();
+			    out.println(myObj.toString());
+			}
 		}catch (Exception e) {
 			session.getTransaction().rollback();
         	session.close();

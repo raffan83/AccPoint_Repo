@@ -92,24 +92,20 @@
 		<td class="actionClass" align="center" style="min-width:250px">
 			 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della Misura"  href="gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(certificato.misura.id)}" ><i class="fa fa-tachometer"></i></a>
 			 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'intervento"  href="gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(certificato.misura.verIntervento.id)}" ><i class="fa fa-file-text-o"></i></a>
-			 <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="gestioneVerCertificati.do?action=download&&cert_rap=0&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
-			<%--<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"   onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
-			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento ${certificato.misura.intervento.nomePack}" onClick="openDettaglioInterventoModal('intervento',${loop.index})"><i class="fa fa-file-text-o"></i>  </a>
-			
-			<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${utl:encryptData(certificato.nomeCertificato)}&pack=${utl:encryptData(certificato.misura.intervento.nomePack)}" ><i class="fa fa-file-pdf-o"></i></a>
-			<c:if test="${certificato.firmato}">
-			<a  target="_blank" class="btn btn-success customTooltip" title="Click per scaricare il p7m del Certificato"  href="scaricaCertificato.do?action=certificatoStrumentoFirmato&nome=${utl:encryptData(certificato.nomeCertificato)}&pack=${utl:encryptData(certificato.misura.intervento.nomePack)}" ><i class="fa fa-file-zip-o"></i></a>
+			 <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Rapporto"  href="gestioneVerCertificati.do?action=download&cert_rap=2&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
+			 
+			 		
+			  <c:if test="${userObj.checkRuolo('AM') && certificato.firmato == 0 }">		 
+			  <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF dell'Attestato"  href="gestioneVerCertificati.do?action=download&cert_rap=1&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
+			  </c:if>
+			<c:if test="${certificato.firmato == 1}">
+			<a  target="_blank" class="btn btn-success customTooltip" title="Click per scaricare il p7m dell'Attestato"  href="gestioneVerCertificati.do?action=download&cert_rap=1&p7m=1&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-zip-o"></i></a>
 			</c:if>
-			
-			<a class="btn btn-danger customTooltip" title="Click per ristampare l'etichetta" href="stampaEtichetta.do?idCertificato=${certificato.id}"><i class="fa fa-print"></i></a>
-			
-			<a class="btn btn-info customTooltip" title="Click per inviare il certificato per e-mail"onClick="inviaEmailCertificato(${certificato.id})"><i class="fa fa-paper-plane-o"></i></a>
-
-			<c:if test="${userObj.idFirma != null && userObj.idFirma != ''}">
-			<c:if test="${abilitato_firma==true && !certificato.firmato}">
-				<a class="btn btn-warning customTooltip" title="Click per firmare il certificato con firma digitale" href="#" onClick="firmaCertificato(${certificato.id})"><i class="fa fa-pencil"></i></a>
-				<a class="btn btn-warning customTooltip" title="Click per firmare il certificato con firma digitale" href="#" onClick="openModalPin(${certificato.id})"><i class="fa fa-pencil"></i></a>
-			</c:if> --%>
+			 <c:if test="${userObj.checkPermesso('FIRMA_ATTESTATO_VERIFICAZIONE')}">
+			 <a class="btn btn-warning customTooltip" title="Click per firmare il certificato con firma digitale" href="#" onClick="openModalPin(${certificato.id})"><i class="fa fa-pencil"></i></a>
+			  
+			  </c:if>
+			<%-- <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="gestioneVerCertificati.do?action=download&&cert_rap=0&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a> --%>
 		</td>
 	</tr>
 
@@ -118,6 +114,45 @@
 	
  </tbody>
  </table>  
+ 
+ 
+ 
+ 	       <div id="modalPin" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h4 class="modal-title" id="myModalLabelHeader">Inserisci il PIN per la firma digitale</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-sm-3">
+			
+        <label >Inserisci PIN:</label>
+        </div>
+        <div class="col-sm-9">
+                      <input class="form-control" id="pin" type="password" name="pin" autocomplete="new-password"/>
+   			 </div>
+     		</div><br>
+
+  		 </div>
+      <div class="modal-footer">
+ 		<div class="row">
+ 		<div class="col-sm-2">
+ 		<a id="close_button" type="button" class="btn btn-info pull-left" onClick="checkPIN()">Firma</a> 
+ 		</div>
+ 		<div class="col-sm-10">
+ 		
+ 		<label class="pull-left" id="result_label" style="display:none"></label>
+ 		</div>
+ 		</div>
+         
+         
+         </div>
+     
+    </div>
+  </div>
+</div>
 
   </div>
 </div>
@@ -207,7 +242,7 @@
 		}	
 		else{
 			$('#modalPin').modal('toggle');
-			firmaCertificato(pin, id_certificato);
+			firmaVerCertificato(pin, id_certificato);
 			$('#pin').val("");
 		}
 		

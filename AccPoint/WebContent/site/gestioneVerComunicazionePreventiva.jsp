@@ -30,7 +30,26 @@
         <div class="col-xs-12">
           <div class="box">
           <div class="box-header">
-          
+     <div class="row">
+     
+      <div class="col-xs-6">
+      
+       <label>Company</label>
+       <select id="company" name="company" class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%">
+       <option value=""></option>
+      	<c:forEach items="${lista_company}" var="company">
+      	<c:if test="${usrCompany.id == company.id}">
+      	<option value="${company.id }" selected>${company.denominazione } </option>
+      	</c:if>
+      	<c:if test="${usrCompany.id != company.id}">
+      	<option value="${company.id }">${company.denominazione } </option>
+      	</c:if>
+      	</c:forEach>
+      
+      </select>
+      </div>
+       </div><br>
+
           
  <div class="row">
   <div class="col-md-6" style="display:none">  
@@ -95,7 +114,7 @@
       <select class="form-control select2" data-placeholder="Seleziona Tecnico Verificatore..." id="tecnico_verificatore" name="tecnico_verificatore" style="width:100%" required>
        		<option value=""></option>
        			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
-       				<option value="${tecnico.id}">${tecnico.nominativo}</option>
+       				<option value="${tecnico.company.id }_${tecnico.id}">${tecnico.nominativo}</option>
        			</c:forEach>
        		</select>
       
@@ -381,7 +400,6 @@ function inviaID(){
 				string = string + $('#id_'+id).val() + "_" + ora + "_" + $('#via_'+id).val() + "_" + $('#civico_'+id).val() + "_" + $('#comune_'+id).val() +";";
 			}
     		
-    		
     	}		
 		
     	salvaComunicazionePreventiva(string, id_cliente, id_sede, commessa, tecnico_verificatore, data_prevista, luogo);
@@ -493,6 +511,42 @@ function validateStrumentias(){
 	});
   
   
+  
+$("#company").change(function() {
+	  
+	  if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    $(this).data('options', $('#tecnico_verificatore option').clone());
+	  }	  
+	  
+	  var selection = $(this).val()	 
+	  var id = selection
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	  
+	  opt.push("<option value = ''></option>");
+	
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+
+		if(str.split("_")[0]==id)
+		{
+
+			opt.push(options[i]);
+		}   
+	   }
+	 
+	 
+	  $('#tecnico_verificatore').html(opt);
+	  
+
+	});
+  
+  
+  
   $('#sede').change(function(){
 	  
 	  dataString = "action=lista_strumenti&id_cliente="+$('#cliente').val()+"&id_sede="+$(this).val();
@@ -511,6 +565,7 @@ function validateStrumentias(){
     	$('#commessa').select2();
     	$('#tecnico_verificatore').select2();
     	$('#luogo').select2();
+    	$('#company').select2();
     	
     	
     	commessa_options = $('#commessa option').clone();

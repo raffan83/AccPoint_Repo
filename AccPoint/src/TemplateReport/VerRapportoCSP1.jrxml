@@ -246,11 +246,6 @@
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Firma operatore tecnico]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="386" y="699" width="120" height="22" uuid="fcfe3f13-0649-4ef6-a734-7d1fc3cac1f9"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$P{firma_operatore}]]></textFieldExpression>
-			</textField>
 			<line>
 				<reportElement x="50" y="720" width="119" height="1" uuid="85e17046-a75b-4f99-8d21-567b434a090b"/>
 				<graphicElement>
@@ -347,6 +342,10 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
+			<image hAlign="Center" onErrorType="Blank">
+				<reportElement x="386" y="698" width="120" height="21" uuid="55836564-4b0b-4d21-9113-e07fcddf8aa1"/>
+				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>

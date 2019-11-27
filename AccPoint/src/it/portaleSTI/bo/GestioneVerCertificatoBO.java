@@ -15,9 +15,11 @@ import it.portaleSTI.DTO.VerMisuraDTO;
 
 public class GestioneVerCertificatoBO {
 
-	public static LinkedHashMap<String, String> getClientiPerVerCertificato(Session session)throws Exception {
+	public static LinkedHashMap<String, String> getClientiPerVerCertificato(UtenteDTO utente, Session session)throws Exception {
 		
-		return GestioneVerCertificatoDAO.getClientiPerVerCertificato(session);
+		
+		return GestioneVerCertificatoDAO.getClientiPerVerCertificato(utente, session);			
+		
 	}
 
 	public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato, int idCliente, int idSede, Session session) {

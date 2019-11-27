@@ -146,51 +146,16 @@
 				<text><![CDATA[I sigilli/contrassegni non sono integri o mancano le necessarie iscrizioni regolamentari.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="6" y="506" width="40" height="21" uuid="69d4960c-7f6b-4672-9c90-f564d7add918"/>
+				<reportElement x="6" y="525" width="40" height="21" uuid="69d4960c-7f6b-4672-9c90-f564d7add918"/>
 				<text><![CDATA[Note:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="51" y="505" width="501" height="32" uuid="9be3e796-ee3a-4aa8-a476-1c2a56a47612"/>
+				<reportElement x="51" y="524" width="501" height="95" uuid="9be3e796-ee3a-4aa8-a476-1c2a56a47612"/>
 				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="5" y="544" width="130" height="20" uuid="748c5f1b-fccc-40a3-a01a-a964e4e3f5ed"/>
-				<text><![CDATA[Il Titolare dello strumento]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="459" y="544" width="90" height="20" uuid="df44f4c6-ff94-41e3-b3f1-0e629b668b55"/>
-				<text><![CDATA[L'operatore tecnico]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="5" y="580" width="130" height="20" uuid="0fcd188e-e641-4fd2-b0ad-fa0e6606ad3a"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[(Nome e cognome stampato)]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="421" y="580" width="130" height="20" uuid="6dba4349-aa2a-4f17-aa0e-c8759de6e0c6"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[(Nome e cognome stampato)]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="3" y="617" width="130" height="18" uuid="7b258816-a39b-41d8-b7f8-af94d1a8b187"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[(Firma)]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="421" y="615" width="130" height="20" uuid="a44b35dc-1be1-4313-b1bf-8d0a4f6a3532"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[(Firma)]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="200" y="641" width="141" height="20" uuid="0dd304ae-5515-4509-aead-5b9ee5669cec"/>
+				<textElement textAlignment="Center"/>
 				<text><![CDATA[Il Responsabile dell'Organismo]]></text>
 			</staticText>
 			<staticText>
@@ -200,30 +165,8 @@
 				</textElement>
 				<text><![CDATA[(Nome e cognome stampato)]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="201" y="709" width="140" height="20" uuid="2a253d1b-5f42-4a4d-8dc6-9c4f67fd98b5"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[(Firma)]]></text>
-			</staticText>
-			<line>
-				<reportElement x="421" y="615" width="130" height="1" uuid="d07ca80c-9749-4c11-b1f5-fd747f8235bf"/>
-			</line>
-			<line>
-				<reportElement x="3" y="616" width="130" height="1" uuid="a72aa673-e8e1-443e-ad7e-a0aa8864e198"/>
-			</line>
-			<line>
-				<reportElement x="421" y="579" width="130" height="1" uuid="e54c5f26-e4b8-4382-8f67-828de77b2535"/>
-			</line>
-			<line>
-				<reportElement x="5" y="579" width="130" height="1" uuid="260b74b6-7e7a-488b-9be8-c639f44a408c"/>
-			</line>
 			<line>
 				<reportElement x="201" y="675" width="140" height="1" uuid="180f0521-7954-4c25-b8f6-9c6158a15251"/>
-			</line>
-			<line>
-				<reportElement x="201" y="708" width="140" height="1" uuid="334f0c43-4118-4f67-af90-303f1d619bcb"/>
 			</line>
 			<textField>
 				<reportElement x="12" y="277" width="50" height="36" uuid="87c14fb6-94b1-4999-a6e8-b6ed0a23205b"/>
@@ -261,15 +204,8 @@
 				<textFieldExpression><![CDATA[$P{motivo3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="562" width="120" height="20" uuid="de7c2072-853b-4c7d-a8eb-f344ac9c5f10"/>
-				<textFieldExpression><![CDATA[$P{nome_titolare}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="426" y="561" width="122" height="20" uuid="b084eb0a-769d-4e67-acef-d5989334325a"/>
-				<textFieldExpression><![CDATA[$P{nome_operatore}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="211" y="658" width="120" height="20" uuid="3d92af5f-a3b8-4dd3-9405-d921800fabf9"/>
+				<reportElement x="201" y="658" width="140" height="20" uuid="3d92af5f-a3b8-4dd3-9405-d921800fabf9"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{responsabile}]]></textFieldExpression>
 			</textField>
 			<staticText>

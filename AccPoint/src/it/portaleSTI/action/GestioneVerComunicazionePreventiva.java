@@ -29,6 +29,7 @@ import java.util.Iterator;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ComuneDTO;
 import it.portaleSTI.DTO.ProvinciaDTO;
 import it.portaleSTI.DTO.SedeDTO;
@@ -45,6 +46,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
+import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.GestioneVerComunicazioniBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
@@ -114,13 +116,15 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				}
 
 				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0, true);
-				ArrayList<UtenteDTO> lista_tecnici = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
+				ArrayList<UtenteDTO> lista_tecnici = GestioneUtenteBO.getAllUtenti(session);
+				ArrayList<CompanyDTO> lista_company = GestioneCompanyBO.getAllCompany(session);
 								
 				
 				request.getSession().setAttribute("lista_commesse", lista_commesse);
 				request.getSession().setAttribute("lista_tecnici", lista_tecnici);				
 				request.getSession().setAttribute("lista_clienti", listaClienti);				
 				request.getSession().setAttribute("lista_sedi", listaSedi);
+				request.getSession().setAttribute("lista_company", lista_company);
 
 				Gson gson = new GsonBuilder().create();
 				JsonArray listaCl = gson.toJsonTree(listaClienti).getAsJsonArray();

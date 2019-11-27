@@ -17,7 +17,7 @@ public class VerCertificatoDTO implements Serializable {
 	private Date dataCreazione;
 	private String nomeRapporto;
 	
-	private Boolean firmato = false;
+	private int firmato;
 	
 	
 	public VerCertificatoDTO(){}
@@ -70,13 +70,13 @@ public class VerCertificatoDTO implements Serializable {
 		this.dataCreazione = dataCreazione;
 	}
 
-	public Boolean getFirmato() {
-		return firmato;
-	}
-
-	public void setFirmato(Boolean firmato) {
-		this.firmato = firmato;
-	}
+//	public Boolean getFirmato() {
+//		return firmato;
+//	}
+//
+//	public void setFirmato(Boolean firmato) {
+//		this.firmato = firmato;
+//	}
 
 	public String getNomeRapporto() {
 		return nomeRapporto;
@@ -84,6 +84,14 @@ public class VerCertificatoDTO implements Serializable {
 
 	public void setNomeRapporto(String nomeRapporto) {
 		this.nomeRapporto = nomeRapporto;
+	}
+
+	public int getFirmato() {
+		return firmato;
+	}
+
+	public void setFirmato(int firmato) {
+		this.firmato = firmato;
 	}
 	
 	

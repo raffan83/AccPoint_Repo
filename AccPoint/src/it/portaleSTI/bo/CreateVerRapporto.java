@@ -28,6 +28,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
 import it.portaleSTI.DTO.VerLinearitaDTO;
@@ -73,13 +74,13 @@ public class CreateVerRapporto {
 	
 	private String um;
 	
-	public CreateVerRapporto(VerMisuraDTO misura, List<SedeDTO> listaSedi, boolean conforme, int motivo,  Session session) throws Exception {
+	public CreateVerRapporto(VerMisuraDTO misura, List<SedeDTO> listaSedi, boolean conforme, int motivo,UtenteDTO utente,  Session session) throws Exception {
 		
-		build(misura, listaSedi, conforme, motivo, session);
+		build(misura, listaSedi, conforme, motivo,utente, session);
 		
 	}
 
-	private void build(VerMisuraDTO misura, List<SedeDTO> listaSedi, boolean conforme, int motivo, Session session) throws Exception {
+	private void build(VerMisuraDTO misura, List<SedeDTO> listaSedi, boolean conforme, int motivo,UtenteDTO utente, Session session) throws Exception {
 		
 		InputStream is = null;
 		if(misura.getVerStrumento().getTipo().getId()==1) {
@@ -89,7 +90,7 @@ public class CreateVerRapporto {
 		}else {
 			is = PivotTemplate.class.getResourceAsStream("VerRapportoCPP1.jrxml");
 		}
-		
+					
 		this.um = misura.getVerStrumento().getUm();
 		
 		int numero_campi = 1;
@@ -133,6 +134,13 @@ public class CreateVerRapporto {
 		
 		report.addParameter("logo_accredia","");
 		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo.png"));
+		
+		File firma = new File(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma());
+		
+		if(!firma.exists()) {
+			firma = null;
+		}
+		
 		
 		if(misura.getNumeroRapporto()!=null) {
 			report.addParameter("numero_rapporto", misura.getNumeroRapporto().replace("_"," - "));
@@ -442,7 +450,18 @@ public class CreateVerRapporto {
 		
 		report.addParameter("registro", misura.getId()+"_"+misura.getVerStrumento().getId()); //MANCA REGISTRO
 		report.addParameter("procedura", "PDI-001 Rev.0"); 
-		report.addParameter("firma_operatore", ""); //MANCA FIRMA
+		
+		if(utente.getFile_firma()!=null) {
+			if(firma!=null) {
+				
+				report.addParameter("firma_operatore", firma);
+			}else {
+				report.addParameter("firma_operatore", ""); 
+			}
+		}else {
+			report.addParameter("firma_operatore", "");
+		}
+		
 		
 		if(misura.getDataVerificazione()!=null) {
 			report.addParameter("data_verificazione", df.format(misura.getDataVerificazione()));
@@ -507,7 +526,17 @@ public class CreateVerRapporto {
 			reportP2.addParameter("esito", "NON SUPERATO");
 		}
 		
-		reportP2.addParameter("firma_operatore", ""); //MANCA FIRMA
+		
+		if(utente.getFile_firma()!=null) {
+			if(firma!=null) {
+				
+				reportP2.addParameter("firma_operatore", firma);
+			}else {
+				reportP2.addParameter("firma_operatore", ""); 
+			}
+		}else {
+			reportP2.addParameter("firma_operatore", ""); 
+		}
 		
 		if(misura.getDataVerificazione()!=null) {
 			reportP2.addParameter("data", df.format(misura.getDataVerificazione()));
@@ -772,9 +801,9 @@ public class CreateVerRapporto {
 					conformita = conformita +"GLOBALE: ";
 				}
 				if(esito_globale) {
-					conformita = conformita +"Conforme";
+					conformita = conformita +"Positivo";
 				}else {
-					conformita = conformita +"Non Conforme";
+					conformita = conformita +"Negativo";
 				}
 				
 				
@@ -823,22 +852,62 @@ public class CreateVerRapporto {
 			if(misura.getDataVerificazione()!=null) {
 				data_verificazione = df.format(misura.getDataVerificazione());
 			}		
-			reportP3.pageFooter(
-					cmp.verticalList(
-					cmp.horizontalList(
-							cmp.horizontalGap(50),
-							cmp.text("Data"),
-							cmp.horizontalGap(170),
-							cmp.text("Firma operatore tecnico")
-							),
-					cmp.horizontalList(
-							cmp.horizontalGap(35),
-							cmp.text(data_verificazione),
-							cmp.horizontalGap(178),
-							cmp.text("........................................")
+			if(utente.getFile_firma()!=null) {
+				if(firma!=null) {
+					
+					reportP3.pageFooter(
+							cmp.verticalList(
+							cmp.horizontalList(
+									cmp.horizontalGap(50),
+									cmp.text("Data"),
+									cmp.horizontalGap(170),
+									cmp.text("Firma operatore tecnico")
+									),
+							cmp.horizontalList(
+									cmp.horizontalGap(35),
+									cmp.text(data_verificazione),
+									cmp.horizontalGap(25),
+									cmp.text(""),
+									cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setFixedHeight(21)
+									)
 							)
-					)
-					);
+							);
+				}
+			}else {
+				reportP3.pageFooter(
+						cmp.verticalList(
+						cmp.horizontalList(
+								cmp.horizontalGap(50),
+								cmp.text("Data"),
+								cmp.horizontalGap(170),
+								cmp.text("Firma operatore tecnico")
+								),
+						cmp.horizontalList(
+								cmp.horizontalGap(35),
+								cmp.text(data_verificazione),
+								cmp.horizontalGap(178),
+								cmp.text("........................................")
+								)
+						)
+						);
+			}
+			
+//			reportP3.pageFooter(
+//					cmp.verticalList(
+//					cmp.horizontalList(
+//							cmp.horizontalGap(50),
+//							cmp.text("Data"),
+//							cmp.horizontalGap(170),
+//							cmp.text("Firma operatore tecnico")
+//							),
+//					cmp.horizontalList(
+//							cmp.horizontalGap(35),
+//							cmp.text(data_verificazione),
+//							cmp.horizontalGap(178),
+//							cmp.text("........................................")
+//							)
+//					)
+//					);
 
 			
 			report.addParameter("pagine_totali", numero_pagine);
@@ -1461,8 +1530,9 @@ private String getClassePrecisione(int classe) {
 	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(23, session);
 	//String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
 	List<SedeDTO> listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+	UtenteDTO utente = GestioneUtenteBO.getUtenteById("11", session);
 
-	new CreateVerRapporto(misura, listaSedi, false, 3, session);
+	new CreateVerRapporto(misura, listaSedi, false, 42,utente, session);
 		session.getTransaction().commit();
 		session.close();
 		System.out.println("FINITO");

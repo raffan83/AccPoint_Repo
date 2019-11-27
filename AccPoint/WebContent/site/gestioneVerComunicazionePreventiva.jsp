@@ -402,7 +402,7 @@ function inviaID(){
     		
     	}		
 		
-    	salvaComunicazionePreventiva(string, id_cliente, id_sede, commessa, tecnico_verificatore, data_prevista, luogo);
+    	salvaComunicazionePreventiva(string, id_cliente, id_sede, commessa, tecnico_verificatore.split("_")[1], data_prevista, luogo);
 	}
     
 }

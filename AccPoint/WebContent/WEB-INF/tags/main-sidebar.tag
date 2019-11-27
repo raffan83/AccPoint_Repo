@@ -221,7 +221,7 @@
         </li>
            <% }%>
            
-         <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_VER_STRUMENTI")){%>  
+         <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_VER_STRUMENTI") || user.checkPermesso("GESTIONE_VER_STRUMENTI_CLIENTE")){%>  
            <li class="header">VERIFICAZIONE STRUMENTI</li>
 
          <li class="treeview">
@@ -233,10 +233,14 @@
           <ul class="treeview-menu">
 		
 			<!-- <li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do',null,true);">Comunicazione Preventiva</a></li> -->
+			<% if(user.checkPermesso("GESTIONE_VER_STRUMENTI")){%>  
 			<li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do?action=esito_comunicazioni',null,true);">Comunicazione Esito</a></li>
+			<% }%>
 	        <li><a href="#" onclick="callAction('gestioneVerStrumenti.do',null,true);">Gestione Strumenti</a></li>
 	        <li><a href="#" onclick="callAction('gestioneVerCertificati.do',null,true);">Lista Certificati</a></li>
+	        <% if(user.checkPermesso("GESTIONE_VER_STRUMENTI")){%>  
 	        <li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do?action=lista',null,true);">Lista Comunicazioni</a></li>
+	        <% }%>
 	        <li><a href="#" onclick="callAction('gestioneVerIntervento.do?action=lista',null,true);">Lista Interventi</a></li>
             <li><a href="#" onclick="callAction('gestioneVerMisura.do?action=lista',null,true);">Lista Misure</a></li>
           </ul>

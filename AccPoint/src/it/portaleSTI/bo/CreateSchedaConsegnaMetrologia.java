@@ -209,13 +209,19 @@ public class CreateSchedaConsegnaMetrologia {
 		
 		int i=1;
 			for (StrumentoDTO strumento : listaStrumenti) {
+								
 				ArrayList<String> arrayPs = new ArrayList<String>();
 				
 				arrayPs.add(""+i);
 				arrayPs.add(strumento.getDenominazione());
 				arrayPs.add(strumento.getCodice_interno());
 				arrayPs.add(strumento.getMatricola());
-				arrayPs.add(""+sdf.format(strumento.getDataUltimaVerifica()));
+				
+				if(strumento.getDataUltimaVerifica()!=null) {
+					arrayPs.add(""+sdf.format(strumento.getDataUltimaVerifica()));	
+				}else {
+					arrayPs.add("");	
+				}
 				arrayPs.add(strumento.getNote());
 				
 		         Object[] listaValori = arrayPs.toArray();

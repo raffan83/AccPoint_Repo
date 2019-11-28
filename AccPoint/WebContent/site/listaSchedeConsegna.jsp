@@ -277,7 +277,7 @@ Fatturata
     </div>
      <div class="modal-footer">
 
-     <button class="btn btn-default pull-left" onClick="scaricaSchedaConsegna('${intervento.id}')"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
+     <button class="btn btn-default pull-left" onClick="scaricaSchedaConsegna('${utl:encryptData(intervento.id)}')"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
    
     	
     </div>

@@ -85,6 +85,8 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				String corteseAttenzione= request.getParameter("corteseAttenzione");
 				String stato= request.getParameter("gridRadios");
 				
+				idIntervento = Utility.decryptData(idIntervento);
+				
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
 				
 				ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureNonObsoleteByIntervento(intervento.getId());

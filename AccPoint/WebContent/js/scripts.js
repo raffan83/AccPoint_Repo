@@ -10702,8 +10702,8 @@ function salvaComunicazionePreventiva(ids, id_cliente, id_sede, commessa, tecnic
 			$('#myModalErrorContent').html(data.messaggio);
 			$('#myModalError').removeClass();	
 			$('#myModalError').addClass("modal modal-danger");	  
-			$('#report_button').hide();
-			$('#visualizza_report').hide();		
+			$('#report_button').show();
+			$('#visualizza_report').show();		
 			$('#myModalError').modal('show');			
 		
 		  }

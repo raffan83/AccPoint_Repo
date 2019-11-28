@@ -909,23 +909,22 @@ public static ArrayList<SicurezzaElettricaDTO> getListaMisureElettriche(Connecti
 		strumento.setFrequenza(rs.getInt("freq_verifica_mesi"));
 		strumento.setTipoRapporto(new TipoRapportoDTO(rs.getInt("tipoRapporto"), ""));
 		
-		if(strumento.getTipoRapporto().getId()==Costanti.ID_TIPO_RAPPORTO_SVT)
-		{
-			Date date = new Date();
-			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-			
-			strumento.setDataUltimaVerifica(sqlDate);
-			
-			Calendar data = Calendar.getInstance();
-			
-			data.setTime(date);
-			data.add(Calendar.MONTH,strumento.getFrequenza());
-			
-			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
-				
-			strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
-			
-		}
+	
+//			Date date = new Date();
+//			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+//			
+//			strumento.setDataUltimaVerifica(sqlDate);
+//			
+//			Calendar data = Calendar.getInstance();
+//			
+//			data.setTime(date);
+//			data.add(Calendar.MONTH,strumento.getFrequenza());
+//			
+//			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
+//				
+//			strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
+//			
+		
 		
 		
 		strumento.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));

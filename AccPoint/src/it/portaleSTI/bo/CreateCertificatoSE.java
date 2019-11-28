@@ -7,30 +7,26 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
 import java.io.File;
 import java.io.InputStream;
-import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
-import TemplateReportLAT.PivotTemplateLAT;
-import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClienteDTO;
-import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
-import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.action.ContextListener;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
@@ -236,7 +232,25 @@ public class CreateCertificatoSE {
 		certificato.setStato(new StatoCertificatoDTO(2));		
 		certificato.setUtenteApprovazione(utente);
 		session.update(certificato);
+		
+		StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(""+certificato.getMisura().getStrumento().get__id(), session);
+		strumento.setDataUltimaVerifica(new java.sql.Date(certificato.getMisura().getDataMisura().getTime()));
+		
+		
+		
+		java.sql.Date sqlDate = new java.sql.Date(strumento.getDataUltimaVerifica().getTime());
 
+		
+		Calendar data = Calendar.getInstance();
+		
+		data.setTime(sqlDate);
+		data.add(Calendar.MONTH,strumento.getFrequenza());
+		
+		java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
+			
+		strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
+		
+		session.update(strumento);
 		
 	}
 	

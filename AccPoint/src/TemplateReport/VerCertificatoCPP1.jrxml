@@ -412,6 +412,20 @@
 				<reportElement x="0" y="469" width="101" height="18" uuid="ca3aea14-c430-456f-a22a-f5b6015e92b6"/>
 				<text><![CDATA[Tipologia:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="0" y="724" width="100" height="16" uuid="7148d7c2-117b-48f3-8e14-e42c69eb04fd"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[MOD-LAB-015]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="456" y="724" width="100" height="16" uuid="dc7a4dff-4f6f-4d8a-8dbc-7f28e585f4de"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Rev. C del 27/11/2019]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 </jasperReport>

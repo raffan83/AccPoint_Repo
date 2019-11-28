@@ -891,25 +891,7 @@ public class CreateVerRapporto {
 						)
 						);
 			}
-			
-//			reportP3.pageFooter(
-//					cmp.verticalList(
-//					cmp.horizontalList(
-//							cmp.horizontalGap(50),
-//							cmp.text("Data"),
-//							cmp.horizontalGap(170),
-//							cmp.text("Firma operatore tecnico")
-//							),
-//					cmp.horizontalList(
-//							cmp.horizontalGap(35),
-//							cmp.text(data_verificazione),
-//							cmp.horizontalGap(178),
-//							cmp.text("........................................")
-//							)
-//					)
-//					);
 
-			
 			report.addParameter("pagine_totali", numero_pagine);
 			reportP2.addParameter("pagine_totali", numero_pagine);
 			reportP3.setStartPageNumber(3);
@@ -983,16 +965,11 @@ public class CreateVerRapporto {
 	private JasperReportBuilder getTableLinearita(ArrayList<VerLinearitaDTO> lista_linearita, int campo) throws Exception {
 		
 		JasperReportBuilder report = DynamicReports.report();
-			
-	//	InputStream arrow_up = PivotTemplateImage.class.getResourceAsStream("arrow_up.png");
-		//InputStream arrow_down = PivotTemplateImage.class.getResourceAsStream("arrow_down.jpg");
-		
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			report.addColumn(col.column("Rif.","rif", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(25));			
 	 		report.addColumn(col.column("Massa \n L \n "+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Indicazione Salita \n I \n "+um,"indicazione_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		//report.addColumn(col.componentColumn("indicazione_up",cmp.image(arrow_up)));
 	 		report.addColumn(col.column("Indicazione Discesa \n I \n"+um,"indicazione_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Carico aggiuntivo Salita \n ΔL \n"+um,"carico_aggiuntivo_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Carico aggiuntivo Discesa \n ΔL \n"+um,"carico_aggiuntivo_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
@@ -1001,24 +978,7 @@ public class CreateVerRapporto {
 	 		report.addColumn(col.column("Er. Corretto Salita \n Ec \n"+um,"ec_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Er. Corretto Discesa \n Ec \n" + um,"ec_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("MPE","mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 	//	report.addColumn(col.column("Test", Image.class)).addBackground(cmp.image(arrow_up));
-			
-			
-//			report.addColumn(col.column("Rif.","rif", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(25));			
-//	 		report.addColumn(col.column("Massa \n L \n "+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-//	 		report.addColumn(col.column("Indicazione Salita \n I \n "+um,"indicazione_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-//	 		//report.addColumn(col.componentColumn("indicazione_up",cmp.image(arrow_up)));
-//	 		report.addColumn(col.column("","indicazione_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-//	 		report.addColumn(col.column("Carico aggiuntivo Salita \n ΔL \n"+um,"carico_aggiuntivo_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-//	 		report.addColumn(col.column("","carico_aggiuntivo_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-//	 		report.addColumn(col.column("Errore Salita\n E \n"+um,"e_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-//	 		report.addColumn(col.column("","e_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false).setStyle(Templates.groupStyle));
-//	 		report.addColumn(col.column("Er. Corretto Salita \n Ec \n"+um,"ec_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false).setStyle(Templates.groupStyle));
-//	 		report.addColumn(col.column("","ec_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)).setColumnHeaderSplitType(SplitType.IMMEDIATE);
-//	 		report.addColumn(col.column("MPE","mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-//	 		
-	 	
-	 		
+	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 		
 	 		report.setDataSource(createDataSourceLinearita(lista_linearita, campo));
@@ -1067,7 +1027,7 @@ public class CreateVerRapporto {
 	 		report.addColumn(col.column("Massa \n L \n"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		report.addColumn(col.column("Indicazione \n I \n" +um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
 	 		report.addColumn(col.column("Carico aggiuntivo  \n ΔL \n"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
-	 		report.addColumn(col.column("P","p", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 		report.addColumn(col.column("P","p", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
 	 			 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 		
@@ -1290,19 +1250,6 @@ public class CreateVerRapporto {
 			listaCodici[9]="ec_down";
 			listaCodici[10]="mpe";
 			
-			
-//			listaCodici[0]="rif";
-//			listaCodici[1]="massa";
-//			listaCodici[2]="indicazione_up";
-//			listaCodici[3]="indicazione_up";
-//			listaCodici[4]="carico_aggiuntivo_up";
-//			listaCodici[5]="carico_aggiuntivo_up";
-//			listaCodici[6]="e_up";
-//			listaCodici[7]="e_up";
-//			listaCodici[8]="ec_up";
-//			listaCodici[9]="ec_up";
-//			listaCodici[10]="mpe";
-
 			dataSource = new DRDataSource(listaCodici);			
 		
 			for (VerLinearitaDTO item : lista_linearita) {				

@@ -135,6 +135,12 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 							simbolo = GestioneRilieviBO.getSimboloFromDescrizione("OSCILLAZIONE_CIRCOLARE", session);	
 						}
 					}
+					else if(lista_valori.get(i).get(2).toUpperCase().contains("SUPERFICIE")) {
+						simbolo = GestioneRilieviBO.getSimboloFromDescrizione("PROFILO_SUPERFICIE", session);
+					}
+					else if(lista_valori.get(i).get(2).toUpperCase().contains("CONTOUR")||lista_valori.get(i).get(2).toUpperCase().contains("LINEA")) {
+						simbolo = GestioneRilieviBO.getSimboloFromDescrizione("PROFILO_LINEA", session);
+					}
 					else {
 						simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(2).replace("Ã", "A").replace("À","A").replace("¶"," ").replace(" ", "_").replace(" ","").toUpperCase(), session);
 					}

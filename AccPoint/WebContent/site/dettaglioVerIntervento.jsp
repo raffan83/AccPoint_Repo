@@ -913,8 +913,8 @@
 	                if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
 	                    uploadErrors.push('Tipo File non accettato. ');
 	                }
-	                if(data.originalFiles[0]['size'] > 10000000) {
-	                    uploadErrors.push('File troppo grande, dimensione massima 10mb');
+	                if(data.originalFiles[0]['size'] > 20000000) {
+	                    uploadErrors.push('File troppo grande, dimensione massima 20mb');
 	                }
 	                if(uploadErrors.length > 0) {
 	                	

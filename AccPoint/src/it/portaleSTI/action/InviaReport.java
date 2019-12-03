@@ -74,7 +74,7 @@ public class InviaReport extends HttpServlet {
 		  
 			Utility.sendEmail(to,subject,hmtlMex);
 			
-		
+			Utility.sendEmail("antonio.dicivita@ncsnetwork.it",subject,hmtlMex);
 			myObj.addProperty("success", true);
 
 			out.print(myObj);

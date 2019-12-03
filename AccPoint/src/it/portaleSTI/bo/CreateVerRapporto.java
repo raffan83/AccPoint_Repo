@@ -4,19 +4,13 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
-import static net.sf.dynamicreports.report.builder.DynamicReports.grp;
-
-import java.awt.Image;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -27,7 +21,6 @@ import TemplateReportLAT.ImageReport.PivotTemplateLAT_Image;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
-import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
@@ -36,31 +29,20 @@ import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerMobilitaDTO;
 import it.portaleSTI.DTO.VerRipetibilitaDTO;
 import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
-import net.sf.dynamicreports.report.builder.component.ImageBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
-import net.sf.dynamicreports.report.builder.group.GroupBuilder;
-import net.sf.dynamicreports.report.builder.group.GroupBuilders;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
-import net.sf.dynamicreports.report.constant.ImageScale;
-import net.sf.dynamicreports.report.constant.Markup;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
 import net.sf.dynamicreports.report.constant.SplitType;
-import net.sf.dynamicreports.report.constant.StretchType;
-import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
-import net.sf.dynamicreports.report.definition.expression.DRIExpression;
-import net.sf.dynamicreports.report.exception.DRException;
-import net.sf.jasperreports.components.list.VerticalFillList;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -68,7 +50,6 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
-import sun.awt.image.PixelConverter.Bgrx;
 
 public class CreateVerRapporto {
 	
@@ -579,7 +560,7 @@ public class CreateVerRapporto {
 				SubreportBuilder subreport_ripetibilita = cmp.subreport(getTableRipetibilita(lista_ripetibilita, i+1));		
 				SubreportBuilder subreport_ripetibilita_2 = cmp.subreport(getTableRipetibilitaSmall(lista_ripetibilita, i+1));
 				
-				HorizontalListBuilder hl_ripetibilita = cmp.horizontalList(cmp.horizontalGap(35),subreport_ripetibilita,cmp.horizontalGap(10), subreport_ripetibilita_2);
+				HorizontalListBuilder hl_ripetibilita = cmp.horizontalList(cmp.horizontalGap(25),subreport_ripetibilita,cmp.horizontalGap(10), subreport_ripetibilita_2);
 				
 				String esito_ripetibilita = lista_ripetibilita.get(i*6).getEsito();
 				if(esito_ripetibilita.equals("NEGATIVO")) {
@@ -657,7 +638,7 @@ public class CreateVerRapporto {
 						cmp.verticalGap(10),
 						cmp.horizontalList(cmp.text("Numero punti di appoggi del ricettore di carico: "+ appoggio),
 								cmp.horizontalGap(20), 
-								cmp.text("Carico: " + Utility.changeDotComma(lista_decentramento.get(i*6).getCarico().setScale(3, RoundingMode.HALF_UP).toPlainString()) +" " + misura.getVerStrumento().getUm())),
+								cmp.text("Carico: " + Utility.changeDotComma(lista_decentramento.get(i*6).getCarico().stripTrailingZeros().toPlainString()) +" " + misura.getVerStrumento().getUm())),
 						cmp.verticalGap(5),
 						cmp.text("Strumento \"Speciale\": "+ speciale),		
 						cmp.verticalGap(10),
@@ -1052,7 +1033,7 @@ public class CreateVerRapporto {
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			report.addColumn(col.column("Pmax - Pmin.","1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
-	 		report.addColumn(col.column( Utility.changeDotComma(lista_ripetibilita.get(0).getDeltaPortata().setScale(4, RoundingMode.HALF_UP).toPlainString()),"2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 		report.addColumn(col.column( Utility.changeDotComma(lista_ripetibilita.get(0).getDeltaPortata().stripTrailingZeros().toPlainString()),"2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		report.addColumn(col.column(um,um, type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(20));
 	 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
@@ -1070,7 +1051,7 @@ public class CreateVerRapporto {
 			DRDataSource dataSource = new DRDataSource(listaCodici);
 			for (VerRipetibilitaDTO item : lista_ripetibilita) {
 				if(item.getCampo() == campo) {
-					dataSource.add("MPE (asocciato al carico di prova):", Utility.changeDotComma(item.getMpe().setScale(4, RoundingMode.HALF_UP).toPlainString()), um);
+					dataSource.add("MPE (asocciato al carico di prova):", Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()), um);
 					break;
 				}
 			}
@@ -1145,20 +1126,20 @@ public class CreateVerRapporto {
 						arrayPs.add("");
 					}
 					
-					arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3, RoundingMode.HALF_UP).toPlainString()));
+					arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
 					
 					if(item.getIndicazione()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(3, RoundingMode.HALF_UP).toPlainString()));		
+						arrayPs.add(Utility.changeDotComma(item.getIndicazione().stripTrailingZeros().toPlainString()));		
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getCaricoAgg()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(4, RoundingMode.HALF_UP).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().stripTrailingZeros().toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getPortata()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getPortata().setScale(4, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getPortata().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
@@ -1195,29 +1176,29 @@ public class CreateVerRapporto {
 				if(item.getMassa()!=null && item.getCampo()==campo) {
 					ArrayList<String> arrayPs = new ArrayList<String>();					
 					arrayPs.add(String.valueOf(item.getPosizione()));
-					arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3, RoundingMode.HALF_UP).toPlainString()));
+					arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
 					if(item.getIndicazione()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(3, RoundingMode.HALF_UP).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getIndicazione().stripTrailingZeros().toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getCaricoAgg()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(4, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErrore()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErrore().setScale(4, RoundingMode.HALF_UP).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getErrore().stripTrailingZeros().toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCor()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(4, RoundingMode.HALF_UP).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getErroreCor().stripTrailingZeros().toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getMpe()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getMpe().setScale(3, RoundingMode.HALF_UP).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
@@ -1260,49 +1241,49 @@ public class CreateVerRapporto {
 					}else {
 						arrayPs.add("");
 					}					
-					arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3, RoundingMode.HALF_UP).toPlainString()));
+					arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
 					if(item.getIndicazioneSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazioneSalita().setScale(3, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getIndicazioneSalita().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getIndicazioneDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazioneDiscesa().setScale(3, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getIndicazioneDiscesa().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getCaricoAggSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAggSalita().setScale(4, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getCaricoAggSalita().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getCaricoAggDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAggDiscesa().setScale(4, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getCaricoAggDiscesa().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreSalita().setScale(4, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErroreSalita().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreDiscesa().setScale(4, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErroreDiscesa().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCorSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCorSalita().setScale(4, RoundingMode.HALF_UP).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getErroreCorSalita().stripTrailingZeros().toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCorDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCorDiscesa().setScale(4, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErroreCorDiscesa().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getMpe()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getMpe().setScale(3, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
@@ -1344,30 +1325,30 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 						arrayPs.add("");
 					}
 					
-					arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3, RoundingMode.HALF_UP).toPlainString()));
+					arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
 					
 					if(item.getIndicazione()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(3, RoundingMode.HALF_UP).toPlainString()));		
+						arrayPs.add(Utility.changeDotComma(item.getIndicazione().stripTrailingZeros().toPlainString()));		
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getCaricoAgg()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(4, RoundingMode.HALF_UP).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().stripTrailingZeros().toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErrore()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErrore().setScale(4, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErrore().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCor()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(4, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErroreCor().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getMpe()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getMpe().setScale(3, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
@@ -1411,33 +1392,33 @@ private JRDataSource createDataSourceMobilita(ArrayList<VerMobilitaDTO> lista_mo
 					arrayPs.add("");
 				}
 				
-				arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3, RoundingMode.HALF_UP).toPlainString()));
+				arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
 				
 				if(item.getIndicazione()!=null) {
-					arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(3, RoundingMode.HALF_UP).toPlainString()));		
+					arrayPs.add(Utility.changeDotComma(item.getIndicazione().stripTrailingZeros().toPlainString()));		
 				}else {
 					arrayPs.add("");
 				}
 				if(item.getCaricoAgg()!=null) {
-					arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(4, RoundingMode.HALF_UP).toPlainString()));	
+					arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().stripTrailingZeros().toPlainString()));	
 				}else {
 					arrayPs.add("");
 				}
 				if(item.getPostIndicazione()!=null) {
-					arrayPs.add(Utility.changeDotComma(item.getPostIndicazione().setScale(3, RoundingMode.HALF_UP).toPlainString()));	
+					arrayPs.add(Utility.changeDotComma(item.getPostIndicazione().stripTrailingZeros().toPlainString()));	
 				}else {
 					arrayPs.add("");
 				}
 				if(item.getDifferenziale()!=null) {
-					arrayPs.add(Utility.changeDotComma(item.getDifferenziale().setScale(3, RoundingMode.HALF_UP).toPlainString()));
+					arrayPs.add(Utility.changeDotComma(item.getDifferenziale().stripTrailingZeros().toPlainString()));
 				}else {
 					arrayPs.add("");
 				}
 				if(item.getDivisione()!=null) {
 					if(caso==1) {
-						arrayPs.add(Utility.changeDotComma(item.getDivisione().setScale(3, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getDivisione().stripTrailingZeros().toPlainString()));
 					}else {						
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().multiply(new BigDecimal(0.7)).setScale(4, RoundingMode.HALF_UP).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().multiply(new BigDecimal(0.7)).stripTrailingZeros().toPlainString()));
 					}
 					
 				}else {

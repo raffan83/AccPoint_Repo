@@ -6434,6 +6434,60 @@ function showNoteCommessa(id){
   
 }
 
+
+function riapriOrigine(origine){
+	
+	 
+	 var dataObj = {};
+	 dataObj.origine=origine;
+
+ $.ajax({
+	  type: "POST",
+	  url: "gestionePacco.do?action=riapri_origine",
+	  data: dataObj,
+	  dataType: "json",
+	  success: function( data, textStatus) {
+		  
+
+		  if(data.success)
+		  { 
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#report_button').hide();
+	  			$('#visualizza_report').hide();		
+				$('#myModalError').modal('show');
+				$('#myModalError').on("hidden.bs.modal",function(){
+					location.reload();
+				});  
+			
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+	  			$('#visualizza_report').show();		
+				$('#myModalError').modal('show');
+			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+ 			$('#visualizza_report').show();		
+			$('#myModalError').modal('show');
+			
+	  }
+ });
+
+ 
+	
+}
   
 
   function eliminaSchedaConsegna(id_scheda){

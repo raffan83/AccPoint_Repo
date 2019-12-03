@@ -223,6 +223,8 @@ public class GestioneStrumentoBO {
 		
 		int idStrumento=saveStrumento(strumento,session);
 
+		
+		
 		strumento.set__id(idStrumento);
 		
 		return strumento;

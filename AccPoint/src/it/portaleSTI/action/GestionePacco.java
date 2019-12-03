@@ -1434,7 +1434,25 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("messaggio", "Strumenti spostati con successo!");
 			out.print(myObj);
 		}
-		
+		else if(action.equals("riapri_origine")) {
+			ajax = true;
+			
+			String origine = request.getParameter("origine");
+			
+			GestioneMagazzinoBO.riapriOrigine(origine, session);
+			
+			
+			session.getTransaction().commit();
+			session.close();
+			JsonObject myObj = new JsonObject();
+			PrintWriter out = response.getWriter();
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Pacchi origine riaperti con successo!");
+			out.print(myObj);
+			
+			
+		}
 	
 		}catch(Exception e) {
 			

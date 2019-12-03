@@ -216,11 +216,15 @@
 
 <a class="btn btn-primary customTooltip"  title="Click per scaricare gli allegati"  style="background-color:#cc6600;border-color:#cc6600;"  onClick="apriAllegati('${pacco.id}')"><i class="fa fa-arrow-down"></i></a>
 </c:if> 
+<c:if test="${pacco.chiuso==1 }">
+<a href="#" class="btn customTooltip btn-info" style="background-color:#9FFF33;border-color:#9FFF33;"   title="Riapri origine" onclick="riapriOrigine('${pacco.origine}')"><i class="fa fa-unlock"></i></a>
+</c:if>
 </td>
 <td>
 <c:if test="${pacco.origine!='' && pacco.origine!=null}">
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(pacco.origine.split('_')[1])}')">${pacco.origine}</a>
 </c:if>
+
 </td>
 
 

@@ -923,4 +923,13 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		return lista;
 	}
 
+
+	public static void riapriOrigine(String origine, Session session) {
+		
+		Query query  = session.createQuery( "update MagPaccoDTO set chiuso = 0 where origine =:_origine");
+		query.setParameter("_origine", origine);
+		
+		query.executeUpdate();
+	}
+
 }

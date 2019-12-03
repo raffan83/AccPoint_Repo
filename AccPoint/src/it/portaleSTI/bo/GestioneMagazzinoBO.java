@@ -447,6 +447,11 @@ public static ArrayList<MagPaccoDTO> getListaPacchiInMagazzino(Session session) 
 	return GestioneMagazzinoDAO.getListaPacchiInMagazzino(session);
 }
 
+public static void riapriOrigine(String origine, Session session) {
+	 
+	GestioneMagazzinoDAO.riapriOrigine(origine, session);
+}
+
 
 
 }

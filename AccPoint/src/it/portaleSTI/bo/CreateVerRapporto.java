@@ -1420,7 +1420,7 @@ private JRDataSource createDataSourceMobilita(ArrayList<VerMobilitaDTO> lista_mo
 					if(caso==1) {
 						arrayPs.add(Utility.changeDotComma(item.getDivisione().stripTrailingZeros().toPlainString()));
 					}else {						
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().multiply(new BigDecimal(0.7)).stripTrailingZeros().toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().multiply(new BigDecimal(0.7).setScale(1, RoundingMode.HALF_UP)).stripTrailingZeros().toPlainString()));
 					}
 					
 				}else {

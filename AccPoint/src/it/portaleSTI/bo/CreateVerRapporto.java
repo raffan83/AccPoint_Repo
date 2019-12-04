@@ -165,8 +165,10 @@ public class CreateVerRapporto {
 		}else {
 			if(cliente!=null && cliente.getCf()!=null) {
 				report.addParameter("partita_iva", cliente.getCf());
+			}else {
+				report.addParameter("partita_iva", "");	
 			}
-			report.addParameter("partita_iva", "");
+			
 		}
 		
 		String indirizzo_sd="";

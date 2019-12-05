@@ -4,9 +4,9 @@
 <!-- Generated 15-feb-2017 11.20.27 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="it.portaleSTI.DTO.CompanyDTO" table="COMPANY">
-        <id name="id" type="java.lang.Integer">
+        <id name="id" type="int">
             <column name="ID" />
-            <generator class="native" />
+            <generator class="assigned" />
         </id>
         <property name="denominazione" type="java.lang.String">
             <column name="DENOMINAZIONE" />

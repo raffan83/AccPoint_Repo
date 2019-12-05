@@ -76,6 +76,7 @@ public class GestioneCompany extends HttpServlet {
 	    	 			String password_pec = request.getParameter("password_pec");
 	    	 			String host_pec = request.getParameter("host_pec");
 	    	 			String porta_pec = request.getParameter("porta_pec");
+	    	 			String id = request.getParameter("id");
 	    	 			
 	    	 
 	    	 			
@@ -93,6 +94,7 @@ public class GestioneCompany extends HttpServlet {
 	    	 			company.setPwd_pec(pwd_encrypted);
 	    	 			company.setHost_pec(host_pec);
 	    	 			company.setPorta_pec(porta_pec);
+	    	 			company.setId(Integer.parseInt(id));
 	    	 			
 
 	    	 			int success = GestioneCompanyBO.saveCompany(company,action,session);
@@ -118,8 +120,7 @@ public class GestioneCompany extends HttpServlet {
 		 			 	
 	    	 		}else if(action.equals("modifica")){
 	    	 			
-	    	 			String id = request.getParameter("modid");
-
+	    	 			String id = request.getParameter("modid");	    	 		
 	    	 			String denominazione = request.getParameter("moddenominazione");
 	    	 			String pIva = request.getParameter("modpiva");
 	    	 			String indirizzo = request.getParameter("modindirizzo");
@@ -133,10 +134,9 @@ public class GestioneCompany extends HttpServlet {
 	    	 			String host_pec = request.getParameter("mod_host_pec");
 	    	 			String porta_pec = request.getParameter("mod_porta_pec");
 	    	 			
-	    	 
-	    	 			
 	    	 			
 	    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(id, session);
+	 			
 	    	 			
 	    	 			if(denominazione != null && !denominazione.equals("")){
 		    	 			company.setDenominazione(denominazione);

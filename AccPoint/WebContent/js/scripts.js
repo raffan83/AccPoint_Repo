@@ -2646,65 +2646,83 @@ function nuovaCompany(){
 	  var password_pec = $('#password_pec').val();
 	  var host_pec = $('#host_pec').val();
 	  var porta_pec = $('#porta_pec').val();
+	  var id = $('#id').val();
+	  
+	  if(id.includes(".") || id.includes(",")){
+		  
+		  $('#report_button').hide();
+			$('#visualizza_report').hide();
+		  $("#modalNuovaCompany").modal("hide");
+		  $('#myModalErrorContent').html("Il campo ID deve essere un numero intero!");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+		  
+	  } else{
+		  
+	  
+	  
 	  var dataObj = {};
 		
-	  dataObj.denominazione = denominazione;
-	  dataObj.piva = piva;
-	  dataObj.indirizzo = indirizzo;
-	  dataObj.comune = comune;
-	  dataObj.cap = cap;
-	  dataObj.email = email;
-	  dataObj.telefono = telefono;
-	  dataObj.codiceAffiliato = codiceAffiliato;
-	  dataObj.email_pec = email_pec;
-	  dataObj.password_pec = password_pec;
-	  dataObj.host_pec = host_pec;
-	  dataObj.porta_pec = porta_pec;
-
-          $.ajax({
-        	  type: "POST",
-        	  url: "gestioneCompany.do?action=nuovo",
-        	  data: dataObj,
-        	  dataType: "json",
-        	  success: function( data, textStatus) {
-        		  
-        		  pleaseWaitDiv.modal('hide');
-        		  
-        		  if(data.success)
-        		  { 
-
-        			  $('#report_button').hide();
-        				$('#visualizza_report').hide();
-        			  $("#modalNuovaCompany").modal("hide");
-        			  $('#myModalErrorContent').html(data.messaggio);
-        			  	$('#myModalError').removeClass();
-        				$('#myModalError').addClass("modal modal-success");
-        				$('#myModalError').modal('show');
-        				
-        		
-        		  }else{
-        			  $('#myModalErrorContent').html(data.messaggio);
-        			  	$('#myModalError').removeClass();
-        				$('#myModalError').addClass("modal modal-danger");
-        				$('#report_button').show();
-          				$('#visualizza_report').show();
-        				$('#myModalError').modal('show');
-        			 
-        		  }
-        	  },
-
-        	  error: function(jqXHR, textStatus, errorThrown){
-        		  pleaseWaitDiv.modal('hide');
-
-        		  $('#myModalErrorContent').html(textStatus);
-  			  	$('#myModalError').removeClass();
-  				$('#myModalError').addClass("modal modal-danger");
-  				$('#report_button').show();
-  				$('#visualizza_report').show();
-  				$('#myModalError').modal('show');
-        
-        	  }
-          });
+		  dataObj.denominazione = denominazione;
+		  dataObj.piva = piva;
+		  dataObj.indirizzo = indirizzo;
+		  dataObj.comune = comune;
+		  dataObj.cap = cap;
+		  dataObj.email = email;
+		  dataObj.telefono = telefono;
+		  dataObj.codiceAffiliato = codiceAffiliato;
+		  dataObj.email_pec = email_pec;
+		  dataObj.password_pec = password_pec;
+		  dataObj.host_pec = host_pec;
+		  dataObj.porta_pec = porta_pec;
+		  dataObj.id = id;
+	
+	          $.ajax({
+	        	  type: "POST",
+	        	  url: "gestioneCompany.do?action=nuovo",
+	        	  data: dataObj,
+	        	  dataType: "json",
+	        	  success: function( data, textStatus) {
+	        		  
+	        		  pleaseWaitDiv.modal('hide');
+	        		  
+	        		  if(data.success)
+	        		  { 
+	
+	        			  $('#report_button').hide();
+	        				$('#visualizza_report').hide();
+	        			  $("#modalNuovaCompany").modal("hide");
+	        			  $('#myModalErrorContent').html(data.messaggio);
+	        			  	$('#myModalError').removeClass();
+	        				$('#myModalError').addClass("modal modal-success");
+	        				$('#myModalError').modal('show');
+	        				
+	        		
+	        		  }else{
+	        			  $('#myModalErrorContent').html(data.messaggio);
+	        			  	$('#myModalError').removeClass();
+	        				$('#myModalError').addClass("modal modal-danger");
+	        				$('#report_button').show();
+	          				$('#visualizza_report').show();
+	        				$('#myModalError').modal('show');
+	        			 
+	        		  }
+	        	  },
+	
+	        	  error: function(jqXHR, textStatus, errorThrown){
+	        		  pleaseWaitDiv.modal('hide');
+	
+	        		  $('#myModalErrorContent').html(textStatus);
+	  			  	$('#myModalError').removeClass();
+	  				$('#myModalError').addClass("modal modal-danger");
+	  				$('#report_button').show();
+	  				$('#visualizza_report').show();
+	  				$('#myModalError').modal('show');
+	        
+	        	  }
+	          });
+		  }
 	  }
   }
   
@@ -2714,7 +2732,7 @@ function modificaCompany(){
 		  pleaseWaitDiv = $('#pleaseWaitDialog');
 		  pleaseWaitDiv.modal();
 
-	  var id=$('#modid').val();
+	  var id=$('#modid').val();  	 
 	  var denominazione=$('#moddenominazione').val();
 	  var piva=$('#modpIva').val();
 	  var indirizzo=$('#modindirizzo').val();
@@ -2731,6 +2749,7 @@ function modificaCompany(){
 	  
 	  var dataObj = {};
 	  dataObj.modid = id;
+	  dataObj.newid = newid;
 	  dataObj.moddenominazione = denominazione;
 	  dataObj.modpiva = piva;
 	  dataObj.modindirizzo = indirizzo;
@@ -2853,7 +2872,7 @@ function eliminaCompany(){
 
   function modalModificaCompany(id,denominazione,piva,indirizzo,comune,cap,email,telefono,codAffiliato, email_pec, host_pec, porta_pec){
 	  
-	  $('#modid').val(id);
+	  $('#modid').val(id);	
 	  $('#moddenominazione').val(denominazione);
 	  $('#modpIva').val(piva);
 	   $('#modindirizzo').val(indirizzo);

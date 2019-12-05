@@ -154,6 +154,17 @@
             <div class="row">
             <div class="col-sm-6">
               <h4 class="modal-title" id="myModalLabel">Nuova Company</h4><br>
+              
+                              <div class="form-group">
+          <label for="denominazione" class="col-sm-2 control-label">ID:</label>
+
+         <div class="col-sm-10">
+         			<input class="form-control" id="id" type="number" step="1" name="id" value="" min = "0" required />
+     	</div>
+     
+   </div>
+              
+              
                 <div class="form-group">
           <label for="denominazione" class="col-sm-2 control-label">Denominazione:</label>
 
@@ -178,37 +189,37 @@
     <div class="form-group">
         <label for="indirizzo" class="col-sm-2 control-label">Indirizzo:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="indirizzo" type="text" name="indirizzo"  value="" required/>
+                      <input class="form-control required" id="indirizzo" type="text" name="indirizzo"  value="" required autocomplete="new-password"/>
     </div>
     </div>
     <div class="form-group">
         <label for="comune" class="col-sm-2 control-label">Comune:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="comune" type="text" name="comune"  value="" required/>
+                      <input class="form-control required" id="comune" type="text" name="comune"  value="" required autocomplete="new-password"/>
     </div>
     </div>
     <div class="form-group">
         <label for="cap" class="col-sm-2 control-label">CAP:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="cap" type="text" name="cap"  value="" required/>
+                      <input class="form-control required" id="cap" type="text" name="cap"  value="" required autocomplete="new-password"/>
     </div>
     </div>
     <div class="form-group">
         <label for="mail" class="col-sm-2 control-label">E-mail:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" type="email" id="mail" type="text" name="mail"  value="" required/>
+                      <input class="form-control required" type="email" id="mail" type="text" name="mail"  value="" required autocomplete="new-password"/>
     </div>
     </div>
      <div class="form-group">
         <label for="telefono" class="col-sm-2 control-label">Telefono:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="telefono" type="text" name="telefono"  value="" required/>
+                      <input class="form-control required" id="telefono" type="text" name="telefono"  value="" required autocomplete="new-password"/>
     </div>
      </div>
      <div class="form-group">
         <label for="codAffiliato" class="col-sm-2 control-label">Codice Affiliato:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="codAffiliato" type="text" name="codAffiliato"  value="" required/>
+                      <input class="form-control required" id="codAffiliato" type="text" name="codAffiliato"  value="" required autocomplete="new-password"/>
     </div>
      </div>
      
@@ -218,14 +229,14 @@
 	     <div class="form-group">
         <label for="email_pec" class="col-sm-2 control-label">Email PEC:</label>
         <div class="col-sm-10">
-                      <input class="form-control " id="email_pec" type="text" name="email_pec"  value="" />
+                      <input class="form-control " id="email_pec" type="text" name="email_pec"  value="" autocomplete="new-password" />
     </div>
      </div>
      
      	     <div class="form-group">
         <label for="password_pec" class="col-sm-2 control-label">Password:</label>
         <div class="col-sm-10">
-                      <input class="form-control " id="password_pec" type="password" name="password_pec"  value="" />
+                      <input class="form-control " id="password_pec" type="password" name="password_pec"  value="" autocomplete="new-password"/>
     </div>
      </div>
      
@@ -258,7 +269,7 @@
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-			<span id="ulError" class="pull-left"></span><button type="submit" class="btn btn-danger" >Salva</button>
+			<span id="ulError" class="pull-left"></span><button type="submit" class="btn btn-danger"  id="btn_save" >Salva</button>
       </div>
         </form>
     </div>
@@ -282,11 +293,13 @@
             <div class="tab-content">
               <div class="tab-pane  table-responsive active" id="modificaCompany">
 
-         			<input class="form-control" id="modid" name="modid" value="" type="hidden" />
+         			 <input class="form-control" id="modid" name="modid" value="" type="hidden" /> 
         
            <div class="row">
             <div class="col-sm-6">
               <h4 class="modal-title" id="myModalLabel">Modifica Company</h4><br>
+            
+            
             
                 <div class="form-group">
           <label for="moddenominazione" class="col-sm-2 control-label">Denominazione:</label>
@@ -353,14 +366,14 @@
 	     <div class="form-group">
         <label for="mod_email_pec" class="col-sm-2 control-label">Email PEC:</label>
         <div class="col-sm-10">
-                      <input class="form-control " id="mod_email_pec" type="text" name="mod_email_pec"  value="" />
+                      <input class="form-control " id="mod_email_pec" type="text" name="mod_email_pec"  value="" autocomplete="new-password"/>
     </div>
      </div>
      
      	     <div class="form-group">
         <label for="mod_password_pec" class="col-sm-2 control-label">Password:</label>
         <div class="col-sm-10">
-                      <input class="form-control " id="mod_password_pec" type="password" name="mod_password_pec"  value="" />
+                      <input class="form-control " id="mod_password_pec" type="password" name="mod_password_pec"  value="" autocomplete="new-password"/>
     </div>
      </div>
      
@@ -484,6 +497,24 @@
    </script>
 
   <script type="text/javascript">
+ 
+  
+  $('#id').focusout(function(){
+		$('#id').css('border', '1px solid #d2d6de');
+		$('#label_id').hide();
+		$('#btn_save').attr('disabled', false);
+		$("#ulError").html("");
+		 $('#tabPM tbody tr').each(function(){		 
+				 var td = $(this).find('td').eq(0);
+				if(td!=null && td[0].innerText== $('#id').val()){
+					$('#id').css('border', '1px solid #f00');
+					$('#label_id').show();
+					 $("#ulError").html("<span class='label label-danger'>ID già inserito!</span>");
+					$('#btn_save').attr('disabled', true);
+				}
+		 });
+	});
+  
 
 	var columsDatatables = [];
 	 

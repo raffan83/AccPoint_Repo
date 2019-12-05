@@ -656,6 +656,13 @@ public class CreateVerRapporto {
 				if(lista_linearita.get(0)!=null && lista_linearita.get(0).getTipoAzzeramento()==0) {
 					azzeramento = "Non automatico o semiautomatico";
 				}
+				
+				String esito_linearita = lista_linearita.get(i*6).getEsito();
+				
+				if(esito_linearita.equals("NEGATIVO")) {
+					esito_globale = false;
+				}
+				
 				VerticalListBuilder vl_linearita = cmp.verticalList(
 						cmp.text(campo).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(boldStyle),
 						cmp.verticalGap(20),

@@ -10,6 +10,7 @@ import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
+import it.portaleSTI.DTO.SequenceDTO;
 import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.TipoEventoRegistroDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.HibernateException;
@@ -626,7 +628,7 @@ public class GestioneCampioneDAO {
 			
 		}else {
 				
-			query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company");
+			query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F'");
 			query.setParameter("_date_start", df.parse(data_start));
 			query.setParameter("_date_end", df.parse(data_end));
 			query.setParameter("_id_company", id_company);				
@@ -639,7 +641,7 @@ public class GestioneCampioneDAO {
 			}
 
 				
-			Query query_reg =	session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1");
+			Query query_reg =	session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1 and campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");
 				
 			registro = (ArrayList<RegistroEventiDTO>) query_reg.list();
 				
@@ -676,5 +678,174 @@ public class GestioneCampioneDAO {
 		return list;		
 	}
 
+
+
+
+//	public static String[] getProgressivoCampione() {
+//		
+//		int prog_sti = 0;
+//		int prog_cdt = 0;
+//		//int prog_sti_slash = 0;
+//		//int prog_cdt_slash = 0;
+//		
+//		String[] ret =  new String[2];
+//		
+//		Session session = SessionFacotryDAO.get().openSession();
+//	    
+//		session.beginTransaction();
+//		
+//				
+//		Query query = session.createQuery("select codice from CampioneDTO where codice like '%STI%' ");
+//			
+//		List<String> result = (List<String>)query.list();
+//				
+//		int max = 0;
+//		int max_slash = 0;
+//		if(result.size()>0) {
+//			for (String s : result) {
+//				if(s!=null && org.apache.commons.lang3.StringUtils.isNumeric(s.split("STI")[1])  && Integer.parseInt(s.split("STI")[1])>max) {
+//					max = Integer.parseInt(s.split("STI")[1]);
+//				}
+//			}
+//		}
+//		
+//		prog_sti = max;
+//		//prog_sti_slash = max_slash;
+//		
+//		query = session.createQuery("select codice from CampioneDTO where codice like '%CDT%' ");
+//		
+//		result = (List<String>)query.list();
+//				
+//		max = 0;
+//		max_slash = 0;
+//		if(result.size()>0) {
+//			for (String s : result) {
+//				if(s!=null && org.apache.commons.lang3.StringUtils.isNumeric(s.split("CDT")[1]) && Integer.parseInt(s.split("CDT")[1])>max) {
+//					max = Integer.parseInt(s.split("CDT")[1]);
+//				}
+//			}
+//		}
+//		
+//		
+//		prog_cdt = max;
+//		//prog_cdt_slash = max_slash;
+//		
+//		
+//		ret[0] = String.valueOf(prog_sti);
+//		ret[1] = String.valueOf(prog_cdt);
+//		//ret[2] = String.valueOf(prog_sti_slash);
+//		//ret[3] = String.valueOf(prog_cdt_slash);
+//		session.close();
+//		return ret;
+//	}
+
+	
+	
+public static Integer[] getProgressivoCampione() {
+		
+		int prog_sti = 0;
+		int prog_cdt = 0;
+		
+		Integer[] ret =  new Integer[2];
+		
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+				
+		Query query = session.createQuery("select seq_sti_campione from SequenceDTO");
+			
+		List<Integer> result = (List<Integer>)query.list();
+				
+		if(result.size()>0) {
+			prog_sti = result.get(0);
+		}
+		
+		
+		query = session.createQuery("select seq_cdt_campione from SequenceDTO");
+		
+		result = (List<Integer>)query.list();
+		
+		if(result.size()>0) {
+			prog_cdt = result.get(0);
+		}
+		
+		ret[0] = prog_sti;
+		ret[1] = prog_cdt;
+
+		session.close();
+		return ret;
+	}
+
+
+
+
+public static SequenceDTO getSequence(Session session) {
+	
+	List<SequenceDTO> list = null;
+	SequenceDTO result = null;	
+			
+	Query query = session.createQuery("from SequenceDTO");
+		
+	list = (List<SequenceDTO>)query.list();
+			
+	if(list.size()>0) {
+		result = list.get(0);
+	}
+	
+	
+	return result;
+}
+
+
+
+
+public static void updateManutenzioniObsolete(CampioneDTO campione, Session session) {
+
+	Query query = session.createQuery("update RegistroEventiDTO set obsoleta='S' where id_campione =:_id_campione and tipo_evento=1 and tipo_manutenzione=1 ");
+	
+	query.setParameter("_id_campione", campione.getId());
+	
+	query.executeUpdate();
+	
+}
+
+
+
+
+public static ArrayList<RegistroEventiDTO> getListaManutenzioniNonObsolete() {
+	
+	Session session = SessionFacotryDAO.get().openSession();
+    
+	session.beginTransaction();
+	ArrayList<RegistroEventiDTO> lista = null;
+	
+	Query query = session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1 and campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");
+	
+			
+	lista = (ArrayList<RegistroEventiDTO>) query.list();
+	session.close();
+			
+	return lista;
+}
+
+
+
+
+public static ArrayList<CampioneDTO> getListaCampioniInServizio() {
+	
+	Session session = SessionFacotryDAO.get().openSession();
+    
+	session.beginTransaction();
+	ArrayList<CampioneDTO> lista = null;
+	
+	Query query = session.createQuery("from CampioneDTO where stato_campione!='F'");
+	
+			
+	lista = (ArrayList<CampioneDTO>) query.list();
+	session.close();
+			
+	return lista;
+}
 	
 }

@@ -21,7 +21,10 @@ import it.portaleSTI.Util.Templates;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
+import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.Markup;
+import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -83,6 +86,21 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<Reg
 		}		
 		
 		report.detail(subreport);
+		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(8).setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
+		if(lista_tarature_evento!=null) {
+			report.addPageFooter(cmp.horizontalList(
+					cmp.text("MOD-PGI009-03").setStyle(footerStyle),
+					cmp.horizontalGap(370),
+					cmp.text("Rev. 0 del 31/07/2019").setStyle(footerStyle)
+					));
+		}else {
+			report.addPageFooter(cmp.horizontalList(
+					cmp.text("MOD-CDT-004").setStyle(footerStyle),
+					cmp.horizontalGap(370),
+					cmp.text("Rev. A del 20/09/2004").setStyle(footerStyle)
+					));
+		}
+		
 		
 		//String path = "C:\\Users\\antonio.dicivita\\Desktop\\";
 		
@@ -141,6 +159,7 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<Reg
 		report.addColumn(col.column("Data prossima taratura", "data_scadenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		report.addColumn(col.column("Centro LAT","laboratorio", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	report.addColumn(col.column("Certificato di taratura","certificato", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Stato","stato", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	report.addColumn(col.column("Operatore","operatore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
@@ -214,13 +233,14 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<Reg
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
 			
-			listaCodici = new String[5];
+			listaCodici = new String[6];
 					
 			listaCodici[0]="data";
 			listaCodici[1]="data_scadenza";
 			listaCodici[2]="laboratorio";
-			listaCodici[3]="certificato";	
-			listaCodici[4]="operatore";
+			listaCodici[3]="certificato";
+			listaCodici[4]="stato";
+			listaCodici[5]="operatore";
 			
 			dataSource = new DRDataSource(listaCodici);
 			
@@ -231,7 +251,11 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<Reg
 						ArrayList<String> arrayPs = new ArrayList<String>();						
 														
 						arrayPs.add(dt.format(evento.getData_evento()));
-						arrayPs.add(dt.format(evento.getData_scadenza()));
+						if(evento.getStato().equals("Idonea")) {
+							arrayPs.add(dt.format(evento.getData_scadenza()));	
+						}else {
+							arrayPs.add("");
+						}
 						if(evento.getLaboratorio()!=null) {
 							arrayPs.add(evento.getLaboratorio());	
 						}else {
@@ -243,7 +267,11 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<Reg
 						}else {
 							arrayPs.add("");
 						}
-						
+						if(evento.getStato()!=null) {
+							arrayPs.add(evento.getStato());
+						}else {
+							arrayPs.add("");
+						}
 						if(evento.getOperatore()!=null) {
 							arrayPs.add(evento.getOperatore().getNominativo());	
 						}else {
@@ -256,7 +284,7 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<Reg
 					}				
 				}
 			}else {
-				dataSource.add("","","","","");
+				dataSource.add("","","","","","");
 			}
 				
 		 		    return dataSource;

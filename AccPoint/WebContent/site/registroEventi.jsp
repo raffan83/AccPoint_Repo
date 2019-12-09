@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
     <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
     <%@page import="it.portaleSTI.DTO.TipoCampioneDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="com.google.gson.Gson"%>
@@ -12,6 +13,8 @@
 <%@ page language="java" import="java.util.List" %>
 <%@ page language="java" import="java.util.ArrayList" %>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
+<% pageContext.setAttribute("newLineChar", "\r\n"); %>
+<% pageContext.setAttribute("newLineChar2", "\n"); %>
     <% 
 
  JsonObject json = (JsonObject)session.getAttribute("myObj");
@@ -56,14 +59,15 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <td>${evento.tipo_evento.descrizione}</td>
 <td>
 <c:if test="${evento.tipo_evento.id==1 }">
-<button class="btn customTooltip btn-info" onClick="dettaglioEventoManutenzione('${evento.descrizione.replace('\'',' ').replace('\\','/')}','${evento.tipo_manutenzione.id }','${evento.data_evento }','${evento.operatore.nominativo }')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioEventoManutenzione('${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${evento.tipo_manutenzione.id }','${evento.data_evento }','${evento.operatore.nominativo }')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 
 <c:if test="${evento.tipo_evento.id==2  }">
 <button class="btn customTooltip btn-info" onClick="dettaglioEventoTaratura('${evento.data_evento }','${evento.data_scadenza }','${evento.laboratorio }','${evento.campo_sospesi }','${evento.operatore.nominativo }','${evento.numero_certificato }','${evento.stato}')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-
- <a class="btn btn-warning customTooltip" title="Click per modificare l'evento" onClick="modificaEvento('${evento.id}','${evento.tipo_evento.id }','${evento.descrizione.replace('\'',' ').replace('\\','/') }','${evento.data_evento }','${evento.tipo_manutenzione.id }','${evento.data_scadenza }','${evento.campo_sospesi }','${evento.operatore.id }','${evento.laboratorio }','${evento.stato }','${evento.numero_certificato }')"><i class="fa fa-edit"></i></a>
+<%-- ${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}' --%>
+  <a class="btn btn-warning customTooltip" title="Click per modificare l'evento" onClick="modificaEvento('${evento.id}','${evento.tipo_evento.id }','${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${evento.data_evento }','${evento.tipo_manutenzione.id }','${evento.data_scadenza }','${evento.campo_sospesi }','${evento.operatore.id }','${evento.laboratorio }','${evento.stato }','${evento.numero_certificato }')"><i class="fa fa-edit"></i></a> 
+ <%-- <a class="btn btn-warning customTooltip" title="Click per modificare l'evento" onClick="modificaEvento('${evento.id}','${evento.tipo_evento.id }','${evento.descrizione.replace('\'',' ').replace('\\','/') }','${evento.data_evento }','${evento.tipo_manutenzione.id }','${evento.data_scadenza }','${evento.campo_sospesi }','${evento.operatore.id }','${evento.laboratorio }','${evento.stato }','${evento.numero_certificato }')"><i class="fa fa-edit"></i></a> --%>
  <c:if test="${evento.allegato!=null && !evento.allegato.equals('') }">
  	<button class="btn customTooltip btn-danger" onClick="callAction('registroEventi.do?action=download&id_evento=${utl:encryptData(evento.id)}')" title="Click per scaricare l'allegato o il certificato"><i class="fa fa-file-pdf-o"></i></button>
  </c:if>
@@ -506,7 +510,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 			    .concat('<div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura_mod"><input class="form-control  required" id="data_scadenza_mod" type="text" name="data_scadenza_mod" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div></div>')
 		        .concat('</div><div class="row"><div class="col-sm-2"><label >Laboratorio:</label></div><div class="col-sm-4"> <input id="check_interna_mod" name="check_interna_mod" type="checkbox"/><label >Interno</label><br> <input  id="check_esterna_mod" name="check_esterna_mod" type="checkbox"/>')
 			    .concat('<label >Esterno  </label> <input type="text" class ="form-control pull-right" style="width:60%" id="presso_mod" name="presso_mod" readonly></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea_mod" name="check_idonea_mod" type="checkbox" checked/><label >Idonea</label><br>')
-			    .concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div></div><br><div class="row"><div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
+			    .concat('<input  id="check_non_idonea_mod" name="check_non_idonea_mod" type="checkbox"/><label >Non Ideonea</label></div></div><br><div class="row"><div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
 			    .concat('<div class="col-sm-2"><label class="pull-right">Numero Certificato:</label></div><div class="col-sm-3"><input class="form-control" id="numero_certificato_mod" name="numero_certificato_mod" type="text"/></div></div><div class="row"><div class="col-sm-2">')
 			    .concat('<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_mod" name="fileupload_mod" type="file"></span></div><div class="col-xs-5"><label id="label_file_mod"></label></div></div>');
 	 }
@@ -625,9 +629,11 @@ function dettaglioEventoTaratura(data_attivita, data_scadenza, laboratorio, camp
 		 }
 		 if(stato=='Idonea'){
 			 $('#check_idonea_mod').prop("checked", true);
+			 $('#check_non_idonea_mod').prop("checked", false);
 			 $('#stato_mod').val("Idonea");
 		 }else{
 			 $('#check_non_idonea_mod').prop("checked", true);
+			 $('#check_idonea_mod').prop("checked", false);
 			 $('#stato_mod').val("Non Idonea");
 		 }
 	 }

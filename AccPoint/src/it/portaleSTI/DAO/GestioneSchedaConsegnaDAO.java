@@ -163,7 +163,7 @@ public class GestioneSchedaConsegnaDAO {
 
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
 		
-		Query query = session.createQuery("from SchedaConsegnaDTO where (STR_TO_DATE(data_caricamento,'%d/%m/%Y')) between :dateFrom and :dateTo");
+		Query query = session.createQuery("from SchedaConsegnaDTO where ver_intervento.id is null and (STR_TO_DATE(data_caricamento,'%d/%m/%Y')) between :dateFrom and :dateTo");
 		
 		
 		query.setParameter("dateFrom",df.parse(dateFrom));
@@ -187,6 +187,37 @@ public class GestioneSchedaConsegnaDAO {
 		query.setParameter("dateTo",df.parse(dateTo));
 		
 		lista= (ArrayList<SchedaConsegnaRilieviDTO>)query.list();
+		
+		return lista;
+	}
+
+	
+	public static ArrayList<SchedaConsegnaDTO> getListaSchedeConsegnaVerificazioneDate(String dateFrom, String dateTo, Session session) throws HibernateException, ParseException {
+		
+		ArrayList<SchedaConsegnaDTO> lista=null;
+
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+		
+		Query query = session.createQuery("from SchedaConsegnaDTO where intervento.id is null and (STR_TO_DATE(data_caricamento,'%d/%m/%Y')) between :dateFrom and :dateTo");
+		
+		
+		query.setParameter("dateFrom",df.parse(dateFrom));
+		query.setParameter("dateTo",df.parse(dateTo));
+		
+		lista= (ArrayList<SchedaConsegnaDTO>)query.list();
+		
+		return lista;
+	}
+
+	public static List<SchedaConsegnaDTO> getListaSchedeConsegnaVerificazione(int ver_intervento, Session session) {
+
+		List<SchedaConsegnaDTO>  lista = null;
+		
+		
+		Query query = session.createQuery("from SchedaConsegnaDTO where ver_intervento.id = :_id");
+		query.setParameter("_id", ver_intervento);
+		
+		lista = (List<SchedaConsegnaDTO>)query.list();	
 		
 		return lista;
 	}

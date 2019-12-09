@@ -54,7 +54,65 @@
 	</div>
 </div>
 <div class="box-body">
+<c:choose>
+<c:when test="${verificazione!=null && verificazione==1}">
+<ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>ID</b> <a class="pull-right">${intervento.id}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>ID Commessa</b> <a class="pull-right">${intervento.commessa}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Presso</b> <a class="pull-right">
+<c:choose>
+					  <c:when test="${interventover.in_sede_cliente == 0}">
+							<span class="label label-success pull-right">IN SEDE</span>
+					  </c:when>
+					  <c:otherwise>
+							<span class="label label-info pull-right">PRESSO CLIENTE</span>
+					  </c:otherwise>
+					</c:choose> 
+   
+		</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Sede</b> <a class="pull-right">${intervento.nome_sede}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Data Creazione</b> <a class="pull-right">
+	
+<%-- 			<c:if test="${not empty intervento.dataCreazione}">
+   				<fmt:formatDate pattern="dd/MM/yyyy" value="${intervento.dataCreazione}" />
+			</c:if> --%>
+		</a>
+                </li>
+                <li class="list-group-item">
+                   <b>Stato</b> <div class="pull-right">
+                  
+					<c:if test="${intervento.id_stato_intervento == 0}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-info">APERTO</span></a>
+					</c:if>
+					
+					<c:if test="${intervento.id_stato_intervento == 1}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-success">APERTO</span></a>
+					</c:if>
+					
+					<c:if test="${intervento.id_stato_intervento == 2}">
+						<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">CHIUSO</span></a>
+					</c:if>
+    
+				</div> 
+			
+                </li>
+                <li class="list-group-item">
+                  <b>Responsabile</b> <a class="pull-right">${intervento.user_creation.nominativo}</a>
+                </li>
+        </ul>
 
+
+</c:when>
+<c:otherwise>
         <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
                   <b>ID</b> <a class="pull-right">${intervento.id}</a>
@@ -114,8 +172,8 @@
                   <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
                 </li>
         </ul>
-        
-   
+        </c:otherwise>
+   </c:choose>
 </div>
 </div>
 </div>
@@ -123,7 +181,7 @@
 
 
 
-
+<c:if test="${verificazione==null }">
 
               <div class="row">
         <div class="col-xs-12">
@@ -164,7 +222,7 @@
 </div>
 </div>
 
-
+</c:if>
 
 
 
@@ -213,7 +271,12 @@ Fatturata
 </c:choose>
 </td>
 <td class="actionClass" align="center" style="min-width:250px">
+<c:if test="${verificazione==null }">
 <a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaFile('${utl:encryptData(scheda.intervento.id)}', '${scheda.nome_file}')"><i class="fa fa-file-pdf-o"></i></a>
+</c:if>
+<c:if test="${verificazione!=null && verificazione==1 }">
+<a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaFile('${utl:encryptData(scheda.ver_intervento.id)}', '${scheda.nome_file}',null, true)"><i class="fa fa-file-pdf-o"></i></a>
+</c:if>
 <a  target="_blank" class="btn btn-primary customTooltip  pull-center" title="Click per eliminare la scheda di consegna"   onClick="eliminaSchedaConsegna('${utl:encryptData(scheda.id)}')"><i class="fa fa-remove" style="color:black"></i></a>
 <a  class="btn btn-warning customTooltip" title="Cambia Stato"   onClick="cambiaStatoSchedaConsegna('${scheda.id}','0')"><i class="glyphicon glyphicon-refresh"></i></a>	
 	</tr>

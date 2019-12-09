@@ -116,6 +116,24 @@ public class GestioneSchedaConsegnaBO {
 		
 		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaRilieviDate(dateFrom, dateTo, session);
 	}
+
+
+
+	public static ArrayList<SchedaConsegnaDTO> getListaSchedeConsegnaVerificazioneDate(String dateFrom,
+			String dateTo, Session session) throws HibernateException, ParseException {
+		// TODO Auto-generated method stub
+		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaVerificazioneDate(dateFrom, dateTo, session);
+	}
+
+
+
+	public static List<SchedaConsegnaDTO> getListaSchedeConsegnaVerificazione(int ver_intervento, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaVerificazione(ver_intervento, session);
+	}
+
+
+
 	
 	
 	

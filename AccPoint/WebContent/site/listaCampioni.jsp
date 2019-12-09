@@ -105,7 +105,7 @@
  <th>Codice</th>
  <th>Costruttore</th>
  <th>Descrizione</th>
- <th>Data Verifica</th>
+ <th>Data Taratura</th>
  <th>Data Scadenza</th>
  <th>Stato</th>
  <th>Distributore</th>
@@ -384,11 +384,100 @@
           <label for="inputEmail" class="col-sm-2 control-label">Proprietario:</label>
 
          <div class="col-sm-10">
-         			<input class="form-control" id="proprietario" type="text" name="proprietario" disabled="disabled" value="${usrCompany.denominazione}" />
+         <select id="proprietario" name="proprietario" class="form-control select2" style="width:100%">
+         <c:forEach items="${lista_company }" var="company">
+         <c:if test="${company.id == usrCompany.id}">
+         <option value="${company.id }" selected>${company.denominazione }</option>
+         </c:if>
+         
+         <c:if test="${company.id != usrCompany.id}">
+         <option value="${company.id }">${company.denominazione }</option>
+         </c:if>
+         
+         
+         </c:forEach>
+         
+         </select>
+         
+         			<%-- <input class="form-control" id="proprietario" type="text" name="proprietario" disabled="disabled" value="${usrCompany.denominazione}" /> --%>
+         			<input class="form-control" id="id_proprietario" type="hidden" name="id_proprietario"  value="${usrCompany.id}" />
          
 			
      	</div>
    </div>
+   
+       <div class="form-group">
+          <label for="inputEmail" class="col-sm-2 control-label">Utilizzatore:</label>
+
+         <div class="col-sm-10">
+         <select id="utilizzatore" name="utilizzatore" class="form-control select2" style="width:100%">
+         <c:forEach items="${lista_company }" var="company">
+         <c:if test="${company.id == usrCompany.id}">
+         <option value="${company.id }" selected>${company.denominazione }</option>
+         </c:if>
+         
+         <c:if test="${company.id != usrCompany.id}">
+         <option value="${company.id }">${company.denominazione }</option>
+         </c:if>
+         
+         
+         </c:forEach>
+         
+         </select>
+			
+     	</div>
+   </div>
+  
+   
+     <div class="form-group">
+          <label class="col-sm-2 control-label">Settore:</label>
+
+         <div class="col-sm-10">
+         <select class="form-control select2" id="settore" data-placeholder ="Seleziona settore..." name="settore" style="width:100%" required>
+         <option value=""></option>
+         <option value="0">Laboratorio metrologico</option>
+         <option value="1">Centro di taratura LAT</option>
+         </select>
+			
+     	</div>
+   </div>
+   
+          <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Tipo Campione:</label>
+        <div class="col-sm-10">
+                     
+					   <select class="form-control required" id="tipoCampione" data-placeholder="Seleziona un Tipo Campione..."name="tipoCampione" required  style="width:100%">
+                       					<option value=""></option>
+                                            <c:forEach items="${listaTipoCampione}" var="cmp" varStatus="loop">
+
+ 												<option value="${cmp.id}">${cmp.nome}</option>
+	 
+											</c:forEach>
+                      </select>
+                      
+    </div>
+     </div>
+   
+   
+          <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Codice:</label>
+        <div class="col-sm-4">
+                      <input class="form-control required"  id="codice" type="text" name="codice" value="" required readonly style="width:100%"/>
+                      <span id="codiceError" class="help-block label label-danger"></span>
+                     
+                      
+    </div>
+     <label class="pull-left"><b>/</b></label>
+    <div class="col-sm-3">
+    <input class="form-control"  id="slash" type="text" name="slash" value=""  readonly style="width:100%"/>
+    </div>
+    <div class="col-sm-2">
+    
+    <input class="form-control pull-left"   type="checkbox" id="manuale" style="width:100%"/>
+    <label >Inserisci manualmente</label> 
+    </div>
+
+     </div>
 
    <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Nome:</label>
@@ -396,49 +485,65 @@
                       <input class="form-control required" id="nome" type="text" name="nome"  value="" required/>
     </div>
      </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Tipo Campione:</label>
-        <div class="col-sm-10">
-                     
-					   <select class="form-control required" id="tipoCampione" name="tipoCampione" required>
-                       					<option value="">Seleziona un Tipo Campione</option>
-                                            <c:forEach items="${listaTipoCampione}" var="cmp" varStatus="loop">
-
- 												<option value="${cmp.id}">${cmp.nome}</option>
-	 
-											</c:forEach>
-                        
-                                            
-                      </select>
-                      
-                      
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Codice:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required"  id="codice" type="text" name="codice" value="" required/>
-                      <span id="codiceError" class="help-block label label-danger"></span>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Matricola:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="matricola" type="text" name="matricola"  value="" required/>
-    </div>
-     </div>
-       <div class="form-group">
+     
+     
+            <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Descrizione:</label>
         <div class="col-sm-10">
                       <input class="form-control required" id="descrizione" type="text" name="descrizione"  value="" required/>
     </div>
-     </div>
-       <div class="form-group">
+     </div>     
+     
+              <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Modello:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="modello" type="text" name="modello"  value="" required/>
+    </div>
+       </div>        
+       
+              <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Costruttore:</label>
         <div class="col-sm-10">
                       <input class="form-control required" id="costruttore" type="text" name="costruttore"  value="" required/>
     </div>
        </div>
+       
+              <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Matricola:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="matricola" type="text" name="matricola"  value="" required/>
+    </div>
+     </div>
+       
+            <div class="form-group">
+        <label for="distributore" class="col-sm-2 control-label">Distributore:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="distributore" type="text" name="distributore"  value="" />
+    </div>
+       </div> 
+     
+            <div class="form-group">
+        <label for="data_acquisto" class="col-sm-2 control-label">Data Acquisto:</label>
+        <div class="col-sm-10">
+                      <input class="form-control datepicker required" id="data_acquisto" type="text" name="data_acquisto"   value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+     
+
+     <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Data messa in servizio:</label>
+        <div class="col-sm-10">
+                      <input class="form-control datepicker" id="data_messa_in_servizio" type="text" name="data_messa_in_servizio"  data-date-format="dd/mm/yyyy"  />
+    </div>
+       </div> 
+       
+              <div class="form-group">
+        <label for="ubicazione" class="col-sm-2 control-label">Ubicazione:</label>
+        <div class="col-sm-10">
+                      <input class="form-control " id="ubicazione" type="text" name="ubicazione"  value="" />
+    </div>
+       </div> 
+
 	<div class="form-group">
         <label for="campo_misura" class="col-sm-2 control-label">Campo di misura:</label>
         <div class="col-sm-10">
@@ -452,10 +557,78 @@
     </div>
        </div>
        
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Modello:</label>
+           <div class="form-group">
+          <label  class="col-sm-2 control-label">Descrizione attività di manutenzione:</label>
+
+         <div class="col-sm-5">
+         <select class="form-control select2" id="select_manutenzione" data-placeholder="Seleziona descrizione manutenzione..." name="select_manutenzione" style="width:100%">
+         <option value=""></option>
+         <option value="Controllo presenza di ammaccature o malformazioni (visivo)">Controllo presenza di ammaccature o malformazioni (visivo)</option>
+         <option value="Controllo presenza di ossidazione / ruggine (visivo)">Controllo presenza di ossidazione / ruggine (visivo)</option>
+         <option value="Controllo integrità indicatore (visivo)">Controllo integrità indicatore (visivo)</option>
+         <option value="Controllo integrità segmenti del display (visivo)">Controllo integrità segmenti del display (visivo)</option>
+         <option value="Controllo integrità terminali di collegamento (visivo)">Controllo integrità terminali di collegamento (visivo)</option>
+         <option value="Controllo dello stato delle batterie (visivo)">Controllo dello stato delle batterie (visivo)</option>
+         <option value="Controllo buono stato delle connessioni (visivo)">Controllo buono stato delle connessioni (visivo)</option>
+         <option value="Controllo dello stato qualitativo (visivo)">Controllo dello stato qualitativo (visivo)</option>
+         <option value="Pulizia">Pulizia</option>
+         <option value="Controllo presenza grasso di vaselina (visivo)">Controllo presenza grasso di vaselina (visivo) </option>
+         <option value="Controllo interno / esterno dello stato del contenitore (visivo)">Controllo interno / esterno dello stato del contenitore (visivo)</option>
+         <option value="Verifica sicurezza elettrica">Verifica sicurezza elettrica</option>
+         </select>
+			
+     	</div>
+     	<div class="col-sm-5">
+     	<textarea id="descrizione_manutenzione" name ="descrizione_manutenzione" style="width:100%" class="form-control" rows="3"></textarea>
+     	</div>
+   </div>
+   
+                 <div class="form-group">
+        <label for="frequenza_manutenzione" class="col-sm-2 control-label">Frequenza Manutenzioni:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="modello" type="text" name="modello"  value="" required/>
+                      <input class="form-control" id="frequenza_manutenzione" type="number" name="frequenza_manutenzione"  value="" />
+    </div>
+       </div>
+       
+       
+        <div class="form-group">
+        <label for="attivita_di_taratura" class="col-sm-2 control-label">Attività Di Taratura:</label>
+       
+        <div class="col-sm-4">
+
+         			<select  class="form-control" id="attivita_di_taratura"  name="attivita_di_taratura" >
+						<option value="0">ESTERNA</option>
+         				<option value="1">INTERNA</option>
+         			
+         			</select>
+     	</div>
+     	<div class="col-sm-1">
+     	 <label for="attivita_taratura_text" class=" control-label pull-right">Presso: </label>
+     	 </div>
+     	<div class="col-sm-5">
+     	  <input class="form-control required" id="attivita_di_taratura_text" type="text" name="attivita_di_taratura_text"  value="" />
+     	</div>    
+   
+       </div> 
+       
+             <div class="form-group">
+        <label for="note_attivita_taratura" class="col-sm-2 control-label">Descrizione Attività di Taratura:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="note_attivita_taratura" type="text" name="note_attivita_taratura"  value="" />
+    </div>
+       </div> 
+       
+            <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Frequenza Taratura:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="freqTaratura" type="number" name="freqTaratura"  value="" required/>
+    </div>
+       </div>        
+   
+          <div class="form-group">
+        <label for="campo_accettabilita" class="col-sm-2 control-label">Campo Di Accettabilità:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="campo_accettabilita" type="text" name="campo_accettabilita"  value="" />
     </div>
        </div> 
        
@@ -474,50 +647,16 @@
     </div>
        </div> 
        
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Frequenza Taratura:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="freqTaratura" type="number" name="freqTaratura"  value="" required/>
-    </div>
-       </div> 
-              <div class="form-group">
-        <label for="frequenza_manutenzioni" class="col-sm-2 control-label">Frequenza Manutenzioni:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="frequenza_manutenzioni" type="number" name="frequenza_manutenzioni"  value="" />
-    </div>
-       </div>
-              <div class="form-group">
-        <label for="frequenza_verifica_intermedia" class="col-sm-2 control-label">Frequenza Verifica Intermedia:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="frequenza_verifica_intermedia" type="number" name="frequenza_verifica_intermedia"  value="" />
-    </div>
-       </div>
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Stato Campione:</label>
-        <div class="col-sm-10">
-
-                        <select class="form-control required" id="statoCampione" name="statoCampione" required>
-                      					<option value="">Selezionare Stato</option>
-	                                    <option value="S">In Servizio</option>
-	                                    <option value="N">Scaduto</option>
-	 									<option value="F">Fuori Servizio</option>
-                            	          
-                      </select>
-                      
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Data Verifica:</label>
+                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Data Taratura:</label>
         <div class="col-sm-10">
                       <input class="form-control datepicker required" id="dataVerifica" type="text" name="dataVerifica"  required value="" data-date-format="dd/mm/yyyy"/>
 
     </div>
-       </div> 
-
+       </div>
        
-         <div class="form-group">
+       
+                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Certificato:</label>
         <div class="col-sm-10">
 
@@ -539,6 +678,41 @@
                       <input class="form-control required" id="ente_certificatore" type="text" name="ente_certificatore"  value="" readonly/>
     </div>
        </div> 
+       
+                         <div class="form-group">
+        <label for="note_attivita_taratura" class="col-sm-2 control-label">Descrizione attività di verifica intermedia:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="descrizione_verifica_intermedia" type="text" name="descrizione_verifica_intermedia" />
+    </div>
+       </div>  
+       
+
+
+              <div class="form-group">
+        <label for="frequenza_verifica_intermedia" class="col-sm-2 control-label">Frequenza Verifica Intermedia:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="frequenza_verifica_intermedia" type="number" name="frequenza_verifica_intermedia"  value="" />
+    </div>
+       </div>
+       
+             
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Stato Campione:</label>
+        <div class="col-sm-10">
+
+                        <select class="form-control required" id="statoCampione" name="statoCampione" required>
+                      					<option value="">Selezionare Stato</option>
+	                                    <option value="S">In Servizio</option>
+	                                    <option value="N">Scaduto</option>
+	 									<option value="F">Fuori Servizio</option>
+                            	          
+                      </select>
+                      
+    </div>
+       </div> 
+       
+
 
      <div class="form-group">
           <label for="interpolato" class="col-sm-2 control-label">Interpolato:</label>
@@ -552,58 +726,11 @@
          			</select>
      	</div>
          </div>
-     <div class="form-group">
-        <label for="distributore" class="col-sm-2 control-label">Distributore:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="distributore" type="text" name="distributore"  value="" />
-    </div>
-       </div> 
-       <div class="form-group">
-        <label for="ubicazione" class="col-sm-2 control-label">Ubicazione:</label>
-        <div class="col-sm-10">
-                      <input class="form-control " id="ubicazione" type="text" name="ubicazione"  value="" />
-    </div>
-       </div> 
-       <div class="form-group">
-        <label for="data_acquisto" class="col-sm-2 control-label">Data Acquisto:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker required" id="data_acquisto" type="text" name="data_acquisto"   value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-       <div class="form-group">
-        <label for="campo_accettabilita" class="col-sm-2 control-label">Campo Di Accettabilità:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="campo_accettabilita" type="text" name="campo_accettabilita"  value="" />
-    </div>
-       </div> 
-       <div class="form-group">
-        <label for="attivita_di_taratura" class="col-sm-2 control-label">Attività Di Taratura:</label>
-       
-        <div class="col-sm-4">
 
-         			<select  class="form-control" id="attivita_di_taratura"  name="attivita_di_taratura" >
-						<option value="0">ESTERNA</option>
-         				<option value="1">INTERNA</option>
-         			
-         			</select>
-     	</div>
-     	<div class="col-sm-1">
-     	 <label for="attivita_taratura_text" class=" control-label pull-right">Presso: </label>
-     	 </div>
-     	<div class="col-sm-5">
-     	  <input class="form-control required" id="attivita_di_taratura_text" type="text" name="attivita_di_taratura_text"  value="" />
-     	</div>    
-   
-       </div> 
-      <div class="form-group">
-        <label for="note_attivita_taratura" class="col-sm-2 control-label">Note Attività di Taratura:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="note_attivita_taratura" type="text" name="note_attivita_taratura"  value="" />
-    </div>
-       </div> 
+
 
      <div class="form-group">
-          <label class="col-sm-12">Valori Campione</label>
+          <label class="col-sm-12" id="lbl_val_camp">Valori Campione</label>
 
          </div>
 
@@ -950,13 +1077,220 @@ var listaStrumenti = ${listaCampioniJson};
 		}
 		
 	});
-  
 	
+	
+	$('#select_manutenzione').change(function(){	
+		var selection = $(this).val();
+		
+		
+		$('#descrizione_manutenzione').append(selection+";\n");
+	});
+	
+	
+	$('#tipoCampione').change(function(){
+		
+		if($(this).val() == 3){
+			$('#attivita_di_taratura').attr('disabled', true);
+			$('#attivita_di_taratura_text').attr('disabled', true);
+			$('#note_attivita_taratura').attr('disabled', true);
+			$('#freqTaratura').attr('disabled', true);
+			$('#campo_accettabilita').attr('disabled', true);
+			$('#interpolazione').attr('disabled', true);
+			$('#dataVerifica').attr('disabled', true);
+			$('#codice').attr('readonly', true);
+			$('#slash').attr('readonly',true);
+			$('#certificato').attr('disabled', true);
+			$('#numeroCerificato').attr('disabled', true);
+			$('#ente_certificatore').attr('disabled', true);
+			$('#descrizione_verifica_intermedia').attr('disabled', true);
+			$('#frequenza_verifica_intermedia').attr('disabled', true);
+			$('#interpolato').attr('disabled', true);
+			$('#attivita_di_taratura').attr('required', false);
+			$('#attivita_di_taratura_text').attr('required', false);
+			$('#note_attivita_taratura').attr('required', false);
+			$('#freqTaratura').attr('required', false);
+			$('#select_manutenzione').attr('disabled', false);
+			$('#descrizione_manutenzione').attr('disabled', false);
+			$('#frequenza_manutenzione').attr('disabled', false);
+			$('#campo_accettabilita').attr('required', false);
+			$('#interpolazione').attr('required', false);
+			$('#dataVerifica').attr('required', false);
+			$('#certificato').attr('required', false);
+			$('#numeroCerificato').attr('required', false);
+			$('#ente_certificatore').attr('required', false);
+			$('#descrizione_verifica_intermedia').attr('required', false);
+			$('#frequenza_verifica_intermedia').attr('required', false);
+			$('#interpolato').attr('required', false);
+			$('#tblAppendGrid').hide();
+			$('#lbl_val_camp').hide();
+			$('#tblAppendGrid_parametri_taratura_1').attr('required', false);
+			$('#tblAppendGrid_valore_taratura_1').attr('required', false);
+			$('#tblAppendGrid_incertezza_assoluta_1').attr('required', false);
+			$('#tblAppendGrid_divisione_UM_1').attr('required', false);
+			$('#tblAppendGrid_tipo_grandezza_1').attr('required', false);
+			$('#tblAppendGrid_unita_misura_td_1').attr('required', false);
+			$('#tblAppendGrid_valore_nominale_1').attr('required', false);
+			$('#tblAppendGrid_incertezza_relativa_1').attr('required', false);
+
+			$('#settore').change();
+			
+		}
+		else if($(this).val() == 4){
+			$('#codice').attr('readonly',false);
+			$('#codice').val('');
+			$('#slash').val('');
+			$('#slash').attr('readonly',false);
+			$('#attivita_di_taratura').attr('disabled', false);
+			$('#attivita_di_taratura_text').attr('disabled', false);
+			$('#note_attivita_taratura').attr('disabled', false);
+			$('#freqTaratura').attr('disabled', false);
+			$('#campo_accettabilita').attr('disabled', false);
+			$('#interpolazione').attr('disabled', false);
+			$('#dataVerifica').attr('disabled', false);
+			$('#certificato').attr('disabled', false);
+			$('#numeroCerificato').attr('disabled', false);
+			$('#ente_certificatore').attr('disabled', false);
+			$('#descrizione_verifica_intermedia').attr('disabled', true);
+			$('#frequenza_verifica_intermedia').attr('disabled', true);
+			$('#select_manutenzione').attr('disabled', false);
+			$('#descrizione_manutenzione').attr('disabled', false);
+			$('#frequenza_manutenzione').attr('disabled', false);
+			$('#select_manutenzione').attr('disabled', true);
+			$('#descrizione_manutenzione').attr('disabled', true);
+			$('#frequenza_manutenzione').attr('disabled', true);
+			$('#interpolato').attr('disabled', false);
+			$('#attivita_di_taratura').attr('required', true);
+			$('#attivita_di_taratura_text').attr('required', true);
+			$('#note_attivita_taratura').attr('required', true);
+			$('#freqTaratura').attr('required', true);
+			$('#campo_accettabilita').attr('required', false);
+			$('#interpolazione').attr('required', false);
+			$('#dataVerifica').attr('required', false);
+			$('#certificato').attr('required', false);
+			$('#numeroCerificato').attr('required', false);
+			$('#ente_certificatore').attr('required', false);
+			$('#descrizione_verifica_intermedia').attr('required', false);
+			$('#frequenza_verifica_intermedia').attr('required', false);
+			$('#interpolato').attr('required', false);
+			
+			$('#settore').change();
+		}
+		else{
+			
+			$('#attivita_di_taratura').attr('required', true);
+			$('#attivita_di_taratura_text').attr('required', true);
+			$('#note_attivita_taratura').attr('required', true);
+			$('#freqTaratura').attr('disabled', true);
+			$('#campo_accettabilita').attr('required', true);
+			$('#interpolazione').attr('required', true);
+			$('#dataVerifica').attr('required', true);
+			$('#certificato').attr('required', true);
+			$('#numeroCerificato').attr('required', true);
+			$('#codice').attr('readonly', true);
+			$('#slash').attr('readonly',true);
+			/* $('#ente_certificatore').attr('required', true); 
+			$('#descrizione_verifica_intermedia').attr('required', true);
+			$('#frequenza_verifica_intermedia').attr('required', true);*/
+			$('#select_manutenzione').attr('disabled', false);
+			$('#descrizione_manutenzione').attr('disabled', false);
+			$('#frequenza_manutenzione').attr('disabled', false);
+			$('#interpolato').attr('required', true);
+			$('#attivita_di_taratura').attr('disabled', false);
+			$('#attivita_di_taratura_text').attr('disabled', false);
+			$('#note_attivita_taratura').attr('disabled', false);
+			$('#freqTaratura').attr('disabled', false);
+			$('#campo_accettabilita').attr('disabled', false);
+			$('#interpolazione').attr('disabled', false);
+			$('#dataVerifica').attr('disabled', false);
+			$('#certificato').attr('disabled', false);
+			$('#numeroCerificato').attr('disabled', false);
+			$('#ente_certificatore').attr('disabled', false);
+			$('#descrizione_verifica_intermedia').attr('disabled', false);
+			$('#frequenza_verifica_intermedia').attr('disabled', false);
+			$('#interpolato').attr('disabled', false);
+			
+			$('#tblAppendGrid_parametri_taratura_1').attr('required', true);
+			$('#tblAppendGrid_valore_taratura_1').attr('required', true);
+			$('#tblAppendGrid_incertezza_assoluta_1').attr('required', true);
+			$('#tblAppendGrid_divisione_UM_1').attr('required', true);
+			$('#tblAppendGrid_tipo_grandezza_1').attr('required', true);
+			$('#tblAppendGrid_unita_misura_td_1').attr('required', true);
+			$('#tblAppendGrid_valore_nominale_1').attr('required', true);
+			$('#tblAppendGrid_incertezza_relativa_1').attr('required', true);
+			
+			$('#tblAppendGrid').show();
+			$('#lbl_val_camp').show();
+	    		
+			$('#settore').change();
+		}
+		
+	});
+  
+	$('#settore').change(function(){
+	
+		var max_sti = "${max_codice_sti}";
+		var max_cdt = "${max_codice_cdt}";
+		
+		var pad = "000"
+		if($('#id_proprietario').val()=='4132' && $('#tipoCampione').val()!=4){
+			if($(this).val()==0){
+				var str = ""+(parseInt(max_sti) + 1);
+				$('#codice').val("STI"+pad.substring(0, pad.length - str.length) + str);
+				
+				$('#descrizione_verifica_intermedia').attr('disabled', true);
+				$('#frequenza_verifica_intermedia').attr('disabled', true);
+				
+			}else{
+				var str = ""+(parseInt(max_cdt) + 1)
+				$('#codice').val("CDT"+pad.substring(0, pad.length - str.length) + str);
+				
+				$('#descrizione_verifica_intermedia').attr('disabled', false);
+				$('#frequenza_verifica_intermedia').attr('disabled', false);
+			}
+		}		
+		
+	});
+	
+	   $('#manuale').on('ifClicked',function(e){
+			
+			 if($('#manuale').is( ':checked' )){
+				
+				$('#manuale').iCheck('uncheck');
+				$('#codice').attr("readonly", true);
+				$('#slash').attr("readonly", true);
+				$('#settore').change();
+			 }else{
+				
+				$('#manuale').iCheck('check');				
+				$('#codice').attr("readonly", false);
+				$('#slash').attr("readonly", false);
+				
+				$('#slash').val("");
+				$('#codice').val("");
+			 }
+
+		 });   
 	
     $(document).ready(function() {
     
 
+    	$('#select_manutenzione').select2();
+    	$('#settore').select2();
+    	$('#tipoCampione').select2();
+    	$('#proprietario').select2();
+    	$('#utilizzatore').select2();
     	
+    	var permesso_prop_util = ${userObj.checkPermesso('PROPRIETARIO_UTILIZZATORE_CAMPIONI')}
+    	
+    	if(!permesso_prop_util){
+    		$('#proprietario').prop('disabled',true);
+        	$('#utilizzatore').prop('disabled',true);
+    	}
+    	
+    	
+    	if($('#id_proprietario').val()!='4132'){
+    		$('#codice').attr('readonly',false);
+    	}
     	
     	var today = new Date();
     	var dd = today.getDate();
@@ -1097,10 +1431,7 @@ var listaStrumenti = ${listaCampioniJson};
 
 		 }
    	    
-   	    
-  		
-  		
-  	
+
   		
      	});
      	    
@@ -1362,7 +1693,7 @@ var listaStrumenti = ${listaCampioniJson};
 
 	
 	    jQuery.validator.addMethod("controllocodicecampione", function(value, element) {
-	    	  return this.optional(element) || /^[a-zA-Z0-9]*$/.test(value);
+	    	  return this.optional(element) || /^[a-zA-Z0-9]*$/.test(value);	    	 
 	    	}, "Codice non corretto, Inserire solo numeri e lettere");
 	    
 	    jQuery.validator.addMethod("numberfloat", function(value, element) {
@@ -1370,9 +1701,33 @@ var listaStrumenti = ${listaCampioniJson};
 	    	}, "Questo campo deve essere un numero");
 	    
 	    
+	    $("#slash").focusout(function(){
+	    	var codice = $("#codice").val()+"/"+$('#slash').val();
+	    	
+	    	var regex = /^[a-zA-Z0-9]*$/;
+	    		    	
+
+	    	if(validator.element( "#codice" )){
+	    		checkCodiceCampione(codice);
+	    	}else{
+
+		    	if(codice.length>0){
+		    		  $("#codiceError").html("Il codice deve contenere solo lettere e numeri");
+	
+		    	}
+
+	    	}
+	    });
 	    
-	    $("#codice").focusout(function(){
-	    	var codice = $("#codice").val();
+	    
+	    
+	     $("#codice").focusout(function(){
+	    	 
+	    	 var codice = $("#codice").val();
+		     if($('#slash').val()!=''){
+		    	 codice = $("#codice").val()+"/"+$('#slash').val();
+		     }
+	    	
 	    	var regex = /^[a-zA-Z0-9]*$/;
 	    	
 	    	
@@ -1391,7 +1746,7 @@ var listaStrumenti = ${listaCampioniJson};
 	    
 	    $("#codice").focusin(function(){
 	    	$("#codiceError").html("");
-	    });
+	    }); 
 	    
 	    function validateSize(file) {
 	    	if(file.files[0]!=undefined){
@@ -1428,4 +1783,6 @@ var listaStrumenti = ${listaCampioniJson};
    
 </jsp:attribute> 
 </t:layout>
+  
+
   

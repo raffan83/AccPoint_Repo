@@ -147,7 +147,7 @@ public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziarioCa
 	
 	List<AcAttivitaCampioneDTO> lista =null;
 	
-	query  = session.createQuery( "from AcAttivitaCampioneDTO where campione.id = :_id_campione");	
+	query  = session.createQuery( "from AcAttivitaCampioneDTO where campione.id = :_id_campione and (obsoleta = null or obsoleta = 'N')");	
 	query.setParameter("_id_campione", campione.getId());
 	
 	lista=query.list();
@@ -219,8 +219,9 @@ public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziario(S
 	HashMap<String, Integer> mapManutenzioni = new HashMap<String, Integer>();
 	
 	List<AcAttivitaCampioneDTO> lista =null;
+	List<CampioneDTO> lista_campioni = null;
 	
-	query  = session.createQuery( "from AcAttivitaCampioneDTO where campione.statoCampione != 'F'");	
+	query  = session.createQuery( "from AcAttivitaCampioneDTO where campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");	
 	
 	lista=query.list();
 	
@@ -260,19 +261,38 @@ public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziario(S
 			
 		}
 		
-		if(att.getTipo_attivita().getId()==3 && att.getData_scadenza()!=null) {
-			
-			int i=1;
-			if(mapTarature.get(sdf.format(att.getData_scadenza()))!=null) {
-				i= mapTarature.get(sdf.format(att.getData_scadenza()))+1;
-			}
-			
-			mapTarature.put(sdf.format(att.getData_scadenza()), i);
-			
-		}
+//		if(att.getTipo_attivita().getId()==3 && att.getData_scadenza()!=null) {
+//			
+//			int i=1;
+//			if(mapTarature.get(sdf.format(att.getData_scadenza()))!=null) {
+//				i= mapTarature.get(sdf.format(att.getData_scadenza()))+1;
+//			}
+//			
+//			mapTarature.put(sdf.format(att.getData_scadenza()), i);
+//			
+//		}
 		
 
     }
+	
+	query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and codice like '%CDT%'");	
+	
+	lista_campioni=query.list();
+	
+	for (CampioneDTO c : lista_campioni) {
+		
+		if(c.getDataScadenza()!=null) {
+		
+		int i=1;
+		if(mapTarature.get(sdf.format(c.getDataScadenza()))!=null) {
+			i= mapTarature.get(sdf.format(c.getDataScadenza()))+1;
+		}
+		
+		mapTarature.put(sdf.format(c.getDataScadenza()), i);
+		
+	}
+		
+	}
 	
 	listMap.add(mapManutenzioni);
 	listMap.add(mapVerifiche);
@@ -282,9 +302,11 @@ public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziario(S
 }
 
 
-public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, boolean manutenzione, boolean lat) throws Exception, ParseException {
+
+
+public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String tipo_data_lat) throws Exception, ParseException {
 	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");		
-Session session = SessionFacotryDAO.get().openSession();
+	Session session = SessionFacotryDAO.get().openSession();
     
 	session.beginTransaction();
 	ArrayList<AcAttivitaCampioneDTO> attivita = null;
@@ -292,36 +314,49 @@ Session session = SessionFacotryDAO.get().openSession();
 	ArrayList<CampioneDTO> lista = new ArrayList<CampioneDTO>();
 	Query query = null;
 	
-	if(!lat) {
-		if(!manutenzione) {
-			query = session.createQuery("from AcAttivitaCampioneDTO where data_scadenza = :_date");	
-			query.setParameter("_date", df.parse(data));
-		}
-		else {
-			query= session.createQuery("from AcAttivitaCampioneDTO where tipo_attivita.id = 1");
-		}
+	if(tipo_data_lat!=null) {
 		
-		attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
-		
-		if(attivita!=null) {
+		if(tipo_data_lat.equals("1")) {
+			query = session.createQuery("from AcAttivitaCampioneDTO where tipo_attivita.id = 1");	
+						
+			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
+			
 			for (AcAttivitaCampioneDTO a : attivita) {
-				if(!manutenzione) {
+				
+
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(a.getData());
+				calendar.add(Calendar.MONTH, a.getCampione().getFrequenza_manutenzione());
+				
+				Date date = calendar.getTime();
+				if(df.format(date).equals(data) && !lista.contains(a.getCampione())) {
 					lista.add(a.getCampione());	
-				}else {
-					
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(a.getData());
-					calendar.add(Calendar.MONTH, a.getCampione().getFrequenza_manutenzione());
-					
-					Date date = calendar.getTime();
-					if(df.format(date).equals(data)) {
-						lista.add(a.getCampione());	
-					}
-					
 				}
 				
 			}
 		}
+		else if(tipo_data_lat.equals("2")) {
+			query = session.createQuery("from AcAttivitaCampioneDTO where data_scadenza = :_date and tipo_attivita.id = 2");	
+			query.setParameter("_date", df.parse(data));
+			
+			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
+			
+			for (AcAttivitaCampioneDTO a : attivita) {
+				
+					lista.add(a.getCampione());	
+				
+			}
+			
+		}
+		else if(tipo_data_lat.equals("3")) {
+			query = session.createQuery("from CampioneDTO where data_scadenza = :_date and stato_campione != 'F'");	
+			query.setParameter("_date", df.parse(data));
+			
+			lista = (ArrayList<CampioneDTO>) query.list();
+		}
+	
+	
+
 	
 	}else {
 		query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1");
@@ -337,7 +372,7 @@ Session session = SessionFacotryDAO.get().openSession();
 					calendar.add(Calendar.MONTH, r.getCampione().getFrequenza_manutenzione());
 					
 					Date date = calendar.getTime();
-					if(df.format(date).equals(data)) {
+					if(df.format(date).equals(data) && !lista.contains(r.getCampione())) {
 						lista.add(r.getCampione());	
 					}
 				}
@@ -346,6 +381,23 @@ Session session = SessionFacotryDAO.get().openSession();
 	}	
 	session.close();
 	return lista;
+}
+
+
+public static void updateObsolete(String idC, int tipo_attivita, Session session) {
+	
+	Query query = null;
+			
+	if(tipo_attivita==1) {
+		
+		query = session.createQuery("update AcAttivitaCampioneDTO set obsoleta='S' where id_campione =:_id_campione and id_tipo_attivita = 1 and tipo_manutenzione=1 ");
+		
+	}else {
+		query = session.createQuery("update AcAttivitaCampioneDTO set obsoleta='S' where id_campione =:_id_campione and id_tipo_attivita = 2");
+	}
+	query.setParameter("_id_campione", idC);
+	
+	query.executeUpdate();
 }
 
 

@@ -294,6 +294,7 @@ public class RegistroEventi extends HttpServlet {
 					if(tipo_evento.equals("1")) {
 						evento.setTipo_manutenzione(new TipoManutenzioneDTO(Integer.parseInt(tipo_manutenzione)));
 						evento.setDescrizione(descrizione);
+						evento.setObsoleta("N");
 					}else {
 						if(laboratorio.equals("Interno")) {
 							evento.setLaboratorio(laboratorio);	
@@ -316,7 +317,13 @@ public class RegistroEventi extends HttpServlet {
 						evento.setAllegato(filename);
 					}
 					
+					if(tipo_evento.equals("1") && tipo_manutenzione.equals("1")) {
+						GestioneCampione.updateManutenzioniObsolete(campione, session);
+					}
+					
 					GestioneCampioneDAO.saveEventoRegistro(evento, session);
+					
+					
 //					for(int i = 0; i<lista_attivita.size();i++) {
 //					AttivitaManutenzioneDTO attivita = new AttivitaManutenzioneDTO();
 //					//attivita.setTipo_attivita(new TipoAttivitaManutenzioneDTO(Integer.parseInt(lista_attivita.get(i))));

@@ -18,12 +18,14 @@ import org.hibernate.Session;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
+import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
+import it.portaleSTI.bo.GestioneVerInterventoBO;
 
 /**
  * Servlet implementation class ScaricaSchedaConsegnaFile
@@ -61,6 +63,7 @@ public class ScaricaSchedaConsegnaFile extends HttpServlet {
 		try
 		{
 		String idIntervento= request.getParameter("idIntervento");
+		String verIntervento= request.getParameter("verIntervento");
 		String nomeFile = request.getParameter("nomefile");
 		String id_scheda = request.getParameter("id_scheda");
 		
@@ -70,6 +73,12 @@ public class ScaricaSchedaConsegnaFile extends HttpServlet {
 			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
 		
 			path = Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+nomeFile;
+		}
+		else if(verIntervento!=null && !verIntervento.equals("")){
+			verIntervento = Utility.decryptData(verIntervento);
+			VerInterventoDTO intervento = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(verIntervento), session);
+		
+			path = Costanti.PATH_FOLDER+"//"+intervento.getNome_pack()+"//"+nomeFile;
 		}else {
 			id_scheda = Utility.decryptData(id_scheda);
 			SchedaConsegnaRilieviDTO scheda = GestioneSchedaConsegnaBO.getSchedaConsegnaRilievoFromId(Integer.parseInt(id_scheda), session);

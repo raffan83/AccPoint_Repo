@@ -19,6 +19,7 @@ public class RegistroEventiDTO {
 	private String descrizione;
 	private UtenteDTO operatore;
 	private Date data_scadenza;
+	private String obsoleta;
 	
 	public int getId() {
 		return id;
@@ -109,6 +110,12 @@ public class RegistroEventiDTO {
 	}
 	public void setData_scadenza(Date data_scadenza) {
 		this.data_scadenza = data_scadenza;
+	}
+	public String getObsoleta() {
+		return obsoleta;
+	}
+	public void setObsoleta(String obsoleta) {
+		this.obsoleta = obsoleta;
 	}
 
 

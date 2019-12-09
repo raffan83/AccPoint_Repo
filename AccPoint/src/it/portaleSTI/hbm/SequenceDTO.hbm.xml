@@ -6,12 +6,20 @@
 <hibernate-mapping>
 <class name="it.portaleSTI.DTO.SequenceDTO" table="sequence">
 
-    <composite-id >
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        
+                <property name="seq_sti_campione" column="seq_sti_campione" type="int"/>    
+        
+		<property name="seq_cdt_campione" column="seq_cdt_campione" type="int" />   
+<!--     <composite-id >
         <key-property name="seq_sti_campione" column="seq_sti_campione" type="int"/>    
         
 		<key-property name="seq_cdt_campione" column="seq_cdt_campione" type="int" />    
       
-    </composite-id>
+    </composite-id> -->
     
     
 

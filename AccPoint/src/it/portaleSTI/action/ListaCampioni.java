@@ -7,10 +7,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -19,14 +16,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
@@ -36,9 +35,9 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaScadenzarioCampioni;
-import it.portaleSTI.bo.GestioneAssegnazioneAttivitaBO;
 import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
 import it.portaleSTI.bo.GestioneCampioneBO;
+import it.portaleSTI.bo.GestioneCompanyBO;
 
 /**
  * Servlet implementation class listaCampioni
@@ -97,12 +96,10 @@ public class ListaCampioni extends HttpServlet {
 		{
 			//	String myCMP =  request.getParameter("p");
 			if(action==null) {
-				
-				
 	
 				String date =request.getParameter("date");
 				String tipo_data_lat =request.getParameter("tipo_data_lat");
-				String lat =request.getParameter("lat");
+				String manutenzione =request.getParameter("manutenzione");
 	
 				ArrayList<CampioneDTO> listaCampioni=new ArrayList<CampioneDTO>();
 	
@@ -115,16 +112,16 @@ public class ListaCampioni extends HttpServlet {
 					if(tipo_data_lat!=null) {
 						if(date.length()>=10)
 						{
-							boolean manutenzione = false;
-							if(tipo_data_lat.equals("1")) {
-								manutenzione = true;
-							}
-							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), manutenzione,false);
+//							boolean manutenzione = false;
+//							if(tipo_data_lat.equals("1")) {
+//								manutenzione = true;
+//							}
+							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data_lat);
 						}
-					}else if(lat!= null) {
+					}else if(manutenzione!= null) {
 						if(date.length()>=10)
 						{						
-							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), false, true);
+							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), null);
 						}
 					}
 					else {
@@ -137,6 +134,12 @@ public class ListaCampioni extends HttpServlet {
 				}
 				
 				
+				Integer[] max_codici = GestioneCampioneBO.getProgressivoCampione();
+				Session session = SessionFacotryDAO.get().openSession();
+				session.beginTransaction();
+				ArrayList<CompanyDTO> lista_company = GestioneCompanyBO.getAllCompany(session);
+				session.getTransaction().commit();
+				session.close();
 				 ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
 			        JsonArray tgArrJson = new JsonArray();
 			        JsonObject umArrJson = new JsonObject();
@@ -168,6 +171,9 @@ public class ListaCampioni extends HttpServlet {
 		
 			        request.getSession().setAttribute("listaTipoGrandezza",tgArrJson);
 			        request.getSession().setAttribute("listaUnitaMisura",umArrJson);
+			        request.getSession().setAttribute("max_codice_sti",max_codici[0]);
+			        request.getSession().setAttribute("max_codice_cdt",max_codici[1]);
+			        request.getSession().setAttribute("lista_company", lista_company);
 	
 	
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -258,10 +264,21 @@ public class ListaCampioni extends HttpServlet {
 		catch (Exception ex) {
 			
 			ex.printStackTrace();
+			
+			if(ajax) {
+				
+				PrintWriter out = response.getWriter();
+				ex.printStackTrace();
+	        	
+	        	request.getSession().setAttribute("exception", ex);
+	        	myObj = STIException.getException(ex);
+	        	out.print(myObj);
+        	}else {
 		     request.setAttribute("error",STIException.callException(ex));
 		     request.getSession().setAttribute("exception", ex);
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 			 dispatcher.forward(request,response);
+        	}
 		}
 		 
 	}

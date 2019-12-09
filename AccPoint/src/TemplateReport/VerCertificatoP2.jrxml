@@ -150,7 +150,7 @@
 				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="414" y="638" width="141" height="20" uuid="0dd304ae-5515-4509-aead-5b9ee5669cec"/>
+				<reportElement x="414" y="629" width="141" height="20" uuid="0dd304ae-5515-4509-aead-5b9ee5669cec"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Il Responsabile dell'Organismo]]></text>
 			</staticText>
@@ -190,7 +190,7 @@
 				<textFieldExpression><![CDATA[$P{motivo3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="414" y="655" width="140" height="20" uuid="3d92af5f-a3b8-4dd3-9405-d921800fabf9"/>
+				<reportElement x="414" y="646" width="140" height="20" uuid="3d92af5f-a3b8-4dd3-9405-d921800fabf9"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{responsabile}]]></textFieldExpression>
 			</textField>
@@ -215,6 +215,10 @@
 				</textElement>
 				<text><![CDATA[MOD-LAB-015]]></text>
 			</staticText>
+			<image hAlign="Center">
+				<reportElement x="381" y="661" width="206" height="40" uuid="d2b5b11a-2250-465c-bf1d-1b88f69cfbca"/>
+				<imageExpression><![CDATA[$P{firma_responsabile}]]></imageExpression>
+			</image>
 		</band>
 	</columnHeader>
 </jasperReport>

@@ -18,7 +18,7 @@ public class AcAttivitaCampioneDTO {
 	private UtenteDTO operatore;
 	private String campo_sospesi;
 	private String allegato;
-	
+	private String obsoleta;
 	
 	public String getCampo_sospesi() {
 		return campo_sospesi;
@@ -103,6 +103,12 @@ public class AcAttivitaCampioneDTO {
 	}
 	public void setAllegato(String allegato) {
 		this.allegato = allegato;
+	}
+	public String getObsoleta() {
+		return obsoleta;
+	}
+	public void setObsoleta(String obsoleta) {
+		this.obsoleta = obsoleta;
 	}
 	
 }

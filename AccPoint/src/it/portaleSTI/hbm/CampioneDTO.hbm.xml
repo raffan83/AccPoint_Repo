@@ -105,7 +105,18 @@
 		<property name="id_strumento" type="int">
             <column name="id_strumento" />
         </property>
-
+        <property name="descrizione_manutenzione" type="java.lang.String">
+            <column name="descrizione_manutenzione" />
+        </property>
+        <property name="descrizione_verifica_intermedia" type="java.lang.String">
+            <column name="descrizione_verifica_intermedia" />
+        </property>
+        <property name="settore" type="int">
+            <column name="settore" />
+        </property>
+		<property name="data_messa_in_servizio" type="java.util.Date">
+            <column name="data_messa_in_servizio" />
+        </property>
         
     <set name="listaCertificatiCampione" table="certificato_campione"
 				inverse="true" lazy="false" fetch="select" >

@@ -123,14 +123,14 @@
 				<text><![CDATA[Frequenza]]></text>
 			</staticText>
 			<line>
-				<reportElement x="30" y="321" width="335" height="1" uuid="f84a93f5-92a5-452e-a438-a93df65ca0fa"/>
+				<reportElement x="30" y="297" width="335" height="1" uuid="f84a93f5-92a5-452e-a438-a93df65ca0fa"/>
 			</line>
 			<textField>
 				<reportElement x="403" y="59" width="140" height="32" uuid="691aac0d-3fa4-419b-a73a-2d3b752c9955"/>
 				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="39" y="304" width="341" height="21" uuid="2a7d22c8-4694-4a4c-8e48-6b6fa79e73ee"/>
+				<reportElement x="37" y="281" width="341" height="21" uuid="2a7d22c8-4694-4a4c-8e48-6b6fa79e73ee"/>
 				<textElement textAlignment="Left"/>
 				<textFieldExpression><![CDATA[$P{attivita_taratura}]]></textFieldExpression>
 			</textField>
@@ -288,17 +288,36 @@
 			<line>
 				<reportElement x="106" y="138" width="185" height="1" uuid="eaf190f6-e14f-4fb4-9a45-504876b771cf"/>
 			</line>
+			<textField>
+				<reportElement x="35" y="308" width="357" height="43" uuid="70f2dcaf-2815-4e21-8850-f76dd9a9e890"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{descrizione_attivita_taratura}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="50">
+	<pageFooter>
+		<band height="68">
+			<staticText>
+				<reportElement x="455" y="52" width="100" height="16" uuid="f4c915b9-6b77-45f3-914f-039d68b34b58"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rev. A del 20/09/2004]]></text>
+			</staticText>
 			<line>
-				<reportElement x="344" y="45" width="200" height="1" uuid="0a7daa7c-65b1-43ec-8a3f-204e7d1bfce7"/>
+				<reportElement x="344" y="45" width="200" height="1" uuid="f5b01190-0cb5-45e1-b2cc-91bafa776832"/>
 			</line>
 			<staticText>
-				<reportElement x="357" y="5" width="171" height="31" uuid="94f377f7-df75-4816-aea4-a0b880952ac0"/>
+				<reportElement x="357" y="5" width="171" height="31" uuid="b05be29f-30b1-4e2e-bb43-4075b81bace3"/>
 				<text><![CDATA[Firma Responsabile di competenza]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="0" y="52" width="100" height="16" uuid="68bae5d2-e7d8-4d3c-b776-60804b3fb29d"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[MOD-CDT-003]]></text>
+			</staticText>
 		</band>
-	</columnFooter>
+	</pageFooter>
 </jasperReport>

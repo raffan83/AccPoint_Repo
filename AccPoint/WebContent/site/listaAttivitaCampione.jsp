@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
     <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
     <%@page import="it.portaleSTI.DTO.TipoCampioneDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="com.google.gson.Gson"%>
@@ -12,6 +13,8 @@
 <%@ page language="java" import="java.util.List" %>
 <%@ page language="java" import="java.util.ArrayList" %>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
+<% pageContext.setAttribute("newLineChar", "\r\n"); %>
+<% pageContext.setAttribute("newLineChar2", "\n"); %>
     <% 
 
  JsonObject json = (JsonObject)session.getAttribute("myObj");
@@ -64,12 +67,13 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <td>${attivita.tipo_attivita.descrizione}</td>
 <td>
 <c:if test="${attivita.tipo_attivita.id==1 }">
-<button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${attivita.descrizione_attivita}','${attivita.tipo_manutenzione }','${attivita.data }','${attivita.operatore.nominativo }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
+<%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
+<button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${fn:replace(fn:replace(attivita.descrizione_attivita.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${attivita.tipo_manutenzione }','${attivita.data }','${attivita.operatore.nominativo }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <c:if test="${attivita.tipo_attivita.id==2 || attivita.tipo_attivita.id==3}">
 <button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${attivita.tipo_attivita.descrizione }','${attivita.data}','${attivita.ente }','${attivita.data_scadenza }','${attivita.etichettatura }','${attivita.stato }','${attivita.campo_sospesi }','${attivita.operatore.nominativo }','${attivita.certificato.misura.nCertificato }','${attivita.certificato.misura.id }','${utl:encryptData(attivita.certificato.misura.id)}')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${attivita.descrizione_attivita }','${attivita.data}','${attivita.tipo_manutenzione }','${attivita.ente }','${attivita.data_scadenza }','${attivita.campo_sospesi }','${attivita.operatore.id }','${attivita.etichettatura }','${attivita.stato }',${attivita.certificato.id } )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
+<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${fn:replace(fn:replace(attivita.descrizione_attivita.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${attivita.data}','${attivita.tipo_manutenzione }','${attivita.ente }','${attivita.data_scadenza }','${attivita.campo_sospesi }','${attivita.operatore.id }','${attivita.etichettatura }','${attivita.stato }',${attivita.certificato.id } )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
  <c:if test="${attivita.allegato!=null && !attivita.allegato.equals('') }">
  	<button class="btn customTooltip btn-danger" onClick="callAction('gestioneAttivitaCampioni.do?action=download_allegato&id_attivita=${utl:encryptData(attivita.id)}')" title="Click per scaricare l'allegato"><i class="fa fa-file-pdf-o"></i></button>
  </c:if>
@@ -351,7 +355,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
              <input id="misura_enc" type="hidden">
         </div>
         <div class="col-sm-3">       
-             <a class="btn btn-info customTooltip" style="margin-top:25px"title="Click per aprire il dettaglio della misura" onClick="dettaglioMisura()"><i class="fa fa-tachometer"></i></a>
+             <a class="btn btn-info customTooltip" style="margin-top:25px"title="Click per aprire il dettaglio della misura" id="btn_dtl" onClick="dettaglioMisura()"><i class="fa fa-tachometer"></i></a>
         </div>
        
     </div>    
@@ -614,6 +618,11 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	$('#data_scadenza_dtl').val(formatDate(data_scadenza));
 	$('#certificato_dtl').val(certificato);
 	$('#misura_dtl').val(misura);
+	if(misura==''){
+		$('#btn_dtl').addClass("disabled");
+	}else{
+		$('#btn_dtl').removeClass("disabled");
+	}
 	$('#misura_enc').val(misura_encrypted)
 	
 	$('#modalDettaglioVerificaTaratura').modal();

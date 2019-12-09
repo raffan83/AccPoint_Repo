@@ -20,7 +20,10 @@ import it.portaleSTI.Util.Templates;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
+import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.Markup;
+import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -79,6 +82,21 @@ public class CreateSchedaManutenzioniCampione {
 		
 		
 		report.detail(subreport);
+		
+		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(8).setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
+		if(lista_evento_manutenzione!=null) {
+			report.addPageFooter(cmp.horizontalList(
+					cmp.text("MOD-PGI009-02").setStyle(footerStyle),
+					cmp.horizontalGap(370),
+					cmp.text("Rev. 0 del 31/07/2019").setStyle(footerStyle)
+					));
+		}else {
+			report.addPageFooter(cmp.horizontalList(
+					cmp.text("MOD-CDT-005").setStyle(footerStyle),
+					cmp.horizontalGap(370),
+					cmp.text("Rev. 0 del 07/01/2003").setStyle(footerStyle)
+					));
+		}
 		
 		//String path = "C:\\Users\\antonio.dicivita\\Desktop\\";
 		String path = "";

@@ -8,6 +8,7 @@ public class SchedaConsegnaDTO {
 	private String data_caricamento;
 	private int abilitato;
 	private int stato; 
+	private VerInterventoDTO ver_intervento;
 	
 	
 	public int getId() {
@@ -51,6 +52,12 @@ public class SchedaConsegnaDTO {
 	}
 	public void setIntervento(InterventoDTO intervento) {
 		this.intervento = intervento;
+	}
+	public VerInterventoDTO getVer_intervento() {
+		return ver_intervento;
+	}
+	public void setVer_intervento(VerInterventoDTO ver_intervento) {
+		this.ver_intervento = ver_intervento;
 	}
 	
 	

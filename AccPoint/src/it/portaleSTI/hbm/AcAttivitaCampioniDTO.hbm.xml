@@ -48,5 +48,8 @@
         <property name="allegato" type="java.lang.String">
             <column name="allegato" />
         </property>
+        <property name="obsoleta" type="java.lang.String">
+            <column name="obsoleta" />
+        </property>
     </class>
 </hibernate-mapping>

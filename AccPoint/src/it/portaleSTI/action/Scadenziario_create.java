@@ -66,8 +66,8 @@ public class Scadenziario_create extends HttpServlet {
 		{
 		CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 		
-		ArrayList<CampioneDTO> listaCampioni =GestioneCampioneDAO.getListaCampioni(null,cmp.getId());
-		ArrayList<RegistroEventiDTO> listaManutenzioni = GestioneCampioneBO.getListaManutenzioni();
+		ArrayList<CampioneDTO> listaCampioni =GestioneCampioneDAO.getListaCampioniInServizio();
+		ArrayList<RegistroEventiDTO> listaManutenzioni = GestioneCampioneBO.getListaManutenzioniNonObsolete();
 		
 		HashMap<String,Integer>  hMapCampioni = new HashMap<String,Integer>();
 		HashMap<String, Integer> mapManutenzioni = new HashMap<String, Integer>();

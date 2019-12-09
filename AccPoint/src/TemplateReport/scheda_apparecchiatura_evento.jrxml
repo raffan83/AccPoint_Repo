@@ -167,14 +167,14 @@
 				<text><![CDATA[Frequenza]]></text>
 			</staticText>
 			<line>
-				<reportElement x="45" y="294" width="262" height="1" uuid="8ae15503-5703-4ccf-a16d-e64cc56460d5"/>
+				<reportElement x="15" y="273" width="301" height="1" uuid="8ae15503-5703-4ccf-a16d-e64cc56460d5"/>
 			</line>
 			<textField>
 				<reportElement x="356" y="47" width="185" height="21" uuid="ba047ec4-5eb3-46d5-8c3f-fc67a3f7c6e5"/>
 				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="54" y="282" width="305" height="21" uuid="4cdf403f-aec7-44fc-98e3-fdaefd7b65d0"/>
+				<reportElement x="24" y="261" width="344" height="21" uuid="4cdf403f-aec7-44fc-98e3-fdaefd7b65d0"/>
 				<textElement textAlignment="Left"/>
 				<textFieldExpression><![CDATA[$P{attivita_taratura}]]></textFieldExpression>
 			</textField>
@@ -259,16 +259,16 @@
 				<reportElement x="356" y="134" width="185" height="1" uuid="40e26770-1df0-4155-a9d5-1532cb0cb07f"/>
 			</line>
 			<line>
-				<reportElement x="113" y="155" width="428" height="1" uuid="3b5ecce5-2877-4592-b7f2-69ae4724bf1e"/>
+				<reportElement x="87" y="157" width="454" height="1" uuid="3b5ecce5-2877-4592-b7f2-69ae4724bf1e"/>
 			</line>
 			<textField>
-				<reportElement x="118" y="142" width="422" height="21" uuid="614ac529-4068-4e2d-af60-5a4fc8e2d1a6"/>
+				<reportElement x="90" y="144" width="450" height="21" uuid="614ac529-4068-4e2d-af60-5a4fc8e2d1a6"/>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA[$P{condizioni_utilizzo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{campi_misura}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="1" y="144" width="101" height="19" uuid="27e92f96-bf96-430a-b0a7-e7c74fde8107"/>
-				<text><![CDATA[Condizioni di utilizzo:]]></text>
+				<text><![CDATA[Campi di misura:]]></text>
 			</staticText>
 			<line>
 				<reportElement x="116" y="210" width="425" height="1" uuid="856a25dd-d7f2-4b85-ae4c-70170c765654"/>
@@ -294,16 +294,35 @@
 				<reportElement x="1" y="170" width="84" height="19" uuid="b873bf80-676d-4d1a-9fab-82ed8b73bc7f"/>
 				<text><![CDATA[Unità di formato:]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="24" y="285" width="343" height="43" uuid="77d2048a-9582-438e-b360-1611de16392a"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{descrizione_attivita_taratura}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
 		<band height="91" splitType="Stretch">
 			<line>
-				<reportElement x="341" y="72" width="200" height="1" uuid="373a5e67-4edb-4560-bb19-3ea43aa894a0"/>
+				<reportElement x="341" y="41" width="200" height="1" uuid="373a5e67-4edb-4560-bb19-3ea43aa894a0"/>
 			</line>
 			<staticText>
-				<reportElement x="357" y="18" width="171" height="31" uuid="7db95db7-8a2f-4538-81b2-3c1a1b49c8b4"/>
+				<reportElement x="357" y="7" width="171" height="31" uuid="7db95db7-8a2f-4538-81b2-3c1a1b49c8b4"/>
 				<text><![CDATA[Firma Responsabile di competenza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="74" width="100" height="16" uuid="b39dea4e-3b24-469d-bb6d-0a20ad689974"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[MOD-PGI009-001]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="456" y="74" width="100" height="16" uuid="e4def4fa-f86a-4047-bf24-b8eb261bf86b"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rev. 0 del 31/07/2019]]></text>
 			</staticText>
 		</band>
 	</pageFooter>

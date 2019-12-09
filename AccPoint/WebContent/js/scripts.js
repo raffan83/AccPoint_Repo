@@ -5664,8 +5664,13 @@ function eliminaCompany(){
 	  callAction("showSchedeConsegna.do?idIntervento="+idIntervento,false, false);
   }
   
-  function scaricaSchedaConsegnaFile(idIntervento, nomefile, id_scheda){
-	  callAction("scaricaSchedaConsegnaFile.do?idIntervento="+idIntervento+"&nomefile="+nomefile+"&id_scheda="+id_scheda,false,false);
+  function scaricaSchedaConsegnaFile(idIntervento, nomefile, id_scheda, verificazione){
+	  if(verificazione!= null){
+		  callAction("scaricaSchedaConsegnaFile.do?verIntervento="+idIntervento+"&nomefile="+nomefile+"&id_scheda="+id_scheda,false,false);
+	  }else{
+		  callAction("scaricaSchedaConsegnaFile.do?idIntervento="+idIntervento+"&nomefile="+nomefile+"&id_scheda="+id_scheda,false,false);  
+	  }
+	  
   }
   function inserisciNuovoPacco(){
 	  callAction("gestionePacco.do", "#NuovoPaccoForm", false);
@@ -11932,4 +11937,109 @@ function firmaVerCertificato(pin, idCertificato){
   
   	  }
     });
+}
+
+
+
+function modalEmailVerificazione(id_certificato){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  $('#id_certificato').val(id_certificato);
+	  
+	  $.ajax({
+ 	  type: "POST",
+ 	  url: "gestioneVerCertificati.do?action=indirizzo_email&id_certificato="+id_certificato,
+ 	  dataType: "json",
+
+ 	  success: function( data, textStatus) {
+ 		  pleaseWaitDiv.modal('hide');
+ 		  if(data.success)
+ 		  { 
+
+ 			  $('#indirizzo_1').val(data.indirizzo);
+ 			 $('#myModalSendEmail').modal('show');
+ 			 
+ 		
+ 		  }else{
+ 			
+ 				  $('#myModalErrorContent').html("Errore nel recupero dell'email!");
+   			  	$('#myModalError').removeClass();
+   				$('#myModalError').addClass("modal modal-danger");
+   				$('#report_button').hide();
+   				$('#visualizza_report').hide();
+   				$('#myModalError').modal('show');
+ 			  				
+ 		  }
+ 	  },
+
+ 	  error: function(jqXHR, textStatus, errorThrown){
+ 		  pleaseWaitDiv.modal('hide');
+
+			$('#myModalErrorContent').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+				$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+			
+ 
+ 	  }
+   });
+	
+	
+}
+		
+
+function sendEmailVerificazione(){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	 pleaseWaitDiv.modal();
+	  
+	
+	  var indirizzo = $('#indirizzo_1').val();
+	  var id_certificato = $('#id_certificato').val();
+	  $.ajax({
+	  type: "POST",
+	  url: "gestioneVerCertificati.do?action=invia_email&id_certificato="+id_certificato+"&indirizzo="+indirizzo,
+	  dataType: "json",
+
+	  success: function( data, textStatus) {
+		  pleaseWaitDiv.modal('hide');
+		  if(data.success)
+		  { 
+			  $('#myModalErrorContent').html(data.messaggio);
+ 			  	$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-success");
+ 				$('#report_button').hide();
+ 				$('#visualizza_report').hide();
+ 				$('#myModalError').modal('show');
+			 
+		
+		  }else{
+			  
+			  $('#myModalErrorContent').html("Errore nel recupero dell'email!");
+ 			  	$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-danger");
+ 				$('#report_button').hide();
+ 				$('#visualizza_report').hide();
+ 				$('#myModalError').modal('show');			
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+			$('#myModalErrorContent').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+				$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+			
+
+	  }
+  });
+	
+	
 }

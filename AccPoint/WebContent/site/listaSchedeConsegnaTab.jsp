@@ -60,6 +60,7 @@
             <ul id="mainTabs" class="nav nav-tabs">
               <li class="active" id="tab1"><a href="#standard" data-toggle="tab" aria-expanded="true"   id="standardTab">Schede di Consegna</a></li>
               		<li class="" id="tab2"><a href="#rilievi" data-toggle="tab" aria-expanded="false"   id="rilieviTab">Rilievi Dimensionali</a></li>
+              		<li class="" id="tab3"><a href="#verificazione" data-toggle="tab" aria-expanded="false"   id="rilieviTab">Verificazione</a></li>
               
             </ul>
             <div class="tab-content">
@@ -108,6 +109,7 @@
  
  <c:forEach items="${lista_schede_consegna}" var="scheda" varStatus="loop">
  <c:if test="${scheda.abilitato==1}">
+
 	 <tr role="row" id="${scheda.id}-${loop.index}">
 
 <td>
@@ -135,7 +137,8 @@ Fatturata
 <a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaFile('${utl:encryptData(scheda.intervento.id)}', '${scheda.nome_file}')"><i class="fa fa-file-pdf-o"></i></a>
  <a  class="btn btn-warning customTooltip" title="Cambia Stato"   onClick="cambiaStatoSchedaConsegna('${scheda.id}','0')"><i class="glyphicon glyphicon-refresh"></i></a>  	
 	</tr>
-	</c:if> 
+	</c:if>
+	
 	</c:forEach>
  
 	
@@ -227,6 +230,89 @@ Fatturata
 
          
 			 </div>
+			 
+			 
+			 
+			 
+			  <div class="tab-pane table-responsive" id="verificazione">
+              
+              
+              <div class="row">
+<div class="col-sm-12">
+	<div class="col-xs-6">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Ricerca Data:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarangeVer" name="datarangeVer" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraSchedePerDataVer()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
+
+	</div>
+
+</div>
+</div>
+              
+              
+              
+              <table id="tabVer" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+<thead><tr class="active">
+ <th>ID Intervento</th>
+ <th>Cliente</th>
+ <th>Sede</th>
+ <th>Data Creazione Intervento</th>
+ <th>Commessa</th>
+ <th>Data Creazione Scheda</th>
+ <th>Stato</th>
+ <th>Azioni</th>
+
+ </tr></thead>
+ 
+ <tbody>
+ 
+ <c:forEach items="${lista_schede_consegna_verificazione}" var="scheda" varStatus="loop">
+ <c:if test="${scheda.abilitato==1}">
+
+ 	<tr role="row" id="${scheda.id}-${loop.index}">
+			<td>
+			
+			<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento Verificazione" onclick="callAction('gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(scheda.ver_intervento.id)}')">
+					${scheda.ver_intervento.id}
+				</a>
+			</td>
+			<td>${scheda.ver_intervento.nome_cliente }</td>
+			<td>${scheda.ver_intervento.nome_sede }</td>
+			<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${scheda.ver_intervento.data_creazione }" /></td>
+			<td>${scheda.ver_intervento.commessa }</td>
+			<td>${scheda.data_caricamento.split(' ')[0]}</td>
+			<td>
+			<c:choose>
+			<c:when test="${scheda.stato==0 }">
+			Da Fatturare
+			</c:when>
+			<c:otherwise>
+			Fatturata
+			</c:otherwise>
+			</c:choose>
+			</td>
+			<td>
+			<a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaFile('${utl:encryptData(scheda.ver_intervento.id)}', '${scheda.nome_file}',null,true)"><i class="fa fa-file-pdf-o"></i></a>
+			 <a  class="btn btn-warning customTooltip" title="Cambia Stato"   onClick="cambiaStatoSchedaConsegna('${scheda.id}','0')"><i class="glyphicon glyphicon-refresh"></i></a>  	
+				</tr>
+ 	
+ 	</c:if>
+     </c:forEach>    
+     </tbody>
+     </table>
+			 </div>
 
 
 
@@ -310,7 +396,7 @@ Fatturata
 		var startDatePicker = $("#datarange").data('daterangepicker').startDate;
 		var endDatePicker = $("#datarange").data('daterangepicker').endDate;
 		
-		dataString = "?action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&rilievo=0";
+		dataString = "?action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&rilievo=0&verificazione=0";
 			 	
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal();
@@ -336,6 +422,21 @@ Fatturata
 					
 	}
 	
+	  function filtraSchedePerDataVer(){
+			
+			
+			var startDatePicker = $("#datarangeVer").data('daterangepicker').startDate;
+			var endDatePicker = $("#datarangeVer").data('daterangepicker').endDate;
+			
+			dataString = "?action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&verificazione=1";
+				 	
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+
+			callAction("listaSchedeConsegna.do"+ dataString, false,true);
+				 	
+					
+	}
 	
 	 function resetDate(){
 			pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -347,6 +448,7 @@ Fatturata
 
 	 var columsDatatables = [];
 	 var columsDatatables2 = [];
+	 var columsDatatables3 = [];
 	 
 	$("#tabSC").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
@@ -384,6 +486,24 @@ Fatturata
 	} );
 
 	
+	$("#tabVer").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    		columsDatatables3 = state.columns;
+	    }
+	    $('#tabVer thead th').each( function () {
+	     	if(columsDatatables3.length==0 || columsDatatables3[$(this).index()]==null ){columsDatatables3.push({search:{search:""}});}
+	        var title = $('#tabVer thead th').eq( $(this).index() ).text();
+	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" value="'+columsDatatables3[$(this).index()].search.search+'" /></div>');
+	    } );
+
+	} );
+	
+	
 	function formatDate(data){
 		
 		   var mydate = new Date(data);
@@ -401,40 +521,77 @@ Fatturata
     	 
     	 
 		var rilievo_attivo = "${rilievo_attivo}";
+		var verificazione_attivo = "${verificazione_attivo}";
 		
 		if(rilievo_attivo!=null && rilievo_attivo!=''){
 
 			$('#tab1').removeClass('active');
+			$('#tab3').removeClass('active');
 			$('#tab2').addClass('active');
 			
+			
 			 //$('.nav-tabs a[href="#rilievi"]').tab('show');
-			 $('a[data-toggle="tab"]').tab('show');
+			 $('a[data-toggle="tab2"]').tab('show');
+			 
+	  
+		}
+		if(verificazione_attivo!=null && verificazione_attivo!=''){
+
+			$('#tab1').removeClass('active');
+			$('#tab2').removeClass('active');
+			$('#tab3').addClass('active');
+			
+			
+			 //$('.nav-tabs a[href="#rilievi"]').tab('show');
+			 $('a[data-toggle="tab3"]').tab('show');
+			 
+	    
 		}
     	 
-    	 $('input[name="datarange"]').daterangepicker({
- 		    locale: {
- 		      format: 'DD/MM/YYYY'
- 		    
- 		    }
- 		}, 
- 		function(start, end, label) {
+	    	
+	 	 $('input[name="datarange"]').daterangepicker({
+			    locale: {
+			      format: 'DD/MM/YYYY'
+			    
+			    }
+			}, 
+			function(start, end, label) {
 
- 		});
-    	 
-    	 $('input[name="datarangeRil"]').daterangepicker({
-  		    locale: {
-  		      format: 'DD/MM/YYYY'
-  		    
-  		    }
-  		}, 
-  		function(start, end, label) {
+			});
+		 
+		 
+		 
 
-  		});
+	 	 $('input[name="datarangeRil"]').daterangepicker({
+			    locale: {
+			      format: 'DD/MM/YYYY'
+			    
+			    }
+			}, 
+			function(start, end, label) {
+
+			});
+		 
+		 
+		 
+		
+	 	 $('input[name="datarangeVer"]').daterangepicker({
+			    locale: {
+			      format: 'DD/MM/YYYY'
+			    
+			    }
+			}, 
+			function(start, end, label) {
+
+			});
  	 
  	 var startScheda = "${dateFromScheda}";
- 	 var endScheda = "${dateFromScheda}";
- 	 var startSchedaRil = "${dateFromSchedaRil}";
-	 var endSchedaRil = "${dateFromSchedaRil}";
+ 	 var endScheda = "${dateToScheda}";
+ 	 var startSchedaRil = "${dateFromRil}";
+	 var endSchedaRil = "${dateToRil}";
+	 var startSchedaVer = "${dateFromVer}";
+	 var endSchedaVer = "${dateToVer}";
+	 
  	 if(startScheda!=null && startScheda!=""){
  		 	$('#datarange').data('daterangepicker').setStartDate(formatDate(startScheda));
  		 	$('#datarange').data('daterangepicker').setEndDate(formatDate(endScheda));
@@ -451,6 +608,17 @@ Fatturata
 		 	/* $("#tipo_data option[value='']").remove();
 		 	$('#tipo_data option[value="${tipo_data}"]').attr("selected", true); */
 		 }
+ 	 
+ 	 if(startSchedaVer!=null && endSchedaVer!=""){
+		 	$('#datarangeVer').data('daterangepicker').setStartDate(formatDate(startSchedaVer));
+		 	$('#datarangeVer').data('daterangepicker').setEndDate(formatDate(endSchedaVer));
+		 	
+		 	/* $("#tipo_data option[value='']").remove();
+		 	$('#tipo_data option[value="${tipo_data}"]').attr("selected", true); */
+		 }
+ 	 
+ 	 
+
     	
     	table = $('#tabSC').DataTable({
     		language: {
@@ -590,7 +758,7 @@ tablePM.columns().eq( 0 ).each( function ( colIdx ) {
 tablePM.columns.adjust().draw();
 	
 
-$('#tabPM').on( 'page.dt', function () {
+$('#tabVer').on( 'page.dt', function () {
 	$('.customTooltip').tooltipster({
         theme: 'tooltipster-light'
     });
@@ -602,6 +770,82 @@ $('#tabPM').on( 'page.dt', function () {
 
 });
 	
+	
+	
+	
+tableVer = $('#tabVer').DataTable({
+	language: {
+        	emptyTable : 	"Nessun dato presente nella tabella",
+        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+        	infoPostFix:	"",
+        infoThousands:	".",
+        lengthMenu:	"Visualizza _MENU_ elementi",
+        loadingRecords:	"Caricamento...",
+        	processing:	"Elaborazione...",
+        	search:	"Cerca:",
+        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+        	paginate:	{
+	        	first:	"Inizio",
+	        	previous:	"Precedente",
+	        	next:	"Successivo",
+	        last:	"Fine",
+        	},
+        aria:	{
+	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+        }
+    },
+    pageLength: 100,
+      paging: true, 
+      ordering: true,
+      info: true, 
+      searchable: true, 
+      targets: 0,
+      responsive: true,
+      scrollX: false,
+    stateSave: true,
+      columnDefs: [
+			   { responsivePriority: 1, targets: 0 },
+                   { responsivePriority: 2, targets: 1 },
+                   
+                   { responsivePriority: 4, targets: 7 }
+               ],
+
+    	
+    });
+
+
+
+	    $('.inputsearchtable').on('click', function(e){
+	       e.stopPropagation();    
+	    }); 
+//DataTable
+tableVer = $('#tabVer').DataTable();
+//Apply the search
+tableVer.columns().eq( 0 ).each( function ( colIdx ) {
+$( 'input', tableVer.column( colIdx ).header() ).on( 'keyup', function () {
+	tableVer
+      .column( colIdx )
+      .search( this.value )
+      .draw();
+} );
+} ); 
+tableVer.columns.adjust().draw();
+
+
+$('#tabVer').on( 'page.dt', function () {
+$('.customTooltip').tooltipster({
+    theme: 'tooltipster-light'
+});
+
+$('.removeDefault').each(function() {
+   $(this).removeClass('btn-default');
+})
+
+
+});
 	
 
 	

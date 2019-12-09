@@ -30,33 +30,72 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
    <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Nome:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="nome" type="text" name="nome" required value="<%=campione.getNome() %>"/>
+                      <input class="form-control" id="nome_mod" type="text" name="nome_mod" required value="<%=campione.getNome() %>"/>
     </div>
      </div>
+     
+            <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Descrizione:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="descrizione_mod" type="text" required name="descrizione_mod"  value="<%=campione.getDescrizione() %>"/>
+    </div>
+     </div>
+     
+              <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Modello:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="modello_mod" type="text" required name="modello_mod"  value="<%=campione.getModello() %>"/>
+    </div>
+       </div> 
+       
+              <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Costruttore:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="costruttore_mod" type="text" required name="costruttore_mod"  value="<%=campione.getCostruttore() %>"/>
+    </div>
+       </div>
 	<div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Matricola:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="matricola" type="text" required name="matricola"  value="<%=campione.getMatricola() %>"/>
+                      <input class="form-control" id="matricola_mod" type="text" required name="matricola_mod"  value="<%=campione.getMatricola() %>"/>
     </div>
     </div>
+
        <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Descrizione:</label>
+        <label for="distributore" class="col-sm-3 control-label">Distributore:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="descrizione" type="text" required name="descrizione"  value="<%=campione.getDescrizione() %>"/>
+                      <input class="form-control required" id="distributore_mod" type="text" name="distributore_mod"  value="<%if(campione.getDistributore()!=null){out.println(campione.getDistributore());}%>" />
     </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Costruttore:</label>
+       </div> 
+       
+              <div class="form-group">
+        <label for="data_acquisto" class="col-sm-3 control-label">Data Acquisto:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="costruttore" type="text" required name="costruttore"  value="<%=campione.getCostruttore() %>"/>
+                      <input class="form-control datepicker required" id="data_acquisto_mod" type="text" name="data_acquisto_mod"   value="<%if(campione.getData_acquisto()!=null){out.println(sdf.format(campione.getData_acquisto()));}%>" data-date-format="dd/mm/yyyy"/>
     </div>
-       </div>
+       </div> 
+       
+       
+                     <div class="form-group">
+        <label for="data_acquisto" class="col-sm-3 control-label">Data Messa in servizio:</label>
+        <div class="col-sm-9">
+                      <input class="form-control datepicker required" id="data_messa_in_servizio_mod" type="text" name="data_messa_in_servizio_mod"   value="<%if(campione.getData_acquisto()!=null){out.println(sdf.format(campione.getData_acquisto()));}%>" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       
+       
+              <div class="form-group">
+        <label for="distributore" class="col-sm-3 control-label">Ubicazione:</label>
+        <div class="col-sm-9">
+                      <input class="form-control required" id="ubicazione_mod" type="text" name="ubicazione_mod"  value="<%if(campione.getUbicazione()!=null){out.println(campione.getUbicazione());}%>" />
+    </div>
+       </div> 
        
           <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Campo di misura:</label>
         <div class="col-sm-9">
                       
-                      <input class="form-control" id="campo_misura" type="text" name="campo_misura"   value="<%if(campione.getCampo_misura()!=null){out.println(campione.getCampo_misura());}%>"/>
+                      <input class="form-control" id="campo_misura_mod" type="text" name="campo_misura_mod"   value="<%if(campione.getCampo_misura()!=null){out.println(campione.getCampo_misura());}%>"/>
                       																											
     </div>																																
        </div>
@@ -64,41 +103,143 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         <label for="inputName" class="col-sm-3 control-label">Unità di formato:</label>
         <div class="col-sm-9">
                       
-                      <input class="form-control" id="unita_formato" type="text" name="unita_formato"  value="<%if(campione.getUnita_formato()!=null){out.println(campione.getUnita_formato());} %>"/>
+                      <input class="form-control" id="unita_formato_mod" type="text" name="unita_formato_mod"  value="<%if(campione.getUnita_formato()!=null){out.println(campione.getUnita_formato());} %>"/>
     </div>
        </div>
        
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Modello:</label>
+       
+                  <div class="form-group">
+          <label  class="col-sm-3 control-label">Descrizione attività di manutenzione:</label>
+
+         <div class="col-sm-4">
+         <select class="form-control select2" id="select_manutenzione_mod" data-placeholder="Seleziona descrizione manutenzione..." name="select_manutenzione_mod" style="width:100%">
+         <option value=""></option>
+         <option value="Controllo presenza di ammaccature o malformazioni (visivo)">Controllo presenza di ammaccature o malformazioni (visivo)</option>
+         <option value="Controllo presenza di ossidazione / ruggine (visivo)">Controllo presenza di ossidazione / ruggine (visivo)</option>
+         <option value="Controllo integrità indicatore (visivo)">Controllo integrità indicatore (visivo)</option>
+         <option value="Controllo integrità segmenti del display (visivo)">Controllo integrità segmenti del display (visivo)</option>
+         <option value="Controllo integrità terminali di collegamento (visivo)">Controllo integrità terminali di collegamento (visivo)</option>
+         <option value="Controllo dello stato delle batterie (visivo)">Controllo dello stato delle batterie (visivo)</option>
+         <option value="Controllo buono stato delle connessioni (visivo)">Controllo buono stato delle connessioni (visivo)</option>
+         <option value="Controllo dello stato qualitativo (visivo)">Controllo dello stato qualitativo (visivo)</option>
+         <option value="Pulizia">Pulizia</option>
+         <option value="Controllo presenza grasso di vaselina (visivo)">Controllo presenza grasso di vaselina (visivo) </option>
+         <option value="Controllo interno / esterno dello stato del contenitore (visivo)">Controllo interno / esterno dello stato del contenitore (visivo)</option>
+         <option value="Verifica sicurezza elettrica">Verifica sicurezza elettrica</option>
+         </select>
+			
+     	</div>
+     	<div class="col-sm-5">
+     	<textarea id="descrizione_manutenzione_mod" name ="descrizione_manutenzione_mod" style="width:100%" class="form-control" rows="3"><%if(campione.getDescrizione_manutenzione()!=null){out.println(campione.getDescrizione_manutenzione());} %></textarea>
+     	</div>
+   </div>
+       
+        <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Frequenza Manutenzioni:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="modello" type="text" required name="modello"  value="<%=campione.getModello() %>"/>
+                      <input class="form-control" id="frequenza_manutenzione_mod" type="text" name="frequenza_manutenzione_mod"   value="<%if(campione.getFrequenza_manutenzione()!=0){out.println(campione.getFrequenza_manutenzione());} %>"/> 
+                      
+    </div>
+       </div>
+       
+               <div class="form-group">
+        <label for="attivita_di_taratura" class="col-sm-3 control-label">Attività Di Taratura:</label>
+       
+        <div class="col-sm-4">
+
+         			<select  class="form-control" id="attivita_di_taratura_mod"  name="attivita_di_taratura_mod" >
+						<option value="0">ESTERNA</option>
+         				<option value="1">INTERNA</option>
+         			
+         			</select>
+     	</div>
+     	<div class="col-sm-1">
+     	 <label for="attivita_taratura_text" class=" control-label pull-right">Presso: </label>
+     	 </div>
+     	<div class="col-sm-4">
+     	  <input class="form-control required" id="attivita_taratura_text_mod" type="text" name="attivita_taratura_text_mod"  value="<%if(campione.getAttivita_di_taratura()!=null){out.println(campione.getAttivita_di_taratura());} %>"/>
+    </div>
+     	</div>    
+   
+       </div> 
+       
+             <div class="form-group">
+        <label for="note_attivita_taratura" class="col-sm-3 control-label">Descrizione Attività di Taratura:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="note_attivita_taratura_mod" type="text" name="note_attivita_taratura_mod"  value="<%if(campione.getNote_attivita()!=null){out.println(campione.getNote_attivita());} %>" />
     </div>
        </div> 
+       
+                <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Frequenza Taratura:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="freqTaratura_mod" type="number" required name="freqTaratura_mod"  value="<%=campione.getFreqTaraturaMesi() %>"/>
+    </div>
+       </div> 
+       
+              <div class="form-group">
+        <label for="campo_accettabilita" class="col-sm-3 control-label">Campo Di Accettabilità:</label>
+        <div class="col-sm-9">
+                      <input class="form-control required" id="campo_accettabilita_mod" type="text" name="campo_accettabilita_mod"  value="<%if(campione.getCampo_accettabilita()!=null){out.println(campione.getCampo_accettabilita());}%>" />
+    </div>
+       </div> 
+       
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Interpolazione:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="interpolazione" type="number" required name="interpolazione"  value="<%=campione.getInterpolazionePermessa() %>"/>
+                      <input class="form-control" id="interpolazione_mod" type="number" required name="interpolazione_mod"  value="<%=campione.getInterpolazionePermessa() %>"/>
+    </div>
+       </div> 
+       
+       <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
+        <div class="col-sm-9">
+
+                      <input class="form-control datepicker" id="dataVerifica_mod" required type="text" name="dataVerifica_mod"  required value="<%
+                      
+                      if(campione.getDataVerifica() != null){
+                    	 out.println(sdf.format(campione.getDataVerifica()));
+                      }
+                      %>" />
+<!-- data-date-format="dd/mm/yyyy" -->
+    </div>
+       </div> 
+     
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Certificato:</label>
+        <div class="col-sm-9">
+
+                        <input accept="application/pdf" onChange="validateSize(this)" type="file" class="form-control" id="certificato_mod" type="text" name="certificato_mod" />
     </div>
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Frequenza Taratura:</label>
+        <label for="inputName" class="col-sm-3 control-label">Numero Certificato:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="freqTaratura" type="number" required name="freqTaratura"  value="<%=campione.getFreqTaraturaMesi() %>"/>
+                      <input class="form-control" id="numeroCerificato_mod" type="text" required name="numeroCerificato_mod"  value="<%=campione.getNumeroCertificato() %>"/>
     </div>
        </div> 
-        <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Frequenza Manutenzioni:</label>
+       
+       <div class="form-group">
+        <label for="ente_certificatore" class="col-sm-3 control-label">Ente Certificatore:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="frequenza_manutenzione" type="text" name="frequenza_manutenzione"   value="<%if(campione.getFrequenza_manutenzione()!=0){out.println(campione.getFrequenza_manutenzione());} %>"/> 
-                      
+                      <input class="form-control required" id="ente_certificatore_mod" type="text" name="ente_certificatore_mod"  value="" readonly/>
     </div>
-       </div>
+       </div> 
+       
+                         <div class="form-group">
+        <label for="note_attivita_taratura" class="col-sm-3 control-label">Descrizione attività di verifica intermedia:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="descrizione_verifica_intermedia_mod" type="text" name="descrizione_verifica_intermedia_mod" />
+    </div>
+       </div>  
+
                 <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Frequenza Verifica Intermedia:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="frequenza_verifica_intermedia" type="text" name="frequenza_verifica_intermedia"  value="<%if(campione.getFrequenza_verifica_intermedia()!=0){out.println(campione.getFrequenza_verifica_intermedia());} %>"/>
+                      <input class="form-control" id="frequenza_verifica_intermedia_mod" type="text" name="frequenza_verifica_intermedia_mod"  value="<%if(campione.getFrequenza_verifica_intermedia()!=0){out.println(campione.getFrequenza_verifica_intermedia());} %>"/>
     </div>
        </div>
        
@@ -107,7 +248,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         <label for="inputName" class="col-sm-3 control-label">Stato Campione:</label>
         <div class="col-sm-9">
 
-                        <select class="form-control" id="statoCampione" required name="statoCampione" required>
+                        <select class="form-control" id="statoCampione_mod" required name="statoCampione_mod" required>
                       
                                             <%
                                      			String def1 = "";
@@ -135,95 +276,9 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
     </div>
        </div> 
        
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
-        <div class="col-sm-9">
-
-                      <input class="form-control datepicker" id="dataVerifica_" required type="text" name="dataVerifica"  required value="<%
-                      
-                      if(campione.getDataVerifica() != null){
-                    	 out.println(sdf.format(campione.getDataVerifica()));
-                      }
-                      %>" />
-<!-- data-date-format="dd/mm/yyyy" -->
-    </div>
-       </div> 
-     
+         
        
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Certificato:</label>
-        <div class="col-sm-9">
-
-                        <input accept="application/pdf" onChange="validateSize(this)" type="file" class="form-control" id="certificato" type="text" name="certificato" />
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Numero Certificato:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="numeroCerificato" type="text" required name="numeroCerificato"  value="<%=campione.getNumeroCertificato() %>"/>
-    </div>
-       </div> 
-       
-       <div class="form-group">
-        <label for="ente_certificatore" class="col-sm-3 control-label">Ente Certificatore:</label>
-        <div class="col-sm-9">
-                      <input class="form-control required" id="ente_certificatore" type="text" name="ente_certificatore"  value="" readonly/>
-    </div>
-       </div> 
-       
-       <div class="form-group">
-        <label for="distributore" class="col-sm-3 control-label">Distributore:</label>
-        <div class="col-sm-9">
-                      <input class="form-control required" id="distributore" type="text" name="distributore"  value="<%if(campione.getDistributore()!=null){out.println(campione.getDistributore());}%>" />
-    </div>
-       </div> 
-       <div class="form-group">
-        <label for="distributore" class="col-sm-3 control-label">Ubicazione:</label>
-        <div class="col-sm-9">
-                      <input class="form-control required" id="ubicazione" type="text" name="ubicazione"  value="<%if(campione.getUbicazione()!=null){out.println(campione.getUbicazione());}%>" />
-    </div>
-       </div> 
-       <div class="form-group">
-        <label for="data_acquisto" class="col-sm-3 control-label">Data Acquisto:</label>
-        <div class="col-sm-9">
-                      <input class="form-control datepicker required" id="data_acquisto" type="text" name="data_acquisto"   value="<%if(campione.getData_acquisto()!=null){out.println(sdf.format(campione.getData_acquisto()));}%>" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-       <div class="form-group">
-        <label for="campo_accettabilita" class="col-sm-3 control-label">Campo Di Accettabilità:</label>
-        <div class="col-sm-9">
-                      <input class="form-control required" id="campo_accettabilita" type="text" name="campo_accettabilita"  value="<%if(campione.getCampo_accettabilita()!=null){out.println(campione.getCampo_accettabilita());}%>" />
-    </div>
-       </div> 
-       <div class="form-group">
-        <label for="attivita_di_taratura" class="col-sm-3 control-label">Attività Di Taratura: </label>
-       
-        <div class="col-sm-4">
-
-         			<select  class="form-control" id="attivita_taratura"  name="attivita_taratura" >
-						<option value="0">ESTERNA</option>
-         				<option value="1">INTERNA</option>
-         			
-         			</select>
-     	</div>
-     	
-     	<div class="col-sm-1">
-     	 <label for="attivita_taratura_text" class=" control-label pull-right">Presso: </label>
-     	 </div>
-     	<div class="col-sm-4">
-     	 
-     	  <input class="form-control required" id="attivita_taratura_text" type="text" name="attivita_taratura_text"  value="<%if(campione.getAttivita_di_taratura()!=null){out.println(campione.getAttivita_di_taratura());}%>" />
-     	</div>    
-   
-       </div> 
-       
-          <div class="form-group">
-        <label for="note_attivita_taratura" class="col-sm-3 control-label">Note Attività di Taratura:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="note_attivita_taratura" type="text" name="note_attivita_taratura"  value="<%if(campione.getNote_attivita()!=null){out.println(campione.getNote_attivita());} %>" />
-    </div>
-       </div> 
+      
           <div class="form-group">
         <label for="strumento" class="col-sm-3 control-label">Strumento:</label>
         <div class="col-sm-2">
@@ -316,19 +371,27 @@ $('#close_modal_str').on('click', function(){
 	$('#modalStrumenti').modal('hide');
 })
 
+
+	$('#select_manutenzione_mod').change(function(){	
+		var selection = $(this).val();
+		
+		
+		$('#descrizione_manutenzione_mod').append(selection+";\n");
+	});
+
 $(document).ready(function(){
 	console.log("test");
-	var selection = $('#attivita_taratura_text').val();
+	var selection = $('#attivita_taratura_text_mod').val();
 	
 	if(selection=="INTERNA"){
-		$('#attivita_taratura').val(1);
-		$('#attivita_taratura_text').attr("readonly", true);
+		$('#attivita_taratura_mod').val(1);
+		$('#attivita_taratura_text_mod').attr("readonly", true);
 	}else{
-		$('#attivita_taratura').val(0);
-		$('#attivita_taratura_text').attr("readonly", false);
+		$('#attivita_taratura_mod').val(0);
+		$('#attivita_taratura_text_mod').attr("readonly", false);
 	}
 	
-
+$('#select_manutenzione_mod').select2();
  $('.datepicker').bootstrapDP({
 		format: "dd/mm/yyyy"
 	});
@@ -367,16 +430,16 @@ $('.form-control').keypress(function(e){
  });
  */
 
- $('#attivita_taratura').change(function(){
-	var selection = $('#attivita_taratura').val();
+ $('#attivita_taratura_mod').change(function(){
+	var selection = $('#attivita_taratura_mod').val();
 	
 	if(selection==1){
-		$('#attivita_taratura_text').val("INTERNA");
-		$('#attivita_taratura_text').attr("readonly", true);
+		$('#attivita_taratura_text_mod').val("INTERNA");
+		$('#attivita_taratura_text_mod').attr("readonly", true);
 		
 	}else{
-		$('#attivita_taratura_text').val("");
-		$('#attivita_taratura_text').attr("readonly", false);
+		$('#attivita_taratura_text_mod').val("");
+		$('#attivita_taratura_text_mod').attr("readonly", false);
 	}
 	
 }); 

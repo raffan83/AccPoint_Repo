@@ -154,6 +154,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				Date date = format.parse(data_attivita);
 				attivita.setData(date);				
 				attivita.setDescrizione_attivita(descrizione);
+				attivita.setObsoleta("N");
 				if(operatore!=null && !operatore.equals("")) {
 					UtenteDTO user = GestioneUtenteBO.getUtenteById(operatore, session);
 					attivita.setOperatore(user);
@@ -179,7 +180,13 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					attivita.setAllegato(filename);
 				}
 				
+				if(tipo_attivita.equals("2") || (tipo_attivita.equals("1") && tipo_manutenzione!=null && tipo_manutenzione.equals("1"))) {
+					GestioneAttivitaCampioneBO.updateObsolete(idC, Integer.parseInt(tipo_attivita),session);
+				}
+				
 				session.save(attivita);
+				
+								
 				session.getTransaction().commit();
 				session.close();
 				

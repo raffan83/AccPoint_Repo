@@ -85,7 +85,7 @@ public class CreateSchedaScadenzarioCampioni {
 			cal.add(Calendar.DATE, -1);
 			Date d = cal.getTime();
 			
-			report.addParameter("mese", "TRA IL "+ df.format(sdf.parse(data_start)) + " E IL "+ df.format(d));
+			report.addParameter("mese", " TRA IL "+ df.format(sdf.parse(data_start)) + " E IL "+ df.format(d));
  
 			report.setColumnStyle(textStyle); //AGG
 

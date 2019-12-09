@@ -202,18 +202,26 @@
     </div>
      
         </li>
-<%--         <c:if test="${interventover.nStrumentiMisurati > 0 || interventover.nStrumentiNuovi > 0}">
+         <%--       <c:choose>
+         <c:when test="${intervento.nStrumentiMisurati > 0 || intervento.nStrumentiNuovi > 0}"> --%>
  				   <li class="list-group-item">
  				   <h4>Download Schede</h4>
  				<button class="btn btn-default " onClick="scaricaSchedaConsegnaModal()"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
- 				<button class="btn btn-info customTooltip " title="Click per aprire le schede di consegna" onClick="showSchedeConsegna('${utl:encryptData(intervento.id)}')"><i class="fa fa-file-text-o"></i> </button>
+ 				<button class="btn btn-info customTooltip " title="Click per aprire le schede di consegna" onClick="ShowSchedaConsegnaVerificazione('${utl:encryptData(interventover.id)}')"><i class="fa fa-file-text-o"></i> Visualizza Scheda Consegna </button>
    				</li>
- 				   <li class="list-group-item">
- 				<button class="btn btn-default " onClick="scaricaListaCampioni('${intervento.id}')"><i class="glyphicon glyphicon-download"></i> Download Lista Campioni</button>
- 				
 
-       </li>
-       				
+       
+     <%--  </c:when> --%>
+<%--       <c:otherwise >
+      <li class="list-group-item">
+ 				   <h4>Schede di Consegna</h4>
+ 				
+ 				<button class="btn btn-info customTooltip " title="Click per aprire le schede di consegna" onClick="showSchedeConsegna('${utl:encryptData(intervento.id)}')"><i class="fa fa-file-text-o"></i> Visualizza Scheda Consegna</button>
+   				</li>
+      </c:otherwise> 
+      </c:choose>
+        
+
  				 
        
            
@@ -227,7 +235,7 @@
 </div>
 </div>
       
-      
+            
       
       <div class="row">
         <div class="col-xs-12">
@@ -388,6 +396,59 @@
 		</div>
 		
           </div>
+          
+          
+          <div id="myModalDownloadSchedaConsegna" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Scheda Consegna</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="myModalDownloadSchedaConsegnaContent">
+ <form name="scaricaSchedaConsegnaForm" method="post" id="scaricaSchedaConsegnaForm" action="#">
+        <div class="form-group">
+		  <label for="notaConsegna">Consegna di:</label>
+		  <textarea class="form-control" rows="5" name="notaConsegna" id="notaConsegna">${defaultNotaConsegna}</textarea>
+		</div>
+		
+		<div class="form-group">
+		  <label for="notaConsegna">Cortese Attenzione di:</label>
+		  <input class="form-control" id="corteseAttenzione" name="corteseAttenzione" />
+		</div>
+		
+      <fieldset class="form-group">
+		  <label for="gridRadios">Stato Intervento:</label>
+         <div class="form-check">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="0" checked="checked">
+            CONSEGNA DEFINITIVA
+           </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="1">
+            STATO AVANZAMENTO
+          </label>
+
+      </div>
+    </fieldset>	     
+</form>   
+  		 </div>
+      
+    </div>
+     <div class="modal-footer">
+
+     <button class="btn btn-default pull-left" onClick="scaricaSchedaConsegnaVerificazione('${utl:encryptData(interventover.id)}')"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
+   
+    	
+    </div>
+  </div>
+    </div>
+
+</div>
 
 
 <div id="myModalDettaglioVerStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
@@ -887,7 +948,16 @@
 				
 			$('#myModalDettaglioVerStrumento').modal();
 		}
- 	
+		  function scaricaSchedaConsegnaVerificazione(idIntervento){
+			  callAction("scaricaSchedaConsegna.do?action=verificazione&verIntervento="+idIntervento,"#scaricaSchedaConsegnaForm",false);
+			  $("#myModalDownloadSchedaConsegna").modal('hide');
+		  }
+		  
+		  function ShowSchedaConsegnaVerificazione(idIntervento){
+			  callAction("showSchedeConsegna.do?action=verificazione&idIntervento="+idIntervento,false, false);
+		  }
+		  
+		  
 	
     $(document).ready(function() { 
     	

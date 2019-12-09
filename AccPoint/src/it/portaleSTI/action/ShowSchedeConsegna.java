@@ -19,11 +19,13 @@ import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
+import it.portaleSTI.bo.GestioneVerInterventoBO;
 
 /**
  * Servlet implementation class ShowSchedeConsegna
@@ -67,6 +69,7 @@ public class ShowSchedeConsegna extends HttpServlet {
 				List<SchedaConsegnaDTO> result=GestioneSchedaConsegnaBO.getListaSchedeConsegna(Integer.parseInt(idIntervento), session);
 				
 				request.getSession().setAttribute("schede_consegna", result);
+				request.getSession().setAttribute("verificazione", null);
 		
 				session.getTransaction().commit();
 				session.close();	
@@ -81,6 +84,24 @@ public class ShowSchedeConsegna extends HttpServlet {
 				request.getSession().setAttribute("lista_schede_consegna", lista_schede_consegna);
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSchedeConsegnaRilievi.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}else if(action!=null && action.equals("verificazione")){
+				
+				String idIntervento= request.getParameter("idIntervento");
+				idIntervento = Utility.decryptData(idIntervento);
+				
+				VerInterventoDTO intervento = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(idIntervento), session);
+				List<SchedaConsegnaDTO> result=GestioneSchedaConsegnaBO.getListaSchedeConsegnaVerificazione(Integer.parseInt(idIntervento), session);
+				
+				request.getSession().setAttribute("schede_consegna", result);
+				request.getSession().setAttribute("intervento", intervento);
+				request.getSession().setAttribute("verificazione", 1);
+		
+				session.getTransaction().commit();
+				session.close();	
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSchedeConsegna.jsp");
 		     	dispatcher.forward(request,response);
 				
 			}

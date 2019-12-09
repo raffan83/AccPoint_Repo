@@ -1,26 +1,15 @@
 package it.portaleSTI.bo;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
-import it.portaleSTI.DAO.GestioneCampioneDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.RegistroEventiDTO;
-import it.portaleSTI.DTO.RilMisuraRilievoDTO;
-import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
-import it.portaleSTI.action.ContextListener;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -52,7 +41,7 @@ public class CreateSchedaApparecchiaturaCampioni {
 			report.setTemplate(Templates.reportTemplate);
 			
 			report.addParameter("codice_interno", campione.getCodice());
-			report.addParameter("denominazione", campione.getNome());
+			report.addParameter("denominazione", campione.getNome() +" "+campione.getDescrizione());
 			report.addParameter("modello", campione.getModello());
 			report.addParameter("costruttore", campione.getCostruttore());
 			report.addParameter("matricola", campione.getMatricola());
@@ -90,9 +79,18 @@ public class CreateSchedaApparecchiaturaCampioni {
 					report.addParameter("campo_accettabilita", "");
 				}
 				
+				if(campione.getData_messa_in_servizio()!=null) {
+					report.addParameter("data_registrazione", dt.format(campione.getData_messa_in_servizio())); 
+				}else {
+					report.addParameter("data_registrazione", ""); 	
+				}
 				
-				report.addParameter("data_registrazione", ""); //MANCA DATA REGISTRAZIONE
-				report.addParameter("condizioni_utilizzo", ""); //MANCA CONDIZIONI UTILIZZO
+//				report.addParameter("condizioni_utilizzo", ""); //MANCA CONDIZIONI UTILIZZO
+				if(campione.getCampo_misura()!=null) {
+					report.addParameter("campi_misura", campione.getCampo_misura());
+				}else {
+					report.addParameter("campi_misura", "");
+				}
 			}else {
 				
 							
@@ -102,8 +100,19 @@ public class CreateSchedaApparecchiaturaCampioni {
 					report.addParameter("campi_misura", "");
 				}
 				
-				report.addParameter("messa_in_servizio", "");
-				report.addParameter("attivita_verifica", "");
+				if(campione.getData_messa_in_servizio()!=null) {
+					report.addParameter("messa_in_servizio", dt.format(campione.getData_messa_in_servizio())); 
+				}else {
+					report.addParameter("messa_in_servizio", ""); 	
+				}
+				
+				
+				if(campione.getDescrizione_verifica_intermedia()!=null) {
+					report.addParameter("attivita_verifica", campione.getDescrizione_verifica_intermedia());
+				}else{
+					report.addParameter("attivita_verifica", "");	
+				}
+				
 				report.addParameter("frequenza_verifica_intermedia", campione.getFrequenza_verifica_intermedia());
 			}
 			
@@ -126,42 +135,55 @@ public class CreateSchedaApparecchiaturaCampioni {
 			}else {
 				report.addParameter("attivita_taratura", "");
 			}
-			String attivita_manutenzione = "- ";
 			
-			if(registro_eventi) {
-				
-				ArrayList<RegistroEventiDTO> lista_evento_manutenzione = GestioneCampioneBO.getListaEvento(campione.getId(), 1, session);
-				
-				for(int i = 0; i<lista_evento_manutenzione.size(); i++) {
-					if(lista_evento_manutenzione.get(i).getTipo_manutenzione().getId()==1) {
-						if(lista_evento_manutenzione.get(i).getDescrizione()!= null) {
-							attivita_manutenzione =attivita_manutenzione + lista_evento_manutenzione.get(i).getDescrizione() +"\n- ";	
-						}											
-					}
-				}
-				attivita_manutenzione = attivita_manutenzione.substring(0, attivita_manutenzione.length()-2);
-				
+			if(campione.getNote_attivita()!=null) {
+				report.addParameter("descrizione_attivita_taratura", campione.getNote_attivita());
 			}else {
-				ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni = GestioneAttivitaCampioneBO.getListaManutenzioni(campione.getId(), session);
-				
-				for(int i = 0; i<lista_manutenzioni.size(); i++) {
-					if(lista_manutenzioni.get(i).getTipo_manutenzione()==1) {
-						attivita_manutenzione =attivita_manutenzione + lista_manutenzioni.get(i).getDescrizione_attivita() +"\n- ";					
-					}
-				}
-				attivita_manutenzione = attivita_manutenzione.substring(0, attivita_manutenzione.length()-2);
+				report.addParameter("descrizione_attivita_taratura", "");
 			}
 			
+//			String attivita_manutenzione = "- ";
+//			
+//			if(registro_eventi) {
+//				
+//				ArrayList<RegistroEventiDTO> lista_evento_manutenzione = GestioneCampioneBO.getListaEvento(campione.getId(), 1, session);
+//				
+//				for(int i = 0; i<lista_evento_manutenzione.size(); i++) {
+//					if(lista_evento_manutenzione.get(i).getTipo_manutenzione().getId()==1) {
+//						if(lista_evento_manutenzione.get(i).getDescrizione()!= null) {
+//							attivita_manutenzione =attivita_manutenzione + lista_evento_manutenzione.get(i).getDescrizione() +"\n- ";	
+//						}											
+//					}
+//				}
+//				attivita_manutenzione = attivita_manutenzione.substring(0, attivita_manutenzione.length()-2);
+//				
+//			}else {
+//				ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni = GestioneAttivitaCampioneBO.getListaManutenzioni(campione.getId(), session);
+//				
+//				for(int i = 0; i<lista_manutenzioni.size(); i++) {
+//					if(lista_manutenzioni.get(i).getTipo_manutenzione()==1) {
+//						attivita_manutenzione =attivita_manutenzione + lista_manutenzioni.get(i).getDescrizione_attivita() +"\n- ";					
+//					}
+//				}
+//				attivita_manutenzione = attivita_manutenzione.substring(0, attivita_manutenzione.length()-2);
+//			}
+//			
+//			
+//			
+//			report.addParameter("attivita_manutenzione",attivita_manutenzione);
 			
-			
-			report.addParameter("attivita_manutenzione",attivita_manutenzione);
+			if(campione.getDescrizione_manutenzione()!=null) {
+				report.addParameter("attivita_manutenzione",campione.getDescrizione_manutenzione());
+			}else{
+				report.addParameter("attivita_manutenzione","");	
+			}
 			
 			report.addParameter("frequenza_manutenzione", campione.getFrequenza_manutenzione());
 			
 			
-			String nome_logo = campione.getCompany().getNomeLogo().substring(0,campione.getCompany().getNomeLogo().length()-4 );
+			//String nome_logo = campione.getCompany().getNomeLogo().substring(0,campione.getCompany().getNomeLogo().length()-4 );
 			
-			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +nome_logo+"_sc.jpg");
+			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti.png");
 			if(imageHeader!=null) {
 				report.addParameter("logo",imageHeader);
 			
@@ -169,10 +191,13 @@ public class CreateSchedaApparecchiaturaCampioni {
 			
 			report.setDataSource(new JREmptyDataSource());
 			
-			
-			//String path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaApparecchiatura\\sa_"+campione.getId()+".pdf";
+			String path = "";
+			if(registro_eventi) {
+				path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\RegistroEventi\\SchedaApparecchiatura\\";
+			}else {
+				path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaApparecchiatura\\";
+			}
 			 
-			String path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\RegistroEventi\\SchedaApparecchiatura\\";
 			  java.io.File folder = new java.io.File(path);
 			  if(!folder.exists()) {
 				  folder.mkdirs();

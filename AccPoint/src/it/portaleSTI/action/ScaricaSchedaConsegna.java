@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,18 +27,24 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
+import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerMisuraDTO;
+import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaConsegnaMetrologia;
+import it.portaleSTI.bo.CreateSchedaConsegnaVerificazione;
 import it.portaleSTI.bo.CreateSchedaConsegnaRilieviDimensionali;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
+import it.portaleSTI.bo.GestioneVerInterventoBO;
 
 /**
  * Servlet implementation class ScaricaCertificato
@@ -188,6 +196,66 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 
+			}
+			else if(action.equals("verificazione")) {
+				
+				String verIntervento= request.getParameter("verIntervento");
+				String notaConsegna= request.getParameter("notaConsegna");
+				String corteseAttenzione= request.getParameter("corteseAttenzione");
+				String stato= request.getParameter("gridRadios");
+				
+				verIntervento = Utility.decryptData(verIntervento);
+				
+				VerInterventoDTO intervento = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(verIntervento), session);
+				
+				ArrayList<VerMisuraDTO> listaMisure = GestioneVerInterventoBO.getListaMisureFromIntervento(Integer.parseInt(verIntervento), session);
+				ArrayList<VerStrumentoDTO> listaStrumenti = new ArrayList<VerStrumentoDTO>();
+				
+				for (VerMisuraDTO misura : listaMisure) {
+					listaStrumenti.add(misura.getVerStrumento());
+				}
+				UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+				
+				SchedaConsegnaDTO scheda = new SchedaConsegnaDTO();
+				scheda.setAbilitato(1);
+				scheda.setVer_intervento(intervento);
+				scheda.setStato(0);
+				Date date = Calendar.getInstance().getTime();  
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");  
+              
+				scheda.setData_caricamento(dateFormat.format(date));
+				new CreateSchedaConsegnaVerificazione(intervento,notaConsegna,Integer.parseInt(stato),corteseAttenzione,listaStrumenti,utente.getCompany());
+				scheda.setNome_file("SchedaDiConsegna.pdf");
+				
+				
+				
+				File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNome_pack()+"//SchedaDiConsegna.pdf");
+				
+				 FileInputStream fileIn = new FileInputStream(d);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename=SchedaDiConsegna.pdf");
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				
+				    
+				    session.save(scheda);
+				    session.getTransaction().commit();
+				    session.close();
+				    
 			}
 		}
 		catch(Exception e)

@@ -81,6 +81,11 @@ public class CampioneDTO implements Serializable {
 	private String campo_misura;
 	private String note_attivita;
 	private Integer id_strumento;
+	private String descrizione_manutenzione;
+	private String descrizione_verifica_intermedia;
+	private int settore;
+	private Date data_messa_in_servizio;
+	
 	
 	
 	public Integer getId_strumento() {
@@ -405,6 +410,38 @@ public class CampioneDTO implements Serializable {
 
 	public void setNote_attivita(String note_attivita) {
 		this.note_attivita = note_attivita;
+	}
+
+	public String getDescrizione_verifica_intermedia() {
+		return descrizione_verifica_intermedia;
+	}
+
+	public void setDescrizione_verifica_intermedia(String descrizione_verifica_intermedia) {
+		this.descrizione_verifica_intermedia = descrizione_verifica_intermedia;
+	}
+
+	public String getDescrizione_manutenzione() {
+		return descrizione_manutenzione;
+	}
+
+	public void setDescrizione_manutenzione(String descrizione_manutenzione) {
+		this.descrizione_manutenzione = descrizione_manutenzione;
+	}
+
+	public int getSettore() {
+		return settore;
+	}
+
+	public void setSettore(int settore) {
+		this.settore = settore;
+	}
+
+	public Date getData_messa_in_servizio() {
+		return data_messa_in_servizio;
+	}
+
+	public void setData_messa_in_servizio(Date data_messa_in_servizio) {
+		this.data_messa_in_servizio = data_messa_in_servizio;
 	}
 
 }

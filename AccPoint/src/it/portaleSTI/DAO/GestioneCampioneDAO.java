@@ -61,7 +61,7 @@ public class GestioneCampioneDAO {
 		
 				if(date!=null)
 				{
-				String s_query = "from CampioneDTO WHERE data_scadenza = :date";
+				String s_query = "from CampioneDTO WHERE data_scadenza = :date and stato_campione != 'F'";
 			    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		        Date dt = df.parse(date);
 			    query = session.createQuery(s_query);
@@ -76,7 +76,7 @@ public class GestioneCampioneDAO {
 		{
 			if(date!=null)
 			{
-			String s_query = "from CampioneDTO WHERE data_scadenza = :date AND id_Company=:_idc";
+			String s_query = "from CampioneDTO WHERE data_scadenza = :date AND id_Company=:_idc and stato_campione != 'F'";
 		    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	        Date dt = df.parse(date);
 		    query = session.createQuery(s_query);
@@ -839,7 +839,7 @@ public static ArrayList<CampioneDTO> getListaCampioniInServizio() {
 	session.beginTransaction();
 	ArrayList<CampioneDTO> lista = null;
 	
-	Query query = session.createQuery("from CampioneDTO where stato_campione!='F'");
+	Query query = session.createQuery("from CampioneDTO where stato_campione!='F' and codice not like '%CDT%'");
 	
 			
 	lista = (ArrayList<CampioneDTO>) query.list();

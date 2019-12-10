@@ -317,7 +317,7 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 	if(tipo_data_lat!=null) {
 		
 		if(tipo_data_lat.equals("1")) {
-			query = session.createQuery("from AcAttivitaCampioneDTO where tipo_attivita.id = 1");	
+			query = session.createQuery("from AcAttivitaCampioneDTO where tipo_attivita.id = 1 and (obsoleta = null or obsoleta = 'N')");	
 						
 			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
 			
@@ -336,7 +336,7 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 			}
 		}
 		else if(tipo_data_lat.equals("2")) {
-			query = session.createQuery("from AcAttivitaCampioneDTO where data_scadenza = :_date and tipo_attivita.id = 2");	
+			query = session.createQuery("from AcAttivitaCampioneDTO where data_scadenza = :_date and tipo_attivita.id = 2 and (obsoleta = null or obsoleta = 'N')");	
 			query.setParameter("_date", df.parse(data));
 			
 			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
@@ -349,7 +349,7 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 			
 		}
 		else if(tipo_data_lat.equals("3")) {
-			query = session.createQuery("from CampioneDTO where data_scadenza = :_date and stato_campione != 'F'");	
+			query = session.createQuery("from CampioneDTO where data_scadenza = :_date and stato_campione != 'F' and (obsoleta = null or obsoleta = 'N')");	
 			query.setParameter("_date", df.parse(data));
 			
 			lista = (ArrayList<CampioneDTO>) query.list();
@@ -359,7 +359,7 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 
 	
 	}else {
-		query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1");
+		query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1 and campione.statoCampione!='F' and (obsoleta = null or obsoleta = 'N')");
 		
 		registro = (ArrayList<RegistroEventiDTO>) query.list();
 		

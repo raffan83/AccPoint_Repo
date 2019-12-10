@@ -28,6 +28,7 @@ import com.google.gson.JsonParser;
 import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -40,9 +41,11 @@ import it.portaleSTI.bo.CreateVerCertificato;
 import it.portaleSTI.bo.CreateVerRapporto;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneConfigurazioneClienteBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.GestioneVerCertificatoBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;
+import it.portaleSTI.bo.SendEmailBO;
 
 /**
  * Servlet implementation class GestioneVerCertificati
@@ -384,6 +387,49 @@ public class GestioneVerCertificati extends HttpServlet {
 				session.close();
 			    out.println(myObj.toString());
 			}
+			else if(action.equals("indirizzo_email")) {
+				
+				ajax = true;
+				String id_certificato = request.getParameter("id_certificato");
+				
+				VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id_certificato), session);
+				String indirizzo = "";
+				if(certificato.getMisura().getVerIntervento().getId_sede()==0) {
+					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(""+certificato.getMisura().getVerIntervento().getId_cliente());
+					indirizzo = cliente.getEmail();
+				}else {
+					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteFromSede(""+certificato.getMisura().getVerIntervento().getId_cliente(), ""+certificato.getMisura().getVerIntervento().getId_sede());
+					indirizzo = cliente.getEmail();							
+				}
+				if(indirizzo == null) {
+					indirizzo = "";
+				}
+				PrintWriter out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("indirizzo", indirizzo);
+				
+				session.getTransaction().commit();
+				session.close();
+			    out.println(myObj);
+			}
+			else if(action.equals("invia_email")) {
+				
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+ 				ajax = true;
+				String id_certificato = request.getParameter("id_certificato");
+				String indirizzo = request.getParameter("indirizzo");
+				
+				VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id_certificato), session);
+					
+				SendEmailBO.sendEmailCertificatoVerificazione(certificato, indirizzo, getServletContext());
+
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Email inviata con successo");
+				out.println(myObj.toString());
+				
+			}
+			
 		}catch (Exception e) {
 			session.getTransaction().rollback();
         	session.close();

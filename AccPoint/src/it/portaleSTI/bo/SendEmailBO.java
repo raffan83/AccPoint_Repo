@@ -4,7 +4,14 @@ package it.portaleSTI.bo;
 
 import java.io.File;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.URLDataSource;
 import javax.mail.Authenticator;
+import javax.mail.BodyPart;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.mail.EmailAttachment;
@@ -12,6 +19,7 @@ import org.apache.commons.mail.HtmlEmail;
 
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.Util.Costanti;
  
 
@@ -72,4 +80,86 @@ public class SendEmailBO {
 		  
 		  
  	}
+	
+	
+public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certificato, String mailTo, ServletContext ctx) throws Exception {
+				
+		
+		String filenameAtt = certificato.getNomeCertificato();
+		String filenameRap = certificato.getNomeRapporto();
+		String filenameP7m = certificato.getNomeCertificato()+".p7m";
+		String pack = certificato.getMisura().getVerIntervento().getNome_pack();
+		
+		  // Create the attachment
+		  EmailAttachment attachment = new EmailAttachment();
+		  attachment.setPath(Costanti.PATH_FOLDER+pack+"/"+filenameAtt);
+		  attachment.setDisposition(EmailAttachment.ATTACHMENT);
+		  attachment.setDescription("Attestato "+certificato.getId());
+		  attachment.setName(certificato.getNomeCertificato());
+		  
+		  
+		  EmailAttachment attachmentRap = new EmailAttachment();
+		  attachmentRap.setPath(Costanti.PATH_FOLDER+pack+"/Rapporto/"+filenameRap);
+		  attachmentRap.setDisposition(EmailAttachment.ATTACHMENT);
+		  attachmentRap.setDescription("Rapporto "+certificato.getId());
+		  attachmentRap.setName(certificato.getNomeRapporto());
+		  
+		  
+		  
+		  EmailAttachment attachmentP7m = new EmailAttachment();
+		  attachmentP7m.setPath(Costanti.PATH_FOLDER+pack+"/"+filenameP7m);
+		  attachmentP7m.setDisposition(EmailAttachment.ATTACHMENT);
+		  attachmentP7m.setDescription("Attestato "+certificato.getId());
+		  attachmentP7m.setName(certificato.getNomeCertificato()+".p7m");
+		  
+		  // Create the email message
+		  HtmlEmail email = new HtmlEmail();
+		  email.setHostName("smtps.aruba.it");
+  		 //email.setDebug(true);
+		  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+
+
+
+	        email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+	        email.getMailSession().getProperties().put("mail.debug", "true");
+	        email.getMailSession().getProperties().put("mail.smtp.port", "465");
+	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+	        email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+		  
+
+		  email.addTo(mailTo);
+		  email.setFrom("commerciale@stisrl.com", "Calver");
+		  email.setSubject("Trasmissione rapporti di verificazione periodica Vs. bilance");
+		  
+
+		  File img = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti_ddt.png");
+
+		  StringBuffer msg = new StringBuffer();
+		  msg.append("<html><body>");
+		  msg.append("<html>Gentile Cliente, <br /> " + 
+		  		"Inviamo in allegato il Rapporto e l'Attestato di verificazione periodica dei Vs. strumenti di misura. <br /> " + 
+		  		"Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata, unitamente al libretto metrologico, per tutto il periodo di validit&agrave; della verificazione (tre anni dalla data di svolgimento), ed esibita agli Enti incaricati in occasione delle attivit&agrave; di vigilanza e controllo. <br /> " + 		
+		  		" <br />  <br /> <br /></html>");
+		  msg.append("<img width='350' src=cid:").append(email.embed(img)).append(">");
+	
+		  msg.append("</body></html>");
+		  email.setHtmlMsg(msg.toString());
+		  
+		  // add the attachment
+		  email.attach(attachment);
+		  email.attach(attachmentRap);
+		  email.attach(attachmentP7m);
+		  
+		  // send the email
+		  email.send();
+		  
+		  
+		  
+ 	}
+	
+	
+
 }

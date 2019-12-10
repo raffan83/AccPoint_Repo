@@ -126,6 +126,10 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
          <option value="Controllo presenza grasso di vaselina (visivo)">Controllo presenza grasso di vaselina (visivo) </option>
          <option value="Controllo interno / esterno dello stato del contenitore (visivo)">Controllo interno / esterno dello stato del contenitore (visivo)</option>
          <option value="Verifica sicurezza elettrica">Verifica sicurezza elettrica</option>
+          <option value="Controllo dello stato integrità del vetro (visivo)">Controllo dello stato integrità del vetro (visivo)</option>
+         <option value="Controllo stato di serraggio del vetro al contenitore (pratico)">Controllo stato di serraggio del vetro al contenitore (pratico)</option>
+         <option value="Controllo della presenza di elementi che ostruiscono il passaggio del fluido nel condotto (Visivo)">Controllo della presenza di elementi che ostruiscono il passaggio del fluido nel condotto (Visivo)</option>
+         <option value="Controllo stato della filettatura (visivo)">Controllo stato della filettatura (visivo)</option>
          </select>
 			
      	</div>
@@ -147,7 +151,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
        
         <div class="col-sm-4">
 
-         			<select  class="form-control" id="attivita_di_taratura_mod"  name="attivita_di_taratura_mod" >
+         			<select  class="form-control" id="attivita_taratura_mod"  name="attivita_taratura_mod" >
 						<option value="0">ESTERNA</option>
          				<option value="1">INTERNA</option>
          			
@@ -378,6 +382,9 @@ $('#close_modal_str').on('click', function(){
 		
 		$('#descrizione_manutenzione_mod').append(selection+";\n");
 	});
+	
+	
+
 
 $(document).ready(function(){
 	console.log("test");

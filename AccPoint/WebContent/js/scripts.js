@@ -12014,11 +12014,13 @@ function sendEmailVerificazione(){
  				$('#report_button').hide();
  				$('#visualizza_report').hide();
  				$('#myModalError').modal('show');
-			 
+ 				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalSendEmail').modal('hide');
+				});
 		
 		  }else{
 			  
-			  $('#myModalErrorContent').html("Errore nel recupero dell'email!");
+			  $('#myModalErrorContent').html("Errore nell'invio dell'email!");
  			  	$('#myModalError').removeClass();
  				$('#myModalError').addClass("modal modal-danger");
  				$('#report_button').hide();

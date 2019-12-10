@@ -42,7 +42,7 @@
    
     <th>Operatore</th>
     <%-- <th>Numero certificato</th> --%>
- <th>Azioni</th>
+ <th style="min-width:270px">Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -99,11 +99,15 @@
 			  <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF dell'Attestato"  href="gestioneVerCertificati.do?action=download&cert_rap=1&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
 			  </c:if>
 			<c:if test="${certificato.firmato == 1}">
+			<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF dell'Attestato"  href="gestioneVerCertificati.do?action=download&cert_rap=1&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
 			<a  target="_blank" class="btn btn-success customTooltip" title="Click per scaricare il p7m dell'Attestato"  href="gestioneVerCertificati.do?action=download&cert_rap=1&p7m=1&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-zip-o"></i></a>
 			</c:if>
 			 <c:if test="${userObj.checkPermesso('FIRMA_ATTESTATO_VERIFICAZIONE')}">
 			 <a class="btn btn-warning customTooltip" title="Click per firmare il certificato con firma digitale" href="#" onClick="openModalPin(${certificato.id})"><i class="fa fa-pencil"></i></a>
 			  
+			  </c:if>
+			  <c:if test="${userObj.checkRuolo('AM') && certificato.firmato == 1}">
+			  <a class="btn btn-info customTooltip" title="Click per inviare il certificato per e-mail"onClick="modalEmailVerificazione('${certificato.id}')"><i class="fa fa-paper-plane-o"></i></a>
 			  </c:if>
 			<%-- <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="gestioneVerCertificati.do?action=download&&cert_rap=0&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a> --%>
 		</td>
@@ -153,6 +157,61 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
+ 	       <div id="myModalSendEmail" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h4 class="modal-title" id="myModalLabelHeader">Invia Attestato per email</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-sm-2">
+			
+        <label class="pull-right">Indirizzo:</label>
+        </div>
+        <div class="col-sm-7">
+                      <input class="form-control" id="indirizzo_1" type="email" name="indirizzo_1" autocomplete="off"/>
+   			 </div>
+   		<div class="col-sm-3">
+            <!--  <a class="btn btn-info" title="Aggiungi indirizzo" onClick="aggiungiIndirizzo()"><i class="fa fa-plus"></i></a> -->
+             <a class="btn btn-danger" id="elimina_indirizzo" title="Elimina indirizzo" onClick="eliminaIndirizzo()" style="display:none"><i class="fa fa-minus"></i></a>
+             
+   			 </div>	 
+   			 <br><br>	
+     		</div>
+		<div id="body_send_email">
+		
+		
+		
+		
+		</div>
+		</div>
+      <div class="modal-footer">
+ 		<div class="row">
+ 		<div class="col-sm-2">
+ 		<a id="close_button" type="button" class="btn btn-info pull-left" onClick="sendEmailVerificazione()">Invia</a> 
+ 		</div>
+ 		<div class="col-sm-10">
+ 		
+ 		<input type="hidden" id="id_certificato" name="id_certificato"> 
+ 		</div>
+ 		</div>
+         
+         
+         </div>
+     
+    </div>
+  </div>
+</div>
+
+
 
   </div>
 </div>
@@ -286,10 +345,33 @@
 
 	} );
 
-  
+	
+	function aggiungiIndirizzo(){
+				
+		var str1 = '<div class="row" id="row_'+indirizzo+'"><div class="col-sm-2"><label class="pull-right">Indirizzo '+indirizzo+':</label></div><div class="col-sm-7">';
+		var str2 = '<input class="form-control" id="indirizzo_'+indirizzo+'" type="email" name="indirizzo_'+indirizzo+'" autocomplete="off"/></div><br><br></div>';
+		
+        var str = str1+str2;
+
+		$('#body_send_email').append(str);
+		indirizzo++;
+		
+		$('#elimina_indirizzo').show()
+	}
+	
+	function eliminaIndirizzo(){
+		
+		if(indirizzo!=2){
+			$('#row_'+(indirizzo-1)).remove();
+			indirizzo--;
+		}
+	
+	}
+	
+	var indirizzo;
     $(document).ready(function() {
     
-    
+    	indirizzo = 2;
     	var maxSelect = 100;
 
     	pin0 = "${userObj.getPin_firma()}";

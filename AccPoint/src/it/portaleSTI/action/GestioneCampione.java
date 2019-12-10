@@ -470,7 +470,7 @@ public class GestioneCampione extends HttpServlet {
 			  String id_strumento = (String)ret.get("strumento");
 			  String descrizione_manutenzione = (String)ret.get("descrizione_manutenzione_mod");
 			  String descrizione_verifica_intermedia = (String)ret.get("descrizione_verifica_intermedia_mod");
-			  String attivita_di_taratura = (String) ret.get("attivita_di_taratura_mod");
+			  String attivita_di_taratura = (String) ret.get("attivita_taratura_text_mod");
 			  
 			 
 				campione.setNome(nome);

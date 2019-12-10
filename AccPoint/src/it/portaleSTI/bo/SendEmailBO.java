@@ -94,14 +94,14 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 		  EmailAttachment attachment = new EmailAttachment();
 		  attachment.setPath(Costanti.PATH_FOLDER+pack+"/"+filenameAtt);
 		  attachment.setDisposition(EmailAttachment.ATTACHMENT);
-		  attachment.setDescription("Attestato "+certificato.getId());
+		  attachment.setDescription(certificato.getNomeCertificato());
 		  attachment.setName(certificato.getNomeCertificato());
 		  
 		  
 		  EmailAttachment attachmentRap = new EmailAttachment();
 		  attachmentRap.setPath(Costanti.PATH_FOLDER+pack+"/Rapporto/"+filenameRap);
 		  attachmentRap.setDisposition(EmailAttachment.ATTACHMENT);
-		  attachmentRap.setDescription("Rapporto "+certificato.getId());
+		  attachmentRap.setDescription(certificato.getNomeRapporto());
 		  attachmentRap.setName(certificato.getNomeRapporto());
 		  
 		  
@@ -109,7 +109,7 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 		  EmailAttachment attachmentP7m = new EmailAttachment();
 		  attachmentP7m.setPath(Costanti.PATH_FOLDER+pack+"/"+filenameP7m);
 		  attachmentP7m.setDisposition(EmailAttachment.ATTACHMENT);
-		  attachmentP7m.setDescription("Attestato "+certificato.getId());
+		  attachmentP7m.setDescription(certificato.getNomeCertificato()+".p7m");
 		  attachmentP7m.setName(certificato.getNomeCertificato()+".p7m");
 		  
 		  // Create the email message

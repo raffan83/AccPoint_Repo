@@ -432,7 +432,7 @@ public class CreateVerRapporto {
 		}
 		
 		report.addParameter("registro", misura.getId()+"_"+misura.getVerStrumento().getId()); //MANCA REGISTRO
-		report.addParameter("procedura", "PDI-001 Rev.0"); 
+		report.addParameter("procedura", "PT-020 Rev. A"); 
 		
 		if(utente.getFile_firma()!=null) {
 			if(firma!=null) {

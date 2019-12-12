@@ -349,7 +349,7 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 			
 		}
 		else if(tipo_data_lat.equals("3")) {
-			query = session.createQuery("from CampioneDTO where data_scadenza = :_date and stato_campione != 'F' and (obsoleta = null or obsoleta = 'N')");	
+			query = session.createQuery("from CampioneDTO where data_scadenza = :_date and stato_campione != 'F'");	
 			query.setParameter("_date", df.parse(data));
 			
 			lista = (ArrayList<CampioneDTO>) query.list();

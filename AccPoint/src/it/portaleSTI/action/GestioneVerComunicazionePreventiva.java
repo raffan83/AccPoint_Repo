@@ -218,11 +218,11 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 						intervento_strumenti.setId_intervento(intervento.getId());
 						intervento_strumenti.setVerStrumento(ver_strumento);
 						intervento_strumenti.setOra_prevista(id.split("_")[1]);
+						intervento_strumenti.setPreventiva("N");
 						if(intervento.getIn_sede_cliente()==2) {
 							intervento_strumenti.setVia(id.split("_")[2]);
 							intervento_strumenti.setCivico(id.split("_")[3]);
-							intervento_strumenti.setComune(new ComuneDTO(Integer.parseInt(id.split("_")[4])));
-							intervento_strumenti.setPreventiva("N");
+							intervento_strumenti.setComune(new ComuneDTO(Integer.parseInt(id.split("_")[4])));							
 						}
 						session.save(intervento_strumenti);
 					}

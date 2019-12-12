@@ -471,6 +471,7 @@ public class GestioneCampione extends HttpServlet {
 			  String descrizione_manutenzione = (String)ret.get("descrizione_manutenzione_mod");
 			  String descrizione_verifica_intermedia = (String)ret.get("descrizione_verifica_intermedia_mod");
 			  String attivita_di_taratura = (String) ret.get("attivita_taratura_text_mod");
+			  String tipo_campione = (String) ret.get("tipoCampione_mod");
 			  
 			 
 				campione.setNome(nome);
@@ -488,6 +489,7 @@ public class GestioneCampione extends HttpServlet {
 				
 				campione.setCampo_misura(campo_misura);
 				campione.setUnita_formato(unita_formato);
+				campione.setTipo_campione(new TipoCampioneDTO(Integer.parseInt(tipo_campione), ""));
 				
 				if(id_strumento!=null && !id_strumento.equals("")) {
 					campione.setId_strumento(Integer.parseInt(id_strumento));

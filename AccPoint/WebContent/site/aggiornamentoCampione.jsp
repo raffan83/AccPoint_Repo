@@ -25,6 +25,32 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
  
  <form class="form-horizontal" id="formAggiornamentoCampione">
  
+           <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Tipo Campione:</label>
+        <div class="col-sm-9">
+                     
+					   <select class="form-control" id="tipoCampione_mod" name="tipoCampione_mod" required >
+                      
+                                            <%
+                                            for(TipoCampioneDTO cmp :listaTipoCampione)
+                                            {
+                                            	String def = "";
+                                            	if(campione.getTipo_campione().getId() == cmp.getId()){
+                                            		def = "selected";
+                                            	}else{
+                                            		def = "";
+                                            	}
+                                            	 %> 
+                            	            	 <option <%=def%> value="<%=cmp.getId() %>"><%=cmp.getNome() %></option>
+                            	            	 <%	 
+                                            }
+                                            %>
+                                            
+                      </select>
+                      
+                      
+    </div>
+     </div>
 
 
    <div class="form-group">
@@ -383,11 +409,125 @@ $('#close_modal_str').on('click', function(){
 		$('#descrizione_manutenzione_mod').append(selection+";\n");
 	});
 	
+$('#tipoCampione_mod').change(function(){
 	
+	if($(this).val() == 3){
+		$('#attivita_taratura_mod').attr('disabled', true);
+		$('#attivita_taratura_text_mod').attr('disabled', true);
+		$('#note_attivita_taratura_mod').attr('disabled', true);
+		$('#freqTaratura_mod').attr('disabled', true);
+		$('#campo_accettabilita_mod').attr('disabled', true);
+		$('#interpolazione_mod').attr('disabled', true);
+		$('#dataVerifica_mod').attr('disabled', true);
+		$('#codice_mod').attr('readonly', true);
+		
+	/* 	$('#certificato_mod').attr('disabled', true); */
+		$('#numeroCerificato_mod').attr('disabled', true);
+		$('#ente_certificatore_mod').attr('disabled', true);
+		$('#descrizione_verifica_intermedia_mod').attr('disabled', true);
+		$('#frequenza_verifica_intermedia_mod').attr('disabled', true);
+		$('#interpolato_mod').attr('disabled', true);
+		$('#attivita_taratura_mod').attr('required', false);
+		$('#attivita_taratura_text_mod').attr('required', false);
+		$('#note_attivita_taratura_mod').attr('required', false);
+		$('#freqTaratura_mod').attr('required', false);
+		$('#select_manutenzione_mod').attr('disabled', false);
+		$('#descrizione_manutenzione_mod').attr('disabled', false);
+		$('#frequenza_manutenzione_mod').attr('disabled', false);
+		$('#campo_accettabilita_mod').attr('required', false);
+		$('#interpolazione_mod').attr('required', false);
+		$('#dataVerifica_mod').attr('required', false);
+		/* $('#certificato_mod').attr('required', false); */
+		$('#numeroCerificato_mod').attr('required', false);
+		$('#ente_certificatore_mod').attr('required', false);
+		$('#descrizione_verifica_intermedia_mod').attr('required', false);
+		$('#frequenza_verifica_intermedia_mod').attr('required', false);
+		$('#interpolato_mod').attr('required', false);
+
+		
+	}
+	else if($(this).val() == 4){
+		$('#codice_mod').attr('readonly',false);		
+		
+		$('#attivita_taratura_mod').attr('disabled', false);
+		$('#attivita_taratura_text_mod').attr('disabled', false);
+		$('#note_attivita_taratura_mod').attr('disabled', false);
+		$('#freqTaratura_mod').attr('disabled', false);
+		$('#campo_accettabilita_mod').attr('disabled', false);
+		$('#interpolazione_mod').attr('disabled', false);
+		$('#dataVerifica_mod').attr('disabled', false);
+		/* $('#certificato_mod').attr('disabled', false); */
+		$('#numeroCerificato_mod').attr('disabled', false);
+		$('#ente_certificatore_mod').attr('disabled', false);
+		$('#descrizione_verifica_intermedia_mod').attr('disabled', true);
+		$('#frequenza_verifica_intermedia_mod').attr('disabled', true);
+		$('#select_manutenzione_mod').attr('disabled', false);
+		$('#descrizione_manutenzione_mod').attr('disabled', false);
+		$('#frequenza_manutenzione_mod').attr('disabled', false);
+		$('#select_manutenzione_mod').attr('disabled', true);
+		$('#descrizione_manutenzione_mod').attr('disabled', true);
+		$('#frequenza_manutenzione_mod').attr('disabled', true);
+		$('#interpolato_mod').attr('disabled', false);
+		$('#attivita_taratura_mod').attr('required', true);
+		$('#attivita_taratura_text_mod').attr('required', true);
+		$('#note_attivita_taratura_mod').attr('required', true);
+		$('#freqTaratura_mod').attr('required', true);
+		$('#campo_accettabilita_mod').attr('required', false);
+		$('#interpolazione_mod').attr('required', false);
+		$('#dataVerifica_mod').attr('required', false);
+		/* $('#certificato_mod').attr('required', false); */
+		$('#numeroCerificato_mod').attr('required', false);
+		$('#ente_certificatore_mod').attr('required', false);
+		$('#descrizione_verifica_intermedia_mod').attr('required', false);
+		$('#frequenza_verifica_intermedia_mod').attr('required', false);
+		$('#interpolato_mod').attr('required', false);
+
+	}
+	else{
+		
+		$('#attivita_di_taratura').attr('required', true);
+		$('#attivita_di_taratura_text').attr('required', true);
+		$('#note_attivita_taratura').attr('required', true);
+		$('#freqTaratura_mod').attr('disabled', true);
+		$('#campo_accettabilita_mod').attr('required', true);
+		$('#interpolazione_mod').attr('required', true);
+		$('#dataVerifica_mod').attr('required', true);
+		/* $('#certificato_mod').attr('required', true); */
+		$('#numeroCerificato_mod').attr('required', true);
+
+
+		/* $('#ente_certificatore').attr('required', true); 
+		$('#descrizione_verifica_intermedia').attr('required', true);
+		$('#frequenza_verifica_intermedia').attr('required', true);*/
+		$('#select_manutenzione_mod').attr('disabled', false);
+		$('#descrizione_manutenzione_mod').attr('disabled', false);
+		$('#frequenza_manutenzione_mod').attr('disabled', false);
+		$('#interpolato_mod').attr('required', true);
+		$('#attivita_taratura_mod').attr('disabled', false);
+		$('#attivita_taratura_text_mod').attr('disabled', false);
+		$('#note_attivita_taratura_mod').attr('disabled', false);
+		$('#freqTaratura_mod').attr('disabled', false);
+		$('#campo_accettabilita_mod').attr('disabled', false);
+		$('#interpolazione_mod').attr('disabled', false);
+		$('#dataVerifica_mod').attr('disabled', false);
+		/* $('#certificato_mod').attr('disabled', false); */
+		$('#numeroCerificato_mod').attr('disabled', false);
+		$('#ente_certificatore_mod').attr('disabled', false);
+		$('#descrizione_verifica_intermedia_mod').attr('disabled', false);
+		$('#frequenza_verifica_intermedia_mod').attr('disabled', false);
+		$('#interpolato_mod').attr('disabled', false);
+		
+
+	}
+	
+});
 
 
 $(document).ready(function(){
 	console.log("test");
+	
+	$('#tipoCampione_mod').select2();
+	
 	var selection = $('#attivita_taratura_text_mod').val();
 	
 	if(selection=="INTERNA"){

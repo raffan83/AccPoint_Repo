@@ -10969,6 +10969,7 @@ function creaEsitoComunicazione(str){
 		pleaseWaitDiv.modal('hide');
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");	  
+			$('#myModalErrorContent').html(data.messaggio);
 			$('#report_button').show();
 			$('#visualizza_report').show();
 				$('#myModalError').modal('show');

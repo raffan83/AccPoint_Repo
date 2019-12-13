@@ -256,8 +256,8 @@
             //captionTooltip: '',
             initRows: 1,
             hideButtons: {
-                remove: true,
-                insert:true
+                remove: false,
+                insert:false
             },
             columns: [
 
@@ -305,17 +305,23 @@
                 },
                 afterRowAppended: function (caller, parentRowIndex, addedRowIndex) {
                     // Copy data of `Year` from parent row to new added rows
-                   
-             /*  modificaValoriCampioneTrigger(umJson);
-                    selection(addedRowIndex);
-                	 */
 
+                	 
                 	 modificaValoriCampioneTrigger(umJson, (parseInt(addedRowIndex)+1+row_deleted));
                 	$('#tblAppendGrid_tipo_grandezza_'+(parseInt(addedRowIndex)+1+row_deleted)).select2();
                 	$('#tblAppendGrid_unita_misura_'+(parseInt(addedRowIndex)+1+row_deleted)).select2();
                 	
                 },
       
+                afterRowInserted: function (caller, parentRowIndex, addedRowIndex) {
+                    // Copy data of `Year` from parent row to new added rows
+   
+                	 var index = caller.rows.length-2;
+                	 modificaValoriCampioneTrigger(umJson, (index+row_deleted));
+                	$('#tblAppendGrid_tipo_grandezza_'+(index+row_deleted)).select2();
+                	$('#tblAppendGrid_unita_misura_'+(index+row_deleted)).select2();
+                	
+                },
         });
     	
     	

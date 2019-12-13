@@ -389,6 +389,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 		  	    dispatcher.forward(request,response);
 			}
 			else if(action.equals("crea_file_esito_comunicazione")) {
+				ajax = true;
 				
 				String ids = request.getParameter("ids");
 				
@@ -407,7 +408,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				
 				 File d = GestioneVerComunicazioniBO.creaFileComunicazioneVerifica(listaMisure, session);
 
-			if(d!=null) {
+			if(d!=null && d.exists()) {
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio", "Esito creato con successo!");
 					myObj.addProperty("filename", d.getName());

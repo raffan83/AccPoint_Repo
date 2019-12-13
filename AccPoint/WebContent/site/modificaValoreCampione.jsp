@@ -140,7 +140,7 @@
   		<div id="emptyPrenotazione" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger"onclick="$(myModalSuccess).modal('hide');"   >Chiudi</button>
+        <button type="button" class="btn btn-outline"onclick="$(myModalSuccess).modal('hide');"   >Chiudi</button>
 
       </div>
     </div>

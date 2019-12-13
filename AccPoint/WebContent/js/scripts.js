@@ -1564,7 +1564,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
         	  var dataRsp = JSON.parse(dataResp);
         	  if(dataRsp.success)
       		  { 
-               		  $("#ulError").html("<span class='label label-danger'>Modifica eseguita con successo</span>");
+               		  $("#ulError").html("<span class='label label-success'>Modifica eseguita con successo</span>");
                		$('#report_button').hide();
       				$('#visualizza_report').hide();
                		  $('#myModalSuccessContent').html("Salvataggio effettuato con successo, click su Chiudi per tornare alla lista dei campioni");

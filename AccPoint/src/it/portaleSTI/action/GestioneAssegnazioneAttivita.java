@@ -20,16 +20,16 @@ import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.ControlloAttivitaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MilestoneOperatoreDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneAssegnazioneAttivitaBO;
-import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
@@ -249,6 +249,70 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Assegnazione eliminata con successo!");				
 	        	out.print(myObj);
+			}
+			else if(action.equals("controllo_attivita")) {
+				
+				ArrayList<UtenteDTO> lista_utenti = new ArrayList<UtenteDTO>();
+				ArrayList<UtenteDTO> lista_utenti_company = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
+				for (UtenteDTO user : lista_utenti_company) {
+					if(user.checkRuolo("OP") || user.checkRuolo("AM") || user.checkRuolo("RS")) {
+						lista_utenti.add(user);
+					}
+				}
+				
+				Collections.sort(lista_utenti, new Comparator<UtenteDTO>() {
+				    public int compare(UtenteDTO v1, UtenteDTO v2) {
+				        return v1.getNominativo().compareTo(v2.getNominativo());
+				    }
+				});
+				
+			
+				request.getSession().setAttribute("lista_utenti",lista_utenti);
+				
+				
+				session.getTransaction().commit();
+				session.close();
+
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaControlloAttivita.jsp");
+				dispatcher.forward(request,response);	
+				
+			}
+			else if(action.equals("cerca_controllo")) {
+				
+				String id_utente = request.getParameter("utente");				
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");
+								
+				
+				ArrayList<InterventoDTO> lista_intervento_operatore = GestioneInterventoBO.getListaInterventoUtente(Integer.parseInt(id_utente), dateFrom, dateTo,session);
+				ArrayList<ControlloAttivitaDTO> lista_controllo_attivita = new ArrayList<ControlloAttivitaDTO>();
+				for (InterventoDTO intervento : lista_intervento_operatore) {
+					int nStrumenti = 0;
+					BigDecimal nStrumentiAss = BigDecimal.ZERO;
+					ControlloAttivitaDTO controllo = new ControlloAttivitaDTO();
+	
+					for (InterventoDatiDTO int_dati : intervento.getListaInterventoDatiDTO()) {
+						if(int_dati.getUtente().getId()==Integer.parseInt(id_utente)) {
+							nStrumenti = nStrumenti + int_dati.getNumStrMis();
+						}
+					}
+					nStrumentiAss = GestioneInterventoBO.getStrumentiAssegnatiUtente(Integer.parseInt(id_utente), intervento.getId(), session);
+					controllo.setIntervento(intervento);
+					controllo.setStrumentiAss(nStrumentiAss.intValue());
+					controllo.setStrumentiTot(nStrumenti);
+					
+					lista_controllo_attivita.add(controllo);
+				}
+										
+				request.getSession().setAttribute("lista_controllo_attivita",lista_controllo_attivita);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaControlloAttivitaTab.jsp");
+				dispatcher.forward(request,response);	
+			
 			}
 			
 		}catch (Exception e) {

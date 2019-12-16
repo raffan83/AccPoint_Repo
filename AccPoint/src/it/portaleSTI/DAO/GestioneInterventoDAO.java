@@ -1,5 +1,6 @@
 package it.portaleSTI.DAO;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import java.sql.PreparedStatement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
@@ -67,6 +70,28 @@ public class GestioneInterventoDAO {
 		
 	}
 
+	
+public static InterventoDTO  getIntervento(String idIntervento, Session session) {
+		
+		Query query=null;
+		InterventoDTO intervento=null;
+		try {
+			
+
+		
+		String s_query = "from InterventoDTO WHERE id = :_id";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",Integer.parseInt(idIntervento));
+		
+	    intervento=(InterventoDTO)query.list().get(0);
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
+		return intervento;
+		
+	}
 
 
 	public static boolean isPresentStrumento(int id, StrumentoDTO strumento, Session session) {
@@ -396,6 +421,55 @@ public class GestioneInterventoDAO {
 
 		
 		return lista;
+	}
+
+
+
+	public static ArrayList<InterventoDTO> getListaInterventoUtente(int id_utente,String dateFrom,String dateTo, Session session) throws Exception{
+		
+		
+		ArrayList<InterventoDTO> lista=null;
+
+	    Query query = null;
+	    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");		
+	    
+
+	    if(dateFrom!=null && dateTo!=null && !dateFrom.equals("") && !dateTo.equals("")) {
+	    	query = session.createQuery("select distinct intervento from MilestoneOperatoreDTO m where m.user.id = :_id_utente and m.intervento.dataCreazione between :dateFrom and :dateTo");
+	  		query.setParameter("_id_utente", id_utente);
+	  		query.setParameter("dateFrom",df.parse(dateFrom));
+			query.setParameter("dateTo",df.parse(dateTo));
+	    }else {
+	    	query = session.createQuery("select distinct intervento from MilestoneOperatoreDTO m where m.user.id = :_id_utente");
+	  		query.setParameter("_id_utente", id_utente);
+	    }
+	    
+	    lista=(ArrayList<InterventoDTO>)query.list();
+		
+		return lista;
+	}
+
+	public static BigDecimal getStrumentiAssegnatiUtente(int id_utente, int id_intervento, Session session) {
+	
+		ArrayList<BigDecimal> lista=null;
+
+	    //Query query = session.createQuery("SELECT COUNT(quantitaAssegnata) FROM MilestoneOperatoreDTO WHERE user.id =:_id_utente AND intervento.id=:_id_intervento");
+		Query query = session.createQuery("SELECT quantitaAssegnata FROM MilestoneOperatoreDTO WHERE user.id =:_id_utente AND intervento.id=:_id_intervento");
+ 		query.setParameter("_id_utente", id_utente);
+ 		query.setParameter("_id_intervento", id_intervento);
+	    
+	    lista=(ArrayList<BigDecimal>)query.list();
+	    
+	    BigDecimal result = BigDecimal.ZERO;
+
+		if(lista.size()>0 ) {			
+			for (BigDecimal bd : lista) {
+				result = result.add(bd);
+			}
+		}
+		return result;
+		
+		
 	}
 
 

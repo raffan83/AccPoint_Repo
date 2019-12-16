@@ -1,6 +1,7 @@
 package it.portaleSTI.bo;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -974,6 +975,16 @@ public class GestioneInterventoBO {
 		Connection con =SQLLiteDAO.getConnection(nomeDB);
 		
 		return SQLLiteDAO.isElectric(con);
+	}
+
+	public static ArrayList<InterventoDTO> getListaInterventoUtente(int id_utente,String dateFrom,String dateTo, Session session) throws Exception{
+		
+		return GestioneInterventoDAO.getListaInterventoUtente(id_utente, dateFrom, dateTo,session);
+	}
+
+	public static BigDecimal getStrumentiAssegnatiUtente(int id_utente, int id_intervento, Session session) {
+		
+		return GestioneInterventoDAO.getStrumentiAssegnatiUtente(id_utente,id_intervento,session);
 	}
 
 

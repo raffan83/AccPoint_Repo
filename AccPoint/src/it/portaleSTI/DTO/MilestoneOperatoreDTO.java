@@ -17,6 +17,7 @@ public class MilestoneOperatoreDTO {
 	BigDecimal presso_assegnato;
 	String note;
 	int abilitato;
+	int controllato;
 	
 	
 	public int getId() {
@@ -90,6 +91,12 @@ public class MilestoneOperatoreDTO {
 	}
 	public void setAbilitato(int abilitato) {
 		this.abilitato = abilitato;
+	}
+	public int getControllato() {
+		return controllato;
+	}
+	public void setControllato(int controllato) {
+		this.controllato = controllato;
 	}
 	
 	

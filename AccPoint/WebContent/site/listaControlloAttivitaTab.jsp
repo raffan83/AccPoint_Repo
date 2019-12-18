@@ -24,35 +24,44 @@
 <th>Sede</th>
 <th>Data</th>
 <th>Numero Strumenti Tot</th>
-<th>Numero Strumenti Ass</th>
+<th>Numero Strumenti Ass</th> 
 <th hidden="hidden"></th>
+ <th>Controllato</th>
  </tr></thead>
  
  <tbody>
  
  	<c:forEach items="${lista_controllo_attivita }" var="controllo" varStatus="loop">
- 	<c:if test="${controllo.strumentiAss > controllo.strumentiTot}">
-	<tr id="row_${loop.index}" style="background-color:#F65959">
+ 	<c:if test="${controllo.controllato!=1 && controllo.strumentiAss > controllo.strumentiTot}">
+	<tr id="row_${loop.index}" style="background-color:#FF7C7C">
  	</c:if>
- 	<c:if test="${controllo.strumentiAss == controllo.strumentiTot}">
+ 	<c:if test="${controllo.controllato==1 || controllo.strumentiAss == controllo.strumentiTot}">
 	<tr id="row_${loop.index}" style="background-color:#00ff80">
  	</c:if>
 		
-	<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(controllo.intervento.id)}');">${controllo.intervento.id }</a></td>	
+	<td><a href="#" class="btn customTooltip customlink"  style="color:#000000" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(controllo.intervento.id)}');">${controllo.intervento.id }</a></td>	
 	<td>${controllo.intervento.nome_cliente }</td>
 	<td>${controllo.intervento.nome_sede }</td>	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${controllo.intervento.dataCreazione }" /></td>
 	<td>${controllo.strumentiTot }</td>
 	<td>${controllo.strumentiAss }</td>
 	<td hidden="hidden">
-	<c:if test="${controllo.strumentiAss > controllo.strumentiTot}">
+	<c:if test="${controllo.controllato!=1 && controllo.strumentiAss > controllo.strumentiTot}">
 	N
 	</c:if>
 	
-	<c:if test="${controllo.strumentiAss == controllo.strumentiTot}">
+	<c:if test="${controllo.controllato==1 || controllo.strumentiAss == controllo.strumentiTot}">
 	C
 	</c:if>
 	</td>
+ 	<td>
+	<c:if test="${controllo.controllato == 1 }">
+	<input type="checkbox" id="controllato_${loop.index }" onClick="checkControlloMilestone('${controllo.intervento.id}','${controllo.operatore.id}',0)" checked>
+	</c:if>
+	<c:if test="${controllo.controllato == 0 }">
+	<input type="checkbox" id="controllato_${loop.index }" onClick="checkControlloMilestone('${controllo.intervento.id}','${controllo.operatore.id}',1)">
+	</c:if>
+	</td> 
 	</tr>
 	</c:forEach>
 	 
@@ -240,34 +249,6 @@ $("#tabControlloAttivita").on( 'init.dt', function ( e, settings ) {
 
 } );
 
-/* 
-	function coloraRighe(tabella){
-	  	 
-		   var data = tabella
-		     .rows()
-		     .data();
-	   		
-	 		for(var i=0;i<data.length;i++){	
-	 	 	    var node = $(tabella.row(i).node());  	 	   
-	 	 	    var color = node.css('backgroundColor');
-	 	 	    
-	 	 	 	 if(rgb2hex(color)=="#00ff80"){
-					 var data_row = $(tabella.row(i).data());		
-					 var tot = stripHtml(data_row[3]);
-					 var ass = stripHtml(data_row[3]);	
-					for(var j = 0; j<data.length;j++){			
-						
-						var data_row2 = $(tabella.row(j).data());		
-						 var origine2 = stripHtml(data_row2[1]);
-				
-						if(origine2==origine){
-							var node2 = $(tabella.row(j).node());  
-							node2.css('backgroundColor',"#00ff80");
-						}							
-					 }		 		
-	 			 }
-	 	 	 }	
-		}    */
 
 		
  		function filtraNonConformi(value){
@@ -290,6 +271,9 @@ $("#tabControlloAttivita").on( 'init.dt', function ( e, settings ) {
 			}
 		} 
 
+		
+		
+		
 $(document).ready(function(){
 	
 	

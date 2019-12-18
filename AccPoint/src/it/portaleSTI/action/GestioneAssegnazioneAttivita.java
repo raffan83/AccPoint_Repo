@@ -286,24 +286,39 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				
 				ArrayList<InterventoDTO> lista_intervento_operatore = GestioneInterventoBO.getListaInterventoUtente(Integer.parseInt(id_utente), dateFrom, dateTo,session);
 				ArrayList<ControlloAttivitaDTO> lista_controllo_attivita = new ArrayList<ControlloAttivitaDTO>();
+				
 				for (InterventoDTO intervento : lista_intervento_operatore) {
 					int nStrumenti = 0;
 					BigDecimal nStrumentiAss = BigDecimal.ZERO;
 					ControlloAttivitaDTO controllo = new ControlloAttivitaDTO();
-	
+					Object[] result = new Object[2];
+					UtenteDTO operatore = null;
 					for (InterventoDatiDTO int_dati : intervento.getListaInterventoDatiDTO()) {
 						if(int_dati.getUtente().getId()==Integer.parseInt(id_utente)) {
 							nStrumenti = nStrumenti + int_dati.getNumStrMis();
+							operatore = int_dati.getUtente();
 						}
 					}
-					nStrumentiAss = GestioneInterventoBO.getStrumentiAssegnatiUtente(Integer.parseInt(id_utente), intervento.getId(), session);
+				
+					result = GestioneInterventoBO.getStrumentiAssegnatiUtente(Integer.parseInt(id_utente), intervento.getId(), session);
+					nStrumentiAss = (BigDecimal) result[0];
+					controllo.setControllato((int) result[1]);
+					//nStrumentiAss = GestioneInterventoBO.getStrumentiAssegnatiUtente(Integer.parseInt(id_utente), intervento.getId(), session);
 					controllo.setIntervento(intervento);
+					if(operatore!=null) {
+						controllo.setOperatore(operatore);	
+					}else {
+						controllo.setOperatore(GestioneUtenteBO.getUtenteById(id_utente, session));
+					}
+					
 					controllo.setStrumentiAss(nStrumentiAss.intValue());
 					controllo.setStrumentiTot(nStrumenti);
 					
+					
 					lista_controllo_attivita.add(controllo);
 				}
-										
+				
+				
 				request.getSession().setAttribute("lista_controllo_attivita",lista_controllo_attivita);
 				
 				session.getTransaction().commit();
@@ -313,6 +328,21 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaControlloAttivitaTab.jsp");
 				dispatcher.forward(request,response);	
 			
+			}
+			else if(action.equals("check_controllo")) {
+				String id_intervento = request.getParameter("id_intervento");
+				String id_utente = request.getParameter("id_utente");
+				String tipo = request.getParameter("tipo");
+				
+				GestioneInterventoBO.setControllato(Integer.parseInt(id_intervento), Integer.parseInt(id_utente), Integer.parseInt(tipo),session );
+				
+				myObj.addProperty("success", true);
+				PrintWriter out = response.getWriter();
+				
+				session.getTransaction().commit();
+	        	session.close();
+				
+				out.print(myObj);
 			}
 			
 		}catch (Exception e) {

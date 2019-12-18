@@ -12046,3 +12046,59 @@ function sendEmailVerificazione(){
 	
 	
 }
+
+function checkControlloMilestone(id_intervento,id_operatore, tipo){
+
+	  var dataObj = {};
+
+	  dataObj.id_intervento = id_intervento;
+	  dataObj.id_utente = id_operatore;
+	  dataObj.tipo = tipo;
+	
+	  $.ajax({
+	  type: "POST",
+	  url: "gestioneAssegnazioneAttivita.do?action=check_controllo",
+	  data: dataObj,
+	  dataType: "json",
+
+	  success: function( data, textStatus) {
+		  pleaseWaitDiv.modal('hide');
+		  if(data.success)
+		  { 
+
+			  
+			  $('#myModalErrorContent').html("Modifica eseguita correttamente!");
+ 			  	$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-success");
+ 				$('#report_button').hide();
+ 				$('#visualizza_report').hide();
+ 				$('#myModalError').modal('show');
+ 				$('#myModalError').on('hidden.bs.modal', function(){
+ 					cercaAssegnazioni();
+				});
+		
+		  }else{
+			  
+			  $('#myModalErrorContent').html("Errore nella modifica!");
+ 			  	$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-danger");
+ 				$('#report_button').hide();
+ 				$('#visualizza_report').hide();
+ 				$('#myModalError').modal('show');			
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+			$('#myModalErrorContent').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+				$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+			
+
+	  }
+  });
+}

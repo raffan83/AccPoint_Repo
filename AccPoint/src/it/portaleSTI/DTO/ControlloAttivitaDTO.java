@@ -6,6 +6,8 @@ public class ControlloAttivitaDTO {
 	private InterventoDTO intervento;
 	int strumentiTot;
 	int strumentiAss;
+	int controllato;
+	
 	public UtenteDTO getOperatore() {
 		return operatore;
 	}
@@ -29,6 +31,12 @@ public class ControlloAttivitaDTO {
 	}
 	public void setStrumentiAss(int strumentiAss) {
 		this.strumentiAss = strumentiAss;
+	}
+	public int getControllato() {
+		return controllato;
+	}
+	public void setControllato(int controllato) {
+		this.controllato = controllato;
 	}
 	
 

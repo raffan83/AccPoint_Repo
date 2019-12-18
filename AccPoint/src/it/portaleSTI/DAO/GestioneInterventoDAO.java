@@ -435,12 +435,12 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 	    
 
 	    if(dateFrom!=null && dateTo!=null && !dateFrom.equals("") && !dateTo.equals("")) {
-	    	query = session.createQuery("select distinct intervento from MilestoneOperatoreDTO m where m.user.id = :_id_utente and m.intervento.dataCreazione between :dateFrom and :dateTo");
+	    	query = session.createQuery("select distinct intervento from MilestoneOperatoreDTO m where m.user.id = :_id_utente and m.intervento.dataCreazione between :dateFrom and :dateTo and m.abilitato = 1");
 	  		query.setParameter("_id_utente", id_utente);
 	  		query.setParameter("dateFrom",df.parse(dateFrom));
 			query.setParameter("dateTo",df.parse(dateTo));
 	    }else {
-	    	query = session.createQuery("select distinct intervento from MilestoneOperatoreDTO m where m.user.id = :_id_utente");
+	    	query = session.createQuery("select distinct intervento from MilestoneOperatoreDTO m where m.user.id = :_id_utente and m.abilitato = 1");
 	  		query.setParameter("_id_utente", id_utente);
 	    }
 	    
@@ -449,26 +449,46 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 		return lista;
 	}
 
-	public static BigDecimal getStrumentiAssegnatiUtente(int id_utente, int id_intervento, Session session) {
+	public static Object[] getStrumentiAssegnatiUtente(int id_utente, int id_intervento, Session session) {
 	
-		ArrayList<BigDecimal> lista=null;
-
-	    //Query query = session.createQuery("SELECT COUNT(quantitaAssegnata) FROM MilestoneOperatoreDTO WHERE user.id =:_id_utente AND intervento.id=:_id_intervento");
-		Query query = session.createQuery("SELECT quantitaAssegnata FROM MilestoneOperatoreDTO WHERE user.id =:_id_utente AND intervento.id=:_id_intervento");
+		Object[] obj = new Object[2];		
+	    
+		Query query = session.createQuery("SELECT quantitaAssegnata,controllato FROM MilestoneOperatoreDTO WHERE user.id =:_id_utente AND intervento.id=:_id_intervento and abilitato = 1");
  		query.setParameter("_id_utente", id_utente);
  		query.setParameter("_id_intervento", id_intervento);
-	    
-	    lista=(ArrayList<BigDecimal>)query.list();
-	    
-	    BigDecimal result = BigDecimal.ZERO;
+	
+ 		List<Object[]> result = (List<Object[]>)query.list();
 
-		if(lista.size()>0 ) {			
-			for (BigDecimal bd : lista) {
-				result = result.add(bd);
+	    BigDecimal qta = BigDecimal.ZERO;
+
+		if(result.size()>0 ) {	
+			
+			int controllo = 0;
+			for (Object[] object : result) {
+				qta = qta.add((BigDecimal) object[0]);
+				if(object[1].equals(1)) {
+					controllo = 1;
+				}
 			}
+			
+			obj[0]= qta;
+			obj[1]=controllo;
 		}
-		return result;
+		return obj;
 		
+		
+	}
+
+
+
+	public static void setControllato(int id_intervento, int id_utente, int tipo, Session session) {
+		
+		Query query = session.createQuery("update MilestoneOperatoreDTO set controllato =:_tipo WHERE user.id =:_id_utente AND intervento.id=:_id_intervento");
+ 		query.setParameter("_id_utente", id_utente);
+ 		query.setParameter("_id_intervento", id_intervento);
+ 		query.setParameter("_tipo", tipo);
+ 		
+ 		query.executeUpdate();
 		
 	}
 

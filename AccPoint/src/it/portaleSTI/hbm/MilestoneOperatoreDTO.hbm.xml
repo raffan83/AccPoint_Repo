@@ -53,5 +53,9 @@
             <column name="abilitato" />
         </property>
         
+         <property name="controllato" type="int">
+            <column name="controllato" />
+        </property>
+        
         </class>
 </hibernate-mapping>

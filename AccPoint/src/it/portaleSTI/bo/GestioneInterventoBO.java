@@ -982,9 +982,14 @@ public class GestioneInterventoBO {
 		return GestioneInterventoDAO.getListaInterventoUtente(id_utente, dateFrom, dateTo,session);
 	}
 
-	public static BigDecimal getStrumentiAssegnatiUtente(int id_utente, int id_intervento, Session session) {
+	public static Object[] getStrumentiAssegnatiUtente(int id_utente, int id_intervento, Session session) {
 		
 		return GestioneInterventoDAO.getStrumentiAssegnatiUtente(id_utente,id_intervento,session);
+	}
+
+	public static void setControllato(int id_intervento, int id_utente, int tipo, Session session) {
+		
+		GestioneInterventoDAO.setControllato(id_intervento,id_utente,tipo, session);
 	}
 
 

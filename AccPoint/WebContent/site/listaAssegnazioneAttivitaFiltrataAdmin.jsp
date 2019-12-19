@@ -35,9 +35,9 @@
 <th>Descrizione</th>
 <th>Prezzo Un</th>
 <th>Prezzo Ass</th>
+<th>UM</th>
 <th>Q.ta Totale</th>
 <th>Q.ta Assegnata</th>
-<th>Unità di misura</th>
 <th>Luogo</th>
 <th>Note</th>
 <th>ID Intervento</th>
@@ -57,9 +57,10 @@
 	<td onClick="showText('${milestone.descrizioneMilestone.replace('\'','#') }', '${loop.index}','5')">${utl:maxChar(milestone.descrizioneMilestone, 50)}</td>
 	<td>${milestone.prezzo_un }</td>	
 	<td>${milestone.presso_assegnato }</td>
+	<td>${milestone.unita_misura }</td>
 	<td>${milestone.quantitaTotale }</td>
 	<td>${milestone.quantitaAssegnata }</td>
-	<td>${milestone.unita_misura }</td>
+	
 	<td>
 		<c:choose>
 		  <c:when test="${milestone.intervento.pressoDestinatario == 0}">
@@ -267,9 +268,10 @@ $("#tabAssegnazioneAttivita").on( 'init.dt', function ( e, settings ) {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
     	  var title = $('#tabVerInterventi thead th').eq( $(this).index() ).text();
     	
-    	  if($(this).index()!=0 ){
+    	  if($(this).index()!=0){
 		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
 	    	}
+    	  
     	//  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
     	
     	} );

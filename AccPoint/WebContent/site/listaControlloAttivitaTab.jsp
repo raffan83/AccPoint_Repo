@@ -23,9 +23,10 @@
 <th>Cliente</th>
 <th>Sede</th>
 <th>Data</th>
+<th>UM</th>
 <th>Quantità Tot</th>
 <th>Quantità Ass</th> 
-<th>Unità di misura</th>
+
 <th></th>
  <th>Controllato</th>
  </tr></thead>
@@ -44,9 +45,10 @@
 	<td>${controllo.intervento.nome_cliente }</td>
 	<td>${controllo.intervento.nome_sede }</td>	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${controllo.intervento.dataCreazione }" /></td>
+	<td>${controllo.unita_misura }</td>
 	<td>${controllo.strumentiTot }</td>
 	<td>${controllo.strumentiAss }</td>
-	<td>${controllo.unita_misura }</td>
+	
 	<td>
 	<c:if test="${controllo.controllato!=1 && controllo.strumentiAss > controllo.strumentiTot}">
 	N

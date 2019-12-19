@@ -159,9 +159,10 @@
  <th>Descrizione Attivita</th>
  <th>Note</th>
 <%--  <th>Descrizione Articolo</th> --%>
+ <th>UM</th>
  <th>Quantit&agrave; Totale</th>
  <th>Quantit&agrave; Assegnata</th>
- <th>Unità di misura</th>
+
 <th>Importo</th>
 
  </tr></thead>
@@ -181,6 +182,7 @@
 		<td>
   ${attivita.noteAttivita}
 	</td>	
+	<td>${attivita.unitaMisura }</td>
 <%-- 	<td>
   ${attivita.descrizioneArticolo}
 	</td>	 --%>
@@ -188,7 +190,7 @@
   ${attivita.quantita}
 	</td>
 	<td><input type="number" style="width:100%" id = "quantita_${loop.index }" name="quantita_${loop.index }" class="form-control test" min="0" max="${attivita.quantita }" onChange="assegnaValore('quantita_${loop.index }','${attivita.quantita}')"></td>
-	<td>${attivita.unitaMisura }</td>
+	
 	<td>${attivita.importo_unitario }</td>
 	
 	</tr>
@@ -1320,10 +1322,10 @@ function reloadDrive()   {
 			 }else{
 				 var descrizione = data[i][2].replace("_","-").replace(";","");
 				 var note = data[i][3].replace("_","-").replace(";","");
-				 var quantita_tot = data[i][4];		
+				 var quantita_tot = data[i][5];		
 				 var importo=data[i][7];
 				 var quantita_ass = array_quantita[id]
-				 var unita_misura = data[i][6];
+				 var unita_misura = data[i][4];
 				 str = str + descrizione + "_" + note + "_" +quantita_tot + "_" +quantita_ass + "_" +importo + "_"+unita_misura+";";			
 			 } 	
 		}

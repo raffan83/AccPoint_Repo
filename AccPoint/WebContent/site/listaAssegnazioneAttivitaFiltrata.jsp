@@ -22,7 +22,7 @@
 <th>Descrizioni Attivita</th>
 <th>Quantità Totale</th>
 <th>Quantità Assegnata</th>
-<th>Unità di misura</th>
+<th>UM</th>
 <th>Note</th>
 <th>ID Intervento</th>
  </tr></thead>
@@ -40,9 +40,10 @@
 
 	 <td onClick="showText('${milestone.descrizioneMilestone }', '${loop.index}','4')">${utl:maxChar(milestone.descrizioneMilestone, 50)}</td>   
 	 <%-- <td>${milestone.descrizioneMilestone }</td>  --%>
+	 <td>${milestone.unita_misura }</td>
 	<td>${milestone.quantitaTotale }</td>
 	<td>${milestone.quantitaAssegnata }</td>
-	<td>${milestone.unita_misura }</td>
+	
 	<td>${milestone.note}</td>
 	<%-- <td onClick="showText('${milestone.note }', '${loop.index}','7')">${utl:maxChar(milestone.note, 10)}</td> --%>
 

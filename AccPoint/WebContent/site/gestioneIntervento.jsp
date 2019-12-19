@@ -141,6 +141,7 @@
  <th>Descrizione Attivita</th>
  <th>Note</th>
 <%--  <th>Descrizione Articolo</th> --%>
+<th>UM</th>
  <th>Quantit&agrave;</th>
 
  </tr></thead>
@@ -162,6 +163,7 @@
 <%-- 	<td>
   ${attivita.descrizioneArticolo}
 	</td>	 --%>
+	<td>${attivita.unitaMisura }</td>
 	<td>
   ${attivita.quantita}
 	</td>

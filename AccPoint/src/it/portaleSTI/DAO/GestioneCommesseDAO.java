@@ -75,7 +75,7 @@ public class GestioneCommesseDAO {
 			"WHERE ID_COMMESSA=?";
 
 	
-	private static String querySqlAttivitaCom="SELECT a.descr as DESC_ATT,a.note AS NOTE_ATT,b.DESCR as DESC_ART,a.QTA AS QUANTITA ,a.K2_RIGA AS RIGA , a.ID_ANAART as CODICEARTICOLO, a.NOTE_AGGREG_COD as CODAGG,a.IMPORTO_UNIT as IMPORTO_U  " +
+	private static String querySqlAttivitaCom="SELECT a.descr as DESC_ATT,a.note AS NOTE_ATT,b.DESCR as DESC_ART,a.QTA AS QUANTITA ,a.K2_RIGA AS RIGA , a.ID_ANAART as CODICEARTICOLO, a.NOTE_AGGREG_COD as CODAGG,a.IMPORTO_UNIT as IMPORTO_U,a.UM  " +
 										"from BWT_COMMESSA_AVANZ AS a " +
 										"Left join BWT_ANAART AS b ON a.ID_ANAART =b.ID_ANAART " +
 										"where ID_COMMESSA=? AND TB_TIPO_MILE='MILE'";
@@ -370,6 +370,8 @@ public class GestioneCommesseDAO {
 				attivita.setQuantita(rsA.getString("QUANTITA"));
 				attivita.setCodiceArticolo(rsA.getString("CODICEARTICOLO"));
 				attivita.setImporto_unitario(rsA.getDouble("IMPORTO_U"));
+				String um=rsA.getString("UM");
+				attivita.setUnitaMisura(um == null ? "" : um);
 				
 				String codAggreg=rsA.getString("CODAGG");
 				

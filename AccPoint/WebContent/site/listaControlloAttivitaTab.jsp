@@ -23,8 +23,8 @@
 <th>Cliente</th>
 <th>Sede</th>
 <th>Data</th>
-<th>Qauntità Tot</th>
-<th>Qauntità Ass</th> 
+<th>Quantità Tot</th>
+<th>Quantità Ass</th> 
 <th>Unità di misura</th>
 <th></th>
  <th>Controllato</th>

@@ -95,7 +95,11 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 					BigDecimal qta_tot =new BigDecimal(data[2]);
 					BigDecimal qta_ass= new BigDecimal(data[3]);
 					BigDecimal importo_unitario= new BigDecimal(data[4]);
-					String unita_misura = data[5];
+					String unita_misura = "";
+					
+					if(data.length>5) {
+						unita_misura = data[5];
+					}							
 					
 					milestone.setIntervento(intervento);
 					milestone.setUser(utente);

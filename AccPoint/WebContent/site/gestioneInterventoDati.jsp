@@ -1325,7 +1325,11 @@ function reloadDrive()   {
 				 var quantita_tot = data[i][5];		
 				 var importo=data[i][7];
 				 var quantita_ass = array_quantita[id]
-				 var unita_misura = data[i][4];
+				 var unita_misura = "";
+				 if(data[i][4]!=null){
+					 unita_misura =  data[i][4];
+				 }
+				 
 				 str = str + descrizione + "_" + note + "_" +quantita_tot + "_" +quantita_ass + "_" +importo + "_"+unita_misura+";";			
 			 } 	
 		}

@@ -354,7 +354,7 @@ $(document).ready(function(){
 		      columnDefs: [
 		    	 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 9 },
+		    	  { responsivePriority: 2, targets: 11 },
 		    	 
 		               ], 	        
 	  	      buttons: [   

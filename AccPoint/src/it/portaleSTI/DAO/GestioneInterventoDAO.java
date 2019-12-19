@@ -451,9 +451,9 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 
 	public static Object[] getStrumentiAssegnatiUtente(int id_utente, int id_intervento, Session session) {
 	
-		Object[] obj = new Object[2];		
+		Object[] obj = new Object[3];		
 	    
-		Query query = session.createQuery("SELECT quantitaAssegnata,controllato FROM MilestoneOperatoreDTO WHERE user.id =:_id_utente AND intervento.id=:_id_intervento and abilitato = 1");
+		Query query = session.createQuery("SELECT quantitaAssegnata,controllato,unita_misura FROM MilestoneOperatoreDTO WHERE user.id =:_id_utente AND intervento.id=:_id_intervento and abilitato = 1");
  		query.setParameter("_id_utente", id_utente);
  		query.setParameter("_id_intervento", id_intervento);
 	
@@ -464,15 +464,20 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 		if(result.size()>0 ) {	
 			
 			int controllo = 0;
+			String um = "";
 			for (Object[] object : result) {
 				qta = qta.add((BigDecimal) object[0]);
 				if(object[1].equals(1)) {
 					controllo = 1;
 				}
+				if(object[2]!=null) {
+					um = (String) object[2];
+				}
 			}
 			
 			obj[0]= qta;
 			obj[1]=controllo;
+			obj[2]= um;
 		}
 		return obj;
 		

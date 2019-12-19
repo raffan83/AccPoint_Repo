@@ -7,6 +7,7 @@ public class ControlloAttivitaDTO {
 	int strumentiTot;
 	int strumentiAss;
 	int controllato;
+	private String unita_misura;
 	
 	public UtenteDTO getOperatore() {
 		return operatore;
@@ -37,6 +38,12 @@ public class ControlloAttivitaDTO {
 	}
 	public void setControllato(int controllato) {
 		this.controllato = controllato;
+	}
+	public String getUnita_misura() {
+		return unita_misura;
+	}
+	public void setUnita_misura(String unita_misura) {
+		this.unita_misura = unita_misura;
 	}
 	
 

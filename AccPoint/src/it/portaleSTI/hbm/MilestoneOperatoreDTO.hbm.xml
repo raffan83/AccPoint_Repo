@@ -57,5 +57,9 @@
             <column name="controllato" />
         </property>
         
+        <property name="unita_misura" type="java.lang.String">
+            <column name="unita_misura" />
+        </property>
+        
         </class>
 </hibernate-mapping>

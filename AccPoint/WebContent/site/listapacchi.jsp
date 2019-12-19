@@ -188,13 +188,13 @@
 	<button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}', '${pacco.stato_lavorazione.id }', '${pacco.commessa }', '${pacco.ddt.id_destinatario }', '${pacco.ddt.id_sede_destinatario }')"><i class="glyphicon glyphicon-duplicate"></i></button>
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==2 && pacco.chiuso!=1}">
-	<button class="btn customTooltip  btn-danger" title="Click se il pacco � stato spedito" onClick="cambiaStatoPacco('${pacco.id}', 3)"><i class="glyphicon glyphicon-send"></i></button>
+	<button class="btn customTooltip  btn-danger" title="Click se il pacco &egrave; stato spedito" onClick="cambiaStatoPacco('${pacco.id}', 3)"><i class="glyphicon glyphicon-send"></i></button>
 	<button class="btn customTooltip  btn-warning" title="Click se il pacco si trova presso un fornitore" onClick="modalFornitore('${pacco.id}')"><i class="fa fa-mail-forward"></i></button>
 	
 	
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==4 && pacco.chiuso!=1}">
-	<button class="btn customTooltip  btn-primary" title="Click se il pacco � rientrato da un fornitore" onClick="cambiaStatoPacco('${pacco.id}', 5)"><i class="fa fa-reply"></i></button>
+	<button class="btn customTooltip  btn-primary" title="Click se il pacco &egrave; rientrato da un fornitore" onClick="cambiaStatoPacco('${pacco.id}', 5)"><i class="fa fa-reply"></i></button>
 	
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==3 && pacco.chiuso!=1}">
@@ -923,7 +923,7 @@ ${pacco.id}
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Lista Attivit� </h4>
+        <h4 class="modal-title" id="myModalLabel">Lista Attivit&agrave; </h4>
       </div>
        <div class="modal-body" id="commessa_body">
        
@@ -1008,7 +1008,7 @@ ${pacco.id}
    </div>
   		
       <div class="modal-footer">
-      <label class="pull-left" style="display:none" id="label_spediti">In giallo gli Item gi� spediti!</label>
+      <label class="pull-left" style="display:none" id="label_spediti">In giallo gli Item gi&agrave; spediti!</label>
 		<!-- <button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="pressoFornitore()">Salva</button> -->
 	<button class="btn btn-primary"  onClick="inviaItemUscita()">Salva</button>
        <!-- <button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="cambiaStatoPacco(null, 4, $('#select_fornitore').val())">Salva</button> -->

@@ -11741,6 +11741,7 @@ function modificaAssegnazioneAdmin(){
 	  dataObj.quantita_assegnata = $('#quantita_assegnata').val();	  
 	  dataObj.note = $('#note').val();
 	  dataObj.id_assegnazione = $('#id_assegnazione').val();
+	  dataObj.unita_misura = $('#unita_misura').val();
 	  
 	  $.ajax({
 	    	  type: "POST",

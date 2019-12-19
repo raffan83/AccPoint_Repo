@@ -23,9 +23,10 @@
 <th>Cliente</th>
 <th>Sede</th>
 <th>Data</th>
-<th>Numero Strumenti Tot</th>
-<th>Numero Strumenti Ass</th> 
-<th hidden="hidden"></th>
+<th>Qauntità Tot</th>
+<th>Qauntità Ass</th> 
+<th>Unità di misura</th>
+<th></th>
  <th>Controllato</th>
  </tr></thead>
  
@@ -45,7 +46,8 @@
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${controllo.intervento.dataCreazione }" /></td>
 	<td>${controllo.strumentiTot }</td>
 	<td>${controllo.strumentiAss }</td>
-	<td hidden="hidden">
+	<td>${controllo.unita_misura }</td>
+	<td>
 	<c:if test="${controllo.controllato!=1 && controllo.strumentiAss > controllo.strumentiTot}">
 	N
 	</c:if>
@@ -254,7 +256,7 @@ $("#tabControlloAttivita").on( 'init.dt', function ( e, settings ) {
  		function filtraNonConformi(value){
 			var tabella = $('#tabControlloAttivita').DataTable();
 			
-			tabella.columns( 6 ).search( value ).draw();
+			tabella.columns( 7 ).search( value ).draw();
 			
 			if(value =='N'){
 				$('#filtro_c').attr('disabled',false);
@@ -348,6 +350,9 @@ $(document).ready(function(){
 	          .draw();
 	  } );
 	} ); 
+	
+	table.columns( [7] ).visible( false );
+	    
 		table.columns.adjust().draw();
 		
 

@@ -161,7 +161,9 @@
 <%--  <th>Descrizione Articolo</th> --%>
  <th>Quantit&agrave; Totale</th>
  <th>Quantit&agrave; Assegnata</th>
+ <th>Unità di misura</th>
 <th>Importo</th>
+
  </tr></thead>
  
  <tbody>
@@ -186,6 +188,7 @@
   ${attivita.quantita}
 	</td>
 	<td><input type="number" style="width:100%" id = "quantita_${loop.index }" name="quantita_${loop.index }" class="form-control test" min="0" max="${attivita.quantita }" onChange="assegnaValore('quantita_${loop.index }','${attivita.quantita}')"></td>
+	<td>${attivita.unitaMisura }</td>
 	<td>${attivita.importo_unitario }</td>
 	
 	</tr>
@@ -1250,7 +1253,7 @@ function reloadDrive()   {
 	    	  var title = $('#tabAttivita thead th').eq( $(this).index() ).text();
 	    //	  $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"   value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
 	    	  
-	    	  if($(this).index()!=0 && $(this).index()!=1 && $(this).index()!=6){
+	    	  if($(this).index()!=0 && $(this).index()!=1 && $(this).index()!=7){
 			    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables2[$(this).index()].search.search+'" type="text" /></div>');	
 		    	}
 		    	else if($(this).index() ==1){
@@ -1318,9 +1321,10 @@ function reloadDrive()   {
 				 var descrizione = data[i][2].replace("_","-").replace(";","");
 				 var note = data[i][3].replace("_","-").replace(";","");
 				 var quantita_tot = data[i][4];		
-				 var importo=data[i][6];
+				 var importo=data[i][7];
 				 var quantita_ass = array_quantita[id]
-				 str = str + descrizione + "_" + note + "_" +quantita_tot + "_" +quantita_ass + "_" +importo + ";";			
+				 var unita_misura = data[i][6];
+				 str = str + descrizione + "_" + note + "_" +quantita_tot + "_" +quantita_ass + "_" +importo + "_"+unita_misura+";";			
 			 } 	
 		}
 		
@@ -1644,7 +1648,7 @@ function reloadDrive()   {
 	      } );
 	    } ); 
 	    
-	    tableAttiìvita.columns( [6] ).visible( false );
+	    tableAttiìvita.columns( [7] ).visible( false );
 	    tableAttiìvita.columns.adjust().draw();
 	        
 	   

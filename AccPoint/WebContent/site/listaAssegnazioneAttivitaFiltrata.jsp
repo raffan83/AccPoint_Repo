@@ -22,7 +22,7 @@
 <th>Descrizioni Attivita</th>
 <th>Quantità Totale</th>
 <th>Quantità Assegnata</th>
-
+<th>Unità di misura</th>
 <th>Note</th>
 <th>ID Intervento</th>
  </tr></thead>
@@ -42,6 +42,7 @@
 	 <%-- <td>${milestone.descrizioneMilestone }</td>  --%>
 	<td>${milestone.quantitaTotale }</td>
 	<td>${milestone.quantitaAssegnata }</td>
+	<td>${milestone.unita_misura }</td>
 	<td>${milestone.note}</td>
 	<%-- <td onClick="showText('${milestone.note }', '${loop.index}','7')">${utl:maxChar(milestone.note, 10)}</td> --%>
 
@@ -140,7 +141,7 @@ $(document).ready(function(){
 		        }
 	        },
 	        pageLength: 25,
-	        "order": [[ 2, "desc" ]],
+	        "order": [[ 3, "desc" ]],
 		      paging: true, 
 		      ordering: true,
 		      info: true, 

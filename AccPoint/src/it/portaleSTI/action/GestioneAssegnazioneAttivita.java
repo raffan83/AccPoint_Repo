@@ -95,6 +95,7 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 					BigDecimal qta_tot =new BigDecimal(data[2]);
 					BigDecimal qta_ass= new BigDecimal(data[3]);
 					BigDecimal importo_unitario= new BigDecimal(data[4]);
+					String unita_misura = data[5];
 					
 					milestone.setIntervento(intervento);
 					milestone.setUser(utente);
@@ -108,6 +109,7 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 					milestone.setPrezzo_un(importo_unitario);
 					milestone.setNote(note);
 					milestone.setAbilitato(1);
+					milestone.setUnita_misura(unita_misura);
 					
 					session.save(milestone);
 				}
@@ -204,6 +206,7 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				String prezzo_assegnato = request.getParameter("prezzo_assegnato");
 				String quantita_totale = request.getParameter("quantita_totale");
 				String quantita_assegnata = request.getParameter("quantita_assegnata");
+				String unita_misura = request.getParameter("unita_misura");
 				String note = request.getParameter("note");
 				
 				MilestoneOperatoreDTO assegnazione = GestioneAssegnazioneAttivitaBO.getMilestone(Integer.parseInt(id_assegnazione),session);
@@ -222,6 +225,7 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				}
 				
 				assegnazione.setNote(note);
+				assegnazione.setUnita_misura(unita_misura);
 				
 				session.update(assegnazione);
 				session.getTransaction().commit();
@@ -313,7 +317,7 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 					
 					controllo.setStrumentiAss(nStrumentiAss.intValue());
 					controllo.setStrumentiTot(nStrumenti);
-					
+					controllo.setUnita_misura((String)result[2]);
 					
 					lista_controllo_attivita.add(controllo);
 				}

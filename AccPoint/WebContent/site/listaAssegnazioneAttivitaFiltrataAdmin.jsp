@@ -37,6 +37,7 @@
 <th>Prezzo Ass</th>
 <th>Q.ta Totale</th>
 <th>Q.ta Assegnata</th>
+<th>Unità di misura</th>
 <th>Luogo</th>
 <th>Note</th>
 <th>ID Intervento</th>
@@ -58,6 +59,7 @@
 	<td>${milestone.presso_assegnato }</td>
 	<td>${milestone.quantitaTotale }</td>
 	<td>${milestone.quantitaAssegnata }</td>
+	<td>${milestone.unita_misura }</td>
 	<td>
 		<c:choose>
 		  <c:when test="${milestone.intervento.pressoDestinatario == 0}">
@@ -78,7 +80,7 @@
 	<%-- <td onClick="showText('${milestone.note }', '${loop.index}','7')">${utl:maxChar(milestone.note, 10)}</td> --%>
 	<td><a class="btn customTooltip customlink" onClicK="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(milestone.intervento.id)}')" >${milestone.intervento.id }</a></td>
  	<td>
-		<a class="btn btn-warning" onClicK="modalModificaAssegnazione('${milestone.prezzo_un}','${milestone.presso_assegnato}','${milestone.quantitaTotale}','${milestone.quantitaAssegnata}','${milestone.note}','${milestone.id}')" ><i class="fa fa-edit"></i></a>
+		<a class="btn btn-warning" onClicK="modalModificaAssegnazione('${milestone.prezzo_un}','${milestone.presso_assegnato}','${milestone.quantitaTotale}','${milestone.quantitaAssegnata}','${milestone.note}','${milestone.unita_misura }','${milestone.id}')" ><i class="fa fa-edit"></i></a>
 		<a class="btn btn-danger" onClicK="modalYesOrNo('${milestone.id}')" ><i class="fa fa-trash"></i></a>
 	</td> 
 	</tr>
@@ -126,6 +128,12 @@
         </div>
         <div class="col-md-12">
                       <input class="form-control" id="quantita_assegnata" type="text" name="quantita_assegnata"/>
+    </div>
+    <div class="col-md-9" >
+        <label  >Unità di misura:</label>
+        </div>
+        <div class="col-md-12">
+                      <input class="form-control" id="unita_misura" type="text" name="unita_misura"/>
     </div>
          	<div class="col-md-9" >
         <label  >Note:</label>
@@ -189,7 +197,7 @@ function modalYesOrNo(id){
 	$('#myModalYesOrNo').modal();
 }
 
-function modalModificaAssegnazione(prezzo_unitario, prezzo_assegnato, quantita_totale, quantita_assegnata, note, id){
+function modalModificaAssegnazione(prezzo_unitario, prezzo_assegnato, quantita_totale, quantita_assegnata, note,unita_misura, id){
 	
 	$('#id_assegnazione').val(id);
 	$('#prezzo_unitario').val(prezzo_unitario);
@@ -197,6 +205,7 @@ function modalModificaAssegnazione(prezzo_unitario, prezzo_assegnato, quantita_t
 	$('#quantita_totale').val(quantita_totale);
 	$('#quantita_assegnata').val(quantita_assegnata);
 	$('#note').val(note);	
+	$('#unita_misura').val(unita_misura)
 	
 	
 	$('#myModalModificaAssegnazione').modal();
@@ -210,6 +219,7 @@ function submitModifica(){
 	 var quantita_assegnata = $('#quantita_assegnata').val();	  
 	 var note = $('#note').val();
 	 var id_assegnazione = $('#id_assegnazione').val();
+	 var unita_misura = $('#unita_misura').val();
 	 
 	 $('#prezzo_unitario').css('border', '1px solid #d2d6de');
 	 $('#prezzo_assegnato').css('border', '1px solid #d2d6de');
@@ -236,7 +246,7 @@ function submitModifica(){
 	 }
 	 
 	 if(esito){
-		 modificaAssegnazioneAdmin(prezzo_unitario, prezzo_assegnato,quantita_totale,quantita_assegnata);
+		 modificaAssegnazioneAdmin();
 	 }
 	 
 }
@@ -331,7 +341,7 @@ $(document).ready(function(){
 		        }
 	        },
 	        pageLength: 25,
-	        "order": [[ 2, "desc" ]],
+	        "order": [[ 3, "desc" ]],
 		      paging: true, 
 		      ordering: true,
 		      info: true, 
@@ -344,7 +354,7 @@ $(document).ready(function(){
 		      columnDefs: [
 		    	 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 10 },
+		    	  { responsivePriority: 2, targets: 9 },
 		    	 
 		               ], 	        
 	  	      buttons: [   

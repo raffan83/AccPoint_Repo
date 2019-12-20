@@ -1435,6 +1435,14 @@ var listaStrumenti = ${listaCampioniJson};
 			 $('#aggiornaTab').show();
 
 		 }
+		 
+		 if(campioneSelected.codice.startsWith('CDT')){
+			 $('#registro_eventiTab').hide();
+			 $('#registro_attivitaTab').show();
+		 }else{
+			 $('#registro_attivitaTab').hide();
+			 $('#registro_eventiTab').show();
+		 }
    	    
 
   		

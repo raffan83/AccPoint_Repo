@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import it.portaleSTI.DTO.ControlloAttivitaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -449,11 +450,11 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 		return lista;
 	}
 
-	public static Object[] getStrumentiAssegnatiUtente(int id_utente, int id_intervento, Session session) {
+	public static ControlloAttivitaDTO getStrumentiAssegnatiUtente(int id_utente, int id_intervento, Session session) {
 	
-		Object[] obj = new Object[3];		
+		ControlloAttivitaDTO controlloAttivita = new ControlloAttivitaDTO();
 	    
-		Query query = session.createQuery("SELECT quantitaAssegnata,controllato,unita_misura FROM MilestoneOperatoreDTO WHERE user.id =:_id_utente AND intervento.id=:_id_intervento and abilitato = 1");
+		Query query = session.createQuery("SELECT quantitaAssegnata,controllato,unita_misura,note_operatore FROM MilestoneOperatoreDTO WHERE user.id =:_id_utente AND intervento.id=:_id_intervento and abilitato = 1");
  		query.setParameter("_id_utente", id_utente);
  		query.setParameter("_id_intervento", id_intervento);
 	
@@ -465,6 +466,7 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 			
 			int controllo = 0;
 			String um = "";
+			String note_operatore = "";
 			for (Object[] object : result) {
 				qta = qta.add((BigDecimal) object[0]);
 				if(object[1].equals(1)) {
@@ -473,16 +475,56 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 				if(object[2]!=null) {
 					um = (String) object[2];
 				}
+				if(object[3]!=null) {
+					note_operatore = (String) object[3];
+				}
 			}
 			
-			obj[0]= qta;
-			obj[1]=controllo;
-			obj[2]= um;
+			controlloAttivita.setControllato(controllo);
+			controlloAttivita.setStrumentiAss(qta.intValue());
+			controlloAttivita.setUnita_misura(um);
+			controlloAttivita.setNote_operatore(note_operatore);			
 		}
-		return obj;
+		return controlloAttivita;
 		
 		
 	}
+	
+	
+//	public static Object[] getStrumentiAssegnatiUtente(int id_utente, int id_intervento, Session session) {
+//		
+//		Object[] obj = new Object[3];		
+//	    
+//		Query query = session.createQuery("SELECT quantitaAssegnata,controllato,unita_misura FROM MilestoneOperatoreDTO WHERE user.id =:_id_utente AND intervento.id=:_id_intervento and abilitato = 1");
+// 		query.setParameter("_id_utente", id_utente);
+// 		query.setParameter("_id_intervento", id_intervento);
+//	
+// 		List<Object[]> result = (List<Object[]>)query.list();
+//
+//	    BigDecimal qta = BigDecimal.ZERO;
+//
+//		if(result.size()>0 ) {	
+//			
+//			int controllo = 0;
+//			String um = "";
+//			for (Object[] object : result) {
+//				qta = qta.add((BigDecimal) object[0]);
+//				if(object[1].equals(1)) {
+//					controllo = 1;
+//				}
+//				if(object[2]!=null) {
+//					um = (String) object[2];
+//				}
+//			}
+//			
+//			obj[0]= qta;
+//			obj[1]=controllo;
+//			obj[2]= um;
+//		}
+//		return obj;
+//		
+//		
+//	}
 
 
 
@@ -492,6 +534,19 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
  		query.setParameter("_id_utente", id_utente);
  		query.setParameter("_id_intervento", id_intervento);
  		query.setParameter("_tipo", tipo);
+ 		
+ 		query.executeUpdate();
+		
+	}
+
+
+
+	public static void salvaNota(int id_intervento, int id_utente, String nota, Session session) {
+		
+		Query query = session.createQuery("update MilestoneOperatoreDTO set note_operatore =:_nota_operatore WHERE user.id =:_id_utente AND intervento.id=:_id_intervento");
+ 		query.setParameter("_id_utente", id_utente);
+ 		query.setParameter("_id_intervento", id_intervento);
+ 		query.setParameter("_nota_operatore", nota);
  		
  		query.executeUpdate();
 		

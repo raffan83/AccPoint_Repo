@@ -61,5 +61,9 @@
             <column name="unita_misura" />
         </property>
         
+        <property name="note_operatore" type="java.lang.String">
+            <column name="note_operatore" />
+        </property>
+        
         </class>
 </hibernate-mapping>

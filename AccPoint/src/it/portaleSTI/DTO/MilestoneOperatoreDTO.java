@@ -19,6 +19,7 @@ public class MilestoneOperatoreDTO {
 	int abilitato;
 	int controllato;
 	String unita_misura;
+	String note_operatore;
 	
 	
 	public int getId() {
@@ -104,6 +105,12 @@ public class MilestoneOperatoreDTO {
 	}
 	public void setUnita_misura(String unita_misura) {
 		this.unita_misura = unita_misura;
+	}
+	public String getNote_operatore() {
+		return note_operatore;
+	}
+	public void setNote_operatore(String note_operatore) {
+		this.note_operatore = note_operatore;
 	}
 	
 	

@@ -51,11 +51,11 @@
 
 <div class="col-xs-3">
 	 <label for="utente" class="control-label">Operatore:</label>
-       <select id="utente" name="utente" class="form-control select2"  data-placeholder="Seleziona Utente..." aria-hidden="true" data-live-search="true" style="width:100%" disabled>
+       <select id="utente" name="utente" class="form-control select2"  data-placeholder="Seleziona Utente..." aria-hidden="true" data-live-search="true" style="width:100%">
        <option value=""></option>
        
       	<c:forEach items="${lista_utenti}" var="utente">
-      	<option value="${utente.id }" selected>${utente.nominativo }</option>
+      	<option value="${utente.id }">${utente.nominativo }</option>
       	</c:forEach>
       
       </select>
@@ -81,7 +81,7 @@
 	</div>
 
 <div class="col-xs-1">
-<button class="btn btn-info" style="margin-top:25px" onClick="cercaAssegnazioni()" id="cerca_btn" >Cerca</button>
+<button class="btn btn-info" style="margin-top:25px" onClick="cercaAssegnazioni()" id="cerca_btn" disabled>Cerca</button>
 </div>
 </div>
 
@@ -180,9 +180,9 @@ function cercaAssegnazioni(){
 		var startDatePicker = $("#datarange").data('daterangepicker').startDate;
 		var endDatePicker = $("#datarange").data('daterangepicker').endDate;
 
-		dataString = "action=cerca_controllo&admin=0&dateFrom=" + formatDate(startDatePicker) + "&dateTo=" + formatDate(endDatePicker)+"&utente="+utente;	
+		dataString = "action=cerca_controllo&admin=1&dateFrom=" + formatDate(startDatePicker) + "&dateTo=" + formatDate(endDatePicker)+"&utente="+utente;	
 	}else{
-		dataString = "action=cerca_controllo&admin=0&utente="+utente;
+		dataString = "action=cerca_controllo&admin=1&utente="+utente;
 		
 	}
 	
@@ -233,8 +233,6 @@ $(document).ready(function() {
 	 
      $('.dropdown-toggle').dropdown();
      $('.select2').select2();     
-     
-     cercaAssegnazioni();
 
 /*      var dataString = "action=cerca&dateFrom=&dateTo=&commessa=&utente=&admin=1";
      exploreModal("gestioneAssegnazioneAttivita.do",dataString,"#tabella_filtrata"); */

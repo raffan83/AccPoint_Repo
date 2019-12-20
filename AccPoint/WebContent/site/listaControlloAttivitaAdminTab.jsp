@@ -28,8 +28,9 @@
 <th>Quantità Ass</th> 
 
 <th></th>
- <%-- <th>Controllato</th> --%>
- <th>Note</th> 
+<th>Note</th>
+ <th>Controllato</th>
+ 
  </tr></thead>
  
  <tbody>
@@ -50,7 +51,7 @@
 	<td>${controllo.strumentiTot }</td>
 	<td>${controllo.strumentiAss }</td>
 	
-	 <td>
+	<td>
 	<c:if test="${controllo.controllato!=1 && controllo.strumentiAss > controllo.strumentiTot}">
 	N
 	</c:if>
@@ -58,16 +59,17 @@
 	<c:if test="${controllo.controllato==1 || controllo.strumentiAss == controllo.strumentiTot}">
 	C
 	</c:if>
-	</td> 
-<%--  	<td>
- 	<c:if test="${controllo.controllato == 1 }">
+	</td>
+	<td><textarea rows="3" style="width:100%" readonly>${controllo.note_operatore }</textarea></td>
+ 	<td>
+	<c:if test="${controllo.controllato == 1 }">
 	<input type="checkbox" id="controllato_${loop.index }" onClick="checkControlloMilestone('${controllo.intervento.id}','${controllo.operatore.id}',0)" checked>
 	</c:if>
 	<c:if test="${controllo.controllato == 0 }">
 	<input type="checkbox" id="controllato_${loop.index }" onClick="checkControlloMilestone('${controllo.intervento.id}','${controllo.operatore.id}',1)">
-	</c:if> 
-	</td>  --%>
-	<td><textarea rows="3" style="width:100%" onfocusout="saveNote($(this).val(), ${controllo.intervento.id }, ${controllo.operatore.id })" id="riga_${loop.index }">${controllo.note_operatore }</textarea></td>
+	</c:if>
+	</td> 
+	
 	</tr>
 	</c:forEach>
 	 
@@ -278,14 +280,10 @@ $("#tabControlloAttivita").on( 'init.dt', function ( e, settings ) {
 		} 
 
 		
-		function saveNote(nota, id_intervento, id_utente){
-			
-			salvaNotaControlloAttivita(nota, id_intervento, id_utente);
-			
-		}
+		
 		
 $(document).ready(function(){
-	console.log("test")
+	
 	
 	 table = $('#tabControlloAttivita').DataTable({
 			language: {
@@ -326,27 +324,7 @@ $(document).ready(function(){
 		    	 
 		    	  { responsivePriority: 1, targets: 1 },
 		    	  { responsivePriority: 2, targets: 4 },
-		    	 /*  {
-		    	  'targets': [8],
-		            'render': function(data, type, row, meta){
-		               if(type === 'display'){
-		                  var api = new $.fn.dataTable.Api(meta.settings);
-
-		                  var $el = $('input, select, textarea', api.cell({ row: meta.row, column: meta.col }).node());
-
-		                  var $html = $(data).wrap('<div/>').parent();
-
-		                  if($el.prop('tagName') === 'TEXTAREA'){
-		                     $('textarea', $html).html($el.val());
-
-		                  }
-
-		                  data = $html.html();
-		               }
-
-		               return data;
-		            }
-		    	  } */
+		    	 
 		               ], 	        
 	  	      buttons: [   
 	  	    	{

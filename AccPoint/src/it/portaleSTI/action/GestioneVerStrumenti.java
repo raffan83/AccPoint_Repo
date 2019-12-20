@@ -87,15 +87,15 @@ public class GestioneVerStrumenti extends HttpServlet {
 			if(action==null) {
 
 
-				if(request.getSession().getAttribute("listaClientiAll")==null) 
-				{
-					request.getSession().setAttribute("listaClientiAll",GestioneAnagraficaRemotaBO.getListaClientiAll());
-				}	
-				
-				if(request.getSession().getAttribute("listaSediAll")==null) 
-				{				
-						request.getSession().setAttribute("listaSediAll",GestioneAnagraficaRemotaBO.getListaSediAll());				
-				}			
+//				if(request.getSession().getAttribute("listaClientiAll")==null) 
+//				{
+//					request.getSession().setAttribute("listaClientiAll",GestioneAnagraficaRemotaBO.getListaClientiAll());
+//				}	
+//				
+//				if(request.getSession().getAttribute("listaSediAll")==null) 
+//				{				
+//						request.getSession().setAttribute("listaSediAll",GestioneAnagraficaRemotaBO.getListaSediAll());				
+//				}			
 		
 				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
 				if(listaClienti==null) {
@@ -115,6 +115,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				
 				request.getSession().setAttribute("listaCl", listaCl.toString().replace("\'", ""));
 				
+				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneVerStrumenti.jsp");
 		  	    dispatcher.forward(request,response);	
@@ -136,6 +137,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				request.getSession().setAttribute("lista_tipologie_strumento",lista_tipologie_strumento);
 				request.getSession().setAttribute("lista_famiglie_strumento",lista_famiglie_strumento);	
 				
+				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneVerStrumentiSede.jsp");
 		  	    dispatcher.forward(request,response);	

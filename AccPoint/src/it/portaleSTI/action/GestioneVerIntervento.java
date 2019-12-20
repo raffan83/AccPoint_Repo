@@ -122,6 +122,7 @@ public class GestioneVerIntervento extends HttpServlet {
 				request.getSession().setAttribute("lista_sedi", listaSedi);
 				request.getSession().setAttribute("lista_comuni", lista_comuni);
 				
+				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerInterventi.jsp");
 		  	    dispatcher.forward(request,response);	
@@ -320,6 +321,8 @@ public class GestioneVerIntervento extends HttpServlet {
 				request.getSession().setAttribute("interventover", interventover);
 				request.getSession().setAttribute("lista_misure", lista_misure);
 				request.getSession().setAttribute("lista_strumenti_intervento", lista_strumenti_intervento);
+				
+				session.getTransaction().commit();
 				session.close();
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioVerIntervento.jsp");

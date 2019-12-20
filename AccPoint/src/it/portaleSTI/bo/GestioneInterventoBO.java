@@ -18,6 +18,7 @@ import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.ContatoreUtenteDTO;
+import it.portaleSTI.DTO.ControlloAttivitaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
@@ -982,7 +983,7 @@ public class GestioneInterventoBO {
 		return GestioneInterventoDAO.getListaInterventoUtente(id_utente, dateFrom, dateTo,session);
 	}
 
-	public static Object[] getStrumentiAssegnatiUtente(int id_utente, int id_intervento, Session session) {
+	public static ControlloAttivitaDTO getStrumentiAssegnatiUtente(int id_utente, int id_intervento, Session session) {
 		
 		return GestioneInterventoDAO.getStrumentiAssegnatiUtente(id_utente,id_intervento,session);
 	}
@@ -990,6 +991,12 @@ public class GestioneInterventoBO {
 	public static void setControllato(int id_intervento, int id_utente, int tipo, Session session) {
 		
 		GestioneInterventoDAO.setControllato(id_intervento,id_utente,tipo, session);
+	}
+
+	public static void salvaNota(int id_intervento, int id_utente, String nota, Session session) {
+		
+		GestioneInterventoDAO.salvaNota(id_intervento, id_utente, nota, session);
+		
 	}
 
 

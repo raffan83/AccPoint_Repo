@@ -78,7 +78,7 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 			if(action.equals("assegna")) {
 			
 				String str = request.getParameter("str");
-				
+				ajax = true;
 				
 				InterventoDTO intervento = (InterventoDTO) request.getSession().getAttribute("intervento");
 				
@@ -260,29 +260,42 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 			}
 			else if(action.equals("controllo_attivita")) {
 				
+				String admin = request.getParameter("admin");
+				
 				ArrayList<UtenteDTO> lista_utenti = new ArrayList<UtenteDTO>();
-				ArrayList<UtenteDTO> lista_utenti_company = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
-				for (UtenteDTO user : lista_utenti_company) {
-					if(user.checkRuolo("OP") || user.checkRuolo("AM") || user.checkRuolo("RS")) {
-						lista_utenti.add(user);
+				
+				if(admin!=null && admin.equals("1")) {
+					ArrayList<UtenteDTO> lista_utenti_company = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
+					for (UtenteDTO user : lista_utenti_company) {
+						if(user.checkRuolo("OP") || user.checkRuolo("AM") || user.checkRuolo("RS")) {
+							lista_utenti.add(user);
+						}
 					}
+					
+					Collections.sort(lista_utenti, new Comparator<UtenteDTO>() {
+					    public int compare(UtenteDTO v1, UtenteDTO v2) {
+					        return v1.getNominativo().compareTo(v2.getNominativo());
+					    }
+					});
+				}else {
+					lista_utenti.add(utente);
 				}
 				
-				Collections.sort(lista_utenti, new Comparator<UtenteDTO>() {
-				    public int compare(UtenteDTO v1, UtenteDTO v2) {
-				        return v1.getNominativo().compareTo(v2.getNominativo());
-				    }
-				});
-				
-			
 				request.getSession().setAttribute("lista_utenti",lista_utenti);
-				
+				request.getSession().setAttribute("admin",admin);				
 				
 				session.getTransaction().commit();
 				session.close();
-
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaControlloAttivita.jsp");
-				dispatcher.forward(request,response);	
+				
+				if(admin!=null && admin.equals("1")) {
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaControlloAttivitaAdmin.jsp");
+					dispatcher.forward(request,response);	
+				}else {
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaControlloAttivita.jsp");	
+					dispatcher.forward(request,response);	
+				}
+				
+				
 				
 			}
 			else if(action.equals("cerca_controllo")) {
@@ -290,7 +303,7 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				String id_utente = request.getParameter("utente");				
 				String dateFrom = request.getParameter("dateFrom");
 				String dateTo = request.getParameter("dateTo");
-								
+				String admin = request.getParameter("admin");
 				
 				ArrayList<InterventoDTO> lista_intervento_operatore = GestioneInterventoBO.getListaInterventoUtente(Integer.parseInt(id_utente), dateFrom, dateTo,session);
 				ArrayList<ControlloAttivitaDTO> lista_controllo_attivita = new ArrayList<ControlloAttivitaDTO>();
@@ -308,9 +321,10 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 						}
 					}
 				
-					result = GestioneInterventoBO.getStrumentiAssegnatiUtente(Integer.parseInt(id_utente), intervento.getId(), session);
-					nStrumentiAss = (BigDecimal) result[0];
-					controllo.setControllato((int) result[1]);
+					//result = GestioneInterventoBO.getStrumentiAssegnatiUtente(Integer.parseInt(id_utente), intervento.getId(), session);
+					controllo = GestioneInterventoBO.getStrumentiAssegnatiUtente(Integer.parseInt(id_utente), intervento.getId(), session);
+					//nStrumentiAss = (BigDecimal) result[0];
+				//	controllo.setControllato((int) result[1]);
 					//nStrumentiAss = GestioneInterventoBO.getStrumentiAssegnatiUtente(Integer.parseInt(id_utente), intervento.getId(), session);
 					controllo.setIntervento(intervento);
 					if(operatore!=null) {
@@ -319,9 +333,9 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 						controllo.setOperatore(GestioneUtenteBO.getUtenteById(id_utente, session));
 					}
 					
-					controllo.setStrumentiAss(nStrumentiAss.intValue());
+					//controllo.setStrumentiAss(nStrumentiAss.intValue());
 					controllo.setStrumentiTot(nStrumenti);
-					controllo.setUnita_misura((String)result[2]);
+					//controllo.setUnita_misura((String)result[2]);
 					
 					lista_controllo_attivita.add(controllo);
 				}
@@ -333,8 +347,13 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				session.close();
 				
 				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaControlloAttivitaTab.jsp");
-				dispatcher.forward(request,response);	
+				if(admin!=null && admin.equals("1")) {
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaControlloAttivitaAdminTab.jsp");
+					dispatcher.forward(request,response);	
+				}else {
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaControlloAttivitaTab.jsp");	
+					dispatcher.forward(request,response);	
+				}
 			
 			}
 			else if(action.equals("check_controllo")) {
@@ -352,6 +371,24 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				
 				out.print(myObj);
 			}
+			
+			else if(action.equals("salva_nota")) {
+				String id_intervento = request.getParameter("id_intervento");
+				String id_utente = request.getParameter("id_operatore");
+				String nota = request.getParameter("nota");
+				
+				GestioneInterventoBO.salvaNota(Integer.parseInt(id_intervento), Integer.parseInt(id_utente), nota,session );
+				
+				myObj.addProperty("success", true);
+				PrintWriter out = response.getWriter();
+				
+				session.getTransaction().commit();
+	        	session.close();
+				
+				out.print(myObj);
+			}
+			
+			
 			
 		}catch (Exception e) {
 			session.getTransaction().rollback();

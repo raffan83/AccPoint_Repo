@@ -1303,6 +1303,9 @@ function reloadDrive()   {
 
     }
 	
+    function replaceAll(str, cerca, sostituisci) {
+    	  return str.split(cerca).join(sostituisci);
+    	}
 	
 	function assegna(id_intervento){
 		
@@ -1320,8 +1323,10 @@ function reloadDrive()   {
 				 messaggio = "Inserire la quantità assegnata sulle attività selezionate!";		
 				
 			 }else{
-				 var descrizione = data[i][2].replace("_","-").replace(";","");
-				 var note = data[i][3].replace("_","-").replace(";","");
+				 //var descrizione = data[i][2].replaceAll("_","-").replaceAll(";","");
+				 var descrizione = replaceAll(replaceAll(data[i][2],"_","-"),";","");
+				 var note = replaceAll(replaceAll(data[i][3],"_","-"),";","");
+				 //var note = data[i][3].replaceAll("_","-").replaceAll(";","");
 				 var quantita_tot = data[i][5];		
 				 var importo=data[i][7];
 				 var quantita_ass = array_quantita[id]

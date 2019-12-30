@@ -150,6 +150,13 @@
  	<mapping class="MilestoneOperatoreDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MilestoneOperatoreDTO.hbm.xml"/>
  	<mapping class="SequenceDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SequenceDTO.hbm.xml"/>
  	
+ 	
+ 	
+ 	<mapping class="ForDocenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForDocenteDTO.hbm.xml"/>
+ 	<mapping class="ForCorsoCatDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoCatDTO.hbm.xml"/>
+ 	<mapping class="ForCorsoCatAllegatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoCatAllegatiDTO.hbm.xml"/>
+ 	<mapping class="ForCorsoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoDTO.hbm.xml"/>
+ 	<mapping class="ForCorsoAllegatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoAllegatiDTO.hbm.xml"/>  
  	 
  	
   </session-factory>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-mag-2017 15.44.30 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.ForDocenteDTO" table="for_docente">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>      
+       <property name="nome" type="java.lang.String" >
+            <column name="nome" />
+        </property>
+        <property name="cognome" type="java.lang.String" >
+            <column name="cognome" />
+        </property>
+         <property name="titolo" type="java.lang.String" >
+            <column name="titolo" />
+        </property>
+        <property name="cv" type="java.lang.String" >
+            <column name="cv" />
+        </property>
+    </class>
+</hibernate-mapping>

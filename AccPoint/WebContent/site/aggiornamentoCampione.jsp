@@ -415,10 +415,10 @@ $('#tipoCampione_mod').change(function(){
 		$('#attivita_taratura_mod').attr('disabled', true);
 		$('#attivita_taratura_text_mod').attr('disabled', true);
 		$('#note_attivita_taratura_mod').attr('disabled', true);
-		$('#freqTaratura_mod').attr('disabled', true);
+	/*	$('#freqTaratura_mod').attr('disabled', true);*/
 		$('#campo_accettabilita_mod').attr('disabled', true);
-		$('#interpolazione_mod').attr('disabled', true);
-		$('#dataVerifica_mod').attr('disabled', true);
+	/*	$('#interpolazione_mod').attr('disabled', true);*/
+	/*	$('#dataVerifica_mod').attr('disabled', true);*/
 		$('#codice_mod').attr('readonly', true);
 		
 	/* 	$('#certificato_mod').attr('disabled', true); */
@@ -436,7 +436,7 @@ $('#tipoCampione_mod').change(function(){
 		$('#frequenza_manutenzione_mod').attr('disabled', false);
 		$('#campo_accettabilita_mod').attr('required', false);
 		$('#interpolazione_mod').attr('required', false);
-		$('#dataVerifica_mod').attr('required', false);
+	/*	$('#dataVerifica_mod').attr('required', false);*/
 		/* $('#certificato_mod').attr('required', false); */
 		$('#numeroCerificato_mod').attr('required', false);
 		$('#ente_certificatore_mod').attr('required', false);

@@ -248,6 +248,25 @@
           </ul>
         </li> 
            <% }%>
+           
+           
+           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_FORMAZIONE")){%>  
+           <li class="header">FORMAZIONE</li>
+
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Gestione Formazione</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+		
+			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_docenti',null,true);">Gestione Docenti</a></li>
+			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_cat_corsi',null,true);">Gestione Categorie Corsi</a></li>
+	      
+          </ul>
+        </li> 
+           <% }%>
         
            <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CONFIGURAZIONI")){%>
         <li class="header">-----------</li>

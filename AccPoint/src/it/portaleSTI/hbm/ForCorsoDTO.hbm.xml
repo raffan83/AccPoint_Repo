@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-mag-2017 15.44.30 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.ForCorsoDTO" table="for_corso">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>      
+       <many-to-one name="corso_cat" class="it.portaleSTI.DTO.ForCorsoCatDTO" fetch="join" lazy="false">
+            <column name="id_corso" />
+        </many-to-one>
+         <many-to-one name="docente" class="it.portaleSTI.DTO.ForDocenteDTO" fetch="join" lazy="false">
+            <column name="id_docente" />
+        </many-to-one>
+        <property name="data_inizio" type="java.util.Date" >
+            <column name="data_inizio" />
+        </property>
+         <property name="data_scadenza" type="java.util.Date" >
+            <column name="data_scadenza" />
+        </property>
+         <property name="documento_test" type="java.lang.String" >
+            <column name="documento_test" />
+        </property>
+        
+          <set name="listaUtenti" table="for_assoc_corso_user"
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
+            <key>
+                <column name="id_user" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.UtenteDTO" />
+        </set> 
+        
+    </class>
+</hibernate-mapping>

@@ -234,8 +234,8 @@
     	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
     	        	paginate:	{
       	        	first:	"Inizio",
-      	        	previous:	"Precedente",
-      	        	next:	"Successivo",
+      	        	previous:	"Prec.",
+      	        	next:	"Succ.",
       	        last:	"Fine",
     	        	},
     	        aria:	{

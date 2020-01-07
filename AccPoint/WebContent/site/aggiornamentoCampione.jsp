@@ -105,7 +105,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
                      <div class="form-group">
         <label for="data_acquisto" class="col-sm-3 control-label">Data Messa in servizio:</label>
         <div class="col-sm-9">
-                      <input class="form-control datepicker required" id="data_messa_in_servizio_mod" type="text" name="data_messa_in_servizio_mod"   value="<%if(campione.getData_acquisto()!=null){out.println(sdf.format(campione.getData_acquisto()));}%>" data-date-format="dd/mm/yyyy"/>
+                      <input class="form-control datepicker required" id="data_messa_in_servizio_mod" type="text" name="data_messa_in_servizio_mod"   value="<%if(campione.getData_messa_in_servizio()!=null){out.println(sdf.format(campione.getData_messa_in_servizio()));}%>" data-date-format="dd/mm/yyyy"/>
     </div>
        </div> 
        

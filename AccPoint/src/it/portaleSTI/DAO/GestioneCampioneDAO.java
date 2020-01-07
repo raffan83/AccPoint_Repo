@@ -593,6 +593,20 @@ public class GestioneCampioneDAO {
 		Query query = null;
 			
 		if(lat) {
+			
+			
+			query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F' and codice LIKE  '%CDT%' ");
+			query.setParameter("_date_start", df.parse(data_start));
+			query.setParameter("_date_end", df.parse(data_end));
+			query.setParameter("_id_company", id_company);	
+			
+			lista = (ArrayList<CampioneDTO>) query.list();				
+			
+			for (CampioneDTO campioneDTO : lista) {
+				lista_tipo.add(3);
+				lista_date.add(df.format(campioneDTO.getDataScadenza()));
+			}
+
 				
 			query = session.createQuery("from AcAttivitaCampioneDTO where (data_scadenza=null or data_scadenza between :_date_start and :_date_end)");	
 			query.setParameter("_date_start", df.parse(data_start));
@@ -602,7 +616,7 @@ public class GestioneCampioneDAO {
 				
 			if(attivita!=null) {
 				for (AcAttivitaCampioneDTO a : attivita) {
-					if(a.getTipo_attivita().getId()!=1) {
+					if(a.getTipo_attivita().getId()==2) {
 						lista.add(a.getCampione());	
 						lista_tipo.add(a.getTipo_attivita().getId());
 						lista_date.add(df.format(a.getData_scadenza()));
@@ -628,7 +642,7 @@ public class GestioneCampioneDAO {
 			
 		}else {
 				
-			query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F'");
+			query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F' and codice NOT LIKE  '%CDT%' ");
 			query.setParameter("_date_start", df.parse(data_start));
 			query.setParameter("_date_end", df.parse(data_end));
 			query.setParameter("_id_company", id_company);				

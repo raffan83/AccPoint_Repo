@@ -7,6 +7,7 @@
 <%@ page language="java" import="java.util.List" %>
 <%@ page language="java" import="java.util.ArrayList" %>
 <%@page import="java.text.SimpleDateFormat"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <% 
 JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonElement jsonElem = (JsonElement)json.getAsJsonObject("dataInfo");
@@ -21,8 +22,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 %>
 	
-
- 
+ <c:set var="tipo_camp" value="<%=campione.getTipo_campione().getId() %>"></c:set>
  <form class="form-horizontal" id="formAggiornamentoCampione">
  
            <div class="form-group">
@@ -176,7 +176,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         <label for="attivita_di_taratura" class="col-sm-3 control-label">Attività Di Taratura:</label>
        
         <div class="col-sm-4">
-
+				
          			<select  class="form-control" id="attivita_taratura_mod"  name="attivita_taratura_mod" >
 						<option value="0">ESTERNA</option>
          				<option value="1">INTERNA</option>
@@ -415,10 +415,10 @@ $('#tipoCampione_mod').change(function(){
 		$('#attivita_taratura_mod').attr('disabled', true);
 		$('#attivita_taratura_text_mod').attr('disabled', true);
 		$('#note_attivita_taratura_mod').attr('disabled', true);
-	/*	$('#freqTaratura_mod').attr('disabled', true);*/
+		$('#freqTaratura_mod').attr('disabled', true);
 		$('#campo_accettabilita_mod').attr('disabled', true);
-	/*	$('#interpolazione_mod').attr('disabled', true);*/
-	/*	$('#dataVerifica_mod').attr('disabled', true);*/
+		$('#interpolazione_mod').attr('disabled', true);
+		$('#dataVerifica_mod').attr('disabled', true);
 		$('#codice_mod').attr('readonly', true);
 		
 	/* 	$('#certificato_mod').attr('disabled', true); */
@@ -436,13 +436,27 @@ $('#tipoCampione_mod').change(function(){
 		$('#frequenza_manutenzione_mod').attr('disabled', false);
 		$('#campo_accettabilita_mod').attr('required', false);
 		$('#interpolazione_mod').attr('required', false);
-	/*	$('#dataVerifica_mod').attr('required', false);*/
+		/* $('#dataVerifica_mod').attr('readonly', false); */
 		/* $('#certificato_mod').attr('required', false); */
 		$('#numeroCerificato_mod').attr('required', false);
 		$('#ente_certificatore_mod').attr('required', false);
 		$('#descrizione_verifica_intermedia_mod').attr('required', false);
 		$('#frequenza_verifica_intermedia_mod').attr('required', false);
 		$('#interpolato_mod').attr('required', false);
+		
+		
+		$('#attivita_taratura_mod').val("");
+		$('#attivita_taratura_text_mod').val("");
+		$('#note_attivita_taratura_mod').val("");
+		$('#freqTaratura_mod').val("");
+		$('#campo_accettabilita_mod').val("");
+		$('#interpolazione_mod').val("");
+		$('#dataVerifica_mod').val("");
+		$('#numeroCerificato_mod').val("");
+		$('#ente_certificatore_mod').val("");
+		$('#descrizione_verifica_intermedia_mod').val("");
+		$('#frequenza_verifica_intermedia_mod').val("");
+		$('#interpolato_mod').val("");
 
 		
 	}
@@ -482,18 +496,17 @@ $('#tipoCampione_mod').change(function(){
 		$('#frequenza_verifica_intermedia_mod').attr('required', false);
 		$('#interpolato_mod').attr('required', false);
 
+		
+		$('#select_manutenzione_mod').val("");
+		$('#descrizione_manutenzione_mod').val("");
+		$('#frequenza_manutenzione_mod').val("");
+		$('#descrizione_verifica_intermedia_mod').val("");
+		$('#frequenza_verifica_intermedia_mod').val("");
+		
 	}
 	else{
 		
-		$('#attivita_di_taratura').attr('required', true);
-		$('#attivita_di_taratura_text').attr('required', true);
-		$('#note_attivita_taratura').attr('required', true);
-		$('#freqTaratura_mod').attr('disabled', true);
-		$('#campo_accettabilita_mod').attr('required', true);
-		$('#interpolazione_mod').attr('required', true);
-		$('#dataVerifica_mod').attr('required', true);
-		/* $('#certificato_mod').attr('required', true); */
-		$('#numeroCerificato_mod').attr('required', true);
+	
 
 
 		/* $('#ente_certificatore').attr('required', true); 
@@ -517,7 +530,15 @@ $('#tipoCampione_mod').change(function(){
 		$('#frequenza_verifica_intermedia_mod').attr('disabled', false);
 		$('#interpolato_mod').attr('disabled', false);
 		
-
+		$('#attivita_di_taratura').attr('required', true);
+		$('#attivita_di_taratura_text').attr('required', true);
+		$('#note_attivita_taratura').attr('required', true);
+		$('#freqTaratura_mod').attr('required', true);
+		$('#campo_accettabilita_mod').attr('required', true);
+		$('#interpolazione_mod').attr('required', true);
+		$('#dataVerifica_mod').attr('required', true);
+		/* $('#certificato_mod').attr('required', true); */
+		$('#numeroCerificato_mod').attr('required', true);
 	}
 	
 });
@@ -526,7 +547,33 @@ $('#tipoCampione_mod').change(function(){
 $(document).ready(function(){
 	console.log("test");
 	
-	$('#tipoCampione_mod').select2();
+	
+	var tipo_camp = ${tipo_camp};
+	
+	
+	if(tipo_camp == 3) {
+		$('#attivita_taratura_mod').attr("disabled", true);
+		$('#attivita_taratura_text_mod').attr("disabled", true);
+		$('#note_attivita_taratura_mod').attr('disabled', true);
+		$('#freqTaratura_mod').attr('disabled', true);
+		$('#campo_accettabilita_mod').attr('disabled', true);
+		$('#interpolazione_mod').attr('disabled', true);
+		$('#dataVerifica_mod').attr('disabled', true);
+		$('#numeroCerificato_mod').attr('disabled', true);
+		$('#ente_certificatore_mod').attr('disabled', true);
+		$('#descrizione_verifica_intermedia_mod').attr('disabled', true);
+		$('#frequenza_verifica_intermedia_mod').attr('disabled', true);
+		$('#interpolato_mod').attr('disabled', true);
+	}
+	else if(tipo_camp==4){
+		$('#select_manutenzione_mod').attr('disabled', true);
+		$('#descrizione_manutenzione_mod').attr('disabled', true);
+		$('#frequenza_manutenzione_mod').attr('disabled', true);
+		$('#descrizione_verifica_intermedia_mod').attr('disabled', true);
+		$('#frequenza_verifica_intermedia_mod').attr('disabled', true);
+	}
+	
+	$('#tipoCampione_mod').select2();	
 	
 	var selection = $('#attivita_taratura_text_mod').val();
 	

@@ -81,7 +81,7 @@
 				<text><![CDATA[ date]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="150" y="181" width="120" height="30" uuid="b325aac9-6364-4861-9c74-afc781e95855"/>
+				<reportElement x="327" y="200" width="3" height="3" uuid="b325aac9-6364-4861-9c74-afc781e95855"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -513,6 +513,13 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numero_pagine}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="180" width="120" height="31" uuid="20728a4b-f8b3-4de4-83d1-260ef1ddba8d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data_misure}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -1356,7 +1356,7 @@ public static ArrayList<LatPuntoLivellaElettronicaDTO> getListaPuntiLivellaElett
 	finally
 	{
 		pst.close();
-		con.close();
+	
 	}
 
 	return listaPunti;

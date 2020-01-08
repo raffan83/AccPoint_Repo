@@ -262,7 +262,7 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP1.jrx
 		reportP2.addParameter("risoluzione","");
 		ArrayList<LatPuntoLivellaElettronicaDTO> lista_punti = GestioneLivellaElettronicaBO.getListaPuntiLivella(misura.getId(), session);
 		if(misura.getIncertezza_estesa()!=null) {
-			reportP2.addParameter("incertezza_estesa", misura.getIncertezza_estesa().setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
+			reportP2.addParameter("incertezza_estesa", misura.getIncertezza_estesa().setScale(1, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
 		}else {
 			reportP2.addParameter("incertezza_estesa", "");
 		}
@@ -272,9 +272,9 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP1.jrx
 		reportP2.addParameter("cell10", "/\"");
 		for(int i = 0; i<lista_punti.size();i++) {
 			
-			reportP2.addParameter("cell"+0+(i+1), lista_punti.get(i).getValore_nominale().toString());
+			reportP2.addParameter("cell"+0+(i+1), lista_punti.get(i).getValore_nominale().setScale(1,RoundingMode.HALF_UP).toString());
 			if(lista_punti.get(i).getScostamentoOff()!=null) {
-				reportP2.addParameter("cell"+1+(i+1), lista_punti.get(i).getScostamentoOff().toString());	
+				reportP2.addParameter("cell"+1+(i+1), lista_punti.get(i).getScostamentoOff().setScale(1,RoundingMode.HALF_UP).toString());	
 			}else {
 				reportP2.addParameter("cell"+1+(i+1), "");
 			}

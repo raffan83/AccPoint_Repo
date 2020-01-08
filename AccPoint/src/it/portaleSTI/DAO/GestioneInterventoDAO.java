@@ -97,6 +97,11 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 
 	public static boolean isPresentStrumento(int id, StrumentoDTO strumento, Session session) {
 		
+		if(strumento.getCreato().equals("S")) 
+		{
+			return false;
+		}
+		
 		Query query=null;
 		boolean isPresent=false;
 		List<MisuraDTO> misura=null;

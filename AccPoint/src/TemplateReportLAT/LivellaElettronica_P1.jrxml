@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LivellaElettronica_P1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="56f8f7ea-816a-433d-bcee-6403ddf04f5d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="181" width="150" height="15" uuid="516e29d4-0ff0-40fc-b508-f9fbf92c663c"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[- data di emissione]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="196" width="150" height="15" uuid="bc067fbf-82eb-4faf-aabc-c7acfc2a6bf4"/>
+				<textElement>
+					<font size="7" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[ date of issue]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="211" width="150" height="15" uuid="daafeca7-6cea-4c89-8be3-ad44ed4a87d1"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[- cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="226" width="150" height="15" uuid="711c586b-1ba8-4ab2-a237-667079ac903d"/>
+				<textElement>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[ customer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="241" width="150" height="15" uuid="15b285b2-e7c6-41ea-ba4f-70f175538686"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[- destinatario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="257" width="150" height="15" uuid="86d6432d-842e-4da9-8780-7c7670ab707a"/>
+				<textElement>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[ receiver]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="327" y="200" width="3" height="3" uuid="59f7450d-6adf-4c0b-ae62-c8d3d7d07dbd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="226" width="120" height="15" uuid="3c083f15-57ff-4fae-b7d9-a814b6aecd9e"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{indirizzo_cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="211" width="120" height="15" uuid="512a91b1-e2a6-4d33-a36d-4c1a760ccce0"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="257" width="120" height="15" uuid="aceabce2-25c0-43f2-b64f-9db51471b1e9"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{indirizzo_destinatario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="241" width="120" height="15" uuid="5a59e9c5-7cec-4e9b-8279-5bdfcbda7794"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{destinatario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="342" width="150" height="15" uuid="653faaa6-64f8-4097-9fd0-97f637806187"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[- oggetto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="355" width="150" height="15" uuid="06662f8a-317a-4353-85c4-f828c668cdef"/>
+				<textElement>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[item]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="370" width="150" height="15" uuid="e62588f3-f13f-49d8-acd7-1057d5522b2e"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[- costruttore]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="385" width="148" height="15" uuid="df80a7d5-24be-4da5-a863-661d24ca0f06"/>
+				<textElement>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[ manufacturer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="400" width="148" height="15" uuid="c9a25f81-6133-4d54-ba62-0e262bc0972d"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[- modello]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="415" width="148" height="15" uuid="2679b10d-0c99-48ad-b1a7-0129f0917dae"/>
+				<textElement>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[ model]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="430" width="148" height="15" uuid="75cecfc6-c1b0-44ca-b984-45c5981f77fe"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[- matricola]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="445" width="148" height="15" uuid="c4121306-f03f-4258-906a-2026fc094e76"/>
+				<textElement>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[ serial number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="460" width="147" height="15" uuid="bd862cfa-0fe4-4038-887b-1b78114d824e"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[- data ricevimento oggetto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="477" width="148" height="15" uuid="cbac33a2-7c07-4aae-a31b-524fbcb87354"/>
+				<textElement>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[ date of receipt of item]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="150" y="370" width="121" height="30" uuid="80352fad-8d7d-4488-a281-c2894a6a9eee"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{costruttore}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="400" width="122" height="30" uuid="933bee1e-b301-4bbd-b0f0-2662a3e99cfe"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{modello}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="148" y="430" width="123" height="30" uuid="a939daa3-1de4-401e-a495-cd02a57051b1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="148" y="460" width="123" height="32" uuid="82348014-893f-48ec-a161-303ccb5e0058"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data_ricevimento_oggetto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="305" width="90" height="21" uuid="69a0e67d-bf6f-40e5-9395-499800068994"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isUnderline="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Si riferisce a]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="322" width="90" height="20" uuid="82248131-1ec1-4c99-9775-10f2a286d109"/>
+				<textElement>
+					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Refering to]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="492" width="147" height="15" uuid="ac78e449-d23a-4efd-8ddf-84d81b298aef"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[- data delle misure]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="1" y="508" width="147" height="15" uuid="385d9e42-b7b8-4965-b9ba-dd2c123a2fd1"/>
+				<textElement>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[ date of measurements]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="148" y="492" width="123" height="31" uuid="6e15cd0a-93c8-44ee-8877-57e51291efb9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data_misure}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="523" width="147" height="15" uuid="363db7eb-da1d-46ce-b9f5-9638d7ceff62"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[- registro di laboratorio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="538" width="148" height="15" uuid="aa451b18-0e5d-4b18-ab00-2e41a0589a3b"/>
+				<textElement>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[ laboratory reference]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="148" y="523" width="123" height="30" uuid="96c953b4-3754-455a-b941-40d8ce0aab61"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{registro_laboratorio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="600" width="554" height="35" uuid="e7c2bb34-6611-4417-b719-fcaf3aff5558"/>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[I risultati di misura riportati nel presente Certificato sono stati ottenuti applicando le procedure di taratura citate alla pagina seguente, dove sono specificati anche i campioni o gli strumenti che garantiscono la catena di riferibilità del Centro e i rispettivi certificati di taratura in corso di validità. Essi si riferiscono esclusivamente all’oggetto in taratura e sono validi nel momento e nelle condizioni di taratura, salvo diversamente specificato.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="635" width="554" height="35" uuid="2c502251-109a-4e88-983d-af614ecf4dae"/>
+				<textElement textAlignment="Justified">
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[The measurement results reported in this Certificate were obtained following the calibration procedures given in the following page, where the reference standards or instruments are indicated which guarantee the traceability chain of the laboratory, and the related calibration certificates in the course of validity are indicated as well. They relate only to the calibrated item and they are valid for the time and conditions of calibration, unless otherwise specified.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="672" width="554" height="35" uuid="9998af38-5fde-4ce3-b6c2-b119df0ecc23"/>
+				<textElement textAlignment="Justified">
+					<font size="8" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Le incertezze di misura dichiarate in questo documento sono state determinate conformemente alla Guida ISO/IEC 98 e al documento EA-4/02. Solitamente sono espresse come incertezza estesa ottenuta moltiplicando l’incertezza tipo per il fattore di copertura   corrispondente ad un livello di fiducia di circa il 95 %. Normalmente tale fattore    vale 2.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="705" width="554" height="35" uuid="f6b7d5e2-bdfa-4dbe-9bae-692bdc0091e5"/>
+				<textElement textAlignment="Justified">
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[The measurement uncertainties stated in this document have been determined according to the ISO/IEC Guide 98 and to EA-4/02. Usually, they have been estimated as expanded uncertainty obtained multiplying the standard uncertainty by the coverage factor k corresponding to a confidence level of about 95%. Normally, this factor k is 2.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="750" width="151" height="14" uuid="6e077e76-87ff-401f-8a6a-db16ef51c743"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Direzione Tecnica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="764" width="151" height="14" uuid="b1cd4909-bea8-484d-b96b-d35ee389262c"/>
+				<textElement textAlignment="Center">
+					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Approving Officier]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="778" width="151" height="14" uuid="301fcd23-ed80-473f-96d3-fcf8c4f0703d"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Ing. Antonio Accettola]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="346" y="324" width="208" height="183" uuid="7c58b92e-0277-4091-9260-d4c0182c6868"/>
+				<textElement textAlignment="Justified">
+					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[This certificate of calibration is issued in compliance with the accreditation LAT N° 172 granted according to decrees connected with Italian law No. 273/1991 which has established the National Calibration System. ACCREDIA attests the calibration and measurement capability, the metrological competence of the Centre and the traceability of calibration results to the national and international standards of the International System of Units (SI).
+This certificate may not be partially reproduced, except with the prior written permission of the issuing Centre.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="346" y="180" width="207" height="152" uuid="973345b5-05f0-4fd8-9934-73dc05bd8824"/>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Il presente certificato di taratura è emesso in base all'accreditamento LAT N° 172 rilasciato in accordo ai decreti attuativi della legge n. 273/1991 che ha istituito il Sistema Nazionale di Taratura (SNT). ACCREDIA attesta le capacità di misura e di taratura, le competenze metrologiche del Centro e la riferibilità delle tarature eseguite ai campioni nazionali e internazionali delle unità di misura del Sistema Internazionale delle Unità (SI).
+Questo certificato non può essere riprodotto in modo parziale, salvo espressa autorizzazione scritta da parte del Centro.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="140" width="555" height="18" uuid="17eafec6-829d-4f6b-905f-3d58d21be201"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[CERTIFICATO DI TARATURA LAT]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="381" y="140" width="173" height="31" uuid="8e9316b6-ad1b-4241-8e41-2add02459eee"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_certificato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="158" width="555" height="18" uuid="0258951e-b77f-4569-9dff-1bd512589dd6"/>
+				<textElement textAlignment="Center">
+					<font size="10" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Certificate of Calibration]]></text>
+			</staticText>
+			<image>
+				<reportElement positionType="FixRelativeToBottom" x="430" y="15" width="115" height="65" uuid="d092dcd0-35be-4daa-8e0f-aa8a12dfe496"/>
+				<imageExpression><![CDATA[$P{immagine_accredia}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="346" y="11" width="60" height="59" uuid="a41f840c-4d8b-404b-91f0-ca8e47e7101e"/>
+				<imageExpression><![CDATA[$P{immagine_ilac}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="157" y="10" width="170" height="13" uuid="b8cff439-eabb-4ad8-b32a-c4e34d82451a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10.5"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Centro di Taratura LAT N° 172]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="23" width="170" height="13" uuid="9eac4036-c9e6-4ff2-a4bf-1e46b6d46829"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9" isItalic="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Calibration Centre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="36" width="170" height="13" uuid="0a75344a-5a67-46d4-a67a-2cb08d6a6280"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10.5"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Laboratorio Accreditato di Taratura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="49" width="170" height="13" uuid="6cf3e46a-7d09-415c-b34d-0441e2dfd191"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9" isItalic="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Accredited Calibration Laboratory]]></text>
+			</staticText>
+			<line direction="BottomUp">
+				<reportElement stretchType="RelativeToTallestObject" x="162" y="70" width="160" height="1" forecolor="#DCDCDC" uuid="6a36d47d-b4d6-4a31-8657-82421c152c29"/>
+			</line>
+			<staticText>
+				<reportElement x="157" y="80" width="170" height="13" uuid="761907ac-e963-431a-a30f-4952b5eb6511"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" isItalic="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Organizzazione con sistema di gestione ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="93" width="170" height="13" uuid="85bab3cd-9864-43eb-90ac-c36619ca09ac"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" isItalic="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[certificato UNI EN ISO 9001 ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="106" width="170" height="13" uuid="a8291afe-fb67-4359-aed7-4abf76cb2d05"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" isItalic="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[UNI EN ISO 14001 - OHSAS 18001]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="5" width="133" height="51" uuid="545cb063-9062-4fe7-9c66-9712f0546ce8"/>
+				<imageExpression><![CDATA[$P{immagine_sti}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="80" width="140" height="13" uuid="c7d39e93-880e-4759-a794-ff5d6d808ead"/>
+				<textElement textAlignment="Center">
+					<font fontName="Garamond" size="7"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[03039 SORA (FR) Via Tofaro 42/b]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="93" width="140" height="13" uuid="eb44e4ee-2ca1-4d1d-938d-556802e171fa"/>
+				<textElement textAlignment="Center">
+					<font fontName="Garamond" size="7"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Tel +39 0776 814606 -  Fax +39 0776 814169]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="106" width="140" height="13" uuid="c0f0a331-3c67-4bed-b40f-b3e45c76fe7d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Garamond" size="7"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[stisrl@stisrl.com  www.stisrl.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="505" y="117" width="50" height="12" uuid="2f50c306-b11f-4aa9-9549-8158e7dde0e0"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pagina 1 di ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="512" y="129" width="43" height="12" uuid="9c38e870-c279-47b8-8ccc-5e92eb48b4e0"/>
+				<textElement>
+					<font size="7" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Page 1 of ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="682" width="10" height="20" uuid="0b626551-b29c-41cb-8fe5-514c94f1964a"/>
+				<textElement>
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[k]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="692" width="10" height="20" uuid="cff51ae1-6861-4bce-8dad-b4270513e8b7"/>
+				<textElement>
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[k]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="151" y="342" width="120" height="28" uuid="3754f5ae-ff83-4635-9f64-cf271d67be20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{oggetto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="547" y="117" width="9" height="12" uuid="a84b979a-cdba-4aba-9866-abc3cf633518"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_pagine}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="544" y="129" width="12" height="12" uuid="7227fa24-a8ce-4314-bf02-a944771956e0"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_pagine}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="180" width="120" height="31" uuid="f4cc161f-1764-454b-8bd6-fcefe807286c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data_misure}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

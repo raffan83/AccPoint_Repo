@@ -1,16 +1,7 @@
 package it.portaleSTI.certificatiLAT;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
-import static net.sf.dynamicreports.report.builder.DynamicReports.col;
-import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
-import static net.sf.dynamicreports.report.builder.DynamicReports.type;
-import static net.sf.dynamicreports.report.builder.DynamicReports.ctab;
-import static net.sf.dynamicreports.report.builder.DynamicReports.field;
-
-import java.awt.Color;
 import java.io.File;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +17,6 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
-import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.Util.Costanti;
@@ -39,23 +29,9 @@ import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneLivellaElettronicaBO;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
-import net.sf.dynamicreports.report.builder.FieldBuilder;
-import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
-import net.sf.dynamicreports.report.builder.crosstab.CrosstabBuilder;
-import net.sf.dynamicreports.report.builder.crosstab.CrosstabColumnGroupBuilder;
-import net.sf.dynamicreports.report.builder.crosstab.CrosstabMeasureBuilder;
-import net.sf.dynamicreports.report.builder.crosstab.CrosstabRowGroupBuilder;
-import net.sf.dynamicreports.report.builder.style.ReportStyleBuilder;
-import net.sf.dynamicreports.report.builder.style.StyleBuilder;
-import net.sf.dynamicreports.report.constant.Calculation;
-import net.sf.dynamicreports.report.constant.CrosstabPercentageType;
-import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
-import net.sf.dynamicreports.report.constant.Rotation;
 import net.sf.dynamicreports.report.constant.SplitType;
-import net.sf.dynamicreports.report.datasource.DRDataSource;
-import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -75,7 +51,7 @@ public class CreaCertificatoLivellaElettronica {
 	
 	private void build(CertificatoDTO certificato, LatMisuraDTO misura, Session session) throws Exception {
 		
-InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP1.jrxml");
+InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica_P1.jrxml");
 		
 		JasperReportBuilder report = DynamicReports.report();
 		
@@ -272,11 +248,11 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP1.jrx
 			reportP2.addParameter("incertezza_estesa", "");
 		}
 		
-		if(misura.getIntervento_dati().getUtente().getNominativo()!=null) {
-			reportP2.addParameter("operatore", misura.getIntervento_dati().getUtente().getNominativo());
-		}else {
-			reportP2.addParameter("operatore", "");
-		}
+//		if(misura.getIntervento_dati().getUtente().getNominativo()!=null) {
+//			reportP2.addParameter("operatore", misura.getIntervento_dati().getUtente().getNominativo());
+//		}else {
+//			reportP2.addParameter("operatore", "");
+//		}
 		
 		reportP2.addParameter("cell00", "/\"");
 		reportP2.addParameter("cell10", "/\"");

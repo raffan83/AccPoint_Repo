@@ -294,7 +294,7 @@
 	    var date = $('#dataVerifica');
 	    data.formData = {dataVerifica: date.val(), id_campione: campione_id};
 	    
-	    if (!data.formData.dataVerifica) {
+/* 	    if (!data.formData.dataVerifica) {
 	        
 	        $('#myModalErrorContent').html("INSERIRE DATA DI VERIFICA");
 			$('#myModalError').removeClass();
@@ -307,7 +307,7 @@
 	        
 	        return false;
 	      }
-	   
+	    */
 	});
 	
  	

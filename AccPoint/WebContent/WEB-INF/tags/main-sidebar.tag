@@ -263,6 +263,7 @@
 		
 			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_docenti',null,true);">Gestione Docenti</a></li>
 			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_cat_corsi',null,true);">Gestione Categorie Corsi</a></li>
+			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_corsi',null,true);">Gestione Corsi</a></li>
 	      
           </ul>
         </li> 

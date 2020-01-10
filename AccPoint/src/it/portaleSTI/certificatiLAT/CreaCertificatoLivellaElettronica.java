@@ -27,6 +27,7 @@ import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneLivellaElettronicaBO;
+import it.portaleSTI.bo.GestioneMagazzinoBO;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.constant.PageOrientation;
@@ -141,7 +142,10 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 			report.addParameter("matricola", "");
 		}
 		
-		report.addParameter("data_ricevimento_oggetto", "DATA RICEVIMENTO OGGETTO");
+				
+		String data_ricevimento = GestioneMagazzinoBO.getDataRicevimentoItem(misura.getStrumento(),session);
+		
+		report.addParameter("data_ricevimento_oggetto",data_ricevimento);
 		
 		if(misura.getData_misura()!=null) {
 			report.addParameter("data_misure", dt.format(misura.getData_misura()));
@@ -226,12 +230,12 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 		if(misura.getTemperatura()!=null) {
 			reportP2.addParameter("temperatura", "("+misura.getTemperatura().setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")+" ± 1) °C");	
 		}else {
-			reportP2.addParameter("temperatura", "(20 ± 1) °C\")");
+			reportP2.addParameter("temperatura", "(20 ± 1) °C");
 		}
 		if(misura.getUmidita()!=null) {
 			reportP2.addParameter("umidita", "("+misura.getUmidita().setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")+" ± 10) %");	
 		}else {
-			reportP2.addParameter("umidita", "(50 ± 10) %)");
+			reportP2.addParameter("umidita", "(50 ± 10) %");
 		}
 		
 		reportP2.addParameter("unita_formato","");

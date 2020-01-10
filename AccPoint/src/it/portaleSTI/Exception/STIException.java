@@ -34,6 +34,7 @@ public class STIException extends Exception{
 	
 	public static JsonObject getException(Exception e) {
 		
+		logger.error( "Fatal - ", e );
 		JsonObject myObj = new JsonObject();
 		if(e instanceof NullPointerException) {
 			myObj.addProperty("messaggio", "Errore: NullPointerException, comunicaci l'errore facendo click sul pulsante Invia Report");

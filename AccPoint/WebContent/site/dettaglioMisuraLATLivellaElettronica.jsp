@@ -216,21 +216,21 @@
      				<div class="form-group row">
         			<label for="campo_misura" class="col-sm-5 control-label">Campo Misura</label>
        						 <div class="col-sm-6">
-        	             <input type="text" id="campo_misura" class="form-control" value="${misura.misuraLAT.campo_misura.stripTrailingZeros()  }" readonly/>
+        	             <input type="text" id="campo_misura" class="form-control" value="${misura.misuraLAT.campo_misura.stripTrailingZeros().toPlainString() }" readonly/>
    						 </div>"
    						 
      				</div>
      				<div class="form-group row">
         			<label for="sensibilita" class="col-sm-5 control-label">Sensibilità</label>
        						 <div class="col-sm-6">
-        	             <input type="text" id="sensibilita" class="form-control" value="${misura.misuraLAT.sensibilita.stripTrailingZeros()  }" readonly/>
+        	             <input type="text" id="sensibilita" class="form-control" value="${misura.misuraLAT.sensibilita.stripTrailingZeros().toPlainString()  }" readonly/>
    						 </div>"
    						 
      				</div>
      				<div class="form-group row">
         			<label for="incertezza_estesa" class="col-sm-5 control-label">Incertezza Estesa U(Em)</label>
        						 <div class="col-sm-6">
-        	             <input type="text" id="incertezza_estesa" class="form-control" value="${misura.misuraLAT.incertezza_estesa.stripTrailingZeros()  }" readonly/>
+        	             <input type="text" id="incertezza_estesa" class="form-control" value="${misura.misuraLAT.incertezza_estesa.stripTrailingZeros().toPlainString()   }" readonly/>
    						 </div>"
    						
      				</div>

@@ -129,15 +129,15 @@ public class CreaCertificatoLivellaBolla {
 				report.addParameter("indirizzo_destinatario", "");
 		}			
 		
-		if(commessa.getN_ORDINE()!=null)
-		{
-			report.addParameter("richiesta", commessa.getN_ORDINE());
-		}else 
-		{
-			report.addParameter("richiesta","");
-		}
+//		if(commessa.getN_ORDINE()!=null)
+//		{
+//			report.addParameter("richiesta", commessa.getN_ORDINE());
+//		}else 
+//		{
+//			report.addParameter("richiesta","");
+//		}
 		report.addParameter("oggetto", "Livella a bolla d'aria");
-		report.addParameter("data", dt.format(commessa.getDT_COMMESSA()));
+//		report.addParameter("data", dt.format(commessa.getDT_COMMESSA()));
 		
 		if(misura.getStrumento().getCostruttore()!=null) {
 			report.addParameter("costruttore", misura.getStrumento().getCostruttore());	
@@ -206,7 +206,7 @@ public class CreaCertificatoLivellaBolla {
 			reportP2.addParameter("matricola", "");
 		}
 		
-		reportP2.addParameter("um", "UM");
+		reportP2.addParameter("um", "mm/m");
 		if(misura.getStrumento().getCampo_misura()!=null) {
 			reportP2.addParameter("campo_misura", misura.getStrumento().getCampo_misura());
 		}else {
@@ -234,8 +234,6 @@ public class CreaCertificatoLivellaBolla {
 		}		
 		
 		reportP2.addParameter("certificati_campione", certificato_campione);
-		
-		if(misura.getRif_campione_lavoro()!=null)
 		
 		if(misura.getTemperatura()!=null) {
 			reportP2.addParameter("temperatura", "("+misura.getTemperatura().setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")+" ± 1) °C");	

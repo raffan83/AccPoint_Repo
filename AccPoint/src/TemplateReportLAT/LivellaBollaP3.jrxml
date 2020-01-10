@@ -156,29 +156,21 @@
 				<reportElement x="-2" y="51" width="561" height="1" uuid="f004ff52-f695-48d6-9630-da8cbcb072b8"/>
 			</line>
 			<staticText>
-				<reportElement x="409" y="80" width="151" height="14" uuid="b7119d09-645b-48f2-80d2-d11eadcd5656"/>
+				<reportElement x="400" y="80" width="151" height="14" uuid="f2d6fb05-2ec2-4c84-97be-2bc9b37c4816"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Il Responsabile del Centro
-Head of the Centre
-"				
-				
-Ing. Antonio Accettola]]></text>
+				<text><![CDATA[Direzione Tecnica]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="409" y="94" width="151" height="14" uuid="317958a0-b9e0-4f46-9eb1-1452e92c2542"/>
+				<reportElement x="400" y="94" width="151" height="14" uuid="f774c14e-020b-4f30-90b1-9a546ea2c497"/>
 				<textElement textAlignment="Center">
 					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<text><![CDATA[Head of the Centre]]></text>
+				<text><![CDATA[Approving Officier]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="409" y="108" width="151" height="14" uuid="7d86580f-b4ad-47da-b023-605dea5c5620"/>
+				<reportElement x="400" y="107" width="151" height="14" uuid="52db0b6e-861a-4f61-abfa-b7c37a6adbc1"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Ing. Antonio Accettola]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="10" y="80" width="151" height="14" uuid="1b630e76-f635-4f1b-9e3a-9873568a707f"/>
-				<text><![CDATA[Operatore]]></text>
 			</staticText>
 		</band>
 	</pageFooter>

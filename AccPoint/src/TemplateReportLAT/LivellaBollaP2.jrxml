@@ -162,28 +162,28 @@
 			<staticText>
 				<reportElement x="57" y="80" width="63" height="15" uuid="f03b57fb-7afe-4357-bad7-e1662824cdae"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Oggetto:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="57" y="96" width="63" height="15" uuid="bc708025-b208-4025-ae9a-d716374a5200"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="true" isItalic="true"/>
+					<font size="8" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Costruttore:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="57" y="112" width="63" height="15" uuid="1f2a713f-feac-40ca-ab15-6009b84e912c"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Modello:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="57" y="128" width="63" height="15" uuid="719642f9-0ab3-4fc4-99ff-2c757c216941"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="true" isItalic="true"/>
+					<font size="8" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Matricola:]]></text>
 			</staticText>
@@ -218,21 +218,21 @@
 			<staticText>
 				<reportElement x="307" y="80" width="83" height="15" uuid="f60cb7cd-1ff4-4b2e-bf74-cbc2234e133b"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isItalic="true"/>
+					<font size="8" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Unità di misura:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="307" y="96" width="83" height="15" uuid="ce9d4df5-9a80-4afc-b658-fc3b15c1fe6f"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Campo di misura:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="307" y="112" width="83" height="15" uuid="8003da78-4478-448e-98d1-d9a3ea3c9480"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isItalic="true"/>
+					<font size="8" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Sensibilità:]]></text>
 			</staticText>
@@ -359,7 +359,7 @@
 			<staticText>
 				<reportElement x="367" y="260" width="123" height="48" uuid="04289f05-c119-4eb8-af6c-448234ffc725"/>
 				<textElement>
-					<font size="9" isItalic="true"/>
+					<font size="9" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
 				</textElement>
 				<text><![CDATA[TLAB.       =
  
@@ -367,14 +367,14 @@ UR%LAB. =
 ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="417" y="261" width="70" height="15" uuid="d6ca58e1-7096-4a5b-897c-d7e1554fdf90"/>
+				<reportElement x="422" y="261" width="70" height="15" uuid="d6ca58e1-7096-4a5b-897c-d7e1554fdf90"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{temperatura}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="417" y="282" width="70" height="15" uuid="83adbfa9-4839-439f-bac1-e72cc2824233"/>
+				<reportElement x="423" y="282" width="70" height="15" uuid="83adbfa9-4839-439f-bac1-e72cc2824233"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
@@ -392,21 +392,21 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 			<staticText>
 				<reportElement x="190" y="400" width="30" height="21" uuid="8bd4c9f9-923d-4c4f-883a-00c34bdfce8f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
-					<font isBold="true" isItalic="true"/>
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
 				</textElement>
 				<text><![CDATA[U = ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="290" y="400" width="41" height="21" uuid="bbe2cb6b-774a-4085-a994-ff17af86587c"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true" isItalic="true"/>
+					<font size="10" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[mm/m]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="220" y="400" width="70" height="21" uuid="fe2602d5-d533-423c-ab24-5463ef229c0b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true" isItalic="true"/>
+					<font size="10" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{incertezza_estesa}]]></textFieldExpression>
 			</textField>
@@ -420,14 +420,14 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 			<textField>
 				<reportElement x="221" y="471" width="70" height="21" uuid="cbd3b4e0-4d80-4883-8c36-4bc293bfec23"/>
 				<textElement textAlignment="Center">
-					<font isBold="true"/>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{val_medio_divisione}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="290" y="471" width="41" height="21" uuid="3cdc24d3-b3b7-4fd2-a550-4806956b1f60"/>
 				<textElement>
-					<font isBold="true"/>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[mm/m]]></text>
 			</staticText>
@@ -441,14 +441,14 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 			<textField>
 				<reportElement x="221" y="527" width="70" height="21" uuid="b516c8cb-23d9-49ae-a05d-7a7121c930b9"/>
 				<textElement textAlignment="Center">
-					<font isBold="true"/>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{incertezza_ass_media}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="290" y="527" width="41" height="21" uuid="dd9abb67-bc0c-4cbb-a7d0-beee6674cb15"/>
 				<textElement>
-					<font isBold="true"/>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[mm/m]]></text>
 			</staticText>
@@ -480,14 +480,14 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 			<staticText>
 				<reportElement x="0" y="320" width="100" height="12" uuid="0d6d00c5-a850-4dea-b1ba-bb28f25e3055"/>
 				<textElement verticalAlignment="Top">
-					<font size="8" isBold="true"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Misurando]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="420" width="100" height="12" uuid="c9880104-0e0a-4611-a2c4-d20f9ee9cdc6"/>
 				<textElement verticalAlignment="Top">
-					<font size="8" isBold="true"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Osservazioni]]></text>
 			</staticText>
@@ -497,6 +497,23 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 					<font size="8" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[k]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="431" y="582" width="151" height="14" uuid="a4fb270f-751b-4995-9e72-27e081f040a3"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Direzione Tecnica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="431" y="596" width="151" height="14" uuid="81158519-f90b-4199-a562-d777362fbc62"/>
+				<textElement textAlignment="Center">
+					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Approving Officier]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="431" y="610" width="151" height="14" uuid="d30af8b3-c7a3-4764-b37e-d55d889b6d73"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Ing. Antonio Accettola]]></text>
 			</staticText>
 		</band>
 	</detail>

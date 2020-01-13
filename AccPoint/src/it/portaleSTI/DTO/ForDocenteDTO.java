@@ -7,6 +7,16 @@ public class ForDocenteDTO {
 	private String cognome;
 	private String titolo;
 	private String cv;
+	
+	
+	public ForDocenteDTO(int id) {
+		this.id = id;
+	}
+	
+	public ForDocenteDTO() {
+		super();
+	}
+	
 	public int getId() {
 		return id;
 	}

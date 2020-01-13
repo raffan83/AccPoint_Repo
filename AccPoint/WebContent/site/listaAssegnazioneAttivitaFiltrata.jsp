@@ -20,11 +20,12 @@
 <%-- <th>Sede</th> --%>
 <th>Data</th>
 <th>Descrizioni Attivita</th>
-<th>Quantità Totale</th>
-<th>Quantità Assegnata</th>
 <th>UM</th>
+<th>Quantità Assegnata</th>
+<th>Quantità Totale</th>
 <th>Note</th>
 <th>ID Intervento</th>
+<th>Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -41,13 +42,19 @@
 	 <td onClick="showText('${milestone.descrizioneMilestone }', '${loop.index}','4')">${utl:maxChar(milestone.descrizioneMilestone, 50)}</td>   
 	 <%-- <td>${milestone.descrizioneMilestone }</td>  --%>
 	 <td>${milestone.unita_misura }</td>
-	<td>${milestone.quantitaTotale }</td>
-	<td>${milestone.quantitaAssegnata }</td>
 	
+	<td>${milestone.quantitaAssegnata }</td>
+	<td>${milestone.quantitaTotale }</td>
 	<td>${milestone.note}</td>
 	<%-- <td onClick="showText('${milestone.note }', '${loop.index}','7')">${utl:maxChar(milestone.note, 10)}</td> --%>
 
 	<td><a class="btn customTooltip customlink" onClicK="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(milestone.intervento.id)}')" >${milestone.intervento.id }</a></td>
+	<td>
+	<c:if test="${milestone.controllato==0 }">
+	<a class="btn btn-warning" onClicK="modalModificaAssegnazione('${milestone.prezzo_un}','${milestone.presso_assegnato}','${milestone.quantitaTotale}','${milestone.quantitaAssegnata}','${milestone.note}','${milestone.unita_misura }','${milestone.id}')" ><i class="fa fa-edit"></i></a>
+		<a class="btn btn-danger" onClicK="modalYesOrNo('${milestone.id}')" ><i class="fa fa-trash"></i></a>
+		</c:if>
+	</td>
 	</tr>
 	</c:forEach>
 	 
@@ -59,12 +66,173 @@
 
 
 
+  <div id="myModalModificaAssegnazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Assegnazione</h4>
+      </div>
+       <div class="modal-body">       
+       <div class="row">
+	
+        <div class="col-md-12">
+       <input class="form-control" id="prezzo_unitario" type="hidden" name="prezzo_unitario" readonly/>
+    </div>
+      
+   
+        <div class="col-md-12">
+                      <input class="form-control" id="prezzo_assegnato" type="hidden" name="prezzo_assegnato"/>
+    </div>
+       
+            	<div class="col-md-9" >
+        <label  >Quantità Totale:</label>
+        </div>
+        <div class="col-md-12">
+                      <input class="form-control" id="quantita_totale" type="text" name="quantita_totale" readonly/>
+    </div>
+         	<div class="col-md-9" >
+        <label  >Quantità Assegnata:</label>
+        </div>
+        <div class="col-md-12">
+                      <input class="form-control" id="quantita_assegnata" type="text" name="quantita_assegnata"/>
+    </div>
+    <div class="col-md-9" >
+        <label  >Unità di misura:</label>
+        </div>
+        <div class="col-md-12">
+                      <input class="form-control" id="unita_misura" type="text" name="unita_misura"/>
+    </div>
+         	<div class="col-md-9" >
+        <label  >Note:</label>
+        </div>
+        <div class="col-md-12">
+        <textarea id="note" name="note" style="width:100%" rows="3"></textarea>
+                     
+    </div>
+      	
+
+      	</div>
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_assegnazione">
+      <a class="btn btn-primary" onclick="submitModifica()" >Salva</a>
+		
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare l'assegnazione?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_assegnazione_elimina">
+      <a class="btn btn-primary" onclick="eliminaAssegnazioneAdmin()" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <script type="text/javascript">
+
+
+
+function modalYesOrNo(id){
+	$('#id_assegnazione_elimina').val(id);
+	$('#myModalYesOrNo').modal();
+}
+
+function modalModificaAssegnazione(prezzo_unitario, prezzo_assegnato, quantita_totale, quantita_assegnata, note,unita_misura, id){
+	
+	$('#id_assegnazione').val(id);
+	$('#prezzo_unitario').val(prezzo_unitario);
+	$('#prezzo_assegnato').val(prezzo_assegnato);
+	$('#quantita_totale').val(quantita_totale);
+	$('#quantita_assegnata').val(quantita_assegnata);
+	$('#note').val(note);	
+	$('#unita_misura').val(unita_misura)
+	
+	
+	$('#myModalModificaAssegnazione').modal();
+}
+
+$('#quantita_assegnata').change(function(){
+	
+	var qta = $(this).val();
+	var prezzo = $('#prezzo_unitario').val();
+	
+	var prezzo_ass = qta*prezzo;
+	if((""+prezzo_ass).includes(".",0)){
+		$('#prezzo_assegnato').val(prezzo_ass);
+	}else{
+		$('#prezzo_assegnato').val(prezzo_ass+".00");	
+	}
+	
+	
+	
+});
+
+function submitModifica(){
+	 var prezzo_unitario = $('#prezzo_unitario').val();
+	 var prezzo_assegnato = $('#prezzo_assegnato').val();
+	 var quantita_totale = $('#quantita_totale').val();
+	 var quantita_assegnata = $('#quantita_assegnata').val();	  
+	 var note = $('#note').val();
+	 var id_assegnazione = $('#id_assegnazione').val();
+	 var unita_misura = $('#unita_misura').val();
+	 
+	 $('#prezzo_unitario').css('border', '1px solid #d2d6de');
+	 $('#prezzo_assegnato').css('border', '1px solid #d2d6de');
+	 $('#quantita_totale').css('border', '1px solid #d2d6de');
+	 $('#quantita_assegnata').css('border', '1px solid #d2d6de');
+	 
+	 var esito = true;
+	 
+	 if(isNaN(prezzo_unitario)){
+		 esito = false;
+		 $('#prezzo_unitario').css('border', '1px solid #f00');
+	 }
+	 if(isNaN(prezzo_assegnato)){
+		 esito = false;
+		 $('#prezzo_assegnato').css('border', '1px solid #f00');
+	 }
+	 if(isNaN(quantita_totale)){
+		 esito = false;
+		 $('#quantita_totale').css('border', '1px solid #f00');
+	 }
+	 if(isNaN(quantita_assegnata)){
+		 esito = false;
+		 $('#quantita_assegnata').css('border', '1px solid #f00');
+	 }
+	 
+	 if(esito){
+		 modificaAssegnazioneAdmin();
+	 }
+	 
+}
 
 
 var columsDatatables = [];

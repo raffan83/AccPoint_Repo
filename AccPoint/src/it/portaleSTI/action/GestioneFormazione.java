@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -25,14 +26,20 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
+import com.lowagie.text.pdf.codec.Base64.OutputStream;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
+import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
+import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
+import it.portaleSTI.DTO.RilAllegatiDTO;
+import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.TipoEventoRegistroDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -40,6 +47,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneFormazioneBO;
+import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
@@ -136,7 +144,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				if(fileItem!=null && !filename.equals("")) {
 
-					saveFile(fileItem, cognome,nome,filename);
+					saveFile(fileItem, "Docenti//"+nome+"_"+cognome,filename);
 					docente.setCv(filename);
 				}
 				
@@ -194,7 +202,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				if(fileItem!=null && !filename.equals("")) {
 
-					saveFile(fileItem, cognome,nome,filename);
+					saveFile(fileItem, "Docenti//"+nome+"_"+cognome,filename);
 					docente.setCv(filename);
 				}
 				
@@ -216,29 +224,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				ForDocenteDTO docente = GestioneFormazioneBO.getDocenteFromId(Integer.parseInt(id_docente), session);
 				
-				String path = Costanti.PATH_FOLDER+"//DocentiFormazione//"+docente.getCognome()+"_"+docente.getNome()+"//"+docente.getCv();
-				File file = new File(path);
+				String path = Costanti.PATH_FOLDER+"//Formazione//Docenti//"+docente.getCognome()+"_"+docente.getNome()+"//"+docente.getCv();
 				
-				FileInputStream fileIn = new FileInputStream(file);
-				 
-				response.setContentType("application/pdf");
-				  
-				 //response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
-				 
-				 ServletOutputStream outp = response.getOutputStream();
-				     
-				    byte[] outputByte = new byte[1];
-				    
-				    while(fileIn.read(outputByte, 0, 1) != -1)
-				    {
-				    	outp.write(outputByte, 0, 1);
-				    }
-				    				    
-				    session.close();
-
-				    fileIn.close();
-				    outp.flush();
-				    outp.close();
+				downloadFile(path, response.getOutputStream());
+				
+				response.setContentType("application/pdf");	
+				
+				session.close();
 				
 			}
 			else if(action.equals("lista_cat_corsi")) {
@@ -357,6 +349,372 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.getTransaction().commit();
 				session.close();
 			}
+			else if(action.equals("lista_corsi")) {
+				
+				ArrayList<ForCorsoDTO> lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
+				ArrayList<ForCorsoCatDTO> lista_corsi_cat = GestioneFormazioneBO.getListaCategorieCorsi(session);
+				ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);				
+				
+				
+				request.getSession().setAttribute("lista_corsi", lista_corsi);
+				request.getSession().setAttribute("lista_corsi_cat", lista_corsi_cat);
+				request.getSession().setAttribute("lista_docenti", lista_docenti);
+				
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneForCorsi.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("nuovo_corso")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		        
+		        		
+				String categoria = ret.get("categoria");
+				String docente = ret.get("docente");
+				String data_inizio = ret.get("data_inizio");
+				String data_scadenza = ret.get("data_scadenza");
+
+				ForCorsoDTO corso = new ForCorsoDTO();		
+				
+				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria)));
+				corso.setDocente(new ForDocenteDTO(Integer.parseInt(docente)));
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				
+				corso.setData_inizio(df.parse(data_inizio));
+				corso.setData_scadenza(df.parse(data_scadenza));
+				
+				if(filename!=null) {
+					corso.setDocumento_test(filename);
+					//saveFile(fileItem, "DocumentiTest//"+lista_corsi, filename);
+				}
+				
+				session.save(corso);
+				
+				if(filename!=null) {
+					
+					saveFile(fileItem, "DocumentiTest//"+corso.getId(), filename);
+				}
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Corso salvato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+				
+			
+			}
+			
+			else if(action.equals("modifica_corso")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+		        String id_corso = request.getParameter("id_corso");
+		        String categoria = ret.get("categoria_mod");
+				String docente = ret.get("docente_mod");
+				String data_inizio = ret.get("data_inizio_mod");
+				String data_scadenza = ret.get("data_scadenza_mod");
+				
+				
+				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso),session);		
+				
+				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria)));
+				corso.setDocente(new ForDocenteDTO(Integer.parseInt(docente)));
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				
+				corso.setData_inizio(df.parse(data_inizio));
+				corso.setData_scadenza(df.parse(data_scadenza));
+				
+				
+				if(filename!=null) {
+					corso.setDocumento_test(filename);
+					saveFile(fileItem, "DocumentiTest//"+corso.getId(), filename);
+				}
+				
+				session.update(corso);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Corso modificato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+			}
+			
+			else if (action.equals("download_documento_test")) {
+				
+				String id_corso = request.getParameter("id_corso");
+				
+				id_corso = Utility.decryptData(id_corso);
+				
+				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso), session);
+				
+				String path = Costanti.PATH_FOLDER+"//Formazione//DocumentiTest//"+corso.getId()+"//"+corso.getDocumento_test();
+				
+				downloadFile(path, response.getOutputStream());
+				
+				response.setContentType("application/pdf");
+	
+								    				    
+				session.close();
+				
+			}
+			else if(action.equals("associa_utenti")) {
+				
+				ajax = true;
+				
+				String id_corso = request.getParameter("id_corso");
+				String utenti = request.getParameter("utenti");
+				String associa_dissocia = request.getParameter("associa_dissocia");				
+				
+				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso), session);;
+				
+				if(associa_dissocia.equals("associa")) {
+					String[] lista_id_utenti = utenti.split(",");		
+					
+					for (String id : lista_id_utenti) {
+						
+						UtenteDTO user = GestioneUtenteBO.getUtenteById(id, session);
+						corso.getListaUtenti().add(user);
+					}	
+				}else {
+					UtenteDTO user = GestioneUtenteBO.getUtenteById(utenti, session);
+					corso.getListaUtenti().remove(user);
+				}				
+				
+				session.update(corso);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Operazione completata con successo!");
+				out.print(myObj);
+				
+				
+			}
+			else if(action.equals("archivio")) {
+				
+				String id_corso = request.getParameter("id_corso");
+				String id_categoria = request.getParameter("id_categoria");
+				
+				ArrayList<ForCorsoAllegatiDTO> lista_allegati_corso = null;
+				ArrayList<ForCorsoCatAllegatiDTO> lista_allegati_categoria = null;
+				
+				if(!id_corso.equals("0")) {
+					lista_allegati_corso = GestioneFormazioneBO.getAllegatiCorso(Integer.parseInt(id_corso), session);					
+				}				
+				
+				if(!id_categoria.equals("0")) {
+					lista_allegati_categoria = GestioneFormazioneBO.getAllegatiCategoria(Integer.parseInt(id_categoria), session);					
+				}
+				
+				request.getSession().setAttribute("lista_allegati_corso", lista_allegati_corso);
+				request.getSession().setAttribute("lista_allegati_categoria", lista_allegati_categoria);
+				request.getSession().setAttribute("id_corso", id_corso);
+				request.getSession().setAttribute("id_categoria", id_categoria);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaArchivioFormazione.jsp");
+		     	dispatcher.forward(request,response);
+			}
+			else if(action.equals("archivio_upload")) {
+				ajax = true;
+				
+				String id_corso = request.getParameter("id_corso");
+				String id_categoria = request.getParameter("id_categoria");				
+								
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+				PrintWriter out = response.getWriter();
+				response.setContentType("application/json");						
+					
+					List<FileItem> items = uploadHandler.parseRequest(request);
+					for (FileItem item : items) {
+						if (!item.isFormField()) {
+							if(id_corso!=null && !id_corso.equals("0")) {
+								
+								ForCorsoAllegatiDTO allegato_corso = new ForCorsoAllegatiDTO();
+								ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso), session);
+								allegato_corso.setCorso(corso);
+								allegato_corso.setNome_allegato(item.getName());
+								saveFile(item, "Allegati//Corsi//"+id_corso,item.getName());	
+								session.save(allegato_corso);
+								
+							}
+							if(id_categoria!=null && !id_categoria.equals("0")) {
+								
+								ForCorsoCatAllegatiDTO allegato_categoria = new ForCorsoCatAllegatiDTO();
+								ForCorsoCatDTO categoria = GestioneFormazioneBO.getCategoriaCorsoFromId(Integer.parseInt(id_categoria), session);
+								allegato_categoria.setCorso(categoria);
+								allegato_categoria.setNome_allegato(item.getName());
+								saveFile(item, "Allegati//Categorie//"+id_categoria,item.getName());	
+								session.save(allegato_categoria);
+							}
+							
+						}
+					}
+
+					session.getTransaction().commit();
+					session.close();	
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Upload effettuato con successo!");
+					out.print(myObj);
+			}
+			else if (action.equals("archivio_download")) {
+
+			
+				String id_corso = request.getParameter("id_corso");
+				String id_categoria = request.getParameter("id_categoria");
+				String id_allegato = request.getParameter("id_allegato");
+				
+				String path = "";
+				
+				if(id_corso!=null && !id_corso.equals("0")) {
+					
+					ForCorsoAllegatiDTO allegato_corso = GestioneFormazioneBO.getAllegatoCorsoFormId(Integer.parseInt(id_allegato), session);
+					
+					path = Costanti.PATH_FOLDER+"//Formazione//Allegati//Corsi//"+id_corso+"//"+allegato_corso.getNome_allegato();
+					response.setContentType("application/octet-stream");
+					response.setHeader("Content-Disposition","attachment;filename="+ allegato_corso.getNome_allegato());
+				}
+				if(id_categoria!=null && !id_categoria.equals("0")) {
+					
+					ForCorsoCatAllegatiDTO allegato_categoria = GestioneFormazioneBO.getAllegatoCorsoCategoriaFormId(Integer.parseInt(id_allegato), session);
+					
+					path = Costanti.PATH_FOLDER+"//Formazione//Allegati//Categorie//"+id_categoria+"//"+allegato_categoria.getNome_allegato();
+					response.setContentType("application/octet-stream");
+					response.setHeader("Content-Disposition","attachment;filename="+ allegato_categoria.getNome_allegato());
+				}
+								
+				downloadFile(path, response.getOutputStream());
+				
+				
+				
+				session.close();
+				
+			}
+			
+			
+			else if(action.equals("elimina_allegato")) {
+				
+				ajax=true;
+				
+				String id_corso = request.getParameter("id_corso");
+				String id_categoria = request.getParameter("id_categoria");
+				String id_allegato = request.getParameter("id_allegato");
+				
+				if(id_corso!=null && !id_corso.equals("0")) {
+					
+					ForCorsoAllegatiDTO allegato_corso = GestioneFormazioneBO.getAllegatoCorsoFormId(Integer.parseInt(id_allegato), session);
+					
+					session.delete(allegato_corso);
+				}
+				if(id_categoria!=null && !id_categoria.equals("0")) {
+					
+					ForCorsoCatAllegatiDTO allegato_categoria = GestioneFormazioneBO.getAllegatoCorsoCategoriaFormId(Integer.parseInt(id_allegato), session);
+					
+					session.delete(allegato_categoria);
+				}
+				
+				
+				PrintWriter out = response.getWriter();
+				session.getTransaction().commit();
+				session.close();	
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Allegato eliminato con successo!");
+				out.print(myObj);
+				
+				
+			}
+			
+			else if(action.equals("dettaglio_corso")) {
+				
+				String id_corso = request.getParameter("id_corso");
+				
+				id_corso = Utility.decryptData(id_corso);
+				
+				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso), session);				
+				ArrayList<UtenteDTO> lista_utenti = GestioneUtenteBO.getAllUtenti(session); 
+												
+				
+				request.getSession().setAttribute("corso", corso);
+				request.getSession().setAttribute("lista_utenti", lista_utenti);
+				
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioForCorso.jsp");
+		     	dispatcher.forward(request,response);
+			}
+			
+			else if(action.equals("dettaglio_partecipanti")) {
+								
+				ForCorsoDTO corso = (ForCorsoDTO) request.getSession().getAttribute("corso");
+				
+				corso = GestioneFormazioneBO.getCorsoFromId(corso.getId(), session);
+				
+				request.getSession().setAttribute("corso", corso);		
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioForPartecipanti.jsp");
+		     	dispatcher.forward(request,response);
+			}
+			
 			
 			
 		}catch(Exception e) {
@@ -381,14 +739,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
         	}
 			
 		}
-		
+				
 	}
+		
 	
 	
-	
-	 private void saveFile(FileItem item, String cognome,String nome, String filename) {
+	 private void saveFile(FileItem item, String path, String filename) {
 
-		 	String path_folder = Costanti.PATH_FOLDER+"//DocentiFormazione//"+cognome+"_"+nome+"//";
+		 	String path_folder = Costanti.PATH_FOLDER+"//Formazione//"+path+"//";
 			File folder=new File(path_folder);
 			
 			if(!folder.exists()) {
@@ -416,5 +774,25 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			}
 		
 		}
+	 
+	 private void downloadFile(String path,  ServletOutputStream outp) throws Exception {
+		 
+		 File file = new File(path);
+			
+			FileInputStream fileIn = new FileInputStream(file);
+
+	
+			    byte[] outputByte = new byte[1];
+			    
+			    while(fileIn.read(outputByte, 0, 1) != -1)
+			    {
+			    	outp.write(outputByte, 0, 1);
+			    }
+			    				    
+			 
+			    fileIn.close();
+			    outp.flush();
+			    outp.close();
+	 }
 
 }

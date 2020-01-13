@@ -23,7 +23,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Lista Categorie Corsi
+        Lista Corsi
         <!-- <small></small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
@@ -36,7 +36,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	Lista Categorie Corsi
+	Lista Corsi
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -50,8 +50,7 @@
 <div class="col-xs-12">
 
 
-<!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
-<a class="btn btn-primary pull-right" onClick="modalnuovaCategoria()"><i class="fa fa-plus"></i> Nuova Categoria Corso</a> 
+<a class="btn btn-primary pull-right" onClick="modalnuovoCorso()"><i class="fa fa-plus"></i> Nuovo Corso</a> 
 
 
 
@@ -62,32 +61,35 @@
 <div class="row">
 <div class="col-sm-12">
 
- <table id="tabForCat" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <table id="tabForCorso" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
 
 <th>ID</th>
-<th>Codice</th>
-<th>Descrizione</th>
-<th>Frequenza</th>
-<th>Durata</th>
-<th>Azioni</th>
+<th>Categoria</th>
+<th>Docente</th>
+<th>Data Inizio</th>
+<th>Data Scadenza</th>
+<th style="min-width:150px">Azioni</th>
  </tr></thead>
  
  <tbody>
  
- 	<c:forEach items="${lista_corsi_cat }" var="corso_cat" varStatus="loop">
+ 	<c:forEach items="${lista_corsi }" var="corso" varStatus="loop">
 	<tr id="row_${loop.index}" >
 
-	<td>${corso_cat.id }</td>	
-	<td>${corso_cat.codice }</td>
-	<td>${corso_cat.descrizione }</td>
-	<td>${corso_cat.frequenza}</td>	
-	<td>${corso_cat.durata}</td>
+	<td>${corso.id }</td>	
+	<td>${corso.corso_cat.descrizione }</td>
+	<td>${corso.docente.nome } ${corso.docente.cognome }</td>
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_inizio}" /></td>	
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_scadenza}" /></td>
 	<td>
-	<%-- <a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_curriculum&id_docente=${utl:encryptData(docente.id)}" title="Click per scaricare il cv"><i class="fa fa-file-pdf-o"></i></a> --%> 
-	<a  class="btn btn-warning" onClicK="modificaCategoriaModal('${corso_cat.id}','${corso_cat.codice }','${corso_cat.descrizione.replace('\'','&prime;')}','${corso_cat.frequenza }','${corso_cat.durata }')" title="Click per modificare la categoria"><i class="fa fa-edit"></i></a>
-	<a href="#" class="btn btn-primary customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${corso_cat.id }')"><i class="fa fa-archive"></i></a>
+	 
+	<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }','${corso.docente.id}','${corso.data_inizio }','${corso.data_scadenza }','${corso.documento_test }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-info" onClick="dettaglioCorso('${utl:encryptData(corso.id)}')"><i class="fa fa-search"></i></a>
+	
+	<a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_documento_test&id_corso=${utl:encryptData(corso.id)}" title="Click per scaricare il documento del test"><i class="fa fa-file-pdf-o"></i></a>
+	<a href="#" class="btn btn-primary customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${corso.id }')"><i class="fa fa-archive"></i></a>
 	</td>
 	</tr>
 	</c:forEach>
@@ -132,46 +134,63 @@
   </div>
 </div>
 
-<form id="nuovaCategoriaForm" name="nuovoDocenteForm">
-<div id="myModalnuovaCategoria" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+<form id="nuovoCorsoForm" name="nuovoCorsoForm">
+<div id="myModalNuovoCorso" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuova categoria Corso</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Corso</h4>
       </div>
        <div class="modal-body">
 
         <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Codice</label>
+       		<label>Categoria</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="codice" name="codice" class="form-control" type="text" style="width:100%" required>
+        <select id="categoria" name="categoria" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Categoria Corso..." required>
+        <option value=""></option>
+        <c:forEach items="${lista_corsi_cat }" var="categoria">
+        <option value="${categoria.id }">${categoria.descrizione }</option>
+        </c:forEach>
+        </select>
        			
        	</div>       	
        </div><br>
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Descrizione</label>
+       		<label>Docente</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="descrizione" name="descrizione" class="form-control" type="text" style="width:100%" required>
+         	<select id="docente" name="docente" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Docente..." required>
+        <option value=""></option>
+        <c:forEach items="${lista_docenti }" var="docente">
+        <option value="${docente.id }">${docente.nome } ${docente.cognome }</option>
+        </c:forEach>
+        </select>	
        			
        	</div>       	
        </div><br>
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Frequenza</label>
+       		<label>Data Inizio</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="frequenza" name="frequenza" class="form-control" type="number" step="1" min="0" style="width:100%" required>
+         <div class='input-group date datepicker' id='datepicker_data_inizio'>
+               <input type='text' class="form-control input-small" id="data_inizio" name="data_inizio" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+        
        			
        	</div>       	
        </div><br>
@@ -179,18 +198,33 @@
          <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Durata (ore)</label>
+       		<label>Data Scadenza</label>
        	</div>
        	<div class="col-sm-9">             	  	
         
-       	<input id="durata" name="durata" class="form-control" type="number" step="1" min="0" style="width:100%" required>
+       	    <div class='input-group date datepicker' id='datepicker_data_scadenza'>
+               <input type='text' class="form-control input-small" id="data_scadenza" name="data_scadenza" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
        	</div>
-       	</div>		
+       	</div>			<br>	
+             <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Documento Test</label>
+       	</div>
+       	<div class="col-sm-9">             	  	
+        
+       	    <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload" name="fileupload" type="file" required></span><label id="label_file"></label>
+       	    </div>
+        
+       	</div>
             	
        
        
-       
-       
        </div>
   		 
       <div class="modal-footer">
@@ -208,46 +242,63 @@
 
 
 
-<form id="modificaCategoriaForm" name="modificaCategoriaForm">
-<div id="myModalModificaCategoria" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+<form id="modificaCorsoForm" name="modificaCorsoForm">
+<div id="myModalModificaCorso" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica categoria Corso</h4>
+        <h4 class="modal-title" id="myModalLabel">Modifica Corso</h4>
       </div>
        <div class="modal-body">
 
         <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Codice</label>
+       		<label>Categoria</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="codice_mod" name="codice_mod" class="form-control" type="text" style="width:100%" required>
+        <select id="categoria_mod" name="categoria_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Categoria Corso..." required>
+        <option value=""></option>
+        <c:forEach items="${lista_corsi_cat }" var="categoria">
+        <option value="${categoria.id }">${categoria.descrizione }</option>
+        </c:forEach>
+        </select>
        			
        	</div>       	
        </div><br>
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Descrizione</label>
+       		<label>Docente</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="descrizione_mod" name="descrizione_mod" class="form-control" type="text" style="width:100%" required>
+         	<select id="docente_mod" name="docente_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Docente..." required>
+        <option value=""></option>
+        <c:forEach items="${lista_docenti }" var="docente">
+        <option value="${docente.id }">${docente.nome } ${docente.cognome }</option>
+        </c:forEach>
+        </select>	
        			
        	</div>       	
        </div><br>
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Frequenza</label>
+       		<label>Data Inizio</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="frequenza_mod" name="frequenza_mod" class="form-control" type="number" step="1" min="0" style="width:100%" required>
+         <div class='input-group date datepicker' id='datepicker_data_inizio'>
+               <input type='text' class="form-control input-small" id="data_inizio_mod" name="data_inizio_mod" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+        
        			
        	</div>       	
        </div><br>
@@ -255,20 +306,38 @@
          <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Durata (ore)</label>
+       		<label>Data Scadenza</label>
        	</div>
        	<div class="col-sm-9">             	  	
         
-       	<input id="durata_mod" name="durata_mod" class="form-control" type="number" step="1" min="0" style="width:100%" required>
+       	    <div class='input-group date datepicker' id='datepicker_data_scadenza'>
+               <input type='text' class="form-control input-small" id="data_scadenza_mod" name="data_scadenza_mod" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       	</div>
+       	</div>	<br>	
+             <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Documento Test</label>
+       	</div>
+       	<div class="col-sm-9">             	  	
+        
+       	    <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload_mod" name="fileupload_mod" type="file" required></span><label id="label_file_mod"></label>
+       	    </div>
+        
        	</div>
        	</div>		
-            	       
+     
        
-       </div>
+     
   		 
       <div class="modal-footer">
 		
-		<input type="hidden" id="id_categoria" name="id_categoria"> 
+		<input type="hidden" id="id_corso" name="id_corso">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -279,30 +348,8 @@
 
 </form>
 
+  
 
-
-
-
-  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
-   
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
-      </div>
-       <div class="modal-body">       
-      	Sei sicuro di voler eliminare il rilievo?
-      	</div>
-      <div class="modal-footer">
-      <input type="hidden" id="elimina_rilievo_id">
-      <a class="btn btn-primary" onclick="eliminaRilievo($('#elimina_rilievo_id').val())" >SI</a>
-		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
-      </div>
-    </div>
-  </div>
-
-</div>
 
 
 
@@ -333,28 +380,45 @@
 <script type="text/javascript">
 
 
-function modalnuovaCategoria(){
+function modalnuovoCorso(){
 	
-	$('#myModalnuovaCategoria').modal();
+	$('#myModalNuovoCorso').modal();
 	
 }
 
 
-
-function modificaCategoriaModal(id_categoria, codice, descrizione,frequenza, durata){
+function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test){
 	
-	$('#id_categoria').val(id_categoria);
-	$('#codice_mod').val(codice);
-	$('#descrizione_mod').val(descrizione);
-	$('#frequenza_mod').val(frequenza);
-	$('#durata_mod').val(durata);
-
-	$('#myModalModificaCategoria').modal();
+	$('#id_corso').val(id_corso);
+	$('#categoria_mod').val(id_categoria);
+	$('#categoria_mod').change();
+	$('#docente_mod').val(id_docente);
+	$('#docente_mod').change();
+	$('#data_inizio_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy"));
+	$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));
+	$('#label_file_mod').html(documento_test);
+	
+	
+	$('#myModalModificaCorso').modal();
 }
+
+
+
+
+$('#fileupload').change(function(){
+	$('#label_file').html($(this).val().split("\\")[2]);
+	 
+ });
+ 
+$('#fileupload_mod').change(function(){
+	$('#label_file_mod').html($(this).val().split("\\")[2]);
+	 
+ });
+
 
 var columsDatatables = [];
 
-$("#tabForCat").on( 'init.dt', function ( e, settings ) {
+$("#tabForCorso").on( 'init.dt', function ( e, settings ) {
     var api = new $.fn.dataTable.Api( settings );
     var state = api.state.loaded();
  
@@ -363,9 +427,9 @@ $("#tabForCat").on( 'init.dt', function ( e, settings ) {
     
     columsDatatables = state.columns;
     }
-    $('#tabForCat thead th').each( function () {
+    $('#tabForCorso thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-    	  var title = $('#tabForCat thead th').eq( $(this).index() ).text();
+    	  var title = $('#tabForCorso thead th').eq( $(this).index() ).text();
     	
     	  //if($(this).index()!=0 && $(this).index()!=1){
 		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
@@ -378,26 +442,33 @@ $("#tabForCat").on( 'init.dt', function ( e, settings ) {
 } );
 
 
-function modalArchivio(id_categoria){
+function modalArchivio(id_corso){
 	 
 	 $('#tab_archivio').html("");
 	 
-	 dataString ="action=archivio&id_categoria="+id_categoria+"&id_corso=0";
-   exploreModal("gestioneFormazione.do",dataString,"#tab_allegati",function(datab,textStatusb){
-   });
+	 dataString ="action=archivio&id_categoria=0&id_corso="+ id_corso;
+    exploreModal("gestioneFormazione.do",dataString,"#tab_allegati",function(datab,textStatusb){
+    });
 $('#myModalArchivio').modal();
 }
 
-
+function dettaglioCorso(id_corso){
+	
+	callAction('gestioneFormazione.do?action=dettaglio_corso&id_corso='+id_corso);
+}
 
 
 $(document).ready(function() {
  
 
      $('.dropdown-toggle').dropdown();
+     $('.datepicker').datepicker({
+		 format: "dd/mm/yyyy"
+	 });    
      
+     $('.select2').select2();
 
-     table = $('#tabForCat').DataTable({
+     table = $('#tabForCorso').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -446,7 +517,7 @@ $(document).ready(function() {
 		               
 		    });
 		
-		table.buttons().container().appendTo( '#tabForCat_wrapper .col-sm-6:eq(1)');
+		table.buttons().container().appendTo( '#tabForCorso_wrapper .col-sm-6:eq(1)');
 	 	    $('.inputsearchtable').on('click', function(e){
 	 	       e.stopPropagation();    
 	 	    });
@@ -465,7 +536,7 @@ $(document).ready(function() {
 		table.columns.adjust().draw();
 		
 
-	$('#tabForCat').on( 'page.dt', function () {
+	$('#tabForCorso').on( 'page.dt', function () {
 		$('.customTooltip').tooltipster({
 	        theme: 'tooltipster-light'
 	    });
@@ -483,16 +554,16 @@ $(document).ready(function() {
 });
 
 
-$('#modificaCategoriaForm').on('submit', function(e){
+$('#modificaCorsoForm').on('submit', function(e){
 	 e.preventDefault();
-	 modificaForCategoriaCorso();
+	 modificaForCorso();
 });
  
 
  
- $('#nuovaCategoriaForm').on('submit', function(e){
+ $('#nuovoCorsoForm').on('submit', function(e){
 	 e.preventDefault();
-	 nuovoForCategoriaCorso();
+	 nuovoForCorso();
 });
  
  

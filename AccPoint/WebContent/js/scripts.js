@@ -20,7 +20,7 @@ function Registrazione() {
 	var cpass = $("#cpassw").val();
 	
 	var cap_ck = /[0-9]{5}/;
-	var login = /^[a-z0-9\.]{8,50}$/;
+	var login = /^[a-z0-9A-Z\.]{8,50}$/;
 	var letter_num = /^[a-z0-9A-Z\s]{1,}$/;
 	var email_ck=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 	var telefono_ck=/[0-9]{8,}$/
@@ -57,9 +57,14 @@ function Registrazione() {
 		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Cognome non pu&ograve; essere vuoto e non pu&ograve; contenere caratteri speciali</label>');
 		return;
 	}
-	if(!letter_num.test(indirizzo))
+//	if(!letter_num.test(indirizzo))
+//	{
+//		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Indirizzo non pu&ograve; essere vuoto e non pu&ograve; contenere caratteri speciali</label>');
+//		return;
+//	}
+	if(indirizzo=="")
 	{
-		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Indirizzo non pu&ograve; essere vuoto e non pu&ograve; contenere caratteri speciali</label>');
+		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Indirizzo non pu&ograve; essere vuoto');
 		return;
 	}
 	if(comune=="")
@@ -12402,4 +12407,254 @@ function modificaForCategoriaCorso(){
 	  }
   });
 	
+}
+
+
+function nuovoForCorso(){
+	
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#nuovoCorsoForm')[0]; 
+		  var formData = new FormData(form);
+		  
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneFormazione.do?action=nuovo_corso",
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+   			$('#myModalError').on('hidden.bs.modal', function(){	         			
+ 				
+   				 location.reload()
+  			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nella creazione del corso!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+  });
+	
+}
+
+
+function modificaForCorso(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#modificaCorsoForm')[0]; 
+		  var formData = new FormData(form);
+		 
+		  var id_corso = $('#id_corso').val();
+$.ajax({
+	  type: "POST",
+	  url: "gestioneFormazione.do?action=modifica_corso&id_corso="+id_corso,
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+ 			$('#myModalError').on('hidden.bs.modal', function(){	         			
+				
+ 				 location.reload()
+			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+});
+}
+
+
+function associaDissociaUtentiCorso(associa_dissocia, id_utente, id_corso){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	 pleaseWaitDiv.modal();
+	  
+	
+	 
+	  var utenti = null;
+	  
+	  if(id_utente==null){
+		  utenti = $('#utenti').val();  
+		  id_corso =   $('#id_corso_user').val();
+	  }else{
+		  utenti = id_utente;
+	  }
+	  
+	  $.ajax({
+	  type: "POST",
+	  url: "gestioneFormazione.do?action=associa_utenti&id_corso="+id_corso+"&utenti="+utenti+"&associa_dissocia="+associa_dissocia,
+	  dataType: "json",
+
+	  success: function( data, textStatus) {
+		  pleaseWaitDiv.modal('hide');
+		  if(data.success)
+		  { 
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalAssociaUtenti').modal('hide');
+					dataString ="action=dettaglio_partecipanti";
+			        exploreModal("gestioneFormazione.do",dataString,"#tab_partecipanti",function(datab,textStatusb){
+			        });
+			        $('.modal-backdrop').hide();
+				});
+		
+		  }else{
+			  if(associa_dissocia=='associa'){
+				  $('#myModalErrorContent').html("Errore nell'associazione degli utenti!");  
+			  }else{
+				  $('#myModalErrorContent').html("Errore nell'eliminazione dell'utente!");
+			  }
+			  
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalError').modal('show');			
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  if(associa_dissocia=='associa'){
+			  $('#myModalErrorContent').html("Errore nell'associazione degli utenti!");  
+		  }else{
+			  $('#myModalErrorContent').html("Errore nell'eliminazione dell'utente!");
+		  }
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+				$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+			
+
+	  }
+ });
+	
+	
+}
+
+
+function eliminaAllegatoFormazione(id_allegato, id_corso, id_categoria){
+	 
+	 var dataObj = {};
+		dataObj.id_allegato = id_allegato;
+		dataObj.id_corso = id_corso;
+		dataObj.id_categoria = id_categoria;
+						
+	  $.ajax({
+     type: "POST",
+     url: "gestioneFormazione.do?action=elimina_allegato&id_allegato="+ id_allegato+"&id_corso="+id_corso+"&id_categoria="+id_categoria,
+     data: dataObj,
+     dataType: "json",
+     //if received a response from the server
+     success: function( data, textStatus) {
+    	 $('#myModalArchivio').hide();
+   	  if(data.success)
+ 		  {  
+   			$('#report_button').hide();
+ 				$('#visualizza_report').hide();
+ 				$('#myModalErrorContent').html(data.messaggio);
+     			  	$('#myModalError').removeClass();
+     				$('#myModalError').addClass("modal modal-success");
+     				$('#myModalError').modal('show');      				
+        			$('#myModalError').on('hidden.bs.modal', function(){	        			
+      				
+        				
+        				$('#myModalYesOrNo').hide();
+        				$('.modal-backdrop').hide();
+        			    //  $(this).off('hidden.bs.modal');
+       			});			  
+ 		  }else{
+ 			
+ 			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+ 		  }
+     },
+     error: function( data, textStatus) {
+   	  $('#myModalYesOrNo').modal('hide');
+   	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+     }
+     });
 }

@@ -7,6 +7,18 @@ public class ForCorsoCatDTO {
 	private String descrizione;
 	private int frequenza;
 	private int durata;
+	
+	
+	public ForCorsoCatDTO(int id) {
+		this.id = id;
+		
+	}
+	
+	public ForCorsoCatDTO() {
+		super();
+	}
+	
+	
 	public int getId() {
 		return id;
 	}

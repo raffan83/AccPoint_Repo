@@ -14,10 +14,10 @@
          <many-to-one name="docente" class="it.portaleSTI.DTO.ForDocenteDTO" fetch="join" lazy="false">
             <column name="id_docente" />
         </many-to-one>
-        <property name="data_inizio" type="java.util.Date" >
+        <property name="data_inizio" type="java.sql.Date" >
             <column name="data_inizio" />
         </property>
-         <property name="data_scadenza" type="java.util.Date" >
+         <property name="data_scadenza" type="java.sql.Date" >
             <column name="data_scadenza" />
         </property>
          <property name="documento_test" type="java.lang.String" >
@@ -25,12 +25,16 @@
         </property>
         
           <set name="listaUtenti" table="for_assoc_corso_user"
-				inverse="true" lazy="false" fetch="select" order-by="id asc">
+				inverse="false" lazy="false" fetch="select" >
             <key>
-                <column name="id_user" />
+                <column name="id_corso" />
             </key>
-            <one-to-many class="it.portaleSTI.DTO.UtenteDTO" />
+            <many-to-many entity-name="it.portaleSTI.DTO.UtenteDTO">
+                <column name="id_user" not-null="true" />
+            </many-to-many>
+            <!-- <one-to-many class="it.portaleSTI.DTO.UtenteDTO" /> -->
         </set> 
+        
         
     </class>
 </hibernate-mapping>

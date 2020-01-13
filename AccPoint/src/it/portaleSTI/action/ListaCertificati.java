@@ -286,7 +286,7 @@ public class ListaCertificati extends HttpServlet {
 //				}else {
 					GestioneCertificatoBO.createCertificato(idCertificato,session,context, utente);	
 //				}
-				
+					
 				
 
 					myObj.addProperty("success", true);

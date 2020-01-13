@@ -13,7 +13,7 @@ public class ForCorsoDTO {
 	private Date data_scadenza;
 	private String documento_test;
 	
-	private Set<UtenteDTO> listaUtenti = new HashSet<UtenteDTO>();
+	private Set<UtenteDTO> listaUtenti = new HashSet<UtenteDTO>(0);
 	
 	public int getId() {
 		return id;

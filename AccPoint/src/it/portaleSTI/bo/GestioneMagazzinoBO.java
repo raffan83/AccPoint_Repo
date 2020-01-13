@@ -452,6 +452,11 @@ public static void riapriOrigine(String origine, Session session) {
 	GestioneMagazzinoDAO.riapriOrigine(origine, session);
 }
 
+public static String getDataRicevimentoItem(StrumentoDTO strumento, Session session) {
+	
+	return GestioneMagazzinoDAO.getDataRicevimentoItem(strumento,session);
+}
+
 
 
 }

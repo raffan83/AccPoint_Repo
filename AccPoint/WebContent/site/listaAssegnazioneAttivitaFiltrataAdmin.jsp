@@ -108,7 +108,7 @@
         <label>Prezzo Unitario:</label>
         </div>
         <div class="col-md-12">
-       <input class="form-control" id="prezzo_unitario" type="text" name="prezzo_unitario"/>
+       <input class="form-control" id="prezzo_unitario" type="text" name="prezzo_unitario" readonly/>
     </div>
       
      	<div class="col-md-9" >
@@ -122,7 +122,7 @@
         <label  >Quantità Totale:</label>
         </div>
         <div class="col-md-12">
-                      <input class="form-control" id="quantita_totale" type="text" name="quantita_totale"/>
+                      <input class="form-control" id="quantita_totale" type="text" name="quantita_totale" readonly/>
     </div>
          	<div class="col-md-9" >
         <label  >Quantità Assegnata:</label>
@@ -313,6 +313,23 @@ $("#tabAssegnazioneAttivita").on( 'init.dt', function ( e, settings ) {
 		}
 		$('#importo_assegnato').val(somma.toFixed(2));
 	}
+	
+	$('#quantita_assegnata').change(function(){
+		
+		var qta = $(this).val();
+		var prezzo = $('#prezzo_unitario').val();
+		
+		var prezzo_ass = qta*prezzo;
+		if((""+prezzo_ass).includes(".",0)){
+			$('#prezzo_assegnato').val(prezzo_ass);
+		}else{
+			$('#prezzo_assegnato').val(prezzo_ass+".00");	
+		}
+		
+		
+		
+	});
+	
 
 
 $(document).ready(function(){

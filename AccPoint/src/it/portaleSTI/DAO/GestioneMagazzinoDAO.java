@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -930,6 +931,26 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		query.setParameter("_origine", origine);
 		
 		query.executeUpdate();
+	}
+
+
+	public static String getDataRicevimentoItem(StrumentoDTO strumento, Session session) {
+		
+		ArrayList<Date> lista = null;
+		String result = ""; 
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = session.createQuery("select a.pacco.data_arrivo from MagItemPaccoDTO a where a.item.id_tipo_proprio = :_id_strumento and a.pacco.stato_lavorazione = 1 order by id desc");
+		query.setParameter("_id_strumento",strumento.get__id());
+		
+		lista = (ArrayList<Date>) query.list();
+		
+		if(lista.size()>0 && lista.get(0)!=null) {
+			
+			result = df.format(lista.get(0));
+		}
+		
+		return result;
 	}
 
 }

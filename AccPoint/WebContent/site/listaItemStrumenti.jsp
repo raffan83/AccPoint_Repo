@@ -276,7 +276,7 @@ ArrayList<CompanyDTO> lista_company =(ArrayList)session.getAttribute("lista_comp
 
  <script type="text/javascript">
  
- $('.select2').select2();
+ //$('.select2').select2();
 
 $('#close_button_modal').on('click', function(){
 	$('#modalNuovoStrumento').modal('hide');
@@ -350,6 +350,12 @@ $('#close_button_modal').on('click', function(){
 	   console.log("test")
 	   ;
 	   
+	   $('#company').select2();
+	   $('#ref_tipo_strumento').select2();
+	   $('#ref_tipo_rapporto').select2();
+	   $('#classificazione').select2();
+		
+		
 	   
  	   	var columsDatatables = []; 
 	   

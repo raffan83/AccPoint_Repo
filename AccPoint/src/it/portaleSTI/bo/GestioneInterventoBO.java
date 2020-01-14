@@ -239,7 +239,7 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setProcedura(strumentoDaFile.getProcedura());
 		   		strumentoModificato.setDataProssimaVerifica(strumentoDaFile.getDataProssimaVerifica());
 		   		strumentoModificato.setDataUltimaVerifica(strumentoDaFile.getDataUltimaVerifica());
-		   		
+		   		strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
 		   		
 		   		GestioneStrumentoBO.update(strumentoModificato, session);
 		   	}
@@ -249,7 +249,7 @@ public class GestioneInterventoBO {
 		   	StrumentoDTO	strumentoAggiormanentoScadenza = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
 		   	strumentoAggiormanentoScadenza.setDataProssimaVerifica(misura.getStrumento().getDataProssimaVerifica());
 		   	strumentoAggiormanentoScadenza.setDataUltimaVerifica(misura.getStrumento().getDataUltimaVerifica());
-	   		
+		   	strumentoAggiormanentoScadenza.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
 	   		
 	   		GestioneStrumentoBO.update(strumentoAggiormanentoScadenza, session);
 		   	}

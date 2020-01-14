@@ -20,6 +20,8 @@ public class MilestoneOperatoreDTO {
 	int controllato;
 	String unita_misura;
 	String note_operatore;
+	UtenteDTO user_modifica;
+	Date data_modifica;
 	
 	
 	public int getId() {
@@ -112,7 +114,18 @@ public class MilestoneOperatoreDTO {
 	public void setNote_operatore(String note_operatore) {
 		this.note_operatore = note_operatore;
 	}
-	
+	public UtenteDTO getUser_modifica() {
+		return user_modifica;
+	}
+	public void setUser_modifica(UtenteDTO user_modifica) {
+		this.user_modifica = user_modifica;
+	}
+	public Date getData_modifica() {
+		return data_modifica;
+	}
+	public void setData_modifica(Date data_modifica) {
+		this.data_modifica = data_modifica;
+	}
 	
 
 	

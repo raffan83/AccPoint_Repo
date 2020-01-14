@@ -65,5 +65,12 @@
             <column name="note_operatore" />
         </property>
         
+         <many-to-one name="user_modifica" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_user_modifica" />
+        </many-to-one> 
+        
+         <property name="data_modifica" type="java.sql.Date">
+            <column name="data_modifica" />
+        </property>
         </class>
 </hibernate-mapping>

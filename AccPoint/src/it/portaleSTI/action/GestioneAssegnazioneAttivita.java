@@ -230,6 +230,8 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				
 				assegnazione.setNote(note);
 				assegnazione.setUnita_misura(unita_misura);
+				assegnazione.setUser_modifica(utente);
+				assegnazione.setData_modifica(new Date());
 				
 				session.update(assegnazione);
 				session.getTransaction().commit();
@@ -247,7 +249,9 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 								
 				MilestoneOperatoreDTO assegnazione = GestioneAssegnazioneAttivitaBO.getMilestone(Integer.parseInt(id_assegnazione),session);
 				
-				assegnazione.setAbilitato(0);				
+				assegnazione.setAbilitato(0);		
+				assegnazione.setUser_modifica(utente);
+				assegnazione.setData_modifica(new Date());
 				
 				session.update(assegnazione);
 				session.getTransaction().commit();

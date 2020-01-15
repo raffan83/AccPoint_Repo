@@ -29,7 +29,7 @@ public class LatMisuraDTO {
 	private String regolazione;
 	private String centraggio;
 	private String nCertificato;
-	private String unita_formato;
+	private BigDecimal unita_formato;
 	
 	public int getIdMisura() {
 		return idMisura;
@@ -208,10 +208,10 @@ public class LatMisuraDTO {
 	public void setListaPunti(Set<LatPuntoLivellaDTO> listaPunti) {
 		this.listaPunti = listaPunti;
 	}
-	public String getUnita_formato() {
+	public BigDecimal getUnita_formato() {
 		return unita_formato;
 	}
-	public void setUnita_formato(String unita_formato) {
+	public void setUnita_formato(BigDecimal unita_formato) {
 		this.unita_formato = unita_formato;
 	}
 		

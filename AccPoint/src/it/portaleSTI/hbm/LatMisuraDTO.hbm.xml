@@ -97,7 +97,7 @@
             <column name="note" />
         </property>
        
-       <property name="unita_formato" type="java.lang.String">
+       <property name="unita_formato" type="java.math.BigDecimal">
             <column name="unita_formato" />
         </property>
     </class>

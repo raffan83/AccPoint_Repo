@@ -190,7 +190,7 @@ public class GestioneVerIntervento extends HttpServlet {
 
 				String timeStamp=sdf.format(new Date());
 				
-				intervento.setId_company(utente.getCompany().getId());
+				intervento.setCompany(utente.getCompany());
 				intervento.setNome_pack("VER"+utente.getCompany().getId()+""+timeStamp);
 				
 				sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -286,7 +286,7 @@ public class GestioneVerIntervento extends HttpServlet {
 
 				String timeStamp=sdf.format(new Date());
 				
-				intervento.setId_company(utente.getCompany().getId());
+				intervento.setCompany(utente.getCompany());
 				intervento.setNome_pack("VER"+utente.getCompany().getId()+""+timeStamp);
 				
 				sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -319,12 +319,12 @@ public class GestioneVerIntervento extends HttpServlet {
 				
 				ArrayList<VerMisuraDTO> lista_misure = GestioneVerInterventoBO.getListaMisureFromIntervento(Integer.parseInt(id_intervento), session);
 				ArrayList<VerInterventoStrumentiDTO> lista_strumenti_intervento = GestioneVerStrumentiBO.getListaStrumentiIntervento(Integer.parseInt(id_intervento), session);
-				CompanyDTO company = GestioneCompanyBO.getCompanyById(""+interventover.getId_company(), session);
+				
 				
 				request.getSession().setAttribute("interventover", interventover);
 				request.getSession().setAttribute("lista_misure", lista_misure);
 				request.getSession().setAttribute("lista_strumenti_intervento", lista_strumenti_intervento);
-				request.getSession().setAttribute("company", company);
+				
 				
 				session.getTransaction().commit();
 				session.close();

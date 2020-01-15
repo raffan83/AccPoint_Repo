@@ -76,6 +76,7 @@
 <th>Data Prevista</th>
 <th>Data Creazione</th>
 <th>Data Chiusura</th>
+<th>Company</th>
 <th>Responsabile</th>
 <th>Verificatore</th>
 <th>Azioni</th>
@@ -105,6 +106,7 @@
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.data_prevista }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.data_creazione }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.data_chiusura }" /></td>
+	<td>${intervento.company.denominazione }</td>
 	<td>${intervento.user_creation.nominativo }</td>
 	<td>${intervento.user_verificazione.nominativo }</td>	
 	<td>
@@ -481,7 +483,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  { className: "select-checkbox", targets: 1,  orderable: false },
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 13 }
+		    	  { responsivePriority: 2, targets: 14 }
 		    	  
 		               ], 	        
 	  	      buttons: [   

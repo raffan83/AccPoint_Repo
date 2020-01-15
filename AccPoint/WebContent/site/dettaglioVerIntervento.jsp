@@ -57,7 +57,7 @@
                   <b>ID</b> <a class="pull-right">${interventover.id}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Company</b> <a class="pull-right">${company.denominazione}</a>
+                  <b>Company</b> <a class="pull-right">${interventover.company.denominazione}</a>
                 </li>
                 <li class="list-group-item">
                 <b>Luogo</b><c:choose>

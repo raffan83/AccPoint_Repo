@@ -190,7 +190,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 
 				String timeStamp=sdf.format(new Date());
 				
-				intervento.setId_company(utente.getCompany().getId());
+				intervento.setCompany(utente.getCompany());
 				intervento.setNome_pack("VER"+utente.getCompany().getId()+""+timeStamp);
 				
 				sdf = new SimpleDateFormat("dd/MM/yyyy");

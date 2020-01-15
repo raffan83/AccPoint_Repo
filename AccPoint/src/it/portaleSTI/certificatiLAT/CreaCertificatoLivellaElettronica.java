@@ -257,7 +257,7 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 		}
 		
 		if(misura.getUnita_formato()!=null) {
-			reportP2.addParameter("unita_formato",misura.getUnita_formato());
+			reportP2.addParameter("unita_formato",misura.getUnita_formato().stripTrailingZeros().toPlainString()+" \"");
 		}else {
 			reportP2.addParameter("unita_formato","");	
 		}

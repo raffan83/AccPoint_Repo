@@ -307,6 +307,7 @@ private static String sqlMisuraLAT="CREATE TABLE lat_misura (Id Integer primary 
 									"incertezzaEstesa_sec decimal(12,6) ," + 
 									"incertezzaMedia decimal(12,6) ," + 
 									"campo_misura decimal(12,6) ," + 
+									"unita_formato decimal(12,6) ," + 
 									"campo_misura_sec decimal(12,6) ," + 
 									"sensibilita decimal(12,6) ," + 
 									"stato varchar(255) ," + 
@@ -1218,6 +1219,7 @@ public static LatMisuraDTO getMisuraLAT(Connection con, StrumentoDTO str,int id_
 			misuraLAT.setIncertezza_estesa_sec(rs.getBigDecimal("incertezzaEstesa_sec"));
 			misuraLAT.setIncertezza_media(rs.getBigDecimal("incertezzaMedia"));
 			misuraLAT.setCampo_misura(rs.getBigDecimal("campo_misura"));
+			misuraLAT.setUnita_formato(rs.getBigDecimal("unita_formato"));
 			misuraLAT.setCampo_misura_sec(rs.getBigDecimal("campo_misura_sec"));
 			misuraLAT.setSensibilita(rs.getBigDecimal("sensibilita"));
 			misuraLAT.setStato(rs.getString("stato"));

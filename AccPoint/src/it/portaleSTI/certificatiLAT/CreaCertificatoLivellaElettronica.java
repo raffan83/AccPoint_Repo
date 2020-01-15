@@ -94,10 +94,14 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 		}else {
 			report.addParameter("cliente", "");
 		}
-		if(commessa!=null && commessa.getINDIRIZZO_PRINCIPALE()!=null) {
-			report.addParameter("indirizzo_cliente", commessa.getINDIRIZZO_PRINCIPALE());
+		if(commessa!=null && commessa.getANAGEN_INDR_INDIRIZZO()!=null && !commessa.getANAGEN_INDR_INDIRIZZO().equals("")) {
+			report.addParameter("indirizzo_cliente", commessa.getANAGEN_INDR_INDIRIZZO());
 		}else{
-			report.addParameter("indirizzo_cliente", "");
+			if(commessa.getK2_ANAGEN_INDR()==0) {
+				report.addParameter("indirizzo_cliente", commessa.getINDIRIZZO_PRINCIPALE());	
+			}else {
+				report.addParameter("indirizzo_cliente", "");	
+			}
 		}
 
 		if(commessa!=null && commessa.getNOME_UTILIZZATORE()!=null) {
@@ -154,7 +158,7 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 		}
 		if(misura.getMisura_lat()!=null) {
 			if(misura.getMisura_lat().getSigla_registro()!=null) {
-				report.addParameter("registro_laboratorio",  misura.getIntervento().getId()+"_"+misura.getIdMisura()+"_"+misura.getStrumento().get__id());		
+				report.addParameter("registro_laboratorio",  misura.getIntervento().getId()+"_"+misura.getId()+"_"+misura.getStrumento().get__id());		
 			}else {
 				report.addParameter("registro_laboratorio",  "");
 			}
@@ -210,19 +214,33 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 		}
 		String certificato_campione = "";
 		if(misura.getRif_campione()!=null) {
-			reportP2.addParameter("campione_riferimento", misura.getRif_campione().getCodice());
+			reportP2.addParameter("campione_riferimento", misura.getRif_campione().getCodice()  +" "+misura.getRif_campione().getNome());
 			certificato_campione = certificato_campione + misura.getRif_campione().getNumeroCertificato();
+			if(!misura.getRif_campione().getAttivita_di_taratura().equals("INTERNA")) {
+				certificato_campione= certificato_campione+" ("+misura.getRif_campione().getAttivita_di_taratura()+")";
+			}else {
+				certificato_campione= certificato_campione+" (S.T.I. SVILUPPO TECNOLOGIE INDUSTRIALI S.R.L.)";	
+			}
 		}else {
 			reportP2.addParameter("campione_riferimento", "");
 		}
-		if(misura.getRif_campione_lavoro()!=null) {
-			reportP2.addParameter("campione_lavoro", misura.getRif_campione_lavoro().getCodice());
-			if(!misura.getRif_campione().getCodice().equals(misura.getRif_campione_lavoro().getCodice())) {
-				certificato_campione = certificato_campione + "; " + misura.getRif_campione_lavoro().getNumeroCertificato();
-			}
-		}else {
-			reportP2.addParameter("campione_lavoro", "");
-		}		
+//		if(misura.getRif_campione_lavoro()!=null) {
+//			reportP2.addParameter("campione_lavoro", misura.getRif_campione_lavoro().getCodice());
+//			if(!misura.getRif_campione().getCodice().equals(misura.getRif_campione_lavoro().getCodice())) {
+//				certificato_campione = certificato_campione + "; " + misura.getRif_campione_lavoro().getNumeroCertificato();
+//				if(misura.getRif_campione().getAttivita_di_taratura()!=null && !misura.getRif_campione().getAttivita_di_taratura().equals("")) {
+//					if(!misura.getRif_campione_lavoro().getAttivita_di_taratura().equals("INTERNA")) {
+//						certificato_campione= certificato_campione+" ("+misura.getRif_campione().getAttivita_di_taratura()+")";
+//					}else {
+//						certificato_campione= certificato_campione+" (S.T.I. SVILUPPO TECNOLOGIE INDUSTRIALI S.R.L.)";	
+//					}
+//					
+//				}
+//			}
+//			
+//		}else {
+//			reportP2.addParameter("campione_lavoro", "");
+//		}		
 		
 		reportP2.addParameter("certificati_campione", certificato_campione);
 		
@@ -238,7 +256,12 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 			reportP2.addParameter("umidita", "(50 ± 10) %");
 		}
 		
-		reportP2.addParameter("unita_formato","");
+		if(misura.getUnita_formato()!=null) {
+			reportP2.addParameter("unita_formato",misura.getUnita_formato());
+		}else {
+			reportP2.addParameter("unita_formato","");	
+		}
+		
 		if(misura.getStrumento().getRisoluzione()!=null) {
 			reportP2.addParameter("risoluzione",misura.getStrumento().getRisoluzione());
 		}else {

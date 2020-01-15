@@ -12,12 +12,12 @@
 	<pageHeader>
 		<band height="176">
 			<staticText>
-				<reportElement positionType="Float" x="0" y="138" width="555" height="18" uuid="530b905a-ba8c-49fc-829e-068a41299787"/>
+				<reportElement positionType="Float" x="-9" y="138" width="555" height="18" uuid="530b905a-ba8c-49fc-829e-068a41299787"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="12" isBold="true"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[CERTIFICATO DI TARATURA LAT]]></text>
+				<text><![CDATA[CERTIFICATO DI TARATURA LAT 172]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="381" y="138" width="173" height="31" uuid="67c911c7-488e-4331-890e-7feaa6c9af80"/>
@@ -329,28 +329,13 @@
 				</textElement>
 				<text><![CDATA[   calibration results and their expanded uncertainty]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="368" y="140" width="123" height="21" uuid="ead61ec7-7a99-4d54-a4ef-328aaa97530a"/>
-				<textElement>
-					<font size="9" isItalic="false"/>
-				</textElement>
-				<text><![CDATA[Campione di riferimento:]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="472" y="140" width="88" height="21" uuid="38d6badd-85c9-462e-b24f-9c0cfd6a150e"/>
+				<reportElement x="368" y="140" width="188" height="21" uuid="38d6badd-85c9-462e-b24f-9c0cfd6a150e"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{campione_riferimento}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="368" y="187" width="123" height="20" uuid="37781474-f55e-4bde-ba43-37ddf253bb5f"/>
-				<textElement>
-					<font size="9" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
-				</textElement>
-				<text><![CDATA[TLAB.       =
-]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="426" y="187" width="70" height="15" uuid="fa7ad202-778e-458e-affb-f0b67fd54311"/>
 				<textElement>
@@ -405,14 +390,36 @@
 				<textElement>
 					<font size="9" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[PT-008 Rev. G]]></text>
+				<text><![CDATA[PT-008 Rev. 0]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="368" y="202" width="70" height="20" uuid="818de048-7525-4387-a36c-9a9ea109576a"/>
 				<textElement>
 					<font size="9" pdfFontName="Helvetica-BoldOblique"/>
 				</textElement>
-				<text><![CDATA[UR%LAB. =]]></text>
+				<text><![CDATA[UR%         =]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="368" y="188" width="123" height="20" uuid="41e616ff-484c-45b2-8474-35bcf6accd1e"/>
+				<textElement>
+					<font size="9" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[T               =
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="374" y="193" width="20" height="7" uuid="e286f3bc-247e-40bf-9508-e09e600678c6"/>
+				<textElement>
+					<font size="5" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[LAB.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="389" y="207" width="20" height="7" uuid="d2edb30d-1b89-443e-8209-59bf4cc6d95f"/>
+				<textElement>
+					<font size="5" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[LAB.]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -1045,7 +1052,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[L'incertezza estesa, espressa come incertezza tipo moltiplicata per il fattore di copertura k= 2, che per una distribuzione normale corrisponde ad una probabilità di copertura di circa il 95%, è pari a: ]]></text>
+				<text><![CDATA[L'incertezza estesa, espressa come incertezza tipo moltiplicata per il fattore di copertura    = 2, che per una distribuzione normale corrisponde ad una probabilità di copertura di circa il 95%, è pari a: ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="34" width="555" height="16" uuid="c3a75dcc-8568-4314-b8ca-513246ac8542"/>
@@ -1081,6 +1088,13 @@
 					<font size="10" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA["]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="0" width="12" height="20" uuid="d11c8a27-0d48-4984-b3f5-9e94bf8cb40b"/>
+				<textElement>
+					<font pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[k]]></text>
 			</staticText>
 		</band>
 	</columnFooter>

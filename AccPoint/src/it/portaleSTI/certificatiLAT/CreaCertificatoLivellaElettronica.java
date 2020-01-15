@@ -257,7 +257,7 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 		}
 		
 		if(misura.getUnita_formato()!=null) {
-			reportP2.addParameter("unita_formato",misura.getUnita_formato().stripTrailingZeros().toPlainString()+" \"");
+			reportP2.addParameter("unita_formato",misura.getUnita_formato().stripTrailingZeros().toPlainString().replace(".", ",")+" \"");
 		}else {
 			reportP2.addParameter("unita_formato","");	
 		}
@@ -285,13 +285,13 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 		reportP2.addParameter("cell10", "/\"");
 		for(int i = 0; i<lista_punti.size();i++) {
 			if(lista_punti.get(i).getValore_nominale()!=null) {
-				reportP2.addParameter("cell"+0+(i+1), lista_punti.get(i).getValore_nominale().setScale(1,RoundingMode.HALF_UP).toString());	
+				reportP2.addParameter("cell"+0+(i+1), lista_punti.get(i).getValore_nominale().setScale(1,RoundingMode.HALF_UP).toString().replace(".", ","));	
 			}else {
 				reportP2.addParameter("cell"+0+(i+1), "");
 			}
 			
 			if(lista_punti.get(i).getScostamentoOff()!=null) {
-				reportP2.addParameter("cell"+1+(i+1), lista_punti.get(i).getScostamentoOff().setScale(1,RoundingMode.HALF_UP).toString());	
+				reportP2.addParameter("cell"+1+(i+1), lista_punti.get(i).getScostamentoOff().setScale(1,RoundingMode.HALF_UP).toString().replace(".", ","));	
 			}else {
 				reportP2.addParameter("cell"+1+(i+1), "");
 			}

@@ -57,6 +57,9 @@
                   <b>ID</b> <a class="pull-right">${interventover.id}</a>
                 </li>
                 <li class="list-group-item">
+                  <b>Company</b> <a class="pull-right">${company.denominazione}</a>
+                </li>
+                <li class="list-group-item">
                 <b>Luogo</b><c:choose>
 					  <c:when test="${interventover.in_sede_cliente == 0}">
 							<span class="label label-success pull-right">IN SEDE</span>
@@ -66,6 +69,7 @@
 					  </c:otherwise>
 					</c:choose> 
 					</li>
+					
                 <li class="list-group-item">
                   <b>ID Commessa</b> <a class="pull-right">${interventover.commessa}</a>
                 </li>

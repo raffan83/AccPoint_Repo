@@ -26,6 +26,7 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ComuneDTO;
 import it.portaleSTI.DTO.ProvinciaDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
@@ -41,6 +42,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
+import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
@@ -317,10 +319,12 @@ public class GestioneVerIntervento extends HttpServlet {
 				
 				ArrayList<VerMisuraDTO> lista_misure = GestioneVerInterventoBO.getListaMisureFromIntervento(Integer.parseInt(id_intervento), session);
 				ArrayList<VerInterventoStrumentiDTO> lista_strumenti_intervento = GestioneVerStrumentiBO.getListaStrumentiIntervento(Integer.parseInt(id_intervento), session);
+				CompanyDTO company = GestioneCompanyBO.getCompanyById(""+interventover.getId_company(), session);
 				
 				request.getSession().setAttribute("interventover", interventover);
 				request.getSession().setAttribute("lista_misure", lista_misure);
 				request.getSession().setAttribute("lista_strumenti_intervento", lista_strumenti_intervento);
+				request.getSession().setAttribute("company", company);
 				
 				session.getTransaction().commit();
 				session.close();

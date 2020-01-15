@@ -18,7 +18,7 @@ public class VerInterventoDTO {
 	private Date data_chiusura;
 	private int id_stato_intervento;
 	private String nome_pack;
-	private int id_company;
+	private CompanyDTO company;
 	private int nStrumentiGenerati;
 	private int nStrumentiMisurati;
 	private int nStrumentiNuovi;
@@ -100,12 +100,6 @@ public class VerInterventoDTO {
 	public void setNome_pack(String nome_pack) {
 		this.nome_pack = nome_pack;
 	}
-	public int getId_company() {
-		return id_company;
-	}
-	public void setId_company(int id_company) {
-		this.id_company = id_company;
-	}
 	public int getnStrumentiGenerati() {
 		return nStrumentiGenerati;
 	}
@@ -155,6 +149,12 @@ public class VerInterventoDTO {
 	}
 	public void setProvincia(String provincia) {
 		this.provincia = provincia;
+	}
+	public CompanyDTO getCompany() {
+		return company;
+	}
+	public void setCompany(CompanyDTO company) {
+		this.company = company;
 	}
 	
 	

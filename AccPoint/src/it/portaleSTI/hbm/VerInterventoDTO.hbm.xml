@@ -41,9 +41,12 @@
         <property name="nome_pack" type="java.lang.String">
             <column name="nome_pack" />
         </property>     
-        <property name="id_company" type="int">
+    <!--     <property name="id_company" type="int">
             <column name="id_company" />
-        </property>  
+        </property>   -->
+         <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" lazy="false">
+            <column name="id_company" />
+        </many-to-one> 
         <property name="nStrumentiGenerati" type="int">
             <column name="nStrumentiGenerati" />
         </property>  

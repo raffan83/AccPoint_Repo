@@ -287,7 +287,7 @@
 				<text><![CDATA[Ing. Antonio Accettola]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="366" width="184" height="183" uuid="7c58b92e-0277-4091-9260-d4c0182c6868"/>
+				<reportElement x="370" y="367" width="184" height="183" uuid="7c58b92e-0277-4091-9260-d4c0182c6868"/>
 				<textElement textAlignment="Justified">
 					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -295,7 +295,7 @@
 This certificate may not be partially reproduced, except with the prior written permission of the issuing Centre.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="188" width="183" height="152" uuid="973345b5-05f0-4fd8-9934-73dc05bd8824"/>
+				<reportElement x="370" y="189" width="183" height="152" uuid="973345b5-05f0-4fd8-9934-73dc05bd8824"/>
 				<textElement textAlignment="Justified">
 					<font size="8"/>
 				</textElement>
@@ -323,101 +323,6 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 					<font size="10" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Certificate of Calibration]]></text>
-			</staticText>
-			<image>
-				<reportElement positionType="FixRelativeToBottom" x="430" y="15" width="115" height="65" uuid="d092dcd0-35be-4daa-8e0f-aa8a12dfe496"/>
-				<imageExpression><![CDATA[$P{immagine_accredia}]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="346" y="11" width="60" height="59" uuid="a41f840c-4d8b-404b-91f0-ca8e47e7101e"/>
-				<imageExpression><![CDATA[$P{immagine_ilac}]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="157" y="10" width="170" height="13" uuid="b8cff439-eabb-4ad8-b32a-c4e34d82451a"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10.5"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Centro di Taratura LAT N° 172]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="157" y="23" width="170" height="13" uuid="9eac4036-c9e6-4ff2-a4bf-1e46b6d46829"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9" isItalic="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Calibration Centre]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="157" y="36" width="170" height="13" uuid="0a75344a-5a67-46d4-a67a-2cb08d6a6280"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10.5"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Laboratorio Accreditato di Taratura]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="157" y="49" width="170" height="13" uuid="6cf3e46a-7d09-415c-b34d-0441e2dfd191"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9" isItalic="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Accredited Calibration Laboratory]]></text>
-			</staticText>
-			<line direction="BottomUp">
-				<reportElement stretchType="RelativeToTallestObject" x="162" y="70" width="160" height="1" forecolor="#DCDCDC" uuid="6a36d47d-b4d6-4a31-8657-82421c152c29"/>
-			</line>
-			<staticText>
-				<reportElement x="157" y="80" width="170" height="13" uuid="761907ac-e963-431a-a30f-4952b5eb6511"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="8" isItalic="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Organizzazione con sistema di gestione ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="157" y="93" width="170" height="13" uuid="85bab3cd-9864-43eb-90ac-c36619ca09ac"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="8" isItalic="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[certificato UNI EN ISO 9001 ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="157" y="106" width="170" height="13" uuid="a8291afe-fb67-4359-aed7-4abf76cb2d05"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="8" isItalic="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[UNI EN ISO 14001 - OHSAS 18001]]></text>
-			</staticText>
-			<image>
-				<reportElement x="0" y="5" width="133" height="51" uuid="545cb063-9062-4fe7-9c66-9712f0546ce8"/>
-				<imageExpression><![CDATA[$P{immagine_sti}]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="0" y="80" width="140" height="13" uuid="c7d39e93-880e-4759-a794-ff5d6d808ead"/>
-				<textElement textAlignment="Center">
-					<font fontName="Garamond" size="7"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[03039 SORA (FR) Via Tofaro 42/b]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="93" width="140" height="13" uuid="eb44e4ee-2ca1-4d1d-938d-556802e171fa"/>
-				<textElement textAlignment="Center">
-					<font fontName="Garamond" size="7"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Tel +39 0776 814606 -  Fax +39 0776 814169]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="106" width="140" height="13" uuid="c0f0a331-3c67-4bed-b40f-b3e45c76fe7d"/>
-				<textElement textAlignment="Center">
-					<font fontName="Garamond" size="7"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[stisrl@stisrl.com  www.stisrl.com]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="505" y="117" width="50" height="12" uuid="2f50c306-b11f-4aa9-9549-8158e7dde0e0"/>
@@ -475,6 +380,10 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				</textElement>
 				<textFieldExpression><![CDATA[$P{data_misure}]]></textFieldExpression>
 			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="2" width="561" height="111" uuid="3d0b5f37-702b-4d37-98cf-3b6cd946cf24"/>
+				<imageExpression><![CDATA[$P{immagine_sti}]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>

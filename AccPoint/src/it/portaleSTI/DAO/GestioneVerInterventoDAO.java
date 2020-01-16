@@ -21,7 +21,7 @@ public class GestioneVerInterventoDAO {
 			
 		}else {
 			
-			query = session.createQuery("from VerInterventoDTO where id_company = :_id_company");
+			query = session.createQuery("from VerInterventoDTO where company.id = :_id_company");
 			query.setParameter("_id_company", utente.getCompany().getId());
 		}		
 		

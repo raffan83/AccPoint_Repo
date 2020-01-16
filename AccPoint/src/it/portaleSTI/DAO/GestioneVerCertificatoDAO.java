@@ -64,7 +64,7 @@ public static LinkedHashMap<String, String> getClientiPerVerCertificato(UtenteDT
 			s_query = "select DISTINCT(int.misura.verIntervento.nome_sede),int.misura.verIntervento.nome_cliente,int.misura.verIntervento.id_cliente,int.misura.verIntervento.id_sede from VerCertificatoDTO as int order by int.misura.verIntervento.nome_cliente asc";
 			query = session.createQuery(s_query);
 		}else {
-			s_query = "select DISTINCT(int.misura.verIntervento.nome_sede),int.misura.verIntervento.nome_cliente,int.misura.verIntervento.id_cliente,int.misura.verIntervento.id_sede from VerCertificatoDTO as int where int.misura.verIntervento.id_company = :_id_company order by int.misura.verIntervento.nome_cliente asc";
+			s_query = "select DISTINCT(int.misura.verIntervento.nome_sede),int.misura.verIntervento.nome_cliente,int.misura.verIntervento.id_cliente,int.misura.verIntervento.id_sede from VerCertificatoDTO as int where int.misura.verIntervento.company.id = :_id_company order by int.misura.verIntervento.nome_cliente asc";
 			query = session.createQuery(s_query);
 			query.setParameter("_id_company", utente.getCompany().getId());
 		}

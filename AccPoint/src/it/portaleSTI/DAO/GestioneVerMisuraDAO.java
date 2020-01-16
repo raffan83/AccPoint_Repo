@@ -103,7 +103,7 @@ public class GestioneVerMisuraDAO {
 			
 			query = session.createQuery("from VerMisuraDTO"); 
 		}else {
-			query = session.createQuery("from VerMisuraDTO where verIntervento.id_company = :_id_company");
+			query = session.createQuery("from VerMisuraDTO where verIntervento.company.id = :_id_company");
 			query.setParameter("_id_company", utente.getCompany().getId());
 		}
 				

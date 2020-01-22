@@ -996,7 +996,8 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 					for (MagPaccoDTO magPaccoDTO : lista_pacchi_origine) {
 						magPaccoDTO.setRitardo(1);
 						
-						if(magPaccoDTO.getSegnalato()!=1 ) {													
+						if(magPaccoDTO.getSegnalato()!=1 && !lista_non_segnalati.contains(item_pacco.getPacco().getOrigine())) {	
+							lista_non_segnalati.add(item_pacco.getPacco().getOrigine());
 							magPaccoDTO.setSegnalato(1);
 						}
 						session.update(magPaccoDTO);
@@ -1004,8 +1005,8 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 				}
 			}			
 		}
-		if(lista_origini.size()>0) {
-			SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);	
+		if(lista_non_segnalati.size()>0) {
+			SendEmailBO.sendEmailPaccoInRitardo(lista_non_segnalati, Costanti.MAIL_DEST_ALERT_PACCO);	
 		}
 		
 		session.getTransaction().commit();

@@ -189,16 +189,16 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 	  }
 	  
 	  email.setFrom("commerciale@stisrl.com", "Calver");
-	  email.setSubject("Pacco in ritardo");
+	  email.setSubject("OGGETTO: avviso permanenza strumenti in magazzino");
 
 
 	  StringBuffer msg = new StringBuffer();
 	  msg.append("<html><body>");
 	  msg.append("<html>Attenzione! <br /> " + 
-	  		"I pacchi con le seguenti origini sono in ritardo:<br />");
+	  		"Si comunica la presenza in magazzino dei seguenti pacchi in attesa di lavorazione:<br />");
 	  
 	  for (String origine : lista_string_origini) {
-		msg.append(origine+"<br>");
+		msg.append("- "+origine+"<br>");
 	  }
 	  msg.append(" <br />  <br /> <br /></html>");
 

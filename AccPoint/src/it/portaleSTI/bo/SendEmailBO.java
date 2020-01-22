@@ -194,7 +194,7 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 
 	  StringBuffer msg = new StringBuffer();
 	  msg.append("<html><body>");
-	  msg.append("<html>Attenzione! <br /> " + 
+	  msg.append("<html><br>" + 
 	  		"Si comunica la presenza in magazzino dei seguenti pacchi in attesa di lavorazione:<br />");
 	  
 	  for (String origine : lista_string_origini) {

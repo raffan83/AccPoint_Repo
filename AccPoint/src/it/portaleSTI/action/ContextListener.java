@@ -93,7 +93,6 @@ public class ContextListener implements ServletContextListener {
 		Costanti.HOST_MAIL_SYSTEM_SENDER=ac.decryptText(props.getProperty("HOST_MAIL_SYSTEM_SENDER"), publicKey);
 		Costanti.HOST_MAIL_SYSTEM_PORT=ac.decryptText(props.getProperty("HOST_MAIL_SYSTEM_PORT"), publicKey);
 		
-		System.out.println(Costanti.HOST_MAIL_SYSTEM_PWD);
 	}
 
 	@Override

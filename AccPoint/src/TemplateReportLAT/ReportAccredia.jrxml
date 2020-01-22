@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8034ff64-84d5-4f16-aa82-6402a20266f5">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="196">
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement x="0" y="10" width="181" height="70" uuid="474444c1-293d-480b-b232-2906e08b26ce"/>
+				<graphicElement fill="Solid"/>
+				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="100" width="250" height="31" uuid="bf33e73c-64d6-4647-9cf1-dd86435f0d29"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Dipartimento Laboratori di Taratura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="140" width="100" height="31" uuid="ffe9452c-1a5a-4ef5-aa28-2a680be78759"/>
+				<textElement textAlignment="Left">
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Report]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="55" y="140" width="390" height="31" uuid="ca972f0a-d049-4912-95aa-2cc0bb2ad966"/>
+				<textElement>
+					<font size="14" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{periodo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

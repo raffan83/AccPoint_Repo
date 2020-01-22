@@ -36,8 +36,22 @@ public class MagPaccoDTO  implements Serializable{
 	private String nome_sede_util;
 	private Integer id_cliente_util;
 	private Integer id_sede_util;
+	private int ritardo;
+	private int segnalato;
 
 	
+	public int getRitardo() {
+		return ritardo;
+	}
+	public void setRitardo(int ritardo) {
+		this.ritardo = ritardo;
+	}
+	public int getSegnalato() {
+		return segnalato;
+	}
+	public void setSegnalato(int segnalato) {
+		this.segnalato = segnalato;
+	}
 	public int getId() {
 		return id;
 	}

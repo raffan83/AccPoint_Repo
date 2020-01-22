@@ -102,6 +102,11 @@
          <property name="id_sede_util" type="int">
             <column name="id_sede_util" />
         </property> 
-	        
+	      <property name="segnalato" type="int">
+            <column name="segnalato" />
+        </property> 
+         <property name="ritardo" type="int">
+            <column name="ritardo" />
+        </property>    
 	</class>
 </hibernate-mapping>

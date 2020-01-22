@@ -3,6 +3,7 @@ package it.portaleSTI.bo;
 
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -18,6 +19,7 @@ import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
 
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.Util.Costanti;
@@ -163,6 +165,52 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 		  
  	}
 	
-	
+public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origini, String mailTo) throws Exception {
+		
+	  
+	  // Create the email message
+	  HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+
+
+        email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+        email.getMailSession().getProperties().put("mail.debug", "true");
+        email.getMailSession().getProperties().put("mail.smtp.port", "465");
+        email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+        email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+        email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+	  String[] to = mailTo.split(";");
+	  for(int i = 0; i<to.length;i++) {
+		  email.addTo(to[i]);  
+	  }
+	  
+	  email.setFrom("commerciale@stisrl.com", "Calver");
+	  email.setSubject("Pacco in ritardo");
+
+
+	  StringBuffer msg = new StringBuffer();
+	  msg.append("<html><body>");
+	  msg.append("<html>Attenzione! <br /> " + 
+	  		"I pacchi con le seguenti origini sono in ritardo:<br />");
+	  
+	  for (String origine : lista_string_origini) {
+		msg.append(origine+"<br>");
+	  }
+	  msg.append(" <br />  <br /> <br /></html>");
+
+	  email.setHtmlMsg(msg.toString());
+	  
+	  // add the attachment
+	  
+	  // send the email
+	  email.send();
+	  
+	  
+	  
+	}
 
 }

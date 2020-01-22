@@ -11,5 +11,8 @@
         <property name="nome" type="java.lang.String">
             <column name="NOME" />
         </property>
+         <property name="id_codice_accredia" type="int">
+            <column name="id_codice_accredia" />
+        </property>
     </class>
 </hibernate-mapping>

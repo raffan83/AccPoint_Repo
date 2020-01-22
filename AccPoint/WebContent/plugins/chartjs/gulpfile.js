@@ -19,7 +19,7 @@ var merge = require('merge-stream');
 var collapse = require('bundle-collapser/plugin');
 var argv  = require('yargs').argv
 var path = require('path');
-var package = require('./package.json');
+var package11 = require('./package.json');
 
 var srcDir = './src/';
 var outDir = './dist/';
@@ -36,7 +36,7 @@ var header = "/*!\n" +
 
 gulp.task('bower', bowerTask);
 gulp.task('build', buildTask);
-gulp.task('package', packageTask);
+gulp.task('package1', package1Task);
 gulp.task('watch', watchTask);
 gulp.task('lint', lintTask);
 gulp.task('docs', docsTask);
@@ -57,11 +57,11 @@ gulp.task('default', ['build', 'watch']);
  */
 function bowerTask() {
   var json = JSON.stringify({
-      name: package.name,
-      description: package.description,
-      homepage: package.homepage,
-      license: package.license,
-      version: package.version,
+      name: package1.name,
+      description: package1.description,
+      homepage: package1.homepage,
+      license: package1.license,
+      version: package1.version,
       main: outDir + "Chart.js",
       ignore: [
         '.github',
@@ -84,11 +84,11 @@ function buildTask() {
     .bundle()
     .pipe(source('Chart.bundle.js'))
     .pipe(insert.prepend(header))
-    .pipe(streamify(replace('{{ version }}', package.version)))
+    .pipe(streamify(replace('{{ version }}', package1.version)))
     .pipe(gulp.dest(outDir))
     .pipe(streamify(uglify()))
     .pipe(insert.prepend(header))
-    .pipe(streamify(replace('{{ version }}', package.version)))
+    .pipe(streamify(replace('{{ version }}', package1.version)))
     .pipe(streamify(concat('Chart.bundle.min.js')))
     .pipe(gulp.dest(outDir));
 
@@ -98,11 +98,11 @@ function buildTask() {
     .bundle()
     .pipe(source('Chart.js'))
     .pipe(insert.prepend(header))
-    .pipe(streamify(replace('{{ version }}', package.version)))
+    .pipe(streamify(replace('{{ version }}', package1.version)))
     .pipe(gulp.dest(outDir))
     .pipe(streamify(uglify()))
     .pipe(insert.prepend(header))
-    .pipe(streamify(replace('{{ version }}', package.version)))
+    .pipe(streamify(replace('{{ version }}', package1.version)))
     .pipe(streamify(concat('Chart.min.js')))
     .pipe(gulp.dest(outDir));
 
@@ -110,12 +110,12 @@ function buildTask() {
 
 }
 
-function packageTask() {
+function package1Task() {
   return merge(
-      // gather "regular" files landing in the package root
+      // gather "regular" files landing in the package1 root
       gulp.src([outDir + '*.js', 'LICENSE.md']),
 
-      // since we moved the dist files one folder up (package root), we need to rewrite
+      // since we moved the dist files one folder up (package1 root), we need to rewrite
       // samples src="../dist/ to src="../ and then copy them in the /samples directory.
       gulp.src('./samples/**/*', { base: '.' })
         .pipe(streamify(replace(/src="((?:\.\.\/)+)dist\//g, 'src="$1')))

@@ -150,6 +150,10 @@ public class DirectMySqlDAO {
 	
 	private static String sqlVerMisurePerDate="select a.id , b.id_cliente,b.id_sede from ver_misura a JOIN ver_intervento b on a.id_ver_intervento=b.id where a.data_verificazione BETWEEN ? AND ?";
 	
+	private static String sqlMisurePerDate = "SELECT m.id, m.id_intervento, s.denominazione,s.matricola,s.codice_interno, m.dataMisura, i.id_commessa, i.nome_cliente, i.nome_sede, ms.descrizione FROM misura m LEFT JOIN strumento s ON s.__id = m.id_strumento LEFT JOIN intervento i ON i.id = m.id_intervento LEFT JOIN lat_misura l ON l.id = m.idMisura LEFT JOIN lat_master ms ON l.id_misura_lat = ms.id WHERE m.dataMisura BETWEEN ? AND ?";
+	
+	private static String sqlDataCertificatoMisura = "SELECT c.data_creazione FROM certificato c LEFT JOIN misura m ON c.id_misura = m.id WHERE c.id_misura = ?"; 
+		
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
 		try
@@ -1819,7 +1823,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 	public static void updateStatoCampioneScheduler() throws Exception {
 
 		
-		String query = "update campione set stato_campione='N' where stato_campione!='F' and (campione.data_Scadenza<now() or campione.data_scadenza is null)";
+		String query = "update campione set stato_campione='N' where stato_campione!='F' and id_tipo_campione!=3 and (campione.data_Scadenza<now() or campione.data_scadenza is null)";
 		
 		Connection con=null;
 		PreparedStatement pst=null;
@@ -2437,6 +2441,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 
 	}
 
+	
+
 	public static ArrayList<String> getListaVerMisureFromDate(String dateFrom, String dateTo) throws Exception {
 		ArrayList<String> lista =new ArrayList<String>();
 		
@@ -2480,7 +2486,99 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		}	
 		return lista;
 	}
-
-
 	
+	
+	
+	public static ArrayList<String> getListaMisureFromDate(String dateFrom, String dateTo) throws Exception {
+		ArrayList<String> lista =new ArrayList<String>();
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+		java.sql.Date sql1 = new java.sql.Date(df.parse(dateFrom).getTime());
+		java.sql.Date sql2 = new java.sql.Date(df.parse(dateTo).getTime());
+		
+		try
+		{
+			con=getConnection();
+			
+						
+				pst=con.prepareStatement(sqlMisurePerDate);		
+			
+				
+				pst.setDate(1, sql1);
+				pst.setDate(2, sql2);
+			
+			
+			rs=pst.executeQuery();
+			df = new SimpleDateFormat("dd/MM/YYYY");
+			while(rs.next())
+			{
+				
+				
+				String s =rs.getString(1)+";"+rs.getString(2)+";"+rs.getString(3)+";"+rs.getString(4)+";"+rs.getString(5)+";"+df.format(rs.getDate(6))+";"+rs.getString(7)+";"+rs.getString(8)+";"+rs.getString(9)+";"+rs.getString(10);
+				lista.add(s);
+			}
+			
+			
+		}catch (Exception e) 
+		{
+			throw e;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+			
+		}	
+		return lista;
+	}
+
+	public static Date getCertificatoFromMisura(MisuraDTO misura) throws Exception {
+		
+		ArrayList<String> lista =new ArrayList<String>();
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+		Date data = null;
+			
+		try
+		{
+			con=getConnection();
+			
+						
+				pst=con.prepareStatement(sqlDataCertificatoMisura);		
+				pst.setInt(1, misura.getId());
+			
+			rs=pst.executeQuery();
+			
+		
+			while(rs.next())
+			{
+								
+				data =rs.getDate(1);
+				
+			}
+			
+			
+		}catch (Exception e) 
+		{
+			throw e;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+			
+		}	
+		return data;
+		
+	}
+
 }
+
+
+

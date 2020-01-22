@@ -63,7 +63,10 @@
     			<% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_ASSEGNAZIONE_ATTIVITA_ADMIN")){%>
     			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=lista&admin=1',null,true);">Assegnazione Attività Admin</a></li>
     			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=controllo_attivita&admin=1',null,true);">Controllo Attività Admin</a></li>
+    			
     			<% }%>
+    			
+    			<li><a href="#" onclick="callAction('gestioneMisura.do?action=lista',null,true);">Lista Misure</a></li>
     			
     		<% }%>
           </ul>
@@ -262,7 +265,7 @@
           <ul class="treeview-menu">
 		
 			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_docenti',null,true);">Gestione Docenti</a></li>
-			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_cat_corsi',null,true);">Gestione Categorie Corsi</a></li>
+			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_cat_corsi',null,true);">Gestione Tipologie Corsi</a></li>
 			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_corsi',null,true);">Gestione Corsi</a></li>
 	      
           </ul>

@@ -6,8 +6,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -36,6 +39,9 @@ import it.portaleSTI.DTO.MagTipoNotaPaccoDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.SendEmailBO;
 
 public class GestioneMagazzinoDAO {
 
@@ -568,13 +574,17 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
-	public static ArrayList<MagPaccoDTO> getListPacchiPerData(String dateFrom, String dateTo, String tipo_data, Session session) throws HibernateException, ParseException {
+	public static ArrayList<MagPaccoDTO> getListPacchiPerData(String dateFrom, String dateTo, String tipo_data, int stato, Session session) throws HibernateException, ParseException {
 		ArrayList<MagPaccoDTO> lista=null;
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
-		
-		Query query = session.createQuery("from MagPaccoDTO as pacco where pacco."+tipo_data+" "+"between :dateFrom and :dateTo");
-				
+		Query query = null;
+		if(stato==0) {
+			query = session.createQuery("from MagPaccoDTO as pacco where pacco."+tipo_data+" "+"between :dateFrom and :dateTo");	
+		}else {
+			query = session.createQuery("from MagPaccoDTO as pacco where pacco.chiuso = 1 and pacco."+tipo_data+" "+"between :dateFrom and :dateTo");
+		}
+						
 		query.setParameter("dateFrom",df.parse(dateFrom));
 		query.setParameter("dateTo",df.parse(dateTo));
 		
@@ -952,5 +962,57 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		return result;
 	}
+
+
+	public static void getItemInRitardo() throws Exception {
+		
+		Session session = SessionFacotryDAO.get().openSession();	    
+		session.beginTransaction();
+		
+		ArrayList<String> lista_origini = new ArrayList<String>();
+		
+		ArrayList<MagItemPaccoDTO> lista = null;
+		
+		Query query = session.createQuery("from MagItemPaccoDTO a where a.pacco.chiuso = 0 and a.item.stato = 1");
+				
+		lista = (ArrayList<MagItemPaccoDTO>) query.list();
+		
+		
+		ArrayList<String> lista_non_segnalati = new ArrayList<String>();
+		for (MagItemPaccoDTO item_pacco : lista) {
+			
+			Date data_arrivo = item_pacco.getPacco().getData_arrivo();
+			if(data_arrivo!=null) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(data_arrivo);
+				calendar.add(Calendar.DATE, 7);
+
+				Date date = calendar.getTime();
+				
+				if(!lista_origini.contains(item_pacco.getPacco().getOrigine()) && Utility.getRapportoLavorati(item_pacco.getPacco())!=1 && date.before(new Date())) {
+					//map.put(item_pacco.getPacco().getOrigine(), 1);
+					lista_origini.add(item_pacco.getPacco().getOrigine());
+					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(item_pacco.getPacco().getOrigine(), session);
+					for (MagPaccoDTO magPaccoDTO : lista_pacchi_origine) {
+						magPaccoDTO.setRitardo(1);
+						
+						if(magPaccoDTO.getSegnalato()!=1 ) {													
+							magPaccoDTO.setSegnalato(1);
+						}
+						session.update(magPaccoDTO);
+					}
+				}
+			}			
+		}
+		if(lista_origini.size()>0) {
+			SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);	
+		}
+		
+		session.getTransaction().commit();
+		session.close();
+		
+	}
+
+
 
 }

@@ -60,6 +60,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
@@ -420,6 +421,14 @@ public class GestioneIntervento extends HttpServlet {
 		    		certificato.setUtente(misura.getUser());
 		    		certificato.setNomeCertificato(nomeFilePdfCertificato);
 					certificato.setDataCreazione(new Date());
+					
+					int idItem=GestioneMagazzinoBO.checkStrumentoInMagazzino(misura.getStrumento().get__id(),misura.getIntervento().getIdCommessa());
+		    		
+		    		if(idItem!=0) 
+		    		{
+		    		 GestioneMagazzinoBO.cambiaStatoStrumento(idItem, 2, session);
+		    		}
+					
 		    		session.save(certificato);
 		    							
 					myObj.addProperty("success", true);				

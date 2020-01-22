@@ -12,6 +12,7 @@ import java.io.File;
 import java.sql.Blob;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -226,6 +227,12 @@ public class GestioneMisuraBO {
 	public static ArrayList<LatMasterDTO> getListaLatMaster() {
 		
 		return GestioneMisuraDAO.getListaLatMaster();
+	}
+
+
+	public static ArrayList<MisuraDTO> getListaMisurePerData(Date start, Date now, boolean lat, Session session) {
+	
+		return GestioneMisuraDAO.getListaMisurePerData(start, now, lat, session);
 	}
 
 }

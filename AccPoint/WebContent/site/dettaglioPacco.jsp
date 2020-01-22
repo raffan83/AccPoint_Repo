@@ -129,7 +129,10 @@ String permesso = "0";
                   <b>Responsabile</b> <a class="pull-right">${pacco.utente.nominativo} </a>
                 </li>
                 <li class="list-group-item">
-                  <b>Commessa</b> <a class="pull-right">${pacco.commessa} </a>
+             
+                  <b>Commessa</b>    <c:if test="${pacco.commessa!=null && pacco.commessa!=''}">
+<a href="#" class="btn customTooltip customlink pull-right" title="Click per aprire il dettaglio della commessa" onclick="dettaglioCommessa('${pacco.commessa}');">${pacco.commessa}</a>
+</c:if>
                 </li>				
                 <c:if test="${pacco.ddt.numero_ddt !=''}">
                 <li class="list-group-item">
@@ -1277,6 +1280,28 @@ String permesso = "0";
      <div id="errorMsg"><!-- Place at bottom of page --></div> 
   
 
+
+<div id="myModalCommessa" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabelCommessa">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Lista Attivit&agrave; </h4>
+      </div>
+       <div class="modal-body" id="commessa_body">
+       
+       
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+
+       
+      </div>
+    </div>
+  </div>
+</div>
 
    
 </div>

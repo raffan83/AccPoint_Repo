@@ -6,8 +6,10 @@ import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import java.sql.Blob;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -169,6 +171,30 @@ public class GestioneMisuraDAO {
 		
 		session.close();
 		
+		return lista;
+	}
+
+	public static ArrayList<MisuraDTO> getListaMisurePerData(Date start, Date now, boolean lat, Session session) {
+		
+			
+		ArrayList<MisuraDTO> lista = null;
+			
+		Query query = null;
+		if(lat) {
+			query = session.createQuery("from MisuraDTO where dataMisura between :dateFrom and :dateTo  and lat = 'S'");	
+			query.setParameter("dateFrom", start);
+			query.setParameter("dateTo", now);
+		}else {
+			query = session.createQuery("from MisuraDTO where dataMisura between :dateFrom and :dateTo  ");
+			query.setParameter("dateFrom", start);
+			query.setParameter("dateTo", now);
+		}
+		
+		
+
+		lista = (ArrayList<MisuraDTO>) query.list();
+		
+				
 		return lista;
 	}
 	

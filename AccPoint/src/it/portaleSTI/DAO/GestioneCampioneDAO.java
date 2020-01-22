@@ -18,6 +18,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.action.ValoriCampione;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.text.DateFormat;
@@ -861,5 +862,72 @@ public static ArrayList<CampioneDTO> getListaCampioniInServizio() {
 			
 	return lista;
 }
+
+
+
+public static void updateCampioneScheduler() {
+	
+	Session session = SessionFacotryDAO.get().openSession();
+    
+	session.beginTransaction();
+	ArrayList<CampioneDTO> lista = null;
+	
+	Query query = session.createQuery("select a.campione, a.data from AcAttivitaCampioneDTO a where a.campione.tipo_campione.id = 3 and a.tipo_attivita.id = 1 and a.campione.statoCampione!='F'");	
+
+	List<Object[]> result = (List<Object[]>)query.list();
+
+	if(result.size()>0 ) {		
+	
+		for (Object[] object : result) {
+			CampioneDTO campione =  (CampioneDTO) object[0];
+			Date data = (Date) object[1];
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(data);
+			calendar.add(Calendar.MONTH, campione.getFrequenza_manutenzione());
+
+			Date date = calendar.getTime();
+			
+			if(date.before(new Date())) {
+				campione.setStatoCampione("N");
+				session.update(campione);
+			}
+			
+		}
+	}
+	
+	query = session.createQuery("select a.campione, a.data_evento from RegistroEventiDTO a where a.campione.tipo_campione.id = 3 and a.tipo_evento.id = 1 and a.campione.statoCampione!='F'");
+	
+	
+	result = (List<Object[]>)query.list();
+
+  
+	if(result.size()>0 ) {		
+	
+		for (Object[] object : result) {
+			CampioneDTO campione =  (CampioneDTO) object[0];
+			Date data = (Date) object[1];
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(data);
+			calendar.add(Calendar.MONTH, campione.getFrequenza_manutenzione());
+
+			Date date = calendar.getTime();
+			
+			if(date.before(new Date())) {
+				campione.setStatoCampione("N");
+				session.update(campione);
+			}
+			
+		}
+	}
+
+	session.getTransaction().commit();
+	session.close();
+			
+
+}
+	
 	
 }
+
+
+

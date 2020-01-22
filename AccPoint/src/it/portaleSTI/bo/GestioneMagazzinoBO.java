@@ -297,9 +297,9 @@ public static void accettaItem(JsonArray acc, JsonArray non_acc, JsonArray note_
 	GestioneMagazzinoDAO.accettaItem(acc,non_acc,note_acc, note_non_acc,id_pacco, session);
 }
 
-public static ArrayList<MagPaccoDTO> getListaPacchiPerData(String dateFrom, String dateTo, String tipo_data, Session session) throws Exception, ParseException {
+public static ArrayList<MagPaccoDTO> getListaPacchiPerData(String dateFrom, String dateTo, String tipo_data, int stato, Session session) throws Exception, ParseException {
 	
-	return GestioneMagazzinoDAO.getListPacchiPerData(dateFrom, dateTo, tipo_data, session);
+	return GestioneMagazzinoDAO.getListPacchiPerData(dateFrom, dateTo, tipo_data, stato, session);
 }
 
 public static MagItemDTO getItemById(int id, Session session) {
@@ -456,6 +456,8 @@ public static String getDataRicevimentoItem(StrumentoDTO strumento, Session sess
 	
 	return GestioneMagazzinoDAO.getDataRicevimentoItem(strumento,session);
 }
+
+
 
 
 

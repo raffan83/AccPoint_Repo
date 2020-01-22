@@ -1,7 +1,11 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -112,14 +116,38 @@ public class ListaPacchi extends HttpServlet {
 			
 			String stato = request.getParameter("stato");
 			ArrayList<MagPaccoDTO> lista_pacchi = null;
+			String dateFrom=null;
+			String dateTo = null;
 			if(stato!=null && stato.equals("tutti")) {
-				lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);						
+				
+				Date end = new Date();
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(end);
+				calendar.add(Calendar.DAY_OF_MONTH, -30);
+				
+				Date start = calendar.getTime();
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				//lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
+				dateFrom = df.format(start);
+				dateTo = df.format(end);
+				lista_pacchi = GestioneMagazzinoBO.getListaPacchiPerData(df.format(start), df.format(end), "data_lavorazione", 0, session);
 			}
 			else if(stato!=null && stato.equals("chiusi")) {
-				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 1, session);
+				Date end = new Date();
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(end);
+				calendar.add(Calendar.DAY_OF_MONTH, -30);
+				
+				Date start = calendar.getTime();
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				dateFrom = df.format(start);
+				dateTo = df.format(end);
+				lista_pacchi = GestioneMagazzinoBO.getListaPacchiPerData(df.format(start), df.format(end), "data_lavorazione", 1, session);
 			}
 			else {
-				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 0, session);
+				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 0, session);				
 			}
 		
 			
@@ -142,8 +170,7 @@ public class ListaPacchi extends HttpServlet {
 		//	ArrayList<Integer> lista_pacchi_allegati = GestioneMagazzinoBO.getListaAllegati(session);
 						
 			
-			String dateFrom=null;
-			String dateTo = null;
+			
 			String commessa = null;
 			
 			session.close();
@@ -204,7 +231,7 @@ public class ListaPacchi extends HttpServlet {
 				tipo= "data_spedizione";
 			}
 			
-			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiPerData(dateFrom, dateTo, tipo, session);
+			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiPerData(dateFrom, dateTo, tipo,0, session);
 			session.close();
 			
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);

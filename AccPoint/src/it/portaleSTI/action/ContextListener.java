@@ -55,8 +55,8 @@ public class ContextListener implements ServletContextListener {
      
     public void configCostantApplication() throws Exception {
 	
-    	String resourceName = "config.properties"; // could also be a constant
-    //	String resourceName = "config_svil.properties"; // could also be a constant
+    	//String resourceName = "config.properties"; // could also be a constant
+    	String resourceName = "config_svil.properties"; // could also be a constant
     	
     	ClassLoader loader = Thread.currentThread().getContextClassLoader();
     	Properties props = new Properties();
@@ -92,6 +92,8 @@ public class ContextListener implements ServletContextListener {
 		Costanti.HOST_MAIL_SYSTEM_PWD=ac.decryptText(props.getProperty("HOST_MAIL_SYSTEM_PWD"), publicKey);
 		Costanti.HOST_MAIL_SYSTEM_SENDER=ac.decryptText(props.getProperty("HOST_MAIL_SYSTEM_SENDER"), publicKey);
 		Costanti.HOST_MAIL_SYSTEM_PORT=ac.decryptText(props.getProperty("HOST_MAIL_SYSTEM_PORT"), publicKey);
+		Costanti.MAIL_DEST_ALERT_PACCO=ac.decryptText(props.getProperty("MAIL_DEST_ALERT_PACCO"), publicKey);
+		
 		
 		System.out.println(Costanti.HOST_MAIL_SYSTEM_PWD);
 	}

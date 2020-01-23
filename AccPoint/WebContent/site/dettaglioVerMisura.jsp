@@ -393,7 +393,7 @@
  </li>
    <li class="list-group-item">
  	<b>Download Certificato</b>
- 	<c:if test="${certificato.stato.id==2 }">
+ 	<c:if test="${certificato.stato.id==2 && certificato.firmato ==1}">
  	<a target="_blank"   class="btn btn-danger customTooltip pull-right btn-xs" title="Click per scaricare il PDF del Certificato"  href="gestioneVerCertificati.do?action=download&&cert_rap=1&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
  	</c:if> 
  </li>

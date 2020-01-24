@@ -22,9 +22,9 @@ public class GestioneVerCertificatoBO {
 		
 	}
 
-	public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato, int idCliente, int idSede, Session session) {
+	public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato, int filtro_emissione, int idCliente, int idSede, Session session) {
 	
-		return GestioneVerCertificatoDAO.getListaCertificati(stato, idCliente, idSede, session);
+		return GestioneVerCertificatoDAO.getListaCertificati(stato,filtro_emissione, idCliente, idSede, session);
 	}
 
 	public static VerCertificatoDTO getCertificatoById(int id, Session session) {

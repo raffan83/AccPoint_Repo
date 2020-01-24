@@ -10993,10 +10993,16 @@ function filtraVerCertificati(){
 
 	  var cliente=$('#selectCliente').val();
 	  var tipologia=$('#selectFiltri').val();
- 
+	  var filtro = tipologia.split("_");
 	  if(cliente!=null && tipologia != null && tipologia != "" && cliente != ""){
-		  	dataString ="cliente="+ cliente
-	        exploreModal("gestioneVerCertificati.do?action="+tipologia,dataString,"#tabellaVerCertificati",function(datab,textStatusb){
+			dataString ="cliente="+ cliente;
+			
+		  if(filtro.length>1){
+			  
+			  dataString = dataString+"&filtro_emissione="+filtro[1];
+		  }
+		  
+	        exploreModal("gestioneVerCertificati.do?action="+filtro[0],dataString,"#tabellaVerCertificati",function(datab,textStatusb){
 	
 	          });
 
@@ -12657,4 +12663,62 @@ function eliminaAllegatoFormazione(id_allegato, id_corso, id_categoria){
 
      }
      });
+}
+
+
+function nuovoForPartecipante(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#nuovPartecipanteForm')[0]; 
+		  var formData = new FormData(form);
+		 
+$.ajax({
+	  type: "POST",
+	  url: "gestioneFormazione.do?action=nuovo_partecipante",
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+			$('#myModalError').on('hidden.bs.modal', function(){	         			
+				
+				 location.reload()
+			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+});
 }

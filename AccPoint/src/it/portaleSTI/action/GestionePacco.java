@@ -160,6 +160,7 @@ public class GestionePacco extends HttpServlet {
 		String testa_pacco = "";
 		String cliente_util = "";
 		String sede_util = "";
+		String ritardo = "";
 		
 		FileItem pdf = null;
 		MagPaccoDTO pacco = new MagPaccoDTO();
@@ -413,7 +414,9 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("sede_utilizzatore")) {
 						sede_util = item.getString();
 					}
-					
+					if(item.getFieldName().equals("ritardo")) {
+						ritardo = item.getString();
+					}
 				}else {
 					
 					if(item.getName()!="") {
@@ -591,7 +594,9 @@ public class GestionePacco extends HttpServlet {
 					pacco.setTipo_nota_pacco(new MagTipoNotaPaccoDTO(Integer.parseInt(select_nota_pacco),""));
 				}
 			}
-			pacco.setData_lavorazione(new Date());		
+			
+			pacco.setData_lavorazione(new Date());	
+				
 			pacco.setStato_lavorazione(new MagStatoLavorazioneDTO(Integer.parseInt(stato_lavorazione), ""));
 			
 			if(!data_arrivo.equals("")&& data_arrivo!=null) {
@@ -632,8 +637,13 @@ public class GestionePacco extends HttpServlet {
 			
 			if(!id_pacco.equals("")) {
 				pacco.setId(Integer.parseInt(id_pacco));
+				if(!ritardo.equals("")) {
+					pacco.setRitardo(Integer.parseInt(ritardo));
+					pacco.setSegnalato(Integer.parseInt(ritardo));
+				}
 				GestioneMagazzinoBO.updatePacco(pacco, session);
 				GestioneMagazzinoBO.deleteItemPacco(Integer.parseInt(id_pacco), session);
+				
 			}else {
 				GestioneMagazzinoBO.savePacco(pacco, session);
 				
@@ -701,6 +711,8 @@ public class GestionePacco extends HttpServlet {
 			
 			
 	}
+		
+		
 		
 		else if(action.equals("dettaglio")) {
 			

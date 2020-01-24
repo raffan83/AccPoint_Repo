@@ -121,7 +121,7 @@ public class GestioneVerCertificati extends HttpServlet {
 					
 				}
 				
-				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(0,Integer.parseInt(idCliente),Integer.parseInt(idSede), session);
+				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(0,0,Integer.parseInt(idCliente),Integer.parseInt(idSede), session);
 
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				RequestDispatcher dispatcher  = getServletContext().getRequestDispatcher("/site/listaVerCertificatiTutti.jsp");
@@ -147,7 +147,7 @@ public class GestioneVerCertificati extends HttpServlet {
 					
 				}
 				
-				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(1, Integer.parseInt(idCliente),Integer.parseInt(idSede), session);
+				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(1,0, Integer.parseInt(idCliente),Integer.parseInt(idSede), session);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerCertificatiInLavorazione.jsp");
 		     	dispatcher.forward(request,response);
@@ -155,7 +155,8 @@ public class GestioneVerCertificati extends HttpServlet {
 				
 			}else if(action.equals("chiusi")){
 				response.setContentType("text/html");
- 				String idClienteSede =request.getParameter("cliente");
+ 				String idClienteSede = request.getParameter("cliente");
+ 				String filtro_emissione = request.getParameter("filtro_emissione");
 				
 				String idCliente = "";
 				String idSede = "";
@@ -172,7 +173,7 @@ public class GestioneVerCertificati extends HttpServlet {
 					
 				}
 				
-				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(2,Integer.parseInt(idCliente),Integer.parseInt(idSede), session);
+				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(2,Integer.parseInt(filtro_emissione),Integer.parseInt(idCliente),Integer.parseInt(idSede), session);
 				
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerCertificatiChiusi.jsp");

@@ -73,7 +73,8 @@
 		         					 	 <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_VERIFICAZIONE')}">       					 	
 								          <option value="lavorazione">In lavorazione</option>
 								          </c:if>		
-								           <option value="chiusi">Chiusi</option>					          
+								           <option value="chiusi_0">Chiusi Da Emettere</option>
+								           <option value="chiusi_1">Chiusi Emessi</option>					          
 		                     </select>
 		
 		                   

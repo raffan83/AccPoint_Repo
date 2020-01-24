@@ -169,7 +169,7 @@
  <c:when test="${pacco.stato_lavorazione.id==1 && utl:getRapportoLavorati(pacco)==1 && pacco.chiuso!=1}">
  <tr style="background-color:#00ff80" id="rowIndex_${loop.index }" ondblclick="dettaglioPacco('${utl:encryptData(pacco.id)}')">
  </c:when>
- <c:when test="${pacco.ritardo == 1}">
+ <c:when test="${pacco.ritardo == 1 && pacco.chiuso!=1}">
  <tr style="background-color:#FA8989" id="rowIndex_${loop.index }" ondblclick="dettaglioPacco('${utl:encryptData(pacco.id)}')">
  </c:when>
  <c:otherwise>

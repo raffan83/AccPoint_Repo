@@ -966,22 +966,50 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 	public static void getItemInRitardo() throws Exception {
 		
-		Session session = SessionFacotryDAO.get().openSession();	    
+ 		Session session = SessionFacotryDAO.get().openSession();	    
 		session.beginTransaction();
 		
 		ArrayList<String> lista_origini = new ArrayList<String>();
 		
-		ArrayList<MagItemPaccoDTO> lista = null;
+		ArrayList<MagPaccoDTO> lista = null;
 		
-		Query query = session.createQuery("from MagItemPaccoDTO a where a.pacco.chiuso = 0 and a.item.stato = 1");
+		Query query = session.createQuery("select distinct a.pacco from MagItemPaccoDTO a where a.pacco.chiuso = 0 and a.item.stato = 1");
 				
-		lista = (ArrayList<MagItemPaccoDTO>) query.list();
+		//lista = (ArrayList<MagItemPaccoDTO>) query.list();
+		lista = (ArrayList<MagPaccoDTO>) query.list();
 		
 		
 		ArrayList<String> lista_non_segnalati = new ArrayList<String>();
-		for (MagItemPaccoDTO item_pacco : lista) {
+//		for (MagItemPaccoDTO item_pacco : lista) {
+//			
+//			Date data_arrivo = item_pacco.getPacco().getData_arrivo();
+//			if(data_arrivo!=null) {
+//				Calendar calendar = Calendar.getInstance();
+//				calendar.setTime(data_arrivo);
+//				calendar.add(Calendar.DATE, 7);
+//
+//				Date date = calendar.getTime();
+//				
+//				if(!lista_origini.contains(item_pacco.getPacco().getOrigine()) && Utility.getRapportoLavorati(item_pacco.getPacco())!=1 && date.before(new Date())) {
+//					//map.put(item_pacco.getPacco().getOrigine(), 1);
+//					lista_origini.add(item_pacco.getPacco().getOrigine());
+//					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(item_pacco.getPacco().getOrigine(), session);
+//					for (MagPaccoDTO magPaccoDTO : lista_pacchi_origine) {
+//						magPaccoDTO.setRitardo(1);
+//						
+//						if(magPaccoDTO.getSegnalato()!=1 && !lista_non_segnalati.contains(item_pacco.getPacco().getOrigine())) {	
+//							lista_non_segnalati.add(item_pacco.getPacco().getOrigine());
+//							magPaccoDTO.setSegnalato(1);
+//						}
+//						session.update(magPaccoDTO);
+//					}
+//				}
+//			}			
+//		}
+		
+		for (MagPaccoDTO pacco : lista) {
 			
-			Date data_arrivo = item_pacco.getPacco().getData_arrivo();
+			Date data_arrivo = pacco.getData_arrivo();
 			if(data_arrivo!=null) {
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(data_arrivo);
@@ -989,22 +1017,24 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 				Date date = calendar.getTime();
 				
-				if(!lista_origini.contains(item_pacco.getPacco().getOrigine()) && Utility.getRapportoLavorati(item_pacco.getPacco())!=1 && date.before(new Date())) {
-					//map.put(item_pacco.getPacco().getOrigine(), 1);
-					lista_origini.add(item_pacco.getPacco().getOrigine());
-					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(item_pacco.getPacco().getOrigine(), session);
+				if(pacco.getRitardo()==0 && Utility.getRapportoLavorati(pacco)!=1 && date.before(new Date())) {
+				
+					lista_origini.add(pacco.getOrigine());
+					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(pacco.getOrigine(), session);
 					for (MagPaccoDTO magPaccoDTO : lista_pacchi_origine) {
-						magPaccoDTO.setRitardo(1);
 						
-						if(magPaccoDTO.getSegnalato()!=1 && !lista_non_segnalati.contains(item_pacco.getPacco().getOrigine())) {	
-							lista_non_segnalati.add(item_pacco.getPacco().getOrigine());
-							magPaccoDTO.setSegnalato(1);
-						}
+						magPaccoDTO.setRitardo(1);
+						magPaccoDTO.setSegnalato(1);
+						
 						session.update(magPaccoDTO);
+					}						
+					if(!lista_non_segnalati.contains(pacco.getOrigine())) {	
+						lista_non_segnalati.add(pacco.getOrigine());
 					}
 				}
 			}			
 		}
+		
 		if(lista_non_segnalati.size()>0) {
 			SendEmailBO.sendEmailPaccoInRitardo(lista_non_segnalati, Costanti.MAIL_DEST_ALERT_PACCO);	
 		}

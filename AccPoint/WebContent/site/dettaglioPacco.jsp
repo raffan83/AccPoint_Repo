@@ -1027,6 +1027,7 @@ String permesso = "0";
 		 <input type="hidden" class="pull-right" id="testa_pacco" name="testa_pacco" value="${pacco.link_testa_pacco }"> 
 		<input type="hidden" class="pull-right" id="select_fornitore" name="select_fornitore" value=""> 
 		<input type="hidden" class="pull-right" id="configurazione" name="configurazione" > 
+		<input type="hidden" class="pull-right" id="ritardo" name="ritardo" value="${pacco.ritardo }">
 		<!-- <button class="btn btn-default pull-left" onClick="modificaPaccoSubmit()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button> -->  
 		<!-- <button class="btn btn-default pull-left" onClick="modalConfigurazione()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button> -->
   <button class="btn btn-default pull-left" onClick="chooseSubmit()" id="button_submit"><i class="glyphicon glyphicon"></i> Modifica Pacco</button>

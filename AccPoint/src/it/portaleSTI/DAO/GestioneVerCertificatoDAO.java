@@ -99,7 +99,7 @@ public static LinkedHashMap<String, String> getClientiPerVerCertificato(UtenteDT
 	}
 
 
-public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato, int idCliente, int idSede, Session session) {
+public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato,int filtro_emissione, int idCliente, int idSede, Session session) {
 	
 	ArrayList<VerCertificatoDTO> lista = null;	
 	String s_query = "";
@@ -115,10 +115,15 @@ public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato, int id
 	}else if(idCliente == 0 && stato!=0) {
 		s_query = s_query + " where certificato.stato.id= :_stato";
 	}
+	
+	if(stato!=0) {
+		s_query = s_query +" and certificato.firmato = :_filtro_emissione";
+	}
 			
 	Query query = session.createQuery(s_query);
 	if(stato != 0) {
-		query.setParameter("_stato",stato);	
+		query.setParameter("_stato",stato);
+		query.setParameter("_filtro_emissione",filtro_emissione);	
 	}	
 	if(idCliente != 0) {
 		query.setParameter("_id_cliente",idCliente);

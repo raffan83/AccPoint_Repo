@@ -24,7 +24,7 @@
 <th>Sede</th>
 <th>Data</th>
 <th>UM</th>
-<th>Quantità Tot</th>
+<th>Quantità Tot Caricata</th>
 <th>Quantità Ass</th> 
 
 <th></th>

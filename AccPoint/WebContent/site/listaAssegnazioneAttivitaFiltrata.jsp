@@ -22,7 +22,7 @@
 <th>Descrizioni Attivita</th>
 <th>UM</th>
 <th>Quantità Assegnata</th>
-<th>Quantità Totale</th>
+<th>Quantità Totale Milestone</th>
 <th>Note</th>
 <th>ID Intervento</th>
 <th>Azioni</th>

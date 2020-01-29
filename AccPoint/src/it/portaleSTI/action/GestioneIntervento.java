@@ -57,10 +57,12 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
+import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
@@ -344,9 +346,13 @@ public class GestioneIntervento extends HttpServlet {
 					
 					String nomeFileExcel= "";
 					if(lat_master!=null && !lat_master.equals("")) {
-						nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), true);				
+						if(file_excel.getName()!=null && !file_excel.getName().equals("")) {
+							nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), true);		
+						}
 					}else {
-						nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), false);
+						if(file_excel.getName()!=null  && !file_excel.getName().equals("")) {
+							nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), false);
+						}
 					}
 					String nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),intervento.getId(),id_strumento);
 					
@@ -405,6 +411,8 @@ public class GestioneIntervento extends HttpServlet {
 		    		if(lat_master!=null && !lat_master.equals("")) {
 		    			misura.setMisuraLAT(misuraLAT);		
 		    			misura.setLat("S");
+		    		}else {
+		    			misura.setLat("N");
 		    		}
 		    		
 		    		misura.setFile_xls_ext(nomeFileExcel);
@@ -436,6 +444,50 @@ public class GestioneIntervento extends HttpServlet {
 					out.print(myObj);
 				
 				}
+		}
+		
+		else if(action.equals("upload_excel")) {
+			
+			String id_misura = request.getParameter("id_misura");			
+							
+			
+			ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());				
+			response.setContentType("application/json");
+			
+			
+			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura));
+			String filename = "";
+			
+			List<FileItem> items;
+			
+				items = uploadHandler.parseRequest(request);
+				
+				for (FileItem item : items) {
+					if (item.isFormField()) {
+					
+					}else {
+						if(item.getName()!="") {		
+							if(misura.getLat().equals("S")) {
+								filename = saveExcelFile(item, misura.getIntervento().getNomePack(), true);	
+							}else {
+								filename = saveExcelFile(item, misura.getIntervento().getNomePack(), false);
+							}
+															
+						}		
+					}
+				}
+				
+				misura.setFile_xls_ext(filename);
+				misura.getInterventoDati().setNomePack(filename);
+			
+				session.update(misura);					
+				session.update(misura.getInterventoDati());
+				
+				myObj.addProperty("success", true);					
+				myObj.addProperty("messaggio", "File caricato con successo!");
+
+				out.print(myObj);		
+			
 		}
 	
 			session.getTransaction().commit();

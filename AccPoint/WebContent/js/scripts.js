@@ -9038,6 +9038,72 @@ function submitFormCertificato(){
 }
 
 
+function submitFormExcel(){
+	  
+	  var form = $('#formExcel')[0]; 
+	  var formData = new FormData(form);
+	  
+	  var id_misura = $('#id_mis').val();
+	  
+	  		
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneIntervento.do?action=upload_excel&id_misura="+id_misura,
+  	  data: formData,
+  	  //dataType: "json",
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  //enctype: 'multipart/form-data',
+  	  success: function( data, textStatus) {
+
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');  
+  				$('#myModalError').on('hidden.bs.modal', function(){
+  					if($('#myModalError').hasClass('modal-success')){
+  						$('#myModalExcel').modal('hide');
+//  						if(caller=="fromModal"){
+//  							exploreModal("strumentiMisurati.do?action=ls&id="+data.id_strumento,"","#misure");
+//  							$('.modal-backdrop').hide();
+//  						}else{
+//  							location.reload();
+//  						}
+  						location.reload();
+  					}
+  				});      		
+  			
+  		  }else
+  		  {
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');  
+  			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  	
+
+  		$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');  
+  
+  	  }
+    });
+	  
+}
+
 function submitFormAllegatiRilievi(stato_lav, cliente_filtro){
 	  
 	  var form = $('#formAllegati')[0]; 
@@ -12535,80 +12601,6 @@ $.ajax({
 }
 
 
-function associaDissociaUtentiCorso(associa_dissocia, id_utente, id_corso){
-	
-	 pleaseWaitDiv = $('#pleaseWaitDialog');
-	 pleaseWaitDiv.modal();
-	  
-	
-	 
-	  var utenti = null;
-	  
-	  if(id_utente==null){
-		  utenti = $('#utenti').val();  
-		  id_corso =   $('#id_corso_user').val();
-	  }else{
-		  utenti = id_utente;
-	  }
-	  
-	  $.ajax({
-	  type: "POST",
-	  url: "gestioneFormazione.do?action=associa_utenti&id_corso="+id_corso+"&utenti="+utenti+"&associa_dissocia="+associa_dissocia,
-	  dataType: "json",
-
-	  success: function( data, textStatus) {
-		  pleaseWaitDiv.modal('hide');
-		  if(data.success)
-		  { 
-			  $('#myModalErrorContent').html(data.messaggio);
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-success");
-				$('#report_button').hide();
-				$('#visualizza_report').hide();
-				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalAssociaUtenti').modal('hide');
-					dataString ="action=dettaglio_partecipanti";
-			        exploreModal("gestioneFormazione.do",dataString,"#tab_partecipanti",function(datab,textStatusb){
-			        });
-			        $('.modal-backdrop').hide();
-				});
-		
-		  }else{
-			  if(associa_dissocia=='associa'){
-				  $('#myModalErrorContent').html("Errore nell'associazione degli utenti!");  
-			  }else{
-				  $('#myModalErrorContent').html("Errore nell'eliminazione dell'utente!");
-			  }
-			  
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");
-				$('#report_button').hide();
-				$('#visualizza_report').hide();
-				$('#myModalError').modal('show');			
-		  }
-	  },
-
-	  error: function(jqXHR, textStatus, errorThrown){
-		  pleaseWaitDiv.modal('hide');
-
-		  if(associa_dissocia=='associa'){
-			  $('#myModalErrorContent').html("Errore nell'associazione degli utenti!");  
-		  }else{
-			  $('#myModalErrorContent').html("Errore nell'eliminazione dell'utente!");
-		  }
-		  	$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-danger");
-			$('#report_button').show();
-				$('#visualizza_report').show();
-			$('#myModalError').modal('show');
-			
-
-	  }
- });
-	
-	
-}
 
 
 function eliminaAllegatoFormazione(id_allegato, id_corso, id_categoria){
@@ -12671,7 +12663,7 @@ function nuovoForPartecipante(){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 
-		  var form = $('#nuovPartecipanteForm')[0]; 
+		  var form = $('#nuovoPartecipanteForm')[0]; 
 		  var formData = new FormData(form);
 		 
 $.ajax({
@@ -12721,4 +12713,188 @@ $.ajax({
 
 	  }
 });
+}
+
+function modificaForPartecipante(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#modificaPartecipanteForm')[0]; 
+		  var formData = new FormData(form);
+		 
+		  var id_partecipante = $('#id_partecipante').val();
+		  
+$.ajax({
+	  type: "POST",
+	  url: "gestioneFormazione.do?action=modifica_partecipante&id_partecipante="+id_partecipante,
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+			$('#myModalError').on('hidden.bs.modal', function(){	         			
+				
+				 location.reload()
+			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+});
+}
+
+
+
+function associaPartecipanteCorso(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#formAssociazioneUtenteCorso')[0]; 
+		  var formData = new FormData(form);
+		 
+		  var id_corso = $('#id_corso_user').val();
+		  
+$.ajax({
+	  type: "POST",
+	  url: "gestioneFormazione.do?action=associa_partecipante_corso&id_corso="+id_corso,
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+			$('#myModalError').on('hidden.bs.modal', function(){	         			
+				
+				 location.reload()
+			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+});
+	
+}
+
+function dissociaPartecipanteCorso(id_partecipante, id_corso, id_ruolo){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  var dataObj = {};
+	  dataObj.id_partecipante = id_partecipante;
+	  dataObj.id_corso = id_corso;
+	  dataObj.id_ruolo = id_ruolo;
+	  
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneFormazione.do?action=dissocia_partecipante_corso",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		  $(".ui-tooltip").remove();
+	    		  if(data.success)
+	    		  { 
+	    			     			 
+	    			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  $("#boxPacchetti").html("");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+	    				$('#myModalError').on('hidden.bs.modal', function(){	         			
+	    					
+	    					 location.reload()
+	    				});
+
+	    		
+	    		  }else{
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#report_button').show();
+	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+						
+	    	  }
+  });
+	
 }

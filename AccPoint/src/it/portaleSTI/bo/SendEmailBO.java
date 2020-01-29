@@ -198,7 +198,7 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 	  		"Si comunica la presenza in magazzino dei seguenti pacchi in attesa di lavorazione:<br />");
 	  
 	  for (String origine : lista_string_origini) {
-		msg.append("- "+origine+"<br>");
+		msg.append("- "+origine.split(";")[0]+" - "+origine.split(";")[1]+"<br>");
 	  }
 	  msg.append(" <br />  <br /> <br /></html>");
 

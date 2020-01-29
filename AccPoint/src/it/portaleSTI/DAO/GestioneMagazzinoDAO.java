@@ -1029,7 +1029,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 						session.update(magPaccoDTO);
 					}						
 					if(!lista_non_segnalati.contains(pacco.getOrigine())) {	
-						lista_non_segnalati.add(pacco.getOrigine());
+						lista_non_segnalati.add(pacco.getOrigine()+";"+pacco.getNome_cliente());
 					}
 				}
 			}			

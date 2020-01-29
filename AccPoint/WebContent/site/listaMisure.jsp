@@ -83,7 +83,9 @@
    <th>Stato Ricezione</th>
     <th>Obsoleta</th>
     <th>Note obsolescenza</th>
-    <th>Certificato</th>
+    <%-- <c:if test="${misura.lat=='S' }"><th>Registro Laboratorio</th></c:if> --%>
+    <th>Registro Laboratorio</th>
+    <th>Certificato/File Excel</th>
     <th>Allegati</th>
     <th>Note Allegati</th>
     <th>Operatore</th>
@@ -110,6 +112,11 @@
 	<span class="label bigLabelTable <c:if test="${misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${misura.obsoleto == 'N'}">label-success </c:if>">${misura.obsoleto}</span> </td>
 <%-- </td> --%>
 <td>${misura.note_obsolescenza }</td>
+
+    <td>
+    <c:if test="${misura.lat=='S' }">${misura.intervento.id}_${misura.misuraLAT.id }_${misura.strumento.__id}</c:if> 
+    </td>
+   
 <td>
 <c:forEach var="entry" items="${arrCartificati}">
 <c:if test="${entry.key eq misura.id}">
@@ -124,6 +131,10 @@
 	</c:if>
 </c:if>
 </c:forEach>
+
+<c:if test="${misura.interventoDati.nomePack==''}">
+	<a  target="_blank" class="btn btn-success customTooltip" title="Click per aggiungere il file Excel" onClick="modalExcel('${misura.id}')"><i class="fa fa-arrow-up"></i></a>
+</c:if>
 </td>
 <td>
 <c:if test="${misura.file_allegato!=null &&  misura.file_allegato!=''}">
@@ -243,6 +254,41 @@
 </form>
 
 
+ <form id="formExcel" name="formExcel">
+  <div id="myModalExcel" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">File Excel</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-12">
+         
+       <span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un file...</span>
+
+		        <input id="fileupload_excel" type="file" accept=".xls,.xlsx,.XLS,.XLSX" name="fileupload_excel" class="form-control"/>
+		   	 </span>
+		   	 <label id="excel_label"></label>
+		   	 <br>
+       </div>
+       </div>
+       
+        <input type="hidden" id="id_mis" name="id_mis">
+       
+  		 </div>
+      <div class="modal-footer">
+      <a class="btn btn-primary" onClick="validateExcel()">Salva</a>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
 
   <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -312,6 +358,11 @@
 	  $('#pack_cert').val(pack);
   }
   
+  function modalExcel(id_misura){
+	  $('#myModalExcel').modal();
+	  $('#id_mis').val(id_misura);
+	  
+  }
   
 	$("#fileupload_pdf").change(function(event){
 		
@@ -354,6 +405,28 @@
 		
 	});
 	
+	
+	$("#fileupload_excel").change(function(event){
+		
+		var fileExtension = 'xls';
+		var fileExtension2 = 'xlsx';
+        if ($(this).val().split('.').pop()!= fileExtension && $(this).val().split('.').pop()!= fileExtension2) {
+        	
+        
+        	$('#myModalErrorContent').html("Attenzione! Inserisci solo xls!");
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+			$(this).val("");
+        }else{
+        	var file = $('#fileupload_excel')[0].files[0].name;
+       	 	$('#excel_label').html(file );
+        }
+        
+		
+	});
+	
 	function validateAllegati(){
 		var filename = $('#fileupload_pdf').val();
 		//var filename = $('#fileupload_pdf')[0].files[0].name;
@@ -371,6 +444,16 @@
 			
 		}else{
 			submitFormCertificato();
+		}
+	}
+	
+	function validateExcel(){
+		var filename = $('#fileupload_excel').val();
+		//var filename = $('#fileupload_pdf')[0].files[0].name;
+		if(filename == null || filename == ""){
+			
+		}else{
+			submitFormExcel();
 		}
 	}
   
@@ -439,7 +522,8 @@
 						   { responsivePriority: 1, targets: 1 },
   	                   { responsivePriority: 2, targets: 2 },
   	                   { responsivePriority: 3, targets: 3 },
-  	                 { responsivePriority: 4, targets: 9 }
+  	                 { responsivePriority: 4, targets: 10 },
+  	                 { responsivePriority: 5, targets: 9 }
   	               ],
   	     
   	               buttons: [ {

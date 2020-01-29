@@ -523,7 +523,7 @@
 			<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Carica Excel...</span>
-				<input accept=".xls,.xlsx"  id="fileupload_excel" name="fileupload_excel" type="file" required>
+				<input accept=".xls,.xlsx"  id="fileupload_excel" name="fileupload_excel" type="file" >
 		       
 		   	 </span>
 		   	</div> 

@@ -36,7 +36,7 @@
 <th>Prezzo Un</th>
 <th>Prezzo Ass</th>
 <th>UM</th>
-<th>Q.ta Totale</th>
+<th>Q.ta Totale Milestone</th>
 <th>Q.ta Assegnata</th>
 <th>Luogo</th>
 <th>Note</th>

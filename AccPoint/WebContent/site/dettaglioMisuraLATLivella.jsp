@@ -110,6 +110,10 @@
 		                  <b>Download Pack</b> 
 		                  <a href="#" class="pull-right customTooltip" title="Click per scaricare il pacchetto" onClick="scaricaPacchettoUploaded('${misura.interventoDati.nomePack}')">${misura.interventoDati.nomePack}</a>
 		  				 </li>
+		  				  <li class="list-group-item">
+		                  <b>Registro Laboratorio</b> 
+		                  <a href="#" class="pull-right customTooltip">${misura.intervento.id}_${misura.misuraLAT.id }_${misura.strumento.__id}</a>
+		  				 </li>
 					<c:if test="${misura.file_allegato!= null && misura.file_allegato!= '' }">
 					<li class="list-group-item">
 		                  <b>Allegato</b> 

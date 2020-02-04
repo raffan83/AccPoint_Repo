@@ -154,9 +154,12 @@
  	
  	<mapping class="ForDocenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForDocenteDTO.hbm.xml"/>
  	<mapping class="ForCorsoCatDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoCatDTO.hbm.xml"/>
- 	<mapping class="ForCorsoCatAllegatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoCatAllegatiDTO.hbm.xml"/>
- 	<mapping class="ForCorsoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoDTO.hbm.xml"/>
- 	<mapping class="ForCorsoAllegatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoAllegatiDTO.hbm.xml"/>  
+ 	<mapping class="ForCorsoCatAllegatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoCatAllegatiDTO.hbm.xml"/> 	
+ 	<mapping class="ForCorsoAllegatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoAllegatiDTO.hbm.xml"/>
+ 	<mapping class="ForRuoloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForRuoloDTO.hbm.xml"/>  
+ 	<mapping class="ForPartecipanteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForPartecipanteDTO.hbm.xml"/>
+ 	<mapping class="ForPartecipanteRuoloCorsoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForPartecipanteRuoloCorsoDTO.hbm.xml"/>   
+ 	<mapping class="ForCorsoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoDTO.hbm.xml"/>    
  	 
  	
   </session-factory>

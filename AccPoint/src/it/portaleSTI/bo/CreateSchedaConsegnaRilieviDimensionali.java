@@ -39,13 +39,13 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaConsegnaRilieviDimensionali {
-	public CreateSchedaConsegnaRilieviDimensionali(ArrayList<RilMisuraRilievoDTO> lista_rilievi, String commessa, String consegnaDi, int checkStato, String ca, List<SedeDTO> listaSedi, String path_firma, UtenteDTO utente, Session session) throws Exception {
+	public CreateSchedaConsegnaRilieviDimensionali(ArrayList<RilMisuraRilievoDTO> lista_rilievi, String commessa, String consegnaDi, int checkStato, String ca, List<SedeDTO> listaSedi, String path_firma, UtenteDTO utente, String anno, Session session) throws Exception {
 	
-			build(lista_rilievi, commessa, consegnaDi,checkStato, ca, listaSedi, path_firma, utente,session);
+			build(lista_rilievi, commessa, consegnaDi,checkStato, ca, listaSedi, path_firma, utente, anno, session);
 		
 	}
 	
-	private void build(ArrayList<RilMisuraRilievoDTO> lista_rilievi, String id_commessa, String consegnaDi, int checkStato, String ca, List<SedeDTO> listaSedi, String path_firma, UtenteDTO utente, Session session) throws Exception {
+	private void build(ArrayList<RilMisuraRilievoDTO> lista_rilievi, String id_commessa, String consegnaDi, int checkStato, String ca, List<SedeDTO> listaSedi, String path_firma, UtenteDTO utente, String anno, Session session) throws Exception {
 
 		
 		InputStream is = PivotTemplate.class.getResourceAsStream("schedaConsegnaRilieviMOD-SGI-031.jrxml");
@@ -105,16 +105,16 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 				indirizzo = sede.getIndirizzo();
 				
 			}else {
-				if(cliente.getIndirizzo()!=null) {
+				if(cliente!=null && cliente.getIndirizzo()!=null) {
 					indirizzo = indirizzo +cliente.getIndirizzo();
 				}
-				if(cliente.getCap()!=null) {
+				if(cliente!=null && cliente.getCap()!=null) {
 					indirizzo = indirizzo + " - " + cliente.getCap();
 				}
-				if(cliente.getCitta()!=null) {
+				if(cliente!=null && cliente.getCitta()!=null) {
 					indirizzo = indirizzo + " - " + cliente.getCitta();
 				}
-				if(cliente.getProvincia()!=null) {
+				if(cliente!=null && cliente.getProvincia()!=null) {
 					indirizzo = indirizzo + " (" + cliente.getProvincia() +")";
 				}
 			}
@@ -156,7 +156,7 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 			report.addParameter("nota",CostantiCertificato.NOTA_CONSEGNA);
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(lista_rilievi.get(0).getData_consegna());
-			report.addParameter("mese",lista_rilievi.get(0).getMese_riferimento() + " " + cal.get(Calendar.YEAR));
+			report.addParameter("mese",lista_rilievi.get(0).getMese_riferimento() + " " + anno);
 			
 			//File firma = new File(path_firma + utente.getNominativo().replace(" ", "_").toUpperCase() + ".jpg" );
 			File firma = new File(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma());
@@ -176,13 +176,13 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 			
 			report.setDataSource(new JREmptyDataSource());
 			File folder = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\SchedeConsegna\\"+lista_rilievi.get(0).getId_cliente_util()+"\\"+lista_rilievi.get(0).getId_sede_util()+
-					"\\"+cal.get(Calendar.YEAR)+"\\"+lista_rilievi.get(0).getMese_riferimento());
+					"\\"+anno+"\\"+lista_rilievi.get(0).getMese_riferimento());
 			if(!folder.exists()) {
 				folder.mkdirs();
 			}
 			String filename = lista_rilievi.get(0).getCommessa().replace("/", "_");
 			File file = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\SchedeConsegna\\"+lista_rilievi.get(0).getId_cliente_util()+"\\"+lista_rilievi.get(0).getId_sede_util()+
-					"\\"+cal.get(Calendar.YEAR)+"\\"+lista_rilievi.get(0).getMese_riferimento()+"\\SCN_"+filename+".pdf");
+					"\\"+anno+"\\"+lista_rilievi.get(0).getMese_riferimento()+"\\SCN_"+filename+".pdf");
 			
 			
 			FileOutputStream fos = new FileOutputStream(file);

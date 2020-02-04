@@ -14,8 +14,8 @@
         <property name="cognome" type="java.lang.String" >
             <column name="cognome" />
         </property>
-         <property name="titolo" type="java.lang.String" >
-            <column name="titolo" />
+         <property name="formatore" type="int" >
+            <column name="formatore" />
         </property>
         <property name="cv" type="java.lang.String" >
             <column name="cv" />

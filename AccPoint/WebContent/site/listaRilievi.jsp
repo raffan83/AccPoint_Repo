@@ -869,8 +869,8 @@
 		 <select class="form-control select2" data-placeholder="Seleziona Anno Di Riferimento..." id="anno_scn" name="anno_scn" style="width:100%" required>
 			  <option value=""></option>
               <option value="2018">2018</option>
-              <option value="2019" selected>2019</option>
-              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+              <option value="2020" selected>2020</option>
               <option value="2021">2021</option>
                 </select>
 		</div>
@@ -965,6 +965,9 @@
     	 }
      });
      $('.dropdown-toggle').dropdown();
+     
+
+     
 	$("#fileupload_pdf").change(function(event){		
 		
         if ($(this).val().split('.').pop()!= 'pdf' && $(this).val().split('.').pop()!= 'PDF') {
@@ -1052,7 +1055,7 @@
  
  
  $('#myModalSchedaConsegna').on('hidden.bs.modal', function(){
-		$('#anno_scn').val('2019');
+		$('#anno_scn').val('2020');
 		$('#anno_scn').change();
 		$('#notaConsegna').val('EFFETTUATI CONTROLLI DIMENSIONALI SU N PARTICOLARI CON UN TOTALE DI N QUOTE');
 		$('#corteseAttenzione').val('');

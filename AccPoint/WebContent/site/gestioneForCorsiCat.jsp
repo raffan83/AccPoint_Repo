@@ -23,7 +23,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Lista Categorie Corsi
+        Lista Tipologie Corsi
         <!-- <small></small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
@@ -36,7 +36,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	Lista Categorie Corsi
+	Lista Tipologie Corsi
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -51,7 +51,7 @@
 
 
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
-<a class="btn btn-primary pull-right" onClick="modalnuovaCategoria()"><i class="fa fa-plus"></i> Nuova Categoria Corso</a> 
+<a class="btn btn-primary pull-right" onClick="modalnuovaCategoria()"><i class="fa fa-plus"></i> Nuova Tipologia Corso</a> 
 
 
 
@@ -138,7 +138,7 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuova categoria Corso</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuova Tipologia Corso</h4>
       </div>
        <div class="modal-body">
 
@@ -167,7 +167,7 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Frequenza</label>
+       		<label>Frequenza (Mesi)</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -179,7 +179,7 @@
          <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Durata (ore)</label>
+       		<label>Durata (Ore)</label>
        	</div>
        	<div class="col-sm-9">             	  	
         
@@ -214,7 +214,7 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica categoria Corso</h4>
+        <h4 class="modal-title" id="myModalLabel">Modifica Tipologia Corso</h4>
       </div>
        <div class="modal-body">
 
@@ -243,7 +243,7 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Frequenza</label>
+       		<label>Frequenza (Mesi)</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -255,7 +255,7 @@
          <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Durata (ore)</label>
+       		<label>Durata (Ore)</label>
        	</div>
        	<div class="col-sm-9">             	  	
         
@@ -292,7 +292,7 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      	Sei sicuro di voler eliminare il rilievo?
+      	Sei sicuro di voler eliminare l'allegato?
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="elimina_rilievo_id">

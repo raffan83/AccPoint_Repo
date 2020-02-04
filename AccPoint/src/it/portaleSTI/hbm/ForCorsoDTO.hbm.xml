@@ -14,8 +14,8 @@
          <many-to-one name="docente" class="it.portaleSTI.DTO.ForDocenteDTO" fetch="join" lazy="false">
             <column name="id_docente" />
         </many-to-one>
-        <property name="data_inizio" type="java.sql.Date" >
-            <column name="data_inizio" />
+        <property name="data_corso" type="java.sql.Date" >
+            <column name="data_corso" />
         </property>
          <property name="data_scadenza" type="java.sql.Date" >
             <column name="data_scadenza" />
@@ -23,18 +23,28 @@
          <property name="documento_test" type="java.lang.String" >
             <column name="documento_test" />
         </property>
+
         
-          <set name="listaUtenti" table="for_assoc_corso_user"
+           <set name="listaPartecipanti" table="for_partecipante_ruolo_corso"
 				inverse="false" lazy="false" fetch="select" >
             <key>
-                <column name="id_corso" />
+                <column name="id_corso" />                
             </key>
-            <many-to-many entity-name="it.portaleSTI.DTO.UtenteDTO">
-                <column name="id_user" not-null="true" />
+            <many-to-many entity-name="it.portaleSTI.DTO.ForPartecipanteDTO">
+                <column name="id_partecipante" not-null="true" />
             </many-to-many>
-            <!-- <one-to-many class="it.portaleSTI.DTO.UtenteDTO" /> -->
+        	
         </set> 
         
+        
+
+        
+          <property name="descrizione" type="java.lang.String" >
+            <column name="descrizione" />
+        </property>
+          <property name="edizione" type="java.lang.String" >
+            <column name="edizione" />
+        </property>
         
     </class>
 </hibernate-mapping>

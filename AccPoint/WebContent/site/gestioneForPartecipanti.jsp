@@ -23,7 +23,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Lista Docenti
+        Lista Partecipanti
         <!-- <small></small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
@@ -36,7 +36,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista Docenti
+	 Lista Partecipanti
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -50,8 +50,7 @@
 <div class="col-xs-12">
 
 
-<!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
-<a class="btn btn-primary pull-right" onClick="modalNuovoDocente()"><i class="fa fa-plus"></i> Nuovo Docente</a> 
+<a class="btn btn-primary pull-right" onClick="modalNuovoPartecipante()"><i class="fa fa-plus"></i> Nuovo Partecipante</a> 
 
 
 
@@ -62,38 +61,32 @@
 <div class="row">
 <div class="col-sm-12">
 
- <table id="tabForDocenti" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <table id="tabForPartecipante" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
 
 <th>ID</th>
 <th>Nome</th>
 <th>Cognome</th>
-<th>Formatore</th>
+<th>Data di nascita</th>
+<th>Azienda</th>
 <th>Azioni</th>
  </tr></thead>
  
  <tbody>
  
- 	<c:forEach items="${lista_docenti }" var="docente" varStatus="loop">
+ 	<c:forEach items="${lista_partecipanti }" var="partecipante" varStatus="loop">
 	<tr id="row_${loop.index}" >
 
-	<td>${docente.id }</td>	
-	<td>${docente.nome }</td>
-	<td>${docente.cognome }</td>
+	<td>${partecipante.id }</td>	
+	<td>${partecipante.nome }</td>
+	<td>${partecipante.cognome }</td>
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${partecipante.data_nascita}" /></td>
+	<td>${partecipante.azienda }</td>	
 	<td>
-	<c:if test="${docente.formatore==1 }">
-	SI
-	</c:if>
-	<c:if test="${docente.formatore!=1 }">
-	NO
-	</c:if>
-	</td>	
-	<td>
-	<c:if test="${docente.cv !=null && docente.cv != '' }">
-	<a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_curriculum&id_docente=${utl:encryptData(docente.id)}" title="Click per scaricare il cv"><i class="fa fa-file-pdf-o"></i></a>
-	</c:if>
-	<a class="btn btn-warning" onClicK="modificaDocenteModal('${docente.id}','${docente.nome }','${docente.cognome.replace('\'','&prime;')}','${docente.formatore }','${docente.cv }')" title="Click per modificare il docente"><i class="fa fa-edit"></i></a> 
+	
+	<a class="btn btn-info" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
+	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${partecipante.nome }','${partecipante.cognome.replace('\'','&prime;')}','${partecipante.data_nascita }','${partecipante.azienda }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a> 
 	</td>
 	</tr>
 	</c:forEach>
@@ -110,156 +103,136 @@
  
 </div>
 </div>
-
+</div>
 
 </section>
 
 
 
-<form id="nuovoDocenteForm" name="nuovoDocenteForm">
-<div id="myModalnuovoDocente" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+ <form id="nuovoPartecipanteForm" name="nuovoPartecipanteForm">  
+<div id="modalNuovoPartecipante" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Docente</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Partecipante</h4>
       </div>
-       <div class="modal-body">
-
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Nome</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="nome" name="nome" class="form-control" type="text" style="width:100%" required>
-       			
-       	</div>       	
-       </div><br>
+       <div class="modal-body">       
        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Cognome</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="cognome" name="cognome" class="form-control" type="text" style="width:100%" required>
-       			
-       	</div>       	
-       </div><br>
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Formatore</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="check_formatore" name="check_formatore" class="form-control" type="checkbox" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-         <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Curriculum</label>
-       	</div>
-       	<div class="col-sm-9">             	  	
-        
-       	<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload" name="fileupload" type="file" ></span><label id="label_file"></label></div>
-       	</div>		
-            	
-       
-       
-       
-       
+       <div class="col-xs-3">
+       <label>Nome</label>
        </div>
-  		 
+        <div class="col-xs-9">
+        <input type="text" id="nome" name="nome" class="form-control" style="width:100%" required>
+        </div>      
+       </div><br>
+        <div class="row">
+       <div class="col-xs-3">
+       <label>Cognome</label>
+       </div>
+        <div class="col-xs-9">
+        <input type="text" id="cognome" name="cognome" class="form-control" style="width:100%" required>
+        </div>      
+       </div><br>
+        <div class="row">
+       <div class="col-xs-3">
+       <label>Data di nascita</label>
+       </div>
+        <div class="col-xs-9">
+         <div class='input-group date datepicker' id='datepicker_data_scadenza'>
+               <input type='text' class="form-control input-small" id="data_nascita" name="data_nascita" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+        </div>      
+       </div><br>
+       <div class="row">
+       <div class="col-xs-3">
+       <label>Azienda</label>
+       </div>
+        <div class="col-xs-9">
+        <input type="text" id="azienda" name="azienda" class="form-control" style="width:100%" required>
+        </div>      
+       </div>
+
+      	
+      	</div>
       <div class="modal-footer">
-		<input type="hidden" id="formatore" name="formatore">
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
+      
+      <a class="btn btn-primary" onclick="nuovoForPartecipante()" >Salva</a>
+		
       </div>
     </div>
   </div>
 
 </div>
-
 </form>
 
 
 
-
-<form id="modificaDocenteForm" name="nuovoDocenteForm">
-<div id="myModalModificaDocente" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+ <form id="modificaPartecipanteForm" name="modificaPartecipanteForm">  
+<div id="modalModificaPartecipante" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Docente</h4>
+        <h4 class="modal-title" id="myModalLabel">Modifica Partecipante</h4>
       </div>
-       <div class="modal-body">
-
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Nome</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="nome_mod" name="nome_mod" class="form-control" type="text" style="width:100%" required>
-       			
-       	</div>       	
-       </div><br>
+       <div class="modal-body">       
        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Cognome</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="cognome_mod" name="cognome_mod" class="form-control" type="text" style="width:100%" required>
-       			
-       	</div>       	
-       </div><br>
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Formatore</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="check_formatore_mod" name="check_formatore_mod" class="form-control" type="checkbox" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-         <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Curriculum</label>
-       	</div>
-       	<div class="col-sm-9">             	  	
-        
-       	<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload_mod" name="fileupload_mod" type="file" ></span><label id="label_file_mod"></label></div>
-       	</div>		
-            	
-       
+       <div class="col-xs-3">
+       <label>Nome</label>
        </div>
-  		 
+        <div class="col-xs-9">
+        <input type="text" id="nome_mod" name="nome_mod" class="form-control" style="width:100%" required>
+        </div>      
+       </div><br>
+        <div class="row">
+       <div class="col-xs-3">
+       <label>Cognome</label>
+       </div>
+        <div class="col-xs-9">
+        <input type="text" id="cognome_mod" name="cognome_mod" class="form-control" style="width:100%" required>
+        </div>      
+       </div><br>
+        <div class="row">
+       <div class="col-xs-3">
+       <label>Data di nascita</label>
+       </div>
+        <div class="col-xs-9">
+         <div class='input-group date datepicker' id='datepicker_data_scadenza'>
+               <input type='text' class="form-control input-small" id="data_nascita_mod" name="data_nascita_mod" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+        </div>      
+       </div><br>
+       <div class="row">
+       <div class="col-xs-3">
+       <label>Azienda</label>
+       </div>
+        <div class="col-xs-9">
+        <input type="text" id="azienda_mod" name="azienda_mod" class="form-control" style="width:100%" required>
+        </div>      
+       </div>
+
+      	
+      	</div>
       <div class="modal-footer">
+      <input type="hidden" id="id_partecipante" name="id_partecipante">
+      <a class="btn btn-primary" onclick="modificaForPartecipante()" >Salva</a>
 		
-		<input type="hidden" id="id_docente" name="id_docente">
-		<input type="hidden" id="formatore_mod" name="formatore_mod">
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
       </div>
     </div>
   </div>
 
 </div>
-
 </form>
 
 
@@ -315,58 +288,36 @@
 <script type="text/javascript">
 
 
-function modalNuovoDocente(){
+function modalNuovoPartecipante(){
 	
-	$('#myModalnuovoDocente').modal();
+	$('#modalNuovoPartecipante').modal();
 	
 }
 
-
-
-function modificaDocenteModal(id_docente, nome, cognome, formatore, cv){
+function dettaglioPartecipante(id_partecipante){
 	
-	$('#id_docente').val(id_docente);
+	callAction('gestioneFormazione.do?action=dettaglio_partecipante&id_partecipante='+id_partecipante,null,true);
+}
+
+
+function modificaPartecipanteModal(id_partecipante, nome, cognome, data_nascita, azienda){
+	
+	$('#id_partecipante').val(id_partecipante);
 	$('#nome_mod').val(nome);
 	$('#cognome_mod').val(cognome);
-	if(formatore =='1'){	
+	$('#data_nascita_mod').val(Date.parse(data_nascita).toString("dd/MM/yyyy"));
+	$('#azienda_mod').val(azienda);
 
-		$('#check_formatore_mod').iCheck('check');
-		$('#formatore_mod').val(1); 
-	}else{
-		$('#check_formatore_mod').iCheck('uncheck');
-		$('#formatore_mod').val(0);
-	}
-	
-	
-	$('#label_file_mod').html(cv);
-
-	$('#myModalModificaDocente').modal();
+	$('#modalModificaPartecipante').modal();
 }
 
-$('#check_formatore').on('ifClicked',function(e){
-	if($('#check_formatore').is( ':checked' )){
-		$('#check_formatore').iCheck('uncheck');
-		$('#formatore').val(0); 
-	}else{
-		$('#check_formatore').iCheck('check');
-		$('#formatore').val(1); 
-	}
-});
 	 
 
-$('#check_formatore_mod').on('ifClicked',function(e){
-	if($('#check_formatore_mod').is( ':checked' )){
-		$('#check_formatore_mod').iCheck('uncheck');
-		$('#formatore_mod').val(0); 
-	}else{
-		$('#check_formatore_mod').iCheck('check');
-		$('#formatore_mod').val(1); 
-	}
-});
+
 
 var columsDatatables = [];
 
-$("#tabForDocenti").on( 'init.dt', function ( e, settings ) {
+$("#tabForPartecipante").on( 'init.dt', function ( e, settings ) {
     var api = new $.fn.dataTable.Api( settings );
     var state = api.state.loaded();
  
@@ -375,9 +326,9 @@ $("#tabForDocenti").on( 'init.dt', function ( e, settings ) {
     
     columsDatatables = state.columns;
     }
-    $('#tabForDocenti thead th').each( function () {
+    $('#tabForPartecipante thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-    	  var title = $('#tabForDocenti thead th').eq( $(this).index() ).text();
+    	  var title = $('#tabForPartecipante thead th').eq( $(this).index() ).text();
     	
     	  //if($(this).index()!=0 && $(this).index()!=1){
 		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
@@ -391,22 +342,17 @@ $("#tabForDocenti").on( 'init.dt', function ( e, settings ) {
 
 
 
-$('#fileupload').change(function(){
-	$('#label_file').html($(this).val().split("\\")[2]);
-	 
- });
-$('#fileupload_mod').change(function(){
-	$('#label_file_mod').html($(this).val().split("\\")[2]);
-	 
- });
 
 $(document).ready(function() {
  
 
      $('.dropdown-toggle').dropdown();
      
+     $('.datepicker').datepicker({
+		 format: "dd/mm/yyyy"
+	 }); 
 
-     table = $('#tabForDocenti').DataTable({
+     table = $('#tabForPartecipante').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -455,7 +401,8 @@ $(document).ready(function() {
 		               
 		    });
 		
-		table.buttons().container().appendTo( '#tabForDocenti_wrapper .col-sm-6:eq(1)');
+		table.buttons().container().appendTo( '#tabForPartecipante_wrapper .col-sm-6:eq(1)');
+		
 	 	    $('.inputsearchtable').on('click', function(e){
 	 	       e.stopPropagation();    
 	 	    });
@@ -474,14 +421,14 @@ $(document).ready(function() {
 		table.columns.adjust().draw();
 		
 
-	$('#tabForDocenti').on( 'page.dt', function () {
+	$('#tabForPartecipante').on( 'page.dt', function () {
 		$('.customTooltip').tooltipster({
 	        theme: 'tooltipster-light'
 	    });
 		
 		$('.removeDefault').each(function() {
 		   $(this).removeClass('btn-default');
-		})
+		});
 
 
 	});
@@ -495,16 +442,16 @@ $(document).ready(function() {
 });
 
 
-$('#modificaDocenteForm').on('submit', function(e){
+$('#modificaPartecipanteForm').on('submit', function(e){
 	 e.preventDefault();
-	 modificaForDocente();
+	 modificaForPartecipante();
 });
  
 
  
- $('#nuovoDocenteForm').on('submit', function(e){
+ $('#nuovoPartecipanteForm').on('submit', function(e){
 	 e.preventDefault();
-	 nuovoForDocente();
+	 nuovoForPartecipante();
 });
  
  

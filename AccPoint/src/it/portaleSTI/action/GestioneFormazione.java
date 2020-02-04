@@ -2,15 +2,16 @@ package it.portaleSTI.action;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,8 +26,9 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.lowagie.text.pdf.codec.Base64.OutputStream;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -37,17 +39,15 @@ import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
-import it.portaleSTI.DTO.RegistroEventiDTO;
-import it.portaleSTI.DTO.RilAllegatiDTO;
-import it.portaleSTI.DTO.RilMisuraRilievoDTO;
-import it.portaleSTI.DTO.TipoEventoRegistroDTO;
-import it.portaleSTI.DTO.TipoManutenzioneDTO;
+import it.portaleSTI.DTO.ForPartecipanteDTO;
+import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
+import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
-import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
@@ -99,6 +99,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				request.getSession().setAttribute("lista_docenti", lista_docenti);
 				
+				session.getTransaction().commit();
+				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneForDocenti.jsp");
 		     	dispatcher.forward(request,response);
 			}
@@ -134,13 +136,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		
 				String nome = ret.get("nome");
 				String cognome = ret.get("cognome");
-				String titolo = ret.get("titolo");
+				String formatore = ret.get("formatore");
 
 				ForDocenteDTO docente = new ForDocenteDTO();
 				
 				docente.setNome(nome);
 				docente.setCognome(cognome);
-				docente.setTitolo(titolo);				
+				docente.setFormatore(Integer.parseInt(formatore));				
 				
 				if(fileItem!=null && !filename.equals("")) {
 
@@ -192,13 +194,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		        String id_docente = request.getParameter("id_docente");
 				String nome = ret.get("nome_mod");
 				String cognome = ret.get("cognome_mod");
-				String titolo = ret.get("titolo_mod");
+				String formatore = ret.get("formatore_mod");
 
 				ForDocenteDTO docente = GestioneFormazioneBO.getDocenteFromId(Integer.parseInt(id_docente),session);
 				
 				docente.setNome(nome);
 				docente.setCognome(cognome);
-				docente.setTitolo(titolo);				
+				docente.setFormatore(Integer.parseInt(formatore));				
 				
 				if(fileItem!=null && !filename.equals("")) {
 
@@ -239,6 +241,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				request.getSession().setAttribute("lista_corsi_cat", lista_corsi_cat);
 				
+				session.getTransaction().commit();
+				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneForCorsiCat.jsp");
 		     	dispatcher.forward(request,response);
 				
@@ -360,7 +364,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				request.getSession().setAttribute("lista_corsi_cat", lista_corsi_cat);
 				request.getSession().setAttribute("lista_docenti", lista_docenti);
 				
-				
+				session.getTransaction().commit();
+				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneForCorsi.jsp");
 		     	dispatcher.forward(request,response);
 				
@@ -398,27 +403,31 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		        		
 				String categoria = ret.get("categoria");
 				String docente = ret.get("docente");
-				String data_inizio = ret.get("data_inizio");
+				String data_corso = ret.get("data_corso");
 				String data_scadenza = ret.get("data_scadenza");
+				String descrizione = ret.get("descrizione");
+				String edizione = ret.get("edizione");
 
 				ForCorsoDTO corso = new ForCorsoDTO();		
 				
-				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria)));
+				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria.split("_")[0])));
 				corso.setDocente(new ForDocenteDTO(Integer.parseInt(docente)));
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
-				corso.setData_inizio(df.parse(data_inizio));
+				corso.setData_corso(df.parse(data_corso));
 				corso.setData_scadenza(df.parse(data_scadenza));
+				corso.setDescrizione(descrizione);
+				corso.setEdizione(edizione);
 				
-				if(filename!=null) {
+				if(filename!=null && !filename.equals("")) {
 					corso.setDocumento_test(filename);
 					//saveFile(fileItem, "DocumentiTest//"+lista_corsi, filename);
 				}
 				
 				session.save(corso);
 				
-				if(filename!=null) {
+				if(filename!=null && !filename.equals("")) {
 					
 					saveFile(fileItem, "DocumentiTest//"+corso.getId(), filename);
 				}
@@ -467,22 +476,24 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		        String id_corso = request.getParameter("id_corso");
 		        String categoria = ret.get("categoria_mod");
 				String docente = ret.get("docente_mod");
-				String data_inizio = ret.get("data_inizio_mod");
+				String data_corso = ret.get("data_corso_mod");
 				String data_scadenza = ret.get("data_scadenza_mod");
-				
+				String descrizione = ret.get("descrizione_mod");
+				String edizione = ret.get("edizione_mod");
 				
 				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso),session);		
 				
-				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria)));
+				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria.split("_")[0])));
 				corso.setDocente(new ForDocenteDTO(Integer.parseInt(docente)));
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
-				corso.setData_inizio(df.parse(data_inizio));
+				corso.setData_corso(df.parse(data_corso));
 				corso.setData_scadenza(df.parse(data_scadenza));
+				corso.setDescrizione(descrizione);
+				corso.setEdizione(edizione);
 				
-				
-				if(filename!=null) {
+				if(filename!=null && !filename.equals("")) {
 					corso.setDocumento_test(filename);
 					saveFile(fileItem, "DocumentiTest//"+corso.getId(), filename);
 				}
@@ -516,42 +527,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.close();
 				
 			}
-			else if(action.equals("associa_utenti")) {
-				
-				ajax = true;
-				
-				String id_corso = request.getParameter("id_corso");
-				String utenti = request.getParameter("utenti");
-				String associa_dissocia = request.getParameter("associa_dissocia");				
-				
-				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso), session);;
-				
-				if(associa_dissocia.equals("associa")) {
-					String[] lista_id_utenti = utenti.split(",");		
-					
-					for (String id : lista_id_utenti) {
-						
-						UtenteDTO user = GestioneUtenteBO.getUtenteById(id, session);
-						corso.getListaUtenti().add(user);
-					}	
-				}else {
-					UtenteDTO user = GestioneUtenteBO.getUtenteById(utenti, session);
-					corso.getListaUtenti().remove(user);
-				}				
-				
-				session.update(corso);
-				
-				session.getTransaction().commit();
-				session.close();
-				
-				myObj = new JsonObject();
-				PrintWriter  out = response.getWriter();
-				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Operazione completata con successo!");
-				out.print(myObj);
-				
-				
-			}
+			
 			else if(action.equals("archivio")) {
 				
 				String id_corso = request.getParameter("id_corso");
@@ -573,6 +549,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				request.getSession().setAttribute("id_corso", id_corso);
 				request.getSession().setAttribute("id_categoria", id_categoria);
 				
+				
+				session.getTransaction().commit();
+				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaArchivioFormazione.jsp");
 		     	dispatcher.forward(request,response);
 			}
@@ -691,31 +670,347 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				id_corso = Utility.decryptData(id_corso);
 				
-				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso), session);				
-				ArrayList<UtenteDTO> lista_utenti = GestioneUtenteBO.getAllUtenti(session); 
+				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso), session);	
+				ArrayList<ForPartecipanteDTO> lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti(session);
+				ArrayList<ForRuoloDTO> lista_ruoli = GestioneFormazioneBO.getListaRuoli(session);
 												
 				
 				request.getSession().setAttribute("corso", corso);
-				request.getSession().setAttribute("lista_utenti", lista_utenti);
+				request.getSession().setAttribute("lista_partecipanti", lista_partecipanti);
+				request.getSession().setAttribute("lista_ruoli", lista_ruoli);
 				
-				
+				session.getTransaction().commit();
+				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioForCorso.jsp");
 		     	dispatcher.forward(request,response);
 			}
 			
-			else if(action.equals("dettaglio_partecipanti")) {
+			else if(action.equals("dettaglio_partecipanti_corso")) {
 								
 				ForCorsoDTO corso = (ForCorsoDTO) request.getSession().getAttribute("corso");
 				
-				corso = GestioneFormazioneBO.getCorsoFromId(corso.getId(), session);
+				ArrayList<ForPartecipanteRuoloCorsoDTO> listaPartecipanti = GestioneFormazioneBO.getListaPartecipantiCorso(corso.getId(),session);
 				
-				request.getSession().setAttribute("corso", corso);		
 				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioForPartecipanti.jsp");
+				request.getSession().setAttribute("listaPartecipanti", listaPartecipanti);					
+				
+				session.getTransaction().commit();
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioForCorsoPartecipanti.jsp");
 		     	dispatcher.forward(request,response);
 			}
+			else if(action.equals("lista_partecipanti")) {
 			
+				ArrayList<ForPartecipanteDTO> lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti(session);
+				
+				request.getSession().setAttribute("lista_partecipanti", lista_partecipanti);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneForPartecipanti.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("nuovo_partecipante")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		        
+		        		
+				String nome = ret.get("nome");
+				String cognome = ret.get("cognome");
+				String data_nascita = ret.get("data_nascita");
+				String azienda = ret.get("azienda");	
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+				ForPartecipanteDTO partecipante = new ForPartecipanteDTO();		
+				partecipante.setCognome(cognome);
+				partecipante.setNome(nome);
+				partecipante.setAzienda(azienda);
+				partecipante.setData_nascita(df.parse(data_nascita));				
 			
+				session.save(partecipante);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Partecipante salvato con successo!");
+				out.print(myObj);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+			}
+			
+			else if(action.equals("modifica_partecipante")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		        
+		        String id = request.getParameter("id_partecipante");		
+				String nome = ret.get("nome_mod");
+				String cognome = ret.get("cognome_mod");
+				String data_nascita = ret.get("data_nascita_mod");
+				String azienda = ret.get("azienda_mod");	
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+				ForPartecipanteDTO partecipante = GestioneFormazioneBO.getPartecipanteFromId(Integer.parseInt(id),session);	
+				partecipante.setCognome(cognome);
+				partecipante.setNome(nome);
+				partecipante.setAzienda(azienda);
+				partecipante.setData_nascita(df.parse(data_nascita));				
+			
+				session.update(partecipante);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Partecipante modificato con successo!");
+				out.print(myObj);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+			}
+			
+			else if(action.equals("associa_partecipante_corso")) {
+							
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+			    if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+			
+			    		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+			    	}
+			    
+			   
+				FileItem fileItem = null;
+				String filename= null;
+			    Hashtable<String,String> ret = new Hashtable<String,String>();
+			  
+			    for (FileItem item : items) {
+			    	 if (!item.isFormField()) {
+			    		
+			             fileItem = item;
+			             filename = item.getName();
+			             
+			    	 }else
+			    	 {
+			              ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+			    	 }
+			    	
+			    }
+			    
+			    String id_corso = request.getParameter("id_corso");		
+				String id_partecipante = ret.get("partecipante");
+				String id_ruolo = ret.get("ruolo");
+				String ore_partecipate = ret.get("ore_partecipate");
+				
+				ForPartecipanteRuoloCorsoDTO part_ruolo_cor = new ForPartecipanteRuoloCorsoDTO();
+				
+				part_ruolo_cor.setCorso(new ForCorsoDTO(Integer.parseInt(id_corso)));
+				part_ruolo_cor.setPartecipante(new ForPartecipanteDTO(Integer.parseInt(id_partecipante)));
+				part_ruolo_cor.setRuolo(new ForRuoloDTO(Integer.parseInt(id_ruolo)));
+				part_ruolo_cor.setOre_partecipate(Double.parseDouble(ore_partecipate));
+			
+				if(filename!=null && !filename.equals("")) {
+					saveFile(fileItem, "Attestati//"+id_corso+"//"+id_partecipante, filename);
+					part_ruolo_cor.setAttestato(filename);
+				}
+				session.save(part_ruolo_cor);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Operazione completata con successo!");
+				out.print(myObj);
+				
+				session.getTransaction().commit();
+				session.close();
+			}
+			else if(action.equals("download_attestato")) {
+				
+				String id_corso = request.getParameter("id_corso");
+				String id_partecipante = request.getParameter("id_partecipante");				
+				String filename = request.getParameter("filename");
+				
+				id_corso = Utility.decryptData(id_corso);
+				id_partecipante = Utility.decryptData(id_partecipante);
+				filename = Utility.decryptData(filename);
+								
+				String path = Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+id_partecipante+"//"+filename;
+				
+				downloadFile(path, response.getOutputStream());
+				
+				response.setContentType("application/pdf");	
+				
+				session.close();	
+			}
+			else if(action.equals("dissocia_partecipante_corso")) {
+				
+				ajax = true;
+				
+				String id_corso = request.getParameter("id_corso");
+				String id_partecipante = request.getParameter("id_partecipante");
+				String id_ruolo = request.getParameter("id_ruolo");	
+				
+				ForPartecipanteRuoloCorsoDTO part = GestioneFormazioneBO.getPartecipanteFromCorso(Integer.parseInt(id_corso), Integer.parseInt(id_partecipante), Integer.parseInt(id_ruolo), session);
+								
+				session.delete(part);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Operazione completata con successo!");
+				out.print(myObj);
+				
+			}
+			else if(action.equals("dettaglio_partecipante")) {
+				
+				String id_partecipante = request.getParameter("id_partecipante");
+				
+				id_partecipante = Utility.decryptData(id_partecipante);
+				
+				ForPartecipanteDTO partecipante = GestioneFormazioneBO.getPartecipanteFromId(Integer.parseInt(id_partecipante), session);
+				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_corsi = GestioneFormazioneBO.getListaCorsiFromPartecipante(Integer.parseInt(id_partecipante), session);
+				
+				request.getSession().setAttribute("partecipante", partecipante);
+				request.getSession().setAttribute("lista_corsi_partecipante", lista_corsi);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioForPartecipante.jsp");
+		     	dispatcher.forward(request,response);
+							
+			}
+			else if(action.equals("scadenzario_partecipante")) {
+				
+				String id_partecipante = request.getParameter("id_partecipante");
+				
+				id_partecipante = Utility.decryptData(id_partecipante);
+				
+				ForPartecipanteDTO partecipante = GestioneFormazioneBO.getPartecipanteFromId(Integer.parseInt(id_partecipante), session);
+				
+				request.getSession().setAttribute("partecipante", partecipante);
+				
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioForPartecipante.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}			
+			else if(action.equals("scadenzario_create")) {
+				
+				ajax = true;
+			
+				ForPartecipanteDTO partecipante = (ForPartecipanteDTO) request.getSession().getAttribute("partecipante");
+							
+				HashMap<String,Integer> listaScadenze =  GestioneFormazioneBO.getListaScadenzeCorsi(partecipante.getId(),session);
+				
+				ArrayList<String> lista_scadenzario = new ArrayList<>();				
+			
+				Iterator scadenza = listaScadenze.entrySet().iterator();
+			
+				while (scadenza.hasNext()) {
+					 Map.Entry pair = (Map.Entry)scadenza.next();
+					 lista_scadenzario.add(pair.getKey() + ";" + pair.getValue());
+					 scadenza.remove(); 
+				}
+				
+				PrintWriter out = response.getWriter();
+				
+				Gson gson = new Gson(); 			        
+		        
+			    JsonElement obj_scadenzario = gson.toJsonTree(lista_scadenzario);
+			       
+			    myObj.addProperty("success", true);
+			  
+			    myObj.add("obj_scadenzario", obj_scadenzario);
+						        
+			    out.println(myObj.toString());
+
+			    out.close();
+			        
+			    session.getTransaction().commit();
+		        session.close();
+				
+			}	
+			else if(action.equals("lista_corsi_scadenza")) {
+				
+				ForPartecipanteDTO partecipante = (ForPartecipanteDTO) request.getSession().getAttribute("partecipante");
+				String data_scadenza = request.getParameter("data_scadenza");
+				
+				
+				ArrayList<ForCorsoDTO> lista_corsi = GestioneFormazioneBO.getListaCorsiPartecipanteScadenza(partecipante.getId(), data_scadenza, session);
+				
+				request.getSession().setAttribute("lista_corsi", lista_corsi);
+				
+				session.getTransaction().commit();
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneForCorsi.jsp");
+		     	dispatcher.forward(request,response);
+			}
 			
 		}catch(Exception e) {
 			

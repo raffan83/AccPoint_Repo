@@ -348,16 +348,31 @@ public class GestioneRilieviDAO {
 
 
 
-	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviInLavorazione(int id_stato_lavorazione, Session session) {
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviInLavorazione(int id_stato_lavorazione,int anno, Session session) {
 
 		ArrayList<RilMisuraRilievoDTO>  lista = null;
 		
 		Query query = null;
 		if(id_stato_lavorazione !=0) {
-		 query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and disabilitato=0");
-		query.setParameter("_id_stato_lavorazione", id_stato_lavorazione);
+			
+			
+			if(anno !=0) {
+				query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and disabilitato=0 and YEAR(data_inizio_rilievo) = :_anno");
+				query.setParameter("_anno", anno);	
+			}else {
+				query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and disabilitato=0");
+			}
+			
+			query.setParameter("_id_stato_lavorazione", id_stato_lavorazione);
+			
 		}else {
-			query = session.createQuery("from RilMisuraRilievoDTO where disabilitato=0");
+			
+			if(anno !=0) {
+				query = session.createQuery("from RilMisuraRilievoDTO where disabilitato=0 and YEAR(data_inizio_rilievo) = :_anno");
+				query.setParameter("_anno", anno);	
+			}else {
+				query = session.createQuery("from RilMisuraRilievoDTO where disabilitato=0");
+			}
 		}
 		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
 				
@@ -419,18 +434,32 @@ public class GestioneRilieviDAO {
 
 
 
-	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente, Session session) {
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente, int anno, Session session) {
 		
 		ArrayList<RilMisuraRilievoDTO>  lista = null;
 		
 		Query query = null;
+		String s_query = null;
 		if(id_stato_lavorazione!=0) {
-		query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and id_cliente_util = :_cliente and disabilitato=0");
+			s_query = "from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and id_cliente_util = :_cliente and disabilitato=0 ";
+			if(anno !=0) {
+				s_query = s_query +"and YEAR(data_inizio_rilievo) = :_anno";
+			}			
+		query = session.createQuery(s_query);
 		query.setParameter("_id_stato_lavorazione", id_stato_lavorazione);
 		}else {
-			query = session.createQuery("from RilMisuraRilievoDTO where id_cliente_util = :_cliente and disabilitato=0");
+			s_query = "from RilMisuraRilievoDTO where id_cliente_util = :_cliente and disabilitato=0";
+			if(anno !=0) {
+				s_query = s_query +" and YEAR(data_inizio_rilievo) = :_anno";
+			}
+			query = session.createQuery(s_query);
+			
 		}
+			
 		query.setParameter("_cliente", cliente);
+		if(anno !=0) {
+			query.setParameter("_anno", anno);
+		}
 						
 		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
 				

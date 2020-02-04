@@ -12898,3 +12898,208 @@ function dissociaPartecipanteCorso(id_partecipante, id_corso, id_ruolo){
   });
 	
 }
+
+
+
+function addCalendarFormazione(){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	 pleaseWaitDiv.modal();
+	  
+	 var url = "gestioneFormazione.do?action=scadenzario_create";
+	   
+	   
+$.ajax({
+  type: "POST",
+  url: url,
+  data: "",
+  dataType: "json",
+  
+  //if received a response from the server
+  success: function( data, textStatus) {
+  	console.log("test");
+  	var id = 0;
+     	if(data.success)
+      	{
+     		
+     		 jsonObj = [];
+     		
+     		
+	             for(var i=0 ; i<data.obj_scadenzario.length;i++)
+	                 {
+	             		var str =data.obj_scadenzario[i].split(";");
+	             		item = {};
+	             		item ["id"] = id;
+	             	    item ["title"] = str[1];
+	             	    item ["start"] = str[0];
+	             	    item ["allDay"] = true;
+	             	    item ["backgroundColor"] = "#777";
+	             	    item ["borderColor"] = "#777";
+	             	    item ["className"]
+	             	        jsonObj.push(item);
+	             	      id++;
+	              	}
+
+     		
+$('#calendario').fullCalendar({
+	 
+		header: {
+	        left: 'prev,next today',
+	        center: 'title',     
+	        right: 'listYear,year,month,agendaWeek,agendaDay'
+	      },	
+	     
+	      
+//	      views: {
+//	    	    timeGridFourDay: {
+//	    	      type: 'timeGrid',
+//	    	      duration: { days: 4 },
+//	    	      buttonText: '4 day'
+//	    	    }
+//	    	  },
+	      
+		  viewRender: function (view, element)
+		    {
+		        intervalStart = view.intervalStart;
+		        intervalEnd = view.intervalEnd;
+		        
+		        //$('#data_start').val(moment(intervalStart).format());
+		        //$('#data_end').val(moment(intervalEnd).format());
+		     
+		    },
+	     
+		  eventRender: function(event, element, view) {
+			  
+			 
+			  if(event.backgroundColor=="#777"){
+				  return $('<span class=\"badge bg-red bigText\"">' 
+				             + event.title + 
+				             '</span>');
+			  }
+			 
+			  
+	         },	 
+	         
+	  events:jsonObj,
+	  
+	           eventClick: function(calEvent, jsEvent, view) {
+
+	        	   callAction('gestioneFormazione.do?action=lista_corsi_scadenza&data_scadenza='+moment(calEvent.start).format());
+	        	
+	               $(this).css('border-color', '#228B22');
+	           },
+	     	 
+//	         editable: true,
+	       drop: function (date, allDay) { // this function is called when something is dropped
+
+	         // retrieve the dropped element's stored Event Object
+	         var originalEventObject = $(this).data('eventObject');
+
+	         // we need to copy it, so that multiple events don't have a reference to the same object
+	         var copiedEventObject = $.extend({}, originalEventObject);
+
+	         // assign it the date that was reported
+	         copiedEventObject.start = date;
+	         copiedEventObject.allDay = allDay;
+	         copiedEventObject.backgroundColor = $(this).css("background-color");
+	         copiedEventObject.borderColor = $(this).css("border-color");
+
+	         // render the event on the calendar
+	         // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+	         $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+	         // is the "remove after drop" checkbox checked?
+	         if ($('#drop-remove').is(':checked')) {
+	           // if so, remove the element from the "Draggable Events" list
+	           $(this).remove();
+	         }
+
+	       }
+}); 
+      	}
+      	
+
+     	var	cal = $('#calendario').fullCalendar('getCalendar');
+     	cal.removeEvents();
+     	cal.addEventSource(jsonObj);
+     
+      
+    	pleaseWaitDiv.modal('hide');
+	          }
+	         });
+	
+}
+
+
+
+function createVerLDTable(duplicate, messaggio){
+	 
+	  
+	  var dataSet = [];
+	  
+	  if(duplicate!= null ){
+		  var jsonData = JSON.parse(duplicate);
+		  
+		  for(var i=0 ; i<jsonData.length;i++)
+	      {
+	
+				item = ["<input type='checkbox' value='"+jsonData[i].id+"'>",jsonData[i].id,jsonData[i].denominazione,"<textarea id='note_obsolescenza_"+i+"' name='note_obsolescenza_"+i+"' rows='2' style='width:100%'></textarea>"];
+		 
+	
+		        dataSet.push(item);
+			}
+		  $("#modalListaDuplicati").modal("show");
+	
+	
+		  $('#tabLD').DataTable( {
+			  language: {
+	  	        	emptyTable : 	"Nessun dato presente nella tabella",
+	  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	  	        	infoPostFix:	"",
+	  	        infoThousands:	".",
+	  	        lengthMenu:	"Visualizza _MENU_ elementi",
+	  	        loadingRecords:	"Caricamento...",
+	  	        	processing:	"Elaborazione...",
+	  	        	search:	"Cerca:",
+	  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	  	        	paginate:	{
+		  	        	first:	"Inizio",
+		  	        	previous:	"Precedente",
+		  	        	next:	"Successivo",
+		  	        last:	"Fine",
+	  	        	},
+	  	        aria:	{
+		  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	  	        }
+	        },
+	        pageLength: 100,
+		        data: dataSet,
+		        bDestroy: true,
+		        columns: [
+		            { title: "Check" },
+		            { title: "ID" },
+		            { title: "Descrizione" },
+		            { title: "Note obsolescenza"}
+		        ]
+		    } );
+	  }else{
+		  if(messaggio != ""){
+		  		$('#myModalErrorContent').html(messaggio);
+		  		$('#myModalError').removeClass();
+		  		$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					location.reload();
+				});
+	  		}
+//		  else{
+//	  			$('#myModalErrorContent').html("Salvato");
+//		  		$('#myModal').removeClass();
+//		  		$('#myModal').addClass("modal modal-success");
+//				$('#myModal').modal('show');
+//	  		}
+	  }
+}

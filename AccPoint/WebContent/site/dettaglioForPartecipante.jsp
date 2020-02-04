@@ -27,7 +27,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
           <h1 class="pull-left">
-        Dettaglio Corso
+        Dettaglio Partecipante
         <small></small>
       </h1>
     <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
@@ -45,7 +45,7 @@
 <div class="col-md-6">
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Dettaglio Corso
+	 Dettaglio Partecipante
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -56,35 +56,38 @@
 
         <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>ID</b> <a class="pull-right">${corso.id}</a>
+                  <b>ID</b> <a class="pull-right">${partecipante.id}</a>
                 </li>
+               
+              
                 <li class="list-group-item">
-                  <b>Data Corso</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${corso.data_corso}" /></a>
-                </li>
-                
-                <li class="list-group-item">
-                  <b>Data Scadenza</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${corso.data_scadenza}" /></a>
-                </li>
-                <li class="list-group-item">
-                <b>Docente</b> <a class="pull-right">${corso.docente.nome } ${corso.docente.cognome }</a>
+                <b>nome</b> <a class="pull-right">${partecipante.nome }</a>
                 </li>
                 
   				 <li class="list-group-item">
-                <b>Descrizione</b> <a class="pull-right">${corso.descrizione}</a>
+                <b>Cognome</b> <a class="pull-right">${partecipante.cognome}</a>
                 </li>
-  				 
                 
-               
+                 <li class="list-group-item">
+                  <b>Data di nascita</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${partecipante.data_nascita}" /></a>
+                </li>
+               <li class="list-group-item">
+                <b>Azienda</b> <a class="pull-right">${partecipante.azienda}</a>
+                </li>
         </ul>
 
 </div>
 </div>
 </div>
-
-
-
-
 <div class="col-md-6">
+
+<a class="btn btn-primary pull-right" onClick="callAction('gestioneFormazione.do?action=scadenzario_partecipante&id_partecipante=${utl:encryptData(partecipante.id)}')">Vai allo scadenzario</a>
+
+</div>
+
+
+
+<%-- <div class="col-md-6">
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
 	 Dettaglio Tipologia
@@ -120,7 +123,7 @@
 </div>
 </div>
 </div>
-
+ --%>
        
  </div>
     
@@ -130,7 +133,7 @@
 <div class="col-md-12">
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Partecipanti
+	 Corsi 
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -139,7 +142,48 @@
 </div>
 <div class="box-body">
 
-<div id="tab_partecipanti"></div>
+
+<table id="tabCorsi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+<th></th>
+<th>ID</th>
+<th>Codice</th>
+<th>Descrizione Tipologia</th>
+<th>Ruolo</th>
+<th>Data Corso</th>
+<th>Data Scadenza</th>
+<th>Ore partecipate</th>
+<th>Ore totali</th>
+<th>Edizione</th>
+<th>Azioni</th>
+ </tr></thead>
+ 
+ <tbody>
+ 
+ 	<c:forEach items="${lista_corsi_partecipante }" var="corso_part" varStatus="loop">
+ 	<tr id="row_${loop.index}" >
+ 	<td></td>
+ 	<td><a class="btn customTooltip customlink" title="Vai al corso" onclick="callAction('gestioneFormazione.do?action=dettaglio_corso&id_corso=${utl:encryptData(corso_part.corso.id)}')">${corso_part.corso.id}</a></td>
+ 	<td>${corso_part.corso.corso_cat.codice}</td>
+	<td>${corso_part.corso.corso_cat.descrizione}</td>
+	<td>${corso_part.ruolo.descrizione}</td>
+	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${corso_part.corso.data_corso}" /></td>
+	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${corso_part.corso.data_scadenza}" /></td>
+	<td>${corso_part.ore_partecipate}</td>
+	<td>${corso_part.corso.corso_cat.durata}</td>
+	<td>${corso_part.corso.edizione}</td>
+	<td>
+	 <a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_attestato&id_corso=${utl:encryptData(corso_part.corso.id)}&id_partecipante=${utl:encryptData(corso_part.partecipante.id)}&filename=${utl:encryptData(corso_part.attestato)}" title="Click per scaricare l'attestato"><i class="fa fa-file-pdf-o"></i></a>
+	
+	
+	</td> 
+	</tr>
+	</c:forEach>
+	 
+
+ </tbody>
+ </table>
+ 
 
 
 </div>
@@ -192,7 +236,7 @@
  
  var columsDatatables = [];
 
- $("#tabPartecipanti").on( 'init.dt', function ( e, settings ) {
+ $("#tabCorsi").on( 'init.dt', function ( e, settings ) {
      var api = new $.fn.dataTable.Api( settings );
      var state = api.state.loaded();
   
@@ -201,13 +245,13 @@
      
      columsDatatables = state.columns;
      }
-     $('#tabPartecipanti thead th').each( function () {
+     $('#tabCorsi thead th').each( function () {
       	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-     	  var title = $('#tabForCorso thead th').eq( $(this).index() ).text();
+     	  var title = $('#tabCorsi thead th').eq( $(this).index() ).text();
      	
-     	  //if($(this).index()!=0 && $(this).index()!=1){
+     	  if($(this).index()!=0 ){
  		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
- 	    	//}
+ 	    	}
 
      	} );
      
@@ -217,10 +261,88 @@
    
     $(document).ready(function() {
     
+    	
+  	  table = $('#tabCorsi').DataTable({
+			language: {
+		        	emptyTable : 	"Nessun dato presente nella tabella",
+		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+		        	infoPostFix:	"",
+		        infoThousands:	".",
+		        lengthMenu:	"Visualizza _MENU_ elementi",
+		        loadingRecords:	"Caricamento...",
+		        	processing:	"Elaborazione...",
+		        	search:	"Cerca:",
+		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+		        	paginate:	{
+	  	        	first:	"Inizio",
+	  	        	previous:	"Precedente",
+	  	        	next:	"Successivo",
+	  	        last:	"Fine",
+		        	},
+		        aria:	{
+	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+		        }
+	        },
+	        pageLength: 25,
+	        "order": [[ 1, "desc" ]],
+		      paging: true, 
+		      ordering: true,
+		      info: true, 
+		      searchable: true, 
+		      targets: 0,
+		      responsive: true,
+		      scrollX: false,
+		      stateSave: true,	
+		           
+		      columnDefs: [
+		    	  
+		    	  { responsivePriority: 1, targets: 1 },
+		    	  
+		    	  
+		               ], 	        
+	  	      buttons: [   
+	  	          {
+	  	            extend: 'colvis',
+	  	            text: 'Nascondi Colonne'  	                   
+	 			  } ]
+		               
+		    });
+		
+		table.buttons().container().appendTo( '#tabCorsi_wrapper .col-sm-6:eq(1)');
+	 	    $('.inputsearchtable').on('click', function(e){
+	 	       e.stopPropagation();    
+	 	    });
 
-    	 dataString ="action=dettaglio_partecipanti_corso";
-        exploreModal("gestioneFormazione.do",dataString,"#tab_partecipanti",function(datab,textStatusb){
-        });
+	 	     table.columns().eq( 0 ).each( function ( colIdx ) {
+	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	      table
+	          .column( colIdx )
+	          .search( this.value )
+	          .draw();
+	  } );
+	} );  
+	
+	
+	
+		table.columns.adjust().draw();
+		
+
+	$('#tabCorsi').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+		
+		$('.removeDefault').each(function() {
+		   $(this).removeClass('btn-default');
+		})
+
+
+	});
+
+    	
     });
 
   </script>

@@ -66,7 +66,7 @@
 
 
 <th>ID</th>
-<th>Categoria</th>
+<th>Tipologia</th>
 <th>Docente</th>
 <th>Data Inizio</th>
 <th>Data Scadenza</th>
@@ -81,14 +81,15 @@
 	<td>${corso.id }</td>	
 	<td>${corso.corso_cat.descrizione }</td>
 	<td>${corso.docente.nome } ${corso.docente.cognome }</td>
-	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_inizio}" /></td>	
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_corso}" /></td>	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_scadenza}" /></td>
 	<td>
 	 
-	<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }','${corso.docente.id}','${corso.data_inizio }','${corso.data_scadenza }','${corso.documento_test }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${corso.docente.id}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${corso.descrizione }','${corso.edizione }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>
 	<a class="btn btn-info" onClick="dettaglioCorso('${utl:encryptData(corso.id)}')"><i class="fa fa-search"></i></a>
-	
+	<c:if test="${corso.documento_test!=null }">
 	<a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_documento_test&id_corso=${utl:encryptData(corso.id)}" title="Click per scaricare il documento del test"><i class="fa fa-file-pdf-o"></i></a>
+	</c:if>
 	<a href="#" class="btn btn-primary customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${corso.id }')"><i class="fa fa-archive"></i></a>
 	</td>
 	</tr>
@@ -147,16 +148,38 @@
         <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Categoria</label>
+       		<label>Tipologia</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <select id="categoria" name="categoria" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Categoria Corso..." required>
+        <select id="categoria" name="categoria" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Tipologia Corso..." required>
         <option value=""></option>
         <c:forEach items="${lista_corsi_cat }" var="categoria">
-        <option value="${categoria.id }">${categoria.descrizione }</option>
+        <option value="${categoria.id }_${categoria.frequenza }">${categoria.descrizione }</option>
         </c:forEach>
         </select>
+       			
+       	</div>       	
+       </div><br>
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Descrizione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+      	<textarea class="form-control" rows="3" style="width:100%" id="descrizione" name="descrizione"></textarea>
+       			
+       	</div>       	
+       </div><br>
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Edizione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+      	<input type="text" id="edizione" name="edizione" class="form-control">
        			
        	</div>       	
        </div><br>
@@ -179,12 +202,12 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Data Inizio</label>
+       		<label>Data Corso</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
          <div class='input-group date datepicker' id='datepicker_data_inizio'>
-               <input type='text' class="form-control input-small" id="data_inizio" name="data_inizio" required>
+               <input type='text' class="form-control input-small" id="data_corso" name="data_corso" required>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -255,16 +278,38 @@
         <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Categoria</label>
+       		<label>Tipologia</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <select id="categoria_mod" name="categoria_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Categoria Corso..." required>
+        <select id="categoria_mod" name="categoria_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Tipologia Corso..." required>
         <option value=""></option>
         <c:forEach items="${lista_corsi_cat }" var="categoria">
-        <option value="${categoria.id }">${categoria.descrizione }</option>
+        <option value="${categoria.id }_${categoria.frequenza}">${categoria.descrizione }</option>
         </c:forEach>
         </select>
+       			
+       	</div>       	
+       </div><br>
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Descrizione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+      	<textarea class="form-control" rows="3" style="width:100%" id="descrizione_mod" name="descrizione_mod"></textarea>
+       			
+       	</div>       	
+       </div><br>
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Edizione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+      	<input type="text" id="edizione_mod" name="edizione_mod" class="form-control">
        			
        	</div>       	
        </div><br>
@@ -292,7 +337,7 @@
        	<div class="col-sm-9">      
        	  	
          <div class='input-group date datepicker' id='datepicker_data_inizio'>
-               <input type='text' class="form-control input-small" id="data_inizio_mod" name="data_inizio_mod" required>
+               <input type='text' class="form-control input-small" id="data_corso_mod" name="data_corso_mod" required>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -326,7 +371,7 @@
        	</div>
        	<div class="col-sm-9">             	  	
         
-       	    <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload_mod" name="fileupload_mod" type="file" required></span><label id="label_file_mod"></label>
+       	    <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload_mod" name="fileupload_mod" type="file" ></span><label id="label_file_mod"></label>
        	    </div>
         
        	</div>
@@ -387,17 +432,23 @@ function modalnuovoCorso(){
 }
 
 
-function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test){
+function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, edizione){
 	
 	$('#id_corso').val(id_corso);
 	$('#categoria_mod').val(id_categoria);
 	$('#categoria_mod').change();
 	$('#docente_mod').val(id_docente);
 	$('#docente_mod').change();
-	$('#data_inizio_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy"));
-	$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));
+	if(data_inizio!=null && data_inizio!=''){
+		$('#data_corso_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy"));
+	}
+	if(data_scadenza!=null && data_scadenza!=''){
+		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));
+	}
+		
 	$('#label_file_mod').html(documento_test);
-	
+	$('#descrizione_mod').val(descrizione);
+	$('#edizione_mod').val(edizione);
 	
 	$('#myModalModificaCorso').modal();
 }
@@ -455,6 +506,79 @@ $('#myModalArchivio').modal();
 function dettaglioCorso(id_corso){
 	
 	callAction('gestioneFormazione.do?action=dettaglio_corso&id_corso='+id_corso);
+}
+
+
+$('#data_corso').change(function(){
+	
+		  var tipologia = $('#categoria').val();
+		  
+		  if(tipologia!=null && tipologia!=''){
+			  var frequenza = tipologia.split("_")[1];
+			  var data =  Date.parse(formatDate($('#data_corso').val()));	
+			  var data_scadenza = data.addMonths(parseInt(frequenza));
+			  $('#data_scadenza').val(formatDate(data_scadenza));
+		  }
+		 
+});
+	
+	
+	
+$('#categoria').change(function(){
+	
+	  var tipologia = $('#categoria').val();
+	  
+	  
+	  if($('#data_corso').val()!=null && $('#data_corso').val()!=''){
+		  var frequenza = tipologia.split("_")[1];
+		  var x = formatDate($('#data_corso').val());
+		  var data =  Date.parse(x);	
+		  var data_scadenza = data.addMonths(parseInt(frequenza));
+		  $('#data_scadenza').val(formatDate(data_scadenza));
+	  }
+	 
+});
+
+
+$('#data_corso_mod').change(function(){
+	
+	  var tipologia = $('#categoria_mod').val();
+	  
+	  if(tipologia!=null && tipologia!=''){
+		  var frequenza = tipologia.split("_")[1];
+		  var data =  Date.parse(formatDate($('#data_corso_mod').val()));	
+		  var data_scadenza = data.addMonths(parseInt(frequenza));
+		  $('#data_scadenza_mod').val(formatDate(data_scadenza));
+	  }
+	 
+});
+
+
+
+$('#categoria_mod').change(function(){
+
+var tipologia = $('#categoria_mod').val();
+
+
+if($('#data_corso_mod').val()!=null && $('#data_corso_mod').val()!=''){
+	  var frequenza = tipologia.split("_")[1];
+	  var x = formatDate($('#data_corso_mod').val());
+	  var data =  Date.parse(x);	
+	  var data_scadenza = data.addMonths(parseInt(frequenza));
+	  $('#data_scadenza_mod').val(formatDate(data_scadenza));
+}
+
+});
+	
+function formatDate(data){
+	
+	   var mydate =  Date.parse(data);
+	   
+	   if(!isNaN(mydate.getTime())){
+	   
+		var   str = mydate.toString("dd/MM/yyyy");
+	   }			   
+	   return str;	 		
 }
 
 

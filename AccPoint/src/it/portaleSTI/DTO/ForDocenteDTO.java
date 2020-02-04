@@ -5,7 +5,7 @@ public class ForDocenteDTO {
 	private int id;
 	private String nome;
 	private String cognome;
-	private String titolo;
+	private int formatore;
 	private String cv;
 	
 	
@@ -35,17 +35,19 @@ public class ForDocenteDTO {
 	public void setCognome(String cognome) {
 		this.cognome = cognome;
 	}
-	public String getTitolo() {
-		return titolo;
-	}
-	public void setTitolo(String titolo) {
-		this.titolo = titolo;
-	}
 	public String getCv() {
 		return cv;
 	}
 	public void setCv(String cv) {
 		this.cv = cv;
+	}
+
+	public int getFormatore() {
+		return formatore;
+	}
+
+	public void setFormatore(int formatore) {
+		this.formatore = formatore;
 	}
 	
 	

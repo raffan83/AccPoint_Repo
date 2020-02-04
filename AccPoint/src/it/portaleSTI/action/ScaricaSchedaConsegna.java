@@ -162,7 +162,7 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilieviSchedaConsegna(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]), mese,commessa.split("\\*")[0], session);
 				String path_firma =  getServletContext().getRealPath("/images") + "\\firme_rilievi\\";
 				
-				new CreateSchedaConsegnaRilieviDimensionali(lista_rilievi,commessa.split("\\*")[0],notaConsegna,Integer.parseInt(stato),corteseAttenzione, listaSedi, path_firma,utente, session);
+				new CreateSchedaConsegnaRilieviDimensionali(lista_rilievi,commessa.split("\\*")[0],notaConsegna,Integer.parseInt(stato),corteseAttenzione, listaSedi, path_firma,utente, anno, session);
 				
 				scheda_consegna.setFile("SCN_"+lista_rilievi.get(0).getCommessa().replace("/", "_")+".pdf");
 				
@@ -174,7 +174,7 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				cal.setTime(lista_rilievi.get(0).getData_consegna());
 				
 				File d = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\SchedeConsegna\\"+lista_rilievi.get(0).getId_cliente_util()+"\\"+lista_rilievi.get(0).getId_sede_util()+
-						"\\"+cal.get(Calendar.YEAR)+"\\"+lista_rilievi.get(0).getMese_riferimento()+"\\SCN_"+lista_rilievi.get(0).getCommessa().replace("/", "_")+".pdf");
+						"\\"+anno+"\\"+lista_rilievi.get(0).getMese_riferimento()+"\\SCN_"+lista_rilievi.get(0).getCommessa().replace("/", "_")+".pdf");
 				
 				 FileInputStream fileIn = new FileInputStream(d);
 				 

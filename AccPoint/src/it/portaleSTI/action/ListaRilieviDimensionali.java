@@ -2,6 +2,9 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -130,6 +133,7 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				
 				String id_stato_lavorazione = request.getParameter("id_stato_lavorazione");
 				String cliente_filtro = request.getParameter("cliente_filtro");	
+				String year = request.getParameter("anno");
 				
 				
 				if(request.getSession().getAttribute("listaClientiAll")==null) 
@@ -155,10 +159,20 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				HashMap<String, String> listaSediAll = (HashMap<String, String>)request.getSession().getAttribute("listaSediAll");
 
 				ArrayList<RilMisuraRilievoDTO> lista_rilievi = 	null;
+				int anno = 0;
+				if(year!=null && !year.equals("")) {
+					anno = Integer.parseInt(year);
+				}else {
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(new Date());
+					anno = cal.get(Calendar.YEAR);
+				}
+				
+				
 				if(cliente_filtro!=null && !cliente_filtro.equals("") && !cliente_filtro.equals("0")) {
-					 lista_rilievi = GestioneRilieviBO.getListaRilieviFiltrati(Integer.parseInt(id_stato_lavorazione), Integer.parseInt(cliente_filtro), session);
+					 lista_rilievi = GestioneRilieviBO.getListaRilieviFiltrati(Integer.parseInt(id_stato_lavorazione), Integer.parseInt(cliente_filtro), anno, session);
 				}else{
-					 lista_rilievi = GestioneRilieviBO.getListaRilieviInLavorazione(Integer.parseInt(id_stato_lavorazione), session);	
+					 lista_rilievi = GestioneRilieviBO.getListaRilieviInLavorazione(Integer.parseInt(id_stato_lavorazione), anno, session);	
 				}
 				
 				
@@ -174,6 +188,7 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				request.getSession().setAttribute("lista_sedi", listaSedi);
 				request.getSession().setAttribute("cliente_filtro", cliente_filtro);
 				request.getSession().setAttribute("filtro_rilievi", id_stato_lavorazione);
+				request.getSession().setAttribute("anno_riferimento", anno);
 			//	request.getSession().setAttribute("lista_tipo_rilievo", lista_tipo_rilievo);
 			//	request.getSession().setAttribute("lista_commesse", lista_commesse);
 				

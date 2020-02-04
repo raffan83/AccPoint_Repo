@@ -759,7 +759,32 @@
   </div>
 </div>
 
+  <div id="modalListaDuplicati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Lista Duplicati</h4>
+      </div>
+       <div class="modal-body">
+        		<h4 class="modal-title" id="myModalLabel">Selezionare le misure da sovrascrivere</h4>
+			<div id="listaDuplicati">
+			<table id="tabLD" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
 
+	
+			 </table>  
+			</div>
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+
+        <button type="button" class="btn btn-danger"onclick="saveDuplicati()"  >Salva</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -1007,7 +1032,7 @@
 	            	if(data.result.success)
 					{
 						
-	            		$('#myModalErrorContent').html(data.result.messaggio);
+	            		/* $('#myModalErrorContent').html(data.result.messaggio);
 						$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-success");						
 						$('#myModalError').modal('show');
@@ -1015,6 +1040,9 @@
 						$('#myModalError').on('hidden.bs.modal', function(){
 							location.reload();
 						});
+						
+						 */
+						createVerLDTable(data.result.duplicate, data.result.messaggio);
 					
 					}else{
 						

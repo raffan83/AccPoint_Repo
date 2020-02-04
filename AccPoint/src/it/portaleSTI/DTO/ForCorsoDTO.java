@@ -9,12 +9,21 @@ public class ForCorsoDTO {
 	private int id;
 	private ForCorsoCatDTO corso_cat;
 	private ForDocenteDTO docente;
-	private Date data_inizio;
+	private Date data_corso;
 	private Date data_scadenza;
 	private String documento_test;
+	private String descrizione;
+	private String edizione;
 	
-	private Set<UtenteDTO> listaUtenti = new HashSet<UtenteDTO>(0);
+	private Set<ForPartecipanteDTO> listaPartecipanti = new HashSet<ForPartecipanteDTO>(0);
 	
+	public ForCorsoDTO() {
+		super();
+	}
+	public ForCorsoDTO(int id) {
+		this.id = id;
+
+	}
 	public int getId() {
 		return id;
 	}
@@ -33,12 +42,7 @@ public class ForCorsoDTO {
 	public void setDocente(ForDocenteDTO docente) {
 		this.docente = docente;
 	}
-	public Date getData_inizio() {
-		return data_inizio;
-	}
-	public void setData_inizio(Date data_inizio) {
-		this.data_inizio = data_inizio;
-	}
+
 	public Date getData_scadenza() {
 		return data_scadenza;
 	}
@@ -50,12 +54,30 @@ public class ForCorsoDTO {
 	}
 	public void setDocumento_test(String documento_test) {
 		this.documento_test = documento_test;
+	}	
+	public Date getData_corso() {
+		return data_corso;
 	}
-	public Set<UtenteDTO> getListaUtenti() {
-		return listaUtenti;
+	public void setData_corso(Date data_corso) {
+		this.data_corso = data_corso;
 	}
-	public void setListaUtenti(Set<UtenteDTO> listaUtenti) {
-		this.listaUtenti = listaUtenti;
+	public String getEdizione() {
+		return edizione;
+	}
+	public void setEdizione(String edizione) {
+		this.edizione = edizione;
+	}
+	public String getDescrizione() {
+		return descrizione;
+	}
+	public void setDescrizione(String descrizione) {
+		this.descrizione = descrizione;
+	}
+	public Set<ForPartecipanteDTO> getListaPartecipanti() {
+		return listaPartecipanti;
+	}
+	public void setListaPartecipanti(Set<ForPartecipanteDTO> listaPartecipanti) {
+		this.listaPartecipanti = listaPartecipanti;
 	}
 	
 	

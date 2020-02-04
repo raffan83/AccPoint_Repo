@@ -95,7 +95,7 @@
 			 <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Rapporto"  href="gestioneVerCertificati.do?action=download&cert_rap=2&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
 			 
 			 		
-			  <c:if test="${userObj.checkRuolo('AM') && certificato.firmato == 0 }">		 
+			  <c:if test="${userObj.checkPermesso('FIRMA_ATTESTATO_VERIFICAZIONE') && (certificato.firmato == 0) }">		 
 			  <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF dell'Attestato"  href="gestioneVerCertificati.do?action=download&cert_rap=1&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
 			  </c:if>
 			<c:if test="${certificato.firmato == 1}">
@@ -106,7 +106,7 @@
 			 <a class="btn btn-warning customTooltip" title="Click per firmare il certificato con firma digitale" href="#" onClick="openModalPin(${certificato.id})"><i class="fa fa-pencil"></i></a>
 			  
 			  </c:if>
-			  <c:if test="${userObj.checkRuolo('AM') && certificato.firmato == 1}">
+			  <c:if test="${userObj.checkPermesso('FIRMA_ATTESTATO_VERIFICAZIONE') && certificato.firmato == 1}">
 			  <a class="btn btn-info customTooltip" title="Click per inviare il certificato per e-mail"onClick="modalEmailVerificazione('${certificato.id}')"><i class="fa fa-paper-plane-o"></i></a>
 			  </c:if>
 			<%-- <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="gestioneVerCertificati.do?action=download&&cert_rap=0&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a> --%>

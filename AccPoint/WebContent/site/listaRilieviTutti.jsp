@@ -25,6 +25,27 @@
 </div>
 </div><br>
     <div class="row">
+
+  
+<div class="col-sm-3">
+    
+    <label>Anno di riferimento:</label>
+<select id="anno" name="anno" class="form-control select2">
+
+<option value="2019">2019</option>
+<option value="2020">2020</option>
+<option value="2021">2021</option>
+<option value="2022">2022</option>
+<option value="2023">2023</option>
+<option value="2024">2024</option>
+<option value="2025">2025</option>
+
+
+</select>
+
+</div>
+</div><br>
+    <div class="row">
 <div class="col-sm-12">
 
  <table id="tabRilievi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -475,6 +496,11 @@ $('#myModalArchivio').modal();
  
 $(document).ready(function() {
 	
+ var anno_riferimento = "${anno_riferimento}";
+     
+     $('#anno').val(anno_riferimento);
+     $('#anno').change();
+	
 	 commessa_options = $('#commessa option').clone();
 	//$('#body_certificati_campione').html("");
 	 $('#label').hide();
@@ -775,5 +801,18 @@ $('#myModalError').on('hidden.bs.modal', function(){
 //	$('#tabUscita').remove();
 	
 }); */
+
+
+$('#anno').change(function(){
+	
+	 var stato_lavorazione = $('#filtro_rilievi').val();	 
+	 var cliente_filtro = $('#cliente_filtro').val();
+	 var anno = $('#anno').val();
+	
+		 dataString ="action=filtra&id_stato_lavorazione="+ stato_lavorazione+"&cliente_filtro="+cliente_filtro+"&anno="+anno;
+	       exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
+	       });
+	
+});
 	</script>
 	

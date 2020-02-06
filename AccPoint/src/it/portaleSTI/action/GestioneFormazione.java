@@ -34,6 +34,7 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+//import it.portaleSTI.DTO.ForAziendaDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
@@ -226,7 +227,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				ForDocenteDTO docente = GestioneFormazioneBO.getDocenteFromId(Integer.parseInt(id_docente), session);
 				
-				String path = Costanti.PATH_FOLDER+"//Formazione//Docenti//"+docente.getCognome()+"_"+docente.getNome()+"//"+docente.getCv();
+				String path = Costanti.PATH_FOLDER+"//Formazione//Docenti//"+docente.getNome()+"_"+docente.getCognome()+"//"+docente.getCv();
 				
 				downloadFile(path, response.getOutputStream());
 				
@@ -702,8 +703,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			else if(action.equals("lista_partecipanti")) {
 			
 				ArrayList<ForPartecipanteDTO> lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti(session);
+				//ArrayList<ForAziendaDTO> lista_aziende = GestioneFormazioneBO.getListaAziende(session);
 				
 				request.getSession().setAttribute("lista_partecipanti", lista_partecipanti);
+				//request.getSession().setAttribute("lista_aziende", lista_aziende);
 				
 				session.getTransaction().commit();
 				session.close();
@@ -753,6 +756,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				ForPartecipanteDTO partecipante = new ForPartecipanteDTO();		
 				partecipante.setCognome(cognome);
 				partecipante.setNome(nome);
+//				if(azienda!=null && !azienda.equals("")) {
+//					partecipante.setAzienda(new ForAziendaDTO(Integer.parseInt(azienda),""));	
+//				}
 				partecipante.setAzienda(azienda);
 				partecipante.setData_nascita(df.parse(data_nascita));				
 			
@@ -810,6 +816,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				ForPartecipanteDTO partecipante = GestioneFormazioneBO.getPartecipanteFromId(Integer.parseInt(id),session);	
 				partecipante.setCognome(cognome);
 				partecipante.setNome(nome);
+//				if(azienda!=null && !azienda.equals("")) {
+//					partecipante.setAzienda(new ForAziendaDTO(Integer.parseInt(azienda),""));	
+//				}
 				partecipante.setAzienda(azienda);
 				partecipante.setData_nascita(df.parse(data_nascita));				
 			
@@ -960,7 +969,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		     	dispatcher.forward(request,response);
 				
 			}			
-			else if(action.equals("scadenzario_create")) {
+			else if(action.equals("scadenzario_partecipante_create")) {
 				
 				ajax = true;
 			
@@ -1011,7 +1020,115 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneForCorsi.jsp");
 		     	dispatcher.forward(request,response);
 			}
-			
+//			else if(action.equals("lista_aziende")) {
+//			
+//				ArrayList<ForAziendaDTO> lista_aziende = GestioneFormazioneBO.getListaAziende(session);
+//				
+//				request.getSession().setAttribute("lista_aziende", lista_aziende);
+//				
+//				session.getTransaction().commit();
+//				session.close();
+//				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneForAziende.jsp");
+//		     	dispatcher.forward(request,response);
+//				
+//				
+//			}
+//			else if(action.equals("nuova_azienda")) {
+//				
+//				ajax = true;
+//				
+//				response.setContentType("application/json");
+//				 
+//			  	List<FileItem> items = null;
+//		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+//
+//		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+//		        	}
+//		        
+//		       
+//				FileItem fileItem = null;
+//				String filename= null;
+//		        Hashtable<String,String> ret = new Hashtable<String,String>();
+//		      
+//		        for (FileItem item : items) {
+//	            	 if (!item.isFormField()) {
+//	            		
+//	                     fileItem = item;
+//	                     filename = item.getName();
+//	                     
+//	            	 }else
+//	            	 {
+//	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+//	            	 }
+//	            	
+//	            }
+//		
+//				String descrizione = ret.get("descrizione");
+//				
+//				ForAziendaDTO azienda = new ForAziendaDTO();
+//				
+//				azienda.setDescrizione(descrizione);
+//				
+//				session.save(azienda);
+//				
+//				myObj = new JsonObject();
+//				PrintWriter  out = response.getWriter();
+//				myObj.addProperty("success", true);
+//				myObj.addProperty("messaggio", "Azienda salvata con successo!");
+//				out.print(myObj);
+//				session.getTransaction().commit();
+//				session.close();
+//				
+//			}
+//			else if(action.equals("modifica_azienda")) {
+//				
+//				ajax = true;
+//				
+//				response.setContentType("application/json");
+//				 
+//			  	List<FileItem> items = null;
+//		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+//
+//		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+//		        	}
+//		        
+//		       
+//				FileItem fileItem = null;
+//				String filename= null;
+//		        Hashtable<String,String> ret = new Hashtable<String,String>();
+//		      
+//		        for (FileItem item : items) {
+//	            	 if (!item.isFormField()) {
+//	            		
+//	                     fileItem = item;
+//	                     filename = item.getName();
+//	                     
+//	            	 }else
+//	            	 {
+//	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+//	            	 }
+//	            	
+//	            }
+//		
+//		        String id_azienda = request.getParameter("id_azienda");
+//				String descrizione = ret.get("descrizione_mod");
+//				
+//				
+//				ForAziendaDTO azienda = GestioneFormazioneBO.getAziendaFromId(Integer.parseInt(id_azienda), session);
+//				
+//				azienda.setDescrizione(descrizione);
+//				
+//				session.update(azienda);
+//				
+//				myObj = new JsonObject();
+//				PrintWriter  out = response.getWriter();
+//				myObj.addProperty("success", true);
+//				myObj.addProperty("messaggio", "Azienda modificata con successo!");
+//				out.print(myObj);
+//				session.getTransaction().commit();
+//				session.close();
+//				
+//			}
 		}catch(Exception e) {
 			
 			session.getTransaction().rollback();

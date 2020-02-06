@@ -12631,6 +12631,7 @@ function eliminaAllegatoFormazione(id_allegato, id_corso, id_categoria){
         				
         				$('#myModalYesOrNo').hide();
         				$('.modal-backdrop').hide();
+        				location.reload();
         			    //  $(this).off('hidden.bs.modal');
        			});			  
  		  }else{
@@ -12906,7 +12907,7 @@ function addCalendarFormazione(){
 	 pleaseWaitDiv = $('#pleaseWaitDialog');
 	 pleaseWaitDiv.modal();
 	  
-	 var url = "gestioneFormazione.do?action=scadenzario_create";
+	 var url = "gestioneFormazione.do?action=scadenzario_partecipante_create";
 	   
 	   
 $.ajax({
@@ -13102,4 +13103,229 @@ function createVerLDTable(duplicate, messaggio){
 //				$('#myModal').modal('show');
 //	  		}
 	  }
+}
+
+
+function saveVerDuplicatiFromModal(){
+	  
+	  
+	  var ids = []; 
+	  var note = [];
+	  var flag = 0;
+	  var check = 0;
+	  $( "#tabLD input[type=checkbox]" ).each(function( i ) {
+		 
+		  if (this.checked) {
+			  check=1;
+            console.log($(this).val()); 
+            ids.push(""+this.value);
+            if($('#note_obsolescenza_'+i).val()!=''){
+          	  note.push($('#note_obsolescenza_'+i).val());  
+            }else{
+          	  $('#myModalErrorContent').html("Attenzione! Inserisci le note di obsolescenza!");
+			  		$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');		
+					flag = 1;
+					check=0
+					return ;					
+            }              
+        }
+		 });
+	  if(flag==0 && check ==1){
+		  
+	  
+	  $("#modalListaDuplicati").modal("hide");
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+		  var  dataObj = {};
+	  	dataObj.ids =""+ ids+"";
+	  	dataObj.note = ""+note+"";
+	  
+		  $.ajax({
+	    	  type: "POST",
+	    	  url: "caricaPacchettoVerificazione.do?action=duplicati",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	
+	    	  success: function( data, textStatus) {
+		    	
+	    		  $('#files').html("");
+
+	    		  pleaseWaitDiv.modal('hide');
+	    		  if(data.success)
+	    		  { 
+	    			  if(data.messaggio != ""){
+	    			  		$('#myModalErrorContent').html(data.messaggio);
+	    			  		$('#myModalError').removeClass();
+	    			  		$('#myModalError').addClass("modal modal-success");
+							$('#myModalError').modal('show');
+							
+	    		  		}
+//	    			  else{
+//	    		  			$('#myModalErrorContent').html("Salvato");
+//	    			  		$('#myModal').removeClass();
+//	    			  		$('#myModal').addClass("modal modal-success");
+//	    					$('#myModal').modal('show');
+//	    		  		}
+						$( "#tabLD" ).html("");
+						
+	    		
+	    		  }else{
+	    			  	$('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+						$('#myModalError').modal('show');
+						$( "#tabLD" ).html("");
+	    		  }
+	    		  $('#progress .progress-bar').css(
+		                    'width',
+		                    '0%'
+		                );
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+
+	    		  pleaseWaitDiv.modal('hide');
+	    		  
+	    		   $('#myModalErrorContent').html(textStatus);
+			  		$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+					$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+
+					$( "#tabLD" ).html("");
+					  $('#progress .progress-bar').css(
+			                    'width',
+			                    '0%'
+			                );
+	    	  }
+	      });
+	  }else if(check==0 && flag ==0){
+      	  $('#myModalErrorContent').html("Attenzione! Seleziona una misura!");
+	  		$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');		
+			
+			return false;					
+  }       
+}
+
+function nuovaForAzienda(){
+	
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#nuovaAziendaForm')[0]; 
+		  var formData = new FormData(form);
+		  
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneFormazione.do?action=nuova_azienda",
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+   			$('#myModalError').on('hidden.bs.modal', function(){	         			
+ 				
+   				 location.reload()
+  			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nella creazione dell'azienda!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+  });
+	
+}
+
+
+function modificaForAzienda(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#modificaAziendaForm')[0]; 
+		  var formData = new FormData(form);
+		 
+		  var id_azienda = $('#id_azienda').val();
+$.ajax({
+	  type: "POST",
+	  url: "gestioneFormazione.do?action=modifica_azienda&id_azienda="+id_azienda,
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+ 			$('#myModalError').on('hidden.bs.modal', function(){	         			
+				
+ 				 location.reload()
+			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+});
 }

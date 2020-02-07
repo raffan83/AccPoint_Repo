@@ -270,12 +270,15 @@
  <th>Tipo</th>
  <th>Data ultima verifica</th>
  <th>Data prossima verifica</th> 
- <th>Azioni</th>
+ <th>Ora prevista</th>
+ <th>Luogo</th>
+  <th>Azioni</th>
  </tr></thead>
  
  <tbody>
  
- <c:forEach items="${lista_strumenti_intervento}" var="strumento_int">
+ <c:forEach items="${lista_strumenti_intervento}" var="strumento_int"> 
+ 
  
  	<tr role="row" id="${strumento_int.verStrumento.id}">
 
@@ -289,6 +292,19 @@
 <td>${strumento_int.verStrumento.tipo.descrizione }</td>	
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento_int.verStrumento.data_ultima_verifica }" /></td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento_int.verStrumento.data_prossima_verifica }" /></td>
+<td>${strumento_int.ora_prevista }</td>
+<td>
+<c:if test="${interventover.in_sede_cliente == 0 }">
+IN SEDE
+</c:if>
+<c:if test="${interventover.in_sede_cliente == 1 }">
+PRESSO CLIENTE
+</c:if>
+<c:if test="${interventover.in_sede_cliente == 2 }">
+via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descrizione }
+</c:if>
+
+</td>
 <td>
 <a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento_int.verStrumento.famiglia_strumento.descrizione }','${strumento_int.verStrumento.freqMesi }','${strumento_int.verStrumento.denominazione }','${strumento_int.verStrumento.costruttore }','${strumento_int.verStrumento.modello }','${strumento_int.verStrumento.matricola }',
 	'${strumento_int.verStrumento.classe }','${strumento_int.verStrumento.tipo.id }','${strumento_int.verStrumento.tipo.descrizione }','${strumento_int.verStrumento.data_ultima_verifica }','${strumento_int.verStrumento.data_prossima_verifica }','${strumento_int.verStrumento.um }','${strumento_int.verStrumento.portata_min_C1 }',
@@ -347,6 +363,8 @@
 <%--  <th>Registro</th> --%>
  <th>Numero Rapporto</th>
  <th>Numero Attestato</th>
+ <th>Obsoleta</th>
+ <th>Note Obsolescenza</th>
  <td style="min-width:150px">Azioni</td>
  </tr></thead>
  
@@ -367,6 +385,8 @@
 <%-- <td>${misura.registro }</td> --%>
 <td>${misura.numeroRapporto }</td>
 <td>${misura.numeroAttestato }</td>
+<td><span class="label bigLabelTable <c:if test="${misura.obsoleta == 'S'}">label-danger</c:if><c:if test="${misura.obsoleta == 'N'}">label-success </c:if>">${misura.obsoleta}</span> </td>
+<td>${misura.note_obsolescenza }</td>
 <td>
 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
 
@@ -780,7 +800,7 @@
       <div class="modal-footer">
 
 
-        <button type="button" class="btn btn-danger"onclick="saveDuplicati()"  >Salva</button>
+        <button type="button" class="btn btn-danger"onclick="saveVerDuplicatiFromModal()"  >Salva</button>
       </div>
     </div>
   </div>
@@ -1132,7 +1152,7 @@
 	    	      responsive: true,
 	    	      scrollX: false,
 	    	      stateSave: true,
-	    	      order:[[0,'desc']],
+	    	      order:[[2,'desc']],
 	    	      select: {		
 	    	    	  
 			        	style:    'multi+shift',
@@ -1141,7 +1161,7 @@
 	    	      columnDefs: [
 	    	    	  { className: "select-checkbox", targets: 1,  orderable: false },
 					  { responsivePriority: 1, targets: 0 },
-	    	          { responsivePriority: 2, targets: 10 }
+	    	          { responsivePriority: 2, targets: 12 }
 	    	               ],
 	             
 	    	               buttons: [ {
@@ -1236,7 +1256,7 @@
 	    	      columnDefs: [
 	    	    	 
 					  { responsivePriority: 1, targets: 0 },
-					  { responsivePriority: 2, targets: 10 },
+					  { responsivePriority: 2, targets: 12 },
 	    	          
 	    	               ],
 	             

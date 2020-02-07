@@ -401,8 +401,9 @@ function inviaID(){
 			}
     		
     	}		
-		
-    	salvaComunicazionePreventiva(string, id_cliente, id_sede, commessa, tecnico_verificatore.split("_")[1], data_prevista, luogo);
+		var company = $('#company').val();
+    	
+    	salvaComunicazionePreventiva(string, id_cliente, id_sede, commessa, tecnico_verificatore.split("_")[1], data_prevista, luogo, company);
 	}
     
 }

@@ -10810,7 +10810,7 @@ function spostaStrumentoPacco(id_util, id_sede_util, id_pacco){
 	
 }
 
-function salvaComunicazionePreventiva(ids, id_cliente, id_sede, commessa, tecnico_verificatore, data_prevista, luogo){
+function salvaComunicazionePreventiva(ids, id_cliente, id_sede, commessa, tecnico_verificatore, data_prevista, luogo, company){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	pleaseWaitDiv.modal();
 	
@@ -10822,6 +10822,7 @@ function salvaComunicazionePreventiva(ids, id_cliente, id_sede, commessa, tecnic
 		dataObj.tecnico_verificatore = tecnico_verificatore;		
 		dataObj.data_prevista = data_prevista;
 		dataObj.luogo = luogo;
+		dataObj.company = company;
 
 		$.ajax({
 	type: "POST",

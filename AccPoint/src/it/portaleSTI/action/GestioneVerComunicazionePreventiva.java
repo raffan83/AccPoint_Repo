@@ -164,7 +164,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				String tecnico_verificatore = request.getParameter("tecnico_verificatore");
 				String data_prevista = request.getParameter("data_prevista");
 				String luogo = request.getParameter("luogo");
-				
+				String id_company = request.getParameter("company");
 				
 				ClienteDTO cl = null; 
 						
@@ -190,7 +190,8 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 
 				String timeStamp=sdf.format(new Date());
 				
-				intervento.setCompany(utente.getCompany());
+				CompanyDTO company = GestioneCompanyBO.getCompanyById(id_company, session);
+				intervento.setCompany(company);
 				intervento.setNome_pack("VER"+utente.getCompany().getId()+""+timeStamp);
 				
 				sdf = new SimpleDateFormat("dd/MM/yyyy");

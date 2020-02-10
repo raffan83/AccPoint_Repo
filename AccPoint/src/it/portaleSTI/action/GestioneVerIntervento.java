@@ -21,6 +21,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -284,10 +286,7 @@ public class GestioneVerIntervento extends HttpServlet {
 				intervento.setData_creazione(new Date());
 				SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
 
-				String timeStamp=sdf.format(new Date());
 				
-				intervento.setCompany(utente.getCompany());
-				intervento.setNome_pack("VER"+utente.getCompany().getId()+""+timeStamp);
 				
 				sdf = new SimpleDateFormat("dd/MM/yyyy");
 				intervento.setData_prevista(sdf.parse(data_prevista));
@@ -333,6 +332,9 @@ public class GestioneVerIntervento extends HttpServlet {
 		  	    dispatcher.forward(request,response);
 			}
 			else if(action.equals("chiudi")) {
+				
+				ajax=true;
+				
 				String id_intervento = request.getParameter("id_intervento");
 				id_intervento = Utility.decryptData(id_intervento);
 				VerInterventoDTO interventover = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);	
@@ -351,6 +353,8 @@ public class GestioneVerIntervento extends HttpServlet {
 			}
 			else if(action.equals("apri")) {
 				
+				ajax=true;
+				
 				String id_intervento = request.getParameter("id_intervento");
 				id_intervento = Utility.decryptData(id_intervento);
 				VerInterventoDTO interventover = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);	
@@ -366,6 +370,25 @@ public class GestioneVerIntervento extends HttpServlet {
 				myObj.addProperty("messaggio", "Intervento aperto con successo!");
 				myObj.addProperty("id_intervento", id_intervento);
 				PrintWriter out = response.getWriter();
+				out.print(myObj);
+			}
+			else if(action.equals("intervento_strumento")) {
+				
+				ajax=true;
+				
+				String id_intervento = request.getParameter("id_intervento");
+				
+				ArrayList<VerInterventoStrumentiDTO> listaInterventoStrumenti =  GestioneVerStrumentiBO.getListaStrumentiIntervento(Integer.parseInt(id_intervento), session);
+				
+
+				Gson gson = new Gson(); 
+			
+			    JsonElement obj = gson.toJsonTree(listaInterventoStrumenti);			     
+
+			    myObj.addProperty("success", true);
+			       
+			    myObj.add("dataInfo", obj);
+			    PrintWriter out = response.getWriter();
 				out.print(myObj);
 			}
 			

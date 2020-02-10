@@ -1,13 +1,16 @@
 package it.portaleSTI.DAO;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
+import it.portaleSTI.DTO.VerStrumentoDTO;
 
 public class GestioneVerInterventoDAO {
 
@@ -56,6 +59,89 @@ public class GestioneVerInterventoDAO {
 		lista = (ArrayList<VerMisuraDTO>) query.list();
 		
 		return lista;
+	}
+
+	public static boolean isPresentVerStrumento(int id_intevento, VerStrumentoDTO verStrumento, Session session) {
+
+		if(verStrumento.getCreato().equals("S")) 
+		{
+			return false;
+		}
+		
+		Query query=null;
+		boolean isPresent=false;
+		List<MisuraDTO> misura=null;
+		try {
+			Session session1=SessionFacotryDAO.get().openSession();	
+			session1.beginTransaction();
+			
+		String s_query = "from VerMisuraDTO WHERE verIntervento.id = :_intervento AND verStrumento.id =:_strumento";
+						  
+	    query = session1.createQuery(s_query);
+	    query.setParameter("_intervento",id_intevento);
+	    query.setParameter("_strumento",verStrumento.getId());
+		
+	    misura=(List<MisuraDTO>)query.list();
+		
+	    session1.getTransaction().commit();
+		session1.close();
+		
+	    if(misura.size()>0)
+	    {
+	    	return true;
+	    }
+	    	else
+	    {
+	    	return false;
+	    }
+	    
+	    
+		
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
+		
+		
+		return isPresent;
+	}
+
+	public static ArrayList<VerMisuraDTO> getMisuraObsoleta(int id, String idStr) {
+		
+		Query query=null;
+		ArrayList<VerMisuraDTO> misura=new ArrayList<VerMisuraDTO>();
+
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from VerMisuraDTO WHERE verIntervento.id = :_idIntervento AND verStrumento.id =:_idStrumento";
+					  //  from MisuraDTO WHERE intervento.id =36              
+	    query = session.createQuery(s_query);
+	    query.setParameter("_idIntervento",id);
+	    query.setParameter("_idStrumento",Integer.parseInt(idStr));
+		
+	    misura=(ArrayList<VerMisuraDTO>)query.list();
+		session.getTransaction().commit();
+		session.close();
+
+	     
+		return misura;
+	}
+
+	public static void misuraObsoleta(VerMisuraDTO misura, Session session) {
+
+
+		Query query=null;
+		
+		
+		String s_query = "update VerMisuraDTO SET obsoleta='S' WHERE id = :_id";
+						  
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",misura.getId());
+		
+	   query.executeUpdate();
 	}
 
 }

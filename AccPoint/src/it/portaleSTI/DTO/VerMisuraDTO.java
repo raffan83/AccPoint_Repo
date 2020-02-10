@@ -67,6 +67,26 @@ public class VerMisuraDTO {
 	private String comunicazione_preventiva;
 	
 	private String comunicazione_esito;
+	
+	private String note_obsolescenza;
+	
+	private String obsoleta;
+
+		public String getNote_obsolescenza() {
+		return note_obsolescenza;
+	}
+
+	public void setNote_obsolescenza(String note_obsolescenza) {
+		this.note_obsolescenza = note_obsolescenza;
+	}
+
+	public String getObsoleta() {
+		return obsoleta;
+	}
+
+	public void setObsoleta(String obsoleta) {
+		this.obsoleta = obsoleta;
+	}
 
 		public VerMisuraDTO() {
 	}

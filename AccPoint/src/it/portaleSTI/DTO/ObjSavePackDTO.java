@@ -8,6 +8,8 @@ public class ObjSavePackDTO {
 	private int esito;
 
 	private ArrayList<StrumentoDTO> listaStrumentiDuplicati = new ArrayList<StrumentoDTO>();
+	
+	private ArrayList<VerStrumentoDTO> listaVerStrumentiDuplicati = new ArrayList<VerStrumentoDTO>();
 
 	private String errorMsg="";
 	
@@ -74,6 +76,14 @@ public class ObjSavePackDTO {
 
 	public void setLAT(boolean isLAT) {
 		this.isLAT = isLAT;
+	}
+
+	public ArrayList<VerStrumentoDTO> getListaVerStrumentiDuplicati() {
+		return listaVerStrumentiDuplicati;
+	}
+
+	public void setListaVerStrumentiDuplicati(ArrayList<VerStrumentoDTO> listaVerStrumentiDuplicati) {
+		this.listaVerStrumentiDuplicati = listaVerStrumentiDuplicati;
 	}
 	
 	

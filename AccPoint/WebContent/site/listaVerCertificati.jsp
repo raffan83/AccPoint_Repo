@@ -74,7 +74,8 @@
 								          <option value="lavorazione">In lavorazione</option>
 								          </c:if>		
 								           <option value="chiusi_0">Chiusi Da Emettere</option>
-								           <option value="chiusi_1">Chiusi Emessi</option>					          
+								           <option value="chiusi_1">Chiusi Emessi</option>		
+								           <option value="obsoleti">Obsoleti</option>			          
 		                     </select>
 		
 		                   

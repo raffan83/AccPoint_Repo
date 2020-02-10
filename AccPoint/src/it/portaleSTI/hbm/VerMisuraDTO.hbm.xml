@@ -113,5 +113,11 @@
          <property name="comunicazione_esito" type="java.lang.String">
             <column name="comunicazione_esito" />
         </property> 
+        <property name="obsoleta" type="java.lang.String">
+            <column name="obsoleta" />
+        </property> 
+        <property name="note_obsolescenza" type="java.lang.String">
+            <column name="note_obsolescenza" />
+        </property> 
     </class>
 </hibernate-mapping>

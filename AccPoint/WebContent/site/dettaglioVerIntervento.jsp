@@ -364,8 +364,8 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
  <th>Numero Rapporto</th>
  <th>Numero Attestato</th>
  
-<%--  <th>Obsoleta</th>
- <th>Note Obsolescenza</th> --%>
+ <th>Obsoleta</th>
+ <th>Note Obsolescenza</th> 
  <td style="min-width:150px">Azioni</td>
  </tr></thead>
  
@@ -386,8 +386,8 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 <%-- <td>${misura.registro }</td> --%>
 <td>${misura.numeroRapporto }</td>
 <td>${misura.numeroAttestato }</td>
-<%-- <td><span class="label bigLabelTable <c:if test="${misura.obsoleta == 'S'}">label-danger</c:if><c:if test="${misura.obsoleta == 'N'}">label-success </c:if>">${misura.obsoleta}</span> </td>
-<td>${misura.note_obsolescenza }</td> --%>
+ <td><span class="label bigLabelTable <c:if test="${misura.obsoleta == 'S'}">label-danger</c:if><c:if test="${misura.obsoleta == 'N'}">label-success </c:if>">${misura.obsoleta}</span> </td>
+<td>${misura.note_obsolescenza }</td> 
 <td>
 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
 
@@ -853,6 +853,11 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 
  <script type="text/javascript">
  
+ $('#modalListaDuplicati').on('hidden.bs.modal',function(){
+	
+	 location.reload();
+ });
+ 
  function creaComunicazione(){
 	 
 	 var table = $("#tabPM").DataTable();
@@ -1162,7 +1167,7 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 	    	      columnDefs: [
 	    	    	  { className: "select-checkbox", targets: 1,  orderable: false },
 					  { responsivePriority: 1, targets: 0 },
-	    	          { responsivePriority: 2, targets: 10 }
+	    	          { responsivePriority: 2, targets: 12 }
 	    	               ],
 	             
 	    	               buttons: [ {

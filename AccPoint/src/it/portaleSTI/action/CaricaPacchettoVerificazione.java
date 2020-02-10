@@ -25,12 +25,14 @@ import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
+import it.portaleSTI.bo.GestioneVerStrumentiBO;
 
 /**
  * Servlet implementation class CaricaPacchettoVerificazione
@@ -69,52 +71,119 @@ public class CaricaPacchettoVerificazione extends HttpServlet {
 		
 		try {			
 			
-	
-			String id_intervento = request.getParameter("id_intervento");
+			String action = request.getParameter("action");
 			UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
-			
-			VerInterventoDTO ver_intervento = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);
-			
-			ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
-			writer = response.getWriter();
-			response.setContentType("application/json");
-			
-			List<FileItem> items = uploadHandler.parseRequest(request);
-			for (FileItem item : items) {
-				if (!item.isFormField()) {
+			if(action== null) {
+				
+				String id_intervento = request.getParameter("id_intervento");
+				
+				
+				VerInterventoDTO ver_intervento = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);
+				
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+				writer = response.getWriter();
+				response.setContentType("application/json");
+				
+				List<FileItem> items = uploadHandler.parseRequest(request);
+				for (FileItem item : items) {
+					if (!item.isFormField()) {
 
-					 esito =GestioneVerInterventoBO.savePackUpload(item,ver_intervento.getNome_pack());
+						 esito =GestioneVerInterventoBO.savePackUpload(item,ver_intervento.getNome_pack());
 
-					if(esito.getEsito()==0)
+						if(esito.getEsito()==0)
+						{
+							jsono.addProperty("success", false);
+							jsono.addProperty("messaggio", esito.getErrorMsg());
+						}
+
+						else if(esito.getEsito()==1 && esito.isDuplicati()==false)
+						{
+
+							esito = GestioneVerInterventoBO.saveDataDB(esito,ver_intervento,utente,session);
+
+							jsono.addProperty("success", true);
+							jsono.addProperty("messaggio", "Pacchetto caricato con successo!");
+						}
+						if(esito.getEsito()==1 && esito.isDuplicati()==true)
+						{
+							for (int i = 0; i < esito.getListaVerStrumentiDuplicati().size(); i++) 
+							{
+								VerStrumentoDTO verStrumento = GestioneVerStrumentiBO.getVerStrumentoFromId(esito.getListaVerStrumentiDuplicati().get(i).getId(),session);
+								esito.getListaVerStrumentiDuplicati().set(i,verStrumento);
+
+							}
+							
+							Gson gson = new Gson();
+							String jsonInString = gson.toJson(esito.getListaVerStrumentiDuplicati());
+							
+							jsono.addProperty("success", true);                      				
+							jsono.addProperty("duplicate",jsonInString);
+						}
+						
+						else if(esito.getEsito()==2)
+						{
+							jsono.addProperty("success", false);
+							jsono.addProperty("messaggio",Strings.CARICA_PACCHETTO_ESITO_2);
+
+						}
+					}
+				}
+				request.getSession().setAttribute("esito", esito);
+				
+				session.getTransaction().commit();
+				session.close();	
+				
+				writer.write(jsono.toString());
+				writer.close();
+			}
+			else if(action!=null && action.equals("duplicati")) {
+				
+				String obj =request.getParameter("ids");
+				String note_obsolescenza = request.getParameter("note");
+
+				VerInterventoDTO ver_intervento  =(VerInterventoDTO)request.getSession().getAttribute("interventover");
+				
+				esito =(ObjSavePackDTO)request.getSession().getAttribute("esito");	
+
+				if(obj!=null && obj.length()>0)
+				{
+					String[] lista =obj.split(",");
+					String[] note = note_obsolescenza.split(",");
+
+					for (int i = 0; i < lista.length; i++) 
 					{
-						jsono.addProperty("success", false);
-						jsono.addProperty("messaggio", esito.getErrorMsg());
+						
+						GestioneVerInterventoBO.updateMisura(lista[i],esito,ver_intervento,utente, note[i], session);	
+						
+
 					}
 
-					else if(esito.getEsito()==1)
+					jsono.addProperty("success", true);
+					jsono.addProperty("messaggio", "Misura caricata con successo!");
+
+				}
+				else
+				{
+
+					if(esito.getInterventoDati().getNumStrMis()==0)
 					{
-
-						esito = GestioneVerInterventoBO.saveDataDB(esito,ver_intervento,utente,session);
-
+						jsono.addProperty("messaggio","Nessun strumento modificato o inserito");
+						GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
 						jsono.addProperty("success", true);
-						jsono.addProperty("messaggio", "Pacchetto caricato con successo!");
 					}
-					
-					else if(esito.getEsito()==2)
+					else
 					{
-						jsono.addProperty("success", false);
-						jsono.addProperty("messaggio",Strings.CARICA_PACCHETTO_ESITO_2);
+						jsono.addProperty("success", true);
+						jsono.addProperty("messaggio", Strings.CARICA_PACCHETTO_ESITO_1(esito.getInterventoDati().getNumStrMis(), esito.getInterventoDati().getNumStrNuovi()));
 
 					}
 				}
+				session.getTransaction().commit();
+				session.close();
+				writer.write(jsono.toString());
+				writer.close();
 			}
-			request.getSession().setAttribute("esito", esito);
 			
-			session.getTransaction().commit();
-			session.close();	
-			
-			writer.write(jsono.toString());
-			writer.close();
 		}
 		catch (Exception e)
 		{ 

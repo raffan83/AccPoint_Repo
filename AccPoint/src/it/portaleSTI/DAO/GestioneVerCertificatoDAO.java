@@ -99,7 +99,7 @@ public static LinkedHashMap<String, String> getClientiPerVerCertificato(UtenteDT
 	}
 
 
-public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato,int filtro_emissione, int idCliente, int idSede, Session session) {
+public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato,int filtro_emissione, int idCliente, int idSede, boolean obsoleti,Session session) {
 	
 	ArrayList<VerCertificatoDTO> lista = null;	
 	String s_query = "";
@@ -110,27 +110,43 @@ public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato,int fil
 		s_query ="from VerCertificatoDTO certificato WHERE certificato.misura.verIntervento.id_cliente = :_id_cliente and certificato.misura.verIntervento.id_sede = :_id_sede"; 
 	}		
 	
-	if(idCliente!=0 && stato!=0) {
-		s_query = s_query + " and certificato.stato.id= :_stato";				 
-	}else if(idCliente == 0 && stato!=0) {
-		s_query = s_query + " where certificato.stato.id= :_stato";
+	if(obsoleti) {
+		
+		if(idCliente == 0 && idSede== 0) {
+			s_query = s_query +" where certificato.misura.obsoleta='S'";	
+		}else {
+			s_query = s_query +" and certificato.misura.obsoleta='S'";
+		}
+		
+		Query query = session.createQuery(s_query);
+		if(idCliente != 0) {
+			query.setParameter("_id_cliente",idCliente);
+			query.setParameter("_id_sede",idSede);
+		}
+		lista = (ArrayList<VerCertificatoDTO>)query.list();
+		
+	}else {
+		if(idCliente!=0 && stato!=0) {
+			s_query = s_query + " and certificato.stato.id= :_stato";				 
+		}else if(idCliente == 0 && stato!=0) {
+			s_query = s_query + " where certificato.stato.id= :_stato";
+		}
+		
+		if(stato!=0) {
+			s_query = s_query +" and certificato.firmato = :_filtro_emissione";
+		}
+				
+		Query query = session.createQuery(s_query);
+		if(stato != 0) {
+			query.setParameter("_stato",stato);
+			query.setParameter("_filtro_emissione",filtro_emissione);	
+		}	
+		if(idCliente != 0) {
+			query.setParameter("_id_cliente",idCliente);
+			query.setParameter("_id_sede",idSede);
+		}
+		lista = (ArrayList<VerCertificatoDTO>)query.list();
 	}
-	
-	if(stato!=0) {
-		s_query = s_query +" and certificato.firmato = :_filtro_emissione";
-	}
-			
-	Query query = session.createQuery(s_query);
-	if(stato != 0) {
-		query.setParameter("_stato",stato);
-		query.setParameter("_filtro_emissione",filtro_emissione);	
-	}	
-	if(idCliente != 0) {
-		query.setParameter("_id_cliente",idCliente);
-		query.setParameter("_id_sede",idSede);
-	}
-	
-	lista = (ArrayList<VerCertificatoDTO>)query.list();
 
 	return lista;
 }

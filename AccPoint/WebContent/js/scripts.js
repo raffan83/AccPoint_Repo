@@ -12078,35 +12078,39 @@ function sendEmailVerificazione(){
 	  
 	
 	  var indirizzo = $('#indirizzo_1').val();
-	  var id_certificato = $('#id_certificato').val();
-	  $.ajax({
-	  type: "POST",
-	  url: "gestioneVerCertificati.do?action=invia_email&id_certificato="+id_certificato+"&indirizzo="+indirizzo,
-	  dataType: "json",
-
-	  success: function( data, textStatus) {
-		  pleaseWaitDiv.modal('hide');
-		  if(data.success)
-		  { 
-			  $('#myModalErrorContent').html(data.messaggio);
- 			  	$('#myModalError').removeClass();
- 				$('#myModalError').addClass("modal modal-success");
- 				$('#report_button').hide();
- 				$('#visualizza_report').hide();
- 				$('#myModalError').modal('show');
- 				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalSendEmail').modal('hide');
-				});
-		
-		  }else{
-			  
-			  $('#myModalErrorContent').html("Errore nell'invio dell'email!");
- 			  	$('#myModalError').removeClass();
- 				$('#myModalError').addClass("modal modal-danger");
- 				$('#report_button').hide();
- 				$('#visualizza_report').hide();
- 				$('#myModalError').modal('show');			
-		  }
+	  
+	  if(indirizzo!=null && indirizzo!=''){
+	  
+		  var id_certificato = $('#id_certificato').val();
+		  $.ajax({
+		  type: "POST",
+		  url: "gestioneVerCertificati.do?action=invia_email&id_certificato="+id_certificato+"&indirizzo="+indirizzo,
+		  dataType: "json",
+	
+		  success: function( data, textStatus) {
+			  pleaseWaitDiv.modal('hide');
+			  if(data.success)
+			  { 
+				  $('#myModalErrorContent').html(data.messaggio);
+	 			  	$('#myModalError').removeClass();
+	 				$('#myModalError').addClass("modal modal-success");
+	 				$('#report_button').hide();
+	 				$('#visualizza_report').hide();
+	 				$('#myModalError').modal('show');
+	 				$('#myModalError').on('hidden.bs.modal', function(){
+						$('#myModalSendEmail').modal('hide');
+					});
+			
+			  }else{
+				  
+				  $('#myModalErrorContent').html("Errore nell'invio dell'email!");
+	 			  	$('#myModalError').removeClass();
+	 				$('#myModalError').addClass("modal modal-danger");
+	 				$('#report_button').hide();
+	 				$('#visualizza_report').hide();
+	 				$('#myModalError').modal('show');			
+			  }
+		  
 	  },
 
 	  error: function(jqXHR, textStatus, errorThrown){
@@ -12122,7 +12126,15 @@ function sendEmailVerificazione(){
 
 	  }
   });
-	
+	  }else{
+		  pleaseWaitDiv.modal('hide');
+			  $('#myModalErrorContent').html("Nessun indirizzo email inserito!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalError').modal('show');	
+		  }
 	
 }
 

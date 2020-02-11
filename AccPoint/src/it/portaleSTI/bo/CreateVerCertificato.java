@@ -199,7 +199,11 @@ public class CreateVerCertificato {
 		if(sede!=null && sede.getN_REA()!=null) {
 			report.addParameter("rea", sede.getN_REA());
 		}else {
-			report.addParameter("rea", "");
+			if(cliente!=null && cliente.getNumeroREA()!=null) {
+				report.addParameter("rea", cliente.getNumeroREA());	
+			}else {
+				report.addParameter("rea", "");	
+			}
 		}
 		if(misura.getVerStrumento().getDenominazione()!=null) {
 			report.addParameter("denominazione_strumento", misura.getVerStrumento().getDenominazione());

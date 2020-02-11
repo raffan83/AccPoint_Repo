@@ -443,22 +443,17 @@ public class GestioneVerCertificati extends HttpServlet {
 			}
 			else if(action.equals("invia_email")) {
 				
+				ajax = true;
+				
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
- 				ajax = true;
+ 				
 				String id_certificato = request.getParameter("id_certificato");
 				String indirizzo = request.getParameter("indirizzo");
 				
-				VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id_certificato), session);
-				
-				indirizzo = indirizzo.replaceAll(" ", "");
-				
-				String[] lista_indirizzi = indirizzo.split(";");
-				
-				for(int i = 0; i<lista_indirizzi.length;i++) {
-					SendEmailBO.sendEmailCertificatoVerificazione(certificato, lista_indirizzi[i], getServletContext());
-				}
+				VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id_certificato), session);				
 
+				SendEmailBO.sendEmailCertificatoVerificazione(certificato, indirizzo, getServletContext());
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Email inviata con successo");
 				out.println(myObj.toString());

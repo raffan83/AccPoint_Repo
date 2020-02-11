@@ -82,8 +82,19 @@ public class CreateTestaPacco {
 			
 				report.addParameter("cliente", GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(pacco.getDdt().getId_destinatario())).getNome());
 				if(pacco.getDdt().getId_sede_destinatario()!=0) {
-					report.addParameter("sede", GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, pacco.getDdt().getId_sede_destinatario(), pacco.getDdt().getId_destinatario()).getDescrizione()
-							+ " - " + GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, pacco.getDdt().getId_sede_destinatario(), pacco.getDdt().getId_destinatario()).getIndirizzo());
+					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, pacco.getDdt().getId_sede_destinatario(), pacco.getDdt().getId_destinatario());
+					String sd = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, pacco.getDdt().getId_sede_destinatario(), pacco.getDdt().getId_destinatario()).getDescrizione();
+					
+					sd = sd +" - "+ sede.getIndirizzo();
+					if(sede.getComune()!=null) {
+						sd = sd + " - " + sede.getComune();
+					}
+					
+					if(sede.getSiglaProvincia()!=null) {
+						sd = sd + " ("+ sede.getSiglaProvincia()+")";
+					}
+					
+					report.addParameter("sede", sd);
 				}else {
 					report.addParameter("sede", "Non associate");
 				}

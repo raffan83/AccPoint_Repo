@@ -255,6 +255,7 @@ public class GestioneVerIntervento extends HttpServlet {
 				//String tecnico_riparatore = ret.get("tecnico_riparatore_mod");
 				String data_prevista = ret.get("data_prevista_mod");
 				String luogo = ret.get("luogo_mod");
+				String ids_strumenti = ret.get("ids_strumenti");
 					
 				ClienteDTO cl = null; 
 				
@@ -297,10 +298,31 @@ public class GestioneVerIntervento extends HttpServlet {
 //				}
 				
 				intervento.setIn_sede_cliente(Integer.parseInt(luogo));
-				intervento.setUser_creation(utente);
+				
 				intervento.setUser_verificazione(GestioneUtenteBO.getUtenteById(tecnico, session));
 				
 				session.update(intervento);
+				
+				
+				int strumenti_gen = ids_strumenti.split(";").length;			
+				
+		
+				for (String id: ids_strumenti.split(";")) 
+				{
+					if(!id.equals(";") && !id.equals("")) {
+						
+						VerInterventoStrumentiDTO intervento_strumento = GestioneVerInterventoBO.getInterventoStrumento(intervento.getId(), Integer.parseInt(id.split("_")[0]), session);
+						
+						intervento_strumento.setOra_prevista(id.split("_")[1]);
+						
+						if(intervento.getIn_sede_cliente()==2) {
+							intervento_strumento.setVia(id.split("_")[2]);
+							intervento_strumento.setCivico(id.split("_")[3]);
+							intervento_strumento.setComune(new ComuneDTO(Integer.parseInt(id.split("_")[4])));							
+						}
+						session.update(intervento_strumento);
+					}
+				}
 				
 				session.getTransaction().commit();
 				
@@ -378,16 +400,20 @@ public class GestioneVerIntervento extends HttpServlet {
 				
 				String id_intervento = request.getParameter("id_intervento");
 				
-				ArrayList<VerInterventoStrumentiDTO> listaInterventoStrumenti =  GestioneVerStrumentiBO.getListaStrumentiIntervento(Integer.parseInt(id_intervento), session);
+				VerInterventoDTO intervento = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);
+				//ArrayList<VerInterventoStrumentiDTO> listaInterventoStrumenti =  GestioneVerStrumentiBO.getListaStrumentiIntervento(Integer.parseInt(id_intervento), session);
+				ArrayList<UtenteDTO> lista_tecnici = GestioneUtenteBO.getUtentiFromCompany(intervento.getCompany().getId(), session);
 				
-
 				Gson gson = new Gson(); 
 			
-			    JsonElement obj = gson.toJsonTree(listaInterventoStrumenti);			     
-
+			    JsonElement obj = gson.toJsonTree(intervento.getInterventoStrumenti());	
+			    JsonElement lista_tecnici_json = gson.toJsonTree(lista_tecnici);
+			    
 			    myObj.addProperty("success", true);
 			       
 			    myObj.add("dataInfo", obj);
+			    myObj.add("tecnici", lista_tecnici_json);			    
+			    
 			    PrintWriter out = response.getWriter();
 				out.print(myObj);
 			}

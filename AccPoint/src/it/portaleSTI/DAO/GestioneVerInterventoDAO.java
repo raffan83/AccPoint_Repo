@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 
@@ -142,6 +143,24 @@ public class GestioneVerInterventoDAO {
 	    query.setParameter("_id",misura.getId());
 		
 	   query.executeUpdate();
+	}
+
+	public static VerInterventoStrumentiDTO getInterventoStrumento(int id_intervento, int id_strumento, Session session) {
+
+		ArrayList<VerInterventoStrumentiDTO> lista = null;
+		VerInterventoStrumentiDTO result = null;			
+
+		Query query = session.createQuery("from VerInterventoStrumentiDTO WHERE id_intervento = :_idIntervento AND verStrumento.id =:_idStrumento");
+	    query.setParameter("_idIntervento",id_intervento);
+	    query.setParameter("_idStrumento",id_strumento);
+		
+	    lista = (ArrayList<VerInterventoStrumentiDTO>)query.list();
+	    
+	    if(lista.size()>0) {
+	    	result = lista.get(0);
+	    }
+	    
+		return result;
 	}
 
 }

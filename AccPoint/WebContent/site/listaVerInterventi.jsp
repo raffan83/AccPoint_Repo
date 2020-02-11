@@ -94,14 +94,26 @@
 	<td>${intervento.provincia}</td>
 	<td>${intervento.commessa }</td>
 	<td>
-	<c:choose>
+	<%-- <c:choose>
 		<c:when test="${intervento.id_stato_intervento == 0}">
 		<span class="label label-success">APERTO</span>
 	</c:when>
 	<c:otherwise>
 		<span class="label label-warning">CHIUSO</span>
 	</c:otherwise>
-	</c:choose>
+	</c:choose> --%>
+	
+	<c:if test="${intervento.id_stato_intervento == 0}">
+						<%-- <a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a> --%>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiVerIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-success">APERTO</span></a>
+						
+					</c:if>
+					
+					<c:if test="${interventover.id_stato_intervento == 1}">
+						<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriVerIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">CHIUSO</span></a>
+						
+					</c:if>
+	
 	</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.data_prevista }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.data_creazione }" /></td>
@@ -155,8 +167,7 @@
        	  <div class="col-md-6" style="display:none">  
                   <label>Cliente</label>
                <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
-                
-                      <c:forEach items="${lista_clienti}" var="cliente">
+                    <c:forEach items="${lista_clienti}" var="cliente">
                      
                            <option value="${cliente.__id}">${cliente.nome}</option> 
                          
@@ -165,7 +176,7 @@
                   </select> 
                 
         </div>  	
-        <input id="cliente_mod" name="cliente_mod" class="form-control" style="width:100%">
+        <input id="cliente_mod" name="cliente_mod" type ="text" class="form-control" style="width:100%">
        		<%-- <select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_mod" name="cliente_mod" style="width:100%" required>
        		<option value=""></option>
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
@@ -254,6 +265,11 @@
 				</select>
        	</div>
        </div>       
+       <div id="tab_luogo">
+
+       	</div>
+
+      
        
        </div>
   		 
@@ -263,6 +279,7 @@
 		 <!-- <a class="btn btn-primary"  onClick="inserisciRilievo()">Salva</a>  -->
 		<!--  <a class="btn btn-primary"  type="submit">Salva</a>  -->
 		<input type="hidden" id="id_intervento" name="id_intervento">
+		<input type="hidden" id="ids_strumenti" name="ids_strumenti">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -313,7 +330,8 @@
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
-
+	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"> 
 
 </jsp:attribute>
 
@@ -321,6 +339,7 @@
 <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script> 
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <script type="text/javascript">
@@ -336,10 +355,17 @@ function modalNuovoIntervento(){
 
 
 function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico_verificatore, sede_cliente, data_prevista){
+	//getStrumentiIntervento(id_intervento, tecnico_verificatore);
+	
+	$('#luogo_mod').val(sede_cliente);
+	$('#luogo_mod').change();
+	
 	
 	$('#id_intervento').val(id_intervento);
 	$('#cliente_mod').val(id_cliente);
 	$('#cliente_mod').change();
+	
+	
 	if(id_sede!='0'){
 		$('#sede_mod').val(id_sede+"_"+id_cliente);	
 	}else{
@@ -347,20 +373,163 @@ function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, t
 	}
 	$('#sede_mod').change();
 	
-	
-	$('#tecnico_verificatore_mod').val(tecnico_verificatore);
-	$('#tecnico_verificatore_mod').change();
-/* 	$('#tecnico_riparatore_mod').val(tecnico_riparatore);
-	$('#tecnico_riparatore_mod').change(); */
-	$('#luogo_mod').val(sede_cliente);
-	$('#luogo_mod').change();
 	if(data_prevista!=null && data_prevista!=""){
 		  $('#data_prevista_mod').val(Date.parse(data_prevista).toString("dd/MM/yyyy"));
 	  }
 	
-
 	$('#myModalModificaIntervento').modal();
 }
+
+
+$('#myModalModificaIntervento').on('hidden.bs.modal',function(){
+	
+	
+	var x = $('#cliente_mod').val();
+	$('#cliente_mod').val("");
+	
+});
+
+
+function getStrumentiIntervento(id_intervento, tecnico_verificatore){
+	pleaseWaitDiv.modal();
+	var dataObj = {};
+	dataObj.id_intervento = id_intervento;
+
+	$.ajax({
+type: "POST",
+url: "gestioneVerIntervento.do?action=intervento_strumento",
+data: dataObj,
+dataType: "json",
+//if received a response from the server
+success: function( data, textStatus) {
+	  if(data.success)
+	  {  
+		  $('#tab_luogo').html("");
+		  var strumenti = data.dataInfo;
+		  var luogo = $('#luogo_mod').val();
+		  var tecnici = data.tecnici;
+		  for(var i=0;i<strumenti.length;i++){
+			  var text ="";
+			  if(strumenti[i].preventiva != 'S'){
+				if(luogo!=2){
+					text ="<div class='row' id='row_"+strumenti[i].verStrumento.id+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+strumenti[i].verStrumento.id+"' readonly value='"+strumenti[i].verStrumento.id +"'> </div>" 
+					+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
+					+"<input type='text' id='ora_"+strumenti[i].verStrumento.id+"' class='form-control timepicker' style='width:100%' value="+strumenti[i].ora_prevista+" required><span class='input-group-addon'>"
+		            +"<span class='fa fa-clock-o'></span></span></div></div><br></div>";
+		            
+		            
+		            $('#tab_luogo').append(text);	
+					
+				}else{
+					text ="<div class='row' id='row_"+strumenti[i].verStrumento.id+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+strumenti[i].verStrumento.id+"' readonly value='"+strumenti[i].verStrumento.id +"'> </div>" 
+					+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
+					+"<input type='text' id='ora_"+strumenti[i].verStrumento.id+"' class='form-control timepicker' style='width:100%' value='"+strumenti[i].ora_prevista+"' required><span class='input-group-addon'>"
+		            +"<span class='fa fa-clock-o'></span></span></div></div><div id='show_luogo_"+strumenti[i].verStrumento.id+"'><div class='col-xs-3'><label>Via</label>"
+		            +"<input class='form-control' type='text' id='via_"+strumenti[i].verStrumento.id+"' name='via_"+strumenti[i].verStrumento.id+"' value='"+strumenti[i].via+"' required></div>"
+		            +"<div class='col-xs-2'><label>Civico</label>"
+		            +"<input style='width:100%' class='form-control' type='text' id='civico_"+strumenti[i].verStrumento.id+"' name='civico_"+strumenti[i].verStrumento.id+"'  value='"+strumenti[i].civico+"' required></div>"
+		            +"<div class='col-xs-2'><label>Comune</label>"
+		            +"<select class='form-control select2' id='comune_"+strumenti[i].verStrumento.id+"' name='comune_"+strumenti[i].verStrumento.id+"' style='width:100%' data-placeholder='Seleziona Comune...' required>"
+		            +"<option value=''></option>"
+		            +" <c:forEach items='${lista_comuni}' var='comune'><option value='${comune.id}'>${comune.descrizione}</option></c:forEach></select></div>"
+		            +"<br></div>";
+		            
+					$('#tab_luogo').append(text);	
+					$('#comune_'+strumenti[i].verStrumento.id).select2();
+					$('#comune_'+strumenti[i].verStrumento.id).val(strumenti[i].comune.id);
+					$('#comune_'+strumenti[i].verStrumento.id).change();
+				}
+				
+			  }else{
+				  
+				  if(luogo!=2){
+						text ="<div class='row' id='row_"+strumenti[i].verStrumento.id+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+strumenti[i].verStrumento.id+"' readonly value='"+strumenti[i].verStrumento.id +"'> </div>" 
+						+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
+						+"<input type='text' id='ora_"+strumenti[i].verStrumento.id+"' class='form-control timepicker' style='width:100%' value="+strumenti[i].ora_prevista+" readonly><span class='input-group-addon'>"
+			            +"<span class='fa fa-clock-o'></span></span></div></div><br></div>";
+			            
+			            
+			            $('#tab_luogo').append(text);	
+						
+					}else{
+						text ="<div class='row' id='row_"+strumenti[i].verStrumento.id+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+strumenti[i].verStrumento.id+"' readonly value='"+strumenti[i].verStrumento.id +"'> </div>" 
+						+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
+						+"<input type='text' id='ora_"+strumenti[i].verStrumento.id+"' class='form-control timepicker' style='width:100%' value='"+strumenti[i].ora_prevista+"' readonly><span class='input-group-addon'>"
+			            +"<span class='fa fa-clock-o'></span></span></div></div><div id='show_luogo_"+strumenti[i].verStrumento.id+"'><div class='col-xs-3'><label>Via</label>"
+			            +"<input class='form-control' type='text' id='via_"+strumenti[i].verStrumento.id+"' name='via_"+strumenti[i].verStrumento.id+"' value='"+strumenti[i].via+"' readonly></div>"
+			            +"<div class='col-xs-2'><label>Civico</label>"
+			            +"<input style='width:100%' class='form-control' type='text' id='civico_"+strumenti[i].verStrumento.id+"' name='civico_"+strumenti[i].verStrumento.id+"'  value='"+strumenti[i].civico+"' readonly></div>"
+			            +"<div class='col-xs-2'><label>Comune</label>"
+			            +"<select class='form-control select2' id='comune_"+strumenti[i].verStrumento.id+"' name='comune_"+strumenti[i].verStrumento.id+"' style='width:100%' data-placeholder='Seleziona Comune...' disabled>"
+			            +"<option value=''></option>"
+			            +" <c:forEach items='${lista_comuni}' var='comune'><option value='${comune.id}'>${comune.descrizione}</option></c:forEach></select></div>"
+			            +"<br></div>";
+			            
+						$('#tab_luogo').append(text);	
+						$('#comune_'+strumenti[i].verStrumento.id).select2();
+						$('#comune_'+strumenti[i].verStrumento.id).val(strumenti[i].comune.id);
+						$('#comune_'+strumenti[i].verStrumento.id).change();
+					}
+			  }
+				
+		
+				
+		  }
+		  $('.timepicker').timepicker({	    	
+		    	 showMeridian:false,	   
+		    	 minuteStep: 1
+		     }); 
+		  
+		  var opt=[];
+			
+		  opt.push("<option value =''></option>");
+
+		  
+		  for(var i = 0;i<tecnici.length;i++){
+			  opt.push("<option value='"+tecnici[i].id+"'>"+tecnici[i].nominativo+"</option");
+		  }
+		  $('#tecnico_verificatore_mod').html(opt);
+		  
+			$('#tecnico_verificatore_mod').val(tecnico_verificatore);
+			$('#tecnico_verificatore_mod').change();
+		  
+		  pleaseWaitDiv.modal('hide');
+		  
+		  $('#myModalModificaIntervento').modal();
+		  
+		 
+		  
+	  }else{
+		  
+		  pleaseWaitDiv.modal('hide');
+		$('#myModalErrorContent').html(data.messaggio);
+		$('#myModalError').removeClass();	
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').show();
+		$('#visualizza_report').show();		
+		$('#myModalError').modal('show');			
+	
+	  }
+	  
+	  		
+},
+
+error: function( data, textStatus) {
+	
+	pleaseWaitDiv.modal('hide');
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').show();
+		$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+
+}
+});
+   
+	
+
+}
+
 
 var columsDatatables = [];
 
@@ -429,7 +598,7 @@ $(document).ready(function() {
  
 	commessa_options = $('#commessa_mod option').clone();
 	initSelect2('#cliente_mod');
-	$('#cliente_mod').change();
+	//$('#cliente_mod').change();
 	$('#sede_mod').select2();
 	$('#commessa_mod').select2();
 	$('#tecnico_verificatore_mod').select2();
@@ -560,6 +729,25 @@ $(document).ready(function() {
 
  $('#modificaInterventoForm').on('submit', function(e){
 	 e.preventDefault();
+	 var row =  document.getElementById('tab_luogo').children;
+	  var string = '';
+	  for(var i = 0;i<row.length;i++){
+   		var id = row[i].id.split("_")[1];			
+			var ora = $('#ora_'+id).val();
+			
+			if(ora!='' && ora.length<5){
+				ora = "0"+ora;
+			}
+			if($('#luogo_mod').val()!="2"){
+				string = string + $('#id_'+id).val() + "_" +ora+";"	;
+			}else{
+				string = string + $('#id_'+id).val() + "_" + ora + "_" + $('#via_'+id).val() + "_" + $('#civico_'+id).val() + "_" + $('#comune_'+id).val() +";";
+			}
+   		
+	  }
+	 
+	  $('#ids_strumenti').val(string);
+	 
 	 modificaVerIntervento();
 });
  

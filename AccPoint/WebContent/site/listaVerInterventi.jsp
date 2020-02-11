@@ -109,7 +109,7 @@
 						
 					</c:if>
 					
-					<c:if test="${interventover.id_stato_intervento == 1}">
+					<c:if test="${intervento.id_stato_intervento == 1}">
 						<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriVerIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">CHIUSO</span></a>
 						
 					</c:if>
@@ -150,7 +150,7 @@
 
 <form id="modificaInterventoForm" name="modificaInterventoForm">
 <div id="myModalModificaIntervento" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -264,7 +264,13 @@
 				  <option value=2>Altro Luogo</option>				  
 				</select>
        	</div>
-       </div>       
+       </div>      <br>
+       
+         <div class="row">
+       	<div class="col-sm-3">
+       	<h4>STRUMENTI</h4>
+       	
+       	</div></div> 
        <div id="tab_luogo">
 
        	</div>
@@ -355,7 +361,9 @@ function modalNuovoIntervento(){
 
 
 function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico_verificatore, sede_cliente, data_prevista){
-	getStrumentiIntervento(id_intervento, tecnico_verificatore);
+
+	
+	initSelect2('#cliente_mod');
 	
 	$('#luogo_mod').val(sede_cliente);
 	$('#luogo_mod').change();
@@ -365,7 +373,8 @@ function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, t
 	$('#cliente_mod').val(id_cliente);
 	$('#cliente_mod').change();
 	
-	
+	// $("#cliente_mod").trigger("chosen:updated");
+
 	if(id_sede!='0'){
 		$('#sede_mod').val(id_sede+"_"+id_cliente);	
 	}else{
@@ -376,17 +385,16 @@ function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, t
 	if(data_prevista!=null && data_prevista!=""){
 		  $('#data_prevista_mod').val(Date.parse(data_prevista).toString("dd/MM/yyyy"));
 	  }
-	
-	$('#myModalModificaIntervento').modal();
-}
+	getStrumentiIntervento(id_intervento, tecnico_verificatore);
 
+}
 
 $('#myModalModificaIntervento').on('hidden.bs.modal',function(){
 	
-	
-	var x = $('#cliente_mod').val();
 	$('#cliente_mod').val("");
+	$('#cliente_mod').change();
 	
+	$(document.body).css('padding-right', '0px');
 });
 
 
@@ -411,59 +419,63 @@ success: function( data, textStatus) {
 		  for(var i=0;i<strumenti.length;i++){
 			  var text ="";
 			  if(strumenti[i].preventiva != 'S'){
-				if(luogo!=2){
+				  $('#luogo_mod').attr('disabled', false);
+				
+				 if(luogo!=2){
 					text ="<div class='row' id='row_"+strumenti[i].verStrumento.id+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+strumenti[i].verStrumento.id+"' readonly value='"+strumenti[i].verStrumento.id +"'> </div>" 
-					+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
+					+"<div class='col-xs-2'><label>Ora prevista</label><div class='input-group'>"
 					+"<input type='text' id='ora_"+strumenti[i].verStrumento.id+"' class='form-control timepicker' style='width:100%' value="+strumenti[i].ora_prevista+" required><span class='input-group-addon'>"
-		            +"<span class='fa fa-clock-o'></span></span></div></div><br></div>";
+		            +"<span class='fa fa-clock-o'></span></span></div></div></div><br>";
 		            
 		            
 		            $('#tab_luogo').append(text);	
 					
 				}else{
 					text ="<div class='row' id='row_"+strumenti[i].verStrumento.id+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+strumenti[i].verStrumento.id+"' readonly value='"+strumenti[i].verStrumento.id +"'> </div>" 
-					+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
+					+"<div class='col-xs-2'><label>Ora prevista</label><div class='input-group'>"
 					+"<input type='text' id='ora_"+strumenti[i].verStrumento.id+"' class='form-control timepicker' style='width:100%' value='"+strumenti[i].ora_prevista+"' required><span class='input-group-addon'>"
-		            +"<span class='fa fa-clock-o'></span></span></div></div><div id='show_luogo_"+strumenti[i].verStrumento.id+"'><div class='col-xs-3'><label>Via</label>"
+		            +"<span class='fa fa-clock-o'></span></span></div></div><div id='show_luogo_"+strumenti[i].verStrumento.id+"'><div class='col-xs-3' id='col_via_"+strumenti[i].verStrumento.id+"'><label>Via</label>"
 		            +"<input class='form-control' type='text' id='via_"+strumenti[i].verStrumento.id+"' name='via_"+strumenti[i].verStrumento.id+"' value='"+strumenti[i].via+"' required></div>"
-		            +"<div class='col-xs-2'><label>Civico</label>"
+		            +"<div class='col-xs-2' id='col_civico_"+strumenti[i].verStrumento.id+"'><label>Civico</label>"
 		            +"<input style='width:100%' class='form-control' type='text' id='civico_"+strumenti[i].verStrumento.id+"' name='civico_"+strumenti[i].verStrumento.id+"'  value='"+strumenti[i].civico+"' required></div>"
-		            +"<div class='col-xs-2'><label>Comune</label>"
+		            +"<div class='col-xs-3' id='col_comune_"+strumenti[i].verStrumento.id+"'><label>Comune</label>"
 		            +"<select class='form-control select2' id='comune_"+strumenti[i].verStrumento.id+"' name='comune_"+strumenti[i].verStrumento.id+"' style='width:100%' data-placeholder='Seleziona Comune...' required>"
 		            +"<option value=''></option>"
 		            +" <c:forEach items='${lista_comuni}' var='comune'><option value='${comune.id}'>${comune.descrizione}</option></c:forEach></select></div>"
-		            +"<br></div>";
+		            +"</div><br>";
 		            
 					$('#tab_luogo').append(text);	
 					$('#comune_'+strumenti[i].verStrumento.id).select2();
 					$('#comune_'+strumenti[i].verStrumento.id).val(strumenti[i].comune.id);
-					$('#comune_'+strumenti[i].verStrumento.id).change();
-				}
+					$('#comune_'+strumenti[i].verStrumento.id).change();					
+					
+				} 
 				
+
 			  }else{
-				  
+				  $('#luogo_mod').attr('disabled', true);
 				  if(luogo!=2){
 						text ="<div class='row' id='row_"+strumenti[i].verStrumento.id+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+strumenti[i].verStrumento.id+"' readonly value='"+strumenti[i].verStrumento.id +"'> </div>" 
-						+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
+						+"<div class='col-xs-2'><label>Ora prevista</label><div class='input-group'>"
 						+"<input type='text' id='ora_"+strumenti[i].verStrumento.id+"' class='form-control timepicker' style='width:100%' value="+strumenti[i].ora_prevista+" readonly><span class='input-group-addon'>"
-			            +"<span class='fa fa-clock-o'></span></span></div></div><br></div>";
+			            +"<span class='fa fa-clock-o'></span></span></div></div></div><br>";
 			            
 			            
 			            $('#tab_luogo').append(text);	
 						
 					}else{
 						text ="<div class='row' id='row_"+strumenti[i].verStrumento.id+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+strumenti[i].verStrumento.id+"' readonly value='"+strumenti[i].verStrumento.id +"'> </div>" 
-						+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
+						+"<div class='col-xs-2'><label>Ora prevista</label><div class='input-group'>"
 						+"<input type='text' id='ora_"+strumenti[i].verStrumento.id+"' class='form-control timepicker' style='width:100%' value='"+strumenti[i].ora_prevista+"' readonly><span class='input-group-addon'>"
 			            +"<span class='fa fa-clock-o'></span></span></div></div><div id='show_luogo_"+strumenti[i].verStrumento.id+"'><div class='col-xs-3'><label>Via</label>"
 			            +"<input class='form-control' type='text' id='via_"+strumenti[i].verStrumento.id+"' name='via_"+strumenti[i].verStrumento.id+"' value='"+strumenti[i].via+"' readonly></div>"
 			            +"<div class='col-xs-2'><label>Civico</label>"
 			            +"<input style='width:100%' class='form-control' type='text' id='civico_"+strumenti[i].verStrumento.id+"' name='civico_"+strumenti[i].verStrumento.id+"'  value='"+strumenti[i].civico+"' readonly></div>"
-			            +"<div class='col-xs-2'><label>Comune</label>"
+			            +"<div class='col-xs-3'><label>Comune</label>"
 			            +"<select class='form-control select2' id='comune_"+strumenti[i].verStrumento.id+"' name='comune_"+strumenti[i].verStrumento.id+"' style='width:100%' data-placeholder='Seleziona Comune...' disabled>"
 			            +"<option value=''></option>"
 			            +" <c:forEach items='${lista_comuni}' var='comune'><option value='${comune.id}'>${comune.descrizione}</option></c:forEach></select></div>"
-			            +"<br></div>";
+			            +"</div><br>";
 			            
 						$('#tab_luogo').append(text);	
 						$('#comune_'+strumenti[i].verStrumento.id).select2();
@@ -597,7 +609,7 @@ var commessa_options;
 $(document).ready(function() {
  
 	commessa_options = $('#commessa_mod option').clone();
-	initSelect2('#cliente_mod');
+	//initSelect2('#cliente_mod');
 	//$('#cliente_mod').change();
 	$('#sede_mod').select2();
 	$('#commessa_mod').select2();
@@ -732,6 +744,7 @@ $(document).ready(function() {
 	 var row =  document.getElementById('tab_luogo').children;
 	  var string = '';
 	  for(var i = 0;i<row.length;i++){
+		  if(row[i].id!=null && row[i].id!=''){
    		var id = row[i].id.split("_")[1];			
 			var ora = $('#ora_'+id).val();
 			
@@ -743,14 +756,59 @@ $(document).ready(function() {
 			}else{
 				string = string + $('#id_'+id).val() + "_" + ora + "_" + $('#via_'+id).val() + "_" + $('#civico_'+id).val() + "_" + $('#comune_'+id).val() +";";
 			}
-   		
+		  }
 	  }
 	 
 	  $('#ids_strumenti').val(string);
-	 
+	 $('#luogo_mod').attr('disabled',false);
 	 modificaVerIntervento();
 });
  
+ 
+ $('#luogo_mod').change(function(){
+	 
+	 var luogo = $('#luogo_mod').val();
+	 
+	 var row =  document.getElementById('tab_luogo').children;
+	  
+	  if(luogo!=2){
+		  for(var i = 0;i<row.length;i++){
+		  		var id = row[i].id.split("_")[1];	
+		  		
+		  		$('#col_via_'+id).remove();
+		  		$('#col_comune_'+id).remove();
+		  		$('#col_civico_'+id).remove();
+		  }
+		  
+	  }else{
+		  
+		  for(var i = 0;i<row.length;i++){
+		  		var id = row[i].id.split("_")[1];	
+		  		
+		  		 text ="<div class='col-xs-3' id='col_via_"+id+"'><label>Via</label>"
+		      +"<input class='form-control' type='text' id='via_"+id+"' name='via_"+id+"'  required></div>"
+		      +"<div class='col-xs-2' id='col_civico_"+id+"'><label>Civico</label>"
+		      +"<input style='width:100%' class='form-control' type='text' id='civico_"+id+"' name='civico_"+id+"' required></div>"
+		      +"<div class='col-xs-3' id='col_comune_"+id+"'><label>Comune</label>"
+		      +"<select class='form-control select2' id='comune_"+id+"' name='comune_"+id+"' style='width:100%' data-placeholder='Seleziona Comune...' required>"
+		      +"<option value=''></option>"
+		      +" <c:forEach items='${lista_comuni}' var='comune'><option value='${comune.id}'>${comune.descrizione}</option></c:forEach></select></div>"
+		      +"</div>";
+		      
+		 		$('#row_'+id).append(text);	
+		 		$('#comune_'+id).select2();
+		 		$('#comune_'+id);
+		 		$('#comune_'+id).change();
+		  		
+		  		
+		  }
+		  
+	  }
+	 
+	 
+	
+	 
+ });
 
  
  $('#nuovoInterventoForm').on('submit', function(e){

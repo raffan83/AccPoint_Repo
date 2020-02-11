@@ -450,7 +450,11 @@ success: function( data, textStatus) {
 					$('#comune_'+strumenti[i].verStrumento.id).change();					
 					
 				} 
-				
+				  $('.timepicker').timepicker({	    	
+				    	 showMeridian:false,	   
+				    	 minuteStep: 1
+				     }); 
+				  
 
 			  }else{
 				  $('#luogo_mod').attr('disabled', true);
@@ -487,11 +491,7 @@ success: function( data, textStatus) {
 		
 				
 		  }
-		  $('.timepicker').timepicker({	    	
-		    	 showMeridian:false,	   
-		    	 minuteStep: 1
-		     }); 
-		  
+
 		  var opt=[];
 			
 		  opt.push("<option value =''></option>");

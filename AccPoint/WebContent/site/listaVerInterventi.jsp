@@ -355,7 +355,7 @@ function modalNuovoIntervento(){
 
 
 function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico_verificatore, sede_cliente, data_prevista){
-	//getStrumentiIntervento(id_intervento, tecnico_verificatore);
+	getStrumentiIntervento(id_intervento, tecnico_verificatore);
 	
 	$('#luogo_mod').val(sede_cliente);
 	$('#luogo_mod').change();

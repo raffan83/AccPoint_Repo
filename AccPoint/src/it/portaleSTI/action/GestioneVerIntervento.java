@@ -319,6 +319,10 @@ public class GestioneVerIntervento extends HttpServlet {
 							intervento_strumento.setVia(id.split("_")[2]);
 							intervento_strumento.setCivico(id.split("_")[3]);
 							intervento_strumento.setComune(new ComuneDTO(Integer.parseInt(id.split("_")[4])));							
+						}else {
+							intervento_strumento.setVia(null);
+							intervento_strumento.setCivico(null);
+							intervento_strumento.setComune(null);		
 						}
 						session.update(intervento_strumento);
 					}

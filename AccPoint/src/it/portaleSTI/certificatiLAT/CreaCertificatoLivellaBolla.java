@@ -397,22 +397,22 @@ public class CreaCertificatoLivellaBolla {
 						}
 						
 						if(punto.getValore_nominale_tratto()!=null) {
-							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto().setScale(2, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto().setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
 						}else {
 							arrayPs.add("");
 						}
 						if(punto.getMedia_corr_mm()!=null && punto.getValore_nominale_tratto()!=null) {
-							arrayPs.add(String.valueOf((punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto())).setScale(3, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+							arrayPs.add(String.valueOf((punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto())).setScale(4, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
 						}else {
 							arrayPs.add("");
 						}
 						if(punto.getValore_nominale_tratto_sec()!=null) {
-							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto_sec().setScale(2, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto_sec().setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
 						}else {
 							arrayPs.add("");
 						}
 						if(punto.getValore_nominale_tratto_sec()!=null && punto.getMedia_corr_sec()!=null) {
-							arrayPs.add(String.valueOf((punto.getMedia_corr_sec().subtract(punto.getValore_nominale_tratto_sec())).setScale(3, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+							arrayPs.add(String.valueOf((punto.getMedia_corr_sec().subtract(punto.getValore_nominale_tratto_sec())).setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
 						}else {
 							arrayPs.add("");
 						}

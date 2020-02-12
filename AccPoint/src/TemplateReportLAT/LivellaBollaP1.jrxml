@@ -324,101 +324,6 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				</textElement>
 				<text><![CDATA[Certificate of Calibration]]></text>
 			</staticText>
-			<image>
-				<reportElement positionType="FixRelativeToBottom" x="430" y="15" width="115" height="65" uuid="f5b30834-803b-45de-913c-fc9ebfb0490a"/>
-				<imageExpression><![CDATA[$P{immagine_accredia}]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="346" y="11" width="60" height="59" uuid="4b778927-43f4-4ba8-ac2c-397530a7e202"/>
-				<imageExpression><![CDATA[$P{immagine_ilac}]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="157" y="10" width="170" height="13" uuid="9a1f570f-7619-41c6-b43d-c22ea4901d59"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10.5"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Centro di Taratura LAT N° 172]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="157" y="23" width="170" height="13" uuid="2b72e3fd-9e63-4c63-849e-86fb24ae010a"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9" isItalic="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Calibration Centre]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="157" y="36" width="170" height="13" uuid="b7ff1b1c-0c30-4ee9-a334-625b5e27af26"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10.5"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Laboratorio Accreditato di Taratura]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="157" y="49" width="170" height="13" uuid="b1415c79-c1e4-4ab0-b9cf-a380cc5a13bf"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9" isItalic="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Accredited Calibration Laboratory]]></text>
-			</staticText>
-			<line direction="BottomUp">
-				<reportElement stretchType="RelativeToTallestObject" x="162" y="70" width="160" height="1" forecolor="#DCDCDC" uuid="fae0f7cb-85ec-414a-9d59-706bd6664ccc"/>
-			</line>
-			<staticText>
-				<reportElement x="157" y="80" width="170" height="13" uuid="dffc1a23-8c0f-4eef-bf8b-a62b07876b15"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="8" isItalic="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Organizzazione con sistema di gestione ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="157" y="93" width="170" height="13" uuid="589fc130-bb52-4b8b-8c27-09554bbbe63c"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="8" isItalic="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[certificato UNI EN ISO 9001 ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="157" y="106" width="170" height="13" uuid="05c219aa-3f62-4f56-b120-4383726adc4f"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="8" isItalic="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[UNI EN ISO 14001 - OHSAS 18001]]></text>
-			</staticText>
-			<image>
-				<reportElement x="0" y="5" width="133" height="51" uuid="09cd8d48-3232-45f1-b6b6-a43783530664"/>
-				<imageExpression><![CDATA[$P{immagine_sti}]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="0" y="80" width="140" height="13" uuid="b0842353-4111-4db1-bdae-88103f9d83c8"/>
-				<textElement textAlignment="Center">
-					<font fontName="Garamond" size="7"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[03039 SORA (FR) Via Tofaro 42/b]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="93" width="140" height="13" uuid="da775656-5d24-4eab-bfc2-8641b3c07e64"/>
-				<textElement textAlignment="Center">
-					<font fontName="Garamond" size="7"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Tel +39 0776 814606 -  Fax +39 0776 814169]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="106" width="140" height="13" uuid="633ecf51-63ae-474d-8236-220ef47b85f7"/>
-				<textElement textAlignment="Center">
-					<font fontName="Garamond" size="7"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[stisrl@stisrl.com  www.stisrl.com]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="505" y="117" width="50" height="12" uuid="284e27b6-28f4-4ebf-ba2e-f750bad50487"/>
 				<textElement>
@@ -475,6 +380,10 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				</textElement>
 				<textFieldExpression><![CDATA[$P{data_misure}]]></textFieldExpression>
 			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="2" width="561" height="111" uuid="920cee4f-d44e-4710-bf39-812076e2c795"/>
+				<imageExpression><![CDATA[$P{immagine_sti}]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>

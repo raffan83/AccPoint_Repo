@@ -29,7 +29,7 @@
 	<td>
 	<a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_attestato&id_corso=${utl:encryptData(corso.id)}&id_partecipante=${utl:encryptData(partecipante.partecipante.id)}&filename=${utl:encryptData(partecipante.attestato)}" title="Click per scaricare l'attestato"><i class="fa fa-file-pdf-o"></i></a>
 	<a class="btn btn-warning" title="Click per modificare" onclick="modificaPartecipanteCorso('${partecipante.partecipante.id}','${partecipante.corso.id }','${partecipante.ruolo.id }','${partecipante.ore_partecipate }','${partecipante.attestato }')"><i class="fa fa-edit"></i></a>
-	<a href="#" class="btn btn-danger customTooltip" title="Click per eliminare il partecipante dal corso" onclick="modalYesOrNo('${partecipante.partecipante.id}','${partecipante.ruolo.id }')"><i class="fa fa-trash"></i></a> 
+	<a href="#" class="btn btn-danger customTooltip" title="Click per eliminare il partecipante dal corso" onclick="modalYesOrNoPart('${partecipante.partecipante.id}','${partecipante.ruolo.id }')"><i class="fa fa-trash"></i></a> 
 	</td>
 	</tr>
 	</c:forEach>
@@ -40,7 +40,7 @@
  
  
  
-   <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   <div id="myModalYesOrNoPart" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
@@ -55,7 +55,7 @@
       <input type="hidden" id="elimina_partecipante_id" name="elimina_partecipante_id">      
       <input type="hidden" id="elimina_ruolo_id" name="elimina_ruolo_id">
       <a class="btn btn-primary" onclick="dissociaPartecipanteCorso($('#elimina_partecipante_id').val(), '${corso.id}',$('#elimina_ruolo_id').val())" >SI</a>
-		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNoPart').modal('hide')" >NO</a>
       </div>
     </div>
   </div>
@@ -112,13 +112,13 @@
        <label>Ore Partecipate</label>
        </div>
        <div class="col-xs-8">
-       <input id="ore_partecipate" name="ore_partecipate" type="number" min="0" max="${corso.corso_cat.durata }" class="form-control" required>
+       <input id="ore_partecipate" name="ore_partecipate" type="number" min="0" max="${corso.corso_cat.durata }" step="0.1" class="form-control" required>
        </div>
        </div><br>
        
        <div class="row">
        <div class="col-xs-12">
-       <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Attestato...</span><input accept=".pdf,.PDF"  id="fileupload" name="fileupload" type="file" required></span><label id="label_attestato"></label></div>
+       <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Attestato...</span><input accept=".pdf,.PDF"  id="fileupload_att" name="fileupload_att" type="file" required></span><label id="label_attestato"></label></div>
        </div>
      
       	
@@ -184,7 +184,7 @@
        <label>Ore Partecipate</label>
        </div>
        <div class="col-xs-8">
-       <input id="ore_partecipate_mod" name="ore_partecipate_mod" type="number" min="0" max="${corso.corso_cat.durata }" class="form-control" required>
+       <input id="ore_partecipate_mod" name="ore_partecipate_mod" type="number" min="0" max="${corso.corso_cat.durata }" step="0.1"class="form-control" required>
        </div>
        </div><br>
        
@@ -216,11 +216,11 @@
 <script type="text/javascript">
  
  
- function modalYesOrNo(id_partecipante, id_ruolo){
+ function modalYesOrNoPart(id_partecipante, id_ruolo){
 	 
 	 $('#elimina_partecipante_id').val(id_partecipante);
 	 $('#elimina_ruolo_id').val(id_ruolo);
-	 $('#myModalYesOrNo').modal();
+	 $('#myModalYesOrNoPart').modal();
 	 
  }
  
@@ -281,7 +281,7 @@ function associaUtentiModal(id_corso){
  } );
    
  
- $('#fileupload').change(function(){
+ $('#fileupload_att').change(function(){
 	$('#label_attestato').html($(this).val().split("\\")[2]) ;
  });
  
@@ -389,6 +389,14 @@ function associaUtentiModal(id_corso){
     	}
     })
     
+    $('#ore_partecipate_mod').focusout(function(){
+    	
+    	var max = '${corso.corso_cat.durata}';
+    	
+    	if($(this).val()>parseInt(max)){
+    		$(this).val(max) ;
+    	}
+    })
     
     $('#formAssociazioneUtenteCorso').on('submit', function(e){
     	e.preventDefault();

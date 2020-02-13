@@ -104,6 +104,7 @@
  <thead><tr class="active">
 
 <th >ID Corso</th>
+<th>Edizione</th>
 <th>Partecipante</th>
 <th>Ruolo</th>
 <th>Tipologia</th>
@@ -119,11 +120,13 @@
  
  	<c:forEach items="${lista_corsi }" var="corso_part" varStatus="loop">
 	<tr id="row_${loop.index}" >
-
-	<td>${corso_part.corso.id }</td>	
+<td>${corso_part.corso.id }</td>
+<td>${corso_part.corso.edizione }</td>
 	<td>
 	<a class="btn customTooltip customlink" title="Vai al partecipante" onclick="callAction('gestioneFormazione.do?action=dettaglio_partecipante&id_partecipante=${utl:encryptData(corso_part.partecipante.id)}')">${corso_part.partecipante.nome } ${corso_part.partecipante.cognome }</a>
 	</td>
+	
+	
 	<td>${corso_part.ruolo.descrizione }</td>
 	<td>${corso_part.corso.corso_cat.descrizione }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso_part.corso.data_corso}" /></td>	
@@ -178,266 +181,6 @@
   </div>
   </div>
 </div>
-
-<form id="nuovoCorsoForm" name="nuovoCorsoForm">
-<div id="myModalNuovoCorso" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Corso</h4>
-      </div>
-       <div class="modal-body">
-
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Tipologia</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <select id="categoria" name="categoria" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Tipologia Corso..." required>
-        <option value=""></option>
-        <c:forEach items="${lista_corsi_cat }" var="categoria">
-        <option value="${categoria.id }_${categoria.frequenza }">${categoria.descrizione }</option>
-        </c:forEach>
-        </select>
-       			
-       	</div>       	
-       </div><br>
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Descrizione</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-      	<textarea class="form-control" rows="3" style="width:100%" id="descrizione" name="descrizione"></textarea>
-       			
-       	</div>       	
-       </div><br>
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Edizione</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-      	<input type="text" id="edizione" name="edizione" class="form-control">
-       			
-       	</div>       	
-       </div><br>
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Docente</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-         	<select id="docente" name="docente" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Docente..." required>
-        <option value=""></option>
-        <c:forEach items="${lista_docenti }" var="docente">
-        <option value="${docente.id }">${docente.nome } ${docente.cognome }</option>
-        </c:forEach>
-        </select>	
-       			
-       	</div>       	
-       </div><br>
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data Corso</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-         <div class='input-group date datepicker' id='datepicker_data_inizio'>
-               <input type='text' class="form-control input-small" id="data_corso" name="data_corso" required>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 	
-        
-       			
-       	</div>       	
-       </div><br>
-       
-         <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data Scadenza</label>
-       	</div>
-       	<div class="col-sm-9">             	  	
-        
-       	    <div class='input-group date datepicker' id='datepicker_data_scadenza'>
-               <input type='text' class="form-control input-small" id="data_scadenza" name="data_scadenza" required>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-       	</div>
-       	</div>			<br>	
-             <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Documento Test</label>
-       	</div>
-       	<div class="col-sm-9">             	  	
-        
-       	    <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload" name="fileupload" type="file" required></span><label id="label_file"></label>
-       	    </div>
-        
-       	</div>
-            	
-       
-       
-       </div>
-  		 
-      <div class="modal-footer">
-		
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</form>
-
-
-
-
-<form id="modificaCorsoForm" name="modificaCorsoForm">
-<div id="myModalModificaCorso" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Corso</h4>
-      </div>
-       <div class="modal-body">
-
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Tipologia</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <select id="categoria_mod" name="categoria_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Tipologia Corso..." required>
-        <option value=""></option>
-        <c:forEach items="${lista_corsi_cat }" var="categoria">
-        <option value="${categoria.id }_${categoria.frequenza}">${categoria.descrizione }</option>
-        </c:forEach>
-        </select>
-       			
-       	</div>       	
-       </div><br>
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Descrizione</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-      	<textarea class="form-control" rows="3" style="width:100%" id="descrizione_mod" name="descrizione_mod"></textarea>
-       			
-       	</div>       	
-       </div><br>
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Edizione</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-      	<input type="text" id="edizione_mod" name="edizione_mod" class="form-control">
-       			
-       	</div>       	
-       </div><br>
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Docente</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-         	<select id="docente_mod" name="docente_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Docente..." required>
-        <option value=""></option>
-        <c:forEach items="${lista_docenti }" var="docente">
-        <option value="${docente.id }">${docente.nome } ${docente.cognome }</option>
-        </c:forEach>
-        </select>	
-       			
-       	</div>       	
-       </div><br>
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data Inizio</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-         <div class='input-group date datepicker' id='datepicker_data_inizio'>
-               <input type='text' class="form-control input-small" id="data_corso_mod" name="data_corso_mod" required>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 	
-        
-       			
-       	</div>       	
-       </div><br>
-       
-         <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data Scadenza</label>
-       	</div>
-       	<div class="col-sm-9">             	  	
-        
-       	    <div class='input-group date datepicker' id='datepicker_data_scadenza'>
-               <input type='text' class="form-control input-small" id="data_scadenza_mod" name="data_scadenza_mod" required>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-       	</div>
-       	</div>	<br>	
-             <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Documento Test</label>
-       	</div>
-       	<div class="col-sm-9">             	  	
-        
-       	    <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload_mod" name="fileupload_mod" type="file" ></span><label id="label_file_mod"></label>
-       	    </div>
-        
-       	</div>
-       	</div>		
-     
-       
-     
-  		 
-      <div class="modal-footer">
-		
-		<input type="hidden" id="id_corso" name="id_corso">
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</form>
-
-  
 
 
 
@@ -644,7 +387,7 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 9 },
+		    	  { responsivePriority: 1, targets: 10 },
 		    	  
 		    	  
 		               ], 	        

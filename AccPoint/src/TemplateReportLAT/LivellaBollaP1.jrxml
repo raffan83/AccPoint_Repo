@@ -348,7 +348,7 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 			<staticText>
 				<reportElement x="102" y="692" width="10" height="20" uuid="cd80642f-3de8-4e5c-bda5-ffbc00fda0aa"/>
 				<textElement>
-					<font size="8" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[k]]></text>
 			</staticText>

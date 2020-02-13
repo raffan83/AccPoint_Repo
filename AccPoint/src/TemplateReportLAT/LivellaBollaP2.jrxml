@@ -338,14 +338,14 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 				<text><![CDATA[mm/m]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="15" width="250" height="15" uuid="869bb370-511d-437e-921c-eeae83d5bc69"/>
+				<reportElement x="0" y="12" width="250" height="15" uuid="869bb370-511d-437e-921c-eeae83d5bc69"/>
 				<textElement>
 					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[In the following, information is reported about:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="49" width="251" height="15" uuid="3b4b58f0-46a1-4420-925a-ac8d7f6d1f34"/>
+				<reportElement x="3" y="45" width="251" height="15" uuid="3b4b58f0-46a1-4420-925a-ac8d7f6d1f34"/>
 				<textElement>
 					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>

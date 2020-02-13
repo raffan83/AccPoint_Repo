@@ -123,7 +123,26 @@
 
        
  </div>
+        <div class="row">
+<div class="col-md-12">
+<div class="box box-danger box-solid">
+<div class="box-header with-border">
+	Allegati
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+<div id="tab_allegati"></div>
+
+</div>
+</div>
+</div>
     
+    </div>
     
     
     <div class="row">
@@ -214,6 +233,16 @@
      
 
  } );
+ 
+function modalArchivio(id_corso){
+	 
+	 $('#tab_archivio').html("");
+	 
+	 dataString ="action=archivio&id_categoria=0&id_corso="+ id_corso;
+    exploreModal("gestioneFormazione.do",dataString,"#tab_allegati",function(datab,textStatusb){
+    });
+$('#myModalArchivio').modal();
+}
    
     $(document).ready(function() {
     
@@ -221,6 +250,8 @@
     	 dataString ="action=dettaglio_partecipanti_corso";
         exploreModal("gestioneFormazione.do",dataString,"#tab_partecipanti",function(datab,textStatusb){
         });
+        
+        modalArchivio('${corso.id}')
     });
 
   </script>

@@ -17,9 +17,23 @@
          <property name="data_nascita" type="java.sql.Date" >
             <column name="data_nascita" />
         </property>
-         <property name="azienda" type="java.lang.String" >
-            <column name="azienda" />
+
+	<property name="id_azienda" type="int" >
+            <column name="id_azienda" />
         </property>
+        <property name="id_sede" type="int" >
+            <column name="id_sede" />
+        </property>
+        <property name="nome_azienda" type="java.lang.String" >
+            <column name="nome_azienda" />
+        </property>
+        <property name="nome_sede" type="java.lang.String" >
+            <column name="nome_sede" />
+        </property>
+        
+       <!--  <many-to-one name="azienda" class="it.portaleSTI.DTO.ForAziendaDTO" fetch="join" lazy="false">
+            <column name="id_azienda" />
+        </many-to-one> -->
         
          <set name="listaRuoli" table="for_partecipante_ruolo_corso"
 				inverse="false" lazy="false" fetch="select" >
@@ -31,6 +45,7 @@
             </many-to-many>
         	
         </set> 
+     
      
         
     </class>

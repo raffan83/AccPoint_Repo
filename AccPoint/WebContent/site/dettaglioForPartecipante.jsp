@@ -72,7 +72,10 @@
                   <b>Data di nascita</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${partecipante.data_nascita}" /></a>
                 </li>
                <li class="list-group-item">
-                <b>Azienda</b> <a class="pull-right">${partecipante.azienda}</a>
+                <b>Azienda</b> <a class="pull-right">${partecipante.nome_azienda}</a>
+                </li>
+                <li class="list-group-item">
+                <b>Sede</b> <a class="pull-right">${partecipante.nome_sede}</a>
                 </li>
         </ul>
 

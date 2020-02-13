@@ -11,9 +11,13 @@
     
         <key-many-to-one name="partecipante" column="id_partecipante" lazy="false"/>    
         
-		<key-many-to-one name="ruolo" column="id_ruolo" lazy="false"/>    
+		<!-- <key-many-to-one name="ruolo" column="id_ruolo" lazy="false"/> -->    
       
     </composite-id>
+    <many-to-one name="ruolo" class="it.portaleSTI.DTO.ForRuoloDTO">
+                <column name="id_ruolo" not-null="true" />
+            </many-to-one>
+            
            
          <property name="ore_partecipate" type="java.lang.Double" >
             <column name="ore_partecipate" />

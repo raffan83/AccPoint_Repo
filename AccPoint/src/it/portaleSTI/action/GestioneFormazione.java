@@ -33,8 +33,8 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
-//import it.portaleSTI.DTO.ForAziendaDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
@@ -43,10 +43,12 @@ import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
@@ -145,13 +147,15 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				docente.setCognome(cognome);
 				docente.setFormatore(Integer.parseInt(formatore));				
 				
+				session.save(docente);
+				
 				if(fileItem!=null && !filename.equals("")) {
 
-					saveFile(fileItem, "Docenti//"+nome+"_"+cognome,filename);
+					//saveFile(fileItem, "Docenti//"+nome+"_"+cognome,filename);
+					saveFile(fileItem, "Docenti//"+docente.getId(),filename);
 					docente.setCv(filename);
+					session.update(docente);
 				}
-				
-				session.save(docente);
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
@@ -205,7 +209,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				if(fileItem!=null && !filename.equals("")) {
 
-					saveFile(fileItem, "Docenti//"+nome+"_"+cognome,filename);
+					//saveFile(fileItem, "Docenti//"+nome+"_"+cognome,filename);
+					saveFile(fileItem, "Docenti//"+id_docente,filename);
 					docente.setCv(filename);
 				}
 				
@@ -227,7 +232,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				ForDocenteDTO docente = GestioneFormazioneBO.getDocenteFromId(Integer.parseInt(id_docente), session);
 				
-				String path = Costanti.PATH_FOLDER+"//Formazione//Docenti//"+docente.getNome()+"_"+docente.getCognome()+"//"+docente.getCv();
+				String path = Costanti.PATH_FOLDER+"//Formazione//Docenti//"+docente.getId()+"//"+docente.getCv();
 				
 				downloadFile(path, response.getOutputStream());
 				
@@ -703,7 +708,21 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			else if(action.equals("lista_partecipanti")) {
 			
 				ArrayList<ForPartecipanteDTO> lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti(session);
-				//ArrayList<ForAziendaDTO> lista_aziende = GestioneFormazioneBO.getListaAziende(session);
+//				ArrayList<ForAziendaDTO> lista_aziende = GestioneFormazioneBO.getListaAziende(session);
+				
+				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+				if(listaClienti==null) {
+					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
+				}
+				
+				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+									
+				request.getSession().setAttribute("lista_clienti", listaClienti);				
+				request.getSession().setAttribute("lista_sedi", listaSedi);
+
 				
 				request.getSession().setAttribute("lista_partecipanti", lista_partecipanti);
 				//request.getSession().setAttribute("lista_aziende", lista_aziende);
@@ -727,7 +746,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 		        	}
 		        
-		       
+		        List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
 				FileItem fileItem = null;
 				String filename= null;
 		        Hashtable<String,String> ret = new Hashtable<String,String>();
@@ -749,17 +771,28 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String nome = ret.get("nome");
 				String cognome = ret.get("cognome");
 				String data_nascita = ret.get("data_nascita");
-				String azienda = ret.get("azienda");	
+				String id_azienda = ret.get("azienda");	
+				String sede = ret.get("sede");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 				ForPartecipanteDTO partecipante = new ForPartecipanteDTO();		
 				partecipante.setCognome(cognome);
 				partecipante.setNome(nome);
-//				if(azienda!=null && !azienda.equals("")) {
-//					partecipante.setAzienda(new ForAziendaDTO(Integer.parseInt(azienda),""));	
-//				}
-				partecipante.setAzienda(azienda);
+				partecipante.setId_azienda(Integer.parseInt(id_azienda));
+				
+				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(id_azienda);
+				partecipante.setNome_azienda(cl.getNome());
+				
+				SedeDTO sd =null;
+				if(!sede.equals("0")) {
+					partecipante.setId_sede(Integer.parseInt(sede.split("_")[0]));
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(id_azienda));
+					partecipante.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")");
+				}else {
+					partecipante.setNome_sede("Non associate");
+				}
+
 				partecipante.setData_nascita(df.parse(data_nascita));				
 			
 				session.save(partecipante);
@@ -787,6 +820,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 		        	}
 		        
+		        List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
 		       
 				FileItem fileItem = null;
 				String filename= null;
@@ -809,17 +846,33 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String nome = ret.get("nome_mod");
 				String cognome = ret.get("cognome_mod");
 				String data_nascita = ret.get("data_nascita_mod");
-				String azienda = ret.get("azienda_mod");	
+				String id_azienda = ret.get("azienda_mod");	
+				String sede = ret.get("sede_mod");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 				ForPartecipanteDTO partecipante = GestioneFormazioneBO.getPartecipanteFromId(Integer.parseInt(id),session);	
 				partecipante.setCognome(cognome);
 				partecipante.setNome(nome);
+				
+				partecipante.setId_azienda(Integer.parseInt(id_azienda));
+				
+				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(id_azienda);
+				partecipante.setNome_azienda(cl.getNome());
+				
+				SedeDTO sd =null;
+				if(!sede.equals("0")) {
+					partecipante.setId_sede(Integer.parseInt(sede.split("_")[0]));
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(id_azienda));
+					partecipante.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo()+" - "+sd.getCap()+" - "+sd.getComune()+" ("+sd.getSiglaProvincia()+")");
+				}else {
+					partecipante.setNome_sede("Non associate");
+				}
+				
 //				if(azienda!=null && !azienda.equals("")) {
 //					partecipante.setAzienda(new ForAziendaDTO(Integer.parseInt(azienda),""));	
 //				}
-				partecipante.setAzienda(azienda);
+				
 				partecipante.setData_nascita(df.parse(data_nascita));				
 			
 				session.update(partecipante);
@@ -891,6 +944,64 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				session.getTransaction().commit();
 				session.close();
+			}
+			
+			else if(action.equals("modifica_associazione_partecipante_corso")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+			    if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+			
+			    		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+			    	}
+			    
+			   
+				FileItem fileItem = null;
+				String filename= null;
+			    Hashtable<String,String> ret = new Hashtable<String,String>();
+			  
+			    for (FileItem item : items) {
+			    	 if (!item.isFormField()) {
+			    		
+			             fileItem = item;
+			             filename = item.getName();
+			             
+			    	 }else
+			    	 {
+			              ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+			    	 }
+			    	
+			    }
+			    
+			    String id_corso = request.getParameter("id_corso");		
+				String id_partecipante =request.getParameter("id_partecipante");	
+				String id_ruolo = ret.get("ruolo_mod");				
+				String ore_partecipate = ret.get("ore_partecipate_mod");
+				
+				ForPartecipanteRuoloCorsoDTO part_ruolo = GestioneFormazioneBO.getPartecipanteFromCorso(Integer.parseInt(id_corso), Integer.parseInt(id_partecipante), 0, session);				
+				
+				part_ruolo.setRuolo(new ForRuoloDTO(Integer.parseInt(id_ruolo)));
+				part_ruolo.setOre_partecipate(Double.parseDouble(ore_partecipate));
+			
+				if(filename!=null && !filename.equals("")) {
+					saveFile(fileItem, "Attestati//"+id_corso+"//"+id_partecipante, filename);
+					part_ruolo.setAttestato(filename);
+				}
+				session.update(part_ruolo);
+				
+				session.getTransaction().commit();
+				session.close();
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Operazione completata con successo!");
+				out.print(myObj);
+				
+				
+				
 			}
 			else if(action.equals("download_attestato")) {
 				
@@ -1020,115 +1131,28 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneForCorsi.jsp");
 		     	dispatcher.forward(request,response);
 			}
-//			else if(action.equals("lista_aziende")) {
-//			
-//				ArrayList<ForAziendaDTO> lista_aziende = GestioneFormazioneBO.getListaAziende(session);
-//				
-//				request.getSession().setAttribute("lista_aziende", lista_aziende);
-//				
-//				session.getTransaction().commit();
-//				session.close();
-//				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneForAziende.jsp");
-//		     	dispatcher.forward(request,response);
-//				
-//				
-//			}
-//			else if(action.equals("nuova_azienda")) {
-//				
-//				ajax = true;
-//				
-//				response.setContentType("application/json");
-//				 
-//			  	List<FileItem> items = null;
-//		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
-//
-//		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-//		        	}
-//		        
-//		       
-//				FileItem fileItem = null;
-//				String filename= null;
-//		        Hashtable<String,String> ret = new Hashtable<String,String>();
-//		      
-//		        for (FileItem item : items) {
-//	            	 if (!item.isFormField()) {
-//	            		
-//	                     fileItem = item;
-//	                     filename = item.getName();
-//	                     
-//	            	 }else
-//	            	 {
-//	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
-//	            	 }
-//	            	
-//	            }
-//		
-//				String descrizione = ret.get("descrizione");
-//				
-//				ForAziendaDTO azienda = new ForAziendaDTO();
-//				
-//				azienda.setDescrizione(descrizione);
-//				
-//				session.save(azienda);
-//				
-//				myObj = new JsonObject();
-//				PrintWriter  out = response.getWriter();
-//				myObj.addProperty("success", true);
-//				myObj.addProperty("messaggio", "Azienda salvata con successo!");
-//				out.print(myObj);
-//				session.getTransaction().commit();
-//				session.close();
-//				
-//			}
-//			else if(action.equals("modifica_azienda")) {
-//				
-//				ajax = true;
-//				
-//				response.setContentType("application/json");
-//				 
-//			  	List<FileItem> items = null;
-//		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
-//
-//		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-//		        	}
-//		        
-//		       
-//				FileItem fileItem = null;
-//				String filename= null;
-//		        Hashtable<String,String> ret = new Hashtable<String,String>();
-//		      
-//		        for (FileItem item : items) {
-//	            	 if (!item.isFormField()) {
-//	            		
-//	                     fileItem = item;
-//	                     filename = item.getName();
-//	                     
-//	            	 }else
-//	            	 {
-//	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
-//	            	 }
-//	            	
-//	            }
-//		
-//		        String id_azienda = request.getParameter("id_azienda");
-//				String descrizione = ret.get("descrizione_mod");
-//				
-//				
-//				ForAziendaDTO azienda = GestioneFormazioneBO.getAziendaFromId(Integer.parseInt(id_azienda), session);
-//				
-//				azienda.setDescrizione(descrizione);
-//				
-//				session.update(azienda);
-//				
-//				myObj = new JsonObject();
-//				PrintWriter  out = response.getWriter();
-//				myObj.addProperty("success", true);
-//				myObj.addProperty("messaggio", "Azienda modificata con successo!");
-//				out.print(myObj);
-//				session.getTransaction().commit();
-//				session.close();
-//				
-//			}
+			else if(action.equals("scadenzario")) {		
+				
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");
+				String tipo_data = request.getParameter("tipo_data");
+				
+				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, session);
+				
+				request.getSession().setAttribute("lista_corsi", lista_corsi);
+				request.getSession().setAttribute("dateFrom", dateFrom);
+				request.getSession().setAttribute("dateTo", dateTo);
+				request.getSession().setAttribute("tipo_data", tipo_data);
+								
+				session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioFormazione.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+
+			
 		}catch(Exception e) {
 			
 			session.getTransaction().rollback();

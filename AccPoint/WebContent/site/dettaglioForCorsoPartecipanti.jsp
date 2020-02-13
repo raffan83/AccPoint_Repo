@@ -23,12 +23,12 @@
  
  	<c:forEach items="${listaPartecipanti }" var="partecipante" varStatus="loop">
  	<tr id="row_${loop.index}" >
- 	<td><a class="btn customTooltip customlink" title="Vai al corso" onclick="callAction('gestioneFormazione.do?action=dettaglio_partecipante&id_partecipante=${utl:encryptData(partecipante.partecipante.id)}')">${partecipante.partecipante.nome } ${partecipante.partecipante.cognome }</a></td>
+ 	<td><a class="btn customTooltip customlink" title="Vai al partecipante" onclick="callAction('gestioneFormazione.do?action=dettaglio_partecipante&id_partecipante=${utl:encryptData(partecipante.partecipante.id)}')">${partecipante.partecipante.nome } ${partecipante.partecipante.cognome }</a></td>
 	<td>${partecipante.ruolo.descrizione }</td>
 	<td>${partecipante.ore_partecipate }</td>
 	<td>
 	<a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_attestato&id_corso=${utl:encryptData(corso.id)}&id_partecipante=${utl:encryptData(partecipante.partecipante.id)}&filename=${utl:encryptData(partecipante.attestato)}" title="Click per scaricare l'attestato"><i class="fa fa-file-pdf-o"></i></a>
-	
+	<a class="btn btn-warning" title="Click per modificare" onclick="modificaPartecipanteCorso('${partecipante.partecipante.id}','${partecipante.corso.id }','${partecipante.ruolo.id }','${partecipante.ore_partecipate }','${partecipante.attestato }')"><i class="fa fa-edit"></i></a>
 	<a href="#" class="btn btn-danger customTooltip" title="Click per eliminare il partecipante dal corso" onclick="modalYesOrNo('${partecipante.partecipante.id}','${partecipante.ruolo.id }')"><i class="fa fa-trash"></i></a> 
 	</td>
 	</tr>
@@ -135,6 +135,81 @@
 </form>
 
 
+<form id="formModificaAssociazioneUtenteCorso" name="formModificaAssociazioneUtenteCorso">
+<div id="myModalModificaAssociaUtenti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Associa partecipante al corso</h4>
+      </div>
+       <div class="modal-body">       
+       <div class="row">
+       <div class="col-xs-12">
+       
+       <select name="partecipante_mod" id="partecipante_mod" data-placeholder="Seleziona Partecipante..." disabled class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%"  required>
+                    
+                    <option value=""></option> 
+                        <c:forEach items="${lista_partecipanti}" var="part">
+                       		<c:choose>
+                     			 <c:when test="${corso.listaPartecipanti.contains(part) }">
+                      				<option value="${part.id }" disabled>${part.nome} ${part.cognome }</option> 
+                    			 </c:when>
+                     			 <c:otherwise>
+                    				<option value="${part.id }">${part.nome} ${part.cognome }</option> 
+                     			 </c:otherwise>
+                      		</c:choose>
+                     	</c:forEach>
+                    
+                  </select>
+                  </div>
+       </div><br>
+       
+         <div class="row">
+       <div class="col-xs-12">
+       
+       <select name="ruolo_mod" id="ruolo_mod" data-placeholder="Seleziona Ruolo..."  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%"  required>
+                    
+                    <option value=""></option>  
+                      <c:forEach items="${lista_ruoli}" var="ruolo">
+                           <option value="${ruolo.id }">${ruolo.descrizione}</option> 
+                     </c:forEach>
+                  </select>
+                  </div>
+       </div><br>
+       
+        <div class="row">
+       <div class="col-xs-4">
+       <label>Ore Partecipate</label>
+       </div>
+       <div class="col-xs-8">
+       <input id="ore_partecipate_mod" name="ore_partecipate_mod" type="number" min="0" max="${corso.corso_cat.durata }" class="form-control" required>
+       </div>
+       </div><br>
+       
+       <div class="row">
+       <div class="col-xs-12">
+       <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Attestato...</span><input accept=".pdf,.PDF"  id="fileupload_mod" name="fileupload_mod" type="file" ></span><label id="label_attestato_mod"></label></div>
+       </div>
+     
+      	
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_partecipante" name="id_partecipante">
+      <input type="hidden" id="id_corso" name="id_corso">
+      <input type="hidden" id="ruolo_old" name="ruolo_old">
+      
+      
+		 <button class="btn btn-primary" type="submit" >Associa</button> 
+      </div>
+    </div>
+  </div>
+
+</div>
+</form>
+
+
 
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
@@ -149,33 +224,34 @@
 	 
  }
  
+ 
+ function modificaPartecipanteCorso(id_partecipante,id_corso,id_ruolo, ore_partecipate, attestato){
+	
+	 $('#id_partecipante').val(id_partecipante);
+	 $('#id_corso').val(id_corso);
+	
+	 $('#partecipante_mod').val(id_partecipante);
+	 $('#partecipante_mod').change();
+	 
+	 $('#ruolo_mod').val(id_ruolo);
+	 $('#ruolo_mod').change();
+	 
+	 if(ore_partecipate!=null && ore_partecipate!=''){
+		 $('#ore_partecipate_mod').val(""+ore_partecipate.replace(",","."));	 
+	 }
+	 if(attestato!=null){
+		 $('#label_attestato_mod').html(attestato);	 
+	 }
+	 
+	 
+	 $('#myModalModificaAssociaUtenti').modal();
+	 
+ }
+ 
 function associaUtentiModal(id_corso){
 	
-	$('#id_corso_user').val(id_corso);
-	
-/* 	var table = $('#tabPartecipanti').DataTable();
-	
-	var partecipanti = table.rows().data();
-	
-	  var options = utenti_options;	  
-	  var opt=[];
-		opt.push("");
-	if(partecipanti.length>0){
- 	for(var i = 0; i<partecipanti.length;i++){
- 		 for(var  j=0; j<options.length;j++){
- 			var str=options[j].value; 	
- 			if(partecipanti[i][0] == str){
- 				options[j].selected = true;
- 			}
- 			opt.push(options[j]);
- 		 }
-	} 
-	   
+	$('#id_corso_user').val(id_corso);	
 
-		$('#utente').html(opt);
-	
-		$("#utente").change();  
-	} */
 	$('#myModalAssociaUtenti').modal();
 }
  
@@ -208,6 +284,10 @@ function associaUtentiModal(id_corso){
  $('#fileupload').change(function(){
 	$('#label_attestato').html($(this).val().split("\\")[2]) ;
  });
+ 
+ $('#fileupload_mod').change(function(){
+		$('#label_attestato_mod').html($(this).val().split("\\")[2]) ;
+	 });
  
  var partecipanti_options;
     $(document).ready(function() {
@@ -314,6 +394,12 @@ function associaUtentiModal(id_corso){
     	e.preventDefault();
     	
     	associaPartecipanteCorso();
+    });
+    
+    $('#formModificaAssociazioneUtenteCorso').on('submit', function(e){
+    	e.preventDefault();
+    	
+    	modificaAssociazionePartecipanteCorso();
     });
 
   </script>

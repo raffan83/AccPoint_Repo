@@ -12850,6 +12850,68 @@ $.ajax({
 	
 }
 
+function modificaAssociazionePartecipanteCorso(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#formModificaAssociazioneUtenteCorso')[0]; 
+		  var formData = new FormData(form);
+		  
+		  var id_corso = $('#id_corso').val();
+		  var id_partecipante = $('#id_partecipante').val();
+		  var ruolo_old = $('#ruolo_old').val();
+		 
+$.ajax({
+	  type: "POST",
+	  url: "gestioneFormazione.do?action=modifica_associazione_partecipante_corso&id_corso="+id_corso+"&id_partecipante="+id_partecipante+"&ruolo_old="+ruolo_old,
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+			$('#myModalError').on('hidden.bs.modal', function(){	         			
+				
+				 location.reload()
+			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+});
+	
+}
+
 function dissociaPartecipanteCorso(id_partecipante, id_corso, id_ruolo){
 	
 	pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -13175,12 +13237,7 @@ function saveVerDuplicatiFromModal(){
 							$('#myModalError').modal('show');
 							
 	    		  		}
-//	    			  else{
-//	    		  			$('#myModalErrorContent').html("Salvato");
-//	    			  		$('#myModal').removeClass();
-//	    			  		$('#myModal').addClass("modal modal-success");
-//	    					$('#myModal').modal('show');
-//	    		  		}
+
 						$( "#tabLD" ).html("");
 						
 	    		
@@ -13225,121 +13282,4 @@ function saveVerDuplicatiFromModal(){
   }       
 }
 
-function nuovaForAzienda(){
-	
-	
-	pleaseWaitDiv = $('#pleaseWaitDialog');
-	  pleaseWaitDiv.modal();
-
-		  var form = $('#nuovaAziendaForm')[0]; 
-		  var formData = new FormData(form);
-		  
-  $.ajax({
-	  type: "POST",
-	  url: "gestioneFormazione.do?action=nuova_azienda",
-	  data: formData,
-	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
-	  processData: false, // NEEDED, DON'T OMIT THIS
-	  success: function( data, textStatus) {
-		pleaseWaitDiv.modal('hide');
-		  	      		  
-		  if(data.success)
-		  { 
-			$('#report_button').hide();
-				$('#visualizza_report').hide();
-				$("#modalModificaDocente").modal("hide");
-			  $('#myModalErrorContent').html(data.messaggio);
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-success");
-				$('#myModalError').modal('show');
-				
-   			$('#myModalError').on('hidden.bs.modal', function(){	         			
- 				
-   				 location.reload()
-  			});
-		
-		  }else{
-			  $('#myModalErrorContent').html(data.messaggio);
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");
-				$('#report_button').show();
-				$('#visualizza_report').show();
-					$('#myModalError').modal('show');	      			 
-		  }
-	  },
-
-	  error: function(jqXHR, textStatus, errorThrown){
-		  pleaseWaitDiv.modal('hide');
-
-		  $('#myModalErrorContent').html("Errore nella creazione dell'azienda!");
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");
-				$('#report_button').show();
-				$('#visualizza_report').show();
-				$('#myModalError').modal('show');
-				
-
-	  }
-  });
-	
-}
-
-
-function modificaForAzienda(){
-	
-	pleaseWaitDiv = $('#pleaseWaitDialog');
-	  pleaseWaitDiv.modal();
-
-		  var form = $('#modificaAziendaForm')[0]; 
-		  var formData = new FormData(form);
-		 
-		  var id_azienda = $('#id_azienda').val();
-$.ajax({
-	  type: "POST",
-	  url: "gestioneFormazione.do?action=modifica_azienda&id_azienda="+id_azienda,
-	  data: formData,
-	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
-	  processData: false, // NEEDED, DON'T OMIT THIS
-	  success: function( data, textStatus) {
-		pleaseWaitDiv.modal('hide');
-		  	      		  
-		  if(data.success)
-		  { 
-			$('#report_button').hide();
-				$('#visualizza_report').hide();
-				$("#modalModificaDocente").modal("hide");
-			  $('#myModalErrorContent').html(data.messaggio);
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-success");
-				$('#myModalError').modal('show');
-				
- 			$('#myModalError').on('hidden.bs.modal', function(){	         			
-				
- 				 location.reload()
-			});
-		
-		  }else{
-			  $('#myModalErrorContent').html(data.messaggio);
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");
-				$('#report_button').show();
-				$('#visualizza_report').show();
-					$('#myModalError').modal('show');	      			 
-		  }
-	  },
-
-	  error: function(jqXHR, textStatus, errorThrown){
-		  pleaseWaitDiv.modal('hide');
-
-		  $('#myModalErrorContent').html("Errore nella modifica!");
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");
-				$('#report_button').show();
-				$('#visualizza_report').show();
-				$('#myModalError').modal('show');
-				
-
-	  }
-});
-}
 

@@ -70,6 +70,7 @@
 <th>Cognome</th>
 <th>Data di nascita</th>
 <th>Azienda</th>
+<th>Sede</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -82,11 +83,12 @@
 	<td>${partecipante.nome }</td>
 	<td>${partecipante.cognome }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${partecipante.data_nascita}" /></td>
-	<td>${partecipante.azienda }</td>	
+	<td>${partecipante.nome_azienda}</td>	
+	<td><c:if test="${partecipante.id_sede!=0 }">${partecipante.nome_sede }</c:if></td>
 	<td>
 	
 	<a class="btn btn-info" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
-	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${partecipante.nome }','${partecipante.cognome.replace('\'','&prime;')}','${partecipante.data_nascita }','${partecipante.azienda }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a> 
+	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${partecipante.nome }','${partecipante.cognome.replace('\'','&prime;')}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a> 
 	</td>
 	</tr>
 	</c:forEach>
@@ -154,7 +156,33 @@
        <label>Azienda</label>
        </div>
         <div class="col-xs-9">
-        <input type="text" id="azienda" name="azienda" class="form-control" style="width:100%" required>
+        <!-- <input type="text" id="azienda" name="azienda" class="form-control" style="width:100%" required> -->
+        <input class="form-control" data-placeholder="Seleziona Azienda..." id="azienda" name="azienda" style="width:100%" required>
+                       <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
+                
+                      <c:forEach items="${lista_clienti}" var="cliente">
+                     
+                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+        </div>      
+       </div>
+       <br>
+       <div class="row">
+       <div class="col-xs-3">
+       <label>Sede</label>
+       </div>
+        <div class="col-xs-9">
+        
+       <select id="sede" name="sede" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" disabled required>
+       <option value=""></option>
+      	<c:forEach items="${lista_sedi}" var="sd">
+      	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
+      	</c:forEach>
+      
+      </select>
         </div>      
        </div>
 
@@ -218,7 +246,24 @@
        <label>Azienda</label>
        </div>
         <div class="col-xs-9">
-        <input type="text" id="azienda_mod" name="azienda_mod" class="form-control" style="width:100%" required>
+        <input class="form-control" data-placeholder="Seleziona Azienda..." id="azienda_mod" name="azienda_mod" style="width:100%" required>
+      
+
+        </div>      
+       </div><br>
+              <div class="row">
+       <div class="col-xs-3">
+       <label>Sede</label>
+       </div>
+        <div class="col-xs-9">
+        
+       <select id="sede_mod" name="sede_mod" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" required>
+       <option value=""></option>
+      	<c:forEach items="${lista_sedi}" var="sd">
+      	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
+      	</c:forEach>
+      
+      </select>
         </div>      
        </div>
 
@@ -300,14 +345,26 @@ function dettaglioPartecipante(id_partecipante){
 }
 
 
-function modificaPartecipanteModal(id_partecipante, nome, cognome, data_nascita, azienda){
+function modificaPartecipanteModal(id_partecipante, nome, cognome, data_nascita, azienda, sede){
 	
 	$('#id_partecipante').val(id_partecipante);
 	$('#nome_mod').val(nome);
 	$('#cognome_mod').val(cognome);
 	$('#data_nascita_mod').val(Date.parse(data_nascita).toString("dd/MM/yyyy"));
-	$('#azienda_mod').val(azienda);
-
+	
+	if(azienda!=null && azienda!=''){
+		$('#azienda_mod').val(azienda);
+		$('#azienda_mod').change();	
+		
+	}
+	if(sede!=null && sede!='' && sede!='0'){
+		$('#sede_mod').val(sede+"_"+azienda);
+		$('#sede_mod').change();
+	}else{
+		$('#sede_mod').val(0);
+		$('#sede_mod').change();
+	}
+	
 	$('#modalModificaPartecipante').modal();
 }
 
@@ -351,6 +408,11 @@ $(document).ready(function() {
      $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
 	 }); 
+  //   $('.select2').select2();
+  initSelect2('#azienda');
+  initSelect2('#azienda_mod');
+  $('#sede').select2();
+  $('#sede_mod').select2();
 
      table = $('#tabForPartecipante').DataTable({
 			language: {
@@ -455,8 +517,129 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 });
  
  
+ $("#azienda").change(function() {
+	  
+	  if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    $(this).data('options', $('#sede option').clone());
+	  }
+	  
+	  
+	  var selection = $(this).val()	 
+	  var id = selection
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	
+	  opt.push("<option value = 0 selected>Non Associate</option>");
+
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+	
+		//if(str.substring(str.indexOf("_")+1,str.length)==id)
+		if(str.substring(str.indexOf("_")+1, str.length)==id)
+		{
+
+			opt.push(options[i]);
+		}   
+	   }
+	 $("#sede").prop("disabled", false);
+	 
+	  $('#sede').html(opt);
+	  
+	  $("#sede").trigger("chosen:updated");
+	  
+
+		$("#sede").change();  
+		
+
+	});
  
- 
+ $("#azienda_mod").change(function() {
+	  
+	  if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    $(this).data('options', $('#sede_mod option').clone());
+	  }
+	  
+	  
+	  var selection = $(this).val()	 
+	  var id = selection
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	
+	  opt.push("<option value = 0 selected>Non Associate</option>");
+
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+	
+		//if(str.substring(str.indexOf("_")+1,str.length)==id)
+		if(str.substring(str.indexOf("_")+1, str.length)==id)
+		{
+
+			opt.push(options[i]);
+		}   
+	   }
+	 $("#sede_mod").prop("disabled", false);
+	 
+	  $('#sede_mod').html(opt);
+	  
+	  $("#sede_mod").trigger("chosen:updated");
+	  
+
+		$("#sede_mod").change();  
+		
+
+	});
+	
+ var options =  $('#cliente_appoggio option').clone();
+ function mockData() {
+ 	  return _.map(options, function(i) {		  
+ 	    return {
+ 	      id: i.value,
+ 	      text: i.text,
+ 	    };
+ 	  });
+ 	}
+ 	
+
+
+ function initSelect2(id_input) {
+
+ 	$(id_input).select2({
+ 	    data: mockData(),
+ 	    placeholder: 'search',
+ 	    multiple: false,
+ 	    // query with pagination
+ 	    query: function(q) {
+ 	      var pageSize,
+ 	        results,
+ 	        that = this;
+ 	      pageSize = 20; // or whatever pagesize
+ 	      results = [];
+ 	      if (q.term && q.term !== '') {
+ 	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+ 	        results = _.filter(x, function(e) {
+ 	        	
+ 	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+ 	        });
+ 	      } else if (q.term === '') {
+ 	        results = that.data;
+ 	      }
+ 	      q.callback({
+ 	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+ 	        more: results.length >= q.page * pageSize,
+ 	      });
+ 	    },
+ 	  });
+ 	
+ 	
+ }
 
  
   </script>

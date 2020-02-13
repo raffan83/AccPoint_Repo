@@ -181,7 +181,7 @@
    			 </div>
    		<div class="col-sm-3">
             <!--  <a class="btn btn-info" title="Aggiungi indirizzo" onClick="aggiungiIndirizzo()"><i class="fa fa-plus"></i></a> -->
-             <a class="btn btn-danger" id="elimina_indirizzo" title="Elimina indirizzo" onClick="eliminaIndirizzo()" style="display:none"><i class="fa fa-minus"></i></a>
+             
              
    			 </div>	 
    			 <br><br>	

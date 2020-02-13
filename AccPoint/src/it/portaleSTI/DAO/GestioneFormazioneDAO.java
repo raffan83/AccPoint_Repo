@@ -3,8 +3,6 @@ package it.portaleSTI.DAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,7 +10,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
@@ -225,10 +222,16 @@ public class GestioneFormazioneDAO {
 		ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		ForPartecipanteRuoloCorsoDTO result = null;
 		
-		Query query = session.createQuery("from ForPartecipanteRuoloCorsoDTO where partecipante.id = :_id_partecipante and corso.id = :_id_corso and ruolo.id = :_id_ruolo");
+		Query query = null;
+		if(id_ruolo!=0) {
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO where partecipante.id = :_id_partecipante and corso.id = :_id_corso and ruolo.id = :_id_ruolo");
+			
+			query.setParameter("_id_ruolo", id_ruolo);
+		}else {
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO where partecipante.id = :_id_partecipante and corso.id = :_id_corso");
+		}
 		query.setParameter("_id_partecipante", id_partecipante);
 		query.setParameter("_id_corso", id_corso);
-		query.setParameter("_id_ruolo", id_ruolo);
 		
 		lista = (ArrayList<ForPartecipanteRuoloCorsoDTO>) query.list();
 		
@@ -298,5 +301,33 @@ public class GestioneFormazioneDAO {
 		return lista;
 		
 	}
+
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiRuoloCorso(String dateFrom, String dateTo, String tipo_data, Session session) throws Exception {
+		
+		ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = null;
+		
+		if(dateFrom !=null && dateTo!=null && tipo_data!=null) {
+			
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso."+tipo_data+" between :_dateFrom and :_dateTo");	
+			query.setParameter("_dateFrom", sdf.parse(dateFrom));
+			query.setParameter("_dateTo", sdf.parse(dateTo));
+			
+		}else {
+			
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO"); 
+			
+		}				
+			
+		lista = (ArrayList<ForPartecipanteRuoloCorsoDTO>) query.list();
+		
+				
+		return lista;
+	}
+
+	
 
 }

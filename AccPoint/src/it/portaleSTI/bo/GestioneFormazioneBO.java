@@ -109,4 +109,11 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getListaCorsiPartecipanteScadenza(id_partecipante, data_scadenza, session);
 	}
 
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiRuoloCorso(String dateFrom, String dateTo, String tipo_data,Session session) throws Exception {
+		
+		return GestioneFormazioneDAO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, session);
+	}
+
+
+
 }

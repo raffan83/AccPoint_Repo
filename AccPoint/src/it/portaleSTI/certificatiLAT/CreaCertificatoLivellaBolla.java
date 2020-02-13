@@ -167,7 +167,7 @@ public class CreaCertificatoLivellaBolla {
 		}
 		if(misura.getMisura_lat()!=null) {
 			if(misura.getMisura_lat().getSigla_registro()!=null) {
-				report.addParameter("registro_laboratorio",  misura.getIntervento().getId()+"_"+misura.getIdMisura()+"_"+misura.getStrumento().get__id());		
+				report.addParameter("registro_laboratorio",  misura.getIntervento().getId()+"_"+misura.getId()+"_"+misura.getStrumento().get__id());		
 			}else {
 				report.addParameter("registro_laboratorio",  "");
 			}
@@ -224,6 +224,12 @@ public class CreaCertificatoLivellaBolla {
 		if(misura.getRif_campione()!=null) {
 			reportP2.addParameter("campione_riferimento", misura.getRif_campione().getCodice());
 			certificato_campione = certificato_campione + misura.getRif_campione().getNumeroCertificato();
+			if(misura.getRif_campione().getAttivita_di_taratura()!=null && !misura.getRif_campione().getAttivita_di_taratura().equals("INTERNA")) {
+				certificato_campione= certificato_campione+" ("+misura.getRif_campione().getAttivita_di_taratura()+")";
+			}else {
+				certificato_campione= certificato_campione+" (S.T.I. SVILUPPO TECNOLOGIE INDUSTRIALI S.R.L.)";	
+			}
+			
 		}else {
 			reportP2.addParameter("campione_riferimento", "");
 		}
@@ -231,6 +237,11 @@ public class CreaCertificatoLivellaBolla {
 			reportP2.addParameter("campione_lavoro", misura.getRif_campione_lavoro().getCodice());
 			if(!misura.getRif_campione().getCodice().equals(misura.getRif_campione_lavoro().getCodice())) {
 				certificato_campione = certificato_campione + "; " + misura.getRif_campione_lavoro().getNumeroCertificato();
+				if(misura.getRif_campione_lavoro().getAttivita_di_taratura()!=null && !misura.getRif_campione_lavoro().getAttivita_di_taratura().equals("INTERNA")) {
+					certificato_campione= certificato_campione+" ("+misura.getRif_campione_lavoro().getAttivita_di_taratura()+")";
+				}else {
+					certificato_campione= certificato_campione+" (S.T.I. SVILUPPO TECNOLOGIE INDUSTRIALI S.R.L.)";	
+				}
 			}
 		}else {
 			reportP2.addParameter("campione_lavoro", "");

@@ -11,12 +11,12 @@
 	<title>
 		<band height="176" splitType="Stretch">
 			<staticText>
-				<reportElement positionType="Float" x="0" y="140" width="555" height="18" uuid="889b516a-740b-4d4d-840a-2dd824c0f063"/>
+				<reportElement positionType="Float" x="0" y="140" width="540" height="18" uuid="889b516a-740b-4d4d-840a-2dd824c0f063"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="12" isBold="true"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[CERTIFICATO DI TARATURA LAT]]></text>
+				<text><![CDATA[CERTIFICATO DI TARATURA LAT 172]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="381" y="140" width="173" height="31" uuid="778a152a-6833-45fb-ac6f-ca0c788dd2e5"/>
@@ -81,6 +81,13 @@
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Ing. Antonio Accettola]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="40" y="19" width="511" height="41" uuid="31be1d41-6796-4e3b-b16b-63fd0f050068"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

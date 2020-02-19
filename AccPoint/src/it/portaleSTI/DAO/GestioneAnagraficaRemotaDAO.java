@@ -188,7 +188,7 @@ public class GestioneAnagraficaRemotaDAO {
 					cliente.setCap(rs.getString("CAP"));
 					cliente.setCitta(rs.getString("CITTA"));
 					cliente.setProvincia(rs.getString("CODPROV"));
-					cliente.setNumeroREA("");
+					cliente.setNumeroREA(rs.getString("N_REA"));
 					cliente.setEmail(rs.getString("EMAIL"));
 					
 				}

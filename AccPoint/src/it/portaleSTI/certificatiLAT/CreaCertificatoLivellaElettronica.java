@@ -297,6 +297,13 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 			}
 			
 		}
+		
+		if(misura.getStrumento().getNote()!=null) {
+			reportP2.addParameter("note", misura.getStrumento().getNote());
+		}else {
+			reportP2.addParameter("note", "");
+		}
+		
 		reportP2.setDetailSplitType(SplitType.IMMEDIATE);
 		
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();

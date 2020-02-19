@@ -99,13 +99,18 @@ public static LinkedHashMap<String, String> getClientiPerVerCertificato(UtenteDT
 	}
 
 
-public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato,int filtro_emissione, int idCliente, int idSede, boolean obsoleti,Session session) {
+public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato,int filtro_emissione, int idCliente, int idSede,String company, boolean obsoleti,Session session) {
 	
 	ArrayList<VerCertificatoDTO> lista = null;	
 	String s_query = "";
 	
 	if(idCliente == 0 && idSede== 0) {
-		s_query = "from VerCertificatoDTO certificato";
+		if(company!=null && !company.equals("")) {
+			s_query = "from VerCertificatoDTO certificato WHERE certificato.misura.verIntervento.company.id =:_company";
+		}else {
+			s_query = "from VerCertificatoDTO certificato";	
+		}
+		
 	}else {
 		s_query ="from VerCertificatoDTO certificato WHERE certificato.misura.verIntervento.id_cliente = :_id_cliente and certificato.misura.verIntervento.id_sede = :_id_sede"; 
 	}		
@@ -113,7 +118,11 @@ public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato,int fil
 	if(obsoleti) {
 		
 		if(idCliente == 0 && idSede== 0) {
-			s_query = s_query +" where certificato.misura.obsoleta='S'";	
+			if(company!=null && !company.equals("")) {
+				s_query = s_query +" and certificato.misura.obsoleta='S'";
+			}else {
+				s_query = s_query +" where certificato.misura.obsoleta='S'";
+			}
 		}else {
 			s_query = s_query +" and certificato.misura.obsoleta='S'";
 		}
@@ -121,21 +130,32 @@ public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato,int fil
 		Query query = session.createQuery(s_query);
 		if(idCliente != 0) {
 			query.setParameter("_id_cliente",idCliente);
-			query.setParameter("_id_sede",idSede);
+			query.setParameter("_id_sede",idSede);			
+		}
+		if(company!=null && !company.equals("")) {
+			query.setParameter("_company",Integer.parseInt(company));
 		}
 		lista = (ArrayList<VerCertificatoDTO>)query.list();
 		
 	}else {
+	
 		if(idCliente!=0 && stato!=0) {
-			s_query = s_query + " and certificato.stato.id= :_stato";				 
+			s_query = s_query + " and certificato.stato.id= :_stato";	
+			s_query = s_query + "  and certificato.misura.obsoleta='N'";			 
 		}else if(idCliente == 0 && stato!=0) {
-			s_query = s_query + " where certificato.stato.id= :_stato";
+			if(company!=null && !company.equals("")) {
+				s_query = s_query + " and certificato.stato.id= :_stato";
+				
+			}else {
+				s_query = s_query + " where certificato.stato.id= :_stato";	
+			}			
+			s_query = s_query + "  and certificato.misura.obsoleta='N'";
 		}
 		
 		if(stato!=0) {
 			s_query = s_query +" and certificato.firmato = :_filtro_emissione";
 		}
-				
+					
 		Query query = session.createQuery(s_query);
 		if(stato != 0) {
 			query.setParameter("_stato",stato);
@@ -145,6 +165,11 @@ public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato,int fil
 			query.setParameter("_id_cliente",idCliente);
 			query.setParameter("_id_sede",idSede);
 		}
+			
+		if(company!=null && !company.equals("")) {
+			query.setParameter("_company",Integer.parseInt(company));
+		}
+		
 		lista = (ArrayList<VerCertificatoDTO>)query.list();
 	}
 

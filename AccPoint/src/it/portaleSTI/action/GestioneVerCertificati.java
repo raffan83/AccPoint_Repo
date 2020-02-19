@@ -108,20 +108,25 @@ public class GestioneVerCertificati extends HttpServlet {
 				
 				String idCliente = "";
 				String idSede = "";
+				String company = "";
 				if(idClienteSede == null) {
 					idCliente = null;
 					idSede = null;
+					company = null;
 				}else {
 
 					String[] cliente = idClienteSede.split("_");
 					
 					 idCliente = cliente[0];
 					 idSede = cliente[1];
+					 if(cliente.length>2) {
+						 company = cliente[2];
+					 }
 					
 					
 				}
 				
-				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(0,0,Integer.parseInt(idCliente),Integer.parseInt(idSede), false,session);
+				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(0,0,Integer.parseInt(idCliente),Integer.parseInt(idSede),company, false,session);
 
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				RequestDispatcher dispatcher  = getServletContext().getRequestDispatcher("/site/listaVerCertificatiTutti.jsp");
@@ -134,20 +139,24 @@ public class GestioneVerCertificati extends HttpServlet {
 				
 				String idCliente = "";
 				String idSede = "";
+				String company = "";
 				if(idClienteSede == null) {
 					idCliente = null;
 					idSede = null;
+					company = null;
 				}else {
 
 					String[] cliente = idClienteSede.split("_");
 					
 					 idCliente = cliente[0];
 					 idSede = cliente[1];
-					
+					 if(cliente.length>2) {
+						 company = cliente[2];
+					 }
 					
 				}
 				
-				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(1,0, Integer.parseInt(idCliente),Integer.parseInt(idSede),false, session);
+				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(1,0, Integer.parseInt(idCliente),Integer.parseInt(idSede),company,false, session);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerCertificatiInLavorazione.jsp");
 		     	dispatcher.forward(request,response);
@@ -160,20 +169,24 @@ public class GestioneVerCertificati extends HttpServlet {
 				
 				String idCliente = "";
 				String idSede = "";
+				String company = "";
 				if(idClienteSede == null) {
 					idCliente = null;
 					idSede = null;
+					company = null;
 				}else {
 
 					String[] cliente = idClienteSede.split("_");
 					
 					 idCliente = cliente[0];
 					 idSede = cliente[1];
-					
+					 if(cliente.length>2) {
+						 company = cliente[2];
+					 }
 					
 				}
 								
-				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(2,Integer.parseInt(filtro_emissione),Integer.parseInt(idCliente),Integer.parseInt(idSede),false, session);
+				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(2,Integer.parseInt(filtro_emissione),Integer.parseInt(idCliente),Integer.parseInt(idSede),company,false, session);
 				
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerCertificatiChiusi.jsp");
@@ -187,20 +200,24 @@ public class GestioneVerCertificati extends HttpServlet {
  				String idClienteSede = request.getParameter("cliente");
 				String idCliente = "";
 				String idSede = "";
+				String company = "";
 				if(idClienteSede == null) {
 					idCliente = null;
 					idSede = null;
+					company = null;
 				}else {
 
 					String[] cliente = idClienteSede.split("_");
 					
 					 idCliente = cliente[0];
 					 idSede = cliente[1];
-					
+					 if(cliente.length>2) {
+						 company = cliente[2];
+					 }
 					
 				}
 								
-				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(0,0,Integer.parseInt(idCliente),Integer.parseInt(idSede),true, session);
+				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(0,0,Integer.parseInt(idCliente),Integer.parseInt(idSede),company,true, session);
 				
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerCertificatiTutti.jsp");

@@ -138,7 +138,7 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<Reg
 	 	report.addColumn(col.column("Data scadenza","data_scadenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	report.addColumn(col.column("Etichettatura di conferma","etichettatura", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	report.addColumn(col.column("Stato","stato", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 	report.addColumn(col.column("Campo sospesi","campo_sospesi", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Note","campo_sospesi", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	report.addColumn(col.column("Operatore","operatore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));

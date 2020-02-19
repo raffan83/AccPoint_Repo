@@ -305,7 +305,11 @@ public class CreaCertificatoLivellaBolla {
 		reportP3.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
 		reportP3.addParameter("numero_certificato", n_certificato);
 		
-		
+		if(misura.getStrumento().getNote()!=null) {
+			reportP3.addParameter("note", misura.getStrumento().getNote());
+		}else {
+			reportP3.addParameter("note", "");
+		}
 		
 		SubreportBuilder subreport; 
 		subreport = cmp.subreport(getTableReport(lista_punti));

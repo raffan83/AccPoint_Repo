@@ -1372,30 +1372,38 @@ public class GestioneRilievi extends HttpServlet {
 			}
 					
 			
-			else if(action.equals("chiudi_rilievo")) {
+			else if(action.equals("apri_chiudi_rilievo")) {
 				ajax = true;
 				PrintWriter out = response.getWriter();
 				String id_rilievo = request.getParameter("id_rilievo");
+				String stato = request.getParameter("stato");
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
-				rilievo.setStato_rilievo(new RilStatoRilievoDTO(2, ""));
-				rilievo.setData_consegna(new Date());
+				rilievo.setStato_rilievo(new RilStatoRilievoDTO(Integer.parseInt(stato), ""));
 				
-				int ultima_scheda = 0;
-				
-				if(rilievo.getNumero_scheda()!=null && !rilievo.getNumero_scheda().equals("")) {
-					ultima_scheda = Integer.parseInt(rilievo.getNumero_scheda().split("_")[1]);
-				}else {
-					ultima_scheda = (GestioneSchedaConsegnaBO.getUltimaScheda(session)+1);
-				}				
-				
-				rilievo.setNumero_scheda("SRD_"+(ultima_scheda));
-				
+				if(stato.equals("2")) {
+					rilievo.setData_consegna(new Date());
+					
+					int ultima_scheda = 0;
+					
+					if(rilievo.getNumero_scheda()!=null && !rilievo.getNumero_scheda().equals("")) {
+						ultima_scheda = Integer.parseInt(rilievo.getNumero_scheda().split("_")[1]);
+					}else {
+						ultima_scheda = (GestioneSchedaConsegnaBO.getUltimaScheda(session)+1);
+					}				
+					
+					rilievo.setNumero_scheda("SRD_"+(ultima_scheda));
+				}
 				
 				session.getTransaction().commit();
 				session.close();
 				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Rilievo chiuso con successo!");
+				if(stato.equals("1")) {
+					myObj.addProperty("messaggio", "Rilievo aperto con successo!");
+				}else {
+					myObj.addProperty("messaggio", "Rilievo chiuso con successo!");	
+				}
+				
 				out.print(myObj);
 				
 			}

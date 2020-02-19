@@ -60,7 +60,7 @@
                   <b>Denominazione</b> <a class="pull-right">${cliente.nome}</a>
                 </li>
                  <li class="list-group-item">
-                  <b>Indirizzo</b> <a class="pull-right">${cliente.indirizzo}</a>
+                  <b>Indirizzo</b> <a class="pull-right">${cliente.indirizzo} - ${cliente.cap } - ${cliente.citta } (${cliente.provincia })</a>
                 </li>
                 <li class="list-group-item">
                   <b>Partita IVA - Cod. Fiscale</b> <a class="pull-right">${cliente.partita_iva}</a>
@@ -72,7 +72,13 @@
                   <b>Telefono</b> <a class="pull-right">${cliente.telefono}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Numero REA</b> <a class="pull-right">${sede.n_REA}</a>
+                <b>Numero REA</b>
+                 <c:if test="${sede!=null && sede.n_REA!=null && sede.n_REA!=''}">
+                   <a class="pull-right">${sede.n_REA}</a>
+                  </c:if> 
+                  <c:if test="${cliente!=null && cliente.numeroREA!=null }">
+                   <a class="pull-right">${cliente.numeroREA}</a>
+                  </c:if>
                 </li>
 
         </ul>

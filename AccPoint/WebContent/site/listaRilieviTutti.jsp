@@ -118,12 +118,13 @@
 			<i class="fa fa-edit"></i></a>
 			<%-- <a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievo('${rilievo.id}')"><i class="fa fa-clone"></i></a> --%>
 			<a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievoModal('${rilievo.id}')"><i class="fa fa-clone"></i></a>
-			<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiRilievo('${rilievo.id}')"><i class="glyphicon glyphicon-remove"></i></a>
+			<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiApriRilievo('${rilievo.id}',2)"><i class="glyphicon glyphicon-remove"></i></a>
 			<a href="#" class="btn btn-danger customTooltip" title="Click per eliminare il rilievo" onclick="eliminaRilievoModal('${rilievo.id}')"><i class="fa fa-trash"></i></a>
 			<a target="_blank" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" href="gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>
 		</c:when>
 		<c:otherwise>
 		<a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievo('${rilievo.id}')"><i class="fa fa-clone"></i></a>
+		<a href="#" class="btn btn-success customTooltip" title="Click per riaprire il rilievo" onClick="chiudiApriRilievo('${rilievo.id}',1)"><i class="fa fa-unlock"></i></a>
 		</c:otherwise>
 		</c:choose>
 		</c:if>

@@ -338,7 +338,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
              <input id="stato_dtl" class="form-control" readonly>
         </div>
         <div class="col-sm-6">
-        <label >Campo sospesi:</label>
+        <label >Note:</label>
              <input id="campo_sospesi_dtl" class="form-control" readonly>
         </div>
         <div class="col-sm-6">
@@ -438,7 +438,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	     	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interna</label><br><input  id="check_esterna" name="check_esterna" type="checkbox"/>')
 	     	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
 	     	.concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>')
-	     	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')     	
+	     	.concat('<div class="col-sm-2"><label>Note:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')     	
 	     	.concat('<div class="col-sm-2"><label class="pull-right">Certificato:</label></div><div class="col-sm-2"><input class="form-control" id="id_certificato" name="id_certificato" type="text" readonly/></div>')
 	     	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
 	
@@ -452,7 +452,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interna</label><br><input  id="check_esterna" name="check_esterna" type="checkbox"/>')
      	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
      	.concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>')
-     	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
+     	.concat('<div class="col-sm-2"><label>Note:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
      	.concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>')
      	.concat('<div class="col-sm-2" style="margin-top:15px"><label>Certificato:</label></div><div class="col-sm-4" style="margin-top:15px"><input class="form-control" id="id_certificato" name="id_certificato" type="text" readonly/></div><div>')
      	.concat('<div class="col-sm-2" style="margin-top:15px"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
@@ -521,7 +521,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna_mod" name="check_interna_mod" type="checkbox"/><label >Interna</label><br><input  id="check_esterna_mod" name="check_esterna_mod" type="checkbox"/>')
      	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea_mod" name="check_idonea_mod" type="checkbox" /><label >Idonea</label><br>')
      	.concat('<input  id="check_non_idonea_mod" name="check_non_idonea_mod" type="checkbox"/><label >Non Ideonea</label></div>')     	
-     	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
+     	.concat('<div class="col-sm-2"><label>Note:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
      	.concat('<div class="col-sm-2"><label class="pull-right">Certificato:</label></div><div class="col-sm-2"><input class="form-control" id="id_certificato_mod" name="id_certificato_mod" type="text" readonly/></div>')
      	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
 	
@@ -535,7 +535,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna_mod" name="check_interna_mod" type="checkbox"/><label >Interna</label><br><input  id="check_esterna_mod" name="check_esterna_mod" type="checkbox"/>')
      	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea_mod" name="check_idonea_mod" type="checkbox" /><label >Idonea</label><br>')
      	.concat('<input  id="check_non_idonea_mod" name="check_non_idonea_mod" type="checkbox"/><label >Non Ideonea</label></div>')
-     	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
+     	.concat('<div class="col-sm-2"><label>Note:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
      	.concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore_mod" name="operatore_mod" style="width:100%"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>')
      	.concat('<div class="col-sm-2" style="margin-top:15px"><label>Certificato:</label></div><div class="col-sm-4" style="margin-top:15px"><input class="form-control" id="id_certificato_mod" name="id_certificato_mod" type="text" readonly/></div><div>')
      	.concat('<div class="col-sm-2" style="margin-top:15px"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');

@@ -51,9 +51,14 @@
 		                <div class="form-group">
 		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."   onchange="filtraVerCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true">
 		                       <option></option>
-		                       <c:if test="${userObj.isTras() }">
+		                       <c:choose>
+		                       <c:when test="${userObj.isTras() }">
 		                        <option value="0_0">Tutti i clienti</option>
-		                        </c:if>
+		                        </c:when>
+		                        <c:otherwise>
+		                         <option value="0_0_${userObj.company.id }">Tutti i clienti</option>
+		                        </c:otherwise>
+		                        </c:choose>
 		                      <c:forEach items="${listaClienti}" var="cliente">
 		                           <option value="${cliente.key}">${cliente.value}</option>                   
 		                     </c:forEach>

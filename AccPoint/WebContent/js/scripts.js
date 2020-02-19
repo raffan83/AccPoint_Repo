@@ -8789,14 +8789,15 @@ function filtraCertificati(){
   
   
   
-function chiudiRilievo(id_rilievo){
+function chiudiApriRilievo(id_rilievo,stato){
 	  
 	  var dataObj = {};
 		dataObj.id_rilievo = id_rilievo;
+		dataObj.stato = stato
 						
 	  $.ajax({
       type: "POST",
-      url: "gestioneRilievi.do?action=chiudi_rilievo",
+      url: "gestioneRilievi.do?action=apri_chiudi_rilievo",
       data: dataObj,
       dataType: "json",
       //if received a response from the server

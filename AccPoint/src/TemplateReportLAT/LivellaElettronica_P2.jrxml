@@ -1036,6 +1036,13 @@
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Ing. Antonio Accettola]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="38" y="-5" width="511" height="21" uuid="7d58af59-78a9-4d8e-8143-30abc94a2a16"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

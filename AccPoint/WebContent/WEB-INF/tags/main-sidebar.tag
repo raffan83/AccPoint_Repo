@@ -300,6 +300,7 @@
 			  <li><a href="gestioneBacheca.do"><i class="fa fa-envelope"></i>Gestione Bacheca</a></li>
 			  
 			  <li><a href="gestioneTabelle.do"><i class="glyphicon glyphicon-th"></i>Gestione Tabelle</a></li>
+			  <li><a href="gestioneTipoStrumento.do"><i class="glyphicon glyphicon-wrench"></i>Gestione Tipo Strumento</a></li>
           </ul>
            
         </li>

@@ -13284,3 +13284,133 @@ function saveVerDuplicatiFromModal(){
 }
 
 
+
+function submitTipoStrumento(descrizione, ids){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  var dataObj = {};
+	  dataObj.descrizione = descrizione;
+	  dataObj.ids = ids;
+	  
+	  
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneTipoStrumento.do?action=nuovo",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		  $(".ui-tooltip").remove();
+	    		  if(data.success)
+	    		  { 
+	    			     			 
+	    			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  $("#boxPacchetti").html("");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+	    				$('#myModalError').on('hidden.bs.modal', function(){	         			
+	    					
+	    					 location.reload()
+	    				});
+
+	    		
+	    		  }else{
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#report_button').show();
+	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+						
+	    	  }
+});
+	
+}
+
+
+function submitAggiungiGrandezzaTipoStrumento(ids,id_tipo_strumento){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  var dataObj = {};
+	  dataObj.ids = ids;
+	  dataObj.id_tipo_strumento = id_tipo_strumento;
+	  
+	  
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneTipoStrumento.do?action=aggiungi",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		  
+	    		  if(data.success)
+	    		  { 
+	    			     			 
+	    			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  $("#boxPacchetti").html("");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+	    				$('#myModalError').on('hidden.bs.modal', function(){	         			
+	    					
+	    					 location.reload()
+	    				});
+
+	    		
+	    		  }else{
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#report_button').show();
+	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+						
+	    	  }
+});
+	
+}
+
+
+

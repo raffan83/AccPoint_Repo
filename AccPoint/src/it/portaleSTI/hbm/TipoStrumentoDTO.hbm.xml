@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.TipoStrumentoDTO" table="TIPO_STRUMENTO">
         <id name="id" type="int">
             <column name="__ID" />
-            <generator class="assigned" />
+            <generator class="native" />
         </id>
         <property name="nome" type="java.lang.String">
             <column name="NOME" />

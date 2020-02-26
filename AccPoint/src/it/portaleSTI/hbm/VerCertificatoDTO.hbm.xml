@@ -29,5 +29,8 @@
         <property name="nomeRapporto" type="java.lang.String" >
             <column name="nome_rapporto" />
         </property>
+        <property name="email_inviata" type="int" >
+            <column name="email_inviata" />
+        </property>
     </class>
 </hibernate-mapping>

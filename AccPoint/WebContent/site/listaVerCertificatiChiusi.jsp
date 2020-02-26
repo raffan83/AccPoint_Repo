@@ -41,8 +41,11 @@
  <th>Data Misura</th>
    
     <th>Operatore</th>
-    <%-- <th>Numero certificato</th> --%>
- <th style="min-width:270px">Azioni</th>
+
+    <th>Email inviata</th>
+
+ 
+ <th style="min-width:320px">Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -51,7 +54,7 @@
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
 	<td></td>
-		<%-- <td></td> --%>
+		
 		<td>${certificato.id}</td>
  		<td>${certificato.misura.verIntervento.commessa}</td>
 		<td>${certificato.misura.verStrumento.denominazione}</td>
@@ -82,13 +85,22 @@
 		</td>	
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataVerificazione}" /></td>
 				
-				
-
-	
- 		
+		
  		
 	<td>${certificato.misura.tecnicoVerificatore.nominativo}</td>
-	<%-- <td>${certificato.misura.nCertificato}</td> --%>
+
+	<td>
+		<c:choose>
+		<c:when test="${certificato.email_inviata==1}">
+	<span class="label bigLabelTable label-success">SI</span>
+		</c:when>
+		<c:otherwise>
+		<span class="label bigLabelTable label-danger">NO</span>
+		</c:otherwise>
+		</c:choose>	 
+		</td>
+	
+	
 		<td class="actionClass" align="center" style="min-width:250px">
 			 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della Misura"  href="gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(certificato.misura.id)}" ><i class="fa fa-tachometer"></i></a>
 			 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'intervento"  href="gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(certificato.misura.verIntervento.id)}" ><i class="fa fa-file-text-o"></i></a>
@@ -108,7 +120,10 @@
 			  </c:if>
 			  <c:if test="${userObj.checkPermesso('FIRMA_ATTESTATO_VERIFICAZIONE') && certificato.firmato == 1}">
 			  <a class="btn btn-info customTooltip" title="Click per inviare il certificato per e-mail"onClick="modalEmailVerificazione('${certificato.id}')"><i class="fa fa-paper-plane-o"></i></a>
+			  <a class="btn btn-default customTooltip" title="Clik per visualizzare lo storico email" onClick="modalStorico('${certificato.id}')"><i class="fa fa-history"></i></a>
 			  </c:if>
+			  
+			 
 			<%-- <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="gestioneVerCertificati.do?action=download&&cert_rap=0&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a> --%>
 		</td>
 	</tr>
@@ -213,6 +228,36 @@
 
 
 
+ <div id="myModalStorico" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h4 class="modal-title" id="myModalLabelHeader">Storico email</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-sm-12">
+			
+       <div id="tab_storico"></div>
+        </div>
+
+     		</div>
+
+		</div>
+      <div class="modal-footer">
+ 		
+ 		<a class="btn btn-default pull-right" onClick="$('#myModalStorico').modal('hide')">Chiudi</a>
+         
+         
+         </div>
+     
+    </div>
+  </div>
+</div>
+
+
+
   </div>
 </div>
 
@@ -226,6 +271,20 @@
    </script>
 
   <script type="text/javascript">
+  
+  
+  function modalStorico(id_certificato){
+	  
+	  dataString ="action=storico_email&id_certificato="+ id_certificato;
+      exploreModal("gestioneVerCertificati.do",dataString,"#tab_storico",function(datab,textStatusb){
+      });
+	  
+	  $('#myModalStorico').modal()
+  }
+  
+  
+  
+  
   var pin0;
   var id_certificato;
   function openModalPin(id){	
@@ -370,7 +429,7 @@
 	
 	var indirizzo;
     $(document).ready(function() {
-    
+ 
     	indirizzo = 2;
     	var maxSelect = 100;
 
@@ -420,7 +479,7 @@
   	                   { responsivePriority: 3, targets: 7 },
   	                   { responsivePriority: 4, targets: 2 },
   	                 { responsivePriority: 5, targets: 1 },
-  	                 { responsivePriority: 2, targets: 10 },
+  	                 { responsivePriority: 2, targets: 11 },
   	               { responsivePriority: 6, targets: 4 },
   	             { responsivePriority: 7, targets: 5 },
   	           { responsivePriority: 8, targets: 3 },
@@ -499,7 +558,7 @@
 	  } ); 
 	
   
-	  var column = table.column( 3 );
+	  var column = table.column( 2 );
 	  
 		 $('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
 		  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona una Commessa</option></select>')

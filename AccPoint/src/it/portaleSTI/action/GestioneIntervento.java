@@ -436,7 +436,7 @@ public class GestioneIntervento extends HttpServlet {
 		    		{
 		    		 GestioneMagazzinoBO.cambiaStatoStrumento(idItem, 2, session);
 		    		}
-					
+		    		GestioneInterventoBO.setControllato(intervento.getId(), utente.getId(), 0, session);
 		    		session.save(certificato);
 		    							
 					myObj.addProperty("success", true);				

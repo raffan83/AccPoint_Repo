@@ -273,7 +273,7 @@
         </li> 
            <% }%>
         
-           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CONFIGURAZIONI")){%>
+           <% if(user.checkRuolo("AM") || user.checkPermesso("ADMIN CONFIG")){%>
         <li class="header">-----------</li>
              <li class="treeview">
           <a href="#"><i class="fa fa-group"></i> <span>Configurazioni</span>
@@ -283,7 +283,7 @@
           </a>
         
           <ul class="treeview-menu">
-           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CONFIGURAZIONI") || user.checkPermesso("GESTIONE_TREND")){%>
+           <% if(user.checkRuolo("AM") || user.checkPermesso("ADMIN CONFIG") || user.checkPermesso("GESTIONE_TREND")){%>
 			<li><a href="listaUtenti.do"><i class="fa fa-group"></i>Gestione Utenti</a></li>
 			  <% if(user.checkRuolo("AM")){%>
 			<li><a href="listaCompany.do"><i class="fa fa-industry"></i>Gestione Company</a></li>

@@ -18,6 +18,7 @@ public class VerCertificatoDTO implements Serializable {
 	private String nomeRapporto;
 	
 	private int firmato;
+	private int email_inviata;
 	
 	
 	public VerCertificatoDTO(){}
@@ -92,6 +93,14 @@ public class VerCertificatoDTO implements Serializable {
 
 	public void setFirmato(int firmato) {
 		this.firmato = firmato;
+	}
+
+	public int getEmail_inviata() {
+		return email_inviata;
+	}
+
+	public void setEmail_inviata(int email_inviata) {
+		this.email_inviata = email_inviata;
 	}
 	
 	

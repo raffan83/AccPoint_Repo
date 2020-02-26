@@ -12,6 +12,8 @@ import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -86,6 +88,14 @@ public class GestioneTLDAO {
 	    
 		
 		list = (ArrayList<TipoStrumentoDTO>)query.list();
+		
+		
+		Collections.sort(list, new Comparator<TipoStrumentoDTO>() {
+            public int compare(TipoStrumentoDTO v1, TipoStrumentoDTO v2) {
+                return v1.getNome().compareTo(v2.getNome());
+            }
+        });
+
 		
 		session.getTransaction().commit();
 		session.close();

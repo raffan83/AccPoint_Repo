@@ -66,7 +66,7 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 									
 
 					intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
-					esito.getInterventoDati().setNumStrMis(esito.getInterventoDati().getNumStrMis()+1);
+ 					esito.getInterventoDati().setNumStrMis(esito.getInterventoDati().getNumStrMis()+1);
 
 					GestioneInterventoBO.updateInterventoDati(esito.getInterventoDati(),session);
 					GestioneInterventoBO.update(intervento, session);
@@ -75,7 +75,7 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 
 				jsono.addProperty("success", true);
 				jsono.addProperty("messaggio", "Sono stati salvati "+esito.getInterventoDati().getNumStrMis()+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
-
+				GestioneInterventoBO.setControllato(intervento.getId(), utente.getId(), 0, session);
 			}
 			else
 			{

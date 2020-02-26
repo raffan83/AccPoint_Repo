@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -33,6 +35,7 @@ import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
+import it.portaleSTI.DTO.VerEmailDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
@@ -471,9 +474,42 @@ public class GestioneVerCertificati extends HttpServlet {
 				VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id_certificato), session);				
 
 				SendEmailBO.sendEmailCertificatoVerificazione(certificato, indirizzo, getServletContext());
+				
+				String[] destinatari = indirizzo.replace(" ", "").split(";");
+				
+				for (String dest : destinatari) {
+					VerEmailDTO email = new VerEmailDTO();
+					
+					email.setCertificato(certificato);
+					email.setData_invio(new Timestamp(System.currentTimeMillis()));
+					email.setUtente(utente);
+					email.setDestinatario(dest);
+					
+					session.save(email);
+				}
+				
+				certificato.setEmail_inviata(1);
+				
+				session.update(certificato);
+				
 				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Email inviata con successo");
+				myObj.addProperty("messaggio", "Email inviata con successo!");
+				
 				out.println(myObj.toString());
+				
+				session.getTransaction().commit();
+				session.close();
+				
+			}
+			else if(action.equals("storico_email")) {
+				
+				String id_certificato = request.getParameter("id_certificato");
+				
+				ArrayList<VerEmailDTO> lista_email = GestioneVerCertificatoBO.getListaEmailCertificato(Integer.parseInt(id_certificato), session);
+				
+				request.getSession().setAttribute("lista_email",lista_email);
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerEmailCertificato.jsp");
+		     	dispatcher.forward(request,response);
 				
 			}
 			

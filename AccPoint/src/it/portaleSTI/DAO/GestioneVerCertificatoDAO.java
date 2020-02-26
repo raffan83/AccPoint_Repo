@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
+import it.portaleSTI.DTO.VerEmailDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 
 public class GestioneVerCertificatoDAO {
@@ -193,6 +194,21 @@ public static VerCertificatoDTO getCertificatoById(int id, Session session) {
 	}
 
 	return result;
+}
+
+
+public static ArrayList<VerEmailDTO> getListaEmailCertificato(int id_certificato, Session session) {
+	
+	ArrayList<VerEmailDTO> lista = null;	
+
+	Query query = session.createQuery("from VerEmailDTO where certificato.id = :_id");
+
+	query.setParameter("_id",id_certificato);
+    
+	lista = (ArrayList<VerEmailDTO>)query.list();
+	
+	
+	return lista;
 }
 
 

@@ -137,6 +137,8 @@ public class CaricaPacchetto extends HttpServlet {
 
 								jsono.addProperty("success", true);
 								jsono.addProperty("messaggio", Strings.CARICA_PACCHETTO_ESITO_1(esito.getInterventoDati().getNumStrMis(), esito.getInterventoDati().getNumStrNuovi()));
+								
+								GestioneInterventoBO.setControllato(intervento.getId(), utente.getId(), 0, session);
 
 							}
 							if(esito.getEsito()==1 && esito.isDuplicati()==true)
@@ -159,6 +161,9 @@ public class CaricaPacchetto extends HttpServlet {
 								jsono.addProperty("success", true);
 								jsono.addProperty("hasFirmaCliente", true);
 							}
+							
+							
+							
 						}
 						
 						if(esito.getEsito()==2)

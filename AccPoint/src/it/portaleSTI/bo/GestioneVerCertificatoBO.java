@@ -11,6 +11,7 @@ import it.portaleSTI.DAO.GestioneVerCertificatoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
+import it.portaleSTI.DTO.VerEmailDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 
 public class GestioneVerCertificatoBO {
@@ -35,5 +36,10 @@ public class GestioneVerCertificatoBO {
 	public static  VerCertificatoDTO getCertificatoByMisura(VerMisuraDTO misura) throws Exception 
 	{
 		return GestioneVerCertificatoDAO.getCertificatoByMisura(misura);
+	}
+
+	public static ArrayList<VerEmailDTO> getListaEmailCertificato(int id_certificato, Session session) {
+		
+		return GestioneVerCertificatoDAO.getListaEmailCertificato(id_certificato,session);
 	}
 }

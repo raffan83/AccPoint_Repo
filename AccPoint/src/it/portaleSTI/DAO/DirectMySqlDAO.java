@@ -2578,6 +2578,67 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		
 	}
 
+	
+	
+	
+public static void insertTipoStrumentoTipoGrandezzaDirect(int id_grandezza, int id_tipo_strumento) throws Exception {
+		
+	String query = "insert into tipo_strumento__tipo_grandezza_ values(?,?)"
+			;
+	Connection con=null;
+	PreparedStatement pst=null;
+
+		con=getConnection();
+ 		pst=con.prepareStatement(query);
+ 		pst.setInt(1, id_grandezza);
+ 		pst.setInt(2, id_tipo_strumento);
+				
+		pst.execute();
+		
+		pst.close();
+		con.close();
+	}
+
+public static ArrayList<Integer> getGrandezzeFromTipoStrumento(int id_tipo_strumento) throws Exception {
+
+	ArrayList<Integer> lista =new ArrayList<Integer>();
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+		
+					
+			pst=con.prepareStatement("SELECT id__tipo_grandezza_ FROM tipo_strumento__tipo_grandezza_ WHERE id__tipo_strumento_ = ?");		
+			pst.setInt(1, id_tipo_strumento);
+		
+		rs=pst.executeQuery();
+		
+	
+		while(rs.next())
+		{
+							
+			lista.add(rs.getInt(1));
+			
+		}
+		
+		
+	}catch (Exception e) 
+	{
+		throw e;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}	
+	return lista;
+}
+	
 }
 
 

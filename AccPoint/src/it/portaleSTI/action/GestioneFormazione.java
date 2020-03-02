@@ -1200,10 +1200,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(id_azienda));
 					nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
 				}
-				
+				int esito = 0;
 				if(!fileItem.getName().equals("")) {
 					
-					GestioneFormazioneBO.importaDaExcel(fileItem, Integer.parseInt(id_azienda), cl.getNome(),id_sede,nome_sede, session);
+					esito = GestioneFormazioneBO.importaDaExcel(fileItem, Integer.parseInt(id_azienda), cl.getNome(),id_sede,nome_sede, session);
 
 				}
 				
@@ -1212,8 +1212,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
-				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Partecipanti importati con successo!");
+				if(esito == 0) {
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Partecipanti importati con successo!");
+				}else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Formato file errato!");
+				}
 				out.print(myObj);
 
 			}

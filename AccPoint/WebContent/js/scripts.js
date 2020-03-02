@@ -13449,8 +13449,8 @@ $.ajax({
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#report_button').show();
-				$('#visualizza_report').show();
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
 					$('#myModalError').modal('show');	      			 
 		  }
 	  },
@@ -13458,7 +13458,7 @@ $.ajax({
 	  error: function(jqXHR, textStatus, errorThrown){
 		  pleaseWaitDiv.modal('hide');
 
-		  $('#myModalErrorContent').html("Errore nella modifica!");
+		  $('#myModalErrorContent').html("Errore nell'importazione!");
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#report_button').show();

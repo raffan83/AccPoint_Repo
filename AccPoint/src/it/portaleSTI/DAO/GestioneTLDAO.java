@@ -36,6 +36,12 @@ public class GestioneTLDAO {
 		
 		list = (ArrayList<UnitaMisuraDTO>)query.list();
 		
+		Collections.sort(list, new Comparator<UnitaMisuraDTO>() {
+            public int compare(UnitaMisuraDTO v1, UnitaMisuraDTO v2) {
+                return v1.getNome().compareTo(v2.getNome());
+            }
+        });
+		
 		session.getTransaction().commit();
 		session.close();
 
@@ -62,6 +68,13 @@ public class GestioneTLDAO {
 	    
 		
 		list = (ArrayList<TipoGrandezzaDTO>)query.list();
+		
+		
+		Collections.sort(list, new Comparator<TipoGrandezzaDTO>() {
+            public int compare(TipoGrandezzaDTO v1, TipoGrandezzaDTO v2) {
+                return v1.getNome().compareTo(v2.getNome());
+            }
+        });
 		
 		session.getTransaction().commit();
 		session.close();

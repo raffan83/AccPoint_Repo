@@ -1,8 +1,16 @@
 package it.portaleSTI.bo;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
@@ -14,6 +22,7 @@ import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
+import it.portaleSTI.Util.Costanti;
 
 public class GestioneFormazioneBO {
 
@@ -114,6 +123,61 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, session);
 	}
 
+	public static void importaDaExcel(FileItem fileItem, int id_azienda,String nome_azienda, int id_sede, String nome_sede, Session session) throws Exception {
+		
+		
+		File file = new File(Costanti.PATH_FOLDER+"temp//tempImportazione.xlsx");
+		fileItem.write(file);
+		
+		FileInputStream fis = new FileInputStream(file);   //obtaining bytes from the file  
+		//creating Workbook instance that refers to .xlsx file  
+		XSSFWorkbook wb = new XSSFWorkbook(fis);   
+		XSSFSheet sheet = wb.getSheetAt(0);     //creating a Sheet object to retrieve object  
+		Iterator<Row> itr = sheet.iterator();    //iterating over excel file  
+		while (itr.hasNext())                 
+		{  
+			Row row = itr.next();  
+			Iterator<Cell> cellIterator = row.cellIterator();   //iterating over each column  
+			
+			ForPartecipanteDTO partecipante = new ForPartecipanteDTO();		
+			partecipante.setId_azienda(id_azienda);
+			partecipante.setId_sede(id_sede);
+			partecipante.setNome_azienda(nome_azienda);
+			partecipante.setNome_sede(nome_sede);
+			
+			boolean esito = false;
+			while (cellIterator.hasNext())   
+			{  
+				Cell cell = cellIterator.next();  
+				if(cell.getCellType()== Cell.CELL_TYPE_STRING) {
+					
+					if(!cell.getStringCellValue().equals("") && !cell.getStringCellValue().toUpperCase().equals("NOME") && !cell.getStringCellValue().toUpperCase().equals("COGNOME") && !cell.getStringCellValue().toUpperCase().equals("DATA DI NASCITA"))
+					{
+						if(cell.getColumnIndex()==0) {
+							partecipante.setNome(cell.getStringCellValue());
+						}
+						else if(cell.getColumnIndex()==1) {
+							partecipante.setCognome(cell.getStringCellValue());
+						}							
+						esito = true;
+					}
+					
+				}else {
+					
+					if(cell.getDateCellValue()!=null && cell.getColumnIndex()==2) {
+						partecipante.setData_nascita(cell.getDateCellValue());					
+						esito = true;
+					}				
+				}				
+			}	
+			if(esito) {
+				session.save(partecipante);	
+			}
+			
+		}
+		
+		
+		file.delete();
 
-
+	}
 }

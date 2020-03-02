@@ -298,7 +298,6 @@
 
 
 
-
   <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
     <div class="modal-dialog modal-md" role="document">

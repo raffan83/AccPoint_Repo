@@ -248,14 +248,22 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 		  msg.append("<html>Gentile Cliente, <br /> " + 
 		  		"Inviamo in allegato il Rapporto e l'Attestato di verificazione periodica dei Vs. strumenti di misura. <br /> " + 
 		  		"Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata, unitamente al libretto metrologico, per tutto il periodo di validit&agrave; della verificazione (tre anni dalla data di svolgimento), ed esibita agli Enti incaricati in occasione delle attivit&agrave; di vigilanza e controllo. <br /> " + 		
-		  		" <br />  <br /> <br /></html>");
+		  		"<br />Restiamo a disposizione per qualsiasi chiarimento in merito.<br>" + 
+		  		"Distinti saluti." + 
+		  		"  <br /> <br />"
+		  		+ "<em><b>S.T.I. Sviluppo Tecnologie Industriali Srl</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br><br>" + 
+		  		"<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> "
+		  		+ "Mail: </em>commerciale@stisrl.com<br>" + 
+		  		"<em>Web: </em>http://www.stisrl.com<br>" + 
+		  		"<br/></html>");
 		//  msg.append("<img width='350' src=cid:").append(message.embed(img)).append(">");
-		  msg.append("<img width='350' src=\"cid:image1\">");
+		  msg.append("<img width='250' src=\"cid:image1\">");
+		  msg.append(" <img width='100' src=\"cid:image2\">");
 	
-		  msg.append("</body><small><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
+		  msg.append("</body><font size='1'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
 		  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio &egrave; vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.<br><br>" + 
 		  		"According to Italian law D.L. 196/2003 and Reg. UE n.2016/679 (GDPR)  concerning privacy, if you are not the addressee (or responsible for delivery of the message to such person) you are hereby notified that any disclosure, reproduction, distribution or other dissemination or use of this communication is strictly prohibited. If you have received this message in error, please destroy it and notify us by email.\n" + 
-		  		"</small></html>");
+		  		"</font></html>");
 		
 
 		  BodyPart messageBodyPart = new MimeBodyPart();
@@ -266,10 +274,15 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 		  BodyPart attachP7m = new MimeBodyPart();
 		 		  
 		  BodyPart image = new MimeBodyPart();
-		  DataSource fds = new FileDataSource(Costanti.PATH_FOLDER_LOGHI +"logo_sti_ddt.png");
+		  BodyPart image_ann = new MimeBodyPart();
+		  DataSource fds = new FileDataSource(Costanti.PATH_FOLDER_LOGHI +"logo_sti.png");
 
 		  image.setDataHandler(new DataHandler(fds));
 		  image.setHeader("Content-ID", "<image1>");
+		  
+		  DataSource fds_ann = new FileDataSource(Costanti.PATH_FOLDER_LOGHI +"anniversario.png");
+		  image_ann.setDataHandler(new DataHandler(fds_ann));
+		  image_ann.setHeader("Content-ID", "<image2>");
 		  
 		  Multipart multipart = new MimeMultipart();
 		  
@@ -297,7 +310,7 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 	         multipart.addBodyPart(attachRapporto);
 	         multipart.addBodyPart(attachP7m);
 	         multipart.addBodyPart(image);
-
+	         multipart.addBodyPart(image_ann);
 	         // Send the complete message parts
 	         message.setContent(multipart);
 

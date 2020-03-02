@@ -378,7 +378,7 @@
  <div class="col-xs-6">
 <ul class="list-group list-group-unbordered">
  <li class="list-group-item">
- 	 <b>Registro</b> <a class="pull-right"></a>
+ 	 <b>Registro</b> <a class="pull-right">${misura.id }_${misura.verStrumento.id }</a>
  </li>
  <li class="list-group-item">
  	<b>Data verificazione</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${misura.dataVerificazione}"/></a>

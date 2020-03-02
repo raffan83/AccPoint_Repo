@@ -388,6 +388,9 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 10 },
+		    	  { responsivePriority: 2, targets: 8 },
+		    	  { responsivePriority: 3, targets: 9 }
+		    	  
 		    	  
 		    	  
 		               ], 	        

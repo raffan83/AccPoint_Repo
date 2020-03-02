@@ -144,7 +144,7 @@ public class CreateSchedaListaStrumenti {
 			report.addColumn(col.column("Codice Interno", "codice_interno", type.stringType()));
 			report.addColumn(col.column("Matricola", "matricola", type.stringType()));
 			report.addColumn(col.column("Denominazione", "denominazione", type.stringType()));
-			report.addColumn(col.column("Costurttore", "costruttore", type.stringType()));
+			report.addColumn(col.column("Costruttore", "costruttore", type.stringType()));
 			report.addColumn(col.column("Modello", "modello", type.stringType()));
 			report.addColumn(col.column("Campo Misura", "campo_misura", type.stringType()));
 			report.addColumn(col.column("Divisione", "risoluzione", type.stringType()));

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import javax.servlet.RequestDispatcher;
@@ -131,8 +133,13 @@ public class ModificaValoriCampione extends HttpServlet {
 					jsObj.addProperty("value", ""+tipoGrandezzaDTO.getId());
 
 					JsonArray umArrJsonChild = new JsonArray();
-
-			        for (Iterator iterator2 = tipoGrandezzaDTO.getListaUM().iterator(); iterator2.hasNext();) {
+					ArrayList<UnitaMisuraDTO> list = new ArrayList<UnitaMisuraDTO>(tipoGrandezzaDTO.getListaUM());
+					Collections.sort( list, new Comparator<UnitaMisuraDTO>() {
+			            public int compare(UnitaMisuraDTO v1, UnitaMisuraDTO v2) {
+			                return v1.getNome().compareTo(v2.getNome());
+			            }
+			        });
+			        for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 						UnitaMisuraDTO unitaMisuraDTO = (UnitaMisuraDTO) iterator2.next();
 						JsonObject jsObj2 = new JsonObject();
 						jsObj2.addProperty("label", unitaMisuraDTO.getNome().replace("'", " "));
@@ -216,8 +223,14 @@ public class ModificaValoriCampione extends HttpServlet {
 					jsObj.addProperty("value", ""+tipoGrandezzaDTO.getId());
 
 					JsonArray umArrJsonChild = new JsonArray();
+					ArrayList<UnitaMisuraDTO> list = new ArrayList<UnitaMisuraDTO>(tipoGrandezzaDTO.getListaUM());
+					Collections.sort( list, new Comparator<UnitaMisuraDTO>() {
+			            public int compare(UnitaMisuraDTO v1, UnitaMisuraDTO v2) {
+			                return v1.getNome().compareTo(v2.getNome());
+			            }
+			        });
 
-			        for (Iterator iterator2 = tipoGrandezzaDTO.getListaUM().iterator(); iterator2.hasNext();) {
+			        for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 						UnitaMisuraDTO unitaMisuraDTO = (UnitaMisuraDTO) iterator2.next();
 						JsonObject jsObj2 = new JsonObject();
 						jsObj2.addProperty("label", unitaMisuraDTO.getNome().replace("'", " "));

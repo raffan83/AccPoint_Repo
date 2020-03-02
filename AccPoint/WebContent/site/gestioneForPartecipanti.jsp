@@ -50,7 +50,9 @@
 <div class="col-xs-12">
 
 
-<a class="btn btn-primary pull-right" onClick="modalNuovoPartecipante()"><i class="fa fa-plus"></i> Nuovo Partecipante</a> 
+<a class="btn btn-primary pull-right" onClick="modalNuovoPartecipante()"><i class="fa fa-plus"></i> Nuovo Partecipante</a>
+<a class="btn btn-primary pull-right" onClick="modalImportaPartecipanti()"  style="margin-right:5px"><i class="fa fa-plus"></i> Importa Partecipanti</a>  
+<a class="btn btn-success customTooltip pull-right" onClick="callAction('gestioneFormazione.do?action=download_template')" title="Scarica template importazione" style="margin-right:5px"><i class="fa fa-file-excel-o"></i></a>
 
 
 
@@ -108,6 +110,63 @@
 </div>
 
 </section>
+
+
+
+ <form id="ImportaForm" name="ImportaForm"> 
+   <div id="myModalImporta" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Importa da Excel</h4>
+      </div>
+       <div class="modal-body">   
+
+       <div class="row">
+       <div class="col-xs-3">
+       <label>Azienda</label>
+       </div>
+        <div class="col-xs-9">
+
+        <input class="form-control" data-placeholder="Seleziona Azienda..." id="azienda_import" name="azienda_import" style="width:100%" required>
+
+        </div>      
+       </div>
+       <br>
+       <div class="row">
+       <div class="col-xs-3">
+       <label>Sede</label>
+       </div>
+        <div class="col-xs-9">
+        
+       <select id="sede_import" name="sede_import" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" disabled required>
+       <option value=""></option>
+      	<c:forEach items="${lista_sedi}" var="sd">
+      	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
+      	</c:forEach>
+      
+      </select>
+        </div>      
+       </div>    <br>
+      	<div class="row">
+     
+      	<div class="col-xs-12">
+      		<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".xls, .XLS, .xlsx, .XLSX"  id="file_excel" name="file_excel" type="file" required></span><label id="label_excel"></label>
+      	
+      	</div>
+      	</div>
+  		 </div>
+      <div class="modal-footer">
+		<button class="btn btn-primary" type="submit" >Salva</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+   </form>
+
 
 
 
@@ -339,11 +398,18 @@ function modalNuovoPartecipante(){
 	
 }
 
+function modalImportaPartecipanti(){
+	$('#myModalImporta').modal();
+}
+
 function dettaglioPartecipante(id_partecipante){
 	
 	callAction('gestioneFormazione.do?action=dettaglio_partecipante&id_partecipante='+id_partecipante,null,true);
 }
 
+$('#file_excel').change(function(){
+	$('#label_excel').html($(this).val().split("\\")[2]);
+});
 
 function modificaPartecipanteModal(id_partecipante, nome, cognome, data_nascita, azienda, sede){
 	
@@ -411,8 +477,10 @@ $(document).ready(function() {
   //   $('.select2').select2();
   initSelect2('#azienda');
   initSelect2('#azienda_mod');
+  initSelect2('#azienda_import');
   $('#sede').select2();
   $('#sede_mod').select2();
+  $('#sede_import').select2();
 
      table = $('#tabForPartecipante').DataTable({
 			language: {
@@ -517,6 +585,11 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 });
  
  
+ $('#ImportaForm').on('submit', function(e){
+	 e.preventDefault();
+	 importaPartecipantiDaExcel();
+});
+ 
  $("#azienda").change(function() {
 	  
 	  if ($(this).data('options') == undefined) 
@@ -593,6 +666,46 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 	  
 
 		$("#sede_mod").change();  
+		
+
+	});
+ 
+ $("#azienda_import").change(function() {
+	  
+	  if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    $(this).data('options', $('#sede_import option').clone());
+	  }
+	  
+	  
+	  var selection = $(this).val()	 
+	  var id = selection
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	
+	  opt.push("<option value = 0 selected>Non Associate</option>");
+
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+	
+		//if(str.substring(str.indexOf("_")+1,str.length)==id)
+		if(str.substring(str.indexOf("_")+1, str.length)==id)
+		{
+
+			opt.push(options[i]);
+		}   
+	   }
+	 $("#sede_import").prop("disabled", false);
+	 
+	  $('#sede_import').html(opt);
+	  
+	  $("#sede_import").trigger("chosen:updated");
+	  
+
+		$("#sede_import").change();  
 		
 
 	});

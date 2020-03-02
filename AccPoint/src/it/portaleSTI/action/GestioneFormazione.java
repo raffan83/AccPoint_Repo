@@ -48,6 +48,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateTabellaFromXML;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
@@ -1149,6 +1150,83 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioFormazione.jsp");
 		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("importa_excel")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		        List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }		        
+		        		
+				String id_azienda = ret.get("azienda_import");	
+				String sede = ret.get("sede_import");
+				int id_sede = 0;
+				
+				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(id_azienda);
+				
+				SedeDTO sd =null;
+				String nome_sede = "Non associate";
+				if(!sede.equals("0")) {
+					id_sede = Integer.parseInt(sede.split("_")[0]);
+					
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(id_azienda));
+					nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
+				}
+				
+				if(!fileItem.getName().equals("")) {
+					
+					GestioneFormazioneBO.importaDaExcel(fileItem, Integer.parseInt(id_azienda), cl.getNome(),id_sede,nome_sede, session);
+
+				}
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Partecipanti importati con successo!");
+				out.print(myObj);
+
+			}
+			else if(action.equals("download_template")) {
+				
+				String path = Costanti.PATH_FOLDER+"Formazione//template_importazione.xlsx";
+				response.setContentType("application/octet-stream");
+				response.setHeader("Content-Disposition","attachment;filename=template_importazione.xlsx");
+				
+				downloadFile(path, response.getOutputStream());
+			
+				
+				session.close();
 				
 			}
 

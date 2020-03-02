@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -154,8 +156,13 @@ public class ListaCampioni extends HttpServlet {
 						jsObj.addProperty("value", ""+tipoGrandezzaDTO.getId());
 	
 						JsonArray umArrJsonChild = new JsonArray();
-	
-				        for (Iterator iterator2 = tipoGrandezzaDTO.getListaUM().iterator(); iterator2.hasNext();) {
+						ArrayList<UnitaMisuraDTO> list = new ArrayList<UnitaMisuraDTO>(tipoGrandezzaDTO.getListaUM());
+						Collections.sort( list, new Comparator<UnitaMisuraDTO>() {
+				            public int compare(UnitaMisuraDTO v1, UnitaMisuraDTO v2) {
+				                return v1.getNome().compareTo(v2.getNome());
+				            }
+				        });
+				        for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 							UnitaMisuraDTO unitaMisuraDTO = (UnitaMisuraDTO) iterator2.next();
 							JsonObject jsObj2 = new JsonObject();
 							jsObj2.addProperty("label", unitaMisuraDTO.getNome().replace("'", " "));

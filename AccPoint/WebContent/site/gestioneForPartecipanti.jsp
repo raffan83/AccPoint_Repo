@@ -330,7 +330,8 @@
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_partecipante" name="id_partecipante">
-      <a class="btn btn-primary" onclick="modificaForPartecipante()" >Salva</a>
+      <button class="btn btn-primary" type="submit">Salva</button>
+      <!-- <a class="btn btn-primary" onclick="modificaForPartecipante()" >Salva</a> -->
 		
       </div>
     </div>
@@ -416,7 +417,9 @@ function modificaPartecipanteModal(id_partecipante, nome, cognome, data_nascita,
 	$('#id_partecipante').val(id_partecipante);
 	$('#nome_mod').val(nome);
 	$('#cognome_mod').val(cognome);
-	$('#data_nascita_mod').val(Date.parse(data_nascita).toString("dd/MM/yyyy"));
+	if(data_nascita!=null && data_nascita!=''){
+		$('#data_nascita_mod').val(Date.parse(data_nascita).toString("dd/MM/yyyy"));
+	}
 	
 	if(azienda!=null && azienda!=''){
 		$('#azienda_mod').val(azienda);

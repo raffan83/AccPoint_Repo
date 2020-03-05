@@ -14,7 +14,25 @@ public class ForPartecipanteDTO {
 	private String nome_azienda;
 	private int id_sede;
 	private String nome_sede;
+	private String cf;
+	private String luogo_nascita;
 	
+	public String getCf() {
+		return cf;
+	}
+
+	public void setCf(String cf) {
+		this.cf = cf;
+	}
+
+	public String getLuogo_nascita() {
+		return luogo_nascita;
+	}
+
+	public void setLuogo_nascita(String luogo_nascita) {
+		this.luogo_nascita = luogo_nascita;
+	}
+
 	private Set<ForRuoloDTO> listaRuoli = new HashSet<ForRuoloDTO>(0);
 	
 	public ForPartecipanteDTO() {

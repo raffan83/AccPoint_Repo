@@ -45,21 +45,21 @@
 </div>
 
 <div class="box-body">
-
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 <div class="row">
 <div class="col-xs-12">
 
 
-<a class="btn btn-primary pull-right" onClick="modalNuovoPartecipante()"><i class="fa fa-plus"></i> Nuovo Partecipante</a>
-<a class="btn btn-primary pull-right" onClick="modalImportaPartecipanti()"  style="margin-right:5px"><i class="fa fa-plus"></i> Importa Partecipanti</a>  
-<a class="btn btn-success customTooltip pull-right" onClick="callAction('gestioneFormazione.do?action=download_template')" title="Scarica template importazione" style="margin-right:5px"><i class="fa fa-file-excel-o"></i></a>
+	<a class="btn btn-primary pull-right" onClick="modalNuovoPartecipante()"><i class="fa fa-plus"></i> Nuovo Partecipante</a>
+	<a class="btn btn-primary pull-right" onClick="modalImportaPartecipanti()"  style="margin-right:5px"><i class="fa fa-plus"></i> Importa Partecipanti</a>  
+	<a class="btn btn-success customTooltip pull-right" onClick="callAction('gestioneFormazione.do?action=download_template')" title="Scarica template importazione" style="margin-right:5px"><i class="fa fa-file-excel-o"></i></a>
 
 
 
 </div>
 
 </div><br>
-
+</c:if>
 <div class="row">
 <div class="col-sm-12">
 
@@ -73,6 +73,8 @@
 <th>Data di nascita</th>
 <th>Azienda</th>
 <th>Sede</th>
+<th>Luogo di nascita</th>
+<th>Codice fiscale</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -87,10 +89,14 @@
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${partecipante.data_nascita}" /></td>
 	<td>${partecipante.nome_azienda}</td>	
 	<td><c:if test="${partecipante.id_sede!=0 }">${partecipante.nome_sede }</c:if></td>
+	<td>${partecipante.luogo_nascita }</td>
+	<td>${partecipante.cf }</td>
 	<td>
 	
 	<a class="btn btn-info" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
-	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${partecipante.nome }','${partecipante.cognome.replace('\'','&prime;')}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a> 
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${partecipante.nome }','${partecipante.cognome.replace('\'','&prime;')}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }','${partecipante.luogo_nascita }','${partecipante.cf }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a>
+	</c:if> 
 	</td>
 	</tr>
 	</c:forEach>
@@ -179,37 +185,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Nuovo Partecipante</h4>
       </div>
-       <div class="modal-body">       
-       <div class="row">
-       <div class="col-xs-3">
-       <label>Nome</label>
-       </div>
-        <div class="col-xs-9">
-        <input type="text" id="nome" name="nome" class="form-control" style="width:100%" required>
-        </div>      
-       </div><br>
-        <div class="row">
-       <div class="col-xs-3">
-       <label>Cognome</label>
-       </div>
-        <div class="col-xs-9">
-        <input type="text" id="cognome" name="cognome" class="form-control" style="width:100%" required>
-        </div>      
-       </div><br>
-        <div class="row">
-       <div class="col-xs-3">
-       <label>Data di nascita</label>
-       </div>
-        <div class="col-xs-9">
-         <div class='input-group date datepicker' id='datepicker_data_scadenza'>
-               <input type='text' class="form-control input-small" id="data_nascita" name="data_nascita" required>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-        </div>      
-       </div><br>
+       <div class="modal-body">     
        <div class="row">
        <div class="col-xs-3">
        <label>Azienda</label>
@@ -243,7 +219,53 @@
       
       </select>
         </div>      
+       </div><br>  
+       <div class="row">
+       <div class="col-xs-3">
+       <label>Nome</label>
        </div>
+        <div class="col-xs-9">
+        <input type="text" id="nome" name="nome" class="form-control" style="width:100%" required>
+        </div>      
+       </div><br>
+        <div class="row">
+       <div class="col-xs-3">
+       <label>Cognome</label>
+       </div>
+        <div class="col-xs-9">
+        <input type="text" id="cognome" name="cognome" class="form-control" style="width:100%" required>
+        </div>      
+       </div><br>
+        <div class="row">
+       <div class="col-xs-3">
+       <label>Data di nascita</label>
+       </div>
+        <div class="col-xs-9">
+         <div class='input-group date datepicker' id='datepicker_data_scadenza'>
+               <input type='text' class="form-control input-small" id="data_nascita" name="data_nascita" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+        </div>      
+       </div><br>
+        <div class="row">
+       <div class="col-xs-3">
+       <label>Luogo di nascita</label>
+       </div>
+        <div class="col-xs-9">
+        <input type="text" id="luogo_nascita" name="luogo_nascita" class="form-control" style="width:100%" required>
+        </div>      
+       </div><br>
+        <div class="row">
+       <div class="col-xs-3">
+       <label>Codice fiscale</label>
+       </div>
+        <div class="col-xs-9">
+        <input type="text" id="cf" name="cf" class="form-control" style="width:100%" required>
+        </div>      
+       </div><br>
 
       	
       	</div>
@@ -269,7 +291,32 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Modifica Partecipante</h4>
       </div>
-       <div class="modal-body">       
+       <div class="modal-body">   
+       <div class="row">
+       <div class="col-xs-3">
+       <label>Azienda</label>
+       </div>
+        <div class="col-xs-9">
+        <input class="form-control" data-placeholder="Seleziona Azienda..." id="azienda_mod" name="azienda_mod" style="width:100%" required>
+      
+
+        </div>      
+       </div><br>
+              <div class="row">
+       <div class="col-xs-3">
+       <label>Sede</label>
+       </div>
+        <div class="col-xs-9">
+        
+       <select id="sede_mod" name="sede_mod" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" required>
+       <option value=""></option>
+      	<c:forEach items="${lista_sedi}" var="sd">
+      	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
+      	</c:forEach>
+      
+      </select>
+        </div>      
+       </div><br>    
        <div class="row">
        <div class="col-xs-3">
        <label>Nome</label>
@@ -300,31 +347,24 @@
         </div> 
         </div>      
        </div><br>
-       <div class="row">
+       
+         <div class="row">
        <div class="col-xs-3">
-       <label>Azienda</label>
+       <label>Luogo di nascita</label>
        </div>
         <div class="col-xs-9">
-        <input class="form-control" data-placeholder="Seleziona Azienda..." id="azienda_mod" name="azienda_mod" style="width:100%" required>
-      
-
+        <input type="text" id="luogo_nascita_mod" name="luogo_nascita_mod" class="form-control" style="width:100%" required>
         </div>      
        </div><br>
-              <div class="row">
+        <div class="row">
        <div class="col-xs-3">
-       <label>Sede</label>
+       <label>Codice fiscale</label>
        </div>
         <div class="col-xs-9">
-        
-       <select id="sede_mod" name="sede_mod" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" required>
-       <option value=""></option>
-      	<c:forEach items="${lista_sedi}" var="sd">
-      	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
-      	</c:forEach>
-      
-      </select>
+        <input type="text" id="cf_mod" name="cf_mod" class="form-control" style="width:100%" required>
         </div>      
        </div>
+       
 
       	
       	</div>
@@ -412,7 +452,7 @@ $('#file_excel').change(function(){
 	$('#label_excel').html($(this).val().split("\\")[2]);
 });
 
-function modificaPartecipanteModal(id_partecipante, nome, cognome, data_nascita, azienda, sede){
+function modificaPartecipanteModal(id_partecipante, nome, cognome, data_nascita, azienda, sede, luogo_nascita, cf){
 	
 	$('#id_partecipante').val(id_partecipante);
 	$('#nome_mod').val(nome);
@@ -433,6 +473,8 @@ function modificaPartecipanteModal(id_partecipante, nome, cognome, data_nascita,
 		$('#sede_mod').val(0);
 		$('#sede_mod').change();
 	}
+	$('#luogo_nascita_mod').val(luogo_nascita);
+	$('#cf_mod').val(cf);
 	
 	$('#modalModificaPartecipante').modal();
 }
@@ -522,7 +564,7 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 1 },
+		    	  { responsivePriority: 1, targets: 8 },
 		    	  
 		    	  
 		               ], 	        

@@ -151,23 +151,32 @@ public class GestioneFormazioneBO {
 				Cell cell = cellIterator.next();  
 				
 				if(cell.getRowIndex()==0) {
-					if(row.getCell(0)== null || row.getCell(1) == null || row.getCell(2)==null || !row.getCell(0).getStringCellValue().equals("NOME") || !row.getCell(1).getStringCellValue().equals("COGNOME") || !row.getCell(2).getStringCellValue().equals("DATA DI NASCITA")) {
+					if(row.getCell(0)== null || row.getCell(1) == null || row.getCell(2)==null || row.getCell(3)== null || row.getCell(4)==null
+							|| !row.getCell(0).getStringCellValue().equals("NOME") || !row.getCell(1).getStringCellValue().equals("COGNOME") 
+							|| !row.getCell(2).getStringCellValue().equals("DATA DI NASCITA") || !row.getCell(3).getStringCellValue().equals("LUOGO DI NASCITA") 
+							|| !row.getCell(4).getStringCellValue().equals("CODICE FISCALE") ) {
 						esito_generale = 1;
 						break;
 					}
 				}
 				
-				if(esito_generale == 0) {
-					if(cell.getCellType()== Cell.CELL_TYPE_STRING) {
+				if(esito_generale == 0 && cell.getRowIndex()!=0) {
+					if(cell.getCellType() == Cell.CELL_TYPE_STRING) {
 						
-						if(!cell.getStringCellValue().equals("") && !cell.getStringCellValue().toUpperCase().equals("NOME") && !cell.getStringCellValue().toUpperCase().equals("COGNOME") && !cell.getStringCellValue().toUpperCase().equals("DATA DI NASCITA"))
+						if(cell.getStringCellValue()!=null && !cell.getStringCellValue().equals("") )
 						{
 							if(cell.getColumnIndex()==0) {
 								partecipante.setNome(cell.getStringCellValue());
 							}
 							else if(cell.getColumnIndex()==1) {
 								partecipante.setCognome(cell.getStringCellValue());
-							}							
+							}	
+							else if(cell.getColumnIndex()==3) {
+								partecipante.setLuogo_nascita(cell.getStringCellValue());
+							}
+							else if(cell.getColumnIndex()==4) {
+								partecipante.setCf(cell.getStringCellValue());
+							}
 							esito = true;
 						}
 						
@@ -189,5 +198,24 @@ public class GestioneFormazioneBO {
 		file.delete();
 
 		return esito_generale;
+	}
+
+	public static ArrayList<ForPartecipanteDTO> getListaPartecipantiCliente(int idCliente, int idSede, Session session) {
+		
+		return GestioneFormazioneDAO.getListaPartecipantiCliente(idCliente,idSede,session);
+	}
+
+	public static ArrayList<ForCorsoDTO> getListaCorsiCliente(int idCliente, int idSede, Session session) {
+		
+		return GestioneFormazioneDAO.getListaCorsiCliente(idCliente,idSede, session);
+	}
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiRuoloCorsoCliente(String dateFrom, String dateTo, String tipo_data, int idCliente, int idSede, Session session) throws Exception {
+		
+		return GestioneFormazioneDAO.getListaPartecipantiRuoloCorsoCliente(dateFrom, dateTo, tipo_data,idCliente,idSede, session);
+	}
+
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiCorsoCliente(int id, int idCliente, int idSede, Session session) {
+
+		return GestioneFormazioneDAO.getListaPartecipantiCorsoCliente(id,idCliente,idSede,session);
 	}
 }

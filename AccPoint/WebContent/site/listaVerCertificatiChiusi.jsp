@@ -30,7 +30,7 @@
  <thead><tr class="active">
  <th></th>
  <%-- <th></th> --%>
- <th>Id Cetificato</th>
+ <th>Id Certificato</th>
    <th>Commessa</th>
   <th>Strumento</th>
   <th>Matricola</th>

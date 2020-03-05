@@ -61,7 +61,7 @@
                
               
                 <li class="list-group-item">
-                <b>nome</b> <a class="pull-right">${partecipante.nome }</a>
+                <b>Nome</b> <a class="pull-right">${partecipante.nome }</a>
                 </li>
                 
   				 <li class="list-group-item">
@@ -70,6 +70,12 @@
                 
                  <li class="list-group-item">
                   <b>Data di nascita</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${partecipante.data_nascita}" /></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Luogo di nascita</b> <a class="pull-right">${partecipante.luogo_nascita}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Codice fiscale</b> <a class="pull-right">${partecipante.cf}</a>
                 </li>
                <li class="list-group-item">
                 <b>Azienda</b> <a class="pull-right">${partecipante.nome_azienda}</a>
@@ -264,6 +270,7 @@
    
     $(document).ready(function() {
     
+    	$('.dropdown-toggle').dropdown();
     	
   	  table = $('#tabCorsi').DataTable({
 			language: {

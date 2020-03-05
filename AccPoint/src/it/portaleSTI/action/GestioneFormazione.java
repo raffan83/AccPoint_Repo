@@ -362,14 +362,20 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			}
 			else if(action.equals("lista_corsi")) {
 				
-				ArrayList<ForCorsoDTO> lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
-				ArrayList<ForCorsoCatDTO> lista_corsi_cat = GestioneFormazioneBO.getListaCategorieCorsi(session);
-				ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);				
+				ArrayList<ForCorsoDTO> lista_corsi = null;
 				
-				
-				request.getSession().setAttribute("lista_corsi", lista_corsi);
-				request.getSession().setAttribute("lista_corsi_cat", lista_corsi_cat);
-				request.getSession().setAttribute("lista_docenti", lista_docenti);
+				if(utente.checkRuolo("F2")) {
+					lista_corsi = GestioneFormazioneBO.getListaCorsiCliente(utente.getIdCliente(), utente.getIdSede(), session);
+				}else {
+					lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
+					ArrayList<ForCorsoCatDTO> lista_corsi_cat = GestioneFormazioneBO.getListaCategorieCorsi(session);
+					ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);			
+					
+					request.getSession().setAttribute("lista_docenti", lista_docenti);
+					request.getSession().setAttribute("lista_corsi_cat", lista_corsi_cat);
+				}
+			
+				request.getSession().setAttribute("lista_corsi", lista_corsi);				
 				
 				session.getTransaction().commit();
 				session.close();
@@ -696,7 +702,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 								
 				ForCorsoDTO corso = (ForCorsoDTO) request.getSession().getAttribute("corso");
 				
-				ArrayList<ForPartecipanteRuoloCorsoDTO> listaPartecipanti = GestioneFormazioneBO.getListaPartecipantiCorso(corso.getId(),session);
+				ArrayList<ForPartecipanteRuoloCorsoDTO> listaPartecipanti = null;
+				
+				if(utente.checkRuolo("F2")) {
+					listaPartecipanti = GestioneFormazioneBO.getListaPartecipantiCorsoCliente(corso.getId(),utente.getIdCliente(),utente.getIdSede(),session); 
+				}else {
+					listaPartecipanti = GestioneFormazioneBO.getListaPartecipantiCorso(corso.getId(),session); 
+				}
+				
 				
 				
 				request.getSession().setAttribute("listaPartecipanti", listaPartecipanti);					
@@ -708,25 +721,33 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			}
 			else if(action.equals("lista_partecipanti")) {
 			
-				ArrayList<ForPartecipanteDTO> lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti(session);
-//				ArrayList<ForAziendaDTO> lista_aziende = GestioneFormazioneBO.getListaAziende(session);
+				ArrayList<ForPartecipanteDTO> lista_partecipanti = null;
 				
-				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
-				if(listaClienti==null) {
-					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
+				if(utente.checkRuolo("F2")) {
+					
+					lista_partecipanti = GestioneFormazioneBO.getListaPartecipantiCliente(utente.getIdCliente(), utente.getIdSede(), session);
+							
+				}else {
+					
+					lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti(session); 
+					List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+					if(listaClienti==null) {
+						listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
+					}
+					
+					List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+					if(listaSedi== null) {
+						listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+					}
+										
+					request.getSession().setAttribute("lista_clienti", listaClienti);				
+					request.getSession().setAttribute("lista_sedi", listaSedi);
+					
 				}
 				
-				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
-				if(listaSedi== null) {
-					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
-				}
-									
-				request.getSession().setAttribute("lista_clienti", listaClienti);				
-				request.getSession().setAttribute("lista_sedi", listaSedi);
-
 				
 				request.getSession().setAttribute("lista_partecipanti", lista_partecipanti);
-				//request.getSession().setAttribute("lista_aziende", lista_aziende);
+		
 				
 				session.getTransaction().commit();
 				session.close();
@@ -774,6 +795,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_nascita = ret.get("data_nascita");
 				String id_azienda = ret.get("azienda");	
 				String sede = ret.get("sede");
+				String cf = ret.get("cf");
+				String luogo_nascita = ret.get("luogo_nascita");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -781,6 +804,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				partecipante.setCognome(cognome);
 				partecipante.setNome(nome);
 				partecipante.setId_azienda(Integer.parseInt(id_azienda));
+				partecipante.setLuogo_nascita(luogo_nascita);
+				partecipante.setCf(cf);
 				
 				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(id_azienda);
 				partecipante.setNome_azienda(cl.getNome());
@@ -849,12 +874,16 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_nascita = ret.get("data_nascita_mod");
 				String id_azienda = ret.get("azienda_mod");	
 				String sede = ret.get("sede_mod");
+				String cf = ret.get("cf_mod");
+				String luogo_nascita = ret.get("luogo_nascita_mod");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 				ForPartecipanteDTO partecipante = GestioneFormazioneBO.getPartecipanteFromId(Integer.parseInt(id),session);	
 				partecipante.setCognome(cognome);
 				partecipante.setNome(nome);
+				partecipante.setLuogo_nascita(luogo_nascita);
+				partecipante.setCf(cf);
 				
 				partecipante.setId_azienda(Integer.parseInt(id_azienda));
 				
@@ -1138,8 +1167,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String dateTo = request.getParameter("dateTo");
 				String tipo_data = request.getParameter("tipo_data");
 				
-				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, session);
+				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_corsi = null;
 				
+				if(utente.checkRuolo("F2")) {
+					lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorsoCliente(dateFrom, dateTo, tipo_data, utente.getIdCliente(),utente.getIdSede(), session);
+				}else {
+					lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, session);
+				}
 				request.getSession().setAttribute("lista_corsi", lista_corsi);
 				request.getSession().setAttribute("dateFrom", dateFrom);
 				request.getSession().setAttribute("dateTo", dateTo);

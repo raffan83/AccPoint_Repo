@@ -9947,7 +9947,7 @@ function submitNuovaMisura(note_obsolescenza){
    			  }
 
    		  }else{
-   			  $('#myModalErrorContent').html("Errore nella modifica dell'attivit&agrave;!");
+   			  $('#myModalErrorContent').html("Errore nell'inserimento della misura!");
    			  	$('#myModalError').removeClass();
    				$('#myModalError').addClass("modal modal-danger");	  
    				$('#report_button').show();

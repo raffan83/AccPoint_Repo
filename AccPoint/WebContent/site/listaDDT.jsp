@@ -78,7 +78,11 @@
 			 
 
 	</div>
-
+	<div class="col-xs-6">
+	<button class="btn btn-primary btnFiltri pull-right" id="btnFiltriDDT_APERTO" onClick="filtraDDT()" >APERTI</button>
+ <button class="btn btn-primary btnFiltri pull-right" id="btnFiltriDDT_CHIUSO" onClick="filtraDDT('chiusi')" style="margin-right:3px">CHIUSI</button>
+<button class="btn btn-primary btnFiltri pull-right" id="btnTuttiDDT" onClick="filtraDDT('tutti')" style="margin-right:3px">TUTTI</button>
+</div>
 </div>
 </div>
 
@@ -206,6 +210,19 @@
 			
 		}
  
+ function filtraDDT(stato){
+	 
+	 var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+		var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+		
+		dataString = "?action=lista_ddt&stato="+stato+"&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD');
+			 	
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+	 
+	 callAction('listaPacchi.do'+dataString)
+ }
+ 
  function resetDate(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal();
@@ -262,6 +279,20 @@
 		function(start, end, label) {
 
 		});
+	 
+     var stato="${stato}";
+     
+     if(stato=='chiusi'){
+		$('#btnFiltriDDT_CHIUSO').attr('disabled', true);
+	}
+	else if(stato=='tutti'){
+		
+		$('#btnTuttiDDT').attr('disabled', true);
+	}
+	else{
+		$('#btnFiltriDDT_APERTO').attr('disabled', true);
+		
+	}
 	 
 	 var start = "${dateFromDdt}";
 	 var end = "${dateToDdt}";

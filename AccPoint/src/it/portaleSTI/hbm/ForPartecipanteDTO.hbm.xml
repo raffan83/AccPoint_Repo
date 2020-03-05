@@ -30,6 +30,12 @@
         <property name="nome_sede" type="java.lang.String" >
             <column name="nome_sede" />
         </property>
+        <property name="luogo_nascita" type="java.lang.String" >
+            <column name="luogo_nascita" />
+        </property>
+        <property name="cf" type="java.lang.String" >
+            <column name="cf" />
+        </property>
         
        <!--  <many-to-one name="azienda" class="it.portaleSTI.DTO.ForAziendaDTO" fetch="join" lazy="false">
             <column name="id_azienda" />

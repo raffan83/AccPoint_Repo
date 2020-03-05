@@ -3,7 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
-
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 
 <div class="row">
 <div class="col-sm-12">
@@ -24,6 +24,7 @@
 		   	 
 		   	 </div>
 		   	 </div>
+		   	 </c:if>
 <div class="row">
 <div class="col-sm-12">
 <c:choose>
@@ -35,8 +36,10 @@
 	                <div class="col-xs-10">
 	                  <b>${allegato.nome_allegato }</b>
 	                  </div>
-	                  <div class="col-xs-2 pull-right"> 	                  
+	                  <div class="col-xs-2 pull-right"> 	           
+	                  <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }">        
 	                  <a class="btn btn-danger btn-xs pull-right"><i class="fa fa-trash" onClick="eliminaAllegato('${allegato.id  }','${id_corso}','0')"></i></a>
+	                  </c:if>
 	                  <a class="btn btn-danger btn-xs  pull-right"style="margin-right:5px" href="gestioneFormazione.do?action=archivio_download&id_allegato=${allegato.id }&id_corso=${id_corso}"><i class="fa fa-arrow-down small"></i></a>
 	                   
 	                  </div>
@@ -56,7 +59,9 @@
 	                  </div>
 	                  <div class="col-xs-2"> 	                  
 	                 <a class="btn btn-danger btn-xs " href="gestioneFormazione.do?action=archivio_download&id_allegato=${allegato.id }&id_categoria=${id_categoria}"><i class="fa fa-arrow-down small"></i></a>
+	                	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 	                  <a class="btn btn-danger btn-xs"><i class="fa fa-trash" onClick="eliminaAllegato('${allegato.id  }','0','${id_categoria}')"></i></a>
+	                  </c:if>
 	                  </div>
                   </div>
                 </li>

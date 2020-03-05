@@ -470,6 +470,7 @@ public class GestioneVerInterventoBO {
 		    		certificato.setMisura(misura);
 		    		certificato.setStato(new StatoCertificatoDTO(1));
 		    		certificato.setUtente(misura.getTecnicoVerificatore());
+		    		certificato.setDataCreazione(new Date());
 		    		
 		    		session.save(certificato);
 				}

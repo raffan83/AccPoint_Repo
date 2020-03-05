@@ -328,6 +328,77 @@ public class GestioneFormazioneDAO {
 		return lista;
 	}
 
+	public static ArrayList<ForPartecipanteDTO> getListaPartecipantiCliente(int idCliente, int idSede, Session session) {
+
+		ArrayList<ForPartecipanteDTO> lista = null;		
+
+		Query query =  session.createQuery("from ForPartecipanteDTO where id_azienda =:_id_cliente and id_sede = :_id_sede"); 
+		query.setParameter("_id_cliente", idCliente);	
+		query.setParameter("_id_sede", idSede);
+			
+		lista = (ArrayList<ForPartecipanteDTO>) query.list();		
+				
+		return lista;
+	}
+
+	public static ArrayList<ForCorsoDTO> getListaCorsiCliente(int idCliente, int idSede, Session session) {
+
+		ArrayList<ForCorsoDTO> lista = null;		
+
+		Query query =  session.createQuery("select corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede = :_id_sede"); 
+		query.setParameter("_id_cliente", idCliente);	
+		query.setParameter("_id_sede", idSede);
+			
+		lista = (ArrayList<ForCorsoDTO>) query.list();		
+				
+		return lista;
+		
+	}
+
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiRuoloCorsoCliente(String dateFrom, String dateTo, String tipo_data, int idCliente, int idSede, Session session) throws Exception, ParseException {
+
+	ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = null;
+		
+		if(dateFrom !=null && dateTo!=null && tipo_data!=null) {
+			
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso."+tipo_data+" between :_dateFrom and :_dateTo and p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede");	
+			query.setParameter("_dateFrom", sdf.parse(dateFrom));
+			query.setParameter("_dateTo", sdf.parse(dateTo));
+			
+		}else {
+			
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where  p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede"); 
+			
+		}		
+		query.setParameter("_id_cliente", idCliente);	
+		query.setParameter("_id_sede", idSede);
+			
+		lista = (ArrayList<ForPartecipanteRuoloCorsoDTO>) query.list();
+		
+				
+		return lista;
+	}
+
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiCorsoCliente(int id_corso, int idCliente, int idSede, Session session) {
+
+		ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
+		
+		
+		Query query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.id = :_id_corso and p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede");
+		query.setParameter("_id_corso", id_corso);
+		query.setParameter("_id_cliente", idCliente);	
+		query.setParameter("_id_sede", idSede);
+		
+		lista = (ArrayList<ForPartecipanteRuoloCorsoDTO>) query.list();
+		
+		
+		return lista;
+	}
+
 	
 
 }

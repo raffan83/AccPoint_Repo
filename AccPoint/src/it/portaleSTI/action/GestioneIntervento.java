@@ -446,7 +446,7 @@ public class GestioneIntervento extends HttpServlet {
 				}
 		}
 		
-		else if(action.equals("upload_excel")) {
+		else if(action !=null && action.equals("upload_excel")) {
 			
 			String id_misura = request.getParameter("id_misura");			
 							

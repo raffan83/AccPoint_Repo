@@ -1187,8 +1187,12 @@ public class CreateVerRapporto {
 		
 			for (VerDecentramentoDTO item : lista_decentramento) {				
 				if(item.getMassa()!=null && item.getCampo()==campo) {
-					ArrayList<String> arrayPs = new ArrayList<String>();					
-					arrayPs.add(String.valueOf(item.getPosizione()));
+					ArrayList<String> arrayPs = new ArrayList<String>();		
+					if((item.getPosizione()%2)!=0) {
+						arrayPs.add("E0");
+					}else {
+						arrayPs.add(String.valueOf(item.getPosizione()/2));
+					}					
 					arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
 					if(item.getIndicazione()!=null) {
 						arrayPs.add(Utility.changeDotComma(item.getIndicazione().stripTrailingZeros().toPlainString()));	

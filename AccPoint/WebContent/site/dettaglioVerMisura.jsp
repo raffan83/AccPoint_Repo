@@ -1130,8 +1130,16 @@ ${lista_decentramento.get(1).puntiAppoggio}
  <c:forEach items="${lista_decentramento}" var="item" varStatus="loop">
 <c:if test="${item.campo== 1 && item.massa!=null }">
 <tr role="row" >
-	
-<td align="center">${item.posizione}</td>
+
+<c:choose>	
+<c:when test="${(item.posizione%2) !=  0}">
+<td align="center">E0</td>
+</c:when>
+<c:otherwise>
+<td align="center"><fmt:formatNumber value="${item.posizione/2}" maxFractionDigits="0" /></td>
+</c:otherwise>
+</c:choose>
+
 <td align="center">${item.massa }</td>
 <td align="center">${item.indicazione}</td>
 <td align="center">${item.caricoAgg}</td>
@@ -1238,7 +1246,14 @@ ${lista_decentramento.get(11).puntiAppoggio}
 <c:if test="${item.campo== 2 && item.massa!=null }">
 <tr role="row" >
 	
-<td align="center">${item.posizione}</td>
+<c:choose>	
+<c:when test="${(item.posizione%2) !=  0}">
+<td align="center">E0</td>
+</c:when>
+<c:otherwise>
+<td align="center"><fmt:formatNumber value="${item.posizione/2}" maxFractionDigits="0" /></td>
+</c:otherwise>
+</c:choose>
 <td align="center">${item.massa }</td>
 <td align="center">${item.indicazione}</td>
 <td align="center">${item.caricoAgg}</td>
@@ -1342,7 +1357,14 @@ ${lista_decentramento.get(21).puntiAppoggio}
 <c:if test="${item.campo== 3 && item.massa!=null }">
 <tr role="row" >
 	
-<td align="center">${item.posizione}</td>
+<c:choose>	
+<c:when test="${(item.posizione%2) !=  0}">
+<td align="center">E0</td>
+</c:when>
+<c:otherwise>
+<td align="center"><fmt:formatNumber value="${item.posizione/2}" maxFractionDigits="0" /></td>
+</c:otherwise>
+</c:choose>
 <td align="center">${item.massa }</td>
 <td align="center">${item.indicazione}</td>
 <td align="center">${item.caricoAgg}</td>

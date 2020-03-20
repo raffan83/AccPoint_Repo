@@ -69,8 +69,8 @@
 <th>ID</th>
 <th>Codice</th>
 <th>Descrizione</th>
-<th>Frequenza</th>
-<th>Durata</th>
+<th>Frequenza (Mesi)</th>
+<th>Durata (Ore)</th>
 <th>Azioni</th>
  </tr></thead>
  

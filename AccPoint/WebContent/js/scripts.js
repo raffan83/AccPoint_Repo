@@ -8479,9 +8479,10 @@ function filtraCertificati(){
 	  
 	  if($('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){
 	  var mod_opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone()
-		$('#mod_cliente').html(mod_opt)
+		//$('#mod_cliente').html(mod_opt)
+	  $('#mod_cliente').val($('#cliente_filtro').val());
   	   }else{
-  		 $('#mod_cliente').html(options_cliente);
+  		// $('#mod_cliente').html(options_cliente);
   		$('#mod_cliente').val(id_cliente);   
   	   }
 		  $('#mod_cliente').change();
@@ -12104,7 +12105,7 @@ function sendEmailVerificazione(){
 			
 			  }else{
 				  
-				  $('#myModalErrorContent').html("Errore nell'invio dell'email!");
+				  $('#myModalErrorContent').html(data.messaggio);
 	 			  	$('#myModalError').removeClass();
 	 				$('#myModalError').addClass("modal modal-danger");
 	 				$('#report_button').hide();

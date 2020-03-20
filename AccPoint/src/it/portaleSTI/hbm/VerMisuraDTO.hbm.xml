@@ -119,5 +119,9 @@
         <property name="note_obsolescenza" type="java.lang.String">
             <column name="note_obsolescenza" />
         </property> 
+        
+        <property name="esito" type="int">
+            <column name="esito" />
+        </property> 
     </class>
 </hibernate-mapping>

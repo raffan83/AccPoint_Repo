@@ -109,7 +109,7 @@
 		</c:if>
 		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 		<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" onclick="modalModificaRilievo('${rilievo.id }','${rilievo.data_inizio_rilievo }','${rilievo.tipo_rilievo.id }','${rilievo.id_cliente_util }','${rilievo.id_sede_util }','${rilievo.commessa}',  
-		'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }','${rilievo.mese_riferimento }','${rilievo.cifre_decimali }','${rilievo.classe_tolleranza }','${rilievo.denominazione }','${rilievo.materiale }','${fn:replace(rilievo.note.replace('\'',' ').replace('\\','/'),newLineChar, ' ')}')">		
+		'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }','${rilievo.mese_riferimento }','${rilievo.cifre_decimali }','${rilievo.classe_tolleranza }','${fn:replace(rilievo.denominazione.replace('\'',' ').replace('\\','/'),newLineChar, ' ')}','${rilievo.materiale }','${fn:replace(rilievo.note.replace('\'',' ').replace('\\','/'),newLineChar, ' ')}')">		
 		<i class="fa fa-edit"></i></a>
 		<a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievoModal('${rilievo.id}')"><i class="fa fa-clone"></i></a>
 		<%-- <a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievo('${rilievo.id}')"><i class="fa fa-clone"></i></a> --%>
@@ -193,18 +193,21 @@
  
  function modalSchedaConsegna(){
 	 
+
 	 if($('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){
 			
 			var opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone();
-		 	$('#cliente_scn').html(opt);
-		 	$('#cliente_scn').change();
-		 	$('#cliente_scn').select2();
+		 	$('#cliente_appoggio').html(opt);
+		 	initSelect2('#cliente_scn');
+		 //	$('#cliente_scn').change();
+		 	//$('#cliente_scn').select2();
 		 	$('#sede_scn').val("0");
 		 	$('#sede_scn').select2();
 	 	} else{
-	 		$('#cliente_scn').html(options_cliente);
-	 		$('#cliente_scn').val(""); 		
-	 		$('#cliente_scn').select2();
+	 		$('#cliente_appoggio').html(options_cliente);
+	 		initSelect2('#cliente_scn');
+	 		//$('#cliente_scn').val(""); 		
+	 		//$('#cliente_scn').select2();
 	 		$('#sede_scn').html(options_sede);
 	 		$('#sede_scn').val("");
 	 		$('#sede_scn').select2();
@@ -315,15 +318,20 @@ $('#myModalArchivio').modal();
 	 if($('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){
 	
 		var opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone();
-	 	$('#cliente').html(opt);
-	 	$('#cliente').change(); 
-		$('#cliente').select2();
+		$('#cliente_appoggio').html(opt);
+		 //	$('#cliente').change();
+			initSelect2('#cliente');
+
+	
 	 	$('#sede').val("0");
 	 	$('#sede').select2();
  	} else{
- 		$('#cliente').html(options_cliente);
+ 		$('#cliente_appoggio').html(options_cliente);
+		 //	$('#cliente').change();
+			initSelect2('#cliente');
+ 	//	$('#cliente').html(options_cliente);
  		$('#cliente').val(""); 		
- 		$('#cliente').select2();
+
  		$('#sede').html(options_sede);
  		$('#sede').val("");
  		$('#sede').select2();
@@ -451,9 +459,37 @@ var commessa_options;
 $(document).ready(function() {
 	
 	 commessa_options = $('#commessa option').clone();
+	 
+	 initSelect2('#mod_cliente');
+	  	initSelect2('#cliente_scn');
+	  	
+	  	
+	  	$('#mod_sede').select2();
+	  	$('#mod_commessa').select2();
+	  	$('#mod_tipo_rilievo').select2();
+	  	$('#mod_mese_riferimento').select2();
+	  	$('#mod_classe_tolleranza').select2();  	
+	  	
+	  	$('#commessa').select2();
+	  	$('#tipo_rilievo').select2();
+	  	$('#mese_riferimento').select2();
+	  	$('#classe_tolleranza').select2();
+	  	
+	  	$('#mod_sede').select2();
+	  	$('#mod_commessa').select2();
+	  	$('#mod_tipo_rilievo').select2();
+	  	$('#mod_mese_riferimento').select2();
+	  	$('#mod_classe_tolleranza').select2();
+	  	
+	  	$('#commessa_scn').select2();
+	  	
+	  	$('#sede_scn').select2();
+	  	$('#tipo_rilievo_scn').select2();
+	  	$('#mese_scn').select2();
+	  	$('#anno_scn').select2();
 	
 	 $('#label').hide();
-	 $('.select2').select2();
+	 //$('.select2').select2();
 	 
 	 $('#mod_label').hide();
 	 $('.datepicker').datepicker({

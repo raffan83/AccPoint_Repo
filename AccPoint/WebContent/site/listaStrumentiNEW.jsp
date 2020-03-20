@@ -31,6 +31,69 @@
           <div class="box">
           <div class="box-header">
              <c:if test="${userObj.idCliente == 0}">  
+             
+                       	 <div class="box box-danger box-solid">
+          	 
+<div class="box-header with-border">
+	 Filtra Strumenti
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+          <div class="row">            
+              <div class="form-group">
+                <div class="col-xs-2">
+            <label>ID</label>
+            <input class="form-control" type="text" id="filtro_id_str" name="filtro_id_str">
+            </div>
+            <div class="col-xs-2">
+            <label>Nome Strumento</label>
+            <input class="form-control" type="text" id="filtro_denominazione_str" name="filtro_denominazione_str">
+            </div>
+            <div class="col-xs-2">
+            <label>Marca</label>            
+            <input class="form-control" type="text" id="filtro_marca_str" name="filtro_marca_str">
+            </div>
+            <div class="col-xs-2">
+            <label>Modello</label>            
+            <input class="form-control" type="text" id="filtro_modello_str" name="filtro_modello_str">
+            </div>
+            <div class="col-xs-2">
+            <label>Matricola</label>            
+            <input class="form-control" type="text" id="filtro_matricola_str" name="filtro_matricola_str">
+            </div>
+            <div class="col-xs-2">
+            <label>Cod. Interno</label>            
+            <input class="form-control" type="text" id="filtro_codice_interno_str" name="filtro_codice_interno_str">
+            </div>
+			</div>
+           </div><br>
+            <div class="row" >        
+           <div class="col-xs-12">
+            <span class="pull-right">
+            <button class="btn btn-info" onClick="filtraStrumentiGenerale()">Filtra</button>
+            <button class="btn btn-primary" onClick="resetFiltriGenerale()">Reset</button>
+            </span>  
+            </div>
+            </div>  
+          
+       
+          </div>
+  
+     
+   
+      </div>   
+       
+       
+             
+             
+             
+             
+             
           	 <div class="box box-danger box-solid">
           	 
 <div class="box-header with-border">
@@ -66,13 +129,12 @@
             <input class="form-control" type="text" id="filtro_codice_interno" name="filtro_codice_interno">
             </div>
             <div class="col-xs-2">
-            <div class="row" style="margin-bottom:16px; margin-top:24px">        
-          
-            <span class="pull-left">
+         
+            <span class="pull-right"  style="margin-bottom:16px; margin-top:24px">
             <button class="btn btn-info" onClick="filtra()">Filtra</button>
             <button class="btn btn-primary" onClick="resetFiltri()">Reset</button>
             </span>  
-            </div>
+           
             </div>  
           
        
@@ -84,9 +146,10 @@
        </div>
        </div>
        
-       
+            
  
        </c:if>  
+          
                         <div class="row">
         <div class="col-xs-6">
 
@@ -258,11 +321,12 @@
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
-        </div>
+       
         <!-- /.col -->
  
 </div>
 </div>
+
 
 
 
@@ -459,11 +523,28 @@
 	  var matricola = $('#filtro_matricola').val();
 	  var codice_int = $('#filtro_codice_interno').val();
 	  
-	  var dataString =  "action=filtra&nome="+nome+ "&marca="+marca +"&modello="+modello +"&matricola="+matricola+"&codice_interno="+codice_int;
+	  var dataString =  "action=filtra_misure&nome="+nome+ "&marca="+marca +"&modello="+modello +"&matricola="+matricola+"&codice_interno="+codice_int;
 	  exploreModal("gestioneStrumento.do",dataString,"#posTab",function(data,textStatus){
 		  
 	  });
   }
+  
+  
+function filtraStrumentiGenerale(){
+	
+	  var id =$('#filtro_id_str').val();
+	  var nome =$('#filtro_denominazione_str').val();
+	  var marca = $('#filtro_marca_str').val();
+	  var modello = $('#filtro_modello_str').val();
+	  var matricola = $('#filtro_matricola_str').val();
+	  var codice_int = $('#filtro_codice_interno_str').val();
+	  
+	  var dataString =  "action=filtra_generali&id="+id+"&nome="+nome+ "&marca="+marca +"&modello="+modello +"&matricola="+matricola+"&codice_interno="+codice_int;
+	  exploreModal("gestioneStrumento.do",dataString,"#posTab",function(data,textStatus){
+		  
+	  });
+	
+}
   
   function resetFiltri(){
 	  var nome =$('#filtro_denominazione').val("");
@@ -474,6 +555,15 @@
 	  
   }
   
+  function resetFiltriGenerale(){
+	  var id = $('#filtro_id_str').val("");
+	  var nome =$('#filtro_denominazione_str').val("");
+	  var marca = $('#filtro_marca_str').val("");
+	  var modello = $('#filtro_modello_str').val("");
+	  var matricola = $('#filtro_matricola_str').val("");
+	  var codice_int = $('#filtro_codice_interno_str').val("");
+	  
+  }
   
   var myChart1 = null;
   var myChart2 = null;

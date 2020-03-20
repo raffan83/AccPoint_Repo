@@ -183,6 +183,23 @@ public class GestioneVerMisura extends HttpServlet {
 			ArrayList<VerMisuraDTO> lista_misure = GestioneVerMisuraBO.getListaMisure(utente, session);
 			session.close();
 			
+			for (VerMisuraDTO misura : lista_misure) {
+				if(misura.getVerIntervento().getId_sede()==0) {
+					String indirizzo = "";
+					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(""+misura.getVerIntervento().getId_cliente());
+					if(cliente.getNome()!=null) {
+						indirizzo = cliente.getNome();
+				}
+					if( cliente.getIndirizzo()!=null) {
+						indirizzo = indirizzo + " - "+cliente.getIndirizzo();				
+					}						
+					if(cliente.getCitta()!=null) {
+							indirizzo = indirizzo + " - "+cliente.getCitta();
+					}
+				misura.getVerIntervento().setNome_sede(indirizzo);								
+				}
+			}
+			
 			request.getSession().setAttribute("lista_misure", lista_misure);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerMisure.jsp");

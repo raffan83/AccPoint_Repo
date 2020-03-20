@@ -281,6 +281,13 @@ public class GestioneVerInterventoBO {
 			  	certificato.setStato(new StatoCertificatoDTO(1));
 			  	certificato.setDataCreazione(new Date());
 			  	certificato.setMisura(misura);
+			  	int esito_misura = GestioneVerMisuraBO.getEsito(misura);
+			  	if(esito_misura!=0) {
+			  		misura.setEsito(0);	
+			  	}else {
+			  		misura.setEsito(1);
+			  	}
+			  	
 			  	
 			  	session.save(certificato);
 			   

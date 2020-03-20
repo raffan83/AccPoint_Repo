@@ -71,6 +71,8 @@ public class VerMisuraDTO {
 	private String note_obsolescenza;
 	
 	private String obsoleta;
+	
+	private int esito;
 
 		public String getNote_obsolescenza() {
 		return note_obsolescenza;
@@ -306,6 +308,14 @@ public class VerMisuraDTO {
 
 	public void setComunicazione_esito(String comunicazione_esito) {
 		this.comunicazione_esito = comunicazione_esito;
+	}
+
+	public int getEsito() {
+		return esito;
+	}
+
+	public void setEsito(int esito) {
+		this.esito = esito;
 	}
 	
 	

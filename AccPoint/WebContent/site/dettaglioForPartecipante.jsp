@@ -81,7 +81,11 @@
                 <b>Azienda</b> <a class="pull-right">${partecipante.nome_azienda}</a>
                 </li>
                 <li class="list-group-item">
+                <div class="row">
+                     <div class="col-xs-12"> 
                 <b>Sede</b> <a class="pull-right">${partecipante.nome_sede}</a>
+                </div>
+                </div>
                 </li>
         </ul>
 

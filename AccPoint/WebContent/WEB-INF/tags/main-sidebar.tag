@@ -266,8 +266,10 @@
 		 <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_FORMAZIONE_ADMIN")){%>
 			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_docenti',null,true);">Gestione Docenti</a></li>			
 			<%} %>
-			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_partecipanti',null,true);">Gestione Partecipanti</a></li>					
+			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_partecipanti',null,true);">Gestione Partecipanti</a></li>	
+			<% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_FORMAZIONE_ADMIN")){%>				
 			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_cat_corsi',null,true);">Gestione Tipologie Corsi</a></li>
+			<%} %>
 			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_corsi',null,true);">Gestione Corsi</a></li>
 	      	<li><a href="#" onclick="callAction('gestioneFormazione.do?action=scadenzario',null,true);">Scadenzario</a></li>
           </ul>

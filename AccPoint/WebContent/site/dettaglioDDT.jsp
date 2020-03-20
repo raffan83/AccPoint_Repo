@@ -75,17 +75,23 @@
                 </li>
 
                 <li class="list-group-item">
+                <div class="row">
+                     <div class="col-xs-12"> 
                 <c:choose>
                 <c:when test="${ddt.tipo_ddt.id==1 }">
                 <b>Mittente</b>
                 </c:when>
                 <c:otherwise>
+                
                 <b>Destinatario</b>
                 </c:otherwise>                
                 </c:choose>
                   <a class="pull-right">${destinatario}</a>
+                  </div></div>
                 </li>
                 <li class="list-group-item">
+                <div class="row">
+                     <div class="col-xs-12"> 
                 <c:choose>
                 <c:when test="${ddt.tipo_ddt.id==1 }">
                 <b>Sede Mittente</b>
@@ -95,13 +101,23 @@
                 </c:otherwise>                
                 </c:choose>
                   <a class="pull-right">${sede_destinatario}</a>
+                  </div>
+                  </div>
                 </li>
                 <c:if test="${ddt.tipo_ddt.id==2}">
                    <li class="list-group-item">
+                   <div class="row">
+                     <div class="col-xs-12"> 
                   <b>Destinazione</b> <a class="pull-right">${destinazione}</a>
+                  </div>
+                  </div>
                 </li>
                 <li class="list-group-item">
+                <div class="row">
+                     <div class="col-xs-12"> 
                   <b>Sede Destinazione</b> <a class="pull-right">${sede_destinazione}</a>
+                  </div>
+                  </div>
                 </li> 
 				</c:if>
 
@@ -146,8 +162,11 @@
                   <b>N. Colli</b> <a class="pull-right"> ${ddt.colli}  </a>
                 </li>       
                 <li class="list-group-item">
+                <div class="row">
+                     <div class="col-xs-12"> 
                   <b>Note</b>  <a class="pull-right">${ddt.note} </a> 
-                
+                </div>
+                </div>
                 </li>
                  <c:if test="${ddt.link_pdf!='' && ddt.link_pdf!=null}"> 
                 <li class="list-group-item" id="link">

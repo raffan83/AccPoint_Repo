@@ -278,7 +278,7 @@ public class GestioneVerIntervento extends HttpServlet {
 				}
 				intervento.setNome_cliente(cl.getNome());
 				if(!sede.equals("0")) {
-					intervento.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo());
+					intervento.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo()+" - "+sd.getComune());
 				}
 				if(commessa!=null && !commessa.equals("")) {
 					intervento.setCommessa(commessa.split("\\*")[0]);	

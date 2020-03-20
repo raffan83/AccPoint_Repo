@@ -499,12 +499,42 @@
        </select>
        </div>
        </div><br>
+                     <div class="row">
+       <div class="col-xs-4">
+        <label>Data Misura:</label>
+       </div>
+       <div class="col-xs-8">
+              		<div class='input-group date datepicker' id='datepicker_data_misura'>
+               <input type='text' class="form-control input-small" id="data_misura" name="data_misura">
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       
+       </div>
+       </div><br>
        <div class="row">
        <div class="col-xs-4">
         <label>Numero Certificato:</label>
        </div>
        <div class="col-xs-8">
        <input type="text" class="form-control" id="nCertificato" name="nCertificato" >
+       </div>
+       </div><br>
+              <div class="row">
+       <div class="col-xs-4">
+        <label>Data Emissione:</label>
+       </div>
+       <div class="col-xs-8">
+              		<div class='input-group date datepicker' id='datepicker_data_emissione'>
+               <input type='text' class="form-control input-small" id="data_emissione" name="data_emissione">
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       
        </div>
        </div><br>
        <div class="row">
@@ -554,6 +584,7 @@
  		<input type="hidden" id="id_intervento" name="id_intervento" value="${intervento.id }">
  		<input type="hidden"  id="id_strumento" name="id_strumento" >
  		<input type="hidden"  id="note_obsolescenza_form" name="note_obsolescenza_form" >
+ 		<input type="hidden"  id="non_sovrascrivere_mis" name="non_sovrascrivere_mis" value="0">
  	<input type="hidden"  id="isDuplicato" name="isDuplicato" >
         <button  class="btn btn-primary" type="submit">Salva</button>
       </div>
@@ -623,8 +654,20 @@
         <h4 class="modal-title" id="myModalLabel">Lista Duplicati</h4>
       </div>
        <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-6">
+       <input type="checkbox" id="non_sovrascrivere" name="non_sovrascrivere"><label style="margin-left:5px"> Non sovrascrivere la misura</label>
+       
+       </div>
+       <div class="col-xs-6">
+       <label>Note</label>
+      <textarea rows="3" style="width:100%" id="note_lat" name="note_lat"></textarea>
+       
+       </div>
+       </div>
+       <div id="listaDuplicati">
         		<h4 class="modal-title" id="myModalLabel">Selezionare le misure da sovrascrivere</h4>
-			<div id="listaDuplicati">
+			
 			<table id="tabLD" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
 
 	
@@ -845,7 +888,8 @@
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
-
+<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
+<script type="text/javascript" src="plugins/datejs/date.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
   <script type="text/javascript" src="js/customCharts.js"></script>
@@ -1206,12 +1250,19 @@ function reloadDrive()   {
 	
 	function saveDuplicati(){
 		
-		if($('#isDuplicato').val()==1){
-			saveDuplicatiFromModalNuovaMisura();
-		}else{
-			saveDuplicatiFromModal();
-		}
-		
+		 if($('#non_sovrascrivere').is( ':checked' ) && $('#note_lat').val()==''){
+			 
+			  $('#myModalErrorContent').html("Attenzione! Inserisci le note!");
+		  		$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+		 }else{
+				if($('#isDuplicato').val()==1){
+					saveDuplicatiFromModalNuovaMisura();
+				}else{
+					saveDuplicatiFromModal();
+				}
+		 }
 	}
 	
 	$('#formFirmaCliente').on('submit',function(e){
@@ -1360,14 +1411,29 @@ function reloadDrive()   {
 	}
 	
 	
+	
+$('#non_sovrascrivere').on('ifClicked',function(e){
+	
+	 if($('#non_sovrascrivere').is( ':checked' )){
+		$('#non_sovrascrivere_mis').val("0");
+		 $('#listaDuplicati').show();
+	
+	 }else{
+		 $('#non_sovrascrivere_mis').val("1");
+		 $('#listaDuplicati').hide();
+	 }
 
+});  
+	
 	
     $(document).ready(function() { 
     	
     	
     	$('.select2').select2();
     	
-    
+   	 $('.datepicker').datepicker({
+		 format: "dd/mm/yyyy"
+	 });
     	
     	if(userCliente == "0"){
 	    	$('#fileupload').fileupload({

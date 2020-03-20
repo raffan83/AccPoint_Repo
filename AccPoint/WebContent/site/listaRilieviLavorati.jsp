@@ -161,24 +161,26 @@
  
  function modalSchedaConsegna(){
 	 
+
 	 if($('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){
 			
 			var opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone();
-		 	$('#cliente_scn').html(opt);
-		 	$('#cliente_scn').change();
-		 	$('#cliente_scn').select2();
+		 	$('#cliente_appoggio').html(opt);
+		 	initSelect2('#cliente_scn');
+		 //	$('#cliente_scn').change();
+		 	//$('#cliente_scn').select2();
 		 	$('#sede_scn').val("0");
 		 	$('#sede_scn').select2();
 	 	} else{
-	 		$('#cliente_scn').html(options_cliente);
-	 		$('#cliente_scn').val(""); 		
-	 		$('#cliente_scn').select2();
+	 		$('#cliente_appoggio').html(options_cliente);
+	 		initSelect2('#cliente_scn');
+	 		//$('#cliente_scn').val(""); 		
+	 		//$('#cliente_scn').select2();
 	 		$('#sede_scn').html(options_sede);
 	 		$('#sede_scn').val("");
 	 		$('#sede_scn').select2();
 
 	 	} 
-	 
 	 $('#myModalSchedaConsegna').modal();
  }
  
@@ -389,7 +391,14 @@ $('#myModalArchivio').modal();
  
 $(document).ready(function() {
 	 $('#label').hide();
-	 $('.select2').select2();
+	// $('.select2').select2();
+		  	$('#commessa_scn').select2();
+	  	
+	  	$('#sede_scn').select2();
+	  	$('#tipo_rilievo_scn').select2();
+	  	$('#mese_scn').select2();
+	  	$('#anno_scn').select2();
+	
 	 
 	 $('#mod_label').hide();
 	 $('.datepicker').datepicker({

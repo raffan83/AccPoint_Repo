@@ -136,7 +136,7 @@
 	<td><c:if test="${corso_part.partecipante.id_sede!=0}">${corso_part.partecipante.nome_sede}</c:if></td>
 	<td>
 	 	
-	<a class="btn btn-info" onClick="dettaglioCorso('${utl:encryptData(corso_part.corso.id)}')"><i class="fa fa-search"></i></a>
+	<a class="btn btn-info customTooltip" onClick="dettaglioCorso('${utl:encryptData(corso_part.corso.id)}')" title="Vai al corso"><i class="fa fa-search"></i></a>
 	
 	</td>
 	</tr>

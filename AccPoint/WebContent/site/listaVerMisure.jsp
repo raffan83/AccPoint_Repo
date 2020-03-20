@@ -36,7 +36,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista Misure
+	 Lista Misure Verificazione Periodica
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -67,11 +67,17 @@
 
 <th>ID</th>
 <th>Strumento</th>
+<th>Costruttore</th>
+<th>Modello</th>
+<th>Matricola</th>
 <th>Cliente</th>
 <th>Sede</th>
 <th>Provincia</th>
 <th>Commessa</th>
+<th>N. Attestato</th>
+<th>N. Rapporto</th>
 <th>Data Verificazione</th>
+<th>Esito</th>
 <th>Data Scadenza</th>
 <th>Tecnico Verificatore</th>
 <th>Comunicazione Preventiva</th>
@@ -97,11 +103,26 @@
 
 	<td>${misura.id }</td>	
 	<td>${misura.verStrumento.denominazione }</td>
+	
+	<td>${misura.verStrumento.costruttore }</td>
+	<td>${misura.verStrumento.modello }</td>
+	<td>${misura.verStrumento.matricola }</td>
+	
 	<td>${misura.verIntervento.nome_cliente}</td>
 	<td>${misura.verIntervento.nome_sede }</td>	
 	<td>${misura.verIntervento.provincia}</td>
 	<td>${misura.verIntervento.commessa }</td>
+	
+	<td>${misura.numeroAttestato }</td>
+	<td>${misura.numeroRapporto }</td>
+	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${misura.dataVerificazione }" /></td>
+	
+	<td>
+	<c:if test="${misura.esito==1 }"><span class="label bigLabelTable label-success">POSITIVO</span></c:if>
+	<c:if test="${misura.esito==0 }"><span class="label bigLabelTable label-danger">NEGATIVO</span></c:if>
+	</td>
+	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${misura.dataScadenza }" /></td>
 	<td>${misura.tecnicoVerificatore.nominativo }</td>	
 	<td>
@@ -215,52 +236,48 @@ function filtraMisure(){
 	var table = $('#tabVerMisure').DataTable();
 	
 	if($('#btnTutte').hasClass('disabled')){
-		$('#inputsearchtable_9').val('');
-		$('#inputsearchtable_10').val('');
+		$('#inputsearchtable_15').val('');
+		$('#inputsearchtable_16').val('');
 		$('#btnPreventiva').removeClass('disabled')
 		$('#btnEsito').removeClass('disabled')
 		 table
-	        .columns( 9 )
+	        .columns( 15 )
 	        .search( "" )
 	        .draw();
 		 table
-	        .columns( 10 )
+	        .columns( 16 )
 	        .search( "" )
 	        .draw();
 	}
 	else if($('#btnPreventiva').hasClass('disabled') && !$('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_9').val('SI');
-		$('#inputsearchtable_10').val('');
+		$('#inputsearchtable_15').val('SI');
+		$('#inputsearchtable_16').val('');
 		 table
-	        .columns( 9 )
+	        .columns( 15 )
 	        .search( "SI" )
 	        .draw();
 		 table
-	        .columns( 10 )
+	        .columns( 16 )
 	        .search( "" )
 	        .draw();
 	}
 	else if(!$('#btnPreventiva').hasClass('disabled') && $('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_9').val('');
-		$('#inputsearchtable_10').val('SI');
-		 /* table
-	        .columns( 8 )
-	        .search( "" )
-	        .draw(); */
+		$('#inputsearchtable_15').val('');
+		$('#inputsearchtable_16').val('SI');
 		 table
-	        .columns( 10 )
+	        .columns( 16 )
 	        .search( "SI" )
 	        .draw();
 	}
 	else if($('#btnPreventiva').hasClass('disabled') && $('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_9').val('SI');
-		$('#inputsearchtable_10').val('SI');
+		$('#inputsearchtable_15').val('SI');
+		$('#inputsearchtable_16').val('SI');
 		 table
-	        .columns( 9 )
+	        .columns( 15 )
 	        .search( "SI" )
 	        .draw();
 		 table
-	        .columns( 10 )
+	        .columns( 16 )
 	        .search( "SI" )
 	        .draw();
 	}
@@ -313,17 +330,26 @@ $(document).ready(function() {
 		      stateSave: true,			       
 		      columnDefs: [
 		    	 
-		    	  { responsivePriority: 0, targets: 1 },
-		    	  { responsivePriority: 1, targets: 9 },
-		    	  { responsivePriority: 2, targets: 10 },
+		    	  { responsivePriority: 1, targets: 14 },
+		    	  { responsivePriority: 2, targets: 16 },
 		    	  { responsivePriority: 3, targets: 11 }
 		    	  
 		               ], 	        
 	  	      buttons: [   
-	  	          {
+	  	    	{
+	                extend: 'excel',
+	                text: 'Esporta Excel',
+	                 exportOptions: {
+	                    modifier: {
+	                        page: 'current'
+	                    }
+	                } 
+	            },
+	  	    	  {
 	  	            extend: 'colvis',
 	  	            text: 'Nascondi Colonne'  	                   
-	 			  } ]
+	 			  },
+	 			  ]
 		               
 		    });
 		

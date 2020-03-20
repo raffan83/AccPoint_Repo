@@ -81,5 +81,9 @@
         <property name="file_firma" type="java.lang.String">
             <column name="file_firma" />
         </property>
+        
+          <property name="note_lat" type="java.lang.String">
+            <column name="note_lat" />
+        </property>
     </class>
 </hibernate-mapping>

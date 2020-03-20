@@ -283,6 +283,10 @@
   }
   
   
+  $('#myModalStorico').on('hidden.bs.modal',function(){
+		$(document.body).css('padding-right', '0px');
+	  
+  });
   
   
   var pin0;

@@ -70,7 +70,13 @@
                 </li>
                 
   				 <li class="list-group-item">
-                <b>Descrizione</b> <a class="pull-right">${corso.descrizione}</a>
+                <div class="row">
+                     <div class="col-xs-12"> 
+                <b>Descrizione</b>
+                  
+                 <a class="pull-right">${corso.descrizione}</a>
+                 </div>
+                 </div>
                 </li>
   				 
                 
@@ -101,14 +107,18 @@
                   <b>Codice</b> <a class="pull-right">${corso.corso_cat.codice}</a>
                 </li>
                 <li class="list-group-item">
+                <div class="row">
+                     <div class="col-xs-12"> 
                   <b>Descrizione</b> <a class="pull-right">${corso.corso_cat.descrizione}</a>
+                  </div>
+                  </div>
                 </li>                
                 
                 <li class="list-group-item">
-                  <b>Frequenza</b> <a class="pull-right">${corso.corso_cat.frequenza}</a>
+                  <b>Frequenza (mesi)</b> <a class="pull-right">${corso.corso_cat.frequenza}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Durata</b> <a class="pull-right">${corso.corso_cat.durata}</a>
+                  <b>Durata (ore)</b> <a class="pull-right">${corso.corso_cat.durata}</a>
                 </li>
                
 			<li class="list-group-item">

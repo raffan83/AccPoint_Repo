@@ -85,5 +85,9 @@
           <property name="note_lat" type="java.lang.String">
             <column name="note_lat" />
         </property>
+        
+          <property name="file_condizioni_ambientali" type="java.lang.String">
+            <column name="file_condizioni_ambientali" />
+        </property>
     </class>
 </hibernate-mapping>

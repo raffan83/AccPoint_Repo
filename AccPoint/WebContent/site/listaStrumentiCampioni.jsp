@@ -219,6 +219,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  </table>  
  
  
+  
+ 
+ 
  <input type="hidden" id ="selected">
 </div>
 </div>
@@ -375,7 +378,54 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 		    } );
 			
 	});
-	
+	$('#tabStrumentiCampioni tbody').on( 'dblclick','tr', function () {
+
+  		var id = $(this).attr('id');
+  		
+  		var row = tabStrumentiCampioni.row('#'+id);
+  		datax = row.data();
+
+	   if(datax){
+		  // console.log(datax);
+ 	    	row.child.hide();
+ 	    	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
+ 	    	$( "#myModalMod" ).modal();
+ 	    	$('body').addClass('noScroll');
+ 	    }
+	   
+	   $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
+
+
+       	var  contentID = e.target.id;
+
+       	if(contentID == "dettaglioTab"){
+       		exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
+       	}
+       	if(contentID == "misureTab"){
+       		exploreModal("strumentiMisurati.do?action=ls&id="+datax[1],"","#misure")
+       	}
+       	if(contentID == "modificaTab"){
+       		exploreModal("modificaStrumento.do?action=modifica&id="+datax[1],"","#modifica")
+       	}
+       	if(contentID == "documentiesterniTab"){
+       		exploreModal("documentiEsterni.do?id_str="+datax[1],"","#documentiesterni")
+       	//	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
+       	}
+       	
+       	
+       	
+
+ 		});
+	   
+	   $('#myModalMod').on('hidden.bs.modal', function (e) {
+
+    	 	$('#dettaglioTab').tab('show');
+    	 	
+    	});
+	   
+	 
+	   
+  	});
 	
 
 

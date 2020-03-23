@@ -29,6 +29,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateReportAccredia;
 import it.portaleSTI.bo.GestioneMisuraBO;
 
@@ -157,6 +158,37 @@ public class GestioneMisura extends HttpServlet {
 				session.close();
 				
 				
+			}else if(action.equals("download_condizioni_ambientali")) {
+				
+				String id_misura = request.getParameter("id_misura");
+				
+				id_misura = Utility.decryptData(id_misura);
+				
+				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura));
+				
+				String path = Costanti.PATH_FOLDER+misura.getIntervento().getNomePack()+"\\CondizioniAmbientali\\"+misura.getFile_condizioni_ambientali();
+				
+				 File file = new File(path);
+					
+					FileInputStream fileIn = new FileInputStream(file);
+
+					ServletOutputStream outp = response.getOutputStream();
+					response.setContentType("application/octet-stream");
+					response.setHeader("Content-Disposition","attachment;filename="+ misura.getFile_condizioni_ambientali());
+			
+					    byte[] outputByte = new byte[1];
+					    
+					    while(fileIn.read(outputByte, 0, 1) != -1)
+					    {
+					    	outp.write(outputByte, 0, 1);
+					    }
+					    				    
+					 
+					    fileIn.close();
+					    outp.flush();
+					    outp.close();
+				
+				session.close();
 			}
 		}catch(Exception e) {
 			

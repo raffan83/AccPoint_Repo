@@ -290,10 +290,12 @@ public class GestioneIntervento extends HttpServlet {
 				String id_intervento = null;				
 				String filename_excel = null;
 				String filename_pdf = null;
+				String filename_cond_amb = null;
 				String id_strumento=null;
 				String nCertificato=null;
 				FileItem file_excel = null;
 				FileItem file_pdf = null;
+				FileItem cond_ambientali = null;
 				String note_obsolescenza = null;
 				String non_sovrascrivere = null;
 				String data_emissione = null;
@@ -330,7 +332,12 @@ public class GestioneIntervento extends HttpServlet {
 						if(item.getFieldName().equals("fileupload_excel")) {
 							file_excel = item;
 							filename_excel = item.getName();
-						}else {
+						}
+						else if(item.getFieldName().equals("fileupload_cond_amb")) {
+							cond_ambientali = item;
+							filename_cond_amb = item.getName();
+						}						
+						else {
 							file_pdf = item;
 							filename_pdf = item.getName();
 						}						
@@ -363,13 +370,18 @@ public class GestioneIntervento extends HttpServlet {
 					String nomeFileExcel= "";
 					if(lat_master!=null && !lat_master.equals("")) {
 						if(file_excel.getName()!=null && !file_excel.getName().equals("")) {
-							nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), true);		
+							nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), true,false);		
 						}
 					}else {
 						if(file_excel.getName()!=null  && !file_excel.getName().equals("")) {
-							nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), false);
+							nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), false,false);
 						}
 					}
+					
+					if(cond_ambientali.getName()!= null && !cond_ambientali.getName().equals("")) {
+						filename_cond_amb = saveExcelFile(cond_ambientali,intervento.getNomePack(), true,true);
+					}
+					
 					String nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),intervento.getId(),id_strumento);
 					
 					interventoDati.setId_intervento(intervento.getId());
@@ -443,6 +455,7 @@ public class GestioneIntervento extends HttpServlet {
 		    		
 		    		misura.setFile_xls_ext(nomeFileExcel);
 		    		misura.setNote_obsolescenza(note_obsolescenza);
+		    		misura.setFile_condizioni_ambientali(filename_cond_amb);
 		    		session.save(misura);
 		    		
 		    		CertificatoDTO certificato = new CertificatoDTO();
@@ -499,9 +512,9 @@ public class GestioneIntervento extends HttpServlet {
 					}else {
 						if(item.getName()!="") {		
 							if(misura.getLat().equals("S")) {
-								filename = saveExcelFile(item, misura.getIntervento().getNomePack(), true);	
+								filename = saveExcelFile(item, misura.getIntervento().getNomePack(), true,false);	
 							}else {
-								filename = saveExcelFile(item, misura.getIntervento().getNomePack(), false);
+								filename = saveExcelFile(item, misura.getIntervento().getNomePack(), false,false);
 							}
 															
 						}		
@@ -566,7 +579,7 @@ public class GestioneIntervento extends HttpServlet {
 		return nomeFile;
 	}
 
-	private String saveExcelFile(FileItem item, String nomePack, boolean lat) {
+	private String saveExcelFile(FileItem item, String nomePack, boolean lat,boolean cond_ambientali) {
 
 		String nomeFile="";
 		String folder=nomePack;
@@ -577,14 +590,22 @@ public class GestioneIntervento extends HttpServlet {
 		{
 			File file=null;
 			
-			if(lat) {
+			if(lat && !cond_ambientali) {
 				file = new File(Costanti.PATH_FOLDER+"//"+folder+"//"+item.getName().substring(0, item.getName().indexOf(ext1)-1)+"_"+index+"."+ext1);
-			}else {
+			}
+			else if(lat && cond_ambientali) {
+				File cartella = new File(Costanti.PATH_FOLDER+"//"+folder+"//CondizioniAmbientali//");
+				if(!cartella.exists()) {
+					cartella.mkdirs();
+				}
+				file = new File(Costanti.PATH_FOLDER+"//"+folder+"//CondizioniAmbientali//"+item.getName());
+			}
+			else {
 				file = new File(Costanti.PATH_FOLDER+"//"+folder+"//"+folder+"_"+index+"."+ext1);	
 			}
 			
 
-			if(file.exists()==false)
+			if(file.exists()==false|| cond_ambientali)
 			{
 
 				try {

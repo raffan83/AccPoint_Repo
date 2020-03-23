@@ -57,6 +57,8 @@ public class MisuraDTO implements Serializable {
 	
 	private String note_lat = "";
 	
+	private String file_condizioni_ambientali = "";
+	
     public String getObsoleto() {
 		return obsoleto;
 	}
@@ -235,6 +237,14 @@ public class MisuraDTO implements Serializable {
 
 	public void setNote_lat(String note_lat) {
 		this.note_lat = note_lat;
+	}
+
+	public String getFile_condizioni_ambientali() {
+		return file_condizioni_ambientali;
+	}
+
+	public void setFile_condizioni_ambientali(String file_condizioni_ambientali) {
+		this.file_condizioni_ambientali = file_condizioni_ambientali;
 	}
 
 

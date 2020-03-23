@@ -552,7 +552,7 @@
        <div class="col-xs-4">
 			<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
-		        <span>Carica Excel...</span>
+		        <span>Carica Excel Misura...</span>
 				<input accept=".xls,.xlsx"  id="fileupload_excel" name="fileupload_excel" type="file" >
 		       
 		   	 </span>
@@ -562,7 +562,21 @@
 		 </div>
 		<!-- </div>  -->
 		</div><br>
-		
+	       <div class="row">
+       <!-- <div class="col-xs-12"> -->
+       <div class="col-xs-5">
+			<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica Condizioni Ambientali...</span>
+				<input accept=".xls,.xlsx"  id="fileupload_cond_amb" name="fileupload_cond_amb" type="file" >
+		       
+		   	 </span>
+		   	</div> 
+		 <div class="col-xs-7">
+		 <label id="label_cond_amb"></label>
+		 </div>
+		<!-- </div>  -->
+		</div><br>	
 		<div class="row">
       <!--  <div class="col-xs-12"> -->
        <div class="col-xs-4">
@@ -791,6 +805,76 @@
 
 		<button class="btn btn-default pull-right" onClick="$('#modalAttenzione').modal('hide')">OK</button>
        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+ <div id="myModalMod" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Strumento</h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
+              <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li>
+       <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li> -->
+        
+ 		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
+               <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
+		</c:if>		
+		 <li class=""><a href="#documentiesterni" data-toggle="tab" aria-expanded="false" onclick="" id="documentiesterniTab">Documenti esterni</a></li>
+             </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="dettaglio">
+
+    			</div> 
+
+              <!-- /.tab-pane -->
+             
+			  <div class="tab-pane" id="misure">
+                
+
+         
+			 </div> 
+
+
+              <!-- /.tab-pane -->
+
+
+               		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
+              
+              			<div class="tab-pane" id="modifica">
+              
+
+              			</div> 
+              		</c:if>		
+              		
+              		<div class="tab-pane" id="documentiesterni">
+              
+
+              			</div> 
+              
+            </div>
+            <!-- /.tab-content -->
+          </div>
+    
+        
+        
+        
+        
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
+        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
       </div>
     </div>
   </div>
@@ -1157,6 +1241,11 @@ function reloadDrive()   {
  
  $('#fileupload_excel').change(function(){
 		$('#label_excel').html($(this).val().split("\\")[2]);
+		 
+	 });
+ 
+ $('#fileupload_cond_amb').change(function(){
+		$('#label_cond_amb').html($(this).val().split("\\")[2]);
 		 
 	 });
  

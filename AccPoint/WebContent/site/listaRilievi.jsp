@@ -176,13 +176,25 @@
        	<div class="col-sm-3">
        		<label>Cliente</label>
        	</div>
-        	<div class="col-sm-9">       	
-       		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente" name="cliente" style="width:100%" required>
+        	<div class="col-sm-9">      
+        	
+        	 <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
+                    <c:forEach items="${lista_clienti}" var="cliente">
+                     
+                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+        	
+        	<input id="cliente" name="cliente" type ="text" class="form-control" style="width:100%" required>
+        	 	
+<%--        		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente" name="cliente" style="width:100%" required>
        		<option value=""></option>
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
        				<option value="${cliente.__id}">${cliente.nome }</option>
        			</c:forEach>
-       		</select>       	
+       		</select>     --%>   	
        	</div> 
 <%--        		<div class="col-sm-9" style="display:none">       	
        		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_appoggio" name="cliente_appoggio" style="width:100%">
@@ -404,13 +416,14 @@
        	<div class="col-sm-3">
        		<label>Cliente</label>
        	</div>
-       	<div class="col-sm-9">       	
-       		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="mod_cliente" name="mod_cliente" style="width:100%" required>
+       	<div class="col-sm-9">     
+       	<input id="mod_cliente" name="mod_cliente" type ="text" class="form-control" style="width:100%">  	
+<%--        		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="mod_cliente" name="mod_cliente" style="width:100%" required>
        		<option value=""></option>
        			 <c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
        				<option value="${cliente.__id}">${cliente.nome }</option>
        			</c:forEach> 
-       		</select>       	
+       		</select>     --%>   	
        	</div>       	
        </div><br>
        <div class="row">
@@ -819,12 +832,14 @@
  
  <div class="form-group">
 		  <label for="cliente_scn">Cliente:</label>
-		  <select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_scn" name="cliente_scn" style="width:100%" required>
+		  
+		  <input id="cliente_scn" name="cliente_scn" type ="text" class="form-control" style="width:100%">
+		 <%--  <select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_scn" name="cliente_scn" style="width:100%" required>
        		<option value=""></option>
        			 <c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
        				<option value="${cliente.__id}">${cliente.nome }</option>
        			</c:forEach> 
-       		</select> 
+       		</select>  --%>
 		</div>
 		<div class="form-group">
 		  <label for="sede_scn">Sede:</label>
@@ -958,7 +973,9 @@
  var options_cliente =  $('#cliente option').clone();
  var options_sede =  $('#sede option').clone();
      $(document).ready(function() {
-    	 $('.select2').select2();
+
+    	 $('#filtro_rilievi').select2();
+    	 $('#cliente_filtro').select2();
 
     	 if($('#filtro_rilievi').val()!=""){
     		 $('#filtro_rilievi').change();
@@ -966,6 +983,24 @@
      });
      $('.dropdown-toggle').dropdown();
      
+     
+/*  	$('#sede').select2();
+  	$('#commessa').select2();
+  	$('#tipo_rilievo').select2();
+  	$('#mese_riferimento').select2();
+  	$('#classe_tolleranza').select2();
+  	
+  	$('#mod_sede').select2();
+  	$('#mod_commessa').select2();
+  	$('#mod_tipo_rilievo').select2();
+  	$('#mod_mese_riferimento').select2();
+  	$('#mod_classe_tolleranza').select2();
+    
+  	
+  	initSelect2('#cliente');
+  	initSelect2('#mod_cliente');
+  	initSelect2('#cliente_scn'); */
+ 
 
      
 	$("#fileupload_pdf").change(function(event){		
@@ -1127,6 +1162,9 @@
  	  });
  	  	
  }
+ 
+ 
+ 
  
   </script>
   

@@ -54,13 +54,25 @@
                   <b>Data Commessa</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${commessa.DT_COMMESSA}" /></a>
                 </li>
                 <li class="list-group-item">
+                 <div class="row">
+                     <div class="col-xs-12"> 
                   <b>Cliente</b> <a class="pull-right">${commessa.ID_ANAGEN_NOME}</a>
+                  </div>
+                  </div>
                 </li>
                 <li class="list-group-item">
+                 <div class="row">
+                     <div class="col-xs-12"> 
                   <b>Indirizzo Cliente</b> <a class="pull-right">${commessa.INDIRIZZO_PRINCIPALE}</a>
+                  </div>
+                  </div>
                 </li>
                 <li class="list-group-item">
+                 <div class="row">
+                     <div class="col-xs-12"> 
                   <b>Sede</b> <a class="pull-right">${commessa.ANAGEN_INDR_DESCR} ${commessa.ANAGEN_INDR_INDIRIZZO}</a>
+                  </div>
+                  </div>
                 </li>
                 <li class="list-group-item">
                   <b>Stato</b> <a class="pull-right">
@@ -104,10 +116,18 @@
 <div class="box-body" id="body_map" style="height:369px">
        		<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
+                 <div class="row">
+                     <div class="col-xs-12"> 
                   <b>Cliente Utilizzatore</b> <a class="pull-right">${commessa.NOME_UTILIZZATORE}</a>
+                  </div>
+                  </div>
                 </li>
                 <li class="list-group-item">
+                 <div class="row">
+                     <div class="col-xs-12"> 
                   <b>Indirizzo Utilizzatore</b> <a class="pull-right">${commessa.INDIRIZZO_UTILIZZATORE}</a>
+                  </div>
+                  </div>
                 </li>
                 </ul>
  

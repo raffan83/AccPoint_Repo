@@ -100,7 +100,11 @@ String permesso = "0";
                   <b>Stato</b> <a class="pull-right">${pacco.stato_lavorazione.descrizione}</a>
                 </li>
                 <li class="list-group-item">
+                <div class="row">
+                     <div class="col-xs-12"> 
                   <b>Cliente</b> <a class="pull-right">${pacco.nome_cliente}</a>
+                  </div>
+                  </div>
                 </li>
                 <li class="list-group-item">    
                     <div class="row">
@@ -110,7 +114,11 @@ String permesso = "0";
                      </div> 
                   </li>
                   <li class="list-group-item">
+                  <div class="row">
+                     <div class="col-xs-12"> 
                   <b>Cliente Utilizzatore</b> <a class="pull-right">${pacco.nome_cliente_util}</a>
+                  </div>
+                  </div>
                 </li>
                 <li class="list-group-item">    
                     <div class="row">
@@ -120,7 +128,11 @@ String permesso = "0";
                      </div> 
                   </li>
                 <li class="list-group-item">
+                <div class="row">
+                     <div class="col-xs-12"> 
                   <b>Fornitore</b> <a class="pull-right">${pacco.fornitore}</a>
+                  </div>
+                  </div>
                 </li>
                 <li class="list-group-item">
                   <b>Pacco di Origine</b> <a class="pull-right">${pacco.origine}</a>

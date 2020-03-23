@@ -599,5 +599,42 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 		return lista;
 	}
 
+	public static ArrayList<StrumentoDTO> getStrumentiFiltratiGenerale(int id, String nome, String marca, String modello, String matricola, String codice_interno, Integer id_company) {
+		
+		ArrayList<StrumentoDTO> lista = null;
+		
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		String str = "from StrumentoDTO where";
+		
+		if(id!=0) {
+			str = str+" __id =:_id and"; 
+					
+		}
+		str = str + " denominazione like :_nome "
+				+ "and costruttore like :_marca "
+				+ "and modello like :_modello "
+				+ "and matricola like :_matricola "
+				+ "and codice_interno like :_codice_interno "
+				+ "and company.id = :_id_company";
+		
+		Query query = session.createQuery(str);
+		
+		if(id!=0) {
+			query.setParameter("_id", id);
+		}		
+		query.setParameter("_nome", "%"+nome+"%");
+		query.setParameter("_marca", "%"+marca+"%");
+		query.setParameter("_modello", "%"+modello+"%");
+		query.setParameter("_matricola", "%"+matricola+"%");
+		query.setParameter("_codice_interno", "%"+codice_interno+"%");
+		query.setParameter("_id_company", id_company);
+
+		
+		lista = (ArrayList<StrumentoDTO>) query.list();
+		
+		return lista;
+	}
+
 
 }

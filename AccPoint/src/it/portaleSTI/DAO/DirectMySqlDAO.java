@@ -150,7 +150,7 @@ public class DirectMySqlDAO {
 	
 	private static String sqlVerMisurePerDate="select a.id , b.id_cliente,b.id_sede from ver_misura a JOIN ver_intervento b on a.id_ver_intervento=b.id where a.data_verificazione BETWEEN ? AND ?";
 	
-	private static String sqlMisurePerDate = "SELECT m.id, m.id_intervento, s.denominazione,s.matricola,s.codice_interno, m.dataMisura, i.id_commessa, i.nome_cliente, i.nome_sede, ms.descrizione FROM misura m LEFT JOIN strumento s ON s.__id = m.id_strumento LEFT JOIN intervento i ON i.id = m.id_intervento LEFT JOIN lat_misura l ON l.id = m.idMisura LEFT JOIN lat_master ms ON l.id_misura_lat = ms.id WHERE m.dataMisura BETWEEN ? AND ?";
+	private static String sqlMisurePerDate = "SELECT m.id, m.id_intervento, s.denominazione,s.matricola,s.codice_interno, m.dataMisura, i.id_commessa, i.nome_cliente, i.nome_sede, ms.descrizione, m.lat FROM misura m LEFT JOIN strumento s ON s.__id = m.id_strumento LEFT JOIN intervento i ON i.id = m.id_intervento LEFT JOIN lat_misura l ON l.id = m.idMisura LEFT JOIN lat_master ms ON l.id_misura_lat = ms.id WHERE m.dataMisura BETWEEN ? AND ?";
 	
 	private static String sqlDataCertificatoMisura = "SELECT c.data_creazione FROM certificato c LEFT JOIN misura m ON c.id_misura = m.id WHERE c.id_misura = ?"; 
 		
@@ -2519,7 +2519,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 			{
 				
 				
-				String s =rs.getString(1)+";"+rs.getString(2)+";"+rs.getString(3)+";"+rs.getString(4)+";"+rs.getString(5)+";"+df.format(rs.getDate(6))+";"+rs.getString(7)+";"+rs.getString(8)+";"+rs.getString(9)+";"+rs.getString(10);
+				String s =rs.getString(1)+";"+rs.getString(2)+";"+rs.getString(3)+";"+rs.getString(4)+";"+rs.getString(5)+";"+df.format(rs.getDate(6))+";"+rs.getString(7)+";"+rs.getString(8)+";"+rs.getString(9)+";"+rs.getString(10)+";"+rs.getString(11);
 				lista.add(s);
 			}
 			

@@ -95,7 +95,7 @@
 	
 	<a class="btn btn-info" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
-	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${partecipante.nome }','${partecipante.cognome.replace('\'','&prime;')}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }','${partecipante.luogo_nascita }','${partecipante.cf }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${partecipante.nome }','${partecipante.cognome.replace('\'','&prime;')}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }','${partecipante.luogo_nascita.replace('\'','&prime;') }','${partecipante.cf }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a>
 	</c:if> 
 	</td>
 	</tr>

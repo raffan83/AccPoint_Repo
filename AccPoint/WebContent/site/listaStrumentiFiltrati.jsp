@@ -46,57 +46,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
 %>
-<% if(user.checkPermesso("NUOVO_STRUMENTO_METROLOGIA")){ %>
-<div class="row">
-<div class="col-lg-12">
-<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoStrumento')">Nuovo Strumento</button>
-<div id="errorMsg" ></div>
-</div>
-</div>
-<%  } %>
-<div style="height:10px;"></div>
-<div class="row">
-<div class="col-xs-12">
- 
- 
-<button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')" disabled>Visualizza Tutti</button>
 
- 	<%
-     for(StatoStrumentoDTO str :listaStatoStrumento)
-     {
-     	 %> 
-     	 <button class="btn btn-primary btnFiltri" id="btnFiltri_<%=str.getId() %>" onClick="filtraStrumenti('<%=str.getNome() %>','<%=str.getId() %>')" ><%=str.getNome() %></button>
-  	 <%	 
-     }
-     %>
-	<button class="btn btn-warning" id="downloadfiltrati" onClick="downloadStrumentiFiltrati()" >Download PDF</button>
- 
-</div>
- <div class="col-xs-12" id="divFiltroDate" style="">
-
-						<div class="form-group">
-						        <label for="datarange" class="control-label">Date Filtro:</label>
-								<div class="row">
-						     		<div class="col-md-3">
-						     		<div class="input-group">
-				                    		 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-				                    		<input type="text" class="form-control" id="datarange" name="datarange" value=""/>
-				                  	</div>
-								    </div>
-								     <div class="col-md-9">
- 				                      	<button type="button" class="btn btn-info" onclick="filtraStrumentiInScadenza('prossima')">Filtra Prossima Verifica</button>
- 				            
- 				                      	<button type="button" class="btn btn-info" onclick="filtraStrumentiInScadenza('ultima')">Filtra Ultima Verifica</button>
-				                     
-				                   		 <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')">Reset</button>
- 				                
- 								</div>
-  								</div>
-						   </div> 
-
-
-	</div>
- </div>
  <div class="clearfix"></div>
 <div class="row" style="margin-top:20px;">
 <div class="col-lg-12">

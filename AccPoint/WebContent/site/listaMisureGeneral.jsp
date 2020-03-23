@@ -59,6 +59,13 @@
 	</div>
 </div>
 <div class="box-body">
+<div class="row">
+	<div class="col-xs-12">
+	<button class="btn btn-primary pull-right" id="lat_btn" onClick="filtraMisure('')" disabled>Tutte</button>
+	<button class="btn btn-primary pull-right" style="margin-right:5px" id="tutte_btn" onClick="filtraMisure('S')">LAT</button>
+	
+	</div>
+	</div>
 
 <div class="row">
 	<div class="col-xs-6">
@@ -101,7 +108,7 @@
   <th>Commessa</th>
   <th>Cliente</th>
   <th>Sede</th>
-
+  <th hidden="hidden"></th>
  </tr></thead>
  
  <tbody>
@@ -125,6 +132,7 @@ ${misura.split(';')[9] }
 <td>${misura.split(';')[6] }</td>
 <td>${misura.split(';')[7] }</td>
 <td>${misura.split(';')[8] }</td>
+<td hidden="hidden">${misura.split(';')[10]}</td>
 	</tr>
 	 
 	</c:forEach>
@@ -381,12 +389,30 @@ ${misura.split(';')[9] }
 		  
 	  }
 	
+	  function filtraMisure(filtro){
+		  table
+	        .columns( 10 )
+	        .search( filtro )
+	        .draw();
+		  if(filtro==''){
+			  $("#tutte_btn").prop("disabled",false);
+			  $("#lat_btn").prop("disabled",true);
+		  }else{
+			  $("#tutte_btn").prop("disabled",true);
+			  $("#lat_btn").prop("disabled",false);  
+		  }
+		  
+		 
+	  }
+	  
 	
     $(document).ready(function() {
     
     	 var date_from = "${date_from}";
      	 var date_to = "${date_to}";
 
+     	 
+     	 
    	 $('input[name="datarange"]').daterangepicker({
 		   
 		     locale: {
@@ -434,7 +460,8 @@ ${misura.split(';')[9] }
   	      scrollX: false,
   	      stateSave: true,
   	      columnDefs: [
-						   { responsivePriority: 1, targets: 1 }
+						   { responsivePriority: 1, targets: 1 },
+						   { responsivePriority: 2, targets: 10 }
   	                  
   	               ],
   	     
@@ -522,7 +549,11 @@ ${misura.split(';')[9] }
     
  
     });
-
+	
+	
+	
+	
+	filtraMisure('');
 });
   </script>
 </jsp:attribute> 

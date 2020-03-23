@@ -55,6 +55,8 @@ public class MisuraDTO implements Serializable {
 	
 	private String file_firma;
 	
+	private String note_lat = "";
+	
     public String getObsoleto() {
 		return obsoleto;
 	}
@@ -226,6 +228,15 @@ public class MisuraDTO implements Serializable {
 	public void setFile_firma(String file_firma) {
 		this.file_firma = file_firma;
 	}
+
+	public String getNote_lat() {
+		return note_lat;
+	}
+
+	public void setNote_lat(String note_lat) {
+		this.note_lat = note_lat;
+	}
+
 
 	
 }

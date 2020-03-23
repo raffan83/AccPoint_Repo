@@ -541,7 +541,7 @@ public class CreateVerRapporto {
 			//reportP3.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
 			//reportP3.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("sti.jpg"));
 			reportP3.addParameter("logo_accredia","");
-			reportP3.addParameter("logo",logo_sti);
+			reportP3.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo.png"));
 			
 			if(misura.getNumeroRapporto()!=null) {
 				reportP3.addParameter("numero_rapporto", misura.getNumeroRapporto().replace("_"," - "));

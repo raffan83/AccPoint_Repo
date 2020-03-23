@@ -48,8 +48,8 @@
 		                <div class="row">
 		              <div class="col-sm-6">
 		              
-		                <div class="form-group">
-		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."   onchange="filtraVerCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true">
+		                <div class="form-group" id="form_dom">
+		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."   onchange="filtraVerCertificati()" class="form-control select2" data-live-search="true" >
 		                       <option></option>
 		                       <c:choose>
 		                       <c:when test="${userObj.isTras() }">
@@ -141,7 +141,7 @@
 <script>
 $(document).ready(function() {
 	$('.select2').select2();
-	filtraCertificati();
+
 });
 </script>
 </jsp:attribute> 

@@ -281,7 +281,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 			response.setContentType("application/json");
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			
 			List<FileItem> items;
 		
@@ -295,6 +295,9 @@ public class GestioneIntervento extends HttpServlet {
 				FileItem file_excel = null;
 				FileItem file_pdf = null;
 				String note_obsolescenza = null;
+				String non_sovrascrivere = null;
+				String data_emissione = null;
+				String data_misura = null;
 				
 				for (FileItem item : items) {
 					if (item.isFormField()) {
@@ -312,6 +315,15 @@ public class GestioneIntervento extends HttpServlet {
 						}	
 						else if(item.getFieldName().equals("note_obsolescenza_form")) {
 							note_obsolescenza = item.getString();
+						}
+						else if(item.getFieldName().equals("non_sovrascrivere_mis")) {
+							non_sovrascrivere = item.getString();
+						}
+						else if(item.getFieldName().equals("data_emissione")) {
+							data_emissione = item.getString();
+						}
+						else if(item.getFieldName().equals("data_misura")) {
+							data_misura = item.getString();
 						}
 					}
 					else {
@@ -331,10 +343,14 @@ public class GestioneIntervento extends HttpServlet {
 				
 				boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),strumento,session);
 				ArrayList<StrumentoDTO> lista_duplicati = new ArrayList<StrumentoDTO>();
-				if((note_obsolescenza==null||note_obsolescenza.equals("")) && isPresent) {
+				if(!non_sovrascrivere.equals("1")&&(note_obsolescenza==null||note_obsolescenza.equals("")) && isPresent) {
 					lista_duplicati.add(strumento);
 					Gson gson = new Gson();
 					String jsonInString = gson.toJson(lista_duplicati);					
+					
+					if(lat_master!= null && !lat_master.equals("")) {
+						myObj.addProperty("lat", true);			
+					}
 					
 					myObj.addProperty("success", true);				
 					myObj.addProperty("duplicato",jsonInString);
@@ -379,7 +395,12 @@ public class GestioneIntervento extends HttpServlet {
 			    		misuraLAT.setIntervento(intervento);	
 		 				misuraLAT.setIntervento_dati(interventoDati);
 		 				misuraLAT.setStrumento(strumento);
-		 				misuraLAT.setData_misura(new Date());
+		 				if(data_misura!=null && !data_misura.equals("")) {
+		 					misuraLAT.setData_misura(sdf.parse(data_misura));
+		 				}else {
+		 					misuraLAT.setData_misura(new Date());	
+		 				}
+		 				
 		 				misuraLAT.setUser(utente);
 		 				misuraLAT.setMisura_lat(new LatMasterDTO(Integer.parseInt(lat_master)));				
 						session.save(misuraLAT);
@@ -398,7 +419,12 @@ public class GestioneIntervento extends HttpServlet {
 		    		misura.setIntervento(intervento);
 	
 		    		misura.setStrumento(strumento);
-		    		misura.setDataMisura(new Date());
+		    		if(data_misura!=null && !data_misura.equals("")) {
+		    			misura.setDataMisura(sdf.parse(data_misura));
+	 				}else {
+	 					misura.setDataMisura(new Date());	
+	 				}
+		    		
 		    		misura.setTemperatura(new BigDecimal(20));
 		    		misura.setUmidita(new BigDecimal(50) );
 		    		misura.setTipoFirma(0);
@@ -428,7 +454,12 @@ public class GestioneIntervento extends HttpServlet {
 		    		}	    		
 		    		certificato.setUtente(misura.getUser());
 		    		certificato.setNomeCertificato(nomeFilePdfCertificato);
-					certificato.setDataCreazione(new Date());
+		    		if(data_emissione!=null && !data_emissione.equals("")) {
+		    			certificato.setDataCreazione(sdf.parse(data_emissione));
+		    		}else {
+		    			certificato.setDataCreazione(new Date());	
+		    		}
+					
 					
 					int idItem=GestioneMagazzinoBO.checkStrumentoInMagazzino(misura.getStrumento().get__id(),misura.getIntervento().getIdCommessa());
 		    		

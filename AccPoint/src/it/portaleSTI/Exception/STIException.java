@@ -1,10 +1,13 @@
 package it.portaleSTI.Exception;
 
 
+import javax.mail.SendFailedException;
+
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.google.gson.JsonObject;
+import com.sun.mail.smtp.SMTPAddressFailedException;
 
 public class STIException extends Exception{
 	
@@ -43,7 +46,11 @@ public class STIException extends Exception{
 		}
 		else if(e instanceof ConstraintViolationException) {
 			myObj.addProperty("messaggio", "Il sitema di caricamento è temporaneamente occupato, riprovare a breve");
-		}else {
+		}
+		else if(e instanceof SendFailedException && ((SendFailedException) e).getNextException() instanceof SMTPAddressFailedException) {
+			myObj.addProperty("messaggio", "Attenzione! Errore sul dominio dell'indirizzo!");
+		}
+		else {
 			myObj.addProperty("messaggio", "Errore Generico, comunicaci l'errore facendo click sul pulsante Invia Report");
 		}
 		myObj.addProperty("success", false);

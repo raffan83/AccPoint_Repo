@@ -31,7 +31,7 @@
 	<td>
 	<a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_attestato&id_corso=${utl:encryptData(corso.id)}&id_partecipante=${utl:encryptData(partecipante.partecipante.id)}&filename=${utl:encryptData(partecipante.attestato)}" title="Click per scaricare l'attestato"><i class="fa fa-file-pdf-o"></i></a>
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
-	<a class="btn btn-warning" title="Click per modificare" onclick="modificaPartecipanteCorso('${partecipante.partecipante.id}','${partecipante.corso.id }','${partecipante.ruolo.id }','${partecipante.ore_partecipate }','${partecipante.attestato }')"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" title="Click per modificare" onclick="modificaPartecipanteCorso('${partecipante.partecipante.id}','${partecipante.corso.id }','${partecipante.ruolo.id }','${partecipante.ore_partecipate }','${partecipante.attestato.replace('\'','&prime;') }')"><i class="fa fa-edit"></i></a>
 	<a href="#" class="btn btn-danger customTooltip" title="Click per eliminare il partecipante dal corso" onclick="modalYesOrNoPart('${partecipante.partecipante.id}','${partecipante.ruolo.id }')"><i class="fa fa-trash"></i></a>
 	</c:if> 
 	</td>

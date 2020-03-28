@@ -553,7 +553,7 @@
 			<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Carica Excel Misura...</span>
-				<input accept=".xls,.xlsx"  id="fileupload_excel" name="fileupload_excel" type="file" >
+				<input accept=".xls,.xlsx,.xlsm,.xlsxm"  id="fileupload_excel" name="fileupload_excel" type="file" >
 		       
 		   	 </span>
 		   	</div> 
@@ -568,7 +568,7 @@
 			<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Carica Condizioni Ambientali...</span>
-				<input accept=".xls,.xlsx"  id="fileupload_cond_amb" name="fileupload_cond_amb" type="file" >
+				<input accept=".xls,.xlsx,.xlsm,.xlsxm"  id="fileupload_cond_amb" name="fileupload_cond_amb" type="file" >
 		       
 		   	 </span>
 		   	</div> 
@@ -1174,7 +1174,7 @@ function reloadDrive()   {
  
  function gestisciFile(nome_file){
 	 filename = nome_file;
-	 if(nome_file.endsWith("xls")||nome_file.endsWith("xlsx")){		 
+	 if(nome_file.endsWith("xls")||nome_file.endsWith("xlsx")||nome_file.endswith("xlsm")||nome_file.endswith("xlsxm")){		 
 		 pacchettoExcel(nome_file);
 	 }else{
 		 scaricaPacchettoUploaded(nome_file);

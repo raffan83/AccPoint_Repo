@@ -79,7 +79,7 @@ public class ScaricaPackGenerato extends HttpServlet {
 			 
 			 File d=null;
 			 
-			 if(ext1.equals("xls") || ext1.equals("xlsx")) 
+			 if(ext1.equals("xls") || ext1.equals("xlsx") || ext1.equals("xlsm")||ext1.equals("xlsxm")) 
 			 {
 				 if(nome_pack!=null && !nome_pack.equals("")) {
 					 d = new File(Costanti.PATH_FOLDER+nome_pack+"/"+filename);

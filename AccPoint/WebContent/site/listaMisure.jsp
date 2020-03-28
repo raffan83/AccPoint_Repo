@@ -410,7 +410,9 @@
 		
 		var fileExtension = 'xls';
 		var fileExtension2 = 'xlsx';
-        if ($(this).val().split('.').pop()!= fileExtension && $(this).val().split('.').pop()!= fileExtension2) {
+		var fileExtension3 = 'xlsm';
+		var fileExtension4 = 'xlsxm';
+        if ($(this).val().split('.').pop()!= fileExtension && $(this).val().split('.').pop()!= fileExtension2 && $(this).val().split('.').pop()!= fileExtension3 && $(this).val().split('.').pop()!= fileExtension4) {
         	
         
         	$('#myModalErrorContent').html("Attenzione! Inserisci solo xls!");

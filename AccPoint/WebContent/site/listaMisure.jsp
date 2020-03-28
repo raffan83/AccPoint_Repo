@@ -271,7 +271,7 @@
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
 
-		        <input id="fileupload_excel" type="file" accept=".xls,.xlsx,.XLS,.XLSX" name="fileupload_excel" class="form-control"/>
+		        <input id="fileupload_excel" type="file" accept=".xls,.xlsx,.XLS,.XLSX,.xlsm,.xlsxm" name="fileupload_excel" class="form-control"/>
 		   	 </span>
 		   	 <label id="excel_label"></label>
 		   	 <br>

@@ -86,8 +86,9 @@
  </tr></thead>
  
  <tbody>
- 
+ 	
  	<c:forEach items="${lista_misure }" var="misura" varStatus="loop">
+ 	<c:if test="${misura.obsoleta == 'N' }">
  	<c:choose>
  	<c:when test="${misura.comunicazione_preventiva == 'N' &&  misura.comunicazione_esito == 'N'}">
  		<tr id="row_${loop.index}" >
@@ -145,6 +146,7 @@
 	<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
 	</td>
 	</tr>
+	</c:if>
 	</c:forEach>
 	 
 

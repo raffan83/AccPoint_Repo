@@ -26,9 +26,9 @@
 				<text><![CDATA[Cliente: ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="40" y="3" width="280" height="20" uuid="32357c00-a523-4d54-ae32-0e47804dc1d8"/>
+				<reportElement x="34" y="4" width="287" height="20" uuid="32357c00-a523-4d54-ae32-0e47804dc1d8"/>
 				<textElement verticalAlignment="Middle">
-					<font size="12"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
 			</textField>

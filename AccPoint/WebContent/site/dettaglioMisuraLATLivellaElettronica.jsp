@@ -225,6 +225,17 @@
    						 
      				</div>
      				<div class="form-group row">
+        			<label for="campo_misura" class="col-sm-5 control-label">Unità di formato</label>
+       						 <div class="col-sm-6">
+       						 <c:if test="${misura.misuraLAT.unita_formato!=null }"></c:if>
+        	             <input type="text" id="campo_misura" class="form-control" value="${misura.misuraLAT.unita_formato.stripTrailingZeros().toPlainString() }" readonly/>
+        	             <c:if test="${misura.misuraLAT.unita_formato==null }">
+        	              <input type="text" id="campo_misura" class="form-control" value="" readonly/>
+        	             </c:if>
+   						 </div>"
+   						 
+     				</div>
+     				<div class="form-group row">
         			<label for="sensibilita" class="col-sm-5 control-label">Sensibilità</label>
        						 <div class="col-sm-6">
         	             <input type="text" id="sensibilita" class="form-control" value="${misura.misuraLAT.sensibilita.stripTrailingZeros().toPlainString()  }" readonly/>

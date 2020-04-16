@@ -371,6 +371,21 @@ public class GestioneRilieviBO {
 		GestioneRilieviDAO.updateQuotaCpCpk(quota,id_impronta,riferimento, session);
 	}
 
+	public static int contaQuote(ArrayList<RilQuotaDTO> lista_quote) {
+		
+		int n_quote = 0;
+		
+		for (RilQuotaDTO quota : lista_quote) {
+			for (RilPuntoQuotaDTO punto : quota.getListaPuntiQuota()) {
+				if(punto.getValore_punto()!=null && !punto.getValore_punto().equals("")) {
+					n_quote++;
+				}
+			}
+		}
+						
+		return n_quote;
+	}
+
 
 
 }

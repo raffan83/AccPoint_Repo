@@ -728,6 +728,5 @@ public class GestioneRilieviDAO {
 		
 	}
 
-
 	
 }

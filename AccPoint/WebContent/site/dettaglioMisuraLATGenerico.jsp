@@ -130,7 +130,7 @@
 		<c:if test="${misura.file_condizioni_ambientali!= null && misura.file_condizioni_ambientali!= '' }">
 					<li class="list-group-item">
 		                  <b>Condizioni Ambientali</b> 
-		                  <a class="pull-right btn btn-success" title="Click per scaricare le condizioni ambientali" href='gestioneMisura.do?action=download_condizioni_ambientali&id_misura=${utl:encryptData(misura.id)}'><i class="fa fa-arrow-down-small"></i></a>
+		                  <a class="pull-right btn btn-success btn-xs customTooltip" title="Click per scaricare le condizioni ambientali" href='gestioneMisura.do?action=download_condizioni_ambientali&id_misura=${utl:encryptData(misura.id)}'><i class="fa fa-arrow-down small"></i></a>
 		  				 </li>
 
 					

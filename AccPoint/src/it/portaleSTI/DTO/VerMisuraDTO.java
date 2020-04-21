@@ -73,7 +73,7 @@ public class VerMisuraDTO {
 	private String obsoleta;
 	
 	private int esito;
-
+	
 		public String getNote_obsolescenza() {
 		return note_obsolescenza;
 	}

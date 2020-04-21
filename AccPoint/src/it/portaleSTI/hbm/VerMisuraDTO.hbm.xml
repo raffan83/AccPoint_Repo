@@ -123,5 +123,11 @@
         <property name="esito" type="int">
             <column name="esito" />
         </property> 
+        
+        <property name="numeroSigilli" type="int">
+            <column name="numero_sigilli" />
+        </property> 
+        
+        
     </class>
 </hibernate-mapping>

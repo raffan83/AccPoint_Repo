@@ -230,7 +230,7 @@ public class GestioneVerInterventoBO {
 			   			dir.mkdir();
 			   		}
 			   		
-			   		FileUtils.writeByteArrayToFile(new File(dir.getPath()+"\\"+misura.getNomeFile_inizio_prova()), misura.getFile_inizio_prova());
+			   		FileUtils.writeByteArrayToFile(new File(dir.getPath()+"\\"+misura.getNomeFile_inizio_prova().replace("'","_")), misura.getFile_inizio_prova());
 			   	}
 				
 			   	if(misura.getFile_fine_prova()!=null) 
@@ -242,7 +242,7 @@ public class GestioneVerInterventoBO {
 			   			dir.mkdir();
 			   		}
 			   		
-			   		FileUtils.writeByteArrayToFile(new File(dir.getPath()+"\\"+misura.getNomeFile_fine_prova()), misura.getFile_fine_prova());
+			   		FileUtils.writeByteArrayToFile(new File(dir.getPath()+"\\"+misura.getNomeFile_fine_prova().replace("'","_")), misura.getFile_fine_prova());
 			   	}
 			   	
 			   	for (VerDecentramentoDTO dec :misura.getListaPuntiDecentramento())
@@ -497,6 +497,11 @@ public class GestioneVerInterventoBO {
 	public static VerInterventoStrumentiDTO getInterventoStrumento(int id_intervento, int id_strumento, Session session) {
 		
 		return GestioneVerInterventoDAO.getInterventoStrumento(id_intervento, id_strumento, session);
+	}
+
+	public static ArrayList<VerInterventoDTO> getListaInterventiCommessa(String idCommessa, Session session) {
+		
+		return GestioneVerInterventoDAO.getListaInterventiCommessa(idCommessa,session);
 	}
 	
 

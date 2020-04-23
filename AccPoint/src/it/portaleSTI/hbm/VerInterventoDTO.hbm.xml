@@ -75,6 +75,12 @@
             </key>
             <one-to-many class="it.portaleSTI.DTO.VerInterventoStrumentiDTO" />
         </set>
+         <property name="data_richiesta" type="java.sql.Date">
+            <column name="data_richiesta" />
+        </property>  
+        <property name="data_termine_attivita" type="java.sql.Date">
+            <column name="data_termine_attivita" />
+        </property>  
         
     </class>
 </hibernate-mapping>

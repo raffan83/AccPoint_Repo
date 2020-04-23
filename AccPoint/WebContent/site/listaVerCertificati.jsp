@@ -143,6 +143,11 @@ $(document).ready(function() {
 	$('.select2').select2();
 
 });
+
+$(window).on('beforeunload', function() {
+	 document.getElementById("selectCliente").selectedIndex = -1;
+	 document.getElementById("selectFiltri").selectedIndex = -1;
+	});  
 </script>
 </jsp:attribute> 
 </t:layout>

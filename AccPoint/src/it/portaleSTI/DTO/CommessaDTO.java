@@ -27,6 +27,8 @@ public class CommessaDTO implements Serializable{
 	private String NOTE_GEN="";
 	private String N_ORDINE="";
 	private String RESPONSABILE;
+	private Date DT_ORDINE;
+	private Date DT_TERMINE;
 	
 	/*
 	 * UTILIZZATORE
@@ -170,6 +172,12 @@ public class CommessaDTO implements Serializable{
 	}
 	public void setRESPONSABILE(String rESPONSABILE) {
 		RESPONSABILE = rESPONSABILE;
+	}
+	public Date getDT_ORDINE() {
+		return DT_ORDINE;
+	}
+	public void setDT_ORDINE(Date dT_ORDINE) {
+		DT_ORDINE = dT_ORDINE;
 	}
 	
 	

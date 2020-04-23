@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -22,6 +24,7 @@ import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -38,6 +41,8 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateVerCertificato;
 
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneCommesseBO;
+import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneVerCertificatoBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;
@@ -168,7 +173,7 @@ public class GestioneVerMisura extends HttpServlet {
 			    while(fileIn.read(outputByte, 0, 1) != -1)
 			    {
 			    	outp.write(outputByte, 0, 1);
-			     }
+			    }
 			    
 			    
 			    session.getTransaction().commit();
@@ -181,7 +186,7 @@ public class GestioneVerMisura extends HttpServlet {
 		else if(action.equals("lista")) {
 			
 			ArrayList<VerMisuraDTO> lista_misure = GestioneVerMisuraBO.getListaMisure(utente, session);
-			session.close();
+		
 			
 			for (VerMisuraDTO misura : lista_misure) {
 				if(misura.getVerIntervento().getId_sede()==0) {
@@ -189,15 +194,17 @@ public class GestioneVerMisura extends HttpServlet {
 					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(""+misura.getVerIntervento().getId_cliente());
 					if(cliente.getNome()!=null) {
 						indirizzo = cliente.getNome();
-				}
+					}
 					if( cliente.getIndirizzo()!=null) {
 						indirizzo = indirizzo + " - "+cliente.getIndirizzo();				
 					}						
 					if(cliente.getCitta()!=null) {
 							indirizzo = indirizzo + " - "+cliente.getCitta();
 					}
-				misura.getVerIntervento().setNome_sede(indirizzo);								
-				}
+				misura.getVerIntervento().setNome_sede(indirizzo);	
+				
+				}				
+
 			}
 			
 			request.getSession().setAttribute("lista_misure", lista_misure);
@@ -205,7 +212,7 @@ public class GestioneVerMisura extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerMisure.jsp");
 	  	    dispatcher.forward(request,response);
 			
-					
+	  		session.close();
 		}
 			
 			

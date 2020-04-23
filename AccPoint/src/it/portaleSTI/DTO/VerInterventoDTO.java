@@ -28,6 +28,9 @@ public class VerInterventoDTO {
 	private String provincia;
 	private Set<VerInterventoStrumentiDTO> interventoStrumenti = new HashSet<VerInterventoStrumentiDTO>(0);
 	
+	private Date data_richiesta;
+	private Date data_termine_attivita;
+	
 		public int getId() {
 		return id;
 	}
@@ -155,6 +158,18 @@ public class VerInterventoDTO {
 	}
 	public void setCompany(CompanyDTO company) {
 		this.company = company;
+	}
+	public Date getData_richiesta() {
+		return data_richiesta;
+	}
+	public void setData_richiesta(Date data_richiesta) {
+		this.data_richiesta = data_richiesta;
+	}
+	public Date getData_termine_attivita() {
+		return data_termine_attivita;
+	}
+	public void setData_termine_attivita(Date data_termine_attivita) {
+		this.data_termine_attivita = data_termine_attivita;
 	}
 	
 	

@@ -74,11 +74,14 @@
 <th>Sede</th>
 <th>Provincia</th>
 <th>Commessa</th>
+<th>Data richiesta pervenuta</th>
+<th>Termine ultimo svolgimento attività</th>
 <th>N. Attestato</th>
 <th>N. Rapporto</th>
 <th>Data Verificazione</th>
 <th>Esito</th>
 <th>Data Scadenza</th>
+<th>N. Sigilli Usati</th>
 <th>Tecnico Verificatore</th>
 <th>Comunicazione Preventiva</th>
 <th>Comunicazione Esito</th>
@@ -113,6 +116,8 @@
 	<td>${misura.verIntervento.nome_sede }</td>	
 	<td>${misura.verIntervento.provincia}</td>
 	<td>${misura.verIntervento.commessa }</td>
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${misura.verIntervento.data_richiesta }" /></td>
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${misura.verIntervento.data_termine_attivita }" /></td>
 	
 	<td>${misura.numeroAttestato }</td>
 	<td>${misura.numeroRapporto }</td>
@@ -125,6 +130,7 @@
 	</td>
 	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${misura.dataScadenza }" /></td>
+	<td>${misura.numeroSigilli }</td>
 	<td>${misura.tecnicoVerificatore.nominativo }</td>	
 	<td>
 	<c:if test="${misura.comunicazione_preventiva=='N'}">
@@ -333,7 +339,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	 
 		    	  { responsivePriority: 1, targets: 14 },
-		    	  { responsivePriority: 2, targets: 16 },
+		    	  { responsivePriority: 2, targets: 20 },
 		    	  { responsivePriority: 3, targets: 11 }
 		    	  
 		               ], 	        

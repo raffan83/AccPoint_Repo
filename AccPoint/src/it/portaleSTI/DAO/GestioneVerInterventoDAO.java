@@ -163,4 +163,18 @@ public class GestioneVerInterventoDAO {
 		return result;
 	}
 
+	public static ArrayList<VerInterventoDTO> getListaInterventiCommessa(String idCommessa, Session session) {
+
+		ArrayList<VerInterventoDTO> lista = null;
+				
+
+		Query query = session.createQuery("from VerInterventoDTO WHERE commessa= :_idCommessa");
+	    query.setParameter("_idCommessa",idCommessa);
+	    		
+	    lista = (ArrayList<VerInterventoDTO>)query.list();
+	    
+	    
+		return lista;
+	}
+
 }

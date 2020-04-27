@@ -49,7 +49,7 @@
 		              <div class="col-sm-6">
 		              
 		                <div class="form-group">
-		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."   onchange="filtraCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true">
+		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."   onchange="filtraCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true" autocomplete="off">
 		                       <option></option>
 		                        <option value="0_0">Tutti i clienti</option>
 		                      <c:forEach items="${listaClienti}" var="cliente">
@@ -63,7 +63,7 @@
 		  
 		  <div class="form-group">
 		                
-		 				<select name="selectFiltri" id="selectFiltri" data-placeholder="Seleziona tipologia..."  onchange="filtraCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true">
+		 				<select name="selectFiltri" id="selectFiltri" data-placeholder="Seleziona tipologia..."  onchange="filtraCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true" autocomplete="off">
 		                             <option>
 		                             <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_TUTTI_METROLOGIA')}"> 
 		         					 	<option value="tutti">Tutte le tipologie</option>
@@ -162,6 +162,12 @@ $(document).ready(function() {
 	$('.select2').select2();
 	filtraCertificati();
 });
+
+
+ $(window).on('beforeunload', function() {
+	 document.getElementById("selectCliente").selectedIndex = -1;
+	 document.getElementById("selectFiltri").selectedIndex = -1;
+	});  
 </script>
 </jsp:attribute> 
 </t:layout>

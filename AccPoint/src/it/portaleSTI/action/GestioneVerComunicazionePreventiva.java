@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -184,7 +185,16 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				if(!sede.equals("0")) {
 					intervento.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo());
 				}
-				intervento.setCommessa(commessa.split("\\*")[0]);
+				CommessaDTO comm= GestioneCommesseBO.getCommessaById(commessa.split("\\*")[0]);
+				if(comm!=null && comm.getDT_ORDINE()!=null) {
+					intervento.setData_richiesta(comm.getDT_ORDINE());
+					Calendar c = Calendar.getInstance();
+					 c.setTime(comm.getDT_ORDINE());
+					 c.add(Calendar.DAY_OF_MONTH, 45);  
+					 intervento.setData_termine_attivita(c.getTime());
+				}
+				intervento.setCommessa(commessa.split("\\*")[0]);				
+				
 				intervento.setData_creazione(new Date());
 				SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
 

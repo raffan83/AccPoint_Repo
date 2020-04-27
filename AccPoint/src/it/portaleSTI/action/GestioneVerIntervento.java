@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -30,11 +31,13 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ComuneDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ProvinciaDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilStatoRilievoDTO;
 import it.portaleSTI.DTO.RilTipoRilievoDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
@@ -45,6 +48,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneCompanyBO;
+import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
@@ -115,6 +119,7 @@ public class GestioneVerIntervento extends HttpServlet {
 				
 				
 				ArrayList<VerInterventoDTO> lista_interventi = GestioneVerInterventoBO.getListaVerInterventi(utente,session);
+
 				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0, true);
 				ArrayList<UtenteDTO> lista_tecnici = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
 				ArrayList<ComuneDTO> lista_comuni = GestioneAnagraficaRemotaBO.getListaComuni(session);
@@ -125,6 +130,8 @@ public class GestioneVerIntervento extends HttpServlet {
 				request.getSession().setAttribute("lista_clienti", listaClienti);				
 				request.getSession().setAttribute("lista_sedi", listaSedi);
 				request.getSession().setAttribute("lista_comuni", lista_comuni);
+				
+				
 				
 				session.getTransaction().commit();
 				session.close();
@@ -281,6 +288,15 @@ public class GestioneVerIntervento extends HttpServlet {
 					intervento.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo()+" - "+sd.getComune());
 				}
 				if(commessa!=null && !commessa.equals("")) {
+					CommessaDTO comm= GestioneCommesseBO.getCommessaById(commessa.split("\\*")[0]);
+					if(comm!=null && comm.getDT_ORDINE()!=null) {
+						intervento.setData_richiesta(comm.getDT_ORDINE());
+						Calendar c = Calendar.getInstance();
+						 c.setTime(comm.getDT_ORDINE());
+						 c.add(Calendar.DAY_OF_MONTH, 45);  
+						 intervento.setData_termine_attivita(c.getTime());
+					}
+					
 					intervento.setCommessa(commessa.split("\\*")[0]);	
 				}
 				
@@ -420,6 +436,69 @@ public class GestioneVerIntervento extends HttpServlet {
 			    
 			    PrintWriter out = response.getWriter();
 				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+			}
+			else if(action.equals("lista_commesse")) {
+				
+				//CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				
+				UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+				String anno=request.getParameter("year");
+				
+				int year=0;
+				
+				if(anno==null) {
+					year = Calendar.getInstance().get(Calendar.YEAR);
+				}else 
+				{
+					year=Integer.parseInt(anno);
+				}
+				
+				ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(user.getCompany(),"SLL",user,year,false);				
+			
+				request.getSession().setAttribute("listaCommesse", listaCommesse);	
+				request.getSession().setAttribute("current_year", year);
+				request.getSession().setAttribute("yearList", Utility.getYearList());
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneVerCommessa.jsp");
+		     	dispatcher.forward(request,response);
+		     	
+		     	session.close();
+			}
+			else if(action.equals("dettaglio_commessa")) {
+				
+				String idCommessa=request.getParameter("idCommessa");
+				
+				
+				idCommessa = Utility.decryptData(idCommessa);
+				
+				CommessaDTO comm=GestioneCommesseBO.getCommessaById(idCommessa);		
+				
+				request.getSession().setAttribute("commessa", comm);
+				
+
+				ArrayList<VerInterventoDTO> listaInterventi = GestioneVerInterventoBO.getListaInterventiCommessa(idCommessa,session);	
+				ArrayList<CompanyDTO> lista_company = GestioneCompanyBO.getAllCompany(session);
+				
+				if(comm.getSYS_STATO().equals("1CHIUSA")) 
+				{
+					StatoInterventoDTO stato = new StatoInterventoDTO();
+					stato.setId(2);
+					stato.setDescrizione("CHIUSO");
+					for (VerInterventoDTO intervento :listaInterventi) 
+					{
+						intervento.setId_stato_intervento(1);
+						session.update(intervento);
+					}
+				}
+				
+				request.getSession().setAttribute("listaInterventi", listaInterventi);				
+				session.getTransaction().commit();
+				session.close();
+
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioVerCommessa.jsp");
+		     	dispatcher.forward(request,response);
+		     	
 			}
 			
 		}catch (Exception e) {

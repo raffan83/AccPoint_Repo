@@ -133,6 +133,9 @@
                 <li class="list-group-item">
                   <b>Campioni di lavoro</b> <a class="pull-right">${misura.campioniLavoro}</a>
                 </li>
+                 <li class="list-group-item">
+                  <b>Numero di sigilli usati</b> <a class="pull-right">${misura.numeroSigilli}</a>
+                </li>
                 <c:if test="${misura.verStrumento.tipo.id == 1 || misura.verStrumento.tipo.id ==2 }">
                 	<li class="list-group-item">                
 		                <c:choose>

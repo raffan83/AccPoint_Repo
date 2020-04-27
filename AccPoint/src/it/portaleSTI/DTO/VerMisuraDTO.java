@@ -36,7 +36,7 @@ public class VerMisuraDTO {
 
 	private String seqRisposte;
 	
-	private int numeroSigiilli;
+	private int numeroSigilli;
 	
 	private Set<VerDecentramentoDTO> listaPuntiDecentramento = new LinkedHashSet<VerDecentramentoDTO>(0);
 	
@@ -74,7 +74,7 @@ public class VerMisuraDTO {
 	private String obsoleta;
 	
 	private int esito;
-
+	
 		public String getNote_obsolescenza() {
 		return note_obsolescenza;
 	}
@@ -271,12 +271,12 @@ public class VerMisuraDTO {
 	}
 
 
-	public int getNumeroSigiilli() {
-		return numeroSigiilli;
+	public int getNumeroSigilli() {
+		return numeroSigilli;
 	}
 
-	public void setNumeroSigiilli(int numeroSigiilli) {
-		this.numeroSigiilli = numeroSigiilli;
+	public void setNumeroSigilli(int numeroSigiilli) {
+		this.numeroSigilli = numeroSigiilli;
 	}
 
 	public byte[] getFile_fine_prova() {

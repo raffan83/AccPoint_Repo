@@ -240,6 +240,7 @@
 			<!-- <li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do',null,true);">Comunicazione Preventiva</a></li> -->
 			<% if(user.checkPermesso("GESTIONE_VER_STRUMENTI")){%>  
 			<li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do?action=esito_comunicazioni',null,true);">Comunicazione Esito</a></li>
+			 <li><a href="gestioneVerIntervento.do?action=lista_commesse">Gestione Commesse</a></li>
 			<% }%>
 	        <li><a href="#" onclick="callAction('gestioneVerStrumenti.do',null,true);">Gestione Strumenti</a></li>
 	        <li><a href="#" onclick="callAction('gestioneVerCertificati.do',null,true);">Lista Certificati</a></li>

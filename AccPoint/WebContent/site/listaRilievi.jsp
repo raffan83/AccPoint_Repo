@@ -981,6 +981,14 @@
     		 $('#filtro_rilievi').change();
     	 }
      });
+     
+     
+     $(window).on('beforeunload', function() {
+    	 document.getElementById("cliente_filtro").selectedIndex = -1;
+    	 document.getElementById("filtro_rilievi").selectedIndex = -1;
+    	});  
+     
+     
      $('.dropdown-toggle').dropdown();
      
      

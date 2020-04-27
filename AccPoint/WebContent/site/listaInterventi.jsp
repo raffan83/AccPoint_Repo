@@ -371,6 +371,11 @@
     });
     
     
+    $(window).on('beforeunload', function() {
+   	 document.getElementById("select1").selectedIndex = -1;
+   	 document.getElementById("select2").selectedIndex = -1;
+   	});  
+    
   </script>
 </jsp:attribute> 
 </t:layout>

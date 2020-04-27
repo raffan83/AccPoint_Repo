@@ -512,7 +512,8 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 												" file_inizio_prova blob,"+
 												" nomefile_inizio_prova varchar(255),"+
 												" file_fine_prova blob,"+
-												" nomefile_fine_prova varchar(255));";
+												" nomefile_fine_prova varchar(255),"+
+												" numeroSigilli int(1));";
 			
 	private static String sqlCreateAccuratezzaVER="CREATE TABLE ver_accuratezza (id Integer primary key autoincrement," + 
 													"  id_misura int(11) ," + 
@@ -1476,8 +1477,9 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			misura.setNomeFile_inizio_prova(rs.getString("nomefile_inizio_prova"));
 			misura.setFile_fine_prova(rs.getBytes("file_fine_prova"));
 			misura.setNomeFile_fine_prova(rs.getString("nomefile_fine_prova"));
-			
+		//	misura.setNumeroSigiilli(rs.getInt("numeroSigilli"));
 			String dataRiparazione=rs.getString("data_riparazione");
+
 			if(dataRiparazione!=null && dataRiparazione.length()>0) 
 			{
 				misura.setDataRiparazione(sdf.parse(dataRiparazione));

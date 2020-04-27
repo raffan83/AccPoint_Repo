@@ -8674,6 +8674,63 @@ function filtraCertificati(){
 	   
 }
   
+  
+  function eliminaParticolare(id_particolare){	 
+	  
+	  
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+	   pleaseWaitDiv.modal();
+	  
+	   var dataObj = {};
+		dataObj.id_particolare = id_particolare;
+
+			
+	        $.ajax({
+	      	  type: "POST",	    
+	    	  url: "gestioneRilievi.do?action=elimina_particolare",
+	      	  data: dataObj,
+	      	dataType: "json",
+	      	  success: function( data, textStatus) {
+	      	
+	      		  if(data.success)
+	      		  { 
+	      			$('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#report_button').hide();
+      				$('#visualizza_report').hide();
+					$('#myModalError').modal('show');	
+					$('#myModalError').on('hidden.bs.modal', function(){	         			
+						
+						 location.reload()
+					})
+	      			 
+	      		  }else{
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-danger");
+	      				$('#report_button').show();
+	      				$('#visualizza_report').show();
+						$('#myModalError').modal('show');	      			 
+	      		  }
+	      	  },
+
+	      	  error: function(jqXHR, textStatus, errorThrown){
+	      		  pleaseWaitDiv.modal('hide');
+
+	      		  $('#myModalErrorContent').html(textStatus);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+	  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+	      
+	      	  }
+	        });
+	   
+}
+  
   function calcolaTolleranze(){
 	  
 	  pleaseWaitDiv = $('#pleaseWaitDialog');

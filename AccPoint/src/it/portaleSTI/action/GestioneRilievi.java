@@ -2297,6 +2297,32 @@ public class GestioneRilievi extends HttpServlet {
 				out.print(myObj);
 				
 			}
+			else if(action.equals("elimina_particolare")) {
+				
+				String id_particolare = request.getParameter("id_particolare");
+				
+				RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(Integer.parseInt(id_particolare), session);			
+				
+				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_particolare), session);
+				
+				for (RilQuotaDTO rilQuotaDTO : lista_quote) {
+
+					for (RilPuntoQuotaDTO rilPuntoQuotaDTO : rilQuotaDTO.getListaPuntiQuota()) {
+						session.delete(rilPuntoQuotaDTO);
+					}
+					session.delete(rilQuotaDTO);
+				}
+				session.delete(particolare);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Particolare eliminato con successo!");
+				PrintWriter out = response.getWriter();
+				out.print(myObj);
+				
+			}
 
 
 		} catch (Exception e) {

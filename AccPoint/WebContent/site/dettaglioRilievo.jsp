@@ -42,7 +42,9 @@
 	
 
 <a class="btn btn-primary pull-left" onClick="modalNuovaImpronta()"><i class="fa fa-plus"></i> Aggiungi Particolare</a>
-<a class="btn btn-primary pull-right disabled" id="mod_particolare_button" onClick="modalModificaParticolare()"><i class="fa fa-pencil"></i> Modifica Particolare</a>
+
+<a class="btn btn-primary pull-right disabled" id="elimina_particolare_button" onClick="modalEliminaParticolare()"><i class="fa fa-trash"></i> Elimina Particolare</a>
+<a class="btn btn-primary pull-right disabled" style="margin-right:5px" id="mod_particolare_button" onClick="modalModificaParticolare()"><i class="fa fa-pencil"></i> Modifica Particolare</a>
 
 </div></div><br>
 </c:if>
@@ -560,6 +562,29 @@
 </div>
 
 
+  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare il particolare selezionato?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="elimina_particolare_id">
+      <a class="btn btn-primary" onclick="eliminaParticolare($('#elimina_particolare_id').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
      <div id="errorMsg"><!-- Place at bottom of page --></div> 
   
 
@@ -613,7 +638,14 @@
 	 
  }
 
-
+ function modalEliminaParticolare(){
+	 
+	 var id_particolare = $('#particolare').val();
+	 
+	 $('#elimina_particolare_id').val(id_particolare);
+	 $('#myModalYesOrNo').modal();
+	 
+ }
  
  function validateNomiImpronta(){
 	 var esito=true;
@@ -1342,6 +1374,7 @@
 	 	 
 	 if(permesso){
 	 	$('#mod_particolare_button').removeClass('disabled');
+	 	$('#elimina_particolare_button').removeClass('disabled');
 	 }
 	 $('#new_button').removeClass('disabled');
 	  $('#val_nominale').val("");
@@ -1368,6 +1401,7 @@
 	 
 	 if(permesso){
 	 	$('#mod_particolare_button').removeClass('disabled');
+	 	$('#elimina_particolare_button').removeClass('disabled');
 	 }
 	  $('#val_nominale').val("");
 	  $('#tolleranza_neg').val("");

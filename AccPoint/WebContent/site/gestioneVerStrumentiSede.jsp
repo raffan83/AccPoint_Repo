@@ -51,7 +51,7 @@
 	<td>${strumento.tipologia.descrizione }</td>		
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_ultima_verifica }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_prossima_verifica }" /></td>
-	<td style="min-width:90px">
+	<td style="min-width:130px">
 	<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento.famiglia_strumento.id }','${strumento.freqMesi }','${strumento.denominazione }','${strumento.costruttore }','${strumento.modello }','${strumento.matricola }',
 	'${strumento.classe }','${strumento.tipo.id }','${strumento.data_ultima_verifica }','${strumento.data_prossima_verifica }','${strumento.um }','${strumento.portata_min_C1 }',
 	'${strumento.portata_max_C1 }','${strumento.div_ver_C1 }','${strumento.div_rel_C1 }','${strumento.numero_div_C1 }',	'${strumento.portata_min_C2 }','${strumento.portata_max_C2 }',
@@ -63,6 +63,8 @@
 	'${strumento.data_prossima_verifica }','${strumento.um }','${strumento.portata_min_C1 }','${strumento.portata_max_C1 }','${strumento.div_ver_C1 }','${strumento.div_rel_C1 }','${strumento.numero_div_C1 }',
 	'${strumento.portata_min_C2 }','${strumento.portata_max_C2 }','${strumento.div_ver_C2 }','${strumento.div_rel_C2 }','${strumento.numero_div_C2 }',
 	'${strumento.portata_min_C3 }','${strumento.portata_max_C3 }','${strumento.div_ver_C3 }','${strumento.div_rel_C3 }','${strumento.numero_div_C3 }','${strumento.anno_marcatura_ce }','${strumento.data_messa_in_servizio }','${strumento.tipologia.id }')"><i class="fa fa-edit"></i></a>
+	
+	<a href="#" class="btn btn-primary customTooltip" title="Click per visualizzare gli allegati" onclick="modalAllegati('${strumento.id }')"><i class="fa fa-archive"></i></a>
 	</td>
 	</tr>
 	</c:forEach>
@@ -393,7 +395,26 @@
        		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c3" name="numero_div_c3" >
        	</div>
        </div> <br> 
+       
         </div>
+        
+         <div class="row">
+       <div class="col-sm-4">
+      
+        <span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Allega uno o più file...</span>
+				<input accept=".pdf,.PDF,.jpg,.gif,.jpeg,.png,.doc,.docx,.xls,.xlsx"  id="fileupload_str" type="file" name="files[]" multiple>
+		       
+		   	 </span>
+
+       </div>
+       		   	 <div class="col-sm-8">
+		   	 <label id="label_file"></label>
+       </div>
+       </div>
+       
+        
        </div>
 
   		 
@@ -1054,6 +1075,28 @@
 </div>
 
 
+  <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Allegati</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+        <div class="col-xs-12">
+       <div id="tab_allegati"></div>
+</div>
+  		 </div>
+  		 </div>
+      <div class="modal-footer">
+      </div>
+   
+  </div>
+  </div>
+</div>
+
 
 
  <style>
@@ -1074,6 +1117,35 @@ input[type=number]::-webkit-outer-spin-button {
 
 <script type="text/javascript">
 
+
+$('#fileupload_str').change(function(){
+	
+	var files = $("#fileupload_str")[0].files;
+	var str ="";
+
+	for (var i = 0; i < files.length; i++)
+	{
+	 str = str+files[i].name+"<br>";
+	}
+	$('#label_file').html(str);
+});
+
+
+function modalAllegati(id_strumento){
+	 
+	 $('#tab_archivio').html("");
+	 
+	 dataString ="action=allegati&id_strumento="+ id_strumento;
+   exploreModal("gestioneVerStrumenti.do",dataString,"#tab_allegati",function(datab,textStatusb){
+   });
+$('#myModalAllegati').modal();
+}
+
+
+$('#myModalAllegati').on('hidden.bs.modal',function(){
+	
+	$(document.body).css('padding-right', '0px');
+});
 
 function modalModificaVerStrumento(id_strumento, freq_mesi, famiglia_strumento, id_cliente, id_sede, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
 		data_prossima_verifica, um, portata_min_c1, portata_max_c1, div_ver_c1, div_rel_c1, numero_div_c1,

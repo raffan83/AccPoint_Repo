@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneVerStrumentiDAO;
+import it.portaleSTI.DTO.VerAllegatoStrumentoDTO;
 import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
 import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
@@ -46,6 +47,16 @@ public class GestioneVerStrumentiBO {
 	public static ArrayList<VerInterventoStrumentiDTO> getListaStrumentiIntervento(int id_intervento, Session session) {
 		
 		return GestioneVerStrumentiDAO.getListaStrumentiIntervento(id_intervento, session);
+	}
+
+	public static ArrayList<VerAllegatoStrumentoDTO> getListaAllegatiStrumento(int id_strumento, Session session) {
+		
+		return GestioneVerStrumentiDAO.getListaAllegatiStrumento(id_strumento, session);
+	}
+
+	public static VerAllegatoStrumentoDTO getAllegatoStrumentoFormId(int id_allegato, Session session) {
+	
+		return GestioneVerStrumentiDAO.getAllegatoStrumentoFormId(id_allegato, session);
 	}
 
 	

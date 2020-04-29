@@ -142,7 +142,8 @@
  	<mapping class="VerFamigliaStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerFamigliaStrumentoDTO.hbm.xml"/>
  	<mapping class="VerInterventoStrumentiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerInterventoStrumentiDTO.hbm.xml"/> 
  	<mapping class="VerCodiceDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerCodiceDocumentoDTO.hbm.xml"/>
- 	<mapping class="VerEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerEmailDTO.hbm.xml"/>  
+ 	<mapping class="VerEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerEmailDTO.hbm.xml"/>
+ 	<mapping class="VerAllegatoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerAllegatoStrumentoDTO.hbm.xml"/>    
  	
  	<mapping class="ProvinciaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ProvinciaDTO.hbm.xml"/>
  	<mapping class="ComuneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ComuneDTO.hbm.xml"/>

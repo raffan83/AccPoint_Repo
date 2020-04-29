@@ -1,5 +1,7 @@
 package it.portaleSTI.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -11,6 +13,7 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,16 +33,23 @@ import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
+import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
+import it.portaleSTI.DTO.ForCorsoCatDTO;
+import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerAllegatoStrumentoDTO;
 import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
 import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.GestioneVerStrumentiBO;
 
@@ -151,20 +161,24 @@ public class GestioneVerStrumenti extends HttpServlet {
 
 	            		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 	            	}
-				
-        		
-    	 		FileItem fileItem = null;
+				        		
+
 				
 		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		        ArrayList<FileItem> lista_file = new ArrayList<FileItem>();
 		      
 		        for (FileItem item : items) {
-    	            	 if (!item.isFormField()) {       		
-    	                     fileItem = item;                     
+    	            	 if (!item.isFormField()) { 
+    	            		 if(item.getName()!=null && !item.getName().equals("")) {
+    	            			 lista_file.add(item);	 
+    	            		 }
+    	            		                      
     	            	 }else
     	            	 {
     	                    ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
 
     	            	 }
+    	            	
 	            }
 				
 		        
@@ -309,8 +323,17 @@ public class GestioneVerStrumenti extends HttpServlet {
 
 
 				session.save(strumento);
+				
+				for (FileItem item : lista_file) {
+					saveFile(item, strumento.getId(), item.getName());
+					VerAllegatoStrumentoDTO allegato = new VerAllegatoStrumentoDTO();
+					allegato.setStrumento(strumento);
+					allegato.setNome_file(item.getName());
+					session.save(allegato);
+				}
 								
-				session.getTransaction().commit();
+				session.getTransaction().commit();				
+				
 				
 				session.close();
 				myObj.addProperty("success", true);				
@@ -337,7 +360,8 @@ public class GestioneVerStrumenti extends HttpServlet {
 		        for (FileItem item : items) {
     	            	 if (!item.isFormField()) {       		
     	                     fileItem = item;                     
-    	            	 }else
+    	            	 }
+    	            	 else
     	            	 {
     	                    ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
 
@@ -495,6 +519,107 @@ public class GestioneVerStrumenti extends HttpServlet {
 				
 				
 			}
+			
+			else if(action.equals("allegati")) {
+				
+				String id_strumento = request.getParameter("id_strumento");
+							
+				ArrayList<VerAllegatoStrumentoDTO> lista_allegati_strumento = GestioneVerStrumentiBO.getListaAllegatiStrumento(Integer.parseInt(id_strumento), session);
+				
+				request.getSession().setAttribute("lista_allegati_strumento", lista_allegati_strumento);
+				
+				request.getSession().setAttribute("id_strumento", id_strumento);				
+				
+				session.getTransaction().commit();
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAllegatiVerStrumento.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("upload_allegati")){
+				
+				ajax = true;
+				
+				String id_strumento = request.getParameter("id_strumento");			
+								
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+				PrintWriter out = response.getWriter();
+				response.setContentType("application/json");						
+					
+					List<FileItem> items = uploadHandler.parseRequest(request);
+					for (FileItem item : items) {
+						if (!item.isFormField()) {							
+								
+							VerAllegatoStrumentoDTO allegato_strumento = new VerAllegatoStrumentoDTO();
+							VerStrumentoDTO strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(id_strumento), session);
+							allegato_strumento.setStrumento(strumento);
+							allegato_strumento.setNome_file(item.getName().replaceAll("'", "_"));
+							saveFile(item, strumento.getId(),item.getName());	
+							session.save(allegato_strumento);							
+						}
+					}
+
+					session.getTransaction().commit();
+					session.close();	
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Upload effettuato con successo!");
+					out.print(myObj);
+			}
+			else if(action.equals("download_allegato")){
+				
+				String id_strumento = request.getParameter("id_strumento");				
+				String id_allegato = request.getParameter("id_allegato");				
+			
+				VerAllegatoStrumentoDTO allegato_strumento = GestioneVerStrumentiBO.getAllegatoStrumentoFormId(Integer.parseInt(id_allegato), session);
+					
+				String path = Costanti.PATH_FOLDER+"//Verificazione//Strumenti//"+id_strumento+"//"+allegato_strumento.getNome_file();
+				response.setContentType("application/octet-stream");
+				response.setHeader("Content-Disposition","attachment;filename="+ allegato_strumento.getNome_file());
+		
+				ServletOutputStream outp = response.getOutputStream();
+				 File file = new File(path);
+					
+					FileInputStream fileIn = new FileInputStream(file);
+
+			
+					    byte[] outputByte = new byte[1];
+					    
+					    while(fileIn.read(outputByte, 0, 1) != -1)
+					    {
+					    	outp.write(outputByte, 0, 1);
+					    }
+					    				    
+					 
+					    fileIn.close();
+					    outp.flush();
+					    outp.close();
+				
+				session.close();
+				
+			}
+			
+			
+			else if(action.equals("elimina_allegato")) {
+				
+				ajax=true;				
+
+				String id_allegato = request.getParameter("id_allegato");				
+			
+				VerAllegatoStrumentoDTO allegato_strumento = GestioneVerStrumentiBO.getAllegatoStrumentoFormId(Integer.parseInt(id_allegato), session);
+			
+				session.delete(allegato_strumento);	
+				
+				
+				PrintWriter out = response.getWriter();
+				session.getTransaction().commit();
+				session.close();	
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Allegato eliminato con successo!");
+				out.print(myObj);
+				
+				
+			}
+					
 		}catch (Exception e) {
 			session.getTransaction().rollback();
         	session.close();
@@ -516,4 +641,56 @@ public class GestioneVerStrumenti extends HttpServlet {
 		}
 	}
 
+	
+	
+	 private void saveFile(FileItem item, int id_strumento, String filename) {
+
+		 	String path_folder = Costanti.PATH_FOLDER+"//Verificazione//Strumenti//"+id_strumento+"//";
+			File folder=new File(path_folder);
+			
+			if(!folder.exists()) {
+				folder.mkdirs();
+			}
+		
+			
+			while(true)
+			{
+				File file=null;
+				
+				
+				file = new File(path_folder+filename);					
+				
+					try {
+						item.write(file);
+						break;
+
+					} catch (Exception e) 
+					{
+
+						e.printStackTrace();
+						break;
+					}
+			}
+		
+		}
+	 
+ private void downloadFile(String path,  ServletOutputStream outp) throws Exception {
+		 
+		 File file = new File(path);
+			
+			FileInputStream fileIn = new FileInputStream(file);
+
+	
+			    byte[] outputByte = new byte[1];
+			    
+			    while(fileIn.read(outputByte, 0, 1) != -1)
+			    {
+			    	outp.write(outputByte, 0, 1);
+			    }
+			    				    
+			 
+			    fileIn.close();
+			    outp.flush();
+			    outp.close();
+	 }
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portaleSTI.DTO.VerAllegatoStrumentoDTO;
 import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
 import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
@@ -97,6 +98,35 @@ public class GestioneVerStrumentiDAO {
 		lista = (ArrayList<VerInterventoStrumentiDTO>) query.list();
 		
 		return lista;
+	}
+
+	public static ArrayList<VerAllegatoStrumentoDTO> getListaAllegatiStrumento(int id_strumento, Session session) {
+
+	ArrayList<VerAllegatoStrumentoDTO> lista = null;
+		
+		Query query = session.createQuery("from VerAllegatoStrumentoDTO a where a.strumento.id =:_id_strumento");
+		query.setParameter("_id_strumento", id_strumento);
+		
+		lista = (ArrayList<VerAllegatoStrumentoDTO>) query.list();
+		
+		return lista;
+	}
+
+	public static VerAllegatoStrumentoDTO getAllegatoStrumentoFormId(int id_allegato, Session session) {
+
+		ArrayList<VerAllegatoStrumentoDTO> lista = null;
+		VerAllegatoStrumentoDTO result = null;
+		
+		Query query = session.createQuery("from VerAllegatoStrumentoDTO where id =:_id_allegato");
+		query.setParameter("_id_allegato", id_allegato);
+		
+		lista = (ArrayList<VerAllegatoStrumentoDTO>) query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
 	}
 
 }

@@ -3,7 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
-<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_VER_STRUMENTI') }"> 
+<%-- <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_VER_STRUMENTI') }">  --%>
 
 <div class="row">
 <div class="col-sm-12">
@@ -18,7 +18,7 @@
 		   	 
 		   	 </div>
 		   	 </div>
-		   	 </c:if>
+		   	<%--  </c:if> --%>
 <div class="row">
 <div class="col-sm-12">
 <c:choose>
@@ -32,9 +32,9 @@
 	                  <b>${allegato.nome_file }</b>
 	                  </div>
 	                  <div class="col-xs-2 pull-right"> 	           
-	                  <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_VER_STRUMENTI') }">        
+	               <%--    <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_VER_STRUMENTI') }">    --%>     
 	                  <a class="btn btn-danger btn-xs pull-right" onClick="eliminaAllegato('${allegato.id  }','${id_strumento}','0')"><i class="fa fa-trash"></i></a>
-	                  </c:if>
+	               <%--    </c:if> --%>
 	                  <a class="btn btn-danger btn-xs  pull-right"style="margin-right:5px" href="gestioneVerStrumenti.do?action=download_allegato&id_allegato=${allegato.id }&id_strumento=${id_strumento}"><i class="fa fa-arrow-down small"></i></a>
 	                   
 	                  </div>

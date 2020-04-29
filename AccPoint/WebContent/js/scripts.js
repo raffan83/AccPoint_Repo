@@ -13529,3 +13529,61 @@ $.ajax({
 	
 }
 
+
+function eliminaAllegatoVerStrumento(id_allegato){
+	 
+	 var dataObj = {};
+		dataObj.id_allegato = id_allegato;
+
+	var id_cliente = $('#cliente').val();
+	var id_sede = $("#sede").val();
+	  $.ajax({
+    type: "POST",
+    url: "gestioneVerStrumenti.do?action=elimina_allegato&id_allegato="+ id_allegato,
+    data: dataObj,
+    dataType: "json",
+    //if received a response from the server
+    success: function( data, textStatus) {
+   	 $('#myModalArchivio').hide();
+  	  if(data.success)
+		  {  
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');      				
+       			$('#myModalError').on('hidden.bs.modal', function(){	        			
+     				
+       				
+       				$('#myModalYesOrNo').hide();
+       				$('.modal-backdrop').hide();
+       				dataString = "action=lista&id_cliente="+id_cliente+"&id_sede="+id_sede;
+ 				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
+ 				   
+ 				   $('.modal-backdrop').hide();
+       			    //  $(this).off('hidden.bs.modal');
+      			});			  
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+    },
+    error: function( data, textStatus) {
+  	  $('#myModalYesOrNo').modal('hide');
+  	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+    }
+    });
+}

@@ -1174,7 +1174,7 @@ function reloadDrive()   {
  
  function gestisciFile(nome_file){
 	 filename = nome_file;
-	 if(nome_file.endsWith("xls")||nome_file.endsWith("xlsx")||nome_file.endswith("xlsm")||nome_file.endswith("xlsxm")){		 
+	 if(nome_file.endsWith("xls")||nome_file.endsWith("xlsx")||nome_file.endsWith("xlsm")||nome_file.endsWith("xlsxm")){		 
 		 pacchettoExcel(nome_file);
 	 }else{
 		 scaricaPacchettoUploaded(nome_file);

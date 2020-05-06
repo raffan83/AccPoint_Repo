@@ -870,9 +870,8 @@ public static void updateCampioneScheduler() {
 	Session session = SessionFacotryDAO.get().openSession();
     
 	session.beginTransaction();
-	ArrayList<CampioneDTO> lista = null;
 	
-	Query query = session.createQuery("select a.campione, a.data from AcAttivitaCampioneDTO a where a.campione.tipo_campione.id = 3 and a.tipo_attivita.id = 1 and a.campione.statoCampione!='F'");	
+	Query query = session.createQuery("select a.campione, a.data from AcAttivitaCampioneDTO a where a.campione.tipo_campione.id = 3 and a.tipo_attivita.id = 1 and a.campione.statoCampione!='F' and a.obsoleta!='S'");	
 
 	List<Object[]> result = (List<Object[]>)query.list();
 
@@ -895,7 +894,7 @@ public static void updateCampioneScheduler() {
 		}
 	}
 	
-	query = session.createQuery("select a.campione, a.data_evento from RegistroEventiDTO a where a.campione.tipo_campione.id = 3 and a.tipo_evento.id = 1 and a.campione.statoCampione!='F'");
+	query = session.createQuery("select a.campione, a.data_evento from RegistroEventiDTO a where a.campione.tipo_campione.id = 3 and a.tipo_evento.id = 1 and a.campione.statoCampione!='F'  and a.obsoleta!='S'");
 	
 	
 	result = (List<Object[]>)query.list();

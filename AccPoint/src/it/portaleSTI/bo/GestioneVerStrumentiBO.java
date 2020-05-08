@@ -1,6 +1,8 @@
 package it.portaleSTI.bo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.hibernate.Session;
 
@@ -57,6 +59,16 @@ public class GestioneVerStrumentiBO {
 	public static VerAllegatoStrumentoDTO getAllegatoStrumentoFormId(int id_allegato, Session session) {
 	
 		return GestioneVerStrumentiDAO.getAllegatoStrumentoFormId(id_allegato, session);
+	}
+
+	public static HashMap<String, Integer> getListaScadenzeVerificazione(Session session,List<Integer> lista_id_clienti) {
+		
+		return GestioneVerStrumentiDAO.getListaScadenzeVerificazione(session, lista_id_clienti);
+	}
+
+	public static ArrayList<VerStrumentoDTO> getlistaStrumentiScadenza(String data, Session session) throws Exception {
+		
+		return GestioneVerStrumentiDAO.getlistaStrumentiScadenza(data, session);
 	}
 
 	

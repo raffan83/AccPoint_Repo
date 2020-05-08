@@ -13587,3 +13587,121 @@ function eliminaAllegatoVerStrumento(id_allegato){
     }
     });
 }
+
+
+
+function addCalendarVerificazione(){ 
+	   
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	   pleaseWaitDiv.modal();
+	   
+	   
+$.ajax({
+  type: "POST",
+  url: "scadenzarioVerificazione.do?action=scadenzario",
+  data: "",
+  dataType: "json",
+  
+  //if received a response from the server
+  success: function( data, textStatus) {
+  	console.log("test");
+  	var id = 0;
+     	if(data.success)
+      	{     		
+     		 jsonObj = [];
+
+	         for(var i=0 ; i<data.obj_scadenze.length;i++)
+	         {
+	            var str =data.obj_scadenze[i].split(";");
+	             item = {};
+	             item ["id"] = id;
+	             item ["title"] = str[1];
+	             item ["start"] = str[0];
+	             item ["allDay"] = true;
+	             item ["backgroundColor"] = "#777";
+	             item ["borderColor"] = "#777";
+	             item ["className"]
+	             jsonObj.push(item);
+	             id++;
+	             }
+     		 }     	
+
+
+$('#calendario').fullCalendar({
+	 
+		header: {
+	        left: 'prev,next today',
+	        center: 'title',     
+	        right: 'listYear,year,month,agendaWeek,agendaDay'
+	      },	
+	     
+	      
+	      
+		  viewRender: function (view, element)
+		    {
+		        intervalStart = view.intervalStart;
+		        intervalEnd = view.intervalEnd;
+		        
+		        $('#data_start').val(moment(intervalStart).format());
+		        $('#data_end').val(moment(intervalEnd).format());
+		     
+		    },
+	     
+		  eventRender: function(event, element, view) {
+			
+			  return $('<span class=\"badge bg-red bigText\"">' 
+				             + event.title + 
+				             '</span>');
+		
+	         },	 
+	         
+	  events:jsonObj,
+	  
+	           eventClick: function(calEvent, jsEvent, view) {
+
+	        	   
+	        	callAction('gestioneVerStrumenti.do?action=strumenti_scadenza&data='+moment(calEvent.start).format());
+	        	
+	               $(this).css('border-color', '#228B22');
+	           },
+	     	 
+//	         editable: true,
+	       drop: function (date, allDay) { // this function is called when something is dropped
+
+	         // retrieve the dropped element's stored Event Object
+	         var originalEventObject = $(this).data('eventObject');
+
+	         // we need to copy it, so that multiple events don't have a reference to the same object
+	         var copiedEventObject = $.extend({}, originalEventObject);
+
+	         // assign it the date that was reported
+	         copiedEventObject.start = date;
+	         copiedEventObject.allDay = allDay;
+	         copiedEventObject.backgroundColor = $(this).css("background-color");
+	         copiedEventObject.borderColor = $(this).css("border-color");
+
+	         // render the event on the calendar
+	         // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+	         $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+	         // is the "remove after drop" checkbox checked?
+	         if ($('#drop-remove').is(':checked')) {
+	           // if so, remove the element from the "Draggable Events" list
+	           $(this).remove();
+	         }
+
+	       }
+}); 
+    
+      	
+
+     	var	cal = $('#calendario').fullCalendar('getCalendar');
+     	cal.removeEvents();
+     	cal.addEventSource(jsonObj);
+     
+    
+     		
+    	pleaseWaitDiv.modal('hide');
+	          }
+	         });
+}

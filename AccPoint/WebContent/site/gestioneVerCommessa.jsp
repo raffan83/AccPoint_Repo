@@ -148,7 +148,11 @@
 <fmt:parseDate pattern="yyyy-MM-dd"  value ="${commessa.DT_ORDINE }" var="var" type="date" />
 <jsp:setProperty name="ourDate" property="time" value="${var.time + 86400000*45}"/>
 
-<td><fmt:formatDate value="${ourDate}" pattern="dd/MM/yyyy"/></td>
+<td>
+<c:if test="${commessa.DT_ORDINE != null}">
+	<fmt:formatDate value="${ourDate}" pattern="dd/MM/yyyy"/>
+</c:if>
+</td>
 	
 		<td>
 			<%-- <a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');"> --%>

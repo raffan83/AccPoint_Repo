@@ -619,6 +619,30 @@ public class GestioneVerStrumenti extends HttpServlet {
 				
 				
 			}
+			
+			else if(action.equals("strumenti_scadenza")) {
+				
+				String data = request.getParameter("data");
+				
+				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getlistaStrumentiScadenza(data, session);
+				ArrayList<VerTipoStrumentoDTO> lista_tipo_strumento = GestioneVerStrumentiBO.getListaTipoStrumento(session);
+				ArrayList<VerTipologiaStrumentoDTO> lista_tipologie_strumento = GestioneVerStrumentiBO.getListaTipologieStrumento(session);
+				ArrayList<VerFamigliaStrumentoDTO> lista_famiglie_strumento = GestioneVerStrumentiBO.getListaFamiglieStrumento(session);
+				
+				request.getSession().setAttribute("lista_strumenti",lista_strumenti);
+				request.getSession().setAttribute("lista_tipo_strumento",lista_tipo_strumento);
+				request.getSession().setAttribute("lista_tipologie_strumento",lista_tipologie_strumento);
+				request.getSession().setAttribute("lista_famiglie_strumento",lista_famiglie_strumento);	
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				request.getSession().setAttribute("data",sdf.parseObject(data));
+				
+				
+				session.getTransaction().commit();
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerStrumentiScadenza.jsp");
+		     	dispatcher.forward(request,response);
+			}
 					
 		}catch (Exception e) {
 			session.getTransaction().rollback();

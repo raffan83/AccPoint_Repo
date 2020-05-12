@@ -425,9 +425,13 @@ public class GestioneVerStrumenti extends HttpServlet {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				if(data_prossima_verifica!=null && !data_prossima_verifica.equals("")) {
 					strumento.setData_prossima_verifica(sdf.parse(data_prossima_verifica));	
-				}	
+				}else {
+					strumento.setData_prossima_verifica(null);	
+				}
 				if(data_ultima_verifica!=null && !data_ultima_verifica.equals("")) {
 					strumento.setData_ultima_verifica(sdf.parse(data_ultima_verifica));	
+				}else {
+					strumento.setData_ultima_verifica(null);	
 				}	
 				strumento.setDenominazione(denominazione);				
 				strumento.setMatricola(matricola);

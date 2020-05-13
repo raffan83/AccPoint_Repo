@@ -1769,7 +1769,7 @@ var listaStrumenti = ${listaCampioniJson};
 	    	$('#ente_certificatore').attr("readonly", true);	
 	    } 
 	        var FileSize = file.files[0].size / 1024 / 1024; // in MB
-	        if (FileSize > 2) {
+	        if (FileSize > 10) {
 	    		$('#myModalErrorContent').html("Il File supera i 2MB, inserire un file più piccolo");
 	    	  	$('#myModalError').removeClass();
 	    		$('#myModalError').addClass("modal modal-danger");

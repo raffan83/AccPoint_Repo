@@ -4,6 +4,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
+import static net.sf.dynamicreports.report.builder.DynamicReports.grp;
 
 import java.awt.Color;
 import java.awt.Image;
@@ -20,6 +21,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.persistence.metamodel.Type;
+
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.HibernateException;
@@ -30,6 +33,7 @@ import com.lowagie.text.Anchor;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import TemplateReport.PivotTemplate;
+import ar.com.fdvs.dj.domain.constants.Page;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilParticolareDTO;
@@ -40,12 +44,21 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
+import javafx.scene.Group;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.base.DRGroup;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.builder.MarginBuilder;
+import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
 import net.sf.dynamicreports.report.builder.component.ImageBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
+import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
+import net.sf.dynamicreports.report.builder.group.CustomGroupBuilder;
+import net.sf.dynamicreports.report.builder.group.GroupBuilder;
+import net.sf.dynamicreports.report.builder.group.Groups;
 import net.sf.dynamicreports.report.builder.style.ConditionalStyleBuilder;
+import net.sf.dynamicreports.report.builder.style.PenBuilder;
 import net.sf.dynamicreports.report.builder.style.ReportStyleBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.builder.style.Styles;
@@ -53,10 +66,14 @@ import net.sf.dynamicreports.report.constant.ComponentPositionType;
 import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.ImageScale;
+import net.sf.dynamicreports.report.constant.LineStyle;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
 import net.sf.dynamicreports.report.constant.ScaleType;
+import net.sf.dynamicreports.report.constant.SplitType;
 import net.sf.dynamicreports.report.constant.StretchType;
+import net.sf.dynamicreports.report.constant.VerticalImageAlignment;
+import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.exception.DRException;
@@ -64,6 +81,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.type.PenEnum;
 import net.sf.jasperreports.engine.type.StretchTypeEnum;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
@@ -268,20 +286,23 @@ public class CreateSchedaRilievo {
 					}
 				}else {
 					if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Impronta " + lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, ultima_scheda, path_simboli, rilievo.getCifre_decimali()));	
+						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Impronta " + lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, ultima_scheda, path_simboli, rilievo.getCifre_decimali())).setStyle(Styles.style().setBorder(stl.penThin()));	
 					}else {
 						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, ultima_scheda, path_simboli, rilievo.getCifre_decimali()));
 						indice_particolare++;
 					}						
 					
+					
 					report_table.addDetail(subreport);
-					report_table.detail(cmp.pageBreak());					
+					
+					report_table.detail(cmp.pageBreak());
+
 				}
 			
 				}
 			
 			}
-			
+
 			report_table.pageFooter(cmp.verticalList(
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(cmp.pageXslashY()))
@@ -327,7 +348,7 @@ public class CreateSchedaRilievo {
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(75, session);
+			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(86, session);
 			
 			String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
 		
@@ -542,7 +563,7 @@ public class CreateSchedaRilievo {
 		 				
 		 				dataSource.add(listaValori2);	
 					}
-				}				
+				}
 	 		    return dataSource;	 
 	 	}
 	
@@ -557,11 +578,11 @@ public class CreateSchedaRilievo {
 		report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 		ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
 	 	if(image!=null) {
-	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);;
-	 		image.setFixedWidth(10).setFixedHeight(10).setStretchType(StretchType.NO_STRETCH);
-	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);
+
+	 		image.setStretchType(StretchType.NO_STRETCH).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setStyle(stl.style().setTopBorder(stl.penThin()).setRightBorder(stl.penThin()).setLeftBorder(stl.penThin()));;
 	 		
-	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40)); 
+	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40).setFixedHeight(15)); 
+	 		
 	 	}
 	 	report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 	report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
@@ -575,7 +596,9 @@ public class CreateSchedaRilievo {
 		
 	 	report.setDataSource(createDataSource(lista_quote, index_start, cifre_decimali));
 	 		
-	 	report.highlightDetailEvenRows();
+	// 	report.highlightDetailEvenRows();
+	 	
+	 	report.addColumnFooter(cmp.line().setFixedHeight(1));
 			
 		int pezzo_start = (index_start-1)*10+1;
 		int pezzo_end = index_start*10;
@@ -601,12 +624,12 @@ public class CreateSchedaRilievo {
 		report.setColumnStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
 	 	report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 	 	ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
-	 		
+
 	 	if(image!=null) {	 		
-	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);		
-	 		
-	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setStretchType(StretchType.NO_STRETCH);
-	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40).setHeight(10));	 		
+
+	 		image.setStretchType(StretchType.NO_STRETCH).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setStyle(stl.style().setTopBorder(stl.penThin()).setRightBorder(stl.penThin()).setLeftBorder(stl.penThin()));
+
+	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40).setHeight(15));
 	 	}
 	 	report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 	report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
@@ -621,9 +644,11 @@ public class CreateSchedaRilievo {
 	 		
 	 	report.setDataSource(createDataSource2(lista_quote, index_start, cifre_decimali));
 	 		
-	 	report.highlightDetailEvenRows();
-	 		
-
+	 //	report.highlightDetailEvenRows();
+	 	
+	 	report.addColumnFooter(cmp.line().setFixedHeight(1));
+	 	
+	 //	report.setBackgroundStyle();
 		int pezzo_start = (index_start*10) +1;
 		int pezzo_end = lista_quote.get(0).getListaPuntiQuota().size();
 		
@@ -636,8 +661,8 @@ public class CreateSchedaRilievo {
 		
 		insertHeader(report, nome_impronta, pezzo_start, pezzo_end,cliente, note, id_rilievo);
 		return report;
+		
 	}
-	
 	
 
 	
@@ -646,11 +671,13 @@ public class CreateSchedaRilievo {
 		for(int i =start; i< size; i++) {	
 			ConditionalStyleBuilder condColumnStyleRed = Styles.conditionalStyle(new ConditionRed(i+1))
 	                .bold()
+	                .setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)
 	                .setBackgroundColor(Color.RED)
 	                .setBorder(stl.penThin());
 			
 			ConditionalStyleBuilder condColumnStyleWhite = Styles.conditionalStyle(new ConditionWhite(i+1))
 	                .bold()
+	                .setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)
 	                .setBackgroundColor(Color.WHITE)
 	                .setBorder(stl.penThin());
 
@@ -675,7 +702,7 @@ public class CreateSchedaRilievo {
 		cmp.horizontalList(cmp.text(particolare).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),
 				cmp.text("Pezzi " +pezzo_start + " - " + pezzo_end).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),
 				cmp.text(cliente).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),
-				cmp.text("Numero scheda: SRD " + id_rilievo).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10)
+				cmp.text("Numero scheda: SRD " + id_rilievo).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT)
 		),		
 		cmp.verticalGap(1),
 		cmp.line().setFixedHeight(1),

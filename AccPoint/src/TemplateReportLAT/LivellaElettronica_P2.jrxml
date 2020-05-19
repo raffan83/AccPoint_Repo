@@ -1010,14 +1010,14 @@
 	<pageFooter>
 		<band height="61">
 			<staticText>
-				<reportElement x="0" y="-3" width="121" height="13" uuid="99658780-b04a-45a5-9161-53337d72606f"/>
+				<reportElement x="0" y="-3" width="29" height="13" uuid="99658780-b04a-45a5-9161-53337d72606f"/>
 				<text><![CDATA[Note:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="37" y="7" width="513" height="1" uuid="c52f3c17-4757-4c35-b646-4b01fffb5e76"/>
+				<reportElement x="29" y="7" width="526" height="1" uuid="c52f3c17-4757-4c35-b646-4b01fffb5e76"/>
 			</line>
 			<line>
-				<reportElement x="37" y="18" width="512" height="1" uuid="75292b96-84d2-4df2-b988-675128253f5f"/>
+				<reportElement x="29" y="19" width="526" height="1" uuid="75292b96-84d2-4df2-b988-675128253f5f"/>
 			</line>
 			<staticText>
 				<reportElement x="409" y="21" width="151" height="14" uuid="efe9d0cb-a5cf-4e08-9058-e9506bcc8df4"/>
@@ -1037,9 +1037,9 @@
 				<text><![CDATA[Ing. Antonio Accettola]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="38" y="-5" width="511" height="21" uuid="7d58af59-78a9-4d8e-8143-30abc94a2a16"/>
+				<reportElement x="30" y="-4" width="526" height="26" uuid="7d58af59-78a9-4d8e-8143-30abc94a2a16"/>
 				<textElement>
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
 			</textField>

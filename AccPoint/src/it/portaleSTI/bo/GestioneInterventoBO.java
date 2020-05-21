@@ -873,6 +873,38 @@ public class GestioneInterventoBO {
 		    		if(esito.isLAT())
 		    		{
 		    			listaMisure.get(i).setLat("S");
+		    			
+		    			
+		    			LatMisuraDTO misuraLAT = SQLLiteDAO.getMisuraLAT(con, misura.getStrumento(), misura.getStrumento().get__id());
+		    			misuraLAT.setIntervento_dati(esito.getInterventoDati());
+		    			misuraLAT.setIntervento(intervento);
+		    			misuraLAT.setUser(utente);
+		    			
+		    			int idMisuraLAT=saveMisuraLAT(misuraLAT,session);
+		    			
+		    			if(misuraLAT.getMisura_lat().getId()==1) 
+			    		{
+			    			ArrayList<LatPuntoLivellaDTO> listaPuntiMisura = SQLLiteDAO.getListaPuntiLivella(con,idMisuraLAT,idTemp);
+				    		
+				    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
+				    		{
+				    			saveListaPuntiLivella(listaPuntiMisura.get(j),session);
+							}	
+			    			
+			    		}
+			    		/*Livella Elettronica*/
+			    		if(misuraLAT.getMisura_lat().getId()==2) 
+			    		{
+			    			ArrayList<LatPuntoLivellaElettronicaDTO> listaPuntiMisura = SQLLiteDAO.getListaPuntiLivellaElettronica(con,idMisuraLAT,idTemp);
+				    		
+				    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
+				    		{
+				    			saveListaPuntiLivellaElettronica(listaPuntiMisura.get(j),session);
+							}	
+			    			
+			    		}
+			    		
+			    		misura.setMisuraLAT(misuraLAT);
 		    		}
 		    		else
 		    		{

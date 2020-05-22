@@ -26,6 +26,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
@@ -109,11 +110,43 @@ public class CreaCertificatoLivellaBolla {
 		}else {
 			report.addParameter("cliente", "");
 		}
-		if(commessa!=null && commessa.getINDIRIZZO_PRINCIPALE()!=null) {
-			report.addParameter("indirizzo_cliente", commessa.getINDIRIZZO_PRINCIPALE());
-		}else{
-			report.addParameter("indirizzo_cliente", "");
-		}
+		
+		ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(commessa.getID_ANAGEN()));
+		
+				
+		String indirizzo="";
+		String cap="";
+		String citta="";
+		String provincia="";
+		
+		if( cliente.getIndirizzo()!=null) {
+			indirizzo = cliente.getIndirizzo();				
+			}
+			if(cliente.getCap()!=null) {
+				cap = cliente.getCap();
+			}
+			if(cliente.getCitta()!=null) {
+				citta = cliente.getCitta();
+			}
+			if(cliente.getProvincia()!=null && !cliente.getProvincia().equals("")) {
+				provincia = " ("+ cliente.getProvincia()+")";
+			}
+		
+			if(cliente!=null && cliente.getIndirizzo()!=null) {
+				report.addParameter("indirizzo_cliente", indirizzo + ", " + cap + ", "+citta +provincia);
+			}else {
+				report.addParameter("indirizzo_cliente", "");
+			}
+		
+//		if(commessa!=null && commessa.getINDIRIZZO_PRINCIPALE()!=null) {
+//			ClienteDTO
+//			
+//			indirizzo = indirizzo +commessa.getINDIRIZZO_PRINCIPALE() +", "+commessa.get
+//			
+//			report.addParameter("indirizzo_cliente", commessa.getINDIRIZZO_PRINCIPALE());
+//		}else{
+//			report.addParameter("indirizzo_cliente", "");
+//		}
 
 		if(commessa!=null && commessa.getNOME_UTILIZZATORE()!=null) {
 			report.addParameter("destinatario", commessa.getNOME_UTILIZZATORE());	
@@ -121,14 +154,40 @@ public class CreaCertificatoLivellaBolla {
 				report.addParameter("destinatario", "");		
 			}
 		
-	
-		if(commessa!=null && commessa.getINDIRIZZO_UTILIZZATORE()!=null)
-		{
-			report.addParameter("indirizzo_destinatario", commessa.getINDIRIZZO_UTILIZZATORE());
-		}else
-		{
+		ClienteDTO cliente_util = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(commessa.getID_ANAGEN_UTIL()));
+		
+		
+		String indirizzo_util="";
+		String cap_util="";
+		String citta_util="";
+		String provincia_util="";
+		
+		if( cliente_util.getIndirizzo()!=null) {
+			indirizzo_util = cliente_util.getIndirizzo();				
+			}
+			if(cliente_util.getCap()!=null) {
+				cap_util = cliente_util.getCap();
+			}
+			if(cliente_util.getCitta()!=null) {
+				citta_util = cliente_util.getCitta();
+			}
+			if(cliente_util.getProvincia()!=null && !cliente_util.getProvincia().equals("")) {
+				provincia_util =" (" +cliente_util.getProvincia()+")";
+			}
+		
+			if(cliente_util!=null && cliente_util.getIndirizzo()!=null) {
+				report.addParameter("indirizzo_destinatario", indirizzo_util + ", " + cap_util + ", "+citta_util + provincia_util);
+			}else {
 				report.addParameter("indirizzo_destinatario", "");
-		}			
+			}
+	
+//		if(commessa!=null && commessa.getINDIRIZZO_UTILIZZATORE()!=null)
+//		{
+//			report.addParameter("indirizzo_destinatario", commessa.getINDIRIZZO_UTILIZZATORE());
+//		}else
+//		{
+//				report.addParameter("indirizzo_destinatario", "");
+//		}			
 		
 //		if(commessa.getN_ORDINE()!=null)
 //		{
@@ -311,8 +370,12 @@ public class CreaCertificatoLivellaBolla {
 			reportP3.addParameter("note", "");
 		}
 		
+		BigDecimal sensibilita = misura.getSensibilita().stripTrailingZeros();
+		
+		int scala = sensibilita.scale(); 
+		
 		SubreportBuilder subreport; 
-		subreport = cmp.subreport(getTableReport(lista_punti));
+		subreport = cmp.subreport(getTableReport(lista_punti, scala));
 		
 	//	reportP3.addDetail(subreport).;
 		reportP3.detail(cmp.horizontalList(cmp.horizontalGap(80),subreport));
@@ -358,7 +421,7 @@ public class CreaCertificatoLivellaBolla {
 
 
 	@SuppressWarnings("deprecation")
-	public JasperReportBuilder getTableReport(ArrayList<LatPuntoLivellaDTO> lista_punti) throws Exception{
+	public JasperReportBuilder getTableReport(ArrayList<LatPuntoLivellaDTO> lista_punti,int scala) throws Exception{
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -373,7 +436,7 @@ public class CreaCertificatoLivellaBolla {
 	 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 		
-	 		report.setDataSource(createDataSource(Utility.ordinaPuntiLivella(lista_punti)));
+	 		report.setDataSource(createDataSource(Utility.ordinaPuntiLivella(lista_punti), scala));
 	 		
 	 		report.highlightDetailEvenRows();
 			
@@ -385,7 +448,7 @@ public class CreaCertificatoLivellaBolla {
 		return report;
 	}
 	
-	private JRDataSource createDataSource(ArrayList<LatPuntoLivellaDTO> lista_punti)throws Exception {
+	private JRDataSource createDataSource(ArrayList<LatPuntoLivellaDTO> lista_punti, int scala)throws Exception {
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
 			
@@ -412,17 +475,17 @@ public class CreaCertificatoLivellaBolla {
 						}
 						
 						if(punto.getValore_nominale_tratto()!=null) {
-							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto().setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto().setScale(scala, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
 						}else {
 							arrayPs.add("");
 						}
 						if(punto.getMedia_corr_mm()!=null && punto.getValore_nominale_tratto()!=null) {
-							arrayPs.add(String.valueOf((punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto())).setScale(4, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+							arrayPs.add(String.valueOf((punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto())).setScale((scala+1), RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
 						}else {
 							arrayPs.add("");
 						}
 						if(punto.getValore_nominale_tratto_sec()!=null) {
-							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto_sec().setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto_sec().setScale(scala, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
 						}else {
 							arrayPs.add("");
 						}

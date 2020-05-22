@@ -15,6 +15,7 @@ import TemplateReportLAT.PivotTemplateLAT;
 import TemplateReportLAT.ImageReport.PivotTemplateLAT_Image;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
@@ -23,6 +24,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
@@ -94,30 +96,92 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 		}else {
 			report.addParameter("cliente", "");
 		}
-		if(commessa!=null && commessa.getANAGEN_INDR_INDIRIZZO()!=null && !commessa.getANAGEN_INDR_INDIRIZZO().equals("")) {
-			report.addParameter("indirizzo_cliente", commessa.getANAGEN_INDR_INDIRIZZO());
-		}else{
-			if(commessa.getK2_ANAGEN_INDR()==0) {
-				report.addParameter("indirizzo_cliente", commessa.getINDIRIZZO_PRINCIPALE());	
-			}else {
-				report.addParameter("indirizzo_cliente", "");	
+		
+		
+		
+		ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(commessa.getID_ANAGEN()));
+		
+		
+		String indirizzo="";
+		String cap="";
+		String citta="";
+		String provincia="";
+		
+		if( cliente.getIndirizzo()!=null) {
+			indirizzo = cliente.getIndirizzo();				
 			}
-		}
+			if(cliente.getCap()!=null) {
+				cap = cliente.getCap();
+			}
+			if(cliente.getCitta()!=null) {
+				citta = cliente.getCitta();
+			}
+			if(cliente.getProvincia()!=null && !cliente.getProvincia().equals("")) {
+				provincia = " ("+ cliente.getProvincia()+")";
+			}
+		
+			if(cliente!=null && cliente.getIndirizzo()!=null) {
+				report.addParameter("indirizzo_cliente", indirizzo + ", " + cap + ", "+citta +provincia);
+			}else {
+				report.addParameter("indirizzo_cliente", "");
+			}
+		
+		
+		
+//		if(commessa!=null && commessa.getANAGEN_INDR_INDIRIZZO()!=null && !commessa.getANAGEN_INDR_INDIRIZZO().equals("")) {
+//			report.addParameter("indirizzo_cliente", commessa.getANAGEN_INDR_INDIRIZZO());
+//		}else{
+//			if(commessa.getK2_ANAGEN_INDR()==0) {
+//				report.addParameter("indirizzo_cliente", commessa.getINDIRIZZO_PRINCIPALE());	
+//			}else {
+//				report.addParameter("indirizzo_cliente", "");	
+//			}
+//		}
 
+		
+		
 		if(commessa!=null && commessa.getNOME_UTILIZZATORE()!=null) {
 			report.addParameter("destinatario", commessa.getNOME_UTILIZZATORE());	
 		}else {
 				report.addParameter("destinatario", "");		
 			}
 		
-	
-		if(commessa!=null && commessa.getINDIRIZZO_UTILIZZATORE()!=null)
-		{
-			report.addParameter("indirizzo_destinatario", commessa.getINDIRIZZO_UTILIZZATORE());
-		}else
-		{
+		
+		ClienteDTO cliente_util = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(commessa.getID_ANAGEN_UTIL()));
+		
+		
+		String indirizzo_util="";
+		String cap_util="";
+		String citta_util="";
+		String provincia_util="";
+		
+		if( cliente_util.getIndirizzo()!=null) {
+			indirizzo_util = cliente_util.getIndirizzo();				
+			}
+			if(cliente_util.getCap()!=null) {
+				cap_util = cliente_util.getCap();
+			}
+			if(cliente_util.getCitta()!=null) {
+				citta_util = cliente_util.getCitta();
+			}
+			if(cliente_util.getProvincia()!=null && !cliente_util.getProvincia().equals("")) {
+				provincia_util =" (" +cliente_util.getProvincia()+")";
+			}
+		
+			if(cliente_util!=null && cliente_util.getIndirizzo()!=null) {
+				report.addParameter("indirizzo_destinatario", indirizzo_util + ", " + cap_util + ", "+citta_util + provincia_util);
+			}else {
 				report.addParameter("indirizzo_destinatario", "");
-		}			
+			}
+		
+	
+//		if(commessa!=null && commessa.getINDIRIZZO_UTILIZZATORE()!=null)
+//		{
+//			report.addParameter("indirizzo_destinatario", commessa.getINDIRIZZO_UTILIZZATORE());
+//		}else
+//		{
+//				report.addParameter("indirizzo_destinatario", "");
+//		}			
 		
 		if(commessa.getN_ORDINE()!=null)
 		{

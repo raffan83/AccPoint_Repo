@@ -1001,7 +1001,7 @@
 			<staticText>
 				<reportElement x="313" y="0" width="12" height="20" uuid="d11c8a27-0d48-4984-b3f5-9e94bf8cb40b"/>
 				<textElement>
-					<font pdfFontName="Helvetica-Oblique"/>
+					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[k]]></text>
 			</staticText>

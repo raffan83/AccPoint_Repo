@@ -326,8 +326,8 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 			reportP2.addParameter("unita_formato","");	
 		}
 		
-		if(misura.getStrumento().getRisoluzione()!=null) {
-			reportP2.addParameter("risoluzione",misura.getStrumento().getRisoluzione());
+		if(misura.getSensibilita()!=null) {
+			reportP2.addParameter("risoluzione",Utility.changeDotComma(misura.getSensibilita().stripTrailingZeros().toPlainString()+" \""));
 		}else {
 			reportP2.addParameter("risoluzione", "");	
 		}

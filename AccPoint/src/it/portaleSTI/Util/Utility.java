@@ -67,6 +67,7 @@ import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.PermessoDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
@@ -1711,4 +1712,43 @@ public class Utility extends HttpServlet {
 			}
 			return str;
 		}
+		
+		
+		
+		public static BigDecimal getScostamentoMaxDecentramento(ArrayList<PuntoMisuraDTO> listaMisure) {
+			
+			BigDecimal max=null;
+			BigDecimal min=null;
+			
+			for (PuntoMisuraDTO misura : listaMisure) {
+			
+				BigDecimal scostamento=misura.getScostamento();
+				
+				if(max==null && min==null && scostamento!=null) 
+				{
+					max=scostamento;
+					min=scostamento;
+				}
+				
+				if(scostamento!=null && scostamento.doubleValue()>max.doubleValue()) 
+				{
+					max=scostamento;
+				} 
+				
+				if(scostamento!=null && scostamento.doubleValue()<min.doubleValue()) 
+				{
+					min=scostamento;
+				} 
+			}
+			
+			if(max!=null) 
+			{
+				return max.subtract(min);
+			}else 
+			{
+				return BigDecimal.ZERO;
+			}
+		}
+		
+		
 }

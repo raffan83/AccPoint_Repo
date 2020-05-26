@@ -76,5 +76,11 @@
         <function-class>it.portaleSTI.Util.Utility</function-class>
         <function-signature> String maxChar(java.lang.String, int)</function-signature>
     </function> 
+        <function>
+        <name>getScostamentoMaxDecentramento</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature> String getScostamentoMaxDecentramento(java.util.ArrayList)</function-signature>
+    </function> 
+    
   
 </taglib>

@@ -37,8 +37,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,8 +67,10 @@ import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
+import net.sf.dynamicreports.report.builder.group.GroupBuilder;
 import net.sf.dynamicreports.report.builder.style.FontBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
+import net.sf.dynamicreports.report.builder.style.Styles;
 import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.Markup;
@@ -95,7 +99,7 @@ import org.hibernate.Session;
 import org.omg.CORBA.CODESET_INCOMPATIBLE;
 
 import TemplateReport.PivotTemplate;
-
+import ar.com.fdvs.dj.domain.Style;
 import ar.com.fdvs.dj.domain.constants.Font;
 
 import com.mysql.jdbc.Util;
@@ -132,11 +136,11 @@ public class CreateCertificato {
 			List<ReportSVT_DTO> listItem = (List<ReportSVT_DTO>) pair.getValue();
 			SubreportBuilder subreport = null;
 			
-			if(pivot.startsWith("R_S") || pivot.startsWith("L_S")){
+			if(pivot.startsWith("R_S") || pivot.startsWith("L_S") || pivot.startsWith("D_S")){
 				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderSvt_EN.jrxml");
 				tipoScheda="SVT";
 			}
-			if(pivot.startsWith("R_R") || pivot.startsWith("L_R")){
+			if(pivot.startsWith("R_R") || pivot.startsWith("L_R") || pivot.startsWith("D_R")){
 				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderRDT_EN.jrxml");
 				tipoScheda="RDT";
 			}
@@ -468,6 +472,14 @@ public class CreateCertificato {
 				if(pivot.equals("RDP")){
 					numberOfRow += 2 + listItem.size();
 					subreport = cmp.subreport(getTableReportRDP(listItem, "RDP"));
+				}
+				if(pivot.startsWith("D_S")){
+					numberOfRow += 2 + listItem.size();
+					subreport = cmp.subreport(getTableReportDec(listItem, "SVT"));
+				}
+				if(pivot.startsWith("D_R")){
+					numberOfRow += 2 + listItem.size();
+					subreport = cmp.subreport(getTableReportDec(listItem, "RDT"));
 				}
 				numberOfRow=numberOfRow - numberOfRowBefore;
 //				if(numberOfRow>11 && isFirtsPage){
@@ -1079,6 +1091,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 	}
 	
 	
+	
 	public JasperReportBuilder getTableReportRDP(List<ReportSVT_DTO> listaReport, String tipoProva){
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(7).setPadding(0);//AGG
@@ -1112,6 +1125,149 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		return report;
 	}
 
+	
+	public JasperReportBuilder 	getTableReportDec(List<ReportSVT_DTO> listaReport, String tipoProva){
+
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(7).setPadding(0);//AGG
+		StyleBuilder colStyle = stl.style(Templates.columnTitleStyle).setFontSize(7);
+		
+//		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("posizione_massa","center",null)).setDataSource(new SubreportData("tipoVerifica"));
+		
+		JasperReportBuilder report_cell = DynamicReports.report();
+		
+		report_cell.addColumn(col.column("3","3",type.stringType()).setHeight(19));
+		report_cell.addColumn(col.column("","empty",type.stringType()).setHeight(19));
+		report_cell.addColumn(col.column("5","5",type.stringType()).setHeight(19));
+	//	report_cell.setColumnTitleStyle(colStyle);
+		report_cell.setColumnStyle(textStyle);
+		report_cell.highlightDetailEvenRows();
+		report_cell.setShowColumnTitle(false);
+		
+		DRDataSource dataSource = new DRDataSource("3","empty","5");
+		dataSource.add("3","","5");
+		dataSource.add("","1=6","");
+		dataSource.add("2","","4");
+		report_cell.setDataSource(dataSource);
+		
+		SubreportBuilder subreport = cmp.subreport(report_cell);
+		
+		
+		JasperReportBuilder report_header = DynamicReports.report();
+		
+		report_header.setColumnTitleStyle(textStyle);
+		report_header.setColumnStyle(textStyle);
+		
+		
+		for(int i = 0; i<6;i++) {
+			report_header.addColumn(col.column("posizione "+(i+1)+" <br> g","posizione_"+(i+1),type.stringType()).setHeight(41));
+		}
+				
+		String[] listaCodici = new String[6];		
+	
+		listaCodici[0]="posizione_1";
+		listaCodici[1]="posizione_2";
+		listaCodici[2]="posizione_3";
+		listaCodici[3]="posizione_4";
+		listaCodici[4]="posizione_5";
+		listaCodici[5]="posizione_6";
+		
+		
+		DRDataSource ds = new DRDataSource(listaCodici);
+		ds.add(listaReport.get(0).getValoreStrumento().get(0).get("vs"),
+				listaReport.get(1).getValoreStrumento().get(0).get("vs"),
+				listaReport.get(2).getValoreStrumento().get(0).get("vs"),
+				listaReport.get(3).getValoreStrumento().get(0).get("vs"),
+				listaReport.get(4).getValoreStrumento().get(0).get("vs"),
+				listaReport.get(5).getValoreStrumento().get(0).get("vs"));
+	
+	
+		report_header.setDataSource(ds);
+	
+		SubreportBuilder subreport_header = cmp.subreport(report_header);
+	
+
+		JasperReportBuilder report = DynamicReports.report();
+
+		try {
+			report.setTemplate(Templates.reportTemplate);
+				
+			report.setColumnStyle(textStyle); //AGG
+			report.setColumnTitleStyle(colStyle);
+			
+			report.addColumn(col.componentColumn("Posizione Massa", subreport).setFixedWidth(80));
+			report.addColumn(col.column("Massa Applicata <br/><i>g</i>","massa_applicata",type.stringType()).setFixedWidth(60));
+			report.addColumn(col.componentColumn("Verifica all'eccentricità del carico 50% f.s", subreport_header));
+			report.addColumn(col.column("Scostamento massimo ecc. <br/><i>g</i>","scostamento",type.stringType()).setFixedWidth(60));
+
+			report.setDetailSplitType(SplitType.PREVENT);
+			
+			report.setDataSource(createDataSourceDecentramento(listaReport));
+	  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return report;
+	}
+	
+	
+	
+	
+	
+	private JRDataSource createDataSourceDecentramento(List<ReportSVT_DTO> listaReport)throws Exception {
+
+		BigDecimal max=null;
+		BigDecimal min=null;
+		
+		BigDecimal scostamento_res=null;
+		
+		for (ReportSVT_DTO reportSVT_DTO : listaReport) {
+		
+			BigDecimal scostamento=new BigDecimal(reportSVT_DTO.getScostamento_correzione().replace(",", "."));
+			
+			if(max==null && min==null && scostamento!=null) 
+			{
+				max=scostamento;
+				min=scostamento;
+			}
+			
+			if(scostamento!=null && scostamento.doubleValue()>max.doubleValue()) 
+			{
+				max=scostamento;
+			} 
+			
+			if(scostamento!=null && scostamento.doubleValue()<min.doubleValue()) 
+			{
+				min=scostamento;
+			}
+			
+		}
+		
+		
+		if(max!=null) 
+		{
+			scostamento_res	=  max.subtract(min);
+		}else 
+		{
+			scostamento_res =  BigDecimal.ZERO;
+		}
+		
+		String[] listaCodici = new String[2];
+		
+		listaCodici[0]="massa_applicata";
+	
+		listaCodici[1]="scostamento";	
+		
+		DRDataSource dataSource = new DRDataSource(listaCodici);
+		
+
+		dataSource.add(listaReport.get(0).getValoreCampione().get(0).get("vc"), scostamento_res.toPlainString().replace(".", ","));
+
+ 		    return dataSource;
+ 	}
+	
+
+	
+	
 	public JasperReportBuilder getTableCampioni(List<CampioneDTO> listaCampioni, String tipoScheda){
 
 		StyleBuilder textStyle = stl.style(Templates.columnTitleStyleWhite).setBorder(stl.penThin()).setFontSize(6).setMarkup(Markup.HTML);//AGG

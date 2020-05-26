@@ -143,7 +143,7 @@
 	</div>
 </div>
 <div class="box-body">
- <c:if test="${punti[0].tipoProva!='RDP' }">
+ <c:if test="${punti[0].tipoProva!='RDP'">
 <div class="graficoIncertezza">
  
 	<canvas id="graficoIncertezza"></canvas>
@@ -155,8 +155,7 @@
 </div>
 </div>
             
-            
-            
+          
             
               <div class="row">
         <div class="col-xs-12">
@@ -171,6 +170,66 @@
 </div>
 <div class="box-body">
  <c:forEach items="${arrayPunti}" var="punti" varStatus="loopArrayPunti">
+ 
+     <c:if test="${fn:startsWith(punti[0].tipoProva, 'D')}"> 
+      <div class="row">
+        <div class="col-xs-12">
+        
+        <table id="tabDecentramento" class="table table-bordered table-inverse dataTable tabPM"  role="grid" width="100%">
+ <thead><tr class="active">
+ 		
+ 		<th style="text-align:center">Posizione massa<br><br> </th>
+ 		<th  style="text-align:center">Massa applicata<br> <br>  g</th>
+ 		<th style="text-align:center" colspan="6">Verifica all'eccentrecità del carico 50% f.s.<br><br>
+ 		
+ 		<table >
+ 	
+ 				 <tr>
+ 				 	<c:forEach items="${punti}" var="puntoMisura" varStatus="loopPunti">
+ 				 <td style="min-width:150px;text-align:center">posizione ${loopPunti.index + 1}<br><br> g</td>
+ 				 </c:forEach>
+ 				 </tr> 
+ 				<%-- <tr><td>${puntoMisura.valoreStrumento.stripTrailingZeros().toPlainString() }</td></tr> --%>
+ 				
+ 				</table>
+ 		
+ 		</th>
+ 		<th style="text-align:center;vertical-align:bottom">Scostamento massimo ecc.<br><br> g</th>
+ 
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr >
+        <td style="text-align:center;vertical-align:middle">
+        	<table class="table" >
+        	<tr><td style="min-width:30px;text-align:center">3</td> <td style="min-width:30px;background-color:#C6C6C6"></td> <td style="min-width:30px;text-align:center">5</td>   </tr>
+        	<tr><td style="background-color:#C6C6C6"></td> <td style="text-align:center">1=6</td> <td style="background-color:#C6C6C6"></td>   </tr>
+        	<tr><td style="text-align:center">2</td> <td style="background-color:#C6C6C6"></td> <td style="text-align:center">4</td>   </tr>
+        	</table>
+         </td>
+         
+         <td style="text-align:center;vertical-align:middle">${punti[0].valoreCampione.stripTrailingZeros().toPlainString() }</td>
+         <c:forEach items="${punti}" var="puntoMisura" varStatus="loopPunti">
+ 			<td  style="min-width:130px;text-align:center;vertical-align:middle">${puntoMisura.valoreStrumento.stripTrailingZeros().toPlainString() }
+ 				<%-- <table class="table  table-inverse dataTable" > 
+ 				 <tr><td>posizione ${loopPunti.index + 1} g</td></tr>
+ 				<tr><td  style="min-width:130px;text-align:center">${puntoMisura.valoreStrumento.stripTrailingZeros().toPlainString() }</td></tr>
+ 				</table> --%>
+ 			</td>
+ 	
+ 			</c:forEach>
+ 			<td style="text-align:center;vertical-align:middle">${utl:getScostamentoMaxDecentramento(punti).stripTrailingZeros().toPlainString() } </td>
+        </tr>
+        </tbody>
+        
+        </table>
+        </div>
+        </div><br>      
+</c:if>   
+ 
+ 
+ 
  
 <table id="tabPM" class="table table-bordered table-inverse dataTable tabPM"  role="grid" width="100%">
  <thead><tr class="active">

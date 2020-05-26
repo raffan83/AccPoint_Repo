@@ -155,7 +155,7 @@ public class GestioneCertificatoBO {
 			
 			if(listaPuntiPerTabella.size()>0)	
 			{	
-			 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L")||listaPuntiPerTabella.get(0).getTipoProva().equals("RDP"))
+			 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L")||listaPuntiPerTabella.get(0).getTipoProva().equals("RDP") ||listaPuntiPerTabella.get(0).getTipoProva().startsWith("D"))
 			 {
 				/*Gestione Linearità*/ 
 				for (int j = 0; j < listaPuntiPerTabella.size(); j++) 
@@ -274,7 +274,8 @@ public class GestioneCertificatoBO {
 						  	//data.setValoreMedioStrumento(Utility.changeDotComma(punto.getValoreStrumento().toPlainString()));
 					  	}
 					  	
-					  	if(tipoRapporto.equals("SVT"))
+					  	
+					 	if(tipoRapporto.equals("SVT"))
 					  	{
 					  		data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 					  	}
@@ -337,6 +338,8 @@ public class GestioneCertificatoBO {
 					  	}
 					  	data.setEsito(punto.getEsito());
 					  	data.setDescrizioneCampione(punto.getDesc_Campione());
+					  	
+					  
 					  	
 					}
 				  	dataSource.get(i).add(data);
@@ -534,6 +537,10 @@ public class GestioneCertificatoBO {
 					{
 				  	listaTabelle.put("R_R_"+j,dataSource.get(j));
 					}	
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("D"))
+					{
+				  	listaTabelle.put("D_R_"+j,dataSource.get(j));
+					}	
 				}
 			
 			if(misura.getStrumento().getTipoRapporto().getNoneRapporto().equals("SVT"))
@@ -546,13 +553,19 @@ public class GestioneCertificatoBO {
 					{
 				  	listaTabelle.put("R_S_"+j,dataSource.get(j));
 					}	
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("D"))
+					{
+				  	listaTabelle.put("D_S_"+j,dataSource.get(j));
+					}	
 				
 				}
 				if(misura.getStrumento().getTipoRapporto().getNoneRapporto().equals("RDP")) 
 				{
 					listaTabelle.put("RDP",dataSource.get(j));
 				}
-					
+				
+
+				
 				  }
 			}			
 			return listaTabelle;
@@ -580,7 +593,7 @@ public class GestioneCertificatoBO {
 				
 				if(listaPuntiPerTabella.size()>0)
 				{	
-				 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L"))				
+				 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L") || listaPuntiPerTabella.get(0).getTipoProva().startsWith("D"))				
 				 {
 					/*Gestione Linearità*/ 
 					for (int j = 0; j < listaPuntiPerTabella.size(); j++) 

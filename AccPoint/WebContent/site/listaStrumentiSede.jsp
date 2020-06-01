@@ -184,7 +184,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        			       <td><%=strumento.getCampo_misura()%></td>
                     	            
                     	             <td><%=strumento.getRisoluzione()%></td>
-                    	             <td><%=strumento.getAltre_matricole() %></td>
+                    	             <td>
+                    	             <%if(strumento.getAltre_matricole()!=null){ %>
+                    	             <%=strumento.getAltre_matricole() %>
+                    	             <% }else{%>
+                    	             <%out.print("");
+                    	             } %>
+                    	             </td>
                     	             <td><%=strumento.getReparto()%></td>
                     	             
                     	                <td><%=strumento.getUtilizzatore()%></td>
@@ -1520,9 +1526,9 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
    function(oSettings, aData, iDataIndex) {
 	   console.log(aData);
 	   if(dataType == "prossima"){
-		   if (aData[14]) {
+		   if (aData[15]) {
 
-	    	 	var dd = aData[14].split("/");
+	    	 	var dd = aData[15].split("/");
 
 	       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
 	       console.log("Prossima:"+minDateFilter);
@@ -1535,9 +1541,9 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	     }
 		   
 	   }else{
-		   if (aData[13]) {
+		   if (aData[14]) {
 
-	    	 	var dd = aData[13].split("/");
+	    	 	var dd = aData[14].split("/");
 
 	       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
 	       console.log("Ultima:"+minDateFilter);

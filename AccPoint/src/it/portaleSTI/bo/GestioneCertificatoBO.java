@@ -304,17 +304,17 @@ public class GestioneCertificatoBO {
 					  			um = punto.getUm();
 					  		}
 					  		
-					  		data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+					  		data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()));
 					  	}
 						if(punto.getSelTolleranza()==1)
 					  	{
 							String perc = " (" + punto.getPer_util()+"%)";	
-						  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+perc);
+						  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
 					  	}
 						if(punto.getSelTolleranza()==2)
 					  	{
 							String perc = " (" +Utility.changeDotComma(punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString())+"])";	
-						  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+perc);
+						  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
 					  	}
 						if(punto.getSelTolleranza()==3)
 					  	{
@@ -327,7 +327,7 @@ public class GestioneCertificatoBO {
 						//	BigDecimal dgt = punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).subtract(percentuale).stripTrailingZeros();
 							
 							String perc ="("+ punto.getDgt().stripTrailingZeros() +" + "+punto.getPer_util()+"%)";	
-							data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+perc);
+							data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
 					  	}
 					  	//data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 					  	
@@ -472,17 +472,17 @@ public class GestioneCertificatoBO {
 							  			um = punto.getUm();
 							  		}
 							  		
-							  		data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+							  		data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()));
 							  	}
 								if(punto.getSelTolleranza()==1)
 							  	{
 									String perc = " (" + punto.getPer_util()+"%)";	
-								  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+perc);
+								  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
 							  	}
 								if(punto.getSelTolleranza()==2)
 							  	{
 									String perc = " (" +Utility.changeDotComma(punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString())+"])";	
-								  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+perc);
+								  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
 							  	}
 								if(punto.getSelTolleranza()==3)
 							  	{
@@ -495,7 +495,7 @@ public class GestioneCertificatoBO {
 									BigDecimal dgt = punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).subtract(percentuale).stripTrailingZeros();
 									
 									String perc ="("+ dgt +" + "+punto.getPer_util()+"%)";	
-									data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+perc);
+									data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
 							  	}
 								
 							  	BigDecimal bd = punto.getIncertezza();

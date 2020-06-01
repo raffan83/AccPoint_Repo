@@ -336,7 +336,7 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 
 
 
-	public static ArrayList<Integer> getListaClientiInterventi() {
+	public static ArrayList<Integer> getListaClientiInterventi(int id_company) {
 		Query query=null;
 		
 		ArrayList<Integer> lista=null;
@@ -345,9 +345,19 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 		session.beginTransaction();
 		
 		
-		String s_query = "select DISTINCT(int.id_cliente) from InterventoDTO as int";
+		String s_query ="";
+		
+		if(id_company!=0) {
+			s_query = "select DISTINCT(int.id_cliente) from InterventoDTO as int where int.company.id = :_id_company";
+		}else {
+			s_query = "select DISTINCT(int.id_cliente) from InterventoDTO as int";
+		}
+				
 						  
 	    query = session.createQuery(s_query);
+	    if(id_company!=0) {
+	    	query.setParameter("_id_company", id_company);
+	    }
  		
 	    lista=(ArrayList<Integer>)query.list();
 

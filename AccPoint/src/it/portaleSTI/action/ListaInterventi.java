@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
@@ -56,13 +57,20 @@ public class ListaInterventi extends HttpServlet {
 		try {
 			
 			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 
 			String idCompany=""+cmp.getId();
 			
 			List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);
 			
-			ArrayList<Integer> clientiIds = GestioneInterventoBO.getListaClientiInterventi();
+			ArrayList<Integer> clientiIds = null;
 			
+			if(utente.isTras()) {
+				clientiIds =	GestioneInterventoBO.getListaClientiInterventi(0);
+			}else {
+				clientiIds = GestioneInterventoBO.getListaClientiInterventi(cmp.getId());
+			}
+								
 			List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();
 			for (ClienteDTO cliente : listaClientiFull) {
  				if(clientiIds.contains(cliente.get__id())) {
@@ -88,7 +96,7 @@ public class ListaInterventi extends HttpServlet {
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaInterventi.jsp");
 	     	dispatcher.forward(request,response);
-			
+	     	
 		}
 		catch(Exception ex)
     	{

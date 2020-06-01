@@ -986,9 +986,9 @@ public class GestioneInterventoBO {
 		return GestioneInterventoDAO.getListaInterventiDaSede(idCliente,idSede,idCompany,user, session);
 	}
 
-	public static ArrayList<Integer> getListaClientiInterventi() {
+	public static ArrayList<Integer> getListaClientiInterventi(int id_company) {
 		// TODO Auto-generated method stub
-		return GestioneInterventoDAO.getListaClientiInterventi();
+		return GestioneInterventoDAO.getListaClientiInterventi(id_company);
 	}
 
 	public static ArrayList<Integer> getListaSediInterventi() {

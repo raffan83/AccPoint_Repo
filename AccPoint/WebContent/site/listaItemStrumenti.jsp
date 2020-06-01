@@ -194,6 +194,13 @@ ArrayList<CompanyDTO> lista_company =(ArrayList)session.getAttribute("lista_comp
     </div>
        </div>
        
+                       <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Altre Matricole:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="altre_matricole" type="text" name="altre_matricole"  value=""/>
+    </div>
+       </div>
+       
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Tipo Rapporto:</label>

@@ -70,6 +70,17 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
     </div>
        </div>
        
+                   <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Altre matricole:</label>
+        <div class="col-sm-10">
+        <%if(strumento.getAltre_matricole()!=null){ %>
+                      <input class="form-control" id="altre_matricole_mod" type="text" name="altre_matricole_mod" value="<%= strumento.getAltre_matricole() %>"/>
+           <%}else{ %>           
+           <input class="form-control" id="altre_matricole_mod" type="text" name="altre_matricole_mod" value=""/>
+           <%} %>
+    </div>
+     </div>
+       
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Campo Misura:</label>
         <div class="col-sm-10">

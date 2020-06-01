@@ -1337,8 +1337,8 @@ public class GestionePacco extends HttpServlet {
 			
 				if(commessa!=null) {
 				
-			
-				
+					
+
 				String id_destinatario = String.valueOf(commessa.getID_ANAGEN());
 				String id_sede_destinatario = String.valueOf(commessa.getK2_ANAGEN_INDR());
 				String id_destinazione = String.valueOf(commessa.getID_ANAGEN());
@@ -1363,6 +1363,8 @@ public class GestionePacco extends HttpServlet {
 					myObj.addProperty("id_sede_utilizzatore", id_sede_utilizzatore);
 					myObj.addProperty("nome_cliente", nome_cliente);
 					myObj.addProperty("nome_sede_cliente", nome_sede_cliente);
+					
+					
 				}else {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", "Attenzione! Non esiste una commessa con questo ID!");

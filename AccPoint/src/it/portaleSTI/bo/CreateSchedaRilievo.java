@@ -699,14 +699,14 @@ public class CreateSchedaRilievo {
 		
 		report.pageHeader(cmp.line().setFixedHeight(1),
 		cmp.verticalGap(1),
-		cmp.horizontalList(cmp.text(particolare).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),
+		cmp.horizontalList(cmp.text(particolare).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT),
 				cmp.text("Pezzi " +pezzo_start + " - " + pezzo_end).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),
 				cmp.text(cliente).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),
 				cmp.text("Numero scheda: SRD " + id_rilievo).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT)
 		),		
 		cmp.verticalGap(1),
 		cmp.line().setFixedHeight(1),
-		cmp.horizontalList(cmp.text("Note: "+ note).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10)),
+		cmp.horizontalList(cmp.text("Note: "+ note).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT)),
 		cmp.line().setFixedHeight(1),
 		cmp.horizontalList(cmp.text("SCHEDA RILIEVI DIMENSIONALI").setStyle((Templates.boldCenteredStyle).setFontSize(9)).setFixedHeight(10)));
 		

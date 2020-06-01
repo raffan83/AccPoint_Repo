@@ -117,6 +117,23 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
        <%} %>
        </div>
        
+       
+              <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Altre matricole:</label>
+        <%if(strumento.getAltre_matricole()!=null) {%>
+        <div class="col-sm-10">
+     
+                      <input class="form-control" id="altre_matricole" type="text" name="altre_matricole" disabled="disabled"  value="<%=strumento.getAltre_matricole() %>"/>
+    </div>
+    <%}else{ %>
+    <div class="col-sm-10">
+                      <input class="form-control" id="altre_matricole" type="text" name="altre_matricole" disabled value=""/>
+    </div>
+       <%} %>
+       </div>
+       
+       
+
 
        
          <div class="form-group">

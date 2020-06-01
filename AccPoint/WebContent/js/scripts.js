@@ -1649,6 +1649,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  var luogo_verifica=$('#luogo_verifica').val();
 	  var interpolazione=$('#interpolazione').val();
 	  var classificazione=$('#classificazione').val();
+	  var altre_matricole = $('#altre_matricole').val();
 
 	  		
 	  		  var dataObj = {};
@@ -1675,7 +1676,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  		dataObj.luogo_verifica = luogo_verifica;
 	  		dataObj.interpolazione = interpolazione;
 	  		dataObj.classificazione = classificazione;
-	  		
+	  		dataObj.altre_matricole = altre_matricole;
 	  		
 	            $.ajax({
 	          	  type: "POST",
@@ -1743,7 +1744,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  var matricola = $('#matricola').val();
 	  var codice_interno = $('#codice_interno').val();
 	  var company = $('#company').val();
-
+	  var altre_matricole = $('#altre_matricole').val();
 	  		
 	  		  var dataObj = {};
 	        
@@ -1761,6 +1762,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  		dataObj.matricola = matricola;
 	  		dataObj.codice_interno = codice_interno;
 	  		dataObj.company = company;
+	  		dataObj.altre_matricole = altre_matricole;
 	  		
 	  		
 	            $.ajax({
@@ -1832,6 +1834,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  //var interpolazione=$('#interpolazione_mod').val();
 	  var classificazione=$('#classificazione_mod').val();
 	  var procedura = $('#procedura_mod').val();
+	  var altre_matricole = $('#altre_matricole_mod').val();
 
 	  		
 	  		  var dataObj = {};
@@ -1854,6 +1857,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  		//dataObj.interpolazione = interpolazione;
 	  		dataObj.classificazione = classificazione;
 	  		dataObj.procedura = procedura;
+	  		dataObj.altre_matricole = altre_matricole;
 	  		
 	            $.ajax({
 	          	  type: "POST",

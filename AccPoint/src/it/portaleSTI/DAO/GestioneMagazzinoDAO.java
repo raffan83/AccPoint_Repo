@@ -1013,7 +1013,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			if(data_arrivo!=null) {
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(data_arrivo);
-				calendar.add(Calendar.DATE, 7);
+				calendar.add(Calendar.DATE, 4);
 
 				Date date = calendar.getTime();
 				

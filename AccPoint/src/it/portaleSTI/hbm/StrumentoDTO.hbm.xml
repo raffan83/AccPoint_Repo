@@ -109,5 +109,11 @@
    		<property generated="never" lazy="false" name="dataModifica" type="java.sql.Date">
    			<column name="data_modifica"/>
   		</property>
+  		
+  		
+     <property name="altre_matricole" type="java.lang.String">
+   <column name="altre_matricole"/>
+  </property>		
  </class>
+ 
 </hibernate-mapping>

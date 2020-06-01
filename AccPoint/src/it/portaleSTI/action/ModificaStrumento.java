@@ -115,6 +115,8 @@ public class ModificaStrumento extends HttpServlet {
 			 	String classificazione=request.getParameter("classificazione");
 			 	String procedura = request.getParameter("procedura");
 			 	
+			 	String altre_matricole = request.getParameter("altre_matricole");
+			 	
 			 	strumento.setDenominazione(denominazione);
 			 	strumento.setCodice_interno(codice_interno);
 			 	strumento.setCostruttore(costruttore);
@@ -127,7 +129,7 @@ public class ModificaStrumento extends HttpServlet {
 			 	strumento.setNote(note);
 			 	strumento.setProcedura(procedura);
 			 	//strumento.setInterpolazione(Integer.parseInt(interpolazione));
-			 	
+			 	strumento.setAltre_matricole(altre_matricole);
 			 	
 				strumento.setTipo_strumento(new TipoStrumentoDTO(Integer.parseInt(ref_tipo_strumento),""));		
 				strumento.setClassificazione(new ClassificazioneDTO(Integer.parseInt(classificazione),""));

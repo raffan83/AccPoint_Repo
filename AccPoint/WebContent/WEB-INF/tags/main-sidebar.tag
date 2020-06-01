@@ -47,7 +47,7 @@
           </ul>
         </li>
          <% }%>
-          <% if(user.checkRuolo("AM") || user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")){%>
+          <% if(user.checkRuolo("AM") || user.checkRuolo("PV") || user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")){%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Interventi</span>
             <span class="pull-right-container">
@@ -55,9 +55,14 @@
             </span>
           </a>
           <ul class="treeview-menu">
+          	<% if(user.checkRuolo("AM") || user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")){%>
     			<li><a href="#" onclick="callAction('listaInterventi.do',null,true);">Lista Interventi</a></li>
+    			
+    			<% }%>
+    				<% if(user.checkRuolo("AM") || (user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")&& !user.checkRuolo("PV"))){%>
     			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=lista&admin=0',null,true);">Assegnazione Attività</a></li>
     			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=controllo_attivita&admin=0',null,true);">Controllo Attività</a></li>
+    				<% }%>
     			<% if(user.checkRuolo("AM") || user.checkPermesso("LISTA_INTERVENTI_OPERATORE")){%>
     			<li><a href="#" onclick="callAction('listaInterventiOperatore.do?action=filtra_date&mese=1',null,true);">Interventi Operatore</a></li>
     			<% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_ASSEGNAZIONE_ATTIVITA_ADMIN")){%>
@@ -65,14 +70,15 @@
     			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=controllo_attivita&admin=1',null,true);">Controllo Attività Admin</a></li>
     			
     			<% }%>
-    			
+    			<% if(user.checkRuolo("AM") || (user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")&& !user.checkRuolo("PV"))){%>
     			<li><a href="#" onclick="callAction('gestioneMisura.do?action=lista',null,true);">Lista Misure</a></li>
-    			
+    				<% }%>
     		<% }%>
           </ul>
         </li>
          <% }%>
-          <% if(user.checkRuolo("AM") || user.checkPermesso("LISTA_CERTIFICATI_MENU_METROLOGIA")){%>
+          <% if(user.checkRuolo("AM") || user.checkRuolo("PV") || user.checkPermesso("LISTA_CERTIFICATI_MENU_METROLOGIA")){%>
+          
          <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Certificati</span>
             <span class="pull-right-container">
@@ -92,7 +98,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-          <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_STRUMENTI_METROLOGIA")){%>
+          <% if(user.checkRuolo("AM") ||  user.checkPermesso("GESTIONE_STRUMENTI_METROLOGIA")){%>
     			<li><a href="#" onclick="callAction('listaStrumentiNew.do',null,true);">Gestione Strumenti</a></li>
     	      <% }%>
     	         <% if(user.checkRuolo("AM") || user.checkPermesso("SCADENZIARIO_STRUMENTI_METROLOGIA")){%>
@@ -113,9 +119,11 @@
           </a>
           <ul class="treeview-menu">
 			<li><a href="listaCampioni.do">Campioni  Personali</a></li>
+			 <% if(user.checkRuolo("AM") || (user.checkPermesso("CAMPIONI_MENU_METROLOGIA") && !user.checkRuolo("PV"))){%>
 			<li><a href="listaCampioniPrenotabili.do">Campioni  Prenotabili</a></li>
 			<li><a href="scadenziario.do">Scadenziario</a></li>
 			<li><a href="scadenziario.do?action=campioni&scadenzario_lat_generale=1">Scadenziario LAT</a></li>
+			  <% }%>
           </ul>
         </li>
             <% }%>

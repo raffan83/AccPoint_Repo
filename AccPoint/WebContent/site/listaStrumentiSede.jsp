@@ -122,6 +122,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  						      <th>Modello</th> 					   
             	       <th>Campo Misura</th>
             	       <th>Divisione</th>
+            	       <th>Altre Matricole</th>
             	        <th>Reparto</th>
             	          <th>Utilizzatore</th>
             	               <th>Freq. Verifica</th> 
@@ -183,6 +184,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        			       <td><%=strumento.getCampo_misura()%></td>
                     	            
                     	             <td><%=strumento.getRisoluzione()%></td>
+                    	             <td><%=strumento.getAltre_matricole() %></td>
                     	             <td><%=strumento.getReparto()%></td>
                     	             
                     	                <td><%=strumento.getUtilizzatore()%></td>
@@ -384,6 +386,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
         <label for="inputName" class="col-sm-2 control-label">Matricola:</label>
         <div class="col-sm-10">
                       <input class="form-control" id="matricola" type="text" name="matricola" maxlength="22" required  value=""/>
+    </div>
+     </div>
+     
+            <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Altre matricole:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="altre_matricole" type="text" name="altre_matricole" value=""/>
     </div>
      </div>
        <div class="form-group">

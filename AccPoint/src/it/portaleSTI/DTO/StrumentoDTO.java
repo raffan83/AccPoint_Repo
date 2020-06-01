@@ -48,6 +48,8 @@ public class StrumentoDTO {
 			 private int idClassificazione = 0;
 			 private int frequenza = 0;
 			 private String procedureString = "";
+			 
+			 private String altre_matricole;
 			 //------
 			 
 			 
@@ -413,6 +415,14 @@ public class StrumentoDTO {
 
 			public void setTipoRapporto(TipoRapportoDTO tipoRapporto) {
 				TipoRapporto = tipoRapporto;
+			}
+
+			public String getAltre_matricole() {
+				return altre_matricole;
+			}
+
+			public void setAltre_matricole(String altre_matricole) {
+				this.altre_matricole = altre_matricole;
 			}
 
 			

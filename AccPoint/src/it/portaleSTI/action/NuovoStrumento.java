@@ -97,7 +97,9 @@ public class NuovoStrumento extends HttpServlet {
 				
 				String dataUltimaVerifica = request.getParameter("dataUltimaVerifica");
 				String dataProssimaVerifica = request.getParameter("dataProssimaVerifica");
-				String ref_tipo_rapporto = request.getParameter("ref_tipo_rapporto");			
+				String ref_tipo_rapporto = request.getParameter("ref_tipo_rapporto");		
+				
+				String altre_matricole = request.getParameter("altre_matricole");
 				
 				StrumentoDTO strumento = new StrumentoDTO();
 				strumento.setStato_strumento(new StatoStrumentoDTO(Integer.parseInt(ref_stato_strumento),""));
@@ -121,7 +123,7 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setUserCreation((UtenteDTO)request.getSession().getAttribute("userObj"));
 				strumento.setClassificazione(new ClassificazioneDTO(Integer.parseInt(classificazione),""));
 				
-				
+				strumento.setAltre_matricole(altre_matricole);
 			
 				if(freq_mesi.length()>0){
 					strumento.setFrequenza(Integer.parseInt(freq_mesi));
@@ -206,6 +208,8 @@ public class NuovoStrumento extends HttpServlet {
 			String matricola = request.getParameter("matricola");
 			String company = request.getParameter("company");
 			
+			String altre_matricole = request.getParameter("altre_matricole");
+			
 			String tipo_strumento = request.getParameter("tipo_strumento");
 			String[] tipo_strumento_split = tipo_strumento.split("_");
 			int successInt=0;
@@ -241,7 +245,7 @@ public class NuovoStrumento extends HttpServlet {
 				}
 				strumento.setTipoRapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
 				
-							
+				strumento.setAltre_matricole(altre_matricole);
 				
 				GestioneStrumentoBO.saveStrumento(strumento, session);
 				

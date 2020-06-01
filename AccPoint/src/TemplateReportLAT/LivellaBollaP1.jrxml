@@ -378,7 +378,7 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{data_misure}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
 				<reportElement x="0" y="2" width="561" height="111" uuid="920cee4f-d44e-4710-bf39-812076e2c795"/>

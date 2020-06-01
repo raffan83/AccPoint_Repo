@@ -48,6 +48,11 @@
         </li>
          <% }%>
           <% if(user.checkRuolo("AM") || user.checkRuolo("PV") || user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")){%>
+         
+
+          <%if(user.checkRuolo("PV")){ %>
+          <li class="header">METROLOGIA</li>
+           <% }%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Interventi</span>
             <span class="pull-right-container">

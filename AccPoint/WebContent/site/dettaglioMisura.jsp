@@ -143,7 +143,7 @@
 	</div>
 </div>
 <div class="box-body">
- <c:if test="${punti[0].tipoProva!='RDP'">
+ <c:if test="${punti[0].tipoProva!='RDP'}">
 <div class="graficoIncertezza">
  
 	<canvas id="graficoIncertezza"></canvas>

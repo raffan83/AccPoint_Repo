@@ -1966,18 +1966,20 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
     		  { 
     			  //callAction("listaStrumentiNew.do");
     			  
-    			  stato = $('#stato_'+idStrumento).html();
-    			  
-    			  if(stato == "In servizio"){
-    				  $('#stato_'+idStrumento).html("Fuori servizio");
-
-     			  }else{
-    				  $('#stato_'+idStrumento).html("In servizio");
-
-
-     			  }
-    			  //exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
-    			  exploreModal("dettaglioStrumento.do","id_str="+idStrumento,"#dettaglio");
+//    			  stato = $('#stato_'+idStrumento).html();
+//    			  
+//    			  if(stato == "In servizio"){
+//    				  $('#stato_'+idStrumento).html("Fuori servizio");
+//
+//     			  }
+//    			  
+//    			  else{
+//    				  $('#stato_'+idStrumento).html("In servizio");
+//
+//
+//     			  }
+//    			  //exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
+//    			  exploreModal("dettaglioStrumento.do","id_str="+idStrumento,"#dettaglio");
     			  pleaseWaitDiv.modal('hide');  
     			  $('#report_button').hide();
     				$('#visualizza_report').hide();
@@ -2009,6 +2011,68 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
       });
 	  
   }
+  
+  
+  function annullaStrumento(idStrumento,idSede,idCliente){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();  
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneStrumento.do?action=annullaStrumento&idStrumento="+idStrumento+"&idSede="+idSede+"&idCliente="+idCliente,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+
+    		  if(data.success)
+    		  { 
+//    			  //callAction("listaStrumentiNew.do");
+//    			  
+//    			  stato = $('#stato_'+idStrumento).html();
+//    			  
+//    			  if(stato == "In servizio"){
+//    				  $('#stato_'+idStrumento).html("Fuori servizio");
+//
+//     			  }
+//    			  
+//    			  else{
+//    				  $('#stato_'+idStrumento).html("In servizio");
+//
+//
+//     			  }
+//    			  //exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
+    			  exploreModal("dettaglioStrumento.do","id_str="+idStrumento,"#dettaglio");
+    			  pleaseWaitDiv.modal('hide');  
+    			  $('#report_button').hide();
+    				$('#visualizza_report').hide();
+    			  $("#myModalErrorContent").html("Strumento annullato con successo");
+		 	        $("#myModalError").modal();
+
+
+
+    		  }else{
+    			  pleaseWaitDiv.modal('hide');  
+    			  $('#report_button').show();
+    				$('#visualizza_report').show();
+    			 $("#myModalErrorContent").html("Errore Salvataggio Strumento");
+		 	        $("#myModalError").modal();
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+
+    		 $("#myModalErrorContent").html(textStatus);
+    		 $('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+    		  //callAction('logout.do');
+    
+    	  }
+      });
+	  
+  }
+  
+  
   function generacsv(){
 	  
 	  var lineArray = [];
@@ -5307,9 +5371,13 @@ function eliminaCompany(){
 //	  }
 	  
 	  function filtraStrumenti(filtro, id_cliente, id_sede){
-		  var action = "in_servizio";
+		  var action = "";
 		  if(filtro==7225){
 			  action = "fuori_servizio"
+		  }else if(filtro == 7226){
+			  action = "in_servizio"
+		  } else{
+			  action = "annullati"
 		  }
 		  
 		  var dataString = "action="+action+"&id_cliente="+id_cliente+"&id_sede="+id_sede;
@@ -5338,8 +5406,16 @@ function eliminaCompany(){
         		if(filtro==7226){
     	   	 		$('#in_servizio').attr('disabled', true);
     	   	 		$('#fuori_servizio').attr('disabled', false);
-    	   	 	}else{
-    	   	 		$('#fuori_servizio').attr('disabled', true);
+    	   	 		$('#annullati').attr('disabled', false);
+    	   	 	}
+        		else if(filtro == 7225){
+        			$('#fuori_servizio').attr('disabled', true);
+    	   	 		$('#in_servizio').attr('disabled', false);
+    	   	 		$('#annullati').attr('disabled', false);
+        		}
+        		else{
+        			$('#annullati').attr('disabled', true);
+    	   	 		$('#fuori_servizio').attr('disabled', false);
     	   	 		$('#in_servizio').attr('disabled', false);
     	   	 	}
         	  

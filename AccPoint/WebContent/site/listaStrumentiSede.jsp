@@ -77,6 +77,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
      
      <button class="btn btn-primary" onClick="filtraStrumenti(7226,<%=idCliente %>,<%=idSede %>)" disabled id="in_servizio">In Servizio</button>
      <button class="btn btn-primary" onClick="filtraStrumenti(7225,<%=idCliente %>,<%=idSede %>)" id="fuori_servizio">Fuori Servizio</button>
+     <button class="btn btn-primary" onClick="filtraStrumenti(7227,<%=idCliente %>,<%=idSede %>)" id="annullati">Annullati</button>
 	<button class="btn btn-warning" id="downloadfiltrati" onClick="downloadStrumentiFiltrati()" >Download PDF</button>
  
 </div>
@@ -315,7 +316,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 									<button class="btn btn-info" title="Sposta strumento"onClick="modalSposta('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')"><i class="fa fa-exchange"></i></button>
 	 									
 	 									<%} %>
-	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Cambia Stato</button> 
+	 									<%if(strumento.getStato_strumento().getId() != 7227){ %> 
+	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Cambia Stato</button>
+	 									
+	 									<button  class="btn btn-danger" onClick="annullaStrumento('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Annulla</button>
+	 									<%}else{ %>
+	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Rimetti in servizio</button>
+	 									<%} %>
 	 								</td>   
 	
 	</tr>

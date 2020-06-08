@@ -101,7 +101,7 @@ public class GestioneStrumento extends HttpServlet {
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				
-				if(strumento.getStato_strumento() != null && strumento.getStato_strumento().getId() == 7225){
+				if(strumento.getStato_strumento() != null && (strumento.getStato_strumento().getId() == 7225 || strumento.getStato_strumento().getId() == 7227)){
 					strumento.setStato_strumento(new StatoStrumentoDTO(7226, "In serivzio"));
 				}else{
 					strumento.setStato_strumento(new StatoStrumentoDTO(7225, "Fuori servizio"));
@@ -397,10 +397,54 @@ public class GestioneStrumento extends HttpServlet {
 				
 				 out.println(myObj);
 			}
+			else if(action.equals("annullaStrumento")) {
+			
+				
+				ajax=true;
+				PrintWriter out = response.getWriter();
+  		        response.setContentType("application/json");
+				strumento = GestioneStrumentoBO.getStrumentoById( request.getParameter("idStrumento"), session);
+				
+				CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				UtenteDTO user=(UtenteDTO)request.getSession().getAttribute("userObj");
+				
+				
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(request.getParameter("idCliente"),request.getParameter("idSede"),idCompany.getId(), session,user); 
+
+				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
+				
+				
+				strumento.setStato_strumento(new StatoStrumentoDTO(7227, "Annullato"));
+			
+				JsonObject myObj = new JsonObject();
+
+				Boolean success = GestioneStrumentoBO.update(strumento, session);
+					
+					String message = "";
+					if(success){
+						message = "Salvato con Successo";
+					}else{
+						message = "Errore Salvataggio";
+					}
+				
+				
+					Gson gson = new Gson();
+					
+					// 2. Java object to JSON, and assign to a String
+
+					
+					
+
+						myObj.addProperty("success", success);
+						myObj.addProperty("messaggio", message);
+				        out.println(myObj.toString());
+				
+			}
 			
 		session.getTransaction().commit();
 		session.close();
 
+	
 
 		}else{
 			ajax=true;

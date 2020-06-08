@@ -66,7 +66,7 @@ public class DirectMySqlDAO {
 												 "strumento.procedura," +
 												 "strumento.id__tipo_strumento_ , scadenza" +
 												 "FROM strumento LEFT JOIN scadenza on strumento.__id =scadenza.id__strumento_ LEFT JOIN strumento__procedura_ on strumento.__id= strumento__procedura_.id__strumento_ "+
-												 "WHERE strumento.id_cliente=? and strumento.id__sede_new =? and strumento.id__company_=?";
+												 "WHERE strumento.id_cliente=? and strumento.id__sede_new =? and strumento.id__company_=? AND strumento.id__stato_strumento_<>7227 ";
 
 	
 	private static final String sqlDatiCampione="select campione.__id,campione.codice,campione.matricola,campione.modello, " +
@@ -313,8 +313,11 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				
 				
 				pstINS=conSQLite.prepareStatement(sqlInsert);
-				pstINS.execute();
 				
+				if(strumento.getStato_strumento().getId()!=7227) 
+				{
+					pstINS.execute();
+				}
 				
 				Integer idMisura = listaMisure.get(id);
 

@@ -43,7 +43,7 @@
 			<staticText>
 				<reportElement x="512" y="126" width="43" height="12" uuid="fb26381a-780b-4260-92de-3a1ceb4c8cce"/>
 				<textElement>
-					<font size="7" isItalic="true"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Page 2 of 2]]></text>
 			</staticText>

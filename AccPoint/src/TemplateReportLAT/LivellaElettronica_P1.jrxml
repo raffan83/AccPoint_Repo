@@ -334,7 +334,7 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 			<staticText>
 				<reportElement x="512" y="129" width="43" height="12" uuid="9c38e870-c279-47b8-8ccc-5e92eb48b4e0"/>
 				<textElement>
-					<font size="7" isItalic="true"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Page 1 of ]]></text>
 			</staticText>

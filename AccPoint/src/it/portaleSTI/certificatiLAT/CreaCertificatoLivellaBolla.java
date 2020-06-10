@@ -29,6 +29,7 @@ import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
@@ -59,13 +60,13 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 public class CreaCertificatoLivellaBolla {
 
 	public File file;
-	public CreaCertificatoLivellaBolla(CertificatoDTO certificato, LatMisuraDTO misura, InputStream is, Session session) throws Exception {
+	public CreaCertificatoLivellaBolla(CertificatoDTO certificato, LatMisuraDTO misura, InputStream is, UtenteDTO utente, Session session) throws Exception {
 		
-		build(certificato, misura, is, session);
+		build(certificato, misura, is, utente, session);
 	}
 	
 	
-	private void build(CertificatoDTO certificato, LatMisuraDTO misura, InputStream inputStream, Session session) throws Exception {
+	private void build(CertificatoDTO certificato, LatMisuraDTO misura, InputStream inputStream, UtenteDTO utente, Session session) throws Exception {
 		
 		InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP1.jrxml");
 		
@@ -402,7 +403,8 @@ public class CreaCertificatoLivellaBolla {
 		
 		certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
 		certificato.setDataCreazione(new Date());
-		certificato.setStato(new StatoCertificatoDTO(2));		
+		certificato.setStato(new StatoCertificatoDTO(2));	
+		certificato.setUtenteApprovazione(utente);
 		session.update(certificato);
 		
 	}

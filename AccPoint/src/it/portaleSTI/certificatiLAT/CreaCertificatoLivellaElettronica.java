@@ -20,6 +20,7 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
@@ -46,13 +47,13 @@ public class CreaCertificatoLivellaElettronica {
 	
 	public File file;
 	
-	public CreaCertificatoLivellaElettronica(CertificatoDTO certificato, LatMisuraDTO misura, Session session) throws Exception {
+	public CreaCertificatoLivellaElettronica(CertificatoDTO certificato, LatMisuraDTO misura, UtenteDTO utente, Session session) throws Exception {
 				
-		build(certificato, misura, session);
+		build(certificato, misura, utente, session);
 	}
 
 	
-	private void build(CertificatoDTO certificato, LatMisuraDTO misura, Session session) throws Exception {
+	private void build(CertificatoDTO certificato, LatMisuraDTO misura, UtenteDTO utente, Session session) throws Exception {
 		
 InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica_P1.jrxml");
 		
@@ -390,7 +391,8 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 		
 		certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
 		certificato.setDataCreazione(new Date());
-		certificato.setStato(new StatoCertificatoDTO(2));		
+		certificato.setStato(new StatoCertificatoDTO(2));
+		certificato.setUtenteApprovazione(utente);
 		session.update(certificato);
 		
 	}
@@ -411,18 +413,18 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 
 	
 	
-	public static void main(String[] args) throws HibernateException, Exception {
-	new ContextListener().configCostantApplication();
-	Session session=SessionFacotryDAO.get().openSession();
-	session.beginTransaction();
-	
-	LatMisuraDTO misura = GestioneLivellaBollaBO.getMisuraLivellaById(10, session);
-	CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("1");
-	
-		new CreaCertificatoLivellaElettronica(certificato,misura, session);
-		session.getTransaction().commit();
-		session.close();
-		System.out.println("FINITO");
-}
-	
+//	public static void main(String[] args) throws HibernateException, Exception {
+//	new ContextListener().configCostantApplication();
+//	Session session=SessionFacotryDAO.get().openSession();
+//	session.beginTransaction();
+//	
+//	LatMisuraDTO misura = GestioneLivellaBollaBO.getMisuraLivellaById(10, session);
+//	CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("1");
+//	
+//		new CreaCertificatoLivellaElettronica(certificato,misura, session);
+//		session.getTransaction().commit();
+//		session.close();
+//		System.out.println("FINITO");
+//}
+//	
 }

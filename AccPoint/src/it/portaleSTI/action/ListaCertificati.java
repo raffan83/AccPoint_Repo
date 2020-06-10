@@ -312,7 +312,7 @@ public class ListaCertificati extends HttpServlet {
 						if(item.getName()!="") {	
 							InputStream is = item.getInputStream();
 							
-							new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), is, session);
+							new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), is, utente, session);
 						}								
 					}
 				}
@@ -335,7 +335,7 @@ public class ListaCertificati extends HttpServlet {
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);				
 				
 				if(latMaster.equals("2")) {
-					new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), session);
+					new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, session);
 				}
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
@@ -447,7 +447,7 @@ public class ListaCertificati extends HttpServlet {
 //						new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(),null, session);
 //					}
 					else if(certificato.getMisura().getMisuraLAT()!=null && certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==2) {
-						new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), session);
+						new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, session);
 					}
 					else {
 						GestioneCertificatoBO.createCertificato(id,session,context, utente);	
@@ -510,7 +510,7 @@ public class ListaCertificati extends HttpServlet {
 						certificato = c.file;
 					}
 					else if(cert.getMisura().getMisuraLAT()!=null && cert.getMisura().getMisuraLAT().getMisura_lat().getId()==2) {
-						CreaCertificatoLivellaElettronica c = new CreaCertificatoLivellaElettronica(cert, cert.getMisura().getMisuraLAT(), session);
+						CreaCertificatoLivellaElettronica c = new CreaCertificatoLivellaElettronica(cert, cert.getMisura().getMisuraLAT(), utente, session);
 						certificato = c.file;
 					}
 					else {

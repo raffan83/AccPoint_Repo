@@ -399,6 +399,19 @@ public class GestioneFormazioneDAO {
 		return lista;
 	}
 
+	public static ArrayList<String> getListaCodiciFiscali(Session session) {
+		
+		ArrayList<String> lista = null;		
+		
+		Query query = session.createQuery("select cf from ForPartecipanteDTO");
+
+		
+		lista = (ArrayList<String>) query.list();
+		
+		
+		return lista;
+	}
+
 	
 
 }

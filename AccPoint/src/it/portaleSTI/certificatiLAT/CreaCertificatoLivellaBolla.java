@@ -93,6 +93,8 @@ public class CreaCertificatoLivellaBolla {
 			n_certificato =misura.getMisura_lat().getSigla()+paddingZero(misura.getMisura_lat().getSeq())+"/"+Utility.getCurrentYear(2);
 			misura.setnCertificato(n_certificato);
 			misura.getMisura_lat().setSeq(misura.getMisura_lat().getSeq()+1);
+			certificato.getMisura().setnCertificato(n_certificato);
+			session.update(certificato.getMisura());
 			session.update(misura.getMisura_lat());
 			session.update(misura);
 			

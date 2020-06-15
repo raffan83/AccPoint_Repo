@@ -134,6 +134,8 @@ public class GestioneFormazioneBO {
 		XSSFWorkbook wb = new XSSFWorkbook(fis);   
 		XSSFSheet sheet = wb.getSheetAt(0);     //creating a Sheet object to retrieve object  
 		Iterator<Row> itr = sheet.iterator();    //iterating over excel file  
+		
+		ArrayList<String> codiciFiscali = GestioneFormazioneDAO.getListaCodiciFiscali(session);
 
 		while (itr.hasNext())                 
 		{  
@@ -165,6 +167,8 @@ public class GestioneFormazioneBO {
 						
 						if(cell.getStringCellValue()!=null && !cell.getStringCellValue().equals("") )
 						{
+							esito = true;		
+							
 							if(cell.getColumnIndex()==0) {
 								partecipante.setNome(cell.getStringCellValue());
 							}
@@ -176,8 +180,12 @@ public class GestioneFormazioneBO {
 							}
 							else if(cell.getColumnIndex()==4) {
 								partecipante.setCf(cell.getStringCellValue());
-							}
-							esito = true;
+								
+								if(codiciFiscali.contains(cell.getStringCellValue())) {
+									esito = false;
+								}
+							}											
+							
 						}
 						
 					}else {
@@ -188,9 +196,10 @@ public class GestioneFormazioneBO {
 						}				
 					}				
 				}	
-				if(esito) {
-					session.save(partecipante);	
-				}
+			
+			}
+			if(esito) {
+				session.save(partecipante);	
 			}
 		}
 		

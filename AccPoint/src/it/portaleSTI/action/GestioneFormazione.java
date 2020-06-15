@@ -31,6 +31,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
+import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
@@ -739,9 +740,15 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					if(listaSedi== null) {
 						listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 					}
-										
+					
+					ArrayList<String> lista_cf = GestioneFormazioneDAO.getListaCodiciFiscali(session);
+					
+					Gson g = new Gson();
+					JsonElement json_cf = g.toJsonTree(lista_cf);
+					
 					request.getSession().setAttribute("lista_clienti", listaClienti);				
 					request.getSession().setAttribute("lista_sedi", listaSedi);
+					request.getSession().setAttribute("json_cf", json_cf);
 					
 				}
 				

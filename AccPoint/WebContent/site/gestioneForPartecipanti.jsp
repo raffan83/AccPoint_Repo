@@ -267,11 +267,16 @@
         </div>      
        </div><br>
 
-      	
+      <div class="row">
+       <div class="col-xs-12">
+       <label style="color:red;display:none" id="label_error">Attenzione! Il Codice Fiscale inserito è già presente nel sistema!</label>
+       </div>
+    
+       </div>
       	</div>
       <div class="modal-footer">
       
-      <a class="btn btn-primary" onclick="nuovoForPartecipante()" >Salva</a>
+      <button class="btn btn-primary" type="submit" id="save_btn">Salva</button>
 		
       </div>
     </div>
@@ -480,7 +485,26 @@ function modificaPartecipanteModal(id_partecipante, nome, cognome, data_nascita,
 }
 
 	 
-
+$('#cf').focusout(function(){
+	
+	var json_cf = '${json_cf}';
+	
+	$('#cf').css('border', '1px solid #d2d6de');
+	$('#label_error').hide();
+	$('#save_btn').attr("disabled",false);
+	
+	if(json_cf !=''){
+		var cf = JSON.parse(json_cf);
+		
+		if(cf.includes($(this).val())){
+			$('#cf').css('border', '1px solid #f00');
+			$('#label_error').show();
+			$('#save_btn').attr("disabled",true);
+		}
+	}
+	
+	
+});
 
 
 var columsDatatables = [];
@@ -615,6 +639,7 @@ $(document).ready(function() {
 	
 	
 });
+
 
 
 $('#modificaPartecipanteForm').on('submit', function(e){

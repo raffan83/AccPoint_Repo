@@ -33,6 +33,8 @@ public class VerMisuraDTO {
 	private String numeroAttestato;
 
 	private String numeroRapporto;
+	
+	private int tipoRisposta;
 
 	private String seqRisposte;
 	
@@ -72,6 +74,25 @@ public class VerMisuraDTO {
 	private String note_obsolescenza;
 	
 	private String obsoleta;
+	
+	private double tInizio;
+	
+	private double tFine;
+	
+	private double altezza_org;
+	
+	private double altezza_util;
+	
+	private double longitudine_org;
+	
+	private double longitudine_util;
+	
+	private double gOrg;
+	
+	private double gUtil;
+	
+	private double gFactor;
+	
 	
 	private int esito;
 	
@@ -325,6 +346,86 @@ public class VerMisuraDTO {
 
 	public void setEsito(int esito) {
 		this.esito = esito;
+	}
+
+	public int getTipoRisposta() {
+		return tipoRisposta;
+	}
+
+	public void setTipoRisposta(int tipoRisposta) {
+		this.tipoRisposta = tipoRisposta;
+	}
+
+	public double gettInizio() {
+		return tInizio;
+	}
+
+	public void settInizio(double tInizio) {
+		this.tInizio = tInizio;
+	}
+
+	public double gettFine() {
+		return tFine;
+	}
+
+	public void settFine(double tFine) {
+		this.tFine = tFine;
+	}
+
+	public double getAltezza_org() {
+		return altezza_org;
+	}
+
+	public void setAltezza_org(double altezza_org) {
+		this.altezza_org = altezza_org;
+	}
+
+	public double getAltezza_util() {
+		return altezza_util;
+	}
+
+	public void setAltezza_util(double altezza_util) {
+		this.altezza_util = altezza_util;
+	}
+
+	public double getLongitudine_org() {
+		return longitudine_org;
+	}
+
+	public void setLongitudine_org(double longitudine_org) {
+		this.longitudine_org = longitudine_org;
+	}
+
+	public double getLongitudine_util() {
+		return longitudine_util;
+	}
+
+	public void setLongitudine_util(double longitudine_util) {
+		this.longitudine_util = longitudine_util;
+	}
+
+	public double getgOrg() {
+		return gOrg;
+	}
+
+	public void setgOrg(double gOrg) {
+		this.gOrg = gOrg;
+	}
+
+	public double getgUtil() {
+		return gUtil;
+	}
+
+	public void setgUtil(double gUtil) {
+		this.gUtil = gUtil;
+	}
+
+	public double getgFactor() {
+		return gFactor;
+	}
+
+	public void setgFactor(double gFactor) {
+		this.gFactor = gFactor;
 	}
 	
 	

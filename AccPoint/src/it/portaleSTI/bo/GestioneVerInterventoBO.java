@@ -287,7 +287,7 @@ public class GestioneVerInterventoBO {
 			  	}else {
 			  		misura.setEsito(1);
 			  	}
-			  	
+			  	session.update(misura);
 			  	
 			  	session.save(certificato);
 			   
@@ -478,6 +478,14 @@ public class GestioneVerInterventoBO {
 		    		certificato.setStato(new StatoCertificatoDTO(1));
 		    		certificato.setUtente(misura.getTecnicoVerificatore());
 		    		certificato.setDataCreazione(new Date());
+		    		
+		    		int esito_misura = GestioneVerMisuraBO.getEsito(misura);
+				  	if(esito_misura!=0) {
+				  		misura.setEsito(0);	
+				  	}else {
+				  		misura.setEsito(1);
+				  	}
+				  	session.update(misura);
 		    		
 		    		session.save(certificato);
 				}

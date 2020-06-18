@@ -83,9 +83,9 @@ public class VerMisuraDTO {
 	
 	private double altezza_util;
 	
-	private double longitudine_org;
+	private double latitudine_org;
 	
-	private double longitudine_util;
+	private double latitudine_util;
 	
 	private double gOrg;
 	
@@ -388,20 +388,20 @@ public class VerMisuraDTO {
 		this.altezza_util = altezza_util;
 	}
 
-	public double getLongitudine_org() {
-		return longitudine_org;
+	public double getLatitudine_org() {
+		return latitudine_org;
 	}
 
-	public void setLongitudine_org(double longitudine_org) {
-		this.longitudine_org = longitudine_org;
+	public void setLatitudine_org(double latitudine_org) {
+		this.latitudine_org = latitudine_org;
 	}
 
-	public double getLongitudine_util() {
-		return longitudine_util;
+	public double getLatitudine_util() {
+		return latitudine_util;
 	}
 
-	public void setLongitudine_util(double longitudine_util) {
-		this.longitudine_util = longitudine_util;
+	public void setLatitudine_util(double latitudine_util) {
+		this.latitudine_util = latitudine_util;
 	}
 
 	public double getgOrg() {

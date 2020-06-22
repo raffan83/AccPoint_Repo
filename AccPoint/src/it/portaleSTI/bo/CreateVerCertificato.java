@@ -471,7 +471,7 @@ public class CreateVerCertificato {
 				reportP2.addParameter("motivo1", "X");
 				reportP2.addParameter("motivo2", "");
 				reportP2.addParameter("motivo3", "");
-			}else if(motivo==2) {
+			}else if(motivo==3) {
 				reportP2.addParameter("motivo1", "");
 				reportP2.addParameter("motivo2", "X");
 				reportP2.addParameter("motivo3", "");

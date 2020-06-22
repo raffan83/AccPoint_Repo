@@ -1,7 +1,11 @@
 package it.portaleSTI.DAO;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -128,6 +132,33 @@ public class GestioneVerMisuraDAO {
 		}
 		
 		return result;
+	}
+
+	public static ArrayList<VerMisuraDTO> getListaMisurePerData(UtenteDTO utente, String dateFrom, String dateTo,Session session) throws Exception {
+
+		ArrayList<VerMisuraDTO> lista = null;
+		
+		Query query = null;
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+		if(utente.isTras()) {		
+			
+			query = session.createQuery("from VerMisuraDTO where data_verificazione between :_dateFrom and :_dateTo"); 
+			query.setParameter("_dateFrom", df.parse(dateFrom));
+			query.setParameter("_dateTo", df.parse(dateTo));
+			
+		}else {
+			
+			query = session.createQuery("from VerMisuraDTO  where verIntervento.company.id = :_id_company and data_verificazione between :_dateFrom and :_dateTo");
+			query.setParameter("_id_company", utente.getCompany().getId());	
+			query.setParameter("_dateFrom", df.parse(dateFrom));
+			query.setParameter("_dateTo", df.parse(dateTo));
+		}
+				
+				
+		lista = (ArrayList<VerMisuraDTO>) query.list();
+		
+		return lista;
 	}
 	
 

@@ -185,5 +185,10 @@ public class GestioneVerMisuraBO {
 		return codice_attestato;
 	}
 
+	public static ArrayList<VerMisuraDTO> getListaMisurePerData(UtenteDTO utente, String dateFrom, String dateTo, Session session) throws Exception {
+		
+		return GestioneVerMisuraDAO.getListaMisurePerData(utente, dateFrom, dateTo, session);
+	}
+
 
 }

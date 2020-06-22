@@ -104,8 +104,10 @@
 		<td class="actionClass" align="center" style="min-width:250px">
 			 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della Misura"  href="gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(certificato.misura.id)}" ><i class="fa fa-tachometer"></i></a>
 			 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'intervento"  href="gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(certificato.misura.verIntervento.id)}" ><i class="fa fa-file-text-o"></i></a>
-			 <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Rapporto"  href="gestioneVerCertificati.do?action=download&cert_rap=2&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
 			 
+			 <c:if test="${certificato.nomeRapporto!=null }">
+			 <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Rapporto"  href="gestioneVerCertificati.do?action=download&cert_rap=2&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
+			 </c:if>
 			 		
 			  <c:if test="${userObj.checkPermesso('FIRMA_ATTESTATO_VERIFICAZIONE') && (certificato.firmato == 0) }">		 
 			  <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF dell'Attestato"  href="gestioneVerCertificati.do?action=download&cert_rap=1&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>

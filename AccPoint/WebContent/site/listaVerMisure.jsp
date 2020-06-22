@@ -47,6 +47,29 @@
 <div class="box-body">
 
 <div class="row">
+	<div class="col-xs-6">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Ricerca Date:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
+							 <span class="input-group-btn">
+				                <button type="button" class="btn btn-info btn-flat" onclick="cercaMisure()">Cerca</button> 
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetData()">Reset Data</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
+
+	</div>
+
+</div><br>
+
+
+<div class="row">
 <div class="col-xs-12">
 
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
@@ -230,6 +253,62 @@ $("#tabVerMisure").on( 'init.dt', function ( e, settings ) {
 
 } );
 
+
+
+
+$('input[name="datarange"]').on('apply.daterangepicker', function(ev, picker) {
+    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    $('#date_from').val(picker.startDate.format('DD/MM/YYYY'));
+    $('#date_to').val(picker.endDate.format('DD/MM/YYYY'));
+    //$('#cerca_btn').attr('disabled', false);
+});
+
+$('input[name="datarange"]').on('cancel.daterangepicker', function(ev, picker) {
+    $(this).val('');
+    $('#date_from').val("");
+    $('#date_to').val("");
+     if($('#utente').val()==''){
+   		$('#cerca_btn').attr('disabled', true);	
+   	}  
+    
+});
+
+function resetData(){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	callAction("gestioneVerMisura.do?action=lista");
+}
+
+function formatDate(data){
+	
+	   var mydate = new Date(data);
+	   
+	   if(!isNaN(mydate.getTime())){
+	   
+		   str = mydate.toString("dd/MM/yyyy");
+	   }			   
+	   return str;	 		
+}
+
+
+  function cercaMisure(){
+		
+		
+		var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+		var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+		
+		dataString = "?action=lista&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD');
+			 	
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+
+		callAction("gestioneVerMisura.do"+ dataString, false,true);
+			 	
+				
+}
+
+
+
 function disableButton(id_button){
 	$(id_button).addClass('disabled');
 	
@@ -297,10 +376,22 @@ function filtraMisure(){
 
 $(document).ready(function() {
  
-	
+	 var date_from = "${dateFrom}";
+ 	 var date_to = "${dateTo}";
 
      $('.dropdown-toggle').dropdown();
-     
+
+ 	 $('input[name="datarange"]').daterangepicker({
+		   
+	     locale: {
+	      format: 'DD/MM/YYYY',
+	    	  
+	    } 
+	});
+
+	 
+	$('#datarange').data('daterangepicker').setStartDate(date_from);
+ 	$('#datarange').data('daterangepicker').setEndDate(date_to);
 
      table = $('#tabVerMisure').DataTable({
 			language: {

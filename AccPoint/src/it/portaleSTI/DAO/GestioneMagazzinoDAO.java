@@ -980,32 +980,34 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		
 		ArrayList<String> lista_non_segnalati = new ArrayList<String>();
-//		for (MagItemPaccoDTO item_pacco : lista) {
+//		for (MagPaccoDTO pacco : lista) {
 //			
-//			Date data_arrivo = item_pacco.getPacco().getData_arrivo();
+//			Date data_arrivo = pacco.getData_arrivo();
 //			if(data_arrivo!=null) {
 //				Calendar calendar = Calendar.getInstance();
 //				calendar.setTime(data_arrivo);
-//				calendar.add(Calendar.DATE, 7);
+//				calendar.add(Calendar.DATE, 4);
 //
 //				Date date = calendar.getTime();
 //				
-//				if(!lista_origini.contains(item_pacco.getPacco().getOrigine()) && Utility.getRapportoLavorati(item_pacco.getPacco())!=1 && date.before(new Date())) {
-//					//map.put(item_pacco.getPacco().getOrigine(), 1);
-//					lista_origini.add(item_pacco.getPacco().getOrigine());
-//					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(item_pacco.getPacco().getOrigine(), session);
+//				if(pacco.getRitardo()==0 && Utility.getRapportoLavorati(pacco)!=1 && date.before(new Date())) {
+//				
+//					lista_origini.add(pacco.getOrigine());
+//					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(pacco.getOrigine(), session);
 //					for (MagPaccoDTO magPaccoDTO : lista_pacchi_origine) {
-//						magPaccoDTO.setRitardo(1);
 //						
-//						if(magPaccoDTO.getSegnalato()!=1 && !lista_non_segnalati.contains(item_pacco.getPacco().getOrigine())) {	
-//							lista_non_segnalati.add(item_pacco.getPacco().getOrigine());
-//							magPaccoDTO.setSegnalato(1);
-//						}
+//						magPaccoDTO.setRitardo(1);
+//						magPaccoDTO.setSegnalato(1);
+//						
 //						session.update(magPaccoDTO);
+//					}						
+//					if(!lista_non_segnalati.contains(pacco.getOrigine())) {	
+//						lista_non_segnalati.add(pacco.getOrigine()+";"+pacco.getNome_cliente());
 //					}
 //				}
 //			}			
 //		}
+		
 		
 		for (MagPaccoDTO pacco : lista) {
 			
@@ -1017,26 +1019,34 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 				Date date = calendar.getTime();
 				
-				if(pacco.getRitardo()==0 && Utility.getRapportoLavorati(pacco)!=1 && date.before(new Date())) {
-				
-					lista_origini.add(pacco.getOrigine());
-					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(pacco.getOrigine(), session);
-					for (MagPaccoDTO magPaccoDTO : lista_pacchi_origine) {
-						
-						magPaccoDTO.setRitardo(1);
-						magPaccoDTO.setSegnalato(1);
-						
-						session.update(magPaccoDTO);
-					}						
-					if(!lista_non_segnalati.contains(pacco.getOrigine())) {	
-						lista_non_segnalati.add(pacco.getOrigine()+";"+pacco.getNome_cliente());
+				if(Utility.getRapportoLavorati(pacco)!=1 && date.before(new Date())) {
+					
+					String toAdd = pacco.getOrigine()+";"+pacco.getNome_cliente();
+					if(pacco.getCommessa()!=null) {
+						toAdd = toAdd +";"+pacco.getCommessa();
 					}
+				
+					lista_origini.add(toAdd);
+//					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(pacco.getOrigine(), session);
+//					for (MagPaccoDTO magPaccoDTO : lista_pacchi_origine) {
+//						
+//						magPaccoDTO.setRitardo(1);
+//						magPaccoDTO.setSegnalato(1);
+//						
+//						session.update(magPaccoDTO);
+//					}						
+//					if(!lista_non_segnalati.contains(pacco.getOrigine())) {	
+//						lista_non_segnalati.add(pacco.getOrigine()+";"+pacco.getNome_cliente());
+//					}
 				}
 			}			
 		}
 		
-		if(lista_non_segnalati.size()>0) {
-			SendEmailBO.sendEmailPaccoInRitardo(lista_non_segnalati, Costanti.MAIL_DEST_ALERT_PACCO);	
+//		if(lista_non_segnalati.size()>0) {
+//			SendEmailBO.sendEmailPaccoInRitardo(lista_non_segnalati, Costanti.MAIL_DEST_ALERT_PACCO);	
+//		}
+		if(lista_origini.size()>0 && Costanti.MAIL_DEST_ALERT_PACCO.split(";").length>0) {
+			SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);
 		}
 		
 		session.getTransaction().commit();

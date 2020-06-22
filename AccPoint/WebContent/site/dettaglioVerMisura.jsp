@@ -413,8 +413,8 @@
  </li>
    <li class="list-group-item">
  	<b>Download Rapporto</b>
- 	<c:if test="${certificato.misura.obsoleta=='N' }">
- 	<c:if test="${certificato.stato.id==2 }">
+ 	<c:if test="${certificato.misura.obsoleta=='N'}">
+ 	<c:if test="${certificato.stato.id==2 && certificato.nomeRapporto!=null }">
  	<a target="_blank"   class="btn btn-danger customTooltip pull-right btn-xs" title="Click per scaricare il PDF del Rapporto"  href="gestioneVerCertificati.do?action=download&&cert_rap=2&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
  	</c:if>
  	</c:if>
@@ -1971,7 +1971,8 @@ Non automatico o semiautomatico
 <div class="row">
 <div class="col-xs-12 text-center">
 
-<b>Caso 2)</b> - Strumento ad equilibrio automatico o semiautomatico(con indicazione analogica)
+
+ Strumento ad equilibrio automatico o semiautomatico(con indicazione analogica)
 
 
 </div>
@@ -2116,7 +2117,7 @@ Non automatico o semiautomatico
 <div class="row">
 <div class="col-xs-12 text-center">
 
-<b>Caso 2)</b> - Strumento ad equilibrio automatico o semiautomatico(con indicazione analogica)
+ Strumento ad equilibrio automatico o semiautomatico(con indicazione analogica)
 
 
 </div>
@@ -2260,7 +2261,7 @@ Non automatico o semiautomatico
 <div class="row">
 <div class="col-xs-12 text-center">
 
-<b>Caso 2)</b> - Strumento ad equilibrio automatico o semiautomatico(con indicazione analogica)
+ Strumento ad equilibrio automatico o semiautomatico(con indicazione analogica)
 
 
 </div>

@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -185,7 +187,38 @@ public class GestioneVerMisura extends HttpServlet {
 		}
 		else if(action.equals("lista")) {
 			
-			ArrayList<VerMisuraDTO> lista_misure = GestioneVerMisuraBO.getListaMisure(utente, session);
+			String dateFrom = request.getParameter("dateFrom");
+			String dateTo = request.getParameter("dateTo");
+			
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Date start = null;
+			Date end = null;
+					
+			
+			if(dateFrom == null && dateTo == null) {	
+				
+				end = new Date();
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(end);
+				calendar.add(Calendar.DAY_OF_MONTH, -30);
+				
+				start = calendar.getTime();
+				
+				 
+				
+				dateFrom = df.format(start);
+				dateTo = df.format(end);				
+			
+			}else {
+				
+				start = df.parse(dateFrom);
+				end = df.parse(dateTo);
+				
+			}
+			
+			
+			ArrayList<VerMisuraDTO> lista_misure = GestioneVerMisuraBO.getListaMisurePerData(utente, dateFrom, dateTo, session);
 		
 			
 			for (VerMisuraDTO misura : lista_misure) {
@@ -208,6 +241,9 @@ public class GestioneVerMisura extends HttpServlet {
 			}
 			
 			request.getSession().setAttribute("lista_misure", lista_misure);
+			df = new SimpleDateFormat("dd/MM/yyyy");
+			request.getSession().setAttribute("dateFrom", df.format(start));
+			request.getSession().setAttribute("dateTo", df.format(end));
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerMisure.jsp");
 	  	    dispatcher.forward(request,response);

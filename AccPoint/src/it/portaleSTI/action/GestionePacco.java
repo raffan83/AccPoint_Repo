@@ -420,7 +420,6 @@ public class GestionePacco extends HttpServlet {
 				}else {
 					
 					if(item.getName()!="") {
-					//link_pdf = GestioneMagazzinoBO.uploadPdf(item, numero_ddt);
 					pdf = item;
 					link_pdf = item.getName();
 					
@@ -433,12 +432,7 @@ public class GestionePacco extends HttpServlet {
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			new SimpleDateFormat("HH:mm");
 	
-//			if(!ora_trasporto.equals("")) {
-//				long ms = time.parse(ora_trasporto).getTime();
-//				Time hour = new Time(ms);
-//				ddt.setOra_trasporto(hour);
-//				
-//			}
+
 			if(!data_trasporto.equals("")) {
 				
 				ddt.setData_trasporto(format.parse(data_trasporto));
@@ -459,10 +453,6 @@ public class GestionePacco extends HttpServlet {
 			ddt.setNote(note);
 			
 			if(stato_lavorazione.equals("1")) {
-				
-				//ddt.setId_destinatario(Integer.parseInt(cliente));
-				//ddt.setId_sede_destinatario(Integer.parseInt(sede.split("_")[0]));
-				
 				
 				if(!destinatario.equals("")) {
 					ddt.setId_destinatario(Integer.parseInt(destinatario.split("_")[0]));
@@ -659,9 +649,7 @@ public class GestionePacco extends HttpServlet {
 					pacco.setOrigine(codice);
 				}
 			}
-				
-			//pacco.setOrigine(codice);
-			
+
 			pacco.setCodice_pacco(codice);
 			GestioneMagazzinoBO.updatePacco(pacco, session);
 			ArrayList <MagItemPaccoDTO> listaItemPacco = (ArrayList<MagItemPaccoDTO>)request.getSession().getAttribute("lista_item_pacco");

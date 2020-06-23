@@ -364,6 +364,7 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 	  
 	  for (String origine : lista_string_origini) {
 		msg.append("- "+origine.split(";")[0]+" - "+origine.split(";")[1]);
+
 		if(origine.split(";").length>2) {
 			msg.append(" - Commessa: "+origine.split(";")[2]+"<br>");
 		}else {

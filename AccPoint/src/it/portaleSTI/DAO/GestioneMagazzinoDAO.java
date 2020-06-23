@@ -492,7 +492,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigine(String origine, Ses
 		ArrayList<MagPaccoDTO> lista= null;
 		
 		
-			Query query  = session.createQuery( "from MagPaccoDTO where origine= :_origine");
+			Query query  = session.createQuery( "from MagPaccoDTO where origine= :_origine order by id desc");
 
 			query.setParameter("_origine", origine);
 			lista=(ArrayList<MagPaccoDTO>) query.list();
@@ -1020,24 +1020,26 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 				Date date = calendar.getTime();
 				
 				if(Utility.getRapportoLavorati(pacco)!=1 && date.before(new Date())) {
+
 					
 					String toAdd = pacco.getOrigine()+";"+pacco.getNome_cliente();
+					
 					if(pacco.getCommessa()!=null) {
 						toAdd = toAdd +";"+pacco.getCommessa();
 					}
-				
+														
 					lista_origini.add(toAdd);
-//					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(pacco.getOrigine(), session);
-//					for (MagPaccoDTO magPaccoDTO : lista_pacchi_origine) {
-//						
-//						magPaccoDTO.setRitardo(1);
-//						magPaccoDTO.setSegnalato(1);
-//						
-//						session.update(magPaccoDTO);
-//					}						
-//					if(!lista_non_segnalati.contains(pacco.getOrigine())) {	
-//						lista_non_segnalati.add(pacco.getOrigine()+";"+pacco.getNome_cliente());
-//					}
+					
+					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(pacco.getOrigine(), session);
+
+					for (MagPaccoDTO magPaccoDTO : lista_pacchi_origine) {
+						
+						magPaccoDTO.setRitardo(1);
+						//magPaccoDTO.setSegnalato(1);
+						
+						session.update(magPaccoDTO);
+					}						
+
 				}
 			}			
 		}

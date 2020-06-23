@@ -11,6 +11,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import org.apache.log4j.PropertyConfigurator;
+import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -56,8 +57,8 @@ public class ContextListener implements ServletContextListener {
     public void configCostantApplication() throws Exception {
 	
 
-    	String resourceName = "config.properties"; // could also be a constant
-    //	String resourceName = "config_svil.properties"; // could also be a constant
+    //	String resourceName = "config.properties"; // could also be a constant
+    	String resourceName = "config_svil.properties"; // could also be a constant
     	
     	ClassLoader loader = Thread.currentThread().getContextClassLoader();
     	Properties props = new Properties();
@@ -106,15 +107,24 @@ public class ContextListener implements ServletContextListener {
     public void startScheduler() throws SchedulerException {
     	
     	JobDetail job = JobBuilder.newJob(AggiornaCampioneScheduler.class).withIdentity("aggiornaCampione", "group1").build();
+    	
+    	JobDetail email_job = JobBuilder.newJob(SendEmailPaccoRitardoScheduler.class).withIdentity("pacchiRitardo", "group2").build();
 
         Trigger trigger = TriggerBuilder
                 .newTrigger()
                 .withIdentity("aggiornaCampione", "group1")
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInHours(12).repeatForever())
                 .build();
+        
+        Trigger trigger2 = TriggerBuilder.newTrigger()
+                .withIdentity("pacchiRitardo", "group2")
+                .withSchedule(
+                     CronScheduleBuilder.cronSchedule("0 0 7 * * ?"))
+                .build();
 
         Scheduler scheduler = new StdSchedulerFactory().getScheduler();
         scheduler.start();
         scheduler.scheduleJob(job, trigger);
+        scheduler.scheduleJob(email_job, trigger2);
     }
 }

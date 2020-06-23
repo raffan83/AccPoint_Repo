@@ -25,7 +25,7 @@ public class AggiornaCampioneScheduler implements Job{
 			intervento.setId(100);
 			GestioneStrumentoDAO.getListaStrumentiIntervento(intervento);
 			GestioneCampioneDAO.updateCampioneScheduler();
-			GestioneMagazzinoDAO.getItemInRitardo();
+			//GestioneMagazzinoDAO.getItemInRitardo();
 			logger.debug("Aggiornamento Stato Campione eseguito con successo dallo scheduler di Quartz!");
 			logger.error("Aggiornamento Stato Campione eseguito con successo dallo scheduler di Quartz!");
 			

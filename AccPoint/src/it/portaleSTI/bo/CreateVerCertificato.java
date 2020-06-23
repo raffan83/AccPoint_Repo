@@ -452,7 +452,7 @@ public class CreateVerCertificato {
 
 		reportP2.addParameter("campioni_prima_linea", CostantiCertificato.CAMPIONI_PRIMA_LINEA);
 		
-		if(misura.getDataScadenza()!=null) {
+		if(misura.getDataScadenza()!=null && conforme) {
 			reportP2.addParameter("data_scadenza", df.format(misura.getDataScadenza()));	
 		}else {
 			reportP2.addParameter("data_scadenza", "");

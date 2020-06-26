@@ -318,8 +318,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 									<%} %>
 	 									<%if(strumento.getStato_strumento().getId() != 7227){ %> 
 	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Cambia Stato</button>
-	 									
+	 									<% if(user.checkRuolo("AM")){ %>
 	 									<button  class="btn btn-danger" onClick="annullaStrumento('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Annulla</button>
+	 									<%} %>
 	 									<%}else{ %>
 	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Rimetti in servizio</button>
 	 									<%} %>

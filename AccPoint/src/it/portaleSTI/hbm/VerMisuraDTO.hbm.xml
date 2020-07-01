@@ -127,7 +127,46 @@
         <property name="numeroSigilli" type="int">
             <column name="numero_sigilli" />
         </property> 
+	
+	<property name="tInizio" type="double">
+            <column name="t_inizio" />
+        </property> 
         
+     <property name="tFine" type="double">
+      <column name="t_fine" />
+     </property> 
+     
+          <property name="altezza_org" type="double">
+      <column name="altezza_org" />
+     </property> 
         
+ <property name="altezza_util" type="double">
+      <column name="altezza_util" />
+     </property> 
+    
+     <property name="latitudine_org" type="double">
+      <column name="latitudine_org" />
+     </property> 
+   
+        <property name="latitudine_util" type="double">
+      <column name="latitudine_util" />
+     </property>          
+     
+      <property name="gOrg" type="double">
+      <column name="g_org" />
+     </property>         
+     
+     <property name="gUtil" type="double">
+      <column name="g_util" />
+     </property>     
+     
+          <property name="gFactor" type="double">
+      <column name="g_factor" />
+     </property>
+     
+     
+   <property name="tipoRisposta" type="int">
+      <column name="tipo_risposta" />
+     </property>      
     </class>
 </hibernate-mapping>

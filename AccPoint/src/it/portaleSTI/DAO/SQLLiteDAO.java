@@ -505,6 +505,7 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 												"  isDifetti varchar(1) default NULL," +
 												"  nome_riparatore varchar(100) default NULL," + 
 												"  data_riparazione varchar(50) default NULL," + 
+												"  tipo_risposta int(1) default NULL," + 
 												"  seq_risposte varchar(255) default NULL," + 
 												"  id_non_conforme int(1) default NULL,"+
 												"  campioni_lavoro varchar(512) default NULL,"+
@@ -513,7 +514,17 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 												" nomefile_inizio_prova varchar(255),"+
 												" file_fine_prova blob,"+
 												" nomefile_fine_prova varchar(255),"+
+												" tInizio decimal(10,2),"+
+												" tFine decimal(10,2),"+
+												" altezza_org decimal(10,2),"+
+												" altezza_util decimal(10,2),"+
+												" latitudine_org decimal(10,2),"+
+												" latitudine_util decimal(10,2),"+
+												" gOrg decimal(10,2),"+
+												" gUtil decimal(10,2),"+
+												" gFactor decimal(10,2),"+
 												" numeroSigilli int(1));";
+									
 			
 	private static String sqlCreateAccuratezzaVER="CREATE TABLE ver_accuratezza (id Integer primary key autoincrement," + 
 													"  id_misura int(11) ," + 
@@ -1464,6 +1475,7 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			strumento = new VerStrumentoDTO();
 			misura.setDataVerificazione(sdf.parse(rs.getString("data_verificazione")));
 			misura.setDataScadenza(sdf.parse(rs.getString("data_scadenza")));
+		//	misura.setTipoRisposta(rs.getInt("tipo_risposta"));
 			misura.setTipo_verifica(new VerTipoVerificaDTO(rs.getInt("tipo_verifica"),""));
 			misura.setMotivo_verifica(new VerMotivoVerificaDTO(rs.getInt("motivo_verifica"),""));
 			misura.setIs_difetti(rs.getString("isDifetti"));
@@ -1478,7 +1490,18 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			misura.setFile_fine_prova(rs.getBytes("file_fine_prova"));
 
 			misura.setNomeFile_fine_prova(rs.getString("nomefile_fine_prova").replace("'","_"));
-		//	misura.setNumeroSigiilli(rs.getInt("numeroSigilli"));
+		//	misura.settInizio(rs.getDouble("tInizio"));
+		//	misura.settFine(rs.getDouble("tFine"));
+		//	misura.setAltezza_org(rs.getDouble("altezza_org"));
+		//	misura.setAltezza_util(rs.getDouble("altezza_util"));
+		//	misura.setLatitudine_org(rs.getDouble("latitudine_org"));
+		//	misura.setLatitudine_util(rs.getDouble("latitudine_util"));
+		//	misura.setgOrg(rs.getDouble("gOrg"));
+		//	misura.setgUtil(rs.getDouble("gUtil"));
+		//	misura.setgFactor(rs.getDouble("gFactor"));
+			
+			
+			misura.setNumeroSigilli(rs.getInt("numeroSigilli"));
 
 			String dataRiparazione=rs.getString("data_riparazione");
 

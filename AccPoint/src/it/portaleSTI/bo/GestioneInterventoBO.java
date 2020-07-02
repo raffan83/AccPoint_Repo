@@ -549,7 +549,6 @@ public class GestioneInterventoBO {
 	public static ObjSavePackDTO saveDataDB_LAT(ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente,Session session) throws Exception {
 	InterventoDatiDTO interventoDati = new InterventoDatiDTO();
 		
-		StrumentoDTO nuovoStrumento=null;
 		int idStrumentoOrg=0;
 		try {
 						
@@ -583,7 +582,7 @@ public class GestioneInterventoBO {
 		   	if(misura.getStrumento().getCreato().equals("S") && misura.getStrumento().getImportato().equals("N"))
 		   		
 		    	{
-		    		nuovoStrumento=GestioneStrumentoBO.createStrumeto(misura.getStrumento(),intervento,session);
+		    		GestioneStrumentoBO.createStrumeto(misura.getStrumento(),intervento,session);
 
 		    		int nuoviStrumenti =intervento.getnStrumentiNuovi()+1;
 		    		intervento.setnStrumentiNuovi(nuoviStrumenti);
@@ -676,7 +675,7 @@ public class GestioneInterventoBO {
 						}	
 		    			
 		    		}
-		    		/*Livella a Bolla*/
+		    		/*Livella Elettronica*/
 		    		if(misuraLAT.getMisura_lat().getId()==2) 
 		    		{
 		    			ArrayList<LatPuntoLivellaElettronicaDTO> listaPuntiMisura = SQLLiteDAO.getListaPuntiLivellaElettronica(con,idMisuraLAT,idTemp);

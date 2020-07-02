@@ -134,7 +134,12 @@ public class CreateTestaPacco {
 				
 				SubreportBuilder subreport;
 		
+				if(lista_item_pacco.size()>0 && lista_item_pacco.get(0).getItem().getTipo_item().getId()==4) {
+					subreport = cmp.subreport(getTableReportRil(lista_item_pacco));
+				}else {
 					subreport = cmp.subreport(getTableReport(lista_item_pacco));
+				}
+					
 					report.addDetail(subreport);
 
 				report.setDataSource(new JREmptyDataSource());
@@ -232,6 +237,66 @@ public class CreateTestaPacco {
 	 		    return dataSource;
 	 	}
 
+	
+	@SuppressWarnings("deprecation")
+	public JasperReportBuilder getTableReportRil(List<MagItemPaccoDTO> lista_item_pacco) throws Exception{
+	 
+		JasperReportBuilder report = DynamicReports.report();
+
+		try {
+			
+			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()).setBackgroundColor(Color.WHITE));
+ 	 		report.addColumn(col.column("Codice della merce o servizio", "id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+ 	 		report.addColumn(col.column("Disegno", "disegno", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+ 	 		report.addColumn(col.column("Variante", "variante", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Pezzi in ingresso", "pezzi_ingresso", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 
+	 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
+			report.setDetailSplitType(SplitType.PREVENT);
+			
+			report.setDataSource(createDataSourceRil(lista_item_pacco));
+	  
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return report;
+	}
+	
+	
+	
+	
+private JRDataSource createDataSourceRil(List<MagItemPaccoDTO> lista_item_pacco)throws Exception {
+			
+		
+		String[] listaCodici = new String[4];
+		
+		listaCodici[0]="id_item";
+		listaCodici[1]="disegno";
+		listaCodici[2]="variante";
+		listaCodici[3]="pezzi_ingresso";	
+		
+		DRDataSource dataSource = new DRDataSource(listaCodici);
+		
+			for (MagItemPaccoDTO item_pacco : lista_item_pacco) {
+				
+				if(item_pacco!=null)
+				{
+					ArrayList<String> arrayPs = new ArrayList<String>();						
+					
+	 				arrayPs.add(String.valueOf(item_pacco.getItem().getId_tipo_proprio()));
+	 				arrayPs.add(item_pacco.getItem().getDisegno());	 
+	 				arrayPs.add(item_pacco.getItem().getVariante());	 
+	 				arrayPs.add(""+item_pacco.getItem().getPezzi_ingresso());
+	 					 			
+			         Object[] listaValori = arrayPs.toArray();
+			        
+			         dataSource.add(listaValori);
+				}
+			
+			}
+ 		    return dataSource;
+ 	}
 
 
 	public boolean isEsito() {

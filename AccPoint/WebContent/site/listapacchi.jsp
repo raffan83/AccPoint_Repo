@@ -813,7 +813,13 @@ ${pacco.id}
 	<label>Tipo Item</label>
 	<select name="tipo_item" id="tipo_item" data-placeholder="Seleziona Tipo item" class="form-control select2"  aria-hidden="true" data-live-search="false" style="width:100%">
 		<c:forEach items="${lista_tipo_item}" var="tipo_item">
+			<c:if test="${tipo_item.id==1 }">
+			<option value="${tipo_item.id}" selected>${tipo_item.descrizione}</option>
+			</c:if>
+			<c:if test="${tipo_item.id!=1 }">
 			<option value="${tipo_item.id}">${tipo_item.descrizione}</option>
+			</c:if>
+			
 		</c:forEach>
 		
 	</select>
@@ -836,7 +842,7 @@ ${pacco.id}
 
 
 
- <div class="form-group">
+ <div class="form-group" id="item_gen">
  <label>Item Nel Pacco</label>
  <div class="table-responsive">
 <table id="tabItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -863,6 +869,37 @@ ${pacco.id}
  </div>
  
  </div>
+ 
+ 
+ 
+ 
+ <div class="form-group" id="item_rilievi" style="display:none">
+ <label>Item Nel Pacco</label>
+ <div class="table-responsive">
+<table id="tabItemRil" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+  <th>Disegno</th>
+ <th>Variante</th>
+ <th>Pezzi in ingresso</th>
+
+ <td><label>Action</label></td>
+
+ </tr></thead>
+ 
+ <tbody>
+
+</tbody>
+ </table>
+ </div>
+ 
+ </div>
+ 
+ 
+ 
+ 
+ 
+ 
  <div class="col-12">
   <label>Note</label></div>
  <textarea id="note_pacco" name="note_pacco" rows="5" style="width:100%"></textarea>
@@ -875,6 +912,7 @@ ${pacco.id}
      <div class="modal-footer">
 
 		<input type="hidden" class="pull-right" id="json" name="json">
+		<input type="hidden" class="pull-right" id="json_rilievi" name="json_rilievi">
 		<input type="hidden" class="pull-right" id="configurazione" name="configurazione">
 		<button class="btn btn-default pull-left" onClick="chooseSubmit()" id="button_submit"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button>
 		<%-- <c:choose>
@@ -908,12 +946,40 @@ ${pacco.id}
        
        <div id="listaItemTop"></div><br>
        <div id="listaItem"></div>
-			 
+		<div id="listaRilievi" style="display:none">
+			<div class="row">
+			<div class="col-xs-3">
+			<label>Disegno</label>
+			</div>
+			<div class="col-xs-9">
+				<input type="text" class="form-control" id="disegno" name="disegno" required/>
+			</div>
+			</div><br>
+		
+			<div class="row">
+			<div class="col-xs-3">
+			<label>Variante</label>
+			</div>
+			<div class="col-xs-9">
+				<input type="text" class="form-control" id="variante" name="variante" required/>
+			</div>
+			</div><br>
+			
+				<div class="row">
+			<div class="col-xs-3">
+			<label>Numero Pezzi in ingresso</label>
+			</div>
+			<div class="col-xs-9">
+				<input type="number" min="0" step="1" class="form-control" id="pezzi_ingresso" name="pezzi_ingresso" required/>
+			</div>
+			</div><br>
+		</div>	 
    
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
 
+			<a id="btn_save_rilievo" class="btn btn-primary" style="display:none" onClick="insertRilievo()">Inserisci</a>
        
       </div>
     </div>
@@ -1063,6 +1129,29 @@ ${pacco.id}
       <input type="hidden" id="id_pacco_elimina">
       <a class="btn btn-primary" onclick="eliminaAllegatoMagazzino($('#id_allegato_elimina').val(),$('#id_pacco_elimina').val())" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div id="myModalRilItem" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      <div id="modalContent"></div>
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="ril_item">
+      
+      <a class="btn btn-primary" onclick="changeTable()" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalRilItem').modal('hide')" >NO</a>
       </div>
     </div>
   </div>
@@ -1243,6 +1332,199 @@ ${pacco.id}
 <script type="text/javascript">
 
 
+var items_rilievo = [];
+
+function insertRilievo(){
+	
+	
+	
+	if($('#disegno').val()=='' || $('#variante').val()=='' || $('#pezzi_ingresso').val()==''){
+		
+		$('#myModalErrorContent').html('Attenzione! Inserisci tutti i campi!');
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal();
+		
+	}else{
+		
+		
+		var flag = true;
+		
+		if(items_rilievo.length>0){
+		
+			for(var i = 0; i<items_rilievo.length; i++){
+				if(items_rilievo[i].disegno == $('#disegno').val()){
+					flag = false;
+				}
+			}
+		}
+		
+		if(flag){
+			
+			var rilievo = {};
+			
+			rilievo.disegno = $('#disegno').val();
+			rilievo.variante = $('#variante').val();
+			rilievo.pezzi_ingresso = $('#pezzi_ingresso').val();
+			rilievo.action = '<button class="btn btn-danger" onClick="eliminaRilievoTable(\''+ $('#disegno').val()+'\')"><i class="fa fa-trash"></i></button>';
+			
+			items_rilievo.push(rilievo)
+			
+			   var table_ril = $('#tabItemRil').DataTable();
+				  
+			table_ril.clear().draw();
+			   
+			table_ril.rows.add(items_rilievo).draw();
+			    
+			table_ril.columns().eq( 0 ).each( function ( colIdx ) {
+			  	  $( 'input', table_ril.column( colIdx ).header() ).on( 'keyup', function () {
+			  	      table
+			  	          .column( colIdx )
+			  	          .search( this.value )
+			  	          .draw();
+			  	  } );
+			  	} ); 
+			table_ril.columns.adjust().draw();
+
+		}else{
+			
+			$('#myModalErrorContent').html('Attenzione! Hai gi&agrave; inserito questo disegno!');
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal();
+			
+		}
+
+		
+	}
+	
+	
+
+
+}
+
+var previous = $('#tipo_item').val(); 
+
+
+$('#tipo_item').change(function(event, clickedIndex, newValue, oldValue){
+	
+	$('#listaRilievi').hide();
+	$('#btn_save_rilievo').hide();
+
+	
+	   var table_ril = $('#tabItemRil').DataTable();
+	   
+	   var table_item = $('#tabItem').DataTable();
+	
+		   
+		var row_ril = table_ril.rows().data();
+		var row_item = table_item.rows().data();
+	
+	
+	if($(this).val()==4){
+		
+		if(row_item.length>0){			
+	
+    				
+    				  $('#modalContent').html("Attenzione! Non &egrave; possibile aggiungere un rilievo al pacco contenente altri item!<br>Vuoi eliminare gli item e inserire rilievi?");    				 
+    	        
+          			 $("#myModalRilItem").modal();
+          			 $('#ril_item').val(previous);
+			
+		}else{
+			$('#item_gen').hide();
+			$('#item_rilievi').show();	
+		}		
+		
+		
+	}else{
+		
+		if(row_ril.length>0){
+	
+				  $('#modalContent').html("Attenzione! Non &egrave; possibile aggiungere un item al pacco contenente rilievi dimensionali!<br>Vuoi eliminare i rilievi e inserire altri item?");
+				 
+      			 $("#myModalRilItem").modal();
+      			$('#ril_item').val(previous);
+		}else{
+			$('#item_gen').show();
+			$('#item_rilievi').hide();
+		}
+		
+	}
+	previous = $(this).val();
+	
+}); 
+
+
+$('#myModalRilItem').on('hidden.bs.modal',function(){
+	
+	if($('#tipo_item').val()!=$('#ril_item').val()){
+		$('#tipo_item').val($('#ril_item').val());
+		$('#tipo_item').change();	
+	}
+	
+});
+
+function changeTable(){
+	
+	$('#ril_item').val($('#tipo_item').val());
+	$('#myModalRilItem').modal('hide');
+	$('#listaRilievi').hide();
+	$('#btn_save_rilievo').hide();
+	
+	if($('#tipo_item').val()==4){
+		
+		  var tab = $('#tabItem').DataTable();
+		  items_json =[];
+		  tab.clear().draw();
+		$('#item_gen').hide();
+		$('#item_rilievi').show();	
+		
+		
+	}else{
+		  var tab = $('#tabItemRil').DataTable();
+		  items_rilievo = [];
+		  tab.clear().draw();
+		$('#item_gen').show();
+		$('#item_rilievi').hide();
+	}
+	
+}
+
+
+function eliminaRilievoTable(disegno){
+	
+	new_items_rilievo=[];
+	
+	items_rilievo.forEach( function (item){
+			if(item.disegno == disegno){
+				
+			}else{
+				new_items_rilievo.push(item);
+			}
+			
+		});
+		
+
+	items_rilievo = new_items_rilievo;
+	
+	   var table_ril = $('#tabItemRil').DataTable();
+		  
+		table_ril.clear().draw();
+		   
+		table_ril.rows.add(items_rilievo).draw();
+		    
+		table_ril.columns().eq( 0 ).each( function ( colIdx ) {
+		  	  $( 'input', table_ril.column( colIdx ).header() ).on( 'keyup', function () {
+		  		table_ril
+		  	          .column( colIdx )
+		  	          .search( this.value )
+		  	          .draw();
+		  	  } );
+		  	} ); 
+		table_ril.columns.adjust().draw();
+}
+
 function pacchiEsterno(){
 	
 	dataString = "?action=pacchi_esterno";
@@ -1290,12 +1572,7 @@ $("#filtro_commessa").on('change', function(){
     .draw();
 });
 	
-/* var commessa = "${commessa}";
 
-if(commessa!=null){
-	$('#filtro_commessa option[value="${commessa}"]').attr("selected", true);
-	
-} */
 
 
 function filtraPacchiPerData(){
@@ -1703,20 +1980,6 @@ function DDTFormSumbit(conf){
 	}
 	
 
-/* 	if($('#numero_ddt_ddt').val()!=""){
-	pleaseWaitDiv = $('#pleaseWaitDialog');
-	  pleaseWaitDiv.modal();
-	  $('#configurazione_ddt').val(conf);
-	  $("#DDTForm").submit();
-	}else{
-		$('#report_button').hide();
-		  $('#visualizza_report').hide();
-            	$('#myModalErrorContent').html("Attenzione! Inserisci un numero per il DDT!");
-            	$('#myModalError').removeClass();
-        		  $('#myModalError').addClass("modal modal-danger");
-        		  
-        		  $('#myModalError').modal('show');
-	} */
 	
 }
 
@@ -1742,20 +2005,7 @@ function dettaglioPaccoFromOrigine(origine){
 	
 }
 
-/* $('#tabPM').on( 'dblclick','tr', function () {  
-	 
-		var id = $(this).attr("id");		
-		var tb = $('#tabPM').DataTable();
-		
-	//	var row = table.row('#'+id);
-		var row = tb.row('#'+id);
-		data = row.data();
-		var x = stripHtml(data[22]);
 
-		
-	}); */
-
-	
 
 
 
@@ -1853,8 +2103,10 @@ function inserisciItem(){
 		}); 
 		
 		var json_data = JSON.stringify(items_json);
+		var json_ril = JSON.stringify(items_rilievo);
 		$('#configurazione').val(configurazione);
 		$('#json').val(json_data);
+		$('#json_rilievi').val(json_ril);
 		$('#codice_pacco').attr('required', 'true');
 		var esito = validateForm();
 
@@ -2153,22 +2405,11 @@ function cambiaNota(){
 	    
 	    columsDatatables = state.columns;
 	    } 
-  	    $('#tabPM thead th').each( function () {
+   	    $('#tabPM thead th').each( function () {
 	    	  $('#inputsearchtable_'+$(this).index()).val(columsDatatables[$(this).index()].search.search);
 	    	 
 	    	}); 
-	    
-	    
-/* 		if($('#inputsearchtable_14').val()=='CHIUSO'){
-	 		$('#btnFiltri_CHIUSO').attr('disabled', true);
-	 	}
-	 	else if($('#inputsearchtable_14').val()=='APERTO'){
-	 		$('#btnFiltri_APERTO').attr('disabled', true);
-	 	}
-	 	else{
-	 		$('#btnTutti').attr('disabled', true);
-	 	}
-	     */
+	     
 
 	} ); 
  
@@ -2346,9 +2587,9 @@ $(document).ready(function() {
      	
     	var title = $('#tabItem thead th').eq( $(this).index() ).text();
     	
-    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" id=search_item_'+$(this).index()+' type="text"  value=""/></div>');
+    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" id="search_item_'+$(this).index()+'" type="text"  value=""/></div>');
     	
-    	} );
+    	});
 	
 	
 
@@ -2359,7 +2600,24 @@ $(document).ready(function() {
 	
 	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	
-	} ); 
+	});
+     
+     
+     
+     
+	var columsDatatables3 = [];
+	
+    $('#tabItemRil thead th').each( function () {
+     	
+    	var title = $('#tabItemRil thead th').eq( $(this).index() ).text();
+    	
+    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" id="search_item_ril_'+$(this).index()+'" type="text"  value=""/></div>');
+    	
+    	});
+	
+	
+
+
     
      
      var stato="${stato}";
@@ -2603,6 +2861,84 @@ table_item.buttons().container().appendTo( '#tabItem_wrapper .col-sm-6:eq(1)');
 
 
 $('#tabItem').on( 'page.dt', function () {
+$('.customTooltip').tooltipster({
+    theme: 'tooltipster-light'
+});
+
+$('.removeDefault').each(function() {
+   $(this).removeClass('btn-default');
+})
+
+
+});
+
+
+
+
+
+table_item_ril = $('#tabItemRil').DataTable({
+	language: {
+        	emptyTable : 	"Nessun dato presente nella tabella",
+        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+        	infoPostFix:	"",
+        infoThousands:	".",
+        lengthMenu:	"Visualizza _MENU_ elementi",
+        loadingRecords:	"Caricamento...",
+        	processing:	"Elaborazione...",
+        	search:	"Cerca:",
+        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+        	paginate:	{
+	        	first:	"Inizio",
+	        	previous:	"Precedente",
+	        	next:	"Successivo",
+	        last:	"Fine",
+        	},
+        aria:	{
+	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+        }
+    },
+    pageLength: 10,
+      paging: true, 
+      ordering: true,
+      info: true, 
+      searchable: false, 
+      targets: 0,
+      responsive: true,
+      scrollX: false,
+      stateSave: false,
+     columns : [
+     	 
+     	{"data" : "disegno"},
+     	{"data" : "variante"},
+     	{"data" : "pezzi_ingresso"},
+     	 {"data" : "action"}
+     ],	
+      columnDefs: [
+			   { responsivePriority: 1, targets: 0 },
+                   { responsivePriority: 2, targets: 1 },
+                   { responsivePriority: 3, targets: 2 }
+               ],
+               buttons: [   
+       	          {
+       	            extend: 'colvis',
+       	            text: 'Nascondi Colonne'  	                   
+      			  } ]
+
+    	
+    });
+
+table_item_ril.buttons().container().appendTo( '#tabItemRil_wrapper .col-sm-6:eq(1)');
+
+
+	    $('.inputsearchtable').on('click', function(e){
+	       e.stopPropagation();    
+	    }); 
+
+
+$('#tabItemRil').on( 'page.dt', function () {
 $('.customTooltip').tooltipster({
     theme: 'tooltipster-light'
 });

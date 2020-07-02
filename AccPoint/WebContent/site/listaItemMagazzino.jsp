@@ -125,6 +125,7 @@
      <div class="row">
      <div class = col-sm-6>
      	<button class="btn btn-primary customTooltip" onClick="itemEsterno()" title="Click per visualizzare gli Item fuori dal magazzino" >Item all'esterno</button>
+     	<button class="btn btn-primary customTooltip" onClick="itemInMagazzino()" title="Click per visualizzare gli Item in magazzino" style="margin-left:5px">Item in magazzino</button>
      
      
      </div>
@@ -134,6 +135,51 @@
 <button class="btn btn-primary btnFiltri pull-right" id="btnTutti" onClick="filtraItemPacchi('tutti')" style="margin-right:3px">TUTTI</button>
 </div>
      </div><br>
+     
+     
+     
+     
+      <div class="row" style="margin-top:15px">
+ <div class="col-xs-2">
+ <div class="row" >
+ <div class="col-xs-12">
+ <label for="tipo_data" class="control-label">Tipo Data:</label>
+ <select class="form-control select2" data-placeholder="Seleziona Tipo di Data..."  aria-hidden="true" data-live-search="true" style="width:100%" id="tipo_data" name="tipo_data">
+ <option value=""></option>
+ <option value="1">Data Creazione</option>
+ <option value="2">Data Arrivo/Rientro</option>
+ <option value="3">Data Spedizione</option>
+ </select>
+ </div>
+ </div> 
+ </div>
+	<div class="col-xs-5">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Ricerca Date:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraPacchiPerData()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
+
+	</div>
+
+
+</div>
+     
+     
+     
+     
+     
+     
 <div class="row">
 <div class="col-sm-12">
   <table id="tab_lista_item" class="table table-bordered table-hover dataTable table-striped" role="grid">
@@ -176,6 +222,7 @@
   <td>
 <c:if test="${item_pacco.pacco.origine!='' && item_pacco.pacco.origine!=null}">
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(item_pacco.pacco.origine.split('_')[1])}')">${item_pacco.pacco.origine}</a>
+<%-- <a class="btn btn-info customTooltip btn-xs" title="Visualizza storico pacco" onClick="modalStoricoPacco(${item_pacco.pacco.origine})"><i class="fa fa-history"></i></a> --%>
 </c:if>
 </td>
   <td>${item_pacco.item.descrizione}</td>
@@ -372,12 +419,29 @@ ${item_pacco.pacco.ddt.numero_ddt} del <fmt:formatDate pattern = "dd/MM/yyyy" va
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
-	
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>	
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
   <script type="text/javascript" src="js/customCharts.js"></script>
+  <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <script type="text/javascript">
 
+function resetDate(){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+	callAction("listaItem.do");
+
+}
+
+function itemInMagazzino(){
+	
+	dataString = "?action=item_magazzino";
+
+pleaseWaitDiv = $('#pleaseWaitDialog');
+pleaseWaitDiv.modal();
+
+callAction("listaItem.do"+ dataString, false,true);
+}
 
  $("#tab_lista_item").on( 'init.dt', function ( e, settings ) {
     var api = new $.fn.dataTable.Api( settings );
@@ -447,6 +511,45 @@ function tornaItem(){
 	callAction("listaItem.do"+ dataString, false,true);
 }
 
+
+
+function filtraPacchiPerData(){
+	
+	var tipo_data = $('#tipo_data').val();
+	
+	if(tipo_data==""){
+		$('#myModalErrorContent').html("Attenzione! Nessun Tipo Di Data Selezioneato!");
+		$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");
+		$('#myModalError').modal('show');
+	}else{
+		
+		var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+	 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+	 	dataString = "?action=filtraDate&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+	 			endDatePicker.format('YYYY-MM-DD')+"&tipo_data="+tipo_data;
+	 	
+	 	 pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+	 	callAction("listaItem.do"+ dataString, false,true);
+	 	
+		
+	}
+}
+
+function formatDate(data){
+	
+	   var mydate = new Date(data);
+	   
+	   if(!isNaN(mydate.getTime())){
+	   
+		   str = mydate.toString("dd/MM/yyyy");
+	   }			   
+	   return str;	 		
+}
+
+
 var columsDatatables = [];
 $(document).ready(function(){
 	
@@ -467,6 +570,28 @@ $(document).ready(function(){
 		$('#btnFiltri_APERTO').attr('disabled', true);
 		
 	}
+    
+    
+    var start = "${dateFrom}";
+ 	var end = "${dateTo}";
+
+ 	$('input[name="datarange"]').daterangepicker({
+	    locale: {
+	      format: 'DD/MM/YYYY'
+	    
+	    }
+	}, 
+	function(start, end, label) {
+
+	});
+ 	
+ 	if(start!=null && start!=""){
+	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
+	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
+	
+	 	$("#tipo_data option[value='']").remove();
+	 	$('#tipo_data option[value="${tipo_data}"]').attr("selected", true);
+	 }
 
     $('#tab_lista_item thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
@@ -569,8 +694,9 @@ $(document).ready(function(){
 	
 	 
 	 var item_esterno = ${item_esterno};
+	 var item_magazzino = ${item_magazzino};
 	 
-	 if(item_esterno){
+	 if(item_esterno||item_magazzino){
 		 $('#tornaItem').show();
 	 }else{
 		 $('#tornaItem').hide();
@@ -656,12 +782,15 @@ function creaGrafico(){
 	var in_lavorazione=0;
 	if(item_pacco_json!=null){
 	item_pacco_json.forEach(function(idx){
-		if(idx.item.stato.id==1){
-			in_lavorazione++;
+		if(idx.item.tipo_item.id!=4){
+			if(idx.item.stato.id==1){
+				in_lavorazione++;
+			}
+			else if(idx.item.stato.id==2){
+				lavorati++;
+			}
 		}
-		else if(idx.item.stato.id==2){
-			lavorati++;
-		}
+		
 		
 	});
 	}

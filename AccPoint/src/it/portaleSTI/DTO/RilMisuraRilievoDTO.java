@@ -32,7 +32,7 @@ public class RilMisuraRilievoDTO {
 	private int disabilitato;
 	private int scheda_consegna;
 	private String numero_scheda;
-	
+	private int pezzi_ingresso;
 	 
 	public int getN_pezzi_tot() {
 		return n_pezzi_tot;
@@ -202,5 +202,11 @@ public class RilMisuraRilievoDTO {
 	}
 	public void setNumero_scheda(String numero_scheda) {
 		this.numero_scheda = numero_scheda;
+	}
+	public int getPezzi_ingresso() {
+		return pezzi_ingresso;
+	}
+	public void setPezzi_ingresso(int pezzi_ingresso) {
+		this.pezzi_ingresso = pezzi_ingresso;
 	}
 }

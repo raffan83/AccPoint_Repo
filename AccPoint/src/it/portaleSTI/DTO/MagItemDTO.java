@@ -18,6 +18,10 @@ public class MagItemDTO implements Serializable{
 	private String matricola;
 	private String codice_interno;
 	private MagAttivitaItemDTO attivita_item;
+	
+	private String disegno;
+	private String variante;
+	private int pezzi_ingresso;
 
 	
 	public String getMatricola() {
@@ -91,6 +95,24 @@ public class MagItemDTO implements Serializable{
 	}
 	public void setAttivita_item(MagAttivitaItemDTO attivita_item) {
 		this.attivita_item = attivita_item;
+	}
+	public String getDisegno() {
+		return disegno;
+	}
+	public void setDisegno(String disegno) {
+		this.disegno = disegno;
+	}
+	public String getVariante() {
+		return variante;
+	}
+	public void setVariante(String variante) {
+		this.variante = variante;
+	}
+	public int getPezzi_ingresso() {
+		return pezzi_ingresso;
+	}
+	public void setPezzi_ingresso(int pezzi_ingresso) {
+		this.pezzi_ingresso = pezzi_ingresso;
 	}
 	
 

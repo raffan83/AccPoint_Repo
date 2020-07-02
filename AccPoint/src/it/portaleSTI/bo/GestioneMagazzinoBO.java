@@ -457,6 +457,16 @@ public static String getDataRicevimentoItem(StrumentoDTO strumento, Session sess
 	return GestioneMagazzinoDAO.getDataRicevimentoItem(strumento,session);
 }
 
+public static ArrayList<MagItemPaccoDTO> getListaStrumentiInMagazzino(Session session) {
+	
+	return GestioneMagazzinoDAO.getListaStrumentiInMagazzino(session);
+}
+
+public static ArrayList<MagItemPaccoDTO> getListaItemPaccoPerData(String dateFrom, String dateTo, String tipo_data, int stato, Session session) throws Exception {
+	
+	return GestioneMagazzinoDAO.getListaItemPaccoPerData(dateFrom, dateTo, tipo_data, stato, session);
+}
+
 
 
 

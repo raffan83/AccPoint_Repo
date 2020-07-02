@@ -182,7 +182,7 @@ String permesso = "0";
 </div>
 
 
- <div class="form-group">
+ <div class="form-group" id="tabItemGeneral">
  <label>Item Nel Pacco</label>
 <table id="tabItems" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
@@ -270,6 +270,58 @@ String permesso = "0";
  
  
  </div>
+ 
+ 
+ 
+ <div class="form-group" id="tabItemRilievi" style="display:none">
+ <label>Item Nel Pacco</label>
+<table id="tabItemsRil" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+ <th>ID Rilievo</th>
+ <th>Disegno</th>
+ <th>Variante</th>
+ <th>Pezzi in ingresso</th>
+ <th>Azioni</th>
+
+
+<%-- <th hidden="hidden"></th> --%>
+ <th hidden="hidden"></th>
+ </tr></thead>
+ 
+ <tbody id="tbodyitem">
+ 
+  <c:forEach items="${lista_item_pacco}" var="item_pacco" varStatus="loop">
+  <tr>
+
+  <td>
+  
+  <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${utl:encryptData(item_pacco.item.id_tipo_proprio)}')">${item_pacco.item.id_tipo_proprio}</a></td>
+
+  <td>${item_pacco.item.disegno }</td>
+  <td>${item_pacco.item.variante }</td>
+  <td>${item_pacco.item.pezzi_ingresso }</td> 
+ 
+ <td>
+<%--  <a class="btn btn-primary pull-center customTooltip"  title="Click per cambiare lo stato dell'Item"   onClick="cambiaStatoItem('${item_pacco.item.id}','${item_pacco.item.stato.id}')"><i class="glyphicon glyphicon-refresh"></i></a>
+ <c:if test="${item_pacco.item.tipo_item.id==1 }">
+ <a class="btn btn-warning pull-center customTooltip"  title="Click per modificare l'Item"   onClick="modificaCampiItemModal('${item_pacco.item.id}','${item_pacco.item.matricola }','${item_pacco.item.codice_interno }','${item_pacco.item.descrizione }')"><i class="glyphicon glyphicon-pencil"></i></a> 
+ </c:if> --%>
+ </td>
+
+  <td hidden="hidden">${item_pacco.item.id }</td>
+  </tr>
+  
+  </c:forEach>
+ 
+
+</tbody>
+ </table>
+ 
+ 
+ </div>
+ 
+ 
  
 
 <%--  <c:if test="${userObj.checkPermesso('ACCETTAZIONE_PACCO') && pacco.stato_lavorazione.id==1}"> --%>
@@ -967,8 +1019,11 @@ String permesso = "0";
                 <li class="list-group-item">
 	<label>Tipo Item</label>
 	<select name="tipo_item" id="tipo_item" data-placeholder="Seleziona Tipo item" class="form-control select2"  aria-hidden="true" data-live-search="false" style="width:100%">
-		<c:forEach items="${lista_tipo_item}" var="tipo_item">
-			<option value="${tipo_item.id}">${tipo_item.descrizione}</option>
+	<option value=""></option>
+		<c:forEach items="${lista_tipo_item}" var="tipo">
+
+			<option value="${tipo.id}">${tipo.descrizione}</option>
+
 		</c:forEach>
 		
 	</select>
@@ -992,7 +1047,7 @@ String permesso = "0";
 
 
 
- <div class="form-group">
+ <div class="form-group" id="tabModGeneral">
  <label>Item Nel Pacco</label>
  <div class="table-responsive">
  <table id="tabItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -1019,6 +1074,33 @@ String permesso = "0";
  
  </div>
  
+ 
+ 
+ 
+  <div class="form-group" id="tabModRilievi">
+ <label>Item Nel Pacco</label>
+ <div class="table-responsive">
+ <table id="tabItemModRil" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+ <th>ID Item</th>
+  <th>Disegno</th>
+ <th>Variante</th>
+ <th>Pezzi in ingresso</th>
+
+ <td><label>Action</label></td>
+
+ </tr></thead>
+ 
+ <tbody id="tbodymodificaRil">
+
+</tbody>
+ </table> 
+ </div>
+ 
+ </div>
+ 
+ 
+ 
   <div class="col-12">
   <label>Note</label></div>
  <textarea id="note_pacco" name="note_pacco" rows="5"  style="width:100%">${pacco.note_pacco }</textarea>
@@ -1031,6 +1113,7 @@ String permesso = "0";
      <div class="modal-footer">
 
 		<input type="hidden" class="pull-right" id="json" name="json">
+		<input type="hidden" class="pull-right" id="json_rilievi" name="json_rilievi">
 		<input type="hidden" class="pull-right" id="select_nota_pacco" name="select_nota_pacco">
 		<input type="hidden" class="pull-right" id="id_pacco" name="id_pacco">
 		<input type="hidden" class="pull-right" id="id_ddt" name="id_ddt">
@@ -1061,12 +1144,39 @@ String permesso = "0";
        <div class="modal-body">
        <div id="listaItemTop"></div><br>
        <div id="listaItem"></div>
-			 
+			 <div id="listaRilievi" style="display:none">
+			<div class="row">
+			<div class="col-xs-3">
+			<label>Disegno</label>
+			</div>
+			<div class="col-xs-9">
+				<input type="text" class="form-control" id="disegno" name="disegno" required/>
+			</div>
+			</div><br>
+		
+			<div class="row">
+			<div class="col-xs-3">
+			<label>Variante</label>
+			</div>
+			<div class="col-xs-9">
+				<input type="text" class="form-control" id="variante" name="variante" required/>
+			</div>
+			</div><br>
+			
+				<div class="row">
+			<div class="col-xs-3">
+			<label>Numero Pezzi in ingresso</label>
+			</div>
+			<div class="col-xs-9">
+				<input type="number" min="0" step="1" class="form-control" id="pezzi_ingresso" name="pezzi_ingresso" required/>
+			</div>
+			</div><br>
+		</div>	 
    
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-
+<a id="btn_save_rilievo" class="btn btn-primary" style="display:none" onClick="insertRilievo()">Inserisci</a>
        
       </div>
     </div>
@@ -1093,6 +1203,28 @@ String permesso = "0";
   </div>
 </div>
    
+<div id="myModalRilItem" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      <div id="modalContent"></div>
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="ril_item">
+      
+      <a class="btn btn-primary" onclick="changeTable()" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalRilItem').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 
   <div id="myModalAllegatiPacco" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
@@ -1400,40 +1532,52 @@ String permesso = "0";
 		};
  
 		var fornitore = "${pacco.ddt.id_destinatario}"+"_"+"${pacco.fornitore}";
+		
 	function modificaPaccoSubmit(configurazione){
 		
 
-		 
- 		items_json.forEach(function(item, index){
-
-			item.note=$('#note_item_'+item.id_proprio).val();
 		
-			if($('#priorita_item_'+item.id_proprio).is( ':checked' ) ){
-				 item.priorita=1;
-			}else{
-				 item.priorita=0;
-			 }
+			items_json.forEach(function(item, index){
+
+				item.note=$('#note_item_'+item.id_proprio).val();
 			
-			if($('#attivita_item_'+item.id_proprio).val()!=null){
-				item.attivita = $('#attivita_item_'+item.id_proprio).val();
-			}else{
-				item.attivita="";
-			}
-			if($('#destinazione_item_'+item.id_proprio).val()!=null){
-				item.destinazione = $('#destinazione_item_'+item.id_proprio).val();
-			}else{
-				item.destinazione= "";
-			}
+				if($('#priorita_item_'+item.id_proprio).is( ':checked' ) ){
+					 item.priorita=1;
+				}else{
+					 item.priorita=0;
+				 }
+				
+				if($('#attivita_item_'+item.id_proprio).val()!=null){
+					item.attivita = $('#attivita_item_'+item.id_proprio).val();
+				}else{
+					item.attivita="";
+				}
+				if($('#destinazione_item_'+item.id_proprio).val()!=null){
+					item.destinazione = $('#destinazione_item_'+item.id_proprio).val();
+				}else{
+					item.destinazione= "";
+				}
+				
+			}); 
+	 		
+			var json_data = JSON.stringify(items_json);
+			$('#json').val(json_data);
 			
-		}); 
+		if(rilievi){
+			
+			
+	 		
+			var json_data = JSON.stringify(items_rilievo);
+			$('#json_rilievi').val(json_data);
+		}
  		
-		var json_data = JSON.stringify(items_json);
 		
 		var id_pacco= ${pacco.id};
 		var id_ddt = ${pacco.ddt.id};
 		var nota_pacco = '${pacco.tipo_nota_pacco.id}'
 		var origine = '${pacco.origine}';
-		$('#json').val(json_data);
+		
+		
 		$('#select_nota_pacco').val(nota_pacco);
 		
 		$('#id_pacco').val(id_pacco);
@@ -1808,8 +1952,9 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 	 initSelect2('#cliente_utilizzatore');
 	 id_cliente_utilizzatore = utilizzatore;
 	 id_sede_utilizzatore = sede_utilizzatore;
-
-	 modificaPacco(attivita_json);
+	 
+	 
+	 modificaPacco(attivita_json, rilievi);
 	 
  }
  	
@@ -1882,6 +2027,21 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 	   
 	}
 	
+	
+	
+	 function dettaglioRilievo(id_rilievo) {
+			
+		 var cliente =  '${utl:encryptData(pacco.id_cliente_util)}';
+		 
+		  var filtro =  '${utl:encryptData(0)}';
+
+	 	 //dataString = "?action=dettaglio&id_rilievo="+id_rilievo+"&cliente_filtro="+$('#cliente_filtro').val()+"&filtro_rilievi=" +$('#filtro_rilievi').val();
+		 dataString = "?action=dettaglio&id_rilievo="+id_rilievo+"&cliente_filtro="+cliente+"&filtro_rilievi="+filtro; 
+	 	 
+		  callAction("gestioneRilievi.do"+dataString, false, false);
+	 }
+	
+	
 	var columsDatatables1 = [];
 	  
 	$("#tabItems").on( 'init.dt', function ( e, settings ) {
@@ -1902,9 +2062,50 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 
 	} );
 	
+	
+	
+	var columsDatatables4 = [];
+	  
+	$("#tabItemsRil").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    		columsDatatables1 = state.columns;
+	    }
+	    
+	    $('#tabItemsRil thead th').each( function () {
+	    	if(columsDatatables4.length==0 || columsDatatables4[$(this).index()]==null ){columsDatatables4.push({search:{search:""}});}
+	    	var title = $('#tabItemsRil thead th').eq( $(this).index() ).text();
+	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables4[$(this).index()].search.search+'" type="text" /></div>');
+	    	} );
+
+	} );
+	
+	
  //  	 var columsDatatables2 = [];
 	  
  	$("#tabItem").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    columsDatatables2 = state.columns;
+	    }
+	  /*   $('#tabItem thead th').each( function () {
+	     	if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
+	    	var title = $('#tabItem thead th').eq( $(this).index() ).text();
+	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
+	    	} ); */
+
+	} );    
+ 	
+ 	
+ 	$("#tabItemModRil").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
 	    var state = api.state.loaded();
 	 
@@ -2027,13 +2228,247 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 		$('#myModalYesOrNo').modal();
 	}
 	
+	
+/* 	$('#tipo_item').change(function(){
+		
+		$('#tabModRilievi').hide();
+		$('#btn_save_rilievo').hide();
+		
+		
+		if($(this).val()==4){
+			$('#tabModGeneral').hide();
+			$('#tabModRilievi').show();
+			
+		}else{
+			$('#tabModRilievi').hide();
+			$('#tabModGeneral').show();
+		}
+		
+	}); */
+	
+	var previous = $('#tipo_item').val(); 
+
+
+	$('#tipo_item').change(function(event, clickedIndex, newValue, oldValue){
+		
+		$('#tabModRilievi').hide();
+		$('#btn_save_rilievo').hide();
+
+		
+		   var table_ril = $('#tabItemModRil').DataTable();
+		   
+		   var table_item = $('#tabItem').DataTable();
+		
+			   
+			var row_ril = table_ril.rows().data();
+			var row_item = table_item.rows().data();
+		
+		
+		if($(this).val()==4){
+			
+			if(row_item.length>0){			
+		
+	    				
+	    				  $('#modalContent').html("Attenzione! Non &egrave; possibile aggiungere un rilievo al pacco contenente altri item!<br>Vuoi eliminare gli item e inserire rilievi?");    				 
+	    	        
+	          			 $("#myModalRilItem").modal();
+	          			 $('#ril_item').val(previous);
+	          			 
+				
+			}else{
+				$('#tabModGeneral').hide();
+				$('#tabModRilievi').show();	
+			}		
+			rilievi = true;
+			
+		}else{
+			
+			if(row_ril.length>0){
+		
+					  $('#modalContent').html("Attenzione! Non &egrave; possibile aggiungere un item al pacco contenente rilievi dimensionali!<br>Vuoi eliminare i rilievi e inserire altri item?");
+					 
+	      			 $("#myModalRilItem").modal();
+	      			$('#ril_item').val(previous);
+			}else{
+				$('#tabModGeneral').show();
+				$('#tabModRilievi').hide();
+			}
+			rilievi = false;
+		}
+		previous = $(this).val();
+		
+	}); 
+
+
+	$('#myModalRilItem').on('hidden.bs.modal',function(){
+		
+		if($('#tipo_item').val()!=$('#ril_item').val()){
+			$('#tipo_item').val($('#ril_item').val());
+			$('#tipo_item').change();	
+		}
+		
+	});
+
+	function changeTable(){
+		
+		$('#ril_item').val($('#tipo_item').val());
+		$('#myModalRilItem').modal('hide');
+		$('#listaRilievi').hide();
+		$('#btn_save_rilievo').hide();
+		
+		if($('#tipo_item').val()==4){
+			
+			  var tab = $('#tabItem').DataTable();
+			  items_json =[];
+			  tab.clear().draw();
+			$('#tabModGeneral').hide();
+			$('#tabModRilievi').show();	
+			rilievi = true;
+			
+		}else{
+			  var tab = $('#tabItemModRil').DataTable();
+			  items_rilievo = []
+			  tab.clear().draw();
+			$('#tabModGeneral').show();
+			$('#tabModRilievi').hide();
+			rilievi = false;
+		}
+		
+	}
+	
+
+	var items_rilievo = [];
+
+	function insertRilievo(){
+		
+		//items_rilievo = items_json;
+		
+		if($('#disegno').val()=='' || $('#variante').val()=='' || $('#pezzi_ingresso').val()==''){
+			
+			$('#myModalErrorContent').html('Attenzione! Inserisci tutti i campi!');
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal();
+			
+		}else{
+			
+			
+			var flag = true;
+			
+			if(items_rilievo.length>0){
+			
+				for(var i = 0; i<items_rilievo.length; i++){
+					if(items_rilievo[i].disegno == $('#disegno').val()){
+						flag = false;
+					}
+				}
+			}
+			
+			if(flag){
+				
+				var rilievo = {};
+				
+				rilievo.id_proprio ="";
+				rilievo.disegno = $('#disegno').val();
+				rilievo.variante = $('#variante').val();
+				rilievo.pezzi_ingresso = $('#pezzi_ingresso').val();
+				rilievo.action = '<button class="btn btn-danger" onClick="eliminaRilievoTable(\''+ $('#disegno').val()+'\')"><i class="fa fa-trash"></i></button>';
+				
+				items_rilievo.push(rilievo)
+				
+				   var table_ril = $('#tabItemModRil').DataTable();
+					  
+				table_ril.clear().draw();
+				   
+				table_ril.rows.add(items_rilievo).draw();
+				
+
+				    
+				table_ril.columns().eq( 0 ).each( function ( colIdx ) {
+				  	  $( 'input', table_ril.column( colIdx ).header() ).on( 'keyup', function () {
+				  		table_ril
+				  	          .column( colIdx )
+				  	          .search( this.value )
+				  	          .draw();
+				  	  } );
+				  	} ); 
+				table_ril.columns.adjust().draw();
+			}else{
+				
+				$('#myModalErrorContent').html('Attenzione! Hai gi&agrave; inserito questo disegno!');
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal();
+				
+			}
+
+			
+		}
+		
+		
+
+
+	}
+
+	
+	function eliminaRilievoTable(disegno, id){
+		
+		new_items_rilievo=[];
+		
+		items_rilievo.forEach( function (item){
+			if(id!=null && disegno==null){
+				if(item.id_proprio == id){
+					
+				}else{
+					new_items_rilievo.push(item);
+				}
+			}else{
+				if(item.disegno == disegno){
+					
+				}else{
+					new_items_rilievo.push(item);
+				}
+			}
+				
+				
+			});
+			
+
+		items_rilievo = new_items_rilievo;
+		
+		   var table_ril = $('#tabItemModRil').DataTable();
+			  
+			table_ril.clear().draw();
+			   
+			table_ril.rows.add(items_rilievo).draw();
+			    
+			 table_ril.columns().eq( 0 ).each( function ( colIdx ) {
+			  	  $( 'input', table_ril.column( colIdx ).header() ).on( 'keyup', function () {
+			  		table_ril
+			  	          .column( colIdx )
+			  	          .search( this.value )
+			  	          .draw();
+			  	  } );
+			  	} );  
+			table_ril.columns.adjust().draw();
+	}
+
+	
  	 var stato_lav = null;
  	 
  	var commessa_options;
 
  	var id_cliente_utilizzatore;
  	var id_sede_utilizzatore;
+ 	
+ 	 var item_pacco_json = JSON.parse('${item_pacco_json}');
+ 	var rilievi = false;
+ 	
+ 
+ 	
    $(document).ready(function() {
+	   
+	  
 	   
 	   commessa_options = $('#commessa option').clone();
 	   
@@ -2050,6 +2485,12 @@ function modalSpostaStrumenti(id_util, id_sede_util){
   	 		var title = $('#tabItem thead th').eq( $(this).index() ).text();
  	  		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
    		} ); 
+	   
+	   $('#tabItemModRil thead th').each( function () {
+   		if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
+ 	 		var title = $('#tabItemModRil thead th').eq( $(this).index() ).text();
+	  		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
+  		} ); 
 	   
 	   
 
@@ -2173,6 +2614,98 @@ $( 'input', table_items.column( colIdx ).header() ).on( 'keyup', function () {
 } );
 } ); 
 table_items.columns.adjust().draw();  
+
+
+
+
+
+
+
+table_items_ril = $('#tabItemsRil').DataTable({
+	language: {
+        	emptyTable : 	"Nessun dato presente nella tabella",
+        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+        	infoPostFix:	"",
+        infoThousands:	".",
+        lengthMenu:	"Visualizza _MENU_ elementi",
+        loadingRecords:	"Caricamento...",
+        	processing:	"Elaborazione...",
+        	search:	"Cerca:",
+        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+        	paginate:	{
+        	first:	"Inizio",
+        	previous:	"Precedente",
+        	next:	"Successivo",
+        last:	"Fine",
+        	},
+        aria:	{
+        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+        }
+ },
+ pageLength: 10,
+      paging: true,                            
+      ordering: true,
+      info: true,         
+      searchable: true, 
+      targets: 0,
+      responsive: true,
+      scrollX: false,
+      stateSave: true,
+      columnDefs: [
+/*   				   { responsivePriority: 1, targets: 0 },
+                   { responsivePriority: 2, targets: 1 },
+                      */
+	              	    { responsivePriority: 1, targets: 0 },
+                
+
+
+               ], 
+               buttons: [   
+        	          {
+        	            extend: 'colvis',
+        	            text: 'Nascondi Colonne'  	                   
+       			  } ]
+
+    	
+    });
+
+table_items_ril.buttons().container().appendTo( '#tabItemsRil_wrapper .col-sm-6:eq(1)');
+
+
+
+
+$('#tabItemsRil').on( 'page.dt', function () {
+$('.customTooltip').tooltipster({
+ theme: 'tooltipster-light'
+});
+ 
+$('.removeDefault').each(function() {
+   $(this).removeClass('btn-default');
+})
+
+
+});  
+
+
+
+
+table_items_ril = $('#tabItemsRil').DataTable();
+//Apply the search
+table_items_ril.columns().eq( 0 ).each( function ( colIdx ) {
+$( 'input', table_items_ril.column( colIdx ).header() ).on( 'keyup', function () {
+	table_items_ril
+   .column( colIdx )
+   .search( this.value )
+   .draw();
+} );
+} ); 
+table_items_ril.columns.adjust().draw();  
+
+
+
  
 
  
@@ -2258,16 +2791,88 @@ table
 table.columns.adjust().draw();  
 
 
-/*    $('#tabItem').on( 'page.dt', function () {
-$('.customTooltip').tooltipster({
- theme: 'tooltipster-light'
-}); 
 
- $('.removeDefault').each(function() {
-   $(this).removeClass('btn-default');
-})  
 
-});   */
+
+
+ 
+tableModRil = $('#tabItemModRil').DataTable({
+	language: {
+        	emptyTable : 	"Nessun dato presente nella tabella",
+        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+        	infoPostFix:	"",
+        infoThousands:	".",
+        lengthMenu:	"Visualizza _MENU_ elementi",
+        loadingRecords:	"Caricamento...",
+        	processing:	"Elaborazione...",
+        	search:	"Cerca:",
+        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+        	paginate:	{
+        	first:	"Inizio",
+        	previous:	"Precedente",
+        	next:	"Successivo",
+        last:	"Fine",
+        	},
+        aria:	{
+        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+        }
+ },
+ pageLength: 100,
+      paging: true, 
+      ordering: true,
+      info: true, 
+      searchable: false, 
+      targets: 0,
+      responsive: true,
+      scrollX: false,
+      stateSave: true,
+      fixedColumns: false,
+      columns : [
+     	 {"data" : "id_proprio"},
+     	 {"data" : "disegno"},
+     	 {"data" : "variante"},
+     	 {"data" : "pezzi_ingresso"},
+     	{"data" : "action"}
+
+     	
+      ],	
+         columnDefs: [
+			   { responsivePriority: 1, targets: 0 },
+                   { responsivePriority: 2, targets: 1 },
+                   { responsivePriority: 3, targets: 2 }
+               ],  
+               buttons: [   
+     	          {
+     	            extend: 'colvis',
+     	            text: 'Nascondi Colonne'  	                   
+    			  } ]
+    	
+    });
+tableModRil.buttons().container().appendTo( '#tabItemModRil_wrapper .col-sm-6:eq(1)');
+
+ 
+     $('.inputsearchtable').on('click', function(e){
+       e.stopPropagation();    
+    });     
+
+
+  tableModRil = $('#tabItemModRil').DataTable();
+
+tableModRil.columns().eq( 0 ).each( function ( colIdx ) {
+$( 'input', tableModRil.column( colIdx ).header() ).on( 'keyup', function () {
+	tableModRil
+   .column( colIdx )
+   .search( this.value )
+   .draw();
+} );
+} ); 
+tableModRil.columns.adjust().draw();  
+
+
+
  
 var permesso = ${userObj.checkPermesso('ACCETTAZIONE_PACCO')};
 if(stato_lav==1 && permesso==true){
@@ -2539,6 +3144,46 @@ table = $('#tabAllegati').DataTable({
     });
 
 
+
+if(item_pacco_json.length>0 && item_pacco_json[0].item!=null && item_pacco_json[0].item.tipo_item.id==4){
+	   $('#tabItemGeneral').hide();
+	   $('#tabItemRilievi').show();
+	   $('#btn_save_rilievo').show();
+	   $('#tipo_item ').val(4);
+	   $('#tipo_item ').change();  
+	   
+	   $('#tipo_item option').each(function(){
+		   
+		   var id = $(this).val();
+		   
+		   if(id!="4"){
+			   this.selected = false;
+			   this.disabled = true;
+		   } 
+
+	   });
+	   
+	   rilievi = true;
+}
+else if(item_pacco_json.length==0){
+	   $('#tipo_item ').val(1);
+	   $('#tipo_item ').change(); 
+}
+else{
+	   $('#tipo_item ').val(1);
+	   $('#tipo_item ').change(); 
+		$('#tipo_item option').each(function(){
+		   
+		   var id = $(this).val();
+		   
+		   if(id=="4"){
+			   this.selected = false;
+			   this.disabled = true;
+		   }
+		  
+
+	   });
+}
 
 
 

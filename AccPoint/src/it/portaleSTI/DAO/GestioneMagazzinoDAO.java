@@ -492,7 +492,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigine(String origine, Ses
 		ArrayList<MagPaccoDTO> lista= null;
 		
 		
-			Query query  = session.createQuery( "from MagPaccoDTO where origine= :_origine order by id desc");
+			Query query  = session.createQuery( "from MagPaccoDTO where origine= :_origine order by id asc");
 
 			query.setParameter("_origine", origine);
 			lista=(ArrayList<MagPaccoDTO>) query.list();
@@ -1028,17 +1028,32 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 						toAdd = toAdd +";"+pacco.getCommessa();
 					}
 														
-					lista_origini.add(toAdd);
+					
 					
 					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(pacco.getOrigine(), session);
+					
+					String note_pacco = "";
 
 					for (MagPaccoDTO magPaccoDTO : lista_pacchi_origine) {
 						
 						magPaccoDTO.setRitardo(1);
-						//magPaccoDTO.setSegnalato(1);
+						
+						if(magPaccoDTO.getTipo_nota_pacco()!=null) {
+							note_pacco = note_pacco + magPaccoDTO.getTipo_nota_pacco().getDescrizione() +" - ";
+						}
+						//magPaccoDTO.setSegnalato(1);						
 						
 						session.update(magPaccoDTO);
-					}						
+					}			
+					
+					
+					
+					if(!note_pacco.equals("")) {
+						note_pacco = note_pacco.substring(0, note_pacco.length()-3).replace("\r\n", "").replace("\n", "");
+						toAdd = toAdd+";Note: - "+note_pacco;
+					}
+					
+					lista_origini.add(toAdd);
 
 				}
 			}			
@@ -1054,6 +1069,42 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		session.getTransaction().commit();
 		session.close();
 		
+	}
+
+
+	public static ArrayList<MagItemPaccoDTO> getListaStrumentiInMagazzino(Session session) {
+		
+		ArrayList<MagItemPaccoDTO> lista= null;
+		
+		//Query query  = session.createQuery( "from MagItemPaccoDTO where pacco.stato_lavorazione.id = 1 AND pacco.chiuso = 0 GROUP BY pacco.id HAVING (COUNT(pacco.origine)=1 )");
+		//Query query  = session.createQuery( "from MagItemPaccoDTO GROUP BY pacco.origine HAVING  pacco.stato_lavorazione.id = 1 AND pacco.chiuso = 0");
+		//Query query  = session.createQuery( "from MagItemPaccoDTO where pacco.stato_lavorazione.id = 1 AND pacco.chiuso = 0 GROUP BY pacco.origine HAVING (COUNT(pacco.origine)=1 )");		
+		Query query  = session.createQuery( "from MagItemPaccoDTO where pacco.id IN (SELECT id from MagPaccoDTO GROUP BY origine HAVING (COUNT(origine)=1 AND stato_lavorazione.id = 1 and chiuso = 0))");
+		
+		lista=(ArrayList<MagItemPaccoDTO>) query.list();
+		
+		return lista;
+	}
+
+
+	public static ArrayList<MagItemPaccoDTO> getListaItemPaccoPerData(String dateFrom, String dateTo, String tipo_data, int stato, Session session) throws Exception {
+		
+	ArrayList<MagItemPaccoDTO> lista=null;
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+		Query query = null;
+		if(stato==0) {
+			query = session.createQuery("from MagItemPaccoDTO as item_pacco where item_pacco.pacco."+tipo_data+" "+"between :dateFrom and :dateTo");	
+		}else {
+			query = session.createQuery("from MagItemPaccoDTO as item_pacco where item_pacco.pacco.chiuso = 1 and item_pacco.pacco."+tipo_data+" "+"between :dateFrom and :dateTo");
+		}
+						
+		query.setParameter("dateFrom",df.parse(dateFrom));
+		query.setParameter("dateTo",df.parse(dateTo));
+		
+		lista= (ArrayList<MagItemPaccoDTO>)query.list();
+		
+		return lista;
 	}
 
 

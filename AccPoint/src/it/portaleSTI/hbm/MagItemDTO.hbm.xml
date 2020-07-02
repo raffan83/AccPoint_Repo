@@ -42,7 +42,16 @@
         </property>
         <many-to-one name="attivita_item" class="it.portaleSTI.DTO.MagAttivitaItemDTO" fetch="join" lazy="false">
             <column name="attivita" />
-        </many-to-one>	
+        </many-to-one>
+        <property name="disegno" type="java.lang.String">
+            <column name="disegno" />
+        </property>
+        <property name="variante" type="java.lang.String">
+            <column name="variante" />
+        </property>
+        <property name="pezzi_ingresso" type="int">
+            <column name="pezzi_ingresso" />
+        </property>	
 
   
 

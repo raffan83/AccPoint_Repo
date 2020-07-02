@@ -53,6 +53,8 @@ import it.portaleSTI.DTO.MagTipoItemDTO;
 import it.portaleSTI.DTO.MagTipoNotaPaccoDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
+import it.portaleSTI.DTO.RilMisuraRilievoDTO;
+import it.portaleSTI.DTO.RilStatoRilievoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -63,6 +65,7 @@ import it.portaleSTI.bo.CreateTestaPacco;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
+import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 
@@ -167,7 +170,7 @@ public class GestionePacco extends HttpServlet {
 		MagDdtDTO ddt = new MagDdtDTO();
 		 Map<MagItemDTO, String> map = new HashMap<MagItemDTO, String>();
 		 List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
-		 
+		 RilMisuraRilievoDTO rilievo = null;  
 		List<FileItem> items;
 		//try {
 			items = uploadHandler.parseRequest(request);
@@ -262,6 +265,78 @@ public class GestionePacco extends HttpServlet {
 					}
 				
 					
+					}
+					if(item.getFieldName().equals("json_rilievi")) {
+						
+						String data_json = item.getString();
+					if(data_json!=null && !data_json.equals("")) {
+						JsonElement jelement = new JsonParser().parse(data_json);
+						JsonArray json_array = jelement.getAsJsonArray();
+						
+						
+						for(int i = 0 ; i<json_array.size();i++) {
+							
+							JsonObject json_obj = json_array.get(i).getAsJsonObject();
+							
+							String id_proprio = null;
+							
+							if(json_obj.get("id_proprio")!=null) {
+								id_proprio =json_obj.get("id_proprio").getAsString(); 
+							}									
+							String disegno = json_obj.get("disegno").getAsString();
+							String variante = json_obj.get("variante").getAsString();
+	 						String pezzi_ingresso = json_obj.get("pezzi_ingresso").getAsString();
+							//String quantita = json_obj.get("quantita").getAsString();
+	 						String id = null;
+							if(json_obj.get("id")!=null) {
+								id = json_obj.get("id").getAsString();
+							}
+							
+							MagItemDTO mag_item = 	null;
+							
+	 						if(id!=null) {
+	 							rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_proprio), session);
+	 							mag_item = GestioneMagazzinoBO.getItemById(Integer.parseInt(id), session);
+	 						}else {
+	 							rilievo = new RilMisuraRilievoDTO();
+	 							mag_item = 	new MagItemDTO();
+	 						}
+							rilievo.setDisegno(disegno);
+							rilievo.setVariante(variante);
+							rilievo.setCifre_decimali(3);
+							
+							if(pezzi_ingresso!= null && !pezzi_ingresso.equals("")) {
+								rilievo.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));	
+							}
+							
+							if(id!=null) {
+								session.update(rilievo);
+							}else {
+								session.save(rilievo);
+							}
+							
+							mag_item.setId_tipo_proprio(rilievo.getId());							
+							
+							mag_item.setTipo_item(new MagTipoItemDTO(4, ""));
+							mag_item.setDisegno(disegno);
+							mag_item.setVariante(variante);
+							if(pezzi_ingresso!= null && !pezzi_ingresso.equals("")) {
+								mag_item.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));
+							}
+							
+							map.put(mag_item, "");
+							
+							if(id!=null) {
+								
+								session.update(mag_item);
+							}else {
+								
+								GestioneMagazzinoBO.saveItem(mag_item, session);
+							}
+						}
+							
+						}
+						
 					}
 					if(item.getFieldName().equals("select1")) {
 						cliente =	item.getString();
@@ -660,9 +735,13 @@ public class GestionePacco extends HttpServlet {
 				item_pacco.setPacco(pacco);
 				String [] str = entry.getValue().split("_");
 				
-				item_pacco.setQuantita(Integer.parseInt(str[0]));
-				if(str.length>1) {
-				item_pacco.setNote(str[1]);
+				if(str.length>0) {
+					if(str[0]!=null && !str[0].equals("")) {
+					item_pacco.setQuantita(Integer.parseInt(str[0]));
+					}
+					if(str.length>1) {
+					item_pacco.setNote(str[1]);
+					}	
 				}
 
 				if(listaItemPacco!=null) {
@@ -679,6 +758,24 @@ public class GestionePacco extends HttpServlet {
 			}
 			if(pdf!=null) {
 				GestioneMagazzinoBO.uploadPdf(pdf, pacco.getId(), pdf.getName());
+			}
+			
+			
+			
+			if(rilievo!=null) {
+				
+				
+
+				
+				rilievo.setId_cliente_util(Integer.parseInt(cliente_util));
+				//rilievo.setNome_cliente_util(util.getNome());
+				rilievo.setId_sede_util(Integer.parseInt(sede_util.split("_")[0]));
+				rilievo.setData_inizio_rilievo(new Date());
+				rilievo.setCommessa(commessa);
+				rilievo.setClasse_tolleranza("m");
+				rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
+				
+				session.update(rilievo);
 			}
 			
 			session.getTransaction().commit();
@@ -724,8 +821,12 @@ public class GestionePacco extends HttpServlet {
 				
 				session.close();
 				
+				Gson g = new Gson();
+				JsonElement json = g.toJsonTree(item_pacco);
+				
 				request.getSession().setAttribute("allegati", allegati);
 				request.getSession().setAttribute("lista_item_pacco", item_pacco);
+				request.getSession().setAttribute("item_pacco_json", json);
 				request.getSession().setAttribute("pacco", pacco);
 				request.getSession().setAttribute("commessa", commessa);
 				

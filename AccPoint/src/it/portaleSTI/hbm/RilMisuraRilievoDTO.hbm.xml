@@ -95,7 +95,9 @@
         <property name="numero_scheda" type="java.lang.String">
             <column name="numero_scheda" />
         </property>
-        
+        <property name="pezzi_ingresso" type="int">
+            <column name="pezzi_ingresso" />
+        </property>
 
 
 	</class>

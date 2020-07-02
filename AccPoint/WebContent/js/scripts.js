@@ -5658,74 +5658,111 @@ function eliminaCompany(){
 	    return temporalDivElement.textContent || temporalDivElement.innerText || "";
 	}
 
-  function modificaPacco(attivita_json){
+  function modificaPacco(attivita_json,rilievi){
 	  
 	  new_items_json=[];
 
 	  items_json = new_items_json;
 
-	  
-	  var tabella = $('#tabItems').DataTable();
-	   var data = tabella
-	     .rows()
-	     .data();
-	   
-	   if($('#tabItems tbody tr').find("td").eq(1).html()!=null){
-			  for(var i =0;i<data.length;i++) {
-				  item={};
-				    item.id_proprio = stripHtml(data[i][0]);    
-				    item.denominazione = data[i][1];
-				     
-				    
-				    item.stato = data[i][4];
-				    item.tipo = data[i][5]; 
-				    item.quantita =data[i][6];
-				   var attivita = data[i][7];
-				    if(item.tipo=="Strumento"){
-				    	item.attivita = '<select id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" class="form-control select2" style="width:100%"  aria-hidden="true" data-live-search="true">'
-				    	item.attivita =	item.attivita + '<option value="">Nessuna</option>';
-							attivita_json.forEach(function(att){
-								if(att.descrizione!=attivita){
-									item.attivita =	item.attivita + '<option value="'+att.id+'">'+att.descrizione+'</option>';
-								}else{
-									item.attivita =	item.attivita + '<option value="'+att.id+'" selected>'+att.descrizione+'</option>';
-								}
-							});
-				    	//item.attivita = '<input type="text" id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(5).text()+'" style="width:100%">';
-					    item.destinazione = '<input type="text" id="destinazione_item_'+item.id_proprio+'" name="destinazione_item_'+item.id_proprio+'" value="'+data[i][8]+'" style="width:100%">';
+	  if(!rilievi){
+		
+		  var tabella = $('#tabItems').DataTable();
+		   var data = tabella
+		     .rows()
+		     .data();
+		   
+		   if($('#tabItems tbody tr').find("td").eq(1).html()!=null){
+				  for(var i =0;i<data.length;i++) {
+					  item={};
+					    item.id_proprio = stripHtml(data[i][0]);    
+					    item.denominazione = data[i][1];
+					     
+					    
+					    item.stato = data[i][4];
+					    item.tipo = data[i][5]; 
+					    item.quantita =data[i][6];
+					   var attivita = data[i][7];
+					    if(item.tipo=="Strumento"){
+					    	item.attivita = '<select id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" class="form-control select2" style="width:100%"  aria-hidden="true" data-live-search="true">'
+					    	item.attivita =	item.attivita + '<option value="">Nessuna</option>';
+								attivita_json.forEach(function(att){
+									if(att.descrizione!=attivita){
+										item.attivita =	item.attivita + '<option value="'+att.id+'">'+att.descrizione+'</option>';
+									}else{
+										item.attivita =	item.attivita + '<option value="'+att.id+'" selected>'+att.descrizione+'</option>';
+									}
+								});
+					    	//item.attivita = '<input type="text" id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(5).text()+'" style="width:100%">';
+						    item.destinazione = '<input type="text" id="destinazione_item_'+item.id_proprio+'" name="destinazione_item_'+item.id_proprio+'" value="'+data[i][8]+'" style="width:100%">';
 
-			    	   	if(data[i][9]!=""){
-			    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'" checked>';		    
-			    	   	}else{
-			    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'">';
-			    	   	}
-			    	    
-				    }else{
-				    	item.priorita = "";
-				    	item.attivita = "";
-				    	item.destinazione = "";
-				    }
-				    item.matricola = data[i][2];
-		    	    item.codice_interno = data[i][3];
-				    	//item.note= '<input type="text" id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" value="'+data[i][7]+'" style="width:100%">';
-				    	item.note= '<textarea id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" style="width:100%;heigth:100%">'+data[i][10]+'</textarea>';
-				    	//<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" disabled></textarea>
-				    	item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id_proprio+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
-				    	item.id = data[i][12];
-				    	items_json.push(item);		    
-				 }
-			  }
-	  
-	   
-	  var table = $('#tabItem').DataTable();		
-	  table.clear().draw();
-	  table.rows.add(items_json).draw();
-
-	 
-	  items_json.forEach(function(item){
+				    	   	if(data[i][9]!=""){
+				    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'" checked>';		    
+				    	   	}else{
+				    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'">';
+				    	   	}
+				    	    
+					    }else{
+					    	item.priorita = "";
+					    	item.attivita = "";
+					    	item.destinazione = "";
+					    }
+					    item.matricola = data[i][2];
+			    	    item.codice_interno = data[i][3];
+					    	//item.note= '<input type="text" id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" value="'+data[i][7]+'" style="width:100%">';
+					    	item.note= '<textarea id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" style="width:100%;heigth:100%">'+data[i][10]+'</textarea>';
+					    	//<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" disabled></textarea>
+					    	item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id_proprio+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
+					    	item.id = data[i][12];
+					    	items_json.push(item);		    
+					 }
+				  }
 		  
-		  $('#attivita_item_'+item.id_proprio).select2();
-	  });
+		   
+		  var table = $('#tabItem').DataTable();		
+		  table.clear().draw();
+		  table.rows.add(items_json).draw();
+
+		 
+		  items_json.forEach(function(item){
+			  
+			  $('#attivita_item_'+item.id_proprio).select2();
+		  });
+		  
+	  }else{
+		  
+		  items_rilievo = [];
+		  var tabella = $('#tabItemsRil').DataTable();
+		   var data = tabella
+		     .rows()
+		     .data();
+		   
+		   if($('#tabItemsRil tbody tr').find("td").eq(1).html()!=null){
+				  for(var i =0;i<data.length;i++) {
+					  item={};
+					    item.id_proprio = stripHtml(data[i][0]);    
+					    item.disegno = data[i][1];
+					     
+					    
+					    item.variante = data[i][2];
+					    item.pezzi_ingresso = data[i][3];
+					    item.action ="";
+					    item.action = '<button class="btn btn-danger" onClick="eliminaRilievoTable(null,\''+ item.id_proprio+'\')"><i class="fa fa-trash"></i></button>';
+					    item.id = data[i][5];
+					    items_rilievo.push(item);	
+					    	    
+					 }
+				  }
+		  
+		   
+		  var table = $('#tabItemModRil').DataTable();		
+		  table.clear().draw();
+		  table.rows.add(items_rilievo).draw();
+
+		  $('#tabModRilievi').show();
+		  $('#tabModGeneral').hide();
+		  
+	  }
+	  
 
 	  $("#myModalModificaPacco").modal();
 	 
@@ -6168,10 +6205,17 @@ function cambiaNotaPacco(id_pacco, nota){
   function inserisciItemModal(tipo_item,id_cliente, id_sede){
 	  
 
-	   dataString = "tipo_item="+tipo_item+"&id_cliente="+id_cliente+"&id_sede="+id_sede;
-	  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
+	  if(tipo_item!=4){
+		  dataString = "tipo_item="+tipo_item+"&id_cliente="+id_cliente+"&id_sede="+id_sede;
+		  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
 
-          });
+	          });
+	  }else{
+		  $('#listaItem').html('');
+		  $('#listaRilievi').show();
+		  $('#btn_save_rilievo').show();
+	  }
+	  
 	  $("#myModalItem").modal('show');
 	
 

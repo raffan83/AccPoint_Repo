@@ -739,7 +739,7 @@ public class Utility extends HttpServlet {
 				 if(item.getItem().getTipo_item().getId()==1) {
 					 totali++;
 				 }
-				 if(item.getItem().getStato().getId()==2) {
+				 if(item.getItem().getStato()!=null && item.getItem().getStato().getId()==2) {
 					 lavorati++;
 				 }
 				 
@@ -769,7 +769,7 @@ public class Utility extends HttpServlet {
 				 if(item.getItem().getTipo_item().getId()==1) {
 					 totali++;
 				 }
-				 if(item.getItem().getStato().getId()==2) {
+				 if(item.getItem().getStato()!=null && item.getItem().getStato().getId()==2) {
 					 lavorati++;
 				 }
 				 

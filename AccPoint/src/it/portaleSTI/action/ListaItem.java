@@ -2,7 +2,11 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -209,16 +213,21 @@ public class ListaItem extends HttpServlet {
 			
 			
 			
-			ArrayList<MagPaccoDTO> lista_pacchi = null;
-			if(stato!=null && stato.equals("tutti")) {
-				lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);						
-			}
-			else if(stato!=null && stato.equals("chiusi")) {
-				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 1, session);
-			}
-			else {
-				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 0, session);
-			}
+//			ArrayList<MagPaccoDTO> lista_pacchi = null;
+//			if(stato!=null && stato.equals("tutti")) {
+//				lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);						
+//			}
+//			else if(stato!=null && stato.equals("chiusi")) {
+//				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 1, session);
+//			}
+//			else {
+//				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 0, session);
+//			}
+			
+			
+			
+			
+			
 			
 			//ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
 			//List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
@@ -233,23 +242,62 @@ public class ListaItem extends HttpServlet {
 			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0,false);
 			ArrayList<MagAttivitaItemDTO> lista_attivita_item = GestioneMagazzinoBO.getListaAttivitaItem(session);
 			
+//			ArrayList<MagItemPaccoDTO> lista_item_pacco = null;
+//			if(stato!=null && stato.equals("tutti")) {
+//				lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(session);				
+//			}
+//			else if(stato!=null && stato.equals("chiusi")) {
+//				lista_item_pacco = GestioneMagazzinoBO.getListaItemPaccoApertiChiusi(1, session);
+//			}
+//			else {
+//				lista_item_pacco = GestioneMagazzinoBO.getListaItemPaccoApertiChiusi(0, session);
+//			}
+			
+			
 			ArrayList<MagItemPaccoDTO> lista_item_pacco = null;
+			String dateFrom=null;
+			String dateTo = null;
 			if(stato!=null && stato.equals("tutti")) {
-				lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(session);				
+				
+				Date end = new Date();
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(end);
+				calendar.add(Calendar.DAY_OF_MONTH, -30);
+				
+				Date start = calendar.getTime();
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				//lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
+				dateFrom = df.format(start);
+				dateTo = df.format(end);
+				lista_item_pacco = GestioneMagazzinoBO.getListaItemPaccoPerData(df.format(start), df.format(end), "data_lavorazione", 0, session);
 			}
 			else if(stato!=null && stato.equals("chiusi")) {
-				lista_item_pacco = GestioneMagazzinoBO.getListaItemPaccoApertiChiusi(1, session);
+				Date end = new Date();
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(end);
+				calendar.add(Calendar.DAY_OF_MONTH, -30);
+				
+				Date start = calendar.getTime();
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				dateFrom = df.format(start);
+				dateTo = df.format(end);
+				lista_item_pacco = GestioneMagazzinoBO.getListaItemPaccoPerData(df.format(start), df.format(end), "data_lavorazione", 1, session);
 			}
 			else {
-				lista_item_pacco = GestioneMagazzinoBO.getListaItemPaccoApertiChiusi(0, session);
+				lista_item_pacco = GestioneMagazzinoBO.getListaItemPaccoApertiChiusi(0, session);				
 			}
+			
+			
+			
 			//ArrayList<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(session);
 			ArrayList<MagNoteDdtDTO> lista_note_ddt = GestioneMagazzinoBO.getListaNoteDDT(session);
 			ArrayList<MagCausaleDTO> lista_causali = GestioneMagazzinoBO.geListaCausali(session);
 			session.close();
 			
 			request.getSession().setAttribute("stato", stato);
-			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
+			//request.getSession().setAttribute("lista_pacchi",lista_pacchi);
 			request.getSession().setAttribute("lista_clienti", listaClienti);
 			request.getSession().setAttribute("lista_fornitori", listaFornitori);
 			request.getSession().setAttribute("lista_sedi", listaSedi);
@@ -269,9 +317,12 @@ public class ListaItem extends HttpServlet {
 			Gson gson = new Gson();
     		String item_pacco_json = gson.toJson(lista_item_pacco);
     		
+    		request.getSession().setAttribute("dateTo",dateTo);
+			request.getSession().setAttribute("dateFrom", dateFrom);
 			request.getSession().setAttribute("lista_item_pacco", lista_item_pacco);
 			request.getSession().setAttribute("item_pacco_json", item_pacco_json);
 			request.getSession().setAttribute("item_esterno", false);
+			request.getSession().setAttribute("item_magazzino", false);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 		     dispatcher.forward(request,response);
@@ -292,6 +343,35 @@ public class ListaItem extends HttpServlet {
 			request.getSession().setAttribute("lista_item_pacco", lista_item_pacco);
 			request.getSession().setAttribute("item_pacco_json", item_pacco_json);
 			request.getSession().setAttribute("item_esterno", true);
+			request.getSession().setAttribute("item_magazzino", false);
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
+		     dispatcher.forward(request,response);
+			
+		}
+		else if(action.equals("item_magazzino")) {
+			
+			ajax = false;
+			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiInMagazzino(session);
+			ArrayList<MagItemPaccoDTO> lista_item_pacco = new ArrayList<MagItemPaccoDTO>();
+			
+			for (MagPaccoDTO magPaccoDTO : lista_pacchi) {
+				for (MagItemPaccoDTO magItemPaccoDTO : magPaccoDTO.getItem_pacco()) {
+					
+					lista_item_pacco.add(magItemPaccoDTO);
+				}
+			}
+			
+//			ArrayList<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaStrumentiInMagazzino(session);
+			
+			session.close();
+
+			Gson gson = new Gson();
+    		String item_pacco_json = gson.toJson(lista_item_pacco);
+    		
+			request.getSession().setAttribute("lista_item_pacco", lista_item_pacco);
+			request.getSession().setAttribute("item_pacco_json", item_pacco_json);
+			request.getSession().setAttribute("item_esterno", false);
+			request.getSession().setAttribute("item_magazzino", true);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 		     dispatcher.forward(request,response);
 			
@@ -342,6 +422,36 @@ public class ListaItem extends HttpServlet {
 				session.close();
 				out.print(myObj);
 			
+		}
+		else if(action.equals("filtraDate")) {
+			
+			
+			String dateFrom = request.getParameter("dateFrom");
+			String dateTo = request.getParameter("dateTo");
+			String tipo_data= request.getParameter("tipo_data");
+			String tipo="";
+			
+			if(tipo_data.equals("1")) {
+				tipo= "data_lavorazione";
+			}
+			else if(tipo_data.equals("2")){
+				tipo= "data_arrivo";
+			}else if(tipo_data.equals("3")) {
+				tipo= "data_spedizione";
+			}
+			
+			ArrayList<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaItemPaccoPerData(dateFrom, dateTo, tipo,0, session);
+			session.close();
+			
+			request.getSession().setAttribute("lista_item_pacco",lista_item_pacco);
+			request.getSession().setAttribute("dateFrom",dateFrom);
+			request.getSession().setAttribute("dateTo",dateTo);
+			request.getSession().setAttribute("tipo_data", tipo_data);
+			request.getSession().setAttribute("item_esterno", false);
+			request.getSession().setAttribute("item_magazzino", false);
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
+	     	dispatcher.forward(request,response);
+	     	
 		}
 		
 

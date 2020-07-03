@@ -2,6 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
+<%@page import="org.json.simple.JSONObject" %>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <%-- <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%> --%>
 <%UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj"); 
@@ -2454,14 +2455,25 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 	}
 
 	
- 	 var stato_lav = null;
+ 	var stato_lav = null;
  	 
  	var commessa_options;
 
  	var id_cliente_utilizzatore;
  	var id_sede_utilizzatore;
  	
- 	 var item_pacco_json = JSON.parse('${item_pacco_json}');
+ 	
+ 	var myJSONString = JSON.stringify('${item_pacco_json}');
+ 	var myEscapedJSONString = myJSONString.replace(/\\n/g, "\\n")
+ 	                                      .replace(/\\'/g, "\\'")
+ 	                                      .replace(/\\"/g, '\\"')
+ 	                                      .replace(/\\&/g, "\\&")
+ 	                                      .replace(/\\r/g, "\\r")
+ 	                                      .replace(/\\t/g, "\\t")
+ 	                                      .replace(/\\b/g, "\\b")
+ 	                                      .replace(/\\f/g, "\\f");
+ 	 
+ 	var item_pacco_json = JSON.parse(myEscapedJSONString);
  	var rilievi = false;
  	
  

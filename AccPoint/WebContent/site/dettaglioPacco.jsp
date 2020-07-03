@@ -283,6 +283,7 @@ String permesso = "0";
  <th>Disegno</th>
  <th>Variante</th>
  <th>Pezzi in ingresso</th>
+ <th>Note</th>
  <th>Azioni</th>
 
 
@@ -301,8 +302,9 @@ String permesso = "0";
 
   <td>${item_pacco.item.disegno }</td>
   <td>${item_pacco.item.variante }</td>
+
   <td>${item_pacco.item.pezzi_ingresso }</td> 
- 
+   <td>${item_pacco.note }</td>
  <td>
 <%--  <a class="btn btn-primary pull-center customTooltip"  title="Click per cambiare lo stato dell'Item"   onClick="cambiaStatoItem('${item_pacco.item.id}','${item_pacco.item.stato.id}')"><i class="glyphicon glyphicon-refresh"></i></a>
  <c:if test="${item_pacco.item.tipo_item.id==1 }">
@@ -1087,7 +1089,7 @@ String permesso = "0";
   <th>Disegno</th>
  <th>Variante</th>
  <th>Pezzi in ingresso</th>
-
+<th>Note</th>	
  <td><label>Action</label></td>
 
  </tr></thead>
@@ -1172,6 +1174,17 @@ String permesso = "0";
 				<input type="number" min="0" step="1" class="form-control" id="pezzi_ingresso" name="pezzi_ingresso" required/>
 			</div>
 			</div><br>
+			
+			<div class="row">
+			<div class="col-xs-3">
+			<label>Note</label>
+			</div>
+			<div class="col-xs-9">
+			<textarea id="note_rilievo" name="note_rilievo" style="width:100%" rows="3" class="form-control"></textarea>
+				
+			</div>
+			</div><br>
+			
 		</div>	 
    
   		<div id="empty" class="testo12"></div>
@@ -2373,6 +2386,7 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 				rilievo.disegno = $('#disegno').val();
 				rilievo.variante = $('#variante').val();
 				rilievo.pezzi_ingresso = $('#pezzi_ingresso').val();
+				rilievo.note_rilievo = $('#note_rilievo').val();
 				rilievo.action = '<button class="btn btn-danger" onClick="eliminaRilievoTable(\''+ $('#disegno').val()+'\')"><i class="fa fa-trash"></i></button>';
 				
 				items_rilievo.push(rilievo)
@@ -2463,7 +2477,7 @@ function modalSpostaStrumenti(id_util, id_sede_util){
  	var id_sede_utilizzatore;
  	
  	
- 	var myJSONString = JSON.stringify('${item_pacco_json}');
+ 	var myJSONString = JSON.stringify(${item_pacco_json});
  	var myEscapedJSONString = myJSONString.replace(/\\n/g, "\\n")
  	                                      .replace(/\\'/g, "\\'")
  	                                      .replace(/\\"/g, '\\"')
@@ -2847,6 +2861,7 @@ tableModRil = $('#tabItemModRil').DataTable({
      	 {"data" : "disegno"},
      	 {"data" : "variante"},
      	 {"data" : "pezzi_ingresso"},
+     	 {"data": "note_rilievo"},
      	{"data" : "action"}
 
      	

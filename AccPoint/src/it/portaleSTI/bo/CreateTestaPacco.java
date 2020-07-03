@@ -248,9 +248,10 @@ public class CreateTestaPacco {
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()).setBackgroundColor(Color.WHITE));
  	 		report.addColumn(col.column("Codice della merce o servizio", "id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
  	 		report.addColumn(col.column("Disegno", "disegno", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
- 	 		report.addColumn(col.column("Variante", "variante", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+ 	 		report.addColumn(col.column("Variante", "variante", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)); 	 		
 	 		report.addColumn(col.column("Pezzi in ingresso", "pezzi_ingresso", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 
+	 		report.addColumn(col.column("Note", "note_rilievo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		
 	 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 			report.setDetailSplitType(SplitType.PREVENT);
 			
@@ -269,12 +270,13 @@ public class CreateTestaPacco {
 private JRDataSource createDataSourceRil(List<MagItemPaccoDTO> lista_item_pacco)throws Exception {
 			
 		
-		String[] listaCodici = new String[4];
+		String[] listaCodici = new String[5];
 		
 		listaCodici[0]="id_item";
 		listaCodici[1]="disegno";
-		listaCodici[2]="variante";
-		listaCodici[3]="pezzi_ingresso";	
+		listaCodici[2]="variante";		
+		listaCodici[3]="pezzi_ingresso";
+		listaCodici[4]= "note_rilievo";
 		
 		DRDataSource dataSource = new DRDataSource(listaCodici);
 		
@@ -288,6 +290,7 @@ private JRDataSource createDataSourceRil(List<MagItemPaccoDTO> lista_item_pacco)
 	 				arrayPs.add(item_pacco.getItem().getDisegno());	 
 	 				arrayPs.add(item_pacco.getItem().getVariante());	 
 	 				arrayPs.add(""+item_pacco.getItem().getPezzi_ingresso());
+	 				arrayPs.add(item_pacco.getNote());
 	 					 			
 			         Object[] listaValori = arrayPs.toArray();
 			        

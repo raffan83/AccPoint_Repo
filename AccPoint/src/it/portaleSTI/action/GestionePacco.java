@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -286,6 +287,7 @@ public class GestionePacco extends HttpServlet {
 							String disegno = json_obj.get("disegno").getAsString();
 							String variante = json_obj.get("variante").getAsString();
 	 						String pezzi_ingresso = json_obj.get("pezzi_ingresso").getAsString();
+	 						String note_rilievo = json_obj.get("note_rilievo").getAsString();
 							//String quantita = json_obj.get("quantita").getAsString();
 	 						String id = null;
 							if(json_obj.get("id")!=null) {
@@ -309,6 +311,16 @@ public class GestionePacco extends HttpServlet {
 								rilievo.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));	
 							}
 							
+							
+							rilievo.setId_cliente_util(Integer.parseInt(cliente_util));
+							//rilievo.setNome_cliente_util(util.getNome());
+							rilievo.setId_sede_util(Integer.parseInt(sede_util.split("_")[0]));
+							rilievo.setData_inizio_rilievo(new Date());
+							rilievo.setCommessa(commessa);
+							rilievo.setClasse_tolleranza("m");
+							rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
+						
+							
 							if(id!=null) {
 								session.update(rilievo);
 							}else {
@@ -324,7 +336,8 @@ public class GestionePacco extends HttpServlet {
 								mag_item.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));
 							}
 							
-							map.put(mag_item, "");
+							
+							map.put(mag_item, "0_"+note_rilievo);
 							
 							if(id!=null) {
 								
@@ -759,24 +772,8 @@ public class GestionePacco extends HttpServlet {
 			if(pdf!=null) {
 				GestioneMagazzinoBO.uploadPdf(pdf, pacco.getId(), pdf.getName());
 			}
-			
-			
-			
-			if(rilievo!=null) {
-				
-				
+						
 
-				
-				rilievo.setId_cliente_util(Integer.parseInt(cliente_util));
-				//rilievo.setNome_cliente_util(util.getNome());
-				rilievo.setId_sede_util(Integer.parseInt(sede_util.split("_")[0]));
-				rilievo.setData_inizio_rilievo(new Date());
-				rilievo.setCommessa(commessa);
-				rilievo.setClasse_tolleranza("m");
-				rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
-				
-				session.update(rilievo);
-			}
 			
 			session.getTransaction().commit();
 			

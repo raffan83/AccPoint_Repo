@@ -882,7 +882,7 @@ ${pacco.id}
   <th>Disegno</th>
  <th>Variante</th>
  <th>Pezzi in ingresso</th>
-
+<th>Note</th>	
  <td><label>Action</label></td>
 
  </tr></thead>
@@ -973,6 +973,18 @@ ${pacco.id}
 				<input type="number" min="0" step="1" class="form-control" id="pezzi_ingresso" name="pezzi_ingresso" required/>
 			</div>
 			</div><br>
+			
+			
+			<div class="row">
+			<div class="col-xs-3">
+			<label>Note</label>
+			</div>
+			<div class="col-xs-9">
+			<textarea id="note_rilievo" name="note_rilievo" style="width:100%" rows="3" class="form-control"></textarea>
+				
+			</div>
+			</div><br>
+			
 		</div>	 
    
   		<div id="empty" class="testo12"></div>
@@ -1366,6 +1378,7 @@ function insertRilievo(){
 			rilievo.disegno = $('#disegno').val();
 			rilievo.variante = $('#variante').val();
 			rilievo.pezzi_ingresso = $('#pezzi_ingresso').val();
+			rilievo.note_rilievo = $('#note_rilievo').val();
 			rilievo.action = '<button class="btn btn-danger" onClick="eliminaRilievoTable(\''+ $('#disegno').val()+'\')"><i class="fa fa-trash"></i></button>';
 			
 			items_rilievo.push(rilievo)
@@ -2914,6 +2927,7 @@ table_item_ril = $('#tabItemRil').DataTable({
      	{"data" : "disegno"},
      	{"data" : "variante"},
      	{"data" : "pezzi_ingresso"},
+     	{"data" : "note_rilievo"},
      	 {"data" : "action"}
      ],	
       columnDefs: [

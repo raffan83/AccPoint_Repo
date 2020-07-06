@@ -89,26 +89,37 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
  <thead><tr class="active">
  						<th>ID</th>
  						<!-- <td>Azioni</td>		 -->		   
-            	       		<th>Stato Strumento</th>		   
+            	       				   
             		   		<th>Denominazione</th>
                        	<th>Codice Interno</th>
                        	<th>Cliente</th>
                        	<th>Sede</th>
-                       	<th>Data Ultima Verifica</th>
-                       	<th>Data Prossima Verifica</th>
-                       	<th>Costurttore</th>
-                       	<th>Modello</th>
+                       	
+                       	<th>Costruttore</th>
+                       	
                        	<th>Matricola</th>
+                       	
+                       	<th>Freq. Verifica</th>
+                       	
+                       	 <th>Tipo Rapporto</th>
                        	<th>Divisione</th>
                        	<th>Campo Misura</th>
                        	<th>Tipo Strumento</th>
-                      	<th>Freq. Verifica</th>
+                      	
                        	<th>Reparto</th>
-                        <th>Tipo Rapporto</th>
+                       
+                        
+                        <th>Modello</th>
                         <th>Utilizzatore</th>
+                        
+                        <th>Data Ultima Verifica</th>
+                       	<th>Data Prossima Verifica</th>
+                       	
                         <th>Luogo Verifica</th>
                         <th>Interpolazioone</th>
                         <th>Classificazione</th>
+                        <th>Stato Strumento</th>
+                        
                         <th>Company</th>
                         <th>Data Modifica</th>
                         <th>Utente Modifica</th> 
@@ -122,7 +133,7 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
 	 <tr role="row" id="${campione.codice}-${loop.index}" class="customTooltip" title="Doppio Click per aprire il dettaglio del Campione">
 
 	<td>${strumento.__id}</td>
-	<td id="stato_${strumento.__id}">${strumento.stato_strumento.nome}</td>
+	
 
    <td>${strumento.denominazione}</td>
                     	             <td>${strumento.codice_interno}</td>
@@ -135,7 +146,44 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
                     	              
                     	             <td><c:out value="${listaSediStrumenti[idSede]}" /> </td>
                     	             
+
+             
+                    	             <td>${strumento.costruttore}</td>
+                    	             
+                    	             <td>${strumento.matricola}</td>
+                    	             
                     	             <td>
+
+<c:if test="${strumento.frequenza != 0}">
+    
+         ${strumento.frequenza} 
+</c:if>
+</td>
+
+
+<td>
+<c:if test="${not empty strumento.getTipoRapporto()}">
+<c:if test="${strumento.tipoRapporto.noneRapporto != ''}">
+
+    ${strumento.tipoRapporto.noneRapporto } 
+
+</c:if>
+</c:if></td>
+                    	             
+                    	             <td>${strumento.risoluzione}</td>
+                    	             <td>${strumento.campo_misura}</td>
+                    	             <td>${strumento.tipo_strumento.nome}</td>
+
+
+
+ <td>${strumento.getReparto() }</td> 
+
+ 
+ <td>${strumento.modello}</td>
+ <td>${strumento.utilizzatore}</td>
+ 
+ 
+                     	             <td>
 
 <c:if test="${not empty strumento.dataUltimaVerifica}">
    <fmt:formatDate pattern="dd/MM/yyyy" 
@@ -150,32 +198,7 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
          value="${strumento.dataProssimaVerifica}" />
 </c:if>
 </td>
-             
-                    	             <td>${strumento.costruttore}</td>
-                    	             <td>${strumento.modello}</td>
-                    	             <td>${strumento.matricola}</td>
-                    	             <td>${strumento.risoluzione}</td>
-                    	             <td>${strumento.campo_misura}</td>
-                    	             <td>${strumento.tipo_strumento.nome}</td>
-
-<td>
-
-<c:if test="${strumento.frequenza != 0}">
-    
-         ${strumento.frequenza} 
-</c:if>
-</td>
-
- <td>${strumento.getReparto() }</td> 
-<td>
-<c:if test="${not empty strumento.getTipoRapporto()}">
-<c:if test="${strumento.tipoRapporto.noneRapporto != ''}">
-
-    ${strumento.tipoRapporto.noneRapporto } 
-
-</c:if>
-</c:if></td>
- <td>${strumento.utilizzatore}</td>
+ 
 <td>
 <c:if test="${not empty strumento.luogo}">
     ${strumento.luogo.descrizione} >
@@ -185,6 +208,7 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
    ${strumento.interpolazione} 
 </c:if></td>
  <td>${strumento.classificazione.descrizione}</td>
+ <td id="stato_${strumento.__id}">${strumento.stato_strumento.nome}</td>
   <td>${strumento.company.denominazione}</td>
   <td>
 <c:if test="${not empty strumento.dataModifica}">

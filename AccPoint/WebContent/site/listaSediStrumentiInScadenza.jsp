@@ -82,7 +82,7 @@
  		<c:set var="name" value="${fn:substringAfter(sedi.key, 's_')}"/>
  		<%-- <td>id Sede: ${name}</td> --%>
 	 
-		<td > 
+		<td id="${sedi.key}_${ listaSediStrumenti[name]}"> 
         <c:out value="${listaSediStrumenti[name]}"/>
         
         	</td>

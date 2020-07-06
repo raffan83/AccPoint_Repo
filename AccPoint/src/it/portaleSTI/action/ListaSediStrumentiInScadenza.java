@@ -78,14 +78,23 @@ public class ListaSediStrumentiInScadenza extends HttpServlet {
 						}
 					
 					}else {
-						if( listaStrumentiPerSede.containsKey("s_"+strumento.getId__sede_())) {
-							ArrayList<StrumentoDTO> listaS = listaStrumentiPerSede.get("s_"+strumento.getId__sede_());
+//						if( listaStrumentiPerSede.containsKey("s_"+strumento.getId__sede_())) {
+//							ArrayList<StrumentoDTO> listaS = listaStrumentiPerSede.get("s_"+strumento.getId__sede_());
+//							listaS.add(strumento);
+//							listaStrumentiPerSede.put("s_"+strumento.getId__sede_(), listaS);
+//						}else {
+//							ArrayList<StrumentoDTO> listaS = new ArrayList<StrumentoDTO>();
+//							listaS.add(strumento);
+//							listaStrumentiPerSede.put("s_"+strumento.getId__sede_(), listaS);
+//						}
+						if( listaStrumentiPerSede.containsKey("s_"+strumento.getId__sede_()+"_"+strumento.getId_cliente())) {
+							ArrayList<StrumentoDTO> listaS = listaStrumentiPerSede.get("s_"+strumento.getId__sede_()+"_"+strumento.getId_cliente());
 							listaS.add(strumento);
-							listaStrumentiPerSede.put("s_"+strumento.getId__sede_(), listaS);
+							listaStrumentiPerSede.put("s_"+strumento.getId__sede_()+"_"+strumento.getId_cliente(), listaS);
 						}else {
 							ArrayList<StrumentoDTO> listaS = new ArrayList<StrumentoDTO>();
 							listaS.add(strumento);
-							listaStrumentiPerSede.put("s_"+strumento.getId__sede_(), listaS);
+							listaStrumentiPerSede.put("s_"+strumento.getId__sede_()+"_"+strumento.getId_cliente(), listaS);
 						}
 					
 					}
@@ -95,7 +104,10 @@ public class ListaSediStrumentiInScadenza extends HttpServlet {
 				HashMap<String, String> listaSediStrumenti = GestioneAnagraficaRemotaBO.getListaNominativiSediClienti();
 				HashMap<String, String> listaClientiStrumenti = GestioneAnagraficaRemotaBO.getListaNominativiClienti();
 				
+				
 				request.getSession().setAttribute("listaStrumentiPerSede", listaStrumentiPerSede);
+				
+				String sede = listaSediStrumenti.get("1");
 				request.getSession().setAttribute("listaSediStrumenti", listaSediStrumenti);
 				request.getSession().setAttribute("listaClientiStrumenti", listaClientiStrumenti);
 

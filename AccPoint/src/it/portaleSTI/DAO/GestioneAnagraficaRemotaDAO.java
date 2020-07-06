@@ -109,14 +109,15 @@ public class GestioneAnagraficaRemotaDAO {
 		
 		try {
 			con=ManagerSQLServer.getConnectionSQL();
-			pst=con.prepareStatement("SELECT DESCR,K2_ANAGEN_INDIR FROM BWT_ANAGEN_INDIR");
+			pst=con.prepareStatement("SELECT DESCR,K2_ANAGEN_INDIR, ID_ANAGEN FROM BWT_ANAGEN_INDIR");
+			
 			rs=pst.executeQuery();
 			
-			
+	
 			
 			while(rs.next())
 			{
-				lista.put(rs.getString("K2_ANAGEN_INDIR"), rs.getString("DESCR"));
+				lista.put(rs.getString("K2_ANAGEN_INDIR")+"_"+rs.getString("ID_ANAGEN"), rs.getString("DESCR"));
 			}
 			
 		} catch (Exception e) {

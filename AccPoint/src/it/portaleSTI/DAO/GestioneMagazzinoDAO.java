@@ -844,23 +844,56 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
-	public static ArrayList<MagDdtDTO> getListaDDTPerData(String dateFrom, String dateTo, Session session) throws Exception {
-		
-		ArrayList<MagDdtDTO> lista=null;
+//	public static ArrayList<MagDdtDTO> getListaDDTPerData(String dateFrom, String dateTo, Session session) throws Exception {
+//		
+//		ArrayList<MagDdtDTO> lista=null;
+//
+//		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+//		
+//		Query query = session.createQuery("from MagDdtDTO where data_ddt between :dateFrom and :dateTo");
+//		
+//		
+//		query.setParameter("dateFrom",df.parse(dateFrom));
+//		query.setParameter("dateTo",df.parse(dateTo));
+//		
+//		lista= (ArrayList<MagDdtDTO>)query.list();
+//		
+//		return lista;
+//	}
 
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+	public static ArrayList<MagDdtDTO> getListaDDTPerData(String dateFrom, String dateTo, Session session) throws Exception {
+	
+	ArrayList<MagDdtDTO> lista=new ArrayList<MagDdtDTO>();
+	ArrayList<Object[]> res = null;
+	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+	
+	Query query = session.createQuery("select a.ddt, a.commessa from MagPaccoDTO a where a.ddt.data_ddt between :dateFrom and :dateTo");
+	
+	
+	query.setParameter("dateFrom",df.parse(dateFrom));
+	query.setParameter("dateTo",df.parse(dateTo));
+	
+	res = (ArrayList<Object[]>) query.list();
+	
+	for (Object[] objects : res) {
+		MagDdtDTO ddt = null;
 		
-		Query query = session.createQuery("from MagDdtDTO where data_ddt between :dateFrom and :dateTo");
+		if(objects[0]!=null) {
+			 ddt = (MagDdtDTO) objects[0];	
+		}
 		
+		if(objects[1]!=null) {
+			ddt.setCommessa((String) objects[1]);	
+		}
 		
-		query.setParameter("dateFrom",df.parse(dateFrom));
-		query.setParameter("dateTo",df.parse(dateTo));
-		
-		lista= (ArrayList<MagDdtDTO>)query.list();
-		
-		return lista;
+		if(objects[0]!=null) {
+			lista.add(ddt);
+		}
 	}
 
+	
+	return lista;
+}
 
 	public static ArrayList<Integer> getListaAllegati(Session session) {
 		

@@ -2,18 +2,14 @@ package it.portaleSTI.bo;
 
 
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.activation.URLDataSource;
-import javax.mail.Authenticator;
 import javax.mail.BodyPart;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -28,11 +24,8 @@ import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
 
 import it.portaleSTI.DTO.CertificatoDTO;
-import it.portaleSTI.DTO.MagPaccoDTO;
-import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.Util.Costanti;
- 
 
 public class SendEmailBO {
 	public static void sendEmailCertificato(CertificatoDTO certificato, String mailTo, ServletContext ctx) throws Exception {
@@ -354,6 +347,159 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 
 
  	}
+
+
+
+
+
+public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato, String mailTo, ServletContext ctx) throws Exception {
+	
+	   String from = "eci@pec.ecisrl.it";
+	   String SMTP_HOST_NAME = "smtps.pec.aruba.it";
+	   int SMTP_HOST_PORT = 465;
+	   String SMTP_AUTH_USER = "eci@pec.ecisrl.it";
+	   String SMTP_AUTH_PWD  = "3\\65Lgrr%2";
+		
+	   
+	   Properties props = new Properties();
+
+       props.put("mail.transport.protocol", "smtps");
+       props.put("mail.smtps.host", SMTP_HOST_NAME);
+       props.put("mail.smtps.auth", true);
+    
+       props.put("mail.smtps.port", 465);
+       
+
+       props.put("mail.smtps.auth",true);
+       props.put("mail.smtps.user","eci@pec.ecisrl.it");
+       props.put("mail.debug", "true");
+       props.put("mail.smtps.port", 465);
+       props.put("mail.smtps.socketFactory.port", 465);
+       props.put("mail.smtps.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+       props.put("mail.smtps.socketFactory.fallback", "false");
+       props.put("mail.smtps.ssl.enable", true);
+       props.put("mail.smtps.ssl.protocols", "TLSv1.2");
+       
+       Session mailSession = Session.getDefaultInstance(props);
+    
+       MimeMessage message = new MimeMessage(mailSession); 
+		
+		// header field of the header. 
+		message.setFrom(new InternetAddress(from)); 	
+		
+		InternetAddress[] address = InternetAddress.parse(mailTo.trim().replace(";", ","));
+		
+		message.addRecipients(Message.RecipientType.TO, address); 
+		
+		message.setSubject("Trasmissione rapporti di verificazione periodica Vs. bilance"); 
+			
+		StringBuffer msg = new StringBuffer();
+		  msg.append("<html><body>");
+		  if(certificato.getNomeRapporto()!=null) {
+			  msg.append("<html>Gentile Cliente, <br /> " + 
+			  		"Inviamo in allegato il Rapporto e l'Attestato di verificazione periodica dei Vs. strumenti di misura. <br /> " + 
+			  		"Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata, unitamente al libretto metrologico, per tutto il periodo di validit&agrave; della verificazione (tre anni dalla data di svolgimento), ed esibita agli Enti incaricati in occasione delle attivit&agrave; di vigilanza e controllo. <br /> " + 		
+			  		"<br />Restiamo a disposizione per qualsiasi chiarimento in merito.<br>" + 
+			  		"Distinti saluti." + 
+			  		"  <br /> <br />"
+			  		+ "<em><b>S.T.I. Sviluppo Tecnologie Industriali Srl</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br><br>" + 
+			  		"<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> "
+			  		+ "Mail: </em>commerciale@stisrl.com<br>" + 
+			  		"<em>Web: </em>http://www.stisrl.com<br>" + 
+			  		"<br/></html>");
+			//  msg.append("<img width='350' src=cid:").append(message.embed(img)).append(">");
+			  msg.append("<img width='250' src=\"cid:image1\">");
+			  msg.append(" <img width='100' src=\"cid:image2\">");
+		
+			  msg.append("</body><font size='1'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
+			  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio &egrave; vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.<br><br>" + 
+			  		"According to Italian law D.L. 196/2003 and Reg. UE n.2016/679 (GDPR)  concerning privacy, if you are not the addressee (or responsible for delivery of the message to such person) you are hereby notified that any disclosure, reproduction, distribution or other dissemination or use of this communication is strictly prohibited. If you have received this message in error, please destroy it and notify us by email.\n" + 
+			  		"</font></html>");
+		  }else {
+			  msg.append("<html>Gentile Cliente, <br /> " + 
+				  		"Inviamo in allegato l'Attestato di verificazione periodica dei Vs. strumenti di misura. <br /> " + 
+				  		"Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata, unitamente al libretto metrologico, per tutto il periodo di validit&agrave; della verificazione (tre anni dalla data di svolgimento), ed esibita agli Enti incaricati in occasione delle attivit&agrave; di vigilanza e controllo. <br /> " + 		
+				  		"<br />Restiamo a disposizione per qualsiasi chiarimento in merito.<br>" + 
+				  		"Distinti saluti." + 
+				  		"  <br /> <br />"
+				  		+ "<em><b>S.T.I. Sviluppo Tecnologie Industriali Srl</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br><br>" + 
+				  		"<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> "
+				  		+ "Mail: </em>commerciale@stisrl.com<br>" + 
+				  		"<em>Web: </em>http://www.stisrl.com<br>" + 
+				  		"<br/></html>");
+				//  msg.append("<img width='350' src=cid:").append(message.embed(img)).append(">");
+				  msg.append("<img width='250' src=\"cid:image1\">");
+				  msg.append(" <img width='100' src=\"cid:image2\">");
+			
+				  msg.append("</body><font size='1'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
+				  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio &egrave; vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.<br><br>" + 
+				  		"According to Italian law D.L. 196/2003 and Reg. UE n.2016/679 (GDPR)  concerning privacy, if you are not the addressee (or responsible for delivery of the message to such person) you are hereby notified that any disclosure, reproduction, distribution or other dissemination or use of this communication is strictly prohibited. If you have received this message in error, please destroy it and notify us by email.\n" + 
+				  		"</font></html>");
+		  }
+
+		  BodyPart messageBodyPart = new MimeBodyPart();
+		  messageBodyPart.setContent(msg.toString(),"text/html");
+		  
+		  BodyPart attachAttestato = new MimeBodyPart();
+		  BodyPart attachRapporto = new MimeBodyPart();
+		  BodyPart attachP7m = new MimeBodyPart();
+		 		  
+		  BodyPart image = new MimeBodyPart();
+		  BodyPart image_ann = new MimeBodyPart();
+		  DataSource fds = new FileDataSource(Costanti.PATH_FOLDER_LOGHI +"logo_sti.png");
+
+		  image.setDataHandler(new DataHandler(fds));
+		  image.setHeader("Content-ID", "<image1>");
+		  
+		  DataSource fds_ann = new FileDataSource(Costanti.PATH_FOLDER_LOGHI +"anniversario.png");
+		  image_ann.setDataHandler(new DataHandler(fds_ann));
+		  image_ann.setHeader("Content-ID", "<image2>");
+		  
+		  Multipart multipart = new MimeMultipart();
+		  
+		    String filenameAtt = certificato.getNomeCertificato();
+			String filenameRap = certificato.getNomeRapporto();
+			String filenameP7m = certificato.getNomeCertificato()+".p7m";
+			String pack = certificato.getMisura().getVerIntervento().getNome_pack();
+			
+			// Create the attachment
+
+	         DataSource source = new FileDataSource(Costanti.PATH_FOLDER+pack+"/"+filenameAtt);
+	         attachAttestato.setDataHandler(new DataHandler(source));
+	         attachAttestato.setFileName(certificato.getNomeCertificato());
+	         
+	         if(certificato.getNomeRapporto()!=null) {
+	        	 source = new FileDataSource(Costanti.PATH_FOLDER+pack+"/Rapporto/"+filenameRap);
+	        	 attachRapporto.setDataHandler(new DataHandler(source));
+	        	 attachRapporto.setFileName(certificato.getNomeRapporto());
+	         }
+	         
+	         source = new FileDataSource(Costanti.PATH_FOLDER+pack+"/"+filenameP7m);
+	         attachP7m.setDataHandler(new DataHandler(source));
+	         attachP7m.setFileName(certificato.getNomeCertificato()+".p7m");
+	         
+	         multipart.addBodyPart(messageBodyPart);
+	         multipart.addBodyPart(attachAttestato);
+	         if(certificato.getNomeRapporto()!=null) {
+	        	 multipart.addBodyPart(attachRapporto);
+	         }
+	         multipart.addBodyPart(attachP7m);
+	         multipart.addBodyPart(image);
+	         multipart.addBodyPart(image_ann);
+	         // Send the complete message parts
+	         message.setContent(multipart);
+       
+
+	         Transport tr = mailSession.getTransport("smtps");
+	         
+	         tr.connect(SMTP_HOST_NAME, SMTP_HOST_PORT, SMTP_AUTH_USER, SMTP_AUTH_PWD);
+	         message.saveChanges();      // don't forget this
+	         tr.sendMessage(message, message.getAllRecipients());
+	         tr.close();
+	
+
+	}
+
 	
 public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origini, String mailTo) throws Exception {
 		
@@ -389,9 +535,17 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 	  
 	  for (String origine : lista_string_origini) {
 		msg.append("- "+origine.split(";")[0]+" - "+origine.split(";")[1]);
-
+		
 		if(origine.split(";").length>2) {
-			msg.append(" - Commessa: "+origine.split(";")[2]+"<br>");
+			if(!origine.split(";")[2].equals("")) {
+				msg.append(" - Commessa: "+origine.split(";")[2]);
+			}
+			if(origine.split(";").length>3) {
+				
+				msg.append(" - " + origine.split(";")[3]+"<br>");
+			}else {
+				msg.append("<br>");
+			}
 		}else {
 			msg.append("<br>");
 		}
@@ -409,4 +563,10 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 	  
 	}
 
+
+
+
 }
+
+
+

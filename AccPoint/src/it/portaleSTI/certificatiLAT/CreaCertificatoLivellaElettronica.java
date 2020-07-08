@@ -76,7 +76,7 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 			n_certificato=misura.getnCertificato();	
 		}else{
 			
-			n_certificato =misura.getMisura_lat().getSigla()+paddingZero(misura.getMisura_lat().getSeq())+"/"+Utility.getCurrentYear(2);
+			n_certificato ="LAT172"+misura.getMisura_lat().getSigla()+paddingZero(misura.getMisura_lat().getSeq())+"/"+Utility.getCurrentYear(2);
 			misura.setnCertificato(n_certificato);
 			misura.getMisura_lat().setSeq(misura.getMisura_lat().getSeq()+1);
 			certificato.getMisura().setnCertificato(n_certificato);

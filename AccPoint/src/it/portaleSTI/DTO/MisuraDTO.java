@@ -59,6 +59,12 @@ public class MisuraDTO implements Serializable {
 	
 	private String file_condizioni_ambientali = "";
 	
+	private Date dataUpdate;
+	
+	private UtenteDTO userModifica;
+	
+	private String notaModifica;
+	
     public String getObsoleto() {
 		return obsoleto;
 	}
@@ -245,6 +251,30 @@ public class MisuraDTO implements Serializable {
 
 	public void setFile_condizioni_ambientali(String file_condizioni_ambientali) {
 		this.file_condizioni_ambientali = file_condizioni_ambientali;
+	}
+
+	public Date getDataUpdate() {
+		return dataUpdate;
+	}
+
+	public void setDataUpdate(Date dataUpdate) {
+		this.dataUpdate = dataUpdate;
+	}
+
+	public UtenteDTO getUserModifica() {
+		return userModifica;
+	}
+
+	public void setUserModifica(UtenteDTO userModifica) {
+		this.userModifica = userModifica;
+	}
+
+	public String getNotaModifica() {
+		return notaModifica;
+	}
+
+	public void setNotaModifica(String notaModifica) {
+		this.notaModifica = notaModifica;
 	}
 
 

@@ -89,5 +89,19 @@
           <property name="file_condizioni_ambientali" type="java.lang.String">
             <column name="file_condizioni_ambientali" />
         </property>
+         
+         <property name="dataUpdate" type="java.util.Date">
+            <column name="data_modifica" />
+        </property>
+        
+        <many-to-one name="userModifica" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_user_modifica" />
+        </many-to-one>
+        
+       <property name="notaModifica" type="java.lang.String">
+            <column name="nota_modifica" />
+        </property>
+    
+        
     </class>
 </hibernate-mapping>

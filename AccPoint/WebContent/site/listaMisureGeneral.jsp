@@ -102,7 +102,8 @@
  <th>ID</th>
  <th>ID Certificato</th>
  <th>N° Certificato</th>
- <th>Data Misura</th>
+ <th>Data Emissione</th>
+ <th>Data Misura</th> 
   <th>Strumento</th>
   <th>Matricola | Codice Interno</th>
   <th>Lat</th>
@@ -126,6 +127,7 @@
 	
 <td>${misura.split(';;')[12] }</td>
 <td>${misura.split(';;')[11] }</td>
+<td>${misura.split(';;')[15] }</td>
 <td>${misura.split(';;')[5]}</td>
 <td>${misura.split(';;')[2]}</td>
 <td>${misura.split(';;')[3]} | ${misura.split(';;')[4]}</td>
@@ -514,7 +516,7 @@ ${misura.split(';;')[9] }
 	
 	  function filtraMisure(filtro){
 		  table
-	        .columns( 12 )
+	        .columns( 13 )
 	        .search( filtro )
 	        .draw();
 		  if(filtro==''){
@@ -603,8 +605,8 @@ ${misura.split(';;')[9] }
   	      stateSave: true,
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 1 },
-						   { responsivePriority: 2, targets: 12 },
-						   { responsivePriority: 3, targets: 10 },
+						   { responsivePriority: 2, targets: 13 },
+						   { responsivePriority: 3, targets: 11 },
   	                  
   	               ],
   	     

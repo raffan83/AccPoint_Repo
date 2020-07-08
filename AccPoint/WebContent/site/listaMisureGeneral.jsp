@@ -100,6 +100,8 @@
  <thead><tr class="active">
  <th></th>
  <th>ID</th>
+ <th>ID Certificato</th>
+ <th>N° Certificato</th>
  <th>Data Misura</th>
   <th>Strumento</th>
   <th>Matricola | Codice Interno</th>
@@ -109,6 +111,7 @@
   <th>Cliente</th>
   <th>Sede</th>
   <th hidden="hidden"></th>
+  <th>Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -116,23 +119,32 @@
  <c:forEach items="${lista_misure}" var="misura" varStatus="loop">
 
 
-		 <tr role="row" id="${misura.split(';')[0]}-${loop.index}">
+		 <tr role="row" id="${misura.split(';;')[0]}-${loop.index}">
 <td></td>
-	<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Misura"  onClick="callAction('dettaglioMisura.do?idMisura=${utl:encryptData(misura.split(';')[0])}')" onClick="">${misura.split(';')[0]}</a></td>
-
-<td>${misura.split(';')[5]}</td>
-<td>${misura.split(';')[2]}</td>
-<td>${misura.split(';')[3]} | ${misura.split(';')[4]}</td>
-<td><c:if test="${misura.split(';')[9].equals('null')}"></c:if>
-<c:if test="${!misura.split(';')[9].equals('null')}">
-${misura.split(';')[9] }
+	<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Misura"  onClick="callAction('dettaglioMisura.do?idMisura=${utl:encryptData(misura.split(';;')[0])}')" onClick="">${misura.split(';;')[0]}</a></td>
+	
+<td>${misura.split(';;')[12] }</td>
+<td>${misura.split(';;')[11] }</td>
+<td>${misura.split(';;')[5]}</td>
+<td>${misura.split(';;')[2]}</td>
+<td>${misura.split(';;')[3]} | ${misura.split(';;')[4]}</td>
+<td><c:if test="${misura.split(';;')[9].equals('null')}"></c:if>
+<c:if test="${!misura.split(';;')[9].equals('null')}">
+${misura.split(';;')[9] }
 </c:if>
 </td>
-<td><a class="btn customTooltip customlink"onClicK="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(misura.split(';')[1])}')" title="Click per aprire il dettaglio dell'intervento">${misura.split(';')[1]}</a></td>
-<td>${misura.split(';')[6] }</td>
-<td>${misura.split(';')[7] }</td>
-<td>${misura.split(';')[8] }</td>
-<td hidden="hidden">${misura.split(';')[10]}</td>
+<td><a class="btn customTooltip customlink"onClicK="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(misura.split(';;')[1])}')" title="Click per aprire il dettaglio dell'intervento">${misura.split(';;')[1]}</a></td>
+<td>${misura.split(';;')[6] }</td>
+<td>${misura.split(';;')[7] }</td>
+<td>${misura.split(';;')[8] }</td>
+<td hidden="hidden">${misura.split(';;')[10]}</td>
+<td>
+
+<a class="btn btn-warning customTooltip" title="Click per modificare lo strumento"><i class="fa fa-edit"></i></a>
+
+<a class="btn btn-info customTooltip" title="Click per cambiare la data emissione"><i class="fa fa-calendar"></i></a>
+
+</td>
 	</tr>
 	 
 	</c:forEach>
@@ -391,7 +403,7 @@ ${misura.split(';')[9] }
 	
 	  function filtraMisure(filtro){
 		  table
-	        .columns( 10 )
+	        .columns( 12 )
 	        .search( filtro )
 	        .draw();
 		  if(filtro==''){
@@ -461,7 +473,8 @@ ${misura.split(';')[9] }
   	      stateSave: true,
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 1 },
-						   { responsivePriority: 2, targets: 10 }
+						   { responsivePriority: 2, targets: 12 },
+						   { responsivePriority: 3, targets: 10 },
   	                  
   	               ],
   	     

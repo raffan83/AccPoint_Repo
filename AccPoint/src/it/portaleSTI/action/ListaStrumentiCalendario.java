@@ -175,7 +175,8 @@ public class ListaStrumentiCalendario extends HttpServlet {
 				{
 					for (StrumentoDTO str :listaStrumenti)
 					{
-						if(str.getId__sede_()==Integer.parseInt(idSede))
+						String[] ref=idSede.split("_");
+						if(str.getId_cliente()==Integer.parseInt(ref[1]) && str.getId__sede_()==Integer.parseInt(ref[0]))
 						{
 							listaStrumentiFiltrata.add(str);
 						}

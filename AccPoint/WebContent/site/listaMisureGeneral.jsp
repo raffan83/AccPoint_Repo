@@ -111,6 +111,7 @@
   <th>Cliente</th>
   <th>Sede</th>
   <th hidden="hidden"></th>
+  <th>Riemissione</th>
   <th>Azioni</th>
  </tr></thead>
  
@@ -139,11 +140,20 @@ ${misura.split(';;')[9] }
 <td>${misura.split(';;')[8] }</td>
 <td hidden="hidden">${misura.split(';;')[10]}</td>
 <td>
+<c:if test="${misura.split(';;')[13] == 'S' }">
+<i class="fa fa-check"></i>
+</c:if>
+<c:if test="${misura.split(';;')[13] == 'N' }">
 
-<a class="btn btn-warning customTooltip" title="Click per modificare lo strumento"><i class="fa fa-edit"></i></a>
-
-<a class="btn btn-info customTooltip" title="Click per cambiare la data emissione"><i class="fa fa-calendar"></i></a>
-
+</c:if>
+</td>
+<td>
+<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
+<a class="btn btn-warning customTooltip" title="Click per modificare lo strumento" onClick="modalModificaStrumento('${misura.split(';;')[14]}')"><i class="fa fa-edit"></i></a>
+</c:if>
+<c:if test="${userObj.checkPermesso('MODIFICA_CERTIFICATO')}">
+<a class="btn btn-info customTooltip" title="Click per modificare il certificato" onClick="modalModificaCertificato('${misura.split(';;')[12]}','${misura.split(';;')[11] }','${misura.split(';;')[5]}')"><i class="fa fa-file"></i></a>
+</c:if>
 </td>
 	</tr>
 	 
@@ -163,9 +173,100 @@ ${misura.split(';;')[9] }
           </div>
           <!-- /.box -->
         </div>
+        </div>
+        </div>
         <!-- /.col -->
  
  
+  <div id="myModalModificaStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Strumento</h4>
+      </div>
+       <div class="modal-body">
+
+
+<div class="tab-pane" id="modifica">
+        
+            <!-- /.tab-content -->
+          </div>
+        
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div> 
+
+
+<form id="modificaCertificatoForm" name="modificaCertificatoForm">
+  <div id="myModalModificaCertificato" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Certificato</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-4">
+       <label>Numero Certificato</label>
+       
+       </div>
+       <div class="col-xs-8">
+       <input id="numero_certificato" name="numero_certificato" type="text" class="form-control" required>
+       </div>
+       
+       </div>
+
+       <div class="row">
+       <div class="col-xs-4">
+       <label>Data Emissione</label>
+       
+       </div>
+       <div class="col-xs-8">
+               <div class='input-group date datepicker' id='datepicker_data_inizio'>
+               <input type='text' class="form-control input-small" id="data_emissione" name="data_emissione" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       </div>
+       
+       </div>
+       
+       
+       <div class="row">
+       <div class="col-xs-4">
+       <label>Note</label>
+       
+       </div>
+       <div class="col-xs-8">
+		<textarea rows="3" style="width:100%" class="form-control" required id="note" name="note"></textarea>
+       </div>
+       
+       </div>
+
+            <!-- /.tab-content -->
+          </div>
+        
+  		
+      <div class="modal-footer">
+		<input type="hidden" id="id_certificato" name="id_certificato">
+		
+		<button class="btn btn-primary" type="submit">Salva</button>
+      </div>
+       </div>
+    </div>
+  </div>
+  </form>
+<!-- </div>  -->
+
  
  
  <form id="formCertificato" name="formCertificato">
@@ -310,6 +411,16 @@ ${misura.split(';;')[9] }
   <script type="text/javascript">
 
   
+  function modalModificaCertificato(id_certificato, numero_certificato, data_emissione){
+	  
+	  $('#id_certificato').val(id_certificato);
+	  $('#numero_certificato').val(numero_certificato);
+	  $('#data_emissione').val(data_emissione);
+	  
+	  $('#myModalModificaCertificato').modal();
+	  
+  }
+  
 	var columsDatatables = [];
 	 
 	$("#tabPM").on( 'init.dt', function ( e, settings ) {
@@ -417,13 +528,32 @@ ${misura.split(';;')[9] }
 		 
 	  }
 	  
+	  
+	  function modalModificaStrumento(id_strumento){
+		  
+		  exploreModal("modificaStrumento.do?action=modifica&id="+id_strumento,"","#modifica")
+		  
+		  $('#myModalModificaStrumento').modal();
+	  }
+	 
+	     $("#myModalError").on("hidden.bs.modal", function () {
+	      	  
+	      	  if($('#myModalError').hasClass("modal-success")){
+	      		if(!$('#myModalModificaPacco').hasClass('in')){
+	      	  		location.reload();
+	      		}
+	        }
+	      	    
+	      	}); 
 	
     $(document).ready(function() {
     
     	 var date_from = "${date_from}";
      	 var date_to = "${date_to}";
 
-     	 
+         $('.datepicker').datepicker({
+    		 format: "dd/mm/yyyy"
+    	 });    
      	 
    	 $('input[name="datarange"]').daterangepicker({
 		   
@@ -568,6 +698,14 @@ ${misura.split(';;')[9] }
 	
 	filtraMisure('');
 });
+    
+    
+    
+    $('#modificaCertificatoForm').on('submit', function(e){
+    	
+    	e.preventDefault()
+    	modificaCertificato();
+    });
   </script>
 </jsp:attribute> 
 </t:layout>

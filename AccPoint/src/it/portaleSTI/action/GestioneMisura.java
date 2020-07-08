@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Hashtable;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,19 +20,29 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneMisuraDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.ForCorsoCatDTO;
+import it.portaleSTI.DTO.ForCorsoDTO;
+import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateReportAccredia;
+import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 
 /**
@@ -189,6 +201,74 @@ public class GestioneMisura extends HttpServlet {
 					    outp.close();
 				
 				session.close();
+			}
+			
+			else if(action.equals("modifica_certificato")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+		        //String id_corso = request.getParameter("id_corso");
+		        String id_certificato = ret.get("id_certificato");
+				String numero_certificato = ret.get("numero_certificato");
+				String data_emissione = ret.get("data_emissione");
+				String note = ret.get("note");
+				
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				
+				if(data_emissione!=null && !data_emissione.equals("")) {
+					certificato.setDataCreazione(df.parse(data_emissione));
+				}
+				
+				certificato.getMisura().setnCertificato(numero_certificato);
+				certificato.getMisura().setDataUpdate(new Date());
+				certificato.getMisura().setUserModifica(utente);
+				certificato.getMisura().setNotaModifica(note);
+				
+				if(certificato.getMisura().getMisuraLAT()!=null) {
+					certificato.getMisura().getMisuraLAT().setnCertificato(numero_certificato);
+					session.update(certificato.getMisura().getMisuraLAT());
+				}
+				
+				
+				session.update(certificato.getMisura());
+				session.update(certificato);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Certificato modificato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+				
 			}
 		}catch(Exception e) {
 			

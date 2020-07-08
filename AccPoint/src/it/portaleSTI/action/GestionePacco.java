@@ -1184,7 +1184,7 @@ public class GestionePacco extends HttpServlet {
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioCommessaPacchi.jsp");
 		     	dispatcher.forward(request,response);
-				
+				session.close();
 
 		}
 		
@@ -1458,7 +1458,7 @@ public class GestionePacco extends HttpServlet {
 			}	
 			
 			out.print(myObj);
-			
+			session.close();
 
 		}
 		

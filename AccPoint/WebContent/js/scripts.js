@@ -12205,11 +12205,17 @@ function firmaVerCertificato(pin, idCertificato){
 
 
 
-function modalEmailVerificazione(id_certificato){
+function modalEmailVerificazione(id_certificato, id_multi){
 	
 	 pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
-	  $('#id_certificato').val(id_certificato);
+	  if(id_multi!=null){
+		  $('#id_certificato').val(id_multi);
+	  }else{
+		  $('#id_certificato').val(id_certificato);  
+	  }
+	  
+	  
 	  
 	  $.ajax({
  	  type: "POST",
@@ -13829,4 +13835,63 @@ $('#calendario').fullCalendar({
     	pleaseWaitDiv.modal('hide');
 	          }
 	         });
+}
+
+
+
+function modificaCertificato(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#modificaCertificatoForm')[0]; 
+		  var formData = new FormData(form);
+		 
+$.ajax({
+	  type: "POST",
+	  url: "gestioneMisura.do?action=modifica_certificato",
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+ 			$('#myModalError').on('hidden.bs.modal', function(){	         			
+				
+ 				 location.reload()
+			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+});
 }

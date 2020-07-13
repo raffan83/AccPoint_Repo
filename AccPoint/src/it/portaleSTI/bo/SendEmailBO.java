@@ -354,24 +354,20 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 
 public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato, String mailTo, ServletContext ctx) throws Exception {
 	
-	   String from = "eci@pec.ecisrl.it";
+	   String from = "metrologiasti@pec.it";
 	   String SMTP_HOST_NAME = "smtps.pec.aruba.it";
 	   int SMTP_HOST_PORT = 465;
-	   String SMTP_AUTH_USER = "eci@pec.ecisrl.it";
-	   String SMTP_AUTH_PWD  = "3\\65Lgrr%2";
-		
+	   String SMTP_AUTH_USER = "metrologiasti@pec.it";
+	   String SMTP_AUTH_PWD  = "XkGiDri9&";
 	   
 	   Properties props = new Properties();
 
        props.put("mail.transport.protocol", "smtps");
        props.put("mail.smtps.host", SMTP_HOST_NAME);
-       props.put("mail.smtps.auth", true);
-    
-       props.put("mail.smtps.port", 465);
-       
-
+       props.put("mail.smtps.auth", true);    
+       props.put("mail.smtps.port", 465);      
        props.put("mail.smtps.auth",true);
-       props.put("mail.smtps.user","eci@pec.ecisrl.it");
+       props.put("mail.smtps.user","metrologiasti@pec.it");
        props.put("mail.debug", "true");
        props.put("mail.smtps.port", 465);
        props.put("mail.smtps.socketFactory.port", 465);
@@ -379,6 +375,7 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
        props.put("mail.smtps.socketFactory.fallback", "false");
        props.put("mail.smtps.ssl.enable", true);
        props.put("mail.smtps.ssl.protocols", "TLSv1.2");
+       
        
        Session mailSession = Session.getDefaultInstance(props);
     
@@ -394,6 +391,7 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 		message.setSubject("Trasmissione rapporti di verificazione periodica Vs. bilance"); 
 			
 		StringBuffer msg = new StringBuffer();
+		
 		  msg.append("<html><body>");
 		  if(certificato.getNomeRapporto()!=null) {
 			  msg.append("<html>Gentile Cliente, <br /> " + 

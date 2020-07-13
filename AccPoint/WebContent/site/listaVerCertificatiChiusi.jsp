@@ -18,17 +18,18 @@
 	%>
 
 	     		 <input style="display:none" type="password" name="fakepasswordremembered"/>
-<!-- 	<div class="row padding-bottom-30" >
+	     		  	<div class="row padding-bottom-30" >
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
-            <button id="generaSelected" class="btn btn-success">Genera Selezionati</button>
-            <form id="certificatiMulti" method="POST"><input type='hidden' id="dataInExport" name='dataIn' value=''></form>
+            <button onClick="inviaSelected()" class="btn btn-info"><i class="fa fa-paper-plane-o"></i> Invia a selezionati</button>
+            
           </div>
-	  </div> -->
+	  </div> 
 	<div class="row" >
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th></th>
+ <th style="max-width:20px"><input id="checkAll" type="checkbox" /></th>
  <%-- <th></th> --%>
  <th>Id Certificato</th>
    <th>Commessa</th>
@@ -54,7 +55,7 @@
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
 	<td></td>
-		
+		<td></td>
 		<td>${certificato.id}</td>
  		<td>${certificato.misura.verIntervento.commessa}</td>
 		<td>${certificato.misura.verStrumento.denominazione}</td>
@@ -373,7 +374,53 @@
 	}
   
   
-  
+  function inviaSelected(){
+	  
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+  		var dataSelected = table.rows( { selected: true } ).data();
+  		var selezionati = {
+  			    ids: []
+  			};
+  		
+  		if(dataSelected.length>0){
+  			
+  			var cliente = dataSelected[0][6];
+  			var cliente_diverso = false;
+  			
+  			for(i=0; i< dataSelected.length; i++){
+  				
+  				if(dataSelected[i][6]==cliente){
+  					selezionati.ids.push(dataSelected[i][2]);
+  				}else{
+  					cliente_diverso = true;
+  					break;
+  				}
+  	  			
+  	  		}
+  			
+  			
+  			if(cliente_diverso){
+  				$('#myModalErrorContent').html("Attenzione! Hai selezionato certificati di clienti diversi!");
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-default");
+  				$('#myModalError').modal('show');
+  			}else{
+  				table.rows().deselect();
+  				modalEmailVerificazione(selezionati.ids[0], selezionati.ids)
+  			}
+  	  		
+  	  		
+  			
+  		}else{
+  			$('#myModalErrorContent').html("Nessun certificato selezionato!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-default");
+				$('#myModalError').modal('show');
+  		}
+  		
+  		 pleaseWaitDiv.modal('hide');
+  }
   
   
 	var columsDatatables = [];
@@ -391,7 +438,7 @@
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabPM thead th').eq( $(this).index() ).text();
 	        
-	        if( $(this).index() != 0){
+	        if( $(this).index() != 0 && $(this).index() != 1){
 	        	$(this).append( '<div><input class="inputsearchtable" type="text" value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	        }
 	     	
@@ -478,19 +525,20 @@
         	style:    'multi+shift',
         	selector: 'td:nth-child(2)'
     	},
-  	      order: [[ 1, "desc" ]],
+  	      order: [[ 2, "desc" ]],
    	      columnDefs: [
+   	    	{ targets: 0,  orderable: false },
 						   { responsivePriority: 1, targets: 0 },
-						  /*   { className: "select-checkbox", targets: 1,  orderable: false }, */
-  	                   { responsivePriority: 3, targets: 7 },
-  	                   { responsivePriority: 4, targets: 2 },
-  	                 { responsivePriority: 5, targets: 1 },
-  	                 { responsivePriority: 2, targets: 11 },
-  	               { responsivePriority: 6, targets: 4 },
-  	             { responsivePriority: 7, targets: 5 },
-  	           { responsivePriority: 8, targets: 3 },
-  	         { responsivePriority: 9, targets: 9 }
-  	       
+						    { className: "select-checkbox", targets: 1,  orderable: false },
+  	                   { responsivePriority: 3, targets: 8 },
+  	                   { responsivePriority: 4, targets: 3 },
+  	                 { responsivePriority: 5, targets: 2 },
+  	                 { responsivePriority: 2, targets: 12 },
+  	               { responsivePriority: 7, targets: 5 },
+  	             { responsivePriority: 8, targets: 6 },
+  	           { responsivePriority: 10, targets: 4 },
+  	         { responsivePriority: 9, targets: 10 },
+  	         { responsivePriority: 6, targets: 1 }
   	               ],
   	      
   	               buttons: [ {
@@ -622,7 +670,7 @@
 	  		
 	  	});
 	//$("#checkAll").click(function(){
-		$('#checkAll').on('ifClicked', function (ev) {
+/* 		$('#checkAll').on('ifClicked', function (ev) {
 		
 			table.rows().deselect();
 			var allData = table.rows({filter: 'applied'});
@@ -667,7 +715,22 @@
 		}
 		
 		
-	  	});
+	  	}); */
+	  	
+	  	
+	  	$('input').on('ifChecked', function(event){  		
+	  		
+ 		   //table.rows().select();
+ 		   table.rows({ filter : 'applied'}).select();
+ 		      	  
+	});
+	$('input').on('ifUnchecked', function(event){
+		
+ 		 table.rows().deselect();
+ 	  
+	});
+	  	
+	  	
 	  $('#checkAll').iCheck({
 	      checkboxClass: 'icheckbox_square-blue',
 	      radioClass: 'iradio_square-blue',

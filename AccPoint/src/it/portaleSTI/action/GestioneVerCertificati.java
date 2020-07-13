@@ -134,6 +134,8 @@ public class GestioneVerCertificati extends HttpServlet {
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				RequestDispatcher dispatcher  = getServletContext().getRequestDispatcher("/site/listaVerCertificatiTutti.jsp");
 		     	dispatcher.forward(request,response);
+		     	session.getTransaction().commit();
+				session.close();
 
 				
 			}else if(action.equals("lavorazione")){
@@ -163,6 +165,8 @@ public class GestioneVerCertificati extends HttpServlet {
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerCertificatiInLavorazione.jsp");
 		     	dispatcher.forward(request,response);
+		     	session.getTransaction().commit();
+				session.close();
 
 				
 			}else if(action.equals("chiusi")){
@@ -194,6 +198,8 @@ public class GestioneVerCertificati extends HttpServlet {
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerCertificatiChiusi.jsp");
 		     	dispatcher.forward(request,response);
+		     	session.getTransaction().commit();
+				session.close();
 
 			}
 			else if(action.equals("obsoleti")) {
@@ -225,6 +231,8 @@ public class GestioneVerCertificati extends HttpServlet {
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerCertificatiTutti.jsp");
 		     	dispatcher.forward(request,response);
+		     	session.getTransaction().commit();
+				session.close();
 			}
 			
 			else if(action.equals("crea_certificato")) {
@@ -471,26 +479,35 @@ public class GestioneVerCertificati extends HttpServlet {
 				String id_certificato = request.getParameter("id_certificato");
 				String indirizzo = request.getParameter("indirizzo");
 				
-				VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id_certificato), session);				
+				String[] ids = id_certificato.split(",");
+				
+				for (String id : ids) {
+					
+					VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id), session);				
 
-				SendEmailBO.sendEmailCertificatoVerificazione(certificato, indirizzo, getServletContext());
-				
-				String[] destinatari = indirizzo.replace(" ", "").split(";");
-				
-				for (String dest : destinatari) {
-					VerEmailDTO email = new VerEmailDTO();
+					//SendEmailBO.sendEmailCertificatoVerificazione(certificato, indirizzo, getServletContext());
 					
-					email.setCertificato(certificato);
-					email.setData_invio(new Timestamp(System.currentTimeMillis()));
-					email.setUtente(utente);
-					email.setDestinatario(dest);
+					SendEmailBO.sendPECCertificatoVerificazione(certificato,indirizzo, getServletContext());
 					
-					session.save(email);
-				}
-				
-				certificato.setEmail_inviata(1);
-				
-				session.update(certificato);
+					String[] destinatari = indirizzo.replace(" ", "").split(";");
+					
+					for (String dest : destinatari) {
+						VerEmailDTO email = new VerEmailDTO();
+						
+						email.setCertificato(certificato);
+						email.setData_invio(new Timestamp(System.currentTimeMillis()));
+						email.setUtente(utente);
+						email.setDestinatario(dest);
+						
+						session.save(email);
+					}
+					
+					certificato.setEmail_inviata(1);
+					
+					session.update(certificato);
+					
+				}				
+
 				
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Email inviata con successo!");
@@ -510,6 +527,9 @@ public class GestioneVerCertificati extends HttpServlet {
 				request.getSession().setAttribute("lista_email",lista_email);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerEmailCertificato.jsp");
 		     	dispatcher.forward(request,response);
+		     	
+		     	session.getTransaction().commit();
+				session.close();
 				
 			}
 			

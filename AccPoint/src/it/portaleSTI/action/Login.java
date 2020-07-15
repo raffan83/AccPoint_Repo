@@ -31,6 +31,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.bo.GestioneBachecaBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneTrendBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.Util.Utility;
 
 /**
@@ -60,6 +61,8 @@ public class Login extends HttpServlet {
 				UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 				Session hsession = SessionFacotryDAO.get().openSession();
 				RequestDispatcher dispatcher;
+				
+				GestioneUtenteBO.updateUltimoAccesso(utente.getId());
 				
 				if(utente.checkRuolo("CL")) {
 	
@@ -259,8 +262,10 @@ public class Login extends HttpServlet {
 	        
 	        if(utente!=null && utente.getAbilitato()==1)
 	        {
+	        	
 	        	 RequestDispatcher dispatcher;
-	        	if(utente.getPrimoAccesso()==1) {
+	        	 GestioneUtenteBO.updateUltimoAccesso(utente.getId());
+	        	 if(utente.getPrimoAccesso()==1) {
 	        		 request.getSession().setAttribute("old_password",Utility.encryptData(pwd));
 	        		 request.getSession().setAttribute("id_utente",Utility.encryptData(String.valueOf(utente.getId())));
 	        		 dispatcher = getServletContext().getRequestDispatcher("/site/passwordResetOld.jsp");

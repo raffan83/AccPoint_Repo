@@ -1,6 +1,7 @@
 package it.portaleSTI.DTO;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -48,6 +49,8 @@ public class UtenteDTO implements Serializable {
 	 * Abilitato = 1
 	 */
 	private int abilitato = 0;
+	
+	private Date ultimoAccesso;
 	
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
 	
@@ -425,6 +428,20 @@ public class UtenteDTO implements Serializable {
 
 	public void setConsenso_commerciale(String consenso_commerciale) {
 		this.consenso_commerciale = consenso_commerciale;
+	}
+
+
+
+
+	public Date getUltimoAccesso() {
+		return ultimoAccesso;
+	}
+
+
+
+
+	public void setUltimoAccesso(Date ultimoAccesso) {
+		this.ultimoAccesso = ultimoAccesso;
 	}
 	
 	

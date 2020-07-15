@@ -235,4 +235,11 @@ public class GestioneUtenteBO {
 		return GestioneUtenteDAO.checkPINFIrma(id, pin, session);
 	}
 
+
+	public static void updateUltimoAccesso(int id) throws Exception {
+	
+		DirectMySqlDAO.updateUltimoAccesso(id);
+		
+	}
+
 }

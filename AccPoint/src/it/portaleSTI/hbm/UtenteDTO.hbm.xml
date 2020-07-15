@@ -96,5 +96,8 @@
          <property name="consenso_commerciale" type="java.lang.String">
             <column name="consenso_commerciale" />
          </property>
+          <property name="ultimoAccesso" type="java.util.Date">
+		   <column name="ultimo_accesso"/>
+		  </property>
     </class>
 </hibernate-mapping>

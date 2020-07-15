@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -2646,6 +2647,32 @@ public static ArrayList<Integer> getGrandezzeFromTipoStrumento(int id_tipo_strum
 		
 	}	
 	return lista;
+}
+
+public static void updateUltimoAccesso(int id) throws Exception {
+	
+	PreparedStatement pst=null;
+	ResultSet rs= null;
+	Connection con=null;
+	try{
+		con = getConnection();	
+		
+		pst=con.prepareStatement("UPDATE users SET ultimo_accesso=? WHERE id=?");
+		pst.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+		pst.setInt(2,id);
+		pst.execute();
+	
+	}catch(Exception ex)
+	{
+		ex.printStackTrace();
+		throw ex;
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
 }
 	
 }

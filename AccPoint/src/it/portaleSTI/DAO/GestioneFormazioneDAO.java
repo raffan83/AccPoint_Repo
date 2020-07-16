@@ -17,6 +17,7 @@ import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
+import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 
 public class GestioneFormazioneDAO {
@@ -412,6 +413,41 @@ public class GestioneFormazioneDAO {
 		return lista;
 	}
 
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaCorsiConsuntivo(String dateFrom, String dateTo, Session session) throws Exception {
+	
+	ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
+	Query query =  session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.data_corso between :_dateFrom and :_dateTo group by p.corso");	
+	query.setParameter("_dateFrom", sdf.parse(dateFrom));
+	query.setParameter("_dateTo", sdf.parse(dateTo));
+		
+		
+	lista = (ArrayList<ForPartecipanteRuoloCorsoDTO>) query.list();
+	
+			
+	return lista;
+}
+
+	public static ForQuestionarioDTO GestioneFormazioneDAO(int id_questionario, Session session) {
+
+		ArrayList<ForQuestionarioDTO> lista = null;
+		ForQuestionarioDTO result = null;
+
+		Query query =  session.createQuery("from ForQuestionarioDTO where id = :_id");	
+		query.setParameter("_id", id_questionario);
+		
+		lista = (ArrayList<ForQuestionarioDTO>) query.list();
+		
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
+		
+	}
 	
 
 }

@@ -31,10 +31,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
+import it.portaleSTI.DAO.GestioneCommesseDAO;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
@@ -43,6 +45,7 @@ import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
+import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -371,9 +374,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
 					ArrayList<ForCorsoCatDTO> lista_corsi_cat = GestioneFormazioneBO.getListaCategorieCorsi(session);
 					ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);			
+					ArrayList<CommessaDTO> lista_commesse = GestioneCommesseDAO.getListaCommesseFormazione(company, "FES", utente, 0, false);
 					
 					request.getSession().setAttribute("lista_docenti", lista_docenti);
 					request.getSession().setAttribute("lista_corsi_cat", lista_corsi_cat);
+					request.getSession().setAttribute("lista_commesse", lista_commesse);
 				}
 			
 				request.getSession().setAttribute("lista_corsi", lista_corsi);				
@@ -421,6 +426,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_scadenza = ret.get("data_scadenza");
 				String descrizione = ret.get("descrizione");
 				String edizione = ret.get("edizione");
+				String commessa = ret.get("commessa");
 
 				ForCorsoDTO corso = new ForCorsoDTO();		
 				
@@ -433,6 +439,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				corso.setData_scadenza(df.parse(data_scadenza));
 				corso.setDescrizione(descrizione);
 				corso.setEdizione(edizione);
+				corso.setCommessa(commessa);
 				
 				if(filename!=null && !filename.equals("")) {
 					corso.setDocumento_test(filename);
@@ -494,6 +501,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_scadenza = ret.get("data_scadenza_mod");
 				String descrizione = ret.get("descrizione_mod");
 				String edizione = ret.get("edizione_mod");
+				String commessa = ret.get("commessa_mod");
 				
 				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso),session);		
 				
@@ -506,6 +514,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				corso.setData_scadenza(df.parse(data_scadenza));
 				corso.setDescrizione(descrizione);
 				corso.setEdizione(edizione);
+				if(commessa!=null && !commessa.equals("")) {
+					corso.setCommessa(commessa);
+				}
 				
 				if(filename!=null && !filename.equals("")) {
 					corso.setDocumento_test(filename);
@@ -1274,6 +1285,93 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				session.close();
 				
+			}
+			else if(action.equals("consuntivo")) {
+								
+				session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/consuntivoFormazione.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("consuntivo_table")) {
+								
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");				
+				
+				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_corsi =  GestioneFormazioneBO.getListaCorsiConsuntivo(dateFrom, dateTo, session);	
+				
+				request.getSession().setAttribute("lista_corsi", lista_corsi);
+				request.getSession().setAttribute("dateFrom", dateFrom);
+				request.getSession().setAttribute("dateTo", dateTo);
+			
+								
+				session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/consuntivoFormazioneTable.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("questionario")) {
+								
+				ForCorsoDTO corso = (ForCorsoDTO) request.getSession().getAttribute("corso");	
+				
+				ForQuestionarioDTO questionario = null;
+				
+				if(corso.getQuestionario() == null) {
+				
+					questionario = new ForQuestionarioDTO();
+					
+					session.save(questionario);
+					
+					corso.setQuestionario(questionario);
+					
+					session.update(corso);					
+					
+				}else {
+				
+					questionario = corso.getQuestionario();
+				}
+				
+				
+				ArrayList<ForPartecipanteRuoloCorsoDTO> listaPartecipanti = (ArrayList<ForPartecipanteRuoloCorsoDTO>) request.getSession().getAttribute("listaPartecipanti");	
+				request.getSession().setAttribute("numero_partecipanti", listaPartecipanti.size());	
+				
+				request.getSession().setAttribute("questionario", questionario);
+				request.getSession().setAttribute("corso", corso);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/questionarioFormazione.jsp");
+		     	dispatcher.forward(request,response);
+			}
+			else if(action.equals("compila_questionario")) {
+				
+				ajax = true;
+				
+			
+				String risposte = request.getParameter("risposte");
+				
+				ForQuestionarioDTO questionario = (ForQuestionarioDTO) request.getSession().getAttribute("questionario");				
+				
+				questionario.setSeq_risposte(risposte);
+				
+				session.update(questionario);				
+				
+				
+				request.getSession().setAttribute("questionario", questionario);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				
+				myObj.addProperty("success", true);				
+				
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
 			}
 
 			

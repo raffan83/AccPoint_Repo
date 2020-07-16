@@ -14,6 +14,9 @@ public class ForCorsoDTO {
 	private String documento_test;
 	private String descrizione;
 	private String edizione;
+	private String commessa;
+	private ForQuestionarioDTO questionario;
+	
 	
 	private Set<ForPartecipanteDTO> listaPartecipanti = new HashSet<ForPartecipanteDTO>(0);
 	
@@ -79,6 +82,18 @@ public class ForCorsoDTO {
 	public void setListaPartecipanti(Set<ForPartecipanteDTO> listaPartecipanti) {
 		this.listaPartecipanti = listaPartecipanti;
 	}
-	
+	public String getCommessa() {
+		return commessa;
+	}
+	public void setCommessa(String commessa) {
+		this.commessa = commessa;
+	}
+	public ForQuestionarioDTO getQuestionario() {
+		return questionario;
+	}
+	public void setQuestionario(ForQuestionarioDTO questionario) {
+		this.questionario = questionario;
+	}
+
 	
 }

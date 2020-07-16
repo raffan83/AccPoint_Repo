@@ -388,7 +388,7 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 		
 		message.addRecipients(Message.RecipientType.TO, address); 
 		
-		message.setSubject("Trasmissione rapporti di verificazione periodica Vs. bilance"); 
+		message.setSubject("Trasmissione rapporti di verificazione periodica Vs. bilance - MATRICOLA: "+certificato.getMisura().getVerStrumento().getMatricola()); 
 			
 		StringBuffer msg = new StringBuffer();
 		
@@ -406,8 +406,8 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 			  		"<em>Web: </em>http://www.stisrl.com<br>" + 
 			  		"<br/></html>");
 			//  msg.append("<img width='350' src=cid:").append(message.embed(img)).append(">");
-			  msg.append("<img width='250' src=\"cid:image1\">");
-			  msg.append(" <img width='100' src=\"cid:image2\">");
+			  msg.append("<a href='www.stisrl.com'><img width='350' src=\"cid:image1\"></a>");
+			  msg.append(" <img width='350' src=\"cid:image2\">");
 		
 			  msg.append("</body><font size='1'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
 			  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio &egrave; vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.<br><br>" + 
@@ -426,8 +426,8 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 				  		"<em>Web: </em>http://www.stisrl.com<br>" + 
 				  		"<br/></html>");
 				//  msg.append("<img width='350' src=cid:").append(message.embed(img)).append(">");
-				  msg.append("<img width='250' src=\"cid:image1\">");
-				  msg.append(" <img width='100' src=\"cid:image2\">");
+				  msg.append("<a href='www.stisrl.com'><img width='350' src=\"cid:image1\"></a>");
+				  msg.append(" <img width='350' src=\"cid:image2\">");
 			
 				  msg.append("</body><font size='1'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
 				  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio &egrave; vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.<br><br>" + 
@@ -444,12 +444,14 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 		 		  
 		  BodyPart image = new MimeBodyPart();
 		  BodyPart image_ann = new MimeBodyPart();
-		  DataSource fds = new FileDataSource(Costanti.PATH_FOLDER_LOGHI +"logo_sti.png");
+		 // DataSource fds = new FileDataSource(Costanti.PATH_FOLDER_LOGHI +"logo_sti.png");
+		  DataSource fds = new FileDataSource(Costanti.PATH_FOLDER_LOGHI +"sito_sti.png");
 
 		  image.setDataHandler(new DataHandler(fds));
 		  image.setHeader("Content-ID", "<image1>");
 		  
-		  DataSource fds_ann = new FileDataSource(Costanti.PATH_FOLDER_LOGHI +"anniversario.png");
+		  //DataSource fds_ann = new FileDataSource(Costanti.PATH_FOLDER_LOGHI +"anniversario.png");
+		  DataSource fds_ann = new FileDataSource(Costanti.PATH_FOLDER_LOGHI +"sito_calver.png");
 		  image_ann.setDataHandler(new DataHandler(fds_ann));
 		  image_ann.setHeader("Content-ID", "<image2>");
 		  

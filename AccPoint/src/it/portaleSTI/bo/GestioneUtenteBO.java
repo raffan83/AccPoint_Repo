@@ -1,5 +1,6 @@
 package it.portaleSTI.bo;
 
+import java.io.File;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
@@ -170,7 +171,7 @@ public class GestioneUtenteBO {
 	public static JsonObject sendEmailAmministratoreNuovoUtente(UtenteDTO utente, Session sessionH) throws Exception {
 		 	JsonObject myObj = new JsonObject(); 
 
-			  String to = Costanti.EMAIL_EXCEPTION_REPORT;
+			  String to = "raffaele.fantini@ncsnetwork.it,antonio.dicivita@ncsnetwork.it,luigi.laposta@stisrl.com";
 			  String subject = "Calver.it Nuovo Utente";
 			  
 		      String hmtlMex = "<h3><img src=\"https://www.calver.it/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />L'utente "+utente.getNominativo()+"<br /> ha chiesto la registrazione per l'accesso a Calver.it <br /><br/>Dati:<br /><br/>Utente: "+utente.getUser()+"<br  />Email: "+utente.getEMail()+"<br  />Telefono: "+utente.getTelefono()+"<br  />Company: "+utente.getDescrizioneCompany()+"<br  /><br /> \r\n" + 
@@ -215,11 +216,14 @@ public class GestioneUtenteBO {
 		  String to2 = utente.getEMail();
 		  String subject2 = "Calver.it Attivazione Utente";
 		  
-	      String hmtlMex2 = "<h3><img src=\"https://www.calver.it/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	il Suo account &egrave; stato attivato con successo.<br /><br/> \r\n" + 
+	      String hmtlMex2 = "<h3><img src=\"https://www.calver.it/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	il Suo account &egrave; stato attivato con successo.<br /><br/>\r\n" +
+	    		 "Inviamo in allegato il manuale operativo.<br><br>"+ 
 	      		"Grazie e buon lavoro.\r\n" + 
 	      		"<br/><br/><br />AccPoint";
-	      	      
-		  Utility.sendEmail(to2,subject2,hmtlMex2);
+	      
+	      File file = new File(Costanti.PATH_FOLDER_CALVER+"\\Guida_Calver.pdf");
+	      
+		  Utility.sendEmailAllegato(to2,subject2,hmtlMex2, file);
 		  
 		  
 			myObj.addProperty("success", true);

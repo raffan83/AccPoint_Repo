@@ -84,6 +84,10 @@
 			 
 
 	</div>
+	
+	<div class="col-xs-4">
+	<a class="btn btn-primary pull-right" style="margin-top:30px" onClick="callAction('gestioneFormazione.do?action=consuntivo')">Vai al consuntivo</a>
+	</div>
 
 
 </div>

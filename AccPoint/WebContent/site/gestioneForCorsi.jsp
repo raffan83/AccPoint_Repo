@@ -67,6 +67,7 @@
 
 <th>ID</th>
 <th>Tipologia</th>
+<th>Commessa</th>
 <th>Docente</th>
 <th>Data Inizio</th>
 <th>Data Scadenza</th>
@@ -80,14 +81,16 @@
 
 	<td>${corso.id }</td>	
 	<td>${corso.corso_cat.descrizione }</td>
+	<td>${corso.commessa }</td>
 	<td>${corso.docente.nome } ${corso.docente.cognome }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_corso}" /></td>	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_scadenza}" /></td>
 	<td>
-	 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
-	<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${corso.docente.id}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${corso.descrizione }','${corso.edizione }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>
-	</c:if>
+
 	<a class="btn btn-info" onClick="dettaglioCorso('${utl:encryptData(corso.id)}')"><i class="fa fa-search"></i></a>
+		 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+	<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${corso.docente.id}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${corso.descrizione }','${corso.edizione }','${corso.commessa }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>
+	</c:if>
 	<c:if test="${corso.documento_test!=null }">
 	<a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_documento_test&id_corso=${utl:encryptData(corso.id)}" title="Click per scaricare il documento del test"><i class="fa fa-file-pdf-o"></i></a>
 	</c:if>
@@ -162,6 +165,24 @@
        			
        	</div>       	
        </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Commessa</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <select id="commessa" name="commessa" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Commessa..." required>
+        <option value=""></option>
+        <c:forEach items="${lista_commesse }" var="commessa">
+        <option value="${commessa.ID_COMMESSA }">${commessa.ID_COMMESSA }</option>
+        </c:forEach>
+        </select>
+       			
+       	</div>       	
+       </div><br>
+       
        <div class="row">
        
        	<div class="col-sm-3">
@@ -292,6 +313,25 @@
        			
        	</div>       	
        </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Commessa</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <select id="commessa_mod" name="commessa_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Commessa..." required>
+        <option value=""></option>
+        <c:forEach items="${lista_commesse }" var="commessa">
+        <option value="${commessa.ID_COMMESSA }">${commessa.ID_COMMESSA }</option>
+        </c:forEach>
+        </select>
+       			
+       	</div>       	
+       </div><br>
+       
+       
         <div class="row">
        
        	<div class="col-sm-3">
@@ -433,13 +473,15 @@ function modalnuovoCorso(){
 }
 
 
-function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, edizione){
+function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, edizione, commessa){
 	
 	$('#id_corso').val(id_corso);
 	$('#categoria_mod').val(id_categoria);
 	$('#categoria_mod').change();
 	$('#docente_mod').val(id_docente);
 	$('#docente_mod').change();
+	$('#commessa_mod').val(commessa);
+	$('#commessa_mod').change();
 	if(data_inizio!=null && data_inizio!=''){
 		$('#data_corso_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy"));
 	}

@@ -43,11 +43,17 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -59,6 +65,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.sun.mail.smtp.SMTPMessage;
 import com.sun.mail.smtp.SMTPTransport;
@@ -601,7 +609,11 @@ public class Utility extends HttpServlet {
 		         message.setFrom(new InternetAddress(Costanti.HOST_MAIL_SYSTEM_SENDER));
 
 		         // Set To: header field of the header.
-		         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+		         
+
+		 		InternetAddress[] address = InternetAddress.parse(to.trim().replace(";", ","));
+		         
+		         message.addRecipients(Message.RecipientType.TO, address);
 
 		         // Set Subject: header field
 		         message.setSubject(subject);
@@ -620,6 +632,69 @@ public class Utility extends HttpServlet {
 	  		    }
 	
 	}
+	
+	
+	public static void sendEmailAllegato(String to, String subject, String msgHtml, File file) throws Exception {
+
+	      
+	      // Get system properties
+	      Properties properties = System.getProperties();
+
+	      // Setup mail server
+	      properties.setProperty("mail.smtp.host", Costanti.HOST_MAIL_SYSTEM);
+	      properties.setProperty("mail.smtp.port", Costanti.HOST_MAIL_SYSTEM_PORT);
+	      properties.setProperty("mail.smtp.auth", "true");
+	      properties.setProperty("mail.transport.protocol", "smtps");
+	      properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	      
+	      // Get the default Session object.
+	      javax.mail.Session session = javax.mail.Session.getDefaultInstance(properties);
+		
+		  MimeMessage message = new MimeMessage(session);
+
+       // Set From: header field of the header.
+       message.setFrom(new InternetAddress(Costanti.HOST_MAIL_SYSTEM_SENDER));
+
+       // Set To: header field of the header.
+       message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+       
+       
+
+       // Set Subject: header field
+       message.setSubject(subject);
+       
+	  BodyPart messageBodyPart = new MimeBodyPart();
+		messageBodyPart.setContent(msgHtml,"text/html");
+	
+		BodyPart allegato = new MimeBodyPart();
+		
+		DataSource source = new FileDataSource(file);
+		allegato.setDataHandler(new DataHandler(source));
+		allegato.setFileName(file.getName());
+		
+		
+		 Multipart multipart = new MimeMultipart();
+		 
+		 multipart.addBodyPart(messageBodyPart);
+		 multipart.addBodyPart(allegato);
+       
+		 
+		 message.setContent(multipart);
+     //  message.setText(msgHtml, "utf-8", "html");
+
+       // Send message
+   	 SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
+	    
+      try {
+		    t.connect(Costanti.HOST_MAIL_SYSTEM, Costanti.HOST_MAIL_SYSTEM_SENDER, Costanti.HOST_MAIL_SYSTEM_PWD);
+		    t.sendMessage(message, message.getAllRecipients());
+	    } finally {
+
+			t.close();  
+	    }
+      
+      
+}
 	
 	
 	public static void sendEmailPEC(String username, String password, String host, String port, String to, String subject, String msgHtml, String filename) throws Exception {
@@ -1749,6 +1824,12 @@ public class Utility extends HttpServlet {
 				return BigDecimal.ZERO;
 			}
 		}
+		
+		
+
+		    public static String escapeJS(String value) {
+		        return StringEscapeUtils.escapeEcmaScript(StringEscapeUtils.escapeHtml4(value));
+		    }
 		
 		
 }

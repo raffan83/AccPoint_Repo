@@ -93,6 +93,18 @@ public class GestioneCommesseDAO {
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+			
 			"WHERE ID_ANAGEN_COMM<>52 AND ID_ANAGEN_COMM<>1703 AND ID_ANAGEN_COMM<>1428 AND ID_ANAGEN_COMM<>7011";
 	
+	private static final String querySqlServerComTrasFormazione = "SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE," +
+			"a.ID_ANAGEN_UTILIZ AS ID_UTIL ,a.K2_ANAGEN_INDIR_UTILIZ AS ID_IND_UTIL, e.nome as NOME_CLIENTE_UTIL, e.INDIR as IND_PRINC_UTIL,e.CITTA AS CITTAPRINCIPALE,e.CODPROV AS COD_PROV_PRINCIPALE,d.DESCR AS DESC_SEDE_UTIL,d.INDIR AS IND_SEDE_UTIL ,d.CITTA AS CITTA_SEDE_UTIL,d.CODPROV AS PROV_SEDE_UTIL, "+
+			"(SELECT COGNOME FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_UTENTI] WHERE TB_RESP_COMM=[BTOMEN_CRESCO_DATI].[dbo].[BWT_UTENTI].USERNAME) AS RESPCOMM_COGNOME ,"+
+			"(SELECT NOME FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_UTENTI] WHERE TB_RESP_COMM=[BTOMEN_CRESCO_DATI].[dbo].[BWT_UTENTI].USERNAME) AS RESPCOMM_NOME, DT_ORDINE "+
+			"FROM BWT_COMMESSA AS a " +
+			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
+			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS d on a.K2_ANAGEN_INDIR_UTILIZ=d.K2_ANAGEN_INDIR AND a.ID_ANAGEN_UTILIZ=d.ID_ANAGEN "+
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+			
+			"WHERE ID_ANAGEN_COMM<>52 AND ID_ANAGEN_COMM<>1703 AND ID_ANAGEN_COMM<>7011";
+	
 	private static final String querySqlServerComTrasWhitYear = "SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
 			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE," +
 			"a.ID_ANAGEN_UTILIZ AS ID_UTIL ,a.K2_ANAGEN_INDIR_UTILIZ AS ID_IND_UTIL, e.nome as NOME_CLIENTE_UTIL, e.INDIR as IND_PRINC_UTIL,e.CITTA AS CITTAPRINCIPALE,e.CODPROV AS COD_PROV_PRINCIPALE,d.DESCR AS DESC_SEDE_UTIL,d.INDIR AS IND_SEDE_UTIL ,d.CITTA AS CITTA_SEDE_UTIL,d.CODPROV AS PROV_SEDE_UTIL,"+
@@ -193,6 +205,7 @@ public class GestioneCommesseDAO {
 				{
 					//String query=querySqlServerComTras.concat(" WHERE ").concat(categ.substring(5,categ.length()));
 					String query=querySqlServerComTras + categ;
+					
 					pst=con.prepareStatement(query);
 					
 				}	
@@ -526,6 +539,190 @@ public class GestioneCommesseDAO {
 			throw e;
 		}
 		return listaAttivita;
+	}
+
+	public static ArrayList<CommessaDTO> getListaCommesseFormazione(CompanyDTO company, String categoria, UtenteDTO user, int year, boolean soloAperte) throws Exception {
+		Connection con=null;
+		PreparedStatement pst=null;
+		PreparedStatement pstA=null;
+		ResultSet rs=null;
+		ResultSet rsA=null;
+		
+		ArrayList<CommessaDTO> listaCommesse = new ArrayList<>();
+		
+		try
+		{
+		
+		con =ManagerSQLServer.getConnectionSQL();
+		
+		String categ="";
+		
+		if(!categoria.equals("")){
+			
+			
+			String[] listaCategorie=categoria.split(";");
+
+			for (int i = 0; i < listaCategorie.length; i++) {
+				
+				categ=categ+" AND TB_CATEG_COM='"+listaCategorie[i]+"'";
+			}
+			
+		}
+				
+		if(user.isTras())
+		{
+			if(!categ.equals(""))
+			{
+				if(year!=0)
+				{
+					//String query=querySqlServerComTrasWhitYear.concat(" WHERE ").concat(categ.substring(5,categ.length()));
+					String query=querySqlServerComTrasWhitYear + categ;
+					pst=con.prepareStatement(query);
+					pst.setInt(1, year);
+				}else 
+				{
+					//String query=querySqlServerComTras.concat(" WHERE ").concat(categ.substring(5,categ.length()));
+					//String query=querySqlServerComTras + categ;
+					String query=querySqlServerComTrasFormazione + categ;
+					pst=con.prepareStatement(query);
+					
+				}	
+				
+			}
+			else
+			{
+				if(year!=0) 
+				{
+					pst=con.prepareStatement(querySqlServerComTrasWhitYear);
+					pst.setInt(1, year);
+				}else 
+				{
+					pst=con.prepareStatement(querySqlServerComTras);
+				}
+			}
+		}
+		else
+		{
+			if(year!=0) 
+			{
+				pst=con.prepareStatement(querySqlServerCommonWhitYear+categ);
+				pst.setInt(1, company.getId());
+				pst.setInt(2, year);
+			}
+			else 
+			{
+				pst=con.prepareStatement(querySqlServerCommon+categ);
+				pst.setInt(1, company.getId());
+			}
+		}
+
+		rs=pst.executeQuery();
+		
+		CommessaDTO commessa=null;
+		while(rs.next())
+		{
+			
+			commessa= new CommessaDTO();
+			String idCommessa=rs.getString(1);
+			commessa.setID_COMMESSA(idCommessa);
+			commessa.setDT_COMMESSA(rs.getDate(2));
+			commessa.setFIR_CHIUSURA_DT(rs.getDate(3));
+			commessa.setID_ANAGEN(rs.getInt(4));
+			commessa.setID_ANAGEN_NOME(rs.getString(5));
+			commessa.setDESCR(rs.getString(6));
+			commessa.setID_ANAGEN_COMM(company.getId());
+			commessa.setSYS_STATO(rs.getString(7));
+			commessa.setK2_ANAGEN_INDR(rs.getInt(8));
+			commessa.setANAGEN_INDR_DESCR(null);
+			String indirizzoSede=rs.getString(10);
+			
+			String cognomeResp=rs.getString("RESPCOMM_COGNOME");
+			String nomeResp =rs.getString("RESPCOMM_NOME");
+			if(cognomeResp!=null) 
+			{
+				commessa.setRESPONSABILE(cognomeResp+" "+nomeResp);
+			}
+	
+			
+			if (indirizzoSede!=null)
+			{
+				String provincia=rs.getString(12);
+				
+				if(provincia!=null && !provincia.equals("null"))
+				{
+					commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+provincia+")");
+				}
+				else 
+				{
+					commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11));
+				}
+			}
+			else
+			{
+				commessa.setANAGEN_INDR_INDIRIZZO("");
+			}
+		
+			String prov=rs.getString(15);
+			if(prov!=null && !prov.equals("null")) 
+			{
+				commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+prov+")");
+			}else 
+			{
+				commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14));
+			}
+			commessa.setNOTE_GEN(rs.getString(16));
+			commessa.setN_ORDINE(rs.getString(17));
+
+			commessa.setID_ANAGEN_UTIL(rs.getInt(18));
+			commessa.setK2_ANAGEN_INDR_UTIL(rs.getInt(19));
+			commessa.setNOME_UTILIZZATORE(rs.getString(20));
+		
+			String sede_util=rs.getString(25);
+			
+			if (sede_util!=null)
+			{
+				String provincia=rs.getString(27);
+				if(provincia!=null && !provincia.equals("null"))
+				{
+					commessa.setINDIRIZZO_UTILIZZATORE(sede_util+" - "+rs.getString(26)+" ("+provincia+")");
+				}
+				else 
+				{
+					commessa.setINDIRIZZO_UTILIZZATORE(sede_util+" - "+rs.getString(26));
+				}
+			}
+			else
+			{
+				String provincia=rs.getString(23);
+				
+				if(provincia!=null && !provincia.equals("null"))
+				{
+					commessa.setINDIRIZZO_UTILIZZATORE(rs.getString(21)+" - "+rs.getString(22)+" ("+provincia+")");
+				}else 
+				{
+					commessa.setINDIRIZZO_UTILIZZATORE(rs.getString(21)+" - "+rs.getString(22));
+				}
+			}
+			
+			if(rs.getDate(30)!=null) {
+				commessa.setDT_ORDINE(rs.getDate(30));;	
+			}
+			
+			
+			if(soloAperte && commessa.getSYS_STATO().equals("1APERTA")) {
+				listaCommesse.add(commessa);	
+			}
+			if(!soloAperte) {
+				listaCommesse.add(commessa);
+			}
+			
+		}
+		
+		}catch (Exception e) 
+		{
+		throw e;
+		}
+		return listaCommesse;
 	}
 
 	

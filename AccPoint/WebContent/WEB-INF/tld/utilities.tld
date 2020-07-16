@@ -82,5 +82,10 @@
         <function-signature> String getScostamentoMaxDecentramento(java.util.ArrayList)</function-signature>
     </function> 
     
+            <function>
+        <name>escapeJS</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature> java.lang.String escapeJS(java.lang.String)</function-signature>
+    </function> 
   
 </taglib>

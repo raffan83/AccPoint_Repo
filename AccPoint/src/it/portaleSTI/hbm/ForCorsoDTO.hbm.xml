@@ -45,6 +45,13 @@
           <property name="edizione" type="java.lang.String" >
             <column name="edizione" />
         </property>
+         <property name="commessa" type="java.lang.String" >
+            <column name="commessa" />
+        </property>
+        
+ 	  <many-to-one name="questionario" class="it.portaleSTI.DTO.ForQuestionarioDTO" fetch="join" lazy="false">
+            <column name="id_questionario" />
+        </many-to-one>
         
     </class>
 </hibernate-mapping>

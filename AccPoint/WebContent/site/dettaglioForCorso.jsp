@@ -59,6 +59,9 @@
                   <b>ID</b> <a class="pull-right">${corso.id}</a>
                 </li>
                 <li class="list-group-item">
+                  <b>Commessa</b> <a class="pull-right">${corso.commessa}</a>
+                </li>
+                <li class="list-group-item">
                   <b>Data Corso</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${corso.data_corso}" /></a>
                 </li>
                 
@@ -154,6 +157,35 @@
     
     </div>
     
+    
+   	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+  <div class="row">
+<div class="col-md-12">
+<div class="box box-danger box-solid">
+<div class="box-header with-border">
+	Questionario
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+<div class="row">
+<div class="col-md-12">
+
+<a class="btn btn-primary pull-right" onClick="callAction('gestioneFormazione.do?action=questionario&id_corso=${utl:encryptData(corso.id)}')"><i class="fa fa-edit"></i> Compila questionario</a>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+    
+    </div>
+ </c:if>   
     
     <div class="row">
 <div class="col-md-12">

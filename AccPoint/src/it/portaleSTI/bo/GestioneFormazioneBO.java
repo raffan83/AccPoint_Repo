@@ -21,6 +21,7 @@ import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
+import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.Util.Costanti;
 
@@ -226,5 +227,15 @@ public class GestioneFormazioneBO {
 	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiCorsoCliente(int id, int idCliente, int idSede, Session session) {
 
 		return GestioneFormazioneDAO.getListaPartecipantiCorsoCliente(id,idCliente,idSede,session);
+	}
+
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaCorsiConsuntivo(String dateFrom, String dateTo, Session session) throws Exception {
+		
+		return GestioneFormazioneDAO.getListaCorsiConsuntivo(dateFrom, dateTo, session);
+	}
+
+	public static ForQuestionarioDTO getQuestionarioFromId(int id_questionario, Session session) {
+		
+		return GestioneFormazioneDAO.GestioneFormazioneDAO(id_questionario,session);
 	}
 }

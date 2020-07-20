@@ -8,7 +8,8 @@ public class LatMassaEffMag {
 	private int id_misura; 
 	private String  comparatore;
 	private String  campione ;
-	private BigDecimal  valore_nominale_campione;   
+	private BigDecimal  valore_nominale_campione;
+	private String classeOILM;
 	private String  segno_distintivo;
 	private BigDecimal  eff_mag_L1;  
 	private BigDecimal  eff_mag_L2;  
@@ -52,6 +53,13 @@ public class LatMassaEffMag {
 	}
 	public void setValore_nominale_campione(BigDecimal valore_nominale_campione) {
 		this.valore_nominale_campione = valore_nominale_campione;
+	}
+	
+	public String getClasseOILM() {
+		return classeOILM;
+	}
+	public void setClasseOILM(String classeOILM) {
+		this.classeOILM = classeOILM;
 	}
 	public String getSegno_distintivo() {
 		return segno_distintivo;

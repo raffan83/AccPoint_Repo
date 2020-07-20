@@ -272,19 +272,19 @@
 			<staticText>
 				<reportElement x="385" y="750" width="151" height="14" uuid="6e077e76-87ff-401f-8a6a-db16ef51c743"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Direzione Tecnica]]></text>
+				<text><![CDATA[Per Direzione Tecnica]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="385" y="764" width="151" height="14" uuid="b1cd4909-bea8-484d-b96b-d35ee389262c"/>
 				<textElement textAlignment="Center">
 					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<text><![CDATA[Approving Officier]]></text>
+				<text><![CDATA[For Approving Officier]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="385" y="778" width="151" height="14" uuid="301fcd23-ed80-473f-96d3-fcf8c4f0703d"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Ing. Antonio Accettola]]></text>
+				<text><![CDATA[Alessio Aversali]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="370" y="367" width="184" height="183" uuid="7c58b92e-0277-4091-9260-d4c0182c6868"/>
@@ -303,15 +303,15 @@ This certificate may not be partially reproduced, except with the prior written 
 Questo certificato non può essere riprodotto in modo parziale, salvo espressa autorizzazione scritta da parte del Centro.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="-11" y="140" width="556" height="18" uuid="17eafec6-829d-4f6b-905f-3d58d21be201"/>
+				<reportElement positionType="Float" x="-11" y="140" width="511" height="18" uuid="17eafec6-829d-4f6b-905f-3d58d21be201"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="12" isBold="true"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[CERTIFICATO DI TARATURA LAT 172]]></text>
+				<text><![CDATA[CERTIFICATO DI TARATURA ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="381" y="140" width="173" height="31" uuid="8e9316b6-ad1b-4241-8e41-2add02459eee"/>
+				<reportElement x="332" y="140" width="222" height="31" uuid="8e9316b6-ad1b-4241-8e41-2add02459eee"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>

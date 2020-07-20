@@ -11,15 +11,15 @@
 	<title>
 		<band height="176" splitType="Stretch">
 			<staticText>
-				<reportElement positionType="Float" x="0" y="140" width="540" height="18" uuid="889b516a-740b-4d4d-840a-2dd824c0f063"/>
+				<reportElement positionType="Float" x="0" y="140" width="490" height="18" uuid="889b516a-740b-4d4d-840a-2dd824c0f063"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="12" isBold="true"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[CERTIFICATO DI TARATURA LAT 172]]></text>
+				<text><![CDATA[CERTIFICATO DI TARATURA ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="381" y="140" width="173" height="31" uuid="778a152a-6833-45fb-ac6f-ca0c788dd2e5"/>
+				<reportElement x="332" y="140" width="224" height="31" uuid="778a152a-6833-45fb-ac6f-ca0c788dd2e5"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -67,19 +67,19 @@
 			<staticText>
 				<reportElement x="400" y="80" width="151" height="14" uuid="f2d6fb05-2ec2-4c84-97be-2bc9b37c4816"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Direzione Tecnica]]></text>
+				<text><![CDATA[Per Direzione Tecnica]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="400" y="94" width="151" height="14" uuid="f774c14e-020b-4f30-90b1-9a546ea2c497"/>
 				<textElement textAlignment="Center">
 					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<text><![CDATA[Approving Officier]]></text>
+				<text><![CDATA[For Approving Officier]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="400" y="107" width="151" height="14" uuid="52db0b6e-861a-4f61-abfa-b7c37a6adbc1"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Ing. Antonio Accettola]]></text>
+				<text><![CDATA[Alessio Aversali]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="40" y="19" width="511" height="41" uuid="31be1d41-6796-4e3b-b16b-63fd0f050068"/>

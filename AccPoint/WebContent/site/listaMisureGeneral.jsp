@@ -70,7 +70,7 @@
 <div class="row">
 	<div class="col-xs-6">
 			 <div class="form-group">
-				 <label for="datarange" class="control-label">Ricerca Date:</label>
+				 <label for="datarange" class="control-label">Ricerca Data Misura:</label>
 					<div class="col-md-10 input-group" >
 						<div class="input-group-addon">
 				             <i class="fa fa-calendar"></i>
@@ -154,7 +154,7 @@ ${misura.split(';;')[9] }
 <a class="btn btn-warning customTooltip" title="Click per modificare lo strumento" onClick="modalModificaStrumento('${misura.split(';;')[14]}')"><i class="fa fa-edit"></i></a>
 </c:if>
 <c:if test="${userObj.checkPermesso('MODIFICA_CERTIFICATO')}">
-<a class="btn btn-info customTooltip" title="Click per modificare il certificato" onClick="modalModificaCertificato('${misura.split(';;')[12]}','${misura.split(';;')[11] }','${misura.split(';;')[5]}')"><i class="fa fa-file"></i></a>
+<a class="btn btn-info customTooltip" title="Click per modificare il certificato" onClick="modalModificaCertificato('${misura.split(';;')[12]}','${misura.split(';;')[11] }','${misura.split(';;')[15]}')"><i class="fa fa-file"></i></a>
 </c:if>
 </td>
 	</tr>

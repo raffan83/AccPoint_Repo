@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import java.awt.List;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -17,10 +18,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -74,7 +78,32 @@ public class ModificaStrumento extends HttpServlet {
 				
 				StrumentoDTO dettaglio = GestioneStrumentoBO.getStrumentoById(idS, session);
 				
- 			
+				ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)request.getSession().getAttribute("listaTipoRapporto");
+				if(listaTipoRapporto==null) {
+					listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
+				}
+				
+				ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)request.getSession().getAttribute("listaTipoStrumento");				
+				if(listaTipoStrumento==null) {
+					listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
+				}
+				
+				ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)request.getSession().getAttribute("listaStatoStrumento");
+				if(listaStatoStrumento==null) {
+					listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
+				}
+
+				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList)request.getSession().getAttribute("listaLuogoVerifica");
+				if(listaLuogoVerifica==null) {
+					listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
+				}
+				
+				ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)request.getSession().getAttribute("listaClassificazione");
+				if(listaClassificazione==null) {
+					listaClassificazione = GestioneTLDAO.getListaClassificazione();
+				}
+				
+
 				PrintWriter out = response.getWriter();
 				
 				 Gson gson = new Gson(); 
@@ -91,6 +120,12 @@ public class ModificaStrumento extends HttpServlet {
 		//	        out.close();
 			        
 			        request.getSession().setAttribute("myObj",myObj);
+			        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
+			        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
+			        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
+			        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
+			        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
+			        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
 		
 					 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/modificaStrumento.jsp");
 				     dispatcher.forward(request,response);

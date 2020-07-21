@@ -439,12 +439,14 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 			"  id_misura int(11) ," + 
 			"  comparatore varchar(50) ," + 
 			"  campione varchar(50) ," + 
-			"  valore_nominale_campione decimal(19,10) ," +
+			"  valore_nominale_campione varchar(50) ," +
 			"  classe_OIML varchar(10) ," + 
 			"  segno_distintivo varchar(1) ," + 
 			"  eff_mag_L1 decimal(19,10) ," + 
 			"  eff_mag_L2 decimal(19,10) ," + 
-			"  eff_mag_esito varchar(50) ," + 
+			"  eff_mag_esito varchar(50) ," +
+			"  mc decimal(19,10) ," + 
+			"  uMc decimal(19,10) ," + 
 			"  classe_campione varchar(50) ," + 
 			"  classe_campione_u decimal(19,10) ," + 
 			"  classe_campione_min decimal(10,2) ," + 

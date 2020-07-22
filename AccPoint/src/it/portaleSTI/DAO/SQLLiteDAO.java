@@ -413,6 +413,30 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 			"PRESSIONE decimal(19,10) ," + 
 			"PRESSIONE_CORRETTA decimal(19,10))";
 	
+	private static String sqlMassaData="CREATE TABLE lat_massa_data (" + 
+			"  id Integer primary key autoincrement," + 
+			"  id_misura int(11) NOT NULL ," + 
+			"  ripetizione int(11) NOT NULL ," + 
+			"  comparatore varchar(50) NOT NULL," + 
+			"  campione varchar(50) NOT NULL," + 
+			"  parametro varchar(50) NOT NULL," + 
+			"  campioneL1 decimal(14,7) NOT NULL ," + 
+			"  misurandoL1 decimal(14,7) NOT NULL ," + 
+			"  misurandoL2 decimal(14,7) NOT NULL ," + 
+			"  campioneL2 decimal(14,7) NOT NULL ," + 
+			"  i_esima_diff decimal(14,7) NOT NULL ," + 
+			"  i_esima_diff_media decimal(14,7) NOT NULL ," + 
+			"  sc1 decimal(14,7) NOT NULL ," + 
+			"  vc1 int(11) NOT NULL ," + 
+			"  sc2 decimal(14,7) NOT NULL ," + 
+			"  esito_conferma varchar(10) NOT NULL," + 
+			"  ud decimal(14,7) NOT NULL ," + 
+			"  uuf decimal(14,7) NOT NULL ," + 
+			"  correzione_eff_mag decimal(14,7) NOT NULL ," + 
+			"  caso int(1) NOT NULL ," + 
+			"  mX decimal(14,7) NOT NULL ," + 
+			"  uMx decimal(14,7) NOT NULL)";
+	
 	private static String sqlMassaAMB_SONDE="CREATE TABLE lat_massa_amb_sonde (ID_TIPO int(11),"
 											+ "NUMERO int(11) ,"+
 											  "INDICAZIONE decimal(19,10) ,"+
@@ -749,6 +773,9 @@ public static void createDBLAT(Connection con) throws SQLException {
 	
 	PreparedStatement pstMassaAMB=con.prepareStatement(sqlMassaAMB);
 	pstMassaAMB.execute();
+	
+	PreparedStatement pstMassaData=con.prepareStatement(sqlMassaData);
+	pstMassaData.execute();
 	
 	PreparedStatement pstMassaAMB_DATA=con.prepareStatement(sqlMassaAMB_DATA);
 	pstMassaAMB_DATA.execute();

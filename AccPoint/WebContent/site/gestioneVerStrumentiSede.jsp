@@ -1137,8 +1137,10 @@ function modalAllegati(id_strumento){
 	 
 	 dataString ="action=allegati&id_strumento="+ id_strumento;
    exploreModal("gestioneVerStrumenti.do",dataString,"#tab_allegati",function(datab,textStatusb){
+	   $('#myModalAllegati').modal();	   
+	   
    });
-$('#myModalAllegati').modal();
+
 }
 
 

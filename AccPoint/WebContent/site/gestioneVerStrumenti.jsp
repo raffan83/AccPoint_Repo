@@ -1,7 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -290,7 +290,10 @@
 	   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
   });
   
-  
+  $('#myModalAllegati').on('hidden.bs.modal',function(){
+		
+		$(document.body).css('padding-right', '0px');
+	});
     
     $(document).ready(function() {
     	

@@ -225,14 +225,28 @@
 	<td id="95"></td>
 	</tr>
 	
+		
  </tbody>
  </table>   
-   
+
     <table id="tabQuestionario" class="table table-bordered datatable table-hover  table-striped" role="grid" width="100%"></table>
     <input type="hidden" id="id_questionario" value="${corso.questionario.id }")>
     
     </div>
-    </div><br>
+    </div>
+    
+       <div class="row"> 
+   <div class="col-xs-8"></div>
+    <div class="col-xs-2">
+    <label >MEDIA NON SODDISFACENTE - POCO SODDISFACENTE</label>
+    <input type="text" readonly class="form-control" id="media_non_sod">
+    </div>
+     <div class="col-xs-2">
+      <label >MEDIA SODDISFACENTE - MOLTO SODDISFACENTE</label>
+      <input type="text" readonly class="form-control" id="media_sod"></div>
+   </div>
+    
+    <br>
     
     <div class="row">
 <div class="col-md-12">
@@ -354,7 +368,10 @@
 			 var perc = (val/numero_partecipanti)*100;			 
 			 
 			 table.cell(i,5).data(perc +"%").draw();
+			 
+			 
 			 calcolaGrafici(table);
+			 
 		 }
 		 
 		 if(data[i][3]!='' && isNaN(parseInt(data[i][3]))){
@@ -376,6 +393,7 @@
 			 var perc = (val/numero_partecipanti)*100;			 
 			 
 			 table.cell(i,6).data(perc +"%").draw();
+			 
 			 calcolaGrafici(table);
 		 }
 		 
@@ -391,10 +409,6 @@
 		 } 
 		 
 	 }
-	 
-	 //if(flag){
-	//	 alert("flag")
-	
 	 
 	 var id_questionario = $('#id_questionario').val();
 	 
@@ -442,7 +456,7 @@
 	    	  }
  });
 	  
-//	 }
+
  }
  
 
@@ -454,8 +468,11 @@
     	$('.dropdown-toggle').dropdown();
     	
     	var t_data = $('#tabQuestionarioData').DataTable({
-		 ordering:false
-		 
+		 ordering:false,
+		 paging:   false,
+	        ordering: false,
+	        info:     false,
+	        searching: false,
 	 });
     	
     	
@@ -586,8 +603,10 @@
     		data: data,
     		lengthChange: false,
     		searching: false,
+    		searchable: false,
     		paging: false,
     		ordering: false,
+    		info:false,
     		order: [],
     		//keys: true,
     		rowsGroup: [// Always the array (!) of the column-selectors in specified order to which rows groupping is applied
@@ -599,15 +618,47 @@
 
     	salvaModificaQuestionario();
 
-    	
-    
-    	
     	calcolaGrafici(table);
     	
     });
 
     
-    
+    function calcolaMedia(table){
+    	
+    	var media_s;
+    	var media_ns;
+    	
+    	var somma_ns = 0.0;
+    	var somma_s = 0.0;
+    	
+    	var risposte_date_s = 0;
+    	var risposte_date_ns = 0;
+    	
+    	var data = table.rows().data();
+    	
+    	for(var i = 0; i<data.length;i++){
+    		
+    		if(!isNaN(parseFloat(data[i][5]))){
+    			somma_ns = somma_ns + parseFloat(data[i][5]);
+    			risposte_date_ns++;
+    		}
+    		if(!isNaN(parseFloat(data[i][6]))){
+    			somma_s = somma_s + parseFloat(data[i][6]);
+    			risposte_date_s++;
+    		}
+    	}
+    	if((risposte_date_s!=0)){
+    		media_s = somma_s/ risposte_date_s;	
+    		$('#media_sod').val(media_s+"%");
+    	}
+    	if((risposte_date_ns!=0)){
+    		media_ns = somma_ns/risposte_date_ns;
+    		$('#media_non_sod').val(media_ns+"%");
+    	}
+    	
+    	
+    	
+    }
     
     
     function calcolaGrafici(table){
@@ -652,6 +703,8 @@
     	d.push(data10);
     	
     	
+    	calcolaMedia(table);
+    	
     	var l = [];
     	
     	
@@ -684,7 +737,7 @@
     		var myChart = new Chart(ctx, {
         	    type: 'horizontalBar',
         	    data: {
-        	        labels: ['SODDISFACENTE', 'MOLTO SODDISFACENTE'],
+        	    	  labels: [['NON SODDISFACENTE', 'POCO SODDISFACENTE'], ['SODDISFACENTE','MOLTO SODDISFACENTE' ]],
         	        datasets: [{
         	            label: l[j],
         	            data: d[j],
@@ -736,7 +789,7 @@
     		var myChart = new Chart(ctx, {
         	    type: 'horizontalBar',
         	    data: {
-        	        labels: ['SODDISFACENTE', 'MOLTO SODDISFACENTE' ],
+        	    	  labels: [['NON SODDISFACENTE', 'POCO SODDISFACENTE'], ['SODDISFACENTE','MOLTO SODDISFACENTE' ]],
         	        datasets: [{
         	            label: l[i+1],
         	            data: d[i+1],

@@ -42,7 +42,7 @@ $(document).ready(function(){
 	
 	console.log("test");
 	
-	table = $('#tabStorico').DataTable({
+	tabella = $('#tabStorico').DataTable({
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",

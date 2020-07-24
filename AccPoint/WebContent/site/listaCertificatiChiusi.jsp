@@ -103,7 +103,7 @@
 			
 			<%-- <a class="btn btn-danger customTooltip" title="Click per ristampare l'etichetta" href="stampaEtichetta.do?idCertificato=${certificato.id}"><i class="fa fa-print"></i></a>
 			 --%>
-			<a class="btn btn-info customTooltip" title="Click per inviare il certificato per e-mail"onClick="inviaEmailCertificato(${certificato.id})"><i class="fa fa-paper-plane-o"></i></a>
+			<%-- <a class="btn btn-info customTooltip" title="Click per inviare il certificato per e-mail"onClick="inviaEmailCertificato(${certificato.id})"><i class="fa fa-paper-plane-o"></i></a> --%>
 
 			<%-- <c:if test="${userObj.idFirma != null && userObj.idFirma != ''}"> --%>
 			<c:if test="${abilitato_firma==true && !certificato.firmato}">

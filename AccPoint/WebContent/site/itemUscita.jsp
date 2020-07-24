@@ -1,6 +1,42 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+
+<c:choose>
+<c:when test="${item_pacco_fornitore.size()>0 && item_pacco_fornitore.get(0).getItem()!=null && item_pacco_fornitore.get(0).getItem().getTipo_item().getId()==4 }">
+<c:set var="rilievi_dimensionali" value="1" ></c:set>
 <table id="tabUscita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+ <th>ID Rilievo</th>
+ <th>Disegno</th>
+ <th>Variante</th>
+ <th>Pezzi in Ingresso</th>
+ <th>Note</th>
+ <td><label>Seleziona</label> <input type="checkbox" id="check_all"></td> 
+
+ </tr></thead>
+ 
+ <tbody>
+ <c:forEach items="${item_pacco_fornitore }" var="item_pacco" varStatus="loop">
+<%--  <c:if test="${item_pacco.item.tipo_item.id==1}">  --%>
+ <tr>
+<td>${item_pacco.item.id_tipo_proprio }</td>
+<td>${item_pacco.item.disegno }</td>
+<td>${item_pacco.item.variante }</td>
+<td>${item_pacco.item.pezzi_ingresso }</td>
+<td>${item_pacco.note}</td>
+
+<td><input class="check_strumenti" type="checkbox" id="checkbox_${item_pacco.item.id_tipo_proprio }"></td> 
+</tr>
+<%--  </c:if>  --%>
+</c:forEach>
+</tbody>
+ </table>
+
+</c:when>
+<c:otherwise>
+
+<table id="tabUscita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+<c:set var="rilievi_dimensionali" value="0" ></c:set>
  <thead><tr class="active">
  <th>ID Item</th>
  <th>Denominazione</th>
@@ -46,6 +82,16 @@
 </c:forEach>
 </tbody>
  </table>
+
+
+</c:otherwise>
+
+</c:choose>
+
+
+
+
+
  
  
  
@@ -112,6 +158,20 @@
  $(document).ready(function() {
 	 $('#label_spediti').hide();
 	 
+	 var ril = "${rilievi_dimensionali}";
+	 if(ril=="1"){
+		 coldef = [	 { responsivePriority: 1, targets: 0 },			 
+			  {orderable: false, targets: 5}];
+	 }else{
+		 coldef = [	 { responsivePriority: 1, targets: 0 },
+			  { responsivePriority: 2, targets: 8 },	    	  
+			   { responsivePriority: 3, targets: 10 },
+			  {orderable: false, targets: 10}];
+	 }
+	 
+
+
+
  
  table = $('#tabUscita').DataTable({
 		language: {
@@ -147,12 +207,7 @@
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: false,
-	      columnDefs: [
-	    	  { responsivePriority: 1, targets: 0 },
-	    	  { responsivePriority: 2, targets: 8 },	    	  
-	    	   { responsivePriority: 3, targets: 10 },
-	    	  {orderable: false, targets: 10}
-	    	], 
+	      columnDefs: coldef, 
 	    });
 	 coloraRigheUscita(table);
 	 

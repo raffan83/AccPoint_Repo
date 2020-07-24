@@ -105,6 +105,18 @@ public class GestioneCommesseDAO {
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+			
 			"WHERE ID_ANAGEN_COMM<>52 AND ID_ANAGEN_COMM<>1703 AND ID_ANAGEN_COMM<>7011";
 	
+	private static final String querySqlServerComTrasFormazioneWhitYear = "SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE," +
+			"a.ID_ANAGEN_UTILIZ AS ID_UTIL ,a.K2_ANAGEN_INDIR_UTILIZ AS ID_IND_UTIL, e.nome as NOME_CLIENTE_UTIL, e.INDIR as IND_PRINC_UTIL,e.CITTA AS CITTAPRINCIPALE,e.CODPROV AS COD_PROV_PRINCIPALE,d.DESCR AS DESC_SEDE_UTIL,d.INDIR AS IND_SEDE_UTIL ,d.CITTA AS CITTA_SEDE_UTIL,d.CODPROV AS PROV_SEDE_UTIL, "+
+			"(SELECT COGNOME FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_UTENTI] WHERE TB_RESP_COMM=[BTOMEN_CRESCO_DATI].[dbo].[BWT_UTENTI].USERNAME) AS RESPCOMM_COGNOME ,"+
+			"(SELECT NOME FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_UTENTI] WHERE TB_RESP_COMM=[BTOMEN_CRESCO_DATI].[dbo].[BWT_UTENTI].USERNAME) AS RESPCOMM_NOME, DT_ORDINE "+
+			"FROM BWT_COMMESSA AS a " +
+			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
+			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS d on a.K2_ANAGEN_INDIR_UTILIZ=d.K2_ANAGEN_INDIR AND a.ID_ANAGEN_UTILIZ=d.ID_ANAGEN "+
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+			
+			"WHERE ID_ANAGEN_COMM<>52 AND ID_ANAGEN_COMM<>1703 AND ID_ANAGEN_COMM<>7011 AND  year([DT_COMMESSA])=? ";
+	
 	private static final String querySqlServerComTrasWhitYear = "SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
 			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE," +
 			"a.ID_ANAGEN_UTILIZ AS ID_UTIL ,a.K2_ANAGEN_INDIR_UTILIZ AS ID_IND_UTIL, e.nome as NOME_CLIENTE_UTIL, e.INDIR as IND_PRINC_UTIL,e.CITTA AS CITTAPRINCIPALE,e.CODPROV AS COD_PROV_PRINCIPALE,d.DESCR AS DESC_SEDE_UTIL,d.INDIR AS IND_SEDE_UTIL ,d.CITTA AS CITTA_SEDE_UTIL,d.CODPROV AS PROV_SEDE_UTIL,"+
@@ -564,7 +576,13 @@ public class GestioneCommesseDAO {
 
 			for (int i = 0; i < listaCategorie.length; i++) {
 				
-				categ=categ+" AND TB_CATEG_COM='"+listaCategorie[i]+"'";
+				if(i==0) {
+					categ=categ+" AND TB_CATEG_COM='"+listaCategorie[i]+"'";	
+				}else {
+					categ=categ+" OR TB_CATEG_COM='"+listaCategorie[i]+"'";
+				}
+				
+				
 			}
 			
 		}
@@ -576,7 +594,7 @@ public class GestioneCommesseDAO {
 				if(year!=0)
 				{
 					//String query=querySqlServerComTrasWhitYear.concat(" WHERE ").concat(categ.substring(5,categ.length()));
-					String query=querySqlServerComTrasWhitYear + categ;
+					String query=querySqlServerComTrasFormazioneWhitYear + categ;
 					pst=con.prepareStatement(query);
 					pst.setInt(1, year);
 				}else 
@@ -593,11 +611,11 @@ public class GestioneCommesseDAO {
 			{
 				if(year!=0) 
 				{
-					pst=con.prepareStatement(querySqlServerComTrasWhitYear);
+					pst=con.prepareStatement(querySqlServerComTrasFormazioneWhitYear);
 					pst.setInt(1, year);
 				}else 
 				{
-					pst=con.prepareStatement(querySqlServerComTras);
+					pst=con.prepareStatement(querySqlServerComTrasFormazione);
 				}
 			}
 		}

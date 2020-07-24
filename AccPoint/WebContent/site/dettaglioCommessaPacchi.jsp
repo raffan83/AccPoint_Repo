@@ -79,7 +79,7 @@
  
 	 $(document).ready(function() {
  
- table = $('#tabAttivita').DataTable({
+ t = $('#tabAttivita').DataTable({
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -126,17 +126,16 @@
 	    });     
 	//DataTable
 
-	  table = $('#tabAttivita').DataTable();
+	  t = $('#tabAttivita').DataTable();
 	//Apply the search
-	table.columns().eq( 0 ).each( function ( colIdx ) {
-	$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-	table
-	   .column( colIdx )
+	t.columns().eq( 0 ).each( function ( colIdx ) {
+	$( 'input', t.column( colIdx ).header() ).on( 'keyup', function () {
+	t.column( colIdx )
 	   .search( this.value )
 	   .draw();
 	} );
 	} ); 
-	table.columns.adjust().draw(); 
+	t.columns.adjust().draw(); 
 
 
 	   $('#tabAttivita').on( 'page.dt', function () {

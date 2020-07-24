@@ -407,7 +407,7 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 			  		"<br/></html>");
 			//  msg.append("<img width='350' src=cid:").append(message.embed(img)).append(">");
 			  msg.append("<a href='www.stisrl.com'><img width='350' src=\"cid:image1\"></a>");
-			  msg.append(" <img width='350' src=\"cid:image2\">");
+			  msg.append("<a href='www.stisrl.com/servizi/piattaforma-calver'> <img width='350' src=\"cid:image2\"></a>");
 		
 			  msg.append("</body><font size='1'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
 			  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio &egrave; vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.<br><br>" + 
@@ -427,7 +427,7 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 				  		"<br/></html>");
 				//  msg.append("<img width='350' src=cid:").append(message.embed(img)).append(">");
 				  msg.append("<a href='www.stisrl.com'><img width='350' src=\"cid:image1\"></a>");
-				  msg.append(" <img width='350' src=\"cid:image2\">");
+				  msg.append("<a href='www.stisrl.com/servizi/piattaforma-calver'> <img width='350' src=\"cid:image2\"></a>");
 			
 				  msg.append("</body><font size='1'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
 				  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio &egrave; vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.<br><br>" + 

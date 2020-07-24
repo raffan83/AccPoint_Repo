@@ -104,6 +104,12 @@ function eliminaAllegato(id_allegato, id_strumento){
 }
 
 
+$('#myModalAllegati').on('hidden.bs.modal',function(){
+	
+	$(document.body).css('padding-right', '0px');
+});
+
+
 $('#fileupload').fileupload({
 	 url: "gestioneVerStrumenti.do?action=upload_allegati&id_strumento="+id_strumento,
 	 dataType: 'json',	 
@@ -147,7 +153,8 @@ $('#fileupload').fileupload({
 	 	pleaseWaitDiv.modal('hide');
 	 	
 	 	if(data.result.success){
-	 		$('#myModalAllegatiArchivio').modal('hide');
+	 		//$('#myModalAllegatiArchivio').modal('hide');
+	 		$('#myModalAllegati').hide();
 	 		$('#myModalErrorContent').html(data.result.messaggio);
 			$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-success");
@@ -155,12 +162,15 @@ $('#fileupload').fileupload({
 			
 			
 			$('#myModalError').on("hidden.bs.modal",function(){
-				$('#myModalAllegati').modal("hide");
-
+				
+			
 				  dataString = "action=lista&id_cliente="+$('#cliente').val()+"&id_sede="+$("#sede").val();
-				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
+				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab', function(){
+						$(document.body).css('padding-right', '0px');
+						$('.modal-backdrop').hide();
+				   });
 				   
-				   $('.modal-backdrop').hide();
+				   
 			});
 	 	}else{		 			
 	 			$('#myModalErrorContent').html(data.result.messaggio);

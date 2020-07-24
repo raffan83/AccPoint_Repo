@@ -13686,7 +13686,7 @@ function eliminaAllegatoVerStrumento(id_allegato){
     				$('#myModalError').modal('show');      				
        			$('#myModalError').on('hidden.bs.modal', function(){	        			
      				
-       				
+       				$('#myModalAllegati').hide();
        				$('#myModalYesOrNo').hide();
        				$('.modal-backdrop').hide();
        				dataString = "action=lista&id_cliente="+id_cliente+"&id_sede="+id_sede;

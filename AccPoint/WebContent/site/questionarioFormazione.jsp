@@ -357,7 +357,7 @@
 		  else if(data[i][2]==''){
 			  
 			  table.cell(i,5).data("").draw();
-			 
+			  risposte = risposte+""+","
 		  }
 		  else{	
 			 
@@ -383,6 +383,7 @@
 		 else if(data[i][3]==''){
 			  
 			  table.cell(i,6).data("").draw();
+			  risposte = risposte+""+","
 		  }
 		 else{
 			

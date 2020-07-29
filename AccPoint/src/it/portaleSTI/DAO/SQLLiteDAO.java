@@ -429,10 +429,12 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 			"  sc1 decimal(14,7) NOT NULL ," + 
 			"  vc1 int(11) NOT NULL ," + 
 			"  sc2 decimal(14,7) NOT NULL ," + 
+			"  sd decimal(14,7) NOT NULL ," + 
 			"  esito_conferma varchar(10) NOT NULL," + 
 			"  ud decimal(14,7) NOT NULL ," + 
 			"  uuf decimal(14,7) NOT NULL ," + 
-			"  correzione_eff_mag decimal(14,7) NOT NULL ," + 
+			"  correzione_eff_mag decimal(14,7)," +
+			"  u_correzione_eff_mag decimal(14,7) ,"+
 			"  caso int(1) NOT NULL ," + 
 			"  mX decimal(14,7) NOT NULL ," + 
 			"  uMx decimal(14,7) NOT NULL)";
@@ -1505,7 +1507,7 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			strumento = new VerStrumentoDTO();
 			misura.setDataVerificazione(sdf.parse(rs.getString("data_verificazione")));
 			misura.setDataScadenza(sdf.parse(rs.getString("data_scadenza")));
-		//	misura.setTipoRisposta(rs.getInt("tipo_risposta"));
+			misura.setTipoRisposta(rs.getInt("tipo_risposta"));
 			misura.setTipo_verifica(new VerTipoVerificaDTO(rs.getInt("tipo_verifica"),""));
 			misura.setMotivo_verifica(new VerMotivoVerificaDTO(rs.getInt("motivo_verifica"),""));
 			misura.setIs_difetti(rs.getString("isDifetti"));
@@ -1520,15 +1522,15 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			misura.setFile_fine_prova(rs.getBytes("file_fine_prova"));
 
 			misura.setNomeFile_fine_prova(rs.getString("nomefile_fine_prova").replace("'","_"));
-		//	misura.settInizio(rs.getDouble("tInizio"));
-		//	misura.settFine(rs.getDouble("tFine"));
-		//	misura.setAltezza_org(rs.getDouble("altezza_org"));
-		//	misura.setAltezza_util(rs.getDouble("altezza_util"));
-		//	misura.setLatitudine_org(rs.getDouble("latitudine_org"));
-		//	misura.setLatitudine_util(rs.getDouble("latitudine_util"));
-		//	misura.setgOrg(rs.getDouble("gOrg"));
-		//	misura.setgUtil(rs.getDouble("gUtil"));
-		//	misura.setgFactor(rs.getDouble("gFactor"));
+			misura.settInizio(rs.getDouble("tInizio"));
+			misura.settFine(rs.getDouble("tFine"));
+			misura.setAltezza_org(rs.getDouble("altezza_org"));
+			misura.setAltezza_util(rs.getDouble("altezza_util"));
+			misura.setLatitudine_org(rs.getDouble("latitudine_org"));
+			misura.setLatitudine_util(rs.getDouble("latitudine_util"));
+			misura.setgOrg(rs.getDouble("gOrg"));
+			misura.setgUtil(rs.getDouble("gUtil"));
+			misura.setgFactor(rs.getDouble("gFactor"));
 			
 			
 			misura.setNumeroSigilli(rs.getInt("numeroSigilli"));

@@ -1315,8 +1315,12 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 			}
 			else if(action.equals("questionario")) {
-								
-				ForCorsoDTO corso = (ForCorsoDTO) request.getSession().getAttribute("corso");	
+				
+				String id_corso = request.getParameter("id_corso");
+
+				id_corso = Utility.decryptData(id_corso);
+				
+				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso), session);
 				
 				ForQuestionarioDTO questionario = null;
 				
@@ -1368,6 +1372,30 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				PrintWriter  out = response.getWriter();
 				
 				myObj.addProperty("success", true);				
+				
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+			}
+			else if(action.equals("salva_compilazione_questionario")) {
+				
+				ajax = true;
+								
+				
+				ForQuestionarioDTO questionario = (ForQuestionarioDTO) request.getSession().getAttribute("questionario");				
+				
+				questionario.setSalvato(1);
+				
+				session.update(questionario);				
+				
+				
+				request.getSession().setAttribute("questionario", questionario);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Questionario salvato con successo!");
 				
 				out.print(myObj);
 				session.getTransaction().commit();

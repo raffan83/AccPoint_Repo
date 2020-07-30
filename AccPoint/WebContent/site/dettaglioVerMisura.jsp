@@ -454,6 +454,9 @@
               <li class="active" id="tab1"><a href="#check_list" data-toggle="tab" aria-expanded="true"   id="checkListTab">Check List del controllo preliminare</a></li>
               
               <c:if test="${esitoCheck=='1'}">
+              <c:if test="${misura.gFactor!=0.0 }">
+              <li class="" id="tab7"><a href="#temp_pos" data-toggle="tab" aria-expanded="false"   id="tempPosTab">Temperatura & Posizione</a></li>
+              </c:if>
               		<li class="" id="tab2"><a href="#ripetibilita" data-toggle="tab" aria-expanded="false"   id="ripetibilitaTab">Ripetibilità</a></li>
               		<li class="" id="tab3"><a href="#decentramento" data-toggle="tab" aria-expanded="false"   id="decentramentoTab">Decentramento</a></li>
               		<li class="" id="tab4"><a href="#linearita" data-toggle="tab" aria-expanded="false"   id="linearitaTab">Linearità</a></li>
@@ -674,7 +677,7 @@
   		</c:if>
   	</td>
 	</tr>
-	
+	<c:if test="${checkList.size()>10}">
 		 <tr role="row">
 	<td>La divisione, se è diversa da e, è presente nella forma d=...?</td>
   	<td align="center">
@@ -789,7 +792,7 @@
   	</td>
 	</tr>
 
- 
+ </c:if>
 	
  </tbody>
  </table> 
@@ -818,7 +821,151 @@
     			 </div>  
 
               <!-- /.tab-pane -->
-              <div class="tab-pane table-responsive" id="ripetibilita">
+              
+              <div class="tab-pane table-responsive" id="temp_pos">
+              
+              <div class="row">
+              <div class="col-xs-3">
+              <label style="font-size:22px">Temperatura di prova</label>
+               </div>
+               </div><br>
+               
+              <div class="row">
+              <div class="col-xs-3">
+              
+              <label class="pull-right">T inizio</label>
+            
+               
+              </div>
+              <div class="col-xs-2">
+              
+              <input type="text" class="form-control pull-right" disabled value="${misura.tInizio }" >
+            
+               
+              </div>
+              <div class="col-xs-1">
+              
+            
+            
+               
+              </div>
+              <div class="col-xs-2">
+              <br>
+              <%-- <input type="text" class="form-control pull-right" disabled value="${misura.tInizio }" > --%>
+             <label >|Ti - Tf| < 5 C°</label>
+               <input type="text" class="form-control pull-right" disabled value="${misura.tFine - misura.tInizio}" > 
+              </div>
+              </div><br>
+              
+              <div class="row">
+              <div class="col-xs-3">
+              
+              <label class="pull-right">T fine</label>
+            
+               
+              </div>
+              <div class="col-xs-2">
+              
+              <input type="text" class="form-control pull-right" disabled value="${misura.tFine }" >
+            
+               
+              </div>
+              <div class="col-xs-1">
+              
+            
+            
+               
+              </div>
+              <div class="col-xs-2">
+              
+              
+            
+               
+              </div>
+              </div><br>
+              
+              
+          <div class="row">
+              <div class="col-xs-3">
+              <label style="font-size:22px">Posizione</label>
+               </div>
+               </div><br>
+               
+               
+ <div class="row">
+
+              <div class="col-xs-3">
+              <label style="margin-top:15px">Posizione organismo (g)</label>
+               </div>
+               
+               <div class="col-xs-2">
+              <label>Altezza/m</label>
+              <input type="text" class="form-control pull-right" disabled value="${misura.altezza_org }" >
+               </div>
+               
+               <div class="col-xs-2">
+              <label>Latitudine °</label>
+              <input type="text" class="form-control pull-right" disabled value="${misura.latitudine_org }" >
+               </div>
+               
+               <div class="col-xs-2">
+              <label>g Loc</label>
+              <input type="text" class="form-control pull-right" disabled value="${misura.gOrg }" >
+               </div>
+               
+               </div><br>
+               
+               
+               
+                <div class="row">
+              <div class="col-xs-3">
+              <label>Posizione utilizzo (g)</label>
+               </div>
+               
+                 <div class="col-xs-2">
+              
+              <input type="text" class="form-control pull-right" disabled value="${misura.altezza_util }" >
+               </div>
+               
+               <div class="col-xs-2">
+              
+              <input type="text" class="form-control pull-right" disabled value="${misura.latitudine_util }" >
+               </div>
+               
+               <div class="col-xs-2">
+              
+              <input type="text" class="form-control pull-right" disabled value="${misura.gUtil }" >
+               </div>
+               
+               </div><br><br><br>
+               
+               
+                  
+                <div class="row">
+              <div class="col-xs-3">
+            
+               </div>
+               
+                 <div class="col-xs-2">
+              
+              <label class="pull-right">Fattore (g)</label>
+               </div>
+               
+               <div class="col-xs-2">
+              
+              <input type="text" class="form-control pull-right" disabled value="${misura.gFactor }" >
+               </div>
+               
+               <div class="col-xs-2">
+        
+               </div>
+               
+               </div><br>
+
+        </div>
+              
+              
+  <div class="tab-pane table-responsive" id="ripetibilita">
 <c:if test="${misura.verStrumento.tipo.id==3 }">
     <div class="row">
   <div class="col-xs-12">

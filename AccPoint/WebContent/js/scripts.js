@@ -13895,3 +13895,56 @@ $.ajax({
 	  }
 });
 }
+
+
+function salvaCompilazioneQuestionario(id_questionario){
+	
+	var dataObj = {};
+	dataObj.id_questionario = id_questionario;
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+var id_cliente = $('#cliente').val();
+var id_sede = $("#sede").val();
+  $.ajax({
+type: "POST",
+url: "gestioneFormazione.do?action=salva_compilazione_questionario&id_questionario="+ id_questionario,
+data: dataObj,
+dataType: "json",
+//if received a response from the server
+success: function( data, textStatus) {
+	pleaseWaitDiv.modal('hide');
+	  if(data.success){	  
+	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();
+			$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');      				
+   				  
+	  }else{
+		
+		$('#myModalErrorContent').html(data.messaggio);
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').hide();
+		$('#visualizza_report').hide();
+		$('#myModalError').modal('show');			
+	
+	  }
+},
+error: function( data, textStatus) {
+	  $('#myModalYesOrNo').modal('hide');
+	  $('#myModalErrorContent').html(data.messaggio);
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').show();
+		$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+
+}
+});
+	
+}

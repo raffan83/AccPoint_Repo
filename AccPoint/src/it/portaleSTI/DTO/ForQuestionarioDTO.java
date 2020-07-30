@@ -4,6 +4,7 @@ public class ForQuestionarioDTO {
 
 	private int id;
 	private String seq_risposte;
+	private int salvato; 
 	
 	
 	public int getId() {
@@ -17,6 +18,12 @@ public class ForQuestionarioDTO {
 	}
 	public void setSeq_risposte(String seq_risposte) {
 		this.seq_risposte = seq_risposte;
+	}
+	public int getSalvato() {
+		return salvato;
+	}
+	public void setSalvato(int salvato) {
+		this.salvato = salvato;
 	}
 	
 	

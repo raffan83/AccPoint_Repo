@@ -12,6 +12,8 @@
             <column name="seq_risposte" />
         </property>
         
-       
+        <property name="salvato" type="int" >
+            <column name="salvato" />
+        </property>
     </class>
 </hibernate-mapping>

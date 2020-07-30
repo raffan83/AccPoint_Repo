@@ -175,7 +175,13 @@
 <div class="row">
 <div class="col-md-12">
 
+<c:if test="${corso.questionario== null || corso.questionario.salvato==0 }">
 <a class="btn btn-primary pull-right" onClick="callAction('gestioneFormazione.do?action=questionario&id_corso=${utl:encryptData(corso.id)}')"><i class="fa fa-edit"></i> Compila questionario</a>
+</c:if>
+
+<c:if test="${corso.questionario!= null && corso.questionario.salvato==1 }">
+<a class="btn btn-primary pull-right" onClick="callAction('gestioneFormazione.do?action=questionario&id_corso=${utl:encryptData(corso.id)}')"><i class="fa fa-edit"></i> Visualizza o modifica questionario</a>
+</c:if>
 
 </div>
 </div>
@@ -274,7 +280,11 @@
      
      
 
+
  } );
+ 
+ 
+
  
 function modalArchivio(id_corso){
 	 

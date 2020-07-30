@@ -59,7 +59,7 @@
 
         <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>ID</b> <a class="pull-right">${corso.id}</a>
+                  <b>ID</b> <a class="pull-right btn customlink customTooltip"onClick="dettaglioCorso('${utl:encryptData(corso.id)}')">${corso.id}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Commessa</b> <a class="pull-right">${corso.commessa}</a>
@@ -248,6 +248,18 @@
     
     <br>
     
+    
+           <div class="row"> 
+   <div class="col-xs-8"></div>
+    <div class="col-xs-4">
+    
+    <a class="btn btn-primary pull-right" onClick="salvaCompilazioneQuestionario('${corso.questionario.id}')">Termina compilazione questionario</a>
+    </div>
+
+   </div>
+    
+    <br>
+    
     <div class="row">
 <div class="col-md-12">
 <div class="box box-danger box-solid">
@@ -333,7 +345,11 @@
   <script src="plugins/datatables-rowsgroup/dataTables.rowsGroup.js"></script>
   
  <script type="text/javascript">
- 
+ function dettaglioCorso(id_corso){
+		
+		callAction('gestioneFormazione.do?action=dettaglio_corso&id_corso='+id_corso);
+	}
+
 
  function salvaModificaQuestionario(){
 	 
@@ -367,8 +383,9 @@
 			 
 			 var perc = (val/numero_partecipanti)*100;			 
 			 
-			 table.cell(i,5).data(perc +"%").draw();
-			 
+			// table.cell(i,5).data(perc +"%").draw();
+			 table.cell(i,5).data( Math.round((perc + Number.EPSILON) * 100) / 100 +"%").draw();
+			
 			 
 			 calcolaGrafici(table);
 			 
@@ -393,7 +410,8 @@
 			 
 			 var perc = (val/numero_partecipanti)*100;			 
 			 
-			 table.cell(i,6).data(perc +"%").draw();
+			 //table.cell(i,6).data(perc +"%").draw();
+			 table.cell(i,6).data(Math.round((perc + Number.EPSILON) * 100) / 100 +"%").draw();
 			 
 			 calcolaGrafici(table);
 		 }
@@ -543,7 +561,7 @@
     			 
     			 var perc = (parseInt(val)/numero_partecipanti)*100;
     			 
-    			 $(cell).val(perc+"%");
+    			 $(cell).val(Math.round((perc + Number.EPSILON) * 100) / 100+"%");
     			 
     		 }
    		
@@ -561,7 +579,7 @@
 			 
 			 var perc = (parseInt(val)/numero_partecipanti)*100;
 			 
-			 $(cell).val(perc+"%");
+			 $(cell).val(Math.round((perc + Number.EPSILON) * 100) / 100+"%");
 			 
 		 }
   		
@@ -650,11 +668,11 @@
     	}
     	if((risposte_date_s!=0)){
     		media_s = somma_s/ risposte_date_s;	
-    		$('#media_sod').val(media_s+"%");
+    		$('#media_sod').val(Math.round((media_s + Number.EPSILON) * 100) / 100+"%");
     	}
     	if((risposte_date_ns!=0)){
     		media_ns = somma_ns/risposte_date_ns;
-    		$('#media_non_sod').val(media_ns+"%");
+    		$('#media_non_sod').val(Math.round((media_ns + Number.EPSILON) * 100) / 100+"%");
     	}
     	
     	
@@ -663,32 +681,34 @@
     
     
     function calcolaGrafici(table){
-    	var data1 = [table.cell(0,5).data().split("%")[0],table.cell(1,5).data().split("%")[0]]
-    	var data2 = [table.cell(0,6).data().split("%")[0],table.cell(1,6).data().split("%")[0]]
+    	
+    	var data1 = [table.cell(0,5).data().split("%")[0],table.cell(0,6).data().split("%")[0]]
+    	var data2 = [table.cell(1,5).data().split("%")[0],table.cell(1,6).data().split("%")[0]]
     	var label1 = table.cell(0,1).data();
     	var label2 = table.cell(1,1).data()
     	
     	
-    	var data3 = [table.cell(2,5).data().split("%")[0],table.cell(3,5).data().split("%")[0]]
-    	var data4 = [table.cell(2,6).data().split("%")[0],table.cell(3,6).data().split("%")[0]]
-    	var data5 = [table.cell(4,5).data().split("%")[0],table.cell(5,5).data().split("%")[0]]
-    	var data6 = [table.cell(4,6).data().split("%")[0],table.cell(5,6).data().split("%")[0]]
+    	var data3 = [table.cell(2,5).data().split("%")[0],table.cell(2,6).data().split("%")[0]]
+    	var data4 = [table.cell(3,5).data().split("%")[0],table.cell(3,6).data().split("%")[0]]
+    	var data5 = [table.cell(4,5).data().split("%")[0],table.cell(4,6).data().split("%")[0]]
+    	var data6 = [table.cell(5,5).data().split("%")[0],table.cell(5,6).data().split("%")[0]]
     	var label3 = table.cell(2,1).data();
     	var label4 = table.cell(3,1).data()
     	var label5 = table.cell(4,1).data();
     	var label6 = table.cell(5,1).data()
     	
     	
-    	var data7 = [table.cell(6,5).data().split("%")[0],table.cell(7,5).data().split("%")[0]]
-    	var data8 = [table.cell(6,6).data().split("%")[0],table.cell(7,6).data().split("%")[0]]
+    	var data7 = [table.cell(5,5).data().split("%")[0],table.cell(6,6).data().split("%")[0]]
+    	var data8 = [table.cell(6,5).data().split("%")[0],table.cell(7,6).data().split("%")[0]]
     	var label7 = table.cell(6,1).data();
     	var label8 = table.cell(7,1).data()
     	
     	
-    	var data9 = [table.cell(8,5).data().split("%")[0],table.cell(9,5).data().split("%")[0]]
-    	var data10 = [table.cell(8,6).data().split("%")[0],table.cell(9,6).data().split("%")[0]]
+    	var data9 = [table.cell(7,5).data().split("%")[0],table.cell(8,6).data().split("%")[0]]
+    	var data10 = [table.cell(8,5).data().split("%")[0],table.cell(9,6).data().split("%")[0]]
     	var label9 = table.cell(8,1).data();
     	var label10 = table.cell(9,1).data()
+    	
     	
     	var d =[];
     	

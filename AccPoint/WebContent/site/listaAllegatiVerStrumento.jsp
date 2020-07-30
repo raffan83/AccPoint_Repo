@@ -163,13 +163,18 @@ $('#fileupload').fileupload({
 			
 			$('#myModalError').on("hidden.bs.modal",function(){
 				
-			
-				  dataString = "action=lista&id_cliente="+$('#cliente').val()+"&id_sede="+$("#sede").val();
+		 	if($('#cliente').val()==null && $("#sede").val()==null){
+				
+				location.reload();
+			}else{ 
+				dataString = "action=lista&id_cliente="+$('#cliente').val()+"&id_sede="+$("#sede").val();
 				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab', function(){
 						$(document.body).css('padding-right', '0px');
 						$('.modal-backdrop').hide();
 				   });
 				   
+			}
+				  
 				   
 			});
 	 	}else{		 			

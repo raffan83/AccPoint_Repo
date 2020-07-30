@@ -13665,6 +13665,8 @@ function eliminaAllegatoVerStrumento(id_allegato){
 	 
 	 var dataObj = {};
 		dataObj.id_allegato = id_allegato;
+		
+		
 
 	var id_cliente = $('#cliente').val();
 	var id_sede = $("#sede").val();
@@ -13689,8 +13691,13 @@ function eliminaAllegatoVerStrumento(id_allegato){
        				$('#myModalAllegati').hide();
        				$('#myModalYesOrNo').hide();
        				$('.modal-backdrop').hide();
-       				dataString = "action=lista&id_cliente="+id_cliente+"&id_sede="+id_sede;
- 				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
+       				if(id_cliente == null && id_sede == null){
+       					location.reload();
+       				}else{
+       					dataString = "action=lista&id_cliente="+id_cliente+"&id_sede="+id_sede;
+      				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');	
+       				}
+       				
  				   
  				   $('.modal-backdrop').hide();
        			    //  $(this).off('hidden.bs.modal');

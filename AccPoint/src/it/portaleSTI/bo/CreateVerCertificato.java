@@ -80,7 +80,7 @@ public class CreateVerCertificato {
 		
 	//	report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
 		report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
-		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo.png"));	
+		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
 		//report.addParameter("immagine_ilac",PivotTemplateLAT_Image.class.getResourceAsStream("ilac.jpg"));	
 		
 		report.setTemplateDesign(is);
@@ -434,7 +434,7 @@ public class CreateVerCertificato {
 //			}		
 		
 		reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
-		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo.png"));	
+		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
 		
 		if(misura.getNumeroAttestato()!=null) {
 			reportP2.addParameter("numero_certificato", misura.getNumeroAttestato().replace("_", " - "));
@@ -492,7 +492,7 @@ public class CreateVerCertificato {
 		
 		reportP2.addParameter("responsabile", "Ing. Antonio Accettola");
 		
-		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo.png"));	
+		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
 		reportP2.addParameter("firma_responsabile", PivotTemplate.class.getResourceAsStream("FIRMA_ANTONIO_ACCETTOLA.png"));
 		
 		JasperPrint jasperPrint2 = reportP2.toJasperPrint();

@@ -208,7 +208,7 @@
        	</div>
        	<div class="col-sm-9">
        		<select class="form-control select2" data-placeholder="Seleziona Unità di Misura..." id="um" name="um" style="width:100%" required>
-       		<option value="Kg">Kg</option>
+       		<option value="kg">kg</option>
        		<option value="g">g</option>
        		
        		</select>
@@ -573,7 +573,7 @@
        	</div>
        	<div class="col-sm-9">
        		<select class="form-control select2" data-placeholder="Seleziona Unità di Misura..." id="um_mod" name="um_mod" style="width:100%" required>
-       		<option value="Kg">Kg</option>
+       		<option value="kg">kg</option>
        		<option value="g">g</option>
        		
        		</select>
@@ -878,7 +878,7 @@
        	</div>
        	<div class="col-sm-9">
        		<select class="form-control select2" data-placeholder="Seleziona Unità di Misura..." id="um_dtl" name="um_dtl" style="width:100%" disabled>
-       		<option value="Kg">Kg</option>
+       		<option value="kg">kg</option>
        		<option value="g">g</option>
        		
        		</select>

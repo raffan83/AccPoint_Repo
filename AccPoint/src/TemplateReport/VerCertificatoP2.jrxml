@@ -9,27 +9,27 @@
 	</background>
 	<title>
 		<band height="62" splitType="Stretch">
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="-14" width="129" height="76" uuid="dc7bc0e4-7cb4-4165-9706-d2a746266679"/>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="0" y="-14" width="129" height="76" uuid="803d4a0b-4748-4a36-950a-4d67e5aec88c"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="97" y="-7" width="369" height="32" uuid="7bf77b3b-9fae-478d-a4c8-7ad92238821d"/>
+				<reportElement x="97" y="-7" width="369" height="32" uuid="c006556e-5b83-4f84-a697-8c3db73f26db"/>
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Organismo di Verificazione Periodica n. FR323]]></text>
+				<text><![CDATA[Organismo di Verificazione Periodica ]]></text>
 			</staticText>
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="450" y="-14" width="103" height="76" uuid="55ff0cc0-5405-4428-b5bf-610904eb3c54"/>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="450" y="-14" width="103" height="76" uuid="df414d45-eeaf-4a47-a82a-298879dff179"/>
 				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="97" y="11" width="369" height="32" uuid="04eae814-2aa0-41a1-a13a-834769ca8ac0"/>
+				<reportElement x="97" y="11" width="369" height="32" uuid="3c625fe6-a89b-4fa6-8238-82f703904694"/>
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Ai sensi del D.M. n. 93/2017]]></text>
+				<text><![CDATA[n. FR323 ai sensi del D.M. n. 93/2017]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -52,11 +52,6 @@
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Allegato:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="0" y="67" width="551" height="21" uuid="6996c6e6-7e11-4fd7-92a9-336e301bf798"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="0" y="92" width="290" height="20" uuid="7a998b74-1b96-4573-86f1-d757d1185888"/>
 				<textElement>
@@ -205,6 +200,13 @@
 				<reportElement x="381" y="661" width="206" height="40" uuid="d2b5b11a-2250-465c-bf1d-1b88f69cfbca"/>
 				<imageExpression><![CDATA[$P{firma_responsabile}]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="0" y="65" width="553" height="21" uuid="c801e3ab-34c3-43ac-86a0-b5d9ec03884b"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 </jasperReport>

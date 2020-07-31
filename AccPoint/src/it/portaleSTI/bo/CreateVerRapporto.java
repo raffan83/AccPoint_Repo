@@ -149,7 +149,7 @@ public class CreateVerRapporto {
 		}
 		
 		if(misura.getNumeroAttestato()!=null) {
-			report.addParameter("allegato", misura.getNumeroAttestato());
+			report.addParameter("allegato", misura.getNumeroAttestato().replace("_"," - "));
 		}else {
 			report.addParameter("allegato", "");
 		}
@@ -512,7 +512,7 @@ public class CreateVerRapporto {
 			reportP2.addParameter("numero_rapporto", "");
 		}
 		if(misura.getNumeroAttestato()!=null) {
-			reportP2.addParameter("allegato", misura.getNumeroAttestato());
+			reportP2.addParameter("allegato", misura.getNumeroAttestato().replace("_"," - "));
 		}else {
 			reportP2.addParameter("allegato", "");
 		}
@@ -581,7 +581,7 @@ public class CreateVerRapporto {
 			
 			
 			if(misura.getNumeroAttestato()!=null) {
-				reportP3.addParameter("allegato", misura.getNumeroAttestato());
+				reportP3.addParameter("allegato", misura.getNumeroAttestato().replace("_"," - "));
 			}else {
 				reportP3.addParameter("allegato", "");
 			}
@@ -1110,7 +1110,7 @@ public class CreateVerRapporto {
 	 		report.addColumn(col.column("Carico aggiuntivo \n ΔL \n"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
 	 		report.addColumn(col.column("Errore \n E \n"+"/"+um,"e", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
 	 		report.addColumn(col.column("Er. Corretto \n Ec \n"+"/"+um,"ec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-	 		report.addColumn(col.column("± MPE \n "+"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Errore Massimo \n ± MPE \n "+"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		
 	 		//report.getReport().setColspan(2, 2, "Estimated");
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
@@ -1212,7 +1212,7 @@ public class CreateVerRapporto {
 	 			report.addColumn(col.column("Div. reale strumento \n d \n"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		 		report.addColumn(col.column("Check \n |I2 - I1| ≥ d\n","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
 	 		}else {
-	 			report.addColumn(col.column("0,7 ⋅ Carico Aggiuntivo \n 0,7 ⋅ MPE \n"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 			report.addColumn(col.column("0,7 • Carico Aggiuntivo = \n 0,7 • MPE \n"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		 		report.addColumn(col.column("Check \n |I2 - I1| ≥ 0,7 MPE\n","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		}
 	 		
@@ -1518,7 +1518,7 @@ private JRDataSource createDataSourceMobilita(ArrayList<VerMobilitaDTO> lista_mo
 				if(item.getCarico()==1) {
 					arrayPs.add("Min");
 				}else if(item.getCarico()==2){
-					arrayPs.add("1//2 Max");
+					arrayPs.add("1/2 Max");
 				}else {
 					arrayPs.add("Max");
 				}

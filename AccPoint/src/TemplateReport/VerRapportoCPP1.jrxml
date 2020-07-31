@@ -10,27 +10,27 @@
 	</background>
 	<title>
 		<band height="63" splitType="Stretch">
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="-14" width="129" height="76" uuid="ec544746-5497-4f9b-ab32-6d35da84d017"/>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="0" y="-14" width="129" height="76" uuid="0d3e16ad-28cc-4962-b8c4-2858dc1b60be"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="97" y="-7" width="369" height="32" uuid="b5f43049-0f32-404e-b368-832e083f8679"/>
+				<reportElement x="97" y="-7" width="369" height="32" uuid="26c88b7e-9f42-4bbb-9191-14eab99402da"/>
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Organismo di Verificazione Periodica n. FR323]]></text>
+				<text><![CDATA[Organismo di Verificazione Periodica ]]></text>
 			</staticText>
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="450" y="-14" width="103" height="76" uuid="0d788744-382a-4c62-8839-0b280fe1d794"/>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="450" y="-14" width="103" height="76" uuid="42c95322-fc22-485d-9aba-6e6995e9b6c1"/>
 				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="97" y="11" width="369" height="32" uuid="a65bbf0d-fb74-47a1-b707-60f3a41ee57a"/>
+				<reportElement x="97" y="11" width="369" height="32" uuid="8381f558-b3b9-4d79-8164-d735e3eee5d5"/>
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Ai sensi del D.M. n. 93/2017]]></text>
+				<text><![CDATA[n. FR323 ai sensi del D.M. n. 93/2017]]></text>
 			</staticText>
 		</band>
 	</title>

@@ -10,27 +10,27 @@
 	</background>
 	<title>
 		<band height="62" splitType="Stretch">
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="-14" width="129" height="76" uuid="9871b0eb-ad02-4026-990a-58ad608b74f1"/>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="0" y="-14" width="129" height="76" uuid="c9ee8018-7f4d-4ae5-92fe-eddd091b107a"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="97" y="-7" width="369" height="32" uuid="b1e82ec4-a7cd-4678-a12d-ff64e78fddc4"/>
+				<reportElement x="97" y="-7" width="369" height="32" uuid="c8b7970c-956a-49d2-a979-8307574bc6b4"/>
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Organismo di Verificazione Periodica n. FR323]]></text>
+				<text><![CDATA[Organismo di Verificazione Periodica ]]></text>
 			</staticText>
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="450" y="-14" width="103" height="76" uuid="2939ea4c-a25d-4bb2-95eb-87d40b7a0d24"/>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="450" y="-14" width="103" height="76" uuid="c8a1af8d-d8bd-443e-9add-ca1137e2228f"/>
 				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="97" y="11" width="369" height="32" uuid="13cf0118-e2bc-4247-8563-d903f0328323"/>
+				<reportElement x="97" y="11" width="369" height="32" uuid="1bbbb561-4843-476b-9e71-4a570e81309f"/>
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Ai sensi del D.M. n. 93/2017]]></text>
+				<text><![CDATA[n. FR323 ai sensi del D.M. n. 93/2017]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -58,7 +58,9 @@
 			</staticText>
 			<textField>
 				<reportElement x="0" y="65" width="553" height="21" uuid="51b5f137-784a-46b1-bf80-c8e81eaeb828"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
 			</textField>
 			<staticText>

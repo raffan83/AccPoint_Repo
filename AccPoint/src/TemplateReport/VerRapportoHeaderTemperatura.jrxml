@@ -70,7 +70,7 @@
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Organismo di Verificazione Periodica n. FR323]]></text>
+				<text><![CDATA[Organismo di Verificazione Periodica ]]></text>
 			</staticText>
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
 				<reportElement x="450" y="-14" width="103" height="76" uuid="7afefc94-dd0f-4942-a64b-e3ff92066add"/>
@@ -81,7 +81,7 @@
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Ai sensi del D.M. n. 93/2017]]></text>
+				<text><![CDATA[n. FR323 ai sensi del D.M. n. 93/2017]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -179,7 +179,7 @@
 				<text><![CDATA[iniziale]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="130" y="41" width="20" height="7" uuid="a657369d-c210-4d6b-9244-55052ca1a2c3"/>
+				<reportElement x="130" y="40" width="20" height="7" uuid="a657369d-c210-4d6b-9244-55052ca1a2c3"/>
 				<textElement>
 					<font size="5" pdfFontName="Helvetica-Oblique"/>
 				</textElement>

@@ -10,27 +10,27 @@
 	</background>
 	<title>
 		<band height="62" splitType="Stretch">
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="-14" width="129" height="76" uuid="3cfcd47c-bae3-4c2a-ad16-ca7ec41c1c1b"/>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="0" y="-14" width="129" height="76" uuid="a4993229-9737-4986-b92a-919cee39b78b"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="97" y="-7" width="369" height="32" uuid="8c68e5b8-bb2e-46e4-b4ea-b3a2e34401d6"/>
+				<reportElement x="97" y="-7" width="369" height="32" uuid="b60cd0e9-3a11-4668-919c-760d923a5346"/>
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Organismo di Verificazione Periodica n. FR323]]></text>
+				<text><![CDATA[Organismo di Verificazione Periodica ]]></text>
 			</staticText>
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="450" y="-14" width="103" height="76" uuid="650346ed-54bb-4451-acce-b6a282973c43"/>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="450" y="-14" width="103" height="76" uuid="cc55d2ed-09c1-4445-9cb4-de0d955f4789"/>
 				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="97" y="11" width="369" height="32" uuid="b83ecbff-50ea-4c81-8941-8f40033df47b"/>
+				<reportElement x="97" y="11" width="369" height="32" uuid="fab36f81-8746-4eca-8c04-014232e39278"/>
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Ai sensi del D.M. n. 93/2017]]></text>
+				<text><![CDATA[n. FR323 ai sensi del D.M. n. 93/2017]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -56,11 +56,6 @@
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Allegato:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="0" y="65" width="553" height="21" uuid="cafaac43-91c7-4dd9-b0a4-8cb4b41abe9f"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="0" y="96" width="553" height="42" uuid="a686e61d-93b2-4733-870a-3a1504c243cc"/>
 				<text><![CDATA[Il sottoscritto Antonio Accettola responsabile dell'Organismo S.T.I. S.r.l. idoneo allo svolgimento della verificazione periodica di strumenti per pesare a funzionamento non automatico (NAWI), ai sensi del Decreto Ministeriale n. 93 del 21 Aprile 2017,]]></text>
@@ -412,6 +407,13 @@
 				<reportElement x="0" y="469" width="101" height="18" uuid="ca3aea14-c430-456f-a22a-f5b6015e92b6"/>
 				<text><![CDATA[Tipologia:]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="0" y="65" width="553" height="21" uuid="c75337ff-a250-467d-9649-42e0421038db"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 </jasperReport>

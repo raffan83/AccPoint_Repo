@@ -10,26 +10,26 @@
 	<title>
 		<band height="62" splitType="Stretch">
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="0" width="129" height="62" uuid="ed3e7b8f-c3da-450e-a02b-6f946bd852d3"/>
+				<reportElement x="0" y="-14" width="129" height="76" uuid="7e718e56-f246-42d9-9f23-8de481a15d6a"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="130" y="11" width="320" height="16" uuid="e38050a7-b7b4-406a-b95f-7f20212a9130"/>
+				<reportElement x="97" y="-7" width="369" height="32" uuid="8fd5e5d5-d433-4b61-86b0-32713a3906a4"/>
 				<textElement textAlignment="Center">
-					<font size="12" isItalic="true"/>
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Organismo di Verificazione Periodica n. FR02]]></text>
+				<text><![CDATA[Organismo di Verificazione Periodica n. FR323]]></text>
 			</staticText>
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="450" y="0" width="103" height="50" uuid="034bfa62-aa0c-4b0d-aaef-60632ec71741"/>
+				<reportElement x="450" y="-14" width="103" height="76" uuid="b529a1e5-6d1f-42a4-b720-457d1699fcdc"/>
 				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="129" y="29" width="320" height="16" uuid="4c26000b-ae4f-4eed-9933-4f192788e85e"/>
+				<reportElement x="97" y="11" width="369" height="32" uuid="d1cda697-1c79-4956-8e6d-e78e2fcccd2c"/>
 				<textElement textAlignment="Center">
-					<font size="10" isItalic="true"/>
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[(Ai sensi del D.M. n. 93/2017 e dell'Art. 42 del D.Leg. n. 34/2019)]]></text>
+				<text><![CDATA[Ai sensi del D.M. n. 93/2017]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -349,20 +349,6 @@
 				<reportElement x="130" y="437" width="421" height="18" uuid="7b8dc2c1-f805-497d-9601-f817f6ea6b77"/>
 				<textFieldExpression><![CDATA[$P{data_messa_in_servizio}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="723" width="100" height="16" uuid="f25a16ea-38d0-46a4-a397-6b5a61f30144"/>
-				<textElement verticalAlignment="Bottom">
-					<font size="7"/>
-				</textElement>
-				<text><![CDATA[MOD-LAB-015]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="456" y="723" width="100" height="16" uuid="1bd604a7-2809-43e0-b57e-90b023f0a73e"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="7"/>
-				</textElement>
-				<text><![CDATA[Rev. C del 27/11/2019]]></text>
-			</staticText>
 		</band>
 	</columnHeader>
 </jasperReport>

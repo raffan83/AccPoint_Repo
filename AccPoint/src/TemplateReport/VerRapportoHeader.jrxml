@@ -9,69 +9,81 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="105" splitType="Stretch">
+		<band height="107" splitType="Stretch">
 			<staticText>
-				<reportElement x="1" y="59" width="553" height="21" uuid="ffdb218a-3c59-4469-9bc4-9a622c1e2cf0"/>
+				<reportElement x="1" y="50" width="553" height="21" uuid="ef5e6416-fd60-419b-b8d9-2969529cede5"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Rapporto di verificazione periodica numero:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="1" y="80" width="553" height="21" uuid="b646af25-c10e-4897-92c3-cd9e11d23ba3"/>
+				<reportElement x="1" y="65" width="553" height="21" uuid="aebcb403-7f7a-4542-94e5-76fb4896a318"/>
 				<textElement textAlignment="Center">
 					<font pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numero_rapporto}]]></textFieldExpression>
 			</textField>
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="0" width="129" height="70" uuid="05fdb64e-a0d6-40db-a165-17812e05571f"/>
-				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="130" y="11" width="320" height="16" uuid="1e97f935-fc81-4850-b179-23946f10ded1"/>
-				<textElement textAlignment="Center">
-					<font size="12" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[Organismo di Verificazione Periodica n. FR02]]></text>
-			</staticText>
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="450" y="0" width="103" height="50" uuid="ac1b5db8-3a52-453d-86a1-f2d7680febb7"/>
-				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="129" y="29" width="320" height="16" uuid="65fe41ab-36e1-41f3-a4fa-f5fae4cac6e6"/>
-				<textElement textAlignment="Center">
-					<font size="10" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[(Ai sensi del D.M. n. 93/2017 e dell'Art. 42 del D.Leg. n. 34/2019)]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="505" y="88" width="12" height="16" uuid="400a2cac-5d3d-4c1f-adb7-184f78cfd2b3"/>
+				<reportElement x="505" y="88" width="12" height="16" uuid="968b2e4f-0f8c-48b5-a0c1-d3219e893a2b"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="517" y="88" width="7" height="16" uuid="e4e25095-a2fc-4eae-ab79-c12399bae351"/>
+				<reportElement x="517" y="88" width="7" height="16" uuid="10f057a0-2ead-4966-9544-249b5a569c86"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[di]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="477" y="88" width="28" height="16" uuid="d03bdb29-19ba-435e-8d17-c1f4e6d47a6c"/>
+				<reportElement x="477" y="88" width="28" height="16" uuid="010561d7-26c1-4038-b284-d495d3e48361"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Pagina]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="526" y="88" width="17" height="16" uuid="2668dc51-a051-4173-9b91-4f294d87201d"/>
+				<reportElement x="526" y="88" width="17" height="16" uuid="497715e9-1bf2-48da-a69e-d8312bd8a524"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="77" width="553" height="21" uuid="6a41fe5d-d9b0-4fab-a271-934c840c5644"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Allegato:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="92" width="553" height="15" uuid="1c96599e-87c2-4952-8f64-2952ccc461a2"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="0" y="-14" width="129" height="76" uuid="e0d7e946-6143-4788-8301-df2af1b3df20"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="97" y="-7" width="369" height="32" uuid="65f19a53-96d0-4f2d-9800-a839a7e81b37"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Organismo di Verificazione Periodica n. FR323]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="450" y="-14" width="103" height="76" uuid="664e0b7a-67e3-41dc-9a85-6ac470cdf0c5"/>
+				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="97" y="11" width="369" height="32" uuid="3dd8f60b-ee17-436b-a7bc-7f2b66abcfe2"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Ai sensi del D.M. n. 93/2017]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 </jasperReport>

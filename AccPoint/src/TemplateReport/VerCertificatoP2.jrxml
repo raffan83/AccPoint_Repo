@@ -10,26 +10,26 @@
 	<title>
 		<band height="62" splitType="Stretch">
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="0" width="129" height="62" uuid="bca378ea-5656-4ee1-a337-a4b641ace923"/>
+				<reportElement x="0" y="-14" width="129" height="76" uuid="dc7bc0e4-7cb4-4165-9706-d2a746266679"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="130" y="11" width="320" height="16" uuid="56af815a-69e0-45e9-a715-7a80b82c535c"/>
+				<reportElement x="97" y="-7" width="369" height="32" uuid="7bf77b3b-9fae-478d-a4c8-7ad92238821d"/>
 				<textElement textAlignment="Center">
-					<font size="12" isItalic="true"/>
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Organismo di Verificazione Periodica n. FR02]]></text>
+				<text><![CDATA[Organismo di Verificazione Periodica n. FR323]]></text>
 			</staticText>
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="450" y="0" width="103" height="50" uuid="600dcc73-ef19-495a-b634-0e0cc17673b4"/>
+				<reportElement x="450" y="-14" width="103" height="76" uuid="55ff0cc0-5405-4428-b5bf-610904eb3c54"/>
 				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="129" y="29" width="320" height="16" uuid="e9c728bb-3167-4498-867d-5bc8e73bec07"/>
+				<reportElement x="97" y="11" width="369" height="32" uuid="04eae814-2aa0-41a1-a13a-834769ca8ac0"/>
 				<textElement textAlignment="Center">
-					<font size="10" isItalic="true"/>
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[(Ai sensi del D.M. n. 93/2017 e dell'Art. 42 del D.Leg. n. 34/2019)]]></text>
+				<text><![CDATA[Ai sensi del D.M. n. 93/2017]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -88,7 +88,7 @@
 				<text><![CDATA[Esito del controllo di verificazione periodica]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="257" width="551" height="14" uuid="979cebf3-a27d-48e1-8a25-f803db9dfe31"/>
+				<reportElement x="0" y="256" width="551" height="14" uuid="979cebf3-a27d-48e1-8a25-f803db9dfe31"/>
 				<textElement textAlignment="Center">
 					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -200,20 +200,6 @@
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Pagina 2 di 2]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="456" y="723" width="100" height="16" uuid="d3ab9f86-4187-4a43-92b4-043824995089"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="7"/>
-				</textElement>
-				<text><![CDATA[Rev. C del 27/11/2019]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="723" width="100" height="16" uuid="9da477f0-1a7a-4dfe-9727-929049731285"/>
-				<textElement verticalAlignment="Bottom">
-					<font size="7"/>
-				</textElement>
-				<text><![CDATA[MOD-LAB-015]]></text>
 			</staticText>
 			<image hAlign="Center">
 				<reportElement x="381" y="661" width="206" height="40" uuid="d2b5b11a-2250-465c-bf1d-1b88f69cfbca"/>

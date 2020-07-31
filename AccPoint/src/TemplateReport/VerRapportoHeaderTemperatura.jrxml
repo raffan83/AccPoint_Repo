@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VerRapportoHeaderTemperatura" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1c1aa1e0-de86-42de-825d-eebee68d2f44">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="109">
+			<staticText>
+				<reportElement x="1" y="50" width="553" height="21" uuid="c712ad85-5f3e-40f8-b3c5-f98e9cc85580"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Rapporto di verificazione periodica numero:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="65" width="553" height="21" uuid="473ed03a-2fd5-4e1f-9155-ec457b7bd1e5"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_rapporto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="505" y="88" width="12" height="16" uuid="0d59ff7f-3274-4fa0-a0ee-5303e06f73ba"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="517" y="88" width="7" height="16" uuid="d997d69e-3c78-4ef9-a8ff-6d9bef50e5f2"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[di]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="477" y="88" width="28" height="16" uuid="8a81ea14-1615-4941-9cd6-e3075f5c1db0"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pagina]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="526" y="88" width="17" height="16" uuid="f6fea9f8-e807-43bb-906e-09144449aa0a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="77" width="553" height="21" uuid="7de2fd98-e414-4d6d-af39-b59713c16237"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Allegato:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="92" width="553" height="15" uuid="4cca3a87-7166-4a07-ab07-cb12fd9dc087"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="0" y="-14" width="129" height="76" uuid="81d2cb57-5411-4799-bc23-2e7d950bf23f"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="97" y="-7" width="369" height="32" uuid="8b402f11-9ca2-4095-9440-fd7e37461e2d"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Organismo di Verificazione Periodica n. FR323]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="450" y="-14" width="103" height="76" uuid="7afefc94-dd0f-4942-a64b-e3ff92066add"/>
+				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="97" y="11" width="369" height="32" uuid="c354d853-9bf3-4a22-926d-053ece7e2681"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Ai sensi del D.M. n. 93/2017]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="142">
+			<rectangle>
+				<reportElement x="399" y="123" width="113" height="16" uuid="f613782e-2465-4b28-84ec-ba77674bb7c5"/>
+			</rectangle>
+			<textField>
+				<reportElement x="399" y="123" width="113" height="16" uuid="8fa6373a-4847-4ee8-b914-626d75522825"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{g_factor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="124" y="36" width="189" height="20" uuid="0f3d7679-11ef-4810-8a6e-cac00a848e3c"/>
+				<textElement>
+					<font size="9" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[T                                                °C
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="124" y="9" width="189" height="20" uuid="8f6ee9b8-89c8-481d-8a97-3bbffb9eee1b"/>
+				<textElement>
+					<font size="9" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[T                                                °C
+ ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="399" y="107" width="113" height="16" uuid="8a2da016-d76c-4f31-b8e8-87ea76288cbe"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="399" y="107" width="113" height="16" backcolor="#F0F0F0" uuid="add8bda8-c577-4892-bd57-7ea9d5b6528a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[g  /g]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="164" y="7" width="83" height="16" uuid="6c734bab-e095-440c-9f1f-27090584fcdb"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{t_inizio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="22" width="100" height="30" uuid="ac85ff47-34ac-468c-b96d-500116d47ec5"/>
+				<textElement>
+					<font size="8" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Temperatura di prova]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="75" width="100" height="19" uuid="9a69f7b8-c617-4ff5-ba1e-30032a77c3f3"/>
+				<textElement>
+					<font size="8" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Gravità g, organismo*]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="93" width="166" height="30" uuid="6f922c86-0806-445e-a7ab-cf0bb50341d6"/>
+				<textElement>
+					<font size="8" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Gravità g, zona di utilizzazione*]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="126" width="300" height="15" uuid="0330ce43-f277-4231-8826-40220f29f321"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[* solo se la prova è condotta nella sede dell'organismo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="164" y="34" width="83" height="16" uuid="1d4b2236-b005-473f-8bed-1fab7654105c"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{t_fine}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="130" y="14" width="20" height="7" uuid="3237b156-0939-4a26-9671-f7193b975449"/>
+				<textElement>
+					<font size="5" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[iniziale]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="41" width="20" height="7" uuid="a657369d-c210-4d6b-9244-55052ca1a2c3"/>
+				<textElement>
+					<font size="5" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[finale]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="292" y="16" width="123" height="20" uuid="c886ca26-2184-49c3-9e3b-f6c77107130e"/>
+				<textElement>
+					<font size="9" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[|T          -
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="299" y="21" width="20" height="7" uuid="a6e8b832-8c53-452d-ae9d-6d3cd9d4e9cf"/>
+				<textElement>
+					<font size="5" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[iniziale]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="16" width="123" height="20" uuid="28e39ee3-ec83-430d-a133-aef936909000"/>
+				<textElement>
+					<font size="9" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[T     | < 5°C
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="345" y="21" width="20" height="7" uuid="dee256fa-1155-4a36-ad48-bb1cb3ee9f8e"/>
+				<textElement>
+					<font size="5" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[finale]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="439" y="16" width="105" height="20" uuid="5e8de12a-a3ee-429c-9024-dee12f8c3936"/>
+				<textElement>
+					<font fontName="Trebuchet MS" size="11" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{esito_temperatura}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="173" y="59" width="113" height="16" uuid="28e65d16-32d0-45b2-907f-ed68aa286680"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="286" y="59" width="113" height="16" uuid="bcbf506d-1e3e-45fc-bc3d-2c04ad27e0bc"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="399" y="59" width="113" height="16" uuid="aadf34f0-db08-4212-8a1e-3ac6fa6bd424"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="173" y="75" width="113" height="16" uuid="eb39d2e4-ad0f-49d6-a352-8b7d5eb1c802"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="286" y="75" width="113" height="16" uuid="60330c4c-6678-4c13-8566-46a68acb36dd"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="399" y="75" width="113" height="16" uuid="f0cf02a2-a6c6-455f-a8f2-10b314aea078"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="173" y="91" width="113" height="16" uuid="51ae5563-6e58-43e1-ab96-2d4ee9b966ea"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="286" y="91" width="113" height="16" uuid="204c8ca1-6587-42d3-ba68-ddcc7edf6799"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="399" y="91" width="113" height="16" uuid="b929b368-ebca-42b9-ad34-2dc51eee94d2"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="173" y="59" width="113" height="16" backcolor="#F0F0F0" uuid="ad2b9f4d-8e99-40bf-ad5d-79a8d5bfef8e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[a altezza /m]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="59" width="113" height="16" backcolor="#F0F0F0" uuid="6abcf73e-b685-4d6e-b59f-1ead58d3e8a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252"/>
+				</textElement>
+				<text><![CDATA[ φ latitudine /°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="59" width="113" height="16" backcolor="#F0F0F0" uuid="81d2453c-fec2-42de-82fb-e616b7634709"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[g]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="459" y="67" width="20" height="16" uuid="227aacc1-58bb-43a4-ae7e-783e6bee2013"/>
+				<textElement>
+					<font size="5" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[loc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="115" width="20" height="16" uuid="fca5a0f4-992e-49d9-8832-5236a218a495"/>
+				<textElement>
+					<font size="5" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="465" y="115" width="20" height="7" uuid="7eb76139-bac1-43bd-bb8a-bd258380db6f"/>
+				<textElement>
+					<font size="5" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[y]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="174" y="75" width="113" height="16" uuid="128a472c-f24a-4c7a-a28c-b1d36ff3bd2e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{altezza_org}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="174" y="92" width="113" height="16" uuid="0d9990c2-d021-403c-bd01-36673a13d5e1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{altezza_util}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="287" y="76" width="113" height="16" uuid="fe5b1c07-4f12-40c0-9f87-c953e2b3d738"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{latitudine_org}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="287" y="92" width="113" height="16" uuid="cc3bb603-3b28-45bb-aaa6-c0fb281e4065"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{latitudine_util}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="76" width="113" height="16" uuid="704d0adb-4755-4176-a1c8-7928b9a51c31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{g_org}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="92" width="113" height="16" uuid="b5475f3d-3580-4301-bc7c-72d11419af9b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{g_util}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="520" y="77" width="20" height="20" uuid="b2d3342d-99b5-4350-bfb2-01cb50b6a69e"/>
+				<text><![CDATA[m/s]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="537" y="79" width="10" height="7" uuid="3417e330-f8e9-4823-a606-0c6aef338c9e"/>
+				<textElement>
+					<font size="5"/>
+				</textElement>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="520" y="93" width="20" height="20" uuid="cffeadf7-9349-4fba-ade6-6dd606075162"/>
+				<text><![CDATA[m/s]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="537" y="95" width="10" height="7" uuid="7e98f367-3505-410d-90cb-057eff11ea8b"/>
+				<textElement>
+					<font size="5"/>
+				</textElement>
+				<text><![CDATA[2]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

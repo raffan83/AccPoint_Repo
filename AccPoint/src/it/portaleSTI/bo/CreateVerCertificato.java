@@ -79,7 +79,7 @@ public class CreateVerCertificato {
 //			}
 		
 	//	report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
-		report.addParameter("logo_accredia","");
+		report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
 		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo.png"));	
 		//report.addParameter("immagine_ilac",PivotTemplateLAT_Image.class.getResourceAsStream("ilac.jpg"));	
 		
@@ -433,7 +433,7 @@ public class CreateVerCertificato {
 //		
 //			}		
 		
-		reportP2.addParameter("logo_accredia","");
+		reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
 		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo.png"));	
 		
 		if(misura.getNumeroAttestato()!=null) {

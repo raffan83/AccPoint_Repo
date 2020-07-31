@@ -111,7 +111,7 @@ public class GestioneVerMisuraBO {
 			
 			if(misura.getListaPuntiRipetibilita()!=null && misura.getListaPuntiRipetibilita().size()>0) {
 				for (VerRipetibilitaDTO item : misura.getListaPuntiRipetibilita()) {
-					if(item.getEsito().equals("NEGATIVO")) {
+					if(item.getEsito()!=null && item.getEsito().equals("NEGATIVO")) {
 						//esito_globale = false;
 						motivo = 1;
 					}
@@ -119,7 +119,7 @@ public class GestioneVerMisuraBO {
 			}
 			if(misura.getListaPuntiLinearita()!=null && misura.getListaPuntiLinearita().size()>0) {
 				for (VerLinearitaDTO item : misura.getListaPuntiLinearita()) {
-					if(item.getEsito().equals("NEGATIVO")) {
+					if(item.getEsito()!=null && item.getEsito().equals("NEGATIVO")) {
 						//esito_globale = false;
 						motivo = 1;
 					}
@@ -127,7 +127,7 @@ public class GestioneVerMisuraBO {
 			}
 			if(misura.getListaPuntiDecentramento()!=null && misura.getListaPuntiDecentramento().size()>0) {
 				for (VerDecentramentoDTO item : misura.getListaPuntiDecentramento()) {
-					if(item.getEsito().equals("NEGATIVO")) {
+					if(item.getEsito()!=null && item.getEsito().equals("NEGATIVO")) {
 						//esito_globale = false;
 						motivo = 1;
 					}
@@ -136,7 +136,7 @@ public class GestioneVerMisuraBO {
 			if(misura.getVerStrumento().getTipologia().getId()==2) {
 				if(misura.getListaPuntiAccuratezza()!=null && misura.getListaPuntiAccuratezza().size()>0) {
 					for (VerAccuratezzaDTO item : misura.getListaPuntiAccuratezza()) {
-						if(item.getEsito().equals("NEGATIVO")) {
+						if(item.getEsito()!=null && item.getEsito().equals("NEGATIVO")) {
 							//esito_globale = false;
 							motivo = 1;
 						}

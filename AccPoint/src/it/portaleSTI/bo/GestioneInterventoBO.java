@@ -475,7 +475,9 @@ public class GestioneInterventoBO {
 			   misura.setnCertificato(codice);
 			   
 			   utente.getContatoreUtente().setContatoreSE(count+1);
-			   session.update(utente.getContatoreUtente());
+			  
+			   GestioneSicurezzaElettricaBO.updateContatoreUtente(utente);
+			 //  session.update(utente.getContatoreUtente());
 			   
 		   }
 		    

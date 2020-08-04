@@ -2652,7 +2652,6 @@ public static ArrayList<Integer> getGrandezzeFromTipoStrumento(int id_tipo_strum
 public static void updateUltimoAccesso(int id) throws Exception {
 	
 	PreparedStatement pst=null;
-	ResultSet rs= null;
 	Connection con=null;
 	try{
 		con = getConnection();	
@@ -2660,6 +2659,32 @@ public static void updateUltimoAccesso(int id) throws Exception {
 		pst=con.prepareStatement("UPDATE users SET ultimo_accesso=? WHERE id=?");
 		pst.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
 		pst.setInt(2,id);
+		pst.execute();
+	
+	}catch(Exception ex)
+	{
+		ex.printStackTrace();
+		throw ex;
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+}
+
+public static void updateConatoreUtente(UtenteDTO utente) throws Exception {
+	
+	PreparedStatement pst=null;
+	ResultSet rs= null;
+	Connection con=null;
+	try{
+		con = getConnection();	
+		
+		pst=con.prepareStatement("UPDATE contatore_user SET count_se=? WHERE id_user=?");
+		pst.setInt(1, utente.getContatoreUtente().getContatoreSE());
+		pst.setInt(2,utente.getId());
 		pst.execute();
 	
 	}catch(Exception ex)

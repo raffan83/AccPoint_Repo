@@ -1491,8 +1491,6 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 	try 
 	{		
 		pst=con.prepareStatement("SELECT a.id as idMis, a.* ,b.id as idStr,b.* FROM ver_misura a JOIN ver_strumento b ON a.id_ver_strumento=b.id where stato=1 ");
-		
-		
 		rs=pst.executeQuery();
 		
 		VerMisuraDTO misura =null;

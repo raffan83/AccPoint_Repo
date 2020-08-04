@@ -396,7 +396,16 @@ public class CreateVerRapporto {
 				
 			}	
 			else if(misura.getVerStrumento().getTipo().getId()==3) {
-				numero_campi = 3;
+				
+				numero_campi = 2;
+				for (VerRipetibilitaDTO item : lista_ripetibilita) {
+					if(item.getMpe()!=null && item.getCampo() == 3) {
+						numero_campi = 3;
+						break;
+					}
+				}
+				
+				
 				if(misura.getVerStrumento().getPortata_max_C2()!=null) {
 					report.addParameter("portata_max_c2", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString()));
 				}else{
@@ -665,12 +674,12 @@ public class CreateVerRapporto {
 				VerticalListBuilder vl_ripetibilita = null;
 				
 				String campo = "";
-				if(numero_campi==3) {
+				if(numero_campi>1) {
 					campo = "Campo " + (i+1);
 					
 				     vl_ripetibilita= cmp.verticalList(
 							cmp.text(campo).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(boldStyle),
-							cmp.verticalGap(10),
+							cmp.verticalGap(5),
 							cmp.text("Prova di Ripetibilità (Rif.UNI CEI EN 45501:2015 - A.4.10)").setStyle(boldStyle),			
 							cmp.verticalGap(8),
 							hl_ripetibilita, 
@@ -1178,7 +1187,7 @@ public class CreateVerRapporto {
 	 		
 			DRDataSource dataSource = new DRDataSource(listaCodici);
 			for (VerRipetibilitaDTO item : lista_ripetibilita) {
-				if(item.getCampo() == campo) {
+				if(item.getMpe()!=null && item.getCampo() == campo) {
 					dataSource.add("± MPE (asocciato al carico di prova):", Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()), um);
 					break;
 				}

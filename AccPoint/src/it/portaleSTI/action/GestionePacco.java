@@ -111,7 +111,7 @@ public class GestionePacco extends HttpServlet {
 		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 		CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 		boolean ajax = false;
-		
+		boolean rilievi=false;
 		try {
 		
 		if(action.equals("new")) {
@@ -165,6 +165,7 @@ public class GestionePacco extends HttpServlet {
 		String cliente_util = "";
 		String sede_util = "";
 		String ritardo = "";
+		String pezzi_ingresso="";
 		
 		FileItem pdf = null;
 		MagPaccoDTO pacco = new MagPaccoDTO();
@@ -269,8 +270,9 @@ public class GestionePacco extends HttpServlet {
 					}
 					if(item.getFieldName().equals("json_rilievi")) {
 						
+						rilievi=true;
 						String data_json = item.getString();
-					if(data_json!=null && !data_json.equals("")) {
+					    if(data_json!=null && !data_json.equals("")) {
 						JsonElement jelement = new JsonParser().parse(data_json);
 						JsonArray json_array = jelement.getAsJsonArray();
 						
@@ -286,9 +288,9 @@ public class GestionePacco extends HttpServlet {
 							}									
 							String disegno = json_obj.get("disegno").getAsString();
 							String variante = json_obj.get("variante").getAsString();
-	 						String pezzi_ingresso = json_obj.get("pezzi_ingresso").getAsString();
+	 						pezzi_ingresso = json_obj.get("pezzi_ingresso").getAsString();
 	 						String note_rilievo = json_obj.get("note_rilievo").getAsString();
-							//String quantita = json_obj.get("quantita").getAsString();
+						//	String quantita = json_obj.get("quantita").getAsString();
 	 						String id = null;
 							if(json_obj.get("id")!=null) {
 								id = json_obj.get("id").getAsString();
@@ -330,6 +332,7 @@ public class GestionePacco extends HttpServlet {
 							mag_item.setId_tipo_proprio(rilievo.getId());							
 							
 							mag_item.setTipo_item(new MagTipoItemDTO(4, ""));
+							mag_item.setDescrizione(disegno+" "+variante);
 							mag_item.setDisegno(disegno);
 							mag_item.setVariante(variante);
 							if(pezzi_ingresso!= null && !pezzi_ingresso.equals("")) {
@@ -750,8 +753,17 @@ public class GestionePacco extends HttpServlet {
 				
 				if(str.length>0) {
 					if(str[0]!=null && !str[0].equals("")) {
-					item_pacco.setQuantita(Integer.parseInt(str[0]));
-					}
+					
+					if(rilievi) 
+						{
+							item_pacco.setQuantita(Integer.parseInt(pezzi_ingresso));
+						}
+						else 
+						{
+							item_pacco.setQuantita(Integer.parseInt(str[0]));
+						}
+						
+						}
 					if(str.length>1) {
 					item_pacco.setNote(str[1]);
 					}	

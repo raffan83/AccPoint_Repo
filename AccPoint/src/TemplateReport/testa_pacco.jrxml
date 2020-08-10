@@ -8,15 +8,15 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="275" splitType="Stretch">
+		<band height="241" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="150" width="281" height="61" uuid="cfc71b2f-419a-4f91-bb66-56da487d3762"/>
+				<reportElement x="0" y="150" width="281" height="40" uuid="cfc71b2f-419a-4f91-bb66-56da487d3762"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="281" y="150" width="275" height="61" uuid="09365193-456c-4df9-af17-7a5a55005cdc"/>
+				<reportElement x="281" y="150" width="275" height="40" uuid="09365193-456c-4df9-af17-7a5a55005cdc"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
@@ -41,7 +41,7 @@
 				<text><![CDATA[CODICE PACCO: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="14" y="154" width="59" height="31" uuid="aebb2b12-b55a-4954-aabd-096c926e0142"/>
+				<reportElement x="10" y="154" width="59" height="31" uuid="aebb2b12-b55a-4954-aabd-096c926e0142"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -59,11 +59,11 @@
 				<textFieldExpression><![CDATA[$P{codice_pacco}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="344" y="155" width="207" height="44" uuid="379483db-72dc-4086-bb89-6d45cc6a3ec8"/>
+				<reportElement x="344" y="155" width="207" height="31" uuid="379483db-72dc-4086-bb89-6d45cc6a3ec8"/>
 				<textFieldExpression><![CDATA[$P{sede}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="71" y="154" width="203" height="46" uuid="4c784de6-b460-4135-93d3-cc59fc5618fd"/>
+				<reportElement x="72" y="154" width="203" height="32" uuid="4c784de6-b460-4135-93d3-cc59fc5618fd"/>
 				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -74,7 +74,7 @@
 				<text><![CDATA[DATA ARRIVO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="373" y="100" width="156" height="21" uuid="4cb84182-1b30-4056-90c5-1d172a33b2b5"/>
+				<reportElement x="373" y="100" width="178" height="21" uuid="4cb84182-1b30-4056-90c5-1d172a33b2b5"/>
 				<textFieldExpression><![CDATA[$P{data_lavorazione}]]></textFieldExpression>
 			</textField>
 			<image>
@@ -82,37 +82,37 @@
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<componentElement>
-				<reportElement x="95" y="121" width="100" height="27" uuid="2e3bcbc5-599f-4c7b-b6f1-a0c1d7a68aab"/>
-				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="SCC14ShippingCode" drawText="false" checksumRequired="false">
+				<reportElement x="98" y="120" width="100" height="25" uuid="2e3bcbc5-599f-4c7b-b6f1-a0c1d7a68aab"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="SCC14ShippingCode" drawText="false" checksumRequired="false" barHeight="23">
 					<jr:codeExpression><![CDATA[$P{barcode}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<rectangle>
-				<reportElement x="0" y="211" width="281" height="61" uuid="14724fee-25cc-4683-a2b6-86f7e45f55e9"/>
+				<reportElement x="0" y="190" width="281" height="39" uuid="14724fee-25cc-4683-a2b6-86f7e45f55e9"/>
 			</rectangle>
 			<textField>
-				<reportElement x="81" y="220" width="102" height="21" uuid="0ac68a7e-d217-48e1-af8b-e43118f082ed"/>
+				<reportElement x="81" y="199" width="102" height="21" uuid="0ac68a7e-d217-48e1-af8b-e43118f082ed"/>
 				<textFieldExpression><![CDATA[$P{commessa}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="16" y="220" width="63" height="21" uuid="37f43607-df32-4ae3-9cdc-f6d16212fb54"/>
+				<reportElement x="16" y="199" width="63" height="21" uuid="37f43607-df32-4ae3-9cdc-f6d16212fb54"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[COMMESSA:]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="281" y="211" width="275" height="61" uuid="688e0746-3d63-45f7-8f4c-c555c3eb0c33"/>
+				<reportElement x="281" y="190" width="275" height="39" uuid="688e0746-3d63-45f7-8f4c-c555c3eb0c33"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="295" y="220" width="63" height="21" uuid="da8234bd-68c3-43e1-bac7-c54e262983a3"/>
+				<reportElement x="295" y="198" width="63" height="21" uuid="da8234bd-68c3-43e1-bac7-c54e262983a3"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[CORRIERE:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="360" y="220" width="102" height="21" uuid="de61a767-25ce-48f2-aa86-ec71901e8b77"/>
+				<reportElement x="360" y="198" width="191" height="21" uuid="de61a767-25ce-48f2-aa86-ec71901e8b77"/>
 				<textFieldExpression><![CDATA[$P{corriere}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -120,7 +120,7 @@
 	<pageHeader>
 		<band height="49" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="18" width="151" height="31" uuid="6966290b-1658-47c3-bb53-b5d1981c6b06"/>
+				<reportElement x="0" y="0" width="151" height="31" uuid="6966290b-1658-47c3-bb53-b5d1981c6b06"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -129,15 +129,15 @@
 		</band>
 	</pageHeader>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="11" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="180" splitType="Stretch">
+		<band height="238" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="556" height="170" uuid="e06e6886-02c1-4edf-b42c-9212aedc83bf"/>
+				<reportElement x="0" y="0" width="556" height="220" uuid="e06e6886-02c1-4edf-b42c-9212aedc83bf"/>
 			</rectangle>
 			<textField>
-				<reportElement x="20" y="61" width="521" height="119" uuid="77911d1e-a510-4bc7-a1ad-8f4277c91b68"/>
+				<reportElement x="10" y="61" width="531" height="159" uuid="77911d1e-a510-4bc7-a1ad-8f4277c91b68"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -178,22 +178,31 @@
 				<text><![CDATA[NOTE]]></text>
 			</staticText>
 			<line>
-				<reportElement x="15" y="74" width="533" height="1" uuid="45f4bfb2-fecb-453a-852c-8d96bd938e1f"/>
+				<reportElement x="10" y="74" width="530" height="1" uuid="45f4bfb2-fecb-453a-852c-8d96bd938e1f"/>
 			</line>
 			<line>
-				<reportElement x="15" y="90" width="533" height="1" uuid="547f0814-601b-4e9c-9ba9-cf190f1d6f66"/>
+				<reportElement x="10" y="90" width="530" height="1" uuid="547f0814-601b-4e9c-9ba9-cf190f1d6f66"/>
 			</line>
 			<line>
-				<reportElement x="15" y="106" width="533" height="1" uuid="a43b7601-d201-4d0b-8a0e-0fc24fc2f07a"/>
+				<reportElement x="10" y="106" width="530" height="1" uuid="a43b7601-d201-4d0b-8a0e-0fc24fc2f07a"/>
 			</line>
 			<line>
-				<reportElement x="15" y="122" width="533" height="1" uuid="7d7e539e-69c0-4c15-bcb9-f94b14760a58"/>
+				<reportElement x="10" y="122" width="530" height="1" uuid="7d7e539e-69c0-4c15-bcb9-f94b14760a58"/>
 			</line>
 			<line>
-				<reportElement x="15" y="138" width="533" height="1" uuid="3520d1cc-52c4-4f61-8c80-c58a4bd1cead"/>
+				<reportElement x="10" y="138" width="530" height="1" uuid="3520d1cc-52c4-4f61-8c80-c58a4bd1cead"/>
 			</line>
 			<line>
-				<reportElement x="15" y="154" width="533" height="1" uuid="fa274243-ec70-45f5-9248-4cfddd88bf41"/>
+				<reportElement x="10" y="152" width="530" height="1" uuid="fa274243-ec70-45f5-9248-4cfddd88bf41"/>
+			</line>
+			<line>
+				<reportElement x="10" y="168" width="530" height="1" uuid="02e959e6-b1a2-4a23-bcfb-5b44d67de2f3"/>
+			</line>
+			<line>
+				<reportElement x="10" y="183" width="530" height="1" uuid="3a9a9825-3558-4607-9bfe-a50a2abd11d8"/>
+			</line>
+			<line>
+				<reportElement x="10" y="199" width="530" height="1" uuid="2ef5e5c8-cfc9-46f7-a93d-b3a92eec62b6"/>
 			</line>
 		</band>
 	</pageFooter>

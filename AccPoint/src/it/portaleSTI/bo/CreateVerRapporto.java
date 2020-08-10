@@ -609,39 +609,39 @@ public class CreateVerRapporto {
 				if(misura.getAltezza_org()!=0) {
 					reportP3.addParameter("altezza_org",(""+ misura.getAltezza_org()).replace(".", ","));	
 				}else {
-					reportP3.addParameter("altezza_org","");
+					reportP3.addParameter("altezza_org","N.A");
 				}
 				
 				
 				if(misura.getAltezza_util()!=0) {
 					reportP3.addParameter("altezza_util", (""+misura.getAltezza_util()).replace(".", ","));
 				}else {
-					reportP3.addParameter("altezza_util","");
+					reportP3.addParameter("altezza_util","N.A.");
 				}
 				if(misura.getLatitudine_org()!=0) {
 					reportP3.addParameter("latitudine_org", (""+misura.getLatitudine_org()).replace(".", ","));
 				}else {
-					reportP3.addParameter("latitudine_org","");
+					reportP3.addParameter("latitudine_org","N.A.");
 				}
 				if(misura.getLatitudine_util()!=0) {
 					reportP3.addParameter("latitudine_util", (""+misura.getLatitudine_util()).replace(".", ","));
 				}else {
-					reportP3.addParameter("latitudine_util","");
+					reportP3.addParameter("latitudine_util","N.A.");
 				}
 				if(misura.getgOrg()!=0) {
 					reportP3.addParameter("g_org", (""+misura.getgOrg()).replace(".", ","));
 				}else {
-					reportP3.addParameter("g_org","");
+					reportP3.addParameter("g_org","N.A.");
 				}
 				if(misura.getgUtil()!=0) {
 					reportP3.addParameter("g_util", (""+misura.getgUtil()).replace(".", ","));
 				}else {
-					reportP3.addParameter("g_util","");
+					reportP3.addParameter("g_util","N.A.");
 				}
 				if(misura.getgFactor()!=0) {
 					reportP3.addParameter("g_factor", (""+misura.getgFactor()).replace(".", ","));
 				}else {
-					reportP3.addParameter("g_factor","");
+					reportP3.addParameter("g_factor","N.A.");
 				}
 				
 			}
@@ -986,7 +986,7 @@ public class CreateVerRapporto {
 									cmp.text(data_verificazione),
 									cmp.horizontalGap(25),
 									cmp.text(""),
-									cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setFixedHeight(21)
+									cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setFixedHeight(18)
 									)
 							)
 							);

@@ -270,7 +270,7 @@ public class GestionePacco extends HttpServlet {
 					}
 					if(item.getFieldName().equals("json_rilievi")) {
 						
-						rilievi=true;
+						
 						String data_json = item.getString();
 					    if(data_json!=null && !data_json.equals("")) {
 						JsonElement jelement = new JsonParser().parse(data_json);
@@ -279,6 +279,7 @@ public class GestionePacco extends HttpServlet {
 						
 						for(int i = 0 ; i<json_array.size();i++) {
 							
+							rilievi=true;
 							JsonObject json_obj = json_array.get(i).getAsJsonObject();
 							
 							String id_proprio = null;
@@ -754,7 +755,7 @@ public class GestionePacco extends HttpServlet {
 				if(str.length>0) {
 					if(str[0]!=null && !str[0].equals("")) {
 					
-					if(rilievi) 
+					if(rilievi && Utility.isNumber(pezzi_ingresso)) 
 						{
 							item_pacco.setQuantita(Integer.parseInt(pezzi_ingresso));
 						}

@@ -1830,6 +1830,20 @@ public class Utility extends HttpServlet {
 		    public static String escapeJS(String value) {
 		        return StringEscapeUtils.escapeEcmaScript(StringEscapeUtils.escapeHtml4(value));
 		    }
-		
+			public static boolean isNumber(String nPunti) {
+				boolean flag=true;
+				
+				try 
+				{
+				 Integer.parseInt(nPunti);		
+				} 
+				catch (NumberFormatException e) 
+				{
+					return false;
+				}
+				
+				
+				return flag;
+			}
 		
 }

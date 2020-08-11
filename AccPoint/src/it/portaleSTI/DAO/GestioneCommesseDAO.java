@@ -304,6 +304,7 @@ public class GestioneCommesseDAO {
 			{
 				commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14));
 			}
+		
 			commessa.setNOTE_GEN(rs.getString(16));
 			commessa.setN_ORDINE(rs.getString(17));
 

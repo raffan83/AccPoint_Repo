@@ -1,4 +1,5 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+
+<%@ tag language="java" pageEncoding="UTF-8"%>
 
     
   <div id="pleaseWaitDialog" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static" data-keyboard="false">

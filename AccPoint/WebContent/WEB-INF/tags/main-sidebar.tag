@@ -1,4 +1,5 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+
+<%@ tag language="java" pageEncoding="UTF-8"%>
 <%@tag import="it.portaleSTI.DTO.UtenteDTO"%>
 
 <% 
@@ -65,14 +66,14 @@
     			
     			<% }%>
     				<% if(user.checkRuolo("AM") || (user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")&& !user.checkRuolo("PV"))){%>
-    			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=lista&admin=0',null,true);">Assegnazione Attivit‡</a></li>
-    			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=controllo_attivita&admin=0',null,true);">Controllo Attivit‡</a></li>
+    			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=lista&admin=0',null,true);">Assegnazione Attivit√†</a></li>
+    			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=controllo_attivita&admin=0',null,true);">Controllo Attivit√†</a></li>
     				<% }%>
     			<% if(user.checkRuolo("AM") || user.checkPermesso("LISTA_INTERVENTI_OPERATORE")){%>
     			<li><a href="#" onclick="callAction('listaInterventiOperatore.do?action=filtra_date&mese=1',null,true);">Interventi Operatore</a></li>
     			<% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_ASSEGNAZIONE_ATTIVITA_ADMIN")){%>
-    			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=lista&admin=1',null,true);">Assegnazione Attivit‡ Admin</a></li>
-    			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=controllo_attivita&admin=1',null,true);">Controllo Attivit‡ Admin</a></li>
+    			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=lista&admin=1',null,true);">Assegnazione Attivit√† Admin</a></li>
+    			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=controllo_attivita&admin=1',null,true);">Controllo Attivit√† Admin</a></li>
     			
     			<% }%>
     			<% if(user.checkRuolo("AM") || (user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")&& !user.checkRuolo("PV"))){%>

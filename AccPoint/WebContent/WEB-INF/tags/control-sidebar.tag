@@ -1,4 +1,5 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+
+<%@ tag language="java" pageEncoding="UTF-8"%>
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->

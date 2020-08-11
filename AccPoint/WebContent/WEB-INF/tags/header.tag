@@ -1,8 +1,11 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+
+<%@ tag language="java" pageEncoding="UTF-8"%>
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <link id="metalinkicon" rel="icon" type="image/x-icon" href="images/favico.ico" >
+ 
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
  
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->

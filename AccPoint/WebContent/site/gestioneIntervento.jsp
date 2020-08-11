@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -675,7 +676,7 @@
 		    });
 		  } );
     
-    var tableAttiìvita = $('#tabAttivita').DataTable({
+    var tableAttiÃ¬vita = $('#tabAttivita').DataTable({
     	language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -742,7 +743,7 @@
 	    	
 	      
 	    });
-    tableAttiìvita.buttons().container().appendTo( '#tabAttivita_wrapper .col-sm-6:eq(1)' );
+    tableAttiÃ¬vita.buttons().container().appendTo( '#tabAttivita_wrapper .col-sm-6:eq(1)' );
 	   
     $('#tabAttivita').on( 'page.dt', function () {
 			$('.customTooltip').tooltipster({
@@ -758,9 +759,9 @@ $('.inputsearchtable').on('click', function(e){
     e.stopPropagation();    
  });
 // DataTable
-tableAttiìvita = $('#tabAttivita').DataTable();
+tableAttiÃ¬vita = $('#tabAttivita').DataTable();
 // Apply the search
-tableAttiìvita.columns().eq( 0 ).each( function ( colIdx ) {
+tableAttiÃ¬vita.columns().eq( 0 ).each( function ( colIdx ) {
   $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
       table
           .column( colIdx )
@@ -769,7 +770,7 @@ tableAttiìvita.columns().eq( 0 ).each( function ( colIdx ) {
   } );
 } ); 
 
-tableAttiìvita.columns.adjust().draw();
+tableAttiÃ¬vita.columns.adjust().draw();
     
  
     $('#myModal').on('hidden.bs.modal', function (e) {

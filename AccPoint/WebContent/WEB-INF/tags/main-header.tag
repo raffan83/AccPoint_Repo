@@ -1,11 +1,13 @@
+
 <%@tag import="it.portaleSTI.DTO.UtenteDTO"%>
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@ tag language="java" pageEncoding="UTF-8"%>
 
 
 <% 
 	UtenteDTO user =(UtenteDTO)request.getSession().getAttribute("userObj");
 %>
   <!-- Main Header -->
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <header class="main-header">
 
     <!-- Logo -->

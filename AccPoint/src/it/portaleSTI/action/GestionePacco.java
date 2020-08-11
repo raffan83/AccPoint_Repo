@@ -1089,7 +1089,7 @@ public class GestionePacco extends HttpServlet {
 				}
 				session.getTransaction().commit();
 				
-				
+				/*rivedere*/
 				ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(utente.getCompany().getId(),0, session);
 				session.close();
 				request.getSession().setAttribute("lista_pacchi",lista_pacchi);

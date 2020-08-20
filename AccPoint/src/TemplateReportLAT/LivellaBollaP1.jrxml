@@ -270,23 +270,6 @@
 				<text><![CDATA[The measurement uncertainties stated in this document have been determined according to the ISO/IEC Guide 98 and to EA-4/02. Usually, they have been estimated as expanded uncertainty obtained multiplying the standard uncertainty by the coverage factor k corresponding to a confidence level of about 95%. Normally, this factor k is 2.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="385" y="750" width="151" height="14" uuid="cd9d7d4a-1aec-410b-b314-953d9290696c"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Per Direzione Tecnica]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="385" y="764" width="151" height="14" uuid="3d17be1b-40a2-428c-ab43-e7e26c31a11f"/>
-				<textElement textAlignment="Center">
-					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
-				</textElement>
-				<text><![CDATA[For Approving Officier]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="385" y="778" width="151" height="14" uuid="f17fa9d0-ae95-45e6-9790-fcd5999993b9"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Alessio Aversali]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="370" y="327" width="184" height="183" uuid="ffa1e113-5e17-4701-abdd-19b86665caeb"/>
 				<textElement textAlignment="Justified">
 					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
@@ -384,6 +367,23 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				<reportElement x="0" y="2" width="561" height="111" uuid="920cee4f-d44e-4710-bf39-812076e2c795"/>
 				<imageExpression><![CDATA[$P{immagine_sti}]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="385" y="750" width="151" height="14" uuid="8cb597ca-f768-41e5-bad9-fba00d947852"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Direzione Tecnica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="764" width="151" height="14" uuid="f87cdba9-4e54-4ecc-bd74-98f940934e4c"/>
+				<textElement textAlignment="Center">
+					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Approving Officier]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="778" width="151" height="14" uuid="509accef-7f2e-4885-9c57-717eb3baabaf"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Eliseo Crescenzi]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

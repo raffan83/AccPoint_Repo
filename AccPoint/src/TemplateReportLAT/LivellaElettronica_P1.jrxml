@@ -272,19 +272,19 @@
 			<staticText>
 				<reportElement x="385" y="750" width="151" height="14" uuid="6e077e76-87ff-401f-8a6a-db16ef51c743"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Per Direzione Tecnica]]></text>
+				<text><![CDATA[Direzione Tecnica]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="385" y="764" width="151" height="14" uuid="b1cd4909-bea8-484d-b96b-d35ee389262c"/>
 				<textElement textAlignment="Center">
 					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<text><![CDATA[For Approving Officier]]></text>
+				<text><![CDATA[Approving Officier]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="385" y="778" width="151" height="14" uuid="301fcd23-ed80-473f-96d3-fcf8c4f0703d"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Alessio Aversali]]></text>
+				<text><![CDATA[Eliseo Crescenzi]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="370" y="367" width="184" height="183" uuid="7c58b92e-0277-4091-9260-d4c0182c6868"/>

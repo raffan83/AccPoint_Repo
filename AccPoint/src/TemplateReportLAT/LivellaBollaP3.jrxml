@@ -65,21 +65,21 @@
 				<reportElement x="-2" y="51" width="561" height="1" uuid="f004ff52-f695-48d6-9630-da8cbcb072b8"/>
 			</line>
 			<staticText>
-				<reportElement x="400" y="80" width="151" height="14" uuid="f2d6fb05-2ec2-4c84-97be-2bc9b37c4816"/>
+				<reportElement x="385" y="80" width="151" height="14" uuid="f2d6fb05-2ec2-4c84-97be-2bc9b37c4816"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Per Direzione Tecnica]]></text>
+				<text><![CDATA[Direzione Tecnica]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="94" width="151" height="14" uuid="f774c14e-020b-4f30-90b1-9a546ea2c497"/>
+				<reportElement x="385" y="94" width="151" height="14" uuid="f774c14e-020b-4f30-90b1-9a546ea2c497"/>
 				<textElement textAlignment="Center">
 					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<text><![CDATA[For Approving Officier]]></text>
+				<text><![CDATA[Approving Officier]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="107" width="151" height="14" uuid="52db0b6e-861a-4f61-abfa-b7c37a6adbc1"/>
+				<reportElement x="385" y="107" width="151" height="14" uuid="52db0b6e-861a-4f61-abfa-b7c37a6adbc1"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Alessio Aversali]]></text>
+				<text><![CDATA[Eliseo Crescenzi]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="40" y="19" width="511" height="41" uuid="31be1d41-6796-4e3b-b16b-63fd0f050068"/>

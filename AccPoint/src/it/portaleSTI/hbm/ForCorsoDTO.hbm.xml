@@ -53,5 +53,9 @@
             <column name="id_questionario" />
         </many-to-one>
         
+         <property name="e_learning" type="int" >
+            <column name="e_learning" />
+        </property>
+        
     </class>
 </hibernate-mapping>

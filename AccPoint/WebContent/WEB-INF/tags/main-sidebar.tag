@@ -341,7 +341,7 @@
 			<li><a href="downloadCalver.do?action=printLabel">PrintLabel v1.1</a></li>
 			<li><a href="downloadCalver.do?action=librerie">Librerie</a></li>
 			<li><a href="downloadCalver.do?action=convertitore">Convertitore</a></li>
-			<% if(user.checkRuolo("AM")){%>
+			<% if(user.checkRuolo("AM") || user.checkRuolo("RS")){%>
 			<li><a href="firmaDocumento.do"><i class="fa fa-link"></i>Firma Documento</a></li>
 			<%} %>
           </ul>

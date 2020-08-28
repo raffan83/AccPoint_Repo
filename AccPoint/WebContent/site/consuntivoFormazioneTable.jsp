@@ -17,6 +17,7 @@
 <th>Commessa</th>
 <th>Azienda</th>
 <th>Sede</th>
+<th>E-Learning</th>
 <th>Durata (Ore)</th>
 <th>N° Partecipanti</th>
 <th>Monte Ore</th>
@@ -53,6 +54,14 @@ ${corso.getListaPartecipanti().iterator().next().getNome_sede()}
 
 </c:if> --%>
 
+</td>
+<td>
+<c:if test="${corso_part.corso.e_learning == 0 }">
+	NO
+	</c:if>
+	<c:if test="${corso_part.corso.e_learning == 1 }">
+	SI
+	</c:if>
 </td>
 <td>${corso_part.corso.corso_cat.durata }</td>
 <td>${corso_part.corso.getListaPartecipanti().size() }</td>
@@ -132,16 +141,16 @@ ${corso.getListaPartecipanti().iterator().next().getNome_sede()}
 	 
 	 for(var i = 0; i<data.length; i++){
 		 
-		 if(data[i][6]!=null && data[i][6]!=''){
-			 tot_durata = tot_durata  + parseInt(data[i][6]);	 
-		 }
-		 
-		if(data[i][7]!=null && data[i][7]!=''){
-			tot_partecipanti = tot_partecipanti  + parseInt(data[i][7]);	 
+		 if(data[i][7]!=null && data[i][7]!=''){
+			 tot_durata = tot_durata  + parseInt(data[i][7]);	 
 		 }
 		 
 		if(data[i][8]!=null && data[i][8]!=''){
-			tot_ore = tot_ore  + parseInt(data[i][8]);	 
+			tot_partecipanti = tot_partecipanti  + parseInt(data[i][8]);	 
+		 }
+		 
+		if(data[i][9]!=null && data[i][9]!=''){
+			tot_ore = tot_ore  + parseInt(data[i][9]);	 
 		 }
 		 
 		 

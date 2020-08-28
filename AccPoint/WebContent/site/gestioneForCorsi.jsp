@@ -69,6 +69,7 @@
 <th>Tipologia</th>
 <th>Commessa</th>
 <th>Docente</th>
+<th>E-Learning</th>
 <th>Data Inizio</th>
 <th>Data Scadenza</th>
 <th style="min-width:150px">Azioni</th>
@@ -83,13 +84,26 @@
 	<td>${corso.corso_cat.descrizione }</td>
 	<td>${corso.commessa }</td>
 	<td>${corso.docente.nome } ${corso.docente.cognome }</td>
+	<td>
+	<c:if test="${corso.e_learning == 0 }">
+	NO
+	</c:if>
+	<c:if test="${corso.e_learning == 1 }">
+	SI
+	</c:if>
+	</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_corso}" /></td>	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_scadenza}" /></td>
 	<td>
 
 	<a class="btn btn-info" onClick="dettaglioCorso('${utl:encryptData(corso.id)}')"><i class="fa fa-search"></i></a>
 		 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
-	<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${corso.docente.id}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${corso.descrizione }','${corso.edizione }','${corso.commessa }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>
+	<%-- 	 	<c:if test="${corso.e_learning == 0}"> --%>
+				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${corso.docente.id}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.edizione }','${corso.commessa }','${corso.e_learning }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
+	<%-- 	 	</c:if>
+	<c:if test="${corso.e_learning == 1}">
+				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }',0,'${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${corso.descrizione }','${corso.edizione }','${corso.commessa }','${corso.e_learning }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
+		 	</c:if> --%>
 	</c:if>
 	<c:if test="${corso.documento_test!=null }">
 	<a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_documento_test&id_corso=${utl:encryptData(corso.id)}" title="Click per scaricare il documento del test"><i class="fa fa-file-pdf-o"></i></a>
@@ -205,6 +219,19 @@
        			
        	</div>       	
        </div><br>
+       
+         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Corso E-Learning</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="check_e_learning" name="check_e_learning" class="form-control" type="checkbox" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
        <div class="row">
        
        	<div class="col-sm-3">
@@ -273,7 +300,7 @@
        </div>
   		 
       <div class="modal-footer">
-		
+		<input type="hidden" id="e_learning" name="e_learning">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -354,19 +381,35 @@
        			
        	</div>       	
        </div><br>
-       <div class="row">
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Corso E-Learning</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="check_e_learning_mod" name="check_e_learning_mod" class="form-control" type="checkbox" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+              <div class="row">
        
        	<div class="col-sm-3">
        		<label>Docente</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-         	<select id="docente_mod" name="docente_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Docente..." required>
+       	<select id="docente_mod" name="docente_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Docente..." required>
         <option value=""></option>
         <c:forEach items="${lista_docenti }" var="docente">
         <option value="${docente.id }">${docente.nome } ${docente.cognome }</option>
         </c:forEach>
         </select>	
+       	  	
+       	  
+
        			
        	</div>       	
        </div><br>
@@ -424,6 +467,7 @@
       <div class="modal-footer">
 		
 		<input type="hidden" id="id_corso" name="id_corso">
+		<input type="hidden" id="e_learning_mod" name="e_learning_mod">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -473,13 +517,15 @@ function modalnuovoCorso(){
 }
 
 
-function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, edizione, commessa){
+function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, edizione, commessa,e_learning){
 	
 	$('#id_corso').val(id_corso);
 	$('#categoria_mod').val(id_categoria);
 	$('#categoria_mod').change();
-	$('#docente_mod').val(id_docente);
-	$('#docente_mod').change();
+	if(id_docente!=null && id_docente!='0'){
+		$('#docente_mod').val(id_docente);
+		$('#docente_mod').change();
+	}	
 	$('#commessa_mod').val(commessa);
 	$('#commessa_mod').change();
 	if(data_inizio!=null && data_inizio!=''){
@@ -493,9 +539,48 @@ function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data
 	$('#descrizione_mod').val(descrizione);
 	$('#edizione_mod').val(edizione);
 	
+	if(e_learning =='1'){	
+
+		$('#check_e_learning_mod').iCheck('check');
+		$('#e_learning_mod').val(1); 
+		$('#docente_mod').attr('disabled', true);
+		$('#docente_mod').attr('required', false);
+	}else{
+		$('#check_e_learning_mod').iCheck('uncheck');
+		$('#e_learning_mod').val(0);
+		$('#docente_mod').attr('disabled', false);
+		$('#docente_mod').attr('required', true);
+	}
+	
 	$('#myModalModificaCorso').modal();
 }
 
+
+
+$('#check_e_learning').on('ifClicked',function(e){
+	if($('#check_e_learning').is( ':checked' )){
+		$('#check_e_learning').iCheck('uncheck');
+		$('#e_learning').val(0); 
+		$('#docente').attr('disabled', false);
+	}else{
+		$('#check_e_learning').iCheck('check');
+		$('#e_learning').val(1);
+		$('#docente').attr('disabled', true);
+	}
+});
+	 
+
+$('#check_e_learning_mod').on('ifClicked',function(e){
+	if($('#check_e_learning_mod').is( ':checked' )){
+		$('#check_e_learning_mod').iCheck('uncheck');
+		$('#e_learning_mod').val(0); 
+		$('#docente_mod').attr('disabled', false);
+	}else{
+		$('#check_e_learning_mod').iCheck('check');
+		$('#e_learning_mod').val(1); 
+		$('#docente_mod').attr('disabled', true);
+	}
+});
 
 
 

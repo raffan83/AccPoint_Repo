@@ -196,27 +196,23 @@
 				<textFieldExpression><![CDATA[$P{procedura}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="599" width="101" height="92" uuid="5afc711b-3762-4a9a-89b0-115fc8bb446a"/>
-				<text><![CDATA[Nel caso di riparazione (con presenza di sigilli provvisori sullo strumento) annotare nome del riparatore e data di riparazione:]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="0" y="538" width="101" height="18" uuid="45515ca3-1d37-4694-96dd-b66af84ceff1"/>
 				<text><![CDATA[Registro:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="131" y="619" width="422" height="22" uuid="9de22698-f61c-4755-b882-b947c3e44a28"/>
+				<reportElement x="155" y="619" width="422" height="22" uuid="9de22698-f61c-4755-b882-b947c3e44a28"/>
 				<textFieldExpression><![CDATA[$P{nome_riparatore}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="131" y="669" width="422" height="22" uuid="7c711a7b-22f5-4ab6-83e3-0cf2ab1d31a2"/>
+				<reportElement x="155" y="669" width="422" height="22" uuid="7c711a7b-22f5-4ab6-83e3-0cf2ab1d31a2"/>
 				<textFieldExpression><![CDATA[$P{data_riparazione}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="131" y="599" width="110" height="22" uuid="6f3de0a1-1ffe-45fe-942c-733886ee6ec4"/>
+				<reportElement x="155" y="599" width="110" height="22" uuid="6f3de0a1-1ffe-45fe-942c-733886ee6ec4"/>
 				<text><![CDATA[Nome riparatore]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="131" y="649" width="110" height="22" uuid="778f6b33-2ab6-47bd-8401-57895e5a062c"/>
+				<reportElement x="155" y="649" width="110" height="22" uuid="778f6b33-2ab6-47bd-8401-57895e5a062c"/>
 				<text><![CDATA[Data riparazione]]></text>
 			</staticText>
 			<staticText>
@@ -357,6 +353,13 @@
 				<reportElement x="1" y="1" width="553" height="21" uuid="a4034d3b-5a23-4d88-934f-1f51cb67b588"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Rapporto di verificazione periodica numero:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="601" width="131" height="92" uuid="29dfe4b5-fb7c-4cbc-aec4-7f0543a5896a"/>
+				<textElement textAlignment="Justified">
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[Nel caso di riparazione (con presenza di sigilli provvisori sullo strumento) annotare nome del riparatore e data di riparazione]]></text>
 			</staticText>
 		</band>
 	</detail>

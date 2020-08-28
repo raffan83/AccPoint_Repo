@@ -490,10 +490,11 @@ public class CreateVerCertificato {
 			reportP2.addParameter("nome_operatore", "");
 		}
 		
-		reportP2.addParameter("responsabile", "Ing. Antonio Accettola");
+		reportP2.addParameter("responsabile", "Eliseo Crescenzi");
 		
 		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
-		reportP2.addParameter("firma_responsabile", PivotTemplate.class.getResourceAsStream("FIRMA_ANTONIO_ACCETTOLA.png"));
+	//	reportP2.addParameter("firma_responsabile", PivotTemplate.class.getResourceAsStream("FIRMA_ANTONIO_ACCETTOLA.png"));
+		reportP2.addParameter("firma_responsabile", PivotTemplate.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
 		
 		JasperPrint jasperPrint2 = reportP2.toJasperPrint();
 		jasperPrintList.add(jasperPrint2);

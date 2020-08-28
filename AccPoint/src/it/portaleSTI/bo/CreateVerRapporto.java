@@ -5,6 +5,8 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -12,7 +14,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
@@ -39,6 +44,7 @@ import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.Markup;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
 import net.sf.dynamicreports.report.constant.SplitType;
@@ -47,6 +53,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.PdfExporterConfiguration;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -55,8 +62,10 @@ public class CreateVerRapporto {
 	
 	private String um;
 	
+	private int risoluzione;
+	
 	public CreateVerRapporto(VerMisuraDTO misura, List<SedeDTO> listaSedi, boolean conforme, int motivo,UtenteDTO utente,  Session session) throws Exception {
-		
+	
 		build(misura, listaSedi, conforme, motivo,utente, session);
 		
 	}
@@ -309,27 +318,30 @@ public class CreateVerRapporto {
 		}
 		
 		if(misura.getVerStrumento().getPortata_max_C1()!=null) {
-			report.addParameter("portata_max_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros().toPlainString()));
+			report.addParameter("portata_max_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros().toPlainString())+" "+um);
 		}else{
 			report.addParameter("portata_max_c1", "");
 		}
 		
 		if(misura.getVerStrumento().getPortata_min_C1()!=null) {
-			report.addParameter("portata_min_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString()));
+			report.addParameter("portata_min_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString())+" "+um);
 		}else{
 			report.addParameter("portata_min_c1", "");
 		}
 		
 		if(misura.getVerStrumento().getDiv_ver_C1()!=null) {
-			report.addParameter("divisione_verifica_c1",Utility.changeDotComma( misura.getVerStrumento().getDiv_ver_C1().stripTrailingZeros().toPlainString()));
+			report.addParameter("divisione_verifica_c1",Utility.changeDotComma( misura.getVerStrumento().getDiv_ver_C1().stripTrailingZeros().toPlainString())+" "+um);
 		}else{
 			report.addParameter("divisione_verifica_c1", "");
 		}
 		
 		if(misura.getVerStrumento().getDiv_rel_C1()!=null) {
-			report.addParameter("divisione_reale_c1", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C1().stripTrailingZeros().toPlainString()));
+			report.addParameter("divisione_reale_c1", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C1().stripTrailingZeros().toPlainString())+" "+um);
+			
+			risoluzione = misura.getVerStrumento().getDiv_rel_C1().stripTrailingZeros().scale();
 		}else{
 			report.addParameter("divisione_reale_c1", "");
+			risoluzione = 3;
 		}
 		
 		if(misura.getVerStrumento().getNumero_div_C1()!=null) {
@@ -341,11 +353,11 @@ public class CreateVerRapporto {
 			if(misura.getVerStrumento().getTipo().getId()==2) {
 				
 				if(misura.getVerStrumento().getPortata_max_C3()!=null && misura.getVerStrumento().getPortata_max_C3().compareTo(BigDecimal.ZERO)==1) {
-					report.addParameter("portata_max", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString()));
+					report.addParameter("portata_max", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString())+" "+um);
 					//numero_campi = 3;
 				}else{
 					if(misura.getVerStrumento().getPortata_max_C2()!=null) {
-						report.addParameter("portata_max",  Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString()));	
+						report.addParameter("portata_max",  Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString())+" "+um);	
 						//numero_campi = 2;
 					}else {
 						report.addParameter("portata_max",  "");
@@ -353,42 +365,42 @@ public class CreateVerRapporto {
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C1()!=null) {
-					report.addParameter("portata_min", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString()));
+					report.addParameter("portata_min", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString())+" "+um);
 				}else{
 					report.addParameter("portata_min", "");
 				}
 				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-					report.addParameter("min1", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString()));	
+					report.addParameter("min1", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString())+" "+um);	
 				}else {
 					report.addParameter("min1", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-					report.addParameter("min2", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C2().stripTrailingZeros().toPlainString()));
+					report.addParameter("min2", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C2().stripTrailingZeros().toPlainString())+" "+um);
 				}else {
 					report.addParameter("min2", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-					report.addParameter("min3", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros().toPlainString()));	
+					report.addParameter("min3", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros().toPlainString())+" "+um);	
 				}else {
 					report.addParameter("min3", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-					report.addParameter("max1", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros().toPlainString()));	
+					report.addParameter("max1", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros().toPlainString())+" "+um);	
 				}else {
 					report.addParameter("max1", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-					report.addParameter("max2", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString()));
+					report.addParameter("max2", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString())+" "+um);
 				}else {
 					report.addParameter("max2", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-					report.addParameter("max3", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString()));	
+					report.addParameter("max3", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString())+" "+um);	
 				}else {
 					report.addParameter("max3", "");
 				}
@@ -407,38 +419,46 @@ public class CreateVerRapporto {
 				
 				
 				if(misura.getVerStrumento().getPortata_max_C2()!=null) {
-					report.addParameter("portata_max_c2", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString()));
+					report.addParameter("portata_max_c2", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString())+" "+um);
 				}else{
 					report.addParameter("portata_max_c2", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C2()!=null) {
-					report.addParameter("portata_min_c2", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C2().stripTrailingZeros().toPlainString()));
+					report.addParameter("portata_min_c2", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C2().stripTrailingZeros().toPlainString())+" "+um);
 				}else{
 					report.addParameter("portata_min_c2", "");
 				}
 				
-				if(misura.getVerStrumento().getPortata_max_C3()!=null) {
-					report.addParameter("portata_max_c3", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString()));
-				}else{
+				if(numero_campi==3) {
+					
+					report.addParameter("campo3", "Campo 3");
+					if(misura.getVerStrumento().getPortata_max_C3()!=null) {
+						report.addParameter("portata_max_c3", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString())+" "+um);
+					}else{
+						report.addParameter("portata_max_c3", "");
+					}
+					
+					if(misura.getVerStrumento().getPortata_min_C3()!=null) {
+						report.addParameter("portata_min_c3", Utility.changeDotComma( misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros().toPlainString())+" "+um);
+					}else{
+						report.addParameter("portata_min_c3", "");
+					}
+				}else {
+					report.addParameter("campo3", "");
 					report.addParameter("portata_max_c3", "");
-				}
-				
-				if(misura.getVerStrumento().getPortata_min_C3()!=null) {
-					report.addParameter("portata_min_c3", Utility.changeDotComma( misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros().toPlainString()));
-				}else{
 					report.addParameter("portata_min_c3", "");
 				}
 			}			
 			
 			if(misura.getVerStrumento().getDiv_ver_C2()!=null) {
-				report.addParameter("divisione_verifica_c2", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C2().stripTrailingZeros().toPlainString()));
+				report.addParameter("divisione_verifica_c2", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C2().stripTrailingZeros().toPlainString())+" "+um);
 			}else{
 				report.addParameter("divisione_verifica_c2", "");
 			}
 			
 			if(misura.getVerStrumento().getDiv_rel_C2()!=null) {
-				report.addParameter("divisione_reale_c2", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C2().stripTrailingZeros().toPlainString()));
+				report.addParameter("divisione_reale_c2", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C2().stripTrailingZeros().toPlainString())+" "+um);
 			}else{
 				report.addParameter("divisione_reale_c2", "");
 			}
@@ -449,22 +469,27 @@ public class CreateVerRapporto {
 				report.addParameter("numero_divisioni_c2", "");
 			}
 			
-			
-			if(misura.getVerStrumento().getDiv_ver_C3()!=null) {
-				report.addParameter("divisione_verifica_c3",Utility.changeDotComma( misura.getVerStrumento().getDiv_ver_C3().stripTrailingZeros().toPlainString()));
-			}else{
+			if(numero_campi==3) {
+				if(misura.getVerStrumento().getDiv_ver_C3()!=null) {
+					report.addParameter("divisione_verifica_c3",Utility.changeDotComma( misura.getVerStrumento().getDiv_ver_C3().stripTrailingZeros().toPlainString())+" "+um);
+				}else{
+					report.addParameter("divisione_verifica_c3", "");
+				}
+				
+				if(misura.getVerStrumento().getDiv_rel_C3()!=null) {
+					report.addParameter("divisione_reale_c3", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C3().stripTrailingZeros().toPlainString())+" "+um);
+				}else{
+					report.addParameter("divisione_reale_c3", "");
+				}
+				
+				if(misura.getVerStrumento().getNumero_div_C3()!=null) {
+					report.addParameter("numero_divisioni_c3",Utility.changeDotComma( misura.getVerStrumento().getNumero_div_C3().stripTrailingZeros().toPlainString()));
+				}else{
+					report.addParameter("numero_divisioni_c3", "");
+				}
+			}else {
 				report.addParameter("divisione_verifica_c3", "");
-			}
-			
-			if(misura.getVerStrumento().getDiv_rel_C3()!=null) {
-				report.addParameter("divisione_reale_c3", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C3().stripTrailingZeros().toPlainString()));
-			}else{
 				report.addParameter("divisione_reale_c3", "");
-			}
-			
-			if(misura.getVerStrumento().getNumero_div_C3()!=null) {
-				report.addParameter("numero_divisioni_c3",Utility.changeDotComma( misura.getVerStrumento().getNumero_div_C3().stripTrailingZeros().toPlainString()));
-			}else{
 				report.addParameter("numero_divisioni_c3", "");
 			}
 		}
@@ -609,7 +634,7 @@ public class CreateVerRapporto {
 				if(misura.getAltezza_org()!=0) {
 					reportP3.addParameter("altezza_org",(""+ misura.getAltezza_org()).replace(".", ","));	
 				}else {
-					reportP3.addParameter("altezza_org","N.A");
+					reportP3.addParameter("altezza_org","N.A.");
 				}
 				
 				
@@ -710,28 +735,50 @@ public class CreateVerRapporto {
 				InputStream im0 = PivotTemplateImage.class.getResourceAsStream("tipo_0.png");
 				InputStream im1 = PivotTemplateImage.class.getResourceAsStream("tipo_1.png");
 				InputStream im2 = PivotTemplateImage.class.getResourceAsStream("tipo_2.png");
-				HorizontalListBuilder hl_ricettori = cmp.horizontalList(cmp.horizontalGap(190),cmp.image(im0).setFixedDimension(60, 60), cmp.horizontalGap(5), cmp.image(im1).setFixedDimension(60, 60), cmp.horizontalGap(5), cmp.image(im2).setFixedDimension(60, 60));
-				HorizontalListBuilder hl_rettangoli = cmp.horizontalList(cmp.horizontalGap(215));
+				InputStream im3 = PivotTemplateImage.class.getResourceAsStream("tipo_3.png");
+				InputStream im4 = PivotTemplateImage.class.getResourceAsStream("tipo_4.png");
+				HorizontalListBuilder hl_ricettori = cmp.horizontalList(cmp.horizontalGap(115),cmp.image(im0).setFixedDimension(60, 60), cmp.horizontalGap(5), cmp.image(im1).setFixedDimension(60, 60), cmp.horizontalGap(5), cmp.image(im2).setFixedDimension(60, 60),cmp.horizontalGap(5), cmp.image(im3).setFixedDimension(60, 60), cmp.horizontalGap(5),cmp.image(im4).setFixedDimension(60, 60));
+				HorizontalListBuilder hl_rettangoli = cmp.horizontalList(cmp.horizontalGap(137));
 				StyleBuilder style = stl.style().setBorder(stl.penThin()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(14);
 				String lbl0 = "";
 				String lbl1 = "";
 				String lbl2 = "";
+				String lbl3 = "";
+				String lbl4 = "";
 				
 				if(lista_decentramento.get(i*6).getTipoRicettore()==0) {
-					lbl0="X";
-					lbl1="";
-					lbl2="";
+					lbl0 = "X";
+					lbl1 = "";
+					lbl2 = "";
+					lbl3 = "";
+					lbl4 = "";
 				}else if(lista_decentramento.get(i*6).getTipoRicettore()==1) {
-					lbl0="";
-					lbl1="X";
-					lbl2="";
+					lbl0 = "";
+					lbl1 = "X";
+					lbl2 = "";
+					lbl3 = "";
+					lbl4 = "";
+				}else if(lista_decentramento.get(i*6).getTipoRicettore()==2) {
+					lbl0 = "";
+					lbl1 = "";
+					lbl2 = "X";
+					lbl3 = "";
+					lbl4 = "";
+				}else if(lista_decentramento.get(i*6).getTipoRicettore()==3) {
+					lbl0 = "";
+					lbl1 = "";
+					lbl2 = "";
+					lbl3 = "X";
+					lbl4 = "";
 				}else {
-					lbl0="";
-					lbl1="";
-					lbl2="X";
+					lbl0 = "";
+					lbl1 = "";
+					lbl2 = "";
+					lbl3 = "";
+					lbl4 = "X";
 				}
 				
-				hl_rettangoli.add(cmp.text(lbl0).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(47),cmp.text(lbl1).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(47),cmp.text(lbl2).setStyle(style).setFixedDimension(15, 15));
+				hl_rettangoli.add(cmp.text(lbl0).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl1).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl2).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl3).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl4).setStyle(style).setFixedDimension(15, 15));
 				String speciale = "";
 				if(lista_decentramento.get(0).getSpeciale().equals("N")) {
 					speciale = "No";
@@ -1032,6 +1079,31 @@ public class CreateVerRapporto {
 		}
 		
 		
+//		
+//		
+//		 File file1 = new java.io.File(Costanti.PATH_FOLDER+"//temp//rep1.pdf");
+//		 File file2 = new java.io.File(Costanti.PATH_FOLDER+"//temp//rep2.pdf");
+//		 File file3 = new java.io.File(Costanti.PATH_FOLDER+"//temp//rep3.pdf");
+//	  
+//	  FileOutputStream fos1 = new FileOutputStream(file1);
+//	  FileOutputStream fos2 = new FileOutputStream(file2);
+//	  FileOutputStream fos3 = new FileOutputStream(file3);
+//	
+//	  
+//	  
+//	  report.toPdf(fos1);
+//	  reportP2.toPdf(fos2);
+//	  reportP3.toPdf(fos3);
+//		
+//	  
+//	  InputStream targetStream1 = new FileInputStream(file1);
+//	  InputStream targetStream2 = new FileInputStream(file2);
+//	  InputStream targetStream3 = new FileInputStream(file3);
+//	  List<InputStream> listInput = new ArrayList<InputStream>();
+//	  
+//	  listInput.add(targetStream1);
+//	  listInput.add(targetStream2);
+//	  listInput.add(targetStream3);
 		
 		File folder = new File(Costanti.PATH_FOLDER+"\\"+misura.getVerIntervento().getNome_pack()+"\\Rapporto\\");
 		if(!folder.exists()) {
@@ -1042,11 +1114,26 @@ public class CreateVerRapporto {
 		String path = Costanti.PATH_FOLDER+"\\"+misura.getVerIntervento().getNome_pack()+"\\Rapporto\\RAP"+misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()+".pdf";
 		//String path = Costanti.PATH_FOLDER+"\\"+misura.getVerIntervento().getNome_pack()+"\\"+misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()+".pdf";
 		
+		
+//		
+//		FileOutputStream fos4 = new FileOutputStream(new File(path));
+//		
+//PDFMergerUtility pdfmerge = new PDFMergerUtility();
+//		
+//		pdfmerge.addSources(listInput);
+//		pdfmerge.setDestinationStream(fos4);
+//		pdfmerge.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+//		fos1.close();
+//		fos2.close();
+//		fos3.close();
+//		
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList)); 
 		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path)); 
 		SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
-		configuration.setCreatingBatchModeBookmarks(true); 
+		
+		configuration.setCreatingBatchModeBookmarks(false); 
+		
 		exporter.setConfiguration(configuration);
 		exporter.exportReport();
 		
@@ -1061,12 +1148,12 @@ public class CreateVerRapporto {
 
 		report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 		report.addColumn(col.column("Posizione n°","n_posizione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));		
- 		report.addColumn(col.column("Massa \n L\n"+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
- 		report.addColumn(col.column("Indicazione \n I \n"+"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
- 		report.addColumn(col.column("Carico aggiuntivo \n ΔL \n"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
- 		report.addColumn(col.column("Errore \n E \n "+"/"+um,"e", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
- 		report.addColumn(col.column("Er. Corretto \n Ec \n"+"/"+um,"ec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
- 		report.addColumn(col.column("Errore Massimo \n ± MPE \n " +"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+ 		report.addColumn(col.column("Massa  <br><i> L</i> <br>"+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+ 		report.addColumn(col.column("Indicazione  <br><i> I </i> <br>"+"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
+ 		report.addColumn(col.column("Carico aggiuntivo  <br><i> ΔL </i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+ 		report.addColumn(col.column("Errore  <br><i> E </i> <br> "+"/"+um,"e", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+ 		report.addColumn(col.column("Er. Corretto <br><i> Ec </i> <br>"+"/"+um,"ec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+ 		report.addColumn(col.column("Errore Massimo  <br> ± EMT  <br> " +"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
  			 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 	
@@ -1084,20 +1171,27 @@ public class CreateVerRapporto {
 		
 		JasperReportBuilder report = DynamicReports.report();
 
+		report.setTemplate(Templates.reportTemplate);
+		//report.setColumnStyle(textStyle);
+		//report.setColumnTitleStyle(textStyle);
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
+			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()).setMarkup(Markup.HTML));
+
+			
 			report.addColumn(col.column("Rif.","rif", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(25));			
-	 		report.addColumn(col.column("Massa \n L \n "+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Indicazione Salita \n I \n "+um,"indicazione_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Indicazione Discesa \n I \n"+"/"+um,"indicazione_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Carico aggiuntivo Salita \n ΔL \n"+"/"+um,"carico_aggiuntivo_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Carico aggiuntivo Discesa \n ΔL \n"+"/"+um,"carico_aggiuntivo_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Errore Salita\n E \n"+"/"+um,"e_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Errore Discesa\n E \n"+"/"+um,"e_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Er. Corretto Salita \n Ec \n"+"/"+um,"ec_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Er. Corretto Discesa \n Ec \n" +"/"+ um,"ec_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Errore Massimo \n ± MPE \n"+"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Massa  <br> <i>L </i> <br> "+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	//	report.addColumn(col.column("Indicazione Salita </i> <br> I </i> <br> "+"/"+um,"indicazione_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Indicazione Salita <br> <i>I</i> <br> "+"/"+um,"indicazione_up", type.stringType()).setStretchWithOverflow(false).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Indicazione Discesa <br> <i>I</i> <br> "+"/"+um,"indicazione_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Carico aggiuntivo Salita <br> <i> ΔL</i> <br> "+"/"+um,"carico_aggiuntivo_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Carico aggiuntivo Discesa <br> <i> ΔL</i> <br> "+"/"+um,"carico_aggiuntivo_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Errore Salita <br> <i> E </i> <br>"+"/"+um,"e_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Errore Discesa<br> <i> E </i> <br>"+"/"+um,"e_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Er. Corretto Salita <br> <i> Ec </i> <br>"+"/"+um,"ec_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Er. Corretto Discesa <br> <i> Ec </i> <br>" +"/"+ um,"ec_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Errore Massimo <br> ± EMT  <br>"+"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	
-			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
+			
 		
 	 		report.setDataSource(createDataSourceLinearita(lista_linearita, campo));
 	 		
@@ -1114,12 +1208,12 @@ public class CreateVerRapporto {
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			report.addColumn(col.column("Rif.","rif", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));			
-	 		report.addColumn(col.column("Massa \n L \n "+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Indicazione \n I \n"+"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-	 		report.addColumn(col.column("Carico aggiuntivo \n ΔL \n"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-	 		report.addColumn(col.column("Errore \n E \n"+"/"+um,"e", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-	 		report.addColumn(col.column("Er. Corretto \n Ec \n"+"/"+um,"ec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-	 		report.addColumn(col.column("Errore Massimo \n ± MPE \n "+"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Massa  <br><i> L </i> <br> "+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Indicazione  <br> <i>I </i> <br>"+"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+	 		report.addColumn(col.column("Carico aggiuntivo  <br> <i>ΔL </i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+	 		report.addColumn(col.column("Errore <br> <i>E </i> <br>"+"/"+um,"e", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+	 		report.addColumn(col.column("Er. Corretto  <br><i> Ec </i> <br>"+"/"+um,"ec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+	 		report.addColumn(col.column("Errore Massimo  <br> ± EMT  <br> "+"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		
 	 		//report.getReport().setColspan(2, 2, "Estimated");
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
@@ -1142,10 +1236,10 @@ public class CreateVerRapporto {
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			report.addColumn(col.column("N° Ripet.","n_ripetizioni", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
-	 		report.addColumn(col.column("Massa \n L \n"+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
-	 		report.addColumn(col.column("Indicazione \n I \n" +"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
-	 		report.addColumn(col.column("Carico aggiuntivo  \n ΔL \n"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
-	 		report.addColumn(col.column("Indicazione \n P \n "+"/"+um,"p", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
+	 		report.addColumn(col.column("Massa  <br> <i>L </i> <br>"+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 		report.addColumn(col.column("Indicazione  <br><i> I </i> <br>" +"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
+	 		report.addColumn(col.column("Carico aggiuntivo   <br><i> ΔL </i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 		report.addColumn(col.column("Indicazione  <br> <i>P </i> <br> "+"/"+um,"p", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
 	 			 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 		
@@ -1169,8 +1263,8 @@ public class CreateVerRapporto {
 		try {			
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
-			report.addColumn(col.column("Pmax - Pmin.","1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
-	 		report.addColumn(col.column( Utility.changeDotComma(lista_ripetibilita.get(0).getDeltaPortata().stripTrailingZeros().toPlainString()),"2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+			report.addColumn(col.column("<i>P</i>max - <i>P</i>min.","1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
+	 		report.addColumn(col.column( Utility.changeDotComma(lista_ripetibilita.get(0).getDeltaPortata().setScale(risoluzione+1).toPlainString()),"2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		report.addColumn(col.column(um,um, type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(20));
 	 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
@@ -1188,7 +1282,7 @@ public class CreateVerRapporto {
 			DRDataSource dataSource = new DRDataSource(listaCodici);
 			for (VerRipetibilitaDTO item : lista_ripetibilita) {
 				if(item.getMpe()!=null && item.getCampo() == campo) {
-					dataSource.add("± MPE (asocciato al carico di prova):", Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()), um);
+					dataSource.add("± EMT (associato al carico di prova):", Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()), um);
 					break;
 				}
 			}
@@ -1212,17 +1306,17 @@ public class CreateVerRapporto {
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			
 			report.addColumn(col.column("Carico","carico", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));			
-	 		report.addColumn(col.column("Massa \n L \n "+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Indicazione \n I1 \n"+"/"+um,"i1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-	 		report.addColumn(col.column("Carico aggiuntivo =\n |MPEcarico|\n ΔL\n"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-	 		report.addColumn(col.column("Indicazione \n I2 \n"+"/"+um,"i2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-	 		report.addColumn(col.column("Differenza \n I2 - I1\n"+"/"+um,"differenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Massa <br> <i>L </i> <br> "+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Indicazione <br><i> I1 </i> <br>"+"/"+um,"i1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+	 		report.addColumn(col.column("Carico aggiuntivo =<br> |EMTcarico| <br> <i>ΔL</i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+	 		report.addColumn(col.column("Indicazione <br><i> I2 </i> <br>"+"/"+um,"i2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+	 		report.addColumn(col.column("Differenza  <br><i> I2 - I1</i> <br>"+"/"+um,"differenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		if(caso==1) {
-	 			report.addColumn(col.column("Div. reale strumento \n d \n"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-		 		report.addColumn(col.column("Check \n |I2 - I1| ≥ d\n","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
+	 			report.addColumn(col.column("Div. reale strumento <br> d  <br>"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 		report.addColumn(col.column("Check <br> <i>|I2 - I1| </i>≥ <i>d</i <br>","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
 	 		}else {
-	 			report.addColumn(col.column("0,7 • Carico Aggiuntivo = \n 0,7 • MPE \n"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-		 		report.addColumn(col.column("Check \n |I2 - I1| ≥ 0,7 MPE\n","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 			report.addColumn(col.column("0,7 • Carico Aggiuntivo =  <br> 0,7 • EMT </i> <br>"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 		report.addColumn(col.column("Check  <br> <i>|I2 - I1|</i> ≥ 0,7 <i>EMT</i> <br>","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		}
 	 		
 	 		
@@ -1266,7 +1360,7 @@ public class CreateVerRapporto {
 					arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
 					
 					if(item.getIndicazione()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazione().stripTrailingZeros().toPlainString()));		
+						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(risoluzione).toPlainString()));		
 					}else {
 						arrayPs.add("");
 					}
@@ -1313,13 +1407,13 @@ public class CreateVerRapporto {
 				if(item.getMassa()!=null && item.getCampo()==campo) {
 					ArrayList<String> arrayPs = new ArrayList<String>();		
 					if((item.getPosizione()%2)!=0) {
-						arrayPs.add("E0");
+						arrayPs.add("E<sub>0</sub>");
 					}else {
 						arrayPs.add(String.valueOf(item.getPosizione()/2));
 					}					
 					arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
 					if(item.getIndicazione()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazione().stripTrailingZeros().toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(risoluzione).toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
@@ -1329,12 +1423,12 @@ public class CreateVerRapporto {
 						arrayPs.add("");
 					}
 					if(item.getErrore()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErrore().stripTrailingZeros().toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getErrore().setScale(risoluzione+1).toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCor()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCor().stripTrailingZeros().toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(risoluzione+1).toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
@@ -1378,18 +1472,18 @@ public class CreateVerRapporto {
 				if(item.getMassa()!=null && item.getCampo()==campo) {
 					ArrayList<String> arrayPs = new ArrayList<String>();
 					if(rif==0) {
-						arrayPs.add("E0");
+						arrayPs.add("E<sub>0</sub>");
 					}else {
 						arrayPs.add(""+rif);
 					}					
 					arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
 					if(item.getIndicazioneSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazioneSalita().stripTrailingZeros().toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getIndicazioneSalita().setScale(risoluzione).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getIndicazioneDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazioneDiscesa().stripTrailingZeros().toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getIndicazioneDiscesa().setScale(risoluzione).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
@@ -1404,22 +1498,22 @@ public class CreateVerRapporto {
 						arrayPs.add("");
 					}
 					if(item.getErroreSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreSalita().stripTrailingZeros().toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErroreSalita().setScale(risoluzione+1).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreDiscesa().stripTrailingZeros().toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErroreDiscesa().setScale(risoluzione+1).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCorSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCorSalita().stripTrailingZeros().toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getErroreCorSalita().setScale(risoluzione+1).toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCorDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCorDiscesa().stripTrailingZeros().toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErroreCorDiscesa().setScale(risoluzione+1).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
@@ -1466,7 +1560,7 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 					arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
 					
 					if(item.getIndicazione()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazione().stripTrailingZeros().toPlainString()));		
+						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(risoluzione).toPlainString()));		
 					}else {
 						arrayPs.add("");
 					}
@@ -1476,12 +1570,12 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 						arrayPs.add("");
 					}
 					if(item.getErrore()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErrore().stripTrailingZeros().toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErrore().setScale(risoluzione+1).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCor()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCor().stripTrailingZeros().toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(risoluzione+1).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
@@ -1535,7 +1629,7 @@ private JRDataSource createDataSourceMobilita(ArrayList<VerMobilitaDTO> lista_mo
 				arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
 				
 				if(item.getIndicazione()!=null) {
-					arrayPs.add(Utility.changeDotComma(item.getIndicazione().stripTrailingZeros().toPlainString()));		
+					arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(risoluzione).toPlainString()));		
 				}else {
 					arrayPs.add("");
 				}

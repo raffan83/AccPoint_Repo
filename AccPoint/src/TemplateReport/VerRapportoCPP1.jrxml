@@ -247,14 +247,6 @@
 				<text><![CDATA[Campo 2]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="347" y="413" width="90" height="16" uuid="2248faa3-1c86-4e71-983b-194edf5fe750"/>
-				<textElement>
-					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Campo 3				
-]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="0" y="317" width="110" height="19" uuid="45242830-62af-4dc3-927e-6a769665f98e"/>
 				<text><![CDATA[Anno di Marcatura CE:]]></text>
 			</staticText>
@@ -299,27 +291,30 @@
 				<textFieldExpression><![CDATA[$P{procedura}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="601" width="101" height="92" uuid="85e499d9-9bc7-470e-9797-de4bbfdece9f"/>
-				<text><![CDATA[Nel caso di riparazione (con presenza di sigilli provvisori sullo strumento) annotare nome del riparatore e data di riparazione:]]></text>
+				<reportElement x="0" y="601" width="131" height="92" uuid="85e499d9-9bc7-470e-9797-de4bbfdece9f"/>
+				<textElement textAlignment="Justified">
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[Nel caso di riparazione (con presenza di sigilli provvisori sullo strumento) annotare nome del riparatore e data di riparazione]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="532" width="101" height="18" uuid="d53b9f0b-7372-4663-9ebc-b8d175a10ee5"/>
 				<text><![CDATA[Registro:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="131" y="621" width="422" height="22" uuid="968ced9d-75c9-44ea-91db-6e9c7f24ecfa"/>
+				<reportElement x="154" y="621" width="422" height="22" uuid="968ced9d-75c9-44ea-91db-6e9c7f24ecfa"/>
 				<textFieldExpression><![CDATA[$P{nome_riparatore}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="131" y="671" width="422" height="22" uuid="cd85220e-6b67-466f-93e0-da21ed689e2a"/>
+				<reportElement x="154" y="671" width="422" height="22" uuid="cd85220e-6b67-466f-93e0-da21ed689e2a"/>
 				<textFieldExpression><![CDATA[$P{data_riparazione}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="131" y="601" width="110" height="22" uuid="53659e38-ab02-4054-812f-01b8165bf1e9"/>
+				<reportElement x="154" y="601" width="110" height="22" uuid="53659e38-ab02-4054-812f-01b8165bf1e9"/>
 				<text><![CDATA[Nome riparatore]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="131" y="651" width="110" height="22" uuid="d5687c59-7ed7-489e-b5d8-44a84f0cc28f"/>
+				<reportElement x="154" y="651" width="110" height="22" uuid="d5687c59-7ed7-489e-b5d8-44a84f0cc28f"/>
 				<text><![CDATA[Data riparazione]]></text>
 			</staticText>
 			<staticText>
@@ -424,6 +419,13 @@
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Rapporto di verificazione periodica numero:]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="347" y="413" width="90" height="16" uuid="aa9c871d-5774-438b-ae01-8bc99881236a"/>
+				<textElement>
+					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{campo3}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 </jasperReport>

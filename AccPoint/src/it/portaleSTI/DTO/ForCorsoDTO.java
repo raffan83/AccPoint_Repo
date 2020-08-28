@@ -16,6 +16,7 @@ public class ForCorsoDTO {
 	private String edizione;
 	private String commessa;
 	private ForQuestionarioDTO questionario;
+	private int e_learning;
 	
 	
 	private Set<ForPartecipanteDTO> listaPartecipanti = new HashSet<ForPartecipanteDTO>(0);
@@ -93,6 +94,12 @@ public class ForCorsoDTO {
 	}
 	public void setQuestionario(ForQuestionarioDTO questionario) {
 		this.questionario = questionario;
+	}
+	public int getE_learning() {
+		return e_learning;
+	}
+	public void setE_learning(int e_learning) {
+		this.e_learning = e_learning;
 	}
 
 	

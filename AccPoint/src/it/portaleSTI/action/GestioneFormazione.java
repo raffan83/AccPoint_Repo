@@ -427,11 +427,17 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String descrizione = ret.get("descrizione");
 				String edizione = ret.get("edizione");
 				String commessa = ret.get("commessa");
+				String e_learning = ret.get("e_learning");
 
 				ForCorsoDTO corso = new ForCorsoDTO();		
 				
 				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria.split("_")[0])));
-				corso.setDocente(new ForDocenteDTO(Integer.parseInt(docente)));
+				if(docente!=null && !docente.equals("")) {
+					corso.setDocente(new ForDocenteDTO(Integer.parseInt(docente)));					
+				}
+				if(e_learning!=null && !e_learning.equals("")) {
+					corso.setE_learning(Integer.parseInt(e_learning));
+				}
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -502,11 +508,19 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String descrizione = ret.get("descrizione_mod");
 				String edizione = ret.get("edizione_mod");
 				String commessa = ret.get("commessa_mod");
+				String e_learning = ret.get("e_learning_mod");
 				
 				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso),session);		
 				
 				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria.split("_")[0])));
-				corso.setDocente(new ForDocenteDTO(Integer.parseInt(docente)));
+				if(docente!=null && !docente.equals("")) {
+					corso.setDocente(new ForDocenteDTO(Integer.parseInt(docente)));					
+				}else {
+					corso.setDocente(null);
+				}
+				if(e_learning!=null && !e_learning.equals("")) {
+					corso.setE_learning(Integer.parseInt(e_learning));
+				}
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				

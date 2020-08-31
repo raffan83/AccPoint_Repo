@@ -116,7 +116,7 @@ public class GestionePacco extends HttpServlet {
 		
 		if(action.equals("new")) {
 			
-	
+			ArrayList<MagPaccoDTO> lista_pacchi = (ArrayList<MagPaccoDTO>) request.getSession().getAttribute("lista_pacchi");
 		
 		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 		
@@ -791,7 +791,11 @@ public class GestionePacco extends HttpServlet {
 			session.getTransaction().commit();
 			
 			
-			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(company.getId(), session);
+			//ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(company.getId(), session);
+			
+			if(id_pacco==null || id_pacco.equals("")) {
+				lista_pacchi.add(pacco);
+			}
 			ArrayList<MagItemPaccoDTO> item_pacco = GestioneMagazzinoBO.getListaItemPacco(pacco.getId(), session);
 			ArrayList<MagSaveStatoDTO> lista_save_stato = GestioneMagazzinoBO.getListaMagSaveStato(session);
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
@@ -889,6 +893,8 @@ public class GestionePacco extends HttpServlet {
 			request.getParameter("ddt");
 			String strumenti_json = request.getParameter("strumenti_json");
 			String sede_fornitore = request.getParameter("sede_fornitore");
+			
+			ArrayList<MagPaccoDTO> lista_pacchi = (ArrayList<MagPaccoDTO>) request.getSession().getAttribute("lista_pacchi");
 		
 				
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
@@ -1086,11 +1092,13 @@ public class GestionePacco extends HttpServlet {
 						
 					}
 					}
+					
+					lista_pacchi.add(newPacco);
 				}
 				session.getTransaction().commit();
 				
 				/*rivedere*/
-				ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(utente.getCompany().getId(),0, session);
+				//ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(utente.getCompany().getId(),0, session);
 				session.close();
 				request.getSession().setAttribute("lista_pacchi",lista_pacchi);
 				

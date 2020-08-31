@@ -29,20 +29,23 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <h4>CARICAMENTO DOCUMENTI</h4>
 </div>
 	<div class="row">
+	<c:if test="${userObj.checkRuolo('RS') }">
 	<div class="col-xs-4">
 			<label>Data Verifica</label>
   		</div>
+  		</c:if>
   	<div class="col-xs-4">
-			<label class="pull-right">Documento da allegare</label>
+			<label>Documento da allegare</label>
   		</div>
   			</div>
 	<div class="row">
-
+<c:if test="${userObj.checkRuolo('RS') }">
 		<div class="col-xs-4">
- 			<input class="form-control datepicker" id="dataVerifica" type="text" name="dataVerifica"  required value="" data-date-format="dd/mm/yyyy"/>
+ 			<input class="form-control datepicker" id="dataVerifica" type="text" name="dataVerifica"  value="" data-date-format="dd/mm/yyyy"/>
   		</div>
-		    <div class="col-xs-4">
-		        <span class="btn btn-primary fileinput-button pull-right">
+  		</c:if>
+		    <div class="col-xs-3">
+		        <span class="btn btn-primary fileinput-button ">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
 		        <!-- The file input field used as target for the file upload widget -->
@@ -284,12 +287,16 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
         .parent().addClass($.support.fileInput ? undefined : 'disabled');
 	
 	
-	$('#fileupload').bind('fileuploadsubmit', function (e, data) {
+ 	$('#fileupload').bind('fileuploadsubmit', function (e, data) {
 	    // The example input, doesn't have to be part of the upload form:
-	    var date = $('#dataVerifica');
-	    data.formData = {dataVerifica: date.val(), idStrumento: strumento_id};
+	    var date = $('#dataVerifica').val();
+
+	    if(date==null){
+	    	date='';
+	    }
+	    data.formData = {dataVerifica: date, idStrumento: strumento_id};
 	    
-	    if (!data.formData.dataVerifica) {
+/* 	    if (!data.formData.dataVerifica) {
 	        
 	        $('#myModalErrorContent').html("INSERIRE DATA DI VERIFICA");
 			$('#myModalError').removeClass();
@@ -301,9 +308,9 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                 );
 	        
 	        return false;
-	      }
+	      } */
 	   
-	});
+	}); 
 	
  	
     	

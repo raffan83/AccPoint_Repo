@@ -108,14 +108,14 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 				}
 				
 				StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(idStrumento, session);
-				if(fileUploaded != null && !dataVerifica.equals("")) {
+				if(fileUploaded != null ) {
 					esito = GestioneStrumentoBO.saveDocumentoEsterno(fileUploaded,strumento,dataVerifica,session);
 				 
 					if(esito.getEsito() == 1) {
 	
 						
 					
-						{
+						if(dataVerifica!=null && !dataVerifica.equals("")){
 
 							SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -151,7 +151,7 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 					
 				}else {
 					jsono.addProperty("success", false);
-					jsono.addProperty("messaggio","File o data verifica mancanti");
+					jsono.addProperty("messaggio","File mancante");
 				}
 
 				

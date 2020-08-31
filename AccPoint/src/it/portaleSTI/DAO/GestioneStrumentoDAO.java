@@ -485,8 +485,13 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 			DocumentiEsterniStrumentoDTO documento = new DocumentiEsterniStrumentoDTO();
 			
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-			Date dataCaricamento = format.parse(dataVerifica);
-			documento.setDataCaricamento(dataCaricamento);
+			if(dataVerifica!=null && !dataVerifica.equals("")) {
+				Date dataCaricamento = format.parse(dataVerifica);
+				documento.setDataCaricamento(dataCaricamento);
+			}else {
+				documento.setDataCaricamento(new Date());
+			}
+			
 			documento.setId_strumento(strumento.get__id());
 			documento.setNomeDocumento(fileUploaded.getName());
 			

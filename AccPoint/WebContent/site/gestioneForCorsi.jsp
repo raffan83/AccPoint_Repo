@@ -187,7 +187,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <select id="commessa" name="commessa" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Commessa..." required>
+        <select id="commessa" name="commessa" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Commessa..." >
         <option value=""></option>
         <c:forEach items="${lista_commesse }" var="commessa">
         <option value="${commessa.ID_COMMESSA }">${commessa.ID_COMMESSA }</option>
@@ -348,7 +348,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <select id="commessa_mod" name="commessa_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Commessa..." required>
+        <select id="commessa_mod" name="commessa_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Commessa..." >
         <option value=""></option>
         <c:forEach items="${lista_commesse }" var="commessa">
         <option value="${commessa.ID_COMMESSA }">${commessa.ID_COMMESSA }</option>

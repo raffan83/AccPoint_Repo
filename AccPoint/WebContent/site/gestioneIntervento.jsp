@@ -93,7 +93,7 @@
 </c:choose>  </a>
                 </li>
                 <li class="list-group-item">
-                  <b>Note:</b> <spanclass="pull-right">${commessa.NOTE_GEN}</span>
+                  <b>Note:</b> <spanclass="pull-right">${utl:escapeHTML(commessa.NOTE_GEN)}</span>
                 </li>
                 <li class="list-group-item">
                  <b>Responsabile Commessa:</b> <a class="pull-right">${commessa.RESPONSABILE}</a>

@@ -1827,9 +1827,15 @@ public class Utility extends HttpServlet {
 		
 		
 
+		    public static String escapeHTML(String value) {
+		        return StringEscapeUtils.escapeHtml4(value);
+		    }
+		    
 		    public static String escapeJS(String value) {
 		        return StringEscapeUtils.escapeEcmaScript(StringEscapeUtils.escapeHtml4(value));
 		    }
+		    
+		    
 			public static boolean isNumber(String nPunti) {
 				boolean flag=true;
 				

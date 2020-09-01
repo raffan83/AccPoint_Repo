@@ -1,10 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="org.json.simple.JSONObject" %>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
-<%-- <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%> --%>
+ 
 <%UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj"); 
 String permesso = "0";
  if(utente.checkPermesso("CAMBIO_STATO_STRUMENTO_PACCO")){
@@ -425,7 +426,7 @@ String permesso = "0";
       </div>
       
       
-      <form name="ModificaPaccoForm" method="post" id="ModificaPaccoForm" action="gestionePacco.do?action=new" enctype="multipart/form-data">
+      <form name="ModificaPaccoForm" method="post" id="ModificaPaccoForm" action="gestionePacco.do?action=new" enctype="multipart/form-data" accept-charset="UTF-8">
          <div id="myModalModificaPacco" class="modal fade" data-backdrop="static" role="dialog" aria-labelledby="myLargeModalLabel">
           
     <div class="modal-dialog modal-lg" role="document">
@@ -593,7 +594,8 @@ String permesso = "0";
                   <label>Note Commessa</label>
    <div class="row" style="margin-down:35px;">    
  <div class= "col-xs-12">             
-		<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" disabled>${commessa.NOTE_GEN }</textarea>
+		<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" readonly>${utl:escapeHTML(commessa.NOTE_GEN) }</textarea> 
+		
   </div>
    
  </div> 
@@ -1106,7 +1108,7 @@ String permesso = "0";
  
   <div class="col-12">
   <label>Note</label></div>
- <textarea id="note_pacco" name="note_pacco" rows="5"  style="width:100%">${pacco.note_pacco }</textarea>
+ <textarea id="note_pacco" name="note_pacco" rows="5"  style="width:100%">${utl:escapeHTML(pacco.note_pacco)}</textarea>
 
 
 </div>
@@ -1611,6 +1613,7 @@ String permesso = "0";
 		
 		destinazioneBox();
 		
+		 
 		document.getElementById("ModificaPaccoForm").submit();
 		
 		

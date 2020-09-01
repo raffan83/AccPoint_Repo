@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang3.CharSet;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 
@@ -480,7 +483,10 @@ public class GestionePacco extends HttpServlet {
 						testa_pacco = item.getString();
 					}
 					if(item.getFieldName().equals("note_pacco")) {
-						note_pacco = item.getString();
+						
+						byte[] b = item.get();
+						note_pacco = new String(b);
+				
 					}
 					if(item.getFieldName().equals("data_arrivo")) {
 						data_arrivo = item.getString();
@@ -692,9 +698,10 @@ public class GestionePacco extends HttpServlet {
 					pacco.setTipo_nota_pacco(null);
 				}
 			}
-			pacco.setCommessa(commessa);
+			pacco.setCommessa(commessa);			
+		
 			pacco.setNote_pacco(note_pacco);
-
+			
 			if(fornitore!=null && !fornitore.equals("")) {
 				pacco.setFornitore(fornitore.split("_")[1]);
 			}

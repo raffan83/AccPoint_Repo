@@ -14,7 +14,7 @@
 %>
 
 <c:choose>
-<c:when test="${userObj.checkRuolo('F1')|| userObj.checkRuolo('F2') }">
+<c:when test="${userObj.getListaRuoli().size()==1 && (userObj.checkRuolo('F1')|| userObj.checkRuolo('F2')) }">
 <c:set var="calver_color" value="blue"></c:set>
 </c:when>
 <c:otherwise>

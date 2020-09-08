@@ -1,7 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
-<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
+<t:layout title="Dashboard" bodyClass="skin-blue-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
 
@@ -97,6 +97,13 @@
     line-height: 1.42857;
 }
 </style>
+<style>
+
+
+.table th {
+    background-color: #3c8dbc !important;
+  }</style>
+
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">

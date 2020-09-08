@@ -25,6 +25,8 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
    <link rel="stylesheet" href="css/skins/skin-red-light.min.css">
+   <link rel="stylesheet" href="css/skins/skin-blue.css">
+   <link rel="stylesheet" href="css/skins/skin-blue-light.min.css">
    
    <link rel="stylesheet" href="css/style_css.css">
    <link rel="stylesheet" href="css/prism.css">

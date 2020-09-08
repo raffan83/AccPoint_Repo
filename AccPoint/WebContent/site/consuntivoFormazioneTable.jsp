@@ -93,6 +93,12 @@ ${corso.getListaPartecipanti().iterator().next().getNome_sede()}
  </div>
  
  
+ <style>
+
+
+.table th {
+    background-color: #3c8dbc !important;
+  }</style>
  
  <script type="text/javascript">
 

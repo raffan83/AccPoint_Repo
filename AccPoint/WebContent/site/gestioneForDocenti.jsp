@@ -8,7 +8,7 @@
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 
-<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
+<t:layout title="Dashboard" bodyClass="skin-blue-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
 
@@ -34,7 +34,7 @@
 <div class="row">
       <div class="col-xs-12">
 
- <div class="box box-danger box-solid">
+ <div class="box box-primary box-solid">
 <div class="box-header with-border">
 	 Lista Docenti
 	<div class="box-tools pull-right">
@@ -303,6 +303,12 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
 
+<style>
+
+
+.table th {
+    background-color: #3c8dbc !important;
+  }</style>
 
 </jsp:attribute>
 

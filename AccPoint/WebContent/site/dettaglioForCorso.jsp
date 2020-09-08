@@ -12,7 +12,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
-<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
+<t:layout title="Dashboard" bodyClass="skin-blue-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
 
@@ -43,7 +43,7 @@
             
             <div class="row">
 <div class="col-md-6">
-<div class="box box-danger box-solid">
+<div class="box box-primary box-solid">
 <div class="box-header with-border">
 	 Dettaglio Corso
 	<div class="box-tools pull-right">
@@ -94,7 +94,7 @@
 
 
 <div class="col-md-6">
-<div class="box box-danger box-solid">
+<div class="box box-primary box-solid">
 <div class="box-header with-border">
 	 Dettaglio Tipologia
 	<div class="box-tools pull-right">
@@ -138,7 +138,7 @@
  </div>
         <div class="row">
 <div class="col-md-12">
-<div class="box box-danger box-solid">
+<div class="box box-primary box-solid">
 <div class="box-header with-border">
 	Allegati
 	<div class="box-tools pull-right">
@@ -161,7 +161,7 @@
    	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
   <div class="row">
 <div class="col-md-12">
-<div class="box box-danger box-solid">
+<div class="box box-primary box-solid">
 <div class="box-header with-border">
 	Questionario
 	<div class="box-tools pull-right">
@@ -195,7 +195,7 @@
     
     <div class="row">
 <div class="col-md-12">
-<div class="box box-danger box-solid">
+<div class="box box-primary box-solid">
 <div class="box-header with-border">
 	 Partecipanti
 	<div class="box-tools pull-right">
@@ -247,6 +247,15 @@
 <jsp:attribute name="extra_css">
 <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 <link type="text/css" href="css/bootstrap.min.css" />
+
+
+<style>
+
+
+.table th {
+    background-color: #3c8dbc !important;
+  }</style>
+
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">

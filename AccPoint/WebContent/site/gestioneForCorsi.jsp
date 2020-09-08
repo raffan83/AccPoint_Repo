@@ -8,7 +8,7 @@
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 
-<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
+<t:layout title="Dashboard" bodyClass="skin-blue-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
 
@@ -34,7 +34,7 @@
 <div class="row">
       <div class="col-xs-12">
 
- <div class="box box-danger box-solid">
+ <div class="box box-primary box-solid">
 <div class="box-header with-border">
 	Lista Corsi
 	<div class="box-tools pull-right">
@@ -61,7 +61,7 @@
 <div class="row">
 <div class="col-sm-12">
 
- <table id="tabForCorso" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <table id="tabForCorso" class="table table-primary table-bordered table-hover dataTable table-striped " role="grid" width="100%" >
  <thead><tr class="active">
 
 
@@ -497,10 +497,16 @@
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
+<style>
 
+
+.table th {
+    background-color: #3c8dbc !important;
+  }</style>
 
 </jsp:attribute>
 
+  
 <jsp:attribute name="extra_js_footer">
 <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
@@ -607,6 +613,8 @@ $("#tabForCorso").on( 'init.dt', function ( e, settings ) {
     columsDatatables = state.columns;
     }
     $('#tabForCorso thead th').each( function () {
+    	
+    	//$(this).css('background-color','#3c8dbc');  	
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
     	  var title = $('#tabForCorso thead th').eq( $(this).index() ).text();
     	
@@ -709,9 +717,20 @@ function formatDate(data){
 	   return str;	 		
 }
 
+function changeSkin(){
+	
+	 //var skinName = $(this).data('skin')
+	    $('body').removeClass('skin-red-light')
+	    $('body').addClass('skin-blue')
+	    //currentSkin = skinName
+	
+}
+
+
 
 $(document).ready(function() {
  
+	//changeSkin();
 
      $('.dropdown-toggle').dropdown();
      $('.datepicker').datepicker({

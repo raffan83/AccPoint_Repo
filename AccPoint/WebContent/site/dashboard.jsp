@@ -13,7 +13,20 @@
 
 %>
 
-<t:layout title="Calver" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
+<c:choose>
+<c:when test="${userObj.checkRuolo('F1')|| userObj.checkRuolo('F2') }">
+<c:set var="calver_color" value="blue"></c:set>
+</c:when>
+<c:otherwise>
+<c:set var="calver_color" value="red"></c:set>
+</c:otherwise>
+
+</c:choose>
+
+
+<t:layout title="Calver" bodyClass="skin-${calver_color }-light sidebar-mini wysihtml5-supported">
+
+
 
 <jsp:attribute name="body_area">
 
@@ -174,6 +187,22 @@
 
 <jsp:attribute name="extra_css">
 <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
+
+
+
+<c:if test="${userObj.checkRuolo('F1')|| userObj.checkRuolo('F2') }">
+
+<style>
+
+
+.table th {
+    background-color: #3c8dbc !important;
+  }</style>
+
+</c:if>
+
+
+
 
 </jsp:attribute>
 

@@ -950,7 +950,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 1. Verificare la presenza dell'annotazione della riparazione effettuata dal riparatore all'interno del libretto metrologico dello strumento di misura;
 2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sul libretto metrologico di cui al precedente punto H.1.</td>
   	<td align="center">
-  		<c:if test="${checkList.get(71) == 0}">
+  		<c:if test="${checkList.get(7) == 0}">
   		<b>X</b>
   		</c:if>
   	</td>

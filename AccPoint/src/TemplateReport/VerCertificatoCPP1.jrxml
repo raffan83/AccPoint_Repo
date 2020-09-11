@@ -58,7 +58,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="96" width="553" height="42" uuid="a686e61d-93b2-4733-870a-3a1504c243cc"/>
-				<text><![CDATA[Il sottoscritto Antonio Accettola responsabile dell'Organismo S.T.I. S.r.l. idoneo allo svolgimento della verificazione periodica di strumenti per pesare a funzionamento non automatico (NAWI), ai sensi del Decreto Ministeriale n. 93 del 21 Aprile 2017,]]></text>
+				<text><![CDATA[Il sottoscritto Eliseo Crescenzi responsabile dell'Organismo S.T.I. S.r.l. idoneo allo svolgimento della verificazione periodica di strumenti per pesare a funzionamento non automatico (NAWI), ai sensi del Decreto Ministeriale n. 93 del 21 Aprile 2017,]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="130" width="553" height="20" uuid="ac1e1cbe-8bfb-46d0-a416-dccded808dac"/>

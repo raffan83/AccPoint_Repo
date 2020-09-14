@@ -11,42 +11,42 @@
 	<detail>
 		<band height="802" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="180" width="150" height="16" uuid="516e29d4-0ff0-40fc-b508-f9fbf92c663c"/>
+				<reportElement x="0" y="179" width="150" height="16" uuid="516e29d4-0ff0-40fc-b508-f9fbf92c663c"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[- data di emissione]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="196" width="150" height="15" uuid="bc067fbf-82eb-4faf-aabc-c7acfc2a6bf4"/>
+				<reportElement x="3" y="195" width="150" height="15" uuid="bc067fbf-82eb-4faf-aabc-c7acfc2a6bf4"/>
 				<textElement>
 					<font size="7" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[ date of issue]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="211" width="150" height="15" uuid="daafeca7-6cea-4c89-8be3-ad44ed4a87d1"/>
+				<reportElement x="0" y="216" width="150" height="15" uuid="daafeca7-6cea-4c89-8be3-ad44ed4a87d1"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[- cliente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="226" width="150" height="15" uuid="711c586b-1ba8-4ab2-a237-667079ac903d"/>
+				<reportElement x="3" y="231" width="150" height="15" uuid="711c586b-1ba8-4ab2-a237-667079ac903d"/>
 				<textElement>
 					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[ customer]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="241" width="150" height="15" uuid="15b285b2-e7c6-41ea-ba4f-70f175538686"/>
+				<reportElement x="0" y="257" width="150" height="15" uuid="15b285b2-e7c6-41ea-ba4f-70f175538686"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[- destinatario]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="257" width="150" height="15" uuid="86d6432d-842e-4da9-8780-7c7670ab707a"/>
+				<reportElement x="3" y="273" width="150" height="15" uuid="86d6432d-842e-4da9-8780-7c7670ab707a"/>
 				<textElement>
 					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -60,28 +60,28 @@
 				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="226" width="240" height="15" uuid="3c083f15-57ff-4fae-b7d9-a814b6aecd9e"/>
+				<reportElement x="120" y="231" width="240" height="26" uuid="3c083f15-57ff-4fae-b7d9-a814b6aecd9e"/>
 				<textElement>
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{indirizzo_cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="211" width="240" height="15" uuid="512a91b1-e2a6-4d33-a36d-4c1a760ccce0"/>
+				<reportElement x="120" y="216" width="240" height="15" uuid="512a91b1-e2a6-4d33-a36d-4c1a760ccce0"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="257" width="240" height="15" uuid="aceabce2-25c0-43f2-b64f-9db51471b1e9"/>
+				<reportElement x="120" y="273" width="240" height="37" uuid="aceabce2-25c0-43f2-b64f-9db51471b1e9"/>
 				<textElement>
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{indirizzo_destinatario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="241" width="240" height="15" uuid="5a59e9c5-7cec-4e9b-8279-5bdfcbda7794"/>
+				<reportElement x="120" y="257" width="240" height="15" uuid="5a59e9c5-7cec-4e9b-8279-5bdfcbda7794"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -374,7 +374,7 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				<textFieldExpression><![CDATA[$P{numero_pagine}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="180" width="150" height="31" uuid="f4cc161f-1764-454b-8bd6-fcefe807286c"/>
+				<reportElement x="120" y="179" width="150" height="31" uuid="f4cc161f-1764-454b-8bd6-fcefe807286c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>

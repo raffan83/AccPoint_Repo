@@ -19,6 +19,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
@@ -55,7 +56,7 @@ public class CreaCertificatoLivellaElettronica {
 	
 	private void build(CertificatoDTO certificato, LatMisuraDTO misura, UtenteDTO utente, Session session) throws Exception {
 		
-InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica_P1.jrxml");
+		InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica_P1.jrxml");
 		
 		JasperReportBuilder report = DynamicReports.report();
 		
@@ -153,29 +154,61 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica
 		ClienteDTO cliente_util = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(commessa.getID_ANAGEN_UTIL()));
 		
 		
+		
+		
 		String indirizzo_util="";
 		String cap_util="";
 		String citta_util="";
 		String provincia_util="";
 		
-		if( cliente_util.getIndirizzo()!=null) {
-			indirizzo_util = cliente_util.getIndirizzo();				
-			}
-			if(cliente_util.getCap()!=null) {
-				cap_util = cliente_util.getCap();
-			}
-			if(cliente_util.getCitta()!=null) {
-				citta_util = cliente_util.getCitta();
-			}
-			if(cliente_util.getProvincia()!=null && !cliente_util.getProvincia().equals("")) {
-				provincia_util =" (" +cliente_util.getProvincia()+")";
-			}
+		if(commessa.getK2_ANAGEN_INDR_UTIL()!=0) {
+			
+			ArrayList<SedeDTO> listaSedi = (ArrayList<SedeDTO>) GestioneAnagraficaRemotaBO.getListaSedi();
+			
+			SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, commessa.getK2_ANAGEN_INDR_UTIL(), commessa.getID_ANAGEN_UTIL());
+			
+			if( sede.getIndirizzo()!=null) {
+				indirizzo_util = sede.getIndirizzo();				
+				}
+				if(sede.getCap()!=null) {
+					cap_util = sede.getCap();
+				}
+				if(sede.getComune()!=null) {
+					citta_util = sede.getComune();
+				}
+				if(sede.getSiglaProvincia()!=null && !sede.getSiglaProvincia().equals("")) {
+					provincia_util =" (" +sede.getSiglaProvincia()+")";
+				}
+				
+				if(sede!=null && sede.getIndirizzo()!=null) {
+					report.addParameter("indirizzo_destinatario", indirizzo_util + ", " + cap_util + ", "+citta_util + provincia_util);
+				}else {
+					report.addParameter("indirizzo_destinatario", "");
+				}
+			
+		}else {
+			
+			if( cliente_util.getIndirizzo()!=null) {
+				indirizzo_util = cliente_util.getIndirizzo();				
+				}
+				if(cliente_util.getCap()!=null) {
+					cap_util = cliente_util.getCap();
+				}
+				if(cliente_util.getCitta()!=null) {
+					citta_util = cliente_util.getCitta();
+				}
+				if(cliente_util.getProvincia()!=null && !cliente_util.getProvincia().equals("")) {
+					provincia_util =" (" +cliente_util.getProvincia()+")";
+				}
+			
+				
+				if(cliente_util!=null && cliente_util.getIndirizzo()!=null) {
+					report.addParameter("indirizzo_destinatario", indirizzo_util + ", " + cap_util + ", "+citta_util + provincia_util);
+				}else {
+					report.addParameter("indirizzo_destinatario", "");
+				}
+		}
 		
-			if(cliente_util!=null && cliente_util.getIndirizzo()!=null) {
-				report.addParameter("indirizzo_destinatario", indirizzo_util + ", " + cap_util + ", "+citta_util + provincia_util);
-			}else {
-				report.addParameter("indirizzo_destinatario", "");
-			}
 		
 	
 //		if(commessa!=null && commessa.getINDIRIZZO_UTILIZZATORE()!=null)

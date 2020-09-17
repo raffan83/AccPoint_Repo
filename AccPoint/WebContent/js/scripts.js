@@ -5427,10 +5427,12 @@ function eliminaCompany(){
 	     function filtraStrumentiInScadenza(dataTypeStr){
 	    	 	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
 	    	 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
-
+	    	 	
+	    	 	startDatePicker._isUTC =  true;
+	    	 	endDatePicker._isUTC =  true;
 
 	    	 		minDateFilter = new Date(startDatePicker.format('YYYY-MM-DD') ).getTime();
-
+	    	 
 	    	 		maxDateFilter = new Date(endDatePicker.format('YYYY-MM-DD') ).getTime();
 	    	 		dataType = dataTypeStr; 
 	    	      table.draw();

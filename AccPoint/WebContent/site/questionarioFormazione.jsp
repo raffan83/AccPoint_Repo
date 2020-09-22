@@ -252,8 +252,9 @@
            <div class="row"> 
    <div class="col-xs-8"></div>
     <div class="col-xs-4">
-    
+    <c:if test=" ${!userObj.checkRuolo('F2')}">
     <a class="btn btn-primary pull-right" onClick="salvaCompilazioneQuestionario('${corso.questionario.id}')">Termina compilazione questionario</a>
+    </c:if>
     </div>
 
    </div>
@@ -489,6 +490,13 @@
 
  var numero_partecipanti = ${numero_partecipanti}
  
+
+ var cliente = false;
+
+ if(${userObj.checkRuolo('F2')}){
+	 cliente = true;
+ }
+ 
  
     $(document).ready(function() {
     	
@@ -507,6 +515,9 @@
     	
     	
     	const editableCell = function(cell) {
+    		
+    		
+    		if(!cliente){
     		  let original
 
     		  cell.setAttribute('contenteditable', true)
@@ -543,6 +554,8 @@
     		      console.log('Row changed: ', row.data())
     		    }
     		  })
+    		  
+    		}
     		};
     	
     	

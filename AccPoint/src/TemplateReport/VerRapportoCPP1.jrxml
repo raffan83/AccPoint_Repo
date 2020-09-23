@@ -146,7 +146,7 @@
 				<text><![CDATA[Unità di misura:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="234" y="429" width="91" height="17" uuid="5596248c-5845-4272-8555-ce20b6a13db5"/>
+				<reportElement x="239" y="429" width="91" height="17" uuid="5596248c-5845-4272-8555-ce20b6a13db5"/>
 				<textFieldExpression><![CDATA[$P{portata_max_c2}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -193,19 +193,19 @@
 				<text><![CDATA[Dati necessari alla compilazione dell'Attestato di verificazione periodica]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="234" y="446" width="91" height="16" uuid="1b313177-34ba-4423-a1c5-f9c6261b7e59"/>
+				<reportElement x="239" y="446" width="91" height="16" uuid="1b313177-34ba-4423-a1c5-f9c6261b7e59"/>
 				<textFieldExpression><![CDATA[$P{portata_min_c2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="234" y="462" width="91" height="16" uuid="e497bf56-4a23-4cd4-bb4c-8325c11c970c"/>
+				<reportElement x="239" y="462" width="91" height="16" uuid="e497bf56-4a23-4cd4-bb4c-8325c11c970c"/>
 				<textFieldExpression><![CDATA[$P{divisione_verifica_c2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="234" y="478" width="91" height="14" uuid="a37e3bdb-7910-407b-b3dd-c5c83aa001c3"/>
+				<reportElement x="239" y="478" width="91" height="14" uuid="a37e3bdb-7910-407b-b3dd-c5c83aa001c3"/>
 				<textFieldExpression><![CDATA[$P{divisione_reale_c2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="234" y="492" width="91" height="16" uuid="041e92dc-4d35-4cc3-8a60-58aeaad38eae"/>
+				<reportElement x="239" y="492" width="91" height="16" uuid="041e92dc-4d35-4cc3-8a60-58aeaad38eae"/>
 				<textFieldExpression><![CDATA[$P{numero_divisioni_c2}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -213,38 +213,38 @@
 				<textFieldExpression><![CDATA[$P{portata_max_c1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="347" y="429" width="90" height="17" uuid="ce7dc92e-f28c-4d13-95b0-ccadfba803ad"/>
+				<reportElement x="355" y="429" width="90" height="17" uuid="ce7dc92e-f28c-4d13-95b0-ccadfba803ad"/>
 				<textFieldExpression><![CDATA[$P{portata_max_c3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="347" y="446" width="90" height="16" uuid="b1dd5cc2-96a9-4e80-86ae-b88c78a65695"/>
+				<reportElement x="355" y="446" width="90" height="16" uuid="b1dd5cc2-96a9-4e80-86ae-b88c78a65695"/>
 				<textFieldExpression><![CDATA[$P{portata_min_c3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="347" y="462" width="90" height="16" uuid="f7e117e7-9f4c-40cc-aa1d-8cc375b95cb3"/>
+				<reportElement x="355" y="462" width="90" height="16" uuid="f7e117e7-9f4c-40cc-aa1d-8cc375b95cb3"/>
 				<textFieldExpression><![CDATA[$P{divisione_verifica_c3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="347" y="478" width="90" height="14" uuid="f5a286b8-4baa-4215-bd3a-7f9b0ece122c"/>
+				<reportElement x="355" y="478" width="90" height="14" uuid="f5a286b8-4baa-4215-bd3a-7f9b0ece122c"/>
 				<textFieldExpression><![CDATA[$P{divisione_reale_c3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="347" y="492" width="90" height="16" uuid="74c203b7-4170-4a5a-8a2e-d7750a3b914b"/>
+				<reportElement x="355" y="492" width="90" height="16" uuid="74c203b7-4170-4a5a-8a2e-d7750a3b914b"/>
 				<textFieldExpression><![CDATA[$P{numero_divisioni_c3}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="131" y="413" width="81" height="16" uuid="a11c04eb-4465-4999-97f0-c75149087a65"/>
+				<reportElement x="131" y="413" width="100" height="16" uuid="a11c04eb-4465-4999-97f0-c75149087a65"/>
 				<textElement>
 					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Campo 1]]></text>
+				<text><![CDATA[Campo di pesatura 1]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="234" y="413" width="91" height="16" uuid="e8291173-65b5-454f-a43a-cfb987c876f0"/>
+				<reportElement x="239" y="413" width="102" height="16" uuid="e8291173-65b5-454f-a43a-cfb987c876f0"/>
 				<textElement>
 					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Campo 2]]></text>
+				<text><![CDATA[Campo di pesatura 2]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="317" width="110" height="19" uuid="45242830-62af-4dc3-927e-6a769665f98e"/>
@@ -420,7 +420,7 @@
 				<text><![CDATA[Rapporto di verificazione periodica numero:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="347" y="413" width="90" height="16" uuid="aa9c871d-5774-438b-ae01-8bc99881236a"/>
+				<reportElement x="355" y="413" width="90" height="16" uuid="aa9c871d-5774-438b-ae01-8bc99881236a"/>
 				<textElement>
 					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>

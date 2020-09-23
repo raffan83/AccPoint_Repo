@@ -180,7 +180,13 @@
 </c:if>
 
 <c:if test="${corso.questionario!= null && corso.questionario.salvato==1 }">
+
+<c:if test=" ${!userObj.checkRuolo('F2')}">
 <a class="btn btn-primary pull-right" onClick="callAction('gestioneFormazione.do?action=questionario&id_corso=${utl:encryptData(corso.id)}')"><i class="fa fa-edit"></i> Visualizza o modifica questionario</a>
+</c:if>
+<c:if test=" ${userObj.checkRuolo('F2')}">
+<a class="btn btn-primary pull-right" onClick="callAction('gestioneFormazione.do?action=questionario&id_corso=${utl:encryptData(corso.id)}')"><i class="fa fa-edit"></i> Visualizza questionario</a>
+</c:if>
 </c:if>
 
 </div>
@@ -192,6 +198,43 @@
     
     </div>
  </c:if>   
+ 
+ 
+    	<c:if test="${userObj.checkRuolo('F2') && corso.questionario!= null && corso.questionario.salvato==1 }">
+    	  <div class="row">
+<div class="col-md-12">
+<div class="box box-primary box-solid">
+<div class="box-header with-border">
+	Questionario
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+<div class="row">
+<div class="col-md-12">
+
+
+
+
+<a class="btn btn-primary pull-right" onClick="callAction('gestioneFormazione.do?action=questionario&id_corso=${utl:encryptData(corso.id)}')"><i class="fa fa-edit"></i> Visualizza questionario</a>
+
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+    
+    </div>
+    	
+    	</c:if>
+ 
+ 
     
     <div class="row">
 <div class="col-md-12">

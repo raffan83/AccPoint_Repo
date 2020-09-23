@@ -28,5 +28,6 @@
       
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2017 <a href="#">Acc Point - Network</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2020 <a href="#">NCS NETWORK COMMERCIAL SYSTEMS S.R.L.</a>.</strong> All rights reserved.
+    
   </footer>

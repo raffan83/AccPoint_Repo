@@ -76,10 +76,11 @@
     			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=controllo_attivita&admin=1',null,true);">Controllo Attività Admin</a></li>
     			
     			<% }%>
-    			<% if(user.checkRuolo("AM") || (user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")&& !user.checkRuolo("PV"))){%>
+    			
+    		<% }%>
+    		<% if(user.checkRuolo("AM") || (user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")&& !user.checkRuolo("PV"))){%>
     			<li><a href="#" onclick="callAction('gestioneMisura.do?action=lista',null,true);">Lista Misure</a></li>
     				<% }%>
-    		<% }%>
           </ul>
         </li>
          <% }%>

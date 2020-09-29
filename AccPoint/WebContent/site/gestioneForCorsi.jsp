@@ -50,6 +50,7 @@
 <div class="col-xs-12">
 
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+	<c:set var="admin" value="1"></c:set>
 <a class="btn btn-primary pull-right" onClick="modalnuovoCorso()"><i class="fa fa-plus"></i> Nuovo Corso</a> 
 </c:if>
 
@@ -66,6 +67,9 @@
 
 
 <th>ID</th>
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+<th>Visibile al cliente</th>
+</c:if>
 <th>Tipologia</th>
 <th>Commessa</th>
 <th>Docente</th>
@@ -81,6 +85,21 @@
 	<tr id="row_${loop.index}" >
 
 	<td>${corso.id }</td>	
+	
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+	<c:if test="${corso.visibile==0 }">
+	<td>
+	<input type="checkbox" id="check_${corso.id }" name="check_${corso.id }" onClick="checkCorso('${corso.id}')" class="icheckbox">
+	</td>
+	</c:if>
+	<c:if test="${corso.visibile==1 }">
+	<td>
+	<input type="checkbox" id="check_${corso.id }" name="check_${corso.id }" checked  onclick="checkCorso('${corso.id}')" class="icheckbox">
+	</td>
+	</c:if>
+	
+	</c:if>
+	
 	<td>${corso.corso_cat.descrizione }</td>
 	<td>${corso.commessa }</td>
 	<td>${corso.docente.nome } ${corso.docente.cognome }</td>
@@ -619,7 +638,60 @@ $("#tabForCorso").on( 'init.dt', function ( e, settings ) {
     	  var title = $('#tabForCorso thead th').eq( $(this).index() ).text();
     	
     	  //if($(this).index()!=0 && $(this).index()!=1){
-		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
+    		  
+    		  if(admin=='1' && $(this).index()==1){
+    			  $(this).append( '<div><input  style="width:100%"  type="checkbox" id="checkall" name="checkall"/></div>');
+    			  
+    			  /* 			     $('input').iCheck({
+    			         checkboxClass: 'icheckbox_square-blue',
+    			         radioClass: 'iradio_square-blue',
+    			         increaseArea: '20%' // optional
+    			       }); 
+    			
+     			     $("#checkall").on('ifChecked', function(event){
+    			    	 
+    			    		$('input:checkbox').each(function(){
+    			    			
+    			    			var id =$(this)[0].id;
+    			    			console.log($(this)[0].id);
+    			    			if(id!=''&& id!='checkall' && id!='check_e_learning' && id!='check_e_learning_mod'){
+    			    				console.log(id);
+    			    				id="#"+id;
+    			    				$(id).iCheck('check');        			    			
+    	    			    		
+      			    				  setVisibilita(id, 1);      			    		
+
+    			    			}
+    			    		
+    			    		
+    			    			
+    			    		})
+    			    	});
+    			 
+    			 
+    			     $("#checkall").on('ifUnchecked', function(event){
+    			    	 
+ 			    		$('input:checkbox').each(function(){
+ 			    			
+ 			    			var id =$(this)[0].id;
+ 			    			console.log($(this)[0].id);
+ 			    			if(id!=''&& id!='checkall' && id!='check_e_learning' && id!='check_e_learning_mod'){
+ 									
+ 			    				id="#"+id;
+ 			    				$(id).iCheck('uncheck');        			    			
+ 	    			    		
+   			    				  setVisibilita(id, 0);      			    		
+
+ 			    			}
+ 			    		
+ 			    		
+ 			    			
+ 			    		})
+ 			    	}); */
+    		  }else{
+    			  $(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');  
+    		  }
+		    		
 	    	//}
 
     	} );
@@ -726,12 +798,80 @@ function changeSkin(){
 	
 }
 
+	
+	
+$('input:checkbox').on('ifToggled', function() {
+	
+	//var id =$(this)[0].id;
+	
+	var id ="#"+$(this)[0].id;
+	
+	if(id!='#checkall' && id!='#check_e_learning' && id!='#check_e_learning_mod'){
+		$(id).on('ifChecked', function(event){
+			  setVisibilita(id, 1);
+		});
 
 
+		$(id).on('ifUnchecked', function(event) {
+			
+			  setVisibilita(id, 0);
+			
+		});
+	}
+	
+
+	
+	});
+	
+	
+
+function setVisibilita(id_corso, visibile){
+	
+	var dataObj = {};
+	dataObj.id_corso = id_corso.split("_")[1];
+	dataObj.visibile = visibile;	
+
+	  $.ajax({
+	type: "POST",
+	url: "gestioneFormazione.do?action=visibilita",
+	data: dataObj,
+	dataType: "json",
+	//if received a response from the server
+	success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  if(data.success){	  			
+	   				  
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();
+			$('#myModalError').modal('show');			
+		
+		  }
+	},
+	error: function( data, textStatus) {
+		  $('#myModalYesOrNo').modal('hide');
+		  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+	
+	}
+	});
+	
+}
+
+
+var admin = "";
 $(document).ready(function() {
  
 	//changeSkin();
-
+	admin="${admin}";
      $('.dropdown-toggle').dropdown();
      $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
@@ -777,7 +917,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  
+		    	   { targets: 1,  orderable: false }
 		    	  
 		               ], 	        
 	  	      buttons: [   
@@ -820,6 +960,55 @@ $(document).ready(function() {
 	});
 	
 	
+    $('#checkall').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%' // optional
+      }); 
+	
+    
+	
+    $("#checkall").on('ifChecked', function(event){
+    	 
+    	$('input:checkbox').each(function(){
+    		
+    		var id =$(this)[0].id;
+    		console.log($(this)[0].id);
+    		if(id!=''&& id!='checkall' && id!='check_e_learning' && id!='check_e_learning_mod'){
+    			console.log(id);
+    			id="#"+id;
+    			$(id).iCheck('check');        			    			
+        		
+    				  setVisibilita(id, 1);      			    		
+
+    		}
+    	
+    	
+    		
+    	})
+    });
+
+
+    $("#checkall").on('ifUnchecked', function(event){
+     
+    	$('input:checkbox').each(function(){
+    		
+    		var id =$(this)[0].id;
+    		console.log($(this)[0].id);
+    		if(id!=''&& id!='checkall' && id!='check_e_learning' && id!='check_e_learning_mod'){
+    				
+    			id="#"+id;
+    			$(id).iCheck('uncheck');        			    			
+     		
+    			  setVisibilita(id, 0);      			    		
+
+    		}
+    	
+    	
+    		
+    	})
+    });
+
 	
 	
 });

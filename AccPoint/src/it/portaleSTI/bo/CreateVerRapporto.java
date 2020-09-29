@@ -63,6 +63,7 @@ public class CreateVerRapporto {
 	private String um;
 	
 	private int risoluzione;
+	private int classe_strumento;
 	
 	public CreateVerRapporto(VerMisuraDTO misura, List<SedeDTO> listaSedi, boolean conforme, int motivo,UtenteDTO utente,  Session session) throws Exception {
 	
@@ -278,13 +279,13 @@ public class CreateVerRapporto {
 			report.addParameter("matricola", "");
 		}
 		
-		if(misura.getVerStrumento().getClasse()!=0) {
-			
-			
-			report.addParameter("classe_precisione",getClassePrecisione(misura.getVerStrumento().getClasse()));
+		if(misura.getVerStrumento().getClasse()!=0) {			
+			report.addParameter("classe_precisione",getClassePrecisione(misura.getVerStrumento().getClasse()));	
 		}else{
 			report.addParameter("classe_precisione", "");
 		}
+		
+		this.classe_strumento = misura.getVerStrumento().getClasse();
 		
 		if(misura.getVerStrumento().getAnno_marcatura_ce()!=0) {
 			report.addParameter("anno_marcatura_ce", misura.getVerStrumento().getAnno_marcatura_ce());
@@ -833,24 +834,61 @@ public class CreateVerRapporto {
 					esito_globale = false;
 				}
 				
-				VerticalListBuilder vl_decentramento = cmp.verticalList(
+				
+				
+				VerticalListBuilder vl_decentramento = null;
+				
+				if(speciale.equals("Si")) {
+					
+				vl_decentramento = cmp.verticalList(
 						cmp.text("Prova di Decentramento (Rif.UNI CEI EN 45501:2015 - A.4.7)").setStyle(boldStyle),
-						cmp.verticalGap(8),
+						//cmp.verticalGap(5),
 						cmp.text("Esempio di tipici ricettori di carico").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle),
-						cmp.verticalGap(8),
+						cmp.verticalGap(4),
 						hl_ricettori,
 						hl_rettangoli,
-						cmp.verticalGap(10),
-						cmp.horizontalList(cmp.text("Numero punti di appoggi del ricettore di carico: "+ appoggio),
-								cmp.horizontalGap(20), 
-								cmp.text("Carico: " + Utility.changeDotComma(lista_decentramento.get(i*10).getCarico().stripTrailingZeros().toPlainString()) +" " + misura.getVerStrumento().getUm())),
 						cmp.verticalGap(5),
-						cmp.text("Strumento \"Speciale\": "+ speciale),		
-						cmp.verticalGap(8),
+//						cmp.horizontalList(cmp.text("Numero punti di appoggi del ricettore di carico: "+ appoggio),
+//								cmp.horizontalGap(20), 
+//								cmp.text("Carico: " + Utility.changeDotComma(lista_decentramento.get(i*10).getCarico().stripTrailingZeros().toPlainString()) +" " + misura.getVerStrumento().getUm())),
+						cmp.horizontalList(cmp.text("Numero punti di appoggi del ricettore di carico: "+ appoggio),cmp.horizontalGap(20), cmp.text("Strumento \"Speciale\": "+ speciale)),
+						//cmp.verticalGap(5),
+						//cmp.text("Strumento \"Speciale\": "+ speciale),		
+						cmp.verticalGap(5),
 						cmp.horizontalList(cmp.horizontalGap(100),subreport_decentramento),
-						cmp.verticalGap(8),
+						cmp.verticalGap(5),
 						cmp.horizontalList(cmp.horizontalGap(400),cmp.text("ESITO: "+ esito_decentramento).setStyle(boldStyle))
 						);
+				
+				
+				}else {
+					
+					 vl_decentramento = cmp.verticalList(
+							cmp.text("Prova di Decentramento (Rif.UNI CEI EN 45501:2015 - A.4.7)").setStyle(boldStyle),
+							cmp.verticalGap(5),
+							cmp.text("Esempio di tipici ricettori di carico").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle),
+							cmp.verticalGap(8),
+							hl_ricettori,
+							hl_rettangoli,
+							cmp.verticalGap(8),
+//							cmp.horizontalList(cmp.text("Numero punti di appoggi del ricettore di carico: "+ appoggio),
+//									cmp.horizontalGap(20), 
+//									cmp.text("Carico: " + Utility.changeDotComma(lista_decentramento.get(i*10).getCarico().stripTrailingZeros().toPlainString()) +" " + misura.getVerStrumento().getUm())),
+							cmp.horizontalList(cmp.text("Numero punti di appoggi del ricettore di carico: "+ appoggio)),
+							cmp.verticalGap(5),
+							cmp.text("Strumento \"Speciale\": "+ speciale),		
+							cmp.verticalGap(8),
+							cmp.horizontalList(cmp.horizontalGap(100),subreport_decentramento),
+							cmp.verticalGap(8),
+							cmp.horizontalList(cmp.horizontalGap(400),cmp.text("ESITO: "+ esito_decentramento).setStyle(boldStyle))
+							);
+				}
+				
+				
+				
+				
+				
+
 						
 				
 				SubreportBuilder subreport_linearita = cmp.subreport(getTableLinearita(lista_linearita, i+1));
@@ -1185,7 +1223,11 @@ public class CreateVerRapporto {
 		report.addColumn(col.column("Posizione n°","n_posizione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));		
  		report.addColumn(col.column("Massa  <br><i> L</i> <br>"+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
  		report.addColumn(col.column("Indicazione  <br><i> I </i> <br>"+"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
- 		report.addColumn(col.column("Carico aggiuntivo  <br><i> ΔL </i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+ 		
+ 		if(classe_strumento!=5) {
+ 			report.addColumn(col.column("Carico aggiuntivo  <br><i> ΔL </i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));	
+ 		}
+ 		
  		report.addColumn(col.column("Errore  <br><i> E </i> <br> "+"/"+um,"e", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
  		report.addColumn(col.column("Er. Corretto <br><i> Ec </i> <br>"+"/"+um,"ec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
  		report.addColumn(col.column("Errore Massimo Tollerato <br> ± EMT  <br> " +"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(90));
@@ -1218,8 +1260,11 @@ public class CreateVerRapporto {
 	 	//	report.addColumn(col.column("Indicazione Salita </i> <br> I </i> <br> "+"/"+um,"indicazione_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Indicazione Salita <br> <i>I</i> <br> "+"/"+um,"indicazione_up", type.stringType()).setStretchWithOverflow(false).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Indicazione Discesa <br> <i>I</i> <br> "+"/"+um,"indicazione_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Carico aggiuntivo Salita <br> <i> ΔL</i> <br> "+"/"+um,"carico_aggiuntivo_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Carico aggiuntivo Discesa <br> <i> ΔL</i> <br> "+"/"+um,"carico_aggiuntivo_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		if(classe_strumento!=5) {
+	 			report.addColumn(col.column("Carico aggiuntivo Salita <br> <i> ΔL</i> <br> "+"/"+um,"carico_aggiuntivo_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 		report.addColumn(col.column("Carico aggiuntivo Discesa <br> <i> ΔL</i> <br> "+"/"+um,"carico_aggiuntivo_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
+	 		}
+	 		
 	 		report.addColumn(col.column("Errore Salita <br> <i> E </i> <br>"+"/"+um,"e_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Errore Discesa<br> <i> E </i> <br>"+"/"+um,"e_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Er. Corretto Salita <br> <i> Ec </i> <br>"+"/"+um,"ec_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
@@ -1273,7 +1318,9 @@ public class CreateVerRapporto {
 			report.addColumn(col.column("N° Ripet.","n_ripetizioni", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		report.addColumn(col.column("Massa  <br> <i>L </i> <br>"+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		report.addColumn(col.column("Indicazione  <br><i> I </i> <br>" +"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
-	 		report.addColumn(col.column("Carico aggiuntivo   <br><i> ΔL </i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 		if(classe_strumento!=5) {
+	 			report.addColumn(col.column("Carico aggiuntivo   <br><i> ΔL </i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 		}
 	 		report.addColumn(col.column("Indicazione  <br> <i>P </i> <br> "+"/"+um,"p", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
 	 			 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
@@ -1317,7 +1364,7 @@ public class CreateVerRapporto {
 			DRDataSource dataSource = new DRDataSource(listaCodici);
 			for (VerRipetibilitaDTO item : lista_ripetibilita) {
 				if(item.getMpe()!=null && item.getCampo() == campo) {
-					dataSource.add("± EMT (associato al carico di prova):", Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()), um);
+					dataSource.add("± EMT (associato al carico di prova):", Utility.changeDotComma(item.getMpe().setScale(risoluzione+1).toPlainString()), um);
 					break;
 				}
 			}
@@ -1371,7 +1418,8 @@ public class CreateVerRapporto {
 	private JRDataSource createDataSourceRipetibilita(ArrayList<VerRipetibilitaDTO> lista_ripetibilita,int campo)throws Exception {
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
-					
+			
+		if(classe_strumento!=5) {
 			listaCodici = new String[5];
 			
 			listaCodici[0]="n_ripetizioni";
@@ -1379,6 +1427,14 @@ public class CreateVerRapporto {
 			listaCodici[2]="indicazione";
 			listaCodici[3]="carico_aggiuntivo";
 			listaCodici[4]="p";	
+		}else {
+			listaCodici = new String[4];
+			
+			listaCodici[0]="n_ripetizioni";
+			listaCodici[1]="massa";
+			listaCodici[2]="indicazione";			
+			listaCodici[3]="p";	
+		}			
 
 			dataSource = new DRDataSource(listaCodici);			
 		
@@ -1399,10 +1455,12 @@ public class CreateVerRapporto {
 					}else {
 						arrayPs.add("");
 					}
-					if(item.getCaricoAgg()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().stripTrailingZeros().toPlainString()));	
-					}else {
-						arrayPs.add("");
+					if(classe_strumento!=5) {
+						if(item.getCaricoAgg()!=null) {
+							arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().stripTrailingZeros().toPlainString()));	
+						}else {
+							arrayPs.add("");
+						}
 					}
 					if(item.getPortata()!=null) {
 						arrayPs.add(Utility.changeDotComma(item.getPortata().setScale(risoluzione+1).toPlainString()));
@@ -1425,7 +1483,9 @@ public class CreateVerRapporto {
 	private JRDataSource createDataSourceDecentramento(ArrayList<VerDecentramentoDTO> lista_decentramento, int campo)throws Exception {
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
-					
+
+		if(classe_strumento!=5) {
+			
 			listaCodici = new String[7];			
 			
 			listaCodici[0]="n_posizione";
@@ -1435,6 +1495,18 @@ public class CreateVerRapporto {
 			listaCodici[4]="e";
 			listaCodici[5]="ec";
 			listaCodici[6]="mpe";
+		}else {
+			
+			listaCodici = new String[6];			
+			
+			listaCodici[0]="n_posizione";
+			listaCodici[1]="massa";
+			listaCodici[2]="indicazione";			
+			listaCodici[3]="e";
+			listaCodici[4]="ec";
+			listaCodici[5]="mpe";
+		}
+
 
 			dataSource = new DRDataSource(listaCodici);			
 		
@@ -1452,11 +1524,14 @@ public class CreateVerRapporto {
 					}else {
 						arrayPs.add("");
 					}
-					if(item.getCaricoAgg()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().stripTrailingZeros().toPlainString()));
-					}else {
-						arrayPs.add("");
+					if(classe_strumento!=5) {
+						if(item.getCaricoAgg()!=null) {
+							arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().stripTrailingZeros().toPlainString()));
+						}else {
+							arrayPs.add("");
+						}
 					}
+					
 					if(item.getErrore()!=null) {
 						arrayPs.add(Utility.changeDotComma(item.getErrore().setScale(risoluzione+1).toPlainString()));	
 					}else {
@@ -1468,7 +1543,7 @@ public class CreateVerRapporto {
 						arrayPs.add("");
 					}
 					if(item.getMpe()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getMpe().setScale(risoluzione+1).toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
@@ -1487,6 +1562,7 @@ public class CreateVerRapporto {
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
 					
+		if(classe_strumento!=5) {
 			listaCodici = new String[11];			
 			
 			listaCodici[0]="rif";
@@ -1500,6 +1576,21 @@ public class CreateVerRapporto {
 			listaCodici[8]="ec_up";
 			listaCodici[9]="ec_down";
 			listaCodici[10]="mpe";
+		}else {
+			
+			listaCodici = new String[9];			
+			
+			listaCodici[0]="rif";
+			listaCodici[1]="massa";
+			listaCodici[2]="indicazione_up";
+			listaCodici[3]="indicazione_down";
+			listaCodici[4]="e_up";
+			listaCodici[5]="e_down";
+			listaCodici[6]="ec_up";
+			listaCodici[7]="ec_down";
+			listaCodici[8]="mpe";
+		}
+			
 			
 			dataSource = new DRDataSource(listaCodici);			
 			int rif = 0;
@@ -1522,16 +1613,20 @@ public class CreateVerRapporto {
 					}else {
 						arrayPs.add("");
 					}
-					if(item.getCaricoAggSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAggSalita().stripTrailingZeros().toPlainString()));
-					}else {
-						arrayPs.add("");
+					
+					if(classe_strumento!=5) {
+						if(item.getCaricoAggSalita()!=null) {
+							arrayPs.add(Utility.changeDotComma(item.getCaricoAggSalita().stripTrailingZeros().toPlainString()));
+						}else {
+							arrayPs.add("");
+						}
+						if(item.getCaricoAggDiscesa()!=null) {
+							arrayPs.add(Utility.changeDotComma(item.getCaricoAggDiscesa().stripTrailingZeros().toPlainString()));
+						}else {
+							arrayPs.add("");
+						}
 					}
-					if(item.getCaricoAggDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAggDiscesa().stripTrailingZeros().toPlainString()));
-					}else {
-						arrayPs.add("");
-					}
+					
 					if(item.getErroreSalita()!=null) {
 						arrayPs.add(Utility.changeDotComma(item.getErroreSalita().setScale(risoluzione+1).toPlainString()));
 					}else {
@@ -1553,7 +1648,7 @@ public class CreateVerRapporto {
 						arrayPs.add("");
 					}
 					if(item.getMpe()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getMpe().setScale(risoluzione+1).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
@@ -1712,8 +1807,16 @@ private JRDataSource createDataSourceMobilita(ArrayList<VerMobilitaDTO> lista_mo
 private String getClassePrecisione(int classe) {
 	
 	String cl = "";
-	for(int i = 0; i<classe; i++) {
-		cl = cl +"I";
+	
+	if(classe == 5) {
+		cl = "I";
+		
+	}else {
+		
+		for(int i = 0; i<classe; i++) {
+			cl = cl +"I";
+		}
+		
 	}
 	return cl;
 	

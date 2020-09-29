@@ -518,11 +518,18 @@ public class CreateVerCertificato {
 	private String getClassePrecisione(int classe) {
 		
 		String cl = "";
-		for(int i = 0; i<classe; i++) {
-			cl = cl +"I";
+		
+		if(classe == 5) {
+			cl = "I";
+			
+		}else {
+			
+			for(int i = 0; i<classe; i++) {
+				cl = cl +"I";
+			}
+			
 		}
 		return cl;
-		
 	}
 	
 	public static void main(String[] args) throws Exception {

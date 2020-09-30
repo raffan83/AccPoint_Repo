@@ -80,6 +80,12 @@
                    <a class="pull-right">${cliente.numeroREA}</a>
                   </c:if>
                 </li>
+                 <li class="list-group-item">
+                <b>Intervento</b>
+                 
+                   
+                 <a class="btn customTooltip customlink pull-right"  href="gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(misura.verIntervento.id)}" >${misura.verIntervento.id }</a>
+                </li>
 
         </ul>
 
@@ -1407,6 +1413,15 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
   </div>
   </c:if>
   
+  
+  <c:if test="${misura.verStrumento.tipo.id==2 }">
+    <div class="row">
+  <div class="col-xs-12">
+  <b>Campo secondario</b>
+  </div>
+  </div>
+  </c:if>
+  
   <div class="row">
   <div class="col-xs-8">
   
@@ -1474,11 +1489,16 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
   </div>
   
   
- <c:if test="${misura.verStrumento.tipo.id==3 }"> 
+ <c:if test="${misura.verStrumento.tipo.id==3 || misura.verStrumento.tipo.id==2}"> 
 
     <div class="row">
   <div class="col-xs-12">
+  <c:if test="${misura.verStrumento.tipo.id==3}">
   <b>Campo 2</b>
+  </c:if>
+  <c:if test="${misura.verStrumento.tipo.id==2}">
+  <b>Campo principale</b>
+  </c:if>
   </div>
   </div>
 
@@ -1637,6 +1657,15 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 </div>
 </div>
 </c:if>
+
+<c:if test="${misura.verStrumento.tipo.id==2 }">
+<div class="row">
+<div class="col-xs-12">
+<b>Campo secondario</b>
+</div>
+</div>
+</c:if>
+
 <div class="row">
 <div class="col-xs-4"></div>
 
@@ -1649,8 +1678,14 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 <c:when test="${lista_decentramento.get(0).tipoRicettore == 1}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_1.png" style="height:70px">
 </c:when>
-<c:otherwise>
+<c:when test="${lista_decentramento.get(0).tipoRicettore == 2}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_2.png" style="height:70px">
+</c:when>
+<c:when test="${lista_decentramento.get(0).tipoRicettore == 3}">
+<img class="img" src="./images/tipo_ricettori_carico/tipo_3.png" style="height:70px">
+</c:when>
+<c:otherwise>
+<img class="img" src="./images/tipo_ricettori_carico/tipo_4.png" style="height:70px">
 </c:otherwise>
 </c:choose>
 </div>
@@ -1749,10 +1784,18 @@ ${lista_decentramento.get(1).puntiAppoggio}
 
 
 
-<c:if test="${misura.verStrumento.tipo.id==3 }">
+<c:if test="${misura.verStrumento.tipo.id==3 ||misura.verStrumento.tipo.id==2}">
 <div class="row">
 <div class="col-xs-12">
+<c:if test="${misura.verStrumento.tipo.id==3}">
 <b>Campo 2</b>
+</c:if>
+
+<c:if test="${misura.verStrumento.tipo.id==2}">
+<b>Campo principale</b>
+</c:if>
+
+
 </div>
 </div>
 
@@ -1768,8 +1811,14 @@ ${lista_decentramento.get(1).puntiAppoggio}
 <c:when test="${lista_decentramento.get(10).tipoRicettore == 1}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_1.png" style="height:70px">
 </c:when>
-<c:otherwise>
+<c:when test="${lista_decentramento.get(10).tipoRicettore == 2}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_2.png" style="height:70px">
+</c:when>
+<c:when test="${lista_decentramento.get(10).tipoRicettore == 3}">
+<img class="img" src="./images/tipo_ricettori_carico/tipo_3.png" style="height:70px">
+</c:when>
+<c:otherwise>
+<img class="img" src="./images/tipo_ricettori_carico/tipo_4.png" style="height:70px">
 </c:otherwise>
 </c:choose>
 </div>
@@ -1879,8 +1928,14 @@ ${lista_decentramento.get(11).puntiAppoggio}
 <c:when test="${lista_decentramento.get(20).tipoRicettore == 1}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_1.png" style="height:70px">
 </c:when>
-<c:otherwise>
+<c:when test="${lista_decentramento.get(20).tipoRicettore == 2}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_2.png" style="height:70px">
+</c:when>
+<c:when test="${lista_decentramento.get(20).tipoRicettore == 3}">
+<img class="img" src="./images/tipo_ricettori_carico/tipo_3.png" style="height:70px">
+</c:when>
+<c:otherwise>
+<img class="img" src="./images/tipo_ricettori_carico/tipo_4.png" style="height:70px">
 </c:otherwise>
 </c:choose>
 </div>
@@ -1981,10 +2036,15 @@ ${lista_decentramento.get(21).puntiAppoggio}
 
 
 <div class="tab-pane table-responsive" id="linearita">
-<c:if test="${misura.verStrumento.tipo.id==3 }">
+<c:if test="${misura.verStrumento.tipo.id==3 || misura.verStrumento.tipo.id==2}">
 <div class="row">
 <div class="col-xs-12">
+<c:if test="${misura.verStrumento.tipo.id==3 }">
 <b>Campo 1</b>
+</c:if>
+<c:if test="${misura.verStrumento.tipo.id==2 }">
+<b>Campo secondario</b>
+</c:if>
 </div>
 </div>
 </c:if>
@@ -2070,11 +2130,16 @@ Non automatico o semiautomatico
 <br>
 
 
-<c:if test="${misura.verStrumento.tipo.id==3 }">
+<c:if test="${misura.verStrumento.tipo.id==3 || misura.verStrumento.tipo.id==2}">
 
 <div class="row">
 <div class="col-xs-12">
+<c:if test="${misura.verStrumento.tipo.id==3 }">
 <b>Campo 2</b>
+</c:if>
+<c:if test="${misura.verStrumento.tipo.id==2 }">
+<b>Campo principale</b>
+</c:if>
 </div>
 </div>
 
@@ -2259,10 +2324,15 @@ Non automatico o semiautomatico
 
 <div class="tab-pane table-responsive" id="accuratezza">
 
-<c:if test="${misura.verStrumento.tipo.id==3 }">
+<c:if test="${misura.verStrumento.tipo.id==3 || misura.verStrumento.tipo.id==2 }">
 <div class="row">
 <div class="col-xs-12">
+<c:if test="${misura.verStrumento.tipo.id==3 }">
 <b>Campo 1</b>
+</c:if>
+<c:if test="${misura.verStrumento.tipo.id==2 }">
+<b>Campo secondario</b>
+</c:if>
 </div>
 </div>
 </c:if>
@@ -2328,11 +2398,16 @@ Non automatico o semiautomatico
 </div>
 <br>
 
-<c:if test="${misura.verStrumento.tipo.id==3 }">
+<c:if test="${misura.verStrumento.tipo.id==3 || misura.verStrumento.tipo.id==2}">
 
 <div class="row">
 <div class="col-xs-12">
+<c:if test="${misura.verStrumento.tipo.id==3 }">
 <b>Campo 2</b>
+</c:if>
+<c:if test="${misura.verStrumento.tipo.id==2 }">
+<b>Campo principale</b>
+</c:if>
 </div>
 </div>
 
@@ -2398,7 +2473,7 @@ Non automatico o semiautomatico
 </div>
 <br>
 
-
+<c:if test="${item.campo == 3 && item.massa!=null }">
 <div class="row">
 <div class="col-xs-12">
 <b>Campo 3</b>
@@ -2467,17 +2542,23 @@ Non automatico o semiautomatico
 </div>
 <br>
 </c:if>
-
+</c:if>
 </div>			 
 
 
 
 <div class="tab-pane table-responsive" id="mobilita">
 
-<c:if test="${misura.verStrumento.tipo.id==3 }">
+<c:if test="${misura.verStrumento.tipo.id==3 || misura.verStrumento.tipo.id==2 }">
 <div class="row">
 <div class="col-xs-12">
+<c:if test="${misura.verStrumento.tipo.id==3}">
 <b>Campo 1</b>
+</c:if>
+
+<c:if test="${misura.verStrumento.tipo.id==2}">
+<b>Campo secondario</b>
+</c:if>
 </div>
 </div>
 </c:if>
@@ -2621,11 +2702,16 @@ Non automatico o semiautomatico
 <br>
  </c:if>
 
-<c:if test="${misura.verStrumento.tipo.id==3 }">
+<c:if test="${misura.verStrumento.tipo.id==3 || misura.verStrumento.tipo.id==2}">
  <c:if test="${lista_mobilita.get(6)!=null && lista_mobilita.get(6).massa!=null }">
 <div class="row">
 <div class="col-xs-12">
+<c:if test="${misura.verStrumento.tipo.id==3}"> 
 <b>Campo 2</b>
+</c:if>
+<c:if test="${misura.verStrumento.tipo.id==2}"> 
+<b>Campo principale</b>
+</c:if>
 </div>
 </div>
 

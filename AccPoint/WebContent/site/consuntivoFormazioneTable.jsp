@@ -143,7 +143,7 @@ ${corso.getListaPartecipanti().iterator().next().getNome_sede()}
 	 var tot_partecipanti = 0;
 	 var tot_ore = 0;
 	 
-	 var data = table.rows().data();
+	 var data = table.rows({ search: 'applied' }).data();
 	 
 	 for(var i = 0; i<data.length; i++){
 		 
@@ -265,6 +265,7 @@ ${corso.getListaPartecipanti().iterator().next().getNome_sede()}
 	          .column( colIdx )
 	          .search( this.value )
 	          .draw();
+	      sommaDati();
 	  } );
 	} );  
 	

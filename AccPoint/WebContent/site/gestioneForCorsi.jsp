@@ -815,6 +815,7 @@ $('input:checkbox').on('ifToggled', function() {
 		$(id).on('ifUnchecked', function(event) {
 			
 			  setVisibilita(id, 0);
+			  
 			
 		});
 	}
@@ -903,7 +904,7 @@ $(document).ready(function() {
 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 		        }
 	        },
-	        pageLength: 25,
+	        pageLength: 100,
 	        "order": [[ 0, "desc" ]],
 		      paging: true, 
 		      ordering: true,
@@ -977,9 +978,12 @@ $(document).ready(function() {
     		if(id!=''&& id!='checkall' && id!='check_e_learning' && id!='check_e_learning_mod'){
     			console.log(id);
     			id="#"+id;
+    			if($(id).prop('checked')== false){
+    				
     			$(id).iCheck('check');        			    			
         		
-    				  setVisibilita(id, 1);      			    		
+    				  setVisibilita(id, 1);
+    			}
 
     		}
     	
@@ -994,13 +998,15 @@ $(document).ready(function() {
     	$('input:checkbox').each(function(){
     		
     		var id =$(this)[0].id;
-    		console.log($(this)[0].id);
+    		
     		if(id!=''&& id!='checkall' && id!='check_e_learning' && id!='check_e_learning_mod'){
     				
     			id="#"+id;
+    			if($(id).prop('checked')== true){
     			$(id).iCheck('uncheck');        			    			
      		
-    			  setVisibilita(id, 0);      			    		
+    			  setVisibilita(id, 0);   
+    			}
 
     		}
     	

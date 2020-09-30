@@ -181,12 +181,9 @@
 
 <c:if test="${corso.questionario!= null && corso.questionario.salvato==1 }">
 
-<c:if test=" ${!userObj.checkRuolo('F2')}">
+
 <a class="btn btn-primary pull-right" onClick="callAction('gestioneFormazione.do?action=questionario&id_corso=${utl:encryptData(corso.id)}')"><i class="fa fa-edit"></i> Visualizza o modifica questionario</a>
-</c:if>
-<c:if test=" ${userObj.checkRuolo('F2')}">
-<a class="btn btn-primary pull-right" onClick="callAction('gestioneFormazione.do?action=questionario&id_corso=${utl:encryptData(corso.id)}')"><i class="fa fa-edit"></i> Visualizza questionario</a>
-</c:if>
+
 </c:if>
 
 </div>

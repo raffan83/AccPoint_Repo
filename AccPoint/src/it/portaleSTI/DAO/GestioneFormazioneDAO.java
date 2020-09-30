@@ -346,7 +346,7 @@ public class GestioneFormazioneDAO {
 
 		ArrayList<ForCorsoDTO> lista = null;		
 
-		Query query =  session.createQuery("select distinct corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede = :_id_sede"); 
+		Query query =  session.createQuery("select distinct corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede = :_id_sede and visibile='1'"); 
 		query.setParameter("_id_cliente", idCliente);	
 		query.setParameter("_id_sede", idSede);
 			

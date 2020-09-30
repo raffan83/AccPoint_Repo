@@ -34,7 +34,7 @@
 <div class="row">
       <div class="col-xs-12">
 
- <div class="box box-danger box-solid">
+ <div class="box box-primary box-solid">
 <div class="box-header with-border">
 	Scadenzario Corsi
 	<div class="box-tools pull-right">

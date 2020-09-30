@@ -1415,6 +1415,27 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.getTransaction().commit();
 				session.close();
 			}
+			else if(action.equals("visibilita")) {
+				
+				ajax = true;
+								
+				String id_corso = request.getParameter("id_corso");
+				String visibile = request.getParameter("visibile");
+				
+				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso), session);
+				corso.setVisibile(Integer.parseInt(visibile));				
+				
+				session.update(corso);				
+
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				
+				myObj.addProperty("success", true);
+				
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+			}
 
 			
 		}catch(Exception e) {

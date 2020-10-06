@@ -635,6 +635,11 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 	
 	private static  String sqlCreatStrListVER = "CREATE TABLE ver_lista_matricole(matricola varchar(255))";
 	
+	private static String sqlMassa_tabAttivita="CREATE TABLE tbAttivita(ID Integer primary key, "+
+			 "descrizione varchar(2048), "+
+			 "note varchar(2048), "+
+			 "um varchar(48), "+
+			 "quantita int(8))";
 	
 	
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
@@ -704,6 +709,9 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement pstSicurezzaElettrica=con.prepareStatement(sqlCreateSicurezzaElettrica);
 	pstSicurezzaElettrica.execute();
+	
+	PreparedStatement pstAttivita=con.prepareStatement(sqlMassa_tabAttivita);
+	pstAttivita.execute();
 	
 	}
 	

@@ -77,7 +77,7 @@ public class ScaricaPacchettoDirect extends HttpServlet {
 		 InterventoDTO intervento = new InterventoDTO();
 		 intervento.setNome_sede(nomeSede);
 		 
-		 String filename = GestioneStrumentoBO.creaPacchetto(Integer.parseInt(idC),Integer.parseInt(idS),cmp,nomeCliente,session,intervento);
+		 String filename = GestioneStrumentoBO.creaPacchetto(Integer.parseInt(idC),Integer.parseInt(idS),cmp,nomeCliente,session,intervento,null);
 		  
 		 response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
 			

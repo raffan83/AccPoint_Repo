@@ -574,9 +574,14 @@ public class DirectMySqlDAO {
 
 			for ( AttivitaMilestoneDTO attivita : commessa.getListaAttivita()) {
 
-
+				String descrizione=attivita.getDescrizioneArticolo();if(descrizione==null)descrizione="";
+				String note=attivita.getNoteAttivita();if(note==null)note="";
+				String um=attivita.getUnitaMisura();if(um==null)um="";
+				String quantita=attivita.getQuantita();if(quantita==null)quantita="";
+				
+				
 				String sqlInsert="INSERT INTO tbAttivita(descrizione,note,um,quantita) VALUES("
-						+ "\""+attivita.getDescrizioneAttivita()+"\",\""+attivita.getNoteAttivita()+"\",\""+attivita.getUnitaMisura()+"\",\""+attivita.getQuantita()+"\")";
+						+ "\""+descrizione+"\",\""+note+"\",\""+um+"\",\""+quantita+"\")";
 
 				pstINS=conSQLLite.prepareStatement(sqlInsert);
 

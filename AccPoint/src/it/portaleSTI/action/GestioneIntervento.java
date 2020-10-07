@@ -172,7 +172,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 			intervento.setCompany(cmp);
 			
-			String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN_UTIL(),comm.getK2_ANAGEN_INDR_UTIL(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
+			String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN_UTIL(),comm.getK2_ANAGEN_INDR_UTIL(),cmp,comm.getID_ANAGEN_NOME(),session,intervento,comm);
 			
 			intervento.setNomePack(filename);
 			

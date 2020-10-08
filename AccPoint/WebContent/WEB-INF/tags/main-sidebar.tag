@@ -336,7 +336,7 @@
             </span>
           </a>
           <ul class="treeview-menu">          	
-			<li><a href="downloadCalver.do?action=calverdesktop">DasmTar v2.1.0</a></li>
+			<li><a href="downloadCalver.do?action=calverdesktop">DasmTar v2.1.1</a></li>
 			<li><a href="downloadCalver.do?action=dasmtarLat">DasmTarLAT v1.0.1</a></li>
 			<li><a href="downloadCalver.do?action=sicurettaElettrica">DasmTarSE v0.0.1</a></li>
 			<li><a href="downloadCalver.do?action=dasmtarVerificazione">DasmTarVER v2.0.2</a></li>

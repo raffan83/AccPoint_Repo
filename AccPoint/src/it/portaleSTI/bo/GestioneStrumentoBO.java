@@ -1,42 +1,35 @@
 package it.portaleSTI.bo;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.commons.fileupload.FileItem;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+
 import it.portaleSTI.DAO.DirectMySqlDAO;
-import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
-import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
-import it.portaleSTI.DTO.FornitoreDTO;
-import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
-
-import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.commons.fileupload.FileItem;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
 
 public class GestioneStrumentoBO {
@@ -83,7 +76,7 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getListaTipiMisura(tpS);
 	}
 
-	public static String creaPacchetto(int idCliente, int idSede, CompanyDTO cmp, String nomeCliente, Session session,InterventoDTO intervento ) throws Exception {
+	public static String creaPacchetto(int idCliente, int idSede, CompanyDTO cmp, String nomeCliente, Session session,InterventoDTO intervento,CommessaDTO commessa ) throws Exception {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
 
@@ -121,6 +114,10 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertTipoStrumento(con);
 		
+		if(commessa!=null) 
+		{
+			DirectMySqlDAO.insertListaAttivita(con,commessa);
+		}
 		if(intervento.getNome_sede()!=null && intervento.getNome_sede().length()>0)
 		{
 			DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
@@ -241,7 +238,7 @@ public class GestioneStrumentoBO {
 //		session.save(scadenza);
 //	}
 	
-	public static String creaPacchettoConNome(int idCliente,int idSede, CompanyDTO cmp,String nomeCliente, Session session,InterventoDTO intervento) throws Exception, SQLException {
+	public static String creaPacchettoConNome(int idCliente,int idSede, CompanyDTO cmp,String nomeCliente, Session session,InterventoDTO intervento,CommessaDTO com) throws Exception, SQLException {
 
 		Connection con=null;
 		
@@ -285,6 +282,8 @@ public class GestioneStrumentoBO {
 		DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
 		
 		DirectMySqlDAO.insertLuogoVerifica(con);
+		
+		DirectMySqlDAO.insertListaAttivita(con,com);
 		
 		con.close();
 		}catch (Exception e) {

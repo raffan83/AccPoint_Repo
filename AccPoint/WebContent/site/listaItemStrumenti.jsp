@@ -393,7 +393,7 @@ $('#close_button_modal').on('click', function(){
 	   
 	   
 	   
- table = $('#tabStrumentiItem').DataTable({
+ tableStr = $('#tabStrumentiItem').DataTable({
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -441,23 +441,23 @@ $('#close_button_modal').on('click', function(){
 	    	
 	    });
 	
- table.buttons().container().appendTo( '#tabStrumentiItem_wrapper .col-sm-6:eq(1)');
+ tableStr.buttons().container().appendTo( '#tabStrumentiItem_wrapper .col-sm-6:eq(1)');
 
 	    $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
 	    });
 //DataTable
-table = $('#tabStrumentiItem').DataTable();
+tableStr = $('#tabStrumentiItem').DataTable();
 //Apply the search
-table.columns().eq( 0 ).each( function ( colIdx ) {
+tableStr.columns().eq( 0 ).each( function ( colIdx ) {
 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-   table
+	tableStr
        .column( colIdx )
        .search( this.value )
        .draw();
 } );
 } ); 
-	table.columns.adjust().draw();
+tableStr.columns.adjust().draw();
 	
 
 $('#tabStrumentiItem').on( 'page.dt', function () {

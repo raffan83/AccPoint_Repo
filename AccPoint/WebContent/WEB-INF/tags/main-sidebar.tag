@@ -45,6 +45,7 @@
            <% if(user.checkPermesso("SCHEDE_CONSEGNA")){%>
             <li><a href="listaSchedeConsegna.do">Schede di Consegna</a></li>
              <% }%>
+              <li><a href="#" onclick="callAction('gestioneIntervento.do?action=stato_consegna_interventi',null,true);">Stato Consegna Interventi</a></li>
           </ul>
         </li>
          <% }%>

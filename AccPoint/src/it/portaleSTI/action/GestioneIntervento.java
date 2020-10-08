@@ -533,6 +533,18 @@ public class GestioneIntervento extends HttpServlet {
 				out.print(myObj);		
 			
 		}
+		
+		else if(action.equals("stato_consegna_interventi")) {
+			
+			ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListaInterventiConsegna(session);
+			
+			request.getSession().setAttribute("listaInterventi", lista_interventi);
+
+
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaConsegnaInterventi.jsp");
+	     	dispatcher.forward(request,response);
+			
+		}
 	
 			session.getTransaction().commit();
 			session.close();	

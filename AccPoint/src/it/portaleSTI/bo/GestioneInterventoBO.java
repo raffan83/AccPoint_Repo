@@ -1032,6 +1032,11 @@ public class GestioneInterventoBO {
 		
 	}
 
+	public static ArrayList<InterventoDTO> getListaInterventiConsegna(Session session) {
+		
+		return GestioneInterventoDAO.getListaInterventiConsegna(session);
+	}
+
 
 
 	

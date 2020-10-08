@@ -569,5 +569,21 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 
 
 
+	public static ArrayList<InterventoDTO> getListaInterventiConsegna(Session session) {
+			
+		ArrayList<InterventoDTO> lista=null;
+
+
+	    Query query = session.createQuery("from InterventoDTO a where a.statoIntervento.id = 2 AND NOT EXISTS (SELECT b.intervento.id  from SchedaConsegnaDTO b where a.id = b.intervento.id)");
+
+	    lista=(ArrayList<InterventoDTO>)query.list();
+		
+		return lista;
+		
+		
+	}
+
+
+
 
 }

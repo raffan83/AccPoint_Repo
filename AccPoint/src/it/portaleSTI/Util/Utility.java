@@ -81,6 +81,7 @@ import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Sec.AsymmetricCryptography;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
@@ -1852,4 +1853,57 @@ public class Utility extends HttpServlet {
 				return flag;
 			}
 		
+			
+			public static BigDecimal getE(int campo, VerStrumentoDTO strumento, BigDecimal carico)
+			{
+
+				BigDecimal e = BigDecimal.ZERO;
+				
+				int id_tipo_strumento = strumento.getTipo().getId();
+				
+				if(id_tipo_strumento==1) 
+				{
+					e=strumento.getDiv_ver_C1().stripTrailingZeros();
+				}
+
+
+				if(id_tipo_strumento==2 ) 
+				{
+					if(carico.doubleValue()>=0 && carico.doubleValue() <=strumento.getPortata_max_C1().doubleValue()) 
+					{
+						e=strumento.getDiv_ver_C1().stripTrailingZeros();
+						return e;
+					}
+					if( strumento.getPortata_min_C2().doubleValue()!=0 && carico.doubleValue()>=strumento.getPortata_min_C2().doubleValue() && carico.doubleValue() <=strumento.getPortata_max_C2().doubleValue()) 
+					{
+						e=strumento.getDiv_ver_C2().stripTrailingZeros();
+						return e;
+					}
+					if(strumento.getPortata_min_C3().doubleValue()!=0 && carico.doubleValue()>strumento.getPortata_min_C3().doubleValue() && carico.doubleValue() <=strumento.getPortata_max_C3().doubleValue()) 
+					{
+						e=strumento.getDiv_ver_C3().stripTrailingZeros();
+						return e;
+					}
+				}
+
+				if(id_tipo_strumento==3) 
+				{
+					if(campo==0) 
+					{
+						e=strumento.getDiv_ver_C1().stripTrailingZeros();
+					}
+					if(campo==1) 
+					{
+						e=strumento.getDiv_ver_C2().stripTrailingZeros();
+					}
+					if(campo==2) 
+					{
+						e=strumento.getDiv_ver_C3().stripTrailingZeros();
+					}
+				}
+
+
+				return e;
+			}
+			
 }

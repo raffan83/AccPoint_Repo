@@ -5,6 +5,7 @@
 <%@page import="com.google.gson.Gson"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.math.BigDecimal"%>
+<%@page import="java.math.RoundingMode"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -146,15 +147,15 @@
                 	<li class="list-group-item">                
 		                <c:choose>
 		                <c:when test="${misura.verStrumento.tipo.id == 1}">
-		                 <b>Portata massima (Max)</b> <a class="pull-right">${misura.verStrumento.portata_max_C1}</a>
+		                 <b>Portata massima (Max)</b> <a class="pull-right">${misura.verStrumento.portata_max_C1.stripTrailingZeros().toPlainString()}</a>
 		                </c:when>
 		                <c:when test="${misura.verStrumento.tipo.id == 2}">
 		                <c:choose>
 		               <c:when test="${misura.verStrumento.portata_max_C3 !=null && misura.verStrumento.portata_max_C3>0}">
-		               		 <b>Portata massima (Max)</b> <a class="pull-right">${misura.verStrumento.portata_max_C3}</a>
+		               		 <b>Portata massima (Max)</b> <a class="pull-right">${misura.verStrumento.portata_max_C3.stripTrailingZeros().toPlainString()}</a>
 		                </c:when>
 		                <c:otherwise>
-		                <b>Portata massima (Max)</b> <a class="pull-right">${misura.verStrumento.portata_max_C2}</a>
+		                <b>Portata massima (Max)</b> <a class="pull-right">${misura.verStrumento.portata_max_C2.stripTrailingZeros().toPlainString()}</a>
 		                </c:otherwise>
 		                 </c:choose>
 		                </c:when>		               
@@ -162,17 +163,17 @@
 	                </li>
              
                 <li class="list-group-item">
-               	 <b>Portata minima (Min)</b> <a class="pull-right">${misura.verStrumento.portata_min_C1}</a>
+               	 <b>Portata minima (Min)</b> <a class="pull-right">${misura.verStrumento.portata_min_C1.stripTrailingZeros().toPlainString()}</a>
                </li>
                <c:if test="${misura.verStrumento.tipo.id == 1 }">
                <li class="list-group-item">
-               	 <b>Divisione di verifica (e)</b> <a class="pull-right">${misura.verStrumento.div_ver_C1}</a>
+               	 <b>Divisione di verifica (e)</b> <a class="pull-right">${misura.verStrumento.div_ver_C1.stripTrailingZeros().toPlainString()}</a>
                </li>
                <li class="list-group-item">
-               	 <b>Divisione reale (d)</b> <a class="pull-right">${misura.verStrumento.div_rel_C1}</a>
+               	 <b>Divisione reale (d)</b> <a class="pull-right">${misura.verStrumento.div_rel_C1.stripTrailingZeros().toPlainString()}</a>
                </li>
                <li class="list-group-item">
-               	 <b>Numero div. di verif. (n)</b> <a class="pull-right">${misura.verStrumento.numero_div_C1}</a>
+               	 <b>Numero div. di verif. (n)</b> <a class="pull-right">${misura.verStrumento.numero_div_C1.stripTrailingZeros().toPlainString()}</a>
                </li>
                </c:if>
    		</c:if>
@@ -186,17 +187,17 @@
  <tbody> 
  	<tr role="row">
 		<td>e1</td>
-		<td>${misura.verStrumento.div_ver_C1}</td>
+		<td>${misura.verStrumento.div_ver_C1.stripTrailingZeros().toPlainString()}</td>
 	</tr>
 	<tr role="row">
 		<td>e2</td>
-		<td>${misura.verStrumento.div_ver_C2}</td>
+		<td>${misura.verStrumento.div_ver_C2.stripTrailingZeros().toPlainString()}</td>
 	
 	</tr>
 	<c:if test="${misura.verStrumento.div_ver_C3!=0 }">
 	<tr role="row">
 		<td>e3</td>
-	<td>${misura.verStrumento.div_ver_C3}</td>
+	<td>${misura.verStrumento.div_ver_C3.stripTrailingZeros().toPlainString()}</td>
 	
 	</tr>
 	</c:if> 
@@ -210,17 +211,17 @@
  <tbody> 
  	<tr role="row">
 		<td>d1</td>
-		<td>${misura.verStrumento.div_rel_C1}</td>
+		<td>${misura.verStrumento.div_rel_C1.stripTrailingZeros().toPlainString()}</td>
 	</tr>
 	<tr role="row">
 		<td>d2</td>
-		<td>${misura.verStrumento.div_rel_C2}</td>
+		<td>${misura.verStrumento.div_rel_C2.stripTrailingZeros().toPlainString()}</td>
 	
 	</tr>
 	<c:if test="${misura.verStrumento.div_rel_C3!=0 }">
 	<tr role="row">
 		<td>d3</td>
-	<td>${misura.verStrumento.div_rel_C3}</td>
+	<td>${misura.verStrumento.div_rel_C3.stripTrailingZeros().toPlainString()}</td>
 	
 	</tr>
 	</c:if> 
@@ -235,17 +236,17 @@
  <tbody> 
  	<tr role="row">
 		<td>n1</td>
-		<td>${misura.verStrumento.numero_div_C1}</td>
+		<td>${misura.verStrumento.numero_div_C1.stripTrailingZeros().toPlainString()}</td>
 	</tr>
 	<tr role="row">
 		<td>n2</td>
-		<td>${misura.verStrumento.numero_div_C2}</td>
+		<td>${misura.verStrumento.numero_div_C2.stripTrailingZeros().toPlainString()}</td>
 	
 	</tr>
 	<c:if test="${misura.verStrumento.numero_div_C3!=0 }">
 	<tr role="row">
 		<td>n3</td>
-	<td>${misura.verStrumento.numero_div_C3}</td>
+	<td>${misura.verStrumento.numero_div_C3.stripTrailingZeros().toPlainString()}</td>
 	
 	</tr>
 	</c:if> 
@@ -265,17 +266,17 @@
  <tbody> 
  	<tr role="row">
 		<td>Min1 = Min</td>
-		<td>${misura.verStrumento.portata_min_C1}</td>
+		<td>${misura.verStrumento.portata_min_C1.stripTrailingZeros().toPlainString()}</td>
 	</tr>
 	<tr role="row">
 		<td>Min2</td>
-		<td>${misura.verStrumento.portata_min_C2}</td>
+		<td>${misura.verStrumento.portata_min_C2.stripTrailingZeros().toPlainString()}</td>
 	
 	</tr>
 	<c:if test="${misura.verStrumento.portata_min_C3!=0 }">
 	<tr role="row">
 		<td>Min3</td>
-	<td>${misura.verStrumento.portata_min_C3}</td>
+	<td>${misura.verStrumento.portata_min_C3.stripTrailingZeros().toPlainString()}</td>
 	
 	</tr>
 	</c:if> 
@@ -289,17 +290,17 @@
  <tbody> 
  	<tr role="row">
 		<td>Max1</td>
-		<td>${misura.verStrumento.portata_max_C1}</td>
+		<td>${misura.verStrumento.portata_max_C1.stripTrailingZeros().toPlainString()}</td>
 	</tr>
 	<tr role="row">
 		<td>Max2</td>
-		<td>${misura.verStrumento.portata_max_C2}</td>
+		<td>${misura.verStrumento.portata_max_C2.stripTrailingZeros().toPlainString()}</td>
 	
 	</tr>
 	<c:if test="${misura.verStrumento.portata_max_C3!=0 }">
 	<tr role="row">
 		<td>Max3</td>
-	<td>${misura.verStrumento.portata_max_C3}</td>
+	<td>${misura.verStrumento.portata_max_C3.stripTrailingZeros().toPlainString()}</td>
 	
 	</tr>
 	</c:if> 
@@ -326,39 +327,39 @@
  
 	<tr role="row">
 		<td>Portata massima (Max)</td>
-		<td>${misura.verStrumento.portata_max_C1}</td>
-		<td>${misura.verStrumento.portata_max_C2}</td>
-		<td>${misura.verStrumento.portata_max_C3}</td>
+		<td>${misura.verStrumento.portata_max_C1.stripTrailingZeros().toPlainString()}</td>
+		<td>${misura.verStrumento.portata_max_C2.stripTrailingZeros().toPlainString()}</td>
+		<td>${misura.verStrumento.portata_max_C3.stripTrailingZeros().toPlainString()}</td>
 		
 	</tr>
 	
 	<tr role="row">
 		<td>Portata minima (Min)</td>
-		<td>${misura.verStrumento.portata_min_C1}</td>
-		<td>${misura.verStrumento.portata_min_C2}</td>
-		<td>${misura.verStrumento.portata_min_C3}</td>
+		<td>${misura.verStrumento.portata_min_C1.stripTrailingZeros().toPlainString()}</td>
+		<td>${misura.verStrumento.portata_min_C2.stripTrailingZeros().toPlainString()}</td>
+		<td>${misura.verStrumento.portata_min_C3.stripTrailingZeros().toPlainString()}</td>
 		
 	</tr>
 	
  	<tr role="row">
 		<td>Divisione di verifica (e)</td>
-		<td>${misura.verStrumento.div_ver_C1}</td>
-		<td>${misura.verStrumento.div_ver_C2}</td>
-		<td>${misura.verStrumento.div_ver_C3}</td>
+		<td>${misura.verStrumento.div_ver_C1.stripTrailingZeros().toPlainString()}</td>
+		<td>${misura.verStrumento.div_ver_C2.stripTrailingZeros().toPlainString()}</td>
+		<td>${misura.verStrumento.div_ver_C3.stripTrailingZeros().toPlainString()}</td>
 		
 	</tr>
 	<tr role="row">
 		<td>Divisione reale (d)</td>
-		<td>${misura.verStrumento.div_rel_C1}</td>
-		<td>${misura.verStrumento.div_rel_C2}</td>
-		<td>${misura.verStrumento.div_rel_C3}</td>
+		<td>${misura.verStrumento.div_rel_C1.stripTrailingZeros().toPlainString()}</td>
+		<td>${misura.verStrumento.div_rel_C2.stripTrailingZeros().toPlainString()}</td>
+		<td>${misura.verStrumento.div_rel_C3.stripTrailingZeros().toPlainString()}</td>
 		
 	</tr>
 	<tr role="row">
 		<td>Numero div. di verif. (n)</td>
-		<td>${misura.verStrumento.numero_div_C1}</td>
-		<td>${misura.verStrumento.numero_div_C2}</td>
-		<td>${misura.verStrumento.numero_div_C3}</td>
+		<td>${misura.verStrumento.numero_div_C1.stripTrailingZeros().toPlainString()}</td>
+		<td>${misura.verStrumento.numero_div_C2.stripTrailingZeros().toPlainString()}</td>
+		<td>${misura.verStrumento.numero_div_C3.stripTrailingZeros().toPlainString()}</td>
 		
 	</tr>
  </tbody>
@@ -1431,7 +1432,9 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <th class="text-center">N° Ripetizione</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+ <c:if test="${misura.verStrumento.classe !=5}">
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ </c:if>
  <th class="text-center">P<br>${misura.verStrumento.um }</th>
 
 
@@ -1440,14 +1443,21 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <tbody>
  
  <c:forEach items="${lista_ripetibilita}" var="item" varStatus="loop">
+ 
+ <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+ 
 <c:if test="${item.campo==1 && item.massa!=null }">
 <tr role="row" >
 	
 <td align="center">${item.numeroRipetizione}</td>
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.portata}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString()}</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+ <c:if test="${misura.verStrumento.classe !=5}">
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia,  3)}</td>
+</c:if>
+<td align="center">${item.portata.setScale(risoluzioneBilanciaE0, 3)}</td>
 
 	</tr>
 	</c:if>
@@ -1466,16 +1476,16 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <tbody>
 
 <tr role="row" >
-	
+	<c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
 <td>Pmax - Pmin</td>
-<td>${lista_ripetibilita.get(0).deltaPortata }</td>
+<td>${lista_ripetibilita.get(0).deltaPortata.setScale(risoluzioneBilanciaE0, 3) }</td>
 <td>${misura.verStrumento.um}</td>
 	</tr>
 	
 	<tr role="row" >
 	
 <td>MPE (associato al carico di prova)</td>
-<td>${lista_ripetibilita.get(0).mpe }</td>
+<td>${lista_ripetibilita.get(0).mpe.stripTrailingZeros() }</td>
 <td>${misura.verStrumento.um}</td>
 	</tr>
 
@@ -1521,14 +1531,21 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <tbody>
  
  <c:forEach items="${lista_ripetibilita}" var="item" varStatus="loop">
+ 
+  <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+ 
 <c:if test="${item.campo==2 && item.massa!=null}">
 <tr role="row" >
 	
 <td align="center">${item.numeroRipetizione}</td>
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.portata}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString()}</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+ <c:if test="${misura.verStrumento.classe !=5}">
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia,  3)}</td>
+</c:if>
+<td align="center">${item.portata.setScale(risoluzioneBilanciaE0, 3)}</td>
 
 	</tr>
 	</c:if>
@@ -1547,16 +1564,16 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <tbody>
 
 <tr role="row" >
-	
+	 <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
 <td>Pmax - Pmin</td>
-<td>${lista_ripetibilita.get(6).deltaPortata }</td>
+<td>${lista_ripetibilita.get(6).deltaPortata.setScale(risoluzioneBilanciaE0, 3)  }</td>
 <td>${misura.verStrumento.um}</td>
 	</tr>
 	
 	<tr role="row" >
 	
 <td>MPE (associato al carico di prova)</td>
-<td>${lista_ripetibilita.get(6).mpe }</td>
+<td>${lista_ripetibilita.get(6).mpe.stripTrailingZeros() }</td>
 <td>${misura.verStrumento.um}</td>
 	</tr>
 
@@ -1594,14 +1611,18 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <tbody>
  
  <c:forEach items="${lista_ripetibilita}" var="item" varStatus="loop">
-
+  <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
 <tr role="row" >
 	
 <td align="center">${item.numeroRipetizione}</td>
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.portata}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString()}</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+ <c:if test="${misura.verStrumento.classe !=5}">
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia,  3)}</td>
+</c:if>
+<td align="center">${item.portata.setScale(risoluzioneBilanciaE0, 3)}</td>
 
 	</tr>
 
@@ -1620,16 +1641,17 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <tbody>
 
 <tr role="row" >
-	
+	  <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+
 <td>Pmax - Pmin</td>
-<td>${lista_ripetibilita.get(12).deltaPortata }</td>
+<td>${lista_ripetibilita.get(12).deltaPortata.setScale(risoluzioneBilanciaE0, 3)  }</td>
 <td>${misura.verStrumento.um}</td>
 	</tr>
 	
 	<tr role="row" >
 	
 <td>MPE (associato al carico di prova)</td>
-<td>${lista_ripetibilita.get(12).mpe }</td>
+<td>${lista_ripetibilita.get(12).mpe.stripTrailingZeros() }</td>
 <td>${misura.verStrumento.um}</td>
 	</tr>
 
@@ -1746,7 +1768,14 @@ ${lista_decentramento.get(1).puntiAppoggio}
  <tbody>
  
  <c:forEach items="${lista_decentramento}" var="item" varStatus="loop">
+ 
+
+ 
 <c:if test="${item.campo== 1 && item.massa!=null }">
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
 <tr role="row" >
 
 <c:choose>	
@@ -1758,12 +1787,12 @@ ${lista_decentramento.get(1).puntiAppoggio}
 </c:otherwise>
 </c:choose>
 
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.errore}</td>
-<td align="center">${item.erroreCor}</td>
-<td align="center">${item.mpe}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.erroreCor.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.mpe.stripTrailingZeros()}</td>
 
 
 	</tr>
@@ -1875,7 +1904,14 @@ ${lista_decentramento.get(11).puntiAppoggio}
  <tbody>
  
  <c:forEach items="${lista_decentramento}" var="item" varStatus="loop">
+ 
+
+ 
 <c:if test="${item.campo== 2 && item.massa!=null }">
+
+    <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
 <tr role="row" >
 	
 <c:choose>	
@@ -1886,12 +1922,13 @@ ${lista_decentramento.get(11).puntiAppoggio}
 <td align="center"><fmt:formatNumber value="${item.posizione/2}" maxFractionDigits="0" /></td>
 </c:otherwise>
 </c:choose>
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.errore}</td>
-<td align="center">${item.erroreCor}</td>
-<td align="center">${item.mpe}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.erroreCor.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.mpe.stripTrailingZeros()}</td>
+
 
 
 	</tr>
@@ -1992,7 +2029,13 @@ ${lista_decentramento.get(21).puntiAppoggio}
  <tbody>
  
  <c:forEach items="${lista_decentramento}" var="item" varStatus="loop">
+ 
+ 
 <c:if test="${item.campo== 3 && item.massa!=null }">
+
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
 <tr role="row" >
 	
 <c:choose>	
@@ -2003,12 +2046,12 @@ ${lista_decentramento.get(21).puntiAppoggio}
 <td align="center"><fmt:formatNumber value="${item.posizione/2}" maxFractionDigits="0" /></td>
 </c:otherwise>
 </c:choose>
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.errore}</td>
-<td align="center">${item.erroreCor}</td>
-<td align="center">${item.mpe}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.erroreCor.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.mpe.stripTrailingZeros()}</td>
 
 
 	</tr>
@@ -2098,19 +2141,23 @@ Non automatico o semiautomatico
  </tr>
  <c:forEach items="${lista_linearita}" var="item" varStatus="loop">
 <c:if test="${item.campo==1 && item.massa!=null }">
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
 <tr role="row" >
 	
 <td>${item.riferimento}</td>
-<td>${item.massa }</td>
-<td>${item.indicazioneSalita}</td>
-<td>${item.indicazioneDiscesa}</td>
-<td>${item.caricoAggSalita}</td>
-<td>${item.caricoAggDiscesa}</td>
-<td>${item.erroreSalita}</td>
-<td>${item.erroreDiscesa}</td>
-<td>${item.erroreCorSalita}</td>
-<td>${item.erroreCorDiscesa}</td>
-<td>${item.mpe}</td>
+<td>${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
+<td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
+<td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
+<td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
+<td>${item.erroreSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreCorDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.mpe.stripTrailingZeros()}</td>
 <%-- <td>${item.divisione}</td> --%>
 
 
@@ -2193,19 +2240,25 @@ Non automatico o semiautomatico
  </tr>
  <c:forEach items="${lista_linearita}" var="item" varStatus="loop">
 <c:if test="${item.campo==2 && item.massa!=null }">
+
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
+
 <tr role="row" >
 	
 <td>${item.riferimento}</td>
-<td>${item.massa }</td>
-<td>${item.indicazioneSalita}</td>
-<td>${item.indicazioneDiscesa}</td>
-<td>${item.caricoAggSalita}</td>
-<td>${item.caricoAggDiscesa}</td>
-<td>${item.erroreSalita}</td>
-<td>${item.erroreDiscesa}</td>
-<td>${item.erroreCorSalita}</td>
-<td>${item.erroreCorDiscesa}</td>
-<td>${item.mpe}</td>
+<td>${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
+<td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
+<td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
+<td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
+<td>${item.erroreSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreCorDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.mpe.stripTrailingZeros()}</td>
 <%-- <td>${item.divisione}</td> --%>
 
 
@@ -2284,19 +2337,24 @@ Non automatico o semiautomatico
  </tr>
  <c:forEach items="${lista_linearita}" var="item" varStatus="loop">
 <c:if test="${item.campo==3 && item.massa!=null }">
+
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
 <tr role="row" >
 	
 <td>${item.riferimento}</td>
-<td>${item.massa }</td>
-<td>${item.indicazioneSalita}</td>
-<td>${item.indicazioneDiscesa}</td>
-<td>${item.caricoAggSalita}</td>
-<td>${item.caricoAggDiscesa}</td>
-<td>${item.erroreSalita}</td>
-<td>${item.erroreDiscesa}</td>
-<td>${item.erroreCorSalita}</td>
-<td>${item.erroreCorDiscesa}</td>
-<td>${item.mpe}</td>
+<td>${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
+<td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
+<td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
+<td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
+<td>${item.erroreSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreCorDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.mpe.stripTrailingZeros()}</td>
 <%-- <td>${item.divisione}</td> --%>
 
 
@@ -2373,15 +2431,18 @@ Non automatico o semiautomatico
 
  <c:forEach items="${lista_accuratezza}" var="item" varStatus="loop">
 <c:if test="${item.campo == 1 && item.massa!=null }">
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
 <tr role="row" >
 	
 <td align="center">${item.posizione}</td>
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.errore}</td>
-<td align="center">${item.erroreCor}</td>
-<td align="center">${item.mpe}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.erroreCor.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.mpe.stripTrailingZeros().toPlainString()}</td>
 
 	</tr>
 	</c:if>
@@ -2448,15 +2509,19 @@ Non automatico o semiautomatico
 
  <c:forEach items="${lista_accuratezza}" var="item" varStatus="loop">
 <c:if test="${item.campo == 2 && item.massa!=null }">
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
 <tr role="row" >
 	
 <td align="center">${item.posizione}</td>
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.errore}</td>
-<td align="center">${item.erroreCor}</td>
-<td align="center">${item.mpe}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.erroreCor.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.mpe.stripTrailingZeros().toPlainString()}</td>
 
 	</tr>
 	</c:if>
@@ -2517,15 +2582,19 @@ Non automatico o semiautomatico
 
  <c:forEach items="${lista_accuratezza}" var="item" varStatus="loop">
 <c:if test="${item.campo == 3 && item.massa!=null }">
+
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
 <tr role="row" >
 	
 <td align="center">${item.posizione}</td>
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.errore}</td>
-<td align="center">${item.erroreCor}</td>
-<td align="center">${item.mpe}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.erroreCor.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.mpe.stripTrailingZeros().toPlainString()}</td>
 
 	</tr>
 	</c:if>
@@ -2595,6 +2664,10 @@ Non automatico o semiautomatico
 
  <c:forEach items="${lista_mobilita}" var="item" varStatus="loop">
 <c:if test="${item.campo==1 && item.caso==1 && item.massa!=null}">
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
 <tr role="row" >
 	
 <c:if test="${item.carico == 1}">
@@ -2607,12 +2680,12 @@ Non automatico o semiautomatico
 <td align="center">Max</td>
 </c:if>
 
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.postIndicazione}</td>
-<td align="center">${item.differenziale}</td>
-<td align="center">${item.divisione}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.postIndicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.differenziale.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.divisione.setScale(risoluzioneBilancia, 3)}</td>
 <td align="center">${item.check_punto}</td>
 
 
@@ -2665,6 +2738,11 @@ Non automatico o semiautomatico
 
  <c:forEach items="${lista_mobilita}" var="item" varStatus="loop">
 <c:if test="${item.campo==1 && item.caso==2 && item.massa!=null}">
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
+
 <tr role="row" >
 	
 <c:if test="${item.carico == 1}">
@@ -2677,12 +2755,12 @@ Non automatico o semiautomatico
 <td align="center">Max</td>
 </c:if>
 
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.postIndicazione}</td>
-<td align="center">${item.differenziale}</td>
-<td align="center">${item.divisione}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.postIndicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.differenziale.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.divisione.setScale(risoluzioneBilancia, 3)}</td>
 <td align="center">${item.check_punto}</td>
 
 
@@ -2746,6 +2824,11 @@ Non automatico o semiautomatico
 
  <c:forEach items="${lista_mobilita}" var="item" varStatus="loop">
 <c:if test="${item.campo==2 && item.caso==1 && item.massa!=null}">
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
+
 <tr role="row" >
 	
 <c:if test="${item.carico == 1}">
@@ -2758,14 +2841,13 @@ Non automatico o semiautomatico
 <td align="center">Max</td>
 </c:if>
 
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.postIndicazione}</td>
-<td align="center">${item.differenziale}</td>
-<td align="center">${item.divisione}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.postIndicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.differenziale.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.divisione.setScale(risoluzioneBilancia, 3)}</td>
 <td align="center">${item.check_punto}</td>
-
 
 	</tr>
 	</c:if>
@@ -2815,6 +2897,12 @@ Non automatico o semiautomatico
 
  <c:forEach items="${lista_mobilita}" var="item" varStatus="loop">
 <c:if test="${item.campo==2 && item.caso==2 && item.massa!=null}">
+
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
+
 <tr role="row" >
 	
 <c:if test="${item.carico == 1}">
@@ -2827,12 +2915,12 @@ Non automatico o semiautomatico
 <td align="center">Max</td>
 </c:if>
 
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.postIndicazione}</td>
-<td align="center">${item.differenziale}</td>
-<td align="center">${item.divisione}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.postIndicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.differenziale.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.divisione.setScale(risoluzioneBilancia, 3)}</td>
 <td align="center">${item.check_punto}</td>
 
 
@@ -2891,6 +2979,12 @@ Non automatico o semiautomatico
 
  <c:forEach items="${lista_mobilita}" var="item" varStatus="loop">
 <c:if test="${item.campo==3 && item.caso==1 && item.massa!=null}">
+
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
+
 <tr role="row" >
 	
 <c:if test="${item.carico == 1}">
@@ -2903,12 +2997,12 @@ Non automatico o semiautomatico
 <td align="center">Max</td>
 </c:if>
 
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.postIndicazione}</td>
-<td align="center">${item.differenziale}</td>
-<td align="center">${item.divisione}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.postIndicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.differenziale.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.divisione.setScale(risoluzioneBilancia, 3)}</td>
 <td align="center">${item.check_punto}</td>
 
 
@@ -2959,6 +3053,12 @@ Non automatico o semiautomatico
 
  <c:forEach items="${lista_mobilita}" var="item" varStatus="loop">
 <c:if test="${item.campo==3 && item.caso==2 && item.massa!=null}">
+
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
+
 <tr role="row" >
 	
 <c:if test="${item.carico == 1}">
@@ -2971,12 +3071,12 @@ Non automatico o semiautomatico
 <td align="center">Max</td>
 </c:if>
 
-<td align="center">${item.massa }</td>
-<td align="center">${item.indicazione}</td>
-<td align="center">${item.caricoAgg}</td>
-<td align="center">${item.postIndicazione}</td>
-<td align="center">${item.differenziale}</td>
-<td align="center">${item.divisione}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.postIndicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.differenziale.setScale(risoluzioneBilancia, 3)}</td>
+<td align="center">${item.divisione.setScale(risoluzioneBilancia, 3)}</td>
 <td align="center">${item.check_punto}</td>
 
 
@@ -3177,26 +3277,7 @@ Non automatico o semiautomatico
     	
     	$('.dropdown-toggle').dropdown();
     	
-    	/*		   $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
 
-
-		       	var  contentID = e.target.id;
-
- 		     	if(contentID == "dettaglioTab"){
-		       		exploreModal("dettaglioStrumento.do","id_str=","#dettaglio");
-		       	}
-		       	if(contentID == "misureTab"){
-		       		exploreModal("strumentiMisurati.do?action=ls&id=","","#misure")
-		       	}
-		       	if(contentID == "modificaTab"){
-		       		exploreModal("modificaStrumento.do?action=modifica&id=","","#modifica")
-		       	}
-		       	if(contentID == "documentiesterniTab"){
-		       		exploreModal("documentiEsterni.do?id_str=","","#documentiesterni")
-	
-		       	} 
-		    		
-		 		});*/
 			   
 			   $('#myModalDettaglioStrumento').on('hidden.bs.modal', function (e) {
 
@@ -3206,172 +3287,6 @@ Non automatico o semiautomatico
 		    	});
     	
 
-    	
-     	/* tableNeg = $('#tabNeg').DataTable({
-    		language: {
-    	        	emptyTable : 	"Nessun dato presente nella tabella",
-    	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-    	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-    	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-    	        	infoPostFix:	"",
-    	        infoThousands:	".",
-    	        lengthMenu:	"Visualizza _MENU_ elementi",
-    	        loadingRecords:	"Caricamento...",
-    	        	processing:	"Elaborazione...",
-    	        	search:	"Cerca:",
-    	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-    	        	paginate:	{
-      	        	first:	"Inizio",
-      	        	previous:	"Precedente",
-      	        	next:	"Successivo",
-      	        last:	"Fine",
-    	        	},
-    	        aria:	{
-      	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-      	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-    	        }
-            },
-            pageLength: 100,          
-    	      paging: false, 
-    	      ordering: true,
-    	      info: false, 
-    	      searchable: false, 
-    	      searching: false, 
-    	      targets: 0,
-    	      responsive: false,
-    	      scrollX: true,
-    	     // scrollY: "450px",
-    	      stateSave: false,
-    	      columnDefs: [], 	       
-
-    });
-     	
-     	
-     	
-     	
-     	tableScostNeg = $('#tabScostNeg').DataTable({
-    		language: {
-    	        	emptyTable : 	"Nessun dato presente nella tabella",
-    	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-    	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-    	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-    	        	infoPostFix:	"",
-    	        infoThousands:	".",
-    	        lengthMenu:	"Visualizza _MENU_ elementi",
-    	        loadingRecords:	"Caricamento...",
-    	        	processing:	"Elaborazione...",
-    	        	search:	"Cerca:",
-    	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-    	        	paginate:	{
-      	        	first:	"Inizio",
-      	        	previous:	"Precedente",
-      	        	next:	"Successivo",
-      	        last:	"Fine",
-    	        	},
-    	        aria:	{
-      	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-      	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-    	        }
-            },
-            pageLength: 100,          
-    	      paging: false, 
-    	      ordering: true,
-    	      info: false, 
-    	      searchable: false,
-    	      searching: false,
-    	      targets: 0,
-    	      responsive: false,
-    	      scrollX: false,
-    	     // scrollY: "450px",
-    	      stateSave: true,
-    	      columnDefs: [], 	       
-
-    });
-     	
-     	
-     	tablePos = $('#tabPos').DataTable({
-    		language: {
-    	        	emptyTable : 	"Nessun dato presente nella tabella",
-    	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-    	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-    	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-    	        	infoPostFix:	"",
-    	        infoThousands:	".",
-    	        lengthMenu:	"Visualizza _MENU_ elementi",
-    	        loadingRecords:	"Caricamento...",
-    	        	processing:	"Elaborazione...",
-    	        	search:	"Cerca:",
-    	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-    	        	paginate:	{
-      	        	first:	"Inizio",
-      	        	previous:	"Precedente",
-      	        	next:	"Successivo",
-      	        last:	"Fine",
-    	        	},
-    	        aria:	{
-      	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-      	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-    	        }
-            },
-            pageLength: 100,          
-    	      paging: false, 
-    	      ordering: true,
-    	      info: false, 
-    	      searchable: false,
-    	      searching: false,
-    	      targets: 0,
-    	      responsive: false,
-    	      scrollX: true,
-    	     // scrollY: "450px",
-    	      stateSave: true,
-    	      columnDefs: [], 	       
-
-    });
-     	
-     	
-     	tableScostPos = $('#tabScostPos').DataTable({
-    		language: {
-    	        	emptyTable : 	"Nessun dato presente nella tabella",
-    	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-    	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-    	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-    	        	infoPostFix:	"",
-    	        infoThousands:	".",
-    	        lengthMenu:	"Visualizza _MENU_ elementi",
-    	        loadingRecords:	"Caricamento...",
-    	        	processing:	"Elaborazione...",
-    	        	search:	"Cerca:",
-    	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-    	        	paginate:	{
-      	        	first:	"Inizio",
-      	        	previous:	"Precedente",
-      	        	next:	"Successivo",
-      	        last:	"Fine",
-    	        	},
-    	        aria:	{
-      	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-      	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-    	        }
-            },
-            pageLength: 100,          
-    	      paging: false, 
-    	      ordering: true,
-    	      info: false, 
-    	      searchable: false,
-    	      searching: false,
-    	      targets: 0,
-    	      responsive: false,
-    	      scrollX: false,
-    	     // scrollY: "450px",
-    	      stateSave: true,
-    	      columnDefs: [], 	       
-
-    }); */
-     	
-
-
-     	
-     	
 
 	});
 

@@ -275,7 +275,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			String sede = null;
 	    	 			if(tipoutente != null && tipoutente.equals("2")) {
 	    	 				  cliente = ret.get("modcliente");
-	    	 				  sede = ret.get("modsede").split("_")[0];
+	    	 				  sede = ret.get("modsede").split("_")[0];	    	 				  
 	    	 			}
 	    	 			
 	    	 			UtenteDTO utente = GestioneUtenteBO.getUtenteById(id, session);
@@ -330,6 +330,11 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			if(companyId != null && !companyId.equals("")){
 		    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
 	    	 				utente.setCompany(company);
+	    	 			}
+	    	 			if(tipoutente != null && tipoutente.equals("1")) {
+	    	 				utente.setTrasversale(1);
+	    	 			}else {
+	    	 				utente.setTrasversale(0);
 	    	 			}
 	    	 			
 	    	 			

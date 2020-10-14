@@ -60,14 +60,23 @@
                   <b>Company</b> <a class="pull-right">${interventover.company.denominazione}</a>
                 </li>
                 <li class="list-group-item">
-                <b>Luogo</b><c:choose>
-					  <c:when test="${interventover.in_sede_cliente == 0}">
-							<span class="label label-success pull-right">IN SEDE</span>
-					  </c:when>
-					  <c:otherwise>
-							<span class="label label-info pull-right">PRESSO CLIENTE</span>
-					  </c:otherwise>
-					</c:choose> 
+                <b>Luogo</b>
+                		<c:choose>
+						  <c:when test="${interventover.in_sede_cliente == 0}">
+								<span class="label label-success pull-right">IN SEDE</span>
+						  </c:when>
+						  <c:when test="${interventover.in_sede_cliente == 1}">
+								<span class="label label-info pull-right">PRESSO CLIENTE</span>
+						  </c:when>
+						    <c:when test="${interventover.in_sede_cliente == 2}">
+								<span class="label label-warning pull-right">ALTRO LUOGO</span>
+						  </c:when>
+						  <c:otherwise>
+						    <span class="label label-info">-</span>
+						  </c:otherwise>
+						</c:choose> 
+                
+ 
 					</li>
 					
                 <li class="list-group-item">

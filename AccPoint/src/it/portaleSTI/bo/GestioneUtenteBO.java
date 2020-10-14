@@ -228,7 +228,7 @@ public class GestioneUtenteBO {
 		  
 			myObj.addProperty("success", true);
 
-			myObj.addProperty("messaggio", "Attivazione avvenuta con successo");
+			myObj.addProperty("messaggio", "Invio email avvenuto con successo");
 	      
 		 
 	return myObj;

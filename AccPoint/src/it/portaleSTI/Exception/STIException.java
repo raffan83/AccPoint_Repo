@@ -50,9 +50,18 @@ public class STIException extends Exception{
 		else if(e instanceof SendFailedException && ((SendFailedException) e).getNextException() instanceof SMTPAddressFailedException) {
 			myObj.addProperty("messaggio", "Attenzione! Errore sul dominio dell'indirizzo!");
 		}
-		else {
+		else if(e instanceof javax.mail.AuthenticationFailedException) 
+		{
+			myObj.addProperty("messaggio", "Errore invio eMail (Auth-error)");
+		}
+		else if(e instanceof javax.mail.MessagingException) 
+		{
+			myObj.addProperty("messaggio", "Errore invio eMail (Messaging-error)");
+				
+		}else {
 			myObj.addProperty("messaggio", "Errore Generico, comunicaci l'errore facendo click sul pulsante Invia Report");
 		}
+		
 		myObj.addProperty("success", false);
 		return myObj;
 		

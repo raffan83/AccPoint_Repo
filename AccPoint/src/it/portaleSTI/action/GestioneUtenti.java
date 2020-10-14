@@ -125,6 +125,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 				  sede = ret.get("sede").split("_")[0];
 	    	 			}
 	    	 			String abilitato = ret.get("abilitato");
+	    	 			String trasversale = ret.get("trasversale");
 	    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
 	    	 				    	 			
 	    	 			UtenteDTO utente = new UtenteDTO();
@@ -159,6 +160,11 @@ public class GestioneUtenti extends HttpServlet {
 		    	 			utente.setAbilitato(1);
 	    	 			}else {
 	    	 				utente.setAbilitato(0);
+	    	 			}
+	    	 			if(trasversale != null && !trasversale.equals("") && trasversale.equals("1")){
+		    	 			utente.setTrasversale(1);
+	    	 			}else {
+	    	 				utente.setTrasversale(0);
 	    	 			}
 	    	 			
 	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
@@ -270,6 +276,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			String companyId = ret.get("modcompany");
 	    	 			String tipoutente = ret.get("modtipoutente");
 	    	 			String abilitato = ret.get("modabilitato");
+	    	 			String trasversale = ret.get("modtrasversale");
 	    	 			String idFirma = ret.get("modidFirma");
 	    	 			String cliente = null;
 	    	 			String sede = null;
@@ -321,6 +328,11 @@ public class GestioneUtenti extends HttpServlet {
 		    	 			utente.setAbilitato(1);
 	    	 			}else {
 	    	 				utente.setAbilitato(0);
+	    	 			}
+	    	 			if(trasversale != null && !trasversale.equals("") && trasversale.equals("1")){
+		    	 			utente.setTrasversale(1);
+	    	 			}else {
+	    	 				utente.setTrasversale(0);
 	    	 			}
 	    	 			if(idFirma != null){
 		    	 			utente.setIdFirma(idFirma);

@@ -124,7 +124,7 @@
 		<c:if test="${utente.abilitato == 1}">
 			<a href="#" onClick="toggleAbilitaUtente(${utente.id},0)" class="btn customTooltip btn-danger " title="Click per eliminare l'utente"><i class="fa fa-ban"></i></a> 
 		</c:if>
-		<a  onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'','&prime;')}','${utente.indirizzo.replace('\'','&prime;')}','${utente.comune.replace('\'','&prime;')}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}','${utente.abilitato}','${utente.idFirma}')" class="btn customTooltip btn-warning" title="Click per modificare l'utente"><i class="fa fa-edit"></i></a> 
+		<a  onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'','&prime;')}','${utente.indirizzo.replace('\'','&prime;')}','${utente.comune.replace('\'','&prime;')}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}','${utente.abilitato}','${utente.idFirma}','${utente.trasversale}')" class="btn customTooltip btn-warning" title="Click per modificare l'utente"><i class="fa fa-edit"></i></a> 
 		<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 		<c:if test="${utente.cv != null && utente.cv != ''}">
 			<a href="#" onClick="callAction('gestioneUtenti.do?action=scaricacv&id=${utente.id}')" class="btn btn-danger "><i class="fa fa-file-pdf-o"></i></a> 
@@ -213,12 +213,15 @@
           <label for="nome" class="col-sm-2 control-label">Abilitato:</label>
 
          <div class="col-sm-10">
-         
-    
- 			<input class="form-control" id="abilitato" type="checkbox" name="abilitato" value="1" />
-          			
-         
-			
+ 			<input class="form-control" id="abilitato" type="checkbox" name="abilitato" value="1" />		
+     	</div>
+   </div>
+   
+    <div class="form-group">
+          <label for="nome" class="col-sm-2 control-label">Trasversale:</label>
+
+         <div class="col-sm-10">
+ 			<input class="form-control" id="trasversale" type="checkbox" name="trasversale" value="1" />		
      	</div>
    </div>
 
@@ -418,7 +421,7 @@
  <div class="form-group">
           <label for="nome" class="col-sm-2 control-label">Abilitato:</label>
 
-         <div class="col-sm-10">
+         <div class="col-sm-4">
          
     
  			    <c:if test="${utente.abilitato == 0}">
@@ -426,6 +429,21 @@
 		</c:if>
 		<c:if test="${utente.abilitato == 1}">
 			<input class="form-control" id="modabilitato" type="checkbox" name="modabilitato" value="1" checked />
+		</c:if>
+			
+     	</div>
+     	</div>
+     	 <div class="form-group">
+          <label for="nome" class="col-sm-2 control-label">Trasversale:</label>
+
+         <div class="col-sm-4">
+         
+    
+ 			    <c:if test="${utente.trasversale == 0}">
+			<input class="form-control" id="modtrasversale" type="checkbox" name="modtrasversale" value="1" />
+		</c:if>
+		<c:if test="${utente.trasversale == 1}">
+			<input class="form-control" id="modtrasversale" type="checkbox" name="modtrasversale" value="1" checked />
 		</c:if>
          			
           			

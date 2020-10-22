@@ -296,6 +296,32 @@
         </li> 
            <% }%>
         
+        
+        
+         <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_DOCUMENTALE")){%>  
+           <li class="header">DOCUMENTALE</li>
+
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Gestione Documentale</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+		
+			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_committenti',null,true);">Gestione Committenti</a></li>
+			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_fornitori',null,true);">Gestione Fornitori</a></li>	
+			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_referenti',null,true);">Gestione Referenti</a></li>
+			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_dipendenti',null,true);">Gestione Dipendenti</a></li>
+			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_documenti',null,true);">Gestione Documenti</a></li>
+			
+	      	
+          </ul>
+        </li> 
+           <% }%>
+        
+        
+        
            <% if(user.checkRuolo("AM") || user.checkPermesso("ADMIN CONFIG")){%>
         <li class="header">-----------</li>
              <li class="treeview">

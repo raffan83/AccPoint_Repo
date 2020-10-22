@@ -27,6 +27,8 @@
    <link rel="stylesheet" href="css/skins/skin-red-light.min.css">
    <link rel="stylesheet" href="css/skins/skin-blue.css">
    <link rel="stylesheet" href="css/skins/skin-blue-light.min.css">
+   <link rel="stylesheet" href="css/skins/skin-green.css">
+   <link rel="stylesheet" href="css/skins/skin-green-light.min.css">
    
    <link rel="stylesheet" href="css/style_css.css">
    <link rel="stylesheet" href="css/prism.css">

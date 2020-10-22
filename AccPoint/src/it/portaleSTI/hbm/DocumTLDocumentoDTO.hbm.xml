@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-mag-2017 15.44.30 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.DocumTLDocumentoDTO" table="docum_tl_documento">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>    
+          
+
+         <property name="frequenza_rinnovo_mesi" type="int" >
+            <column name="frequenza_rinnovo_mesi" />
+        </property>
+        
+        <property name="rilasciato" type="java.lang.String" >
+            <column name="rilasciato" />
+        </property>
+      
+        
+                <property name="nome_documento" type="java.lang.String" >
+            <column name="nome_documento" />
+        </property>
+        
+                 <property name="data_caricamento" type="java.sql.Date" >
+            <column name="data_caricamento" />
+        </property>
+        
+            <property name="id_fornitore" type="int" >
+            <column name="id_fornitore" />
+        </property>
+        
+            <property name="nome_fornitore" type="java.lang.String" >
+            <column name="nome_fornitore" />
+        </property>
+        
+            <property name="data_scadenza" type="java.sql.Date" >
+            <column name="data_scadenza" />
+        </property>
+        
+        <property name="nome_file" type="java.lang.String" >
+            <column name="nome_file" />
+        </property>
+        
+        <property name="disabilitato" type="int" >
+            <column name="disabilitato" />
+        </property>
+        
+    </class>
+</hibernate-mapping>

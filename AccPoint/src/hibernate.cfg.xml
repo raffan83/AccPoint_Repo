@@ -151,8 +151,7 @@
  	<mapping class="TipoEventoRegistroDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoEventoRegistroDTO.hbm.xml"/>
  	<mapping class="MilestoneOperatoreDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MilestoneOperatoreDTO.hbm.xml"/>
  	<mapping class="SequenceDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SequenceDTO.hbm.xml"/>
- 	
- 	
+ 	 	
  	
  	<mapping class="ForDocenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForDocenteDTO.hbm.xml"/> 	    
  	<mapping class="ForCorsoCatDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoCatDTO.hbm.xml"/>
@@ -165,6 +164,12 @@
  	<mapping class="ForQuestionarioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForQuestionarioDTO.hbm.xml"/>
  	    
  	 
+ 	<mapping class="DocumTLStatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTLStatoDTO.hbm.xml"/> 	    
+ 	<mapping class="DocumCommittenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumCommittenteDTO.hbm.xml"/>
+ 	<mapping class="DocumFornitoreDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumFornitoreDTO.hbm.xml"/> 	    
+ 	<mapping class="DocumReferenteFornDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumReferenteFornDTO.hbm.xml"/>
+ 	<mapping class="DocumDipendenteFornDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumDipendenteFornDTO.hbm.xml"/>
+ 	<mapping class="DocumTLDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTLDocumentoDTO.hbm.xml"/> 	    
  	
   </session-factory>
 </hibernate-configuration>

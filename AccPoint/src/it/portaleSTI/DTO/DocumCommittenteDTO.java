@@ -1,0 +1,59 @@
+package it.portaleSTI.DTO;
+
+public class DocumCommittenteDTO {
+	
+	private int id;
+	private int id_cliente;
+	private int id_sede;
+	private String nome_cliente;
+	private String indirizzo_cliente;
+	private String nominativo_referente;
+	
+	public DocumCommittenteDTO() {
+		super();
+	}
+	
+	public DocumCommittenteDTO(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getId_cliente() {
+		return id_cliente;
+	}
+	public void setId_cliente(int id_cliente) {
+		this.id_cliente = id_cliente;
+	}
+	public int getId_sede() {
+		return id_sede;
+	}
+	public void setId_sede(int id_sede) {
+		this.id_sede = id_sede;
+	}
+	public String getNome_cliente() {
+		return nome_cliente;
+	}
+	public void setNome_cliente(String nome_cliente) {
+		this.nome_cliente = nome_cliente;
+	}
+	public String getIndirizzo_cliente() {
+		return indirizzo_cliente;
+	}
+	public void setIndirizzo_cliente(String indirizzo_cliente) {
+		this.indirizzo_cliente = indirizzo_cliente;
+	}
+	public String getNominativo_referente() {
+		return nominativo_referente;
+	}
+	public void setNominativo_referente(String nominativo_referente) {
+		this.nominativo_referente = nominativo_referente;
+	}
+	
+	
+
+}

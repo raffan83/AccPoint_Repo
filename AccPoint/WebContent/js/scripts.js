@@ -13962,3 +13962,662 @@ error: function( data, textStatus) {
 });
 	
 }
+
+
+
+function nuovoCommittente(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#nuovoCommittenteForm')[0]; 
+		  var formData = new FormData(form);
+		 
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneDocumentale.do?action=nuovo_committente",
+  	  data: formData,
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  success: function( data, textStatus) {
+  		pleaseWaitDiv.modal('hide');
+  		  	      		  
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+  			  $("#modalNuovoCommittente").modal("hide");
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+     			$('#myModalError').on('hidden.bs.modal', function(){	         			
+   				
+     				 location.reload()
+    			});
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+  
+  	  }
+    });
+	
+}
+
+
+function modificaCommittente(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  
+		  var form = $('#modificaCommittenteForm')[0]; 
+		  var formData = new FormData(form);
+		 
+		  var id_committente = $('#id_committente').val();
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneDocumentale.do?action=modifica_committente&id_committente="+id_committente,
+  	  data: formData,
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  success: function( data, textStatus) {
+  		pleaseWaitDiv.modal('hide');
+  		  	      		  
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaCommittente").modal("hide");
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+     			$('#myModalError').on('hidden.bs.modal', function(){	         			
+   				
+     				 location.reload()
+    			});
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+  
+  	  }
+    });
+	
+}
+
+
+function nuovoFornitore(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#nuovoFornitoreForm')[0]; 
+		  var formData = new FormData(form);
+		 
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneDocumentale.do?action=nuovo_fornitore",
+  	  data: formData,
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  success: function( data, textStatus) {
+  		pleaseWaitDiv.modal('hide');
+  		  	      		  
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+  			  $("#modalNuovoFornitore").modal("hide");
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+     			$('#myModalError').on('hidden.bs.modal', function(){	         			
+   				
+     				 location.reload()
+    			});
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+  
+  	  }
+    });
+	
+}
+
+
+function modificaFornitore(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  
+		  var form = $('#modificaFornitoreForm')[0]; 
+		  var formData = new FormData(form);
+		 
+		  var id_fornitore = $('#id_fornitore').val();
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneDocumentale.do?action=modifica_fornitore&id_fornitore="+id_fornitore,
+  	  data: formData,
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  success: function( data, textStatus) {
+  		pleaseWaitDiv.modal('hide');
+  		  	      		  
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaFornitore").modal("hide");
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+     			$('#myModalError').on('hidden.bs.modal', function(){	         			
+   				
+     				 location.reload()
+    			});
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+  
+  	  }
+    });
+	
+}
+
+
+
+
+function nuovoReferente(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#nuovoReferenteForm')[0]; 
+		  var formData = new FormData(form);
+		 
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneDocumentale.do?action=nuovo_referente",
+  	  data: formData,
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  success: function( data, textStatus) {
+  		pleaseWaitDiv.modal('hide');
+  		  	      		  
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+  			  $("#modalNuovoReferente").modal("hide");
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+     			$('#myModalError').on('hidden.bs.modal', function(){	         			
+   				
+     				 location.reload()
+    			});
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+  
+  	  }
+    });
+	
+}
+
+function modificaReferente(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  
+		  var form = $('#modificaReferenteForm')[0]; 
+		  var formData = new FormData(form);
+		 
+		  var id_referente = $('#id_referente').val();
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneDocumentale.do?action=modifica_referente&id_referente="+id_referente,
+  	  data: formData,
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  success: function( data, textStatus) {
+  		pleaseWaitDiv.modal('hide');
+  		  	      		  
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaReferente").modal("hide");
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+     			$('#myModalError').on('hidden.bs.modal', function(){	         			
+   				
+     				 location.reload()
+    			});
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+  
+  	  }
+    });
+	
+}
+
+
+
+function nuovoDipendente(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#nuovoDipendenteForm')[0]; 
+		  var formData = new FormData(form);
+		 
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneDocumentale.do?action=nuovo_dipendente",
+  	  data: formData,
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  success: function( data, textStatus) {
+  		pleaseWaitDiv.modal('hide');
+  		  	      		  
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+  			  $("#modalNuovoDipendente").modal("hide");
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+     			$('#myModalError').on('hidden.bs.modal', function(){	         			
+   				
+     				 location.reload()
+    			});
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+  
+  	  }
+    });
+	
+}
+
+function modificaDipendente(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  
+		  var form = $('#modificaDipendenteForm')[0]; 
+		  var formData = new FormData(form);
+		 
+		  var id_dipendente = $('#id_dipendente').val();
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneDocumentale.do?action=modifica_dipendente&id_dipendente="+id_dipendente,
+  	  data: formData,
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  success: function( data, textStatus) {
+  		pleaseWaitDiv.modal('hide');
+  		  	      		  
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDipendente").modal("hide");
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+     			$('#myModalError').on('hidden.bs.modal', function(){	         			
+   				
+     				 location.reload()
+    			});
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+  
+  	  }
+    });
+	
+}
+
+
+
+
+function nuovoDocumento(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#nuovoDocumentoForm')[0]; 
+		  var formData = new FormData(form);
+		 
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneDocumentale.do?action=nuovo_documento",
+  	  data: formData,
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  success: function( data, textStatus) {
+  		pleaseWaitDiv.modal('hide');
+  		  	      		  
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+  			  $("#modalNuovoDocumento").modal("hide");
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+     			$('#myModalError').on('hidden.bs.modal', function(){	         			
+   				
+     				 location.reload()
+    			});
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+  
+  	  }
+    });
+	
+}
+
+function modificaDocumento(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  
+		  var form = $('#modificaDocumentoForm')[0]; 
+		  var formData = new FormData(form);
+		 
+		  var id_documento = $('#id_documento').val();
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneDocumentale.do?action=modifica_documento&id_documento="+id_documento,
+  	  data: formData,
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  success: function( data, textStatus) {
+  		pleaseWaitDiv.modal('hide');
+  		  	      		  
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocumento").modal("hide");
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+     			$('#myModalError').on('hidden.bs.modal', function(){	         			
+   				
+     				 location.reload()
+    			});
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+  
+  	  }
+    });
+	
+}
+
+function eliminaDocumento(id_documento){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  dataObj = {}
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneDocumentale.do?action=elimina_documento&id_documento="+id_documento,
+  	data: dataObj,
+  	dataType: "json",
+  	 
+  	  success: function( data, textStatus) {
+  		pleaseWaitDiv.modal('hide');
+  		  	      		  
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#myModalYesOrNo").modal("hide");
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+     			$('#myModalError').on('hidden.bs.modal', function(){	         			
+   				
+     				 location.reload()
+    			});
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+  
+  	  }
+    });
+	
+}

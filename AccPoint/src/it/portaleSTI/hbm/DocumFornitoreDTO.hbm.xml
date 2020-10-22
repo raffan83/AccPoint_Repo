@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-mag-2017 15.44.30 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.DocumFornitoreDTO" table="docum_fornitore">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>    
+        
+       <many-to-one name="committente" class="it.portaleSTI.DTO.DocumCommittenteDTO" fetch="join" lazy="false">
+            <column name="id_committente" />
+        </many-to-one>
+          
+
+         <property name="ragione_sociale" type="java.lang.String" >
+            <column name="ragione_sociale" />
+        </property>
+        <property name="p_iva" type="java.lang.String" >
+            <column name="p_iva" />
+        </property>
+        <property name="cf" type="java.lang.String" >
+            <column name="cf" />
+        </property>
+        
+                <property name="indirizzo" type="java.lang.String" >
+            <column name="indirizzo" />
+        </property>
+        
+                <property name="comune" type="java.lang.String" >
+            <column name="comune" />
+        </property>
+        
+                <property name="cap" type="java.lang.String" >
+            <column name="cap" />
+        </property>
+        
+                <property name="provincia" type="java.lang.String" >
+            <column name="provincia" />
+        </property>
+        
+                <property name="nazione" type="java.lang.String" >
+            <column name="nazione" />
+        </property>
+        
+                <property name="abilitato" type="java.lang.String" >
+            <column name="abilitato" />
+        </property>
+        
+                <property name="email" type="java.lang.String" >
+            <column name="email" />
+        </property>
+        
+       <many-to-one name="stato" class="it.portaleSTI.DTO.DocumTLStatoDTO" fetch="join" lazy="false">
+            <column name="stato" />
+        </many-to-one>
+        
+        
+                <set name="listaDipendenti" table="docum_fornitore_dipendente"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id_fornitore" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portaleSTI.DTO.DocumDipendenteFornDTO">
+                <column name="id_dipendente" not-null="true" />
+            </many-to-many>
+        </set>
+        
+        
+        <set name="listaReferenti" table="docum_fornitore_referente"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id_fornitore" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portaleSTI.DTO.DocumReferenteFornDTO">
+                <column name="id_referente" not-null="true" />
+            </many-to-many>
+        </set>
+        
+         <set name="listaDocumenti" table="docum_documento_fornitore"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id_fornitore" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portaleSTI.DTO.DocumTLDocumentoDTO">
+                <column name="id_documento" not-null="true" />
+            </many-to-many>
+        </set>
+        
+    </class>
+</hibernate-mapping>

@@ -80,7 +80,7 @@
 	<tr id="row_${loop.index}" >
 
 	<td>${documento.id }</td>	
-	<td>${documento.nome_fornitore }</td>
+	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(documento.fornitore.id)}')">${documento.nome_fornitore }</a></td>
 	<td>${documento.nome_documento }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_caricamento}" /></td>
 	<td>${documento.frequenza_rinnovo_mesi }</td>

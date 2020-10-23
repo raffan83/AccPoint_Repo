@@ -81,7 +81,9 @@
  	<c:forEach items="${lista_fornitori}" var="fornitore" varStatus="loop">
 	<tr id="row_${loop.index}" >
 
-	<td>${fornitore.id }</td>	
+	<td>
+	<a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(fornitore.id)}')">${fornitore.id }</a>
+	</td>	
 	<td>${fornitore.committente.nome_cliente }</td>
 	<td>${fornitore.ragione_sociale }</td>
 	<td>${fornitore.indirizzo }</td>
@@ -136,8 +138,8 @@
        	<div class="col-sm-9">      
        	  	
         
-    <select name="committente" id="committente" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
-                
+    <select name="committente" id="committente" class="form-control select2" data-placeholder="Seleziona committente..." aria-hidden="true" data-live-search="true" style="width:100%" required >
+                <option value=""></option>
                       <c:forEach items="${lista_committenti}" var="committente">
                      
                            <option value="${committente.id}">${committente.nome_cliente} - ${committente.indirizzo_cliente }</option> 
@@ -285,8 +287,8 @@
        	<div class="col-sm-9">      
        	  	
         
-    <select name="committente_mod" id="committente_mod" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
-                
+    <select name="committente_mod" id="committente_mod" class="form-control select2" data-placeholder="Seleziona committente..." aria-hidden="true" data-live-search="true" style="width:100%" required>
+                <option value=""></option>
                       <c:forEach items="${lista_committenti}" var="committente">
                      
                            <option value="${committente.id}">${committente.nome_cliente} - ${committente.indirizzo_cliente }</option> 

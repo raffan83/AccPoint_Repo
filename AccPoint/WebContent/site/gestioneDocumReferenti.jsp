@@ -79,7 +79,7 @@
 	<tr id="row_${loop.index}" >
 
 	<td>${referente.id }</td>	
-	<td>${referente.nome_fornitore }</td>
+	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(referente.id_fornitore)}')">${referente.nome_fornitore }</a></td>
 	<td>${referente.nome } ${referente.cognome }</td>
 	<td>${referente.qualifica }</td>
 	<td>${referente.mansione }</td>	

@@ -93,9 +93,8 @@
 	<td>${fornitore.stato.nome }</td>			
 	<td>	
 	
-	<a class="btn btn-info" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(fornitore.id)}')"><i class="fa fa-search"></i></a>  
-	
-	  <a class="btn btn-warning" onClicK="modificaFornitoreModal('${fornitore.id}','${fornitore.committente.id}','${fornitore.ragione_sociale.replace('\'','&prime;')}','${fornitore.indirizzo.replace('\'','&prime;')}','${fornitore.cap.replace('\'','&prime;')}',
+	<a class="btn btn-info" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(fornitore.id)}')"><i class="fa fa-search"></i></a>
+	 <a class="btn btn-warning" onClicK="modificaFornitoreModal('${fornitore.id}','${fornitore.committente.id}','${fornitore.ragione_sociale.replace('\'','&prime;')}','${fornitore.indirizzo.replace('\'','&prime;')}','${fornitore.cap.replace('\'','&prime;')}',
 	  '${fornitore.comune.replace('\'','&prime;')}', '${fornitore.provincia.replace('\'','&prime;')}','${fornitore.p_iva }','${fornitore.cf }','${fornitore.email }')" title="Click per modificare il Fornitore"><i class="fa fa-edit"></i></a>
 	  
 	</td>
@@ -115,7 +114,7 @@
 </div>
 </div>
 
-
+</div>
 </section>
 
 

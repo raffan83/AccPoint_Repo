@@ -111,9 +111,22 @@
 </div>
 <div class="box-body">
 
+ <div class="nav-tabs-custom">
+            <ul id="mainTabs" class="nav nav-tabs">
+              <li class="active" id="tab1"><a href="#documenti" data-toggle="tab" aria-expanded="true"   id="documentiTab"><strong><h3>Documenti</h3></strong></a></li> 
+              <li class="" id="tab2"><a href="#referenti" data-toggle="tab" aria-expanded="false"   id="referentiTab"><strong><h3>Referenti</h3></strong></a></li>
+              <li class="" id="tab3"><a href="#dipendenti" data-toggle="tab" aria-expanded="false"   id="dipendentiTab"><strong><h3>Dipendenti</h3></strong></a></li>
+
+              		 
+              	 
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="documenti">
+              
+              
 <div class="row">
 <div class="col-sm-12">
-
+<a class="btn btn-primary pull-left" onClick="callAction('gestioneDocumentale.do?action=scadenzario&id_fornitore=${utl:encryptData(fornitore.id)}&nome_fornitore=${fornitore.ragione_sociale }')"><i class="fa fa-plus"></i> Vai allo scadenzario</a> 
 <a class="btn btn-primary pull-right" onClick="modalNuovoDocumento()"><i class="fa fa-plus"></i> Nuovo Documento</a> 
 
 </div></div><br>
@@ -162,8 +175,126 @@
  </table>  
 </div>
 </div>
+              
+              
+              </div>
+              
+              
+              
+   
+       <div class="tab-pane" id="referenti">
+       
+       <div class="row">
+<div class="col-sm-12">
+
+<a class="btn btn-primary pull-right" onClick="modalNuovoReferente()"><i class="fa fa-plus"></i> Nuovo Referente</a> 
+
+</div></div><br>
+       
+       
+       <div class="row">
+<div class="col-sm-12">
+
+ <table id="tabDocumReferenti" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
 
 
+<th>ID</th>
+<th>Fornitore</th>
+<th>Nominativo</th>
+<th>Qualifica</th>
+<th>Mansione</th>
+<th>Note</th>
+<th>Azioni</th>
+ </tr></thead>
+ 
+ <tbody>
+ 
+ 	<c:forEach items="${fornitore.getListaReferenti()}" var="referente" varStatus="loop">
+	<tr id="row_${loop.index}" >
+
+	<td>${referente.id }</td>	
+	<td>${referente.nome_fornitore }</td>
+	<td>${referente.nome } ${referente.cognome }</td>
+	<td>${referente.qualifica }</td>
+	<td>${referente.mansione }</td>	
+	<td>${referente.note }</td>
+		
+	<td>	
+	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.id}','${referente.id_fornitore}','${referente.nome.replace('\'','&prime;')}','${referente.cognome.replace('\'','&prime;')}','${utl:escapeJS(utl:escapeHTML(referente.note.replace('\'','&prime;')))}',
+	  '${referente.mansione}', '${referente.qualifica}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>   
+	</td>
+	</tr>
+	</c:forEach>
+	 
+
+ </tbody>
+ </table>  
+</div>
+</div>
+       </div>
+          
+
+
+
+
+       <div class="tab-pane table-responsive" id="dipendenti">
+       
+       <div class="row">
+<div class="col-sm-12">
+
+<a class="btn btn-primary pull-right" onClick="modalNuovoDipendente()"><i class="fa fa-plus"></i> Nuovo Dipendente</a> 
+
+</div></div><br>
+
+       
+       <div class="row">
+      
+       
+<div class="col-sm-12">
+<table id="tabDocumDipendenti" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+
+<th>ID</th>
+<th>Fornitore</th>
+<th>Nominativo</th>
+<th>Qualifica</th>
+
+<th>Note</th>
+<th>Azioni</th>
+ </tr></thead>
+ 
+ <tbody>
+ 
+ 	<c:forEach items="${fornitore.getListaDipendenti()}" var="dipendente" varStatus="loop">
+	<tr id="row_${loop.index}" >
+
+	<td>${dipendente.id }</td>	
+	<td>${dipendente.nome_fornitore }</td>
+	<td>${dipendente.nome } ${dipendente.cognome }</td>
+	<td>${dipendente.qualifica }</td>
+	
+	<td>${dipendente.note }</td>
+		
+	<td>	
+	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.id}','${dipendente.id_fornitore}','${dipendente.nome.replace('\'','&prime;')}','${dipendente.cognome.replace('\'','&prime;')}','${utl:escapeJS(utl:escapeHTML(dipendente.note.replace('\'','&prime;')))}',
+	   '${dipendente.qualifica}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
+	</td>
+	</tr>
+	</c:forEach>
+	 
+
+ </tbody>
+ </table>  
+</div>
+</div>
+       </div>
+       </div>                 
+              
+              
+              </div>
+              
 </div>
 </div>
 </div>
@@ -460,6 +591,460 @@
 
 
 
+<form id="nuovoReferenteForm" name="nuovoReferenteForm">
+<div id="myModalnuovoReferente" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Referente</h4>
+      </div>
+       <div class="modal-body">
+
+      <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Fornitore</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="forn_ref" id="forn_ref" class="form-control select2" aria-hidden="true" disabled data-placeholder="Seleziona fornitore..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <option value=""></option>
+                      <c:forEach items="${lista_fornitori}" var="forn">
+                     	<c:if test="${forn.id == fornitore.id}">
+                     	  <option value="${fornitore.id}" selected>${fornitore.ragione_sociale}</option>
+                     	</c:if>
+                          <c:if test="${forn.id != fornitore.id}">
+                     	  <option value="${fornitore.id}">${fornitore.ragione_sociale}</option>
+                     	</c:if>
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>
+             
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Nome</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="nome" name="nome" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+                <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Cognome</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="cognome" name="cognome" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Qualifica</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="qualifica" name="qualifica" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+                 <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Mansione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="mansione" name="mansione" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+
+       
+  <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Note</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <textarea rows="3" style="width:100%" id="note" name="note" class="form-control"></textarea>
+       			
+       	</div>       	
+       </div><br>
+
+
+       
+       </div>
+  		 
+      <div class="modal-footer">
+	<input type="hidden" id="fornitore_ref" name="fornitore_ref">
+		<button class="btn btn-primary" type="submit">Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</form>
+
+
+
+
+<form id="modificaReferenteForm" name="modificaReferenteForm">
+<div id="myModalModificaReferente" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Referente</h4>
+      </div>
+                  <div class="modal-body">
+
+      <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Fornitore</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="forn_ref_mod" id="forn_ref_mod" class="form-control select2" aria-hidden="true" disabled data-live-search="true" style="width:100%" >
+                
+                   <option value=""></option>
+                      <option value=""></option>
+                      <c:forEach items="${lista_fornitori}" var="forn">
+                     	<c:if test="${forn.id == fornitore.id}">
+                     	  <option value="${fornitore.id}" selected>${fornitore.ragione_sociale}</option>
+                     	</c:if>
+                          <c:if test="${forn.id != fornitore.id}">
+                     	  <option value="${fornitore.id}">${fornitore.ragione_sociale}</option>
+                     	</c:if>
+                         
+                     </c:forEach>
+
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>
+             
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Nome</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="nome_mod" name="nome_mod" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+                <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Cognome</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="cognome_mod" name="cognome_mod" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Qualifica</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="qualifica_mod" name="qualifica_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+                 <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Mansione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="mansione_mod" name="mansione_mod" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+
+       
+  <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Note</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <textarea rows="3" style="width:100%" id="note_mod" name="note_mod" class="form-control"></textarea>
+       			
+       	</div>       	
+       </div><br>
+
+
+       
+       </div>
+  		 
+      <div class="modal-footer">
+		
+		<input type="hidden" id="id_referente" name="id_referente">
+		<input type="hidden" id="fornitore_ref_mod" name="fornitore_ref_mod">
+
+		<button class="btn btn-primary" type="submit">Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</form>
+
+
+
+
+<form id="nuovoDipendenteForm" name="nuovoDipendenteForm">
+<div id="myModalnuovoDipendente" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Dipendente</h4>
+      </div>
+       <div class="modal-body">
+
+      <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Fornitore</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="forn_dip" id="forn_dip" class="form-control select2" data-placeholder="Seleziona fornitore..." disabled aria-hidden="true" required data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <option value=""></option>
+                      <c:forEach items="${lista_fornitori}" var="forn">
+                     	<c:if test="${forn.id == fornitore.id}">
+                     	  <option value="${fornitore.id}" selected>${fornitore.ragione_sociale}</option>
+                     	</c:if>
+                          <c:if test="${forn.id != fornitore.id}">
+                     	  <option value="${fornitore.id}">${fornitore.ragione_sociale}</option>
+                     	</c:if>
+                         
+                     </c:forEach>
+
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>
+             
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Nome</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="nome" name="nome" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+                <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Cognome</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="cognome" name="cognome" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Qualifica</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="qualifica" name="qualifica" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+
+       
+  <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Note</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <textarea rows="3" style="width:100%" id="note" name="note" class="form-control"></textarea>
+       			
+       	</div>       	
+       </div><br>
+
+
+       
+       </div>
+  		 
+      <div class="modal-footer">
+	<input type="hidden" id="fornitore_dip" name="fornitore_dip">
+		<button class="btn btn-primary" type="submit">Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</form>
+
+
+
+
+<form id="modificaDipendenteForm" name="modificaDipendenteForm">
+<div id="myModalModificaDipendente" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Dipendente</h4>
+      </div>
+                  <div class="modal-body">
+
+      <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Fornitore</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="forn_dip_mod" id="forn_dip_mod" class="form-control select2" aria-hidden="true" data-live-search="true" disabled style="width:100%" >
+                <option value=""></option>
+                      <option value=""></option>
+                      <c:forEach items="${lista_fornitori}" var="forn">
+                     	<c:if test="${forn.id == fornitore.id}">
+                     	  <option value="${fornitore.id}" selected>${fornitore.ragione_sociale}</option>
+                     	</c:if>
+                          <c:if test="${forn.id != fornitore.id}">
+                     	  <option value="${fornitore.id}">${fornitore.ragione_sociale}</option>
+                     	</c:if>
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>
+             
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Nome</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="nome_mod" name="nome_mod" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+                <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Cognome</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="cognome_mod" name="cognome_mod" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Qualifica</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="qualifica_mod" name="qualifica_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+             
+       
+  <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Note</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <textarea rows="3" style="width:100%" id="note_mod" name="note_mod" class="form-control"></textarea>
+       			
+       	</div>       	
+       </div><br>
+
+
+       
+       </div>
+  		 
+      <div class="modal-footer">
+		
+		<input type="hidden" id="id_dipendente" name="id_dipendente">
+		<input type="hidden" id="fornitore_dip_mod" name="fornitore_dip_mod">
+
+		<button class="btn btn-primary" type="submit">Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</form>
+
+
+
+
+
   <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
     <div class="modal-dialog modal-md" role="document">
@@ -588,8 +1173,61 @@
      
 
  } );
+ 
+
+ var columsDatatables1 = [];
+
+ $("#tabDocumReferenti").on( 'init.dt', function ( e, settings ) {
+     var api = new $.fn.dataTable.Api( settings );
+     var state = api.state.loaded();
+  
+     if(state != null && state.columns!=null){
+     		console.log(state.columns);
+     
+     columsDatatables1 = state.columns;
+     }
+     $('#tabDocumReferenti thead th').each( function () {
+      	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
+     	  var title = $('#tabDocumReferenti thead th').eq( $(this).index() ).text();
+     	
+     	  //if($(this).index()!=0 && $(this).index()!=1){
+ 		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables1[$(this).index()].search.search+'" type="text" /></div>');	
+ 	    	//}
+
+     	} );
+     
+     
+
+ } );
    
  
+
+ var columsDatatables2 = [];
+
+ $("#tabDocumDipendenti").on( 'init.dt', function ( e, settings ) {
+     var api = new $.fn.dataTable.Api( settings );
+     var state = api.state.loaded();
+  
+     if(state != null && state.columns!=null){
+     		console.log(state.columns);
+     
+     columsDatatables2 = state.columns;
+     }
+     $('#tabDocumDipendenti thead th').each( function () {
+      	if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
+     	  var title = $('#tabDocumDipendenti thead th').eq( $(this).index() ).text();
+     	
+     	  //if($(this).index()!=0 && $(this).index()!=1){
+ 		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables2[$(this).index()].search.search+'" type="text" /></div>');	
+ 	    	//}
+
+     	} );
+     
+     
+
+ } );
+
+
  
  $('#fileupload').change(function(){
 		$('#label_file').html($(this).val().split("\\")[2]);
@@ -696,6 +1334,70 @@
 		   }			   
 		   return str;	 		
 	}
+	
+	
+	
+	
+	
+
+	function modalNuovoReferente(){
+		
+		$('#myModalnuovoReferente').modal();
+		
+	}
+
+
+	function modificaReferenteModal(id_referente, fornitore, nome, cognome, note, mansione, qualifica){
+		
+		
+		$('#id_referente').val(id_referente);
+			
+		$('#fornitore_mod').val(fornitore);
+		$('#fornitore_mod').change();
+
+
+		$('#nome_mod').val(nome);
+		$('#cognome_mod').val(cognome);
+		$('#note_mod').val(note);
+		$('#mansione_mod').val(mansione);
+		$('#qualifica_mod').val(qualifica);
+
+		
+		$('#myModalModificaReferente').modal();
+	}
+
+	
+	
+	
+	
+
+	function modalNuovoDipendente(){
+		
+		$('#myModalnuovoDipendente').modal();
+		
+	}
+
+
+	function modificaDipendenteModal(id_dipendente, fornitore, nome, cognome, note,  qualifica){
+		
+		
+		$('#id_dipendente').val(id_dipendente);
+			
+		$('#fornitore_mod').val(fornitore);
+		$('#fornitore_mod').change();
+
+
+		$('#nome_mod').val(nome);
+		$('#cognome_mod').val(cognome);
+		$('#note_mod').val(note);
+		
+		$('#qualifica_mod').val(qualifica);
+
+		
+		$('#myModalModificaDipendente').modal();
+	}
+	
+	
     $(document).ready(function() {
     
     	$('.select2').select2();
@@ -707,8 +1409,14 @@
     	     
     	  
     	  
-    	$('#fornitore_mod').val('${fornitore.id}')
-    	$('#fornitore').val('${fornitore.id}')
+    	$('#fornitore_mod').val('${fornitore.id}');
+    	$('#fornitore').val('${fornitore.id}');
+    	
+    	$('#fornitore_dip_mod').val('${fornitore.id}');
+    	$('#fornitore_dip').val('${fornitore.id}');
+    	
+    	$('#fornitore_ref_mod').val('${fornitore.id}');
+    	$('#fornitore_ref').val('${fornitore.id}');
     	
     	
     	 table = $('#tabDocumDocumento').DataTable({
@@ -752,11 +1460,11 @@
  		    	  
  		    	  
  		               ], 	        
- 	  	      buttons: [   
+ 	  	      /* buttons: [   
  	  	          {
- 	  	            extend: 'colvis',
- 	  	            text: 'Nascondi Colonne'  	                   
- 	 			  } ]
+ 	  	            //extend: 'colvis',
+ 	  	            //text: 'Nascondi Colonne'  	                   
+ 	 			  } ] */
  		               
  		    });
  		
@@ -791,6 +1499,184 @@
 
  	});
  	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	  tableRef = $('#tabDocumReferenti').DataTable({
+			language: {
+		        	emptytable : 	"Nessun dato presente nella tabella",
+		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+		        	infoPostFix:	"",
+		        infoThousands:	".",
+		        lengthMenu:	"Visualizza _MENU_ elementi",
+		        loadingRecords:	"Caricamento...",
+		        	processing:	"Elaborazione...",
+		        	search:	"Cerca:",
+		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+		        	paginate:	{
+	  	        	first:	"Inizio",
+	  	        	previous:	"Precedente",
+	  	        	next:	"Successivo",
+	  	        last:	"Fine",
+		        	},
+		        aria:	{
+	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+		        }
+	        },
+	        pageLength: 25,
+	        "order": [[ 0, "desc" ]],
+		      paging: true, 
+		      ordering: true,
+		      info: true, 
+		      searchable: true, 
+		      targets: 0,
+		      responsive: true,
+		      scrollX: false,
+		      stateSave: true,	
+		           
+		      columnDefs: [
+		    	  
+		    	  { responsivePriority: 1, targets: 1 },
+		    	  
+		    	  
+		               ], 	        
+	  	    /*   buttons: [   
+	  	          {
+	  	           // extend: 'colvis',
+	  	            //text: 'Nascondi Colonne'  	                   
+	 			  } ] */
+		               
+		    });
+		
+		tableRef.buttons().container().appendTo( '#tabDocumReferenti_wrapper .col-sm-6:eq(1)');
+	 	    $('.inputsearchtable').on('click', function(e){
+	 	       e.stopPropagation();    
+	 	    });
+
+	 	     tableRef.columns().eq( 0 ).each( function ( colIdx ) {
+	  $( 'input', tableRef.column( colIdx ).header() ).on( 'keyup', function () {
+	      tableRef
+	          .column( colIdx )
+	          .search( this.value )
+	          .draw();
+	  } );
+	} );  
+	
+	
+	
+		tableRef.columns.adjust().draw();
+		
+
+	$('#tabDocumReferenti').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+		
+		$('.removeDefault').each(function() {
+		   $(this).removeClass('btn-default');
+		})
+
+
+	});
+	
+	
+ 	
+ 	
+ 	
+	 tableDip = $('#tabDocumDipendenti').DataTable({
+			language: {
+		        	emptytable : 	"Nessun dato presente nella tabella",
+		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+		        	infoPostFix:	"",
+		        infoThousands:	".",
+		        lengthMenu:	"Visualizza _MENU_ elementi",
+		        loadingRecords:	"Caricamento...",
+		        	processing:	"Elaborazione...",
+		        	search:	"Cerca:",
+		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+		        	paginate:	{
+	  	        	first:	"Inizio",
+	  	        	previous:	"Precedente",
+	  	        	next:	"Successivo",
+	  	        last:	"Fine",
+		        	},
+		        aria:	{
+	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+		        }
+	        },
+	        pageLength: 25,
+	        "order": [[ 0, "desc" ]],
+		      paging: true, 
+		      ordering: true,
+		      info: true, 
+		      searchable: true, 
+		      targets: 0,
+		      responsive: true,
+		      scrollX: false,
+		      stateSave: true,	
+		           
+		      columnDefs: [
+		    	  
+		    	  { responsivePriority: 1, targets: 1 },
+		    	  
+		    	  
+		               ], 	        
+	/*   	      buttons: [   
+	  	          {
+	  	            //extend: 'colvis',
+	  	            //text: 'Nascondi Colonne'  	                   
+	 			  } ]
+		               */ 
+		    });
+		
+		tableDip.buttons().container().appendTo( '#tabDocumDipendenti_wrapper .col-sm-6:eq(1)');
+	 	    $('.inputsearchtable').on('click', function(e){
+	 	       e.stopPropagation();    
+	 	    });
+
+	 	     tableDip.columns().eq( 0 ).each( function ( colIdx ) {
+	  $( 'input', tableDip.column( colIdx ).header() ).on( 'keyup', function () {
+	      tableDip
+	          .column( colIdx )
+	          .search( this.value )
+	          .draw();
+	  } );
+	} );  
+	
+	
+	
+		tableDip.columns.adjust().draw();
+		
+
+	$('#tabDocumDipendenti').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+		
+		$('.removeDefault').each(function() {
+		   $(this).removeClass('btn-default');
+		})
+
+
+	});
+	
+	
+	
+ 	
+ 	
+ 	
+ 	
+ 	
     });
     
     
@@ -806,7 +1692,33 @@
    	 nuovoDocumento();
    });
     
+    
 
+    $('#modificaReferenteForm').on('submit', function(e){
+    	 e.preventDefault();
+    	 modificaReferente();
+    });
+     
+
+     
+     $('#nuovoReferenteForm').on('submit', function(e){
+    	 e.preventDefault();
+    	 nuovoReferente();
+    });
+     
+     
+     $('#modificaDipendenteForm').on('submit', function(e){
+    	 e.preventDefault();
+    	 modificaDipendente();
+    });
+     
+
+     
+     $('#nuovoDipendenteForm').on('submit', function(e){
+    	 e.preventDefault();
+    	 nuovoDipendente();
+    });
+     
 
   </script>
   

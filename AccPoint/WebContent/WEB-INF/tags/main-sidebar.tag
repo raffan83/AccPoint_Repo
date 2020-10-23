@@ -314,7 +314,7 @@
 			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_referenti',null,true);">Gestione Referenti</a></li>
 			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_dipendenti',null,true);">Gestione Dipendenti</a></li>
 			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_documenti',null,true);">Gestione Documenti</a></li>
-			
+			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=scadenzario',null,true);">Scadenzario Documenti</a></li>
 	      	
           </ul>
         </li> 

@@ -21,7 +21,12 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
+      <c:if test="${data_scadenza == null }">
         Lista Documenti
+        </c:if>
+       <c:if test="${data_scadenza != null }">
+        Lista Documenti in scadenza il <fmt:formatDate value="${data_scadenza }" pattern="dd/MM/yyyy"/>
+        </c:if>
         <!-- <small></small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
@@ -80,7 +85,7 @@
 	<tr id="row_${loop.index}" >
 
 	<td>${documento.id }</td>	
-	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(documento.fornitore.id)}')">${documento.nome_fornitore }</a></td>
+	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(documento.id_fornitore)}')">${documento.nome_fornitore }</a></td>
 	<td>${documento.nome_documento }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_caricamento}" /></td>
 	<td>${documento.frequenza_rinnovo_mesi }</td>
@@ -109,7 +114,7 @@
  
 </div>
 </div>
-
+</div>
 
 </section>
 

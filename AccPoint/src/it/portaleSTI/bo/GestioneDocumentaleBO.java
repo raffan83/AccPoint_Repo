@@ -1,6 +1,8 @@
 package it.portaleSTI.bo;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.hibernate.Session;
 
@@ -53,13 +55,18 @@ public class GestioneDocumentaleBO {
 		return GestioneDocumentaleDAO.getDipendenteFromId(id_dipendente, session);
 	}
 
-	public static ArrayList<DocumTLDocumentoDTO> getListaDocumenti(Session session) {
+	public static ArrayList<DocumTLDocumentoDTO> getListaDocumenti(String data_scadenza, int id_fornitore, Session session) throws ParseException, Exception {
 		
-		return GestioneDocumentaleDAO.getListaDocumenti(session);
+		return GestioneDocumentaleDAO.getListaDocumenti(data_scadenza,id_fornitore, session);
 	}
 
 	public static DocumTLDocumentoDTO getDocumentoFromId(int id_documento, Session session) {
 		
 		return GestioneDocumentaleDAO.getDocumentoFromId(id_documento, session);
+	}
+
+	public static HashMap<String, Integer> getDocumentiScadenza(int id_fornitore, Session session) {
+		
+		return GestioneDocumentaleDAO.getDocumentiScadenza(id_fornitore, session);
 	}
 }

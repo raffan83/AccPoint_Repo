@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,9 +25,9 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mysql.jdbc.Util;
-
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
@@ -33,7 +36,6 @@ import it.portaleSTI.DTO.DocumDipendenteFornDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
 import it.portaleSTI.DTO.DocumReferenteFornDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
-import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -237,7 +239,7 @@ public class GestioneDocumentale extends HttpServlet {
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Docente modificato con successo!");
+				myObj.addProperty("messaggio", "Committente modificato con successo!");
 				out.print(myObj);
 				session.getTransaction().commit();
 				session.close();
@@ -445,6 +447,8 @@ public class GestioneDocumentale extends HttpServlet {
 	            }
 		
 		        String id_fornitore = ret.get("fornitore");
+		        String id_fornitore_ref = ret.get("fornitore_ref");
+		      
 		        String nome = ret.get("nome");				
 				String cognome = ret.get("cognome");
 				String qualifica = ret.get("qualifica");
@@ -454,6 +458,11 @@ public class GestioneDocumentale extends HttpServlet {
 
 				DocumReferenteFornDTO referente = new DocumReferenteFornDTO();
 				
+				if(id_fornitore_ref!=null) {
+					id_fornitore = id_fornitore_ref;
+				}
+				
+	
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
 				
 				referente.setId_fornitore(fornitore.getId());
@@ -513,6 +522,8 @@ public class GestioneDocumentale extends HttpServlet {
 		        
 		        String id_referente = request.getParameter("id_referente");
 		        String id_fornitore = ret.get("fornitore_mod");
+		        String id_fornitore_ref = ret.get("fornitore_ref_mod");
+		        
 		        String nome = ret.get("nome_mod");				
 				String cognome = ret.get("cognome_mod");
 				String qualifica = ret.get("qualifica_mod");
@@ -520,6 +531,10 @@ public class GestioneDocumentale extends HttpServlet {
 				String note = ret.get("note_mod");
 
 
+				if(id_fornitore_ref!=null) {
+					id_fornitore = id_fornitore_ref;
+				}
+				
 				DocumReferenteFornDTO referente = GestioneDocumentaleBO.getReferenteFromId(Integer.parseInt(id_referente), session);
 				
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
@@ -597,6 +612,7 @@ public class GestioneDocumentale extends HttpServlet {
 	            }
 		
 		        String id_fornitore = ret.get("fornitore");
+		        String id_fornitore_dip = ret.get("fornitore_dip");
 		        String nome = ret.get("nome");				
 				String cognome = ret.get("cognome");
 				String qualifica = ret.get("qualifica");				
@@ -604,6 +620,10 @@ public class GestioneDocumentale extends HttpServlet {
 
 
 				DocumDipendenteFornDTO dipendente = new DocumDipendenteFornDTO();
+				
+				if(id_fornitore_dip!=null) {
+					id_fornitore = id_fornitore_dip;
+				}
 				
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
 				
@@ -664,6 +684,7 @@ public class GestioneDocumentale extends HttpServlet {
 		        
 		        String id_dipendente = request.getParameter("id_dipendente");
 		        String id_fornitore = ret.get("fornitore_mod");
+		        String id_fornitore_dip = ret.get("fornitore_dip_mod");
 		        String nome = ret.get("nome_mod");				
 				String cognome = ret.get("cognome_mod");
 				String qualifica = ret.get("qualifica_mod");
@@ -673,6 +694,10 @@ public class GestioneDocumentale extends HttpServlet {
 
 				DocumDipendenteFornDTO dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_dipendente), session);
 				
+				if(id_fornitore_dip!=null) {
+					id_fornitore = id_fornitore_dip;
+				}
+								
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
 				
 				fornitore.getListaDipendenti().remove(dipendente);
@@ -701,12 +726,13 @@ public class GestioneDocumentale extends HttpServlet {
 			}
 			if(action.equals("lista_documenti")) {
 				
-				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(session);
+				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(null, 0, session);
 				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
 				
 				
 				request.getSession().setAttribute("lista_documenti", lista_documenti);
 				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
+				request.getSession().setAttribute("data_scadenza", null);
 					
 				session.getTransaction().commit();
 				session.close();
@@ -891,6 +917,85 @@ public class GestioneDocumentale extends HttpServlet {
 				session.getTransaction().commit();
 				session.close();
 			}
+			
+			else if(action.equals("scadenzario")) {				
+				
+				String id_fornitore = request.getParameter("id_fornitore");
+				String nome_fornitore = request.getParameter("nome_fornitore");
+				
+				if(id_fornitore!=null) {
+					id_fornitore = Utility.decryptData(id_fornitore);
+				}
+				request.getSession().setAttribute("id_fornitore", id_fornitore);
+				request.getSession().setAttribute("nome_fornitore", nome_fornitore);
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioDocumentale.jsp");
+			    dispatcher.forward(request,response);
+			    
+			    session.close();
+			}
+			
+			else if(action.equals("create_scadenzario")) {				
+				
+				String id_fornitore = request.getParameter("id_fornitore");
+				
+				if(id_fornitore == null) {
+					id_fornitore = "0";
+				}
+				
+				HashMap<String,Integer> listaScadenze = GestioneDocumentaleBO.getDocumentiScadenza(Integer.parseInt(id_fornitore), session);
+				
+				ArrayList<String> lista_documenti_scadenza = new ArrayList<>();				
+				
+				 Iterator scadenza = listaScadenze.entrySet().iterator();
+		
+				    while (scadenza.hasNext()) {
+				        Map.Entry pair = (Map.Entry)scadenza.next();
+				        lista_documenti_scadenza.add(pair.getKey() + ";" + pair.getValue());
+				        scadenza.remove(); 
+				    }
+		
+				PrintWriter out = response.getWriter();
+				
+				 Gson gson = new Gson(); 
+			        
+			        
+			        JsonElement obj_scadenze = gson.toJsonTree(lista_documenti_scadenza);
+			       		       
+			        myObj.addProperty("success", true);
+			  
+			        myObj.add("obj_scadenze", obj_scadenze);
+			        
+			        out.println(myObj.toString());
+		
+			        out.close();
+			        
+			     session.getTransaction().commit();
+		       	session.close();
+			
+			}
+			
+			else if(action.equals("documenti_scadenza")) {
+				
+				String data_scadenza = request.getParameter("data_scadenza");
+				String id_fornitore = request.getParameter("id_fornitore");
+				
+				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(data_scadenza, Integer.parseInt(id_fornitore), session);
+			
+				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
+								
+				request.getSession().setAttribute("lista_documenti", lista_documenti);
+				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
+				
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				request.getSession().setAttribute("data_scadenza", df.parseObject(data_scadenza));
+					
+				session.getTransaction().commit();
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneDocumDocumenti.jsp");
+		     	dispatcher.forward(request,response);
+			}
+			
+			
 		}catch(Exception e) {
 			
 			session.getTransaction().rollback();

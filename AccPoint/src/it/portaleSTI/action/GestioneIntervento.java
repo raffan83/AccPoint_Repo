@@ -431,11 +431,41 @@ public class GestioneIntervento extends HttpServlet {
 		    		misura.setIntervento(intervento);
 	
 		    		misura.setStrumento(strumento);
+		    		
+		    		
+		    		
 		    		if(data_misura!=null && !data_misura.equals("")) {
 		    			misura.setDataMisura(sdf.parse(data_misura));
+		    			strumento.setDataUltimaVerifica(new java.sql.Date(sdf.parse(data_misura).getTime()) );
+		    			
+		    			if(strumento.getFrequenza()!=0) {
+		    			Calendar calendar = Calendar.getInstance();
+						calendar.setTime(sdf.parse(data_misura));
+						calendar.add(Calendar.MONTH, strumento.getFrequenza());
+						
+						Date date = calendar.getTime();
+						
+						strumento.setDataProssimaVerifica(new java.sql.Date(date.getTime()));
+		    			}
+						
+					
+		    			
 	 				}else {
 	 					misura.setDataMisura(new Date());	
+	 					strumento.setDataUltimaVerifica(new java.sql.Date(new Date().getTime()));
+	 					
+	 					if(strumento.getFrequenza()!=0) {
+			    			Calendar calendar = Calendar.getInstance();
+							calendar.setTime(new Date());
+							calendar.add(Calendar.MONTH, strumento.getFrequenza());
+							
+							Date date = calendar.getTime();
+							
+							strumento.setDataProssimaVerifica(new java.sql.Date(date.getTime()));
+	 					}
 	 				}
+		    		
+		    		
 		    		
 		    		misura.setTemperatura(new BigDecimal(20));
 		    		misura.setUmidita(new BigDecimal(50) );
@@ -457,7 +487,7 @@ public class GestioneIntervento extends HttpServlet {
 		    		misura.setNote_obsolescenza(note_obsolescenza);
 		    		misura.setFile_condizioni_ambientali(filename_cond_amb);
 		    		session.save(misura);
-		    		
+		    		session.update(strumento);
 		    		CertificatoDTO certificato = new CertificatoDTO();
 		    		certificato.setMisura(misura);
 		    		if(filename_pdf!=null && !filename_pdf.equals("")) {

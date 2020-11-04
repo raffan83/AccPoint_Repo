@@ -987,6 +987,11 @@ public class GestioneDocumentale extends HttpServlet {
 				String data_scadenza = request.getParameter("data_scadenza");
 				String id_fornitore = request.getParameter("id_fornitore");
 				
+				if(!id_fornitore.equals("0")) {
+					id_fornitore = Utility.decryptData(id_fornitore);	
+				}
+				
+				
 				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(data_scadenza, Integer.parseInt(id_fornitore), session);
 			
 				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);

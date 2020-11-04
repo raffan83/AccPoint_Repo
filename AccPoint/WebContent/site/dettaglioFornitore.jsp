@@ -979,7 +979,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="nome_mod" name="nome_mod" class="form-control" type="text" style="width:100%" required>
+        <input id="nome_dip_mod" name="nome_mod" class="form-control" type="text" style="width:100%" required>
        			
        	</div>       	
        </div><br>
@@ -991,7 +991,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="cognome_mod" name="cognome_mod" class="form-control" type="text" style="width:100%" required>
+        <input id="cognome_dip_mod" name="cognome_mod" class="form-control" type="text" style="width:100%" required>
        			
        	</div>       	
        </div><br>
@@ -1003,7 +1003,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="qualifica_mod" name="qualifica_mod" class="form-control" type="text" style="width:100%" >
+        <input id="qualifica_dip_mod" name="qualifica_mod" class="form-control" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -1017,7 +1017,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <textarea rows="3" style="width:100%" id="note_mod" name="note_mod" class="form-control"></textarea>
+        <textarea rows="3" style="width:100%" id="note_dip_mod" name="note_mod" class="form-control"></textarea>
        			
        	</div>       	
        </div><br>
@@ -1387,11 +1387,11 @@
 		$('#fornitore_mod').change();
 
 
-		$('#nome_mod').val(nome);
-		$('#cognome_mod').val(cognome);
-		$('#note_mod').val(note);
+		$('#nome_dip_mod').val(nome);
+		$('#cognome_dip_mod').val(cognome);
+		$('#note_dip_mod').val(note);
 		
-		$('#qualifica_mod').val(qualifica);
+		$('#qualifica_dip_mod').val(qualifica);
 
 		
 		$('#myModalModificaDipendente').modal();

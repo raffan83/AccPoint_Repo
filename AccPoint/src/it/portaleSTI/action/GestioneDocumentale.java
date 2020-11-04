@@ -938,8 +938,16 @@ public class GestioneDocumentale extends HttpServlet {
 				
 				String id_fornitore = request.getParameter("id_fornitore");
 				
+			
+				
 				if(id_fornitore == null) {
 					id_fornitore = "0";
+				} 
+				else if(id_fornitore.equals("0")){
+					
+				}
+				else {
+					id_fornitore= Utility.decryptData(id_fornitore);
 				}
 				
 				HashMap<String,Integer> listaScadenze = GestioneDocumentaleBO.getDocumentiScadenza(Integer.parseInt(id_fornitore), session);

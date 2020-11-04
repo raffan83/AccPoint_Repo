@@ -478,9 +478,9 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getListaStrumentiInFuoriServizio(idCliente, idSede, idCompany, session,utente, stato);
 	}
 
-	public static ArrayList<StrumentoDTO> getStrumentiFiltratiGenerale(int id, String nome, String marca, String modello, String matricola, String codice_interno, Integer id_company) {
+	public static ArrayList<StrumentoDTO> getStrumentiFiltratiGenerale(int id, String nome, String marca, String modello, String matricola, String codice_interno, Integer id_company, UtenteDTO user) {
 
-		return GestioneStrumentoDAO.getStrumentiFiltratiGenerale(id,nome, marca, modello, matricola, codice_interno, id_company);
+		return GestioneStrumentoDAO.getStrumentiFiltratiGenerale(id,nome, marca, modello, matricola, codice_interno, id_company, user);
 	}
 
 

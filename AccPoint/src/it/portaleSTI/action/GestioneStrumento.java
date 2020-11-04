@@ -272,11 +272,11 @@ public class GestioneStrumento extends HttpServlet {
 				String codice_interno = request.getParameter("codice_interno");
 				
 				CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
-				
+				UtenteDTO user=(UtenteDTO)request.getSession().getAttribute("userObj");
 				if(id==null || id.equals("")) {
 					id ="0";
 				}
-				ArrayList<StrumentoDTO> lista_strumenti_filtrati = GestioneStrumentoBO.getStrumentiFiltratiGenerale(Integer.parseInt(id),nome, marca, modello, matricola, codice_interno, idCompany.getId());
+				ArrayList<StrumentoDTO> lista_strumenti_filtrati = GestioneStrumentoBO.getStrumentiFiltratiGenerale(Integer.parseInt(id),nome, marca, modello, matricola, codice_interno, idCompany.getId(), user);
 
 				if(idCompany!=null)
 				{

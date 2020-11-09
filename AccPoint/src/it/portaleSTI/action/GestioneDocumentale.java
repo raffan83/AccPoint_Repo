@@ -28,6 +28,8 @@ import org.hibernate.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
@@ -284,12 +286,14 @@ public class GestioneDocumentale extends HttpServlet {
 	                     
 	            	 }else
 	            	 {
-	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            		            			 
+	            		 ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8")); 
+	            		 
 	            	 }
 	            	
 	            }
-		
-		        String id_committente = ret.get("committente");
+
+		        String id_committenti =  request.getParameter("committente");
 		        String ragione_sociale = ret.get("ragione_sociale");				
 				String p_iva = ret.get("p_iva");
 				String cf = ret.get("cf");
@@ -299,9 +303,10 @@ public class GestioneDocumentale extends HttpServlet {
 				String provincia = ret.get("provincia");
 				String email = ret.get("email");
 
-				DocumFornitoreDTO fornitore = new DocumFornitoreDTO();
+				DocumFornitoreDTO fornitore = new DocumFornitoreDTO();				
+								
+				//fornitore.setCommittente(new DocumCommittenteDTO(Integer.parseInt(id_committente)));
 				
-				fornitore.setCommittente(new DocumCommittenteDTO(Integer.parseInt(id_committente)));
 				fornitore.setRagione_sociale(ragione_sociale);
 				fornitore.setP_iva(p_iva);
 				fornitore.setCf(cf);
@@ -313,6 +318,14 @@ public class GestioneDocumentale extends HttpServlet {
 				fornitore.setAbilitato("S");
 
 				session.save(fornitore);
+				
+				for (String id : id_committenti.split(",")) {
+					
+					DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromID(Integer.parseInt(id), session);
+					committente.getListaFornitori().add(fornitore);
+					
+					session.update(committente);
+				}
 
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
@@ -322,7 +335,53 @@ public class GestioneDocumentale extends HttpServlet {
 				session.getTransaction().commit();
 				session.close();
 			}
-			
+			else if(action.equals("committenti_fornitore")) {
+				
+				ajax = true;
+				
+				String id_fornitore = request.getParameter("id_fornitore");
+				
+				ArrayList<DocumCommittenteDTO> lista_committenti = DirectMySqlDAO.getIdCommittentiFromFornitore(Integer.parseInt(id_fornitore));
+				
+				Gson g = new Gson();
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.add("committenti",g.toJsonTree(lista_committenti));
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+				
+			}
+			else if(action.equals("fornitori_committente")) {
+				
+				ajax = true;
+				
+				String id_committente = request.getParameter("id_committente");
+				
+				DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromID(Integer.parseInt(id_committente), session);
+				
+				Gson g = new Gson();
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				for (int i = 0; i < committente.getListaFornitori().size(); i++) {
+					
+				}
+				Iterator<DocumFornitoreDTO> iterator = committente.getListaFornitori().iterator();
+				
+				while (iterator.hasNext()) {
+
+					DocumFornitoreDTO fornitore = iterator.next();
+					fornitore.setId_encrypted(Utility.encryptData(fornitore.getId()+""));
+				}
+				
+				myObj.add("fornitori",g.toJsonTree(committente.getListaFornitori()));
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+				
+			}
 			else if(action.equals("modifica_fornitore")) {
 				
 				ajax = true;
@@ -353,7 +412,8 @@ public class GestioneDocumentale extends HttpServlet {
 	            	
 	            }
 		        String id_fornitore = request.getParameter("id_fornitore");
-		        String id_committente = ret.get("committente_mod");
+		        String id_committenti =  request.getParameter("id_committenti");
+		        String remove_committenti =  request.getParameter("remove_comm");
 		        String ragione_sociale = ret.get("ragione_sociale_mod");				
 				String p_iva = ret.get("p_iva_mod");
 				String cf = ret.get("cf_mod");
@@ -365,7 +425,31 @@ public class GestioneDocumentale extends HttpServlet {
 
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
 				
-				fornitore.setCommittente(new DocumCommittenteDTO(Integer.parseInt(id_committente)));
+				for (String id : id_committenti.split(",")) {
+					
+					DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromID(Integer.parseInt(id), session);
+					if(!committente.getListaFornitori().contains(fornitore)) {
+						committente.getListaFornitori().add(fornitore);
+						
+						session.update(committente);
+					}
+					
+				}
+				
+				if(remove_committenti!=null && !remove_committenti.equals("")) {
+					for (String id : remove_committenti.split(",")) {
+						
+						DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromID(Integer.parseInt(id), session);
+						
+						committente.getListaFornitori().remove(fornitore);
+							
+							session.update(committente);
+						
+						
+					}
+				}
+				
+			//	fornitore.setCommittente(new DocumCommittenteDTO(Integer.parseInt(id_committente)));
 				fornitore.setRagione_sociale(ragione_sociale);
 				fornitore.setP_iva(p_iva);
 				fornitore.setCf(cf);
@@ -393,8 +477,16 @@ public class GestioneDocumentale extends HttpServlet {
 				id_fornitore = Utility.decryptData(id_fornitore);
 				
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
+				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(null, fornitore.getId(), session);
+				ArrayList<DocumReferenteFornDTO> lista_referenti = GestioneDocumentaleBO.getListaReferenti(fornitore.getId(), session);
+				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(fornitore.getId(),session);
+				ArrayList<DocumCommittenteDTO> lista_committenti = DirectMySqlDAO.getIdCommittentiFromFornitore(Integer.parseInt(id_fornitore));
 				
 				request.getSession().setAttribute("fornitore", fornitore);
+				request.getSession().setAttribute("lista_documenti", lista_documenti);
+				request.getSession().setAttribute("lista_referenti", lista_referenti);
+				request.getSession().setAttribute("lista_dipendenti", lista_dipendenti);
+				request.getSession().setAttribute("lista_committenti", lista_committenti);
 				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioFornitore.jsp");
@@ -403,12 +495,13 @@ public class GestioneDocumentale extends HttpServlet {
 			
 			if(action.equals("lista_referenti")) {
 				
-				ArrayList<DocumReferenteFornDTO> lista_referenti = GestioneDocumentaleBO.getListaReferenti(session);
+				ArrayList<DocumReferenteFornDTO> lista_referenti = GestioneDocumentaleBO.getListaReferenti(0,session);
 				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
+				ArrayList<DocumCommittenteDTO> lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
 				
-				
-				request.getSession().setAttribute("lista_referenti", lista_referenti);
 				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
+				request.getSession().setAttribute("lista_referenti", lista_referenti);
+				request.getSession().setAttribute("lista_committenti", lista_committenti);
 					
 				session.getTransaction().commit();
 				session.close();
@@ -448,25 +541,27 @@ public class GestioneDocumentale extends HttpServlet {
 		
 		        String id_fornitore = ret.get("fornitore");
 		        String id_fornitore_ref = ret.get("fornitore_ref");
-		      
+		        String id_committente = ret.get("committente_ref");
 		        String nome = ret.get("nome");				
 				String cognome = ret.get("cognome");
 				String qualifica = ret.get("qualifica");
 				String mansione = ret.get("mansione");
 				String note = ret.get("note");
 
-
 				DocumReferenteFornDTO referente = new DocumReferenteFornDTO();
 				
 				if(id_fornitore_ref!=null) {
 					id_fornitore = id_fornitore_ref;
-				}
-				
+				}				
 	
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
 				
-				referente.setId_fornitore(fornitore.getId());
-				referente.setNome_fornitore(fornitore.getRagione_sociale());
+				DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromID(Integer.parseInt(id_committente), session);
+				
+				referente.setCommittente(committente);
+				referente.setFornitore(fornitore);
+//				referente.setId_fornitore(fornitore.getId());
+//				referente.setNome_fornitore(fornitore.getRagione_sociale());
 				referente.setNome(nome);
 				referente.setCognome(cognome);
 				referente.setQualifica(qualifica);
@@ -476,7 +571,7 @@ public class GestioneDocumentale extends HttpServlet {
 				session.save(referente);
 				
 				
-				fornitore.getListaReferenti().add(referente);
+			//	fornitore.getListaReferenti().add(referente);
 				session.update(fornitore);
 				
 				myObj = new JsonObject();
@@ -523,7 +618,7 @@ public class GestioneDocumentale extends HttpServlet {
 		        String id_referente = request.getParameter("id_referente");
 		        String id_fornitore = ret.get("fornitore_mod");
 		        String id_fornitore_ref = ret.get("fornitore_ref_mod");
-		        
+		        String id_committente = ret.get("committente_ref_mod");
 		        String nome = ret.get("nome_mod");				
 				String cognome = ret.get("cognome_mod");
 				String qualifica = ret.get("qualifica_mod");
@@ -539,10 +634,14 @@ public class GestioneDocumentale extends HttpServlet {
 				
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
 				
-				fornitore.getListaReferenti().remove(referente);
+				DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromID(Integer.parseInt(id_committente), session);
 				
-				referente.setId_fornitore(fornitore.getId());
-				referente.setNome_fornitore(fornitore.getRagione_sociale());
+			//	fornitore.getListaReferenti().remove(referente);
+				
+//				referente.setId_fornitore(fornitore.getId());
+//				referente.setNome_fornitore(fornitore.getRagione_sociale());
+				referente.setCommittente(committente);
+				referente.setFornitore(fornitore);
 				referente.setNome(nome);
 				referente.setCognome(cognome);
 				referente.setQualifica(qualifica);
@@ -551,7 +650,7 @@ public class GestioneDocumentale extends HttpServlet {
 								
 				session.update(referente);
 				
-				fornitore.getListaReferenti().add(referente);
+				//fornitore.getListaReferenti().add(referente);
 				
 				session.update(fornitore);
 				
@@ -568,7 +667,7 @@ public class GestioneDocumentale extends HttpServlet {
 			
 			if(action.equals("lista_dipendenti")) {
 				
-				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(session);
+				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0,session);
 				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
 				
 				
@@ -613,6 +712,7 @@ public class GestioneDocumentale extends HttpServlet {
 		
 		        String id_fornitore = ret.get("fornitore");
 		        String id_fornitore_dip = ret.get("fornitore_dip");
+		        String id_committente = ret.get("committente_dip");
 		        String nome = ret.get("nome");				
 				String cognome = ret.get("cognome");
 				String qualifica = ret.get("qualifica");				
@@ -627,8 +727,12 @@ public class GestioneDocumentale extends HttpServlet {
 				
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
 				
-				dipendente.setId_fornitore(fornitore.getId());
-				dipendente.setNome_fornitore(fornitore.getRagione_sociale());
+				DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromID(Integer.parseInt(id_committente), session);
+				
+//				dipendente.setId_fornitore(fornitore.getId());
+//				dipendente.setNome_fornitore(fornitore.getRagione_sociale());
+				dipendente.setCommittente(committente);
+				dipendente.setFornitore(fornitore);
 				dipendente.setNome(nome);
 				dipendente.setCognome(cognome);
 				dipendente.setQualifica(qualifica);
@@ -638,7 +742,7 @@ public class GestioneDocumentale extends HttpServlet {
 				session.save(dipendente);
 				
 				
-				fornitore.getListaDipendenti().add(dipendente);
+				//fornitore.getListaDipendenti().add(dipendente);
 				session.update(fornitore);
 				
 				myObj = new JsonObject();
@@ -684,11 +788,11 @@ public class GestioneDocumentale extends HttpServlet {
 		        
 		        String id_dipendente = request.getParameter("id_dipendente");
 		        String id_fornitore = ret.get("fornitore_mod");
+		        String id_committente = ret.get("committente_dip_mod");
 		        String id_fornitore_dip = ret.get("fornitore_dip_mod");
 		        String nome = ret.get("nome_mod");				
 				String cognome = ret.get("cognome_mod");
-				String qualifica = ret.get("qualifica_mod");
-				
+				String qualifica = ret.get("qualifica_mod");				
 				String note = ret.get("note_mod");
 
 
@@ -700,10 +804,13 @@ public class GestioneDocumentale extends HttpServlet {
 								
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
 				
-				fornitore.getListaDipendenti().remove(dipendente);
+				DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromID(Integer.parseInt(id_committente), session);
+				//fornitore.getListaDipendenti().remove(dipendente);
 				
-				dipendente.setId_fornitore(fornitore.getId());
-				dipendente.setNome_fornitore(fornitore.getRagione_sociale());
+//				dipendente.setId_fornitore(fornitore.getId());
+//				dipendente.setNome_fornitore(fornitore.getRagione_sociale());
+				dipendente.setCommittente(committente);
+				dipendente.setFornitore(fornitore);
 				dipendente.setNome(nome);
 				dipendente.setCognome(cognome);
 				dipendente.setQualifica(qualifica);
@@ -712,7 +819,7 @@ public class GestioneDocumentale extends HttpServlet {
 								
 				session.update(dipendente);
 				
-				fornitore.getListaDipendenti().add(dipendente);
+		//		fornitore.getListaDipendenti().add(dipendente);
 				
 				session.update(fornitore);
 				
@@ -771,6 +878,7 @@ public class GestioneDocumentale extends HttpServlet {
 	            }
 		
 		        String id_fornitore = ret.get("fornitore");
+		        String id_committente = ret.get("committente_docum");		        	
 		        String nome_documento = ret.get("nome_documento");				
 				String data_caricamento = ret.get("data_caricamento");
 				String frequenza = ret.get("frequenza");				
@@ -780,9 +888,12 @@ public class GestioneDocumentale extends HttpServlet {
 				DocumTLDocumentoDTO documento = new DocumTLDocumentoDTO();
 				
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
+				DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromID(Integer.parseInt(id_committente), session);
 				
-				documento.setId_fornitore(fornitore.getId());
-				documento.setNome_fornitore(fornitore.getRagione_sociale());
+//				documento.setId_fornitore(fornitore.getId());
+//				documento.setNome_fornitore(fornitore.getRagione_sociale());
+				documento.setCommittente(committente);		
+				documento.setFornitore(fornitore);
 				documento.setNome_documento(nome_documento);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				documento.setData_caricamento(sdf.parse(data_caricamento));
@@ -795,7 +906,7 @@ public class GestioneDocumentale extends HttpServlet {
 								
 				session.save(documento);
 				
-				fornitore.getListaDocumenti().add(documento);
+			//	fornitore.getListaDocumenti().add(documento);
 				session.update(fornitore);
 				
 				myObj = new JsonObject();
@@ -840,6 +951,7 @@ public class GestioneDocumentale extends HttpServlet {
 		        
 		        
 		        String id_documento = request.getParameter("id_documento");
+		        String id_committente = ret.get("committente_docum_mod");	
 		        String id_fornitore = ret.get("fornitore_mod");
 		        String nome_documento = ret.get("nome_documento_mod");				
 				String data_caricamento = ret.get("data_caricamento_mod");
@@ -852,8 +964,12 @@ public class GestioneDocumentale extends HttpServlet {
 				
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
 				
-				documento.setId_fornitore(fornitore.getId());
-				documento.setNome_fornitore(fornitore.getRagione_sociale());
+				DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromID(Integer.parseInt(id_committente), session);
+				
+//				documento.setId_fornitore(fornitore.getId());
+//				documento.setNome_fornitore(fornitore.getRagione_sociale());
+				documento.setCommittente(committente);
+				documento.setFornitore(fornitore);
 				documento.setNome_documento(nome_documento);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				documento.setData_caricamento(sdf.parse(data_caricamento));
@@ -870,8 +986,8 @@ public class GestioneDocumentale extends HttpServlet {
 								
 				session.save(documento);
 				
-				fornitore.getListaDocumenti().add(documento);
-				session.update(fornitore);
+			//	fornitore.getListaDocumenti().add(documento);
+			//	session.update(fornitore);
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
@@ -891,7 +1007,7 @@ public class GestioneDocumentale extends HttpServlet {
 				
 				response.setContentType("application/octet-stream");
 				response.setHeader("Content-Disposition","attachment;filename="+ documento.getNome_file());
-				downloadFile(documento.getId_fornitore(), documento.getNome_file(), response.getOutputStream());
+				downloadFile(documento.getFornitore().getId(), documento.getNome_file(), response.getOutputStream());
 				
 				session.close();
 				
@@ -902,8 +1018,8 @@ public class GestioneDocumentale extends HttpServlet {
 				
 				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
 				
-				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(documento.getId_fornitore(), session);
-				fornitore.getListaDocumenti().remove(documento);
+				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(documento.getFornitore().getId(), session);
+				//fornitore.getListaDocumenti().remove(documento);
 				
 				documento.setDisabilitato(1);
 				

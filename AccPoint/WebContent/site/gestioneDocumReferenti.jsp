@@ -65,6 +65,7 @@
 
 
 <th>ID</th>
+<th>Committente</th>
 <th>Fornitore</th>
 <th>Nominativo</th>
 <th>Qualifica</th>
@@ -79,14 +80,15 @@
 	<tr id="row_${loop.index}" >
 
 	<td>${referente.id }</td>	
-	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(referente.id_fornitore)}')">${referente.nome_fornitore }</a></td>
+	<td>${referente.committente.nome_cliente } - ${referente.committente.indirizzo_cliente }</td>
+	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(referente.fornitore.id)}')">${referente.fornitore.ragione_sociale }</a></td>
 	<td>${referente.nome } ${referente.cognome }</td>
 	<td>${referente.qualifica }</td>
 	<td>${referente.mansione }</td>	
 	<td>${referente.note }</td>
 		
 	<td>	
-	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.id}','${referente.id_fornitore}','${referente.nome.replace('\'','&prime;')}','${referente.cognome.replace('\'','&prime;')}','${utl:escapeJS(utl:escapeHTML(referente.note.replace('\'','&prime;')))}',
+	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.committente.id}','${referente.id}','${referente.fornitore.id}','${referente.nome.replace('\'','&prime;')}','${referente.cognome.replace('\'','&prime;')}','${utl:escapeJS(referente.note)}',
 	  '${referente.mansione}', '${referente.qualifica}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>   
 	</td>
 	</tr>
@@ -119,6 +121,28 @@
         <h4 class="modal-title" id="myModalLabel">Nuovo Referente</h4>
       </div>
        <div class="modal-body">
+       
+       
+             <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Committente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="committente_ref" id="committente_ref" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona committente..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <c:forEach items="${lista_committenti}" var="committente">
+                     
+                           <option value="${committente.id}">${committente.nome_cliente} - ${committente.indirizzo_cliente }</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>
 
       <div class="row">
        
@@ -128,7 +152,7 @@
        	<div class="col-sm-9">      
        	  	
         
-    <select name="fornitore" id="fornitore" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona fornitore..." data-live-search="true" style="width:100%" >
+    <select name="fornitore" id="fornitore" class="form-control select2" aria-hidden="true" disabled data-placeholder="Seleziona fornitore..." data-live-search="true" style="width:100%" >
                 <option value=""></option>
                       <c:forEach items="${lista_fornitori}" var="fornitore">
                      
@@ -232,6 +256,28 @@
       </div>
                   <div class="modal-body">
 
+<div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Committente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="committente_ref_mod" id="committente_ref_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona committente..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <c:forEach items="${lista_committenti}" var="committente">
+                     
+                           <option value="${committente.id}">${committente.nome_cliente} - ${committente.indirizzo_cliente }</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>
+
+
       <div class="row">
        
        	<div class="col-sm-3">
@@ -321,7 +367,9 @@
   		 
       <div class="modal-footer">
 		
-		<input type="hidden" id="id_referente" name="id_referente">
+		
+<input type="hidden" id="fornitore_temp" name="fornitore_temp">
+<input type="hidden" id="id_referente" name="id_referente">
 
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
@@ -399,15 +447,15 @@ function modalNuovoReferente(){
 }
 
 
-function modificaReferenteModal(id_referente, fornitore, nome, cognome, note, mansione, qualifica){
+function modificaReferenteModal(id_committente,id_referente, fornitore, nome, cognome, note, mansione, qualifica){
 	
+	$('#fornitore_temp').val(fornitore);
 	
 	$('#id_referente').val(id_referente);
+	
+	$('#committente_ref_mod').val(id_committente);
+	$('#committente_ref_mod').change();
 		
-	$('#fornitore_mod').val(fornitore);
-	$('#fornitore_mod').change();
-
-
 	$('#nome_mod').val(nome);
 	$('#cognome_mod').val(cognome);
 	$('#note_mod').val(note);
@@ -454,12 +502,29 @@ $('#fileupload_mod').change(function(){
 	$('#label_file_mod').html($(this).val().split("\\")[2]);
 	 
  });
+ 
+ 
+ $('#committente_ref').change(function(){
+	
+	 var id_committente = $(this).val();
+	 getFornitoriCommittente("", id_committente);
+	 
+ });
+ 
+ 
+ $('#committente_ref_mod').change(function(){
+		
+	 var id_committente = $(this).val();
+	 getFornitoriCommittente("_mod", id_committente);
+	 
+ });
+ 
+
 
 $(document).ready(function() {
  
-	$('#fornitore').select2();
-	$('#fornitore_mod').select2();
-	 
+$('.select2').select2();
+	
      $('.dropdown-toggle').dropdown();
      
 

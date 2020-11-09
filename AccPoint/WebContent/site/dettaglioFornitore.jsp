@@ -77,9 +77,9 @@
                 <b>Stato</b> <a class="pull-right">${fornitore.stato.nome }</a>
                 </li>
                 
-                <li class="list-group-item">
+                <%-- <li class="list-group-item">
                 <b>Committente</b> <a class="pull-right">${fornitore.committente.nome_cliente } - ${fornitore.committente.indirizzo_cliente }</a>
-                </li>
+                </li> --%>
                 
 
                 
@@ -138,6 +138,7 @@
 
 
 <th>ID</th>
+<th>Committente</th>
 <th>Fornitore</th>
 <th>Nome Documento</th>
 <th>Data caricamento</th>
@@ -149,11 +150,12 @@
  
  <tbody>
  
- 	<c:forEach items="${fornitore.getListaDocumenti()}" var="documento" varStatus="loop">
+ 	<c:forEach items="${lista_documenti}" var="documento" varStatus="loop">
 	<tr id="row_${loop.index}" >
 
 	<td>${documento.id }</td>	
-	<td>${documento.nome_fornitore }</td>
+	<td>${documento.committente.nome_cliente} - ${documento.committente.indirizzo_cliente}</td>	
+	<td>${documento.fornitore.ragione_sociale }</td>
 	<td>${documento.nome_documento }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_caricamento}" /></td>
 	<td>${documento.frequenza_rinnovo_mesi }</td>
@@ -162,7 +164,7 @@
 		
 	<td>	
 	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
-	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.id}','${documento.id_fornitore}','${documento.nome_documento}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
+	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.id}','${documento.committente.id }','${documento.fornitore.id}','${documento.nome_documento}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
 	   '${documento.data_scadenza}','${documento.nome_file }','${documento.rilasciato }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
 	   <a class="btn btn-danger" onClick="modalEliminaDocumento('${documento.id}')"><i class="fa fa-trash"></i></a>   
@@ -200,6 +202,7 @@
 
 
 <th>ID</th>
+<th>Committente</th>
 <th>Fornitore</th>
 <th>Nominativo</th>
 <th>Qualifica</th>
@@ -210,18 +213,19 @@
  
  <tbody>
  
- 	<c:forEach items="${fornitore.getListaReferenti()}" var="referente" varStatus="loop">
+ 	<c:forEach items="${lista_referenti}" var="referente" varStatus="loop">
 	<tr id="row_${loop.index}" >
 
 	<td>${referente.id }</td>	
-	<td>${referente.nome_fornitore }</td>
+	<td>${referente.committente.nome_cliente} - ${referente.committente.indirizzo_cliente}</td>	
+	<td>${referente.fornitore.ragione_sociale }</td>
 	<td>${referente.nome } ${referente.cognome }</td>
 	<td>${referente.qualifica }</td>
 	<td>${referente.mansione }</td>	
 	<td>${referente.note }</td>
 		
 	<td>	
-	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.id}','${referente.id_fornitore}','${referente.nome.replace('\'','&prime;')}','${referente.cognome.replace('\'','&prime;')}','${utl:escapeJS(utl:escapeHTML(referente.note.replace('\'','&prime;')))}',
+	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.id}','${referente.committente.id }','${referente.fornitore.id}','${referente.nome.replace('\'','&prime;')}','${referente.cognome.replace('\'','&prime;')}','${utl:escapeJS(utl:escapeHTML(referente.note.replace('\'','&prime;')))}',
 	  '${referente.mansione}', '${referente.qualifica}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>   
 	</td>
 	</tr>
@@ -257,6 +261,7 @@
 
 
 <th>ID</th>
+<th>Committente</th>
 <th>Fornitore</th>
 <th>Nominativo</th>
 <th>Qualifica</th>
@@ -267,18 +272,19 @@
  
  <tbody>
  
- 	<c:forEach items="${fornitore.getListaDipendenti()}" var="dipendente" varStatus="loop">
+ 	<c:forEach items="${lista_dipendenti}" var="dipendente" varStatus="loop">
 	<tr id="row_${loop.index}" >
 
-	<td>${dipendente.id }</td>	
-	<td>${dipendente.nome_fornitore }</td>
+	<td>${dipendente.id }</td>
+	<td>${dipendente.committente.nome_cliente} - ${dipendente.committente.indirizzo_cliente}</td>	
+	<td>${dipendente.fornitore.ragione_sociale }</td>
 	<td>${dipendente.nome } ${dipendente.cognome }</td>
 	<td>${dipendente.qualifica }</td>
 	
 	<td>${dipendente.note }</td>
 		
 	<td>	
-	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.id}','${dipendente.id_fornitore}','${dipendente.nome.replace('\'','&prime;')}','${dipendente.cognome.replace('\'','&prime;')}','${utl:escapeJS(utl:escapeHTML(dipendente.note.replace('\'','&prime;')))}',
+	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.id}','${dipendente.committente.id }','${dipendente.fornitore.id}','${dipendente.nome.replace('\'','&prime;')}','${dipendente.cognome.replace('\'','&prime;')}','${utl:escapeJS(utl:escapeHTML(dipendente.note.replace('\'','&prime;')))}',
 	   '${dipendente.qualifica}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
 	</td>
 	</tr>
@@ -348,6 +354,31 @@
        			
        	</div>       	
        </div><br>
+       
+       
+                   <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Committente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="committente_docum" id="committente_docum" class="form-control select2" data-placeholder="Seleziona committente..." aria-hidden="true" required data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <option value=""></option>
+                      <c:forEach items="${lista_committenti}" var="committente">
+                
+                     	  <option value="${committente.id}" >${committente.nome_cliente} - ${committente.indirizzo_cliente }</option>
+                  
+                     </c:forEach>
+
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>     
+             
              
        <div class="row">
        
@@ -484,6 +515,29 @@
        			
        	</div>       	
        </div><br>
+                                <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Committente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="committente_docum_mod" id="committente_docum_mod" class="form-control select2" data-placeholder="Seleziona committente..." aria-hidden="true" required data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <option value=""></option>
+                      <c:forEach items="${lista_committenti}" var="committente">
+                
+                     	  <option value="${committente.id}" >${committente.nome_cliente} - ${committente.indirizzo_cliente }</option>
+                  
+                     </c:forEach>
+
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>    
+             
              
        <div class="row">
        
@@ -626,6 +680,31 @@
        			
        	</div>       	
        </div><br>
+       
+       
+                     <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Committente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="committente_ref" id="committente_ref" class="form-control select2" data-placeholder="Seleziona committente..." aria-hidden="true" required data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <option value=""></option>
+                      <c:forEach items="${lista_committenti}" var="committente">
+                
+                     	  <option value="${committente.id}" >${committente.nome_cliente} - ${committente.indirizzo_cliente }</option>
+                  
+                     </c:forEach>
+
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>     
+             
              
        <div class="row">
        
@@ -745,6 +824,30 @@
        			
        	</div>       	
        </div><br>
+       
+         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Committente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="committente_ref_mod" id="committente_ref_mod" class="form-control select2" data-placeholder="Seleziona committente..." aria-hidden="true" required data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <option value=""></option>
+                      <c:forEach items="${lista_committenti}" var="committente">
+                
+                     	  <option value="${committente.id}" >${committente.nome_cliente} - ${committente.indirizzo_cliente }</option>
+                  
+                     </c:forEach>
+
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>     
+       
              
        <div class="row">
        
@@ -867,6 +970,31 @@
        	</div>       	
        </div><br>
              
+              <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Committente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="committente_dip" id="committente_dip" class="form-control select2" data-placeholder="Seleziona committente..." aria-hidden="true" required data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <option value=""></option>
+                      <c:forEach items="${lista_committenti}" var="committente">
+                
+                     	  <option value="${committente.id}" >${committente.nome_cliente} - ${committente.indirizzo_cliente }</option>
+                  
+                     </c:forEach>
+
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>     
+             
+             
+             
        <div class="row">
        
        	<div class="col-sm-3">
@@ -971,6 +1099,31 @@
        			
        	</div>       	
        </div><br>
+       
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Committente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="committente_dip_mod" id="committente_dip_mod" class="form-control select2" data-placeholder="Seleziona committente..." aria-hidden="true" required data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <option value=""></option>
+                      <c:forEach items="${lista_committenti}" var="committente">
+                
+                     	  <option value="${committente.id}" >${committente.nome_cliente} - ${committente.indirizzo_cliente }</option>
+                  
+                     </c:forEach>
+
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>     
+             
              
        <div class="row">
        
@@ -1123,12 +1276,15 @@
 		$('#myModalYesOrNo').modal();
  }
 
- function modificaDocumentoModal(id_documento, fornitore, nome_documento, data_caricamento, frequenza,  data_scadenza, nome_file, rilasciato){
+ function modificaDocumentoModal(id_documento, committente, fornitore, nome_documento, data_caricamento, frequenza,  data_scadenza, nome_file, rilasciato){
 
  	$('#id_documento').val(id_documento);
  		
  	$('#fornitore_mod').val(fornitore);
  	$('#fornitore_mod').change();
+ 	
+ 	$('#committente_docum_mod').val(committente);
+ 	$('#committente_docum_mod').change();
 
  	$('#nome_documento_mod').val(nome_documento);
  	$('#frequenza_mod').val(frequenza);	
@@ -1347,13 +1503,16 @@
 	}
 
 
-	function modificaReferenteModal(id_referente, fornitore, nome, cognome, note, mansione, qualifica){
+	function modificaReferenteModal(id_referente, committente, fornitore, nome, cognome, note, mansione, qualifica){
 		
 		
 		$('#id_referente').val(id_referente);
 			
 		$('#fornitore_mod').val(fornitore);
 		$('#fornitore_mod').change();
+
+	 	$('#committente_ref_mod').val(committente);
+	 	$('#committente_ref_mod').change();
 
 
 		$('#nome_mod').val(nome);
@@ -1378,13 +1537,16 @@
 	}
 
 
-	function modificaDipendenteModal(id_dipendente, fornitore, nome, cognome, note,  qualifica){
+	function modificaDipendenteModal(id_dipendente, committente, fornitore, nome, cognome, note,  qualifica){
 		
 		
 		$('#id_dipendente').val(id_dipendente);
 			
 		$('#fornitore_mod').val(fornitore);
 		$('#fornitore_mod').change();
+		
+	 	$('#committente_dip_mod').val(committente);
+	 	$('#committente_dip_mod').change();
 
 
 		$('#nome_dip_mod').val(nome);

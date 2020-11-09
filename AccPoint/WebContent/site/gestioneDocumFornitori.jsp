@@ -65,7 +65,7 @@
 
 
 <th>ID</th>
-<th>Committente</th>
+<%-- <th>Committente</th> --%>
 <th>Ragione Sociale</th>
 <th>Indirizzo</th>
 <th>Partita iva</th>
@@ -84,7 +84,7 @@
 	<td>
 	<a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(fornitore.id)}')">${fornitore.id }</a>
 	</td>	
-	<td>${fornitore.committente.nome_cliente }</td>
+	<%-- <td>${fornitore.committente.nome_cliente }</td> --%>
 	<td>${fornitore.ragione_sociale }</td>
 	<td>${fornitore.indirizzo }</td>
 	<td>${fornitore.p_iva }</td>	
@@ -94,9 +94,10 @@
 	<td>	
 	
 	<a class="btn btn-info" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(fornitore.id)}')"><i class="fa fa-search"></i></a>
-	 <a class="btn btn-warning" onClicK="modificaFornitoreModal('${fornitore.id}','${fornitore.committente.id}','${fornitore.ragione_sociale.replace('\'','&prime;')}','${fornitore.indirizzo.replace('\'','&prime;')}','${fornitore.cap.replace('\'','&prime;')}',
-	  '${fornitore.comune.replace('\'','&prime;')}', '${fornitore.provincia.replace('\'','&prime;')}','${fornitore.p_iva }','${fornitore.cf }','${fornitore.email }')" title="Click per modificare il Fornitore"><i class="fa fa-edit"></i></a>
-	  
+	 <%-- <a class="btn btn-warning" onClicK="modificaFornitoreModal('${fornitore.id}','${fornitore.committente.id}','${fornitore.ragione_sociale.replace('\'','&prime;')}','${fornitore.indirizzo.replace('\'','&prime;')}','${fornitore.cap.replace('\'','&prime;')}',
+	  '${fornitore.comune.replace('\'','&prime;')}', '${fornitore.provincia.replace('\'','&prime;')}','${fornitore.p_iva }','${fornitore.cf }','${fornitore.email }')" title="Click per modificare il Fornitore"><i class="fa fa-edit"></i></a> --%>
+	 <a class="btn btn-warning" onClicK="modificaFornitoreModal('${fornitore.id}','${fornitore.ragione_sociale.replace('\'','&prime;')}','${fornitore.indirizzo.replace('\'','&prime;')}','${fornitore.cap.replace('\'','&prime;')}',
+	  '${fornitore.comune.replace('\'','&prime;')}', '${fornitore.provincia.replace('\'','&prime;')}','${fornitore.p_iva }','${fornitore.cf }','${fornitore.email }')" title="Click per modificare il Fornitore"><i class="fa fa-edit"></i></a> 
 	</td>
 	</tr>
 	</c:forEach>
@@ -132,12 +133,12 @@
       <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Committente</label>
+       		<label>Committenti</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
         
-    <select name="committente" id="committente" class="form-control select2" data-placeholder="Seleziona committente..." aria-hidden="true" data-live-search="true" style="width:100%" required >
+    <select name="committente[]" id="committente" class="form-control select2" data-placeholder="Seleziona committente..." aria-hidden="true" data-live-search="true" style="width:100%" required multiple>
                 <option value=""></option>
                       <c:forEach items="${lista_committenti}" var="committente">
                      
@@ -281,12 +282,12 @@
       <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Committente</label>
+       		<label>Committenti</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
         
-    <select name="committente_mod" id="committente_mod" class="form-control select2" data-placeholder="Seleziona committente..." aria-hidden="true" data-live-search="true" style="width:100%" required>
+    <select name="committente_mod[]" id="committente_mod" class="form-control select2" data-placeholder="Seleziona committente..." aria-hidden="true" data-live-search="true" style="width:100%" required multiple>
                 <option value=""></option>
                       <c:forEach items="${lista_committenti}" var="committente">
                      
@@ -405,6 +406,7 @@
       <div class="modal-footer">
 		
 		<input type="hidden" id="id_fornitore" name="id_fornitore">
+		<input type="hidden" id="remove_comm" name="remove_comm">
 
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
@@ -481,26 +483,100 @@ function modalNuovoFornitore(){
 	
 }
 
-
-function modificaFornitoreModal(id_fornitore, committente, ragione_sociale, indirizzo, cap, comune, provincia, p_iva, cf, email){
+var committenti_bc;
+function modificaFornitoreModal(id_fornitore,  ragione_sociale, indirizzo, cap, comune, provincia, p_iva, cf, email){
 	
 	$('#id_fornitore').val(id_fornitore);
-		
-	$('#committente_mod').val(committente);
-	$('#committente_mod').change();
-
-
-	$('#ragione_sociale_mod').val(ragione_sociale);
-	$('#indirizzo_mod').val(indirizzo);
-	$('#cap_mod').val(cap);
-	$('#comune_mod').val(comune);
-	$('#provincia_mod').val(provincia);
-	$('#p_iva_mod').val(p_iva);
-	$('#cf_mod').val(cf);
-	$('#email_mod').val(email);
 	
-	$('#myModalModificaFornitore').modal();
+	
+	 var dataObj = {};
+		dataObj.id_fornitore = id_fornitore;
+		
+
+	  $.ajax({
+ type: "POST",
+ url: "gestioneDocumentale.do?action=committenti_fornitore",
+ data: dataObj,
+ dataType: "json",
+ //if received a response from the server
+ success: function( data, textStatus) {
+	
+	  if(data.success)
+		  {  
+		  if(data.committenti!=null){
+			  
+			  var committenti = [];
+			  data.committenti.forEach(function(item){
+ 				   committenti.push(item.id);
+ 				})
+		  }
+			
+			committenti_bc = committenti;
+   				committenti.forEach(function(item){
+   				    $("#committente_mod option[value='" + item + "']").prop("selected", true);
+   				})
+   				$("#committente_mod").change();
+			
+   				$('#ragione_sociale_mod').val(ragione_sociale);
+   				$('#indirizzo_mod').val(indirizzo);
+   				$('#cap_mod').val(cap);
+   				$('#comune_mod').val(comune);
+   				$('#provincia_mod').val(provincia);
+   				$('#p_iva_mod').val(p_iva);
+   				$('#cf_mod').val(cf);
+   				$('#email_mod').val(email);
+   				
+   				$('#myModalModificaFornitore').modal();
+			
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+ },
+ error: function( data, textStatus) {
+	  $('#myModalYesOrNo').modal('hide');
+	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+ }
+ });
+	
+	
+
+
 }
+
+
+$("#committente_mod").change(function(){
+	
+	var values = $(this).val();
+	var committenti_ac = "";
+	
+	committenti_bc.forEach(function(item){
+		var remove = true;
+		for(var i = 0;i<values.length;i++){
+			if(item==parseInt(values[i])){
+				remove = false;	
+			}
+		}
+		if(remove){
+			committenti_ac = committenti_ac+item+",";
+		}
+		
+	});
+	$('#remove_comm').val(committenti_ac);
+});
+
 
 /* $('#check_formatore').on('ifClicked',function(e){
 	if($('#check_formatore').is( ':checked' )){

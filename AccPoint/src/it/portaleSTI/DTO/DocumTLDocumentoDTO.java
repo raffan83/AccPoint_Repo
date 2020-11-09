@@ -9,8 +9,11 @@ public class DocumTLDocumentoDTO {
 	private int frequenza_rinnovo_mesi;
 	private String rilasciato;
 	private Date data_caricamento;
-	private int id_fornitore;
-	private String nome_fornitore;
+//	private int id_fornitore;
+//	private String nome_fornitore;
+	private DocumCommittenteDTO committente;
+	private DocumFornitoreDTO fornitore;
+	
 	private Date data_scadenza;
 	private String nome_file;
 	private int disabilitato;
@@ -45,18 +48,18 @@ public class DocumTLDocumentoDTO {
 	public void setData_caricamento(Date data_caricamento) {
 		this.data_caricamento = data_caricamento;
 	}
-	public int getId_fornitore() {
-		return id_fornitore;
-	}
-	public void setId_fornitore(int id_fornitore) {
-		this.id_fornitore = id_fornitore;
-	}
-	public String getNome_fornitore() {
-		return nome_fornitore;
-	}
-	public void setNome_fornitore(String nome_fornitore) {
-		this.nome_fornitore = nome_fornitore;
-	}
+//	public int getId_fornitore() {
+//		return id_fornitore;
+//	}
+//	public void setId_fornitore(int id_fornitore) {
+//		this.id_fornitore = id_fornitore;
+//	}
+//	public String getNome_fornitore() {
+//		return nome_fornitore;
+//	}
+//	public void setNome_fornitore(String nome_fornitore) {
+//		this.nome_fornitore = nome_fornitore;
+//	}
 	public Date getData_scadenza() {
 		return data_scadenza;
 	}
@@ -74,6 +77,18 @@ public class DocumTLDocumentoDTO {
 	}
 	public void setDisabilitato(int disabilitato) {
 		this.disabilitato = disabilitato;
+	}
+	public DocumCommittenteDTO getCommittente() {
+		return committente;
+	}
+	public void setCommittente(DocumCommittenteDTO committente) {
+		this.committente = committente;
+	}
+	public DocumFornitoreDTO getFornitore() {
+		return fornitore;
+	}
+	public void setFornitore(DocumFornitoreDTO fornitore) {
+		this.fornitore = fornitore;
 	}
 
 	

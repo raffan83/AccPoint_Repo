@@ -81,8 +81,8 @@
 	<td>${committente.indirizzo_cliente }</td>
 	<td>${committente.nominativo_referente }</td>	
 	<td>	
-	 <a class="btn btn-warning" onClicK="modificaCommittenteModal('${committente.id}','${committente.id_cliente}','${committente.id_sede }','${committente.nominativo_referente.replace('\'','&prime;')}')" title="Click per modificare il Committente"><i class="fa fa-edit"></i></a>
-	 <a class="btn btn-info" onClick="showListaFornitori('${committente.id}')"><i class="fa fa-search"></i></a> 
+	 <a class="btn btn-warning customTooltip" title="Modifica committente" onClicK="modificaCommittenteModal('${committente.id}','${committente.id_cliente}','${committente.id_sede }','${utl:escapeJS(committente.nominativo_referente)}')" title="Click per modificare il Committente"><i class="fa fa-edit"></i></a>
+	 <a class="btn btn-info customTooltip" title="Mostra lista Fornitori" onClick="showListaFornitori('${committente.id}','${utl:escapeJS(committente.nome_cliente)}','${utl:escapeJS(committente.indirizzo_cliente) }')"><i class="fa fa-search"></i></a> 
 	</td>
 	</tr>
 	</c:forEach>
@@ -253,7 +253,7 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Lista Fornitori</h4>
+        <h4 class="modal-title" id="label_fornitori"></h4>
       </div>
        <div class="modal-body">       
       	<div id="lista_fornitori_content">
@@ -403,6 +403,33 @@ $("#tabDocumCommittenti").on( 'init.dt', function ( e, settings ) {
 
 
 
+var columsDatatables1 = [];
+
+$("#tabFornitori").on( 'init.dt', function ( e, settings ) {
+    var api = new $.fn.dataTable.Api( settings );
+    var state = api.state.loaded();
+ 
+    if(state != null && state.columns!=null){
+    		console.log(state.columns);
+    
+    		columsDatatables1 = state.columns;
+    }
+     $('#tabFornitori thead th').each( function () {
+     	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
+    	  var title = $('#tabFornitori thead th').eq( $(this).index() ).text();
+    	
+    	  
+	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables1[$(this).index()].search.search+'" type="text" /></div>');
+	    
+
+    	} ); 
+    
+    
+
+} );
+
+
+
 $('#fileupload').change(function(){
 	$('#label_file').html($(this).val().split("\\")[2]);
 	 
@@ -412,19 +439,24 @@ $('#fileupload_mod').change(function(){
 	 
  });
 
+$("#myModalListaFornitori").on("hidden.bs.modal", function(){
+	
+	$(document.body).css('padding-right', '0px');
+	
+});
 
 
 
-function showListaFornitori(id_committente){
+function showListaFornitori(id_committente, cliente, sede){
 	
 	dataString ="id_committente="+ id_committente;
     exploreModal("gestioneDocumentale.do?action=fornitori_committente",dataString,null,function(datab,textStatusb){
 
-    	var lista_fornitori = JSON.parse(datab);
+    	var json = JSON.parse(datab);
     	
     	var items = [];
     	
-    	(lista_fornitori.fornitori).forEach(function(item){
+    	(json.fornitori).forEach(function(item){
     		
     		var fornitore = {};
     		
@@ -443,6 +475,8 @@ function showListaFornitori(id_committente){
  	
     	  });
 	   var table = $('#tabFornitori').DataTable();
+	   
+	   
 	 	  
  	   table.clear().draw();
 
@@ -457,14 +491,31 @@ function showListaFornitori(id_committente){
  	  	  } );
  	  	} ); 
  	  		table.columns.adjust().draw();
+ 	  		$('.customTooltip').tooltipster({
+ 	  		    theme: 'tooltipster-light'
+ 	  		});
     	
-    	
-  		$('#myModalListaFornitori').modal();
-
+ 	  	
+ 	  		$('#label_fornitori').html("Lista fornitori di "+cliente + " - "+sede)		
+ 	  		
+    	 
+ 	  		
+ 	  		
+ 	  	 $( "#myModalListaFornitori" ).modal()
+  		
     });
 	
 
 }
+
+
+ $( "#myModalListaFornitori" ).on('shown.bs.modal', function(){
+	var table = $('#tabFornitori').DataTable();
+	
+	
+	table.columns.adjust().draw();
+});
+
 
 
 $(document).ready(function() {
@@ -560,7 +611,6 @@ $(document).ready(function() {
 	
 	
 	
-	
 
 	 tabForn = $('#tabFornitori').DataTable({
 		language: {
@@ -609,7 +659,7 @@ $(document).ready(function() {
 	     ],	
 	      columnDefs: [
 	    	  
-	    	  { responsivePriority: 1, targets: 1 },
+	    	  { responsivePriority: 1, targets: 7 },
 	    	  
 	    	  
 	               ], 	        

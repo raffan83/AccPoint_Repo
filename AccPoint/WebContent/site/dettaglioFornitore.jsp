@@ -142,7 +142,7 @@
 <th>Fornitore</th>
 <th>Nome Documento</th>
 <th>Data caricamento</th>
-<th>Frequenza</th>
+<th>Frequenza (mesi)</th>
 <th>Data scadenza</th>
 <th>Rilasciato</th>
 <th>Azioni</th>
@@ -164,8 +164,8 @@
 		
 	<td>	
 	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
-	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.id}','${documento.committente.id }','${documento.fornitore.id}','${documento.nome_documento}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
-	   '${documento.data_scadenza}','${documento.nome_file }','${documento.rilasciato }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
+	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.id}','${documento.committente.id }','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
+	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
 	   <a class="btn btn-danger" onClick="modalEliminaDocumento('${documento.id}')"><i class="fa fa-trash"></i></a>   
 	</td>
@@ -225,8 +225,8 @@
 	<td>${referente.note }</td>
 		
 	<td>	
-	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.id}','${referente.committente.id }','${referente.fornitore.id}','${referente.nome.replace('\'','&prime;')}','${referente.cognome.replace('\'','&prime;')}','${utl:escapeJS(utl:escapeHTML(referente.note.replace('\'','&prime;')))}',
-	  '${referente.mansione}', '${referente.qualifica}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>   
+	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.id}','${referente.committente.id }','${referente.fornitore.id}','${utl:escapeJS(referente.nome)}','${utl:escapeJS(referente.cognome)}','${utl:escapeJS(referente.note)}',
+	  '${utl:escapeJS(referente.mansione)}', '${utl:escapeJS(referente.qualifica)}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>   
 	</td>
 	</tr>
 	</c:forEach>
@@ -284,8 +284,8 @@
 	<td>${dipendente.note }</td>
 		
 	<td>	
-	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.id}','${dipendente.committente.id }','${dipendente.fornitore.id}','${dipendente.nome.replace('\'','&prime;')}','${dipendente.cognome.replace('\'','&prime;')}','${utl:escapeJS(utl:escapeHTML(dipendente.note.replace('\'','&prime;')))}',
-	   '${dipendente.qualifica}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
+	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.id}','${dipendente.committente.id }','${dipendente.fornitore.id}','${utl:escapeJS(dipendente.nome)}','${utl:escapeJS(dipendente.cognome)}','${utl:escapeJS(dipendente.note)}',
+	   '${utl:escapeJS(dipendente.qualifica)}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
 	</td>
 	</tr>
 	</c:forEach>
@@ -339,8 +339,8 @@
        	  	
         
     <select name="forn" id="forn" class="form-control select2" data-placeholder="Seleziona fornitore..." disabled aria-hidden="true" data-live-search="true" style="width:100%" >
-                <option value=""></option>
-                      <c:forEach items="${lista_fornitori}" var="forn">
+                <option value="${fornitore.id }">${fornitore.ragione_sociale}</option>
+                      <%-- <c:forEach items="${lista_fornitori}" var="forn">
                      	<c:if test="${forn.id == fornitore.id}">
                      	  <option value="${fornitore.id}" selected>${fornitore.ragione_sociale}</option>
                      	</c:if>
@@ -348,7 +348,7 @@
                      	  <option value="${fornitore.id}">${fornitore.ragione_sociale}</option>
                      	</c:if>
                          
-                     </c:forEach>
+                     </c:forEach> --%>
 
                   </select> 
        			
@@ -413,7 +413,7 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Frequenza</label>
+       		<label>Frequenza (mesi)</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -500,8 +500,8 @@
        	  	
         
     <select name="forn_mod" id="forn_mod" class="form-control select2" data-placeholder="Seleziona fornitore..." disabled aria-hidden="true" data-live-search="true" style="width:100%" >
-                <option value=""></option>
-                      <c:forEach items="${lista_fornitori}" var="forn">
+              <option value="${fornitore.id }">${fornitore.ragione_sociale}</option>
+                     <%--  <c:forEach items="${lista_fornitori}" var="forn">
                      	<c:if test="${forn.id == fornitore.id}">
                      	  <option value="${fornitore.id}" selected>${fornitore.ragione_sociale}</option>
                      	</c:if>
@@ -509,7 +509,7 @@
                      	  <option value="${fornitore.id}">${fornitore.ragione_sociale}</option>
                      	</c:if>
                          
-                     </c:forEach>
+                     </c:forEach> --%>
 
                   </select> 
        			
@@ -572,7 +572,7 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Frequenza</label>
+       		<label>Frequenza (mesi)</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -664,8 +664,8 @@
        	  	
         
     <select name="forn_ref" id="forn_ref" class="form-control select2" aria-hidden="true" disabled data-placeholder="Seleziona fornitore..." data-live-search="true" style="width:100%" >
-                <option value=""></option>
-                      <option value=""></option>
+               <option value="${fornitore.id }">${fornitore.ragione_sociale}</option>
+                     <%--  <option value=""></option>
                       <c:forEach items="${lista_fornitori}" var="forn">
                      	<c:if test="${forn.id == fornitore.id}">
                      	  <option value="${fornitore.id}" selected>${fornitore.ragione_sociale}</option>
@@ -674,7 +674,7 @@
                      	  <option value="${fornitore.id}">${fornitore.ragione_sociale}</option>
                      	</c:if>
                          
-                     </c:forEach>
+                     </c:forEach> --%>
 
                   </select> 
        			
@@ -806,8 +806,8 @@
        	  	
         
     <select name="forn_ref_mod" id="forn_ref_mod" class="form-control select2" aria-hidden="true" disabled data-live-search="true" style="width:100%" >
-                
-                   <option value=""></option>
+                <option value="${fornitore.id }">${fornitore.ragione_sociale}</option>
+                  <%--  <option value=""></option>
                       <option value=""></option>
                       <c:forEach items="${lista_fornitori}" var="forn">
                      	<c:if test="${forn.id == fornitore.id}">
@@ -817,7 +817,7 @@
                      	  <option value="${fornitore.id}">${fornitore.ragione_sociale}</option>
                      	</c:if>
                          
-                     </c:forEach>
+                     </c:forEach> --%>
 
 
                   </select> 
@@ -952,8 +952,8 @@
        	  	
         
     <select name="forn_dip" id="forn_dip" class="form-control select2" data-placeholder="Seleziona fornitore..." disabled aria-hidden="true" required data-live-search="true" style="width:100%" >
-                <option value=""></option>
-                      <option value=""></option>
+                <option value="${fornitore.id }">${fornitore.ragione_sociale}</option>
+                   <%--    <option value=""></option>
                       <c:forEach items="${lista_fornitori}" var="forn">
                      	<c:if test="${forn.id == fornitore.id}">
                      	  <option value="${fornitore.id}" selected>${fornitore.ragione_sociale}</option>
@@ -962,7 +962,7 @@
                      	  <option value="${fornitore.id}">${fornitore.ragione_sociale}</option>
                      	</c:if>
                          
-                     </c:forEach>
+                     </c:forEach> --%>
 
 
                   </select> 
@@ -1083,8 +1083,8 @@
        	  	
         
     <select name="forn_dip_mod" id="forn_dip_mod" class="form-control select2" aria-hidden="true" data-live-search="true" disabled style="width:100%" >
-                <option value=""></option>
-                      <option value=""></option>
+                <option value="${fornitore.id }">${fornitore.ragione_sociale}</option>
+                 <%--      <option value=""></option>
                       <c:forEach items="${lista_fornitori}" var="forn">
                      	<c:if test="${forn.id == fornitore.id}">
                      	  <option value="${fornitore.id}" selected>${fornitore.ragione_sociale}</option>
@@ -1093,7 +1093,7 @@
                      	  <option value="${fornitore.id}">${fornitore.ragione_sociale}</option>
                      	</c:if>
                          
-                     </c:forEach>
+                     </c:forEach> --%>
 
                   </select> 
        			

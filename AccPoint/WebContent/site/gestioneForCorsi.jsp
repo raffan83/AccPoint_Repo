@@ -76,7 +76,7 @@
 <th>E-Learning</th>
 <th>Data Inizio</th>
 <th>Data Scadenza</th>
-<th style="min-width:150px">Azioni</th>
+<th style="min-width:185px">Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -128,6 +128,9 @@
 	<a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_documento_test&id_corso=${utl:encryptData(corso.id)}" title="Click per scaricare il documento del test"><i class="fa fa-file-pdf-o"></i></a>
 	</c:if>
 	<a href="#" class="btn btn-primary customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${corso.id }')"><i class="fa fa-archive"></i></a>
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+	<a class="btn btn-danger customTooltip" title="Click per eliminare il corso" onClick="eliminaCorsoModal('${corso.id}')"><i class="fa fa-trash"></i></a>
+	</c:if>
 	</td>
 	</tr>
 	</c:forEach>
@@ -499,7 +502,26 @@
 
   
 
+  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare il corso?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_corso_elimina">
+      <a class="btn btn-primary" onclick="eliminaForCorso($('#id_corso_elimina').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
 
+</div>
 
 
 </div>
@@ -539,6 +561,13 @@ function modalnuovoCorso(){
 	
 	$('#myModalNuovoCorso').modal();
 	
+}
+
+function eliminaCorsoModal(id_corso){
+	
+	$('#id_corso_elimina').val(id_corso);
+	
+	$('#myModalYesOrNo').modal();
 }
 
 
@@ -642,52 +671,7 @@ $("#tabForCorso").on( 'init.dt', function ( e, settings ) {
     		  if(admin=='1' && $(this).index()==1){
     			  $(this).append( '<div><input  style="width:100%"  type="checkbox" id="checkall" name="checkall"/></div>');
     			  
-    			  /* 			     $('input').iCheck({
-    			         checkboxClass: 'icheckbox_square-blue',
-    			         radioClass: 'iradio_square-blue',
-    			         increaseArea: '20%' // optional
-    			       }); 
-    			
-     			     $("#checkall").on('ifChecked', function(event){
-    			    	 
-    			    		$('input:checkbox').each(function(){
-    			    			
-    			    			var id =$(this)[0].id;
-    			    			console.log($(this)[0].id);
-    			    			if(id!=''&& id!='checkall' && id!='check_e_learning' && id!='check_e_learning_mod'){
-    			    				console.log(id);
-    			    				id="#"+id;
-    			    				$(id).iCheck('check');        			    			
-    	    			    		
-      			    				  setVisibilita(id, 1);      			    		
-
-    			    			}
-    			    		
-    			    		
-    			    			
-    			    		})
-    			    	});
     			 
-    			 
-    			     $("#checkall").on('ifUnchecked', function(event){
-    			    	 
- 			    		$('input:checkbox').each(function(){
- 			    			
- 			    			var id =$(this)[0].id;
- 			    			console.log($(this)[0].id);
- 			    			if(id!=''&& id!='checkall' && id!='check_e_learning' && id!='check_e_learning_mod'){
- 									
- 			    				id="#"+id;
- 			    				$(id).iCheck('uncheck');        			    			
- 	    			    		
-   			    				  setVisibilita(id, 0);      			    		
-
- 			    			}
- 			    		
- 			    		
- 			    			
- 			    		})
- 			    	}); */
     		  }else{
     			  $(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');  
     		  }
@@ -918,6 +902,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
+		    	  { responsivePriority: 2, targets: 8 },
 		    	   { targets: 1,  orderable: false }
 		    	  
 		               ], 	        

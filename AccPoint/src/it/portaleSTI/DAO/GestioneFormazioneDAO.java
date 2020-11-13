@@ -82,7 +82,7 @@ public class GestioneFormazioneDAO {
 		
 		ArrayList<ForCorsoDTO> lista = null;
 				
-		Query query = session.createQuery("from ForCorsoDTO");
+		Query query = session.createQuery("from ForCorsoDTO where disabilitato = 0");
 				
 		lista = (ArrayList<ForCorsoDTO>) query.list();		
 			
@@ -247,7 +247,7 @@ public class GestioneFormazioneDAO {
 
 		ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 				
-		Query query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id = :_id_partecipante");
+		Query query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id = :_id_partecipante and p.corso.disabilitato = 0");
 		query.setParameter("_id_partecipante", id_partecipante);		
 		
 		lista = (ArrayList<ForPartecipanteRuoloCorsoDTO>) query.list();
@@ -264,7 +264,7 @@ public class GestioneFormazioneDAO {
 				
 		List<ForCorsoDTO> lista =null;
 		
-		query  = session.createQuery( "select p.corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id = :_id_partecipante");	
+		query  = session.createQuery( "select p.corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id = :_id_partecipante and p.corso.disabilitato = 0");	
 		query.setParameter("_id_partecipante", id_partecipante);
 		
 		lista=query.list();
@@ -292,7 +292,7 @@ public class GestioneFormazioneDAO {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		Query query = session.createQuery("select p.corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id = :_id_partecipante and p.corso.data_scadenza = :_data_scadenza");
+		Query query = session.createQuery("select p.corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id = :_id_partecipante and p.corso.data_scadenza = :_data_scadenza and p.corso.disabilitato = 0");
 		query.setParameter("_id_partecipante", id_partecipante);
 		query.setParameter("_data_scadenza", sdf.parse(data_scadenza));		
 		
@@ -313,13 +313,13 @@ public class GestioneFormazioneDAO {
 		
 		if(dateFrom !=null && dateTo!=null && tipo_data!=null) {
 			
-			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso."+tipo_data+" between :_dateFrom and :_dateTo");	
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso."+tipo_data+" between :_dateFrom and :_dateTo and p.corso.disabilitato = 0");	
 			query.setParameter("_dateFrom", sdf.parse(dateFrom));
 			query.setParameter("_dateTo", sdf.parse(dateTo));
 			
 		}else {
 			
-			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO"); 
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.disabilitato = 0"); 
 			
 		}				
 			
@@ -346,7 +346,7 @@ public class GestioneFormazioneDAO {
 
 		ArrayList<ForCorsoDTO> lista = null;		
 
-		Query query =  session.createQuery("select distinct corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede = :_id_sede and visibile='1'"); 
+		Query query =  session.createQuery("select distinct corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede = :_id_sede and visibile='1' and disabilitato = 0"); 
 		query.setParameter("_id_cliente", idCliente);	
 		query.setParameter("_id_sede", idSede);
 			
@@ -366,13 +366,13 @@ public class GestioneFormazioneDAO {
 		
 		if(dateFrom !=null && dateTo!=null && tipo_data!=null) {
 			
-			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso."+tipo_data+" between :_dateFrom and :_dateTo and p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede");	
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso."+tipo_data+" between :_dateFrom and :_dateTo and p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede and p.corso.disabilitato = 0");	
 			query.setParameter("_dateFrom", sdf.parse(dateFrom));
 			query.setParameter("_dateTo", sdf.parse(dateTo));
 			
 		}else {
 			
-			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where  p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede"); 
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where  p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede and p.corso.disabilitato = 0"); 
 			
 		}		
 		query.setParameter("_id_cliente", idCliente);	
@@ -389,7 +389,7 @@ public class GestioneFormazioneDAO {
 		ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		
 		
-		Query query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.id = :_id_corso and p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede");
+		Query query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.id = :_id_corso and p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede and p.corso.disabilitato = 0");
 		query.setParameter("_id_corso", id_corso);
 		query.setParameter("_id_cliente", idCliente);	
 		query.setParameter("_id_sede", idSede);
@@ -419,7 +419,7 @@ public class GestioneFormazioneDAO {
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
-	Query query =  session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.data_corso between :_dateFrom and :_dateTo group by p.corso");	
+	Query query =  session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.data_corso between :_dateFrom and :_dateTo and  p.corso.disabilitato = 0 group by p.corso");	
 	query.setParameter("_dateFrom", sdf.parse(dateFrom));
 	query.setParameter("_dateTo", sdf.parse(dateTo));
 		

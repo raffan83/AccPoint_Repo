@@ -835,10 +835,12 @@ public class GestioneDocumentale extends HttpServlet {
 				
 				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(null, 0, session);
 				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
+				ArrayList<DocumCommittenteDTO> lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
 				
 				
 				request.getSession().setAttribute("lista_documenti", lista_documenti);
 				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
+				request.getSession().setAttribute("lista_committenti", lista_committenti);
 				request.getSession().setAttribute("data_scadenza", null);
 					
 				session.getTransaction().commit();

@@ -88,7 +88,7 @@
 	<td>${dipendente.note }</td>
 		
 	<td>	
-	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.committente.id }','${dipendente.id}','${dipendente.fornitore.id}','${dipendente.nome.replace('\'','&prime;')}','${dipendente.cognome.replace('\'','&prime;')}','${utl:escapeJS(dipendente.note)}',
+	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.committente.id }','${dipendente.id}','${dipendente.fornitore.id}','${utl:escapeJS(dipendente.nome)}','${utl:escapeJS(dipendente.cognome)}','${utl:escapeJS(dipendente.note)}',
 	   '${dipendente.qualifica}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
 	</td>
 	</tr>

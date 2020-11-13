@@ -60,5 +60,9 @@
         <property name="visibile" type="int" >
             <column name="visibile" />
         </property>
+        
+                 <property name="disabilitato" type="int" >
+            <column name="disabilitato" />
+        </property>
     </class>
 </hibernate-mapping>

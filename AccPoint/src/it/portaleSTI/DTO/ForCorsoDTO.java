@@ -18,7 +18,7 @@ public class ForCorsoDTO {
 	private ForQuestionarioDTO questionario;
 	private int e_learning;
 	private int visibile;
-	
+	private int disabilitato;
 	
 	private Set<ForPartecipanteDTO> listaPartecipanti = new HashSet<ForPartecipanteDTO>(0);
 	
@@ -107,6 +107,12 @@ public class ForCorsoDTO {
 	}
 	public void setVisibile(int visibile) {
 		this.visibile = visibile;
+	}
+	public int getDisabilitato() {
+		return disabilitato;
+	}
+	public void setDisabilitato(int disabilitato) {
+		this.disabilitato = disabilitato;
 	}
 
 	

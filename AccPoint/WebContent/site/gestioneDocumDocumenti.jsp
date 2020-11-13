@@ -74,7 +74,7 @@
 <th>Fornitore</th>
 <th>Nome Documento</th>
 <th>Data caricamento</th>
-<th>Frequenza</th>
+<th>Frequenza (mesi)</th>
 <th>Data scadenza</th>
 <th>Rilasciato</th>
 <th>Azioni</th>
@@ -96,8 +96,8 @@
 		
 	<td>	
 	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
-	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.committente.id }','${documento.id}','${documento.fornitore.id}','${documento.nome_documento}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
-	   '${documento.data_scadenza}','${documento.nome_file }','${documento.rilasciato }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
+	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.committente.id }','${documento.id}','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
+	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
 	      <a class="btn btn-danger" onClick="modalEliminaDocumento('${documento.id}')"><i class="fa fa-trash"></i></a>     
 	</td>
@@ -208,7 +208,7 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Frequenza</label>
+       		<label>Frequenza (mesi)</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -361,7 +361,7 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Frequenza</label>
+       		<label>Frequenza (mesi)</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -503,7 +503,12 @@ $('#committente_docum').change(function(){
 	 var id_committente = $(this).val();
 	 getFornitoriCommittente("", id_committente);
 	 
-		
+});
+
+
+
+$('#committente_docum_mod').change(function(){
+
 	 var id_committente = $(this).val();
 	 getFornitoriCommittente("_mod", id_committente);
 	 

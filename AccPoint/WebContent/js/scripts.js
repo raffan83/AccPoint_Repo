@@ -12811,7 +12811,58 @@ $.ajax({
 }
 
 
+function eliminaForCorso(id_corso){
+	 
+	 var dataObj = {};	
+		dataObj.id_corso = id_corso;
+						
+	  $.ajax({
+    type: "POST",
+    url: "gestioneFormazione.do?action=elimina_corso",
+    data: dataObj,
+    dataType: "json",
+    //if received a response from the server
+    success: function( data, textStatus) {
+   	 $('#myModalArchivio').hide();
+  	  if(data.success)
+		  {  
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');      				
+       			$('#myModalError').on('hidden.bs.modal', function(){	        			
+     				
+       				
+       				$('#myModalYesOrNo').hide();
+       				$('.modal-backdrop').hide();
+       				location.reload();
+       			    //  $(this).off('hidden.bs.modal');
+      			});			  
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+    },
+    error: function( data, textStatus) {
+  	  $('#myModalYesOrNo').modal('hide');
+  	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
 
+    }
+    });
+}
 
 function eliminaAllegatoFormazione(id_allegato, id_corso, id_categoria){
 	 

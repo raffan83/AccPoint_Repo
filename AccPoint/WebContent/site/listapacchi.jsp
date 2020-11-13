@@ -1637,7 +1637,7 @@ function resetCommesse(){
 
 }
 	var flag = 0;
-function creaDDT(id_ddt,nome_cliente, nome_sede, stato_pacco, commessa, id_destinatario, id_sede_destinatario){
+function creaDDT(id_ddt, stato_pacco, commessa, id_destinatario, id_sede_destinatario){
 flag=1;
 
 	$('#collapsed_box').removeClass("collapsed-box");

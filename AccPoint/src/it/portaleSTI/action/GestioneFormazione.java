@@ -30,11 +30,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneCommesseDAO;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
@@ -52,11 +50,8 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.CreateTabellaFromXML;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
-import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
-import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneFormazione
@@ -546,6 +541,26 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				out.print(myObj);
 				session.getTransaction().commit();
 				session.close();
+			}
+			else if(action.equals("elimina_corso")) {
+				
+				ajax = true;
+				
+				String id_corso = request.getParameter("id_corso");
+				
+				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso), session);
+				corso.setDisabilitato(1);
+				
+				session.update(corso);
+				session.getTransaction().commit();
+				session.close();
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Corso eliminato con successo!");
+				out.print(myObj);
+				
 			}
 			
 			else if (action.equals("download_documento_test")) {

@@ -88,8 +88,8 @@
 	<td>${referente.note }</td>
 		
 	<td>	
-	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.committente.id}','${referente.id}','${referente.fornitore.id}','${referente.nome.replace('\'','&prime;')}','${referente.cognome.replace('\'','&prime;')}','${utl:escapeJS(referente.note)}',
-	  '${referente.mansione}', '${referente.qualifica}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>   
+	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.committente.id}','${referente.id}','${referente.fornitore.id}','${utl:escapeJS(referente.nome)}','${utl:escapeJS(referente.cognome)}','${utl:escapeJS(referente.note)}',
+	  '${utl:escapeJS(referente.mansione)}', '${utl:escapeJS(referente.qualifica)}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>   
 	</td>
 	</tr>
 	</c:forEach>

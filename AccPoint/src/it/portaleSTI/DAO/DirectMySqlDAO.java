@@ -31,6 +31,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ColonnaDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -156,6 +157,8 @@ public class DirectMySqlDAO {
 	private static String sqlMisurePerDate = "SELECT m.id, m.id_intervento, s.denominazione,s.matricola,s.codice_interno, m.dataMisura, i.id_commessa, i.nome_cliente, i.nome_sede, ms.descrizione, m.lat, m.nCertificato, c.id, m.obsoleto, s.__id, c.data_creazione FROM misura m LEFT JOIN strumento s ON s.__id = m.id_strumento LEFT JOIN intervento i ON i.id = m.id_intervento LEFT JOIN lat_misura l ON l.id = m.idMisura LEFT JOIN lat_master ms ON l.id_misura_lat = ms.id LEFT JOIN certificato c on m.id = c.id_misura WHERE m.dataMisura BETWEEN ? AND ?";
 
 	private static String sqlDataCertificatoMisura = "SELECT c.data_creazione FROM certificato c LEFT JOIN misura m ON c.id_misura = m.id WHERE c.id_misura = ?"; 
+	
+	private static String sqlCommittentiPerFornitore = "SELECT a.id_committente, b.nome_cliente, b.indirizzo_cliente FROM docum_committente_fornitore a LEFT JOIN docum_committente b on a.id_committente = b.id WHERE a.id_fornitore = ?";
 
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
@@ -2739,6 +2742,53 @@ public class DirectMySqlDAO {
 			con.close();
 		}
 
+	}
+	
+	
+	
+	public static ArrayList<DocumCommittenteDTO> getIdCommittentiFromFornitore(int id_fornitore) throws Exception {
+
+		ArrayList<DocumCommittenteDTO> lista =new ArrayList<DocumCommittenteDTO>();
+
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+
+		try
+		{
+			con=getConnection();
+
+
+			pst=con.prepareStatement(sqlCommittentiPerFornitore);		
+			pst.setInt(1, id_fornitore);
+			
+
+			rs=pst.executeQuery();
+
+
+			while(rs.next())
+			{
+				DocumCommittenteDTO committente = new DocumCommittenteDTO();
+				
+				committente.setId(rs.getInt(1));
+				committente.setNome_cliente(rs.getString(2));
+				committente.setIndirizzo_cliente(rs.getString(3));
+				lista.add(committente);
+
+			}
+
+
+		}catch (Exception e) 
+		{
+			throw e;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+
+		}	
+		return lista;
 	}
 
 }

@@ -1,5 +1,8 @@
 package it.portaleSTI.DTO;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class DocumCommittenteDTO {
 	
 	private int id;
@@ -8,6 +11,8 @@ public class DocumCommittenteDTO {
 	private String nome_cliente;
 	private String indirizzo_cliente;
 	private String nominativo_referente;
+	
+	private Set<DocumFornitoreDTO> listaFornitori = new HashSet<DocumFornitoreDTO>(0);
 	
 	public DocumCommittenteDTO() {
 		super();
@@ -52,6 +57,14 @@ public class DocumCommittenteDTO {
 	}
 	public void setNominativo_referente(String nominativo_referente) {
 		this.nominativo_referente = nominativo_referente;
+	}
+
+	public Set<DocumFornitoreDTO> getListaFornitori() {
+		return listaFornitori;
+	}
+
+	public void setListaFornitori(Set<DocumFornitoreDTO> listaFornitori) {
+		this.listaFornitori = listaFornitori;
 	}
 	
 	

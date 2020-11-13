@@ -35,9 +35,9 @@ public class GestioneDocumentaleBO {
 		return GestioneDocumentaleDAO.getFornitoreFromId(id_fornitore, session);
 	}
 
-	public static ArrayList<DocumReferenteFornDTO> getListaReferenti(Session session) {
+	public static ArrayList<DocumReferenteFornDTO> getListaReferenti(int id_fornitore,Session session) {
 		
-		return GestioneDocumentaleDAO.getListaReferenti(session);
+		return GestioneDocumentaleDAO.getListaReferenti(id_fornitore, session);
 	}
 
 	public static DocumReferenteFornDTO getReferenteFromId(int id_referente, Session session) {
@@ -45,9 +45,9 @@ public class GestioneDocumentaleBO {
 		return GestioneDocumentaleDAO.getReferenteFromId(id_referente, session);
 	}
 
-	public static ArrayList<DocumDipendenteFornDTO> getListaDipendenti(Session session) {
+	public static ArrayList<DocumDipendenteFornDTO> getListaDipendenti(int id_fornitore,Session session) {
 		
-		return GestioneDocumentaleDAO.getListaDipendenti(session);
+		return GestioneDocumentaleDAO.getListaDipendenti(id_fornitore,session);
 	}
 
 	public static DocumDipendenteFornDTO getDipendenteFromId(int id_dipendente, Session session) {
@@ -69,4 +69,6 @@ public class GestioneDocumentaleBO {
 		
 		return GestioneDocumentaleDAO.getDocumentiScadenza(id_fornitore, session);
 	}
+
+
 }

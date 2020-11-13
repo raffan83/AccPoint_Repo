@@ -27,13 +27,23 @@
             <column name="data_caricamento" />
         </property>
         
-            <property name="id_fornitore" type="int" >
+<!--             <property name="id_fornitore" type="int" >
             <column name="id_fornitore" />
         </property>
         
             <property name="nome_fornitore" type="java.lang.String" >
             <column name="nome_fornitore" />
-        </property>
+        </property> -->
+        
+        
+                  <many-to-one name="committente" class="it.portaleSTI.DTO.DocumCommittenteDTO" fetch="join" lazy="false">
+            <column name="id_committente" />
+        </many-to-one>
+
+
+          <many-to-one name="fornitore" class="it.portaleSTI.DTO.DocumFornitoreDTO" fetch="join" lazy="false">
+            <column name="id_fornitore" />
+        </many-to-one>
         
             <property name="data_scadenza" type="java.sql.Date" >
             <column name="data_scadenza" />

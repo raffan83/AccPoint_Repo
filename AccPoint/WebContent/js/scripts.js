@@ -14092,10 +14092,11 @@ function nuovoFornitore(){
 
 		  var form = $('#nuovoFornitoreForm')[0]; 
 		  var formData = new FormData(form);
+		 var committente = $('#committente').val();
 		 
     $.ajax({
   	  type: "POST",
-  	  url: "gestioneDocumentale.do?action=nuovo_fornitore",
+  	  url: "gestioneDocumentale.do?action=nuovo_fornitore&committente="+committente,
   	  data: formData,
   	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
   	  processData: false, // NEEDED, DON'T OMIT THIS
@@ -14154,9 +14155,12 @@ function modificaFornitore(){
 		  var formData = new FormData(form);
 		 
 		  var id_fornitore = $('#id_fornitore').val();
+		  var committente = $('#committente_mod').val();
+		  var remove_comm = $('#remove_comm').val();
+		  
     $.ajax({
   	  type: "POST",
-  	  url: "gestioneDocumentale.do?action=modifica_fornitore&id_fornitore="+id_fornitore,
+  	  url: "gestioneDocumentale.do?action=modifica_fornitore&id_fornitore="+id_fornitore+"&id_committenti="+committente+"&remove_comm="+remove_comm,
   	  data: formData,
   	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
   	  processData: false, // NEEDED, DON'T OMIT THIS
@@ -14740,4 +14744,74 @@ $('#calendario').fullCalendar({
 	          }
 	         });
 	
+}
+
+
+
+
+function getFornitoriCommittente(mod, id_committente){
+	 
+	 var dataObj = {};
+		dataObj.id_committente = id_committente;
+		
+
+	  $.ajax({
+type: "POST",
+url: "gestioneDocumentale.do?action=fornitori_committente",
+data: dataObj,
+dataType: "json",
+//if received a response from the server
+success: function( data, textStatus) {
+	
+	  if(data.success)
+		  {  
+		  if(data.fornitori!=null){
+			  
+			 var opt = [];
+			 if(mod!=''){
+				 opt.push("<option value=''></<option>");				 
+			 }else{
+				 opt.push("<option value='' selected></<option>");	 
+			 }
+			 
+			 
+			 for(var i = 0;i<data.fornitori.length;i++){
+				 
+				 opt.push("<option value='"+data.fornitori[i].id+"'>"+data.fornitori[i].ragione_sociale+"</option>");
+			 }
+			 
+			 $('#fornitore'+mod).html(opt);
+			 $('#fornitore'+mod).attr('disabled', false);
+			 
+			 if(mod!=''){
+				 $('#fornitore_mod').val($('#fornitore_temp').val());
+				 $('#fornitore_mod').change();
+			 }
+		  }
+			
+			
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+},
+error: function( data, textStatus) {
+	  $('#myModalYesOrNo').modal('hide');
+	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+}
+});
+	
+	 
 }

@@ -70,6 +70,7 @@
 
 
 <th>ID</th>
+<th>Committente</th>
 <th>Fornitore</th>
 <th>Nome Documento</th>
 <th>Data caricamento</th>
@@ -85,7 +86,8 @@
 	<tr id="row_${loop.index}" >
 
 	<td>${documento.id }</td>	
-	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(documento.id_fornitore)}')">${documento.nome_fornitore }</a></td>
+	<td>${documento.committente.nome_cliente } - ${documento.committente.indirizzo_cliente }</td>
+	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(documento.fornitore.id)}')">${documento.fornitore.ragione_sociale }</a></td>
 	<td>${documento.nome_documento }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_caricamento}" /></td>
 	<td>${documento.frequenza_rinnovo_mesi }</td>
@@ -94,7 +96,7 @@
 		
 	<td>	
 	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
-	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.id}','${documento.id_fornitore}','${documento.nome_documento}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
+	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.committente.id }','${documento.id}','${documento.fornitore.id}','${documento.nome_documento}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
 	   '${documento.data_scadenza}','${documento.nome_file }','${documento.rilasciato }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
 	      <a class="btn btn-danger" onClick="modalEliminaDocumento('${documento.id}')"><i class="fa fa-trash"></i></a>     
@@ -129,6 +131,28 @@
         <h4 class="modal-title" id="myModalLabel">Nuovo Documento</h4>
       </div>
        <div class="modal-body">
+       
+       
+                           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Committente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="committente_docum" id="committente_docum" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona committente..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <c:forEach items="${lista_committenti}" var="committente">
+                     
+                           <option value="${committente.id}">${committente.nome_cliente} - ${committente.indirizzo_cliente }</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>
 
       <div class="row">
        
@@ -261,6 +285,27 @@
         <h4 class="modal-title" id="myModalLabel">Modifica Documento</h4>
       </div>
             <div class="modal-body">
+            
+             <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Committente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="committente_docum_mod" id="committente_docum_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona committente..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <c:forEach items="${lista_committenti}" var="committente">
+                     
+                           <option value="${committente.id}">${committente.nome_cliente} - ${committente.indirizzo_cliente }</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>
 
       <div class="row">
        
@@ -374,6 +419,8 @@
       <div class="modal-footer">
 		
 		<input type="hidden" id="id_documento" name="id_documento">
+		<input type="hidden" id="fornitore_temp" name="fornitore_temp">
+		
 
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
@@ -451,12 +498,29 @@ function modalNuovoDocumento(){
 }
 
 
-function modificaDocumentoModal(id_documento, fornitore, nome_documento, data_caricamento, frequenza,  data_scadenza, nome_file, rilasciato){
+$('#committente_docum').change(function(){
+	
+	 var id_committente = $(this).val();
+	 getFornitoriCommittente("", id_committente);
+	 
+		
+	 var id_committente = $(this).val();
+	 getFornitoriCommittente("_mod", id_committente);
+	 
+});
+
+
+function modificaDocumentoModal(id_committente, id_documento, fornitore, nome_documento, data_caricamento, frequenza,  data_scadenza, nome_file, rilasciato){
 
 	$('#id_documento').val(id_documento);
 		
-	$('#fornitore_mod').val(fornitore);
-	$('#fornitore_mod').change();
+	
+	$('#fornitore_temp').val(fornitore);	
+
+	
+	$('#committente_docum_mod').val(id_committente);
+	$('#committente_docum_mod').change();
+	
 
 	$('#nome_documento_mod').val(nome_documento);
 	$('#frequenza_mod').val(frequenza);	
@@ -611,8 +675,7 @@ function modalEliminaDocumento(id_documento){
 
 $(document).ready(function() {
  
-	$('#fornitore').select2();
-	$('#fornitore_mod').select2();
+$('.select2').select2();
 	 
      $('.dropdown-toggle').dropdown();
      

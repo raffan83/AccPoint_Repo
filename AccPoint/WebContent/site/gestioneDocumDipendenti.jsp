@@ -65,6 +65,7 @@
 
 
 <th>ID</th>
+<th>Committente</th>
 <th>Fornitore</th>
 <th>Nominativo</th>
 <th>Qualifica</th>
@@ -79,14 +80,15 @@
 	<tr id="row_${loop.index}" >
 
 	<td>${dipendente.id }</td>	
-	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(dipendente.id_fornitore)}')">${dipendente.nome_fornitore }</a></td>
+	<td>${dipendente.committente.nome_cliente } - ${dipendente.committente.indirizzo_cliente }</td>
+	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(dipendente.fornitore.id)}')">${dipendente.fornitore.ragione_sociale }</a></td>
 	<td>${dipendente.nome } ${dipendente.cognome }</td>
 	<td>${dipendente.qualifica }</td>
 	
 	<td>${dipendente.note }</td>
 		
 	<td>	
-	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.id}','${dipendente.id_fornitore}','${dipendente.nome.replace('\'','&prime;')}','${dipendente.cognome.replace('\'','&prime;')}','${utl:escapeJS(utl:escapeHTML(dipendente.note.replace('\'','&prime;')))}',
+	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.committente.id }','${dipendente.id}','${dipendente.fornitore.id}','${dipendente.nome.replace('\'','&prime;')}','${dipendente.cognome.replace('\'','&prime;')}','${utl:escapeJS(dipendente.note)}',
 	   '${dipendente.qualifica}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
 	</td>
 	</tr>
@@ -119,6 +121,28 @@
         <h4 class="modal-title" id="myModalLabel">Nuovo Dipendente</h4>
       </div>
        <div class="modal-body">
+       
+       
+                    <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Committente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="committente_dip" id="committente_dip" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona committente..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <c:forEach items="${lista_committenti}" var="committente">
+                     
+                           <option value="${committente.id}">${committente.nome_cliente} - ${committente.indirizzo_cliente }</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>
 
       <div class="row">
        
@@ -128,7 +152,7 @@
        	<div class="col-sm-9">      
        	  	
         
-    <select name="fornitore" id="fornitore" class="form-control select2" data-placeholder="Seleziona fornitore..." aria-hidden="true" required data-live-search="true" style="width:100%" >
+    <select name="fornitore" id="fornitore" class="form-control select2" data-placeholder="Seleziona fornitore..." aria-hidden="true" required disabled data-live-search="true" style="width:100%" >
                 <option value=""></option>
                       <c:forEach items="${lista_fornitori}" var="fornitore">
                      
@@ -219,6 +243,27 @@
         <h4 class="modal-title" id="myModalLabel">Modifica Dipendente</h4>
       </div>
                   <div class="modal-body">
+                  
+                                      <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Committente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="committente_dip_mod" id="committente_dip_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona committente..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <c:forEach items="${lista_committenti}" var="committente">
+                     
+                           <option value="${committente.id}">${committente.nome_cliente} - ${committente.indirizzo_cliente }</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br>
 
       <div class="row">
        
@@ -296,7 +341,7 @@
        </div>
   		 
       <div class="modal-footer">
-		
+		<input type="hidden" id="fornitore_temp" name="fornitore_temp">
 		<input type="hidden" id="id_dipendente" name="id_dipendente">
 
 		<button class="btn btn-primary" type="submit">Salva</button> 
@@ -375,14 +420,16 @@ function modalNuovoDipendente(){
 }
 
 
-function modificaDipendenteModal(id_dipendente, fornitore, nome, cognome, note,  qualifica){
+function modificaDipendenteModal(id_committente, id_dipendente, fornitore, nome, cognome, note,  qualifica){
 	
+	
+	$('#fornitore_temp').val(fornitore);
 	
 	$('#id_dipendente').val(id_dipendente);
-		
-	$('#fornitore_mod').val(fornitore);
-	$('#fornitore_mod').change();
-
+	
+	$('#committente_dip_mod').val(id_committente);
+	$('#committente_dip_mod').change();
+	
 
 	$('#nome_mod').val(nome);
 	$('#cognome_mod').val(cognome);
@@ -393,6 +440,23 @@ function modificaDipendenteModal(id_dipendente, fornitore, nome, cognome, note, 
 	
 	$('#myModalModificaDipendente').modal();
 }
+
+
+
+$('#committente_dip').change(function(){
+	
+	 var id_committente = $(this).val();
+	 getFornitoriCommittente("", id_committente);
+	 
+});
+
+
+$('#committente_dip_mod').change(function(){
+		
+	 var id_committente = $(this).val();
+	 getFornitoriCommittente("_mod", id_committente);
+	 
+});
 
 
 var columsDatatables = [];
@@ -433,8 +497,7 @@ $('#fileupload_mod').change(function(){
 
 $(document).ready(function() {
  
-	$('#fornitore').select2();
-	$('#fornitore_mod').select2();
+	$('.select2').select2();
 	 
      $('.dropdown-toggle').dropdown();
      

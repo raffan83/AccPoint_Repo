@@ -9,11 +9,18 @@
             <generator class="native" />
         </id>    
 
-          
+          <many-to-one name="committente" class="it.portaleSTI.DTO.DocumCommittenteDTO" fetch="join" lazy="false">
+            <column name="id_committente" />
+        </many-to-one>
 
-         <property name="id_fornitore" type="int" >
+
+          <many-to-one name="fornitore" class="it.portaleSTI.DTO.DocumFornitoreDTO" fetch="join" lazy="false">
             <column name="id_fornitore" />
-        </property>
+        </many-to-one>
+        
+<!--          <property name="id_fornitore" type="int" >
+            <column name="id_fornitore" />
+        </property> -->
         <property name="cognome" type="java.lang.String" >
             <column name="cognome" />
         </property>
@@ -29,9 +36,9 @@
             <column name="note" />
         </property>
         
-                <property name="nome_fornitore" type="java.lang.String" >
+<!--                 <property name="nome_fornitore" type="java.lang.String" >
             <column name="nome_fornitore" />
-        </property>
+        </property> -->
         
     </class>
 </hibernate-mapping>

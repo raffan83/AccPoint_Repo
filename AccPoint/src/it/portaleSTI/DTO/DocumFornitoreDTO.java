@@ -6,7 +6,7 @@ import java.util.Set;
 public class DocumFornitoreDTO {
 	
 	private int id;
-	private DocumCommittenteDTO committente;
+	//private DocumCommittenteDTO committente;
 	private String ragione_sociale;
 	private String p_iva;
 	private String cf;
@@ -19,9 +19,13 @@ public class DocumFornitoreDTO {
 	private String email;
 	private DocumTLStatoDTO stato;
 	
-	private Set<DocumDipendenteFornDTO> listaDipendenti = new HashSet<DocumDipendenteFornDTO>(0);
-	private Set<DocumReferenteFornDTO> listaReferenti = new HashSet<DocumReferenteFornDTO>(0);
-	private Set<DocumTLDocumentoDTO> listaDocumenti = new HashSet<DocumTLDocumentoDTO>(0);
+	//private Set<DocumCommittenteDTO> listaCommittenti = new HashSet<DocumCommittenteDTO>(0);
+
+//	private Set<DocumDipendenteFornDTO> listaDipendenti = new HashSet<DocumDipendenteFornDTO>(0);
+//	private Set<DocumReferenteFornDTO> listaReferenti = new HashSet<DocumReferenteFornDTO>(0);
+//	private Set<DocumTLDocumentoDTO> listaDocumenti = new HashSet<DocumTLDocumentoDTO>(0);
+	
+	private String id_encrypted;
 	
 	public int getId() {
 		return id;
@@ -29,12 +33,12 @@ public class DocumFornitoreDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public DocumCommittenteDTO getCommittente() {
-		return committente;
-	}
-	public void setCommittente(DocumCommittenteDTO committente) {
-		this.committente = committente;
-	}
+//	public DocumCommittenteDTO getCommittente() {
+//		return committente;
+//	}
+//	public void setCommittente(DocumCommittenteDTO committente) {
+//		this.committente = committente;
+//	}
 	public String getRagione_sociale() {
 		return ragione_sociale;
 	}
@@ -101,25 +105,37 @@ public class DocumFornitoreDTO {
 	public void setStato(DocumTLStatoDTO stato) {
 		this.stato = stato;
 	}
-	public Set<DocumDipendenteFornDTO> getListaDipendenti() {
-		return listaDipendenti;
+//	public Set<DocumDipendenteFornDTO> getListaDipendenti() {
+//		return listaDipendenti;
+//	}
+//	public void setListaDipendenti(Set<DocumDipendenteFornDTO> listaDipendenti) {
+//		this.listaDipendenti = listaDipendenti;
+//	}
+//	public Set<DocumReferenteFornDTO> getListaReferenti() {
+//		return listaReferenti;
+//	}
+//	public void setListaReferenti(Set<DocumReferenteFornDTO> listaReferenti) {
+//		this.listaReferenti = listaReferenti;
+//	}
+//	public Set<DocumTLDocumentoDTO> getListaDocumenti() {
+//		return listaDocumenti;
+//	}
+//	public void setListaDocumenti(Set<DocumTLDocumentoDTO> listaDocumenti) {
+//		this.listaDocumenti = listaDocumenti;
+//	}
+//	
+//	
+//	public Set<DocumCommittenteDTO> getListaCommittenti() {
+//		return listaCommittenti;
+//	}
+//	public void setListaCommittenti(Set<DocumCommittenteDTO> listaCommittenti) {
+//		this.listaCommittenti = listaCommittenti;
+//	}
+	public String getId_encrypted() {
+		return id_encrypted;
 	}
-	public void setListaDipendenti(Set<DocumDipendenteFornDTO> listaDipendenti) {
-		this.listaDipendenti = listaDipendenti;
+	public void setId_encrypted(String id_encrypted) {
+		this.id_encrypted = id_encrypted;
 	}
-	public Set<DocumReferenteFornDTO> getListaReferenti() {
-		return listaReferenti;
-	}
-	public void setListaReferenti(Set<DocumReferenteFornDTO> listaReferenti) {
-		this.listaReferenti = listaReferenti;
-	}
-	public Set<DocumTLDocumentoDTO> getListaDocumenti() {
-		return listaDocumenti;
-	}
-	public void setListaDocumenti(Set<DocumTLDocumentoDTO> listaDocumenti) {
-		this.listaDocumenti = listaDocumenti;
-	}
-	
-	
 
 }

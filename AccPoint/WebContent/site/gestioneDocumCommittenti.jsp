@@ -81,7 +81,8 @@
 	<td>${committente.indirizzo_cliente }</td>
 	<td>${committente.nominativo_referente }</td>	
 	<td>	
-	 <a class="btn btn-warning" onClicK="modificaCommittenteModal('${committente.id}','${committente.id_cliente}','${committente.id_sede }','${committente.nominativo_referente.replace('\'','&prime;')}')" title="Click per modificare il Committente"><i class="fa fa-edit"></i></a>  
+	 <a class="btn btn-warning" onClicK="modificaCommittenteModal('${committente.id}','${committente.id_cliente}','${committente.id_sede }','${committente.nominativo_referente.replace('\'','&prime;')}')" title="Click per modificare il Committente"><i class="fa fa-edit"></i></a>
+	 <a class="btn btn-info" onClick="showListaFornitori('${committente.id}')"><i class="fa fa-search"></i></a> 
 	</td>
 	</tr>
 	</c:forEach>
@@ -246,6 +247,49 @@
 
 
 
+  <div id="myModalListaFornitori" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Lista Fornitori</h4>
+      </div>
+       <div class="modal-body">       
+      	<div id="lista_fornitori_content">
+      	
+      	 <table id="tabFornitori" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+
+<th>ID</th>
+<%-- <th>Committente</th> --%>
+<th>Ragione Sociale</th>
+<th>Indirizzo</th>
+<th>Partita iva</th>
+<th>Codice Fiscale</th>
+<th>email</th>
+<th>Stato</th>
+
+<th>Azioni</th>
+ </tr></thead>
+ 
+ <tbody id="tbody_fornitori">
+ </tbody>
+      	</table>
+      	
+      	</div>
+      	</div>
+      <div class="modal-footer">
+
+		<a class="btn btn-primary" onclick="$('#myModalListaFornitori').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 
   <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
@@ -331,26 +375,6 @@ function modificaCommittenteModal(id_committente, id_cliente, id_sede, referente
 	$('#myModalModificaCommittente').modal();
 }
 
-/* $('#check_formatore').on('ifClicked',function(e){
-	if($('#check_formatore').is( ':checked' )){
-		$('#check_formatore').iCheck('uncheck');
-		$('#formatore').val(0); 
-	}else{
-		$('#check_formatore').iCheck('check');
-		$('#formatore').val(1); 
-	}
-});
-	 
-
-$('#check_formatore_mod').on('ifClicked',function(e){
-	if($('#check_formatore_mod').is( ':checked' )){
-		$('#check_formatore_mod').iCheck('uncheck');
-		$('#formatore_mod').val(0); 
-	}else{
-		$('#check_formatore_mod').iCheck('check');
-		$('#formatore_mod').val(1); 
-	}
-}); */
 
 var columsDatatables = [];
 
@@ -387,6 +411,61 @@ $('#fileupload_mod').change(function(){
 	$('#label_file_mod').html($(this).val().split("\\")[2]);
 	 
  });
+
+
+
+
+function showListaFornitori(id_committente){
+	
+	dataString ="id_committente="+ id_committente;
+    exploreModal("gestioneDocumentale.do?action=fornitori_committente",dataString,null,function(datab,textStatusb){
+
+    	var lista_fornitori = JSON.parse(datab);
+    	
+    	var items = [];
+    	
+    	(lista_fornitori.fornitori).forEach(function(item){
+    		
+    		var fornitore = {};
+    		
+    		
+    		fornitore.id = item.id;
+    		fornitore.ragione_sociale = item.ragione_sociale;
+    		fornitore.indirizzo = item.indirizzo;
+    		fornitore.p_iva = item.p_iva;
+    		fornitore.cf = item.cf;
+    		fornitore.email = item.email;
+    		fornitore.stato = "";
+    		fornitore.azioni = "<td><a class=\"btn btn-info customTooltip \" title=\"Click per visualizzare il dettaglio fornitore\" onClick=\"callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore="+item.id_encrypted+"');\"><i class=\"fa fa-search\"></i></a></td>";
+    		
+    		items.push(fornitore);
+    		
+ 	
+    	  });
+	   var table = $('#tabFornitori').DataTable();
+	 	  
+ 	   table.clear().draw();
+
+ 		table.rows.add(items).draw();
+ 	    
+ 	    table.columns().eq( 0 ).each( function ( colIdx ) {
+ 	  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+ 	  	      table
+ 	  	          .column( colIdx )
+ 	  	          .search( this.value )
+ 	  	          .draw();
+ 	  	  } );
+ 	  	} ); 
+ 	  		table.columns.adjust().draw();
+    	
+    	
+  		$('#myModalListaFornitori').modal();
+
+    });
+	
+
+}
+
 
 $(document).ready(function() {
  
@@ -481,6 +560,97 @@ $(document).ready(function() {
 	
 	
 	
+	
+
+	 tabForn = $('#tabFornitori').DataTable({
+		language: {
+	        	emptyTable : 	"Nessun dato presente nella tabella",
+	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	        	infoPostFix:	"",
+	        infoThousands:	".",
+	        lengthMenu:	"Visualizza _MENU_ elementi",
+	        loadingRecords:	"Caricamento...",
+	        	processing:	"Elaborazione...",
+	        	search:	"Cerca:",
+	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	        	paginate:	{
+  	        	first:	"Inizio",
+  	        	previous:	"Precedente",
+  	        	next:	"Successivo",
+  	        last:	"Fine",
+	        	},
+	        aria:	{
+  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	        }
+        },
+        pageLength: 25,
+        "order": [[ 0, "desc" ]],
+	      paging: true, 
+	      ordering: true,
+	      info: true, 
+	      searchable: true, 
+	      targets: 0,
+	      responsive: true,
+	      scrollX: false,
+	      stateSave: true,	
+	           
+	     columns : [
+	     	 {"data" : "id"},
+	     	 {"data" : "ragione_sociale"},
+	     	 {"data" : "indirizzo"},
+	     	 {"data" : "p_iva"},
+	     	 {"data" : "cf"},
+	     	 {"data" : "email"},
+	         {"data" : "stato"},
+	     	 {"data" : "azioni"}
+	     ],	
+	      columnDefs: [
+	    	  
+	    	  { responsivePriority: 1, targets: 1 },
+	    	  
+	    	  
+	               ], 	        
+  	      buttons: [   
+  	          {
+  	            extend: 'colvis',
+  	            text: 'Nascondi Colonne'  	                   
+ 			  } ]
+	               
+	    });
+	
+	 tabForn.buttons().container().appendTo( '#tabFornitori_wrapper .col-sm-6:eq(1)');
+ 	    $('.inputsearchtable').on('click', function(e){
+ 	       e.stopPropagation();    
+ 	    });
+
+ 	   tabForn.columns().eq( 0 ).each( function ( colIdx ) {
+  $( 'input', tabForn.column( colIdx ).header() ).on( 'keyup', function () {
+	  tabForn
+          .column( colIdx )
+          .search( this.value )
+          .draw();
+  } );
+} );  
+
+
+
+ 	  tabForn.columns.adjust().draw();
+	
+
+$('#tabFornitori').on( 'page.dt', function () {
+	$('.customTooltip').tooltipster({
+        theme: 'tooltipster-light'
+    });
+	
+	$('.removeDefault').each(function() {
+	   $(this).removeClass('btn-default');
+	})
+
+
+});
 	
 
 	

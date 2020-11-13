@@ -74,11 +74,18 @@ public class GestioneDocumentaleDAO {
 		return result;
 	}
 
-	public static ArrayList<DocumReferenteFornDTO> getListaReferenti(Session session) {
+	public static ArrayList<DocumReferenteFornDTO> getListaReferenti(int id_fornitore, Session session) {
 
 		ArrayList<DocumReferenteFornDTO> lista = null;
 		
-		Query query = session.createQuery("from DocumReferenteFornDTO");
+		Query query = null;
+		
+		if(id_fornitore==0) {
+			query = session.createQuery("from DocumReferenteFornDTO");	
+		}else {
+			query = session.createQuery("from DocumReferenteFornDTO where id_fornitore =:_id_fornitore");
+			query.setParameter("_id_fornitore", id_fornitore);
+		}
 		
 		lista = (ArrayList<DocumReferenteFornDTO>) query.list();
 		
@@ -102,11 +109,19 @@ public class GestioneDocumentaleDAO {
 		return result;
 	}
 
-	public static ArrayList<DocumDipendenteFornDTO> getListaDipendenti(Session session) {
+	public static ArrayList<DocumDipendenteFornDTO> getListaDipendenti(int id_fornitore, Session session) {
 	
 		ArrayList<DocumDipendenteFornDTO> lista = null;
 		
-		Query query = session.createQuery("from DocumDipendenteFornDTO");
+		Query query = null;
+		
+		if(id_fornitore==0) {
+			query = session.createQuery("from DocumDipendenteFornDTO"); 
+		}else {
+			query = session.createQuery("from DocumDipendenteFornDTO where id_fornitore =:_id_fornitore");
+			query.setParameter("_id_fornitore", id_fornitore);
+		}
+		
 		
 		lista = (ArrayList<DocumDipendenteFornDTO>) query.list();
 		
@@ -136,8 +151,15 @@ public class GestioneDocumentaleDAO {
 		
 		Query query = null;
 		
-		if(data_scadenza==null) {
+		if(data_scadenza==null && id_fornitore == 0) {
 			query = session.createQuery("from DocumTLDocumentoDTO where disabilitato = 0");
+		}
+		else if(data_scadenza==null && id_fornitore!=0) {
+			
+			query = session.createQuery("from DocumTLDocumentoDTO where disabilitato = 0 and id_fornitore = :_id_fornitore");
+			query.setParameter("_id_fornitore", id_fornitore);
+			
+			
 		}
 		else if(data_scadenza != null && id_fornitore == 0){
 			
@@ -211,5 +233,6 @@ public class GestioneDocumentaleDAO {
 
 		return mapScadenze;
 	}
+
 
 }

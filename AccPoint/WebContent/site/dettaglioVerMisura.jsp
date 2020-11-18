@@ -81,6 +81,13 @@
                    <a class="pull-right">${cliente.numeroREA}</a>
                   </c:if>
                 </li>
+                
+                 <li class="list-group-item">
+                <b>ID Misura</b>
+                 
+                   
+                 <a class="pull-right"  >${misura.id }</a>
+                </li>
                  <li class="list-group-item">
                 <b>Intervento</b>
                  
@@ -1293,7 +1300,8 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
               <br>
               <%-- <input type="text" class="form-control pull-right" disabled value="${misura.tInizio }" > --%>
              <label >|Ti - Tf| < 5 C°</label>
-               <input type="text" class="form-control pull-right" disabled value="${misura.tFine - misura.tInizio}" > 
+         
+               <input type="text" class="form-control pull-right"  value='${misura.tFine - misura.tInizio }' disabled> 
               </div>
               </div><br>
               
@@ -1432,7 +1440,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <th class="text-center">N° Ripetizione</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
- <c:if test="${misura.verStrumento.classe !=5}">
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
  </c:if>
  <th class="text-center">P<br>${misura.verStrumento.um }</th>
@@ -1454,7 +1462,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 <td align="center">${item.numeroRipetizione}</td>
 <td align="center">${item.massa.stripTrailingZeros().toPlainString()}</td>
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
- <c:if test="${misura.verStrumento.classe !=5}">
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia,  3)}</td>
 </c:if>
 <td align="center">${item.portata.setScale(risoluzioneBilanciaE0, 3)}</td>
@@ -1542,7 +1550,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 <td align="center">${item.numeroRipetizione}</td>
 <td align="center">${item.massa.stripTrailingZeros().toPlainString()}</td>
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
- <c:if test="${misura.verStrumento.classe !=5}">
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6}">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia,  3)}</td>
 </c:if>
 <td align="center">${item.portata.setScale(risoluzioneBilanciaE0, 3)}</td>
@@ -1619,7 +1627,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 <td align="center">${item.numeroRipetizione}</td>
 <td align="center">${item.massa.stripTrailingZeros().toPlainString()}</td>
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
- <c:if test="${misura.verStrumento.classe !=5}">
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6}">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia,  3)}</td>
 </c:if>
 <td align="center">${item.portata.setScale(risoluzioneBilanciaE0, 3)}</td>
@@ -1758,7 +1766,9 @@ ${lista_decentramento.get(1).puntiAppoggio}
  <th class="text-center">Posizione n°</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ </c:if>
  <th class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
  <th class="text-center">ErCorretto<br>Ec<br>${misura.verStrumento.um }</th>
  <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
@@ -1789,7 +1799,9 @@ ${lista_decentramento.get(1).puntiAppoggio}
 
 <td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+</c:if>
 <td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td align="center">${item.erroreCor.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td align="center">${item.mpe.stripTrailingZeros()}</td>
@@ -1894,7 +1906,9 @@ ${lista_decentramento.get(11).puntiAppoggio}
  <th class="text-center">Posizione n°</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ </c:if>
  <th class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
  <th class="text-center">ErCorretto<br>Ec<br>${misura.verStrumento.um }</th>
  <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
@@ -1924,7 +1938,9 @@ ${lista_decentramento.get(11).puntiAppoggio}
 </c:choose>
 <td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+</c:if>
 <td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td align="center">${item.erroreCor.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td align="center">${item.mpe.stripTrailingZeros()}</td>
@@ -2019,7 +2035,9 @@ ${lista_decentramento.get(21).puntiAppoggio}
  <th class="text-center">Posizione n°</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ </c:if>
  <th class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
  <th class="text-center">ErCorretto<br>Ec<br>${misura.verStrumento.um }</th>
  <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
@@ -2048,7 +2066,9 @@ ${lista_decentramento.get(21).puntiAppoggio}
 </c:choose>
 <td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+</c:if>
 <td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td align="center">${item.erroreCor.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td align="center">${item.mpe.stripTrailingZeros()}</td>
@@ -2116,7 +2136,9 @@ Non automatico o semiautomatico
  <th class="text-center">Rif.</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th colspan="2" class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th colspan="2" class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ </c:if>
  <th colspan="2" class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
  <th colspan="2" class="text-center">ErCorretto<br>Ec<br>${misura.verStrumento.um }</th>
  <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
@@ -2130,8 +2152,10 @@ Non automatico o semiautomatico
 <td></td>
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
+</c:if>
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
 <td align="center"><i class="fa fa-arrow-up"></i></td>
@@ -2151,8 +2175,10 @@ Non automatico o semiautomatico
 <td>${item.massa.stripTrailingZeros().toPlainString() }</td>
 <td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
 <td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
 <td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
+</c:if>
 <td>${item.erroreSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
@@ -2215,7 +2241,9 @@ Non automatico o semiautomatico
  <th class="text-center">Rif.</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th colspan="2" class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th colspan="2" class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ </c:if>
  <th colspan="2" class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
  <th colspan="2" class="text-center">ErCorretto<br>Ec<br>${misura.verStrumento.um }</th>
  <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
@@ -2229,8 +2257,10 @@ Non automatico o semiautomatico
 <td></td>
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
+</c:if>
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
 <td align="center"><i class="fa fa-arrow-up"></i></td>
@@ -2252,8 +2282,10 @@ Non automatico o semiautomatico
 <td>${item.massa.stripTrailingZeros().toPlainString() }</td>
 <td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
 <td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
 <td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
+</c:if>
 <td>${item.erroreSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
@@ -2312,7 +2344,9 @@ Non automatico o semiautomatico
  <th class="text-center">Rif.</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th colspan="2" class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th colspan="2" class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ </c:if>
  <th colspan="2" class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
  <th colspan="2" class="text-center">ErCorretto<br>Ec<br>${misura.verStrumento.um }</th>
  <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
@@ -2326,8 +2360,10 @@ Non automatico o semiautomatico
 <td></td>
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
+</c:if>
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
 <td align="center"><i class="fa fa-arrow-up"></i></td>
@@ -2348,8 +2384,10 @@ Non automatico o semiautomatico
 <td>${item.massa.stripTrailingZeros().toPlainString() }</td>
 <td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
 <td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
 <td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
+</c:if>
 <td>${item.erroreSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>

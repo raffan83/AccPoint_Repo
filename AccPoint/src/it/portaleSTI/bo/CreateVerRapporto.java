@@ -1546,11 +1546,11 @@ public class CreateVerRapporto {
 						arrayPs.add("");
 					}
 					if(item.getMpe()!=null) {
-						if((item.getPosizione()%2)!=0){
-							arrayPs.add(Utility.changeDotComma(item.getMpe().toPlainString()));	
-						}else {
+//						if((item.getPosizione()%2)!=0){
+//							arrayPs.add(Utility.changeDotComma(item.getMpe().toPlainString()));	
+//						}else {
 							arrayPs.add(Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()));		
-						}
+//						}
 						
 					}else {
 						arrayPs.add("");

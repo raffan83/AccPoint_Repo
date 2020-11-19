@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -44,6 +45,11 @@ public class ScaricaPacchettoVerificazione extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    
+	@Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	doPost(request, response);
+    }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -57,38 +63,97 @@ public class ScaricaPacchettoVerificazione extends HttpServlet {
 		
 		try{
 			
-			 
-			 CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
-			 
-			 VerInterventoDTO intervento=(VerInterventoDTO) request.getSession().getAttribute("interventover");
-			 
-			 
-		 	 String filename = GestioneVerificazioneBO.creaPacchettoConNome(intervento,cmp,session);
+			String action = request.getParameter("action");
 			
-		     File d = new File(Costanti.PATH_FOLDER+filename+"/"+filename+".db");
-			 
-			 FileInputStream fileIn = new FileInputStream(d);
-			 
-			 response.setContentType("application/octet-stream");
-			  
-			 response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
-			 
-			 ServletOutputStream outp = response.getOutputStream();
-			     
-			    byte[] outputByte = new byte[1];
-			    
-			    while(fileIn.read(outputByte, 0, 1) != -1)
-			    {
-			    	outp.write(outputByte, 0, 1);
-			    }
-			    
-			    
-			    fileIn.close();
-			    outp.flush();
-			    outp.close();
-			   
-				session.getTransaction().commit();
-				session.close();
+			if(action== null) {
+				CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				 
+				 VerInterventoDTO intervento=(VerInterventoDTO) request.getSession().getAttribute("interventover");
+				 
+				 
+			 	 String filename = GestioneVerificazioneBO.creaPacchettoConNome(intervento,cmp,session);
+				
+			     File d = new File(Costanti.PATH_FOLDER+filename+"/"+filename+".db");
+				 
+				 FileInputStream fileIn = new FileInputStream(d);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				   
+					session.getTransaction().commit();
+					session.close();
+					
+			}			 
+				
+				else if(action!=null && action.equals("download_generato")) {
+					
+					 String filename = request.getParameter("filename");
+						
+				     File dir = new File(Costanti.PATH_FOLDER+filename);
+					
+				    
+				     int index = 0;
+					for(File file : dir.listFiles()) {
+						
+						String ext = FilenameUtils.getExtension(file.getName());
+						if(ext.equals("db")) {
+							if(file.getName().split("_").length>1) {								
+								index++;				
+							}
+						}
+						
+					}
+					
+					String path = "";
+					if(index==0) {
+						path = Costanti.PATH_FOLDER+filename+"/"+filename+".db";
+						response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
+					}else {
+						path = Costanti.PATH_FOLDER+filename+"/"+filename+"_"+index+".db";
+						response.setHeader("Content-Disposition","attachment;filename="+filename+"_"+index+".db");
+					}
+					
+					File toDownload = new File(path);
+//					 request.getSession().setAttribute("filepath", Costanti.PATH_FOLDER+filename.split("_")[0]+"/");
+					 
+					 FileInputStream fileIn = new FileInputStream(toDownload);
+					
+					 response.setContentType("application/octet-stream");
+					 
+					 
+					
+					 ServletOutputStream outp = response.getOutputStream();
+					     
+					    byte[] outputByte = new byte[1];
+					    
+					    while(fileIn.read(outputByte, 0, 1) != -1)
+					    {
+					    	outp.write(outputByte, 0, 1);
+					    }			    
+					    
+					    fileIn.close();
+					    outp.flush();
+					    outp.close();
+					 
+						session.getTransaction().commit();
+						session.close();
+				
+				}
 		}
 		catch(Exception ex)
     	{

@@ -94,6 +94,12 @@
                    
                  <a class="btn customTooltip customlink pull-right"  href="gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(misura.verIntervento.id)}" >${misura.verIntervento.id }</a>
                 </li>
+                 <li class="list-group-item">
+                <b>Pacchetto</b>
+                 
+                   
+                 <a class="btn customTooltip customlink pull-right"  href="scaricaPacchettoVerificazione.do?action=download_generato&filename=${misura.verIntervento.nome_pack}" >${misura.verIntervento.nome_pack }</a>
+                </li>
 
         </ul>
 

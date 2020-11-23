@@ -98,7 +98,7 @@
                 <b>Pacchetto</b>
                  
                    
-                 <a class="btn customTooltip customlink pull-right"  href="scaricaPacchettoVerificazione.do?action=download_generato&filename=${misura.verIntervento.nome_pack}" >${misura.verIntervento.nome_pack }</a>
+                 <a class="btn pull-right" onClick="modalListaFile('${misura.verIntervento.nome_pack }')" >${misura.verIntervento.nome_pack}</a>
                 </li>
 
         </ul>
@@ -3215,6 +3215,28 @@ Non automatico o semiautomatico
 </section>
 </div>
 
+
+  <div id="myModalFile" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Lista upload</h4>
+      </div>
+       <div class="modal-body">
+			<div id="file_content">
+			
+			</div>
+   
+  		 </div>
+      <div class="modal-footer" id="myModalFooter">
+ 
+       
+      </div>
+    </div>
+  </div>
+</div>
+
   
   <div id="myModalDettaglioStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -3313,16 +3335,58 @@ Non automatico o semiautomatico
 
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+ 	<script type="text/javascript" src="plugins/datejs/date.js"></script>
   
  <script type="text/javascript">
  
+ 
+	function formatDate(data){
+		
+		   var mydate = new Date(data);
+		   
+		   if(!isNaN(mydate.getTime())){
+		   
+			   str = mydate.toString("dd/MM/yyyy HH:mm:ss");
+		   }			   
+		   return str;	 		
+	}
+ 
+ function modalListaFile(filename){	 
+	 
+	 dataString ="filename="+ filename;
+       exploreModal("scaricaPacchettoVerificazione.do?action=lista_file",dataString,null,function(datab,textStatusb){
+
+    	   var result = JSON.parse(datab);
+    	   if(result.success){
+    		   var lista_file = result.lista_file;
+    		   var lista_date = result.lista_date;
+    		   if(lista_file.length>0){
+    			   var html = '<li class="list-group-item"><div class="row"><div class="col-xs-4"><b>Pacchetto</b></div><div class="col-xs-5"><b class="pull-right" style="margin-right:10px">Ultima modifica</b></div><div class="col-xs-3"> </div></div></li>';    		   
+        		   for(var i = 0;i<lista_file.length;i++){
+        			   html = html +' <li class="list-group-item"><div class="row"><div class="col-xs-4"><b>'+lista_file[i]+'</b></div><div class="col-xs-5"><b class="pull-right">'+new Date(parseInt(lista_date[i])).toString("dd/MM/yyyy HH:mm:ss")+'</b></div><div class="col-xs-3"> <a class="btn btn-default btn-sm pull-right" href="scaricaPacchettoVerificazione.do?action=download&filename='+lista_file[i]+'" ><i class="fa fa-arrow-down"></i></a></div></div></li>';
+        		   }
+    		   }else{
+    			   var html = '<b>Non sono presenti pacchetti!</b>'
+    		   }
+				
+    	   }
+    	  
+    	   $('#file_content').html(html);
+    	   
+     	  $("#myModalFile").modal();
+     	  
+       });
+	 
+ }
+ 
+ $('#myModalFile').on('hidden.bs.modal',function(){
+	 $(document.body).css('padding-right', '0px');
+ });
    
     $(document).ready(function() {
     	
     	$('.dropdown-toggle').dropdown();
     	
-
-			   
 			   $('#myModalDettaglioStrumento').on('hidden.bs.modal', function (e) {
 
 		    	 	$('#dettaglioTab').tab('show');
@@ -3330,7 +3394,6 @@ Non automatico o semiautomatico
 		    	 	$(document.body).css('padding-right', '0px');
 		    	});
     	
-
 
 	});
 

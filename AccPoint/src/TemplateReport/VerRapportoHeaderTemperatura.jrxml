@@ -119,9 +119,9 @@
 			<staticText>
 				<reportElement x="399" y="107" width="113" height="16" backcolor="#F0F0F0" uuid="add8bda8-c577-4892-bd57-7ea9d5b6528a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfFontName="Helvetica-Bold"/>
+					<font size="9" pdfFontName="Helvetica-BoldOblique" pdfEncoding=""/>
 				</textElement>
-				<text><![CDATA[g /g]]></text>
+				<text><![CDATA[g  /g]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="164" y="7" width="83" height="16" uuid="6c734bab-e095-440c-9f1f-27090584fcdb"/>
@@ -145,14 +145,14 @@
 				<textElement>
 					<font size="8" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[g : Luogo di normale funzionamento*]]></text>
+				<text><![CDATA[   : Luogo di normale funzionamento*]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="1" y="93" width="166" height="30" uuid="6f922c86-0806-445e-a7ab-cf0bb50341d6"/>
 				<textElement>
 					<font size="8" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[g : Luogo di verificazione (esempio sede dell'Organismo)*]]></text>
+				<text><![CDATA[   : Luogo di verificazione (esempio sede dell'Organismo)*]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="1" y="126" width="309" height="15" uuid="0330ce43-f277-4231-8826-40220f29f321"/>
@@ -254,7 +254,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[a altezza /m]]></text>
+				<text><![CDATA[altezza /m]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="287" y="59" width="113" height="16" backcolor="#F0F0F0" uuid="6abcf73e-b685-4d6e-b59f-1ead58d3e8a8"/>
@@ -266,28 +266,28 @@
 			<staticText>
 				<reportElement x="399" y="59" width="113" height="16" backcolor="#F0F0F0" uuid="81d2453c-fec2-42de-82fb-e616b7634709"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfFontName="Helvetica-Bold"/>
+					<font size="9" isItalic="true" pdfFontName="Helvetica-BoldOblique" pdfEncoding=""/>
 				</textElement>
 				<text><![CDATA[g]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="459" y="67" width="20" height="16" uuid="227aacc1-58bb-43a4-ae7e-783e6bee2013"/>
 				<textElement>
-					<font size="5" pdfFontName="Helvetica-Oblique"/>
+					<font size="5" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[loc]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="453" y="115" width="20" height="16" uuid="fca5a0f4-992e-49d9-8832-5236a218a495"/>
+				<reportElement x="452" y="115" width="20" height="16" uuid="fca5a0f4-992e-49d9-8832-5236a218a495"/>
 				<textElement>
-					<font size="5" pdfFontName="Helvetica-Oblique"/>
+					<font size="5" pdfFontName="Helvetica-BoldOblique" pdfEncoding=""/>
 				</textElement>
 				<text><![CDATA[x]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="465" y="115" width="20" height="7" uuid="7eb76139-bac1-43bd-bb8a-bd258380db6f"/>
+				<reportElement x="464" y="115" width="20" height="7" uuid="7eb76139-bac1-43bd-bb8a-bd258380db6f"/>
 				<textElement>
-					<font size="5" pdfFontName="Helvetica-Oblique"/>
+					<font size="5" pdfFontName="Helvetica-BoldOblique" pdfEncoding=""/>
 				</textElement>
 				<text><![CDATA[y]]></text>
 			</staticText>
@@ -322,7 +322,7 @@
 			<textField>
 				<reportElement x="400" y="76" width="113" height="16" uuid="704d0adb-4755-4176-a1c8-7928b9a51c31"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfFontName="Helvetica-Bold"/>
+					<font size="9" pdfFontName="Helvetica-BoldOblique" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{g_org}]]></textFieldExpression>
 			</textField>
@@ -358,14 +358,14 @@
 			<staticText>
 				<reportElement x="5" y="97" width="20" height="16" uuid="e7b65ee3-1aca-4395-957f-c48d2012ea2e"/>
 				<textElement>
-					<font size="5" pdfFontName="Helvetica-Oblique"/>
+					<font size="5" pdfFontName="Helvetica-BoldOblique" pdfEncoding=""/>
 				</textElement>
 				<text><![CDATA[y]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="6" y="79" width="20" height="16" uuid="8ef6fc61-83dd-4de0-b323-4fe75431571b"/>
 				<textElement>
-					<font size="5" pdfFontName="Helvetica-Oblique"/>
+					<font size="5" pdfFontName="Helvetica-BoldOblique" pdfEncoding=""/>
 				</textElement>
 				<text><![CDATA[x]]></text>
 			</staticText>
@@ -375,6 +375,20 @@
 					<font size="9" isBold="false" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[5° C]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="74" width="13" height="17" uuid="e742f121-a93e-45df-9805-28549e1896f6"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[g]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="92" width="13" height="17" uuid="10d5e27a-6c6d-4007-88c1-f67ef62969ef"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[g]]></text>
 			</staticText>
 		</band>
 	</detail>

@@ -3,6 +3,8 @@ package it.portaleSTI.action;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
@@ -60,6 +65,9 @@ public class ScaricaPacchettoVerificazione extends HttpServlet {
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
+		boolean ajax = false;
+		JsonObject myObj = new JsonObject();
+		PrintWriter out = response.getWriter();
 		
 		try{
 			
@@ -100,43 +108,59 @@ public class ScaricaPacchettoVerificazione extends HttpServlet {
 					
 			}			 
 				
-				else if(action!=null && action.equals("download_generato")) {
+				else if(action!=null && action.equals("lista_file")) {
 					
-					 String filename = request.getParameter("filename");
+					ajax = true;
+					
+					String filename = request.getParameter("filename");
 						
-				     File dir = new File(Costanti.PATH_FOLDER+filename);
+				    File dir = new File(Costanti.PATH_FOLDER+filename);
 					
+				    ArrayList<String> lista_file = new ArrayList<String>();
+				    ArrayList<String> lista_date = new ArrayList<String>();
 				    
-				     int index = 0;
-					for(File file : dir.listFiles()) {
-						
-						String ext = FilenameUtils.getExtension(file.getName());
-						if(ext.equals("db")) {
-							if(file.getName().split("_").length>1) {								
-								index++;				
+				    if(dir.listFiles()!= null) {
+				    	for(File file : dir.listFiles()) {
+							
+							String ext = FilenameUtils.getExtension(file.getName());
+							if(ext.equals("db")) {
+								
+								lista_file.add(file.getName());	
+								lista_date.add(file.lastModified()+"");
 							}
+							
 						}
-						
-					}
+				    }
 					
-					String path = "";
-					if(index==0) {
-						path = Costanti.PATH_FOLDER+filename+"/"+filename+".db";
-						response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
-					}else {
-						path = Costanti.PATH_FOLDER+filename+"/"+filename+"_"+index+".db";
-						response.setHeader("Content-Disposition","attachment;filename="+filename+"_"+index+".db");
-					}
 					
-					File toDownload = new File(path);
-//					 request.getSession().setAttribute("filepath", Costanti.PATH_FOLDER+filename.split("_")[0]+"/");
+					
+					Gson g = new Gson();
+							
+					myObj.addProperty("success", true);
+					myObj.add("lista_file", g.toJsonTree(lista_file));
+					myObj.add("lista_date", g.toJsonTree(lista_date));
+										
+					
+					out.print(myObj);
+					
+	 
+					session.getTransaction().commit();
+					session.close();
+				
+				}
+			
+				else if(action!=null && action.equals("download")) {
+					
+					String filename = request.getParameter("filename");
+					
+					File file = new File( Costanti.PATH_FOLDER+filename.split("_")[0].replace(".db","")+"/"+filename);
 					 
-					 FileInputStream fileIn = new FileInputStream(toDownload);
+					 FileInputStream fileIn = new FileInputStream(file);
 					
-					 response.setContentType("application/octet-stream");
-					 
-					 
+					 response.setContentType("application/octet-stream");					 
 					
+					 response.setHeader("Content-Disposition","attachment;filename="+filename);
+					 
 					 ServletOutputStream outp = response.getOutputStream();
 					     
 					    byte[] outputByte = new byte[1];
@@ -152,18 +176,25 @@ public class ScaricaPacchettoVerificazione extends HttpServlet {
 					 
 						session.getTransaction().commit();
 						session.close();
-				
 				}
 		}
 		catch(Exception ex)
     	{
-    		 ex.printStackTrace();
-    		 session.getTransaction().rollback();
-    		 session.close();
-    	     request.setAttribute("error",STIException.callException(ex));
-       	     request.getSession().setAttribute("exception", ex);
-    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-    	     dispatcher.forward(request,response);	
+			if(ajax) {
+				ex.printStackTrace();	        	
+	        	request.getSession().setAttribute("exception", ex);
+	        	myObj = STIException.getException(ex);
+	        	out.print(myObj);
+			}else {
+				ex.printStackTrace();
+	    		 session.getTransaction().rollback();
+	    		 session.close();
+	    	     request.setAttribute("error",STIException.callException(ex));
+	       	     request.getSession().setAttribute("exception", ex);
+	    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	    	     dispatcher.forward(request,response);	
+			}
+    		 
     	}  
 	}
 

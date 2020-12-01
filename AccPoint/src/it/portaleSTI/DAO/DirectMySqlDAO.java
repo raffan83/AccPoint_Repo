@@ -577,7 +577,7 @@ public class DirectMySqlDAO {
 
 			for ( AttivitaMilestoneDTO attivita : commessa.getListaAttivita()) {
 
-				String descrizione=attivita.getDescrizioneArticolo();if(descrizione==null)descrizione="";
+				String descrizione=attivita.getDescrizioneAttivita();if(descrizione==null)descrizione="";
 				String note=attivita.getNoteAttivita();if(note==null)note="";
 				String um=attivita.getUnitaMisura();if(um==null)um="";
 				String quantita=attivita.getQuantita();if(quantita==null)quantita="";

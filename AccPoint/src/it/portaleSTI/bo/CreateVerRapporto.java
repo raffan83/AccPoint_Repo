@@ -1861,15 +1861,15 @@ private BigDecimal getE(int campo,  BigDecimal carico)
 
 	if(id_tipo_strumento==3) 
 	{
-		if(campo==0) 
+		if(campo==1) 
 		{
 			e=strumento.getDiv_rel_C1().stripTrailingZeros();
 		}
-		if(campo==1) 
+		if(campo==2) 
 		{
 			e=strumento.getDiv_rel_C2().stripTrailingZeros();
 		}
-		if(campo==2) 
+		if(campo==3) 
 		{
 			e=strumento.getDiv_rel_C3().stripTrailingZeros();
 		}

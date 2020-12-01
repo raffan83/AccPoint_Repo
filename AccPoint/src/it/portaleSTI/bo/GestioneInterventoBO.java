@@ -881,6 +881,8 @@ public class GestioneInterventoBO {
 		    			misuraLAT.setIntervento(intervento);
 		    			misuraLAT.setUser(utente);
 		    			
+		    			idTemp = misuraLAT.getId();
+		    			
 		    			int idMisuraLAT=saveMisuraLAT(misuraLAT,session);
 		    			
 		    			if(misuraLAT.getMisura_lat().getId()==1) 

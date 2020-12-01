@@ -278,34 +278,7 @@
 
 <label>Destinazione</label> 
                   <a class="pull-center">
-<%--                  <c:choose>
-                  <c:when test="${pacco.stato_lavorazione.id==4 || pacco.stato_lavorazione.id==5 }">
-                    
-                  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_fornitori}" var="fornitore" varStatus="loop">
-                  <option value="${fornitore.__id}">${fornitore.nome}</option>
-                  </c:forEach>
-                  </select>
-                  
-                  </c:when>
-                  <c:otherwise>
-                  
-                  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
-                  <option value="${cliente.__id}">${cliente.nome}</option>
-                  </c:forEach> 
-                  </select>
-                  
-                  </c:otherwise>
-                  </c:choose>  --%>
-<%-- <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
-                  <option value="${cliente.__id}">${cliente.nome}</option>
-                  </c:forEach> 
-                  </select> --%>
+
                   <input class="form-control" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
                   </a> 
 </div>
@@ -349,12 +322,7 @@
 <label id="dest_mitt">Destinatario</label> 
                   <a class="pull-center">
                   
-                  <%-- <select class="form-control select2" data-placeholder="Seleziona Destinatario..." id="destinatario" name="destinatario" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
-                  <option value="${cliente.__id}">${cliente.nome}</option>
-                  </c:forEach> 
-                  </select> --%>
+
                   <input class="form-control" data-placeholder="Seleziona Destinatario..." id="destinatario" name="destinatario" style="width:100%">
                   </a>
 
@@ -593,8 +561,6 @@
 		<input type="hidden" class="pull-right" id="configurazione_ddt" name="configurazione_ddt" > 
 		<input type="hidden" class="pull-right" id="id_ddt" name="id_ddt">
 		<input type="hidden" class="pull-right" id ="pdf_path" name="pdf_path" value="${ddt.link_pdf }">
-		<!-- <p align='center'><button class="btn btn-default " onClick="modificaDdtSubmit()"><i class="glyphicon glyphicon"></i> Modifica DDT</button></p> -->  
-		<!-- <p align='center'><button class="btn btn-default " onClick="modalConfigurazione()"><i class="glyphicon glyphicon"></i> Modifica DDT</button></p> -->
 		<p align='center'><button class="btn btn-default " onClick="chooseSubmit()"><i class="glyphicon glyphicon"></i> Modifica DDT</button></p>
         
     </div>
@@ -732,30 +698,6 @@
 		var sede_destinatario = "${ddt.id_sede_destinatario}";
 		var destinazione = "${ddt.id_destinazione}";
 		var sede_destinazione = "${ddt.id_sede_destinazione}";
-		
- /* 		if(destinatario!=null && destinatario !=''&& destinatario !=0){
-			$('#destinatario option[value=""]').remove();
-		}
-		if(sede_destinatario!=null && sede_destinatario !=''){
-			$('#sede_destinatario option[value=""]').remove();
-		}
-		if(destinazione!=null && destinazione !=''&& destinazione !=0){
-			$('#destinazione option[value=""]').remove();
-			
-		}
-		if(sede_destinazione!=null && sede_destinazione !=''){
-			$('#sede_destinazione option[value=""]').remove();
-		}  */
-		
-			
-		/* $('#destinatario option[value="'+destinatario+'"]').attr("selected", true);		
-		$('#destinatario').change();
-		$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);		
-		$('#destinazione option[value="'+destinazione+'"]').attr("selected", true);	
-		$('#destinazione').change();
-		$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true);
-		 $('#sede_destinazione').change(); */
-		 
 		 $('#destinatario').val(destinatario);
 			$('#destinatario').change();	
 			if(sede_destinatario==0){
@@ -965,10 +907,6 @@
 	 
 	
 	 $('.select2').select2();
-//	$('#sede_destinazione').change();
-	 
-	// initSelect2('#destinatario');
-	//initSelect2('#destinazione');
 	 
 	  var data_ora_trasporto = $('#data_ora_trasporto').val()
 	   var data_ddt = $('#data_ddt').val();

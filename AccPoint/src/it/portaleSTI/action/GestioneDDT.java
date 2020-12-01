@@ -325,13 +325,13 @@ public class GestioneDDT extends HttpServlet {
 							 magazzino =	item.getString();
 						}
 						if(item.getFieldName().equals("configurazione_ddt")) {
-							 configurazione_ddt =	item.getString();
+							 configurazione_ddt =	item.getString().replaceAll("\t", " ");
 						}
 						if(item.getFieldName().equals("peso")) {
 							 peso =	item.getString();
 						}
 						if(item.getFieldName().equals("causale")) {
-							 causale =	item.getString();
+							 causale =	item.getString().replaceAll("\t", " ");
 						}
 						if(item.getFieldName().equals("destinatario")) {
 							 destinatario =	item.getString();
@@ -358,10 +358,10 @@ public class GestioneDDT extends HttpServlet {
 							sede_destinazione_ddt =	item.getString();
 						}
 						if(item.getFieldName().equals("cortese_attenzione")) {
-							cortese_attenzione =	item.getString();
+							cortese_attenzione =	item.getString().replaceAll("\t", " ");
 						}
 						if(item.getFieldName().equals("note_ddt")) {
-							note_ddt =	item.getString();
+							note_ddt =	item.getString().replaceAll("\t", " ");
 						}
 						if(item.getFieldName().equals("colli")) {
 							 colli =	item.getString();
@@ -381,16 +381,16 @@ public class GestioneDDT extends HttpServlet {
 							}
 						}
 						if(item.getFieldName().equals("spedizioniere")) {
-							 spedizioniere =	item.getString();
+							 spedizioniere =	item.getString().replaceAll("\t", " ");
 						}
 						if(item.getFieldName().equals("account")) {
-							 account =	item.getString();
+							 account =	item.getString().replaceAll("\t", "");
 						}
 						if(item.getFieldName().equals("annotazioni")) {
-							annotazioni =	item.getString();
+							annotazioni =	item.getString().replaceAll("\t", " ");
 						}
 						if(item.getFieldName().equals("note")) {
-							 note =	item.getString();
+							 note =	item.getString().replaceAll("\t", " ");
 						}
 					
 						if(item.getFieldName().equals("id_ddt")) {
@@ -403,7 +403,7 @@ public class GestioneDDT extends HttpServlet {
 							data_arrivo = item.getString();
 						}
 						if(item.getFieldName().equals("operatore_trasporto")) {
-							operatore_trasporto = item.getString();
+							operatore_trasporto = item.getString().replaceAll("\t", " ");
 						}
 
 						
@@ -529,9 +529,9 @@ public class GestioneDDT extends HttpServlet {
 				
 				session.getTransaction().commit();
 				
-				ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(company.getId(), session);
-				
-				request.getSession().setAttribute("lista_pacchi",lista_pacchi);				
+//				ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(company.getId(), session);
+//				
+//				request.getSession().setAttribute("lista_pacchi",lista_pacchi);				
 				
 				ArrayList<MagSaveStatoDTO> lista_save_stato = GestioneMagazzinoBO.getListaMagSaveStato(session);
 				

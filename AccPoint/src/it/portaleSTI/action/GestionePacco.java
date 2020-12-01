@@ -196,10 +196,10 @@ public class GestionePacco extends HttpServlet {
 						
 						String id_proprio = json_obj.get("id_proprio").getAsString();
 						String tipo = json_obj.get("tipo").getAsString();
- 						String denominazione = json_obj.get("denominazione").getAsString();
+ 						String denominazione = json_obj.get("denominazione").getAsString().replaceAll("\t", " ");
 						String quantita = json_obj.get("quantita").getAsString();
 						String stato = json_obj.get("stato").getAsString();
-						String note_item = json_obj.get("note").getAsString();
+						String note_item = json_obj.get("note").getAsString().replaceAll("\t", " ");
 						String priorita = json_obj.get("priorita").getAsString();
 						String attivita = json_obj.get("attivita").getAsString();
 						String dest = json_obj.get("destinazione").getAsString();
@@ -392,13 +392,13 @@ public class GestionePacco extends HttpServlet {
 						 data_ddt =	item.getString();
 					}
 					if(item.getFieldName().equals("aspetto")) {
-						 aspetto =	item.getString();
+						 aspetto =	item.getString().replaceAll("\t", " ");
 					}
 					if(item.getFieldName().equals("configurazione")) {
-						 configurazione =	item.getString();
+						 configurazione =	item.getString().replaceAll("\t", " ");
 					}
 					if(item.getFieldName().equals("causale")) {
-						 causale =	item.getString();
+						 causale =	item.getString().replaceAll("\t", " ");
 					}
 					if(item.getFieldName().equals("destinatario")) {
 						 destinatario =	item.getString();
@@ -437,7 +437,7 @@ public class GestionePacco extends HttpServlet {
 						 fornitore_modal =	item.getString();
 					}
 					if(item.getFieldName().equals("cortese_attenzione")) {
-						cortese_attenzione =	item.getString();
+						cortese_attenzione =	item.getString().replaceAll("\t", " ");
 					}
 					if(item.getFieldName().equals("data_ora_trasporto")) {
 						data_ora_trasporto =	item.getString();
@@ -453,16 +453,16 @@ public class GestionePacco extends HttpServlet {
 						}
 					}
 					if(item.getFieldName().equals("spedizioniere")) {
-						 spedizioniere =	item.getString();
+						 spedizioniere =	item.getString().replaceAll("\t", " ");
 					}
 					if(item.getFieldName().equals("account")) {
-						 account =	item.getString();
+						 account =	item.getString().replaceAll("\t", " ");
 					}
 					if(item.getFieldName().equals("annotazioni")) {
-						annotazioni =	item.getString();
+						annotazioni =	item.getString().replaceAll("\t", " ");
 					}
 					if(item.getFieldName().equals("note")) {
-						 note =	item.getString();
+						 note =	item.getString().replaceAll("\t", " ");
 					}
 					if(item.getFieldName().equals("id_pacco")) {
 						 id_pacco =	item.getString();
@@ -498,7 +498,7 @@ public class GestionePacco extends HttpServlet {
 						item.getString();
 					}
 					if(item.getFieldName().equals("operatore_trasporto")) {
-						operatore_trasporto = item.getString();
+						operatore_trasporto = item.getString().replaceAll("\t", " ");
 					}
 					if(item.getFieldName().equals("select_nota_pacco")) {
 						select_nota_pacco = item.getString();

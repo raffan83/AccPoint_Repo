@@ -34,6 +34,8 @@ import it.portaleSTI.bo.GestioneUtenteBO;
 @WebServlet("/version.do")
 public class Version extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String DASM_VERSION = "2.2.1";
+	private static final String DASM_VER_VERSION ="2.0.3";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -63,7 +65,8 @@ public class Version extends HttpServlet {
 
 				//generate JWT
 			//   	myObj.add("userObj", utente.getUtenteJsonObject(true));
-				myObj.addProperty("version", Costanti.DASM_VERSION);
+				myObj.addProperty("DASMTAR", DASM_VERSION);
+				myObj.addProperty("DASMTARVER",DASM_VER_VERSION);
 			   	
 		
 			

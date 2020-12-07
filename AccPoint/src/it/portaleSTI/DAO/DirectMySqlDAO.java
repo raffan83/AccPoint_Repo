@@ -32,6 +32,7 @@ import it.portaleSTI.DTO.ColonnaDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
+import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -159,6 +160,8 @@ public class DirectMySqlDAO {
 	private static String sqlDataCertificatoMisura = "SELECT c.data_creazione FROM certificato c LEFT JOIN misura m ON c.id_misura = m.id WHERE c.id_misura = ?"; 
 	
 	private static String sqlCommittentiPerFornitore = "SELECT a.id_committente, b.nome_cliente, b.indirizzo_cliente FROM docum_committente_fornitore a LEFT JOIN docum_committente b on a.id_committente = b.id WHERE a.id_fornitore = ?";
+	
+	private static String sqlInsertDocumentoDocumentale = "INSERT INTO  docum_tl_documento(id_committente, id_fornitore, nome_documento, numero_documento, data_caricamento, frequenza_rinnovo_mesi, rilasciato, data_scadenza, nome_file, stato, documento_sostituito) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
@@ -2791,6 +2794,51 @@ public class DirectMySqlDAO {
 		return lista;
 	}
 
+	
+	public static ArrayList<DocumCommittenteDTO> insertDocumento(DocumTLDocumentoDTO documento) throws Exception {
+
+		ArrayList<DocumCommittenteDTO> lista =new ArrayList<DocumCommittenteDTO>();
+
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+
+		try
+		{
+			con=getConnection();
+
+
+			pst=con.prepareStatement(sqlInsertDocumentoDocumentale);		
+
+			pst.setInt(1, documento.getCommittente().getId());
+			pst.setInt(2, documento.getFornitore().getId());
+			pst.setString(3, documento.getNome_documento());
+			pst.setString(4, documento.getNumero_documento());
+			pst.setDate(5, new java.sql.Date(documento.getData_caricamento().getTime()));
+			pst.setInt(6, documento.getFrequenza_rinnovo_mesi());
+			pst.setString(7, documento.getRilasciato());
+			pst.setDate(8, new java.sql.Date(documento.getData_scadenza().getTime()));
+			pst.setString(9, documento.getNome_file());
+			pst.setInt(10, documento.getStato().getId());
+			pst.setInt(11, documento.getDocumento_sostituito());
+
+			pst.execute();
+
+
+
+		}catch (Exception e) 
+		{
+			throw e;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+
+		}	
+		return lista;
+	}
+	
 }
 
 

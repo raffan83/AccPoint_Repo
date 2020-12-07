@@ -60,28 +60,28 @@
 				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="231" width="240" height="26" uuid="3c083f15-57ff-4fae-b7d9-a814b6aecd9e"/>
+				<reportElement x="101" y="231" width="258" height="26" uuid="3c083f15-57ff-4fae-b7d9-a814b6aecd9e"/>
 				<textElement>
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{indirizzo_cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="216" width="240" height="15" uuid="512a91b1-e2a6-4d33-a36d-4c1a760ccce0"/>
+				<reportElement x="101" y="216" width="258" height="15" uuid="512a91b1-e2a6-4d33-a36d-4c1a760ccce0"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="273" width="240" height="37" uuid="aceabce2-25c0-43f2-b64f-9db51471b1e9"/>
+				<reportElement x="101" y="273" width="258" height="37" uuid="aceabce2-25c0-43f2-b64f-9db51471b1e9"/>
 				<textElement>
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{indirizzo_destinatario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="257" width="240" height="15" uuid="5a59e9c5-7cec-4e9b-8279-5bdfcbda7794"/>
+				<reportElement x="101" y="257" width="258" height="15" uuid="5a59e9c5-7cec-4e9b-8279-5bdfcbda7794"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -158,28 +158,28 @@
 				<text><![CDATA[ date of receipt of item]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="120" y="370" width="239" height="30" uuid="80352fad-8d7d-4488-a281-c2894a6a9eee"/>
+				<reportElement x="102" y="370" width="255" height="30" uuid="80352fad-8d7d-4488-a281-c2894a6a9eee"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{costruttore}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="400" width="239" height="30" uuid="933bee1e-b301-4bbd-b0f0-2662a3e99cfe"/>
+				<reportElement x="102" y="400" width="255" height="30" uuid="933bee1e-b301-4bbd-b0f0-2662a3e99cfe"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{modello}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="430" width="240" height="30" uuid="a939daa3-1de4-401e-a495-cd02a57051b1"/>
+				<reportElement x="102" y="430" width="256" height="30" uuid="a939daa3-1de4-401e-a495-cd02a57051b1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="460" width="240" height="32" uuid="82348014-893f-48ec-a161-303ccb5e0058"/>
+				<reportElement x="102" y="460" width="256" height="32" uuid="82348014-893f-48ec-a161-303ccb5e0058"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -214,7 +214,7 @@
 				<text><![CDATA[ date of measurements]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="120" y="492" width="240" height="31" uuid="6e15cd0a-93c8-44ee-8877-57e51291efb9"/>
+				<reportElement x="102" y="492" width="256" height="31" uuid="6e15cd0a-93c8-44ee-8877-57e51291efb9"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -235,7 +235,7 @@
 				<text><![CDATA[ laboratory reference]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="120" y="523" width="240" height="30" uuid="96c953b4-3754-455a-b941-40d8ce0aab61"/>
+				<reportElement x="102" y="523" width="256" height="30" uuid="96c953b4-3754-455a-b941-40d8ce0aab61"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -353,7 +353,7 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				<text><![CDATA[k]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="120" y="342" width="240" height="28" uuid="3754f5ae-ff83-4635-9f64-cf271d67be20"/>
+				<reportElement x="102" y="342" width="256" height="28" uuid="3754f5ae-ff83-4635-9f64-cf271d67be20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -374,7 +374,7 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				<textFieldExpression><![CDATA[$P{numero_pagine}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="179" width="150" height="31" uuid="f4cc161f-1764-454b-8bd6-fcefe807286c"/>
+				<reportElement x="101" y="179" width="150" height="31" uuid="f4cc161f-1764-454b-8bd6-fcefe807286c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>

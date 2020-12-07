@@ -249,6 +249,7 @@ public class CreaCertificatoLivellaElettronica {
 				
 		String data_ricevimento = GestioneMagazzinoBO.getDataRicevimentoItem(misura.getStrumento(),session);
 		
+		if (data_ricevimento.length()==0) {data_ricevimento="\\";}
 		report.addParameter("data_ricevimento_oggetto",data_ricevimento);
 		
 		if(misura.getData_misura()!=null) {

@@ -67,7 +67,7 @@ public class ScaricaPacchettoVerificazione extends HttpServlet {
 		session.beginTransaction();
 		boolean ajax = false;
 		JsonObject myObj = new JsonObject();
-		PrintWriter out = response.getWriter();
+		//
 		
 		try{
 			
@@ -140,7 +140,7 @@ public class ScaricaPacchettoVerificazione extends HttpServlet {
 					myObj.add("lista_file", g.toJsonTree(lista_file));
 					myObj.add("lista_date", g.toJsonTree(lista_date));
 										
-					
+					PrintWriter out = response.getWriter();
 					out.print(myObj);
 					
 	 
@@ -184,6 +184,7 @@ public class ScaricaPacchettoVerificazione extends HttpServlet {
 				ex.printStackTrace();	        	
 	        	request.getSession().setAttribute("exception", ex);
 	        	myObj = STIException.getException(ex);
+	        	PrintWriter out = response.getWriter();
 	        	out.print(myObj);
 			}else {
 				ex.printStackTrace();

@@ -587,7 +587,7 @@ public class DirectMySqlDAO {
 				
 				
 				String sqlInsert="INSERT INTO tbAttivita(descrizione,note,um,quantita) VALUES("
-						+ "\""+descrizione+"\",\""+note+"\",\""+um+"\",\""+quantita+"\")";
+						+ "\""+descrizione.replaceAll("\"", "\"\"")+"\",\""+note.replaceAll("\"", "\"\"")+"\",\""+um.replaceAll("\"", "\"\"")+"\",\""+quantita.replaceAll("\"", "\"\"")+"\")";
 
 				pstINS=conSQLLite.prepareStatement(sqlInsert);
 

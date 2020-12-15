@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -55,6 +56,8 @@ import it.portaleSTI.bo.GestioneMagazzinoBO;
 @WebServlet("/gestioneDDT.do")
 public class GestioneDDT extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	static final Logger logger = Logger.getLogger(GestioneDDT.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -82,6 +85,11 @@ public class GestioneDDT extends HttpServlet {
 		session.beginTransaction();
 		String action = request.getParameter("action");
 		List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("lista_sedi"); 
+		
+		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+		
+		logger.error("Action: "+action +" - Utente: "+utente.getNominativo());
+		
 		if(action.equals("dettaglio")) {
 		
 		String id_ddt = request.getParameter("id");
@@ -139,7 +147,7 @@ public class GestioneDDT extends HttpServlet {
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioDDT.jsp");
      	dispatcher.forward(request,response);
-     	
+     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}catch (Exception e) {
 			
      	e.printStackTrace();
@@ -191,7 +199,7 @@ public class GestioneDDT extends HttpServlet {
 				myObj = STIException.getSuccessMessage("DDT Creato con successo!");
 				out.print(myObj);
 				
-				
+				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 			} catch (Exception e) {
 				
 				e.printStackTrace();
@@ -234,6 +242,8 @@ public class GestioneDDT extends HttpServlet {
 			    outp.flush();
 			    outp.close();
 			    
+			    logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+			    
 			}catch(Exception ex)
 	    	{
 				session.close();
@@ -254,7 +264,7 @@ public class GestioneDDT extends HttpServlet {
 			//session.beginTransaction();
 			
 			PrintWriter writer = response.getWriter();
-			UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+			
 			CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 			
@@ -543,7 +553,7 @@ public class GestioneDDT extends HttpServlet {
 		   		//dispatcher.forward(request, response);
 		   		response.sendRedirect(request.getHeader("referer"));
 
-			
+		   		logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 			} catch (Exception e) {
 				
 				session.getTransaction().rollback();

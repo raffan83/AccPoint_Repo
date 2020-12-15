@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -51,6 +52,8 @@ import it.portaleSTI.bo.GestioneMagazzinoBO;
 @WebServlet("/listaPacchi.do")
 public class ListaPacchi extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	static final Logger logger = Logger.getLogger(ListaPacchi.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -83,6 +86,8 @@ public class ListaPacchi extends HttpServlet {
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		String action = request.getParameter("action");
+		
+		logger.error("Action: "+action +" - Utente: "+utente.getNominativo());
 		
 		try {
 			
@@ -214,6 +219,9 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("pacchi_esterno",false);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
+	     	
+	     	
+	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		else if(action.equals("filtraDate")) {
 			
@@ -240,6 +248,8 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("tipo_data", tipo_data);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
+	     	
+	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		else if(action.equals("filtraCommesse")) {
 		
@@ -249,8 +259,13 @@ public class ListaPacchi extends HttpServlet {
 			
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
 			request.getSession().setAttribute("commessa", commessa);
+			
+			session.close();
+			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
+	     	
+	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 			
 		else if(action.equals("pacchi_esterno")) {
@@ -265,7 +280,7 @@ public class ListaPacchi extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
 			
-			
+	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("pacchi_magazzino")) {
@@ -279,110 +294,8 @@ public class ListaPacchi extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPacchiInMagazzino.jsp");
 	     	dispatcher.forward(request,response);
 			
-			
+	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
-		
-//		else if(action.equals("lista_ddt")) {
-//			
-//			HashMap<Integer, String> listaClientiAll = (HashMap<Integer, String>)request.getSession().getAttribute("listaClientiAll");
-//			
-//			if(listaClientiAll==null) 
-//			{
-//				listaClientiAll = GestioneAnagraficaRemotaBO.getListaClientiAll();
-//				request.getSession().setAttribute("listaClientiAll",listaClientiAll);
-//			}	
-//			
-//			HashMap<String, String> listaSediAll = (HashMap<String, String>)request.getSession().getAttribute("listaSediAll");
-//			if(listaSediAll==null) 
-//			{
-//				listaSediAll = GestioneAnagraficaRemotaBO.getListaSediAll();
-//				request.getSession().setAttribute("listaSediAll",listaSediAll);
-//			}
-//			
-//		//	ArrayList<MagDdtDTO> lista_ddt = GestioneMagazzinoBO.getListaDDT(session);
-//
-//			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
-//			ArrayList<MagDdtDTO> lista_ddt = new ArrayList<MagDdtDTO>();
-//			for (MagPaccoDTO pacco : lista_pacchi) {
-//				pacco.getDdt().setCommessa(pacco.getCommessa());
-//				if(pacco.getDdt().getId_destinatario()!=null && pacco.getDdt().getId_destinatario()!=0) {
-//					pacco.getDdt().setDestinatario(listaClientiAll.get(pacco.getDdt().getId_destinatario()));	
-//				}
-//				if(pacco.getDdt().getId_sede_destinatario()!=null && pacco.getDdt().getId_sede_destinatario()!=0) {
-//					pacco.getDdt().setSede_destinatario(listaSediAll.get(pacco.getDdt().getId_destinatario()+"_"+pacco.getDdt().getId_sede_destinatario()));
-//				}
-//				if(pacco.getDdt().getId_destinazione()!=null && pacco.getDdt().getId_destinazione()!=0) {
-//					pacco.getDdt().setDestinazione(listaClientiAll.get(pacco.getDdt().getId_destinazione()));
-//				}
-//				if(pacco.getDdt().getId_sede_destinazione()!=null && pacco.getDdt().getId_sede_destinazione()!=0) {
-//					pacco.getDdt().setSede_destinazione(listaSediAll.get(pacco.getDdt().getId_destinazione()+"_"+pacco.getDdt().getId_sede_destinazione()));
-//				}
-//				if(!lista_ddt.contains(pacco.getDdt())) {
-//					lista_ddt.add(pacco.getDdt());	
-//				}
-//				
-//			}
-//			
-////			for (MagDdtDTO ddt : lista_ddt) {
-////				if(ddt.getId_destinatario()!=null && ddt.getId_destinatario()!=0) {
-////					ddt.setDestinatario(listaClientiAll.get(ddt.getId_destinatario()));	
-////				}
-////				if(ddt.getId_sede_destinatario()!=null && ddt.getId_sede_destinatario()!=0) {
-////					ddt.setSede_destinatario(listaSediAll.get(ddt.getId_destinatario()+"_"+ddt.getId_sede_destinatario()));
-////				}
-////				if(ddt.getId_destinazione()!=null && ddt.getId_destinazione()!=0) {
-////					ddt.setDestinazione(listaClientiAll.get(ddt.getId_destinazione()));
-////				}
-////				if(ddt.getId_sede_destinazione()!=null && ddt.getId_sede_destinazione()!=0) {
-////					ddt.setSede_destinazione(listaSediAll.get(ddt.getId_destinazione()+"_"+ddt.getId_sede_destinazione()));
-////				}
-////			}
-//			
-//			
-//			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
-//			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
-//			ArrayList<MagTipoTrasportoDTO> tipo_trasporto = GestioneMagazzinoBO.getListaTipoTrasporto(session); 
-//			ArrayList<MagAspettoDTO> aspetto = GestioneMagazzinoBO.getListaTipoAspetto(session);
-//			ArrayList<MagTipoItemDTO> tipo_item = GestioneMagazzinoBO.getListaTipoItem(session);
-//			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
-//			ArrayList<MagAttivitaItemDTO> lista_attivita_item = GestioneMagazzinoBO.getListaAttivitaItem(session);
-//			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0,true);
-//			ArrayList<MagNoteDdtDTO> lista_note_ddt = GestioneMagazzinoBO.getListaNoteDDT(session);
-//			ArrayList<MagCausaleDTO> lista_causali = GestioneMagazzinoBO.geListaCausali(session);
-//			
-//			session.close();			
-//
-//			request.getSession().setAttribute("lista_clienti", listaClienti);
-//			request.getSession().setAttribute("lista_fornitori", listaFornitori);
-//			request.getSession().setAttribute("lista_sedi", listaSedi);
-//			request.getSession().setAttribute("lista_tipo_ddt", tipo_ddt);
-//			request.getSession().setAttribute("lista_tipo_porto", tipo_porto);
-//			request.getSession().setAttribute("lista_tipo_trasporto", tipo_trasporto);
-//			request.getSession().setAttribute("lista_aspetto", aspetto);
-//			request.getSession().setAttribute("lista_tipo_item", tipo_item);
-//			request.getSession().setAttribute("lista_tipo_aspetto", aspetto);
-//			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
-//			request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_item);
-//			request.getSession().setAttribute("lista_causali", lista_causali);
-//			
-//			String attivita_json = new Gson().toJson(lista_attivita_item);
-//			request.getSession().setAttribute("attivita_json", attivita_json);
-//			
-//			request.getSession().setAttribute("lista_commesse", lista_commesse);
-//
-//			request.getSession().setAttribute("lista_note_ddt", lista_note_ddt);
-//			String dateFrom="";
-//			String dateTo = "";
-//			request.getSession().setAttribute("dateFromDdt",dateFrom);
-//			request.getSession().setAttribute("dateToDdt",dateTo);
-//
-//			
-//			request.getSession().setAttribute("lista_ddt",lista_ddt);
-//		
-//			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDDT.jsp");
-//	     	dispatcher.forward(request,response);
-//			
-//		}
 		
 		else if(action.equals("lista_ddt")) {
 			
@@ -506,7 +419,8 @@ public class ListaPacchi extends HttpServlet {
 		
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDDT.jsp");
 	     	dispatcher.forward(request,response);
-			
+		
+	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("filtraDateDDT")) {
@@ -552,6 +466,8 @@ public class ListaPacchi extends HttpServlet {
 		
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDDT.jsp");
 	     	dispatcher.forward(request,response);
+	     	
+	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 				
 		

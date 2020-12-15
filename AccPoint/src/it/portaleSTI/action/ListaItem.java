@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -66,6 +67,7 @@ import it.portaleSTI.bo.GestioneMagazzinoBO;
 public class ListaItem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	static final Logger logger = Logger.getLogger(ListaItem.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -97,6 +99,9 @@ public class ListaItem extends HttpServlet {
 		String tipo_item = request.getParameter("tipo_item");
 		String action = request.getParameter("action");
 		
+		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+		
+		logger.error("Action: "+action +" - Utente: "+utente.getNominativo());
 	
 		if(action!=null && action.equals("new")) {
 			ajax = false;
@@ -122,15 +127,17 @@ public class ListaItem extends HttpServlet {
 			myObj.addProperty("messaggio", "Generico inserito correttamente!");
 		
 		out.print(myObj);
+		
+		logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		
 		
-		if(tipo_item!=null && tipo_item.equals("1")) {
+		if(action.equals("lista_item_inserimento") && tipo_item!=null && tipo_item.equals("1")) {
 			ajax = false;
 			String id_cliente=request.getParameter("id_cliente");
 			String id_sede = request.getParameter("id_sede");
-			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+			
 			String[] sede= id_sede.split("_");
 			String[] cliente= id_cliente.split("_");
 				
@@ -158,10 +165,10 @@ public class ListaItem extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemStrumenti.jsp");
 		     dispatcher.forward(request,response);
 		     
-		     
+		     logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
-		else if(tipo_item!=null && tipo_item.equals("2")) {
+		else if(action.equals("lista_item_inserimento") && tipo_item!=null && tipo_item.equals("2")) {
 			ajax = false;
 			
 			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
@@ -171,10 +178,10 @@ public class ListaItem extends HttpServlet {
 			session.close();
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemAccessori.jsp");
 		     dispatcher.forward(request,response);
-			
+		     logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
-		else if(tipo_item!=null && tipo_item.equals("3")) {
+		else if(action.equals("lista_item_inserimento") && tipo_item!=null && tipo_item.equals("3")) {
 			
 			ajax = false;
 			ArrayList<MagAccessorioDTO> lista_generici =   GestioneMagazzinoBO.getListaGenerici(session);
@@ -185,13 +192,13 @@ public class ListaItem extends HttpServlet {
 			session.close();
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemGenerici.jsp");
 		     dispatcher.forward(request,response);
-			
+		     logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("lista")) {
 			
 			ajax = false;
-			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+			
 			
 			int id_company= utente.getCompany().getId();
 			
@@ -212,27 +219,7 @@ public class ListaItem extends HttpServlet {
 			}			
 			
 			
-			
-//			ArrayList<MagPaccoDTO> lista_pacchi = null;
-//			if(stato!=null && stato.equals("tutti")) {
-//				lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);						
-//			}
-//			else if(stato!=null && stato.equals("chiusi")) {
-//				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 1, session);
-//			}
-//			else {
-//				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 0, session);
-//			}
-			
-			
-			
-			
-			
-			
-			//ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
-			//List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
-			//List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
-			//List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();			
+	
 			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
 			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
 			ArrayList<MagTipoTrasportoDTO> tipo_trasporto = GestioneMagazzinoBO.getListaTipoTrasporto(session); 
@@ -242,17 +229,7 @@ public class ListaItem extends HttpServlet {
 			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0,false);
 			ArrayList<MagAttivitaItemDTO> lista_attivita_item = GestioneMagazzinoBO.getListaAttivitaItem(session);
 			
-//			ArrayList<MagItemPaccoDTO> lista_item_pacco = null;
-//			if(stato!=null && stato.equals("tutti")) {
-//				lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(session);				
-//			}
-//			else if(stato!=null && stato.equals("chiusi")) {
-//				lista_item_pacco = GestioneMagazzinoBO.getListaItemPaccoApertiChiusi(1, session);
-//			}
-//			else {
-//				lista_item_pacco = GestioneMagazzinoBO.getListaItemPaccoApertiChiusi(0, session);
-//			}
-			
+
 			
 			ArrayList<MagItemPaccoDTO> lista_item_pacco = null;
 			String dateFrom=null;
@@ -327,7 +304,7 @@ public class ListaItem extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 		     dispatcher.forward(request,response);
 			
-			
+		     logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("item_esterno")) {
@@ -347,6 +324,7 @@ public class ListaItem extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 		     dispatcher.forward(request,response);
 			
+		     logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		else if(action.equals("item_magazzino")) {
 			
@@ -374,7 +352,7 @@ public class ListaItem extends HttpServlet {
 			request.getSession().setAttribute("item_magazzino", true);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 		     dispatcher.forward(request,response);
-			
+		     logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if (action.equals("cerca_origini")) {
@@ -398,7 +376,7 @@ public class ListaItem extends HttpServlet {
 				myObj.addProperty("messaggio", "Nessun pacco origine trovato!");
 			}
 			out.print(myObj);
-			
+			logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		else if(action.equals("storico_item")) {
 			
@@ -421,7 +399,7 @@ public class ListaItem extends HttpServlet {
 				}
 				session.close();
 				out.print(myObj);
-			
+				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		else if(action.equals("filtraDate")) {
 			
@@ -451,7 +429,7 @@ public class ListaItem extends HttpServlet {
 			request.getSession().setAttribute("item_magazzino", false);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 	     	dispatcher.forward(request,response);
-	     	
+	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 

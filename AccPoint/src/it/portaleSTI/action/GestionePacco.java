@@ -27,6 +27,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.CharSet;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -82,6 +83,8 @@ import it.portaleSTI.bo.GestioneStrumentoBO;
 public class GestionePacco extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	
+	static final Logger logger = Logger.getLogger(GestionePacco.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -105,7 +108,7 @@ public class GestionePacco extends HttpServlet {
 		
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-	
+		
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
@@ -116,10 +119,11 @@ public class GestionePacco extends HttpServlet {
 		boolean ajax = false;
 		boolean rilievi=false;
 		try {
+			
+		logger.error("Action: "+action +" - Utente: "+utente.getNominativo());
 		
 		if(action.equals("new")) {
-			
-			ArrayList<MagPaccoDTO> lista_pacchi = (ArrayList<MagPaccoDTO>) request.getSession().getAttribute("lista_pacchi");
+		ArrayList<MagPaccoDTO> lista_pacchi = (ArrayList<MagPaccoDTO>) request.getSession().getAttribute("lista_pacchi");
 		
 		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 		
@@ -815,7 +819,7 @@ public class GestionePacco extends HttpServlet {
 	   		response.sendRedirect(request.getHeader("referer"));
 	   	     //dispatcher.forward(request,response);	
 			
-			
+	   		logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 	}
 		
 		
@@ -854,7 +858,7 @@ public class GestionePacco extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPacco.jsp");
 		     	dispatcher.forward(request,response);
 				
-			
+		     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 	
@@ -887,7 +891,7 @@ public class GestionePacco extends HttpServlet {
 				
 				out.print(myObj);
 		
-			
+				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		
@@ -1111,7 +1115,7 @@ public class GestionePacco extends HttpServlet {
 				
 				response.sendRedirect(request.getHeader("referer"));
 
-
+				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 	
@@ -1134,7 +1138,7 @@ public class GestionePacco extends HttpServlet {
 				out.print(myObj);
 				}
 
-	
+				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if (action.equals("accettazione")) {
@@ -1165,7 +1169,8 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Accettazione effettuata con successo!");
 			out.print(myObj);
-
+			
+			logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 			
@@ -1195,7 +1200,7 @@ public class GestionePacco extends HttpServlet {
 				session.close();
 				out.print(myObj);
 
-	
+				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 	}
 		else if(action.equals("dettaglio_commessa")) {
 			
@@ -1210,10 +1215,12 @@ public class GestionePacco extends HttpServlet {
 				request.getSession().setAttribute("id_commessa", id_commessa);
 				request.getSession().setAttribute("note_commessa", comm.getNOTE_GEN());
 
+				session.close();
+				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioCommessaPacchi.jsp");
 		     	dispatcher.forward(request,response);
-				session.close();
-
+				
+				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("download_testa_pacco")) {
@@ -1244,7 +1251,7 @@ public class GestionePacco extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 				    
-
+				    logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 			
 		}
 		
@@ -1298,7 +1305,7 @@ public class GestionePacco extends HttpServlet {
 				
 				out.print(myObj);
 				
-
+				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 
 		}
 		
@@ -1330,7 +1337,7 @@ public class GestionePacco extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 				    session.close();
-
+				    logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 			
 		}
 		
@@ -1363,7 +1370,7 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Allegato eliminato con successo!");
 			out.print(myObj);
-
+			logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("note_commessa")) {
@@ -1387,7 +1394,7 @@ public class GestionePacco extends HttpServlet {
 				
 				out.print(myObj);
 				
-
+				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		
@@ -1414,7 +1421,7 @@ public class GestionePacco extends HttpServlet {
 				
 				out.print(myObj);
 				
-
+				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("item_uscita")) {
@@ -1432,7 +1439,7 @@ public class GestionePacco extends HttpServlet {
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/itemUscita.jsp");
 	     	dispatcher.forward(request,response);
-
+	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("importa_da_commessa")) {
@@ -1487,7 +1494,7 @@ public class GestionePacco extends HttpServlet {
 			
 			out.print(myObj);
 			session.close();
-
+			logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		
@@ -1516,7 +1523,7 @@ public class GestionePacco extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Strumento modificato con successo!");
 				out.print(myObj);
-
+				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 			
 		}
 		
@@ -1531,7 +1538,7 @@ public class GestionePacco extends HttpServlet {
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaFileAllegatiMagazzino.jsp");
 	     	dispatcher.forward(request,response);
-			
+	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("sposta_strumenti")) {
@@ -1561,6 +1568,8 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Strumenti spostati con successo!");
 			out.print(myObj);
+			
+			logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		else if(action.equals("riapri_origine")) {
 			ajax = true;
@@ -1579,7 +1588,7 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("messaggio", "Pacchi origine riaperti con successo!");
 			out.print(myObj);
 			
-			
+			logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 	
 		}catch(Exception e) {

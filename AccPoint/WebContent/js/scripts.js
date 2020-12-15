@@ -6214,7 +6214,7 @@ function cambiaNotaPacco(id_pacco, nota){
 	  
 
 	  if(tipo_item!=4){
-		  dataString = "tipo_item="+tipo_item+"&id_cliente="+id_cliente+"&id_sede="+id_sede;
+		  dataString = "action=lista_item_inserimento&tipo_item="+tipo_item+"&id_cliente="+id_cliente+"&id_sede="+id_sede;
 		  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
 
 	          });
@@ -14866,3 +14866,161 @@ error: function( data, textStatus) {
 	
 	 
 }
+
+
+
+function associaDocumentiDipendente(selezionati, id_dipendente){
+	
+	
+	 var dataObj = {};
+		dataObj.selezionati = selezionati;
+		dataObj.id_dipendente = id_dipendente;
+		
+
+	  $.ajax({
+type: "POST",
+url: "gestioneDocumentale.do?action=associa_documento",
+data: dataObj,
+dataType: "json",
+//if received a response from the server
+success: function( data, textStatus) {
+	pleaseWaitDiv.modal('hide');
+	  if(data.success)
+		  {  
+		 
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();
+			$('#myModalError').modal('show');	
+			 $('#myModalError').on('hidden.bs.modal', function () {
+				 location.reload();
+			 });
+			
+		  }else{
+			
+				$('#myModalErrorContent').html("Errore nell'associazione dei documenti!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');			
+		
+		  }
+},
+error: function( data, textStatus) {
+	  $('#myModalYesOrNo').modal('hide');
+	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+}
+});
+
+	
+}
+
+
+
+function getDipendenteFornitoreCommittente(mod, id_committente, id_fornitore, id_documento){
+	 
+	 var dataObj = {};
+		dataObj.id_committente = id_committente;
+		dataObj.id_fornitore = id_fornitore;
+		
+
+	  $.ajax({
+type: "POST",
+url: "gestioneDocumentale.do?action=dipendenti_fornitore_committente",
+data: dataObj,
+dataType: "json",
+//if received a response from the server
+success: function( data, textStatus) {
+	
+	  if(data.success)
+		  {  
+		  if(data.dipendenti!=null){
+			  
+			 var opt = [];
+			 if(mod!=''){
+				 opt.push("<option value=''></<option>");				 
+			 }
+			 
+			 if(mod!=''){
+				 
+				 var ids = "";
+				 for(var i = 0;i<data.dipendenti.length;i++){	
+					 
+					 var doc = data.dipendenti[i].listaDocumenti;
+					 
+					 if(doc.length>0){
+						
+						 for(var j = 0;j<doc.length;j++){
+							 
+							 if(doc[j].id == parseInt(id_documento)){
+								 opt.push("<option value='"+data.dipendenti[i].id+"' selected>"+data.dipendenti[i].nome+ " " + data.dipendenti[i].cognome+"</option>");
+								 ids = ids +data.dipendenti[i].id+";";
+								 
+								 $('#ids_dipendenti_mod').val(ids);
+							 }
+						 }
+					 }
+					 
+					 if(!ids.includes(data.dipendenti[i].id)){
+						 opt.push("<option value='"+data.dipendenti[i].id+"' >"+data.dipendenti[i].nome+ " " + data.dipendenti[i].cognome+"</option>");
+					 }
+							 
+					
+				 }
+			 }
+			 else{
+				 for(var i = 0;i<data.dipendenti.length;i++){				 
+					 
+					 opt.push("<option value='"+data.dipendenti[i].id+"'>"+data.dipendenti[i].nome+ " " + data.dipendenti[i].cognome+"</option>");
+				 }
+			 }
+			 
+			 
+			 $('#dipendenti'+mod).html(opt);
+			 $('#dipendenti'+mod).attr('disabled', false);
+			 
+//			 if(mod!=''){
+//				 $('#dipendenti_mod').val($('#fornitore_temp').val());
+//				 $('#dipendenti_mod').change();
+//			 }
+		  }
+			
+			
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+},
+error: function( data, textStatus) {
+	  $('#myModalYesOrNo').modal('hide');
+	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+}
+});
+	
+	 
+}
+
+
+
+

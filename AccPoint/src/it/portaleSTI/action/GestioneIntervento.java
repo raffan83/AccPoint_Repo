@@ -564,7 +564,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 		}
 		
-		else if(action.equals("stato_consegna_interventi")) {
+		else if(action!= null && action.equals("stato_consegna_interventi")) {
 			
 			ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListaInterventiConsegna(session);
 			

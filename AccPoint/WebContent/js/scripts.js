@@ -1778,7 +1778,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	          			  $('#modalNuovoStrumento').modal('hide');
 	          			$('#report_button').hide();
 	      				$('#visualizza_report').hide();
-	          			  dataString = "tipo_item="+"1"+"&id_cliente="+idCliente+"&id_sede="+idSede;
+	          			  dataString = "action=lista_item_inserimento&tipo_item="+"1"+"&id_cliente="+idCliente+"&id_sede="+idSede;
 	          			  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
 	          				  
 	          				  $("#myModalErrorContent").html(data.messaggio);
@@ -6256,7 +6256,7 @@ function cambiaNotaPacco(id_pacco, nota){
 	          		  { 
 	          			
 	          			 $('#modalNuovoGenerico').modal('hide');
-	          			  dataString = "tipo_item="+"3";
+	          			  dataString = "action=lista_item_inserimento&tipo_item="+"3";
 	          			  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
 	          				  
 	          				$('#report_button').hide();

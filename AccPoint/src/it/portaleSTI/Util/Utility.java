@@ -1906,4 +1906,36 @@ public class Utility extends HttpServlet {
 				return e;
 			}
 			
+			public static  String getMemorySpace() 
+			{
+				long freeMemory=Runtime.getRuntime().freeMemory();
+				
+				long totalMemory=Runtime.getRuntime().totalMemory();
+				
+				long maxMemory=Runtime.getRuntime().maxMemory();
+				
+				String fM="0 Mb";
+				
+				String tM="0 Mb";
+				
+				String mM="0 Mb";
+						
+					if(freeMemory>0) 
+					{
+						fM=""+freeMemory/1000000+" Mb";
+					}	
+					
+					if(totalMemory>0) 
+					{
+						tM=""+totalMemory/1000000+" Mb";
+					}
+					
+					if(maxMemory>0) 
+					{
+						mM=""+maxMemory/1000000+" Mb";
+					}
+					
+				return "[FM "+fM+"] - [TM "+tM+"] - [MM "+mM+"]";	
+			}
+			
 }

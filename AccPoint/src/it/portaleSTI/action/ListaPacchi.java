@@ -87,7 +87,7 @@ public class ListaPacchi extends HttpServlet {
 		session.beginTransaction();
 		String action = request.getParameter("action");
 		
-		logger.error("Action: "+action +" - Utente: "+utente.getNominativo());
+		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 		
 		try {
 			

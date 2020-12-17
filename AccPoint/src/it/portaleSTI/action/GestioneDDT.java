@@ -88,7 +88,7 @@ public class GestioneDDT extends HttpServlet {
 		
 		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 		
-		logger.error("Action: "+action +" - Utente: "+utente.getNominativo());
+		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 		
 		if(action.equals("dettaglio")) {
 		
@@ -147,7 +147,7 @@ public class GestioneDDT extends HttpServlet {
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioDDT.jsp");
      	dispatcher.forward(request,response);
-     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+     	logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}catch (Exception e) {
 			
      	e.printStackTrace();
@@ -199,7 +199,7 @@ public class GestioneDDT extends HttpServlet {
 				myObj = STIException.getSuccessMessage("DDT Creato con successo!");
 				out.print(myObj);
 				
-				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 			} catch (Exception e) {
 				
 				e.printStackTrace();
@@ -242,7 +242,7 @@ public class GestioneDDT extends HttpServlet {
 			    outp.flush();
 			    outp.close();
 			    
-			    logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+			    logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 			    
 			}catch(Exception ex)
 	    	{
@@ -553,7 +553,7 @@ public class GestioneDDT extends HttpServlet {
 		   		//dispatcher.forward(request, response);
 		   		response.sendRedirect(request.getHeader("referer"));
 
-		   		logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+		   		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 			} catch (Exception e) {
 				
 				session.getTransaction().rollback();

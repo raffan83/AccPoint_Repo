@@ -101,7 +101,7 @@ public class ListaItem extends HttpServlet {
 		
 		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 		
-		logger.error("Action: "+action +" - Utente: "+utente.getNominativo());
+		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 	
 		if(action!=null && action.equals("new")) {
 			ajax = false;
@@ -128,7 +128,7 @@ public class ListaItem extends HttpServlet {
 		
 		out.print(myObj);
 		
-		logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		
@@ -165,7 +165,7 @@ public class ListaItem extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemStrumenti.jsp");
 		     dispatcher.forward(request,response);
 		     
-		     logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+		     logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action!=null && action.equals("lista_item_inserimento") && tipo_item!=null && tipo_item.equals("2")) {
@@ -178,7 +178,7 @@ public class ListaItem extends HttpServlet {
 			session.close();
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemAccessori.jsp");
 		     dispatcher.forward(request,response);
-		     logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+		     logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action!=null && action.equals("lista_item_inserimento") && tipo_item!=null && tipo_item.equals("3")) {
@@ -192,7 +192,7 @@ public class ListaItem extends HttpServlet {
 			session.close();
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemGenerici.jsp");
 		     dispatcher.forward(request,response);
-		     logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+		     logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action!=null && action.equals("lista")) {
@@ -304,7 +304,7 @@ public class ListaItem extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 		     dispatcher.forward(request,response);
 			
-		     logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+		     logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action!=null && action.equals("item_esterno")) {
@@ -324,7 +324,7 @@ public class ListaItem extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 		     dispatcher.forward(request,response);
 			
-		     logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+		     logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		else if(action!=null && action.equals("item_magazzino")) {
 			
@@ -352,7 +352,7 @@ public class ListaItem extends HttpServlet {
 			request.getSession().setAttribute("item_magazzino", true);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 		     dispatcher.forward(request,response);
-		     logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+		     logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if (action!=null && action.equals("cerca_origini")) {
@@ -376,7 +376,7 @@ public class ListaItem extends HttpServlet {
 				myObj.addProperty("messaggio", "Nessun pacco origine trovato!");
 			}
 			out.print(myObj);
-			logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		else if(action!=null && action.equals("storico_item")) {
 			
@@ -399,7 +399,7 @@ public class ListaItem extends HttpServlet {
 				}
 				session.close();
 				out.print(myObj);
-				logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		else if(action!=null && action.equals("filtraDate")) {
 			
@@ -429,7 +429,7 @@ public class ListaItem extends HttpServlet {
 			request.getSession().setAttribute("item_magazzino", false);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 	     	dispatcher.forward(request,response);
-	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+	     	logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 

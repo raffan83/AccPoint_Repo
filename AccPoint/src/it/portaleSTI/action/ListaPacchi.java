@@ -221,7 +221,7 @@ public class ListaPacchi extends HttpServlet {
 	     	dispatcher.forward(request,response);
 	     	
 	     	
-	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+	     	logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		else if(action.equals("filtraDate")) {
 			
@@ -249,7 +249,7 @@ public class ListaPacchi extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
 	     	
-	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+	     	logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		else if(action.equals("filtraCommesse")) {
 		
@@ -265,7 +265,7 @@ public class ListaPacchi extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
 	     	
-	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+	     	logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 			
 		else if(action.equals("pacchi_esterno")) {
@@ -280,7 +280,7 @@ public class ListaPacchi extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
 			
-	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+	     	logger.error(Utility.getMemorySpace()+"Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("pacchi_magazzino")) {
@@ -294,7 +294,7 @@ public class ListaPacchi extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPacchiInMagazzino.jsp");
 	     	dispatcher.forward(request,response);
 			
-	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+	     	logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("lista_ddt")) {
@@ -420,7 +420,7 @@ public class ListaPacchi extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDDT.jsp");
 	     	dispatcher.forward(request,response);
 		
-	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+	     	logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("filtraDateDDT")) {
@@ -467,7 +467,7 @@ public class ListaPacchi extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDDT.jsp");
 	     	dispatcher.forward(request,response);
 	     	
-	     	logger.error("Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+	     	logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 				
 		

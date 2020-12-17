@@ -1386,7 +1386,7 @@ public class CreateVerRapporto {
 		 		report.addColumn(col.column("Check <br> <i>|I2 - I1| </i>≥ <i>d</i <br>","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
 	 		}else {
 	 			report.addColumn(col.column("0,7 • Carico Aggiuntivo =  <br> 0,7 • EMT </i> <br>"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-		 		report.addColumn(col.column("Check  <br> <i>|I2 - I1|</i> ≥ 0,7 <i>EMT</i> <br>","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 		report.addColumn(col.column("Check  <br> <i>|I2 - I1|</i> ≥ 0,7 EMT <br>","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		}
 	 		
 	 		

@@ -30,7 +30,7 @@
           
 
          
-         
+         <%if(user!=null){ %>
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->
@@ -50,6 +50,7 @@
                   <small><%= user.getNominativo()  %></small>
                 </p>
               </li>
+              <%} %>
               <!-- Menu Body -->
               <li class="user-body">
                 <div class="row">

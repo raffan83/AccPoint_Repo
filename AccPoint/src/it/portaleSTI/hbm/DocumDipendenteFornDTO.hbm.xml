@@ -40,5 +40,21 @@
             <column name="nome_fornitore" />
         </property> -->
         
+        
+        <set name="listaDocumenti" table="docum_documento_dipendente"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id_dipendente" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portaleSTI.DTO.DocumTLDocumentoDTO">
+                <column name="id_documento" not-null="true" />
+            </many-to-many>
+        </set>
+        
+        
+         <many-to-one name="stato" class="it.portaleSTI.DTO.DocumTLStatoDipendenteDTO" fetch="join" lazy="false">
+            <column name="id_stato" />
+        </many-to-one>
+        
     </class>
 </hibernate-mapping>

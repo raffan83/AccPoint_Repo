@@ -22,10 +22,14 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
+import org.apache.log4j.Logger;
 
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.action.AggiornaCampioneScheduler;
 
 public class SendEmailBO {
 	public static void sendEmailCertificato(CertificatoDTO certificato, String mailTo, ServletContext ctx) throws Exception {
@@ -354,6 +358,8 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 
 public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato, String mailTo, ServletContext ctx) throws Exception {
 	
+		Logger logger = Logger.getLogger(SendEmailBO.class);
+		
 	   String from = "metrologiasti@pec.it";
 	   String SMTP_HOST_NAME = "smtps.pec.aruba.it";
 	   int SMTP_HOST_PORT = 465;
@@ -378,6 +384,8 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
        
        
        Session mailSession = Session.getDefaultInstance(props);
+       
+       
     
        MimeMessage message = new MimeMessage(mailSession); 
 		
@@ -489,7 +497,7 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 	         // Send the complete message parts
 	         message.setContent(multipart);
        
-
+	         logger.error(mailSession.getProperty("mail.transport.protocol"));
 	         Transport tr = mailSession.getTransport("smtps");
 	         
 	         tr.connect(SMTP_HOST_NAME, SMTP_HOST_PORT, SMTP_AUTH_USER, SMTP_AUTH_PWD);
@@ -564,7 +572,78 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 	}
 
 
+public static void sendEmailDocumento(DocumTLDocumentoDTO documento, String mailTo, String mailCc, String motivo_rifiuto) throws Exception {
+	
+	
+	String filename = documento.getNome_documento();
+	
+	
+	  // Create the attachment
+//	  EmailAttachment attachment = new EmailAttachment();
+//	  attachment.setPath(Costanti.PATH_FOLDER+pack+"/"+filename);
+//	  attachment.setDisposition(EmailAttachment.ATTACHMENT);
+//	  attachment.setDescription("Documento "+documento.getId());
+//	  attachment.setName(certificato.getNomeCertificato());
+	  
+	  // Create the email message
+	  HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
 
+        email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+        email.getMailSession().getProperties().put("mail.debug", "true");
+        email.getMailSession().getProperties().put("mail.smtp.port", "465");
+        email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+        email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+        email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+
+	  email.addTo(mailTo);
+	  if(mailCc!=null && !mailCc.equals("")) {
+		  email.addCc(mailCc);  
+	  }
+	  
+	  email.setFrom("calver@accpoint.it", "Calver");
+	  email.setSubject("Documento "+documento.getNome_documento());
+	  
+	  // embed the image and get the content id
+
+//	  File image = new File(ctx.getRealPath("images/logo_calver_v2.png"));
+//	  String cid = email.embed(image, "Calver logo");
+	  
+	  // set the html message
+	  
+	  if(motivo_rifiuto!=null) {
+		  email.setHtmlMsg("<html>Il documento "+documento.getNome_documento()+" &egrave stato rifiutato. "
+			  		+ "Motivo rifiuto: "
+			  		+ "<br /> "
+			  		+ motivo_rifiuto
+			  		+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.LOGO_EMAIL_FOOTER+" \"></html>");
+
+	  }else {
+		  email.setHtmlMsg("<html>Il documento "+documento.getNome_documento()+" &egrave scaduto! "
+			  		+ "Fai click sul link per ricaricare il documento aggiornato"
+			  		+ "<br /> "
+			  		+ "http://portale.ecisrl.it/FormInputDoc/index.jsp?id_documento="+Utility.encryptData(documento.getId()+"")
+			  		+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.LOGO_EMAIL_FOOTER+" \"></html>");
+
+	  }
+
+
+	  // set the alternative message
+	 // email.setTextMsg("In allegato Certificato");
+
+	  // add the attachment
+	 // email.attach(attachment);
+	  
+	  // send the email
+	  email.send();
+	  
+	  
+	  
+	}
 
 }
 

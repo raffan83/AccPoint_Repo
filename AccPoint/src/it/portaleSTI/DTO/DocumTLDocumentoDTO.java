@@ -1,6 +1,8 @@
 package it.portaleSTI.DTO;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DocumTLDocumentoDTO {
 	
@@ -21,6 +23,10 @@ public class DocumTLDocumentoDTO {
 	private int obsoleto;
 	private int email_inviata;
 	private int documento_sostituito;
+	private String note_upload;
+	private String motivo_rifiuto;
+
+	private transient Set<DocumDipendenteFornDTO> listaDipendenti= new HashSet<DocumDipendenteFornDTO>(0);	
 	
 	
 	public int getId() {
@@ -112,6 +118,25 @@ public class DocumTLDocumentoDTO {
 	}
 	public void setDocumento_sostituito(int documento_sostituito) {
 		this.documento_sostituito = documento_sostituito;
+	}
+
+	public Set<DocumDipendenteFornDTO> getListaDipendenti() {
+		return listaDipendenti;
+	}
+	public void setListaDipendenti(Set<DocumDipendenteFornDTO> listaDipendenti) {
+		this.listaDipendenti = listaDipendenti;
+	}
+	public String getMotivo_rifiuto() {
+		return motivo_rifiuto;
+	}
+	public void setMotivo_rifiuto(String motivo_rifiuto) {
+		this.motivo_rifiuto = motivo_rifiuto;
+	}
+	public String getNote_upload() {
+		return note_upload;
+	}
+	public void setNote_upload(String note_upload) {
+		this.note_upload = note_upload;
 	}
 
 	

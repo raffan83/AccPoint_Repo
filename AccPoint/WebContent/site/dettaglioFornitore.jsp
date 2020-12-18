@@ -141,11 +141,12 @@
 <th>Committente</th>
 <th>Fornitore</th>
 <th>Nome Documento</th>
+<th>Numero Documento</th>
 <th>Data caricamento</th>
 <th>Frequenza (mesi)</th>
 <th>Data scadenza</th>
 <th>Rilasciato</th>
-<th>Azioni</th>
+<th style="min-width:145px">Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -157,6 +158,7 @@
 	<td>${documento.committente.nome_cliente} - ${documento.committente.indirizzo_cliente}</td>	
 	<td>${documento.fornitore.ragione_sociale }</td>
 	<td>${documento.nome_documento }</td>
+	<td>${documento.numero_documento }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_caricamento}" /></td>
 	<td>${documento.frequenza_rinnovo_mesi }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_scadenza}" /></td>
@@ -165,9 +167,10 @@
 	<td>	
 	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
 	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.id}','${documento.committente.id }','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
-	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
+	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
 	   <a class="btn btn-danger" onClick="modalEliminaDocumento('${documento.id}')"><i class="fa fa-trash"></i></a>   
+	   <a class="btn btn-info customTooltip" onclick="modalStorico('${documento.id}')"><i class="fa fa-history"></i></a>
 	</td>
 	</tr>
 	</c:forEach>
@@ -285,7 +288,8 @@
 		
 	<td>	
 	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.id}','${dipendente.committente.id }','${dipendente.fornitore.id}','${utl:escapeJS(dipendente.nome)}','${utl:escapeJS(dipendente.cognome)}','${utl:escapeJS(dipendente.note)}',
-	   '${utl:escapeJS(dipendente.qualifica)}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
+	   '${utl:escapeJS(dipendente.qualifica)}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>  
+	   <a class="btn btn-info customTooltip" title="Associa documenti" onClick="modalAssociaDocumenti('${dipendente.committente.id }','${dipendente.fornitore.id }','${dipendente.id}')"><i class="fa fa-plus"></i></a> 
 	</td>
 	</tr>
 	</c:forEach>
@@ -378,6 +382,26 @@
        			
        	</div>       	
        </div><br>     
+       
+       
+                <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Associa ai dipendenti</label>
+       	</div>
+       	<div class="col-sm-9"> 
+           <select name="dipendenti" id="dipendenti" class="form-control select2" data-placeholder="Seleziona dipendenti" aria-hidden="true" data-live-search="true" style="width:100%" disabled multiple>
+                <option value=""></option>
+                      <c:forEach items="${lista_dipendenti}" var="dipendente">
+                     
+                           <option value="${dipendente.id}">${dipendente.nome} ${dipendente.cognome }</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br> 
              
              
        <div class="row">
@@ -388,6 +412,18 @@
        	<div class="col-sm-9">      
        	  	
         <input id="nome_documento" name="nome_documento" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Numero Documento</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="numero_documento" name="numero_documento" class="form-control" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -468,6 +504,7 @@
   		 
       <div class="modal-footer">
 	<input type="hidden" id="fornitore" name="fornitore">
+	<input type="hidden" id="ids_dipendenti" name="ids_dipendenti">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -537,6 +574,26 @@
        			
        	</div>       	
        </div><br>    
+       
+       
+                <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Associa ai dipendenti</label>
+       	</div>
+       	<div class="col-sm-9"> 
+           <select name="dipendenti_mod" id="dipendenti_mod" class="form-control select2" data-placeholder="Seleziona dipendenti" aria-hidden="true" data-live-search="true" style="width:100%" disabled multiple>
+                <option value=""></option>
+                      <c:forEach items="${lista_dipendenti}" var="dipendente">
+                     
+                           <option value="${dipendente.id}">${dipendente.nome} ${dipendente.cognome }</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br> 
              
              
        <div class="row">
@@ -547,6 +604,19 @@
        	<div class="col-sm-9">      
        	  	
         <input id="nome_documento_mod" name="nome_documento_mod" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Numero Documento</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="numero_documento_mod" name="numero_documento_mod" class="form-control" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -631,6 +701,8 @@
 		
 		<input type="hidden" id="id_documento" name="id_documento">
 		<input type="hidden" id="fornitore_mod" name="fornitore_mod">
+				<input type="hidden" id="ids_dipendenti_mod" name="ids_dipendenti_mod">
+		<input type="hidden" id="ids_dipendenti_dissocia" name="ids_dipendenti_dissocia">
 
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
@@ -993,6 +1065,8 @@
        	</div>       	
        </div><br>     
              
+                                 
+
              
              
        <div class="row">
@@ -1124,6 +1198,8 @@
        	</div>       	
        </div><br>     
              
+                    
+
              
        <div class="row">
        
@@ -1182,6 +1258,7 @@
       <div class="modal-footer">
 		
 		<input type="hidden" id="id_dipendente" name="id_dipendente">
+
 		<input type="hidden" id="fornitore_dip_mod" name="fornitore_dip_mod">
 
 		<button class="btn btn-primary" type="submit">Salva</button> 
@@ -1194,6 +1271,105 @@
 
 </form>
 
+
+<div id="myModalStorico" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h4 class="modal-title" id="myModalLabelHeader">Storico documento</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-sm-12">
+			
+      
+        
+ <table id="table_storico" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+
+<th>ID</th>
+<th>Committente</th>
+<th>Fornitore</th>
+<th>Nome documento</th>
+<th>Numero documento</th>
+<th>Data caricamento</th>
+<th>Frequenza</th>
+<th>Data scadenza</th>
+<th>Rilasciato</th>
+<th>Azioni</th>
+ </tr></thead>
+ 
+
+</table>
+</div>
+		</div>
+
+     
+    </div>
+          <div class="modal-footer">
+ 		
+ 		<a class="btn btn-default pull-right" onClick="$('#myModalStorico').modal('hide')">Chiudi</a>
+         
+         
+         </div>
+  </div>
+</div>
+</div>
+
+
+
+<div id="myModalAssociaDocumenti" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h4 class="modal-title" id="myModalLabelHeader">Associa documenti al dipendente</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-sm-12">
+			
+      
+        
+ <table id="table_doc" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+<th></th>
+<th style="min-width:25px"></th>
+<th>ID</th>
+<th>Committente</th>
+<th>Fornitore</th>
+<th>Nome documento</th>
+<th>Numero documento</th>
+<th>Data caricamento</th>
+<th>Frequenza</th>
+<th>Data scadenza</th>
+<th>Rilasciato</th>
+<th>Azioni</th>
+ </tr></thead>
+ 
+ <tbody>
+</tbody>
+</table>
+</div>
+		</div>
+
+     
+    </div>
+          <div class="modal-footer">
+          
+          <input type="hidden" id="id_dipendente_associazione"> 
+ 		
+ 		
+        <a class = "btn btn-primary pull-right" onClick="associaDocumenti()">Salva</a> 
+        <a class="btn btn-primary pull-right"  style="margin-right:5px"  onClick="$('#myModalAssociaDocumenti').modal('hide')">Chiudi</a>
+         
+         </div>
+  </div>
+</div>
+</div>
 
 
 
@@ -1258,9 +1434,179 @@
  
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
   
  <script type="text/javascript">
+ 
+ function modalStorico(id_documento){
+		
+	  dataString ="action=storico_documento&id_documento="+ id_documento;
+     exploreModal("gestioneDocumentale.do",dataString,null,function(datab,textStatusb){
+   	  	
+   	  var result = JSON.parse(datab);
+   	  
+   	  if(result.success){
+   		  
+   		 
+   		  var table_data = [];
+   		  
+   		  var lista_documenti = result.lista_documenti;
+   		  
+   		  for(var i = 0; i<lista_documenti.length;i++){
+   			  var dati = {};
+   			  dati.id = lista_documenti[i].id;
+   			  dati.committente = lista_documenti[i].committente.nome_cliente +" - "+lista_documenti[i].committente.indirizzo_cliente;
+   			  dati.fornitore = lista_documenti[i].fornitore.ragione_sociale;
+   			  dati.nome_documento = lista_documenti[i].nome_documento;
+   			  if(lista_documenti[i].numero_documento==null){
+   				  dati.numero_documento = ''; 
+   			  }else{
+   				  dati.numero_documento = lista_documenti[i].numero_documento;
+   			  }    			  
+   			  dati.data_caricamento =  formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
+   			  dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
+   			  dati.data_scadenza =  formatDate(moment(lista_documenti[i].data_scadenza, "DD, MMM YY"));
+   			  dati.rilasciato = lista_documenti[i].rilasciato;
+   			  dati.azioni = '<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento_table&id_documento='+lista_documenti[i].id+'" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>';
+   			
+   			  table_data.push(dati);
+   		  }
+   		  var tab = $('#table_storico').DataTable();
+   		  
+   		tab.clear().draw();
+    		   
+   		tab.rows.add(table_data).draw();
+    			tab.columns.adjust().draw();
+  			
+  		  $('#myModalStorico').modal();
+  			
+   	  }
+   	  
+   	  $('#myModalStorico').on('shown.bs.modal', function () {
+   		  var tab = $('#table_storico').DataTable();
+   		  
+   		tab.columns.adjust().draw();
+ 			
+   		})
+   	  
+     });
+	  
+
+	
+} 
+
+
+ function associaDocumenti(){
+ 	  pleaseWaitDiv = $('#pleaseWaitDialog');
+ 	  pleaseWaitDiv.modal();
+ 	  
+ 	  var table = $('#table_doc').DataTable();
+ 		var dataSelected = table.rows( { selected: true } ).data();
+ 		var selezionati = "";
+ 		for(i=0; i< dataSelected.length; i++){
+ 			dataSelected[i];
+ 			selezionati = selezionati +dataSelected[i].id+";";
+ 		}
+ 		console.log(selezionati);
+ 		table.rows().deselect();
+ 		associaDocumentiDipendente(selezionati, $('#id_dipendente_associazione').val());
+ 		
+ 	}
+
+
+ function modalAssociaDocumenti(id_committente, id_fornitore,id_dipendente){
+ 	
+ 	$('#id_dipendente_associazione').val(id_dipendente);
+ 	
+ 	dataString ="action=documenti_dipendente&id_committente="+ id_committente+"&id_fornitore="+id_fornitore+"&id_dipendente="+id_dipendente;
+     exploreModal("gestioneDocumentale.do",dataString,null,function(datab,textStatusb){
+   	  	
+   	  var result = JSON.parse(datab.replace());
+   	  
+   	  if(result.success){  		  
+   		 
+   		  var table_data = [];
+   		  
+   		  var lista_documenti = result.lista_documenti;
+   		  var lista_documenti_associati = result.lista_documenti_associati;
+   		  
+   		  for(var i = 0; i<lista_documenti.length;i++){
+   			  var dati = {};
+   			  dati.empty = '<td></td>';
+   			  dati.check = '<td></td>';
+   			  dati.id = lista_documenti[i].id;
+   			  dati.committente = lista_documenti[i].committente.nome_cliente +" - "+lista_documenti[i].committente.indirizzo_cliente;
+   			  dati.fornitore = lista_documenti[i].fornitore.ragione_sociale;
+   			  dati.nome_documento = lista_documenti[i].nome_documento;
+   			  if(lista_documenti[i].numero_documento==null){
+   				dati.numero_documento = "";
+   			  }else{
+   				dati.numero_documento = lista_documenti[i].numero_documento; 
+   			  }
+   			  
+   			  dati.data_caricamento =  formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
+   			  dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
+   			  dati.data_scadenza =  formatDate(moment(lista_documenti[i].data_scadenza, "DD, MMM YY"));
+   			  dati.rilasciato = lista_documenti[i].rilasciato;
+   			  dati.azioni = '<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento_table&id_documento='+lista_documenti[i].id+'" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>';
+   				
+   			
+   			  table_data.push(dati);
+   		  }
+   		  var table = $('#table_doc').DataTable();
+   		  
+    		   table.clear().draw();
+    		   
+    			table.rows.add(table_data).draw();
+    			
+    			table.columns.adjust().draw();
+  			
+    			$('#table_doc tr').each(function(){
+    				var val  = $(this).find('td:eq(2)').text();
+    				$(this).attr("id", val)
+    			});
+    			controllaAssociati(table,lista_documenti_associati );
+  		  $('#myModalAssociaDocumenti').modal();
+  			
+   	  }
+   	  
+   	  $('#myModalAssociaDocumenti').on('shown.bs.modal', function () {
+   		  var table = $('#table_doc').DataTable();
+   			table.columns.adjust().draw();
+   			
+   		})
+   	  
+     });
+ 	  
+ }
+
+ function controllaAssociati(table, lista_documenti_associati){
+ 	
+ 	//var dataSelected = table.rows( { selected: true } ).data();
+ 	var data = table.rows().data();
+ 	for(var i = 0;i<lista_documenti_associati.length;i++){
+ 	
+ 		table.row( "#"+lista_documenti_associati[i].id ).select();
+ 			
+ 		}
+ 		
+ 		
+ 	
+ }
+
+
+ function formatDate(data){
+ 	
+ 	   var mydate = new Date(data);
+ 	   
+ 	   if(!isNaN(mydate.getTime())){
+ 	   
+ 		   str = mydate.toString("dd/MM/yyyy");
+ 	   }			   
+ 	   return str;	 		
+ }
+
  
 
  function modalNuovoDocumento(){
@@ -1276,7 +1622,60 @@
 		$('#myModalYesOrNo').modal();
  }
 
- function modificaDocumentoModal(id_documento, committente, fornitore, nome_documento, data_caricamento, frequenza,  data_scadenza, nome_file, rilasciato){
+ 
+ $('#committente_docum_mod').change(function(){
+		
+		var id_committente = $('#committente_docum_mod').val();
+		var id_fornitore = $('#fornitore_mod').val();
+		var id_documento = $('#id_documento').val();
+		getDipendenteFornitoreCommittente("_mod", id_committente, id_fornitore, id_documento);
+		
+		
+	});
+ 
+ 
+ $('#committente_docum').change(function(){
+		
+		var id_committente = $('#committente_docum').val();
+		var id_fornitore = $('#fornitore').val();
+		
+		getDipendenteFornitoreCommittente("", id_committente, id_fornitore);
+		$('#dipendenti').attr('disabled', false);
+		
+	});
+ 
+ 
+ $('#dipendenti_mod').on('change', function() {
+	  
+		var selected = $(this).val();
+		var selected_before = $('#ids_dipendenti_mod').val().split(";");
+		var deselected = "";
+		
+
+		if(selected!=null && selected.length>0){
+			
+			for(var i = 0; i<selected_before.length;i++){
+				var found = false
+				for(var j = 0; j<selected.length;j++){
+					if(selected_before[i] == selected[j]){
+						found = true;
+					}
+				}
+				if(!found && selected_before[i]!=''){
+					deselected = deselected+selected_before[i]+";";
+				}
+			}
+		}else{
+			deselected = $('#ids_dipendenti_mod').val();
+		}
+		 
+		
+		$('#ids_dipendenti_dissocia').val(deselected)
+		
+	  });
+
+ 
+ function modificaDocumentoModal(id_documento, committente, fornitore, nome_documento, data_caricamento, frequenza,  data_scadenza, nome_file, rilasciato,numero_documento){
 
  	$('#id_documento').val(id_documento);
  		
@@ -1289,6 +1688,7 @@
  	$('#nome_documento_mod').val(nome_documento);
  	$('#frequenza_mod').val(frequenza);	
  	
+ 	$('#numero_documento_mod').val(numero_documento);
  	if(data_caricamento!=null && data_caricamento!=''){
  		$('#data_caricamento_mod').val(Date.parse(data_caricamento).toString("dd/MM/yyyy"));
  	}
@@ -1296,7 +1696,7 @@
  		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));
  	}
  	$('#rilasciato_mod').val(rilasciato);
- 	$('#label_file_mod').html(nome_file);
+	$('#label_file_mod').html(nome_file.split("\\")[1]);
  	
  	$('#myModalModificaDocumento').modal();
  }
@@ -1619,7 +2019,7 @@
  		      columnDefs: [
  		    	  
  		    	  { responsivePriority: 1, targets: 1 },
- 		    	  
+ 		    	 { responsivePriority: 2, targets: 9 },
  		    	  
  		               ], 	        
  	  	      /* buttons: [   
@@ -1835,8 +2235,181 @@
 	
 	
  	
+	tab = $('#table_doc').DataTable({
+		language: {
+	        	emptyTable : 	"Nessun dato presente nella tabella",
+	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	        	infoPostFix:	"",
+	        infoThousands:	".",
+	        lengthMenu:	"Visualizza _MENU_ elementi",
+	        loadingRecords:	"Caricamento...",
+	        	processing:	"Elaborazione...",
+	        	search:	"Cerca:",
+	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	        	paginate:	{
+  	        	first:	"Inizio",
+  	        	previous:	"Precedente",
+  	        	next:	"Successivo",
+  	        last:	"Fine",
+	        	},
+	        aria:	{
+  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	        }
+        },
+        pageLength: 25,
+        "order": [[ 2, "desc" ]],
+	      paging: false, 
+	      ordering: true,
+	      info: false, 
+	      searchable: false, 
+	      targets: 0,
+	      responsive: true,  
+	      scrollX: false,
+	      stateSave: true,	
+	      select: {
+	        	style:    'multi+shift',
+	        	selector: 'td:nth-child(2)'
+	    	},
+	      columns : [
+	    	  {"data" : "empty"},  
+	    	{"data" : "check"},  
+	      	{"data" : "id"},
+	      	{"data" : "committente"},
+	      	{"data" : "fornitore"},
+	      	{"data" : "nome_documento"},
+	      	{"data" : "numero_documento"},
+	      	{"data" : "data_caricamento"},
+	      	{"data" : "frequenza"},
+	      	{"data" : "data_scadenza"},
+	      	{"data" : "rilasciato"},
+	      	{"data" : "azioni"},
+	       ],	
+	           
+	      columnDefs: [
+	    	  
+	    	  { responsivePriority: 1, targets: 1 },
+	    	  { responsivePriority: 2, targets: 9 },
+	    	  
+	    	  { className: "select-checkbox", targets: 1,  orderable: false }
+	    	  ],
+	    	  
+	     	          
+  	      buttons: [   
+  	          {
+  	            extend: 'colvis',
+  	            text: 'Nascondi Colonne'  	                   
+ 			  } ]
+	               
+	    });
+	
+	
+	
+	
+	
+	
+	
+	var	  tabStorico = $('#table_storico').DataTable({
+			language: {
+		        	emptyTable : 	"Nessun dato presente nella tabella",
+		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+		        	infoPostFix:	"",
+		        infoThousands:	".",
+		        lengthMenu:	"Visualizza _MENU_ elementi",
+		        loadingRecords:	"Caricamento...",
+		        	processing:	"Elaborazione...",
+		        	search:	"Cerca:",
+		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+		        	paginate:	{
+	  	        	first:	"Inizio",
+	  	        	previous:	"Precedente",
+	  	        	next:	"Successivo",
+	  	        last:	"Fine",
+		        	},
+		        aria:	{
+	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+		        }
+	        },
+	        pageLength: 25,
+	        "order": [[ 0, "desc" ]],
+		      paging: false, 
+		      ordering: true,
+		      info: false, 
+		      searchable: false, 
+		      targets: 0,
+		      responsive: true,  
+		      scrollX: false,
+		      stateSave: true,	
+		      columns : [
+		      	{"data" : "id"},
+		      	{"data" : "committente"},
+		      	{"data" : "fornitore"},
+		      	{"data" : "nome_documento"},
+		      	{"data" : "numero_documento"},
+		      	{"data" : "data_caricamento"},
+		      	{"data" : "frequenza"},
+		      	{"data" : "data_scadenza"},
+		      	{"data" : "rilasciato"},
+		      	{"data" : "azioni"},
+		       ],	
+		           
+		      columnDefs: [
+		    	  
+		    	  { responsivePriority: 1, targets: 1 },
+		    	  { responsivePriority: 2, targets: 9 },
+		    	  
+		    	  
+		               ], 	        
+	  	      buttons: [   
+	  	          {
+	  	            extend: 'colvis',
+	  	            text: 'Nascondi Colonne'  	                   
+	 			  } ]
+		               
+		    });
+	
+	
+	
+	
+	tab.buttons().container().appendTo( '#table_doc_wrapper .col-sm-6:eq(1)');
+ 	    $('.inputsearchtable').on('click', function(e){
+ 	       e.stopPropagation();    
+ 	    });
+
+ 	     tab.columns().eq( 0 ).each( function ( colIdx ) {
+  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+      tab
+          .column( colIdx )
+          .search( this.value )
+          .draw();
+  } );
+} );  
  	
- 	
+ 	     
+ 	     
+ 	     
+ 		
+ 
+ 			
+ 		 /* 			tabStorico.buttons().container().appendTo( '#table_storico_wrapper .col-sm-6:eq(1)');
+ 		 	    $('.inputsearchtable').on('click', function(e){
+ 		 	       e.stopPropagation();    
+ 		 	    });
+
+ 		 	     tabStorico.columns().eq( 0 ).each( function ( colIdx ) {
+ 		  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+ 		      tabStorico
+ 		          .column( colIdx )
+ 		          .search( this.value )
+ 		          .draw();
+ 		  } );
+ 		} );   */
+ 		
  	
  	
     });
@@ -1844,16 +2417,41 @@
     
     $('#modificaDocumentoForm').on('submit', function(e){
    	 e.preventDefault();
+   	 
+   	 
+   	 if($('#dipendenti_mod').val()!=null && $('#dipendenti_mod').val()!=''){
+   		 
+   		 var values = $('#dipendenti_mod').val();
+   		 var ids = "";
+   		 for(var i = 0;i<values.length;i++){
+   			 ids = ids + values[i]+";";
+   		 }
+   		 
+   		 $('#ids_dipendenti_mod').val(ids);
+   	 }else {
+   		 $('#ids_dipendenti_mod').val("");
+   	 }
    	 modificaDocumento();
    });
     
 
     
     $('#nuovoDocumentoForm').on('submit', function(e){
+   	 
+   	 if($('#dipendenti').val()!=null && $('#dipendenti').val()!=''){
+   		 
+   		 var values = $('#dipendenti').val();
+   		 var ids = "";
+   		 for(var i = 0;i<values.length;i++){
+   			 ids = ids + values[i]+";";
+   		 }
+   		 
+   		 $('#ids_dipendenti').val(ids);
+   	 }
+   	 
    	 e.preventDefault();
    	 nuovoDocumento();
    });
-    
     
 
     $('#modificaReferenteForm').on('submit', function(e){
@@ -1880,6 +2478,12 @@
     	 e.preventDefault();
     	 nuovoDipendente();
     });
+     
+     $('#myModalStorico').on('hidden.bs.modal', function(){
+    	 $(document.body).css('padding-right', '0px'); 
+     });
+     
+
      
 
   </script>

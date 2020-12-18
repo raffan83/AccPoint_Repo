@@ -68,6 +68,7 @@
 <th>Nome Cliente</th>
 <th>Sede</th>
 <th>Referente</th>
+<th>Email</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -80,8 +81,9 @@
 	<td>${committente.nome_cliente }</td>
 	<td>${committente.indirizzo_cliente }</td>
 	<td>${committente.nominativo_referente }</td>	
+	<td>${committente.email }</td>
 	<td>	
-	 <a class="btn btn-warning customTooltip" title="Modifica committente" onClicK="modificaCommittenteModal('${committente.id}','${committente.id_cliente}','${committente.id_sede }','${utl:escapeJS(committente.nominativo_referente)}')" title="Click per modificare il Committente"><i class="fa fa-edit"></i></a>
+	 <a class="btn btn-warning customTooltip" title="Modifica committente" onClicK="modificaCommittenteModal('${committente.id}','${committente.id_cliente}','${committente.id_sede }','${utl:escapeJS(committente.nominativo_referente)}','${committente.email }')" title="Click per modificare il Committente"><i class="fa fa-edit"></i></a>
 	 <a class="btn btn-info customTooltip" title="Mostra lista Fornitori" onClick="showListaFornitori('${committente.id}','${utl:escapeJS(committente.nome_cliente)}','${utl:escapeJS(committente.indirizzo_cliente) }')"><i class="fa fa-search"></i></a> 
 	</td>
 	</tr>
@@ -163,6 +165,18 @@
        			
        	</div>       	
        </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="email" name="email" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
        </div>
   		 
       <div class="modal-footer">
@@ -226,6 +240,19 @@
        	<div class="col-sm-9">      
        	  	
         <input id="referente_mod" name="referente_mod" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+       
+               <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="email_mod" name="email_mod" class="form-control" type="text" style="width:100%" required>
        			
        	</div>       	
        </div><br>
@@ -355,7 +382,7 @@ function modalNuovoCommittente(){
 
 
 
-function modificaCommittenteModal(id_committente, id_cliente, id_sede, referente){
+function modificaCommittenteModal(id_committente, id_cliente, id_sede, referente, email){
 	
 	$('#id_committente').val(id_committente);
 		
@@ -371,6 +398,8 @@ function modificaCommittenteModal(id_committente, id_cliente, id_sede, referente
 	$('#sede_mod').change();	
 
 	$('#referente_mod').val(referente);
+	
+	$('#email_mod').val(email);
 	
 	$('#myModalModificaCommittente').modal();
 }

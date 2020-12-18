@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DAO.GestioneDocumentaleDAO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
+import it.portaleSTI.DTO.DocumEmailDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
 import it.portaleSTI.DTO.DocumReferenteFornDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
@@ -45,9 +46,9 @@ public class GestioneDocumentaleBO {
 		return GestioneDocumentaleDAO.getReferenteFromId(id_referente, session);
 	}
 
-	public static ArrayList<DocumDipendenteFornDTO> getListaDipendenti(int id_fornitore,Session session) {
+	public static ArrayList<DocumDipendenteFornDTO> getListaDipendenti(int id_committente, int id_fornitore,Session session) {
 		
-		return GestioneDocumentaleDAO.getListaDipendenti(id_fornitore,session);
+		return GestioneDocumentaleDAO.getListaDipendenti(id_committente, id_fornitore,session);
 	}
 
 	public static DocumDipendenteFornDTO getDipendenteFromId(int id_dipendente, Session session) {
@@ -59,6 +60,11 @@ public class GestioneDocumentaleBO {
 		
 		return GestioneDocumentaleDAO.getListaDocumenti(data_scadenza,id_fornitore, session);
 	}
+	
+	public static ArrayList<DocumTLDocumentoDTO> getListaDocumentiDaApprovare(String data_scadenza, int id_fornitore, Session session) throws Exception, ParseException {
+		
+		return GestioneDocumentaleDAO.getListaDocumentiDaApprovare(data_scadenza,id_fornitore, session);
+	}
 
 	public static DocumTLDocumentoDTO getDocumentoFromId(int id_documento, Session session) {
 		
@@ -68,6 +74,21 @@ public class GestioneDocumentaleBO {
 	public static HashMap<String, Integer> getDocumentiScadenza(int id_fornitore, Session session) {
 		
 		return GestioneDocumentaleDAO.getDocumentiScadenza(id_fornitore, session);
+	}
+
+	public static ArrayList<DocumEmailDTO> getStoricoEmail(int id_documento, Session session) {
+	
+		return GestioneDocumentaleDAO.getStoricoEmail(id_documento, session);
+	}
+
+	public static ArrayList<DocumTLDocumentoDTO> getListaDocumentiDaAssociare(int id_committente, int id_fornitore, Session session) {
+		
+		return GestioneDocumentaleDAO.getListaDocumentiDaAssociare(id_committente, id_fornitore, session);
+	}
+
+	public static ArrayList<DocumTLDocumentoDTO> getDocumentiObsoleti(Session session) {
+	
+		return GestioneDocumentaleDAO.getDocumentiObsoleti(session);
 	}
 
 

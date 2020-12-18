@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -22,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;import org.apache.commons.math3.geometry.spherical.oned.ArcsSet.Split;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -35,9 +37,12 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
+import it.portaleSTI.DTO.DocumEmailDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
 import it.portaleSTI.DTO.DocumReferenteFornDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
+import it.portaleSTI.DTO.DocumTLStatoDTO;
+import it.portaleSTI.DTO.DocumTLStatoDipendenteDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -45,6 +50,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneDocumentaleBO;
+import it.portaleSTI.bo.SendEmailBO;
 
 /**
  * Servlet implementation class GestioneDocumentale
@@ -148,6 +154,7 @@ public class GestioneDocumentale extends HttpServlet {
 		        String id_cliente = ret.get("cliente");
 		        String id_sede = ret.get("sede");				
 				String referente = ret.get("referente");
+				String email = ret.get("email");
 
 				DocumCommittenteDTO committente = new DocumCommittenteDTO();
 				
@@ -166,6 +173,7 @@ public class GestioneDocumentale extends HttpServlet {
 				}
 				
 				committente.setNominativo_referente(referente);
+				committente.setEmail(email);
 
 
 				session.save(committente);
@@ -217,6 +225,7 @@ public class GestioneDocumentale extends HttpServlet {
 		        String id_cliente = ret.get("cliente_mod");
 		        String id_sede = ret.get("sede_mod");				
 				String referente = ret.get("referente_mod");
+				String email = ret.get("email_mod");
 
 				DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromID(Integer.parseInt(id_committente), session);
 				
@@ -235,6 +244,7 @@ public class GestioneDocumentale extends HttpServlet {
 				}
 				
 				committente.setNominativo_referente(referente);
+				committente.setEmail(email);
 				
 				session.update(committente);
 				
@@ -477,9 +487,9 @@ public class GestioneDocumentale extends HttpServlet {
 				id_fornitore = Utility.decryptData(id_fornitore);
 				
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
-				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(null, fornitore.getId(), session);
+				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(null, fornitore.getId(), session);				
 				ArrayList<DocumReferenteFornDTO> lista_referenti = GestioneDocumentaleBO.getListaReferenti(fornitore.getId(), session);
-				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(fornitore.getId(),session);
+				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0,fornitore.getId(),session);
 				ArrayList<DocumCommittenteDTO> lista_committenti = DirectMySqlDAO.getIdCommittentiFromFornitore(Integer.parseInt(id_fornitore));
 				
 				request.getSession().setAttribute("fornitore", fornitore);
@@ -667,12 +677,14 @@ public class GestioneDocumentale extends HttpServlet {
 			
 			if(action.equals("lista_dipendenti")) {
 				
-				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0,session);
+				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0,0,session);
 				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
+				ArrayList<DocumCommittenteDTO> lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
 				
 				
 				request.getSession().setAttribute("lista_dipendenti", lista_dipendenti);
 				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
+				request.getSession().setAttribute("lista_committenti", lista_committenti);
 					
 				session.getTransaction().commit();
 				session.close();
@@ -836,9 +848,11 @@ public class GestioneDocumentale extends HttpServlet {
 				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(null, 0, session);
 				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
 				ArrayList<DocumCommittenteDTO> lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
+				ArrayList<DocumTLDocumentoDTO> lista_documenti_da_approvare = GestioneDocumentaleBO.getListaDocumentiDaApprovare(null, 0, session);
 				
 				
 				request.getSession().setAttribute("lista_documenti", lista_documenti);
+				request.getSession().setAttribute("numero_documenti_da_approvare", lista_documenti_da_approvare.size());
 				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
 				request.getSession().setAttribute("lista_committenti", lista_committenti);
 				request.getSession().setAttribute("data_scadenza", null);
@@ -865,6 +879,8 @@ public class GestioneDocumentale extends HttpServlet {
 				FileItem fileItem = null;
 				String filename= null;
 		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		        
+		        
 		      
 		        for (FileItem item : items) {
 	            	 if (!item.isFormField()) {
@@ -874,6 +890,7 @@ public class GestioneDocumentale extends HttpServlet {
 	                     
 	            	 }else
 	            	 {
+	      
 	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
 	            	 }
 	            	
@@ -886,6 +903,9 @@ public class GestioneDocumentale extends HttpServlet {
 				String frequenza = ret.get("frequenza");				
 				String data_scadenza = ret.get("data_scadenza");
 				String rilasciato = ret.get("rilasciato");
+				String numero_documento = ret.get("numero_documento");
+				String ids_dipendenti = ret.get("ids_dipendenti");
+				
 
 				DocumTLDocumentoDTO documento = new DocumTLDocumentoDTO();
 				
@@ -900,24 +920,51 @@ public class GestioneDocumentale extends HttpServlet {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				documento.setData_caricamento(sdf.parse(data_caricamento));
 				documento.setFrequenza_rinnovo_mesi(Integer.parseInt(frequenza));
-				documento.setData_scadenza(sdf.parse(data_scadenza));
-				documento.setNome_file(filename);
-				documento.setRilasciato(rilasciato);
+				documento.setData_scadenza(sdf.parse(data_scadenza));		
 				
-				saveFile(fileItem, fornitore.getId(), filename);
+				DocumTLStatoDTO stato = new DocumTLStatoDTO();
+				if(sdf.parse(data_scadenza)!=null && sdf.parse(data_scadenza).before(new Date())) {
+					stato.setId(3);
+				}else {
+					stato.setId(1);
+				}
+				
+				documento.setStato(stato);
+				documento.setRilasciato(rilasciato);
+				documento.setNumero_documento(numero_documento);
+				
+				SimpleDateFormat df = new SimpleDateFormat("ddMMyyyyHHmmss");
+				
+				String timestamp = df.format(new Timestamp(System.currentTimeMillis()));
+				
+				saveFile(fileItem, fornitore.getId(), timestamp ,filename);
+				
+				documento.setNome_file(timestamp+"\\"+filename);
 								
 				session.save(documento);
 				
 			//	fornitore.getListaDocumenti().add(documento);
 				session.update(fornitore);
 				
+				if(ids_dipendenti !=null && !ids_dipendenti.equals("")) {
+					
+					for (String id : ids_dipendenti.split(";")) {
+						DocumDipendenteFornDTO dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id), session);
+						dipendente.getListaDocumenti().add(documento);
+						dipendente.setStato(checkStatoDipendente(dipendente));
+						session.update(dipendente);
+					}
+					
+				}
+
+				session.getTransaction().commit();
+				session.close();
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Documento salvato con successo!");
 				out.print(myObj);
-				session.getTransaction().commit();
-				session.close();
+				
 			}
 			
 			
@@ -960,7 +1007,9 @@ public class GestioneDocumentale extends HttpServlet {
 				String frequenza = ret.get("frequenza_mod");				
 				String data_scadenza = ret.get("data_scadenza_mod");
 				String rilasciato = ret.get("rilasciato_mod");
-				
+				String numero_documento = ret.get("numero_documento_mod");
+				String ids_dipendenti = ret.get("ids_dipendenti_mod");
+				String ids_dipendenti_dissocia = ret.get("ids_dipendenti_dissocia");				
 
 				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
 				
@@ -968,8 +1017,6 @@ public class GestioneDocumentale extends HttpServlet {
 				
 				DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromID(Integer.parseInt(id_committente), session);
 				
-//				documento.setId_fornitore(fornitore.getId());
-//				documento.setNome_fornitore(fornitore.getRagione_sociale());
 				documento.setCommittente(committente);
 				documento.setFornitore(fornitore);
 				documento.setNome_documento(nome_documento);
@@ -978,18 +1025,51 @@ public class GestioneDocumentale extends HttpServlet {
 				documento.setFrequenza_rinnovo_mesi(Integer.parseInt(frequenza));
 				documento.setData_scadenza(sdf.parse(data_scadenza));
 				documento.setRilasciato(rilasciato);
+				documento.setNumero_documento(numero_documento);
 				
 				if(filename!=null && !filename.equals(""))
 				{
-					saveFile(fileItem, fornitore.getId(), filename);
-					documento.setNome_file(filename);
+					SimpleDateFormat df = new SimpleDateFormat("ddMMyyyyHHmmss");
+					String timestamp = df.format(new Timestamp(System.currentTimeMillis()));
+					saveFile(fileItem, fornitore.getId(), timestamp, filename);
+					documento.setNome_file(timestamp + "\\"+filename);
 				}
-								
-								
-				session.save(documento);
 				
-			//	fornitore.getListaDocumenti().add(documento);
-			//	session.update(fornitore);
+				DocumTLStatoDTO stato = new DocumTLStatoDTO();
+				if(documento.getStato().getId() != 4) {
+					if(sdf.parse(data_scadenza)!=null && sdf.parse(data_scadenza).before(new Date())) {
+						stato.setId(3);
+					}else {
+						stato.setId(1);
+					}
+					documento.setStato(stato);
+				}
+						
+								
+				session.update(documento);
+				
+
+				if(ids_dipendenti !=null && !ids_dipendenti.equals("")) {
+					
+					for (String id : ids_dipendenti.split(";")) {
+						DocumDipendenteFornDTO dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id), session);
+						dipendente.getListaDocumenti().add(documento);
+						dipendente.setStato(checkStatoDipendente(dipendente));
+						session.update(dipendente);
+					}
+					
+				}
+				
+				if(ids_dipendenti_dissocia !=null && !ids_dipendenti_dissocia.equals("")) {
+					
+					for (String id : ids_dipendenti_dissocia.split(";")) {
+						DocumDipendenteFornDTO dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id), session);
+						dipendente.getListaDocumenti().remove(documento);
+						dipendente.setStato(checkStatoDipendente(dipendente));
+						session.update(dipendente);
+					}
+					
+				}
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
@@ -1004,6 +1084,19 @@ public class GestioneDocumentale extends HttpServlet {
 				String id_documento = request.getParameter("id_documento");
 				
 				id_documento = Utility.decryptData(id_documento);
+				
+				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
+				
+				response.setContentType("application/octet-stream");
+				response.setHeader("Content-Disposition","attachment;filename="+ documento.getNome_file());
+				downloadFile(documento.getFornitore().getId(), documento.getNome_file(), response.getOutputStream());
+				
+				session.close();
+				
+			}
+			else if (action.equals("download_documento_table")) {
+				
+				String id_documento = request.getParameter("id_documento");
 				
 				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
 				
@@ -1054,9 +1147,9 @@ public class GestioneDocumentale extends HttpServlet {
 			
 			else if(action.equals("create_scadenzario")) {				
 				
-				String id_fornitore = request.getParameter("id_fornitore");
+				ajax =true;
 				
-			
+				String id_fornitore = request.getParameter("id_fornitore");				
 				
 				if(id_fornitore == null) {
 					id_fornitore = "0";
@@ -1126,6 +1219,318 @@ public class GestioneDocumentale extends HttpServlet {
 		     	dispatcher.forward(request,response);
 			}
 			
+			else if(action.equals("email_forn_comm")) {
+				
+				ajax = true;
+				
+				String id_documento = request.getParameter("id_documento");
+				
+				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
+				
+				PrintWriter out = response.getWriter();       
+				
+				String destinatario = "";
+				String copia = "";
+				
+				if(documento.getFornitore()!=null && documento.getFornitore().getEmail()!=null) {
+					destinatario = documento.getFornitore().getEmail();
+				}
+				
+				if(documento.getCommittente()!=null && documento.getCommittente().getEmail()!=null) {
+					copia = documento.getCommittente().getEmail();
+				}			  
+			  
+			    myObj.addProperty("destinatario", destinatario);
+			    myObj.addProperty("copia", copia);
+			    
+			    myObj.addProperty("success", true);
+			        
+			    out.println(myObj.toString());
+		
+			    out.close();
+			        
+			    session.getTransaction().commit();
+		       	session.close();
+				
+			}
+			else if(action.equals("invia_email")) {
+				
+				ajax = true;
+				
+				String id_documento = request.getParameter("id_documento");
+				
+				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);				
+				
+				String destinatario = request.getParameter("destinatario");
+				String copia = request.getParameter("copia");
+				
+				SendEmailBO.sendEmailDocumento(documento, destinatario, copia, null);
+				
+				PrintWriter out = response.getWriter();
+				
+				
+				DocumEmailDTO email = new DocumEmailDTO();
+				email.setData(new Timestamp(System.currentTimeMillis()));
+				email.setUtente(utente);
+				email.setDestinatario(destinatario);
+				email.setDocumento(documento);
+				
+				session.save(email);
+			
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Email inviata con successo!");
+				        
+				out.println(myObj.toString());
+				
+				out.close();
+
+				DocumTLStatoDTO stato = new DocumTLStatoDTO();
+				stato.setId(2);
+				documento.setStato(stato);				
+				
+				documento.setEmail_inviata(1);
+				
+				session.update(documento);				
+			   
+				session.getTransaction().commit();
+			    session.close();
+				
+			}
+			else if (action.equals("storico_email")) {
+				
+				ajax=true;
+				
+				String id_documento = request.getParameter("id_documento");
+				
+				ArrayList<DocumEmailDTO> lista_email = GestioneDocumentaleBO.getStoricoEmail(Integer.parseInt(id_documento), session);
+			
+				PrintWriter out = response.getWriter();
+				
+				 Gson gson = new Gson(); 
+			        			        
+			     			       		       
+			        myObj.addProperty("success", true);
+			  
+			        myObj.add("lista_email", gson.toJsonTree(lista_email));
+			        
+			        out.println(myObj.toString());
+		
+			        out.close();
+			        
+			     session.getTransaction().commit();
+		       	session.close();
+			}
+			else if(action.equals("staging_area")) {
+				
+				ArrayList<DocumTLDocumentoDTO> documenti_da_approvare = GestioneDocumentaleBO.getListaDocumentiDaApprovare(null, 0, session);
+
+				request.getSession().setAttribute("lista_documenti_da_approvare", documenti_da_approvare);
+
+				session.getTransaction().commit();
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneDocumDocumentiDaApprovare.jsp");
+		     	dispatcher.forward(request,response);
+			}
+			else if(action.equals("cambia_stato_documento")) {
+				
+				ajax=true;
+				
+				String id_documento = request.getParameter("id_documento");
+				String stato = request.getParameter("stato");
+				String email_referente = request.getParameter("email_referente");
+				String motivo_rifiuto = request.getParameter("motivo_rifiuto");
+				
+				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
+				
+				DocumTLStatoDTO stato_documento = new DocumTLStatoDTO();
+				if(stato.equals("1")) {
+					
+					stato_documento.setId(1);
+					documento.setStato(stato_documento);
+					DocumTLDocumentoDTO documento_sostituito = GestioneDocumentaleBO.getDocumentoFromId(documento.getDocumento_sostituito(), session);
+					documento_sostituito.setObsoleto(1);
+					
+					session.update(documento_sostituito);
+					
+					Iterator<DocumDipendenteFornDTO> iterator = documento_sostituito.getListaDipendenti().iterator();
+					
+					while(iterator.hasNext()) {
+						DocumDipendenteFornDTO dipendente = iterator.next();
+						dipendente.setStato(new DocumTLStatoDipendenteDTO(1, ""));
+						session.update(dipendente);
+					}
+					
+					myObj.addProperty("messaggio", "Documento approvato con successo!");
+					
+				}else if(stato.equals("5")) {
+					
+					stato_documento.setId(5);
+					documento.setStato(stato_documento);
+					documento.setDisabilitato(1);
+					documento.setMotivo_rifiuto(motivo_rifiuto);
+					
+					Iterator<DocumDipendenteFornDTO> iterator = documento.getListaDipendenti().iterator();
+					while(iterator.hasNext()) {
+						DocumDipendenteFornDTO dipendente = iterator.next();
+						dipendente.setStato(new DocumTLStatoDipendenteDTO(3, ""));
+						session.update(dipendente);
+					}
+					     
+					SendEmailBO.sendEmailDocumento(documento, email_referente, null, motivo_rifiuto);
+					myObj.addProperty("messaggio", "Documento rifiutato con successo!");
+				}
+				
+				session.update(documento);
+				
+				PrintWriter out = response.getWriter();				
+				     			       		       
+			    myObj.addProperty("success", true);
+			  			        
+			    out.println(myObj.toString());
+		
+			    out.close();
+			        
+			    session.getTransaction().commit();
+		       	session.close();
+			}
+			
+			else if (action.equals("storico_documento")) {
+				
+				ajax=true;
+				
+				String id_documento = request.getParameter("id_documento");
+				
+				ArrayList<DocumTLDocumentoDTO> lista_documenti = new ArrayList<DocumTLDocumentoDTO>();
+				
+				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
+								
+				lista_documenti.add(documento);
+				
+				if(documento.getDocumento_sostituito()!=0) {
+					while(documento.getDocumento_sostituito()!=0) {
+						DocumTLDocumentoDTO documento_sostituito = GestioneDocumentaleBO.getDocumentoFromId(documento.getDocumento_sostituito(), session);
+						lista_documenti.add(documento_sostituito);
+						
+						documento = documento_sostituito;
+					}
+				}
+			
+				PrintWriter out = response.getWriter();
+				
+				 Gson gson = new Gson(); 			        			        
+			     			       		       
+			        myObj.addProperty("success", true);
+			  
+			        myObj.add("lista_documenti", gson.toJsonTree(lista_documenti));			      
+			        
+			        out.println(myObj.toString());
+		
+			        out.close();
+			        
+			     session.getTransaction().commit();
+		       	session.close();
+			}
+			else if(action.equals("documenti_dipendente")) {
+				
+				ajax=true;
+				
+				String id_committente = request.getParameter("id_committente");
+				String id_fornitore = request.getParameter("id_fornitore");			
+				String id_dipendente = request.getParameter("id_dipendente");
+				
+				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumentiDaAssociare(Integer.parseInt(id_committente), Integer.parseInt(id_fornitore), session);
+				DocumDipendenteFornDTO dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_dipendente), session);
+				
+								
+				PrintWriter out = response.getWriter();
+				
+				 Gson gson = new Gson(); 
+			        			        
+			     			       		       
+			        myObj.addProperty("success", true);
+			  
+			        myObj.add("lista_documenti", gson.toJsonTree(lista_documenti));
+			        myObj.add("lista_documenti_associati", gson.toJsonTree(dipendente.getListaDocumenti()));
+			        
+			        out.print(myObj);
+		
+			        out.close();
+			        
+			     session.getTransaction().commit();
+		       	session.close();
+				
+			} 
+			else if(action.equals("associa_documento")) {
+				
+				ajax = true;
+				
+				String id_dipendente = request.getParameter("id_dipendente");
+				String selezionati = request.getParameter("selezionati");
+					
+				DocumDipendenteFornDTO dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_dipendente), session);
+				dipendente.getListaDocumenti().clear();
+				
+				for(int i = 0;i<selezionati.split(";").length;i++) {
+					
+					DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(selezionati.split(";")[i]), session);
+					dipendente.getListaDocumenti().add(documento);
+					dipendente.setStato(checkStatoDipendente(dipendente));
+					
+				}
+				
+				
+				session.getTransaction().commit();
+			    session.close();
+				
+				PrintWriter out = response.getWriter();
+			      
+		        myObj.addProperty("success", true);
+		  
+		        myObj.addProperty("messaggio", "Documenti associati con successo!");
+		        
+		        out.println(myObj);
+	
+		        out.close();
+		        
+		   
+				
+			}
+			
+			
+			else if(action.equals("dipendenti_fornitore_committente")) {
+				
+				ajax = true;
+				
+				String id_committente = request.getParameter("id_committente");
+				String id_fornitore = request.getParameter("id_fornitore");
+				
+				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(Integer.parseInt(id_committente),  Integer.parseInt(id_fornitore), session);
+				
+				PrintWriter out = response.getWriter();
+				
+				 Gson g = new Gson(); 
+				
+				myObj.addProperty("success", true); 
+				myObj.add("dipendenti",g.toJsonTree(lista_dipendenti));
+				myObj.add("dipendenti_associati",g.toJsonTree(lista_dipendenti));
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+				
+			}
+			
+			else if(action.equals("lista_obsoleti")) {
+				
+				ArrayList<DocumTLDocumentoDTO> documenti_obsoleti = GestioneDocumentaleBO.getDocumentiObsoleti(session);
+
+				request.getSession().setAttribute("documenti_obsoleti", documenti_obsoleti);
+
+				session.getTransaction().commit();
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneDocumDocumentiObsoleti.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
 			
 		}catch(Exception e) {
 			
@@ -1156,9 +1561,9 @@ public class GestioneDocumentale extends HttpServlet {
 	
 	
 	
-	 private void saveFile(FileItem item, int id_fornitore, String filename) {
+	 private void saveFile(FileItem item, int id_fornitore, String timestamp, String filename) {
 
-		 	String path_folder = Costanti.PATH_FOLDER+"//Documentale//"+id_fornitore+"//";
+		 	String path_folder = Costanti.PATH_FOLDER+"Doc_documentale\\"+id_fornitore+"\\"+timestamp+"\\";
 			File folder=new File(path_folder);
 			
 			if(!folder.exists()) {
@@ -1187,9 +1592,9 @@ public class GestioneDocumentale extends HttpServlet {
 		
 		}
 	 
-	 private void downloadFile(int id_fornitore, String filename, ServletOutputStream outp) throws Exception {
+	 private void downloadFile(int id_fornitore,  String filename, ServletOutputStream outp) throws Exception {
 		 
-		 String path = Costanti.PATH_FOLDER+"//Documentale//"+id_fornitore+"//"+filename;
+		 String path = Costanti.PATH_FOLDER+"Doc_documentale\\"+id_fornitore+"\\"+filename;
 		 
 		 File file = new File(path);
 			
@@ -1207,5 +1612,44 @@ public class GestioneDocumentale extends HttpServlet {
 			    fileIn.close();
 			    outp.flush();
 			    outp.close();
+	 }
+	 
+	 
+	 private DocumTLStatoDipendenteDTO checkStatoDipendente(DocumDipendenteFornDTO dipendente) {
+		 
+		 DocumTLStatoDipendenteDTO stato = null; 
+		 
+		 Iterator<DocumTLDocumentoDTO> iterator = dipendente.getListaDocumenti().iterator();
+		 boolean flagScaduto = false;
+		 boolean flagInApprovazione = false;
+		 int count = 0;
+		 while(iterator.hasNext()) {
+			 DocumTLDocumentoDTO documento = iterator.next();
+			 
+			 if(documento.getObsoleto()== 0 && documento.getDisabilitato() == 0) {
+				 if(documento.getStato().getId() == 3) {
+					 flagScaduto = true;				 
+				 }else if(documento.getStato().getId() == 4) {
+					 flagInApprovazione = true;
+				 }
+				 count++;
+			 }
+			 
+		 }
+		 
+		 if(flagScaduto) {
+			 stato = new DocumTLStatoDipendenteDTO();
+			 stato.setId(3);
+		 }else if(flagInApprovazione) {
+			 stato = new DocumTLStatoDipendenteDTO();
+			 stato.setId(2);
+		 }else if(count>0){
+			 stato = new DocumTLStatoDipendenteDTO();
+			 stato.setId(1);
+		 }
+		 
+		 
+		 return stato;
+		 
 	 }
 }

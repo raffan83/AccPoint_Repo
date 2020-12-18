@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Iterator;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -12,9 +13,12 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
+import it.portaleSTI.DTO.DocumEmailDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
 import it.portaleSTI.DTO.DocumReferenteFornDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
+import it.portaleSTI.DTO.DocumTLStatoDTO;
+import it.portaleSTI.DTO.DocumTLStatoDipendenteDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 
 public class GestioneDocumentaleDAO {
@@ -109,17 +113,22 @@ public class GestioneDocumentaleDAO {
 		return result;
 	}
 
-	public static ArrayList<DocumDipendenteFornDTO> getListaDipendenti(int id_fornitore, Session session) {
+	public static ArrayList<DocumDipendenteFornDTO> getListaDipendenti(int id_committente, int id_fornitore, Session session) {
 	
 		ArrayList<DocumDipendenteFornDTO> lista = null;
 		
 		Query query = null;
 		
-		if(id_fornitore==0) {
+		if(id_fornitore==0 && id_committente == 0) {
 			query = session.createQuery("from DocumDipendenteFornDTO"); 
-		}else {
+		}
+		else if(id_committente == 0) {
 			query = session.createQuery("from DocumDipendenteFornDTO where id_fornitore =:_id_fornitore");
 			query.setParameter("_id_fornitore", id_fornitore);
+		}else {
+			query = session.createQuery("from DocumDipendenteFornDTO where id_committente =:_id_committente and id_fornitore =:_id_fornitore");
+			query.setParameter("_id_fornitore", id_fornitore);
+			query.setParameter("_id_committente", id_committente);
 		}
 		
 		
@@ -152,11 +161,11 @@ public class GestioneDocumentaleDAO {
 		Query query = null;
 		
 		if(data_scadenza==null && id_fornitore == 0) {
-			query = session.createQuery("from DocumTLDocumentoDTO where disabilitato = 0");
+			query = session.createQuery("from DocumTLDocumentoDTO where disabilitato = 0 and stato.id != 4 and obsoleto = 0" );
 		}
 		else if(data_scadenza==null && id_fornitore!=0) {
 			
-			query = session.createQuery("from DocumTLDocumentoDTO where disabilitato = 0 and id_fornitore = :_id_fornitore");
+			query = session.createQuery("from DocumTLDocumentoDTO where disabilitato = 0 and id_fornitore = :_id_fornitore and stato.id != 4 and obsoleto = 0");
 			query.setParameter("_id_fornitore", id_fornitore);
 			
 			
@@ -164,13 +173,13 @@ public class GestioneDocumentaleDAO {
 		else if(data_scadenza != null && id_fornitore == 0){
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			query = session.createQuery("from DocumTLDocumentoDTO where data_scadenza = :_data and disabilitato = 0");
+			query = session.createQuery("from DocumTLDocumentoDTO where data_scadenza = :_data and disabilitato = 0 and stato.id != 4 and obsoleto = 0");
 			query.setParameter("_data", sdf.parse(data_scadenza));
 		}
 		else if(data_scadenza != null && id_fornitore != 0){
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			query = session.createQuery("from DocumTLDocumentoDTO where data_scadenza = :_data and id_fornitore = :_id_fornitore and disabilitato = 0" );
+			query = session.createQuery("from DocumTLDocumentoDTO where data_scadenza = :_data and id_fornitore = :_id_fornitore and disabilitato = 0 and stato.id != 4 and obsoleto = 0" );
 			query.setParameter("_data", sdf.parse(data_scadenza));
 			query.setParameter("_id_fornitore", id_fornitore);
 		}
@@ -180,6 +189,44 @@ public class GestioneDocumentaleDAO {
 		return lista;
 	}
 
+	
+	public static ArrayList<DocumTLDocumentoDTO> getListaDocumentiDaApprovare(String data_scadenza, int id_fornitore, Session session) throws Exception, ParseException {
+		
+ArrayList<DocumTLDocumentoDTO> lista = null;
+		
+		Query query = null;
+		
+		if(data_scadenza==null && id_fornitore == 0) {
+			query = session.createQuery("from DocumTLDocumentoDTO where disabilitato = 0 and stato.id = 4 and obsoleto = 0");
+		}
+		else if(data_scadenza==null && id_fornitore!=0) {
+			
+			query = session.createQuery("from DocumTLDocumentoDTO where disabilitato = 0 and id_fornitore = :_id_fornitore and stato.id = 4 and obsoleto = 0");
+			query.setParameter("_id_fornitore", id_fornitore);
+			
+			
+		}
+		else if(data_scadenza != null && id_fornitore == 0){
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			query = session.createQuery("from DocumTLDocumentoDTO where data_scadenza = :_data and disabilitato = 0 and stato.id = 4 and obsoleto = 0");
+			query.setParameter("_data", sdf.parse(data_scadenza));
+		}
+		else if(data_scadenza != null && id_fornitore != 0){
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			query = session.createQuery("from DocumTLDocumentoDTO where data_scadenza = :_data and id_fornitore = :_id_fornitore and disabilitato = 0 and stato.id = 4 and obsoleto = 0" );
+			query.setParameter("_data", sdf.parse(data_scadenza));
+			query.setParameter("_id_fornitore", id_fornitore);
+		}
+		
+		lista = (ArrayList<DocumTLDocumentoDTO>) query.list();
+		
+		return lista;
+		
+	}
+	
+	
 	public static DocumTLDocumentoDTO getDocumentoFromId(int id_documento, Session session) {
 		
 		ArrayList<DocumTLDocumentoDTO> lista = null;
@@ -207,11 +254,11 @@ public class GestioneDocumentaleDAO {
 		
 		if(id_fornitore==0) {
 			
-			query =  session.createQuery( "from DocumTLDocumentoDTO where disabilitato = 0");	
+			query =  session.createQuery( "from DocumTLDocumentoDTO where disabilitato = 0 and stato.id != 4 and obsoleto = 0");	
 			
 		}else {
 			
-			query =  session.createQuery( "from DocumTLDocumentoDTO where id_fornitore = :_id_fornitore and disabilitato = 0");
+			query =  session.createQuery( "from DocumTLDocumentoDTO where id_fornitore = :_id_fornitore and disabilitato = 0 and stato.id != 4 and obsoleto = 0");
 			query.setParameter("_id_fornitore", id_fornitore);
 		}
 			
@@ -234,5 +281,70 @@ public class GestioneDocumentaleDAO {
 		return mapScadenze;
 	}
 
+	public static ArrayList<DocumEmailDTO> getStoricoEmail(int id_documento, Session session) {
 
+		ArrayList<DocumEmailDTO> lista_email = null;
+		
+		Query query = session.createQuery("from DocumEmailDTO where documento.id = :_id_documento");
+		query.setParameter("_id_documento", id_documento);
+		
+		lista_email = (ArrayList<DocumEmailDTO>) query.list();
+		
+		return lista_email;
+	}
+
+	public static ArrayList<DocumTLDocumentoDTO> getListaDocumentiDaAssociare(int id_committente, int id_fornitore, Session session) {
+
+		ArrayList<DocumTLDocumentoDTO> lista = null;
+		
+		Query query = session.createQuery("from DocumTLDocumentoDTO where committente.id = :_id_committente and fornitore.id = :_id_fornitore and obsoleto = 0 and disabilitato = 0 and stato.id != 4");
+		query.setParameter("_id_committente", id_committente);
+		query.setParameter("_id_fornitore", id_fornitore);
+		
+		
+		lista = (ArrayList<DocumTLDocumentoDTO>) query.list();
+		
+		return lista;
+
+	}
+
+	public static void AggiornamentoStatoDocumenti() {
+		
+ 		Session session = SessionFacotryDAO.get().openSession();	    
+		session.beginTransaction();
+				
+		ArrayList<DocumTLDocumentoDTO>lista_documenti = null;
+		
+		Query query = session.createQuery("from DocumTLDocumentoDTO WHERE data_scadenza < CURDATE() and stato.id !=4 and obsoleto = 0 and disabilitato = 0");
+		lista_documenti = (ArrayList<DocumTLDocumentoDTO>) query.list();
+		
+		for (DocumTLDocumentoDTO documento : lista_documenti) {
+			documento.setStato(new DocumTLStatoDTO(3, ""));
+			session.update(documento);
+			
+			Iterator<DocumDipendenteFornDTO> iterator = documento.getListaDipendenti().iterator();
+			
+			while(iterator.hasNext()) {
+				DocumDipendenteFornDTO dipendente = iterator.next();
+				dipendente.setStato(new DocumTLStatoDipendenteDTO(3,""));
+				session.update(dipendente);
+			}
+			
+		}
+		
+		session.getTransaction().commit();
+		session.close();
+		
+	}
+
+	public static ArrayList<DocumTLDocumentoDTO> getDocumentiObsoleti(Session session) {
+
+		ArrayList<DocumTLDocumentoDTO> lista = null;
+		
+		Query query = session.createQuery("from DocumTLDocumentoDTO where obsoleto = 1");		
+		
+		lista = (ArrayList<DocumTLDocumentoDTO>) query.list();
+		
+		return lista;
+	}
 }

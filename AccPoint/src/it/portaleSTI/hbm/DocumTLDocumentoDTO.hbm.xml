@@ -26,16 +26,7 @@
                  <property name="data_caricamento" type="java.sql.Date" >
             <column name="data_caricamento" />
         </property>
-        
-<!--             <property name="id_fornitore" type="int" >
-            <column name="id_fornitore" />
-        </property>
-        
-            <property name="nome_fornitore" type="java.lang.String" >
-            <column name="nome_fornitore" />
-        </property> -->
-        
-        
+
                   <many-to-one name="committente" class="it.portaleSTI.DTO.DocumCommittenteDTO" fetch="join" lazy="false">
             <column name="id_committente" />
         </many-to-one>
@@ -53,9 +44,50 @@
             <column name="nome_file" />
         </property>
         
+        
         <property name="disabilitato" type="int" >
             <column name="disabilitato" />
         </property>
+        
+                  <many-to-one name="stato" class="it.portaleSTI.DTO.DocumTLStatoDTO" fetch="join" lazy="false">
+            <column name="stato" />
+        </many-to-one>
+        
+                <property name="obsoleto" type="int" >
+            <column name="obsoleto" />
+        </property>
+        
+        <property name="email_inviata" type="int" >
+            <column name="email_inviata" />
+        </property>
+        
+                <property name="numero_documento" type="java.lang.String" >
+            <column name="numero_documento" />
+        </property>
+        
+         <property name="documento_sostituito" type="int" >
+            <column name="documento_sostituito" />
+        </property>
+
+        <property name="note_upload" type="java.lang.String" >
+            <column name="note_upload" />
+        </property> 
+        
+        
+        <property name="motivo_rifiuto" type="java.lang.String" >
+            <column name="motivo_rifiuto" />
+        </property> 
+        
+        
+        <set name="listaDipendenti" table="docum_documento_dipendente"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id_documento" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portaleSTI.DTO.DocumDipendenteFornDTO">
+                <column name="id_dipendente" not-null="true" />
+            </many-to-many>
+        </set>
         
     </class>
 </hibernate-mapping>

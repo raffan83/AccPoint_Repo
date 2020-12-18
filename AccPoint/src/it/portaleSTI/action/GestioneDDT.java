@@ -191,7 +191,7 @@ public class GestioneDDT extends HttpServlet {
 
 				CreateDDT ddt_pdf =new CreateDDT(ddt, lista_sedi, lista_item_pacco, session);
 
-				ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
+				//ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
 				
 				session.getTransaction().commit();
 				session.close();

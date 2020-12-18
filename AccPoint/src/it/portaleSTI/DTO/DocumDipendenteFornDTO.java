@@ -1,5 +1,8 @@
 package it.portaleSTI.DTO;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class DocumDipendenteFornDTO {
 
 	private int id;
@@ -11,6 +14,11 @@ public class DocumDipendenteFornDTO {
 	private String nome;
 	private String qualifica;
 	private String note;
+	private DocumTLStatoDipendenteDTO stato;
+	
+	
+	private Set<DocumTLDocumentoDTO> listaDocumenti = new HashSet<DocumTLDocumentoDTO>(0);
+	
 	public int getId() {
 		return id;
 	}
@@ -65,6 +73,18 @@ public class DocumDipendenteFornDTO {
 	}
 	public void setFornitore(DocumFornitoreDTO fornitore) {
 		this.fornitore = fornitore;
+	}
+	public Set<DocumTLDocumentoDTO> getListaDocumenti() {
+		return listaDocumenti;
+	}
+	public void setListaDocumenti(Set<DocumTLDocumentoDTO> listaDocumenti) {
+		this.listaDocumenti = listaDocumenti;
+	}
+	public DocumTLStatoDipendenteDTO getStato() {
+		return stato;
+	}
+	public void setStato(DocumTLStatoDipendenteDTO stato) {
+		this.stato = stato;
 	}
 	
 	

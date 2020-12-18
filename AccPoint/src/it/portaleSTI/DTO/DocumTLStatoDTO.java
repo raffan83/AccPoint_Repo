@@ -4,6 +4,16 @@ public class DocumTLStatoDTO {
 	
 	private int id;
 	private String nome;
+	
+	
+	public DocumTLStatoDTO() {
+		super();
+	}
+	
+	public DocumTLStatoDTO(int id, String nome) {
+		this.id = id;
+		this.nome = nome;
+	}
 	public int getId() {
 		return id;
 	}

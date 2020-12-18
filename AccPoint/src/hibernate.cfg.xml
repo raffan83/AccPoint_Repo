@@ -164,12 +164,14 @@
  	<mapping class="ForQuestionarioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForQuestionarioDTO.hbm.xml"/>
  	    
  	 
- 	<mapping class="DocumTLStatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTLStatoDTO.hbm.xml"/> 	    
+ 	<mapping class="DocumTLStatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTLStatoDTO.hbm.xml"/>
+ 	<mapping class="DocumTLStatoDipendenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTLStatoDipendenteDTO.hbm.xml"/> 	 	    
  	<mapping class="DocumCommittenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumCommittenteDTO.hbm.xml"/>
  	<mapping class="DocumFornitoreDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumFornitoreDTO.hbm.xml"/> 	    
  	<mapping class="DocumReferenteFornDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumReferenteFornDTO.hbm.xml"/>
  	<mapping class="DocumDipendenteFornDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumDipendenteFornDTO.hbm.xml"/>
- 	<mapping class="DocumTLDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTLDocumentoDTO.hbm.xml"/> 	    
+ 	<mapping class="DocumTLDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTLDocumentoDTO.hbm.xml"/>
+ 	<mapping class="DocumEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumEmailDTO.hbm.xml"/> 	    
  	
   </session-factory>
 </hibernate-configuration>

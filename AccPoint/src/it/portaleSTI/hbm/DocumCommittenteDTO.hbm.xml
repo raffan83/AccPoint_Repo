@@ -35,6 +35,10 @@
             </many-to-many>
         </set>
         
+         <property name="email" type="java.lang.String" >
+            <column name="email" />
+        </property>
+        
         
     </class>
 </hibernate-mapping>

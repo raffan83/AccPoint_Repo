@@ -11,6 +11,7 @@ public class DocumCommittenteDTO {
 	private String nome_cliente;
 	private String indirizzo_cliente;
 	private String nominativo_referente;
+	private String email;
 	
 	private Set<DocumFornitoreDTO> listaFornitori = new HashSet<DocumFornitoreDTO>(0);
 	
@@ -65,6 +66,14 @@ public class DocumCommittenteDTO {
 
 	public void setListaFornitori(Set<DocumFornitoreDTO> listaFornitori) {
 		this.listaFornitori = listaFornitori;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

@@ -1,6 +1,8 @@
 package it.portaleSTI.Exception;
 
 
+import java.io.File;
+
 import javax.mail.SendFailedException;
 
 import org.apache.log4j.Logger;
@@ -13,7 +15,7 @@ public class STIException extends Exception{
 	
 	static final Logger logger = Logger.getLogger(STIException.class);
 	 
-	//static final Logger logger = Logger.getLogger(STIException.class);
+		//static final Logger logger = Logger.getLogger(STIException.class);
 	
 	public STIException(String string) {
 	
@@ -23,6 +25,8 @@ public class STIException extends Exception{
 	public static String[] callException(Exception ex)
 	{
 		//logger.debug(ex);
+		
+		
 		logger.error( "Fatal - ", ex );
 		StackTraceElement[] element=ex.getStackTrace();
 		String[] buff= new String[element.length+1];

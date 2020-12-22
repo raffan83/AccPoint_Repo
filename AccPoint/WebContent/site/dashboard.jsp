@@ -14,10 +14,10 @@
 %>
 
 <c:choose>
-<c:when test="${userObj.getListaRuoli().size()==1 && (userObj.checkRuolo('F1')|| userObj.checkRuolo('F2')) }">
+<c:when test="${userObj.getListaRuoli().size()==1 && (userObj.checkRuolo('F1') || userObj.checkRuolo('F2')) }">
 <c:set var="calver_color" value="blue"></c:set>
 </c:when>
-<c:when test="${userObj.getListaRuoli().size()==1 && userObj.checkRuolo('DC') }">
+<c:when test="${userObj.getListaRuoli().size()==1 && (userObj.checkRuolo('D1') || userObj.checkRuolo('D2')) }">
 <c:set var="calver_color" value="green"></c:set>
 </c:when>
 <c:otherwise>

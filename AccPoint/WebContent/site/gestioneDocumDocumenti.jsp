@@ -49,7 +49,7 @@
 </div>
 
 <div class="box-body">
-
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
 <div class="row">
 <div class="col-xs-12">
 
@@ -68,7 +68,7 @@
 <a class="btn btn-primary pull-right" onClick="modalNuovoDocumento()"><i class="fa fa-plus"></i> Nuovo Documento</a> 
 </div>
 </div><br>
-
+</c:if>
 <div class="row">
 <div class="col-sm-12">
 
@@ -114,6 +114,7 @@
 		
 	<td>	
 	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
+	 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
 	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.committente.id }','${documento.id}','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
 	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
@@ -121,7 +122,7 @@
 	      <c:if test="${documento.stato.id==3 && documento.email_inviata==0 }"> 
 	      <a class="btn btn-primary customTooltip" onclick="modalEmail('${documento.id}')"><i class="fa fa-paper-plane-o"></i></a>
 	      </c:if>
-	      
+	     </c:if>
 	      <a class="btn btn-info customTooltip" onclick="modalStorico('${documento.id}')"><i class="fa fa-history"></i></a>
 
 	</td>
@@ -1214,7 +1215,7 @@ $('.select2').select2();
 	
 	  tab = $('#table_storico').DataTable({
 			language: {
-		        	emptyTable : 	"Nessun dato presente nella tabella",
+		        	emptyTable : 	"Non sono presenti documenti antecedenti",
 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
 		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
 		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",

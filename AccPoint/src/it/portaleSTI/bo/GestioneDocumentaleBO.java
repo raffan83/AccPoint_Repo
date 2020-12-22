@@ -36,9 +36,9 @@ public class GestioneDocumentaleBO {
 		return GestioneDocumentaleDAO.getFornitoreFromId(id_fornitore, session);
 	}
 
-	public static ArrayList<DocumReferenteFornDTO> getListaReferenti(int id_fornitore,Session session) {
+	public static ArrayList<DocumReferenteFornDTO> getListaReferenti(int id_fornitore,int id_committente,Session session) {
 		
-		return GestioneDocumentaleDAO.getListaReferenti(id_fornitore, session);
+		return GestioneDocumentaleDAO.getListaReferenti(id_fornitore, id_committente, session);
 	}
 
 	public static DocumReferenteFornDTO getReferenteFromId(int id_referente, Session session) {
@@ -56,9 +56,9 @@ public class GestioneDocumentaleBO {
 		return GestioneDocumentaleDAO.getDipendenteFromId(id_dipendente, session);
 	}
 
-	public static ArrayList<DocumTLDocumentoDTO> getListaDocumenti(String data_scadenza, int id_fornitore, Session session) throws ParseException, Exception {
+	public static ArrayList<DocumTLDocumentoDTO> getListaDocumenti(String data_scadenza, int id_fornitore,int id_committente, Session session) throws ParseException, Exception {
 		
-		return GestioneDocumentaleDAO.getListaDocumenti(data_scadenza,id_fornitore, session);
+		return GestioneDocumentaleDAO.getListaDocumenti(data_scadenza,id_fornitore,id_committente, session);
 	}
 	
 	public static ArrayList<DocumTLDocumentoDTO> getListaDocumentiDaApprovare(String data_scadenza, int id_fornitore, Session session) throws Exception, ParseException {
@@ -71,9 +71,9 @@ public class GestioneDocumentaleBO {
 		return GestioneDocumentaleDAO.getDocumentoFromId(id_documento, session);
 	}
 
-	public static HashMap<String, Integer> getDocumentiScadenza(int id_fornitore, Session session) {
+	public static HashMap<String, Integer> getDocumentiScadenza(int id_fornitore, int id_committente, Session session) {
 		
-		return GestioneDocumentaleDAO.getDocumentiScadenza(id_fornitore, session);
+		return GestioneDocumentaleDAO.getDocumentiScadenza(id_fornitore,id_committente, session);
 	}
 
 	public static ArrayList<DocumEmailDTO> getStoricoEmail(int id_documento, Session session) {
@@ -89,6 +89,11 @@ public class GestioneDocumentaleBO {
 	public static ArrayList<DocumTLDocumentoDTO> getDocumentiObsoleti(Session session) {
 	
 		return GestioneDocumentaleDAO.getDocumentiObsoleti(session);
+	}
+
+	public static DocumCommittenteDTO getCommittenteFromIDClienteSede(int idCliente, int idSede, Session session) {
+		
+		return GestioneDocumentaleDAO.getCommittenteFromIDClienteSede(idCliente, idSede, session);
 	}
 
 

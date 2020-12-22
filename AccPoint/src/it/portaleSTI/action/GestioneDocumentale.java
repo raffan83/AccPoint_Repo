@@ -258,9 +258,23 @@ public class GestioneDocumentale extends HttpServlet {
 			}
 			if(action.equals("lista_fornitori")) {
 				
-				ArrayList<DocumCommittenteDTO> lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
-				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
+				ArrayList<DocumCommittenteDTO> lista_committenti =null;
+				ArrayList<DocumFornitoreDTO> lista_fornitori = null;				
 				
+				if(utente.getIdCliente()!=0) {
+					DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromIDClienteSede(utente.getIdCliente(), utente.getIdSede(), session);
+					
+					if(committente !=null) {
+						lista_fornitori = new ArrayList<DocumFornitoreDTO>();
+						lista_fornitori.addAll(committente.getListaFornitori());
+					}
+					 							
+				}else {
+					
+					 lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
+					 lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);	
+				}
+								
 				
 				request.getSession().setAttribute("lista_committenti", lista_committenti);
 				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
@@ -487,10 +501,27 @@ public class GestioneDocumentale extends HttpServlet {
 				id_fornitore = Utility.decryptData(id_fornitore);
 				
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
-				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(null, fornitore.getId(), session);				
-				ArrayList<DocumReferenteFornDTO> lista_referenti = GestioneDocumentaleBO.getListaReferenti(fornitore.getId(), session);
-				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0,fornitore.getId(),session);
-				ArrayList<DocumCommittenteDTO> lista_committenti = DirectMySqlDAO.getIdCommittentiFromFornitore(Integer.parseInt(id_fornitore));
+				ArrayList<DocumTLDocumentoDTO> lista_documenti = null;				
+				ArrayList<DocumReferenteFornDTO> lista_referenti = null;
+				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = null;
+				ArrayList<DocumCommittenteDTO> lista_committenti = null;
+				
+				if(utente.getIdCliente()!=0) {
+					
+					DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromIDClienteSede(utente.getIdCliente(), utente.getIdSede(), session);
+					lista_documenti = GestioneDocumentaleBO.getListaDocumenti(null, fornitore.getId(),committente.getId(), session);				
+					lista_referenti = GestioneDocumentaleBO.getListaReferenti(fornitore.getId(),committente.getId(), session);
+					lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(committente.getId(),fornitore.getId(),session);
+				
+										 							
+				}else {
+										
+					lista_documenti = GestioneDocumentaleBO.getListaDocumenti(null, fornitore.getId(),0, session);				
+					lista_referenti = GestioneDocumentaleBO.getListaReferenti(fornitore.getId(),0, session);
+					lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0,fornitore.getId(),session);
+					lista_committenti = DirectMySqlDAO.getIdCommittentiFromFornitore(Integer.parseInt(id_fornitore));
+				}
+					
 				
 				request.getSession().setAttribute("fornitore", fornitore);
 				request.getSession().setAttribute("lista_documenti", lista_documenti);
@@ -505,9 +536,23 @@ public class GestioneDocumentale extends HttpServlet {
 			
 			if(action.equals("lista_referenti")) {
 				
-				ArrayList<DocumReferenteFornDTO> lista_referenti = GestioneDocumentaleBO.getListaReferenti(0,session);
-				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
-				ArrayList<DocumCommittenteDTO> lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
+				ArrayList<DocumReferenteFornDTO> lista_referenti = null;
+				ArrayList<DocumFornitoreDTO> lista_fornitori = null;
+				ArrayList<DocumCommittenteDTO> lista_committenti = null;
+				
+				if(utente.getIdCliente()!=0) {
+					
+					DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromIDClienteSede(utente.getIdCliente(), utente.getIdSede(), session);
+					
+					lista_referenti = GestioneDocumentaleBO.getListaReferenti(0,committente.getId(),session);					
+					
+				}else {
+					
+					lista_referenti = GestioneDocumentaleBO.getListaReferenti(0,0,session);
+					lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
+					lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
+					
+				}					
 				
 				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
 				request.getSession().setAttribute("lista_referenti", lista_referenti);
@@ -677,10 +722,23 @@ public class GestioneDocumentale extends HttpServlet {
 			
 			if(action.equals("lista_dipendenti")) {
 				
-				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0,0,session);
-				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
-				ArrayList<DocumCommittenteDTO> lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
+				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = null;
+				ArrayList<DocumFornitoreDTO> lista_fornitori = null;
+				ArrayList<DocumCommittenteDTO> lista_committenti = null;
 				
+				if(utente.getIdCliente()!=0) {
+					
+					DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromIDClienteSede(utente.getIdCliente(), utente.getIdSede(), session);
+					
+					lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(committente.getId(),0,session);					
+					
+				}else {
+					
+					lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0,0,session);
+					lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
+					lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
+					
+				}
 				
 				request.getSession().setAttribute("lista_dipendenti", lista_dipendenti);
 				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
@@ -845,14 +903,30 @@ public class GestioneDocumentale extends HttpServlet {
 			}
 			if(action.equals("lista_documenti")) {
 				
-				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(null, 0, session);
-				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
-				ArrayList<DocumCommittenteDTO> lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
-				ArrayList<DocumTLDocumentoDTO> lista_documenti_da_approvare = GestioneDocumentaleBO.getListaDocumentiDaApprovare(null, 0, session);
+				ArrayList<DocumTLDocumentoDTO> lista_documenti = null;
+				ArrayList<DocumFornitoreDTO> lista_fornitori = null;
+				ArrayList<DocumCommittenteDTO> lista_committenti = null;
+				ArrayList<DocumTLDocumentoDTO> lista_documenti_da_approvare = null;
 				
+				if(utente.getIdCliente()!=0) {
+					
+					DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromIDClienteSede(utente.getIdCliente(), utente.getIdSede(), session);
+					
+					lista_documenti = GestioneDocumentaleBO.getListaDocumenti(null, 0,committente.getId(), session);				
+					
+				}else {
+					
+					lista_documenti = GestioneDocumentaleBO.getListaDocumenti(null, 0,0, session);
+					lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
+					lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
+					lista_documenti_da_approvare = GestioneDocumentaleBO.getListaDocumentiDaApprovare(null, 0, session);
+					
+				}
 				
 				request.getSession().setAttribute("lista_documenti", lista_documenti);
-				request.getSession().setAttribute("numero_documenti_da_approvare", lista_documenti_da_approvare.size());
+				if(lista_documenti_da_approvare!=null) {
+					request.getSession().setAttribute("numero_documenti_da_approvare", lista_documenti_da_approvare.size());	
+				}				
 				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
 				request.getSession().setAttribute("lista_committenti", lista_committenti);
 				request.getSession().setAttribute("data_scadenza", null);
@@ -1088,7 +1162,7 @@ public class GestioneDocumentale extends HttpServlet {
 				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
 				
 				response.setContentType("application/octet-stream");
-				response.setHeader("Content-Disposition","attachment;filename="+ documento.getNome_file());
+				response.setHeader("Content-Disposition","attachment;filename="+ documento.getNome_file().split("\\\\")[1]);
 				downloadFile(documento.getFornitore().getId(), documento.getNome_file(), response.getOutputStream());
 				
 				session.close();
@@ -1161,7 +1235,15 @@ public class GestioneDocumentale extends HttpServlet {
 					id_fornitore= Utility.decryptData(id_fornitore);
 				}
 				
-				HashMap<String,Integer> listaScadenze = GestioneDocumentaleBO.getDocumentiScadenza(Integer.parseInt(id_fornitore), session);
+				int id_committente = 0;
+				
+				if(utente.getIdCliente()!=0) {
+					
+					DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromIDClienteSede(utente.getIdCliente(), utente.getIdSede(), session);
+					id_committente = committente.getId();
+				}
+				
+				HashMap<String,Integer> listaScadenze = GestioneDocumentaleBO.getDocumentiScadenza(Integer.parseInt(id_fornitore),id_committente, session);
 				
 				ArrayList<String> lista_documenti_scadenza = new ArrayList<>();				
 				
@@ -1203,7 +1285,7 @@ public class GestioneDocumentale extends HttpServlet {
 				}
 				
 				
-				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(data_scadenza, Integer.parseInt(id_fornitore), session);
+				ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumenti(data_scadenza, Integer.parseInt(id_fornitore),0, session);
 			
 				ArrayList<DocumFornitoreDTO> lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
 								

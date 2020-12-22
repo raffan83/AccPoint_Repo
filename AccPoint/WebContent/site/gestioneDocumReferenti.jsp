@@ -43,7 +43,7 @@
 </div>
 
 <div class="box-body">
-
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
 <div class="row">
 <div class="col-xs-12">
 
@@ -55,7 +55,7 @@
 
 </div>
 
-</div><br>
+</div><br></c:if>
 
 <div class="row">
 <div class="col-sm-12">
@@ -88,8 +88,10 @@
 	<td>${referente.note }</td>
 		
 	<td>	
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
 	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.committente.id}','${referente.id}','${referente.fornitore.id}','${utl:escapeJS(referente.nome)}','${utl:escapeJS(referente.cognome)}','${utl:escapeJS(referente.note)}',
 	  '${utl:escapeJS(referente.mansione)}', '${utl:escapeJS(referente.qualifica)}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>   
+	</c:if>
 	</td>
 	</tr>
 	</c:forEach>

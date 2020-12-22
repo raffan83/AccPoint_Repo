@@ -126,9 +126,11 @@
               
 <div class="row">
 <div class="col-sm-12">
-<a class="btn btn-primary pull-left" onClick="callAction('gestioneDocumentale.do?action=scadenzario&id_fornitore=${utl:encryptData(fornitore.id)}&nome_fornitore=${fornitore.ragione_sociale }')"><i class="fa fa-plus"></i> Vai allo scadenzario</a> 
-<a class="btn btn-primary pull-right" onClick="modalNuovoDocumento()"><i class="fa fa-plus"></i> Nuovo Documento</a> 
+<a class="btn btn-primary pull-left" onClick="callAction('gestioneDocumentale.do?action=scadenzario&id_fornitore=${utl:encryptData(fornitore.id)}&nome_fornitore=${fornitore.ragione_sociale }')"><i class="fa fa-plus"></i> Vai allo scadenzario</a>
 
+<c:if test="${user.checkRuolo('AM') || user.checkRuolo('F1') }"> 
+<a class="btn btn-primary pull-right" onClick="modalNuovoDocumento()"><i class="fa fa-plus"></i> Nuovo Documento</a> 
+</c:if>
 </div></div><br>
 <div class="row">
 <div class="col-sm-12">
@@ -166,10 +168,12 @@
 		
 	<td>	
 	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
+	<c:if test="${user.checkRuolo('AM') || user.checkRuolo('F1') }">
 	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.id}','${documento.committente.id }','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
 	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
 	   <a class="btn btn-danger" onClick="modalEliminaDocumento('${documento.id}')"><i class="fa fa-trash"></i></a>   
+	   </c:if>
 	   <a class="btn btn-info customTooltip" onclick="modalStorico('${documento.id}')"><i class="fa fa-history"></i></a>
 	</td>
 	</tr>
@@ -192,8 +196,9 @@
        <div class="row">
 <div class="col-sm-12">
 
+<c:if test="${user.checkRuolo('AM') || user.checkRuolo('F1') }">
 <a class="btn btn-primary pull-right" onClick="modalNuovoReferente()"><i class="fa fa-plus"></i> Nuovo Referente</a> 
-
+</c:if>
 </div></div><br>
        
        
@@ -228,8 +233,10 @@
 	<td>${referente.note }</td>
 		
 	<td>	
+	<c:if test="${user.checkRuolo('AM') || user.checkRuolo('F1') }">
 	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.id}','${referente.committente.id }','${referente.fornitore.id}','${utl:escapeJS(referente.nome)}','${utl:escapeJS(referente.cognome)}','${utl:escapeJS(referente.note)}',
-	  '${utl:escapeJS(referente.mansione)}', '${utl:escapeJS(referente.qualifica)}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>   
+	  '${utl:escapeJS(referente.mansione)}', '${utl:escapeJS(referente.qualifica)}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>
+	  </c:if>   
 	</td>
 	</tr>
 	</c:forEach>
@@ -248,10 +255,11 @@
        <div class="tab-pane table-responsive" id="dipendenti">
        
        <div class="row">
-<div class="col-sm-12">
-
+<div class="col-sm-12"><a>
+</a>
+<c:if test="${user.checkRuolo('AM') || user.checkRuolo('F1') }">
 <a class="btn btn-primary pull-right" onClick="modalNuovoDipendente()"><i class="fa fa-plus"></i> Nuovo Dipendente</a> 
-
+</c:if>
 </div></div><br>
 
        
@@ -287,9 +295,11 @@
 	<td>${dipendente.note }</td>
 		
 	<td>	
+	<c:if test="${user.checkRuolo('AM') || user.checkRuolo('F1') }">
 	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.id}','${dipendente.committente.id }','${dipendente.fornitore.id}','${utl:escapeJS(dipendente.nome)}','${utl:escapeJS(dipendente.cognome)}','${utl:escapeJS(dipendente.note)}',
 	   '${utl:escapeJS(dipendente.qualifica)}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>  
-	   <a class="btn btn-info customTooltip" title="Associa documenti" onClick="modalAssociaDocumenti('${dipendente.committente.id }','${dipendente.fornitore.id }','${dipendente.id}')"><i class="fa fa-plus"></i></a> 
+	   <a class="btn btn-info customTooltip" title="Associa documenti" onClick="modalAssociaDocumenti('${dipendente.committente.id }','${dipendente.fornitore.id }','${dipendente.id}')"><i class="fa fa-plus"></i></a>
+	   </c:if> 
 	</td>
 	</tr>
 	</c:forEach>
@@ -344,15 +354,7 @@
         
     <select name="forn" id="forn" class="form-control select2" data-placeholder="Seleziona fornitore..." disabled aria-hidden="true" data-live-search="true" style="width:100%" >
                 <option value="${fornitore.id }">${fornitore.ragione_sociale}</option>
-                      <%-- <c:forEach items="${lista_fornitori}" var="forn">
-                     	<c:if test="${forn.id == fornitore.id}">
-                     	  <option value="${fornitore.id}" selected>${fornitore.ragione_sociale}</option>
-                     	</c:if>
-                          <c:if test="${forn.id != fornitore.id}">
-                     	  <option value="${fornitore.id}">${fornitore.ragione_sociale}</option>
-                     	</c:if>
-                         
-                     </c:forEach> --%>
+
 
                   </select> 
        			
@@ -1454,23 +1456,27 @@
    		  var lista_documenti = result.lista_documenti;
    		  
    		  for(var i = 0; i<lista_documenti.length;i++){
-   			  var dati = {};
-   			  dati.id = lista_documenti[i].id;
-   			  dati.committente = lista_documenti[i].committente.nome_cliente +" - "+lista_documenti[i].committente.indirizzo_cliente;
-   			  dati.fornitore = lista_documenti[i].fornitore.ragione_sociale;
-   			  dati.nome_documento = lista_documenti[i].nome_documento;
-   			  if(lista_documenti[i].numero_documento==null){
-   				  dati.numero_documento = ''; 
-   			  }else{
-   				  dati.numero_documento = lista_documenti[i].numero_documento;
-   			  }    			  
-   			  dati.data_caricamento =  formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
-   			  dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
-   			  dati.data_scadenza =  formatDate(moment(lista_documenti[i].data_scadenza, "DD, MMM YY"));
-   			  dati.rilasciato = lista_documenti[i].rilasciato;
-   			  dati.azioni = '<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento_table&id_documento='+lista_documenti[i].id+'" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>';
-   			
-   			  table_data.push(dati);
+   			  
+   			if(lista_documenti[i].id!=id_documento){
+   				var dati = {};
+     			  dati.id = lista_documenti[i].id;
+     			  dati.committente = lista_documenti[i].committente.nome_cliente +" - "+lista_documenti[i].committente.indirizzo_cliente;
+     			  dati.fornitore = lista_documenti[i].fornitore.ragione_sociale;
+     			  dati.nome_documento = lista_documenti[i].nome_documento;
+     			  if(lista_documenti[i].numero_documento==null){
+     				  dati.numero_documento = ''; 
+     			  }else{
+     				  dati.numero_documento = lista_documenti[i].numero_documento;
+     			  }    			  
+     			  dati.data_caricamento =  formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
+     			  dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
+     			  dati.data_scadenza =  formatDate(moment(lista_documenti[i].data_scadenza, "DD, MMM YY"));
+     			  dati.rilasciato = lista_documenti[i].rilasciato;
+     			  dati.azioni = '<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento_table&id_documento='+lista_documenti[i].id+'" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>';
+     			
+     			  table_data.push(dati);
+   			}
+   			  
    		  }
    		  var tab = $('#table_storico').DataTable();
    		  
@@ -1532,6 +1538,7 @@
    		  var lista_documenti_associati = result.lista_documenti_associati;
    		  
    		  for(var i = 0; i<lista_documenti.length;i++){
+   			  
    			  var dati = {};
    			  dati.empty = '<td></td>';
    			  dati.check = '<td></td>';
@@ -2313,7 +2320,7 @@
 	
 	var	  tabStorico = $('#table_storico').DataTable({
 			language: {
-		        	emptyTable : 	"Nessun dato presente nella tabella",
+		        	emptyTable : 	"Non sono presenti documenti antecedenti",
 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
 		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
 		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",

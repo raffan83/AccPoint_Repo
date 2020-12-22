@@ -44,18 +44,17 @@
 
 <div class="box-body">
 
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
 <div class="row">
 <div class="col-xs-12">
 
-
-<!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
 <a class="btn btn-primary pull-right" onClick="modalNuovoFornitore()"><i class="fa fa-plus"></i> Nuovo Fornitore</a> 
-
-
 
 </div>
 
 </div><br>
+
+</c:if>
 
 <div class="row">
 <div class="col-sm-12">
@@ -95,8 +94,10 @@
 	
 	<a class="btn btn-info" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(fornitore.id)}')"><i class="fa fa-search"></i></a>
 	 
+	 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
 	 <a class="btn btn-warning" onClicK="modificaFornitoreModal('${fornitore.id}','${utl:escapeJS(fornitore.ragione_sociale)}','${utl:escapeJS(fornitore.indirizzo)}','${utl:escapeJS(fornitore.cap)}',
-	  '${utl:escapeJS(fornitore.comune)}', '${utl:escapeJS(fornitore.provincia)}','${fornitore.p_iva }','${fornitore.cf }','${fornitore.email }')" title="Click per modificare il Fornitore"><i class="fa fa-edit"></i></a> 
+	  '${utl:escapeJS(fornitore.comune)}', '${utl:escapeJS(fornitore.provincia)}','${fornitore.p_iva }','${fornitore.cf }','${fornitore.email }')" title="Click per modificare il Fornitore"><i class="fa fa-edit"></i></a>
+	  </c:if> 
 	</td>
 	</tr>
 	</c:forEach>

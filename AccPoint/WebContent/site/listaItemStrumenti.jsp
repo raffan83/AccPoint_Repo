@@ -447,16 +447,16 @@ $('#close_button_modal').on('click', function(){
 	       e.stopPropagation();    
 	    });
 //DataTable
-tableStr = $('#tabStrumentiItem').DataTable();
+//tableStr = $('#tabStrumentiItem').DataTable();
 //Apply the search
-tableStr.columns().eq( 0 ).each( function ( colIdx ) {
-$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+ tableStr.columns().eq( 0 ).each( function ( colIdx ) {
+$( 'inputsearchtable', tableStr.column( colIdx ).header() ).on( 'keyup', function () {
 	tableStr
        .column( colIdx )
        .search( this.value )
        .draw();
 } );
-} ); 
+} );  
 tableStr.columns.adjust().draw();
 	
 
@@ -474,7 +474,7 @@ $('#tabStrumentiItem').on( 'page.dt', function () {
 
 
 
-  });   
+  })
 
 
 </script>

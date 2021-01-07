@@ -2565,7 +2565,7 @@ public class DirectMySqlDAO {
 
 
 			rs=pst.executeQuery();
-			df = new SimpleDateFormat("dd/MM/YYYY");
+			df = new SimpleDateFormat("dd/MM/yyyy");
 			while(rs.next())
 			{
 

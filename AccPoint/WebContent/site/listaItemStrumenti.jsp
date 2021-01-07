@@ -352,10 +352,56 @@ $('#close_button_modal').on('click', function(){
 		 var attivita_json = JSON.parse('${attivita_json}');
 		 insertEntryItem(id,descrizione, 'Strumento', 1, note, priorita, attivita, destinazione, codice_interno, matricola, attivita_json);
 	 }
+	 
+	 
+	 
+/* 	  	var columsDatatables = [];
+		 
+		$("#tabStrumentiItem").on( 'init.dt', function ( e, settings ) {
+		    var api = new $.fn.dataTable.Api( settings );
+		    var state = api.state.loaded();
+		 
+		    if(state != null && state.columns!=null){
+		    		console.log(state.columns);
+		    
+		    columsDatatables = state.columns;
+		    }
+		    $('#tabStrumentiItem thead th').each( function () {
+		     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+		    	var title = $('#tabStrumentiItem thead th').eq( $(this).index() ).text();
+		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+		    	} );
+
+		} );
+ */
+
+		var columsDatatables = [];
+		 
+		$("#tabStrumentiItem").on( 'init.dt', function ( e, settings ) {
+		    var api = new $.fn.dataTable.Api( settings );
+		    var state = api.state.loaded();
+		 
+		    if(state != null && state.columns!=null){
+		    		console.log(state.columns);
+		    
+		    columsDatatables = state.columns;
+		    }
+		    
+		    
+		    $('#tabStrumentiItem thead th').each( function () {
+		     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+		        var title = $('#tabStrumentiItem thead th').eq( $(this).index() ).text();
+		        if($(this).index()!= 0){
+		        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+		        }
+		    } );
+		} );
+
+	      
+	 
 	
    $(document).ready(function() {
-	   console.log("test")
-	   ;
+	   console.log("test");
 	   
 	   $('#company').select2();
 	   $('#ref_tipo_strumento').select2();
@@ -365,7 +411,7 @@ $('#close_button_modal').on('click', function(){
 		
 	   
  	   	var columsDatatables = []; 
-	   
+ 	   
 	   
 	      $('#tabStrumentiItem thead th').each( function () {
     	//if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
@@ -373,6 +419,11 @@ $('#close_button_modal').on('click', function(){
    	//$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value=""/></div>');
    	} );  
+	      
+	       
+	      
+	      
+
 	   
 	   
 	   var today = moment();
@@ -385,15 +436,15 @@ $('#close_button_modal').on('click', function(){
 		  $("#dataProssimaVerifica").val(futureMonth.format('DD/MM/YYYY'));
 		  $("#dataProssimaVerifica").attr("required", true);
 	   
-
+/* 
 		 $('.customTooltip').tooltipster({
 		        theme: 'tooltipster-light'
 		    });
 	   
+	    */
 	   
 	   
-	   
- tableStr = $('#tabStrumentiItem').DataTable({
+var tableStr = $('#tabStrumentiItem').DataTable({
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -417,6 +468,7 @@ $('#close_button_modal').on('click', function(){
 	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	        }
      },
+     
      pageLength: 10,
 	      paging: true, 
 	      ordering: true,
@@ -426,7 +478,7 @@ $('#close_button_modal').on('click', function(){
 	      targets: 0,
 	      responsive: false,
 	      scrollX: true,
-	      stateSave: false,
+	      stateSave: true,
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 5 },
 	                   { responsivePriority: 2, targets: 1 },
@@ -450,7 +502,7 @@ $('#close_button_modal').on('click', function(){
 //tableStr = $('#tabStrumentiItem').DataTable();
 //Apply the search
  tableStr.columns().eq( 0 ).each( function ( colIdx ) {
-$( 'inputsearchtable', tableStr.column( colIdx ).header() ).on( 'keyup', function () {
+$( 'input', tableStr.column( colIdx ).header() ).on( 'keyup', function () {
 	tableStr
        .column( colIdx )
        .search( this.value )
@@ -459,7 +511,7 @@ $( 'inputsearchtable', tableStr.column( colIdx ).header() ).on( 'keyup', functio
 } );  
 tableStr.columns.adjust().draw();
 	
-
+ 
 $('#tabStrumentiItem').on( 'page.dt', function () {
 	$('.customTooltip').tooltipster({
      theme: 'tooltipster-light'
@@ -470,11 +522,11 @@ $('#tabStrumentiItem').on( 'page.dt', function () {
 	});
 
 
-});
+}); 
 
 
 
-  })
+  });
 
 
 </script>

@@ -1438,8 +1438,17 @@ public class GestioneDocumentale extends HttpServlet {
 					
 					while(iterator.hasNext()) {
 						DocumDipendenteFornDTO dipendente = iterator.next();
-						dipendente.setStato(new DocumTLStatoDipendenteDTO(1, ""));
-						session.update(dipendente);
+						boolean scaduto = false;
+						for (DocumTLDocumentoDTO doc : dipendente.getListaDocumenti()) {
+							if(doc.getId()!=documento.getId() && doc.getStato().getId()!=1 && doc.getStato().getId()!=5 && doc.getObsoleto()==0) {
+								scaduto = true;
+								break;
+							}
+						}
+						if(!scaduto) {
+							dipendente.setStato(new DocumTLStatoDipendenteDTO(1, ""));
+							session.update(dipendente);
+						}
 					}
 					
 					myObj.addProperty("messaggio", "Documento approvato con successo!");

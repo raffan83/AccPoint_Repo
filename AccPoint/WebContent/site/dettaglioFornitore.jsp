@@ -168,7 +168,7 @@
 		
 	<td>	
 	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
-	<c:if test="${user.checkRuolo('AM') || user.checkRuolo('F1') }">
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
 	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.id}','${documento.committente.id }','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
 	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
@@ -233,7 +233,7 @@
 	<td>${referente.note }</td>
 		
 	<td>	
-	<c:if test="${user.checkRuolo('AM') || user.checkRuolo('F1') }">
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
 	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.id}','${referente.committente.id }','${referente.fornitore.id}','${utl:escapeJS(referente.nome)}','${utl:escapeJS(referente.cognome)}','${utl:escapeJS(referente.note)}',
 	  '${utl:escapeJS(referente.mansione)}', '${utl:escapeJS(referente.qualifica)}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>
 	  </c:if>   
@@ -295,7 +295,7 @@
 	<td>${dipendente.note }</td>
 		
 	<td>	
-	<c:if test="${user.checkRuolo('AM') || user.checkRuolo('F1') }">
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
 	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.id}','${dipendente.committente.id }','${dipendente.fornitore.id}','${utl:escapeJS(dipendente.nome)}','${utl:escapeJS(dipendente.cognome)}','${utl:escapeJS(dipendente.note)}',
 	   '${utl:escapeJS(dipendente.qualifica)}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>  
 	   <a class="btn btn-info customTooltip" title="Associa documenti" onClick="modalAssociaDocumenti('${dipendente.committente.id }','${dipendente.fornitore.id }','${dipendente.id}')"><i class="fa fa-plus"></i></a>

@@ -522,6 +522,9 @@ public class CreateVerCertificato {
 		if(classe == 5) {
 			cl = "I";
 			
+		}else if(classe == 6){
+			cl="II";
+			
 		}else {
 			
 			for(int i = 0; i<classe; i++) {

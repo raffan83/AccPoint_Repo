@@ -1691,16 +1691,9 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 		
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
-					
-		if(tipologia_strumento == 1) {
-			listaCodici = new String[5];			
 			
-			listaCodici[0]="rif";
-			listaCodici[1]="massa";
-			listaCodici[2]="indicazione";	
-			listaCodici[3]="e";			
-			listaCodici[4]="mpe";
-		}else {
+		
+		if(tipologia_strumento == 1) {
 			listaCodici = new String[7];			
 			
 			listaCodici[0]="rif";
@@ -1710,8 +1703,17 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 			listaCodici[4]="e";			
 			listaCodici[5]="ec";			
 			listaCodici[6]="mpe";
-		}
+		
+		}else {
 			
+			listaCodici = new String[5];			
+			
+			listaCodici[0]="rif";
+			listaCodici[1]="massa";
+			listaCodici[2]="indicazione";	
+			listaCodici[3]="e";			
+			listaCodici[4]="mpe";
+		}
 
 			dataSource = new DRDataSource(listaCodici);			
 		

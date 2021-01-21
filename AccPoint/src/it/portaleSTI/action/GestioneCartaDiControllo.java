@@ -163,7 +163,7 @@ public class GestioneCartaDiControllo extends HttpServlet {
 				
 				FileInputStream fileIn = new FileInputStream(file);
 				 
-				 response.setContentType("application/pdf");
+				 response.setContentType("application/octet-stream");
 				  
 				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
 				 

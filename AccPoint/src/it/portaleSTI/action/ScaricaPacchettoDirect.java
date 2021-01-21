@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
@@ -28,7 +30,7 @@ import it.portaleSTI.bo.GestioneStrumentoBO;
 @WebServlet(name= "/scaricoPacchettoDirect", urlPatterns = { "/scaricoPacchettoDirect.do" })
 public class ScaricaPacchettoDirect extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(ScaricaPacchettoDirect.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -55,6 +57,8 @@ public class ScaricaPacchettoDirect extends HttpServlet {
 		
 		try{
 		
+			logger.error(Utility.getMemorySpace()+" Action: "+"ScaricaPacchettoDirect" +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
+			
 		 String idC= request.getParameter("idC");
 		 
 		 String idS= request.getParameter("idS");

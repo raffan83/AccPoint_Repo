@@ -34,6 +34,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.log4j.Logger;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
@@ -81,6 +82,7 @@ import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 public class GestioneRilievi extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	static final Logger logger = Logger.getLogger(GestioneRilievi.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -112,6 +114,10 @@ public class GestioneRilievi extends HttpServlet {
 		boolean ajax = false;
         response.setContentType("application/json");
 		try {
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
+			
+			
 			if(action.equals("nuovo")) {
 				ajax=true;
 				PrintWriter out = response.getWriter();

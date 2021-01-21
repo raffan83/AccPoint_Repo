@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -42,7 +43,7 @@ import it.portaleSTI.bo.GestioneVerificazioneBO;
 
 public class ScaricaPacchettoVerificazione extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(ScaricaPacchettoVerificazione.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -72,7 +73,7 @@ public class ScaricaPacchettoVerificazione extends HttpServlet {
 		try{
 			
 			String action = request.getParameter("action");
-			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
 			if(action== null) {
 				CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 				 

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -40,6 +41,8 @@ import it.portaleSTI.bo.GestioneVerStrumentiBO;
 @WebServlet("/caricaPacchettoVerificazione.do")
 public class CaricaPacchettoVerificazione extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	static final Logger logger = Logger.getLogger(CaricaPacchettoVerificazione.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -70,9 +73,12 @@ public class CaricaPacchettoVerificazione extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		
 		try {			
-			
 			String action = request.getParameter("action");
 			UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+			
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
+			
 			if(action== null) {
 				
 				String id_intervento = request.getParameter("id_intervento");

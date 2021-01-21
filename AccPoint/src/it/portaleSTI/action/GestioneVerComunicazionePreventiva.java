@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -60,7 +61,7 @@ import it.portaleSTI.bo.GestioneVerStrumentiBO;
 @WebServlet("/gestioneVerComunicazionePreventiva.do")
 public class GestioneVerComunicazionePreventiva extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(GestioneVerComunicazionePreventiva.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -94,7 +95,10 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
         response.setContentType("application/json");
 		try {
 			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
+			
 			if(action==null) {
+				
 				
 				if(request.getSession().getAttribute("listaClientiAll")==null) 
 				{

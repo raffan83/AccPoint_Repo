@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -35,7 +36,7 @@ import it.portaleSTI.bo.GestioneStrumentoBO;
 
 public class ScaricaStrumentoLAT extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(ScaricaStrumentoLAT.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -61,6 +62,8 @@ public class ScaricaStrumentoLAT extends HttpServlet {
 			 CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			 
 			 UtenteDTO utente= (UtenteDTO)request.getSession().getAttribute("userObj");
+			 
+			 logger.error(Utility.getMemorySpace()+" Action: "+"ScaricaStrumentoLAT" +" - Utente: "+utente.getNominativo());
 			 
 			 InterventoDTO intervento=(InterventoDTO) request.getSession().getAttribute("intervento");
 			 

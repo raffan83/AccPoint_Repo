@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
@@ -52,7 +53,7 @@ import it.portaleSTI.bo.GestioneVerInterventoBO;
 @WebServlet(name= "/scaricaSchedaConsegna", urlPatterns = { "/scaricaSchedaConsegna.do" })
 public class ScaricaSchedaConsegna extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(ScaricaSchedaConsegna.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -88,6 +89,10 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 		try
 		{
 			if(action==null) {
+				
+				
+				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
+				
 				String idIntervento= request.getParameter("idIntervento");
 				String notaConsegna= request.getParameter("notaConsegna");
 				String corteseAttenzione= request.getParameter("corteseAttenzione");

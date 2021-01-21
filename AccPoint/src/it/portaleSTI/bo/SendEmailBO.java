@@ -356,12 +356,17 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 
 
 
-public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato, String mailTo, ServletContext ctx) throws Exception {
+public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato, String mailTo, boolean second_host, ServletContext ctx) throws Exception {
 	
 		Logger logger = Logger.getLogger(SendEmailBO.class);
 		
 	   String from = "metrologiasti@pec.it";
 	   String SMTP_HOST_NAME = "smtps.pec.aruba.it";
+	   
+	   if(second_host) {
+		    SMTP_HOST_NAME = "smtp2rid.arubapec.it";
+	   }
+	   
 	   int SMTP_HOST_PORT = 465;
 	   String SMTP_AUTH_USER = "metrologiasti@pec.it";
 	   String SMTP_AUTH_PWD  = "XkGiDri9&";

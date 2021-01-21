@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -38,7 +39,7 @@ import it.portaleSTI.bo.GestioneVerStrumentiBO;
 @WebServlet("/scadenzarioVerificazione.do")
 public class ScadenzarioVerificazione extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(ScadenzarioVerificazione.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -72,6 +73,7 @@ public class ScadenzarioVerificazione extends HttpServlet {
 		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 		
 		try {
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 						
 			if(action == null) {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioVerStrumenti.jsp");

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -25,7 +27,7 @@ import it.portaleSTI.bo.GestioneCommesseBO;
 
 public class GestioneCommessa extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(GestionePacco.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -57,6 +59,8 @@ public class GestioneCommessa extends HttpServlet {
 			CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			
 			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+"GestioneCommessa" +" - Utente: "+user.getNominativo());
 			
 			String anno=request.getParameter("year");
 			

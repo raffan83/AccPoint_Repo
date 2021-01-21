@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
@@ -55,7 +56,7 @@ import it.portaleSTI.bo.GestioneVerMisuraBO;
 @WebServlet("/gestioneVerMisura.do")
 public class GestioneVerMisura extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(GestioneVerMisura.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -89,6 +90,10 @@ public class GestioneVerMisura extends HttpServlet {
 		boolean ajax = false;
         response.setContentType("application/json");
 		try {
+			
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
+			
 			
 		if(action!=null && action.equals("dettaglio")) {
 			

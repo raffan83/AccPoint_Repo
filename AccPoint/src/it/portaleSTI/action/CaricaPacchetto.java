@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -47,7 +48,7 @@ import it.portaleSTI.bo.GestioneStrumentoBO;
 
 public class CaricaPacchetto extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	static final Logger logger = Logger.getLogger(CaricaPacchetto.class);
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -78,6 +79,9 @@ public class CaricaPacchetto extends HttpServlet {
 		response.setContentType("application/json");
 		String action = request.getParameter("action");
 		try {
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
+			
 			if(action==null) {
 				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 				List<FileItem> items = uploadHandler.parseRequest(request);

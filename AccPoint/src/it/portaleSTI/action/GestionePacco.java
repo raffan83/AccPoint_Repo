@@ -819,7 +819,6 @@ public class GestionePacco extends HttpServlet {
 	   		response.sendRedirect(request.getHeader("referer"));
 	   	     //dispatcher.forward(request,response);	
 			
-	   		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 	}
 		
 		
@@ -858,7 +857,6 @@ public class GestionePacco extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPacco.jsp");
 		     	dispatcher.forward(request,response);
 				
-		     	logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 	
@@ -891,7 +889,6 @@ public class GestionePacco extends HttpServlet {
 				
 				out.print(myObj);
 		
-				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		
@@ -1115,7 +1112,6 @@ public class GestionePacco extends HttpServlet {
 				
 				response.sendRedirect(request.getHeader("referer"));
 
-				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 	
@@ -1138,7 +1134,6 @@ public class GestionePacco extends HttpServlet {
 				out.print(myObj);
 				}
 
-				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if (action.equals("accettazione")) {
@@ -1170,7 +1165,6 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("messaggio", "Accettazione effettuata con successo!");
 			out.print(myObj);
 			
-			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 			
@@ -1200,7 +1194,6 @@ public class GestionePacco extends HttpServlet {
 				session.close();
 				out.print(myObj);
 
-				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 	}
 		else if(action.equals("dettaglio_commessa")) {
 			
@@ -1220,7 +1213,6 @@ public class GestionePacco extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioCommessaPacchi.jsp");
 		     	dispatcher.forward(request,response);
 				
-				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("download_testa_pacco")) {
@@ -1251,7 +1243,6 @@ public class GestionePacco extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 				    
-				    logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 			
 		}
 		
@@ -1305,7 +1296,6 @@ public class GestionePacco extends HttpServlet {
 				
 				out.print(myObj);
 				
-				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 
 		}
 		
@@ -1337,7 +1327,6 @@ public class GestionePacco extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 				    session.close();
-				    logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 			
 		}
 		
@@ -1370,7 +1359,6 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Allegato eliminato con successo!");
 			out.print(myObj);
-			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("note_commessa")) {
@@ -1394,7 +1382,6 @@ public class GestionePacco extends HttpServlet {
 				
 				out.print(myObj);
 				
-				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		
@@ -1421,7 +1408,6 @@ public class GestionePacco extends HttpServlet {
 				
 				out.print(myObj);
 				
-				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("item_uscita")) {
@@ -1439,7 +1425,6 @@ public class GestionePacco extends HttpServlet {
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/itemUscita.jsp");
 	     	dispatcher.forward(request,response);
-	     	logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("importa_da_commessa")) {
@@ -1494,7 +1479,6 @@ public class GestionePacco extends HttpServlet {
 			
 			out.print(myObj);
 			session.close();
-			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		
@@ -1523,7 +1507,6 @@ public class GestionePacco extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Strumento modificato con successo!");
 				out.print(myObj);
-				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 			
 		}
 		
@@ -1538,7 +1521,6 @@ public class GestionePacco extends HttpServlet {
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaFileAllegatiMagazzino.jsp");
 	     	dispatcher.forward(request,response);
-	     	logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		
 		else if(action.equals("sposta_strumenti")) {
@@ -1569,7 +1551,6 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("messaggio", "Strumenti spostati con successo!");
 			out.print(myObj);
 			
-			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 		else if(action.equals("riapri_origine")) {
 			ajax = true;
@@ -1588,7 +1569,6 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("messaggio", "Pacchi origine riaperti con successo!");
 			out.print(myObj);
 			
-			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}
 	
 		}catch(Exception e) {

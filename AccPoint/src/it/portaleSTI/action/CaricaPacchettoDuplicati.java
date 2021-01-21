@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
@@ -26,6 +27,8 @@ import it.portaleSTI.bo.GestioneInterventoBO;
 
 public class CaricaPacchettoDuplicati extends HttpServlet {
 
+	static final Logger logger = Logger.getLogger(CaricaPacchettoDuplicati.class);
+	
 	public CaricaPacchettoDuplicati() {
 		super();
 	}
@@ -49,6 +52,9 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 
 		try
 		{
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+"CaricaPacchettoDuplicati" +" - Utente: "+utente.getNominativo());
+			
 			String obj =request.getParameter("ids");
 			String note_obsolescenza = request.getParameter("note");
 

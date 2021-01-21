@@ -1,7 +1,9 @@
 package it.portaleSTI.action;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -12,6 +14,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -59,7 +64,7 @@ import it.portaleSTI.bo.GestioneFormazioneBO;
 @WebServlet("/gestioneFormazione.do")
 public class GestioneFormazione extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(GestioneFormazione.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -95,6 +100,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		boolean ajax = false;
 		
 		try {
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 			
 			if(action.equals("lista_docenti")) {
 				
@@ -1097,6 +1103,59 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				response.setContentType("application/pdf");	
 				
 				session.close();	
+			}
+			else if(action.equals("download_attestato_all")) {
+				String id_corso = request.getParameter("id_corso");
+				
+				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_partecipanti_corso = GestioneFormazioneBO.getListaPartecipantiCorso(Integer.parseInt(id_corso), session);
+				
+				 FileOutputStream fos = null;
+			     ZipOutputStream zipOut = null;
+			     FileInputStream fis = null;
+			     fos = new FileOutputStream(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+"zipfile.zip");
+		         zipOut = new ZipOutputStream(new BufferedOutputStream(fos));
+		            
+		         ArrayList<String> filenames=new ArrayList<String>();
+				
+				for (ForPartecipanteRuoloCorsoDTO p : lista_partecipanti_corso) {
+					File input = new File(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+p.getPartecipante().getId()+"//"+p.getAttestato());
+					
+					String name=input.getName().replace(".pdf","").replace(".PDF", "");
+					  ZipEntry ze = null;
+					if(!filenames.contains(input.getName())) {
+						filenames.add(input.getName());
+						fis = new FileInputStream(input);
+		                 ze = new ZipEntry(input.getName());
+		                System.out.println("Zipping the file: "+input.getName());
+					}else {
+						File input_renamed = new File(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+p.getPartecipante().getId()+"//"+name+"_"+p.getPartecipante().getId()+".pdf");
+						input.renameTo(input_renamed);
+						
+						fis = new FileInputStream(input_renamed);
+						ze = new ZipEntry(input_renamed.getName());
+		                System.out.println("Zipping the file: "+input_renamed.getName());
+		                p.setAttestato(input_renamed.getName());
+		                session.update(p);
+					}									
+
+	                zipOut.putNextEntry(ze);
+	                byte[] tmp = new byte[4*1024];
+	                int size = 0;
+	                while((size = fis.read(tmp)) != -1){
+	                    zipOut.write(tmp, 0, size);
+	                }
+	                zipOut.flush();
+	                fis.close();
+	            }
+	            zipOut.close();
+	            System.out.println("Done... Zipped the files...");
+				
+				downloadFile(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+"zipfile.zip", response.getOutputStream());
+				
+				response.setContentType("application/octet-stream");	
+				
+				session.getTransaction().commit();
+				session.close();
 			}
 			else if(action.equals("dissocia_partecipante_corso")) {
 				

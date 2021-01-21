@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -23,6 +24,7 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
@@ -35,7 +37,7 @@ import it.portaleSTI.bo.GestioneCampioneBO;
 @WebServlet(name= "/scadenziario", urlPatterns = { "/scadenziario.do" })
 public class Scadenziario extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(Scadenziario.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -60,11 +62,20 @@ public class Scadenziario extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		try {	
 		String action = request.getParameter("action");
+		
+		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
 		
 		if(action == null) {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenziario.jsp");
 		    dispatcher.forward(request,response);// TODO Auto-generated method stub
+		    
+		    session.getTransaction().commit();
+        	session.close();
 		}
 		else if(action.equals("campioni")) {
 			
@@ -78,17 +89,19 @@ public class Scadenziario extends HttpServlet {
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioAttivitaCampioni.jsp");
 		    dispatcher.forward(request,response);// TODO Auto-generated method stub
+		    
+		    session.getTransaction().commit();
+        	session.close();
 		}
 		else if(action.equals("scadenzario")) {
 			
-			Session session = SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
+			
 			
 			String id_campione = request.getParameter("id_campione");
 
 			JsonObject myObj = new JsonObject();
 
-			try {
+		
 			
 				ArrayList<HashMap<String,Integer>> listaScadenze = null;
 			if(id_campione!=null) {
@@ -154,21 +167,21 @@ public class Scadenziario extends HttpServlet {
 	        	session.close();
 		        
 		        
-			} catch (Exception e) {
-
-				session.getTransaction().rollback();
-	        	session.close();
-				
-				PrintWriter out = response.getWriter();
-				e.printStackTrace();	        	
-		        request.getSession().setAttribute("exception", e);
-		        myObj = STIException.getException(e);
-		        out.print(myObj);
-	        	
-			}
-		}
+			
 	    
 	    
 	}
+		} catch (Exception e) {
 
+			session.getTransaction().rollback();
+        	session.close();
+        	JsonObject myObj = new JsonObject();
+			PrintWriter out = response.getWriter();
+			e.printStackTrace();	        	
+	        request.getSession().setAttribute("exception", e);
+	        myObj = STIException.getException(e);
+	        out.print(myObj);
+        	
+		}
+	}
 }

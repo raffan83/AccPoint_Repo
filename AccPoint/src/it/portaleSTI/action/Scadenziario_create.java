@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -25,6 +27,7 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCampioneBO;
@@ -37,7 +40,7 @@ import it.portaleSTI.bo.GestioneCampioneBO;
 
 public class Scadenziario_create extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(Scadenziario_create.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -68,6 +71,8 @@ public class Scadenziario_create extends HttpServlet {
 		
 		ArrayList<CampioneDTO> listaCampioni =GestioneCampioneDAO.getListaCampioniInServizio();
 		ArrayList<RegistroEventiDTO> listaManutenzioni = GestioneCampioneBO.getListaManutenzioniNonObsolete();
+		
+		logger.error(Utility.getMemorySpace()+" Action: "+"Scadenziario_create" +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
 		
 		HashMap<String,Integer>  hMapCampioni = new HashMap<String,Integer>();
 		HashMap<String, Integer> mapManutenzioni = new HashMap<String, Integer>();

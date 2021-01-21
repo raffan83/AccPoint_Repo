@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -36,7 +38,7 @@ import it.portaleSTI.bo.GestioneCommesseBO;
 
 public class ListaCommesse extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(ListaCommesse.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -66,6 +68,8 @@ public class ListaCommesse extends HttpServlet {
 		try {
 			String action = request.getParameter("action");
 			if(action == null || action.equals("")) {
+				
+				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
 				
 				response.setContentType("text/html");
 

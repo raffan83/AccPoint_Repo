@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -19,6 +20,7 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneMisuraBO;
@@ -30,6 +32,7 @@ import it.portaleSTI.bo.GestioneMisuraBO;
 @WebServlet(name="gestionePuntoMisura" , urlPatterns = { "/gestionePuntoMisura.do" })
 public class GestionePuntoMisura extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static final Logger logger = Logger.getLogger(GestionePuntoMisura.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -61,6 +64,8 @@ public class GestionePuntoMisura extends HttpServlet {
 
 			
 			String action = request.getParameter("action");
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
 	
 			if(action.equals("salva")) {
 

@@ -12268,7 +12268,7 @@ function modalEmailVerificazione(id_certificato, id_multi){
 }
 		
 
-function sendEmailVerificazione(){
+function sendEmailVerificazione(second_host){
 	
 	 pleaseWaitDiv = $('#pleaseWaitDialog');
 	 pleaseWaitDiv.modal();
@@ -12281,7 +12281,7 @@ function sendEmailVerificazione(){
 		  var id_certificato = $('#id_certificato').val();
 		  $.ajax({
 		  type: "POST",
-		  url: "gestioneVerCertificati.do?action=invia_email&id_certificato="+id_certificato+"&indirizzo="+indirizzo,
+		  url: "gestioneVerCertificati.do?action=invia_email&id_certificato="+id_certificato+"&indirizzo="+indirizzo+"&second_host="+second_host,
 		  dataType: "json",
 	
 		  success: function( data, textStatus) {

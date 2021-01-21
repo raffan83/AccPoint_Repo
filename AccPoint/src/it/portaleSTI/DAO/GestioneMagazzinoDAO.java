@@ -286,7 +286,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 
 	public static ArrayList<MagItemPaccoDTO> getItemPaccoByPacco(int id_pacco, Session session) {
 		
-		logger.error("Metodo: getItemPaccoByPacco");
+	
 	
 		ArrayList<MagItemPaccoDTO> item_pacco= null;		
 		 
@@ -296,7 +296,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 				
 		item_pacco= (ArrayList<MagItemPaccoDTO>) query.list();
 		
-		logger.error("Metodo: getItemPaccoByPacco - fine metodo");
+		
 		
 		return item_pacco;
 		
@@ -304,7 +304,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 	public static ArrayList<MagItemPaccoDTO> getListaItemPacco( Session session) {
 		
-		logger.error("Metodo: getListaItemPacco");
+		
 		
 		ArrayList<MagItemPaccoDTO> item_pacco= null;		
 		 
@@ -312,7 +312,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 
 		item_pacco= (ArrayList<MagItemPaccoDTO>) query.list();
 		
-		logger.error("Metodo: getListaItemPacco - fine metodo");
+		
 		
 		return item_pacco;
 		
@@ -320,7 +320,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 	public static MagItemPaccoDTO getItemPaccoByIdItem(int id_item, Session session) {
 		
-		logger.error("Metodo: getItemPaccoByIdItem");
+		
 
 		MagItemPaccoDTO item_pacco= null;		
 		 
@@ -341,7 +341,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 			}
 			
 			
-			logger.error("Metodo: getItemPaccoByIdItem - fine metodo");
+		
 			
 			if(item_pacco.getPacco().getStato_lavorazione().getId()==4)
 			{
@@ -360,8 +360,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 	public static MagItemPaccoDTO getItemPaccoByIdPacco(int id_pacco, Session session) {
 		
-		logger.error("Metodo: getItemPaccoByIdPacco");
-
+		
 		MagItemPaccoDTO item_pacco= null;		
 		 
 		Query query  = session.createQuery( "from MagItemPaccoDTO where id_item= :_id_pacco");
@@ -381,7 +380,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 				}
 			}
 		
-			logger.error("Metodo: getItemPaccoByIdPacco - fine metodo");
+		
 			
 			if(item_pacco.getPacco().getStato_lavorazione().getId()==4)
 			{
@@ -399,36 +398,34 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	}
 
 
-	public static void updatePacco(MagPaccoDTO pacco, Session session) {
+	public static void updatePacco(MagPaccoDTO pacco, Session session) {	
 	
-		logger.error("Metodo: updatePacco");
 		session.update(pacco);
-		logger.error("Metodo: updatePacco - fine metodo");
 	}
 
 
 	public static void updateDdt(MagDdtDTO ddt, Session session) {
 		
-		logger.error("Metodo: updateDdt");
+	
 		session.update(ddt);
-		logger.error("Metodo: updateDdt - fine metodo");
+	
 	}
 
 
 	public static void deleteItemPacco(int pacco, Session session) {
 		
-		logger.error("Metodo: deleteItemPacco");
+	
 	
 		String hql = "delete from MagItemPaccoDTO where id_pacco= :_id";
 		session.createQuery(hql).setInteger("_id", pacco).executeUpdate();
-		logger.error("Metodo: deleteItemPacco - fine metodo");
+	
 		
 	}
 
 
 	public static MagPaccoDTO getPaccoByDDT(int id, Session session) {
 		
-		logger.error("Metodo: getPaccoByDDT");
+		
 		
 		MagPaccoDTO pacco= null;		
 		 
@@ -438,15 +435,13 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		pacco= (MagPaccoDTO) query.list().get(0);
 		
 		
-		logger.error("Metodo: getPaccoByDDT - fine metodo");
 		return pacco;
 		
 	}
 
 
 	public static ArrayList<MagCategoriaDTO> getListaCategorie(Session session) {
-		
-		logger.error("Metodo: getListaCategorie");
+	
 
 		ArrayList<MagCategoriaDTO> lista= null;
 
@@ -454,24 +449,21 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 			lista=(ArrayList<MagCategoriaDTO>) query.list();
 			
-			logger.error("Metodo: getListaCategorie - fine metodo");
-			
+						
 			return lista;
 	}
 
 
 	public static void updateAllegati(MagPaccoDTO pacco, Session session) {
 		
-		
-		logger.error("Metodo: updateAllegati");
-		session.update(pacco);
-		logger.error("Metodo: updateAllegati - fine metodo");
+			session.update(pacco);
+	
 	}
 
 
 	public static ArrayList<MagAllegatoDTO> getAllegatiFromPacco(String id_pacco, Session session) {
 		
-		logger.error("Metodo: getAllegatiFromPacco");
+		
 		
 		ArrayList<MagAllegatoDTO> lista= null;
 		
@@ -479,16 +471,14 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 			query.setParameter("_id", Integer.parseInt(id_pacco));
 			lista=(ArrayList<MagAllegatoDTO>) query.list();
-			
-			logger.error("Metodo: getAllegatiFromPacco - fine metodo");
+	
 			return lista;
 	}
 
 
 	public static void deleteAllegato(int id_allegato, Session session) {
 		
-		logger.error("Metodo: deleteAllegato");
-		
+	
 		MagAllegatoDTO allegato = null;
 		Query query  = session.createQuery( "from MagAllegatoDTO where id= :_id");
 		
@@ -498,13 +488,13 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		
 		session.delete(allegato);
 		
-		logger.error("Metodo: deleteAllegato - fine metodo");
+		
 	}
 
 
 	public static void cambiaStatoStrumento(int id_strumento, int stato, Session session) {
 		
-		logger.error("Metodo: cambiaStatoStrumento");
+		
 		
 		Query query = session.createQuery("update MagItemDTO set stato= :_stato where id= :_id_strumento");
 		MagStatoItemDTO new_stato = new MagStatoItemDTO();
@@ -513,14 +503,12 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		query.setParameter("_stato", new_stato);
 
 		query.executeUpdate();
-		logger.error("Metodo: cambiaStatoStrumento - fine metodo");
 	}
 
 
 	public static ArrayList<MagPaccoDTO> getPaccoByCommessa(String id_commessa, Session session) {
 		
-		logger.error("Metodo: getPaccoByCommessa");
-		
+
 		ArrayList<MagPaccoDTO> lista= null;
 		
 		
@@ -529,14 +517,13 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 			query.setParameter("_commessa", id_commessa);
 			lista=(ArrayList<MagPaccoDTO>) query.list();
 			
-			logger.error("Metodo: getPaccoByCommessa - fine metodo");
-			
+
 			return lista;
 	}
 
 	public static ArrayList<MagPaccoDTO> getListaPacchiByCommessa(String id_commessa, Session session) {
 		
-		logger.error("Metodo: getListaPacchiByCommessa");
+		
 		
 		ArrayList<MagPaccoDTO> lista= null;
 		
@@ -546,15 +533,14 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 			query.setParameter("_commessa", id_commessa);
 			lista=(ArrayList<MagPaccoDTO>) query.list();
 			
-			logger.error("Metodo: getListaPacchiByCommessa - fine metodo");
+			
 			return lista;
 	}
 
 
 	public static ArrayList<MagItemDTO> getListaItemByPacco(int id_pacco, Session session) {
 		
-		logger.error("Metodo: getListaItemByPacco");
-		
+
 		ArrayList<MagItemDTO> lista= null;
 		
 	
@@ -564,14 +550,13 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 			lista=(ArrayList<MagItemDTO>) query.list();
 			
 			
-			logger.error("Metodo: getListaItemByPacco - fine metodo");
 			return lista;
 	}
 
 
 	public static ArrayList<MagAttivitaItemDTO> getListaAttivitaItem(Session session) {
 		
-		logger.error("Metodo: getListaAttivitaItem");
+
 		
 		ArrayList<MagAttivitaItemDTO> lista= null;
 				
@@ -580,14 +565,11 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 		lista=(ArrayList<MagAttivitaItemDTO>) query.list();
 		
-		logger.error("Metodo: getListaAttivitaItem - fine metodo");
 		return lista;
 	}
 
 
 	public static ArrayList<MagTipoNotaPaccoDTO> getListaTipoNotaPacco(Session session) {
-		
-		logger.error("Metodo: getListaTipoNotaPacco");
 
 		ArrayList<MagTipoNotaPaccoDTO> lista= null;
 		
@@ -596,7 +578,6 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 		lista=(ArrayList<MagTipoNotaPaccoDTO>) query.list();
 		
-		logger.error("Metodo: getListaTipoNotaPacco - fine metodo");
 		
 		return lista;
 	}
@@ -604,8 +585,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 public static ArrayList<MagPaccoDTO> getListaPacchiByOrigine(String origine, Session session) {
 	
-	logger.error("Metodo: getListaPacchiByOrigine");
-		
+
 		ArrayList<MagPaccoDTO> lista= null;
 		
 		
@@ -614,14 +594,11 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigine(String origine, Ses
 			query.setParameter("_origine", origine);
 			lista=(ArrayList<MagPaccoDTO>) query.list();
 			
-			logger.error("Metodo: getListaPacchiByOrigine - fine metodo");
 			
 			return lista;
 	}
 
 public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origine, String id_item, String matricola, Session session) {
-	
-	logger.error("Metodo: getListaPacchiByOrigineAndItem");
 	
 	ArrayList<MagPaccoDTO> lista= null;
 		
@@ -640,28 +617,25 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		}
 		lista=(ArrayList<MagPaccoDTO>) query.list();
 		
-		
-		logger.error("Metodo: getListaPacchiByOrigineAndItem - fine metodo");
+
 		return lista;
 }
 
 	public static void chiudiPacchiOrigine(ArrayList<MagPaccoDTO> lista_pacchi, Session session) {
 		
-		logger.error("Metodo: chiudiPacchiOrigine");
-		
+
 		for(int i=0; i<lista_pacchi.size();i++) {
 			lista_pacchi.get(i).setChiuso(1);
 			lista_pacchi.get(i).setTipo_nota_pacco(null);
 			session.update(lista_pacchi.get(i));
 		}
 		
-		logger.error("Metodo: chiudiPacchiOrigine - fine metodo");
+
 	}
 
 
 	public static void accettaItem(JsonArray acc, JsonArray non_acc, JsonArray note_acc,JsonArray note_non_acc, String id_pacco, Session session) {
 		
-		logger.error("Metodo: accettaItem");
 		
 		for(int i=0; i<acc.size();i++) {
 	
@@ -694,7 +668,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		}
 		
 
-		logger.error("Metodo: accettaItem - fine metodo");
 		
 			
 	}
@@ -702,7 +675,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 	public static ArrayList<MagPaccoDTO> getListPacchiPerData(String dateFrom, String dateTo, String tipo_data, int stato, Session session) throws HibernateException, ParseException {
 		
-		logger.error("Metodo: getListPacchiPerData");
+	
 		ArrayList<MagPaccoDTO> lista=null;
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
@@ -718,7 +691,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		lista= (ArrayList<MagPaccoDTO>)query.list();
 		
-		logger.error("Metodo: getListPacchiPerData - fine metodo");
+	
 		
 		return lista;
 	}
@@ -726,7 +699,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 	public static MagItemDTO getItemById(int id, Session session) {
 		
-		logger.error("Metodo: getItemById");
+	
 		
 		MagItemDTO item = null;
 				
@@ -735,14 +708,13 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		item = (MagItemDTO)query.list().get(0);
 		
-		logger.error("Metodo: getItemById - fine metodo");
 		return item;
 	}
 
 
 	public static ArrayList<Integer> getListaStrumentiEsterni() throws Exception {
 	
-		logger.error("Metodo: getListaStrumentiEsterni");
+		
 		
 		Connection con=null;
 		PreparedStatement pst = null;
@@ -774,7 +746,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			con.close();
 		}
 		
-		logger.error("Metodo: getListaStrumentiEsterni - fine metodo");
+		
 		
 		return listaid;
 	}
@@ -782,7 +754,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 	public static ArrayList<MagPaccoDTO> getOriginiFromItem(String id_item, String matricola, Session session) {
 		
-		logger.error("Metodo: getOriginiFromItem");
 		
 		ArrayList<MagPaccoDTO> lista = null;		
 		
@@ -801,7 +772,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		lista = (ArrayList<MagPaccoDTO>)query.list();
 		
-		logger.error("Metodo: getOriginiFromItem - fine metodo");
+		
 		
 		return lista;
 		
@@ -810,9 +781,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 
 	public static ArrayList<MagNoteDdtDTO> getListaNoteDDT(Session session) {
-		
-		logger.error("Metodo: getListaNoteDDT");
-		
+				
 		ArrayList<MagNoteDdtDTO> lista = null;
 		
 		
@@ -821,7 +790,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		lista = (ArrayList<MagNoteDdtDTO>)query.list();
 		
-		logger.error("Metodo: getListaNoteDDT - fine metodo");
 		
 		return lista;
 	}
@@ -829,7 +797,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 	public static void updateStrumento(StrumentoDTO strumento, Session session) {
 		
-		logger.error("Metodo: updateStrumento");
+
 		
 		String descrizione = strumento.getDenominazione();
 		String cod_interno = strumento.getCodice_interno();
@@ -843,15 +811,13 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		query.setParameter("_matricola", matricola);
 		query.setParameter("_id", id);
 		
-		logger.error("Metodo: updateStrumento - fine metodo");
-		
+
 		query.executeUpdate();
 	}
 
 
 	public static ArrayList<MagCausaleDTO> getListaCausali(Session session) {
 		
-		logger.error("Metodo: getListaCausali");
 		
 		ArrayList<MagCausaleDTO> lista = null;		
 		
@@ -859,15 +825,14 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		lista = (ArrayList<MagCausaleDTO>)query.list();
 		
-		logger.error("Metodo: getListaCausali - fine metodo");
-		
+				
 		return lista;
 	}
 
 
 	public static ArrayList<MagDdtDTO> getListaDDT(Session session) {
 		
-		logger.error("Metodo: getListaDDT");
+	
 		
 		ArrayList<MagDdtDTO> lista = null;
 				
@@ -875,16 +840,14 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		lista = (ArrayList<MagDdtDTO>)query.list();
 
-		logger.error("Metodo: getListaDDT - fine metodo");
-
+		
 		return lista;
 	}
 
 
 	public static int checkStrumentoInMagazzino(int id, String idCommessa) throws Exception {
 		
-		logger.error("Metodo: checkStrumentoInMagazzino");
-		
+				
 		int toReturn=0;
 		Connection con=null;
 		PreparedStatement pst=null;
@@ -914,15 +877,13 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			con.close();
 		}
 		
-		logger.error("Metodo: checkStrumentoInMagazzino - fine metodo");
-		
 		return toReturn;
 	}
 
 
 	public static MagSaveStatoDTO getMagSaveStato(int id_cliente, int id_sede, Session session) {
 		
-		logger.error("Metodo: getMagSaveStato");
+		
 		
 		MagSaveStatoDTO stato = null;		
 		
@@ -946,7 +907,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	
 	public static ArrayList<MagSaveStatoDTO> getListaMagSaveStato(Session session) {
 		
-		logger.error("Metodo: getListaMagSaveStato");
 		
 		ArrayList<MagSaveStatoDTO> lista = null;
 		
@@ -954,7 +914,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 		lista = (ArrayList<MagSaveStatoDTO>)query.list();
 		
-		logger.error("Metodo: getListaMagSaveStato - fine metodo");
 	
 		return lista;
 	}
@@ -962,8 +921,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 	public static ArrayList<MagItemDTO> getListaitemSpediti(int id_pacco, Session session) throws Exception {
 		
-		logger.error("Metodo: getListaitemSpediti");
-		
+	
 		ArrayList<MagItemDTO> lista = null;
 		
 		MagPaccoDTO pacco = getPaccoId(id_pacco, session);
@@ -973,7 +931,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 		lista = (ArrayList<MagItemDTO>)query.list();	
 		
-		logger.error("Metodo: getListaitemSpediti - fine metodo");
+	
 
 		return lista;
 		
@@ -983,8 +941,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 	public static Object[] getRiferimentoDDT(String origine, Session session) throws Exception{
 		
-		logger.error("Metodo: getRiferimentoDDT");
-		
+			
 		Object[] riferimento =null;		
 		
 		Query query = session.createQuery("select a.ddt.numero_ddt, a.ddt.data_ddt from MagPaccoDTO a where a.origine = :_origine and a.stato_lavorazione.id=1");
@@ -996,15 +953,13 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			riferimento =  (Object[])query.list().get(0);
 		}
 		
-		logger.error("Metodo: getRiferimentoDDT - fine metodo");
-		
+
 		return riferimento;
 	}
 
 
 	public static int getProgressivoDDT(Session session) throws Exception {
 		
-		logger.error("Metodo: getProgressivoDDT");
 		
 		Query query = session.createQuery("select a.ddt.numero_ddt from MagPaccoDTO a where  (a.stato_lavorazione.id = 3 or a.stato_lavorazione.id = 4) and a.ddt.numero_ddt like '%STI_%'"
 				+ "and YEAR(a.ddt.data_ddt)=YEAR(CURDATE()) order by a.id desc");
@@ -1020,8 +975,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			}
 		}
 		
-		logger.error("Metodo: getProgressivoDDT - fine metodo");
-	
+			
 		return max;
 	}
 
@@ -1029,8 +983,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 	public static ArrayList<MagDdtDTO> getListaDDTPerData(String dateFrom, String dateTo, Session session) throws Exception {
 		
-		logger.error("Metodo: getListaDDTPerData");
-	
 	ArrayList<MagDdtDTO> lista=new ArrayList<MagDdtDTO>();
 	ArrayList<Object[]> res = null;
 	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
@@ -1059,15 +1011,13 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		}
 	}
 
-	logger.error("Metodo: getListaDDTPerData - fine metodo");
 	
 	return lista;
 }
 
 	public static ArrayList<Integer> getListaAllegati(Session session) {
 		
-		logger.error("Metodo: getListaAllegati");
-		
+
 		ArrayList<MagAllegatoDTO> lista=null;
 		ArrayList<Integer> lista_id=new ArrayList<Integer>();
 		
@@ -1079,18 +1029,13 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 				lista_id.add(allegato.getPacco().getId());
 			}
 		}
-		
-		logger.error("Metodo: getListaAllegati - fine metodo");
-		
+
 		return lista_id;
 	}
 
 
 	public static ArrayList<MagPaccoDTO> getListaPacchiApertiChiusi(int id_company, int stato, Session session) {
 		
-		logger.error("Metodo: getListaPacchiApertiChiusi");
-		
-
 		 ArrayList<MagPaccoDTO> lista= null;
 		
 			Query query  = session.createQuery( "from MagPaccoDTO WHERE id_company= :_id_company and chiuso= :_stato");
@@ -1100,15 +1045,11 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 					
 			lista=(ArrayList<MagPaccoDTO>) query.list();
 			
-			logger.error("Metodo: getListaPacchiApertiChiusi - fine metodo");
-			
 			return lista;
 	}
 
 
 	public static ArrayList<Integer> getPaccoFromStrumento(String id_strumento, Session session) {
-		
-		logger.error("Metodo: getPaccoFromStrumento");
 		
 		 ArrayList<Integer> lista= null;
 			
@@ -1118,7 +1059,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 								
 			lista=(ArrayList<Integer>) query.list();
 			
-			logger.error("Metodo: getPaccoFromStrumento - fine metodo");
 			
 			return lista;
 	}
@@ -1126,8 +1066,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 	public static ArrayList<MagItemPaccoDTO> getListaItemPaccoApertiChiusi(int stato, Session session) {
 		
-		logger.error("Metodo: getListaItemPaccoApertiChiusi");
-	
+
 		ArrayList<MagItemPaccoDTO> lista= null;
 		
 		Query query  = session.createQuery( "from MagItemPaccoDTO a WHERE a.pacco.chiuso = :_stato");		
@@ -1135,45 +1074,39 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 				
 		lista=(ArrayList<MagItemPaccoDTO>) query.list();
 		
-		logger.error("Metodo: getListaItemPaccoApertiChiusi - fine metodo");
-		
+
 		return lista;
 	}
 
 
 	public static ArrayList<MagPaccoDTO> getListaPacchiInMagazzino(Session session) {
 		
-		logger.error("Metodo: getListaPacchiInMagazzino");
-		
+
 		ArrayList<MagPaccoDTO> lista= null;
 		
 		Query query  = session.createQuery( "from MagPaccoDTO GROUP BY origine HAVING (COUNT(origine)=1 AND stato_lavorazione.id = 1 and chiuso = 0)");
 				
 		lista=(ArrayList<MagPaccoDTO>) query.list();
 		
-		logger.error("Metodo: getListaPacchiInMagazzino - fine metodo");
-		
+	
 		return lista;
 	}
 
 
 	public static void riapriOrigine(String origine, Session session) {
 		
-		logger.error("Metodo: riapriOrigine");
-		
+
 		Query query  = session.createQuery( "update MagPaccoDTO set chiuso = 0 where origine =:_origine");
 		query.setParameter("_origine", origine);
 		
 		query.executeUpdate();
 		
-		logger.error("Metodo: riapriOrigine - fine metodo");
 	}
 
 
 	public static String getDataRicevimentoItem(StrumentoDTO strumento, Session session) {
 		
-		logger.error("Metodo: getDataRicevimentoItem");
-		
+
 		ArrayList<Date> lista = null;
 		String result = ""; 
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -1188,7 +1121,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			result = df.format(lista.get(0));
 		}
 		
-		logger.error("Metodo: getDataRicevimentoItem - fine metodo");
 		
 		return result;
 	}
@@ -1196,7 +1128,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 	public static void getItemInRitardo() throws Exception {
 		
-		logger.error("Metodo: getItemInRitardo");
 		
  		Session session = SessionFacotryDAO.get().openSession();	    
 		session.beginTransaction();
@@ -1270,31 +1201,25 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		session.getTransaction().commit();
 		session.close();
 		
-		logger.error("Metodo: getItemInRitardo - fine metodo");
-		
 	}
 
 
 	public static ArrayList<MagItemPaccoDTO> getListaStrumentiInMagazzino(Session session) {
 
-		logger.error("Metodo: getListaStrumentiInMagazzino");
-		
 		ArrayList<MagItemPaccoDTO> lista= null;
 				
 		Query query  = session.createQuery( "from MagItemPaccoDTO where pacco.id IN (SELECT id from MagPaccoDTO GROUP BY origine HAVING (COUNT(origine)=1 AND stato_lavorazione.id = 1 and chiuso = 0))");
 		
 		lista=(ArrayList<MagItemPaccoDTO>) query.list();
 		
-		logger.error("Metodo: getListaStrumentiInMagazzino - fine metodo");
-		
+
 		return lista;
 	}
 
 	
 	public static ArrayList<MagItemPaccoDTO> getListaItemPaccoPerData(String dateFrom, String dateTo, String tipo_data, int stato, Session session) throws Exception {
 		
-		logger.error("Metodo: getListaItemPaccoPerData");
-		
+
 	ArrayList<MagItemPaccoDTO> lista=null;
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
@@ -1309,8 +1234,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		query.setParameter("dateTo",df.parse(dateTo));
 		
 		lista= (ArrayList<MagItemPaccoDTO>)query.list();
-		
-		logger.error("Metodo: getListaItemPaccoPerData - fine metodo");
 		
 		return lista;
 	}

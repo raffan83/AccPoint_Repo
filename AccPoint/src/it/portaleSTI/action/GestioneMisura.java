@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
@@ -51,7 +52,7 @@ import it.portaleSTI.bo.GestioneMisuraBO;
 @WebServlet("/gestioneMisura.do")
 public class GestioneMisura extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(GestioneMisura.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -85,6 +86,8 @@ public class GestioneMisura extends HttpServlet {
 		boolean ajax = false;
 		
 		try {
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 			
 			if(action.equals("lista")) {
 				

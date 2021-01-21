@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -37,6 +38,7 @@ import it.portaleSTI.bo.GestioneRilieviBO;
 @WebServlet("/listaRilieviDimensionali.do")
 public class ListaRilieviDimensionali extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static final Logger logger = Logger.getLogger(ListaRilieviDimensionali.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -68,6 +70,8 @@ public class ListaRilieviDimensionali extends HttpServlet {
 	
 		
 		try {
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 			if(action==null) {
 				List<ClienteDTO> listaClientiFull = null;
 				List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();

@@ -23,6 +23,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -71,7 +72,7 @@ import it.portaleSTI.bo.GestioneStrumentoBO;
 @WebServlet(name = "gestioneIntervento", urlPatterns = { "/gestioneIntervento.do" })
 public class GestioneIntervento extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(GestioneIntervento.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -102,7 +103,7 @@ public class GestioneIntervento extends HttpServlet {
 		String action=request.getParameter("action");
 		try 
 		{
-			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
 	
 			if(action ==null || action.equals(""))
 			{

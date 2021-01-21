@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -26,6 +27,7 @@ import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
@@ -38,7 +40,7 @@ import it.portaleSTI.bo.GestioneStrumentoBO;
 @WebServlet(name="modificaStrumento" , urlPatterns = { "/modificaStrumento.do" })
 public class ModificaStrumento extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(ModificaStrumento.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -69,6 +71,9 @@ public class ModificaStrumento extends HttpServlet {
 
 			
 			String action = request.getParameter("action");
+			
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
 			if(action.equals("modifica")) {
 				String idS = request.getParameter("id");
 		

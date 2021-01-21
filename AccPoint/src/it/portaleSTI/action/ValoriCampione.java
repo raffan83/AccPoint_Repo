@@ -10,11 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -26,7 +29,7 @@ import it.portaleSTI.Util.Utility;
 
 public class ValoriCampione extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(ValoriCampione.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -55,6 +58,9 @@ public class ValoriCampione extends HttpServlet {
 		
 		try
 		{
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+"valoriCampione" +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
+			
 	    ArrayList<ValoreCampioneDTO> listaVCP = GestioneCampioneDAO.getListaValori(Integer.parseInt(idCmp));
 	    
 		for (ValoreCampioneDTO valoreCampioneDTO : listaVCP) {

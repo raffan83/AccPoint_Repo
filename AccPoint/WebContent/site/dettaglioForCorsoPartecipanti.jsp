@@ -9,6 +9,8 @@
 <div class="row">
 <div class="col-xs-12">
  <a class="btn btn-primary pull-right" onClick="associaUtentiModal('${corso.id}')" title="Click per associare gli utenti al corso"><i class="fa fa-plus"></i> Aggiungi Partecipanti</a>
+ <%-- <a class="btn btn-danger pull-right" href="gestioneFormazione.do?action=download_attestato_all&id_corso=${corso.id}" title="Click per associare gli utenti al corso"><i class="fa fa-plus"></i> Aggiungi Partecipanti</a> --%>
+ <a class="btn btn-danger pull-right" onClick="scaricaTutti(${corso.id})"style="margin-right:5px"><i class="fa fa-arrow-down"></i> Scarica tutti gli attestati</a>
 </div>
 </div><br>
 </c:if>
@@ -299,13 +301,23 @@ function associaUtentiModal(id_corso){
 		$('#label_attestato_mod').html($(this).val().split("\\")[2]) ;
 	 });
  
+ function scaricaTutti(id_corso){
+	 
+	 callAction("gestioneFormazione.do?action=download_attestato_all&id_corso="+id_corso, null, true);
+	 pleaseWaitDiv.modal('hide')
+	 
+
+	 
+	// location.reload()
+ }
+ 
  var partecipanti_options;
     $(document).ready(function() {
     	
     	partecipanti_options = $('#partecipante option').clone();
     	
     	$('.select2').select2();
-    	console.log()
+    	console.log("test2")
     	
     	  table = $('#tabPartecipanti').DataTable({
   			language: {

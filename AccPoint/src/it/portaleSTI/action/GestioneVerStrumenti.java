@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.record.crypto.Biff8DecryptingStream;
 import org.hibernate.Session;
 
@@ -59,7 +60,7 @@ import it.portaleSTI.bo.GestioneVerStrumentiBO;
 @WebServlet("/gestioneVerStrumenti.do")
 public class GestioneVerStrumenti extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(GestioneVerStrumenti.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -93,6 +94,8 @@ public class GestioneVerStrumenti extends HttpServlet {
 		boolean ajax = false;
         response.setContentType("application/json");
 		try {
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 			
 			if(action==null) {
 

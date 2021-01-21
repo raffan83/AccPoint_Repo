@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
@@ -39,6 +40,8 @@ import it.portaleSTI.bo.GestioneUtenteBO;
 @WebServlet("/gestioneAssegnazioneAttivita.do")
 public class GestioneAssegnazioneAttivita extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	static final Logger logger = Logger.getLogger(GestioneAssegnazioneAttivita.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -74,6 +77,8 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 		boolean ajax = false;
         response.setContentType("application/json");
 		try {
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 			
 			if(action.equals("assegna")) {
 			

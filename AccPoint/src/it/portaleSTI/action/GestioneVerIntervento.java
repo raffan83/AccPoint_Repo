@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -60,7 +61,7 @@ import it.portaleSTI.bo.GestioneVerStrumentiBO;
 @WebServlet("/gestioneVerIntervento.do")
 public class GestioneVerIntervento extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(GestioneVerIntervento.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -94,6 +95,7 @@ public class GestioneVerIntervento extends HttpServlet {
 		boolean ajax = false;
         response.setContentType("application/json");
 		try {
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 			
 			if(action.equals("lista")) {
 				

@@ -18,11 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DTO.ColonnaDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 
@@ -32,7 +34,7 @@ import it.portaleSTI.Util.Utility;
 @WebServlet("/gestioneTabelle.do")
 public class GestioneTabelle extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(GestioneTabelle.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -61,6 +63,8 @@ public class GestioneTabelle extends HttpServlet {
 		PrintWriter  out = response.getWriter();
 		boolean ajax = false;
 		try {
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
+			
 			if(action== null || action.equals("")) {
 			ajax=false;
 			

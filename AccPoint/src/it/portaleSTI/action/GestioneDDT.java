@@ -147,7 +147,6 @@ public class GestioneDDT extends HttpServlet {
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioDDT.jsp");
      	dispatcher.forward(request,response);
-     	logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 		}catch (Exception e) {
 			
      	e.printStackTrace();
@@ -199,7 +198,6 @@ public class GestioneDDT extends HttpServlet {
 				myObj = STIException.getSuccessMessage("DDT Creato con successo!");
 				out.print(myObj);
 				
-				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
 			} catch (Exception e) {
 				
 				e.printStackTrace();
@@ -242,7 +240,7 @@ public class GestioneDDT extends HttpServlet {
 			    outp.flush();
 			    outp.close();
 			    
-			    logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+			  
 			    
 			}catch(Exception ex)
 	    	{
@@ -553,7 +551,7 @@ public class GestioneDDT extends HttpServlet {
 		   		//dispatcher.forward(request, response);
 		   		response.sendRedirect(request.getHeader("referer"));
 
-		   		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo() +" - fine action");
+		   		
 			} catch (Exception e) {
 				
 				session.getTransaction().rollback();

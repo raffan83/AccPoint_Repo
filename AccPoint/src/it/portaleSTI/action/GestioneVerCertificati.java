@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
@@ -56,7 +57,7 @@ import it.portaleSTI.bo.SendEmailBO;
 @WebServlet("/gestioneVerCertificati.do")
 public class GestioneVerCertificati extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(GestioneVerCertificati.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -90,6 +91,8 @@ public class GestioneVerCertificati extends HttpServlet {
 		boolean ajax = false;
         response.setContentType("application/json");
 		try {
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 			
 			LinkedHashMap<String, String> listaClienti =  GestioneVerCertificatoBO.getClientiPerVerCertificato(utente, session);
 			request.getSession().setAttribute("listaClienti",listaClienti);				
@@ -478,6 +481,12 @@ public class GestioneVerCertificati extends HttpServlet {
  				
 				String id_certificato = request.getParameter("id_certificato");
 				String indirizzo = request.getParameter("indirizzo");
+				String host = request.getParameter("second_host");
+				
+				boolean second_host = false;
+				if(host!=null && host.equals("1")) {
+					second_host = true;
+				}
 				
 				String[] ids = id_certificato.split(",");
 				
@@ -487,7 +496,7 @@ public class GestioneVerCertificati extends HttpServlet {
 
 					//SendEmailBO.sendEmailCertificatoVerificazione(certificato, indirizzo, getServletContext());
 					
-					SendEmailBO.sendPECCertificatoVerificazione(certificato,indirizzo, getServletContext());
+					SendEmailBO.sendPECCertificatoVerificazione(certificato,indirizzo, second_host, getServletContext());
 					
 					String[] destinatari = indirizzo.replace(" ", "").split(";");
 					

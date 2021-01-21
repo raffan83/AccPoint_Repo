@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.JsonArray;
@@ -26,6 +27,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -38,7 +40,7 @@ import it.portaleSTI.bo.GestioneCampioneBO;
 
 public class ModificaValoriCampione extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(ModificaValoriCampione.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -70,6 +72,10 @@ public class ModificaValoriCampione extends HttpServlet {
 		JsonObject myObj = new JsonObject();
 		
 	try{	
+		
+		
+		logger.error(Utility.getMemorySpace()+" Action: "+"ModificaValoriCampione" +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
+		
 		String idC = request.getParameter("idC");
 
 		String view = request.getParameter("view");

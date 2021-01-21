@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -33,6 +34,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
@@ -46,7 +48,7 @@ import it.portaleSTI.bo.GestioneSicurezzaElettricaBO;
 @WebServlet(name = "dettaglioMisura", urlPatterns = { "/dettaglioMisura.do" })
 public class DettaglioMisura extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(DettaglioMisura.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -84,6 +86,8 @@ public class DettaglioMisura extends HttpServlet {
 			
 			String idMisura=request.getParameter("idMisura");
 			String action = request.getParameter("action");
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
 			
 			if(action==null || action.equals("")) {
 				

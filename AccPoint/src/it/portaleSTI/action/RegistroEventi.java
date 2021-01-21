@@ -23,6 +23,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
@@ -55,7 +56,7 @@ import it.portaleSTI.bo.GestioneUtenteBO;
 @WebServlet("/registroEventi.do")
 public class RegistroEventi extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(RegistroEventi.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -89,6 +90,9 @@ public class RegistroEventi extends HttpServlet {
 		boolean ajax = false;
 		JsonObject myObj = new JsonObject();
 		try{
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
+			
 			if(action==null || action.equals("")) {
 				
 			String idC = request.getParameter("idCamp");

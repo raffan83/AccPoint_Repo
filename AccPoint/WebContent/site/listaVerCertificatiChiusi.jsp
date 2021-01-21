@@ -213,12 +213,17 @@
 		</div>
       <div class="modal-footer">
  		<div class="row">
- 		<div class="col-sm-2">
+ 		<div class="col-sm-4">
  		<a id="close_button" type="button" class="btn btn-info pull-left" onClick="sendEmailVerificazione()">Invia</a> 
+ 		<c:if test="${userObj.checkPermesso('SECOND_HOST_PEC') }">
+ 		<a id="close_button" type="button" class="btn btn-info pull-left" onClick="sendEmailVerificazione(1)">Invia 2</a> 
+ 		</c:if>
+ 		
  		</div>
  		<div class="col-sm-10">
  		
- 		<input type="hidden" id="id_certificato" name="id_certificato"> 
+ 		<input type="hidden" id="id_certificato" name="id_certificato">
+ 		 
  		</div>
  		</div>
          

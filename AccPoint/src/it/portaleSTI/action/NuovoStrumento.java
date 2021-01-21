@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -41,7 +42,7 @@ import it.portaleSTI.bo.GestioneStrumentoBO;
 
 public class NuovoStrumento extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(NuovoStrumento.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -71,6 +72,9 @@ public class NuovoStrumento extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		String action = request.getParameter("action");
+		
+		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
+		
 		if(action==null || action =="") {
 
 		try{	

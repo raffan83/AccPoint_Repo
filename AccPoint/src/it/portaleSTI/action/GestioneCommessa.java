@@ -27,7 +27,7 @@ import it.portaleSTI.bo.GestioneCommesseBO;
 
 public class GestioneCommessa extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	static final Logger logger = Logger.getLogger(GestionePacco.class);
+	static final Logger logger = Logger.getLogger(GestioneCommessa.class);
     /**
      * @see HttpServlet#HttpServlet()
      */

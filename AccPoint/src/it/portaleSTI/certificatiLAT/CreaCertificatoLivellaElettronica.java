@@ -307,7 +307,7 @@ public class CreaCertificatoLivellaElettronica {
 			if(misura.getStrumento().getCodice_interno()!=null) {
 				matricola = matricola +" - "+misura.getStrumento().getCodice_interno();
 			}
-			report.addParameter("matricola", matricola);	
+			reportP2.addParameter("matricola", matricola);	
 		}else {
 			reportP2.addParameter("matricola", "");
 		}

@@ -241,7 +241,12 @@ public class CreaCertificatoLivellaElettronica {
 			report.addParameter("modello", "");	
 		}
 		if(misura.getStrumento().getMatricola()!=null) {
-			report.addParameter("matricola", misura.getStrumento().getMatricola());	
+			String matricola = misura.getStrumento().getMatricola();
+			
+			if(misura.getStrumento().getCodice_interno()!=null) {
+				matricola = matricola +" - "+misura.getStrumento().getCodice_interno();
+			}
+			report.addParameter("matricola", matricola);	
 		}else {
 			report.addParameter("matricola", "");
 		}
@@ -297,7 +302,12 @@ public class CreaCertificatoLivellaElettronica {
 			reportP2.addParameter("modello", "");
 		}
 		if(misura.getStrumento().getMatricola()!=null) {
-			reportP2.addParameter("matricola", misura.getStrumento().getMatricola());
+			String matricola = misura.getStrumento().getMatricola();
+			
+			if(misura.getStrumento().getCodice_interno()!=null) {
+				matricola = matricola +" - "+misura.getStrumento().getCodice_interno();
+			}
+			report.addParameter("matricola", matricola);	
 		}else {
 			reportP2.addParameter("matricola", "");
 		}

@@ -271,7 +271,12 @@ public class CreaCertificatoLivellaBolla {
 			reportP2.addParameter("modello", "");
 		}
 		if(misura.getStrumento().getMatricola()!=null) {
-			reportP2.addParameter("matricola", misura.getStrumento().getMatricola());
+			String matricola = misura.getStrumento().getMatricola();
+			
+			if(misura.getStrumento().getCodice_interno()!=null) {
+				matricola = matricola +" - "+misura.getStrumento().getCodice_interno();
+			}
+			report.addParameter("matricola", matricola);	
 		}else {
 			reportP2.addParameter("matricola", "");
 		}

@@ -303,42 +303,42 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{altezza_org}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{altezza_util}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="174" y="89" width="113" height="16" uuid="0d9990c2-d021-403c-bd01-36673a13d5e1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{altezza_util}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{altezza_org}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="287" y="73" width="113" height="16" uuid="fe5b1c07-4f12-40c0-9f87-c953e2b3d738"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{latitudine_org}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{latitudine_util}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="287" y="89" width="113" height="16" uuid="cc3bb603-3b28-45bb-aaa6-c0fb281e4065"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{latitudine_util}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{latitudine_org}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="400" y="73" width="113" height="16" uuid="704d0adb-4755-4176-a1c8-7928b9a51c31"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{g_org}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{g_util}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="400" y="89" width="113" height="16" uuid="b5475f3d-3580-4301-bc7c-72d11419af9b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{g_util}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{g_org}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="520" y="74" width="20" height="20" uuid="b2d3342d-99b5-4350-bfb2-01cb50b6a69e"/>

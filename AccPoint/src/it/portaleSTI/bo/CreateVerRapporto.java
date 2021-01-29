@@ -1662,12 +1662,22 @@ public class CreateVerRapporto {
 						arrayPs.add("");
 					}
 					if(item.getErroreCorSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCorSalita().setScale(risoluzioneBilanciaE0, RoundingMode.HALF_UP).toPlainString()));	
+						if(rif==0) {
+							arrayPs.add("/");
+						}else {
+							arrayPs.add(Utility.changeDotComma(item.getErroreCorSalita().setScale(risoluzioneBilanciaE0, RoundingMode.HALF_UP).toPlainString()));	
+						}
+							
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCorDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCorDiscesa().setScale(risoluzioneBilanciaE0, RoundingMode.HALF_UP).toPlainString()));
+						if(rif==0) {
+							arrayPs.add("/");
+						}else {
+							arrayPs.add(Utility.changeDotComma(item.getErroreCorDiscesa().setScale(risoluzioneBilanciaE0, RoundingMode.HALF_UP).toPlainString()));	
+						}
+						
 					}else {
 						arrayPs.add("");
 					}

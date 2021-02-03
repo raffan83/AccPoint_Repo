@@ -923,8 +923,12 @@ public class CreateVerRapporto {
 								cmp.text("|Ec").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(17),
 								cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
 								cmp.text("| < EMT").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS")),
-								cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS"))
-								));
+								cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS"))),
+						cmp.horizontalList(cmp.text("  - Per il punto E").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(75), 
+								cmp.text("0").setFixedWidth(5).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
+								cmp.text(":").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(8),
+								cmp.text("Ec = E").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(35))
+						);
 				
 				VerticalListBuilder vl_linearita = cmp.verticalList(
 						cmp.text(campo).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(boldStyle),
@@ -1214,9 +1218,9 @@ public class CreateVerRapporto {
  		}
  		
  		report.addColumn(col.column("Errore  <br><i> E </i> <br> "+"/"+um,"e", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
- 		if(tipologia_strumento == 1 && classe_strumento!=5 && classe_strumento!=6) {
+ 	//	if(tipologia_strumento == 1 && classe_strumento!=5 && classe_strumento!=6) {
  			report.addColumn(col.column("Errore Corretto <br><i> Ec </i> <br>"+"/"+um,"ec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
- 		}
+ 	//	}
  		report.addColumn(col.column("Errore Massimo Tollerato <br> ± EMT  <br> " +"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(90));
  			 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
@@ -1254,10 +1258,10 @@ public class CreateVerRapporto {
 	 		
 	 		report.addColumn(col.column("Errore Salita <br> <i> E </i> <br>"+"/"+um,"e_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Errore Discesa<br> <i> E </i> <br>"+"/"+um,"e_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		if(tipologia_strumento == 1 && classe_strumento!=5 && classe_strumento!=6) {
+	 		//if(tipologia_strumento == 1 && classe_strumento!=5 && classe_strumento!=6) {
 	 			report.addColumn(col.column("Errore Corretto Salita <br> <i> Ec </i> <br>"+"/"+um,"ec_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 			report.addColumn(col.column("Errore Corretto Discesa <br> <i> Ec </i> <br>" +"/"+ um,"ec_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		}
+	 		//}
 	 		report.addColumn(col.column("Errore Massimo Tollerato <br> ± EMT  <br>"+"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	
 			
@@ -1285,9 +1289,9 @@ public class CreateVerRapporto {
 	 		}
 	 			 		
 	 		report.addColumn(col.column("Errore <br> <i>E </i> <br>"+"/"+um,"e", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		if(tipologia_strumento == 1) {
+	 	//	if(tipologia_strumento == 1) {
 	 			report.addColumn(col.column("Errore Corretto  <br><i> Ec </i> <br>"+"/"+um,"ec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		}
+	 	//	}
 	 		report.addColumn(col.column("Errore Massimo Tollerato <br> ± EMT  <br> "+"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		
 	 		//report.getReport().setColspan(2, 2, "Estimated");
@@ -1388,16 +1392,16 @@ public class CreateVerRapporto {
 			
 			report.addColumn(col.column("Carico","carico", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));			
 	 		report.addColumn(col.column("Massa <br> <i>L </i> <br> "+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Indicazione <br><i> I1 </i> <br>"+"/"+um,"i1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+	 		report.addColumn(col.column("Indicazione <br><i> I<sub>1</sub> </i> <br>"+"/"+um,"i1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
 	 		report.addColumn(col.column("Carico aggiuntivo =<br> |EMTcarico| <br> <i>ΔL</i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-	 		report.addColumn(col.column("Indicazione <br><i> I2 </i> <br>"+"/"+um,"i2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-	 		report.addColumn(col.column("Differenza  <br><i> I2 - I1</i> <br>"+"/"+um,"differenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Indicazione <br><i> I<sub>2</sub> </i> <br>"+"/"+um,"i2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+	 		report.addColumn(col.column("Differenza  <br><i> I<sub>2</sub> - I<sub>1</sub></i> <br>"+"/"+um,"differenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		if(caso==1) {
 	 			report.addColumn(col.column("Div. reale strumento <br> d  <br>"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-		 		report.addColumn(col.column("Check <br> <i>|I2 - I1| </i>≥ <i>d</i <br>","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
+		 		report.addColumn(col.column("Check <br> <i>|I<sub>2</sub> - I<sub>1</sub>| </i>≥ <i>d</i <br>","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
 	 		}else {
-	 			report.addColumn(col.column("0,7 • Carico Aggiuntivo =  <br> 0,7 • EMT </i> <br>"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-		 		report.addColumn(col.column("Check  <br> <i>|I2 - I1|</i> ≥ 0,7 EMT <br>","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 			report.addColumn(col.column("0,7 Carico Aggiuntivo =  <br> 0,7 EMT </i> <br>"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 		report.addColumn(col.column("Check  <br> <i>|I<sub>2</sub> - I<sub>1</sub>|</i> ≥<br>0,7 EMT ","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		}
 	 		
 	 		
@@ -1552,7 +1556,12 @@ public class CreateVerRapporto {
 						arrayPs.add("");
 					}
 					if(item.getErroreCor()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(risoluzioneBilanciaE0, RoundingMode.HALF_UP).toPlainString()));	
+						if((item.getPosizione()%2)!=0) {
+							arrayPs.add("/");
+						}else {
+							arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(risoluzioneBilanciaE0, RoundingMode.HALF_UP).toPlainString()));	
+						}
+							
 					}else {
 						arrayPs.add("");
 					}
@@ -1736,7 +1745,7 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 					
 					ArrayList<String> arrayPs = new ArrayList<String>();
 							
-					arrayPs.add("ET");
+					arrayPs.add("<i>E<sub>T</sub></i>");
 					
 					
 					arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));

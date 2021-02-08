@@ -636,8 +636,10 @@ public class CreateVerRapporto {
 			
 			if(misura.gettInizio()!=0 && misura.gettFine()!=0) {
 				
-				reportP3.addParameter("t_inizio", (""+misura.gettInizio()).replace(".", ","));
-				reportP3.addParameter("t_fine", (""+misura.gettFine()).replace(".", ","));
+				//reportP3.addParameter("t_inizio", (""+misura.gettInizio()).replace(".", ","));				
+				reportP3.addParameter("t_inizio",String.format("%.1f", misura.gettInizio()).replace(".", ","));
+				reportP3.addParameter("t_fine",String.format("%.1f", misura.gettFine()).replace(".", ","));
+				//reportP3.addParameter("t_fine", (""+misura.gettFine()).replace(".", ","));
 				
 				if(Math.abs(misura.gettInizio()-misura.gettFine())<5) {
 					reportP3.addParameter("esito_temperatura", "ESITO: POSITIVO");	
@@ -673,12 +675,12 @@ public class CreateVerRapporto {
 					reportP3.addParameter("g_org","N.A.");
 				}
 				if(misura.getgUtil()!=0) {
-					reportP3.addParameter("g_util", (""+misura.getgUtil()).replace(".", ","));
+					reportP3.addParameter("g_util", String.format("%.4f", misura.getgUtil()).replace(".", ","));
 				}else {
 					reportP3.addParameter("g_util","N.A.");
 				}
 				if(misura.getgFactor()!=0) {
-					reportP3.addParameter("g_factor", (""+misura.getgFactor()).replace(".", ","));
+					reportP3.addParameter("g_factor", String.format("%.4f", misura.getgFactor()).replace(".", ","));
 				}else {
 					reportP3.addParameter("g_factor","N.A.");
 				}

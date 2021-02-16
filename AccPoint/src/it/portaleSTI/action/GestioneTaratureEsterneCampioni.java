@@ -190,12 +190,13 @@ public class GestioneTaratureEsterneCampioni extends HttpServlet {
 			String data = ret.get("data_mod");
 			String committente = ret.get("committente_mod");
 			String oggetto = ret.get("oggetto_mod");
-			String stato = ret.get("stato_mod");
+			String stato = ret.get("stato_tar_mod");
 			String controllo = ret.get("controllo_mod");
-			String commessa = ret.get("commessa_mod");
+			String commessa = ret.get("commessa_mod");			
 			String operatore = ret.get("operatore_mod");	
 			String id_taratura = ret.get("id_taratura");	
 			String note = ret.get("note_mod");
+			
 			
 			//CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);				
 			
@@ -209,8 +210,11 @@ public class GestioneTaratureEsterneCampioni extends HttpServlet {
 			taratura.setData(date);
 			taratura.setOggetto(oggetto);
 			taratura.setStato(Integer.parseInt(stato));
-			AcAttivitaCampioneDTO verifica_intermedia = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(rif_verifica), session);
-			taratura.setVerifica_intermedia(verifica_intermedia);
+			
+			if(rif_verifica!=null && !rif_verifica.equals("")) {
+				AcAttivitaCampioneDTO verifica_intermedia = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(rif_verifica), session);
+				taratura.setVerifica_intermedia(verifica_intermedia);
+			}			
 			
 			UtenteDTO op = GestioneUtenteBO.getUtenteById(operatore, session);
 			taratura.setOperatore(op);;

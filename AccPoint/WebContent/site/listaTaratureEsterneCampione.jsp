@@ -367,7 +367,7 @@ Uscita
         
        	  <!-- </div>  -->
       <div class="modal-footer">
-      <input type="hidden" id="stato_mod" name="stato_mod"/>
+      <input type="hidden" id="stato_tar_mod" name="stato_tar_mod"/>
       <input type="hidden" id="controllo_mod" name="controllo_mod"/>
       <input type="hidden" id="id_taratura" name="id_taratura"/>
       
@@ -458,10 +458,10 @@ function caricaVerifica(){
 	 
 	 if(stato==0){
 		 $('#check_entrata_mod').prop("checked", true); 
-		 $('#stato_mod').val("0");
+		 $('#stato_tar_mod').val("0");
 	 }else{
 		 $('#check_uscita_mod').prop("checked", true); 
-		 $('#stato_mod').val("1");
+		 $('#stato_tar_mod').val("1");
 	 }
 	 if(controllo=='OK'){
 		 $('#check_ok_mod').prop("checked", true);
@@ -690,12 +690,12 @@ $('#tabTaratureEsterne').on( 'page.dt', function () {
 
 		$('#check_entrata_mod').click(function(){
 			$('#check_uscita_mod').prop("checked", false); 
-			$('#stato_mod').val("0");
+			$('#stato_tar_mod').val("0");
 		 });
 		 
 		 $('#check_uscita_mod').click(function(){
 			$('#check_entrata_mod').prop("checked", false);
-			$('#stato_mod').val("1");
+			$('#stato_tar_mod').val("1");
 		 });
 		 
 		 $('#check_ok_mod').click(function(){

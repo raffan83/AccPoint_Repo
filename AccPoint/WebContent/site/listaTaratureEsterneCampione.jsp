@@ -619,14 +619,14 @@ $('#tabTaratureEsterne').on( 'page.dt', function () {
  
   $('#formNuovaTaraturaEsterna').on('submit',function(e){		
 		e.preventDefault();		
-		if($('#rif_verifica').val()==""){
+		/* if($('#rif_verifica').val()==""){
 			$('#myModalErrorContent').html("Attenzione! Selezionare una scheda di verifica!");
   			$('#myModalError').removeClass();
   			$('#myModalError').addClass("modal modal-danger");
   			$('#myModalError').modal('show');
-		}else{
+		}else{ */
 			nuovaTaraturaEsterna(datax[0]);
-		}
+		//}
 	});
   
   $('#formModificaTaraturaEsterna').on('submit',function(e){		

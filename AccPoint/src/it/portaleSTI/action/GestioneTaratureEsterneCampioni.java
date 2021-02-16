@@ -146,9 +146,10 @@ public class GestioneTaratureEsterneCampioni extends HttpServlet {
 			taratura.setData(date);
 			taratura.setOggetto(oggetto);
 			taratura.setStato(Integer.parseInt(stato));
-			AcAttivitaCampioneDTO verifica_intermedia = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(rif_verifica), session);
-			taratura.setVerifica_intermedia(verifica_intermedia);
-			
+			if(rif_verifica!=null && !rif_verifica.equals("")) {
+				AcAttivitaCampioneDTO verifica_intermedia = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(rif_verifica), session);
+				taratura.setVerifica_intermedia(verifica_intermedia);
+			}
 			UtenteDTO op = GestioneUtenteBO.getUtenteById(operatore, session);
 			taratura.setOperatore(op);;
 			taratura.setNote(note);

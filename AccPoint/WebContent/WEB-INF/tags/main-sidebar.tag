@@ -309,7 +309,7 @@
           </a>
           <ul class="treeview-menu">
 		
-		    <%if(user.checkRuolo("AM") ||user.checkRuolo("F1")){ %>
+		    <%if(user.checkRuolo("AM") ||user.checkRuolo("D1")){ %>
 			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_committenti',null,true);">Gestione Committenti</a></li>
 			<%} %>
 			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_fornitori',null,true);">Gestione Fornitori</a></li>	

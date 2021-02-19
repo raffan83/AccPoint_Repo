@@ -44,7 +44,7 @@
 
 <div class="box-body">
 
-<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 <div class="row">
 <div class="col-xs-12">
 
@@ -94,7 +94,7 @@
 	
 	<a class="btn btn-info" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(fornitore.id)}')"><i class="fa fa-search"></i></a>
 	 
-	 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
+	 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 	 <a class="btn btn-warning" onClicK="modificaFornitoreModal('${fornitore.id}','${utl:escapeJS(fornitore.ragione_sociale)}','${utl:escapeJS(fornitore.indirizzo)}','${utl:escapeJS(fornitore.cap)}',
 	  '${utl:escapeJS(fornitore.comune)}', '${utl:escapeJS(fornitore.provincia)}','${fornitore.p_iva }','${fornitore.cf }','${fornitore.email }')" title="Click per modificare il Fornitore"><i class="fa fa-edit"></i></a>
 	  </c:if> 

@@ -2,6 +2,7 @@ package it.portaleSTI.bo;
 
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -577,7 +578,7 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 	}
 
 
-public static void sendEmailDocumento(DocumTLDocumentoDTO documento, String mailTo, String mailCc, String motivo_rifiuto) throws Exception {
+public static void sendEmailDocumento(DocumTLDocumentoDTO documento, String mailTo, String mailCc, String motivo_rifiuto,ServletContext ctx) throws Exception {
 	
 	
 	String filename = documento.getNome_documento();
@@ -605,7 +606,12 @@ public static void sendEmailDocumento(DocumTLDocumentoDTO documento, String mail
         email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
 
 
-	  email.addTo(mailTo);
+        String[] destinatari = mailTo.split(";"); 
+        
+        for (String dest : destinatari) {
+        	email.addTo(dest);
+		}
+	  
 	  if(mailCc!=null && !mailCc.equals("")) {
 		  email.addCc(mailCc);  
 	  }
@@ -615,8 +621,8 @@ public static void sendEmailDocumento(DocumTLDocumentoDTO documento, String mail
 	  
 	  // embed the image and get the content id
 
-//	  File image = new File(ctx.getRealPath("images/logo_calver_v2.png"));
-//	  String cid = email.embed(image, "Calver logo");
+	  File image = new File(ctx.getRealPath("images/logo_calver_v2.png"));
+	  String cid = email.embed(image, "Calver logo");
 	  
 	  // set the html message
 	  
@@ -625,14 +631,15 @@ public static void sendEmailDocumento(DocumTLDocumentoDTO documento, String mail
 			  		+ "Motivo rifiuto: "
 			  		+ "<br /> "
 			  		+ motivo_rifiuto
-			  		+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.LOGO_EMAIL_FOOTER+" \"></html>");
+			  		+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.PATH_FOLDER_LOGHI +"\\sito_calver.png"+" \"></html>");
 
 	  }else {
 		  email.setHtmlMsg("<html>Il documento "+documento.getNome_documento()+" &egrave scaduto! "
 			  		+ "Fai click sul link per ricaricare il documento aggiornato"
 			  		+ "<br /> "
 			  		+ "http://portale.ecisrl.it/FormInputDoc/index.jsp?id_documento="+Utility.encryptData(documento.getId()+"")
-			  		+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.LOGO_EMAIL_FOOTER+" \"></html>");
+			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
+			  		//+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.PATH_FOLDER_LOGHI +"\\sito_calver.png"+" \"></html>");
 
 	  }
 

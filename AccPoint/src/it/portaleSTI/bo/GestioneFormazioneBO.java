@@ -3,6 +3,7 @@ package it.portaleSTI.bo;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -149,6 +150,12 @@ public class GestioneFormazioneBO {
 			partecipante.setNome_azienda(nome_azienda);
 			partecipante.setNome_sede(nome_sede);			
 			boolean esito = false;
+			
+			String nome = null;
+			String cognome = null;
+			String cf = null;
+			String luogo_nascita = null;
+			Date data_nascita = null;
 			while (cellIterator.hasNext())   
 			{  
 				Cell cell = cellIterator.next();  
@@ -171,20 +178,24 @@ public class GestioneFormazioneBO {
 							esito = true;		
 							
 							if(cell.getColumnIndex()==0) {
-								partecipante.setNome(cell.getStringCellValue());
+								nome = cell.getStringCellValue();
+								//partecipante.setNome(cell.getStringCellValue());
 							}
 							else if(cell.getColumnIndex()==1) {
-								partecipante.setCognome(cell.getStringCellValue());
+								cognome = cell.getStringCellValue();
+								//partecipante.setCognome(cell.getStringCellValue());
 							}	
 							else if(cell.getColumnIndex()==3) {
-								partecipante.setLuogo_nascita(cell.getStringCellValue());
+								luogo_nascita = cell.getStringCellValue();
+								//partecipante.setLuogo_nascita(cell.getStringCellValue());
 							}
 							else if(cell.getColumnIndex()==4) {
-								partecipante.setCf(cell.getStringCellValue());
+								cf = cell.getStringCellValue();
+								//partecipante.setCf(cell.getStringCellValue());
 								
-								if(codiciFiscali.contains(cell.getStringCellValue())) {
-									esito = false;
-								}
+//								if(codiciFiscali.contains(cell.getStringCellValue())) {
+//									esito = false;
+//								}
 							}											
 							
 						}
@@ -192,14 +203,20 @@ public class GestioneFormazioneBO {
 					}else {
 						
 						if(cell.getDateCellValue()!=null && cell.getColumnIndex()==2) {
-							partecipante.setData_nascita(cell.getDateCellValue());					
+							
+							data_nascita = cell.getDateCellValue();
+							//partecipante.setData_nascita(cell.getDateCellValue());					
 							esito = true;
 						}				
 					}				
 				}	
 			
 			}
-			if(esito) {
+			if(!codiciFiscali.contains(cf)) {
+				partecipante.setNome(nome);
+				partecipante.setCognome(cognome);
+				partecipante.setData_nascita(data_nascita);
+				partecipante.setCf(cf);
 				session.save(partecipante);	
 			}
 		}

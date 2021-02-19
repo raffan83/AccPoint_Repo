@@ -48,7 +48,7 @@ import it.portaleSTI.bo.SendEmailBO;
 
 public class GestioneMagazzinoDAO {
 	
-	static final Logger logger = Logger.getLogger(GestioneMagazzinoDAO.class);
+	
 
 private static final String queryControlloStrumento = "SELECT a.commessa,c.id_tipo_proprio ,c.id as idItemPacco from mag_pacco a "
 		+ "left join mag_item_pacco b on a.id=b.id_pacco  "
@@ -58,7 +58,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 	public static ArrayList<MagPaccoDTO> getPacchi(int id_company, Session session){
 		
-		logger.error("Metodo: getPacchi");
+	
 		
 		 ArrayList<MagPaccoDTO> lista= null;
 		
@@ -68,7 +68,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 					
 			lista=(ArrayList<MagPaccoDTO>) query.list();
 			
-			logger.error("Metodo: getPacchi - fine metodo");
+			
 			
 			return lista;
 	}
@@ -76,17 +76,16 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 	public static void savePacco(MagPaccoDTO pacco, Session session) {
 		
-		logger.error("Metodo: savePacco");
+		
 	
 		session.save(pacco);
 		
-		logger.error("Metodo: savePacco - fine metodo");
+	
 	}
 
 
 	public static MagDdtDTO getDDT(String id_ddt, Session session) {
 		
-		logger.error("Metodo: getDDT");
 		
 		MagDdtDTO ddt= null;
 		
@@ -97,7 +96,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 					
 			ddt= (MagDdtDTO) query.list().get(0);
 			
-			logger.error("Metodo: getDDT - fine metodo");
+		
 			
 			return ddt;
 		
@@ -107,7 +106,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 
 	public static ArrayList<MagTipoDdtDTO> getTipoDDT(Session session) {
 		
-		logger.error("Metodo: getTipoDDT");
+		
 		
 		 ArrayList<MagTipoDdtDTO> lista= null;
 		
@@ -116,7 +115,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 			lista=(ArrayList<MagTipoDdtDTO>) query.list();
 			
-			logger.error("Metodo: getTipoDDT - fine metodo");
+		
 			
 			return lista;
 		
@@ -126,7 +125,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 
 	public static ArrayList<MagTipoTrasportoDTO> getTipoTrasporto(Session session) {
 		
-		logger.error("Metodo: getTipoTrasporto");
+	
 		
 		 ArrayList<MagTipoTrasportoDTO> lista= null;
 			 
@@ -134,7 +133,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 			lista=(ArrayList<MagTipoTrasportoDTO>) query.list();
 			
-			logger.error("Metodo: getTipoTrasporto - fine metodo");
+		
 			
 			return lista;
 			
@@ -143,7 +142,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 
 	public static ArrayList<MagTipoPortoDTO> getTipoPorto(Session session) {
 		
-		logger.error("Metodo: getTipoPorto");
+
 		
 		 ArrayList<MagTipoPortoDTO> lista= null;
 		
@@ -152,7 +151,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 			lista=(ArrayList<MagTipoPortoDTO>) query.list();
 			
-			logger.error("Metodo: getTipoPorto - fine metodo");
+			
 			
 			return lista;
 			
@@ -161,7 +160,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 
 	public static ArrayList<MagAspettoDTO> getTipoAspetto(Session session) {
 		
-		logger.error("Metodo: getTipoAspetto");
+		
 		
 		ArrayList<MagAspettoDTO> lista= null;
 		
@@ -169,7 +168,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 			lista=(ArrayList<MagAspettoDTO>) query.list();
 			
-			logger.error("Metodo: getTipoAspetto - fine metodo");
+		
 			
 			return lista;
 	}
@@ -179,7 +178,6 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 
 	public static ArrayList<MagTipoItemDTO> getTipoItem(Session session) {
 		
-		logger.error("Metodo: getTipoItem");
 		
 		ArrayList<MagTipoItemDTO> lista= null;
 		
@@ -188,7 +186,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 			lista=(ArrayList<MagTipoItemDTO>) query.list();
 			
 			
-			logger.error("Metodo: getTipoItem - fine metodo");
+		
 			
 			return lista;
 	}
@@ -196,7 +194,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 
 	public static ArrayList<MagAccessorioDTO> getGenerico(Session session) {
 		
-		logger.error("Metodo: getGenerico");
+		
 		
 		ArrayList<MagAccessorioDTO> lista= null;
 		
@@ -205,23 +203,20 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	
 			lista=(ArrayList<MagAccessorioDTO>) query.list();
 			
-			logger.error("Metodo: getGenerico - fine metodo");
-			
+						
 			return lista;
 	}
 	
 	public static ArrayList<MagStatoLavorazioneDTO> getStatoLavorazione(Session session) {
 		
-		logger.error("Metodo: getStatoLavorazione");
-		
+	
 		ArrayList<MagStatoLavorazioneDTO> lista= null;
 	
 			Query query  = session.createQuery( "from MagStatoLavorazioneDTO");
 	
 			lista=(ArrayList<MagStatoLavorazioneDTO>) query.list();
 			
-			logger.error("Metodo: getStatoLavorazione - fine metodo");
-			
+				
 			return lista;
 		
 		
@@ -230,38 +225,35 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 
 	public static void saveDdt(MagDdtDTO ddt, Session session) {
 		
-		logger.error("Metodo: saveDdt");
+		
 		
 		session.save(ddt);
-		logger.error("Metodo: saveDdt - fine metodo");
+		
 	}
 
 
 	public static void saveItem(MagItemDTO mag_item, Session session) {
 		
-		logger.error("Metodo: saveItem");
+		
 	
 		session.save(mag_item);
 		
-		logger.error("Metodo: saveItem - fine metodo");
+		
 	}
 
 
 	public static void saveItemPacco(MagItemPaccoDTO item_pacco, Session session) {
 		
-		logger.error("Metodo: saveItemPacco");
-		
+	
 		session.saveOrUpdate(item_pacco);
 		
-		logger.error("Metodo: saveItemPacco - fine metodo");
+	
 	}
 
 
 	public static MagPaccoDTO getPaccoId(int id_pacco, Session session) throws Exception {
 		
-		logger.error("Metodo: getPaccoId");
-	
-
+		
 		MagPaccoDTO pacco= null;		
 		 
 		Query query  = session.createQuery( "from MagPaccoDTO WHERE id= :_id_pacco");
@@ -271,7 +263,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		List<MagPaccoDTO> result =query.list();
 		
 
-		logger.error("Metodo: getPaccoId - fine metodo");
+		
 		if(result.size()>0)
 		{			
 			return result.get(0);
@@ -893,8 +885,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		List<MagSaveStatoDTO> result = (List<MagSaveStatoDTO>)query.list();
 		
-		logger.error("Metodo: getMagSaveStato - fine metodo");
-		
+
 		if(result.size()>0)
 		{			
 			return result.get(0);

@@ -25,7 +25,9 @@ public class DocumTLDocumentoDTO {
 	private int documento_sostituito;
 	private String note_upload;
 	private String motivo_rifiuto;
-
+	private Date data_rilascio;
+	
+	
 	private transient Set<DocumDipendenteFornDTO> listaDipendenti= new HashSet<DocumDipendenteFornDTO>(0);	
 	
 	
@@ -137,6 +139,12 @@ public class DocumTLDocumentoDTO {
 	}
 	public void setNote_upload(String note_upload) {
 		this.note_upload = note_upload;
+	}
+	public Date getData_rilascio() {
+		return data_rilascio;
+	}
+	public void setData_rilascio(Date data_rilascio) {
+		this.data_rilascio = data_rilascio;
 	}
 
 	

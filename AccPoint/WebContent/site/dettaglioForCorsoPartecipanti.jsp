@@ -386,6 +386,9 @@ function associaUtentiModal(id_corso){
   	
   		table.columns.adjust().draw();
   		
+  		
+
+  		
 
   	$('#tabPartecipanti').on( 'page.dt', function () {
   		$('.customTooltip').tooltipster({
@@ -399,7 +402,9 @@ function associaUtentiModal(id_corso){
 
   	});
      	
-
+  		var n_partecipanti = table.rows()[0].length;
+  		
+  		$("#n_partecipanti").html(n_partecipanti);
 	});
 
     $('#ore_partecipate').focusout(function(){

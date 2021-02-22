@@ -602,7 +602,8 @@ public class GestioneDocumentale extends HttpServlet {
 				String qualifica = ret.get("qualifica");
 				String mansione = ret.get("mansione");
 				String note = ret.get("note");
-
+				String email = ret.get("email");
+;
 				DocumReferenteFornDTO referente = new DocumReferenteFornDTO();
 				
 				if(id_fornitore_ref!=null) {
@@ -622,7 +623,8 @@ public class GestioneDocumentale extends HttpServlet {
 				referente.setQualifica(qualifica);
 				referente.setMansione(mansione);
 				referente.setNote(note);
-								
+				referente.setEmail(email);				
+				
 				session.save(referente);
 				
 				
@@ -679,6 +681,7 @@ public class GestioneDocumentale extends HttpServlet {
 				String qualifica = ret.get("qualifica_mod");
 				String mansione = ret.get("mansione_mod");
 				String note = ret.get("note_mod");
+				String email = ret.get("email_mod");
 
 
 				if(id_fornitore_ref!=null) {
@@ -702,7 +705,7 @@ public class GestioneDocumentale extends HttpServlet {
 				referente.setQualifica(qualifica);
 				referente.setMansione(mansione);
 				referente.setNote(note);
-								
+				referente.setEmail(email);
 				session.update(referente);
 				
 				//fornitore.getListaReferenti().add(referente);
@@ -972,14 +975,13 @@ public class GestioneDocumentale extends HttpServlet {
 		
 		        String id_fornitore = ret.get("fornitore");
 		        String id_committente = ret.get("committente_docum");		        	
-		        String nome_documento = ret.get("nome_documento");				
-				String data_caricamento = ret.get("data_caricamento");
+		        String nome_documento = ret.get("nome_documento");	
 				String frequenza = ret.get("frequenza");				
 				String data_scadenza = ret.get("data_scadenza");
 				String rilasciato = ret.get("rilasciato");
 				String numero_documento = ret.get("numero_documento");
 				String ids_dipendenti = ret.get("ids_dipendenti");
-				
+				String data_rilascio = ret.get("data_rilascio");
 
 				DocumTLDocumentoDTO documento = new DocumTLDocumentoDTO();
 				
@@ -992,12 +994,26 @@ public class GestioneDocumentale extends HttpServlet {
 				documento.setFornitore(fornitore);
 				documento.setNome_documento(nome_documento);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-				documento.setData_caricamento(sdf.parse(data_caricamento));
-				documento.setFrequenza_rinnovo_mesi(Integer.parseInt(frequenza));
-				documento.setData_scadenza(sdf.parse(data_scadenza));		
+				documento.setData_caricamento(new Date());
+				if(data_rilascio!=null && !data_rilascio.equals("")) {
+					documento.setData_rilascio(sdf.parse(data_rilascio));
+				}else {
+					documento.setData_rilascio(null);
+				}
+				if(frequenza!=null && !frequenza.equals("")) {
+					documento.setFrequenza_rinnovo_mesi(Integer.parseInt(frequenza));	
+				}else {
+					documento.setFrequenza_rinnovo_mesi(0);
+				}
+				
+				if(data_scadenza!=null && !data_scadenza.equals("")) {
+					documento.setData_scadenza(sdf.parse(data_scadenza));
+				}else {
+					documento.setData_scadenza(null);
+				}
 				
 				DocumTLStatoDTO stato = new DocumTLStatoDTO();
-				if(sdf.parse(data_scadenza)!=null && sdf.parse(data_scadenza).before(new Date())) {
+				if(data_scadenza!=null && !data_scadenza.equals("") && sdf.parse(data_scadenza)!=null && sdf.parse(data_scadenza).before(new Date())) {
 					stato.setId(3);
 				}else {
 					stato.setId(1);
@@ -1077,14 +1093,15 @@ public class GestioneDocumentale extends HttpServlet {
 		        String id_committente = ret.get("committente_docum_mod");	
 		        String id_fornitore = ret.get("fornitore_mod");
 		        String nome_documento = ret.get("nome_documento_mod");				
-				String data_caricamento = ret.get("data_caricamento_mod");
+				//String data_caricamento = ret.get("data_caricamento_mod");
 				String frequenza = ret.get("frequenza_mod");				
 				String data_scadenza = ret.get("data_scadenza_mod");
 				String rilasciato = ret.get("rilasciato_mod");
 				String numero_documento = ret.get("numero_documento_mod");
 				String ids_dipendenti = ret.get("ids_dipendenti_mod");
 				String ids_dipendenti_dissocia = ret.get("ids_dipendenti_dissocia");				
-
+				String data_rilascio = ret.get("data_rilascio_mod");
+				
 				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
 				
 				DocumFornitoreDTO fornitore = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_fornitore), session);
@@ -1095,9 +1112,23 @@ public class GestioneDocumentale extends HttpServlet {
 				documento.setFornitore(fornitore);
 				documento.setNome_documento(nome_documento);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-				documento.setData_caricamento(sdf.parse(data_caricamento));
-				documento.setFrequenza_rinnovo_mesi(Integer.parseInt(frequenza));
-				documento.setData_scadenza(sdf.parse(data_scadenza));
+				if(data_rilascio!=null && !data_rilascio.equals("")) {
+					documento.setData_rilascio(sdf.parse(data_rilascio));
+				}else {
+					documento.setData_rilascio(null);
+				}
+				if(frequenza!=null && !frequenza.equals("")) {
+					documento.setFrequenza_rinnovo_mesi(Integer.parseInt(frequenza));	
+				}else {
+					documento.setFrequenza_rinnovo_mesi(0);
+				}
+				
+				if(data_scadenza!=null && !data_scadenza.equals("")) {
+					documento.setData_scadenza(sdf.parse(data_scadenza));
+				}else {
+					documento.setData_scadenza(null);
+				}
+				
 				documento.setRilasciato(rilasciato);
 				documento.setNumero_documento(numero_documento);
 				
@@ -1110,7 +1141,7 @@ public class GestioneDocumentale extends HttpServlet {
 				}
 				
 				DocumTLStatoDTO stato = new DocumTLStatoDTO();
-				if(documento.getStato().getId() != 4) {
+				if(documento.getStato().getId() != 4 && data_scadenza!=null && !data_scadenza.equals("")) {
 					if(sdf.parse(data_scadenza)!=null && sdf.parse(data_scadenza).before(new Date())) {
 						stato.setId(3);
 					}else {
@@ -1305,23 +1336,27 @@ public class GestioneDocumentale extends HttpServlet {
 				
 				ajax = true;
 				
-				String id_documento = request.getParameter("id_documento");
+				//String id_documento = request.getParameter("id_documento");
+				String id_fornitore = request.getParameter("id_fornitore");
+				String id_committente = request.getParameter("id_committente");
 				
-				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
+				ArrayList<DocumReferenteFornDTO> lista_referenti = GestioneDocumentaleBO.getListaReferenti(Integer.parseInt(id_fornitore), Integer.parseInt(id_committente), session);
+				
+				//DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
 				
 				PrintWriter out = response.getWriter();       
 				
 				String destinatario = "";
 				String copia = "";
 				
-				if(documento.getFornitore()!=null && documento.getFornitore().getEmail()!=null) {
-					destinatario = documento.getFornitore().getEmail();
+				for (DocumReferenteFornDTO ref : lista_referenti) {
+					if(ref.getEmail()!=null) {
+						destinatario = destinatario+ref.getEmail()+";";
+					}
+					copia = ref.getCommittente().getEmail();
 				}
-				
-				if(documento.getCommittente()!=null && documento.getCommittente().getEmail()!=null) {
-					copia = documento.getCommittente().getEmail();
-				}			  
-			  
+							
+
 			    myObj.addProperty("destinatario", destinatario);
 			    myObj.addProperty("copia", copia);
 			    
@@ -1346,7 +1381,7 @@ public class GestioneDocumentale extends HttpServlet {
 				String destinatario = request.getParameter("destinatario");
 				String copia = request.getParameter("copia");
 				
-				SendEmailBO.sendEmailDocumento(documento, destinatario, copia, null);
+				SendEmailBO.sendEmailDocumento(documento, destinatario, copia, null, request.getServletContext());
 				
 				PrintWriter out = response.getWriter();
 				
@@ -1467,7 +1502,7 @@ public class GestioneDocumentale extends HttpServlet {
 						session.update(dipendente);
 					}
 					     
-					SendEmailBO.sendEmailDocumento(documento, email_referente, null, motivo_rifiuto);
+					SendEmailBO.sendEmailDocumento(documento, email_referente, null, motivo_rifiuto, request.getServletContext());
 					myObj.addProperty("messaggio", "Documento rifiutato con successo!");
 				}
 				

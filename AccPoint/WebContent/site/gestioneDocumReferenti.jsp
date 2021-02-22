@@ -43,7 +43,7 @@
 </div>
 
 <div class="box-body">
-<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 <div class="row">
 <div class="col-xs-12">
 
@@ -68,8 +68,9 @@
 <th>Committente</th>
 <th>Fornitore</th>
 <th>Nominativo</th>
-<th>Qualifica</th>
+<th>Email</th>
 <th>Mansione</th>
+<th>Qualifica</th>
 <th>Note</th>
 <th>Azioni</th>
  </tr></thead>
@@ -83,14 +84,15 @@
 	<td>${referente.committente.nome_cliente } - ${referente.committente.indirizzo_cliente }</td>
 	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(referente.fornitore.id)}')">${referente.fornitore.ragione_sociale }</a></td>
 	<td>${referente.nome } ${referente.cognome }</td>
-	<td>${referente.qualifica }</td>
+	<td>${referente.email }</td>
 	<td>${referente.mansione }</td>	
+	<td>${referente.qualifica }</td>
 	<td>${referente.note }</td>
 		
 	<td>	
-	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.committente.id}','${referente.id}','${referente.fornitore.id}','${utl:escapeJS(referente.nome)}','${utl:escapeJS(referente.cognome)}','${utl:escapeJS(referente.note)}',
-	  '${utl:escapeJS(referente.mansione)}', '${utl:escapeJS(referente.qualifica)}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>   
+	  '${utl:escapeJS(referente.mansione)}', '${utl:escapeJS(referente.qualifica)}', '${referente.email }')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>   
 	</c:if>
 	</td>
 	</tr>
@@ -190,6 +192,19 @@
        			
        	</div>       	
        </div><br>
+       
+           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="email" name="email" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
        
        <div class="row">
        
@@ -325,6 +340,19 @@
        	</div>       	
        </div><br>
        
+                  <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="email_mod" name="email_mod" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+       
        <div class="row">
        
        	<div class="col-sm-3">
@@ -449,7 +477,7 @@ function modalNuovoReferente(){
 }
 
 
-function modificaReferenteModal(id_committente,id_referente, fornitore, nome, cognome, note, mansione, qualifica){
+function modificaReferenteModal(id_committente,id_referente, fornitore, nome, cognome, note, mansione, qualifica, email){
 	
 	$('#fornitore_temp').val(fornitore);
 	
@@ -463,7 +491,7 @@ function modificaReferenteModal(id_committente,id_referente, fornitore, nome, co
 	$('#note_mod').val(note);
 	$('#mansione_mod').val(mansione);
 	$('#qualifica_mod').val(qualifica);
-
+	$('#email_mod').val(email);
 	
 	$('#myModalModificaReferente').modal();
 }
@@ -567,7 +595,7 @@ $('.select2').select2();
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 1 },
+		    	  { responsivePriority: 1, targets: 8 },
 		    	  
 		    	  
 		               ], 	        

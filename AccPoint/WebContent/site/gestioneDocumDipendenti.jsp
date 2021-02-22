@@ -44,7 +44,7 @@
 </div>
 
 <div class="box-body">
-<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 <div class="row">
 <div class="col-xs-12">
 
@@ -97,7 +97,7 @@
 	<td>${dipendente.note }</td>
 		
 	<td>	
-	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.committente.id }','${dipendente.id}','${dipendente.fornitore.id}','${utl:escapeJS(dipendente.nome)}','${utl:escapeJS(dipendente.cognome)}','${utl:escapeJS(dipendente.note)}',
 	   '${dipendente.qualifica}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
 	   <a class="btn btn-info customTooltip" title="Associa documenti" onClick="modalAssociaDocumenti('${dipendente.committente.id }','${dipendente.fornitore.id }','${dipendente.id}')"><i class="fa fa-plus"></i></a>

@@ -49,7 +49,7 @@
 </div>
 
 <div class="box-body">
-<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 <div class="row">
 <div class="col-xs-12">
 
@@ -82,8 +82,10 @@
 <th>Nome Documento</th>
 <th>Numero Documento</th>
 <th>Data caricamento</th>
-<th>Frequenza (mesi)</th>
+<th>Data rilascio</th>
 <th>Data scadenza</th>
+<th>Frequenza (mesi)</th>
+
 <th>Stato</th>
 <th>Rilasciato</th>
 <th style="min-width:185px">Azioni</th>
@@ -107,20 +109,22 @@
 	<td>${documento.nome_documento }</td>
 	<td>${documento.numero_documento }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_caricamento}" /></td>
-	<td>${documento.frequenza_rinnovo_mesi }</td>
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_rilascio}" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_scadenza}" /></td>
+	<td>${documento.frequenza_rinnovo_mesi }</td>
+	
 	<td>${documento.getStato().getNome() }</td>
 	<td>${documento.rilasciato }</td>
 		
 	<td>	
 	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
-	 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
-	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.committente.id }','${documento.id}','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
+	 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
+	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.committente.id }','${documento.id}','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_rilascio}','${documento.frequenza_rinnovo_mesi }',
 	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
 	      <a class="btn btn-danger" onClick="modalEliminaDocumento('${documento.id}')"><i class="fa fa-trash"></i></a>    
 	      <c:if test="${documento.stato.id==3 && documento.email_inviata==0 }"> 
-	      <a class="btn btn-primary customTooltip" onclick="modalEmail('${documento.id}')"><i class="fa fa-paper-plane-o"></i></a>
+	      <a class="btn btn-primary customTooltip" onclick="modalEmail('${documento.id }','${documento.fornitore.id}','${documento.committente.id }')"><i class="fa fa-paper-plane-o"></i></a>
 	      </c:if>
 	     </c:if>
 	      <a class="btn btn-info customTooltip" onclick="modalStorico('${documento.id}')"><i class="fa fa-history"></i></a>
@@ -246,12 +250,12 @@
                 <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Data Caricamento</label>
+       		<label>Data Rilascio</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-                <div class='input-group date datepicker' id='datepicker_data_caricamento'>
-               <input type='text' class="form-control input-small" id="data_caricamento" name="data_caricamento" required>
+                <div class='input-group date datepicker' id='datepicker_data_rilascio'>
+               <input type='text' class="form-control input-small" id="data_rilascio" name="data_rilascio" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -268,7 +272,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="frequenza" name="frequenza" class="form-control" type="number" min="0" step="1" style="width:100%" required>
+        <input id="frequenza" name="frequenza" class="form-control" type="number" min="0" step="1" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -281,7 +285,7 @@
        	<div class="col-sm-9">      
        	  	
                 <div class='input-group date datepicker' id='datepicker_data_scadenza'>
-               <input type='text' class="form-control input-small" id="data_scadenza" name="data_scadenza" required>
+               <input type='text' class="form-control input-small" id="data_scadenza" name="data_scadenza" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -432,12 +436,12 @@
                 <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Data Caricamento</label>
+       		<label>Data Rilascio</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-                <div class='input-group date datepicker' id='datepicker_data_caricamento_mod'>
-               <input type='text' class="form-control input-small" id="data_caricamento_mod" name="data_caricamento_mod" required>
+                <div class='input-group date datepicker' id='datepicker_data_rilascio_mod'>
+               <input type='text' class="form-control input-small" id="data_rilascio_mod" name="data_rilascio_mod" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -454,7 +458,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="frequenza_mod" name="frequenza_mod" class="form-control" type="number" min="0" step="1" style="width:100%" required>
+        <input id="frequenza_mod" name="frequenza_mod" class="form-control" type="number" min="0" step="1" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -467,7 +471,7 @@
        	<div class="col-sm-9">      
        	  	
                 <div class='input-group date datepicker' id='datepicker_data_scadenza'>
-               <input type='text' class="form-control input-small" id="data_scadenza_mod" name="data_scadenza_mod" required>
+               <input type='text' class="form-control input-small" id="data_scadenza_mod" name="data_scadenza_mod" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -532,12 +536,12 @@
         <h4 class="modal-title" id="myModalLabel">Invia Comunicazione</h4>
       </div>
        <div class="modal-body">       
-      	<label>A (fornitore):</label><input type="text" class="form-control" id="destinatario" name="destinatario"/>
+      	<label>A (Referente fornitore):</label><input type="text" class="form-control" id="destinatario" name="destinatario"/>
       	<label>CC (committente):</label><input type="text" class="form-control" id="copia" name="copia"/>
       	</div>
       <div class="modal-footer">
       
-      <input type="hidden" id="id_docum" name="id_docume">
+      <input type="hidden" id="id_docum" name="id_docum">
       <a class="btn btn-primary" onclick="inviaEmail()" >Invia</a>
 		
       </div>
@@ -612,8 +616,9 @@
 <th>Nome documento</th>
 <th>Numero documento</th>
 <th>Data caricamento</th>
-<th>Frequenza</th>
+<th>Data rilascio</th>
 <th>Data scadenza</th>
+<th>Frequenza</th>
 <th>Rilasciato</th>
 <th>Azioni</th>
  </tr></thead>
@@ -732,8 +737,9 @@ function modalStorico(id_documento){
     				  dati.numero_documento = ''; 
     			  }else{
     				  dati.numero_documento = lista_documenti[i].numero_documento;
-    			  }    			  
-    			  dati.data_caricamento =  formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
+    			  }    			
+    			  dati.data_caricamento = formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
+    			  dati.data_rilascio =  formatDate(moment(lista_documenti[i].data_rilascio, "DD, MMM YY"));
     			  dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
     			  dati.data_scadenza =  formatDate(moment(lista_documenti[i].data_scadenza, "DD, MMM YY"));
     			  dati.rilasciato = lista_documenti[i].rilasciato;
@@ -777,59 +783,72 @@ function inviaEmail(){
 	  dataObj.destinatario = $('#destinatario').val();
 	  dataObj.copia = $('#copia').val();
 	  
-  $.ajax({
-	  type: "POST",
-	  url: "gestioneDocumentale.do?action=invia_email",
-	data: dataObj,
-	dataType: "json",
-	 
-	  success: function( data, textStatus) {
-		pleaseWaitDiv.modal('hide');
-		  	      		  
-		  if(data.success)
-		  { 
-			$('#myModalEmail').hide();
-			  $('#myModalErrorContent').html(data.messaggio);
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-success");
-				$('#report_button').hide();
-				$('#visualizza_report').hide();
-					$('#myModalError').modal('show');	 
-					
-					$('#myModalError').on('hidden.bs.modal',function(){
-						location.reload();
-						$(".modal-backdrop").hide();
-					});
-			  
-		  }else{
-			  $('#myModalErrorContent').html("Errore nel recupero dell'email!");
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");
-				$('#report_button').hide();
-				$('#visualizza_report').hide();
-					$('#myModalError').modal('show');	      			 
-		  }
-	  },
-
-	  error: function(jqXHR, textStatus, errorThrown){
+	  if($('#destinatario').val()==''){
 		  pleaseWaitDiv.modal('hide');
+		  $('#myModalErrorContent').html("Nessun destinatario inserito!");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').hide();
+			$('#visualizza_report').hide();
+				$('#myModalError').modal('show');	
+	  }else{
+		  
+		  
+		  $.ajax({
+			  type: "POST",
+			  url: "gestioneDocumentale.do?action=invia_email",
+			data: dataObj,
+			dataType: "json",
+			 
+			  success: function( data, textStatus) {
+				pleaseWaitDiv.modal('hide');
+				  	      		  
+				  if(data.success)
+				  { 
+					$('#myModalEmail').hide();
+					  $('#myModalErrorContent').html(data.messaggio);
+					  	$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-success");
+						$('#report_button').hide();
+						$('#visualizza_report').hide();
+							$('#myModalError').modal('show');	 
+							
+							$('#myModalError').on('hidden.bs.modal',function(){
+								location.reload();
+								$(".modal-backdrop").hide();
+							});
+					  
+				  }else{
+					  $('#myModalErrorContent').html("Errore nell'invio dell'email!");
+					  	$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+						$('#report_button').hide();
+						$('#visualizza_report').hide();
+							$('#myModalError').modal('show');	      			 
+				  }
+			  },
 
-		  $('#myModalErrorContent').html("Errore nel recupero dell'email!");
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");
-				$('#report_button').show();
-				$('#visualizza_report').show();
-				$('#myModalError').modal('show');
-				
+			  error: function(jqXHR, textStatus, errorThrown){
+				  pleaseWaitDiv.modal('hide');
 
+				  $('#myModalErrorContent').html("Errore nell'invio dell'email!");
+					  	$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+						$('#report_button').show();
+						$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+						
+
+			  }
+		  });
+		  
 	  }
-  });
 	
 }
 
 
 
-function modalEmail(id_documento){
+function modalEmail(id_documento, id_fornitore, id_committente){
 	
 	
 	$('#id_docum').val(id_documento);
@@ -840,7 +859,7 @@ function modalEmail(id_documento){
 	  dataObj = {}
   $.ajax({
 	  type: "POST",
-	  url: "gestioneDocumentale.do?action=email_forn_comm&id_documento="+id_documento,
+	  url: "gestioneDocumentale.do?action=email_forn_comm&id_fornitore="+id_fornitore+"&id_committente="+id_committente,
 	data: dataObj,
 	dataType: "json",
 	 
@@ -924,7 +943,7 @@ $('#fornitore_mod').change(function(){
 	
 });
 
-function modificaDocumentoModal(id_committente, id_documento, fornitore, nome_documento, data_caricamento, frequenza,  data_scadenza, nome_file, rilasciato, numero_documento){
+function modificaDocumentoModal(id_committente, id_documento, fornitore, nome_documento, data_rilascio, frequenza,  data_scadenza, nome_file, rilasciato, numero_documento){
 
 	$('#id_documento').val(id_documento);
 		
@@ -941,8 +960,8 @@ function modificaDocumentoModal(id_committente, id_documento, fornitore, nome_do
 	
 	$('#numero_documento_mod').val(numero_documento);
 	
-	if(data_caricamento!=null && data_caricamento!=''){
-		$('#data_caricamento_mod').val(Date.parse(data_caricamento).toString("dd/MM/yyyy"));
+	if(data_rilascio!=null && data_rilascio!=''){
+		$('#data_rilascio_mod').val(Date.parse(data_rilascio).toString("dd/MM/yyyy"));
 	}
 	if(data_scadenza!=null && data_scadenza!=''){
 		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));
@@ -991,12 +1010,12 @@ $('#fileupload_mod').change(function(){
  });
 
 
-$('#data_caricamento').change(function(){
+$('#data_rilascio').change(function(){
 	
 	var frequenza = $('#frequenza').val();
 	
 	if(frequenza!=null && frequenza!=''){
-		var date = $('#data_caricamento').val();
+		var date = $('#data_rilascio').val();
 		var d = moment(date, "DD-MM-YYYY");
 		if(date!='' && d._isValid){
 			
@@ -1012,12 +1031,12 @@ $('#data_caricamento').change(function(){
 	
 });
 
-$('#data_caricamento_mod').change(function(){
+$('#data_rilascio_mod').change(function(){
 	
 	var frequenza = $('#frequenza_mod').val();
 	
 	if(frequenza!=null && frequenza!=''){
-		var date = $('#data_caricamento_mod').val();
+		var date = $('#data_rilascio_mod').val();
 		var d = moment(date, "DD-MM-YYYY");
 		if(date!='' && d._isValid){
 			
@@ -1036,7 +1055,7 @@ $('#data_caricamento_mod').change(function(){
 
 $('#frequenza').change(function(){
 	
-	var date = $('#data_caricamento').val();
+	var date = $('#data_rilascio').val();
 	var frequenza = $(this).val();
 	if(date!=null && date!='' && frequenza!=''){
 		
@@ -1056,7 +1075,7 @@ $('#frequenza').change(function(){
 
 	$('#frequenza_mod').change(function(){
 		
-		var date = $('#data_caricamento_mod').val();
+		var date = $('#data_rilascio_mod').val();
 		var frequenza = $(this).val();
 		if(date!=null && date!='' && frequenza!=''){
 			
@@ -1168,7 +1187,7 @@ $('.select2').select2();
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 10 },
+		    	  { responsivePriority: 2, targets: 11 },
 		    	  
 		               ], 	        
 	  	      buttons: [   
@@ -1254,6 +1273,7 @@ $('.select2').select2();
 		      	{"data" : "nome_documento"},
 		      	{"data" : "numero_documento"},
 		      	{"data" : "data_caricamento"},
+		      	{"data" : "data_rilascio"},
 		      	{"data" : "frequenza"},
 		      	{"data" : "data_scadenza"},
 		      	{"data" : "rilasciato"},
@@ -1353,7 +1373,9 @@ $('#modificaDocumentoForm').on('submit', function(e){
 	 $(document.body).css('padding-right', '0px'); 
  });
  
-
+ $('#myModalEmail').on('hidden.bs.modal', function(){
+	 $(document.body).css('padding-right', '0px'); 
+ });
  
   </script>
   

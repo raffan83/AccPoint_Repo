@@ -209,7 +209,7 @@
 	var umJson = JSON.parse('${listaUnitaMisura}');
 	var tgJson = JSON.parse('${listaTipoGrandezza}');
 	
- 	function selection(i){
+ 	function selection(i, json_data){
  			
 			//$('#select3 option').clone()
 			var select = $('#tblAppendGrid_tipo_grandezza_'+(i+1));  
@@ -217,10 +217,14 @@
 			//var options = $('#tblAppendGrid_tipo_grandezza_'+(i+1) +'option').clone();
 			 var opt = $('#tblAppendGrid_tipo_grandezza_'+(i+1))[0];
 			for(var j=0;j<opt.length;j++){
-				if(opt[j].value==json[i].tipo_grandezza.id.toString()){					
+				
+				if(json[i].tipo_grandezza.id != null && opt[j].value==json[i].tipo_grandezza.id.toString()){					
 
 				opt[j].selected = true;
  				$('#tblAppendGrid_tipo_grandezza_'+(i+1)).val(opt[j].value).trigger('change');  
+				}else if(opt[j].value==json[i].tipo_grandezza.toString()){
+					opt[j].selected = true;
+	 				$('#tblAppendGrid_tipo_grandezza_'+(i+1)).val(opt[j].value).trigger('change');  
 				}
 			}	
 		selection2(i);
@@ -234,14 +238,17 @@
 			var opt = $('#tblAppendGrid_unita_misura_'+(i+1))[0];
 			for(var j=0;j<opt.length;j++){
 
-				if(opt[j].value==json[i].unita_misura.id.toString()){
+				if(json[i].unita_misura.id !=null && opt[j].value==json[i].unita_misura.id.toString()){
 					
 				opt[j].selected = true;
  				$('#tblAppendGrid_unita_misura_'+(i+1)).val(opt[j].value).trigger('change');  
+				}else if(opt[j].value==json[i].unita_misura.toString()){
+					opt[j].selected = true;
+	 				$('#tblAppendGrid_tipo_grandezza_'+(i+1)).val(opt[j].value).trigger('change');  
 				}
 			}
 			//$(select).change();  
-  
+			  
 	}
 	 
 
@@ -395,13 +402,24 @@
 		         // browser completed reading file - display it
 
 		        		 var values = JSON.parse(e.target.result);
-		        	   	    
-		        	   	 $('#tblAppendGrid').appendGrid('load', 
+		        	   	
+		         		for(var i = 0; i<values.length; i++){
+		         			json.push(values[i]);
+		         		}
+		         		
+		        	   	 /* $('#tblAppendGrid').appendGrid('load', 
 		        	   		values
-		        	     );
+		        	     ); */
+		        	     var x = $('#tblAppendGrid').appendGrid('appendRow', values);
+		        	    
 		        	   	 
 		        	 	modificaValoriCampioneTrigger(umJson);
-		        	 	$( ".tipograndezzeselect" ).each(function( index ) {
+		        	 	
+		        	 	
+		        	 	
+		        	 
+ 		        	 	$( ".tipograndezzeselect" ).each(function( index ) {
+		        	 		
 		        	 		var str = $(this).attr("id");
 		        	  		var value = $(this).val();
 		        	  		var resId = str.split("_");
@@ -416,7 +434,12 @@
 		        	  				select.append("<option value='" +umList[j].value+ "'>" +umList[j].label+ "</option>");    
 		        	  			}   
 		        			}
-		        	 	});
+		        	 	}); 
+ 		        	 	
+ 		        		 $('.select2MV').select2({
+ 		 				  	//	placeholder: "Seleziona",
+ 		 				  		dropdownCssClass: "select2MVOpt",  		
+ 		 				  	});
 
 		     	};
 	   	   

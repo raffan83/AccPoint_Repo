@@ -40,6 +40,9 @@
             <column name="note" />
         </property>
         
+      <property name="email" type="java.lang.String" >
+            <column name="email" />
+        </property>
 <!--                 <property name="nome_fornitore" type="java.lang.String" >
             <column name="nome_fornitore" />
         </property>

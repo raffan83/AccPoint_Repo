@@ -71,6 +71,10 @@
                 <li class="list-group-item">
                 <b>Docente</b> <a class="pull-right">${corso.docente.nome } ${corso.docente.cognome }</a>
                 </li>
+                <li class="list-group-item">
+              
+                <b>Numero partecipanti</b> <a class="pull-right" id="n_partecipanti"></a>
+                </li>
                 
   				 <li class="list-group-item">
                 <div class="row">

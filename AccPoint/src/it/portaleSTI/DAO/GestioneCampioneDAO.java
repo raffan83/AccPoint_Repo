@@ -609,7 +609,7 @@ public class GestioneCampioneDAO {
 			}
 
 				
-			query = session.createQuery("from AcAttivitaCampioneDTO where (data_scadenza=null or data_scadenza between :_date_start and :_date_end)");	
+			query = session.createQuery("from AcAttivitaCampioneDTO where tipo_attivita.id != 3 and (data_scadenza=null or data_scadenza between :_date_start and :_date_end)");	
 			query.setParameter("_date_start", df.parse(data_start));
 			query.setParameter("_date_end", df.parse(data_end));
 				

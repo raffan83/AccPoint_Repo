@@ -91,7 +91,7 @@ Uscita
 <td>${taratura.operatore.nominativo }</td>
 <td>${taratura.note }</td>
 <td>
-<a class="btn btn-warning" onClick="modificaTaraturaEsterna('${taratura.id}','${taratura.verifica_intermedia.id }','${taratura.data }','${taratura.stato }','${taratura.commessa }','${taratura.oggetto }','${taratura.committente }','${taratura.controllo }','${taratura.operatore.id }','${taratura.note }')"><i class="fa fa-edit"></i></a>
+<a class="btn btn-warning" onClick="modificaTaraturaEsterna('${taratura.id}','${taratura.verifica_intermedia.id }','${taratura.data }','${taratura.stato }','${taratura.commessa }','${utl:escapeJS(taratura.oggetto) }','${utl:escapeJS(taratura.committente) }','${taratura.controllo }','${taratura.operatore.id }','${utl:escapeJS(taratura.note) }')"><i class="fa fa-edit"></i></a>
 <c:if test="${taratura.verifica_intermedia.certificato.misura.file_xls_ext!=null &&  taratura.verifica_intermedia.certificato.misura.file_xls_ext!=''}">
 	<a href="#" class="btn btn-success" title="Click per scaricare il file" onClick="scaricaPacchettoUploaded('${taratura.verifica_intermedia.certificato.misura.interventoDati.nomePack}','','${taratura.verifica_intermedia.certificato.misura.intervento.nomePack}')"><i class="fa fa-file-excel-o"></i></a>
 </c:if>

@@ -128,7 +128,7 @@
 <div class="col-sm-12">
 <a class="btn btn-primary pull-left" onClick="callAction('gestioneDocumentale.do?action=scadenzario&id_fornitore=${utl:encryptData(fornitore.id)}&nome_fornitore=${fornitore.ragione_sociale }')"><i class="fa fa-plus"></i> Vai allo scadenzario</a>
 
-<c:if test="${user.checkRuolo('AM') || user.checkRuolo('F1') }"> 
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }"> 
 <a class="btn btn-primary pull-right" onClick="modalNuovoDocumento()"><i class="fa fa-plus"></i> Nuovo Documento</a> 
 </c:if>
 </div></div><br>
@@ -145,16 +145,27 @@
 <th>Nome Documento</th>
 <th>Numero Documento</th>
 <th>Data caricamento</th>
-<th>Frequenza (mesi)</th>
+<th>Data rilascio</th>
 <th>Data scadenza</th>
+<th>Frequenza (mesi)</th>
+
+<th>Stato</th>
 <th>Rilasciato</th>
 <th style="min-width:145px">Azioni</th>
  </tr></thead>
  
  <tbody>
  
- 	<c:forEach items="${lista_documenti}" var="documento" varStatus="loop">
-	<tr id="row_${loop.index}" >
+ 	<c:forEach items="${lista_documenti}" var="documento" varStatus="loop"> 	
+ 	<c:if test="${documento.stato.id==1 }">
+ 	<tr id="row_${loop.index}" style="background-color:#00ff80" >
+ 	</c:if>
+ 	<c:if test="${documento.stato.id==2 }">
+	<tr id="row_${loop.index}" style="background-color:#F8F26D" >
+	</c:if>
+	 	<c:if test="${documento.stato.id==3 }">
+	<tr id="row_${loop.index}" style="background-color:#FA8989" >
+	</c:if>
 
 	<td>${documento.id }</td>	
 	<td>${documento.committente.nome_cliente} - ${documento.committente.indirizzo_cliente}</td>	
@@ -162,13 +173,15 @@
 	<td>${documento.nome_documento }</td>
 	<td>${documento.numero_documento }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_caricamento}" /></td>
-	<td>${documento.frequenza_rinnovo_mesi }</td>
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_rilascio}" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_scadenza}" /></td>
+	<td>${documento.frequenza_rinnovo_mesi }</td>
+	<td>${documento.getStato().getNome() }</td>
 	<td>${documento.rilasciato }</td>
 		
 	<td>	
 	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
-	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.id}','${documento.committente.id }','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
 	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
@@ -196,7 +209,7 @@
        <div class="row">
 <div class="col-sm-12">
 
-<c:if test="${user.checkRuolo('AM') || user.checkRuolo('F1') }">
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 <a class="btn btn-primary pull-right" onClick="modalNuovoReferente()"><i class="fa fa-plus"></i> Nuovo Referente</a> 
 </c:if>
 </div></div><br>
@@ -213,8 +226,9 @@
 <th>Committente</th>
 <th>Fornitore</th>
 <th>Nominativo</th>
-<th>Qualifica</th>
+<th>Email</th>
 <th>Mansione</th>
+<th>Qualifica</th>
 <th>Note</th>
 <th>Azioni</th>
  </tr></thead>
@@ -228,14 +242,16 @@
 	<td>${referente.committente.nome_cliente} - ${referente.committente.indirizzo_cliente}</td>	
 	<td>${referente.fornitore.ragione_sociale }</td>
 	<td>${referente.nome } ${referente.cognome }</td>
-	<td>${referente.qualifica }</td>
-	<td>${referente.mansione }</td>	
+	<td>${referente.email }</td>
+	
+	<td>${referente.mansione }</td>
+	<td>${referente.qualifica }</td>	
 	<td>${referente.note }</td>
 		
 	<td>	
-	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 	  <a class="btn btn-warning" onClicK="modificaReferenteModal('${referente.id}','${referente.committente.id }','${referente.fornitore.id}','${utl:escapeJS(referente.nome)}','${utl:escapeJS(referente.cognome)}','${utl:escapeJS(referente.note)}',
-	  '${utl:escapeJS(referente.mansione)}', '${utl:escapeJS(referente.qualifica)}')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>
+	  '${utl:escapeJS(referente.mansione)}', '${utl:escapeJS(referente.qualifica)}','${referente.email }')" title="Click per modificare il Referente"><i class="fa fa-edit"></i></a>
 	  </c:if>   
 	</td>
 	</tr>
@@ -257,7 +273,7 @@
        <div class="row">
 <div class="col-sm-12"><a>
 </a>
-<c:if test="${user.checkRuolo('AM') || user.checkRuolo('F1') }">
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }"> 
 <a class="btn btn-primary pull-right" onClick="modalNuovoDipendente()"><i class="fa fa-plus"></i> Nuovo Dipendente</a> 
 </c:if>
 </div></div><br>
@@ -295,7 +311,7 @@
 	<td>${dipendente.note }</td>
 		
 	<td>	
-	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }">
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.id}','${dipendente.committente.id }','${dipendente.fornitore.id}','${utl:escapeJS(dipendente.nome)}','${utl:escapeJS(dipendente.cognome)}','${utl:escapeJS(dipendente.note)}',
 	   '${utl:escapeJS(dipendente.qualifica)}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>  
 	   <a class="btn btn-info customTooltip" title="Associa documenti" onClick="modalAssociaDocumenti('${dipendente.committente.id }','${dipendente.fornitore.id }','${dipendente.id}')"><i class="fa fa-plus"></i></a>
@@ -433,12 +449,12 @@
                 <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Data Caricamento</label>
+       		<label>Data Rilascio</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-                <div class='input-group date datepicker' id='datepicker_data_caricamento'>
-               <input type='text' class="form-control input-small" id="data_caricamento" name="data_caricamento" required>
+                <div class='input-group date datepicker' id='datepicker_data_rilascio'>
+               <input type='text' class="form-control input-small" id="data_rilascio" name="data_rilascio" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -455,7 +471,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="frequenza" name="frequenza" class="form-control" type="number" min="0" step="1" style="width:100%" required>
+        <input id="frequenza" name="frequenza" class="form-control" type="number" min="0" step="1" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -468,7 +484,7 @@
        	<div class="col-sm-9">      
        	  	
                 <div class='input-group date datepicker' id='datepicker_data_scadenza'>
-               <input type='text' class="form-control input-small" id="data_scadenza" name="data_scadenza" required>
+               <input type='text' class="form-control input-small" id="data_scadenza" name="data_scadenza" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -626,12 +642,12 @@
                 <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Data Caricamento</label>
+       		<label>Data Rilascio</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-                <div class='input-group date datepicker' id='datepicker_data_caricamento_mod'>
-               <input type='text' class="form-control input-small" id="data_caricamento_mod" name="data_caricamento_mod" required>
+                <div class='input-group date datepicker' id='datepicker_data_rilascio_mod'>
+               <input type='text' class="form-control input-small" id="data_rilascio_mod" name="data_rilascio_mod" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -648,7 +664,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="frequenza_mod" name="frequenza_mod" class="form-control" type="number" min="0" step="1" style="width:100%" required>
+        <input id="frequenza_mod" name="frequenza_mod" class="form-control" type="number" min="0" step="1" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -661,7 +677,7 @@
        	<div class="col-sm-9">      
        	  	
                 <div class='input-group date datepicker' id='datepicker_data_scadenza'>
-               <input type='text' class="form-control input-small" id="data_scadenza_mod" name="data_scadenza_mod" required>
+               <input type='text' class="form-control input-small" id="data_scadenza_mod" name="data_scadenza_mod" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -800,6 +816,18 @@
        	<div class="col-sm-9">      
        	  	
         <input id="cognome" name="cognome" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+                  <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="email" name="email" class="form-control" type="text" style="width:100%" required>
        			
        	</div>       	
        </div><br>
@@ -943,6 +971,19 @@
        	<div class="col-sm-9">      
        	  	
         <input id="cognome_mod" name="cognome_mod" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+       
+           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="email_mod" name="email_mod" class="form-control" type="text" style="width:100%" required>
        			
        	</div>       	
        </div><br>
@@ -1297,8 +1338,9 @@
 <th>Nome documento</th>
 <th>Numero documento</th>
 <th>Data caricamento</th>
-<th>Frequenza</th>
+<th>Data rilascio</th>
 <th>Data scadenza</th>
+<th>Frequenza</th>
 <th>Rilasciato</th>
 <th>Azioni</th>
  </tr></thead>
@@ -1346,8 +1388,9 @@
 <th>Nome documento</th>
 <th>Numero documento</th>
 <th>Data caricamento</th>
-<th>Frequenza</th>
+<th>Data rilascio</th>
 <th>Data scadenza</th>
+<th>Frequenza</th>
 <th>Rilasciato</th>
 <th>Azioni</th>
  </tr></thead>
@@ -1468,9 +1511,32 @@
      			  }else{
      				  dati.numero_documento = lista_documenti[i].numero_documento;
      			  }    			  
-     			  dati.data_caricamento =  formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
-     			  dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
-     			  dati.data_scadenza =  formatDate(moment(lista_documenti[i].data_scadenza, "DD, MMM YY"));
+     			
+     			 
+     			 if( lista_documenti[i].data_caricamento==null){
+     				 dati.data_caricamento =  '';
+     			 }else{
+     				  dati.data_caricamento =  formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
+     			 }
+     			 if( lista_documenti[i].data_rilascio==null){
+     				 dati.data_rilascio =  '';
+     			 }else{
+     				 dati.data_rilascio =  formatDate(moment(lista_documenti[i].data_rilascio, "DD, MMM YY"));
+     			 }
+     			if( lista_documenti[i].data_scadenza==null){
+    				 dati.data_scadenza =  '';
+    			 }else{
+    				 dati.data_scadenza =  formatDate(moment(lista_documenti[i].data_scadenza, "DD, MMM YY"));
+    			 }
+     			
+     			if( lista_documenti[i].frequenza_rinnovo_mesi==null){
+   				 dati.frequenza =  '';
+   				 }else{
+   				dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
+   				 }
+    			  
+
+     			 
      			  dati.rilasciato = lista_documenti[i].rilasciato;
      			  dati.azioni = '<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento_table&id_documento='+lista_documenti[i].id+'" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>';
      			
@@ -1552,9 +1618,28 @@
    				dati.numero_documento = lista_documenti[i].numero_documento; 
    			  }
    			  
-   			  dati.data_caricamento =  formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
-   			  dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
-   			  dati.data_scadenza =  formatDate(moment(lista_documenti[i].data_scadenza, "DD, MMM YY"));
+   			 if( lista_documenti[i].data_caricamento==null){
+ 				 dati.data_caricamento =  '';
+ 			 }else{
+ 				  dati.data_caricamento =  formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
+ 			 }
+ 			 if( lista_documenti[i].data_rilascio==null){
+ 				 dati.data_rilascio =  '';
+ 			 }else{
+ 				 dati.data_rilascio =  formatDate(moment(lista_documenti[i].data_rilascio, "DD, MMM YY"));
+ 			 }
+ 			if( lista_documenti[i].data_scadenza==null){
+				 dati.data_scadenza =  '';
+			 }else{
+				 dati.data_scadenza =  formatDate(moment(lista_documenti[i].data_scadenza, "DD, MMM YY"));
+			 }
+ 			
+ 			if( lista_documenti[i].frequenza_rinnovo_mesi==null){
+				 dati.frequenza =  '';
+				 }else{
+				dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
+				 }
+			  
    			  dati.rilasciato = lista_documenti[i].rilasciato;
    			  dati.azioni = '<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento_table&id_documento='+lista_documenti[i].id+'" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>';
    				
@@ -1910,7 +1995,7 @@
 	}
 
 
-	function modificaReferenteModal(id_referente, committente, fornitore, nome, cognome, note, mansione, qualifica){
+	function modificaReferenteModal(id_referente, committente, fornitore, nome, cognome, note, mansione, qualifica, email){
 		
 		
 		$('#id_referente').val(id_referente);
@@ -1927,6 +2012,7 @@
 		$('#note_mod').val(note);
 		$('#mansione_mod').val(mansione);
 		$('#qualifica_mod').val(qualifica);
+		$('#email_mod').val(email);
 
 		
 		$('#myModalModificaReferente').modal();
@@ -2026,7 +2112,7 @@
  		      columnDefs: [
  		    	  
  		    	  { responsivePriority: 1, targets: 1 },
- 		    	 { responsivePriority: 2, targets: 9 },
+ 		    	 { responsivePriority: 2, targets: 11 },
  		    	  
  		               ], 	        
  	  	      /* buttons: [   
@@ -2242,7 +2328,7 @@
 	
 	
  	
-	tab = $('#table_doc').DataTable({
+	tabDoc = $('#table_doc').DataTable({
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -2289,8 +2375,10 @@
 	      	{"data" : "nome_documento"},
 	      	{"data" : "numero_documento"},
 	      	{"data" : "data_caricamento"},
+	      	{"data" : "data_rilascio"},
+	    	{"data" : "data_scadenza"},
 	      	{"data" : "frequenza"},
-	      	{"data" : "data_scadenza"},
+
 	      	{"data" : "rilasciato"},
 	      	{"data" : "azioni"},
 	       ],	
@@ -2298,7 +2386,7 @@
 	      columnDefs: [
 	    	  
 	    	  { responsivePriority: 1, targets: 1 },
-	    	  { responsivePriority: 2, targets: 9 },
+	    	  { responsivePriority: 2, targets:11 },
 	    	  
 	    	  { className: "select-checkbox", targets: 1,  orderable: false }
 	    	  ],
@@ -2359,8 +2447,9 @@
 		      	{"data" : "nome_documento"},
 		      	{"data" : "numero_documento"},
 		      	{"data" : "data_caricamento"},
-		      	{"data" : "frequenza"},
+		      	{"data" : "data_rilascio"},		      	
 		      	{"data" : "data_scadenza"},
+		      	{"data" : "frequenza"},
 		      	{"data" : "rilasciato"},
 		      	{"data" : "azioni"},
 		       ],	
@@ -2368,7 +2457,7 @@
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 9 },
+		    	  { responsivePriority: 2, targets: 10 },
 		    	  
 		    	  
 		               ], 	        
@@ -2383,14 +2472,14 @@
 	
 	
 	
-	tab.buttons().container().appendTo( '#table_doc_wrapper .col-sm-6:eq(1)');
+	tabDoc.buttons().container().appendTo( '#table_doc_wrapper .col-sm-6:eq(1)');
  	    $('.inputsearchtable').on('click', function(e){
  	       e.stopPropagation();    
  	    });
 
- 	     tab.columns().eq( 0 ).each( function ( colIdx ) {
-  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-      tab
+ 	   tabDoc.columns().eq( 0 ).each( function ( colIdx ) {
+  $( 'input', tabDoc.column( colIdx ).header() ).on( 'keyup', function () {
+	  tabDoc
           .column( colIdx )
           .search( this.value )
           .draw();

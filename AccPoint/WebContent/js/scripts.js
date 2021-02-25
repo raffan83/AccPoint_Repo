@@ -13225,6 +13225,68 @@ function dissociaPartecipanteCorso(id_partecipante, id_corso, id_ruolo){
 
 
 
+function eliminaPartecipante(id_partecipante){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  var dataObj = {};
+	  dataObj.id_partecipante = id_partecipante;
+	  
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneFormazione.do?action=elimina_partecipante",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		  $(".ui-tooltip").remove();
+	    		  if(data.success)
+	    		  { 
+	    			     			 
+	    			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
+	    			  $('#myModalErrorContent').html("Partecipante eliminato con successo!");
+	    			  $("#boxPacchetti").html("");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+	    				$('#myModalError').on('hidden.bs.modal', function(){	         			
+	    					
+	    					 location.reload()
+	    				});
+
+	    		
+	    		  }else{
+	    			  $('#myModalErrorContent').html("Errore nell'eliminazione del partecipante!");
+	    			  
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#report_button').show();
+	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+						
+	    	  }
+  });
+	
+}
+
+
 function addCalendarFormazione(){
 	
 	 pleaseWaitDiv = $('#pleaseWaitDialog');

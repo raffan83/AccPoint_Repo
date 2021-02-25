@@ -1510,7 +1510,60 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.getTransaction().commit();
 				session.close();
 			}
+			else if(action.equals("corsi_partecipante")) {
+			
+				String id_partecipante = request.getParameter("id_partecipante");
+								
+				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_corsi = GestioneFormazioneBO.getListaCorsiFromPartecipante(Integer.parseInt(id_partecipante), session);
+								
+				request.getSession().setAttribute("lista_corsi_partecipante", lista_corsi);				
+				
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				
+				String corsi = "";
+				if(lista_corsi.size()>0) {
+					for (ForPartecipanteRuoloCorsoDTO cor : lista_corsi) {
+						
+						corsi = corsi +"- " +cor.getCorso().getId()+"<br>";
+					}
+					
+					corsi = corsi +"Per procedere con l'eliminazione, dissociare prima il partecipante dai corsi.";
+				}
+				
+				myObj.addProperty("success", true);
+				  
+				myObj.addProperty("corsi", corsi);
+							        
+				out.println(myObj.toString());
 
+				out.close();
+				
+				session.getTransaction().commit();
+				session.close();
+			}
+
+			else if(action.equals("elimina_partecipante")) {
+				
+				String id_partecipante = request.getParameter("id_partecipante");
+				
+				ForPartecipanteDTO partecipante = GestioneFormazioneBO.getPartecipanteFromId(Integer.parseInt(id_partecipante), session);
+				
+				session.delete(partecipante);
+
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+							        
+				out.println(myObj.toString());
+
+				out.close();
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				
+			}
 			
 		}catch(Exception e) {
 			

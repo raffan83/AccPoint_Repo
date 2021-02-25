@@ -96,7 +96,9 @@
 	<a class="btn btn-info" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${partecipante.nome }','${partecipante.cognome.replace('\'','&prime;')}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }','${partecipante.luogo_nascita.replace('\'','&prime;') }','${partecipante.cf }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a>
-	</c:if> 
+
+	 <a class="btn btn-danger" title="Click per eliminare il partecipante" onClick="modalEliminaPartecipante('${partecipante.id}')"><i class="fa fa-times"></i></a>
+	 	</c:if>
 	</td>
 	</tr>
 	</c:forEach>
@@ -397,11 +399,11 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      	Sei sicuro di voler eliminare il rilievo?
+      	Sei sicuro di voler eliminare il partecipante?
       	</div>
       <div class="modal-footer">
-      <input type="hidden" id="elimina_rilievo_id">
-      <a class="btn btn-primary" onclick="eliminaRilievo($('#elimina_rilievo_id').val())" >SI</a>
+      <input type="hidden" id="elimina_partecipante_id">
+      <a class="btn btn-primary" onclick="eliminaPartecipante($('#elimina_partecipante_id').val())" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
     </div>
@@ -537,6 +539,65 @@ $("#tabForPartecipante").on( 'init.dt', function ( e, settings ) {
     
 
 } );
+
+
+
+
+
+function modalEliminaPartecipante(id_partecipante){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	 
+	  dataObj={};
+	  
+	  $('#elimina_partecipante_id').val(id_partecipante);
+ $.ajax({
+	  type: "POST",
+	  url: "gestioneFormazione.do?action=corsi_partecipante&id_partecipante="+id_partecipante,
+	  data: dataObj,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+ 	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		  
+		  var data = JSON.parse(data);
+		  
+		  pleaseWaitDiv.modal('hide');
+		  
+		  if(data.success && data.corsi=="")
+		  { 
+			  $('#myModalYesOrNo').modal();
+			  
+		
+		  }else{
+			  
+			  			  
+			  $('#myModalErrorContent').html("Attenzione! il partecipante è associato ai corsi:<br>"+data.corsi);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').hide();
+ 				$('#visualizza_report').hide();
+				$('#myModalError').modal('show');
+			 
+				
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+				$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+
+	  }
+ });
+	
+}
+
 
 
 
@@ -830,6 +891,10 @@ $('#modificaPartecipanteForm').on('submit', function(e){
  	
  }
 
+ 
+ $('#myModalErrorContent').on('hidden.bs.modal', function(){
+	$(document).css("padding-right", "0px"); 
+ });
  
   </script>
   

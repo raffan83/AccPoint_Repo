@@ -43,6 +43,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAllegatoStrumentoDTO;
 import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerLegalizzazioneBilanceDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
 import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
@@ -52,6 +53,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
+import it.portaleSTI.bo.GestioneVerLegalizzazioneBilanceBO;
 import it.portaleSTI.bo.GestioneVerStrumentiBO;
 
 /**
@@ -650,6 +652,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerStrumentiScadenza.jsp");
 		     	dispatcher.forward(request,response);
 			}
+			
 					
 		}catch (Exception e) {
 			session.getTransaction().rollback();

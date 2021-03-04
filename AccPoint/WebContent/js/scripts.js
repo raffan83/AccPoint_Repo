@@ -15085,4 +15085,232 @@ error: function( data, textStatus) {
 
 
 
+function nuovoProvvedimento(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  
+		  var form = $('#nuovoProvvedimentoForm')[0]; 
+		  var formData = new FormData(form);
 
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneVerLegalizzazioneBilance.do?action=nuovo_provvedimento",
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocumento").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+   			$('#myModalError').on('hidden.bs.modal', function(){	         			
+ 				
+   				 location.reload()
+  			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nel salvataggio!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+  });
+	
+}
+
+
+function modificaProvvedimento(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  
+		  var form = $('#modificaProvvedimentoForm')[0]; 
+		  var formData = new FormData(form);
+
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneVerLegalizzazioneBilance.do?action=modifica_provvedimento",
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaProvvedimento").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+   			$('#myModalError').on('hidden.bs.modal', function(){	         			
+ 				
+   				 location.reload()
+  			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nel salvataggio!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+  });
+	
+}
+
+function associaProvvedimentiVerStrumento(selezionati, id_strumento){
+	
+	
+	 var dataObj = {};
+		dataObj.selezionati = selezionati;
+		dataObj.id_strumento = id_strumento;
+		
+
+	  $.ajax({
+type: "POST",
+url: "gestioneVerLegalizzazioneBilance.do?action=associa_provvedimento",
+data: dataObj,
+dataType: "json",
+//if received a response from the server
+success: function( data, textStatus) {
+	pleaseWaitDiv.modal('hide');
+	  if(data.success)
+		  {  
+		 
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();
+			$('#myModalError').modal('show');	
+			 $('#myModalError').on('hidden.bs.modal', function () {
+				  dataString = "action=lista&id_cliente="+$('#cliente').val()+"&id_sede="+$('#sede').val();
+				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
+				   $('#myModalAssociaLegalizzazione').hide();
+				   $('.modal-backdrop').hide();
+			 });
+			
+		  }else{
+			
+				$('#myModalErrorContent').html("Errore nell'associazione!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');			
+		
+		  }
+},
+error: function( data, textStatus) {
+	  $('#myModalYesOrNo').modal('hide');
+	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+}
+});
+
+	
+}
+
+
+function eliminaAllegatoLegalizzazione(id_allegato){
+	  
+	  var dataObj = {};
+		dataObj.id_allegato = id_allegato;
+		
+						
+	  $.ajax({
+  type: "POST",
+  url: "gestioneVerLegalizzazioneBilance.do?action=elimina_allegato",
+  data: dataObj,
+  dataType: "json",
+  //if received a response from the server
+  success: function( data, textStatus) {
+	  //var dataRsp = JSON.parse(dataResp);
+	  if(data.success)
+		  {  
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');      				
+  				$('#myModalError').on('hidden.bs.modal', function(){
+    					if($('#myModalError').hasClass('modal-success')){
+    						
+    						location.reload()
+    					}
+    				}); 
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+  },
+  error: function( data, textStatus) {
+
+	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+  }
+  });
+}

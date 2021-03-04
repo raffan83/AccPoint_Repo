@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.VerLegalizzazioneBilanceDTO" table="ver_legalizzazione_bilance">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+     
+        <property name="descrizione_strumento" type="java.lang.String">
+            <column name="descrizione_strumento" />
+        </property>
+        <property name="costruttore" type="java.lang.String">
+            <column name="costruttore" />
+        </property>
+        <property name="modello" type="java.lang.String">
+            <column name="modello" />
+        </property>
+        <property name="classe" type="java.lang.String">
+            <column name="classe" />
+        </property>
+       <property name="rev" type="java.lang.String">
+            <column name="rev" />
+        </property>
+
+         <property name="data_provvedimento" type="java.sql.Date">
+            <column name="data_provvedimento" />
+        </property>
+
+         <many-to-one name="tipo_approvazione" class="it.portaleSTI.DTO.VerTipoApprovazioneDTO" fetch="join" lazy="false">
+            <column name="tipo_approvazione" />
+        </many-to-one> 
+        
+         <many-to-one name="tipo_provvedimento" class="it.portaleSTI.DTO.VerTipoProvvedimentoDTO" fetch="join" lazy="false">
+            <column name="tipo_provvedimento" />
+        </many-to-one> 
+        
+        
+            <property name="numero_provvedimento" type="java.lang.String">
+            <column name="numero_provvedimento" />
+        </property>
+        
+         
+        
+    </class>
+</hibernate-mapping>

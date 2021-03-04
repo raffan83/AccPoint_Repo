@@ -34,7 +34,7 @@
 <th>Tipologia</th>
 <th>Data ultima verifica</th>
 <th>Data prossima verifica</th>
-<td>Azioni</td>
+<td style="min-width:145px">Azioni</td>
  </tr></thead>
  
  <tbody>
@@ -64,7 +64,8 @@
 	'${strumento.portata_min_C2 }','${strumento.portata_max_C2 }','${strumento.div_ver_C2 }','${strumento.div_rel_C2 }','${strumento.numero_div_C2 }',
 	'${strumento.portata_min_C3 }','${strumento.portata_max_C3 }','${strumento.div_ver_C3 }','${strumento.div_rel_C3 }','${strumento.numero_div_C3 }','${strumento.anno_marcatura_ce }','${strumento.data_messa_in_servizio }','${strumento.tipologia.id }')"><i class="fa fa-edit"></i></a>
 	
-	<a href="#" class="btn btn-primary customTooltip" title="Click per visualizzare gli allegati" onclick="modalAllegati('${strumento.id }')"><i class="fa fa-archive"></i></a>
+	<a class="btn btn-primary customTooltip customLink" title="Associa a provvedimento di legalizzazione bilance" onClick="modalAssociaProvvedimento('${strumento.id}')"><i class="fa fa-plus"></i></a>
+	<a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegati('${strumento.id }')"><i class="fa fa-archive"></i></a>
 	</td>
 	</tr>
 	</c:forEach>
@@ -1098,6 +1099,54 @@
 </div>
 
 
+  <div id="myModalAssociaLegalizzazione" class="modal modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Associazione Legalizzazione Bilance</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+        <div class="col-xs-12">
+      <table id="table_legalizzazione" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+<th></th>
+<th style="max-width:15px"></th>
+<th>ID</th>
+<th>Descrizione Strumento</th>
+<th>Costruttore</th>
+<th>Modello</th>
+<th>Classe</th>
+<th>Tipo approvazione</th>
+<th>Tipo provvedimento</th>
+<th>Numero provvedimento</th>
+<th>Data provvedimento</th>
+<th>Rev.</th>
+
+ </tr></thead>
+ 
+ <tbody>
+</tbody>
+</table>
+</div>
+  		 </div>
+  		 </div>
+      <div class="modal-footer">
+      
+      
+      <input type="hidden" id="id_strumento_legalizzazione" name="id_strumento_legalizzazione">
+      <a class="btn btn-primary" onClick="associaStrumentoLegalizzazione()">Salva</a>
+       <a class="btn btn-primary pull-right"  style="margin-right:5px"  onClick="$('#myModalAssociaLegalizzazione').modal('hide')">Chiudi</a>
+      </div>
+   
+  </div>
+  </div>
+</div>
+
+
 
  <style>
  input[type=number]::-webkit-inner-spin-button, 
@@ -1116,6 +1165,114 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 <script type="text/javascript">
+
+
+function formatDate(data){
+	
+	   var mydate = new Date(data);
+	   
+	   if(!isNaN(mydate.getTime())){
+	   
+		   str = mydate.toString("dd/MM/yyyy");
+	   }			   
+	   return str;	 		
+}
+
+
+function modalAssociaProvvedimento(id_strumento){
+	
+$('#id_strumento_legalizzazione').val(id_strumento);
+	
+	dataString ="action=strumento_legalizzazione_bilance&id_strumento="+id_strumento;
+    exploreModal("gestioneVerLegalizzazioneBilance.do",dataString,null,function(datab,textStatusb){
+  	  	
+  	  var result = datab;
+  	  
+  	  if(result.success){  		  
+  		 
+  		  var table_data = [];
+  		  
+  		  var lista_provvedimenti = result.lista_provvedimenti;
+  		  var lista_provvedimenti_associati = result.lista_provvedimenti_associati;
+  		  
+  		  for(var i = 0; i<lista_provvedimenti.length;i++){
+  			  var dati = {};
+  			  dati.empty = '<td></td>';
+  			  dati.check = '<td></td>';
+  			  dati.id = lista_provvedimenti[i].id;
+  			  dati.descrizione_strumento = lista_provvedimenti[i].descrizione_strumento;
+  			  dati.costruttore = lista_provvedimenti[i].costruttore;
+  			  dati.modello = lista_provvedimenti[i].modello;
+  			  dati.classe = lista_provvedimenti[i].classe;
+  			  dati.tipo_approvazione = lista_provvedimenti[i].tipo_approvazione.descrizione;
+  			  dati.tipo_provvedimento = lista_provvedimenti[i].tipo_provvedimento.descrizione;
+  			  dati.numero_provvedimento = lista_provvedimenti[i].numero_provvedimento;
+  			  dati.data_provvedimento =  formatDate(moment(lista_provvedimenti[i].data_provvedimento, "DD, MMM YY"));
+  			  dati.rev = lista_provvedimenti[i].rev;  			 
+  			 
+  			  
+  			  table_data.push(dati);
+  			
+  		  }
+  		  var table = $('#table_legalizzazione').DataTable();
+  		  
+   		   table.clear().draw();
+   		   
+   			table.rows.add(table_data).draw();
+   			
+   			table.columns.adjust().draw();
+ 			
+   			$('#table_legalizzazione tr').each(function(){
+   				var val  = $(this).find('td:eq(2)').text();
+   				$(this).attr("id", val)
+   			});
+   			controllaAssociati(table,lista_provvedimenti_associati );
+ 		  $('#myModalAssociaLegalizzazione').modal();
+ 			
+  	  }
+  	  
+  	  $('#myModalAssociaLegalizzazione').on('shown.bs.modal', function () {
+  		  var table = $('#table_legalizzazione').DataTable();
+  			table.columns.adjust().draw();
+  			
+  		})
+  	  
+    });
+	  
+	
+}
+
+
+function associaStrumentoLegalizzazione(){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  var table = $('#table_legalizzazione').DataTable();
+		var dataSelected = table.rows( { selected: true } ).data();
+		var selezionati = "";
+		for(i=0; i< dataSelected.length; i++){
+			dataSelected[i];
+			selezionati = selezionati +dataSelected[i].id+";";
+		}
+		console.log(selezionati);
+		table.rows().deselect();
+		associaProvvedimentiVerStrumento(selezionati, $('#id_strumento_legalizzazione').val());
+		
+	}
+
+function controllaAssociati(table, lista_provvedimenti_associati){
+	
+	//var dataSelected = table.rows( { selected: true } ).data();
+	var data = table.rows().data();
+	for(var i = 0;i<lista_provvedimenti_associati.length;i++){
+	
+		table.row( "#"+lista_provvedimenti_associati[i].id ).select();
+			
+		}
+		
+		
+	
+}
 
 
 $('#fileupload_str').change(function(){
@@ -1393,6 +1550,31 @@ $("#tabStrumenti").on( 'init.dt', function ( e, settings ) {
 
 } ); 
 
+var columsDatatables1 = [];
+
+$("#table_legalizzazione").on( 'init.dt', function ( e, settings ) {
+    var api = new $.fn.dataTable.Api( settings );
+    var state = api.state.loaded();
+ 
+    if(state != null && state.columns!=null){
+    		console.log(state.columns);
+    
+    		columsDatatables1 = state.columns;
+    }
+    $('#table_legalizzazione thead th').each( function () {
+     	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
+    	  var title = $('#table_legalizzazione thead th').eq( $(this).index() ).text();
+    	
+    	  if($(this).index()!=0 && $(this).index()!=1){
+		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables1[$(this).index()].search.search+'" type="text" /></div>');	
+	    	}
+
+    	} );
+    
+    
+
+} );
+
 
 
 $('#matricola').change(function(){
@@ -1538,6 +1720,95 @@ $(document).ready(function() {
 	}); 
 	
 	
+	
+	
+	
+	tab = $('#table_legalizzazione').DataTable({
+		language: {
+	        	emptyTable : 	"Nessun dato presente nella tabella",
+	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	        	infoPostFix:	"",
+	        infoThousands:	".",
+	        lengthMenu:	"Visualizza _MENU_ elementi",
+	        loadingRecords:	"Caricamento...",
+	        	processing:	"Elaborazione...",
+	        	search:	"Cerca:",
+	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	        	paginate:	{
+  	        	first:	"Inizio",
+  	        	previous:	"Precedente",
+  	        	next:	"Successivo",
+  	        last:	"Fine",
+	        	},
+	        aria:	{
+  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	        }
+        },
+        pageLength: 25,
+        "order": [[ 2, "desc" ]],
+	      paging: false, 
+	      ordering: true,
+	      info: false, 
+	      searchable: false, 
+	      targets: 0,
+	      responsive: true,  
+	      scrollX: false,
+	      stateSave: true,	
+	      select: {
+	        	style:    'multi+shift',
+	        	selector: 'td:nth-child(2)'
+	    	},
+	      columns : [
+	    	  {"data" : "empty"},  
+	    	{"data" : "check"},  
+	      	{"data" : "id"},
+	      	{"data" : "descrizione_strumento"},
+	      	{"data" : "costruttore"},
+	      	{"data" : "modello"},
+	      	{"data" : "classe"},
+	      	{"data" : "tipo_approvazione"},
+	      	{"data" : "tipo_provvedimento"},
+	      	{"data" : "numero_provvedimento"},
+	      	{"data" : "data_provvedimento"},
+	      	{"data" : "rev"}
+	       ],	
+	           
+	      columnDefs: [
+	    	  
+	    	  { responsivePriority: 1, targets: 1 },
+	    	  { responsivePriority: 2, targets: 9 },
+	    	  
+	    	  { className: "select-checkbox", targets: 1,  orderable: false }
+	    	  ],
+	    	  
+	     	          
+  	      buttons: [   
+  	          {
+  	            extend: 'colvis',
+  	            text: 'Nascondi Colonne'  	                   
+ 			  } ]
+	               
+	    });
+	
+	tab.buttons().container().appendTo( '#table_legalizzazione_wrapper .col-sm-6:eq(1)');
+ 	    $('.inputsearchtable').on('click', function(e){
+ 	       e.stopPropagation();    
+ 	    });
+
+ 	     tab.columns().eq( 0 ).each( function ( colIdx ) {
+  $( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
+      tab
+          .column( colIdx )
+          .search( this.value )
+          .draw();
+  } );
+} );  
+
+	
+	
 });
 
 
@@ -1551,6 +1822,11 @@ $('#modificaVerStrumentoForm').on('submit', function(e){
 $('#nuovoVerStrumentoForm').on('submit', function(e){
 	 e.preventDefault();
 	 nuovoVerStrumento();
+});
+
+$('#myModalAssociaLegalizzazione').on('hidden.bs.modal', function(){
+	
+	$(document.body).css('padding-right', '0px');
 });
 
 $("#cliente_mod").on('change',function() {

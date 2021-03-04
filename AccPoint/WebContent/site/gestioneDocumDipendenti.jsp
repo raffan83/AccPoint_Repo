@@ -871,7 +871,7 @@ $(document).ready(function() {
  	    });
 
  	     tab.columns().eq( 0 ).each( function ( colIdx ) {
-  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+  $( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
       tab
           .column( colIdx )
           .search( this.value )

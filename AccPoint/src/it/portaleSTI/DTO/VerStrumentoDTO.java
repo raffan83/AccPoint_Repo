@@ -2,6 +2,8 @@ package it.portaleSTI.DTO;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class VerStrumentoDTO {
 	
@@ -40,6 +42,7 @@ public class VerStrumentoDTO {
 	private String nome_cliente;
 	private String nome_sede;
 	private VerFamigliaStrumentoDTO famiglia_strumento;
+	private Set<VerLegalizzazioneBilanceDTO> lista_legalizzazione_bilance= new HashSet<VerLegalizzazioneBilanceDTO>(0);;
 	
 	public String getCreato() {
 		return creato;
@@ -251,5 +254,14 @@ public class VerStrumentoDTO {
 	public void setFamiglia_strumento(VerFamigliaStrumentoDTO famiglia_strumento) {
 		this.famiglia_strumento = famiglia_strumento;
 	}
+
+	public Set<VerLegalizzazioneBilanceDTO> getLista_legalizzazione_bilance() {
+		return lista_legalizzazione_bilance;
+	}
+	public void setLista_legalizzazione_bilance(Set<VerLegalizzazioneBilanceDTO> lista_legalizzazione_bilance) {
+		this.lista_legalizzazione_bilance = lista_legalizzazione_bilance;
+	}
+
+
 	
 }

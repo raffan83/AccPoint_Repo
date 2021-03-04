@@ -106,12 +106,13 @@
  <th>Data Misura</th> 
   <th>Strumento</th>
   <th>Matricola | Codice Interno</th>
-  <th>Lat</th>
+  <th>Strumento Lat</th>
   <th>Intervento</th>
   <th>Commessa</th>
   <th>Cliente</th>
   <th>Sede</th>
-  <th hidden="hidden"></th>
+  <th >Lat</th>
+  <th>Misura obsoleta</th>
   <th>Riemissione</th>
   <th>Azioni</th>
  </tr></thead>
@@ -126,7 +127,11 @@
 	<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Misura"  onClick="callAction('dettaglioMisura.do?idMisura=${utl:encryptData(misura.split(';;')[0])}')" onClick="">${misura.split(';;')[0]}</a></td>
 	
 <td>${misura.split(';;')[12] }</td>
-<td>${misura.split(';;')[11] }</td>
+<td><c:if test="${misura.split(';;')[11].equals('null')}"></c:if>
+<c:if test="${!misura.split(';;')[11].equals('null')}">
+${misura.split(';;')[11] }
+</c:if>
+</td>
 <td>${misura.split(';;')[15] }</td>
 <td>${misura.split(';;')[5]}</td>
 <td>${misura.split(';;')[2]}</td>
@@ -140,9 +145,25 @@ ${misura.split(';;')[9] }
 <td>${misura.split(';;')[6] }</td>
 <td>${misura.split(';;')[7] }</td>
 <td>${misura.split(';;')[8] }</td>
-<td hidden="hidden">${misura.split(';;')[10]}</td>
 <td>
-<c:if test="${misura.split(';;')[13] == 'S' }">
+<c:if test="${misura.split(';;')[10] == 'S'}">
+SI
+</c:if>
+<c:if test="${misura.split(';;')[10] == 'N' }">
+NO
+</c:if>
+
+</td>
+<td>
+<c:if test="${misura.split(';;')[13] == 'S'}">
+SI
+</c:if>
+<c:if test="${misura.split(';;')[13] == 'N' }">
+NO
+</c:if>
+</td>
+<td>
+<c:if test="${misura.split(';;')[13] == 'S' &&  !misura.split(';;')[11].equals('null')}">
 <i class="fa fa-check"></i>
 </c:if>
 <c:if test="${misura.split(';;')[13] == 'N' }">
@@ -605,8 +626,8 @@ ${misura.split(';;')[9] }
   	      stateSave: true,
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 1 },
-						   { responsivePriority: 2, targets: 13 },
-						   { responsivePriority: 3, targets: 11 },
+						   { responsivePriority: 2, targets: 11 },
+						   /* { responsivePriority: 3, targets: 14 }, */
   	                  
   	               ],
   	     

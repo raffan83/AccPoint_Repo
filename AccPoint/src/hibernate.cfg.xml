@@ -143,7 +143,11 @@
  	<mapping class="VerInterventoStrumentiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerInterventoStrumentiDTO.hbm.xml"/> 
  	<mapping class="VerCodiceDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerCodiceDocumentoDTO.hbm.xml"/>
  	<mapping class="VerEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerEmailDTO.hbm.xml"/>
- 	<mapping class="VerAllegatoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerAllegatoStrumentoDTO.hbm.xml"/>    
+ 	<mapping class="VerAllegatoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerAllegatoStrumentoDTO.hbm.xml"/>
+ 	<mapping class="VerAllegatoLegalizzazioneBilanceDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerAllegatoLegalizzazioneBilanceDTO.hbm.xml"/> 	
+ 	<mapping class="VerTipoProvvedimentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipoProvvedimentoDTO.hbm.xml"/>
+ 	<mapping class="VerTipoApprovazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipoApprovazioneDTO.hbm.xml"/>
+ 	<mapping class="VerLegalizzazioneBilanceDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerLegalizzazioneBilanceDTO.hbm.xml"/>
  	
  	<mapping class="ProvinciaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ProvinciaDTO.hbm.xml"/>
  	<mapping class="ComuneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ComuneDTO.hbm.xml"/>

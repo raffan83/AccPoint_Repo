@@ -107,5 +107,15 @@
         <many-to-one name="famiglia_strumento" class="it.portaleSTI.DTO.VerFamigliaStrumentoDTO" fetch="join" lazy="false">
             <column name="id_famiglia_strumento" />
         </many-to-one>
+        
+             <set name="lista_legalizzazione_bilance" table="ver_strumento_legalizzazione_bilance"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id_strumento" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portaleSTI.DTO.VerLegalizzazioneBilanceDTO">
+                <column name="id_legalizzazione_bilance" not-null="true" />
+            </many-to-many>
+        </set>
     </class>
 </hibernate-mapping>

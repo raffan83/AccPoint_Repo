@@ -1864,7 +1864,7 @@ public class Utility extends HttpServlet {
 				
 				if(id_tipo_strumento==1) 
 				{
-					e=strumento.getDiv_ver_C1().stripTrailingZeros();
+					e=strumento.getDiv_rel_C1().stripTrailingZeros();
 				}
 
 
@@ -1872,34 +1872,34 @@ public class Utility extends HttpServlet {
 				{
 					if(carico.doubleValue()>=0 && carico.doubleValue() <=strumento.getPortata_max_C1().doubleValue()) 
 					{
-						e=strumento.getDiv_ver_C1().stripTrailingZeros();
+						e=strumento.getDiv_rel_C1().stripTrailingZeros();
 						return e;
 					}
 					if( strumento.getPortata_min_C2().doubleValue()!=0 && carico.doubleValue()>=strumento.getPortata_min_C2().doubleValue() && carico.doubleValue() <=strumento.getPortata_max_C2().doubleValue()) 
 					{
-						e=strumento.getDiv_ver_C2().stripTrailingZeros();
+						e=strumento.getDiv_rel_C2().stripTrailingZeros();
 						return e;
 					}
 					if(strumento.getPortata_min_C3().doubleValue()!=0 && carico.doubleValue()>strumento.getPortata_min_C3().doubleValue() && carico.doubleValue() <=strumento.getPortata_max_C3().doubleValue()) 
 					{
-						e=strumento.getDiv_ver_C3().stripTrailingZeros();
+						e=strumento.getDiv_rel_C3().stripTrailingZeros();
 						return e;
 					}
 				}
 
 				if(id_tipo_strumento==3) 
 				{
-					if(campo==0) 
-					{
-						e=strumento.getDiv_ver_C1().stripTrailingZeros();
-					}
 					if(campo==1) 
 					{
-						e=strumento.getDiv_ver_C2().stripTrailingZeros();
+						e=strumento.getDiv_rel_C1().stripTrailingZeros();
 					}
 					if(campo==2) 
 					{
-						e=strumento.getDiv_ver_C3().stripTrailingZeros();
+						e=strumento.getDiv_rel_C2().stripTrailingZeros();
+					}
+					if(campo==3) 
+					{
+						e=strumento.getDiv_rel_C3().stripTrailingZeros();
 					}
 				}
 

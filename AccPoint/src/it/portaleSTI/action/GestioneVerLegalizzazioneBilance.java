@@ -126,12 +126,11 @@ public class GestioneVerLegalizzazioneBilance extends HttpServlet {
 				FileItem fileItem = null;
 				String filename= null;
 		        Hashtable<String,String> ret = new Hashtable<String,String>();
-		      
+		        ArrayList<FileItem> file_list = new ArrayList<FileItem>();
 		        for (FileItem item : items) {
 	            	 if (!item.isFormField()) {
 	            		
-	                     fileItem = item;
-	                     filename = item.getName();
+	            		 file_list.add(item);
 	                     
 	            	 }else
 	            	 {
@@ -165,6 +164,15 @@ public class GestioneVerLegalizzazioneBilance extends HttpServlet {
 				
 				session.save(provvedimento);
 				
+				for (FileItem item : file_list) {
+					saveFile(item, provvedimento.getId(),item.getName());		
+					
+					VerAllegatoLegalizzazioneBilanceDTO allegato = new VerAllegatoLegalizzazioneBilanceDTO();
+					allegato.setNome_file(item.getName());
+					allegato.setProvvedimento(provvedimento);
+							
+					session.save(allegato);
+				}				
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
@@ -188,15 +196,13 @@ public class GestioneVerLegalizzazioneBilance extends HttpServlet {
 		        	}
 		        
 		       
-				FileItem fileItem = null;
-				String filename= null;
+				
 		        Hashtable<String,String> ret = new Hashtable<String,String>();
-		      
+		        
 		        for (FileItem item : items) {
 	            	 if (!item.isFormField()) {
 	            		
-	                     fileItem = item;
-	                     filename = item.getName();
+	                     
 	                     
 	            	 }else
 	            	 {
@@ -231,7 +237,7 @@ public class GestioneVerLegalizzazioneBilance extends HttpServlet {
 				
 				session.save(provvedimento);
 				
-				
+								
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);

@@ -81,7 +81,7 @@
 
 <th>Rev.</th>
 <th>Data provvedimento</th>
-<th >Azioni</th>
+<th style="min-width:120px">Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -100,9 +100,9 @@
 	<td>${provvedimento.rev}</td>		
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${provvedimento.data_provvedimento}" /></td>
 	<td>
-	<a class="btn btn-warning" onClick="modalModificaProvvedimento('${provvedimento.id }','${utl:escapeJS(provvedimento.descrizione_strumento)}','${utl:escapeJS(provvedimento.costruttore) }','${utl:escapeJS(provvedimento.modello) }',
-	'${utl:escapeJS(provvedimento.classe) }',${provvedimento.tipo_approvazione.id }, '${provvedimento.tipo_provvedimento.id }', '${provvedimento.numero_provvedimento }', '${provvedimento.data_provvedimento }', '${provvedimento.rev }')"><i class="fa fa-edit"></i></a>
-	
+	<a class="btn btn-warning customTooltip"title="Click per modificare il provvedimento"  onClick="modalModificaProvvedimento('${provvedimento.id }','${utl:escapeJS(provvedimento.descrizione_strumento)}','${utl:escapeJS(provvedimento.costruttore) }','${utl:escapeJS(provvedimento.modello) }',
+	'${utl:escapeJS(provvedimento.classe) }','${provvedimento.tipo_approvazione.id }', '${provvedimento.tipo_provvedimento.id }', '${provvedimento.numero_provvedimento }', '${provvedimento.data_provvedimento }', '${provvedimento.rev }')"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-info customTooltip" title="Click per clonare il provvedimento" onClick="modalClonaProvvedimento('${utl:escapeJS(provvedimento.descrizione_strumento)}','${provvedimento.tipo_approvazione.id }', '${provvedimento.tipo_provvedimento.id }', '${provvedimento.numero_provvedimento }', '${provvedimento.data_provvedimento }', '${provvedimento.rev }')"><i class="fa fa-clone"></i></a>
 	<a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegatiProvvedimento('${provvedimento.id }')"><i class="fa fa-archive"></i></a>
 
 	</td>
@@ -180,7 +180,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-      	<input type="text" id="strumento" name="strumento" class="form-control">
+      	<input type="text" id="strumento" name="strumento" class="form-control" required>
        			
        	</div>       	
        </div><br>
@@ -192,7 +192,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-      	<input type="text" id="costruttore" name="costruttore" class="form-control">
+      	<input type="text" id="costruttore" name="costruttore" class="form-control" required>
        			
        	</div>       	
        </div><br>
@@ -204,7 +204,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-      	<input type="text" id="modello" name="modello" class="form-control">
+      	<input type="text" id="modello" name="modello" class="form-control" required>
        			
        	</div>       	
        </div><br>
@@ -216,7 +216,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-      	<input type="text" id="classe" name="classe" class="form-control">
+      	<input type="text" id="classe" name="classe" class="form-control" required>
        			
        	</div>       	
        </div><br>
@@ -300,7 +300,21 @@
        	</div>       	
        </div><br>
       
-       
+              <div class="row">
+        <div class="col-xs-12">
+
+ <span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Allega uno o più file...</span>
+				<input accept=".pdf,.PDF,.jpg,.gif,.jpeg,.png,.doc,.docx,.xls,.xlsx"  id="fileupload_prov" type="file" name="files[]" multiple>
+		       
+		   	 </span> <label id="label_fileupload"></label>
+
+		   	 <br><br>
+
+       <div id="tab_allegati"></div>
+</div>
+  		 </div>
        
        </div>
   		 
@@ -484,11 +498,11 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      	Sei sicuro di voler eliminare il corso?
+      	Sei sicuro di voler eliminare l'allegato?
       	</div>
       <div class="modal-footer">
-      <input type="hidden" id="id_corso_elimina">
-      <a class="btn btn-primary" onclick="eliminaForCorso($('#id_corso_elimina').val())" >SI</a>
+      <input type="hidden" id="id_allegato_elimina">
+      <a class="btn btn-primary" onclick="eliminaAllegatoLegalizzazione($('#id_allegato_elimina').val())" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
     </div>
@@ -531,6 +545,21 @@
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
 <script type="text/javascript">
+
+
+
+$('#fileupload_prov').change(function(){
+	
+	var list = this.files;
+	var html ="";
+	for(var i = 0;i<list.length;i++){
+		html = html +list[i].name+"; <br>"
+	}
+	
+	//$('#label_fileupload').html($(this).val().split("\\")[2]);
+	$('#label_fileupload').html(html);
+	 
+ });
 
 
 $('#tipo_approvazione').change(function(){
@@ -632,7 +661,7 @@ function modalAllegatiProvvedimento(id_provvedimento){
     		if(lista_allegati.length>0){
     			for(var i= 0; i<lista_allegati.length;i++){
        			 html= html + '<li class="list-group-item"><div class="row"><div class="col-xs-10"><b>'+lista_allegati[i].nome_file+'</b></div><div class="col-xs-2 pull-right">' 	           
-                +'<a class="btn btn-danger btn-xs pull-right" onClick="eliminaAllegatoLegalizzazione(\''+lista_allegati[i].id+'\')"><i class="fa fa-trash"></i></a>'
+                +'<a class="btn btn-danger btn-xs pull-right" onClick="eliminaAllegatoModal(\''+lista_allegati[i].id+'\')"><i class="fa fa-trash"></i></a>'
     	           +'<a class="btn btn-danger btn-xs  pull-right"style="margin-right:5px" href="gestioneVerLegalizzazioneBilance.do?action=download_allegato&id_allegato='+lista_allegati[i].id+'"><i class="fa fa-arrow-down small"></i></a>'
     	           +'</div></div></li>';
        		}
@@ -762,9 +791,9 @@ function modalNuovoProvvedimento(){
 	
 }
 
-function eliminaCorsoModal(id_corso){
+function eliminaAllegatoModal(id_allegato){
 	
-	$('#id_corso_elimina').val(id_corso);
+	$('#id_allegato_elimina').val(id_allegato);
 	
 	$('#myModalYesOrNo').modal();
 }
@@ -788,7 +817,22 @@ function modalModificaProvvedimento(id_provvedimento,descrizione_strumento, cost
 	$('#myModalModificaProvvedimento').modal();
 }
 
+function modalClonaProvvedimento(descrizione_strumento,tipo_approvazione, tipo_provvedimento, numero_provvedimento, data_provvedimento, rev ){
+		
+	$('#strumento').val(descrizione_strumento);
 
+	$('#numero_provvedimento').val(numero_provvedimento);
+	$('#data_provvedimento').val(Date.parse(data_provvedimento).toString("dd/MM/yyyy"));
+	$('#tipo_approvazione').val(tipo_approvazione);
+	$('#tipo_approvazione').change();
+	$('#tipo_provvedimento').val(tipo_provvedimento);
+	$('#tipo_provvedimento').change();
+	$('#rev').val(rev);
+
+	$('#myModalNuovoProvvedimento').modal();
+	
+	
+}
 
 
 var columsDatatables = [];

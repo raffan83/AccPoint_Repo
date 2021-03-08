@@ -1099,6 +1099,58 @@
 </div>
 
 
+ <div id="myModalArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" style="z-index: 9900;">
+  
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Allegati provvedimento legalizzazione bilance</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+        <div class="col-xs-12">
+
+ 
+
+       <div id="tab_allegati_provvedimento"></div>
+</div>
+  		 </div>
+  		 </div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_provvedimento_allegato" name="id_provvedimento_allegato">
+      
+      <a class="btn btn-primary pull-right"  style="margin-right:5px"  onClick="$('#myModalArchivio').modal('hide')">Chiudi</a>
+      
+      </div>
+   
+  </div>
+  </div>
+</div>
+
+
+  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" style="z-index: 9999;">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare l'allegato?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_allegato_elimina">
+      <a class="btn btn-primary" onclick="eliminaAllegatoLegalizzazione($('#id_allegato_elimina').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
   <div id="myModalAssociaLegalizzazione" class="modal modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
   
     <div class="modal-dialog modal-lg" role="document">
@@ -1125,6 +1177,7 @@
 <th>Numero provvedimento</th>
 <th>Data provvedimento</th>
 <th>Rev.</th>
+<th>Azioni</th>
 
  </tr></thead>
  
@@ -1209,7 +1262,7 @@ $('#id_strumento_legalizzazione').val(id_strumento);
   			  dati.numero_provvedimento = lista_provvedimenti[i].numero_provvedimento;
   			  dati.data_provvedimento =  formatDate(moment(lista_provvedimenti[i].data_provvedimento, "DD, MMM YY"));
   			  dati.rev = lista_provvedimenti[i].rev;  			 
-  			 
+  			  dati.azioni = '<td><a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegatiProvvedimento('+lista_provvedimenti[i].id+')"><i class="fa fa-archive"></i></a></td>';
   			  
   			  table_data.push(dati);
   			
@@ -1240,6 +1293,51 @@ $('#id_strumento_legalizzazione').val(id_strumento);
     });
 	  
 	
+}
+
+
+
+function modalAllegatiProvvedimento(id_provvedimento){
+
+	$('#id_provvedimento_allegato').val(id_provvedimento);
+	// $('#tab_archivio').html("");
+	 
+	 dataString ="action=lista_allegati&id_provvedimento="+ id_provvedimento;
+    exploreModal("gestioneVerLegalizzazioneBilance.do",dataString,null,function(datab,textStatusb){
+    	
+    	var result = JSON.parse(datab);
+    	
+    	if(result.success){
+    		
+    		var lista_allegati = result.lista_allegati;
+    		var html = '<ul class="list-group list-group-bordered">';
+    		if(lista_allegati.length>0){
+    			for(var i= 0; i<lista_allegati.length;i++){
+          			 html= html + '<li class="list-group-item"><div class="row"><div class="col-xs-10"><b>'+lista_allegati[i].nome_file+'</b></div><div class="col-xs-2 pull-right">' 	           
+                   +'<a class="btn btn-danger btn-xs pull-right" onClick="eliminaAllegatoModal(\''+lista_allegati[i].id+'\')"><i class="fa fa-trash"></i></a>'
+       	           +'<a class="btn btn-danger btn-xs  pull-right"style="margin-right:5px" href="gestioneVerLegalizzazioneBilance.do?action=download_allegato&id_allegato='+lista_allegati[i].id+'"><i class="fa fa-arrow-down small"></i></a>'
+       	           +'</div></div></li>';
+          		}
+    		}else{
+    			 html= html + '<li class="list-group-item"> Nessun file allegato allo strumento! </li>';
+    		}
+    		
+    		$("#tab_allegati_provvedimento").html(html+"</ul>");
+    	}
+    	
+    	  $('#myModalArchivio').modal('show');
+    	
+    });
+    
+  
+}
+
+
+function eliminaAllegatoModal(id_allegato){
+	
+	$('#id_allegato_elimina').val(id_allegato);
+	
+	$('#myModalYesOrNo').modal();
 }
 
 
@@ -1556,11 +1654,11 @@ $("#table_legalizzazione").on( 'init.dt', function ( e, settings ) {
     var api = new $.fn.dataTable.Api( settings );
     var state = api.state.loaded();
  
-    if(state != null && state.columns!=null){
+/*     if(state != null && state.columns!=null){
     		console.log(state.columns);
     
     		columsDatatables1 = state.columns;
-    }
+    } */
     $('#table_legalizzazione thead th').each( function () {
      	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
     	  var title = $('#table_legalizzazione thead th').eq( $(this).index() ).text();
@@ -1762,7 +1860,7 @@ $(document).ready(function() {
 	        	selector: 'td:nth-child(2)'
 	    	},
 	      columns : [
-	    	  {"data" : "empty"},  
+	    	{"data" : "empty"},  
 	    	{"data" : "check"},  
 	      	{"data" : "id"},
 	      	{"data" : "descrizione_strumento"},
@@ -1773,13 +1871,14 @@ $(document).ready(function() {
 	      	{"data" : "tipo_provvedimento"},
 	      	{"data" : "numero_provvedimento"},
 	      	{"data" : "data_provvedimento"},
-	      	{"data" : "rev"}
+	      	{"data" : "rev"},
+	      	{"data" : "azioni"}
 	       ],	
 	           
 	      columnDefs: [
 	    	  
 	    	  { responsivePriority: 1, targets: 1 },
-	    	  { responsivePriority: 2, targets: 9 },
+	    	  { responsivePriority: 2, targets: 12 },
 	    	  
 	    	  { className: "select-checkbox", targets: 1,  orderable: false }
 	    	  ],

@@ -96,6 +96,8 @@ public class VerMisuraDTO {
 	
 	private int esito;
 	
+	private String note_attestato;
+	
 		public String getNote_obsolescenza() {
 		return note_obsolescenza;
 	}
@@ -426,6 +428,14 @@ public class VerMisuraDTO {
 
 	public void setgFactor(double gFactor) {
 		this.gFactor = gFactor;
+	}
+
+	public String getNote_attestato() {
+		return note_attestato;
+	}
+
+	public void setNote_attestato(String note_attestato) {
+		this.note_attestato = note_attestato;
 	}
 	
 	

@@ -168,5 +168,9 @@
    <property name="tipoRisposta" type="int">
       <column name="tipo_risposta" />
      </property>      
+     
+        <property name="note_attestato" type="java.lang.String">
+      <column name="note_attestato" />
+     </property>  
     </class>
 </hibernate-mapping>

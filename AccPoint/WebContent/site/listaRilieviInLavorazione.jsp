@@ -619,7 +619,7 @@ $("#cliente").change(function() {
 
 		$("#sede").change();  
 		
-		  var id_cliente = selection.split("_")[0];
+/* 		  var id_cliente = selection.split("_")[0];
 		  
 			
 		  var options = commessa_options;
@@ -638,9 +638,37 @@ $("#cliente").change(function() {
 		   } 
 		$('#commessa').html(opt);
 		$('#commessa').val("");
-		$("#commessa").change();  	
+		$("#commessa").change();   */	
 
 	});
+
+
+$("#sede").change(function(){
+	
+	
+	var id_cliente = $('#cliente').val().split("_")[0];
+	  var id_sede = $(this).val().split("_")[0];	 
+	
+	  var options = commessa_options;
+	  var opt=[];
+		opt.push("");
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 		
+		
+		if((str.split("*")[1] == id_cliente||str.split("*")[2]==id_cliente) && (str.split("@")[1] == id_sede || str.split("@")[2] == id_sede))	
+		{
+
+			opt.push(options[i]);
+		}   
+  
+	   } 
+	$('#commessa').html(opt);
+	$('#commessa').val("");
+	$("#commessa").change();  
+});  
+
+
 
 $("#mod_cliente").change(function() {
 	  
@@ -677,7 +705,7 @@ $("#mod_cliente").change(function() {
 		$("#mod_sede").change();  
 
 
-		  var id_cliente = selection.split("_")[0];
+/* 		  var id_cliente = selection.split("_")[0];
 		  
 			
 		  var options = commessa_options;
@@ -695,11 +723,46 @@ $("#mod_cliente").change(function() {
 		   } 
 		$('#mod_commessa').html(opt);
 		$('#mod_commessa').val("");
-		$("#mod_commessa").change();  	  
+		$("#mod_commessa").change();   */	  
 		
 	  
 	
 	});
+	
+	
+	
+$("#mod_sede").change(function(){
+	
+	
+	var id_cliente = $('#mod_cliente').val().split("_")[0];
+	  var id_sede = $(this).val().split("_")[0];	 
+	
+	  var options = commessa_options;
+	  var opt=[];
+		opt.push("");
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 		
+		
+		if((str.split("*")[1] == id_cliente||str.split("*")[2]==id_cliente) && (str.split("@")[1] == id_sede || str.split("@")[2] == id_sede))	
+		{
+
+			opt.push(options[i]);
+		}   
+  
+	   } 
+	$('#mod_commessa').html(opt);
+	$('#mod_commessa').val("");
+	$("#mod_commessa").change();  
+});
+	
+	
+	
+$('#myModalModificaRilievo').on('hidden.bs.modal', function(){
+	
+	 document.getElementById("mod_cliente").selectedIndex = -1;
+})
+	
 	
 	
 $("#cliente_scn").change(function() {
@@ -735,7 +798,7 @@ $("#cliente_scn").change(function() {
 
 		$("#sede_scn").change();  
 
-		var id_cliente = selection.split("_")[0];
+/* 		var id_cliente = selection.split("_")[0];
 		  
 		
 		  var options = commessa_options;
@@ -753,11 +816,34 @@ $("#cliente_scn").change(function() {
 		   } 
 		$('#commessa_scn').html(opt);
 		$('#commessa_scn').val("");
-		$("#commessa_scn").change();  	
+		$("#commessa_scn").change();  	 */
 	});
 	
 
+$("#sede_scn").change(function(){
+	
+	
+	var id_cliente = $('#cliente_scn').val().split("_")[0];
+	  var id_sede = $(this).val().split("_")[0];	 
+	
+	  var options = commessa_options;
+	  var opt=[];
+		opt.push("");
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 		
+		
+		if((str.split("*")[1] == id_cliente||str.split("*")[2]==id_cliente) && (str.split("@")[1] == id_sede || str.split("@")[2] == id_sede))	
+		{
 
+			opt.push(options[i]);
+		}   
+  
+	   } 
+	$('#commessa_scn').html(opt);
+	$('#commessa_scn').val("");
+	$("#commessa_scn").change();  
+});
 
 $('#myModalArchivio').on('hidden.bs.modal', function(){
 	$(document.body).css('padding-right', '0px');	

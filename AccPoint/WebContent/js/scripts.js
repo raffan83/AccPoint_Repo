@@ -8624,6 +8624,8 @@ function filtraCertificati(){
 		  }else{
 			  $('#mod_sede').val(id_sede);
 		  }
+		  
+		  $('#mod_sede').change();
 		  $('#mod_tipo_rilievo').val(tipo_rilievo);
 		  $('#mod_tipo_rilievo').change();
 		  $('#mod_commessa').val(commessa+"*"+id_cliente);

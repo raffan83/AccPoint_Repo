@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,16 +31,8 @@ import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.DocumDipendenteFornDTO;
-import it.portaleSTI.DTO.DocumTLDocumentoDTO;
-import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
-import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
-import it.portaleSTI.DTO.ForCorsoCatDTO;
-import it.portaleSTI.DTO.ForCorsoDTO;
-import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAllegatoLegalizzazioneBilanceDTO;
-import it.portaleSTI.DTO.VerAllegatoStrumentoDTO;
 import it.portaleSTI.DTO.VerLegalizzazioneBilanceDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoApprovazioneDTO;
@@ -45,8 +40,6 @@ import it.portaleSTI.DTO.VerTipoProvvedimentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneDocumentaleBO;
-import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneVerLegalizzazioneBilanceBO;
 import it.portaleSTI.bo.GestioneVerStrumentiBO;
 
@@ -101,6 +94,12 @@ public class GestioneVerLegalizzazioneBilance extends HttpServlet {
 				request.getSession().setAttribute("lista_legalizzazioni", lista_legalizzazioni);
 				request.getSession().setAttribute("lista_tipo_provvedimento", lista_tipo_provvedimento);
 				request.getSession().setAttribute("lista_tipo_approvazione", lista_tipo_approvazione);
+				
+				
+				
+				
+				//importaAllegati(lista_legalizzazioni, session);
+				
 				
 				
 				session.getTransaction().commit();
@@ -165,13 +164,15 @@ public class GestioneVerLegalizzazioneBilance extends HttpServlet {
 				session.save(provvedimento);
 				
 				for (FileItem item : file_list) {
-					saveFile(item, provvedimento.getId(),item.getName());		
-					
-					VerAllegatoLegalizzazioneBilanceDTO allegato = new VerAllegatoLegalizzazioneBilanceDTO();
-					allegato.setNome_file(item.getName());
-					allegato.setProvvedimento(provvedimento);
-							
-					session.save(allegato);
+					if(!item.getName().equals("")) {
+						saveFile(item, provvedimento.getId(),item.getName());		
+						
+						VerAllegatoLegalizzazioneBilanceDTO allegato = new VerAllegatoLegalizzazioneBilanceDTO();
+						allegato.setNome_file(item.getName());
+						allegato.setProvvedimento(provvedimento);
+								
+						session.save(allegato);
+					}
 				}				
 				
 				myObj = new JsonObject();
@@ -418,6 +419,8 @@ public class GestioneVerLegalizzazioneBilance extends HttpServlet {
 				
 				
 			}
+			
+
 		}catch(Exception e) {
 			
 			session.getTransaction().rollback();
@@ -494,5 +497,51 @@ private void downloadFile(String path,  ServletOutputStream outp) throws Excepti
 			    outp.flush();
 			    outp.close();
 	 }
+
+
+
+public static void importaAllegati(ArrayList<VerLegalizzazioneBilanceDTO> lista_legalizzazioni, Session session) throws Exception {
+	
+		
+	for(VerLegalizzazioneBilanceDTO legalizzazione : lista_legalizzazioni) {
+
+		
+				String folder = "C:\\Users\\antonio.dicivita\\Desktop\\BILANCE\\"+legalizzazione.getId();
+				
+				String[] files;
+				
+				File cartella = new File(folder);
+				
+				files = cartella.list();
+				
+				for (String name : files) {
+					File fileToCopy = new File(folder+"\\"+name);					
+					
+					String destinazione = Costanti.PATH_FOLDER+"//Verificazione//LegalizzazioneBilance//"+legalizzazione.getId()+"//";
+					
+					File folder_destination=new File(destinazione);
+					
+					if(!folder_destination.exists()) {
+						folder_destination.mkdirs();
+					}
+					
+//					File destination = new File(destinazione+"//"+name);
+//					if(destination.exists())
+					Files.copy(Paths.get(folder+"\\"+name), Paths.get(destinazione+"\\"+name), StandardCopyOption.REPLACE_EXISTING);
+					
+					
+					VerAllegatoLegalizzazioneBilanceDTO allegato = new VerAllegatoLegalizzazioneBilanceDTO();
+					allegato.setProvvedimento(legalizzazione);
+					allegato.setNome_file(name);
+					session.save(allegato);
+				}
+				
+
+					
+}
+
+
+
+}
 
 }

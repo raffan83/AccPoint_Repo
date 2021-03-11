@@ -229,7 +229,7 @@
        		<select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa" name="commessa" style="width:100%">
        		<option value=""></option>
    			<c:forEach items="${lista_commesse }" var="commessa" varStatus="loop">
-   			<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}">${commessa.ID_COMMESSA}</option>
+   			<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}@${commessa.getK2_ANAGEN_INDR()}@${commessa.getK2_ANAGEN_INDR_UTIL()}">${commessa.ID_COMMESSA}</option>
        				<%-- <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option> --%>
        			</c:forEach> 
        		</select>
@@ -447,7 +447,7 @@
        		<select class="form-control select2" data-placeholder="Seleziona Commessa..." id="mod_commessa" name="mod_commessa" style="width:100%">
        		<option value=""></option>
        			<c:forEach items="${lista_commesse }" var="commessa" varStatus="loop">
-       			<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}">${commessa.ID_COMMESSA}</option>
+       			<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}@${commessa.getK2_ANAGEN_INDR()}@${commessa.getK2_ANAGEN_INDR_UTIL()}">${commessa.ID_COMMESSA}</option>
        				<%-- <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option --%>
        			</c:forEach>
        		</select>
@@ -856,7 +856,7 @@
        		<option value=""></option>
        		<c:forEach items="${lista_commesse }" var="commessa" varStatus="loop">
        				<%-- <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option> --%>
-       				<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}">${commessa.ID_COMMESSA}</option>
+       				<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}@${commessa.getK2_ANAGEN_INDR()}@${commessa.getK2_ANAGEN_INDR_UTIL()}">${commessa.ID_COMMESSA}</option>
        			</c:forEach>
        		</select>
 		</div>

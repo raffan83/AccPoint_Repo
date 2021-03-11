@@ -261,25 +261,25 @@ public class CreateVerCertificato {
 			report.addParameter("data_messa_in_servizio", "");
 		}
 		if(misura.getVerStrumento().getPortata_max_C1()!=null) {
-			report.addParameter("portata_max_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros().toPlainString()));
+			report.addParameter("portata_max_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 		}else{
 			report.addParameter("portata_max_c1", "");
 		}
 		
 		if(misura.getVerStrumento().getPortata_min_C1()!=null) {
-			report.addParameter("portata_min_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString()));
+			report.addParameter("portata_min_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 		}else{
 			report.addParameter("portata_min_c1", "");
 		}
 		
 		if(misura.getVerStrumento().getDiv_ver_C1()!=null) {
-			report.addParameter("divisione_verifica_c1", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C1().stripTrailingZeros().toPlainString()));
+			report.addParameter("divisione_verifica_c1", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C1().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 		}else{
 			report.addParameter("divisione_verifica_c1", "");
 		}
 		
 		if(misura.getVerStrumento().getDiv_rel_C1()!=null) {
-			report.addParameter("divisione_reale_c1", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C1().stripTrailingZeros().toPlainString()));
+			report.addParameter("divisione_reale_c1", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C1().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 		}else{
 			report.addParameter("divisione_reale_c1", "");
 		}
@@ -293,17 +293,17 @@ public class CreateVerCertificato {
 			if(misura.getVerStrumento().getTipo().getId()==2) {
 				
 				if(misura.getVerStrumento().getPortata_max_C3()!=null && misura.getVerStrumento().getPortata_max_C3().compareTo(BigDecimal.ZERO)==1) {
-					report.addParameter("portata_max", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString()));
+					report.addParameter("portata_max", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 				}else{
 					if(misura.getVerStrumento().getPortata_max_C2()!=null) {
-						report.addParameter("portata_max",  Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString()));	
+						report.addParameter("portata_max",  Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());	
 					}else {
 						report.addParameter("portata_max",  "");
 					}				
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C1()!=null) {
-					report.addParameter("portata_min", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString()));
+					report.addParameter("portata_min", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 				}else{
 					report.addParameter("portata_min", "");
 				}
@@ -330,38 +330,38 @@ public class CreateVerCertificato {
 			else if(misura.getVerStrumento().getTipo().getId()==3) {
 				
 				if(misura.getVerStrumento().getPortata_max_C2()!=null) {
-					report.addParameter("portata_max_c2", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString()));
+					report.addParameter("portata_max_c2", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 				}else{
 					report.addParameter("portata_max_c2", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C2()!=null) {
-					report.addParameter("portata_min_c2", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C2().stripTrailingZeros().toPlainString()));
+					report.addParameter("portata_min_c2", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C2().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 				}else{
 					report.addParameter("portata_min_c2", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_max_C3()!=null) {
-					report.addParameter("portata_max_c3", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString()));
+					report.addParameter("portata_max_c3", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 				}else{
 					report.addParameter("portata_max_c3", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C3()!=null) {
-					report.addParameter("portata_min_c3", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros().toPlainString()));
+					report.addParameter("portata_min_c3", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 				}else{
 					report.addParameter("portata_min_c3", "");
 				}
 			}			
 			
 			if(misura.getVerStrumento().getDiv_ver_C2()!=null) {
-				report.addParameter("divisione_verifica_c2", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C2().stripTrailingZeros().toPlainString()));
+				report.addParameter("divisione_verifica_c2", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C2().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 			}else{
 				report.addParameter("divisione_verifica_c2", "");
 			}
 			
 			if(misura.getVerStrumento().getDiv_rel_C2()!=null) {
-				report.addParameter("divisione_reale_c2", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C2().stripTrailingZeros().toPlainString()));
+				report.addParameter("divisione_reale_c2", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C2().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 			}else{
 				report.addParameter("divisione_reale_c2", "");
 			}
@@ -374,13 +374,13 @@ public class CreateVerCertificato {
 			
 			
 			if(misura.getVerStrumento().getDiv_ver_C3()!=null && misura.getVerStrumento().getDiv_ver_C3().compareTo(BigDecimal.ZERO)==1) {
-				report.addParameter("divisione_verifica_c3", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C3().stripTrailingZeros().toPlainString()));
+				report.addParameter("divisione_verifica_c3", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C3().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 			}else{
 				report.addParameter("divisione_verifica_c3", "");
 			}
 			
 			if(misura.getVerStrumento().getDiv_rel_C3()!=null && misura.getVerStrumento().getDiv_rel_C3().compareTo(BigDecimal.ZERO)==1) {
-				report.addParameter("divisione_reale_c3", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C3().stripTrailingZeros().toPlainString()));
+				report.addParameter("divisione_reale_c3", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C3().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 			}else{
 				report.addParameter("divisione_reale_c3", "");
 			}
@@ -482,7 +482,12 @@ public class CreateVerCertificato {
 			}
 		}
 		
-		reportP2.addParameter("note", "");
+		if(misura.getNote_attestato()!=null) {
+			reportP2.addParameter("note", misura.getNote_attestato());
+		}else {
+			reportP2.addParameter("note", "");	
+		}
+		
 		reportP2.addParameter("nome_titolare", "");
 		if(misura.getTecnicoVerificatore()!=null && misura.getTecnicoVerificatore().getNominativo()!=null) {
 			reportP2.addParameter("nome_operatore", misura.getTecnicoVerificatore().getNominativo());	

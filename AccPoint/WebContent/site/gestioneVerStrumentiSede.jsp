@@ -52,7 +52,7 @@
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_ultima_verifica }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_prossima_verifica }" /></td>
 	<td style="min-width:130px">
-	<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento.famiglia_strumento.id }','${strumento.freqMesi }','${utl:escapeJS(strumento.denominazione) }','${utl:escapeJS(strumento.costruttore) }','${utl:escapeJS(strumento.modello) }','${strumento.matricola }',
+	<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento.id }','${strumento.famiglia_strumento.id }','${strumento.freqMesi }','${utl:escapeJS(strumento.denominazione) }','${utl:escapeJS(strumento.costruttore) }','${utl:escapeJS(strumento.modello) }','${strumento.matricola }',
 	'${strumento.classe }','${strumento.tipo.id }','${strumento.data_ultima_verifica }','${strumento.data_prossima_verifica }','${strumento.um }','${strumento.portata_min_C1 }',
 	'${strumento.portata_max_C1 }','${strumento.div_ver_C1 }','${strumento.div_rel_C1 }','${strumento.numero_div_C1 }',	'${strumento.portata_min_C2 }','${strumento.portata_max_C2 }',
 	'${strumento.div_ver_C2 }','${strumento.div_rel_C2 }','${strumento.numero_div_C2 }','${strumento.portata_min_C3 }','${strumento.portata_max_C3 }','${strumento.div_ver_C3 }',
@@ -1067,7 +1067,33 @@
        		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c3_dtl" name="numero_div_c3_dtl" disabled>
        	</div>
        </div> <br> 
+
         </div>
+        
+                <div class="row">
+       	<div class="col-sm-6">
+       		<label>Provvedimenti di Legalizzazione</label>
+       	</div>
+       	<div class="col-sm-12">
+       		<table id="table_legalizzazione_strumento" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+
+<th>ID</th>
+<th>Tipo provvedimento</th>
+<th>Numero provvedimento</th>
+<th>Data provvedimento</th>
+
+<th>Azioni</th>
+
+ </tr></thead>
+ 
+ <tbody>
+</tbody>
+</table>
+       	</div>
+       </div> <br> 
+        
        </div>
 
     </div>
@@ -1471,14 +1497,13 @@ function modalModificaVerStrumento(id_strumento, freq_mesi, famiglia_strumento, 
 	}
 	
 	
-	
 	$('#myModalModificaVerStrumento').modal();
 	
 }
 
 
 
-function modalDettaglioVerStrumento(famiglia_strumento, freq_mesi, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
+function modalDettaglioVerStrumento(id_strumento,famiglia_strumento, freq_mesi, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
 		data_prossima_verifica, um, portata_min_c1, portata_max_c1, div_ver_c1, div_rel_c1, numero_div_c1,
 		portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3, anno_marcatura_ce, data_messa_in_servizio,tipologia){
 	
@@ -1528,8 +1553,63 @@ function modalDettaglioVerStrumento(famiglia_strumento, freq_mesi, denominazione
 		$('#div_rel_c3_dtl').val(div_rel_c3);
 		$('#numero_div_c3_dtl').val(numero_div_c3);
 	}
+	
+	
+	creaTabellaLegalizzazione(id_strumento);
 		
 	$('#myModalDettaglioVerStrumento').modal();
+}
+
+
+
+function creaTabellaLegalizzazione(id_strumento){
+	
+
+	 dataString ="action=strumento_legalizzazione_bilance&id_strumento="+ id_strumento;
+    exploreModal("gestioneVerLegalizzazioneBilance.do",dataString,null,function(datab,textStatusb){
+    	
+    	var result = datab;
+    	
+    	if(result.success){
+    		
+    		 var table_data = [];     		  
+
+     		  var lista_provvedimenti_associati = result.lista_provvedimenti_associati;
+     		  
+     		  for(var i = 0; i<lista_provvedimenti_associati.length;i++){
+     			  var dati = {};
+     			  
+     			  dati.id = lista_provvedimenti_associati[i].id;
+
+     			  dati.tipo_provvedimento = lista_provvedimenti_associati[i].tipo_provvedimento.descrizione;
+     			  dati.numero_provvedimento = lista_provvedimenti_associati[i].numero_provvedimento;
+     			  dati.data_provvedimento =  formatDate(moment(lista_provvedimenti_associati[i].data_provvedimento, "DD, MMM YY"));
+     			 			 
+     			  dati.azioni = '<td><a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegatiProvvedimento('+lista_provvedimenti_associati[i].id+')"><i class="fa fa-archive"></i></a></td>';
+     			  
+     			  table_data.push(dati);
+     			
+     		  }
+     		  var table = $('#table_legalizzazione_strumento').DataTable();
+     		  
+      		   table.clear().draw();
+      		   
+      			table.rows.add(table_data).draw();
+      			
+      			table.columns.adjust().draw();
+    			
+/*       			$('#table_legalizzazione tr').each(function(){
+      				var val  = $(this).find('td:eq(2)').text();
+      				$(this).attr("id", val)
+      			});
+      			controllaAssociati(table,lista_provvedimenti_associati ); */
+    	}
+    	
+    	//  $('#myModalArchivio').modal('show');
+    	
+    });
+	
+	
 }
 
 
@@ -1906,6 +1986,71 @@ $(document).ready(function() {
   } );
 } );  
 
+ 	     
+ 	     
+ 	     
+ 	     
+ 	     
+ 	    tabella_leg_strumento = $('#table_legalizzazione_strumento').DataTable({
+ 			language: {
+ 		        	emptyTable : 	"Nessun dato presente nella tabella",
+ 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+ 		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+ 		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+ 		        	infoPostFix:	"",
+ 		        infoThousands:	".",
+ 		        lengthMenu:	"Visualizza _MENU_ elementi",
+ 		        loadingRecords:	"Caricamento...",
+ 		        	processing:	"Elaborazione...",
+ 		        	search:	"Cerca:",
+ 		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+ 		        	paginate:	{
+ 	  	        	first:	"Inizio",
+ 	  	        	previous:	"Precedente",
+ 	  	        	next:	"Successivo",
+ 	  	        last:	"Fine",
+ 		        	},
+ 		        aria:	{
+ 	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+ 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+ 		        }
+ 	        },
+ 	        pageLength: 25,
+ 	        "order": [[ 2, "desc" ]],
+ 		      paging: false, 
+ 		      ordering: false,
+ 		      info: false, 
+ 		      searchable: false, 
+ 		      targets: 0,
+ 		      responsive: true,  
+ 		      scrollX: false,
+ 		      stateSave: false,	
+ 		      "searching": false,
+ 		      columns : [
+ 
+ 		      	{"data" : "id"},
+ 	
+ 		      	{"data" : "tipo_provvedimento"},
+ 		      	{"data" : "numero_provvedimento"},
+ 		      	{"data" : "data_provvedimento"},
+
+ 		      	{"data" : "azioni"}
+ 		       ],	
+ 		           
+ 		      columnDefs: [
+ 		    	  
+ 		    	  { responsivePriority: 1, targets: 1 },
+ 		    	
+ 		    	  ],
+ 		    	  
+ 		     	          
+ 	  	      buttons: [   
+ 	  	          {
+ 	  	            extend: 'colvis',
+ 	  	            text: 'Nascondi Colonne'  	                   
+ 	 			  } ]
+ 		               
+ 		    });
 	
 	
 });
@@ -1928,6 +2073,10 @@ $('#myModalAssociaLegalizzazione').on('hidden.bs.modal', function(){
 	$(document.body).css('padding-right', '0px');
 });
 
+$('#myModalDettaglioVerStrumento').on('hidden.bs.modal', function(){
+	
+	$(document.body).css('padding-right', '0px');
+});
 $("#cliente_mod").on('change',function() {
 	  
 	  if ($(this).data('options') == undefined) 

@@ -255,6 +255,25 @@ public class GestioneVerMisura extends HttpServlet {
 			
 	  		session.close();
 		}
+		else if(action.equals("note_attestato")) {
+			ajax = true;
+			
+			String id_misura = request.getParameter("id_misura");
+			String note = request.getParameter("note");
+			
+			VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(Integer.parseInt(id_misura), session);
+			
+			misura.setNote_attestato(note);
+			
+			session.update(misura);
+			
+			session.getTransaction().commit();
+			session.close();
+			myObj.addProperty("success", true);
+			PrintWriter out = response.getWriter();
+			out.print(myObj);
+			
+		}
 			
 			
 			

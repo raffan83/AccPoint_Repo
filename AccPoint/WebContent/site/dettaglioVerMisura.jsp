@@ -409,6 +409,9 @@
   <li class="list-group-item">
  	<b>Procedura di verificazione</b> <a class="pull-right"></a>
  </li>
+   <li class="list-group-item">
+ 	<b>Note attestato</b><textarea id="note_attestato" class="form-control pull-right" name="nome_attestato" rows="1" style="width:100%">${misura.note_attestato }</textarea>
+ </li>
  </ul>
  </div>
  
@@ -3339,6 +3342,52 @@ Non automatico o semiautomatico
   
  <script type="text/javascript">
  
+ 
+ $('#note_attestato').change(function(){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  dataObj = {}
+	  dataObj.note = $(this).val();
+   $.ajax({
+ 	  type: "POST",
+ 	  url: "gestioneVerMisura.do?action=note_attestato&id_misura="+${misura.id},
+ 	data: dataObj,
+ 	dataType: "json",
+ 	 
+ 	  success: function( data, textStatus) {
+ 		pleaseWaitDiv.modal('hide');
+ 		  	      		  
+ 		 
+ 		
+ 		  if(!data.success){
+ 			  
+ 		  
+ 			  $('#myModalErrorContent').html("Errone nel salvataggio delle note attestato!");
+ 			  	$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-danger");
+ 				$('#report_button').show();
+ 				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+ 		  }
+ 	  },
+
+ 	  error: function(jqXHR, textStatus, errorThrown){
+ 		  pleaseWaitDiv.modal('hide');
+
+ 		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+ 
+ 	  }
+   });
+	 
+ });
  
 	function formatDate(data){
 		

@@ -529,6 +529,33 @@ $("#cliente").change(function() {
 
 	});
 
+
+$("#sede").change(function(){
+	
+	
+	var id_cliente = $('#cliente').val().split("_")[0];
+	  var id_sede = $(this).val().split("_")[0];	 
+	
+	  var options = commessa_options;
+	  var opt=[];
+		opt.push("");
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 		
+		
+		if((str.split("*")[1] == id_cliente||str.split("*")[2]==id_cliente) && (str.split("@")[1] == id_sede || str.split("@")[2] == id_sede))	
+		{
+
+			opt.push(options[i]);
+		}   
+  
+	   } 
+	$('#commessa').html(opt);
+	$('#commessa').val("");
+	$("#commessa").change();  
+});  
+
+
 $("#mod_cliente").change(function() {
 	  
 	  if ($(this).data('options') == undefined) 
@@ -610,7 +637,7 @@ $("#cliente_scn").change(function() {
 		$("#sede_scn").change();  
 
 
-		  var id_cliente = selection.split("_")[0];
+/* 		  var id_cliente = selection.split("_")[0];
 		  
 			
 		  var options = commessa_options;
@@ -628,11 +655,60 @@ $("#cliente_scn").change(function() {
 		   } 
 		$('#commessa_scn').html(opt);
 		$('#commessa_scn').val("");
-		$("#commessa_scn").change();  	
+		$("#commessa_scn").change();  	 */
 	});
+	
+	
+$("#sede_scn").change(function(){
+	
+	
+	var id_cliente = $('#cliente_scn').val().split("_")[0];
+	  var id_sede = $(this).val().split("_")[0];	 
+	
+	  var options = commessa_options;
+	  var opt=[];
+		opt.push("");
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 		
+		
+		if((str.split("*")[1] == id_cliente||str.split("*")[2]==id_cliente) && (str.split("@")[1] == id_sede || str.split("@")[2] == id_sede))	
+		{
+
+			opt.push(options[i]);
+		}   
+  
+	   } 
+	$('#commessa_scn').html(opt);
+	$('#commessa_scn').val("");
+	$("#commessa_scn").change();  
+});
 
 
+$("#mod_sede").change(function(){
+	
+	
+	var id_cliente = $('#mod_cliente').val().split("_")[0];
+	  var id_sede = $(this).val().split("_")[0];	 
+	
+	  var options = commessa_options;
+	  var opt=[];
+		opt.push("");
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 		
+		
+		if((str.split("*")[1] == id_cliente||str.split("*")[2]==id_cliente) && (str.split("@")[1] == id_sede || str.split("@")[2] == id_sede))	
+		{
 
+			opt.push(options[i]);
+		}   
+  
+	   } 
+	$('#mod_commessa').html(opt);
+	$('#mod_commessa').val("");
+	$("#mod_commessa").change();  
+});
 
 
 $('#nuovoRilievoForm').on('submit', function(e){

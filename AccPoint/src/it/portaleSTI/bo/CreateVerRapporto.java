@@ -12,6 +12,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
@@ -23,6 +25,7 @@ import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
+import it.portaleSTI.DTO.VerLegalizzazioneBilanceDTO;
 import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerMobilitaDTO;
@@ -71,6 +74,12 @@ public class CreateVerRapporto {
 	private void build(VerMisuraDTO misura, List<SedeDTO> listaSedi, boolean conforme, int motivo,UtenteDTO utente, Session session) throws Exception {
 		
 		InputStream is = null;
+		String leg = "_leg";
+		
+		if(misura.getVerStrumento().getLista_legalizzazione_bilance()!=null && misura.getVerStrumento().getLista_legalizzazione_bilance().size()>0) {
+			leg = "_leg" ;
+		}
+		
 		if(misura.getVerStrumento().getTipo().getId()==1) {
 			is = PivotTemplate.class.getResourceAsStream("VerRapportoCSP1.jrxml");
 		}else if(misura.getVerStrumento().getTipo().getId()==2) {
@@ -115,9 +124,48 @@ public class CreateVerRapporto {
 		JasperReportBuilder report = DynamicReports.report();
 		JasperReportBuilder reportP2 = DynamicReports.report();
 		JasperReportBuilder reportP3 = DynamicReports.report();
+		report.setTemplate(Templates.reportTemplate);
+		
 		
 		report.setTemplateDesign(is);
-		report.setTemplate(Templates.reportTemplate);
+		
+		if(misura.getVerStrumento().getLista_legalizzazione_bilance()!=null && misura.getVerStrumento().getLista_legalizzazione_bilance().size()>0) {
+			
+			report.addParameter("tipo_approvazione_header","Tipo di approvazione");
+			report.addParameter("numero_provvedimento_header", "N. provvedimento");
+			report.addParameter("data_provvedimento_header", "Data provvedimento");
+			report.addParameter("legalizzazione_title", "Dati del provvedimento di legalizzazione");
+			
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			int index = 1;
+			for (VerLegalizzazioneBilanceDTO legalizzazione : misura.getVerStrumento().getLista_legalizzazione_bilance()) {
+				report.addParameter("tipo_approvazione_"+index, legalizzazione.getTipo_approvazione().getDescrizione());
+				report.addParameter("numero_provvedimento_"+index, legalizzazione.getNumero_provvedimento());
+				report.addParameter("data_provvedimento_"+index, df.format(legalizzazione.getData_provvedimento()));
+				index++;
+			}
+			if(index == 2) {
+				report.addParameter("tipo_approvazione_2","");
+				report.addParameter("numero_provvedimento_2", "");
+				report.addParameter("data_provvedimento_2", "");
+			}
+			
+		}else {
+			
+			report.addParameter("tipo_approvazione_header","");
+			report.addParameter("numero_provvedimento_header", "");
+			report.addParameter("data_provvedimento_header", "");
+			report.addParameter("legalizzazione_title", "");
+			
+			report.addParameter("tipo_approvazione_1","");
+			report.addParameter("numero_provvedimento_1", "");
+			report.addParameter("data_provvedimento_1", "");
+			
+			report.addParameter("tipo_approvazione_2","");
+			report.addParameter("numero_provvedimento_2", "");
+			report.addParameter("data_provvedimento_2", "");
+		}
+		
 		report.setStartPageNumber(1);
 		report.setDataSource(new JREmptyDataSource());		
 		report.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
@@ -140,6 +188,9 @@ public class CreateVerRapporto {
 	
 		SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, misura.getVerStrumento().getId_sede(), misura.getVerStrumento().getId_cliente());
 		
+		
+		
+	
 		report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
 		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));
 		
@@ -148,6 +199,7 @@ public class CreateVerRapporto {
 		if(!firma.exists()) {
 			firma = null;
 		}
+
 		
 		
 		if(misura.getNumeroRapporto()!=null) {
@@ -317,6 +369,9 @@ public class CreateVerRapporto {
 			report.addParameter("um", "");
 		}
 		
+
+						
+		
 		if(misura.getVerStrumento().getPortata_max_C1()!=null) {
 			report.addParameter("portata_max_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros().toPlainString())+" "+um);
 		}else{
@@ -352,64 +407,7 @@ public class CreateVerRapporto {
 			report.addParameter("numero_divisioni_c1", "");
 		}
 		if(misura.getVerStrumento().getTipo().getId()!=1) {
-//			if(misura.getVerStrumento().getTipo().getId()==2) {
-//				
-//				if(misura.getVerStrumento().getPortata_max_C3()!=null && misura.getVerStrumento().getPortata_max_C3().compareTo(BigDecimal.ZERO)==1) {
-//					report.addParameter("portata_max", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString())+" "+um);
-//					//numero_campi = 3;
-//				}else{
-//					if(misura.getVerStrumento().getPortata_max_C2()!=null) {
-//						report.addParameter("portata_max",  Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString())+" "+um);	
-//						//numero_campi = 2;
-//					}else {
-//						report.addParameter("portata_max",  "");
-//					}				
-//				}
-//				
-//				if(misura.getVerStrumento().getPortata_min_C1()!=null) {
-//					report.addParameter("portata_min", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString())+" "+um);
-//				}else{
-//					report.addParameter("portata_min", "");
-//				}
-//				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-//					report.addParameter("min1", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString())+" "+um);	
-//				}else {
-//					report.addParameter("min1", "");
-//				}
-//				
-//				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-//					report.addParameter("min2", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C2().stripTrailingZeros().toPlainString())+" "+um);
-//				}else {
-//					report.addParameter("min2", "");
-//				}
-//				
-//				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-//					report.addParameter("min3", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros().toPlainString())+" "+um);	
-//				}else {
-//					report.addParameter("min3", "");
-//				}
-//				
-//				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-//					report.addParameter("max1", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros().toPlainString())+" "+um);	
-//				}else {
-//					report.addParameter("max1", "");
-//				}
-//				
-//				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-//					report.addParameter("max2", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString())+" "+um);
-//				}else {
-//					report.addParameter("max2", "");
-//				}
-//				
-//				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-//					report.addParameter("max3", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString())+" "+um);	
-//				}else {
-//					report.addParameter("max3", "");
-//				}
-//				
-//				
-//			}	
-//			else if(misura.getVerStrumento().getTipo().getId()==3) {
+
 				
 				numero_campi = 2;
 				for (VerRipetibilitaDTO item : lista_ripetibilita) {
@@ -439,7 +437,7 @@ public class CreateVerRapporto {
 						report.addParameter("campo2", "Campo di pesatura secondario 2");
 						report.addParameter("campo3", "Campo di pesatura principale");
 					}else {
-						report.addParameter("campo3", "Campo 3");
+						report.addParameter("campo3", "Campo di pesatura 3");
 					}
 					
 					if(misura.getVerStrumento().getPortata_max_C3()!=null) {
@@ -509,7 +507,7 @@ public class CreateVerRapporto {
 		}
 		
 		report.addParameter("registro", misura.getId()+"_"+misura.getVerStrumento().getId()); //MANCA REGISTRO
-		report.addParameter("procedura", "PT-020 Rev. C"); 
+		report.addParameter("procedura", "PT-020 Rev. E"); 
 		
 		if(utente.getFile_firma()!=null) {
 			if(firma!=null) {
@@ -1205,6 +1203,25 @@ public class CreateVerRapporto {
 	}
 	
 	
+	private JasperReportBuilder getTableLegalizzazione(Set<VerLegalizzazioneBilanceDTO> lista_legalizzazione_bilance) {
+		
+		JasperReportBuilder report = DynamicReports.report();
+		
+
+		report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
+		report.addColumn(col.column("Tipo approvazione","tipo_approvazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));		
+ 		report.addColumn(col.column("N. provvedimeto","n_provvedimento", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+ 		report.addColumn(col.column("Data provvedimeno","data_provvedimento", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
+
+ 		report.setDataSource(createDataSourceLegalizzazione(lista_legalizzazione_bilance));
+ 		
+ 		report.highlightDetailEvenRows();
+		
+		return report;
+	}
+
+
+
 	private JasperReportBuilder getTableDecentramento(ArrayList<VerDecentramentoDTO> lista_decentramento, int campo) throws Exception {
 
 		JasperReportBuilder report = DynamicReports.report();
@@ -1875,6 +1892,51 @@ private JRDataSource createDataSourceMobilita(ArrayList<VerMobilitaDTO> lista_mo
  		return dataSource;
 }
 
+private JRDataSource createDataSourceLegalizzazione(Set<VerLegalizzazioneBilanceDTO> lista_legalizzazione_bilance) {
+	
+
+	DRDataSource dataSource = null;
+	String[] listaCodici = null;
+				
+		listaCodici = new String[3];			
+		
+		listaCodici[0]="tipo_approvazione";
+		listaCodici[1]="n_provvedimento";
+		listaCodici[2]="data_provvedimento";
+		
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		
+		dataSource = new DRDataSource(listaCodici);			
+	
+		for (VerLegalizzazioneBilanceDTO item : lista_legalizzazione_bilance) {		
+			ArrayList<String> arrayPs = new ArrayList<String>();			
+			
+			if(item.getTipo_approvazione()!=null) {
+				arrayPs.add(item.getTipo_approvazione().getDescrizione());
+			}else {
+				arrayPs.add("");
+			}
+				
+			if(item.getNumero_provvedimento()!=null) {
+				arrayPs.add(item.getNumero_provvedimento());
+			}else {
+				arrayPs.add("");
+			}
+			
+			if(item.getData_provvedimento()!=null) {
+				arrayPs.add(df.format(item.getData_provvedimento()));
+			}else {
+				arrayPs.add("");
+			}
+							
+				dataSource.add(arrayPs.toArray());
+					
+		}			
+		
+		
+ 		return dataSource;
+}
+
 
 private BigDecimal getE(int campo,  BigDecimal carico)
 {
@@ -1956,7 +2018,7 @@ private String getClassePrecisione(int classe) {
 	Session session=SessionFacotryDAO.get().openSession();
 	session.beginTransaction();
 	
-	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(130, session);
+	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(131, session);
 	//String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
 	List<SedeDTO> listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 	UtenteDTO utente = GestioneUtenteBO.getUtenteById("11", session);

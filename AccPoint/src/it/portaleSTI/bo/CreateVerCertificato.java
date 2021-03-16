@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -20,6 +21,7 @@ import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
 import it.portaleSTI.DTO.VerCodiceDocumentoDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
+import it.portaleSTI.DTO.VerLegalizzazioneBilanceDTO;
 import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerMobilitaDTO;
@@ -52,6 +54,13 @@ public class CreateVerCertificato {
 	private void build(VerMisuraDTO misura,List<SedeDTO> listaSedi, boolean conforme, int motivo, Session session) throws Exception {
 		
 		InputStream is = null;
+		
+		String leg = "_leg";
+		
+		if(misura.getVerStrumento().getLista_legalizzazione_bilance()!=null && misura.getVerStrumento().getLista_legalizzazione_bilance().size()>0) {
+			leg = "_leg" ;
+		}
+				
 		if(misura.getVerStrumento().getTipo().getId()==1) {
 			is = PivotTemplate.class.getResourceAsStream("VerCertificatoCSP1.jrxml");
 		}else if(misura.getVerStrumento().getTipo().getId()==2) {
@@ -118,6 +127,45 @@ public class CreateVerCertificato {
 		}else {
 			report.addParameter("denominazione_titolare", "");
 		}
+		
+		
+		if(misura.getVerStrumento().getLista_legalizzazione_bilance()!=null && misura.getVerStrumento().getLista_legalizzazione_bilance().size()>0) {
+			
+			report.addParameter("tipo_approvazione_header","Tipo di approvazione");
+			report.addParameter("numero_provvedimento_header", "N. provvedimento");
+			report.addParameter("data_provvedimento_header", "Data provvedimento");
+			report.addParameter("legalizzazione_title", "Dati del provvedimento di legalizzazione");
+			
+			int index = 1;
+			for (VerLegalizzazioneBilanceDTO legalizzazione : misura.getVerStrumento().getLista_legalizzazione_bilance()) {
+				report.addParameter("tipo_approvazione_"+index, legalizzazione.getTipo_approvazione().getDescrizione());
+				report.addParameter("numero_provvedimento_"+index, legalizzazione.getNumero_provvedimento());
+				report.addParameter("data_provvedimento_"+index, df.format(legalizzazione.getData_provvedimento()));
+				index++;
+			}
+			if(index == 2) {
+				report.addParameter("tipo_approvazione_2","");
+				report.addParameter("numero_provvedimento_2", "");
+				report.addParameter("data_provvedimento_2", "");
+			}
+			
+		}else {
+			
+			report.addParameter("tipo_approvazione_header","");
+			report.addParameter("numero_provvedimento_header", "");
+			report.addParameter("data_provvedimento_header", "");
+			report.addParameter("legalizzazione_title", "");
+			
+			report.addParameter("tipo_approvazione_1","");
+			report.addParameter("numero_provvedimento_1", "");
+			report.addParameter("data_provvedimento_1", "");
+			
+			report.addParameter("tipo_approvazione_2","");
+			report.addParameter("numero_provvedimento_2", "");
+			report.addParameter("data_provvedimento_2", "");
+			
+		}
+		
 		
 		String indirizzo="";
 		String cap="";
@@ -341,13 +389,15 @@ public class CreateVerCertificato {
 					report.addParameter("portata_min_c2", "");
 				}
 				
-				if(misura.getVerStrumento().getPortata_max_C3()!=null) {
+				if(misura.getVerStrumento().getPortata_max_C3()!=null && misura.getVerStrumento().getPortata_max_C3().compareTo(BigDecimal.ZERO)==1) {
+					report.addParameter("campo_pesatura_3", "Campo di pesatura 3");
 					report.addParameter("portata_max_c3", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 				}else{
+					report.addParameter("campo_pesatura_3", "");
 					report.addParameter("portata_max_c3", "");
 				}
 				
-				if(misura.getVerStrumento().getPortata_min_C3()!=null) {
+				if(misura.getVerStrumento().getPortata_min_C3()!=null && misura.getVerStrumento().getPortata_min_C3().compareTo(BigDecimal.ZERO)==1) {
 					report.addParameter("portata_min_c3", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 				}else{
 					report.addParameter("portata_min_c3", "");
@@ -373,9 +423,9 @@ public class CreateVerCertificato {
 			}
 			
 			
-			if(misura.getVerStrumento().getDiv_ver_C3()!=null && misura.getVerStrumento().getDiv_ver_C3().compareTo(BigDecimal.ZERO)==1) {
+			if(misura.getVerStrumento().getDiv_ver_C3()!=null && misura.getVerStrumento().getDiv_ver_C3().compareTo(BigDecimal.ZERO)==1) {				
 				report.addParameter("divisione_verifica_c3", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C3().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
-			}else{
+			}else{			
 				report.addParameter("divisione_verifica_c3", "");
 			}
 			
@@ -495,6 +545,7 @@ public class CreateVerCertificato {
 			reportP2.addParameter("nome_operatore", "");
 		}
 		
+		reportP2.addParameter("data_emissione", df.format(new Date()));
 		reportP2.addParameter("responsabile", "Eliseo Crescenzi");
 		
 		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	

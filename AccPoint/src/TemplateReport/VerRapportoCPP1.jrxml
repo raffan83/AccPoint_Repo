@@ -420,11 +420,108 @@
 				<text><![CDATA[Rapporto di verificazione periodica numero:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="355" y="413" width="90" height="16" uuid="aa9c871d-5774-438b-ae01-8bc99881236a"/>
+				<reportElement x="355" y="413" width="111" height="16" uuid="aa9c871d-5774-438b-ae01-8bc99881236a"/>
 				<textElement>
 					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{campo3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="321" y="273" width="79" height="16" isRemoveLineWhenBlank="true" uuid="61372bdd-9e9e-44de-afb5-66043464af0d"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipo_approvazione_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="400" y="273" width="78" height="16" isRemoveLineWhenBlank="true" uuid="e3c506db-30de-4d32-a8e4-3b20cb0b3afc"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_provvedimento_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="478" y="273" width="76" height="16" isRemoveLineWhenBlank="true" uuid="c0db6088-365b-4b81-9998-7b245c37d31e"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data_provvedimento_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="321" y="289" width="79" height="16" isRemoveLineWhenBlank="true" uuid="99d0acec-408f-4e9d-8974-8a28e3328bd7"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipo_approvazione_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="400" y="289" width="78" height="16" isRemoveLineWhenBlank="true" uuid="974ea57f-f865-44bc-bc86-fff5463cf6d6"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="rtf">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_provvedimento_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="478" y="289" width="76" height="16" isRemoveLineWhenBlank="true" uuid="b43b4265-e218-478c-8bb2-fe4c7fa129f2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data_provvedimento_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="321" y="257" width="79" height="16" isRemoveLineWhenBlank="true" uuid="536f2ecd-9ab6-435d-a4f9-0cd007277580"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipo_approvazione_header}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="400" y="257" width="78" height="16" isRemoveLineWhenBlank="true" uuid="100c7dd4-a257-4db8-bb90-da9f7292dd04"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_provvedimento_header}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="478" y="257" width="76" height="16" isRemoveLineWhenBlank="true" uuid="c6dfcb95-6f49-48b4-be67-7df020d78a32"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data_provvedimento_header}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="320" y="242" width="235" height="15" isRemoveLineWhenBlank="true" uuid="0822a0aa-b42b-467d-bdd2-414f859611e8"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{legalizzazione_title}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

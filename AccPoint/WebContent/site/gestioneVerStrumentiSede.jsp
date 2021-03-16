@@ -1258,6 +1258,8 @@ function formatDate(data){
 }
 
 
+
+
 function modalAssociaProvvedimento(id_strumento){
 	
 $('#id_strumento_legalizzazione').val(id_strumento);
@@ -1285,8 +1287,8 @@ $('#id_strumento_legalizzazione').val(id_strumento);
   			  dati.classe = lista_provvedimenti[i].classe;
   			  dati.tipo_approvazione = lista_provvedimenti[i].tipo_approvazione.descrizione;
   			  dati.tipo_provvedimento = lista_provvedimenti[i].tipo_provvedimento.descrizione;
-  			  dati.numero_provvedimento = lista_provvedimenti[i].numero_provvedimento;
-  			  dati.data_provvedimento =  formatDate(moment(lista_provvedimenti[i].data_provvedimento, "DD, MMM YY"));
+  			  dati.numero_provvedimento = lista_provvedimenti[i].numero_provvedimento;  			  
+  			  dati.data_provvedimento =  lista_provvedimenti[i].data_provvedimento;
   			  dati.rev = lista_provvedimenti[i].rev;  			 
   			  dati.azioni = '<td><a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegatiProvvedimento('+lista_provvedimenti[i].id+')"><i class="fa fa-archive"></i></a></td>';
   			  
@@ -1583,7 +1585,7 @@ function creaTabellaLegalizzazione(id_strumento){
 
      			  dati.tipo_provvedimento = lista_provvedimenti_associati[i].tipo_provvedimento.descrizione;
      			  dati.numero_provvedimento = lista_provvedimenti_associati[i].numero_provvedimento;
-     			  dati.data_provvedimento =  formatDate(moment(lista_provvedimenti_associati[i].data_provvedimento, "DD, MMM YY"));
+     			  dati.data_provvedimento =  lista_provvedimenti[i].data_provvedimento;
      			 			 
      			  dati.azioni = '<td><a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegatiProvvedimento('+lista_provvedimenti_associati[i].id+')"><i class="fa fa-archive"></i></a></td>';
      			  

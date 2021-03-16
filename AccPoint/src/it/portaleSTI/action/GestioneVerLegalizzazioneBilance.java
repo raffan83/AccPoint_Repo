@@ -27,6 +27,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -257,9 +258,9 @@ public class GestioneVerLegalizzazioneBilance extends HttpServlet {
 				ArrayList<VerLegalizzazioneBilanceDTO> lista_provvedimenti = GestioneVerLegalizzazioneBilanceBO.getListaLegalizzazioni(session);
 				PrintWriter out = response.getWriter();
 				
-				 Gson gson = new Gson(); 
+				 Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 			        			        
-			     			       		       
+			     			       		   
 			        myObj.addProperty("success", true);
 			  
 			        myObj.add("lista_provvedimenti", gson.toJsonTree(lista_provvedimenti));
@@ -505,38 +506,40 @@ public static void importaAllegati(ArrayList<VerLegalizzazioneBilanceDTO> lista_
 		
 	for(VerLegalizzazioneBilanceDTO legalizzazione : lista_legalizzazioni) {
 
-		
-				String folder = "C:\\Users\\antonio.dicivita\\Desktop\\BILANCE\\"+legalizzazione.getId();
+		if(legalizzazione.getId()>315 && legalizzazione.getId()<811) {
+			
+			System.out.println(legalizzazione.getId());
+			String folder = "C:\\Users\\antonio.dicivita\\Desktop\\BILANCE\\"+legalizzazione.getId();
+			
+			String[] files;
+			
+			File cartella = new File(folder);
+			
+			files = cartella.list();
+			
+			for (String name : files) {
+				File fileToCopy = new File(folder+"\\"+name);					
 				
-				String[] files;
+				String destinazione = Costanti.PATH_FOLDER+"//Verificazione//LegalizzazioneBilance//"+legalizzazione.getId()+"//";
 				
-				File cartella = new File(folder);
+				File folder_destination=new File(destinazione);
 				
-				files = cartella.list();
-				
-				for (String name : files) {
-					File fileToCopy = new File(folder+"\\"+name);					
-					
-					String destinazione = Costanti.PATH_FOLDER+"//Verificazione//LegalizzazioneBilance//"+legalizzazione.getId()+"//";
-					
-					File folder_destination=new File(destinazione);
-					
-					if(!folder_destination.exists()) {
-						folder_destination.mkdirs();
-					}
-					
-//					File destination = new File(destinazione+"//"+name);
-//					if(destination.exists())
-					Files.copy(Paths.get(folder+"\\"+name), Paths.get(destinazione+"\\"+name), StandardCopyOption.REPLACE_EXISTING);
-					
-					
-					VerAllegatoLegalizzazioneBilanceDTO allegato = new VerAllegatoLegalizzazioneBilanceDTO();
-					allegato.setProvvedimento(legalizzazione);
-					allegato.setNome_file(name);
-					session.save(allegato);
+				if(!folder_destination.exists()) {
+					folder_destination.mkdirs();
 				}
 				
-
+//				File destination = new File(destinazione+"//"+name);
+//				if(destination.exists())
+				Files.copy(Paths.get(folder+"\\"+name), Paths.get(destinazione+"\\"+name), StandardCopyOption.REPLACE_EXISTING);
+				
+				
+				VerAllegatoLegalizzazioneBilanceDTO allegato = new VerAllegatoLegalizzazioneBilanceDTO();
+				allegato.setProvvedimento(legalizzazione);
+				allegato.setNome_file(name);
+				session.save(allegato);
+			}
+			
+		}
 					
 }
 

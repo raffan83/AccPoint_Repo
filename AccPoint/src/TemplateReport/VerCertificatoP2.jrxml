@@ -207,6 +207,16 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="15" y="629" width="80" height="20" uuid="9fe37b4b-a5f9-4460-a317-f035c22f7441"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Data emissione]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="2" y="646" width="95" height="20" uuid="1794ddde-a4af-4135-ae59-1b73eb038a09"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 </jasperReport>

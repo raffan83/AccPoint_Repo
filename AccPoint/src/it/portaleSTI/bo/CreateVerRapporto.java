@@ -134,10 +134,12 @@ public class CreateVerRapporto {
 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 			int index = 1;
 			for (VerLegalizzazioneBilanceDTO legalizzazione : misura.getVerStrumento().getLista_legalizzazione_bilance()) {
-				report.addParameter("tipo_approvazione_"+index, legalizzazione.getTipo_approvazione().getDescrizione());
-				report.addParameter("numero_provvedimento_"+index, legalizzazione.getNumero_provvedimento());
-				report.addParameter("data_provvedimento_"+index, df.format(legalizzazione.getData_provvedimento()));
-				index++;
+				if(index<3) {
+					report.addParameter("tipo_approvazione_"+index, legalizzazione.getTipo_approvazione().getDescrizione());
+					report.addParameter("numero_provvedimento_"+index, legalizzazione.getNumero_provvedimento());
+					report.addParameter("data_provvedimento_"+index, df.format(legalizzazione.getData_provvedimento()));
+					index++;
+				}
 			}
 			if(index == 2) {
 				report.addParameter("tipo_approvazione_2","");

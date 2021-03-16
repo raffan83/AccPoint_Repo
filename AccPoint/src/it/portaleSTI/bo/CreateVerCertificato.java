@@ -55,12 +55,7 @@ public class CreateVerCertificato {
 		
 		InputStream is = null;
 		
-		String leg = "_leg";
-		
-		if(misura.getVerStrumento().getLista_legalizzazione_bilance()!=null && misura.getVerStrumento().getLista_legalizzazione_bilance().size()>0) {
-			leg = "_leg" ;
-		}
-				
+
 		if(misura.getVerStrumento().getTipo().getId()==1) {
 			is = PivotTemplate.class.getResourceAsStream("VerCertificatoCSP1.jrxml");
 		}else if(misura.getVerStrumento().getTipo().getId()==2) {
@@ -74,24 +69,9 @@ public class CreateVerCertificato {
 		JasperReportBuilder report = DynamicReports.report();
 		JasperReportBuilder reportP2 = DynamicReports.report();
 
-		//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+misura.getIntervento().getCompany());
-//		File logo = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti_ddt.png");
-//		if(logo!=null) {
-//			report.addParameter("logo",logo);
-//		
-//			}
-//		
-//		File logoAccredia = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti_ddt.png");
-//		if(logoAccredia!=null) {
-//			report.addParameter("logo_accredia",logoAccredia);
-//		
-//			}
-		
-	//	report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
 		report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
 		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
-		//report.addParameter("immagine_ilac",PivotTemplateLAT_Image.class.getResourceAsStream("ilac.jpg"));	
-		
+
 		report.setTemplateDesign(is);
 		report.setTemplate(Templates.reportTemplate);
 

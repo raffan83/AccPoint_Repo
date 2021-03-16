@@ -74,11 +74,6 @@ public class CreateVerRapporto {
 	private void build(VerMisuraDTO misura, List<SedeDTO> listaSedi, boolean conforme, int motivo,UtenteDTO utente, Session session) throws Exception {
 		
 		InputStream is = null;
-		String leg = "_leg";
-		
-		if(misura.getVerStrumento().getLista_legalizzazione_bilance()!=null && misura.getVerStrumento().getLista_legalizzazione_bilance().size()>0) {
-			leg = "_leg" ;
-		}
 		
 		if(misura.getVerStrumento().getTipo().getId()==1) {
 			is = PivotTemplate.class.getResourceAsStream("VerRapportoCSP1.jrxml");

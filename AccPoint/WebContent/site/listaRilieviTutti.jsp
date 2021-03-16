@@ -6,30 +6,46 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <% pageContext.setAttribute("newLineChar", "\r\n"); %>
     
-    <div class="row">
-<div class="col-sm-12">
+
 
 <c:choose>
-<c:when test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
-<button class="btn btn-primary" onClick="modalNuovoRilievo()"><i class="fa fa-plus"></i> Nuovo Rilievo</button>
-<button class="btn btn-info pull-right" title="Click per aprire la lista delle schede di consegna"  onClick="callAction('showSchedeConsegna.do?action=rilievi')"><i class="fa fa-list-ul"></i></button> 
- <!-- <button class="btn btn-info pull-right" title="Click per aprire la lista delle schede di consegna"  onClick="modalListaSchedeConsegna()"><i class="fa fa-list-ul"></i></button> -->
 
-<button class="btn btn-primary pull-right" style="margin-right:5px" onClick="modalSchedaConsegna()"><i class="fa fa-plus"></i> Crea Scheda Consegna</button>
+<c:when test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
+
+<div class="row">
+<div class="col-sm-12">
+
+<button class="btn btn-primary" onClick="modalNuovoRilievo()"><i class="fa fa-plus"></i> Nuovo Rilievo</button>
+
+</div>
+</div>
+<br>
+
+<div class="row">
+<div class="col-sm-12" >
+
+ <!-- <button class="btn btn-info pull-right" title="Click per aprire la lista delle schede di consegna"  onClick="modalListaSchedeConsegna()"><i class="fa fa-list-ul"></i></button> -->
+<button class="btn btn-primary pull-left" style="margin-right:5px" onClick="modalSchedaConsegna()"><i class="fa fa-plus"></i> Crea Scheda Consegna</button>
+
+<button class="btn btn-info pull-left" title="Click per aprire la lista delle schede di consegna"  onClick="callAction('showSchedeConsegna.do?action=rilievi')"><i class="fa fa-list-ul"></i></button> 
+	</div>
+</div><br>
+
 </c:when>
 <c:otherwise>
 <!-- <button class="btn btn-primary" onClick="modalNuovoRilievo()" disabled><i class="fa fa-plus"></i> Nuovo Rilievo</button> -->
 </c:otherwise>
+
 </c:choose>
 
-</div>
-</div><br>
-    <div class="row">
+
+
+<div class="row">
 
   
 <div class="col-sm-3">
     
-    <label>Anno di riferimento:</label>
+<label>Anno di riferimento:</label>
 <select id="anno" name="anno" class="form-control select2">
 
 <option value="2019">2019</option>
@@ -42,6 +58,14 @@
 
 
 </select>
+
+</div>
+
+<div class="col-sm-3">
+    
+<label class="pull-left">Totale Quote: </label><br>
+
+<input type="text" id="importo_assegnato" class="form-control pull-left" readonly style="width:100%;text-align:right;">
 
 </div>
 </div><br>
@@ -504,6 +528,8 @@ $('#myModalArchivio').modal();
  
 $(document).ready(function() {
 	
+
+	
  var anno_riferimento = "${anno_riferimento}";
 
 	initSelect2('#mod_cliente');
@@ -640,6 +666,13 @@ $(document).ready(function() {
 	});
 	
 	$('#tabRilievi').DataTable().order([23, "desc"]).draw();
+	
+	contaImportoTotale(table);
+
+	table.on( 'search.dt', function () {
+		contaImportoTotale(table);
+	} );
+	
 	
 });
 
@@ -914,6 +947,21 @@ $('#myModalError').on('hidden.bs.modal', function(){
 //	$('#tabUscita').remove();
 	
 }); */
+
+function contaImportoTotale(table){
+	
+	//var table = $("#tabPM").DataTable();
+	
+	var data = table
+     .rows({ search: 'applied' })
+     .data();
+	var somma = 0.0;
+	for(var i=0;i<data.length;i++){	
+		var num = parseFloat(stripHtml(data[i][5]));
+		somma = somma + num;
+	}
+	$('#importo_assegnato').val(somma);
+}
 
 
 $('#anno').change(function(){

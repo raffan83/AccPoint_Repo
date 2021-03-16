@@ -6,13 +6,18 @@
 
 
 
-    <div class="row">
-<div class="col-sm-12">
 <c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
-<button class="btn btn-info pull-right" title="Click per aprire la lista delle schede di consegna"  onClick="callAction('showSchedeConsegna.do?action=rilievi')"><i class="fa fa-list-ul"></i></button>
-<button class="btn btn-primary pull-right" style="margin-right:5px" onClick="modalSchedaConsegna()"><i class="fa fa-plus"></i> Crea Scheda Consegna</button>
+<div class="row">
+<div class="col-sm-12" >
+
+ <!-- <button class="btn btn-info pull-right" title="Click per aprire la lista delle schede di consegna"  onClick="modalListaSchedeConsegna()"><i class="fa fa-list-ul"></i></button> -->
+<button class="btn btn-primary pull-left" style="margin-right:5px" onClick="modalSchedaConsegna()"><i class="fa fa-plus"></i> Crea Scheda Consegna</button>
+
+<button class="btn btn-info pull-left" title="Click per aprire la lista delle schede di consegna"  onClick="callAction('showSchedeConsegna.do?action=rilievi')"><i class="fa fa-list-ul"></i></button> 
+	</div>
+</div><br>
 </c:if>
-</div></div><br>
+
     <div class="row">
 
   
@@ -33,6 +38,14 @@
 </select>
 
 </div>
+<div class="col-sm-3">
+    
+<label class="pull-left">Totale Quote: </label><br>
+
+<input type="text" id="importo_assegnato" class="form-control pull-left" readonly style="width:100%;text-align:right;">
+
+</div>
+</div><br>
 </div><br>
 
 <div class="row">
@@ -486,6 +499,13 @@ $(document).ready(function() {
 	});
 	
 	$('#tabRilievi').DataTable().order([23, "desc"]).draw();
+	
+	contaImportoTotale(table);
+
+	table.on( 'search.dt', function () {
+		contaImportoTotale(table);
+	} );
+	
 });
 
 
@@ -728,6 +748,21 @@ $('#myModalError').on('hidden.bs.modal', function(){
 	$(document.body).css('padding-right', '0px');	
 });
 
+function contaImportoTotale(table){
+	
+	//var table = $("#tabPM").DataTable();
+	
+	var data = table
+     .rows({ search: 'applied' })
+     .data();
+	var somma = 0.0;
+	for(var i=0;i<data.length;i++){	
+		var num = parseFloat(stripHtml(data[i][5]));
+		somma = somma + num;
+	}
+	$('#importo_assegnato').val(somma);
+}
+
 $('#anno').change(function(){
 	
 	 var stato_lavorazione = $('#filtro_rilievi').val();	 
@@ -739,5 +774,6 @@ $('#anno').change(function(){
 	       });
 	
 });
+
 
 	</script>

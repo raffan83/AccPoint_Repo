@@ -173,7 +173,7 @@
 		 
                 </li>
                <li class="list-group-item">
-                  <b>N° Strumenti Genenerati</b> <a class="pull-right">${interventover.nStrumentiGenerati}</a>
+                  <b>N° Strumenti Generati</b> <a class="pull-right">${interventover.nStrumentiGenerati}</a>
                 </li>
 
                 <li class="list-group-item">

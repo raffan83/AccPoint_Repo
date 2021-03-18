@@ -1585,7 +1585,7 @@ function creaTabellaLegalizzazione(id_strumento){
 
      			  dati.tipo_provvedimento = lista_provvedimenti_associati[i].tipo_provvedimento.descrizione;
      			  dati.numero_provvedimento = lista_provvedimenti_associati[i].numero_provvedimento;
-     			  dati.data_provvedimento =  lista_provvedimenti[i].data_provvedimento;
+     			  dati.data_provvedimento =  lista_provvedimenti_associati[i].data_provvedimento;
      			 			 
      			  dati.azioni = '<td><a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegatiProvvedimento('+lista_provvedimenti_associati[i].id+')"><i class="fa fa-archive"></i></a></td>';
      			  

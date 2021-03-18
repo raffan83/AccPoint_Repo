@@ -127,9 +127,9 @@ public class CreateVerRapporto {
 		if(misura.getVerStrumento().getLista_legalizzazione_bilance()!=null && misura.getVerStrumento().getLista_legalizzazione_bilance().size()>0) {
 			
 			report.addParameter("tipo_approvazione_header","Tipo di approvazione");
-			report.addParameter("numero_provvedimento_header", "N. provvedimento");
+			report.addParameter("numero_provvedimento_header", "Numero provvedimento");
 			report.addParameter("data_provvedimento_header", "Data provvedimento");
-			report.addParameter("legalizzazione_title", "Dati del provvedimento di legalizzazione");
+			report.addParameter("legalizzazione_title", "Dati relativi all'accertamento della conformità");
 			
 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 			int index = 1;

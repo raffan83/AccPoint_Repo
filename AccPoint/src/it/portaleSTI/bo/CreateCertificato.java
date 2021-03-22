@@ -213,16 +213,21 @@ public class CreateCertificato {
 				
 				if(tipoScheda.equals("SVT"))
 				{
-					Calendar c = Calendar.getInstance(); 
-					c.setTime(misura.getDataMisura()); 
-					c.add(Calendar.MONTH,strumento.getFrequenza());
-					c.getTime();
 					
-					strumento.setDataProssimaVerifica(new java.sql.Date(c.getTime().getTime()));
-				
+					if(!idoneo.equals("NON IDONEO - <i>UNSUITABLE</i>")) {
+						Calendar c = Calendar.getInstance(); 
+						c.setTime(misura.getDataMisura()); 
+						c.add(Calendar.MONTH,strumento.getFrequenza());
+						c.getTime();
+						
+						strumento.setDataProssimaVerifica(new java.sql.Date(c.getTime().getTime()));
+					}else {
+						
+						strumento.setDataProssimaVerifica(null);
+					}
+					
 					
 					GestioneStrumentoBO.update(strumento, session);
-					
 					
 					
 					if(misura.getDataMisura()!=null){
@@ -235,7 +240,7 @@ public class CreateCertificato {
 					if(strumento.getDataProssimaVerifica()!=null){
 						report.addParameter("dataProssimaVerifica",""+sdf.format(strumento.getDataProssimaVerifica()));
 					}else {
-						report.addParameter("dataProssimaVerifica"," ");			
+						report.addParameter("dataProssimaVerifica","/");			
 					}
 					
 					

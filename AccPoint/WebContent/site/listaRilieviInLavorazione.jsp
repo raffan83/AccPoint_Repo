@@ -690,11 +690,18 @@ $("#sede").change(function(){
 	   {
 		var str=options[i].value; 		
 		
-		if((str.split("*")[1] == id_cliente||str.split("*")[2]==id_cliente) && (str.split("@")[1] == id_sede || str.split("@")[2] == id_sede))	
+		var id_util;
+		if(str.split("*").length>2){
+			id_util = str.split("*")[2].split("@")[0];
+		}else{
+			id_util = str.split("*")[1];
+		}
+		
+		if((str.split("*")[1] == id_cliente||id_util==id_cliente) && (str.split("@")[1] == id_sede || str.split("@")[2] == id_sede))	
 		{
 
 			opt.push(options[i]);
-		}   
+		}     
   
 	   } 
 	$('#commessa').html(opt);
@@ -778,12 +785,19 @@ $("#mod_sede").change(function(){
 	   {
 		var str=options[i].value; 		
 		
-		if((str.split("*")[1] == id_cliente||str.split("*")[2]==id_cliente) && (str.split("@")[1] == id_sede || str.split("@")[2] == id_sede))	
+		var id_util;
+		if(str.split("*").length>2){
+			id_util = str.split("*")[2].split("@")[0];
+		}else{
+			id_util = str.split("*")[1];
+		}
+		
+		if((str.split("*")[1] == id_cliente||id_util==id_cliente) && (str.split("@")[1] == id_sede || str.split("@")[2] == id_sede))	
 		{
 
 			opt.push(options[i]);
 		}   
-  
+
 	   } 
 	$('#mod_commessa').html(opt);
 	$('#mod_commessa').val("");
@@ -867,7 +881,14 @@ $("#sede_scn").change(function(){
 	   {
 		var str=options[i].value; 		
 		
-		if((str.split("*")[1] == id_cliente||str.split("*")[2]==id_cliente) && (str.split("@")[1] == id_sede || str.split("@")[2] == id_sede))	
+		var id_util;
+		if(str.split("*").length>2){
+			id_util = str.split("*")[2].split("@")[0];
+		}else{
+			id_util = str.split("*")[1];
+		}
+		
+		if((str.split("*")[1] == id_cliente||id_util==id_cliente) && (str.split("@")[1] == id_sede || str.split("@")[2] == id_sede))	
 		{
 
 			opt.push(options[i]);

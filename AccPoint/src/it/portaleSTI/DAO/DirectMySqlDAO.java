@@ -350,7 +350,7 @@ public class DirectMySqlDAO {
 
 						PuntoMisuraDTO punto = iterator.next();
 
-						pstINS=conSQLite.prepareStatement("INSERT INTO tblTabelleMisura(id,id_misura,id_tabella,id_ripetizione,ordine,tipoProva,label,tipoVerifica,val_misura_prec,val_campione_prec,val_esito_prec, val_descrizione_prec,applicabile,dgt,file_att_prec,perc_util,SelTolleranza,fondo_scala) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+						pstINS=conSQLite.prepareStatement("INSERT INTO tblTabelleMisura(id,id_misura,id_tabella,id_ripetizione,ordine,tipoProva,label,tipoVerifica,val_misura_prec,val_campione_prec,val_esito_prec, val_descrizione_prec,applicabile,dgt,file_att_prec,perc_util,SelTolleranza,fondo_scala,risoluzione_misura,interpolazione) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 						pstINS.setInt(1, idTabella);
 						pstINS.setInt(2, idMisuraSQLite);
 						pstINS.setInt(3, punto.getId_tabella());
@@ -404,6 +404,14 @@ public class DirectMySqlDAO {
 						{
 							pstINS.setString(18, "0");
 						}
+						
+						if(punto.getRisoluzione_misura()!=null) 
+						{
+							pstINS.setString(19, punto.getRisoluzione_misura().toPlainString());
+						}
+						
+						pstINS.setInt(20, punto.getInterpolazione());
+						
 
 						iterator.remove();			
 						idTabella++;

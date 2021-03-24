@@ -112,16 +112,25 @@ public class CreateVerCertificato {
 		if(misura.getVerStrumento().getLista_legalizzazione_bilance()!=null && misura.getVerStrumento().getLista_legalizzazione_bilance().size()>0) {
 			
 			report.addParameter("tipo_approvazione_header","Tipo di approvazione");
-			report.addParameter("numero_provvedimento_header", "Numero \n provvedimento");
+			report.addParameter("numero_provvedimento_header", "Numero \n provvedimento");		
+			
 			report.addParameter("data_provvedimento_header", "Data");
 			report.addParameter("legalizzazione_title", "Dati relativi all'accertamento della conformità");
-			
+			report.addParameter("legalizzazione_title_small", "");
+		
 			int index = 1;
 			for (VerLegalizzazioneBilanceDTO legalizzazione : misura.getVerStrumento().getLista_legalizzazione_bilance()) {
 				if(index<3) {
 					report.addParameter("tipo_approvazione_"+index, legalizzazione.getTipo_approvazione().getDescrizione());
 					report.addParameter("numero_provvedimento_"+index, legalizzazione.getNumero_provvedimento());
-					report.addParameter("data_provvedimento_"+index, df.format(legalizzazione.getData_provvedimento()));
+					if(legalizzazione.getTipo_approvazione().getId()==1) {
+						report.addParameter("data_provvedimento_"+index, df.format(legalizzazione.getData_provvedimento()));
+					}else {
+						report.addParameter("data_provvedimento_"+index, "");
+						report.setParameter("data_provvedimento_header", "");
+						report.setParameter("legalizzazione_title_small", "Dati relativi all'accertamento della conformità");
+						report.setParameter("legalizzazione_title", "");
+					}
 					index++;
 				}
 			}
@@ -137,7 +146,7 @@ public class CreateVerCertificato {
 			report.addParameter("numero_provvedimento_header", "");
 			report.addParameter("data_provvedimento_header", "");
 			report.addParameter("legalizzazione_title", "");
-			
+			report.addParameter("legalizzazione_title_small","");
 			report.addParameter("tipo_approvazione_1","");
 			report.addParameter("numero_provvedimento_1", "");
 			report.addParameter("data_provvedimento_1", "");
@@ -145,6 +154,7 @@ public class CreateVerCertificato {
 			report.addParameter("tipo_approvazione_2","");
 			report.addParameter("numero_provvedimento_2", "");
 			report.addParameter("data_provvedimento_2", "");
+		
 			
 		}
 		

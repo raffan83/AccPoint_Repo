@@ -532,6 +532,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{legalizzazione_title}]]></textFieldExpression>
 			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="243" width="225" height="15" isRemoveLineWhenBlank="true" uuid="4e5a797c-abad-4c47-8fb8-7003156cc972"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{legalizzazione_title_small}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 </jasperReport>

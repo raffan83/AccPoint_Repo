@@ -82,9 +82,9 @@ public class GestioneSchedaConsegnaBO {
 		return GestioneSchedaConsegnaDAO.getUltimaScheda(session);
 	}
 
-	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegnaRilievi(Session session) {
+	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegnaRilievi(int id_cliente, int id_sede, Session session) {
 
-		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaRilievi(session);
+		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaRilievi(id_cliente, id_sede, session);
 	}
 
 	public static SchedaConsegnaRilieviDTO getSchedaConsegnaRilievoFromId(int id_scheda, Session session) {

@@ -79,7 +79,17 @@ public class ShowSchedeConsegna extends HttpServlet {
 	     	
 			}else if(action!=null && action.equals("rilievi")){
 				
-				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(session);
+				int id_cliente = 0;
+				int id_sede = 0;
+				
+				UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");
+				
+				if(user.checkRuolo("RL")) {
+					id_cliente = user.getIdCliente();
+					id_sede = user.getIdSede();		
+				}
+				
+				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(id_cliente, id_sede, session);
 				
 				request.getSession().setAttribute("lista_schede_consegna", lista_schede_consegna);
 				session.close();

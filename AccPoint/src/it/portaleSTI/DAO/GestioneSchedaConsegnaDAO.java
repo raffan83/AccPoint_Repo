@@ -92,12 +92,22 @@ public class GestioneSchedaConsegnaDAO {
 
 
 
-	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegnaRilievi(Session session) {
+	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegnaRilievi(int id_cliente, int id_sede, Session session) {
 
 		ArrayList<SchedaConsegnaRilieviDTO>  lista = null;
 		
-		Query query = session.createQuery("from SchedaConsegnaRilieviDTO");
-
+		String query_cliente = "";
+		
+		if(id_cliente != 0) {
+			query_cliente = " WHERE id_cliente = :_id_cliente AND id_sede = :_id_sede";
+		}
+		
+		Query query = session.createQuery("from SchedaConsegnaRilieviDTO"+query_cliente);
+		if(id_cliente != 0) {
+			query.setParameter("_id_cliente", id_cliente);
+			query.setParameter("_id_sede", id_sede);			
+		}
+		
 		lista = (ArrayList<SchedaConsegnaRilieviDTO>)query.list();	
 
 		return lista;

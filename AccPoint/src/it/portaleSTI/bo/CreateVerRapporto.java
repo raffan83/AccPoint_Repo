@@ -919,8 +919,28 @@ public class CreateVerRapporto {
 //						subreport_linearita,
 //						cmp.verticalGap(10),
 //						cmp.horizontalList(cmp.horizontalGap(400),cmp.text("ESITO: "+lista_linearita.get(i*6).getEsito()).setStyle(boldStyle)));
-
-				VerticalListBuilder vl_criteri = cmp.verticalList(cmp.text("CRITERI").setStyle(stl.style().setFontName("Trebuchet MS")), 
+				VerticalListBuilder vl_criteri = null;
+				if(tipologia_strumento == 2 && lista_accuratezza.size()>0 && lista_accuratezza.get(0).getMassa()!=null) {
+					 vl_criteri = cmp.verticalList(cmp.text("CRITERI").setStyle(stl.style().setFontName("Trebuchet MS")), 
+								cmp.horizontalList(cmp.text("  - Per la/le prova/e di ripetibilità:").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(160),
+										cmp.text("|Pmax - Pmin|").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(68),
+										cmp.text(" < EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35)).setGap(0),
+								cmp.horizontalList(cmp.text("  - Per le ulteriori prove: ").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(115), 
+										cmp.text("|Ec").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(17),
+										cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
+										cmp.text("| < EMT").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS")),
+										cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS"))),
+								cmp.horizontalList(cmp.text("  - Per i punti E").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(70), 
+										cmp.text("0").setFixedWidth(7).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
+										cmp.text("e E").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(15),
+										cmp.text("T").setFixedWidth(5).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
+										cmp.text(":").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(8),
+										cmp.text("Ec = E").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(35))
+								);
+				}else {
+				
+				
+				 vl_criteri = cmp.verticalList(cmp.text("CRITERI").setStyle(stl.style().setFontName("Trebuchet MS")), 
 						cmp.horizontalList(cmp.text("  - Per la/le prova/e di ripetibilità:").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(160),
 								cmp.text("|Pmax - Pmin|").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(68),
 								cmp.text(" < EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35)).setGap(0),
@@ -934,10 +954,10 @@ public class CreateVerRapporto {
 								cmp.text(":").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(8),
 								cmp.text("Ec = E").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(35))
 						);
-				
+				}
 				VerticalListBuilder vl_linearita = cmp.verticalList(
 						cmp.text(campo).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(boldStyle),
-						cmp.verticalGap(20),
+						cmp.verticalGap(10),
 						cmp.text("Prova di Linearità (Rif.UNI CEI EN 45501:2015 - A.4.4.1 - A.4.2.3)").setStyle(boldStyle), 
 						cmp.text("Tipo dispositivo di azzeramento: " + azzeramento).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 						cmp.verticalGap(10),
@@ -1032,7 +1052,7 @@ public class CreateVerRapporto {
 					if(caso1) {
 						vl_mobilita_caso2 = cmp.verticalList(
 								cmp.text(campo).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(boldStyle),
-								cmp.verticalGap(20),
+								cmp.verticalGap(10),
 								cmp.text("Caso 2) - Strumenti ad equilibrio automatico o semiautomatico (con indicazione analogica)").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 								cmp.verticalGap(10),
 								subreport_mobilita2,
@@ -1084,9 +1104,9 @@ public class CreateVerRapporto {
 							vl_decentramento,
 							cmp.pageBreak(),
 							vl_linearita,
-							cmp.verticalGap(25),
+							cmp.verticalGap(20),
 							vl_accuratezza,
-							cmp.verticalGap(25),
+							cmp.verticalGap(20),
 							vl_mobilita,
 							cmp.verticalGap(20),
 							cmp.text(conformita).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle.setFontSize(12)),
@@ -1749,13 +1769,14 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 		
 		}else {
 			
-			listaCodici = new String[5];			
+			listaCodici = new String[6];			
 			
 			listaCodici[0]="rif";
 			listaCodici[1]="massa";
 			listaCodici[2]="indicazione";	
 			listaCodici[3]="e";			
-			listaCodici[4]="mpe";
+			listaCodici[4]="ec";	
+			listaCodici[5]="mpe";
 		}
 
 			dataSource = new DRDataSource(listaCodici);			
@@ -1791,11 +1812,16 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 					}else {
 						arrayPs.add("");
 					}
-					if(tipologia_strumento == 1) {
+					
+					if(tipologia_strumento == 2) {
+						
+						arrayPs.add("/");
+						
+					}else {
 						if(item.getErroreCor()!=null) {
 							arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(risoluzioneBilanciaE0, RoundingMode.HALF_UP).toPlainString()));
 						}else {
-							arrayPs.add("");
+							arrayPs.add("/");
 						}
 					}
 					if(item.getMpe()!=null) {

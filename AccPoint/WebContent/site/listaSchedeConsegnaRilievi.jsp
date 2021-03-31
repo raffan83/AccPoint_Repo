@@ -64,7 +64,10 @@
  <th>Anno</th>
  <th>Commessa</th>
  <th>Data Creazione</th> 
- <th>Stato</th>
+ <c:if test="${!userObj.checkRuolo('RL') }">
+  <th>Stato</th>
+ </c:if>
+
  <th>Azioni</th>
 
  </tr></thead>
@@ -82,6 +85,7 @@
 <td>${scheda.anno}</td>
 <td>${scheda.commessa }</td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${scheda.data_creazione}" /></td>
+ <c:if test="${!userObj.checkRuolo('RL') }">
 <td>
 <c:choose>
 <c:when test="${scheda.stato==0 }">
@@ -92,9 +96,12 @@ Fatturata
 </c:otherwise>
 </c:choose>
 </td>
+</c:if>
 <td>
  <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaFile('','${scheda.file}', '${utl:encryptData(scheda.id)}')"><i class="fa fa-file-pdf-o"></i></a>
+  <c:if test="${!userObj.checkRuolo('RL') }">
  <a  class="btn btn-warning customTooltip" title="Cambia Stato"   onClick="cambiaStatoSchedaConsegna('${scheda.id}','1')"><i class="glyphicon glyphicon-refresh"></i></a>
+ </c:if>
 <%-- <a  target="_blank" class="btn btn-primary customTooltip  pull-center" title="Click per eliminare la scheda di consegna"   onClick="eliminaSchedaConsegna(${scheda.id})"><i class="fa fa-remove" style="color:black"></i></a> --%>	
 </td>
 	</tr>
@@ -297,9 +304,9 @@ Fatturata
   	  "order": [[0, "desc" ]],
   	      columnDefs: [
 					   { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 },
+  	                   /* { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 8 },
-  	                   { responsivePriority: 4, targets: 7 }
+  	                   { responsivePriority: 4, targets: 7 } */
   	               ],
 
   	    	

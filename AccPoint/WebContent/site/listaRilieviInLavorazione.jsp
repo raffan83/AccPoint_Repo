@@ -28,7 +28,7 @@
  <!-- <button class="btn btn-info pull-right" title="Click per aprire la lista delle schede di consegna"  onClick="modalListaSchedeConsegna()"><i class="fa fa-list-ul"></i></button> -->
 <button class="btn btn-primary pull-left" style="margin-right:5px" onClick="modalSchedaConsegna()"><i class="fa fa-plus"></i> Crea Scheda Consegna</button>
 
-<button class="btn btn-info pull-left" title="Click per aprire la lista delle schede di consegna"  onClick="callAction('showSchedeConsegna.do?action=rilievi')"><i class="fa fa-list-ul"></i></button> 
+<button class="btn btn-info pull-left" title="Click per aprire la lista delle schede di consegna"  onClick="callAction('showSchedeConsegna.do?action=rilievi')"><i class="fa fa-list-ul"></i> Lista Schede di Consegna</button> 
 	</div>
 </div><br>
 
@@ -38,7 +38,15 @@
 </c:otherwise>
 
 </c:choose>
+<c:if test="${userObj.checkRuolo('RL') }">
+<div class="row">
+<div class="col-sm-12" >
 
+<button class="btn btn-info pull-left" title="Click per aprire la lista delle schede di consegna"  onClick="callAction('showSchedeConsegna.do?action=rilievi')"><i class="fa fa-list-ul"></i> Lista Schede di Consegna</button> 
+	</div>
+</div><br>
+
+</c:if>
 
 </div>
 </div><br>

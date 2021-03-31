@@ -63,7 +63,7 @@ public class ListaSchedeConsegna extends HttpServlet {
 			if(action==null || action.equals("")) {
 				
 				ArrayList<SchedaConsegnaDTO> lista_schede_consegna_all = GestioneSchedaConsegnaBO.getListaSchedeConsegnaAll(session);
-				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(session);
+				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(0,0,session);
 								
 				ArrayList<SchedaConsegnaDTO> lista_schede_consegna = new ArrayList<SchedaConsegnaDTO>();
 				ArrayList<SchedaConsegnaDTO> lista_schede_consegna_verificazione = new ArrayList<SchedaConsegnaDTO>();
@@ -136,7 +136,7 @@ public class ListaSchedeConsegna extends HttpServlet {
 				if(rilievo!=null && rilievo.equals("0") && verificazione!=null && verificazione.equals("0") ) {
 					
 					 lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaDate(dateFrom, dateTo,session);
-					 lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(session);
+					 lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(0,0,session);
 					 lista_schede_consegna_verificazione = (ArrayList<SchedaConsegnaDTO>) request.getSession().getAttribute("lista_schede_consegna_verificazione");
 					 request.getSession().setAttribute("dateFromScheda",dateFrom);
 					 request.getSession().setAttribute("dateToScheda",dateTo);	
@@ -150,7 +150,7 @@ public class ListaSchedeConsegna extends HttpServlet {
 				else if(verificazione!=null && verificazione.equals("1")) {
 					// lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaDate(dateFrom, dateTo,session);
 					 lista_schede_consegna = (ArrayList<SchedaConsegnaDTO>) request.getSession().getAttribute("lista_schede_consegna");
-					 lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(session);
+					 lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(0,0,session);
 					 lista_schede_consegna_verificazione = GestioneSchedaConsegnaBO.getListaSchedeConsegnaVerificazioneDate(dateFrom, dateTo, session);
 					 request.getSession().setAttribute("dateFromScheda","");
 					 request.getSession().setAttribute("dateToScheda","");	

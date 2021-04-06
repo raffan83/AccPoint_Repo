@@ -2,18 +2,34 @@ package it.portaleSTI.bo;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 
+import TemplateReport.PivotTemplate;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
@@ -120,9 +136,9 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getListaCorsiPartecipanteScadenza(id_partecipante, data_scadenza, session);
 	}
 
-	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiRuoloCorso(String dateFrom, String dateTo, String tipo_data,Session session) throws Exception {
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiRuoloCorso(String dateFrom, String dateTo, String tipo_data, String id_azienda, String id_sede, Session session) throws Exception {
 		
-		return GestioneFormazioneDAO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, session);
+		return GestioneFormazioneDAO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, id_azienda, id_sede, session);
 	}
 
 	public static int importaDaExcel(FileItem fileItem, int id_azienda,String nome_azienda, int id_sede, String nome_sede, Session session) throws Exception {
@@ -255,4 +271,174 @@ public class GestioneFormazioneBO {
 		
 		return GestioneFormazioneDAO.GestioneFormazioneDAO(id_questionario,session);
 	}
+	
+	public static ArrayList<String> getListaAziendeConPartecipanti(Session session) {
+		
+		return GestioneFormazioneDAO.getListaAziendeConPartecipanti(session);
+	}
+
+
+	public static void createReportPartecipanti(ArrayList<ForPartecipanteRuoloCorsoDTO> lista) throws Exception {
+
+	        XSSFWorkbook workbook = new XSSFWorkbook();         
+	           
+			 XSSFSheet sheet0 = workbook.createSheet("Report partecipanti");
+			 
+			 workbook.setSheetOrder("Report partecipanti", 0);
+			 workbook.setActiveSheet(0);
+			 sheet0.setSelected(true);			 
+			 
+			 sheet0.setMargin(Sheet.RightMargin, 0.39);
+			 sheet0.setMargin(Sheet.LeftMargin, 0.39);
+			 sheet0.setMargin(Sheet.TopMargin, 0.39);
+			 sheet0.setMargin(Sheet.BottomMargin, 0.39);
+			 sheet0.setMargin(Sheet.HeaderMargin, 0.157);
+			 sheet0.setMargin(Sheet.FooterMargin, 0.39);		
+			 Font headerFont = workbook.createFont();
+		     headerFont.setBold(false);
+		     headerFont.setFontHeightInPoints((short) 12);
+		     headerFont.setColor(IndexedColors.BLACK.getIndex());		
+		
+		     CellStyle greenStyle = workbook.createCellStyle();
+
+		     greenStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+		     greenStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);	    
+		     greenStyle.setBorderBottom(BorderStyle.THIN);
+		     greenStyle.setBorderTop(BorderStyle.THIN);
+		     greenStyle.setBorderLeft(BorderStyle.THIN);
+		     greenStyle.setBorderRight(BorderStyle.THIN);
+		     greenStyle.setAlignment(HorizontalAlignment.CENTER);
+		     greenStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		     greenStyle.setFont(headerFont);
+			
+		     CellStyle titleStyle = workbook.createCellStyle();
+		        
+		     titleStyle.setBorderBottom(BorderStyle.THIN);
+		     titleStyle.setBorderTop(BorderStyle.THIN);
+		     titleStyle.setBorderLeft(BorderStyle.THIN);
+		     titleStyle.setBorderRight(BorderStyle.THIN);
+		     titleStyle.setAlignment(HorizontalAlignment.CENTER);
+		     titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		     titleStyle.setFont(headerFont);
+		     
+		     
+			 Row rowHeader = sheet0.createRow(0);
+
+			 for(int j = 0; j<8; j++) {
+				 rowHeader.createCell(j);
+				 
+				 rowHeader.getCell(j).setCellStyle(greenStyle);
+			 }
+			 
+		
+			 sheet0.getRow(0).getCell(0).setCellValue("Nome");
+			 
+			 sheet0.getRow(0).getCell(1).setCellValue("Cognome");
+			 
+			 sheet0.getRow(0).getCell(2).setCellValue("Data di nascita");	
+			 
+			 sheet0.getRow(0).getCell(3).setCellValue("Codice fiscale");	
+			 		 
+			 sheet0.getRow(0).getCell(4).setCellValue("Azienda");		 
+			 
+			 sheet0.getRow(0).getCell(5).setCellValue("Sede");
+			 		 
+			 sheet0.getRow(0).getCell(6).setCellValue("Corso");		 
+			 
+			 sheet0.getRow(0).getCell(7).setCellValue("Ore partecipate");		 
+			 			 
+	  
+		     int row_index = 0;	        
+		     for (int i = 0; i<lista.size();i++) {
+		    	 
+		    	 Row row = sheet0.createRow(1+row_index);
+		    	 
+		    	 ForPartecipanteRuoloCorsoDTO partecipante = lista.get(i);
+		    	 
+		    	 int col = 0;
+		    	 
+		    	 Cell cell = row.createCell(col);
+		    	 
+		 		 cell.setCellValue(partecipante.getPartecipante().getNome());
+
+		    	 col++;
+		    	 cell = row.createCell(col);
+		    	 
+		    	 cell.setCellValue(partecipante.getPartecipante().getCognome());
+		    	 
+		    	 col++;
+		    	 cell = row.createCell(col);
+		    	 
+			 	 SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			 	 
+			 	 if(partecipante.getPartecipante().getData_nascita()!=null) {
+			 		cell.setCellValue(df.format(partecipante.getPartecipante().getData_nascita())+"");	 
+			 	 }else {
+			 		cell.setCellValue("");
+			 	 }
+		    	 col++;
+		    	 cell = row.createCell(col);
+		    	 
+		    	 if(partecipante.getPartecipante().getCf()!=null) {
+		    		 cell.setCellValue(partecipante.getPartecipante().getCf());		  
+		    	 }else {
+		    		 cell.setCellValue("");		  	 
+		    	 }
+		    	   	 
+	    	 
+		    	 col++;
+		    	 cell = row.createCell(col);	    	 
+		    	 
+		    	 if(partecipante.getPartecipante().getNome_azienda()!=null) {
+		    		 cell.setCellValue(partecipante.getPartecipante().getNome_azienda());
+		    	 }else {
+		    		 cell.setCellValue("");	 
+		    	 }
+		    	 
+		    	 
+		    	 col++;
+		    	 cell = row.createCell(col);	
+		    	 
+		    	 if(partecipante.getPartecipante().getNome_azienda()!=null) {
+		    		 cell.setCellValue(partecipante.getPartecipante().getNome_sede());
+		    	 }else {
+		    		 cell.setCellValue("");	 
+		    	 }
+		    	 
+		    	 col++;
+		    	 cell = row.createCell(col);
+		    	 
+		    	 cell.setCellValue(partecipante.getCorso().getDescrizione());
+		    	 
+		    	 col++;
+		    	 cell = row.createCell(col);
+		    	 
+		    	 cell.setCellValue(partecipante.getOre_partecipate());
+		    	 
+			 	
+						row_index++;
+			}
+		     		     
+		    	 for(int j = 0; j<9;j++) {
+		    		 sheet0.autoSizeColumn(j);
+		    	 }
+		     
+		 		
+		 		String path = Costanti.PATH_FOLDER + "\\Formazione\\ReportPartecipanti\\";
+
+		 		
+		 		if(!new File(path).exists()) {
+		 			new File(path).mkdirs();
+		 		}
+		        FileOutputStream fileOut = new FileOutputStream(path +"REPORT_PARTECIPANTI.xlsx");
+		        workbook.write(fileOut);
+		        fileOut.close();
+
+		        workbook.close();
+		  
+		}
+
+	
+		
+	
 }

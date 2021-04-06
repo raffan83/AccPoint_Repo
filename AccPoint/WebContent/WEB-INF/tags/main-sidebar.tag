@@ -364,7 +364,8 @@
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">          	
+          <ul class="treeview-menu">          
+       
 			<li><a href="downloadCalver.do?action=calverdesktop">DasmTar v2.3.1</a></li>
 
 			<li><a href="downloadCalver.do?action=dasmtarLat">DasmTarLAT v1.0.3</a></li>
@@ -374,7 +375,7 @@
 			<li><a href="downloadCalver.do?action=printLabel">PrintLabel v1.1</a></li>
 			<li><a href="downloadCalver.do?action=librerie">Librerie</a></li>
 			<li><a href="downloadCalver.do?action=convertitore">Convertitore</a></li>
-			<% if(user.checkRuolo("AM") || user.checkRuolo("RS")){%>
+			<% if(user.checkRuolo("AM") || user.checkRuolo("RS") || user.checkPermesso("FIRMA_DOCUMENTO")){%>
 			<li><a href="firmaDocumento.do"><i class="fa fa-link"></i>Firma Documento</a></li>
 			<%} %>
           </ul>

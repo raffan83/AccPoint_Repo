@@ -1730,30 +1730,30 @@ $("#tabStrumenti").on( 'init.dt', function ( e, settings ) {
 
 } ); 
 
-var columsDatatables1 = [];
+/* var columsDatatables1 = [];
 
 $("#table_legalizzazione").on( 'init.dt', function ( e, settings ) {
-    var api = new $.fn.dataTable.Api( settings );
-    var state = api.state.loaded();
+   // var api = new $.fn.dataTable.Api( settings );
+ //   var state = api.state.loaded();
  
 /*     if(state != null && state.columns!=null){
     		console.log(state.columns);
     
     		columsDatatables1 = state.columns;
-    } */
+    } 
     $('#table_legalizzazione thead th').each( function () {
-     	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
-    	  var title = $('#table_legalizzazione thead th').eq( $(this).index() ).text();
+/*      	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
+    	  var title = $('#table_legalizzazione thead th').eq( $(this).index() ).text(); 
     	
     	  if($(this).index()!=0 && $(this).index()!=1){
-		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables1[$(this).index()].search.search+'" type="text" /></div>');	
+		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="" type="text" /></div>');	
 	    	}
 
     	} );
     
     
 
-} );
+} ); */
 
 
 
@@ -1932,11 +1932,11 @@ $(document).ready(function() {
 	      paging: false, 
 	      ordering: true,
 	      info: false, 
-	      searchable: false, 
+	      searchable: true, 
 	      targets: 0,
 	      responsive: true,  
 	      scrollX: false,
-	      stateSave: true,	
+	      stateSave: false,	
 	      select: {
 	        	style:    'multi+shift',
 	        	selector: 'td:nth-child(2)'
@@ -1974,6 +1974,12 @@ $(document).ready(function() {
 	               
 	    });
 	
+	$('#table_legalizzazione thead th').each( function () {
+		var title = $('#table_legalizzazione thead th').eq( $(this).index() ).text();
+		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
+	} );
+	
+	
 	tab.buttons().container().appendTo( '#table_legalizzazione_wrapper .col-sm-6:eq(1)');
  	    $('.inputsearchtable').on('click', function(e){
  	       e.stopPropagation();    
@@ -1988,7 +1994,7 @@ $(document).ready(function() {
   } );
 } );  
 
- 	     
+
  	     
  	     
  	     
@@ -2072,6 +2078,7 @@ $('#nuovoVerStrumentoForm').on('submit', function(e){
 
 $('#myModalAssociaLegalizzazione').on('hidden.bs.modal', function(){
 	
+
 	$(document.body).css('padding-right', '0px');
 });
 

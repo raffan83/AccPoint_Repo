@@ -19,6 +19,7 @@ import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
+import it.portaleSTI.DTO.MagDdtDTO;
 
 public class GestioneFormazioneDAO {
 
@@ -303,7 +304,7 @@ public class GestioneFormazioneDAO {
 		
 	}
 
-	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiRuoloCorso(String dateFrom, String dateTo, String tipo_data, Session session) throws Exception {
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiRuoloCorso(String dateFrom, String dateTo, String tipo_data,String id_azienda, String id_sede,  Session session) throws Exception {
 		
 		ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		
@@ -319,7 +320,14 @@ public class GestioneFormazioneDAO {
 			
 		}else {
 			
-			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.disabilitato = 0"); 
+			if(id_azienda!=null && !id_azienda.equals("0")) {
+				query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.disabilitato = 0 and p.partecipante.id_azienda = :_id_azienda and p.partecipante.id_sede = :_id_sede");
+				query.setParameter("_id_azienda", Integer.parseInt(id_azienda));
+				query.setParameter("_id_sede", Integer.parseInt(id_sede));
+			}else {
+				query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.disabilitato = 0"); 	
+			}
+			
 			
 		}				
 			
@@ -447,6 +455,31 @@ public class GestioneFormazioneDAO {
 		
 		return result;
 		
+	}
+
+	public static ArrayList<String> getListaAziendeConPartecipanti(Session session) {
+
+		ArrayList<Object[]> res = null;
+		ArrayList<String> lista = new ArrayList<String>();
+
+		Query query =  session.createQuery("select distinct id_azienda, nome_azienda,id_sede, nome_sede from ForPartecipanteDTO");	
+
+		
+		res = (ArrayList<Object[]>) query.list();
+		
+		for (Object[] objects : res) {
+		
+		String azienda = null;	
+			if(objects[0]!=null && objects[1]!=null) {
+				 azienda =  objects[0]+"!"+objects[1]+"!"+objects[2]+"!"+objects[3];	
+				 lista.add(azienda);
+			}
+
+		}
+
+		
+		
+		return lista;
 	}
 	
 

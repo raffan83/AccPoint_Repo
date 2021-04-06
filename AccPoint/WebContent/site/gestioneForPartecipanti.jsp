@@ -49,7 +49,8 @@
 <div class="row">
 <div class="col-xs-12">
 
-
+<!-- <a class="btn btn-primary pull-left" onClick="callAction('gestioneFormazione.do?action=report_partecipanti')">Crea report partecipanti</a> -->
+<a class="btn btn-primary pull-left" onClick="modalReportPartecipanti()">Crea report partecipanti</a>
 	<a class="btn btn-primary pull-right" onClick="modalNuovoPartecipante()"><i class="fa fa-plus"></i> Nuovo Partecipante</a>
 	<a class="btn btn-primary pull-right" onClick="modalImportaPartecipanti()"  style="margin-right:5px"><i class="fa fa-plus"></i> Importa Partecipanti</a>  
 	<a class="btn btn-success customTooltip pull-right" onClick="callAction('gestioneFormazione.do?action=download_template')" title="Scarica template importazione" style="margin-right:5px"><i class="fa fa-file-excel-o"></i></a>
@@ -411,6 +412,64 @@
 
 </div>
 
+<form id="formReport" name="formReport">
+  <div id="myModalReportPartecipanti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Seleziona Azienda</h4>
+      </div>
+       <div class="modal-body">      
+       
+        <div class="row">
+       <div class="col-xs-3">
+       <label>Azienda</label>
+       </div>
+        <div class="col-xs-9">
+        
+         <select id="azienda_report" name="azienda_report" class="form-control select2"  data-placeholder="Seleziona Azienda..." aria-hidden="true" data-live-search="true" style="width:100%" required >
+         <option value=""></option>
+       <option value="0">TUTTE</option>
+      	<c:forEach items="${listaAziendePartecipanti}" var="azienda" >
+      	<option value="${azienda.split('!')[0]}">${azienda.split('!')[1]}</option>
+      	</c:forEach>
+      
+      </select>
+
+        </div>      
+       </div><br>
+              <div class="row">
+       <div class="col-xs-3">
+       <label>Sede</label>
+       </div>
+        <div class="col-xs-9">
+        
+       <select id="sede_report" name="sede_report" class="form-control select2"  data-placeholder="Seleziona Sede..." disabled aria-hidden="true" data-live-search="true" style="width:100%" required>
+       <option value=""></option>
+       <c:forEach items="${listaAziendePartecipanti}" var="azienda">
+      	<option value="${azienda.split('!')[2]}_${azienda.split('!')[0]}">${azienda.split('!')[3]}</option>
+      	</c:forEach>
+      	<%-- <c:forEach items="${lista_sedi}" var="sd">
+      	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
+      	</c:forEach> --%>
+      
+      </select>
+        </div>      
+       </div> 
+      	
+      	</div>
+      <div class="modal-footer">
+      
+      <button class="btn btn-primary" type="submit" >Crea report</button>
+		<a class="btn btn-primary" onclick="$('#myModalReportPartecipanti').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</form>
 
 
 </div>
@@ -445,6 +504,21 @@
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <script type="text/javascript">
 
+$('#formReport').on('submit', function(e){
+	e.preventDefault();
+	
+	creaReportPartecipanti();
+});
+
+function creaReportPartecipanti(){
+	
+	var id_azienda = $('#azienda_report').val();
+	var id_sede = $('#sede_report').val();
+	
+	callAction('gestioneFormazione.do?action=report_partecipanti&id_azienda='+id_azienda+'&id_sede='+id_sede,null,true);
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal('hide');
+}
 
 function modalNuovoPartecipante(){
 	
@@ -599,11 +673,34 @@ function modalEliminaPartecipante(id_partecipante){
 }
 
 
+function modalReportPartecipanti(){
+	
+	//$('#azienda_report').change();
+	
+		var usedNames = {};
+	$("select[name='azienda_report'] > option").each(function () {
+	    if(usedNames[this.text]) {
+	        $(this).remove();
+	    } else {
+	        usedNames[this.text] = this.value;
+	    }
+	});
+	
+	$('#myModalReportPartecipanti').modal();
+	
+}
 
+$('#myModalReportPartecipanti').on('hidden.bs.modal', function(){
+	
+	$('#azienda_report').val("");
+	$('#azienda_report').change()
+	$('#sede_report').val("");
+	$("#sede_report").prop("disabled", true);
+});
 
 
 $(document).ready(function() {
- 
+ 	
 
      $('.dropdown-toggle').dropdown();
      
@@ -614,9 +711,12 @@ $(document).ready(function() {
   initSelect2('#azienda');
   initSelect2('#azienda_mod');
   initSelect2('#azienda_import');
+  
   $('#sede').select2();
   $('#sede_mod').select2();
   $('#sede_import').select2();
+  $('#sede_report').select2();
+  $('#azienda_report').select2();
 
      table = $('#tabForPartecipante').DataTable({
 			language: {
@@ -727,6 +827,8 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 	 importaPartecipantiDaExcel();
 });
  
+ 
+ 
  $("#azienda").change(function() {
 	  
 	  if ($(this).data('options') == undefined) 
@@ -807,6 +909,52 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 
 	});
  
+ 
+ $("#azienda_report").change(function() {
+	  
+	  if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    $(this).data('options', $('#sede_report option').clone());
+	  }
+	  
+	  
+	  var selection = $(this).val()	 
+	  var id = selection
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	  
+	  if(id!=0){
+	  
+
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+	
+		//if(str.substring(str.indexOf("_")+1,str.length)==id)
+		if(str.substring(str.indexOf("_")+1, str.length)==id)
+		{
+
+			opt.push(options[i]);
+		}   
+	   }
+	 $("#sede_report").prop("disabled", false);
+	 
+	  $('#sede_report').html(opt);
+	  
+	  $("#sede_report").trigger("chosen:updated");
+	  
+
+		$("#sede_report").change();  
+		
+	  }else{
+		  $('#sede_report').html(opt);
+		  $("#sede_report").change(); 
+		  $("#sede_report").prop("disabled", true);
+	  }
+	});
+ 
  $("#azienda_import").change(function() {
 	  
 	  if ($(this).data('options') == undefined) 
@@ -822,6 +970,7 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 
 	  var opt=[];
 	
+	  
 	  opt.push("<option value = 0 selected>Non Associate</option>");
 
 	   for(var  i=0; i<options.length;i++)
@@ -844,8 +993,13 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 
 		$("#sede_import").change();  
 		
-
+	  
 	});
+ 
+ 
+ 
+ 
+
 	
  var options =  $('#cliente_appoggio option').clone();
  function mockData() {

@@ -787,12 +787,15 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 					}
 					
+					ArrayList<String> listaAziendePartecipanti = GestioneFormazioneBO.getListaAziendeConPartecipanti(session);
+					
 					ArrayList<String> lista_cf = GestioneFormazioneDAO.getListaCodiciFiscali(session);
 					
 					Gson g = new Gson();
 					JsonElement json_cf = g.toJsonTree(lista_cf);
 					
-					request.getSession().setAttribute("lista_clienti", listaClienti);				
+					request.getSession().setAttribute("lista_clienti", listaClienti);
+					request.getSession().setAttribute("listaAziendePartecipanti", listaAziendePartecipanti);	
 					request.getSession().setAttribute("lista_sedi", listaSedi);
 					request.getSession().setAttribute("json_cf", json_cf);
 					
@@ -1278,7 +1281,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				if(utente.checkRuolo("F2")) {
 					lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorsoCliente(dateFrom, dateTo, tipo_data, utente.getIdCliente(),utente.getIdSede(), session);
 				}else {
-					lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, session);
+					lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, null, null, session);
 				}
 				request.getSession().setAttribute("lista_corsi", lista_corsi);
 				request.getSession().setAttribute("dateFrom", dateFrom);
@@ -1563,6 +1566,42 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.close();
 				
 				
+			}
+			else if(action.equals("report_partecipanti")) {
+				
+				String id_azienda = request.getParameter("id_azienda");
+				String id_sede = request.getParameter("id_sede");
+				
+				if(id_sede!=null && !id_sede.equals("0")) {
+					id_sede= id_sede.split("_")[0];
+				}
+				
+				ArrayList<ForPartecipanteRuoloCorsoDTO> lista = GestioneFormazioneBO.getListaPartecipantiRuoloCorso(null, null, null, id_azienda, id_sede, session);
+				
+				GestioneFormazioneBO.createReportPartecipanti(lista);
+				
+				String path = Costanti.PATH_FOLDER + "\\Formazione\\ReportPartecipanti\\REPORT_PARTECIPANTI.xlsx";
+				 File file = new File(path);
+					
+					FileInputStream fileIn = new FileInputStream(file);
+
+					ServletOutputStream outp = response.getOutputStream();
+					response.setContentType("application/octet-stream");
+					response.setHeader("Content-Disposition","attachment;filename=REPORT_PARTECIPANTI.xlsx");
+			
+					    byte[] outputByte = new byte[1];
+					    
+					    while(fileIn.read(outputByte, 0, 1) != -1)
+					    {
+					    	outp.write(outputByte, 0, 1);
+					    }
+					    				    
+					 
+					    fileIn.close();
+					    outp.flush();
+					    outp.close();
+				
+				session.close();
 			}
 			
 		}catch(Exception e) {

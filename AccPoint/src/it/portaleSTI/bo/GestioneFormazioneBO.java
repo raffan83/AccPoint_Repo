@@ -324,7 +324,7 @@ public class GestioneFormazioneBO {
 		     
 			 Row rowHeader = sheet0.createRow(0);
 
-			 for(int j = 0; j<8; j++) {
+			 for(int j = 0; j<9; j++) {
 				 rowHeader.createCell(j);
 				 
 				 rowHeader.getCell(j).setCellStyle(greenStyle);
@@ -345,7 +345,9 @@ public class GestioneFormazioneBO {
 			 		 
 			 sheet0.getRow(0).getCell(6).setCellValue("Corso");		 
 			 
-			 sheet0.getRow(0).getCell(7).setCellValue("Ore partecipate");		 
+			 sheet0.getRow(0).getCell(7).setCellValue("Commessa");
+			 
+			 sheet0.getRow(0).getCell(8).setCellValue("Ore partecipate");		 
 			 			 
 	  
 		     int row_index = 0;	        
@@ -413,13 +415,23 @@ public class GestioneFormazioneBO {
 		    	 col++;
 		    	 cell = row.createCell(col);
 		    	 
+		    	 if(partecipante.getCorso().getCommessa()!=null) {
+		    		 cell.setCellValue(partecipante.getCorso().getCommessa());	 
+		    	 }else {
+		    		 cell.setCellValue("");
+		    	 }
+		    	 
+		    	 
+		    	 col++;
+		    	 cell = row.createCell(col);
+		    	 
 		    	 cell.setCellValue(partecipante.getOre_partecipate());
 		    	 
 			 	
 						row_index++;
 			}
 		     		     
-		    	 for(int j = 0; j<9;j++) {
+		    	 for(int j = 0; j<10;j++) {
 		    		 sheet0.autoSizeColumn(j);
 		    	 }
 		     

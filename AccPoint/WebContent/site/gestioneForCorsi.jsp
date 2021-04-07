@@ -71,6 +71,7 @@
 <th>Visibile al cliente</th>
 </c:if>
 <th>Tipologia</th>
+<th>Descrizione</th>
 <th>Commessa</th>
 <th>Docente</th>
 <th>E-Learning</th>
@@ -101,6 +102,7 @@
 	</c:if>
 	
 	<td>${corso.corso_cat.descrizione }</td>
+	<td>${corso.descrizione }</td>
 	<td>${corso.commessa }</td>
 	<td>${corso.docente.nome } ${corso.docente.cognome }</td>
 	<td>
@@ -902,7 +904,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 8 },
+		    	  { responsivePriority: 2, targets: 9 },
 		    	   { targets: 1,  orderable: false }
 		    	  
 		               ], 	        

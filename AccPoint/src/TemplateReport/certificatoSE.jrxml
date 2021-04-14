@@ -371,6 +371,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Rev. 0 del 02/05/2019]]></text>
 			</staticText>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement x="7" y="165" width="274" height="21" uuid="5cb8c991-fdb8-485f-a717-4d252eb4666a"/>
+				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
+			</image>
 		</band>
 	</columnFooter>
 </jasperReport>

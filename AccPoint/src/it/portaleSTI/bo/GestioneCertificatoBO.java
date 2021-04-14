@@ -37,6 +37,8 @@ import javax.servlet.ServletContext;
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
 
+import com.google.gson.JsonObject;
+
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 
 public class GestioneCertificatoBO {
@@ -82,7 +84,7 @@ public class GestioneCertificatoBO {
 				
 	            listaProcedure.add(strumento.getProcedura());
 
-				new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,true, utente);
+				CreateCertificato cert = new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,true, utente);
 					
 					/*
 					 * Aggiornata data Emissione su scadenzaDTO
@@ -115,11 +117,13 @@ public class GestioneCertificatoBO {
 		    		}
 		    		
 					
+			
+			return cert.firmato.get("messaggio").getAsString();
+			
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw e;
 			}
-			return null;
 		}
 		
 		

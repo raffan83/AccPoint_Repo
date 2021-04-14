@@ -248,4 +248,10 @@ public class GestioneUtenteBO {
 		
 	}
 
+
+	public static String getIdFirmaDigitale(int id, Session session) {
+		
+		return GestioneUtenteDAO.getIdFirmaDigitale(id, session);
+	}
+
 }

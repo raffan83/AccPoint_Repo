@@ -18,8 +18,11 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import com.google.gson.JsonObject;
+
 import TemplateReportLAT.PivotTemplateLAT;
 import TemplateReportLAT.ImageReport.PivotTemplateLAT_Image;
+import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClienteDTO;
@@ -42,6 +45,7 @@ import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
@@ -242,6 +246,9 @@ public class CreaCertificatoLivellaBolla {
 			report.addParameter("registro_laboratorio", "");
 		}
 		
+		report.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
+		
+		
 		InputStream is2 =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP2.jrxml");
 		
 		JasperReportBuilder reportP2 = DynamicReports.report();
@@ -354,6 +361,8 @@ public class CreaCertificatoLivellaBolla {
 			reportP2.addParameter("incertezza_ass_media", "");
 		}
 
+		reportP2.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
+		
 		//File image = new File(inputStream);
 
 
@@ -382,6 +391,9 @@ public class CreaCertificatoLivellaBolla {
 		}else {
 			reportP3.addParameter("note", "");
 		}
+		
+		
+		reportP3.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
 		
 		BigDecimal sensibilita = misura.getSensibilita().stripTrailingZeros();
 		
@@ -412,6 +424,15 @@ public class CreaCertificatoLivellaBolla {
 		exporter.exportReport();
 		
 		this.file = new File(path);
+		
+		UtenteDTO responsabile = GestioneUtenteBO.getUtenteById(""+86, session);
+		JsonObject jsonOP =  ArubaSignService.signCertificatoPades(responsabile,  certificato);
+		 
+		  
+//		  if(jsonOP.get("success")==null || !jsonOP.get("success").getAsBoolean() || certificato.getMisura().getInterventoDati().getUtente().getIdFirma()==null) {
+//			  
+//			  messaggio_firma = "Non è stato possibile appore la firma digitale dell'operatore";				  
+//		  }
 		
 		certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
 		certificato.setDataCreazione(new Date());

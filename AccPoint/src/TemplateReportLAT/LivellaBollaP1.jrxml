@@ -9,7 +9,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="802" splitType="Stretch">
+		<band height="772" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="181" width="150" height="15" uuid="680cbf97-70f2-4b83-be8e-7ffe39db315a"/>
 				<textElement verticalAlignment="Bottom">
@@ -242,28 +242,28 @@
 				<textFieldExpression><![CDATA[$P{registro_laboratorio}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="600" width="554" height="35" uuid="e0abdf68-f31b-46e9-9735-ecc5e892010e"/>
+				<reportElement x="0" y="569" width="554" height="35" uuid="e0abdf68-f31b-46e9-9735-ecc5e892010e"/>
 				<textElement textAlignment="Justified">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[I risultati di misura riportati nel presente Certificato sono stati ottenuti applicando le procedure di taratura citate alla pagina seguente, dove sono specificati anche i campioni o gli strumenti che garantiscono la catena di riferibilità del Centro e i rispettivi certificati di taratura in corso di validità. Essi si riferiscono esclusivamente all’oggetto in taratura e sono validi nel momento e nelle condizioni di taratura, salvo diversamente specificato.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-1" y="635" width="554" height="35" uuid="67520280-f80b-40a8-bbda-7c7c3716273a"/>
+				<reportElement x="-1" y="604" width="554" height="35" uuid="67520280-f80b-40a8-bbda-7c7c3716273a"/>
 				<textElement textAlignment="Justified">
 					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[The measurement results reported in this Certificate were obtained following the calibration procedures given in the following page, where the reference standards or instruments are indicated which guarantee the traceability chain of the laboratory, and the related calibration certificates in the course of validity are indicated as well. They relate only to the calibrated item and they are valid for the time and conditions of calibration, unless otherwise specified.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="672" width="554" height="35" uuid="681025b4-bc16-46ef-afdc-dbb0b1a4f0fb"/>
+				<reportElement x="0" y="641" width="554" height="35" uuid="681025b4-bc16-46ef-afdc-dbb0b1a4f0fb"/>
 				<textElement textAlignment="Justified">
 					<font size="8" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[Le incertezze di misura dichiarate in questo documento sono state determinate conformemente alla Guida ISO/IEC 98 e al documento EA-4/02. Solitamente sono espresse come incertezza estesa ottenuta moltiplicando l’incertezza tipo per il fattore di copertura   corrispondente ad un livello di fiducia di circa il 95 %. Normalmente tale fattore    vale 2.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="705" width="554" height="35" uuid="f5b6306e-417f-4369-89c5-a9618c59b05a"/>
+				<reportElement x="0" y="674" width="554" height="35" uuid="f5b6306e-417f-4369-89c5-a9618c59b05a"/>
 				<textElement textAlignment="Justified">
 					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -322,14 +322,14 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				<text><![CDATA[Page 1 of ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="682" width="10" height="20" uuid="45693343-8ad0-4d71-abca-0722f430e666"/>
+				<reportElement x="370" y="651" width="10" height="20" uuid="45693343-8ad0-4d71-abca-0722f430e666"/>
 				<textElement>
 					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[k]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="102" y="692" width="10" height="20" uuid="cd80642f-3de8-4e5c-bda5-ffbc00fda0aa"/>
+				<reportElement x="102" y="661" width="10" height="20" uuid="cd80642f-3de8-4e5c-bda5-ffbc00fda0aa"/>
 				<textElement>
 					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -368,22 +368,26 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				<imageExpression><![CDATA[$P{immagine_sti}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="385" y="750" width="151" height="14" uuid="8cb597ca-f768-41e5-bad9-fba00d947852"/>
+				<reportElement x="385" y="712" width="151" height="14" uuid="8cb597ca-f768-41e5-bad9-fba00d947852"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Direzione Tecnica]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="385" y="764" width="151" height="14" uuid="f87cdba9-4e54-4ecc-bd74-98f940934e4c"/>
+				<reportElement x="385" y="726" width="151" height="14" uuid="f87cdba9-4e54-4ecc-bd74-98f940934e4c"/>
 				<textElement textAlignment="Center">
 					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Approving Officier]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="385" y="778" width="151" height="14" uuid="509accef-7f2e-4885-9c57-717eb3baabaf"/>
+				<reportElement x="385" y="740" width="151" height="14" uuid="509accef-7f2e-4885-9c57-717eb3baabaf"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Eliseo Crescenzi]]></text>
 			</staticText>
+			<image hAlign="Center">
+				<reportElement x="385" y="752" width="151" height="20" uuid="60c01dc2-7b1f-4c08-afa9-f9606f4e8a95"/>
+				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>

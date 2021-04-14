@@ -92,6 +92,23 @@ public static boolean checkPINFIrma(int id, String pin, Session session) {
 	return esito;
 }
 
+public static String getIdFirmaDigitale(int id, Session session) {
+	
+	ArrayList<String> lista = null;
+	String result = null;
+	
+	Query query  = session.createQuery( "select idFirma from UtenteDTO WHERE id = :_id");
+	
+	query.setParameter("_id", id);
+	lista =(ArrayList<String>) query.list();
+	
+	if(lista.size()>0) {
+		result = lista.get(0);
+	}
+	
+	return result;
+}
+
 
 
 

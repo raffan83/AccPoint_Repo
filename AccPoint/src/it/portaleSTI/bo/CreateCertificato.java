@@ -8,6 +8,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.report;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
+import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
@@ -102,6 +103,7 @@ import TemplateReport.PivotTemplate;
 import ar.com.fdvs.dj.domain.Style;
 import ar.com.fdvs.dj.domain.constants.Font;
 
+import com.google.gson.JsonObject;
 import com.mysql.jdbc.Util;
 import com.sun.corba.se.impl.orbutil.closure.Constant;
 import com.sun.org.apache.bcel.internal.classfile.ConstantInterfaceMethodref;
@@ -109,6 +111,7 @@ import com.sun.org.apache.bcel.internal.classfile.ConstantInterfaceMethodref;
 public class CreateCertificato {
 	
 	public File file;
+	public JsonObject firmato;
 
 	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati, UtenteDTO utente) throws Exception {
 		try {
@@ -581,13 +584,15 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 									cmp.horizontalList(
 										cmp.verticalList(
 												cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),												
+												cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
 												
 											),
 										cmp.line().setFixedWidth(1),
 										cmp.verticalList(
 												cmp.text(per+CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+												cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+												cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
 											)
 										)
 										
@@ -625,13 +630,14 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 									cmp.horizontalList(
 										cmp.verticalList(
 												cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
-												
+												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+												cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
 											),
 										cmp.line().setFixedWidth(1),
 										cmp.verticalList(
 												cmp.text(per+CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+												cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+												cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
 											)
 										)
 										
@@ -714,13 +720,14 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 								cmp.horizontalList(
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
-											
+											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
 										),
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
 											cmp.text(per+CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+											cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
 										),
 									cmp.line().setFixedWidth(1),
 									vertList)
@@ -801,7 +808,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 							
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
 										)
 									,
 									cmp.line().setFixedWidth(1),
@@ -857,7 +865,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 							
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
 										)
 									
 					),
@@ -932,6 +941,37 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  }
 			  
 			  System.out.println("Generato Certificato: "+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
+			  
+			  JsonObject jsonOP = new JsonObject();
+			  JsonObject jsonRL = new JsonObject();
+			  this.firmato = new JsonObject();
+			  String messaggio = "";
+			  
+			  if(certificato.getMisura().getInterventoDati().getUtente().getFile_firma()!=null && certificato.getMisura().getInterventoDati().getUtente().getIdFirma()!=null) {
+				  jsonOP = ArubaSignService.signCertificatoPades(certificato.getMisura().getInterventoDati().getUtente(),  certificato);				  
+			  }
+			  
+			  if(jsonOP.get("success")==null || !jsonOP.get("success").getAsBoolean() || certificato.getMisura().getInterventoDati().getUtente().getIdFirma()==null) {
+				  
+				  messaggio = "Non è stato possibile appore la firma digitale dell'operatore";				  
+			  }
+			  
+			  utente.setIdFirma(GestioneUtenteBO.getIdFirmaDigitale(utente.getId(), session));
+			  if(utente.getFile_firma()!=null && utente.getIdFirma()!=null) {
+				 jsonRL =  ArubaSignService.signCertificatoPades(utente,  certificato);
+			  }
+			  
+			  if(jsonRL.get("success")==null || !jsonRL.get("success").getAsBoolean() || utente.getIdFirma()==null ) {
+				  
+				  if(messaggio.equals("")) {
+					  messaggio = "Non è stato possibile appore la firma digitale del responsabile";  
+				  }else {
+					  messaggio += " e del responsabile";
+				  }				  
+				 
+			  }
+			
+			  firmato.addProperty("messaggio", messaggio);
 			  if(context == null) {
 				  report.show();
 			  }

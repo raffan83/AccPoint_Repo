@@ -11,8 +11,11 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import com.google.gson.JsonObject;
+
 import TemplateReportLAT.PivotTemplateLAT;
 import TemplateReportLAT.ImageReport.PivotTemplateLAT_Image;
+import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClienteDTO;
@@ -32,6 +35,7 @@ import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneLivellaElettronicaBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.constant.PageOrientation;
@@ -273,6 +277,8 @@ public class CreaCertificatoLivellaElettronica {
 		}
 		report.addParameter("numero_pagine","2");
 		
+		report.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
+		
 		InputStream is2 =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica_P2.jrxml");
 		
 		JasperReportBuilder reportP2 = DynamicReports.report();
@@ -415,6 +421,8 @@ public class CreaCertificatoLivellaElettronica {
 			reportP2.addParameter("note", "");
 		}
 		
+		reportP2.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
+		
 		reportP2.setDetailSplitType(SplitType.IMMEDIATE);
 		
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
@@ -434,6 +442,9 @@ public class CreaCertificatoLivellaElettronica {
 		exporter.exportReport();
 		
 		this.file = new File(path);
+		
+		UtenteDTO responsabile = GestioneUtenteBO.getUtenteById(""+86, session);
+		JsonObject jsonOP =  ArubaSignService.signCertificatoPades(responsabile,  certificato);
 		
 		certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
 		certificato.setDataCreazione(new Date());

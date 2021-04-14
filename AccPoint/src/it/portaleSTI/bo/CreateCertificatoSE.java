@@ -16,7 +16,10 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import com.google.gson.JsonObject;
+
 import TemplateReport.PivotTemplate;
+import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
@@ -45,6 +48,7 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 public class CreateCertificatoSE {
 	
 	public File file;
+	public String messaggio_firma;
 	public CreateCertificatoSE(CertificatoDTO certificato,UtenteDTO utente, Session session) throws Exception {
 		
 		build(certificato,utente, session);
@@ -198,6 +202,7 @@ public class CreateCertificatoSE {
 		report.addParameter("tipo_strumento", "SECUTEST 0751/601");
 		report.addParameter("produttore_strumento", "GOSSEN-METRAWATT");
 		report.addParameter("operatore", certificato.getUtente().getNominativo());
+		report.addParameter("firma_operatore", Costanti.PATH_FOLDER + "FileFirme\\"+certificato.getUtente().getFile_firma());
 		if(misura_se.getDATA()!=null) {
 			report.addParameter("data", misura_se.getDATA());	
 		}else {
@@ -226,6 +231,22 @@ public class CreateCertificatoSE {
 		exporter.setConfiguration(configuration);
 		exporter.exportReport();
 		this.file = new File(path);
+		
+		  
+		  JsonObject jsonOP = new JsonObject();
+		  
+		  this.messaggio_firma ="";
+	
+		
+		certificato.getUtente().setIdFirma(GestioneUtenteBO.getIdFirmaDigitale(utente.getId(), session));
+		  if(certificato.getUtente().getFile_firma()!=null && certificato.getUtente().getIdFirma()!=null) {
+			 jsonOP =  ArubaSignService.signCertificatoPades(utente,  certificato);
+		  }
+		  
+		  if(jsonOP.get("success")==null || !jsonOP.get("success").getAsBoolean() || certificato.getMisura().getInterventoDati().getUtente().getIdFirma()==null) {
+			  
+			  messaggio_firma = "Non è stato possibile appore la firma digitale dell'operatore";				  
+		  }
 		
 		certificato.setNomeCertificato(certificato.getMisura().getIntervento().getNomePack()+"_"+certificato.getMisura().getInterventoDati().getId()+""+certificato.getMisura().getStrumento().get__id()+".pdf");
 		certificato.setDataCreazione(new Date());

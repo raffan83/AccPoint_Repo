@@ -88,6 +88,10 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
 			</textField>
+			<image hAlign="Center">
+				<reportElement x="385" y="120" width="151" height="20" uuid="1acb3358-ce58-46f5-9c32-48ea9fd23a9d"/>
+				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
+			</image>
 		</band>
 	</pageFooter>
 </jasperReport>

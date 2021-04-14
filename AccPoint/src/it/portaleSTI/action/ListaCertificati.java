@@ -284,13 +284,13 @@ public class ListaCertificati extends HttpServlet {
 //						//new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), path_immagine, session);						
 //					}					
 //				}else {
-					GestioneCertificatoBO.createCertificato(idCertificato,session,context, utente);	
+				String resultFirma = GestioneCertificatoBO.createCertificato(idCertificato,session,context, utente);	
 //				}
 					
 				
 
 					myObj.addProperty("success", true);
-					myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
+					myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo <br>"+ resultFirma);
 			        out.println(myObj.toString());
 			        
 			     
@@ -350,7 +350,15 @@ public class ListaCertificati extends HttpServlet {
 							
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
 				
-				new CreateCertificatoSE(certificato,utente,session);
+				CreateCertificatoSE resultFirma = new CreateCertificatoSE(certificato,utente,session);				
+			
+//				}
+					
+				
+
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo <br>"+ resultFirma.messaggio_firma);
+			        out.println(myObj.toString());
 				
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
@@ -434,21 +442,23 @@ public class ListaCertificati extends HttpServlet {
 				JsonElement jelement = new JsonParser().parse(selezionati);
 				JsonObject jsonObj = jelement.getAsJsonObject();
 				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
-				
+			//	String resultFirma = "";
 				for(int i=0; i<jsArr.size(); i++){
 					String id =  jsArr.get(i).toString().replaceAll("\"", "");
 				
 					ServletContext context =getServletContext();
 					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id);
+					
 					if(certificato.getMisura().getLat().equals("E")) {
 						new CreateCertificatoSE(certificato,utente,session);
 					}
-//					else if(certificato.getMisura().getMisuraLAT()!=null && certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
-//						new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(),null, session);
-//					}
+					else if(certificato.getMisura().getMisuraLAT()!=null && certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
+//						new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), null,utente, session);
+					}
 					else if(certificato.getMisura().getMisuraLAT()!=null && certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==2) {
 						new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, session);
 					}
+					
 					else {
 						GestioneCertificatoBO.createCertificato(id,session,context, utente);	
 					}

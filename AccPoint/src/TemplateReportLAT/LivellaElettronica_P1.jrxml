@@ -270,19 +270,19 @@
 				<text><![CDATA[The measurement uncertainties stated in this document have been determined according to the ISO/IEC Guide 98 and to EA-4/02. Usually, they have been estimated as expanded uncertainty obtained multiplying the standard uncertainty by the coverage factor k corresponding to a confidence level of about 95%. Normally, this factor k is 2.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="385" y="750" width="151" height="14" uuid="6e077e76-87ff-401f-8a6a-db16ef51c743"/>
+				<reportElement x="385" y="741" width="151" height="14" uuid="6e077e76-87ff-401f-8a6a-db16ef51c743"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Direzione Tecnica]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="385" y="764" width="151" height="14" uuid="b1cd4909-bea8-484d-b96b-d35ee389262c"/>
+				<reportElement x="385" y="755" width="151" height="14" uuid="b1cd4909-bea8-484d-b96b-d35ee389262c"/>
 				<textElement textAlignment="Center">
 					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Approving Officier]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="385" y="778" width="151" height="14" uuid="301fcd23-ed80-473f-96d3-fcf8c4f0703d"/>
+				<reportElement x="385" y="769" width="151" height="14" uuid="301fcd23-ed80-473f-96d3-fcf8c4f0703d"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Eliseo Crescenzi]]></text>
 			</staticText>
@@ -383,6 +383,10 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 			<image scaleImage="FillFrame">
 				<reportElement x="0" y="2" width="561" height="111" uuid="3d0b5f37-702b-4d37-98cf-3b6cd946cf24"/>
 				<imageExpression><![CDATA[$P{immagine_sti}]]></imageExpression>
+			</image>
+			<image hAlign="Center">
+				<reportElement x="370" y="782" width="181" height="20" uuid="bae77aa9-3aa7-4c97-9328-76788f741940"/>
+				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
 			</image>
 		</band>
 	</detail>

@@ -370,7 +370,8 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 	   
 	   int SMTP_HOST_PORT = 465;
 	   String SMTP_AUTH_USER = "metrologiasti@pec.it";
-	   String SMTP_AUTH_PWD  = "XkGiDri9&";
+	  // String SMTP_AUTH_PWD  = "XkGiDri9&";
+	   String SMTP_AUTH_PWD  = "q85#*NJzq3Zn";
 	   
 	   Properties props = new Properties();
 

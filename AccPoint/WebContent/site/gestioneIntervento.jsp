@@ -252,7 +252,14 @@
    <c:when test="${intervento.pressoDestinatario == 2}">
 		<span class="label label-warning">MISTO CLIENTE - SEDE</span>
   </c:when>
-  <c:otherwise>
+   <c:when test="${intervento.pressoDestinatario == 3}">
+		<span class="label label-primary">PRESSO LABORATORIO</span>
+  </c:when>
+  
+   <c:when test="${intervento.pressoDestinatario == 4}">
+		<span class="label label-info">PRESSO FORNITORE ESTERNO</span>
+  </c:when>
+    <c:otherwise>
     <span class="label label-info">-</span>
   </c:otherwise>
 </c:choose> 
@@ -334,6 +341,7 @@
 				  <option value=1>Presso il Cliente</option>
 				  <option value=2>Misto - Cliente - Sede</option>
 				   <option value=3>Presso Laboratorio</option>
+				   <option value=4>Presso Fornitore Esterno</option>
 				</select>
 
                 </div>

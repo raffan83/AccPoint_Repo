@@ -82,7 +82,15 @@
     <c:when test="${intervento.pressoDestinatario == 2}">
 		<span class="label label-warning">MISTO CLIENTE - SEDE</span>
   </c:when>
+      <c:when test="${intervento.pressoDestinatario == 3}">
+		<span class="label label-primary">PRESSO LABORATORIO</span>
+  </c:when>
+  
+   <c:when test="${intervento.pressoDestinatario == 4}">
+		<span class="label label-info">PRESSO FORNITORE ESTERNO</span>
+  </c:when>
   <c:otherwise>
+
     <span class="label label-info">-</span>
   </c:otherwise>
 </c:choose> 

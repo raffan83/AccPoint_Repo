@@ -683,7 +683,7 @@ public class CreateVerRapporto {
 					reportP3.addParameter("g_util","N.A.");
 				}
 				if(misura.getgFactor()!=0) {
-					reportP3.addParameter("g_factor", String.format("%.4f", misura.getgFactor()).replace(".", ","));
+					reportP3.addParameter("g_factor", String.format("%.5f", misura.getgFactor()).replace(".", ","));
 				}else {
 					reportP3.addParameter("g_factor","N.A.");
 				}

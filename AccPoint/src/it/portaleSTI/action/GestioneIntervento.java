@@ -473,7 +473,12 @@ public class GestioneIntervento extends HttpServlet {
 		    		misura.setTipoFirma(0);
 		    		misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(8901));
 		    		misura.setObsoleto("N");
-		    		misura.setnCertificato(nCertificato);
+		    		if(nCertificato!=null &&lat_master!=null && !lat_master.equals("")) {
+		    			misura.setnCertificato(nCertificato.replaceAll(" ", ""));	
+		    		}else {
+		    			misura.setnCertificato(nCertificato);	
+		    		}
+		    		
 		    		misura.setInterventoDati(interventoDati);
 		    		misura.setUser(utente);		    		
 		    		

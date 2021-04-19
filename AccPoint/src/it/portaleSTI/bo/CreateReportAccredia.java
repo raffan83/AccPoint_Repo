@@ -159,78 +159,83 @@ private DRDataSource createDataSourceReport(ArrayList<MisuraDTO> lista_misure) t
 		for (MisuraDTO misura : lista_misure) {
 			ArrayList<String> arrayPs = new ArrayList<String>();
 			
-			if(misura.getnCertificato()!=null) {
-				arrayPs.add(misura.getnCertificato());
-			}else {
-				arrayPs.add("");
-			}
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			Date date = DirectMySqlDAO.getCertificatoFromMisura(misura);
-			//CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura);
-			if(date!=null) {
-				arrayPs.add(df.format(date));
-			}else {
-				arrayPs.add("");
-			}
+			ArrayList<String> datiCert = DirectMySqlDAO.getCertificatoFromMisura(misura);
+			if(!datiCert.get(0).equals("3") && misura.getnCertificato()!=null && !misura.getnCertificato().equals("")) {
+				if(misura.getnCertificato()!=null) {
+					arrayPs.add(misura.getnCertificato());
+				}else {
+					arrayPs.add("");
+				}
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			
-			if(misura.getStrumento().getDenominazione()!=null) {
-				arrayPs.add(misura.getStrumento().getDenominazione());
-			}else {
-				arrayPs.add("");
-			}
-			
-			if(misura.getStrumento().getCostruttore()!=null) {
-				arrayPs.add(misura.getStrumento().getCostruttore());
-			}else {
-				arrayPs.add("");
-			}
+				//CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura);
+				if(datiCert.get(1)!=null) {
+					arrayPs.add(df.format(df.parse(datiCert.get(1))));
+				}else {
+					arrayPs.add("");
+				}
+				
+				if(misura.getStrumento().getDenominazione()!=null) {
+					arrayPs.add(misura.getStrumento().getDenominazione());
+				}else {
+					arrayPs.add("");
+				}
+				
+				if(misura.getStrumento().getCostruttore()!=null) {
+					arrayPs.add(misura.getStrumento().getCostruttore());
+				}else {
+					arrayPs.add("");
+				}
 
-			if(misura.getStrumento().getModello()!=null) {
-				arrayPs.add(misura.getStrumento().getModello());
-			}else {
-				arrayPs.add("");
-			}
+				if(misura.getStrumento().getModello()!=null) {
+					arrayPs.add(misura.getStrumento().getModello());
+				}else {
+					arrayPs.add("");
+				}
 
-			if(misura.getStrumento().getMatricola()!=null) {
-				arrayPs.add(misura.getStrumento().getMatricola());
-			}else {
-				arrayPs.add("");
+				if(misura.getStrumento().getMatricola()!=null) {
+					arrayPs.add(misura.getStrumento().getMatricola());
+				}else {
+					arrayPs.add("");
+				}
+				
+				if(misura.getIntervento().getNome_cliente()!=null) {
+					arrayPs.add(misura.getIntervento().getNome_cliente());
+				}else {
+					arrayPs.add("");
+				}
+				
+				if(misura.getIntervento().getId_cliente()!=0) {
+					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(""+misura.getIntervento().getId_cliente()); 
+					arrayPs.add(cliente.getProvincia());
+				}else {
+					arrayPs.add("");
+				}
+				if(misura.getStrumento()!=null) {
+					 
+					arrayPs.add(""+misura.getStrumento().getTipo_strumento().getId_codice_accredia());
+				}else {
+					arrayPs.add("");
+				}
+				if(misura.getIntervento()!=null) {
+					 if(misura.getIntervento().getPressoDestinatario()==0 || misura.getIntervento().getPressoDestinatario()==3) {
+						 arrayPs.add("P");	 
+					 }else {
+						 arrayPs.add("E");
+					 }				
+				}else {
+					arrayPs.add("");
+				}
+				if(misura.getObsoleto().equals("S")) {
+					arrayPs.add("X");
+				}else {
+					arrayPs.add("");	
+				}
+				
+				dataSource.add(arrayPs.toArray());
 			}
 			
-			if(misura.getIntervento().getNome_cliente()!=null) {
-				arrayPs.add(misura.getIntervento().getNome_cliente());
-			}else {
-				arrayPs.add("");
-			}
 			
-			if(misura.getIntervento().getId_cliente()!=0) {
-				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(""+misura.getIntervento().getId_cliente()); 
-				arrayPs.add(cliente.getProvincia());
-			}else {
-				arrayPs.add("");
-			}
-			if(misura.getStrumento()!=null) {
-				 
-				arrayPs.add(""+misura.getStrumento().getTipo_strumento().getId_codice_accredia());
-			}else {
-				arrayPs.add("");
-			}
-			if(misura.getIntervento()!=null) {
-				 if(misura.getIntervento().getPressoDestinatario()==0 || misura.getIntervento().getPressoDestinatario()==3) {
-					 arrayPs.add("P");	 
-				 }else {
-					 arrayPs.add("E");
-				 }				
-			}else {
-				arrayPs.add("");
-			}
-			if(misura.getObsoleto().equals("S")) {
-				arrayPs.add("X");
-			}else {
-				arrayPs.add("");	
-			}
-			
-			dataSource.add(arrayPs.toArray());
 		}
 	
 

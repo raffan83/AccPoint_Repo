@@ -157,7 +157,7 @@ public class DirectMySqlDAO {
 
 	private static String sqlMisurePerDate = "SELECT m.id, m.id_intervento, s.denominazione,s.matricola,s.codice_interno, m.dataMisura, i.id_commessa, i.nome_cliente, i.nome_sede, ms.descrizione, m.lat, m.nCertificato, c.id, m.obsoleto, s.__id, c.data_creazione FROM misura m LEFT JOIN strumento s ON s.__id = m.id_strumento LEFT JOIN intervento i ON i.id = m.id_intervento LEFT JOIN lat_misura l ON l.id = m.idMisura LEFT JOIN lat_master ms ON l.id_misura_lat = ms.id LEFT JOIN certificato c on m.id = c.id_misura WHERE m.dataMisura BETWEEN ? AND ?";
 
-	private static String sqlDataCertificatoMisura = "SELECT c.data_creazione FROM certificato c LEFT JOIN misura m ON c.id_misura = m.id WHERE c.id_misura = ?"; 
+	private static String sqlDataStatoCertificatoMisura = "SELECT c.id_stato_certificato, c.data_creazione FROM certificato c LEFT JOIN misura m ON c.id_misura = m.id WHERE c.id_misura = ?"; 
 	
 	private static String sqlCommittentiPerFornitore = "SELECT a.id_committente, b.nome_cliente, b.indirizzo_cliente FROM docum_committente_fornitore a LEFT JOIN docum_committente b on a.id_committente = b.id WHERE a.id_fornitore = ?";
 	
@@ -2601,21 +2601,21 @@ public class DirectMySqlDAO {
 		return lista;
 	}
 
-	public static Date getCertificatoFromMisura(MisuraDTO misura) throws Exception {
+	public static ArrayList<String> getCertificatoFromMisura(MisuraDTO misura) throws Exception {
 
 		ArrayList<String> lista =new ArrayList<String>();
 
 		Connection con=null;
 		PreparedStatement pst=null;
 		ResultSet rs= null;
-		Date data = null;
+		
 
 		try
 		{
 			con=getConnection();
 
 
-			pst=con.prepareStatement(sqlDataCertificatoMisura);		
+			pst=con.prepareStatement(sqlDataStatoCertificatoMisura);		
 			pst.setInt(1, misura.getId());
 
 			rs=pst.executeQuery();
@@ -2624,8 +2624,11 @@ public class DirectMySqlDAO {
 			while(rs.next())
 			{
 
-				data =rs.getDate(1);
-
+				
+				String stato = rs.getString(1);
+				String data =rs.getDate(2)+"";
+				lista.add(stato);
+				lista.add(data);
 			}
 
 
@@ -2639,7 +2642,7 @@ public class DirectMySqlDAO {
 			con.close();
 
 		}	
-		return data;
+		return lista;
 
 	}
 

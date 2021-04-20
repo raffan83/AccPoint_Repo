@@ -426,7 +426,7 @@ public class CreaCertificatoLivellaBolla {
 		this.file = new File(path);
 		
 		UtenteDTO responsabile = GestioneUtenteBO.getUtenteById(""+86, session);
-		JsonObject jsonOP =  ArubaSignService.signCertificatoPades(responsabile,  certificato);
+		JsonObject jsonOP =  ArubaSignService.signCertificatoPades(responsabile, null,true, certificato);
 		 
 		  
 //		  if(jsonOP.get("success")==null || !jsonOP.get("success").getAsBoolean() || certificato.getMisura().getInterventoDati().getUtente().getIdFirma()==null) {

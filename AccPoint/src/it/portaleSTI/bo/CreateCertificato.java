@@ -583,16 +583,22 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 								
 									cmp.horizontalList(
 										cmp.verticalList(
+//												cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+//												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),												
+//												cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(25)
 												cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),												
-												cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
+												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+												cmp.verticalGap(10)
 												
 											),
 										cmp.line().setFixedWidth(1),
 										cmp.verticalList(
+//												cmp.text(per+CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+//												cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+//												cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(25)
 												cmp.text(per+CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 												cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
+												cmp.verticalGap(10)
 											)
 										)
 										
@@ -631,13 +637,15 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 										cmp.verticalList(
 												cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
+												//cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(25)
+												cmp.verticalGap(10)
 											),
 										cmp.line().setFixedWidth(1),
 										cmp.verticalList(
 												cmp.text(per+CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 												cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
+												cmp.verticalGap(10)
+												//cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(25)
 											)
 										)
 										
@@ -683,7 +691,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				vertList.add(
 						cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 						cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-						cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
+						cmp.verticalGap(10));
+						//cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
 			}else {
 				vertList.add(					
 						cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
@@ -721,13 +730,15 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
+											cmp.verticalGap(10)
+											//cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(25)
 										),
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
 											cmp.text(per+CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 											cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
+											cmp.verticalGap(10)
+											//cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(25)
 										),
 									cmp.line().setFixedWidth(1),
 									vertList)
@@ -809,7 +820,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
+											cmp.verticalGap(10)
+											//cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(25)
 										)
 									,
 									cmp.line().setFixedWidth(1),
@@ -866,7 +878,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(18)
+											cmp.verticalGap(10)
+											//cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(25)
 										)
 									
 					),
@@ -897,6 +910,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		//	  report.show();
 			  String nomePack=misura.getIntervento().getNomePack();
 			  java.io.File file = null;
+			  
 			  if(appenCertificati) {
 				  file  = new java.io.File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
 			  }else {
@@ -947,8 +961,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  this.firmato = new JsonObject();
 			  String messaggio = "";
 			  
+			
 			  if(certificato.getMisura().getInterventoDati().getUtente().getFile_firma()!=null && certificato.getMisura().getInterventoDati().getUtente().getIdFirma()!=null) {
-				  jsonOP = ArubaSignService.signCertificatoPades(certificato.getMisura().getInterventoDati().getUtente(),  certificato);				  
+				  jsonOP = ArubaSignService.signCertificatoPades(certificato.getMisura().getInterventoDati().getUtente(), CostantiCertificato.OPERATORE_LABEL,false, certificato);				  
 			  }
 			  
 			  if(jsonOP.get("success")==null || !jsonOP.get("success").getAsBoolean() || certificato.getMisura().getInterventoDati().getUtente().getIdFirma()==null) {
@@ -958,7 +973,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  
 			  utente.setIdFirma(GestioneUtenteBO.getIdFirmaDigitale(utente.getId(), session));
 			  if(utente.getFile_firma()!=null && utente.getIdFirma()!=null) {
-				 jsonRL =  ArubaSignService.signCertificatoPades(utente,  certificato);
+				 jsonRL =  ArubaSignService.signCertificatoPades(utente, CostantiCertificato.RESPONSABILE_LABEL,false, certificato);
 			  }
 			  
 			  if(jsonRL.get("success")==null || !jsonRL.get("success").getAsBoolean() || utente.getIdFirma()==null ) {
@@ -1502,12 +1517,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			new ContextListener().configCostantApplication();
 			Session session =SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
-
 			
+			UtenteDTO utente = GestioneUtenteBO.getUtenteById("11", session);
 
-			//GestioneCertificatoBO.createCertificato("509",session,null);
-
-			
+			GestioneCertificatoBO.createCertificato("290",session, null, utente);
 			
 		}
 }

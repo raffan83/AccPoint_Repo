@@ -443,8 +443,8 @@ public class CreaCertificatoLivellaElettronica {
 		
 		this.file = new File(path);
 		
-		UtenteDTO responsabile = GestioneUtenteBO.getUtenteById(""+86, session);
-		JsonObject jsonOP =  ArubaSignService.signCertificatoPades(responsabile,  certificato);
+		UtenteDTO responsabile = GestioneUtenteBO.getUtenteById(""+11, session);
+		JsonObject jsonOP =  ArubaSignService.signCertificatoPades(responsabile, null,true,certificato);
 		
 		certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
 		certificato.setDataCreazione(new Date());

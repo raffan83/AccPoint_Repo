@@ -240,7 +240,7 @@ public class CreateCertificatoSE {
 		
 		certificato.getUtente().setIdFirma(GestioneUtenteBO.getIdFirmaDigitale(utente.getId(), session));
 		  if(certificato.getUtente().getFile_firma()!=null && certificato.getUtente().getIdFirma()!=null) {
-			 jsonOP =  ArubaSignService.signCertificatoPades(utente,  certificato);
+			 jsonOP =  ArubaSignService.signCertificatoPades(utente,null,true, certificato);
 		  }
 		  
 		  if(jsonOP.get("success")==null || !jsonOP.get("success").getAsBoolean() || certificato.getMisura().getInterventoDati().getUtente().getIdFirma()==null) {

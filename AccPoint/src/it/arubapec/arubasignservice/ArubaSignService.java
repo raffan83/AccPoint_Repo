@@ -1,16 +1,34 @@
 package it.arubapec.arubasignservice;
 
+import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 
 import com.google.gson.JsonObject;
 import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.ImageRenderInfo;
+import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
+import com.itextpdf.text.pdf.parser.RenderListener;
+import com.itextpdf.text.pdf.parser.TextRenderInfo;
+
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Auth;
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.PdfProfile;
+import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.PdfSignApparence;
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.PdfsignatureV2;
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.PdfsignatureV2E;
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.PdfsignatureV2ResponseE;
@@ -23,6 +41,7 @@ import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.Util.Costanti;
+import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 
 public class ArubaSignService {
 
@@ -325,7 +344,7 @@ public static JsonObject signDocumentoPades(String utente, String filename) thro
 
 
 
-public static JsonObject signCertificatoPades(UtenteDTO utente, CertificatoDTO certificato) throws TypeOfTransportNotImplementedException, IOException {
+public static JsonObject signCertificatoPades(UtenteDTO utente, String keyWord, boolean lat,  CertificatoDTO certificato) throws TypeOfTransportNotImplementedException, IOException {
 	
 
 	ArubaSignServiceServiceStub stub = new ArubaSignServiceServiceStub();
@@ -358,7 +377,6 @@ public static JsonObject signCertificatoPades(UtenteDTO utente, CertificatoDTO c
 
 	URI uri = f.toURI();	
 
-    PdfReader reader = new PdfReader(path);
 
 	javax.activation.DataHandler dh = new DataHandler(uri.toURL());
 	
@@ -369,7 +387,41 @@ public static JsonObject signCertificatoPades(UtenteDTO utente, CertificatoDTO c
 	pkcs.setSignRequestV2(sign);
 	pkcs.setPdfprofile(PdfProfile.BASIC);
  	request.setPdfsignatureV2(pkcs);
-     		
+ 	
+ 	PdfSignApparence apparence = new PdfSignApparence();
+	
+	
+	if(utente.getFile_firma()!=null && !utente.getFile_firma().equals("") && !lat) {
+	    PdfReader reader = new PdfReader(path);
+	    Integer[] fontPosition = null;
+		for(int i = 1;i<=reader.getNumberOfPages();i++) {
+			fontPosition = getFontPosition(path, keyWord, i);
+			
+			if(fontPosition[0] != null && fontPosition[1] != null) {
+				apparence.setPage(i);
+				break;
+			}
+		}
+				
+		
+	    System.out.println(Arrays.toString(fontPosition));
+	
+	    apparence.setImage("C:\\PortalECI\\FileFirme\\"+utente.getFile_firma());
+	
+	  
+	   apparence.setLeftx(fontPosition[0] - 15 );        	
+	   apparence.setLefty(fontPosition[1] +10);
+	   apparence.setRightx(fontPosition[0] + 70);
+	   apparence.setRighty(fontPosition[1]-25);
+
+	  
+	    apparence.setImageOnly(true);
+	    apparence.setResizeMode(1);
+	    pkcs.setApparence(apparence);
+	    reader.close();
+	}
+	
+    
      PdfsignatureV2ResponseE response= stub.pdfsignatureV2(request);
      
      JsonObject myObj = new JsonObject();
@@ -385,9 +437,49 @@ public static JsonObject signCertificatoPades(UtenteDTO utente, CertificatoDTO c
     	 myObj.addProperty("succes", false);
      }
 
-	reader.close();
 	
-	return myObj; 
+	
+	return myObj;
+
+
+}
+
+
+private static Integer[] getFontPosition(String filePath, final String keyWord, Integer pageNum) throws IOException {
+    final Integer[] result = new Integer[2];
+    PdfReader pdfReader = new PdfReader(filePath);
+    if (pageNum == null) {
+        pageNum = pdfReader.getNumberOfPages();
+    }
+    new PdfReaderContentParser(pdfReader).processContent(pageNum, new RenderListener() {
+        public void beginTextBlock() {
+
+        }
+
+        public void renderText(TextRenderInfo textRenderInfo) {
+        	
+            String text = textRenderInfo.getText();
+          //  System.out.println("text is ：" + text);
+            if (text != null && text.contains(keyWord)) {
+                                     // The abscissa and ordinate of the text in the page
+                com.itextpdf.awt.geom.Rectangle2D.Float textFloat = textRenderInfo.getBaseline().getBoundingRectange();
+                float x = textFloat.x;
+                float y = textFloat.y;
+                result[0] = (int) x;
+                result[1] = (int) y;
+                 //                    System.out.println(String.format("The signature text field absolute position is x:%s, y:%s", x, y));
+            }
+        }
+
+        public void endTextBlock() {
+
+        }
+
+        public void renderImage(ImageRenderInfo renderInfo) {
+
+        }
+    });
+    return result;
 }
 
 

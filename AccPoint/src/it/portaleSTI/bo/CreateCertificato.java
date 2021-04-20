@@ -973,7 +973,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  }
 			  
 			  utente.setIdFirma(GestioneUtenteBO.getIdFirmaDigitale(utente.getId(), session));
-			  if(utente.getFile_firma()!=null && utente.getIdFirma()!=null) {
+			  if(utente.getFile_firma()!=null && utente.getIdFirma()!=null && (tipo_firma == 0 || tipo_firma == 2)) {
 				 jsonRL =  ArubaSignService.signCertificatoPades(utente, CostantiCertificato.RESPONSABILE_LABEL,false, certificato);
 			  }
 			  

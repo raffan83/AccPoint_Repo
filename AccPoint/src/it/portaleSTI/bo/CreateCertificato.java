@@ -954,6 +954,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				  addCertificatiCampioni(file,misura,strumento.getTipoRapporto());
 			  }
 			  
+			  
 			  System.out.println("Generato Certificato: "+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
 			  
 			  JsonObject jsonOP = new JsonObject();

@@ -6,7 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -18,9 +20,12 @@ import javax.activation.FileDataSource;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
 
 import com.google.gson.JsonObject;
+import com.itextpdf.text.io.RandomAccessSourceFactory;
 import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.RandomAccessFileOrArray;
 import com.itextpdf.text.pdf.parser.ImageRenderInfo;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.RenderListener;
@@ -344,7 +349,7 @@ public static JsonObject signDocumentoPades(String utente, String filename) thro
 
 
 
-public static JsonObject signCertificatoPades(UtenteDTO utente, String keyWord, boolean lat,  CertificatoDTO certificato) throws TypeOfTransportNotImplementedException, IOException {
+public static JsonObject signCertificatoPades(UtenteDTO utente,String keyWord, boolean lat,  CertificatoDTO certificato) throws TypeOfTransportNotImplementedException, IOException {
 	
 
 	ArubaSignServiceServiceStub stub = new ArubaSignServiceServiceStub();
@@ -392,10 +397,12 @@ public static JsonObject signCertificatoPades(UtenteDTO utente, String keyWord, 
 	
 	
 	if(utente.getFile_firma()!=null && !utente.getFile_firma().equals("") && !lat) {
+		
 	    PdfReader reader = new PdfReader(path);
+		
 	    Integer[] fontPosition = null;
 		for(int i = 1;i<=reader.getNumberOfPages();i++) {
-			fontPosition = getFontPosition(path, keyWord, i);
+			fontPosition = getFontPosition(reader, keyWord, i);
 			
 			if(fontPosition[0] != null && fontPosition[1] != null) {
 				apparence.setPage(i);
@@ -403,7 +410,7 @@ public static JsonObject signCertificatoPades(UtenteDTO utente, String keyWord, 
 			}
 		}
 				
-		
+	
 	    System.out.println(Arrays.toString(fontPosition));
 	
 	    apparence.setImage("C:\\PortalECI\\FileFirme\\"+utente.getFile_firma());
@@ -413,7 +420,6 @@ public static JsonObject signCertificatoPades(UtenteDTO utente, String keyWord, 
 	   apparence.setLefty(fontPosition[1] +10);
 	   apparence.setRightx(fontPosition[0] + 70);
 	   apparence.setRighty(fontPosition[1]-25);
-
 	  
 	    apparence.setImageOnly(true);
 	    apparence.setResizeMode(1);
@@ -429,6 +435,7 @@ public static JsonObject signCertificatoPades(UtenteDTO utente, String keyWord, 
      if( !response.getPdfsignatureV2Response().get_return().getStatus().equals("KO")) {
 
      	DataHandler fileReturn=response.getPdfsignatureV2Response().get_return().getBinaryoutput();
+     	//File targetFile=  new File(path);
      	File targetFile=  new File(path);
      			     			
      	FileUtils.copyInputStreamToFile(fileReturn.getInputStream(), targetFile);
@@ -445,9 +452,8 @@ public static JsonObject signCertificatoPades(UtenteDTO utente, String keyWord, 
 }
 
 
-private static Integer[] getFontPosition(String filePath, final String keyWord, Integer pageNum) throws IOException {
+private static Integer[] getFontPosition(  PdfReader pdfReader, final String keyWord, Integer pageNum) throws IOException {
     final Integer[] result = new Integer[2];
-    PdfReader pdfReader = new PdfReader(filePath);
     if (pageNum == null) {
         pageNum = pdfReader.getNumberOfPages();
     }

@@ -338,7 +338,22 @@
 </div>
 
 
+</div> 
+
+<div class="row"><br>
+<div class="col-xs-2">
+
+<label>Tempo scansione</label>
+	<input name="tempo_scansione" id="tempo_scansione" type="number" step="0.25" min=0 class="form-control ignore" aria-hidden="true" data-live-search="true" style="width:100%" value="${rilievo.tempo_scansione }">
+
+
 </div>
+<div class="col-xs-2">
+
+<label style="margin-top:25px">Ore</label>
+</div>
+</div>
+
 
 <div class="row"><br>
 <div class="col-xs-12">
@@ -1287,6 +1302,28 @@
  }
  
  
+ 
+ $('#tempo_scansione').focusout(function(){
+	 
+	 var val = $(this).val();
+	 var newValue="";
+	 
+	 if(val == ''){
+		 $('#tempo_scansione').val('');
+	 }else{
+		 newValue = (Math.round(val*4)/4).toFixed(2)
+		
+		 $('#tempo_scansione').val(newValue);	 
+	 }
+	 
+	 
+	 salvaTempoScansione(newValue, "${rilievo.id}");
+	 
+	 
+ });
+ 
+ 
+ 
  function calcolaTolleranzeForoAlbero(){
 		
 		var numero = $('#numero').val();
@@ -1320,6 +1357,7 @@
 
 
  $(document).ready(function(){	
+	
 	 
  	permesso = ${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI')};
  	if(permesso){
@@ -1457,7 +1495,10 @@
    
    var validator = $("#formQuota").validate({
 
-   	showErrors: function(errorMap, errorList) {   	  	
+	ignore: ".ignore",
+	  
+   	showErrors: function(errorMap, errorList) {   
+   	 
    	    this.defaultShowErrors();   	
    	  },
    	  errorPlacement: function(error, element) {

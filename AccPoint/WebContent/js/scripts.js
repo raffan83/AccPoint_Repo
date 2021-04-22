@@ -15316,3 +15316,48 @@ function eliminaAllegatoLegalizzazione(id_allegato){
   }
   });
 }
+
+
+
+function salvaTempoScansione(tempo_scansione, id_rilievo){
+	
+	 var dataObj = {};
+		dataObj.id_rilievo = id_rilievo;
+		dataObj.tempo_scansione = tempo_scansione;
+		
+						
+	  $.ajax({
+type: "POST",
+url: "gestioneRilievi.do?action=salva_tempo_scansione",
+data: dataObj,
+dataType: "json",
+//if received a response from the server
+success: function( data, textStatus) {
+	  //var dataRsp = JSON.parse(dataResp);
+	  if(data.success)
+		  {  
+			
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();
+			$('#myModalError').modal('show');			
+		
+		  }
+},
+error: function( data, textStatus) {
+
+	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+}
+});
+	
+}

@@ -91,6 +91,7 @@
 <th>Tipo Rilievo</th>
 <th>Quote Totali</th>
 <th>Pezzi Totali</th>
+<th>Tempo scansione (Ore)</th>
 <th>Cliente</th>
 <th>Sede</th>
 <th>Apparecchio</th>
@@ -125,6 +126,7 @@
 		<td>${rilievo.tipo_rilievo.descrizione }</td>
 		<td>${rilievo.n_quote }</td>
 		<td>${rilievo.n_pezzi_tot }</td>
+		<td>${rilievo.tempo_scansione }</td>
 		<td>${rilievo.nome_cliente_util }</td>
 		<td>${rilievo.nome_sede_util }</td>
 		<td>${rilievo.apparecchio }</td>	
@@ -637,7 +639,7 @@ $(document).ready(function() {
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 19 }
+		    	  { responsivePriority: 2, targets: 20 }
 		               ], 	        
 	  	      buttons: [   
 	  	          {

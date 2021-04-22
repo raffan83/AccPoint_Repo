@@ -33,6 +33,7 @@ public class RilMisuraRilievoDTO {
 	private int scheda_consegna;
 	private String numero_scheda;
 	private int pezzi_ingresso;
+	private Double tempo_scansione;
 	 
 	public int getN_pezzi_tot() {
 		return n_pezzi_tot;
@@ -208,5 +209,11 @@ public class RilMisuraRilievoDTO {
 	}
 	public void setPezzi_ingresso(int pezzi_ingresso) {
 		this.pezzi_ingresso = pezzi_ingresso;
+	}
+	public Double getTempo_scansione() {
+		return tempo_scansione;
+	}
+	public void setTempo_scansione(Double tempo_scansione) {
+		this.tempo_scansione = tempo_scansione;
 	}
 }

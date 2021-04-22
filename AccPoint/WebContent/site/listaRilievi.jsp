@@ -885,13 +885,13 @@
 			  <option value=""></option>
               <option value="2018">2018</option>
               <option value="2019">2019</option>
-              <option value="2020" selected>2020</option>
-              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2021" selected>2021</option>
                 </select>
 		</div>
         <div class="form-group">
 		  <label for="notaConsegna">Consegna di:</label>
-		  <textarea class="form-control" rows="5" name="notaConsegna" id="notaConsegna">EFFETTUATI CONTROLLI DIMENSIONALI SU N PARTICOLARI CON UN TOTALE DI N QUOTE</textarea>
+		  <textarea class="form-control" rows="5" name="notaConsegna" id="notaConsegna">EFFETTUATI CONTROLLI DIMENSIONALI SU N PARTICOLARI CON UN TOTALE DI N QUOTE E DI N ORE SCANSIONE</textarea>
 		</div>
 		
 		<div class="form-group">

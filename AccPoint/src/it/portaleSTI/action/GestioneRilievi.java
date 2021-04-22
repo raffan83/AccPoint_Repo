@@ -2350,6 +2350,41 @@ public class GestioneRilievi extends HttpServlet {
 				out.print(myObj);
 				
 			}
+			else if(action.equals("salva_tempo_scansione")) {
+				
+				String id_rilievo = request.getParameter("id_rilievo");
+				String tempo_scansione = request.getParameter("tempo_scansione");
+				
+				RilMisuraRilievoDTO rilievo = (RilMisuraRilievoDTO) request.getSession().getAttribute("rilievo");
+				
+				if(rilievo==null) {
+					rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);					
+				}			
+				
+				
+				PrintWriter out = response.getWriter();
+				if(tempo_scansione!=null) {
+					rilievo.setTempo_scansione(new Double(tempo_scansione));
+					session.update(rilievo);
+					myObj.addProperty("success", true);
+					
+				}
+				else if(tempo_scansione.equals("")){
+					rilievo.setTempo_scansione(null);
+					session.update(rilievo);
+					myObj.addProperty("success", true);
+				}else {
+				
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Impossibile salvare il tempo scansione! Formato errato!");
+					
+					
+				}
+				session.getTransaction().commit();
+				session.close();
+				out.print(myObj);
+				
+			}
 
 
 		} catch (Exception e) {

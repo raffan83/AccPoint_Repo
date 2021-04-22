@@ -98,6 +98,9 @@
         <property name="pezzi_ingresso" type="int">
             <column name="pezzi_ingresso" />
         </property>
+        <property name="tempo_scansione" type="java.lang.Double">
+            <column name="tempo_scansione" />
+        </property>
 
 
 	</class>

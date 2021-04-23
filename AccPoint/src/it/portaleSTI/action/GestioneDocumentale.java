@@ -1542,7 +1542,7 @@ public class GestioneDocumentale extends HttpServlet {
 				}
 			
 				PrintWriter out = response.getWriter();
-				
+				response.setContentType("application/json");
 				 Gson gson = new Gson(); 			        			        
 			     			       		       
 			        myObj.addProperty("success", true);
@@ -1569,7 +1569,7 @@ public class GestioneDocumentale extends HttpServlet {
 				
 								
 				PrintWriter out = response.getWriter();
-				
+				response.setContentType("application/json");
 				 Gson gson = new Gson(); 
 			        			        
 			     			       		       

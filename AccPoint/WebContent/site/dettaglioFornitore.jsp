@@ -115,7 +115,7 @@
             <ul id="mainTabs" class="nav nav-tabs">
               <li class="active" id="tab1"><a href="#documenti" data-toggle="tab" aria-expanded="true"   id="documentiTab"><strong><h3>Documenti</h3></strong></a></li> 
               <li class="" id="tab2"><a href="#referenti" data-toggle="tab" aria-expanded="false"   id="referentiTab"><strong><h3>Referenti</h3></strong></a></li>
-              <li class="" id="tab3"><a href="#dipendenti" data-toggle="tab" aria-expanded="false"   id="dipendentiTab"><strong><h3>Dipendenti</h3></strong></a></li>
+              <li class="" id="tab3"><a href="#dipendentitab" data-toggle="tab" aria-expanded="false"   id="dipendentiTab"><strong><h3>Dipendenti</h3></strong></a></li>
 
               		 
               	 
@@ -268,7 +268,7 @@
 
 
 
-       <div class="tab-pane table-responsive" id="dipendenti">
+       <div class="tab-pane table-responsive" id="dipendentitab">
        
        <div class="row">
 <div class="col-sm-12"><a>
@@ -1489,7 +1489,7 @@
 	  dataString ="action=storico_documento&id_documento="+ id_documento;
      exploreModal("gestioneDocumentale.do",dataString,null,function(datab,textStatusb){
    	  	
-   	  var result = JSON.parse(datab);
+   	  var result =datab;
    	  
    	  if(result.success){
    		  
@@ -1594,7 +1594,7 @@
  	dataString ="action=documenti_dipendente&id_committente="+ id_committente+"&id_fornitore="+id_fornitore+"&id_dipendente="+id_dipendente;
      exploreModal("gestioneDocumentale.do",dataString,null,function(datab,textStatusb){
    	  	
-   	  var result = JSON.parse(datab.replace());
+   	  var result = datab;
    	  
    	  if(result.success){  		  
    		 

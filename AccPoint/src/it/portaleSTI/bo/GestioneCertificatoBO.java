@@ -84,7 +84,7 @@ public class GestioneCertificatoBO {
 				
 	            listaProcedure.add(strumento.getProcedura());
 
-				CreateCertificato cert = new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,true, utente);
+				CreateCertificato cert = new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,true,false, utente);
 					
 					/*
 					 * Aggiornata data Emissione su scadenzaDTO
@@ -706,7 +706,7 @@ public class GestioneCertificatoBO {
             DRDataSource listaProcedure = new DRDataSource("listaProcedure");
  			listaProcedure.add(strumento.getProcedura());
 
- 		  CreateCertificato cert = new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,false, utente);
+ 		  CreateCertificato cert = new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,false, true, utente);
 				
  		  return cert.file;
 		 

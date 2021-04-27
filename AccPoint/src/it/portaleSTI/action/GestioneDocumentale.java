@@ -43,6 +43,7 @@ import it.portaleSTI.DTO.DocumReferenteFornDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.DocumTLStatoDTO;
 import it.portaleSTI.DTO.DocumTLStatoDipendenteDTO;
+import it.portaleSTI.DTO.DocumTipoDocumentoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -522,12 +523,14 @@ public class GestioneDocumentale extends HttpServlet {
 					lista_committenti = DirectMySqlDAO.getIdCommittentiFromFornitore(Integer.parseInt(id_fornitore));
 				}
 					
-				
+				ArrayList<DocumTipoDocumentoDTO> lista_tipo_documento = GestioneDocumentaleBO.getListaTipoDocumento(session);
 				request.getSession().setAttribute("fornitore", fornitore);
 				request.getSession().setAttribute("lista_documenti", lista_documenti);
 				request.getSession().setAttribute("lista_referenti", lista_referenti);
 				request.getSession().setAttribute("lista_dipendenti", lista_dipendenti);
 				request.getSession().setAttribute("lista_committenti", lista_committenti);
+				request.getSession().setAttribute("lista_tipo_documento", lista_tipo_documento);
+				
 				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioFornitore.jsp");
@@ -930,8 +933,12 @@ public class GestioneDocumentale extends HttpServlet {
 				if(lista_documenti_da_approvare!=null) {
 					request.getSession().setAttribute("numero_documenti_da_approvare", lista_documenti_da_approvare.size());	
 				}				
+				
+				ArrayList<DocumTipoDocumentoDTO> lista_tipo_documento = GestioneDocumentaleBO.getListaTipoDocumento(session);
+				
 				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
 				request.getSession().setAttribute("lista_committenti", lista_committenti);
+				request.getSession().setAttribute("lista_tipo_documento", lista_tipo_documento);
 				request.getSession().setAttribute("data_scadenza", null);
 					
 				session.getTransaction().commit();
@@ -982,6 +989,7 @@ public class GestioneDocumentale extends HttpServlet {
 				String numero_documento = ret.get("numero_documento");
 				String ids_dipendenti = ret.get("ids_dipendenti");
 				String data_rilascio = ret.get("data_rilascio");
+				String tipo_documento = ret.get("tipo_documento");
 
 				DocumTLDocumentoDTO documento = new DocumTLDocumentoDTO();
 				
@@ -1022,6 +1030,9 @@ public class GestioneDocumentale extends HttpServlet {
 				documento.setStato(stato);
 				documento.setRilasciato(rilasciato);
 				documento.setNumero_documento(numero_documento);
+				if(tipo_documento!=null && !tipo_documento.equals("")) {
+					documento.setTipo_documento(new DocumTipoDocumentoDTO(Integer.parseInt(tipo_documento), ""));
+				}
 				
 				SimpleDateFormat df = new SimpleDateFormat("ddMMyyyyHHmmss");
 				
@@ -1101,6 +1112,7 @@ public class GestioneDocumentale extends HttpServlet {
 				String ids_dipendenti = ret.get("ids_dipendenti_mod");
 				String ids_dipendenti_dissocia = ret.get("ids_dipendenti_dissocia");				
 				String data_rilascio = ret.get("data_rilascio_mod");
+				String tipo_documento = ret.get("tipo_documento_mod");
 				
 				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
 				
@@ -1127,6 +1139,12 @@ public class GestioneDocumentale extends HttpServlet {
 					documento.setData_scadenza(sdf.parse(data_scadenza));
 				}else {
 					documento.setData_scadenza(null);
+				}
+				
+				if(tipo_documento!=null && !tipo_documento.equals("")) {
+					documento.setTipo_documento(new DocumTipoDocumentoDTO(Integer.parseInt(tipo_documento), ""));
+				}else {
+					documento.setTipo_documento(null);
 				}
 				
 				documento.setRilasciato(rilasciato);
@@ -1655,6 +1673,123 @@ public class GestioneDocumentale extends HttpServlet {
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneDocumDocumentiObsoleti.jsp");
 		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("aggiorna_documento")) {
+				
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		        
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		        
+		        	      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	      
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+		        String id_documento = ret.get("aggiorna_documento_id");		        		        	
+		        String nome_documento = ret.get("nome_documento_agg");	
+				String frequenza = ret.get("frequenza_agg");				
+				String data_scadenza = ret.get("data_scadenza_agg");
+				String rilasciato = ret.get("rilasciato_agg");
+				String numero_documento = ret.get("numero_documento_agg");
+				String data_rilascio = ret.get("data_rilascio_agg");
+
+				
+				DocumTLDocumentoDTO documento_old = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
+				DocumTLDocumentoDTO documento = new DocumTLDocumentoDTO();
+
+				
+				documento.setCommittente(documento_old.getCommittente());		
+				documento.setFornitore(documento_old.getFornitore());
+				documento.setNome_documento(nome_documento);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				documento.setData_caricamento(new Date());
+				if(data_rilascio!=null && !data_rilascio.equals("")) {
+					documento.setData_rilascio(sdf.parse(data_rilascio));
+				}else {
+					documento.setData_rilascio(null);
+				}
+				if(frequenza!=null && !frequenza.equals("")) {
+					documento.setFrequenza_rinnovo_mesi(Integer.parseInt(frequenza));	
+				}else {
+					documento.setFrequenza_rinnovo_mesi(0);
+				}
+				
+				if(data_scadenza!=null && !data_scadenza.equals("")) {
+					documento.setData_scadenza(sdf.parse(data_scadenza));
+				}else {
+					documento.setData_scadenza(null);
+				}
+				
+				DocumTLStatoDTO stato = new DocumTLStatoDTO();
+				if(data_scadenza!=null && !data_scadenza.equals("") && sdf.parse(data_scadenza)!=null && sdf.parse(data_scadenza).before(new Date())) {
+					stato.setId(3);
+				}else {
+					stato.setId(1);
+				}
+				
+				documento.setStato(stato);
+				documento.setRilasciato(rilasciato);
+				documento.setNumero_documento(numero_documento);
+				
+				documento.setTipo_documento(documento_old.getTipo_documento());
+				
+				documento.setDocumento_sostituito(documento_old.getId());
+				SimpleDateFormat df = new SimpleDateFormat("ddMMyyyyHHmmss");
+				
+				String timestamp = df.format(new Timestamp(System.currentTimeMillis()));
+				
+				saveFile(fileItem, documento_old.getFornitore().getId(), timestamp ,filename);
+				
+				documento.setNome_file(timestamp+"\\"+filename);
+								
+				session.save(documento);
+				
+			//	fornitore.getListaDocumenti().add(documento);
+				session.update(documento.getFornitore());
+				
+				documento_old.setObsoleto(1);
+				
+				session.update(documento_old);
+				
+				for (DocumDipendenteFornDTO dipendente : documento_old.getListaDipendenti()) {						
+						dipendente.getListaDocumenti().add(documento);
+						dipendente.setStato(checkStatoDipendente(dipendente));
+						session.update(dipendente);
+					
+					
+				}
+
+				session.getTransaction().commit();
+				session.close();
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Documento salvato con successo!");
+				out.print(myObj);
+				
 				
 			}
 			

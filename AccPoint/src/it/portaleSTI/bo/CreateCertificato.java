@@ -113,10 +113,10 @@ public class CreateCertificato {
 	public File file;
 	public JsonObject firmato;
 
-	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati, UtenteDTO utente) throws Exception {
+	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati, Boolean multi, UtenteDTO utente) throws Exception {
 		try {
 			 Utility.memoryInfo();
-			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,idoneo,session,context,appenCertificati, utente);
+			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,idoneo,session,context,appenCertificati,multi, utente);
 			 Utility.memoryInfo();
 		} catch (Exception e) {
 			
@@ -126,7 +126,7 @@ public class CreateCertificato {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati, UtenteDTO utente) throws Exception {
+	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati, Boolean multi, UtenteDTO utente) throws Exception {
 		String tipoScheda="";
 		
 		InputStream is = null;
@@ -962,8 +962,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  this.firmato = new JsonObject();
 			  String messaggio = "";
 			  
-			
-			  if(certificato.getMisura().getInterventoDati().getUtente().getFile_firma()!=null && certificato.getMisura().getInterventoDati().getUtente().getIdFirma()!=null) {
+			//multi serve per non aggiungere la firma in caso di stampa di tanti certificati 
+			  if(!multi && certificato.getMisura().getInterventoDati().getUtente().getFile_firma()!=null && certificato.getMisura().getInterventoDati().getUtente().getIdFirma()!=null) {
 				  jsonOP = ArubaSignService.signCertificatoPades(certificato.getMisura().getInterventoDati().getUtente(), CostantiCertificato.OPERATORE_LABEL,false, certificato);				  
 			  }
 			  
@@ -973,7 +973,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  }
 			  
 			  utente.setIdFirma(GestioneUtenteBO.getIdFirmaDigitale(utente.getId(), session));
-			  if(utente.getFile_firma()!=null && utente.getIdFirma()!=null && (tipo_firma == 0 || tipo_firma == 2)) {
+			  if(!multi && utente.getFile_firma()!=null && utente.getIdFirma()!=null && (tipo_firma == 0 || tipo_firma == 2)) {
 				 jsonRL =  ArubaSignService.signCertificatoPades(utente, CostantiCertificato.RESPONSABILE_LABEL,false, certificato);
 			  }
 			  
@@ -987,6 +987,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				 
 			  }
 			
+			  if(multi) {
+				  messaggio="";
+			  }
 			  firmato.addProperty("messaggio", messaggio);
 			  if(context == null) {
 				  report.show();

@@ -144,6 +144,7 @@
 <th>Fornitore</th>
 <th>Nome Documento</th>
 <th>Numero Documento</th>
+<th>Tipo Documento</th>
 <th>Data caricamento</th>
 <th>Data rilascio</th>
 <th>Data scadenza</th>
@@ -172,6 +173,7 @@
 	<td>${documento.fornitore.ragione_sociale }</td>
 	<td>${documento.nome_documento }</td>
 	<td>${documento.numero_documento }</td>
+	<td>${documento.tipo_documento.descrizione }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_caricamento}" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_rilascio}" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_scadenza}" /></td>
@@ -183,7 +185,7 @@
 	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.id}','${documento.committente.id }','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
-	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
+	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }','${documento.tipo_documento.id }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
 	   <a class="btn btn-danger" onClick="modalEliminaDocumento('${documento.id}')"><i class="fa fa-trash"></i></a>   
 	   </c:if>
@@ -446,6 +448,25 @@
        	</div>       	
        </div><br>
        
+                     <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Tipo Documento</label>
+       	</div>
+       	<div class="col-sm-9"> 
+           <select name="tipo_documento" id="tipo_documento" class="form-control select2" data-placeholder="Seleziona tipo documento..." aria-hidden="true" data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <c:forEach items="${lista_tipo_documento}" var="tipo">
+                     
+                           <option value="${tipo.id}">${tipo.descrizione}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br> 
+       
                 <div class="row">
        
        	<div class="col-sm-3">
@@ -638,6 +659,25 @@
        			
        	</div>       	
        </div><br>
+       
+                           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Tipo Documento</label>
+       	</div>
+       	<div class="col-sm-9"> 
+           <select name="tipo_documento_mod" id="tipo_documento_mod" class="form-control select2" data-placeholder="Seleziona tipo documento..." aria-hidden="true" data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <c:forEach items="${lista_tipo_documento}" var="tipo">
+                     
+                           <option value="${tipo.id}">${tipo.descrizione}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br> 
        
                 <div class="row">
        
@@ -1337,6 +1377,7 @@
 <th>Fornitore</th>
 <th>Nome documento</th>
 <th>Numero documento</th>
+<th>Tipo documento</th>
 <th>Data caricamento</th>
 <th>Data rilascio</th>
 <th>Data scadenza</th>
@@ -1511,7 +1552,11 @@
      			  }else{
      				  dati.numero_documento = lista_documenti[i].numero_documento;
      			  }    			  
-     			
+     			 if(lista_documenti[i].tipo_documento==null){
+    				  dati.tipo_documento = ''; 
+    			  }else{
+    				  dati.tipo_documento = lista_documenti[i].tipo_documento.descrizione;
+    			  } 
      			 
      			 if( lista_documenti[i].data_caricamento==null){
      				 dati.data_caricamento =  '';
@@ -1767,7 +1812,7 @@
 	  });
 
  
- function modificaDocumentoModal(id_documento, committente, fornitore, nome_documento, data_caricamento, frequenza,  data_scadenza, nome_file, rilasciato,numero_documento){
+ function modificaDocumentoModal(id_documento, committente, fornitore, nome_documento, data_caricamento, frequenza,  data_scadenza, nome_file, rilasciato,numero_documento, tipo_documento){
 
  	$('#id_documento').val(id_documento);
  		
@@ -1776,6 +1821,13 @@
  	
  	$('#committente_docum_mod').val(committente);
  	$('#committente_docum_mod').change();
+ 	
+ 	if(tipo_documento!=null){
+ 		
+ 		$('#tipo_documento_mod').val(tipo_documento);
+ 	 	$('#tipo_documento_mod').change();
+ 	 	
+ 	}
 
  	$('#nome_documento_mod').val(nome_documento);
  	$('#frequenza_mod').val(frequenza);	
@@ -2112,7 +2164,7 @@
  		      columnDefs: [
  		    	  
  		    	  { responsivePriority: 1, targets: 1 },
- 		    	 { responsivePriority: 2, targets: 11 },
+ 		    	 { responsivePriority: 2, targets: 12 },
  		    	  
  		               ], 	        
  	  	      /* buttons: [   
@@ -2446,6 +2498,7 @@
 		      	{"data" : "fornitore"},
 		      	{"data" : "nome_documento"},
 		      	{"data" : "numero_documento"},
+		      	{"data" : "tipo_documento"},
 		      	{"data" : "data_caricamento"},
 		      	{"data" : "data_rilascio"},		      	
 		      	{"data" : "data_scadenza"},
@@ -2457,7 +2510,7 @@
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 10 },
+		    	  { responsivePriority: 2, targets: 11 },
 		    	  
 		    	  
 		               ], 	        

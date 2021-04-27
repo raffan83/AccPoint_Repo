@@ -27,6 +27,8 @@ public class DocumTLDocumentoDTO {
 	private String motivo_rifiuto;
 	private Date data_rilascio;
 	
+	private DocumTipoDocumentoDTO tipo_documento;
+	
 	
 	private transient Set<DocumDipendenteFornDTO> listaDipendenti= new HashSet<DocumDipendenteFornDTO>(0);	
 	
@@ -145,6 +147,12 @@ public class DocumTLDocumentoDTO {
 	}
 	public void setData_rilascio(Date data_rilascio) {
 		this.data_rilascio = data_rilascio;
+	}
+	public DocumTipoDocumentoDTO getTipo_documento() {
+		return tipo_documento;
+	}
+	public void setTipo_documento(DocumTipoDocumentoDTO tipo_documento) {
+		this.tipo_documento = tipo_documento;
 	}
 
 	

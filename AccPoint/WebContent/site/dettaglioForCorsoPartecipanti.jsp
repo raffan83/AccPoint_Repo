@@ -14,6 +14,14 @@
 </div>
 </div><br>
 </c:if>
+
+<c:if test="${userObj.checkRuolo('F2') }"> 
+<div class="row">
+<div class="col-xs-12">
+ <a class="btn btn-danger pull-right" onClick="scaricaTutti(${corso.id})"style="margin-right:5px"><i class="fa fa-arrow-down"></i> Scarica tutti gli attestati</a>
+</div>
+</div><br>
+</c:if>
 <table id="tabPartecipanti" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 

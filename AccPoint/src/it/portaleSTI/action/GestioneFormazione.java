@@ -1110,7 +1110,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			else if(action.equals("download_attestato_all")) {
 				String id_corso = request.getParameter("id_corso");
 				
-				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_partecipanti_corso = GestioneFormazioneBO.getListaPartecipantiCorso(Integer.parseInt(id_corso), session);
+				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_partecipanti_corso = null;
+				
+				if(utente.checkRuolo("F2")) {
+					lista_partecipanti_corso = GestioneFormazioneBO.getListaPartecipantiCorsoCliente(Integer.parseInt(id_corso), utente.getIdCliente(), utente.getIdSede(), session);
+				}else {
+					lista_partecipanti_corso = GestioneFormazioneBO.getListaPartecipantiCorso(Integer.parseInt(id_corso), session); 
+				}
+				
 				
 				 FileOutputStream fos = null;
 			     ZipOutputStream zipOut = null;

@@ -19,6 +19,7 @@ import it.portaleSTI.DTO.DocumReferenteFornDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.DocumTLStatoDTO;
 import it.portaleSTI.DTO.DocumTLStatoDipendenteDTO;
+import it.portaleSTI.DTO.DocumTipoDocumentoDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 
 public class GestioneDocumentaleDAO {
@@ -426,5 +427,19 @@ ArrayList<DocumTLDocumentoDTO> lista = null;
 		}
 		
 		return result;	
+	}
+
+	public static ArrayList<DocumTipoDocumentoDTO> getListaTipoDocumento(Session session) {
+		
+		ArrayList<DocumTipoDocumentoDTO> lista = null;
+		
+		Query query = session.createQuery("from DocumTipoDocumentoDTO");	
+
+		
+		lista = (ArrayList<DocumTipoDocumentoDTO>) query.list();
+		
+
+		
+		return lista;	
 	}
 }

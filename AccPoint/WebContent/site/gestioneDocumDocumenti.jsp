@@ -81,6 +81,7 @@
 <th>Fornitore</th>
 <th>Nome Documento</th>
 <th>Numero Documento</th>
+<th>Tipo Documento</th>
 <th>Data caricamento</th>
 <th>Data rilascio</th>
 <th>Data scadenza</th>
@@ -88,7 +89,7 @@
 
 <th>Stato</th>
 <th>Rilasciato</th>
-<th style="min-width:185px">Azioni</th>
+<th style="min-width:230px">Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -108,6 +109,7 @@
 	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(documento.fornitore.id)}')">${documento.fornitore.ragione_sociale }</a></td>
 	<td>${documento.nome_documento }</td>
 	<td>${documento.numero_documento }</td>
+	<td>${documento.tipo_documento.descrizione }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_caricamento}" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_rilascio}" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_scadenza}" /></td>
@@ -117,18 +119,20 @@
 	<td>${documento.rilasciato }</td>
 		
 	<td>	
-	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
+	<a class="btn btn-danger customTooltip" title="Download documento"  href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" ><i class="fa fa-file-pdf-o"></i></a>
 	 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
-	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.committente.id }','${documento.id}','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_rilascio}','${documento.frequenza_rinnovo_mesi }',
-	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
+	  <a class="btn btn-warning customTooltip" title="Modifica documento"  onClicK="modificaDocumentoModal('${documento.committente.id }','${documento.id}','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_rilascio}','${documento.frequenza_rinnovo_mesi }',
+	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }','${documento.tipo_documento.id }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
-	      <a class="btn btn-danger" onClick="modalEliminaDocumento('${documento.id}')"><i class="fa fa-trash"></i></a>    
+	      <a class="btn btn-danger customTooltip" onClick="modalEliminaDocumento('${documento.id}')" title="Elimina documento" ><i class="fa fa-trash"></i></a>    
 	      <c:if test="${documento.stato.id==3 && documento.email_inviata==0 }"> 
 	      <a class="btn btn-primary customTooltip" onclick="modalEmail('${documento.id }','${documento.fornitore.id}','${documento.committente.id }')"><i class="fa fa-paper-plane-o"></i></a>
 	      </c:if>
 	     </c:if>
-	      <a class="btn btn-info customTooltip" onclick="modalStorico('${documento.id}')"><i class="fa fa-history"></i></a>
-
+	      <a class="btn btn-info customTooltip" title="Vai allo storico"  onclick="modalStorico('${documento.id}')"><i class="fa fa-history"></i></a>
+		<c:if test="${documento.stato.id==3 }">
+		<a class="btn btn-success customTooltip" title="Aggiorna documento" onClick="modalAggiornaDocumento('${documento.id}','${documento.nome_documento }','${documento.frequenza_rinnovo_mesi }')"><i class="fa fa-arrow-up"></i></a>
+		</c:if>
 	</td>
 	</tr>
 	</c:forEach>
@@ -246,6 +250,26 @@
        			
        	</div>       	
        </div><br>
+       
+                    <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Tipo Documento</label>
+       	</div>
+       	<div class="col-sm-9"> 
+           <select name="tipo_documento" id="tipo_documento" class="form-control select2" data-placeholder="Seleziona tipo documento..." aria-hidden="true" data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <c:forEach items="${lista_tipo_documento}" var="tipo">
+                     
+                           <option value="${tipo.id}">${tipo.descrizione}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br> 
+       
        
                 <div class="row">
        
@@ -433,6 +457,26 @@
        </div><br>
        
        
+                           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Tipo Documento</label>
+       	</div>
+       	<div class="col-sm-9"> 
+           <select name="tipo_documento_mod" id="tipo_documento_mod" class="form-control select2" data-placeholder="Seleziona tipo documento..." aria-hidden="true" data-live-search="true" style="width:100%"  >
+                <option value=""></option>
+                      <c:forEach items="${lista_tipo_documento}" var="tipo">
+                     
+                           <option value="${tipo.id}">${tipo.descrizione}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
+       	</div>       	
+       </div><br> 
+       
+       
                 <div class="row">
        
        	<div class="col-sm-3">
@@ -615,6 +659,7 @@
 <th>Fornitore</th>
 <th>Nome documento</th>
 <th>Numero documento</th>
+<th>Tipo documento</th>
 <th>Data caricamento</th>
 <th>Data rilascio</th>
 <th>Data scadenza</th>
@@ -663,6 +708,123 @@
 
 </div>
 
+<form id="formAggiornaDocumento" name="formAggiornaDocumento">
+  <div id="myModalAggiornaDocumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Carica il documento aggiornato</h4>
+      </div>
+       <div class="modal-body">       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Nome Documento</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="nome_documento_agg" name="nome_documento_agg" class="form-control" type="text" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+              <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Numero Documento</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="numero_documento_agg" name="numero_documento_agg" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data Rilascio</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+                <div class='input-group date datepicker' id='datepicker_data_rilascio_agg'>
+               <input type='text' class="form-control input-small" id="data_rilascio_agg" name="data_rilascio_agg" >
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Frequenza (mesi)</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="frequenza_agg" name="frequenza_agg" class="form-control" type="number" min="0" step="1" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+              
+                <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data Scadenza</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+                <div class='input-group date datepicker' id='datepicker_data_scadenza'>
+               <input type='text' class="form-control input-small" id="data_scadenza_agg" name="data_scadenza_agg" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       			
+       	</div>       	
+       </div><br>
+      
+      
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Rilasciato</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="rilasciato_agg" name="rilasciato_agg" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+                    
+                    
+                <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>File</label>
+       	</div>
+       	<div class="col-sm-9">      
+			<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.xls,.xlsx,.XLS,.XLSX,.p7m,.doc,.docX,.DOCX,.DOC,.P7M"  id="fileupload_agg" name="fileupload_agg" type="file"  required></span><label id="label_file_agg"></label>
+       	</div>       	
+       </div><br> 
+     
+     
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="aggiorna_documento_id"  name="aggiorna_documento_id">
+      <button type="submit" class="btn btn-primary" >Salva</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</form>
 
 </div>
    <t:dash-footer />
@@ -710,6 +872,15 @@
 <script type="text/javascript">
 
 
+function modalAggiornaDocumento(id_documento, nome_documento, frequenza){
+	
+	$('#aggiorna_documento_id').val(id_documento);
+	$('#nome_documento_agg').val(nome_documento);
+	$('#frequenza_agg').val(frequenza);
+	
+	$('#myModalAggiornaDocumento').modal();
+}
+
 function modalStorico(id_documento){
 	
 	  dataString ="action=storico_documento&id_documento="+ id_documento;
@@ -737,7 +908,12 @@ function modalStorico(id_documento){
     				  dati.numero_documento = ''; 
     			  }else{
     				  dati.numero_documento = lista_documenti[i].numero_documento;
-    			  }    			
+    			  }    	
+    			  if(lista_documenti[i].tipo_documento==null){
+    				  dati.tipo_documento = ''; 
+    			  }else{
+    				  dati.tipo_documento = lista_documenti[i].tipo_documento.descrizione;
+    			  } 
     			  dati.data_caricamento = formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
     			  dati.data_rilascio =  formatDate(moment(lista_documenti[i].data_rilascio, "DD, MMM YY"));
     			  dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
@@ -943,7 +1119,7 @@ $('#fornitore_mod').change(function(){
 	
 });
 
-function modificaDocumentoModal(id_committente, id_documento, fornitore, nome_documento, data_rilascio, frequenza,  data_scadenza, nome_file, rilasciato, numero_documento){
+function modificaDocumentoModal(id_committente, id_documento, fornitore, nome_documento, data_rilascio, frequenza,  data_scadenza, nome_file, rilasciato, numero_documento, tipo_documento){
 
 	$('#id_documento').val(id_documento);
 		
@@ -954,6 +1130,10 @@ function modificaDocumentoModal(id_committente, id_documento, fornitore, nome_do
 	$('#committente_docum_mod').val(id_committente);
 	$('#committente_docum_mod').change();
 	
+	if(tipo_documento!=null){
+		$('#tipo_documento_mod').val(tipo_documento);
+		$('#tipo_documento_mod').change();
+	}
 
 	$('#nome_documento_mod').val(nome_documento);
 	$('#frequenza_mod').val(frequenza);	
@@ -1009,6 +1189,10 @@ $('#fileupload_mod').change(function(){
 	 
  });
 
+$('#fileupload_agg').change(function(){
+	$('#label_file_agg').html($(this).val().split("\\")[2]);
+	 
+ });
 
 $('#data_rilascio').change(function(){
 	
@@ -1053,6 +1237,29 @@ $('#data_rilascio_mod').change(function(){
 });
 
 
+$('#data_rilascio_agg').change(function(){
+	
+	var frequenza = $('#frequenza_agg').val();
+	
+	if(frequenza!=null && frequenza!=''){
+		var date = $('#data_rilascio_agg').val();
+		var d = moment(date, "DD-MM-YYYY");
+		if(date!='' && d._isValid){
+			
+			   var year = d._pf.parsedDateParts[0];
+			   var month = d._pf.parsedDateParts[1];
+			   var day = d._pf.parsedDateParts[2];
+			   var c = new Date(year, month + parseInt(frequenza), day);
+			    $('#data_scadenza_agg').val(formatDate(c));
+			
+		}
+		
+	}
+	
+});
+
+
+
 $('#frequenza').change(function(){
 	
 	var date = $('#data_rilascio').val();
@@ -1091,6 +1298,27 @@ $('#frequenza').change(function(){
 		}
 	});
 
+	
+	$('#frequenza_agg').change(function(){
+		
+		var date = $('#data_rilascio_agg').val();
+		var frequenza = $(this).val();
+		if(date!=null && date!='' && frequenza!=''){
+			
+			var d = moment(date, "DD-MM-YYYY");
+			if(date!='' && d._isValid){
+				
+				   var year = d._pf.parsedDateParts[0];
+				   var month = d._pf.parsedDateParts[1];
+				   var day = d._pf.parsedDateParts[2];
+				   var c = new Date(year, month + parseInt(frequenza), day);
+				    $('#data_scadenza_agg').val(formatDate(c));
+				
+			}
+		}
+		
+	});
+	
 function formatDate(data){
 	
 	   var mydate = new Date(data);
@@ -1187,7 +1415,7 @@ $('.select2').select2();
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 11 },
+		    	  { responsivePriority: 2, targets: 12 },
 		    	  
 		               ], 	        
 	  	      buttons: [   
@@ -1272,6 +1500,7 @@ $('.select2').select2();
 		      	{"data" : "fornitore"},
 		      	{"data" : "nome_documento"},
 		      	{"data" : "numero_documento"},
+		      	{"data" : "tipo_documento"},
 		      	{"data" : "data_caricamento"},
 		      	{"data" : "data_rilascio"},
 		      	{"data" : "frequenza"},
@@ -1283,7 +1512,7 @@ $('.select2').select2();
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 9 },
+		    	  { responsivePriority: 2, targets: 10 },
 		    	  
 		    	  
 		               ], 	        
@@ -1367,6 +1596,13 @@ $('#modificaDocumentoForm').on('submit', function(e){
 	 
 	 e.preventDefault();
 	 nuovoDocumento();
+});
+ 
+ 
+ $('#formAggiornaDocumento').on('submit', function(e){
+
+	 e.preventDefault();
+	 aggiornaDocumento();
 });
  
  $('#myModalStorico').on('hidden.bs.modal', function(){

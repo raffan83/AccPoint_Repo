@@ -69,7 +69,10 @@
                   <b>Data Scadenza</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${corso.data_scadenza}" /></a>
                 </li>
                 <li class="list-group-item">
-                <b>Docente</b> <a class="pull-right">${corso.docente.nome } ${corso.docente.cognome }</a>
+                <b>Docente</b> 
+                <c:if test="${corso.docente!=null }"><a target="_blank" class="btn btn-danger  btn-xs pull-right customTooltip" href="gestioneFormazione.do?action=download_curriculum&id_docente=${utl:encryptData(docente.id)}" title="Click per scaricare il cv"><i class="fa fa-file-pdf-o"></i></a></c:if>
+                <a class="pull-right">${corso.docente.nome } ${corso.docente.cognome }</a>
+                
                 </li>
                 <li class="list-group-item">
               

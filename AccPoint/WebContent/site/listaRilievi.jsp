@@ -1098,9 +1098,9 @@
  
  
  $('#myModalSchedaConsegna').on('hidden.bs.modal', function(){
-		$('#anno_scn').val('2020');
+		$('#anno_scn').val('2021');
 		$('#anno_scn').change();
-		$('#notaConsegna').val('EFFETTUATI CONTROLLI DIMENSIONALI SU N PARTICOLARI CON UN TOTALE DI N QUOTE');
+		$('#notaConsegna').val('EFFETTUATI CONTROLLI DIMENSIONALI SU N PARTICOLARI CON UN TOTALE DI N QUOTE E DI N ORE SCANSIONE');
 		$('#corteseAttenzione').val('');
 		$('#gridRadios2').iCheck('uncheck')
 		$("#gridRadios1").iCheck('check')

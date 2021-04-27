@@ -413,7 +413,7 @@ $('#myModalArchivio').modal();
  
  
  
- 
+     var commessa_options;
 $(document).ready(function() {
 	 $('#label').hide();
 	// $('.select2').select2();
@@ -434,6 +434,8 @@ $(document).ready(function() {
      
      $('#anno').val(anno_riferimento);
      $('#anno').change();
+     
+     commessa_options = $('#commessa option').clone();
 	 
 	 $('.dropdown-toggle').dropdown();
 	 table = $('#tabRilievi').DataTable({

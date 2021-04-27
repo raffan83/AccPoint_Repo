@@ -174,6 +174,7 @@
  	<mapping class="DocumFornitoreDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumFornitoreDTO.hbm.xml"/> 	    
  	<mapping class="DocumReferenteFornDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumReferenteFornDTO.hbm.xml"/>
  	<mapping class="DocumDipendenteFornDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumDipendenteFornDTO.hbm.xml"/>
+ 	<mapping class="DocumTipoDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTipoDocumentoDTO.hbm.xml"/> 	
  	<mapping class="DocumTLDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTLDocumentoDTO.hbm.xml"/>
  	<mapping class="DocumEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumEmailDTO.hbm.xml"/> 	    
  	

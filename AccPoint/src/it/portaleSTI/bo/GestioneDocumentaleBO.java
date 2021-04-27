@@ -13,6 +13,7 @@ import it.portaleSTI.DTO.DocumEmailDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
 import it.portaleSTI.DTO.DocumReferenteFornDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
+import it.portaleSTI.DTO.DocumTipoDocumentoDTO;
 
 public class GestioneDocumentaleBO {
 
@@ -94,6 +95,11 @@ public class GestioneDocumentaleBO {
 	public static DocumCommittenteDTO getCommittenteFromIDClienteSede(int idCliente, int idSede, Session session) {
 		
 		return GestioneDocumentaleDAO.getCommittenteFromIDClienteSede(idCliente, idSede, session);
+	}
+
+	public static ArrayList<DocumTipoDocumentoDTO> getListaTipoDocumento(Session session) {
+		
+		return GestioneDocumentaleDAO.getListaTipoDocumento(session);
 	}
 
 

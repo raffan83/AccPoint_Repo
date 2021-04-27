@@ -252,7 +252,7 @@
            <div class="row"> 
    <div class="col-xs-8"></div>
     <div class="col-xs-4">
-    <c:if test=" ${!userObj.checkRuolo('F2')}">
+    <c:if test= "${userObj.checkRuolo('F2') == false}">
     <a class="btn btn-primary pull-right" onClick="salvaCompilazioneQuestionario('${corso.questionario.id}')">Termina compilazione questionario</a>
     </c:if>
     </div>

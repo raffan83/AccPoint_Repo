@@ -93,5 +93,10 @@
             <column name="data_rilascio" />
         </property>
         
+        
+          <many-to-one name="tipo_documento" class="it.portaleSTI.DTO.DocumTipoDocumentoDTO" fetch="join" lazy="false">
+            <column name="id_tipo_documento" />
+        </many-to-one>
+        
     </class>
 </hibernate-mapping>

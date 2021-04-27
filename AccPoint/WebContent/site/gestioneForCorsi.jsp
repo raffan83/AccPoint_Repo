@@ -859,6 +859,14 @@ $(document).ready(function() {
  
 	//changeSkin();
 	admin="${admin}";
+	
+	var col_azioni = 8;
+	
+	if(admin == "1"){
+		col_azioni++;
+	}
+	
+	
      $('.dropdown-toggle').dropdown();
      $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
@@ -904,7 +912,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 9 },
+		    	  { responsivePriority: 2, targets: col_azioni },
 		    	   { targets: 1,  orderable: false }
 		    	  
 		               ], 	        

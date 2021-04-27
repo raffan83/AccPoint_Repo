@@ -267,7 +267,9 @@
             <li><a href="#" onclick="callAction('gestioneVerMisura.do?action=lista',null,true);">Lista Misure</a></li>
     
             <li><a href="#" onclick="callAction('scadenzarioVerificazione.do',null,true);">Scadenzario</a></li>
+            <% if(user.checkRuolo("AM") || !user.checkRuolo("VC")){%>
             <li><a href="#" onclick="callAction('gestioneVerLegalizzazioneBilance.do?action=lista',null,true);">Accertamento conformità</a></li>
+            <%} %>
         
           </ul>
         </li> 

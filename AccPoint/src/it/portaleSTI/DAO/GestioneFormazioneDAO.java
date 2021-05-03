@@ -421,13 +421,22 @@ public class GestioneFormazioneDAO {
 		return lista;
 	}
 
-	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaCorsiConsuntivo(String dateFrom, String dateTo, Session session) throws Exception {
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaCorsiConsuntivo(String dateFrom, String dateTo, int id_cliente, int id_sede, Session session) throws Exception {
 	
 	ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
-	Query query =  session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.data_corso between :_dateFrom and :_dateTo and  p.corso.disabilitato = 0 group by p.corso");	
+	Query query = null;
+	
+	if(id_cliente!=0) {
+		query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda = :_id_cliente and p.partecipante.id_sede = :_id_sede and p.corso.data_corso between :_dateFrom and :_dateTo and  p.corso.disabilitato = 0 group by p.corso");
+		query.setParameter("_id_cliente", id_cliente);
+		query.setParameter("_id_sede", id_sede);
+	}else {
+		query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.data_corso between :_dateFrom and :_dateTo and  p.corso.disabilitato = 0 group by p.corso"); 
+	}			
+				
 	query.setParameter("_dateFrom", sdf.parse(dateFrom));
 	query.setParameter("_dateTo", sdf.parse(dateTo));
 		

@@ -262,9 +262,9 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getListaPartecipantiCorsoCliente(id,idCliente,idSede,session);
 	}
 
-	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaCorsiConsuntivo(String dateFrom, String dateTo, Session session) throws Exception {
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaCorsiConsuntivo(String dateFrom, String dateTo, int id_cliente, int id_sede, Session session) throws Exception {
 		
-		return GestioneFormazioneDAO.getListaCorsiConsuntivo(dateFrom, dateTo, session);
+		return GestioneFormazioneDAO.getListaCorsiConsuntivo(dateFrom, dateTo, id_cliente, id_sede, session);
 	}
 
 	public static ForQuestionarioDTO getQuestionarioFromId(int id_questionario, Session session) {

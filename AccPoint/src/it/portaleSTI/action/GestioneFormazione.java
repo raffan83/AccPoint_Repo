@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -1398,14 +1399,30 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String dateFrom = request.getParameter("dateFrom");
 				String dateTo = request.getParameter("dateTo");				
 				
-				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_corsi =  GestioneFormazioneBO.getListaCorsiConsuntivo(dateFrom, dateTo, session);	
-				
+				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_corsi = null;
+				if(utente.checkRuolo("F2")) {
+					lista_corsi = GestioneFormazioneBO.getListaCorsiConsuntivo(dateFrom, dateTo, utente.getIdCliente(), utente.getIdSede(), session);
+					
+					
+					for (ForPartecipanteRuoloCorsoDTO c : lista_corsi) {
+						List<ForPartecipanteDTO> lista_partecipanti = new ArrayList<ForPartecipanteDTO>();
+						for (ForPartecipanteDTO p : c.getCorso().getListaPartecipanti()) {							
+							if(p.getId_azienda() == utente.getIdCliente() && p.getId_sede() == utente.getIdSede()) {
+								lista_partecipanti.add(p);
+							}
+						}
+						c.getCorso().setListaPartecipanti(new HashSet<ForPartecipanteDTO>(lista_partecipanti));
+					}
+					
+				}else {
+					lista_corsi = GestioneFormazioneBO.getListaCorsiConsuntivo(dateFrom, dateTo, 0, 0, session);	
+				}
 				request.getSession().setAttribute("lista_corsi", lista_corsi);
 				request.getSession().setAttribute("dateFrom", dateFrom);
 				request.getSession().setAttribute("dateTo", dateTo);
 			
 								
-				session.getTransaction().commit();
+				//session.getTransaction().commit();
 				session.close();
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/consuntivoFormazioneTable.jsp");

@@ -102,5 +102,15 @@ public class GestioneDocumentaleBO {
 		return GestioneDocumentaleDAO.getListaTipoDocumento(session);
 	}
 
+	public static DocumTipoDocumentoDTO getTipoDocumentoFromId(int id_tipo, Session session) {
+
+		return GestioneDocumentaleDAO.getTipoDocumentoFromId(id_tipo, session);
+	}
+
+	public static ArrayList<DocumTLDocumentoDTO> getListaDocumentiScadenzario(String dateFrom, String dateTo, int fornitore,int committente, Session session) throws Exception, Exception {
+
+		return GestioneDocumentaleDAO.getListaDocumentiScadenzario(dateFrom, dateTo, fornitore, committente, session);
+	}
+
 
 }

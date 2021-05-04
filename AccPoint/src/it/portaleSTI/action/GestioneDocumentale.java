@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -44,6 +45,8 @@ import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.DocumTLStatoDTO;
 import it.portaleSTI.DTO.DocumTLStatoDipendenteDTO;
 import it.portaleSTI.DTO.DocumTipoDocumentoDTO;
+import it.portaleSTI.DTO.ForPartecipanteDTO;
+import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -51,6 +54,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneDocumentaleBO;
+import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.SendEmailBO;
 
 /**
@@ -990,6 +994,9 @@ public class GestioneDocumentale extends HttpServlet {
 				String ids_dipendenti = ret.get("ids_dipendenti");
 				String data_rilascio = ret.get("data_rilascio");
 				String tipo_documento = ret.get("tipo_documento");
+				String aggiornabile_cliente = ret.get("aggiornabile_cliente");
+				String revisione = ret.get("revisione");
+				String codice = ret.get("codice");
 
 				DocumTLDocumentoDTO documento = new DocumTLDocumentoDTO();
 				
@@ -1001,6 +1008,7 @@ public class GestioneDocumentale extends HttpServlet {
 				documento.setCommittente(committente);		
 				documento.setFornitore(fornitore);
 				documento.setNome_documento(nome_documento);
+				
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				documento.setData_caricamento(new Date());
 				if(data_rilascio!=null && !data_rilascio.equals("")) {
@@ -1031,7 +1039,7 @@ public class GestioneDocumentale extends HttpServlet {
 				documento.setRilasciato(rilasciato);
 				documento.setNumero_documento(numero_documento);
 				if(tipo_documento!=null && !tipo_documento.equals("")) {
-					documento.setTipo_documento(new DocumTipoDocumentoDTO(Integer.parseInt(tipo_documento), ""));
+					documento.setTipo_documento(new DocumTipoDocumentoDTO(Integer.parseInt(tipo_documento.split("_")[0]), ""));
 				}
 				
 				SimpleDateFormat df = new SimpleDateFormat("ddMMyyyyHHmmss");
@@ -1041,6 +1049,10 @@ public class GestioneDocumentale extends HttpServlet {
 				saveFile(fileItem, fornitore.getId(), timestamp ,filename);
 				
 				documento.setNome_file(timestamp+"\\"+filename);
+				
+				documento.setAggiornabile_cl(Integer.parseInt(aggiornabile_cliente));
+				documento.setRevisione(revisione);
+				documento.setCodice(codice);
 								
 				session.save(documento);
 				
@@ -1113,6 +1125,10 @@ public class GestioneDocumentale extends HttpServlet {
 				String ids_dipendenti_dissocia = ret.get("ids_dipendenti_dissocia");				
 				String data_rilascio = ret.get("data_rilascio_mod");
 				String tipo_documento = ret.get("tipo_documento_mod");
+				String aggiornabile_cliente = ret.get("aggiornabile_cliente_mod");
+				String revisione = ret.get("revisione_mod");
+				String codice = ret.get("codice_mod");
+
 				
 				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
 				
@@ -1142,7 +1158,7 @@ public class GestioneDocumentale extends HttpServlet {
 				}
 				
 				if(tipo_documento!=null && !tipo_documento.equals("")) {
-					documento.setTipo_documento(new DocumTipoDocumentoDTO(Integer.parseInt(tipo_documento), ""));
+					documento.setTipo_documento(new DocumTipoDocumentoDTO(Integer.parseInt(tipo_documento.split("_")[0]), ""));
 				}else {
 					documento.setTipo_documento(null);
 				}
@@ -1167,6 +1183,10 @@ public class GestioneDocumentale extends HttpServlet {
 					}
 					documento.setStato(stato);
 				}
+				
+				documento.setAggiornabile_cl(Integer.parseInt(aggiornabile_cliente));
+				documento.setRevisione(revisione);
+				documento.setCodice(codice);
 						
 								
 				session.update(documento);
@@ -1260,6 +1280,24 @@ public class GestioneDocumentale extends HttpServlet {
 				if(id_fornitore!=null) {
 					id_fornitore = Utility.decryptData(id_fornitore);
 				}
+				
+				ArrayList<DocumFornitoreDTO> lista_fornitori = null;
+				ArrayList<DocumCommittenteDTO> lista_committenti = null;
+				
+				if(!utente.checkRuolo("D2")) {
+					
+					lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
+					lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
+					
+				}
+				
+				ArrayList<DocumTipoDocumentoDTO> lista_tipo_documento = GestioneDocumentaleBO.getListaTipoDocumento(session);
+				
+				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
+				request.getSession().setAttribute("lista_committenti", lista_committenti);
+				request.getSession().setAttribute("lista_tipo_documento", lista_tipo_documento);
+				
+				
 				request.getSession().setAttribute("id_fornitore", id_fornitore);
 				request.getSession().setAttribute("nome_fornitore", nome_fornitore);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioDocumentale.jsp");
@@ -1267,7 +1305,37 @@ public class GestioneDocumentale extends HttpServlet {
 			    
 			    session.close();
 			}
-			
+			else if(action.equals("scadenzario_table")) {
+				
+				String id_fornitore = (String)request.getSession().getAttribute("id_fornitore");
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");					
+				
+				if(id_fornitore==null || id_fornitore.equals("")) {
+					id_fornitore = "0";
+				}
+				
+				ArrayList<DocumTLDocumentoDTO> lista_documenti = null;
+				if(utente.checkRuolo("D2")) {
+					DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromIDClienteSede(utente.getIdCliente(), utente.getIdSede(), session);
+					
+					lista_documenti = GestioneDocumentaleBO.getListaDocumentiScadenzario(dateFrom,dateTo, Integer.parseInt(id_fornitore), committente.getId(), session);
+					
+				}else {
+					lista_documenti = GestioneDocumentaleBO.getListaDocumentiScadenzario(dateFrom,dateTo, Integer.parseInt(id_fornitore), 0, session);
+				}
+				request.getSession().setAttribute("lista_documenti", lista_documenti);
+				request.getSession().setAttribute("dateFrom", dateFrom);
+				request.getSession().setAttribute("dateTo", dateTo);
+				request.getSession().setAttribute("id_fornitore", id_fornitore);
+								
+				//session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioDocumentaleTable.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
 			else if(action.equals("create_scadenzario")) {				
 				
 				ajax =true;
@@ -1651,6 +1719,7 @@ public class GestioneDocumentale extends HttpServlet {
 				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(Integer.parseInt(id_committente),  Integer.parseInt(id_fornitore), session);
 				
 				PrintWriter out = response.getWriter();
+				response.setContentType("application/json");
 				
 				 Gson g = new Gson(); 
 				
@@ -1790,6 +1859,173 @@ public class GestioneDocumentale extends HttpServlet {
 				myObj.addProperty("messaggio", "Documento salvato con successo!");
 				out.print(myObj);
 				
+				
+			}
+			else if(action.equals("tipo_documento")) {
+				
+				ArrayList<DocumTipoDocumentoDTO> lista_tipi_documento = GestioneDocumentaleBO.getListaTipoDocumento(session);
+				
+				request.getSession().setAttribute("lista_tipi_documento", lista_tipi_documento);
+
+				session.getTransaction().commit();
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneDocumTipiDocumento.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("nuovo_tipo_documento")) {
+				
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		        
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		        
+		        	      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	      
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+		               		        	
+		        String descrizione = ret.get("descrizione");	
+				String aggiornabile_cl_default = ret.get("aggiornabile_cl_default");					
+			
+				DocumTipoDocumentoDTO tipo_documento = new DocumTipoDocumentoDTO();
+
+				tipo_documento.setDescrizione(descrizione);
+				tipo_documento.setAggiornabile_cl_default(Integer.parseInt(aggiornabile_cl_default));
+								
+				session.save(tipo_documento);
+				
+			
+				session.getTransaction().commit();
+				session.close();
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Tipo documento salvato con successo!");
+				out.print(myObj);
+				
+				
+			}
+			
+			else if(action.equals("modifica_tipo_documento")) {				
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		        
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		        
+		        	      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	      
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }		
+		               		        	
+		        String id_tipo = ret.get("id_tipo_documento");
+		        String descrizione = ret.get("descrizione_mod");	
+				String aggiornabile_cl_default = ret.get("aggiornabile_mod");					
+			
+				DocumTipoDocumentoDTO tipo_documento = GestioneDocumentaleBO.getTipoDocumentoFromId(Integer.parseInt(id_tipo),session);
+
+				tipo_documento.setDescrizione(descrizione);
+				tipo_documento.setAggiornabile_cl_default(Integer.parseInt(aggiornabile_cl_default));
+								
+				session.update(tipo_documento);
+							
+				session.getTransaction().commit();
+				session.close();
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Tipo documento modificato con successo!");
+				out.print(myObj);
+				
+				
+			}else if(action.equals("elimina_tipo_documento")) {
+				
+				String id_tipo = request.getParameter("id_tipo_documento");
+				
+				DocumTipoDocumentoDTO tipo_documento = GestioneDocumentaleBO.getTipoDocumentoFromId(Integer.parseInt(id_tipo),session);
+
+				tipo_documento.setDisabilitato(1);
+				
+				session.update(tipo_documento);
+				
+				session.getTransaction().commit();
+				session.close();
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Tipo documento eliminato con successo!");
+				out.print(myObj);
+			}
+			else if (action.equals("scheda_consegna")) {
+				
+				String indirizzo = request.getParameter("destinatario_consegna");
+				String ids = request.getParameter("ids");
+				String parziale = request.getParameter("parziale");
+								
+				ArrayList<DocumTLDocumentoDTO> lista_documenti = new ArrayList<DocumTLDocumentoDTO>();
+				
+				for(int i = 0;i<ids.split(";").length;i++) {
+					
+					DocumTLDocumentoDTO doc = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(ids.split(";")[i]), session);
+					lista_documenti.add(doc);
+					doc.setComunicata_consegna(1);
+					session.update(doc);
+				}
+				
+				SendEmailBO.sendEmailSchedaConsegnaDocumentale(lista_documenti, parziale, indirizzo, request.getServletContext());
+				
+				
+				
+				session.getTransaction().commit();
+				session.close();
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Comunicazione inviata con successo!");
+				out.print(myObj);
 				
 			}
 			

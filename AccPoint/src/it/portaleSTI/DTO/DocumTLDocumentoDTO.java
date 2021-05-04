@@ -28,7 +28,10 @@ public class DocumTLDocumentoDTO {
 	private Date data_rilascio;
 	
 	private DocumTipoDocumentoDTO tipo_documento;
-	
+	private int aggiornabile_cl;
+	private String codice;
+	private String revisione;
+	private int comunicata_consegna;
 	
 	private transient Set<DocumDipendenteFornDTO> listaDipendenti= new HashSet<DocumDipendenteFornDTO>(0);	
 	
@@ -153,6 +156,30 @@ public class DocumTLDocumentoDTO {
 	}
 	public void setTipo_documento(DocumTipoDocumentoDTO tipo_documento) {
 		this.tipo_documento = tipo_documento;
+	}
+	public int getAggiornabile_cl() {
+		return aggiornabile_cl;
+	}
+	public void setAggiornabile_cl(int aggiornabile_cl) {
+		this.aggiornabile_cl = aggiornabile_cl;
+	}
+	public String getCodice() {
+		return codice;
+	}
+	public void setCodice(String codice) {
+		this.codice = codice;
+	}
+	public String getRevisione() {
+		return revisione;
+	}
+	public void setRevisione(String revisione) {
+		this.revisione = revisione;
+	}
+	public int getComunicata_consegna() {
+		return comunicata_consegna;
+	}
+	public void setComunicata_consegna(int comunicata_consegna) {
+		this.comunicata_consegna = comunicata_consegna;
 	}
 
 	

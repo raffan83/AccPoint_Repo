@@ -89,7 +89,7 @@
             </many-to-many>
         </set>
         
-                         <property name="data_rilascio" type="java.sql.Date" >
+        <property name="data_rilascio" type="java.sql.Date" >
             <column name="data_rilascio" />
         </property>
         
@@ -97,6 +97,22 @@
           <many-to-one name="tipo_documento" class="it.portaleSTI.DTO.DocumTipoDocumentoDTO" fetch="join" lazy="false">
             <column name="id_tipo_documento" />
         </many-to-one>
+        
+              <property name="revisione" type="java.lang.String" >
+            <column name="revisione" />
+        </property> 
+        
+              <property name="codice" type="java.lang.String" >
+            <column name="codice" />
+        </property> 
+        
+              <property name="aggiornabile_cl" type="int" >
+            <column name="aggiornabile_cl" />
+        </property> 
+        
+           <property name="comunicata_consegna" type="int" >
+            <column name="comunicata_consegna" />
+        </property> 
         
     </class>
 </hibernate-mapping>

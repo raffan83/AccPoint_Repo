@@ -239,6 +239,47 @@ public class GestioneDocumentaleDAO {
 	}
 
 	
+	
+	
+	
+	public static ArrayList<DocumTLDocumentoDTO> getListaDocumentiScadenzario(String data_start,String data_end, int id_fornitore,int  id_committente,  Session session) throws Exception, ParseException {
+
+		ArrayList<DocumTLDocumentoDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String queryStr ="from DocumTLDocumentoDTO where data_scadenza between :_data_start and :_data_end and disabilitato = 0 and stato.id != 4 and obsoleto = 0";
+
+		if(id_committente!=0) {
+
+			queryStr += " and committente.id = :_committente";
+		}
+		
+		if(id_fornitore!=0) {
+			
+			queryStr += " and id_fornitore = :_fornitore";
+		}
+		
+		Query query = session.createQuery(queryStr);
+		query.setParameter("_data_start", sdf.parse(data_start));
+		query.setParameter("_data_end", sdf.parse(data_end));
+		
+		if(id_committente!=0) {
+			query.setParameter("_committente", id_committente);
+		}
+		if(id_fornitore!=0) {
+			query.setParameter("_fornitore", id_fornitore);
+		}	
+
+		
+		lista = (ArrayList<DocumTLDocumentoDTO>) query.list();
+		
+		return lista;
+	}
+	
+	
+	
+	
 	public static ArrayList<DocumTLDocumentoDTO> getListaDocumentiDaApprovare(String data_scadenza, int id_fornitore, Session session) throws Exception, ParseException {
 		
 ArrayList<DocumTLDocumentoDTO> lista = null;
@@ -433,13 +474,28 @@ ArrayList<DocumTLDocumentoDTO> lista = null;
 		
 		ArrayList<DocumTipoDocumentoDTO> lista = null;
 		
-		Query query = session.createQuery("from DocumTipoDocumentoDTO");	
+		Query query = session.createQuery("from DocumTipoDocumentoDTO where disabilitato = 0");	
 
 		
 		lista = (ArrayList<DocumTipoDocumentoDTO>) query.list();
 		
-
-		
 		return lista;	
+	}
+
+	public static DocumTipoDocumentoDTO getTipoDocumentoFromId(int id_tipo, Session session) {
+		
+		ArrayList<DocumTipoDocumentoDTO> lista = null;
+		DocumTipoDocumentoDTO result = null;
+		
+		Query query = session.createQuery("from DocumTipoDocumentoDTO where id =:_id_tipo");	
+		query.setParameter("_id_tipo", id_tipo);
+		
+		lista = (ArrayList<DocumTipoDocumentoDTO>) query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;	
 	}
 }

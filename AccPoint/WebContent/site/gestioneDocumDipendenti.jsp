@@ -503,7 +503,7 @@ function modalAssociaDocumenti(id_committente, id_fornitore,id_dipendente){
 	dataString ="action=documenti_dipendente&id_committente="+ id_committente+"&id_fornitore="+id_fornitore+"&id_dipendente="+id_dipendente;
     exploreModal("gestioneDocumentale.do",dataString,null,function(datab,textStatusb){
   	  	
-  	  var result = JSON.parse(datab.replace());
+  	  var result = datab;
   	  
   	  if(result.success){  		  
   		 

@@ -13,5 +13,14 @@
             <column name="descrizione" />
         </property>
        
+                     <property name="aggiornabile_cl_default" type="int" >
+            <column name="aggiornabile_cl_default" />
+        </property>
+        
+  <property name="disabilitato" type="int" >
+            <column name="disabilitato" />
+        </property>
+       
+       
     </class>
 </hibernate-mapping>

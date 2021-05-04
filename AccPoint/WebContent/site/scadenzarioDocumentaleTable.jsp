@@ -7,34 +7,7 @@
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 
-<t:layout title="Dashboard" bodyClass="skin-green-light sidebar-mini wysihtml5-supported">
 
-<jsp:attribute name="body_area">
-
-<div class="wrapper">
-	
-
-  <t:main-sidebar />
- <t:main-header />
-
-  <!-- Content Wrapper. Contains page content -->
-  <div id="corpoframe" class="content-wrapper">
-   <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1 class="pull-left">
-      <c:if test="${data_scadenza == null }">
-        Lista Documenti
-        </c:if>
-       <c:if test="${data_scadenza != null }">
-        Lista Documenti in scadenza il <fmt:formatDate value="${data_scadenza }" pattern="dd/MM/yyyy"/>
-        </c:if>
-        <!-- <small></small> -->
-      </h1>
-       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
-    </section>
-    <div style="clear: both;"></div>    
-    <!-- Main content -->
-     <section class="content">
 <div class="row">
       <div class="col-xs-12">
 
@@ -49,31 +22,7 @@
 </div>
 
 <div class="box-body">
-<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
-<div class="row">
-<div class="col-xs-12">
 
-
- <a class="btn btn-primary pull-left" onClick="callAction('gestioneDocumentale.do?action=staging_area')"><i class="fa fa-list"></i> Documenti da approvare<span class="badge bg-yellow">${numero_documenti_da_approvare }</span></a>
-
-
-<a class="btn btn-primary pull-right" onClick="callAction('gestioneDocumentale.do?action=lista_obsoleti')"><i class="fa fa-list"></i> Documenti obsoleti</a> 
-
-
-</div>
-
-</div><br>
-<div class="row">
-<div class="col-xs-12">
-<a class="btn btn-primary pull-right" onClick="modalNuovoDocumento()"><i class="fa fa-plus"></i> Nuovo Documento</a> 
-</div>
-</div><br>
-<div class="row">
-<div class="col-xs-12">
-<a class="btn btn-primary pull-right" onClick="modalSchedaConsegna()"><i class="fa fa-plus"></i> Invia Comunicazione Consegna</a> 
-</div>
-</div><br>
-</c:if>
 <div class="row">
 <div class="col-sm-12">
 
@@ -82,12 +31,8 @@
 
 
 <th>ID</th>
-<c:if test="${userObj.checkRuolo('D2') == false }">
-<th style="min-width:25px"><input id="checkAll" type="checkbox" /></th>
-</c:if>
 <th>Committente</th>
 <th>Fornitore</th>
-<th>Codice</th>
 <th>Nome Documento</th>
 <th>Numero Documento</th>
 <th>Tipo Documento</th>
@@ -95,12 +40,9 @@
 <th>Data rilascio</th>
 <th>Data scadenza</th>
 <th>Frequenza (mesi)</th>
-<th>Revisione</th>
+
 <th>Stato</th>
 <th>Rilasciato</th>
-<c:if test="${userObj.checkRuolo('D2') == false }">
-<th>Comunicata consegna</th>
-</c:if>
 <th style="min-width:230px">Azioni</th>
  </tr></thead>
  
@@ -116,13 +58,9 @@
 	 	<c:if test="${documento.stato.id==3 }">
 	<tr id="row_${loop.index}" style="background-color:#FA8989" >
 	</c:if>
-	<td>${documento.id }</td>
-	<c:if test="${userObj.checkRuolo('D2') == false }">
-	<td></td>	
-	</c:if>
+	<td>${documento.id }</td>	
 	<td>${documento.committente.nome_cliente } - ${documento.committente.indirizzo_cliente }</td>
 	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(documento.fornitore.id)}')">${documento.fornitore.ragione_sociale }</a></td>
-	<td>${documento.codice }</td>
 	<td>${documento.nome_documento }</td>
 	<td>${documento.numero_documento }</td>
 	<td>${documento.tipo_documento.descrizione }</td>
@@ -130,24 +68,19 @@
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_rilascio}" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_scadenza}" /></td>
 	<td>${documento.frequenza_rinnovo_mesi }</td>
-	<td>${documento.revisione }</td>
+	
 	<td>${documento.getStato().getNome() }</td>
 	<td>${documento.rilasciato }</td>
-	<c:if test="${userObj.checkRuolo('D2') == false }">
-	<td>
-	<c:if test="${documento.comunicata_consegna == 1 }">SI</c:if>
-	<c:if test="${documento.comunicata_consegna == 0 }">NO</c:if>
-	</td>	
-	</c:if>
+		
 	<td>	
 	<a class="btn btn-danger customTooltip" title="Download documento"  href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" ><i class="fa fa-file-pdf-o"></i></a>
 	 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 	  <a class="btn btn-warning customTooltip" title="Modifica documento"  onClicK="modificaDocumentoModal('${documento.committente.id }','${documento.id}','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_rilascio}','${documento.frequenza_rinnovo_mesi }',
-	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }','${documento.tipo_documento.id }','${documento.aggiornabile_cl }','${documento.tipo_documento.aggiornabile_cl_default }','${documento.codice }','${documento.revisione }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
+	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }','${documento.tipo_documento.id }','${documento.aggiornabile_cl }','${documento.tipo_documento.aggiornabile_cl_default }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
 	      <a class="btn btn-danger customTooltip" onClick="modalEliminaDocumento('${documento.id}')" title="Elimina documento" ><i class="fa fa-trash"></i></a>    
 	      <c:if test="${documento.stato.id==3 && documento.email_inviata==0 }"> 
-	      <a class="btn btn-primary customTooltip" onclick="modalEmail('${documento.id }','${documento.fornitore.id}','${documento.committente.id }')" title="Invia comunicazione documento scaduto"><i class="fa fa-paper-plane-o"></i></a>
+	      <a class="btn btn-primary customTooltip" onclick="modalEmail('${documento.id }','${documento.fornitore.id}','${documento.committente.id }')"><i class="fa fa-paper-plane-o"></i></a>
 	      </c:if>
 	     </c:if>
 	      <a class="btn btn-info customTooltip" title="Vai allo storico"  onclick="modalStorico('${documento.id}')"><i class="fa fa-history"></i></a>
@@ -178,497 +111,10 @@
 </div>
 </div>
 
-</section>
-
-
-
-<form id="nuovoDocumentoForm" name="nuovoDipendenteForm">
-<div id="myModalnuovoDocumento" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Documento</h4>
-      </div>
-       <div class="modal-body">
-       
-       
-                           <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Committente</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        
-    <select name="committente_docum" id="committente_docum" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona committente..." data-live-search="true" style="width:100%" >
-                <option value=""></option>
-                      <c:forEach items="${lista_committenti}" var="committente">
-                     
-                           <option value="${committente.id}">${committente.nome_cliente} - ${committente.indirizzo_cliente }</option> 
-                         
-                     </c:forEach>
-
-                  </select> 
-       			
-       	</div>       	
-       </div><br>
-
-      <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Fornitore</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        
-    <select name="fornitore" id="fornitore" class="form-control select2" data-placeholder="Seleziona fornitore..." aria-hidden="true" data-live-search="true" style="width:100%" required disabled>
-                <option value=""></option>
-                      <c:forEach items="${lista_fornitori}" var="fornitore">
-                     
-                           <option value="${fornitore.id}">${fornitore.ragione_sociale}</option> 
-                         
-                     </c:forEach>
-
-                  </select> 
-       			
-       	</div>       	
-       </div><br>
-       
-             <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Associa ai dipendenti</label>
-       	</div>
-       	<div class="col-sm-9"> 
-           <select name="dipendenti" id="dipendenti" class="form-control select2" data-placeholder="Seleziona dipendenti" aria-hidden="true" data-live-search="true" style="width:100%" disabled multiple>
-                <option value=""></option>
-                      <c:forEach items="${lista_dipendenti}" var="dipendente">
-                     
-                           <option value="${dipendente.id}">${dipendente.nome} ${dipendente.cognome }</option> 
-                         
-                     </c:forEach>
-
-                  </select> 
-       			
-       	</div>       	
-       </div><br> 
-       
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Codice</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="codice" name="codice" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-             
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Nome Documento</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="nome_documento" name="nome_documento" class="form-control" type="text" style="width:100%" required>
-       			
-       	</div>       	
-       </div><br>
-       
-              <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Numero Documento</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="numero_documento" name="numero_documento" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-                    <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Tipo Documento</label>
-       	</div>
-       	<div class="col-sm-9"> 
-           <select name="tipo_documento" id="tipo_documento" class="form-control select2" data-placeholder="Seleziona tipo documento..." aria-hidden="true" data-live-search="true" style="width:100%" >
-                <option value=""></option>
-                      <c:forEach items="${lista_tipo_documento}" var="tipo">
-                     
-                           <option value="${tipo.id}_${tipo.aggiornabile_cl_default}">${tipo.descrizione}</option> 
-                         
-                     </c:forEach>
-
-                  </select> 
-       			
-       	</div>       	
-       </div><br> 
-       
-       
-                <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data Rilascio</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-                <div class='input-group date datepicker' id='datepicker_data_rilascio'>
-               <input type='text' class="form-control input-small" id="data_rilascio" name="data_rilascio" >
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 	
-       			
-       	</div>       	
-       </div><br>
-       
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Frequenza (mesi)</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="frequenza" name="frequenza" class="form-control" type="number" min="0" step="1" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-              
-                <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data Scadenza</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-                <div class='input-group date datepicker' id='datepicker_data_scadenza'>
-               <input type='text' class="form-control input-small" id="data_scadenza" name="data_scadenza" >
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 	
-       			
-       	</div>       	
-       </div><br>
-      
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Rilasciato</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="rilasciato" name="rilasciato" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Revisione</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="revisione" name="revisione" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-       
-       		<div class="row">
-       <div class="col-sm-3">
-       <label>Aggiornabile dal cliente</label>
-		</div>
-		
-		<div class="col-sm-9">
-       <input type="checkbox" class="form-control" id="aggiornabile_cl" name="aggiornabile_cl">
-		</div>
-		</div><br>
-                    
-                <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>File</label>
-       	</div>
-       	<div class="col-sm-9">      
-			<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.xls,.xlsx,.XLS,.XLSX,.p7m,.doc,.docX,.DOCX,.DOC,.P7M"  id="fileupload" name="fileupload" type="file" required></span><label id="label_file"></label>
-       	</div>       	
-       </div><br> 
-
-
-       
-       </div>
-  		 
-      <div class="modal-footer">
-	<input type="hidden" id="ids_dipendenti" name="ids_dipendenti">
-	<input type="hidden" id="aggiornabile_cliente" name="aggiornabile_cliente">
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</form>
 
 
 
 
-<form id="modificaDocumentoForm" name="modificaDocumentoForm">
-<div id="myModalModificaDocumento" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Documento</h4>
-      </div>
-            <div class="modal-body">
-            
-             <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Committente</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        
-    <select name="committente_docum_mod" id="committente_docum_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona committente..." data-live-search="true" style="width:100%" >
-                <option value=""></option>
-                      <c:forEach items="${lista_committenti}" var="committente">
-                     
-                           <option value="${committente.id}">${committente.nome_cliente} - ${committente.indirizzo_cliente }</option> 
-                         
-                     </c:forEach>
-
-                  </select> 
-       			
-       	</div>       	
-       </div><br>
-
-      <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Fornitore</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        
-    <select name="fornitore_mod" id="fornitore_mod" class="form-control select2" data-placeholder="Seleziona fornitore..." aria-hidden="true" data-live-search="true" style="width:100%" >
-                <option value=""></option>
-                      <c:forEach items="${lista_fornitori}" var="fornitore">
-                     
-                           <option value="${fornitore.id}">${fornitore.ragione_sociale}</option> 
-                         
-                     </c:forEach>
-
-                  </select> 
-       			
-       	</div>       	
-       </div><br>
-       
-       
-         <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Associa ai dipendenti</label>
-       	</div>
-       	<div class="col-sm-9"> 
-           <select name="dipendenti_mod" id="dipendenti_mod" class="form-control select2" data-placeholder="Seleziona dipendenti" aria-hidden="true" data-live-search="true" style="width:100%" disabled multiple>
-                <option value=""></option>
-                      <c:forEach items="${lista_dipendenti}" var="dipendente">
-                     
-                           <option value="${dipendente.id}">${dipendente.nome} ${dipendente.cognome }</option> 
-                         
-                     </c:forEach>
-
-                  </select> 
-       			
-       	</div>       	
-       </div><br> 
-       
-               <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Codice</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="codice_mod" name="codice_mod" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-             
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Nome Documento</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="nome_documento_mod" name="nome_documento_mod" class="form-control" type="text" style="width:100%" required>
-       			
-       	</div>       	
-       </div><br>
-       
-              <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Numero Documento</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="numero_documento_mod" name="numero_documento_mod" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-       
-                           <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Tipo Documento</label>
-       	</div>
-       	<div class="col-sm-9"> 
-           <select name="tipo_documento_mod" id="tipo_documento_mod" class="form-control select2" data-placeholder="Seleziona tipo documento..." aria-hidden="true" data-live-search="true" style="width:100%"  >
-                <option value=""></option>
-                      <c:forEach items="${lista_tipo_documento}" var="tipo">
-                     
-                           <option value="${tipo.id}_${tipo.aggiornabile_cl_default}">${tipo.descrizione}</option> 
-                         
-                     </c:forEach>
-
-                  </select> 
-       			
-       	</div>       	
-       </div><br> 
-       
-       
-                <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data Rilascio</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-                <div class='input-group date datepicker' id='datepicker_data_rilascio_mod'>
-               <input type='text' class="form-control input-small" id="data_rilascio_mod" name="data_rilascio_mod" >
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 	
-       			
-       	</div>       	
-       </div><br>
-       
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Frequenza (mesi)</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="frequenza_mod" name="frequenza_mod" class="form-control" type="number" min="0" step="1" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-              
-                <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data Scadenza</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-                <div class='input-group date datepicker' id='datepicker_data_scadenza'>
-               <input type='text' class="form-control input-small" id="data_scadenza_mod" name="data_scadenza_mod" >
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 	
-       			
-       	</div>       	
-       </div><br>
-      
-      
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Rilasciato</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="rilasciato_mod" name="rilasciato_mod" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-       
-               <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Revisione</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="revisione_mod" name="revisione_mod" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-       
-              		<div class="row">
-       <div class="col-sm-3">
-       <label>Aggiornabile dal cliente</label>
-		</div>
-		
-		<div class="col-sm-9">
-       <input type="checkbox" class="form-control" id="aggiornabile_cl_mod" name="aggiornabile_cl_mod">
-		</div>
-		</div><br>
-                    
-                    
-                <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>File</label>
-       	</div>
-       	<div class="col-sm-9">      
-			<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.xls,.xlsx,.XLS,.XLSX,.p7m,.doc,.docX,.DOCX,.DOC,.P7M"  id="fileupload_mod" name="fileupload_mod" type="file" ></span><label id="label_file_mod"></label>
-       	</div>       	
-       </div><br> 
-
-
-       
-       </div>
-  		 
-      <div class="modal-footer">
-		
-		<input type="hidden" id="ids_dipendenti_mod" name="ids_dipendenti_mod">
-		<input type="hidden" id="ids_dipendenti_dissocia" name="ids_dipendenti_dissocia">
-		<input type="hidden" id="id_documento" name="id_documento">
-		<input type="hidden" id="fornitore_temp" name="fornitore_temp">
-		<input type="hidden" id="aggiornabile_cliente_mod" name="aggiornabile_cliente_mod">
-
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</form>
 
   <div id="myModalEmail" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
@@ -927,99 +373,6 @@
 
 
 
-
-
-<div id="modalSchedaConsegna" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
-   
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Invia comunicazione di cosegna documenti</h4>
-      </div>
-       <div class="modal-body">       
-       <div class="row">       
-       	<div class="col-sm-12">
-       	<table id="tab_scheda_consegna" class="table table-bordered table-hover dataTable table-striped">
-       	<thead>
-       	<tr>
-       	<th>ID</th>
-       	<th>Committente</th>
-       	<th>Fornitore</th>
-       	<th>Codice</th>
-       	<th>Nome documento</th>
-       	<th>Tipo documento</th>
-       	<%-- <th>Tipo consegna</th> --%>
-       	</tr>
-       	</thead>
-       	<tbody></tbody>
-       	</table>	
-       	</div>
-      
-       </div>
-        <div class="row">       
-       	<div class="col-sm-6">
-       	<label>Tipo consegna</label>
-       	</div>
-       	</div><br>
-         <div class="row">       
-       	<div class="col-sm-3">
-       	<input id="check_parziale" name="check_parziale" type="radio" class="form-control"><label style="margin-left:5px">Parziale</label>
-       	</div>
-       	<div class="col-sm-3">
-       	<input id="check_totale" name="check_totale"type="radio" class="form-control" checked ><label style="margin-left:5px">Totale</label>
-       	</div>
-       	</div>
-       </div>
-      <div class="modal-footer">
-      
-      <button class="btn btn-primary" onClick="$('#myModalEmailConsegna').modal()">Salva</button>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
- <div id="myModalEmailConsegna" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
-   
-    <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Invia Comunicazione Consegna</h4>
-      </div>
-       <div class="modal-body">       
-      	<label>Indirizzo:</label><input type="text" class="form-control" id="destinatario_consegna" value="antonio.dicivita@ncsnetwork.it" name="destinatario_consegna"/>
-      	
-      	</div>
-      <div class="modal-footer">
-      
-      
-      <a class="btn btn-primary" onclick="inviaEmailConsegna()" >Invia</a>
-		
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
-
-
-
-</div>
-   <t:dash-footer />
-   
-  <t:control-sidebar />
-</div>
-<!-- ./wrapper -->
-
-</jsp:attribute>
-
-
-<jsp:attribute name="extra_css">
-
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
 
@@ -1042,9 +395,9 @@
     background-color: #00a65a !important;
   }</style>
 
-</jsp:attribute>
 
-<jsp:attribute name="extra_js_footer">
+
+<script src="plugins/iCheck/icheck.min.js"></script> 
 <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
@@ -1258,29 +611,6 @@ function modalEmail(id_documento, id_fornitore, id_committente){
 }
 
 
-$('#check_parziale').on('ifClicked', function(){
-	
-	if($('#check_parziale').is( ':checked' )){
-		$('#check_parziale').iCheck('check');
-	}else{
-		$('#check_totale').iCheck('uncheck');
-		
-	}
-	
-});
-
-$('#check_totale').on('ifClicked', function(){
-	
-	if($('#check_totale').is( ':checked' )){
-		$('#check_totale').iCheck('check');
-	}else{
-		$('#check_parziale').iCheck('uncheck');
-		
-	}
-	
-});
-
-
 function modalNuovoDocumento(){
 	
 	$('#myModalnuovoDocumento').modal();
@@ -1324,7 +654,7 @@ $('#fornitore_mod').change(function(){
 	
 });
 
-function modificaDocumentoModal(id_committente, id_documento, fornitore, nome_documento, data_rilascio, frequenza,  data_scadenza, nome_file, rilasciato, numero_documento, tipo_documento, aggiornabile, aggiornabile_default, codice, revisione){
+function modificaDocumentoModal(id_committente, id_documento, fornitore, nome_documento, data_rilascio, frequenza,  data_scadenza, nome_file, rilasciato, numero_documento, tipo_documento, aggiornabile, aggiornabile_default){
 
 	$('#id_documento').val(id_documento);
 		
@@ -1363,9 +693,6 @@ function modificaDocumentoModal(id_committente, id_documento, fornitore, nome_do
 	$('#rilasciato_mod').val(rilasciato);
 	$('#label_file_mod').html(nome_file.split("\\")[1]);
 	
-	$("#codice_mod").val(codice);
-	$("#revisione_mod").val(revisione);
-	
 	$('#myModalModificaDocumento').modal();
 }
 
@@ -1385,13 +712,9 @@ $("#tabDocumDocumento").on( 'init.dt', function ( e, settings ) {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
     	  var title = $('#tabDocumDocumento thead th').eq( $(this).index() ).text();
     	
-    	  if((${userObj.checkRuolo('D1') == true} || ${userObj.checkRuolo('AM') == true}) && $(this).index()!=1){
-    		  $(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');
-		    		
-	    	}
-    	  else if(${userObj.checkRuolo('D2') == true} ){
-    		  $(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');
-    	  }
+    	  //if($(this).index()!=0 && $(this).index()!=1){
+		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
+	    	//}
 
     	} );
     
@@ -1544,7 +867,7 @@ function formatDate(data){
 	
 	   var mydate = new Date(data);
 	   
-	   if(!isNaN(mydate.getTime())){
+	   if(!isNaN(mydate)){
 	   
 		   str = mydate.toString("dd/MM/yyyy");
 	   }			   
@@ -1556,9 +879,6 @@ function modalEliminaDocumento(id_documento){
 	 $('#elimina_documento_id').val(id_documento);
 		$('#myModalYesOrNo').modal();
 }
-
-
-
 
 
 $('#dipendenti_mod').on('change', function() {
@@ -1589,22 +909,7 @@ $('#dipendenti_mod').on('change', function() {
 	$('#ids_dipendenti_dissocia').val(deselected)
 	
   });
-  
-  $('#tipo_documento').change(function(){
-	 
-	  var value = $(this).val();
-	  
-	  if(value.split("_")[1] == 1){
-		
-		  $('#aggiornabile_cl').iCheck("check");
-		  $('#aggiornabile_cliente').val(1);
-	  }else{
-		  $('#aggiornabile_cl').iCheck("uncheck");
-		  $('#aggiornabile_cliente').val(0);
-	  }
-	  
-  });
-  
+
   $('#tipo_documento_mod').change(function(){
 		 
 	  var value = $(this).val();
@@ -1621,15 +926,6 @@ $('#dipendenti_mod').on('change', function() {
   });
 
   
-  $('#aggiornabile_cl').on('ifClicked',function(e){
-		if($('#aggiornabile_cl').is( ':checked' )){
-			$('#aggiornabile_cl').iCheck('uncheck');
-			$('#aggiornabile_cliente').val(0);
-		}else{
-			$('#aggiornabile_cl').iCheck('check');
-			$('#aggiornabile_cliente').val(1);
-		}
-	});
 
 	$('#aggiornabile_cl_mod').on('ifClicked',function(e){
 		if($('#aggiornabile_cl_mod').is( ':checked' )){
@@ -1642,165 +938,9 @@ $('#dipendenti_mod').on('change', function() {
 	});
   
 
-	function modalSchedaConsegna(){
-	//	 table = $('#tabDocumDocumento').DataTable()
-		 pleaseWaitDiv = $('#pleaseWaitDialog');
-		  pleaseWaitDiv.modal();
-	  		var dataSelected = table.rows( { selected: true } ).data();
-	  		var selezionati = {
-	  			    ids: []
-	  			};
-	  		var table_data = [];
-	  		if(dataSelected.length>0){
-	  			
-	  			for(var i = 0;i<dataSelected.length;i++){
-	  				var row = [];
-	  				row.id = dataSelected[i][0];
-	  				row.committente = dataSelected[i][2];
-	  				row.fornitore = dataSelected[i][3];
-	  				row.codice = dataSelected[i][4];
-	  				row.nome_documento = dataSelected[i][5];
-	  				row.tipo_documento = dataSelected[i][7];
-					/* row.check_box = '<input type="checkbox" id="checkParziale_'+dataSelected[i][0]+'" name="checkParziale_'+dataSelected[i][0]+'" class="check_consegna">'+
-					'<label>Parziale</label><br>'+
-					'<input type="checkbox" checked id="checkTotale_'+dataSelected[i][0]+'" name="checkTotale_'+dataSelected[i][0]+'" class="check_consegna">'+
-					'<label>Totale</label>' */
-	  				table_data.push(row);
-	  				
-	  			}
-	  			
-	  			var t = $('#tab_scheda_consegna').DataTable();
-	    		  
-	     		   t.clear().draw();
-	     		   
-	     			t.rows.add(table_data).draw();
-	     			t.columns.adjust().draw();
-	   			
-	   		  $('#modalSchedaConsegna').modal();
-	   			
-	    	  
-	    	  
-	    	  $('#modalSchedaConsegna').on('shown.bs.modal', function () {
-	    		  var t = $('#tab_scheda_consegna').DataTable();
-	    		  
-	    			t.columns.adjust().draw();
-	  			
-	    		})
-	  			
-	  			// $('#modalSchedaConsegna').modal('show');
-	  		}else{
-	  			$('#myModalErrorContent').html("Nessun documento selezionato!");
-				  $('#myModalError').removeClass();
-				  $('#myModalError').addClass("modal modal-default");
-				  $('#myModalError').modal('show');
-	  		}
-	  		
-	  		 pleaseWaitDiv.modal('hide');
-	  		 
-	  		 $('.check_consegna').on('click',function(){
-	  			
-	  			 var value = this.id;
-	  			 
-	  			 var id = value.split("_")[1];
-	  			 var tipo = value.split("_")[0];	  			 
-	  			 
-	  			 if(tipo == 'checkParziale'){
-	  				 $('#checkTotale_'+id).prop('checked', false);
-	  			 }else{
-	  				$('#checkParziale_'+id).prop('checked', false);
-	  			 }
-	  			 
-	  		 });
-	  		 
-	}
-	
-	
-function inviaEmailConsegna(){
-	
-	var t = $('#tab_scheda_consegna').DataTable();
-	
-	var data = t.columns(0).data();
-	var ids = "";
-	
-/* 	for(var i = 0; i<ids[0].length;i++){
-		if($('#checkParziale_'+ids[0][i]).prop('checked')== true){
-			check = check+ids[0][i]+"_"+0+";";
-		}else{
-			check = check+ids[0][i]+"_"+1+";";
-		}
-		
-	}
-	 */
-	 
-	 for(var i = 0; i<data[0].length;i++){
-		 ids = ids+data[0][i]+";"
-	 }
-	 
-	 if($('#check_parziale').is( ':checked' )){
-		 var parziale = 1;
-	 }else{
-		 var parziale = 0;
-	 }
-	 if($('#check_totale').is( ':checked' )){
-		 var totale = 1;
-	 }else{
-		 var totale = 0;
-	 }
-	 
-	dataObj = {};
-	dataObj.ids = ids;
-	dataObj.parziale = parziale;
-	dataObj.totale = totale;
-	dataObj.destinatario_consegna = $('#destinatario_consegna').val();
-	
-	 $.ajax({
-		 type: "POST",
-		 url: "gestioneDocumentale.do?action=scheda_consegna",
-		 data: dataObj,
-		 dataType: "json",
-		 //if received a response from the server
-		 success: function( data, textStatus) {
-		 	pleaseWaitDiv.modal('hide');
-		 	  if(data.success)
-		 		  {  
-		 		 
-		 			$('#myModalErrorContent').html(data.messaggio);
-		 		  	$('#myModalError').removeClass();
-		 			$('#myModalError').addClass("modal modal-success");	  
-		 			$('#report_button').hide();
-		 			$('#visualizza_report').hide();
-		 			$('#myModalError').modal('show');	
-		 			 $('#myModalError').on('hidden.bs.modal', function () {
-		 				 location.reload();
-		 			 });
-		 			
-		 		  }else{
-		 			
-		 				$('#myModalErrorContent').html("Errore nell'associazione dei documenti!");
-		 			  	$('#myModalError').removeClass();
-		 				$('#myModalError').addClass("modal modal-danger");	  
-		 				$('#report_button').show();
-		 				$('#visualizza_report').show();
-		 				$('#myModalError').modal('show');			
-		 		
-		 		  }
-		 },
-		 error: function( data, textStatus) {
-		 	  $('#myModalYesOrNo').modal('hide');
-		 	  $('#myModalErrorContent').html(data.messaggio);
-		 		  	$('#myModalError').removeClass();
-		 			$('#myModalError').addClass("modal modal-danger");	  
-		 			$('#report_button').show();
-		 			$('#visualizza_report').show();
-		 				$('#myModalError').modal('show');
-
-		 }
-		 });
-	
-}	
-	
-	
 $(document).ready(function() {
+	
+	console.log("test");
  
 $('.select2').select2();
 	 
@@ -1808,33 +948,7 @@ $('.select2').select2();
      
      $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
-	 });   
-     
-     var columnDef = [];
-     var ruolo = ${userObj.checkRuolo('D2')};
-     
-     if(!ruolo){
-    	 columnDef =	 [
-	    	  
-	    	  { responsivePriority: 1, targets: 1 },
-	    	  { responsivePriority: 2, targets: 16 },
-	    	  { className: "select-checkbox", targets: 1,  orderable: false }
-	               ]
-    	 
-    	 selectOpt = {
-		        	style:    'multi+shift',
-		        	selector: 'td:nth-child(2)'
-		    	}
-     }else{
-    	 columnDef =	 [
-	    	  
-	    	  { responsivePriority: 1, targets: 1 },
-	    	  { responsivePriority: 2, targets: 14 },
-	               ] 
-    	 
-    	 selectOpt = {}
-     }
-     
+	 });    
      
      table = $('#tabDocumDocumento').DataTable({
 			language: {
@@ -1870,8 +984,13 @@ $('.select2').select2();
 		      responsive: true,
 		      scrollX: false,
 		      stateSave: true,	
-		      select: selectOpt,
-		      columnDefs: columnDef, 	        
+		           
+		      columnDefs: [
+		    	  
+		    	  { responsivePriority: 1, targets: 1 },
+		    	  { responsivePriority: 2, targets: 12 },
+		    	  
+		               ], 	        
 	  	      buttons: [   
 	  	          {
 	  	            extend: 'colvis',
@@ -1991,70 +1110,8 @@ $('.select2').select2();
 	          .draw();
 	  } );
 	} );  
-	 	     
-	 	     
-	 	     
-	 	     
-	 	     
-	 	    tabSchedaConsegna = $('#tab_scheda_consegna').DataTable({
-				language: {
-			        	emptyTable : 	"Non sono presenti documenti antecedenti",
-			        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-			        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-			        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-			        	infoPostFix:	"",
-			        infoThousands:	".",
-			        lengthMenu:	"Visualizza _MENU_ elementi",
-			        loadingRecords:	"Caricamento...",
-			        	processing:	"Elaborazione...",
-			        	search:	"Cerca:",
-			        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-			        	paginate:	{
-		  	        	first:	"Inizio",
-		  	        	previous:	"Precedente",
-		  	        	next:	"Successivo",
-		  	        last:	"Fine",
-			        	},
-			        aria:	{
-		  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-			        }
-		        },
-		        pageLength: 25,
-		        "order": [[ 0, "desc" ]],
-			      paging: false, 
-			      ordering: true,
-			      info: false, 
-			      searchable: false, 
-			      targets: 0,
-			      responsive: true,  
-			      scrollX: false,
-			      stateSave: false,	
-			      columns : [
-			      	{"data" : "id"},
-			      	{"data" : "committente"},
-			      	{"data" : "fornitore"},
-			    	{"data" : "codice"},
-			      	{"data" : "nome_documento"},
-			      	{"data" : "tipo_documento"}
-			      	/* {"data" : "check_box"} */
-			       ],	
-			           
-			      columnDefs: [
-			    	  
-			    	  { responsivePriority: 1, targets: 1 },
-			    	  
-			    	  
-			               ], 	        
-		  	      buttons: [   
-		  	          {
-		  	            extend: 'colvis',
-		  	            text: 'Nascondi Colonne'  	                   
-		 			  } ]
-			               
-			    });
-			
-
+	
+	
 	
 		table.columns.adjust().draw();
 		
@@ -2114,19 +1171,6 @@ $('#modificaDocumentoForm').on('submit', function(e){
 	 nuovoDocumento();
 });
  
-	$('#checkAll').on('ifChecked', function(event){  		
-  		
-		   //table.rows().select();
-		   table.rows({ filter : 'applied'}).select();
-		      	  
-	});
-	$('#checkAll').on('ifUnchecked', function(event){
-		
-		 table.rows().deselect();
-	  
-	});
-
- 
  
  $('#formAggiornaDocumento').on('submit', function(e){
 
@@ -2144,6 +1188,4 @@ $('#modificaDocumentoForm').on('submit', function(e){
  
   </script>
   
-</jsp:attribute> 
-</t:layout>
 

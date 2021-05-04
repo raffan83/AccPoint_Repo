@@ -185,7 +185,7 @@
 	<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 	  <a class="btn btn-warning" onClicK="modificaDocumentoModal('${documento.id}','${documento.committente.id }','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_caricamento}','${documento.frequenza_rinnovo_mesi }',
-	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }','${documento.tipo_documento.id }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
+	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }','${documento.tipo_documento.id }','${documento.aggiornabile_cl }','${documento.tipo_documento.aggiornabile_cl_default }','${documento.codice }','${documento.revisione }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
 	   
 	   <a class="btn btn-danger" onClick="modalEliminaDocumento('${documento.id}')"><i class="fa fa-trash"></i></a>   
 	   </c:if>
@@ -422,7 +422,17 @@
        			
        	</div>       	
        </div><br> 
-             
+                      <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Codice</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="codice" name="codice" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
              
        <div class="row">
        
@@ -526,6 +536,30 @@
        			
        	</div>       	
        </div><br>
+       
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Revisione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="revisione" name="revisione" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       
+              		<div class="row">
+       <div class="col-sm-3">
+       <label>Aggiornabile dal cliente</label>
+		</div>
+		
+		<div class="col-sm-9">
+       <input type="checkbox" class="form-control" id="aggiornabile_cl" name="aggiornabile_cl">
+		</div>
+		</div><br>
                     
                 <div class="row">
        
@@ -633,6 +667,18 @@
        			
        	</div>       	
        </div><br> 
+       
+         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Codice</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="codice_mod" name="codice_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
              
              
        <div class="row">
@@ -670,7 +716,7 @@
                 <option value=""></option>
                       <c:forEach items="${lista_tipo_documento}" var="tipo">
                      
-                           <option value="${tipo.id}">${tipo.descrizione}</option> 
+                           <option value="${tipo.id}_${tipo.aggiornabile_cl_default}" >${tipo.descrizione}</option> 
                          
                      </c:forEach>
 
@@ -740,6 +786,29 @@
        	</div>       	
        </div><br>
                     
+                     <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Revisione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="revisione_mod" name="revisione_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       
+              		<div class="row">
+       <div class="col-sm-3">
+       <label>Aggiornabile dal cliente</label>
+		</div>
+		
+		<div class="col-sm-9">
+       <input type="checkbox" class="form-control" id="aggiornabile_cl_mod" name="aggiornabile_cl_mod">
+		</div>
+		</div><br>
+                    
                     
                 <div class="row">
        
@@ -761,6 +830,7 @@
 		<input type="hidden" id="fornitore_mod" name="fornitore_mod">
 				<input type="hidden" id="ids_dipendenti_mod" name="ids_dipendenti_mod">
 		<input type="hidden" id="ids_dipendenti_dissocia" name="ids_dipendenti_dissocia">
+		<input type="hidden" id="aggiornabile_cliente_mod" name="aggiornabile_cliente_mod">
 
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
@@ -1811,8 +1881,60 @@
 		
 	  });
 
+	
+	$('#tipo_documento').change(function(){
+		 
+		  var value = $(this).val();
+		  
+		  if(value.split("_")[1] == 1){
+			
+			  $('#aggiornabile_cl').iCheck("check");
+			  $('#aggiornabile_cliente').val(1);
+		  }else{
+			  $('#aggiornabile_cl').iCheck("uncheck");
+			  $('#aggiornabile_cliente').val(0);
+		  }
+		  
+	  });
+	  
+	  $('#tipo_documento_mod').change(function(){
+			 
+		  var value = $(this).val();
+		  
+		  if(value!=null && value.split("_")[1] == 1){
+			
+			  $('#aggiornabile_cl_mod').iCheck("check");
+			  $('#aggiornabile_cliente_mod').val(1);
+		  }else{
+			  $('#aggiornabile_cl_mod').iCheck("uncheck");
+			  $('#aggiornabile_cliente_mod').val(0);
+		  }
+		  
+	  });
+
+	  
+	  $('#aggiornabile_cl').on('ifClicked',function(e){
+			if($('#aggiornabile_cl').is( ':checked' )){
+				$('#aggiornabile_cl').iCheck('uncheck');
+				$('#aggiornabile_cliente').val(0);
+			}else{
+				$('#aggiornabile_cl').iCheck('check');
+				$('#aggiornabile_cliente').val(1);
+			}
+		});
+
+		$('#aggiornabile_cl_mod').on('ifClicked',function(e){
+			if($('#aggiornabile_cl_mod').is( ':checked' )){
+				$('#aggiornabile_cl_mod').iCheck('uncheck');
+				$('#aggiornabile_cliente_mod').val(0);
+			}else{
+				$('#aggiornabile_cl_mod').iCheck('check');
+				$('#aggiornabile_cliente_mod').val(1);
+			}
+		});
  
- function modificaDocumentoModal(id_documento, committente, fornitore, nome_documento, data_caricamento, frequenza,  data_scadenza, nome_file, rilasciato,numero_documento, tipo_documento){
+ 
+ function modificaDocumentoModal(id_documento, committente, fornitore, nome_documento, data_caricamento, frequenza,  data_scadenza, nome_file, rilasciato,numero_documento, tipo_documento, aggiornabile, aggiornabile_default, codice, revisione){
 
  	$('#id_documento').val(id_documento);
  		
@@ -1822,12 +1944,21 @@
  	$('#committente_docum_mod').val(committente);
  	$('#committente_docum_mod').change();
  	
+
+ 	
  	if(tipo_documento!=null){
- 		
- 		$('#tipo_documento_mod').val(tipo_documento);
- 	 	$('#tipo_documento_mod').change();
- 	 	
- 	}
+		$('#tipo_documento_mod').val(tipo_documento+"_"+aggiornabile_default);
+		$('#tipo_documento_mod').change();
+	}
+	
+	if(aggiornabile!=null && aggiornabile==1){
+		$('#aggiornabile_cl_mod').iCheck("check");
+		$('#aggiornabile_cliente_mod').val(1);
+		
+	}else{
+		$('#aggiornabile_cl_mod').iCheck("uncheck");
+		$('#aggiornabile_cliente_mod').val(0);
+	}
 
  	$('#nome_documento_mod').val(nome_documento);
  	$('#frequenza_mod').val(frequenza);	
@@ -1841,10 +1972,13 @@
  	}
  	$('#rilasciato_mod').val(rilasciato);
 	$('#label_file_mod').html(nome_file.split("\\")[1]);
+	
+	$("#codice_mod").val(codice);
+	$("#revisione_mod").val(revisione);
  	
  	$('#myModalModificaDocumento').modal();
  }
-
+ 
 
 
 

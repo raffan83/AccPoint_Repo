@@ -22,6 +22,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.log4j.Logger;
 
@@ -657,6 +658,71 @@ public static void sendEmailDocumento(DocumTLDocumentoDTO documento, String mail
 	  
 	  
 	}
+
+public static void sendEmailSchedaConsegnaDocumentale(ArrayList<DocumTLDocumentoDTO> lista_documenti, String parziale, String mailTo,ServletContext ctx) throws EmailException {
+	
+	
+
+	  // Create the email message
+	  HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+
+      email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+      email.getMailSession().getProperties().put("mail.debug", "true");
+      email.getMailSession().getProperties().put("mail.smtp.port", "465");
+      email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+      email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+      email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+      email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+
+      String[] destinatari = mailTo.split(";"); 
+      
+      for (String dest : destinatari) {
+      	email.addTo(dest);
+		}
+	  
+	  
+	  email.setFrom("calver@accpoint.it", "Calver");
+	  email.setSubject("Scheda consegna documenti");
+	  
+	  // embed the image and get the content id
+
+	  File image = new File(ctx.getRealPath("images/logo_calver_v2.png"));
+	  String cid = email.embed(image, "Calver logo");
+	  
+	  String lista_doc ="";
+	  
+	 
+	  
+	  for (DocumTLDocumentoDTO doc : lista_documenti) {
+		  String tipo_documento = "";
+		  
+		  if(doc.getTipo_documento()!=null) {
+			  tipo_documento = doc.getTipo_documento().getDescrizione();
+		  }
+		  lista_doc += "ID: "+doc.getId()+" Committente: "+doc.getCommittente().getNome_cliente() +" - "+doc.getCommittente().getIndirizzo_cliente()+
+		   " Fornitore: "+doc.getFornitore().getRagione_sociale() +" Nome documento: "+doc.getNome_documento()+" Tipo documento: "+tipo_documento+"<br><br>";		  
+	  }
+	  
+	  String tipo_consegna = "CONSEGNA TOTALE";
+	  if(parziale.equals("1")) {
+		  tipo_consegna = "CONSEGNA PARZIALE";
+	  }
+
+		  email.setHtmlMsg("<html>Si avvisa che i seguenti documenti sono pronti per essere consegnati:<br>"
+		  
+				  +lista_doc
+			  	+"Tipo consegna: "+tipo_consegna
+			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
+			  		//+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.PATH_FOLDER_LOGHI +"\\sito_calver.png"+" \"></html>");
+
+
+	  email.send();
+	
+}
 
 }
 

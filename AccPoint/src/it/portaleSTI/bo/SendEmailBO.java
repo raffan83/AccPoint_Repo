@@ -51,7 +51,8 @@ public class SendEmailBO {
 		  HtmlEmail email = new HtmlEmail();
 		  email.setHostName("smtps.aruba.it");
   		 //email.setDebug(true);
-		  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+		 // email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+		  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
 
 
 
@@ -190,7 +191,8 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 			final String username = "calver@accpoint.it";
 			
 			// correct password for gmail id 
-			final String password = "7LwqE9w4tu"; 
+			final String password = Costanti.PASS_EMAIL_ACC; 
+			
 
 			System.out.println("TLSEmail Start"); 
 			// Get the session object 
@@ -372,7 +374,7 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 	   int SMTP_HOST_PORT = 465;
 	   String SMTP_AUTH_USER = "metrologiasti@pec.it";
 	  // String SMTP_AUTH_PWD  = "XkGiDri9&";
-	   String SMTP_AUTH_PWD  = "q85#*NJzq3Zn";
+	   String SMTP_AUTH_PWD  = Costanti.PASS_PEC_VER;
 	   
 	   Properties props = new Properties();
 
@@ -524,7 +526,7 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 	  HtmlEmail email = new HtmlEmail();
 	  email.setHostName("smtps.aruba.it");
 		 //email.setDebug(true);
-	  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
 
 
         email.getMailSession().getProperties().put("mail.smtp.auth", "true");
@@ -597,7 +599,7 @@ public static void sendEmailDocumento(DocumTLDocumentoDTO documento, String mail
 	  HtmlEmail email = new HtmlEmail();
 	  email.setHostName("smtps.aruba.it");
 		 //email.setDebug(true);
-	  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
 
         email.getMailSession().getProperties().put("mail.smtp.auth", "true");
         email.getMailSession().getProperties().put("mail.debug", "true");
@@ -667,7 +669,7 @@ public static void sendEmailSchedaConsegnaDocumentale(ArrayList<DocumTLDocumento
 	  HtmlEmail email = new HtmlEmail();
 	  email.setHostName("smtps.aruba.it");
 		 //email.setDebug(true);
-	  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
 
       email.getMailSession().getProperties().put("mail.smtp.auth", "true");
       email.getMailSession().getProperties().put("mail.debug", "true");

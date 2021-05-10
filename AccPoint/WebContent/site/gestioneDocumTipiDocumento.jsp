@@ -22,7 +22,7 @@
     <section class="content-header">
       <h1 class="pull-left">
      
-        Lista Documenti Obsoleti
+        Lista Tipo Documento
      
 
         <!-- <small></small> -->

@@ -63,7 +63,14 @@ public class CreateTestaPacco {
 		private void build(MagPaccoDTO pacco, List<MagItemPaccoDTO> lista_item_pacco, List<SedeDTO> lista_sedi, Session session) throws Exception {
 			
 			
-			InputStream is =  PivotTemplate.class.getResourceAsStream("testa_pacco.jrxml");
+			InputStream is = null;
+			
+			if(lista_item_pacco.size()>0 && lista_item_pacco.get(0).getItem().getTipo_item().getId()==4) {
+				is = PivotTemplate.class.getResourceAsStream("testa_pacco_rilievi.jrxml"); 
+			}else {
+				is = PivotTemplate.class.getResourceAsStream("testa_pacco.jrxml");
+			}
+			
 			
 
 			JasperReportBuilder report = DynamicReports.report();

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="testa_pacco" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d0d73ace-4ec5-4385-9176-343ee6ec013c">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="241" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="150" width="281" height="40" uuid="cfc71b2f-419a-4f91-bb66-56da487d3762"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="281" y="150" width="275" height="40" uuid="09365193-456c-4df9-af17-7a5a55005cdc"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="281" y="89" width="275" height="61" uuid="18afc08c-d62d-4aa6-b663-fcdd87b1ec8c"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="89" width="281" height="61" uuid="43b7108b-a921-421b-8cf5-224fbf06c645"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="14" y="100" width="84" height="20" uuid="81365c48-c663-4f42-8964-203696c7487e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CODICE PACCO: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="154" width="59" height="31" uuid="aebb2b12-b55a-4954-aabd-096c926e0142"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="155" width="47" height="31" uuid="f97a5db0-401c-4786-90e2-9bb8ceb87b0c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEDE: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="102" y="100" width="92" height="20" uuid="05b58e08-717e-4437-a872-9e0077f7549c"/>
+				<textFieldExpression><![CDATA[$P{codice_pacco}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="344" y="155" width="207" height="31" uuid="379483db-72dc-4086-bb89-6d45cc6a3ec8"/>
+				<textFieldExpression><![CDATA[$P{sede}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="72" y="154" width="203" height="32" uuid="4c784de6-b460-4135-93d3-cc59fc5618fd"/>
+				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="294" y="100" width="77" height="21" uuid="053c0141-9f50-4fa7-932b-8d8e087d9bde"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA ARRIVO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="373" y="100" width="178" height="21" uuid="4cb84182-1b30-4056-90c5-1d172a33b2b5"/>
+				<textFieldExpression><![CDATA[$P{data_lavorazione}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="2" y="0" width="554" height="70" uuid="d806efef-ee1c-49e3-933c-2666e2e416e4"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<componentElement>
+				<reportElement x="98" y="120" width="100" height="25" uuid="2e3bcbc5-599f-4c7b-b6f1-a0c1d7a68aab"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="SCC14ShippingCode" drawText="false" checksumRequired="false" barHeight="23">
+					<jr:codeExpression><![CDATA[$P{barcode}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<rectangle>
+				<reportElement x="0" y="190" width="281" height="39" uuid="14724fee-25cc-4683-a2b6-86f7e45f55e9"/>
+			</rectangle>
+			<textField>
+				<reportElement x="81" y="199" width="102" height="21" uuid="0ac68a7e-d217-48e1-af8b-e43118f082ed"/>
+				<textFieldExpression><![CDATA[$P{commessa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="16" y="199" width="63" height="21" uuid="37f43607-df32-4ae3-9cdc-f6d16212fb54"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COMMESSA:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="281" y="190" width="275" height="39" uuid="688e0746-3d63-45f7-8f4c-c555c3eb0c33"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="295" y="198" width="63" height="21" uuid="da8234bd-68c3-43e1-bac7-c54e262983a3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CORRIERE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="360" y="198" width="191" height="21" uuid="de61a767-25ce-48f2-aa86-ec71901e8b77"/>
+				<textFieldExpression><![CDATA[$P{corriere}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="151" height="31" uuid="6966290b-1658-47c3-bb53-b5d1981c6b06"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTENUTO DEL PACCO:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnFooter>
+		<band height="11" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="280" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="556" height="220" uuid="e06e6886-02c1-4edf-b42c-9212aedc83bf"/>
+			</rectangle>
+			<textField>
+				<reportElement x="10" y="61" width="531" height="159" uuid="77911d1e-a510-4bc7-a1ad-8f4277c91b68"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{note_pacco}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="10" width="180" height="31" uuid="52e6417c-3409-4e51-94fb-d9f2fc7b6f7f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VERIFICA DDT/CONTENUTO PACCO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="220" y="12" width="11" height="11" uuid="57b6426f-e266-4e3b-8ab3-c67803a2b5a3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="289" y="12" width="11" height="11" uuid="b9772f83-feb3-4832-ba68-62e2eb68eed6"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="237" y="12" width="38" height="18" uuid="c7e758d3-cdf2-4da6-9dbe-da2c16ec4289"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OK]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="307" y="12" width="38" height="18" uuid="7f65cabf-9b1f-4c7d-8f8e-da479cc046b3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOK]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="42" width="38" height="18" uuid="53937286-0f83-46ab-800c-9ca9f6e69993"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOTE]]></text>
+			</staticText>
+			<line>
+				<reportElement x="10" y="74" width="530" height="1" uuid="45f4bfb2-fecb-453a-852c-8d96bd938e1f"/>
+			</line>
+			<line>
+				<reportElement x="10" y="90" width="530" height="1" uuid="547f0814-601b-4e9c-9ba9-cf190f1d6f66"/>
+			</line>
+			<line>
+				<reportElement x="10" y="106" width="530" height="1" uuid="a43b7601-d201-4d0b-8a0e-0fc24fc2f07a"/>
+			</line>
+			<line>
+				<reportElement x="10" y="122" width="530" height="1" uuid="7d7e539e-69c0-4c15-bcb9-f94b14760a58"/>
+			</line>
+			<line>
+				<reportElement x="10" y="138" width="530" height="1" uuid="3520d1cc-52c4-4f61-8c80-c58a4bd1cead"/>
+			</line>
+			<line>
+				<reportElement x="10" y="152" width="530" height="1" uuid="fa274243-ec70-45f5-9248-4cfddd88bf41"/>
+			</line>
+			<line>
+				<reportElement x="10" y="168" width="530" height="1" uuid="02e959e6-b1a2-4a23-bcfb-5b44d67de2f3"/>
+			</line>
+			<line>
+				<reportElement x="10" y="183" width="530" height="1" uuid="3a9a9825-3558-4607-9bfe-a50a2abd11d8"/>
+			</line>
+			<line>
+				<reportElement x="10" y="199" width="530" height="1" uuid="2ef5e5c8-cfc9-46f7-a93d-b3a92eec62b6"/>
+			</line>
+			<rectangle>
+				<reportElement x="0" y="249" width="11" height="11" uuid="47387474-26e2-4b52-be19-cb7a77fb0d69"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="15" y="249" width="205" height="18" uuid="c3609b81-251d-4651-97d3-db058c3d003d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PEZZI DA RICONSEGNARE AL CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="249" width="190" height="18" uuid="782fdb8c-1ebe-402a-8d56-bc0c3bd01036"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RIFIUTO URBANO INDIFFERENZIATO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="230" y="249" width="11" height="11" uuid="15a22862-4e13-4af6-a9c4-57f6f8ac6d95"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="470" y="249" width="100" height="18" uuid="50824ad1-7552-448b-bf0c-6b3ece646278"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RIFIUTO SPECIALE]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="455" y="249" width="11" height="11" uuid="859df37c-070d-4a4d-93f1-56753f00b2c4"/>
+			</rectangle>
+		</band>
+	</pageFooter>
+</jasperReport>

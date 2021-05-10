@@ -7,9 +7,6 @@ import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
-import it.portaleSTI.DTO.MagItemDTO;
-import it.portaleSTI.DTO.MagItemPaccoDTO;
-import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
@@ -21,13 +18,14 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,10 +33,23 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
-
+import com.itextpdf.text.Annotation;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfAnnotation;
+import com.itextpdf.text.pdf.PdfBorderArray;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfDestination;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.parser.ImageRenderInfo;
+import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
+import com.itextpdf.text.pdf.parser.RenderListener;
+import com.itextpdf.text.pdf.parser.TextRenderInfo;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 
 public class GestioneCertificatoBO {
@@ -747,4 +758,96 @@ public class GestioneCertificatoBO {
 			}
 		
 	}
+
+	public static JsonObject addSign(UtenteDTO utente, String keyWord, boolean multi, CertificatoDTO certificato) throws Exception {
+		
+		
+		String path = Costanti.PATH_FOLDER+certificato.getMisura().getIntervento().getNomePack()+"\\"+certificato.getNomeCertificato();
+		
+		
+	    PdfReader reader = new PdfReader(path);
+	    	          
+	    PdfStamper stamper = new PdfStamper(reader,new FileOutputStream(Costanti.PATH_FOLDER+"\\temp\\"+certificato.getNomeCertificato()));
+	    PdfContentByte content = stamper.getOverContent(1);
+	    Image image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma());
+
+	    image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	    
+	    
+	    Integer[] fontPosition = null;
+		for(int i = 1;i<=reader.getNumberOfPages();i++) {
+			fontPosition = getFontPosition(reader, keyWord, i);
+			
+			if(fontPosition[0] != null && fontPosition[1] != null) {
+				
+				int x = fontPosition[0] - 15;
+				int y = fontPosition[1] +10;
+				int w = x + 85;
+				int h = y + 31;
+				
+				 Rectangle rect = new Rectangle(x, y, w, h);
+			    
+				 image.scaleAbsolute(rect);
+				
+				image.setAbsolutePosition(fontPosition[0] - 15 , fontPosition[1] -25);
+				content.addImage(image);
+				
+				break;
+			}
+		}
+		
+		stamper.close();
+		reader.close();
+	    System.out.println(Arrays.toString(fontPosition));
+
+	    File targetFile=  new File(path);
+		File source = new File(Costanti.PATH_FOLDER+"\\temp\\"+certificato.getNomeCertificato());
+     	FileUtils.copyFile(source, targetFile);
+     	
+     	if(!multi) {
+     		source.delete();
+     	}
+	    JsonObject myObj = new JsonObject();
+	    
+     	myObj.addProperty("success", true);
+		return myObj;
+	}
+	
+	
+	
+	private static Integer[] getFontPosition(  PdfReader pdfReader, final String keyWord, Integer pageNum) throws IOException {
+	    final Integer[] result = new Integer[2];
+	    if (pageNum == null) {
+	        pageNum = pdfReader.getNumberOfPages();
+	    }
+	    new PdfReaderContentParser(pdfReader).processContent(pageNum, new RenderListener() {
+	        public void beginTextBlock() {
+
+	        }
+
+	        public void renderText(TextRenderInfo textRenderInfo) {
+	        	
+	            String text = textRenderInfo.getText();
+	          //  System.out.println("text is ：" + text);
+	            if (text != null && text.contains(keyWord)) {
+	                                     // The abscissa and ordinate of the text in the page
+	                com.itextpdf.awt.geom.Rectangle2D.Float textFloat = textRenderInfo.getBaseline().getBoundingRectange();
+	                float x = textFloat.x;
+	                float y = textFloat.y;
+	                result[0] = (int) x;
+	                result[1] = (int) y;
+	                 //                    System.out.println(String.format("The signature text field absolute position is x:%s, y:%s", x, y));
+	            }
+	        }
+
+	        public void endTextBlock() {
+
+	        }
+
+	        public void renderImage(ImageRenderInfo renderInfo) {
+
+	        }
+	    });
+	    return result;
+	}
+
 }

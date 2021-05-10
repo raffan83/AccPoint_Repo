@@ -51,7 +51,7 @@ public class SendEmailBO {
 		  HtmlEmail email = new HtmlEmail();
 		  email.setHostName("smtps.aruba.it");
   		 //email.setDebug(true);
-		  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+		  email.setAuthentication("calver@accpoint.it", "bDBH34GM2I");
 
 
 
@@ -126,7 +126,7 @@ public class SendEmailBO {
 //		  HtmlEmail email = new HtmlEmail();
 //		  email.setHostName("smtps.aruba.it");
 //  		 //email.setDebug(true);
-//		  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+//		  email.setAuthentication("calver@accpoint.it", "bDBH34GM2I");
 //
 //
 //
@@ -190,7 +190,7 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 			final String username = "calver@accpoint.it";
 			
 			// correct password for gmail id 
-			final String password = "7LwqE9w4tu"; 
+			final String password = "bDBH34GM2I"; 
 
 			System.out.println("TLSEmail Start"); 
 			// Get the session object 
@@ -524,7 +524,7 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 	  HtmlEmail email = new HtmlEmail();
 	  email.setHostName("smtps.aruba.it");
 		 //email.setDebug(true);
-	  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+	  email.setAuthentication("calver@accpoint.it", "bDBH34GM2I");
 
 
         email.getMailSession().getProperties().put("mail.smtp.auth", "true");
@@ -597,7 +597,7 @@ public static void sendEmailDocumento(DocumTLDocumentoDTO documento, String mail
 	  HtmlEmail email = new HtmlEmail();
 	  email.setHostName("smtps.aruba.it");
 		 //email.setDebug(true);
-	  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+	  email.setAuthentication("calver@accpoint.it", "bDBH34GM2I");
 
         email.getMailSession().getProperties().put("mail.smtp.auth", "true");
         email.getMailSession().getProperties().put("mail.debug", "true");
@@ -667,7 +667,7 @@ public static void sendEmailSchedaConsegnaDocumentale(ArrayList<DocumTLDocumento
 	  HtmlEmail email = new HtmlEmail();
 	  email.setHostName("smtps.aruba.it");
 		 //email.setDebug(true);
-	  email.setAuthentication("calver@accpoint.it", "7LwqE9w4tu");
+	  email.setAuthentication("calver@accpoint.it", "bDBH34GM2I");
 
       email.getMailSession().getProperties().put("mail.smtp.auth", "true");
       email.getMailSession().getProperties().put("mail.debug", "true");

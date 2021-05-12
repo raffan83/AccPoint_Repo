@@ -486,9 +486,41 @@ public class GestioneFormazioneDAO {
 
 		}
 
-		
-		
 		return lista;
+	}
+
+	public static ForPartecipanteDTO getPartecipanteFromCf(String cf, Session session) {
+		
+		ForPartecipanteDTO res = null;
+		ArrayList<ForPartecipanteDTO> lista = new ArrayList<ForPartecipanteDTO>();
+
+		Query query =  session.createQuery("from ForPartecipanteDTO where cf = :_cf");	
+		query.setParameter("_cf", cf);
+		
+		lista = (ArrayList<ForPartecipanteDTO>) query.list();
+		
+		if(lista.size()>0) {
+			res = lista.get(0);
+		}
+
+		return res;
+	}
+
+	public static ForRuoloDTO getRuoloFromId(int id_ruolo, Session session) {
+
+		ForRuoloDTO res = null;
+		ArrayList<ForRuoloDTO> lista = new ArrayList<ForRuoloDTO>();
+
+		Query query =  session.createQuery("from ForRuoloDTO where id = :_id");	
+		query.setParameter("_id", id_ruolo);
+		
+		lista = (ArrayList<ForRuoloDTO>) query.list();
+		
+		if(lista.size()>0) {
+			res = lista.get(0);
+		}
+
+		return res;
 	}
 	
 

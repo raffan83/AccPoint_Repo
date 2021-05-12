@@ -33,8 +33,10 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import it.portaleSTI.DAO.GestioneCommesseDAO;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
@@ -795,10 +797,15 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					Gson g = new Gson();
 					JsonElement json_cf = g.toJsonTree(lista_cf);
 					
+					ArrayList<ForCorsoDTO> lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
+					ArrayList<ForRuoloDTO> lista_ruoli = GestioneFormazioneBO.getListaRuoli(session);
+					
 					request.getSession().setAttribute("lista_clienti", listaClienti);
 					request.getSession().setAttribute("listaAziendePartecipanti", listaAziendePartecipanti);	
 					request.getSession().setAttribute("lista_sedi", listaSedi);
 					request.getSession().setAttribute("json_cf", json_cf);
+					request.getSession().setAttribute("lista_corsi", lista_corsi);
+					request.getSession().setAttribute("lista_ruoli", lista_ruoli);
 					
 				}
 				
@@ -1372,6 +1379,247 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				}
 				out.print(myObj);
 
+			}
+			else if(action.equals("importa_pdf")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		        List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }		        
+		        		
+				String id_azienda = ret.get("azienda_import");	
+				String sede = ret.get("sede_import");
+				int id_sede = 0;
+				
+				ClienteDTO cl = null;
+				
+				if(id_azienda!=null && !id_azienda.equals("")) {
+					cl = GestioneAnagraficaRemotaBO.getClienteById(id_azienda);	
+				}				
+				
+				SedeDTO sd =null;
+				String nome_sede = "Non associate";
+				if(sede!=null && !sede.equals("0")) {
+					id_sede = Integer.parseInt(sede.split("_")[0]);
+					
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(id_azienda));
+					
+				}
+				
+				ArrayList<ForPartecipanteDTO> lista_partecipanti = null;
+				
+				if(!fileItem.getName().equals("")) {
+					
+					lista_partecipanti =  GestioneFormazioneBO.importaDaPDF(fileItem,cl, sd, session);
+
+				}
+				
+				session.getTransaction().commit();
+				session.close();
+				Gson g = new Gson();
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				if(lista_partecipanti != null) {
+					myObj.addProperty("success", true);
+					myObj.add("lista_partecipanti_import", g.toJsonTree(lista_partecipanti));
+					request.getSession().setAttribute("fileItemAttestati", fileItem);
+				}else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Formato file errato!");
+				}
+				out.print(myObj);
+				
+				
+			}
+			else if(action.equals("conferma_importazione")) {
+				
+				ajax = true;
+				
+				String[] data = request.getParameterValues("data");
+				String dataOj = request.getParameter("data");
+				
+				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				
+				JsonElement jelement = new JsonParser().parse(dataOj);
+				JsonArray json_array = jelement.getAsJsonArray();
+				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_partecipanti = new ArrayList<ForPartecipanteRuoloCorsoDTO>(); 
+				ArrayList<String> lista_cf = GestioneFormazioneDAO.getListaCodiciFiscali(session);
+				for (JsonElement json : json_array) {
+					JsonObject json_obj = json.getAsJsonObject();
+					
+					String nome = json_obj.get("nome").getAsString();
+					String cognome = json_obj.get("cognome").getAsString();
+					String cf = json_obj.get("cf").getAsString();
+					String luogo_nascita = json_obj.get("luogo_nascita").getAsString();
+					String data_nascita = json_obj.get("data_nascita").getAsString();
+					int id_azienda = json_obj.get("azienda").getAsInt();
+					String id_sede = json_obj.get("sede").getAsString();
+					int id_corso = 0;
+					int id_ruolo = 0;
+					Double ore = 0.0;
+					if(json_obj.get("id_corso")!=null && !json_obj.get("id_corso").getAsString().equals("") ) {
+						id_corso = json_obj.get("id_corso").getAsInt();
+					}
+					if(json_obj.get("id_ruolo")!=null && !json_obj.get("id_ruolo").getAsString().equals("") ) {					
+						id_ruolo = json_obj.get("id_ruolo").getAsInt();
+					}
+					if(json_obj.get("ore")!=null && !json_obj.get("ore").getAsString().equals("") ) {	
+						ore = json_obj.get("ore").getAsDouble();
+					}
+				
+					ForPartecipanteDTO partecipante = null;
+					if(!lista_cf.contains(cf)) {
+						partecipante =  new ForPartecipanteDTO();
+					}else {
+						partecipante = GestioneFormazioneBO.getPartecipanteFromCf(cf,session);
+					}
+					
+						partecipante.setNome(nome);
+						partecipante.setCognome(cognome);
+						partecipante.setCf(cf);
+						partecipante.setLuogo_nascita(luogo_nascita);
+						partecipante.setData_nascita(df.parse(data_nascita));
+						partecipante.setId_azienda(id_azienda);
+						if(id_sede!=null && !id_sede.equals("0")) {
+							partecipante.setId_sede(Integer.parseInt(id_sede.split("_")[1]));	
+						}else {
+							partecipante.setId_sede(0);
+						}
+						
+						
+						ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(""+id_azienda);	
+									
+						
+						SedeDTO sd =null;
+						String nome_sede = "Non associate";
+						
+					
+						if(!id_sede.equals("0")) {
+							sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), id_azienda);
+							nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
+						}					
+						
+						partecipante.setNome_azienda(cl.getNome());
+						partecipante.setNome_sede(nome_sede);
+						session.saveOrUpdate(partecipante);
+					
+					
+					if(partecipante !=null && id_corso!=0) {
+						
+						
+						
+						ForPartecipanteRuoloCorsoDTO p = null;
+						ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(id_corso, session);
+						
+						if(!corso.getListaPartecipanti().contains(partecipante)){
+							
+							p = new ForPartecipanteRuoloCorsoDTO();
+							p.setCorso(corso);
+							
+							
+							p.setOre_partecipate(ore);
+							if(id_ruolo!=0) {
+								p.setRuolo(new ForRuoloDTO(id_ruolo));	
+							}
+							
+													
+							p.setPartecipante(partecipante);
+							session.save(p);	
+						}else {
+							ForRuoloDTO ruolo = GestioneFormazioneBO.getRuoloFromId(id_ruolo, session);
+							if(partecipante.getListaRuoli().contains(ruolo)) {
+								p = GestioneFormazioneBO.getPartecipanteFromCorso(corso.getId(), partecipante.getId(), id_ruolo, session);
+								
+								if(p == null) {
+									p = GestioneFormazioneBO.getPartecipanteFromCorso(corso.getId(), partecipante.getId(), 0, session);
+									p.setCorso(corso);
+									
+									
+									p.setOre_partecipate(ore);
+									if(id_ruolo!=0) {
+										p.setRuolo(ruolo);	
+									}
+									
+															
+									p.setPartecipante(partecipante);
+									session.saveOrUpdate(p);
+								}
+								
+							}else {
+								p = new ForPartecipanteRuoloCorsoDTO();
+								p.setCorso(corso);
+								
+								
+								p.setOre_partecipate(ore);
+								if(id_ruolo!=0) {
+									p.setRuolo(new ForRuoloDTO(id_ruolo));	
+								}
+								
+														
+								p.setPartecipante(partecipante);
+								session.save(p);	
+							}
+							
+						}
+						
+						
+						lista_partecipanti.add(p);
+						
+					}
+				}
+				
+				if(lista_partecipanti.size()>0) {
+					FileItem fileItem = (FileItem) request.getSession().getAttribute("fileItemAttestati");
+					GestioneFormazioneBO.splitPdf(fileItem,lista_partecipanti, session);
+				}				
+				
+				
+				
+				session.getTransaction().commit();
+				session.close();
+
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Partecipanti importati con successo");
+
+				out.print(myObj);
+				
+				
 			}
 			else if(action.equals("download_template")) {
 				

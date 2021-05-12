@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +17,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FileUtils;
+import org.apache.pdfbox.multipdf.Splitter;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -29,8 +35,23 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 
+import com.google.gson.JsonObject;
+import com.itextpdf.text.Annotation;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.parser.ImageRenderInfo;
+import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
+import com.itextpdf.text.pdf.parser.RenderListener;
+import com.itextpdf.text.pdf.parser.TextRenderInfo;
+import com.lowagie.text.pdf.PdfDocument;
+
 import TemplateReport.PivotTemplate;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
+import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
@@ -40,6 +61,8 @@ import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
+import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 
 public class GestioneFormazioneBO {
@@ -277,6 +300,11 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getListaAziendeConPartecipanti(session);
 	}
 
+	public static ForPartecipanteDTO getPartecipanteFromCf(String cf,Session session) {
+		
+		return GestioneFormazioneDAO.getPartecipanteFromCf(cf,session);
+	}
+		
 
 	public static void createReportPartecipanti(ArrayList<ForPartecipanteRuoloCorsoDTO> lista) throws Exception {
 
@@ -450,7 +478,277 @@ public class GestioneFormazioneBO {
 		  
 		}
 
-	
+	public static ArrayList<ForPartecipanteDTO> importaDaPDF(FileItem fileItem,ClienteDTO cl, SedeDTO sd, Session session) throws Exception {
 		
+		ArrayList<ForPartecipanteDTO> lista = new ArrayList<ForPartecipanteDTO>();
+		PdfReader reader = new PdfReader(fileItem.getInputStream());
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		int pageNumber = reader.getNumberOfPages();
+		ArrayList<Integer> firstPages = new ArrayList<Integer>();
+		
+		for (int i = 1; i <= pageNumber; i++) {
+			String[] text = getText(reader, i); 
+			String pdftext = text[0];
+			
+			String keyNome = "SI CERTIFICA CHE ";
+			String keyNascita = " Nato/a il";
+			String keyLuogoStart = ", in ";
+			String keyLuogoEnd = " Profilo";
+			String keyCf = "C.F. : ";
+			
+			if(pdftext.contains(keyNome)) {
+				
+				String nominativo = pdftext.substring(pdftext.indexOf(keyNome) + keyNome.length(), pdftext.indexOf(keyNascita));
+				String data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyLuogoStart));
+				String luogo_nascita =  pdftext.substring(pdftext.indexOf(keyLuogoStart) + keyLuogoStart.length(), pdftext.indexOf(keyLuogoEnd));
+				String cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
+				System.out.println(nominativo + " "+ data_nascita+" "+luogo_nascita+" "+cf);
+				
+				ForPartecipanteDTO partecipante = new ForPartecipanteDTO();
+				
+				String[] nomeCognome = nominativo.split(" ");
+				
+								
+				if(nomeCognome.length == 2) {
+					partecipante.setCognome(nomeCognome[0]);
+					partecipante.setNome(nomeCognome[1]);
+						
+				}else if(nomeCognome.length == 3){
+					partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);					
+					partecipante.setNome(nomeCognome[2]);
+					partecipante.setNominativo_irregolare(1);
+				}else if(nomeCognome.length>3){
+					partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);			
+					partecipante.setNominativo_irregolare(1);
+					int j = 2;
+					while(j<nomeCognome.length) {
+						partecipante.setNome(nomeCognome[j]);
+						j++;
+					}
+				}
+				partecipante.setCf(cf);
+				partecipante.setData_nascita(df.parse(data_nascita));
+				partecipante.setLuogo_nascita(luogo_nascita);
+				if(cl!=null) {
+					partecipante.setId_azienda(cl.get__id());
+					partecipante.setNome_azienda(cl.getNome());
+				}
+				
+				if(sd!=null) {
+					partecipante.setId_sede(sd.get__id());
+					String nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
+					partecipante.setNome_sede(nome_sede);
+				}
+				
+				lista.add(partecipante);
+			}
+
+		}
+		
+		
+		
+		
+		
+		
+		return lista;
+	}
+
+	
+	public static void splitPdf(FileItem fileItem, ArrayList<ForPartecipanteRuoloCorsoDTO> lista_partecipanti,Session session) throws Exception, IOException {
+		
+		File file = new File(Costanti.PATH_FOLDER+"\\Formazione\\temp\\attestati_temp.pdf");
+		fileItem.write(file);		
+		
+		PDDocument document = PDDocument.load(file); 
+	
+		PdfReader reader = new PdfReader(fileItem.getInputStream());
+	
+		int pageNumber = reader.getNumberOfPages();		
+
+		String keyFirstPage = "SI CERTIFICA CHE";
+		
+		ArrayList<Integer> firstPages = new ArrayList<Integer>();
+		
+		for (ForPartecipanteRuoloCorsoDTO partecipante : lista_partecipanti) {
+			Splitter splitter = new Splitter(); 
+			for (int i = 1; i <= pageNumber; i++) {
+				String[] text = getText(reader, i); 
+				String pdftext = text[0];
+				
+				if(pdftext.contains(keyFirstPage) && pdftext.contains(partecipante.getPartecipante().getCf().toUpperCase()) ) {				
+					splitter.setStartPage(i);
+					splitter.setEndPage(i+1);
+					splitter.setSplitAtPage(i+1);
+					break;
+				}
+			}
+			
+			String filename = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+			List<PDDocument> splittedList = splitter.split(document);
+			
+			 File folder = new File(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\");
+			 if(!folder.exists()) {
+				 folder.mkdirs();
+			 }
+			splittedList.get(0).save(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf");
+			splittedList.get(0).close();
+			
+			partecipante.setAttestato(filename+".pdf");
+			session.update(partecipante);
+			
+			addSign(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf", filename);
+			
+		}
+		
+  
+		
+	}
+	
+	
+	private static String[] getText(  PdfReader pdfReader, Integer pageNum) throws IOException {
+	    final String[] result = new String[1];
+	   
+	    if (pageNum == null) {
+	        pageNum = pdfReader.getNumberOfPages();
+	    }
+	    new PdfReaderContentParser(pdfReader).processContent(pageNum, new RenderListener() {
+	        public void beginTextBlock() {
+
+	        }
+
+	        public void renderText(TextRenderInfo textRenderInfo) {
+	        	
+	            String text = textRenderInfo.getText();
+	            result[0] +=" "+ text;
+
+	        }
+
+	        public void endTextBlock() {
+
+	        }
+
+	        public void renderImage(ImageRenderInfo renderInfo) {
+
+	        }
+	    });
+	    return result;
+	}
+	
+	
+	private static Integer[] getFontPosition(  PdfReader pdfReader, final String keyWord, Integer pageNum) throws IOException {
+	    final Integer[] result = new Integer[2];
+	    if (pageNum == null) {
+	        pageNum = pdfReader.getNumberOfPages();
+	    }
+	    new PdfReaderContentParser(pdfReader).processContent(pageNum, new RenderListener() {
+	        public void beginTextBlock() {
+
+	        }
+
+	        public void renderText(TextRenderInfo textRenderInfo) {
+	        	
+	            String text = textRenderInfo.getText();
+	          //  System.out.println("text is ：" + text);
+	            if (text != null && text.contains(keyWord)) {
+	                                     // The abscissa and ordinate of the text in the page
+	                com.itextpdf.awt.geom.Rectangle2D.Float textFloat = textRenderInfo.getBaseline().getBoundingRectange();
+	                float x = textFloat.x;
+	                float y = textFloat.y;
+	                result[0] = (int) x;
+	                result[1] = (int) y;
+	                 //                    System.out.println(String.format("The signature text field absolute position is x:%s, y:%s", x, y));
+	            }
+	        }
+
+	        public void endTextBlock() {
+
+	        }
+
+	        public void renderImage(ImageRenderInfo renderInfo) {
+
+	        }
+	    });
+	    return result;
+	}
+	
+	public static JsonObject addSign(String path, String filename_attestato) throws Exception {
+
+	    PdfReader reader = new PdfReader(path);
+	    
+	    String filename = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+	    	          
+	    PdfStamper stamper = new PdfStamper(reader,new FileOutputStream(Costanti.PATH_FOLDER+"\\temp\\"+filename+".pdf"));
+	    PdfContentByte content = stamper.getOverContent(1);
+	    Image image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_alessandro_di_vito.png");
+
+	    image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	    
+	    
+	    String keyWord = "RESPONSABILE";
+	    Integer[] fontPosition = null;
+		for(int i = 1;i<=reader.getNumberOfPages();i++) {
+			fontPosition = getFontPosition(reader, keyWord, i);
+			
+			if(fontPosition[0] != null && fontPosition[1] != null) {
+				
+				int x = fontPosition[0] ;
+				int y = fontPosition[1] -20;
+				int w = x + 85;
+				int h = y + 31;
+				
+				 Rectangle rect = new Rectangle(x, y, w, h);
+			    
+				 image.scaleAbsolute(rect);
+				
+				image.setAbsolutePosition(fontPosition[0] , fontPosition[1] -35);
+				content.addImage(image);
+				
+				break;
+			}else {
+				
+				keyWord = "DIRETTORE";
+				
+				fontPosition = getFontPosition(reader, keyWord, i);
+				
+				if(fontPosition[0] != null && fontPosition[1] != null) {
+				int x = fontPosition[0] ;
+				int y = fontPosition[1] -20;
+				int w = x + 85;
+				int h = y + 31;
+				
+				 Rectangle rect = new Rectangle(x, y, w, h);
+			    
+				 image.scaleAbsolute(rect);
+				
+				image.setAbsolutePosition(fontPosition[0] , fontPosition[1] -35);
+				content.addImage(image);
+				break;
+				}
+				
+			}
+		}
+		
+		stamper.close();
+		reader.close();
+	    System.out.println(Arrays.toString(fontPosition));
+
+	    File targetFile=  new File(path);
+		File source = new File(Costanti.PATH_FOLDER+"\\temp\\"+filename+".pdf");
+     	FileUtils.copyFile(source, targetFile);
+     	
+     
+     	source.delete();
+     
+	    JsonObject myObj = new JsonObject();
+	    
+     	myObj.addProperty("success", true);
+		return myObj;
+	}
+
+	public static ForRuoloDTO getRuoloFromId(int id_ruolo, Session session) {
+		
+		return GestioneFormazioneDAO.getRuoloFromId(id_ruolo, session);
+	}
+
+	
 	
 }

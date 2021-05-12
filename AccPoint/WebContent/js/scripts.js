@@ -13724,17 +13724,23 @@ function submitAggiungiGrandezzaTipoStrumento(ids,id_tipo_strumento){
 }
 
 
-function importaPartecipantiDaExcel(){
+function importaPartecipantiDaExcel(flag_pdf){
 	
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	pleaseWaitDiv.modal();
 
 		  var form = $('#ImportaForm')[0]; 
 		  var formData = new FormData(form);
+		  
+		  if(flag_pdf == 1){
+			var url = "gestioneFormazione.do?action=importa_pdf";
+		  }else{
+			  var url = "gestioneFormazione.do?action=importa_excel";  
+		  }
 		 
 $.ajax({
 	  type: "POST",
-	  url: "gestioneFormazione.do?action=importa_excel",
+	  url: url,
 	  data: formData,
 	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
 	  processData: false, // NEEDED, DON'T OMIT THIS
@@ -13743,18 +13749,8 @@ $.ajax({
 		  	      		  
 		  if(data.success)
 		  { 
-			$('#report_button').hide();
-				$('#visualizza_report').hide();
-				$("#modalModificaDocente").modal("hide");
-			  $('#myModalErrorContent').html(data.messaggio);
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-success");
-				$('#myModalError').modal('show');
-				
-			$('#myModalError').on('hidden.bs.modal', function(){	         			
-				
-				 location.reload()
-			});
+			
+			  createTableImport(data.lista_partecipanti_import);
 		
 		  }else{
 			  $('#myModalErrorContent').html(data.messaggio);

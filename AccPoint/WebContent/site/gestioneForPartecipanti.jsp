@@ -54,7 +54,7 @@
 	<a class="btn btn-primary pull-right" onClick="modalNuovoPartecipante()"><i class="fa fa-plus"></i> Nuovo Partecipante</a>
 	<a class="btn btn-primary pull-right" onClick="modalImportaPartecipanti()"  style="margin-right:5px"><i class="fa fa-plus"></i> Importa Partecipanti</a>  
 	<a class="btn btn-success customTooltip pull-right" onClick="callAction('gestioneFormazione.do?action=download_template')" title="Scarica template importazione" style="margin-right:5px"><i class="fa fa-file-excel-o"></i></a>
-
+    
 
 
 </div>
@@ -129,7 +129,7 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Importa da Excel</h4>
+        <h4 class="modal-title" id="myModalLabel">Importa da File</h4>
       </div>
        <div class="modal-body">   
 
@@ -139,7 +139,7 @@
        </div>
         <div class="col-xs-9">
 
-        <input class="form-control" data-placeholder="Seleziona Azienda..." id="azienda_import" name="azienda_import" style="width:100%" required>
+        <input class="form-control" data-placeholder="Seleziona Azienda..." id="azienda_import" name="azienda_import" style="width:100%" >
 
         </div>      
        </div>
@@ -150,7 +150,7 @@
        </div>
         <div class="col-xs-9">
         
-       <select id="sede_import" name="sede_import" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" disabled required>
+       <select id="sede_import" name="sede_import" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" disabled >
        <option value=""></option>
       	<c:forEach items="${lista_sedi}" var="sd">
       	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
@@ -162,12 +162,13 @@
       	<div class="row">
      
       	<div class="col-xs-12">
-      		<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".xls, .XLS, .xlsx, .XLSX"  id="file_excel" name="file_excel" type="file" required></span><label id="label_excel"></label>
+      		<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".xls, .XLS, .xlsx, .XLSX, .pdf, .PDF"  id="file_excel" name="file_excel" type="file" required></span><label id="label_excel"></label>
       	
       	</div>
       	</div>
   		 </div>
       <div class="modal-footer">
+      <input type="hidden" id="flag_pdf">
 		<button class="btn btn-primary" type="submit" >Salva</button>
       </div>
     </div>
@@ -429,7 +430,7 @@
        </div>
         <div class="col-xs-9">
         
-         <select id="azienda_report" name="azienda_report" class="form-control select2"  data-placeholder="Seleziona Azienda..." aria-hidden="true" data-live-search="true" style="width:100%" required >
+         <select id="azienda_report" name="azienda_report" class="form-control select2"  data-placeholder="Seleziona Azienda..." aria-hidden="true" data-live-search="true" style="width:100%" required  >
          <option value=""></option>
        <option value="0">TUTTE</option>
       	<c:forEach items="${listaAziendePartecipanti}" var="azienda" >
@@ -446,7 +447,7 @@
        </div>
         <div class="col-xs-9">
         
-       <select id="sede_report" name="sede_report" class="form-control select2"  data-placeholder="Seleziona Sede..." disabled aria-hidden="true" data-live-search="true" style="width:100%" required>
+       <select id="sede_report" name="sede_report" class="form-control select2"  data-placeholder="Seleziona Sede..." disabled aria-hidden="true" data-live-search="true" style="width:100%" required >
        <option value=""></option>
        <c:forEach items="${listaAziendePartecipanti}" var="azienda">
       	<option value="${azienda.split('!')[2]}_${azienda.split('!')[0]}">${azienda.split('!')[3]}</option>
@@ -470,6 +471,169 @@
 
 </div>
 </form>
+
+
+
+<div id="myModalAssociaUtenti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato"  style="z-index:9998">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button >
+        <h4 class="modal-title" id="myModalLabel">Associa partecipante al corso</h4>
+      </div>
+       <div class="modal-body">       
+       <div class="row">
+       <div class="col-xs-12">
+       
+       <select name="corsi" id="corsi" data-placeholder="Seleziona Corsi..."  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%"  required>
+                    
+                    <option value=""></option> 
+                        <c:forEach items="${lista_corsi}" var="corso">
+                       		
+                      	<option value="${corso.id }" >${corso.descrizione}</option> 
+                    			 
+                     	</c:forEach>
+                    
+                  </select>
+                  </div>
+       </div><br>
+       
+         <div class="row">
+       <div class="col-xs-12">
+       
+       <select name="ruoli" id="ruoli" data-placeholder="Seleziona Ruolo..."  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%"  >
+                    
+                    <option value=""></option>  
+                      <c:forEach items="${lista_ruoli}" var="ruolo">
+                           <option value="${ruolo.id }">${ruolo.descrizione}</option> 
+                     </c:forEach>
+                  </select>
+                  </div>
+       </div><br>
+       
+        <div class="row">
+       <div class="col-xs-4">
+       <label>Ore Partecipate</label>
+       </div>
+       <div class="col-xs-8">
+       <input id="ore_partecipate" name="ore_partecipate" type="number" min="0"  step="0.1" class="form-control" >
+       </div>
+       </div><br>
+       
+      	
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="cf_corso" name="cf_corso">
+      <!-- <a class="btn btn-primary" onclick="associaPartecipanteCorso()" >Associa</a> -->
+		 <a class="btn btn-primary" onClick='associaPartecipanteCorsi()'>Associa</a> 
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<div id="modalConfermaImportazione" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Seleziona Azienda</h4>
+      </div>
+       <div class="modal-body">      
+       
+         <div class="row">
+       <div class="col-xs-5">
+       <label>Azienda</label>
+       <input class="form-control"  data-placeholder="Seleziona Azienda..." id="azienda_import_general" name="azienda_import_general"  style="width:100%">
+        
+        <!-- < select id="azienda_import_general" name="azienda_import_general" class="form-control select2"  data-placeholder="Seleziona Azienda..." aria-hidden="true" data-live-search="true" style="width:100%" required  > 
+         <option value=""></option>
+       <option value="0">TUTTE</option>
+      	<c:forEach items="${listaAziendePartecipanti}" var="azienda" >
+      	<option value="${azienda.split('!')[0]}">${azienda.split('!')[1]}</option>
+      	</c:forEach>
+      
+      </select>
+-->
+        </div>    
+        
+        <div class="col-xs-5">
+       <label>Sede</label>
+       
+        
+       <select id="sede_import_general" name="sede_import_general" class="form-control select2"  data-placeholder="Seleziona Sede..." disabled aria-hidden="true" data-live-search="true" style="width:100%" required >
+       <option value=""></option>
+       <c:forEach items="${listaAziendePartecipanti}" var="azienda">
+      	<option value="${azienda.split('!')[2]}_${azienda.split('!')[0]}">${azienda.split('!')[3]}</option>
+      	</c:forEach>
+      </select>
+        </div>
+         <div class="col-xs-2">
+         
+         <a class="btn btn-primary" onClick="modalAssocia()" style="margin-top:25px">Associa al corso</a>
+         </div>
+        
+        
+         </div> 
+        
+          <br> 
+
+ <table id="tabImportPartecipante" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+<th>Nome</th>
+<th>Cognome</th>
+<th>Codice fiscale</th>
+<th>Data di nascita</th>
+<th>Luogo di nascita</th>
+<th>Azienda</th>
+<th >Sede</th>
+<th>Corsi</th>
+
+<th>Azioni</th>
+ </tr></thead>
+ 
+<%--  <tbody>
+ 
+ 	<c:forEach items="${lista_partecipanti }" var="partecipante" varStatus="loop">
+	<tr id="row_${loop.index}" >
+	<td>${partecipante.nome }</td>
+	<td>${partecipante.cognome }</td>
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${partecipante.data_nascita}" /></td>
+	<td>${partecipante.nome_azienda}</td>	
+	<td><c:if test="${partecipante.id_sede!=0 }">${partecipante.nome_sede }</c:if></td>
+	<td>${partecipante.luogo_nascita }</td>
+	<td>${partecipante.cf }</td>
+	<td>
+	
+	<a class="btn btn-info" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${partecipante.nome }','${partecipante.cognome.replace('\'','&prime;')}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }','${partecipante.luogo_nascita.replace('\'','&prime;') }','${partecipante.cf }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a>
+
+	 <a class="btn btn-danger" title="Click per eliminare il partecipante" onClick="modalEliminaPartecipante('${partecipante.id}')"><i class="fa fa-times"></i></a>
+	 	</c:if>
+	</td>
+	</tr>
+	</c:forEach>
+	 
+
+ </tbody> --%>
+ </table>  
+
+
+      <div class="modal-footer">
+      
+      <button class="btn btn-primary" onClick="confermaImportazione()" >Salva</button>
+		<!-- <a class="btn btn-primary" onclick="$('#myModalReportPartecipanti').modal('hide')" >Chiudi</a> -->
+      </div>
+    </div>
+  </div>
+
+</div>
 
 
 </div>
@@ -502,6 +666,8 @@
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
 <script type="text/javascript">
 
 $('#formReport').on('submit', function(e){
@@ -536,6 +702,17 @@ function dettaglioPartecipante(id_partecipante){
 }
 
 $('#file_excel').change(function(){
+	
+	if($(this).val().includes(".pdf")){
+		$("#azienda_import").prop("required", false);
+		$("#sede_import").prop("required", false);
+		$('#flag_pdf').val(1);
+	}else{
+		$("#azienda_import").prop("required", true);
+		$("#sede_import").attr("required", true);
+		$('#flag_pdf').val(0);
+	}
+	
 	$('#label_excel').html($(this).val().split("\\")[2]);
 });
 
@@ -700,7 +877,6 @@ $('#myModalReportPartecipanti').on('hidden.bs.modal', function(){
 
 
 $(document).ready(function() {
- 	
 
      $('.dropdown-toggle').dropdown();
      
@@ -711,12 +887,23 @@ $(document).ready(function() {
   initSelect2('#azienda');
   initSelect2('#azienda_mod');
   initSelect2('#azienda_import');
+  initSelect2('#azienda_import_general');
   
   $('#sede').select2();
   $('#sede_mod').select2();
   $('#sede_import').select2();
   $('#sede_report').select2();
   $('#azienda_report').select2();
+  $('#sede_import_general').select2();
+  $('#corsi').select2();
+  $('#ruoli').select2();
+  
+	$('#ruoli').select2({
+	    dropdownParent: $('#myModalAssociaUtenti')
+	});
+	$('#corsi').select2({
+	    dropdownParent: $('#myModalAssociaUtenti')
+	});
 
      table = $('#tabForPartecipante').DataTable({
 			language: {
@@ -800,8 +987,126 @@ $(document).ready(function() {
 	});
 	
 	
+	const editableCell = function(cell) {
+		
+		
+		//if(!cliente){
+		  let original
+
+		  cell.setAttribute('contenteditable', true)
+		  cell.setAttribute('spellcheck', false)
+		  var index = cell._DT_CellIndex;
+		  cell.setAttribute('id',""+index.row+""+index.column)	
+		   $(cell).css('text-align', 'center');
+		  
+		  
+		  cell.addEventListener('focus', function(e) {
+		    original = e.target.textContent
+	
+		     $(cell).css('border', '2px solid red');
+		    
+		  })
+		
+		   cell.addEventListener('focusout', function(e) {
+		    original = stripHtml(e.target.textContent)
+		
+		    $(cell).css('border', '1px solid #d1d1d1');
+		   $(cell).css('border-bottom-width', '0px');
+		    $(cell).css('border-left-width', '0px');
+		     
+		     
+		    //$(e.currentTarget).html('<input type="text" value="'+original+'" onChange="salvaModificaQuestionario()">');
+		  })
+		  
+		  cell.addEventListener('blur', function(e) {
+		    if (original !== e.target.textContent) {
+		      const row = tab.row(e.target.parentElement)
+		      tab.cell(row.index(),e.target.cellIndex).data(e.target.textContent).draw();
+		      var x = tab.rows().data();
+		      	//salvaModificaQuestionario();
+		      console.log('Row changed: ', row.data())
+		    }
+		  })
+		  
+		//}
+		};
+		
+		
 	
 	
+	 tab = $('#tabImportPartecipante').DataTable({
+			language: {
+		        	emptyTable : 	"Non sono presenti documenti antecedenti",
+		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+		        	infoPostFix:	"",
+		        infoThousands:	".",
+		        lengthMenu:	"Visualizza _MENU_ elementi",
+		        loadingRecords:	"Caricamento...",
+		        	processing:	"Elaborazione...",
+		        	search:	"Cerca:",
+		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+		        	paginate:	{
+	  	        	first:	"Inizio",
+	  	        	previous:	"Precedente",
+	  	        	next:	"Successivo",
+	  	        last:	"Fine",
+		        	},
+		        aria:	{
+	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+		        }
+	        },
+	        pageLength: 25,
+	        "order": [[ 0, "desc" ]],
+		      paging: false, 
+		      ordering: true,
+		      info: false, 
+		      searchable: false, 
+		      targets: 0,
+		      responsive: true,  
+		      scrollX: false,
+		      stateSave: true,	
+		     fixedColumns : true,
+		      columns : [
+		      	{"data" : "nome", createdCell: editableCell},
+		      	{"data" : "cognome", createdCell: editableCell},
+		      	{"data" : "cf"},
+		      	{"data" : "data_nascita", createdCell: editableCell},
+		      	{"data" : "luogo_nascita", createdCell: editableCell},
+		      	{"data" : "azienda"},
+		      	{"data" : "sede", width: 200},
+		      	{"data" : "corsi"},
+		      	{"data" : "azioni"},
+		       ],	
+		           
+		      columnDefs: [
+		    	  
+		    	  { responsivePriority: 1, targets: 1 },
+		    	
+		               ], 	        
+	  	      buttons: [   
+	  	          {
+	  	            extend: 'colvis',
+	  	            text: 'Nascondi Colonne'  	                   
+	 			  } ]
+		               
+		    });
+		
+		tab.buttons().container().appendTo( '#table_storico_wrapper .col-sm-6:eq(1)');
+	 	    $('.inputsearchtable').on('click', function(e){
+	 	       e.stopPropagation();    
+	 	    });
+
+	 	     tab.columns().eq( 0 ).each( function ( colIdx ) {
+	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	      tab
+	          .column( colIdx )
+	          .search( this.value )
+	          .draw();
+	  } );
+	} );  
 
 	
 	
@@ -824,8 +1129,352 @@ $('#modificaPartecipanteForm').on('submit', function(e){
  
  $('#ImportaForm').on('submit', function(e){
 	 e.preventDefault();
-	 importaPartecipantiDaExcel();
+	 if($('#flag_pdf').val()==1){
+		 importaPartecipantiDaExcel(1);
+	 }else{
+		 importaPartecipantiDaExcel(0);	 
+	 }
+	 
 });
+ 
+ 
+ 
+ function confermaImportazione(){
+	 
+	 var table = $('#tabImportPartecipante').DataTable();
+	  
+	 var data_table = table.rows().data(); 
+	 
+	 var data = [];
+	 
+	 var checkForm = 1;
+	 
+	 for (var i = 0; i < data_table.length; i++) {
+		 var partecipante ={};
+		 
+		 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+			$(x).css("background-color","#F9F9F9")
+		 
+		 partecipante.nome = data_table[i].nome;
+		 partecipante.cognome = data_table[i].cognome;
+		 partecipante.cf = data_table[i].cf;
+		 partecipante.data_nascita = data_table[i].data_nascita;
+		 partecipante.luogo_nascita = data_table[i].luogo_nascita;
+		 partecipante.azienda = $('#azienda_table_'+data_table[i].cf).val();
+		 partecipante.sede =  $('#sede_table_'+data_table[i].cf).val();
+		 partecipante.id_corso =  $('#corso_table_'+data_table[i].cf).val();
+		 partecipante.id_ruolo = $('#ruolo_table_'+data_table[i].cf).val();
+		 partecipante.ore =  $('#ore_table_'+data_table[i].cf).val();
+		 
+		 if(data_table[i].nome == ''){
+			 checkForm = 0;
+			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+				$(x).css("background-color","#F8F26D")
+		 }
+		 if(data_table[i].cognome == ''){
+			 checkForm = 0;
+			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+				$(x).css("background-color","#F8F26D")
+		 }
+		 if(data_table[i].data_nascita == ''){
+			 checkForm = 0;
+			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+				$(x).css("background-color","#F8F26D")
+		 }
+		 if(data_table[i].luogo_nascita == ''){
+			 checkForm = 0;
+			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+				$(x).css("background-color","#F8F26D")
+		 }
+		 if($('#azienda_table_'+data_table[i].cf).val() == null || $('#azienda_table_'+data_table[i].cf).val() == ''){
+			 checkForm = 0;
+			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+				$(x).css("background-color","#F8F26D")
+		 }
+		 if($('#sede_table_'+data_table[i].cf).val() == null || $('#sede_table_'+data_table[i].cf).val() == ''){
+			 checkForm = 0;
+			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+				$(x).css("background-color","#F8F26D")
+		 }
+		 
+		 data.push(partecipante);
+	}
+	 
+	 
+	 if(checkForm == 0){
+		 $('#myModalErrorContent').html("Attenzione! Dati non inseriti correttamente!");
+	 	  	$('#myModalError').removeClass();
+	 		$('#myModalError').addClass("modal modal-danger");	  
+	 		$('#report_button').hide();
+	 		$('#visualizza_report').hide();
+	 		$('#myModalError').modal('show');
+	 }else{
+		 confermaImportazionePdf(data);	 
+	 }
+	 
+	 
+ }
+ 
+ 
+ 
+ function confermaImportazionePdf(dataTable){
+		
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	 var data = JSON.stringify(dataTable);
+	 dataObj={};
+	 dataObj.data = data 
+	 $.ajax({
+		 type: "POST",
+		 url: "gestioneFormazione.do?action=conferma_importazione",
+		 data: dataObj,
+		 dataType: "json",
+		 //if received a response from the server
+		 success: function( data, textStatus) {
+		 	pleaseWaitDiv.modal('hide');
+		 	  if(data.success){	  
+		 	  
+		 			$('#report_button').hide();
+		 			$('#visualizza_report').hide();
+		 			$('#myModalErrorContent').html(data.messaggio);
+		 			  	$('#myModalError').removeClass();
+		 				$('#myModalError').addClass("modal modal-success");
+		 				$('#myModalError').modal('show');      				
+		    				  
+		 				$('#myModalError').on("hidden.bs.modal", function(){
+		 					location.reload();
+		 				})
+		 	  }else{
+		 		 pleaseWaitDiv.modal('hide');
+		 		  
+		 		$('#myModalErrorContent').html("Errore nell'importazione dei partecipanti!");
+		 	  	$('#myModalError').removeClass();
+		 		$('#myModalError').addClass("modal modal-danger");	  
+		 		$('#report_button').hide();
+		 		$('#visualizza_report').hide();
+		 		$('#myModalError').modal('show');			
+		 	
+		 	  }
+		 },
+		 error: function( data, textStatus) {
+			 pleaseWaitDiv.modal('hide');
+		 	  $('#myModalYesOrNo').modal('hide');
+		 	  $('#myModalErrorContent').html(data.messaggio);
+		 	  	$('#myModalError').removeClass();
+		 		$('#myModalError').addClass("modal modal-danger");	  
+		 		$('#report_button').show();
+		 		$('#visualizza_report').show();
+		 			$('#myModalError').modal('show');
+
+		 }
+		 });
+	
+}
+ 
+ 
+ function associaPartecipanteCorsi(){
+	 
+	 var cf = $('#cf_corso').val();
+	 var corso = $('#corsi').val();
+	 var ruolo = $('#ruoli').val();
+	 var ore = $('#ore_partecipate').val();
+	 
+	 if(corso == null || corso == '' || ruolo == null || ruolo == '' || ore == ''){
+		 
+		 $('#myModalError').css("z-index", "9999")
+			$('#myModalErrorContent').html("Attenzione! inserisci tutti i campi!");
+	 	  	$('#myModalError').removeClass();
+	 		$('#myModalError').addClass("modal modal-danger");	  
+	 		$('#report_button').hide();
+	 		$('#visualizza_report').hide();
+	 		$('#myModalError').modal('show');		
+		 
+	 }else{
+		 if(cf!=0){	
+			 
+			 $('#corso_table_'+cf).val(corso);
+			 $('#ruolo_table_'+cf).val(ruolo);
+			 $('#ore_table_'+cf).val(ore);
+			 
+			 var html = '<label>ID: '+corso+'</label><br><label>Ruolo: '+ruolo+'</label><br><label>Ore: '+ore+'</label>';
+			 
+			 $('#content_corsi_'+cf).html(html);
+		 }else{
+			 
+				var tableImport = $('#tabImportPartecipante').DataTable();
+				var cf_array = tableImport.column(2).data();
+				
+				for(var i = 0; i<cf_array.length;i++){
+					 $('#corso_table_'+cf_array[i]).val(corso);
+					 $('#ruolo_table_'+cf_array[i]).val(ruolo);
+					 $('#ore_table_'+cf_array[i]).val(ore);
+					 
+					 var html = '<label>ID: '+corso+'</label><br><label>Ruolo: '+ruolo+'</label><br><label>Ore: '+ore+'</label>';
+					 
+					 $('#content_corsi_'+cf_array[i]).html(html);
+				}
+			 
+		 }
+		 
+		 $('#myModalAssociaUtenti').modal('hide')
+		 
+		 $('#corsi').val('');
+		 $('#corsi').change();
+		 $('#ruoli').val('');
+		 $('#ruoli').change();
+		$('#ore_partecipate').val('');
+	 }
+	 
+	 
+	 
+ }
+ 
+ function modalAssocia(cf){
+
+	 $('#cf_corso').val(cf)
+	 $('#myModalAssociaUtenti').modal()
+ }
+ 
+ function createTableImport(lista_partecipanti_import, lista_corsi){
+	 
+	 var table_data = [];
+	 
+	 var nomi_irregolari = [];
+	  var col_cf = [];
+	  for(var i = 0; i<lista_partecipanti_import.length;i++){
+		  var dati = {};
+		  		
+		  dati.nome = lista_partecipanti_import[i].nome;
+		  dati.cognome = lista_partecipanti_import[i].cognome;
+		  dati.cf = lista_partecipanti_import[i].cf;
+		  
+		  dati.data_nascita = formatDate(moment(lista_partecipanti_import[i].data_nascita, "MMM DD, YYYY"));
+		  dati.luogo_nascita = lista_partecipanti_import[i].luogo_nascita;
+		  dati.azienda = '<input class="form-control" onChange="changeSedeTab(\''+lista_partecipanti_import[i].cf+'\')" data-placeholder="Seleziona Azienda..." id="azienda_table_'+lista_partecipanti_import[i].cf+'" name="azienda_table_'+lista_partecipanti_import[i].cf+'"  style="width:100%">'
+		  
+		  dati.sede = '<select class="form-control select2" id="sede_table_'+lista_partecipanti_import[i].cf+'" style="width:100%" name="sede_table_'+lista_partecipanti_import[i].cf+'" disabled></select>';
+		  dati.corsi = '<div id="content_corsi_'+lista_partecipanti_import[i].cf+'"></div> <input type="hidden" id="corso_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="ruolo_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="ore_table_'+lista_partecipanti_import[i].cf+'">';
+		  dati.azioni = '<a class="btn btn-primary" onClick="modalAssocia(\''+lista_partecipanti_import[i].cf+'\')">Associa al corso</a>';
+		  
+		  if(lista_partecipanti_import[i].nominativo_irregolare == 1){
+			  nomi_irregolari.push(lista_partecipanti_import[i].cf);
+		  }
+		   col_cf.push(lista_partecipanti_import[i].cf);
+		  table_data.push(dati);
+		  }
+	  
+	  var table = $('#tabImportPartecipante').DataTable();
+	  
+	   table.clear().draw();
+	   
+		table.rows.add(table_data).draw();
+
+		for(var i = 0;i<nomi_irregolari.length;i++){
+			for(var j = 0; j<col_cf.length;j++){
+				if(col_cf[j] == nomi_irregolari[i]){
+					var x = $('#content_corsi_'+col_cf[j])[0].parentNode.parentNode;
+					$(x).css("background-color","#F8F26D")
+				}
+			}
+		}
+		
+		table.columns.adjust().draw();
+		
+		for(var i = 0; i<lista_partecipanti_import.length;i++){
+			initSelect2('#azienda_table_'+lista_partecipanti_import[i].cf);
+			$('#sede_table_'+lista_partecipanti_import[i].cf).select2();
+			
+		}
+		
+		var azienda_val = $('#azienda_import').val();
+		var sede_val = $('#sede_import').val();
+		
+		 if(azienda_val!=null){
+				
+				$('#azienda_import_general').val(azienda_val);
+				$('#azienda_import_general').change();
+			}
+			if(sede_val!=null){
+				if(sede_val == 0){
+					$('#sede_import_general').val(0);
+				}else{
+					$('#sede_import_general').val(sede_val);	
+				}
+				
+				$('#sede_import_general').change();
+			} 
+		
+		
+	  $('#modalConfermaImportazione').modal();
+		
+ 
+ 
+ $('#modalConfermaImportazione').on('shown.bs.modal', function () {
+	  var table = $('#tabImportPartecipante').DataTable();
+	  
+		table.columns.adjust().draw();
+		
+	})
+	  
+	 
+ }
+ 
+ function formatDate(data){
+		
+	   var mydate = new Date(data);
+	   
+	   if(!isNaN(mydate.getTime())){
+	   
+		   str = mydate.toString("dd/MM/yyyy");
+	   }			   
+	   return str;	 		
+}
+ 
+ 
+ 
+function changeSedeTab(cf, value){
+	 
+	
+/* 	 if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1
+	    $(this).data('options', );
+	  }
+	   */
+	   if(value!=null){
+		  var id = value;
+	  }else{ 
+		  var id =  $("#azienda_table_"+cf).val();	
+	  }
+	   
+	   //var options = $(this).data('options');
+	  var options =   $('#sede option').clone()
+	  var opt=[];
+	
+	  opt.push("<option value = 0 selected>Non Associate</option>");
+	  
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+	
+		//if(str.substring(str.indexOf("_")+1,str.length)==id)
+		if(str.substring(str.indexOf("_")+1, str.length)==id)
+		{
+
+			//opt.push(options[i]);
+			opt.push("<option value = "+options[i].value+">"+options[i].innerText+"</option>");
+		}   
+	   }	
+	 
+	  $("#sede_table_"+cf).html(opt);
+
+	  $("#sede_table_"+cf).prop("disabled", false);
+	  
+		$("#sede_table_"+cf).change();
+		 
+ }
+ 
+ 
  
  
  
@@ -993,10 +1642,78 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 
 		$("#sede_import").change();  
 		
-	  
+		  
 	});
  
+  
+ $("#azienda_import_general").change(function() {
+	  
+	  if ($(this).data('options') == undefined) 
+	  {
+	    
+	    $(this).data('options', $('#sede option').clone());
+	  }
+	  
+	  
+	  var selection = $(this).val()	 
+	  var id = selection
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	
+	  
+	  opt.push("<option value = 0 selected>Non Associate</option>");
+
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+	
+		//if(str.substring(str.indexOf("_")+1,str.length)==id)
+		if(str.substring(str.indexOf("_")+1, str.length)==id)
+		{
+
+			opt.push(options[i]);
+		}   
+	   }
+	 $("#sede_import_general").prop("disabled", false);
+	 
+	  $('#sede_import_general').html(opt);
+	  
+	  $("#sede_import_general").trigger("chosen:updated");
+	  
+
+		$("#sede_import_general").change();  
+		
+		var tableImport = $('#tabImportPartecipante').DataTable();
+		var cf = tableImport.column(2).data();
+		
+		for(var i = 0; i<cf.length;i++){
+			//changeSedeTab(cf[i], id);
+			$("#azienda_table_"+cf[i]).val(id).trigger("change");
+			initSelect2("#azienda_table_"+cf[i]);
+		}
+		
+	  
+	}); 
  
+ 
+ 
+ $("#sede_import_general").change(function() {
+	  
+	  var selection = $(this).val()	 
+	  
+	  
+	  		var tableImport = $('#tabImportPartecipante').DataTable();
+		var cf = tableImport.column(2).data();
+	  
+		
+		for(var i = 0; i<cf.length;i++){
+			$("#sede_table_"+cf[i]).val(selection).trigger("change");
+		}
+	  
+		//tableImport.columns.adjust().draw();
+	  
+	}); 
  
  
 
@@ -1028,7 +1745,7 @@ $('#modificaPartecipanteForm').on('submit', function(e){
  	      results = [];
  	      if (q.term && q.term !== '') {
  	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
- 	        results = _.filter(x, function(e) {
+ 	        results = _.filter( function(e) {
  	        	
  	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
  	        });

@@ -521,7 +521,32 @@
        </div>
        </div><br>
        
-      	
+        <div class="row">
+       <div class="col-xs-4">
+       <label>Firma Responsabile</label>
+       </div>
+       <div class="col-xs-8">
+       <select id="firma_responsabile" name="firma_responsabile" class="form-control select2">
+       <option value="0">Default</option>
+       <option value="1">Alessandro Di Vito</option>
+       <option value="2">Antonio Accettola</option>
+       <option value="3">Gabriella Mammone</option>
+       </select>
+       </div>
+       </div><br>
+       
+      	 <div class="row">
+       <div class="col-xs-4">
+       <label>Firma Legale Rappresentante</label>
+       </div>
+       <div class="col-xs-8">
+       <select id="firma_legale_rappresentante" name="firma_legale_rappresentante"  class="form-control select2">
+       <option value="0">Default</option>       
+       <option value="1">Antonio Accettola</option>
+       <option value="2">Gabriella Mammone</option>
+       </select>
+       </div>
+       </div>
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="cf_corso" name="cf_corso">
@@ -897,11 +922,18 @@ $(document).ready(function() {
   $('#sede_import_general').select2();
   $('#corsi').select2();
   $('#ruoli').select2();
-  
+
 	$('#ruoli').select2({
 	    dropdownParent: $('#myModalAssociaUtenti')
 	});
 	$('#corsi').select2({
+	    dropdownParent: $('#myModalAssociaUtenti')
+	});
+	
+	$('#firma_responsabile').select2({
+	    dropdownParent: $('#myModalAssociaUtenti')
+	});
+	$('#firma_legale_rappresentante').select2({
 	    dropdownParent: $('#myModalAssociaUtenti')
 	});
 
@@ -1165,6 +1197,8 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 		 partecipante.id_corso =  $('#corso_table_'+data_table[i].cf).val();
 		 partecipante.id_ruolo = $('#ruolo_table_'+data_table[i].cf).val();
 		 partecipante.ore =  $('#ore_table_'+data_table[i].cf).val();
+		 partecipante.firma_responsabile = $('#firma_responsabile_'+data_table[i].cf).val();
+		 partecipante.firma_legale_rappresentante = $('#firma_legale_rappresentante_'+data_table[i].cf).val();
 		 
 		 if(data_table[i].nome == ''){
 			 checkForm = 0;
@@ -1278,6 +1312,8 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 	 var corso = $('#corsi').val();
 	 var ruolo = $('#ruoli').val();
 	 var ore = $('#ore_partecipate').val();
+	 var firma_responsabile = $('#firma_responsabile').val();
+	 var firma_legale_rappresentante = $('#firma_legale_rappresentante').val();
 	 
 	 if(corso == null || corso == '' || ruolo == null || ruolo == '' || ore == ''){
 		 
@@ -1295,6 +1331,8 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 			 $('#corso_table_'+cf).val(corso);
 			 $('#ruolo_table_'+cf).val(ruolo);
 			 $('#ore_table_'+cf).val(ore);
+			 $('#firma_legale_rappresentante_'+cf).val(firma_legale_rappresentante);
+			 $('#firma_responsabile_'+cf).val(firma_responsabile);
 			 
 			 var html = '<label>ID: '+corso+'</label><br><label>Ruolo: '+ruolo+'</label><br><label>Ore: '+ore+'</label>';
 			 
@@ -1308,6 +1346,8 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 					 $('#corso_table_'+cf_array[i]).val(corso);
 					 $('#ruolo_table_'+cf_array[i]).val(ruolo);
 					 $('#ore_table_'+cf_array[i]).val(ore);
+					 $('#firma_legale_rappresentante_'+cf_array[i]).val(firma_legale_rappresentante);
+					 $('#firma_responsabile_'+cf_array[i]).val(firma_responsabile);
 					 
 					 var html = '<label>ID: '+corso+'</label><br><label>Ruolo: '+ruolo+'</label><br><label>Ore: '+ore+'</label>';
 					 
@@ -1353,7 +1393,7 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 		  dati.azienda = '<input class="form-control" onChange="changeSedeTab(\''+lista_partecipanti_import[i].cf+'\')" data-placeholder="Seleziona Azienda..." id="azienda_table_'+lista_partecipanti_import[i].cf+'" name="azienda_table_'+lista_partecipanti_import[i].cf+'"  style="width:100%">'
 		  
 		  dati.sede = '<select class="form-control select2" id="sede_table_'+lista_partecipanti_import[i].cf+'" style="width:100%" name="sede_table_'+lista_partecipanti_import[i].cf+'" disabled></select>';
-		  dati.corsi = '<div id="content_corsi_'+lista_partecipanti_import[i].cf+'"></div> <input type="hidden" id="corso_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="ruolo_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="ore_table_'+lista_partecipanti_import[i].cf+'">';
+		  dati.corsi = '<div id="content_corsi_'+lista_partecipanti_import[i].cf+'"></div> <input type="hidden" id="corso_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="ruolo_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="ore_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="firma_responsabile_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="firma_legale_rappresentante_'+lista_partecipanti_import[i].cf+'">';
 		  dati.azioni = '<a class="btn btn-primary" onClick="modalAssocia(\''+lista_partecipanti_import[i].cf+'\')">Associa al corso</a>';
 		  
 		  if(lista_partecipanti_import[i].nominativo_irregolare == 1){

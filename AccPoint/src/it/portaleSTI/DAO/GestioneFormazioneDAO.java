@@ -374,13 +374,13 @@ public class GestioneFormazioneDAO {
 		
 		if(dateFrom !=null && dateTo!=null && tipo_data!=null) {
 			
-			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso."+tipo_data+" between :_dateFrom and :_dateTo and p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede and p.corso.disabilitato = 0");	
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso."+tipo_data+" between :_dateFrom and :_dateTo and p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede and p.corso.disabilitato = 0 and p.corso.visibile = 1");	
 			query.setParameter("_dateFrom", sdf.parse(dateFrom));
 			query.setParameter("_dateTo", sdf.parse(dateTo));
 			
 		}else {
 			
-			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where  p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede and p.corso.disabilitato = 0"); 
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where  p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede and p.corso.disabilitato = 0  and p.corso.visibile = 1"); 
 			
 		}		
 		query.setParameter("_id_cliente", idCliente);	
@@ -430,7 +430,7 @@ public class GestioneFormazioneDAO {
 	Query query = null;
 	
 	if(id_cliente!=0) {
-		query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda = :_id_cliente and p.partecipante.id_sede = :_id_sede and p.corso.data_corso between :_dateFrom and :_dateTo and  p.corso.disabilitato = 0 group by p.corso");
+		query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda = :_id_cliente and p.partecipante.id_sede = :_id_sede and p.corso.data_corso between :_dateFrom and :_dateTo and  p.corso.disabilitato = 0 and p.corso.visibile = 1 group by p.corso");
 		query.setParameter("_id_cliente", id_cliente);
 		query.setParameter("_id_sede", id_sede);
 	}else {

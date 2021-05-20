@@ -1490,6 +1490,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					int id_corso = 0;
 					int id_ruolo = 0;
 					Double ore = 0.0;
+					int firma_responsabile = 0;
+					int firma_legale_rappresentante = 0;
 					if(json_obj.get("id_corso")!=null && !json_obj.get("id_corso").getAsString().equals("") ) {
 						id_corso = json_obj.get("id_corso").getAsInt();
 					}
@@ -1498,6 +1500,12 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					}
 					if(json_obj.get("ore")!=null && !json_obj.get("ore").getAsString().equals("") ) {	
 						ore = json_obj.get("ore").getAsDouble();
+					}					
+					if(json_obj.get("firma_responsabile")!=null ) {	
+						firma_responsabile = json_obj.get("firma_responsabile").getAsInt();
+					}					
+					if(json_obj.get("firma_legale_rappresentante")!=null) {	
+						firma_legale_rappresentante = json_obj.get("firma_legale_rappresentante").getAsInt();
 					}
 				
 					ForPartecipanteDTO partecipante = null;
@@ -1590,12 +1598,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 								
 														
 								p.setPartecipante(partecipante);
-								session.save(p);	
+								session.saveOrUpdate(p);	
 							}
 							
 						}
 						
-						
+						p.setFirma_legale_rappresentante(firma_legale_rappresentante);
+						p.setFirma_responsabile(firma_responsabile);
 						lista_partecipanti.add(p);
 						
 					}

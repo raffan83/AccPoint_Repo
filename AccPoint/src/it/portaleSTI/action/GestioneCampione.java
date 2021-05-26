@@ -324,7 +324,7 @@ public class GestioneCampione extends HttpServlet {
 					}
 					
 					if(utilizzatore!=null && !utilizzatore.equals("")) {
-						CompanyDTO cmp = GestioneCompanyBO.getCompanyById(proprietario, session);
+						CompanyDTO cmp = GestioneCompanyBO.getCompanyById(utilizzatore, session);
 						campione.setCompany_utilizzatore(cmp);
 					}else {
 						campione.setCompany_utilizzatore((CompanyDTO) request.getSession().getAttribute("usrCompany"));	

@@ -139,6 +139,28 @@
 
 </div>
 </div>
+
+
+
+
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+<div class="box box-primary box-solid">
+<div class="box-header with-border">
+	 Referenti
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+        <a class="btn btn-primary pull-right" onClick="$('#modalReferenti').modal()"><i class="fa fa-plus"></i> Referenti corso</a>
+
+</div>
+</div>
+</c:if>
+
 </div>
 
        
@@ -262,7 +284,107 @@
     
     </div>
         
-        
+          <div id="modalReferenti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Referenti Corso</h4>
+      </div>
+       <div class="modal-body">       
+       <div class="row">
+      	<div class="col-xs-12">
+      	
+      	<a class="btn btn-primary pull-right" onClick="$('#modalAssociaReferenti').modal()"><i class="fa fa-plus"></i> Associa Referente</a>
+      	
+      	</div>
+      	</div><br>
+      	<div class="row">
+      	<div class="col-xs-12">
+      	<div id="content_referenti">
+      	<c:forEach items="${corso.getListaReferenti() }" var="referente">
+      	 <li class="list-group-item">
+                  <div class="row">  <div class="col-xs-4"><b>${referente.nome } ${referente.cognome }</b></div><div class="col-xs-4"> <b>${referente.nome_azienda } - ${referente.nome_sede }</b></div><div class="col-xs-4"> <a class="pull-right">${referente.email }</a></div></div>
+                </li>
+      	
+      	</c:forEach>
+      	</div>
+      	</div>
+      	
+      	</div>
+      	</div>
+      <div class="modal-footer">
+     
+    </div>
+  </div>
+
+</div>
+
+
+
+
+ <div id="modalAssociaReferenti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Referenti</h4>
+      </div>
+       <div class="modal-body">       
+
+      	<div class="row">
+      	<div class="col-xs-12">
+      	<table id="tabForCorso" class="table table-primary table-bordered table-hover dataTable table-striped " role="grid" width="100%" >
+ <thead><tr class="active">
+
+
+<th>Nome</th>
+<th>Cognome</th>
+<th>Azienda</th>
+<th>Sede</th>
+<th>Email</th>
+<th>Azioni</th>
+ </tr></thead>
+ 
+ <tbody>
+ 
+ 	<c:forEach items="${lista_referenti }" var="referente" varStatus="loop">
+	<tr id="row_${loop.index}" >
+
+	<td>${referente.nome }</td>
+	<td>${referente.cognome }</td>	
+	<td>${referente.nome_azienda }</td>	
+	<td>${referente.nome_sede }</td>	
+	<td>${referente.email }</td>	
+	<td>
+	<c:if test="${corso.getListaReferenti().contains(referente) }">
+	<input type="checkbox" id="check_referente_${referente.id }" checked onchange="associaDissociaReferente('${referente.id}', '${corso.id }')">
+	</c:if>
+	<c:if test="${!corso.getListaReferenti().contains(referente) }">
+	<input type="checkbox" id="check_referente_${referente.id }" onchange="associaDissociaReferente('${referente.id}', '${corso.id }')">
+	</c:if>
+	</td>		
+	
+	
+	</tr>
+	</c:forEach>
+	 
+
+ </tbody>
+ </table>  
+      	</div>
+      	
+      	</div>
+      	</div>
+      <div class="modal-footer">
+     
+      </div>
+    </div>
+  </div>
+
+</div>
         
 
 </div>
@@ -352,6 +474,68 @@ function modalArchivio(id_corso){
 $('#myModalArchivio').modal();
 }
    
+   
+   
+function associaDissociaReferente(id_referente, id_corso){
+	
+	var azione = 'dissocia';
+	
+	if($('#check_referente_'+id_referente).is( ':checked' )){
+		azione = 'associa'
+	}
+	
+	var dataObj = {};
+	dataObj.id_corso = id_corso;
+	dataObj.id_referente = id_referente;
+	dataObj.azione = azione
+
+	  $.ajax({
+	type: "POST",
+	url: "gestioneFormazione.do?action=associa_dissocia_referente",
+	data: dataObj,
+	dataType: "json",
+	//if received a response from the server
+	success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  if(data.success){	  			
+	   				  
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();
+			$('#myModalError').modal('show');			
+		
+		  }
+	},
+	error: function( data, textStatus) {
+		  $('#myModalYesOrNo').modal('hide');
+		  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+	
+	}
+	});
+}   
+
+
+$('input:checkbox').on('ifToggled', function() {
+	
+	var id =$(this)[0].id;
+			
+		id=id.split("_")[2];
+
+		associaDissociaReferente(id, '${corso.id}');
+
+	
+}) 
+   
+   
     $(document).ready(function() {
     
 
@@ -361,6 +545,62 @@ $('#myModalArchivio').modal();
         
         modalArchivio('${corso.id}')
     });
+    
+    
+    
+    $('#modalAssociaReferenti').on('hidden.bs.modal', function(){  
+    	
+    	var dataObj = {};
+    	dataObj.id_corso = '${corso.id}';
+
+
+    	  $.ajax({
+    	type: "POST",
+    	url: "gestioneFormazione.do?action=referenti_corso",
+    	data: dataObj,
+    	dataType: "json",
+    	//if received a response from the server
+    	success: function( data, textStatus) {
+    		pleaseWaitDiv.modal('hide');
+    		  if(data.success){	  	
+    			  
+    			  html = '';
+    			  
+    			  var referenti = data.lista_referenti_corso;
+    			  for (var i = 0; i < referenti.length; i++) {
+					html = html +' <li class="list-group-item"> <div class="row">  <div class="col-xs-4"><b>'+referenti[i].nome +' '+ referenti[i].cognome+'</b> </div>  <div class="col-xs-4"> <b>'+referenti[i].nome_azienda+' - '+referenti[i].nome_sede+'</b> </div>  <div class="col-xs-4">  <a class="pull-right">'+referenti[i].email+'</a></div></div></li>'
+				}
+    			  
+					$('#content_referenti').html(html)
+    		    	$('#modalReferenti').modal();  
+    		  }else{
+    			
+    			$('#myModalErrorContent').html(data.messaggio);
+    		  	$('#myModalError').removeClass();
+    			$('#myModalError').addClass("modal modal-danger");	  
+    			$('#report_button').hide();
+    			$('#visualizza_report').hide();
+    			$('#myModalError').modal('show');			
+    		
+    		  }
+    	},
+    	error: function( data, textStatus) {
+    		  $('#myModalYesOrNo').modal('hide');
+    		  $('#myModalErrorContent').html(data.messaggio);
+    		  	$('#myModalError').removeClass();
+    			$('#myModalError').addClass("modal modal-danger");	  
+    			$('#report_button').show();
+    			$('#visualizza_report').show();
+    				$('#myModalError').modal('show');
+    	
+    	}
+    	});
+    	
+    	
+    
+    	
+    })
+    
 
   </script>
   

@@ -2849,6 +2849,23 @@ public class DirectMySqlDAO {
 		}	
 		return lista;
 	}
+
+	public static void updateStatoStrumentoScheduler() throws Exception {
+
+		String query = "update strumento set id__stato_strumento_ = 7225 WHERE  id_tipo_rapporto = 7201 AND (data_prossima_verifica IS NULL OR data_prossima_verifica < NOW())";
+
+		Connection con=null;
+		PreparedStatement pst=null;
+
+		con=getConnection();
+		pst=con.prepareStatement(query);
+
+		pst.executeUpdate();
+
+		pst.close();
+		con.close();
+		
+	}
 	
 }
 

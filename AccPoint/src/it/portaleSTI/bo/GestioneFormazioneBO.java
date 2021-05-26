@@ -57,9 +57,11 @@ import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
+import it.portaleSTI.DTO.ForEmailDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
+import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -596,7 +598,11 @@ public class GestioneFormazioneBO {
 			partecipante.setAttestato(filename+".pdf");
 			session.update(partecipante);
 			
-			addSign(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf", filename);
+			addSign(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf", filename,0, partecipante.getFirma_responsabile());
+			
+			if(partecipante.getFirma_legale_rappresentante()>0) {
+				addSign(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf", filename, partecipante.getFirma_legale_rappresentante(), 0);
+			}
 			
 		}
 		
@@ -671,65 +677,123 @@ public class GestioneFormazioneBO {
 	    return result;
 	}
 	
-	public static JsonObject addSign(String path, String filename_attestato) throws Exception {
+	public static JsonObject addSign(String path, String filename_attestato, int firma_legale_rappresentante, int firma_responsabile) throws Exception {
 
 	    PdfReader reader = new PdfReader(path);
 	    
 	    String filename = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
 	    	          
 	    PdfStamper stamper = new PdfStamper(reader,new FileOutputStream(Costanti.PATH_FOLDER+"\\temp\\"+filename+".pdf"));
-	    PdfContentByte content = stamper.getOverContent(1);
-	    Image image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_alessandro_di_vito.png");
-
-	    image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	    
+	    PdfContentByte content = stamper.getOverContent(1);	   
 	    
-	    String keyWord = "RESPONSABILE";
-	    Integer[] fontPosition = null;
-		for(int i = 1;i<=reader.getNumberOfPages();i++) {
-			fontPosition = getFontPosition(reader, keyWord, i);
-			
-			if(fontPosition[0] != null && fontPosition[1] != null) {
-				
-				int x = fontPosition[0] ;
-				int y = fontPosition[1] -20;
-				int w = x + 85;
-				int h = y + 31;
-				
-				 Rectangle rect = new Rectangle(x, y, w, h);
-			    
-				 image.scaleAbsolute(rect);
-				
-				image.setAbsolutePosition(fontPosition[0] , fontPosition[1] -35);
-				content.addImage(image);
-				
-				break;
-			}else {
-				
-				keyWord = "DIRETTORE";
-				
+	    if(firma_legale_rappresentante == 0) {
+	    
+	    	Image image = null;
+	    	
+	    	if(firma_responsabile == 0 || firma_responsabile == 1) {
+	    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_alessandro_di_vito.png");	
+	    	}else if(firma_responsabile == 2) {
+	    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_antonio_accettola.png");
+	    	}else if(firma_responsabile == 3) {
+	    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_gabriella_mammone.png");
+	    	}
+	    	
+
+	  	    image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	   
+	    	
+	    	
+		    String keyWord = "RESPONSABILE";
+		    Integer[] fontPosition = null;
+			for(int i = 1;i<=reader.getNumberOfPages();i++) {
 				fontPosition = getFontPosition(reader, keyWord, i);
 				
 				if(fontPosition[0] != null && fontPosition[1] != null) {
-				int x = fontPosition[0] ;
-				int y = fontPosition[1] -20;
-				int w = x + 85;
-				int h = y + 31;
-				
-				 Rectangle rect = new Rectangle(x, y, w, h);
-			    
-				 image.scaleAbsolute(rect);
-				
-				image.setAbsolutePosition(fontPosition[0] , fontPosition[1] -35);
-				content.addImage(image);
-				break;
+					
+					int x = fontPosition[0] ;
+					int y = fontPosition[1] -20;
+					int w = x + 85;
+					int h = y + 31;
+					
+					 Rectangle rect = new Rectangle(x, y, w, h);
+				    
+					 image.scaleAbsolute(rect);
+					
+					image.setAbsolutePosition(fontPosition[0] , fontPosition[1] -35);
+					content.addImage(image);
+					
+					break;
+				}else {
+					
+					keyWord = "DIRETTORE";
+					
+					fontPosition = getFontPosition(reader, keyWord, i);
+					
+					if(fontPosition[0] != null && fontPosition[1] != null) {
+					int x = fontPosition[0] ;
+					int y = fontPosition[1] -20;
+					int w = x + 85;
+					int h = y + 31;
+					
+					 Rectangle rect = new Rectangle(x, y, w, h);
+				    
+					 image.scaleAbsolute(rect);
+					
+					image.setAbsolutePosition(fontPosition[0] , fontPosition[1] -35);
+					content.addImage(image);
+					break;
+					}
+					
+				}
+			}
+			
+			stamper.close();
+			reader.close();
+		    System.out.println(Arrays.toString(fontPosition));
+	    	
+	    	
+	    }else {
+	    	Image image = null;
+	    	
+	    	if(firma_legale_rappresentante == 1) {
+	    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_antonio_accettola.png");
+	    	}else if(firma_legale_rappresentante == 2) {
+	    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_gabriella_mammone.png");
+	    	}
+	    	
+	    	
+	    	 image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	   
+		    	
+		    	
+			    String keyWord = "CRESCO";
+			    Integer[] fontPosition = null;
+				for(int i = 1;i<=reader.getNumberOfPages();i++) {
+					fontPosition = getFontPosition(reader, keyWord, i);
+					
+					if(fontPosition[0] != null && fontPosition[1] != null) {
+						
+						int x = fontPosition[0] + 25 ;
+						int y = fontPosition[1] -45;
+						int w = x + 85;
+						int h = y + 31;
+						
+						 Rectangle rect = new Rectangle(x, y, w, h);
+					    
+						 image.scaleAbsolute(rect);
+						
+						image.setAbsolutePosition(fontPosition[0] +25, fontPosition[1] - 45);
+						content.addImage(image);
+						
+						break;
+					}
 				}
 				
-			}
-		}
-		
-		stamper.close();
-		reader.close();
-	    System.out.println(Arrays.toString(fontPosition));
+				stamper.close();
+				reader.close();
+			    System.out.println(Arrays.toString(fontPosition));
+	    	
+	    }
+	    
+
 
 	    File targetFile=  new File(path);
 		File source = new File(Costanti.PATH_FOLDER+"\\temp\\"+filename+".pdf");
@@ -747,6 +811,21 @@ public class GestioneFormazioneBO {
 	public static ForRuoloDTO getRuoloFromId(int id_ruolo, Session session) {
 		
 		return GestioneFormazioneDAO.getRuoloFromId(id_ruolo, session);
+	}
+
+	public static ArrayList<ForReferenteDTO> getListaReferenti(Session session) {
+		
+		return GestioneFormazioneDAO.getListaReferenti(session);
+	}
+
+	public static ForReferenteDTO getReferenteFromID(int id_referente, Session session) {
+		
+		return GestioneFormazioneDAO.getReferenteFromID(id_referente, session);
+	}
+
+	public static ArrayList<ForEmailDTO> getStoricoEmail(int id_corso, Session session) {
+		
+		return GestioneFormazioneDAO.getStoricoEmail(id_corso, session);
 	}
 
 	

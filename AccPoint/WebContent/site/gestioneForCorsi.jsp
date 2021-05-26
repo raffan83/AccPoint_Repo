@@ -77,7 +77,12 @@
 <th>E-Learning</th>
 <th>Data Inizio</th>
 <th>Data Scadenza</th>
-<th style="min-width:185px">Azioni</th>
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+<th style="min-width:235px">Azioni</th>
+</c:if>
+<c:if test="${!userObj.checkRuolo('AM') && !userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+<th style="min-width:150px">Azioni</th>
+</c:if>
  </tr></thead>
  
  <tbody>
@@ -132,7 +137,11 @@
 	<a href="#" class="btn btn-primary customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${corso.id }')"><i class="fa fa-archive"></i></a>
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 	<a class="btn btn-danger customTooltip" title="Click per eliminare il corso" onClick="eliminaCorsoModal('${corso.id}')"><i class="fa fa-trash"></i></a>
+	<c:if test="${corso.scheda_consegna_inviata == 1 }">
+	<a class="btn btn-primary customTooltip" title="Vai allo storico email" onClick="modalStorico('${corso.id}')"><i class="fa fa-envelope"></i></a>
 	</c:if>
+	</c:if>
+
 	</td>
 	</tr>
 	</c:forEach>
@@ -526,6 +535,49 @@
 </div>
 
 
+  <div id="modalEmailReferente" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Vuoi inviare la scheda di consegna ai referenti?</h4>
+      </div>
+       <div class="modal-body">       
+      	<input type="text" class="form-control" id="referenti" name="referenti">
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_corso_referente">
+      <a class="btn btn-primary" onclick="inviaComunicazioneReferente($('#id_corso_referente').val(), $('#referenti').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#modalEmailReferente').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+  <div id="myModalStorico" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Storico</h4>
+      </div>
+       <div class="modal-body">       
+      	<div id="content_storico"></div>
+      	</div>
+      <div class="modal-footer">
+
+      
+		<a class="btn btn-primary" onclick="$('#myModalStorico').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 </div>
    <t:dash-footer />
    
@@ -671,7 +723,7 @@ $("#tabForCorso").on( 'init.dt', function ( e, settings ) {
     	  //if($(this).index()!=0 && $(this).index()!=1){
     		  
     		  if(admin=='1' && $(this).index()==1){
-    			  $(this).append( '<div><input  style="width:100%"  type="checkbox" id="checkall" name="checkall"/></div>');
+    			 // $(this).append( '<div><input  style="width:100%"  type="checkbox" id="checkall" name="checkall"/></div>');
     			  
     			 
     		  }else{
@@ -795,6 +847,58 @@ $('input:checkbox').on('ifToggled', function() {
 	if(id!='#checkall' && id!='#check_e_learning' && id!='#check_e_learning_mod'){
 		$(id).on('ifChecked', function(event){
 			  setVisibilita(id, 1);
+			  
+			  var dataObj = {};
+    	dataObj.id_corso = id.split("_")[1];
+
+    	$('#id_corso_referente').val(id.split("_")[1]);
+    	
+    	  $.ajax({
+    	type: "POST",
+    	url: "gestioneFormazione.do?action=referenti_corso",
+    	data: dataObj,
+    	dataType: "json",
+    	//if received a response from the server
+    	success: function( data, textStatus) {
+    		pleaseWaitDiv.modal('hide');
+    		  if(data.success){	  	
+    			  
+    			var email = ""; 
+    			  
+    			  var referenti = data.lista_referenti_corso;
+    			  for (var i = 0; i < referenti.length; i++) {
+					
+    				  email = email + referenti[i].email+";";
+				}
+    			  
+					$('#referenti').val(email)
+					  $('#modalEmailReferente').modal();
+    		  }else{
+    			
+    			$('#myModalErrorContent').html(data.messaggio);
+    		  	$('#myModalError').removeClass();
+    			$('#myModalError').addClass("modal modal-danger");	  
+    			$('#report_button').hide();
+    			$('#visualizza_report').hide();
+    			$('#myModalError').modal('show');			
+    		
+    		  }
+    	},
+    	error: function( data, textStatus) {
+    		  $('#myModalYesOrNo').modal('hide');
+    		  $('#myModalErrorContent').html(data.messaggio);
+    		  	$('#myModalError').removeClass();
+    			$('#myModalError').addClass("modal modal-danger");	  
+    			$('#report_button').show();
+    			$('#visualizza_report').show();
+    				$('#myModalError').modal('show');
+    	
+    	}
+    	});
+    	
+    	
+			  
+			
 		});
 
 
@@ -1029,8 +1133,72 @@ $('#modificaCorsoForm').on('submit', function(e){
  
  
  
- 
+ function inviaComunicazioneReferente(id_corso, indirizzi){
+		
+		
+		
+		var dataObj = {};
+		dataObj.id_corso = id_corso;
+		dataObj.indirizzi = indirizzi;
 
+
+		  $.ajax({
+		type: "POST",
+		url: "gestioneFormazione.do?action=invia_comunicazione",
+		data: dataObj,
+		dataType: "json",
+		//if received a response from the server
+		success: function( data, textStatus) {
+			pleaseWaitDiv.modal('hide');
+			  if(data.success){	  	
+				 
+				  pleaseWaitDiv.modal('hide');
+					$('#myModalErrorContent').html(data.messaggio);
+					$('#myModalError').removeClass();	
+					$('#myModalError').addClass("modal modal-success");	  
+					$('#report_button').hide();
+					$('#visualizza_report').hide();		
+					$('#myModalError').modal('show');
+					
+					$('#myModalError').on('hidden.bs.modal',function(){
+						location.reload();
+					});
+			  }else{
+				
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalError').modal('show');			
+			
+			  }
+		},
+		error: function( data, textStatus) {
+			  $('#myModalYesOrNo').modal('hide');
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+		
+		}
+		});
+		
+		
+	}
+
+ 
+ 
+ function modalStorico(id_corso){
+	  
+	  dataString ="action=storico_email&id_corso="+ id_corso;
+     exploreModal("gestioneFormazione.do",dataString,"#content_storico",function(datab,textStatusb){
+     });
+	  
+	  $('#myModalStorico').modal()
+ }
  
   </script>
   

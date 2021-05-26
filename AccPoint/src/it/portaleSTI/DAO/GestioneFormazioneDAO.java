@@ -15,9 +15,11 @@ import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
+import it.portaleSTI.DTO.ForEmailDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
+import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 
@@ -374,13 +376,13 @@ public class GestioneFormazioneDAO {
 		
 		if(dateFrom !=null && dateTo!=null && tipo_data!=null) {
 			
-			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso."+tipo_data+" between :_dateFrom and :_dateTo and p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede and p.corso.disabilitato = 0");	
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso."+tipo_data+" between :_dateFrom and :_dateTo and p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede and p.corso.disabilitato = 0 and p.corso.visibile = 1");	
 			query.setParameter("_dateFrom", sdf.parse(dateFrom));
 			query.setParameter("_dateTo", sdf.parse(dateTo));
 			
 		}else {
 			
-			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where  p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede and p.corso.disabilitato = 0"); 
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where  p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede =:_id_sede and p.corso.disabilitato = 0  and p.corso.visibile = 1"); 
 			
 		}		
 		query.setParameter("_id_cliente", idCliente);	
@@ -430,7 +432,7 @@ public class GestioneFormazioneDAO {
 	Query query = null;
 	
 	if(id_cliente!=0) {
-		query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda = :_id_cliente and p.partecipante.id_sede = :_id_sede and p.corso.data_corso between :_dateFrom and :_dateTo and  p.corso.disabilitato = 0 group by p.corso");
+		query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda = :_id_cliente and p.partecipante.id_sede = :_id_sede and p.corso.data_corso between :_dateFrom and :_dateTo and  p.corso.disabilitato = 0 and p.corso.visibile = 1 group by p.corso");
 		query.setParameter("_id_cliente", id_cliente);
 		query.setParameter("_id_sede", id_sede);
 	}else {
@@ -521,6 +523,50 @@ public class GestioneFormazioneDAO {
 		}
 
 		return res;
+	}
+
+	public static ArrayList<ForReferenteDTO> getListaReferenti(Session session) {
+
+		ArrayList<ForReferenteDTO> lista = null;
+
+		Query query =  session.createQuery("from ForReferenteDTO");	
+
+		
+		lista = (ArrayList<ForReferenteDTO>) query.list();
+		
+		return lista;
+	}
+
+	public static ForReferenteDTO getReferenteFromID(int id_referente, Session session) {
+
+		ArrayList<ForReferenteDTO> lista = null;
+		ForReferenteDTO res = null;
+
+		Query query =  session.createQuery("from ForReferenteDTO where id = :_id_referente");
+		query.setParameter("_id_referente", id_referente);
+
+		
+		lista = (ArrayList<ForReferenteDTO>) query.list();
+		if(lista.size()>0) {
+			res = lista.get(0);
+		}
+		
+		return res;
+			
+	}
+
+	public static ArrayList<ForEmailDTO> getStoricoEmail(int id_corso, Session session) {
+		
+		ArrayList<ForEmailDTO> lista = null;
+
+		Query query =  session.createQuery("from ForEmailDTO where corso.id = :_id_corso");
+		query.setParameter("_id_corso", id_corso);
+
+		
+		lista = (ArrayList<ForEmailDTO>) query.list();
+	
+		
+		return lista;
 	}
 	
 

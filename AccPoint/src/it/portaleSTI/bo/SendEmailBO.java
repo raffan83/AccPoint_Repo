@@ -3,6 +3,8 @@ package it.portaleSTI.bo;
 
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -28,6 +30,7 @@ import org.apache.log4j.Logger;
 
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
+import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
@@ -724,6 +727,62 @@ public static void sendEmailSchedaConsegnaDocumentale(ArrayList<DocumTLDocumento
 
 	  email.send();
 	
+}
+
+public static void sendEmailFormazione(ForCorsoDTO corso, String mailTo, ServletContext ctx) throws Exception {
+	  HtmlEmail email = new HtmlEmail();
+	  email.setHostName("mail.vianova.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("segreteria@crescosrl.net", Costanti.PASS_EMAIL_CRESCO);
+
+      email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+      email.getMailSession().getProperties().put("mail.debug", "true");
+      email.getMailSession().getProperties().put("mail.smtp.port", "587");
+      email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "587");
+      email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+      email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "true");
+      email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
+      
+      email.addTo(mailTo);
+	
+	  email.setFrom("segreteria@crescosrl.net", "Segreteria Cresco Srl");
+	  email.setSubject("Scheda cosegna attestati di formazione - ID corso: "+corso.getId());
+	  
+	  // embed the image and get the content id
+	  
+	  DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+	  File image = new File(ctx.getRealPath("images/calver_cresco.png"));
+	  String cid = email.embed(image, "Calver logo");
+
+		  email.setHtmlMsg("<html>Gentile Cliente,<br>"
+		  
+			  	+"Si avvisa che gli attestati di formazione sono pronti per essere scaricati tramite il ns. software CALVER. <br><br>"
+			  	+"ID: "+corso.getId()+" - Corso: "+corso.getDescrizione()+" - Data inizio: "+df.format(corso.getData_corso())+"<br><br>"
+			  	+"Tipo consegna: CONSEGNA TOTALE <br><br>"
+			  	
+			  	+"Restiamo a disposizione per qualsiasi chiarimento in merito.<br>"
+			  	+"Distinti saluti.<br><br>"
+			  	
+			  	
+					+"<em><b>CRESCO Formazione e Cosulenza Srl</b></em> <br>"+
+					
+						"<em></b><br>Via Tofaro 42, B - 03039 Sora (FR)<br>" + 
+						"Tel +39 0776.18151 - Fax +39 0776.814169</em> <br> "
+						+ "Web: </em>www.crescosrl.net<br>" 
+						+ "Mail: </em>segreteria@crescosrl.net<br>" + 
+				
+						"<br/></html>"
+			  	
+			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"cid:"+cid+"\"><a><br>"
+			  		
+				  +"<font size='1'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
+			  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio &egrave; vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.<br><br>" + 
+			  		"According to Italian law D.L. 196/2003 and Reg. UE n.2016/679 (GDPR) concerning privacy, if you are not the addressee (or responsible for delivery of the message to such person) you are hereby notified that any disclosure, reproduction, distribution or other dissemination or use of this communication is strictly prohibited. If you have received this message in error, please destroy it and notify us by email." + 
+			  		"</font>"
+				  );
+			
+	  email.send();
 }
 
 }

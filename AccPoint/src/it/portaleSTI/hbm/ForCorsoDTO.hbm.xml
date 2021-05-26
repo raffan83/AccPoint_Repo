@@ -36,7 +36,16 @@
         	
         </set> 
         
-        
+         <set name="listaReferenti" table="for_referente_corso"
+				inverse="false" lazy="false" fetch="select" >
+            <key>
+                <column name="id_corso" />                
+            </key>
+            <many-to-many entity-name="it.portaleSTI.DTO.ForReferenteDTO">
+                <column name="id_referente" not-null="true" />
+            </many-to-many>
+        	
+        </set> 
 
         
           <property name="descrizione" type="java.lang.String" >
@@ -63,6 +72,9 @@
         
                  <property name="disabilitato" type="int" >
             <column name="disabilitato" />
+        </property>
+                   <property name="scheda_consegna_inviata" type="int" >
+            <column name="scheda_consegna_inviata" />
         </property>
     </class>
 </hibernate-mapping>

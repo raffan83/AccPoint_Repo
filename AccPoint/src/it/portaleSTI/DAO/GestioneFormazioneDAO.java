@@ -15,9 +15,11 @@ import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
+import it.portaleSTI.DTO.ForEmailDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
+import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 
@@ -521,6 +523,50 @@ public class GestioneFormazioneDAO {
 		}
 
 		return res;
+	}
+
+	public static ArrayList<ForReferenteDTO> getListaReferenti(Session session) {
+
+		ArrayList<ForReferenteDTO> lista = null;
+
+		Query query =  session.createQuery("from ForReferenteDTO");	
+
+		
+		lista = (ArrayList<ForReferenteDTO>) query.list();
+		
+		return lista;
+	}
+
+	public static ForReferenteDTO getReferenteFromID(int id_referente, Session session) {
+
+		ArrayList<ForReferenteDTO> lista = null;
+		ForReferenteDTO res = null;
+
+		Query query =  session.createQuery("from ForReferenteDTO where id = :_id_referente");
+		query.setParameter("_id_referente", id_referente);
+
+		
+		lista = (ArrayList<ForReferenteDTO>) query.list();
+		if(lista.size()>0) {
+			res = lista.get(0);
+		}
+		
+		return res;
+			
+	}
+
+	public static ArrayList<ForEmailDTO> getStoricoEmail(int id_corso, Session session) {
+		
+		ArrayList<ForEmailDTO> lista = null;
+
+		Query query =  session.createQuery("from ForEmailDTO where corso.id = :_id_corso");
+		query.setParameter("_id_corso", id_corso);
+
+		
+		lista = (ArrayList<ForEmailDTO>) query.list();
+	
+		
+		return lista;
 	}
 	
 

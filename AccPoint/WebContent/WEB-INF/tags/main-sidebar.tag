@@ -288,6 +288,7 @@
           <ul class="treeview-menu">
 		 <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_FORMAZIONE_ADMIN")){%>
 			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_docenti',null,true);">Gestione Docenti</a></li>			
+			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_referenti',null,true);">Gestione Referenti</a></li>
 			<%} %>
 			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_partecipanti',null,true);">Gestione Partecipanti</a></li>	
 			<% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_FORMAZIONE_ADMIN")){%>				

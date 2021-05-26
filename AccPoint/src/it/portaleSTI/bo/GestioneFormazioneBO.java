@@ -57,9 +57,11 @@ import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
+import it.portaleSTI.DTO.ForEmailDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
+import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -809,6 +811,21 @@ public class GestioneFormazioneBO {
 	public static ForRuoloDTO getRuoloFromId(int id_ruolo, Session session) {
 		
 		return GestioneFormazioneDAO.getRuoloFromId(id_ruolo, session);
+	}
+
+	public static ArrayList<ForReferenteDTO> getListaReferenti(Session session) {
+		
+		return GestioneFormazioneDAO.getListaReferenti(session);
+	}
+
+	public static ForReferenteDTO getReferenteFromID(int id_referente, Session session) {
+		
+		return GestioneFormazioneDAO.getReferenteFromID(id_referente, session);
+	}
+
+	public static ArrayList<ForEmailDTO> getStoricoEmail(int id_corso, Session session) {
+		
+		return GestioneFormazioneDAO.getStoricoEmail(id_corso, session);
 	}
 
 	

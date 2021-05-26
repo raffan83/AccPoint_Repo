@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.ForEmailDTO" table="for_email">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <many-to-one name="corso" class="it.portaleSTI.DTO.ForCorsoDTO" fetch="join" lazy="false">
+            <column name="id_corso" />
+        </many-to-one>
+
+         <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_utente" />
+        </many-to-one> 
+        <property name="data" type="java.sql.Timestamp">
+            <column name="data" />
+        </property>
+        <property name="destinatario" type="java.lang.String">
+            <column name="destinatario" />
+        </property>
+    </class>
+</hibernate-mapping>

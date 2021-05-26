@@ -19,8 +19,10 @@ public class ForCorsoDTO {
 	private int e_learning;
 	private int visibile;
 	private int disabilitato;
+	private int scheda_consegna_inviata;
 	
 	private Set<ForPartecipanteDTO> listaPartecipanti = new HashSet<ForPartecipanteDTO>(0);
+	private Set<ForReferenteDTO> listaReferenti = new HashSet<ForReferenteDTO>(0);
 	
 	public ForCorsoDTO() {
 		super();
@@ -113,6 +115,18 @@ public class ForCorsoDTO {
 	}
 	public void setDisabilitato(int disabilitato) {
 		this.disabilitato = disabilitato;
+	}
+	public Set<ForReferenteDTO> getListaReferenti() {
+		return listaReferenti;
+	}
+	public void setListaReferenti(Set<ForReferenteDTO> listaReferenti) {
+		this.listaReferenti = listaReferenti;
+	}
+	public int getScheda_consegna_inviata() {
+		return scheda_consegna_inviata;
+	}
+	public void setScheda_consegna_inviata(int scheda_consegna_inviata) {
+		this.scheda_consegna_inviata = scheda_consegna_inviata;
 	}
 
 	

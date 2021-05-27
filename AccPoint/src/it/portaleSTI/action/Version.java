@@ -34,7 +34,7 @@ import it.portaleSTI.bo.GestioneUtenteBO;
 @WebServlet("/version.do")
 public class Version extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String DASM_VERSION = "2.3.3";
+	private static final String DASM_VERSION = "2.3.4";
 	private static final String DASM_VER_VERSION ="2.0.5";
        
     /**

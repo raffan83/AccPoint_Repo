@@ -87,7 +87,6 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 						idSede="0";
 					}
 					
-					System.out.println("id_Cliente: "+idCliente +"\nid_Sede: "+idSede);
 					
 				
 					CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
@@ -95,7 +94,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 					
 					if(idCompany!=null)
 					{
-					System.out.println("Inizio query tot"+new Date());	
+					
 					ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento(session);
 					ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto(session);
 					ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento(session);
@@ -109,7 +108,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 					request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 					ArrayList<StrumentoDTO> listaStrumentiPerSedeGrafici=GestioneStrumentoBO.getListaStrumentiPerGrafici(idCliente,idSede,idCompany.getId(),utente); 
 	
-					System.out.println("fine query tot"+new Date());	
+					
 					HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
 					HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();
 					HashMap<String,Integer> tipoStrumenti = new HashMap<String,Integer>();
@@ -243,7 +242,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
 			        request.getSession().setAttribute("listaStrumentiTemp",null);
 			        
-			        System.out.println("query tot fine action "+new Date());	
+			        
 					 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
 				     dispatcher.forward(request,response);
 			        
@@ -296,7 +295,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			ArrayList<StrumentoDTO> listaStrumentiAnn = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumentiAnn");
 		
 			if(listaStrumentiTemp!=null && listaStrumentiAnn== null) {
-				System.out.println("in servizio inizio"+new Date());	
+					
 				request.getSession().setAttribute("listaStrumentiTemp", listaStrumenti);
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiTemp);
 				
@@ -306,7 +305,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				
 			}
 
-			System.out.println("in servizio fine"+new Date());	
+			
 			
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
 		     dispatcher.forward(request,response);
@@ -324,7 +323,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumenti");
 			ArrayList<StrumentoDTO> listaStrumentiAnn = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumentiAnn");
 	
-			System.out.println("fuori servizio inizio"+new Date());	
+		
 			
 			if(listaStrumentiTemp!=null && listaStrumentiAnn== null) {
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiTemp);			
@@ -336,8 +335,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiFiltrata);
 				
 			}
-			System.out.println("fuori servizio fine"+new Date());	
-			
+	
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
 		    dispatcher.forward(request,response);
 
@@ -353,8 +351,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		//	ArrayList<StrumentoDTO> listaStrumentiTemp = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumentiTemp");
 			ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumenti");
 	
-			System.out.println("fuori servizio inizio"+new Date());	
-			
+	
 //			if(listaStrumentiTemp!=null) {
 //				request.getSession().setAttribute("listaStrumenti", listaStrumentiTemp);			
 //				request.getSession().setAttribute("listaStrumentiTemp", listaStrumenti);
@@ -366,8 +363,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				request.getSession().setAttribute("listaStrumentiAnn", listaStrumentiFiltrata);
 				
 	//		}
-			System.out.println("fuori servizio fine"+new Date());	
-			
+
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
 		    dispatcher.forward(request,response);
 			

@@ -11,11 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
@@ -55,12 +58,14 @@ public class AggiornamentoCampione extends HttpServlet {
 		
 
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
 	try{	
 		String idC = request.getParameter("idCamp");
 			
 		List<PrenotazioneDTO>	prenotazione=GestionePrenotazioniBO.getListaPrenotazione(idC);
-		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
+		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione(session);
 
 		
 		ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
@@ -88,6 +93,9 @@ public class AggiornamentoCampione extends HttpServlet {
 	        
 	        request.getSession().setAttribute("myObj",myObj);
 	        request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
+	        
+	        session.getTransaction().commit();
+	        session.close();
 
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/aggiornamentoCampione.jsp");
 		     dispatcher.forward(request,response);
@@ -95,7 +103,8 @@ public class AggiornamentoCampione extends HttpServlet {
 	
 	}catch(Exception ex)
 	{
-		
+		session.getTransaction().rollback();
+		session.close();
 		 ex.printStackTrace();
 		 request.getSession().setAttribute("exception",ex);
 	     request.setAttribute("error",STIException.callException(ex));

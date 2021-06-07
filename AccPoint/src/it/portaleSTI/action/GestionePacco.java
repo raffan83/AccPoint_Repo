@@ -312,6 +312,7 @@ public class GestionePacco extends HttpServlet {
 	 						}else {
 	 							rilievo = new RilMisuraRilievoDTO();
 	 							mag_item = 	new MagItemDTO();
+	 							rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
 	 						}
 							rilievo.setDisegno(disegno);
 							rilievo.setVariante(variante);
@@ -328,7 +329,7 @@ public class GestionePacco extends HttpServlet {
 							rilievo.setData_inizio_rilievo(new Date());
 							rilievo.setCommessa(commessa);
 							rilievo.setClasse_tolleranza("m");
-							rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
+							
 						
 							
 							if(id!=null) {

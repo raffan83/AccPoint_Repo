@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -73,11 +74,15 @@ public class NuovoStrumento extends HttpServlet {
 		
 		String action = request.getParameter("action");
 		
-		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
+		boolean ajax = false;
 		
-		if(action==null || action =="") {
-
+		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
 		try{	
+			
+			if(action==null || action =="") {
+				
+				ajax = true;
+		
 			
 				String ref_stato_strumento = request.getParameter("ref_stato_strumento");
 				String denominazione = request.getParameter("denominazione");
@@ -177,24 +182,12 @@ public class NuovoStrumento extends HttpServlet {
 			        session.getTransaction().commit();
 		        	session.close();	
 	
-		}catch(Exception ex)
-		{
-		 session.getTransaction().rollback();
-     	 session.close();
-
-		 JsonObject myObj = new JsonObject();
-		  request.getSession().setAttribute("exception", ex);
-		//myObj.addProperty("success", false);
-		//myObj.addProperty("messaggio", STIException.callException(ex).toString());
-		  myObj = STIException.getException(ex);
-        out.println(myObj.toString());
-		
-		
-			}  
+ 
 		}
 		
 		else if(action.equals("nuovo_strumento_pacco")) {
-		try {	
+	
+			ajax = true;
 			
 			String id_pacco = request.getParameter("id_pacco");
 			
@@ -251,7 +244,7 @@ public class NuovoStrumento extends HttpServlet {
 				
 				strumento.setAltre_matricole(altre_matricole);
 				
-				GestioneStrumentoBO.saveStrumento(strumento, session);
+			//	GestioneStrumentoBO.saveStrumento(strumento, session);
 				
 				if(Integer.parseInt(quantita)==1 && matricola!=null && !matricola.equals("")) {
 					strumento.setMatricola(matricola);
@@ -264,11 +257,12 @@ public class NuovoStrumento extends HttpServlet {
 					strumento.setCodice_interno("PC_"+id_pacco+"_CIN_"+strumento.get__id());
 				}
 				
-				GestioneStrumentoBO.update(strumento, session);
+				//GestioneStrumentoBO.saveStrumento(strumento, session);
+				session.save(strumento);
 				successInt =1;
 			}
 			
-			session.getTransaction().commit();
+		
 			String message = ""; 
 			Boolean success = true;
 			if(successInt>0){
@@ -278,35 +272,42 @@ public class NuovoStrumento extends HttpServlet {
 				success = false;
 			}
 			
-			
+			session.getTransaction().commit();
 			session.close();	
-		 JsonObject myObj = new JsonObject();
+			 JsonObject myObj = new JsonObject();
 
 				myObj.addProperty("success", success);
 				myObj.addProperty("messaggio", message);
 		        out.println(myObj.toString());
 		        
 		        
-	        	
+		}
 
-	}catch(Exception ex)
+	}catch(Exception e)
 	{
-	 session.getTransaction().rollback();
- 	 session.close();
-	  request.getSession().setAttribute("exception", ex);
-	 JsonObject myObj = new JsonObject();
-
-	//myObj.addProperty("success", false);
-	//myObj.addProperty("messaggio", STIException.callException(ex).toString());
-	 myObj = STIException.getException(ex);
-    out.println(myObj.toString());
-	
+		session.getTransaction().rollback();
+    	session.close();
+		if(ajax) {
+			
+			e.printStackTrace();
+			 JsonObject myObj = new JsonObject();
+        	request.getSession().setAttribute("exception", e);
+        	myObj = STIException.getException(e);
+        	out.print(myObj);
+    	}else {
+			    			
+			e.printStackTrace();
+			request.setAttribute("error",STIException.callException(e));
+	  	     request.getSession().setAttribute("exception", e);
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		     dispatcher.forward(request,response);	
+    	}
 	
 		}  
 			
 			
 			
-		}
+		
 		
 	
 	}

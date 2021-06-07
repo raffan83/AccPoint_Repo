@@ -113,6 +113,9 @@ public class ListaCertificati extends HttpServlet {
 			request.getSession().setAttribute("listaClienti",listaClienti);
 			
 			if(action == null || action.equals("")){
+				
+				ajax = false;
+				
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
    				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificati.jsp");
@@ -120,6 +123,8 @@ public class ListaCertificati extends HttpServlet {
 
 				
 			}else if(action.equals("tutti")){
+				ajax = false;
+				
 				response.setContentType("text/html");
 				PrintWriter out = response.getWriter();
  				String idClienteSede =request.getParameter("cliente");
@@ -150,6 +155,8 @@ public class ListaCertificati extends HttpServlet {
 
 				
 			}else if(action.equals("lavorazione")){
+				ajax = false;
+				
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
  				String idClienteSede =request.getParameter("cliente");
@@ -180,6 +187,9 @@ public class ListaCertificati extends HttpServlet {
 
 				
 			}else if(action.equals("obsoleti")){
+				
+				ajax = false;
+				
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
  				String idClienteSede =request.getParameter("cliente");
@@ -210,6 +220,9 @@ public class ListaCertificati extends HttpServlet {
 
 				
 			}else if(action.equals("chiusi")){
+				
+				ajax = false;
+				
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
  				String idClienteSede =request.getParameter("cliente");
@@ -239,6 +252,9 @@ public class ListaCertificati extends HttpServlet {
 		     	dispatcher.forward(request,response);
 
 			}else if(action.equals("annullati")){
+				
+				ajax = false;
+				
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
  				String idClienteSede =request.getParameter("cliente");
@@ -267,9 +283,11 @@ public class ListaCertificati extends HttpServlet {
 		     	dispatcher.forward(request,response);
 
 			}else if(action.equals("creaCertificato")){
+				ajax = true;
+				
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
- 				ajax = true;
+ 			
 				ServletContext context =getServletContext();
 	
 				
@@ -413,9 +431,11 @@ public class ListaCertificati extends HttpServlet {
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("annullaCertificato")){
+				ajax = true;
+				
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
- 				ajax = true;
+ 				
 				String idCertificato = request.getParameter("idCertificato");
 				
 				CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(idCertificato);
@@ -432,9 +452,12 @@ public class ListaCertificati extends HttpServlet {
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("approvaCertificatiMulti")){
+				
+				ajax = true;
+				
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
- 				ajax = true;
+ 				
  				
 				String selezionati = request.getParameter("dataIn");
 				
@@ -469,10 +492,13 @@ public class ListaCertificati extends HttpServlet {
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("annullaCertificatiMulti")){
+				
+				ajax = true;
+				
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
 				
-				ajax = true;
+				
 				String selezionati = request.getParameter("dataIn");
 				
 				JsonElement jelement = new JsonParser().parse(selezionati);
@@ -578,6 +604,8 @@ public class ListaCertificati extends HttpServlet {
 			}
 			
 			else if(action.equals("certificati_misure_campione")) {
+				ajax = false;
+				
 				String id_campione = request.getParameter("idCamp");
 				
 				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
@@ -595,32 +623,24 @@ public class ListaCertificati extends HttpServlet {
 			 
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			session.getTransaction().rollback();
+        	session.close();
 			if(ajax) {
-				session.getTransaction().rollback();
-				session.close();
-				request.getSession().setAttribute("exception", e);
 				
-
- 				PrintWriter out = response.getWriter();
-
-				//check exception type
-//				if(e instanceof NullPointerException) {
-//					myObj.addProperty("messaggio", "Errore generazione certificato: NullPointerException, comunicaci l'errore facendo click sul pulsante Invia Report");
-//				}else if(e instanceof NumberFormatException) {
-//					myObj.addProperty("messaggio", "Errore generazione certificato: NumberFormatException, comunicaci l'errore facendo click sul pulsante Invia Report");
-//				}else {
-//					myObj.addProperty("messaggio", "Errore generazione certificato: Errore Generico, comunicaci l'errore facendo click sul pulsante Invia Report");
-//				}
-				myObj = STIException.getException(e);
-				out.println(myObj.toString());
- 
-			}else {
- 			     request.setAttribute("error",STIException.callException(e));
- 			    request.getSession().setAttribute("exception", e);
-				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-			     dispatcher.forward(request,response);
-			}
+				PrintWriter out = response.getWriter();
+				e.printStackTrace();
+	        	
+	        	request.getSession().setAttribute("exception", e);
+	        	myObj = STIException.getException(e);
+	        	out.print(myObj);
+        	}else {
+   			    			
+    			e.printStackTrace();
+    			request.setAttribute("error",STIException.callException(e));
+    	  	     request.getSession().setAttribute("exception", e);
+    			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+    		     dispatcher.forward(request,response);	
+        	}
 
 		}
 	

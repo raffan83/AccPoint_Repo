@@ -746,7 +746,7 @@ public static void sendEmailFormazione(ForCorsoDTO corso, String mailTo, Servlet
       email.addTo(mailTo);
 	
 	  email.setFrom("segreteria@crescosrl.net", "Segreteria Cresco Srl");
-	  email.setSubject("Scheda cosegna attestati di formazione - ID corso: "+corso.getId());
+	  email.setSubject("Scheda consegna attestati di formazione - Corso: "+corso.getDescrizione());
 	  
 	  // embed the image and get the content id
 	  
@@ -765,10 +765,10 @@ public static void sendEmailFormazione(ForCorsoDTO corso, String mailTo, Servlet
 			  	+"Distinti saluti.<br><br>"
 			  	
 			  	
-					+"<em><b>CRESCO Formazione e Cosulenza Srl</b></em> <br>"+
+					+"<em><b>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
 					
-						"<em></b><br>Via Tofaro 42, B - 03039 Sora (FR)<br>" + 
-						"Tel +39 0776.18151 - Fax +39 0776.814169</em> <br> "
+						"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
+						"Tel int. +39 0776.1815115 - Fax +39 0776.814169</em> <br> "
 						+ "Web: </em>www.crescosrl.net<br>" 
 						+ "Mail: </em>segreteria@crescosrl.net<br>" + 
 				

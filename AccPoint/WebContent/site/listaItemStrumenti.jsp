@@ -112,7 +112,7 @@ ArrayList<CompanyDTO> lista_company =(ArrayList)session.getAttribute("lista_comp
  
 
 
-
+ <form class="form-horizontal" id="formNuovoStrumento">
 <div id="modalNuovoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
@@ -123,7 +123,7 @@ ArrayList<CompanyDTO> lista_company =(ArrayList)session.getAttribute("lista_comp
       </div>
        <div class="modal-body">
 
-        <form class="form-horizontal" id="formNuovoStrumento">
+       
               
 
          <div class="form-group">
@@ -262,7 +262,7 @@ ArrayList<CompanyDTO> lista_company =(ArrayList)session.getAttribute("lista_comp
                 <button type="submit" class="btn btn-primary" >Salva</button>
         
      
-        </form>
+       
    
   		<div id="empty" class="testo12"></div>
   		 </div>
@@ -272,7 +272,7 @@ ArrayList<CompanyDTO> lista_company =(ArrayList)session.getAttribute("lista_comp
     </div>
   </div>
 </div>
-
+ </form>
  
  
 

@@ -11,12 +11,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
@@ -55,6 +58,9 @@ public class DettaglioCampione extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
 		
 	try{	
 		String idC = request.getParameter("idCamp");
@@ -63,7 +69,7 @@ public class DettaglioCampione extends HttpServlet {
 		
 		CampioneDTO dettaglio =GestioneCampioneDAO.getCampioneFromId(idC);	
 		
-		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
+		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione(session);
 //		ArrayList<AttivitaManutenzioneDTO> lista_attivita_manutenzione = GestioneCampioneBO.getListaAttivitaManutenzione(Integer.parseInt(idC));
 //		ArrayList<RegistroEventiDTO> lista_eventi = GestioneCampioneBO.getListaRegistroEventi(idC, session);
 		 Gson gson = new Gson(); 
@@ -92,13 +98,17 @@ public class DettaglioCampione extends HttpServlet {
 	        request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
 //	        request.getSession().setAttribute("lista_attivita_manutenzione", lista_attivita_manutenzione);
 //	        request.getSession().setAttribute("lista_eventi", lista_eventi);
+	        
+	        session.getTransaction().commit();
+	        session.close();
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioCampione.jsp");
 		     dispatcher.forward(request,response);
 
 	
 	}catch(Exception ex)
 	{
-		
+		session.getTransaction().rollback();
+		session.close();
 		 ex.printStackTrace();
 	     request.setAttribute("error",STIException.callException(ex));
 	     request.getSession().setAttribute("exception",ex);

@@ -122,7 +122,7 @@ public class ModificaValoriCampione extends HttpServlet {
 		       // request.getSession().setAttribute("listaValoriCampioneJson",newArr);
 		        request.getSession().setAttribute("listaValoriCampioneJson",jsonElem);
 
-		        ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
+		        ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza(session);
 		        JsonArray tgArrJson = new JsonArray();
 		        JsonObject umArrJson = new JsonObject();
 		        JsonObject jsObjDefault = new JsonObject();
@@ -212,7 +212,7 @@ public class ModificaValoriCampione extends HttpServlet {
 		        request.getSession().setAttribute("listaValoriCampione",newArr);
 		        request.getSession().setAttribute("listaValoriCampioneJson",newArr);
 
-		        ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
+		        ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza(session);
 		        JsonArray tgArrJson = new JsonArray();
 		        JsonObject umArrJson = new JsonObject();
 		        JsonObject jsObjDefault = new JsonObject();

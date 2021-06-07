@@ -85,27 +85,27 @@ public class ModificaStrumento extends HttpServlet {
 				
 				ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)request.getSession().getAttribute("listaTipoRapporto");
 				if(listaTipoRapporto==null) {
-					listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
+					listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto(session);
 				}
 				
 				ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)request.getSession().getAttribute("listaTipoStrumento");				
 				if(listaTipoStrumento==null) {
-					listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
+					listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento(session);
 				}
 				
 				ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)request.getSession().getAttribute("listaStatoStrumento");
 				if(listaStatoStrumento==null) {
-					listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
+					listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento(session);
 				}
 
 				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList)request.getSession().getAttribute("listaLuogoVerifica");
 				if(listaLuogoVerifica==null) {
-					listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
+					listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica(session);
 				}
 				
 				ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)request.getSession().getAttribute("listaClassificazione");
 				if(listaClassificazione==null) {
-					listaClassificazione = GestioneTLDAO.getListaClassificazione();
+					listaClassificazione = GestioneTLDAO.getListaClassificazione(session);
 				}
 				
 

@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
@@ -497,37 +498,75 @@ public class GestioneFormazioneBO {
 			String keyLuogoStart = ", in ";
 			String keyLuogoEnd = " Profilo";
 			String keyCf = "C.F. : ";
-			
+			String keyCf2 = "C.F. ";
+			Locale locale = new Locale("it", "IT");
+		
 			if(pdftext.contains(keyNome)) {
 				
 				String nominativo = pdftext.substring(pdftext.indexOf(keyNome) + keyNome.length(), pdftext.indexOf(keyNascita));
 				String data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyLuogoStart));
 				String luogo_nascita =  pdftext.substring(pdftext.indexOf(keyLuogoStart) + keyLuogoStart.length(), pdftext.indexOf(keyLuogoEnd));
-				String cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
+				
+				String cf = "";
+				
+				if(pdftext.indexOf(keyCf) == -1) {
+					
+					cf = pdftext.substring(pdftext.indexOf("opnefeiitalia@flexipec.it") +66, pdftext.indexOf("opnefeiitalia@flexipec.it") +82);
+					
+					df = new SimpleDateFormat("dd MMMM yyyy");
+				
+				}else {
+					cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
+				}						
+						
 				System.out.println(nominativo + " "+ data_nascita+" "+luogo_nascita+" "+cf);
 				
 				ForPartecipanteDTO partecipante = new ForPartecipanteDTO();
 				
 				String[] nomeCognome = nominativo.split(" ");
 				
-								
-				if(nomeCognome.length == 2) {
-					partecipante.setCognome(nomeCognome[0]);
-					partecipante.setNome(nomeCognome[1]);
+				if(pdftext.indexOf(keyCf) == -1) {
+					if(nomeCognome.length == 2) {
+						partecipante.setCognome(nomeCognome[1]);
+						partecipante.setNome(nomeCognome[0]);
+							
+					}else if(nomeCognome.length == 3){
+						partecipante.setCognome(nomeCognome[1] +" "+ nomeCognome[2]);					
+						partecipante.setNome(nomeCognome[0]);
+						partecipante.setNominativo_irregolare(1);
+					}else if(nomeCognome.length>3){
+						partecipante.setNome(nomeCognome[0]);								
+						partecipante.setNominativo_irregolare(0);
+						int j = 2;
+						String cognome = nomeCognome[1] +" "+ nomeCognome[2];
 						
-				}else if(nomeCognome.length == 3){
-					partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);					
-					partecipante.setNome(nomeCognome[2]);
-					partecipante.setNominativo_irregolare(1);
-				}else if(nomeCognome.length>3){
-					partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);			
-					partecipante.setNominativo_irregolare(1);
-					int j = 2;
-					while(j<nomeCognome.length) {
-						partecipante.setNome(nomeCognome[j]);
-						j++;
+						while(j<nomeCognome.length) {
+							cognome += nomeCognome[j];
+							
+							j++;
+						}
+						partecipante.setCognome(cognome);
+					}
+				}else {
+					if(nomeCognome.length == 2) {
+						partecipante.setCognome(nomeCognome[0]);
+						partecipante.setNome(nomeCognome[1]);
+							
+					}else if(nomeCognome.length == 3){
+						partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);					
+						partecipante.setNome(nomeCognome[2]);
+						partecipante.setNominativo_irregolare(1);
+					}else if(nomeCognome.length>3){
+						partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);			
+						partecipante.setNominativo_irregolare(1);
+						int j = 2;
+						while(j<nomeCognome.length) {
+							partecipante.setNome(nomeCognome[j]);
+							j++;
+						}
 					}
 				}
+				
 				partecipante.setCf(cf);
 				partecipante.setData_nascita(df.parse(data_nascita));
 				partecipante.setLuogo_nascita(luogo_nascita);

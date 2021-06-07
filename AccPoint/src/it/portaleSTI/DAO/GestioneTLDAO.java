@@ -21,14 +21,14 @@ import org.hibernate.Session;
 public class GestioneTLDAO {
 
 	@SuppressWarnings("unchecked")
-	public static ArrayList<UnitaMisuraDTO> getListaUnitaMisura(){
+	public static ArrayList<UnitaMisuraDTO> getListaUnitaMisura(Session session){
 		Query query=null;
 		ArrayList<UnitaMisuraDTO> list=null;
 		try {
 			
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+//		Session session = SessionFacotryDAO.get().openSession();
+//	    
+//		session.beginTransaction();
 		
 		String s_query = "from UnitaMisuraDTO";
 	    query = session.createQuery(s_query);
@@ -42,8 +42,8 @@ public class GestioneTLDAO {
             }
         });
 		
-		session.getTransaction().commit();
-		session.close();
+//		session.getTransaction().commit();
+//		session.close();
 
 	     } catch(Exception e)
 	     {
@@ -54,14 +54,14 @@ public class GestioneTLDAO {
 		}
 	
 	@SuppressWarnings("unchecked")
-	public static ArrayList<TipoGrandezzaDTO> getListaTipoGrandezza(){
+	public static ArrayList<TipoGrandezzaDTO> getListaTipoGrandezza(Session session){
 		Query query=null;
 		ArrayList<TipoGrandezzaDTO> list=null;
 		try {
 			
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+//		Session session = SessionFacotryDAO.get().openSession();
+//	    
+//		session.beginTransaction();
 		
 		String s_query = "from TipoGrandezzaDTO";
 	    query = session.createQuery(s_query);
@@ -76,8 +76,8 @@ public class GestioneTLDAO {
             }
         });
 		
-		session.getTransaction().commit();
-		session.close();
+//		session.getTransaction().commit();
+//		session.close();
 
 	     } catch(Exception e)
 	     {
@@ -87,14 +87,14 @@ public class GestioneTLDAO {
 
 		}
 	@SuppressWarnings("unchecked")
-	public static ArrayList<TipoStrumentoDTO> getListaTipoStrumento(){
+	public static ArrayList<TipoStrumentoDTO> getListaTipoStrumento(Session session){
 		Query query=null;
 		ArrayList<TipoStrumentoDTO> list=null;
 		try {
 			
-		Session session = SessionFacotryDAO.get().openSession();
+		//Session session = SessionFacotryDAO.get().openSession();
 	    
-		session.beginTransaction();
+		//session.beginTransaction();
 		
 		String s_query = "from TipoStrumentoDTO";
 	    query = session.createQuery(s_query);
@@ -110,8 +110,8 @@ public class GestioneTLDAO {
         });
 
 		
-		session.getTransaction().commit();
-		session.close();
+		//session.getTransaction().commit();
+		//session.close();
 
 	     } catch(Exception e)
 	     {
@@ -121,14 +121,14 @@ public class GestioneTLDAO {
 
 		}
 	@SuppressWarnings("unchecked")
-	public static ArrayList<TipoRapportoDTO> getListaTipoRapporto(){
+	public static ArrayList<TipoRapportoDTO> getListaTipoRapporto(Session session){
 		Query query=null;
 		ArrayList<TipoRapportoDTO> list=null;
 		try {
 			
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+//		Session session = SessionFacotryDAO.get().openSession();
+//	    
+//		session.beginTransaction();
 		
 		String s_query = "from TipoRapportoDTO";
 	    query = session.createQuery(s_query);
@@ -136,8 +136,8 @@ public class GestioneTLDAO {
 		
 		list = (ArrayList<TipoRapportoDTO>)query.list();
 		
-		session.getTransaction().commit();
-		session.close();
+//		session.getTransaction().commit();
+//		session.close();
 
 	     } catch(Exception e)
 	     {
@@ -146,14 +146,14 @@ public class GestioneTLDAO {
 		return list;
 
 		}
-	public static ArrayList<StatoStrumentoDTO> getListaStatoStrumento(){
+	public static ArrayList<StatoStrumentoDTO> getListaStatoStrumento(Session session ){
 		Query query=null;
 		ArrayList<StatoStrumentoDTO> list=null;
 		try {
 			
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+//		Session session = SessionFacotryDAO.get().openSession();
+//	    
+//		session.beginTransaction();
 		
 		String s_query = "from StatoStrumentoDTO";
 	    query = session.createQuery(s_query);
@@ -161,8 +161,8 @@ public class GestioneTLDAO {
 		
 		list = (ArrayList<StatoStrumentoDTO>)query.list();
 		
-		session.getTransaction().commit();
-		session.close();
+//		session.getTransaction().commit();
+//		session.close();
 
 	     } catch(Exception e)
 	     {
@@ -172,14 +172,14 @@ public class GestioneTLDAO {
 
 		}
 	
-	public static ArrayList<LuogoVerificaDTO> getListaLuogoVerifica(){
+	public static ArrayList<LuogoVerificaDTO> getListaLuogoVerifica(Session session){
 		Query query=null;
 		ArrayList<LuogoVerificaDTO> list=null;
 		try {
 			
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+//		Session session = SessionFacotryDAO.get().openSession();
+//	    
+//		session.beginTransaction();
 		
 		String s_query = "from LuogoVerificaDTO";
 	    query = session.createQuery(s_query);
@@ -187,8 +187,8 @@ public class GestioneTLDAO {
 		
 		list = (ArrayList<LuogoVerificaDTO>)query.list();
 		
-		session.getTransaction().commit();
-		session.close();
+//		session.getTransaction().commit();
+//		session.close();
 
 	     } catch(Exception e)
 	     {
@@ -197,14 +197,14 @@ public class GestioneTLDAO {
 		return list;
 
 		}
-	public static ArrayList<ClassificazioneDTO> getListaClassificazione(){
+	public static ArrayList<ClassificazioneDTO> getListaClassificazione(Session session ){
 		Query query=null;
 		ArrayList<ClassificazioneDTO> list=null;
 		try {
 			
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+//		Session session = SessionFacotryDAO.get().openSession();
+//	    
+//		session.beginTransaction();
 		
 		String s_query = "from ClassificazioneDTO";
 	    query = session.createQuery(s_query);
@@ -212,8 +212,8 @@ public class GestioneTLDAO {
 		
 		list = (ArrayList<ClassificazioneDTO>)query.list();
 		
-		session.getTransaction().commit();
-		session.close();
+//		session.getTransaction().commit();
+//		session.close();
 
 	     } catch(Exception e)
 	     {
@@ -223,14 +223,14 @@ public class GestioneTLDAO {
 
 		}
 
-	public static ArrayList<TipoCampioneDTO> getListaTipoCampione() {
+	public static ArrayList<TipoCampioneDTO> getListaTipoCampione(Session session ) {
 		Query query=null;
 		ArrayList<TipoCampioneDTO> list=null;
 		try {
 			
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+//		Session session = SessionFacotryDAO.get().openSession();
+//	    
+//		session.beginTransaction();
 		
 		String s_query = "from TipoCampioneDTO";
 	    query = session.createQuery(s_query);
@@ -238,8 +238,8 @@ public class GestioneTLDAO {
 		
 		list = (ArrayList<TipoCampioneDTO>)query.list();
 		
-		session.getTransaction().commit();
-		session.close();
+//		session.getTransaction().commit();
+//		session.close();
 
 	     } catch(Exception e)
 	     {
@@ -249,14 +249,14 @@ public class GestioneTLDAO {
 
 	}
 
-	public static ArrayList<StatoInterventoDTO> getListaStatoIntervento() {
+	public static ArrayList<StatoInterventoDTO> getListaStatoIntervento(Session session ) {
 		Query query=null;
 		ArrayList<StatoInterventoDTO> list=null;
 		try {
 			
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+//		Session session = SessionFacotryDAO.get().openSession();
+//	    
+//		session.beginTransaction();
 		
 		String s_query = "from StatoInterventoDTO";
 	    query = session.createQuery(s_query);
@@ -264,8 +264,8 @@ public class GestioneTLDAO {
 		
 		list = (ArrayList<StatoInterventoDTO>)query.list();
 		
-		session.getTransaction().commit();
-		session.close();
+//		session.getTransaction().commit();
+//		session.close();
 
 	     } catch(Exception e)
 	     {

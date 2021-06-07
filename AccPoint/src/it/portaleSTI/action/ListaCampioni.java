@@ -74,7 +74,8 @@ public class ListaCampioni extends HttpServlet {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 
-		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		response.setContentType("text/html");
 		
 		JsonObject myObj = new JsonObject();
@@ -107,7 +108,7 @@ public class ListaCampioni extends HttpServlet {
 	
 				if(date==null || date.equals(""))
 				{
-					listaCampioni =GestioneCampioneDAO.getListaCampioni(null,idCompany);
+					listaCampioni =GestioneCampioneDAO.getListaCampioni(null,idCompany, session);
 				}
 				else
 				{
@@ -129,7 +130,7 @@ public class ListaCampioni extends HttpServlet {
 					else {
 						if(date.length()>=10)
 						{
-							listaCampioni =GestioneCampioneDAO.getListaCampioni(date.substring(0,10),idCompany);
+							listaCampioni =GestioneCampioneDAO.getListaCampioni(date.substring(0,10),idCompany, session);
 						}
 					}
 					
@@ -137,12 +138,10 @@ public class ListaCampioni extends HttpServlet {
 				
 				
 				Integer[] max_codici = GestioneCampioneBO.getProgressivoCampione();
-				Session session = SessionFacotryDAO.get().openSession();
-				session.beginTransaction();
+
 				ArrayList<CompanyDTO> lista_company = GestioneCompanyBO.getAllCompany(session);
-				session.getTransaction().commit();
-				session.close();
-				 ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
+
+				 ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza(session);
 			        JsonArray tgArrJson = new JsonArray();
 			        JsonObject umArrJson = new JsonObject();
 			        JsonObject jsObjDefault = new JsonObject();
@@ -184,11 +183,14 @@ public class ListaCampioni extends HttpServlet {
 	
 	
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-				ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
+				ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione(session);
 				request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
 				request.getSession().setAttribute("listaCampioni",listaCampioni);
 	
 				String rilievi = request.getParameter("rilievi");
+				
+				session.getTransaction().commit();
+				session.close();
 				
 				if(rilievi != null && rilievi.equals("true")) {
 					String id_rilievo = request.getParameter("id_rilievo");
@@ -242,6 +244,9 @@ public class ListaCampioni extends HttpServlet {
 					myObj.addProperty("messaggio", "Nessun campione in scadenza nel periodo selezionato!");
 					out.print(myObj);
 				}
+				
+				session.getTransaction().commit();
+				session.close();
 			}
 			else if(action.equals("download_scadenzario")) {
 				
@@ -265,11 +270,15 @@ public class ListaCampioni extends HttpServlet {
 				    fileIn.close();
 				    outp.flush();
 				    outp.close();
+				    
+					session.getTransaction().commit();
+					session.close();
 				
 			}
 		} 
 		catch (Exception ex) {
-			
+			session.getTransaction().rollback();
+			session.close();
 			ex.printStackTrace();
 			
 			if(ajax) {

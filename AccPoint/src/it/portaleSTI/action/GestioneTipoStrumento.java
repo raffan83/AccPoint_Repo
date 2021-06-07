@@ -76,8 +76,8 @@ public class GestioneTipoStrumento extends HttpServlet {
 			
 		if(action==null) {
 			
-			ArrayList<TipoGrandezzaDTO> lista_tipo_grandezza = GestioneTLDAO.getListaTipoGrandezza();
-			ArrayList<TipoStrumentoDTO> lista_tipo_strumento = GestioneTLDAO.getListaTipoStrumento();
+			ArrayList<TipoGrandezzaDTO> lista_tipo_grandezza = GestioneTLDAO.getListaTipoGrandezza(session);
+			ArrayList<TipoStrumentoDTO> lista_tipo_strumento = GestioneTLDAO.getListaTipoStrumento(session);
 			
 			Gson gson = new Gson();			
 		

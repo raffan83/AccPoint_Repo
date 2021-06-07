@@ -47,14 +47,14 @@ public class GestioneCampioneDAO {
 
 	private static String updateCompanyUtilizzatoreCampione="UPDATE campione set id_company_utilizzatore=? WHERE __id=?";
 
-	public static ArrayList<CampioneDTO> getListaCampioni(String date, int idCompany) {
+	public static ArrayList<CampioneDTO> getListaCampioni(String date, int idCompany, Session session) {
 		Query query=null;
 		ArrayList<CampioneDTO> list=null;
 		try {
 			
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+//		Session session = SessionFacotryDAO.get().openSession();
+//	    
+//		session.beginTransaction();
 		
 		if(idCompany==0)
 		{
@@ -93,8 +93,8 @@ public class GestioneCampioneDAO {
 		
 		list = (ArrayList<CampioneDTO>)query.list();
 		
-		session.getTransaction().commit();
-		session.close();
+//		session.getTransaction().commit();
+//		session.close();
 	
 	     } catch(Exception e)
 	     {

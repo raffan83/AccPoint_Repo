@@ -12,11 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
@@ -56,7 +59,8 @@ public class ListaCampioniPrenotabili extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		
 		response.setContentType("text/html");
 		
@@ -72,7 +76,7 @@ public class ListaCampioniPrenotabili extends HttpServlet {
 			
 			
 			
-			 ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
+			 ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza(session);
 		        JsonArray tgArrJson = new JsonArray();
 		        JsonObject umArrJson = new JsonObject();
 		        JsonObject jsObjDefault = new JsonObject();
@@ -107,16 +111,17 @@ public class ListaCampioniPrenotabili extends HttpServlet {
 			
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
+			ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione(session);
 			request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
 			request.getSession().setAttribute("listaCampioni",listaCampioni);
-	
+			session.close();
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCampioniPrenotabili.jsp");
 	     	dispatcher.forward(request,response);
 		} 
 		catch (Exception ex) {
 			
+			session.close();
 			ex.printStackTrace();
 		     request.setAttribute("error",STIException.callException(ex));
 		     request.getSession().setAttribute("exception", ex);

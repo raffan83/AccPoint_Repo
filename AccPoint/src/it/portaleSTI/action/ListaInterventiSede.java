@@ -89,7 +89,7 @@ public class ListaInterventiSede extends HttpServlet {
 					
 					ArrayList<InterventoDTO> listaInterventiPerSede = GestioneInterventoBO.getListaInterventiDaSede(idCliente,idSede,idCompany.getId(),user, session); 
 					request.getSession().setAttribute("listaInterventi", listaInterventiPerSede);
-					ArrayList<StatoInterventoDTO> listaStatoInterventi = GestioneTLDAO.getListaStatoIntervento();
+					ArrayList<StatoInterventoDTO> listaStatoInterventi = GestioneTLDAO.getListaStatoIntervento(session);
 					request.getSession().setAttribute("listaStatoInterventi", listaStatoInterventi);
 					
 					

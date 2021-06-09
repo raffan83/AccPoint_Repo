@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.apache.pdfbox.multipdf.Splitter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
@@ -67,8 +68,11 @@ import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.action.GestioneFormazione;
 
 public class GestioneFormazioneBO {
+	static final Logger logger = Logger.getLogger(GestioneFormazioneBO.class);
 
 	public static ArrayList<ForDocenteDTO> getListaDocenti(Session session) {
 	
@@ -503,6 +507,8 @@ public class GestioneFormazioneBO {
 		
 			if(pdftext.contains(keyNome)) {
 				
+				
+				
 				String nominativo = pdftext.substring(pdftext.indexOf(keyNome) + keyNome.length(), pdftext.indexOf(keyNascita));
 				String data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyLuogoStart));
 				String luogo_nascita =  pdftext.substring(pdftext.indexOf(keyLuogoStart) + keyLuogoStart.length(), pdftext.indexOf(keyLuogoEnd));
@@ -513,12 +519,13 @@ public class GestioneFormazioneBO {
 					
 					cf = pdftext.substring(pdftext.indexOf("opnefeiitalia@flexipec.it") +66, pdftext.indexOf("opnefeiitalia@flexipec.it") +82);
 					
-					df = new SimpleDateFormat("dd MMMM yyyy");
+					df = new SimpleDateFormat("dd MMMM yyyy", locale);
 				
 				}else {
 					cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
 				}						
 						
+			
 				System.out.println(nominativo + " "+ data_nascita+" "+luogo_nascita+" "+cf);
 				
 				ForPartecipanteDTO partecipante = new ForPartecipanteDTO();

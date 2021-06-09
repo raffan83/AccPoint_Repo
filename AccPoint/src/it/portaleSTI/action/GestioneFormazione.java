@@ -2134,6 +2134,15 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			    	  session.save(email);
 			    	  corso.setScheda_consegna_inviata(1);
 			    	  session.update(corso);
+			    	  
+			    	  String dest_rendicontazione = "segreteria@crescosrl.net";
+			    	  
+			    	  SendEmailBO.sendEmailFormazione(corso, dest_rendicontazione, request.getServletContext());
+			    	  ForEmailDTO email_conf = new ForEmailDTO();
+			    	  email_conf.setCorso(corso);
+			    	  email_conf.setUtente(utente);
+			    	  email_conf.setData(new Timestamp(System.currentTimeMillis()));
+			    	  email_conf.setDestinatario(dest_rendicontazione);
 			      }
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();

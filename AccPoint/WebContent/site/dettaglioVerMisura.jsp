@@ -92,13 +92,13 @@
                 <b>Intervento</b>
                  
                    
-                 <a class="btn customTooltip customlink pull-right"  href="gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(misura.verIntervento.id)}" >${misura.verIntervento.id }</a>
+                 <a class=" customTooltip customlink pull-right"  href="gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(misura.verIntervento.id)}" >${misura.verIntervento.id }</a>
                 </li>
                  <li class="list-group-item">
                 <b>Pacchetto</b>
                  
                    
-                 <a class="btn pull-right" onClick="modalListaFile('${misura.verIntervento.nome_pack }')" >${misura.verIntervento.nome_pack}</a>
+                 <a class=" pull-right " href="#" onClick="modalListaFile('${misura.verIntervento.nome_pack }')" >${misura.verIntervento.nome_pack}</a>
                 </li>
 
         </ul>

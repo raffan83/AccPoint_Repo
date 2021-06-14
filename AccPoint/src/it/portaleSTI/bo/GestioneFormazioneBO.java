@@ -44,10 +44,13 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.PdfString;
 import com.itextpdf.text.pdf.parser.ImageRenderInfo;
+import com.itextpdf.text.pdf.parser.LineSegment;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.RenderListener;
 import com.itextpdf.text.pdf.parser.TextRenderInfo;
+import com.itextpdf.text.pdf.parser.Vector;
 import com.lowagie.text.pdf.PdfDocument;
 
 import TemplateReport.PivotTemplate;
@@ -689,6 +692,7 @@ public class GestioneFormazioneBO {
 	
 	private static Integer[] getFontPosition(  PdfReader pdfReader, final String keyWord, Integer pageNum) throws IOException {
 	    final Integer[] result = new Integer[2];
+	    final List<Integer[]> list =new ArrayList<Integer[]>();
 	    if (pageNum == null) {
 	        pageNum = pdfReader.getNumberOfPages();
 	    }
@@ -699,15 +703,25 @@ public class GestioneFormazioneBO {
 
 	        public void renderText(TextRenderInfo textRenderInfo) {
 	        	
+//	        	 LineSegment segment = textRenderInfo.getBaseline();
+//	        	    int x = (int) segment.getStartPoint().get(Vector.I1);
+//	        	    // smaller Y means closer to the BOTTOM of the page. So we negate the Y to get proper top-to-bottom ordering
+//	        	    int y = -(int) segment.getStartPoint().get(Vector.I2);
+//	        	    int endx = (int) segment.getEndPoint().get(Vector.I1);
+//	        	    System.out.println("renderText "+x+".."+endx+"/"+y+": "+textRenderInfo.getText());
+//	     
 	            String text = textRenderInfo.getText();
-	          //  System.out.println("text is ：" + text);
+	            
 	            if (text != null && text.contains(keyWord)) {
-	                                     // The abscissa and ordinate of the text in the page
+	                                 
 	                com.itextpdf.awt.geom.Rectangle2D.Float textFloat = textRenderInfo.getBaseline().getBoundingRectange();
 	                float x = textFloat.x;
 	                float y = textFloat.y;
-	                result[0] = (int) x;
-	                result[1] = (int) y;
+	                Integer[] integer = new Integer[2];
+	                integer[0] = (int) x;
+	                integer[1] = (int) y;
+	                list.add(integer);
+	                
 	                 //                    System.out.println(String.format("The signature text field absolute position is x:%s, y:%s", x, y));
 	            }
 	        }
@@ -720,6 +734,22 @@ public class GestioneFormazioneBO {
 
 	        }
 	    });
+	    int max = 0;
+	   	if(list.size()>0) {
+	   		Integer[] integer = list.get(0);
+	   		max = integer[0];
+	   		result[0] = integer[0];
+   			result[1] = integer[1];
+	   	}
+	   	
+	   	for (int i = 1; i < list.size(); i++) {
+	   		Integer[] integer = list.get(i);
+	   		if(integer[0]>max) {
+	   			result[0] = integer[0];
+	   			result[1] = integer[1];
+	   		}
+		}
+
 	    return result;
 	}
 	

@@ -154,6 +154,84 @@
 </div>
 </div>
 </div>
+         
+         
+         
+         
+          <div class="row">
+<div class="col-md-12">
+<div class="box box-danger box-solid" id="grafico_deriva">
+<div class="box-header with-border">
+	 Grafico Deriva
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+
+        <div class="graficoDeriva">
+        
+       
+        
+        <div class="nav-tabs-custom">
+            <ul id="mainTabs" class="nav nav-tabs">
+             <c:forEach items="${arrayPunti}" var="punti" varStatus="loopArrayPunti">
+             <c:if test="${loopArrayPunti.index == 0 }">
+              <li class="active" id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >Grafico Tabella ${loopArrayPunti.index +1 }</a></li>
+              </c:if>
+              <c:if test="${loopArrayPunti.index != 0 }">
+              <li  id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >Grafico Tabella ${loopArrayPunti.index +1 }</a></li>
+              </c:if>
+              		</c:forEach>
+            </ul>
+             <div class="tab-content">
+             <c:forEach items="${arrayPunti}" var="punti" varStatus="loopArrayPunti">
+           
+              <c:if test="${loopArrayPunti.index == 0 }">
+              <div class="tab-pane active" id="tab_grafico_${loopArrayPunti.index }">
+	
+	  <canvas id="graficoDeriva${loopArrayPunti.index }"></canvas>
+	
+	
+    			</div> 
+    		</c:if>	
+    		
+    		<c:if test="${loopArrayPunti.index != 0 }">
+              <div class="tab-pane" id="tab_grafico_${loopArrayPunti.index }">
+	
+	  <canvas id="graficoDeriva${loopArrayPunti.index }"></canvas>
+	
+	
+    			</div> 
+    		</c:if>	
+    		
+    			
+    			</c:forEach>
+</div>
+              <!-- /.tab-pane -->
+             
+
+
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+        
+        
+     
+        
+ 
+	 
+	
+</div>
+</div>
+</div>
+</div>
+</div>
+         
             
           
             
@@ -875,8 +953,12 @@
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
-  <script type="text/javascript" src="js/customCharts.js"></script>
+ <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!--   <script type="text/javascript" src="js/customCharts.js"></script> -->
+<!--   <script src="path/to/chartjs/dist/chart.min.js"></script> -->
+<script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.0.1/chartjs-plugin-zoom.min.js"></script>
+<!-- <script src="path/to/chartjs-plugin-zoom/dist/chartjs-plugin-zoom.min.js"></script> -->
 
   
  <script type="text/javascript">
@@ -885,8 +967,23 @@
 	 
 	 callAction("dettaglioMisura.do?action=download&id_punto="+id_puntoMisura);
  } */
+ 
+ 
+ function attivatab(){
+	 
+ }
+
    
     $(document).ready(function() {
+    	
+    	
+
+		//$('#tab_grafico_1').addClass('active');
+		
+		
+		 //$('.nav-tabs a[href="#rilievi"]').tab('show');
+		 $('a[data-toggle="tab2"]').tab('show');
+
 
     		arrayListaPuntiJson = ${listaPuntJson};
     		
@@ -958,6 +1055,325 @@
 
 				});
 				
+				
+				
+				
+
+		    	/* GRAFICO DERIVA*/
+		    	
+
+			var tipoRapporto = "${misura.strumento.tipoRapporto.noneRapporto}";
+			
+		    	if(tipoRapporto=='RDP'){
+		    		$('#grafico').hide();
+		    		$('#grafico_deriva').hide();
+		    	}
+		    	
+		    	
+		   for (var i = 0;i<arrayListaPuntiJson.length;i++){
+			   
+			   
+			   var  myChart2 = null;	
+		    	numberBack2 = Math.ceil(Object.keys(arrayListaPuntiJson).length/6);
+		    	if(numberBack2>0){
+		    		grafico2 = {};
+		    		grafico2.labels = [];
+		    		 
+		    		dataset1 = {};
+		    		dataset1.data = [];
+		    		dataset1.label = "Accettabilità +";
+		    		dataset2 = {};
+		    		dataset2.data = [];
+		    		dataset2.label =  "Accettabilità -";
+		    		dataset3 = {};
+		    		dataset3.data = [];
+		    		dataset3.label ="Punto + U";
+		    		dataset4 = {};
+		    		dataset4.data = [];
+		    		dataset4.label = "Punto";
+		    		dataset5 = {};
+		    		dataset5.data = [];
+		    		dataset5.label =  "Punto - U" ;
+		    		
+		   
+		    		
+		    			dataset1.backgroundColor = [];
+		    			dataset1.borderColor = [];
+		    			dataset2.backgroundColor = [];
+		    			dataset2.borderColor = [];
+		    			dataset3.backgroundColor = [];
+		    			dataset3.borderColor = [];
+		    			dataset4.backgroundColor = [];
+		    			dataset4.borderColor = [];
+		    			dataset5.backgroundColor = [];
+		    			dataset5.borderColor = [];
+
+		    		     
+		    		      newArr = [		    		         
+		    		         'rgba(54, 162, 235, 0.8)',
+		    		         'rgba(255, 99, 132, 0.8)',
+		    		         'rgba(255, 206, 86, 0.8)',
+		    		         'rgba(75, 192, 192, 0.8)',
+		    		         'rgba(153, 102, 255, 0.8)',
+		    		         'rgba(255, 159, 64, 0.8)'
+		    		     ];
+		    			
+		    			newArrB = [		    		         
+		    		         'rgba(54, 162, 235, 1)',
+		    		         'rgba(255,99,132,1)',
+		    		         'rgba(255, 206, 86, 1)',
+		    		         'rgba(75, 192, 192, 1)',
+		    		         'rgba(153, 102, 255, 1)',
+		    		         'rgba(255, 159, 64, 1)'
+		    		     ]; 
+		    			
+		    			colorBg=[];
+		    			colorLine=[];
+		    	
+		    			colorBg2=[];
+		    			colorLine2=[];
+		    			
+		    			colorBg3=[];
+		    			colorLine3=[];
+		    			
+		    			colorBg4=[];
+		    			colorLine4=[];
+		    			
+		    			colorBg5=[];
+		    			colorLine5=[];
+		    			
+		    			
+		    			dataset1.borderWidth = 2;
+		    			dataset2.borderWidth = 2;
+		    			dataset3.borderWidth = 2;
+		    			dataset4.borderWidth = 2;
+		    			dataset5.borderWidth = 2;
+
+		    		
+		    		var itemHeight1 = 200;
+		    		var total1 = 0;
+		    		
+/* 		    		$.each(arrayListaPuntiJson, function(i,val){
+		    		
+		    			idRip=0;
+		    			var tab_index = 1; */
+		    			var val = arrayListaPuntiJson[i];
+			    		$.each(val, function(j,punto){
+			    						    			
+			    			
+					    	tipoProva = punto.tipoProva.substring(0, 1);
+			    			
+			    			if(tipoProva == "L"){
+			    				var val = punto.risoluzione_misura.toString().split(".");
+			    				var scale = 0;
+			    				if(val.length>1){
+			    					scale = val[1].length;
+			    				}
+			    				
+			    				grafico2.labels.push(punto.tipoVerifica);
+			    				if(scale==0){
+			    					dataset1.data.push(punto.valoreStrumento + Math.round(punto.accettabilita));
+			    					dataset2.data.push(punto.valoreStrumento - Math.round(punto.accettabilita));
+			    				}else{
+			    					dataset1.data.push((punto.valoreStrumento + parseFloat(punto.accettabilita.toFixed(scale))).toFixed(scale));
+			    					dataset2.data.push((punto.valoreStrumento - parseFloat(punto.accettabilita.toFixed(scale))).toFixed(scale));
+			    				}
+				    			
+				    			dataset3.data.push(punto.valoreStrumento + punto.incertezza);
+				    			dataset4.data.push(punto.valoreStrumento );
+				    			dataset5.data.push(punto.valoreStrumento - punto.incertezza);
+				    			
+			    			}else if(tipoProva == "R"){
+			    				
+			    				var val = punto.risoluzione_misura.toString().split(".");
+			    				var scale = 0;
+			    				if(val.length>1){
+			    					scale = val[1].length;
+			    				}
+			    				
+			    				grafico2.labels.push(punto.tipoVerifica);
+			    				if(scale==0){
+			    					dataset1.data.push(punto.valoreMedioStrumento + Math.round(punto.accettabilita));	
+			    					dataset2.data.push(punto.valoreMedioStrumento - Math.round(punto.accettabilita));
+			    				}else{
+			    					dataset1.data.push((punto.valoreMedioStrumento + parseFloat(punto.accettabilita.toFixed(scale))).toFixed(scale));
+			    					dataset2.data.push((punto.valoreMedioStrumento - parseFloat(punto.accettabilita.toFixed(scale))).toFixed(scale));
+			    				}
+				    			
+				    			;
+				    			dataset3.data.push(punto.valoreMedioStrumento + punto.incertezza);
+				    			dataset4.data.push(punto.valoreMedioStrumento );
+				    			dataset5.data.push(punto.valoreMedioStrumento - punto.incertezza);
+
+			    			}
+			    			
+			    			itemHeight1 += 12;
+			    			total1 += val;
+			    			colorBg.push(newArr[0]);
+					    	colorLine.push(newArrB[0]);
+					    	
+					    	colorBg2.push(newArr[1]);
+					    	colorLine2.push(newArrB[1]);
+					    	
+					    	colorBg3.push(newArr[2]);
+					    	colorLine3.push(newArrB[2]);
+					    	
+					    	colorBg4.push(newArr[3]);
+					    	colorLine4.push(newArrB[3]);
+					    	
+					    	colorBg5.push(newArr[4]);
+					    	colorLine5.push(newArrB[4]);
+					  
+			    			
+		    			});
+		    		//});
+		    		
+		    		dataset1.backgroundColor = dataset1.backgroundColor.concat(colorBg);
+	    			dataset1.borderColor = dataset1.borderColor.concat(colorLine);
+	    			dataset2.backgroundColor = dataset2.backgroundColor.concat(colorBg2);
+	    			dataset2.borderColor = dataset2.borderColor.concat(colorLine2);
+	    			dataset3.backgroundColor = dataset3.backgroundColor.concat(colorBg3);
+	    			dataset3.borderColor = dataset3.borderColor.concat(colorLine3);
+	    			dataset4.backgroundColor = dataset4.backgroundColor.concat(colorBg4);
+	    			dataset4.borderColor = dataset4.borderColor.concat(colorLine4);
+	    			dataset5.backgroundColor = dataset5.backgroundColor.concat(colorBg5);
+	    			dataset5.borderColor = dataset5.borderColor.concat(colorLine5);
+	    			dataset1.fill = false,
+	    			dataset2.fill = false,
+	    			dataset3.fill = false,	    			
+	    			dataset4.fill = false,
+	    			dataset5.fill = false,
+	    			dataset1.tension = 0.2,
+	    			dataset2.tension = 0.2,
+	    			dataset3.tension = 0.2,	    			
+	    			dataset4.tension = 0.2,
+	    			dataset5.tension = 0.2,
+	    			
+		    		//$(".graficoDeriva").height("290");
+		    		
+/* 		    		if(tipoRapporto=="SVT"){
+		    			dataset2.backgroundColor = dataset.backgroundColor.concat(colorBg2);
+		    			dataset2.borderColor = dataset.borderColor.concat(colorLine2);
+		    			grafico1.datasets = [dataset1,dataset2];
+		    		}else{ */
+		    			grafico2.datasets = [dataset1, dataset2, dataset3, dataset4, dataset5];
+	//	    		}
+		    		 var ctx2 = document.getElementById("graficoDeriva"+i).getContext("2d");
+		    		
+		    		
+		    		 var config2 = {
+		        		     data: grafico2,		        		    
+		        		     options: {
+		        		    	 responsive: true, 
+		        		    	 maintainAspectRatio: true,
+		        		    	 scales: {
+		        		    	        yAxes: [{
+		        		    	            ticks: {
+		        		    	                beginAtZero: false
+		        		    	            }
+		        		    	        }],
+		        		    	        xAxes: [{
+		        		    	            ticks: {
+		        		    	                autoSkip: true
+		        		    	            }
+		        		    	        }]
+		        		    	    },
+		    		 plugins: {
+		    		      zoom: {
+		    		        zoom: {
+		    		          wheel: {
+		    		            enabled: true,
+		    		          },
+		    		          pinch: {
+		    		            enabled: true
+		    		          },
+		    		          mode: 'y',
+		    		        }
+		    		      },
+		    		      
+		    		      tooltip:{
+		    		    	  
+		    		    	   callbacks: {
+	 			    		      // tooltipItem is an object containing some information about the item that this label is for (item that will show in tooltip). 
+	 			    		      // data : the chart data item containing all of the datasets
+	 			    		      label: function(tooltipItem, data) {
+	 			    		    	  
+	 			    		    	 var label = tooltipItem.dataset.label;
+	 			    		    	var index = tooltipItem.dataIndex;	 			    		    	
+	 			    		    	  	 			    		    	  
+	 			    		    	  if(tooltipItem.datasetIndex == 3){
+	 			    		    		  
+	 			    		    		  var ret = [];
+	 			    		    		  
+	 			    		    		 var accettabilita = grafico2.datasets[0].data;
+		 			    		    	  var U = grafico2.datasets[2].data;		 			    		    	  
+		 			    		    	  
+		 			    		    	 var value = tooltipItem.formattedValue;		 		
+		 			    		    	var val = accettabilita[index].toString().split(".");
+					    				var scale = 0;
+					    				if(val.length>1){
+					    					scale = val[1].length;
+					    				}
+					    				
+	 			    		    		  
+	 			    		    		var lab = "Accettabilita: " + (accettabilita[index] - tooltipItem.dataset.data[index]).toFixed(scale);
+	 			    		    		var U = "U: " + (U[index] - tooltipItem.dataset.data[index]).toFixed(2)
+
+	 			    		    		ret.push(label + ": "+value);
+	 			    		    		ret.push(lab);
+	 			    		    		ret.push(U);
+	 			    		    		
+	 			    		    		//return label + ": "+value+" " + lab + U;
+	 			    		    		return ret;
+	 			    		    		
+	 			    		    	  }else{
+	 			    		    		  return label +": " + tooltipItem.dataset.data[index]
+	 			    		    	  }
+	
+	 			    		      }
+	 			    		    } 
+		    		    	  
+		    		    	  
+		    		      }
+		        		    	    
+		        		    	    
+		        		    	    
+		    		    }
+		        		     }
+		        		 };
+		 			 
+		 				config2.type = "line";
+/* 		 				config2.options.tooltips = {
+		 			    		 callbacks: {
+		 			    		      // tooltipItem is an object containing some information about the item that this label is for (item that will show in tooltip). 
+		 			    		      // data : the chart data item containing all of the datasets
+		 			    		      label: function(tooltipItem, data) {
+		 			    		    	  var value = data.datasets[0].data[tooltipItem.index];
+		 			                      var label = data.labels[tooltipItem.index];
+		 			                      var percentage =  value / total1 * 100;
+		 			                     
+		 			                      return label + ': ' + value + ' - ' + percentage.toFixed(2) + '%';
+
+		 			    		      }
+		 			    		    }
+		 	  		 		 }; */
+		 		
+		    		  myChart2 = new Chart(ctx2, config2);
+		    	 
+		    	}else{
+		    		if(myChart2!= null){
+		    		 	myChart2.destroy();
+		    		 }
+		    	}
+
+			   
+			   
+			   
+		   } 	
+		    	
+		  				
+    		
+ 	
 				
 
 		    	/* GRAFICO incertezza*/

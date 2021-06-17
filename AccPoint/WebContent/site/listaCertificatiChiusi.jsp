@@ -92,7 +92,7 @@
 	<td>${certificato.misura.interventoDati.utente.nominativo}</td>
 	<td>${certificato.misura.nCertificato}</td>
 		<td class="actionClass" align="center" style="min-width:250px">
-			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${utl:encryptData(certificato.misura.id)}" ><i class="fa fa-tachometer"></i></a>
+			<a target="_blank" class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${utl:encryptData(certificato.misura.id)}" ><i class="fa fa-tachometer"></i></a>
 			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"   onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
 			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento ${certificato.misura.intervento.nomePack}" onClick="openDettaglioInterventoModal('intervento',${loop.index})"><i class="fa fa-file-text-o"></i>  </a>
 			

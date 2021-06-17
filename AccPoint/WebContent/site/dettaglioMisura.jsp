@@ -1076,7 +1076,8 @@
 			   var  myChart2 = null;	
 		    	numberBack2 = Math.ceil(Object.keys(arrayListaPuntiJson).length/6);
 		    	if(numberBack2>0){
-		    		grafico2 = {};
+		    		var grafico2 = {};
+		    		
 		    		grafico2.labels = [];
 		    		 
 		    		dataset1 = {};
@@ -1304,9 +1305,9 @@
 	 			    		    	  if(tooltipItem.datasetIndex == 3){
 	 			    		    		  
 	 			    		    		  var ret = [];
-	 			    		    		  
-	 			    		    		 var accettabilita = grafico2.datasets[0].data;
-		 			    		    	  var U = grafico2.datasets[2].data;		 			    		    	  
+	 			    		    		  var x = $(this)
+	 			    		    		 var accettabilita = tooltipItem.chart.config._config.data.datasets[0].data;
+		 			    		    	  var U = tooltipItem.chart.config._config.data.datasets[2].data;	 			    		    	  
 		 			    		    	  
 		 			    		    	 var value = tooltipItem.formattedValue;		 		
 		 			    		    	var val = accettabilita[index].toString().split(".");

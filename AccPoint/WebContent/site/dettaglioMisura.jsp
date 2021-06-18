@@ -1426,6 +1426,11 @@
 		    		            enabled: true
 		    		          },
 		    		          mode: 'y',
+		    		        },
+		    		        pan: {
+		    		        	enabled: true,
+		    		        	mode : 'xy'
+		    		        	
 		    		        }
 		    		      },
 		    		      

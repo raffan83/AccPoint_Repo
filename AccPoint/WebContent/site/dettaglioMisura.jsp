@@ -158,7 +158,7 @@
          
          
          
-          <div class="row">
+          <%-- <div class="row">
 <div class="col-md-12">
 <div class="box box-danger box-solid" id="grafico_deriva">
 <div class="box-header with-border">
@@ -180,10 +180,28 @@
             <ul id="mainTabs" class="nav nav-tabs">
              <c:forEach items="${arrayPunti}" var="punti" varStatus="loopArrayPunti">
              <c:if test="${loopArrayPunti.index == 0 }">
-              <li class="active" id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >Grafico Tabella ${loopArrayPunti.index +1 }</a></li>
+             <c:set var="n_punti" value="${punti[loopArrayPunti.index].tipoProva.split('_')[1] }"></c:set>
+             
+             <c:if test="${fn:startsWith(punti[loopArrayPunti.index].tipoProva, 'L')}">
+             <li class="active" id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >LINEARIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]</a></li>
+             </c:if>
+             <c:if test="${fn:startsWith(punti[loopArrayPunti.index].tipoProva, 'R')}">
+             <li class="active" id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >RIPETIBILIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]</a></li>
+             </c:if>
+              
               </c:if>
               <c:if test="${loopArrayPunti.index != 0 }">
-              <li  id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >Grafico Tabella ${loopArrayPunti.index +1 }</a></li>
+              
+                <c:set var="n_punti" value="${punti[0].tipoProva.split('_')[1] }"></c:set>
+              
+               <c:if test="${fn:startsWith(punti[0].tipoProva, 'L')}"> 
+             <li id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >LINEARIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]</a></li>
+              </c:if>
+             <c:if test="${fn:startsWith(punti[0].tipoProva, 'R')}">
+             <li id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >RIPETIBILIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]</a></li>
+             </c:if> 
+              
+              <li  id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >Grafico Tabella ${loopArrayPunti.index +1 }</a></li> 
               </c:if>
               		</c:forEach>
             </ul>
@@ -229,10 +247,9 @@
 </div>
 </div>
 </div>
-</div>
-</div>
-         
-            
+</div> --%>
+<!-- </div>
+   -->
           
             
               <div class="row">
@@ -549,6 +566,112 @@
 
  </tbody>
  </table> 
+ 
+ <c:set var="n_punti" value="${punti[loopArrayPunti.index].tipoProva.split('_')[1] }"></c:set>
+ 
+ 
+ <div class="row">
+<div class="col-md-12">
+<div class="box box-danger box-solid collapsed-box" id="grafico_deriva">
+<div class="box-header with-border">
+
+             <c:if test="${fn:startsWith(punti[0].tipoProva, 'L')}">
+               GRAFICO DERIVA LINEARIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]
+             </c:if>
+             <c:if test="${fn:startsWith(punti[0].tipoProva, 'R')}">
+             GRAFICO DERIVA RIPETIBILIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]
+             </c:if>
+	
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+
+        <div class="graficoDeriva">
+        
+         <canvas id="graficoDeriva${loopArrayPunti.index }"></canvas>
+        
+       <%--  <div class="nav-tabs-custom">
+        
+            <ul id="mainTabs" class="nav nav-tabs">
+             <c:forEach items="${arrayPunti}" var="punti" varStatus="loopArrayPunti">
+             <c:if test="${loopArrayPunti.index == 0 }">
+             
+             
+             <c:if test="${fn:startsWith(punti[loopArrayPunti.index].tipoProva, 'L')}">
+             <li class="active" id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >LINEARIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]</a></li>
+             </c:if>
+             <c:if test="${fn:startsWith(punti[loopArrayPunti.index].tipoProva, 'R')}">
+             <li class="active" id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >RIPETIBILIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]</a></li>
+             </c:if>
+              
+              </c:if>
+              <c:if test="${loopArrayPunti.index != 0 }">
+              
+                <c:set var="n_punti" value="${punti[0].tipoProva.split('_')[1] }"></c:set>
+              
+               <c:if test="${fn:startsWith(punti[0].tipoProva, 'L')}"> 
+             <li id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >LINEARIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]</a></li>
+              </c:if>
+             <c:if test="${fn:startsWith(punti[0].tipoProva, 'R')}">
+             <li id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >RIPETIBILIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]</a></li>
+             </c:if> 
+              
+              <li  id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >Grafico Tabella ${loopArrayPunti.index +1 }</a></li> 
+              </c:if>
+              		</c:forEach>
+            </ul>
+             <div class="tab-content">
+             <c:forEach items="${arrayPunti}" var="punti" varStatus="loopArrayPunti">
+           
+              <c:if test="${loopArrayPunti.index == 0 }">
+              <div class="tab-pane active" id="tab_grafico_${loopArrayPunti.index }">
+	
+	
+	
+	
+    			</div> 
+    		</c:if>	
+    		
+    		<c:if test="${loopArrayPunti.index != 0 }"> 
+              <div class="tab-pane" id="tab_grafico_${loopArrayPunti.index }">
+	
+	  <canvas id="graficoDeriva${loopArrayPunti.index }"></canvas>
+	
+	
+    			</div> 
+    	<%-- 	</c:if>	
+    		
+    			
+    			</c:forEach>
+</div>
+              <!-- /.tab-pane -->
+             
+
+
+              <!-- /.tab-pane -->
+            </div> --%>
+            <!-- /.tab-content -->
+          </div>
+        
+        
+     
+        
+ 
+	 
+	
+</div>
+</div>
+</div>
+</div>
+ 
+ 
+ 
+ 
  </c:forEach> 
 </div>
 </div>
@@ -677,6 +800,7 @@
 
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
+            <LI>
              <ul class="nav nav-tabs">
               <li class="active"><a href="#dettagliopunto" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioPuntoTab">Dettaglio Punto</a></li>
          
@@ -684,6 +808,7 @@
                <li class=""><a href="#modificapunto" data-toggle="tab" aria-expanded="false" onclick="" id="modificaPuntoTab">Modifica Punto</a></li>
 		</c:if>		
               </ul>
+              </LI>
             </ul>
             <div class="tab-content">
                <div class="tab-pane active" id="dettagliopunto">
@@ -811,7 +936,9 @@
 		        	
 				</div>
 				</ul>
+			
 			</div>
+			
     			</div> 
 
               <!-- /.tab-pane -->
@@ -1175,14 +1302,20 @@
 			    				if(scale==0){
 			    					dataset1.data.push(punto.valoreStrumento + Math.round(punto.accettabilita));
 			    					dataset2.data.push(punto.valoreStrumento - Math.round(punto.accettabilita));
+			    					dataset3.data.push(punto.valoreStrumento + Math.round(punto.incertezza));
+			    					dataset5.data.push(punto.valoreStrumento -  Math.round(punto.incertezza));
 			    				}else{
 			    					dataset1.data.push((punto.valoreStrumento + parseFloat(punto.accettabilita.toFixed(scale))).toFixed(scale));
 			    					dataset2.data.push((punto.valoreStrumento - parseFloat(punto.accettabilita.toFixed(scale))).toFixed(scale));
+			    					dataset3.data.push((punto.valoreStrumento + parseFloat(punto.incertezza.toFixed(scale))).toFixed(scale));
+			    					dataset5.data.push((punto.valoreStrumento - parseFloat(punto.incertezza.toFixed(scale))).toFixed(scale));
+			    					/* dataset3.data.push((punto.valoreStrumento + punto.incertezza));
+			    					dataset5.data.push(punto.valoreStrumento - punto.incertezza); */
 			    				}
 				    			
-				    			dataset3.data.push(punto.valoreStrumento + punto.incertezza);
+				    			
 				    			dataset4.data.push(punto.valoreStrumento );
-				    			dataset5.data.push(punto.valoreStrumento - punto.incertezza);
+				    			
 				    			
 			    			}else if(tipoProva == "R"){
 			    				
@@ -1196,15 +1329,19 @@
 			    				if(scale==0){
 			    					dataset1.data.push(punto.valoreMedioStrumento + Math.round(punto.accettabilita));	
 			    					dataset2.data.push(punto.valoreMedioStrumento - Math.round(punto.accettabilita));
+			    					dataset3.data.push(punto.valoreMedioStrumento + Math.round(punto.incertezza));
+			    					dataset5.data.push(punto.valoreMedioStrumento -  Math.round(punto.incertezza));
 			    				}else{
 			    					dataset1.data.push((punto.valoreMedioStrumento + parseFloat(punto.accettabilita.toFixed(scale))).toFixed(scale));
 			    					dataset2.data.push((punto.valoreMedioStrumento - parseFloat(punto.accettabilita.toFixed(scale))).toFixed(scale));
+			    					dataset3.data.push((punto.valoreMedioStrumento + parseFloat(punto.incertezza.toFixed(scale))).toFixed(scale));
+			    					dataset5.data.push((punto.valoreMedioStrumento - parseFloat(punto.incertezza.toFixed(scale))).toFixed(scale));
 			    				}
 				    			
-				    			;
-				    			dataset3.data.push(punto.valoreMedioStrumento + punto.incertezza);
+				    			
+				    			//dataset3.data.push(punto.valoreMedioStrumento + punto.incertezza);
 				    			dataset4.data.push(punto.valoreMedioStrumento );
-				    			dataset5.data.push(punto.valoreMedioStrumento - punto.incertezza);
+				    			//dataset5.data.push(punto.valoreMedioStrumento - punto.incertezza);
 
 			    			}
 			    			
@@ -1229,16 +1366,16 @@
 		    			});
 		    		//});
 		    		
-		    		dataset1.backgroundColor = dataset1.backgroundColor.concat(colorBg);
-	    			dataset1.borderColor = dataset1.borderColor.concat(colorLine);
+		    		dataset1.backgroundColor = dataset1.backgroundColor.concat(colorBg2);
+	    			dataset1.borderColor = dataset1.borderColor.concat(colorLine2);
 	    			dataset2.backgroundColor = dataset2.backgroundColor.concat(colorBg2);
 	    			dataset2.borderColor = dataset2.borderColor.concat(colorLine2);
-	    			dataset3.backgroundColor = dataset3.backgroundColor.concat(colorBg3);
-	    			dataset3.borderColor = dataset3.borderColor.concat(colorLine3);
-	    			dataset4.backgroundColor = dataset4.backgroundColor.concat(colorBg4);
-	    			dataset4.borderColor = dataset4.borderColor.concat(colorLine4);
-	    			dataset5.backgroundColor = dataset5.backgroundColor.concat(colorBg5);
-	    			dataset5.borderColor = dataset5.borderColor.concat(colorLine5);
+	    			dataset3.backgroundColor = dataset3.backgroundColor.concat(colorBg);
+	    			dataset3.borderColor = dataset3.borderColor.concat(colorLine);
+	    			dataset4.backgroundColor = dataset4.backgroundColor.concat(colorBg3);
+	    			dataset4.borderColor = dataset4.borderColor.concat(colorLine3);
+	    			dataset5.backgroundColor = dataset5.backgroundColor.concat(colorBg);
+	    			dataset5.borderColor = dataset5.borderColor.concat(colorLine);
 	    			dataset1.fill = false,
 	    			dataset2.fill = false,
 	    			dataset3.fill = false,	    			
@@ -1318,7 +1455,7 @@
 					    				
 	 			    		    		  
 	 			    		    		var lab = "Accettabilita: " + (accettabilita[index] - tooltipItem.dataset.data[index]).toFixed(scale);
-	 			    		    		var U = "U: " + (U[index] - tooltipItem.dataset.data[index]).toFixed(2)
+	 			    		    		var U = "U: " + (U[index] - tooltipItem.dataset.data[index]).toFixed(scale)
 
 	 			    		    		ret.push(label + ": "+value);
 	 			    		    		ret.push(lab);

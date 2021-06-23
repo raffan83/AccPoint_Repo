@@ -40,6 +40,8 @@
       <div class="modal-footer">
       
 			<a type="button" class="btn btn-primary" href="/"  >OK</a>
+			
+			
 <!--         <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
       </div>
     </div>

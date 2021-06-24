@@ -36,6 +36,7 @@ import org.hibernate.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -851,6 +852,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 	            		
 	                     fileItem = item;
 	                     filename = item.getName();
+	                     System.out.println(item.getSize());
 	                     
 	            	 }else
 	            	 {
@@ -1342,7 +1344,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 	            		
 	                     fileItem = item;
 	                     filename = item.getName();
-	                     
+	                     System.out.println(item.getSize());
 	            	 }else
 	            	 {
 	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
@@ -1412,6 +1414,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 	            		
 	                     fileItem = item;
 	                     filename = item.getName();
+	                     System.out.println(item.getSize());
 	                     
 	            	 }else
 	            	 {
@@ -1471,6 +1474,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				String[] data = request.getParameterValues("data");
 				String dataOj = request.getParameter("data");
+				String id_azienda_general = request.getParameter("id_azienda_general");
+				String id_sede_general = request.getParameter("id_sede_general");
 				
 				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 				if(listaSedi== null) {
@@ -1483,6 +1488,22 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				JsonArray json_array = jelement.getAsJsonArray();
 				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_partecipanti = new ArrayList<ForPartecipanteRuoloCorsoDTO>(); 
 				ArrayList<String> lista_cf = GestioneFormazioneDAO.getListaCodiciFiscali(session);
+				
+				ClienteDTO cl = null; 
+						
+				if(id_azienda_general!=null && !id_azienda_general.equals("")) {
+					cl = GestioneAnagraficaRemotaBO.getClienteById(""+id_azienda_general);	
+				}					
+				
+				SedeDTO sd =null;
+				String nome_sede = "Non associate";
+				
+			
+				if(id_sede_general!=null && !id_sede_general.equals("0") && !id_azienda_general.equals("")) {
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_general.split("_")[0]), Integer.parseInt(id_azienda_general));
+					nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
+				}		
+				
 				for (JsonElement json : json_array) {
 					JsonObject json_obj = json.getAsJsonObject();
 					
@@ -1491,8 +1512,33 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String cf = json_obj.get("cf").getAsString();
 					String luogo_nascita = json_obj.get("luogo_nascita").getAsString();
 					String data_nascita = json_obj.get("data_nascita").getAsString();
-					int id_azienda = json_obj.get("azienda").getAsInt();
-					String id_sede = json_obj.get("sede").getAsString();
+					int id_azienda = 0;
+					String id_sede = "";
+					ClienteDTO cliente = null;
+					if(json_obj.get("azienda")!=null && !json_obj.get("azienda").getAsString().equals("")) {
+					    id_azienda = json_obj.get("azienda").getAsInt();
+					    cliente  = GestioneAnagraficaRemotaBO.getClienteById(""+id_azienda);	
+					}else {
+						id_azienda = Integer.parseInt(id_azienda_general);						
+						cliente = cl;
+					}
+					
+					if(json_obj.get("sede")!=null &&json_obj.get("sede")!= JsonNull.INSTANCE && !json_obj.get("sede").getAsString().equals("")) {
+						
+						if(json_obj.get("sede").getAsString().equals("0")) {
+							id_sede = "0";
+							
+							nome_sede = "Non Associate";
+						}else {
+							id_sede = json_obj.get("id_sede").getAsString();
+							sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_general.split("_")[0]), Integer.parseInt(id_azienda_general));
+							nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";	
+						}
+						
+					}else {
+						id_sede = id_sede_general;
+					}
+					
 					int id_corso = 0;
 					int id_ruolo = 0;
 					Double ore = 0.0;
@@ -1507,10 +1553,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					if(json_obj.get("ore")!=null && !json_obj.get("ore").getAsString().equals("") ) {	
 						ore = json_obj.get("ore").getAsDouble();
 					}					
-					if(json_obj.get("firma_responsabile")!=null ) {	
+					if(json_obj.get("firma_responsabile")!=null && !json_obj.get("firma_responsabile").getAsString().equals("") ) {	
 						firma_responsabile = json_obj.get("firma_responsabile").getAsInt();
 					}					
-					if(json_obj.get("firma_legale_rappresentante")!=null) {	
+					if(json_obj.get("firma_legale_rappresentante")!=null && !json_obj.get("firma_responsabile").getAsString().equals("") ) {	
 						firma_legale_rappresentante = json_obj.get("firma_legale_rappresentante").getAsInt();
 					}
 				
@@ -1533,27 +1579,12 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 							partecipante.setId_sede(0);
 						}
 						
-						
-						ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(""+id_azienda);	
-									
-						
-						SedeDTO sd =null;
-						String nome_sede = "Non associate";
-						
-					
-						if(!id_sede.equals("0")) {
-							sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), id_azienda);
-							nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
-						}					
-						
-						partecipante.setNome_azienda(cl.getNome());
+						partecipante.setNome_azienda(cliente.getNome());
 						partecipante.setNome_sede(nome_sede);
 						session.saveOrUpdate(partecipante);
 					
 					
-					if(partecipante !=null && id_corso!=0) {
-						
-						
+					if(partecipante !=null && id_corso!=0) {						
 						
 						ForPartecipanteRuoloCorsoDTO p = null;
 						ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(id_corso, session);

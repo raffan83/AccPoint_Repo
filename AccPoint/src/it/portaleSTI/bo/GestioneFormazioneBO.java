@@ -503,7 +503,7 @@ public class GestioneFormazioneBO {
 			String keyNome = "SI CERTIFICA CHE ";
 			String keyNascita = " Nato/a il";
 			String keyLuogoStart = ", in ";
-			String keyLuogoEnd = " Profilo";
+			String keyLuogoEnd = "Profilo";
 			String keyCf = "C.F. : ";
 			String keyCf2 = "C.F. ";
 			Locale locale = new Locale("it", "IT");
@@ -521,13 +521,19 @@ public class GestioneFormazioneBO {
 				if(pdftext.indexOf(keyCf) == -1) {
 					
 					cf = pdftext.substring(pdftext.indexOf("opnefeiitalia@flexipec.it") +66, pdftext.indexOf("opnefeiitalia@flexipec.it") +82);
-					
-					df = new SimpleDateFormat("dd MMMM yyyy", locale);
+										
+				
 				
 				}else {
 					cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
 				}						
 						
+				
+				if(data_nascita.contains("/")) {
+					df = new SimpleDateFormat("dd/MM/yyyy", locale);
+				}else {
+					df = new SimpleDateFormat("dd MMMM yyyy", locale);
+				}
 			
 				System.out.println(nominativo + " "+ data_nascita+" "+luogo_nascita+" "+cf);
 				
@@ -577,6 +583,7 @@ public class GestioneFormazioneBO {
 					}
 				}
 				
+				
 				partecipante.setCf(cf);
 				partecipante.setData_nascita(df.parse(data_nascita));
 				partecipante.setLuogo_nascita(luogo_nascita);
@@ -607,13 +614,14 @@ public class GestioneFormazioneBO {
 	
 	public static void splitPdf(FileItem fileItem, ArrayList<ForPartecipanteRuoloCorsoDTO> lista_partecipanti,Session session) throws Exception, IOException {
 		
-		File file = new File(Costanti.PATH_FOLDER+"\\Formazione\\temp\\attestati_temp.pdf");
-		fileItem.write(file);		
+		//File file = new File(Costanti.PATH_FOLDER+"\\Formazione\\temp\\attestati_temp.pdf");
+		//fileItem.write(file);		
 		
-		PDDocument document = PDDocument.load(file); 
-	
 		PdfReader reader = new PdfReader(fileItem.getInputStream());
+		
+		PDDocument document = PDDocument.load(fileItem.getInputStream()); 
 	
+		
 		int pageNumber = reader.getNumberOfPages();		
 
 		String keyFirstPage = "SI CERTIFICA CHE";
@@ -626,7 +634,7 @@ public class GestioneFormazioneBO {
 				String[] text = getText(reader, i); 
 				String pdftext = text[0];
 				
-				if(pdftext.contains(keyFirstPage) && pdftext.contains(partecipante.getPartecipante().getCf().toUpperCase()) ) {				
+				if(pdftext.contains(keyFirstPage) && pdftext.contains(partecipante.getPartecipante().getCf()) ) {				
 					splitter.setStartPage(i);
 					splitter.setEndPage(i+1);
 					splitter.setSplitAtPage(i+1);
@@ -653,6 +661,8 @@ public class GestioneFormazioneBO {
 				addSign(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf", filename, partecipante.getFirma_legale_rappresentante(), 0);
 			}
 			
+			
+			//System.out.println("Inserito: "+partecipante.getPartecipante().getNome()+" "+partecipante.getPartecipante().getCognome());
 		}
 		
   
@@ -766,17 +776,7 @@ public class GestioneFormazioneBO {
 	    
 	    	Image image = null;
 	    	
-	    	if(firma_responsabile == 0 || firma_responsabile == 1) {
-	    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_alessandro_di_vito.png");	
-	    	}else if(firma_responsabile == 2) {
-	    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_antonio_accettola.png");
-	    	}else if(firma_responsabile == 3) {
-	    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_gabriella_mammone.png");
-	    	}
-	    	
-
-	  	    image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	   
-	    	
+    	
 	    	
 		    String keyWord = "RESPONSABILE";
 		    Integer[] fontPosition = null;
@@ -792,10 +792,22 @@ public class GestioneFormazioneBO {
 					
 					 Rectangle rect = new Rectangle(x, y, w, h);
 				    
-					 image.scaleAbsolute(rect);
-					
-					image.setAbsolutePosition(fontPosition[0] , fontPosition[1] -35);
-					content.addImage(image);
+					 
+				    	if(firma_responsabile == 0 || firma_responsabile == 1) {
+				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_alessandro_di_vito.png");	
+				    	}else if(firma_responsabile == 2) {
+				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_antonio_accettola.png");
+				    	}else if(firma_responsabile == 3) {
+				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_gabriella_mammone.png");
+				    	}
+				    	
+				    	image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	   
+					    
+						 image.scaleAbsolute(rect);
+						
+						image.setAbsolutePosition(fontPosition[0] , fontPosition[1] -35);
+						
+						content.addImage(image);
 					
 					break;
 				}else {
@@ -811,10 +823,22 @@ public class GestioneFormazioneBO {
 					int h = y + 31;
 					
 					 Rectangle rect = new Rectangle(x, y, w, h);
+					 
+				    	if(firma_responsabile == 0 || firma_responsabile == 1) {
+				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_alessandro_di_vito.png");	
+				    	}else if(firma_responsabile == 2) {
+				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_antonio_accettola.png");
+				    	}else if(firma_responsabile == 3) {
+				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_gabriella_mammone.png");
+				    	}
+				    	
+
+				  	    image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	   
 				    
 					 image.scaleAbsolute(rect);
 					
 					image.setAbsolutePosition(fontPosition[0] , fontPosition[1] -35);
+					
 					content.addImage(image);
 					break;
 					}

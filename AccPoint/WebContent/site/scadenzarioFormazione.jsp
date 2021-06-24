@@ -112,6 +112,7 @@
 <th>Partecipante</th>
 <th>Ruolo</th>
 <th>Tipologia</th>
+<th>Descrizione</th>
 <th>Data Corso</th>
 <th>Data Scadenza</th>
 <th>Frequenza (mesi)</th>
@@ -133,6 +134,7 @@
 	
 	<td>${corso_part.ruolo.descrizione }</td>
 	<td>${corso_part.corso.corso_cat.descrizione }</td>
+	<td>${corso_part.corso.descrizione }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso_part.corso.data_corso}" /></td>	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso_part.corso.data_scadenza}" /></td>
 	<td>${corso_part.corso.corso_cat.frequenza }</td>
@@ -397,9 +399,9 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 10 },
-		    	  { responsivePriority: 2, targets: 8 },
-		    	  { responsivePriority: 3, targets: 9 }
+		    	  { responsivePriority: 1, targets: 11 },
+		    	  { responsivePriority: 2, targets: 9 },
+		    	  { responsivePriority: 3, targets: 10 }
 		    	  
 		    	  
 		    	  

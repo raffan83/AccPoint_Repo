@@ -29,6 +29,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;import org.apache
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -1629,10 +1630,10 @@ public class GestioneDocumentale extends HttpServlet {
 			
 				PrintWriter out = response.getWriter();
 				response.setContentType("application/json");
-				 Gson gson = new Gson(); 			        			        
-			     			       		       
+				 Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create(); 			        			        
+			     			      		       
 			        myObj.addProperty("success", true);
-			  
+			
 			        myObj.add("lista_documenti", gson.toJsonTree(lista_documenti));			      
 			        
 			        out.println(myObj.toString());
@@ -1656,7 +1657,7 @@ public class GestioneDocumentale extends HttpServlet {
 								
 				PrintWriter out = response.getWriter();
 				response.setContentType("application/json");
-				 Gson gson = new Gson(); 
+				 Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create(); 
 			        			        
 			     			       		       
 			        myObj.addProperty("success", true);

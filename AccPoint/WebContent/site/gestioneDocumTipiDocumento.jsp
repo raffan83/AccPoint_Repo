@@ -85,7 +85,7 @@
 	
 	</td>
 	<td>	
-	<a class="btn btn-warning customTooltip" onClick="modalModificaTipoDocumento('${tipo.id}','${tipo.descrizione}','${tipo.aggiornabile_cl_default}')" title="Click per modificare il tipo documento"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning customTooltip" onClick="modalModificaTipoDocumento('${tipo.id}','${utl:escapeJS(tipo.descrizione)}','${tipo.aggiornabile_cl_default}')" title="Click per modificare il tipo documento"><i class="fa fa-edit"></i></a>
     <a class="btn btn-danger customTooltip" onClick="modalEliminaTipoDocumento('${tipo.id}')" title="Click per eliminare il documento"><i class="fa fa-trash"></i></a>
 	
 	</td>
@@ -133,7 +133,7 @@
 		</div>
 		
 		<div class="col-sm-9">
-       <input type="checkbox" class="form-control" id="aggiornabile_cl_default" name="aggiornabile_cl_default" value="0">
+       <input type="checkbox" class="form-control" id="agg_cl_default" name="agg_cl_default" value="0">
 		</div>
 		</div>
 
@@ -141,7 +141,7 @@
     </div>
           <div class="modal-footer">
  		
- 		
+ 		<input type="hidden" id ="aggiornabile_cl_default" name="aggiornabile_cl_default" value="0">
          <button type="submit" class="btn btn-primary pull-right"> Salva</button>
          
          </div>
@@ -252,13 +252,13 @@
 
 
 
-$('#aggiornabile_cl_default').on('ifClicked',function(e){
-	if($('#aggiornabile_cl_default').is( ':checked' )){
-		$('#aggiornabile_cl_default').iCheck('uncheck');
-		$(this).val(0);
+$('#agg_cl_default').on('ifClicked',function(e){
+	if($('#agg_cl_default').is( ':checked' )){
+		$('#agg_cl_default').iCheck('uncheck');
+		$('#aggiornabile_cl_default').val(0);
 	}else{
-		$('#aggiornabile_cl_default').iCheck('check');
-		$(this).val(1);
+		$('#agg_cl_default').iCheck('check');
+		$('#aggiornabile_cl_default').val(1);
 	}
 });
 

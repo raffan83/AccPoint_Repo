@@ -530,9 +530,28 @@ function modalAssociaDocumenti(id_committente, id_fornitore,id_dipendente){
   				dati.numero_documento = lista_documenti[i].numero_documento; 
   			  }
   			  
-  			  dati.data_caricamento =  formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
-  			  dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
-  			  dati.data_scadenza =  formatDate(moment(lista_documenti[i].data_scadenza, "DD, MMM YY"));
+ 			 if(lista_documenti[i].data_caricamento == null){
+				 dati.data_caricamento = '';
+			 }else{
+				 dati.data_caricamento = lista_documenti[i].data_caricamento;	 
+			 }
+			 
+			 if(lista_documenti[i].data_rilascio == null){
+				 dati.data_rilascio = '';
+			 }else{
+				 dati.data_rilascio = lista_documenti[i].data_rilascio;	 
+			 }
+			 
+			
+			 dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
+			 
+			 if(lista_documenti[i].data_scadenza == null){
+				 dati.data_scadenza = '';
+			 }else{
+				 dati.data_scadenza = lista_documenti[i].data_scadenza;	 
+			 }
+			 
+  			  
   			  if(lista_documenti[i].stato!=null){
   				  dati.stato = lista_documenti[i].stato.nome 
   			  }else{

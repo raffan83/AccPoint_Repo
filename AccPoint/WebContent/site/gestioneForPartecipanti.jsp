@@ -491,7 +491,7 @@
                     <option value=""></option> 
                         <c:forEach items="${lista_corsi}" var="corso">
                        		
-                      	<option value="${corso.id }" >${corso.descrizione}</option> 
+                      	<option value="${corso.id }" >ID: ${corso.id} - ${corso.descrizione}</option> 
                     			 
                      	</c:forEach>
                     
@@ -662,6 +662,34 @@
 
 
 </div>
+
+
+
+  <div id="modalProgress" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Importazione dei partecipanti in corso...</h4>
+      </div>
+       <div class="modal-body">       
+      <div id="myProgress">
+  <div class="progress" id="myBar"></div>
+</div>
+      	</div>
+<!--       <div class="modal-footer">
+      <input type="hidden" id="elimina_partecipante_id">
+      <a class="btn btn-primary" onclick="eliminaPartecipante($('#elimina_partecipante_id').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div> -->
+    </div>
+  </div>
+
+</div>
+
+
+
    <t:dash-footer />
    
   <t:control-sidebar />
@@ -678,6 +706,31 @@
 
 <style>
 
+.progress {
+    display: block;
+    text-align: center;
+    width: 0;
+    height: 3px;
+    background: red;
+    transition: width .3s;
+}
+.progress.hide {
+    opacity: 0;
+    transition: opacity 1.3s;
+}
+
+
+#myProgress {
+  width: 100%;
+  background-color: grey;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: green;
+}
+
 
 .table th {
     background-color: #3c8dbc !important;
@@ -693,6 +746,7 @@
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+
 <script type="text/javascript">
 
 $('#formReport').on('submit', function(e){
@@ -900,9 +954,13 @@ $('#myModalReportPartecipanti').on('hidden.bs.modal', function(){
 	$("#sede_report").prop("disabled", true);
 });
 
+var dataSelect2 = {};
 
 $(document).ready(function() {
 
+	
+	dataSelect2 = mockData();
+	
      $('.dropdown-toggle').dropdown();
      
      $('.datepicker').datepicker({
@@ -937,7 +995,7 @@ $(document).ready(function() {
 	    dropdownParent: $('#myModalAssociaUtenti')
 	});
 
-     table = $('#tabForPartecipante').DataTable({
+   var  tablePartecipante = $('#tabForPartecipante').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -986,15 +1044,15 @@ $(document).ready(function() {
 		               
 		    });
 		
-		table.buttons().container().appendTo( '#tabForPartecipante_wrapper .col-sm-6:eq(1)');
+   tablePartecipante.buttons().container().appendTo( '#tabForPartecipante_wrapper .col-sm-6:eq(1)');
 		
 	 	    $('.inputsearchtable').on('click', function(e){
 	 	       e.stopPropagation();    
 	 	    });
 
-	 	     table.columns().eq( 0 ).each( function ( colIdx ) {
-	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-	      table
+	 	   tablePartecipante.columns().eq( 0 ).each( function ( colIdx ) {
+	  $( 'input', tablePartecipante.column( colIdx ).header() ).on( 'keyup', function () {
+		  tablePartecipante
 	          .column( colIdx )
 	          .search( this.value )
 	          .draw();
@@ -1003,7 +1061,7 @@ $(document).ready(function() {
 	
 	
 	
-		table.columns.adjust().draw();
+	 	  tablePartecipante.columns.adjust().draw();
 		
 
 	$('#tabForPartecipante').on( 'page.dt', function () {
@@ -1094,12 +1152,12 @@ $(document).ready(function() {
 	        "order": [[ 0, "desc" ]],
 		      paging: false, 
 		      ordering: true,
-		      info: false, 
+		      info: true, 
 		      searchable: false, 
 		      targets: 0,
 		      responsive: true,  
 		      scrollX: false,
-		      stateSave: true,	
+		      stateSave: false,	
 		     fixedColumns : true,
 		      columns : [
 		      	{"data" : "nome", createdCell: editableCell},
@@ -1180,6 +1238,7 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 	 var data = [];
 	 
 	 var checkForm = 1;
+	 var checkAzienda = 1;
 	 
 	 for (var i = 0; i < data_table.length; i++) {
 		 var partecipante ={};
@@ -1220,22 +1279,25 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
 				$(x).css("background-color","#F8F26D")
 		 }
-		 if($('#azienda_table_'+data_table[i].cf).val() == null || $('#azienda_table_'+data_table[i].cf).val() == ''){
+		 
+
+		 
+ 		 if($('#azienda_table_'+data_table[i].cf).val() == null || $('#azienda_table_'+data_table[i].cf).val() == ''){
+ 			checkAzienda = 0;
+			 //var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+			//	$(x).css("background-color","#F8F26D")
+		 }
+		 /* if($('#sede_table_'+data_table[i].cf).val() == null || $('#sede_table_'+data_table[i].cf).val() == ''){
 			 checkForm = 0;
 			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
 				$(x).css("background-color","#F8F26D")
-		 }
-		 if($('#sede_table_'+data_table[i].cf).val() == null || $('#sede_table_'+data_table[i].cf).val() == ''){
-			 checkForm = 0;
-			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
-				$(x).css("background-color","#F8F26D")
-		 }
+		 }  */
 		 
 		 data.push(partecipante);
 	}
 	 
 	 
-	 if(checkForm == 0){
+	 if((checkForm == 0) || ($('#azienda_import_general').val()=='' && checkAzienda == 0)){
 		 $('#myModalErrorContent').html("Attenzione! Dati non inseriti correttamente!");
 	 	  	$('#myModalError').removeClass();
 	 		$('#myModalError').addClass("modal modal-danger");	  
@@ -1243,21 +1305,57 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 	 		$('#visualizza_report').hide();
 	 		$('#myModalError').modal('show');
 	 }else{
+		 
+		
+		 
 		 confermaImportazionePdf(data);	 
 	 }
 	 
 	 
  }
  
+ function startProgressBar(data_size){
+	 
+	 
+	 var i = 0;
+	 
+	   if (i == 0) {
+	     i = 1;
+	     var elem = document.getElementById("myBar");
+	     var width = 1;
+	     var id = setInterval(frame, (data_size * 4.6));
+	     function frame() {
+	       if (width >= 100) {
+	         clearInterval(id);
+	         i = 0;
+	       } else {
+	         width++;
+	         elem.style.width = width + "%";
+	       }
+	     }
+	   }
+	 
+	 
+	 
+ }
  
+
  
- function confermaImportazionePdf(dataTable){
+ function confermaImportazionePdf(dataTable, id_){
 		
-	 pleaseWaitDiv = $('#pleaseWaitDialog');
-	  pleaseWaitDiv.modal();
-	 var data = JSON.stringify(dataTable);
+
+	  $('#modalProgress').modal(); 
+	  startProgressBar(dataTable.length)
+	 
+  
+	  var id_azienda = $('#azienda_import_general').val();
+		 var id_sede = $('#sede_import_general').val();
+	  
+		 var data = JSON.stringify(dataTable);
 	 dataObj={};
-	 dataObj.data = data 
+	 dataObj.data = data
+	 dataObj.id_azienda_general = id_azienda 
+	 dataObj.id_sede_general = id_sede 
 	 $.ajax({
 		 type: "POST",
 		 url: "gestioneFormazione.do?action=conferma_importazione",
@@ -1267,6 +1365,10 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 		 success: function( data, textStatus) {
 		 	pleaseWaitDiv.modal('hide');
 		 	  if(data.success){	  
+		 		  
+		 		 var elem = document.getElementById("myBar");
+		 		  elem.style.width = 100 + "%";
+		 		  $('#modalProgress').modal('hide');
 		 	  
 		 			$('#report_button').hide();
 		 			$('#visualizza_report').hide();
@@ -1280,6 +1382,9 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 		 				})
 		 	  }else{
 		 		 pleaseWaitDiv.modal('hide');
+		 		 var elem = document.getElementById("myBar");
+		 		  elem.style.width = 0 + "%";
+		 		  $('#modalProgress').modal('hide');
 		 		  
 		 		$('#myModalErrorContent').html("Errore nell'importazione dei partecipanti!");
 		 	  	$('#myModalError').removeClass();
@@ -1290,8 +1395,13 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 		 	
 		 	  }
 		 },
+		
 		 error: function( data, textStatus) {
 			 pleaseWaitDiv.modal('hide');
+			 
+			 var elem = document.getElementById("myBar");
+	 		  elem.style.width = 0 + "%";
+	 		  $('#modalProgress').modal('hide');
 		 	  $('#myModalYesOrNo').modal('hide');
 		 	  $('#myModalErrorContent').html(data.messaggio);
 		 	  	$('#myModalError').removeClass();
@@ -1375,6 +1485,14 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 	 $('#myModalAssociaUtenti').modal()
  }
  
+  
+ function creaSelect(cf){
+	 
+
+	 initSelect2('#azienda_table_'+cf);
+	   
+ }
+ 
  function createTableImport(lista_partecipanti_import, lista_corsi){
 	 
 	 var table_data = [];
@@ -1390,7 +1508,7 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 		  
 		  dati.data_nascita = formatDate(moment(lista_partecipanti_import[i].data_nascita, "MMM DD, YYYY"));
 		  dati.luogo_nascita = lista_partecipanti_import[i].luogo_nascita;
-		  dati.azienda = '<input class="form-control" onChange="changeSedeTab(\''+lista_partecipanti_import[i].cf+'\')" data-placeholder="Seleziona Azienda..." id="azienda_table_'+lista_partecipanti_import[i].cf+'" name="azienda_table_'+lista_partecipanti_import[i].cf+'"  style="width:100%">'
+		  dati.azienda = '<input class="form-control typeahead" onClick="creaSelect(\''+lista_partecipanti_import[i].cf+'\')" onChange="changeSedeTab(\''+lista_partecipanti_import[i].cf+'\')" data-placeholder="Seleziona Azienda..." id="azienda_table_'+lista_partecipanti_import[i].cf+'" name="azienda_table_'+lista_partecipanti_import[i].cf+'"  style="width:100%">'
 		  
 		  dati.sede = '<select class="form-control select2" id="sede_table_'+lista_partecipanti_import[i].cf+'" style="width:100%" name="sede_table_'+lista_partecipanti_import[i].cf+'" disabled></select>';
 		  dati.corsi = '<div id="content_corsi_'+lista_partecipanti_import[i].cf+'"></div> <input type="hidden" id="corso_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="ruolo_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="ore_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="firma_responsabile_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="firma_legale_rappresentante_'+lista_partecipanti_import[i].cf+'">';
@@ -1418,23 +1536,22 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 			}
 		}
 		
-		table.columns.adjust().draw();
-		
-		for(var i = 0; i<lista_partecipanti_import.length;i++){
-			initSelect2('#azienda_table_'+lista_partecipanti_import[i].cf);
+ 		table.columns.adjust().draw();
+ 		for(var i = 0; i<lista_partecipanti_import.length;i++){
+			//initSelect2('#azienda_table_'+lista_partecipanti_import[i].cf);
 			$('#sede_table_'+lista_partecipanti_import[i].cf).select2();
 			
-		}
+		}  
 		
-		var azienda_val = $('#azienda_import').val();
+ 		var azienda_val = $('#azienda_import').val();
 		var sede_val = $('#sede_import').val();
 		
-		 if(azienda_val!=null){
+		 if(azienda_val!=null && azienda_val!=''){
 				
 				$('#azienda_import_general').val(azienda_val);
 				$('#azienda_import_general').change();
 			}
-			if(sede_val!=null){
+			if(sede_val!=null && sede_val!=''){
 				if(sede_val == 0){
 					$('#sede_import_general').val(0);
 				}else{
@@ -1442,7 +1559,7 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 				}
 				
 				$('#sede_import_general').change();
-			} 
+			}  
 		
 		
 	  $('#modalConfermaImportazione').modal();
@@ -1481,6 +1598,9 @@ function changeSedeTab(cf, value){
 	    $(this).data('options', );
 	  }
 	   */
+	   
+
+	   
 	   if(value!=null){
 		  var id = value;
 	  }else{ 
@@ -1724,36 +1844,49 @@ function changeSedeTab(cf, value){
 
 		$("#sede_import_general").change();  
 		
-		var tableImport = $('#tabImportPartecipante').DataTable();
+/* 		var tableImport = $('#tabImportPartecipante').DataTable();
 		var cf = tableImport.column(2).data();
 		
 		for(var i = 0; i<cf.length;i++){
 			//changeSedeTab(cf[i], id);
+			
 			$("#azienda_table_"+cf[i]).val(id).trigger("change");
-			initSelect2("#azienda_table_"+cf[i]);
+			
+			var data = {};
+			
+			data.id = id;
+			data.text = "Azienda test"
+			
+			var dataSel = []
+			dataSel.push(data)
+			initSelect2("#azienda_table_"+cf[i], dataSel);
 		}
-		
+		 */
 	  
 	}); 
  
  
- 
+/*  
  $("#sede_import_general").change(function() {
 	  
 	  var selection = $(this).val()	 
 	  
 	  
-	  		var tableImport = $('#tabImportPartecipante').DataTable();
+	  	var tableImport = $('#tabImportPartecipante').DataTable();
 		var cf = tableImport.column(2).data();
 	  
 		
-		for(var i = 0; i<cf.length;i++){
+ 		for(var i = 0; i<cf.length;i++){
+			
 			$("#sede_table_"+cf[i]).val(selection).trigger("change");
-		}
+			
+		} 
 	  
+		
+		
 		//tableImport.columns.adjust().draw();
-	  
-	}); 
+	
+	});  */
  
  
 
@@ -1770,14 +1903,18 @@ function changeSedeTab(cf, value){
  	
 
 
- function initSelect2(id_input) {
+ function initSelect2(id_input, data) {
+	 
+	 if(data == null){
+		 data = dataSelect2;
+	 }
 
  	$(id_input).select2({
- 	    data: mockData(),
+ 	    data: data,
  	    placeholder: 'search',
  	    multiple: false,
  	    // query with pagination
- 	    query: function(q) {
+  	    query: function(q) {
  	      var pageSize,
  	        results,
  	        that = this;
@@ -1796,7 +1933,7 @@ function changeSedeTab(cf, value){
  	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
  	        more: results.length >= q.page * pageSize,
  	      });
- 	    },
+ 	    }, 
  	  });
  	
  	

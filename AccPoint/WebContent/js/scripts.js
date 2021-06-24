@@ -3897,13 +3897,13 @@ function eliminaCompany(){
 
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
-   
-   			$('#myModalErrorContent').html(errorThrown.message);
-		  	$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-danger");
-			$('#report_button').show();
-			$('#visualizza_report').show();
-			$('#myModalError').modal('show');
+    		  location.reload();
+//   			$('#myModalErrorContent').html("Errore Timeout");
+//		  	$('#myModalError').removeClass();
+//			$('#myModalError').addClass("modal modal-danger");
+//			$('#report_button').show();
+//			$('#visualizza_report').show();
+//			$('#myModalError').modal('show');
 			    
     	  }
       });

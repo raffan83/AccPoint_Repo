@@ -1096,10 +1096,32 @@ function modalStorico(id_documento){
     			  }else{
     				  dati.tipo_documento = lista_documenti[i].tipo_documento.descrizione;
     			  } 
-    			  dati.data_caricamento = formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
-    			  dati.data_rilascio =  formatDate(moment(lista_documenti[i].data_rilascio, "DD, MMM YY"));
-    			  dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
-    			  dati.data_scadenza =  formatDate(moment(lista_documenti[i].data_scadenza, "DD, MMM YY"));
+    			  //dati.data_caricamento = formatDate(moment(lista_documenti[i].data_caricamento, "DD, MMM YY"));
+    			 // dati.data_rilascio =  formatDate(moment(lista_documenti[i].data_rilascio, "DD, MMM YY"));
+    			 
+    			 if(lista_documenti[i].data_caricamento == null){
+    				 dati.data_caricamento = '';
+    			 }else{
+    				 dati.data_caricamento = lista_documenti[i].data_caricamento;	 
+    			 }
+    			 
+    			 if(lista_documenti[i].data_rilascio == null){
+    				 dati.data_rilascio = '';
+    			 }else{
+    				 dati.data_rilascio = lista_documenti[i].data_rilascio;	 
+    			 }
+    			 
+    			
+    			 dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
+    			 
+    			 if(lista_documenti[i].data_scadenza == null){
+    				 dati.data_scadenza = '';
+    			 }else{
+    				 dati.data_scadenza = lista_documenti[i].data_scadenza;	 
+    			 }
+    			 
+    			 
+    			  
     			  dati.rilasciato = lista_documenti[i].rilasciato;
     			  dati.azioni = '<a  class="btn btn-danger" href="gestioneDocumentale.do?action=download_documento_table&id_documento='+lista_documenti[i].id+'" title="Click per scaricare il documento"><i class="fa fa-file-pdf-o"></i></a>';
     			

@@ -218,14 +218,14 @@ public class GestioneUtenteBO {
 		  String to2 = utente.getEMail();
 		  String subject2 = "Calver.it Attivazione Utente";
 		  
-	      String hmtlMex2 = "<h3><img src=\"https://www.calver.it/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	il Suo account &egrave; stato attivato con successo.<br /><br/>\r\n" +
-	    		 "Inviamo in allegato il manuale operativo.<br><br>"+ 
+	      String hmtlMex2 = "<h3><img src=\"https://www.calver.it/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	il Suo account &egrave; stato attivato con successo.<br /><br/>\r\n" + 
 	      		"Grazie e buon lavoro.\r\n" + 
-	      		"<br/><br/><br />AccPoint";
+	      		"<br/><br/><br />Calver.it";
 	      
-	      File file = new File(Costanti.PATH_FOLDER_CALVER+"\\Guida_Calver.pdf");
+	      /*Allegato*/
+	    //  File file = new File(Costanti.PATH_FOLDER_CALVER+"\\Guida_Calver.pdf");
 	      
-		  Utility.sendEmailAllegato(to2,subject2,hmtlMex2, file);
+		  Utility.sendEmail(to2,subject2,hmtlMex2);
 		  
 		  
 			myObj.addProperty("success", true);

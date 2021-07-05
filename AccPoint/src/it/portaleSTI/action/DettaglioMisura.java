@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -41,6 +43,7 @@ import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneLivellaElettronicaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneSicurezzaElettricaBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -141,6 +144,7 @@ public class DettaglioMisura extends HttpServlet {
 			     	dispatcher.forward(request,response);
 					
 				}
+		
 				else {
 					
 					
@@ -246,6 +250,64 @@ public class DettaglioMisura extends HttpServlet {
 			
 			}
 			
+			
+			else if(action.equals("andamento_temporale")) {
+				
+				String id_strumento = request.getParameter("id_strumento");
+					
+				ArrayList<MisuraDTO> lista_misure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id_strumento), session);
+				
+				request.setAttribute("lista_misure", lista_misure);
+				Gson g = new Gson();
+				
+				request.setAttribute("lista_punti_misure", g.toJsonTree(lista_misure));
+				
+
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/graficoAndamentoTemporale.jsp");
+		     	dispatcher.forward(request,response);
+				
+				
+				session.getTransaction().commit();
+				session.close();
+			}
+			else if(action.equals("select_tabella")) {
+				
+				String id = request.getParameter("id_misura");
+				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id));	
+				
+				
+					int numeroTabelle = GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());
+					
+					ArrayList<ArrayList<PuntoMisuraDTO>> arrayPunti = new ArrayList<ArrayList<PuntoMisuraDTO>>();
+					
+					for(int i = 0; i < numeroTabelle; i++){
+						ArrayList<PuntoMisuraDTO> punti = GestioneMisuraBO.getListaPuntiByIdTabella(misura.getListaPunti(), i+1);
+						
+						if(punti.size()>0)
+						{
+							
+							arrayPunti.add(punti);
+						}
+					}
+					
+	
+				request.getSession().setAttribute("arrayPunti", arrayPunti);
+				
+				Gson gson = new Gson();
+				JsonArray listaPuntiJson = gson.toJsonTree(arrayPunti).getAsJsonArray();
+				
+				PrintWriter out = response.getWriter();
+				
+				JsonObject myObj = new JsonObject();
+				myObj.addProperty("success", true);
+				myObj.add("listaPuntiJson", listaPuntiJson);
+				
+				out.print(myObj);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+			}
 			else if(action.equals("download")) {
 				
 				String id_punto = request.getParameter("id_punto");
@@ -265,10 +327,15 @@ public class DettaglioMisura extends HttpServlet {
 	              IOUtils.copy(bis, outp);
 
 	              outp.close();
+	              
+	              session.getTransaction().commit();
+					session.close();
 
 			}     
 		
 		}catch (Exception ex) {
+			session.getTransaction().rollback();
+			session.close();
 			 ex.printStackTrace();
 	   	     request.setAttribute("error",STIException.callException(ex));
 	   	     request.getSession().setAttribute("exception",ex);

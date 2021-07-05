@@ -121,9 +121,23 @@
         <div class="col-sm-4">
                       <input class="form-control required" id="telefono" type="text" name="telefono"  value="${telefono}" required/>
     </div>
+
     </div>
 </div>
-
+<div class="col-xs-12">  
+  <div class="row form-group">
+            <label for="area_interesse" class="col-sm-2 control-label">Area d'interesse:</label>
+        <div class="col-sm-4">
+                      <select class="form-control select2" title="Seleziona area di interesse" id="area_interesse" name="area_interesse">
+                      <option value=""></option>
+                      <option value="1">Tarature</option>
+                      <option value="2">Rilievi dimensionali</option>
+                      <option value="3">Corsi di Formazione</option>
+                      <option value="4">Verificazione periodica</option>
+                      </select>
+    </div>
+    </div>
+</div>
 
    
   <div class="col-xs-12">
@@ -246,6 +260,8 @@
 <jsp:attribute name="extra_js_footer"> 
 
 <script>
+
+$('.select2').select2()
 	   $('#check1').on('ifClicked',function(e){
 			
 		   if($('#check1').is( ':checked' )){

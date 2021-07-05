@@ -11,7 +11,6 @@
       <div class="col-xs-12">
       
       <a class="btn btn-primary" href="gestioneDocumentale.do?action=scadenzario_dipendenti">Vista Dipendenti</a>
-      <a class="btn btn-primary" onclick="exploreModal('gestioneDocumentale.do','action=scadenzario_dipendenti','#calendario')">Vista Dipendenti</a>
       </div>
       </div> -->
 <div class="row">
@@ -42,7 +41,10 @@
 <th>Nome Documento</th>
 <th>Numero Documento</th>
 <th>Tipo Documento</th>
-<th>Dipendenti</th>
+<th>Qualifica</th>
+<th>Nominativo</th>
+<th>Data di nascita</th>
+<th>Luogo di nascita</th>
 <th>Data caricamento</th>
 <th>Data rilascio</th>
 <th>Data scadenza</th>
@@ -50,61 +52,60 @@
 
 <th>Stato</th>
 <th>Rilasciato</th>
-<th style="min-width:230px">Azioni</th>
+<th >Azioni</th>
  </tr></thead>
  
  <tbody>
  
- 	<c:forEach items="${lista_documenti}" var="documento" varStatus="loop">
- 	<c:if test="${documento.stato.id==1 }">
+ 	<c:forEach items="${lista_documenti_dipendente}" var="doc" varStatus="loop">
+ 	<c:if test="${doc.documento.stato.id==1 }">
  	<tr id="row_${loop.index}" style="background-color:#00ff80" >
  	</c:if>
- 	<c:if test="${documento.stato.id==2 }">
+ 	<c:if test="${doc.documento.stato.id==2 }">
 	<tr id="row_${loop.index}" style="background-color:#F8F26D" >
 	</c:if>
-	 	<c:if test="${documento.stato.id==3 }">
+	 	<c:if test="${doc.documento.stato.id==3 }">
 	<tr id="row_${loop.index}" style="background-color:#FA8989" >
 	</c:if>
-	<td>${documento.id }</td>	
-	<td>${documento.committente.nome_cliente } - ${documento.committente.indirizzo_cliente }</td>
-	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(documento.fornitore.id)}')">${documento.fornitore.ragione_sociale }</a></td>
-	<td>${documento.nome_documento }</td>
-	<td>${documento.numero_documento }</td>
-	<td>${documento.tipo_documento.descrizione }</td>
-		<td>
-	<c:forEach items="${documento.getListaDipendenti() }" var="dipendente">
-	${dipendente.nome} ${dipendente.cognome }<br>
-	</c:forEach>
-	</td>
-	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_caricamento}" /></td>
-	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_rilascio}" /></td>
-	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_scadenza}" /></td>
-	<td>${documento.frequenza_rinnovo_mesi }</td>
+	<td>${doc.documento.id }</td>	
+	<td>${doc.documento.committente.nome_cliente } - ${doc.documento.committente.indirizzo_cliente }</td>
+	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(doc.documento.fornitore.id)}')">${doc.documento.fornitore.ragione_sociale }</a></td>
+	<td>${doc.documento.nome_documento }</td>
+	<td>${doc.documento.numero_documento }</td>
+	<td>${doc.documento.tipo_documento.descrizione }</td>
+	<td>
 	
-	<td>${documento.getStato().getNome() }</td>
-	<td>${documento.rilasciato }</td>
+	${doc.dipendente.qualifica}
+	
+	</td>
+		<td>
+	
+	${doc.dipendente.nome} ${doc.dipendente.cognome }
+	
+	</td>
+		<td>
+	
+	
+	<fmt:formatDate pattern = "dd/MM/yyyy" value = "${doc.dipendente.data_nascita}" />
+	</td>
+		<td>
+	
+	${doc.dipendente.luogo_nascita} 
+	
+	</td>
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${doc.documento.data_caricamento}" /></td>
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${doc.documento.data_rilascio}" /></td>
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${doc.documento.data_scadenza}" /></td>
+	<td>${doc.documento.frequenza_rinnovo_mesi }</td>
+	
+	<td>${doc.documento.getStato().getNome() }</td>
+	<td>${doc.documento.rilasciato }</td>
 		
 	<td>	
-	<a class="btn btn-danger customTooltip" title="Download documento"  href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(documento.id)}" ><i class="fa fa-file-pdf-o"></i></a>
-	 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
-	  <a class="btn btn-warning customTooltip" title="Modifica documento"  onClicK="modificaDocumentoModal('${documento.committente.id }','${documento.id}','${documento.fornitore.id}','${utl:escapeJS(documento.nome_documento)}','${documento.data_rilascio}','${documento.frequenza_rinnovo_mesi }',
-	   '${documento.data_scadenza}','${utl:escapeJS(documento.nome_file) }','${utl:escapeJS(documento.rilasciato) }','${documento.numero_documento }','${documento.tipo_documento.id }','${documento.aggiornabile_cl }','${documento.tipo_documento.aggiornabile_cl_default }')" title="Click per modificare il Documento"><i class="fa fa-edit"></i></a>
-	   
-	      <a class="btn btn-danger customTooltip" onClick="modalEliminaDocumento('${documento.id}')" title="Elimina documento" ><i class="fa fa-trash"></i></a>    
-	      <c:if test="${documento.stato.id==3 && documento.email_inviata==0 }"> 
-	      <a class="btn btn-primary customTooltip" onclick="modalEmail('${documento.id }','${documento.fornitore.id}','${documento.committente.id }')"><i class="fa fa-paper-plane-o"></i></a>
-	      </c:if>
-	     </c:if>
-	      <a class="btn btn-info customTooltip" title="Vai allo storico"  onclick="modalStorico('${documento.id}')"><i class="fa fa-history"></i></a>
-	      
-	      <c:set var="ruolo" value="false"></c:set>
-	      <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1')  }">
-	      <c:set var="ruolo" value="true"></c:set>
-	      </c:if>
-	      
-		<c:if test="${documento.aggiornabile_cl == 1 || (documento.stato.id==3 && ruolo)}">
-		<a class="btn btn-success customTooltip" title="Aggiorna documento" onClick="modalAggiornaDocumento('${documento.id}','${documento.nome_documento }','${documento.frequenza_rinnovo_mesi }')"><i class="fa fa-arrow-up"></i></a>
-		</c:if>
+ 	<a class="btn btn-danger customTooltip" title="Download documento"  href="gestioneDocumentale.do?action=download_documento&id_documento=${utl:encryptData(doc.documento.id)}" ><i class="fa fa-file-pdf-o"></i></a>
+
+	      <a class="btn btn-info customTooltip" title="Vai allo storico"  onclick="modalStorico('${doc.documento.id}')"><i class="fa fa-history"></i></a>
+
 	</td>
 	</tr>
 	</c:forEach>
@@ -1000,7 +1001,7 @@ $('.select2').select2();
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 13 },
+		    	  { responsivePriority: 2, targets: 16 },
 		    	  
 		               ], 	        
 		               buttons: [ {
@@ -1121,11 +1122,7 @@ $('.select2').select2();
 		    	  
 		    	  
 		               ], 	        
-	  	      buttons: [   
-	  	          {
-	  	            extend: 'colvis',
-	  	            text: 'Nascondi Colonne'  	                   
-	 			  } ]
+		               
 		               
 		    });
 		

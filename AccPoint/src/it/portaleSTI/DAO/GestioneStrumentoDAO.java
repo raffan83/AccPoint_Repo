@@ -193,14 +193,14 @@ public static ArrayList<StrumentoDTO> getListaStrumentiInFuoriServizio(String id
 	return lista;
 }
 
-public static ArrayList<MisuraDTO> getListaMirureByStrumento(int idStrumento) {
+public static ArrayList<MisuraDTO> getListaMirureByStrumento(int idStrumento, Session session) {
 
 		Query query=null;
 		
 		ArrayList<MisuraDTO> misura=null;
 		try {
-		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+//		Session session =SessionFacotryDAO.get().openSession();
+//		session.beginTransaction();
 		
 		
 		String s_query = "from MisuraDTO WHERE strumento.__id = :_idStrumento";
@@ -210,8 +210,8 @@ public static ArrayList<MisuraDTO> getListaMirureByStrumento(int idStrumento) {
 		
 	    misura=(ArrayList<MisuraDTO>)query.list();
 		
-		session.getTransaction().commit();
-		session.close();
+//		session.getTransaction().commit();
+//		session.close();
 	     } 
 		catch(Exception e)
 	     {

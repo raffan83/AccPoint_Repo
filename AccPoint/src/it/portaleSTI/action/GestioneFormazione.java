@@ -1116,10 +1116,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				filename = Utility.decryptData(filename);
 								
 				String path = Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+id_partecipante+"//"+filename;
+				//response.setHeader("Content-disposition", "attachment; filename=\""+filename+"\"");
+				response.setContentType("application/pdf");	
 				
 				downloadFile(path, response.getOutputStream());
 				
-				response.setContentType("application/pdf");	
 				
 				session.close();	
 			}
@@ -1530,8 +1531,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 							
 							nome_sede = "Non Associate";
 						}else {
-							id_sede = json_obj.get("id_sede").getAsString();
-							sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_general.split("_")[0]), Integer.parseInt(id_azienda_general));
+							id_sede = json_obj.get("sede").getAsString();
+							sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), id_azienda);
 							nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";	
 						}
 						

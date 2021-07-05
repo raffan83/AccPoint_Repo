@@ -1,5 +1,6 @@
 package it.portaleSTI.DTO;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,8 @@ public class DocumDipendenteFornDTO {
 	private String qualifica;
 	private String note;
 	private DocumTLStatoDipendenteDTO stato;
-	
+	private String luogo_nascita;
+	private Date data_nascita;
 	
 	private Set<DocumTLDocumentoDTO> listaDocumenti = new HashSet<DocumTLDocumentoDTO>(0);
 	
@@ -85,6 +87,18 @@ public class DocumDipendenteFornDTO {
 	}
 	public void setStato(DocumTLStatoDipendenteDTO stato) {
 		this.stato = stato;
+	}
+	public String getLuogo_nascita() {
+		return luogo_nascita;
+	}
+	public void setLuogo_nascita(String luogo_nascita) {
+		this.luogo_nascita = luogo_nascita;
+	}
+	public Date getData_nascita() {
+		return data_nascita;
+	}
+	public void setData_nascita(Date data_nascita) {
+		this.data_nascita = data_nascita;
 	}
 	
 	

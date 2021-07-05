@@ -1,59 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
-
-<jsp:attribute name="body_area">
-
-<div class="wrapper">
-	
-  <t:main-header  />
-  <t:main-sidebar />
- 
-
-  <!-- Content Wrapper. Contains page content -->
-  <div id="corpoframe" class="content-wrapper">
-   <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1 class="pull-left">
-        Lista Strumenti Verificazione in scadenza il  <fmt:formatDate pattern="dd/MM/yyyy" value="${data}" />
-      </h1>
-       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
-    </section>
-    <div style="clear: both;"></div>    
-  <!-- Main content -->
-    <section class="content">
 
 <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-          <div class="box-header">
-          
-          
-
-
-          </div>
-            <div class="box-body">
-
-<div class="row">
-	<div class="col-xs-12">
-
-            <a class="btn btn-default pull-right" style="margin-right:5px;" onClick="callAction('scadenzarioVerificazione.do',null,true)"; ><i class="fa fa-arrow-left"></i> Torna allo scadenzario</a>
-<br><br>
-	 <div id="boxLista" class="box box-danger box-solid">
-<div class="box-header with-border">
-	 Lista
-	<div class="box-tools pull-right">
-		
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
-
-	</div>
-</div>
-<div class="box-body">
-
-		
-		<div class="row">
 <div class="col-sm-12">
 
  <table id="tabStrumenti" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -111,23 +65,7 @@
  </table>  
 </div>
 </div>
-		
-		
-		
-		
-		</div>
-</div>
-</div>
-</div>
 
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
- 
-</div>
-</div>
 
 
 
@@ -447,51 +385,11 @@
 </div>
 
 
-
-
- 
- 
-  <div  class="modal"><!-- Place at bottom of page --></div> 
-   <div id="modal1"><!-- Place at bottom of page --></div> 
-   
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-
-
-
-	
-  <t:dash-footer />
-  
-
-  <t:control-sidebar />
-   
-
-</div>
-<!-- ./wrapper -->
-
-</jsp:attribute>
-
-
-<jsp:attribute name="extra_css">
-	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
-	<link type="text/css" href="css/bootstrap.min.css" />
-
-</jsp:attribute>
-
-<jsp:attribute name="extra_js_footer">
-
-<!-- <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
-<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
-<script type="text/javascript" src="plugins/datejs/date.js"></script>
-  -->
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script> 
+
  <script type="text/javascript" src="plugins/datejs/date.js"></script>
-  <script type="text/javascript">
+ <script type="text/javascript">
   
 
   function modalAllegati(id_strumento){
@@ -653,7 +551,9 @@
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 12 }
+		    	  { responsivePriority: 2, targets: 12 },
+		    	  { responsivePriority: 2, targets: 10 },
+		    	  { responsivePriority: 2, targets: 11 }
 		    	  
 		               ], 	        
 	  	      buttons: [   
@@ -708,8 +608,3 @@
 
 
   </script>
-</jsp:attribute> 
-</t:layout>
-
- 
- 

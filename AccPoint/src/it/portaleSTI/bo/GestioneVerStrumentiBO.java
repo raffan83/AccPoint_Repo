@@ -66,9 +66,9 @@ public class GestioneVerStrumentiBO {
 		return GestioneVerStrumentiDAO.getListaScadenzeVerificazione(session, lista_id_clienti);
 	}
 
-	public static ArrayList<VerStrumentoDTO> getlistaStrumentiScadenza(String data, Session session) throws Exception {
+	public static ArrayList<VerStrumentoDTO> getlistaStrumentiScadenza(String dateFrom,String dateTo, Session session) throws Exception {
 		
-		return GestioneVerStrumentiDAO.getlistaStrumentiScadenza(data, session);
+		return GestioneVerStrumentiDAO.getlistaStrumentiScadenza(dateFrom, dateTo, session);
 	}
 
 	

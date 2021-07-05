@@ -280,18 +280,20 @@ public class ScaricaCertificato extends HttpServlet {
 					
 					
 				
-					session.update(misura);
-					session.getTransaction().commit();
-					session.close();			
 					
 					myObj.addProperty("success", true);					
 					myObj.addProperty("messaggio", "Allegato caricato con successo!");
 					
 					
-					ArrayList<MisuraDTO> listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(misura.getStrumento().get__id());
+					ArrayList<MisuraDTO> listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(misura.getStrumento().get__id(), session);
 					request.getSession().setAttribute("listaMisure", listaMisure);
 					myObj.addProperty("id_strumento", misura.getStrumento().get__id());
 					out.print(myObj);			
+					
+
+					session.update(misura);
+					session.getTransaction().commit();
+					session.close();			
 		}
 			if(action.equals("download_allegato")) {
 				
@@ -335,7 +337,7 @@ public class ScaricaCertificato extends HttpServlet {
 				
 				GestioneMisuraBO.eliminaAllegato(Integer.parseInt(id_misura), session);
 				session.getTransaction().commit();
-				ArrayList<MisuraDTO> listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id_strumento));						
+				ArrayList<MisuraDTO> listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id_strumento), session);						
 				session.close();
 				
 				request.getSession().setAttribute("listaMisure", listaMisure);

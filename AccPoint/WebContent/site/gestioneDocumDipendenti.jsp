@@ -70,7 +70,8 @@
 <th>Fornitore</th>
 <th>Nominativo</th>
 <th>Qualifica</th>
-
+<th>Data di nascita</th>
+<th>Luogo di nascita</th>
 <th>Note</th>
 <th>Azioni</th>
  </tr></thead>
@@ -93,13 +94,14 @@
 	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(dipendente.fornitore.id)}')">${dipendente.fornitore.ragione_sociale }</a></td>
 	<td>${dipendente.nome } ${dipendente.cognome }</td>
 	<td>${dipendente.qualifica }</td>
-	
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${dipendente.data_nascita }" /></td>
+	<td>${dipendente.luogo_nascita }</td>
 	<td>${dipendente.note }</td>
 		
 	<td>	
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.committente.id }','${dipendente.id}','${dipendente.fornitore.id}','${utl:escapeJS(dipendente.nome)}','${utl:escapeJS(dipendente.cognome)}','${utl:escapeJS(dipendente.note)}',
-	   '${dipendente.qualifica}')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
+	   '${dipendente.qualifica}', '${dipendente.data_nascita }','${utl:escapeJS(dipendente.luogo_nascita) }')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
 	   <a class="btn btn-info customTooltip" title="Associa documenti" onClick="modalAssociaDocumenti('${dipendente.committente.id }','${dipendente.fornitore.id }','${dipendente.id}')"><i class="fa fa-plus"></i></a>
 	</c:if>
 	</td>
@@ -213,7 +215,35 @@
        	</div>       	
        </div><br>
        
-
+                <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data di nascita</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+                <div class='input-group date datepicker' id='datepicker_data_nascita'>
+               <input type='text' class="form-control input-small" id="data_nascita" name="data_nascita" >
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Luogo di nascita</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="luogo_nascita" name="luogo_nascita" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
        
   <div class="row">
        
@@ -334,7 +364,35 @@
        	</div>       	
        </div><br>
        
-             
+             <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data di nascita</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+                <div class='input-group date datepicker' id='datepicker_data_nascita'>
+               <input type='text' class="form-control input-small" id="data_nascita_mod" name="data_nascita_mod" >
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Luogo di nascita</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="luogo_nascita_mod" name="luogo_nascita_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
        
   <div class="row">
        
@@ -626,7 +684,7 @@ function modalNuovoDipendente(){
 }
 
 
-function modificaDipendenteModal(id_committente, id_dipendente, fornitore, nome, cognome, note,  qualifica){
+function modificaDipendenteModal(id_committente, id_dipendente, fornitore, nome, cognome, note,  qualifica, data_nascita, luogo_nascita){
 	
 	
 	$('#fornitore_temp').val(fornitore);
@@ -642,6 +700,11 @@ function modificaDipendenteModal(id_committente, id_dipendente, fornitore, nome,
 	$('#note_mod').val(note);
 	
 	$('#qualifica_mod').val(qualifica);
+	if(data_nascita!=null && data_nascita!=''){
+		$('#data_nascita_mod').val(Date.parse(data_nascita).toString("dd/MM/yyyy"));
+	}
+	
+	$('#luogo_nascita_mod').val(luogo_nascita);
 
 	
 	$('#myModalModificaDipendente').modal();
@@ -729,7 +792,9 @@ $(document).ready(function() {
 	$('.select2').select2();
 	 
      $('.dropdown-toggle').dropdown();
-     
+     $('.datepicker').datepicker({
+		 format: "dd/mm/yyyy"
+	 });   
 
      table = $('#tabDocumDipendenti').DataTable({
 			language: {

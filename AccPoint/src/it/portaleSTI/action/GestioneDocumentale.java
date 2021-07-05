@@ -39,6 +39,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
+import it.portaleSTI.DTO.DocumDocumentoDipendenteDTO;
 import it.portaleSTI.DTO.DocumEmailDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
 import it.portaleSTI.DTO.DocumReferenteFornDTO;
@@ -798,6 +799,8 @@ public class GestioneDocumentale extends HttpServlet {
 				String cognome = ret.get("cognome");
 				String qualifica = ret.get("qualifica");				
 				String note = ret.get("note");
+				String data_nascita = ret.get("data_nascita");
+				String luogo_nascita = ret.get("luogo_nascita");
 
 
 				DocumDipendenteFornDTO dipendente = new DocumDipendenteFornDTO();
@@ -819,6 +822,15 @@ public class GestioneDocumentale extends HttpServlet {
 				dipendente.setQualifica(qualifica);
 			
 				dipendente.setNote(note);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			
+				if(data_nascita!=null && !data_nascita.equals("")) {
+					dipendente.setData_nascita(sdf.parse(data_nascita));
+				}else {
+					dipendente.setData_nascita(null);
+				}
+				
+				dipendente.setLuogo_nascita(luogo_nascita);
 								
 				session.save(dipendente);
 				
@@ -875,6 +887,8 @@ public class GestioneDocumentale extends HttpServlet {
 				String cognome = ret.get("cognome_mod");
 				String qualifica = ret.get("qualifica_mod");				
 				String note = ret.get("note_mod");
+				String data_nascita = ret.get("data_nascita_mod");
+				String luogo_nascita = ret.get("luogo_nascita_mod");
 
 
 				DocumDipendenteFornDTO dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_dipendente), session);
@@ -897,6 +911,16 @@ public class GestioneDocumentale extends HttpServlet {
 				dipendente.setQualifica(qualifica);
 				
 				dipendente.setNote(note);
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				
+				if(data_nascita!=null && !data_nascita.equals("")) {
+					dipendente.setData_nascita(sdf.parse(data_nascita));
+				}else {
+					dipendente.setData_nascita(null);
+				}
+				
+				dipendente.setLuogo_nascita(luogo_nascita);
 								
 				session.update(dipendente);
 				
@@ -1306,6 +1330,8 @@ public class GestioneDocumentale extends HttpServlet {
 			    
 			    session.close();
 			}
+			
+			
 			else if(action.equals("scadenzario_table")) {
 				
 				String id_fornitore = (String)request.getSession().getAttribute("id_fornitore");
@@ -1337,6 +1363,50 @@ public class GestioneDocumentale extends HttpServlet {
 		     	dispatcher.forward(request,response);
 				
 			}
+			
+			
+			else if(action.equals("scadenzario_dipendenti")) {
+				
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");	
+				
+				String id_fornitore = (String)request.getSession().getAttribute("id_fornitore");
+				if(id_fornitore==null || id_fornitore.equals("")) {
+					id_fornitore = "0";
+				}
+				
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+				if(dateFrom == null) {
+					
+					dateFrom = df.format(new Date());
+				}
+				if(dateTo == null) {
+					
+					dateTo = df.format(new Date());
+				}
+				
+				ArrayList<DocumDocumentoDipendenteDTO> lista_documenti_dipendente = null;
+				
+				if(utente.checkRuolo("D2")) {
+					DocumCommittenteDTO committente = GestioneDocumentaleBO.getCommittenteFromIDClienteSede(utente.getIdCliente(), utente.getIdSede(), session);
+					
+					lista_documenti_dipendente = GestioneDocumentaleBO.getDocumentiScadenzarioDipendenti(dateFrom,dateTo, Integer.parseInt(id_fornitore), committente.getId(), session);
+					
+				}else {
+					lista_documenti_dipendente = GestioneDocumentaleBO.getDocumentiScadenzarioDipendenti(dateFrom,dateTo, Integer.parseInt(id_fornitore), 0, session);
+				}
+				
+				session.close();
+				
+				request.getSession().setAttribute("lista_documenti_dipendente", lista_documenti_dipendente);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioDocumentaleDipendenti.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			
+			
+			
 			else if(action.equals("create_scadenzario")) {				
 				
 				ajax =true;
@@ -2019,7 +2089,6 @@ public class GestioneDocumentale extends HttpServlet {
 				SendEmailBO.sendEmailSchedaConsegnaDocumentale(lista_documenti, parziale, indirizzo, request.getServletContext());
 				
 				
-				
 				session.getTransaction().commit();
 				session.close();
 				myObj = new JsonObject();
@@ -2029,6 +2098,7 @@ public class GestioneDocumentale extends HttpServlet {
 				out.print(myObj);
 				
 			}
+
 			
 		}catch(Exception e) {
 			

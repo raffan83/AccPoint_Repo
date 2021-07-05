@@ -13,6 +13,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
+import it.portaleSTI.DTO.DocumDocumentoDipendenteDTO;
 import it.portaleSTI.DTO.DocumEmailDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
 import it.portaleSTI.DTO.DocumReferenteFornDTO;
@@ -497,5 +498,40 @@ ArrayList<DocumTLDocumentoDTO> lista = null;
 		}
 		
 		return result;	
+	}
+
+	public static ArrayList<DocumDocumentoDipendenteDTO> getDocumentiScadenzarioDipendenti(String dateFrom, String dateTo, int id_fornitore, int id_committente, Session session) throws Exception, ParseException {
+		
+		ArrayList<DocumDocumentoDipendenteDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String queryStr ="from DocumDocumentoDipendenteDTO d where d.documento.data_scadenza between :_data_start and :_data_end and d.documento.disabilitato = 0 and d.documento.stato.id != 4 and d.documento.obsoleto = 0";
+
+		if(id_committente!=0) {
+
+			queryStr += " and d.documento.committente.id = :_committente";
+		}
+		
+		if(id_fornitore!=0) {
+			
+			queryStr += " and d.documento.fornitore.id = :_fornitore";
+		}
+		
+		Query query = session.createQuery(queryStr);
+		query.setParameter("_data_start", sdf.parse(dateFrom));
+		query.setParameter("_data_end", sdf.parse(dateTo));
+		
+		if(id_committente!=0) {
+			query.setParameter("_committente", id_committente);
+		}
+		if(id_fornitore!=0) {
+			query.setParameter("_fornitore", id_fornitore);
+		}	
+
+		
+		lista = (ArrayList<DocumDocumentoDipendenteDTO>) query.list();
+		
+		return lista;
 	}
 }

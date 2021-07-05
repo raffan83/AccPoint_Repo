@@ -179,6 +179,7 @@
  	<mapping class="DocumTipoDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTipoDocumentoDTO.hbm.xml"/> 	
  	<mapping class="DocumTLDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTLDocumentoDTO.hbm.xml"/>
  	<mapping class="DocumEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumEmailDTO.hbm.xml"/> 	    
- 	
+ 	<mapping class="DocumDocumentoDipendenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumDocumentoDipendenteDTO.hbm.xml"/> 
+ 		
   </session-factory>
 </hibernate-configuration>

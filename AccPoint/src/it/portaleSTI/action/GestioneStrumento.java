@@ -235,7 +235,7 @@ public class GestioneStrumento extends HttpServlet {
 		        ArrayList<MisuraDTO> lista_misure = new ArrayList<MisuraDTO>();
 		        
 		        for(int i=0;i<lista_strumenti_filtrati.size();i++) {
-		        	lista_misure = GestioneStrumentoBO.getListaMisureByStrumento(lista_strumenti_filtrati.get(i).get__id());
+		        	lista_misure = GestioneStrumentoBO.getListaMisureByStrumento(lista_strumenti_filtrati.get(i).get__id(), session);
 		        	ArrayList<Integer>lista_id_misure = new ArrayList<Integer>();
 		        	for(int j = 0; j<lista_misure.size();j++) {
 		        		lista_id_misure.add(lista_misure.get(j).getId());
@@ -327,7 +327,7 @@ public class GestioneStrumento extends HttpServlet {
 		        ArrayList<MisuraDTO> lista_misure = new ArrayList<MisuraDTO>();
 		        
 		        for(int i=0;i<lista_strumenti_filtrati.size();i++) {
-		        	lista_misure = GestioneStrumentoBO.getListaMisureByStrumento(lista_strumenti_filtrati.get(i).get__id());
+		        	lista_misure = GestioneStrumentoBO.getListaMisureByStrumento(lista_strumenti_filtrati.get(i).get__id(), session);
 		        	ArrayList<Integer>lista_id_misure = new ArrayList<Integer>();
 		        	for(int j = 0; j<lista_misure.size();j++) {
 		        		lista_id_misure.add(lista_misure.get(j).getId());

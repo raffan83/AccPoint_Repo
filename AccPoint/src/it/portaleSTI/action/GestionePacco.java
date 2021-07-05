@@ -767,9 +767,9 @@ public class GestionePacco extends HttpServlet {
 				if(str.length>0) {
 					if(str[0]!=null && !str[0].equals("")) {
 					
-					if(rilievi && Utility.isNumber(pezzi_ingresso)) 
+					if(rilievi) 
 						{
-							item_pacco.setQuantita(Integer.parseInt(pezzi_ingresso));
+							item_pacco.setQuantita(entry.getKey().getPezzi_ingresso());
 						}
 						else 
 						{

@@ -167,14 +167,15 @@ public class GestioneVerStrumentiDAO {
 		return mapScadenze;
 	}
 
-	public static ArrayList<VerStrumentoDTO> getlistaStrumentiScadenza(String data, Session session) throws Exception {
+	public static ArrayList<VerStrumentoDTO> getlistaStrumentiScadenza(String dateFrom,String dateTo,  Session session) throws Exception {
 		
 		ArrayList<VerStrumentoDTO> lista = null;
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		Query query = session.createQuery("from VerStrumentoDTO where data_prossima_verifica = :_data");
-		query.setParameter("_data", sdf.parse(data));
+		Query query = session.createQuery("from VerStrumentoDTO where data_prossima_verifica between :_dateFrom and :_dateTo");
+		query.setParameter("_dateFrom", sdf.parse(dateFrom));
+		query.setParameter("_dateTo", sdf.parse(dateTo));
 		
 		lista = (ArrayList<VerStrumentoDTO>) query.list();
 		

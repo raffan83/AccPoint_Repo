@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,6 +28,10 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
+import it.portaleSTI.DTO.VerStrumentoDTO;
+import it.portaleSTI.DTO.VerTipoStrumentoDTO;
+import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
@@ -81,53 +86,80 @@ public class ScadenzarioVerificazione extends HttpServlet {
 			    
 			    session.close();
 			}	
+			
 			else if(action.equals("scadenzario")) {
 				
-				ajax = true;
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");	
 				
-				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
-				if(listaClienti==null) {				
-					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
-				}
+				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getlistaStrumentiScadenza(dateFrom,dateTo, session);
+				ArrayList<VerTipoStrumentoDTO> lista_tipo_strumento = GestioneVerStrumentiBO.getListaTipoStrumento(session);
+				ArrayList<VerTipologiaStrumentoDTO> lista_tipologie_strumento = GestioneVerStrumentiBO.getListaTipologieStrumento(session);
+				ArrayList<VerFamigliaStrumentoDTO> lista_famiglie_strumento = GestioneVerStrumentiBO.getListaFamiglieStrumento(session);
 				
-				List<Integer> lista_id_clienti = new ArrayList<Integer>();
+				request.getSession().setAttribute("lista_strumenti",lista_strumenti);
+				request.getSession().setAttribute("lista_tipo_strumento",lista_tipo_strumento);
+				request.getSession().setAttribute("lista_tipologie_strumento",lista_tipologie_strumento);
+				request.getSession().setAttribute("lista_famiglie_strumento",lista_famiglie_strumento);	
 				
-				for (ClienteDTO clienteDTO : listaClienti) {
-					lista_id_clienti.add(clienteDTO.get__id());
-				}
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			//	request.getSession().setAttribute("data",sdf.parseObject(data));
 				
-				HashMap<String,Integer> listaScadenze = GestioneVerStrumentiBO.getListaScadenzeVerificazione(session, lista_id_clienti);
 				
-				ArrayList<String> lista_strumenti_scadenza = new ArrayList<>();				
-			
-					 Iterator scadenza = listaScadenze.entrySet().iterator();
-			
-					    while (scadenza.hasNext()) {
-					        Map.Entry pair = (Map.Entry)scadenza.next();
-					        lista_strumenti_scadenza.add(pair.getKey() + ";" + pair.getValue());
-					        scadenza.remove(); 
-					    }
-
-				PrintWriter out = response.getWriter();
-				
-				 Gson gson = new Gson(); 
-			        
-			        
-			        JsonElement obj_scadenze = gson.toJsonTree(lista_strumenti_scadenza);
-
-			       		       
-			        myObj.addProperty("success", true);
-			  
-			        myObj.add("obj_scadenze", obj_scadenze);
-			        
-			        out.println(myObj.toString());
-
-			        out.close();
-			        
-			        session.getTransaction().commit();
-		        	session.close();
+				session.getTransaction().commit();
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerStrumentiScadenza.jsp");
+		     	dispatcher.forward(request,response);
 				
 			}
+			
+//			else if(action.equals("scadenzario")) {
+//				
+//				ajax = true;
+//				
+//				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+//				if(listaClienti==null) {				
+//					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
+//				}
+//				
+//				List<Integer> lista_id_clienti = new ArrayList<Integer>();
+//				
+//				for (ClienteDTO clienteDTO : listaClienti) {
+//					lista_id_clienti.add(clienteDTO.get__id());
+//				}
+//				
+//				HashMap<String,Integer> listaScadenze = GestioneVerStrumentiBO.getListaScadenzeVerificazione(session, lista_id_clienti);
+//				
+//				ArrayList<String> lista_strumenti_scadenza = new ArrayList<>();				
+//			
+//					 Iterator scadenza = listaScadenze.entrySet().iterator();
+//			
+//					    while (scadenza.hasNext()) {
+//					        Map.Entry pair = (Map.Entry)scadenza.next();
+//					        lista_strumenti_scadenza.add(pair.getKey() + ";" + pair.getValue());
+//					        scadenza.remove(); 
+//					    }
+//
+//				PrintWriter out = response.getWriter();
+//				
+//				 Gson gson = new Gson(); 
+//			        
+//			        
+//			        JsonElement obj_scadenze = gson.toJsonTree(lista_strumenti_scadenza);
+//
+//			       		       
+//			        myObj.addProperty("success", true);
+//			  
+//			        myObj.add("obj_scadenze", obj_scadenze);
+//			        
+//			        out.println(myObj.toString());
+//
+//			        out.close();
+//			        
+//			        session.getTransaction().commit();
+//		        	session.close();
+//				
+//			}
 			
 			
 			

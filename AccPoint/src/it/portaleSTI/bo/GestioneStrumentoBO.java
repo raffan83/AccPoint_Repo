@@ -190,10 +190,10 @@ public class GestioneStrumentoBO {
 		}
 		
 	}
-	public static ArrayList<MisuraDTO> getListaMisureByStrumento(int idStrumento)throws Exception
+	public static ArrayList<MisuraDTO> getListaMisureByStrumento(int idStrumento, Session session)throws Exception
 	{
 		
-			return GestioneStrumentoDAO.getListaMirureByStrumento(idStrumento);
+			return GestioneStrumentoDAO.getListaMirureByStrumento(idStrumento, session);
 			
 		
 	}

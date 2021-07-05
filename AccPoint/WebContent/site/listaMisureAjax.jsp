@@ -25,6 +25,15 @@
 
           </div>
             <div class="box-body">
+            
+            <c:if test="${listaMisure.size()>1}">
+                                    <div class="row">
+        <div class="col-xs-12">
+        <a class="btn btn-primary pull-right" target="_blank" href="dettaglioMisura.do?action=andamento_temporale&id_strumento=${id_strumento}">Vedi andamento temporale </a>
+        </div>
+        </div><br>
+            </c:if>
+            
               <div class="row">
         <div class="col-xs-12">
 

@@ -44,6 +44,7 @@ public class UtenteDTO implements Serializable {
 	private ContatoreUtenteDTO contatoreUtente;
 	private String codiceTecnicoVerificazione;
 	private String consenso_commerciale;
+	private int area_interesse;
 	/*
 	 * Non Abilitato = 0
 	 * Abilitato = 1
@@ -442,6 +443,20 @@ public class UtenteDTO implements Serializable {
 
 	public void setUltimoAccesso(Date ultimoAccesso) {
 		this.ultimoAccesso = ultimoAccesso;
+	}
+
+
+
+
+	public int getArea_interesse() {
+		return area_interesse;
+	}
+
+
+
+
+	public void setArea_interesse(int area_interesse) {
+		this.area_interesse = area_interesse;
 	}
 	
 	

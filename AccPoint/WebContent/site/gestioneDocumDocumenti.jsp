@@ -88,6 +88,7 @@
 <th>Committente</th>
 <th>Fornitore</th>
 <th>Codice</th>
+<th>Dipendenti</th>
 <th>Nome Documento</th>
 <th>Numero Documento</th>
 <th>Tipo Documento</th>
@@ -123,6 +124,11 @@
 	<td>${documento.committente.nome_cliente } - ${documento.committente.indirizzo_cliente }</td>
 	<td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(documento.fornitore.id)}')">${documento.fornitore.ragione_sociale }</a></td>
 	<td>${documento.codice }</td>
+	<td>
+	<c:forEach items="${documento.getListaDipendenti() }" var="dipendente">
+	${dipendente.nome} ${dipendente.cognome }<br>
+	</c:forEach>
+	</td>
 	<td>${documento.nome_documento }</td>
 	<td>${documento.numero_documento }</td>
 	<td>${documento.tipo_documento.descrizione }</td>
@@ -1839,7 +1845,7 @@ $('.select2').select2();
     	 columnDef =	 [
 	    	  
 	    	  { responsivePriority: 1, targets: 1 },
-	    	  { responsivePriority: 2, targets: 16 },
+	    	  { responsivePriority: 2, targets: 17 },
 	    	  { className: "select-checkbox", targets: 1,  orderable: false }
 	               ]
     	 
@@ -1851,7 +1857,7 @@ $('.select2').select2();
     	 columnDef =	 [
 	    	  
 	    	  { responsivePriority: 1, targets: 1 },
-	    	  { responsivePriority: 2, targets: 14 },
+	    	  { responsivePriority: 2, targets: 15 },
 	               ] 
     	 
     	 selectOpt = {}

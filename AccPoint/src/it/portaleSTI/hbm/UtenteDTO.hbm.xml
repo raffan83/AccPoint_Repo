@@ -99,5 +99,9 @@
           <property name="ultimoAccesso" type="java.util.Date">
 		   <column name="ultimo_accesso"/>
 		  </property>
+		  
+		           <property name="area_interesse" type="int">
+            <column name="area_interesse" />
+        </property> 
     </class>
 </hibernate-mapping>

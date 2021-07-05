@@ -56,5 +56,13 @@
             <column name="id_stato" />
         </many-to-one>
         
+         <property name="luogo_nascita" type="java.lang.String" >
+            <column name="luogo_nascita" />
+        </property>
+        
+          <property name="data_nascita" type="java.sql.Date" >
+            <column name="data_nascita" />
+        </property>
+        
     </class>
 </hibernate-mapping>

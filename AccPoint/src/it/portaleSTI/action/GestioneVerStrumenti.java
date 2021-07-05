@@ -633,7 +633,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				
 				String data = request.getParameter("data");
 				
-				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getlistaStrumentiScadenza(data, session);
+				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getlistaStrumentiScadenza(data,data, session);
 				ArrayList<VerTipoStrumentoDTO> lista_tipo_strumento = GestioneVerStrumentiBO.getListaTipoStrumento(session);
 				ArrayList<VerTipologiaStrumentoDTO> lista_tipologie_strumento = GestioneVerStrumentiBO.getListaTipologieStrumento(session);
 				ArrayList<VerFamigliaStrumentoDTO> lista_famiglie_strumento = GestioneVerStrumentiBO.getListaFamiglieStrumento(session);

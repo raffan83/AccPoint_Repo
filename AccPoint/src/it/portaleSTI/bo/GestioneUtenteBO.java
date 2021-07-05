@@ -171,7 +171,19 @@ public class GestioneUtenteBO {
 	public static JsonObject sendEmailAmministratoreNuovoUtente(UtenteDTO utente, Session sessionH) throws Exception {
 		 	JsonObject myObj = new JsonObject(); 
 
-
+		 	String area_interesse = "";
+		 	
+		 	if(utente.getArea_interesse()!=0) {
+		 		if(utente.getArea_interesse() == 1) {
+		 			area_interesse = "Tarature";
+		 		}else if(utente.getArea_interesse() == 2) {
+		 			area_interesse = "Rilievi dimensionali";
+		 		}else if(utente.getArea_interesse() == 3) {
+		 			area_interesse = "Corsi di Formazione";
+		 		}else if(utente.getArea_interesse() == 4) {
+		 			area_interesse = "Verificazione periodica";
+		 		}
+		 	}
 			  
 			  String to2 = utente.getEMail();
 			  String subject2 = "Calver.it Registrazione Utente";
@@ -185,7 +197,7 @@ public class GestioneUtenteBO {
 			  String to = "raffaele.fantini@ncsnetwork.it,antonio.dicivita@ncsnetwork.it,luigi.laposta@stisrl.com";
 			  String subject = "Calver.it Nuovo Utente";
 			  
-		      String hmtlMex = "<h3><img src=\"https://www.calver.it/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />L'utente "+utente.getNominativo()+"<br /> ha chiesto la registrazione per l'accesso a Calver.it <br /><br/>Dati:<br /><br/>Utente: "+utente.getUser()+"<br  />Email: "+utente.getEMail()+"<br  />Telefono: "+utente.getTelefono()+"<br  />Company: "+utente.getDescrizioneCompany()+"<br  /><br /> \r\n" + 
+		      String hmtlMex = "<h3><img src=\"https://www.calver.it/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />L'utente "+utente.getNominativo()+"<br /> ha chiesto la registrazione per l'accesso a Calver.it <br /><br/>Dati:<br /><br/>Utente: "+utente.getUser()+"<br  />Email: "+utente.getEMail()+"<br  />Telefono: "+utente.getTelefono()+"<br  />Company: "+utente.getDescrizioneCompany()+"<br  /> Area d'interesse: "+area_interesse+"<br /> \r\n" + 
 		      		"Grazie e buon lavoro.\r\n" + 
 		      		"<br/><br/><br />AccPoint";
 		      	      

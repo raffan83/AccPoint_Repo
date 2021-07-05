@@ -94,7 +94,7 @@ public class Registrazione extends HttpServlet {
  			String telefono = request.getParameter("telefono");
  			String descrizioneCompany = request.getParameter("descrizioneCompany");
  			String check_consenso = request.getParameter("check_consenso");
- 			
+ 			String area_interesse = request.getParameter("area_interesse");
  			if(!passw.equals(cpassw)) {
  				
  				request.setAttribute("success", false);
@@ -133,6 +133,10 @@ public class Registrazione extends HttpServlet {
 	 			utente.setNominativo(nome+" "+cognome);
 	 			utente.setContatoreUtente(new ContatoreUtenteDTO(1));	 			
 	 			utente.setConsenso_commerciale(check_consenso);
+	 			if(area_interesse!=null && !area_interesse.equals("")) {
+	 				utente.setArea_interesse(Integer.parseInt(area_interesse));
+	 			}
+	 			
 	 			
 	 				utente.setIdCliente(0);
 	 	 

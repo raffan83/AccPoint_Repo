@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DAO.GestioneDocumentaleDAO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
+import it.portaleSTI.DTO.DocumDocumentoDipendenteDTO;
 import it.portaleSTI.DTO.DocumEmailDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
 import it.portaleSTI.DTO.DocumReferenteFornDTO;
@@ -110,6 +111,11 @@ public class GestioneDocumentaleBO {
 	public static ArrayList<DocumTLDocumentoDTO> getListaDocumentiScadenzario(String dateFrom, String dateTo, int fornitore,int committente, Session session) throws Exception, Exception {
 
 		return GestioneDocumentaleDAO.getListaDocumentiScadenzario(dateFrom, dateTo, fornitore, committente, session);
+	}
+
+	public static ArrayList<DocumDocumentoDipendenteDTO> getDocumentiScadenzarioDipendenti(String dateFrom, String dateTo, int id_fornitore, int id_committente, Session session) throws ParseException, Exception {
+		
+		return GestioneDocumentaleDAO.getDocumentiScadenzarioDipendenti(dateFrom, dateTo, id_fornitore, id_committente, session);
 	}
 
 

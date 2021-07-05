@@ -56,7 +56,11 @@
 			 
 
 	</div>
+	<div class="col-xs-7">
+	<button class="btn btn-primary pull-right" style="margin-top:25px;" onclick="filtraDateDipendenti()" id="vista_dipendenti">Vista Dipendenti</button>
+	<button class="btn btn-primary pull-right " style="margin-top:25px;margin-right:5px" disabled  onclick="filtraDate(1)" id="vista_documenti">Vista Documenti</button>
 	
+	</div>
 
 
 </div>
@@ -349,13 +353,50 @@
 <script type="text/javascript">
 
 
-function filtraDate(){
+function filtraDate(jspDoc){
+	
+	//var id_fornitore = "${id_forn}";
+		$('#vista_dipendenti').attr("disabled", false);
+	$('#vista_documenti').attr("disabled", true);
+	
+	if(jspDoc!=null){
+		jspDipendenti = false;
+	}
+	
+	if(jspDipendenti){
+		
+		filtraDateDipendenti()
+		
+	}else{
+		var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+	 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+	 	dataString = "action=scadenzario_table&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+	 			endDatePicker.format('YYYY-MM-DD');
+	 	
+	 	 pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+	 	//callAction("gestioneFormazione.do"+ dataString, false,true);
+
+	 	exploreModal("gestioneDocumentale.do", dataString, '#calendario');
+	 	
+	 	jspDipendenti = false;
+	}
+	
+
+}
+
+
+function filtraDateDipendenti(){
+	
+	$('#vista_dipendenti').attr("disabled", true);
+	$('#vista_documenti').attr("disabled", false);
 	
 	//var id_fornitore = "${id_forn}";
 	
 	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
  	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
- 	dataString = "action=scadenzario_table&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+ 	dataString = "action=scadenzario_dipendenti&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
  			endDatePicker.format('YYYY-MM-DD');
  	
  	 pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -364,8 +405,10 @@ function filtraDate(){
  	//callAction("gestioneFormazione.do"+ dataString, false,true);
 
  	exploreModal("gestioneDocumentale.do", dataString, '#calendario');
+ 	
+ 	jspDipendenti = true;
+ 	//exploreModal('gestioneDocumentale.do','action=scadenzario_dipendenti','#calendario')
 }
-
 
 
 
@@ -387,6 +430,9 @@ function formatDate(data){
 	   }			   
 	   return str;	 		
 }
+
+
+var jspDipendenti = false;
 
 $(document).ready(function() {
 	 

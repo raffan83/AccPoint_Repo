@@ -12,11 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneCertificatoDAO;
 import it.portaleSTI.DAO.GestioneMisuraDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
@@ -61,6 +64,9 @@ public class StrumentiMisurati extends HttpServlet {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
 		try 
 		{
 			
@@ -98,11 +104,15 @@ public class StrumentiMisurati extends HttpServlet {
 					request.getSession().setAttribute("actionParent", "li");
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
 					dispatcher.forward(request,response);
+					
+					session.getTransaction().commit();
+					session.close();
+					
 				}else if(action.equals("lmcheck")) {
 					
 					id = Utility.decryptData(id);
 					
-					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
+					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id), session);
 										
 					PrintWriter out = response.getWriter();
 										
@@ -115,11 +125,14 @@ public class StrumentiMisurati extends HttpServlet {
 					}
 			        out.println(myObj.toString());
 
+			        session.getTransaction().commit();
+					session.close();
+			        
 				}else if(action.equals("ls")){
 					
 					
 					
-					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
+					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id), session);
 					if(listaMisure.size() > 0){
 						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
 						for (MisuraDTO misura : listaMisure) {
@@ -135,14 +148,18 @@ public class StrumentiMisurati extends HttpServlet {
 						request.getSession().setAttribute("arrCartificati", arrCartificati);
 					}
 					request.getSession().setAttribute("listaMisure", listaMisure);
+					request.getSession().setAttribute("id_strumento", id);
 					
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisureAjax.jsp");
 					dispatcher.forward(request,response);
+					
+					session.getTransaction().commit();
+					session.close();
 				}else if(action.equals("lm")){
 					
 					id = Utility.decryptData(id);
 					
-					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
+					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id), session);
 					if(listaMisure.size() > 0){
 						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
 						for (MisuraDTO misura : listaMisure) {
@@ -161,6 +178,9 @@ public class StrumentiMisurati extends HttpServlet {
 					
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
 					dispatcher.forward(request,response);
+					
+					session.getTransaction().commit();
+					session.close();
 				}else if(action.equals("lt")){
 					
 					id=Utility.decryptData(id);
@@ -186,6 +206,9 @@ public class StrumentiMisurati extends HttpServlet {
 					request.getSession().setAttribute("actionParent", "lt");
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
 					dispatcher.forward(request,response);
+					
+					session.getTransaction().commit();
+					session.close();
 				}else if(action.equals("lc")){
 					id = Utility.decryptData(id);
 					String actionParent = request.getParameter("actionParent");
@@ -210,10 +233,16 @@ public class StrumentiMisurati extends HttpServlet {
 					
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiMisure.jsp");
 					dispatcher.forward(request,response);
+					
+					session.getTransaction().commit();
+					session.close();
 				}
 
 		     	
 			}else{
+				
+				session.getTransaction().commit();
+				session.close();
 				request.setAttribute("error","Action Inesistente");
 			
 		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
@@ -221,6 +250,9 @@ public class StrumentiMisurati extends HttpServlet {
 			}
 
 		}catch (Exception ex) {
+			
+			session.getTransaction().rollback();
+			session.close();
 			 ex.printStackTrace();
 	   	     request.setAttribute("error",STIException.callException(ex));
 	   	  request.getSession().setAttribute("exception", ex);

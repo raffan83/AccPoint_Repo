@@ -43,6 +43,7 @@ public class VerStrumentoDTO {
 	private String nome_sede;
 	private VerFamigliaStrumentoDTO famiglia_strumento;
 	private Set<VerLegalizzazioneBilanceDTO> lista_legalizzazione_bilance= new HashSet<VerLegalizzazioneBilanceDTO>(0);;
+	private String ultimo_verificatore;
 	
 	public String getCreato() {
 		return creato;
@@ -260,6 +261,12 @@ public class VerStrumentoDTO {
 	}
 	public void setLista_legalizzazione_bilance(Set<VerLegalizzazioneBilanceDTO> lista_legalizzazione_bilance) {
 		this.lista_legalizzazione_bilance = lista_legalizzazione_bilance;
+	}
+	public String getUltimo_verificatore() {
+		return ultimo_verificatore;
+	}
+	public void setUltimo_verificatore(String ultimo_verificatore) {
+		this.ultimo_verificatore = ultimo_verificatore;
 	}
 
 

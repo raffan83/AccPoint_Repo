@@ -413,9 +413,16 @@
        		   	 <div class="col-sm-8">
 		   	 <label id="label_file"></label>
        </div>
-       </div>
+       </div><br>
        
-        
+        <div class="row">
+       <div class="col-sm-5">
+       <a class="btn btn-primary customTooltip customLink" title="Associa a provvedimento di legalizzazione bilance" onClick="modalAssociaProvvedimento()"><i class="fa fa-plus"></i> Associa provv. legalizzazione</a>
+        </div>
+        <div class="col-sm-7">
+        <label id="label_provvedimenti"></label>
+        </div>
+        </div>
        </div>
 
   		 
@@ -424,7 +431,10 @@
 	
 		<input type="hidden" id="id_cliente" name="id_cliente">
 		<input type="hidden" id="id_sede" name="id_sede">
-		<button class="btn btn-primary" type="submit" id="save_btn">Salva</button> 
+		 
+		 <input type="hidden" id="provv_legalizzazione_selezionati" name="provv_legalizzazione_selezionati">
+		 
+		<button class="btn btn-primary" type="submit" id="save_btn" disabled>Salva</button> 
        
       </div>
     </div>
@@ -1217,7 +1227,8 @@
       
       
       <input type="hidden" id="id_strumento_legalizzazione" name="id_strumento_legalizzazione">
-      <a class="btn btn-primary" onClick="associaStrumentoLegalizzazione()">Salva</a>
+      <a class="btn btn-primary" onClick="associaStrumentoLegalizzazione(false)" id="button_salva">Salva</a>
+      <a class="btn btn-primary" style="display:none" onClick="associaStrumentoLegalizzazione(true)" id="button_associa">Salva</a>
        <a class="btn btn-primary pull-right"  style="margin-right:5px"  onClick="$('#myModalAssociaLegalizzazione').modal('hide')">Chiudi</a>
       </div>
    
@@ -1262,9 +1273,18 @@ function formatDate(data){
 
 function modalAssociaProvvedimento(id_strumento){
 	
-$('#id_strumento_legalizzazione').val(id_strumento);
+	if(id_strumento!=null){
+		$('#id_strumento_legalizzazione').val(id_strumento);
+		dataString ="action=strumento_legalizzazione_bilance&id_strumento="+id_strumento;
+		$('#button_salva').show();
+		$('#button_associa').hide();
+	}else{
+		dataString ="action=strumento_legalizzazione_bilance";
+		$('#button_salva').hide();
+		$('#button_associa').show();
+	}
 	
-	dataString ="action=strumento_legalizzazione_bilance&id_strumento="+id_strumento;
+	
     exploreModal("gestioneVerLegalizzazioneBilance.do",dataString,null,function(datab,textStatusb){
   	  	
   	  var result = datab;
@@ -1307,7 +1327,10 @@ $('#id_strumento_legalizzazione').val(id_strumento);
    				var val  = $(this).find('td:eq(2)').text();
    				$(this).attr("id", val)
    			});
-   			controllaAssociati(table,lista_provvedimenti_associati );
+   			if(lista_provvedimenti_associati!=null){
+   				controllaAssociati(table,lista_provvedimenti_associati );	
+   			}
+   			
  		  $('#myModalAssociaLegalizzazione').modal();
  			
   	  }
@@ -1369,7 +1392,7 @@ function eliminaAllegatoModal(id_allegato){
 }
 
 
-function associaStrumentoLegalizzazione(){
+function associaStrumentoLegalizzazione(nuovo){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 	  
@@ -1382,9 +1405,21 @@ function associaStrumentoLegalizzazione(){
 		}
 		console.log(selezionati);
 		table.rows().deselect();
-		associaProvvedimentiVerStrumento(selezionati, $('#id_strumento_legalizzazione').val());
+		if(!nuovo){
+			associaProvvedimentiVerStrumento(selezionati, $('#id_strumento_legalizzazione').val());	
+		}else{
+			$('#provv_legalizzazione_selezionati').val(selezionati);
+		
+			$('#label_provvedimenti').html("ID provvedimenti associati: "+selezionati);
+			  $('#myModalAssociaLegalizzazione').modal('hide')
+			  $('#save_btn').attr('disabled', false);
+			  pleaseWaitDiv.modal('hide');
+		}
+		
 		
 	}
+	
+
 
 function controllaAssociati(table, lista_provvedimenti_associati){
 	
@@ -1760,7 +1795,10 @@ $("#table_legalizzazione").on( 'init.dt', function ( e, settings ) {
 $('#matricola').change(function(){
 	$('#matricola').css('border', '1px solid #d2d6de');
 	$('#label_matricola').hide();
+if($('#provv_legalizzazione_selezionati').val()!=null && $('#provv_legalizzazione_selezionati').val()!=''){
 	$('#save_btn').attr('disabled', false);
+}
+	
 	 $('#tabStrumenti tbody tr').each(function(){		 
 			 var td = $(this).find('td').eq(4);
 			if(td!=null && td[0].innerText== $('#matricola').val()){

@@ -29,6 +29,7 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
+import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
 import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
@@ -36,6 +37,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
+import it.portaleSTI.bo.GestioneVerMisuraBO;
 import it.portaleSTI.bo.GestioneVerStrumentiBO;
 
 /**
@@ -104,6 +106,11 @@ public class ScadenzarioVerificazione extends HttpServlet {
 				
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			//	request.getSession().setAttribute("data",sdf.parseObject(data));
+				
+				for (VerStrumentoDTO strumento : lista_strumenti) {
+					String ultimo_verificatore = GestioneVerStrumentiBO.getUltimoVerificatoreStrumento(strumento.getId(), session);
+					strumento.setUltimo_verificatore(ultimo_verificatore);
+				}
 				
 				
 				session.getTransaction().commit();

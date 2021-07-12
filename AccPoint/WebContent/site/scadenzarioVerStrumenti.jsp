@@ -138,7 +138,16 @@
 	$('#button_export').attr("href",'listaCampioni.do?action=campioni_scadenza&data_start='+start+'&data_end='+end);
 }); */
 
-
+function formatDate(data){
+	
+	   var mydate = new Date(data);
+	   
+	   if(!isNaN(mydate.getTime())){
+	   
+		   str = mydate.toString("dd/MM/yyyy");
+	   }			   
+	   return str;	 		
+}
 
 function filtraDate(){
 	

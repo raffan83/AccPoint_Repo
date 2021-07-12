@@ -92,6 +92,7 @@
    <th>Cliente</th>
     <th>Sede</th>
     <th>ID Firma</th>
+    <th>Area d'interesse</th>
   <th style="width:110px">Azioni</th>
  </tr></thead>
  
@@ -118,13 +119,19 @@
 	<td>${utente.idSede}</td>
 	<td>${utente.idFirma}</td>
 	<td>
+	<c:if test="${utente.area_interesse == 1 }">Tarature</c:if>
+	<c:if test="${utente.area_interesse == 2 }">Rilievi dimensionali</c:if>
+	<c:if test="${utente.area_interesse == 3 }">Corsi di Formazione</c:if>
+	<c:if test="${utente.area_interesse == 4 }">Verificazione periodica</c:if>
+	</td>
+	<td>
 	<c:if test="${utente.abilitato == 0}">
 			<a href="#" onClick="toggleAbilitaUtente(${utente.id},1)" class="btn btn-success"><i class="fa fa-check-circle"></i></a> 
 		</c:if>
 		<c:if test="${utente.abilitato == 1}">
 			<a href="#" onClick="toggleAbilitaUtente(${utente.id},0)" class="btn customTooltip btn-danger " title="Click per eliminare l'utente"><i class="fa fa-ban"></i></a> 
 		</c:if>
-		<a  onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'','&prime;')}','${utente.indirizzo.replace('\'','&prime;')}','${utente.comune.replace('\'','&prime;')}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}','${utente.abilitato}','${utente.idFirma}','${utente.trasversale}')" class="btn customTooltip btn-warning" title="Click per modificare l'utente"><i class="fa fa-edit"></i></a> 
+		<a  onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'','&prime;')}','${utente.indirizzo.replace('\'','&prime;')}','${utente.comune.replace('\'','&prime;')}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}','${utente.abilitato}','${utente.idFirma}','${utente.trasversale}', '${utente.area_interesse }')" class="btn customTooltip btn-warning" title="Click per modificare l'utente"><i class="fa fa-edit"></i></a> 
 		<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 		<c:if test="${utente.cv != null && utente.cv != ''}">
 			<a href="#" onClick="callAction('gestioneUtenti.do?action=scaricacv&id=${utente.id}')" class="btn btn-danger "><i class="fa fa-file-pdf-o"></i></a> 
@@ -341,6 +348,20 @@
      
      </div>
     	 </div> 
+    	 
+    	     <div class="form-group" id="curriculumdiv">
+        <label class="col-sm-2 control-label">Area d'interesse:</label>
+        <div class="col-sm-10">
+              <select class="form-control select2" title="Seleziona area di interesse" id="area_interesse" name="area_interesse">
+                      <option value=""></option>
+                      <option value="1">Tarature</option>
+                      <option value="2">Rilievi dimensionali</option>
+                      <option value="3">Corsi di Formazione</option>
+                      <option value="4">Verificazione periodica</option>
+                      </select>
+    </div>
+     </div>
+    	 
     <div class="form-group" id="curriculumdiv">
         <label for="curriculum" class="col-sm-2 control-label">Curriculum:</label>
         <div class="col-sm-10">
@@ -557,6 +578,20 @@
      </div>
      
         </div> 
+        
+            	     <div class="form-group" id="curriculumdiv">
+        <label class="col-sm-2 control-label">Area d'interesse:</label>
+        <div class="col-sm-10">
+              <select class="form-control select2" title="Seleziona area di interesse" id="modarea_interesse" name="modarea_interesse">
+                      <option value=""></option>
+                      <option value="1">Tarature</option>
+                      <option value="2">Rilievi dimensionali</option>
+                      <option value="3">Corsi di Formazione</option>
+                      <option value="4">Verificazione periodica</option>
+                      </select>
+    </div>
+     </div>
+        
      <div class="form-group" id="modcurriculumdiv">
         <label for="modcurriculum" class="col-sm-2 control-label">Curriculum:</label>
         <div class="col-sm-10">
@@ -911,7 +946,7 @@
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 },
   	                   { responsivePriority: 4, targets: 6 },
-  	                   { responsivePriority: 5, targets: 16 },
+  	                   { responsivePriority: 5, targets: 17 },
   	                  { responsivePriority: 6, targets: 9 },
   	                { responsivePriority: 7, targets: 10 },
   	               ],

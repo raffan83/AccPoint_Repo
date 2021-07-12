@@ -137,7 +137,7 @@ String permesso = "0";
                   </div>
                 </li>
                 <li class="list-group-item">
-                  <b>Pacco di Origine</b> <a class="pull-right">${pacco.origine}</a>
+                  <b>Pacco di Origine</b><a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del pacco origine" onclick="callAction('gestionePacco.do?action=dettaglio&id_pacco=${utl:encryptData(pacco.origine.split('_')[1])}')">${pacco.origine} </a>
                 </li>
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${pacco.utente.nominativo} </a>

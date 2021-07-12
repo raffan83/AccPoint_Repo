@@ -223,6 +223,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				String tipologia = ret.get("tipologia");
 				String famiglia_strumento = ret.get("famiglia_strumento");
 				String freq_mesi = ret.get("freq_mesi");
+				String selezionati = ret.get("provv_legalizzazione_selezionati");
 				
 				VerStrumentoDTO strumento = new VerStrumentoDTO();
 				
@@ -337,6 +338,15 @@ public class GestioneVerStrumenti extends HttpServlet {
 					session.save(allegato);
 				}
 								
+				
+				if(selezionati!=null && !selezionati.equals("")) {
+					for(int i = 0;i<selezionati.split(";").length;i++) {
+						
+						VerLegalizzazioneBilanceDTO provvedimento = GestioneVerLegalizzazioneBilanceBO.getProvvedimentoFromId(Integer.parseInt(selezionati.split(";")[i]), session);
+						strumento.getLista_legalizzazione_bilance().add(provvedimento);					
+					}					
+				}
+				
 				session.getTransaction().commit();				
 				
 				

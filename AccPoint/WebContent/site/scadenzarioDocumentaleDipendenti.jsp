@@ -42,7 +42,7 @@
 <th>Numero Documento</th>
 <th>Tipo Documento</th>
 <th>Qualifica</th>
-<th>Nominativo</th>
+<th>Dipendente</th>
 <th>Data di nascita</th>
 <th>Luogo di nascita</th>
 <th>Data caricamento</th>

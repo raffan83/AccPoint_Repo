@@ -183,4 +183,21 @@ public class GestioneVerStrumentiDAO {
 		
 	}
 
+	public static String getUltimoVerificatoreStrumento(int id_strumento, Session session) {
+		
+		String result = "";
+		
+		
+		Query query = session.createQuery("select a.tecnicoVerificatore.nominativo from VerMisuraDTO a where a.verStrumento.id =:_id_strumento and a.obsoleta = 'N' order by a.id desc");
+		query.setParameter("_id_strumento", id_strumento);
+		
+		List<String> res = query.list();
+		
+		if(res.size()>0) {
+			result = res.get(0);
+		}
+		
+		return result;
+	}
+
 }

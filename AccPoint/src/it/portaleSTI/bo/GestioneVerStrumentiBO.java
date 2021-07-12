@@ -71,6 +71,11 @@ public class GestioneVerStrumentiBO {
 		return GestioneVerStrumentiDAO.getlistaStrumentiScadenza(dateFrom, dateTo, session);
 	}
 
+	public static String getUltimoVerificatoreStrumento(int id_strumento, Session session) {
+		
+		return GestioneVerStrumentiDAO.getUltimoVerificatoreStrumento(id_strumento, session);
+	}
+
 	
 	
 }

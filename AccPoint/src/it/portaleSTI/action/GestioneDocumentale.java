@@ -1285,8 +1285,17 @@ public class GestioneDocumentale extends HttpServlet {
 				//fornitore.getListaDocumenti().remove(documento);
 				
 				documento.setDisabilitato(1);
+			
+				Iterator<DocumDipendenteFornDTO> iterator = documento.getListaDipendenti().iterator();
+				
 				
 				session.update(documento);
+				
+				while(iterator.hasNext()) {
+					DocumDipendenteFornDTO dipendente = iterator.next();
+					dipendente.setStato(checkStatoDipendente(dipendente));
+					session.update(dipendente);
+				}
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();

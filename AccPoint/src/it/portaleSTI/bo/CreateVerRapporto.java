@@ -673,17 +673,17 @@ public class CreateVerRapporto {
 					reportP3.addParameter("latitudine_util","N.A.");
 				}
 				if(misura.getgOrg()!=0) {
-					reportP3.addParameter("g_org", (""+misura.getgOrg()).replace(".", ","));
+					reportP3.addParameter("g_org",  String.format("%.5f", ""+  misura.getgOrg()).replace(".", ","));
 				}else {
 					reportP3.addParameter("g_org","N.A.");
 				}
 				if(misura.getgUtil()!=0) {
-					reportP3.addParameter("g_util", String.format("%.4f", misura.getgUtil()).replace(".", ","));
+					reportP3.addParameter("g_util", String.format("%.5f", misura.getgUtil()).replace(".", ","));
 				}else {
 					reportP3.addParameter("g_util","N.A.");
 				}
 				if(misura.getgFactor()!=0) {
-					reportP3.addParameter("g_factor", String.format("%.5f", misura.getgFactor()).replace(".", ","));
+					reportP3.addParameter("g_factor", String.format("%.6f", misura.getgFactor()).replace(".", ","));
 				}else {
 					reportP3.addParameter("g_factor","N.A.");
 				}

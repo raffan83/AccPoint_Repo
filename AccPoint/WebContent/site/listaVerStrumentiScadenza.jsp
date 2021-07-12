@@ -22,8 +22,10 @@
 <th>Classe</th>
 <th>Tipo</th>
 <th>Tipologia</th>
+<th>Portata max</th>
 <th>Data ultima verifica</th>
 <th>Data prossima verifica</th>
+<th>Ultimo verificatore</th>
 <td>Azioni</td>
  </tr></thead>
  
@@ -41,8 +43,25 @@
 	<td>${strumento.classe }</td>
 	<td>${strumento.tipo.descrizione }</td>
 	<td>${strumento.tipologia.descrizione }</td>		
+	<td>
+	<c:if test="${(strumento.portata_max_C2 == null && strumento.portata_max_C3 == null) || (strumento.portata_max_C1 > strumento.portata_max_C3 && strumento.portata_max_C1 > strumento.portata_max_C2)}">
+	
+	${strumento.portata_max_C1 }
+	</c:if>
+	<c:if test="${strumento.tipo.id!=1 }">
+	<c:if test="${strumento.portata_max_C3 == null || (strumento.portata_max_C2 >  strumento.portata_max_C3 && strumento.portata_max_C2 >  strumento.portata_max_C1)}">
+	${strumento.portata_max_C2} 
+	</c:if>
+	<c:if test="${strumento.portata_max_C2 == null || (strumento.portata_max_C3 >=  strumento.portata_max_C2 && strumento.portata_max_C3 >=  strumento.portata_max_C1)}">
+	${strumento.portata_max_C3} 
+	</c:if>
+	
+	</c:if>
+	
+	</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_ultima_verifica }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_prossima_verifica }" /></td>
+	<td>${strumento.ultimo_verificatore }</td>
 	<td style="min-width:130px">
 	<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento.famiglia_strumento.id }','${strumento.freqMesi }','${strumento.denominazione }','${strumento.costruttore }','${strumento.modello }','${strumento.matricola }',
 	'${strumento.classe }','${strumento.tipo.id }','${strumento.data_ultima_verifica }','${strumento.data_prossima_verifica }','${strumento.um }','${strumento.portata_min_C1 }',

@@ -253,8 +253,11 @@ public class GestioneVerLegalizzazioneBilance extends HttpServlet {
 				 response.setContentType("application/json");
 				
 				String id_strumento = request.getParameter("id_strumento");
+				VerStrumentoDTO strumento = null;
+				if(id_strumento!=null) {
+					 strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(id_strumento), session);	
+				}
 				
-				VerStrumentoDTO strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(id_strumento), session);
 				ArrayList<VerLegalizzazioneBilanceDTO> lista_provvedimenti = GestioneVerLegalizzazioneBilanceBO.getListaLegalizzazioni(session);
 				PrintWriter out = response.getWriter();
 				
@@ -264,8 +267,9 @@ public class GestioneVerLegalizzazioneBilance extends HttpServlet {
 			        myObj.addProperty("success", true);
 			  
 			        myObj.add("lista_provvedimenti", gson.toJsonTree(lista_provvedimenti));
-			        myObj.add("lista_provvedimenti_associati", gson.toJsonTree(strumento.getLista_legalizzazione_bilance()));
-			        
+			        if(id_strumento!=null) {
+			        	myObj.add("lista_provvedimenti_associati", gson.toJsonTree(strumento.getLista_legalizzazione_bilance()));
+			        }
 			        out.print(myObj);
 		
 			        out.close();
@@ -293,8 +297,7 @@ public class GestioneVerLegalizzazioneBilance extends HttpServlet {
 					}					
 				}				
 				
-				session.getTransaction().commit();
-			    session.close();
+				
 				
 				PrintWriter out = response.getWriter();
 			      
@@ -305,7 +308,8 @@ public class GestioneVerLegalizzazioneBilance extends HttpServlet {
 		        out.println(myObj);
 	
 		        out.close();
-		        
+		        session.getTransaction().commit();
+			    session.close();
 				
 			}
 			else if(action.equals("lista_allegati")) {

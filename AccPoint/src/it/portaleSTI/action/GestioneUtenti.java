@@ -118,6 +118,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			String companyId = ret.get("company");
 	    	 			String idFirma = ret.get("idFirma");
  	    	 			String tipoutente = ret.get("tipoutente");
+ 	    	 			String area_interesse = ret.get("area_interesse");
 	    	 			String cliente = null;
 	    	 			String sede = null;
 	    	 			if(tipoutente.equals("2")) {
@@ -165,6 +166,10 @@ public class GestioneUtenti extends HttpServlet {
 		    	 			utente.setTrasversale(1);
 	    	 			}else {
 	    	 				utente.setTrasversale(0);
+	    	 			}
+	    	 			
+	    	 			if(area_interesse!=null && !area_interesse.equals("")) {
+	    	 				utente.setArea_interesse(Integer.parseInt(area_interesse));
 	    	 			}
 	    	 			
 	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
@@ -278,6 +283,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			String abilitato = ret.get("modabilitato");
 	    	 			String trasversale = ret.get("modtrasversale");
 	    	 			String idFirma = ret.get("modidFirma");
+	    	 			String area_interesse = ret.get("modarea_interesse");
 	    	 			String cliente = null;
 	    	 			String sede = null;
 	    	 			if(tipoutente != null && tipoutente.equals("2")) {
@@ -338,6 +344,10 @@ public class GestioneUtenti extends HttpServlet {
 		    	 			utente.setIdFirma(idFirma);
 	    	 			}
 	    	 			utente.setNominativo(utente.getNome()+" "+utente.getCognome());
+	    	 			
+	    	 			if(area_interesse!=null && !area_interesse.equals("")) {
+	    	 				utente.setArea_interesse(Integer.parseInt(area_interesse));
+	    	 			}
 	    	 			
 	    	 			if(companyId != null && !companyId.equals("")){
 		    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);

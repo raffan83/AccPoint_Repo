@@ -2657,7 +2657,7 @@ function eliminaUtente(){
 
 }
 
-  function modalModificaUtente(tipoutente,id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company,cliente,sede,abilitato,idFirma,trasversale){
+  function modalModificaUtente(tipoutente,id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company,cliente,sede,abilitato,idFirma,trasversale, area_interesse){
 	  
 	  $('#modtipoutente').val(tipoutente);
 	  $('#modtipoutente').change();
@@ -2673,7 +2673,8 @@ function eliminaUtente(){
 	  $('#modcompany').val(company);
 	  $('#modcompany').change();
 	  $('#modcliente').val(cliente);
-	  
+	  $('#modarea_interesse').val(area_interesse);
+	  $('#modarea_interesse').change();
 	  $('#modsede').val(sede);
 	//  $('#modcliente').change();
 	//  $('#modsede').change();

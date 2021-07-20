@@ -87,6 +87,7 @@
  <th>Cap</th>
  <th>e-mail</th>
  <th>Telefono</th>
+ <th>Abilitato</th>
  <th>Company</th>
   <th>Descrizione Company</th>
    <th>Cliente</th>
@@ -113,6 +114,14 @@
 	<td>${utente.cap}</td>
 	<td>${utente.EMail}</td>
 	<td>${utente.telefono}</td>
+	<td>
+	<c:if test="${utente.abilitato == 0 }">
+	NO
+	</c:if>
+	<c:if test="${utente.abilitato == 1 }">
+	SI
+	</c:if>
+	</td>
 	<td>${utente.company.denominazione}</td>
 	<td>${utente.descrizioneCompany}</td>
 	<td>${utente.idCliente}</td>
@@ -582,7 +591,7 @@
             	     <div class="form-group" id="curriculumdiv">
         <label class="col-sm-2 control-label">Area d'interesse:</label>
         <div class="col-sm-10">
-              <select class="form-control select2" title="Seleziona area di interesse" id="modarea_interesse" name="modarea_interesse">
+              <select class="form-control select2" title="Seleziona area di interesse" id="modarea_interesse" name="modarea_interesse" required>
                       <option value=""></option>
                       <option value="1">Tarature</option>
                       <option value="2">Rilievi dimensionali</option>
@@ -946,9 +955,9 @@
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 },
   	                   { responsivePriority: 4, targets: 6 },
-  	                   { responsivePriority: 5, targets: 17 },
-  	                  { responsivePriority: 6, targets: 9 },
-  	                { responsivePriority: 7, targets: 10 },
+  	                   { responsivePriority: 5, targets: 18 },
+  	                  { responsivePriority: 6, targets: 10 },
+  	                { responsivePriority: 7, targets: 11 },
   	               ],
   	     
   	               buttons: [ {

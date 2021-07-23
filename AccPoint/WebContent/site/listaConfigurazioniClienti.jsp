@@ -51,12 +51,18 @@
 	
 			<div class="col-md-3">
 			<label>Cliente</label>
-			<select class="form-control select2" data-placeholder="Seleziona Cliente..."  aria-hidden="true" data-live-search="true" style="width:100%" id="cliente" name="cliente" required>
-			<option value=""></option>
-			<c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
-			 <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> 
-			</c:forEach>
-			</select>
+			<input class="form-control"  style="width:100%" id="cliente" name="cliente" required >
+			
+		                      <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
+                
+                      <c:forEach items="${lista_clienti}" var="cliente">
+                     
+                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+       			
 			</div>
 			
 			<div class="col-md-3">
@@ -65,7 +71,7 @@
 			
 			<option value=""></option>
 			<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
-			 <option value="${sede.__id}_${sede.id__cliente_}__${sede.descrizione} - ${sede.indirizzo}">${sede.descrizione} - ${sede.indirizzo}</option>     
+			 <option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo}</option>     
 			</c:forEach>
 			</select>
 			</div>
@@ -84,15 +90,11 @@
 			</div>
 		</div><br>
 		<div class="row">
-		<div class=col-md-3>
-		       <span class="btn btn-primary fileinput-button">
-		        <i class="glyphicon glyphicon-plus"></i>
-		        <span>Seleziona un logo...</span>
 
-		        <input id="fileupload" accept=".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.btm,.BTM,.tiff,.TIFF"  type="file" name="fileupload" class="form-control" required/>
-		   	 </span>
-		</div>
-		<div class="col-md-3">
+
+		
+				<div class="col-md-3">
+				<label>Firma</label>
 		<select class="form-control select2" data-placeholder="Seleziona Firma..."  aria-hidden="true" data-live-search="true" style="width:100%" id="firma" name="firma" required>
 		<option value=""></option>
 		<option value="0">OP + RL</option>
@@ -102,7 +104,31 @@
 		
 			</select>
 		</div>
-		<div class="col-md-6">
+		
+		
+				<div class="col-md-3">
+		<label>Modello</label>
+		<input type="text" class="form-control" id="modello" name="modello">
+		</div>
+		
+				<div class="col-md-3">
+	<label>Revisione</label>
+		<input type="text" class="form-control" id="revisione" name="revisione">
+		</div>
+		
+		
+				<div class=col-md-3>
+		       <span class="btn btn-primary fileinput-button pull-right" style="margin-top:25px">
+		        <i class="glyphicon glyphicon-plus "></i>
+		        <span>Seleziona un logo...</span>
+
+		        <input id="fileupload" accept=".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.btm,.BTM,.tiff,.TIFF"  type="file" name="fileupload" class="form-control" required/>
+		   	 </span>
+		</div>
+		</div><br><br>
+			<div class="row">
+		
+		<div class="col-md-12">
 		<input type="hidden" name="seleziona_tutte" id="seleziona_tutte">
 
 			<!-- <a class="btn btn-primary" id="salva_btn" onClick="inserisciNuovaConfigurazione()">Salva</a> -->
@@ -143,6 +169,8 @@
 <th>Sede</th>
 <th>Tipo Rapporto</th>
 <th>Tipo Firma</th>
+<th>Modello</th>
+<th>Revisione</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -170,9 +198,11 @@
 			</c:otherwise>
 		</c:choose>
 		</td>
+		<td>${configurazione.modello }</td>
+		<td>${configurazione.revisione}</td>
 		<td>
 		<%-- <a class="btn btn-warning" onClick="modalModifica('${configurazione.id_cliente}','${configurazione.nome_cliente}','${configurazione.id_sede }','${configurazione.nome_sede }','${configurazione.tipo_rapporto.id}','${configurazione.nome_file_logo }','${configurazione.id_firma }')"><i class="fa fa-edit"></i></a> --%>
-		<a class="btn btn-warning custom toolTip" title="Click per modificare la configurazione"  onClick="modalModifica('${configurazione.id_cliente}','${configurazione.nome_cliente }','${configurazione.id_sede }','${configurazione.nome_sede.replace('\'','*') }','${configurazione.tipo_rapporto.id }','${configurazione.nome_file_logo }','${configurazione.id_firma }')"><i class="fa fa-edit"></i></a>
+		<a class="btn btn-warning custom toolTip" title="Click per modificare la configurazione"  onClick="modalModifica('${configurazione.id_cliente}','${configurazione.id_sede }','${configurazione.tipo_rapporto.id }','${configurazione.nome_file_logo }','${configurazione.id_firma }','${configurazione.modello }','${configurazione.revisione }')"><i class="fa fa-edit"></i></a>
 		<a class="btn btn-primary custom toolTip" title="Click per scaricare il logo" onClick="callAction('gestioneConfigurazioniClienti.do?action=download_logo&id_cliente=${utl:encryptData(configurazione.id_cliente)}&id_sede=${utl:encryptData(configurazione.id_sede) }&tipo_rapporto=${utl:encryptData(configurazione.tipo_rapporto.id) }')"><i class="fa fa-image"></i></a>
 		</td>
 	</tr>
@@ -200,12 +230,14 @@
      
        <div class="col-md-3">
 			<label>Cliente</label>
-			<select class="form-control select2" data-placeholder="Seleziona Cliente..."  aria-hidden="true" data-live-search="true" style="width:100%" id="mod_cliente" name="mod_cliente" required>
+				<!-- <input class="form-control"  style="width:100%" id="mod_cliente" name="mod_cliente" required > -->
+				<input class="form-control" data-placeholder="Seleziona Cliente..." id="mod_cliente" name="mod_cliente" style="width:100%" required>
+<%-- 			<select class="form-control select2" data-placeholder="Seleziona Cliente..."  aria-hidden="true" data-live-search="true" style="width:100%" id="mod_cliente" name="mod_cliente" required>
 			<option value=""></option>
 			<c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
 			 <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> 
 			</c:forEach>
-			</select>
+			</select> --%>
 			</div>			
 			<div class="col-md-3">
 			<label>Sede</label>
@@ -214,7 +246,7 @@
 			<option value=""></option>
 			<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
 			 <%-- <option value="${sede.__id}_${sede.id__cliente_}__${sede.descrizione} - ${sede.indirizzo} ">${sede.descrizione} - ${sede.indirizzo}</option> --%>
-			 <option value="${sede.__id}_${sede.id__cliente_}__${sede.descrizione} - ${sede.indirizzo}">${sede.descrizione} - ${sede.indirizzo}</option>     
+			 <option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo}</option>     
 			</c:forEach>
 			</select>
 			</div>
@@ -233,19 +265,14 @@
 			</div>
 		</div><br>
 		<div class="row">
-		<div class=col-md-5>
-		       <span class="btn btn-primary fileinput-button">
-		        <i class="glyphicon glyphicon-plus"></i>
-		        <span>Seleziona un logo...</span>
-
-		        <input id="mod_fileupload" accept=".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.btm,.BTM,.tiff,.TIFF"  type="file" name="mod_fileupload" class="form-control" />
-		   	 </span>
-		   	 <label id="label_nome_file"></label>
-		</div>
+<!-- 		<div class=col-md-5>
+		       
+		</div> -->
 		<!-- <div class="col-md-3">
 		
 		</div> -->
 		<div class="col-md-3">
+		<label>Firma</label>
 		<select class="form-control select2" data-placeholder="Seleziona Firma..."  aria-hidden="true" data-live-search="true" style="width:100%" id="mod_firma" name="mod_firma" required>
 		<option value=""></option>
 		<option value="0">OP + RL</option>
@@ -256,6 +283,33 @@
 			</select>
 		</div>
 		<div class="col-md-3">
+		<label>Modello</label>
+		<input type="text" class="form-control" id="modello_mod" name="modello_mod">
+		</div>
+		
+				<div class="col-md-3">
+	<label>Revisione</label>
+		<input type="text" class="form-control" id="revisione_mod" name="revisione_mod">
+		</div>
+		
+		
+		</div><br>
+		
+		<div class="row">
+		<div class=col-md-5>
+		<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un logo...</span>
+
+		        <input id="mod_fileupload" accept=".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.btm,.BTM,.tiff,.TIFF"  type="file" name="mod_fileupload" class="form-control" />
+		   	 </span>
+		   	 <label id="label_nome_file"></label>
+		</div>
+		</div>
+		
+		<br>
+		<div class="row">
+		<div class="col-md-12">
 		<input type="hidden" name="mod_seleziona_tutte" id="mod_seleziona_tutte">
 		<input type="hidden" name="cliente_old" id="cliente_old">
 		<input type="hidden" name="sede_old" id="sede_old">
@@ -413,7 +467,17 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
 	});
 
      $(document).ready(function() {
-    	 $('.select2').select2();
+    	 
+    	
+    	 initSelect2('#cliente');
+    	 initSelect2('#mod_cliente');
+    	 
+    	 $('#sede').select2();
+    	 $('#tipo_rapporto').select2();
+    	 $('#firma').select2();
+    	 $('#mod_sede').select2();
+    	 $('#mod_tipo_rapporto').select2();
+    	 $('#mod_firma').select2();
     	 
     	   $('.dropdown-toggle').dropdown();
     	 table = $('#tabConfigurazioni').DataTable({
@@ -491,6 +555,13 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
      });
      
      
+
+
+     });
+     
+     
+     
+     
   
 
      
@@ -505,7 +576,7 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
    	  
    	  var selection = $(this).val()
    	 
-   	  var id = selection.substring(0,selection.indexOf("_"));
+   	  var id = selection;
    	  
    	  var options = $(this).data('options');
 
@@ -517,7 +588,7 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
    	   {
    		var str=options[i].value; 
    	
-   		if(str.substring(str.indexOf("_")+1,str.indexOf("__"))==id)
+   		if(str.split("_")[1]==id)
    		{
 
    			opt.push(options[i]);
@@ -550,7 +621,7 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
    	  
    	  var selection = $(this).val()
    	 
-   	  var id = selection.substring(0,selection.indexOf("_"));
+   	  var id = selection;
    	  
    	  var options = $(this).data('options');
 
@@ -562,7 +633,7 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
    	   {
    		var str=options[i].value; 
    	
-   		if(str.substring(str.indexOf("_")+1,str.indexOf("__"))==id)
+   		if(str.split("_")[1]==id)
    		{
 
    			opt.push(options[i]);
@@ -579,16 +650,19 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
 
      });
      
-
-     });
      
      
-     function modalModifica(id_cliente, nome_cliente, id_sede, nome_sede, tipo_rapporto, nome_file, firma){
-    	 $('#mod_cliente').val(id_cliente+"_"+nome_cliente);
-    	 $('#mod_cliente').change();
-		
+     
+     function modalModifica(id_cliente,  id_sede,  tipo_rapporto, nome_file, firma, modello, revisione){
+    	 
+    	
+    	 $('#mod_cliente').val(id_cliente);
+    	 //	$('#mod_cliente option[value="'+id_cliente+'"').attr("selected", true);
+			$('#mod_cliente').change();
+    	 
     	 if(id_sede!=0){
-    	 	$('#mod_sede').val(id_sede+"_"+id_cliente+"__"+nome_sede.replace("*","\'"));
+    	 	//$('#mod_sede').val(id_sede+"_"+id_cliente+"__"+nome_sede.replace("*","\'"));
+    		 $('#mod_sede').val(id_sede+"_"+id_cliente);
     	 }else{
     		 $('#mod_sede').val(0); 
     	 }
@@ -602,13 +676,63 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
     	 
     	 $('#label_nome_file').html(nome_file);
     	 
-    	 $('#myModalModifica').modal();
+  
     	 
-    	 $('#cliente_old').val(id_cliente+"_"+nome_cliente);
-    	 $('#sede_old').val(id_sede+"_"+id_cliente+"__"+nome_sede);
+    	 $('#cliente_old').val(id_cliente);
+    	 $('#sede_old').val(id_sede+"_"+id_cliente);
     	 $('#tipo_rapporto_old').val(tipo_rapporto);
+    	 $('#modello_mod').val(modello);
+    	 $('#revisione_mod').val(revisione);
+    	 
+      	 
+    	 $('#myModalModifica').modal();
      }
      
+     
+     var options_cl =  $('#cliente_appoggio option').clone();
+     function mockData() {
+     	  return _.map(options_cl, function(i) {		  
+     	    return {
+     	      id: i.value,
+     	      text: i.text,
+     	    };
+     	  });
+     	}
+     
+     
+     
+     function initSelect2(id_input, placeholder) {
+    	  if(placeholder==null){
+    		  placeholder = "Seleziona Cliente...";
+    	  }
+
+     	$(id_input).select2({
+     	    data: mockData(),
+     	    placeholder: placeholder,
+     	    multiple: false,
+     	    // query with pagination
+     	    query: function(q) {
+     	      var pageSize,
+     	        results,
+     	        that = this;
+     	      pageSize = 20; // or whatever pagesize
+     	      results = [];
+     	      if (q.term && q.term !== '') {
+     	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+     	        results = _.filter(x, function(e) {
+     	        	
+     	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+     	        });
+     	      } else if (q.term === '') {
+     	        results = that.data;
+     	      }
+     	      q.callback({
+     	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+     	        more: results.length >= q.page * pageSize,
+     	      });
+     	    },
+     	  });
+     }
      
   </script>
   

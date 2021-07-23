@@ -31,6 +31,12 @@
           <property name="id_firma" type="int">
             <column name="id_firma" />
         </property>
+         <property name="modello" type="java.lang.String">
+            <column name="modello" />
+        </property>
+         <property name="revisione" type="java.lang.String">
+            <column name="revisione" />
+        </property>
         
     </class>
 </hibernate-mapping>

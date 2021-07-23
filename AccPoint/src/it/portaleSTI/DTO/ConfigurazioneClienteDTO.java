@@ -12,6 +12,8 @@ public class ConfigurazioneClienteDTO implements Serializable{
 	private TipoRapportoDTO tipo_rapporto;
 	private int id_firma;
 	private String nome_file_logo;
+	private String modello;
+	private String revisione;
 	
 	
 	public int getId_cliente() {
@@ -55,6 +57,19 @@ public class ConfigurazioneClienteDTO implements Serializable{
 	}
 	public void setNome_file_logo(String nome_file_logo) {
 		this.nome_file_logo = nome_file_logo;
+	}
+
+	public String getRevisione() {
+		return revisione;
+	}
+	public void setRevisione(String revisione) {
+		this.revisione = revisione;
+	}
+	public String getModello() {
+		return modello;
+	}
+	public void setModello(String modello) {
+		this.modello = modello;
 	}
 
 }

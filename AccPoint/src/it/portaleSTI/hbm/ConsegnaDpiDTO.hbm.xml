@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.ConsegnaDpiDTO" table="consegna_dpi">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <many-to-one name="tipo" class="it.portaleSTI.DTO.TipoDpiDTO" fetch="join" lazy="false">
+            <column name="id_tipo_dpi" />
+        </many-to-one>
+
+         <many-to-one name="lavoratore" class="it.portaleSTI.DTO.DocumDipendenteFornDTO" fetch="join" lazy="false">
+            <column name="id_lavoratore" />
+        </many-to-one> 
+        <property name="data_consegna" type="java.sql.Date">
+            <column name="data_consegna" />
+        </property>
+        <property name="data_scadenza" type="java.sql.Date">
+            <column name="data_scadenza" />
+        </property>
+        <property name="data_accettazione" type="java.sql.Date">
+            <column name="data_accettazione" />
+        </property>
+        
+        <property name="modello" type="java.lang.String">
+            <column name="modello" />
+        </property>
+        <property name="quantita" type="int">
+            <column name="quantita" />
+        </property>
+        <property name="conformita" type="java.lang.String">
+            <column name="conformita" />
+        </property>
+        <property name="ricevuto" type="int">
+            <column name="ricevuto" />
+        </property>
+        
+        <property name="riconsegnato" type="int">
+            <column name="riconsegnato" />
+        </property>
+       <many-to-one name="restituzione" class="it.portaleSTI.DTO.ConsegnaDpiDTO" fetch="join" lazy="false">
+            <column name="id_restituzione" />
+        </many-to-one> 
+        
+         <property name="is_restituzione" type="int">
+            <column name="restituzione" />
+        </property>
+         <property name="motivazione" type="java.lang.String">
+            <column name="motivazione" />
+        </property>
+
+        
+    </class>
+</hibernate-mapping>

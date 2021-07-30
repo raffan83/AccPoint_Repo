@@ -29,6 +29,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.apache.log4j.Logger;
 
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.ConsegnaDpiDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
@@ -782,6 +783,95 @@ public static void sendEmailFormazione(ForCorsoDTO corso, String mailTo, Servlet
 			  		"</font>"
 				  );
 			
+	  email.send();
+}
+
+public static void sendEmailAccettazioneConsegna(ConsegnaDpiDTO consegna, ServletContext ctx) throws Exception {
+	
+	
+	  // Create the email message
+	  HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+    email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+    email.getMailSession().getProperties().put("mail.debug", "true");
+    email.getMailSession().getProperties().put("mail.smtp.port", "465");
+    email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+    email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+    email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+    email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+
+    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	  email.addTo(consegna.getLavoratore().getEmail());
+	  email.setFrom("calver@accpoint.it", "Calver");
+	  email.setSubject("Consegna DPI "+consegna.getId());
+	  
+	  // embed the image and get the content id
+
+	  File image = new File(ctx.getRealPath("images/logo_calver_v2.png"));
+	  String cid = email.embed(image, "Calver logo");
+	  	
+		  email.setHtmlMsg("<html>Gentile "+consegna.getLavoratore().getNome() + " "+consegna.getLavoratore().getCognome()+",<br>"
+		  	  	+"In data "+df.format(consegna.getData_consegna())+" ti &egrave; stato consegnato il seguente DPI: <br><br>"
+				  +"TIPO: "+consegna.getTipo().getDescrizione()
+				  +"<br>MODELLO: " +consegna.getModello()
+				  +"<br>QUANTIT&Agrave;:"+consegna.getQuantita()
+				  +"<br>Clicca sul link per accettare la consegna."
+				  +"<br><br>http://localhost:8080/FormInputDoc/accettazioneDpi.jsp?id_consegna="+Utility.encryptData(""+consegna.getId())
+				  
+				  
+			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
+			  		//+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.PATH_FOLDER_LOGHI +"\\sito_calver.png"+" \"></html>");
+
+
+	  email.send();
+	
+}
+
+public static void sendEmailRiconsegnaDPI(ConsegnaDpiDTO consegna, ServletContext ctx) throws Exception {
+	
+
+	  HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+  email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+  email.getMailSession().getProperties().put("mail.debug", "true");
+  email.getMailSession().getProperties().put("mail.smtp.port", "465");
+  email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+  email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+  email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+  email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+  DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+	  email.addTo(consegna.getLavoratore().getEmail());
+	  email.setFrom("calver@accpoint.it", "Calver");
+	  email.setSubject("Riconsegna DPI "+consegna.getId());
+	  
+	  // embed the image and get the content id
+
+	  File image = new File(ctx.getRealPath("images/logo_calver_v2.png"));
+	  String cid = email.embed(image, "Calver logo");
+	  	
+		  email.setHtmlMsg("<html>Gentile "+consegna.getLavoratore().getNome() + " "+consegna.getLavoratore().getCognome()+",<br>"
+		  	  	+"In data "+df.format(consegna.getRestituzione().getData_consegna())+" hai riconsegnato il seguente DPI: <br><br>"
+				  +"TIPO: "+consegna.getTipo().getDescrizione()
+				  +"<br>MODELLO: " +consegna.getModello()
+				  +"<br>QUANTIT&Agrave;: "+consegna.getRestituzione().getQuantita()
+				  +"<br>MOTIVAZIONE: "+consegna.getRestituzione().getMotivazione()
+				  +"<br>Clicca sul link per confermare la restituzione."
+				  +"<br><br>http://localhost:8080/FormInputDoc/accettazioneDpi.jsp?id_consegna="+Utility.encryptData(""+consegna.getId())+"&id_riconsegna="+Utility.encryptData(""+consegna.getRestituzione().getId())
+				  
+				  
+			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
+			  		//+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.PATH_FOLDER_LOGHI +"\\sito_calver.png"+" \"></html>");
+
+
 	  email.send();
 }
 

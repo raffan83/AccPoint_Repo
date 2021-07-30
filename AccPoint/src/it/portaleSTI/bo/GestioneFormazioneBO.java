@@ -626,7 +626,7 @@ public class GestioneFormazioneBO {
 				String[] text = getText(reader, i); 
 				String pdftext = text[0];
 				
-				if(pdftext.contains(keyFirstPage) && pdftext.contains(partecipante.getPartecipante().getCf()) ) {				
+				if(StringUtils.containsIgnoreCase(pdftext, keyFirstPage) &&  StringUtils.containsIgnoreCase(pdftext, partecipante.getPartecipante().getCf())) {				
 					splitter.setStartPage(i);
 					splitter.setEndPage(i+1);
 					splitter.setSplitAtPage(i+1);
@@ -830,7 +830,12 @@ public class GestioneFormazioneBO {
 				    
 					 image.scaleAbsolute(rect);
 					
-					image.setAbsolutePosition(fontPosition[0] , fontPosition[1] -35);
+					 if(firma_legale_rappresentante>0) {
+						 image.setAbsolutePosition(fontPosition[0] +55, fontPosition[1] -35);
+					 }else {
+						 image.setAbsolutePosition(fontPosition[0] , fontPosition[1] -35);	 
+					 }
+					
 					
 					content.addImage(image);
 					break;

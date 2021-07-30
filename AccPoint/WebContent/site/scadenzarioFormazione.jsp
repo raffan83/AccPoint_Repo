@@ -108,7 +108,8 @@
  <thead><tr class="active">
 
 <th >ID Corso</th>
-<th>Edizione</th>
+<th>Commessa</th>
+
 <th>Partecipante</th>
 <th>Ruolo</th>
 <th>Tipologia</th>
@@ -118,15 +119,23 @@
 <th>Frequenza (mesi)</th>
 <th>Azienda</th>
 <th>Sede</th>
+<th>Edizione</th>
 <th>Azioni</th>
  </tr></thead>
  
  <tbody>
  
  	<c:forEach items="${lista_corsi }" var="corso_part" varStatus="loop">
-	<tr id="row_${loop.index}" >
+ 	
+ 	<c:if test="${corso_part.corso_aggiornato == 1 }">
+ 	<tr id="row_${loop.index}" style="background-color:#F8F26D" >
+ 	</c:if>
+	<c:if test="${corso_part.corso_aggiornato == 0 }">
+ 	<tr id="row_${loop.index}" >
+ 	</c:if>
 <td>${corso_part.corso.id }</td>
-<td>${corso_part.corso.edizione }</td>
+<td>${corso_part.corso.commessa }</td>
+
 	<td>
 	<a class="btn customTooltip customlink" title="Vai al partecipante" onclick="callAction('gestioneFormazione.do?action=dettaglio_partecipante&id_partecipante=${utl:encryptData(corso_part.partecipante.id)}')">${corso_part.partecipante.nome } ${corso_part.partecipante.cognome }</a>
 	</td>
@@ -140,6 +149,7 @@
 	<td>${corso_part.corso.corso_cat.frequenza }</td>
 	<td>${corso_part.partecipante.nome_azienda}</td>
 	<td><c:if test="${corso_part.partecipante.id_sede!=0}">${corso_part.partecipante.nome_sede}</c:if></td>
+	<td>${corso_part.corso.edizione }</td>
 	<td>
 	 	
 	<a class="btn btn-info customTooltip" onClick="dettaglioCorso('${utl:encryptData(corso_part.corso.id)}')" title="Vai al corso"><i class="fa fa-search"></i></a>
@@ -399,8 +409,8 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 11 },
-		    	  { responsivePriority: 2, targets: 9 },
+		    	  { responsivePriority: 1, targets: 12 },
+		    	  { responsivePriority: 2, targets: 9},
 		    	  { responsivePriority: 3, targets: 10 }
 		    	  
 		    	  

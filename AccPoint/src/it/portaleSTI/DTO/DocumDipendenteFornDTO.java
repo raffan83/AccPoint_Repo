@@ -18,6 +18,7 @@ public class DocumDipendenteFornDTO {
 	private DocumTLStatoDipendenteDTO stato;
 	private String luogo_nascita;
 	private Date data_nascita;
+	private String email;
 	
 	private Set<DocumTLDocumentoDTO> listaDocumenti = new HashSet<DocumTLDocumentoDTO>(0);
 	
@@ -99,6 +100,12 @@ public class DocumDipendenteFornDTO {
 	}
 	public void setData_nascita(Date data_nascita) {
 		this.data_nascita = data_nascita;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

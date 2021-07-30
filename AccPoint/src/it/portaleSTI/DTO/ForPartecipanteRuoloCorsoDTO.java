@@ -9,8 +9,10 @@ public class ForPartecipanteRuoloCorsoDTO implements Serializable{
 	private ForRuoloDTO ruolo;
 	private Double ore_partecipate;
 	private String attestato;
-	int firma_responsabile;
-	int firma_legale_rappresentante;
+	private int firma_responsabile;
+	private int firma_legale_rappresentante;
+	private int firma_centro_formazione;
+	private int corso_aggiornato;
 	
 	
 	public ForPartecipanteDTO getPartecipante() {
@@ -54,6 +56,18 @@ public class ForPartecipanteRuoloCorsoDTO implements Serializable{
 	}
 	public void setFirma_legale_rappresentante(int firma_legale_rappresentante) {
 		this.firma_legale_rappresentante = firma_legale_rappresentante;
+	}
+	public int getCorso_aggiornato() {
+		return corso_aggiornato;
+	}
+	public void setCorso_aggiornato(int corso_aggiornato) {
+		this.corso_aggiornato = corso_aggiornato;
+	}
+	public int getFirma_centro_formazione() {
+		return firma_centro_formazione;
+	}
+	public void setFirma_centro_formazione(int firma_centro_formazione) {
+		this.firma_centro_formazione = firma_centro_formazione;
 	}
 
 

@@ -261,6 +261,7 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
             <ul class="nav nav-tabs">
               <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
               <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li>
+              <li class=""><a href="#documentiesterni" data-toggle="tab" aria-expanded="false" onclick="" id="documentiesterniTab">Documenti esterni</a></li>
       
             </ul>
             <div class="tab-content">
@@ -276,6 +277,12 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
          
 			 </div> 
 
+
+	<div class="tab-pane" id="documentiesterni">
+                
+
+         
+			 </div> 
  
               <!-- /.tab-pane -->
             </div>
@@ -505,7 +512,10 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
         		exploreModal("strumentiMisurati.do?action=ls&id="+datax[0],"","#misure")
         	}
       
-        	
+        	if(contentID == "documentiesterniTab"){
+           		exploreModal("documentiEsterni.do?id_str="+datax[0],"","#documentiesterni")
+           	//	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
+           	}
         	
         	
 
@@ -513,10 +523,26 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
  	   
  	   
    	});  
+ 	  
+	  $('#myModalError').on('hidden.bs.modal', function (e) {
+		  
+		  var input = $("#uploadSuccess").val();
+		  if(input){
+			  $('#myModal').modal("hide");
+		
+		  }
+
+	   	 	
+	   	 	
+	   	});
    	    
    	    
  		
+ 	 $('#myModal').on('hidden.bs.modal', function (e) {
 
+ 	 	$('#dettaglioTab').tab('show');
+ 	 	
+ 	});
 
 
  

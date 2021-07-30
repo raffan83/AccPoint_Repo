@@ -278,7 +278,7 @@ public class ScaricaCertificato extends HttpServlet {
 						}
 					}
 					
-					
+					session.update(misura);
 				
 					
 					myObj.addProperty("success", true);					
@@ -291,7 +291,7 @@ public class ScaricaCertificato extends HttpServlet {
 					out.print(myObj);			
 					
 
-					session.update(misura);
+					
 					session.getTransaction().commit();
 					session.close();			
 		}
@@ -370,7 +370,7 @@ public class ScaricaCertificato extends HttpServlet {
 						
 						}else {
 							if(item.getName()!="") {
-								GestioneCertificatoBO.uploadCertificato(item, pack, certificato.getMisura().getIntervento().getId(), certificato.getMisura().getStrumento().get__id());								
+								GestioneCertificatoBO.uploadCertificato(item, pack, certificato.getMisura().getInterventoDati().getId(), certificato.getMisura().getStrumento().get__id());								
 							}		
 						}
 					}

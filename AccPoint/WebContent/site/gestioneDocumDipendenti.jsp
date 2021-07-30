@@ -72,6 +72,7 @@
 <th>Qualifica</th>
 <th>Data di nascita</th>
 <th>Luogo di nascita</th>
+<th>Email</th>
 <th>Note</th>
 <th>Azioni</th>
  </tr></thead>
@@ -96,12 +97,13 @@
 	<td>${dipendente.qualifica }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${dipendente.data_nascita }" /></td>
 	<td>${dipendente.luogo_nascita }</td>
+	<td>${dipendente.email }</td>
 	<td>${dipendente.note }</td>
 		
 	<td>	
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.committente.id }','${dipendente.id}','${dipendente.fornitore.id}','${utl:escapeJS(dipendente.nome)}','${utl:escapeJS(dipendente.cognome)}','${utl:escapeJS(dipendente.note)}',
-	   '${dipendente.qualifica}', '${dipendente.data_nascita }','${utl:escapeJS(dipendente.luogo_nascita) }')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
+	   '${dipendente.qualifica}', '${dipendente.data_nascita }','${utl:escapeJS(dipendente.luogo_nascita) }','${dipendente.email }')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
 	   <a class="btn btn-info customTooltip" title="Associa documenti" onClick="modalAssociaDocumenti('${dipendente.committente.id }','${dipendente.fornitore.id }','${dipendente.id}')"><i class="fa fa-plus"></i></a>
 	</c:if>
 	</td>
@@ -241,6 +243,17 @@
        	<div class="col-sm-9">      
        	  	
         <input id="luogo_nascita" name="luogo_nascita" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+              <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="email" name="email" class="form-control" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -390,6 +403,17 @@
        	<div class="col-sm-9">      
        	  	
         <input id="luogo_nascita_mod" name="luogo_nascita_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="email_mod" name="email_mod" class="form-control" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -684,7 +708,7 @@ function modalNuovoDipendente(){
 }
 
 
-function modificaDipendenteModal(id_committente, id_dipendente, fornitore, nome, cognome, note,  qualifica, data_nascita, luogo_nascita){
+function modificaDipendenteModal(id_committente, id_dipendente, fornitore, nome, cognome, note,  qualifica, data_nascita, luogo_nascita, email){
 	
 	
 	$('#fornitore_temp').val(fornitore);
@@ -698,6 +722,7 @@ function modificaDipendenteModal(id_committente, id_dipendente, fornitore, nome,
 	$('#nome_mod').val(nome);
 	$('#cognome_mod').val(cognome);
 	$('#note_mod').val(note);
+	$('#email_mod').val(email);
 	
 	$('#qualifica_mod').val(qualifica);
 	if(data_nascita!=null && data_nascita!=''){
@@ -833,7 +858,7 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 1 },
+		    	  { responsivePriority: 1, targets: 9 },
 		    	  
 		    	  
 		               ], 	        

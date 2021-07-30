@@ -1306,7 +1306,28 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorsoCliente(dateFrom, dateTo, tipo_data, utente.getIdCliente(),utente.getIdSede(), session);
 				}else {
 					lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, null, null, session);
-				}
+					
+					if(tipo_data !=null && tipo_data.equals("data_scadenza") &&dateTo!=null) {
+						ArrayList<ForPartecipanteRuoloCorsoDTO> lista_corsi_successivi = GestioneFormazioneBO.getListaCorsiSuccessivi(dateTo, session);
+						
+						
+						for (ForPartecipanteRuoloCorsoDTO succ : lista_corsi_successivi) {
+							for(ForPartecipanteRuoloCorsoDTO part : lista_corsi) {
+								if(part.getCorso().getCorso_cat().getId() == succ.getCorso().getCorso_cat().getId()) {
+									List<ForPartecipanteDTO> mainList = new ArrayList<ForPartecipanteDTO>();
+									mainList.addAll(succ.getCorso().getListaPartecipanti());
+									
+									if(mainList.contains(part.getPartecipante())) {
+										part.setCorso_aggiornato(1);
+									}
+								}
+							}
+						}
+						
+					}
+				}				
+				
+				
 				request.getSession().setAttribute("lista_corsi", lista_corsi);
 				request.getSession().setAttribute("dateFrom", dateFrom);
 				request.getSession().setAttribute("dateTo", dateTo);
@@ -1545,6 +1566,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					Double ore = 0.0;
 					int firma_responsabile = 0;
 					int firma_legale_rappresentante = 0;
+					int firma_centro_formazione = 0;
 					if(json_obj.get("id_corso")!=null && !json_obj.get("id_corso").getAsString().equals("") ) {
 						id_corso = json_obj.get("id_corso").getAsInt();
 					}
@@ -1557,8 +1579,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					if(json_obj.get("firma_responsabile")!=null && !json_obj.get("firma_responsabile").getAsString().equals("") ) {	
 						firma_responsabile = json_obj.get("firma_responsabile").getAsInt();
 					}					
-					if(json_obj.get("firma_legale_rappresentante")!=null && !json_obj.get("firma_responsabile").getAsString().equals("") ) {	
+					if(json_obj.get("firma_legale_rappresentante")!=null && !json_obj.get("firma_legale_rappresentante").getAsString().equals("") ) {	
 						firma_legale_rappresentante = json_obj.get("firma_legale_rappresentante").getAsInt();
+					}
+					if(json_obj.get("firma_centro_formazione")!=null && !json_obj.get("firma_centro_formazione").getAsString().equals("") ) {	
+						firma_centro_formazione = json_obj.get("firma_centro_formazione").getAsInt();
 					}
 				
 					ForPartecipanteDTO partecipante = null;
@@ -1643,6 +1668,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						
 						p.setFirma_legale_rappresentante(firma_legale_rappresentante);
 						p.setFirma_responsabile(firma_responsabile);
+						p.setFirma_centro_formazione(firma_centro_formazione);
+						
 						lista_partecipanti.add(p);
 						
 					}

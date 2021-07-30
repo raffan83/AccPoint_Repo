@@ -568,6 +568,22 @@ public class GestioneFormazioneDAO {
 		
 		return lista;
 	}
+
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaCorsiSuccessivi(String dateTo, Session session) throws Exception, ParseException {
+
+		ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.data_scadenza > :_dateTo and p.corso.disabilitato = 0");	
+		query.setParameter("_dateTo", sdf.parse(dateTo));
+			
+			
+		lista = (ArrayList<ForPartecipanteRuoloCorsoDTO>) query.list();
+		
+				
+		return lista;
+	}
 	
 
 }

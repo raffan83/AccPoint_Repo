@@ -314,20 +314,42 @@
           <ul class="treeview-menu">
 		
 		    <%if(user.checkRuolo("AM") ||user.checkRuolo("D1")){ %>
-			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_committenti',null,true);">Gestione Committenti</a></li>
+			<li><a href="gestioneDocumentale.do?action=lista_committenti" >Gestione Committenti</a></li>
 			<%} %>
-			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_fornitori',null,true);">Gestione Fornitori</a></li>	
-			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_referenti',null,true);">Gestione Referenti</a></li>
-			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_dipendenti',null,true);">Gestione Dipendenti</a></li>
-			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=lista_documenti',null,true);">Gestione Documenti</a></li>
+			<li><a href="gestioneDocumentale.do?action=lista_fornitori" >Gestione Fornitori</a></li>	
+			<li><a href="gestioneDocumentale.do?action=lista_referenti" >Gestione Referenti</a></li>
+			<li><a href="gestioneDocumentale.do?action=lista_dipendenti">Gestione Dipendenti</a></li>
+			<li><a href="gestioneDocumentale.do?action=lista_documenti" >Gestione Documenti</a></li>
 			<%if(user.checkRuolo("AM") ||user.checkRuolo("D1")){ %>
-			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=tipo_documento',null,true);">Gestione Tipi Documento</a></li>
+			<li><a href="gestioneDocumentale.do?action=tipo_documento" >Gestione Tipi Documento</a></li>
 			<%} %>
-			<li><a href="#" onclick="callAction('gestioneDocumentale.do?action=scadenzario',null,true);">Scadenzario Documenti</a></li>
+			<li><a href="gestioneDocumentale.do?action=scadenzario" >Scadenzario Documenti</a></li>
 	      	
           </ul>
         </li> 
            <% }%>
+        
+        
+        
+        
+             <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE DPI")){%>  
+           <li class="header">DPI</li>
+
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Gestione DPI</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+		   
+			<li><a href="gestioneDpi.do?action=lista">Gestione DPI</a></li>	
+	      	
+          </ul>
+        </li> 
+           <% }%>
+        
+        
         
         
         
@@ -378,7 +400,7 @@
 
 			<li><a href="downloadCalver.do?action=sicurettaElettrica">DasmTarSE v0.0.1</a></li>
 			<li><a href="downloadCalver.do?action=dasmtarVerificazione">DasmTarVER v2.0.5</a></li>
-			<li><a href="downloadCalver.do?action=printLabel">PrintLabel v1.1</a></li>
+			<li><a href="downloadCalver.do?action=printLabel">PrintLabel v1.1.5</a></li>
 			<li><a href="downloadCalver.do?action=librerie">Librerie</a></li>
 			<li><a href="downloadCalver.do?action=convertitore">Convertitore</a></li>
 			<% if(user.checkRuolo("AM") || user.checkRuolo("RS") || user.checkPermesso("FIRMA_DOCUMENTO")){%>

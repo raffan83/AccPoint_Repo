@@ -2,15 +2,12 @@ package it.portaleSTI.bo;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,7 +19,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.pdfbox.multipdf.Splitter;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -44,18 +40,11 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.PdfString;
 import com.itextpdf.text.pdf.parser.ImageRenderInfo;
-import com.itextpdf.text.pdf.parser.LineSegment;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.RenderListener;
 import com.itextpdf.text.pdf.parser.TextRenderInfo;
-import com.itextpdf.text.pdf.parser.Vector;
-import com.lowagie.text.pdf.PdfDocument;
-
-import TemplateReport.PivotTemplate;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
-import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
@@ -69,10 +58,8 @@ import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.SedeDTO;
-import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.action.GestioneFormazione;
+import org.apache.commons.lang3.StringUtils;
 
 public class GestioneFormazioneBO {
 	static final Logger logger = Logger.getLogger(GestioneFormazioneBO.class);
@@ -501,6 +488,7 @@ public class GestioneFormazioneBO {
 			String pdftext = text[0];
 			
 			String keyNome = "SI CERTIFICA CHE ";
+			String keyNome2 = "Si certifica che ";
 			String keyNascita = " Nato/a il";
 			String keyLuogoStart = ", in ";
 			String keyLuogoEnd = "Profilo";
@@ -508,9 +496,12 @@ public class GestioneFormazioneBO {
 			String keyCf2 = "C.F. ";
 			Locale locale = new Locale("it", "IT");
 		
-			if(pdftext.contains(keyNome)) {
+			if(pdftext.contains(keyNome) || pdftext.contains(keyNome2)) {
 				
-				
+				if(pdftext.contains(keyNome2)) {
+					keyNome = keyNome2;
+					keyCf = "C.F. ";
+				}
 				
 				String nominativo = pdftext.substring(pdftext.indexOf(keyNome) + keyNome.length(), pdftext.indexOf(keyNascita));
 				String data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyLuogoStart));
@@ -600,6 +591,7 @@ public class GestioneFormazioneBO {
 				
 				lista.add(partecipante);
 			}
+			
 
 		}
 		
@@ -655,10 +647,11 @@ public class GestioneFormazioneBO {
 			partecipante.setAttestato(filename+".pdf");
 			session.update(partecipante);
 			
-			addSign(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf", filename,0, partecipante.getFirma_responsabile());
 			
+			addSign(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf", filename,0, partecipante.getFirma_responsabile(),partecipante.getFirma_centro_formazione());	
+		
 			if(partecipante.getFirma_legale_rappresentante()>0) {
-				addSign(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf", filename, partecipante.getFirma_legale_rappresentante(), 0);
+				addSign(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf", filename, partecipante.getFirma_legale_rappresentante(), 0,0);
 			}
 			
 			
@@ -722,7 +715,7 @@ public class GestioneFormazioneBO {
 //	     
 	            String text = textRenderInfo.getText();
 	            
-	            if (text != null && text.contains(keyWord)) {
+	            if (text != null && StringUtils.containsIgnoreCase(text, keyWord)) {
 	                                 
 	                com.itextpdf.awt.geom.Rectangle2D.Float textFloat = textRenderInfo.getBaseline().getBoundingRectange();
 	                float x = textFloat.x;
@@ -763,7 +756,7 @@ public class GestioneFormazioneBO {
 	    return result;
 	}
 	
-	public static JsonObject addSign(String path, String filename_attestato, int firma_legale_rappresentante, int firma_responsabile) throws Exception {
+	public static JsonObject addSign(String path, String filename_attestato, int firma_legale_rappresentante, int firma_responsabile, int firma_centro_formazione) throws Exception {
 
 	    PdfReader reader = new PdfReader(path);
 	    
@@ -846,10 +839,10 @@ public class GestioneFormazioneBO {
 				}
 			}
 			
-			stamper.close();
-			reader.close();
-		    System.out.println(Arrays.toString(fontPosition));
-	    	
+			//stamper.close();
+			//reader.close();
+		   // System.out.println(Arrays.toString(fontPosition));
+			System.out.println(Arrays.toString(fontPosition));
 	    	
 	    }else {
 	    	Image image = null;
@@ -887,13 +880,59 @@ public class GestioneFormazioneBO {
 					}
 				}
 				
-				stamper.close();
-				reader.close();
-			    System.out.println(Arrays.toString(fontPosition));
-	    	
+				//stamper.close();
+				//reader.close();
+			    //System.out.println(Arrays.toString(fontPosition));
+				System.out.println(Arrays.toString(fontPosition));
 	    }
 	    
 
+	    
+	    if(firma_centro_formazione >0) {
+	    	
+	    	Image image =  null;
+	    	
+	    	if(firma_centro_formazione == 1) {
+	    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_antonio_accettola.png");	
+	    	}else if(firma_responsabile == 2) {
+	    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_gabriella_mammone.png");
+	    	}
+	    	
+	    	
+	    	Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_antonio_accettola.png");	    	
+	    	
+	    	 image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	   
+		    	
+		    	
+			    String keyWord = "Centro di Formazione";
+			    Integer[] fontPosition = null;
+				for(int i = 1;i<=reader.getNumberOfPages();i++) {
+					fontPosition = getFontPosition(reader, keyWord, i);
+					
+					if(fontPosition[0] != null && fontPosition[1] != null) {
+						
+						int x = fontPosition[0] + 25 ;
+						int y = fontPosition[1] -45;
+						int w = x + 85;
+						int h = y + 31;
+						
+						 Rectangle rect = new Rectangle(x, y, w, h);
+					    
+						 image.scaleAbsolute(rect);
+						
+						image.setAbsolutePosition(fontPosition[0] +25, fontPosition[1] - 45);
+						content.addImage(image);
+						
+						break;
+					}
+				}
+				System.out.println(Arrays.toString(fontPosition));
+				
+	    }
+	    
+	    stamper.close();
+		reader.close();
+	  //  
 
 	    File targetFile=  new File(path);
 		File source = new File(Costanti.PATH_FOLDER+"\\temp\\"+filename+".pdf");
@@ -926,6 +965,11 @@ public class GestioneFormazioneBO {
 	public static ArrayList<ForEmailDTO> getStoricoEmail(int id_corso, Session session) {
 		
 		return GestioneFormazioneDAO.getStoricoEmail(id_corso, session);
+	}
+
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaCorsiSuccessivi(String dateTo, Session session) throws Exception, Exception {
+		
+		return GestioneFormazioneDAO.getListaCorsiSuccessivi(dateTo, session);
 	}
 
 	

@@ -673,7 +673,7 @@ public class CreateVerRapporto {
 					reportP3.addParameter("latitudine_util","N.A.");
 				}
 				if(misura.getgOrg()!=0) {
-					reportP3.addParameter("g_org",  String.format("%.5f", ""+  misura.getgOrg()).replace(".", ","));
+					reportP3.addParameter("g_org",  String.format("%.5f", misura.getgOrg()).replace(".", ","));
 				}else {
 					reportP3.addParameter("g_org","N.A.");
 				}

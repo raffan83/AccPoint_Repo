@@ -137,6 +137,9 @@
  
  function resetGrafico(){
 	 
+	 $('#select_tabella').siblings(".select2-container").css('border', '0px solid #f00');
+	 $('#select_misura').siblings(".select2-container").css('border', '0px solid #f00');
+	 
 	 $('#select_misura').val("");
 	 $('#select_misura').change();
 	 
@@ -157,6 +160,7 @@
  $('#select_misura').change(function(){
 	
 	 var id = $(this).val();
+	 $('#select_misura').siblings(".select2-container").css('border', '0px solid #f00');
 	 
 	 dataObj={}
 	 
@@ -228,19 +232,10 @@
 	 
 	 var id_tabella = $('#select_tabella').val();
 	
-	 if(id_tabella!=''){
+	 if(id_tabella!=null && id_tabella!=''){
 		 var id_misura = $('#select_misura').val();
 		 $('#select_tabella').prop('disabled', true);
-		 
-/* 		 newArr = [		    		         
-	         'rgba(54, 162, 235, 0.8)',
-	         'rgba(255, 99, 132, 0.8)',
-	         'rgba(255, 206, 86, 0.8)',
-	         'rgba(75, 192, 192, 0.8)',
-	         'rgba(153, 102, 255, 0.8)',
-	         'rgba(255, 159, 64, 0.8)'
-	     ];
-		  */
+
 		  newArr = ['#FF6633', '#FFB399', '#FF33FF',  '#00B3E6', 
 			  '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
 			  '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A', 
@@ -265,12 +260,7 @@
 				 label : "MISURA DEL "+$( "#select_misura option:selected" ).text(),
 				 backgroundColor : newArr[$('#select_misura')[0].selectedIndex],
 		 		 borderColor : newArr[$('#select_misura')[0].selectedIndex]
-				 /* fillColor: "rgba(220,220,220,0.0)",
-			        strokeColor: "rgba(220,220,220,0)",
-			        pointColor: "rgba(220,220,220,0)",
-			        pointStrokeColor: "#fff",
-			        pointHighlightFill: "#fff",
-			        pointHighlightStroke: "rgba(220,220,220,1)", */
+		 
 		 };
 		 dataset.data = []
 		 var labels = [];
@@ -351,34 +341,6 @@
 		    		    	 var label = tooltipItem.dataset.label;
 		    		    	var index = tooltipItem.dataIndex;	 			    		    	
 		    		    	  	 			    		    	  
-		    		    	/*   if(tooltipItem.datasetIndex == 3){
-		    		    		  
-		    		    		  var ret = [];
-		    		    		  var x = $(this)
-		    		    		 var accettabilita = tooltipItem.chart.config._config.data.datasets[0].data;
-			    		    	  var U = tooltipItem.chart.config._config.data.datasets[2].data;	 			    		    	  
-			    		    	  
-			    		    	 var value = tooltipItem.formattedValue;		 		
-			    		    	var val = accettabilita[index].toString().split(".");
-			    				var scale = 0;
-			    				if(val.length>1){
-			    					scale = val[1].length;
-			    				}
-			    				
-		    		    		  
-		    		    		var lab = "Accettabilita: " + (accettabilita[index] - tooltipItem.dataset.data[index]).toFixed(scale);
-		    		    		var U = "U: " + (U[index] - tooltipItem.dataset.data[index]).toFixed(scale)
-
-		    		    		ret.push(label + ": "+value);
-		    		    		ret.push(lab);
-		    		    		ret.push(U);
-		    		    		
-		    		    		//return label + ": "+value+" " + lab + U;
-		    		    		return ret;
-		    		    		
-		    		    	  }else{
-		    		    		 
-		    		    	  } */
 		    		    	  return label +": " + tooltipItem.dataset.data[index]
 
 		    		      }
@@ -403,6 +365,17 @@
 					
 					myLineChart.update();
 				}
+	 }else{
+		 
+		 
+		 if($('#select_misura').val()==null || $('#select_misura').val()==''){
+			 //$('#select_misura').css('border', '1px solid #f00');
+			 $('#select_misura').siblings(".select2-container").css('border', '1px solid #f00');
+		 }
+		 
+		 $('#select_tabella').css('border', '1px solid #f00');
+		 $('#select_tabella').siblings(".select2-container").css('border', '1px solid #f00');
+		 
 	 }
 	
 	 

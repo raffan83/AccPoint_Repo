@@ -801,6 +801,7 @@ public class GestioneDocumentale extends HttpServlet {
 				String note = ret.get("note");
 				String data_nascita = ret.get("data_nascita");
 				String luogo_nascita = ret.get("luogo_nascita");
+				String email = ret.get("email");
 
 
 				DocumDipendenteFornDTO dipendente = new DocumDipendenteFornDTO();
@@ -820,6 +821,7 @@ public class GestioneDocumentale extends HttpServlet {
 				dipendente.setNome(nome);
 				dipendente.setCognome(cognome);
 				dipendente.setQualifica(qualifica);
+				dipendente.setEmail(email);
 			
 				dipendente.setNote(note);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -889,6 +891,7 @@ public class GestioneDocumentale extends HttpServlet {
 				String note = ret.get("note_mod");
 				String data_nascita = ret.get("data_nascita_mod");
 				String luogo_nascita = ret.get("luogo_nascita_mod");
+				String email = ret.get("email_mod");
 
 
 				DocumDipendenteFornDTO dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_dipendente), session);
@@ -911,6 +914,7 @@ public class GestioneDocumentale extends HttpServlet {
 				dipendente.setQualifica(qualifica);
 				
 				dipendente.setNote(note);
+				dipendente.setEmail(email);
 				
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				

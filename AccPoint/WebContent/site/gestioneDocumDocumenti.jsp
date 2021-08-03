@@ -595,7 +595,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-                <div class='input-group date datepicker' id='datepicker_data_scadenza'>
+                <div class='input-group date datepicker' id='datepicker_data_scadenza_mod'>
                <input type='text' class="form-control input-small" id="data_scadenza_mod" name="data_scadenza_mod" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
@@ -884,7 +884,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-                <div class='input-group date datepicker' id='datepicker_data_scadenza'>
+                <div class='input-group date datepicker' id='datepicker_data_scadenza_agg'>
                <input type='text' class="form-control input-small" id="data_scadenza_agg" name="data_scadenza_agg" required>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
@@ -1457,6 +1457,7 @@ $('#data_rilascio').change(function(){
 			   var day = d._pf.parsedDateParts[2];
 			   var c = new Date(year, month + parseInt(frequenza), day);
 			    $('#data_scadenza').val(formatDate(c));
+			    $('#datepicker_data_scadenza').datepicker("setDate", c );
 			
 		}
 		
@@ -1478,6 +1479,7 @@ $('#data_rilascio_mod').change(function(){
 			   var day = d._pf.parsedDateParts[2];
 			   var c = new Date(year, month + parseInt(frequenza), day);
 			    $('#data_scadenza_mod').val(formatDate(c));
+			    $('#datepicker_data_scadenza_mod').datepicker("setDate", c );
 			
 		}
 		
@@ -1500,6 +1502,7 @@ $('#data_rilascio_agg').change(function(){
 			   var day = d._pf.parsedDateParts[2];
 			   var c = new Date(year, month + parseInt(frequenza), day);
 			    $('#data_scadenza_agg').val(formatDate(c));
+			    $('#datepicker_data_scadenza_agg').datepicker("setDate", c );
 			
 		}
 		
@@ -1523,7 +1526,8 @@ $('#frequenza').change(function(){
 			   var day = d._pf.parsedDateParts[2];
 			   var c = new Date(year, month + parseInt(frequenza), day);
 			    $('#data_scadenza').val(formatDate(c));
-			
+			    $('#datepicker_data_scadenza').datepicker("setDate", c );
+				
 		}
 	}
 	
@@ -1543,6 +1547,7 @@ $('#frequenza').change(function(){
 				   var day = d._pf.parsedDateParts[2];
 				   var c = new Date(year, month + parseInt(frequenza), day);
 				    $('#data_scadenza_mod').val(formatDate(c));
+				    $('#datepicker_data_scadenza_mod').datepicker("setDate", c );
 			}
 		}
 	});
@@ -1562,6 +1567,7 @@ $('#frequenza').change(function(){
 				   var day = d._pf.parsedDateParts[2];
 				   var c = new Date(year, month + parseInt(frequenza), day);
 				    $('#data_scadenza_agg').val(formatDate(c));
+				    $('#datepicker_data_scadenza_agg').datepicker("setDate", c );
 				
 			}
 		}

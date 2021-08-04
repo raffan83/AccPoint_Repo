@@ -75,6 +75,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <thead><tr class="active">
  
  <th></th>
+ <th>ID</th>
   <th>Nome Documento</th>
  <th>Data Caricamento</th>
 	<%-- <c:if test="${userObj.checkPermesso('LISTA_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}"> --%>
@@ -89,6 +90,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  	<tr role="row" id="${certificatocamp.id}-${loop.index}">
 	
 		<td></td>
+		<td>${documento.id}</td>
 		<td>${documento.nomeDocumento}</td>
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${documento.dataCaricamento}" /></td>
 	

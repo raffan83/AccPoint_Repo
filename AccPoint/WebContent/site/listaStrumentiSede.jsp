@@ -857,7 +857,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	var today = moment();
 
 
-	$("#dataUltimaVerifica").attr("value", today.format('DD/MM/YYYY'));
+//	$("#dataUltimaVerifica").attr("value", today.format('DD/MM/YYYY'));
 	
 	$( "#ref_tipo_rapporto" ).change(function() {
 
@@ -876,7 +876,8 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
  			  $("#dataProssimaVerifica").val("");
 		  }
  		});
-	$( "#freq_mesi" ).change(function() {
+	
+	/*$( "#freq_mesi" ).change(function() {
 
 		  if(this.value > 0){
 
@@ -890,7 +891,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		  }else{
 			  $("#freq_mesi").val("");
 		  }
-		});
+		});*/
 	 $('.customTooltip').tooltipster({
 	        theme: 'tooltipster-light'
 	    });

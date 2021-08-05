@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.VerDocumentoDTO" table="ver_documento">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+     
+        <property name="costruttore" type="java.lang.String">
+            <column name="costruttore" />
+        </property>
+        <property name="modello" type="java.lang.String">
+            <column name="modello" />
+        </property>
+
+         <many-to-one name="tipo_documento" class="it.portaleSTI.DTO.VerTipoDocumentoDTO" fetch="join" lazy="false">
+            <column name="tipo_documento" />
+        </many-to-one> 
+        
+               <property name="data_caricamento" type="java.sql.Date">
+            <column name="data_caricamento" />
+        </property>
+         
+        
+    </class>
+</hibernate-mapping>

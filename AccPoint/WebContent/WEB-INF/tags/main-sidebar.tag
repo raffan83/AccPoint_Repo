@@ -268,7 +268,8 @@
     
             <li><a href="#" onclick="callAction('scadenzarioVerificazione.do',null,true);">Scadenzario</a></li>
             <% if(user.checkRuolo("AM") || !user.checkRuolo("VC")){%>
-            <li><a href="#" onclick="callAction('gestioneVerLegalizzazioneBilance.do?action=lista',null,true);">Accertamento conformità</a></li>
+             <li><a href="#" onclick="callAction('gestioneVerLegalizzazioneBilance.do?action=lista',null,true);">Accertamento conformità</a></li>
+             <li><a href="#" onclick="callAction('gestioneVerDocumenti.do?action=lista',null,true);">Documenti</a></li>
             <%} %>
         
           </ul>
@@ -332,7 +333,7 @@
         
         
         
-             <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE DPI")){%>  
+ <%--             <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE DPI")){%>  
            <li class="header">DPI</li>
 
          <li class="treeview">
@@ -348,7 +349,7 @@
           </ul>
         </li> 
            <% }%>
-        
+         --%>
         
         
         

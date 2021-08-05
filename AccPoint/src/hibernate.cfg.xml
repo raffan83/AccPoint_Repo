@@ -148,6 +148,9 @@
  	<mapping class="VerTipoProvvedimentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipoProvvedimentoDTO.hbm.xml"/>
  	<mapping class="VerTipoApprovazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipoApprovazioneDTO.hbm.xml"/>
  	<mapping class="VerLegalizzazioneBilanceDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerLegalizzazioneBilanceDTO.hbm.xml"/>
+ 	<mapping class="VerAllegatoDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerAllegatoDocumentoDTO.hbm.xml"/>
+ 	<mapping class="VerTipoDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipoDocumentoDTO.hbm.xml"/>
+ 	<mapping class="VerDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerDocumentoDTO.hbm.xml"/>
  	
  	<mapping class="ProvinciaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ProvinciaDTO.hbm.xml"/>
  	<mapping class="ComuneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ComuneDTO.hbm.xml"/>

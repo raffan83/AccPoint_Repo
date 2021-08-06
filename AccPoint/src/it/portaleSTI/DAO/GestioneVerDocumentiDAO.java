@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portaleSTI.DTO.VerAllegatoDocumentoDTO;
 import it.portaleSTI.DTO.VerAllegatoLegalizzazioneBilanceDTO;
 import it.portaleSTI.DTO.VerDocumentoDTO;
 import it.portaleSTI.DTO.VerLegalizzazioneBilanceDTO;
@@ -36,15 +37,15 @@ public class GestioneVerDocumentiDAO {
 		return lista;	
 	}
 
-	public static VerLegalizzazioneBilanceDTO getProvvedimentoFromId(int id_provvedimento, Session session) {
+	public static VerDocumentoDTO getDocumentoFromId(int id_documento, Session session) {
 		
-		ArrayList<VerLegalizzazioneBilanceDTO> lista = null;
-		VerLegalizzazioneBilanceDTO result = null;
+		ArrayList<VerDocumentoDTO> lista = null;
+		VerDocumentoDTO result = null;
 		
-		Query query = session.createQuery("from VerLegalizzazioneBilanceDTO where id = :_id_provvedimento");
-		query.setParameter("_id_provvedimento", id_provvedimento);
+		Query query = session.createQuery("from VerDocumentoDTO where id = :_id_documento");
+		query.setParameter("_id_documento", id_documento);
 		
-		lista = (ArrayList<VerLegalizzazioneBilanceDTO>) query.list();
+		lista = (ArrayList<VerDocumentoDTO>) query.list();
 		
 		if(lista.size()>0) {
 			result = lista.get(0);
@@ -53,27 +54,27 @@ public class GestioneVerDocumentiDAO {
 		return result;
 	}
 
-	public static ArrayList<VerAllegatoLegalizzazioneBilanceDTO> getListaAllegati(int id_provvedimento,	Session session) {
+	public static ArrayList<VerAllegatoDocumentoDTO> getListaAllegati(int id_documento,	Session session) {
 
-		ArrayList<VerAllegatoLegalizzazioneBilanceDTO> lista = null;
+		ArrayList<VerAllegatoDocumentoDTO> lista = null;
 		
-		Query query = session.createQuery("from VerAllegatoLegalizzazioneBilanceDTO where id_legalizzazione_bilance = :_id_provvedimento"); 
-		query.setParameter("_id_provvedimento", id_provvedimento);
+		Query query = session.createQuery("from VerAllegatoDocumentoDTO where id_documento = :_id_documento"); 
+		query.setParameter("_id_documento", id_documento);
 		
-		lista = (ArrayList<VerAllegatoLegalizzazioneBilanceDTO>) query.list();
+		lista = (ArrayList<VerAllegatoDocumentoDTO>) query.list();
 		
 		
 		return lista;	
 	}
 
-	public static VerAllegatoLegalizzazioneBilanceDTO getAllegatoFromId(int id_allegato, Session session) {
-		ArrayList<VerAllegatoLegalizzazioneBilanceDTO> lista = null;
-		VerAllegatoLegalizzazioneBilanceDTO result = null;
+	public static VerAllegatoDocumentoDTO getAllegatoFromId(int id_allegato, Session session) {
+		ArrayList<VerAllegatoDocumentoDTO> lista = null;
+		VerAllegatoDocumentoDTO result = null;
 		
-		Query query = session.createQuery("from VerAllegatoLegalizzazioneBilanceDTO where id = :_id_allegato");
+		Query query = session.createQuery("from VerAllegatoDocumentoDTO where id = :_id_allegato");
 		query.setParameter("_id_allegato", id_allegato);
 		
-		lista = (ArrayList<VerAllegatoLegalizzazioneBilanceDTO>) query.list();
+		lista = (ArrayList<VerAllegatoDocumentoDTO>) query.list();
 		
 		if(lista.size()>0) {
 			result = lista.get(0);

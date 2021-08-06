@@ -139,7 +139,6 @@ public class GestioneVerDocumenti extends HttpServlet {
 
 				documento.setCostruttore(costruttore);
 				documento.setModello(modello);
-			//	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				documento.setData_caricamento(new Date());
 				documento.setTipo_documento(new VerTipoDocumentoDTO(Integer.parseInt(tipo_documento),""));
 		
@@ -167,7 +166,7 @@ public class GestioneVerDocumenti extends HttpServlet {
 				session.close();
 				
 			}
-			else if(action.equals("modifica_provvedimento")) {
+			else if(action.equals("modifica_documento")) {
 				
 				ajax = true;
 				
@@ -190,116 +189,43 @@ public class GestioneVerDocumenti extends HttpServlet {
 	                     
 	            	 }else
 	            	 {
-	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
 	            	 }
 	            	
 	            }
+
+				
 		
-		        String id = ret.get("id_provvedimento");
-				String strumento = ret.get("strumento_mod");
-				String costruttore = ret.get("costruttore_mod");
-				String modello = ret.get("modello_mod");
-				String classe = ret.get("classe_mod");
-				String tipo_approvazione = ret.get("tipo_approvazione_mod");
-				String tipo_provvedimento = ret.get("tipo_provvedimento_mod");
-				String numero_provvedimento = ret.get("numero_provvedimento_mod");
-				String data_provvedimento = ret.get("data_provvedimento_mod");
-				String rev = ret.get("rev_mod");
 				
-				VerLegalizzazioneBilanceDTO provvedimento = GestioneVerLegalizzazioneBilanceBO.getProvvedimentoFromId(Integer.parseInt(id), session);
+				String id=ret.get("id_documento");
+				String costruttore=ret.get("costruttore_mod");
+				String modello=ret.get("modello_mod");
+				String id_tipo_documento=ret.get("tipo_documento_mod");
 				
-				provvedimento.setDescrizione_strumento(strumento);
-				provvedimento.setCostruttore(costruttore);
-				provvedimento.setClasse(classe);
-				provvedimento.setModello(modello);
-				provvedimento.setNumero_provvedimento(numero_provvedimento);
-				provvedimento.setRev(rev);
-				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-				provvedimento.setData_provvedimento(df.parse(data_provvedimento));
-				provvedimento.setTipo_approvazione(new VerTipoApprovazioneDTO(Integer.parseInt(tipo_approvazione),""));
-				provvedimento.setTipo_provvedimento(new VerTipoProvvedimentoDTO(Integer.parseInt(tipo_provvedimento), ""));
+				VerDocumentoDTO documento =GestioneVerDocumentiBO.getDocumentoFromId(Integer.parseInt(id), session);
 				
-				session.save(provvedimento);
+				documento.setCostruttore(costruttore);
+				documento.setModello(modello);
+				documento.setTipo_documento(new VerTipoDocumentoDTO(Integer.parseInt(id_tipo_documento),""));
+				documento.setData_caricamento(new Date());
 				
-								
+				session.save(documento);
+				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Provvedimento salvato con successo!");
+				myObj.addProperty("messaggio", "Documento modificato con successo!");
 				out.print(myObj);
 				session.getTransaction().commit();
 				session.close();
 			}
-			
-			else if(action.equals("strumento_legalizzazione_bilance")) {
-				 response.setContentType("application/json");
-				
-				String id_strumento = request.getParameter("id_strumento");
-				VerStrumentoDTO strumento = null;
-				if(id_strumento!=null) {
-					 strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(id_strumento), session);	
-				}
-				
-				ArrayList<VerLegalizzazioneBilanceDTO> lista_provvedimenti = GestioneVerLegalizzazioneBilanceBO.getListaLegalizzazioni(session);
-				PrintWriter out = response.getWriter();
-				
-				 Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
-			        			        
-			     			       		   
-			        myObj.addProperty("success", true);
-			  
-			        myObj.add("lista_provvedimenti", gson.toJsonTree(lista_provvedimenti));
-			        if(id_strumento!=null) {
-			        	myObj.add("lista_provvedimenti_associati", gson.toJsonTree(strumento.getLista_legalizzazione_bilance()));
-			        }
-			        out.print(myObj);
-		
-			        out.close();
-			        
-			     session.getTransaction().commit();
-		       	session.close();
-				
-			}
-			
-			else if(action.equals("associa_provvedimento")) {
-								
-				ajax = true;
-				
-				String id_strumento = request.getParameter("id_strumento");
-				String selezionati = request.getParameter("selezionati");
-					
-				VerStrumentoDTO strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(id_strumento), session);
-				strumento.getLista_legalizzazione_bilance().clear();
-				
-				if(selezionati!=null && !selezionati.equals("")) {
-					for(int i = 0;i<selezionati.split(";").length;i++) {
-						
-						VerLegalizzazioneBilanceDTO provvedimento = GestioneVerLegalizzazioneBilanceBO.getProvvedimentoFromId(Integer.parseInt(selezionati.split(";")[i]), session);
-						strumento.getLista_legalizzazione_bilance().add(provvedimento);					
-					}					
-				}				
-				
-				
-				
-				PrintWriter out = response.getWriter();
-			      
-		        myObj.addProperty("success", true);
-		  
-		        myObj.addProperty("messaggio", "Provvedimenti associati con successo!");
-		        
-		        out.println(myObj);
-	
-		        out.close();
-		        session.getTransaction().commit();
-			    session.close();
-				
-			}
+
 			else if(action.equals("lista_allegati")) {
 			
-				 String id = request.getParameter("id_provvedimento");
+				 String id = request.getParameter("id_documento");
 					
 
-				 ArrayList<VerAllegatoLegalizzazioneBilanceDTO> lista_allegati = GestioneVerLegalizzazioneBilanceBO.getListaAllegati(Integer.parseInt(id), session);
+				 ArrayList<VerAllegatoDocumentoDTO> lista_allegati = GestioneVerDocumentiBO.getListaAllegati(Integer.parseInt(id), session);
 	
 				    PrintWriter out = response.getWriter();
 					
@@ -323,9 +249,9 @@ public class GestioneVerDocumenti extends HttpServlet {
 				
 				 ajax = true;
 				
-				 String id = request.getParameter("id_provvedimento");
+				 String id = request.getParameter("id_documento");
 					
-				 VerLegalizzazioneBilanceDTO provvedimento = GestioneVerLegalizzazioneBilanceBO.getProvvedimentoFromId(Integer.parseInt(id), session);
+				 VerDocumentoDTO documento = GestioneVerDocumentiBO.getDocumentoFromId(Integer.parseInt(id), session);
 				
 				
 				 ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
@@ -335,11 +261,11 @@ public class GestioneVerDocumenti extends HttpServlet {
 						List<FileItem> items = uploadHandler.parseRequest(request);
 						for (FileItem item : items) {
 							if (!item.isFormField()) {							
-								saveFile(item, provvedimento.getId(),item.getName());		
+								saveFile(item, documento.getId(),item.getName());		
 								
-								VerAllegatoLegalizzazioneBilanceDTO allegato = new VerAllegatoLegalizzazioneBilanceDTO();
+								VerAllegatoDocumentoDTO allegato = new VerAllegatoDocumentoDTO();
 								allegato.setNome_file(item.getName());
-								allegato.setProvvedimento(provvedimento);
+								allegato.setDocumento(documento);
 										
 								session.save(allegato);
 							}
@@ -356,10 +282,10 @@ public class GestioneVerDocumenti extends HttpServlet {
 			
 				String id_allegato = request.getParameter("id_allegato");			
 			
-				VerAllegatoLegalizzazioneBilanceDTO allegato = GestioneVerLegalizzazioneBilanceBO.getAllegatoFromId(Integer.parseInt(id_allegato), session); 
+				VerAllegatoDocumentoDTO allegato = GestioneVerDocumentiBO.getAllegatoFromId(Integer.parseInt(id_allegato), session); 
 					
 				
-				String path = Costanti.PATH_FOLDER+"//Verificazione//LegalizzazioneBilance//"+allegato.getProvvedimento().getId()+"//"+allegato.getNome_file();
+				String path = Costanti.PATH_FOLDER+"//Verificazione//Documenti//"+allegato.getDocumento().getId()+"//"+allegato.getNome_file();
 				response.setContentType("application/octet-stream");
 				response.setHeader("Content-Disposition","attachment;filename="+ allegato.getNome_file());
 		
@@ -392,7 +318,7 @@ public class GestioneVerDocumenti extends HttpServlet {
 
 				String id_allegato = request.getParameter("id_allegato");			
 				
-				VerAllegatoLegalizzazioneBilanceDTO allegato = GestioneVerLegalizzazioneBilanceBO.getAllegatoFromId(Integer.parseInt(id_allegato), session); 
+				VerAllegatoDocumentoDTO allegato = GestioneVerDocumentiBO.getAllegatoFromId(Integer.parseInt(id_allegato), session);
 					
 				session.delete(allegato);	
 				

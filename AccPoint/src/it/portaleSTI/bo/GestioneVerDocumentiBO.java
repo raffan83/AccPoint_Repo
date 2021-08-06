@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneVerDocumentiDAO;
+import it.portaleSTI.DTO.VerAllegatoDocumentoDTO;
 import it.portaleSTI.DTO.VerDocumentoDTO;
 import it.portaleSTI.DTO.VerTipoDocumentoDTO;
 
@@ -19,25 +20,20 @@ public class GestioneVerDocumentiBO {
 		
 		return GestioneVerDocumentiDAO.getListaTipoDocumento(session);
 	}
-//
-//	public static ArrayList<VerTipoProvvedimentoDTO> getListaTipoProvvedimento(Session session) {
-//		
-//		return GestioneVerLegalizzazioneBilanceDAO.getListaTipoProvvedimento(session);
-//	}
-//
-//	public static VerLegalizzazioneBilanceDTO getProvvedimentoFromId(int id_provvedimento, Session session) {
-//		
-//		return GestioneVerLegalizzazioneBilanceDAO.getProvvedimentoFromId(id_provvedimento, session);
-//	}
-//
-//	public static ArrayList<VerAllegatoLegalizzazioneBilanceDTO> getListaAllegati(int id_provvedimento, Session session) {
-//		
-//		return GestioneVerLegalizzazioneBilanceDAO.getListaAllegati(id_provvedimento, session);
-//	}
-//
-//	public static VerAllegatoLegalizzazioneBilanceDTO getAllegatoFromId(int id_allegato, Session session) {
-//		
-//		return GestioneVerLegalizzazioneBilanceDAO.getAllegatoFromId(id_allegato, session);
-//	}
+
+	public static VerDocumentoDTO getDocumentoFromId(int id_documento, Session session) {
+		
+		return GestioneVerDocumentiDAO.getDocumentoFromId(id_documento, session);
+	}
+
+	public static ArrayList<VerAllegatoDocumentoDTO> getListaAllegati(int id_documento, Session session) {
+		
+		return GestioneVerDocumentiDAO.getListaAllegati(id_documento, session);
+	}
+
+	public static VerAllegatoDocumentoDTO getAllegatoFromId(int id_allegato, Session session) {
+		
+		return GestioneVerDocumentiDAO.getAllegatoFromId(id_allegato, session);
+	}
 
 }

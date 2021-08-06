@@ -15261,6 +15261,65 @@ function modificaProvvedimento(){
 	
 }
 
+function modificaDocumentoVerificazione(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  
+		  var form = $('#modificaDocumentoForm')[0]; 
+		  var formData = new FormData(form);
+
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneVerDocumenti.do?action=modifica_documento",
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocumento").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+   			$('#myModalError').on('hidden.bs.modal', function(){	         			
+ 				
+   				 location.reload()
+  			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nel salvataggio!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+  });
+	
+}
+
 function associaProvvedimentiVerStrumento(selezionati, id_strumento){
 	
 	
@@ -15372,7 +15431,57 @@ function eliminaAllegatoLegalizzazione(id_allegato){
   });
 }
 
+function eliminaAllegatoDocumento(id_allegato){
+	  
+	  var dataObj = {};
+		dataObj.id_allegato = id_allegato;
+		
+						
+	  $.ajax({
+type: "POST",
+url: "gestioneVerDocumenti.do?action=elimina_allegato",
+data: dataObj,
+dataType: "json",
+//if received a response from the server
+success: function( data, textStatus) {
+	  //var dataRsp = JSON.parse(dataResp);
+	  if(data.success)
+		  {  
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');      				
+				$('#myModalError').on('hidden.bs.modal', function(){
+  					if($('#myModalError').hasClass('modal-success')){
+  						
+  						location.reload()
+  					}
+  				}); 
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+},
+error: function( data, textStatus) {
 
+	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+}
+});
+}
 
 function salvaTempoScansione(tempo_scansione, id_rilievo){
 	

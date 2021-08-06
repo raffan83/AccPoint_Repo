@@ -65,10 +65,7 @@
 
  <table id="tabDocumenti" class="table table-bordered table-hover dataTable table-striped " role="grid" width="100%" >
  <thead><tr class="active">
-
-
 <th>ID</th>
-
 <th>Costruttore</th>
 <th>Modello</th>
 <th>Tipo documento</th>
@@ -87,16 +84,13 @@
 	<td>${documento.tipo_documento.descrizione}</td>	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${documento.data_caricamento}" /></td>
 	<td>
-	<%-- <a class="btn btn-warning customTooltip"title="Click per modificare il provvedimento"  onClick="modalModificaProvvedimento('${provvedimento.id }','${utl:escapeJS(provvedimento.costruttore) }','${utl:escapeJS(provvedimento.modello) }',
-	'${utl:escapeJS(provvedimento.classe) }','${provvedimento.tipo_approvazione.id }', '${provvedimento.tipo_provvedimento.id }', '${provvedimento.numero_provvedimento }', '${provvedimento.data_provvedimento }', '${provvedimento.rev }')"><i class="fa fa-edit"></i></a>
-	<a class="btn btn-info customTooltip" title="Click per clonare il provvedimento" onClick="modalClonaProvvedimento('${utl:escapeJS(provvedimento.descrizione_strumento)}','${provvedimento.tipo_approvazione.id }', '${provvedimento.tipo_provvedimento.id }', '${provvedimento.numero_provvedimento }', '${provvedimento.data_provvedimento }', '${provvedimento.rev }')"><i class="fa fa-clone"></i></a>
-	<a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegatiProvvedimento('${provvedimento.id }')"><i class="fa fa-archive"></i></a>
- --%>
+	<a class="btn btn-warning customTooltip"title="Click per modificare il provvedimento"  onClick="modalModificaDocumento('${documento.id }','${utl:escapeJS(documento.costruttore) }','${utl:escapeJS(documento.modello) }', '${documento.tipo_documento.id }', '${documento.data_caricamento }')"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-info customTooltip" title="Click per clonare il provvedimento" onClick="modalClonaDocumento('${utl:escapeJS(documento.costruttore) }','${utl:escapeJS(documento.modello) }', '${documento.tipo_documento.id }')"><i class="fa fa-clone"></i></a>
+	<a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegatiDocumento('${documento.id }')"><i class="fa fa-archive"></i></a>
+
 	</td>
 	</tr>
 	</c:forEach>
-	 
-
  </tbody>
  </table>  
 </div>
@@ -140,7 +134,7 @@
   		 </div>
   		 </div>
       <div class="modal-footer">
-      <input type="hidden" id="id_provvedimento_allegato" name="id_provvedimento_allegato">
+      <input type="hidden" id="id_documento_allegato" name="id_documento_allegato">
       
       <a class="btn btn-primary pull-right"  style="margin-right:5px"  onClick="$('#myModalArchivio').modal('hide')">Chiudi</a>
       
@@ -233,27 +227,15 @@
 
 
 
-<form id="modificaProvvedimentoForm" name="nuovoCorsoForm">
-<div id="myModalModificaProvvedimento" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+<form id="modificaDocumentoForm" name="modificaDocumentoForm">
+<div id="mymodalModificaDocumento" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica provvedimento</h4>
+        <h4 class="modal-title" id="myModalLabel">Modifica documento</h4>
       </div>
        <div class="modal-body">
-       
-          <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Strumento</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-      	<input type="text" id="strumento_mod" name="strumento_mod" class="form-control">
-       			
-       	</div>       	
-       </div><br>
        
           <div class="row">
        
@@ -279,104 +261,30 @@
        	</div>       	
        </div><br>
        
-          <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Classe</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-      	<input type="text" id="classe_mod" name="classe_mod" class="form-control">
-       			
-       	</div>       	
-       </div><br>
-       
        
         <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Tipo di approvazione</label>
+       		<label>Tipo documento</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <select id="tipo_approvazione_mod" name="tipo_approvazione_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Tipo di approvazione..." required>
+        <select id="tipo_documento_mod" name="tipo_documento_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Tipo di documento..." required>
         <option value=""></option>
-        <c:forEach items="${lista_tipo_approvazione }" var="tipo_approvazione">
-        <option value="${tipo_approvazione.id }">${tipo_approvazione.descrizione }</option>
+        <c:forEach items="${lista_tipo_documenti }" var="tipo_documento">
+        <option value="${tipo_documento.id }">${tipo_documento.descrizione }</option>
         </c:forEach>
         </select>
        			
        	</div>       	
        </div><br>
        
-		<div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Tipo provvedimento</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <select id="tipo_provvedimento_mod" name="tipo_provvedimento_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Tipologia Provvedimento..." required>
-        <option value=""></option>
-        <c:forEach items="${lista_tipo_provvedimento }" var="tipo_provvedimento">
-        <option value="${tipo_provvedimento.id }">${tipo_provvedimento.descrizione }</option>
-        </c:forEach>
-        </select>
-       			
-       	</div>       	
-       </div><br>
-       
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Numero provvedimento</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	 <input type="text" id="numero_provvedimento_mod" name="numero_provvedimento_mod" class="form-control"> 	
-      	
-       			
-       	</div>       	
-       </div><br>
-      
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data provvedimento</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-         <div class='input-group date datepicker' id='datepicker_provvedimento_mod'>
-               <input type='text' class="form-control input-small" id="data_provvedimento_mod" name="data_provvedimento_mod" required>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 	
-        
-       			
-       	</div>       	
-       </div><br>
-       
- 	
-    <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Rev.</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	 <input type="text" id="rev_mod" name="rev_mod" class="form-control"> 	
-      	
-       			
-       	</div>       	
-       </div><br>
-      
-       
-       
+
        </div>
   		 
       <div class="modal-footer">
 	
-	  	 <input type="hidden" id="id_provvedimento" name="id_provvedimento" class="form-control"> 	
+	  	 <input type="hidden" id="id_documento" name="id_documento" class="form-control"> 	
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -403,7 +311,7 @@
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_allegato_elimina">
-      <a class="btn btn-primary" onclick="eliminaAllegatoLegalizzazione($('#id_allegato_elimina').val())" >SI</a>
+      <a class="btn btn-primary" onclick="eliminaAllegatoDocumento($('#id_allegato_elimina').val())" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
     </div>
@@ -465,13 +373,13 @@ $('#fileupload_documento').change(function(){
 
 
 
-function modalAllegatiProvvedimento(id_provvedimento){
+function modalAllegatiDocumento(id_provvedimento){
 
-	$('#id_provvedimento_allegato').val(id_provvedimento);
+	$('#id_documento_allegato').val(id_provvedimento);
 	 $('#tab_archivio').html("");
 	 
-	 dataString ="action=lista_allegati&id_provvedimento="+ id_provvedimento;
-    exploreModal("gestioneVerLegalizzazioneBilance.do",dataString,null,function(datab,textStatusb){
+	 dataString ="action=lista_allegati&id_documento="+ id_provvedimento;
+    exploreModal("gestioneVerDocumenti.do",dataString,null,function(datab,textStatusb){
     	
     	var result = JSON.parse(datab);
     	
@@ -483,7 +391,7 @@ function modalAllegatiProvvedimento(id_provvedimento){
     			for(var i= 0; i<lista_allegati.length;i++){
        			 html= html + '<li class="list-group-item"><div class="row"><div class="col-xs-10"><b>'+lista_allegati[i].nome_file+'</b></div><div class="col-xs-2 pull-right">' 	           
                 +'<a class="btn btn-danger btn-xs pull-right" onClick="eliminaAllegatoModal(\''+lista_allegati[i].id+'\')"><i class="fa fa-trash"></i></a>'
-    	           +'<a class="btn btn-danger btn-xs  pull-right"style="margin-right:5px" href="gestioneVerLegalizzazioneBilance.do?action=download_allegato&id_allegato='+lista_allegati[i].id+'"><i class="fa fa-arrow-down small"></i></a>'
+    	           +'<a class="btn btn-danger btn-xs  pull-right"style="margin-right:5px" href="gestioneVerDocumenti.do?action=download_allegato&id_allegato='+lista_allegati[i].id+'"><i class="fa fa-arrow-down small"></i></a>'
     	           +'</div></div></li>';
        		}
     		}else{
@@ -501,7 +409,7 @@ function modalAllegatiProvvedimento(id_provvedimento){
     
     
     $('#fileupload').fileupload({
-    	 url: "gestioneVerLegalizzazioneBilance.do?action=upload_allegato&id_provvedimento="+$('#id_provvedimento_allegato').val(),
+    	 url: "gestioneVerDocumenti.do?action=upload_allegato&id_documento="+$('#id_documento_allegato').val(),
     	 dataType: 'json',	 
     	 getNumberOfFiles: function () {
     	     return this.filesContainer.children()
@@ -620,36 +528,25 @@ function eliminaAllegatoModal(id_allegato){
 }
 
 
-function modalModificaProvvedimento(id_provvedimento,descrizione_strumento, costruttore, modello, classe, tipo_approvazione, tipo_provvedimento, numero_provvedimento, data_provvedimento, rev){
+function modalModificaDocumento(id_documento, costruttore, modello,tipo_documento){
 	
-	$('#id_provvedimento').val(id_provvedimento);
-	$('#strumento_mod').val(descrizione_strumento);
+	$('#id_documento').val(id_documento);
+	
 	$('#costruttore_mod').val(costruttore);
 	$('#modello_mod').val(modello);
-	$('#classe_mod').val(classe);
-	$('#numero_provvedimento_mod').val(numero_provvedimento);
-	$('#data_provvedimento_mod').val(Date.parse(data_provvedimento).toString("dd/MM/yyyy"));
-	$('#tipo_approvazione_mod').val(tipo_approvazione);
-	$('#tipo_approvazione_mod').change();
-	$('#tipo_provvedimento_mod').val(tipo_provvedimento);
-	$('#tipo_provvedimento_mod').change();
-	$('#rev_mod').val(rev);
-
-	$('#myModalModificaProvvedimento').modal();
+	$('#tipo_documento_mod').val(tipo_documento);
+	$('#tipo_documento_mod').change();
+	
+	$('#mymodalModificaDocumento').modal();
 }
 
-function modalClonaProvvedimento(descrizione_strumento,tipo_approvazione, tipo_provvedimento, numero_provvedimento, data_provvedimento, rev ){
+function modalClonaDocumento(costruttore,modello, tipo_documento){
 		
-	$('#strumento').val(descrizione_strumento);
-
-	$('#numero_provvedimento').val(numero_provvedimento);
-	$('#data_provvedimento').val(Date.parse(data_provvedimento).toString("dd/MM/yyyy"));
-	$('#tipo_approvazione').val(tipo_approvazione);
-	$('#tipo_approvazione').change();
-	$('#tipo_provvedimento').val(tipo_provvedimento);
-	$('#tipo_provvedimento').change();
-	$('#rev').val(rev);
-
+	$('#costruttore').val(costruttore);
+	$('#modello').val(modello);
+	$('#tipo_documento').val(tipo_documento);
+	$('#tipo_documento').change();
+	
 	$('#mymodalNuovoDocumento').modal();
 	
 	
@@ -749,7 +646,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 10 },
+		    	  { responsivePriority: 2, targets: 5 },
 		    	   { targets: 1,  orderable: false }
 		    	  
 		               ], 	        
@@ -803,9 +700,9 @@ $('#nuovoDocumentoForm').on('submit', function(e){
 });
 
  
- $('#modificaProvvedimentoForm').on('submit', function(e){
+ $('#modificaDocumentoForm').on('submit', function(e){
 	 e.preventDefault();
-	 modificaProvvedimento();
+	 modificaDocumentoVerificazione();
 });
  
  

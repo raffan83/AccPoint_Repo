@@ -23,7 +23,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Documenti Verificazione
+        Documentazione Tecnica
 
         <!-- <small></small> -->
       </h1>
@@ -37,7 +37,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	Documenti Verificazione
+	Documentazione Tecnica
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>

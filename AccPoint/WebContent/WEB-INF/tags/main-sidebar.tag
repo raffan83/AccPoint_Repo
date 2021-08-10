@@ -269,7 +269,7 @@
             <li><a href="#" onclick="callAction('scadenzarioVerificazione.do',null,true);">Scadenzario</a></li>
             <% if(user.checkRuolo("AM") || !user.checkRuolo("VC")){%>
              <li><a href="#" onclick="callAction('gestioneVerLegalizzazioneBilance.do?action=lista',null,true);">Accertamento conformità</a></li>
-             <li><a href="#" onclick="callAction('gestioneVerDocumenti.do?action=lista',null,true);">Documenti</a></li>
+             <li><a href="#" onclick="callAction('gestioneVerDocumenti.do?action=lista',null,true);">Documentazione Tecnica</a></li>
             <%} %>
         
           </ul>

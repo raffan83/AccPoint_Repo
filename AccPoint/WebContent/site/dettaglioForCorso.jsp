@@ -336,16 +336,17 @@
 
       	<div class="row">
       	<div class="col-xs-12">
-      	<table id="tabForCorso" class="table table-primary table-bordered table-hover dataTable table-striped " role="grid" width="100%" >
+      	<table id="tabForCorso" class="table table-bordered table-hover dataTable table-striped " role="grid" width="100%" >
  <thead><tr class="active">
 
 
+<th style="max-width:40px">Sel</th>
 <th>Nome</th>
 <th>Cognome</th>
 <th>Azienda</th>
 <th>Sede</th>
 <th>Email</th>
-<th>Azioni</th>
+
  </tr></thead>
  
  <tbody>
@@ -353,11 +354,6 @@
  	<c:forEach items="${lista_referenti }" var="referente" varStatus="loop">
 	<tr id="row_${loop.index}" >
 
-	<td>${referente.nome }</td>
-	<td>${referente.cognome }</td>	
-	<td>${referente.nome_azienda }</td>	
-	<td>${referente.nome_sede }</td>	
-	<td>${referente.email }</td>	
 	<td>
 	<c:if test="${corso.getListaReferenti().contains(referente) }">
 	<input type="checkbox" id="check_referente_${referente.id }" checked onchange="associaDissociaReferente('${referente.id}', '${corso.id }')">
@@ -365,7 +361,13 @@
 	<c:if test="${!corso.getListaReferenti().contains(referente) }">
 	<input type="checkbox" id="check_referente_${referente.id }" onchange="associaDissociaReferente('${referente.id}', '${corso.id }')">
 	</c:if>
-	</td>		
+	</td>
+	<td>${referente.nome }</td>
+	<td>${referente.cognome }</td>	
+	<td>${referente.nome_azienda }</td>	
+	<td>${referente.nome_sede }</td>	
+	<td>${referente.email }</td>	
+		
 	
 	
 	</tr>
@@ -435,24 +437,24 @@
  <script type="text/javascript">
  
  
- var columsDatatables = [];
 
- $("#tabPartecipanti").on( 'init.dt', function ( e, settings ) {
+ var columsDatatables1 = [];
+ $("#tabForCorso").on( 'init.dt', function ( e, settings ) {
      var api = new $.fn.dataTable.Api( settings );
      var state = api.state.loaded();
   
      if(state != null && state.columns!=null){
      		console.log(state.columns);
      
-     columsDatatables = state.columns;
+     columsDatatables1 = state.columns;
      }
-     $('#tabPartecipanti thead th').each( function () {
-      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+     $('#tabForCorso thead th').each( function () {
+      	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
      	  var title = $('#tabForCorso thead th').eq( $(this).index() ).text();
      	
-     	  //if($(this).index()!=0 && $(this).index()!=1){
- 		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
- 	    	//}
+     	  if($(this).index() >0 ){
+ 		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables1[$(this).index()].search.search+'" type="text" /></div>');	
+ 	    	}
 
      	} );
      
@@ -460,8 +462,6 @@
 
 
  } );
- 
- 
 
  
 function modalArchivio(id_corso){
@@ -544,6 +544,86 @@ $('input:checkbox').on('ifToggled', function() {
         });
         
         modalArchivio('${corso.id}')
+        
+      var  table = $('#tabForCorso').DataTable({
+			language: {
+		        	emptyTable : 	"Nessun dato presente nella tabella",
+		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+		        	infoPostFix:	"",
+		        infoThousands:	".",
+		        lengthMenu:	"Visualizza _MENU_ elementi",
+		        loadingRecords:	"Caricamento...",
+		        	processing:	"Elaborazione...",
+		        	search:	"Cerca:",
+		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+		        	paginate:	{
+	  	        	first:	"Inizio",
+	  	        	previous:	"Precedente",
+	  	        	next:	"Successivo",
+	  	        last:	"Fine",
+		        	},
+		        aria:	{
+	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+		        }
+	        },
+	        pageLength: 50,
+	        "order": [[ 1, "desc" ]],
+		      paging: true, 
+		      ordering: true,
+		      info: true, 
+		      searchable: true, 
+		      targets: 0,
+		      responsive: true,
+		      scrollX: false,
+		      stateSave: true,	
+		           
+		      columnDefs: [
+		    	  
+		    	  { responsivePriority: 1, targets: 1 },
+		    	  { responsivePriority: 2, targets: 5 },
+		    	   { targets: 0,  orderable: false }
+		    	  
+		               ], 	        
+	  	      buttons: [   
+	  	          {
+	  	            extend: 'colvis',
+	  	            text: 'Nascondi Colonne'  	                   
+	 			  } ]
+		               
+		    });
+        
+        
+		
+        table.buttons().container().appendTo( '#tabForCorso_wrapper .col-sm-6:eq(1)');
+ 	    $('.inputsearchtable').on('click', function(e){
+ 	       e.stopPropagation();    
+ 	    });
+ 	    
+	     table.columns().eq( 0 ).each( function ( colIdx ) {
+	   	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	   	      table
+	   	          .column( colIdx )
+	   	          .search( this.value )
+	   	          .draw();
+	   	  } );
+	   	} ); 
+	     
+	     table.columns.adjust().draw();
+	     
+	 	$('#tabForCorso').on( 'page.dt', function () {
+			$('.customTooltip').tooltipster({
+		        theme: 'tooltipster-light'
+		    });
+			
+			$('.removeDefault').each(function() {
+			   $(this).removeClass('btn-default');
+			})
+
+
+		});
     });
     
     

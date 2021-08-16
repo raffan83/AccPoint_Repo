@@ -137,12 +137,12 @@ public class NuovoStrumento extends HttpServlet {
 				if(freq_mesi.length()>0){
 					strumento.setFrequenza(Integer.parseInt(freq_mesi));
 				}
-				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			//	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
-				strumento.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
-				if(dataProssimaVerifica.length()>0){
-					strumento.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
-				}
+			//	strumento.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
+			//	if(dataProssimaVerifica.length()>0){
+			//		strumento.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
+			//	}
 				strumento.setTipoRapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
 				
 				
@@ -234,12 +234,12 @@ public class NuovoStrumento extends HttpServlet {
 				if(freq_mesi.length()>0){
 					strumento.setFrequenza(Integer.parseInt(freq_mesi));
 				}
-				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			//	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
-				strumento.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
-				if(dataProssimaVerifica.length()>0){
-					strumento.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
-				}
+			//	strumento.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
+			//	if(dataProssimaVerifica.length()>0){
+			//		strumento.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
+			//	}
 				strumento.setTipoRapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
 				
 				strumento.setAltre_matricole(altre_matricole);

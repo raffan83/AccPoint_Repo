@@ -2179,6 +2179,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso), session);
 				
+				 String dest_rendicontazione = "segreteria@crescosrl.net";
+		    	  
+		    	 SendEmailBO.sendEmailFormazione(corso, dest_rendicontazione, request.getServletContext());
+		    	  
 				String[] destinatari = indirizzi.split(";"); 
 			      
 			      for (String dest : destinatari) {
@@ -2193,7 +2197,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			    	  session.save(email);
 			    	  corso.setScheda_consegna_inviata(1);
 			    	  session.update(corso);
-			    	  
+			    /*	  
 			    	  String dest_rendicontazione = "segreteria@crescosrl.net";
 			    	  
 			    	  SendEmailBO.sendEmailFormazione(corso, dest_rendicontazione, request.getServletContext());
@@ -2202,6 +2206,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			    	  email_conf.setUtente(utente);
 			    	  email_conf.setData(new Timestamp(System.currentTimeMillis()));
 			    	  email_conf.setDestinatario(dest_rendicontazione);
+			    	  */
 			      }
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();

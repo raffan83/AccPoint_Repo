@@ -333,7 +333,7 @@
         
         
         
- <%--             <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE DPI")){%>  
+<%--              <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE DPI")){%>  
            <li class="header">DPI</li>
 
          <li class="treeview">
@@ -349,8 +349,8 @@
           </ul>
         </li> 
            <% }%>
+         
          --%>
-        
         
         
         

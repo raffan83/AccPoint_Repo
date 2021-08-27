@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SchedaRiconsegnaDPI" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="88fac77a-e789-4a1f-8eef-932a400e9cf3">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="551" height="61" uuid="c16340f3-c042-4693-8e16-529c9cf1e131"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[SCHEDA RICONSEGNA DPI (SRDPI)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="144" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="20" width="70" height="34" uuid="1c0beef0-3f8c-4e78-b130-0e8a04ab3b67"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Il sottoscritto ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="76" y="20" width="150" height="31" uuid="a0aba224-fe5f-4795-a5b9-8e9f7ff3683a"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sottoscritto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="237" y="20" width="140" height="31" uuid="5328cdd9-b519-4b54-a2a9-904d31c58dde"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[dipendente della Società ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="379" y="20" width="191" height="31" uuid="2084735c-2329-4645-b2e6-ec280dfcab0f"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{societa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="69" width="551" height="21" uuid="b61038c8-5f04-4bb4-a0a8-368d7c8ccffc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DICHIARA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="110" width="551" height="34" uuid="2aa5f068-bcca-4f60-8b10-8b06be6f7158"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[di aver riconsegnato alla stessa i seguenti dispositivi di protezione individuale:]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="90" splitType="Stretch"/>
+	</columnFooter>
+</jasperReport>

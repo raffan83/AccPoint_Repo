@@ -212,4 +212,19 @@ public static ArrayList<VerEmailDTO> getListaEmailCertificato(int id_certificato
 }
 
 
+public static ArrayList<VerCertificatoDTO> getListaCertificatiPrecedenti(int id_strumento,  Session session) {
+	
+	ArrayList<VerCertificatoDTO> lista = null;	
+
+	Query query = session.createQuery("from VerCertificatoDTO where stato.id = 2 and misura.verStrumento.id = :_id_strumento and misura.obsoleta='N'");
+
+	query.setParameter("_id_strumento",id_strumento);
+	    
+	lista = (ArrayList<VerCertificatoDTO>)query.list();
+	
+	
+	return lista;
+}
+
+
 }

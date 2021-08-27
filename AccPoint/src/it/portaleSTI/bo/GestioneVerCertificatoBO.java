@@ -42,4 +42,9 @@ public class GestioneVerCertificatoBO {
 		
 		return GestioneVerCertificatoDAO.getListaEmailCertificato(id_certificato,session);
 	}
+
+	public static ArrayList<VerCertificatoDTO> getListaCertificatiPrecedenti(int id_strumento,  Session session) {
+		
+		return GestioneVerCertificatoDAO.getListaCertificatiPrecedenti(id_strumento, session);
+	}
 }

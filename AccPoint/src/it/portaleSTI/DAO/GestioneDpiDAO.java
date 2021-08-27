@@ -1,12 +1,16 @@
 package it.portaleSTI.DAO;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
+import it.portaleSTI.DTO.DpiDTO;
 import it.portaleSTI.DTO.TipoDpiDTO;
 
 public class GestioneDpiDAO {
@@ -85,6 +89,62 @@ public class GestioneDpiDAO {
 	
 		
 		lista = (ArrayList<ConsegnaDpiDTO>) query.list();
+		
+		return lista;
+	}
+
+	public static ArrayList<DpiDTO> getListaDpi(Session session) {
+		ArrayList<DpiDTO> lista = null;
+		
+		Query query = session.createQuery("from DpiDTO");
+		
+		lista = (ArrayList<DpiDTO>) query.list();
+		
+		return lista;
+	}
+
+	public static DpiDTO getDpiFormId(int id_dpi, Session session) {
+		
+		ArrayList<DpiDTO> lista = null;
+		DpiDTO result = null;
+		
+		Query query = session.createQuery("from DpiDTO where id =:_id");
+		query.setParameter("_id", id_dpi);
+		
+		lista = (ArrayList<DpiDTO>) query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
+	}
+
+	public static ArrayList<ConsegnaDpiDTO> getListaEventiFromDPI(int id_dpi, Session session) {
+
+		ArrayList<ConsegnaDpiDTO> lista = null;
+		
+		Query query = session.createQuery("from ConsegnaDpiDTO where dpi.id = :_id_dpi");
+		query.setParameter("_id_dpi", id_dpi);
+		
+		lista = (ArrayList<ConsegnaDpiDTO>) query.list();
+		
+		return lista;
+	}
+
+	public static ArrayList<DpiDTO> getListaDpiScadenzario(String dateFrom, String dateTo, Session session) throws Exception, ParseException {
+
+		ArrayList<DpiDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+
+		Query query = session.createQuery("from DpiDTO where data_scadenza between :_data_start and :_data_end");
+		query.setParameter("_data_start", sdf.parse(dateFrom));
+		query.setParameter("_data_end", sdf.parse(dateTo));
+		
+
+		lista = (ArrayList<DpiDTO>) query.list();
 		
 		return lista;
 	}

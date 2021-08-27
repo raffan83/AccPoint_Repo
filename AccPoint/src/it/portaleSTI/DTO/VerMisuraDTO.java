@@ -98,6 +98,8 @@ public class VerMisuraDTO {
 	
 	private String note_attestato;
 	
+	private int id_misura_old;
+	
 		public String getNote_obsolescenza() {
 		return note_obsolescenza;
 	}
@@ -436,6 +438,15 @@ public class VerMisuraDTO {
 
 	public void setNote_attestato(String note_attestato) {
 		this.note_attestato = note_attestato;
+	}
+
+
+	public int getId_misura_old() {
+		return id_misura_old;
+	}
+
+	public void setId_misura_old(int id_misura_old) {
+		this.id_misura_old = id_misura_old;
 	}
 	
 	

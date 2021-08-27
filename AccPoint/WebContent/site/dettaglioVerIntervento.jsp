@@ -321,6 +321,8 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 	'${strumento_int.verStrumento.div_ver_C2 }','${strumento_int.verStrumento.div_rel_C2 }','${strumento_int.verStrumento.numero_div_C2 }','${strumento_int.verStrumento.portata_min_C3 }','${strumento_int.verStrumento.portata_max_C3 }','${strumento_int.verStrumento.div_ver_C3 }',
 	'${strumento_int.verStrumento.div_rel_C3 }','${strumento_int.verStrumento.numero_div_C3 }','${strumento_int.verStrumento.anno_marcatura_ce }','${strumento_int.verStrumento.data_messa_in_servizio }','${strumento_int.verStrumento.tipologia.descrizione }')"><i class="fa fa-search"></i></a>
 
+
+<button class="btn btn-success  customTooltip" title="Riemetti certificato esistente" onClick="getListaCertificatiprecedenti('${strumento_int.verStrumento.id}')"><i class="fa fa-copy"></i></button>
 </td>
 	</tr>
  
@@ -789,6 +791,36 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
   </div>
 </div>
 
+
+
+
+
+
+   <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" style="z-index:10000">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler riemettere il certificato selezionato?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_certificato_riemissione">
+      
+      <a class="btn btn-primary" onclick="riemettiCertificato($('#id_certificato_riemissione').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
   <div id="modalListaDuplicati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-keyboard="false" data-backdrop="static" >
     <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -823,7 +855,50 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
   </div>
   <!-- /.content-wrapper -->
 
+<div id="myModalStorico" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h4 class="modal-title" id="myModalLabelHeader">Seleziona il certificato da riemettere</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-sm-12">
+			
+      
+        
+ <table id="table_storico" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
 
+<th></th>
+<th>ID Certificato</th>
+<th>ID Misura</th>
+<th>Strumento</th>
+<th>Matricola</th>
+<th>Data misura</th>
+<th>Operatore</th>
+<th>Commessa</th>
+
+ </tr></thead>
+ 
+ <tbody>
+</tbody>
+</table>
+</div>
+		</div>
+
+     
+    </div>
+          <div class="modal-footer">
+ 		<a class="btn btn-default pull-right"  style="margin-left:5px"onClick="modalYesOrNo()">Riemetti</a>
+ 		<a class="btn btn-default pull-right" onClick="$('#myModalStorico').modal('hide')">Chiudi</a>
+         
+         
+         </div>
+  </div>
+</div>
+</div>
 
 	
   <t:dash-footer />
@@ -861,6 +936,143 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
   <script src="plugins/iCheck/icheck.min.js"></script>  -->
 
  <script type="text/javascript">
+ 
+ function riemettiCertificato(id_certificato){
+	 
+	 var dataObj = {};
+	 dataObj.id_certificato = id_certificato;
+	 dataObj.id_intervento = ${interventover.id};
+	 
+	
+	  
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneVerCertificati.do?action=riemetti_certificato",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		  $(".ui-tooltip").remove();
+	    		  if(data.success)
+	    		  { 
+	    			 location.reload()
+
+	    		
+	    		  }else{
+	    			  $('#myModalErrorContent').html("Errore nel salvataggio!");
+	    			  
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#report_button').show();
+	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+						
+	    	  }
+});
+	 
+ }
+ 
+ function modalYesOrNo(){
+
+	 
+ var table = $("#table_storico").DataTable();
+	 
+	 var str = "";
+	 
+	 
+	 $('#table_storico tbody tr').each(function(){
+		 if($(this).hasClass("selected")){
+			 var td = $(this).find('td').eq(1);
+			 str = str+td[0].innerText;
+		 }
+		
+	 });
+	 
+	if(str == ''){
+		$('#myModalErrorContent').html("Nessun certificato selezionato!")
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#myModalError').modal('show');		
+	}else{
+
+		 $('#id_certificato_riemissione').val(str);
+		 
+		 $('#myModalYesOrNo').modal();
+	}
+	 
+	 
+	
+
+ }
+ 
+ 
+ function getListaCertificatiprecedenti(id_strumento){
+	  
+	  dataString ="action=certificati_precedenti&id_strumento="+ id_strumento;
+	     exploreModal("gestioneVerCertificati.do",dataString,null,function(datab,textStatusb){
+	   	  	
+	   	  var result =datab;
+	   	  
+	   	  if(result.success){
+	   		 
+	   		  var table_data = [];
+	   		  
+	   		  var lista_certificati = result.lista_certificati;
+	   		  
+	   		  for(var i = 0; i<lista_certificati.length;i++){
+	   			  var dati = {};
+	   			   				 
+	   			  dati.check="";
+	   			  dati.id = lista_certificati[i].id;	   			
+	   			  dati.id_misura = lista_certificati[i].misura.id;	   			  
+	   			  dati.strumento = lista_certificati[i].misura.verStrumento.denominazione;  
+	   			  dati.matricola = lista_certificati[i].misura.verStrumento.matricola;  
+	   			  dati.data_misura = lista_certificati[i].misura.dataVerificazione;
+	   			  dati.operatore = lista_certificati[i].misura.tecnicoVerificatore.nominativo;
+	   			  dati.commessa = lista_certificati[i].misura.verIntervento.commessa
+	   			 
+	   			  table_data.push(dati);
+	   			  
+	   		  }
+	   		  var t = $('#table_storico').DataTable();
+	   		  
+	    		   t.clear().draw();
+	    		   
+	    			t.rows.add(table_data).draw();
+	    			t.columns.adjust().draw();
+	  			
+	  		  $('#myModalStorico').modal();
+	  			
+	   	  }
+	   	  
+	   	  $('#myModalStorico').on('shown.bs.modal', function () {
+	   		  var t = $('#table_storico').DataTable();
+	   		  
+	   			t.columns.adjust().draw();
+	 			
+	   		})
+	   	  
+	     });
+	  
+ }
+ 
+ 
+ 
  
  $('#modalListaDuplicati').on('hidden.bs.modal',function(){
 	
@@ -1326,6 +1538,9 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 		   $(this).removeClass('btn-default');
 		})
 	       	 
+		
+		
+
  
     });  
 	
@@ -1358,6 +1573,90 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 			table.rows().deselect();
 
 	  	});
+	
+	
+	
+	
+	
+	
+	t = $('#table_storico').DataTable({
+		language: {
+	        	emptyTable : 	"Non sono presenti documenti antecedenti",
+	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	        	infoPostFix:	"",
+	        infoThousands:	".",
+	        lengthMenu:	"Visualizza _MENU_ elementi",
+	        loadingRecords:	"Caricamento...",
+	        	processing:	"Elaborazione...",
+	        	search:	"Cerca:",
+	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	        	paginate:	{
+  	        	first:	"Inizio",
+  	        	previous:	"Precedente",
+  	        	next:	"Successivo",
+  	        last:	"Fine",
+	        	},
+	        aria:	{
+  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	        }
+        },
+        pageLength: 25,
+        "order": [[ 0, "desc" ]],
+	      paging: false, 
+	      ordering: true,
+	      info: false, 
+	      searchable: false, 
+	      targets: 0,
+	      responsive: true,  
+	      scrollX: false,
+	      stateSave: true,	
+	      select: {		
+	    	  
+	        	style:    'single',
+	        	selector: 'td:nth-child(1)'
+	    	}, 
+	      columns : [
+	    	{"data" : "check"},
+	      	{"data" : "id"},
+	      	{"data" : "id_misura"},
+	      	{"data" : "strumento"},
+	      	{"data" : "matricola"},
+	      	{"data" : "data_misura"},
+	      	{"data" : "operatore"},
+	      	{"data" : "commessa"}
+	       ],	
+	           
+	      columnDefs: [
+	    	  
+	    	  { className: "select-checkbox", targets:  0, orderable: false },
+	    	  
+	    	  
+	               ], 	        
+  	      buttons: [   
+  	          {
+  	            extend: 'colvis',
+  	            text: 'Nascondi Colonne'  	                   
+ 			  } ]
+	               
+	    });
+	
+	t.buttons().container().appendTo( '#table_storico_wrapper .col-sm-6:eq(1)');
+ 	    $('.inputsearchtable').on('click', function(e){
+ 	       e.stopPropagation();    
+ 	    });
+
+ 	     t.columns().eq( 0 ).each( function ( colIdx ) {
+  $( 'input', t.column( colIdx ).header() ).on( 'keyup', function () {
+      t
+          .column( colIdx )
+          .search( this.value )
+          .draw();
+  } );
+} );  
+	
     });
 
 	

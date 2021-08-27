@@ -383,7 +383,7 @@ public class GestioneIntervento extends HttpServlet {
 						filename_cond_amb = saveExcelFile(cond_ambientali,intervento.getNomePack(), true,true);
 					}
 					
-					String nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),intervento.getId(),id_strumento);
+					
 					
 					interventoDati.setId_intervento(intervento.getId());
 					interventoDati.setNomePack(nomeFileExcel);
@@ -400,7 +400,7 @@ public class GestioneIntervento extends HttpServlet {
 		    		
 		    		session.update(intervento);
 		    		session.save(interventoDati);
-		    		
+		    		String nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),interventoDati.getId(),id_strumento);
 		    		LatMisuraDTO misuraLAT = new LatMisuraDTO();
 		    		
 		    		if(lat_master!=null && !lat_master.equals("")) {

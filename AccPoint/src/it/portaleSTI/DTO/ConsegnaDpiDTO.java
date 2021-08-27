@@ -5,12 +5,8 @@ import java.util.Date;
 public class ConsegnaDpiDTO {
 
 	private int id;
-	private TipoDpiDTO tipo;
-	private int quantita;
-	private String modello;
-	private String conformita;
+	private DpiDTO dpi;
 	private Date data_consegna;
-	private Date data_scadenza;
 	private Date data_accettazione;
 	private DocumDipendenteFornDTO lavoratore;
 	private int ricevuto;
@@ -27,36 +23,7 @@ public class ConsegnaDpiDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public TipoDpiDTO getTipo() {
-		return tipo;
-	}
-	public void setTipo(TipoDpiDTO tipo) {
-		this.tipo = tipo;
-	}
-	public int getQuantita() {
-		return quantita;
-	}
-	public void setQuantita(int quantita) {
-		this.quantita = quantita;
-	}
-	public String getModello() {
-		return modello;
-	}
-	public void setModello(String modello) {
-		this.modello = modello;
-	}
-	public String getConformita() {
-		return conformita;
-	}
-	public void setConformita(String conformita) {
-		this.conformita = conformita;
-	}
-	public Date getData_scadenza() {
-		return data_scadenza;
-	}
-	public void setData_scadenza(Date data_scadenza) {
-		this.data_scadenza = data_scadenza;
-	}
+	
 	public DocumDipendenteFornDTO getLavoratore() {
 		return lavoratore;
 	}
@@ -110,6 +77,12 @@ public class ConsegnaDpiDTO {
 	}
 	public void setCommessa(String commessa) {
 		this.commessa = commessa;
+	}
+	public DpiDTO getDpi() {
+		return dpi;
+	}
+	public void setDpi(DpiDTO dpi) {
+		this.dpi = dpi;
 	}
 	
 	

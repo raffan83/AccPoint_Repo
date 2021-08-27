@@ -529,12 +529,12 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 			<staticText>
 				<reportElement x="49" y="677" width="120" height="22" uuid="327fb93b-c844-4603-8744-83b26e6a4fe3"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Data]]></text>
+				<text><![CDATA[Data emissione]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="49" y="697" width="120" height="22" uuid="26b948d3-06c1-4022-8cdd-7ed98fd09c75"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="386" y="675" width="120" height="22" uuid="240db746-5d4b-4431-aa40-df72c56ff5f7"/>

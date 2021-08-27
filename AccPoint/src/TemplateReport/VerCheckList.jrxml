@@ -778,12 +778,12 @@
 			<staticText>
 				<reportElement x="49" y="679" width="120" height="22" uuid="dd7f11ab-4b2d-4e92-ad60-3a361a2edd55"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Data]]></text>
+				<text><![CDATA[Data emissione]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="49" y="699" width="120" height="22" uuid="be4e25a7-d1e3-4143-9cb9-51f9db2df1ab"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="386" y="677" width="120" height="22" uuid="5a80a170-70fa-47e6-94f4-5fa749c9cf2d"/>

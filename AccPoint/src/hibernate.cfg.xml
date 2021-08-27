@@ -186,6 +186,7 @@
  		
  		
  	<mapping class="TipoDpiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoDpiDTO.hbm.xml"/>
- 	<mapping class="ConsegnaDpiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ConsegnaDpiDTO.hbm.xml"/>	
+ 	<mapping class="ConsegnaDpiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ConsegnaDpiDTO.hbm.xml"/>
+ 	<mapping class="DpiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DpiDTO.hbm.xml"/>		
   </session-factory>
 </hibernate-configuration>

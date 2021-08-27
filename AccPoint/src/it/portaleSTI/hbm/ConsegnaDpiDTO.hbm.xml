@@ -8,8 +8,8 @@
             <column name="id" />
             <generator class="native" />
         </id>
-        <many-to-one name="tipo" class="it.portaleSTI.DTO.TipoDpiDTO" fetch="join" lazy="false">
-            <column name="id_tipo_dpi" />
+        <many-to-one name="dpi" class="it.portaleSTI.DTO.DpiDTO" fetch="join" lazy="false">
+            <column name="id_dpi" />
         </many-to-one>
 
          <many-to-one name="lavoratore" class="it.portaleSTI.DTO.DocumDipendenteFornDTO" fetch="join" lazy="false">
@@ -18,22 +18,12 @@
         <property name="data_consegna" type="java.sql.Date">
             <column name="data_consegna" />
         </property>
-        <property name="data_scadenza" type="java.sql.Date">
-            <column name="data_scadenza" />
-        </property>
+
         <property name="data_accettazione" type="java.sql.Date">
             <column name="data_accettazione" />
         </property>
         
-        <property name="modello" type="java.lang.String">
-            <column name="modello" />
-        </property>
-        <property name="quantita" type="int">
-            <column name="quantita" />
-        </property>
-        <property name="conformita" type="java.lang.String">
-            <column name="conformita" />
-        </property>
+       
         <property name="ricevuto" type="int">
             <column name="ricevuto" />
         </property>
@@ -51,7 +41,9 @@
          <property name="motivazione" type="java.lang.String">
             <column name="motivazione" />
         </property>
-
+ <property name="commessa" type="java.lang.String">
+            <column name="commessa" />
+        </property>
         
     </class>
 </hibernate-mapping>

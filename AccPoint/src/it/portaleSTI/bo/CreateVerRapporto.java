@@ -5,16 +5,32 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 import TemplateReport.PivotTemplate;
 import TemplateReport.ImageReport.PivotTemplateImage;
@@ -544,11 +560,9 @@ public class CreateVerRapporto {
 			report.addParameter("data_riparazione","");
 		}
 		
-		if(misura.getDataVerificazione()!=null) {
-			report.addParameter("data", df.format(misura.getDataVerificazione()));
-		}else {
-			report.addParameter("data","");
-		}
+		
+		report.addParameter("data_emissione", df.format(new Date()));
+		
 		
 		
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
@@ -606,11 +620,8 @@ public class CreateVerRapporto {
 			reportP2.addParameter("firma_operatore", ""); 
 		}
 		
-		if(misura.getDataVerificazione()!=null) {
-			reportP2.addParameter("data", df.format(misura.getDataVerificazione()));
-		}else {
-			reportP2.addParameter("data","");
-		}
+		reportP2.addParameter("data_emissione", df.format(new Date()));
+		
 		
 				
 		File logo_accredia = new File(PivotTemplateLAT_Image.class.getResource("accredia.png").getPath());
@@ -1137,10 +1148,8 @@ public class CreateVerRapporto {
 				//reportP3.ignorePagination();
 			}
 			
-			String data_verificazione = "";
-			if(misura.getDataVerificazione()!=null) {
-				data_verificazione = df.format(misura.getDataVerificazione());
-			}		
+			String data_emissione = df.format(new Date());
+			
 			if(utente.getFile_firma()!=null) {
 				if(firma!=null) {
 					
@@ -1148,13 +1157,13 @@ public class CreateVerRapporto {
 							cmp.verticalList(
 							cmp.horizontalList(
 									cmp.horizontalGap(50),
-									cmp.text("Data"),
+									cmp.text("Data emissione"),
 									cmp.horizontalGap(170),
 									cmp.text("Firma operatore tecnico")
 									),
 							cmp.horizontalList(
-									cmp.horizontalGap(35),
-									cmp.text(data_verificazione),
+									cmp.horizontalGap(60),
+									cmp.text(data_emissione),
 									cmp.horizontalGap(25),
 									cmp.text(""),
 									cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setFixedHeight(18)
@@ -1166,14 +1175,14 @@ public class CreateVerRapporto {
 				reportP3.pageFooter(
 						cmp.verticalList(
 						cmp.horizontalList(
-								cmp.horizontalGap(50),
-								cmp.text("Data"),
+								cmp.horizontalGap(5),
+								cmp.text("Data emissione"),
 								cmp.horizontalGap(170),
 								cmp.text("Firma operatore tecnico")
 								),
 						cmp.horizontalList(
-								cmp.horizontalGap(35),
-								cmp.text(data_verificazione),
+								cmp.horizontalGap(60),
+								cmp.text(data_emissione),
 								cmp.horizontalGap(178),
 								cmp.text("........................................")
 								)
@@ -1224,6 +1233,10 @@ public class CreateVerRapporto {
 		exporter.setConfiguration(configuration);
 		exporter.exportReport();
 		
+		
+		if(misura.getId_misura_old()!=0) {
+			addRiemessione(misura.getId_misura_old(), path, misura.getNumeroRapporto().replace("_", " - "), session);
+		}
 		
 	}
 	
@@ -2041,6 +2054,82 @@ private String getClassePrecisione(int classe) {
 		
 	}
 	return cl;
+	
+}
+
+
+public  void addRiemessione(int misuraOld,String path,String nuovo_rapporto, Session session) throws Exception {
+
+	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(misuraOld, session);
+
+
+	File folderCopy = new File(Costanti.PATH_FOLDER+"\\"+misura.getVerIntervento().getNome_pack()+"\\OLD\\"); 
+	
+	
+	if(!folderCopy.exists()) {
+		folderCopy.mkdirs();
+	}
+	
+	Files.copy(Paths.get(path), Paths.get(folderCopy+"\\"+misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()+".pdf"), StandardCopyOption.REPLACE_EXISTING);
+		//System.out.println("filepath" + filepath);
+		File tmpFile = new File(path+"tmp");
+        PdfReader reader = new PdfReader(path);
+        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
+        Font f = new Font(FontFamily.HELVETICA, 12);
+        f.setColor(BaseColor.RED);
+        int pages = reader.getNumberOfPages();
+        for (int i=0; i<pages; i++) {	        
+	        PdfContentByte over = stamper.getOverContent(i+1);
+	        Phrase p = new Phrase(String.format("Corregge il rapporto n. %s", misura.getNumeroRapporto().replaceAll("_", "-")), f);
+	        over.saveState();
+	        PdfGState gs1 = new PdfGState();
+	        gs1.setFillOpacity(0.7f);
+	        over.setGState(gs1);
+	        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 580, 450, 90);
+	        over.restoreState();
+        }
+        stamper.close();
+        reader.close();
+        File fil = new File (path);
+        if(fil.exists()) {
+        	fil.delete();
+        }
+		tmpFile.renameTo(new File(path));
+	
+		addRiemessioneOld(misura, nuovo_rapporto, session);
+	
+}
+
+
+public  void addRiemessioneOld(VerMisuraDTO misuraOld,String nuovo_rapporto, Session session) throws Exception {
+
+	String path = Costanti.PATH_FOLDER+"\\"+misuraOld.getVerIntervento().getNome_pack()+"\\Rapporto\\RAP"+misuraOld.getVerIntervento().getNome_pack()+"_"+misuraOld.getId()+""+misuraOld.getVerStrumento().getId()+".pdf";
+	
+		File tmpFile = new File(path+"tmp");
+        PdfReader reader = new PdfReader(path);
+        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
+        Font f = new Font(FontFamily.HELVETICA, 12);
+        f.setColor(BaseColor.RED);
+        int pages = reader.getNumberOfPages();
+        for (int i=0; i<pages; i++) {	        
+	        PdfContentByte over = stamper.getOverContent(i+1);
+	        Phrase p = new Phrase(String.format("Questo rapporto è stato sostituito dal rapporto %s", nuovo_rapporto), f);
+	        over.saveState();
+	        PdfGState gs1 = new PdfGState();
+	        gs1.setFillOpacity(0.7f);
+	        over.setGState(gs1);
+	        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 580, 450, 90);
+	        over.restoreState();
+        }
+        stamper.close();
+        reader.close();
+        File fil = new File (path);
+        if(fil.exists()) {
+        	fil.delete();
+        }
+		tmpFile.renameTo(new File(path));
+	
+	
 	
 }
 	

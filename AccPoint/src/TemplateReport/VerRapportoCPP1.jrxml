@@ -320,12 +320,12 @@
 			<staticText>
 				<reportElement x="49" y="694" width="120" height="22" uuid="ff121639-e0c0-491f-8563-c8d5ba9111dc"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Data]]></text>
+				<text><![CDATA[Data emissione]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="49" y="715" width="120" height="22" uuid="d0766b49-be31-4776-b767-a92850a23e12"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="386" y="692" width="120" height="22" uuid="faacd871-918e-4016-bd6c-a94285968603"/>

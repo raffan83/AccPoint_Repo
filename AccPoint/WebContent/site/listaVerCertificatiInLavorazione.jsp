@@ -86,6 +86,9 @@
 		
 		 <button class="btn btn-success  customTooltip" title="Click per generare il Certificato" onClick="creaVerCertificato('${utl:encryptData(certificato.misura.id)}')"><i class="fa fa-check"></i></button>
 		 
+		 
+
+		 
 			<%-- <button class="btn btn-success  customTooltip" title="Click per generare il Certificato" onClick="creaVerCertificato('${utl:encryptData(certificato.misura.id)}')"><i class="fa fa-check"></i></button> --%>
 			
 			 
@@ -99,6 +102,7 @@
  </table>  
    </div>
 	  </div>
+
 
 
 
@@ -118,6 +122,9 @@
   <script type="text/javascript">
   
   
+
+  
+  
   
   function generaSelezionati(){
 	  
@@ -131,6 +138,20 @@
   		}
   		
   		generaVerCertificatiMulti(selezionati);
+	  
+  }
+  
+  
+  function modalRiemissione(){
+	  
+
+	  	 dataString ="action=certificati_emessi_riemissione&id_intervento="+ id_intervento;
+	     exploreModal("listaCertificati.do",dataString,"#tab_riemissione",function(datab,textStatusb){
+	    	 
+	    	 
+	    	 
+	     });
+	  $('#myModalAllegati').modal();
 	  
   }
 
@@ -418,6 +439,9 @@
 	      increaseArea: '20%' // optional
 	    });
 	
+	  
+	  
+
 	
     });
 

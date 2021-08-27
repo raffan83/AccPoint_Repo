@@ -15143,7 +15143,7 @@ function nuovoProvvedimento(){
 	
 }
 
-function nuovoDocumento(){
+function nuovoVerDocumento(){
 	
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
@@ -16119,5 +16119,124 @@ function nuovaSchedaDPI(){
 
 	  }
   });
+	
+}
+
+
+
+function nuovoDPI(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#nuovoDpiForm')[0]; 
+		  var formData = new FormData(form);
+		 
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneDpi.do?action=nuovo_dpi",
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+			  $("#modalNuovoReferente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+   			$('#myModalError').on('hidden.bs.modal', function(){	         			
+ 				
+   				 location.reload()
+  			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+  });
+	
+}
+
+function modificaDPI(){
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var form = $('#modificadpiForm')[0]; 
+		  var formData = new FormData(form);
+		 
+$.ajax({
+	  type: "POST",
+	  url: "gestioneDpi.do?action=modifica_dpi",
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+			  $("#modalNuovoReferente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+ 			$('#myModalError').on('hidden.bs.modal', function(){	         			
+				
+ 				 location.reload()
+			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+});
+	
 	
 }

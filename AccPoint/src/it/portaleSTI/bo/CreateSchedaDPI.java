@@ -230,13 +230,13 @@ public class CreateSchedaDPI {
 				ArrayList<String> arrayPs = new ArrayList<String>();
 				
 				arrayPs.add(consegna.getId()+"");
-				arrayPs.add(consegna.getTipo().getDescrizione());
-				arrayPs.add(consegna.getQuantita()+"");
-				arrayPs.add(consegna.getModello());
-				arrayPs.add(consegna.getConformita());
+				arrayPs.add(consegna.getDpi().getTipo().getDescrizione());
+				arrayPs.add("");
+				arrayPs.add(consegna.getDpi().getModello());
+				arrayPs.add(consegna.getDpi().getConformita());
 				
 				if(tipo_scheda == 0) {
-					arrayPs.add(df.format(consegna.getData_scadenza()));	
+					arrayPs.add(df.format(consegna.getDpi().getData_scadenza()));	
 				}else {
 					arrayPs.add(consegna.getMotivazione());
 				}					
@@ -317,7 +317,7 @@ public class CreateSchedaDPI {
 					ArrayList<String> arrayPs = new ArrayList<String>();
 					
 					
-					arrayPs.add(consegna.getTipo().getId()+"");
+					arrayPs.add(consegna.getDpi().getTipo().getId()+"");
 					if(consegna.getData_accettazione()!=null) {
 						arrayPs.add(df.format(consegna.getData_accettazione()));	
 					}else {

@@ -214,12 +214,12 @@
 			<staticText>
 				<reportElement x="49" y="759" width="120" height="22" uuid="d8ee5068-a2be-4060-96dc-5da1d21cebb5"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Data]]></text>
+				<text><![CDATA[Data emissione]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="49" y="779" width="120" height="22" uuid="6f5c99ba-cd68-4bbb-a69f-d0fbcae96146"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="386" y="757" width="120" height="22" uuid="9b246a95-9797-4f4a-9b02-0df32a2aab76"/>

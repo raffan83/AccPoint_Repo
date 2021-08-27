@@ -23,6 +23,8 @@ import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -35,9 +37,15 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerAccuratezzaDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
+import it.portaleSTI.DTO.VerDecentramentoDTO;
 import it.portaleSTI.DTO.VerEmailDTO;
+import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
+import it.portaleSTI.DTO.VerMobilitaDTO;
+import it.portaleSTI.DTO.VerRipetibilitaDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
@@ -48,6 +56,7 @@ import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneConfigurazioneClienteBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.GestioneVerCertificatoBO;
+import it.portaleSTI.bo.GestioneVerInterventoBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;
 import it.portaleSTI.bo.SendEmailBO;
 
@@ -541,7 +550,193 @@ public class GestioneVerCertificati extends HttpServlet {
 				session.close();
 				
 			}
+			else if(action.equals("certificati_precedenti")) {
+				
+				String id_strumento = request.getParameter("id_strumento");
+
+				ArrayList<VerCertificatoDTO> lista_certificati = GestioneVerCertificatoBO.getListaCertificatiPrecedenti(Integer.parseInt(id_strumento),  session);
+				
+				PrintWriter out = response.getWriter();
+				response.setContentType("application/json");
+				 Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create(); 			        			        
+			     			      		       
+			        myObj.addProperty("success", true);
 			
+			        myObj.add("lista_certificati", gson.toJsonTree(lista_certificati));			      
+			        
+			        out.println(myObj.toString());
+		
+			        out.close();
+			        
+			     session.getTransaction().commit();
+		       	session.close();
+			}
+			else if(action.equals("riemetti_certificato")) {
+				
+				String id_certificato = request.getParameter("id_certificato");
+				String id_intervento = request.getParameter("id_intervento");
+				
+				VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id_certificato), session);
+				VerInterventoDTO intervento = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);
+				VerMisuraDTO misura = certificato.getMisura();
+				
+				VerMisuraDTO newMisura = new VerMisuraDTO();
+			
+				newMisura.setVerIntervento(intervento);
+				newMisura.setAltezza_org(misura.getAltezza_org());
+				newMisura.setAltezza_util(misura.getAltezza_util());
+				newMisura.setCampioniLavoro(misura.getCampioniLavoro());
+				newMisura.setDataRiparazione(misura.getDataRiparazione());
+				newMisura.setDataScadenza(misura.getDataScadenza());
+				newMisura.setDataVerificazione(misura.getDataVerificazione());
+				newMisura.setEsito(misura.getEsito());
+				newMisura.setFile_fine_prova(misura.getFile_fine_prova());
+				newMisura.setFile_inizio_prova(misura.getFile_fine_prova());
+				newMisura.setgFactor(misura.getgFactor());
+				newMisura.setgOrg(misura.getgOrg());
+				newMisura.setgUtil(misura.getgUtil());
+				newMisura.setIdNonConforme(misura.getIdNonConforme());
+				newMisura.setIs_difetti(misura.getIs_difetti());
+				newMisura.setLatitudine_org(misura.getLatitudine_org());
+				newMisura.setLatitudine_util(misura.getLatitudine_util());
+				newMisura.setMotivo_verifica(misura.getMotivo_verifica());
+				newMisura.setNomeFile_fine_prova(misura.getNomeFile_fine_prova());
+				newMisura.setNomeFile_inizio_prova(misura.getNomeFile_inizio_prova());
+				newMisura.setNomeRiparatore(misura.getNomeRiparatore());
+				newMisura.setNote_attestato(misura.getNote_attestato());
+				newMisura.setNote_attestato(misura.getNote_attestato());
+				newMisura.setNote_obsolescenza(misura.getNote_obsolescenza());
+				newMisura.setNumeroSigilli(misura.getNumeroSigilli());
+				newMisura.setSeqRisposte(misura.getSeqRisposte());
+				newMisura.setTecnicoVerificatore(misura.getTecnicoVerificatore());
+				newMisura.settFine(misura.gettFine());
+				newMisura.settInizio(misura.gettInizio());
+				newMisura.setTipo_verifica(misura.getTipo_verifica());
+				newMisura.setTipoRisposta(misura.getTipoRisposta());
+				newMisura.setVerStrumento(misura.getVerStrumento());
+				newMisura.setId_misura_old(misura.getId());
+				newMisura.setObsoleta("N");
+				
+				session.save(newMisura);
+				
+				for (VerRipetibilitaDTO item : misura.getListaPuntiRipetibilita()) {
+					VerRipetibilitaDTO punto = new VerRipetibilitaDTO();
+					punto.setCampo(item.getCampo());
+					punto.setCaricoAgg(item.getCaricoAgg());
+					punto.setDeltaPortata(item.getDeltaPortata());
+					punto.setEsito(item.getEsito());
+					punto.setIdMisura(newMisura.getId());
+					punto.setIndicazione(item.getIndicazione());
+					punto.setMassa(item.getMassa());
+					punto.setMpe(item.getMpe());
+					punto.setNumeroRipetizione(item.getNumeroRipetizione());
+					punto.setPortata(item.getPortata());
+					
+					session.save(punto);
+					
+				}				
+				
+				
+				for (VerAccuratezzaDTO item : misura.getListaPuntiAccuratezza()) {
+					VerAccuratezzaDTO punto = new VerAccuratezzaDTO();
+					punto.setCampo(item.getCampo());
+					punto.setCaricoAgg(item.getCaricoAgg());
+					punto.setEsito(item.getEsito());
+					punto.setIdMisura(newMisura.getId());
+					punto.setIndicazione(item.getIndicazione());
+					punto.setMassa(item.getMassa());
+					punto.setMpe(item.getMpe());
+					punto.setErrore(item.getErrore());
+					punto.setErroreCor(item.getErroreCor());
+					punto.setPosizione(item.getPosizione());
+					punto.setTipoTara(item.getTipoTara());	
+					
+					session.save(punto);
+					
+				}
+				
+				for (VerDecentramentoDTO item : misura.getListaPuntiDecentramento()) {
+					VerDecentramentoDTO punto = new VerDecentramentoDTO();
+					punto.setCampo(item.getCampo());
+					punto.setCaricoAgg(item.getCaricoAgg());
+					punto.setEsito(item.getEsito());
+					punto.setIdMisura(newMisura.getId());
+					punto.setIndicazione(item.getIndicazione());
+					punto.setMassa(item.getMassa());
+					punto.setMpe(item.getMpe());
+					punto.setErrore(item.getErrore());
+					punto.setErroreCor(item.getErroreCor());
+					punto.setPosizione(item.getPosizione());
+					punto.setPuntiAppoggio(item.getPuntiAppoggio());			
+					punto.setSpeciale(item.getSpeciale());
+					punto.setTipoRicettore(item.getTipoRicettore());
+					
+					session.save(punto);
+					
+				}
+				
+				for (VerLinearitaDTO item : misura.getListaPuntiLinearita()) {
+					VerLinearitaDTO punto = new VerLinearitaDTO();
+					punto.setCampo(item.getCampo());
+					punto.setEsito(item.getEsito());
+					punto.setIdMisura(newMisura.getId());					
+					punto.setMassa(item.getMassa());
+					punto.setMpe(item.getMpe());					
+					punto.setCaricoAggDiscesa(item.getCaricoAggDiscesa());
+					punto.setCaricoAggSalita(item.getCaricoAggSalita());
+					punto.setDivisione(item.getDivisione());
+					punto.setErroreCorDiscesa(item.getErroreCorDiscesa());
+					punto.setErroreCorSalita(item.getErroreCorSalita());
+					punto.setErroreDiscesa(item.getErroreDiscesa());
+					punto.setErroreSalita(item.getErroreSalita());				
+					punto.setIndicazioneDiscesa(item.getIndicazioneDiscesa());
+					punto.setIndicazioneSalita(item.getIndicazioneSalita());
+					punto.setRiferimento(item.getRiferimento());
+					punto.setTipoAzzeramento(item.getTipoAzzeramento());
+					
+					session.save(punto);
+				}
+				
+				for (VerMobilitaDTO item : misura.getListaPuntiMobilita()) {
+					VerMobilitaDTO punto = new VerMobilitaDTO();
+					punto.setCampo(item.getCampo());
+					punto.setCaricoAgg(item.getCaricoAgg());
+					punto.setEsito(item.getEsito());
+					punto.setIdMisura(newMisura.getId());
+					punto.setIndicazione(item.getIndicazione());
+					punto.setMassa(item.getMassa());
+					punto.setCaso(item.getCaso());
+					punto.setCheck_punto(item.getCheck_punto());
+					punto.setDifferenziale(item.getDifferenziale());
+					punto.setDivisione(item.getDivisione());
+					punto.setPostIndicazione(item.getPostIndicazione());
+					punto.setCarico(item.getCarico());
+					
+					session.save(punto);
+					
+				}
+				
+				
+				VerCertificatoDTO newCertificato = new VerCertificatoDTO();
+				newCertificato.setDataCreazione(new Date());
+				newCertificato.setMisura(newMisura);
+				newCertificato.setUtente(utente);
+				newCertificato.setStato(new StatoCertificatoDTO(1));
+				
+				session.save(newCertificato);
+				
+				
+				session.getTransaction().commit();
+	        	session.close();
+	        	
+	        	
+	        	PrintWriter out = response.getWriter();
+	        	myObj.addProperty("success", true);
+	        	myObj.addProperty("messaggio", "Certificato riemesso con successo!");
+	        	out.print(myObj);
+				
+				
+			}
 		}catch (Exception e) {
 			session.getTransaction().rollback();
         	session.close();

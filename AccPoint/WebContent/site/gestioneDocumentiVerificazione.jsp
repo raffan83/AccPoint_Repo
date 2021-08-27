@@ -696,7 +696,7 @@ $(document).ready(function() {
 
 $('#nuovoDocumentoForm').on('submit', function(e){
 	 e.preventDefault();
-	 nuovoDocumento();
+	 nuovoVerDocumento();
 });
 
  

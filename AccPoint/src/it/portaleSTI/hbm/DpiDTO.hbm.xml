@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.DpiDTO" table="dpi">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <many-to-one name="tipo" class="it.portaleSTI.DTO.TipoDpiDTO" fetch="join" lazy="false">
+            <column name="tipologia_dpi" />
+        </many-to-one>
+
+         <many-to-one name="company" class="it.portaleSTI.DTO.DocumFornitoreDTO" fetch="join" lazy="false">
+            <column name="company" />
+        </many-to-one> 
+
+        <property name="data_scadenza" type="java.sql.Date">
+            <column name="data_scadenza" />
+        </property>
+
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        
+        <property name="modello" type="java.lang.String">
+            <column name="modello" />
+        </property>
+
+        <property name="conformita" type="java.lang.String">
+            <column name="conformita" />
+        </property>
+ <property name="collettivo" type="int">
+            <column name="collettivo" />
+        </property>
+
+
+        
+    </class>
+</hibernate-mapping>

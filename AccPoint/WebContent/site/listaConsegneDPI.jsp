@@ -64,13 +64,14 @@
 
 <th>ID</th>
 <th>Tipo</th>
-<th>Tipo DPI</th>
-<th>Quantità</th>
+<th>ID DPI</th>
+<th>Descrizione DPI</th>
+<th>DPI Collettivo</th>
 <th>Modello</th>
 <th>Conformità</th>
 <th>Data consegna/riconsegna</th>
 <th>Data scadenza</th>
-
+<th>Commessa</th>
 <th>Lavoratore</th>
 <th>Ricevuto</th>
 <th>Riconsegnato</th>
@@ -88,13 +89,21 @@
 	<c:if test="${consegna.is_restituzione==0 }">CONSEGNA</c:if>
 	<c:if test="${consegna.is_restituzione==1 }">RICONSEGNA</c:if>
 	</td>
-	<td>${consegna.tipo.descrizione }</td>
-	<%-- <td><a href="#" class="btn customTooltip customlink" onClick="callAction('gestioneDocumentale.do?action=dettaglio_fornitore&id_fornitore=${utl:encryptData(referente.fornitore.id)}')">${referente.fornitore.ragione_sociale }</a></td> --%>
-	<td>${consegna.quantita }</td>
-	<td>${consegna.modello }</td>
-	<td>${consegna.conformita }</td>
+	<td>${consegna.dpi.id }</td>
+	<td>${consegna.dpi.descrizione }</td>
+	<td>
+	<c:if test="${consegna.dpi.collettivo == 1 }">
+	SI
+	</c:if>
+	<c:if test="${consegna.dpi.collettivo == 0 }">
+	NO
+	</c:if>
+	</td>
+	<td>${consegna.dpi.modello }</td>
+	<td>${consegna.dpi.conformita }</td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${consegna.data_consegna }"></fmt:formatDate></td>	
-	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${consegna.data_scadenza }"></fmt:formatDate></td>
+	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${consegna.dpi.data_scadenza }"></fmt:formatDate></td>
+	<td>${consegna.commessa}</td>
 	<td>${consegna.lavoratore.nome } ${consegna.lavoratore.cognome }</td>
 	<td>
 	<c:if test="${consegna.is_restituzione==0 && consegna.ricevuto == 0}">NO</c:if>
@@ -108,10 +117,10 @@
 	<td>${consegna.restituzione.id }</td>		
 	<td>	
 
-	  <a class="btn btn-warning customTooltip" onClicK="modalModificaConsegna('${consegna.id }','${consegna.tipo.id }','${consegna.quantita }','${utl:escapeJS(consegna.modello) }','${utl:escapeJS(consegna.conformita) }','${consegna.data_scadenza }','${consegna.lavoratore.id }')" title="Click per modificare la consegna"><i class="fa fa-edit"></i></a>   
+	   <a class="btn btn-warning customTooltip" onClicK="modalModificaConsegna('${consegna.id }','${consegna.dpi.id }','${consegna.lavoratore.id }')" title="Click per modificare la consegna"><i class="fa fa-edit"></i></a>   
 	  <c:if test="${consegna.is_restituzione==0 }">
-	  <a class="btn btn-success customTooltip" onClicK="modalCreaRestituzione('${consegna.id }', ${consegna.quantita })" title="Crea restituzione DPI"><i class="fa fa-arrow-left"></i></a>
-	  </c:if>
+	  <a class="btn btn-success customTooltip" onClicK="modalCreaRestituzione('${consegna.id }')" title="Crea restituzione DPI"><i class="fa fa-arrow-left"></i></a>
+	  </c:if> 
 
 	</td>
 	</tr>
@@ -154,11 +163,11 @@
        	<div class="col-sm-9">      
        	  	
         
-    <select name="tipo_dpi" id="tipo_dpi" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipi DPI..." data-live-search="true" style="width:100%" >
+    <select name="id_dpi" id="id_dpi" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipi DPI..." data-live-search="true" style="width:100%" >
                 <option value=""></option>
-                      <c:forEach items="${lista_tipo_dpi}" var="tipo">
+                      <c:forEach items="${lista_dpi}" var="dpi">
                      
-                           <option value="${tipo.id}">${tipo.descrizione} <c:if test="${tipo.collettivo == 1 }"> (Dpi collettivo)</c:if></option> 
+                           <option value="${dpi.id}">${dpi.descrizione} </option> 
                          
                      </c:forEach>
 				
@@ -187,8 +196,21 @@
        			
        	</div>       	
        </div><br>
+       
+       
+               <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Commessa</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="commessa" name="commessa" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div>
              
-       <div class="row">
+     <!--   <div class="row">
        
        	<div class="col-sm-3">
        		<label>Quantità</label>
@@ -222,10 +244,10 @@
         <input id="conformita" name="conformita" class="form-control" type="text" style="width:100%" required>
        			
        	</div>       	
-       </div><br>
+       </div><br> -->
        
        
-       <div class="row">
+<!--        <div class="row">
        
        	<div class="col-sm-3">
        		<label>Data scadenza</label>
@@ -236,14 +258,13 @@
        			
        	</div>       	
        </div><br>
-       
+        -->
    
        
        </div>
   		 
       <div class="modal-footer">
-	<input type="hidden" id="nuovo_tipo_dpi" name="nuovo_tipo_dpi">
-	<input type="hidden" id="collettivo" name="collettivo">
+	
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -265,7 +286,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Modifica Cosegna DPI</h4>
       </div>
-       <div class="modal-body">
+              <div class="modal-body">
        
        
              <div class="row">
@@ -276,14 +297,14 @@
        	<div class="col-sm-9">      
        	  	
         
-    <select name="tipo_dpi_mod" id="tipo_dpi_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipi DPI..." data-live-search="true" style="width:100%" >
+    <select name="id_dpi_mod" id="id_dpi_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipi DPI..." data-live-search="true" style="width:100%" >
                 <option value=""></option>
-                      <c:forEach items="${lista_tipo_dpi}" var="tipo">
+                      <c:forEach items="${lista_dpi}" var="dpi">
                      
-                           <option value="${tipo.id}">${tipo.descrizione} <c:if test="${tipo.collettivo == 1 }"> (Dpi collettivo)</c:if></option> 
+                           <option value="${dpi.id}">${dpi.descrizione} </option> 
                          
                      </c:forEach>
-
+				
                   </select> 
        			
        	</div>       	
@@ -309,15 +330,27 @@
        			
        	</div>       	
        </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Commessa</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="commessa_mod" name="commessa_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div>
              
-       <div class="row">
+     <!--   <div class="row">
        
        	<div class="col-sm-3">
        		<label>Quantità</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="quantita_mod" name="quantita_mod" class="form-control" type="number" min="0" step="1" style="width:100%" required>
+        <input id="quantita" name="quantita" class="form-control" type="number" min="0" step="1" style="width:100%" required>
        			
        	</div>       	
        </div><br>
@@ -329,7 +362,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="modello_mod" name="modello_mod" class="form-control" type="text" style="width:100%" required>
+        <input id="modello" name="modello" class="form-control" type="text" style="width:100%" required>
        			
        	</div>       	
        </div><br>
@@ -341,32 +374,31 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="conformita_mod" name="conformita_mod" class="form-control" type="text" style="width:100%" required>
+        <input id="conformita" name="conformita" class="form-control" type="text" style="width:100%" required>
        			
        	</div>       	
-       </div><br>
+       </div><br> -->
        
        
-       <div class="row">
+<!--        <div class="row">
        
        	<div class="col-sm-3">
        		<label>Data scadenza</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="data_scadenza_mod" name="data_scadenza_mod" class="form-control datepicker" type="text" style="width:100%" >
+        <input id="data_scadenza" name="data_scadenza" class="form-control datepicker" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
-       
+        -->
    
        
        </div>
   		 
       <div class="modal-footer">
 	<input type="hidden" id="id_consegna" name="id_consegna">
-		<input type="hidden" id="nuovo_tipo_dpi_mod" name="nuovo_tipo_dpi_mod">
-	<input type="hidden" id="collettivo_mod" name="collettivo_mod">
+
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -400,7 +432,7 @@
        			
        	</div>       	
        </div><br>
-             	       <div class="row">
+<!--              	       <div class="row">
        
        	<div class="col-sm-3">
        		<label>Quantità</label>
@@ -411,7 +443,7 @@
         <input id="quantita_rest" name="quantita_rest" class="form-control " type="number" step="1" style="width:100%" >
        			
        	</div>       	
-       </div>
+       </div> -->
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_consegna_restituzione">
@@ -447,41 +479,7 @@
 </div>
 
 
-  <div id="modalNuovoTipoDPI" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
-   
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Inserisci descrizione</h4>
-      </div>
-       <div class="modal-body">    
-       <div class="row">
-       <div class="col-xs-12">
-         <label>Descrizione</label>
-      <input class="form-control" type="text" id="descrizione_nuovo_tipo">
-       </div>
-       </div>   <br>
-       
-        <div class="row">
-       <div class="col-xs-12">
-         <label>Dpi Collettivo</label>
-      <input class="form-control" type="checkbox" id="collettivo_nuovo">
-       </div>
-       </div>
-
-    
-      	</div>
-      <div class="modal-footer">
-<input type="hidden" id=isMod>
-      <a class="btn btn-primary" onclick="assegnaValoreOpzione()" >Salva</a>
-		<a class="btn btn-primary" onclick="$('#modalNuovoTipoDPI').modal('hide')" >Chiudi</a>
-      </div>
-    </div>
-  </div>
-
-</div>
-
+  
 <form id="formScheda" name="formScheda" method="post" action="gestioneDpi.do">
 <div id="modalScheda" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
@@ -594,70 +592,15 @@ function modalNuovoTipoDPI(){
 }
 
 
-$('input:checkbox').on('ifToggled', function() {
-	
-	$('#collettivo_nuovo').on('ifChecked', function(event){
-		$('#collettivo').val(1);
-		$('#collettivo_mod').val(1);
-	});
-	
-	$('#collettivo_nuovo').on('ifUnchecked', function(event) {
-		
-		$('#collettivo').val(0);
-		$('#collettivo_mod').val(0);
-	});
-})
-
-function assegnaValoreOpzione(){
-	
-
-	
-	var data = {
-		    id: 0,
-		    text: $('#descrizione_nuovo_tipo').val()
-		};
-
-		var newOption = new Option(data.text, data.id, false, false);
-		
-		if($('#isMod').val()== 1){
-			
-			$('#tipo_dpi_mod').append(newOption).trigger('change');
-			$('#tipo_dpi_mod').val(0)
-			
-			$('#nuovo_tipo_dpi_mod').val($('#descrizione_nuovo_tipo').val());
-		
-
-			$('#modalNuovoTipoDPI').modal('hide');
-			
-		}else{
-			$('#tipo_dpi').append(newOption).trigger('change');
-			$('#tipo_dpi').val(0)
-			
-			$('#nuovo_tipo_dpi').val($('#descrizione_nuovo_tipo').val());
-		
-
-			$('#modalNuovoTipoDPI').modal('hide');
-		}
-		
-
-	
-}
 
 
-function modalModificaConsegna(id,id_tipo, quantita, modello, conformita, data_scadenza, id_lavoratore){
+function modalModificaConsegna(id,id_dpi, id_lavoratore){
 	
 	$('#id_consegna').val(id);
 	
-	$('#tipo_dpi_mod').val(id_tipo);
-	$('#tipo_dpi_mod').change();
+	$('#id_dpi_mod').val(id_dpi);
+	$('#id_dpi_mod').change();
 		
-	$('#quantita_mod').val(quantita);
-	$('#modello_mod').val(modello);
-	$('#conformita_mod').val(conformita);
-	if(data_scadenza!=null && data_scadenza!=''){
-		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));	
-	}
-	
 	$('#lavoratore_mod').val(id_lavoratore);
 	$('#lavoratore_mod').change();
 	
@@ -668,8 +611,8 @@ function modalModificaConsegna(id,id_tipo, quantita, modello, conformita, data_s
 function modalCreaRestituzione(id_consegna, quantita){
 	
 	$('#id_consegna_restituzione').val(id_consegna);
-	$('#quantita_rest').attr("max", quantita);
-	$('#quantita_rest').val( quantita);
+/* 	$('#quantita_rest').attr("max", quantita);
+	$('#quantita_rest').val( quantita); */
 	
 	$('#myModalRestituzione').modal();
 }
@@ -722,17 +665,11 @@ $(document).ready(function() {
  
 //$('.select2').select2();
 
-$('#tipo_dpi')
-    .select2()
-    .on('select2:open', () => {
-        $(".select2-results:not(:has(a))").append('<a href="#" style="padding: 6px;height: 20px;display: inline-table;" onClick="aggiungiOpzione(false)">Crea Nuovo Tipo DPI</a>');
-});
+$('#id_dpi').select2()
 
-$('#tipo_dpi_mod')
-    .select2()
-    .on('select2:open', () => {
-        $(".select2-results:not(:has(a))").append('<a href="#" style="padding: 6px;height: 20px;display: inline-table;" onClick="aggiungiOpzione(true)">Crea Nuovo Tipo DPI</a>');
-});
+
+$('#id_dpi_mod').select2()
+
 
 $('#lavoratore').select2();
 $('#lavoratore_mod').select2();
@@ -781,7 +718,7 @@ $('#lavoratore_scheda').select2();
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 12 },
+		    	  { responsivePriority: 1, targets: 13 },
 		    	  
 		    	  
 		               ], 	        

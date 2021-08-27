@@ -24,12 +24,18 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
+import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
+import it.portaleSTI.DTO.DocumFornitoreDTO;
+import it.portaleSTI.DTO.DocumTLDocumentoDTO;
+import it.portaleSTI.DTO.DpiDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.TipoDpiDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -84,13 +90,176 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		boolean ajax = false;
 		
 		try {
+			
 			if(action.equals("lista")) {
 				
 				ArrayList<TipoDpiDTO> lista_tipo_dpi = GestioneDpiBO.getListaTipoDPI(session);
+				ArrayList<DpiDTO> lista_dpi = GestioneDpiBO.getListaDpi(session);
+				ArrayList<DocumFornitoreDTO> lista_company = GestioneDocumentaleBO.getListaDocumFornitori(session);
+				request.getSession().setAttribute("lista_tipo_dpi", lista_tipo_dpi);
+				request.getSession().setAttribute("lista_dpi", lista_dpi);
+				request.getSession().setAttribute("lista_company", lista_company);
+				
+				session.getTransaction().commit();
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDPI.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("nuovo_dpi")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+				String tipo_dpi = ret.get("tipo_dpi");
+				String id_company = ret.get("company");
+				String descrizione = ret.get("descrizione");
+				String modello = ret.get("modello");
+				String conformita = ret.get("conformita");
+				String data_scadenza = ret.get("data_scadenza");
+				String nuovo_tipo_dpi = ret.get("nuovo_tipo_dpi");
+				String collettivo = ret.get("collettivo");
+
+				DpiDTO dpi = new DpiDTO();				
+				
+				TipoDpiDTO tipo = null;
+				
+				if(tipo_dpi.equals("0")) {
+					tipo = new TipoDpiDTO();
+					tipo.setDescrizione(nuovo_tipo_dpi);
+					tipo.setCollettivo(Integer.parseInt(collettivo));
+					session.save(tipo);
+				}else {
+					tipo = GestioneDpiBO.getTipoDPIFromId(Integer.parseInt(tipo_dpi), session); 
+				}				
+				
+				DocumFornitoreDTO cmp = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
+				
+				dpi.setCompany(cmp);
+				dpi.setTipo(tipo);	
+				dpi.setDescrizione(descrizione);
+				dpi.setModello(modello);
+				dpi.setConformita(conformita);
+				dpi.setCollettivo(Integer.parseInt(collettivo));
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				dpi.setData_scadenza(df.parse(data_scadenza));			
+				
+				session.save(dpi);				
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "DPI salvato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+			}
+			else if(action.equals("modifica_dpi")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+		        String id_dpi = ret.get("id_dpi");
+				String tipo_dpi = ret.get("tipo_dpi_mod");
+				String id_company = ret.get("company_mod");
+				String descrizione = ret.get("descrizione_mod");
+				String modello = ret.get("modello_mod");
+				String conformita = ret.get("conformita_mod");
+				String data_scadenza = ret.get("data_scadenza_mod");
+				String nuovo_tipo_dpi = ret.get("nuovo_tipo_dpi_mod");
+				String collettivo = ret.get("collettivo_mod");
+
+				DpiDTO dpi = GestioneDpiBO.getDpiFormId(Integer.parseInt(id_dpi), session);				
+				
+				TipoDpiDTO tipo = null;
+				
+				if(tipo_dpi.equals("0")) {
+					tipo = new TipoDpiDTO();
+					tipo.setDescrizione(nuovo_tipo_dpi);
+					tipo.setCollettivo(Integer.parseInt(collettivo));
+					session.save(tipo);
+				}else {
+					tipo = GestioneDpiBO.getTipoDPIFromId(Integer.parseInt(tipo_dpi), session); 
+				}				
+				
+				DocumFornitoreDTO cmp = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
+				
+				dpi.setCompany(cmp);
+				dpi.setTipo(tipo);	
+				dpi.setDescrizione(descrizione);
+				dpi.setModello(modello);
+				dpi.setConformita(conformita);
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				dpi.setData_scadenza(df.parse(data_scadenza));			
+				dpi.setCollettivo(Integer.parseInt(collettivo));
+				session.update(dpi);				
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "DPI salvato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+			}
+			
+			else if(action.equals("lista_schede_consegna")) {
+				
+				ArrayList<DpiDTO> lista_dpi = GestioneDpiBO.getListaDpi(session);
 				ArrayList<ConsegnaDpiDTO> lista_consegne = GestioneDpiBO.getListaConsegneDpi(session);
 				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0, 0, session);
 				
-				request.getSession().setAttribute("lista_tipo_dpi", lista_tipo_dpi);
+				request.getSession().setAttribute("lista_dpi", lista_dpi);
 				request.getSession().setAttribute("lista_consegne", lista_consegne);
 				request.getSession().setAttribute("lista_dipendenti", lista_dipendenti);
 				
@@ -130,37 +299,20 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 	            	
 	            }
 		
-				String tipo_dpi = ret.get("tipo_dpi");
+				String id_dpi = ret.get("id_dpi");
 				String id_lavoratore = ret.get("lavoratore");
-				String quantita = ret.get("quantita");
-				String modello = ret.get("modello");
-				String conformita = ret.get("conformita");
-				String data_scadenza = ret.get("data_scadenza");
-				String nuovo_tipo_dpi = ret.get("nuovo_tipo_dpi");
-				String collettivo = ret.get("collettivo");
+				String commessa = ret.get("commessa");
 
 				ConsegnaDpiDTO consegna = new ConsegnaDpiDTO();				
 				
-				TipoDpiDTO tipo = null;
+				DpiDTO dpi = GestioneDpiBO.getDpiFormId(Integer.parseInt(id_dpi), session);				
 				
-				if(tipo_dpi.equals("0")) {
-					tipo = new TipoDpiDTO();
-					tipo.setDescrizione(nuovo_tipo_dpi);
-					tipo.setCollettivo(Integer.parseInt(collettivo));
-					session.save(tipo);
-				}else {
-					tipo = GestioneDpiBO.getTipoDPIFromId(Integer.parseInt(tipo_dpi), session); 
-				}				
-				
-				consegna.setTipo(tipo);	
+				consegna.setDpi(dpi);	
 				DocumDipendenteFornDTO lavoratore = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_lavoratore), session);
 				consegna.setLavoratore(lavoratore);
-				consegna.setQuantita(Integer.parseInt(quantita));
-				consegna.setModello(modello);
-				consegna.setConformita(conformita);
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-				consegna.setData_scadenza(df.parse(data_scadenza));
 				consegna.setData_consegna(new Date());
+				consegna.setCommessa(commessa);
 				
 				session.save(consegna);
 				
@@ -206,38 +358,20 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 	            }
 		
 		        String id_consegna = ret.get("id_consegna");
-				String tipo_dpi = ret.get("tipo_dpi_mod");
+				String id_dpi = ret.get("id_dpi_mod");
 				String id_lavoratore = ret.get("lavoratore_mod");
-				String quantita = ret.get("quantita_mod");
-				String modello = ret.get("modello_mod");
-				String conformita = ret.get("conformita_mod");
-				String data_scadenza = ret.get("data_scadenza_mod");
-				String nuovo_tipo_dpi = ret.get("nuovo_tipo_dpi_mod");
-				String collettivo = ret.get("collettivo_mod");
+				String commessa = ret.get("commessa_mod");
 				
 				ConsegnaDpiDTO consegna = GestioneDpiBO.getCosegnaFromID(Integer.parseInt(id_consegna),session);
 				
 				
-				TipoDpiDTO tipo = null;
-				
-				if(tipo_dpi.equals("0")) {
-					tipo = new TipoDpiDTO();
-					tipo.setDescrizione(nuovo_tipo_dpi);
-					tipo.setCollettivo(Integer.parseInt(collettivo));
-					session.save(tipo);
-				}else {
-					tipo = GestioneDpiBO.getTipoDPIFromId(Integer.parseInt(tipo_dpi), session); 
-				}				
-				
-				consegna.setTipo(tipo);	
+				DpiDTO dpi = GestioneDpiBO.getDpiFormId(Integer.parseInt(id_dpi), session);	
+				consegna.setDpi(dpi);	
 				DocumDipendenteFornDTO lavoratore = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_lavoratore), session);
 				consegna.setLavoratore(lavoratore);
-				consegna.setQuantita(Integer.parseInt(quantita));
-				consegna.setModello(modello);
-				consegna.setConformita(conformita);
+		
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-				consegna.setData_scadenza(df.parse(data_scadenza));
-				
+				consegna.setCommessa(commessa);
 				//consegna.setData_consegna(new Date());
 				
 				session.update(consegna);
@@ -261,11 +395,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				ConsegnaDpiDTO consegna = GestioneDpiBO.getCosegnaFromID(Integer.parseInt(id_consegna), session);
 				
 				ConsegnaDpiDTO restituzione = new ConsegnaDpiDTO();
-				restituzione.setConformita(consegna.getConformita());
-				restituzione.setModello(consegna.getModello());
-				restituzione.setLavoratore(consegna.getLavoratore());
-				restituzione.setQuantita(Integer.parseInt(quantita));
-				restituzione.setTipo(consegna.getTipo());
+				restituzione.setLavoratore(consegna.getLavoratore());				
+				restituzione.setDpi(consegna.getDpi());
 				restituzione.setIs_restituzione(1);
 				restituzione.setData_consegna(new Date());
 				restituzione.setMotivazione(motivazione);
@@ -360,6 +491,56 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				    fileIn.close();
 				    outp.flush();
 				    outp.close();
+				
+			}
+			
+			else if(action.equals("storico")) {
+				
+			String id_dpi = request.getParameter("id_dpi");
+			
+			ArrayList<ConsegnaDpiDTO> lista_eventi = GestioneDpiBO.getListaEventiFromDPI(Integer.parseInt(id_dpi), session);
+			
+			PrintWriter out = response.getWriter();
+			response.setContentType("application/json");
+			 Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create(); 			        			        
+		     			      		       
+		        myObj.addProperty("success", true);
+		
+		        myObj.add("lista_eventi", gson.toJsonTree(lista_eventi));			      
+		        
+		        out.println(myObj.toString());
+	
+		        out.close();
+		        
+		     session.getTransaction().commit();
+	       	session.close();
+				
+			}
+			else if(action.equals("scadenzario")) {
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioDPI.jsp");
+			    dispatcher.forward(request,response);
+			    
+			    session.close();
+				
+			}
+			
+			else if(action.equals("scadenzario_table")) {
+				
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");					
+				
+				ArrayList<DpiDTO> lista_dpi = GestioneDpiBO.getListaDpiScadenzario(dateFrom,dateTo, session);
+				
+				request.getSession().setAttribute("lista_dpi", lista_dpi);
+				request.getSession().setAttribute("dateFrom", dateFrom);
+				request.getSession().setAttribute("dateTo", dateTo);
+								
+				//session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioDpiTable.jsp");
+		     	dispatcher.forward(request,response);
 				
 			}
 		}catch(Exception e) {

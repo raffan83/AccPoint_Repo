@@ -1,8 +1,13 @@
 package it.portaleSTI.bo;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +15,18 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 import TemplateReport.PivotTemplate;
 import TemplateReportLAT.ImageReport.PivotTemplateLAT_Image;
@@ -559,9 +576,88 @@ public class CreateVerCertificato {
 		exporter.setConfiguration(configuration);
 		exporter.exportReport();
 		
+		
+		if(misura.getId_misura_old()!=0) {
+			addRiemessione(misura.getId_misura_old(), path, misura.getNumeroAttestato().replace("_", " - "), session);
+		}
+		
 	};
 	
 	
+	
+	public  void addRiemessione(int misuraOld,String path,String nuovo_attestato, Session session) throws Exception {
+
+		VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(misuraOld, session);
+		
+		File folderCopy = new File(Costanti.PATH_FOLDER+"\\"+misura.getVerIntervento().getNome_pack()+"\\OLD\\"); 
+
+		if(!folderCopy.exists()) {
+			folderCopy.mkdirs();
+		}
+		
+		Files.copy(Paths.get(path), Paths.get(folderCopy+"\\"+misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()+".pdf"), StandardCopyOption.REPLACE_EXISTING);
+			//System.out.println("filepath" + filepath);
+			File tmpFile = new File(path+"tmp");
+	        PdfReader reader = new PdfReader(path);
+	        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
+	        Font f = new Font(FontFamily.HELVETICA, 12);
+	        f.setColor(BaseColor.RED);
+	        int pages = reader.getNumberOfPages();
+	        for (int i=0; i<pages; i++) {	        
+		        PdfContentByte over = stamper.getOverContent(i+1);
+		        Phrase p = new Phrase(String.format("Corregge l'attestato n. %s", misura.getNumeroAttestato().replaceAll("_", "-")), f);
+		        over.saveState();
+		        PdfGState gs1 = new PdfGState();
+		        gs1.setFillOpacity(0.7f);
+		        over.setGState(gs1);
+		        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 580, 450, 90);
+		        over.restoreState();
+	        }
+	        stamper.close();
+	        reader.close();
+	        File fil = new File (path);
+	        if(fil.exists()) {
+	        	fil.delete();
+	        }
+			tmpFile.renameTo(new File(path));
+		
+			addRiemessioneOld(misura, nuovo_attestato, session);
+		
+	}
+	
+	
+	public  void addRiemessioneOld(VerMisuraDTO misuraOld,String nuovo_attestato, Session session) throws Exception {
+
+		String path = Costanti.PATH_FOLDER+"\\"+misuraOld.getVerIntervento().getNome_pack()+"\\"+misuraOld.getVerIntervento().getNome_pack()+"_"+misuraOld.getId()+""+misuraOld.getVerStrumento().getId()+".pdf";
+		
+		
+			File tmpFile = new File(path+"tmp");
+	        PdfReader reader = new PdfReader(path);
+	        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
+	        Font f = new Font(FontFamily.HELVETICA, 12);
+	        f.setColor(BaseColor.RED);
+	        int pages = reader.getNumberOfPages();
+	        for (int i=0; i<pages; i++) {	        
+		        PdfContentByte over = stamper.getOverContent(i+1);
+		        Phrase p = new Phrase(String.format("Questo attestato è stato sostituito dall'attestato %s", nuovo_attestato), f);
+		        over.saveState();
+		        PdfGState gs1 = new PdfGState();
+		        gs1.setFillOpacity(0.7f);
+		        over.setGState(gs1);
+		        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 580, 450, 90);
+		        over.restoreState();
+	        }
+	        stamper.close();
+	        reader.close();
+	        File fil = new File (path);
+	        if(fil.exists()) {
+	        	fil.delete();
+	        }
+			tmpFile.renameTo(new File(path));
+		
+		
+		
+	}
 	
 	private String getClassePrecisione(int classe) {
 		

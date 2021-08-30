@@ -51,5 +51,9 @@
         <property name="obsoleta" type="java.lang.String">
             <column name="obsoleta" />
         </property>
+        
+         <property name="disabilitata" type="int">
+            <column name="disabilitata" />
+        </property>
     </class>
 </hibernate-mapping>

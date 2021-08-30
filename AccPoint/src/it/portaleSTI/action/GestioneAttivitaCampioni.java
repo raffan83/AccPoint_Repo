@@ -186,7 +186,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				}
 				
 				if(tipo_attivita.equals("2") || (tipo_attivita.equals("1") && tipo_manutenzione!=null && tipo_manutenzione.equals("1"))) {
-					GestioneAttivitaCampioneBO.updateObsolete(idC, Integer.parseInt(tipo_attivita),session);
+					GestioneAttivitaCampioneBO.updateObsolete(idC, Integer.parseInt(tipo_attivita),null, session);
 				}
 				
 				session.save(attivita);
@@ -271,6 +271,10 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					attivita.setAllegato(filename);
 				}
 				
+				if(tipo_attivita.equals("2") || (tipo_attivita.equals("1") && tipo_manutenzione!=null && tipo_manutenzione.equals("1"))) {
+					GestioneAttivitaCampioneBO.updateObsolete(""+attivita.getCampione().getId(), Integer.parseInt(tipo_attivita),attivita.getData(), session);
+				}
+				
 				session.update(attivita);
 				session.getTransaction().commit();
 				session.close();
@@ -279,6 +283,24 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Attività modificata con successo!");
 				out.print(myObj);
+			}
+			
+			else if(action.equals("elimina")) {
+				
+				String id_attivita = request.getParameter("id_attivita");
+				
+				AcAttivitaCampioneDTO attivita = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(id_attivita), session);
+				attivita.setDisabilitata(1);
+				
+				session.update(attivita);
+				session.getTransaction().commit();
+				session.close();
+				
+				PrintWriter out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Attività eliminata con successo!");
+				out.print(myObj);
+				
 			}
 			
 			else if(action.equals("scheda_manutenzioni")) {

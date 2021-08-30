@@ -19,6 +19,7 @@ public class AcAttivitaCampioneDTO {
 	private String campo_sospesi;
 	private String allegato;
 	private String obsoleta;
+	private int disabilitata;
 	
 	public String getCampo_sospesi() {
 		return campo_sospesi;
@@ -109,6 +110,12 @@ public class AcAttivitaCampioneDTO {
 	}
 	public void setObsoleta(String obsoleta) {
 		this.obsoleta = obsoleta;
+	}
+	public int getDisabilitata() {
+		return disabilitata;
+	}
+	public void setDisabilitata(int disabilitata) {
+		this.disabilitata = disabilitata;
 	}
 	
 }

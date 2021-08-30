@@ -2,6 +2,7 @@ package it.portaleSTI.bo;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.hibernate.Session;
@@ -69,9 +70,9 @@ public class GestioneAttivitaCampioneBO {
 		return GestioneAttivitaCampioneDAO.getListaCampioniPerData(data,tipo_data_lat);
 	}
 
-	public static void updateObsolete(String idC, int tipo_attivita, Session session) {
+	public static void updateObsolete(String idC, int tipo_attivita, Date data,  Session session) {
 	
-		GestioneAttivitaCampioneDAO.updateObsolete(idC, tipo_attivita, session);
+		GestioneAttivitaCampioneDAO.updateObsolete(idC, tipo_attivita, data, session);
 	}
 	
 }

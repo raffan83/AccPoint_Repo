@@ -27,7 +27,7 @@ public class GestioneAttivitaCampioneDAO {
 		
 		ArrayList<AcAttivitaCampioneDTO> lista=null;
 
-		Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.id = :_id_campione");
+		Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.id = :_id_campione and disabilitata = 0");
 		query.setParameter("_id_campione", idC);
 		
 		lista= (ArrayList<AcAttivitaCampioneDTO>)query.list();
@@ -68,7 +68,7 @@ public class GestioneAttivitaCampioneDAO {
 		
 		ArrayList<AcAttivitaCampioneDTO> lista=null;
 
-		Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.id = :_id_campione and tipo_attivita.id = 1");		
+		Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.id = :_id_campione and tipo_attivita.id = 1 and disabilitata = 0");		
 		query.setParameter("_id_campione", id_campione);
 		
 		
@@ -83,7 +83,7 @@ public static ArrayList<AcAttivitaCampioneDTO> getListaTaratureVerificheIntermed
 		
 		ArrayList<AcAttivitaCampioneDTO> lista=null;
 
-		Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.id = :_id_campione and (tipo_attivita.id = 2 or tipo_attivita.id = 3)");		
+		Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.id = :_id_campione and (tipo_attivita.id = 2 or tipo_attivita.id = 3) and disabilitata = 0");		
 		query.setParameter("_id_campione", id_campione);		
 		
 		lista= (ArrayList<AcAttivitaCampioneDTO>)query.list();	
@@ -97,7 +97,7 @@ public static ArrayList<TaraturaEsternaCampioneDTO> getListaTaratureEsterneCampi
 
 	ArrayList<TaraturaEsternaCampioneDTO> lista=null;
 
-	Query query = session.createQuery("from TaraturaEsternaCampioneDTO where campione.id = :_id_campione)");
+	Query query = session.createQuery("from TaraturaEsternaCampioneDTO where campione.id = :_id_campione) and disabilitata = 0");
 	query.setParameter("_id_campione", id_campione);		
 	
 	lista= (ArrayList<TaraturaEsternaCampioneDTO>)query.list();	
@@ -109,7 +109,7 @@ public static ArrayList<AcAttivitaCampioneDTO> getListaVerificheIntermedie(int i
 	
 	ArrayList<AcAttivitaCampioneDTO> lista=null;
 
-	Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.id = :_id_campione and tipo_attivita.id = 2 ");		
+	Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.id = :_id_campione and tipo_attivita.id = 2  and disabilitata = 0");		
 	query.setParameter("_id_campione", id_campione);		
 	
 	lista= (ArrayList<AcAttivitaCampioneDTO>)query.list();	
@@ -147,7 +147,7 @@ public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziarioCa
 	
 	List<AcAttivitaCampioneDTO> lista =null;
 	
-	query  = session.createQuery( "from AcAttivitaCampioneDTO where campione.id = :_id_campione and (obsoleta = null or obsoleta = 'N')");	
+	query  = session.createQuery( "from AcAttivitaCampioneDTO where campione.id = :_id_campione and (obsoleta = null or obsoleta = 'N') and disabilitata = 0");	
 	query.setParameter("_id_campione", campione.getId());
 	
 	lista=query.list();
@@ -221,7 +221,7 @@ public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziario(S
 	List<AcAttivitaCampioneDTO> lista =null;
 	List<CampioneDTO> lista_campioni = null;
 	
-	query  = session.createQuery( "from AcAttivitaCampioneDTO where campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");	
+	query  = session.createQuery( "from AcAttivitaCampioneDTO where campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N') and disabilitata = 0");	
 	
 	lista=query.list();
 	
@@ -317,7 +317,7 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 	if(tipo_data_lat!=null) {
 		
 		if(tipo_data_lat.equals("1")) {
-			query = session.createQuery("from AcAttivitaCampioneDTO where tipo_attivita.id = 1 and (obsoleta = null or obsoleta = 'N')");	
+			query = session.createQuery("from AcAttivitaCampioneDTO where tipo_attivita.id = 1 and (obsoleta = null or obsoleta = 'N') and disabilitata = 0");	
 						
 			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
 			
@@ -336,7 +336,7 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 			}
 		}
 		else if(tipo_data_lat.equals("2")) {
-			query = session.createQuery("from AcAttivitaCampioneDTO where data_scadenza = :_date and tipo_attivita.id = 2 and (obsoleta = null or obsoleta = 'N')");	
+			query = session.createQuery("from AcAttivitaCampioneDTO where data_scadenza = :_date and tipo_attivita.id = 2 and (obsoleta = null or obsoleta = 'N') and disabilitata = 0");	
 			query.setParameter("_date", df.parse(data));
 			
 			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
@@ -384,18 +384,29 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 }
 
 
-public static void updateObsolete(String idC, int tipo_attivita, Session session) {
+public static void updateObsolete(String idC, int tipo_attivita, Date data, Session session) {
 	
 	Query query = null;
+	String str_query = "";
 			
 	if(tipo_attivita==1) {
+		str_query = "update AcAttivitaCampioneDTO set obsoleta='S' where id_campione =:_id_campione and id_tipo_attivita = 1 and tipo_manutenzione=1 ";
 		
-		query = session.createQuery("update AcAttivitaCampioneDTO set obsoleta='S' where id_campione =:_id_campione and id_tipo_attivita = 1 and tipo_manutenzione=1 ");
 		
 	}else {
-		query = session.createQuery("update AcAttivitaCampioneDTO set obsoleta='S' where id_campione =:_id_campione and id_tipo_attivita = 2");
+		str_query = "update AcAttivitaCampioneDTO set obsoleta='S' where id_campione =:_id_campione and id_tipo_attivita = 2";
 	}
+	
+	if(data!=null) {
+		str_query += " and data < :_data";
+	}
+	
+	query = session.createQuery(str_query);
+	
 	query.setParameter("_id_campione", idC);
+	if(data!=null) {
+		query.setParameter("_data", data);
+	}
 	
 	query.executeUpdate();
 }

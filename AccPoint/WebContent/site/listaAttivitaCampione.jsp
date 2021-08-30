@@ -77,7 +77,9 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <c:if test="${attivita.allegato!=null && !attivita.allegato.equals('') }">
  	<button class="btn customTooltip btn-danger" onClick="callAction('gestioneAttivitaCampioni.do?action=download_allegato&id_attivita=${utl:encryptData(attivita.id)}')" title="Click per scaricare l'allegato"><i class="fa fa-file-pdf-o"></i></button>
  </c:if>
-
+ <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('RS') }">
+ 	<button class="btn customTooltip btn-danger" onClick="modalYesOrNo('${attivita.id}')" title="Click per eliminare l'attivita"><i class="fa fa-trash"></i></button>
+ </c:if>
 </td>
 
 	</tr>
@@ -374,6 +376,29 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 </div>
 
 
+
+  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare l'attività?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="elimina_attivita_id">
+      <a class="btn btn-primary" onclick="eliminaAttivita($('#elimina_attivita_id').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <!--  <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
@@ -382,6 +407,70 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		 -->
 
  <script type="text/javascript">
+ 
+ 
+ function modalYesOrNo(id_attivita){
+	 
+	 $('#elimina_attivita_id').val(id_attivita);
+	 $('#myModalYesOrNo').modal()
+	 
+ }
+ 
+ 
+ 
+ function eliminaAttivita(id_attivita){
+	  
+	  var dataObj = {};
+		dataObj.id_attivita = id_attivita;
+		
+						
+	  $.ajax({
+ type: "POST",
+ url: "gestioneAttivitaCampioni.do?action=elimina",
+ data: dataObj,
+ dataType: "json",
+ //if received a response from the server
+ success: function( data, textStatus) {
+	  //var dataRsp = JSON.parse(dataResp);
+	  if(data.success)
+		  {  
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+ 			  	$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-success");
+ 				$('#myModalError').modal('show');      				
+ 				$('#myModalError').on('hidden.bs.modal', function(){
+   					if($('#myModalError').hasClass('modal-success')){
+   						
+   						location.reload()
+   					}
+   				}); 
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+ },
+ error: function( data, textStatus) {
+
+	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+ }
+ });
+}
+
+ 
  
  
  function generaSchedaManutenzioni(){

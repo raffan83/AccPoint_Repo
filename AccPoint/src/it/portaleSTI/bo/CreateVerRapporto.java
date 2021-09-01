@@ -2080,7 +2080,7 @@ public  void addRiemessione(int misuraOld,String path,String nuovo_rapporto, Ses
         int pages = reader.getNumberOfPages();
         for (int i=0; i<pages; i++) {	        
 	        PdfContentByte over = stamper.getOverContent(i+1);
-	        Phrase p = new Phrase(String.format("Corregge il rapporto n. %s", misura.getNumeroRapporto().replaceAll("_", "-")), f);
+	        Phrase p = new Phrase(String.format("Questo rapporto corregge il rapporto n. %s", misura.getNumeroRapporto().replaceAll("_", "-")), f);
 	        over.saveState();
 	        PdfGState gs1 = new PdfGState();
 	        gs1.setFillOpacity(0.7f);

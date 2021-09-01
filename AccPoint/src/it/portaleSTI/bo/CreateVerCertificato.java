@@ -605,7 +605,7 @@ public class CreateVerCertificato {
 	        int pages = reader.getNumberOfPages();
 	        for (int i=0; i<pages; i++) {	        
 		        PdfContentByte over = stamper.getOverContent(i+1);
-		        Phrase p = new Phrase(String.format("Corregge l'attestato n. %s", misura.getNumeroAttestato().replaceAll("_", "-")), f);
+		        Phrase p = new Phrase(String.format("Questo attestato corregge l'attestato n. %s", misura.getNumeroAttestato().replaceAll("_", "-")), f);
 		        over.saveState();
 		        PdfGState gs1 = new PdfGState();
 		        gs1.setFillOpacity(0.7f);

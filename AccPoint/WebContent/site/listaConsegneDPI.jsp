@@ -158,12 +158,12 @@
              <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Tipo DPI</label>
+       		<label>DPI</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
         
-    <select name="id_dpi" id="id_dpi" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipi DPI..." data-live-search="true" style="width:100%" >
+    <select name="id_dpi" id="id_dpi" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona DPI..." data-live-search="true" style="width:100%" >
                 <option value=""></option>
                       <c:forEach items="${lista_dpi}" var="dpi">
                      
@@ -292,12 +292,12 @@
              <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Tipo DPI</label>
+       		<label>DPI</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
         
-    <select name="id_dpi_mod" id="id_dpi_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipi DPI..." data-live-search="true" style="width:100%" >
+    <select name="id_dpi_mod" id="id_dpi_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona DPI..." data-live-search="true" style="width:100%" >
                 <option value=""></option>
                       <c:forEach items="${lista_dpi}" var="dpi">
                      

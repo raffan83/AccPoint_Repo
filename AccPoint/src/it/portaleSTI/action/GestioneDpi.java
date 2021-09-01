@@ -152,6 +152,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				if(tipo_dpi.equals("0")) {
 					tipo = new TipoDpiDTO();
 					tipo.setDescrizione(nuovo_tipo_dpi);
+					if(collettivo == null) {
+						collettivo = "0";
+					}
 					tipo.setCollettivo(Integer.parseInt(collettivo));
 					session.save(tipo);
 				}else {
@@ -165,9 +168,16 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				dpi.setDescrizione(descrizione);
 				dpi.setModello(modello);
 				dpi.setConformita(conformita);
+				
+				if(collettivo == null) {
+					collettivo = "0";
+				}
+				
 				dpi.setCollettivo(Integer.parseInt(collettivo));
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-				dpi.setData_scadenza(df.parse(data_scadenza));			
+				if(data_scadenza!=null && !data_scadenza.equals("")) {
+					dpi.setData_scadenza(df.parse(data_scadenza));	
+				}	
 				
 				session.save(dpi);				
 				
@@ -240,7 +250,17 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				dpi.setModello(modello);
 				dpi.setConformita(conformita);
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-				dpi.setData_scadenza(df.parse(data_scadenza));			
+				if(data_scadenza!=null && !data_scadenza.equals("")) {
+					dpi.setData_scadenza(df.parse(data_scadenza));	
+				}else {
+					dpi.setData_scadenza(null);
+				}
+						
+				
+				if(collettivo == null) {					
+					collettivo = "0";
+				}
+				
 				dpi.setCollettivo(Integer.parseInt(collettivo));
 				session.update(dpi);				
 				

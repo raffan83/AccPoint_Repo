@@ -250,7 +250,7 @@
        </div>
   		 
       <div class="modal-footer">
-
+<input type="hidden" id="nuovo_tipo_dpi" name="nuovo_tipo_dpi">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>

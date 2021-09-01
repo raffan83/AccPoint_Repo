@@ -321,8 +321,9 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 	'${strumento_int.verStrumento.div_ver_C2 }','${strumento_int.verStrumento.div_rel_C2 }','${strumento_int.verStrumento.numero_div_C2 }','${strumento_int.verStrumento.portata_min_C3 }','${strumento_int.verStrumento.portata_max_C3 }','${strumento_int.verStrumento.div_ver_C3 }',
 	'${strumento_int.verStrumento.div_rel_C3 }','${strumento_int.verStrumento.numero_div_C3 }','${strumento_int.verStrumento.anno_marcatura_ce }','${strumento_int.verStrumento.data_messa_in_servizio }','${strumento_int.verStrumento.tipologia.descrizione }')"><i class="fa fa-search"></i></a>
 
-
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('RS')}">
 <button class="btn btn-success  customTooltip" title="Riemetti certificato esistente" onClick="getListaCertificatiprecedenti('${strumento_int.verStrumento.id}')"><i class="fa fa-copy"></i></button>
+</c:if>
 </td>
 	</tr>
  

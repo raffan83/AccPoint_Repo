@@ -84,7 +84,7 @@ public class GestioneDpiDAO {
 			query = session.createQuery("from ConsegnaDpiDTO where is_restituzione = 1 and lavoratore.id = :_id_lavoratore");
 			query.setParameter("_id_lavoratore", lavoratore.getId());
 		}else if(tipo_scheda == 2) {
-			query = session.createQuery("from ConsegnaDpiDTO where tipo.collettivo = 1");
+			query = session.createQuery("from ConsegnaDpiDTO where dpi.collettivo = 1");
 		}
 	
 		

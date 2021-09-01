@@ -252,9 +252,13 @@ public class GestioneFormazioneBO {
 				partecipante.setNome(nome);
 				partecipante.setCognome(cognome);
 				partecipante.setData_nascita(data_nascita);
+				partecipante.setLuogo_nascita(luogo_nascita);
 				partecipante.setCf(cf);
 				session.save(partecipante);	
 			}
+			
+
+
 		}
 		
 		

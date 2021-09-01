@@ -817,8 +817,8 @@ public static void sendEmailAccettazioneConsegna(ConsegnaDpiDTO consegna, Servle
 		  email.setHtmlMsg("<html>Gentile "+consegna.getLavoratore().getNome() + " "+consegna.getLavoratore().getCognome()+",<br>"
 		  	  	+"In data "+df.format(consegna.getData_consegna())+" ti &egrave; stato consegnato il seguente DPI: <br><br>"
 				  +"TIPO: "+consegna.getDpi().getTipo().getDescrizione()
+				  +"DESCRIZIONE: "+consegna.getDpi().getDescrizione()
 				  +"<br>MODELLO: " +consegna.getDpi().getModello()
-				  +"<br>QUANTIT&Agrave;:"
 				  +"<br>Clicca sul link per accettare la consegna."
 				  +"<br><br>http://localhost:8080/FormInputDoc/accettazioneDpi.jsp?id_consegna="+Utility.encryptData(""+consegna.getId())
 				  
@@ -861,8 +861,8 @@ public static void sendEmailRiconsegnaDPI(ConsegnaDpiDTO consegna, ServletContex
 		  email.setHtmlMsg("<html>Gentile "+consegna.getLavoratore().getNome() + " "+consegna.getLavoratore().getCognome()+",<br>"
 		  	  	+"In data "+df.format(consegna.getRestituzione().getData_consegna())+" hai riconsegnato il seguente DPI: <br><br>"
 				  +"TIPO: "+consegna.getDpi().getTipo().getDescrizione()
+				  +"DESCRIZIONE: "+consegna.getDpi().getDescrizione()
 				  +"<br>MODELLO: " +consegna.getDpi().getModello()
-				  +"<br>QUANTIT&Agrave;: "
 				  +"<br>MOTIVAZIONE: "+consegna.getRestituzione().getMotivazione()
 				  +"<br>Clicca sul link per confermare la restituzione."
 				  +"<br><br>http://localhost:8080/FormInputDoc/accettazioneDpi.jsp?id_consegna="+Utility.encryptData(""+consegna.getId())+"&id_riconsegna="+Utility.encryptData(""+consegna.getRestituzione().getId())

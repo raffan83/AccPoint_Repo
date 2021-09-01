@@ -177,7 +177,6 @@ public class CreateSchedaDPI {
 			report.setColumnStyle(textStyle); //AGG
 			report.addColumn(col.column("ID", "id", type.stringType()));
 			report.addColumn(col.column("DPI", "dpi", type.stringType()));
- 	 		report.addColumn(col.column("QUANTITÀ", "quantita", type.stringType()));
 	 		report.addColumn(col.column("MODELLO", "modello", type.stringType()));
 	 		report.addColumn(col.column("CONFORMITÀ", "conformita", type.stringType()));
 	 		 		
@@ -214,7 +213,6 @@ public class CreateSchedaDPI {
 		
 		listaCodici[0]="id";
 		listaCodici[1]="dpi";
-		listaCodici[2]="quantita";
 		listaCodici[3]="modello";
 		listaCodici[4]="conformita";
 		listaCodici[5]="scadenza";
@@ -226,31 +224,53 @@ public class CreateSchedaDPI {
 		
 		int i=1;
 			for (ConsegnaDpiDTO consegna : lista) {
-								
-				ArrayList<String> arrayPs = new ArrayList<String>();
+						
+				if(tipo_scheda == 0 && consegna.getRestituzione()== null) {
+					ArrayList<String> arrayPs = new ArrayList<String>();
+					
+					arrayPs.add(consegna.getId()+"");
+					arrayPs.add(consegna.getDpi().getTipo().getDescrizione());
+					arrayPs.add(consegna.getDpi().getModello());
+					arrayPs.add(consegna.getDpi().getConformita());
+					
+					
+					arrayPs.add(df.format(consegna.getDpi().getData_scadenza()));										
+					
+					
+					if(consegna.getData_accettazione()!=null) {
+						arrayPs.add(df.format(consegna.getData_accettazione()));	
+					}else {
+						arrayPs.add("");
+					}			
+					
+					
+			         Object[] listaValori = arrayPs.toArray();
+			        
+			         dataSource.add(listaValori);
+				}else if(tipo_scheda == 1){
+					ArrayList<String> arrayPs = new ArrayList<String>();
+					
+					arrayPs.add(consegna.getId()+"");
+					arrayPs.add(consegna.getDpi().getTipo().getDescrizione());
+					arrayPs.add(consegna.getDpi().getModello());
+					arrayPs.add(consegna.getDpi().getConformita());
+					
 				
-				arrayPs.add(consegna.getId()+"");
-				arrayPs.add(consegna.getDpi().getTipo().getDescrizione());
-				arrayPs.add("");
-				arrayPs.add(consegna.getDpi().getModello());
-				arrayPs.add(consegna.getDpi().getConformita());
-				
-				if(tipo_scheda == 0) {
-					arrayPs.add(df.format(consegna.getDpi().getData_scadenza()));	
-				}else {
 					arrayPs.add(consegna.getMotivazione());
-				}					
-				
-				if(consegna.getData_accettazione()!=null) {
-					arrayPs.add(df.format(consegna.getData_accettazione()));	
-				}else {
-					arrayPs.add("");
+									
+					
+					if(consegna.getData_accettazione()!=null) {
+						arrayPs.add(df.format(consegna.getData_accettazione()));	
+					}else {
+						arrayPs.add("");
+					}
+					
+					
+			         Object[] listaValori = arrayPs.toArray();
+			        
+			         dataSource.add(listaValori);
 				}
 				
-				
-		         Object[] listaValori = arrayPs.toArray();
-		        
-		         dataSource.add(listaValori);
 		         i++;
 			}
  		    return dataSource;
@@ -271,7 +291,7 @@ public class CreateSchedaDPI {
 				report.setTemplate(Templates.reportTemplate);
 				report.setColumnStyle(textStyle); //AGG				
 			
-				report.addColumn(col.column("ID", "id", type.stringType()).setFixedWidth(30));
+				report.addColumn(col.column("ID DPI", "id", type.stringType()).setFixedWidth(30));
 				report.addColumn(col.column("Data", "data_accettazione", type.stringType()).setFixedWidth(75));
 	 	 		report.addColumn(col.column("Nominativo", "nominativo", type.stringType()).setFixedWidth(190));
 		 		report.addColumn(col.column("Codice commessa", "commessa", type.stringType()).setFixedWidth(65));

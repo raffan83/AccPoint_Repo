@@ -104,6 +104,7 @@
 <th>Data Verificazione</th>
 <th>Esito</th>
 <th>Data Scadenza</th>
+<th>Campioni di lavoro</th>
 <th>N. Sigilli Usati</th>
 <th>Tecnico Verificatore</th>
 <th>Comunicazione Preventiva</th>
@@ -153,6 +154,7 @@
 	</td>
 	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${misura.dataScadenza }" /></td>
+	<td>${misura.campioniLavoro }</td>
 	<td>${misura.numeroSigilli }</td>
 	<td>${misura.tecnicoVerificatore.nominativo }</td>	
 	<td>
@@ -172,7 +174,7 @@
 	</c:if>
 	</td>
 	<td>
-	<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
+	<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
 	</td>
 	</tr>
 	</c:if>
@@ -323,48 +325,48 @@ function filtraMisure(){
 	var table = $('#tabVerMisure').DataTable();
 	
 	if($('#btnTutte').hasClass('disabled')){
-		$('#inputsearchtable_15').val('');
 		$('#inputsearchtable_16').val('');
+		$('#inputsearchtable_17').val('');
 		$('#btnPreventiva').removeClass('disabled')
 		$('#btnEsito').removeClass('disabled')
 		 table
-	        .columns( 15 )
+	        .columns( 16 )
 	        .search( "" )
 	        .draw();
 		 table
-	        .columns( 16 )
+	        .columns( 17 )
 	        .search( "" )
 	        .draw();
 	}
 	else if($('#btnPreventiva').hasClass('disabled') && !$('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_15').val('SI');
-		$('#inputsearchtable_16').val('');
+		$('#inputsearchtable_16').val('SI');
+		$('#inputsearchtable_17').val('');
 		 table
-	        .columns( 15 )
+	        .columns( 16 )
 	        .search( "SI" )
 	        .draw();
 		 table
-	        .columns( 16 )
+	        .columns( 17 )
 	        .search( "" )
 	        .draw();
 	}
 	else if(!$('#btnPreventiva').hasClass('disabled') && $('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_15').val('');
-		$('#inputsearchtable_16').val('SI');
+		$('#inputsearchtable_16').val('');
+		$('#inputsearchtable_17').val('SI');
 		 table
-	        .columns( 16 )
+	        .columns( 17 )
 	        .search( "SI" )
 	        .draw();
 	}
 	else if($('#btnPreventiva').hasClass('disabled') && $('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_15').val('SI');
 		$('#inputsearchtable_16').val('SI');
+		$('#inputsearchtable_17').val('SI');
 		 table
-	        .columns( 15 )
+	        .columns( 16 )
 	        .search( "SI" )
 	        .draw();
 		 table
-	        .columns( 16 )
+	        .columns( 17 )
 	        .search( "SI" )
 	        .draw();
 	}
@@ -430,7 +432,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	 
 		    	  { responsivePriority: 1, targets: 14 },
-		    	  { responsivePriority: 2, targets: 20 },
+		    	  { responsivePriority: 2, targets: 21 },
 		    	  { responsivePriority: 3, targets: 11 }
 		    	  
 		               ], 	        

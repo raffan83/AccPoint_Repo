@@ -233,6 +233,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				TipoDpiDTO tipo = null;
 				
+				if(collettivo == null) {
+					collettivo = "0";
+				}
+				
 				if(tipo_dpi.equals("0")) {
 					tipo = new TipoDpiDTO();
 					tipo.setDescrizione(nuovo_tipo_dpi);
@@ -255,12 +259,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				}else {
 					dpi.setData_scadenza(null);
 				}
-						
-				
-				if(collettivo == null) {					
-					collettivo = "0";
-				}
-				
+
 				dpi.setCollettivo(Integer.parseInt(collettivo));
 				session.update(dpi);				
 				

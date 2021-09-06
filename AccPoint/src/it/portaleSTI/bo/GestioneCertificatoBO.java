@@ -729,6 +729,11 @@ public class GestioneCertificatoBO {
 		return GestioneCertificatoDAO.getListaCertificatiByIntervento(stato, intervento, cmp, utente, obsoleto, idCliente, idSede);
 	}
 
+	public static ArrayList<CertificatoDTO> getListaCertificatiChiusiStrumento(Integer id_strumento, Session session) {
+		
+		return GestioneCertificatoDAO.getListaCertificatiChiusiStrumento(id_strumento, session);
+	}
+	
 	public static ArrayList<CertificatoDTO> getListaCertificatiCampioneStrumento(Integer id_strumento, Session session) {
 		
 		return GestioneCertificatoDAO.getListaCertificatiCampioneStrumento(id_strumento, session);

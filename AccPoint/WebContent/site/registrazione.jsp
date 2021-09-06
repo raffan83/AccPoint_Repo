@@ -128,7 +128,7 @@
   <div class="row form-group">
             <label for="area_interesse" class="col-sm-2 control-label">Area d'interesse:</label>
         <div class="col-sm-4">
-                      <select class="form-control select2" title="Seleziona area di interesse" id="area_interesse" name="area_interesse">
+                      <select class="form-control select2" title="Seleziona area di interesse" id="area_interesse" name="area_interesse" required>
                       <option value=""></option>
                       <option value="1">Tarature</option>
                       <option value="2">Rilievi dimensionali</option>

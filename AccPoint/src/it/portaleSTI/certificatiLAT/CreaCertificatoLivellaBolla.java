@@ -6,6 +6,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,10 +16,21 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 import TemplateReportLAT.PivotTemplateLAT;
 import TemplateReportLAT.ImageReport.PivotTemplateLAT_Image;
@@ -33,6 +45,7 @@ import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
@@ -64,13 +77,13 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 public class CreaCertificatoLivellaBolla {
 
 	public File file;
-	public CreaCertificatoLivellaBolla(CertificatoDTO certificato, LatMisuraDTO misura, InputStream is, UtenteDTO utente, Session session) throws Exception {
+	public CreaCertificatoLivellaBolla(CertificatoDTO certificato, LatMisuraDTO misura, InputStream is, UtenteDTO utente,CertificatoDTO certificato_riemesso, Session session) throws Exception {
 		
-		build(certificato, misura, is, utente, session);
+		build(certificato, misura, is, utente,  certificato_riemesso, session);
 	}
 	
 	
-	private void build(CertificatoDTO certificato, LatMisuraDTO misura, InputStream inputStream, UtenteDTO utente, Session session) throws Exception {
+	private void build(CertificatoDTO certificato, LatMisuraDTO misura, InputStream inputStream, UtenteDTO utente, CertificatoDTO certificato_riemesso, Session session) throws Exception {
 		
 		InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP1.jrxml");
 		
@@ -105,6 +118,13 @@ public class CreaCertificatoLivellaBolla {
 		}
 		
 		report.addParameter("numero_certificato",n_certificato);
+		
+		if(certificato_riemesso!=null) {
+			report.addParameter("nota_riemissione","Sostituisce il certificato n. "+certificato_riemesso.getMisura().getnCertificato());
+						
+		}else {
+			report.addParameter("nota_riemissione","");
+		}
 		
 		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd"); 
 		
@@ -363,6 +383,14 @@ public class CreaCertificatoLivellaBolla {
 
 		reportP2.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
 		
+		if(certificato_riemesso!=null) {
+			reportP2.addParameter("nota_riemissione","Sostituisce il certificato n. "+certificato_riemesso.getMisura().getnCertificato());
+			
+			
+		}else {
+			reportP2.addParameter("nota_riemissione","");
+		}
+		
 		//File image = new File(inputStream);
 
 
@@ -394,6 +422,13 @@ public class CreaCertificatoLivellaBolla {
 		
 		
 		reportP3.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
+		if(certificato_riemesso!=null) {
+			reportP3.addParameter("nota_riemissione","Sostituisce il certificato n. "+certificato_riemesso.getMisura().getnCertificato());
+			addRiemessioneOld(certificato_riemesso, n_certificato, session);
+			
+		}else {
+			reportP3.addParameter("nota_riemissione","");
+		}
 		
 		BigDecimal sensibilita = misura.getSensibilita().stripTrailingZeros();
 		
@@ -425,7 +460,7 @@ public class CreaCertificatoLivellaBolla {
 		
 		this.file = new File(path);
 		
-		UtenteDTO responsabile = GestioneUtenteBO.getUtenteById(""+86, session);
+		UtenteDTO responsabile = GestioneUtenteBO.getUtenteById(""+11, session);
 		JsonObject jsonOP =  ArubaSignService.signCertificatoPades(responsabile, null,true, certificato);
 		 
 		  
@@ -550,6 +585,52 @@ public class CreaCertificatoLivellaBolla {
 	 	}
 	
 	
+	
+	
+	public  void addRiemessioneOld(CertificatoDTO certificatoOld,String nuovoCertificato, Session session) throws Exception {
+
+		//String path = Costanti.PATH_FOLDER+"\\"+misuraOld.getVerIntervento().getNome_pack()+"\\Rapporto\\RAP"+misuraOld.getVerIntervento().getNome_pack()+"_"+misuraOld.getId()+""+misuraOld.getVerStrumento().getId()+".pdf";
+		//certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
+		String path = Costanti.PATH_FOLDER+"\\"+certificatoOld.getMisura().getIntervento().getNomePack()+"\\"+certificatoOld.getMisura().getIntervento().getNomePack()+"_"+certificatoOld.getMisura().getInterventoDati().getId()+""+certificatoOld.getMisura().getStrumento().get__id()+".pdf";
+		
+			File tmpFile = new File(path+"tmp");
+	        PdfReader reader = new PdfReader(path);
+	        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
+	        Font f = new Font(FontFamily.HELVETICA, 11);
+	        f.setColor(BaseColor.BLACK);
+	        int pages = reader.getNumberOfPages();
+	        for (int i=0; i<pages; i++) {	        
+		        PdfContentByte over = stamper.getOverContent(i+1);
+		        Phrase p = new Phrase(String.format("Sostituito dal certificato di taratura n. %s", nuovoCertificato), f);
+		        over.saveState();
+		        PdfGState gs1 = new PdfGState();
+		        gs1.setFillOpacity(0.7f);
+		        over.setGState(gs1);
+		        if(i==0) {
+		        	ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 305, 690, 0);
+		        }else {
+		        	ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 310, 695, 0);	
+		        }
+		        
+		        over.restoreState();
+	        }
+	        stamper.close();
+	        reader.close();
+	        File fil = new File (path);
+	        if(fil.exists()) {
+	        	String folder = Costanti.PATH_FOLDER+"\\"+certificatoOld.getMisura().getIntervento().getNomePack()+"\\OLD\\";
+	        	File dest = new File(folder);
+	        	if(!dest.exists()) {
+	        		dest.mkdirs();
+	        	}
+	        	FileUtils.copyFile(fil, new File(dest+"\\"+certificatoOld.getMisura().getIntervento().getNomePack()+"_"+certificatoOld.getMisura().getInterventoDati().getId()+""+certificatoOld.getMisura().getStrumento().get__id()+".pdf"));
+	        	fil.delete();
+	        }
+			tmpFile.renameTo(new File(path));
+		
+		
+		
+	}
 
 
 //	public static void main(String[] args) throws HibernateException, Exception {

@@ -30,6 +30,7 @@ public class LatMisuraDTO {
 	private String centraggio;
 	private String nCertificato;
 	private BigDecimal unita_formato;
+	private String note_sostituzione;
 	
 	public int getIdMisura() {
 		return idMisura;
@@ -213,6 +214,12 @@ public class LatMisuraDTO {
 	}
 	public void setUnita_formato(BigDecimal unita_formato) {
 		this.unita_formato = unita_formato;
+	}
+	public String getNote_sostituzione() {
+		return note_sostituzione;
+	}
+	public void setNote_sostituzione(String note_sostituzione) {
+		this.note_sostituzione = note_sostituzione;
 	}
 		
 	

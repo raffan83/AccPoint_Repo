@@ -96,6 +96,10 @@
         <property name="note" type="java.lang.String">
             <column name="note" />
         </property>
+        
+                <property name="note_sostituzione" type="java.lang.String">
+            <column name="note_sostituzione" />
+        </property>
        
        <property name="unita_formato" type="java.math.BigDecimal">
             <column name="unita_formato" />

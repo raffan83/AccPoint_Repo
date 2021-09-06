@@ -50,6 +50,13 @@
 				<reportElement x="0" y="2" width="561" height="111" uuid="8b3fec0d-88d3-4ec7-816a-7ad61931be3f"/>
 				<imageExpression><![CDATA[$P{immagine_sti}]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="1" y="113" width="554" height="19" uuid="97e9861f-f4f3-44a0-b31e-9390ef6de813"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nota_riemissione}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>

@@ -241,8 +241,12 @@ public class CreateCertificato {
 					strumento.setDataProssimaVerifica(new java.sql.Date(c.getTime().getTime()));
 					
 					GestioneStrumentoBO.update(strumento, session);
+					if(!multi) {
+						report.addParameter("dataEmissione",""+sdf.format(new Date()));
+					}else {
+						report.addParameter("dataEmissione",""+sdf.format(certificato.getDataCreazione()));	
+					}
 					
-					report.addParameter("dataEmissione",""+sdf.format(new Date()));
 					if(misura.getDataMisura() !=null){
 						report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
 					}else {
@@ -261,7 +265,11 @@ public class CreateCertificato {
 				{
 					GestioneStrumentoBO.update(strumento, session);
 					
-					report.addParameter("dataEmissione",""+sdf.format(new Date()));
+					if(!multi) {
+						report.addParameter("dataEmissione",""+sdf.format(new Date()));
+					}else {
+						report.addParameter("dataEmissione",""+sdf.format(certificato.getDataCreazione()));	
+					}
 					if(misura.getDataMisura() !=null){
 						report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
 					}else {
@@ -784,6 +792,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 						cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 			}
 			
+			if(strumento.getNote()==null) {
+				strumento.setNote("");
+			}
+			
 			report.lastPageFooter(cmp.verticalList(
 					cmp.text(CostantiCertificato.DESCRIZIONE_INCERTEZZA).setStyle(footerStyle),	
 					cmp.line().setFixedHeight(1),	
@@ -928,7 +940,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  report.toPdf(fos);
 			  
 			  certificato.setNomeCertificato(file.getName());
-			  certificato.setDataCreazione(new Date());
+			  if(!multi) {
+				  certificato.setDataCreazione(new Date());  
+			  }
+			  
 			  certificato.setUtenteApprovazione(utente);
 			  session.update(certificato);
 			  fos.close();

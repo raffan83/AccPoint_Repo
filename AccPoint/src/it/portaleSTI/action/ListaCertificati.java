@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -25,6 +26,8 @@ import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,20 +39,32 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerAccuratezzaDTO;
+import it.portaleSTI.DTO.VerCertificatoDTO;
+import it.portaleSTI.DTO.VerDecentramentoDTO;
+import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerLinearitaDTO;
+import it.portaleSTI.DTO.VerMisuraDTO;
+import it.portaleSTI.DTO.VerMobilitaDTO;
+import it.portaleSTI.DTO.VerRipetibilitaDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateCertificatoSE;
 import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneSicurezzaElettricaBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
+import it.portaleSTI.bo.GestioneVerCertificatoBO;
+import it.portaleSTI.bo.GestioneVerInterventoBO;
 import it.portaleSTI.bo.SendEmailBO;
 import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaBolla;
 import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaElettronica;
@@ -330,7 +345,7 @@ public class ListaCertificati extends HttpServlet {
 						if(item.getName()!="") {	
 							InputStream is = item.getInputStream();
 							
-							new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), is, utente, session);
+							new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), is, utente,null, session);
 						}								
 					}
 				}
@@ -353,7 +368,7 @@ public class ListaCertificati extends HttpServlet {
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);				
 				
 				if(latMaster.equals("2")) {
-					new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, session);
+					new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, null,session);
 				}
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
@@ -479,7 +494,7 @@ public class ListaCertificati extends HttpServlet {
 //						new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), null,utente, session);
 					}
 					else if(certificato.getMisura().getMisuraLAT()!=null && certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==2) {
-						new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, session);
+						new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, null,session);
 					}
 					
 					else {
@@ -546,7 +561,7 @@ public class ListaCertificati extends HttpServlet {
 						certificato = c.file;
 					}
 					else if(cert.getMisura().getMisuraLAT()!=null && cert.getMisura().getMisuraLAT().getMisura_lat().getId()==2) {
-						CreaCertificatoLivellaElettronica c = new CreaCertificatoLivellaElettronica(cert, cert.getMisura().getMisuraLAT(), utente, session);
+						CreaCertificatoLivellaElettronica c = new CreaCertificatoLivellaElettronica(cert, cert.getMisura().getMisuraLAT(), utente, null,session);
 						certificato = c.file;
 					}
 					else {
@@ -617,7 +632,64 @@ public class ListaCertificati extends HttpServlet {
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiCampioneStrumento.jsp");
 		     	dispatcher.forward(request,response);
 			}
+			else if(action.equals("certificati_precedenti")) {
+				
+				ajax = true;
+				
+				String id_strumento = request.getParameter("id_strumento");
+				
+				ArrayList<CertificatoDTO> lista_certificati = GestioneCertificatoBO.getListaCertificatiChiusiStrumento(Integer.parseInt(id_strumento), session);
+				PrintWriter out = response.getWriter();
+				response.setContentType("application/json");
+				 Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create(); 			        			        
+			     			      		       
+			        myObj.addProperty("success", true);
 			
+			        myObj.add("lista_certificati", gson.toJsonTree(lista_certificati));			      
+			        
+			        out.println(myObj.toString());
+		
+			        out.close();
+			        
+						
+			}
+			else if(action.equals("riemetti_certificato")) {
+				
+				String id_certificato_old = request.getParameter("id_certificato_old");
+				String id_certificato_new = request.getParameter("id_certificato_new");
+				
+				CertificatoDTO certificato_old = GestioneCertificatoBO.getCertificatoById(id_certificato_old);
+				CertificatoDTO certificato_new = GestioneCertificatoBO.getCertificatoById(id_certificato_new);
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());				
+				response.setContentType("application/json");
+				List<FileItem> items = uploadHandler.parseRequest(request);
+				InputStream is = null;
+				for (FileItem item : items) {
+					if (!item.isFormField()) {
+						if(item.getName()!="") {	
+							 is = item.getInputStream();
+						}								
+					}
+				}
+				
+				if(certificato_new.getMisura().getMisuraLAT().getMisura_lat().getId()== 1) {
+					new CreaCertificatoLivellaBolla(certificato_new, certificato_new.getMisura().getMisuraLAT(), is, utente, certificato_old,  session);
+				}
+				
+				if(certificato_new.getMisura().getMisuraLAT().getMisura_lat().getId()== 2) {
+					new CreaCertificatoLivellaElettronica(certificato_new, certificato_new.getMisura().getMisuraLAT(), utente,certificato_old,  session);
+				}
+				
+				certificato_old.getMisura().setObsoleto("S");
+				session.update(certificato_old.getMisura());
+
+	        	PrintWriter out = response.getWriter();
+	        	myObj.addProperty("success", true);
+	        	myObj.addProperty("messaggio", "Certificato riemesso con successo!");
+	        	out.print(myObj);
+				
+				
+			}
 			   session.getTransaction().commit();
 		       session.close();
 			 

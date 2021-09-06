@@ -388,6 +388,13 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				<reportElement x="385" y="752" width="151" height="20" uuid="60c01dc2-7b1f-4c08-afa9-f9606f4e8a95"/>
 				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="1" y="117" width="554" height="22" uuid="bda45078-96c1-4d79-adc5-e7c9f534a7c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nota_riemissione}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>

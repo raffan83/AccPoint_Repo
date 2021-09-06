@@ -493,4 +493,19 @@ public static LinkedHashMap<String, String> getClientiPerCertificato(int id_comp
 		
 		return lista;
 	}
+	
+	public static ArrayList<CertificatoDTO> getListaCertificatiChiusiStrumento(Integer id_strumento, Session session) {
+		
+		ArrayList<CertificatoDTO> lista = null;
+		
+		Query query =session.createQuery("from CertificatoDTO where misura.strumento.__id =:_id_strumento and stato.id = 2");
+		query.setParameter("_id_strumento", id_strumento);
+		
+
+	          
+		lista=(ArrayList<CertificatoDTO>)query.list();
+		
+		
+		return lista;
+	}
 }

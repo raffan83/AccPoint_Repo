@@ -33,6 +33,7 @@ import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.StrumentoNoteDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -103,15 +104,29 @@ public class GestioneStrumento extends HttpServlet {
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				
+				StrumentoNoteDTO noteStrumento = new StrumentoNoteDTO();
+					
+				noteStrumento.setId_strumento(Integer.parseInt(request.getParameter("idStrumento")));		
+				noteStrumento.setUser(user);
+				noteStrumento.setData(new Date(System.currentTimeMillis()));
+				
+				String descrizione="Modifica stato strumento|";
+				
 				if(strumento.getStato_strumento() != null && (strumento.getStato_strumento().getId() == 7225 || strumento.getStato_strumento().getId() == 7227)){
 					strumento.setStato_strumento(new StatoStrumentoDTO(7226, "In serivzio"));
+					descrizione=descrizione+"Strumento messo In Servizio";
 				}else{
 					strumento.setStato_strumento(new StatoStrumentoDTO(7225, "Fuori servizio"));
+					descrizione=descrizione+"Strumento messo Fuori Servizio";
 				}
+				noteStrumento.setDescrizione(descrizione);
+				
+				
 				JsonObject myObj = new JsonObject();
 				strumento.setUserModifica(user);
 				strumento.setDataModifica(new Date(System.currentTimeMillis()));
 				Boolean success = GestioneStrumentoBO.update(strumento, session);
+				success=GestioneStrumentoBO.saveNote(noteStrumento, session);
 					
 					String message = "";
 					if(success){

@@ -28,7 +28,7 @@
   <mapping class="StatoInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoInterventoDTO.hbm.xml"/>
   <mapping class="InterventoDatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/InterventoDatiDTO.hbm.xml"/>
   <mapping class="StatoPackDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoPackDTO.hbm.xml"/>
-  <!-- <mapping class="ScadenzaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ScadenzaDTO.hbm.xml"/> -->
+  <mapping class="StrumentoNoteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StrumentoNoteDTO.hbm.xml"/>
   <mapping class="StatoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoStrumentoDTO.hbm.xml"/>
   <mapping class="LuogoVerificaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LuogoVerificaDTO.hbm.xml"/>
   <mapping class="StatoRicezioneStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoRicezioneStrumentoDTO.hbm.xml"/>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.StrumentoNoteDTO" table="strumento_note">
+       
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+ 		
+ 		<property name="id_strumento" type="int">
+            <column name="id_strumento" />
+        </property>
+        
+        <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" lazy="false" fetch="join">
+   		<column name="id_user" />
+   		</many-to-one>
+   
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        
+         <property name="data" type="java.util.Date">
+            <column name="data" />
+        </property>
+
+    </class>
+</hibernate-mapping>

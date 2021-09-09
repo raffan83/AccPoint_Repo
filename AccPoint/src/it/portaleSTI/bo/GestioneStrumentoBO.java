@@ -25,6 +25,7 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.StrumentoNoteDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
@@ -481,6 +482,20 @@ public class GestioneStrumentoBO {
 	public static ArrayList<StrumentoDTO> getStrumentiFiltratiGenerale(int id, String nome, String marca, String modello, String matricola, String codice_interno, Integer id_company, UtenteDTO user) {
 
 		return GestioneStrumentoDAO.getStrumentiFiltratiGenerale(id,nome, marca, modello, matricola, codice_interno, id_company, user);
+	}
+
+	public static boolean saveNote(StrumentoNoteDTO noteStrumento, Session session) {
+		
+	try{			
+			
+			session.save(noteStrumento);
+			
+			return true;
+		
+		}catch(Exception ex)
+		{
+			return false;
+		}
 	}
 
 

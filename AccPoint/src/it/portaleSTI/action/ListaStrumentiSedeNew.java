@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -28,6 +29,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.StrumentoNoteDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -366,6 +368,26 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
 		    dispatcher.forward(request,response);
+			
+		}
+		else if(action.equals("note_strumento")) {
+			
+			StrumentoDTO strumento = (StrumentoDTO) request.getSession().getAttribute("strumento");
+			
+			ArrayList<String> note_strumento = new ArrayList<String>();
+			
+			request.getSession().setAttribute("lista_note", strumento.getListaNoteStrumento());
+			
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaNoteStrumento.jsp");
+		    dispatcher.forward(request,response);
+//			note_strumento.addAll(strumento.getListaNoteStrumento().get)
+			
+//			Iterator<StrumentoNoteDTO> it = strumento.getListaNoteStrumento().iterator();
+//			while(it.hasNext()) {
+//				note_strumento
+//			}
+			
+			
 			
 		}
 			

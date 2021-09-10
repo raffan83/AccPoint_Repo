@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -68,12 +69,11 @@ public class DettaglioStrumento extends HttpServlet {
 
 		StrumentoDTO dettaglio = GestioneStrumentoBO.getStrumentoById(idS, session);
 
-		 Gson gson = new Gson(); 
+		 Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 	        JsonObject myObj = new JsonObject();
 
 	        JsonElement obj = gson.toJsonTree(dettaglio);
-	       
-
+	      
 	            myObj.addProperty("success", true);
 	       
 	        myObj.add("dataInfo", obj);
@@ -85,6 +85,7 @@ public class DettaglioStrumento extends HttpServlet {
 	        int id_cliente = dettaglio.getId_cliente();
 	        
 	        request.getSession().setAttribute("myObj",myObj);
+	        request.getSession().setAttribute("strumento",dettaglio);
 	        
 			ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento(session);
 			ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto(session);

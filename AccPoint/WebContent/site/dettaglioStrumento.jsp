@@ -4,11 +4,12 @@
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonElement"%>
 <%@page import="it.portaleSTI.DTO.StrumentoDTO"%>
+<%@page import="com.google.gson.GsonBuilder"%>
 
 <% 
 JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonElement jsonElem = (JsonElement)json.getAsJsonObject("dataInfo");
-Gson gson = new Gson();
+Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 StrumentoDTO strumento=(StrumentoDTO)gson.fromJson(jsonElem,StrumentoDTO.class); 
 SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 String idSede = (String)session.getAttribute("id_Sede");

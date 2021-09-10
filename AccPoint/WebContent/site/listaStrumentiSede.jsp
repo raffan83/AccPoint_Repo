@@ -677,6 +677,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  $(function(){
 	
 	 //$('.select2').select2();
+	 
+	 console.log("test")
  
 	 $('#cliente').select2();
 	 $('#sede').select2();
@@ -791,7 +793,12 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        	//	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
        	}
        	
-       	
+       	if(contentID == "noteStrumentoTab"){
+    		
+       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str="+datax[1],"","#notestrumento")
+       	 }
+       		
+     	
        	
 
  		});
@@ -1625,7 +1632,10 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
     	if(contentID == "documentiesterniTab"){
     		exploreModal("documentiEsterni.do?id_str="+datax[1],"","#documentiesterni")
      	}
-    	
+		if(contentID == "noteStrumentoTab"){
+    		
+       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str="+datax[1],"","#notestrumento")
+       	 }
     	
     	
 

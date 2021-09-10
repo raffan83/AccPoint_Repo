@@ -350,6 +350,8 @@
                <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
 		</c:if>		
 		 <li class=""><a href="#documentiesterni" data-toggle="tab" aria-expanded="false" onclick="" id="documentiesterniTab">Documenti esterni</a></li>
+		 
+		 <li class=""><a href="#notestrumento" data-toggle="tab" aria-expanded="false" onclick="" id="noteStrumentoTab">Note Strumento</a></li>
              </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">
@@ -380,6 +382,14 @@
               
 
               			</div> 
+              			
+              			
+              			   		<div class="tab-pane" id="notestrumento">
+              			   		
+
+              			</div> 
+              			
+              			
               
             </div>
             <!-- /.tab-content -->
@@ -697,7 +707,7 @@ function spd()
         		  var input = $("#uploadSuccess").val();
         		  if(input){
         			  $('#myModal').modal("hide");
-				
+						
         		  }
 
         	   	 	
@@ -712,6 +722,9 @@ function spd()
           
     });
     
+    
+    
+
     
   </script>
 </jsp:attribute> 

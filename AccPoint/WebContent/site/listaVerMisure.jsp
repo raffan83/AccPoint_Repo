@@ -174,7 +174,7 @@
 	</c:if>
 	</td>
 	<td>
-	<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
+	<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
 	</td>
 	</tr>
 	</c:if>

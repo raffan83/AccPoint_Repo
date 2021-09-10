@@ -1984,10 +1984,46 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
     			  $('#report_button').hide();
     				$('#visualizza_report').hide();
     			  $("#myModalErrorContent").html("Stato Strumento salvato con successo");
+    			  $("#myModalError").addClass("modal modal-success");
 		 	        $("#myModalError").modal();
+		 	        
+		 	        
+		 	       $('#myModalError').on('hidden.bs.modal', function (e) {
+		 			  
+		 	    	  var sede = $("#select2").val();
+			           var cliente = $("#select1").val();
+			        
+		         			  $('#myModal').modal("hide");
+		 						
+		         		 
+			           $('.modal-backdrop').hide();
+			           
+			           dataString ="idSede="+ sede+";"+cliente;
+			           exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(data,textStatus){
+			         	  $('#myModal').on('hidden.bs.modal', function (e) {
+			              	  	$('#noteApp').val("");
+			              	 	$('#empty').html("");
+			              	 	$('body').removeClass('noScroll');
+			              	 	$(document.body).css('padding-right', '0px');
+			              	});
+			         	  
+			  			
+//			         	  $('#myModalError').on('hidden.bs.modal', function (e) {
+//			         		  
+//			         		  var input = $("#uploadSuccess").val();
+//			         		  if(input){
+//			         			  $('#myModal').modal("hide");
+//			 						
+//			         		  }
+//
+//			         	   	 	
+//			         	   	 	
+//			         	   	});
 
-
-
+		 	       });
+		 	       
+		 	       });
+		 	        
     		  }else{
     			  pleaseWaitDiv.modal('hide');  
     			  $('#report_button').show();

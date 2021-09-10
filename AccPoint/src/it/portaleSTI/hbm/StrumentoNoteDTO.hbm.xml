@@ -22,7 +22,7 @@
             <column name="descrizione" />
         </property>
         
-         <property name="data" type="java.util.Date">
+         <property name="data" type="java.sql.Date">
             <column name="data" />
         </property>
 

@@ -50,12 +50,17 @@ public class StrumentoDTO {
 			 private String procedureString = "";
 			 
 			 private String altre_matricole;
+			 
+			 
 			 //------
+			 
 			 
 			 
 //			 private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
 			
 			 private Set<DocumentiEsterniStrumentoDTO> listaDocumentiEsterni = new HashSet<DocumentiEsterniStrumentoDTO>(0);
+			 private Set<StrumentoNoteDTO> listaNoteStrumento = new HashSet<StrumentoNoteDTO>(0);
+			 
 			 
 			 public StrumentoDTO() {
 					super();
@@ -423,6 +428,14 @@ public class StrumentoDTO {
 
 			public void setAltre_matricole(String altre_matricole) {
 				this.altre_matricole = altre_matricole;
+			}
+
+			public Set<StrumentoNoteDTO> getListaNoteStrumento() {
+				return listaNoteStrumento;
+			}
+
+			public void setListaNoteStrumento(Set<StrumentoNoteDTO> listaNoteStrumento) {
+				this.listaNoteStrumento = listaNoteStrumento;
 			}
 
 			

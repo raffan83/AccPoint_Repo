@@ -1198,6 +1198,7 @@
 		    	}
 		    	
 		    	
+		    if(tipoRapporto!='RDP')	{
 		   for (var i = 0;i<arrayListaPuntiJson.length;i++){
 			   
 			   
@@ -1515,7 +1516,7 @@
 			   
 		   } 	
 		    	
-		  				
+    }
     		
  	
 				
@@ -1529,7 +1530,7 @@
 		    		$('#grafico').hide();
 		    	}
 		    	
-		    	
+		        if(tipoRapporto!='RDP')	{  	
 		    var  myChart1 = null;	
 		    	numberBack1 = Math.ceil(Object.keys(arrayListaPuntiJson).length/6);
 		    	if(numberBack1>0){
@@ -1685,7 +1686,7 @@
 		    		 	myChart1.destroy();
 		    		 }
 		    	}
-				
+		        }
     		
     });
   </script>

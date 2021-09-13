@@ -20,6 +20,7 @@ public class ForCorsoDTO {
 	private int visibile;
 	private int disabilitato;
 	private int scheda_consegna_inviata;
+	private int durata;
 	
 	private Set<ForPartecipanteDTO> listaPartecipanti = new HashSet<ForPartecipanteDTO>(0);
 	private Set<ForReferenteDTO> listaReferenti = new HashSet<ForReferenteDTO>(0);
@@ -127,6 +128,12 @@ public class ForCorsoDTO {
 	}
 	public void setScheda_consegna_inviata(int scheda_consegna_inviata) {
 		this.scheda_consegna_inviata = scheda_consegna_inviata;
+	}
+	public int getDurata() {
+		return durata;
+	}
+	public void setDurata(int durata) {
+		this.durata = durata;
 	}
 
 	

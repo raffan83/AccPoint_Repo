@@ -17,8 +17,6 @@
          <property name="frequenza" type="int" >
             <column name="frequenza" />
         </property>
-        <property name="durata" type="int" >
-            <column name="durata" />
-        </property>
+        
     </class>
 </hibernate-mapping>

@@ -82,7 +82,7 @@
 
 
 <th>ID</th>
-<c:if test="${userObj.checkRuolo('D2') == false }">
+<c:if test="${userObj.checkRuolo('D2') == false && userObj.checkRuolo('D3') == false }">
 <th style="min-width:25px"><input id="checkAll" type="checkbox" /></th>
 </c:if>
 <th>Committente</th>
@@ -99,7 +99,7 @@
 <th>Revisione</th>
 <th>Stato</th>
 <th>Rilasciato</th>
-<c:if test="${userObj.checkRuolo('D2') == false }">
+<c:if test="${userObj.checkRuolo('D2') == false && userObj.checkRuolo('D3') == false }">
 <th>Comunicata consegna</th>
 </c:if>
 <th style="min-width:230px">Azioni</th>
@@ -109,7 +109,8 @@
  
  	<c:forEach items="${lista_documenti}" var="documento" varStatus="loop">
  	<c:if test="${documento.stato.id==1 }">
- 	<tr id="row_${loop.index}" style="background-color:#00ff80" >
+ 	<%-- <tr id="row_${loop.index}" style="background-color:#00ff80" > --%>
+ 	<tr id="row_${loop.index}" style="background-color:#ccffcc" >
  	</c:if>
  	<c:if test="${documento.stato.id==2 }">
 	<tr id="row_${loop.index}" style="background-color:#F8F26D" >
@@ -118,7 +119,7 @@
 	<tr id="row_${loop.index}" style="background-color:#FA8989" >
 	</c:if>
 	<td>${documento.id }</td>
-	<c:if test="${userObj.checkRuolo('D2') == false }">
+	<c:if test="${userObj.checkRuolo('D2') == false && userObj.checkRuolo('D3') == false }">
 	<td></td>	
 	</c:if>
 	<td>${documento.committente.nome_cliente } - ${documento.committente.indirizzo_cliente }</td>
@@ -139,7 +140,7 @@
 	<td>${documento.revisione }</td>
 	<td>${documento.getStato().getNome() }</td>
 	<td>${documento.rilasciato }</td>
-	<c:if test="${userObj.checkRuolo('D2') == false }">
+	<c:if test="${userObj.checkRuolo('D2') == false && userObj.checkRuolo('D3') == false }">
 	<td>
 	<c:if test="${documento.comunicata_consegna == 1 }">SI</c:if>
 	<c:if test="${documento.comunicata_consegna == 0 }">NO</c:if>
@@ -1417,7 +1418,7 @@ $("#tabDocumDocumento").on( 'init.dt', function ( e, settings ) {
     		  $(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');
 		    		
 	    	}
-    	  else if(${userObj.checkRuolo('D2') == true} ){
+    	  else if(${userObj.checkRuolo('D2') == true|| userObj.checkRuolo('D3') == true}  ){
     		  $(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');
     	  }
 
@@ -1845,7 +1846,7 @@ $('.select2').select2();
 	 });   
      
      var columnDef = [];
-     var ruolo = ${userObj.checkRuolo('D2')};
+     var ruolo = ${userObj.checkRuolo('D2') || userObj.checkRuolo('D3')};
      
      if(!ruolo){
     	 columnDef =	 [
@@ -1914,7 +1915,7 @@ $('.select2').select2();
 		               
 		    });
 		
-		table.buttons().container().appendTo( '#tabDocumDipendenti_wrapper .col-sm-6:eq(1)');
+		table.buttons().container().appendTo( '#tabDocumDocumento_wrapper .col-sm-6:eq(1)');
 	 	    $('.inputsearchtable').on('click', function(e){
 	 	       e.stopPropagation();    
 	 	    });

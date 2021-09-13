@@ -77,9 +77,9 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <c:if test="${attivita.allegato!=null && !attivita.allegato.equals('') }">
  	<button class="btn customTooltip btn-danger" onClick="callAction('gestioneAttivitaCampioni.do?action=download_allegato&id_attivita=${utl:encryptData(attivita.id)}')" title="Click per scaricare l'allegato"><i class="fa fa-file-pdf-o"></i></button>
  </c:if>
- <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('RS') }">
+<%--  <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('RS') }">
  	<button class="btn customTooltip btn-danger" onClick="modalYesOrNo('${attivita.id}')" title="Click per eliminare l'attivita"><i class="fa fa-trash"></i></button>
- </c:if>
+ </c:if> --%>
 </td>
 
 	</tr>

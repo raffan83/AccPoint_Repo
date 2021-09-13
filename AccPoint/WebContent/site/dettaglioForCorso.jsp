@@ -128,7 +128,7 @@
                   <b>Frequenza (mesi)</b> <a class="pull-right">${corso.corso_cat.frequenza}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Durata (ore)</b> <a class="pull-right">${corso.corso_cat.durata}</a>
+                  <b>Durata (ore)</b> <a class="pull-right">${corso.durata}</a>
                 </li>
                
 			<li class="list-group-item">

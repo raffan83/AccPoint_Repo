@@ -420,11 +420,25 @@ $(document).ready(function() {
 	  	          {
 	  	            extend: 'colvis',
 	  	            text: 'Nascondi Colonne'  	                   
-	 			  } ]
+	 			  },
+	 			 {
+		  	            extend: 'excel',
+		  	            text: 'Esporta Excel'  	                   
+		 			  },
+	 			  
+	 			  ]
 		               
 		    });
+     
+     
+     
+		if(${!userObj.checkRuolo('F2')}){
+			table.buttons().container().appendTo( '#tabForCorso_wrapper .col-sm-6:eq(1)');	
+		}
 		
-		table.buttons().container().appendTo( '#tabForCorso_wrapper .col-sm-6:eq(1)');
+		
+		
+		
 	 	    $('.inputsearchtable').on('click', function(e){
 	 	       e.stopPropagation();    
 	 	    });

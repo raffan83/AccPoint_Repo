@@ -73,10 +73,12 @@
 <th>Tipologia</th>
 <th>Descrizione</th>
 <th>Commessa</th>
-<th>Docente</th>
+<th>Durata</th>
+
 <th>E-Learning</th>
 <th>Data Inizio</th>
 <th>Data Scadenza</th>
+<th>Docente</th>
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 <th style="min-width:235px">Azioni</th>
 </c:if>
@@ -109,7 +111,7 @@
 	<td>${corso.corso_cat.descrizione }</td>
 	<td>${corso.descrizione }</td>
 	<td>${corso.commessa }</td>
-	<td>${corso.docente.nome } ${corso.docente.cognome }</td>
+<td>${corso.durata }</td>
 	<td>
 	<c:if test="${corso.e_learning == 0 }">
 	NO
@@ -120,12 +122,14 @@
 	</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_corso}" /></td>	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_scadenza}" /></td>
+		<td>${corso.docente.nome } ${corso.docente.cognome }</td>
+	
 	<td>
 
 	<a class="btn btn-info" onClick="dettaglioCorso('${utl:encryptData(corso.id)}')"><i class="fa fa-search"></i></a>
 		 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 	<%-- 	 	<c:if test="${corso.e_learning == 0}"> --%>
-				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${corso.docente.id}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.edizione }','${corso.commessa }','${corso.e_learning }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
+				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${corso.docente.id}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.edizione }','${corso.commessa }','${corso.e_learning }', ${corso.durata })" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
 	<%-- 	 	</c:if>
 	<c:if test="${corso.e_learning == 1}">
 				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }',0,'${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${corso.descrizione }','${corso.edizione }','${corso.commessa }','${corso.e_learning }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
@@ -316,6 +320,19 @@
         </div> 
        	</div>
        	</div>			<br>	
+       	
+       	
+       	       	         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Durata (Ore)</label>
+       	</div>
+       	<div class="col-sm-9">             	  	
+        
+       	<input id="durata" name="durata" class="form-control" type="number" step="1" min="0" style="width:100%" required>
+       	</div>
+       	</div>	<br>
+       	
              <div class="row">
        
        	<div class="col-sm-3">
@@ -481,6 +498,19 @@
         </div> 
        	</div>
        	</div>	<br>	
+       	
+       	         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Durata (Ore)</label>
+       	</div>
+       	<div class="col-sm-9">             	  	
+        
+       	<input id="durata_mod" name="durata_mod" class="form-control" type="number" step="1" min="0" style="width:100%" required>
+       	</div>
+       	</div>	<br>
+       	
+       	
              <div class="row">
        
        	<div class="col-sm-3">
@@ -625,7 +655,7 @@ function eliminaCorsoModal(id_corso){
 }
 
 
-function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, edizione, commessa,e_learning){
+function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, edizione, commessa,e_learning, durata){
 	
 	$('#id_corso').val(id_corso);
 	$('#categoria_mod').val(id_categoria);
@@ -646,6 +676,7 @@ function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data
 	$('#label_file_mod').html(documento_test);
 	$('#descrizione_mod').val(descrizione);
 	$('#edizione_mod').val(edizione);
+	$('#durata_mod').val(durata);
 	
 	if(e_learning =='1'){	
 
@@ -964,7 +995,7 @@ $(document).ready(function() {
 	//changeSkin();
 	admin="${admin}";
 	
-	var col_azioni = 8;
+	var col_azioni = 9;
 	
 	if(admin == "1"){
 		col_azioni++;

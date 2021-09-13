@@ -5,8 +5,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -372,22 +375,13 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		}
 		else if(action.equals("note_strumento")) {
 			
-			StrumentoDTO strumento = (StrumentoDTO) request.getSession().getAttribute("strumento");
-			
-			ArrayList<String> note_strumento = new ArrayList<String>();
+			StrumentoDTO strumento = (StrumentoDTO) request.getSession().getAttribute("strumento");			
+
 			
 			request.getSession().setAttribute("lista_note", strumento.getListaNoteStrumento());
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaNoteStrumento.jsp");
 		    dispatcher.forward(request,response);
-//			note_strumento.addAll(strumento.getListaNoteStrumento().get)
-			
-//			Iterator<StrumentoNoteDTO> it = strumento.getListaNoteStrumento().iterator();
-//			while(it.hasNext()) {
-//				note_strumento
-//			}
-			
-			
 			
 		}
 			

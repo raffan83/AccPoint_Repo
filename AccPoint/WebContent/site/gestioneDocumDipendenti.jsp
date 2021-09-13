@@ -81,7 +81,7 @@
  
  	<c:forEach items="${lista_dipendenti}" var="dipendente" varStatus="loop">
 	<c:if test="${dipendente.stato.id==1 }">
- 	<tr id="row_${loop.index}" style="background-color:#00ff80" >
+ 	<tr id="row_${loop.index}" style="background-color:#ccffcc" >
  	</c:if>
  	<c:if test="${dipendente.stato.id==2 }">
 	<tr id="row_${loop.index}" style="background-color:#F8F26D" >

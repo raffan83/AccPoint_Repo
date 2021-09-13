@@ -318,10 +318,11 @@
 		
 		    <%if(user.checkRuolo("AM") ||user.checkRuolo("D1")){ %>
 			<li><a href="gestioneDocumentale.do?action=lista_committenti" >Gestione Committenti</a></li>
-			<%} %>
+		
 			<li><a href="gestioneDocumentale.do?action=lista_fornitori" >Gestione Fornitori</a></li>	
 			<li><a href="gestioneDocumentale.do?action=lista_referenti" >Gestione Referenti</a></li>
 			<li><a href="gestioneDocumentale.do?action=lista_dipendenti">Gestione Dipendenti</a></li>
+				<%} %>
 			<li><a href="gestioneDocumentale.do?action=lista_documenti" >Gestione Documenti</a></li>
 			<%if(user.checkRuolo("AM") ||user.checkRuolo("D1")){ %>
 			<li><a href="gestioneDocumentale.do?action=tipo_documento" >Gestione Tipi Documento</a></li>

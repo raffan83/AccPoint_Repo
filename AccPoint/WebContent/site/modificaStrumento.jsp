@@ -4,6 +4,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="com.google.gson.Gson"%>
+<%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonElement"%>
 <%@page import="it.portaleSTI.DTO.ClassificazioneDTO"%>
@@ -13,7 +14,7 @@
 <% 
 JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonElement jsonElem = (JsonElement)json.getAsJsonObject("dataInfo");
-Gson gson = new Gson();
+Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 StrumentoDTO strumento=(StrumentoDTO)gson.fromJson(jsonElem,StrumentoDTO.class); 
 session.setAttribute("strumento", strumento);
 SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");

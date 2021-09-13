@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -114,7 +115,7 @@ public class ModificaStrumento extends HttpServlet {
 
 				PrintWriter out = response.getWriter();
 
-				Gson gson = new Gson(); 
+				Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create(); 
 				JsonObject myObj = new JsonObject();
 
 				JsonElement obj = gson.toJsonTree(dettaglio);
@@ -167,62 +168,148 @@ public class ModificaStrumento extends HttpServlet {
 
 				if(!strumento.getDenominazione().equals(denominazione))
 				{
-					stringaModifica=stringaModifica+"Denominazione("+strumento.getDenominazione()+","+denominazione+")|";
+					if(strumento.getDenominazione().equals("")) {
+						stringaModifica=stringaModifica+"Denominazione([VUOTO],"+denominazione+")|";
+					}else {
+						if(denominazione.equals("")) {
+							denominazione = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Denominazione("+strumento.getDenominazione()+","+denominazione+")|";	
+					}
+					
 				}
 
 				if(!strumento.getCodice_interno().equals(codice_interno))
 				{
-					stringaModifica=stringaModifica+"Codice Interno("+strumento.getCodice_interno()+","+codice_interno+")|";
+					if(strumento.getCodice_interno().equals("")) {
+						stringaModifica=stringaModifica+"Codice Interno([VUOTO],"+codice_interno+")|";
+					}else {
+						if(codice_interno.equals("")) {
+							codice_interno = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Codice Interno("+strumento.getCodice_interno()+","+codice_interno+")|";
+					}
 				}
 
 				if(!strumento.getCostruttore().equals(costruttore))
 				{
-					stringaModifica=stringaModifica+"Costruttore("+strumento.getCostruttore()+","+costruttore+")|";
+					if(strumento.getCostruttore().equals("")) {
+						stringaModifica=stringaModifica+"Costruttore([VUOTO],"+costruttore+")|";
+					}else {				
+						if(costruttore.equals("")) {
+							costruttore = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Costruttore("+strumento.getCostruttore()+","+costruttore+")|";
+					}
 				}
 
 				if(!strumento.getModello().equals(modello))
 				{
-					stringaModifica=stringaModifica+"Modello("+strumento.getModello()+","+modello+")|";
+					
+					if(strumento.getModello().equals("")) {
+						stringaModifica=stringaModifica+"Modello([VUOTO],"+modello+")|";
+					}else {
+						if(modello.equals("")) {
+							modello = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Modello("+strumento.getModello()+","+modello+")|";
+					}
 				}
 
 				if(!strumento.getMatricola().equals(matricola))
 				{
-					stringaModifica=stringaModifica+"Matricola("+strumento.getMatricola()+","+matricola+")|";
+					if(strumento.getMatricola().equals("")) {
+						stringaModifica=stringaModifica+"Matricola([VUOTO],"+matricola+")|";
+					}else {
+						if(matricola.equals("")) {
+							matricola = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Matricola("+strumento.getMatricola()+","+matricola+")|";
+					}
 				}
 
 				if(!strumento.getRisoluzione().equals(risoluzione))
 				{
-					stringaModifica=stringaModifica+"Risoluzione("+strumento.getRisoluzione()+","+risoluzione+")|";
+					if(strumento.getRisoluzione().equals("")) {
+						stringaModifica=stringaModifica+"Risoluzione([VUOTO],"+risoluzione+")|";
+					}else {
+						if(risoluzione.equals("")) {
+							risoluzione = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Risoluzione("+strumento.getRisoluzione()+","+risoluzione+")|";
+					}
 				}
 
 				if(!strumento.getCampo_misura().equals(campo_misura))
 				{
-					stringaModifica=stringaModifica+"Campo Misura("+strumento.getCampo_misura()+","+campo_misura+")|";
+					if(strumento.getCampo_misura().equals("")) {
+						stringaModifica=stringaModifica+"Campo Misura([VUOTO],"+campo_misura+")|";
+					}else {
+						if(campo_misura.equals("")) {
+							campo_misura = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Campo Misura("+strumento.getCampo_misura()+","+campo_misura+")|";
+					}
 				}
 
 				if(!strumento.getUtilizzatore().equals(utilizzatore))
 				{
-					stringaModifica=stringaModifica+"Utilizzatore("+strumento.getUtilizzatore()+","+utilizzatore+")|";
+					if(strumento.getUtilizzatore().equals("")) {
+						stringaModifica=stringaModifica+"Utilizzatore([VUOTO],"+utilizzatore+")|";
+					}else {
+						if(utilizzatore.equals("")) {
+							utilizzatore = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Utilizzatore("+strumento.getUtilizzatore()+","+utilizzatore+")|";
+					}
 				}
 
 				if(!strumento.getReparto().equals(reparto))
 				{
-					stringaModifica=stringaModifica+"Reparto("+strumento.getReparto()+","+reparto+")|";
+					if(strumento.getReparto().equals("")) {
+						stringaModifica=stringaModifica+"Reparto([VUOTO],"+reparto+")|";
+					}else {
+						if(reparto.equals("")) {
+							reparto = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Reparto("+strumento.getReparto()+","+reparto+")|";
+					}
 				}
 
 				if(!strumento.getNote().equals(note))
 				{
-					stringaModifica=stringaModifica+"Note("+strumento.getNote()+","+note+")|";
+					if(strumento.getNote().equals("")) {
+						stringaModifica=stringaModifica+"Note([VUOTO],"+note+")|";
+					}else {
+						if(note.equals("")) {
+							note = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Note("+strumento.getNote()+","+note+")|";
+					}
 				}
 
 				if(!strumento.getProcedura().equals(procedura))
 				{
-					stringaModifica=stringaModifica+"Procedure("+strumento.getProcedura()+","+procedura+")|";
+					if(strumento.getDenominazione().equals("")) {
+						stringaModifica=stringaModifica+"Procedure([VUOTO],"+procedura+")|";
+					}else {
+						if(procedura.equals("")) {
+							procedura = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Procedure("+strumento.getProcedura()+","+procedura+")|";
+					}
 				}
 
 				if(!strumento.getAltre_matricole().equals(altre_matricole))
 				{
-					stringaModifica=stringaModifica+"Altre Matricole("+strumento.getAltre_matricole()+","+altre_matricole+")|";
+					if(strumento.getDenominazione().equals("")) {
+						stringaModifica=stringaModifica+"Altre Matricole([VUOTO],"+altre_matricole+")|";
+					}else {
+						if(altre_matricole.equals("")) {
+							altre_matricole = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Altre Matricole("+strumento.getAltre_matricole()+","+altre_matricole+")|";
+					}
 				}
 
 
@@ -242,7 +329,7 @@ public class ModificaStrumento extends HttpServlet {
 				}
 
 
-				if(strumento.getTipo_strumento().getId()!=(Integer.parseInt(ref_tipo_strumento)));
+				if(strumento.getTipo_strumento().getId()!=(Integer.parseInt(ref_tipo_strumento)))
 				{
 					stringaModifica=stringaModifica+"Tipo Strumento("+strumento.getTipo_strumento().getNome()+","+getTipoStrumento(listaTipoStrumento,ref_tipo_strumento)+")|";
 				}
@@ -302,7 +389,7 @@ public class ModificaStrumento extends HttpServlet {
 					success = false;
 				}
 				GestioneMagazzinoBO.updateStrumento(strumento, session);
-				Gson gson = new Gson();
+				Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 
 				// 2. Java object to JSON, and assign to a String
 				String jsonInString = gson.toJson(strumento);

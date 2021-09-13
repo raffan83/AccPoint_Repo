@@ -70,7 +70,6 @@
 <th>Codice</th>
 <th>Descrizione</th>
 <th>Frequenza (Mesi)</th>
-<th>Durata (Ore)</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -83,10 +82,9 @@
 	<td>${corso_cat.codice }</td>
 	<td>${corso_cat.descrizione }</td>
 	<td>${corso_cat.frequenza}</td>	
-	<td>${corso_cat.durata}</td>
 	<td>
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
-	<a  class="btn btn-warning" onClicK="modificaCategoriaModal('${corso_cat.id}','${corso_cat.codice }','${corso_cat.descrizione.replace('\'','&prime;')}','${corso_cat.frequenza }','${corso_cat.durata }')" title="Click per modificare la categoria"><i class="fa fa-edit"></i></a>
+	<a  class="btn btn-warning" onClicK="modificaCategoriaModal('${corso_cat.id}','${corso_cat.codice }','${corso_cat.descrizione.replace('\'','&prime;')}','${corso_cat.frequenza }')" title="Click per modificare la categoria"><i class="fa fa-edit"></i></a>
 	<a href="#" class="btn btn-primary customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${corso_cat.id }')"><i class="fa fa-archive"></i></a>
 	</c:if>
 	</td>
@@ -177,18 +175,7 @@
        	</div>       	
        </div><br>
        
-         <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Durata (Ore)</label>
-       	</div>
-       	<div class="col-sm-9">             	  	
-        
-       	<input id="durata" name="durata" class="form-control" type="number" step="1" min="0" style="width:100%" required>
-       	</div>
-       	</div>		
-            	
-       
+
        
        
        
@@ -253,16 +240,7 @@
        	</div>       	
        </div><br>
        
-         <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Durata (Ore)</label>
-       	</div>
-       	<div class="col-sm-9">             	  	
-        
-       	<input id="durata_mod" name="durata_mod" class="form-control" type="number" step="1" min="0" style="width:100%" required>
-       	</div>
-       	</div>		
+	
             	       
        
        </div>
@@ -354,7 +332,7 @@ function modificaCategoriaModal(id_categoria, codice, descrizione,frequenza, dur
 	$('#codice_mod').val(codice);
 	$('#descrizione_mod').val(descrizione);
 	$('#frequenza_mod').val(frequenza);
-	$('#durata_mod').val(durata);
+	
 
 	$('#myModalModificaCategoria').modal();
 }

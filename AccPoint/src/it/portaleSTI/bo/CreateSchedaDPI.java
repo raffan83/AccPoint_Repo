@@ -213,10 +213,10 @@ public class CreateSchedaDPI {
 		
 		listaCodici[0]="id";
 		listaCodici[1]="dpi";
-		listaCodici[3]="modello";
-		listaCodici[4]="conformita";
+		listaCodici[2]="modello";
+		listaCodici[3]="conformita";		
+		listaCodici[4]="data_accettazione";
 		listaCodici[5]="scadenza";
-		listaCodici[6]="data_accettazione";
 
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		
@@ -233,16 +233,13 @@ public class CreateSchedaDPI {
 					arrayPs.add(consegna.getDpi().getModello());
 					arrayPs.add(consegna.getDpi().getConformita());
 					
-					
-					arrayPs.add(df.format(consegna.getDpi().getData_scadenza()));										
-					
-					
 					if(consegna.getData_accettazione()!=null) {
 						arrayPs.add(df.format(consegna.getData_accettazione()));	
 					}else {
 						arrayPs.add("");
 					}			
 					
+					arrayPs.add(df.format(consegna.getDpi().getData_scadenza()));
 					
 			         Object[] listaValori = arrayPs.toArray();
 			        
@@ -256,14 +253,14 @@ public class CreateSchedaDPI {
 					arrayPs.add(consegna.getDpi().getConformita());
 					
 				
-					arrayPs.add(consegna.getMotivazione());
-									
-					
 					if(consegna.getData_accettazione()!=null) {
 						arrayPs.add(df.format(consegna.getData_accettazione()));	
 					}else {
 						arrayPs.add("");
 					}
+
+					arrayPs.add(consegna.getMotivazione());
+									
 					
 					
 			         Object[] listaValori = arrayPs.toArray();

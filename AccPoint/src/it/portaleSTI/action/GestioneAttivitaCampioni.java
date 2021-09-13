@@ -177,7 +177,15 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 						CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
 						attivita.setCertificato(certificato);
 					}
+					
 				}				
+				
+				
+				if(Integer.parseInt(tipo_attivita)==3 || Integer.parseInt(tipo_attivita)==1) {
+					if(attivita.getCampione().getStatoCampione().equals("N")) {
+						attivita.getCampione().setStatoCampione("S");
+					}
+				}
 				
 				if(fileItem!=null && !filename.equals("")) {
 

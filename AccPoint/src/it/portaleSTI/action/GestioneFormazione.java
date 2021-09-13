@@ -299,15 +299,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		
 				String codice = ret.get("codice");
 				String descrizione = ret.get("descrizione");
-				String frequenza = ret.get("frequenza");
-				String durata = ret.get("durata");
+				String frequenza = ret.get("frequenza");	
 
 				ForCorsoCatDTO categoria = new ForCorsoCatDTO();		
 				
 				categoria.setCodice(codice);
 				categoria.setDescrizione(descrizione);
 				categoria.setFrequenza(Integer.parseInt(frequenza));
-				categoria.setDurata(Integer.parseInt(durata));
 				
 				session.save(categoria);
 				
@@ -354,15 +352,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String codice = ret.get("codice_mod");
 				String descrizione = ret.get("descrizione_mod");
 				String frequenza = ret.get("frequenza_mod");
-				String durata = ret.get("durata_mod");
+				
 
 				ForCorsoCatDTO categoria = GestioneFormazioneBO.getCategoriaCorsoFromId(Integer.parseInt(id_categoria),session);		
 				
 				categoria.setCodice(codice);
 				categoria.setDescrizione(descrizione);
 				categoria.setFrequenza(Integer.parseInt(frequenza));
-				categoria.setDurata(Integer.parseInt(durata));
-				
+								
 				session.update(categoria);
 				
 				myObj = new JsonObject();
@@ -381,6 +378,15 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					lista_corsi = GestioneFormazioneBO.getListaCorsiCliente(utente.getIdCliente(), utente.getIdSede(), session);
 				}else {
 					lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
+					
+//					
+//					for (ForCorsoDTO corso : lista_corsi) {
+//						int durata = corso.getCorso_cat().getDurata();
+//						corso.setDurata(durata);
+//						session.update(corso);
+//					}
+					
+					
 					ArrayList<ForCorsoCatDTO> lista_corsi_cat = GestioneFormazioneBO.getListaCategorieCorsi(session);
 					ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);			
 					ArrayList<CommessaDTO> lista_commesse = GestioneCommesseDAO.getListaCommesseFormazione(company, "FES;FCS", utente, 0, false);
@@ -437,7 +443,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String edizione = ret.get("edizione");
 				String commessa = ret.get("commessa");
 				String e_learning = ret.get("e_learning");
-
+				String durata = ret.get("durata");
+				
 				ForCorsoDTO corso = new ForCorsoDTO();		
 				
 				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria.split("_")[0])));
@@ -455,6 +462,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				corso.setDescrizione(descrizione);
 				corso.setEdizione(edizione);
 				corso.setCommessa(commessa);
+				corso.setDurata(Integer.parseInt(durata));
 				
 				if(filename!=null && !filename.equals("")) {
 					corso.setDocumento_test(filename);
@@ -518,6 +526,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String edizione = ret.get("edizione_mod");
 				String commessa = ret.get("commessa_mod");
 				String e_learning = ret.get("e_learning_mod");
+				String durata = ret.get("durata_mod");
 				
 				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso),session);		
 				
@@ -545,6 +554,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					corso.setDocumento_test(filename);
 					saveFile(fileItem, "DocumentiTest//"+corso.getId(), filename);
 				}
+				
+				corso.setDurata(Integer.parseInt(durata));
 				
 				session.update(corso);
 				

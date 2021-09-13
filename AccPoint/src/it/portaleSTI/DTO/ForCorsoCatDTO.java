@@ -6,7 +6,7 @@ public class ForCorsoCatDTO {
 	private String codice;
 	private String descrizione;
 	private int frequenza;
-	private int durata;
+	
 	
 	
 	public ForCorsoCatDTO(int id) {
@@ -42,12 +42,6 @@ public class ForCorsoCatDTO {
 	}
 	public void setFrequenza(int frequenza) {
 		this.frequenza = frequenza;
-	}
-	public int getDurata() {
-		return durata;
-	}
-	public void setDurata(int durata) {
-		this.durata = durata;
 	}
 
 	

@@ -23,7 +23,9 @@
          <property name="documento_test" type="java.lang.String" >
             <column name="documento_test" />
         </property>
-
+	<property name="durata" type="int" >
+            <column name="durata" />
+        </property>
         
            <set name="listaPartecipanti" table="for_partecipante_ruolo_corso"
 				inverse="false" lazy="false" fetch="select" >

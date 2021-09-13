@@ -59,7 +59,7 @@
  
  	<c:forEach items="${lista_documenti_dipendente}" var="doc" varStatus="loop">
  	<c:if test="${doc.documento.stato.id==1 }">
- 	<tr id="row_${loop.index}" style="background-color:#00ff80" >
+ 	<tr id="row_${loop.index}" style="background-color:#ccffcc" >
  	</c:if>
  	<c:if test="${doc.documento.stato.id==2 }">
 	<tr id="row_${loop.index}" style="background-color:#F8F26D" >

@@ -126,7 +126,7 @@
        <label>Ore Partecipate</label>
        </div>
        <div class="col-xs-8">
-       <input id="ore_partecipate" name="ore_partecipate" type="number" min="0" max="${corso.corso_cat.durata }" step="0.1" class="form-control" required>
+       <input id="ore_partecipate" name="ore_partecipate" type="number" min="0" max="${corso.durata }" step="0.1" class="form-control" required>
        </div>
        </div><br>
        
@@ -198,7 +198,7 @@
        <label>Ore Partecipate</label>
        </div>
        <div class="col-xs-8">
-       <input id="ore_partecipate_mod" name="ore_partecipate_mod" type="number" min="0" max="${corso.corso_cat.durata }" step="0.1"class="form-control" required>
+       <input id="ore_partecipate_mod" name="ore_partecipate_mod" type="number" min="0" max="${corso.durata }" step="0.1"class="form-control" required>
        </div>
        </div><br>
        
@@ -417,7 +417,7 @@ function associaUtentiModal(id_corso){
 
     $('#ore_partecipate').focusout(function(){
     	
-    	var max = '${corso.corso_cat.durata}';
+    	var max = '${corso.durata}';
     	
     	if($(this).val()>parseInt(max)){
     		$(this).val(max) ;
@@ -426,7 +426,7 @@ function associaUtentiModal(id_corso){
     
     $('#ore_partecipate_mod').focusout(function(){
     	
-    	var max = '${corso.corso_cat.durata}';
+    	var max = '${corso.durata}';
     	
     	if($(this).val()>parseInt(max)){
     		$(this).val(max) ;

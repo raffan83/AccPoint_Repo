@@ -333,7 +333,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				consegna.setData_consegna(new Date());
 				consegna.setCommessa(commessa);
 				
+				dpi.setAssegnato(1);
+				
 				session.save(consegna);
+				
+				session.update(dpi);
 				
 				SendEmailBO.sendEmailAccettazioneConsegna(consegna, request.getServletContext());
 				
@@ -419,8 +423,12 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				restituzione.setIs_restituzione(1);
 				restituzione.setData_consegna(new Date());
 				restituzione.setMotivazione(motivazione);
+				restituzione.setCommessa(consegna.getCommessa());
 				
 				session.save(restituzione);
+				
+				restituzione.getDpi().setAssegnato(0);
+				session.update(restituzione.getDpi());
 				
 				consegna.setRestituzione(restituzione);
 				session.update(consegna);

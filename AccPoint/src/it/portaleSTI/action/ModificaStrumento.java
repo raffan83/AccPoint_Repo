@@ -1,10 +1,11 @@
 package it.portaleSTI.action;
 
-import java.awt.List;
+import java.util.List;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -70,6 +74,7 @@ public class ModificaStrumento extends HttpServlet {
 		Session session =SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 
+		boolean ajax = false;
 		try
 		{
 
@@ -405,6 +410,56 @@ public class ModificaStrumento extends HttpServlet {
 
 				out.println(myObj.toString());
 
+			}
+			else if(action.equals("nuova_nota_strumento")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+
+				String nuova_nota = ret.get("nuova_nota");
+				
+				StrumentoDTO strumento = (StrumentoDTO) request.getSession().getAttribute("strumento");		
+				
+				UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+				
+				StrumentoNoteDTO nota = new StrumentoNoteDTO();
+				nota.setDescrizione(nuova_nota);
+				nota.setUser(utente);
+				nota.setData(new java.util.Date());
+				nota.setId_strumento(strumento.get__id());
+				session.save(nota);
+				
+				JsonObject myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Nota salvata con successo!");
+				out.print(myObj);
+				
 			}
 			session.getTransaction().commit();
 			session.close();

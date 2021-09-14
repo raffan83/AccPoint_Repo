@@ -11,9 +11,9 @@
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 
+<a class="btn btn-primary pull-right" onClick="$('#modalNuovaNota').modal()"><i class="fa fa-plus"></i>Nuova nota</a><br><br>
 
-
-	 <table id="tabNote" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+	 <table id="tabNote" class="table table-bordered table-hover dataTable table-striped" role="dialog" width="100%">
  <thead><tr class="active">
 
                        
@@ -59,6 +59,40 @@
 </table> 
 
 
+
+<form id="formNuovaNota" name="formNuovaNota" >
+<div id="modalNuovaNota" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" onclick="$('#modalNuovaNota').modal('hide')"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nuova Nota</h4>
+      </div>
+       <div class="modal-body">       
+      
+        <div class="row">
+       <div class="col-xs-12">
+       <label>Nota</label>
+
+       <textarea id="nuova_nota" name="nuova_nota" rows="3" class="form-control" required></textarea>
+       </div>
+       </div>
+      	
+      	</div>
+      <div class="modal-footer">
+
+      
+      <!-- <a class="btn btn-primary" onclick="associaPartecipanteCorso()" >Associa</a> -->
+		 <button class="btn btn-primary" type="submit" >Salva</button> 
+      </div>
+    </div>
+  </div>
+
+</div>
+</form>
+
+
 <script>
 
 
@@ -102,7 +136,7 @@ $(document).ready(function(){
 	 	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	       }
 	  },
-	  pageLength: 100,
+	  pageLength: 10,
 	     paging: true, 
 	     ordering: true,
 	     info: true, 
@@ -150,6 +184,16 @@ $(document).ready(function(){
 	
 });
 
-
+ 
+ $('#formNuovaNota').on('submit', function(e){
+	
+	 e.preventDefault();
+	 nuovaNotaStrumento('#formNuovaNota', 'modificaStrumento.do?action=nuova_nota_strumento');
+	 
+ });
+ 
+ 
+ 
+ 
 
 </script>

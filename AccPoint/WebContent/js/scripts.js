@@ -16276,3 +16276,76 @@ $.ajax({
 	
 	
 }
+
+
+function nuovaNotaStrumento(form, action){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+		  var f = $(form)[0]; 
+		  var formData = new FormData(f);
+		 
+  $.ajax({
+	  type: "POST",
+	  url: action,
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+			  $("#modalNuovoReferente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+   			$('#myModalError').on('hidden.bs.modal', function(){	  
+   				
+   				idCliente = $('#select1').val()
+   				idSede = $('#select2').val()
+   			
+   			 dataString ="idSede="+ idSede+";"+idCliente;
+ 	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
+ 	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+ 	        	$('#report_button').hide();
+ 				$('#visualizza_report').hide();
+ 	        	  $('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-success");
+ 	        	  $("#myModalErrorContent").html(data.messaggio);
+ 	        	$('#myModal').modal('hide');
+ 	        	$('.modal-backdrop').hide();
+   				
+ 	         });
+   			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+  });
+	
+}

@@ -35,7 +35,9 @@
             <column name="collettivo" />
         </property>
 
-
+<property name="assegnato" type="int">
+            <column name="assegnato" />
+        </property>
         
     </class>
 </hibernate-mapping>

@@ -12,6 +12,8 @@ public class DpiDTO {
 	private String conformita;
 	private Date data_scadenza;
 	private int collettivo;
+	private int assegnato;
+	
 	public int getId() {
 		return id;
 	}
@@ -59,6 +61,12 @@ public class DpiDTO {
 	}
 	public void setCollettivo(int collettivo) {
 		this.collettivo = collettivo;
+	}
+	public int getAssegnato() {
+		return assegnato;
+	}
+	public void setAssegnato(int assegnato) {
+		this.assegnato = assegnato;
 	}
 	
 	

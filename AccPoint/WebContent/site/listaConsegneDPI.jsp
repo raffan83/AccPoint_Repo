@@ -167,7 +167,13 @@
                 <option value=""></option>
                       <c:forEach items="${lista_dpi}" var="dpi">
                      
-                           <option value="${dpi.id}">${dpi.descrizione} </option> 
+                     <c:if test="${dpi.assegnato == 0 }">
+                     <option value="${dpi.id}">${dpi.descrizione} </option> 
+                     </c:if>
+                     <c:if test="${dpi.assegnato == 1 }">
+                     <option value="${dpi.id}" disabled>${dpi.descrizione} </option> 
+                     </c:if>
+                           
                          
                      </c:forEach>
 				

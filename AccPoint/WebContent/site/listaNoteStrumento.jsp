@@ -18,7 +18,7 @@
 
                        
                        
- 						<th>ID</th>
+ 						<th  hidden="hidden">ID</th>
   						<th>Modifiche</th>
  						  <th>Utente</th>
  						  <th>Data</th>                      
@@ -29,7 +29,7 @@
 
  <c:set var = "descrizione_nota" value = "${fn:split(nota.getDescrizione(), '|')}" />
  <tr>
- <td>${nota.id }</td>
+ <td hidden="hidden" >${nota.id }</td>
  <td>
  <ul class="list-group ">
                 
@@ -147,7 +147,7 @@ $(document).ready(function(){
 	     stateSave: true,
 	     order:[[0, "desc"]],
 	     columns : [
-	   	  {"data" : "id"},  
+	    	 {"data" : "id"},  
 	   	{"data" : "modifiche"},  
 	     	{"data" : "utente"},
 	     	{"data" : "data"}

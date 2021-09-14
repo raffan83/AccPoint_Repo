@@ -4,6 +4,8 @@ import java.util.List;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -171,7 +173,7 @@ public class ModificaStrumento extends HttpServlet {
 
 				String stringaModifica=("Modifica attributi strumento|");
 
-				if(!strumento.getDenominazione().equals(denominazione))
+				if(strumento.getDenominazione()!=null && !strumento.getDenominazione().equals(denominazione))
 				{
 					if(strumento.getDenominazione().equals("")) {
 						stringaModifica=stringaModifica+"Denominazione([VUOTO],"+denominazione+")|";
@@ -184,7 +186,7 @@ public class ModificaStrumento extends HttpServlet {
 					
 				}
 
-				if(!strumento.getCodice_interno().equals(codice_interno))
+				if(strumento.getCodice_interno()!=null &&!strumento.getCodice_interno().equals(codice_interno))
 				{
 					if(strumento.getCodice_interno().equals("")) {
 						stringaModifica=stringaModifica+"Codice Interno([VUOTO],"+codice_interno+")|";
@@ -196,7 +198,7 @@ public class ModificaStrumento extends HttpServlet {
 					}
 				}
 
-				if(!strumento.getCostruttore().equals(costruttore))
+				if(strumento.getCostruttore()!=null && !strumento.getCostruttore().equals(costruttore))
 				{
 					if(strumento.getCostruttore().equals("")) {
 						stringaModifica=stringaModifica+"Costruttore([VUOTO],"+costruttore+")|";
@@ -208,7 +210,7 @@ public class ModificaStrumento extends HttpServlet {
 					}
 				}
 
-				if(!strumento.getModello().equals(modello))
+				if(strumento.getModello()!=null && !strumento.getModello().equals(modello))
 				{
 					
 					if(strumento.getModello().equals("")) {
@@ -221,7 +223,7 @@ public class ModificaStrumento extends HttpServlet {
 					}
 				}
 
-				if(!strumento.getMatricola().equals(matricola))
+				if(strumento.getMatricola()!=null && !strumento.getMatricola().equals(matricola))
 				{
 					if(strumento.getMatricola().equals("")) {
 						stringaModifica=stringaModifica+"Matricola([VUOTO],"+matricola+")|";
@@ -233,7 +235,7 @@ public class ModificaStrumento extends HttpServlet {
 					}
 				}
 
-				if(!strumento.getRisoluzione().equals(risoluzione))
+				if(strumento.getRisoluzione()!=null && !strumento.getRisoluzione().equals(risoluzione))
 				{
 					if(strumento.getRisoluzione().equals("")) {
 						stringaModifica=stringaModifica+"Risoluzione([VUOTO],"+risoluzione+")|";
@@ -245,7 +247,7 @@ public class ModificaStrumento extends HttpServlet {
 					}
 				}
 
-				if(!strumento.getCampo_misura().equals(campo_misura))
+				if(strumento.getCampo_misura()!=null && !strumento.getCampo_misura().equals(campo_misura))
 				{
 					if(strumento.getCampo_misura().equals("")) {
 						stringaModifica=stringaModifica+"Campo Misura([VUOTO],"+campo_misura+")|";
@@ -257,7 +259,7 @@ public class ModificaStrumento extends HttpServlet {
 					}
 				}
 
-				if(!strumento.getUtilizzatore().equals(utilizzatore))
+				if(strumento.getUtilizzatore()!=null && !strumento.getUtilizzatore().equals(utilizzatore))
 				{
 					if(strumento.getUtilizzatore().equals("")) {
 						stringaModifica=stringaModifica+"Utilizzatore([VUOTO],"+utilizzatore+")|";
@@ -269,7 +271,7 @@ public class ModificaStrumento extends HttpServlet {
 					}
 				}
 
-				if(!strumento.getReparto().equals(reparto))
+				if(strumento.getReparto()!=null && !strumento.getReparto().equals(reparto))
 				{
 					if(strumento.getReparto().equals("")) {
 						stringaModifica=stringaModifica+"Reparto([VUOTO],"+reparto+")|";
@@ -281,7 +283,7 @@ public class ModificaStrumento extends HttpServlet {
 					}
 				}
 
-				if(!strumento.getNote().equals(note))
+				if(strumento.getNote()!=null && !strumento.getNote().equals(note))
 				{
 					if(strumento.getNote().equals("")) {
 						stringaModifica=stringaModifica+"Note([VUOTO],"+note+")|";
@@ -293,7 +295,7 @@ public class ModificaStrumento extends HttpServlet {
 					}
 				}
 
-				if(!strumento.getProcedura().equals(procedura))
+				if(strumento.getProcedura()!=null && !strumento.getProcedura().equals(procedura))
 				{
 					if(strumento.getDenominazione().equals("")) {
 						stringaModifica=stringaModifica+"Procedure([VUOTO],"+procedura+")|";
@@ -305,7 +307,7 @@ public class ModificaStrumento extends HttpServlet {
 					}
 				}
 
-				if(!strumento.getAltre_matricole().equals(altre_matricole))
+				if(strumento.getAltre_matricole()!=null && !strumento.getAltre_matricole().equals(altre_matricole))
 				{
 					if(strumento.getDenominazione().equals("")) {
 						stringaModifica=stringaModifica+"Altre Matricole([VUOTO],"+altre_matricole+")|";
@@ -374,8 +376,8 @@ public class ModificaStrumento extends HttpServlet {
 				noteStrumento.setId_strumento(strumento.get__id());
 				noteStrumento.setUser(utente);
 				noteStrumento.setDescrizione(stringaModifica);
-
-				noteStrumento.setData(new Date(System.currentTimeMillis()));
+				
+				noteStrumento.setData(new java.util.Date());
 
 				String message = "Salvato con Successo";
 				Boolean success = true;

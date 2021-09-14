@@ -46,7 +46,7 @@
  </td> 
 <%--  <td>-${nota.descrizione.replace('|', '<br>-') }</td> --%>
  <td>${nota.user.nominativo }</td>
- <td><fmt:formatDate pattern="dd/MM/yyyy" value="${nota.data }"></fmt:formatDate></td>
+ <td><fmt:formatDate pattern="dd/MM/yyyy HH:mm:ss" value="${nota.data }"></fmt:formatDate></td>
  
  
  

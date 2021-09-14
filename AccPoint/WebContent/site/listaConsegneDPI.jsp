@@ -168,10 +168,10 @@
                       <c:forEach items="${lista_dpi}" var="dpi">
                      
                      <c:if test="${dpi.assegnato == 0 }">
-                     <option value="${dpi.id}">${dpi.descrizione} </option> 
+                     <option value="${dpi.id}">${dpi.descrizione} (ID ${dpi.id })</option> 
                      </c:if>
                      <c:if test="${dpi.assegnato == 1 }">
-                     <option value="${dpi.id}" disabled>${dpi.descrizione} </option> 
+                     <option value="${dpi.id}" disabled>${dpi.descrizione} (ID ${dpi.id })</option> 
                      </c:if>
                            
                          

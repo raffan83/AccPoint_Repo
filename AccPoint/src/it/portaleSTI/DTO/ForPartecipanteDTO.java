@@ -17,6 +17,7 @@ public class ForPartecipanteDTO {
 	private String cf;
 	private String luogo_nascita;
 	private int nominativo_irregolare;
+	private String note;
 	
 	public String getCf() {
 		return cf;
@@ -114,6 +115,14 @@ public class ForPartecipanteDTO {
 
 	public void setNominativo_irregolare(int nominativo_irregolare) {
 		this.nominativo_irregolare = nominativo_irregolare;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 

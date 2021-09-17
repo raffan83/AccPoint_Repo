@@ -158,7 +158,7 @@ function modalnuovoCorso(){
 }
 
 
-function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, edizione){
+function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, tipologia){
 	
 	$('#id_corso').val(id_corso);
 	$('#categoria_mod').val(id_categoria);
@@ -174,7 +174,7 @@ function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data
 		
 	$('#label_file_mod').html(documento_test);
 	$('#descrizione_mod').val(descrizione);
-	$('#edizione_mod').val(edizione);
+	$('#tipologia_mod').val(tipologia);
 	
 	$('#myModalModificaCorso').modal();
 }

@@ -440,7 +440,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_corso = ret.get("data_corso");
 				String data_scadenza = ret.get("data_scadenza");
 				String descrizione = ret.get("descrizione");
-				String edizione = ret.get("edizione");
+				String tipologia = ret.get("tipologia");
 				String commessa = ret.get("commessa");
 				String e_learning = ret.get("e_learning");
 				String durata = ret.get("durata");
@@ -460,7 +460,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				corso.setData_corso(df.parse(data_corso));
 				corso.setData_scadenza(df.parse(data_scadenza));
 				corso.setDescrizione(descrizione);
-				corso.setEdizione(edizione);
+				corso.setTipologia(tipologia);
 				corso.setCommessa(commessa);
 				corso.setDurata(Integer.parseInt(durata));
 				
@@ -523,7 +523,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_corso = ret.get("data_corso_mod");
 				String data_scadenza = ret.get("data_scadenza_mod");
 				String descrizione = ret.get("descrizione_mod");
-				String edizione = ret.get("edizione_mod");
+				String tipologia = ret.get("tipologia_mod");
 				String commessa = ret.get("commessa_mod");
 				String e_learning = ret.get("e_learning_mod");
 				String durata = ret.get("durata_mod");
@@ -545,7 +545,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				corso.setData_corso(df.parse(data_corso));
 				corso.setData_scadenza(df.parse(data_scadenza));
 				corso.setDescrizione(descrizione);
-				corso.setEdizione(edizione);
+				corso.setTipologia(tipologia);
 				if(commessa!=null && !commessa.equals("")) {
 					corso.setCommessa(commessa);
 				}
@@ -2240,6 +2240,28 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaForEmailCorso.jsp");
 		     	dispatcher.forward(request,response);
+			}
+			else if(action.equals("update_nota_partecipante")) {
+				
+				String id_partecipante = request.getParameter("id_partecipante");
+				String nota = request.getParameter("nota");
+				
+				ForPartecipanteDTO partecipante = (ForPartecipanteDTO) request.getSession().getAttribute("partecipante");
+				if(partecipante == null) {
+					partecipante = GestioneFormazioneBO.getPartecipanteFromId(Integer.parseInt(id_partecipante), session);
+				}
+				partecipante.setNote(nota);
+				
+				session.update(partecipante);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Nota inserita con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+				
 			}
 			
 		}catch(Exception e) {

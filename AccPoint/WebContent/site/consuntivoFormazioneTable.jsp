@@ -12,12 +12,13 @@
  <thead><tr class="active">
 
 <th>ID Corso</th>
-<th>Tipologia</th>
+<th>Categoria</th>
 <th>Descrizione</th>
 <th>Commessa</th>
 <th>Azienda</th>
 <th>Sede</th>
 <th>E-Learning</th>
+<th>Tipologia</th>
 <th>Durata (Ore)</th>
 <th>N° Partecipanti</th>
 <th>Monte Ore</th>
@@ -63,9 +64,10 @@ ${corso.getListaPartecipanti().iterator().next().getNome_sede()}
 	SI
 	</c:if>
 </td>
-<td>${corso_part.corso.corso_cat.durata }</td>
+<td>${corso_part.corso.tipologia }</td>
+<td>${corso_part.corso.durata }</td>
 <td>${corso_part.corso.getListaPartecipanti().size() }</td>
-<td>${corso_part.corso.getListaPartecipanti().size() * corso_part.corso.corso_cat.durata }</td>
+<td>${corso_part.corso.getListaPartecipanti().size() * corso_part.corso.durata }</td>
 
 
 

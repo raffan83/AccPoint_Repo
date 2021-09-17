@@ -48,7 +48,7 @@
 <div class="col-xs-12">
 <a class="btn btn-primary pull-left" onClick="$('#modalScheda').modal()"><i class="fa fa-plus"></i> Crea Scheda DPI</a> 
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
-<a class="btn btn-primary pull-right" onClick="modalnuovaConsegna()"><i class="fa fa-plus"></i> Nuova Cosegna DPI</a> 
+<a class="btn btn-primary pull-right" onClick="modalnuovaConsegna()"><i class="fa fa-plus"></i> Nuova Consegna DPI</a> 
 
 
 

@@ -13,7 +13,7 @@ public class ForCorsoDTO {
 	private Date data_scadenza;
 	private String documento_test;
 	private String descrizione;
-	private String edizione;
+	private String tipologia;
 	private String commessa;
 	private ForQuestionarioDTO questionario;
 	private int e_learning;
@@ -69,12 +69,7 @@ public class ForCorsoDTO {
 	public void setData_corso(Date data_corso) {
 		this.data_corso = data_corso;
 	}
-	public String getEdizione() {
-		return edizione;
-	}
-	public void setEdizione(String edizione) {
-		this.edizione = edizione;
-	}
+
 	public String getDescrizione() {
 		return descrizione;
 	}
@@ -134,6 +129,13 @@ public class ForCorsoDTO {
 	}
 	public void setDurata(int durata) {
 		this.durata = durata;
+	}
+
+	public String getTipologia() {
+		return tipologia;
+	}
+	public void setTipologia(String tipologia) {
+		this.tipologia = tipologia;
 	}
 
 	

@@ -112,14 +112,16 @@
 
 <th>Partecipante</th>
 <th>Ruolo</th>
-<th>Tipologia</th>
+<th>Categoria</th>
 <th>Descrizione</th>
 <th>Data Corso</th>
 <th>Data Scadenza</th>
 <th>Frequenza (mesi)</th>
 <th>Azienda</th>
 <th>Sede</th>
-<th>Edizione</th>
+
+<th>Tipologia</th>
+<th>Note</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -149,7 +151,9 @@
 	<td>${corso_part.corso.corso_cat.frequenza }</td>
 	<td>${corso_part.partecipante.nome_azienda}</td>
 	<td><c:if test="${corso_part.partecipante.id_sede!=0}">${corso_part.partecipante.nome_sede}</c:if></td>
-	<td>${corso_part.corso.edizione }</td>
+
+	<td>${corso_part.corso.tipologia }</td>
+		<td>${corso_part.partecipante.note }</td>
 	<td>
 	 	
 	<a class="btn btn-info customTooltip" onClick="dettaglioCorso('${utl:encryptData(corso_part.corso.id)}')" title="Vai al corso"><i class="fa fa-search"></i></a>
@@ -241,7 +245,7 @@ function modalnuovoCorso(){
 }
 
 
-function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, edizione){
+function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, tipologia){
 	
 	$('#id_corso').val(id_corso);
 	$('#categoria_mod').val(id_categoria);
@@ -257,7 +261,7 @@ function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data
 		
 	$('#label_file_mod').html(documento_test);
 	$('#descrizione_mod').val(descrizione);
-	$('#edizione_mod').val(edizione);
+	$('#tipologia_mod').val(tipologia);
 	
 	$('#myModalModificaCorso').modal();
 }
@@ -409,7 +413,7 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 12 },
+		    	  { responsivePriority: 1, targets: 13 },
 		    	  { responsivePriority: 2, targets: 9},
 		    	  { responsivePriority: 3, targets: 10 }
 		    	  

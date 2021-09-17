@@ -336,17 +336,17 @@ public class ModificaStrumento extends HttpServlet {
 				}
 
 
-				if(strumento.getTipo_strumento().getId()!=(Integer.parseInt(ref_tipo_strumento)))
+				if(strumento.getTipo_strumento()!=null && strumento.getTipo_strumento().getId()!=(Integer.parseInt(ref_tipo_strumento)))
 				{
 					stringaModifica=stringaModifica+"Tipo Strumento("+strumento.getTipo_strumento().getNome()+","+getTipoStrumento(listaTipoStrumento,ref_tipo_strumento)+")|";
 				}
 
-				if(strumento.getClassificazione().getId()!=(Integer.parseInt(classificazione)))
+				if(strumento.getClassificazione()!=null && strumento.getClassificazione().getId()!=(Integer.parseInt(classificazione)))
 				{
 					stringaModifica=stringaModifica+"Classificazione("+strumento.getClassificazione().getDescrizione()+","+getClassificazione(listaClassificazione,classificazione)+")|";
 				}
 
-				if(strumento.getLuogo().getId()!=(Integer.parseInt(luogo_verifica)))
+				if(strumento.getLuogo()!=null && strumento.getLuogo().getId()!=(Integer.parseInt(luogo_verifica)))
 				{
 					stringaModifica=stringaModifica+"Luogo("+strumento.getLuogo().getDescrizione()+","+getLuogoVerifica(listaLuogoVerifica,luogo_verifica)+")";
 				}

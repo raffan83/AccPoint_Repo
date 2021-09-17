@@ -717,6 +717,8 @@
                <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
 		</c:if>		
 		 <li class=""><a href="#documentiesterni" data-toggle="tab" aria-expanded="false" onclick="" id="documentiesterniTab">Documenti esterni</a></li>
+		 
+		 <li class=""><a href="#notestrumento" data-toggle="tab" aria-expanded="false" onclick="" id="noteStrumentoTab">Note Strumento</a></li>
              </ul>
             </ul>
             <div class="tab-content">
@@ -746,6 +748,10 @@
               		
               		<div class="tab-pane" id="documentiesterni">
               
+
+              			</div> 
+              			<div class="tab-pane" id="notestrumento">
+              			   		
 
               			</div> 
               </div>  
@@ -1134,6 +1140,12 @@
     		       		exploreModal("documentiEsterni.do?id_str="+${misura.strumento.__id},"","#documentiesterni")
     		       	//	exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#documentiesterni");
     		       	}
+    		       	
+    		       	if(contentID == "noteStrumentoTab"){
+    		    		
+    		       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str="+${misura.strumento.__id},"","#notestrumento")
+    		       	 }
+    		       	
     		    		
     		 		});
     			   

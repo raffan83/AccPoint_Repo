@@ -16310,20 +16310,27 @@ function nuovaNotaStrumento(form, action){
    				idCliente = $('#select1').val()
    				idSede = $('#select2').val()
    			
-   			 dataString ="idSede="+ idSede+";"+idCliente;
- 	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
- 	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
- 	        	$('#report_button').hide();
- 				$('#visualizza_report').hide();
- 	        	  $('#myModalError').removeClass();
- 				$('#myModalError').addClass("modal modal-success");
- 	        	  $("#myModalErrorContent").html(data.messaggio);
- 	        	$('#myModal').modal('hide');
- 	        	$('.modal-backdrop').hide();
+   				if(idCliente!= null){
+   					dataString ="idSede="+ idSede+";"+idCliente;
+   	 	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
+   	 	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+   	 	        	$('#report_button').hide();
+   	 				$('#visualizza_report').hide();
+   	 	        	  $('#myModalError').removeClass();
+   	 				$('#myModalError').addClass("modal modal-success");
+   	 	        	  $("#myModalErrorContent").html(data.messaggio);
+   	 	        	$('#myModal').modal('hide');
+   	 	        	$('.modal-backdrop').hide();
    				
  	         });
+   	 	          
+   	 	          
+   				}else{
+					location.reload()
+				}
    			});
-		
+   			
+			 
 		  }else{
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
@@ -16349,3 +16356,67 @@ function nuovaNotaStrumento(form, action){
   });
 	
 }
+
+
+
+function callAjax(dataObj, url, callback){
+	 
+
+	  $.ajax({
+type: "POST",
+url: url,
+data: dataObj,
+dataType: "json",
+//if received a response from the server
+success: function( data, textStatus) {
+	pleaseWaitDiv.modal('hide');
+		  
+	  if(data.success)
+	  { 
+		  
+		  if (callback!=null && typeof callback === "function") {
+
+  	    	callback(data, textStatus);
+  	}else{
+  	
+  		
+  		$('#report_button').hide();
+		$('#visualizza_report').hide();
+	  $("#modalNuovoReferente").modal("hide");
+	  $('#myModalErrorContent').html(data.messaggio);
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-success");
+		$('#myModalError').modal('show');
+		
+	$('#myModalError').on('hidden.bs.modal', function(){	         			
+		
+		 location.reload()
+	});
+  	}
+		  
+		
+	
+	  }else{
+		  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');	      			 
+	  }
+},
+error: function( data, textStatus) {
+	  $('#myModalYesOrNo').modal('hide');
+	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+}
+});
+	
+	 
+}
+

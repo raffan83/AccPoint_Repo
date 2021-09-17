@@ -53,8 +53,8 @@
           <property name="descrizione" type="java.lang.String" >
             <column name="descrizione" />
         </property>
-          <property name="edizione" type="java.lang.String" >
-            <column name="edizione" />
+          <property name="tipologia" type="java.lang.String" >
+            <column name="tipologia" />
         </property>
          <property name="commessa" type="java.lang.String" >
             <column name="commessa" />

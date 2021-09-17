@@ -87,6 +87,14 @@
                 </div>
                 </div>
                 </li>
+                
+                 <li class="list-group-item">
+                <div class="row">
+                     <div class="col-xs-12"> 
+                <b>Note</b> <!-- <a class="pull-right"> --><textarea id="note" name="note" rows="3" style="width:100%" class="form-control pull-right">${partecipante.note }</textarea><!-- </a> -->
+                </div>
+                </div>
+                </li>
         </ul>
 
 </div>
@@ -183,7 +191,7 @@
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${corso_part.corso.data_corso}" /></td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${corso_part.corso.data_scadenza}" /></td>
 	<td>${corso_part.ore_partecipate}</td>
-	<td>${corso_part.corso.corso_cat.durata}</td>
+	<td>${corso_part.corso.durata}</td>
 	<td>${corso_part.corso.edizione}</td>
 	<td>
 	 <a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_attestato&id_corso=${utl:encryptData(corso_part.corso.id)}&id_partecipante=${utl:encryptData(corso_part.partecipante.id)}&filename=${utl:encryptData(corso_part.attestato)}" title="Click per scaricare l'attestato"><i class="fa fa-file-pdf-o"></i></a>
@@ -367,6 +375,25 @@
     	
     });
 
+    
+    $('#note').change(function(){
+    
+    	
+    	var dataObj = {};
+    	dataObj.id_partecipante = "${partecipante.id}";
+    	dataObj.nota = $(this).val();
+    	
+    	
+    	callAjax(dataObj, "gestioneFormazione.do?action=update_nota_partecipante", function(){
+    		
+    	
+    	});
+    	
+    	
+    });
+    
+    
+    
   </script>
   
 </jsp:attribute> 

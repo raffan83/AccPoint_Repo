@@ -70,11 +70,11 @@
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 <th>Visibile al cliente</th>
 </c:if>
-<th>Tipologia</th>
+<th>Categoria</th>
 <th>Descrizione</th>
 <th>Commessa</th>
 <th>Durata</th>
-
+<th>Tipologia</th>
 <th>E-Learning</th>
 <th>Data Inizio</th>
 <th>Data Scadenza</th>
@@ -112,6 +112,7 @@
 	<td>${corso.descrizione }</td>
 	<td>${corso.commessa }</td>
 <td>${corso.durata }</td>
+<td>${corso.tipologia }</td>
 	<td>
 	<c:if test="${corso.e_learning == 0 }">
 	NO
@@ -129,10 +130,10 @@
 	<a class="btn btn-info" onClick="dettaglioCorso('${utl:encryptData(corso.id)}')"><i class="fa fa-search"></i></a>
 		 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 	<%-- 	 	<c:if test="${corso.e_learning == 0}"> --%>
-				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${corso.docente.id}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.edizione }','${corso.commessa }','${corso.e_learning }', ${corso.durata })" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
+				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${corso.docente.id}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }', ${corso.durata })" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
 	<%-- 	 	</c:if>
 	<c:if test="${corso.e_learning == 1}">
-				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }',0,'${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${corso.descrizione }','${corso.edizione }','${corso.commessa }','${corso.e_learning }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
+				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }',0,'${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${corso.descrizione }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
 		 	</c:if> --%>
 	</c:if>
 	<c:if test="${corso.documento_test!=null }">
@@ -203,7 +204,7 @@
         <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Tipologia</label>
+       		<label>Categoria</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -248,11 +249,15 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Edizione</label>
+       		<label>Tipologia</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-      	<input type="text" id="edizione" name="edizione" class="form-control">
+      	<select id="tipologia" name="tipologia" class="form-control select2" style="width:100%" data-placeholder="Seleziona tipologia..." required >
+      	<option value=""></option>
+      	<option value="BASE">BASE</option>
+      	<option value="AGGIORNAMENTO">AGGIORNAMENTO</option>
+      	</select>
        			
        	</div>       	
        </div><br>
@@ -340,7 +345,7 @@
        	</div>
        	<div class="col-sm-9">             	  	
         
-       	    <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload" name="fileupload" type="file" required></span><label id="label_file"></label>
+       	    <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload" name="fileupload" type="file" ></span><label id="label_file"></label>
        	    </div>
         
        	</div>
@@ -377,7 +382,7 @@
         <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Tipologia</label>
+       		<label>Categoria</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -420,14 +425,18 @@
        			
        	</div>       	
        </div><br>
-       <div class="row">
+      <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Edizione</label>
+       		<label>Tipologia</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-      	<input type="text" id="edizione_mod" name="edizione_mod" class="form-control">
+      	<select id="tipologia_mod" name="tipologia_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona tipologia..." required >
+      	<option value=""></option>
+      	<option value="BASE">BASE</option>
+      	<option value="AGGIORNAMENTO">AGGIORNAMENTO</option>
+      	</select>
        			
        	</div>       	
        </div><br>
@@ -655,7 +664,7 @@ function eliminaCorsoModal(id_corso){
 }
 
 
-function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, edizione, commessa,e_learning, durata){
+function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, tipologia, commessa,e_learning, durata){
 	
 	$('#id_corso').val(id_corso);
 	$('#categoria_mod').val(id_categoria);
@@ -675,7 +684,8 @@ function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data
 		
 	$('#label_file_mod').html(documento_test);
 	$('#descrizione_mod').val(descrizione);
-	$('#edizione_mod').val(edizione);
+	$('#tipologia_mod').val(tipologia);
+	$('#tipologia_mod').change();
 	$('#durata_mod').val(durata);
 	
 	if(e_learning =='1'){	
@@ -995,7 +1005,7 @@ $(document).ready(function() {
 	//changeSkin();
 	admin="${admin}";
 	
-	var col_azioni = 9;
+	var col_azioni = 10;
 	
 	if(admin == "1"){
 		col_azioni++;

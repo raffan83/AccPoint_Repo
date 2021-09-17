@@ -51,7 +51,9 @@
             </many-to-many>
         	
         </set> 
-     
+       <property name="note" type="java.lang.String" >
+            <column name="note" />
+        </property>
      
         
     </class>

@@ -103,7 +103,7 @@
 <div class="col-md-6">
 <div class="box box-primary box-solid">
 <div class="box-header with-border">
-	 Dettaglio Tipologia
+	 Dettaglio Categoria
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -132,7 +132,7 @@
                 </li>
                
 			<li class="list-group-item">
-                <b>Edizione</b> <a class="pull-right">${corso.edizione}</a>
+                <b>Tipologia</b> <a class="pull-right">${corso.tipologia}</a>
                 </li>
                
         </ul>

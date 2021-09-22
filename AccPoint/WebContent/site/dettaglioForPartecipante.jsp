@@ -169,13 +169,13 @@
 <th></th>
 <th>ID</th>
 <th>Codice</th>
-<th>Descrizione Tipologia</th>
+<th>Descrizione Categoria</th>
 <th>Ruolo</th>
 <th>Data Corso</th>
 <th>Data Scadenza</th>
 <th>Ore partecipate</th>
 <th>Ore totali</th>
-<th>Edizione</th>
+<th>Tipologia</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -192,7 +192,7 @@
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${corso_part.corso.data_scadenza}" /></td>
 	<td>${corso_part.ore_partecipate}</td>
 	<td>${corso_part.corso.durata}</td>
-	<td>${corso_part.corso.edizione}</td>
+	<td>${corso_part.corso.tipologia}</td>
 	<td>
 	 <a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_attestato&id_corso=${utl:encryptData(corso_part.corso.id)}&id_partecipante=${utl:encryptData(corso_part.partecipante.id)}&filename=${utl:encryptData(corso_part.attestato)}" title="Click per scaricare l'attestato"><i class="fa fa-file-pdf-o"></i></a>
 	

@@ -17,7 +17,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="20"/>
 				</textElement>
-				<text><![CDATA[SCHEDA RICONSEGNA DPI (SRDPI)]]></text>
+				<text><![CDATA[SCHEDA RICONSEGNA DPI ]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

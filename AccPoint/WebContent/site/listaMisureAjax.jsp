@@ -284,7 +284,7 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	    stateSave: true,
+  	    stateSave: false,
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 1 },
   	                   { responsivePriority: 2, targets: 2 },
@@ -356,14 +356,14 @@
   // DataTable
 	tableMisure = $('#tabMisure').DataTable();
   // Apply the search
-  tableMisure.columns().eq( 0 ).each( function ( colIdx ) {
+   tableMisure.columns().eq( 0 ).each( function ( colIdx ) {
       $( 'input', tableMisure.column( colIdx ).header() ).on( 'keyup', function () {
-          table
+    	  tableMisure
               .column( colIdx )
               .search( this.value )
               .draw();
       } );
-  } ); 
+  } );  
   tableMisure.columns.adjust().draw();
     	
 	

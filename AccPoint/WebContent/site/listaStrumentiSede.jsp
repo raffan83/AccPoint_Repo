@@ -1540,67 +1540,75 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
  maxDateFilter = "";
  dataType = "";
  
- $.fn.dataTableExt.afnFiltering.push(
+  $.fn.dataTableExt.afnFiltering.push(
+		  
+  
    function(oSettings, aData, iDataIndex) {
 	   console.log(aData);
-	   if(dataType == "prossima"){
-		   if (aData[15]) {
+	   
+		if(oSettings.nTable.getAttribute('id') == "tabPM"){
+			 if(dataType == "prossima"){
+				   if (aData[15]) {
 
-	    	 	var dd = aData[15].split("/");
+			    	 	var dd = aData[15].split("/");
 
-	       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
-	       console.log("Prossima:"+minDateFilter);
-		   console.log("MIN:"+minDateFilter);
-		   console.log("MAX:"+maxDateFilter);
-		   console.log("VAL:"+aData._date);
-		   console.log( dd);
-
-
-	     }
-		   
-	   }else{
-		   if (aData[14]) {
-
-	    	 	var dd = aData[14].split("/");
-
-	       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
-	       console.log("Ultima:"+minDateFilter);
-		   console.log("MIN:"+minDateFilter);
-		   console.log("MAX:"+maxDateFilter);
-		   console.log("VAL:"+aData._date);
-		   console.log( dd);
+			       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
+			       console.log("Prossima:"+minDateFilter);
+				   console.log("MIN:"+minDateFilter);
+				   console.log("MAX:"+maxDateFilter);
+				   console.log("VAL:"+aData._date);
+				   console.log( dd);
 
 
-	     }
-		   
-	   }
-	  
-	  
-     if (minDateFilter && !isNaN(minDateFilter)) {
-    	 if(isNaN(aData._date)){
-    		 return false;
-     
-     }
-       if (aData._date < minDateFilter) {
-          return false;
-       }
-   		
-     }
+			     }
+				   
+			   }else{
+				   if (aData[14]) {
 
-     if (maxDateFilter && !isNaN(maxDateFilter)) {
-    	 if(isNaN(aData._date)){
-    		 return false;
-     
-     }
-       if (aData._date > maxDateFilter) {
-    	  
-         return false;
-       }
-      }
+			    	 	var dd = aData[14].split("/");
 
-     return true;
-   }
- );
+			       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
+			       console.log("Ultima:"+minDateFilter);
+				   console.log("MIN:"+minDateFilter);
+				   console.log("MAX:"+maxDateFilter);
+				   console.log("VAL:"+aData._date);
+				   console.log( dd);
+
+
+			     }
+				   
+			   }
+			  
+			  
+		     if (minDateFilter && !isNaN(minDateFilter)) {
+		    	 if(isNaN(aData._date)){
+		    		 return false;
+		     
+		     }
+		       if (aData._date < minDateFilter) {
+		          return false;
+		       }
+		   		
+		     }
+
+		     if (maxDateFilter && !isNaN(maxDateFilter)) {
+		    	 if(isNaN(aData._date)){
+		    		 return false;
+		     
+		     }
+		       if (aData._date > maxDateFilter) {
+		    	  
+		         return false;
+		       }
+		      }
+
+		     
+		   }
+		  return true;
+		}	
+	   
+ 
+ ); 
  
  function openDownloadDocumenti(id){
 

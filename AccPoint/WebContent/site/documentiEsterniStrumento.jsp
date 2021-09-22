@@ -385,7 +385,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   // Apply the search
   tableDocumenti.columns().eq( 0 ).each( function ( colIdx ) {
       $( 'input', tableDocumenti.column( colIdx ).header() ).on( 'keyup', function () {
-    	  tableCertificati
+    	  tableDocumenti
               .column( colIdx )
               .search( this.value )
               .draw();

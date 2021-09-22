@@ -149,16 +149,16 @@ ${corso.getListaPartecipanti().iterator().next().getNome_sede()}
 	 
 	 for(var i = 0; i<data.length; i++){
 		 
-		 if(data[i][7]!=null && data[i][7]!=''){
-			 tot_durata = tot_durata  + parseInt(data[i][7]);	 
-		 }
-		 
-		if(data[i][8]!=null && data[i][8]!=''){
-			tot_partecipanti = tot_partecipanti  + parseInt(data[i][8]);	 
+		 if(data[i][8]!=null && data[i][8]!=''){
+			 tot_durata = tot_durata  + parseInt(data[i][8]);	 
 		 }
 		 
 		if(data[i][9]!=null && data[i][9]!=''){
-			tot_ore = tot_ore  + parseInt(data[i][9]);	 
+			tot_partecipanti = tot_partecipanti  + parseInt(data[i][9]);	 
+		 }
+		 
+		if(data[i][10]!=null && data[i][10]!=''){
+			tot_ore = tot_ore  + parseInt(data[i][10]);	 
 		 }
 		 
 		 

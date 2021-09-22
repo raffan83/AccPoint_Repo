@@ -5477,6 +5477,8 @@ function eliminaCompany(){
 	    	 
 	    	 		maxDateFilter = new Date(endDatePicker.format('YYYY-MM-DD') ).getTime();
 	    	 		dataType = dataTypeStr; 
+	    	 		
+	    	 		var table = $('#tabPM').DataTable();
 	    	      table.draw();
 	    	       
 	       }

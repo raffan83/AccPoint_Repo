@@ -773,7 +773,7 @@ public class GestioneCertificatoBO {
 	    PdfReader reader = new PdfReader(path);
 	    	          
 	    PdfStamper stamper = new PdfStamper(reader,new FileOutputStream(Costanti.PATH_FOLDER+"\\temp\\"+certificato.getNomeCertificato()));
-	    PdfContentByte content = stamper.getOverContent(1);
+	   
 	    Image image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma());
 
 	    image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	    
@@ -794,6 +794,7 @@ public class GestioneCertificatoBO {
 				 image.scaleAbsolute(rect);
 				
 				image.setAbsolutePosition(fontPosition[0] - 15 , fontPosition[1] -25);
+				PdfContentByte content = stamper.getOverContent(i);
 				content.addImage(image);
 				
 				break;

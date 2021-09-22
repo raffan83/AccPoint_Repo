@@ -53,6 +53,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
             <ul id="mainTabs" class="nav nav-tabs">
               <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true"   id="dettaglioTab">Dettaglio Strumento</a></li>
               <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false"   id="misureTab">Dettaglio Misure</a></li>
+      <li class=""><a href="#notestrumento" data-toggle="tab" aria-expanded="false" onclick="" id="noteStrumentoTab">Note Strumento</a></li>
               
 			</ul>
             <div class="tab-content">
@@ -68,6 +69,10 @@ String idCliente = (String)session.getAttribute("id_Cliente");
 
          
 			 </div>
+			 <div class="tab-pane" id="notestrumento">
+              			   		
+
+              			</div> 
 
               <!-- /.tab-pane -->
 
@@ -124,7 +129,10 @@ String idCliente = (String)session.getAttribute("id_Cliente");
     	       		exploreModal("strumentiMisurati.do?action=ls&id=${strumento.__id}","","#misure")
     	       	}
     	     
-    	       	
+    	       	if(contentID == "noteStrumentoTab"){
+    	    		
+    	       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str=${strumento.__id}","","#notestrumento")
+    	       	 }
     	       	
     	       	
 

@@ -87,9 +87,10 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 	}
 	
 	if(lista_quote.size()==0) {
+	
 		for (RilParticolareDTO part : lista_impronte) {
-			int id_ripetizione = GestioneRilieviBO.getMaxIdRipetizione(part, session) + 1;
 			
+			int id_ripetizione = GestioneRilieviBO.getMaxIdRipetizioneImpronta(part, session) + 1;
 			for(int i = 0; i<lista_valori.size();i++) {
 				RilQuotaDTO quota = new RilQuotaDTO();
 				RilSimboloDTO simbolo = null;

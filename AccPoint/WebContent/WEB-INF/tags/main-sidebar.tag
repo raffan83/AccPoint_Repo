@@ -336,7 +336,7 @@
         
         
         
-              <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE DPI")){%>  
+              <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_DPI") || user.checkRuolo("DP")){%>  
            <li class="header">DPI</li>
 
          <li class="treeview">
@@ -346,9 +346,13 @@
             </span>
           </a>
           <ul class="treeview-menu">
+        <% if(!user.checkRuolo("DP")){%>  
 		   <li><a href="gestioneDpi.do?action=lista">Elenco DPI</a></li>	
+		   <% }%>
 			<li><a href="gestioneDpi.do?action=lista_schede_consegna">Schede consegna DPI</a></li>
+			<% if(!user.checkRuolo("DP")){%>  
 			<li><a href="gestioneDpi.do?action=scadenzario">Scadenzario</a></li>		
+			<% }%>
 	      	
           </ul>
         </li> 

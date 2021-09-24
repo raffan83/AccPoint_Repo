@@ -47,9 +47,11 @@
 <div class="row">
 <div class="col-xs-12">
 <a class="btn btn-primary pull-left" onClick="$('#modalScheda').modal()"><i class="fa fa-plus"></i> Crea Scheda DPI</a> 
-<!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
+<!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> -->
+ 
+   <c:if test="${!utente.checkRuolo('DP') }">
 <a class="btn btn-primary pull-right" onClick="modalnuovaConsegna()"><i class="fa fa-plus"></i> Nuova Consegna DPI</a> 
-
+</c:if>
 
 
 </div>
@@ -116,12 +118,12 @@
 </td>
 	<td>${consegna.restituzione.id }</td>		
 	<td>	
-
+  <c:if test="${!utente.checkRuolo('DP') }">
 	   <a class="btn btn-warning customTooltip" onClicK="modalModificaConsegna('${consegna.id }','${consegna.dpi.id }','${consegna.lavoratore.id }')" title="Click per modificare la consegna"><i class="fa fa-edit"></i></a>   
 	  <c:if test="${consegna.is_restituzione==0 }">
 	  <a class="btn btn-success customTooltip" onClicK="modalCreaRestituzione('${consegna.id }')" title="Crea restituzione DPI"><i class="fa fa-arrow-left"></i></a>
 	  </c:if> 
-
+</c:if>
 	</td>
 	</tr>
 	</c:forEach>
@@ -150,7 +152,7 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuova Cosegna DPI</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuova Consegna DPI</h4>
       </div>
        <div class="modal-body">
        
@@ -290,7 +292,7 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Cosegna DPI</h4>
+        <h4 class="modal-title" id="myModalLabel">Modifica Consegna DPI</h4>
       </div>
               <div class="modal-body">
        
@@ -724,7 +726,7 @@ $('#lavoratore_scheda').select2();
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 13 },
+		    	  { responsivePriority: 1, targets: 10 },
 		    	  
 		    	  
 		               ], 	        

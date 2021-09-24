@@ -414,11 +414,27 @@ public class GestioneRilieviDAO {
 
 
 
-	public static int getMaxIdRipetizione(RilParticolareDTO impronta, Session session) {
+	public static int getMaxIdRipetizione(ArrayList<RilParticolareDTO> lista_impronte, Session session) {
 		
-		Integer res= 0;
-			Query query = session.createQuery("select max(id_ripetizione) from RilQuotaDTO where impronta.id = :_impronta");
-			query.setParameter("_impronta", impronta.getId());
+	
+		String str = "";
+		int res = 0;
+		
+		for (int i = 0; i<lista_impronte.size();i++) {
+			if(i==0) {
+				
+				str += "impronta.id = "+lista_impronte.get(i).getId();
+						
+			}else {
+				
+				str += " or impronta.id = "+lista_impronte.get(i).getId();
+				
+			}				
+			
+		}
+				
+			Query query = session.createQuery("select max(id_ripetizione) from RilQuotaDTO where "+str);
+			//query.setParameter("_impronta", impronta.getId());
 		
 			List<Integer> result = (List<Integer>) query.list();
 			
@@ -726,6 +742,25 @@ public class GestioneRilieviDAO {
 
 		query.executeUpdate();
 		
+	}
+
+
+
+	public static int getMaxIdRipetizioneImpronta(RilParticolareDTO part, Session session) {
+
+		int res = 0;
+
+			Query query = session.createQuery("select max(id_ripetizione) from RilQuotaDTO where impronta.id = :_id_impronta");
+			query.setParameter("_id_impronta", part.getId());
+		
+			List<Integer> result = (List<Integer>) query.list();
+			
+			if(result.get(0)!=null) {
+				return result.get(0);
+			}
+			else {
+				return res; 
+			}
 	}
 
 	

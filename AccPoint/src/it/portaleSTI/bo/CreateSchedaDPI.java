@@ -238,8 +238,12 @@ public class CreateSchedaDPI {
 					}else {
 						arrayPs.add("");
 					}			
+					if(consegna.getDpi().getData_scadenza()!=null) {
+						arrayPs.add(df.format(consegna.getDpi().getData_scadenza()));
+					}else {
+						arrayPs.add("");
+					}
 					
-					arrayPs.add(df.format(consegna.getDpi().getData_scadenza()));
 					
 			         Object[] listaValori = arrayPs.toArray();
 			        

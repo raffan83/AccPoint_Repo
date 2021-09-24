@@ -290,9 +290,9 @@ public class GestioneRilieviBO {
 		
 	}
 
-	public static int getMaxIdRipetizione(RilParticolareDTO impronta, Session session) {
+	public static int getMaxIdRipetizione(ArrayList<RilParticolareDTO> lista_impronte, Session session) {
 		
-		return GestioneRilieviDAO.getMaxIdRipetizione(impronta, session);
+		return GestioneRilieviDAO.getMaxIdRipetizione(lista_impronte, session);
 	}
 
 	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente, int anno, Session session) {
@@ -384,6 +384,11 @@ public class GestioneRilieviBO {
 		}
 						
 		return n_quote;
+	}
+
+	public static int getMaxIdRipetizioneImpronta(RilParticolareDTO part, Session session) {
+		
+		return GestioneRilieviDAO.getMaxIdRipetizioneImpronta(part, session);
 	}
 
 

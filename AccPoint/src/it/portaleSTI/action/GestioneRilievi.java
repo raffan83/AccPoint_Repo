@@ -304,13 +304,16 @@ public class GestioneRilievi extends HttpServlet {
 				ArrayList<RilQuotaFunzionaleDTO> lista_quote_funzionali = GestioneRilieviBO.getListaQuoteFunzionali(session);				
 				
 
-				session.close();
+				
 				request.getSession().setAttribute("rilievo", rilievo);
 				request.getSession().setAttribute("lista_impronte", lista_impronte);
 				request.getSession().setAttribute("lista_simboli", lista_simboli);
 				request.getSession().setAttribute("lista_quote_funzionali", lista_quote_funzionali);
 				request.getSession().setAttribute("filtro_rilievi", filtro_rilievi);
 				request.getSession().setAttribute("cliente_filtro", cliente_filtro);
+				
+				session.getTransaction().commit();
+				session.close();
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioRilievo.jsp");
 		  	    dispatcher.forward(request,response);	
@@ -376,15 +379,17 @@ public class GestioneRilievi extends HttpServlet {
 					}
 
 
-				session.getTransaction().commit();
+				
 				ArrayList<RilParticolareDTO> lista_impronte = GestioneRilieviBO.getListaParticolariPerMisura(rilievo.getId(), session);
-
-				session.close();
+				
 				
 				request.getSession().setAttribute("numero_pezzi", n_pezzi);
 				request.getSession().setAttribute("lista_impronte", lista_impronte);
 				request.getSession().setAttribute("quote_pezzo", quote_pezzo);
 				request.getSession().setAttribute("numero_impronte", numero_impronte);
+				
+				session.getTransaction().commit();
+				session.close();
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Particolare aggiunto con successo!");
 				out.print(myObj);
@@ -491,10 +496,11 @@ public class GestioneRilievi extends HttpServlet {
 							}
 						}
 						
-						session.getTransaction().commit();
+						
 						
 						myObj.addProperty("success", true);
 						}
+						session.getTransaction().commit();
 						session.close();
 						out.print(myObj);
 			}
@@ -593,6 +599,7 @@ public class GestioneRilievi extends HttpServlet {
 				request.getSession().setAttribute("particolare", impronta);
 				request.getSession().setAttribute("id_impronta", id_impronta);		
 				
+				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPuntiQuota.jsp");
 		  	    dispatcher.forward(request,response);
@@ -904,6 +911,7 @@ public class GestioneRilievi extends HttpServlet {
 				}
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(impr.getMisura().getId(), session);
+				int max_id_ripetizione = GestioneRilieviBO.getMaxIdRipetizione(lista_impronte, session);
 				
 				for(int i = 0; i<n;i++) {
 					for(int t = 0; t<ripetizioni; t++) {
@@ -965,7 +973,7 @@ public class GestioneRilievi extends HttpServlet {
 						if(impr.getNome_impronta().equals("")) {
 							quota.setId_ripetizione(0);
 						}else {
-							quota.setId_ripetizione((GestioneRilieviBO.getMaxIdRipetizione(lista_impronte.get(i), session))+1);
+							quota.setId_ripetizione(max_id_ripetizione+1);
 						}
 	
 						session.save(quota);					
@@ -1819,9 +1827,11 @@ public class GestioneRilievi extends HttpServlet {
 				
 				String id_rilievo = request.getParameter("id_rilievo");
 				ArrayList<RilAllegatiDTO> lista_allegati = GestioneRilieviBO.getlistaFileArchivio(Integer.parseInt(id_rilievo), session);
-				session.close();
+				
 				request.getSession().setAttribute("lista_allegati", lista_allegati);		
 				request.getSession().setAttribute("id_rilievo", id_rilievo);	
+				
+				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaFileArchivioRilievi.jsp");
 		  	    dispatcher.forward(request,response);
 		  	    

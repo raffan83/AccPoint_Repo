@@ -150,7 +150,7 @@
        	<div class="col-sm-9">      
        	  	
         
-    <select name="tipo_dpi" id="tipo_dpi" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipi DPI..." data-live-search="true" style="width:100%" >
+    <select name="tipo_dpi" id="tipo_dpi" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipi DPI..." data-live-search="true" style="width:100%" required >
                 <option value=""></option>
                       <c:forEach items="${lista_tipo_dpi}" var="tipo">
                      

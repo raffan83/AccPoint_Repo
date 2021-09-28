@@ -911,7 +911,13 @@ public class GestioneRilievi extends HttpServlet {
 				}
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(impr.getMisura().getId(), session);
-				int max_id_ripetizione = GestioneRilieviBO.getMaxIdRipetizione(lista_impronte, session);
+				int max_id_ripetizione = 0;
+				
+				if(lista_impronte!=null) {
+				
+					max_id_ripetizione = GestioneRilieviBO.getMaxIdRipetizione(lista_impronte, session);
+				}
+				
 				
 				for(int i = 0; i<n;i++) {
 					for(int t = 0; t<ripetizioni; t++) {

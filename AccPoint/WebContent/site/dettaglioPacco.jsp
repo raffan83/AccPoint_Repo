@@ -2074,6 +2074,7 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 	    $('#tabItems thead th').each( function () {
 	    	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
 	    	var title = $('#tabItems thead th').eq( $(this).index() ).text();
+	    
 	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables1[$(this).index()].search.search+'" type="text" /></div>');
 	    	} );
 

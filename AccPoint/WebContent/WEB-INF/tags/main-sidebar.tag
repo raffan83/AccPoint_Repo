@@ -408,7 +408,7 @@
 			<li><a href="downloadCalver.do?action=dasmtarLat">DasmTarLAT v1.0.3</a></li>
 
 			<li><a href="downloadCalver.do?action=sicurettaElettrica">DasmTarSE v0.0.1</a></li>
-			<li><a href="downloadCalver.do?action=dasmtarVerificazione">DasmTarVER v2.0.5</a></li>
+			<li><a href="downloadCalver.do?action=dasmtarVerificazione">DasmTarVER v2.0.6</a></li>
 			<li><a href="downloadCalver.do?action=printLabel">PrintLabel v1.1.5</a></li>
 			<li><a href="downloadCalver.do?action=librerie">Librerie</a></li>
 			<li><a href="downloadCalver.do?action=convertitore">Convertitore</a></li>

@@ -165,7 +165,7 @@
 	      </c:if>
 	      
 		<c:if test="${documento.aggiornabile_cl == 1 || (documento.stato.id==3 && ruolo)}">
-		<a class="btn btn-success customTooltip" title="Aggiorna documento" onClick="modalAggiornaDocumento('${documento.id}','${documento.nome_documento }','${documento.frequenza_rinnovo_mesi }')"><i class="fa fa-arrow-up"></i></a>
+		<a class="btn btn-success customTooltip" title="Aggiorna documento" onClick="modalAggiornaDocumento('${documento.id}','${utl:escapeJS(documento.nome_documento) }','${documento.frequenza_rinnovo_mesi }')"><i class="fa fa-arrow-up"></i></a>
 		</c:if>
 	</td>
 	</tr>

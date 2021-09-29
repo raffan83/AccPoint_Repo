@@ -619,7 +619,11 @@
         
          </div> 
         
+
           <br> 
+
+
+<a class="btn btn-primary" onClick="invertiNomeCognome()">Inverti Nome e Cognome</a>
 
  <table id="tabImportPartecipante" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
@@ -1207,7 +1211,7 @@ $(document).ready(function() {
 	 	    });
 
 	 	     tab.columns().eq( 0 ).each( function ( colIdx ) {
-	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	  $( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
 	      tab
 	          .column( colIdx )
 	          .search( this.value )
@@ -1244,6 +1248,28 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 	 
 });
  
+ 
+ function invertiNomeCognome(){
+	 
+	 var table = $('#tabImportPartecipante').DataTable();
+	  
+	 var data_table = table.rows().data(); 
+	 
+	 for (var i = 0; i < data_table.length; i++) {
+		 var x = data_table[i].nome;
+		 
+		 data_table[i].nome = data_table[i].cognome;
+		 data_table[i].cognome = x;
+	}
+	 
+
+	 
+	  table.clear().draw();
+	   
+		table.rows.add(data_table).draw();
+	 
+	 
+ }
  
  
  function confermaImportazione(){

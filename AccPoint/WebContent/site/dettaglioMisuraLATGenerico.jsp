@@ -163,6 +163,84 @@
 </div>
 
   
+  <div id="myModalDettaglioStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Strumento</h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+             <ul class="nav nav-tabs">
+              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
+              <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li>
+       <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li> -->
+        
+ 		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
+               <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
+		</c:if>		
+		 <li class=""><a href="#documentiesterni" data-toggle="tab" aria-expanded="false" onclick="" id="documentiesterniTab">Documenti esterni</a></li>
+		 
+		 <li class=""><a href="#notestrumento" data-toggle="tab" aria-expanded="false" onclick="" id="noteStrumentoTab">Note Strumento</a></li>
+             </ul>
+            </ul>
+            <div class="tab-content">
+               <div class="tab-pane active" id="dettaglio">
+
+    			</div> 
+
+              <!-- /.tab-pane -->
+             
+			  <div class="tab-pane" id="misure">
+                
+
+         
+			 </div> 
+
+
+              <!-- /.tab-pane -->
+
+
+               		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
+              
+              			<div class="tab-pane" id="modifica">
+              
+
+              			</div> 
+              		</c:if>		
+              		
+              		<div class="tab-pane" id="documentiesterni">
+              
+
+              			</div> 
+              			<div class="tab-pane" id="notestrumento">
+              			   		
+
+              			</div> 
+              </div>  
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+    
+        
+        
+        
+        
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
+        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+      </div>
+    </div>
+  </div>
+  
+  
+  
   </div>
   
   <!-- /.content-wrapper -->
@@ -194,7 +272,45 @@
    
     $(document).ready(function() {
     	
-  
+    	 $('a[data-toggle="tab2"]').tab('show');
+
+
+ 		
+ 		
+ 		
+ 		   $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
+
+
+ 		       	var  contentID = e.target.id;
+
+ 		     	if(contentID == "dettaglioTab"){
+ 		       		exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#dettaglio");
+ 		       	}
+ 		       	if(contentID == "misureTab"){
+ 		       		exploreModal("strumentiMisurati.do?action=ls&id="+${misura.strumento.__id},"","#misure")
+ 		       	}
+ 		       	if(contentID == "modificaTab"){
+ 		       		exploreModal("modificaStrumento.do?action=modifica&id="+${misura.strumento.__id},"","#modifica")
+ 		       	}
+ 		       	if(contentID == "documentiesterniTab"){
+ 		       		exploreModal("documentiEsterni.do?id_str="+${misura.strumento.__id},"","#documentiesterni")
+ 		       	//	exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#documentiesterni");
+ 		       	}
+ 		       	
+ 		       	if(contentID == "noteStrumentoTab"){
+ 		    		
+ 		       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str="+${misura.strumento.__id},"","#notestrumento")
+ 		       	 }
+ 		       	
+ 		    		
+ 		 		});
+ 			   
+ 			   $('#myModalDettaglioStrumento').on('hidden.bs.modal', function (e) {
+
+ 		    	 	$('#dettaglioTab').tab('show');
+ 		    	 	$('body').removeClass('noScroll');
+ 		    	 	$(document.body).css('padding-right', '0px');
+ 		    	});
      	
 
 	});

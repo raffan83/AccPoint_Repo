@@ -65,6 +65,7 @@ import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
+import it.portaleSTI.bo.SendEmailBO;
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -198,7 +199,7 @@ public class GestioneIntervento extends HttpServlet {
 			 
 			
 			String idIntervento = request.getParameter("idIntervento" );
-			
+			String comunicazione = request.getParameter("comunicazione" );
 			idIntervento = Utility.decryptData(idIntervento);
 					
 			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
@@ -209,6 +210,11 @@ public class GestioneIntervento extends HttpServlet {
 						
 	
 				GestioneInterventoBO.update(intervento,session);
+				
+				
+				if(comunicazione != null && comunicazione.equals("1")) {
+					SendEmailBO.sendEmailAperturaChiusuraIntevento("C",request.getServletContext(), intervento);	
+				}
 				
 				Gson gson = new Gson();
 			
@@ -226,6 +232,7 @@ public class GestioneIntervento extends HttpServlet {
 		if(action !=null && action.equals("apri")){
 			 			
 			String idIntervento = request.getParameter("idIntervento" );
+			String comunicazione = request.getParameter("comunicazione" );
 			
 			idIntervento = Utility.decryptData(idIntervento);
 
@@ -237,6 +244,12 @@ public class GestioneIntervento extends HttpServlet {
 						
 	
 				GestioneInterventoBO.update(intervento,session);
+				
+				if(comunicazione != null && comunicazione.equals("1")) {
+					SendEmailBO.sendEmailAperturaChiusuraIntevento("A",request.getServletContext(), intervento);	
+				}
+				
+				
 				
 				Gson gson = new Gson();
 			

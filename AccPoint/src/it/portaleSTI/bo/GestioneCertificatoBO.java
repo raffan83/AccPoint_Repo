@@ -769,11 +769,19 @@ public class GestioneCertificatoBO {
 		
 		String path = Costanti.PATH_FOLDER+certificato.getMisura().getIntervento().getNomePack()+"\\"+certificato.getNomeCertificato();
 		
-		
+		if(multi) {
+			path = Costanti.PATH_FOLDER+"\\temp\\"+certificato.getNomeCertificato();
+			
+		}
+		String path_stamper = Costanti.PATH_FOLDER+"\\temp\\"+certificato.getNomeCertificato();
 	    PdfReader reader = new PdfReader(path);
-	    	          
-	    PdfStamper stamper = new PdfStamper(reader,new FileOutputStream(Costanti.PATH_FOLDER+"\\temp\\"+certificato.getNomeCertificato()));
-	   
+	        
+	    if(multi) {
+	    	path_stamper = Costanti.PATH_FOLDER+"\\temp\\"+certificato.getNomeCertificato().substring(0, certificato.getNomeCertificato().length()-4)+"new.pdf";
+	    }
+	    
+	    PdfStamper stamper = new PdfStamper(reader,new FileOutputStream(path_stamper)); 
+	    
 	    Image image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma());
 
 	    image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	    
@@ -804,13 +812,17 @@ public class GestioneCertificatoBO {
 		stamper.close();
 		reader.close();
 	    System.out.println(Arrays.toString(fontPosition));
-
+	    if(!multi) {
 	    File targetFile=  new File(path);
 		File source = new File(Costanti.PATH_FOLDER+"\\temp\\"+certificato.getNomeCertificato());
      	FileUtils.copyFile(source, targetFile);
      	
-     	if(!multi) {
+     	
      		source.delete();
+     	}else {
+     		File targetFile=  new File(path);
+     		File source = new File(Costanti.PATH_FOLDER+"\\temp\\"+certificato.getNomeCertificato().substring(0, certificato.getNomeCertificato().length()-4)+"new.pdf");
+          	FileUtils.copyFile(source, targetFile);
      	}
 	    JsonObject myObj = new JsonObject();
 	    

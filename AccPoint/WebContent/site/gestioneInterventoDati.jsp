@@ -5,8 +5,11 @@
 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
-<jsp:attribute name="body_area">
 
+
+
+<jsp:attribute name="body_area">
+<c:set var="apertura_chiusura"></c:set>
 <div class="wrapper">
 	
   <t:main-header  />
@@ -116,7 +119,7 @@
                 <li class="list-group-item">
                   <b>Stato</b> <div class="pull-right">
                   
-					<c:if test="${intervento.statoIntervento.id == 0}">
+					<%-- <c:if test="${intervento.statoIntervento.id == 0}">
 						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 						
 					</c:if>
@@ -129,8 +132,23 @@
 					<c:if test="${intervento.statoIntervento.id == 2}">
 					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
 					
-					</c:if>
+					</c:if> --%>
     
+    
+ <c:if test="${intervento.statoIntervento.id == 0}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+						
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 1}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 2}">
+					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','apertura')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
+					
+					</c:if> 
 				</div>
                 </li>
                 <li class="list-group-item">
@@ -483,6 +501,36 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+  <div id="modalComunicazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">
+			<label id="label_chiusura">Vuoi inviare la comunicazione di avvenuta chiusura intervento?</label>
+   <label id="label_apertura">Vuoi inviare la comunicazione di avvenuta apertura intervento?</label>
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer" id="myModalFooter">
+ 	<input id="id_int" type="hidden">
+ 	<input id="apertura_chiusura" type="hidden">
+ 	
+ 
+ 		<button type="button" class="btn btn-primary" onClick="cambiaStatoIntervento($('#id_int').val(), 1)">SI</button>
+        <button type="button" class="btn btn-primary"  onClick="cambiaStatoIntervento($('#id_int').val(), 0)">NO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <form id="formNuovaMisura" name="formNuovaMisura">
   <div id="modalNuovaMisura" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -1522,6 +1570,34 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 
 });  
 	
+	
+	
+	function openModalComunicazione(id_intervento, apertura_chiusura){
+		
+		$('#id_int').val(id_intervento);
+		
+		if(apertura_chiusura == 'apertura'){
+			$('#label_chiusura').hide();
+			$('#label_apertura').show();
+		}else{
+			$('#label_apertura').hide();
+			$('#label_chiusura').show();
+		}
+		$('#apertura_chiusura').val(apertura_chiusura);
+		$('#modalComunicazione').modal()
+	}
+	
+	
+	function cambiaStatoIntervento(id_intervento, comunicazione){
+		
+		if($('#apertura_chiusura').val() == 'apertura'){
+			apriIntervento('${utl:encryptData(intervento.id)}',0,0, comunicazione)
+		}else{
+			chiudiIntervento('${utl:encryptData(intervento.id)}',0,0, comunicazione)
+		}
+		
+		
+	}
 	
     $(document).ready(function() { 
     	

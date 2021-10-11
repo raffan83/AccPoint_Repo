@@ -977,7 +977,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			//multi serve per non aggiungere la firma in caso di stampa di tanti certificati 
 			  if(!multi && certificato.getMisura().getInterventoDati().getUtente().getFile_firma()!=null && certificato.getMisura().getInterventoDati().getUtente().getIdFirma()!=null && !certificato.getMisura().getInterventoDati().getUtente().getIdFirma().equals("")) {
 				  jsonOP = ArubaSignService.signCertificatoPades(certificato.getMisura().getInterventoDati().getUtente(), CostantiCertificato.OPERATORE_LABEL,false, certificato);				  
-			  }else if(certificato.getMisura().getInterventoDati().getUtente().getFile_firma()!=null && (certificato.getMisura().getInterventoDati().getUtente().getIdFirma()==null || certificato.getMisura().getInterventoDati().getUtente().getIdFirma().equals(""))) {
+			  }			 
+			  else if(multi || (certificato.getMisura().getInterventoDati().getUtente().getFile_firma()!=null && (certificato.getMisura().getInterventoDati().getUtente().getIdFirma()==null || certificato.getMisura().getInterventoDati().getUtente().getIdFirma().equals("")))) {
 				  jsonOP = GestioneCertificatoBO.addSign(certificato.getMisura().getInterventoDati().getUtente(), CostantiCertificato.OPERATORE_LABEL, multi,certificato);
 			  }
 			  
@@ -987,9 +988,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  }
 			  
 			  utente.setIdFirma(GestioneUtenteBO.getIdFirmaDigitale(utente.getId(), session));
-			  if(!multi && utente.getFile_firma()!=null && utente.getIdFirma()!=null && certificato.getMisura().getInterventoDati().getUtente().getIdFirma()!=null && !certificato.getMisura().getInterventoDati().getUtente().getIdFirma().equals("") && (tipo_firma == 0 || tipo_firma == 2)) {
+			  if(!multi && utente.getFile_firma()!=null && utente.getIdFirma()!=null&& (tipo_firma == 0 || tipo_firma == 2)) {
 				 jsonRL =  ArubaSignService.signCertificatoPades(utente, CostantiCertificato.RESPONSABILE_LABEL,false, certificato);
-			  }else if(utente.getFile_firma()!=null&& (tipo_firma == 0 || tipo_firma == 2) && (utente.getIdFirma()==null || certificato.getMisura().getInterventoDati().getUtente().getIdFirma()== null || certificato.getMisura().getInterventoDati().getUtente().getIdFirma().equals(""))) {
+			  }else if(multi || (utente.getFile_firma()!=null&& (tipo_firma == 0 || tipo_firma == 2) && (utente.getIdFirma()==null || certificato.getMisura().getInterventoDati().getUtente().getIdFirma()== null || certificato.getMisura().getInterventoDati().getUtente().getIdFirma().equals("")))) {
 				  jsonRL = GestioneCertificatoBO.addSign(utente, CostantiCertificato.RESPONSABILE_LABEL, multi, certificato);
 			  }
 			  

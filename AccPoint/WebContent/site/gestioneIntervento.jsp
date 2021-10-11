@@ -433,7 +433,7 @@
  <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyCuBQxPwqQMTjowOqSX4z-7wZtgZDXNaVI&sensor=false"></script> -->
  <!-- <script src="http://www.openlayers.org/api/OpenLayers.js"></script>  -->
  <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js"></script>
- 
+ <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <!-- <script src="plugins/jbdemonte-gmap3/dist/gmap3.min.js"></script> -->
  
  <script type="text/javascript">
@@ -533,6 +533,16 @@
 
 	}
 	
+	 function formatDate(data){
+			
+		   var mydate = new Date(data);
+		   
+		   if(!isNaN(mydate.getTime())){
+		   
+			   str = mydate.toString("dd/MM/yyyy");
+		   }			   
+		   return str;	 		
+	}
 	
 	
     function init() {
@@ -573,7 +583,14 @@
     	
 		init();
 
-		
+		    var stato = 'CHIUSA';
+		    
+		    if("${commessa.SYS_STATO}" == '1APERTA'){
+		    	stato = 'APERTA';
+		    }else if("${commessa.SYS_STATO}" == '0CREATA'){
+		    	stato = 'CREATA';
+		    }
+		    
 		
     	$('.select2').select2();
     	
@@ -684,6 +701,10 @@
 		    });
 		  } );
     
+    
+    
+    var dataCommessa = formatDate('${commessa.DT_COMMESSA}');
+    
     var tableAttiìvita = $('#tabAttivita').DataTable({
     	language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -732,9 +753,12 @@
 	                   text: 'Esporta Excel',
 	                  
 	               },{
+
 	                   extend: 'pdf',
 	                   text: 'Esporta Pdf',
-	                  
+	                   message: 'ID COMMESSA: ${commessa.ID_COMMESSA} \n\nDATA COMMESSA: '+dataCommessa+'\n\nCLIENTE: ${commessa.ID_ANAGEN_NOME} \n\n INDIRIZZO CLIENTE: ${commessa.INDIRIZZO_PRINCIPALE} \n\n SEDE: ${commessa.ANAGEN_INDR_DESCR} ${commessa.ANAGEN_INDR_INDIRIZZO}'+
+	                  '\n\nCLIENTE UTILIZZATORE: ${commessa.NOME_UTILIZZATORE}\n\nINDIRIZZO UTILIZZATORE: ${commessa.INDIRIZZO_UTILIZZATORE}\n\nSTATO: '+stato+' \n\nNOTE: ${utl:escapeJS(commessa.NOTE_GEN)} \n\nRESPONSABILE COMMESSA: ${commessa.RESPONSABILE}',
+	                  title: 'Lista Attività'
 	               },
 	               {
 	                   extend: 'colvis',

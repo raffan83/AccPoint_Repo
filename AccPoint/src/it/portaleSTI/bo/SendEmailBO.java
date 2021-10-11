@@ -6,6 +6,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -32,6 +33,7 @@ import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
@@ -871,6 +873,66 @@ public static void sendEmailRiconsegnaDPI(ConsegnaDpiDTO consegna, ServletContex
 
 
 	  email.send();
+}
+
+public static void sendEmailAperturaChiusuraIntevento(String apertura_chiusura,ServletContext ctx, InterventoDTO intervento) throws Exception {
+	
+	
+	
+	 HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+ email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+ email.getMailSession().getProperties().put("mail.debug", "true");
+ email.getMailSession().getProperties().put("mail.smtp.port", "465");
+ email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+ email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+ email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+ DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+	  email.addTo("giuseppe.gabriele@stisrl.com");
+	  email.addTo("sara.massaro@stisrl.com");
+	  email.setFrom("calver@accpoint.it", "Calver");
+	  File image = new File(ctx.getRealPath("images/logo_calver_v2.png"));
+	  String cid = email.embed(image, "Calver logo");
+	  if(apertura_chiusura.equals("A")) {
+		  email.setSubject("Apertura intervento ID: "+intervento.getId());
+		  
+		  email.setHtmlMsg("<html>Si comunica l'apertura del seguente intervento:<br><br>"
+			  	  	+"ID: "+intervento.getId()
+					  +"<br>COMMESSA: "+intervento.getIdCommessa()
+					  +"<br>CLIENTE: "+intervento.getNome_cliente()
+					  +"<br>SEDE: " +intervento.getNome_sede()
+					  +"<br>RESPONSABILE: "+intervento.getUser().getNominativo()					 
+					  +"<br>DATA APERTURA: "+df.format(new Date())
+					  
+				  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
+		  
+		  
+	  }else{
+		  email.setSubject("Chiusura intervento ID: "+intervento.getId());
+		  email.setHtmlMsg("<html>Si comunica la chiusura del seguente intervento:<br><br>"
+			  	  	+"ID: "+intervento.getId()+""
+					  +"<br>COMMESSA: "+intervento.getIdCommessa()
+					  +"<br>CLIENTE: "+intervento.getNome_cliente()
+					  +"<br>SEDE: " +intervento.getNome_sede()
+					  +"<br>RESPONSABILE: "+intervento.getUser().getNominativo()
+					  +"<br>DATA CHIUSURA: "+df.format(new Date())
+					  
+					  
+					  
+				  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
+		  
+	  }
+	  
+
+
+	  email.send();
+	
 }
 
 }

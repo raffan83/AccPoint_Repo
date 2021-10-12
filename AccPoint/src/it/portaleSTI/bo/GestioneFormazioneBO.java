@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -499,6 +500,8 @@ public class GestioneFormazioneBO {
 			String keyCf = "C.F. : ";
 			String keyCf2 = "C.F. ";
 			Locale locale = new Locale("it", "IT");
+			
+			String textNoSpace = pdftext.replaceAll(" ","");
 		
 			if(pdftext.contains(keyNome) || pdftext.contains(keyNome2)) {
 				
@@ -595,7 +598,99 @@ public class GestioneFormazioneBO {
 				
 				lista.add(partecipante);
 			}
-			
+//			}else if(textNoSpace.contains("C.F.")||textNoSpace.contains("C.F.:")) {
+//				
+//				String nominativo = textNoSpace.substring(textNoSpace.indexOf(keyNome.replaceAll(" ","")) + keyNome.replaceAll(" ","").length(), textNoSpace.indexOf(keyNascita.replaceAll(" ","")));
+//				String data_nascita = textNoSpace.substring(textNoSpace.indexOf(keyNascita.replaceAll(" ","")) + keyNascita.replaceAll(" ","").length(), textNoSpace.indexOf(keyLuogoStart.replaceAll(" ","")));
+//				String luogo_nascita =  textNoSpace.substring(textNoSpace.indexOf(keyLuogoStart.replaceAll(" ","")) + keyLuogoStart.replaceAll(" ","").length(), textNoSpace.indexOf(keyLuogoEnd.replaceAll(" ","")));
+//				
+//				String cf = "";
+//				
+//				if(pdftext.indexOf(keyCf) == -1) {
+//					
+//					cf = pdftext.substring(pdftext.indexOf("opnefeiitalia@flexipec.it") +66, pdftext.indexOf("opnefeiitalia@flexipec.it") +82);
+//										
+//				
+//				
+//				}else {
+//					cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
+//				}						
+//						
+//				
+//				if(data_nascita.contains("/")) {
+//					df = new SimpleDateFormat("dd/MM/yyyy", locale);
+//				}else {
+//					df = new SimpleDateFormat("dd MMMM yyyy", locale);
+//				}
+//			
+//				System.out.println(nominativo + " "+ data_nascita+" "+luogo_nascita+" "+cf);
+//				
+//				ForPartecipanteDTO partecipante = new ForPartecipanteDTO();
+//				
+//				String[] nomeCognome = nominativo.split(" ");
+//				
+//				if(pdftext.indexOf(keyCf) == -1) {
+//					if(nomeCognome.length == 2) {
+//						partecipante.setCognome(nomeCognome[1]);
+//						partecipante.setNome(nomeCognome[0]);
+//							
+//					}else if(nomeCognome.length == 3){
+//						partecipante.setCognome(nomeCognome[1] +" "+ nomeCognome[2]);					
+//						partecipante.setNome(nomeCognome[0]);
+//						partecipante.setNominativo_irregolare(1);
+//					}else if(nomeCognome.length>3){
+//						partecipante.setNome(nomeCognome[0]);								
+//						partecipante.setNominativo_irregolare(0);
+//						int j = 2;
+//						String cognome = nomeCognome[1] +" "+ nomeCognome[2];
+//						
+//						while(j<nomeCognome.length) {
+//							cognome += nomeCognome[j];
+//							
+//							j++;
+//						}
+//						partecipante.setCognome(cognome);
+//					}
+//				}else {
+//					if(nomeCognome.length == 2) {
+//						partecipante.setCognome(nomeCognome[0]);
+//						partecipante.setNome(nomeCognome[1]);
+//							
+//					}else if(nomeCognome.length == 3){
+//						partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);					
+//						partecipante.setNome(nomeCognome[2]);
+//						partecipante.setNominativo_irregolare(1);
+//					}else if(nomeCognome.length>3){
+//						partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);			
+//						partecipante.setNominativo_irregolare(1);
+//						int j = 2;
+//						while(j<nomeCognome.length) {
+//							partecipante.setNome(nomeCognome[j]);
+//							j++;
+//						}
+//					}
+//				}
+//				
+//				
+//				partecipante.setCf(cf);
+//				partecipante.setData_nascita(df.parse(data_nascita));
+//				partecipante.setLuogo_nascita(luogo_nascita);
+//				if(cl!=null) {
+//					partecipante.setId_azienda(cl.get__id());
+//					partecipante.setNome_azienda(cl.getNome());
+//				}
+//				
+//				if(sd!=null) {
+//					partecipante.setId_sede(sd.get__id());
+//					String nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
+//					partecipante.setNome_sede(nome_sede);
+//				}
+//				
+//				lista.add(partecipante);
+//				
+//				
+//			}
+//			
 
 		}
 		
@@ -979,6 +1074,11 @@ public class GestioneFormazioneBO {
 	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaCorsiSuccessivi(String dateTo, Session session) throws Exception, Exception {
 		
 		return GestioneFormazioneDAO.getListaCorsiSuccessivi(dateTo, session);
+	}
+
+	public static ArrayList<ForCorsoDTO> getListaCorsiDocente(String dateFrom, String dateTo, int id_docente,	Session session) throws Exception, Exception {
+		
+		return GestioneFormazioneDAO.getListaCorsiDocente(dateFrom, dateTo, id_docente, session);
 	}
 
 	

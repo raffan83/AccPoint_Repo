@@ -2263,6 +2263,26 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.close();
 				
 			}
+			else if(action.equals("consuntivo_docente")) {
+				
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");	
+				String id_docente = request.getParameter("docente");	
+				
+				ArrayList<ForCorsoDTO> lista_corsi_docente =  GestioneFormazioneBO.getListaCorsiDocente(dateFrom, dateTo, Integer.parseInt(id_docente), session);	
+				
+				request.getSession().setAttribute("lista_corsi", lista_corsi_docente);
+				request.getSession().setAttribute("dateFrom", dateFrom);
+				request.getSession().setAttribute("dateTo", dateTo);
+			
+								
+				//session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/consuntivoDocenteFormazione.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
 			
 		}catch(Exception e) {
 			

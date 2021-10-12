@@ -91,9 +91,10 @@
 	</td>	
 	<td>
 	<c:if test="${docente.cv !=null && docente.cv != '' }">
-	<a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_curriculum&id_docente=${utl:encryptData(docente.id)}" title="Click per scaricare il cv"><i class="fa fa-file-pdf-o"></i></a>
+	<a target="_blank" class="btn btn-danger customTooltip" href="gestioneFormazione.do?action=download_curriculum&id_docente=${utl:encryptData(docente.id)}" title="Click per scaricare il cv"><i class="fa fa-file-pdf-o"></i></a>
 	</c:if>
-	<a class="btn btn-warning" onClicK="modificaDocenteModal('${docente.id}','${docente.nome }','${docente.cognome.replace('\'','&prime;')}','${docente.formatore }','${docente.cv }')" title="Click per modificare il docente"><i class="fa fa-edit"></i></a> 
+	<a class="btn btn-warning customTooltip" onClicK="modificaDocenteModal('${docente.id}','${utl:escapeJS(docente.nome) }','${utl:escapeJS(docente.cognome)}','${docente.formatore }','${docente.cv }')" title="Click per modificare il docente"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-info customTooltip" onClicK="modalConsuntivoDocente('${docente.id}', '${utl:escapeJS(docente.nome) }','${utl:escapeJS(docente.cognome)}')" title="Click per visualizzare il consuntivo docente"><i class="fa fa-search"></i></a> 
 	</td>
 	</tr>
 	</c:forEach>
@@ -288,6 +289,64 @@
 
 
 
+<div id="myModalConsuntivoDocente" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabelDocente"> </h4>
+      </div>
+       <div class="modal-body">      
+       
+       
+       <div class="row">
+
+	<div class="col-xs-8">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Filtra Data:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraDate()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
+
+	</div>
+	
+
+
+</div>
+
+<div class="row">
+<div class="col-xs-12">
+
+<div id="content_consuntivo"></div>
+
+</div>
+
+</div>
+    
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="docente_id">
+   
+		<a class="btn btn-primary" onclick="$('#myModalConsuntivoDocente').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
 </div>
    <t:dash-footer />
    
@@ -325,6 +384,42 @@ function modalNuovoDocente(){
 	
 	$('#myModalnuovoDocente').modal();
 	
+}
+
+function modalConsuntivoDocente(id_docente, nome, cognome){
+	
+	$('#docente_id').val(id_docente);
+	
+	$('#myModalLabelDocente').html("Consuntivo docente: "+nome+" "+cognome);
+	
+	
+	$('#myModalConsuntivoDocente').modal()
+	
+}
+
+function filtraDate(){
+	
+	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+ 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+ 	var docente = $('#docente_id').val()
+ 	dataString = "action=consuntivo_docente&docente="+docente+"&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+ 			endDatePicker.format('YYYY-MM-DD');
+ 	
+ 	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+ 	//callAction("gestioneFormazione.do"+ dataString, false,true);
+
+ 	exploreModal("gestioneFormazione.do", dataString, '#content_consuntivo');
+}
+
+
+
+
+function resetDate(){
+	$('#datarange').data('daterangepicker').setStartDate(formatDate(new Date()));
+	$('#datarange').data('daterangepicker').setEndDate(formatDate(new Date()));
+
 }
 
 
@@ -405,12 +500,50 @@ $('#fileupload_mod').change(function(){
 	$('#label_file_mod').html($(this).val().split("\\")[2]);
 	 
  });
+ 
+ 
+function formatDate(data){
+	
+	   var mydate =  Date.parse(data);
+	   
+	   if(!isNaN(mydate.getTime())){
+	   
+		var   str = mydate.toString("dd/MM/yyyy");
+	   }			   
+	   return str;	 		
+}
+
 
 $(document).ready(function() {
  
 
      $('.dropdown-toggle').dropdown();
      
+     
+     $('.datepicker').datepicker({
+		 format: "dd/mm/yyyy"
+	 });    
+
+     
+     
+     var start = "${dateFrom}";
+  	var end = "${dateTo}";
+
+  	$('input[name="datarange"]').daterangepicker({
+ 	    locale: {
+ 	      format: 'DD/MM/YYYY'
+ 	    
+ 	    }
+ 	}, 
+ 	function(start, end, label) {
+
+ 	});
+  	
+  	if(start!=null && start!=""){
+ 	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
+ 	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
+ 	
+ 	 }
 
      table = $('#tabForDocenti').DataTable({
 			language: {
@@ -515,6 +648,13 @@ $('#modificaDocenteForm').on('submit', function(e){
  
  
  
+ $('#myModalConsuntivoDocente').on('hidden.bs.modal', function(){
+
+	 $('#content_consuntivo').html("");
+	 resetDate()
+	 
+	 
+ });
  
 
  

@@ -106,6 +106,8 @@
  <th>Data Misura</th> 
   <th>Strumento</th>
   <th>Matricola | Codice Interno</th>
+  <th>Modello</th>
+  <th>Costruttore</th>
   <th>Strumento Lat</th>
   <th>Intervento</th>
   <th>Commessa</th>
@@ -132,10 +134,18 @@
 ${misura.split(';;')[11] }
 </c:if>
 </td>
-<td>${misura.split(';;')[15] }</td>
+<td>${misura.split(';;')[17] }</td>
 <td>${misura.split(';;')[5]}</td>
 <td>${misura.split(';;')[2]}</td>
 <td>${misura.split(';;')[3]} | ${misura.split(';;')[4]}</td>
+<td><c:if test="${misura.split(';;')[15].equals('null')}"></c:if>
+<c:if test="${!misura.split(';;')[15].equals('null')}">
+${misura.split(';;')[15] }
+</c:if></td>
+<td><c:if test="${misura.split(';;')[16].equals('null')}"></c:if>
+<c:if test="${!misura.split(';;')[16].equals('null')}">
+${misura.split(';;')[16] }
+</c:if></td>
 <td><c:if test="${misura.split(';;')[9].equals('null')}"></c:if>
 <c:if test="${!misura.split(';;')[9].equals('null')}">
 ${misura.split(';;')[9] }
@@ -626,7 +636,7 @@ NO
   	      stateSave: true,
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 1 },
-						   { responsivePriority: 2, targets: 11 },
+						   { responsivePriority: 2, targets: 13 },
 						   /* { responsivePriority: 3, targets: 14 }, */
   	                  
   	               ],

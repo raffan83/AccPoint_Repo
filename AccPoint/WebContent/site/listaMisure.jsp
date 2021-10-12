@@ -79,6 +79,9 @@
   <th>Strumento</th>
      <th>Matricola | Codice Interno</th>
 
+	
+	<th>Costruttore</th>
+	<th>Modello</th>
 	<th>Tipo Firma</th>
    <th>Stato Ricezione</th>
     <th>Obsoleta</th>
@@ -106,6 +109,9 @@
 </c:if></td>
 <td>${misura.strumento.denominazione}</td>
 <td>${misura.strumento.matricola} | ${misura.strumento.codice_interno}</td>
+
+<td>${misura.strumento.costruttore}</td>
+<td>${misura.strumento.modello}</td>
 <td>${misura.tipoFirma}</td>
 <td>${misura.statoRicezione.nome}</td>
 <td align="center">			
@@ -524,7 +530,7 @@
 						   { responsivePriority: 1, targets: 1 },
   	                   { responsivePriority: 2, targets: 2 },
   	                   { responsivePriority: 3, targets: 3 },
-  	                 { responsivePriority: 4, targets: 10 },
+  	                 { responsivePriority: 4, targets: 12 },
   	                 { responsivePriority: 5, targets: 9 }
   	               ],
   	     

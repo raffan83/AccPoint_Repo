@@ -584,6 +584,26 @@ public class GestioneFormazioneDAO {
 				
 		return lista;
 	}
+
+	public static ArrayList<ForCorsoDTO> getListaCorsiDocente(String dateFrom, String dateTo, int id_docente,Session session) throws Exception, ParseException{
+		
+	ArrayList<ForCorsoDTO> lista = null;
 	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
+
+	Query query = session.createQuery("from ForCorsoDTO  where data_corso between :_dateFrom and :_dateTo and disabilitato = 0 and docente.id = :_id_docente"); 
+				
+	query.setParameter("_dateFrom", sdf.parse(dateFrom));
+	query.setParameter("_dateTo", sdf.parse(dateTo));
+	query.setParameter("_id_docente", id_docente);
+		
+		
+	lista = (ArrayList<ForCorsoDTO>) query.list();
+	
+			
+	return lista;
+	
+	}
 
 }

@@ -1071,7 +1071,7 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getStoricoEmail(id_corso, session);
 	}
 
-	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaCorsiSuccessivi(String dateTo, Session session) throws Exception, Exception {
+	public static ArrayList<ForCorsoDTO> getListaCorsiSuccessivi(String dateTo, Session session) throws Exception, Exception {
 		
 		return GestioneFormazioneDAO.getListaCorsiSuccessivi(dateTo, session);
 	}

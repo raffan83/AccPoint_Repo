@@ -61,7 +61,10 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <c:if test="${evento.tipo_evento.id==1 }">
 <button class="btn customTooltip btn-info" onClick="dettaglioEventoManutenzione('${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${evento.tipo_manutenzione.id }','${evento.data_evento }','${evento.operatore.nominativo }')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-
+<c:if test="${evento.tipo_evento.id==4 }">
+<%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
+<button class="btn customTooltip btn-info" onClick="dettaglioFuoriServizio('${utl:escapeJS(evento.descrizione)}','${evento.data_evento }','${utl:escapeJS(evento.operatore.nominativo) }')" title="Click per visualizzare l'attività di fuori servizio"><i class="fa fa-arrow-right"></i></button>
+</c:if>
 <c:if test="${evento.tipo_evento.id==2  }">
 <button class="btn customTooltip btn-info" onClick="dettaglioEventoTaratura('${evento.data_evento }','${evento.data_scadenza }','${evento.laboratorio }','${evento.campo_sospesi }','${evento.operatore.nominativo }','${evento.numero_certificato }','${evento.stato}')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
 </c:if>
@@ -288,7 +291,47 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   </div>
 
 
- 
+  <div id="modalDettaglioFuoriServizio" class="modal fade" role="dialog" aria-labelledby="myModalLabel">
+
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" id="close_btn_man_fs" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+       
+        <h4 class="modal-title" id="myModalLabel">Dettaglio Fuori Servizio</h4>
+      </div>
+       <div class="modal-body" id="modalDettaglioContent" >
+     
+	<div class="form-group">
+  <div class="row">
+	 <div class="col-sm-12">
+
+        <div class="col-sm-6">
+		<label >Data:</label>
+			<input type="text" class="form-control" id="dettaglio_data_fs" readonly >
+        </div>
+		<div class="col-sm-6">
+		<label >Operatore:</label>
+			<input type="text" class="form-control" id="dettaglio_operatore_fs" readonly >
+        </div>
+      </div>
+      </div><br>
+      <div class="row">
+        <div class="col-sm-12"><div class="col-sm-12">
+             <textarea rows="5" style="width:100%" id="dettaglio_descrizione_fs" name="dettaglio_descrizione_fs" readonly></textarea>
+</div>
+        </div>
+       </div>
+       </div>
+       </div>      
+	
+  		
+      <div class="modal-footer">
+       
+      </div>
+      </div>
+    </div>
+  </div>
 
 
 
@@ -412,6 +455,14 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  }
  
  
+ function dettaglioFuoriServizio(descrizione,  data,operatore){
+	 $('#dettaglio_descrizione_fs').val(descrizione);
+
+	 $('#dettaglio_operatore_fs').val(operatore);
+	 $('#dettaglio_data_fs').val(formatDate(data));
+	 $('#modalDettaglioFuoriServizio').modal();
+ };
+ 
  $('#select_tipo_evento').change(function(){
 	 
 	 var str_html="";
@@ -440,7 +491,14 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	
 	 }
 
-
+	 else if($(this).val()==4){
+			
+		 str_html="<div class='form-group'>"				
+			 .concat("<div class='col-sm-2'><label>Operatore:</label></div><div class='col-sm-4'>")
+			 .concat("<select class='form-control select2' data-placeholder='Seleziona Operatore...' id='operatore' name='operatore'><option value=''></option><c:forEach items='${lista_utenti}' var='utente'><option value='${utente.id}'>${utente.nominativo}</option></c:forEach></select></div></div>")
+			 .concat("<div class='form-group'> <div class='col-sm-2'><label >Descrizione Attività:</label></div>")
+			 .concat("<div class='col-sm-10'><textarea rows='5' style='width:100%' id='descrizione' name='descrizione' required></textarea></div></div><div class='row'><div class='col-sm-2'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Allegato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_all' name='fileupload_all' type='file'></span></div><div class='col-xs-5'><label id='label_file'></label></div> </div>");
+	 }
 	 
 	 
 	 $('#content_evento').html(str_html);
@@ -514,6 +572,15 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 			    .concat('<div class="col-sm-2"><label class="pull-right">Numero Certificato:</label></div><div class="col-sm-3"><input class="form-control" id="numero_certificato_mod" name="numero_certificato_mod" type="text"/></div></div><div class="row"><div class="col-sm-2">')
 			    .concat('<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_mod" name="fileupload_mod" type="file"></span></div><div class="col-xs-5"><label id="label_file_mod"></label></div></div>');
 	 }
+	 
+	 else if($(this).val()==4){
+			
+		 str_html="<div class='form-group'>"				
+			 .concat("<div class='col-sm-2'><label>Operatore:</label></div><div class='col-sm-4'>")
+			 .concat("<select class='form-control select2' data-placeholder='Seleziona Operatore...' id='operatore_mod' name='operatore_mod' style='width:100%'><option value=''></option><c:forEach items='${lista_utenti}' var='utente'><option value='${utente.id}'>${utente.nominativo}</option></c:forEach></select></div></div>")
+			 .concat("<div class='form-group'> <div class='col-sm-2'><label >Descrizione Attività:</label></div>")
+			 .concat("<div class='col-sm-10'><textarea rows='5' style='width:100%' id='descrizione_mod' name='descrizione_mod' required></textarea></div></div><div class='row'><div class='col-sm-2'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Allegato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_all_mod' name='fileupload_all_mod' type='file'></span></div><div class='col-xs-5'><label id='label_file'></label></div> </div>");
+	 }
 
 	 $('#content_evento_mod').html(str_html);
 	 $('#select_tipo_manutenzione_mod').select2();
@@ -560,9 +627,17 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 			$('#label_file_man_mod').html($(this).val().split("\\")[2]);
 			 
 		 });
+	 
+	 $('#fileupload_all_mod').change(function(){
+			$('#label_file_mod').html($(this).val().split("\\")[2]);
+			 
+		 });
    
  });
- 
+ $('#fileupload_all').change(function(){
+		$('#label_file').html($(this).val().split("\\")[2]);
+		 
+	 });
  
 
 
@@ -801,6 +876,10 @@ $('#tabRegistroEventi').on( 'page.dt', function () {
   $('#close_btn_evento_man_dtl').on('click', function(){
 	  $('#modalDettaglioEventoManutenzione').modal('hide');
   });
+  
+  $('#close_btn_man_fs').on('click', function(){
+	  $('#modalDettaglioFuoriServizio').modal('hide');
+  });
  
   $('#close_btn_cert').on('click', function(){
 	  $('#modalCertificati').modal('hide');
@@ -824,6 +903,11 @@ $('#tabRegistroEventi').on( 'page.dt', function () {
 		  
 	 });   
 
+	  $('#modalDettaglioFuoriServizio').on('hidden.bs.modal', function(){
+		  contentID == "registro_attivitaTab";
+		  
+	 });  
+	  
 	  $('#modalDettaglioEventoTaratura').on('hidden.bs.modal', function(){
 		  contentID == "registro_attivitaTab";
 		  

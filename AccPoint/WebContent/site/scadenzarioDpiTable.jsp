@@ -17,7 +17,7 @@
 <div class="row">
       <div class="col-xs-12">
 
- <div class="box box-success box-solid">
+ <div class="box box-danger box-solid">
 <div class="box-header with-border">
 	 Lista Dpi
 	<div class="box-tools pull-right">
@@ -381,9 +381,8 @@
 }
   */
 
-.table th {
-    background-color: #00a65a !important;
-  }</style>
+  
+  </style>
 
 
 

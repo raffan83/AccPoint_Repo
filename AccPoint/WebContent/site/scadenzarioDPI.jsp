@@ -2,7 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
-<t:layout title="Dashboard" bodyClass="skin-green-light sidebar-mini wysihtml5-supported">
+<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
 <c:if test="${id_fornitore!=null }">

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.DevStatoValidazioneDTO" table="dev_stato_validazione">
+	        <id name="id" type="int">
+            <column name="Id" />
+            <generator class="native" />
+        </id>	
+       <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        
+ 
+	
+	</class>
+</hibernate-mapping>

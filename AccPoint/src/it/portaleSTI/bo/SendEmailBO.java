@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
+import it.portaleSTI.DTO.DevRegistroAttivitaDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
@@ -929,6 +930,58 @@ public static void sendEmailAperturaChiusuraIntevento(String apertura_chiusura,S
 		  
 	  }
 	  
+
+
+	  email.send();
+	
+}
+
+public static void sendEmailScadenzaAttivitaDevice(DevRegistroAttivitaDTO attivita, String messaggio, String referenti) throws EmailException {
+	
+	HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+email.getMailSession().getProperties().put("mail.debug", "true");
+email.getMailSession().getProperties().put("mail.smtp.port", "465");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+	  //email.addTo("giuseppe.gabriele@stisrl.com");
+	  //email.addTo("sara.massaro@stisrl.com");
+if(attivita.getDevice().getDipendente()!=null && attivita.getDevice().getDipendente().getEmail()!=null && !attivita.getDevice().getDipendente().getEmail().equals("")) {
+	email.addTo(attivita.getDevice().getDipendente().getEmail());
+}
+
+String[] to = referenti.split(";");
+
+for (String string : to) {
+	email.addTo(string);
+}
+	
+
+	  email.setFrom("calver@accpoint.it", "Calver");
+	  File image = new File(Costanti.PATH_FOLDER+"LoghiCompany\\logo_calver_v2.png");
+	  String cid = email.embed(image, "Calver logo");
+	 
+	  email.setSubject("Attività programmata sul device "+attivita.getDevice().getDenominazione() +"(ID: "+attivita.getDevice().getId()+")");
+	   
+//	 email.setHtmlMsg("<html>Gentile utente,<br><br>"
+//			  	  	+"Si comunica che il giorno "+df.format(attivita.getData_prossima())+" &egrave; in scadenza un'attività programmata sul device in oggetto. "
+//					
+//					  
+//				  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
+		  
+		  
+	  email.setHtmlMsg(messaggio.replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;")
+				  
+			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
 
 
 	  email.send();

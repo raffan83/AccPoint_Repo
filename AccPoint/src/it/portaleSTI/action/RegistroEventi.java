@@ -299,7 +299,11 @@ public class RegistroEventi extends HttpServlet {
 						evento.setTipo_manutenzione(new TipoManutenzioneDTO(Integer.parseInt(tipo_manutenzione)));
 						evento.setDescrizione(descrizione);
 						evento.setObsoleta("N");
-					}else {
+					}
+					else if (tipo_evento.equals("4")) {
+						evento.setDescrizione(descrizione);
+					}
+					else {
 						if(laboratorio.equals("Interno")) {
 							evento.setLaboratorio(laboratorio);	
 						}else {
@@ -417,7 +421,11 @@ public class RegistroEventi extends HttpServlet {
 					if(tipo_evento.equals("1")) {
 						evento.setTipo_manutenzione(new TipoManutenzioneDTO(Integer.parseInt(tipo_manutenzione)));
 						evento.setDescrizione(descrizione);
-					}else {
+					}
+					else if (tipo_evento.equals("4")) {
+						evento.setDescrizione(descrizione);
+					}
+					else {
 						if(laboratorio.equals("Interno")) {
 							evento.setLaboratorio(laboratorio);	
 						}else {
@@ -463,13 +471,14 @@ public class RegistroEventi extends HttpServlet {
 				String id_campione = request.getParameter("id_campione");
 				
 				ArrayList<RegistroEventiDTO> lista_manutenzioni = GestioneCampioneBO.getListaEvento(Integer.parseInt(id_campione), 1, session);
+				ArrayList<RegistroEventiDTO> lista_fuori_servizio = GestioneCampioneBO.getListaEvento(Integer.parseInt(id_campione), 4, session);
 				CampioneDTO campione= null;
 				if(lista_manutenzioni.size()>0) {
 					campione = lista_manutenzioni.get(0).getCampione();
 				}else {
 					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
 				}
-				new CreateSchedaManutenzioniCampione(null,lista_manutenzioni, campione);
+				new CreateSchedaManutenzioniCampione(null,lista_manutenzioni,null, lista_fuori_servizio, campione);
 				
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\RegistroEventi\\SchedaManutenzione\\"+"sma_"+id_campione+".pdf";
@@ -504,13 +513,14 @@ public class RegistroEventi extends HttpServlet {
 				String id_campione = request.getParameter("id_campione");
 				
 				ArrayList<RegistroEventiDTO> lista_tarature = GestioneCampioneBO.getListaEvento(Integer.parseInt(id_campione), 2, session);
+				ArrayList<RegistroEventiDTO> lista_fuori_servizio = GestioneCampioneBO.getListaEvento(Integer.parseInt(id_campione), 4, session);
 				CampioneDTO campione= null;
 				if(lista_tarature.size()>0) {
 					campione = lista_tarature.get(0).getCampione();
 				}else {
 					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
 				}
-				new CreateSchedaTaraturaVerificaIntermedia(null,lista_tarature, campione);
+				new CreateSchedaTaraturaVerificaIntermedia(null,lista_tarature,null, lista_fuori_servizio, campione);
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\RegistroEventi\\Taratura\\stca_"+id_campione+".pdf";
 				File file = new File(path);

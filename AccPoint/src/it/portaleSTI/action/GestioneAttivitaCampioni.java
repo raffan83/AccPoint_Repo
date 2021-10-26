@@ -318,13 +318,14 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String id_campione = request.getParameter("id_campione");
 				
 				ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni = GestioneAttivitaCampioneBO.getListaManutenzioni(Integer.parseInt(id_campione), session);
+				ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio = GestioneAttivitaCampioneBO.getListaFuoriServizio(Integer.parseInt(id_campione), session);
 				CampioneDTO campione= null;
 				if(lista_manutenzioni.size()>0) {
 					campione = lista_manutenzioni.get(0).getCampione();
 				}else {
 					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
 				}
-				new CreateSchedaManutenzioniCampione(lista_manutenzioni,null, campione);
+				new CreateSchedaManutenzioniCampione(lista_manutenzioni,null, lista_fuori_servizio, null, campione);
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaManutenzione\\sma_"+id_campione+".pdf";
 				File file = new File(path);
@@ -359,13 +360,14 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String id_campione = request.getParameter("id_campione");
 				
 				ArrayList<AcAttivitaCampioneDTO> lista_verifiche = GestioneAttivitaCampioneBO.getListaTaratureVerificheIntermedie(Integer.parseInt(id_campione), session);
+				ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio = GestioneAttivitaCampioneBO.getListaFuoriServizio(Integer.parseInt(id_campione), session);
 				CampioneDTO campione= null;
 				if(lista_verifiche.size()>0) {
 					campione = lista_verifiche.get(0).getCampione();
 				}else {
 					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
 				}
-				new CreateSchedaTaraturaVerificaIntermedia(lista_verifiche,null, campione);
+				new CreateSchedaTaraturaVerificaIntermedia(lista_verifiche,null,lista_fuori_servizio, null, campione);
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaVerificaIntermedia\\stca_"+id_campione+".pdf";
 				File file = new File(path);

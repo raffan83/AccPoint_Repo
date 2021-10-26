@@ -1,7 +1,7 @@
 
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@tag import="it.portaleSTI.DTO.UtenteDTO"%>
-
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <% 
 	UtenteDTO user =(UtenteDTO)request.getSession().getAttribute("userObj");
 %>
@@ -358,7 +358,26 @@
         </li> 
            <% }%>
          
-         
+          <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_DEVICE")){%>  
+           <li class="header">DEVICE</li>
+
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Gestione Device</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+   
+		   <li><a href="gestioneDevice.do?action=lista_tipi_device">Tipi Device</a></li>	
+  			<li><a href="gestioneDevice.do?action=lista_device">Lista Device</a></li>
+  			<li><a href="gestioneDevice.do?action=lista_software">Lista Software</a></li>
+  			<li><a href="gestioneDevice.do?action=scadenzario">Scadenzario</a></li>
+		
+	      	
+          </ul>
+        </li> 
+           <% }%>
         
         
         

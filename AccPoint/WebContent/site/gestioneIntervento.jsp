@@ -756,8 +756,8 @@
 
 	                   extend: 'pdf',
 	                   text: 'Esporta Pdf',
-	                   message: 'ID COMMESSA: ${commessa.ID_COMMESSA} \n\nDATA COMMESSA: '+dataCommessa+'\n\nCLIENTE: ${commessa.ID_ANAGEN_NOME} \n\n INDIRIZZO CLIENTE: ${commessa.INDIRIZZO_PRINCIPALE} \n\n SEDE: ${commessa.ANAGEN_INDR_DESCR} ${commessa.ANAGEN_INDR_INDIRIZZO}'+
-	                  '\n\nCLIENTE UTILIZZATORE: ${commessa.NOME_UTILIZZATORE}\n\nINDIRIZZO UTILIZZATORE: ${commessa.INDIRIZZO_UTILIZZATORE}\n\nSTATO: '+stato+' \n\nNOTE: ${utl:escapeJS(commessa.NOTE_GEN)} \n\nRESPONSABILE COMMESSA: ${commessa.RESPONSABILE}',
+	                   message: 'ID COMMESSA: ${commessa.ID_COMMESSA} \n\nDATA COMMESSA: '+dataCommessa+'\n\nCLIENTE: ${utl:escapeJS(commessa.ID_ANAGEN_NOME)} \n\n INDIRIZZO CLIENTE: ${utl:escapeJS(commessa.INDIRIZZO_PRINCIPALE)} \n\n SEDE: ${utl:escapeJS(commessa.ANAGEN_INDR_DESCR)} ${utl:escapeJS(commessa.ANAGEN_INDR_INDIRIZZO)}'+
+	                  '\n\nCLIENTE UTILIZZATORE: ${utl:escapeJS(commessa.NOME_UTILIZZATORE)}\n\nINDIRIZZO UTILIZZATORE: ${utl:escapeJS(commessa.INDIRIZZO_UTILIZZATORE)}\n\nSTATO: '+stato+' \n\nNOTE: ${utl:escapeJS(commessa.NOTE_GEN)} \n\nRESPONSABILE COMMESSA: ${utl:escapeJS(commessa.RESPONSABILE)}',
 	                  title: 'Lista Attività'
 	               },
 	               {

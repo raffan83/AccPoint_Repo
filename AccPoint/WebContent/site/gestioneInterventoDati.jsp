@@ -1599,6 +1599,17 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 		
 	}
 	
+	 function formatDate(data){
+			
+		   var mydate = new Date(data);
+		   
+		   if(!isNaN(mydate.getTime())){
+		   
+			   str = mydate.toString("dd/MM/yyyy");
+		   }			   
+		   return str;	 		
+	}
+	
     $(document).ready(function() { 
     	
     	
@@ -1607,6 +1618,14 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
    	 $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
 	 });
+   	 
+   	var stato = 'CHIUSA';
+    
+    if("${commessa.SYS_STATO}" == '1APERTA'){
+    	stato = 'APERTA';
+    }else if("${commessa.SYS_STATO}" == '0CREATA'){
+    	stato = 'CREATA';
+    }
     	
     	if(userCliente == "0"){
 	    	$('#fileupload').fileupload({
@@ -1794,7 +1813,7 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	    	table.buttons().container()
 	        .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
 	     	   
-	    	
+	    	var dataCommessa = formatDate('${commessa.DT_COMMESSA}');
 	    	
 	        var tableAttiìvita = $('#tabAttivita').DataTable({
 	        	language: {
@@ -1854,7 +1873,9 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	    	               },{
 	    	                   extend: 'pdf',
 	    	                   text: 'Esporta Pdf',
-	    	                  
+	    	                    message: 'ID COMMESSA: ${commessa.ID_COMMESSA} \n\nDATA COMMESSA: '+dataCommessa+'\n\nCLIENTE: ${utl:escapeJS(commessa.ID_ANAGEN_NOME)} \n\n INDIRIZZO CLIENTE: ${utl:escapeJS(commessa.INDIRIZZO_PRINCIPALE)} \n\n SEDE: ${utl:escapeJS(commessa.ANAGEN_INDR_DESCR)} ${utl:escapeJS(commessa.ANAGEN_INDR_INDIRIZZO)}'+
+	    		                  '\n\nCLIENTE UTILIZZATORE: ${utl:escapeJS(commessa.NOME_UTILIZZATORE)}\n\nINDIRIZZO UTILIZZATORE: ${utl:escapeJS(commessa.INDIRIZZO_UTILIZZATORE)}\n\nSTATO: '+stato+' \n\nNOTE: ${utl:escapeJS(commessa.NOTE_GEN)} \n\nRESPONSABILE COMMESSA: ${utl:escapeJS(commessa.RESPONSABILE)}',
+	    		                  title: 'Lista Attività' 
 	    	               },
 	    	               {
 	    	                   extend: 'colvis',

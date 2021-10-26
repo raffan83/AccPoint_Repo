@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.DevProceduraDTO" table="dev_procedura">
+	        <id name="id" type="int">
+            <column name="Id" />
+            <generator class="native" />
+        </id>	
+       <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        
+
+ 		
+	<property name="frequenza" type="java.lang.String">
+            <column name="frequenza" />
+        </property>
+       <many-to-one name="tipo_procedura" class="it.portaleSTI.DTO.DevTipoProceduraDTO" fetch="join" lazy="false">
+            <column name="id_tipo_procedura" />
+        </many-to-one>
+        
+        
+        <property name="id_device" type="int">
+            <column name="id_device" />
+        </property>
+       
+	</class>
+</hibernate-mapping>

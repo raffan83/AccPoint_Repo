@@ -74,5 +74,10 @@ public class GestioneAttivitaCampioneBO {
 	
 		GestioneAttivitaCampioneDAO.updateObsolete(idC, tipo_attivita, data, session);
 	}
+
+	public static ArrayList<AcAttivitaCampioneDTO> getListaFuoriServizio(int parseInt, Session session) {
+
+		return GestioneAttivitaCampioneDAO.getListaFuoriServizio(parseInt, session);
+	}
 	
 }

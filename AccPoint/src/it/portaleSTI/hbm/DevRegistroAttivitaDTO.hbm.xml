@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.DevRegistroAttivitaDTO" table="dev_registro_attivita">
+	        <id name="id" type="int">
+            <column name="Id" />
+            <generator class="native" />
+        </id>	
+
+       <many-to-one name="device" class="it.portaleSTI.DTO.DevDeviceDTO" fetch="join" lazy="false">
+            <column name="id_device" />
+        </many-to-one>
+        
+        
+ 		<property name="data_evento" type="java.sql.Date">
+            <column name="data_evento" />
+        </property>
+        
+        <many-to-one name="tipo_evento" class="it.portaleSTI.DTO.DevTipoEventoDTO" fetch="join" lazy="false">
+            <column name="id_tipo_evento" />
+        </many-to-one>
+	
+	
+	
+	<property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        <property name="note_evento" type="java.lang.String">
+            <column name="note_evento" />
+        </property>
+        
+         <property name="frequenza" type="int">
+            <column name="frequenza" />
+        </property>
+       <property name="data_prossima" type="java.sql.Date">
+            <column name="data_prossima" />
+        </property>
+           <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_user" />
+        </many-to-one>
+       
+       	<property name="tipo_intervento" type="java.lang.String">
+            <column name="tipo_intervento" />
+        </property>
+        <many-to-one name="company" class="it.portaleSTI.DTO.DocumFornitoreDTO" fetch="join" lazy="false">
+            <column name="id_company" />
+        </many-to-one>
+        
+         <property name="email_inviata" type="int">
+            <column name="email_inviata" />
+        </property>
+	</class>
+</hibernate-mapping>

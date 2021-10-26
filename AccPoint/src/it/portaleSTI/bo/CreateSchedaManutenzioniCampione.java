@@ -20,6 +20,7 @@ import it.portaleSTI.Util.Templates;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
+import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.Markup;
@@ -30,12 +31,12 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaManutenzioniCampione {
 	
-	public CreateSchedaManutenzioniCampione(ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni,ArrayList<RegistroEventiDTO> lista_evento_manutenzione, CampioneDTO campione) throws Exception {
+	public CreateSchedaManutenzioniCampione(ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni,ArrayList<RegistroEventiDTO> lista_evento_manutenzione,ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio,ArrayList<RegistroEventiDTO> lista_fuori_servizio_ev, CampioneDTO campione) throws Exception {
 		
-		build(lista_manutenzioni,lista_evento_manutenzione, campione);		
+		build(lista_manutenzioni,lista_evento_manutenzione,lista_fuori_servizio, lista_fuori_servizio_ev,campione);		
 	}
 	
-	private void build(ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni,ArrayList<RegistroEventiDTO> lista_evento_manutenzione, CampioneDTO campione) throws Exception {
+	private void build(ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni,ArrayList<RegistroEventiDTO> lista_evento_manutenzione, ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio,ArrayList<RegistroEventiDTO> lista_fuori_servizio_ev,CampioneDTO campione) throws Exception {
 		
 	InputStream is =  PivotTemplate.class.getResourceAsStream("schedaManutenzioniCampione.jrxml");
 		
@@ -82,6 +83,18 @@ public class CreateSchedaManutenzioniCampione {
 		
 		
 		report.detail(subreport);
+		
+		if(lista_fuori_servizio!=null && lista_fuori_servizio.size()>0) {
+			SubreportBuilder subreport_fs =	cmp.subreport(getTableReportFs(lista_fuori_servizio)); 
+			
+			VerticalListBuilder vl = cmp.verticalList(cmp.verticalGap(25), cmp.text("Attività fuori servizio").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER), cmp.verticalGap(15), subreport_fs);
+			report.addDetail(vl);
+		}else if(lista_fuori_servizio_ev!=null && lista_fuori_servizio_ev.size()>0){
+			SubreportBuilder subreport_fs =	cmp.subreport(getTableReportFsEv(lista_fuori_servizio_ev)); 
+			
+			VerticalListBuilder vl = cmp.verticalList(cmp.verticalGap(25), cmp.text("Attività fuori servizio").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER), cmp.verticalGap(15), subreport_fs);
+			report.addDetail(vl);
+		}
 		
 		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(8).setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
 		if(lista_evento_manutenzione!=null) {
@@ -134,6 +147,40 @@ public class CreateSchedaManutenzioniCampione {
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
 		
 	 	report.setDataSource(createDataSourceEvento(lista_evento_manutenzione));
+	 	report.highlightDetailEvenRows();
+		return report;
+	}
+	
+	private JasperReportBuilder getTableReportFs(ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio) throws Exception {
+		
+		JasperReportBuilder report = DynamicReports.report();
+
+		report.setColumnStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9));
+		report.addColumn(col.column("Data","data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));	
+		
+	 	report.addColumn(col.column("Descrizione attività","descrizione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Operatore","operatore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setWidth(120));
+	 	
+		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
+		
+	 	report.setDataSource(createDataSourceFs(lista_fuori_servizio));
+	 	report.highlightDetailEvenRows();
+		return report;
+	}
+	
+private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> lista_fuori_servizio) throws Exception {
+		
+		JasperReportBuilder report = DynamicReports.report();
+
+		report.setColumnStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9));
+		report.addColumn(col.column("Data","data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));	
+		
+	 	report.addColumn(col.column("Descrizione attività","descrizione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Operatore","operatore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setWidth(120));
+	 	
+		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
+		
+	 	report.setDataSource(createDataSourceFsEv(lista_fuori_servizio));
 	 	report.highlightDetailEvenRows();
 		return report;
 	}
@@ -238,6 +285,84 @@ public class CreateSchedaManutenzioniCampione {
 				}
 			}else {
 				dataSource.add("","","","");
+			}
+				
+		 		    return dataSource;
+		 	}
+	
+	
+	
+	private JRDataSource createDataSourceFs(ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio)throws Exception {
+		DRDataSource dataSource = null;
+		String[] listaCodici = null;
+			
+			listaCodici = new String[3];
+					
+			listaCodici[0]="data";
+			listaCodici[1]="descrizione";
+			listaCodici[2]="operatore";
+			
+			dataSource = new DRDataSource(listaCodici);
+			
+			SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+			if(lista_fuori_servizio.size()>0) {
+				for (AcAttivitaCampioneDTO manutenzione : lista_fuori_servizio) {						
+					if(manutenzione!=null){
+						ArrayList<String> arrayPs = new ArrayList<String>();
+							
+						arrayPs.add(dt.format(manutenzione.getData()));
+						arrayPs.add(manutenzione.getDescrizione_attivita());
+						if(manutenzione.getOperatore()!=null) {
+							arrayPs.add(manutenzione.getOperatore().getNominativo());	
+						}else {
+							arrayPs.add("");
+						}						
+						
+			 			Object[] listaValori = arrayPs.toArray();
+						
+					    dataSource.add(listaValori);				   
+					}				
+				}
+			}else {
+				dataSource.add("","","");
+			}
+				
+		 		    return dataSource;
+		 	}
+	
+	private JRDataSource createDataSourceFsEv(ArrayList<RegistroEventiDTO> lista_fuori_servizio)throws Exception {
+		DRDataSource dataSource = null;
+		String[] listaCodici = null;
+			
+			listaCodici = new String[3];
+					
+			listaCodici[0]="data";
+			listaCodici[1]="descrizione";
+			listaCodici[2]="operatore";
+			
+			dataSource = new DRDataSource(listaCodici);
+			
+			SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+			if(lista_fuori_servizio.size()>0) {
+				for (RegistroEventiDTO evento : lista_fuori_servizio) {						
+					if(evento!=null){
+						ArrayList<String> arrayPs = new ArrayList<String>();
+							
+						arrayPs.add(dt.format(evento.getData_evento()));
+						arrayPs.add(evento.getDescrizione());
+						if(evento.getOperatore()!=null) {
+							arrayPs.add(evento.getOperatore().getNominativo());	
+						}else {
+							arrayPs.add("");
+						}						
+						
+			 			Object[] listaValori = arrayPs.toArray();
+						
+					    dataSource.add(listaValori);				   
+					}				
+				}
+			}else {
+				dataSource.add("","","");
 			}
 				
 		 		    return dataSource;

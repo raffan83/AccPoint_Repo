@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-mag-2017 15.44.30 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.DevDeviceSoftwareDTO" table="dev_device_software">
+
+             <composite-id >
+    
+    	<key-many-to-one name="device" column="id_device" lazy="false"/>
+    
+        <key-many-to-one name="software" column="id_software" lazy="false"/>    
+        
+		<!-- <key-many-to-one name="ruolo" column="id_ruolo" lazy="false"/> -->    
+      
+    </composite-id>
+    
+    <many-to-one name="stato_validazione" class="it.portaleSTI.DTO.DevStatoValidazioneDTO" fetch="join" lazy="false">
+            <column name="id_stato_validazione" />
+        </many-to-one>
+        
+        
+ 		<property name="data_validazione" type="java.sql.Date">
+            <column name="data_validazione" />
+        </property>
+        
+        <property name="product_key" type="java.lang.String">
+            <column name="product_key" />
+        </property>
+        
+    </class>
+</hibernate-mapping>

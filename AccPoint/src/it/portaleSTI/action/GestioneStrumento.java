@@ -100,9 +100,9 @@ public class GestioneStrumento extends HttpServlet {
 				UtenteDTO user=(UtenteDTO)request.getSession().getAttribute("userObj");
 				
 				
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(request.getParameter("idCliente"),request.getParameter("idSede"),idCompany.getId(), session,user); 
+				//ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(request.getParameter("idCliente"),request.getParameter("idSede"),idCompany.getId(), session,user); 
 
-				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
+				//request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				
 				StrumentoNoteDTO noteStrumento = new StrumentoNoteDTO();
 					

@@ -314,6 +314,9 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
 		     dispatcher.forward(request,response);
+		     
+		     session.getTransaction().commit();
+				session.close();
 			
 		}
 		else if(action.equals("fuori_servizio")) {
@@ -343,6 +346,9 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 	
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
 		    dispatcher.forward(request,response);
+		    
+		    session.getTransaction().commit();
+			session.close();
 
 		}
 		else if(action.equals("annullati")) {
@@ -371,18 +377,24 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
 		    dispatcher.forward(request,response);
+		    
+		    session.getTransaction().commit();
+			session.close();
 			
 		}
 		else if(action.equals("note_strumento")) {
 			
-			StrumentoDTO strumento = (StrumentoDTO) request.getSession().getAttribute("strumento");			
+			String id = request.getParameter("id_str");
+			StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(id, session);
 
 			
 			request.getSession().setAttribute("lista_note", strumento.getListaNoteStrumento());
+			request.getSession().setAttribute("id_strum", id);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaNoteStrumento.jsp");
 		    dispatcher.forward(request,response);
-			
+		    session.getTransaction().commit();
+			session.close();
 		}
 			
 			 

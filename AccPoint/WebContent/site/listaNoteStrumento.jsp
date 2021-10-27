@@ -188,7 +188,50 @@ $(document).ready(function(){
  $('#formNuovaNota').on('submit', function(e){
 	
 	 e.preventDefault();
-	 nuovaNotaStrumento('#formNuovaNota', 'modificaStrumento.do?action=nuova_nota_strumento');
+/* 	 nuovaNotaStrumento('#formNuovaNota', 'modificaStrumento.do?action=nuova_nota_strumento', function(){
+		 
+		 $('#report_button').hide();
+			$('#visualizza_report').hide();
+		
+		  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");
+			$('#myModalError').modal('show');
+			
+		$('#myModalError').on('hidden.bs.modal', function(){	         			
+		
+			$('#modalNuovaAttivita').hide();
+			$( "#myModal" ).modal();
+			exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str=${strumento.__id}","","#notestrumento")
+			
+		});
+		 
+		 
+	 }); */
+	 
+	 
+	 callAjaxForm('#formNuovaNota','modificaStrumento.do?action=nuova_nota_strumento', function(data, textStatus){
+		 
+		 $('#report_button').hide();
+			$('#visualizza_report').hide();
+		
+		  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");
+			$('#myModalError').modal('show');
+			
+		$('#myModalError').on('hidden.bs.modal', function(){	         			
+		
+			$('#modalNuovaAttivita').hide();
+			
+			exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str=${id_strum}","","#notestrumento")
+			$( "#myModal" ).modal();
+		});
+		 
+		 
+	 });
+	 
+	 
 	 
  });
  

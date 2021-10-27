@@ -1147,8 +1147,18 @@ function createTableAssociati(){
 				  		  }else{
 				  			dati.product_key = '' 
 				  		  }
-					  dati.autorizzato = lista_software_associati[i].software.autorizzato;
-					  dati.versione =  lista_software_associati[i].software.versione;
+					  if(lista_software_associati[i].autorizzato!=null){
+						  dati.autorizzato = lista_software_associati[i].software.autorizzato;
+					  }else{
+						  dati.autorizzato = '';
+					  }
+					  if(lista_software_associati[i].versione!=null){
+						  dati.versione =  lista_software_associati[i].software.versione;
+					  }else{
+						  dati.versione =  '';
+					  }
+					  
+					 
 					  table_data.push(dati);
 				  }
 				  			
@@ -1271,8 +1281,16 @@ function modalSoftware(id_device){
   			dati.data_validazione = '<td><div id="label_data_val_'+lista_software[i].id+'"></div><input type="hidden" id="data_val_'+lista_software[i].id+'"></td>' 
   		  }
   		  dati.product_key = '<td><div id="label_product_key_'+lista_software[i].id+'"></div><input type="hidden" id="product_key_'+lista_software[i].id+'"></td>';
-  		  dati.autorizzato = lista_software[i].autorizzato;
-  		  dati.versione =  lista_software[i].versione;
+  		if(lista_software[i].autorizzato!=null){
+			  dati.autorizzato = lista_software[i].autorizzato;
+		  }else{
+			  dati.autorizzato = '';
+		  }
+		  if(lista_software[i].versione!=null){
+			  dati.versione =  lista_software[i].versione;
+		  }else{
+			  dati.versione =  '';
+		  }
   		  dati.validazione = '<td><a class="btn btn-primary customTooltip" title="Aggiungi validazione" onClick="modalValidazione('+lista_software[i].id+')"><i class="fa fa-plus">Validazione</i></a></td>'
   		t_data.push(dati);
   	  }

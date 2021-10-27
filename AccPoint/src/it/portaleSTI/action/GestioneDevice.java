@@ -915,27 +915,29 @@ public class GestioneDevice extends HttpServlet {
 				//device.getListaSoftware().clear();				
 			
 				GestioneDeviceBO.dissociaSoftware(device.getId(), session);
-				
-				for(int i = 0; i<selezionati.split(";;").length;i++) {
+				if(selezionati!=null && !selezionati.equals("")) {
+					for(int i = 0; i<selezionati.split(";;").length;i++) {
+						
+						DevSoftwareDTO software = GestioneDeviceBO.getSoftwareFromID(Integer.parseInt(selezionati.split(";;")[i]), session);
+											
+						DevDeviceSoftwareDTO devSw = new DevDeviceSoftwareDTO();					
+						devSw.setDevice(device);
+						devSw.setSoftware(software);
+						if(product_key.split(";;", -1)!=null && product_key.split(";;", -1)!=null) {
+							devSw.setProduct_key(product_key.split(";;", -1)[i]);	
+						}
+						if(stati_validazioni.split(";;", -1)!=null && stati_validazioni.split(";;", -1)[i]!=null && !stati_validazioni.split(";;", -1)[i].equals("")) {
+							devSw.setStato_validazione(new DevStatoValidazioneDTO(Integer.parseInt(stati_validazioni.split(";;", -1)[i]), ""));	
+						}
+						if(date_validazioni.split(";;", -1)!=null && date_validazioni.split(";;", -1)[i]!=null && !date_validazioni.split(";;", -1)[i].equals("")) {
+							devSw.setData_validazione(df.parse(date_validazioni.split(";;", -1)[i]));	
+						}										
 					
-					DevSoftwareDTO software = GestioneDeviceBO.getSoftwareFromID(Integer.parseInt(selezionati.split(";;")[i]), session);
-										
-					DevDeviceSoftwareDTO devSw = new DevDeviceSoftwareDTO();					
-					devSw.setDevice(device);
-					devSw.setSoftware(software);
-					if(product_key.split(";;", -1)!=null && product_key.split(";;", -1)!=null) {
-						devSw.setProduct_key(product_key.split(";;", -1)[i]);	
+						session.save(devSw);
+						
 					}
-					if(stati_validazioni.split(";;", -1)!=null && stati_validazioni.split(";;", -1)[i]!=null && !stati_validazioni.split(";;", -1)[i].equals("")) {
-						devSw.setStato_validazione(new DevStatoValidazioneDTO(Integer.parseInt(stati_validazioni.split(";;", -1)[i]), ""));	
-					}
-					if(date_validazioni.split(";;", -1)!=null && date_validazioni.split(";;", -1)[i]!=null && !date_validazioni.split(";;", -1)[i].equals("")) {
-						devSw.setData_validazione(df.parse(date_validazioni.split(";;", -1)[i]));	
-					}										
-				
-					session.save(devSw);
-					
 				}
+				
 				
 				
 				myObj = new JsonObject();

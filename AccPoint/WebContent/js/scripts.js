@@ -2021,7 +2021,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 //			         	   	});
 
 		 	       });
-		 	       
+			           $(this).off('hidden.bs.modal');
 		 	       });
 		 	        
     		  }else{

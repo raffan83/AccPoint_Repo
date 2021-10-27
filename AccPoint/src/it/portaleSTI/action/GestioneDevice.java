@@ -619,7 +619,7 @@ public class GestioneDevice extends HttpServlet {
 				software.setNome(nome);
 				software.setProduttore(produttore);
 				software.setAutorizzato(autorizzato);
-				
+				software.setVersione(versione);
 				session.save(software);				
 				
 				myObj = new JsonObject();

@@ -69,8 +69,8 @@
 <th>ID</th>
 <th>Nome</th>
 <th>Produttore</th>
-<th>Stato validazione</th>
-<th>Data validazione</th>
+<%-- <th>Stato validazione</th>
+<th>Data validazione</th> --%>
 <th>Autorizzato</th>
 <th>Versione</th>
 <th>Azioni</th>
@@ -84,13 +84,13 @@
 	<td>${software.id }</td>	
 	<td>${software.nome }</td>
 	<td>${software.produttore }</td>
-	<td>${software.stato_validazione.descrizione }</td>
-	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${software.data_validazione }"></fmt:formatDate></td>
+<%-- 	<td>${software.stato_validazione.descrizione }</td>
+	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${software.data_validazione }"></fmt:formatDate></td> --%>
 	<td>${software.autorizzato }</td>
 	<td>${software.versione }</td>
 	<td>
 
-	 <a class="btn btn-warning customTooltip" onClicK="modificaSoftware('${software.id}', '${utl:escapeJS(software.nome) }','${utl:escapeJS(software.produttore) }','${software.stato_validazione.id}','${software.data_validazione }','${utl:escapeJS(software.autorizzato) }','${utl:escapeJS(software.versione) }')" title="Click per modificare il tipo device"><i class="fa fa-edit"></i></a> 
+	 <a class="btn btn-warning customTooltip" onClicK="modificaSoftware('${software.id}', '${utl:escapeJS(software.nome) }','${utl:escapeJS(software.produttore) }','${utl:escapeJS(software.autorizzato) }','${utl:escapeJS(software.versione) }')" title="Click per modificare il tipo device"><i class="fa fa-edit"></i></a> 
 	  <a class="btn btn-danger customTooltip"onClicK="modalYesOrNo('${software.id}')" title="Click per eliminare il software"><i class="fa fa-trash"></i></a>
 	  <a class="btn btn-primary customTooltip" onClick="modalAllegati('${software.id}')" title="Click per aprire gli allegati"><i class="fa fa-archive"></i></a>
 	</td>
@@ -155,7 +155,7 @@
        
              
        
-        <div class="row">
+       <%--  <div class="row">
        
        	<div class="col-sm-3">
        		<label>Stato validazione</label>
@@ -186,7 +186,7 @@
         <input id="data_validazione" name="data_validazione" class="form-control datepicker" type="text" style="width:100%" >
        			
        	</div>       	
-       </div><br>
+       </div><br> --%>
        
         <div class="row">
        
@@ -267,7 +267,7 @@
        </div><br>
        
              
-       
+       <%-- 
         <div class="row">
        
        	<div class="col-sm-3">
@@ -299,7 +299,7 @@
         <input id="data_validazione_mod" name="data_validazione_mod" class="form-control datepicker" type="text" style="width:100%" >
        			
        	</div>       	
-       </div><br>
+       </div><br> --%>
        
         <div class="row">
        
@@ -348,10 +348,10 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Allegati</h4>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      <div id=""></div>
+      Sei sicuro di voler eliminare il software?
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_elimina_software">
@@ -423,14 +423,14 @@ function modalNuovoSoftware(){
 }
 
 
-function modificaSoftware(id_software, nome, produttore, id_stato_validazione, data_validazione, autorizzato, versione){
+function modificaSoftware(id_software, nome, produttore,  autorizzato, versione){
 	
 	$('#id_software').val(id_software);
 	$('#nome_mod').val(nome);
 	$('#produttore_mod').val(produttore);
-	$('#stato_validazione_mod').val(id_stato_validazione);
+/* 	$('#stato_validazione_mod').val(id_stato_validazione);
 	$('#stato_validazione_mod').change();
-	$('#data_validazione_mod').val(Date.parse(data_validazione).toString("dd/MM/yyyy"));
+	$('#data_validazione_mod').val(Date.parse(data_validazione).toString("dd/MM/yyyy")); */
 	$('#autorizzato_mod').val(autorizzato);	
 	$('#versione_mod').val(versione);
 

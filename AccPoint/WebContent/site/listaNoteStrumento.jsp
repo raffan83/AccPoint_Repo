@@ -225,12 +225,21 @@ $(document).ready(function(){
 			$('#modalNuovaAttivita').hide();
 			
 			exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str=${id_strum}","","#notestrumento")
-			$( "#myModal" ).modal();
+			/* $( "#myModal" ).modal(); */
+			
+			 $('#myModal').on('hidden.bs.modal', function (e) {
+
+			 	 	$('#dettaglioTab').tab('show');
+			 	 	$('.modal-backdrop').hide();
+			 	 	
+			 	});
 		});
 		 
 		 
 	 });
 	 
+	 
+	
 	 
 	 
  });

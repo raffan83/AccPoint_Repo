@@ -806,6 +806,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	   $('#myModal').on('hidden.bs.modal', function (e) {
 
     	 	$('#dettaglioTab').tab('show');
+    	 	$('.modal-backdrop').hide();
     	 	
     	});
 	   
@@ -1652,6 +1653,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	   
 	   $('#myModal').on('hidden.bs.modal', function (e) {
 
+		   $('.modal-backdrop').hide();
     	 	$('#dettaglioTab').tab('show');
     	 	
     	});

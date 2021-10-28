@@ -1276,19 +1276,20 @@ function controllaAssociati(table, lista_software_associati){
 	 		$("#stato_val_"+val).val(lista_software_associati[i].stato_validazione.id);
 	 		$("#stato_val_"+val).change();
 	 	}
-	 	if(lista_software_associati[i].stato_validazione!=null){
+	 	if(lista_software_associati[i].data_validazione!=null){
 	 		$("#label_data_val_"+val).html(""+lista_software_associati[i].data_validazione+"");	
 	 		$("#data_val_"+val).val(lista_software_associati[i].data_validazione);
 	 	}
 	 	
-	 	if(lista_software_associati[i].stato_validazione!=null){
+	 	if(lista_software_associati[i].product_key!=null){
 	 		$("#label_product_key_"+val).html(""+lista_software_associati[i].product_key+"");
 	 		$("#product_key_"+val).val(lista_software_associati[i].product_key);	 
 	 	}
 	 	
-	 	if(lista_software_associati[i].autorizzazioni!=null){
-	 		$("#label_autorizzazione_"+val).html(""+lista_software_associati[i].autorizzazioni+"");
-	 		$("#autorizzazione_"+val).val(lista_software_associati[i].autorizzazioni);	 
+	 	if(lista_software_associati[i].autorizzato!=null){
+	 		$("#label_autorizzazione_"+val).html(""+lista_software_associati[i].autorizzato+"");
+	 		$("#autorizzazione_"+val).val(lista_software_associati[i].autorizzato);	 
+	 		$("#autorizzazione_"+val).change();
 	 	}
 	 	
 	 
@@ -1388,6 +1389,7 @@ function modalValidazione(id){
 	$('#data_validazione').val(data);
 	$('#product_key').val(pk);
 	$('#autorizzazioni').val(aut);
+	$('#autorizzazioni').change();
 	
 	$('#modalValidazione').modal();
 	

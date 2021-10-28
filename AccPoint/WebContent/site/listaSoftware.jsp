@@ -200,7 +200,7 @@
        	</div>       	
        </div><br>
        
-               <div class="row">
+<!--                <div class="row">
        
        	<div class="col-sm-3">
        		<label>Autorizzato</label>
@@ -211,7 +211,7 @@
        			
        	</div>       	
        </div><br>
-       </div>
+       </div> -->
   		 
       <div class="modal-footer">
 
@@ -313,7 +313,7 @@
        	</div>       	
        </div><br>
        
-               <div class="row">
+<!--                <div class="row">
        
        	<div class="col-sm-3">
        		<label>Autorizzato</label>
@@ -324,7 +324,7 @@
        			
        	</div>       	
        </div><br>
-       </div>
+       </div> -->
   		 
       <div class="modal-footer">
 		

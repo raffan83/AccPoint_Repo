@@ -28,5 +28,9 @@
             <column name="product_key" />
         </property>
         
+        <property name="autorizzato" type="java.lang.String">
+            <column name="autorizzato" />
+        </property>
+        
     </class>
 </hibernate-mapping>

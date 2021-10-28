@@ -71,7 +71,7 @@
 <th>Produttore</th>
 <%-- <th>Stato validazione</th>
 <th>Data validazione</th> --%>
-<th>Autorizzato</th>
+<%-- <th>Autorizzato</th> --%>
 <th>Versione</th>
 <th>Azioni</th>
  </tr></thead>
@@ -86,11 +86,11 @@
 	<td>${software.produttore }</td>
 <%-- 	<td>${software.stato_validazione.descrizione }</td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${software.data_validazione }"></fmt:formatDate></td> --%>
-	<td>${software.autorizzato }</td>
+<%-- 	<td>${software.autorizzato }</td> --%>
 	<td>${software.versione }</td>
 	<td>
 
-	 <a class="btn btn-warning customTooltip" onClicK="modificaSoftware('${software.id}', '${utl:escapeJS(software.nome) }','${utl:escapeJS(software.produttore) }','${utl:escapeJS(software.autorizzato) }','${utl:escapeJS(software.versione) }')" title="Click per modificare il tipo device"><i class="fa fa-edit"></i></a> 
+	 <a class="btn btn-warning customTooltip" onClicK="modificaSoftware('${software.id}', '${utl:escapeJS(software.nome) }','${utl:escapeJS(software.produttore) }','${utl:escapeJS(software.versione) }')" title="Click per modificare il tipo device"><i class="fa fa-edit"></i></a> 
 	  <a class="btn btn-danger customTooltip"onClicK="modalYesOrNo('${software.id}')" title="Click per eliminare il software"><i class="fa fa-trash"></i></a>
 	  <a class="btn btn-primary customTooltip" onClick="modalAllegati('${software.id}')" title="Click per aprire gli allegati"><i class="fa fa-archive"></i></a>
 	</td>
@@ -423,7 +423,7 @@ function modalNuovoSoftware(){
 }
 
 
-function modificaSoftware(id_software, nome, produttore,  autorizzato, versione){
+function modificaSoftware(id_software, nome, produttore,   versione){
 	
 	$('#id_software').val(id_software);
 	$('#nome_mod').val(nome);
@@ -431,7 +431,7 @@ function modificaSoftware(id_software, nome, produttore,  autorizzato, versione)
 /* 	$('#stato_validazione_mod').val(id_stato_validazione);
 	$('#stato_validazione_mod').change();
 	$('#data_validazione_mod').val(Date.parse(data_validazione).toString("dd/MM/yyyy")); */
-	$('#autorizzato_mod').val(autorizzato);	
+	//$('#autorizzato_mod').val(autorizzato);	
 	$('#versione_mod').val(versione);
 
 	$('#myModalModificaSoftware').modal();

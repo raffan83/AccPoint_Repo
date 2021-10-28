@@ -618,7 +618,6 @@ public class GestioneDevice extends HttpServlet {
 				DevSoftwareDTO software = new DevSoftwareDTO();
 				software.setNome(nome);
 				software.setProduttore(produttore);
-				software.setAutorizzato(autorizzato);
 				software.setVersione(versione);
 				session.save(software);				
 				
@@ -670,7 +669,6 @@ public class GestioneDevice extends HttpServlet {
 				DevSoftwareDTO software = GestioneDeviceBO.getSoftwareFromID(Integer.parseInt(id_software), session);
 				software.setNome(nome);
 				software.setProduttore(produttore);
-				software.setAutorizzato(autorizzato);
 				
 				software.setVersione(versione);
 				
@@ -907,6 +905,7 @@ public class GestioneDevice extends HttpServlet {
 				String stati_validazioni = request.getParameter("stati_validazioni");
 				String date_validazioni = request.getParameter("date_validazioni");
 				String product_key = request.getParameter("product_key");
+				String autorizzazioni = request.getParameter("autorizzazioni");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -931,7 +930,10 @@ public class GestioneDevice extends HttpServlet {
 						}
 						if(date_validazioni.split(";;", -1)!=null && date_validazioni.split(";;", -1)[i]!=null && !date_validazioni.split(";;", -1)[i].equals("")) {
 							devSw.setData_validazione(df.parse(date_validazioni.split(";;", -1)[i]));	
-						}										
+						}		
+						if(autorizzazioni.split(";;", -1)!=null && autorizzazioni.split(";;", -1)[i]!=null && !autorizzazioni.split(";;", -1)[i].equals("")) {
+							devSw.setAutorizzato(autorizzazioni.split(";;", -1)[i]);	
+						}
 					
 						session.save(devSw);
 						

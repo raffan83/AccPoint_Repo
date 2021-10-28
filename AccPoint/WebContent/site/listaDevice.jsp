@@ -732,6 +732,26 @@
        <div class="row">
        
        	<div class="col-sm-3">
+       		<label>Autorizzato</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <select id="autorizzazioni" name="autorizzazioni" data-placeholder="Seleziona autorizzazione..." class="form-control select2" style="width:100%" required>
+        <option value=""></option>
+        
+        <option value="SI">SI</option>
+        <option value="NO">NO</option>
+        
+        
+        
+        </select>
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
        		<label>Product-key</label>
        	</div>
        	<div class="col-sm-9">      
@@ -1148,11 +1168,11 @@ function createTableAssociati(){
 				  			dati.product_key = '' 
 				  		  }
 					  if(lista_software_associati[i].autorizzato!=null){
-						  dati.autorizzato = lista_software_associati[i].software.autorizzato;
+						  dati.autorizzazioni = lista_software_associati[i].autorizzato;
 					  }else{
-						  dati.autorizzato = '';
+						  dati.autorizzazioni = '';
 					  }
-					  if(lista_software_associati[i].versione!=null){
+					  if(lista_software_associati[i].software!=null){
 						  dati.versione =  lista_software_associati[i].software.versione;
 					  }else{
 						  dati.versione =  '';
@@ -1201,12 +1221,31 @@ function associaSoftware(){
 		var validazioni ="";
 		var date_validazioni = "";
 		var product_key = "";
+		var autorizzazioni = "";
 		 for(i=0; i< dataSelected.length; i++){
 			dataSelected[i];
 			selezionati = selezionati +dataSelected[i].id+";;";
-			validazioni = validazioni +$('#stato_val_'+dataSelected[i].id).val()+";;";
-			date_validazioni = date_validazioni +$('#data_val_'+dataSelected[i].id).val()+";;";
-			product_key = product_key +$('#product_key_'+dataSelected[i].id).val()+";;";
+			if($('#stato_val_'+dataSelected[i].id).val()!=null){
+				validazioni = validazioni +$('#stato_val_'+dataSelected[i].id).val()+";;";
+			}else{
+				validazioni = validazioni +";;";
+			}
+			if($('#data_val_'+dataSelected[i].id).val()!=null){
+				date_validazioni = date_validazioni +$('#data_val_'+dataSelected[i].id).val()+";;";
+			}else{
+				date_validazioni = date_validazioni +";;";
+			}
+			if($('#product_key_'+dataSelected[i].id).val()!=null){
+				product_key = product_key +$('#product_key_'+dataSelected[i].id).val()+";;";
+			}else{
+				product_key = product_key +";;";
+			}
+			if($('#autorizzazione_'+dataSelected[i].id).val()!=null){
+				autorizzazioni = autorizzazioni +$('#autorizzazione_'+dataSelected[i].id).val()+";;";
+			}else{
+				autorizzazioni = autorizzazioni +";;";
+			}
+			
 		} 
 		console.log(selezionati);
 		table.rows().deselect();
@@ -1216,6 +1255,7 @@ function associaSoftware(){
 		dataObj.stati_validazioni = validazioni;
 		dataObj.date_validazioni = date_validazioni;
 		dataObj.product_key = product_key;
+		dataObj.autorizzazioni = autorizzazioni;
 		dataObj.id_device = $('#id_device_software').val();
 		
 		callAjax(dataObj, "gestioneDevice.do?action=salva_associazione");
@@ -1245,6 +1285,13 @@ function controllaAssociati(table, lista_software_associati){
 	 		$("#label_product_key_"+val).html(""+lista_software_associati[i].product_key+"");
 	 		$("#product_key_"+val).val(lista_software_associati[i].product_key);	 
 	 	}
+	 	
+	 	if(lista_software_associati[i].autorizzazioni!=null){
+	 		$("#label_autorizzazione_"+val).html(""+lista_software_associati[i].autorizzazioni+"");
+	 		$("#autorizzazione_"+val).val(lista_software_associati[i].autorizzazioni);	 
+	 	}
+	 	
+	 
 	}
 }
 
@@ -1281,11 +1328,8 @@ function modalSoftware(id_device){
   			dati.data_validazione = '<td><div id="label_data_val_'+lista_software[i].id+'"></div><input type="hidden" id="data_val_'+lista_software[i].id+'"></td>' 
   		  }
   		  dati.product_key = '<td><div id="label_product_key_'+lista_software[i].id+'"></div><input type="hidden" id="product_key_'+lista_software[i].id+'"></td>';
-  		if(lista_software[i].autorizzato!=null){
-			  dati.autorizzato = lista_software[i].autorizzato;
-		  }else{
-			  dati.autorizzato = '';
-		  }
+  		dati.autorizzazioni = '<td><div id="label_autorizzazione_'+lista_software[i].id+'"></div><input type="hidden" id="autorizzazione_'+lista_software[i].id+'"></td>';
+  		
 		  if(lista_software[i].versione!=null){
 			  dati.versione =  lista_software[i].versione;
 		  }else{
@@ -1336,18 +1380,31 @@ function modalValidazione(id){
 	var stato = $('#stato_val_'+id).val();
 	var data = $('#data_val_'+id).val();
 	var pk = $('#product_key_'+id).val();
+	var aut = $('#autorizzazione_'+id).val();
 	
 	$('#stato_validazione').val(stato);
 	$('#stato_validazione').change();
 	
 	$('#data_validazione').val(data);
 	$('#product_key').val(pk);
-	
+	$('#autorizzazioni').val(aut);
 	
 	$('#modalValidazione').modal();
 	
 }
 
+
+$('#stato_validazione').change(function(){
+	
+	if($(this).val()==1){
+		$('#autorizzazioni').val("SI");
+	}else if($(this).val()==''){
+		$('#autorizzazioni').val("");
+	}else{
+		$('#autorizzazioni').val("NO");
+	}
+        $('#autorizzazioni').change();
+});
 
 function salvaValidazione(){
 	var val = $('#id_software_validazione').val();
@@ -1357,11 +1414,13 @@ function salvaValidazione(){
 	$("#label_stato_val_"+val).html("<label>"+$('#stato_validazione option[value="'+opt+'"]').text()+"</label>");
 	$("#label_data_val_"+val).html("<label>"+$('#data_validazione').val()+"</label>");
 	$("#label_product_key_"+val).html("<label>"+$('#product_key').val()+"</label>");
+	$("#label_autorizzazione_"+val).html("<label>"+$('#autorizzazioni').val()+"</label>");
 	
 	
 	$("#stato_val_"+val).val(opt);
 	$("#data_val_"+val).val($('#data_validazione').val());
 	$("#product_key_"+val).val($('#product_key').val());
+	$("#autorizzazione_"+val).val($('#autorizzazioni').val());
 	
 	$('#modalValidazione').modal('hide');
 }
@@ -1372,7 +1431,8 @@ $('#modalValidazione').on('hidden.bs.modal', function(){
 	$('#stato_validazione').change();
 	$('#data_validazione').val("")
 	$('#product_key').val("")
-	
+	$('#autorizzazioni').val("");
+	$('#autorizzazioni').change();
 });
 
 function modificaDevice(id_device, codice_interno, id_tipo_device, id_company, denominazione, costruttore, modello, distributore, data_acquisto, ubicazione, id_dipendente, configurazione){
@@ -1736,7 +1796,7 @@ $(document).ready(function() {
 	    	  {"data" : "stato"},
 	    	  {"data" : "data_validazione"},
 	    	  {"data" : "product_key"},
-	    	  {"data" : "autorizzato"},
+	    	  {"data" : "autorizzazioni"},
 	    	  {"data" : "versione"}
 	    	  
 	    	  
@@ -1786,7 +1846,7 @@ $(document).ready(function() {
 	    	  {"data" : "stato"},
 	    	  {"data" : "data_validazione"},
 	    	  {"data" : "product_key"},
-	    	  {"data" : "autorizzato"},
+	    	  {"data" : "autorizzazioni"},
 	    	  {"data" : "versione"},
 	    	  {"data" : "validazione"}
 	    	  

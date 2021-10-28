@@ -10,6 +10,7 @@ public class DevDeviceSoftwareDTO implements Serializable{
 	private DevStatoValidazioneDTO stato_validazione;
 	private Date data_validazione;
 	private String product_key;
+	private String autorizzato;
 	
 	public DevDeviceDTO getDevice() {
 		return device;
@@ -40,6 +41,12 @@ public class DevDeviceSoftwareDTO implements Serializable{
 	}
 	public void setProduct_key(String product_key) {
 		this.product_key = product_key;
+	}
+	public String getAutorizzato() {
+		return autorizzato;
+	}
+	public void setAutorizzato(String autorizzato) {
+		this.autorizzato = autorizzato;
 	}
 	
 

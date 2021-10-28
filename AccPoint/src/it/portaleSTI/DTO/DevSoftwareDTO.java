@@ -9,9 +9,6 @@ public class DevSoftwareDTO {
 	private int id;
 	private String nome;
 	private String produttore;
-
-	private String autorizzato;
-
 	private String versione;
 	private int disabilitato;
 	//private Set<DevDeviceDTO> listaDevice = new HashSet<DevDeviceDTO>();
@@ -35,12 +32,7 @@ public class DevSoftwareDTO {
 		this.produttore = produttore;
 	}
 	
-	public String getAutorizzato() {
-		return autorizzato;
-	}
-	public void setAutorizzato(String autorizzato) {
-		this.autorizzato = autorizzato;
-	}
+	
 	
 	public String getVersione() {
 		return versione;

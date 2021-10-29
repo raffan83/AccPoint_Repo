@@ -5532,13 +5532,13 @@ function eliminaCompany(){
 //	    			  }
 	    				  
 	    				  if(datatable == 1){
-	 	    				  var oTable = $('#tabPM').dataTable();openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')
-		    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',apertura)" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 4 );
+	 	    				  var oTable = $('#tabPM').dataTable();
+		    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'apertura\')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 4 );
 		    			  }else if(datatable == 2){
 		    				  var oTable = $('#tabPM').dataTable();
-		    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',apertura)" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 5 );
+		    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'apertura\')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 5 );
 		    			  }else{
-		    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',apertura)" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>');
+		    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'apertura\')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>');
 		    			  }
 	    			 
 	    			 
@@ -5549,7 +5549,7 @@ function eliminaCompany(){
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-success");
 	    				$('#myModalError').modal('show');
-
+	    				$('#modalComunicazione').modal('hide');
 	    		
 	    		  }else{
 	    			  $('#myModalErrorContent').html(data.messaggio);
@@ -5606,13 +5606,13 @@ function eliminaCompany(){
 //	    			  }
 	    			 
 	    			  if(datatable == 1){
- 	    				  var oTable = $('#tabPM').dataTable();openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')
-	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',chiusura)" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 4 );
+ 	    				  var oTable = $('#tabPM').dataTable();
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'chiusura\')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>', index, 4 );
 	    			  }else if(datatable == 2){
 	    				  var oTable = $('#tabPM').dataTable();
-	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',chiusura)" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 5 );
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'chiusura\')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>', index, 5 );
 	    			  }else{
-	    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',apertura)" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>');
+	    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'chiusura\')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>');
 	    			  }
 	    			  
 	    			  $('#report_button').hide();
@@ -5622,7 +5622,7 @@ function eliminaCompany(){
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-success");
 	    				$('#myModalError').modal('show');
-
+	    				$('#modalComunicazione').modal('hide');
 	    		
 	    		  }else{
 	    			 

@@ -1152,7 +1152,7 @@ function createTableAssociati(){
 					  dati.nome = lista_software_associati[i].software.nome;
 					  dati.produttore = lista_software_associati[i].software.produttore;
 					 
-					  if(lista_software_associati[i].data_validazione!=null){
+					  if(lista_software_associati[i].stato_validazione!=null){
 				  			dati.stato = lista_software_associati[i].stato_validazione.descrizione;  
 				  		  }else{
 				  			dati.stato = '' 
@@ -1198,12 +1198,7 @@ function createTableAssociati(){
 		       	 pleaseWaitDiv = $('#pleaseWaitDialog');
 		   	  pleaseWaitDiv.modal('hide');
 				
-				/* $('#modalSoftwareAssociati').on('shown.bs.modal', function () {
-				var table = $('#tabSoftware').DataTable();
-				table.columns.adjust().draw();
-				
-				}); */
-
+			
       	  }
 	});
 }
@@ -1222,33 +1217,30 @@ function associaSoftware(){
 		var date_validazioni = "";
 		var product_key = "";
 		var autorizzazioni = "";
-		 for(i=0; i< dataSelected.length; i++){
+ 		 for(i=0; i< dataSelected.length; i++){
 			dataSelected[i];
-			selezionati = selezionati +dataSelected[i].id+";;";
-			if($('#stato_val_'+dataSelected[i].id).val()!=null){
-				validazioni = validazioni +$('#stato_val_'+dataSelected[i].id).val()+";;";
-			}else{
-				validazioni = validazioni +";;";
-			}
-			if($('#data_val_'+dataSelected[i].id).val()!=null){
-				date_validazioni = date_validazioni +$('#data_val_'+dataSelected[i].id).val()+";;";
-			}else{
-				date_validazioni = date_validazioni +";;";
-			}
-			if($('#product_key_'+dataSelected[i].id).val()!=null){
-				product_key = product_key +$('#product_key_'+dataSelected[i].id).val()+";;";
-			}else{
-				product_key = product_key +";;";
-			}
-			if($('#autorizzazione_'+dataSelected[i].id).val()!=null){
-				autorizzazioni = autorizzazioni +$('#autorizzazione_'+dataSelected[i].id).val()+";;";
-			}else{
-				autorizzazioni = autorizzazioni +";;";
-			}
 			
-		} 
-		console.log(selezionati);
-		table.rows().deselect();
+			selezionati = selezionati +dataSelected[i].id+";;";
+			
+			if(dataSelected[i].stato=='VALIDATO'){
+				validazioni = validazioni +1+";;";	
+			}else if(dataSelected[i].stato == 'IN CORSO DI VALIDAZIONE'){
+				validazioni = validazioni +2+";;";	
+			}else{
+				validazioni = validazioni +3+";;";	
+			}
+							
+		
+			date_validazioni = date_validazioni +dataSelected[i].data_validazione+";;";			
+			
+			product_key = product_key +dataSelected[i].product_key+";;";
+						
+			autorizzazioni = autorizzazioni +dataSelected[i].autorizzazioni+";;";
+			
+			
+		}  
+		
+		console.log(selezionati);		
 		
 		dataObj = {},
 		dataObj.selezionati = selezionati;
@@ -1259,41 +1251,44 @@ function associaSoftware(){
 		dataObj.id_device = $('#id_device_software').val();
 		
 		callAjax(dataObj, "gestioneDevice.do?action=salva_associazione");
-		
+		table.rows().deselect();
 }
 
 function controllaAssociati(table, lista_software_associati){
 	
 	//var dataSelected = table.rows( { selected: true } ).data();
+	
+	var oTable = $('#tabSoftwareTot').dataTable();
 	var data = table.rows().data();
 	for(var i = 0;i<lista_software_associati.length;i++){
 	
 		var val = lista_software_associati[i].software.id;
 		
-	 	table.row( "#row_sw_"+ val).select();
+	 	
+		var index = table.row("#row_sw_"+ val, { page: 'all' });
+	 	
+	 	
 	 	if(lista_software_associati[i].stato_validazione!=null){
-	 		$("#label_stato_val_"+val).html(""+$('#stato_validazione option[value="'+lista_software_associati[i].stato_validazione.id+'"]').text()+"");
-	 		$("#stato_val_"+val).val(lista_software_associati[i].stato_validazione.id);
-	 		$("#stato_val_"+val).change();
+	 	    oTable.fnUpdate(lista_software_associati[i].stato_validazione.descrizione, index, 5 );
 	 	}
+	 	
 	 	if(lista_software_associati[i].data_validazione!=null){
-	 		$("#label_data_val_"+val).html(""+lista_software_associati[i].data_validazione+"");	
-	 		$("#data_val_"+val).val(lista_software_associati[i].data_validazione);
+	 		oTable.fnUpdate(lista_software_associati[i].data_validazione , index, 6 );
 	 	}
 	 	
 	 	if(lista_software_associati[i].product_key!=null){
-	 		$("#label_product_key_"+val).html(""+lista_software_associati[i].product_key+"");
-	 		$("#product_key_"+val).val(lista_software_associati[i].product_key);	 
+	 		oTable.fnUpdate(lista_software_associati[i].product_key , index, 7 );
 	 	}
 	 	
 	 	if(lista_software_associati[i].autorizzato!=null){
-	 		$("#label_autorizzazione_"+val).html(""+lista_software_associati[i].autorizzato+"");
-	 		$("#autorizzazione_"+val).val(lista_software_associati[i].autorizzato);	 
-	 		$("#autorizzazione_"+val).change();
-	 	}
+	 		oTable.fnUpdate(lista_software_associati[i].autorizzato , index, 8 );
+	 	} 
 	 	
-	 
+	 	table.row( "#row_sw_"+ val, { page:   'all'}).select();
+
 	}
+
+	
 }
 
 
@@ -1321,21 +1316,11 @@ function modalSoftware(id_device){
   		  dati.id = lista_software[i].id; 
   		  dati.nome = lista_software[i].nome;
   		  dati.produttore = lista_software[i].produttore;
-  		 // dati.stato = lista_software[i].stato_validazione.descrizione;
-  		  dati.stato = '<td><div id="label_stato_val_'+lista_software[i].id+'"></div><input type="hidden" id="stato_val_'+lista_software[i].id+'"></td>';
-  		  if(lista_software[i].data_validazione!=null){
-  			dati.data_validazione = lista_software[i].data_validazione;  
-  		  }else{
-  			dati.data_validazione = '<td><div id="label_data_val_'+lista_software[i].id+'"></div><input type="hidden" id="data_val_'+lista_software[i].id+'"></td>' 
-  		  }
-  		  dati.product_key = '<td><div id="label_product_key_'+lista_software[i].id+'"></div><input type="hidden" id="product_key_'+lista_software[i].id+'"></td>';
-  		dati.autorizzazioni = '<td><div id="label_autorizzazione_'+lista_software[i].id+'"></div><input type="hidden" id="autorizzazione_'+lista_software[i].id+'"></td>';
-  		
-		  if(lista_software[i].versione!=null){
-			  dati.versione =  lista_software[i].versione;
-		  }else{
-			  dati.versione =  '';
-		  }
+  		 dati.stato = '';
+  		 dati.data_validazione ='';
+  		 dati.product_key = '';
+  		 dati.autorizzazioni = '';
+  		 dati.versione = '';
   		  dati.validazione = '<td><a class="btn btn-primary customTooltip" title="Aggiungi validazione" onClick="modalValidazione('+lista_software[i].id+')"><i class="fa fa-plus">Validazione</i></a></td>'
   		t_data.push(dati);
   	  }
@@ -1353,10 +1338,12 @@ function modalSoftware(id_device){
   	
   	table.columns.adjust().draw();
   	
-  	$('#tabSoftwareTot tr').each(function(){
-			var val  = $(this).find('td:eq(2)').text();
-			$(this).attr("id", "row_sw_"+val)
-		});
+
+  	var p = table.rows({ page: 'all' }).nodes();
+  	 
+  	 for (var i = 0; i < p.length; i++) {
+  		p[i].id = "row_sw_"+ p[i].childNodes[2].innerText
+	}
   	
   	controllaAssociati(table, lista_software_associati);
   	$('#modalSoftwareTot').modal();
@@ -1378,12 +1365,24 @@ function modalValidazione(id){
 	
 	$('#id_software_validazione').val(id);
 	
-	var stato = $('#stato_val_'+id).val();
-	var data = $('#data_val_'+id).val();
-	var pk = $('#product_key_'+id).val();
-	var aut = $('#autorizzazione_'+id).val();
+	var table = $('#tabSoftwareTot').DataTable();
 	
-	$('#stato_validazione').val(stato);
+	var stato = table.cell("#row_sw_"+id, 5).data();
+	var data = table.cell("#row_sw_"+id, 6).data();
+	var pk = table.cell("#row_sw_"+id, 7).data();
+	var aut = table.cell("#row_sw_"+id, 8).data();
+	
+	
+	if(stato!=null && stato == "VALIDATO"){
+		$('#stato_validazione').val("1");
+	}else if(stato!=null && stato == "IN CORSO DI VALIDAZIONE"){
+		$('#stato_validazione').val("2");
+	}else if(stato!=null && stato == "NON VALIDATO"){
+		$('#stato_validazione').val("3");
+	}else{
+		$('#stato_validazione').val("");
+	}
+	
 	$('#stato_validazione').change();
 	
 	$('#data_validazione').val(data);
@@ -1409,9 +1408,51 @@ $('#stato_validazione').change(function(){
 });
 
 function salvaValidazione(){
-	var val = $('#id_software_validazione').val();
 	
+
+	var val = $('#id_software_validazione').val();
 	 var opt = $('#stato_validazione').val();
+	
+	var stato = $('#stato_validazione option[value="'+opt+'"]').text();
+	var data_val = $('#data_validazione').val();
+	var pk = $('#product_key').val();
+	var aut = $('#autorizzazioni').val();
+	
+	
+	
+	var oTable = $('#tabSoftwareTot').dataTable();
+//	var table =  $('#tabSoftwareTot').DataTable();
+	
+	//var data = table.rows().data();
+/*  	for(var i = 0;i<lista_software_associati.length;i++){
+	
+		var val = lista_software_associati[i].software.id; */
+		var index = $('#row_sw_'+val)[0]._DT_RowIndex;	
+		//table.row( "#row_sw_"+ val, { page:   'all'}).select();
+	 	
+	 	//oTable.fnUpdate(lista_software_associati[i].stato_validazione.id , index, 5 );
+	 	
+	 	
+	 	if(data_val!=null){
+	 		oTable.fnUpdate(data_val , index, 6 , false);
+	 	}
+	 	
+	 	if(stato!=null){
+	 	    oTable.fnUpdate(stato , index, 5, false );
+	 	}
+	 	if(pk!=null){
+	 	    oTable.fnUpdate(pk , index, 7, false  );
+	 	}
+	 	if(aut!=null){
+	 	    oTable.fnUpdate(aut , index, 8, false  );
+	 	}
+	 	
+	 	
+	//}	 	
+	
+	
+	
+/* 	 var opt = $('#stato_validazione').val();
 	
 	$("#label_stato_val_"+val).html("<label>"+$('#stato_validazione option[value="'+opt+'"]').text()+"</label>");
 	$("#label_data_val_"+val).html("<label>"+$('#data_validazione').val()+"</label>");
@@ -1422,7 +1463,7 @@ function salvaValidazione(){
 	$("#stato_val_"+val).val(opt);
 	$("#data_val_"+val).val($('#data_validazione').val());
 	$("#product_key_"+val).val($('#product_key').val());
-	$("#autorizzazione_"+val).val($('#autorizzazioni').val());
+	$("#autorizzazione_"+val).val($('#autorizzazioni').val()); */
 	
 	$('#modalValidazione').modal('hide');
 }

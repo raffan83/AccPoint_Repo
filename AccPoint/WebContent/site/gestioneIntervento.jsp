@@ -276,7 +276,22 @@
 
 	 <c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	 
 	 
-		<c:if test="${intervento.statoIntervento.id == 0}">
+	  <c:if test="${intervento.statoIntervento.id == 0}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','${loop.index}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+						
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 1}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','${loop.index}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 2}">
+					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','${loop.index}','apertura')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
+					
+					</c:if> 
+	 
+<%-- 		<c:if test="${intervento.statoIntervento.id == 0}">
 			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',1,'${loop.index}')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 		</c:if>
 		
@@ -286,7 +301,7 @@
 		
 		<c:if test="${intervento.statoIntervento.id == 2}">
 			<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento('${utl:encryptData(intervento.id)}',1,'${loop.index}')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
-		</c:if>
+		</c:if> --%>
 	</c:if>
 	
 	 <c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
@@ -321,7 +336,31 @@
  </div>
 </div>
 
+  <div id="modalComunicazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">
+			<label id="label_chiusura">Vuoi inviare la comunicazione di avvenuta chiusura intervento?</label>
+   <label id="label_apertura">Vuoi inviare la comunicazione di avvenuta apertura intervento?</label>
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer" id="myModalFooter">
+ 	<input id="id_int" type="hidden">
+ 	<input id="index" type="hidden">
 
+ 	<input id="apertura_chiusura" type="hidden">
+ 	
+ 
+ 		<button type="button" class="btn btn-primary" onClick="cambiaStatoIntervento($('#id_int').val(), 1)">SI</button>
+        <button type="button" class="btn btn-primary"  onClick="cambiaStatoIntervento($('#id_int').val(), 0)">NO</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
   <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -437,6 +476,36 @@
 <!-- <script src="plugins/jbdemonte-gmap3/dist/gmap3.min.js"></script> -->
  
  <script type="text/javascript">
+ 
+ 
+	function openModalComunicazione(id_intervento, index,apertura_chiusura){
+		
+		$('#id_int').val(id_intervento);
+		$('#index').val(index);
+		
+		if(apertura_chiusura == 'apertura'){
+			$('#label_chiusura').hide();
+			$('#label_apertura').show();
+		}else{
+			$('#label_apertura').hide();
+			$('#label_chiusura').show();
+		}
+		$('#apertura_chiusura').val(apertura_chiusura);
+		$('#modalComunicazione').modal()
+	}
+	
+	
+	function cambiaStatoIntervento(id_intervento, comunicazione){
+		
+		if($('#apertura_chiusura').val() == 'apertura'){
+			apriIntervento(id_intervento,1,$('#index').val(), comunicazione)
+		}else{
+			chiudiIntervento(id_intervento,1,$('#index').val(), comunicazione)
+		}
+		
+		
+	}
+ 
  
  	var columsDatatables = [];
  

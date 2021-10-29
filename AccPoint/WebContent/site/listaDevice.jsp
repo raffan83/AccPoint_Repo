@@ -1320,7 +1320,7 @@ function modalSoftware(id_device){
   		 dati.data_validazione ='';
   		 dati.product_key = '';
   		 dati.autorizzazioni = '';
-  		 dati.versione = '';
+  		 dati.versione = lista_software[i].versione;
   		  dati.validazione = '<td><a class="btn btn-primary customTooltip" title="Aggiungi validazione" onClick="modalValidazione('+lista_software[i].id+')"><i class="fa fa-plus">Validazione</i></a></td>'
   		t_data.push(dati);
   	  }

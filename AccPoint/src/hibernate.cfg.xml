@@ -207,6 +207,8 @@
  	<mapping class="DevTipoEventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevTipoEventoDTO.hbm.xml"/>
  	<mapping class="DevTipoProceduraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevTipoProceduraDTO.hbm.xml"/>
  	<mapping class="DevTestoEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevTestoEmailDTO.hbm.xml"/>
+ 	
+ 	<mapping class="GPDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/GPDTO.hbm.xml"/>
  			
   </session-factory>
 </hibernate-configuration>

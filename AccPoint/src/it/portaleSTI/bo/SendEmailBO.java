@@ -34,6 +34,7 @@ import it.portaleSTI.DTO.ConsegnaDpiDTO;
 import it.portaleSTI.DTO.DevRegistroAttivitaDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
+import it.portaleSTI.DTO.GPDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.Util.Costanti;
@@ -984,6 +985,44 @@ for (String string : to) {
 			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
 
 
+	  email.send();
+	
+}
+
+public static void sendEmailGreenPass(GPDTO greenPass, String destinatario) throws EmailException {
+	
+	
+	
+	 HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+email.getMailSession().getProperties().put("mail.debug", "true");
+email.getMailSession().getProperties().put("mail.smtp.port", "465");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+DateFormat df_dataNascita = new SimpleDateFormat("dd/MM/yyyy");
+
+	  email.addTo(destinatario);
+	  
+	  email.setFrom("system@ncsnetwork.it", "GP Control");
+	
+
+		  email.setSubject("GREEN PASS INVALID");
+		  
+		  email.setHtmlMsg("<html>Rilevato Green Pass non valido:<br><br>"
+				  	  +"<br>COGNOME: "+greenPass.getCognome()
+					  +"<br>NOME: "+greenPass.getNome()
+					  +"<br>DATA NASCITA: " +df_dataNascita.format(greenPass.getDataNascita())
+					  +"<br>DATA VERIFICA: "+df.format(greenPass.getDataVerifica())					 
+					  +" <br /> <br />");
+		  
 	  email.send();
 	
 }

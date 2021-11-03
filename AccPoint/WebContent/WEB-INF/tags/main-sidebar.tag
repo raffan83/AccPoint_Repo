@@ -373,6 +373,7 @@
 		   <li><a href="gestioneDevice.do?action=lista_tipi_device">Tipi Device</a></li>	
   			<li><a href="gestioneDevice.do?action=lista_device">Lista Device</a></li>
   			<li><a href="gestioneDevice.do?action=lista_software">Lista Software</a></li>
+  			<li><a href="gestioneDevice.do?action=lista_procedure">Lista Procedure</a></li>
   			<li><a href="gestioneDevice.do?action=scadenzario">Scadenzario</a></li>
 		
 	      	

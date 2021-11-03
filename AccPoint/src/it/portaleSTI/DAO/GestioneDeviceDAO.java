@@ -15,6 +15,7 @@ import it.portaleSTI.DTO.DevDeviceSoftwareDTO;
 import it.portaleSTI.DTO.DevLabelConfigDTO;
 import it.portaleSTI.DTO.DevLabelTipoInterventoDTO;
 import it.portaleSTI.DTO.DevProceduraDTO;
+import it.portaleSTI.DTO.DevProceduraDeviceDTO;
 import it.portaleSTI.DTO.DevRegistroAttivitaDTO;
 import it.portaleSTI.DTO.DevSoftwareDTO;
 import it.portaleSTI.DTO.DevStatoValidazioneDTO;
@@ -189,12 +190,23 @@ public class GestioneDeviceDAO {
 		return lista;
 	}
 
-	public static ArrayList<DevProceduraDTO> getListaProcedure(int id_device, Session session) {
+	public static ArrayList<DevProceduraDeviceDTO> getListaProcedureDevice(int id_device, Session session) {
+		
+		ArrayList<DevProceduraDeviceDTO> lista = null;
+		
+		Query query = session.createQuery("from DevProceduraDeviceDTO where device.id = :_id_device and procedura.disabilitato = 0");
+		query.setParameter("_id_device", id_device);
+		
+		lista = (ArrayList<DevProceduraDeviceDTO>) query.list();
+		
+		return lista;
+	}
+	
+public static ArrayList<DevProceduraDTO> getListaProcedure(Session session) {
 		
 		ArrayList<DevProceduraDTO> lista = null;
 		
-		Query query = session.createQuery("from DevProceduraDTO where id_device = :_id_device");
-		query.setParameter("_id_device", id_device);
+		Query query = session.createQuery("from DevProceduraDTO where disabilitato = 0");
 		
 		lista = (ArrayList<DevProceduraDTO>) query.list();
 		
@@ -350,6 +362,13 @@ public static DevTestoEmailDTO getTestoEmail(Session session) {
 	}
 	
 	return result;
+}
+
+public static void dissociaProcedura(int id, Session session) {
+	Query query = session.createQuery("delete from DevProceduraDeviceDTO where device.id =:_id_device");
+	query.setParameter("_id_device", id);
+	query.executeUpdate();
+	
 }
 
 }

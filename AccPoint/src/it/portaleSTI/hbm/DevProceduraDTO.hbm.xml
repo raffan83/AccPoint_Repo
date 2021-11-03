@@ -24,9 +24,9 @@
         </many-to-one>
         
         
-        <property name="id_device" type="int">
-            <column name="id_device" />
-        </property>
+         <property name="disabilitato" type="int">
+            <column name="disabilitato" />
+        </property> 
        
 	</class>
 </hibernate-mapping>

@@ -6,7 +6,7 @@ public class DevProceduraDTO {
 	private String descrizione;
 	private String frequenza;
 	private DevTipoProceduraDTO tipo_procedura;
-	int id_device;
+	private int disabilitato;
 	
 	public int getId() {
 		return id;
@@ -32,11 +32,17 @@ public class DevProceduraDTO {
 	public void setTipo_procedura(DevTipoProceduraDTO tipo_procedura) {
 		this.tipo_procedura = tipo_procedura;
 	}
-	public int getId_device() {
-		return id_device;
+//	public int getId_device() {
+//		return id_device;
+//	}
+//	public void setId_device(int id_device) {
+//		this.id_device = id_device;
+//	}
+	public int getDisabilitato() {
+		return disabilitato;
 	}
-	public void setId_device(int id_device) {
-		this.id_device = id_device;
+	public void setDisabilitato(int disabilitato) {
+		this.disabilitato = disabilitato;
 	}
 	
 	

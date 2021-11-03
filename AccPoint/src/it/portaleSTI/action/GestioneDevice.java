@@ -38,6 +38,7 @@ import it.portaleSTI.DTO.DevDeviceSoftwareDTO;
 import it.portaleSTI.DTO.DevLabelConfigDTO;
 import it.portaleSTI.DTO.DevLabelTipoInterventoDTO;
 import it.portaleSTI.DTO.DevProceduraDTO;
+import it.portaleSTI.DTO.DevProceduraDeviceDTO;
 import it.portaleSTI.DTO.DevRegistroAttivitaDTO;
 import it.portaleSTI.DTO.DevSoftwareDTO;
 import it.portaleSTI.DTO.DevStatoValidazioneDTO;
@@ -985,10 +986,33 @@ public class GestioneDevice extends HttpServlet {
 				
 				String id_device = request.getParameter("id_device");
 				
-				ArrayList<DevProceduraDTO> lista_procedure = GestioneDeviceBO.getListaProcedure(Integer.parseInt(id_device), session);
+				ArrayList<DevProceduraDTO> lista_procedure = GestioneDeviceBO.getListaProcedure( session);
 				ArrayList<DevTipoProceduraDTO> lista_tipi_procedure = GestioneDeviceBO.getListaTipiProcedure(session);
 				
 				request.getSession().setAttribute("lista_tipi_procedure", lista_tipi_procedure);
+				request.getSession().setAttribute("lista_procedure", lista_procedure);
+				request.getSession().setAttribute("id_device", id_device);
+
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDevProcedure.jsp");
+		     	dispatcher.forward(request,response);		
+				
+			}
+			
+			else if(action.equals("lista_procedure_device")) {
+				
+				String id_device = request.getParameter("id_device");
+				
+				ArrayList<DevProceduraDTO> lista_procedure = GestioneDeviceBO.getListaProcedure( session);
+				ArrayList<DevProceduraDeviceDTO> lista_procedure_associate = GestioneDeviceBO.getListaProcedureDevice(Integer.parseInt(id_device), session);
+				ArrayList<Integer> id_associati = new ArrayList<Integer>();
+				for (DevProceduraDeviceDTO devProceduraDeviceDTO : lista_procedure_associate) {
+					id_associati.add(devProceduraDeviceDTO.getProcedura().getId());
+				}
+			
+				Gson g = new Gson();
+				
+				request.getSession().setAttribute("id_associati", g.toJsonTree(id_associati));
 				request.getSession().setAttribute("lista_procedure", lista_procedure);
 				request.getSession().setAttribute("id_device", id_device);
 
@@ -997,6 +1021,45 @@ public class GestioneDevice extends HttpServlet {
 		     	dispatcher.forward(request,response);		
 				
 			}
+			
+			else if(action.equals("associa_procedura")) {
+				
+				ajax = true;
+				
+				String id_device = request.getParameter("id_device");
+				String selezionati = request.getParameter("selezionati");
+				
+				DevDeviceDTO device = GestioneDeviceBO.getDeviceFromID(Integer.parseInt(id_device), session);
+				
+					
+			
+				GestioneDeviceBO.dissociaProcedura(device.getId(), session);
+				if(selezionati!=null && !selezionati.equals("")) {
+					for(int i = 0; i<selezionati.split(";;").length;i++) {
+						
+						DevProceduraDTO procedura = GestioneDeviceBO.getProceduraFromID(Integer.parseInt(selezionati.split(";;")[i]), session);
+											
+						DevProceduraDeviceDTO prDv = new DevProceduraDeviceDTO();
+						
+						prDv.setDevice(device);
+						prDv.setProcedura(procedura);
+						
+						session.save(prDv);
+						
+					}
+				}
+				
+				
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Operazione completata con successo!");
+				out.print(myObj);	
+				
+			}
+			
+			
 			else if(action.equals("nuova_procedura")) {
 				
 				ajax = true;
@@ -1035,7 +1098,7 @@ public class GestioneDevice extends HttpServlet {
 				DevProceduraDTO procedura = new DevProceduraDTO();
 				procedura.setDescrizione(descrizione);
 				procedura.setFrequenza(frequenza);
-				procedura.setId_device(Integer.parseInt(id_device));
+				//procedura.setId_device(Integer.parseInt(id_device));
 				procedura.setTipo_procedura(new DevTipoProceduraDTO(Integer.parseInt(tipo_procedura), ""));			
 				
 				session.save(procedura);				
@@ -1094,6 +1157,24 @@ public class GestioneDevice extends HttpServlet {
 				myObj.addProperty("messaggio", "Procedura salvata con successo!");
 				out.print(myObj);
 			}
+			
+			else if(action.equals("elimina_procedura")) {
+				
+				ajax = true;
+						
+				String id_procedura = request.getParameter("id");
+				DevProceduraDTO procedura = GestioneDeviceBO.getProceduraFromID(Integer.parseInt(id_procedura), session);
+				procedura.setDisabilitato(1);
+				session.update(procedura);				
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Procedura eliminata con successo!");
+				out.print(myObj);
+				
+			}
+			
 			else if(action.equals("lista_allegati_device")) {
 				
 				String id_device = request.getParameter("id_device");	

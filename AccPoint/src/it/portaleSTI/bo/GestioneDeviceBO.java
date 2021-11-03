@@ -18,6 +18,7 @@ import it.portaleSTI.DTO.DevDeviceSoftwareDTO;
 import it.portaleSTI.DTO.DevLabelConfigDTO;
 import it.portaleSTI.DTO.DevLabelTipoInterventoDTO;
 import it.portaleSTI.DTO.DevProceduraDTO;
+import it.portaleSTI.DTO.DevProceduraDeviceDTO;
 import it.portaleSTI.DTO.DevRegistroAttivitaDTO;
 import it.portaleSTI.DTO.DevSoftwareDTO;
 import it.portaleSTI.DTO.DevStatoValidazioneDTO;
@@ -83,9 +84,14 @@ public class GestioneDeviceBO {
 		return GestioneDeviceDAO.getListaLabelConfigurazioni(session);
 	}
 
-	public static ArrayList<DevProceduraDTO> getListaProcedure(int id_device, Session session) {
+	public static ArrayList<DevProceduraDTO> getListaProcedure(Session session) {
 		
-		return GestioneDeviceDAO.getListaProcedure(id_device, session);
+		return GestioneDeviceDAO.getListaProcedure( session);
+	}
+	
+	public static ArrayList<DevProceduraDeviceDTO> getListaProcedureDevice(int id_device, Session session) {
+		
+		return GestioneDeviceDAO.getListaProcedureDevice(id_device, session);
 	}
 
 	public static ArrayList<DevTipoProceduraDTO> getListaTipiProcedure(Session session) {
@@ -173,5 +179,10 @@ public class GestioneDeviceBO {
 	public static DevTestoEmailDTO getTestoEmail(Session session) {
 		
 		return GestioneDeviceDAO.getTestoEmail(session);
+	}
+
+	public static void dissociaProcedura(int id, Session session) {
+		
+		GestioneDeviceDAO.dissociaProcedura(id, session);
 	}
 }

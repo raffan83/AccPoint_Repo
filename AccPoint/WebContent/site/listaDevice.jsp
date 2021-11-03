@@ -1636,7 +1636,7 @@ $(document).ready(function() {
       	if(content_id == 2){
       		
     		
-      	   exploreModal("gestioneDevice.do","action=lista_procedure&id_device="+id,"#gestione_procedure");
+      	   exploreModal("gestioneDevice.do","action=lista_procedure_device&id_device="+id,"#gestione_procedure");
       	    $( "#myModal" ).modal();
       	    $('body').addClass('noScroll');
        	}
@@ -1709,7 +1709,7 @@ $(document).ready(function() {
     	if(contentID == "gestioneProcedureTab"){
       		
     		
-       	   exploreModal("gestioneDevice.do","action=lista_procedure&id_device="+id,"#gestione_procedure");
+       	   exploreModal("gestioneDevice.do","action=lista_procedure_device&id_device="+id,"#gestione_procedure");
        	    $( "#myModal" ).modal();
        	    $('body').addClass('noScroll');
         }

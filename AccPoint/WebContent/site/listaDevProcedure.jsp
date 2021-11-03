@@ -1,14 +1,50 @@
-<%@page import="it.portaleSTI.DTO.MisuraDTO"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.google.gson.JsonArray"%>
-<%@page import="com.google.gson.Gson"%>
-<%@page import="it.portaleSTI.DTO.CampioneDTO"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@page import="com.google.gson.JsonObject"%>
-<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@page import="it.portaleSTI.DTO.MagPaccoDTO"%>
+<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
+<%@page import="it.portaleSTI.DTO.ClienteDTO"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
+
+
+<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
+
+<jsp:attribute name="body_area">
+
+<div class="wrapper">
+	
+
+  <t:main-sidebar />
+ <t:main-header />
+
+  <!-- Content Wrapper. Contains page content -->
+  <div id="corpoframe" class="content-wrapper">
+   <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1 class="pull-left">
+        Lista Letture Green Pass
+        <!-- <small></small> -->
+      </h1>
+       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+    </section>
+    <div style="clear: both;"></div>    
+    <!-- Main content -->
+     <section class="content">
+<div class="row">
+      <div class="col-xs-12">
+
+ <div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Lista Letture Green Pass
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+
+<div class="box-body">
 
 
 <a class="btn btn-primary pull-right" onClick="$('#modalNuovaProcedura').modal()"><i class="fa fa-plus"></i>Nuova procedura</a><br><br>
@@ -16,19 +52,19 @@
 	 <table id="tabProcedura" class="table table-bordered table-hover dataTable table-striped" role="dialog" width="100%">
  <thead><tr class="active">
 
-                   <th></th>
- 						<th>ID</th>  						
+                   <th>ID</th>
+ 												
  						  <th>Descrizione</th>
  						  <th>Tipo procedura</th> 
  						  <th>Frequenza</th> 						   
- 						     
+ 						     <th>Azioni</th>
  </tr></thead>
  
  <tbody>
   <c:forEach items="${lista_procedure }" var="procedura">
 
- <tr id="proc_${procedura.id }">
- <td></td>
+ <tr >
+
  <td >${procedura.id }</td>
   <td >${procedura.descrizione }</td>
 
@@ -37,10 +73,10 @@
 
   </td>
   <td>${procedura.frequenza }</td>
-<%-- <td>
-  <a class="btn btn-warning customTooltip" onClicK="modificaProcedura('${procedura.id}','${procedura.tipo_procedura.id }','${utl:escapeJS(procedura.descrizione) }','${utl:escapeJS(procedura.frequenza)}')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></a> 
-
- </td> --%>
+ <td>
+  <a class="btn btn-warning customTooltip" onClicK="modificaProcedura('${procedura.id}','${procedura.tipo_procedura.id }','${utl:escapeJS(procedura.descrizione) }','${utl:escapeJS(procedura.frequenza)}')" title="Click per modificare la procedura"><i class="fa fa-edit"></i></a> 
+<a class="btn btn-danger customTooltip" onClicK="modalYesOrNo('${procedura.id}')" title="Click per eliminare"><i class="fa fa-trash"></i></a>
+ </td> 
  
  </tr>
  </c:forEach> 
@@ -50,12 +86,7 @@
               
 </table> <br>
 
-<div class="row"> 
-<div class="col-xs-12">
-
-<a class="btn btn-primary pull-right" onClick="salvaAssociazioneProcedure()"><i class="fa fa-plus"></i> Salva Associazione</a>
-</div>
-</div>
+</div></div>
 
 <form id="formNuovaProcedura" name="formNuovaProcedura" >
 <div id="modalNuovaProcedura" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
@@ -202,31 +233,66 @@
 </div>
 </form>
 
+
+
+
+
+
+
+  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      Sei sicuro di voler eliminare il la procedura?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_elimina_procedura" >
+      <a class="btn btn-primary" onclick="eliminaProceduraDevice($('#id_elimina_procedura').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+</div>
+   <t:dash-footer />
+   
+  <t:control-sidebar />
+</div>
+</section>
+</div>
+<!-- ./wrapper -->
+
+</jsp:attribute>
+
+
+<jsp:attribute name="extra_css">
+
+	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
+	<link type="text/css" href="css/bootstrap.min.css" />
+
+
+
+</jsp:attribute>
+
+<jsp:attribute name="extra_js_footer">
+<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
+<script type="text/javascript">
 
-<script>
-
-
-function controllaProcedureAssociate(table, lista_procedure_associate){
-	
-	//var dataSelected = table.rows( { selected: true } ).data();
-	
-	var oTable = $('#tabProcedura').dataTable();
-	var data = table.rows().data();
-	for(var i = 0;i<lista_procedure_associate.length;i++){
-	
-		var val = lista_procedure_associate[i];		
-	
-		//var index = table.row("#proc_"+ val, { page: 'all' });
-	 	
-	 	table.row( "#proc_"+ val, { page:   'all'}).select();
-
-	}
-
-	
-}
 
 
 console.log("test2")
@@ -385,14 +451,8 @@ $(document).ready(function(){
 	     responsive: true,
 	     scrollX: false,
 	     stateSave: true,
-	     order:[[1, "desc"]],
-	     select: {
-	       	style:    'multi-shift',
-	       	selector: 'td:nth-child(1)'
-	   	},
-	    columnDefs: [
-	    	{ className: "select-checkbox", targets: 0,  orderable: false }
-	    		]
+	     order:[[0, "desc"]]
+	     
 
 	     
 	   });
@@ -402,7 +462,7 @@ $(document).ready(function(){
 
 	$('#tabProcedura thead th').each( function () {
 		var title = $('#tabProcedura thead th').eq( $(this).index() ).text();
-		if($(this).index()!=0)
+		
 		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
 	} );
 		
@@ -424,10 +484,6 @@ $(document).ready(function(){
 	
 	
 	
-	var lista_procedure_associate = JSON.parse("${id_associati}");
-	
-	controllaProcedureAssociate(tableNote, lista_procedure_associate);
-	
 	
 	
 });
@@ -436,99 +492,39 @@ $(document).ready(function(){
  $('#formNuovaProcedura').on('submit', function(e){
 	
 	 e.preventDefault();
-	 callAjaxForm('#formNuovaProcedura', 'gestioneDevice.do?action=nuova_procedura', function(data, textStatus){
+	 callAjaxForm('#formNuovaProcedura', 'gestioneDevice.do?action=nuova_procedura')
 		 
-		 $('#report_button').hide();
-			$('#visualizza_report').hide();
-		  $("#modalNuovoReferente").modal("hide");
-		  $('#myModalErrorContent').html(data.messaggio);
-		  	$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-success");
-			$('#myModalError').modal('show');
-			
-		$('#myModalError').on('hidden.bs.modal', function(){	         			
-			
-			$('#modalNuovaProcedura').hide();
-		       	   exploreModal("gestioneDevice.do","action=lista_procedure_device&id_device=${id_device}","#gestione_procedure");
-		       	    $( "#myModal" ).modal();
-		       	    $('body').addClass('noScroll');
-		    
-		});
 		 
-	 });
+		 
+	 
  });
  
  $('#formModificaProcedura').on('submit', function(e){
 		
 	 e.preventDefault();
-	 callAjaxForm('#formModificaProcedura', 'gestioneDevice.do?action=modifica_procedura', function(data, textStatus){
-		 
-		 
-		 $('#report_button').hide();
-			$('#visualizza_report').hide();
-		  $("#modalNuovoReferente").modal("hide");
-		  $('#myModalErrorContent').html(data.messaggio);
-		  	$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-success");
-			$('#myModalError').modal('show');
-			
-		$('#myModalError').on('hidden.bs.modal', function(){	         			
-			
-			$('#modalModificaProcedura').hide();
-		       	   exploreModal("gestioneDevice.do","action=lista_procedure&id_device=${id_device}","#gestione_procedure");
-		       	    $( "#myModal" ).modal();
-		       	    $('body').addClass('noScroll');
-		    
-		});
-		 
-		 
-		 
-	 });
+	 callAjaxForm('#formModificaProcedura', 'gestioneDevice.do?action=modifica_procedura')
+	 
  });
  
- function salvaAssociazioneProcedure(){
-	 
-	 pleaseWaitDiv = $('#pleaseWaitDialog');
-	  pleaseWaitDiv.modal();
-	  var selezionati ="";
-	  
-	  var table = $('#tabProcedura').DataTable();
-		var dataSelected = table.rows( { selected: true } ).data();
-
-		 for(i=0; i< dataSelected.length; i++){		
-			
-			selezionati = selezionati +dataSelected[i][1]+";;";
-			
-		}  
-		
-		console.log(selezionati);		
-		
-		dataObj = {},
-		dataObj.selezionati = selezionati;
-
-		dataObj.id_device = "${id_device}";
-		
-		callAjax(dataObj, "gestioneDevice.do?action=associa_procedura", function(data, textStatus){
-			
-			 $('#report_button').hide();
-				$('#visualizza_report').hide();
-			  $("#modalNuovoReferente").modal("hide");
-			  $('#myModalErrorContent').html(data.messaggio);
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-success");
-				$('#myModalError').modal('show');
-				
-			$('#myModalError').on('hidden.bs.modal', function(){	         			
-				
-				$('#modalModificaProcedura').hide();
-			       	   exploreModal("gestioneDevice.do","action=lista_procedure_device&id_device=${id_device}","#gestione_procedure");
-			       	    $( "#myModal" ).modal();
-			       	    $('body').addClass('noScroll');
-			    
-			});
-			
-		});
-		//table.rows().deselect();
+ function modalYesOrNo(id_procedura){
+	 $('#id_elimina_procedura').val(id_procedura);
+	 $('#myModalYesOrNo').modal()
  }
 
-</script>
+ function eliminaProceduraDevice(){
+	 
+	 dataObj = {}
+	 dataObj.id = $('#id_elimina_procedura').val();
+	 
+	 callAjax(dataObj, "gestioneDevice.do?action=elimina_procedura")
+ }
+ 
+
+
+ 
+  </script>
+  
+</jsp:attribute> 
+</t:layout>
+
+

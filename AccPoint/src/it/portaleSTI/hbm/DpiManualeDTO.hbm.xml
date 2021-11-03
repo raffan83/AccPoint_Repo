@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.DpiManualeDTO" table="dpi_manuale">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <many-to-one name="tipo_dpi" class="it.portaleSTI.DTO.TipoDpiDTO" fetch="join" lazy="false">
+            <column name="id_tipo_dpi" />
+        </many-to-one>
+
+
+
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        
+        <property name="modello" type="java.lang.String">
+            <column name="modello" />
+        </property>
+
+        <property name="conformita" type="java.lang.String">
+            <column name="conformita" />
+        </property>
+
+
+<property name="disabilitato" type="int">
+            <column name="disabilitato" />
+        </property>
+        
+    </class>
+</hibernate-mapping>

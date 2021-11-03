@@ -188,13 +188,15 @@
  	<mapping class="TipoDpiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoDpiDTO.hbm.xml"/>
  	<mapping class="ConsegnaDpiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ConsegnaDpiDTO.hbm.xml"/>
  	<mapping class="DpiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DpiDTO.hbm.xml"/>
+ 	<mapping class="DpiManualeDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DpiManualeDTO.hbm.xml"/>
+ 	<mapping class="DpiAllegatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DpiAllegatiDTO.hbm.xml"/>
  	
  	
  	
  	<mapping class="DevAllegatiDeviceDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevAllegatiDeviceDTO.hbm.xml"/>		
  	<mapping class="DevAllegatiSoftwareDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevAllegatiSoftwareDTO.hbm.xml"/>
  	<mapping class="DevDeviceDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevDeviceDTO.hbm.xml"/>
-  <mapping class="DevDeviceSoftwareDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevDeviceSoftwareDTO.hbm.xml"/> 
+  	<mapping class="DevDeviceSoftwareDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevDeviceSoftwareDTO.hbm.xml"/> 
  	<mapping class="DevLabelConfigDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevLabelConfigDTO.hbm.xml"/>
  	<mapping class="DevLabelTipoInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevLabelTipoInterventoDTO.hbm.xml"/>
  	<mapping class="DevProceduraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevProceduraDTO.hbm.xml"/>

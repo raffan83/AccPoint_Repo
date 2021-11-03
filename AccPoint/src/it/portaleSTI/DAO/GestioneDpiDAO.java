@@ -10,7 +10,9 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
+import it.portaleSTI.DTO.DpiAllegatiDTO;
 import it.portaleSTI.DTO.DpiDTO;
+import it.portaleSTI.DTO.DpiManualeDTO;
 import it.portaleSTI.DTO.TipoDpiDTO;
 
 public class GestioneDpiDAO {
@@ -145,6 +147,64 @@ public class GestioneDpiDAO {
 		
 
 		lista = (ArrayList<DpiDTO>) query.list();
+		
+		return lista;
+	}
+
+	public static DpiManualeDTO getManualeFromId(int id_manuale, Session session) {
+
+		ArrayList<DpiManualeDTO> lista = null;
+		DpiManualeDTO result = null;
+		
+		Query query = session.createQuery("from DpiManualeDTO where id =:_id");
+		query.setParameter("_id", id_manuale);
+		
+		lista = (ArrayList<DpiManualeDTO>) query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
+			
+	}
+
+	public static ArrayList<DpiManualeDTO> getListaManuali(Session session) {
+		ArrayList<DpiManualeDTO> lista = null;
+		
+		Query query = session.createQuery("from DpiManualeDTO where disabilitato = 0");
+		
+		lista = (ArrayList<DpiManualeDTO>) query.list();
+		
+		return lista;
+	}
+
+	public static DpiAllegatiDTO getAllegatoFromID(int id_allegato, Session session) {
+
+		ArrayList<DpiAllegatiDTO> lista = null;
+		DpiAllegatiDTO result = null;
+		
+		Query query = session.createQuery("from DpiAllegatiDTO where id =:_id");
+		query.setParameter("_id", id_allegato);
+		
+		lista = (ArrayList<DpiAllegatiDTO>) query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
+	}
+
+	public static ArrayList<DpiAllegatiDTO> getListaAllegati(int id_manuale, Session session) {
+		
+		ArrayList<DpiAllegatiDTO> lista = null;	
+		
+		Query query = session.createQuery("from DpiAllegatiDTO where id_manuale =:_id and disabilitato = 0");
+		query.setParameter("_id", id_manuale);
+		
+		lista = (ArrayList<DpiAllegatiDTO>) query.list();		
+	
 		
 		return lista;
 	}

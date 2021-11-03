@@ -352,6 +352,7 @@
 			<li><a href="gestioneDpi.do?action=lista_schede_consegna">Schede consegna DPI</a></li>
 			<% if(!user.checkRuolo("DP")){%>  
 			<li><a href="gestioneDpi.do?action=scadenzario">Scadenzario</a></li>		
+			<li><a href="gestioneDpi.do?action=lista_manuali_dpi">Gestione manuali DPI</a></li>	
 			<% }%>
 	      	
           </ul>
@@ -379,6 +380,24 @@
         </li> 
            <% }%>
         
+         <% if(user.checkPermesso("GREEN_PASS")){%> 
+         
+           <li class="header">GREEN PASS</li>
+
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Green Pass</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+   
+		   <li><a href="gestioneGreenPass.do?action=lista">Gestione Green Pass</a></li>	
+		
+	      	
+          </ul>
+        </li> 
+         <%} %>
         
         
            <% if(user.checkRuolo("AM") || user.checkPermesso("ADMIN CONFIG")){%>

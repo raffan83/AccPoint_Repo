@@ -7,7 +7,9 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneDpiDAO;
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
+import it.portaleSTI.DTO.DpiAllegatiDTO;
 import it.portaleSTI.DTO.DpiDTO;
+import it.portaleSTI.DTO.DpiManualeDTO;
 import it.portaleSTI.DTO.TipoDpiDTO;
 
 public class GestioneDpiBO {
@@ -50,6 +52,26 @@ public class GestioneDpiBO {
 	public static ArrayList<DpiDTO> getListaDpiScadenzario(String dateFrom, String dateTo, Session session) throws Exception, Exception {
 		
 		return GestioneDpiDAO.getListaDpiScadenzario(dateFrom, dateTo, session);
+	}
+
+	public static DpiManualeDTO getManualeFromId(int id_manuale, Session session) {
+		
+		return GestioneDpiDAO.getManualeFromId(id_manuale, session);
+	}
+
+	public static ArrayList<DpiManualeDTO> getListaManuali(Session session) {
+		
+		return GestioneDpiDAO.getListaManuali(session);
+	}
+
+	public static DpiAllegatiDTO getAllegatoFromID(int id_allegato, Session session) {
+		
+		return GestioneDpiDAO.getAllegatoFromID(id_allegato, session);
+	}
+
+	public static ArrayList<DpiAllegatiDTO> getListaAllegati(int id_manuale, Session session) {
+
+		return GestioneDpiDAO.getListaAllegati(id_manuale, session);
 	}
 
 }

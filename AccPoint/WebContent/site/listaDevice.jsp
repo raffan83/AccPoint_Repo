@@ -1385,6 +1385,11 @@ function modalValidazione(id){
 	
 	$('#stato_validazione').change();
 	
+	if(data==''){
+		data = new Date();
+		data = data.toLocaleDateString("it-IT")
+	}
+	
 	$('#data_validazione').val(data);
 	$('#product_key').val(pk);
 	$('#autorizzazioni').val(aut);

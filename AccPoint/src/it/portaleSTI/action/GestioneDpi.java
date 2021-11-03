@@ -31,11 +31,15 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
+import it.portaleSTI.DTO.DevAllegatiDeviceDTO;
+import it.portaleSTI.DTO.DevAllegatiSoftwareDTO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
+import it.portaleSTI.DTO.DpiAllegatiDTO;
 import it.portaleSTI.DTO.DpiDTO;
+import it.portaleSTI.DTO.DpiManualeDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.TipoDpiDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -43,6 +47,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaDPI;
+import it.portaleSTI.bo.GestioneDeviceBO;
 import it.portaleSTI.bo.GestioneDocumentaleBO;
 import it.portaleSTI.bo.GestioneDpiBO;
 import it.portaleSTI.bo.SendEmailBO;
@@ -447,32 +452,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			else if(action.equals("nuova_scheda_dpi")) {				
 				
 				ajax = false;
-				
-//				response.setContentType("application/json");
-//				 
-//			  	List<FileItem> items = null;
-//		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
-//
-//		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-//		        	}
-//		        
-//		       
-//				FileItem fileItem = null;
-//				String filename= null;
-//		        Hashtable<String,String> ret = new Hashtable<String,String>();
-//		      
-//		        for (FileItem item : items) {
-//	            	 if (!item.isFormField()) {
-//	            		
-//	                     fileItem = item;
-//	                     filename = item.getName();
-//	                     
-//	            	 }else
-//	            	 {
-//	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
-//	            	 }
-//	            	
-//	            }
+
 		
 		        String tipo_scheda = request.getParameter("tipo_scheda");
 				String id_lavoratore = request.getParameter("lavoratore_scheda");
@@ -570,6 +550,223 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		     	dispatcher.forward(request,response);
 				
 			}
+			else if(action.equals("lista_manuali_dpi")) {
+				
+				
+				ArrayList<DpiManualeDTO> lista_manuali = GestioneDpiBO.getListaManuali(session);
+				ArrayList<TipoDpiDTO> lista_tipo_dpi = GestioneDpiBO.getListaTipoDPI(session);
+				
+				request.getSession().setAttribute("lista_manuali", lista_manuali);
+				request.getSession().setAttribute("lista_tipo_dpi", lista_tipo_dpi);
+	
+				//session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaManualiDPI.jsp");
+		     	dispatcher.forward(request,response);		
+				
+			}
+			else if(action.equals("nuovo_manuale_dpi")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+				String tipo_dpi = ret.get("tipo_dpi");				
+				String descrizione = ret.get("descrizione");
+				String modello = ret.get("modello");
+				String conformita = ret.get("conformita");				
+
+				DpiManualeDTO manuale = new DpiManualeDTO();				
+				
+				TipoDpiDTO tipo =  GestioneDpiBO.getTipoDPIFromId(Integer.parseInt(tipo_dpi), session); 
+								
+				manuale.setTipo_dpi(tipo);	
+				manuale.setDescrizione(descrizione);
+				manuale.setModello(modello);
+				manuale.setConformita(conformita);
+				
+				session.save(manuale);				
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Manuale salvato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+			}
+			else if(action.equals("modifica_manuale_dpi")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+		        String id_manuale = ret.get("id_manuale");
+				String tipo_dpi = ret.get("tipo_dpi_mod");				
+				String descrizione = ret.get("descrizione_mod");
+				String modello = ret.get("modello_mod");
+				String conformita = ret.get("conformita_mod");
+			
+				DpiManualeDTO manuale = GestioneDpiBO.getManualeFromId(Integer.parseInt(id_manuale), session);
+				
+				
+				TipoDpiDTO tipo = GestioneDpiBO.getTipoDPIFromId(Integer.parseInt(tipo_dpi), session); 							
+				
+			
+				manuale.setTipo_dpi(tipo);	
+				manuale.setDescrizione(descrizione);
+				manuale.setModello(modello);
+				manuale.setConformita(conformita);
+
+				session.update(manuale);				
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Manuale salvato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+			}
+			
+			else  if(action.equals("lista_allegati_dpi")) {
+				
+				String id_manuale = request.getParameter("id_manuale");	
+				
+				ArrayList<DpiAllegatiDTO> lista_allegati = GestioneDpiBO.getListaAllegati(Integer.parseInt(id_manuale), session);
+				
+				request.getSession().setAttribute("lista_allegati", lista_allegati);
+
+				request.getSession().setAttribute("id_manuale", id_manuale);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAllegatiDpi.jsp");
+		     	dispatcher.forward(request,response);	
+						
+		     	session.getTransaction().commit();
+				session.close();
+			}
+			
+			else if(action.equals("upload_allegati")){
+				
+				ajax = true;
+				
+				String id_manuale = request.getParameter("id_manuale");
+								
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+				PrintWriter out = response.getWriter();
+				response.setContentType("application/json");						
+					
+					List<FileItem> items = uploadHandler.parseRequest(request);
+					for (FileItem item : items) {
+						if (!item.isFormField()) {							
+																
+							DpiAllegatiDTO allegato = new DpiAllegatiDTO();
+							allegato.setId_manuale(Integer.parseInt(id_manuale));
+							allegato.setNome_file(item.getName().replaceAll("'", "_"));
+							saveFile(item, id_manuale, item.getName());	
+							session.save(allegato);
+																					
+						}
+					}
+
+					
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Upload effettuato con successo!");
+					out.print(myObj);
+					session.getTransaction().commit();
+					session.close();
+			}
+			else if(action.equals("download_allegato")){
+				
+				String id_manuale = request.getParameter("id_manuale");
+				
+				String id_allegato = request.getParameter("id_allegato");	
+				
+					
+				DpiAllegatiDTO allegato = GestioneDpiBO.getAllegatoFromID(Integer.parseInt(id_allegato), session);
+				String path = Costanti.PATH_FOLDER+"\\GestioneDPI\\Allegati\\Manuali\\"+id_manuale+"\\"+allegato.getNome_file();
+				
+				response.setHeader("Content-Disposition","attachment;filename="+ allegato.getNome_file());
+								
+				response.setContentType("application/octet-stream");
+				session.getTransaction().commit();
+				session.close();
+		
+				ServletOutputStream outp = response.getOutputStream();
+				
+				downloadFile(path, outp);
+				
+			}
+			
+			
+			else if(action.equals("elimina_allegato")) {
+				
+				ajax=true;								
+				String id_allegato = request.getParameter("id_allegato");	
+				
+				DpiAllegatiDTO allegato = GestioneDpiBO.getAllegatoFromID(Integer.parseInt(id_allegato), session);
+				allegato.setDisabilitato(1);
+				session.update(allegato);								
+				
+				PrintWriter out = response.getWriter();
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Allegato eliminato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+				
+			}
+			
 		}catch(Exception e) {
 			
 			session.getTransaction().rollback();
@@ -594,5 +791,54 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		}
 		
 	}
+	private void saveFile(FileItem item, String id_manuale, String filename) {
 
+	 	String path_folder = Costanti.PATH_FOLDER+"\\GestioneDpi\\Allegati\\Manuali\\"+id_manuale+"\\";
+		File folder=new File(path_folder);
+		
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+	
+		
+		while(true)
+		{
+			File file=null;
+			
+			
+			file = new File(path_folder+filename);					
+			
+				try {
+					item.write(file);
+					break;
+
+				} catch (Exception e) 
+				{
+
+					e.printStackTrace();
+					break;
+				}
+		}
+	
+	}
+ 
+private void downloadFile(String path,  ServletOutputStream outp) throws Exception {
+	 
+	 File file = new File(path);
+		
+		FileInputStream fileIn = new FileInputStream(file);
+
+
+		    byte[] outputByte = new byte[1];
+		    
+		    while(fileIn.read(outputByte, 0, 1) != -1)
+		    {
+		    	outp.write(outputByte, 0, 1);
+		    }
+		    				    
+		 
+		    fileIn.close();
+		    outp.flush();
+		    outp.close();
+ }
 }

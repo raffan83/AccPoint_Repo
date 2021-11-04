@@ -3,8 +3,9 @@ package it.portaleSTI.DTO;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Comparator;
 
-public class DocumDipendenteFornDTO {
+public class DocumDipendenteFornDTO implements Comparable<DocumDipendenteFornDTO> {
 
 	private int id;
 	//private int id_fornitore;
@@ -106,6 +107,16 @@ public class DocumDipendenteFornDTO {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+
+//    public int compare(DocumDipendenteFornDTO o1, DocumDipendenteFornDTO o2) {
+//        return o1.getCognome().compareTo(o2.getCognome());
+//    }
+	@Override
+	public int compareTo(DocumDipendenteFornDTO o) {
+		
+		return getCognome().compareTo(o.getCognome());
 	}
 	
 	

@@ -87,7 +87,34 @@
 </table> <br>
 
 </div></div>
+</div>
 
+</div>
+
+
+
+</section>
+
+  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      Sei sicuro di voler eliminare il la procedura?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_elimina_procedura" >
+      <a class="btn btn-primary" onclick="eliminaProceduraDevice($('#id_elimina_procedura').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
 <form id="formNuovaProcedura" name="formNuovaProcedura" >
 <div id="modalNuovaProcedura" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
    
@@ -237,39 +264,12 @@
 
 
 
-
-
-  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
-   
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
-      </div>
-       <div class="modal-body">       
-      Sei sicuro di voler eliminare il la procedura?
-      	</div>
-      <div class="modal-footer">
-      <input type="hidden" id="id_elimina_procedura" >
-      <a class="btn btn-primary" onclick="eliminaProceduraDevice($('#id_elimina_procedura').val())" >SI</a>
-		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
-      </div>
-    </div>
-  </div>
-
 </div>
 
 
-
-
-
-</div>
    <t:dash-footer />
    
   <t:control-sidebar />
-</div>
-</section>
 </div>
 <!-- ./wrapper -->
 

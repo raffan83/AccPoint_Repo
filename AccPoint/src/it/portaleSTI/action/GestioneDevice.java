@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -220,6 +222,9 @@ public class GestioneDevice extends HttpServlet {
 				ArrayList<DevLabelConfigDTO> lista_configurazioni = GestioneDeviceBO.getListaLabelConfigurazioni(session);
 				ArrayList<DevStatoValidazioneDTO> lista_stati_validazione = GestioneDeviceBO.getListaStatiValidazione(session);
 				 
+				
+				Collections.sort(lista_dipendenti);
+				
 				request.getSession().setAttribute("lista_device", lista_device);
 				request.getSession().setAttribute("lista_tipi_device", lista_tipi_device);
 				request.getSession().setAttribute("lista_company", lista_company);
@@ -269,6 +274,7 @@ public class GestioneDevice extends HttpServlet {
 				String modello = ret.get("modello");
 				String distributore = ret.get("distributore");
 				String data_acquisto = ret.get("data_acquisto");
+				String data_creazione = ret.get("data_creazione");
 				String ubicazione = ret.get("ubicazione");
 				String configurazione = ret.get("configurazione");
 				String id_dipendente = ret.get("dipendente");
@@ -281,13 +287,18 @@ public class GestioneDevice extends HttpServlet {
 				DocumFornitoreDTO company = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
 				device.setCompany(company);
 				device.setTipo_device(new DevTipoDeviceDTO(Integer.parseInt(id_tipo_device), ""));
-				device.setData_creazione(new Date());
+				
 				device.setDenominazione(denominazione);
 				device.setCostruttore(costruttore);
 				device.setModello(modello);
 				device.setDistributore(distributore);
 				if(data_acquisto!=null && !data_acquisto.equals("")) {
 					device.setData_acquisto(df.parse(data_acquisto));
+				}
+				if(data_creazione!=null && !data_creazione.equals("")) {
+					device.setData_creazione(df.parse(data_creazione));
+				}else {
+					device.setData_creazione(new Date());
 				}
 				device.setUbicazione(ubicazione);
 				device.setConfigurazione(configurazione);
@@ -465,6 +476,23 @@ public class GestioneDevice extends HttpServlet {
 							data_acquisto = "[VUOTO]";
 						}
 						stringaModifica=stringaModifica+"Data acquisto("+df.format(device.getData_acquisto())+","+data_acquisto+")|";
+					}
+				}
+				
+				
+				if(device.getData_creazione()!=null && data_creazione!=null && data_creazione.equals("") && !device.getData_creazione().equals(df.parse(data_creazione)))
+				{					
+						
+						stringaModifica=stringaModifica+"Data creazione("+device.getData_acquisto()+","+df.parse(data_creazione)+")|";	
+										
+				}else {
+					if(device.getData_creazione()==null && !data_creazione.equals("")) {
+						stringaModifica=stringaModifica+"Data creazione([VUOTO],"+df.parse(data_creazione)+")|";
+					}else {
+						if(data_creazione==null || data_creazione.equals("")) {
+							data_creazione = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Data creazione("+df.format(device.getData_creazione())+","+data_creazione+")|";
 					}
 				}
 				

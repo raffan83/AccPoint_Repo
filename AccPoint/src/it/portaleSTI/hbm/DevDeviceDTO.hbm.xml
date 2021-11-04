@@ -64,12 +64,15 @@
             </many-to-many>
         </set>
         
-        <set name="listaProcedure" table="dev_procedura"
+        <set name="listaProcedure" table="dev_procedura_device"
 				inverse="true" lazy="false" fetch="select" >
             <key>
                 <column name="id_device" not-null="true" />
             </key>
-            <one-to-many class="it.portaleSTI.DTO.DevProceduraDTO" />
+            <many-to-many entity-name="it.portaleSTI.DTO.DevProceduraDTO">
+                <column name="id_procedura" not-null="true" />
+            </many-to-many>
+           
    </set>
         
         <property name="disabilitato" type="int">

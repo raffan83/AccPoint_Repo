@@ -132,7 +132,7 @@
 	<td>
 
 	<a class="btn btn-info customTooltip" onClicK="$(this).dblclick()" title="Click per aprire il dettaglio device"><i class="fa fa-search"></i></a>
-	 <a class="btn btn-warning customTooltip" onClicK="modificaDevice('${device.id}', '${device.codice_interno }','${device.tipo_device.id }','${device.company.id }','${utl:escapeJS(device.denominazione) }','${utl:escapeJS(device.costruttore) }','${utl:escapeJS(device.modello) }','${utl:escapeJS(device.distributore) }','${device.data_acquisto }','${utl:escapeJS(device.ubicazione) }','${device.dipendente.id }', '${utl:escapeJS(device.configurazione) }')" title="Click per modificare il tipo device"><i class="fa fa-edit"></i></a> 
+	 <a class="btn btn-warning customTooltip" onClicK="modificaDevice('${device.id}', '${device.codice_interno }','${device.tipo_device.id }','${device.company.id }','${utl:escapeJS(device.denominazione) }','${utl:escapeJS(device.costruttore) }','${utl:escapeJS(device.modello) }','${utl:escapeJS(device.distributore) }','${device.data_acquisto }','${utl:escapeJS(device.ubicazione) }','${device.dipendente.id }', '${utl:escapeJS(device.configurazione) }','${device.data_creazione }')" title="Click per modificare il tipo device"><i class="fa fa-edit"></i></a> 
 	 <a class="btn btn-info customTooltip" onClicK="modalSoftware('${device.id}')" title="Click per associare un software al device"><i class="fa fa-file-code-o"></i></a>
 	 <a class="btn btn-danger customTooltip"onClicK="modalYesOrNo('${device.id}')" title="Click per eliminare il device"><i class="fa fa-trash"></i></a>
 	</td>
@@ -245,7 +245,7 @@
         <select id="dipendente" name="dipendente" data-placeholder="Seleziona operatore..." class="form-control select2" style="width:100%" >
         <option value=""></option>
         <c:forEach items="${lista_dipendenti }" var="dipendente">
-        <option value="${dipendente.id }">${dipendente.nome } ${dipendente.cognome }</option>
+        <option value="${dipendente.id }">${dipendente.cognome } ${dipendente.nome } </option>
         
         </c:forEach>
         
@@ -306,6 +306,18 @@
        	<div class="col-sm-9">      
        	  	
         <input id="data_acquisto" name="data_acquisto" class="form-control datepicker" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data creazione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="data_creazione" name="data_creazione" class="form-control datepicker" type="text" style="width:100%">
        			
        	</div>       	
        </div><br>
@@ -461,7 +473,7 @@
         <select id="dipendente_mod" name="dipendente_mod" data-placeholder="Seleziona operatore..." class="form-control select2" style="width:100%" >
         <option value=""></option>
         <c:forEach items="${lista_dipendenti }" var="dipendente">
-        <option value="${dipendente.id }">${dipendente.nome } ${dipendente.cognome }</option>
+        <option value="${dipendente.id }">${dipendente.cognome } ${dipendente.nome }</option>
         
         </c:forEach>
         
@@ -522,6 +534,18 @@
        	<div class="col-sm-9">      
        	  	
         <input id="data_acquisto_mod" name="data_acquisto_mod" class="form-control datepicker" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data creazione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="data_creazione_mod" name="data_creazione_mod" class="form-control datepicker" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -941,7 +965,17 @@
        			
        	</div>       	
        </div><br>
+               <div class="row">
        
+       	<div class="col-sm-3">
+       		<label>Data creazione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="data_creazione_dtl" name="data_creazione_dtl" class="form-control datepicker" type="text" style="width:100%" readonly>
+       			
+       	</div>       	
+       </div><br>
         <div class="row">
        
        	<div class="col-sm-3">
@@ -1074,6 +1108,9 @@
 
 function modalNuovoDevice(){
 	
+	var data = new Date()
+	
+	$('#data_creazione').val(data.toLocaleDateString("it-IT"));
 	$('#myModalNuovoDevice').modal();
 	
 }
@@ -1483,7 +1520,7 @@ $('#modalValidazione').on('hidden.bs.modal', function(){
 	$('#autorizzazioni').change();
 });
 
-function modificaDevice(id_device, codice_interno, id_tipo_device, id_company, denominazione, costruttore, modello, distributore, data_acquisto, ubicazione, id_dipendente, configurazione){
+function modificaDevice(id_device, codice_interno, id_tipo_device, id_company, denominazione, costruttore, modello, distributore, data_acquisto, ubicazione, id_dipendente, configurazione, data_creazione){
 	
 	$('#id_device').val(id_device);
 	$('#codice_interno_mod').val(codice_interno);
@@ -1499,7 +1536,9 @@ function modificaDevice(id_device, codice_interno, id_tipo_device, id_company, d
 	if(data_acquisto!=null && data_acquisto!=''){
 		$('#data_acquisto_mod').val(Date.parse(data_acquisto).toString("dd/MM/yyyy"));	
 	}
-	
+	if(data_creazione!=null && data_creazione!=''){
+		$('#data_creazione_mod').val(Date.parse(data_creazione).toString("dd/MM/yyyy"));	
+	}
 	$('#dipendente_mod').val(id_dipendente);
 	$('#dipendente_mod').change();
 	
@@ -1607,6 +1646,9 @@ $(document).ready(function() {
 				if(device.data_acquisto!=null && device.data_acquisto!=''){
 					$('#data_acquisto_dtl').val(Date.parse(device.data_acquisto).toString("dd/MM/yyyy"));	
 				}
+				if(device.data_creazione!=null && device.data_creazione!=''){
+					$('#data_creazione_dtl').val(Date.parse(device.data_creazione).toString("dd/MM/yyyy"));	
+				}
 				if(device.dipendente!=null){
 					$('#dipendente_dtl').val(device.dipendente.id);
 					$('#dipendente_dtl').change();
@@ -1707,7 +1749,6 @@ $(document).ready(function() {
     	}
     	
     	if(contentID == "gestioneProcedureTab"){
-      		
     		
        	   exploreModal("gestioneDevice.do","action=lista_procedure_device&id_device="+id,"#gestione_procedure");
        	    $( "#myModal" ).modal();

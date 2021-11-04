@@ -11,7 +11,7 @@
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 
-<a class="btn btn-primary pull-right" onClick="$('#modalNuovaProcedura').modal()"><i class="fa fa-plus"></i>Nuova procedura</a><br><br>
+<!-- <a class="btn btn-primary pull-right" onClick="$('#modalNuovaProcedura').modal()"><i class="fa fa-plus"></i>Nuova procedura</a><br><br> -->
 
 	 <table id="tabProcedura" class="table table-bordered table-hover dataTable table-striped" role="dialog" width="100%">
  <thead><tr class="active">

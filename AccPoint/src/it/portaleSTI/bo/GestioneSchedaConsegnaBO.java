@@ -82,9 +82,9 @@ public class GestioneSchedaConsegnaBO {
 		return GestioneSchedaConsegnaDAO.getUltimaScheda(session);
 	}
 
-	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegnaRilievi(int id_cliente, int id_sede, Session session) {
+	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegnaRilievi(int start_year, int id_cliente, int id_sede, Session session) {
 
-		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaRilievi(id_cliente, id_sede, session);
+		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaRilievi(start_year, id_cliente, id_sede, session);
 	}
 
 	public static SchedaConsegnaRilieviDTO getSchedaConsegnaRilievoFromId(int id_scheda, Session session) {
@@ -92,9 +92,9 @@ public class GestioneSchedaConsegnaBO {
 		return GestioneSchedaConsegnaDAO.getSchedaConsegnaRilievoFromId(id_scheda, session);
 	}	
 
-	public static ArrayList<SchedaConsegnaDTO> getListaSchedeConsegnaAll(Session session) {
+	public static ArrayList<SchedaConsegnaDTO> getListaSchedeConsegnaAll(int start_year, Session session) {
 		
-		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaAll(session);
+		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaAll(start_year, session);
 	}
 
 

@@ -92,7 +92,7 @@ public class GestioneSchedaConsegnaDAO {
 
 
 
-	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegnaRilievi(int id_cliente, int id_sede, Session session) {
+	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegnaRilievi(int start_year, int id_cliente, int id_sede, Session session) {
 
 		ArrayList<SchedaConsegnaRilieviDTO>  lista = null;
 		
@@ -101,11 +101,24 @@ public class GestioneSchedaConsegnaDAO {
 		if(id_cliente != 0) {
 			query_cliente = " WHERE id_cliente = :_id_cliente AND id_sede = :_id_sede";
 		}
+		String Stquery = "from SchedaConsegnaRilieviDTO"+query_cliente;
 		
-		Query query = session.createQuery("from SchedaConsegnaRilieviDTO"+query_cliente);
+		if(start_year != 0) {
+			if(id_cliente!=0) {
+				Stquery = Stquery +" and YEAR(data_creazione) >= :_start_year";
+			}else {
+				Stquery = Stquery +" where YEAR(data_creazione) >= :_start_year";
+			}
+		}
+		Query query = session.createQuery(Stquery);
+		
 		if(id_cliente != 0) {
 			query.setParameter("_id_cliente", id_cliente);
 			query.setParameter("_id_sede", id_sede);			
+		}
+		
+		if(start_year != 0) {
+			query.setParameter("_start_year", start_year);
 		}
 		
 		lista = (ArrayList<SchedaConsegnaRilieviDTO>)query.list();	
@@ -136,10 +149,18 @@ public class GestioneSchedaConsegnaDAO {
 
 
 
-	public static ArrayList<SchedaConsegnaDTO> getListaSchedeConsegnaAll(Session session) {
+	public static ArrayList<SchedaConsegnaDTO> getListaSchedeConsegnaAll(int start_year, Session session) {
 		
 		ArrayList<SchedaConsegnaDTO> lista = null;
-		Query query  = session.createQuery( "from SchedaConsegnaDTO");
+		Query query  = null;
+		
+		if(start_year !=0) {
+			query = session.createQuery( "from SchedaConsegnaDTO where YEAR(intervento.dataCreazione) >= :_start_year");
+			query.setParameter("_start_year", start_year);
+		}else {
+			query = session.createQuery( "from SchedaConsegnaDTO");
+		}
+		
 
 		lista =(ArrayList<SchedaConsegnaDTO>) query.list();
 		
@@ -208,11 +229,18 @@ public class GestioneSchedaConsegnaDAO {
 
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
 		
-		Query query = session.createQuery("from SchedaConsegnaDTO where intervento.id is null and (STR_TO_DATE(data_caricamento,'%d/%m/%Y')) between :dateFrom and :dateTo");
+		Query query = null;
+		
+		if(dateFrom == null) {
+			query = session.createQuery("from SchedaConsegnaDTO where intervento.id is null");
+		}else {
+			query = session.createQuery("from SchedaConsegnaDTO where intervento.id is null and (STR_TO_DATE(data_caricamento,'%d/%m/%Y')) between :dateFrom and :dateTo");
+			query.setParameter("dateFrom",df.parse(dateFrom));
+			query.setParameter("dateTo",df.parse(dateTo));
+		}
 		
 		
-		query.setParameter("dateFrom",df.parse(dateFrom));
-		query.setParameter("dateTo",df.parse(dateTo));
+		
 		
 		lista= (ArrayList<SchedaConsegnaDTO>)query.list();
 		

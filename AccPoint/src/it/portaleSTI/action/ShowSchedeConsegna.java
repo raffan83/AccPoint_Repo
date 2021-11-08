@@ -89,7 +89,7 @@ public class ShowSchedeConsegna extends HttpServlet {
 					id_sede = user.getIdSede();		
 				}
 				
-				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(id_cliente, id_sede, session);
+				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(0,id_cliente, id_sede, session);
 				
 				request.getSession().setAttribute("lista_schede_consegna", lista_schede_consegna);
 				session.close();

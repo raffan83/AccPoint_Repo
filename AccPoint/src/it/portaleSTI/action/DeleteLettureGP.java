@@ -18,7 +18,7 @@ public class DeleteLettureGP implements Job{
 		try {
 			GestioneGreenPassDAO.deleteLettureGP();
 			//GestioneMagazzinoDAO.getItemInRitardo();
-			logger.debug("Aggiornamento Stato Campione eseguito con successo dallo scheduler di Quartz!");
+			logger.debug("Cancellazione letture Green Pass eseguita con successo dallo scheduler di Quartz!");
 			logger.error("Cancellazione letture Green Pass eseguita con successo dallo scheduler di Quartz!");
 			
 			

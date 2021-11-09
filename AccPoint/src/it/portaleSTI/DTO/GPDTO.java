@@ -10,6 +10,7 @@ public class GPDTO {
 	private Date dataNascita;
 	private String esito;
 	private Date dataVerifica;
+	private int visibile;
 	
 	
 	public int getId() {
@@ -48,6 +49,13 @@ public class GPDTO {
 	public void setDataVerifica(Date dataVerifica) {
 		this.dataVerifica = dataVerifica;
 	}
+	public int getVisibile() {
+		return visibile;
+	}
+	public void setVisibile(int visibile) {
+		this.visibile = visibile;
+	}
+		
 	
 
 }

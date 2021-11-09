@@ -13,7 +13,7 @@ public class GestioneGreenPassDAO {
 		
 		ArrayList<GPDTO> lista = null;
 		
-		Query query = session.createQuery("from GPDTO");
+		Query query = session.createQuery("from GPDTO WHERE visibile=0");
 		
 		lista = (ArrayList<GPDTO>) query.list();
 		

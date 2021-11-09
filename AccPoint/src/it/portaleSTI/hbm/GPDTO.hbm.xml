@@ -30,6 +30,9 @@
             <property name="dataVerifica" type="java.util.Date">
             <column name="dataVerifica" />
         </property>
+        <property name="visibile" type="java.lang.Integer">
+            <column name="visibile" />
+        </property>
 
     </class>
 </hibernate-mapping>

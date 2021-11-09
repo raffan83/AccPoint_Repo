@@ -11,10 +11,10 @@ public class GestioneValidazioneGPBO {
 	public static void bundleGP(GPDTO greenPass, Session session) throws EmailException {
 		
 		
-		String[] listaDestinatari= {"raffan83@gmail.com"};
+		String[] listaDestinatari= {"raffan83@gmail.com","lisa.lombardozzi@crescosrl.net","contabilita@stisrl.com","gabriella@stisrl.com"};
 		
 		
-		if(greenPass.getEsito().equals("NOT_VALID")) 
+		if(greenPass.getEsito().equals("NOT_VALID") ||greenPass.getEsito().equals("NOT_VALID_YET") ) 
 		{
 			for (String destinatari : listaDestinatari) {
 				

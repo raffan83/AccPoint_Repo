@@ -795,9 +795,9 @@ public class GestioneDevice extends HttpServlet {
 				attivita.setTipo_intervento(tipo_intervento);
 				attivita.setNote_evento(note_evento);
 
-				if(attivita.getTipo_evento().getId()==2) {
-					attivita.setCompany(device.getCompany());
-				}
+				//if(attivita.getTipo_evento().getId()==2) {
+				attivita.setCompany(device.getCompany());
+				//}
 				session.save(attivita);				
 				
 				if(nuova_label_tipo!=null && !nuova_label_tipo.equals("")) {
@@ -1118,16 +1118,22 @@ public class GestioneDevice extends HttpServlet {
 	            	
 	            }
 		
-		        String id_device = ret.get("id_device");
+		        
 				String tipo_procedura = ret.get("tipo_procedura");
 				String descrizione = ret.get("descrizione_procedura");			
 				String frequenza = ret.get("frequenza_procedura");
+				String scadenza_contratto = ret.get("scadenza_contratto");
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
 				DevProceduraDTO procedura = new DevProceduraDTO();
 				procedura.setDescrizione(descrizione);
 				procedura.setFrequenza(frequenza);
 				//procedura.setId_device(Integer.parseInt(id_device));
-				procedura.setTipo_procedura(new DevTipoProceduraDTO(Integer.parseInt(tipo_procedura), ""));			
+				procedura.setTipo_procedura(new DevTipoProceduraDTO(Integer.parseInt(tipo_procedura), ""));		
+				if(scadenza_contratto!=null && !scadenza_contratto.equals("")) {
+					procedura.setScadenza_contratto(df.parse(scadenza_contratto));
+				}
 				
 				session.save(procedura);				
 				
@@ -1171,11 +1177,17 @@ public class GestioneDevice extends HttpServlet {
 				String tipo_procedura = ret.get("tipo_procedura_mod");
 				String descrizione = ret.get("descrizione_procedura_mod");			
 				String frequenza = ret.get("frequenza_procedura_mod");
+				String scadenza_contratto = ret.get("scadenza_contratto_mod");
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
 				DevProceduraDTO procedura = GestioneDeviceBO.getProceduraFromID(Integer.parseInt(id_procedura), session);
 				procedura.setDescrizione(descrizione);
 				procedura.setFrequenza(frequenza);
 				procedura.setTipo_procedura(new DevTipoProceduraDTO(Integer.parseInt(tipo_procedura), ""));			
+				if(scadenza_contratto!=null && !scadenza_contratto.equals("")) {
+					procedura.setScadenza_contratto(df.parse(scadenza_contratto));
+				}
 				
 				session.save(procedura);				
 				

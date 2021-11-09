@@ -21,7 +21,7 @@
  						  <th>Descrizione</th>
  						  <th>Tipo procedura</th> 
  						  <th>Frequenza</th> 						   
- 						     
+ 						     <th>Scadenza contratto</th>	
  </tr></thead>
  
  <tbody>
@@ -37,6 +37,7 @@
 
   </td>
   <td>${procedura.frequenza }</td>
+  <td><fmt:formatDate pattern="dd/MM/yyyy" value="${procedura.scadenza_contratto }"></fmt:formatDate></td>
 <%-- <td>
   <a class="btn btn-warning customTooltip" onClicK="modificaProcedura('${procedura.id}','${procedura.tipo_procedura.id }','${utl:escapeJS(procedura.descrizione) }','${utl:escapeJS(procedura.frequenza)}')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></a> 
 

@@ -22,4 +22,18 @@ public class GestioneGreenPassDAO {
 		return lista;
 	}
 
+	public static void deleteLettureGP() {
+	
+		Session session =SessionFacotryDAO.get().openSession();
+ 		session.beginTransaction();
+ 		
+ 		Query query = session.createQuery("update GPDTO set visibile = 1");
+ 		
+ 		query.executeUpdate();
+ 		
+ 		session.getTransaction().commit();
+ 		session.close();
+		
+	}
+
 }

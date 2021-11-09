@@ -161,8 +161,9 @@ function resetFiltri(){
 	 $('#date_from').val('');
 	 $('#date_to').val('');
 	 
-	 var dataString = "action=cerca&dateFrom=&dateTo=&commessa=&utente=&admin=1";
-     exploreModal("gestioneAssegnazioneAttivita.do",dataString,"#tabella_filtrata", true);
+	// var dataString = "action=cerca&dateFrom=&dateTo=&commessa=&utente=&admin=1";
+     //exploreModal("gestioneAssegnazioneAttivita.do",dataString,"#tabella_filtrata", true);
+     callAction("gestioneAssegnazioneAttivita.do?action=lista&admin=1",null, true)
 }
 
 function formatDate(data){
@@ -238,8 +239,8 @@ $(document).ready(function() {
      $('.dropdown-toggle').dropdown();
      $('.select2').select2();     
 
-     var dataString = "action=cerca&dateFrom=&dateTo=&commessa=&utente=&admin=1";
-     exploreModal("gestioneAssegnazioneAttivita.do",dataString,"#tabella_filtrata");
+    // var dataString = "action=cerca&dateFrom=&dateTo=&commessa=&utente=&admin=1";
+    // exploreModal("gestioneAssegnazioneAttivita.do",dataString,"#tabella_filtrata");
 
 	
 });

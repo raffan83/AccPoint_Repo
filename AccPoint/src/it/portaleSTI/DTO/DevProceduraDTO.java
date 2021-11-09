@@ -1,5 +1,7 @@
 package it.portaleSTI.DTO;
 
+import java.util.Date;
+
 public class DevProceduraDTO {
 	
 	private int id;
@@ -7,7 +9,7 @@ public class DevProceduraDTO {
 	private String frequenza;
 	private DevTipoProceduraDTO tipo_procedura;
 	private int disabilitato;
-	
+	private Date scadenza_contratto;
 	public int getId() {
 		return id;
 	}
@@ -43,6 +45,12 @@ public class DevProceduraDTO {
 	}
 	public void setDisabilitato(int disabilitato) {
 		this.disabilitato = disabilitato;
+	}
+	public Date getScadenza_contratto() {
+		return scadenza_contratto;
+	}
+	public void setScadenza_contratto(Date scadenza_contratto) {
+		this.scadenza_contratto = scadenza_contratto;
 	}
 	
 	

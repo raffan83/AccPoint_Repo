@@ -23,7 +23,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Lista Letture Green Pass
+        Lista Procedure
         <!-- <small></small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
@@ -36,7 +36,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista Letture Green Pass
+	 Lista Procedure
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -56,7 +56,8 @@
  												
  						  <th>Descrizione</th>
  						  <th>Tipo procedura</th> 
- 						  <th>Frequenza</th> 						   
+ 						  <th>Frequenza</th> 	
+ 						  <th>Scadenza contratto</th>		   
  						     <th>Azioni</th>
  </tr></thead>
  
@@ -73,8 +74,9 @@
 
   </td>
   <td>${procedura.frequenza }</td>
+	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${procedura.scadenza_contratto }"></fmt:formatDate></td>
  <td>
-  <a class="btn btn-warning customTooltip" onClicK="modificaProcedura('${procedura.id}','${procedura.tipo_procedura.id }','${utl:escapeJS(procedura.descrizione) }','${utl:escapeJS(procedura.frequenza)}')" title="Click per modificare la procedura"><i class="fa fa-edit"></i></a> 
+  <a class="btn btn-warning customTooltip" onClicK="modificaProcedura('${procedura.id}','${procedura.tipo_procedura.id }','${utl:escapeJS(procedura.descrizione) }','${utl:escapeJS(procedura.frequenza)}','${procedura.scadenza_contratto }')" title="Click per modificare la procedura"><i class="fa fa-edit"></i></a> 
 <a class="btn btn-danger customTooltip" onClicK="modalYesOrNo('${procedura.id}')" title="Click per eliminare"><i class="fa fa-trash"></i></a>
  </td> 
  
@@ -172,7 +174,17 @@
        	</div>       	
        </div><br> 
        
+        <div class="row">
        
+       	<div class="col-sm-3">
+       		<label>Scadenza contratto</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input type="text" class="form-control datepicker" id="scadenza_contratto" name="scadenza_contratto" >
+       			
+       	</div>       	
+       </div><br> 
       
       	
       	</div>
@@ -245,6 +257,18 @@
        	</div>       	
        </div><br> 
        
+       
+               <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Scadenza contratto</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input type="text" class="form-control datepicker" id="scadenza_contratto_mod" name="scadenza_contratto_mod" >
+       			
+       	</div>       	
+       </div><br> 
       	
       	</div>
       <div class="modal-footer">
@@ -396,7 +420,7 @@ $('#frequenza_mod').change(function(){
 	
 });
  
- function modificaProcedura(id_procedura, tipo_procedura, descrizione, frequenza){
+ function modificaProcedura(id_procedura, tipo_procedura, descrizione, frequenza, scadenza_contratto){
 		
 		$('#id_procedura').val(id_procedura);
 		$('#tipo_procedura_mod').val(tipo_procedura);
@@ -404,6 +428,10 @@ $('#frequenza_mod').change(function(){
 		$('#descrizione_procedura_mod').val(descrizione);
 		
 		$('#frequenza_procedura_mod').val(frequenza);
+		if(scadenza_contratto!=null){
+			$('#scadenza_contratto_mod').val(Date.parse(scadenza_contratto).toString("dd/MM/yyyy"));	
+		}
+		
 		
 		$('#modalModificaProcedura').modal();
 	}

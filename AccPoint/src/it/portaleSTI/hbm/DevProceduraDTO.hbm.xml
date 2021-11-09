@@ -27,6 +27,10 @@
          <property name="disabilitato" type="int">
             <column name="disabilitato" />
         </property> 
+        
+         <property name="scadenza_contratto" type="java.sql.Date">
+            <column name="scadenza_contratto" />
+        </property> 
        
 	</class>
 </hibernate-mapping>

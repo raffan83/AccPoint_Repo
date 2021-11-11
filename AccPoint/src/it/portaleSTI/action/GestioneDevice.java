@@ -1357,6 +1357,10 @@ public class GestioneDevice extends HttpServlet {
 				
 				DevTestoEmailDTO testo_email = GestioneDeviceBO.getTestoEmail(session);
 				
+				ArrayList<DocumFornitoreDTO> lista_company = GestioneDocumentaleBO.getListaDocumFornitori(session);				 
+				
+				request.getSession().setAttribute("lista_company", lista_company);
+				
 				request.getSession().setAttribute("testo_email", testo_email);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioDevice.jsp");
@@ -1369,9 +1373,10 @@ public class GestioneDevice extends HttpServlet {
 			else if(action.equals("scadenzario_table")) {
 				
 				String dateFrom = request.getParameter("dateFrom");
-				String dateTo = request.getParameter("dateTo");					
+				String dateTo = request.getParameter("dateTo");	
+				String company = request.getParameter("company");	
 				
-				ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceBO.getListaScadenze(dateFrom,dateTo, session);
+				ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceBO.getListaScadenze(dateFrom,dateTo,Integer.parseInt(company), session);
 				
 				request.getSession().setAttribute("lista_scadenze", lista_scadenze);
 				request.getSession().setAttribute("dateFrom", dateFrom);

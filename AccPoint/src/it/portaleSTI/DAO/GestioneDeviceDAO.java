@@ -332,17 +332,26 @@ public static ArrayList<DevLabelTipoInterventoDTO> geListaLabelTipoIntervento(Se
 	return lista;
 }
 
-public static ArrayList<DevRegistroAttivitaDTO> getListaScadenze(String dateFrom, String dateTo, Session session) throws Exception, ParseException {
+public static ArrayList<DevRegistroAttivitaDTO> getListaScadenze(String dateFrom, String dateTo,int company,  Session session) throws Exception, ParseException {
 	
 	ArrayList<DevRegistroAttivitaDTO> lista = null;
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	
 
-	Query query = session.createQuery("from DevRegistroAttivitaDTO where data_prossima between :_data_start and :_data_end");
+	String str = "";
+	if(company == 0) {
+		str = "from DevRegistroAttivitaDTO where data_prossima between :_data_start and :_data_end";
+	}else {
+		str = "from DevRegistroAttivitaDTO where data_prossima between :_data_start and :_data_end and id_company = :_id_company";
+	}
+
+	Query query = session.createQuery(str);
 	query.setParameter("_data_start", sdf.parse(dateFrom));
 	query.setParameter("_data_end", sdf.parse(dateTo));
 	
+	if(company!=0) {
+		query.setParameter("_id_company", company);
+	}
 
 	lista = (ArrayList<DevRegistroAttivitaDTO>) query.list();
 	

@@ -140,9 +140,9 @@ public class GestioneDeviceBO {
 		return GestioneDeviceDAO.geListaLabelTipoIntervento(session);
 	}
 
-	public static ArrayList<DevRegistroAttivitaDTO> getListaScadenze(String dateFrom, String dateTo, Session session) throws ParseException, Exception {
+	public static ArrayList<DevRegistroAttivitaDTO> getListaScadenze(String dateFrom, String dateTo, int company, Session session) throws ParseException, Exception {
 
-		return GestioneDeviceDAO.getListaScadenze(dateFrom, dateTo, session);
+		return GestioneDeviceDAO.getListaScadenze(dateFrom, dateTo,company,session);
 	}
 
 	public static void sendEmailAttivitaScadute() throws ParseException, Exception {
@@ -159,7 +159,7 @@ public class GestioneDeviceBO {
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
-		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenze(df.format(nextDate), df.format(nextDate), session);
+		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenze(df.format(nextDate), df.format(nextDate), 0,session);
 		
 		DevTestoEmailDTO testo_email = getTestoEmail(session);
 		

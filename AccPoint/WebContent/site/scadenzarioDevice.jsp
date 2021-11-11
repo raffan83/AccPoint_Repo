@@ -36,7 +36,7 @@
             
             <div class="row">
 
-	<div class="col-xs-5">
+	<div class="col-xs-3">
 			 <div class="form-group">
 				 <label for="datarange" class="control-label">Filtra Data Prossima Attività:</label>
 					<div class="col-md-10 input-group" >
@@ -44,17 +44,41 @@
 				             <i class="fa fa-calendar"></i>
 				        </div>				                  	
 						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
-							 <span class="input-group-btn">
-				               <button type="button" class="btn btn-info btn-flat" onclick="filtraDate()">Cerca</button>
-				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
-				             </span>				                     
+										                     
   					</div>  								
 			 </div>	
 			 
 			 
 
 	</div>
-	<div class="col-xs-7">
+	
+	<div class="col-xs-3">
+	
+		<label>Filtra Company</label>
+         
+       	  	
+        <select id="company" name="company" data-placeholder="Seleziona company..." class="form-control select2" style="width:100%" >
+        
+        <option value="0" >TUTTE LE COMPANY</option>
+     
+        <c:forEach items="${lista_company }" var="cmp">
+        
+        
+        <option value="${cmp.id }">${cmp.ragione_sociale }</option>
+       
+        </c:forEach>
+        
+        </select>
+	
+	</div>
+	<div class="col-xs-3">
+	
+	 <span class="input-group-btn" >
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraDate()" style="margin-top:25px">Cerca</button>
+				               <button type="button"  class="btn btn-primary btn-flat" onclick="resetDate()" style="margin-top:25px">Reset Filtri</button>
+				             </span>	
+	</div>
+	<div class="col-xs-3">
 	<a class="btn btn-primary pull-right" onClick="$('#modalTestoEmail').modal()"><i class="fa fa-edit"></i> Modifica email di notifica</a>
 	</div>
 
@@ -174,8 +198,9 @@ function filtraDate(jspDoc){
 	
 		var startDatePicker = $("#datarange").data('daterangepicker').startDate;
 	 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+	 	var company = $('#company').val();
 	 	dataString = "action=scadenzario_table&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
-	 			endDatePicker.format('YYYY-MM-DD');
+	 			endDatePicker.format('YYYY-MM-DD')+"&company="+company;
 	 	
 	 	 pleaseWaitDiv = $('#pleaseWaitDialog');
 		  pleaseWaitDiv.modal();
@@ -219,7 +244,7 @@ function filtraDateDipendenti(){
 function resetDate(){
 pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
-callAction("gestioneDocumentale.do?action=scadenzario");
+callAction("gestioneDevice.do?action=scadenzario");
 
 }
 

@@ -111,16 +111,14 @@ public class DirectMySqlDAO {
 
 	private static final String sqlDatiScheda="SELECT * FROM punto_misura";
 
-	private static final String sqlDatiStrumentiPerGrafico = "SELECT a.reparto,b.freq_verifica_mesi,c.nome as stato_strumento, d.nome as tipo_strumento "
+	private static final String sqlDatiStrumentiPerGrafico = "SELECT a.reparto,a.frequenza,c.nome as stato_strumento, d.nome as tipo_strumento, a.denominazione,a.utilizzatore "
 			+ "from strumento a " + 
-			"left join scadenza b on a.__id=b.id__strumento_ " + 
 			"left JOIN stato_strumento c on a.id__stato_strumento_=c.__id " + 
 			"left join tipo_strumento d on a.id__tipo_strumento_=d.__id " + 
 			"where a.id__company_=? AND a.id_cliente=? and id__sede_new=?";
 
-	private static final String sqlDatiStrumentiPerGraficoTras = "SELECT a.reparto,b.freq_verifica_mesi,c.nome as stato_strumento, d.nome as tipo_strumento "
-			+ "from strumento a " + 
-			"left join scadenza b on a.__id=b.id__strumento_ " + 
+	private static final String sqlDatiStrumentiPerGraficoTras = "SELECT a.reparto,a.frequenza,c.nome as stato_strumento, d.nome as tipo_strumento,a.denominazione,a.utilizzatore "
+			+ "from strumento a " +
 			"left JOIN stato_strumento c on a.id__stato_strumento_=c.__id " + 
 			"left join tipo_strumento d on a.id__tipo_strumento_=d.__id " + 
 			"where a.id_cliente=? and id__sede_new=?";
@@ -1594,7 +1592,7 @@ public class DirectMySqlDAO {
 			{
 				strumento= new StrumentoDTO();
 				strumento.setReparto(rs.getString("reparto"));
-				String freq = rs.getString("freq_verifica_mesi");
+				String freq = rs.getString("frequenza");
 				if(freq!=null && freq.length()>0) 
 				{
 					strumento.setFrequenza(Integer.parseInt(freq));
@@ -1602,6 +1600,8 @@ public class DirectMySqlDAO {
 				{
 					strumento.setFrequenza(0);
 				}
+				strumento.setDenominazione(rs.getString("denominazione"));
+				strumento.setUtilizzatore(rs.getString("utilizzatore"));
 				strumento.setTipo_strumento(new TipoStrumentoDTO(0, rs.getString("tipo_Strumento")));
 				strumento.setStato_strumento(new StatoStrumentoDTO(0, rs.getString("stato_strumento")));
 

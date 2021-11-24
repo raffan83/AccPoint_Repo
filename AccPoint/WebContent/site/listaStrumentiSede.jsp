@@ -332,7 +332,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <% 	 
  } 
  
- System.out.println("fine jsp"+new Date());	
+
  %>
  </tbody>
  </table>  

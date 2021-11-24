@@ -132,6 +132,9 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 	
 					for(StrumentoDTO strumentoDTO: listaStrumentiPerSedeGrafici) {
 	
+						
+							
+						
 						if(statoStrumenti.containsKey(strumentoDTO.getStato_strumento().getNome())) {
 							Integer iter = statoStrumenti.get(strumentoDTO.getStato_strumento().getNome());
 							iter++;
@@ -140,6 +143,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 							statoStrumenti.put(strumentoDTO.getStato_strumento().getNome(), 1);
 						}
 						
+						if(strumentoDTO.getStato_strumento().getNome().equals("In servizio")) {	
 						if(tipoStrumenti.containsKey(strumentoDTO.getTipo_strumento().getNome())) {
 							Integer iter = tipoStrumenti.get(strumentoDTO.getTipo_strumento().getNome());
 							iter++;
@@ -166,13 +170,11 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 								freqKey = strumentoDTO.getFrequenza()+"mese";
 							}
 							
-							if(freqStrumenti.containsKey(""+strumentoDTO.getFrequenza())) {
+							if(freqStrumenti.containsKey(freqKey)) {
 								
-								Integer iter = freqStrumenti.get(""+strumentoDTO.getFrequenza());
+								Integer iter = freqStrumenti.get(freqKey);
 								iter++;
-								
-								
-								
+
 								freqStrumenti.put(freqKey, iter);
 							}else {
 								
@@ -199,7 +201,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 							utilizzatoreStrumenti.put(strumentoDTO.getUtilizzatore(), 1);
 							
 						}
-	
+						}
 					
 					}
 					Gson gson = new Gson(); 

@@ -927,9 +927,10 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 
 		dataset1 = {};
 		dataset1.data = [];
+		
 		dataset1.label = "# Strumenti in Servizio";
 		
-		
+	
 		
 		
 		
@@ -1003,6 +1004,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 				$('#grafico1').addClass("col-lg-6");
 			}else{
 				config1.type = "bar";	
+				config1.options.legend = {display : false}
 				$('#grafico1').removeClass("col-lg-6");
 			
 			}
@@ -1024,6 +1026,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 
 		dataset2 = {};
 		dataset2.data = [];
+		
 		dataset2.label = "# Strumenti per Tipologia";
 		
 		
@@ -1076,7 +1079,14 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 				     options: {
 				    	 responsive: true, 
 				    	 maintainAspectRatio: true,
-				          
+				    	 scales:{
+				    		 xAxes: [{
+					    		 ticks: {
+					    		 autoSkip: false
+					    		 }
+					    		 }]
+				    	 }
+				    	
 				     }
 				 };
 			if(Object.keys(tipoStrumentiJson).length<5){
@@ -1098,6 +1108,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 				$('#grafico2').addClass("col-lg-6");
 			}else{
 				config2.type = "bar";	
+				config2.options.legend = {display : false}
 				$('#grafico2').removeClass("col-lg-6");
 			
 			}
@@ -1120,8 +1131,9 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 
 		dataset3 = {};
 		dataset3.data = [];
+	
 		dataset3.label = "# Strumenti per Denominazione";
-		
+	
 		
  		dataset3.backgroundColor = [ ];
 		dataset3.borderColor = [ ];
@@ -1198,6 +1210,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 				$('#grafico3').addClass("col-lg-6");
 			}else{
 				config3.type = "horizontalBar";	
+				config3.options.legend = {display : false}
 				$('#grafico3').removeClass("col-lg-6");
 			}
 		  myChart3 = new Chart(ctx3, config3);
@@ -1296,6 +1309,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 				$('#grafico4').addClass("col-lg-6");
 			}else{
 				config4.type = "horizontalBar";	
+				config4.options.legend = {display : false}
 				$('#grafico4').removeClass("col-lg-6");
 			}
 		  myChart4 = new Chart(ctx4, config4);
@@ -1395,6 +1409,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 				$('#grafico5').addClass("col-lg-6");
 			}else{
 				config5.type = "horizontalBar";	
+				config5.options.legend = {display : false}
 				$('#grafico5').removeClass("col-lg-6");
 			}
 		  myChart5 = new Chart(ctx5,config5);
@@ -1504,6 +1519,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 				$('#grafico6').addClass("col-lg-6");
 			}else{
 				config6.type = "horizontalBar";	
+				config6.options.legend = {display : false}
 				$('#grafico6').removeClass("col-lg-6");
 			}
 		 $(".grafico6").height(itemHeight6);

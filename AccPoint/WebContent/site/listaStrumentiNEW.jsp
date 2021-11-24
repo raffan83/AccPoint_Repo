@@ -294,23 +294,43 @@
 <div class="box-body">
 		<div id="grafici">
 			<div class="row">
+			<div class="box box-info box-solid">
+			<div class="box-header with-border" style="text-align:center">Strumenti in servizio</div>
 				<div class="col-xs-12 grafico1">
+				
 					<canvas id="grafico1"></canvas>
 				</div>
+				
+				</div>
+				<div class="box box-info box-solid">
+			<div class="box-header with-border" style="text-align:center">Strumenti per tipologia</div>
 				<div class="col-xs-12 grafico2" >
 					<canvas id="grafico2"></canvas>
 				</div>
+				</div>
+				<div class="box box-info box-solid">
+			<div class="box-header with-border" style="text-align:center">Strumenti per denominazione</div>
 				<div class="col-xs-12 grafico3">
 					<canvas id="grafico3"></canvas>
 				</div>
+				</div>
+				<div class="box box-info box-solid">
+			<div class="box-header with-border" style="text-align:center">Strumenti per frequenza</div>
 				<div class="col-xs-12 grafico4">
 					<canvas id="grafico4"></canvas>
 				</div>
+				</div>
+				<div class="box box-info box-solid">
+			<div class="box-header with-border" style="text-align:center">Strumenti per reparto</div>
 				<div class="col-xs-12 grafico5">
 					<canvas id="grafico5"></canvas>
 				</div>
+				</div>
+				<div class="box box-info box-solid">
+			<div class="box-header with-border" style="text-align:center">Strumenti per utilizzatore</div>
 				<div class="col-xs-12 grafico6">
 					<canvas id="grafico6"></canvas>
+				</div>
 				</div>
 			</div>
 		</div>

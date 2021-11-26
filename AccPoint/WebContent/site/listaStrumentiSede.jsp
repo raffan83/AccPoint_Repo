@@ -674,8 +674,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    //console.log(new Date());
 	} );
 
- $(function(){
-	
+ //$(function(){
+ $(document).ready(function() {
 	 //$('.select2').select2();
 	 
 	 console.log("test")
@@ -1078,14 +1078,8 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 				     data: grafico2,
 				     options: {
 				    	 responsive: true, 
-				    	 maintainAspectRatio: true,
-				    	 scales:{
-				    		 xAxes: [{
-					    		 ticks: {
-					    		 autoSkip: false
-					    		 }
-					    		 }]
-				    	 }
+				    	 maintainAspectRatio: true
+				    	 
 				    	
 				     }
 				 };
@@ -1109,6 +1103,13 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 			}else{
 				config2.type = "bar";	
 				config2.options.legend = {display : false}
+				config2.options.scales = {
+			    		 xAxes: [{
+				    		 ticks: {
+				    		 autoSkip: false
+				    		 }
+				    		 }]
+			    	 }
 				$('#grafico2').removeClass("col-lg-6");
 			
 			}

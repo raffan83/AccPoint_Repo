@@ -473,7 +473,7 @@
 </form>
 
 
-
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }">
 <div id="myModalAssociaUtenti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato"  style="z-index:9998">
    
     <div class="modal-dialog modal-md" role="document">
@@ -571,7 +571,7 @@
   </div>
 
 </div>
-
+</c:if>
 
 
 <div id="modalConfermaImportazione" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalsaveStato">
@@ -708,11 +708,16 @@
 
 
 
+
+</div>
+
+</div>
+<!-- ./wrapper -->
+
+
    <t:dash-footer />
    
   <t:control-sidebar />
-</div>
-<!-- ./wrapper -->
 
 </jsp:attribute>
 

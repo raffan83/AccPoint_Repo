@@ -118,5 +118,10 @@ public class GestioneDocumentaleBO {
 		return GestioneDocumentaleDAO.getDocumentiScadenzarioDipendenti(dateFrom, dateTo, id_fornitore, id_committente, session);
 	}
 
+	public static ArrayList<DocumTLDocumentoDTO> getListaDocumentiStato(int id_stato, Session session) {
+		
+		return GestioneDocumentaleDAO.getListaDocumentiStato(id_stato, session);
+	}
+
 
 }

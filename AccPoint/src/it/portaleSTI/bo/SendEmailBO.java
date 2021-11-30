@@ -1027,6 +1027,51 @@ DateFormat df_dataNascita = new SimpleDateFormat("dd/MM/yyyy");
 	
 }
 
+public static void sendEmailDocumentiInScadenza() throws EmailException {
+	
+	ArrayList<DocumTLDocumentoDTO> lista_documenti = GestioneDocumentaleBO.getListaDocumentiStato(6, null);
+	
+	String messaggio = "";
+	
+	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	
+	for (DocumTLDocumentoDTO doc : lista_documenti) {
+		messaggio += "ID: "+doc.getId()+" - ";
+		messaggio += "Committente: " + doc.getCommittente().getNome_cliente()+" - ";
+		messaggio += "Nome documento: " + doc.getNome_documento()+" - ";
+		messaggio += "Data scadenza: " + df.format(doc.getData_scadenza())+"<br>";
+	}
+	
+	 HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+email.getMailSession().getProperties().put("mail.debug", "true");
+email.getMailSession().getProperties().put("mail.smtp.port", "465");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+
+
+email.addTo("valeria.rotondi@stisrl.com");
+email.addTo("claudia.perruzza@stisrl.com");
+
+	  
+	  email.setFrom("calver@accpoint.it", "Calver Documentale");
+	
+
+		  email.setSubject("AVVISO DOCUMENTI IN SCADENZA");
+		  
+		  email.setHtmlMsg("<html>Si riporta di seguito l&lsquo;elencazione dei documenti in scadenza:<br><br>"
+				  	 +messaggio+"</html>");
+		  
+	  email.send();
+}
+
 }
 
 

@@ -564,6 +564,19 @@ public class ListaCertificati extends HttpServlet {
 						CreaCertificatoLivellaElettronica c = new CreaCertificatoLivellaElettronica(cert, cert.getMisura().getMisuraLAT(), utente, null,session);
 						certificato = c.file;
 					}
+					else if(cert.getMisura().getMisuraLAT()!=null && cert.getMisura().getMisuraLAT().getMisura_lat().getId()!=1 && cert.getMisura().getMisuraLAT().getMisura_lat().getId()!=2) {
+						
+//						saveExcelPDF(file_pdf,intervento.getNomePack(),interventoDati.getId(),id_strumento);
+//						
+//						private String saveExcelPDF(FileItem item, String nomePack, int idInt, String id_strumento) {
+//							
+//							String nomeFile=nomePack+"_"+idInt+""+id_strumento+".pdf";
+//							
+//							File f= new File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+idInt+""+id_strumento+".pdf");
+//							
+							
+						certificato = new File(Costanti.PATH_FOLDER+cert.getMisura().getIntervento().getNomePack()+"\\"+cert.getMisura().getIntervento().getNomePack()+"_" + cert.getMisura().getInterventoDati().getId()+""+cert.getMisura().getStrumento().get__id()+".pdf");
+					}
 					else {
 						certificato = GestioneCertificatoBO.createCertificatoMulti(id,session,context, cert.getUtenteApprovazione());	
 					}

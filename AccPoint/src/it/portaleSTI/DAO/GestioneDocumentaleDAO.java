@@ -1,8 +1,11 @@
 package it.portaleSTI.DAO;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Iterator;
@@ -413,7 +416,7 @@ ArrayList<DocumTLDocumentoDTO> lista = null;
 
 	}
 
-	public static void AggiornamentoStatoDocumenti() {
+	public static void AggiornamentoStatoDocumenti() throws HibernateException, ParseException {
 		
  		Session session = SessionFacotryDAO.get().openSession();	    
 		session.beginTransaction();
@@ -436,6 +439,37 @@ ArrayList<DocumTLDocumentoDTO> lista = null;
 			}
 			
 		}
+		
+		
+		Date today = new Date();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(today);
+		cal.add(Calendar.DATE, 10);
+		Date nextDate = cal.getTime();
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		query = session.createQuery("from DocumTLDocumentoDTO WHERE data_scadenza <= :_scadenza and stato.id !=4 and stato.id !=3 and obsoleto = 0 and disabilitato = 0");
+		query.setParameter("_scadenza", df.parse(df.format(nextDate)));
+		
+		lista_documenti = (ArrayList<DocumTLDocumentoDTO>) query.list();
+		
+		for (DocumTLDocumentoDTO documento : lista_documenti) {
+			documento.setStato(new DocumTLStatoDTO(6, ""));
+			session.update(documento);
+			
+			Iterator<DocumDipendenteFornDTO> iterator = documento.getListaDipendenti().iterator();
+			
+			while(iterator.hasNext()) {
+				DocumDipendenteFornDTO dipendente = iterator.next();
+				dipendente.setStato(new DocumTLStatoDipendenteDTO(4,""));
+				session.update(dipendente);
+			}
+			
+		}	
+		
+		
 		
 		session.getTransaction().commit();
 		session.close();
@@ -532,6 +566,31 @@ ArrayList<DocumTLDocumentoDTO> lista = null;
 		
 		lista = (ArrayList<DocumDocumentoDipendenteDTO>) query.list();
 		
+		return lista;
+	}
+
+	public static ArrayList<DocumTLDocumentoDTO> getListaDocumentiStato(int id_stato, Session session) {
+		
+		 ArrayList<DocumTLDocumentoDTO> lista = null;
+		
+		 boolean sessionNull = false;
+		 if(session==null) {
+			 
+			 session = 	SessionFacotryDAO.get().openSession();	    
+			 session.beginTransaction();
+			 sessionNull = true;
+		 }
+		
+		 Query query = session.createQuery("from DocumTLDocumentoDTO where stato.id = :_id_stato");
+		 query.setParameter("_id_stato", id_stato);
+		 
+		 lista = (ArrayList<DocumTLDocumentoDTO>) query.list();
+		 if(sessionNull) {
+			 
+			 session.getTransaction().commit();
+			 session.close();
+		 }
+
 		return lista;
 	}
 }

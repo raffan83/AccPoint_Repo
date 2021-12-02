@@ -81,7 +81,7 @@ public class ListaStrumentiCalendario extends HttpServlet {
 				
 				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione(session);
 				
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiFromDate(utente, null, date); 
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiFromDate(utente, null, date,0); 
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				
@@ -158,13 +158,13 @@ public class ListaStrumentiCalendario extends HttpServlet {
 				ArrayList<StrumentoDTO> listaStrumenti = new ArrayList<StrumentoDTO>();
 				
 				if(idSede != null && !idSede.equals("")) {
-					listaStrumenti =GestioneStrumentoBO.getListaStrumentiFromDate(utente, dateFrom, dateTo); 
+					listaStrumenti =GestioneStrumentoBO.getListaStrumentiFromDate(utente, dateFrom, dateTo, 0); 
 					
 					HashMap<String, String> listaSediStrumenti = (HashMap<String, String>) request.getSession().getAttribute("listaSediStrumenti");
 					request.getSession().setAttribute("descrizioneClienteStrumenti", listaSediStrumenti.get(idSede));
 				}
 				else if(idCliente != null && !idCliente.equals("")) {
-					listaStrumenti =GestioneStrumentoBO.getListaStrumentiFromDate(utente, dateFrom, dateTo); 
+					listaStrumenti =GestioneStrumentoBO.getListaStrumentiFromDate(utente, dateFrom, dateTo,0); 
 					
 					HashMap<String, String> listaClientiStrumenti = (HashMap<String, String>) request.getSession().getAttribute("listaClientiStrumenti");
 					request.getSession().setAttribute("descrizioneClienteStrumenti", listaClientiStrumenti.get(idCliente));

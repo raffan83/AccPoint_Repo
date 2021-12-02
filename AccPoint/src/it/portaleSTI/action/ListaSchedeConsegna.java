@@ -79,18 +79,12 @@ public class ListaSchedeConsegna extends HttpServlet {
 				
 				ArrayList<SchedaConsegnaDTO> lista_schede_consegna_all = GestioneSchedaConsegnaBO.getListaSchedeConsegnaDate(df.format(dateBefore),df.format(today), session);
 				
-				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna_rilievi = (ArrayList<SchedaConsegnaRilieviDTO>) request.getSession().getAttribute("lista_schede_consegna_rilievi");
+				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna_rilievi  = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(0,0,0, session);
 				
-				if(lista_schede_consegna_rilievi== null) {
-					lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(0,0,0, session);
-				}
 				
-				ArrayList<SchedaConsegnaDTO> lista_schede_consegna_verificazione =  (ArrayList<SchedaConsegnaDTO>) request.getSession().getAttribute("lista_schede_consegna_verificazione");
+				ArrayList<SchedaConsegnaDTO> lista_schede_consegna_verificazione = GestioneSchedaConsegnaBO.getListaSchedeConsegnaVerificazioneDate(null, null, session);
 				
-				if(lista_schede_consegna_verificazione == null) {
-					lista_schede_consegna_verificazione = GestioneSchedaConsegnaBO.getListaSchedeConsegnaVerificazioneDate(null, null, session);
-				}
-						
+					
 				
 				session.close();
 				request.getSession().setAttribute("lista_schede_consegna", lista_schede_consegna_all);

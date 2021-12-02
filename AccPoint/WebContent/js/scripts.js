@@ -5368,7 +5368,8 @@ function eliminaCompany(){
      function cercaStrumentiInScadenzaClienti(){
     	 	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
     	 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
-    	 	exploreModal("listaSediStrumentiInScadenza.do?dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD'), "", "#tabellaLista", null);
+    	 	var tipo_rapporto = $('#tipo_rapporto').val();
+    	 	exploreModal("listaSediStrumentiInScadenza.do?dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&tipo_rapporto="+tipo_rapporto, "", "#tabellaLista", null);
     	 	//alert(startDatePicker.format('YYYY-MM-DD') + " - " + endDatePicker.format('YYYY-MM-DD'));
      }
      

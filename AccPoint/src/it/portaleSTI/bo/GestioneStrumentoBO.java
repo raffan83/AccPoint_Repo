@@ -352,7 +352,7 @@ public class GestioneStrumentoBO {
 	}
 
 
-	public static ArrayList<StrumentoDTO> getListaStrumentiFromDate(UtenteDTO user, String dateFrom, String dateTo) throws ParseException {
+	public static ArrayList<StrumentoDTO> getListaStrumentiFromDate(UtenteDTO user, String dateFrom, String dateTo, int tipo_rapporto) throws ParseException {
 
 		List<StrumentoDTO> lista = GestioneStrumentoDAO.getListaStrumentiFromUser(user,dateFrom,dateTo);
 		
@@ -368,10 +368,18 @@ public class GestioneStrumentoBO {
 				if(strumento!=null && strumento.getDataProssimaVerifica()!=null)
 				{
 					Date prossimaVerifica=strumento.getDataProssimaVerifica();
-					if(prossimaVerifica!=null && sdf.format(prossimaVerifica).equals(dateTo))
-					{
-						listaFiltrata.add(strumento);
-					}
+					if(tipo_rapporto == 0) {
+						if(prossimaVerifica!=null && sdf.format(prossimaVerifica).equals(dateTo))
+						{
+							listaFiltrata.add(strumento);
+						}
+					}else {
+						if(prossimaVerifica!=null && sdf.format(prossimaVerifica).equals(dateTo) && strumento.getTipoRapporto().getId()==tipo_rapporto)
+						{
+							listaFiltrata.add(strumento);
+						}
+					}					
+					
 				}
 			}
 		}
@@ -383,13 +391,26 @@ public class GestioneStrumentoBO {
 				if(strumento!=null && strumento.getDataProssimaVerifica()!=null)
 				{
 					Date prossimaVerifica=strumento.getDataProssimaVerifica();
-					if(prossimaVerifica!=null && prossimaVerifica.after(sdf.parse(dateFrom))&& prossimaVerifica.before(sdf.parse(dateTo)))
-					{
-						if(nonContieneStrumento(listaFiltrata,strumento))
+					
+					if(tipo_rapporto == 0) {
+						if(prossimaVerifica!=null && prossimaVerifica.after(sdf.parse(dateFrom))&& prossimaVerifica.before(sdf.parse(dateTo)))
 						{
-							listaFiltrata.add(strumento);
+							if(nonContieneStrumento(listaFiltrata,strumento))
+							{
+								listaFiltrata.add(strumento);
+							}
+						}
+					}else {
+						if(strumento.getTipoRapporto().getId() == tipo_rapporto && prossimaVerifica!=null && prossimaVerifica.after(sdf.parse(dateFrom))&& prossimaVerifica.before(sdf.parse(dateTo)))
+						{
+							if(nonContieneStrumento(listaFiltrata,strumento))
+							{
+								listaFiltrata.add(strumento);
+							}
 						}
 					}
+					
+					
 				}
 			}
 		}

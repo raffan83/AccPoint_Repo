@@ -188,7 +188,7 @@ public class GestionePacco extends HttpServlet {
 				if (item.isFormField()) {
 					if(item.getFieldName().equals("json")) {
 						
-					String data_json = item.getString();
+					String data_json = item.getString("UTF-8");
 					
 					JsonElement jelement = new JsonParser().parse(data_json);
 					JsonArray json_array = jelement.getAsJsonArray();

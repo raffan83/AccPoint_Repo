@@ -55,11 +55,12 @@ public class ListaSediStrumentiInScadenza extends HttpServlet {
 			
 			String dateFrom =request.getParameter("dateFrom");
 			String dateTo =request.getParameter("dateTo");
+			String tipo_rapporto = request.getParameter("tipo_rapporto");
 			
 			
 			if(dateFrom!=null && dateFrom.length()>0 && !dateFrom.equals("null") && dateTo!=null && dateTo.length()>0 && !dateTo.equals("null"))
 			{
-				ArrayList<StrumentoDTO> listaStrumenti=GestioneStrumentoBO.getListaStrumentiFromDate(utente, dateFrom, dateTo); 
+				ArrayList<StrumentoDTO> listaStrumenti=GestioneStrumentoBO.getListaStrumentiFromDate(utente, dateFrom, dateTo, Integer.parseInt(tipo_rapporto)); 
 
 				HashMap<String,ArrayList<StrumentoDTO>> listaStrumentiPerSede = new HashMap<String,ArrayList<StrumentoDTO>>();
 				

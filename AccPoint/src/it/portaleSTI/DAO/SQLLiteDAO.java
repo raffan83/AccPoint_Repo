@@ -1524,10 +1524,20 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			misura.setSeqRisposte(rs.getString("seq_risposte"));
 			
 			misura.setFile_inizio_prova(rs.getBytes("file_inizio_prova"));
-			misura.setNomeFile_inizio_prova(rs.getString("nomefile_inizio_prova").replace("'","_"));
+			if(rs.getString("nomefile_inizio_prova")!=null) {
+				misura.setNomeFile_inizio_prova(rs.getString("nomefile_inizio_prova").replace("'","_"));
+			}else {
+				misura.setNomeFile_inizio_prova(rs.getString("nomefile_inizio_prova"));
+			}
+			
 			misura.setFile_fine_prova(rs.getBytes("file_fine_prova"));
 
-			misura.setNomeFile_fine_prova(rs.getString("nomefile_fine_prova").replace("'","_"));
+			if(rs.getString("nomefile_fine_prova")!=null) {
+				misura.setNomeFile_fine_prova(rs.getString("nomefile_fine_prova").replace("'","_"));
+			}else {
+				misura.setNomeFile_fine_prova(rs.getString("nomefile_fine_prova"));
+			}
+			
 			misura.settInizio(rs.getDouble("tInizio"));
 			misura.settFine(rs.getDouble("tFine"));
 			misura.setAltezza_org(rs.getDouble("altezza_org"));

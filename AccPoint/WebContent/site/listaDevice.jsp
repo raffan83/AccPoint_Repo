@@ -101,14 +101,15 @@
 <th>Codice Interno</th>
 <th>Tipo Device</th>
 <th>Company</th>
-<th>Denominazione</th>
+<th>Dipendente</th>
 <th>Costruttore</th>
 <th>Modello</th>
 <th>Distributore</th>
 <th>Data Creazione</th>
 <th>Data Acquisto</th>
 <th>Ubicazione</th>
-<th>Dipendente</th>
+<th>Denominazione</th>
+
 <th style="min-width:150px">Azioni</th>
  </tr></thead>
  
@@ -121,14 +122,15 @@
 	<td>${device.codice_interno }</td>
 	<td>${device.tipo_device.descrizione }</td>
 	<td>${device.company.ragione_sociale }</td>
-	<td>${device.denominazione }</td>
+	<td>${device.dipendente.nome } ${device.dipendente.cognome }</td>
 	<td>${device.costruttore }</td>
 	<td>${device.modello }</td>
 	<td>${device.distributore }</td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${device.data_creazione }"></fmt:formatDate></td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${device.data_acquisto }"></fmt:formatDate></td>
 	<td>${device.ubicazione }</td>
-	<td>${device.dipendente.nome } ${device.dipendente.cognome }</td>
+	<td>${device.denominazione }</td>
+	
 	<td>
 
 	<a class="btn btn-info customTooltip" onClicK="$(this).dblclick()" title="Click per aprire il dettaglio device"><i class="fa fa-search"></i></a>

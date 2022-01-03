@@ -126,6 +126,11 @@
             <one-to-many class="it.portaleSTI.DTO.CertificatoCampioneDTO" />
    </set>
    
+   
+     <property name="campione_verificazione" type="int">
+            <column name="campione_verificazione" />
+        </property>
+   
 <!--             <set name="listaDocumentiEsterni" table="documenti_esterni_campione"
 				inverse="true" lazy="false" fetch="select" >
             <key>

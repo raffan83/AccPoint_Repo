@@ -304,7 +304,102 @@ public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziario(S
 
 
 
-public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String tipo_data_lat) throws Exception, ParseException {
+public static ArrayList<HashMap<String, Integer>> getListaRegistroEventiScadenziario(String verificazione, Session session) {
+	
+	Query query=null;
+	ArrayList<HashMap<String, Integer>> listMap= new ArrayList<HashMap<String, Integer>>();
+	HashMap<String, Integer> mapTarature = new HashMap<String, Integer>();
+	HashMap<String, Integer> mapVerifiche = new HashMap<String, Integer>();
+	HashMap<String, Integer> mapManutenzioni = new HashMap<String, Integer>();
+	
+	List<RegistroEventiDTO> lista =null;
+	List<CampioneDTO> lista_campioni = null;
+	
+	if(verificazione!=null) {
+		query  = session.createQuery( "from RegistroEventiDTO where campione.statoCampione != 'F' and campione.campione_verificazione = 1 and (obsoleta = null or obsoleta = 'N')");
+	}else {
+		query  = session.createQuery( "from RegistroEventiDTO where campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");	
+	}
+		
+	
+	lista=query.list();
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
+	for (RegistroEventiDTO att: lista) {
+		
+		
+		if(att.getTipo_evento().getId()==1) {
+		
+			if(att.getCampione().getFrequenza_manutenzione()!=0) {
+				int i=1;
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(att.getData_evento());
+				calendar.add(Calendar.MONTH, att.getCampione().getFrequenza_manutenzione());
+				
+				Date date = calendar.getTime();
+				
+				if(mapManutenzioni.get(sdf.format(date))!=null) {					
+					
+					i= mapManutenzioni.get(sdf.format(date))+1;
+				}
+				
+				mapManutenzioni.put(sdf.format(date), i);
+			}			
+		}
+		
+		if(att.getTipo_evento().getId()==5 && att.getData_scadenza()!=null) {
+			
+			int i=1;
+			if(mapVerifiche.get(sdf.format(att.getData_scadenza()))!=null) {
+				i= mapVerifiche.get(sdf.format(att.getData_scadenza()))+1;
+			}
+			
+			mapVerifiche.put(sdf.format(att.getData_scadenza()), i);
+			
+		}
+		
+
+
+    }
+	
+	if(verificazione!=null) {
+		query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and campione_verificazione = 1 and  codice not like '%CDT%'");	
+	}else {
+		query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and codice not like '%CDT%'");		
+	}
+	
+	
+	lista_campioni=query.list();
+	
+	for (CampioneDTO c : lista_campioni) {
+		
+		if(c.getDataScadenza()!=null) {
+		
+		int i=1;
+		if(mapTarature.get(sdf.format(c.getDataScadenza()))!=null) {
+			i= mapTarature.get(sdf.format(c.getDataScadenza()))+1;
+		}
+		
+		mapTarature.put(sdf.format(c.getDataScadenza()), i);
+		
+	}
+		
+	}
+	
+	listMap.add(mapManutenzioni);
+	listMap.add(mapVerifiche);
+	listMap.add(mapTarature);
+
+	return listMap;
+}
+
+
+
+
+
+public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String tipo_data_lat, String tipo_evento, int verificazione) throws Exception, ParseException {
 	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");		
 	Session session = SessionFacotryDAO.get().openSession();
     
@@ -359,8 +454,9 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 
 	
 	}else {
-		query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1 and campione.statoCampione!='F' and (obsoleta = null or obsoleta = 'N')");
-		
+		query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = :_tipo_evento and campione.campione_verificazione = :_campione_verificazione and campione.statoCampione!='F' and (obsoleta = null or obsoleta = 'N')");
+		query.setParameter("_tipo_evento", Integer.parseInt(tipo_evento));
+		query.setParameter("_campione_verificazione",verificazione);
 		registro = (ArrayList<RegistroEventiDTO>) query.list();
 		
 		if(registro!=null) {

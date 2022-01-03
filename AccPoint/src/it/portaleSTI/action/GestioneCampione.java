@@ -217,7 +217,7 @@ public class GestioneCampione extends HttpServlet {
 			  String settore = (String)ret.get("settore");
 			  String slash = (String)ret.get("slash");
 			  String proprietario = (String)ret.get("proprietario");
-			  
+			  String campione_verificazione = (String) ret.get("campione_verificazione");
 			  
 			  String attivita_di_taratura ="";
 			  
@@ -271,6 +271,8 @@ public class GestioneCampione extends HttpServlet {
 				}else {
 					campione.setData_acquisto(null);
 				}
+				
+				campione.setCampione_verificazione(Integer.parseInt(campione_verificazione));
 				
 				if(data_messa_in_servizio !=null && !data_messa_in_servizio.equals("")) {
 					Date d = (Date) format.parse(data_messa_in_servizio);
@@ -472,6 +474,7 @@ public class GestioneCampione extends HttpServlet {
 			  String descrizione_verifica_intermedia = (String)ret.get("descrizione_verifica_intermedia_mod");
 			  String attivita_di_taratura = (String) ret.get("attivita_taratura_text_mod");
 			  String tipo_campione = (String) ret.get("tipoCampione_mod");
+			  String campione_verificazione = (String) ret.get("campione_verificazione_mod");
 			  
 			 
 				campione.setNome(nome);
@@ -521,6 +524,9 @@ public class GestioneCampione extends HttpServlet {
 				
 				campione.setDescrizione_manutenzione(descrizione_manutenzione);
 				campione.setDescrizione_verifica_intermedia(descrizione_verifica_intermedia);
+				
+				
+				campione.setCampione_verificazione(Integer.parseInt(campione_verificazione));
 				
 				DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN);
 				

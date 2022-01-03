@@ -54,6 +54,21 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 
 
    <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Campione Verificazione:</label>
+        <div class="col-sm-9">
+        <%if(campione.getCampione_verificazione()==1){      	%>
+        
+        <input  id="check_verificazione_mod" type="checkbox" name="check_verificazione_mod" checked/>
+        
+        <%}else{ %>
+        
+                      <input  id="check_verificazione_mod" type="checkbox" name="check_verificazione_mod" />
+                      <%} %>
+    </div>
+     </div>
+
+
+   <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Nome:</label>
         <div class="col-sm-9">
                       <input class="form-control" id="nome_mod" type="text" name="nome_mod" required value="<%=campione.getNome() %>"/>
@@ -316,7 +331,13 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
     </div>
     <div class="col-sm-4"><a class="btn btn-primary"onClick="caricaListaStrumenti()">Seleziona</a></div>
        </div> 
+         <%if(campione.getCampione_verificazione()==1){      	%>
+        
+       <input type="hidden" id="campione_verificazione_mod" name="campione_verificazione_mod" value="1">
+       <%}else{ %>
        
+        <input type="hidden" id="campione_verificazione_mod" name="campione_verificazione_mod" value="0">
+       <%} %>
         <button type="submit" class="btn btn-danger" >Invia Modifica</button>
     <span id="errorModifica"></span>
    </form>
@@ -355,7 +376,25 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="plugins/datejs/date.js"></script>   
+<script src="plugins/iCheck/icheck.js"></script> 
 <script>
+
+
+$('#check_verificazione_mod').on('ifClicked',function(e){
+	
+	 if($('#check_verificazione_mod').is( ':checked' )){
+		
+		$('#check_verificazione_mod').iCheck('uncheck');
+		$('#campione_verificazione_mod').val(0);
+	 }else{
+		
+		$('#check_verificazione_mod').iCheck('check');				
+		$('#campione_verificazione_mod').val(1);
+	 }
+
+});  
+
+
 
 
 function caricaListaStrumenti(){
@@ -545,6 +584,13 @@ $('#tipoCampione_mod').change(function(){
 
 
 $(document).ready(function(){
+	
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%' // optional
+      }); 
+	
 	console.log("test");
 	
 	

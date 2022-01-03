@@ -17,8 +17,8 @@
 <!-- Content Header (Page header) -->
     <section class="content-header">
        <h1 class="pull-left">
-        Scadenziario
-        <small>Fai click per prenotare</small>
+        Scadenziario ${verificazione!=null ? "Verificazione":"Campioni" }
+       <!--  <small>Fai click per prenotare</small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
@@ -34,14 +34,19 @@
                 <div class="row">
 	
 	<div class="col-xs-3">
-	<div class="btn btn-primary" style="background-color:#00a65a;border-color:#00a65a" onClick="addCalendar(1)"></div><label style="margin-left:5px">Data manutenzione</label>
+	<div class="btn btn-primary" style="background-color:#00a65a;border-color:#00a65a" onClick="addCalendar(1,${verificazione})"></div><label style="margin-left:5px">Data manutenzione</label>
 	</div>
+	
+	<div class="col-xs-3">
+	<div class="btn btn-primary" style="background-color:#777;border-color:#777"  onClick="addCalendar(5, ${verificazione})"></div><label style="margin-left:5px">Data verifica intermedia</label>
+	</div>
+	
 
 	<div class="col-xs-3">
-	<div class="btn btn-primary" style="background-color:#dd4b39;border-color:#dd4b39"  onClick="addCalendar(2)"></div><label style="margin-left:5px">Data taratura</label>
+	<div class="btn btn-primary" style="background-color:#dd4b39;border-color:#dd4b39"  onClick="addCalendar(2,${verificazione})"></div><label style="margin-left:5px">Data taratura</label>
 	</div>
-	<div class="col-xs-6">
-	<a class="btn btn-default pull-right" id="generale_btn" onClick="addCalendar(0)" style="display:none"><i class="fa fa-arrow-left"></i> Torna al generale</a>
+	<div class="col-xs-3">
+	<a class="btn btn-default pull-right" id="generale_btn" onClick="addCalendar(0,${verificazione})" style="display:none"><i class="fa fa-arrow-left"></i> Torna al generale</a>
 	</div>
 	
 	<div class="col-xs-12">
@@ -117,7 +122,7 @@
 
 $(function () {
 	
-	addCalendar(0);
+	addCalendar(0, ${verificazione});
 
 	});
 	

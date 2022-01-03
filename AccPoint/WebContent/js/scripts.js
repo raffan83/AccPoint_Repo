@@ -1063,10 +1063,18 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 		         });
 	  }
  	 
-   function addCalendar(tipo_data){
+   function addCalendar(tipo_data, verificazione){
+
+	   if(verificazione!=null){
+		   var url = "Scadenziario_create.do?verificazione="+verificazione;
+	   }else {
+		   var url = "Scadenziario_create.do"
+	   }
+	   
+	   
 	   $.ajax({
 	          type: "POST",
-	          url: "Scadenziario_create.do",
+	          url: url,
 	          data: "",
 	          dataType: "json",
 	          
@@ -1079,15 +1087,15 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	             		 jsonObj = [];
 	             		 
 	             		if(tipo_data==0 || tipo_data==2){
-		             		for(var i=0 ; i<data.dataInfo.length;i++)
+		             		for(var i=0 ; i<data.obj_taratura.length;i++)
 		                    {
-		             			var str =data.dataInfo[i].split(";");
+		             			var str =data.obj_taratura[i].split(";");
 		             			item = {};
 		             	        item ["title"] = str[1];
 		             	        item ["start"] = str[0];
 		             	        item ["allDay"] = true;
-		             	       item ["backgroundColor"] = "#ffbf00";
-		             	      item ["borderColor"] = "#ffbf00";
+		             	       item ["backgroundColor"] = "#777";
+		             	      item ["borderColor"] = "#777";
 		             	        jsonObj.push(item);
 		              		}
 		           
@@ -1105,6 +1113,21 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	             	        jsonObj.push(item);
 	              		}
 	             		}
+	             		
+	             		
+	             		if(tipo_data==0 || tipo_data==5){ 
+		             		for(var i=0 ; i<data.obj_verifica.length;i++)
+		                    {
+		             			var str =data.obj_verifica[i].split(";");
+		             			item = {};
+		             	        item ["title"] = str[1];
+		             	        item ["start"] = str[0];
+		             	        item ["allDay"] = true;
+		             	       item ["backgroundColor"] = "#9d201d";
+		             	      item ["borderColor"] = "#9d201d";
+		             	        jsonObj.push(item);
+		              		}
+		             		}
  		 $('#calendario').fullCalendar({
    			header: {
    		        left: 'prev,next today',
@@ -1133,27 +1156,57 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
   		     
   		    },
 				  eventRender: function(event, element, view) {
+					
+					  
+					  
 					  if(event.backgroundColor=="#00a65a"){
 						  return $('<span class=\"badge bg-green bigText\"">' 
 						             + event.title + 
 						             '</button>'); 
-					  }
-					  else{
+					  }else if(event.backgroundColor=="#777"){
 						  return $('<span class=\"badge bg-red bigText\"">' 
 						             + event.title + 
 						             '</span>');
 					  }
+					  else{
+						  return $('<span class=\"badge bg-grey bigText\"">' 
+						             + event.title + 
+						             '</span>');
+					  }
+					  
 			            
 			         },	 
 		         
    		  events:jsonObj,
    		           eventClick: function(calEvent, jsEvent, view) {
+   		        	   
+   		        	   
+//   		        	 eventClick: function(calEvent, jsEvent, view) {
+//   			        	var tipo_data;
+//   			        
+//   			        	   if(calEvent.backgroundColor=="#00a65a"){
+//   			        		   tipo_data = "1";	        		  
+//   			        	   }else if(calEvent.backgroundColor=="#777"){
+//   			        		   tipo_data = "3";
+//   			        	   }else if(calEvent.backgroundColor=="#9d201d"){
+//   			        		   tipo_data = "2";
+//   			        	   }
+//   			        	   
+//   			        //	callAction('listaAttrezzature.do?action=scadenzario&data='+moment(calEvent.start).format()+'&tipo_data='+tipo_data);
+//   			        	   callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_data_lat='+tipo_data);
+//   			        	
+//   			               $(this).css('border-color', '#228B22');
+//   			           }
 
    		        	//explore('listaCampioni.do?date='+moment(calEvent.start).format());
    		        	if(calEvent.backgroundColor=="#00a65a"){
-   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&manutenzione=1');	
-   		        	}else{
-   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format());
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_evento=1&verificazione=1');	
+   		        	}
+   		        	else if(calEvent.backgroundColor=="#777"){
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format());	
+   		        	}
+   		        	else{
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+"&tipo_evento=5&verificazione=1");
    		        	}
    		        	
    		              // alert('Event: ' + moment(calEvent.start).format());              		
@@ -1913,7 +1966,10 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
   }
   function modificaCampione(idCamampione){
 	  
-	  var form = $('#aggiorna form')[0]; 
+	
+	  
+	  
+	  var form = $('#formAggiornamentoCampione')[0]; 
 	  var formData = new FormData(form);
 	  
 	 
@@ -11623,7 +11679,9 @@ function addCalendarAttivitaCampione(tipo_data, id_campione, registro_eventi){
 	   
 	   if(id_campione!=null){
 		   var url = "scadenziario.do?action=scadenzario&id_campione="+id_campione;
-	   }else{
+	   }
+	   
+	   else{
 		   var url= "scadenziario.do?action=scadenzario";
 	   }
 	   

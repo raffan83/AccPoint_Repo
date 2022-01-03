@@ -71,6 +71,9 @@ public class Scadenziario extends HttpServlet {
 		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
 		
 		if(action == null) {
+			
+			request.getSession().setAttribute("verificazione", null);
+			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenziario.jsp");
 		    dispatcher.forward(request,response);// TODO Auto-generated method stub
 		    
@@ -86,6 +89,7 @@ public class Scadenziario extends HttpServlet {
 			request.getSession().setAttribute("id_campione", id_campione);
 			request.getSession().setAttribute("registroEventi", registroEventi);
 			request.getSession().setAttribute("scadenzarioGenerale", scadenzarioGenerale);
+			request.getSession().setAttribute("verificazione", null);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenzarioAttivitaCampioni.jsp");
 		    dispatcher.forward(request,response);// TODO Auto-generated method stub
@@ -159,6 +163,9 @@ public class Scadenziario extends HttpServlet {
 		        myObj.add("obj_verifica", obj_verifica); 
 		        myObj.add("obj_taratura", obj_taratura); 
 		        
+		        
+		        request.getSession().setAttribute("verificazione", null);
+		        
 		        out.println(myObj.toString());
 
 		        out.close();
@@ -170,7 +177,18 @@ public class Scadenziario extends HttpServlet {
 			
 	    
 	    
+	}else if(action.equals("campioni_verificazione")) {
+		
+		request.getSession().setAttribute("verificazione", "1");
+		
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenziario.jsp");
+	    dispatcher.forward(request,response);// TODO Auto-generated method stub
+	    
+	    session.getTransaction().commit();
+    	session.close();
+		
 	}
+
 		} catch (Exception e) {
 
 			session.getTransaction().rollback();

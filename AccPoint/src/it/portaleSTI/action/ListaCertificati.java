@@ -393,9 +393,9 @@ public class ListaCertificati extends HttpServlet {
 					myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo <br>"+ resultFirma.messaggio_firma);
 			        out.println(myObj.toString());
 				
-				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
-		        out.println(myObj.toString());
+//				myObj.addProperty("success", true);
+//				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
+//		        out.println(myObj.toString());
 				
 			}
 			

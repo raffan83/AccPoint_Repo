@@ -766,6 +766,24 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.close();
 				
 			}
+			else if(action.equals("elimina_dpi")) {
+				
+				ajax=true;								
+				String id_dpi = request.getParameter("id_dpi");	
+				
+				DpiDTO dpi = GestioneDpiBO.getDpiFormId(Integer.parseInt(id_dpi), session);
+				dpi.setDisabilitato(1);
+				session.update(dpi);								
+				
+				PrintWriter out = response.getWriter();
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Dpi eliminato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+				
+			}
 			
 		}catch(Exception e) {
 			

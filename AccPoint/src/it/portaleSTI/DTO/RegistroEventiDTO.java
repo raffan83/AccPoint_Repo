@@ -117,6 +117,7 @@ public class RegistroEventiDTO {
 	public void setObsoleta(String obsoleta) {
 		this.obsoleta = obsoleta;
 	}
+	
 
 
 }

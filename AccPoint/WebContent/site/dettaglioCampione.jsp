@@ -81,6 +81,20 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                       <input class="form-control" id="codiceCampioneDettaglio" type="text" name="codiceCampioneDettaglio" disabled="disabled" value="<%=campione.getCodice() %>"/>
     </div>
      </div>
+     
+        <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Campione Verificazione:</label>
+        <div class="col-sm-9">
+        <%if(campione.getCampione_verificazione()==1){      	%>
+        
+        <input  id="campione_verificazione_dtl" type="checkbox" name="campione_verificazione_dtl" value="1" checked disabled/>
+        
+        <%}else{ %>
+        
+                      <input  id="campione_verificazione_dtl" type="checkbox" name="campione_verificazione_dtl" value="0" disabled/>
+                      <%} %>
+    </div>
+     </div>
 
    <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Nome:</label>
@@ -347,5 +361,18 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
        
     
    </form>
+
+<script>
+$(document).ready(function(){
+
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%' // optional
+      }); 
+
+})
+
+</script>
 
 				

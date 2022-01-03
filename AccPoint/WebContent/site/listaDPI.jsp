@@ -104,7 +104,10 @@
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_scadenza }"></fmt:formatDate></td>
 	<td>	
 
- 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaDpi('${dpi.id }','${dpi.tipo.id }','${dpi.collettivo }','${dpi.company.id }','${utl:escapeJS(dpi.modello) }','${utl:escapeJS(dpi.conformita) }','${utl:escapeJS(dpi.descrizione) }','${dpi.data_scadenza }')" title="Click per modificare la dpi"><i class="fa fa-edit"></i></a>   
+ 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaDpi('${dpi.id }','${dpi.tipo.id }','${dpi.collettivo }','${dpi.company.id }','${utl:escapeJS(dpi.modello) }','${utl:escapeJS(dpi.conformita) }','${utl:escapeJS(dpi.descrizione) }','${dpi.data_scadenza }')" title="Click per modificare la dpi"><i class="fa fa-edit"></i></a>
+ 	  <c:if test="${dpi.assegnato == 0 }">
+ 	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaDpi('${dpi.id }')" title="Click per eliminare il dpi"><i class="fa fa-trash"></i></a>
+ 	  </c:if>   
 <%-- 	  <c:if test="${dpi.is_restituzione==0 }">
 	  <a class="btn btn-success customTooltip" onClicK="modalCreaRestituzione('${dpi.id }', ${dpi.quantita })" title="Crea restituzione DPI"><i class="fa fa-arrow-left"></i></a>
 	  </c:if> --%>
@@ -406,11 +409,11 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      	Sei sicuro di voler eliminare il rilievo?
+      	Sei sicuro di voler eliminare il dpi?
       	</div>
       <div class="modal-footer">
-      <input type="hidden" id="elimina_rilievo_id">
-      <a class="btn btn-primary" onclick="eliminaRilievo($('#elimina_rilievo_id').val())" >SI</a>
+      <input type="hidden" id="elimina_dpi">
+      <a class="btn btn-primary" onclick="eliminaDpi($('#elimina_dpi').val())" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
     </div>
@@ -575,6 +578,24 @@
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <script type="text/javascript">
 
+
+function modalEliminaDpi(id_dpi){
+	
+	
+	$('#elimina_dpi').val(id_dpi);
+	$('#myModalYesOrNo').modal()
+	
+}
+
+
+function eliminaDpi(){
+	
+	dataObj = {};
+	
+	dataObj.id_dpi = $('#elimina_dpi').val();
+	
+	callAjax(dataObj, "gestioneDpi.do?action=elimina_dpi");
+}
 
 function openStoricoModal(id_dpi){
 	

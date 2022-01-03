@@ -85,6 +85,7 @@ public class CampioneDTO implements Serializable {
 	private String descrizione_verifica_intermedia;
 	private int settore;
 	private Date data_messa_in_servizio;
+	private int campione_verificazione;
 	
 	
 	
@@ -442,6 +443,14 @@ public class CampioneDTO implements Serializable {
 
 	public void setData_messa_in_servizio(Date data_messa_in_servizio) {
 		this.data_messa_in_servizio = data_messa_in_servizio;
+	}
+
+	public int getCampione_verificazione() {
+		return campione_verificazione;
+	}
+
+	public void setCampione_verificazione(int campione_verificazione) {
+		this.campione_verificazione = campione_verificazione;
 	}
 
 }

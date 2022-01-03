@@ -251,10 +251,13 @@ public class GestioneCampioneBO {
 	}
 
 
-	public static ArrayList<RegistroEventiDTO> getListaManutenzioniNonObsolete() {
+	public static ArrayList<RegistroEventiDTO> getListaManutenzioniNonObsolete(Session session, String verificazione) {
 		
-		return GestioneCampioneDAO.getListaManutenzioniNonObsolete();
+		return GestioneCampioneDAO.getListaManutenzioniNonObsolete(session, verificazione);
 	}
+
+
+
 
 
 	

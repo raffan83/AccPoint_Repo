@@ -33,6 +33,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.AttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
@@ -48,6 +49,7 @@ import it.portaleSTI.bo.CreateSchedaManutenzioniCampione;
 import it.portaleSTI.bo.CreateSchedaTaraturaVerificaIntermedia;
 import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
 import it.portaleSTI.bo.GestioneCampioneBO;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
@@ -267,6 +269,7 @@ public class RegistroEventi extends HttpServlet {
 					String campo_sospesi = ret.get("campo_sospesi");
 					String numero_certificato = ret.get("numero_certificato");
 					String presso = ret.get("presso");
+					String etichettatura = ret.get("etichettatura");
 					//String allegato = ret.get("allegato");
 					
 					ArrayList<String> lista_attivita = new ArrayList<String>();
@@ -303,19 +306,30 @@ public class RegistroEventi extends HttpServlet {
 					else if (tipo_evento.equals("4")) {
 						evento.setDescrizione(descrizione);
 					}
+					
+					
 					else {
-						if(laboratorio.equals("Interno")) {
-							evento.setLaboratorio(laboratorio);	
-						}else {
-							evento.setLaboratorio(presso);
-						}
-						
+					
+							if(laboratorio.equals("Interno")) {
+								evento.setLaboratorio(laboratorio);	
+							}else {
+								if(tipo_evento.equals("5")) {
+									evento.setLaboratorio("Esterno");
+								}else {
+									evento.setLaboratorio(presso);
+								}
+								
+							}
+							
 						evento.setStato(stato);
 						evento.setCampo_sospesi(campo_sospesi);
 						evento.setNumero_certificato(numero_certificato);
 						evento.setData_scadenza(format.parse(data_scadenza));
 												
 					}
+					
+					
+					
 					
 					evento.setCampione(campione);
 					
@@ -514,12 +528,19 @@ public class RegistroEventi extends HttpServlet {
 				
 				ArrayList<RegistroEventiDTO> lista_tarature = GestioneCampioneBO.getListaEvento(Integer.parseInt(id_campione), 2, session);
 				ArrayList<RegistroEventiDTO> lista_fuori_servizio = GestioneCampioneBO.getListaEvento(Integer.parseInt(id_campione), 4, session);
+				ArrayList<RegistroEventiDTO> lista_verifiche = GestioneCampioneBO.getListaEvento(Integer.parseInt(id_campione), 5, session);
 				CampioneDTO campione= null;
+				
 				if(lista_tarature.size()>0) {
 					campione = lista_tarature.get(0).getCampione();
 				}else {
 					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
 				}
+				
+				if(lista_verifiche!=null) {
+					lista_tarature.addAll(lista_verifiche);
+				}
+				
 				new CreateSchedaTaraturaVerificaIntermedia(null,lista_tarature,null, lista_fuori_servizio, campione);
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\RegistroEventi\\Taratura\\stca_"+id_campione+".pdf";

@@ -43,7 +43,7 @@
 <th>Descrizione</th>
 <th>Modello</th>
 <th>Conformità</th>
-
+<th>Lavoratore</th>
 <th>Data scadenza</th>
 
 <%-- <th>Azioni</th> --%>
@@ -74,7 +74,7 @@
 	<td>${dpi.descrizione }</td>
 	<td>${dpi.modello }</td>
 	<td>${dpi.conformita }</td>
-
+	<td>${dpi.nome_lavoratore }</td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_scadenza }"></fmt:formatDate></td>
 <%-- 	<td>	
 

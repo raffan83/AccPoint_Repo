@@ -457,6 +457,8 @@
                       
     </div>
      </div>
+     
+
    
    
           <div class="form-group">
@@ -478,6 +480,18 @@
     </div>
 
      </div>
+
+
+        <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Campione Verificazione:</label>
+        <div class="col-sm-10">
+
+        
+                      <input  id="campione_verificazione" type="checkbox" name="campione_verificazione" value="0"/>
+              
+    </div>
+     </div>
+
 
    <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Nome:</label>
@@ -1255,6 +1269,24 @@ var listaStrumenti = ${listaCampioniJson};
 		}		
 		
 	});
+	
+	
+	
+	$('#campione_verificazione').on('ifClicked',function(e){
+		
+		 if($('#campione_verificazione').is( ':checked' )){
+			
+			$('#campione_verificazione').iCheck('uncheck');
+			$('#campione_verificazione').val(1);
+		 }else{
+			
+			$('#campione_verificazione').iCheck('check');				
+			$('#campione_verificazione').val(1);
+		 }
+
+	});  
+	
+	
 	
 	   $('#manuale').on('ifClicked',function(e){
 			

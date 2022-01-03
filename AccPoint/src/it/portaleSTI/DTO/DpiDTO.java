@@ -13,6 +13,8 @@ public class DpiDTO {
 	private Date data_scadenza;
 	private int collettivo;
 	private int assegnato;
+	private String nome_lavoratore;
+	private int disabilitato;
 	
 	public int getId() {
 		return id;
@@ -67,6 +69,20 @@ public class DpiDTO {
 	}
 	public void setAssegnato(int assegnato) {
 		this.assegnato = assegnato;
+	}
+
+
+	public String getNome_lavoratore() {
+		return nome_lavoratore;
+	}
+	public void setNome_lavoratore(String nome_lavoratore) {
+		this.nome_lavoratore = nome_lavoratore;
+	}
+	public int getDisabilitato() {
+		return disabilitato;
+	}
+	public void setDisabilitato(int disabilitato) {
+		this.disabilitato = disabilitato;
 	}
 	
 	

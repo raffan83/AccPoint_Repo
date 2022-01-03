@@ -13,6 +13,7 @@ import it.portaleSTI.DTO.DocumDipendenteFornDTO;
 import it.portaleSTI.DTO.DpiAllegatiDTO;
 import it.portaleSTI.DTO.DpiDTO;
 import it.portaleSTI.DTO.DpiManualeDTO;
+import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.TipoDpiDTO;
 
 public class GestioneDpiDAO {
@@ -32,7 +33,7 @@ public class GestioneDpiDAO {
 
 		ArrayList<ConsegnaDpiDTO> lista = null;
 		
-		Query query = session.createQuery("from ConsegnaDpiDTO");
+		Query query = session.createQuery("from ConsegnaDpiDTO where dpi.disabilitato = 0");
 		
 		lista = (ArrayList<ConsegnaDpiDTO>) query.list();
 		
@@ -98,7 +99,7 @@ public class GestioneDpiDAO {
 	public static ArrayList<DpiDTO> getListaDpi(Session session) {
 		ArrayList<DpiDTO> lista = null;
 		
-		Query query = session.createQuery("from DpiDTO");
+		Query query = session.createQuery("from DpiDTO where disabilitato = 0");
 		
 		lista = (ArrayList<DpiDTO>) query.list();
 		
@@ -136,17 +137,42 @@ public class GestioneDpiDAO {
 
 	public static ArrayList<DpiDTO> getListaDpiScadenzario(String dateFrom, String dateTo, Session session) throws Exception, ParseException {
 
-		ArrayList<DpiDTO> lista = null;
+		ArrayList<Object[]> res = null;
+		ArrayList<DpiDTO> lista = new ArrayList<DpiDTO>();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-
-		Query query = session.createQuery("from DpiDTO where data_scadenza between :_data_start and :_data_end");
+		Query query = session.createQuery("from DpiDTO where assegnato=0 and data_scadenza between :_data_start and :_data_end and disabilitato = 0");
 		query.setParameter("_data_start", sdf.parse(dateFrom));
 		query.setParameter("_data_end", sdf.parse(dateTo));
 		
-
 		lista = (ArrayList<DpiDTO>) query.list();
+
+		query = session.createQuery("select  a.dpi, a.lavoratore from ConsegnaDpiDTO a where a.dpi.data_scadenza between :_data_start and :_data_end and a.dpi.disabilitato = 0");
+		query.setParameter("_data_start", sdf.parse(dateFrom));
+		query.setParameter("_data_end", sdf.parse(dateTo));
+		
+		
+		res = (ArrayList<Object[]>) query.list();
+		
+		for (Object[] objects : res) {
+			DpiDTO dpi = null;
+			
+			if(objects[0]!=null) {
+				 dpi = (DpiDTO) objects[0];	
+			}
+			
+			
+			if(objects[0]!=null && !lista.contains(dpi)) {
+				
+				if(objects[1]!=null) {
+					DocumDipendenteFornDTO lav = (DocumDipendenteFornDTO) objects[1];
+					dpi.setNome_lavoratore(lav.getNome() +" "+lav.getCognome());	
+				}
+				
+				lista.add(dpi);
+			}
+		}
 		
 		return lista;
 	}

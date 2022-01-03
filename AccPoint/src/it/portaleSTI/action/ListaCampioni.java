@@ -28,8 +28,11 @@ import com.google.gson.reflect.TypeToken;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
+import it.portaleSTI.DTO.AcTipoAttivitaCampioniDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
@@ -103,6 +106,8 @@ public class ListaCampioni extends HttpServlet {
 				String date =request.getParameter("date");
 				String tipo_data_lat =request.getParameter("tipo_data_lat");
 				String manutenzione =request.getParameter("manutenzione");
+				String verificazione = request.getParameter("verificazione");
+				String tipo_evento = request.getParameter("tipo_evento");
 	
 				ArrayList<CampioneDTO> listaCampioni=new ArrayList<CampioneDTO>();
 	
@@ -119,14 +124,22 @@ public class ListaCampioni extends HttpServlet {
 //							if(tipo_data_lat.equals("1")) {
 //								manutenzione = true;
 //							}
-							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data_lat);
+							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data_lat, null, 0);
 						}
 					}else if(manutenzione!= null) {
 						if(date.length()>=10)
 						{						
-							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), null);
+							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), null, null, 0);
 						}
 					}
+					else if(verificazione!=null) {
+						if(date.length()>=10)
+						{						
+							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data_lat, tipo_evento, Integer.parseInt(verificazione));
+						}
+					}
+					
+					
 					else {
 						if(date.length()>=10)
 						{
@@ -188,6 +201,33 @@ public class ListaCampioni extends HttpServlet {
 				request.getSession().setAttribute("listaCampioni",listaCampioni);
 	
 				String rilievi = request.getParameter("rilievi");
+				
+				
+//				ArrayList<RegistroEventiDTO> lista_eventi = GestioneCampioneDAO.getListaEventiNonSti(session);
+//				
+//				for (RegistroEventiDTO r : lista_eventi) {
+//					AcAttivitaCampioneDTO attivita = new AcAttivitaCampioneDTO();
+//					
+//					attivita.setAllegato(r.getAllegato());
+//					attivita.setCampione(r.getCampione());
+//					attivita.setCampo_sospesi(r.getCampo_sospesi());
+//					attivita.setData(r.getData_evento());
+//					attivita.setData_scadenza(r.getData_scadenza());
+//					attivita.setDescrizione_attivita(r.getDescrizione());
+//					attivita.setDisabilitata(0);
+//					attivita.setObsoleta(r.getObsoleta());
+//					attivita.setOperatore(r.getOperatore());
+//					attivita.setStato(r.getStato());
+//					if(r.getTipo_evento().getId()==2) {
+//						attivita.setTipo_attivita(new AcTipoAttivitaCampioniDTO(3, ""));
+//					}else {
+//						attivita.setTipo_attivita(new AcTipoAttivitaCampioniDTO(r.getTipo_evento().getId(), ""));
+//					}
+//					attivita.setTipo_manutenzione(r.getTipo_manutenzione().getId());
+//					
+//				//	session.save(attivita);
+//				}
+				
 				
 				session.getTransaction().commit();
 				session.close();

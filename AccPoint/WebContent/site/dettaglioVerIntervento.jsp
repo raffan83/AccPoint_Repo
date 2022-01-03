@@ -368,6 +368,7 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
   <th style="max-width:65px" class="text-center"></th>
   <th>ID</th>   
  <th>Strumento</th>
+ <th>Matricola</th>
  <th>Data Verificazione</th>
  <th>Tecnico Verificatore</th>	
  <th>Data Scadenza</th>
@@ -391,6 +392,7 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 <td>${misura.id}</td>
 
 <td>${misura.verStrumento.denominazione}</td>
+<td>${misura.verStrumento.matricola}</td>
 <td> <fmt:formatDate pattern="dd/MM/yyyy"  value="${misura.dataVerificazione}" />	</td>
 <td>${misura.tecnicoVerificatore.nominativo }</td>
 <td><fmt:formatDate pattern="dd/MM/yyyy"  value="${misura.dataScadenza}" /></td>
@@ -1389,7 +1391,7 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 	    	      columnDefs: [
 	    	    	  { className: "select-checkbox", targets: 1,  orderable: false },
 					  { responsivePriority: 1, targets: 0 },
-	    	          { responsivePriority: 2, targets: 12 }
+	    	          { responsivePriority: 2, targets: 13 }
 	    	               ],
 	             
 	    	               buttons: [ {

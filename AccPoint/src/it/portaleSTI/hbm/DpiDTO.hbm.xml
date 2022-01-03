@@ -38,6 +38,10 @@
 <property name="assegnato" type="int">
             <column name="assegnato" />
         </property>
+
+<property name="disabilitato" type="int">
+            <column name="disabilitato" />
+        </property>
         
     </class>
 </hibernate-mapping>

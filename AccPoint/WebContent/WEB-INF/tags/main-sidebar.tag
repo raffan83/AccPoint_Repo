@@ -268,7 +268,9 @@
 	        <li><a href="#" onclick="callAction('gestioneVerIntervento.do?action=lista',null,true);">Lista Interventi</a></li>
             <li><a href="#" onclick="callAction('gestioneVerMisura.do?action=lista',null,true);">Lista Misure</a></li>
     
-            <li><a href="#" onclick="callAction('scadenzarioVerificazione.do',null,true);">Scadenzario</a></li>
+            <li><a href="#" onclick="callAction('scadenzarioVerificazione.do',null,true);">Scadenzario Strumenti</a></li>
+            <li><a href="#" onclick="callAction('scadenziario.do?action=campioni_verificazione&verificazione=1',null,true);">Scadenzario Campioni</a></li>
+            
             <% if(user.checkRuolo("AM") || !user.checkRuolo("VC")){%>
              <li><a href="#" onclick="callAction('gestioneVerLegalizzazioneBilance.do?action=lista',null,true);">Accertamento conformità</a></li>
              <li><a href="#" onclick="callAction('gestioneVerDocumenti.do?action=lista',null,true);">Documentazione Tecnica</a></li>

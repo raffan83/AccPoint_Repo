@@ -828,37 +828,44 @@ public static void updateManutenzioniObsolete(CampioneDTO campione, Session sess
 
 
 
-public static ArrayList<RegistroEventiDTO> getListaManutenzioniNonObsolete() {
+public static ArrayList<RegistroEventiDTO> getListaManutenzioniNonObsolete(Session session, String verificazione) {
 	
-	Session session = SessionFacotryDAO.get().openSession();
-    
 	session.beginTransaction();
 	ArrayList<RegistroEventiDTO> lista = null;
 	
-	Query query = session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1 and campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");
+	Query query = null;
+	
+	if(verificazione!=null) {
+		query = session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1 and campione.statoCampione != 'F' and campione.campione_verificazione = 1 and (obsoleta = null or obsoleta = 'N')");
+	}else {
+		query = session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1 and campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");
+	}
+	
 	
 			
 	lista = (ArrayList<RegistroEventiDTO>) query.list();
-	session.close();
-			
+
 	return lista;
 }
 
 
 
 
-public static ArrayList<CampioneDTO> getListaCampioniInServizio() {
+public static ArrayList<CampioneDTO> getListaCampioniInServizio(Session session, String verificazione) {
 	
-	Session session = SessionFacotryDAO.get().openSession();
-    
-	session.beginTransaction();
+
 	ArrayList<CampioneDTO> lista = null;
+	String q = "from CampioneDTO where stato_campione!='F' and codice not like '%CDT%'";
 	
-	Query query = session.createQuery("from CampioneDTO where stato_campione!='F' and codice not like '%CDT%'");
 	
+	if(verificazione!=null) {
+		q += " and campione_verificazione = 1";
+	}
+	
+	Query query = session.createQuery(q);
 			
 	lista = (ArrayList<CampioneDTO>) query.list();
-	session.close();
+	
 			
 	return lista;
 }
@@ -923,6 +930,21 @@ public static void updateCampioneScheduler() {
 	session.close();
 			
 
+}
+
+
+
+
+public static ArrayList<RegistroEventiDTO> getListaEventiNonSti(Session session) {
+
+	ArrayList<RegistroEventiDTO> lista = null;
+	
+	Query query = session.createQuery("from RegistroEventiDTO where campione.codice like '%NAS%' or campione.codice like '%TAB%' or campione.codice like '%TEC%'");
+	
+	
+	 lista = (ArrayList<RegistroEventiDTO>) query.list();
+
+	 return lista;
 }
 	
 	

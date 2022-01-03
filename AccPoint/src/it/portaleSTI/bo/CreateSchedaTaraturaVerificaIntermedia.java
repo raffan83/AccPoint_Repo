@@ -205,10 +205,11 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 
 		report.setColumnStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9));
 		
-		report.addColumn(col.column("Data taratura", "data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-		report.addColumn(col.column("Data prossima taratura", "data_scadenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		report.addColumn(col.column("Tipo evento", "tipo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		report.addColumn(col.column("Data", "data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		report.addColumn(col.column("Data prossima", "data_scadenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		report.addColumn(col.column("Centro LAT","laboratorio", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 	report.addColumn(col.column("Certificato di taratura","certificato", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Certificato","certificato", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	report.addColumn(col.column("Stato","stato", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	report.addColumn(col.column("Operatore","operatore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	
@@ -283,14 +284,15 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
 			
-			listaCodici = new String[6];
+			listaCodici = new String[7];
 					
-			listaCodici[0]="data";
-			listaCodici[1]="data_scadenza";
-			listaCodici[2]="laboratorio";
-			listaCodici[3]="certificato";
-			listaCodici[4]="stato";
-			listaCodici[5]="operatore";
+			listaCodici[0]="tipo";
+			listaCodici[1]="data";
+			listaCodici[2]="data_scadenza";
+			listaCodici[3]="laboratorio";
+			listaCodici[4]="certificato";
+			listaCodici[5]="stato";
+			listaCodici[6]="operatore";
 			
 			dataSource = new DRDataSource(listaCodici);
 			
@@ -300,6 +302,12 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 					if(evento!=null){
 						ArrayList<String> arrayPs = new ArrayList<String>();						
 														
+						
+						if(evento.getTipo_evento().getId()==2) {
+							arrayPs.add("Taratura");
+						}else {
+							arrayPs.add("Verifica intermedia");
+						}
 						arrayPs.add(dt.format(evento.getData_evento()));
 						if(evento.getStato().equals("Idonea")) {
 							arrayPs.add(dt.format(evento.getData_scadenza()));	

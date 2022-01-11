@@ -639,7 +639,128 @@ public class RegistroEventi extends HttpServlet {
 				    outp.close();
 				
 			}
+			else if(action.equals("pianifica_evento")) {
 			
+				 response.setContentType("application/json");
+				 
+				  	List<FileItem> items = null;
+			        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+			        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+			        	}
+			        
+			       
+					FileItem fileItem = null;
+					String filename= null;
+			        Hashtable<String,String> ret = new Hashtable<String,String>();
+			      
+			        for (FileItem item : items) {
+		            	 if (!item.isFormField()) {
+		            		
+		                     fileItem = item;
+		                     filename = item.getName();
+		                     
+		            	 }else
+		            	 {
+		                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+		            	 }
+		            	
+		            }
+			
+					String idC = request.getParameter("idCamp");					
+					String tipo_evento = ret.get("select_tipo_evento_pianifica");
+					String data_evento = ret.get("data_evento_pianifica");
+
+					CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
+					
+					
+					RegistroEventiDTO evento = new RegistroEventiDTO();
+					
+					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = format.parse(data_evento);
+					
+					
+					evento.setData_scadenza(date);
+					
+					evento.setTipo_evento(new TipoEventoRegistroDTO(Integer.parseInt(tipo_evento),""));
+										
+					evento.setCampione(campione);
+					evento.setPianificato(1);
+					
+					session.save(evento);
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter  out = response.getWriter();
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Evento pianificato con successo!");
+					out.print(myObj);
+				
+				
+				
+			}
+			
+			else if(action.equals("modifica_evento_pianificato")) {
+				
+				 response.setContentType("application/json");
+				 
+				  	List<FileItem> items = null;
+			        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+			        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+			        	}
+			        
+			       
+					FileItem fileItem = null;
+					String filename= null;
+			        Hashtable<String,String> ret = new Hashtable<String,String>();
+			      
+			        for (FileItem item : items) {
+		            	 if (!item.isFormField()) {
+		            		
+		                     fileItem = item;
+		                     filename = item.getName();
+		                     
+		            	 }else
+		            	 {
+		                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+		            	 }
+		            	
+		            }
+			
+					String idC = request.getParameter("idCamp");
+					String id_evento = ret.get("id_evento_pianificato");
+					String tipo_evento = ret.get("select_tipo_evento_pianificato_mod");
+					String data_evento = ret.get("data_evento_pianificato_mod");
+
+					CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
+					
+					
+					RegistroEventiDTO evento = GestioneCampioneBO.getEventoFromId(Integer.parseInt(id_evento), session);
+					
+					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = format.parse(data_evento);
+					
+					
+					evento.setData_scadenza(date);
+					
+					evento.setTipo_evento(new TipoEventoRegistroDTO(Integer.parseInt(tipo_evento),""));
+										
+					evento.setCampione(campione);
+					evento.setPianificato(1);
+					
+					session.update(evento);
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter  out = response.getWriter();
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Evento pianificato con successo!");
+					out.print(myObj);
+				
+				
+				
+			}
 			
 		}catch(Exception ex)
 		{

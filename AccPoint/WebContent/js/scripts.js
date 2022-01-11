@@ -1200,13 +1200,13 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 
    		        	//explore('listaCampioni.do?date='+moment(calEvent.start).format());
    		        	if(calEvent.backgroundColor=="#00a65a"){
-   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_evento=1&verificazione=1');	
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_evento=1');	
    		        	}
    		        	else if(calEvent.backgroundColor=="#777"){
    		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format());	
    		        	}
    		        	else{
-   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+"&tipo_evento=5&verificazione=1");
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+"&tipo_evento=5");
    		        	}
    		        	
    		              // alert('Event: ' + moment(calEvent.start).format());              		

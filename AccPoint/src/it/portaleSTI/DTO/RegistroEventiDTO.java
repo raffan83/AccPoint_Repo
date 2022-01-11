@@ -20,6 +20,8 @@ public class RegistroEventiDTO {
 	private UtenteDTO operatore;
 	private Date data_scadenza;
 	private String obsoleta;
+	private int pianificato;
+	
 	
 	public int getId() {
 		return id;
@@ -116,6 +118,12 @@ public class RegistroEventiDTO {
 	}
 	public void setObsoleta(String obsoleta) {
 		this.obsoleta = obsoleta;
+	}
+	public int getPianificato() {
+		return pianificato;
+	}
+	public void setPianificato(int pianificato) {
+		this.pianificato = pianificato;
 	}
 	
 

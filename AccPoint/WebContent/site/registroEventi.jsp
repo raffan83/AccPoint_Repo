@@ -30,6 +30,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <div class="col-xs-3">
 
 <button class="btn btn-primary" id="nuovo_evento_btn" onClick="nuovoInterventoFromModal('#modalNuovoEvento')">Nuovo Evento</button><br><br>
+<button class="btn btn-primary" id="nuovo_evento_btn" onClick="nuovoInterventoFromModal('#modalPianificaEvento')">Pianifica Evento</button><br><br>
 </div>
 <div class="col-xs-9">
 <a target="_blank" class="btn customTooltip btn-danger pull-right" onClick="generaSchedaManutenzioni()" title="Click per scaricare la scheda di manutenzione"><i class="fa fa-file-pdf-o"></i> Scheda Manutenzione</a>
@@ -46,6 +47,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <th>ID</th>
  <th>Data</th>
  <th>Tipo Evento</th>
+ <th>Evento Pianificato</th>
  <th>Azioni</th>
 
  </tr></thead>
@@ -55,22 +57,33 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <c:forEach items="${lista_eventi}" var="evento" varStatus="loop">
 <tr>
 <td>${evento.id }</td>
-<td><fmt:formatDate pattern = "yyyy-MM-dd" value = "${evento.data_evento}" /></td>
+<td>
+<c:if test="${evento.pianificato == 1 }">
+<fmt:formatDate pattern = "yyyy-MM-dd" value = "${evento.data_scadenza}" />
+</c:if>
+
+<c:if test="${evento.pianificato == 0 }">
+<fmt:formatDate pattern = "yyyy-MM-dd" value = "${evento.data_evento}" />
+</c:if>
+</td>
 <td>${evento.tipo_evento.descrizione}</td>
 <td>
-<c:if test="${evento.tipo_evento.id==1 }">
+<c:if test="${evento.pianificato == 1 }">Pianificato</c:if>
+</td>
+
+<td>
+<c:if test="${evento.tipo_evento.id==1 && evento.pianificato == 0 }">
 <button class="btn customTooltip btn-info" onClick="dettaglioEventoManutenzione('${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${evento.tipo_manutenzione.id }','${evento.data_evento }','${evento.operatore.nominativo }')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<c:if test="${evento.tipo_evento.id==4 }">
+<c:if test="${evento.tipo_evento.id==4 && evento.pianificato == 0}">
 <%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
 <button class="btn customTooltip btn-info" onClick="dettaglioFuoriServizio('${utl:escapeJS(evento.descrizione)}','${evento.data_evento }','${utl:escapeJS(evento.operatore.nominativo) }')" title="Click per visualizzare l'attività di fuori servizio"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<c:if test="${evento.tipo_evento.id==2 || evento.tipo_evento.id == 5  }">
+<c:if test="${(evento.tipo_evento.id==2 || evento.tipo_evento.id == 5) && evento.pianificato == 0}">
 <button class="btn customTooltip btn-info" onClick="dettaglioEventoTaratura('${evento.data_evento }','${evento.data_scadenza }','${evento.laboratorio }','${evento.campo_sospesi }','${evento.operatore.nominativo }','${evento.numero_certificato }','${evento.stato}')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 
-<a class="btn btn-warning customTooltip" title="Click per modificare l'evento" onClick="modificaEvento('${evento.id}','${evento.tipo_evento.id }','${utl:escapeJS(evento.descrizione)}','${evento.data_evento }','${evento.tipo_manutenzione.id }','${evento.data_scadenza }','${evento.campo_sospesi }','${evento.operatore.id }','${evento.laboratorio }','${evento.stato }','${evento.numero_certificato }')"><i class="fa fa-edit"></i></a>
-
+<a class="btn btn-warning customTooltip" title="Click per modificare l'evento" onClick="modificaEvento('${evento.id}','${evento.tipo_evento.id }','${utl:escapeJS(evento.descrizione)}','${evento.data_evento }','${evento.tipo_manutenzione.id }','${evento.data_scadenza }','${evento.campo_sospesi }','${evento.operatore.id }','${evento.laboratorio }','${evento.stato }','${evento.numero_certificato }', '${evento.pianificato }')"><i class="fa fa-edit"></i></a>
 <%-- ${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}' --%>
   <%-- <a class="btn btn-warning customTooltip" title="Click per modificare l'evento" onClick="modificaEvento('${evento.id}','${evento.tipo_evento.id }','${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${evento.data_evento }','${evento.tipo_manutenzione.id }','${evento.data_scadenza }','${evento.campo_sospesi }','${evento.operatore.id }','${evento.laboratorio }','${evento.stato }','${evento.numero_certificato }')"><i class="fa fa-edit"></i></a> --%> 
  <%-- <a class="btn btn-warning customTooltip" title="Click per modificare l'evento" onClick="modificaEvento('${evento.id}','${evento.tipo_evento.id }','${evento.descrizione.replace('\'',' ').replace('\\','/') }','${evento.data_evento }','${evento.tipo_manutenzione.id }','${evento.data_scadenza }','${evento.campo_sospesi }','${evento.operatore.id }','${evento.laboratorio }','${evento.stato }','${evento.numero_certificato }')"><i class="fa fa-edit"></i></a> --%>
@@ -220,6 +233,125 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 
 </form> 
    
+   
+   
+   
+   
+  <form class="form-horizontal" id="formPianificaEvento">
+<div id="modalPianificaEvento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" >
+
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" onClick="$('#modalPianificaEvento').modal('hide');" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Pianifica Evento</h4>
+      </div>
+       <div class="modal-body" id="modalNuovoEventoContent" >
+       
+        <div class="form-group">
+  
+      <div class="col-sm-2">
+			<label >Tipo Evento:</label>
+		</div>
+		
+		<div class="col-sm-4">
+              <select name="select_tipo_evento_pianifica" id="select_tipo_evento_pianifica" data-placeholder="Seleziona Tipo Evento..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+              
+              <option value=""></option>
+              <c:forEach items="${lista_tipo_evento}" var="tipo">	  
+	                     <option value="${tipo.id}">${tipo.descrizione}</option> 	                        
+	            </c:forEach>
+              </select>
+        </div>
+        
+        <div class="col-sm-2 ">
+			<label class="pull-right">Data Evento:</label>
+		</div>
+        <div class="col-sm-3">
+             
+             <div class="input-group date datepicker"  id="datetimepicker_ev_pianifica">
+            <input class="form-control  required" id="data_evento_pianifica" type="text" name="data_evento_pianifica" required/> 
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+              
+        </div>
+       </div>      
+       
+
+
+  		 </div>
+      <div class="modal-footer">
+
+      
+        <button type="submit" class="btn btn-primary" >Salva</button>
+       
+      </div>
+    </div>
+
+</div>
+   
+</div>
+
+   </form>   
+   
+   
+   
+    <form class="form-horizontal" id="formPianificaEventoMod">
+<div id="modalPianificaEventoMod" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" >
+
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" onClick="$('#modalPianificaEventoMod').modal('hide');" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Pianifica Evento</h4>
+      </div>
+       <div class="modal-body" id="modalNuovoEventoContent" >
+       
+        <div class="form-group">
+  
+      <div class="col-sm-2">
+			<label >Tipo Evento:</label>
+		</div>
+		
+		<div class="col-sm-4">
+              <select name="select_tipo_evento_pianificato_mod" id="select_tipo_evento_pianificato_mod" data-placeholder="Seleziona Tipo Evento..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+              
+              <option value=""></option>
+              <c:forEach items="${lista_tipo_evento}" var="tipo">	  
+	                     <option value="${tipo.id}">${tipo.descrizione}</option> 	                        
+	            </c:forEach>
+              </select>
+        </div>
+        
+        <div class="col-sm-2 ">
+			<label class="pull-right">Data Evento:</label>
+		</div>
+        <div class="col-sm-3">
+             
+             <div class="input-group date datepicker"  id="datetimepicker_ev_pianifica_mod">
+            <input class="form-control  required" id="data_evento_pianificato_mod" type="text" name="data_evento_pianificato_mod" required/> 
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+              
+        </div>
+       </div>      
+       
+
+
+  		 </div>
+      <div class="modal-footer">
+	<input type="hidden" id="id_evento_pianificato" name="id_evento_pianificato">
+      
+        <button type="submit" class="btn btn-primary" >Salva</button>
+       
+      </div>
+    </div>
+
+</div>
+   
+</div>
+
+   </form>  
    
 
    <!-- <div id="modalCertificati" class="modal fade " role="dialog"  aria-labelledby="myModalLabel" >
@@ -703,53 +835,77 @@ function dettaglioEventoTaratura(data_attivita, data_scadenza, laboratorio, camp
  
  
  
- function modificaEvento(id, tipo_evento, descrizione, data, tipo_manutenzione, data_scadenza, campo_sospesi, operatore, laboratorio, stato, numero_certificato){
+ function modificaEvento(id, tipo_evento, descrizione, data, tipo_manutenzione, data_scadenza, campo_sospesi, operatore, laboratorio, stato, numero_certificato, pianificato){
 	 
-	 $('#select_tipo_evento_mod').val(tipo_evento);
-	 $('#select_tipo_evento_mod').change();
-	 var date = formatDate(data);
-	 $('#data_evento_mod').val(date);
-	 if(tipo_manutenzione!=null && tipo_manutenzione!=''){
-		 $('#select_tipo_manutenzione_mod').val(tipo_manutenzione);
-		 $('#select_tipo_manutenzione_mod').change();
-	 }
-	 $('#descrizione_mod').val(descrizione)
-	 $('#id_evento').val(id);
-	 $('#operatore_mod').val(operatore);
-	 $('#operatore_mod').change();
-	 
-	 $('#numero_certificato_mod').val(numero_certificato);
-	 if(tipo_evento==2 || tipo_evento == 5){		
-		 var date = formatDate(data_scadenza);
-		 $('#data_scadenza_mod').val(date);
-		 $('#campo_sospesi_mod').val(campo_sospesi);		 
+	 if(pianificato == 1){
 		 
-		 if(laboratorio=='Interno'){
-			 $('#check_interna_mod').prop("checked", true); 
-			 $('#laboratorio_mod').val("Interno");
-			 $('#presso_mod').prop("readonly", true);
-		 }else{
-			 $('#check_interna_mod').prop("checked", false); 
-			 $('#check_esterna_mod').prop("checked", true);
-			 $('#presso_mod').prop("readonly", false);
-			 if(laboratorio!='Esterno'){
-				 $('#presso_mod').val(laboratorio);	 
-			 }
+		  $('#id_evento_pianificato').val(id);
+		 
+		 $('#select_tipo_evento_pianificato_mod').val(tipo_evento);
+		 $('#select_tipo_evento_pianificato_mod').change();
+		 var date = formatDate(data_scadenza);
+		 		 
+		 $('#data_evento_pianificato_mod').val(data_scadenza);
+		 
+		 
+		 $('#datetimepicker_ev_pianifica_mod').bootstrapDP({
 			 
-			 $('#laboratorio_mod').val("Esterno");
+				format: "yyyy-mm-dd"
+			});
+		 
+		 $('#modalPianificaEventoMod').modal();
+		 
+	 }else{
+		 
+		 $('#select_tipo_evento_mod').val(tipo_evento);
+		 $('#select_tipo_evento_mod').change();
+		 var date = formatDate(data);
+		 $('#data_evento_mod').val(date);
+		 if(tipo_manutenzione!=null && tipo_manutenzione!=''){
+			 $('#select_tipo_manutenzione_mod').val(tipo_manutenzione);
+			 $('#select_tipo_manutenzione_mod').change();
 		 }
-		 if(stato=='Idonea'){
-			 $('#check_idonea_mod').prop("checked", true);
-			 $('#check_non_idonea_mod').prop("checked", false);
-			 $('#stato_mod').val("Idonea");
-		 }else{
-			 $('#check_non_idonea_mod').prop("checked", true);
-			 $('#check_idonea_mod').prop("checked", false);
-			 $('#stato_mod').val("Non Idonea");
+		 $('#descrizione_mod').val(descrizione)
+		 $('#id_evento').val(id);
+		 $('#operatore_mod').val(operatore);
+		 $('#operatore_mod').change();
+		 
+		 $('#numero_certificato_mod').val(numero_certificato);
+		 if(tipo_evento==2 || tipo_evento == 5){		
+			 var date = formatDate(data_scadenza);
+			 $('#data_scadenza_mod').val(date);
+			 $('#campo_sospesi_mod').val(campo_sospesi);		 
+			 
+			 if(laboratorio=='Interno'){
+				 $('#check_interna_mod').prop("checked", true); 
+				 $('#laboratorio_mod').val("Interno");
+				 $('#presso_mod').prop("readonly", true);
+			 }else{
+				 $('#check_interna_mod').prop("checked", false); 
+				 $('#check_esterna_mod').prop("checked", true);
+				 $('#presso_mod').prop("readonly", false);
+				 if(laboratorio!='Esterno'){
+					 $('#presso_mod').val(laboratorio);	 
+				 }
+				 
+				 $('#laboratorio_mod').val("Esterno");
+			 }
+			 if(stato=='Idonea'){
+				 $('#check_idonea_mod').prop("checked", true);
+				 $('#check_non_idonea_mod').prop("checked", false);
+				 $('#stato_mod').val("Idonea");
+			 }else{
+				 $('#check_non_idonea_mod').prop("checked", true);
+				 $('#check_idonea_mod').prop("checked", false);
+				 $('#stato_mod').val("Non Idonea");
+			 }
 		 }
-	 }
 
-	 $('#modalModificaEvento').modal();
+		 $('#modalModificaEvento').modal();
+		 
+		 
+	 }
+	 
 	 
  }
  
@@ -802,6 +958,12 @@ function dettaglioEventoTaratura(data_attivita, data_scadenza, laboratorio, camp
 			format: "yyyy-mm-dd"
 		});
 	 	
+	  $('#datetimepicker_ev_pianifica').bootstrapDP({
+			format: "yyyy-mm-dd"
+		});
+
+	  
+	  
 	  $('#modalCertificati').css("overflow", "hidden");
 	  $('#modalModificaAttivita').css("overflow", "hidden");
 	  $('#modalNuovaAttivita').css("overflow", "hidden");
@@ -959,6 +1121,18 @@ $('#tabRegistroEventi').on( 'page.dt', function () {
 		  
 	 }); 
 	  
+	  $('#modalPianificaEventoMod').on('hidden.bs.modal', function(){
+		  $('#content_evento_mod').html('');
+		  contentID == "registro_attivitaTab";
+		  
+	  }); 
+	  
+	  $('#modalPianificaEvento').on('hidden.bs.modal', function(){
+		  $('#content_evento_mod').html('');
+		  contentID == "registro_attivitaTab";
+		  
+	  }); 
+	  
 <%-- 	  $('#data_evento').change(function(){
 		  var frequenza;
 		 
@@ -988,5 +1162,20 @@ $('#tabRegistroEventi').on( 'page.dt', function () {
 		  $('#data_scadenza_mod').val(formatDate(data_scadenza));
 		 
 	  });
+	  
+	  
+	  
+	  $('#formPianificaEvento').on('submit',function(e){		
+			e.preventDefault();
+			
+			callAjaxForm('#formPianificaEvento', 'registroEventi.do?action=pianifica_evento&idCamp='+datax[0]);
+		});
+	  
+	  
+	  $('#formPianificaEventoMod').on('submit',function(e){		
+			e.preventDefault();
+			
+			callAjaxForm('#formPianificaEventoMod', 'registroEventi.do?action=modifica_evento_pianificato&idCamp='+datax[0]);
+		});
 	  
 </script>

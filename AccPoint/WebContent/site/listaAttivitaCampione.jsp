@@ -30,6 +30,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <div class="col-xs-3">
 
 <button class="btn btn-primary" id="nuovo_evento_btn" onClick="nuovoInterventoFromModal('#modalNuovaAttivita')">Nuova Attività</button><br><br>
+<button class="btn btn-primary" id="nuovo_evento_btn" onClick="nuovoInterventoFromModal('#modalPianificaAttivita')">Pianifica Attività</button><br><br>
 </div>
 <div class="col-xs-9">
 <a target="_blank" class="btn customTooltip btn-danger pull-right" onClick="generaSchedaManutenzioni()" title="Click per scaricare la scheda di manutenzione"><i class="fa fa-file-pdf-o"></i> Scheda Manutenzione</a>
@@ -54,6 +55,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <th>ID</th>
  <th>Data</th>
  <th>Tipo Attivita</th>
+ <th>Pianificata</th>
  <th>Azioni</th>
 
  </tr></thead>
@@ -63,21 +65,33 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <c:forEach items="${lista_attivita}" var="attivita" varStatus="loop">
 <tr>
 <td>${attivita.id }</td>
-<td><fmt:formatDate pattern = "yyyy-MM-dd" value = "${attivita.data}" /></td>
-<td>${attivita.tipo_attivita.descrizione}</td>
 <td>
-<c:if test="${attivita.tipo_attivita.id==1 }">
+<c:if test="${attivita.pianificata== 1}">
+<fmt:formatDate pattern = "yyyy-MM-dd" value = "${attivita.data_scadenza}" />
+</c:if>
+<c:if test="${attivita.pianificata== 0}">
+<fmt:formatDate pattern = "yyyy-MM-dd" value = "${attivita.data}" />
+</c:if></td>
+<td>${attivita.tipo_attivita.descrizione}</td>
+
+<td>
+<c:if test="${attivita.pianificata== 1}">
+Pianificata
+</c:if>
+</td>
+<td>
+<c:if test="${attivita.tipo_attivita.id==1 && attivita.pianificata==0}">
 <%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
 <button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.tipo_manutenzione }','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<c:if test="${attivita.tipo_attivita.id==4 }">
+<c:if test="${attivita.tipo_attivita.id==4 && attivita.pianificata==0}">
 <%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
 <button class="btn customTooltip btn-info" onClick="dettaglioFuoriServizio('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di fuori servizio"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<c:if test="${attivita.tipo_attivita.id==2 || attivita.tipo_attivita.id==3}">
+<c:if test="${(attivita.tipo_attivita.id==2 || attivita.tipo_attivita.id==3) && attivita.pianificata==0}">
 <button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.campo_sospesi }','${utl:escapeJS(attivita.operatore.nominativo) }','${attivita.certificato.misura.nCertificato }','${attivita.certificato.misura.id }','${utl:encryptData(attivita.certificato.misura.id)}')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data}','${attivita.tipo_manutenzione }','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.campo_sospesi) }','${attivita.operatore.id }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }',${attivita.certificato.id } )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
+<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data}','${attivita.tipo_manutenzione }','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.campo_sospesi) }','${attivita.operatore.id }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.certificato.id }', '${attivita.pianificata }')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
  <c:if test="${attivita.allegato!=null && !attivita.allegato.equals('') }">
  	<button class="btn customTooltip btn-danger" onClick="callAction('gestioneAttivitaCampioni.do?action=download_allegato&id_attivita=${utl:encryptData(attivita.id)}')" title="Click per scaricare l'allegato"><i class="fa fa-file-pdf-o"></i></button>
  </c:if>
@@ -419,6 +433,123 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 
 </div>
 
+
+
+
+  <form class="form-horizontal" id="formPianificaAttivita">
+<div id="modalPianificaAttivita" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" >
+
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" onClick="$('#modalPianificaAttivita').modal('hide');" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Pianifica Attività</h4>
+      </div>
+       <div class="modal-body" id="modalNuovoEventoContent" >
+       
+        <div class="form-group">
+  
+      <div class="col-sm-2">
+			<label >Tipo Attività:</label>
+		</div>
+		
+		<div class="col-sm-4">
+              <select name="select_tipo_evento_pianifica" id="select_tipo_evento_pianifica" data-placeholder="Seleziona Tipo Attività..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+              
+              <option value=""></option>
+              <c:forEach items="${lista_tipo_attivita_campioni}" var="tipo">	  
+	                     <option value="${tipo.id}">${tipo.descrizione}</option> 	                        
+	            </c:forEach>
+              </select>
+        </div>
+        
+        <div class="col-sm-2 ">
+			<label class="pull-right">Data Attività:</label>
+		</div>
+        <div class="col-sm-3">
+             
+             <div class="input-group date datepicker"  id="datetimepicker_ev_pianifica">
+            <input class="form-control  required" id="data_evento_pianifica" type="text" name="data_evento_pianifica" required/> 
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+              
+        </div>
+       </div>      
+       
+
+
+  		 </div>
+      <div class="modal-footer">
+
+      
+        <button type="submit" class="btn btn-primary" >Salva</button>
+       
+      </div>
+    </div>
+
+</div>
+   
+</div>
+
+   </form>   
+
+<form class="form-horizontal" id="formPianificaAttivitaMod">
+<div id="modalPianificaAttivitaMod" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" >
+
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" onClick="$('#modalPianificaAttivitaMod').modal('hide');" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Pianifica Attività</h4>
+      </div>
+       <div class="modal-body" id="modalNuovoEventoContent" >
+       
+        <div class="form-group">
+  
+      <div class="col-sm-2">
+			<label >Tipo Attività:</label>
+		</div>
+		
+		<div class="col-sm-4">
+              <select name="select_tipo_evento_pianificato_mod" id="select_tipo_evento_pianificato_mod" data-placeholder="Seleziona Tipo Attività..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+              
+              <option value=""></option>
+              <c:forEach items="${lista_tipo_attivita_campioni}" var="tipo">	  
+	                     <option value="${tipo.id}">${tipo.descrizione}</option> 	                        
+	            </c:forEach>
+              </select>
+        </div>
+        
+        <div class="col-sm-2 ">
+			<label class="pull-right">Data Attività:</label>
+		</div>
+        <div class="col-sm-3">
+             
+             <div class="input-group date datepicker"  id="datetimepicker_ev_pianifica_mod">
+            <input class="form-control  required" id="data_evento_pianificato_mod" type="text" name="data_evento_pianificato_mod" required/> 
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+              
+        </div>
+       </div>      
+       
+
+
+  		 </div>
+      <div class="modal-footer">
+	<input type="hidden" id="id_evento_pianificato" name="id_evento_pianificato">
+      
+        <button type="submit" class="btn btn-primary" >Salva</button>
+       
+      </div>
+    </div>
+
+</div>
+   
+</div>
+
+   </form>  
+   
 
 
   <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
@@ -800,7 +931,28 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
  };
  
  
- function modificaAttivita(id, tipo_attivita, descrizione, data, tipo_manutenzione, ente, data_scadenza, campo_sospesi, operatore, etichettatura, stato, id_certificato){
+ function modificaAttivita(id, tipo_attivita, descrizione, data, tipo_manutenzione, ente, data_scadenza, campo_sospesi, operatore, etichettatura, stato, id_certificato, pianificata){
+	 
+	 if(pianificata == 1){
+		 
+		  $('#id_evento_pianificato').val(id);
+		 
+		 $('#select_tipo_evento_pianificato_mod').val(tipo_attivita);
+		 $('#select_tipo_evento_pianificato_mod').change();
+		 var date = formatDate(data_scadenza);
+		 		 
+		 $('#data_evento_pianificato_mod').val(data_scadenza);
+		 
+		 
+		 $('#datetimepicker_ev_pianifica_mod').bootstrapDP({
+			 
+				format: "yyyy-mm-dd"
+			});
+		 
+		 $('#modalPianificaAttivitaMod').modal();
+		 
+	 }else{
+	 
 	 
 	 $('#select_tipo_attivita_mod').val(tipo_attivita);
 	 $('#select_tipo_attivita_mod').change();
@@ -840,7 +992,7 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	 }
 
 	 $('#modalModificaAttivita').modal();
-	 
+	 }
  }
  
  
@@ -887,6 +1039,10 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
  console.log("test");
 	  $(".select2").select2();
 	  $('#datetimepicker').bootstrapDP({
+			format: "yyyy-mm-dd"
+		});
+	  
+	  $('#datetimepicker_ev_pianifica').bootstrapDP({
 			format: "yyyy-mm-dd"
 		});
 	 	
@@ -1069,5 +1225,19 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
 		  $('#data_scadenza_mod').val(formatDate(data_scadenza));
 		 
 	  });
+	  
+	  
+	  $('#formPianificaAttivita').on('submit',function(e){		
+			e.preventDefault();
+			
+			callAjaxForm('#formPianificaAttivita', 'gestioneAttivitaCampioni.do?action=pianifica_attivita&idCamp='+datax[0]);
+		});
+	  															
+	  
+	  $('#formPianificaAttivitaMod').on('submit',function(e){		
+			e.preventDefault();
+			
+			callAjaxForm('#formPianificaAttivitaMod', 'gestioneAttivitaCampioni.do?action=modifica_attivita_pianificata&idCamp='+datax[0]);
+		});
 	  
 </script>

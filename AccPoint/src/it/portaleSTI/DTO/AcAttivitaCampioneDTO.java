@@ -20,6 +20,7 @@ public class AcAttivitaCampioneDTO {
 	private String allegato;
 	private String obsoleta;
 	private int disabilitata;
+	private int pianificata;
 	
 	public String getCampo_sospesi() {
 		return campo_sospesi;
@@ -116,6 +117,12 @@ public class AcAttivitaCampioneDTO {
 	}
 	public void setDisabilitata(int disabilitata) {
 		this.disabilitata = disabilitata;
+	}
+	public int getPianificata() {
+		return pianificata;
+	}
+	public void setPianificata(int pianificata) {
+		this.pianificata = pianificata;
 	}
 	
 }

@@ -106,7 +106,7 @@ public class ListaCampioni extends HttpServlet {
 				String date =request.getParameter("date");
 				String tipo_data_lat =request.getParameter("tipo_data_lat");
 				String manutenzione =request.getParameter("manutenzione");
-				String verificazione = request.getParameter("verificazione");
+				String verificazione = (String) request.getSession().getAttribute("verificazione");
 				String tipo_evento = request.getParameter("tipo_evento");
 	
 				ArrayList<CampioneDTO> listaCampioni=new ArrayList<CampioneDTO>();

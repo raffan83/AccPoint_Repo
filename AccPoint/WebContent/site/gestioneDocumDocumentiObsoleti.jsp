@@ -201,7 +201,7 @@ function modalStorico(id_documento){
 	  dataString ="action=storico_documento&id_documento="+ id_documento;
       exploreModal("gestioneDocumentale.do",dataString,null,function(datab,textStatusb){
     	  	
-    	  var result = JSON.parse(datab);
+    	  var result = datab;
     	  
     	  if(result.success){
     		  

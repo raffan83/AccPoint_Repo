@@ -272,6 +272,10 @@ public class GestioneCampione extends HttpServlet {
 					campione.setData_acquisto(null);
 				}
 				
+				if(campione_verificazione==null) {
+					campione_verificazione = "0";
+				}
+				
 				campione.setCampione_verificazione(Integer.parseInt(campione_verificazione));
 				
 				if(data_messa_in_servizio !=null && !data_messa_in_servizio.equals("")) {

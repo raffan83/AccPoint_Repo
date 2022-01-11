@@ -330,9 +330,11 @@ public static ArrayList<HashMap<String, Integer>> getListaRegistroEventiScadenzi
 		
 		
 		if(att.getTipo_evento().getId()==1) {
+			
+			int i=1;
 		
 			if(att.getCampione().getFrequenza_manutenzione()!=0) {
-				int i=1;
+				
 				
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(att.getData_evento());
@@ -346,7 +348,18 @@ public static ArrayList<HashMap<String, Integer>> getListaRegistroEventiScadenzi
 				}
 				
 				mapManutenzioni.put(sdf.format(date), i);
-			}			
+			}else {
+				if(att.getPianificato()==1) {
+					
+					
+					if(mapManutenzioni.get(sdf.format(att.getData_scadenza()))!=null) {					
+						
+						i= mapManutenzioni.get(sdf.format(att.getData_scadenza()))+1;
+					}
+					
+					mapManutenzioni.put(sdf.format(att.getData_scadenza()), i);
+				}
+			}
 		}
 		
 		if(att.getTipo_evento().getId()==5 && att.getData_scadenza()!=null) {

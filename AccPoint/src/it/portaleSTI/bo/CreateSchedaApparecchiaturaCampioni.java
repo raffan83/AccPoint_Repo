@@ -107,14 +107,18 @@ public class CreateSchedaApparecchiaturaCampioni {
 				}
 				
 				
-				if(campione.getDescrizione_verifica_intermedia()!=null) {
-					report.addParameter("attivita_verifica", campione.getDescrizione_verifica_intermedia());
-				}else{
-					report.addParameter("attivita_verifica", "");	
-				}
 				
-				report.addParameter("frequenza_verifica_intermedia", campione.getFrequenza_verifica_intermedia());
 			}
+			
+			
+			
+			if(campione.getDescrizione_verifica_intermedia()!=null) {
+				report.addParameter("attivita_verifica", campione.getDescrizione_verifica_intermedia());
+			}else{
+				report.addParameter("attivita_verifica", "");	
+			}
+			
+			report.addParameter("frequenza_verifica_intermedia", campione.getFrequenza_verifica_intermedia());
 			
 			
 			if(campione.getTipo_campione()!=null && campione.getTipo_campione().getNome()!=null) {

@@ -55,5 +55,8 @@
          <property name="disabilitata" type="int">
             <column name="disabilitata" />
         </property>
+        <property name="pianificata" type="int">
+            <column name="pianificata" />
+        </property>
     </class>
 </hibernate-mapping>

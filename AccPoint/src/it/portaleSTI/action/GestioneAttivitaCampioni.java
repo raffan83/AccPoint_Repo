@@ -35,6 +35,7 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
+import it.portaleSTI.DTO.TipoEventoRegistroDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -476,6 +477,128 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerificheIntermedie.jsp");
 				dispatcher.forward(request,response);
+			}
+			
+			else if(action.equals("pianifica_attivita")) {
+				
+				 response.setContentType("application/json");
+				 
+				  	List<FileItem> items = null;
+			        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+			        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+			        	}
+			        
+			       
+					FileItem fileItem = null;
+					String filename= null;
+			        Hashtable<String,String> ret = new Hashtable<String,String>();
+			      
+			        for (FileItem item : items) {
+		            	 if (!item.isFormField()) {
+		            		
+		                     fileItem = item;
+		                     filename = item.getName();
+		                     
+		            	 }else
+		            	 {
+		                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+		            	 }
+		            	
+		            }
+			
+					String idC = request.getParameter("idCamp");					
+					String tipo_evento = ret.get("select_tipo_evento_pianifica");
+					String data_evento = ret.get("data_evento_pianifica");
+
+					CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
+					
+					
+					AcAttivitaCampioneDTO attivita = new AcAttivitaCampioneDTO();
+					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = format.parse(data_evento);
+					
+					
+					attivita.setData_scadenza(date);
+					
+					attivita.setTipo_attivita(new AcTipoAttivitaCampioniDTO(Integer.parseInt(tipo_evento),""));
+										
+					attivita.setCampione(campione);
+					attivita.setPianificata(1);
+					
+					session.save(attivita);
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter  out = response.getWriter();
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Attività pianificata con successo!");
+					out.print(myObj);
+				
+				
+				
+			}
+			
+			else if(action.equals("modifica_attivita_pianificata")) {
+				
+				 response.setContentType("application/json");
+				 
+				  	List<FileItem> items = null;
+			        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+			        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+			        	}
+			        
+			       
+					FileItem fileItem = null;
+					String filename= null;
+			        Hashtable<String,String> ret = new Hashtable<String,String>();
+			      
+			        for (FileItem item : items) {
+		            	 if (!item.isFormField()) {
+		            		
+		                     fileItem = item;
+		                     filename = item.getName();
+		                     
+		            	 }else
+		            	 {
+		                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+		            	 }
+		            	
+		            }
+			
+					String idC = request.getParameter("idCamp");
+					String id_evento = ret.get("id_evento_pianificato");
+					String tipo_evento = ret.get("select_tipo_evento_pianificato_mod");
+					String data_evento = ret.get("data_evento_pianificato_mod");
+
+					CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
+					
+					
+					AcAttivitaCampioneDTO attivita = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(id_evento), session);
+					
+					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = format.parse(data_evento);
+					
+					
+					attivita.setData_scadenza(date);
+					
+					attivita.setTipo_attivita(new AcTipoAttivitaCampioniDTO(Integer.parseInt(tipo_evento),""));
+										
+					attivita.setCampione(campione);
+					attivita.setPianificata(1);
+					
+					session.update(attivita);
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter  out = response.getWriter();
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Attività pianificata con successo!");
+					out.print(myObj);
+				
+				
+				
 			}
 		}catch (Exception e) {
 			session.getTransaction().rollback();

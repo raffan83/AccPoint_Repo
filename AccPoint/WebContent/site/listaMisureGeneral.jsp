@@ -185,7 +185,7 @@ NO
 <a class="btn btn-warning customTooltip" title="Click per modificare lo strumento" onClick="modalModificaStrumento('${misura.split(';;')[14]}')"><i class="fa fa-edit"></i></a>
 </c:if>
 <c:if test="${userObj.checkPermesso('MODIFICA_CERTIFICATO')}">
-<a class="btn btn-info customTooltip" title="Click per modificare il certificato" onClick="modalModificaCertificato('${misura.split(';;')[12]}','${misura.split(';;')[11] }','${misura.split(';;')[15]}')"><i class="fa fa-file"></i></a>
+<a class="btn btn-info customTooltip" title="Click per modificare il certificato" onClick="modalModificaCertificato('${misura.split(';;')[12]}','${misura.split(';;')[11] }','${misura.split(';;')[17]}')"><i class="fa fa-file"></i></a>
 </c:if>
 </td>
 	</tr>
@@ -453,6 +453,14 @@ NO
 	  $('#myModalModificaCertificato').modal();
 	  
   }
+  
+  
+  $('#myModalModificaCertificato').on('hidden.bs.modal', function(){
+	 
+	  $('#note').val("");
+	  
+  });
+  
   
 	var columsDatatables = [];
 	 

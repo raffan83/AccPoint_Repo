@@ -24,6 +24,7 @@ public class PuntoMisuraDTO {
 	private String esito = "";
 	private String desc_Campione = "";
 	private String desc_parametro = "";
+	private String numeroCertificatoCampione;
 	private BigDecimal misura = BigDecimal.ZERO;
 	private String um_calc = "";
 	private BigDecimal risoluzione_campione = BigDecimal.ZERO;
@@ -156,7 +157,15 @@ public class PuntoMisuraDTO {
 	public void setDesc_parametro(String desc_parametro) {
 		this.desc_parametro = desc_parametro;
 	}
+	
+	public String getNumeroCertificatoCampione() {
+		return numeroCertificatoCampione;
+	}
+	public void setNumeroCertificatoCampione(String numeroCertificatoCampione) {
+		this.numeroCertificatoCampione = numeroCertificatoCampione;
+	}
 
+	
 	public BigDecimal getMisura() {
 		return misura;
 	}

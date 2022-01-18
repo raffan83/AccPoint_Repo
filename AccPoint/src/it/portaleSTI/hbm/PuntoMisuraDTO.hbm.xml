@@ -107,10 +107,10 @@
         <property name="file_att" type="byte[]">
             <column name="file_att" />
         </property>
+
          <property name="numero_certificato_campione" type="java.lang.String">
             <column name="numero_certificato_campione" />
         </property>
-        
-        
+
     </class>
 </hibernate-mapping>

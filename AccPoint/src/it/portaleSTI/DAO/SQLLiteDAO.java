@@ -1054,7 +1054,8 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 	
 	
 	
-	pst=con.prepareStatement("SELECT * FROM tblTabelleMisura WHERE id_misura=?");
+//	pst=con.prepareStatement("SELECT * FROM tblTabelleMisura WHERE id_misura=?");
+	pst=con.prepareStatement("SELECT a.* ,(SELECT num_certificato from tblCampioni where codice=a.desc_campione) numero_certificato  FROM tblTabelleMisura a WHERE id_misura=?");
 	pst.setInt(1, idTemp);
 	
 	rs=pst.executeQuery();
@@ -1085,6 +1086,8 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setRisoluzione_misura(rs.getBigDecimal("risoluzione_misura"));
 		punto.setDgt(rs.getBigDecimal("dgt"));
 		punto.setCalibrazione(rs.getString("calibrazione"));
+		punto.setNumeroCertificatoCampione(rs.getString("numero_certificato"));
+		
 		
 		byte[] byteArr = rs.getBytes("file_att");
 		//Blob blob = new javax.sql.rowset.serial.SerialBlob(byteArr);

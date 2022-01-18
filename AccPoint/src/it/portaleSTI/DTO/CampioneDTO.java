@@ -86,7 +86,7 @@ public class CampioneDTO implements Serializable {
 	private int settore;
 	private Date data_messa_in_servizio;
 	private int campione_verificazione;
-	
+	private String numeroCertificatoPunto;
 	
 	
 	public Integer getId_strumento() {
@@ -358,6 +358,29 @@ public class CampioneDTO implements Serializable {
 	}
 
 	
+	
+	public CertificatoCampioneDTO getCertificatoFromPunto(Set<CertificatoCampioneDTO> listaCertificatiCampione, String numeroCertificatoPunto) {
+		
+		CertificatoCampioneDTO certificato=null;
+		
+		 Iterator iterator = listaCertificatiCampione.iterator();
+	      
+		   while (iterator.hasNext()){
+			   
+			CertificatoCampioneDTO certificatoTmp= (CertificatoCampioneDTO) iterator.next(); 
+			  
+			 if(certificatoTmp.getNumero_certificato().equals(numeroCertificatoPunto))
+			 {
+				 return certificatoTmp;
+			 }
+		   
+		   }
+		
+		
+		return certificato;
+	}
+	
+	
 //	public Set<DocumentoCampioneDTO> getListaDocumentiEsterni() {
 //		return listaDocumentiEsterni;
 //	}
@@ -452,5 +475,15 @@ public class CampioneDTO implements Serializable {
 	public void setCampione_verificazione(int campione_verificazione) {
 		this.campione_verificazione = campione_verificazione;
 	}
+
+	public String getNumeroCertificatoPunto() {
+		return numeroCertificatoPunto;
+	}
+
+	public void setNumeroCertificatoPunto(String numeroCertificatoPunto) {
+		this.numeroCertificatoPunto = numeroCertificatoPunto;
+	}
+
+	
 
 }

@@ -40,6 +40,7 @@ public class PuntoMisuraDTO {
 	private BigDecimal dgt = BigDecimal.ZERO;
 	private String calibrazione="";
 	private byte[] file_att;
+	private String numero_certificato_campione;
 
 	
 	public BigDecimal getDgt() {
@@ -246,6 +247,12 @@ public class PuntoMisuraDTO {
 	}
 	public void setFile_att(byte[] file_att) {
 		this.file_att = file_att;
+	}
+	public String getNumero_certificato_campione() {
+		return numero_certificato_campione;
+	}
+	public void setNumero_certificato_campione(String numero_certificato_campione) {
+		this.numero_certificato_campione = numero_certificato_campione;
 	}
 
 

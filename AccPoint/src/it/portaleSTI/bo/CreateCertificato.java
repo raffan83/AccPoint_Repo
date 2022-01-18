@@ -1047,7 +1047,17 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		
 		for (CampioneDTO campioneDTO : listaCampioni) {
 			if(campioneDTO != null) {
-				CertificatoCampioneDTO certificato = campioneDTO.getCertificatoCorrente(campioneDTO.getListaCertificatiCampione());
+				CertificatoCampioneDTO certificato = null;
+				if(campioneDTO.getNumeroCertificatoPunto()!=null) {
+					
+					certificato = campioneDTO.getCertificatoFromPunto(campioneDTO.getListaCertificatiCampione(), campioneDTO.getNumeroCertificatoPunto());
+					
+				}else {
+					
+					certificato = campioneDTO.getCertificatoCorrente(campioneDTO.getListaCertificatiCampione());
+					
+				}				
+				
 				if(certificato != null) {
 					String folder = Costanti.PATH_FOLDER+"//Campioni//"+campioneDTO.getId()+"//"+certificato.getFilename();
 					File x = new File(folder);

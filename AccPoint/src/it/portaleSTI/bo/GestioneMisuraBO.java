@@ -94,13 +94,28 @@ public class GestioneMisuraBO {
 		   
 		   {
 			   PuntoMisuraDTO punto = (PuntoMisuraDTO) iterator.next();	   
-		    		String[] array = punto.getDesc_Campione().split("\\|"); 
+			   
+			   if(punto.getNumero_certificato_campione()!=null) {
+				   String[] array = punto.getDesc_Campione().split("\\|"); 
+				   String[] cert = punto.getNumero_certificato_campione().split("\\|"); 
+		    		for (int i = 0;i<array.length;i++) {
+		    			if(!listaCampioni.containsKey(array[i]))
+		    			{
+		    				listaCampioni.put(array[i], cert[i]);
+		    			}
+		    		}
+			   }else {
+				   
+				   String[] array = punto.getDesc_Campione().split("\\|"); 
 		    		for (String codCamp : array) {
 		    			if(!listaCampioni.containsKey(codCamp))
 		    			{
 		    				listaCampioni.put(codCamp, codCamp);
 		    			}
 		    		}
+				   
+			   }
+			  
 		    
 		    	
 		    
@@ -114,6 +129,9 @@ public class GestioneMisuraBO {
 			   Map.Entry pair = (Map.Entry)itCampioni.next();
 		        
 		        CampioneDTO campione =GestioneCampioneDAO.getCampioneFromCodice(pair.getKey().toString());
+		        if(!pair.getValue().equals(pair.getKey())) {
+		        	campione.setNumeroCertificatoPunto(pair.getValue().toString());
+		        }
 		       
 		        if(campione==null) {
 		        	campione = new CampioneDTO();

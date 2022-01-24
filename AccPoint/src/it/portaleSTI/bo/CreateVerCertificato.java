@@ -87,6 +87,7 @@ public class CreateVerCertificato {
 		JasperReportBuilder reportP2 = DynamicReports.report();
 
 		report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
+		//report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver_NEW.png"));
 		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
 
 		report.setTemplateDesign(is);
@@ -493,6 +494,7 @@ public class CreateVerCertificato {
 //			}		
 		
 		reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
+		//reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver_NEW.png"));
 		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
 		
 		if(misura.getNumeroAttestato()!=null) {

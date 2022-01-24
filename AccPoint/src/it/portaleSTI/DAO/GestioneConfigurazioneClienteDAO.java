@@ -54,11 +54,20 @@ public class GestioneConfigurazioneClienteDAO {
 		
 		ArrayList<ConfigurazioneClienteDTO> lista=null;
 		ConfigurazioneClienteDTO conf = null;
-		Query query = session.createQuery("from ConfigurazioneClienteDTO a where a.id_cliente = :_id_cliente and a.id_sede = :_id_sede and a.tipo_rapporto.id = :_tipo_rapporto");
+		Query query = null;
+		
+		if(tipo_rapporto == 0) {
+			query = session.createQuery("from ConfigurazioneClienteDTO a where a.id_cliente = :_id_cliente and a.id_sede = :_id_sede");
+		}else {
+			query = session.createQuery("from ConfigurazioneClienteDTO a where a.id_cliente = :_id_cliente and a.id_sede = :_id_sede and a.tipo_rapporto.id = :_tipo_rapporto"); 
+		}						
 		
 		query.setParameter("_id_sede",id_sede);
 		query.setParameter("_id_cliente",id_cliente);
-		query.setParameter("_tipo_rapporto",tipo_rapporto);
+		if(tipo_rapporto != 0) {
+			query.setParameter("_tipo_rapporto",tipo_rapporto);	
+		}
+		
 		
 		lista= (ArrayList<ConfigurazioneClienteDTO>)query.list();
 		

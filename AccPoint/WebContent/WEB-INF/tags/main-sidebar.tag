@@ -269,6 +269,7 @@
             <li><a href="#" onclick="callAction('gestioneVerMisura.do?action=lista',null,true);">Lista Misure</a></li>
     
             <li><a href="#" onclick="callAction('scadenzarioVerificazione.do',null,true);">Scadenzario Strumenti</a></li>
+            <li><a href="#" onclick="callAction('listaCampioni.do?campioni_verificazione=1',null,true);">Lista Campioni</a></li>
             <li><a href="#" onclick="callAction('scadenziario.do?action=campioni_verificazione&verificazione=1',null,true);">Scadenzario Campioni</a></li>
             
             <% if(user.checkRuolo("AM") || !user.checkRuolo("VC")){%>

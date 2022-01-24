@@ -47,7 +47,6 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <th>ID</th>
  <th>Data</th>
  <th>Tipo Evento</th>
- <th>Evento Pianificato</th>
  <th>Azioni</th>
 
  </tr></thead>
@@ -55,7 +54,8 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <tbody>
  
  <c:forEach items="${lista_eventi}" var="evento" varStatus="loop">
-<tr>
+ <c:if test="${evento.pianificato == 0 }">
+ <tr>
 <td>${evento.id }</td>
 <td>
 <c:if test="${evento.pianificato == 1 }">
@@ -67,15 +67,13 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 </c:if>
 </td>
 <td>${evento.tipo_evento.descrizione}</td>
-<td>
-<c:if test="${evento.pianificato == 1 }">Pianificato</c:if>
-</td>
+
 
 <td>
-<c:if test="${evento.tipo_evento.id==1 && evento.pianificato == 0 }">
+<c:if test="${evento.tipo_evento.id==1  }">
 <button class="btn customTooltip btn-info" onClick="dettaglioEventoManutenzione('${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${evento.tipo_manutenzione.id }','${evento.data_evento }','${evento.operatore.nominativo }')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<c:if test="${evento.tipo_evento.id==4 && evento.pianificato == 0}">
+<c:if test="${evento.tipo_evento.id==4 }">
 <%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
 <button class="btn customTooltip btn-info" onClick="dettaglioFuoriServizio('${utl:escapeJS(evento.descrizione)}','${evento.data_evento }','${utl:escapeJS(evento.operatore.nominativo) }')" title="Click per visualizzare l'attività di fuori servizio"><i class="fa fa-arrow-right"></i></button>
 </c:if>
@@ -95,6 +93,8 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 </td>
 
 	</tr>
+ </c:if>
+
 	
 	</c:forEach>
  

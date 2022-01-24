@@ -506,8 +506,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			}
 			
 			String footer_right = CostantiCertificato.FOOTER_RIGHT;
-			if(conf!=null && conf.getRevisione()!=null && !conf.getRevisione().equals("")) {
-				footer_right = conf.getRevisione();
+			if(conf!=null && conf.getRevisione_certificato()!=null && !conf.getRevisione_certificato().equals("")) {
+				footer_right = conf.getRevisione_certificato();
 			}
 			
 			report.pageFooter(cmp.verticalList(
@@ -538,8 +538,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					per = "<i>per il </i>";
 				}
 				footer_right = CostantiCertificato.FOOTER_RIGHT;
-				if(conf!=null && conf.getRevisione()!=null && !conf.getRevisione().equals("")) {
-					footer_right = conf.getRevisione();
+				if(conf!=null && conf.getRevisione_certificato()!=null && !conf.getRevisione_certificato().equals("")) {
+					footer_right = conf.getRevisione_certificato();
 				}
 				
 				if(!tipoScheda.equals("RDP")) {					
@@ -668,8 +668,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				per = "<i>per il </i>";
 			}
 			footer_right = CostantiCertificato.FOOTER_RIGHT;
-			if(conf!=null && conf.getRevisione()!=null && !conf.getRevisione().equals("")) {
-				footer_right = conf.getRevisione();
+			if(conf!=null && conf.getRevisione_certificato()!=null && !conf.getRevisione_certificato().equals("")) {
+				footer_right = conf.getRevisione_certificato();
 			}
 			
 			String cliente_label = "";
@@ -772,8 +772,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			}
 			
 			footer_right = CostantiCertificato.FOOTER_RIGHT;
-			if(conf!=null && conf.getRevisione()!=null && !conf.getRevisione().equals("")) {
-				footer_right = conf.getRevisione();
+			if(conf!=null && conf.getRevisione_certificato()!=null && !conf.getRevisione_certificato().equals("")) {
+				footer_right = conf.getRevisione_certificato();
 			}
 			
 			VerticalListBuilder vertList = cmp.verticalList();
@@ -856,8 +856,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		}else if(tipo_firma == 1){//Firma OP
 			
 			footer_right = CostantiCertificato.FOOTER_RIGHT;
-			if(conf!=null && conf.getRevisione()!=null && !conf.getRevisione().equals("")) {
-				footer_right = conf.getRevisione();
+			if(conf!=null && conf.getRevisione_certificato()!=null && !conf.getRevisione_certificato().equals("")) {
+				footer_right = conf.getRevisione_certificato();
 			}
 			
 			report.lastPageFooter(cmp.verticalList(
@@ -1518,8 +1518,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 	  
 	  private String getFooterLeft(String tipoProva, int tipoFirma, ConfigurazioneClienteDTO conf) {
 		  
-		  if(conf!=null && conf.getModello()!=null && !conf.getModello().equals("")) {
-			  return conf.getModello();
+		  if(conf!=null && conf.getModello_certificato()!=null && !conf.getModello_certificato().equals("")) {
+			  return conf.getModello_certificato();
 			  
 		  }else {
 			  if(tipoProva.equals("RDT")) {

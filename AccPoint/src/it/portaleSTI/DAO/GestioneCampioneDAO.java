@@ -62,7 +62,7 @@ public class GestioneCampioneDAO {
 		
 				if(date!=null)
 				{
-				String s_query = "from CampioneDTO WHERE data_scadenza = :date and stato_campione != 'F'";
+				String s_query = "from CampioneDTO WHERE data_scadenza = :date and stato_campione != 'F'  and codice not like '%CDT%'";
 			    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		        Date dt = df.parse(date);
 			    query = session.createQuery(s_query);
@@ -77,7 +77,7 @@ public class GestioneCampioneDAO {
 		{
 			if(date!=null)
 			{
-			String s_query = "from CampioneDTO WHERE data_scadenza = :date AND id_Company=:_idc and stato_campione != 'F'";
+			String s_query = "from CampioneDTO WHERE data_scadenza = :date AND id_Company=:_idc and stato_campione != 'F'  and codice not like '%CDT%'";
 		    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	        Date dt = df.parse(date);
 		    query = session.createQuery(s_query);
@@ -945,6 +945,22 @@ public static ArrayList<RegistroEventiDTO> getListaEventiNonSti(Session session)
 	 lista = (ArrayList<RegistroEventiDTO>) query.list();
 
 	 return lista;
+}
+
+
+
+
+public static ArrayList<CampioneDTO> getListaCampioniVerificazione(Session session) {
+	
+	ArrayList<CampioneDTO> lista = null;
+	
+	Query query = session.createQuery("from CampioneDTO where campione_verificazione = 1");
+	
+	
+	 lista = (ArrayList<CampioneDTO>) query.list();
+
+	 return lista;
+	
 }
 	
 	

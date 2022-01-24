@@ -114,8 +114,10 @@ public class CreateVerRapporto {
 				
 		if(misura.getSeqRisposte().length()<31) {
 			if(misura.getTipoRisposta()==0) {
-				is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0.jrxml");	
+				//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0_NOA.jrxml");	
+				is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0.jrxml");
 			}else {
+				//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1_NOA.jrxml");
 				is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1.jrxml");
 			}
 			
@@ -213,6 +215,7 @@ public class CreateVerRapporto {
 		
 	
 		report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
+		//report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver_NEW.png"));
 		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));
 		
 		File firma = new File(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma());
@@ -529,6 +532,7 @@ public class CreateVerRapporto {
 		
 		report.addParameter("registro", misura.getId()+"_"+misura.getVerStrumento().getId()); //MANCA REGISTRO
 		report.addParameter("procedura", "PT-020 Rev. E"); 
+		//report.addParameter("procedura", "PDI-001 Rev. A");
 		
 		if(utente.getFile_firma()!=null) {
 			if(firma!=null) {
@@ -569,6 +573,8 @@ public class CreateVerRapporto {
 		
 
 		reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
+		//reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver_NEW.png"));
+		
 		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));
 		
 		if(misura.getNumeroRapporto()!=null) {
@@ -586,6 +592,7 @@ public class CreateVerRapporto {
 		
 		boolean esito = true;
 		for(int i = 0; i < risposte.length;i++) {
+			
 			if(risposte[i].equals("0")) {
 				reportP2.addParameter("x_"+(i+1)+"1", "X");
 				reportP2.addParameter("x_"+(i+1)+"2", "");
@@ -601,7 +608,7 @@ public class CreateVerRapporto {
 				reportP2.addParameter("x_"+(i+1)+"3", "X");
 			}
 		}
-
+		
 		if(esito) {
 			reportP2.addParameter("esito", "SUPERATO");
 		}else {
@@ -633,6 +640,8 @@ public class CreateVerRapporto {
 			//reportP3.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
 			//reportP3.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("sti.jpg"));
 			reportP3.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
+			//reportP3.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver_NEW.png"));
+			
 			reportP3.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));
 			
 			if(misura.getNumeroRapporto()!=null) {
@@ -935,11 +944,11 @@ public class CreateVerRapporto {
 					 vl_criteri = cmp.verticalList(cmp.text("CRITERI").setStyle(stl.style().setFontName("Trebuchet MS")), 
 								cmp.horizontalList(cmp.text("  - Per la/le prova/e di ripetibilità:").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(160),
 										cmp.text("|Pmax - Pmin|").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(68),
-										cmp.text(" < EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35)).setGap(0),
+										cmp.text(" ≤ EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35)).setGap(0),
 								cmp.horizontalList(cmp.text("  - Per le ulteriori prove: ").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(115), 
 										cmp.text("|Ec").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(17),
 										cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
-										cmp.text("| < EMT").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS")),
+										cmp.text("| ≤ EMT").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS")),
 										cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS"))),
 								cmp.horizontalList(cmp.text("  - Per i punti E").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(70), 
 										cmp.text("0").setFixedWidth(7).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
@@ -954,11 +963,11 @@ public class CreateVerRapporto {
 				 vl_criteri = cmp.verticalList(cmp.text("CRITERI").setStyle(stl.style().setFontName("Trebuchet MS")), 
 						cmp.horizontalList(cmp.text("  - Per la/le prova/e di ripetibilità:").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(160),
 								cmp.text("|Pmax - Pmin|").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(68),
-								cmp.text(" < EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35)).setGap(0),
+								cmp.text(" ≤ EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35)).setGap(0),
 						cmp.horizontalList(cmp.text("  - Per le ulteriori prove: ").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(115), 
 								cmp.text("|Ec").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(17),
 								cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
-								cmp.text("| < EMT").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS")),
+								cmp.text("| ≤ EMT").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS")),
 								cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS"))),
 						cmp.horizontalList(cmp.text("  - Per il punto E").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(75), 
 								cmp.text("0").setFixedWidth(5).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
@@ -1582,9 +1591,19 @@ public class CreateVerRapporto {
 				if(item.getMassa()!=null && item.getCampo()==campo) {
 					
 					
-					int risoluzioneBilanciaE0=getE(campo, BigDecimal.ZERO).scale()+1;
-					int risoluzioneBilancia=getE(campo,item.getMassa()).scale()+1;
-					int risoluzioneIndicazione=getE(campo,item.getMassa()).scale();
+					int risoluzioneBilanciaE0=0;
+					int risoluzioneBilancia=0;
+					int risoluzioneIndicazione=0;
+					
+					if(tipologia_strumento == 1) {
+						risoluzioneBilanciaE0=getE(campo, BigDecimal.ZERO).scale()+1;
+						risoluzioneBilancia=getE(campo,item.getMassa()).scale()+1;
+						risoluzioneIndicazione=getE(campo,item.getMassa()).scale();
+					}else {
+						 risoluzioneBilanciaE0=getE(campo, BigDecimal.ZERO).scale()+2;
+						 risoluzioneBilancia=getE(campo,item.getMassa()).scale()+2;
+						 risoluzioneIndicazione=getE(campo,item.getMassa()).scale()+1;
+					}
 					
 					
 					ArrayList<String> arrayPs = new ArrayList<String>();		
@@ -1682,9 +1701,21 @@ public class CreateVerRapporto {
 			for (VerLinearitaDTO item : lista_linearita) {				
 				if(item.getMassa()!=null && item.getCampo()==campo) {
 					
-					int risoluzioneBilanciaE0=getE(campo, BigDecimal.ZERO).scale()+1;
-					int risoluzioneBilancia=getE(campo, item.getMassa()).scale()+1;
-					int risoluzioneIndicazione=getE(campo, item.getMassa()).scale();
+									
+					int risoluzioneBilanciaE0=0;
+					int risoluzioneBilancia=0;
+					int risoluzioneIndicazione=0;
+					
+					if(tipologia_strumento == 1) {
+						risoluzioneBilanciaE0=getE(campo, BigDecimal.ZERO).scale()+1;
+						risoluzioneBilancia=getE(campo,item.getMassa()).scale()+1;
+						risoluzioneIndicazione=getE(campo,item.getMassa()).scale();
+					}else {
+						 risoluzioneBilanciaE0=getE(campo, BigDecimal.ZERO).scale()+2;
+						 risoluzioneBilancia=getE(campo,item.getMassa()).scale()+2;
+						 risoluzioneIndicazione=getE(campo,item.getMassa()).scale()+1;
+					}
+					
 					
 					ArrayList<String> arrayPs = new ArrayList<String>();
 					if(rif==0) {
@@ -1797,9 +1828,20 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 			for (VerAccuratezzaDTO item : lista_accuratezza) {				
 				if(item.getMassa()!=null && item.getCampo()==campo) {
 					
-					int risoluzioneBilanciaE0=getE(campo,BigDecimal.ZERO).scale()+1;
-					int risoluzioneBilancia=getE(campo, item.getMassa()).scale()+1;
-					int risoluzioneIndicazione=getE(campo, item.getMassa()).scale();
+	
+					int risoluzioneBilanciaE0=0;
+					int risoluzioneBilancia=0;
+					int risoluzioneIndicazione=0;
+					
+					if(tipologia_strumento == 1) {
+						risoluzioneBilanciaE0=getE(campo, BigDecimal.ZERO).scale()+1;
+						risoluzioneBilancia=getE(campo,item.getMassa()).scale()+1;
+						risoluzioneIndicazione=getE(campo,item.getMassa()).scale();
+					}else {
+						 risoluzioneBilanciaE0=getE(campo, BigDecimal.ZERO).scale()+2;
+						 risoluzioneBilancia=getE(campo,item.getMassa()).scale()+2;
+						 risoluzioneIndicazione=getE(campo,item.getMassa()).scale()+1;
+					}
 					
 					ArrayList<String> arrayPs = new ArrayList<String>();
 							
@@ -1876,8 +1918,19 @@ private JRDataSource createDataSourceMobilita(ArrayList<VerMobilitaDTO> lista_mo
 			if(item.getMassa()!=null && item.getCaso() == caso && item.getCampo()==campo) {
 				
 				
-				int risoluzioneBilancia=getE(campo, item.getMassa()).scale()+1;
-				int risoluzioneIndicazione=getE(campo, item.getMassa()).scale();
+			
+				int risoluzioneBilancia=0;
+				int risoluzioneIndicazione=0;
+				
+				if(tipologia_strumento == 1) {
+					
+					risoluzioneBilancia=getE(campo,item.getMassa()).scale()+1;
+					risoluzioneIndicazione=getE(campo,item.getMassa()).scale();
+				}else {
+			
+					 risoluzioneBilancia=getE(campo,item.getMassa()).scale()+2;
+					 risoluzioneIndicazione=getE(campo,item.getMassa()).scale()+1;
+				}
 				
 				ArrayList<String> arrayPs = new ArrayList<String>();
 				
@@ -1986,7 +2039,7 @@ private BigDecimal getE(int campo,  BigDecimal carico)
 {
 
 	BigDecimal e = BigDecimal.ZERO;
-	
+			
 	int id_tipo_strumento = strumento.getTipo().getId();
 	
 	if(id_tipo_strumento==1) 
@@ -2032,6 +2085,8 @@ private BigDecimal getE(int campo,  BigDecimal carico)
 
 
 	return e;
+	
+	
 }
 
 

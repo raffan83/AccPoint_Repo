@@ -29,6 +29,7 @@ import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
@@ -52,17 +53,17 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaListaStrumenti {
-	public CreateSchedaListaStrumenti( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, Session session, ServletContext context, UtenteDTO user) throws Exception {
+	public CreateSchedaListaStrumenti( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, Session session, ServletContext context, ConfigurazioneClienteDTO conf,UtenteDTO user) throws Exception {
 		try {
 		
-			build(listaStrumenti,cliente, sede , context, user);
+			build(listaStrumenti,cliente, sede , context,conf, user);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			throw e;
 		} 
 	}
-	private void build( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, ServletContext context, UtenteDTO user) throws Exception {
+	private void build( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, ServletContext context, ConfigurazioneClienteDTO conf,UtenteDTO user) throws Exception {
 		
 		InputStream is = PivotTemplate.class.getResourceAsStream("schedaListaStrumentiMetrologiaMOD-LAB-013V.jrxml");
 		 
@@ -81,8 +82,15 @@ public class CreateSchedaListaStrumenti {
  		
  			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
-
-			Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+user.getCompany().getNomeLogo());
+			
+			Object imageHeader = null;
+			if(conf!=null) {
+				imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+ "\\ConfigurazioneClienti\\"+conf.getId_cliente()+"\\"+conf.getId_sede()+"\\"+conf.getNome_file_logo());
+			}else {
+				imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+user.getCompany().getNomeLogo());
+			}
+			 
+					
 			//Object imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/accpoint.jpg");
 			if(imageHeader!=null) {
 				report.addParameter("logo",imageHeader);
@@ -91,8 +99,23 @@ public class CreateSchedaListaStrumenti {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			
 			report.addParameter("data",""+sdf.format(new Date()));
-			report.addParameter("cliente",cliente);
-			report.addParameter("sede",sede);
+			if(conf!=null) {
+				report.addParameter("cliente",conf.getNome_cliente());
+				if(conf.getNome_sede()!=null) {
+					report.addParameter("sede",conf.getNome_sede());
+				}else {
+					report.addParameter("sede","");
+				}
+				
+				report.addParameter("modello_lista_strumenti",conf.getModello_lista_strumenti());
+				report.addParameter("revisione_lista_strumenti",conf.getRevisione_lista_strumenti());
+			}else {
+				report.addParameter("cliente",cliente);
+				report.addParameter("sede",sede);
+				report.addParameter("modello_lista_strumenti","MOD-LAB-010");
+				report.addParameter("revisione_lista_strumenti","Rev. 0 del 19/01/2004");
+			}
+			
  
 			report.setColumnStyle(textStyle); //AGG
 

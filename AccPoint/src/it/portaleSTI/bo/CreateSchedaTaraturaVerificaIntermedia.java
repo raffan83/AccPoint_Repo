@@ -241,7 +241,7 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 			SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
 			if(lista_tar_ver.size()>0) {
 				for (AcAttivitaCampioneDTO attivita : lista_tar_ver) {						
-					if(attivita!=null){
+					if(attivita!=null && attivita.getPianificata()==0){
 						ArrayList<String> arrayPs = new ArrayList<String>();
 						
 						arrayPs.add(attivita.getTipo_attivita().getDescrizione());
@@ -299,7 +299,7 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 			SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
 			if(lista_tarature_evento.size()>0) {
 				for (RegistroEventiDTO evento : lista_tarature_evento) {						
-					if(evento!=null){
+					if(evento!=null && evento.getPianificato()==0){
 						ArrayList<String> arrayPs = new ArrayList<String>();						
 														
 						

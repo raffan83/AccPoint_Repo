@@ -1203,7 +1203,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
    		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_evento=1');	
    		        	}
    		        	else if(calEvent.backgroundColor=="#777"){
-   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format());	
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_evento=2');	
    		        	}
    		        	else{
    		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+"&tipo_evento=5");
@@ -7843,8 +7843,12 @@ function filtraCertificati(){
 //			 
 //		} );
 
-	   cliente = $("#select1 option:selected").text();
-	   sede = $("#select2 option:selected").text();
+	   //cliente = $("#select1 option:selected").text();
+	   //sede = $("#select2 option:selected").text();
+	   
+	   cliente = $("#select1").val();
+	   sede = $("#select2").val();
+	   
 	   if(sede == "Non Associate"){
 		   sede = "";
 	   }

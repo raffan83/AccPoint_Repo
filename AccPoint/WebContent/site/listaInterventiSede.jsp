@@ -115,7 +115,19 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
                    	            	%> 
                    	            	 	<span class="label label-warning">MISTO CLIENTE - SEDE</span>
                    	            	 <%	 
-                   	             }else{
+                   	             
+								 }else if (intervento.getPressoDestinatario() == 3){
+								    	%> 
+								    	 	<span class="label label-primary">PRESSO LABORATORIO</span>
+								    	 <%	 
+								     
+								}else if (intervento.getPressoDestinatario() == 4){
+								   	%> 
+								   	 	<span class="label label-info">PRESSO FORNITORE ESTERNO</span>
+								   	 <%	 
+								    }
+
+                   	             else{
                    	             %> 
                    	             	<span class="label label-info">-</span>
 								<%	

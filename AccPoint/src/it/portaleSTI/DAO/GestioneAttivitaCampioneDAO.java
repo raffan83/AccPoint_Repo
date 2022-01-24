@@ -362,6 +362,19 @@ public static ArrayList<HashMap<String, Integer>> getListaRegistroEventiScadenzi
 			}
 		}
 		
+		
+		if(att.getTipo_evento().getId()==2 && att.getData_scadenza()!=null && att.getPianificato()==1) {
+			
+			int i=1;
+			if(mapTarature.get(sdf.format(att.getData_scadenza()))!=null) {
+				i= mapTarature.get(sdf.format(att.getData_scadenza()))+1;
+			}
+			
+			mapTarature.put(sdf.format(att.getData_scadenza()), i);
+			
+		}
+		
+		
 		if(att.getTipo_evento().getId()==5 && att.getData_scadenza()!=null) {
 			
 			int i=1;
@@ -457,7 +470,7 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 			
 		}
 		else if(tipo_data_lat.equals("3")) {
-			query = session.createQuery("from CampioneDTO where data_scadenza = :_date and stato_campione != 'F'");	
+			query = session.createQuery("from CampioneDTO where data_scadenza = :_date and stato_campione != 'F' and codice like '%CDT%'");	
 			query.setParameter("_date", df.parse(data));
 			
 			lista = (ArrayList<CampioneDTO>) query.list();
@@ -474,7 +487,7 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 		
 		if(registro!=null) {
 			for (RegistroEventiDTO r : registro) {
-				if(r.getCampione().getFrequenza_manutenzione()!=0) {
+				if(tipo_evento.equals("1") && r.getCampione().getFrequenza_manutenzione()!=0) {
 									
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(r.getData_evento());
@@ -484,6 +497,8 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 					if(df.format(date).equals(data) && !lista.contains(r.getCampione())) {
 						lista.add(r.getCampione());	
 					}
+				}else if(tipo_evento.equals("5")) {
+					lista.add(r.getCampione());	
 				}
 			}
 		}

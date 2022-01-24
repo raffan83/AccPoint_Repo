@@ -107,13 +107,23 @@
 		
 		
 				<div class="col-md-3">
-		<label>Modello</label>
+		<label>Modello Certificato</label>
 		<input type="text" class="form-control" id="modello" name="modello">
 		</div>
 		
 				<div class="col-md-3">
-	<label>Revisione</label>
+	<label>Revisione Certificato</label>
 		<input type="text" class="form-control" id="revisione" name="revisione">
+		</div>
+		
+						<div class="col-md-3">
+		<label>Modello Lista Strumenti</label>
+		<input type="text" class="form-control" id="modello_lista_strumenti" name="modello_lista_strumenti">
+		</div>
+		
+						<div class="col-md-3">
+		<label>Revisione Lista Strumenti</label>
+		<input type="text" class="form-control" id="revisione_lista_strumenti" name="revisione_lista_strumenti">
 		</div>
 		
 		
@@ -169,8 +179,10 @@
 <th>Sede</th>
 <th>Tipo Rapporto</th>
 <th>Tipo Firma</th>
-<th>Modello</th>
-<th>Revisione</th>
+<th>Modello Certificato</th>
+<th>Revisione Certificato</th>
+<th>Modello Lista Strumenti</th>
+<th>Revisione Lista Strumenti</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -198,11 +210,13 @@
 			</c:otherwise>
 		</c:choose>
 		</td>
-		<td>${configurazione.modello }</td>
-		<td>${configurazione.revisione}</td>
+		<td>${configurazione.modello_certificato }</td>
+		<td>${configurazione.revisione_certificato}</td>
+		<td>${configurazione.modello_lista_strumenti }</td>
+		<td>${configurazione.revisione_lista_strumenti}</td>
 		<td>
 		<%-- <a class="btn btn-warning" onClick="modalModifica('${configurazione.id_cliente}','${configurazione.nome_cliente}','${configurazione.id_sede }','${configurazione.nome_sede }','${configurazione.tipo_rapporto.id}','${configurazione.nome_file_logo }','${configurazione.id_firma }')"><i class="fa fa-edit"></i></a> --%>
-		<a class="btn btn-warning custom toolTip" title="Click per modificare la configurazione"  onClick="modalModifica('${configurazione.id_cliente}','${configurazione.id_sede }','${configurazione.tipo_rapporto.id }','${configurazione.nome_file_logo }','${configurazione.id_firma }','${configurazione.modello }','${configurazione.revisione }')"><i class="fa fa-edit"></i></a>
+		<a class="btn btn-warning custom toolTip" title="Click per modificare la configurazione"  onClick="modalModifica('${configurazione.id_cliente}','${configurazione.id_sede }','${configurazione.tipo_rapporto.id }','${configurazione.nome_file_logo }','${configurazione.id_firma }','${configurazione.modello_certificato }','${configurazione.revisione_certificato }','${configurazione.modello_lista_strumenti }','${configurazione.revisione_lista_strumenti }')"><i class="fa fa-edit"></i></a>
 		<a class="btn btn-primary custom toolTip" title="Click per scaricare il logo" onClick="callAction('gestioneConfigurazioniClienti.do?action=download_logo&id_cliente=${utl:encryptData(configurazione.id_cliente)}&id_sede=${utl:encryptData(configurazione.id_sede) }&tipo_rapporto=${utl:encryptData(configurazione.tipo_rapporto.id) }')"><i class="fa fa-image"></i></a>
 		</td>
 	</tr>
@@ -291,7 +305,15 @@
 	<label>Revisione</label>
 		<input type="text" class="form-control" id="revisione_mod" name="revisione_mod">
 		</div>
+		<div class="col-md-3">
+		<label>Modello Lista Strumenti</label>
+		<input type="text" class="form-control" id="modello_lista_strumenti_mod" name="modello_lista_strumenti_mod">
+		</div>
 		
+						<div class="col-md-3">
+		<label>Revisione Lista Strumenti</label>
+		<input type="text" class="form-control" id="revisione_lista_strumenti_mod" name="revisione_lista_strumenti_mod">
+		</div>
 		
 		</div><br>
 		
@@ -653,7 +675,7 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
      
      
      
-     function modalModifica(id_cliente,  id_sede,  tipo_rapporto, nome_file, firma, modello, revisione){
+     function modalModifica(id_cliente,  id_sede,  tipo_rapporto, nome_file, firma, modello, revisione, modello_lista_strumenti, revisione_lista_strumenti){
     	 
     	
     	 $('#mod_cliente').val(id_cliente);
@@ -683,7 +705,8 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
     	 $('#tipo_rapporto_old').val(tipo_rapporto);
     	 $('#modello_mod').val(modello);
     	 $('#revisione_mod').val(revisione);
-    	 
+    	 $('#modello_lista_strumenti_mod').val(modello_lista_strumenti);
+    	 $('#revisione_lista_strumenti_mod').val(revisione_lista_strumenti);
       	 
     	 $('#myModalModifica').modal();
      }

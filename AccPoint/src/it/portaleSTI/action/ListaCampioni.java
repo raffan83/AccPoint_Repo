@@ -108,12 +108,19 @@ public class ListaCampioni extends HttpServlet {
 				String manutenzione =request.getParameter("manutenzione");
 				String verificazione = (String) request.getSession().getAttribute("verificazione");
 				String tipo_evento = request.getParameter("tipo_evento");
+				String campioni_verificazione = request.getParameter("campioni_verificazione");
 	
 				ArrayList<CampioneDTO> listaCampioni=new ArrayList<CampioneDTO>();
 	
 				if(date==null || date.equals(""))
 				{
-					listaCampioni =GestioneCampioneDAO.getListaCampioni(null,idCompany, session);
+					if(campioni_verificazione!=null) {
+						listaCampioni =GestioneCampioneDAO.getListaCampioniVerificazione(session);	
+					}else {
+						listaCampioni =GestioneCampioneDAO.getListaCampioni(null,idCompany, session);
+						
+					}
+					
 				}
 				else
 				{
@@ -315,6 +322,8 @@ public class ListaCampioni extends HttpServlet {
 					session.close();
 				
 			}
+			
+
 		} 
 		catch (Exception ex) {
 			session.getTransaction().rollback();

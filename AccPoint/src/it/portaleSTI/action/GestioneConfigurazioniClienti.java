@@ -143,6 +143,8 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 					String filename = null;
 					String modello = null;
 					String revisione = null;
+					String modello_lista_strumenti = null;
+					String revisione_lista_strumenti = null;
 					FileItem file = null;
 					
 					for (FileItem item : items) {
@@ -168,6 +170,12 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							else if(item.getFieldName().equals("revisione")) {
 								revisione = item.getString();
 							}	
+							else if(item.getFieldName().equals("revisione_lista_strumenti")) {
+								revisione_lista_strumenti = item.getString();
+							}	
+							else if(item.getFieldName().equals("modello_lista_strumenti")) {
+								modello_lista_strumenti = item.getString();
+							}	
 						}
 						else {
 							file = item;
@@ -183,9 +191,27 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
 					
 					if(seleziona_tutte.equals("YES")) {
-						ArrayList<SedeDTO> lista_sedi_cliente = GestioneAnagraficaRemotaBO.getSediFromCliente(listaSedi, cliente.get__id());
+						ArrayList<SedeDTO> lista_sedi_cliente = GestioneAnagraficaRemotaBO.getSediFromCliente(listaSedi, cliente.get__id());						
 						ArrayList<String> lista_id_sedi_esistenti = new ArrayList<String>(); 
-						if(lista_sedi_cliente.size()>0) {			
+						if(lista_sedi_cliente.size()>0) {	
+							
+							ConfigurazioneClienteDTO configurazione = new ConfigurazioneClienteDTO();
+							configurazione.setId_cliente(cliente.get__id());
+							configurazione.setNome_cliente(cliente.getNome());
+							configurazione.setId_sede(0);
+							
+							configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
+							configurazione.setId_firma(Integer.parseInt(firma));
+							GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
+							configurazione.setNome_file_logo(filename);
+							configurazione.setModello_certificato(modello);
+							configurazione.setRevisione_certificato(revisione);
+							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
+							configurazione.setModello_lista_strumenti(modello_lista_strumenti);
+							session.save(configurazione);
+							
+							
+							
 							int j = 0;
 							for (SedeDTO s : lista_sedi_cliente) {
 								if(s.getId__cliente_()==cliente.get__id()) {
@@ -193,7 +219,7 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 										lista_id_sedi_esistenti.add(s.getDescrizione());
 									}else {
 										
-										ConfigurazioneClienteDTO configurazione = new ConfigurazioneClienteDTO();
+										configurazione = new ConfigurazioneClienteDTO();
 										configurazione.setId_cliente(cliente.get__id());
 										configurazione.setNome_cliente(cliente.getNome());
 										configurazione.setId_sede(s.get__id());
@@ -202,16 +228,18 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 									
 										configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
 										configurazione.setId_firma(Integer.parseInt(firma));
-										configurazione.setModello(modello);
-										configurazione.setRevisione(revisione);
-										if(j==0) {
-											GestioneConfigurazioneClienteBO.uploadFile(file, s.getId__cliente_(), s.get__id());
+										configurazione.setModello_certificato(modello);
+										configurazione.setRevisione_certificato(revisione);
+										configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
+										configurazione.setModello_lista_strumenti(modello_lista_strumenti);
+										//if(j==0) {
+										//	GestioneConfigurazioneClienteBO.uploadFile(file, s.getId__cliente_(), s.get__id());
 											//GestioneConfigurazioneBO.uploadFile(file, lista_sedi_cliente.get(j).getId__cliente_(), lista_sedi_cliente.get(j).get__id());
-										}else{
+										//}else{
 											String filePath = Costanti.PATH_FOLDER+"\\"+"LoghiCompany\\ConfigurazioneClienti\\";
-											FileUtils.copyFile(new File(filePath + lista_sedi_cliente.get(j-1).getId__cliente_()+"\\"+lista_sedi_cliente.get(j-1).get__id()+"\\"+filename),
+											FileUtils.copyFile(new File(filePath + lista_sedi_cliente.get(j).getId__cliente_()+"\\"+0+"\\"+filename),
 													new File(filePath + lista_sedi_cliente.get(j).getId__cliente_()+"\\"+lista_sedi_cliente.get(j).get__id()+"\\"+filename));
-										}									
+										//}									
 										configurazione.setNome_file_logo(filename);
 										session.save(configurazione);
 										j++;
@@ -253,8 +281,10 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							configurazione.setId_firma(Integer.parseInt(firma));
 							GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
 							configurazione.setNome_file_logo(filename);
-							configurazione.setModello(modello);
-							configurazione.setRevisione(revisione);
+							configurazione.setModello_certificato(modello);
+							configurazione.setRevisione_certificato(revisione);
+							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
+							configurazione.setModello_lista_strumenti(modello_lista_strumenti);
 							session.save(configurazione);
 							myObj.addProperty("success", true);
 							myObj.addProperty("messaggio", "Configurazione inserita con successo!");
@@ -280,8 +310,10 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							GestioneConfigurazioneClienteBO.uploadFile(file,cliente.get__id(), Integer.parseInt(id_sede.split("_")[0]));
 							
 							configurazione.setNome_file_logo(filename);
-							configurazione.setModello(modello);
-							configurazione.setRevisione(revisione);
+							configurazione.setModello_certificato(modello);
+							configurazione.setRevisione_certificato(revisione);
+							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
+							configurazione.setModello_lista_strumenti(modello_lista_strumenti);
 							session.save(configurazione);
 							myObj.addProperty("success", true);
 							myObj.addProperty("messaggio", "Configurazione inserita con successo!");
@@ -315,6 +347,9 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 					String filename = null;
 					String modello = null;
 					String revisione = null;
+					String modello_lista_strumenti = null;
+					String revisione_lista_strumenti = null;
+					
 					FileItem file = null;
 					
 					String cliente_old = null;
@@ -353,6 +388,12 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							else if(item.getFieldName().equals("revisione_mod")) {
 								revisione = item.getString();
 							}	
+							else if(item.getFieldName().equals("revisione_lista_strumenti_mod")) {
+								revisione_lista_strumenti = item.getString();
+							}	
+							else if(item.getFieldName().equals("modello_lista_strumenti_mod")) {
+								modello_lista_strumenti = item.getString();
+							}	
 						}
 						else {
 							file = item;
@@ -383,8 +424,10 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 										configurazione.setNome_sede(lista_sedi_cliente.get(i).getDescrizione()+ " - " +lista_sedi_cliente.get(i).getIndirizzo());									
 										configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
 										configurazione.setId_firma(Integer.parseInt(firma));
-										configurazione.setModello(modello);
-										configurazione.setRevisione(revisione);
+										configurazione.setModello_certificato(modello);
+										configurazione.setRevisione_certificato(revisione);
+										configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
+										configurazione.setModello_lista_strumenti(modello_lista_strumenti);
 										if(filename!=null && !filename.equals("")) {
 											if(i==0) {
 												GestioneConfigurazioneClienteBO.uploadFile(file, lista_sedi_cliente.get(i).getId__cliente_(), lista_sedi_cliente.get(i).get__id());
@@ -408,8 +451,10 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							
 							configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
 							configurazione.setId_firma(Integer.parseInt(firma));
-							configurazione.setModello(modello);
-							configurazione.setRevisione(revisione);
+							configurazione.setModello_certificato(modello);
+							configurazione.setRevisione_certificato(revisione);
+							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
+							configurazione.setModello_lista_strumenti(modello_lista_strumenti);
 							if(filename!=null && !filename.equals("")) {
 								GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
 								configurazione.setNome_file_logo(filename);
@@ -437,8 +482,10 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 								GestioneConfigurazioneClienteBO.uploadFile(file,cliente.get__id(), Integer.parseInt(id_sede.split("_")[0]));
 								configurazione.setNome_file_logo(filename);
 							}
-							configurazione.setModello(modello);
-							configurazione.setRevisione(revisione);
+							configurazione.setModello_certificato(modello);
+							configurazione.setRevisione_certificato(revisione);
+							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
+							configurazione.setModello_lista_strumenti(modello_lista_strumenti);
 							session.update(configurazione);
 							myObj.addProperty("success", true);
 							myObj.addProperty("messaggio", "Configurazione modificata con successo!");

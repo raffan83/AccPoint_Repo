@@ -12,9 +12,10 @@ public class ConfigurazioneClienteDTO implements Serializable{
 	private TipoRapportoDTO tipo_rapporto;
 	private int id_firma;
 	private String nome_file_logo;
-	private String modello;
-	private String revisione;
-	
+	private String modello_certificato;
+	private String revisione_certificato;
+	private String modello_lista_strumenti;
+	private String revisione_lista_strumenti;
 	
 	public int getId_cliente() {
 		return id_cliente;
@@ -59,17 +60,29 @@ public class ConfigurazioneClienteDTO implements Serializable{
 		this.nome_file_logo = nome_file_logo;
 	}
 
-	public String getRevisione() {
-		return revisione;
+	public String getModello_lista_strumenti() {
+		return modello_lista_strumenti;
 	}
-	public void setRevisione(String revisione) {
-		this.revisione = revisione;
+	public void setModello_lista_strumenti(String modello_lista_strumenti) {
+		this.modello_lista_strumenti = modello_lista_strumenti;
 	}
-	public String getModello() {
-		return modello;
+	public String getRevisione_lista_strumenti() {
+		return revisione_lista_strumenti;
 	}
-	public void setModello(String modello) {
-		this.modello = modello;
+	public void setRevisione_lista_strumenti(String revisione_lista_strumenti) {
+		this.revisione_lista_strumenti = revisione_lista_strumenti;
+	}
+	public String getModello_certificato() {
+		return modello_certificato;
+	}
+	public void setModello_certificato(String modello_certificato) {
+		this.modello_certificato = modello_certificato;
+	}
+	public String getRevisione_certificato() {
+		return revisione_certificato;
+	}
+	public void setRevisione_certificato(String revisione_certificato) {
+		this.revisione_certificato = revisione_certificato;
 	}
 
 }

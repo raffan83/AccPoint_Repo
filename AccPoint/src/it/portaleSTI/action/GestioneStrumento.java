@@ -29,6 +29,7 @@ import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
@@ -41,6 +42,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaListaStrumenti;
+import it.portaleSTI.bo.GestioneConfigurazioneClienteBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -159,7 +161,10 @@ public class GestioneStrumento extends HttpServlet {
 				
 				ArrayList<StrumentoDTO> arrayStrumenti = GestioneStrumentoBO.getStrumentiByIds(idsStrumenti, session);
 				
-				new CreateSchedaListaStrumenti(arrayStrumenti,cliente, sede ,session,getServletContext(), user);
+				ConfigurazioneClienteDTO conf = GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromId(Integer.parseInt(cliente), Integer.parseInt(sede), 0, session);
+						
+				
+				new CreateSchedaListaStrumenti(arrayStrumenti,cliente, sede ,session,getServletContext(), conf,  user);
 				
 				
 				File output = new File(Costanti.PATH_FOLDER+"//temp//SchedaListastrumenti.pdf");

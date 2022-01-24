@@ -55,7 +55,6 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <th>ID</th>
  <th>Data</th>
  <th>Tipo Attivita</th>
- <th>Pianificata</th>
  <th>Azioni</th>
 
  </tr></thead>
@@ -63,7 +62,8 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <tbody>
  
  <c:forEach items="${lista_attivita}" var="attivita" varStatus="loop">
-<tr>
+ <c:if test="${attivita.pianificata == 0 }">
+ <tr>
 <td>${attivita.id }</td>
 <td>
 <c:if test="${attivita.pianificata== 1}">
@@ -74,21 +74,18 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 </c:if></td>
 <td>${attivita.tipo_attivita.descrizione}</td>
 
-<td>
-<c:if test="${attivita.pianificata== 1}">
-Pianificata
-</c:if>
+
 </td>
 <td>
-<c:if test="${attivita.tipo_attivita.id==1 && attivita.pianificata==0}">
+<c:if test="${attivita.tipo_attivita.id==1}">
 <%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
 <button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.tipo_manutenzione }','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<c:if test="${attivita.tipo_attivita.id==4 && attivita.pianificata==0}">
+<c:if test="${attivita.tipo_attivita.id==4 }">
 <%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
 <button class="btn customTooltip btn-info" onClick="dettaglioFuoriServizio('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di fuori servizio"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<c:if test="${(attivita.tipo_attivita.id==2 || attivita.tipo_attivita.id==3) && attivita.pianificata==0}">
+<c:if test="${(attivita.tipo_attivita.id==2 || attivita.tipo_attivita.id==3) }">
 <button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.campo_sospesi }','${utl:escapeJS(attivita.operatore.nominativo) }','${attivita.certificato.misura.nCertificato }','${attivita.certificato.misura.id }','${utl:encryptData(attivita.certificato.misura.id)}')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data}','${attivita.tipo_manutenzione }','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.campo_sospesi) }','${attivita.operatore.id }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.certificato.id }', '${attivita.pianificata }')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
@@ -101,6 +98,9 @@ Pianificata
 </td>
 
 	</tr>
+ 
+ </c:if>
+
 	
 	</c:forEach>
  

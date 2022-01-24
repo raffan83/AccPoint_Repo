@@ -31,11 +31,18 @@
           <property name="id_firma" type="int">
             <column name="id_firma" />
         </property>
-         <property name="modello" type="java.lang.String">
+         <property name="modello_certificato" type="java.lang.String">
             <column name="modello" />
         </property>
-         <property name="revisione" type="java.lang.String">
+         <property name="revisione_certificato" type="java.lang.String">
             <column name="revisione" />
+        </property>
+        
+         <property name="modello_lista_strumenti" type="java.lang.String">
+            <column name="modello_lista_strumenti" />
+        </property>
+         <property name="revisione_lista_strumenti" type="java.lang.String">
+            <column name="revisione_lista_strumenti" />
         </property>
         
     </class>

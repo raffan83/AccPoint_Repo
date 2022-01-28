@@ -57,6 +57,12 @@
          <property name="esito" type="java.lang.String">
             <column name="esito" />
         </property>
+         <property name="posizione_salita" type="java.lang.String">
+            <column name="posizione_salita" />
+        </property>
+         <property name="posizione_discesa" type="java.lang.String">
+            <column name="posizione_discesa" />
+        </property>
         
     </class>
 </hibernate-mapping>

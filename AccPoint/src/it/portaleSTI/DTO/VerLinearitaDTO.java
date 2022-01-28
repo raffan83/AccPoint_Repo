@@ -47,6 +47,9 @@ public class VerLinearitaDTO {
 
 	
 	private int tipoAzzeramento;
+	
+	private String posizione_salita;
+	private String posizione_discesa;
 
 	public VerLinearitaDTO() {
 	}
@@ -185,6 +188,22 @@ public class VerLinearitaDTO {
 
 	public void setIndicazioneDiscesa(BigDecimal indicazioneDiscesa) {
 		this.indicazioneDiscesa = indicazioneDiscesa;
+	}
+
+	public String getPosizione_salita() {
+		return posizione_salita;
+	}
+
+	public void setPosizione_salita(String posizione_salita) {
+		this.posizione_salita = posizione_salita;
+	}
+
+	public String getPosizione_discesa() {
+		return posizione_discesa;
+	}
+
+	public void setPosizione_discesa(String posizione_discesa) {
+		this.posizione_discesa = posizione_discesa;
 	}
 
 

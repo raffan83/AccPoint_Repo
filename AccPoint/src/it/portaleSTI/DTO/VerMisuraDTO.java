@@ -100,6 +100,8 @@ public class VerMisuraDTO {
 	
 	private int id_misura_old;
 	
+	private String note_combinazioni;
+	
 		public String getNote_obsolescenza() {
 		return note_obsolescenza;
 	}
@@ -447,6 +449,14 @@ public class VerMisuraDTO {
 
 	public void setId_misura_old(int id_misura_old) {
 		this.id_misura_old = id_misura_old;
+	}
+
+	public String getNote_combinazioni() {
+		return note_combinazioni;
+	}
+
+	public void setNote_combinazioni(String note_combinazioni) {
+		this.note_combinazioni = note_combinazioni;
 	}
 	
 	

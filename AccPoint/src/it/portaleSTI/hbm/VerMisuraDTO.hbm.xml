@@ -169,13 +169,18 @@
       <column name="tipo_risposta" />
      </property>      
      
-        <property name="note_attestato" type="java.lang.String">
+     <property name="note_attestato" type="java.lang.String">
       <column name="note_attestato" />
+     </property>  
+     
+      <property name="note_combinazioni" type="java.lang.String">
+      <column name="note_combinazioni" />
      </property>  
      
      <property name="id_misura_old" type="int">
             <column name="id_misura_old" />
         </property> 
+      
      
     </class>
 </hibernate-mapping>

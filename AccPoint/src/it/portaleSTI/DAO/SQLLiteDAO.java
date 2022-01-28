@@ -82,40 +82,42 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"luogo_verifica varchar(255));";
 
 private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id Integer primary key autoincrement," + 
-													"  denominazione varchar(255) NOT NULL," + 
-													"  costruttore varchar(50) default NULL," + 
-													"  modello varchar(50) default NULL," + 
-													"  matricola varchar(50) NOT NULL," + 
-													"  classe int(1) NOT NULL default '0'," + 
-													"  id_ver_tipo_strumento int(11) NOT NULL default '0'," + 
-													"  um varchar(4) NOT NULL," + 
-													"  data_ultima_verifica varchar(50) default NULL," + 
-													"  data_prossima_verifica varchar(50) default NULL," + 
-													"  portata_min_C1 decimal(10,5) ," + 
-													"  portata_max_C1 decimal(10,5) ," + 
-													"  div_ver_C1 decimal(10,5) ," + 
-													"  div_rel_C1 decimal(10,5) ," + 
-													"  numero_div_C1 decimal(10,5) ," + 
-													"  portata_min_C2 decimal(10,5) ," + 
-													"  portata_max_C2 decimal(10,5)," + 
-													"  div_ver_C2 decimal(10,5) ," + 
-													"  div_rel_C2 decimal(10,5)," + 
-													"  numero_div_C2 decimal(10,5) ," + 
-													"  portata_min_C3 decimal(10,5)," + 
-													"  portata_max_C3 decimal(10,5) ," + 
-													"  div_ver_C3 decimal(10,5) ," + 
-													"  div_rel_C3 decimal(10,5) ," + 
-													"  numero_div_C3 decimal(10,5)," + 
-													"  id_cliente int(11) default NULL," + 
-													"  id_sede int(11) default NULL," + 
-													"  nome_cliente int(11) default NULL," + 
-													"  nome_sede int(11) default NULL,"
-													+ "anno_marcatura_CE int(4) default NULL,"
-													+ "data_ms  varchar(50) default NULL,"
-													+ "id_tipologia int(11) default NULL,"
-													+ "freq_mesi int(11) default NULL,"
-													+ "creato varchar(1) default NULL,"
-													+ "famiglia_strumento varchar(5) default NULL);";
+													" denominazione varchar(255) NOT NULL," + 
+													" costruttore varchar(50) default NULL," + 
+													" modello varchar(50) default NULL," + 
+													" matricola varchar(50) NOT NULL," + 
+													" classe int(1) NOT NULL default '0'," + 
+													" id_ver_tipo_strumento int(11) NOT NULL default '0'," + 
+													" um varchar(4) NOT NULL," + 
+													" data_ultima_verifica varchar(50) default NULL," + 
+													" data_prossima_verifica varchar(50) default NULL," + 
+													" portata_min_C1 decimal(10,5) ," + 
+													" portata_max_C1 decimal(10,5) ," + 
+													" div_ver_C1 decimal(10,5) ," + 
+													" div_rel_C1 decimal(10,5) ," + 
+													" numero_div_C1 decimal(10,5) ," + 
+													" portata_min_C2 decimal(10,5) ," + 
+													" portata_max_C2 decimal(10,5)," + 
+													" div_ver_C2 decimal(10,5) ," + 
+													" div_rel_C2 decimal(10,5)," + 
+													" numero_div_C2 decimal(10,5) ," + 
+													" portata_min_C3 decimal(10,5)," + 
+													" portata_max_C3 decimal(10,5) ," + 
+													" div_ver_C3 decimal(10,5) ," + 
+													" div_rel_C3 decimal(10,5) ," + 
+													" numero_div_C3 decimal(10,5)," + 
+													" id_cliente int(11) default NULL," + 
+													" id_sede int(11) default NULL," + 
+													" nome_cliente int(11) default NULL," + 
+													" nome_sede int(11) default NULL,"+
+													" anno_marcatura_CE int(4) default NULL,"+
+													" data_ms  varchar(50) default NULL,"+
+													" id_tipologia int(11) default NULL,"+
+													" freq_mesi int(11) default NULL,"+
+													" creato varchar(1) default NULL,"+
+													" famiglia_strumento varchar(5) default NULL,"+
+													" posizione_cambio int(11),"+
+													" masse_corredo varchar(255));";
 
 private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
 																  "codice varchar(255) ,"+
@@ -552,7 +554,8 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 												" gOrg decimal(10,2),"+
 												" gUtil decimal(10,2),"+
 												" gFactor decimal(10,2),"+
-												" numeroSigilli int(1));";
+												" numeroSigilli int(1),"+
+												" note_combinazioni varchar(255));";
 									
 			
 	private static String sqlCreateAccuratezzaVER="CREATE TABLE ver_accuratezza (id Integer primary key autoincrement," + 
@@ -605,7 +608,9 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 													"  errore_cor_discesa decimal(10,5)," + 
 													"  mpe decimal(10,5)," + 
 													"  divisione decimal(10,5)," + 
-													"  esito varchar(10));" ;
+													"  esito varchar(10),"+
+													"  posizione_salita varchar(10),"+
+													"  posizione_discesa varchar(10));" ;
 	
 	private static String sqlCreateRipetibilitaVER="CREATE TABLE ver_ripetibilita (id Integer primary key autoincrement," + 
 													"  id_misura int(11)," + 
@@ -617,7 +622,8 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 													"  portata decimal(10,5)," + 
 													"  delta_portata decimal(10,5)," + 
 													"  mpe decimal(10,5)," + 
-													"  esito varchar(10));" ;
+													"  esito varchar(10)," +
+													"  posizione varchar(10));" ;
 	
 	private static String sqlCreateMobilitaVER="CREATE TABLE ver_mobilita (id Integer primary key autoincrement," + 
 																		"  id_misura int(11)," + 

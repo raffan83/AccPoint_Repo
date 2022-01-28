@@ -104,6 +104,12 @@
         <property name="nome_sede" type="java.lang.String">
             <column name="nome_sede" />
         </property>
+         <property name="posizione_cambio" type="int">
+            <column name="posizione_cambio" />
+        </property>
+         <property name="masse_corredo" type="java.lang.String">
+            <column name="masse_corredo" />
+        </property>
         <many-to-one name="famiglia_strumento" class="it.portaleSTI.DTO.VerFamigliaStrumentoDTO" fetch="join" lazy="false">
             <column name="id_famiglia_strumento" />
         </many-to-one>

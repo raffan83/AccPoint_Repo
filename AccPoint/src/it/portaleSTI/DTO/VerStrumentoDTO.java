@@ -44,6 +44,8 @@ public class VerStrumentoDTO {
 	private VerFamigliaStrumentoDTO famiglia_strumento;
 	private Set<VerLegalizzazioneBilanceDTO> lista_legalizzazione_bilance= new HashSet<VerLegalizzazioneBilanceDTO>(0);;
 	private String ultimo_verificatore;
+	private int posizione_cambio;
+	private String masse_corredo;
 	
 	public String getCreato() {
 		return creato;
@@ -268,7 +270,17 @@ public class VerStrumentoDTO {
 	public void setUltimo_verificatore(String ultimo_verificatore) {
 		this.ultimo_verificatore = ultimo_verificatore;
 	}
+	public int getPosizione_cambio() {
+		return posizione_cambio;
+	}
+	public void setPosizione_cambio(int posizione_cambio) {
+		this.posizione_cambio = posizione_cambio;
+	}
+	public String getMasse_corredo() {
+		return masse_corredo;
+	}
+	public void setMasse_corredo(String masse_corredo) {
+		this.masse_corredo = masse_corredo;
+	}
 
-
-	
 }

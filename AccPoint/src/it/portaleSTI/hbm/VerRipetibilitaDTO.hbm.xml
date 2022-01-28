@@ -39,7 +39,10 @@
         </property>
        <property name="esito" type="java.lang.String">
             <column name="esito" />
-        </property> 
+        </property>
+          <property name="posizione" type="java.lang.String">
+            <column name="posizione" />
+        </property>
         
     </class>
 </hibernate-mapping>

@@ -29,6 +29,8 @@ public class VerRipetibilitaDTO {
 	private int numeroRipetizione;
 
 	private BigDecimal portata;
+	
+	private String posizione;
 
 
 	public VerRipetibilitaDTO() {
@@ -122,6 +124,14 @@ public class VerRipetibilitaDTO {
 
 	public void setIdMisura(int idMisura) {
 		this.idMisura = idMisura;
+	}
+
+	public String getPosizione() {
+		return posizione;
+	}
+
+	public void setPosizione(String posizione) {
+		this.posizione = posizione;
 	}
 
 	

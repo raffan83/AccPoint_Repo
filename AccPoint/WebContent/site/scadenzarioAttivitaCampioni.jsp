@@ -82,7 +82,7 @@
 	<br><br> 
 	<div class="col-xs-12">
 	
-	<a class="btn btn-danger pull-right"  onClick="esportaCampioniScadenzario(1)">Esporta Campioni in scadenza</a>
+	<a class="btn btn-danger pull-right"  onClick="esportaCampioniScadenzario(0,1)">Esporta Campioni in scadenza</a>
 	
 	</div>
 	

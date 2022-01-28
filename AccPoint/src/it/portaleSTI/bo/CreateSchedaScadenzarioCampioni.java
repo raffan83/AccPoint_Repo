@@ -158,21 +158,21 @@ public class CreateSchedaScadenzarioCampioni {
 		
 		DRDataSource dataSource = new DRDataSource(listaCodici);
 		
-		int i = 0;
-		for (CampioneDTO campione : campioni) {		
+		//int i = 0;
+		for (int i = 0;i<campioni.size();i++) {		
 				
-				if(campione!=null)
+				if(campioni.get(i)!=null)
 				{
 					ArrayList<String> arrayPs = new ArrayList<String>();
 					String tipo = "";
-					if(campione.getDataScadenza()!=null && !campione.getCodice().equals("NA")) 
+					if(campioni.get(i).getDataScadenza()!=null && !campioni.get(i).getCodice().equals("NA")) 
 					{
-	 				arrayPs.add(campione.getCodice());
-	 				arrayPs.add(campione.getNome());
-	 				arrayPs.add(campione.getMatricola());
+	 				arrayPs.add(campioni.get(i).getCodice());
+	 				arrayPs.add(campioni.get(i).getNome());
+	 				arrayPs.add(campioni.get(i).getMatricola());
 	 				if(descrizioni!=null && descrizioni.get(i)!=null && descrizioni.get(i)==1) {
 	 					tipo = "Manutenzione";
-	 				}else if(descrizioni!=null && descrizioni.get(i)!=null && descrizioni.get(i)==2) {
+	 				}else if(descrizioni!=null && descrizioni.get(i)!=null && (descrizioni.get(i)==2 || descrizioni.get(i)==5)) {
 	 					tipo = "Verifica Intermedia";
 	 				}else if(descrizioni!=null && descrizioni.get(i)!=null && descrizioni.get(i)==3) {
 	 					tipo = "Taratura";
@@ -180,7 +180,7 @@ public class CreateSchedaScadenzarioCampioni {
 	 				arrayPs.add(tipo);
 	 				arrayPs.add(df.format(sdf.parse(date.get(i))));
 	 				if(tipo.equals("Taratura")) {
-	 					arrayPs.add(campione.getAttivita_di_taratura());
+	 					arrayPs.add(campioni.get(i).getAttivita_di_taratura());
 	 				}else {
 	 					arrayPs.add("");
 	 				}					
@@ -188,7 +188,7 @@ public class CreateSchedaScadenzarioCampioni {
 			         Object[] listaValori = arrayPs.toArray();
 			        
 			         dataSource.add(listaValori);
-			         i++;
+			        // i++;
 					}     
 				}
 			

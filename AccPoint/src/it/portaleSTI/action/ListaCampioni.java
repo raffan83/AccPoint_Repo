@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -34,6 +35,7 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
+import it.portaleSTI.DTO.TipoEventoRegistroDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.Exception.STIException;
@@ -116,6 +118,34 @@ public class ListaCampioni extends HttpServlet {
 				{
 					if(campioni_verificazione!=null) {
 						listaCampioni =GestioneCampioneDAO.getListaCampioniVerificazione(session);	
+						
+						
+//						for (CampioneDTO campioneDTO : listaCampioni) {
+//							ArrayList<RegistroEventiDTO> lista = GestioneCampioneBO.getListaEvento(campioneDTO.getId(), 5, session);
+//							if(lista.size()==0) {
+//								RegistroEventiDTO evento = new RegistroEventiDTO();
+//								evento.setTipo_evento(new TipoEventoRegistroDTO(5, ""));
+//								evento.setCampione(campioneDTO);
+//								
+//								Calendar c = Calendar.getInstance();
+//								c.setTime(campioneDTO.getDataVerifica());
+//								if(campioneDTO.getFrequenza_verifica_intermedia()==0) {
+//									c.add(Calendar.MONTH, 12);
+//								}else {
+//									c.add(Calendar.MONTH, campioneDTO.getFrequenza_verifica_intermedia());	
+//								}
+//								
+//								
+//								evento.setData_scadenza(c.getTime());
+//								evento.setPianificato(1);
+//								session.save(evento);
+//							}
+//						}
+						
+						
+						
+						
+						
 					}else {
 						listaCampioni =GestioneCampioneDAO.getListaCampioni(null,idCompany, session);
 						
@@ -257,14 +287,20 @@ public class ListaCampioni extends HttpServlet {
 				String data_start = request.getParameter("data_start");
 				String data_end = request.getParameter("data_end");
 				String tipo = request.getParameter("tipo");
+				String verificazione = request.getParameter("verificazione");
 				
 				boolean lat = false;
 				if(tipo!=null && tipo.equals("1")) {
 					lat = true;
 				}
+				
+				if(verificazione == null || !verificazione.equals("1")) {
+					verificazione = "0";
+				}
+				
 				PrintWriter out = response.getWriter();
 							
-				JsonArray listaCampioni = GestioneCampioneBO.getCampioniScadenzaDate(data_start, data_end, lat, cmp.getId());
+				JsonArray listaCampioni = GestioneCampioneBO.getCampioniScadenzaDate(data_start, data_end, lat, cmp.getId(), Integer.parseInt(verificazione));
 			
 				JsonArray campioni = (JsonArray) listaCampioni.get(0);
 				JsonArray descrizioni = (JsonArray)listaCampioni.get(1);

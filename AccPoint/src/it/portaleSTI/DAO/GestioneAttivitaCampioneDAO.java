@@ -363,7 +363,7 @@ public static ArrayList<HashMap<String, Integer>> getListaRegistroEventiScadenzi
 		}
 		
 		
-		if(att.getTipo_evento().getId()==2 && att.getData_scadenza()!=null && att.getPianificato()==1) {
+		if(att.getTipo_evento().getId()==2 && att.getData_scadenza()!=null ) {
 			
 			int i=1;
 			if(mapTarature.get(sdf.format(att.getData_scadenza()))!=null) {
@@ -390,30 +390,30 @@ public static ArrayList<HashMap<String, Integer>> getListaRegistroEventiScadenzi
 
     }
 	
-	if(verificazione!=null) {
-		query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and campione_verificazione = 1 and  codice not like '%CDT%'");	
-	}else {
-		query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and codice not like '%CDT%'");		
-	}
-	
-	
-	lista_campioni=query.list();
-	
-	for (CampioneDTO c : lista_campioni) {
-		
-		if(c.getDataScadenza()!=null) {
-		
-		int i=1;
-		if(mapTarature.get(sdf.format(c.getDataScadenza()))!=null) {
-			i= mapTarature.get(sdf.format(c.getDataScadenza()))+1;
-		}
-		
-		mapTarature.put(sdf.format(c.getDataScadenza()), i);
-		
-	}
-		
-	}
-	
+//	if(verificazione!=null) {
+//		query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and campione_verificazione = 1 and  codice not like '%CDT%'");	
+//	}else {
+//		query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and codice not like '%CDT%'");		
+//	}
+//	
+//	
+//	lista_campioni=query.list();
+//	
+//	for (CampioneDTO c : lista_campioni) {
+//		
+//		if(c.getDataScadenza()!=null) {
+//		
+//		int i=1;
+//		if(mapTarature.get(sdf.format(c.getDataScadenza()))!=null) {
+//			i= mapTarature.get(sdf.format(c.getDataScadenza()))+1;
+//		}
+//		
+//		mapTarature.put(sdf.format(c.getDataScadenza()), i);
+//		
+//	}
+//		
+//	}
+//	
 	listMap.add(mapManutenzioni);
 	listMap.add(mapVerifiche);
 	listMap.add(mapTarature);
@@ -480,9 +480,26 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 
 	
 	}else {
-		query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = :_tipo_evento and campione.campione_verificazione = :_campione_verificazione and campione.statoCampione!='F' and (obsoleta = null or obsoleta = 'N')");
-		query.setParameter("_tipo_evento", Integer.parseInt(tipo_evento));
-		query.setParameter("_campione_verificazione",verificazione);
+		
+		
+		if(tipo_evento.equals("1")) {
+			
+			query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = :_tipo_evento and campione.campione_verificazione = :_campione_verificazione and campione.statoCampione!='F' and (obsoleta = null or obsoleta = 'N')");
+			query.setParameter("_tipo_evento", Integer.parseInt(tipo_evento));
+			query.setParameter("_campione_verificazione",verificazione);
+			registro = (ArrayList<RegistroEventiDTO>) query.list();
+			
+			
+		}else {
+			query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = :_tipo_evento and data_scadenza = :_data_scadenza and campione.campione_verificazione = :_campione_verificazione and campione.statoCampione!='F' and (obsoleta = null or obsoleta = 'N')");
+			query.setParameter("_tipo_evento", Integer.parseInt(tipo_evento));
+			query.setParameter("_campione_verificazione",verificazione);
+			query.setParameter("_data_scadenza",df.parse(data));
+		
+			
+			
+		}
+		
 		registro = (ArrayList<RegistroEventiDTO>) query.list();
 		
 		if(registro!=null) {
@@ -497,7 +514,7 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 					if(df.format(date).equals(data) && !lista.contains(r.getCampione())) {
 						lista.add(r.getCampione());	
 					}
-				}else if(tipo_evento.equals("5")) {
+				}else  {
 					lista.add(r.getCampione());	
 				}
 			}

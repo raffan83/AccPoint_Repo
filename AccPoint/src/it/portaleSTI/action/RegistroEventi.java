@@ -362,6 +362,14 @@ public class RegistroEventi extends HttpServlet {
 					
 				//	CreateSchedaApparecchiatura x = new CreateSchedaApparecchiatura(campione, lista_attivita_manutenzione, evento, session);
 					
+					if(tipo_evento.equals("2")) {
+						campione.setDataVerifica(evento.getData_evento());
+						campione.setDataScadenza(evento.getData_scadenza());
+						session.update(campione);
+					}
+					
+					
+					
 					myObj = new JsonObject();
 					PrintWriter  out = response.getWriter();
 					myObj.addProperty("success", true);

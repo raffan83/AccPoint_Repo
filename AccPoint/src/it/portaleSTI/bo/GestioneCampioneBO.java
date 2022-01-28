@@ -233,9 +233,9 @@ public class GestioneCampioneBO {
 	}
 
 
-	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end, boolean lat, int id_company) throws Exception {
+	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end, boolean lat, int id_company, int verificazione) throws Exception {
 		
-		return GestioneCampioneDAO.getCampioniScadenzaDate(data_start, data_end, lat,id_company);
+		return GestioneCampioneDAO.getCampioniScadenzaDate(data_start, data_end, lat,id_company, verificazione);
 	}
 
 

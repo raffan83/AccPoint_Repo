@@ -11876,7 +11876,7 @@ $.ajax({
 }
 
 
-function esportaCampioniScadenzario(tipo){	
+function esportaCampioniScadenzario(verificazione, tipo){	
 	
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	pleaseWaitDiv.modal();
@@ -11891,6 +11891,7 @@ function esportaCampioniScadenzario(tipo){
 	dataObj.data_start = start;
 	dataObj.data_end = end;
 	dataObj.tipo = tipo;
+	dataObj.verificazione = verificazione;
 	
 		$.ajax({
 	type: "POST",

@@ -116,7 +116,7 @@ private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id
 													" freq_mesi int(11) default NULL,"+
 													" creato varchar(1) default NULL,"+
 													" famiglia_strumento varchar(5) default NULL,"+
-													" posizione_cambio int(11),"+
+													" posizione_cambio int(11) default 0,"+
 													" masse_corredo varchar(255));";
 
 private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
@@ -1559,6 +1559,8 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			
 			
 			misura.setNumeroSigilli(rs.getInt("numeroSigilli"));
+			
+			misura.setNote_combinazioni(rs.getString("note_combinazioni"));
 
 			String dataRiparazione=rs.getString("data_riparazione");
 
@@ -1629,6 +1631,9 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			strumento.setFreqMesi(rs.getInt("freq_mesi"));
 			strumento.setCreato(rs.getString("creato"));
 			strumento.setFamiglia_strumento(new VerFamigliaStrumentoDTO(rs.getString("famiglia_strumento"),""));
+			
+			strumento.setPosizione_cambio(rs.getInt("posizione_cambio"));
+			strumento.setMasse_corredo(rs.getString("masse_corredo"));
 			misura.setVerStrumento(strumento);
 			
 			listaMisura.add(misura);
@@ -1781,6 +1786,8 @@ private static LinkedHashSet<VerLinearitaDTO> getListaProvaLinearita(Connection 
 		    ver_lin.setMpe(rs.getBigDecimal("mpe"));
 		    ver_lin.setDivisione(rs.getBigDecimal("divisione"));
 		    ver_lin.setEsito(rs.getString("esito"));
+		    ver_lin.setPosizione_salita(rs.getString("posizione_salita"));
+		    ver_lin.setPosizione_discesa(rs.getString("posizione_discesa"));
 		    
 		    listaLinearita.add(ver_lin);
 		    
@@ -1883,6 +1890,7 @@ private static LinkedHashSet<VerRipetibilitaDTO> getListaProvaRipetibilita(Conne
 		    ver_rip.setDeltaPortata(rs.getBigDecimal("delta_portata"));
 		    ver_rip.setMpe(rs.getBigDecimal("mpe"));
 		    ver_rip.setEsito(rs.getString("esito"));
+		    ver_rip.setPosizione(rs.getString("posizione"));
 		    
 		    listaRipetibilita.add(ver_rip);
 		    

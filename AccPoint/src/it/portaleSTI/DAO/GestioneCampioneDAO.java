@@ -643,35 +643,35 @@ public class GestioneCampioneDAO {
 			
 		}else {
 			
-			if(verificazione!=0) {
-				query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F' and codice NOT LIKE  '%CDT%' and campione_verificazione = :_verificazione");	
-			}else {
-				query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F' and codice NOT LIKE  '%CDT%'");
-			}
-			
-			query.setParameter("_date_start", df.parse(data_start));
-			query.setParameter("_date_end", df.parse(data_end));
-			query.setParameter("_id_company", id_company);		
-			if(verificazione!=0) {
-				query.setParameter("_verificazione", verificazione);	
-			}
-				
-				
-			lista = (ArrayList<CampioneDTO>) query.list();				
-				
-			for (CampioneDTO campioneDTO : lista) {
-				lista_tipo.add(3);
-				lista_date.add(df.format(campioneDTO.getDataScadenza()));
-			}
+//			if(verificazione!=0) {
+//				query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F' and codice NOT LIKE  '%CDT%' and campione_verificazione = :_verificazione");	
+//			}else {
+//				query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F' and codice NOT LIKE  '%CDT%'");
+//			}
+//			
+//			query.setParameter("_date_start", df.parse(data_start));
+//			query.setParameter("_date_end", df.parse(data_end));
+//			query.setParameter("_id_company", id_company);		
+//			if(verificazione!=0) {
+//				query.setParameter("_verificazione", verificazione);	
+//			}
+//				
+//				
+//			lista = (ArrayList<CampioneDTO>) query.list();				
+//				
+//			for (CampioneDTO campioneDTO : lista) {
+//				lista_tipo.add(3);
+//				lista_date.add(df.format(campioneDTO.getDataScadenza()));
+//			}
 
 				
 			Query query_reg =	null;
 			
 			if(verificazione!=0) {
-				query_reg = session.createQuery("from RegistroEventiDTO where (tipo_evento.id = 1 or tipo_evento = 5) and campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')  and campione.campione_verificazione = :_verificazione");
+				query_reg = session.createQuery("from RegistroEventiDTO where and campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')  and campione.campione_verificazione = :_verificazione");
 				query_reg.setParameter("_verificazione", verificazione);
 			}else {
-				query_reg = session.createQuery("from RegistroEventiDTO where (tipo_evento.id = 1 or tipo_evento = 5) and campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");
+				query_reg = session.createQuery("from RegistroEventiDTO where  campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");
 			}
 			
 			
@@ -695,7 +695,7 @@ public class GestioneCampioneDAO {
 					}else {
 						if(r.getData_scadenza()!=null && (df.format(r.getData_scadenza()).equals(data_start) || ( r.getData_scadenza().after(df.parse(data_start)) && r.getData_scadenza().before(df.parse(data_end))))) {
 							lista.add(r.getCampione());
-							lista_tipo.add(5);
+							lista_tipo.add(r.getTipo_evento().getId());
 							lista_date.add(df.format(r.getData_scadenza()));
 								
 						}

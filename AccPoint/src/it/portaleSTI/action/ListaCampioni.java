@@ -180,7 +180,8 @@ public class ListaCampioni extends HttpServlet {
 					else {
 						if(date.length()>=10)
 						{
-							listaCampioni =GestioneCampioneDAO.getListaCampioni(date.substring(0,10),idCompany, session);
+							//listaCampioni =GestioneCampioneDAO.getListaCampioni(date.substring(0,10),idCompany, session);
+							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data_lat, tipo_evento, 0);
 						}
 					}
 					

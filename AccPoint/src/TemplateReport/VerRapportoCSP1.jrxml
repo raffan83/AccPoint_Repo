@@ -141,7 +141,7 @@
 				<text><![CDATA[Unità di misura:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="582" width="359" height="21" uuid="17371a5a-cbee-4f12-a61b-8fdbe2a96c4c"/>
+				<reportElement x="0" y="601" width="359" height="21" uuid="17371a5a-cbee-4f12-a61b-8fdbe2a96c4c"/>
 				<textElement>
 					<font isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -172,43 +172,43 @@
 				<textFieldExpression><![CDATA[$P{tipo_strumento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="131" y="602" width="422" height="19" uuid="36348c7c-2e35-411f-b1c9-c81ab6af631d"/>
+				<reportElement x="131" y="619" width="422" height="19" uuid="36348c7c-2e35-411f-b1c9-c81ab6af631d"/>
 				<textFieldExpression><![CDATA[$P{registro}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="620" width="101" height="21" uuid="0ee98a73-ae7e-40ee-b291-1e487a423f46"/>
+				<reportElement x="0" y="638" width="101" height="21" uuid="0ee98a73-ae7e-40ee-b291-1e487a423f46"/>
 				<text><![CDATA[Data verificazione:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="131" y="621" width="422" height="20" uuid="1caf3c40-5a02-4517-a277-f4562fc8e016"/>
+				<reportElement x="131" y="637" width="422" height="20" uuid="1caf3c40-5a02-4517-a277-f4562fc8e016"/>
 				<textFieldExpression><![CDATA[$P{data_verificazione}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="641" width="110" height="22" uuid="6e995e2f-9b36-45fa-932f-3e3902535d51"/>
+				<reportElement x="0" y="656" width="110" height="22" uuid="6e995e2f-9b36-45fa-932f-3e3902535d51"/>
 				<text><![CDATA[Procedura di verificaz.:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="131" y="641" width="422" height="22" uuid="98c22a2e-1e82-4b2f-8f27-652b753ca73a"/>
+				<reportElement x="131" y="655" width="422" height="22" uuid="98c22a2e-1e82-4b2f-8f27-652b753ca73a"/>
 				<textFieldExpression><![CDATA[$P{procedura}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="602" width="101" height="18" uuid="b93e59e0-2b42-4c7d-a752-bee376468328"/>
+				<reportElement x="0" y="620" width="101" height="18" uuid="b93e59e0-2b42-4c7d-a752-bee376468328"/>
 				<text><![CDATA[Registro:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="155" y="683" width="422" height="22" uuid="c4ee22cc-a260-4bf8-844e-70bd98e5aa90"/>
+				<reportElement x="155" y="699" width="422" height="22" uuid="c4ee22cc-a260-4bf8-844e-70bd98e5aa90"/>
 				<textFieldExpression><![CDATA[$P{nome_riparatore}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="155" y="733" width="422" height="22" uuid="6eebe6a7-9806-4b7f-9a62-96a840fd385f"/>
+				<reportElement x="155" y="742" width="422" height="22" uuid="6eebe6a7-9806-4b7f-9a62-96a840fd385f"/>
 				<textFieldExpression><![CDATA[$P{data_riparazione}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="155" y="663" width="110" height="22" uuid="5d64f313-1c19-44ee-ad60-f70602288b89"/>
+				<reportElement x="155" y="678" width="110" height="22" uuid="5d64f313-1c19-44ee-ad60-f70602288b89"/>
 				<text><![CDATA[Nome riparatore]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="155" y="713" width="110" height="22" uuid="2565ea7b-13d0-4d70-84e6-2bf9b6a7b1f2"/>
+				<reportElement x="155" y="721" width="110" height="22" uuid="2565ea7b-13d0-4d70-84e6-2bf9b6a7b1f2"/>
 				<text><![CDATA[Data riparazione]]></text>
 			</staticText>
 			<staticText>
@@ -351,7 +351,7 @@
 				<text><![CDATA[Rapporto di verificazione periodica numero:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="665" width="131" height="92" uuid="cf4a7921-f623-4a6e-aaac-d8d209fa63be"/>
+				<reportElement x="0" y="673" width="131" height="92" uuid="cf4a7921-f623-4a6e-aaac-d8d209fa63be"/>
 				<textElement textAlignment="Justified">
 					<paragraph lineSpacing="1_1_2"/>
 				</textElement>
@@ -470,6 +470,14 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{legalizzazione_title_small}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="131" y="582" width="421" height="19" uuid="a40561ce-74cb-4a54-89a4-f92095c47a71"/>
+				<textFieldExpression><![CDATA[$P{masse_corredo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="582" width="110" height="19" uuid="35289c4a-6094-473b-84d5-c1c45e1d217f"/>
+				<text><![CDATA[Masse a corredo:]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

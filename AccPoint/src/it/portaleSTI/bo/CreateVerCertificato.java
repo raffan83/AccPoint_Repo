@@ -73,7 +73,7 @@ public class CreateVerCertificato {
 		InputStream is = null;
 		
 
-		if(misura.getVerStrumento().getTipo().getId()==1) {
+		if(misura.getVerStrumento().getTipo().getId()==1 || misura.getVerStrumento().getTipo().getId()==4 || misura.getVerStrumento().getTipo().getId()==5) {
 			is = PivotTemplate.class.getResourceAsStream("VerCertificatoCSP1.jrxml");
 		}else if(misura.getVerStrumento().getTipo().getId()==2) {
 			is = PivotTemplate.class.getResourceAsStream("VerCertificatoDPP1.jrxml");
@@ -318,6 +318,16 @@ public class CreateVerCertificato {
 		}else {
 			report.addParameter("data_messa_in_servizio", "");
 		}
+		
+		if(misura.getVerStrumento().getMasse_corredo()!=null) {
+			report.addParameter("masse_corredo",misura.getVerStrumento().getMasse_corredo());
+		}else{
+			if(misura.getVerStrumento().getTipo().getId()==1|| misura.getVerStrumento().getTipo().getId()==4|| misura.getVerStrumento().getTipo().getId()==5) {
+			report.addParameter("masse_corredo", "");
+			}
+		}
+		
+		
 		if(misura.getVerStrumento().getPortata_max_C1()!=null) {
 			report.addParameter("portata_max_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
 		}else{
@@ -347,7 +357,7 @@ public class CreateVerCertificato {
 		}else{
 			report.addParameter("numero_divisioni_c1", "");
 		}
-		if(misura.getVerStrumento().getTipo().getId()!=1) {
+		if(misura.getVerStrumento().getTipo().getId()!=1 && misura.getVerStrumento().getTipo().getId()!=4 && misura.getVerStrumento().getTipo().getId()!=5) {
 			if(misura.getVerStrumento().getTipo().getId()==2) {
 				
 				if(misura.getVerStrumento().getPortata_max_C3()!=null && misura.getVerStrumento().getPortata_max_C3().compareTo(BigDecimal.ZERO)==1) {

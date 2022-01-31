@@ -91,7 +91,7 @@ public class CreateVerRapporto {
 		
 		InputStream is = null;
 		
-		if(misura.getVerStrumento().getTipo().getId()==1) {
+		if(misura.getVerStrumento().getTipo().getId()==1|| misura.getVerStrumento().getTipo().getId()==4|| misura.getVerStrumento().getTipo().getId()==5) {
 			is = PivotTemplate.class.getResourceAsStream("VerRapportoCSP1.jrxml");
 		}else if(misura.getVerStrumento().getTipo().getId()==2) {
 			is = PivotTemplate.class.getResourceAsStream("VerRapportoDPP1.jrxml");
@@ -393,7 +393,13 @@ public class CreateVerRapporto {
 			report.addParameter("um", "");
 		}
 		
-
+		if(misura.getVerStrumento().getMasse_corredo()!=null) {
+			report.addParameter("masse_corredo",misura.getVerStrumento().getMasse_corredo());
+		}else{
+			if(misura.getVerStrumento().getTipo().getId()==1|| misura.getVerStrumento().getTipo().getId()==4|| misura.getVerStrumento().getTipo().getId()==5) {
+			report.addParameter("masse_corredo", "");
+			}
+		}
 						
 		
 		if(misura.getVerStrumento().getPortata_max_C1()!=null) {
@@ -430,7 +436,7 @@ public class CreateVerRapporto {
 		}else{
 			report.addParameter("numero_divisioni_c1", "");
 		}
-		if(misura.getVerStrumento().getTipo().getId()!=1) {
+		if(misura.getVerStrumento().getTipo().getId()!=1 && misura.getVerStrumento().getTipo().getId()!=4 && misura.getVerStrumento().getTipo().getId()!=5) {
 
 				
 				numero_campi = 2;
@@ -789,8 +795,10 @@ public class CreateVerRapporto {
 				
 				
 				
-	
+				VerticalListBuilder vl_decentramento = null;
 				
+				
+				if(misura.getVerStrumento().getTipo().getId()!=4) {
 				
 				SubreportBuilder subreport_decentramento = cmp.subreport(getTableDecentramento(lista_decentramento, i+1));
 	
@@ -856,13 +864,13 @@ public class CreateVerRapporto {
 	
 				String esito_decentramento = lista_decentramento.get(i*10).getEsito();
 				
-				if(esito_decentramento.equals("NEGATIVO")) {
+				if(esito_decentramento!=null && esito_decentramento.equals("NEGATIVO")) {
 					esito_globale = false;
 				}
 				
 				
 				
-				VerticalListBuilder vl_decentramento = null;
+			
 				
 				if(speciale.equals("Si")) {
 					
@@ -913,7 +921,11 @@ public class CreateVerRapporto {
 				
 				
 				
-				
+				}else {
+					
+					vl_decentramento = cmp.verticalList();
+					
+				}
 
 						
 				

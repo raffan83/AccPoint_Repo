@@ -243,6 +243,7 @@ public class CreateCertificato {
 					GestioneStrumentoBO.update(strumento, session);
 					if(!multi) {
 						report.addParameter("dataEmissione",""+sdf.format(new Date()));
+					//	report.addParameter("dataEmissione","22/12/2021");
 					}else {
 						report.addParameter("dataEmissione",""+sdf.format(certificato.getDataCreazione()));	
 					}

@@ -7829,74 +7829,28 @@ function filtraCertificati(){
 		   
 		 });
 	   
-//	   var stringColumns = "";
-//	   table.columns().every( function () {
-//		    var visibility = this.visible();
-//		  
-//			   if(stringColumns!=""){
-//				   stringColumns+=";";
-//			   }
-//			   if(visibility && this.toArray()[0] != 0){
-//				   stringColumns+=""+this.toArray()[0];
-//
-//			   }
-//			 
-//		} );
+	   if(stringid==""){
+		   
+		   $('#myModalErrorContent').html("Nessuno strumento presente!");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			
+			$('#myModalError').modal('show');
+	   }else{
+		   cliente = $("#select1").val();
+		   sede = $("#select2").val();
+		   
 
-	   //cliente = $("#select1 option:selected").text();
-	   //sede = $("#select2 option:selected").text();
-	   
-	   cliente = $("#select1").val();
-	   sede = $("#select2").val();
-	   
-	   if(sede == "Non Associate"){
-		   sede = "";
+		   sede = sede.split("_")[0];
+		  
+		 	$.form("gestioneStrumento.do?action=pdffiltrati", {"idstrumenti" : stringid,  "cliente" : cliente, "sede" : sede }, 'POST').submit();
+		 	
 	   }
+	   
+
 	  
-	 	$.form("gestioneStrumento.do?action=pdffiltrati", {"idstrumenti" : stringid,  "cliente" : cliente, "sede" : sede }, 'POST').submit();
 	 	
 	 	
-	 	
-	   
-//	   $.ajax({
-//			type: "POST",
-//			url: 'gestioneStrumento.do?action=pdffiltrati',
-//			data: {"idstrumenti":stringid},
-// 			success: function( data, textStatus) {
-//			
-//			pleaseWaitDiv.modal('hide');
-//			
-//				if(data.success)
-//				{ 	
-//					  
-//
-//				
-//					  
-//				}else{
-//					
-//					pleaseWaitDiv.modal('hide');
-//					
-//					$('#myModalErrorContent').html(data.messaggio);
-//					$('#myModalError').removeClass();
-//					$('#myModalError').addClass("modal modal-warning");
-//	 				$('#myModalError').modal('show');
-//				
-//				}
-//			},
-//			
-//			error: function(jqXHR, textStatus, errorThrown){
-//				pleaseWaitDiv.modal('hide');
-//			
-//				$('#myModalErrorContent').html("Nessuna Misura presente per questo strumento");
-//				$('#myModalError').removeClass();
-//				$('#myModalError').addClass("modal modal-warning");
-//				$('#myModalError').modal('show');
-//			
-//			
-//				
-//				}		
-//		});
-	   
 	   
    }
  

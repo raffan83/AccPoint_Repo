@@ -28,6 +28,7 @@ import TemplateReport.PivotTemplate;
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
@@ -53,17 +54,17 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaListaStrumenti {
-	public CreateSchedaListaStrumenti( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, Session session, ServletContext context, ConfigurazioneClienteDTO conf,UtenteDTO user) throws Exception {
+	public CreateSchedaListaStrumenti( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, Session session, ServletContext context, ConfigurazioneClienteDTO conf,UtenteDTO user, String nome_cliente, String nome_sede) throws Exception {
 		try {
 		
-			build(listaStrumenti,cliente, sede , context,conf, user);
+			build(listaStrumenti,cliente, sede , context,conf, user, nome_cliente, nome_sede);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			throw e;
 		} 
 	}
-	private void build( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, ServletContext context, ConfigurazioneClienteDTO conf,UtenteDTO user) throws Exception {
+	private void build( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, ServletContext context, ConfigurazioneClienteDTO conf,UtenteDTO user, String nome_cliente, String nome_sede) throws Exception {
 		
 		InputStream is = PivotTemplate.class.getResourceAsStream("schedaListaStrumentiMetrologiaMOD-LAB-013V.jrxml");
 		 
@@ -110,8 +111,12 @@ public class CreateSchedaListaStrumenti {
 				report.addParameter("modello_lista_strumenti",conf.getModello_lista_strumenti());
 				report.addParameter("revisione_lista_strumenti",conf.getRevisione_lista_strumenti());
 			}else {
-				report.addParameter("cliente",cliente);
-				report.addParameter("sede",sede);
+								
+				report.addParameter("cliente",nome_cliente.replaceAll("Cliente", "").replaceAll("\\r", "").replaceAll("\\n", ""));
+				
+				report.addParameter("sede",nome_sede);
+			
+				
 				report.addParameter("modello_lista_strumenti","MOD-LAB-010");
 				report.addParameter("revisione_lista_strumenti","Rev. 0 del 19/01/2004");
 			}

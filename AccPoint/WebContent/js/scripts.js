@@ -7842,8 +7842,15 @@ function filtraCertificati(){
 		   
 
 		   sede = sede.split("_")[0];
-		  
-		 	$.form("gestioneStrumento.do?action=pdffiltrati", {"idstrumenti" : stringid,  "cliente" : cliente, "sede" : sede }, 'POST').submit();
+		   
+		   nome_cliente = $("#select1")[0].parentNode.innerText;
+		   nome_sede = $("#select2 option:selected").text();
+		   
+		   if(sede == 0){
+			   nome_sede = "";
+		   }
+		   
+		 	$.form("gestioneStrumento.do?action=pdffiltrati", {"idstrumenti" : stringid,  "cliente" : cliente, "sede" : sede , "nome_cliente" : nome_cliente, "nome_sede" : nome_sede  }, 'POST').submit();
 		 	
 	   }
 	   

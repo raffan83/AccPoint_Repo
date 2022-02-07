@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VerCheckListNew" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1600539e-1cf6-4f84-a460-eaddc8f29dde">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="75" splitType="Stretch">
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="0" y="-14" width="129" height="76" uuid="0769d02c-e16e-4033-a0e4-9d58f041873a"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="97" y="-7" width="369" height="32" uuid="b689a36f-942b-4311-96e2-ba41e9e98afa"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Organismo di Verificazione Periodica ]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="450" y="-14" width="103" height="76" uuid="0946951b-7f8a-482b-8778-65cdc2b693fd"/>
+				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="97" y="11" width="369" height="32" uuid="4d8bed30-747a-47ea-a016-1cd3179a3d60"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[n. FR323 ai sensi del D.M. n. 93/2017]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="721" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="44" width="553" height="15" uuid="e7fd7847-ef5e-4a57-9285-a397ccb3e2f3"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="70" width="553" height="20" uuid="9f932367-f84e-4127-9130-fe6b6b7c573f"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Fixed"/>
+				</textElement>
+				<text><![CDATA[CHECK LIST DEL CONTROLLO PRELIMINARE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="87" width="416" height="21" uuid="8ad85c82-7a5f-440e-b144-ef46497274c0"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Tipologia di controllo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="87" width="44" height="21" uuid="ac683681-83b0-4d64-8fca-548b29cb3e75"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="462" y="87" width="44" height="21" uuid="103093d3-d478-4491-8449-af67162272ab"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="506" y="87" width="44" height="21" uuid="5e08303a-f884-4903-a735-bc452a771cfa"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[N/A]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="108" width="416" height="57" uuid="2ac48af9-31ae-4fca-83d4-5cfab947ccff"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="false" isItalic="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[A) Verificare se lo strumento di misura sottoposto a verificazione è munito dell’ulteriore documentazione indicata nel Decreto di ammissione a verifica es. manuale istruzione, manuale di uso e manutenzione, data sheet, ecc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="165" width="416" height="38" uuid="98f7271c-344a-4aba-ba0f-512dbf9fc378"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="false" isItalic="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[B) Verificare l'esistenza e la corrispondenza sullo strumento di misura delle iscrizioni regolamentari previste nel corrispondente decreto di ammissione a verifica.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="203" width="416" height="40" uuid="1b0f5aaa-f4a4-49c3-8e4f-0256de87d6ea"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="false" isItalic="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[C) Accertare la presenza, integrità, leggibilità e rispondenza ai documenti di omologazione e piani di legalizzazione dello strumento di misura, delle  impronte di verificazione prima nazionale.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="243" width="416" height="24" uuid="91b0a233-c654-4fe4-87d4-da74e0420b14"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="false" isItalic="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[D) Verificare l’esistenza sullo strumento di misura dei sigilli o di altri elementi di protezione in rispondenza a decreto di ammissione a verifica.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="267" width="416" height="131" uuid="bef11a27-f989-4594-8290-d8a732194928"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="false" isItalic="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[E) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione) antecedentemente alla prima verificazione periodica.
+Se applicabile, procedere con i seguenti punti 1, 2 e 3. 
+In caso di non applicabilità, procedere al successivo punto F
+1. Verificare presenza della dichiarazione (o sua copia) rilasciata al titolare dello strumento dal riparatore, contenente la descrizione dell’intervento effettuato e dei sigilli provvisori applicati e di cui è stata informata la CCIAA competente per territorio;
+2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sulla dichiarazione di cui al precedente punto E.1.
+3. Annotare sul libretto metrologico la dichiarazione di riparazione (o sua copia) rilasciata al titolare dello strumento dal riparatore indicata al precedente punto E.1.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="398" width="416" height="80" uuid="2ccb81ba-f045-4e7d-9b2c-213f5015ddba"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="false" isItalic="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[F) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) successivamente alla prima verificazione periodica:
+Se applicabile, procedere con i seguenti punti 1 e 2.
+1. Verificare la presenza dell’annotazione della riparazione effettuata dal riparatore all’interno del libretto metrologico dello strumento di misura;
+2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sul libretto metrologico di cui al precedente punto F.1.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="478" width="416" height="30" uuid="281798ef-5641-4c2b-bd08-71104079425b"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="false" isItalic="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[G) Verificare le condizioni esterne dello strumento, dei dispositivi di comando, regolazione (es. piedini di livello e bolla) e di visualizzazione (es. display, scale graduate);]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="508" width="416" height="32" uuid="3e8956c0-9ef1-4c35-99fa-0b8893a4f900"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="false" isItalic="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[H) Controllare la presenza e lo stato di aggiornamento del libretto metrologico dello strumento sottoposto a verificazione.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="540" width="548" height="31" uuid="f66c2170-0e73-4dd0-817e-ca05f84e7cfd"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Nota: segnare per ciascun controllo della “check list” la corrispondente casella SI/NO o N/A (non applicabile) con la lettera “X” maiuscola.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="643" width="110" height="31" uuid="2b805536-08e4-436a-b359-685dea285284"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Controllo preliminare]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="280" y="643" width="140" height="31" uuid="90b5751c-ef3d-4fcc-a91b-2feff54851e8"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{esito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="108" width="44" height="57" uuid="8ede201e-5aaa-47f1-8b80-f49118d85afb"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_22}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="418" y="108" width="44" height="57" uuid="29df7f44-6806-4140-845d-e6a758470be0"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_21}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="506" y="108" width="44" height="57" uuid="350d1f05-adf8-40c1-b4b5-36953823f375"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_23}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="165" width="44" height="38" uuid="d699bb67-ea15-498a-a267-6497d9fbd487"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_32}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="418" y="165" width="44" height="38" uuid="37fcde27-fd52-4559-a00a-de53d6b6e999"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_31}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="506" y="165" width="44" height="38" uuid="50ac0914-3c88-4aab-b808-2f15c2204004"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_33}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="203" width="44" height="40" uuid="5e66e47e-6ca5-4ede-9bfb-0ee82c564eeb"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_42}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="418" y="203" width="44" height="40" uuid="dde59fff-6b3b-4503-8bb4-f727e8018517"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_41}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="506" y="203" width="44" height="40" uuid="f273cd00-68eb-45e5-95f4-275e8b548056"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_43}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="243" width="44" height="24" uuid="4bdadbca-0a3a-4b0b-81dd-e376ce9439f4"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_52}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="418" y="243" width="44" height="24" uuid="5414897b-fb1d-4457-8c31-105edf2c294f"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_51}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="506" y="243" width="44" height="24" uuid="1f3ba174-4bf5-4954-b5fa-45960aa23f7e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_53}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="267" width="44" height="131" uuid="525c7610-0ae7-4471-9904-0e3dc966d8ad"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_72}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="418" y="267" width="44" height="131" uuid="212e0bbf-23f8-4959-a94d-54103e5fe09a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_71}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="506" y="267" width="44" height="131" uuid="32a148dc-31da-49e4-ab39-08c17fa6f102"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_73}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="398" width="44" height="80" uuid="f2bd11d4-6eae-4838-9933-3770b41ad3d7"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_82}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="418" y="398" width="44" height="80" uuid="12ea7982-fc07-4422-9802-984e7268b291"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_81}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="506" y="398" width="44" height="80" uuid="1eda34c9-3f89-434e-b2f1-41b8c598abf2"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_83}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="478" width="44" height="30" uuid="eade3728-d6d2-466c-b98c-af3eece01c15"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_92}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="418" y="478" width="44" height="30" uuid="ac4b78dc-4b93-4474-9319-85ca1fcce9f9"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_91}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="506" y="478" width="44" height="30" uuid="8093aa19-e8b1-4720-ae26-9b6da11eb092"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_93}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="508" width="44" height="32" uuid="d5855793-b2ef-4598-86b3-8ad1c9e9104a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_102}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="418" y="508" width="44" height="32" uuid="2b7c410c-e9cc-4e04-997b-c65e7ca5f389"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_101}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="506" y="508" width="44" height="32" uuid="155e563b-d1aa-41d4-8922-b803d1385557"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{x_103}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="49" y="677" width="120" height="22" uuid="b6cfdaf7-0bac-45f9-8bfd-bde08c63ccfb"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Data emissione]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="49" y="697" width="120" height="22" uuid="aa3fbbaf-8ead-4312-bdfb-df56fd1efec6"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="386" y="675" width="120" height="22" uuid="c6aec85e-a8c8-49c6-9fcd-f70472c43510"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Firma operatore tecnico]]></text>
+			</staticText>
+			<line>
+				<reportElement x="49" y="713" width="120" height="1" uuid="042a2cf9-9530-48c4-ac14-bcfad8da2535"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="388" y="713" width="120" height="1" uuid="ba046c1c-38d7-4852-8b17-a15bf8350a36"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="505" y="65" width="12" height="20" uuid="a64dd259-37d1-4381-8501-5ff4c1439164"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="517" y="65" width="7" height="20" uuid="a26a67fe-cede-4e57-a8fa-dd9bab1998fc"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[di]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="477" y="65" width="28" height="20" uuid="ac2d9269-da59-4f74-8766-7f9f3bf6ec03"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pagina]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="526" y="65" width="17" height="20" uuid="2f2ef782-94ec-4617-833e-d42c94a54798"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" onErrorType="Blank">
+				<reportElement x="386" y="690" width="120" height="21" uuid="7e90a7b9-6c95-4354-a4ee-beeaf8501699"/>
+				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="29" width="553" height="21" uuid="035cd465-94ae-4edb-a64a-0af24988feb7"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Allegato:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="17" width="553" height="21" uuid="d975965b-e3cc-4c70-b0f8-7a5081c88880"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_rapporto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="2" width="553" height="21" uuid="4a4e922f-225c-4b0f-ba49-b5fb4bd407c3"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Rapporto di verificazione periodica numero:]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+</jasperReport>

@@ -109,6 +109,7 @@
 <th>Tecnico Verificatore</th>
 <th>Comunicazione Preventiva</th>
 <th>Comunicazione Esito</th>
+<th>Classe strumento</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -173,6 +174,7 @@
 	SI
 	</c:if>
 	</td>
+	<td>${misura.verStrumento.classe }</td>
 	<td>
 	<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
 	</td>
@@ -330,43 +332,43 @@ function filtraMisure(){
 		$('#btnPreventiva').removeClass('disabled')
 		$('#btnEsito').removeClass('disabled')
 		 table
-	        .columns( 16 )
+	        .columns( 19 )
 	        .search( "" )
 	        .draw();
 		 table
-	        .columns( 17 )
+	        .columns( 20 )
 	        .search( "" )
 	        .draw();
 	}
 	else if($('#btnPreventiva').hasClass('disabled') && !$('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_16').val('SI');
-		$('#inputsearchtable_17').val('');
+		$('#inputsearchtable_19').val('SI');
+		$('#inputsearchtable_20').val('');
 		 table
-	        .columns( 16 )
+	        .columns( 19 )
 	        .search( "SI" )
 	        .draw();
 		 table
-	        .columns( 17 )
+	        .columns( 20 )
 	        .search( "" )
 	        .draw();
 	}
 	else if(!$('#btnPreventiva').hasClass('disabled') && $('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_16').val('');
-		$('#inputsearchtable_17').val('SI');
+		$('#inputsearchtable_19').val('');
+		$('#inputsearchtable_20').val('SI');
 		 table
-	        .columns( 17 )
+	        .columns( 20 )
 	        .search( "SI" )
 	        .draw();
 	}
 	else if($('#btnPreventiva').hasClass('disabled') && $('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_16').val('SI');
-		$('#inputsearchtable_17').val('SI');
+		$('#inputsearchtable_19').val('SI');
+		$('#inputsearchtable_20').val('SI');
 		 table
-	        .columns( 16 )
+	        .columns( 19 )
 	        .search( "SI" )
 	        .draw();
 		 table
-	        .columns( 17 )
+	        .columns( 20 )
 	        .search( "SI" )
 	        .draw();
 	}
@@ -432,7 +434,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	 
 		    	  { responsivePriority: 1, targets: 14 },
-		    	  { responsivePriority: 2, targets: 21 },
+		    	  { responsivePriority: 2, targets: 22 },
 		    	  { responsivePriority: 3, targets: 11 }
 		    	  
 		               ], 	        

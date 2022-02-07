@@ -71,7 +71,7 @@
 <th>Conformità</th>
 
 <th>Data scadenza</th>
-
+<th>Archiviato</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -102,11 +102,16 @@
 	<td>${dpi.conformita }</td>
 
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_scadenza }"></fmt:formatDate></td>
+	<td>
+	<c:if test="${dpi.disabilitato == 1 }">
+	SI
+	</c:if>
+	</td>
 	<td>	
 
  	  <a class="btn btn-warning customTooltip" onClicK="modalModificaDpi('${dpi.id }','${dpi.tipo.id }','${dpi.collettivo }','${dpi.company.id }','${utl:escapeJS(dpi.modello) }','${utl:escapeJS(dpi.conformita) }','${utl:escapeJS(dpi.descrizione) }','${dpi.data_scadenza }')" title="Click per modificare la dpi"><i class="fa fa-edit"></i></a>
- 	  <c:if test="${dpi.assegnato == 0 }">
- 	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaDpi('${dpi.id }')" title="Click per eliminare il dpi"><i class="fa fa-trash"></i></a>
+ 	  <c:if test="${dpi.assegnato == 0 && dpi.disabilitato == 0}">
+ 	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaDpi('${dpi.id }')" title="Click per archiviare il dpi"><i class="fa fa-trash"></i></a>
  	  </c:if>   
 <%-- 	  <c:if test="${dpi.is_restituzione==0 }">
 	  <a class="btn btn-success customTooltip" onClicK="modalCreaRestituzione('${dpi.id }', ${dpi.quantita })" title="Crea restituzione DPI"><i class="fa fa-arrow-left"></i></a>
@@ -898,7 +903,7 @@ $('#company_mod').select2();
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 8 },
+		    	  { responsivePriority: 1, targets: 9 },
 		    	  
 		    	  
 		               ], 	        

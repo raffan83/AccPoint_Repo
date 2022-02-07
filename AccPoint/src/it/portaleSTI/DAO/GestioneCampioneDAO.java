@@ -668,7 +668,7 @@ public class GestioneCampioneDAO {
 			Query query_reg =	null;
 			
 			if(verificazione!=0) {
-				query_reg = session.createQuery("from RegistroEventiDTO where and campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')  and campione.campione_verificazione = :_verificazione");
+				query_reg = session.createQuery("from RegistroEventiDTO where  campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')  and campione.campione_verificazione = :_verificazione");
 				query_reg.setParameter("_verificazione", verificazione);
 			}else {
 				query_reg = session.createQuery("from RegistroEventiDTO where  campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");
@@ -851,6 +851,15 @@ public static void updateManutenzioniObsolete(CampioneDTO campione, Session sess
 }
 
 
+public static void updateTaratureObsolete(CampioneDTO campione, Session session) {
+
+	Query query = session.createQuery("update RegistroEventiDTO set obsoleta='S' where id_campione =:_id_campione and tipo_evento=2  ");
+	
+	query.setParameter("_id_campione", campione.getId());
+	
+	query.executeUpdate();
+	
+}
 
 
 public static ArrayList<RegistroEventiDTO> getListaManutenzioniNonObsolete(Session session, String verificazione) {

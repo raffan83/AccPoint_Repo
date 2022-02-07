@@ -10,6 +10,8 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -1323,9 +1325,19 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				if(tipo_data !=null && tipo_data.equals("data_scadenza") &&dateTo!=null) {
 					ArrayList<ForCorsoDTO> lista_corsi_successivi = GestioneFormazioneBO.getListaCorsiSuccessivi(dateFrom, session);
 					
+					Calendar c = Calendar.getInstance();
+					Date scadenza = new Date();
+					c.add(Calendar.DAY_OF_MONTH, 60);
+					scadenza = c.getTime();
+					
 					
 					for (ForCorsoDTO succ : lista_corsi_successivi) {
 						for(ForPartecipanteRuoloCorsoDTO part : lista_corsi) {
+							if(part.getCorso().getData_scadenza().before(scadenza) || part.getCorso().getData_scadenza().equals(scadenza)) {
+								part.getCorso().setIn_scadenza(1);
+							}
+							
+							
 							if(part.getCorso().getId()!=succ.getId() && part.getCorso().getCorso_cat().getId() == succ.getCorso_cat().getId() && part.getCorso().getData_scadenza().before(succ.getData_scadenza())) {
 								List<ForPartecipanteDTO> mainList = new ArrayList<ForPartecipanteDTO>();
 								mainList.addAll(succ.getListaPartecipanti());
@@ -1334,6 +1346,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 									part.setCorso_aggiornato(1);
 								}
 							}
+							
 						}
 					}
 					

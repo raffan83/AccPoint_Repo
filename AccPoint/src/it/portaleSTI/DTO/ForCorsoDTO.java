@@ -21,6 +21,7 @@ public class ForCorsoDTO {
 	private int disabilitato;
 	private int scheda_consegna_inviata;
 	private int durata;
+	private int in_scadenza;
 	
 	private Set<ForPartecipanteDTO> listaPartecipanti = new HashSet<ForPartecipanteDTO>(0);
 	private Set<ForReferenteDTO> listaReferenti = new HashSet<ForReferenteDTO>(0);
@@ -136,6 +137,12 @@ public class ForCorsoDTO {
 	}
 	public void setTipologia(String tipologia) {
 		this.tipologia = tipologia;
+	}
+	public int getIn_scadenza() {
+		return in_scadenza;
+	}
+	public void setIn_scadenza(int in_scadenza) {
+		this.in_scadenza = in_scadenza;
 	}
 
 	

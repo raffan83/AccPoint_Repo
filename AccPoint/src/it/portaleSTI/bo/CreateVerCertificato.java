@@ -73,15 +73,25 @@ public class CreateVerCertificato {
 		InputStream is = null;
 		
 
-		if(misura.getVerStrumento().getTipo().getId()==1 || misura.getVerStrumento().getTipo().getId()==4 || misura.getVerStrumento().getTipo().getId()==5) {
+		if(misura.getVerStrumento().getTipo().getId()==1 || misura.getVerStrumento().getTipo().getId()==5) {
 			is = PivotTemplate.class.getResourceAsStream("VerCertificatoCSP1.jrxml");
 		}else if(misura.getVerStrumento().getTipo().getId()==2) {
 			is = PivotTemplate.class.getResourceAsStream("VerCertificatoDPP1.jrxml");
-		}else {
+		}else if(misura.getVerStrumento().getTipo().getId()==4) {
+			is = PivotTemplate.class.getResourceAsStream("VerCertificatoCorredoEsternoP1.jrxml");
+		}		
+		else {
 			is = PivotTemplate.class.getResourceAsStream("VerCertificatoCPP1.jrxml");
 		}
 	
-		InputStream is2 =  PivotTemplate.class.getResourceAsStream("VerCertificatoP2.jrxml");
+		InputStream is2 =  null;
+		
+		 if(misura.getVerStrumento().getTipo().getId()==4) {
+			 is2 = PivotTemplate.class.getResourceAsStream("VerCertificatoCorredoEsternoP2.jrxml");
+		 }else {
+			 is2 = PivotTemplate.class.getResourceAsStream("VerCertificatoP2.jrxml");
+		 }
+		
 		
 		JasperReportBuilder report = DynamicReports.report();
 		JasperReportBuilder reportP2 = DynamicReports.report();
@@ -327,6 +337,25 @@ public class CreateVerCertificato {
 			}
 		}
 		
+		if(misura.getNote_combinazioni()!=null) {
+			
+			String note = "";
+			String [] array = misura.getNote_combinazioni().split("\\r?\\n");
+			
+			for(int i = 0; i<array.length;i++) {
+				note += " ["+array[i]+"] -";
+			}
+			if(!note.equals("")) {
+				note = note.substring(0, note.length()-1);
+			}
+			
+			report.addParameter("combinazioni_campioni",note);
+		}else{
+			if(misura.getVerStrumento().getTipo().getId()==4) {
+			report.addParameter("combinazioni_campioni", "");
+			}
+		}
+		
 		
 		if(misura.getVerStrumento().getPortata_max_C1()!=null) {
 			report.addParameter("portata_max_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros().toPlainString())+" "+misura.getVerStrumento().getUm());
@@ -462,24 +491,27 @@ public class CreateVerCertificato {
 			}
 		}
 		
-		if(misura.getMotivo_verifica().getId()==1) {
-			report.addParameter("croce1", "X");
-			report.addParameter("croce2", "");
-			report.addParameter("croce3", "");
-			report.addParameter("riparatore", "");
-			report.addParameter("data_riparazione", "");
-		}else if(misura.getMotivo_verifica().getId()==2) {
-			report.addParameter("croce1", "");
-			report.addParameter("croce2", "X");
-			report.addParameter("croce3", "");
-			report.addParameter("riparatore", misura.getNomeRiparatore());
-			report.addParameter("data_riparazione", misura.getDataRiparazione());
-		}else{
-			report.addParameter("croce1", "");
-			report.addParameter("croce2", "");
-			report.addParameter("croce3", "X");
-			report.addParameter("riparatore", "");
-			report.addParameter("data_riparazione", "");
+		if(misura.getVerStrumento().getTipo().getId()!=4) {			
+		
+			if(misura.getMotivo_verifica().getId()==1) {
+				report.addParameter("croce1", "X");
+				report.addParameter("croce2", "");
+				report.addParameter("croce3", "");
+				report.addParameter("riparatore", "");
+				report.addParameter("data_riparazione", "");
+			}else if(misura.getMotivo_verifica().getId()==2) {
+				report.addParameter("croce1", "");
+				report.addParameter("croce2", "X");
+				report.addParameter("croce3", "");
+				report.addParameter("riparatore", misura.getNomeRiparatore());
+				report.addParameter("data_riparazione", misura.getDataRiparazione());
+			}else{
+				report.addParameter("croce1", "");
+				report.addParameter("croce2", "");
+				report.addParameter("croce3", "X");
+				report.addParameter("riparatore", "");
+				report.addParameter("data_riparazione", "");
+			}
 		}
 		
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
@@ -501,7 +533,32 @@ public class CreateVerCertificato {
 //		if(logoAccredia!=null) {
 //			reportP2.addParameter("logo_accredia",logoAccredia);
 //		
-//			}		
+//			}
+		
+		
+		if(misura.getVerStrumento().getTipo().getId()==4 || misura.getVerStrumento().getTipo().getId()==5) {			
+			
+			if(misura.getMotivo_verifica().getId()==1) {
+				reportP2.addParameter("croce1", "X");
+				reportP2.addParameter("croce2", "");
+				reportP2.addParameter("croce3", "");
+				reportP2.addParameter("riparatore", "");
+				reportP2.addParameter("data_riparazione", "");
+			}else if(misura.getMotivo_verifica().getId()==2) {
+				reportP2.addParameter("croce1", "");
+				reportP2.addParameter("croce2", "X");
+				reportP2.addParameter("croce3", "");
+				reportP2.addParameter("riparatore", misura.getNomeRiparatore());
+				reportP2.addParameter("data_riparazione", misura.getDataRiparazione());
+			}else{
+				reportP2.addParameter("croce1", "");
+				reportP2.addParameter("croce2", "");
+				reportP2.addParameter("croce3", "X");
+				reportP2.addParameter("riparatore", "");
+				reportP2.addParameter("data_riparazione", "");
+			}
+		}
+		
 		
 		reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
 		//reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver_NEW.png"));

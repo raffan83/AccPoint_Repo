@@ -125,6 +125,9 @@
 <th>Azioni</th>
  </tr></thead>
  
+ 
+
+ 
  <tbody>
  
  	<c:forEach items="${lista_corsi }" var="corso_part" varStatus="loop">
@@ -133,7 +136,15 @@
  	<tr id="row_${loop.index}" style="background-color:#F8F26D" >
  	</c:if>
 	<c:if test="${corso_part.corso_aggiornato == 0 }">
- 	<tr id="row_${loop.index}" >
+	<c:choose>
+	<c:when test="${corso_part.corso.in_scadenza == 1 }">
+	<tr id="row_${loop.index}" style="background-color:#FA8989" >
+	</c:when>
+	
+	<c:otherwise>
+	<tr id="row_${loop.index}" >
+	</c:otherwise>
+ 	</c:choose>
  	</c:if>
 <td>${corso_part.corso.id }</td>
 <td>${corso_part.corso.commessa }</td>

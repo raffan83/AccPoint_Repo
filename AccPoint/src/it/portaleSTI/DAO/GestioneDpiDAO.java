@@ -33,7 +33,7 @@ public class GestioneDpiDAO {
 
 		ArrayList<ConsegnaDpiDTO> lista = null;
 		
-		Query query = session.createQuery("from ConsegnaDpiDTO where dpi.disabilitato = 0");
+		Query query = session.createQuery("from ConsegnaDpiDTO  ");
 		
 		lista = (ArrayList<ConsegnaDpiDTO>) query.list();
 		
@@ -99,7 +99,7 @@ public class GestioneDpiDAO {
 	public static ArrayList<DpiDTO> getListaDpi(Session session) {
 		ArrayList<DpiDTO> lista = null;
 		
-		Query query = session.createQuery("from DpiDTO where disabilitato = 0");
+		Query query = session.createQuery("from DpiDTO");
 		
 		lista = (ArrayList<DpiDTO>) query.list();
 		

@@ -172,9 +172,9 @@ public class CreateSchedaScadenzarioCampioni {
 	 				arrayPs.add(campioni.get(i).getMatricola());
 	 				if(descrizioni!=null && descrizioni.get(i)!=null && descrizioni.get(i)==1) {
 	 					tipo = "Manutenzione";
-	 				}else if(descrizioni!=null && descrizioni.get(i)!=null && (descrizioni.get(i)==2 || descrizioni.get(i)==5)) {
+	 				}else if(descrizioni!=null && descrizioni.get(i)!=null && ((descrizioni.get(i)==2 && campioni.get(i).getCodice().startsWith("LAT") )|| descrizioni.get(i)==5)) {
 	 					tipo = "Verifica Intermedia";
-	 				}else if(descrizioni!=null && descrizioni.get(i)!=null && descrizioni.get(i)==3) {
+	 				}else if(descrizioni!=null && descrizioni.get(i)!=null && (descrizioni.get(i)==3 || (descrizioni.get(i)==2 && !campioni.get(i).getCodice().startsWith("LAT")))) {
 	 					tipo = "Taratura";
 	 				}
 	 				arrayPs.add(tipo);

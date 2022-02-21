@@ -256,7 +256,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="false" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[Attività di verifica periodica e di conferma metrologica]]></text>
+				<text><![CDATA[Attività di verifica intermedia]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement x="403" y="381" width="143" height="116" uuid="6e680ba0-6948-40b4-a41e-90322169a0a8"/>
@@ -302,7 +302,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Rev. A del 20/09/2004]]></text>
+				<text><![CDATA[Rev. A del 08/02/2022]]></text>
 			</staticText>
 			<line>
 				<reportElement x="344" y="45" width="200" height="1" uuid="f5b01190-0cb5-45e1-b2cc-91bafa776832"/>

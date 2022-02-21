@@ -458,18 +458,28 @@ public class GestioneVerStrumenti extends HttpServlet {
 				strumento.setFreqMesi(Integer.parseInt(freq_mesi));
 				if(div_rel_c1!=null && !div_rel_c1.equals("")) {
 					strumento.setDiv_rel_C1(new BigDecimal(div_rel_c1));	
+				}else {
+					strumento.setDiv_rel_C1(null);	
 				}
 				if(div_ver_c1!=null && !div_ver_c1.equals("")) {
 					strumento.setDiv_ver_C1(new BigDecimal(div_ver_c1));	
+				}else {
+					strumento.setDiv_ver_C1(null);
 				}
 				if(numero_div_c1!=null && !numero_div_c1.equals("")) {
 					strumento.setNumero_div_C1(new BigDecimal(numero_div_c1));	
+				}else {
+					strumento.setNumero_div_C1(null);	
 				}
 				if(portata_max_c1!=null && !portata_max_c1.equals("")) {
 					strumento.setPortata_max_C1(new BigDecimal(portata_max_c1));	
+				}else {
+					strumento.setPortata_max_C1(null);	
 				}
 				if(portata_min_c1!=null && !portata_min_c1.equals("")) {
 					strumento.setPortata_min_C1(new BigDecimal(portata_min_c1));	
+				}else {
+					strumento.setPortata_min_C1(null);	
 				}
 				if(anno_marcatura_ce!=null && !anno_marcatura_ce.equals("")) {
 					strumento.setAnno_marcatura_ce(Integer.parseInt(anno_marcatura_ce));	
@@ -481,36 +491,58 @@ public class GestioneVerStrumenti extends HttpServlet {
 				if(!tipo_ver_strumento.equals("1")) {
 					if(div_rel_c2!=null && !div_rel_c2.equals("")) {
 						strumento.setDiv_rel_C2(new BigDecimal(div_rel_c2));	
+					}else {
+						strumento.setDiv_rel_C2(null);	
 					}
 					if(div_ver_c2!=null && !div_ver_c2.equals("")) {
 						strumento.setDiv_ver_C2(new BigDecimal(div_ver_c2));	
+					}else {
+						strumento.setDiv_ver_C2(null);	
 					}
 					if(portata_max_c2!=null && !portata_max_c2.equals("")) {
 						strumento.setPortata_max_C2(new BigDecimal(portata_max_c2));	
+					}else {
+						strumento.setPortata_max_C2(null);	
 					}
 					if(portata_max_c2!=null && !portata_max_c2.equals("")) {
 						strumento.setPortata_max_C2(new BigDecimal(portata_max_c2));	
+					}else {
+						strumento.setPortata_max_C2(null);
 					}
 					if(portata_min_c2!=null && !portata_min_c2.equals("")) {
 						strumento.setPortata_min_C2(new BigDecimal(portata_min_c2));	
+					}else {
+						strumento.setPortata_min_C2(null);
 					}
 					if(numero_div_c2!=null && !numero_div_c2.equals("")) {
 						strumento.setNumero_div_C2(new BigDecimal(numero_div_c2));	
+					}else {
+						strumento.setNumero_div_C2(null);
 					}
 					if(div_rel_c3!=null && !div_rel_c3.equals("")) {
 						strumento.setDiv_rel_C3(new BigDecimal(div_rel_c3));	
+					}else {
+						strumento.setDiv_rel_C3(null);
 					}
 					if(div_ver_c3!=null && !div_ver_c3.equals("")) {
 						strumento.setDiv_ver_C3(new BigDecimal(div_ver_c3));	
+					}else {
+						strumento.setDiv_ver_C3(null);
 					}
 					if(numero_div_c3!=null && !numero_div_c3.equals("")) {
 						strumento.setNumero_div_C3(new BigDecimal(numero_div_c3));	
+					}else {
+						strumento.setNumero_div_C3(null);	
 					}
 					if(portata_max_c3!=null && !portata_max_c3.equals("")) {
 						strumento.setPortata_max_C3(new BigDecimal(portata_max_c3));	
+					}else {
+						strumento.setPortata_max_C3(null);
 					}
 					if(portata_min_c3!=null && !portata_min_c3.equals("")) {
 						strumento.setPortata_min_C3(new BigDecimal(portata_min_c3));	
+					}else {
+						strumento.setPortata_min_C3(null);
 					}
 				
 				}

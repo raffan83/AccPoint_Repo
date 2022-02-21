@@ -108,8 +108,18 @@ public class CreateSchedaListaStrumenti {
 					report.addParameter("sede","");
 				}
 				
-				report.addParameter("modello_lista_strumenti",conf.getModello_lista_strumenti());
-				report.addParameter("revisione_lista_strumenti",conf.getRevisione_lista_strumenti());
+				if(conf.getModello_lista_strumenti()!=null) {
+					report.addParameter("modello_lista_strumenti",conf.getModello_lista_strumenti());
+				}else {
+					report.addParameter("modello_lista_strumenti","");
+				}
+				
+				if(conf.getRevisione_lista_strumenti()!=null) {
+					report.addParameter("revisione_lista_strumenti",conf.getRevisione_lista_strumenti());
+				}else {
+					report.addParameter("revisione_lista_strumenti","");	
+				}
+				
 			}else {
 								
 				report.addParameter("cliente",nome_cliente.replaceAll("Cliente", "").replaceAll("\\r", "").replaceAll("\\n", ""));

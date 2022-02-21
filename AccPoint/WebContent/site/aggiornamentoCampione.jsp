@@ -277,7 +277,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
                          <div class="form-group">
         <label for="note_attivita_taratura" class="col-sm-3 control-label">Descrizione attività di verifica intermedia:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="descrizione_verifica_intermedia_mod" type="text" name="descrizione_verifica_intermedia_mod" />
+                      <input class="form-control" id="descrizione_verifica_intermedia_mod" type="text" name="descrizione_verifica_intermedia_mod" value="<%=campione.getDescrizione_verifica_intermedia()%>"/>
     </div>
        </div>  
 

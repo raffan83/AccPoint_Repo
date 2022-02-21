@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VerCertificatoP2NoFirma" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b81272d0-42d4-4914-8470-85fe45228a0b">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="62" splitType="Stretch">
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="0" y="-14" width="129" height="76" uuid="6f88e46a-fddc-4421-bcf9-803d6c94ab76"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="97" y="-7" width="369" height="32" uuid="968c919b-cb81-44b7-9ed7-1f3153ac9674"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Organismo di Verificazione Periodica ]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="450" y="-14" width="103" height="76" uuid="52ad6ddd-5670-4e03-acfb-6f701c2abfe8"/>
+				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="97" y="11" width="369" height="32" uuid="eb8af454-5ff6-41c5-9b47-5730603c3820"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[n. FR323 ai sensi del D.M. n. 93/2017]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="723" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="551" height="21" uuid="a13d161d-1e05-489b-a8c2-3ae7fa633c01"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Attestato di verificazione periodica numero:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="23" width="550" height="21" uuid="9d3658e8-a005-4b51-bff6-c2816c15258e"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_certificato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="46" width="551" height="21" uuid="a5560887-889d-483b-9f13-dd272ad58e58"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Allegato:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="92" width="290" height="20" uuid="28bba859-db9c-4e53-8e55-0c571065e87c"/>
+				<textElement>
+					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Masse campione utilizzate per la verificazione periodica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="112" width="551" height="30" uuid="edc1d7a6-6256-4e8f-80f1-9d1f13d361b6"/>
+				<text><![CDATA[Di seguito si riportano i campioni di massa (campioni di lavoro) utilizzati per lo svolgimento dell'attività di verificazione periodica:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="157" width="120" height="20" uuid="71afb862-6f45-4862-a684-aa287c3d28cf"/>
+				<text><![CDATA[Campioni di lavoro:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="99" y="157" width="450" height="39" uuid="6edf5442-db9f-4d22-ab23-3d78f405be7c"/>
+				<textFieldExpression><![CDATA[$P{campioni_lavoro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="214" width="551" height="30" uuid="ff43b08a-97a5-4db4-ba4b-41de44562900"/>
+				<text><![CDATA[A seguito dei controlli e delle prove metrologiche previste dall'Allegato III - Scheda A del Decreto Ministeriale n. 93 del 21 Aprile 2017, l'esito della verificazione periodica eseguita sullo strumento descritto nella sezione dedicata sovrastante, è]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="196" width="417" height="20" uuid="26fda6fe-0f29-47e9-b33f-8a14037eec9e"/>
+				<textElement>
+					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Esito del controllo di verificazione periodica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="256" width="551" height="14" uuid="1f0f1bfe-f3cb-467c-bbb5-cbae2a164170"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RISULTATO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="10" y="283" width="21" height="21" uuid="39747709-d743-42b2-8ccc-ee24ebd1601b"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="50" y="284" width="110" height="21" uuid="5b39ad1f-3c12-4958-8c65-12f7d435886c"/>
+				<text><![CDATA[POSITIVO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="284" width="371" height="56" uuid="a824a9cb-afc4-434d-a58b-1276e31a01bd"/>
+				<text><![CDATA[alle prescrizioni del suddetto Decreto Ministeriale. Pertanto, si procede all'applicazione sullo strumento del contrassegno "verde" attestante l'esito positivo della verificazione periodica con scadenza il:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="390" y="310" width="130" height="13" uuid="734b85ef-9296-4570-85a8-a56fe27405e8"/>
+				<textFieldExpression><![CDATA[$P{data_scadenza}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="10" y="350" width="21" height="21" uuid="05af6f81-e003-4c94-9775-c98886255487"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="50" y="351" width="110" height="21" uuid="bc1465b0-5cf8-4cc1-8b5a-ed8872530741"/>
+				<text><![CDATA[NEGATIVO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="351" width="371" height="20" uuid="40a86182-1442-47f1-a0b0-69e3c5e0bcc5"/>
+				<text><![CDATA[alle prescrizioni del suddetto Decreto Ministeriale.]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="180" y="382" width="21" height="21" uuid="6aae3e75-4078-435c-aa6e-c26571f9a5a5"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="220" y="383" width="331" height="21" uuid="8d8b3317-4986-4728-8b20-9042fc5b87d6"/>
+				<text><![CDATA[Non sono rispettati i valori di MPE definiti dalla normativa vigente;]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="180" y="413" width="21" height="21" uuid="cac372c2-7cd1-45b0-abec-3f3e04251e4a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="220" y="414" width="330" height="21" uuid="ae62789c-05e9-40f9-8eb9-0916d8e043d3"/>
+				<text><![CDATA[Lo strumento presenta difetti tali da pregiudicarne l'affidabilità metrologica;]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="180" y="446" width="21" height="21" uuid="b7bafac2-0456-41ae-89bd-f6c444cb326a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="220" y="447" width="330" height="30" uuid="1b349f3d-6405-40b7-a33f-e099778ceacf"/>
+				<text><![CDATA[I sigilli/contrassegni non sono integri o mancano le necessarie iscrizioni regolamentari.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="503" width="40" height="44" uuid="82d0b689-d411-4600-811a-b625b6e94cc4"/>
+				<text><![CDATA[Note:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="51" y="502" width="501" height="118" uuid="66d5bef9-5050-4186-8c46-2e5a48837458"/>
+				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="414" y="629" width="141" height="20" uuid="5f3aabcc-971e-4bc0-b059-8b87aa93741c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Il Responsabile dell'Organismo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="12" y="277" width="50" height="36" uuid="4e22ce31-8100-42e6-b7fd-fb590d41264f"/>
+				<textElement>
+					<font size="25" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{conforme}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="344" width="50" height="36" uuid="387b2f1e-f605-4f54-bf14-c52fc012c432"/>
+				<textElement>
+					<font size="25" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{non_conforme}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="182" y="376" width="50" height="36" uuid="74cdd9b9-6d24-4067-abf9-e7e88f7f6c1e"/>
+				<textElement>
+					<font size="25" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{motivo1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="182" y="407" width="50" height="36" uuid="8652bc07-ad20-4dea-b055-1d2946e199fd"/>
+				<textElement>
+					<font size="25" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{motivo2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="182" y="440" width="50" height="36" uuid="93d78a54-19cc-428a-ac0b-ee6ea1a84ecf"/>
+				<textElement>
+					<font size="25" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{motivo3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="510" y="74" width="50" height="12" uuid="f8c94bac-b319-47c0-9634-6fc2e4f5a210"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pagina 2 di 2]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="65" width="553" height="21" uuid="05e39f1f-eb95-4299-8f68-0b8ea3be0519"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="629" width="80" height="20" uuid="1eee5125-eb77-4aa1-9ed1-aac1be73f518"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Data emissione]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="2" y="646" width="95" height="20" uuid="50d8a408-bc08-4a6e-a0f7-35943ebabe84"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+</jasperReport>

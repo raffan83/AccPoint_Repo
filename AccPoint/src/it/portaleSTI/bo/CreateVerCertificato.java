@@ -89,7 +89,7 @@ public class CreateVerCertificato {
 		 if(misura.getVerStrumento().getTipo().getId()==4) {
 			 is2 = PivotTemplate.class.getResourceAsStream("VerCertificatoCorredoEsternoP2.jrxml");
 		 }else {
-			 is2 = PivotTemplate.class.getResourceAsStream("VerCertificatoP2.jrxml");
+			 is2 = PivotTemplate.class.getResourceAsStream("VerCertificatoP2NoFirma.jrxml");
 		 }
 		
 		
@@ -624,11 +624,11 @@ public class CreateVerCertificato {
 		}
 		
 		reportP2.addParameter("data_emissione", df.format(new Date()));
-		reportP2.addParameter("responsabile", "Eliseo Crescenzi");
+		//reportP2.addParameter("responsabile", "Eliseo Crescenzi");
 		
 		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
 	//	reportP2.addParameter("firma_responsabile", PivotTemplate.class.getResourceAsStream("FIRMA_ANTONIO_ACCETTOLA.png"));
-		reportP2.addParameter("firma_responsabile", PivotTemplate.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
+		//reportP2.addParameter("firma_responsabile", PivotTemplate.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
 		
 		JasperPrint jasperPrint2 = reportP2.toJasperPrint();
 		jasperPrintList.add(jasperPrint2);

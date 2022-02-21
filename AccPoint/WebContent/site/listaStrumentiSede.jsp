@@ -869,7 +869,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	
 	$( "#ref_tipo_rapporto" ).change(function() {
 
-		  if(this.value == 7201){
+		  if(this.value == 7201 || this.value == 7203){
 			  $("#freq_mesi").attr("disabled", false);
 			  $("#freq_mesi").attr("required", true);
  			  $("#dataProssimaVerifica").attr("required", true);

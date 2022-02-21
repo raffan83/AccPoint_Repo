@@ -1448,8 +1448,15 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <thead><tr class="active">
  <th class="text-center">N° Ripetizione</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
- <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
- <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
+  <th class="text-center">Posizione<br><br>${misura.verStrumento.um }</th>
+  <th class="text-center">Carico equilibrio<br><br>${misura.verStrumento.um }</th>
+ </c:if>
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+   <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  </c:if>
+
+ <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 && misura.verStrumento.tipo.id != 4 }">
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
  </c:if>
  <th class="text-center">P<br>${misura.verStrumento.um }</th>
@@ -1470,8 +1477,16 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 	
 <td align="center">${item.numeroRipetizione}</td>
 <td align="center">${item.massa.stripTrailingZeros().toPlainString()}</td>
+
+<c:if test="${misura.verStrumento.tipo.id ==4}">
+<td align="center">${item.posizione}</td>
+</c:if>
+
+<c:if test="${misura.verStrumento.tipo.id !=4 }">
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
- <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+</c:if>
+
+ <c:if test="${(misura.verStrumento.tipo.id ==4) || (misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 )}">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia,  3)}</td>
 </c:if>
 <td align="center">${item.portata.setScale(risoluzioneBilanciaE0, 3)}</td>
@@ -1536,11 +1551,27 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
   
  <table id="tabCampo2" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <th class="text-center">N° Ripetizione</th>
+ 
+  <th class="text-center">N° Ripetizione</th>
+ <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
+  <th class="text-center">Posizione<br><br>${misura.verStrumento.um }</th>
+  <th class="text-center">Carico equilibrio<br><br>${misura.verStrumento.um }</th>
+ </c:if>
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+   <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  </c:if>
+
+ <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 && misura.verStrumento.tipo.id != 4 }">
+ <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ </c:if>
+ <th class="text-center">P<br>${misura.verStrumento.um }</th>
+ 
+<%--  <th class="text-center">N° Ripetizione</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
- <th class="text-center">P<br>${misura.verStrumento.um }</th>
+ <th class="text-center">P<br>${misura.verStrumento.um }</th> --%>
 
 
  </tr></thead>
@@ -1548,6 +1579,36 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <tbody>
  
  <c:forEach items="${lista_ripetibilita}" var="item" varStatus="loop">
+ 
+ <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+ 
+<c:if test="${item.campo==2 && item.massa!=null }">
+<tr role="row" >
+	
+<td align="center">${item.numeroRipetizione}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString()}</td>
+
+<c:if test="${misura.verStrumento.tipo.id ==4}">
+<td align="center">${item.posizione}</td>
+</c:if>
+
+<c:if test="${misura.verStrumento.tipo.id !=4 }">
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+</c:if>
+
+ <c:if test="${(misura.verStrumento.tipo.id ==4) || (misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 )}">
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia,  3)}</td>
+</c:if>
+<td align="center">${item.portata.setScale(risoluzioneBilanciaE0, 3)}</td>
+
+	</tr>
+	</c:if>
+	</c:forEach>
+ 
+ 
+<%--  <c:forEach items="${lista_ripetibilita}" var="item" varStatus="loop">
  
   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
  <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
@@ -1567,7 +1628,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 	</tr>
 	</c:if>
 	</c:forEach>
- 
+  --%>
 	
  </tbody>
  </table>  
@@ -1616,11 +1677,27 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
   
  <table id="tabCampo3" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+ 
  <th class="text-center">N° Ripetizione</th>
+ <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
+  <th class="text-center">Posizione<br><br>${misura.verStrumento.um }</th>
+  <th class="text-center">Carico equilibrio<br><br>${misura.verStrumento.um }</th>
+ </c:if>
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+   <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  </c:if>
+
+ <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 && misura.verStrumento.tipo.id != 4 }">
+ <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ </c:if>
+ <th class="text-center">P<br>${misura.verStrumento.um }</th>
+ 
+<%--  <th class="text-center">N° Ripetizione</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
- <th class="text-center">P<br>${misura.verStrumento.um }</th>
+ <th class="text-center">P<br>${misura.verStrumento.um }</th> --%>
 
 
  </tr></thead>
@@ -1628,6 +1705,35 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <tbody>
  
  <c:forEach items="${lista_ripetibilita}" var="item" varStatus="loop">
+ 
+ <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+ 
+<c:if test="${item.campo==3 && item.massa!=null }">
+<tr role="row" >
+	
+<td align="center">${item.numeroRipetizione}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString()}</td>
+
+<c:if test="${misura.verStrumento.tipo.id ==4}">
+<td align="center">${item.posizione}</td>
+</c:if>
+
+<c:if test="${misura.verStrumento.tipo.id !=4 }">
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+</c:if>
+
+ <c:if test="${(misura.verStrumento.tipo.id ==4) || (misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 )}">
+<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia,  3)}</td>
+</c:if>
+<td align="center">${item.portata.setScale(risoluzioneBilanciaE0, 3)}</td>
+
+	</tr>
+	</c:if>
+	</c:forEach>
+ 
+<%--  <c:forEach items="${lista_ripetibilita}" var="item" varStatus="loop">
   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
  <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
  <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
@@ -1646,7 +1752,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 	</c:forEach>
  
 	
- </tbody>
+ --%> </tbody>
  </table>  
                 
 </div>  
@@ -1775,7 +1881,7 @@ ${lista_decentramento.get(1).puntiAppoggio}
  <th class="text-center">Posizione n°</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
-  <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+  <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
  </c:if>
  <th class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
@@ -1808,7 +1914,7 @@ ${lista_decentramento.get(1).puntiAppoggio}
 
 <td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
- <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+ <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
 </c:if>
 <td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
@@ -1915,7 +2021,7 @@ ${lista_decentramento.get(11).puntiAppoggio}
  <th class="text-center">Posizione n°</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
-  <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+  <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
  </c:if>
  <th class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
@@ -1947,7 +2053,7 @@ ${lista_decentramento.get(11).puntiAppoggio}
 </c:choose>
 <td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
- <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+ <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
 </c:if>
 <td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
@@ -2044,7 +2150,7 @@ ${lista_decentramento.get(21).puntiAppoggio}
  <th class="text-center">Posizione n°</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
-  <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+  <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
  </c:if>
  <th class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
@@ -2075,7 +2181,7 @@ ${lista_decentramento.get(21).puntiAppoggio}
 </c:choose>
 <td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
- <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+ <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
 </c:if>
 <td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
@@ -2144,8 +2250,20 @@ Non automatico o semiautomatico
  <thead><tr class="active">
  <th class="text-center">Rif.</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
- <th colspan="2" class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
-  <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+ 
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
+  <th colspan="2" class="text-center">Posizione <br><br></th>
+    <th colspan="2" class="text-center">Carico Equilibrio <br><br>${misura.verStrumento.um }</th>
+      <th colspan="2" class="text-center">Indicazione Stimata <br><br>${misura.verStrumento.um }</th>
+ 
+ </c:if>
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+   <th colspan="2" class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  
+  </c:if>
+ 
+
+  <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th colspan="2" class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
  </c:if>
  <th colspan="2" class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
@@ -2159,9 +2277,20 @@ Non automatico o semiautomatico
  <tr>
  <td></td>
 <td></td>
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
- <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+ 
+ </c:if>
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+</c:if>
+ <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
 </c:if>
@@ -2182,9 +2311,26 @@ Non automatico o semiautomatico
 	
 <td>${item.riferimento}</td>
 <td>${item.massa.stripTrailingZeros().toPlainString() }</td>
+
+<c:if test="${misura.verStrumento.tipo.id == 4 }">
+
+<td>${item.posizione_salita}</td>
+<td>${item.posizione_discesa}</td>
+
+<td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
+<td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
+
 <td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
 <td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
- <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+</c:if>
+
+
+<c:if test="${misura.verStrumento.tipo.id != 4 }">
+<td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
+<td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
+</c:if>
+
+ <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 && misura.verStrumento.tipo.id != 4 }">
 <td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
 <td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
 </c:if>
@@ -2246,10 +2392,23 @@ Non automatico o semiautomatico
 
 
  <table  class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ 
  <thead><tr class="active">
  <th class="text-center">Rif.</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
- <th colspan="2" class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+ 
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
+  <th colspan="2" class="text-center">Posizione <br><br></th>
+    <th colspan="2" class="text-center">Carico Equilibrio <br><br>${misura.verStrumento.um }</th>
+      <th colspan="2" class="text-center">Indicazione Stimata <br><br>${misura.verStrumento.um }</th>
+ 
+ </c:if>
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+   <th colspan="2" class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  
+  </c:if>
+ 
+
   <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th colspan="2" class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
  </c:if>
@@ -2260,7 +2419,100 @@ Non automatico o semiautomatico
 
  </tr></thead>
  
- <tbody>
+ 
+<%--  <thead><tr class="active">
+ <th class="text-center">Rif.</th>
+ <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
+ <th colspan="2" class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+ <th colspan="2" class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ </c:if>
+ <th colspan="2" class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
+ <th colspan="2" class="text-center">ErCorretto<br>Ec<br>${misura.verStrumento.um }</th>
+ <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Divisione di verifica <br>e associata al carico di prova<br>${misura.verStrumento.um }</th>
+
+ </tr></thead> --%>
+ 
+ 
+  <tbody>
+ <tr>
+ <td></td>
+<td></td>
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+ 
+ </c:if>
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+</c:if>
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+</c:if>
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+<td></td>
+<%-- <td></td> --%>
+ </tr>
+ <c:forEach items="${lista_linearita}" var="item" varStatus="loop">
+<c:if test="${item.campo==2 && item.massa!=null }">
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
+<tr role="row" >
+	
+<td>${item.riferimento}</td>
+<td>${item.massa.stripTrailingZeros().toPlainString() }</td>
+
+<c:if test="${misura.verStrumento.tipo.id == 4 }">
+
+<td>${item.posizione_salita}</td>
+<td>${item.posizione_discesa}</td>
+
+<td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
+<td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
+
+<td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
+<td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
+</c:if>
+
+
+<c:if test="${misura.verStrumento.tipo.id != 4 }">
+<td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
+<td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
+</c:if>
+
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 && misura.verStrumento.tipo.id != 4 }">
+<td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
+<td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
+</c:if>
+<td>${item.erroreSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreCorDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.mpe.stripTrailingZeros()}</td>
+<%-- <td>${item.divisione}</td> --%>
+
+
+	</tr>
+	</c:if>
+	</c:forEach>
+ 
+	
+ </tbody>
+ 
+ 
+<%--  <tbody>
  <tr>
  <td></td>
 <td></td>
@@ -2275,7 +2527,7 @@ Non automatico o semiautomatico
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
 <td></td>
-<%-- <td></td> --%>
+<td></td>
  </tr>
  <c:forEach items="${lista_linearita}" var="item" varStatus="loop">
 <c:if test="${item.campo==2 && item.massa!=null }">
@@ -2300,7 +2552,7 @@ Non automatico o semiautomatico
 <td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreCorDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.mpe.stripTrailingZeros()}</td>
-<%-- <td>${item.divisione}</td> --%>
+<td>${item.divisione}</td>
 
 
 	</tr>
@@ -2308,7 +2560,7 @@ Non automatico o semiautomatico
 	</c:forEach>
  
 	
- </tbody>
+ </tbody> --%>
  </table>  
  <br>
 <div class="row">
@@ -2349,10 +2601,23 @@ Non automatico o semiautomatico
 
 
  <table  class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
+ 
+  <thead><tr class="active">
  <th class="text-center">Rif.</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
- <th colspan="2" class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+ 
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
+  <th colspan="2" class="text-center">Posizione <br><br></th>
+    <th colspan="2" class="text-center">Carico Equilibrio <br><br>${misura.verStrumento.um }</th>
+      <th colspan="2" class="text-center">Indicazione Stimata <br><br>${misura.verStrumento.um }</th>
+ 
+ </c:if>
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+   <th colspan="2" class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  
+  </c:if>
+ 
+
   <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
  <th colspan="2" class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
  </c:if>
@@ -2363,7 +2628,99 @@ Non automatico o semiautomatico
 
  </tr></thead>
  
- <tbody>
+<%--  <thead><tr class="active">
+ <th class="text-center">Rif.</th>
+ <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
+ <th colspan="2" class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
+  <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+ <th colspan="2" class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ </c:if>
+ <th colspan="2" class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
+ <th colspan="2" class="text-center">ErCorretto<br>Ec<br>${misura.verStrumento.um }</th>
+ <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Divisione di verifica <br>e associata al carico di prova<br>${misura.verStrumento.um }</th>
+
+ </tr></thead> --%>
+ 
+ 
+  <tbody>
+ <tr>
+ <td></td>
+<td></td>
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+ 
+ </c:if>
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+</c:if>
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 }">
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+</c:if>
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+<td align="center"><i class="fa fa-arrow-up"></i></td>
+<td align="center"><i class="fa fa-arrow-down"></i></td>
+<td></td>
+<%-- <td></td> --%>
+ </tr>
+ <c:forEach items="${lista_linearita}" var="item" varStatus="loop">
+<c:if test="${item.campo==3 && item.massa!=null }">
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+
+<tr role="row" >
+	
+<td>${item.riferimento}</td>
+<td>${item.massa.stripTrailingZeros().toPlainString() }</td>
+
+<c:if test="${misura.verStrumento.tipo.id == 4 }">
+
+<td>${item.posizione_salita}</td>
+<td>${item.posizione_discesa}</td>
+
+<td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
+<td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
+
+<td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
+<td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
+</c:if>
+
+
+<c:if test="${misura.verStrumento.tipo.id != 4 }">
+<td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
+<td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
+</c:if>
+
+ <c:if test="${misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 && misura.verStrumento.tipo.id != 4 }">
+<td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
+<td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
+</c:if>
+<td>${item.erroreSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.erroreCorDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td>${item.mpe.stripTrailingZeros()}</td>
+<%-- <td>${item.divisione}</td> --%>
+
+
+	</tr>
+	</c:if>
+	</c:forEach>
+ 
+	
+ </tbody>
+ 
+ 
+<%--  <tbody>
  <tr>
  <td></td>
 <td></td>
@@ -2378,7 +2735,7 @@ Non automatico o semiautomatico
 <td align="center"><i class="fa fa-arrow-up"></i></td>
 <td align="center"><i class="fa fa-arrow-down"></i></td>
 <td></td>
-<%-- <td></td> --%>
+<td></td>
  </tr>
  <c:forEach items="${lista_linearita}" var="item" varStatus="loop">
 <c:if test="${item.campo==3 && item.massa!=null }">
@@ -2402,7 +2759,7 @@ Non automatico o semiautomatico
 <td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreCorDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.mpe.stripTrailingZeros()}</td>
-<%-- <td>${item.divisione}</td> --%>
+<td>${item.divisione}</td>
 
 
 	</tr>
@@ -2410,7 +2767,7 @@ Non automatico o semiautomatico
 	</c:forEach>
  
 	
- </tbody>
+ </tbody> --%>
  </table>  
  <br>
 <div class="row">
@@ -2464,10 +2821,24 @@ Non automatico o semiautomatico
 
  <table  class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <th class="text-center">Rif.</th>
+ 
+<%--  <th class="text-center">Rif.</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
+ <th class="text-center">ErCorretto <br>Ec<br> ${misura.verStrumento.um }</th>
+ <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th> --%>
+ 
+ <th class="text-center">Rif.</th>
+ <th class="text-center">Pozione 0<br>L<br>${misura.verStrumento.um }</th> 
+ <th class="text-center">Scarto<br>I<br>${misura.verStrumento.um }</th>
+ 
+ <c:if test="${misura.verStrumento.tipo.id == 5 }">
+  <th class="text-center">Max Valore Tara<br><br>${misura.verStrumento.um }</th>
+ </c:if>
+ 
+
  <th class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
  <th class="text-center">ErCorretto <br>Ec<br> ${misura.verStrumento.um }</th>
  <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
@@ -2486,7 +2857,10 @@ Non automatico o semiautomatico
 <td align="center">${item.posizione}</td>
 <td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
-<td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+ <c:if test="${misura.verStrumento.tipologia.id == 1 || misura.verStrumento.tipo.id == 5 }">
+ <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+ </c:if>
+
 <td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td align="center">${item.erroreCor.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td align="center">${item.mpe.stripTrailingZeros().toPlainString()}</td>
@@ -2542,17 +2916,59 @@ Non automatico o semiautomatico
 
  <table  class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <th class="text-center">Rif.</th>
+ 
+  <th class="text-center">Rif.</th>
+ <th class="text-center">Pozione 0<br>L<br>${misura.verStrumento.um }</th> 
+ <th class="text-center">Scarto<br>I<br>${misura.verStrumento.um }</th>
+ 
+ <c:if test="${misura.verStrumento.tipo.id == 5 }">
+  <th class="text-center">Max Valore Tara<br><br>${misura.verStrumento.um }</th>
+ </c:if>
+ 
+
+ <th class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
+ <th class="text-center">ErCorretto <br>Ec<br> ${misura.verStrumento.um }</th>
+ <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
+ 
+<%--  <th class="text-center">Rif.</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
  <th class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
  <th class="text-center">ErCorretto <br>Ec<br> ${misura.verStrumento.um }</th>
- <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
+ <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th> --%>
 
  </tr></thead>
  
- <tbody>
+ 
+  <tbody>
+
+ <c:forEach items="${lista_accuratezza}" var="item" varStatus="loop">
+<c:if test="${item.campo == 2 && item.massa!=null }">
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+<tr role="row" >
+	
+<td align="center">${item.posizione}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+ <c:if test="${misura.verStrumento.tipo.id == 5 }">
+ <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+ </c:if>
+
+<td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.erroreCor.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.mpe.stripTrailingZeros().toPlainString()}</td>
+
+	</tr>
+	</c:if>
+	</c:forEach>
+ 
+	
+ </tbody>
+ 
+ <%-- <tbody>
 
  <c:forEach items="${lista_accuratezza}" var="item" varStatus="loop">
 <c:if test="${item.campo == 2 && item.massa!=null }">
@@ -2575,7 +2991,7 @@ Non automatico o semiautomatico
 	</c:forEach>
  
 	
- </tbody>
+ </tbody> --%>
  </table>  
  <br>
 <div class="row">
@@ -2615,17 +3031,58 @@ Non automatico o semiautomatico
 
  <table  class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <th class="text-center">Rif.</th>
+ 
+  <th class="text-center">Rif.</th>
+ <th class="text-center">Pozione 0<br>L<br>${misura.verStrumento.um }</th> 
+ <th class="text-center">Scarto<br>I<br>${misura.verStrumento.um }</th>
+ 
+ <c:if test="${misura.verStrumento.tipo.id == 5 }">
+  <th class="text-center">Max Valore Tara<br><br>${misura.verStrumento.um }</th>
+ </c:if>
+ 
+
+ <th class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
+ <th class="text-center">ErCorretto <br>Ec<br> ${misura.verStrumento.um }</th>
+ <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
+ 
+<%--  <th class="text-center">Rif.</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
  <th class="text-center">Errore<br>E<br>${misura.verStrumento.um }</th>
  <th class="text-center">ErCorretto <br>Ec<br> ${misura.verStrumento.um }</th>
- <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th>
+ <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th> --%>
 
  </tr></thead>
  
- <tbody>
+  <tbody>
+
+ <c:forEach items="${lista_accuratezza}" var="item" varStatus="loop">
+<c:if test="${item.campo == 3 && item.massa!=null }">
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+<tr role="row" >
+	
+<td align="center">${item.posizione}</td>
+<td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+ <c:if test="${misura.verStrumento.tipologia.id == 1 ||misura.verStrumento.tipo.id == 5 }">
+ <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
+ </c:if>
+
+<td align="center">${item.errore.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.erroreCor.setScale(risoluzioneBilanciaE0, 3)}</td>
+<td align="center">${item.mpe.stripTrailingZeros().toPlainString()}</td>
+
+	</tr>
+	</c:if>
+	</c:forEach>
+ 
+	
+ </tbody>
+ 
+ <%-- <tbody>
 
  <c:forEach items="${lista_accuratezza}" var="item" varStatus="loop">
 <c:if test="${item.campo == 3 && item.massa!=null }">
@@ -2648,7 +3105,7 @@ Non automatico o semiautomatico
 	</c:forEach>
  
 	
- </tbody>
+ </tbody> --%>
  </table>  
  <br>
 <div class="row">
@@ -2697,14 +3154,29 @@ Non automatico o semiautomatico
  <table  class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th class="text-center">Carico</th>
- <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
+ <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th>
+ 
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
+  <th class="text-center">Indicazione<br>L1<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Carico Aggiuntivo =<br>|EMT carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Indicazione<br>L2<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Differenza<br>L2 - L1<br>${misura.verStrumento.um }</th>
+  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 EMT<br>  <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|L2 - L1| &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
+ 
+ </c:if>
+  
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+  
  <th class="text-center">Indicazione<br>I1<br>${misura.verStrumento.um }</th>
- <th class="text-center">Carico Aggiuntivo =<br> 0,4·|MPE carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Carico Aggiuntivo =<br> |EMT carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
  <th class="text-center">Indicazione<br>I2<br>${misura.verStrumento.um }</th>
  <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
- <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
- <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th>
-
+<%--  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th> --%>
+  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 EMT<br>  <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
+</c:if>
  </tr></thead>
  
  <tbody>
@@ -2769,7 +3241,35 @@ Non automatico o semiautomatico
 
 
  <table  class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
+ 
+  <thead><tr class="active">
+ <th class="text-center">Carico</th>
+ <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th>
+ 
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
+  <th class="text-center">Indicazione<br>L1<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Carico Aggiuntivo =<br>|EMT carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Indicazione<br>L2<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Differenza<br>L2 - L1<br>${misura.verStrumento.um }</th>
+  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 EMT<br>  <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|L2 - L1| &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
+ 
+ </c:if>
+  
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+  
+ <th class="text-center">Indicazione<br>I1<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Carico Aggiuntivo =<br> |EMT carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Indicazione<br>I2<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
+<%--  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th> --%>
+  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 EMT<br>  <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
+</c:if>
+ </tr></thead>
+ 
+<%--  <thead><tr class="active">
  <th class="text-center">Carico</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I1<br>${misura.verStrumento.um }</th>
@@ -2779,7 +3279,7 @@ Non automatico o semiautomatico
  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
  <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th>
 
- </tr></thead>
+ </tr></thead> --%>
  
  <tbody>
 
@@ -2855,17 +3355,18 @@ Non automatico o semiautomatico
 
 
  <table  class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
+
+  <thead><tr class="active">
  <th class="text-center">Carico</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I1<br>${misura.verStrumento.um }</th>
- <th class="text-center">Carico Aggiuntivo =<br> 0,4·|MPE carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Carico Aggiuntivo =<br> |EMT carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
  <th class="text-center">Indicazione<br>I2<br>${misura.verStrumento.um }</th>
  <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
  <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th>
 
- </tr></thead>
+ </tr></thead> 
  
  <tbody>
 
@@ -2928,7 +3429,36 @@ Non automatico o semiautomatico
 
 
  <table  class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
+ 
+   <thead><tr class="active">
+ <th class="text-center">Carico</th>
+ <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th>
+ 
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
+  <th class="text-center">Indicazione<br>L1<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Carico Aggiuntivo =<br>|EMT carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Indicazione<br>L2<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Differenza<br>L2 - L1<br>${misura.verStrumento.um }</th>
+  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 EMT<br>  <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|L2 - L1| &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
+ 
+ </c:if>
+  
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+  
+ <th class="text-center">Indicazione<br>I1<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Carico Aggiuntivo =<br> |EMT carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Indicazione<br>I2<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
+<%--  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th> --%>
+  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 EMT<br>  <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
+</c:if>
+ </tr></thead>
+ 
+ 
+<%--  <thead><tr class="active">
  <th class="text-center">Carico</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I1<br>${misura.verStrumento.um }</th>
@@ -2938,7 +3468,7 @@ Non automatico o semiautomatico
  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
  <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th>
 
- </tr></thead>
+ </tr></thead> --%>
  
  <tbody>
 
@@ -3014,7 +3544,7 @@ Non automatico o semiautomatico
  <th class="text-center">Carico</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I1<br>${misura.verStrumento.um }</th>
- <th class="text-center">Carico Aggiuntivo =<br> 0,4·|MPE carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Carico Aggiuntivo =<br> |EMT carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
  <th class="text-center">Indicazione<br>I2<br>${misura.verStrumento.um }</th>
  <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
@@ -3084,7 +3614,35 @@ Non automatico o semiautomatico
 
 
  <table  class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
+ 
+   <thead><tr class="active">
+ <th class="text-center">Carico</th>
+ <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th>
+ 
+ <c:if test="${misura.verStrumento.tipo.id == 4 }">
+  <th class="text-center">Indicazione<br>L1<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Carico Aggiuntivo =<br>|EMT carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Indicazione<br>L2<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Differenza<br>L2 - L1<br>${misura.verStrumento.um }</th>
+  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 EMT<br>  <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|L2 - L1| &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
+ 
+ </c:if>
+  
+  <c:if test="${misura.verStrumento.tipo.id != 4 }">
+  
+ <th class="text-center">Indicazione<br>I1<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Carico Aggiuntivo =<br> |EMT carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Indicazione<br>I2<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
+<%--  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th> --%>
+  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 EMT<br>  <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
+</c:if>
+ </tr></thead>
+ 
+<%--  <thead><tr class="active">
  <th class="text-center">Carico</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <th class="text-center">Indicazione<br>I1<br>${misura.verStrumento.um }</th>
@@ -3095,7 +3653,7 @@ Non automatico o semiautomatico
  <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th>
 
  </tr></thead>
- 
+  --%>
  <tbody>
 
  <c:forEach items="${lista_mobilita}" var="item" varStatus="loop">

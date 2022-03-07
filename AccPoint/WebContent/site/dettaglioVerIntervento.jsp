@@ -315,7 +315,7 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 
 </td>
 <td>
-<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento_int.verStrumento.famiglia_strumento.descrizione }','${strumento_int.verStrumento.freqMesi }','${strumento_int.verStrumento.denominazione }','${strumento_int.verStrumento.costruttore }','${strumento_int.verStrumento.modello }','${strumento_int.verStrumento.matricola }',
+<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento_int.verStrumento.id}','${strumento_int.verStrumento.famiglia_strumento.descrizione }','${strumento_int.verStrumento.freqMesi }','${strumento_int.verStrumento.denominazione }','${strumento_int.verStrumento.costruttore }','${strumento_int.verStrumento.modello }','${strumento_int.verStrumento.matricola }',
 	'${strumento_int.verStrumento.classe }','${strumento_int.verStrumento.tipo.id }','${strumento_int.verStrumento.tipo.descrizione }','${strumento_int.verStrumento.data_ultima_verifica }','${strumento_int.verStrumento.data_prossima_verifica }','${strumento_int.verStrumento.um }','${strumento_int.verStrumento.portata_min_C1 }',
 	'${strumento_int.verStrumento.portata_max_C1 }','${strumento_int.verStrumento.div_ver_C1 }','${strumento_int.verStrumento.div_rel_C1 }','${strumento_int.verStrumento.numero_div_C1 }',	'${strumento_int.verStrumento.portata_min_C2 }','${strumento_int.verStrumento.portata_max_C2 }',
 	'${strumento_int.verStrumento.div_ver_C2 }','${strumento_int.verStrumento.div_rel_C2 }','${strumento_int.verStrumento.numero_div_C2 }','${strumento_int.verStrumento.portata_min_C3 }','${strumento_int.verStrumento.portata_max_C3 }','${strumento_int.verStrumento.div_ver_C3 }',
@@ -762,7 +762,33 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
        		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c3_dtl" name="numero_div_c3_dtl" disabled>
        	</div>
        </div> <br> 
+                       
         </div>
+        
+        <div class="row">
+       	<div class="col-sm-6">
+       		<label>Provvedimenti di Legalizzazione</label>
+       	</div>
+       	<div class="col-sm-12">
+       		<table id="table_legalizzazione_strumento" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+
+<th>ID</th>
+<th>Tipo provvedimento</th>
+<th>Numero provvedimento</th>
+<th>Data provvedimento</th>
+
+<th>Azioni</th>
+
+ </tr></thead>
+ 
+ <tbody>
+</tbody>
+</table>
+       	</div>
+       </div> <br> 
+        
        </div>
 
     </div>
@@ -857,6 +883,36 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
    
   </div>
   <!-- /.content-wrapper -->
+  
+  
+   <div id="myModalArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" style="z-index: 9900;">
+  
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Allegati provvedimento legalizzazione bilance</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+        <div class="col-xs-12">
+
+ 
+
+       <div id="tab_allegati_provvedimento"></div>
+</div>
+  		 </div>
+  		 </div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_provvedimento_allegato" name="id_provvedimento_allegato">
+      
+      <a class="btn btn-primary pull-right"  style="margin-right:5px"  onClick="$('#myModalArchivio').modal('hide')">Chiudi</a>
+      
+      </div>
+   
+  </div>
+  </div>
+</div>
 
 <div id="myModalStorico" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -989,6 +1045,46 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 });
 	 
  }
+ 
+ 
+ 
+ function modalAllegatiProvvedimento(id_provvedimento){
+
+		$('#id_provvedimento_allegato').val(id_provvedimento);
+		// $('#tab_archivio').html("");
+		 
+		 dataString ="action=lista_allegati&id_provvedimento="+ id_provvedimento;
+	    exploreModal("gestioneVerLegalizzazioneBilance.do",dataString,null,function(datab,textStatusb){
+	    	
+	    	var result = JSON.parse(datab);
+	    	
+	    	if(result.success){
+	    		
+	    		var lista_allegati = result.lista_allegati;
+	    		var html = '<ul class="list-group list-group-bordered">';
+	    		if(lista_allegati.length>0){
+	    			for(var i= 0; i<lista_allegati.length;i++){
+	          			 html= html + '<li class="list-group-item"><div class="row"><div class="col-xs-10"><b>'+lista_allegati[i].nome_file+'</b></div><div class="col-xs-2 pull-right">' 	           
+	                   +'<a class="btn btn-danger btn-xs pull-right" onClick="eliminaAllegatoModal(\''+lista_allegati[i].id+'\')"><i class="fa fa-trash"></i></a>'
+	       	           +'<a class="btn btn-danger btn-xs  pull-right"style="margin-right:5px" href="gestioneVerLegalizzazioneBilance.do?action=download_allegato&id_allegato='+lista_allegati[i].id+'"><i class="fa fa-arrow-down small"></i></a>'
+	       	           +'</div></div></li>';
+	          		}
+	    		}else{
+	    			 html= html + '<li class="list-group-item"> Nessun file allegato allo strumento! </li>';
+	    		}
+	    		
+	    		$("#tab_allegati_provvedimento").html(html+"</ul>");
+	    	}
+	    	
+	    	  $('#myModalArchivio').modal('show');
+	    	
+	    });
+	    
+	  
+	}
+
+ 
+ 
  
  function modalYesOrNo(){
 
@@ -1169,7 +1265,7 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 		} );
 		
 		
-		function modalDettaglioVerStrumento(famiglia_strumento, freq_mesi, denominazione, costruttore, modello, matricola, classe, id_tipo,tipo, data_ultima_verifica,
+		function modalDettaglioVerStrumento(id_strumento, famiglia_strumento, freq_mesi, denominazione, costruttore, modello, matricola, classe, id_tipo,tipo, data_ultima_verifica,
 				data_prossima_verifica, um, portata_min_c1, portata_max_c1, div_ver_c1, div_rel_c1, numero_div_c1,
 				portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3, anno_marcatura_ce, data_messa_in_servizio,tipologia){
 			
@@ -1224,6 +1320,9 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 				}
 				
 			}
+			
+			
+			creaTabellaLegalizzazione(id_strumento);
 				
 			$('#myModalDettaglioVerStrumento').modal();
 		}
@@ -1543,10 +1642,77 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 	       	 
 		
 		
+		
+		
+		
+		  
+		
 
  
     });  
 	
+	
+	
+	tabella_leg_strumento = $('#table_legalizzazione_strumento').DataTable({
+			language: {
+		        	emptyTable : 	"Nessun dato presente nella tabella",
+		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+		        	infoPostFix:	"",
+		        infoThousands:	".",
+		        lengthMenu:	"Visualizza _MENU_ elementi",
+		        loadingRecords:	"Caricamento...",
+		        	processing:	"Elaborazione...",
+		        	search:	"Cerca:",
+		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+		        	paginate:	{
+	  	        	first:	"Inizio",
+	  	        	previous:	"Precedente",
+	  	        	next:	"Successivo",
+	  	        last:	"Fine",
+		        	},
+		        aria:	{
+	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+		        }
+	        },
+	        pageLength: 25,
+	        "order": [[ 2, "desc" ]],
+		      paging: false, 
+		      ordering: false,
+		      info: false, 
+		      searchable: false, 
+		      targets: 0,
+		      responsive: true,  
+		      scrollX: false,
+		      stateSave: false,	
+		      "searching": false,
+		      columns : [
+
+		      	{"data" : "id"},
+	
+		      	{"data" : "tipo_provvedimento"},
+		      	{"data" : "numero_provvedimento"},
+		      	{"data" : "data_provvedimento"},
+
+		      	{"data" : "azioni"}
+		       ],	
+		           
+		      columnDefs: [
+		    	  
+		    	  { responsivePriority: 1, targets: 1 },
+		    	
+		    	  ],
+		    	  
+		     	          
+	  	      buttons: [   
+	  	          {
+	  	            extend: 'colvis',
+	  	            text: 'Nascondi Colonne'  	                   
+	 			  } ]
+		               
+		    });
 	
 	
    	$('#checkAll').on('ifChecked', function (ev) {

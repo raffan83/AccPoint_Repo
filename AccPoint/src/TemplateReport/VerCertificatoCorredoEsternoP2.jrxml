@@ -184,11 +184,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{motivo3}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="414" y="673" width="140" height="20" uuid="27dce54d-4042-46dd-b05a-42d0a9eb6832"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$P{responsabile}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="510" y="74" width="50" height="12" uuid="ce2928f1-7fd3-4e1b-a320-23f523db0066"/>
 				<textElement>
@@ -196,10 +191,6 @@
 				</textElement>
 				<text><![CDATA[Pagina 2 di 2]]></text>
 			</staticText>
-			<image hAlign="Center">
-				<reportElement x="381" y="688" width="206" height="40" uuid="04905b46-6304-42e2-a8bc-dd1316a82e39"/>
-				<imageExpression><![CDATA[$P{firma_responsabile}]]></imageExpression>
-			</image>
 			<textField>
 				<reportElement x="0" y="65" width="553" height="21" uuid="ed072579-b66d-4e29-8c00-1926b68a93b8"/>
 				<textElement textAlignment="Center">

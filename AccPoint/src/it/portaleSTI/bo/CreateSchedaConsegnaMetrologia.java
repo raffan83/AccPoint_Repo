@@ -172,7 +172,7 @@ public class CreateSchedaConsegnaMetrologia {
 			  
 			report.setColumnStyle(textStyle); //AGG
 			report.addColumn(col.column("N.", "progressivo", type.stringType()).setWidth(10));
- 	 		report.addColumn(col.column("Denominazoione", "denominazione", type.stringType()));
+ 	 		report.addColumn(col.column("Denominazione", "denominazione", type.stringType()));
 	 		report.addColumn(col.column("Codice Interno", "codInterno", type.stringType()).setWidth(38));
 	 		report.addColumn(col.column("Matricola", "matricola", type.stringType()).setWidth(38));
 	 		report.addColumn(col.column("Data verifica", "dataVer", type.stringType()).setWidth(25));

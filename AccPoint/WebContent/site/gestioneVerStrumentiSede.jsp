@@ -1599,55 +1599,7 @@ function modalDettaglioVerStrumento(id_strumento,famiglia_strumento, freq_mesi, 
 
 
 
-function creaTabellaLegalizzazione(id_strumento){
-	
 
-	 dataString ="action=strumento_legalizzazione_bilance&id_strumento="+ id_strumento;
-    exploreModal("gestioneVerLegalizzazioneBilance.do",dataString,null,function(datab,textStatusb){
-    	
-    	var result = datab;
-    	
-    	if(result.success){
-    		
-    		 var table_data = [];     		  
-
-     		  var lista_provvedimenti_associati = result.lista_provvedimenti_associati;
-     		  
-     		  for(var i = 0; i<lista_provvedimenti_associati.length;i++){
-     			  var dati = {};
-     			  
-     			  dati.id = lista_provvedimenti_associati[i].id;
-
-     			  dati.tipo_provvedimento = lista_provvedimenti_associati[i].tipo_provvedimento.descrizione;
-     			  dati.numero_provvedimento = lista_provvedimenti_associati[i].numero_provvedimento;
-     			  dati.data_provvedimento =  lista_provvedimenti_associati[i].data_provvedimento;
-     			 			 
-     			  dati.azioni = '<td><a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegatiProvvedimento('+lista_provvedimenti_associati[i].id+')"><i class="fa fa-archive"></i></a></td>';
-     			  
-     			  table_data.push(dati);
-     			
-     		  }
-     		  var table = $('#table_legalizzazione_strumento').DataTable();
-     		  
-      		   table.clear().draw();
-      		   
-      			table.rows.add(table_data).draw();
-      			
-      			table.columns.adjust().draw();
-    			
-/*       			$('#table_legalizzazione tr').each(function(){
-      				var val  = $(this).find('td:eq(2)').text();
-      				$(this).attr("id", val)
-      			});
-      			controllaAssociati(table,lista_provvedimenti_associati ); */
-    	}
-    	
-    	//  $('#myModalArchivio').modal('show');
-    	
-    });
-	
-	
-}
 
 
 function modalNuovoStrumento(){

@@ -89,6 +89,7 @@
 <th>Fornitore</th>
 <th>Codice</th>
 <th>Dipendenti</th>
+<th>Qualifica dipendenti</th>
 <th>Nome Documento</th>
 <th>Numero Documento</th>
 <th>Tipo Documento</th>
@@ -128,6 +129,11 @@
 	<td>
 	<c:forEach items="${documento.getListaDipendenti() }" var="dipendente">
 	${dipendente.nome} ${dipendente.cognome }<br>
+	</c:forEach>
+	</td>
+	<td>
+	<c:forEach items="${documento.getListaDipendenti() }" var="dipendente">
+	${dipendente.qualifica}<br>
 	</c:forEach>
 	</td>
 	<td>${documento.nome_documento }</td>
@@ -1852,7 +1858,7 @@ $('.select2').select2();
     	 columnDef =	 [
 	    	  
 	    	  { responsivePriority: 1, targets: 1 },
-	    	  { responsivePriority: 2, targets: 17 },
+	    	  { responsivePriority: 2, targets: 18 },
 	    	  { className: "select-checkbox", targets: 1,  orderable: false }
 	               ]
     	 
@@ -1864,7 +1870,7 @@ $('.select2').select2();
     	 columnDef =	 [
 	    	  
 	    	  { responsivePriority: 1, targets: 1 },
-	    	  { responsivePriority: 2, targets: 15 },
+	    	  { responsivePriority: 2, targets: 16 },
 	               ] 
     	 
     	 selectOpt = {}
@@ -1911,7 +1917,12 @@ $('.select2').select2();
 	  	          {
 	  	            extend: 'colvis',
 	  	            text: 'Nascondi Colonne'  	                   
-	 			  } ]
+	 			  }, 
+	 			 {
+		  	            extend: 'excel',
+		  	            text: 'Esporta Excel'  	                   
+		 			  }
+	 			  ]
 		               
 		    });
 		

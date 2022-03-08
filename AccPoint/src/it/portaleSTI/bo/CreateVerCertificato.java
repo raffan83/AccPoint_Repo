@@ -504,7 +504,7 @@ public class CreateVerCertificato {
 				report.addParameter("croce2", "X");
 				report.addParameter("croce3", "");
 				report.addParameter("riparatore", misura.getNomeRiparatore());
-				report.addParameter("data_riparazione", misura.getDataRiparazione());
+				report.addParameter("data_riparazione",df.format(misura.getDataRiparazione()));
 			}else{
 				report.addParameter("croce1", "");
 				report.addParameter("croce2", "");

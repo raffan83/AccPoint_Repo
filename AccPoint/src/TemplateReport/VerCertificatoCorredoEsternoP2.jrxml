@@ -231,7 +231,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="49" y="152" width="120" height="21" uuid="3da1f01c-9c55-4fa3-a87a-84050f55ac50"/>
-				<text><![CDATA[Riparazione effetuata da]]></text>
+				<text><![CDATA[Riparazione effettuata da]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="49" y="178" width="371" height="21" uuid="cad1d5b9-ba0f-4a7a-8d54-e6162a55890c"/>

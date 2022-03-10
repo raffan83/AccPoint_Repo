@@ -117,7 +117,8 @@ private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id
 													" creato varchar(1) default NULL,"+
 													" famiglia_strumento varchar(5) default NULL,"+
 													" posizione_cambio int(11) default 0,"+
-													" masse_corredo varchar(255));";
+													" masse_corredo varchar(255),"+
+													" tipo_indicazione int(11) default 0);";
 
 private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
 																  "codice varchar(255) ,"+

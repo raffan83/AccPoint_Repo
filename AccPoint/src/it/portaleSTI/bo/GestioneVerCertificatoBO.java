@@ -295,7 +295,7 @@ public class GestioneVerCertificatoBO {
      
 	    JsonObject myObj = new JsonObject();
 	    
-	    scanFields("C:\\Users\\antonio.dicivita\\Desktop\\1.pdf");
+	   // scanFields("C:\\Users\\antonio.dicivita\\Desktop\\1.pdf");
 	    
      	myObj.addProperty("success", true);
 		return myObj;

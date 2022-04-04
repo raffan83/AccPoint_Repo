@@ -651,5 +651,19 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 		return lista;
 	}
 
+	public static ArrayList<StrumentoDTO> getlistaStrumenti(int i, int j, Session session) {
+		
+		ArrayList<StrumentoDTO> lista = null;
+		
+		Query query = session.createQuery("from StrumentoDTO  where id_cliente = :_i and id__sede_ = :_j");
+		query.setParameter("_i", i);
+
+		query.setParameter("_j", j);
+		
+		lista = (ArrayList<StrumentoDTO>) query.list();
+		
+		return lista;
+	}
+
 
 }

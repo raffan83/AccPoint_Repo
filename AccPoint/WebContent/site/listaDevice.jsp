@@ -815,10 +815,10 @@
 
         <div class="nav-tabs-custom">
             <ul id="mainTabs" class="nav nav-tabs">
-            <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true"   id="detttaglioTab">Dettaglio</a></li>
-              <li class=""><a href="#registro_attivita" data-toggle="tab" aria-expanded="true"   id="registroAttivitaTab">Registro attività</a></li>
-              <li class=""><a href="#gestione_procedure" data-toggle="tab" aria-expanded="true"   id="gestioneProcedureTab">Gestione procedure</a></li>
-              <li class=""><a href="#lista_allegati" data-toggle="tab" aria-expanded="true"   id="listaAllegatiTab">Lista allegati</a></li>
+            <li class="active" id="li_dettaglio"><a href="#dettaglio" data-toggle="tab" aria-expanded="true"   id="detttaglioTab">Dettaglio</a></li>
+              <li class="" id="li_registro_attivita"><a href="#registro_attivita" data-toggle="tab" aria-expanded="true"   id="registroAttivitaTab">Registro attività</a></li>
+              <li class="" id="li_gestione_procedure"><a href="#gestione_procedure" data-toggle="tab" aria-expanded="true"   id="gestioneProcedureTab">Gestione procedure</a></li>
+              <li class="" id="li_lista_allegati"><a href="#lista_allegati" data-toggle="tab" aria-expanded="true"   id="listaAllegatiTab">Lista allegati</a></li>
             </ul>
             
             <div class="tab-content">
@@ -1619,13 +1619,22 @@ $(document).ready(function() {
  
 	
     $('#tabDevice').on( 'dblclick','tr', function () {   
-      	 
+    	
+    	pleaseWaitDiv = $('#pleaseWaitDialog');
+	   	  pleaseWaitDiv.modal('hide');
     	var id = $(this).attr('id').split("_")[1];
     	
     	$('#device_dettaglio').val(id);
     	
       	if(content_id == 0){
       		
+      	$('#dettaglio').addClass("active");
+      	$('#li_dettaglio').addClass("active");
+      	$('#li_registro_attivita').removeClass("active");
+      	$('#li_gestione_procedure').removeClass("active");
+      	$('#li_lista_allegati').removeClass("active");
+      	
+
       	 exploreModal("gestioneDevice.do","action=dettaglio_device&id_device="+id, null, function(datab,textStatusb){
       		 
       		 var result = JSON.parse(datab);

@@ -8,7 +8,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -28,11 +27,9 @@ import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DevAllegatiDeviceDTO;
 import it.portaleSTI.DTO.DevAllegatiSoftwareDTO;
 import it.portaleSTI.DTO.DevDeviceDTO;
@@ -50,18 +47,12 @@ import it.portaleSTI.DTO.DevTipoEventoDTO;
 import it.portaleSTI.DTO.DevTipoProceduraDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
-import it.portaleSTI.DTO.DpiDTO;
-import it.portaleSTI.DTO.TipoDpiDTO;
 import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.DTO.VerAllegatoStrumentoDTO;
-import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneDeviceBO;
 import it.portaleSTI.bo.GestioneDocumentaleBO;
-import it.portaleSTI.bo.GestioneDpiBO;
-import it.portaleSTI.bo.GestioneVerStrumentiBO;
 
 /**
  * Servlet implementation class GestioneDevice
@@ -106,7 +97,8 @@ public class GestioneDevice extends HttpServlet {
 		try {
 			
 			if(action.equals("lista_tipi_device")) {
-			
+				
+		
 				ArrayList<DevTipoDeviceDTO> lista_tipi_device = GestioneDeviceBO.getListaTipiDevice(session);
 				
 				request.getSession().setAttribute("lista_tipi_device", lista_tipi_device);

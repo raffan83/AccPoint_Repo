@@ -1,12 +1,21 @@
 package it.portaleSTI.bo;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
+import org.apache.commons.mail.EmailException;
 import org.hibernate.Session;
 
+import it.portaleSTI.DAO.GestioneDeviceDAO;
 import it.portaleSTI.DAO.GestioneDpiDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
+import it.portaleSTI.DTO.DevRegistroAttivitaDTO;
+import it.portaleSTI.DTO.DevTestoEmailDTO;
 import it.portaleSTI.DTO.DpiAllegatiDTO;
 import it.portaleSTI.DTO.DpiDTO;
 import it.portaleSTI.DTO.DpiManualeDTO;
@@ -72,6 +81,32 @@ public class GestioneDpiBO {
 	public static ArrayList<DpiAllegatiDTO> getListaAllegati(int id_manuale, Session session) {
 
 		return GestioneDpiDAO.getListaAllegati(id_manuale, session);
+	}
+
+	public static void sendEmailDpiScadenza() throws ParseException, Exception {
+
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		Date today = new Date();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(today);
+		cal.add(Calendar.DATE, 10);
+		Date nextDate = cal.getTime();
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		ArrayList<DpiDTO> lista_scadenze = GestioneDpiDAO.getListaDpiScadenzario(df.format(nextDate), df.format(nextDate), session);
+		
+		if(lista_scadenze.size()>0) {
+			
+			SendEmailBO.sendEmailDPIInScadenza(lista_scadenze);
+			
+		}
+		session.getTransaction().commit();
+		session.close();
+		
 	}
 
 }

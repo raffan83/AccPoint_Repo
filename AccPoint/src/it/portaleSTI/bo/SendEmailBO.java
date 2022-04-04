@@ -33,6 +33,7 @@ import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
 import it.portaleSTI.DTO.DevRegistroAttivitaDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
+import it.portaleSTI.DTO.DpiDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.GPDTO;
 import it.portaleSTI.DTO.InterventoDTO;
@@ -1037,10 +1038,13 @@ public static void sendEmailDocumentiInScadenza() throws EmailException {
 	
 	if(lista_documenti.size()>0) {
 		for (DocumTLDocumentoDTO doc : lista_documenti) {
-			messaggio += "ID: "+doc.getId()+" - ";
-			messaggio += "Committente: " + doc.getCommittente().getNome_cliente()+" - ";
-			messaggio += "Nome documento: " + doc.getNome_documento()+" - ";
-			messaggio += "Data scadenza: " + df.format(doc.getData_scadenza())+"<br>";
+			
+			if(doc.getObsoleto()==0 && doc.getDisabilitato()==0) {
+				messaggio += "ID: "+doc.getId()+" - ";
+				messaggio += "Committente: " + doc.getCommittente().getNome_cliente()+" - ";
+				messaggio += "Nome documento: " + doc.getNome_documento()+" - ";
+				messaggio += "Data scadenza: " + df.format(doc.getData_scadenza())+"<br>";
+			}
 		}
 		
 		 HtmlEmail email = new HtmlEmail();
@@ -1074,6 +1078,59 @@ public static void sendEmailDocumentiInScadenza() throws EmailException {
 	}
 	
 }
+
+
+
+public static void sendEmailDPIInScadenza(ArrayList<DpiDTO> lista_dpi) throws EmailException {
+	
+
+	String messaggio = "";
+	
+	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	
+	
+		for (DpiDTO dpi : lista_dpi) {
+			
+		
+				messaggio += "ID: "+dpi.getId()+" - ";
+				messaggio += "TIPO DPI: " + dpi.getTipo().getDescrizione()+" - ";
+				messaggio += "Company: " + dpi.getCompany().getRagione_sociale()+" - ";
+				messaggio += "Lavoratore: " + dpi.getNome_lavoratore()+" - ";
+				messaggio += "Data scadenza: " + df.format(dpi.getData_scadenza())+"<br>";
+			}
+		
+		
+		 HtmlEmail email = new HtmlEmail();
+		  email.setHostName("smtps.aruba.it");
+			 //email.setDebug(true);
+		  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+	email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+	email.getMailSession().getProperties().put("mail.debug", "true");
+	email.getMailSession().getProperties().put("mail.smtp.port", "465");
+	email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+
+
+	
+	email.addTo("giuseppe.gabriele@stisrl.com");
+
+		  
+		  email.setFrom("calver@accpoint.it", "Calver - Gestione DPI");
+		
+
+			  email.setSubject("AVVISO DPI IN SCADENZA");
+			  
+			  email.setHtmlMsg("<html>Si riporta di seguito l&lsquo;elencazione dei dpi in scadenza:<br><br>"
+					  	 +messaggio+"</html>");
+			  
+		  email.send();
+	}
+	
+
 
 }
 

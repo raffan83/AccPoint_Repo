@@ -43,6 +43,7 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.parser.ImageRenderInfo;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
+import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.itextpdf.text.pdf.parser.RenderListener;
 import com.itextpdf.text.pdf.parser.TextRenderInfo;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
@@ -488,40 +489,73 @@ public class GestioneFormazioneBO {
 		int pageNumber = reader.getNumberOfPages();
 		ArrayList<Integer> firstPages = new ArrayList<Integer>();
 		
+	//	String x = getPDFText();
+		
 		for (int i = 1; i <= pageNumber; i++) {
-			String[] text = getText(reader, i); 
-			String pdftext = text[0];
+			//String[] text = getText(reader, i); 
+			//String pdftext = text[0];
+			String pdftext = getPDFText(reader, i).replaceAll("\\n", " ");
 			
+			if(pdftext.contains("SICERTIFICACHE")) {
+				String[] text = getText(reader, i); 
+				pdftext = text[0];
+			}
+	
 			String keyNome = "SI CERTIFICA CHE ";
 			String keyNome2 = "Si certifica che ";
-			String keyNascita = " Nato/a il";
+			String keyNome3 = "Si Certifica che";
+			String keyNascita = "Nato/a il";
 			String keyLuogoStart = ", in ";
 			String keyLuogoEnd = "Profilo";
 			String keyCf = "C.F. : ";
-			String keyCf2 = "C.F. ";
 			Locale locale = new Locale("it", "IT");
 			
-			String textNoSpace = pdftext.replaceAll(" ","");
+			String nominativo = "";				
+			String data_nascita = "";
+			String luogo_nascita = "";
 		
-			if(pdftext.contains(keyNome) || pdftext.contains(keyNome2)) {
+			//if(pdftext.contains(keyNome) || pdftext.contains(keyNome2)) {
+			if(StringUtils.containsIgnoreCase(pdftext, keyNome) || StringUtils.containsIgnoreCase(pdftext, keyNome2) || StringUtils.containsIgnoreCase(pdftext, keyNome3)) {
+				
 				
 				if(pdftext.contains(keyNome2)) {
 					keyNome = keyNome2;
 					keyCf = "C.F. ";
 				}
 				
-				String nominativo = pdftext.substring(pdftext.indexOf(keyNome) + keyNome.length(), pdftext.indexOf(keyNascita));
-				String data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyLuogoStart));
-				String luogo_nascita =  pdftext.substring(pdftext.indexOf(keyLuogoStart) + keyLuogoStart.length(), pdftext.indexOf(keyLuogoEnd));
-				
+				if(pdftext.contains(keyNome3)) {
+					keyNome = keyNome3;
+					keyCf = "C.F. ";
+					keyLuogoStart = "Nato/a a ";
+					keyLuogoEnd = ") il ";
+					keyNascita = keyLuogoEnd;
+					
+					nominativo = pdftext.substring(pdftext.indexOf(keyNome) + keyNome.length(), pdftext.indexOf(keyLuogoStart)).replaceAll("\\n", "");					
+					data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyNascita)+ keyNascita.length()+11);
+					luogo_nascita =  pdftext.substring(pdftext.indexOf(keyLuogoStart) + keyLuogoStart.length(), pdftext.indexOf(keyLuogoEnd)+keyLuogoEnd.length()-3);
+					
+				}else {
+					
+					nominativo = pdftext.substring(pdftext.indexOf(keyNome) + keyNome.length(), pdftext.indexOf(keyNascita)).replaceAll("\\n", "");
+					data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyLuogoStart));					
+					luogo_nascita =  pdftext.substring(pdftext.indexOf(keyLuogoStart) + keyLuogoStart.length(), pdftext.indexOf(keyLuogoEnd));
+					
+					
+				}				
+
 				String cf = "";
 				
 				if(pdftext.indexOf(keyCf) == -1) {
 					
-					cf = pdftext.substring(pdftext.indexOf("opnefeiitalia@flexipec.it") +66, pdftext.indexOf("opnefeiitalia@flexipec.it") +82);
-										
-				
-				
+					keyCf =  "C.F. ";
+					
+					if(pdftext.indexOf(keyCf) == -1) {
+						cf = pdftext.substring(pdftext.indexOf("opnefeiitalia@flexipec.it") +66, pdftext.indexOf("opnefeiitalia@flexipec.it") +82);
+					}else {
+						cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
+					}
+					
+					
 				}else {
 					cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
 				}						
@@ -598,110 +632,41 @@ public class GestioneFormazioneBO {
 				
 				lista.add(partecipante);
 			}
-//			}else if(textNoSpace.contains("C.F.")||textNoSpace.contains("C.F.:")) {
-//				
-//				String nominativo = textNoSpace.substring(textNoSpace.indexOf(keyNome.replaceAll(" ","")) + keyNome.replaceAll(" ","").length(), textNoSpace.indexOf(keyNascita.replaceAll(" ","")));
-//				String data_nascita = textNoSpace.substring(textNoSpace.indexOf(keyNascita.replaceAll(" ","")) + keyNascita.replaceAll(" ","").length(), textNoSpace.indexOf(keyLuogoStart.replaceAll(" ","")));
-//				String luogo_nascita =  textNoSpace.substring(textNoSpace.indexOf(keyLuogoStart.replaceAll(" ","")) + keyLuogoStart.replaceAll(" ","").length(), textNoSpace.indexOf(keyLuogoEnd.replaceAll(" ","")));
-//				
-//				String cf = "";
-//				
-//				if(pdftext.indexOf(keyCf) == -1) {
-//					
-//					cf = pdftext.substring(pdftext.indexOf("opnefeiitalia@flexipec.it") +66, pdftext.indexOf("opnefeiitalia@flexipec.it") +82);
-//										
-//				
-//				
-//				}else {
-//					cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
-//				}						
-//						
-//				
-//				if(data_nascita.contains("/")) {
-//					df = new SimpleDateFormat("dd/MM/yyyy", locale);
-//				}else {
-//					df = new SimpleDateFormat("dd MMMM yyyy", locale);
-//				}
-//			
-//				System.out.println(nominativo + " "+ data_nascita+" "+luogo_nascita+" "+cf);
-//				
-//				ForPartecipanteDTO partecipante = new ForPartecipanteDTO();
-//				
-//				String[] nomeCognome = nominativo.split(" ");
-//				
-//				if(pdftext.indexOf(keyCf) == -1) {
-//					if(nomeCognome.length == 2) {
-//						partecipante.setCognome(nomeCognome[1]);
-//						partecipante.setNome(nomeCognome[0]);
-//							
-//					}else if(nomeCognome.length == 3){
-//						partecipante.setCognome(nomeCognome[1] +" "+ nomeCognome[2]);					
-//						partecipante.setNome(nomeCognome[0]);
-//						partecipante.setNominativo_irregolare(1);
-//					}else if(nomeCognome.length>3){
-//						partecipante.setNome(nomeCognome[0]);								
-//						partecipante.setNominativo_irregolare(0);
-//						int j = 2;
-//						String cognome = nomeCognome[1] +" "+ nomeCognome[2];
-//						
-//						while(j<nomeCognome.length) {
-//							cognome += nomeCognome[j];
-//							
-//							j++;
-//						}
-//						partecipante.setCognome(cognome);
-//					}
-//				}else {
-//					if(nomeCognome.length == 2) {
-//						partecipante.setCognome(nomeCognome[0]);
-//						partecipante.setNome(nomeCognome[1]);
-//							
-//					}else if(nomeCognome.length == 3){
-//						partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);					
-//						partecipante.setNome(nomeCognome[2]);
-//						partecipante.setNominativo_irregolare(1);
-//					}else if(nomeCognome.length>3){
-//						partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);			
-//						partecipante.setNominativo_irregolare(1);
-//						int j = 2;
-//						while(j<nomeCognome.length) {
-//							partecipante.setNome(nomeCognome[j]);
-//							j++;
-//						}
-//					}
-//				}
-//				
-//				
-//				partecipante.setCf(cf);
-//				partecipante.setData_nascita(df.parse(data_nascita));
-//				partecipante.setLuogo_nascita(luogo_nascita);
-//				if(cl!=null) {
-//					partecipante.setId_azienda(cl.get__id());
-//					partecipante.setNome_azienda(cl.getNome());
-//				}
-//				
-//				if(sd!=null) {
-//					partecipante.setId_sede(sd.get__id());
-//					String nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
-//					partecipante.setNome_sede(nome_sede);
-//				}
-//				
-//				lista.add(partecipante);
-//				
-//				
-//			}
-//			
+		
 
 		}
-		
-		
-		
 		
 		
 		
 		return lista;
 	}
 
+	
+	
+	public static String getPDFText(PdfReader reader, int page) throws IOException {
+		
+		//PdfReader pdf = new PdfReader("C:\\Users\\antonio.dicivita\\Desktop\\1.pdf");  
+		   
+        //Get the number of pages in pdf.
+    //    int nbrPages = pdf.getNumberOfPages(); 
+        String content = "";
+        //Iterate the pdf through the pages.
+//        for(int i=1; i <= nbrPages; i++) 
+//        { 
+            //Extract the content of the page using PdfTextExtractor.
+             content = PdfTextExtractor.getTextFromPage(reader, page);
+   
+            //Display the content of the page on the console.
+            System.out.println("Content of the page : " + content);
+//        }
+   
+        //Close the PdfReader.
+       // pdf.close();
+		
+        return content;
+		
+	}
+	
 	
 	public static void splitPdf(FileItem fileItem, ArrayList<ForPartecipanteRuoloCorsoDTO> lista_partecipanti,Session session) throws Exception, IOException {
 		

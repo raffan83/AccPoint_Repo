@@ -46,6 +46,7 @@ public class VerStrumentoDTO {
 	private String ultimo_verificatore;
 	private int posizione_cambio;
 	private String masse_corredo;
+	private int tipo_indicazione;
 	
 	public String getCreato() {
 		return creato;
@@ -282,5 +283,11 @@ public class VerStrumentoDTO {
 	public void setMasse_corredo(String masse_corredo) {
 		this.masse_corredo = masse_corredo;
 	}
-
+	public int getTipo_indicazione() {
+		return tipo_indicazione;
+	}
+	public void setTipo_indicazione(int tipo_indicazione) {
+		this.tipo_indicazione = tipo_indicazione;
+	}
+	
 }

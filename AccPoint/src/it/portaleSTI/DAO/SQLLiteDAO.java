@@ -1635,6 +1635,7 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			
 			strumento.setPosizione_cambio(rs.getInt("posizione_cambio"));
 			strumento.setMasse_corredo(rs.getString("masse_corredo"));
+			strumento.setTipo_indicazione(rs.getInt("tipo_indicazione"));
 			misura.setVerStrumento(strumento);
 			
 			listaMisura.add(misura);

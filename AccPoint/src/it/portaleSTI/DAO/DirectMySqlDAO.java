@@ -2871,6 +2871,33 @@ public class DirectMySqlDAO {
 		con.close();
 		
 	}
+
+	public static HashMap<Integer, Integer> getListaClientiConStrumenti() throws Exception {
+		
+		
+		HashMap<Integer, Integer> listaClietiConStrumenti= new HashMap<Integer,Integer>();
+		
+		String query="select distinct(id_cliente) from strumento ";
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs = null;
+		
+		
+		con=getConnection();
+		pst=con.prepareStatement(query);
+
+		rs=pst.executeQuery();
+		
+		while(rs.next()) 
+		{
+			int id_cliente=rs.getInt(1);
+			
+			listaClietiConStrumenti.put(id_cliente, id_cliente);
+		}
+		
+		return listaClietiConStrumenti;
+	}
 	
 	
 	

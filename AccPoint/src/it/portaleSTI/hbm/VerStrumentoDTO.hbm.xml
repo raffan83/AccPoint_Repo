@@ -110,6 +110,9 @@
          <property name="masse_corredo" type="java.lang.String">
             <column name="masse_corredo" />
         </property>
+          <property name="tipo_indicazione" type="int">
+            <column name="tipo_indicazione" />
+        </property>
         <many-to-one name="famiglia_strumento" class="it.portaleSTI.DTO.VerFamigliaStrumentoDTO" fetch="join" lazy="false">
             <column name="id_famiglia_strumento" />
         </many-to-one>

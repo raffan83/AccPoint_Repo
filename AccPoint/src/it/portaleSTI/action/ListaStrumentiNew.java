@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.SedeDTO;
@@ -62,6 +64,18 @@ public class ListaStrumentiNew extends HttpServlet {
 				
 				List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);
 				
+				List<ClienteDTO> listaClientiCS = new ArrayList<ClienteDTO>();
+				
+				HashMap<Integer,Integer> listaClientiConStrumenti=DirectMySqlDAO.getListaClientiConStrumenti();
+				
+				for (ClienteDTO clienteDTO : listaClientiFull) {
+					
+					if(listaClientiConStrumenti.containsKey(clienteDTO.get__id())) 
+					{
+						listaClientiCS.add(clienteDTO);
+					}
+				}
+				
 	//			ArrayList<Integer> clientiIds = GestioneStrumentoBO.getListaClientiStrumenti();
 	//			
 	//			List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();
@@ -70,7 +84,7 @@ public class ListaStrumentiNew extends HttpServlet {
 	//					listaClienti.add(cliente);
 	//				}
 	//			}
-				request.getSession().setAttribute("listaClienti",listaClientiFull);
+				request.getSession().setAttribute("listaClienti",listaClientiCS);
 				
 				
 				

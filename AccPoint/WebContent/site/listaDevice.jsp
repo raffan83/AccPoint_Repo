@@ -1647,7 +1647,7 @@ $(document).ready(function() {
 				$('#codice_interno_dtl').val(device.codice_interno);
 				$('#tipo_device_dtl').val(device.tipo_device.id);
 				$('#tipo_device_dtl').change();
-				$('#company_dtl').val(device.tipo_device.id);
+				$('#company_dtl').val(device.company.id);
 				$('#company_dtl').change();
 				$('#denominazione_dtl').val(device.denominazione);
 				$('#costruttore_dtl').val(device.costruttore);
@@ -1726,7 +1726,7 @@ $(document).ready(function() {
     				$('#codice_interno_dtl').val(device.codice_interno);
     				$('#tipo_device_dtl').val(device.tipo_device.id);
     				$('#tipo_device_dtl').change();
-    				$('#company_dtl').val(device.tipo_device.id);
+    				$('#company_dtl').val(device.company.id);
     				$('#company_dtl').change();
     				$('#denominazione_dtl').val(device.denominazione);
     				$('#costruttore_dtl').val(device.costruttore);

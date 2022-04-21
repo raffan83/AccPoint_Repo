@@ -42,6 +42,7 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneCommesseDAO;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -810,6 +811,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 					}
 					
+			
 					ArrayList<String> listaAziendePartecipanti = GestioneFormazioneBO.getListaAziendeConPartecipanti(session);
 					
 					ArrayList<String> lista_cf = GestioneFormazioneDAO.getListaCodiciFiscali(session);
@@ -817,7 +819,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					Gson g = new Gson();
 					JsonElement json_cf = g.toJsonTree(lista_cf);
 					
-					ArrayList<ForCorsoDTO> lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
+					ArrayList<ForCorsoDTO> lista_corsi = DirectMySqlDAO.getListaCorsiDirect(session);
 					ArrayList<ForRuoloDTO> lista_ruoli = GestioneFormazioneBO.getListaRuoli(session);
 					
 					request.getSession().setAttribute("lista_clienti", listaClienti);

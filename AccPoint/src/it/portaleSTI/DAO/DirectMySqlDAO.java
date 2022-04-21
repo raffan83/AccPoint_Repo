@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -33,6 +34,8 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
+import it.portaleSTI.DTO.ForCorsoDTO;
+import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -2868,6 +2871,103 @@ public class DirectMySqlDAO {
 		con.close();
 		
 	}
+	
+	
+	
+public static ArrayList<ForPartecipanteDTO> getListaPartecipantiDirect(Session session) throws Exception {
+		
+		
+	ArrayList<ForPartecipanteDTO> lista =new ArrayList<ForPartecipanteDTO>();
+		
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
+		
+		try {
+			con=getConnection();
+
+			pst=con.prepareStatement("SELECT * FROM FOR_PARTECIPANTE");
+			rs=pst.executeQuery();
+			
+			ForPartecipanteDTO partecipante=null;
+			
+			while(rs.next())
+			{
+				partecipante= new ForPartecipanteDTO();
+				partecipante.setId(rs.getInt("id"));
+				partecipante.setCf(rs.getString("cf"));
+				partecipante.setCognome(rs.getString("cognome"));
+				partecipante.setData_nascita(rs.getDate("data_nascita"));
+				partecipante.setId_azienda(rs.getInt("id_azienda"));
+				partecipante.setId_sede(rs.getInt("id_sede"));
+				partecipante.setLuogo_nascita(rs.getString("luogo_nascita"));
+				partecipante.setNome(rs.getString("nome"));
+				partecipante.setNome_azienda(rs.getString("nome_azienda"));
+				partecipante.setNome_sede(rs.getString("nome_sede"));
+				partecipante.setNote(rs.getString("note"));
+				
+				
+				lista.add(partecipante);
+			}
+			
+		} catch (Exception e) {
+			
+			throw e;
+		//	e.printStackTrace();
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+		return lista;
+		
+	}
+
+
+public static ArrayList<ForCorsoDTO> getListaCorsiDirect(Session session) throws Exception {
+	
+	
+	ArrayList<ForCorsoDTO> lista =new ArrayList<ForCorsoDTO>();
+		
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
+		
+		try {
+			con=getConnection();
+
+			pst=con.prepareStatement("SELECT * FROM FOR_CORSO WHERE DISABILITATO = 0");
+			rs=pst.executeQuery();
+			
+			ForCorsoDTO corso=null;
+			
+			while(rs.next())
+			{
+				corso= new ForCorsoDTO();
+				corso.setId(rs.getInt("id"));
+				corso.setDescrizione(rs.getString("descrizione"));
+
+				
+				lista.add(corso);
+			}
+			
+		} catch (Exception e) {
+			
+			throw e;
+		//	e.printStackTrace();
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+		return lista;
+		
+	}
+	
 	
 }
 

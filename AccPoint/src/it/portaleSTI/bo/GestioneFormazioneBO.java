@@ -46,6 +46,8 @@ import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.itextpdf.text.pdf.parser.RenderListener;
 import com.itextpdf.text.pdf.parser.TextRenderInfo;
+
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
@@ -118,9 +120,9 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getAllegatoCategoriaFormId(id_allegato, session);
 	}
 
-	public static ArrayList<ForPartecipanteDTO> getListaPartecipanti(Session session) {
+	public static ArrayList<ForPartecipanteDTO> getListaPartecipanti(Session session) throws Exception {
 		
-		return GestioneFormazioneDAO.getListaPartecipanti(session);
+		return DirectMySqlDAO.getListaPartecipantiDirect(session);
 	}
 
 	public static ForPartecipanteDTO getPartecipanteFromId(int id_partecipante, Session session) {
@@ -182,18 +184,17 @@ public class GestioneFormazioneBO {
 			Row row = itr.next();  
 			Iterator<Cell> cellIterator = row.cellIterator();   //iterating over each column  
 			
-			ForPartecipanteDTO partecipante = new ForPartecipanteDTO();		
-			partecipante.setId_azienda(id_azienda);
-			partecipante.setId_sede(id_sede);
-			partecipante.setNome_azienda(nome_azienda);
-			partecipante.setNome_sede(nome_sede);			
-			boolean esito = false;
+			ForPartecipanteDTO partecipante = null;		
 			
 			String nome = null;
 			String cognome = null;
 			String cf = null;
 			String luogo_nascita = null;
 			Date data_nascita = null;
+			int id_ruolo = 0;
+			int id_corso = 0;
+			String ore_partecipate = null;
+			
 			while (cellIterator.hasNext())   
 			{  
 				Cell cell = cellIterator.next();  
@@ -209,58 +210,78 @@ public class GestioneFormazioneBO {
 				}
 				
 				if(esito_generale == 0 && cell.getRowIndex()!=0) {
-					if(cell.getCellType() == Cell.CELL_TYPE_STRING) {
+					if(cell.getCellType() == Cell.CELL_TYPE_STRING ) {
 						
 						if(cell.getStringCellValue()!=null && !cell.getStringCellValue().equals("") )
 						{
-							esito = true;		
 							
 							if(cell.getColumnIndex()==0) {
 								nome = cell.getStringCellValue();
-								//partecipante.setNome(cell.getStringCellValue());
 							}
 							else if(cell.getColumnIndex()==1) {
 								cognome = cell.getStringCellValue();
-								//partecipante.setCognome(cell.getStringCellValue());
 							}	
 							else if(cell.getColumnIndex()==3) {
 								luogo_nascita = cell.getStringCellValue();
-								//partecipante.setLuogo_nascita(cell.getStringCellValue());
 							}
 							else if(cell.getColumnIndex()==4) {
 								cf = cell.getStringCellValue();
-								//partecipante.setCf(cell.getStringCellValue());
-								
-//								if(codiciFiscali.contains(cell.getStringCellValue())) {
-//									esito = false;
-//								}
-							}											
+							}
+							
 							
 						}
 						
 					}else {
 						
-						if(cell.getDateCellValue()!=null && cell.getColumnIndex()==2) {
-							
-							data_nascita = cell.getDateCellValue();
-							//partecipante.setData_nascita(cell.getDateCellValue());					
-							esito = true;
-						}				
-					}				
-				}	
+						if(cell.getDateCellValue()!=null && cell.getColumnIndex()==2) {							
+							data_nascita = cell.getDateCellValue();						
+						}						
+						else if(cell.getColumnIndex()==5 ) {
+							id_corso = (int) cell.getNumericCellValue();
+						}
+						else if(cell.getColumnIndex()==6 ) {
+							id_ruolo =  (int) cell.getNumericCellValue();								
+						}else if(cell.getColumnIndex()==7 ) {
+							ore_partecipate = ""+cell.getNumericCellValue();
+						}
+					}	
+				}
 			
 			}
-			if(!codiciFiscali.contains(cf)) {
-				partecipante.setNome(nome);
-				partecipante.setCognome(cognome);
-				partecipante.setData_nascita(data_nascita);
-				partecipante.setLuogo_nascita(luogo_nascita);
-				partecipante.setCf(cf);
-				session.save(partecipante);	
+			if(row.getRowNum()!=0) {
+				if(!codiciFiscali.contains(cf)) {
+					partecipante= new ForPartecipanteDTO();		
+					partecipante.setId_azienda(id_azienda);
+					partecipante.setId_sede(id_sede);
+					partecipante.setNome_azienda(nome_azienda);
+					partecipante.setNome_sede(nome_sede);	
+					
+				}else {
+					partecipante = getPartecipanteFromCf(cf, session);
+				}
+				
+				if(partecipante!=null) {
+					partecipante.setNome(nome);
+					partecipante.setCognome(cognome);
+					partecipante.setData_nascita(data_nascita);
+					partecipante.setLuogo_nascita(luogo_nascita);
+					partecipante.setCf(cf);
+					session.saveOrUpdate(partecipante);	
+					
+					
+					if(id_corso!=0 && id_ruolo!=0 && ore_partecipate!=null) {
+						ForPartecipanteRuoloCorsoDTO p = new ForPartecipanteRuoloCorsoDTO();
+						ForCorsoDTO corso = getCorsoFromId(id_corso, session);
+						p.setCorso(corso);
+						p.setPartecipante(partecipante);
+						p.setRuolo(new ForRuoloDTO(id_ruolo));
+						p.setOre_partecipate(Double.parseDouble(ore_partecipate));
+						session.saveOrUpdate(p);
+					}
+				}
+				
 			}
 			
-
-
 		}
 		
 		
@@ -657,7 +678,7 @@ public class GestioneFormazioneBO {
              content = PdfTextExtractor.getTextFromPage(reader, page);
    
             //Display the content of the page on the console.
-            System.out.println("Content of the page : " + content);
+          //  System.out.println("Content of the page : " + content);
 //        }
    
         //Close the PdfReader.

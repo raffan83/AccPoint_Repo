@@ -1,5 +1,8 @@
 package it.portaleSTI.DAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +13,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
@@ -178,6 +182,9 @@ public class GestioneFormazioneDAO {
 					
 		return lista;
 	}
+	
+	
+	
 
 	public static ForPartecipanteDTO getPartecipanteFromId(int id_partecipante, Session session) {
 		

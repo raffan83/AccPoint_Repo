@@ -1045,7 +1045,7 @@ $(document).ready(function() {
 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 		        }
 	        },
-	        pageLength: 25,
+	        pageLength: 100,
 	        "order": [[ 0, "desc" ]],
 		      paging: true, 
 		      ordering: true,
@@ -1551,80 +1551,86 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 	 
 	 var nomi_irregolari = [];
 	  var col_cf = [];
-	  for(var i = 0; i<lista_partecipanti_import.length;i++){
-		  var dati = {};
-		  		
-		  dati.nome = lista_partecipanti_import[i].nome;
-		  dati.cognome = lista_partecipanti_import[i].cognome;
-		  dati.cf = lista_partecipanti_import[i].cf;
-		  
-		  dati.data_nascita = formatDate(moment(lista_partecipanti_import[i].data_nascita, "MMM DD, YYYY"));
-		  dati.luogo_nascita = lista_partecipanti_import[i].luogo_nascita;
-		  dati.azienda = '<input class="form-control typeahead" onClick="creaSelect(\''+lista_partecipanti_import[i].cf+'\')" onChange="changeSedeTab(\''+lista_partecipanti_import[i].cf+'\')" data-placeholder="Seleziona Azienda..." id="azienda_table_'+lista_partecipanti_import[i].cf+'" name="azienda_table_'+lista_partecipanti_import[i].cf+'"  style="width:100%">'
-		  
-		  dati.sede = '<select class="form-control select2" id="sede_table_'+lista_partecipanti_import[i].cf+'" style="width:100%" name="sede_table_'+lista_partecipanti_import[i].cf+'" disabled></select>';
-		  dati.corsi = '<div id="content_corsi_'+lista_partecipanti_import[i].cf+'"></div> <input type="hidden" id="corso_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="ruolo_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="ore_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="firma_responsabile_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="firma_legale_rappresentante_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="firma_centro_formazione_'+lista_partecipanti_import[i].cf+'">';
-		  dati.azioni = '<a class="btn btn-primary" onClick="modalAssocia(\''+lista_partecipanti_import[i].cf+'\')">Associa al corso</a>';
-		  
-		  if(lista_partecipanti_import[i].nominativo_irregolare == 1){
-			  nomi_irregolari.push(lista_partecipanti_import[i].cf);
-		  }
-		   col_cf.push(lista_partecipanti_import[i].cf);
-		  table_data.push(dati);
-		  }
 	  
-	  var table = $('#tabImportPartecipante').DataTable();
-	  
-	   table.clear().draw();
-	   
-		table.rows.add(table_data).draw();
+	  if(lista_partecipanti_import!=null){
+		  for(var i = 0; i<lista_partecipanti_import.length;i++){
+			  var dati = {};
+			  		
+			  dati.nome = lista_partecipanti_import[i].nome;
+			  dati.cognome = lista_partecipanti_import[i].cognome;
+			  dati.cf = lista_partecipanti_import[i].cf;
+			  
+			  dati.data_nascita = formatDate(moment(lista_partecipanti_import[i].data_nascita, "MMM DD, YYYY"));
+			  dati.luogo_nascita = lista_partecipanti_import[i].luogo_nascita;
+			  dati.azienda = '<input class="form-control typeahead" onClick="creaSelect(\''+lista_partecipanti_import[i].cf+'\')" onChange="changeSedeTab(\''+lista_partecipanti_import[i].cf+'\')" data-placeholder="Seleziona Azienda..." id="azienda_table_'+lista_partecipanti_import[i].cf+'" name="azienda_table_'+lista_partecipanti_import[i].cf+'"  style="width:100%">'
+			  
+			  dati.sede = '<select class="form-control select2" id="sede_table_'+lista_partecipanti_import[i].cf+'" style="width:100%" name="sede_table_'+lista_partecipanti_import[i].cf+'" disabled></select>';
+			  dati.corsi = '<div id="content_corsi_'+lista_partecipanti_import[i].cf+'"></div> <input type="hidden" id="corso_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="ruolo_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="ore_table_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="firma_responsabile_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="firma_legale_rappresentante_'+lista_partecipanti_import[i].cf+'"> <input type="hidden" id="firma_centro_formazione_'+lista_partecipanti_import[i].cf+'">';
+			  dati.azioni = '<a class="btn btn-primary" onClick="modalAssocia(\''+lista_partecipanti_import[i].cf+'\')">Associa al corso</a>';
+			  
+			  if(lista_partecipanti_import[i].nominativo_irregolare == 1){
+				  nomi_irregolari.push(lista_partecipanti_import[i].cf);
+			  }
+			   col_cf.push(lista_partecipanti_import[i].cf);
+			  table_data.push(dati);
+			  }
+		  
+		  var table = $('#tabImportPartecipante').DataTable();
+		  
+		   table.clear().draw();
+		   
+			table.rows.add(table_data).draw();
 
-		for(var i = 0;i<nomi_irregolari.length;i++){
-			for(var j = 0; j<col_cf.length;j++){
-				if(col_cf[j] == nomi_irregolari[i]){
-					var x = $('#content_corsi_'+col_cf[j])[0].parentNode.parentNode;
-					$(x).css("background-color","#F8F26D")
+			for(var i = 0;i<nomi_irregolari.length;i++){
+				for(var j = 0; j<col_cf.length;j++){
+					if(col_cf[j] == nomi_irregolari[i]){
+						var x = $('#content_corsi_'+col_cf[j])[0].parentNode.parentNode;
+						$(x).css("background-color","#F8F26D")
+					}
 				}
 			}
-		}
-		
- 		table.columns.adjust().draw();
- 		for(var i = 0; i<lista_partecipanti_import.length;i++){
-			//initSelect2('#azienda_table_'+lista_partecipanti_import[i].cf);
-			$('#sede_table_'+lista_partecipanti_import[i].cf).select2();
 			
-		}  
-		
- 		var azienda_val = $('#azienda_import').val();
-		var sede_val = $('#sede_import').val();
-		
-		 if(azienda_val!=null && azienda_val!=''){
+	 		table.columns.adjust().draw();
+	 		for(var i = 0; i<lista_partecipanti_import.length;i++){
+				//initSelect2('#azienda_table_'+lista_partecipanti_import[i].cf);
+				$('#sede_table_'+lista_partecipanti_import[i].cf).select2();
 				
-				$('#azienda_import_general').val(azienda_val);
-				$('#azienda_import_general').change();
-			}
-			if(sede_val!=null && sede_val!=''){
-				if(sede_val == 0){
-					$('#sede_import_general').val(0);
-				}else{
-					$('#sede_import_general').val(sede_val);	
-				}
-				
-				$('#sede_import_general').change();
 			}  
-		
-		
-	  $('#modalConfermaImportazione').modal();
-		
- 
- 
- $('#modalConfermaImportazione').on('shown.bs.modal', function () {
-	  var table = $('#tabImportPartecipante').DataTable();
-	  
-		table.columns.adjust().draw();
-		
-	})
-	  
+			
+	 		var azienda_val = $('#azienda_import').val();
+			var sede_val = $('#sede_import').val();
+			
+			 if(azienda_val!=null && azienda_val!=''){
+					
+					$('#azienda_import_general').val(azienda_val);
+					$('#azienda_import_general').change();
+				}
+				if(sede_val!=null && sede_val!=''){
+					if(sede_val == 0){
+						$('#sede_import_general').val(0);
+					}else{
+						$('#sede_import_general').val(sede_val);	
+					}
+					
+					$('#sede_import_general').change();
+				}  
+			
+			
+		  $('#modalConfermaImportazione').modal();
+			
+	 
+	 
+	 $('#modalConfermaImportazione').on('shown.bs.modal', function () {
+		  var table = $('#tabImportPartecipante').DataTable();
+		  
+			table.columns.adjust().draw();
+			
+		})
+		  
+	  }else{
+		  location.reload();
+	  }
+	 
 	 
  }
  

@@ -734,7 +734,11 @@ $('#lavoratore_scheda').select2();
 	  	          {
 	  	            extend: 'colvis',
 	  	            text: 'Nascondi Colonne'  	                   
-	 			  } ]
+	 			  }, 
+		 			 {
+		  	            extend: 'excel',
+		  	            text: 'Esporta Excel'  	                   
+		 			  } ]
 		               
 		    });
 		

@@ -524,7 +524,7 @@ public class GestioneFormazioneBO {
 	
 			String keyNome = "SI CERTIFICA CHE ";
 			String keyNome2 = "Si certifica che ";
-			String keyNome3 = "Si Certifica che";
+			String keyNome3 = "Si Certifica che ";
 			String keyNascita = "Nato/a il";
 			String keyLuogoStart = ", in ";
 			String keyLuogoEnd = "Profilo";

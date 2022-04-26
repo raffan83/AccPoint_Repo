@@ -120,7 +120,7 @@
 			</rectangle>
 			<staticText>
 				<reportElement x="220" y="383" width="331" height="21" uuid="7537ecd3-0ddc-4719-88b5-c3a1f5da55a5"/>
-				<text><![CDATA[Non sono rispettati i valori di MPE definiti dalla normativa vigente;]]></text>
+				<text><![CDATA[Non sono rispettati i valori di EMT definiti dalla normativa vigente;]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement x="180" y="413" width="21" height="21" uuid="0d643cd8-c2d2-40d2-80f9-2009d3c9ace3"/>

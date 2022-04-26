@@ -539,6 +539,39 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{legalizzazione_title_small}]]></textFieldExpression>
 			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="493" y="319" width="67" height="16" isRemoveLineWhenBlank="true" uuid="ccd8b990-040c-4501-8d50-34cae33e521f"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data_provvedimento_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="370" y="319" width="123" height="16" isRemoveLineWhenBlank="true" uuid="ef389a92-97c8-45a3-968b-2de91ab05eb5"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font size="10"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_provvedimento_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="290" y="319" width="80" height="16" isRemoveLineWhenBlank="true" uuid="d029ad97-eb3e-455e-ac0c-f44bc12e7c54"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipo_approvazione_3}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 </jasperReport>

@@ -194,8 +194,9 @@
 	<td>${corso_part.corso.durata}</td>
 	<td>${corso_part.corso.tipologia}</td>
 	<td>
+	<c:if test="${corso_part.attestato!=null }">
 	 <a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_attestato&id_corso=${utl:encryptData(corso_part.corso.id)}&id_partecipante=${utl:encryptData(corso_part.partecipante.id)}&filename=${utl:encryptData(corso_part.attestato)}" title="Click per scaricare l'attestato"><i class="fa fa-file-pdf-o"></i></a>
-	
+	</c:if>
 	
 	</td> 
 	</tr>

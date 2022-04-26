@@ -405,6 +405,39 @@
 				<reportElement x="0" y="650" width="553" height="79" uuid="7f23da2a-0b18-44bf-b21d-5f0ad8d41b1f"/>
 				<textFieldExpression><![CDATA[$P{combinazioni_campioni}]]></textFieldExpression>
 			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="493" y="422" width="67" height="16" isRemoveLineWhenBlank="true" uuid="381f17df-e1ba-4dc6-a8c6-380f6fb3b98d"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data_provvedimento_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="370" y="422" width="123" height="16" isRemoveLineWhenBlank="true" uuid="d47df45c-0179-4130-a04a-c576b820fb0c"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font size="10"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_provvedimento_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="290" y="422" width="80" height="16" isRemoveLineWhenBlank="true" uuid="d6350d0a-4a2f-4cfa-912f-fc735608874f"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipo_approvazione_3}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 </jasperReport>

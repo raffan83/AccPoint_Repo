@@ -1294,8 +1294,8 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
                
               </div>
               <div class="col-xs-2">
-              
-              <input type="text" class="form-control pull-right" disabled value="${misura.tInizio }" >
+                 <fmt:formatNumber value="${misura.tInizio }" maxFractionDigits="7"  var="tInizio" />
+              <input type="text" class="form-control pull-right" disabled value="${tInizio }" >
             
                
               </div>
@@ -1310,7 +1310,9 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
               <%-- <input type="text" class="form-control pull-right" disabled value="${misura.tInizio }" > --%>
              <label >|Ti - Tf| < 5 C°</label>
          
-               <input type="text" class="form-control pull-right"  value='${misura.tFine - misura.tInizio }' disabled> 
+         <fmt:formatNumber value="${(misura.tFine - misura.tInizio) }" maxFractionDigits="7"  var="temperatura" />
+         
+               <input type="text" class="form-control pull-right"  value='${temperatura }' disabled> 
               </div>
               </div><br>
               
@@ -1322,8 +1324,8 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
                
               </div>
               <div class="col-xs-2">
-              
-              <input type="text" class="form-control pull-right" disabled value="${misura.tFine }" >
+              <fmt:formatNumber value="${misura.tFine }" maxFractionDigits="7"  var="tFine" />
+              <input type="text" class="form-control pull-right" disabled value="${tFine }"  >
             
                
               </div>
@@ -1357,17 +1359,20 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
                
                <div class="col-xs-2">
               <label>Altezza/m</label>
-              <input type="text" class="form-control pull-right" disabled value="${misura.altezza_org }" >
+              <fmt:formatNumber value="${misura.altezza_org }" maxFractionDigits="7"  var="altezza_org" />
+              <input type="text" class="form-control pull-right" disabled value="${altezza_org }" >
                </div>
                
                <div class="col-xs-2">
               <label>Latitudine °</label>
-              <input type="text" class="form-control pull-right" disabled value="${misura.latitudine_org }" >
+               <fmt:formatNumber value="${misura.latitudine_org }" maxFractionDigits="7"  var="latitudine_org" />
+              <input type="text" class="form-control pull-right" disabled value="${latitudine_org }" >
                </div>
                
                <div class="col-xs-2">
               <label>g Loc</label>
-              <input type="text" class="form-control pull-right" disabled value="${misura.gOrg }" >
+              <fmt:formatNumber value="${misura.gOrg }" maxFractionDigits="7"  var="gOrg" />
+              <input type="text" class="form-control pull-right" disabled value="${gOrg }" >
                </div>
                
                </div><br>
@@ -1380,18 +1385,18 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
                </div>
                
                  <div class="col-xs-2">
-              
-              <input type="text" class="form-control pull-right" disabled value="${misura.altezza_util }" >
+               <fmt:formatNumber value="${misura.altezza_util }" maxFractionDigits="7"  var="altezza_util" />
+              <input type="text" class="form-control pull-right" disabled value="${altezza_util }" >
                </div>
                
                <div class="col-xs-2">
-              
-              <input type="text" class="form-control pull-right" disabled value="${misura.latitudine_util }" >
+               <fmt:formatNumber value="${misura.latitudine_util }" maxFractionDigits="7"  var="latitudine_util" />
+              <input type="text" class="form-control pull-right" disabled value="${latitudine_util }" >
                </div>
                
                <div class="col-xs-2">
-              
-              <input type="text" class="form-control pull-right" disabled value="${misura.gUtil }" >
+               <fmt:formatNumber value="${misura.gUtil }" maxFractionDigits="7"  var="gUtil" />
+              <input type="text" class="form-control pull-right" disabled value="${gUtil }" >
                </div>
                
                </div><br><br><br>
@@ -1409,8 +1414,8 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
                </div>
                
                <div class="col-xs-2">
-              
-              <input type="text" class="form-control pull-right" disabled value="${misura.gFactor }" >
+               <fmt:formatNumber value="${misura.gFactor }" maxFractionDigits="7"  var="gFactor" />
+              <input type="text" class="form-control pull-right" disabled value="${gFactor }" >
                </div>
                
                <div class="col-xs-2">
@@ -1840,7 +1845,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 <div class="col-xs-6">
 
 
-<b>Numero di punti di appoggi del ricettore di carico:
+<b>Punti di appoggio decentrati:
 <c:choose>
 <c:when test="${lista_decentramento.get(0).puntiAppoggio!=0}"> 
 ${lista_decentramento.get(0).puntiAppoggio}
@@ -1982,7 +1987,7 @@ ${lista_decentramento.get(1).puntiAppoggio}
 </div>
 <div class="row">
 <div class="col-xs-6">
-<b>Numero di punti di appoggi del ricettore di carico:
+<b>Punti di appoggio decentrati:
 <c:choose>
 <c:when test="${lista_decentramento.get(10).puntiAppoggio!=0}"> 
 ${lista_decentramento.get(10).puntiAppoggio}
@@ -2112,7 +2117,7 @@ ${lista_decentramento.get(11).puntiAppoggio}
 <div class="row">
 <div class="col-xs-6">
 
-<b>Numero di punti di appoggi del ricettore di carico:
+<b>Punti di appoggio decentrati:
 <c:choose>
 <c:when test="${lista_decentramento.get(20).puntiAppoggio!=0}"> 
 ${lista_decentramento.get(20).puntiAppoggio}

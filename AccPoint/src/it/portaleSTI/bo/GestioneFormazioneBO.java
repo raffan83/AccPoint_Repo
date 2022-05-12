@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
@@ -34,6 +36,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.itextpdf.text.Annotation;
 import com.itextpdf.text.Image;
@@ -502,7 +505,13 @@ public class GestioneFormazioneBO {
 		  
 		}
 
-	public static ArrayList<ForPartecipanteDTO> importaDaPDF(FileItem fileItem,ClienteDTO cl, SedeDTO sd, Session session) throws Exception {
+	public static JsonObject importaDaPDF(FileItem fileItem,ClienteDTO cl, SedeDTO sd, Session session) throws Exception {
+		
+		
+		JsonObject obj = new JsonObject();
+		Gson g = new Gson();
+		boolean esito = true;
+		String messaggio = "";
 		
 		ArrayList<ForPartecipanteDTO> lista = new ArrayList<ForPartecipanteDTO>();
 		PdfReader reader = new PdfReader(fileItem.getInputStream());
@@ -551,7 +560,7 @@ public class GestioneFormazioneBO {
 					keyLuogoEnd = ") il ";
 					keyNascita = keyLuogoEnd;
 					
-					nominativo = pdftext.substring(pdftext.indexOf(keyNome) + keyNome.length(), pdftext.indexOf(keyLuogoStart)).replaceAll("\\n", "");					
+					nominativo = pdftext.substring(pdftext.indexOf(keyNome) + keyNome.length(), pdftext.indexOf(keyLuogoStart)-1).replaceAll("\\n", "");					
 					data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyNascita)+ keyNascita.length()+11);
 					luogo_nascita =  pdftext.substring(pdftext.indexOf(keyLuogoStart) + keyLuogoStart.length(), pdftext.indexOf(keyLuogoEnd)+keyLuogoEnd.length()-3);
 					
@@ -590,78 +599,131 @@ public class GestioneFormazioneBO {
 			
 				System.out.println(nominativo + " "+ data_nascita+" "+luogo_nascita+" "+cf);
 				
-				ForPartecipanteDTO partecipante = new ForPartecipanteDTO();
+				nominativo = removeSpace(nominativo);
+				luogo_nascita = removeSpace(luogo_nascita);
+				cf = removeSpace(cf);
 				
-				String[] nomeCognome = nominativo.split(" ");
+				esito = checkCFPattern(cf);
 				
-				if(pdftext.indexOf(keyCf) == -1) {
-					if(nomeCognome.length == 2) {
-						partecipante.setCognome(nomeCognome[1]);
-						partecipante.setNome(nomeCognome[0]);
+				if(esito) {
+					
+					ForPartecipanteDTO partecipante = new ForPartecipanteDTO();
+					
+					String[] nomeCognome = nominativo.split(" ");
+					
+					if(pdftext.indexOf(keyCf) == -1) {
+						if(nomeCognome.length == 2) {
+							partecipante.setCognome(nomeCognome[1]);
+							partecipante.setNome(nomeCognome[0]);
+								
+						}else if(nomeCognome.length == 3){
+							partecipante.setCognome(nomeCognome[1] +" "+ nomeCognome[2]);					
+							partecipante.setNome(nomeCognome[0]);
+							partecipante.setNominativo_irregolare(1);
+						}else if(nomeCognome.length>3){
+							partecipante.setNome(nomeCognome[0]);								
+							partecipante.setNominativo_irregolare(0);
+							int j = 2;
+							String cognome = nomeCognome[1] +" "+ nomeCognome[2];
 							
-					}else if(nomeCognome.length == 3){
-						partecipante.setCognome(nomeCognome[1] +" "+ nomeCognome[2]);					
-						partecipante.setNome(nomeCognome[0]);
-						partecipante.setNominativo_irregolare(1);
-					}else if(nomeCognome.length>3){
-						partecipante.setNome(nomeCognome[0]);								
-						partecipante.setNominativo_irregolare(0);
-						int j = 2;
-						String cognome = nomeCognome[1] +" "+ nomeCognome[2];
-						
-						while(j<nomeCognome.length) {
-							cognome += nomeCognome[j];
-							
-							j++;
+							while(j<nomeCognome.length) {
+								cognome += nomeCognome[j];
+								
+								j++;
+							}
+							partecipante.setCognome(cognome);
 						}
-						partecipante.setCognome(cognome);
+					}else {
+						if(nomeCognome.length == 2) {
+							partecipante.setCognome(nomeCognome[0]);
+							partecipante.setNome(nomeCognome[1]);
+								
+						}else if(nomeCognome.length == 3){
+							partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);					
+							partecipante.setNome(nomeCognome[2]);
+							partecipante.setNominativo_irregolare(1);
+						}else if(nomeCognome.length>3){
+							partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);			
+							partecipante.setNominativo_irregolare(1);
+							int j = 2;
+							while(j<nomeCognome.length) {
+								if(partecipante.getNome()!=null) {
+									partecipante.setNome(partecipante.getNome()+" "+nomeCognome[j]);
+								}else {
+									partecipante.setNome(nomeCognome[j]);
+								}
+								
+								j++;
+							}
+						}
 					}
+					
+					
+					partecipante.setCf(cf);
+					partecipante.setData_nascita(df.parse(data_nascita));
+					partecipante.setLuogo_nascita(luogo_nascita);
+					if(cl!=null) {
+						partecipante.setId_azienda(cl.get__id());
+						partecipante.setNome_azienda(cl.getNome());
+					}
+					
+					if(sd!=null) {
+						partecipante.setId_sede(sd.get__id());
+						String nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
+						partecipante.setNome_sede(nome_sede);
+					}
+					
+					lista.add(partecipante);
+					
+					
 				}else {
-					if(nomeCognome.length == 2) {
-						partecipante.setCognome(nomeCognome[0]);
-						partecipante.setNome(nomeCognome[1]);
-							
-					}else if(nomeCognome.length == 3){
-						partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);					
-						partecipante.setNome(nomeCognome[2]);
-						partecipante.setNominativo_irregolare(1);
-					}else if(nomeCognome.length>3){
-						partecipante.setCognome(nomeCognome[0] +" "+ nomeCognome[1]);			
-						partecipante.setNominativo_irregolare(1);
-						int j = 2;
-						while(j<nomeCognome.length) {
-							partecipante.setNome(nomeCognome[j]);
-							j++;
-						}
-					}
+					messaggio = "Attenzione! Formato codice fiscale errato per "+nominativo;
+					break;
 				}
 				
-				
-				partecipante.setCf(cf);
-				partecipante.setData_nascita(df.parse(data_nascita));
-				partecipante.setLuogo_nascita(luogo_nascita);
-				if(cl!=null) {
-					partecipante.setId_azienda(cl.get__id());
-					partecipante.setNome_azienda(cl.getNome());
-				}
-				
-				if(sd!=null) {
-					partecipante.setId_sede(sd.get__id());
-					String nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
-					partecipante.setNome_sede(nome_sede);
-				}
-				
-				lista.add(partecipante);
 			}
 		
 
 		}
 		
 		
+		obj.addProperty("success", esito);
+		obj.addProperty("messaggio", messaggio);
+		obj.add("lista_partecipanti_import", g.toJsonTree(lista));
 		
-		return lista;
+		return obj;
+		//return lista;
 	}
 
+	
+	
+	static boolean checkCFPattern(String cf) {
+		
+		 // String patternStr = "/^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$/";
+		 String patternStr = "[a-zA-Z]{6}\\d\\d[a-zA-Z]\\d\\d[a-zA-Z]\\d\\d\\d[a-zA-Z]";
+		  
+	        if(cf.matches(patternStr)) {
+	        	return true;
+	        }else {
+	        	return false;
+	        }
+
+		
+		
+	}
+	
+	
+	static String removeSpace(String str) {
+		
+		if(str.startsWith(" ")) {
+			str = str.replaceFirst(" ", "");
+		}
+		if(str.endsWith(" ")) {
+			str = str.substring(0,str.length() - 1);
+		}
+		
+		return str;
+	}
 	
 	
 	public static String getPDFText(PdfReader reader, int page) throws IOException {

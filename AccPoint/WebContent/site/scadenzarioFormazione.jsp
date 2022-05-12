@@ -356,8 +356,91 @@ function formatDate(data){
 }
 
 
+var array_color = [];
+
 $(document).ready(function() {
  
+	
+	var array_buttons = [];
+	
+	if(${userObj.checkRuolo("F2")}){
+		
+		array_buttons.push(	{
+            extend: 'colvis',
+            text: 'Nascondi Colonne'  	                   
+		  });
+		
+	}else{
+		array_buttons.push(	{
+	            extend: 'colvis',
+	            text: 'Nascondi Colonne'  	                   
+			  },
+			 {
+  	            extend: 'excelHtml5',
+  	            text: 'Esporta Excel',
+  	          customize: function(xlsx) {
+  	        	  
+  	        	table.rows().nodes().each( function ( index ) {
+  	        	    var row = index;	  	        	 
+  	        	    
+  	        	    var color = $(index).css("background-color");
+  	        	    
+  	        	    var text = {};
+  	        	    
+  	        	    if(color == "rgb(250, 137, 137)" || color == "rgb(248, 242, 109)"){
+  	        	    	text.corso = table.cell(index, 0).data();
+  	        	    	text.partecipante = stripHtml(table.cell(index, 2).data());
+  	        	    	if(text.partecipante.endsWith(" ")){
+  	        	    		text.partecipante = text.partecipante.substring(0, text.partecipante.length-1);
+  	        	    	}
+  	        	    	
+  	        	    	text.color = color;
+  	        	    	array_color.push(text);
+  	        	    }
+  	        	  	
+  	        	   
+  	        	} );
+  	        	  
+                  var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                  
+                  
+                  $('row', sheet).each( function (row) {
+                	  
+                	  if($('v', this)[0]!=null){
+                	  
+                	  for(var i = 0; i<array_color.length; i++){
+                		 
+                		  var id_corso = $('c[r^="A"]', this).text();
+                		  var partecipante = $('c[r^="C"]', this).text();
+                		  
+	                		
+	                			if(id_corso == array_color[i].corso && partecipante == array_color[i].partecipante){
+	                			
+	                			  
+	                			  if(array_color[i].color == "rgb(250, 137, 137)"){
+	                				  $('c', this).attr('s', '35');
+	                			  }else if(array_color[i].color == "rgb(248, 242, 109)"){
+	                				  $('c', this).attr('s', '45');
+	                			  }
+		                				 
+		                			
+		               
+		                		  }
+	                		  
+                		  
+                				                		 
+                	  }
+	                		  }
+   
+    
+                        });
+  
+ 			  }
+			 });
+	}
+	
+	
+	
 
      $('.dropdown-toggle').dropdown();
      $('.datepicker').datepicker({
@@ -431,17 +514,7 @@ $(document).ready(function() {
 		    	  
 		    	  
 		               ], 	        
-	  	      buttons: [   
-	  	          {
-	  	            extend: 'colvis',
-	  	            text: 'Nascondi Colonne'  	                   
-	 			  },
-	 			 {
-		  	            extend: 'excel',
-		  	            text: 'Esporta Excel'  	                   
-		 			  },
-	 			  
-	 			  ]
+	  	      buttons: array_buttons
 		               
 		    });
      

@@ -1492,26 +1492,28 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				ArrayList<ForPartecipanteDTO> lista_partecipanti = null;
 				
+				myObj = new JsonObject();
+				
 				if(!fileItem.getName().equals("")) {
 					
-					lista_partecipanti =  GestioneFormazioneBO.importaDaPDF(fileItem,cl, sd, session);
+					myObj =  GestioneFormazioneBO.importaDaPDF(fileItem,cl, sd, session);
 
 				}
 				
 				session.getTransaction().commit();
 				session.close();
-				Gson g = new Gson();
 				
-				myObj = new JsonObject();
+				
 				PrintWriter  out = response.getWriter();
-				if(lista_partecipanti != null) {
-					myObj.addProperty("success", true);
-					myObj.add("lista_partecipanti_import", g.toJsonTree(lista_partecipanti));
-					request.getSession().setAttribute("fileItemAttestati", fileItem);
-				}else {
-					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Formato file errato!");
-				}
+				request.getSession().setAttribute("fileItemAttestati", fileItem);
+//				if(lista_partecipanti != null) {
+//					myObj.addProperty("success", true);
+//					myObj.add("lista_partecipanti_import", g.toJsonTree(lista_partecipanti));
+					
+//				}else {
+//					myObj.addProperty("success", false);
+//					myObj.addProperty("messaggio", "Formato file errato!");
+//				}
 				out.print(myObj);
 				
 				

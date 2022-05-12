@@ -114,11 +114,11 @@ public class CreateVerRapporto {
 				
 		if(misura.getSeqRisposte().length()<31) {
 			if(misura.getTipoRisposta()==0) {
-				//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0_NOA.jrxml");	
-				is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0.jrxml");
+				is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0_NOA.jrxml");	
+				//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0.jrxml");
 			}else {
-				//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1_NOA.jrxml");
-				is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1.jrxml");
+				is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1_NOA.jrxml");
+				//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1.jrxml");
 			}
 			
 		}else {
@@ -171,6 +171,10 @@ public class CreateVerRapporto {
 				report.addParameter("tipo_approvazione_2","");
 				report.addParameter("numero_provvedimento_2", "");
 				report.addParameter("data_provvedimento_2", "");
+				
+				report.addParameter("tipo_approvazione_3","");
+				report.addParameter("numero_provvedimento_3", "");
+				report.addParameter("data_provvedimento_3", "");
 			}
 			
 			if(index == 3) {		
@@ -548,8 +552,8 @@ public class CreateVerRapporto {
 		}
 		
 		report.addParameter("registro", misura.getId()+"_"+misura.getVerStrumento().getId()); //MANCA REGISTRO
-		report.addParameter("procedura", "PT-020 Rev. E"); 
-		//report.addParameter("procedura", "PDI-001 Rev. B");
+		//report.addParameter("procedura", "PT-020 Rev. E"); 
+		report.addParameter("procedura", "PDI-001 Rev. D");
 		
 		if(utente.getFile_firma()!=null) {
 			if(firma!=null) {
@@ -888,15 +892,15 @@ public class CreateVerRapporto {
 				vl_decentramento = cmp.verticalList(
 						cmp.text("Prova di Decentramento (Rif.UNI CEI EN 45501:2015 - A.4.7)").setStyle(boldStyle),
 						//cmp.verticalGap(5),
-						cmp.text("Esempio di tipici ricettori di carico").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle),
+						cmp.text("Tipologie di ricettori di carico").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle),
 						cmp.verticalGap(4),
 						hl_ricettori,
 						hl_rettangoli,
 						cmp.verticalGap(5),
-//						cmp.horizontalList(cmp.text("Numero punti di appoggi del ricettore di carico: "+ appoggio),
+//						cmp.horizontalList(cmp.text("Punti di appoggio decentrati: "+ appoggio),
 //								cmp.horizontalGap(20), 
 //								cmp.text("Carico: " + Utility.changeDotComma(lista_decentramento.get(i*10).getCarico().stripTrailingZeros().toPlainString()) +" " + misura.getVerStrumento().getUm())),
-						cmp.horizontalList(cmp.text("Numero punti di appoggi del ricettore di carico: "+ appoggio),cmp.horizontalGap(20), cmp.text("Strumento \"Speciale\": "+ speciale)),
+						cmp.horizontalList(cmp.text("Punti di appoggio decentrati: "+ appoggio),cmp.horizontalGap(20), cmp.text("Strumento \"Speciale\": "+ speciale)),
 						//cmp.verticalGap(5),
 						//cmp.text("Strumento \"Speciale\": "+ speciale),		
 						cmp.verticalGap(5),
@@ -911,15 +915,15 @@ public class CreateVerRapporto {
 					 vl_decentramento = cmp.verticalList(
 							cmp.text("Prova di Decentramento (Rif.UNI CEI EN 45501:2015 - A.4.7)").setStyle(boldStyle),
 							cmp.verticalGap(5),
-							cmp.text("Esempio di tipici ricettori di carico").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle),
+							cmp.text("Tipologie di ricettori di carico").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle),
 							cmp.verticalGap(8),
 							hl_ricettori,
 							hl_rettangoli,
 							cmp.verticalGap(8),
-//							cmp.horizontalList(cmp.text("Numero punti di appoggi del ricettore di carico: "+ appoggio),
+//							cmp.horizontalList(cmp.text("Punti di appoggio decentrati: "+ appoggio),
 //									cmp.horizontalGap(20), 
 //									cmp.text("Carico: " + Utility.changeDotComma(lista_decentramento.get(i*10).getCarico().stripTrailingZeros().toPlainString()) +" " + misura.getVerStrumento().getUm())),
-							cmp.horizontalList(cmp.text("Numero punti di appoggi del ricettore di carico: "+ appoggio)),
+							cmp.horizontalList(cmp.text("Punti di appoggio decentrati: "+ appoggio)),
 							cmp.verticalGap(5),
 							cmp.text("Strumento \"Speciale\": "+ speciale),		
 							cmp.verticalGap(8),
@@ -1493,7 +1497,7 @@ public class CreateVerRapporto {
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			report.addColumn(col.column("Rif.","rif", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));			
 	 		report.addColumn(col.column("Indicazione Tara Attiva  <br> "+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Dispositivo Azzeramento <br> "+"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Carico effettivo di Tara <br> "+"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 //	 		if(tipologia_strumento != 1 || strumento.getTipo().getId()==5) {
 //	 			//report.addColumn(col.column("Carico aggiuntivo  <br> <i>ΔL </i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
 //	 			report.addColumn(col.column("Max Valore Tara  <br>  <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));

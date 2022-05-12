@@ -1123,15 +1123,15 @@ function modalStorico(id_documento){
     			 }else{
     				 dati.data_rilascio = lista_documenti[i].data_rilascio;	 
     			 }
-    			 
-    			
-    			 dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
-    			 
     			 if(lista_documenti[i].data_scadenza == null){
     				 dati.data_scadenza = '';
     			 }else{
     				 dati.data_scadenza = lista_documenti[i].data_scadenza;	 
     			 }
+    			
+    			 dati.frequenza = lista_documenti[i].frequenza_rinnovo_mesi;
+    			 
+    			 
     			 
     			 
     			  
@@ -1141,12 +1141,12 @@ function modalStorico(id_documento){
     			  table_data.push(dati);
     			  }
     		  }
-    		  var table = $('#table_storico').DataTable();
+    		  var table= $('#table_storico').DataTable();
     		  
-     		   table.clear().draw();
+    		  table.clear().draw();
      		   
-     			table.rows.add(table_data).draw();
-     			table.columns.adjust().draw();
+    		  table.rows.add(table_data).draw();
+    		  table.columns.adjust().draw();
    			
    		  $('#myModalStorico').modal();
    			
@@ -1155,7 +1155,7 @@ function modalStorico(id_documento){
     	  $('#myModalStorico').on('shown.bs.modal', function () {
     		  var table = $('#table_storico').DataTable();
     		  
-    			table.columns.adjust().draw();
+    		  table.columns.adjust().draw();
   			
     		})
     	  
@@ -1962,7 +1962,7 @@ $('.select2').select2();
 	
 	  tab = $('#table_storico').DataTable({
 			language: {
-		        	emptyTable : 	"Non sono presenti documenti antecedenti",
+		        	emptyTable : 	"Non sono presenti documenti precedenti",
 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
 		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
 		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
@@ -2003,8 +2003,9 @@ $('.select2').select2();
 		      	{"data" : "tipo_documento"},
 		      	{"data" : "data_caricamento"},
 		      	{"data" : "data_rilascio"},
-		      	{"data" : "frequenza"},
+		      
 		      	{"data" : "data_scadenza"},
+		    	{"data" : "frequenza"},
 		      	{"data" : "rilasciato"},
 		      	{"data" : "azioni"},
 		       ],	
@@ -2024,19 +2025,19 @@ $('.select2').select2();
 		               
 		    });
 		
-		tab.buttons().container().appendTo( '#table_storico_wrapper .col-sm-6:eq(1)');
+ 	/* 	tab.buttons().container().appendTo( '#table_storico_wrapper .col-sm-6:eq(1)');
 	 	    $('.inputsearchtable').on('click', function(e){
 	 	       e.stopPropagation();    
 	 	    });
 
 	 	     tab.columns().eq( 0 ).each( function ( colIdx ) {
-	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	  $( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
 	      tab
 	          .column( colIdx )
-	          .search( this.value )
+	          .search( "" )
 	          .draw();
 	  } );
-	} );  
+	} );    */
 	 	     
 	 	     
 	 	     

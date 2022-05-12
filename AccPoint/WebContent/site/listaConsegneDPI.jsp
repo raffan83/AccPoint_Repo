@@ -120,7 +120,7 @@
 	<td>	
   <c:if test="${!utente.checkRuolo('DP') }">
 	   <a class="btn btn-warning customTooltip" onClicK="modalModificaConsegna('${consegna.id }','${consegna.dpi.id }','${consegna.lavoratore.id }')" title="Click per modificare la consegna"><i class="fa fa-edit"></i></a>   
-	  <c:if test="${consegna.is_restituzione==0 }">
+	  <c:if test="${consegna.is_restituzione==0 && consegna.restituzione == null}">
 	  <a class="btn btn-success customTooltip" onClicK="modalCreaRestituzione('${consegna.id }')" title="Crea restituzione DPI"><i class="fa fa-arrow-left"></i></a>
 	  </c:if> 
 </c:if>

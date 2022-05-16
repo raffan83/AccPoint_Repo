@@ -660,13 +660,26 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    if(state != null && state.columns!=null){
 	    		//console.log(state.columns);
 	    
-	    columsDatatables = state.columns;
+	    		 columsDatatables = [];
+	    		state.columns.forEach(function(item, index, array){
+	    		
+	    			if(item.visible){
+	    				columsDatatables.push(item);
+	    			}
+	    		   });
+	    		
 	    }
+	    
+	    
+	    
+	  
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	   var title = $('#tabPM thead th').eq( $(this).index() ).text();
 	    	   if($(this).index()!= 0){
-	    		   $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
+	    
+	    			   $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');   
+	    	
 	    	   }
 	    	  
 	    	} );

@@ -77,7 +77,7 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 public class CreaCertificatoLivellaBolla {
 
 	public File file;
-	public CreaCertificatoLivellaBolla(CertificatoDTO certificato, LatMisuraDTO misura, InputStream is, UtenteDTO utente,CertificatoDTO certificato_riemesso, Session session) throws Exception {
+	public CreaCertificatoLivellaBolla(CertificatoDTO certificato, LatMisuraDTO misura, InputStream is, UtenteDTO utente,CertificatoDTO certificato_riemesso,  Session session) throws Exception {
 		
 		build(certificato, misura, is, utente,  certificato_riemesso, session);
 	}
@@ -450,6 +450,10 @@ public class CreaCertificatoLivellaBolla {
 		
 	//	String path ="C:\\Users\\raffaele.fantini\\Desktop\\TestCeftificatoLAT.pdf";
 		String path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\"+misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf";
+		
+
+		
+		
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList)); 
 		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path)); 

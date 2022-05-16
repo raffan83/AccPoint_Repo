@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneVerStrumentiDAO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAllegatoStrumentoDTO;
 import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
 import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
@@ -66,9 +67,9 @@ public class GestioneVerStrumentiBO {
 		return GestioneVerStrumentiDAO.getListaScadenzeVerificazione(session, lista_id_clienti);
 	}
 
-	public static ArrayList<VerStrumentoDTO> getlistaStrumentiScadenza(String dateFrom,String dateTo, Session session) throws Exception {
+	public static ArrayList<VerStrumentoDTO> getlistaStrumentiScadenza(String dateFrom,String dateTo, UtenteDTO utente, Session session) throws Exception {
 		
-		return GestioneVerStrumentiDAO.getlistaStrumentiScadenza(dateFrom, dateTo, session);
+		return GestioneVerStrumentiDAO.getlistaStrumentiScadenza(dateFrom, dateTo,utente, session);
 	}
 
 	public static String getUltimoVerificatoreStrumento(int id_strumento, Session session) {

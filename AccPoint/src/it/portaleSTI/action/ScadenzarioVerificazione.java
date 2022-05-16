@@ -94,7 +94,7 @@ public class ScadenzarioVerificazione extends HttpServlet {
 				String dateFrom = request.getParameter("dateFrom");
 				String dateTo = request.getParameter("dateTo");	
 				
-				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getlistaStrumentiScadenza(dateFrom,dateTo, session);
+				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getlistaStrumentiScadenza(dateFrom,dateTo,utente, session);
 				ArrayList<VerTipoStrumentoDTO> lista_tipo_strumento = GestioneVerStrumentiBO.getListaTipoStrumento(session);
 				ArrayList<VerTipologiaStrumentoDTO> lista_tipologie_strumento = GestioneVerStrumentiBO.getListaTipologieStrumento(session);
 				ArrayList<VerFamigliaStrumentoDTO> lista_famiglie_strumento = GestioneVerStrumentiBO.getListaFamiglieStrumento(session);

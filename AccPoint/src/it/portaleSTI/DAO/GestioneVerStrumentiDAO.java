@@ -15,6 +15,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAllegatoStrumentoDTO;
 import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
 import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
@@ -167,13 +168,23 @@ public class GestioneVerStrumentiDAO {
 		return mapScadenze;
 	}
 
-	public static ArrayList<VerStrumentoDTO> getlistaStrumentiScadenza(String dateFrom,String dateTo,  Session session) throws Exception {
+	public static ArrayList<VerStrumentoDTO> getlistaStrumentiScadenza(String dateFrom,String dateTo,UtenteDTO utente,  Session session) throws Exception {
 		
 		ArrayList<VerStrumentoDTO> lista = null;
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		Query query = session.createQuery("from VerStrumentoDTO where data_prossima_verifica between :_dateFrom and :_dateTo");
+		Query query = null;
+		
+		
+		
+		if(utente.checkRuolo("VC")) {
+			query = session.createQuery("select verStrumento from VerMisuraDTO m where m.verStrumento.data_prossima_verifica between :_dateFrom and :_dateTo and m.verIntervento.company.id = :_id_company and m.obsoleta = 'N'");
+			query.setParameter("_id_company", utente.getCompany().getId());
+		}else {
+			query = session.createQuery("from VerStrumentoDTO where data_prossima_verifica between :_dateFrom and :_dateTo");
+		}
+		
 		query.setParameter("_dateFrom", sdf.parse(dateFrom));
 		query.setParameter("_dateTo", sdf.parse(dateTo));
 		

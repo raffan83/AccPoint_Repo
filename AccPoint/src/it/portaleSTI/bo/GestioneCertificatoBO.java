@@ -16,6 +16,8 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaBolla;
+import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaElettronica;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -697,30 +699,41 @@ public class GestioneCertificatoBO {
 			MisuraDTO misura = certificato.getMisura();
 		    
 			StrumentoDTO strumento = misura.getStrumento();
-					
-					
-			LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();
 			
-			
-			listaTabelle= getListaTabelle(misura,strumento.getTipoRapporto().getNoneRapporto());
-			
-	
-			List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti(),strumento.getTipoRapporto());
-			
-		//	String idoneo = getIsIdoneo(misura);
-			String idoneo;
-			if(!strumento.getTipoRapporto().getNoneRapporto().equals("RDP")) {
-				idoneo = getIsIdoneo(misura);
-			}else {
-				idoneo = null;
-			}
-            DRDataSource listaProcedure = new DRDataSource("listaProcedure");
- 			listaProcedure.add(strumento.getProcedura());
 
- 		  CreateCertificato cert = new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,false, true, utente);
+			 if(certificato.getMisura().getLat().equals("E") || certificato.getMisura().getLat().equals("S")) {
 				
- 		  return cert.file;
-		 
+			
+				return new File(Costanti.PATH_FOLDER+certificato.getMisura().getIntervento().getNomePack()+"\\"+certificato.getMisura().getIntervento().getNomePack()+"_" + certificato.getMisura().getInterventoDati().getId()+""+certificato.getMisura().getStrumento().get__id()+".pdf");
+				
+				 
+			}
+			else {
+					
+					
+				LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();
+				
+				
+				listaTabelle= getListaTabelle(misura,strumento.getTipoRapporto().getNoneRapporto());
+				
+		
+				List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti(),strumento.getTipoRapporto());
+				
+			//	String idoneo = getIsIdoneo(misura);
+				String idoneo;
+				if(!strumento.getTipoRapporto().getNoneRapporto().equals("RDP")) {
+					idoneo = getIsIdoneo(misura);
+				}else {
+					idoneo = null;
+				}
+	            DRDataSource listaProcedure = new DRDataSource("listaProcedure");
+	 			listaProcedure.add(strumento.getProcedura());
+	
+	 		  CreateCertificato cert = new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,false, true, utente);
+					
+	 		  return cert.file;
+			}
+			
 
 	}
 

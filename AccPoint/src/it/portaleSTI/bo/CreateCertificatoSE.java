@@ -28,6 +28,7 @@ import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -49,13 +50,13 @@ public class CreateCertificatoSE {
 	
 	public File file;
 	public String messaggio_firma;
-	public CreateCertificatoSE(CertificatoDTO certificato,UtenteDTO utente, Session session) throws Exception {
+	public CreateCertificatoSE(CertificatoDTO certificato,UtenteDTO utente,  Session session) throws Exception {
 		
 		build(certificato,utente, session);
 	}
 
 	
-	void build(CertificatoDTO certificato,UtenteDTO utente, Session session) throws Exception {
+	void build(CertificatoDTO certificato,UtenteDTO utente,  Session session) throws Exception {
 		
 		InputStream is =  PivotTemplate.class.getResourceAsStream("certificatoSE.jrxml");
 		
@@ -223,6 +224,8 @@ public class CreateCertificatoSE {
 	//	String path ="C:\\Users\\antonio.dicivita\\Desktop\\TestCeftificatoSE.pdf";
 		String path = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getIntervento().getNomePack()+"\\"+certificato.getMisura().getIntervento().getNomePack()+"_"+certificato.getMisura().getInterventoDati().getId()+""+certificato.getMisura().getStrumento().get__id()+".pdf";
 
+		
+	
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList)); 
 		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path)); 
@@ -242,6 +245,7 @@ public class CreateCertificatoSE {
 		  if(certificato.getUtente().getFile_firma()!=null && certificato.getUtente().getIdFirma()!=null) {
 			 jsonOP =  ArubaSignService.signCertificatoPades(utente,null,true, certificato);
 		  }
+		  
 		  
 		  if(jsonOP.get("success")==null || !jsonOP.get("success").getAsBoolean() || certificato.getMisura().getInterventoDati().getUtente().getIdFirma()==null) {
 			  

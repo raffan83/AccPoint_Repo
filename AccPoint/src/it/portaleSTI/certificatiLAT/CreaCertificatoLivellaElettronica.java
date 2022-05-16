@@ -471,6 +471,8 @@ public class CreaCertificatoLivellaElettronica {
 		
 		//String path ="C:\\Users\\antonio.dicivita\\Desktop\\TestCeftificatoLAT.pdf";
 		String path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\"+misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf";
+		
+	
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList)); 
 		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path)); 

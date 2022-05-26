@@ -211,5 +211,7 @@
  	
  	<mapping class="GPDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/GPDTO.hbm.xml"/>
  			
+ 	<mapping class="FirmaClienteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/FirmaClienteDTO.hbm.xml"/>
+ 			
   </session-factory>
 </hibernate-configuration>

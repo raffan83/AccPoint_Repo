@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-mag-2017 15.44.30 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.FirmaClienteDTO" table="firma_cliente">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>      
+      <property name="id_cliente" type="int" >
+            <column name="id_cliente" />
+        </property>
+        <property name="id_sede" type="int" >
+            <column name="id_sede" />
+        </property>
+        <property name="nome_cliente" type="java.lang.String" >
+            <column name="nome_cliente" />
+        </property>
+        <property name="nome_sede" type="java.lang.String" >
+            <column name="nome_sede" />
+        </property>
+        <property name="nome_file" type="java.lang.String" >
+            <column name="nome_file" />
+        </property>
+        <property name="nominativo_firma" type="java.lang.String" >
+            <column name="nominativo_firma" />
+        </property>
+         <property name="disabilitato" type="int" >
+            <column name="disabilitato" />
+        </property>
+    </class>
+</hibernate-mapping>

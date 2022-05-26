@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +30,7 @@ import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.FirmaClienteDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
@@ -35,6 +40,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneFirmaClienteBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -198,12 +204,19 @@ public class CaricaPacchetto extends HttpServlet {
 				
 				response.setContentType("application/json");
 				
-				List<FileItem> items;
+				List<FileItem> items = null;
 			
-					items = uploadHandler.parseRequest(request);
+			//		items = uploadHandler.parseRequest(request);
+					
+					 if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+			        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+			        	}
+					
 					String nome_cliente = "";		
 					String filename_firma = "";	
 					String nome_pack = "";
+					String check = "";
 					FileItem file = null;
 					for (FileItem item : items) {
 						if (item.isFormField()) {
@@ -212,6 +225,9 @@ public class CaricaPacchetto extends HttpServlet {
 							}	
 							else if(item.getFieldName().equals("nome_pack")) {
 								nome_pack = item.getString();
+							}
+							else if(item.getFieldName().startsWith("check")) {
+								check= check +item.getFieldName();
 							}
 						}
 						else {
@@ -222,6 +238,16 @@ public class CaricaPacchetto extends HttpServlet {
 						}
 					}
 					
+					
+					FirmaClienteDTO firma = null;
+					if(!check.equals("")) {
+						
+						String id = check.split("_")[1];
+						firma= GestioneFirmaClienteBO.getFirmaCliente(Integer.parseInt(id), session);
+						filename_firma = firma.getNome_file();
+						nome_cliente = firma.getNominativo_firma();
+					}
+					
 					if(!filename_firma.equals("")) {
 						File folder = new File(Costanti.PATH_FOLDER+"\\"+nome_pack+"\\FileFirmaCliente\\");
 						
@@ -229,8 +255,12 @@ public class CaricaPacchetto extends HttpServlet {
 							folder.mkdirs();
 						}
 						
-						File f = new File(folder.getPath() +"\\"+ filename_firma);
+						
 
+						if(!check.equals("")){
+							Files.copy(Paths.get(Costanti.PATH_FOLDER+"\\FirmeCliente\\"+firma.getId_cliente()+"\\"+firma.getId_sede()+"\\"+firma.getNome_file()), Paths.get(folder.getPath() +"\\"+ filename_firma), StandardCopyOption.REPLACE_EXISTING);
+						}else {
+							File f = new File(folder.getPath() +"\\"+ filename_firma);
 							while(true) {		
 								try {
 									file.write(f);
@@ -244,6 +274,9 @@ public class CaricaPacchetto extends HttpServlet {
 								
 						
 							}
+						}
+								
+						
 					}
 					
 					

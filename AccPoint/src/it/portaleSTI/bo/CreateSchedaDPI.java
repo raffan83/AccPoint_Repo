@@ -177,6 +177,7 @@ public class CreateSchedaDPI {
 			report.setColumnStyle(textStyle); //AGG
 			report.addColumn(col.column("ID", "id", type.stringType()));
 			report.addColumn(col.column("DPI", "dpi", type.stringType()));
+			report.addColumn(col.column("DESCRIZIONE", "descrizione", type.stringType()));
 	 		report.addColumn(col.column("MODELLO", "modello", type.stringType()));
 	 		report.addColumn(col.column("CONFORMITÀ", "conformita", type.stringType()));
 	 		 		
@@ -213,10 +214,11 @@ public class CreateSchedaDPI {
 		
 		listaCodici[0]="id";
 		listaCodici[1]="dpi";
-		listaCodici[2]="modello";
-		listaCodici[3]="conformita";		
-		listaCodici[4]="data_accettazione";
-		listaCodici[5]="scadenza";
+		listaCodici[2]="descrizione";
+		listaCodici[3]="modello";
+		listaCodici[4]="conformita";		
+		listaCodici[5]="data_accettazione";
+		listaCodici[6]="scadenza";
 
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		
@@ -230,6 +232,7 @@ public class CreateSchedaDPI {
 					
 					arrayPs.add(consegna.getId()+"");
 					arrayPs.add(consegna.getDpi().getTipo().getDescrizione());
+					arrayPs.add(consegna.getDpi().getDescrizione());
 					arrayPs.add(consegna.getDpi().getModello());
 					arrayPs.add(consegna.getDpi().getConformita());
 					
@@ -253,6 +256,7 @@ public class CreateSchedaDPI {
 					
 					arrayPs.add(consegna.getId()+"");
 					arrayPs.add(consegna.getDpi().getTipo().getDescrizione());
+					arrayPs.add(consegna.getDpi().getDescrizione());
 					arrayPs.add(consegna.getDpi().getModello());
 					arrayPs.add(consegna.getDpi().getConformita());
 					
@@ -338,7 +342,7 @@ public class CreateSchedaDPI {
 					ArrayList<String> arrayPs = new ArrayList<String>();
 					
 					
-					arrayPs.add(consegna.getDpi().getTipo().getId()+"");
+					arrayPs.add(consegna.getDpi().getId()+"");
 					if(consegna.getData_accettazione()!=null) {
 						arrayPs.add(df.format(consegna.getData_accettazione()));	
 					}else {

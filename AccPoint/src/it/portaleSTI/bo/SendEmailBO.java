@@ -764,7 +764,7 @@ public static void sendEmailFormazione(ForCorsoDTO corso, String mailTo, Servlet
 		  email.setHtmlMsg("<html>Gentile Cliente,<br>"
 		  
 			  	+"Si avvisa che gli attestati di formazione sono pronti per essere scaricati tramite il ns. software CALVER. <br><br>"
-			  	+"ID: "+corso.getId()+" - Corso: "+corso.getCorso_cat().getDescrizione()+" - Data inizio: "+df.format(corso.getData_corso())+"<br><br>"
+			  	+"ID: "+corso.getId()+" - Corso: "+corso.getCorso_cat().getDescrizione()+" - Data inizio: "+df.format(corso.getData_corso())+" - Commessa: +" +corso.getCommessa()+"<br><br>"
 			  	+"Tipo consegna: CONSEGNA TOTALE <br><br>"
 			  	
 			  	+"Restiamo a disposizione per qualsiasi chiarimento in merito.<br>"

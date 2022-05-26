@@ -280,6 +280,7 @@
 	        <div class="col-xs-4">
 				<button class="btn btn-default pull-left" onClick="scaricaPacchetto('${intervento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>&nbsp;
 			    <button class="btn btn-info customTooltip " title="Scarica Pacchetto LAT" onClick="scaricaPacchettoLAT('${intervento.nomePack}')"><i class="fa fa-cog"></i> </button>
+			    
 			</div>
 			<div class="col-xs-4">
 			    <span class="btn btn-primary fileinput-button pull-right">
@@ -936,7 +937,30 @@
   </div>
 </div>
 
+<form id="formFirmaClienteCheck" name="formFirmaClienteCheck">
+  <div id="myModalFirmeCliente" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato"  data-backdrop="static" >
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">È stata rilevata una firma cliente, scegli il nominativo e la firma da caricare</h4>
+      </div>
+       <div class="modal-body">       
+      	
+      	<div id="content_firme"></div>
+      	
+      	</div>
+      <div class="modal-footer">
 
+		<input type="hidden" name="nome_pack" value="${intervento.nomePack }">
+		<button class="btn btn-primary" type="submit" >Salva</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</form>
 
    <div id="myModalDownloadSchedaConsegna" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
@@ -1415,6 +1439,29 @@ function reloadDrive()   {
 	    saveFirmaCliente();
 	});    
 	
+	
+	$('#formFirmaClienteCheck').on('submit',function(e){
+	    e.preventDefault();	   
+	    
+	    var selected = false;
+	    $(".check_firma_cliente").each(function(item){
+	    	if($(this).prop('checked')){
+	    		selected = true;
+	    	}
+	    });
+
+	    
+	    if(selected){
+	    	callAjaxForm('#formFirmaClienteCheck','caricaPacchetto.do?action=firma_cliente');
+	    }else{
+	  	  $('#myModalErrorContent').html("Seleziona una firma!");
+	  		$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');	
+	    }
+	    
+	});    
+	
 	   $('#check_lat').on('ifClicked',function(e){
 		
 			 if($('#check_lat').is( ':checked' )){
@@ -1610,6 +1657,56 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 		   return str;	 		
 	}
 	
+	 
+	 
+	 
+	 function modalFirmeCliente(id_cliente, id_sede){
+		 
+		 dataString ="action=lista_firme_cliente&id_cliente="+ id_cliente+"&id_sede="+id_sede;
+	      exploreModal("gestioneFirmaCliente.do",dataString,null,function(datab,textStatusb){
+	    	  	
+	    	  var result =datab;
+	    	  
+	    	  if(result.success){
+	    		  	    		 
+	    		  var lista_firme = result.lista_firme;
+					
+	    		  var str_html = '<ul class="list-group list-group-bordered">';
+	    		  
+	    		  if(lista_firme.length>0){
+	    			  for(var i = 0; i<lista_firme.length;i++){
+		    			  
+	  					str_html = str_html+'<li class="list-group-item"><div class="row"><div class="col-xs-10"><input onchange="checkfirma('+lista_firme[i].id+')" class="check_firma_cliente" type="checkbox" id="check_'+lista_firme[i].id+'" name="check_'+lista_firme[i].id+'">  <b>'+lista_firme[i].nominativo_firma+'</b> </div>'+
+	  					'<div class="col-xs-2 pull-right"> <a class="btn btn-danger btn-xs  pull-right"style="margin-right:5px" href="gestioneFirmaCliente.do?action=download_firma&id_firma='+lista_firme[i].id+'"><i class="fa fa-arrow-down small"></i></a> </div>'+
+	  					'<div class="col-xs-2 pull-right"> </div> '+
+	  	                 ' </div>  </li>'
+	  	    			    			  
+	  	    		  }
+	    			  
+	    			  $('#content_firme').html(str_html+"</ul>");
+		    		  
+	    	   		  $('#myModalFirmeCliente').modal();
+	    		  }else{
+	    			  //str_html = str_html+'<li class="list-group-item">Nessuna firma presente</li>';
+	    			  
+	    			  $('#modalFirmaCliente').modal();
+	    		  }
+	    		 
+	    	
+	   			
+	    	  }
+	    	  });
+	 }
+	 
+	 
+	 
+	 function checkfirma(id){
+		 $(".check_firma_cliente").val(0);
+		 $(".check_firma_cliente").attr('checked', false);
+		 $("#check_"+id).prop('checked', true);
+		 $("#check_"+id).val(1);
+	 }
+	 
     $(document).ready(function() { 
     	
     	
@@ -1940,7 +2037,11 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
  	       	 $('#myModalError').on('hidden.bs.modal', function (e) {
 	       		if($('#myModalError').hasClass('modal-success')){
 	       			if(firmaCliente){
-	       				$('#modalFirmaCliente').modal();
+	       				
+	       				modalFirmeCliente('${intervento.id_cliente}','${intervento.idSede }');
+	       				
+	       				
+	       				//$('#modalFirmaCliente').modal();
 	       				firmaCliente = false;
 	       			}else{
 	       				callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');	

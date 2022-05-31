@@ -333,6 +333,13 @@ public class CreateVerCertificato {
 		}else{
 			report.addParameter("um", "");
 		}
+		
+		if(misura.getTipoRisposta()==0) {
+			report.addParameter("tipo_data_marcatura", "Anno di fabbricazione:");
+		}else {
+			report.addParameter("tipo_data_marcatura", "Anno di Marcatura CE:");
+		}
+		
 		if(misura.getVerStrumento().getAnno_marcatura_ce()!=0) {
 			report.addParameter("anno_marcatura_ce", misura.getVerStrumento().getAnno_marcatura_ce());
 		}else {

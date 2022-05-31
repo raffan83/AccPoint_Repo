@@ -1066,7 +1066,11 @@ $(document).ready(function() {
 	  	          {
 	  	            extend: 'colvis',
 	  	            text: 'Nascondi Colonne'  	                   
-	 			  } ]
+	 			  }, 
+	 			 {
+		  	            extend: 'excel',
+		  	            text: 'Esporta Excel'  	                   
+		 			  }]
 		               
 		    });
 		

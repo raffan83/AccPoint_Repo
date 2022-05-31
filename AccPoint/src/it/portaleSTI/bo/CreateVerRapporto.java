@@ -377,6 +377,14 @@ public class CreateVerRapporto {
 		this.classe_strumento = misura.getVerStrumento().getClasse();
 		this.tipologia_strumento = misura.getVerStrumento().getTipologia().getId();
 		
+		
+	
+		if(misura.getTipoRisposta()==0) {
+			report.addParameter("tipo_data_marcatura", "Anno di fabbricazione:");
+		}else {
+			report.addParameter("tipo_data_marcatura", "Anno di Marcatura CE:");
+		}
+		
 		if(misura.getVerStrumento().getAnno_marcatura_ce()!=0) {
 			report.addParameter("anno_marcatura_ce", misura.getVerStrumento().getAnno_marcatura_ce());
 		}else{

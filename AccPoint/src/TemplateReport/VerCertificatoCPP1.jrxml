@@ -387,10 +387,6 @@
 				<reportElement x="131" y="414" width="421" height="18" uuid="fdac422e-c076-4c9d-85ef-43494d10ab0d"/>
 				<textFieldExpression><![CDATA[$P{anno_marcatura_ce}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="414" width="101" height="18" uuid="9d157bd2-a753-4ca5-95f3-4d5dc8738e59"/>
-				<text><![CDATA[Anno marcatura CE:]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="131" y="469" width="421" height="18" uuid="87ac37ae-c2b3-4858-9771-93d561ef8e30"/>
 				<textFieldExpression><![CDATA[$P{tipologia}]]></textFieldExpression>
@@ -558,6 +554,10 @@
 					<paragraph lineSpacingSize="1.0"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tipo_approvazione_3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="414" width="120" height="18" uuid="e5f5f1c2-be03-4a5e-bb0e-07dda601f27b"/>
+				<textFieldExpression><![CDATA[$P{tipo_data_marcatura}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

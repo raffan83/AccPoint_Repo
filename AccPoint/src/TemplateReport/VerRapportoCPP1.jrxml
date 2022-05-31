@@ -246,10 +246,6 @@
 				</textElement>
 				<text><![CDATA[Campo di pesatura 2]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="0" y="317" width="110" height="19" uuid="45242830-62af-4dc3-927e-6a769665f98e"/>
-				<text><![CDATA[Anno di Marcatura CE:]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="131" y="318" width="422" height="19" uuid="9ce0034b-8e60-439f-bf50-e2ef2d230e45"/>
 				<textFieldExpression><![CDATA[$P{anno_marcatura_ce}]]></textFieldExpression>
@@ -571,6 +567,10 @@
 					<paragraph lineSpacingSize="1.0"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tipo_approvazione_3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="317" width="129" height="19" uuid="ceda2642-a08e-4a97-b530-5c1ede925de1"/>
+				<textFieldExpression><![CDATA[$P{tipo_data_marcatura}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

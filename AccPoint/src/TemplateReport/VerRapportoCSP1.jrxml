@@ -147,10 +147,6 @@
 				</textElement>
 				<text><![CDATA[Dati necessari alla compilazione dell'Attestato di verificazione periodica]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="0" y="392" width="110" height="19" uuid="238f53cb-4554-483f-8a4d-1b359cc206a2"/>
-				<text><![CDATA[Anno di Marcatura CE:]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="131" y="392" width="422" height="19" uuid="a3107799-fada-4f70-9987-224dbc548f0b"/>
 				<textFieldExpression><![CDATA[$P{anno_marcatura_ce}]]></textFieldExpression>
@@ -510,6 +506,10 @@
 					<paragraph lineSpacingSize="1.0"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tipo_approvazione_3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="392" width="120" height="19" uuid="783d27ea-364b-4d50-9ba3-fff59b4f7271"/>
+				<textFieldExpression><![CDATA[$P{tipo_data_marcatura}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

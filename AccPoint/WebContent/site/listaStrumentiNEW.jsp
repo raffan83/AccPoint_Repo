@@ -2,6 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -254,6 +255,13 @@
       
         <button class="btn btn-info" onclick="spd()">Scarica Pacchetto Dati</button> 
 
+       
+        <c:if test="${userObj.checkPermesso('NUOVO_STRUMENTO_METROLOGIA')}"> 
+
+<button class="btn btn-primary pull-right" onClick="nuovoStrumentoGeneral()">Nuovo Strumento</button>
+<div id="errorMsg" ></div>
+</c:if> 
+
 </c:if>		
         </div>
 </div>
@@ -348,6 +356,25 @@
 </div>
 
 
+<div id="modalNuovoStrumentoGeneral" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Strumento</h4>
+      </div>
+       <div class="modal-body">
+       
+       <div id="content_nuovo_strumento"></div>
+         		
+  		 </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+    
+    </div>
+    </div>
 
 
 
@@ -742,7 +769,16 @@ function spd()
           
     });
     
-    
+   
+    function nuovoStrumentoGeneral(){
+    	
+    	
+    	exploreModal("listaStrumentiSedeNew.do?action=nuovo_strumento_general&idCliente="+$('#select1').val()+"&idSede="+$('#select2').val(), "", "#content_nuovo_strumento", function(){
+    		initSelect2Gen('#cliente_general');
+    		$('#modalNuovoStrumentoGeneral').modal()
+    		
+    	});
+    }
     
 
     

@@ -125,8 +125,13 @@
 			  <a class="btn btn-info customTooltip" title="Click per inviare il certificato per e-mail"onClick="modalEmailVerificazione('${certificato.id}')"><i class="fa fa-paper-plane-o"></i></a>
 			  <a class="btn btn-default customTooltip" title="Clik per visualizzare lo storico email" onClick="modalStorico('${certificato.id}')"><i class="fa fa-history"></i></a>
 			  </c:if>
-			  
-			 
+			  <c:if test="${certificato.misura.nomeFile_inizio_prova!=null && certificato.misura.nomeFile_inizio_prova!='' && certificato.firmato == 0}">
+			 <a class="btn btn-primary customTooltip" title="Click per scaricare l'immagine di inizio prova" onClick="callAction('gestioneVerMisura.do?action=download_immagine&id_misura=${utl:encryptData(certificato.misura.id)}&filename=${certificato.misura.nomeFile_inizio_prova}&nome_pack=${certificato.misura.verIntervento.nome_pack }')"><i class="fa fa-image"></i></a>
+			</c:if>
+			<c:if test="${certificato.misura.nomeFile_fine_prova!=null && certificato.misura.nomeFile_fine_prova!='' && certificato.firmato == 0}">
+			
+			<a class="btn btn-primary customTooltip" title="Click per scaricare l'immagine di fine prova" onClick="callAction('gestioneVerMisura.do?action=download_immagine&id_misura=${utl:encryptData(certificato.misura.id)}&filename=${certificato.misura.nomeFile_fine_prova}&nome_pack=${certificato.misura.verIntervento.nome_pack }')"><i class="fa fa-image"></i></a>
+</c:if>
 			<%-- <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="gestioneVerCertificati.do?action=download&&cert_rap=0&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a> --%>
 		</td>
 	</tr>

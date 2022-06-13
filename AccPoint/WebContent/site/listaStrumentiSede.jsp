@@ -51,14 +51,14 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
 %>
-<% if(user.checkPermesso("NUOVO_STRUMENTO_METROLOGIA")){ %>
+<%-- <% if(user.checkPermesso("NUOVO_STRUMENTO_METROLOGIA")){ %>
 <div class="row">
 <div class="col-lg-12">
 <button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoStrumento')">Nuovo Strumento</button>
 <div id="errorMsg" ></div>
 </div>
 </div>
-<%  } %>
+<%  } %> --%>
 <div style="height:10px;"></div>
 <div class="row">
 <div class="col-xs-12">
@@ -339,7 +339,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 </div>
 </div>
 
-<div id="modalNuovoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<%-- <div id="modalNuovoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -577,7 +577,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
     </div>
   </div>
 </div>
-
+ --%>
 
 
 

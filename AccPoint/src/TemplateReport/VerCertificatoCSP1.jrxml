@@ -348,7 +348,7 @@
 				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="290" y="390" width="80" height="16" isRemoveLineWhenBlank="true" uuid="ac2942d4-1c1e-481c-8370-ec2160f4a54c"/>
+				<reportElement x="290" y="408" width="80" height="16" isRemoveLineWhenBlank="true" uuid="ac2942d4-1c1e-481c-8370-ec2160f4a54c"/>
 				<box>
 					<pen lineWidth="0.25"/>
 				</box>
@@ -359,7 +359,7 @@
 				<textFieldExpression><![CDATA[$P{tipo_approvazione_1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="370" y="390" width="123" height="16" isRemoveLineWhenBlank="true" uuid="acc63f18-d70a-458b-8993-5d7dc62ed13a"/>
+				<reportElement x="370" y="408" width="123" height="16" isRemoveLineWhenBlank="true" uuid="acc63f18-d70a-458b-8993-5d7dc62ed13a"/>
 				<box>
 					<pen lineWidth="0.25"/>
 				</box>
@@ -370,7 +370,7 @@
 				<textFieldExpression><![CDATA[$P{numero_provvedimento_1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="493" y="390" width="67" height="16" isRemoveLineWhenBlank="true" uuid="18526bac-8c8f-42ae-a3bf-a56a7964e3a1"/>
+				<reportElement x="493" y="408" width="67" height="16" isRemoveLineWhenBlank="true" uuid="18526bac-8c8f-42ae-a3bf-a56a7964e3a1"/>
 				<box>
 					<pen lineWidth="0.25"/>
 				</box>
@@ -381,7 +381,7 @@
 				<textFieldExpression><![CDATA[$P{data_provvedimento_1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="290" y="406" width="80" height="16" isRemoveLineWhenBlank="true" uuid="fbf8bced-062d-4865-9a6c-680761725666"/>
+				<reportElement x="290" y="424" width="80" height="16" isRemoveLineWhenBlank="true" uuid="fbf8bced-062d-4865-9a6c-680761725666"/>
 				<box>
 					<pen lineWidth="0.25"/>
 				</box>
@@ -392,7 +392,7 @@
 				<textFieldExpression><![CDATA[$P{tipo_approvazione_2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="370" y="406" width="123" height="16" isRemoveLineWhenBlank="true" uuid="98856d07-c096-418e-b671-be411c994eea"/>
+				<reportElement x="370" y="424" width="123" height="16" isRemoveLineWhenBlank="true" uuid="98856d07-c096-418e-b671-be411c994eea"/>
 				<box>
 					<pen lineWidth="0.25"/>
 				</box>
@@ -403,7 +403,7 @@
 				<textFieldExpression><![CDATA[$P{numero_provvedimento_2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="493" y="406" width="67" height="16" isRemoveLineWhenBlank="true" uuid="2a44da55-f74f-44dc-ad56-ed29405cb571"/>
+				<reportElement x="493" y="424" width="67" height="16" isRemoveLineWhenBlank="true" uuid="2a44da55-f74f-44dc-ad56-ed29405cb571"/>
 				<box>
 					<pen lineWidth="0.25"/>
 				</box>
@@ -414,7 +414,7 @@
 				<textFieldExpression><![CDATA[$P{data_provvedimento_2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="290" y="360" width="80" height="30" isRemoveLineWhenBlank="true" uuid="c1598f5c-1283-4767-94dd-1ea11c1bd133"/>
+				<reportElement x="290" y="378" width="80" height="30" isRemoveLineWhenBlank="true" uuid="c1598f5c-1283-4767-94dd-1ea11c1bd133"/>
 				<box>
 					<pen lineWidth="0.25"/>
 				</box>
@@ -425,7 +425,7 @@
 				<textFieldExpression><![CDATA[$P{tipo_approvazione_header}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="370" y="360" width="123" height="30" isRemoveLineWhenBlank="true" uuid="1492f415-896c-400c-a1c3-9d127a8b50a8"/>
+				<reportElement x="370" y="378" width="123" height="30" isRemoveLineWhenBlank="true" uuid="1492f415-896c-400c-a1c3-9d127a8b50a8"/>
 				<box>
 					<pen lineWidth="0.25"/>
 				</box>
@@ -436,7 +436,7 @@
 				<textFieldExpression><![CDATA[$P{numero_provvedimento_header}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="493" y="360" width="67" height="30" isRemoveLineWhenBlank="true" uuid="67700062-f9c1-4f61-bff8-4c8838a84da7"/>
+				<reportElement x="493" y="378" width="67" height="30" isRemoveLineWhenBlank="true" uuid="67700062-f9c1-4f61-bff8-4c8838a84da7"/>
 				<box>
 					<pen lineWidth="0.25"/>
 				</box>
@@ -447,14 +447,14 @@
 				<textFieldExpression><![CDATA[$P{data_provvedimento_header}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="290" y="345" width="269" height="15" isRemoveLineWhenBlank="true" uuid="04c8ba4f-c53a-4f34-bef1-343ac5dfe09e"/>
+				<reportElement x="290" y="363" width="269" height="15" isRemoveLineWhenBlank="true" uuid="04c8ba4f-c53a-4f34-bef1-343ac5dfe09e"/>
 				<textElement textAlignment="Center">
 					<font size="10" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{legalizzazione_title}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="280" y="345" width="225" height="15" isRemoveLineWhenBlank="true" uuid="42717eed-a165-47ad-8d00-bcf6571e700f"/>
+				<reportElement x="280" y="363" width="225" height="15" isRemoveLineWhenBlank="true" uuid="42717eed-a165-47ad-8d00-bcf6571e700f"/>
 				<textElement textAlignment="Center">
 					<font size="10" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -469,7 +469,7 @@
 				<text><![CDATA[Masse a corredo:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="493" y="422" width="67" height="16" isRemoveLineWhenBlank="true" uuid="e1c8514a-cb6d-4227-80af-da0830de5ec2"/>
+				<reportElement x="493" y="440" width="67" height="16" isRemoveLineWhenBlank="true" uuid="e1c8514a-cb6d-4227-80af-da0830de5ec2"/>
 				<box>
 					<pen lineWidth="0.25"/>
 				</box>
@@ -480,7 +480,7 @@
 				<textFieldExpression><![CDATA[$P{data_provvedimento_3}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="370" y="422" width="123" height="16" isRemoveLineWhenBlank="true" uuid="6ac3bc9f-97dc-43d2-aeac-f752e3380338"/>
+				<reportElement x="370" y="440" width="123" height="16" isRemoveLineWhenBlank="true" uuid="6ac3bc9f-97dc-43d2-aeac-f752e3380338"/>
 				<box>
 					<pen lineWidth="0.25"/>
 				</box>
@@ -491,7 +491,7 @@
 				<textFieldExpression><![CDATA[$P{numero_provvedimento_3}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="290" y="422" width="80" height="16" isRemoveLineWhenBlank="true" uuid="753428aa-8fea-4445-b511-1efa68c22919"/>
+				<reportElement x="290" y="440" width="80" height="16" isRemoveLineWhenBlank="true" uuid="753428aa-8fea-4445-b511-1efa68c22919"/>
 				<box>
 					<pen lineWidth="0.25"/>
 				</box>

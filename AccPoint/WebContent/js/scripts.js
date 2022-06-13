@@ -1741,18 +1741,21 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 
 	          		  if(data.success)
 	          		  { 
-	          			$('#report_button').hide();
-	      				$('#visualizza_report').hide();
-	          			  $('#modalNuovoStrumento').modal('hide');
-	          			  dataString ="idSede="+ idSede+";"+idCliente;
-	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
-	          	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
-	          	        	  $("#myModalErrorContent").html(data.messaggio);
-	          	        	  $('#myModalError').addClass("modal modal-success");
-		          			 $("#myModalError").modal();
-	          	          });
-	          			  	
-	          		
+//	          			$('#report_button').hide();
+//	      				$('#visualizza_report').hide();
+//	          			  $('#modalNuovoStrumento').modal('hide');
+//	          			  dataString ="idSede="+ idSede+";"+idCliente;
+//	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
+//	          	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+//	          	        	  $("#myModalErrorContent").html(data.messaggio);
+//	          	        	  $('#myModalError').addClass("modal modal-success");
+//		          			 $("#myModalError").modal();
+//	          	          });
+	          			  $("#myModalErrorContent").html(data.messaggio);
+          	        	  $('#myModalError').addClass("modal modal-success");
+	          			 $("#myModalError").modal();
+	          			 
+	          			
 	          		  }else{
 	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.messaggio+"</h3>");
 	          			 $("#myModalErrorContent").html(data.messaggio);

@@ -28,8 +28,10 @@ import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.StrumentoNoteDTO;
@@ -38,6 +40,7 @@ import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
@@ -404,7 +407,50 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		    dispatcher.forward(request,response);
 		    
 		}
+		else if(action.equals("nuovo_strumento_general")) {
 			
+			CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany.getId()+"");
+			
+			List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
+			
+			String idCliente = request.getParameter("idCliente");
+			String idSede = request.getParameter("idSede");
+			
+			if(idCliente==null || idCliente.equals("")) {
+				idCliente="0";
+			}
+			
+			if(idSede==null || idSede.equals("")) {
+				idSede="0";
+			}
+			
+			request.getSession().setAttribute("listaSediGeneral",listaSediFull);
+			
+			request.getSession().setAttribute("listaClientiGeneral", listaClientiFull);
+			
+			
+			ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento(session);
+			ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto(session);
+			ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento(session);
+			ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica(session);
+			ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione(session);
+			
+			
+	        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
+	        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
+	        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
+	        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
+	        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
+	        request.getSession().setAttribute("id_Cliente",idCliente);
+	        request.getSession().setAttribute("id_Sede",idSede);
+			
+			session.getTransaction().commit();
+			session.close();
+			
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/nuovoStrumentoGeneral.jsp");
+		    dispatcher.forward(request,response);
+		}
 			 
 		}
 

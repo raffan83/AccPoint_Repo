@@ -1662,6 +1662,8 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	 
 	 function modalFirmeCliente(id_cliente, id_sede){
 		 
+		 firmaCliente = false;
+		 
 		 dataString ="action=lista_firme_cliente&id_cliente="+ id_cliente+"&id_sede="+id_sede;
 	      exploreModal("gestioneFirmaCliente.do",dataString,null,function(datab,textStatusb){
 	    	  	
@@ -2042,7 +2044,7 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	       				
 	       				
 	       				//$('#modalFirmaCliente').modal();
-	       				firmaCliente = false;
+	       				
 	       			}else{
 	       				callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');	
 	       			}

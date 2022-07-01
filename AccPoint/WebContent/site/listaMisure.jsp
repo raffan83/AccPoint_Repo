@@ -130,6 +130,7 @@
   	<c:set var="certificato" value="${entry.value}"/>
   	<c:if test="${certificato.stato.id == 2}">
 		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${utl:encryptData(certificato.nomeCertificato)}&pack=${utl:encryptData(misura.intervento.nomePack)}" ><i class="fa fa-file-pdf-o"></i></a>
+		<a  target="_blank" class="btn btn-primary customTooltip" title="Click per scaricare il PDF dell'etichetta"  href="scaricaEtichetta.do?action=stampaEtichetta&idMisura=${utl:encryptData(misura.id)}" ><i class="fa fa-print"></i></a>
 	<c:set var = "flag" value="1"/>
 	</c:if>
 	<c:if test="${certificato.stato.id == 4}">

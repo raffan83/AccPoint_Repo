@@ -772,6 +772,12 @@ public class DirectMySqlDAO {
 	private static BigDecimal getScostamentoPrecedente(ValoreCampioneDTO val, ArrayList<ValoreCampioneDTO> listaValori) {
 
 		BigDecimal scostamentoPrecedente=BigDecimal.ZERO;
+		
+		if(val.getCampione().getCodice().equals("CDT054")) 
+		{
+			System.out.println("stop");
+		}
+		
 		if(val.getObsoleto().equals("N") ) 
 		{
 			int maxID=0;

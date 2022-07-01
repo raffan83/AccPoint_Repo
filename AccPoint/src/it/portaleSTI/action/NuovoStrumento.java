@@ -120,7 +120,14 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setRisoluzione(risoluzione);
 				strumento.setCampo_misura(campo_misura);
 				strumento.setTipo_strumento(new TipoStrumentoDTO(Integer.parseInt(ref_tipo_strumento),""));
-				strumento.setId__sede_(Integer.parseInt(idSede));
+				
+				if(idSede.equals("0")) {
+					strumento.setId__sede_(Integer.parseInt(idSede));
+				}else {
+					strumento.setId__sede_(Integer.parseInt(idSede.split("_")[0]));
+				}
+				
+				
 				strumento.setId_cliente(Integer.parseInt(idCliente));
 			
 				strumento.setReparto(reparto);

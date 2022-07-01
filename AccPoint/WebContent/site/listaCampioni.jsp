@@ -1480,12 +1480,14 @@ var listaStrumenti = ${listaCampioniJson};
   		
      	});
      	    
+           	 
+     	var  contentID;
      	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
 
-        	var  contentID = e.target.id;
-
         	
+     		contentID = e.target.id
+     		
         	if(contentID == "dettaglioTab"){
         		$("#myModal").addClass("modal-fullscreen");
         		exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
@@ -1580,7 +1582,95 @@ var listaStrumenti = ${listaCampioniJson};
      	
        $('#myModalError').on('hidden.bs.modal', function (e) {
 				if($( "#myModalError" ).hasClass( "modal-success" )&& !$('#modificaSingoloValCampioneModal').hasClass('in')){
-					callAction("listaCampioni.do");
+					//callAction("listaCampioni.do");
+					
+					
+					
+					
+					
+					if(contentID == "dettaglioTab"){
+		        		$("#myModal").addClass("modal-fullscreen");
+		        		exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
+		        	}
+		        	if(contentID == "valoriTab"){
+		        		$("#myModal").addClass("modal-fullscreen");
+		        		exploreModal("valoriCampione.do","idCamp="+datax[0],"#valori")
+		        	}
+		        	if(contentID == "certificatiTab"){
+		        		$("#myModal").addClass("modal-fullscreen");
+		        		exploreModal("listaCertificatiCampione.do","idCamp="+datax[0],"#certificati")
+		        	}
+		        	 if(contentID == "registro_eventiTab"){
+		        		  //$("#myModal").addClass("modal-fullscreen"); 
+		        		 $("#myModal").removeClass("modal-fullscreen");
+		        			exploreModal("registroEventi.do","idCamp="+datax[0],"#registro_eventi");      
+		        	 } 
+		        	 if(contentID == "registro_attivitaTab"){
+		       		  //$("#myModal").addClass("modal-fullscreen"); 
+		       		 $("#myModal").removeClass("modal-fullscreen");
+		       			exploreModal("gestioneAttivitaCampioni.do?action=lista","idCamp="+datax[0],"#registro_attivita");      
+		       	 } 
+		        	 
+		        	 if(contentID == "registro_tarature_esterneTab"){
+		          		  //$("#myModal").addClass("modal-fullscreen"); 
+		          		 $("#myModal").removeClass("modal-fullscreen");
+		          			exploreModal("gestioneTaratureEsterneCampioni.do?action=lista","idCamp="+datax[0],"#registro_tarature_esterne");      
+		          	 } 
+		        	 if(contentID == "carta_di_controlloTab"){
+		         		  //$("#myModal").addClass("modal-fullscreen"); 
+		         		 $("#myModal").removeClass("modal-fullscreen");
+		         			exploreModal("gestioneCartaDiControllo.do","idCamp="+datax[0],"#carta_di_controllo");      
+		         	 } 
+		        	if(contentID == "prenotazioneTab"){
+		        		$("#myModal").removeClass("modal-fullscreen");
+
+		        		 if(listaStrumenti[indexCampione[1]].statoCampione == "N")
+		        	     {
+		        	
+		        			 $("#prenotazioneCalendario").html("CAMPIONE NON DISPONIBILE");
+		        			 $("#prenotazioneRange").hide();
+		        			
+		        		 }else{
+		        			
+		        			 
+		             		//exploreModal("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
+
+		        			loadCalendar("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazioneCalendario")
+		        			 $("#prenotazioneRange").show();
+		        		 }
+		        		
+		        		
+		        	}
+		        	
+		        	if(contentID == "aggiornaTab"){
+		        		$("#myModal").addClass("modal-fullscreen");
+		        	//	if(listaStrumenti[indexCampione[1]].company.id != '${utente.company.id}' && '${utente.trasversale}'!=1 )
+		        	 //    {
+		        		
+		        		//	 $('#aggiornaTab').hide();
+		        			
+		        	//	 }else{
+		        			 $('#aggiornaTab').show();
+		        		exploreModal("aggiornamentoCampione.do","idCamp="+datax[0],"#aggiorna")
+		        	//	 }
+		        	}
+		        	if(contentID == "documenti_esterniTab"){
+		        		$("#myModal").removeClass("modal-fullscreen");
+		        	
+		           		exploreModal("documentiEsterni.do?action=campioni&id_str="+datax[0],"","#documenti_esterni")
+		           	//	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
+		           	}
+
+		        	
+		        	if(contentID == "documentazione_tecnicaTab"){
+		        		$("#myModal").removeClass("modal-fullscreen");
+		        	
+		           		exploreModal("documentiEsterni.do?action=documentazione_tecnica_campioni&id_str="+datax[0],"","#documentazione_tecnica")
+		         
+		           	}
+					
+					
+					
 				}
      		
       	}); 

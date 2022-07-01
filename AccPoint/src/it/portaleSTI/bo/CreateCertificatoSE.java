@@ -193,6 +193,29 @@ public class CreateCertificatoSE {
 
 		report.addParameter("periodicita_verifica", certificato.getMisura().getStrumento().getFrequenza() + " mesi");
 		
+		
+		
+		StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(""+certificato.getMisura().getStrumento().get__id(), session);
+		strumento.setDataUltimaVerifica(new java.sql.Date(certificato.getMisura().getDataMisura().getTime()));
+		
+		
+		
+		java.sql.Date sqlDate = new java.sql.Date(strumento.getDataUltimaVerifica().getTime());
+
+		
+		Calendar data = Calendar.getInstance();
+		
+		data.setTime(sqlDate);
+		data.add(Calendar.MONTH,strumento.getFrequenza());
+		
+		java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
+			
+		strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
+		
+		session.update(strumento);
+		
+		
+		
 		if(certificato.getMisura().getStrumento().getDataProssimaVerifica()!=null) {		
 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 			report.addParameter("prossima_verifica", df.format(certificato.getMisura().getStrumento().getDataProssimaVerifica()));	
@@ -258,24 +281,7 @@ public class CreateCertificatoSE {
 		certificato.setUtenteApprovazione(utente);
 		session.update(certificato);
 		
-		StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(""+certificato.getMisura().getStrumento().get__id(), session);
-		strumento.setDataUltimaVerifica(new java.sql.Date(certificato.getMisura().getDataMisura().getTime()));
 		
-		
-		
-		java.sql.Date sqlDate = new java.sql.Date(strumento.getDataUltimaVerifica().getTime());
-
-		
-		Calendar data = Calendar.getInstance();
-		
-		data.setTime(sqlDate);
-		data.add(Calendar.MONTH,strumento.getFrequenza());
-		
-		java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
-			
-		strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
-		
-		session.update(strumento);
 		
 	}
 	

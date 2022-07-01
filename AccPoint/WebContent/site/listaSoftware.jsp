@@ -484,8 +484,10 @@ function eliminaSoftware(id_software){
 
 function modalAllegati(id_software){
 	
-	 exploreModal("gestioneDevice.do","action=lista_allegati_software&id_software="+id_software,"#content_allegati");
-	 $('#myModalAllegati').modal();
+	 exploreModal("gestioneDevice.do","action=lista_allegati_software&id_software="+id_software,"#content_allegati", function(datab, status){
+		 $('#myModalAllegati').modal();	 
+	 });
+	 
 }
 
 $(document).ready(function() {

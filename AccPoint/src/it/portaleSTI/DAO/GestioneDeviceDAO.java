@@ -288,7 +288,7 @@ public static DevAllegatiSoftwareDTO getAllegatoSoftwareFromID(int id_software, 
 	ArrayList<DevAllegatiSoftwareDTO> lista = null;
 	DevAllegatiSoftwareDTO result = null;
 	
-	Query query = session.createQuery("from DevAllegatiSoftwareDTO where id =:_id_device");
+	Query query = session.createQuery("from DevAllegatiSoftwareDTO where id =:_id_software");
 	query.setParameter("_id_software", id_software);
 	
 	lista = (ArrayList<DevAllegatiSoftwareDTO>) query.list();

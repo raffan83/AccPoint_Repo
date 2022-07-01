@@ -335,7 +335,7 @@ public class RegistroEventi extends HttpServlet {
 					
 					if(fileItem!=null && !filename.equals("")) {
 
-						saveFile(fileItem, campione.getId(),filename);
+						filename = saveFile(fileItem, campione.getId(),filename);
 						evento.setAllegato(filename);
 					}
 					
@@ -474,7 +474,7 @@ public class RegistroEventi extends HttpServlet {
 					
 					if(fileItem!=null && !filename.equals("")) {
 
-						saveFile(fileItem, campione.getId(),filename);
+						filename = saveFile(fileItem, campione.getId(),filename);
 						evento.setAllegato(filename);
 					}
 					
@@ -849,7 +849,7 @@ public class RegistroEventi extends HttpServlet {
 		    outp.close();
 	}
 	
-	 private void saveFile(FileItem item, int id_campione, String filename) {
+	 private String saveFile(FileItem item, int id_campione, String filename) {
 
 		 	String path_folder = Costanti.PATH_FOLDER+"//Campioni//"+id_campione+"//Allegati//";
 			File folder=new File(path_folder);
@@ -858,15 +858,21 @@ public class RegistroEventi extends HttpServlet {
 				folder.mkdirs();
 			}
 		
-			
+			int index = 1;
+			String ext1 = FilenameUtils.getExtension(item.getName());
 			while(true)
 			{
 				File file=null;
 				
 				
-				file = new File(path_folder+filename);					
-				
+				file = new File(path_folder+filename);			
+				if(file.exists()) {
+					filename = filename.replace("_"+(index-1), "").replace("."+ext1, "_"+index+"."+ext1);				
+					index++;
+				}
+				else {
 					try {
+						
 						item.write(file);
 						break;
 
@@ -876,7 +882,10 @@ public class RegistroEventi extends HttpServlet {
 						e.printStackTrace();
 						break;
 					}
+				}
+				
+				
 			}
-		
+			return filename;
 		}
 }

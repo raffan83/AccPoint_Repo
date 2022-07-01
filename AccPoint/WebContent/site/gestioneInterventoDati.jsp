@@ -1664,9 +1664,13 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 		 
 		 firmaCliente = false;
 		 
-		 dataString ="action=lista_firme_cliente&id_cliente="+ id_cliente+"&id_sede="+id_sede;
-	      exploreModal("gestioneFirmaCliente.do",dataString,null,function(datab,textStatusb){
-	    	  	
+		 dataObj = {};
+		 dataObj.id_cliente = id_cliente;
+		 dataObj.id_sede = id_sede;
+		 
+		 callAjax(dataObj, "gestioneFirmaCliente.do?action=lista_firme_cliente", function(datab,textStatusb){
+		 
+			    	  	
 	    	  var result =datab;
 	    	  
 	    	  if(result.success){

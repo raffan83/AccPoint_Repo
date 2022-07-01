@@ -384,9 +384,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 //					
 //					for (ForCorsoDTO corso : lista_corsi) {
-//						int durata = corso.getCorso_cat().getDurata();
-//						corso.setDurata(durata);
+//						
+//						ForDocenteDTO docente = corso.getDocente();
+//						
+//						if(docente!=null) {
+//						corso.getListaDocenti().add(docente);
+//						
 //						session.update(corso);
+//						}
 //					}
 					
 					
@@ -439,7 +444,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		        
 		        		
 				String categoria = ret.get("categoria");
-				String docente = ret.get("docente");
+				String id_docenti = ret.get("id_docenti");
 				String data_corso = ret.get("data_corso");
 				String data_scadenza = ret.get("data_scadenza");
 				String descrizione = ret.get("descrizione");
@@ -451,8 +456,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				ForCorsoDTO corso = new ForCorsoDTO();		
 				
 				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria.split("_")[0])));
-				if(docente!=null && !docente.equals("")) {
-					corso.setDocente(new ForDocenteDTO(Integer.parseInt(docente)));					
+				if(id_docenti!=null && !id_docenti.equals("")) {
+					for (String id : id_docenti.split(";")) {
+						corso.getListaDocenti().add(new ForDocenteDTO(Integer.parseInt(id)));
+						
+					}
+					
+									
 				}
 				if(e_learning!=null && !e_learning.equals("")) {
 					corso.setE_learning(Integer.parseInt(e_learning));
@@ -522,7 +532,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		        String id_corso = request.getParameter("id_corso");
 		        String categoria = ret.get("categoria_mod");
-				String docente = ret.get("docente_mod");
+				String id_docenti = ret.get("id_docenti_mod");
+				String id_docenti_dissocia = ret.get("id_docenti_dissocia");
 				String data_corso = ret.get("data_corso_mod");
 				String data_scadenza = ret.get("data_scadenza_mod");
 				String descrizione = ret.get("descrizione_mod");
@@ -534,10 +545,24 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso),session);		
 				
 				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria.split("_")[0])));
-				if(docente!=null && !docente.equals("")) {
-					corso.setDocente(new ForDocenteDTO(Integer.parseInt(docente)));					
-				}else {
-					corso.setDocente(null);
+				
+				if(id_docenti_dissocia!=null && !id_docenti_dissocia.equals("")) {
+					for (String id : id_docenti_dissocia.split(";")) {
+						
+						corso.getListaDocenti().remove(GestioneFormazioneBO.getDocenteFromId(Integer.parseInt(id), session));
+						
+					}
+					
+									
+				}
+				
+				if(id_docenti!=null && !id_docenti.equals("")) {
+					for (String id : id_docenti.split(";")) {
+						corso.getListaDocenti().add(new ForDocenteDTO(Integer.parseInt(id)));
+						
+					}
+					
+									
 				}
 				if(e_learning!=null && !e_learning.equals("")) {
 					corso.setE_learning(Integer.parseInt(e_learning));
@@ -1979,6 +2004,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			}
 			
 			else if(action.equals("lista_referenti")) {
+				
+				
+				
+				
 				
 				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
 				if(listaClienti==null) {

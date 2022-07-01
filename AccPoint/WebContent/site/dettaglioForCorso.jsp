@@ -69,10 +69,18 @@
                   <b>Data Scadenza</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${corso.data_scadenza}" /></a>
                 </li>
                 <li class="list-group-item">
-                <b>Docente</b> 
-                <c:if test="${corso.docente!=null }"><a target="_blank" class="btn btn-danger  btn-xs pull-right customTooltip" href="gestioneFormazione.do?action=download_curriculum&id_docente=${utl:encryptData(corso.docente.id)}" title="Click per scaricare il cv"><i class="fa fa-file-pdf-o"></i></a></c:if>
-                <a class="pull-right">${corso.docente.nome } ${corso.docente.cognome }</a>
+               
+                 <b>Docenti</b> 
+                <c:forEach items="${corso.getListaDocenti() }" var="docente">
+                 <div class="row">
+                <div class="col-xs-12">
+                <c:if test="${docente!=null }">
+               <a target="_blank" class="btn btn-danger  btn-xs pull-right customTooltip" href="gestioneFormazione.do?action=download_curriculum&id_docente=${utl:encryptData(docente.id)}" title="Click per scaricare il cv"><i class="fa fa-file-pdf-o"></i></a></c:if>
+                <a class="pull-right">${docente.nome } ${docente.cognome }</a>
                 
+            </div>
+                </div>
+                </c:forEach>
                 </li>
                 <li class="list-group-item">
               

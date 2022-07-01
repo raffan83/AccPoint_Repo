@@ -1862,7 +1862,7 @@ public class Utility extends HttpServlet {
 				
 				int id_tipo_strumento = strumento.getTipo().getId();
 				
-				if(id_tipo_strumento==1) 
+				if(id_tipo_strumento==1 || id_tipo_strumento==4 || id_tipo_strumento == 5) 
 				{
 					e=strumento.getDiv_rel_C1().stripTrailingZeros();
 				}

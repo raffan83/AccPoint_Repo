@@ -130,7 +130,7 @@
 	<a class="btn btn-info" onClick="dettaglioCorso('${utl:encryptData(corso.id)}')"><i class="fa fa-search"></i></a>
 		 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 	<%-- 	 	<c:if test="${corso.e_learning == 0}"> --%>
-				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${corso.docente.id}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }', ${corso.durata })" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
+				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${utl:escapeJS(corso.getDocentiCorsoJson())}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }', ${corso.durata })" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
 	<%-- 	 	</c:if>
 	<c:if test="${corso.e_learning == 1}">
 				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }',0,'${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${corso.descrizione }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
@@ -277,11 +277,11 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Docente</label>
+       		<label>Docenti</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-         	<select id="docente" name="docente" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Docente..." required>
+         	<select id="docente" name="docente" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Docente..." required multiple>
         <option value=""></option>
         <c:forEach items="${lista_docenti }" var="docente">
         <option value="${docente.id }">${docente.nome } ${docente.cognome }</option>
@@ -356,6 +356,8 @@
   		 
       <div class="modal-footer">
 		<input type="hidden" id="e_learning" name="e_learning">
+		<input type="hidden" id="id_docenti" name="id_docenti">
+		
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -460,7 +462,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-       	<select id="docente_mod" name="docente_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Docente..." required>
+       	<select id="docente_mod" name="docente_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Docente..." required multiple>
         <option value=""></option>
         <c:forEach items="${lista_docenti }" var="docente">
         <option value="${docente.id }">${docente.nome } ${docente.cognome }</option>
@@ -540,6 +542,9 @@
 		
 		<input type="hidden" id="id_corso" name="id_corso">
 		<input type="hidden" id="e_learning_mod" name="e_learning_mod">
+		<input type="hidden" id="id_docenti_mod" name="id_docenti_mod">
+		<input type="hidden" id="id_docenti_dissocia" name="id_docenti_dissocia">
+		
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -664,15 +669,55 @@ function eliminaCorsoModal(id_corso){
 }
 
 
-function modificaCorsoModal(id_corso,id_categoria, id_docente, data_inizio, data_scadenza, documento_test, descrizione, tipologia, commessa,e_learning, durata){
+$('#docente_mod').on('change', function() {
+	  
+	var selected = $(this).val();
+	var selected_before = $('#id_docenti_mod').val().split(";");
+	var deselected = "";
 	
+
+	if(selected!=null && selected.length>0){
+		
+		for(var i = 0; i<selected_before.length;i++){
+			var found = false
+			for(var j = 0; j<selected.length;j++){
+				if(selected_before[i] == selected[j]){
+					found = true;
+				}
+			}
+			if(!found && selected_before[i]!=''){
+				deselected = deselected+selected_before[i]+";";
+			}
+		}
+	}else{
+		deselected = $('#id_docenti_mod').val();
+	}
+	 
+	
+	$('#id_docenti_dissocia').val(deselected)
+	
+  });
+
+
+function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_scadenza, documento_test, descrizione, tipologia, commessa,e_learning, durata){
+	
+	var json = JSON.parse(docenti);
+	
+	$('#docente_mod option').attr("selected", false);
+	$('#id_docenti_mod').val("")
+	$('#id_docenti_dissocia').val("")
 	$('#id_corso').val(id_corso);
 	$('#categoria_mod').val(id_categoria);
 	$('#categoria_mod').change();
-	if(id_docente!=null && id_docente!='0'){
-		$('#docente_mod').val(id_docente);
+	for (var i = 0; i < json.lista_docenti.length; i++) {
+		
+		$('#docente_mod option[value="'+json.lista_docenti[i].id+'"]').attr("selected", true);
+
 		$('#docente_mod').change();
-	}	
+		$('#id_docenti_mod').val($('#id_docenti_mod').val()+json.lista_docenti[i].id+";")
+	}
+		
+		
 	$('#commessa_mod').val(commessa);
 	$('#commessa_mod').change();
 	if(data_inizio!=null && data_inizio!=''){
@@ -1165,6 +1210,19 @@ $(document).ready(function() {
 
 $('#modificaCorsoForm').on('submit', function(e){
 	 e.preventDefault();
+	 
+if($('#docente_mod').val()!=null && $('#docente_mod').val()!=''){
+		 
+		 var values = $('#docente_mod').val();
+		 var ids = "";
+		 for(var i = 0;i<values.length;i++){
+			 ids = ids + values[i]+";";
+		 }
+		 
+		 $('#id_docenti_mod').val(ids);
+	 }
+	 
+	 
 	 modificaForCorso();
 });
  
@@ -1172,6 +1230,18 @@ $('#modificaCorsoForm').on('submit', function(e){
  
  $('#nuovoCorsoForm').on('submit', function(e){
 	 e.preventDefault();
+	 
+if($('#docente').val()!=null && $('#docente').val()!=''){
+		 
+		 var values = $('#docente').val();
+		 var ids = "";
+		 for(var i = 0;i<values.length;i++){
+			 ids = ids + values[i]+";";
+		 }
+		 
+		 $('#id_docenti').val(ids);
+	 }
+	 
 	 nuovoForCorso();
 });
  

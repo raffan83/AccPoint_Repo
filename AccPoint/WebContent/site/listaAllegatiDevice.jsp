@@ -166,7 +166,7 @@ $('#fileupload').fileupload({
 	 	
 	 	if(data.result.success){
 	 		//$('#myModalAllegatiArchivio').modal('hide');
-	 		$('#myModalAllegati').hide();
+	 		//$('#myModalAllegati').modal('hide');
 	 		$('#myModalErrorContent').html(data.result.messaggio);
 			$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-success");

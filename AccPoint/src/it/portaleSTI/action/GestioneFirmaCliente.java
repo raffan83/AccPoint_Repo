@@ -270,6 +270,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			}
 			else if(action.equals("lista_firme_cliente")) {
 				
+				ajax = true;
+				
 				String id_cliente = request.getParameter("id_cliente");
 				String id_sede = request.getParameter("id_sede");
 				
@@ -281,7 +283,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				myObj.addProperty("success", true);
 				myObj.add("lista_firme", g.toJsonTree(lista_firme));
 				out.print(myObj);
-						
+				out.close();		
 				
 			}
 			

@@ -414,8 +414,8 @@ String idCliente = (String)session.getAttribute("id_Cliente");
   	  	});
   	
   	 
- 	var id_sede =<%=idSede%>
-	var id_cliente =<%=idCliente%>
+ 	var id_sede ="${id_Sede}";
+	var id_cliente ="${id_Cliente}";
   	 
     $(document).ready(function() {
         console.log("test")
@@ -437,7 +437,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
     		 if(id_sede==0){
     			 $("#sede_general").val(0);
     		 }else{
-    			 $("#sede_general").val(id_sede+"_"+id_cliente);
+    			 $("#sede_general").val(id_sede);
     		 }
     		 $("#sede_general").change()
     		 

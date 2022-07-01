@@ -47,7 +47,18 @@
                 <column name="id_referente" not-null="true" />
             </many-to-many>
         	
-        </set> 
+        </set>
+        
+         <set name="listaDocenti" table="for_corso_docente"
+				inverse="false" lazy="false" fetch="select" >
+            <key>
+                <column name="id_corso" />                
+            </key>
+            <many-to-many entity-name="it.portaleSTI.DTO.ForDocenteDTO">
+                <column name="id_docente" not-null="true" />
+            </many-to-many>
+        	
+        </set>  
 
         
           <property name="descrizione" type="java.lang.String" >

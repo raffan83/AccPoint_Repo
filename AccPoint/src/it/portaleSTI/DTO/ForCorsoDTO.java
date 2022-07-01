@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+
 public class ForCorsoDTO {
 
 	private int id;
@@ -25,6 +29,7 @@ public class ForCorsoDTO {
 	
 	private Set<ForPartecipanteDTO> listaPartecipanti = new HashSet<ForPartecipanteDTO>(0);
 	private Set<ForReferenteDTO> listaReferenti = new HashSet<ForReferenteDTO>(0);
+	private Set<ForDocenteDTO> listaDocenti = new HashSet<ForDocenteDTO>(0);
 	
 	public ForCorsoDTO() {
 		super();
@@ -144,6 +149,36 @@ public class ForCorsoDTO {
 	public void setIn_scadenza(int in_scadenza) {
 		this.in_scadenza = in_scadenza;
 	}
+	public Set<ForDocenteDTO> getListaDocenti() {
+		return listaDocenti;
+	}
+	public void setListaDocenti(Set<ForDocenteDTO> listaDocenti) {
+		this.listaDocenti = listaDocenti;
+	}
 
+	public JsonObject getDocentiCorsoJson() {
 	
+		JsonObject jobj = new JsonObject();
+		
+	
+		if(this.listaDocenti!=null) {
+			JsonArray docenti = new JsonArray();
+
+			for (ForDocenteDTO docente : this.listaDocenti) {
+				
+				JsonObject json = new JsonObject();
+				
+				json.addProperty("id", docente.getId());
+				json.addProperty("nome", docente.getNome());
+				json.addProperty("cognome", docente.getCognome());
+				json.addProperty("formatore", docente.getFormatore());
+				
+				docenti.add(json);
+			}
+			jobj.add("lista_docenti",docenti);
+		}
+		
+		return jobj;
+	}
+
 }

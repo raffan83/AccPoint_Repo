@@ -120,25 +120,26 @@ public class ScaricaEtichetta extends HttpServlet {
 
 			File imageHeader = null;
 			//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+misura.getIntervento().getCompany());
-			ConfigurazioneClienteDTO conf = GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromId(misura.getIntervento().getId_cliente(), misura.getIntervento().getIdSede(), misura.getStrumento().getTipoRapporto().getId(), session);
+			ConfigurazioneClienteDTO conf = GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromId(misura.getIntervento().getId_cliente(), misura.getIntervento().getIdSede(),0, session);
 					if(conf != null && conf.getNome_file_logo()!=null && !conf.getNome_file_logo().equals("")) {
 						imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+ "\\ConfigurazioneClienti\\"+misura.getIntervento().getId_cliente()+"\\"+misura.getIntervento().getIdSede()+"\\"+conf.getNome_file_logo());
 					}else {
-						imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/sti_90.png");
+						imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/sti.jpg");
 					}			
 			
 		//	byte[] byteFile=FileUtils.readFileToByteArray(imageHeader);	
 			
 		//	report.addParameter("logo",new ByteArrayInputStream(rotateImage(byteFile, 45.00)));
 
-			report.addParameter("logo",imageHeader);
+			BufferedImage in = ImageIO.read(imageHeader);		
+			report.addParameter("logo",rotateClockwise90(in));
 			report.addParameter("codiceInterno",misura.getStrumento().getCodice_interno());
 			report.addParameter("matricola",misura.getStrumento().getMatricola());
 			report.addParameter("dataVerifica",sdf.format(misura.getDataMisura()));
 			report.addParameter("dataProVerifica",sdf.format(misura.getStrumento().getDataProssimaVerifica()));
 			report.addParameter("nScheda",misura.getnCertificato());
 
-			createQR(misura.getStrumento(),misura.getIntervento().getNomePack());
+			createQR(misura.getStrumento(),nomePack);
 
 			File qr= new File(Costanti.PATH_FOLDER+"\\"+nomePack+"\\qr.png");
 		
@@ -206,24 +207,19 @@ public class ScaricaEtichetta extends HttpServlet {
 		}  
 	}
 	
-	private byte[] rotateImage(byte[] originalImageAsBytes , double radians) throws Exception {
-		ByteArrayOutputStream rotatedImageStream = null;
+	public static BufferedImage rotateClockwise90(BufferedImage src) {
+	    int width = src.getWidth();
+	    int height = src.getHeight();
 
-		try {
-		  BufferedImage originalImage = ImageIO.read(new ByteArrayInputStream(originalImageAsBytes)); // read the original image
-		  AffineTransform rotationTransform = new AffineTransform();
-		  rotationTransform.rotate(radians, originalImage.getWidth() / 2.0 , originalImage.getHeight() / 2.0);
-		  AffineTransformOp rotationTransformOp = 
-		    new AffineTransformOp(rotationTransform , AffineTransformOp.TYPE_NEAREST_NEIGHBOR); 
-		  BufferedImage rotatedImage = rotationTransformOp.filter(originalImage,null); 
+	    BufferedImage dest = new BufferedImage(height, width, src.getType());
 
-		  rotatedImageStream = new ByteArrayOutputStream();
-		  ImageIO.write(rotatedImage, "png" , rotatedImageStream); 
-		} catch (IOException e) {
-		  e.printStackTrace();
-		}
-		return rotatedImageStream.toByteArray();
-		}
+	    Graphics2D graphics2D = dest.createGraphics();
+	    graphics2D.translate((height - width) / 2, (height - width) / 2);
+	    graphics2D.rotate(Math.PI / 2, height / 2, width / 2);
+	    graphics2D.drawRenderedImage(src, null);
+
+	    return dest;
+	}
 	
 	public static void createQR(StrumentoDTO strumento, String nomePack) throws Exception
 	{

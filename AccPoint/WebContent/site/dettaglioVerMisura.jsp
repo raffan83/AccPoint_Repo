@@ -481,10 +481,14 @@
               <li class="" id="tab7"><a href="#temp_pos" data-toggle="tab" aria-expanded="false"   id="tempPosTab">Temperatura & Posizione</a></li>
               </c:if>
               		<li class="" id="tab2"><a href="#ripetibilita" data-toggle="tab" aria-expanded="false"   id="ripetibilitaTab">Ripetibilità</a></li>
+              		<c:if test="${lista_decentramento.get(0).getMassa()!=null }"> 
               		<li class="" id="tab3"><a href="#decentramento" data-toggle="tab" aria-expanded="false"   id="decentramentoTab">Decentramento</a></li>
+              		</c:if>
               		<li class="" id="tab4"><a href="#linearita" data-toggle="tab" aria-expanded="false"   id="linearitaTab">Linearità</a></li>
               		 <c:if test="${misura.verStrumento.tipologia.id==2 }"> 
-              		<li class="" id="tab5"><a href="#accuratezza" data-toggle="tab" aria-expanded="false"   id="accuratezzaTab">Accuratezza</a></li>              		
+              		 <c:if test="${lista_accuratezza.get(0).getMassa()!=null }"> 
+              		<li class="" id="tab5"><a href="#accuratezza" data-toggle="tab" aria-expanded="false"   id="accuratezzaTab">Accuratezza</a></li>
+              		</c:if>              		
               		<li class="" id="tab6"><a href="#mobilita" data-toggle="tab" aria-expanded="false"   id="mobilitaTab">Mobilità</a></li>
               		 </c:if> 
               </c:if>		 
@@ -819,9 +823,17 @@
  </c:if>
 	</c:if>
 <c:if test="${checkList.size()<=10 && misura.tipoRisposta==0}">
+	<fmt:setLocale value="it_IT" />
+<fmt:parseDate var="testdate" value="04/07/2022" pattern="dd/MM/yyyy" />
 
-			 <tr role="row">
-	<td>A) Verificare se lo strumento sottoposto a verificazione è munito di decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale);</td>
+
+	<c:choose>
+	
+
+<c:when test="${misura.dataVerificazione.time gt testdate.time}">
+
+ <tr role="row">
+	<td>A) Verificare se lo strumento di misura sottoposto a verificazione è munito dell'ulteriore documentazione indicata nel Decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale) oppure nell'Attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea), es. manuale istruzione, manuale di uso e manutenzione, data sheet, eventuali specifiche dei componenti software, ecc.</td>
   	<td align="center">
   		<c:if test="${checkList.get(0) == 0}">
   		<b>X</b>
@@ -838,9 +850,225 @@
   		</c:if>
   	</td>
 	</tr>
+	
+	
+	
+				 <tr role="row">
+	<td>B) Verificare l'esistenza e la corrispondenza sullo strumento di misura delle iscrizioni regolamentari previste nel corrispondente decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(1) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(1) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(1) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+
+
+
+				 <tr role="row">
+	<td>C) Accertare la presenza, integrità, leggibilità e rispondenza ai documenti di omologazione e piani di legalizzazione dello strumento di misura, delle seguenti tipologie di impronte di verificazione prima nazionale, oppure di verificazione prima CEE, oppure di verificazione prima CE, oppure di verifica CE.</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(2) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(2) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(2) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+ <tr role="row">
+	<td>D) Verificare l'esistenza sullo strumento di misura dei sigilli o di altri elementi di protezione in rispondenza a decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale);</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(3) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(3) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(3) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+<%-- 	 <tr role="row">
+	<td>E) In caso di presenza di sigillo elettronico con contatore di eventi, accertare la corrispondenza tra l'indicazione di detto contatore e il numero riscontrato, secondo i casi, in occasione dell'ultima verificazione periodica, della verificazione prima o CE oppure dell'ultima rilegalizzazione;</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(5) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(5) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(5) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr> --%>
+
+
+
+	 <tr role="row">
+	<td>E) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) antecedentemente alla prima verificazione periodica.
+Se applicabile, procedere con i seguenti punti 1, 2 e 3. 
+In caso di non applicabilità, procedere al successivo punto H
+1. Verificare presenza della dichiarazione (o sua copia) rilasciata al titolare dello strumento dal riparatore, contenente la descrizione dell'intervento effettuato e dei sigilli provvisori applicati e di cui è stata informata la CCIAA competente per territorio;
+2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sulla dichiarazione di cui al precedente punto G.1.
+3. Annotare sul libretto metrologico la dichiarazione di riparazione (o sua copia) rilasciata al titolare dello strumento dal riparatore indicata al precedente punto G.1.</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(4) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(4) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(4) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+	
+		 <tr role="row">
+	<td>F) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) successivamente alla prima verificazione periodica:
+Se applicabile, procedere con i seguenti punti 1 e 2.
+1. Verificare la presenza dell'annotazione della riparazione effettuata dal riparatore all'interno del libretto metrologico dello strumento di misura;
+2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sul libretto metrologico di cui al precedente punto H.1.</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(5) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(5) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(5) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+	
+		 <tr role="row">
+	<td>G) Verificare le condizioni esterne dello strumento, dei dispositivi di comando, regolazione (es. piedini di livello e bolla) e di visualizzazione (es. display, scale graduate);</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(6) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(6) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(6) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+			 <tr role="row">
+	<td>H) Controllare la presenza e lo stato di aggiornamento del libretto metrologico dello strumento sottoposto a verificazione.</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(7) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(7) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(7) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+
 
 			 <tr role="row">
-	<td>B) Verificare se lo strumento di misura sottoposto a verificazione è munito dell'ulteriore documentazione indicata nel Decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale) oppure nell'Attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea), es. manuale istruzione, manuale di uso e manutenzione, data sheet, eventuali specifiche dei componenti software, ecc.</td>
+	<td>I) Rilascio libretto metrologico (art. 4, c.12 DM93/17)</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(8) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(8) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(8) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+				 <tr role="row">
+	<td>L) Compilazione libretto metrologico esistente</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(9) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(9) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(9) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+
+</c:when>
+<c:otherwise>
+
+
+ <tr role="row">
+	<td>A) Verificare se lo strumento di misura sottoposto a verificazione è munito dell'ulteriore documentazione indicata nel Decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale) oppure nell'Attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea), es. manuale istruzione, manuale di uso e manutenzione, data sheet, eventuali specifiche dei componenti software, ecc.</td>
   	<td align="center">
   		<c:if test="${checkList.get(1) == 0}">
   		<b>X</b>
@@ -861,7 +1089,7 @@
 	
 	
 				 <tr role="row">
-	<td>C) Verificare l'esistenza e la corrispondenza sullo strumento di misura delle iscrizioni regolamentari previste nel corrispondente decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale</td>
+	<td>B) Verificare l'esistenza e la corrispondenza sullo strumento di misura delle iscrizioni regolamentari previste nel corrispondente decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale</td>
   	<td align="center">
   		<c:if test="${checkList.get(2) == 0}">
   		<b>X</b>
@@ -882,7 +1110,7 @@
 
 
 				 <tr role="row">
-	<td>D) Accertare la presenza, integrità, leggibilità e rispondenza ai documenti di omologazione e piani di legalizzazione dello strumento di misura, delle seguenti tipologie di impronte di verificazione prima nazionale, oppure di verificazione prima CEE, oppure di verificazione prima CE, oppure di verifica CE.</td>
+	<td>C) Accertare la presenza, integrità, leggibilità e rispondenza ai documenti di omologazione e piani di legalizzazione dello strumento di misura, delle seguenti tipologie di impronte di verificazione prima nazionale, oppure di verificazione prima CEE, oppure di verificazione prima CE, oppure di verifica CE.</td>
   	<td align="center">
   		<c:if test="${checkList.get(3) == 0}">
   		<b>X</b>
@@ -902,7 +1130,7 @@
 	
 	
  <tr role="row">
-	<td>E) Verificare l'esistenza sullo strumento di misura dei sigilli o di altri elementi di protezione in rispondenza a decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale);</td>
+	<td>D) Verificare l'esistenza sullo strumento di misura dei sigilli o di altri elementi di protezione in rispondenza a decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale);</td>
   	<td align="center">
   		<c:if test="${checkList.get(4) == 0}">
   		<b>X</b>
@@ -920,8 +1148,34 @@
   	</td>
 	</tr>
 	
+<%-- 	 <tr role="row">
+	<td>E) In caso di presenza di sigillo elettronico con contatore di eventi, accertare la corrispondenza tra l'indicazione di detto contatore e il numero riscontrato, secondo i casi, in occasione dell'ultima verificazione periodica, della verificazione prima o CE oppure dell'ultima rilegalizzazione;</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(5) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(5) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(5) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr> --%>
+
+
+
 	 <tr role="row">
-	<td>F) In caso di presenza di sigillo elettronico con contatore di eventi, accertare la corrispondenza tra l'indicazione di detto contatore e il numero riscontrato, secondo i casi, in occasione dell'ultima verificazione periodica, della verificazione prima o CE oppure dell'ultima rilegalizzazione;</td>
+	<td>E) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) antecedentemente alla prima verificazione periodica.
+Se applicabile, procedere con i seguenti punti 1, 2 e 3. 
+In caso di non applicabilità, procedere al successivo punto H
+1. Verificare presenza della dichiarazione (o sua copia) rilasciata al titolare dello strumento dal riparatore, contenente la descrizione dell'intervento effettuato e dei sigilli provvisori applicati e di cui è stata informata la CCIAA competente per territorio;
+2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sulla dichiarazione di cui al precedente punto G.1.
+3. Annotare sul libretto metrologico la dichiarazione di riparazione (o sua copia) rilasciata al titolare dello strumento dal riparatore indicata al precedente punto G.1.</td>
   	<td align="center">
   		<c:if test="${checkList.get(5) == 0}">
   		<b>X</b>
@@ -938,37 +1192,11 @@
   		</c:if>
   	</td>
 	</tr>
-
-
-
-	 <tr role="row">
-	<td>G) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) antecedentemente alla prima verificazione periodica.
-Se applicabile, procedere con i seguenti punti 1, 2 e 3. 
-In caso di non applicabilità, procedere al successivo punto H
-1. Verificare presenza della dichiarazione (o sua copia) rilasciata al titolare dello strumento dal riparatore, contenente la descrizione dell'intervento effettuato e dei sigilli provvisori applicati e di cui è stata informata la CCIAA competente per territorio;
-2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sulla dichiarazione di cui al precedente punto G.1.
-3. Annotare sul libretto metrologico la dichiarazione di riparazione (o sua copia) rilasciata al titolare dello strumento dal riparatore indicata al precedente punto G.1.</td>
-  	<td align="center">
-  		<c:if test="${checkList.get(6) == 0}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(6) == 1}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(6) == 2}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-	</tr>
 	
 	
 	
 		 <tr role="row">
-	<td>H) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) successivamente alla prima verificazione periodica:
+	<td>F) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) successivamente alla prima verificazione periodica:
 Se applicabile, procedere con i seguenti punti 1 e 2.
 1. Verificare la presenza dell'annotazione della riparazione effettuata dal riparatore all'interno del libretto metrologico dello strumento di misura;
 2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sul libretto metrologico di cui al precedente punto H.1.</td>
@@ -992,7 +1220,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 	
 	
 		 <tr role="row">
-	<td>I) Verificare le condizioni esterne dello strumento, dei dispositivi di comando, regolazione (es. piedini di livello e bolla) e di visualizzazione (es. display, scale graduate);</td>
+	<td>G) Verificare le condizioni esterne dello strumento, dei dispositivi di comando, regolazione (es. piedini di livello e bolla) e di visualizzazione (es. display, scale graduate);</td>
   	<td align="center">
   		<c:if test="${checkList.get(8) == 0}">
   		<b>X</b>
@@ -1012,7 +1240,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 	
 	
 			 <tr role="row">
-	<td>L) Controllare la presenza e lo stato di aggiornamento del libretto metrologico dello strumento sottoposto a verificazione.</td>
+	<td>H) Controllare la presenza e lo stato di aggiornamento del libretto metrologico dello strumento sottoposto a verificazione.</td>
   	<td align="center">
   		<c:if test="${checkList.get(9) == 0}">
   		<b>X</b>
@@ -1030,15 +1258,437 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
   	</td>
 	</tr>
 
+
+
+
+</c:otherwise>
+</c:choose>
+
+			
+
 </c:if>	
 	
 	
 	
-	
+		<fmt:setLocale value="it_IT" />
+<fmt:parseDate var="testdate" value="04/07/2022" pattern="dd/MM/yyyy" />
 	
 	<c:if test="${checkList.size()<=10 && misura.tipoRisposta==1}">
+	
+	
+	<c:choose>
+	
+<%-- 	<fmt:setLocale value="it_IT" />
+<fmt:parseDate var="testdate" value="04/07/2022" pattern="dd/MM/yyyy" /> --%>
+<c:when test="${misura.dataVerificazione.time gt testdate.time}">
+ <tr role="row">
+	<td>A) Verificare se lo strumento di misura sottoposto a verificazione è munito dell'ulteriore documentazione indicata nel Decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale) oppure nell'Attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea), es. manuale istruzione, manuale di uso e manutenzione, data sheet, eventuali specifiche dei componenti software, ecc.</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(0) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(0) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(0) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+	
+				 <tr role="row">
+	<td>B) Verificare l'esistenza e la corrispondenza sullo strumento di misura delle iscrizioni regolamentari previste nel corrispondente attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea).</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(1) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(1) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(1) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+
+
+
+				 <tr role="row">
+	<td>C) Accertare la presenza, integrità, leggibilità e rispondenza ai documenti di omologazione e piani di legalizzazione dello strumento di misura, delle seguenti tipologie di impronte di verificazione prima nazionale, oppure di verificazione prima CEE, oppure di verificazione prima CE, oppure di verifica CE.</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(2) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(2) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(2) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+ <tr role="row">
+	<td>D) Verificare l'esistenza sullo strumento di misura dei sigilli o di altri elementi di protezione in rispondenza a Attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea)</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(3) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(3) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(3) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	 <tr role="row">
+	<td>E) In caso di presenza di sigillo elettronico con contatore di eventi, accertare la corrispondenza tra l'indicazione di detto contatore e il numero riscontrato, secondo i casi, in occasione dell'ultima verificazione periodica, della verificazione prima o CE oppure dell'ultima rilegalizzazione;</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(4) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(4) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(4) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+
+
+
+	 <tr role="row">
+	<td>F) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) antecedentemente alla prima verificazione periodica.
+Se applicabile, procedere con i seguenti punti 1, 2 e 3. 
+In caso di non applicabilità, procedere al successivo punto H
+1. Verificare presenza della dichiarazione (o sua copia) rilasciata al titolare dello strumento dal riparatore, contenente la descrizione dell'intervento effettuato e dei sigilli provvisori applicati e di cui è stata informata la CCIAA competente per territorio;
+2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sulla dichiarazione di cui al precedente punto G.1.
+3. Annotare sul libretto metrologico la dichiarazione di riparazione (o sua copia) rilasciata al titolare dello strumento dal riparatore indicata al precedente punto G.1.</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(5) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(5) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(5) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+	
+		 <tr role="row">
+	<td>G) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) successivamente alla prima verificazione periodica:
+Se applicabile, procedere con i seguenti punti 1 e 2.
+1. Verificare la presenza dell'annotazione della riparazione effettuata dal riparatore all'interno del libretto metrologico dello strumento di misura;
+2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sul libretto metrologico di cui al precedente punto H.1.</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(6) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(6) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(6) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+	
+		 <tr role="row">
+	<td>H) Verificare le condizioni esterne dello strumento, dei dispositivi di comando, regolazione (es. piedini di livello e bolla) e di visualizzazione (es. display, scale graduate);</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(7) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(7) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(7) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+			 <tr role="row">
+	<td>I) Rilascio libretto metrologico (art. 4, c.12 DM93/17)</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(8) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(8) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(8) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	
+  	
+  	
+	</tr>
+
+
+
+
 
 			 <tr role="row">
+	<td>L) Compilazione libretto metrologico esistente</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(9) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(9) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(9) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+</c:when>
+<c:otherwise>
+
+
+ <tr role="row">
+	<td>A) Verificare se lo strumento di misura sottoposto a verificazione è munito dell'ulteriore documentazione indicata nel Decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale) oppure nell'Attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea), es. manuale istruzione, manuale di uso e manutenzione, data sheet, eventuali specifiche dei componenti software, ecc.</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(1) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(1) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(1) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+	
+				 <tr role="row">
+	<td>B) Verificare l'esistenza e la corrispondenza sullo strumento di misura delle iscrizioni regolamentari previste nel corrispondente attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea).</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(2) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(2) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(2) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+
+
+
+				 <tr role="row">
+	<td>C) Accertare la presenza, integrità, leggibilità e rispondenza ai documenti di omologazione e piani di legalizzazione dello strumento di misura, delle seguenti tipologie di impronte di verificazione prima nazionale, oppure di verificazione prima CEE, oppure di verificazione prima CE, oppure di verifica CE.</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(3) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(3) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(3) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+ <tr role="row">
+	<td>D) Verificare l'esistenza sullo strumento di misura dei sigilli o di altri elementi di protezione in rispondenza a Attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea)</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(4) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(4) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(4) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+
+
+
+
+	 <tr role="row">
+	<td>E) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) antecedentemente alla prima verificazione periodica.
+Se applicabile, procedere con i seguenti punti 1, 2 e 3. 
+In caso di non applicabilità, procedere al successivo punto H
+1. Verificare presenza della dichiarazione (o sua copia) rilasciata al titolare dello strumento dal riparatore, contenente la descrizione dell'intervento effettuato e dei sigilli provvisori applicati e di cui è stata informata la CCIAA competente per territorio;
+2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sulla dichiarazione di cui al precedente punto G.1.
+3. Annotare sul libretto metrologico la dichiarazione di riparazione (o sua copia) rilasciata al titolare dello strumento dal riparatore indicata al precedente punto G.1.</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(5) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(5) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(5) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+	
+		 <tr role="row">
+	<td>F) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) successivamente alla prima verificazione periodica:
+Se applicabile, procedere con i seguenti punti 1 e 2.
+1. Verificare la presenza dell'annotazione della riparazione effettuata dal riparatore all'interno del libretto metrologico dello strumento di misura;
+2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sul libretto metrologico di cui al precedente punto H.1.</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(6) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(6) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(6) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+	
+		 <tr role="row">
+	<td>G) Verificare le condizioni esterne dello strumento, dei dispositivi di comando, regolazione (es. piedini di livello e bolla) e di visualizzazione (es. display, scale graduate);</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(7) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(7) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(7) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+	
+			 <tr role="row">
+	<td>H) Controllare la presenza e lo stato di aggiornamento del libretto metrologico dello strumento
+sottoposto a verificazione</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(8) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(8) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(8) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	
+  	
+  	
+	</tr>
+
+
+
+
+
+
+
+</c:otherwise>
+</c:choose>
+
+<%-- 			 <tr role="row">
 	<td>A) Verificare se lo strumento sottoposto a verificazione è munito di Attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea).</td>
   	<td align="center">
   		<c:if test="${checkList.get(0) == 0}">
@@ -1055,198 +1705,9 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
   		<b>X</b>
   		</c:if>
   	</td>
-	</tr>
+	</tr> --%>
 
-			 <tr role="row">
-	<td>B) Verificare se lo strumento di misura sottoposto a verificazione è munito dell'ulteriore documentazione indicata nel Decreto di ammissione a verifica (per gli strumenti muniti di bolli di verificazione prima nazionale) oppure nell'Attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea), es. manuale istruzione, manuale di uso e manutenzione, data sheet, eventuali specifiche dei componenti software, ecc.</td>
-  	<td align="center">
-  		<c:if test="${checkList.get(1) == 0}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(1) == 1}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(1) == 2}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-	</tr>
-	
-	
-	
-				 <tr role="row">
-	<td>C) Verificare l'esistenza e la corrispondenza sullo strumento di misura delle iscrizioni regolamentari previste nel corrispondente attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea).</td>
-  	<td align="center">
-  		<c:if test="${checkList.get(2) == 0}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(2) == 1}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(2) == 2}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-	</tr>
-
-
-
-				 <tr role="row">
-	<td>D) Accertare la presenza, integrità, leggibilità e rispondenza ai documenti di omologazione e piani di legalizzazione dello strumento di misura, delle seguenti tipologie di impronte di verificazione prima nazionale, oppure di verificazione prima CEE, oppure di verificazione prima CE, oppure di verifica CE.</td>
-  	<td align="center">
-  		<c:if test="${checkList.get(3) == 0}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(3) == 1}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(3) == 2}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-	</tr>
-	
-	
- <tr role="row">
-	<td>E) Verificare l'esistenza sullo strumento di misura dei sigilli o di altri elementi di protezione in rispondenza a Attestazione/Certificazione di esame CE/UE del tipo o di progetto (per gli strumenti conformi alla normativa europea)</td>
-  	<td align="center">
-  		<c:if test="${checkList.get(4) == 0}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(4) == 1}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(4) == 2}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-	</tr>
-	
-	 <tr role="row">
-	<td>F) In caso di presenza di sigillo elettronico con contatore di eventi, accertare la corrispondenza tra l'indicazione di detto contatore e il numero riscontrato, secondo i casi, in occasione dell'ultima verificazione periodica, della verificazione prima o CE oppure dell'ultima rilegalizzazione;</td>
-  	<td align="center">
-  		<c:if test="${checkList.get(5) == 0}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(5) == 1}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(5) == 2}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-	</tr>
-
-
-
-	 <tr role="row">
-	<td>G) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) antecedentemente alla prima verificazione periodica.
-Se applicabile, procedere con i seguenti punti 1, 2 e 3. 
-In caso di non applicabilità, procedere al successivo punto H
-1. Verificare presenza della dichiarazione (o sua copia) rilasciata al titolare dello strumento dal riparatore, contenente la descrizione dell'intervento effettuato e dei sigilli provvisori applicati e di cui è stata informata la CCIAA competente per territorio;
-2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sulla dichiarazione di cui al precedente punto G.1.
-3. Annotare sul libretto metrologico la dichiarazione di riparazione (o sua copia) rilasciata al titolare dello strumento dal riparatore indicata al precedente punto G.1.</td>
-  	<td align="center">
-  		<c:if test="${checkList.get(6) == 0}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(6) == 1}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(6) == 2}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-	</tr>
-	
-	
-	
-		 <tr role="row">
-	<td>H) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) successivamente alla prima verificazione periodica:
-Se applicabile, procedere con i seguenti punti 1 e 2.
-1. Verificare la presenza dell'annotazione della riparazione effettuata dal riparatore all'interno del libretto metrologico dello strumento di misura;
-2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sul libretto metrologico di cui al precedente punto H.1.</td>
-  	<td align="center">
-  		<c:if test="${checkList.get(7) == 0}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(7) == 1}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(7) == 2}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-	</tr>
-	
-	
-	
-		 <tr role="row">
-	<td>I) Verificare le condizioni esterne dello strumento, dei dispositivi di comando, regolazione (es. piedini di livello e bolla) e di visualizzazione (es. display, scale graduate);</td>
-  	<td align="center">
-  		<c:if test="${checkList.get(8) == 0}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(8) == 1}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(8) == 2}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-	</tr>
-	
-	
-			 <tr role="row">
-	<td>L) Controllare la presenza e lo stato di aggiornamento del libretto metrologico dello strumento sottoposto a verificazione.</td>
-  	<td align="center">
-  		<c:if test="${checkList.get(9) == 0}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(9) == 1}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(9) == 2}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-	</tr>
+			
 
 </c:if>	
 	
@@ -1454,8 +1915,8 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <th class="text-center">N° Ripetizione</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <c:if test="${misura.verStrumento.tipo.id == 4 }">
-  <th class="text-center">Posizione<br><br>${misura.verStrumento.um }</th>
-  <th class="text-center">Carico equilibrio<br><br>${misura.verStrumento.um }</th>
+  <th class="text-center">Posizione<br>Ceq<br>${misura.verStrumento.um }</th>
+  <th class="text-center">Carico di equilibrio<br><br>${misura.verStrumento.um }</th>
  </c:if>
   <c:if test="${misura.verStrumento.tipo.id != 4 }">
    <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
@@ -1464,7 +1925,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 && misura.verStrumento.tipo.id != 4 }">
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
  </c:if>
- <th class="text-center">P<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Indicazione P<br>${misura.verStrumento.um }</th>
 
 
  </tr></thead>
@@ -1484,7 +1945,18 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 <td align="center">${item.massa.stripTrailingZeros().toPlainString()}</td>
 
 <c:if test="${misura.verStrumento.tipo.id ==4}">
-<td align="center">${item.posizione}</td>
+<c:choose>
+ <c:when test="${item.caricoAgg>0}"> 
+ <td align="center">${item.posizione}</td>
+
+</c:when>
+<c:otherwise >
+<td align="center">/ </td>
+</c:otherwise> 
+
+</c:choose>
+
+
 </c:if>
 
 <c:if test="${misura.verStrumento.tipo.id !=4 }">
@@ -1494,7 +1966,17 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <c:if test="${(misura.verStrumento.tipo.id ==4) || (misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 )}">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia,  3)}</td>
 </c:if>
+
+<c:if test="${misura.verStrumento.tipo.id !=4 }">
 <td align="center">${item.portata.setScale(risoluzioneBilanciaE0, 3)}</td>
+</c:if>
+
+<c:if test="${misura.verStrumento.tipo.id ==4 }">
+
+<td align="center">${item.indicazione.setScale(risoluzioneBilanciaE0, 3)}</td>
+</c:if>
+
+
 
 	</tr>
 	</c:if>
@@ -1560,7 +2042,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
   <th class="text-center">N° Ripetizione</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
  <c:if test="${misura.verStrumento.tipo.id == 4 }">
-  <th class="text-center">Posizione<br><br>${misura.verStrumento.um }</th>
+  <th class="text-center">Posizione<br>Carico di eq.<br>${misura.verStrumento.um }</th>
   <th class="text-center">Carico equilibrio<br><br>${misura.verStrumento.um }</th>
  </c:if>
   <c:if test="${misura.verStrumento.tipo.id != 4 }">
@@ -1596,17 +2078,37 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 <td align="center">${item.massa.stripTrailingZeros().toPlainString()}</td>
 
 <c:if test="${misura.verStrumento.tipo.id ==4}">
-<td align="center">${item.posizione}</td>
+<c:choose>
+ <c:when test="${item.caricoAgg>0}"> 
+ <td align="center">${item.posizione}</td>
+
+</c:when>
+<c:otherwise >
+<td align="center">/ </td>
+</c:otherwise> 
+
+</c:choose>
+
+
 </c:if>
 
 <c:if test="${misura.verStrumento.tipo.id !=4 }">
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
 </c:if>
 
+
+
  <c:if test="${(misura.verStrumento.tipo.id ==4) || (misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 )}">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia,  3)}</td>
 </c:if>
+<c:if test="${misura.verStrumento.tipo.id !=4 }">
 <td align="center">${item.portata.setScale(risoluzioneBilanciaE0, 3)}</td>
+</c:if>
+
+<c:if test="${misura.verStrumento.tipo.id ==4 }">
+
+<td align="center">${item.indicazione.setScale(risoluzioneBilanciaE0, 3)}</td>
+</c:if>
 
 	</tr>
 	</c:if>
@@ -1685,13 +2187,24 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  
  <th class="text-center">N° Ripetizione</th>
  <th class="text-center">Massa<br>L<br>${misura.verStrumento.um }</th> 
- <c:if test="${misura.verStrumento.tipo.id == 4 }">
-  <th class="text-center">Posizione<br><br>${misura.verStrumento.um }</th>
-  <th class="text-center">Carico equilibrio<br><br>${misura.verStrumento.um }</th>
- </c:if>
-  <c:if test="${misura.verStrumento.tipo.id != 4 }">
-   <th class="text-center">Indicazione<br>I<br>${misura.verStrumento.um }</th>
-  </c:if>
+<c:if test="${misura.verStrumento.tipo.id ==4}">
+<c:choose>
+ <c:when test="${item.caricoAgg>0}"> 
+ <td align="center">${item.posizione}</td>
+
+</c:when>
+<c:otherwise >
+<td align="center">/ </td>
+</c:otherwise> 
+
+</c:choose>
+
+
+</c:if>
+
+<c:if test="${misura.verStrumento.tipo.id !=4 }">
+<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+</c:if>
 
  <c:if test="${misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 && misura.verStrumento.tipo.id != 4 }">
  <th class="text-center">Carico Aggiuntivo<br>&#x0394L<br>${misura.verStrumento.um }</th>
@@ -1732,7 +2245,14 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
  <c:if test="${(misura.verStrumento.tipo.id ==4) || (misura.verStrumento.tipologia.id == 1 && misura.verStrumento.classe !=5 && misura.verStrumento.classe!=6 )}">
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia,  3)}</td>
 </c:if>
+<c:if test="${misura.verStrumento.tipo.id !=4 }">
 <td align="center">${item.portata.setScale(risoluzioneBilanciaE0, 3)}</td>
+</c:if>
+
+<c:if test="${misura.verStrumento.tipo.id ==4 }">
+
+<td align="center">${item.indicazione.setScale(risoluzioneBilanciaE0, 3)}</td>
+</c:if>
 
 	</tr>
 	</c:if>
@@ -2308,9 +2828,20 @@ Non automatico o semiautomatico
  </tr>
  <c:forEach items="${lista_linearita}" var="item" varStatus="loop">
 <c:if test="${item.campo==1 && item.massa!=null }">
+<c:choose>
+<c:when test="${misura.verStrumento.tipologia.id == 1 }">
    <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
  <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
  <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
+</c:when>
+<c:otherwise>
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+2 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+2 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale()+1 }"></c:set>
+</c:otherwise>
+</c:choose>
+
+
 
 <tr role="row" >
 	
@@ -2319,14 +2850,33 @@ Non automatico o semiautomatico
 
 <c:if test="${misura.verStrumento.tipo.id == 4 }">
 
+<c:choose>
+ <c:when test="${item.caricoAggSalita>0}"> 
 <td>${item.posizione_salita}</td>
+
+</c:when>
+<c:otherwise >
+<td align="center">/ </td>
+</c:otherwise> 
+
+</c:choose>
+
+<c:choose>
+ <c:when test="${item.caricoAggDiscesa>0}"> 
 <td>${item.posizione_discesa}</td>
+
+</c:when>
+<c:otherwise >
+<td align="center">/ </td>
+</c:otherwise> 
+
+</c:choose>
 
 <td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
 <td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
 
-<td>${item.indicazioneSalita.setScale(risoluzioneIndicazione, 3)}</td>
-<td>${item.indicazioneDiscesa.setScale(risoluzioneIndicazione, 3)}</td>
+<td>${item.indicazioneSalita.setScale(risoluzioneBilancia, 3)}</td>
+<td>${item.indicazioneDiscesa.setScale(risoluzioneBilancia, 3)}</td>
 </c:if>
 
 
@@ -2341,8 +2891,18 @@ Non automatico o semiautomatico
 </c:if>
 <td>${item.erroreSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+
+<c:choose>
+<c:when test="${item.riferimento == 1 }">
+<td>/</td>
+<td>/</td>
+</c:when>
+<c:otherwise>
 <td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreCorDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+</c:otherwise>
+</c:choose>
+
 <td>${item.mpe.stripTrailingZeros()}</td>
 <%-- <td>${item.divisione}</td> --%>
 
@@ -2470,10 +3030,18 @@ Non automatico o semiautomatico
  </tr>
  <c:forEach items="${lista_linearita}" var="item" varStatus="loop">
 <c:if test="${item.campo==2 && item.massa!=null }">
+   <c:choose>
+<c:when test="${misura.verStrumento.tipologia.id == 1 }">
    <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
  <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
  <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
-
+</c:when>
+<c:otherwise>
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+2 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+2 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale()+1 }"></c:set>
+</c:otherwise>
+</c:choose>
 <tr role="row" >
 	
 <td>${item.riferimento}</td>
@@ -2481,8 +3049,27 @@ Non automatico o semiautomatico
 
 <c:if test="${misura.verStrumento.tipo.id == 4 }">
 
+<c:choose>
+ <c:when test="${item.caricoAggSalita>0}"> 
 <td>${item.posizione_salita}</td>
+
+</c:when>
+<c:otherwise >
+<td align="center">/ </td>
+</c:otherwise> 
+
+</c:choose>
+
+<c:choose>
+ <c:when test="${item.caricoAggDiscesa>0}"> 
 <td>${item.posizione_discesa}</td>
+
+</c:when>
+<c:otherwise >
+<td align="center">/ </td>
+</c:otherwise> 
+
+</c:choose>
 
 <td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
 <td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
@@ -2503,8 +3090,17 @@ Non automatico o semiautomatico
 </c:if>
 <td>${item.erroreSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+<c:choose>
+<c:when test="${item.riferimento == 1 }">
+<td>/</td>
+<td>/</td>
+</c:when>
+<c:otherwise>
 <td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreCorDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+</c:otherwise>
+</c:choose>
+
 <td>${item.mpe.stripTrailingZeros()}</td>
 <%-- <td>${item.divisione}</td> --%>
 
@@ -2678,10 +3274,18 @@ Non automatico o semiautomatico
  </tr>
  <c:forEach items="${lista_linearita}" var="item" varStatus="loop">
 <c:if test="${item.campo==3 && item.massa!=null }">
+<c:choose>
+<c:when test="${misura.verStrumento.tipologia.id == 1 }">
    <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
  <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
  <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
-
+</c:when>
+<c:otherwise>
+   <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+2 }"></c:set>
+ <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+2 }"></c:set>
+ <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale()+1 }"></c:set>
+</c:otherwise>
+</c:choose>
 <tr role="row" >
 	
 <td>${item.riferimento}</td>
@@ -2689,8 +3293,27 @@ Non automatico o semiautomatico
 
 <c:if test="${misura.verStrumento.tipo.id == 4 }">
 
+<c:choose>
+ <c:when test="${item.caricoAggSalita>0}"> 
 <td>${item.posizione_salita}</td>
+
+</c:when>
+<c:otherwise >
+<td align="center">/ </td>
+</c:otherwise> 
+
+</c:choose>
+
+<c:choose>
+ <c:when test="${item.caricoAggDiscesa>0}"> 
 <td>${item.posizione_discesa}</td>
+
+</c:when>
+<c:otherwise >
+<td align="center">/ </td>
+</c:otherwise> 
+
+</c:choose>
 
 <td>${item.caricoAggSalita.setScale(risoluzioneBilancia, 3)}</td>
 <td>${item.caricoAggDiscesa.setScale(risoluzioneBilancia, 3)}</td>
@@ -2711,8 +3334,17 @@ Non automatico o semiautomatico
 </c:if>
 <td>${item.erroreSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+<c:choose>
+<c:when test="${item.riferimento == 1 }">
+<td>/</td>
+<td>/</td>
+</c:when>
+<c:otherwise>
 <td>${item.erroreCorSalita.setScale(risoluzioneBilanciaE0, 3)}</td>
 <td>${item.erroreCorDiscesa.setScale(risoluzioneBilanciaE0, 3)}</td>
+</c:otherwise>
+</c:choose>
+
 <td>${item.mpe.stripTrailingZeros()}</td>
 <%-- <td>${item.divisione}</td> --%>
 
@@ -2815,6 +3447,9 @@ Automatico
 <c:if test="${lista_accuratezza.get(0).tipoTara == 1}">
 Non automatico o semiautomatico
 </c:if>
+<c:if test="${lista_accuratezza.get(0).tipoTara == 2}">
+Non presente
+</c:if>
 </b>
 
 </div>
@@ -2836,8 +3471,8 @@ Non automatico o semiautomatico
  <th class="text-center">MPE<br>(±)<br>${misura.verStrumento.um }</th> --%>
  
  <th class="text-center">Rif.</th>
- <th class="text-center">Pozione 0<br>L<br>${misura.verStrumento.um }</th> 
- <th class="text-center">Scarto<br>I<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Indicazione Tara Attiva<br><br>${misura.verStrumento.um }</th> 
+ <th class="text-center">Carico effettivo di tara<br><br>${misura.verStrumento.um }</th>
  
  <c:if test="${misura.verStrumento.tipo.id == 5 }">
   <th class="text-center">Max Valore Tara<br><br>${misura.verStrumento.um }</th>
@@ -2853,6 +3488,27 @@ Non automatico o semiautomatico
  <tbody>
 
  <c:forEach items="${lista_accuratezza}" var="item" varStatus="loop">
+ 
+ <c:choose>
+ <c:when test="${lista_accuratezza.get(0).tipoTara == 2}">
+<tr role="row" >
+	
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+ <c:if test="${misura.verStrumento.tipo.id == 5 }">
+ <td align="center">N/A</td>
+</c:if>
+
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+
+	</tr>
+</c:when>
+ <c:otherwise>
+ 
+  
 <c:if test="${item.campo == 1 && item.massa!=null }">
    <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
  <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
@@ -2872,6 +3528,10 @@ Non automatico o semiautomatico
 
 	</tr>
 	</c:if>
+ </c:otherwise>
+ </c:choose>
+ 
+
 	</c:forEach>
  
 	
@@ -2909,6 +3569,9 @@ Automatico
 <c:if test="${lista_accuratezza.get(1).tipoTara == 1}">
 Non automatico o semiautomatico
 </c:if>
+<c:if test="${lista_accuratezza.get(1).tipoTara == 2}">
+Non presente
+</c:if>
 </b>
 
 
@@ -2923,8 +3586,8 @@ Non automatico o semiautomatico
  <thead><tr class="active">
  
   <th class="text-center">Rif.</th>
- <th class="text-center">Pozione 0<br>L<br>${misura.verStrumento.um }</th> 
- <th class="text-center">Scarto<br>I<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Indicazione Tara Attiva<br><br>${misura.verStrumento.um }</th> 
+ <th class="text-center">Carico effettivo di tara<br><br>${misura.verStrumento.um }</th>
  
  <c:if test="${misura.verStrumento.tipo.id == 5 }">
   <th class="text-center">Max Valore Tara<br><br>${misura.verStrumento.um }</th>
@@ -2949,7 +3612,27 @@ Non automatico o semiautomatico
   <tbody>
 
  <c:forEach items="${lista_accuratezza}" var="item" varStatus="loop">
-<c:if test="${item.campo == 2 && item.massa!=null }">
+ 
+  <c:choose>
+ <c:when test="${lista_accuratezza.get(1).tipoTara == 2}">
+<tr role="row" >
+	
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+ <c:if test="${misura.verStrumento.tipo.id == 5 }">
+ <td align="center">N/A</td>
+</c:if>
+
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+
+	</tr>
+</c:when>
+ <c:otherwise>
+ 
+ <c:if test="${item.campo == 2 && item.massa!=null }">
    <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
  <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
  <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
@@ -2968,6 +3651,11 @@ Non automatico o semiautomatico
 
 	</tr>
 	</c:if>
+ </c:otherwise>
+ </c:choose>
+ 
+ 
+
 	</c:forEach>
  
 	
@@ -3024,6 +3712,9 @@ Automatico
 <c:if test="${lista_accuratezza.get(2).tipoTara == 1}">
 Non automatico o semiautomatico
 </c:if>
+<c:if test="${lista_accuratezza.get(2).tipoTara == 2}">
+Non presente
+</c:if>
 </b>
 
 
@@ -3038,8 +3729,8 @@ Non automatico o semiautomatico
  <thead><tr class="active">
  
   <th class="text-center">Rif.</th>
- <th class="text-center">Pozione 0<br>L<br>${misura.verStrumento.um }</th> 
- <th class="text-center">Scarto<br>I<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Indicazione Tara Attiva<br><br>${misura.verStrumento.um }</th> 
+ <th class="text-center">Carico effettivo di Tara<br><br>${misura.verStrumento.um }</th>
  
  <c:if test="${misura.verStrumento.tipo.id == 5 }">
   <th class="text-center">Max Valore Tara<br><br>${misura.verStrumento.um }</th>
@@ -3063,7 +3754,26 @@ Non automatico o semiautomatico
   <tbody>
 
  <c:forEach items="${lista_accuratezza}" var="item" varStatus="loop">
-<c:if test="${item.campo == 3 && item.massa!=null }">
+ 
+  <c:choose>
+ <c:when test="${lista_accuratezza.get(2).tipoTara == 2}">
+<tr role="row" >
+	
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+ <c:if test="${misura.verStrumento.tipo.id == 5 }">
+ <td align="center">N/A</td>
+</c:if>
+
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+
+	</tr>
+</c:when>
+ <c:otherwise>
+ <c:if test="${item.campo == 3 && item.massa!=null }">
    <c:set var="risoluzioneBilanciaE0" value="${utl:getE(item.campo, misura.verStrumento, BigDecimal.ZERO).scale()+1 }"></c:set>
  <c:set var="risoluzioneBilancia" value="${utl:getE(item.campo,  misura.verStrumento, item.getMassa()).scale()+1 }"></c:set>
  <c:set var="risoluzioneIndicazione" value="${utl:getE(item.campo, misura.verStrumento,item.getMassa()).scale() }"></c:set>
@@ -3082,6 +3792,13 @@ Non automatico o semiautomatico
 
 	</tr>
 	</c:if>
+ 
+ </c:otherwise>
+ </c:choose>
+ 
+ 
+ 
+
 	</c:forEach>
  
 	
@@ -3166,8 +3883,8 @@ Non automatico o semiautomatico
  <th class="text-center">Carico Aggiuntivo =<br>|EMT carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
  <th class="text-center">Indicazione<br>L2<br>${misura.verStrumento.um }</th>
  <th class="text-center">Differenza<br>L2 - L1<br>${misura.verStrumento.um }</th>
-  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 EMT<br>  <br> ${misura.verStrumento.um }</th>
- <th class="text-center">Check<br>|L2 - L1| &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
+  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 |EMT|<br>  <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>L2 - L1 &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
  
  </c:if>
   
@@ -3179,8 +3896,8 @@ Non automatico o semiautomatico
  <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
 <%--  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
  <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th> --%>
-  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 EMT<br>  <br> ${misura.verStrumento.um }</th>
- <th class="text-center">Check<br>|I2 - I1| &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
+  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 |EMT|<br>  <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>I2 - I1 &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
 </c:if>
  </tr></thead>
  
@@ -3256,8 +3973,8 @@ Non automatico o semiautomatico
  <th class="text-center">Carico Aggiuntivo =<br>|EMT carico|<br>&#x0394L<br>${misura.verStrumento.um }</th>
  <th class="text-center">Indicazione<br>L2<br>${misura.verStrumento.um }</th>
  <th class="text-center">Differenza<br>L2 - L1<br>${misura.verStrumento.um }</th>
-  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 EMT<br>  <br> ${misura.verStrumento.um }</th>
- <th class="text-center">Check<br>|L2 - L1| &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
+  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 |EMT|<br>  <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>L2 - L1 &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
  
  </c:if>
   
@@ -3269,8 +3986,8 @@ Non automatico o semiautomatico
  <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
 <%--  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
  <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th> --%>
-  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 EMT<br>  <br> ${misura.verStrumento.um }</th>
- <th class="text-center">Check<br>|I2 - I1| &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
+  <th class="text-center">0,7 Carico Aggiuntivo = <br>0,7 |EMT|<br>  <br> ${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>I2 - I1 &#8805 0,7 EMT<br>${misura.verStrumento.um }</th>
 </c:if>
  </tr></thead>
  

@@ -130,8 +130,8 @@ public class GestioneVerMisura extends HttpServlet {
 				esito_globale = false;			
 			}
 			
-			
-			if(new ArrayList<String>(Arrays.asList(misura.getSeqRisposte().split(";"))).contains("1")) {
+			String[] arrayRisposte = misura.getSeqRisposte().substring(0, misura.getSeqRisposte().length()-4).split(";");
+			if(new ArrayList<String>(Arrays.asList(arrayRisposte)).contains("1")) {
 				esitoCheck= "0";
 			}
 			

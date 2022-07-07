@@ -135,8 +135,8 @@ $('#fileupload').fileupload({
 		         uploadErrors.push('Tipo del File '+data.originalFiles[i]['name']+' non accettato. ');
 		         break;
 		     }	 
-	    	 if(data.originalFiles[i]['size'] > 30000000) {
-		         uploadErrors.push('File '+data.originalFiles[i]['name']+' troppo grande, dimensione massima 30mb');
+	    	 if(data.originalFiles[i]['size'] > 60000000) {
+		         uploadErrors.push('File '+data.originalFiles[i]['name']+' troppo grande, dimensione massima 60mb');
 		         break;
 		     }
 	     }	     		     

@@ -88,7 +88,7 @@
     <th>Note obsolescenza</th>
     <%-- <c:if test="${misura.lat=='S' }"><th>Registro Laboratorio</th></c:if> --%>
     <th>Registro Laboratorio</th>
-    <th>Certificato/File Excel</th>
+    <th>Certificato/File Excel/Stampa etichetta</th>
     <th>Allegati</th>
     <th>Note Allegati</th>
     <th>Operatore</th>

@@ -365,6 +365,28 @@
           </ul>
         </li> 
            <% }%>
+           
+           
+             <%--  <% if(user.checkRuolo("AM") || user.checkPermesso("CONTOLLI_OPERATIVI")){%>  
+           <li class="header">CONTROLLI OPERATIVI</li>
+
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Controlli Operativi </span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+      
+		   <li><a href="gestioneControlliOperativi.do?action=lista_attrezzature">Lista Attrezzature</a></li>	
+		
+			<li><a href="gestioneControlliOperativi.do?action=lista_controlli">Lista Controlli</a></li>	
+		 	      	
+          </ul>
+        </li> 
+           <% }%>
+            --%>
+           
          
           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_DEVICE")){%>  
            <li class="header">DEVICE</li>

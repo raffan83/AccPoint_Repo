@@ -119,12 +119,24 @@ public class DirectMySqlDAO {
 			"left JOIN stato_strumento c on a.id__stato_strumento_=c.__id " + 
 			"left join tipo_strumento d on a.id__tipo_strumento_=d.__id " + 
 			"where a.id__company_=? AND a.id_cliente=? and id__sede_new=?";
+	
+	private static final String sqlDatiStrumentiPerGraficoSediAll = "SELECT a.reparto,a.frequenza,c.nome as stato_strumento, d.nome as tipo_strumento, a.denominazione,a.utilizzatore "
+			+ "from strumento a " + 
+			"left JOIN stato_strumento c on a.id__stato_strumento_=c.__id " + 
+			"left join tipo_strumento d on a.id__tipo_strumento_=d.__id " + 
+			"where a.id__company_=? AND a.id_cliente=? ";
 
 	private static final String sqlDatiStrumentiPerGraficoTras = "SELECT a.reparto,a.frequenza,c.nome as stato_strumento, d.nome as tipo_strumento,a.denominazione,a.utilizzatore "
 			+ "from strumento a " +
 			"left JOIN stato_strumento c on a.id__stato_strumento_=c.__id " + 
 			"left join tipo_strumento d on a.id__tipo_strumento_=d.__id " + 
 			"where a.id_cliente=? and id__sede_new=?";
+	
+	private static final String sqlDatiStrumentiPerGraficoTrasSediAll = "SELECT a.reparto,a.frequenza,c.nome as stato_strumento, d.nome as tipo_strumento,a.denominazione,a.utilizzatore "
+			+ "from strumento a " +
+			"left JOIN stato_strumento c on a.id__stato_strumento_=c.__id " + 
+			"left join tipo_strumento d on a.id__tipo_strumento_=d.__id " + 
+			"where a.id_cliente=? ";
 
 
 	private static String sqlInsertCampioniAssociati="INSERT INTO tblCampioniAssociati(id_str,camp_ass) VALUES(?,?)";
@@ -1580,16 +1592,35 @@ public class DirectMySqlDAO {
 
 			if(!user.isTras()) 
 			{
-				pst=con.prepareStatement(sqlDatiStrumentiPerGrafico);
-				pst.setInt(1,idCompany);
-				pst.setString(2, idCliente);
-				pst.setString(3, idSede);
+				
+				if(idSede.equals("0")) {
+					pst=con.prepareStatement(sqlDatiStrumentiPerGraficoSediAll);
+					pst.setInt(1,idCompany);
+					pst.setString(2, idCliente);
+					
+				}else {
+					pst=con.prepareStatement(sqlDatiStrumentiPerGrafico);
+					pst.setInt(1,idCompany);
+					pst.setString(2, idCliente);
+					pst.setString(3, idSede);
+				}
+				
+				
+				
+				
 			}
 			else 
 			{
-				pst=con.prepareStatement(sqlDatiStrumentiPerGraficoTras);
-				pst.setString(1, idCliente);
-				pst.setString(2, idSede);
+				if(idSede.equals("0")) {
+					pst=con.prepareStatement(sqlDatiStrumentiPerGraficoTrasSediAll);
+					pst.setInt(1,idCompany);
+					pst.setString(2, idCliente);
+					
+				}else {
+					pst=con.prepareStatement(sqlDatiStrumentiPerGraficoTras);
+					pst.setString(1, idCliente);
+					pst.setString(2, idSede);
+				}
 			}
 
 

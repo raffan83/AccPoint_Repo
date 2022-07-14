@@ -165,7 +165,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
       <div class="modal-footer">
       <input type="hidden" id="stato" name="stato" value="Idonea"/>
       <input type="hidden" id="etichettatura" name="etichettatura" value="Interna"/>
-      
+      <input type="hidden" id="id_affini_checked" name="id_affini_checked"> 
         <button type="submit" class="btn btn-primary" >Salva</button>
        
       </div>
@@ -572,6 +572,30 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   </div>
 
 </div>
+
+
+  <div id="modalAffini" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close"  onClick="$('#modalAffini').modal('hide');" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione! Sono stati rilevati i seguenti campioni affini. Seleziona i campioni per i quali vuoi creare l'evento. </h4>
+      </div>
+       <div class="modal-body">       
+      	<div id="content_affini"></div>
+      	</div>
+      <div class="modal-footer">
+      
+
+      <button class="btn btn-primary" id="btn_salva_affini" onclick="salvaAttivitaCampioniAffini()" >Salva</button>
+		<!-- <a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a> -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
 
 
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
@@ -1126,11 +1150,111 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
 
  }); 
   
+  
+  function getCodiciAffini(){
+	  
+	  dataObj = {};
+	  
+	  dataObj.id_campione = datax[0]
+	  
+	  callAjax(dataObj,"gestioneAttivitaCampioni.do?action=codici_affini", function(datab, textStatusb){
+		  
+			var str = "<ul class='list-group list-group-unbordered'><li class='list-group-item'><div class='row'> <div class='col-xs-8'><label>Codice</label> </div><div class='col-xs-2'><input class='pull-right' type='checkbox' onclick='checkAllAffini()'  id='check_affini_all' name='check_affini_all'><label class='pull-right'>Sel. tutti</label></div></div></li>";
+
+		
+		  if(datab.lista_campioni_affini.length>0){
+			 
+			  for (var i = 0; i < datab.lista_campioni_affini.length; i++) {
+				  if(datab.lista_campioni_affini[i].id == datax[0]){
+					  str = str + "<li  class='list-group-item'><div class='row'> <div class='col-xs-8'>" +datab.lista_campioni_affini[i].codice+"</div> <div class='col-xs-2'><input class='pull-right check_affini' type='checkbox' onclick='checkCampioneAffine("+datab.lista_campioni_affini[i].id+")' id='check_affini_"+datab.lista_campioni_affini[i].id+"' name='check_affini_"+datab.lista_campioni_affini[i].id+"' checked> </div></div></li>"
+					  $("#id_affini_checked").val($("#id_affini_checked").val()+datab.lista_campioni_affini[i].id+";");
+				  }else{
+					  str = str + "<li  class='list-group-item'><div class='row'> <div class='col-xs-8'>" +datab.lista_campioni_affini[i].codice+"</div> <div class='col-xs-2'><input class='pull-right check_affini' type='checkbox' onclick='checkCampioneAffine("+datab.lista_campioni_affini[i].id+")' id='check_affini_"+datab.lista_campioni_affini[i].id+"' name='check_affini_"+datab.lista_campioni_affini[i].id+"'> </div></div></li>"  
+				  }
+					
+				}
+			  
+			  $('#content_affini').html(str);
+			  
+			  $('#modalAffini').modal();
+			  
+		  }else{
+			  nuovaAttivitaCampione(datax[0])
+		  }
+		  
+		  
+	  });
+	  
+  }
+  
+  function checkCampioneAffine(id){
+	  
+	  
+	  if($("#check_affini_"+id).prop("checked")== false){
+		  $("#id_affini_checked").val($("#id_affini_checked").val().replace(id+";", ""));
+	  }else{
+		  $("#id_affini_checked").val($("#id_affini_checked").val()+id+";");
+	  }
+	  
+	
+  }
+  function checkAllAffini(){
+	  
+	  var checked = true;
+	  
+	  if($("#check_affini_all").prop("checked") == false){
+		  checked = false;
+	  }
+	  	 
+
+	  $(".check_affini").each(function(index, item){
+		  var id = item.id;
+		  if(checked){
+			  
+			  if($("#"+id).prop("checked")== false){
+				  $("#"+id).prop("checked", true);
+				  $("#id_affini_checked").val($("#id_affini_checked").val()+id.split("_")[2]+";");
+			  }
+			  
+		  }else{
+			  if($("#"+id).prop("checked") ){
+				  $("#"+id).prop("checked", false);
+				  $("#id_affini_checked").val($("#id_affini_checked").val().replace(id.split("_")[2]+";", ""));
+			  }
+		  }
+	
+	
+		  
+	  });
+	  
+	  
+  }
  
+  
+  function salvaAttivitaCampioniAffini(){
+	  
+	  if($('#id_affini_checked').val()==""){
+		  $('#myModalErrorContent').html("Seleziona almeno un campione!");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();
+			$('#myModalError').modal('show');
+	  }else{
+		  nuovaAttivitaCampione(datax[0]);  
+	  }
+	  
+	  
+  }
+  
+  
+  
   $('#formNuovaAttivita').on('submit',function(e){		
 		e.preventDefault();
 		
-		nuovaAttivitaCampione(datax[0]);	  
+		getCodiciAffini()
+		
+		//nuovaAttivitaCampione(datax[0]);	  
 	});
   
   $('#formModificaAttivita').on('submit',function(e){		
@@ -1189,6 +1313,11 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
 	 });   
 	  
 	  $('#modalCertificati').on('hidden.bs.modal', function(){
+		  contentID == "registro_attivitaTab";
+		  
+	 }); 
+	  
+	  $('#modalAffini').on('hidden.bs.modal', function(){
 		  contentID == "registro_attivitaTab";
 		  
 	 }); 

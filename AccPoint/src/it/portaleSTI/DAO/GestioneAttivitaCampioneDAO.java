@@ -566,4 +566,19 @@ public static ArrayList<AcAttivitaCampioneDTO> getListaFuoriServizio(int id_camp
 }
 
 
+public static ArrayList<CampioneDTO> getListaCampioniAffini(String codice, Session session) {
+
+
+	ArrayList<CampioneDTO> lista=null;
+
+	Query query = session.createQuery("from CampioneDTO where codice like '%"+codice+"%'");		
+	
+	
+	
+	lista= (ArrayList<CampioneDTO>)query.list();	
+	
+	return lista;
+}
+
+
 }

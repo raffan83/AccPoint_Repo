@@ -135,8 +135,18 @@ public class ScaricaEtichetta extends HttpServlet {
 			report.addParameter("logo",rotateClockwise90(in));
 			report.addParameter("codiceInterno",misura.getStrumento().getCodice_interno());
 			report.addParameter("matricola",misura.getStrumento().getMatricola());
-			report.addParameter("dataVerifica",sdf.format(misura.getDataMisura()));
-			report.addParameter("dataProVerifica",sdf.format(misura.getStrumento().getDataProssimaVerifica()));
+			if(misura.getDataMisura()!=null) {
+				report.addParameter("dataVerifica",sdf.format(misura.getDataMisura()));
+			}else {
+				report.addParameter("dataVerifica","");	
+			}
+			
+			if(misura.getStrumento().getDataProssimaVerifica()!=null) {
+				report.addParameter("dataProVerifica",sdf.format(misura.getStrumento().getDataProssimaVerifica()));
+			}else {
+				report.addParameter("dataProVerifica","");
+			}
+			
 			report.addParameter("nScheda",misura.getnCertificato());
 
 			createQR(misura.getStrumento(),nomePack);

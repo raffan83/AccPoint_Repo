@@ -79,5 +79,10 @@ public class GestioneAttivitaCampioneBO {
 
 		return GestioneAttivitaCampioneDAO.getListaFuoriServizio(parseInt, session);
 	}
+
+	public static ArrayList<CampioneDTO> getListaCampioniAffini(String codice, Session session) {
+
+		return GestioneAttivitaCampioneDAO.getListaCampioniAffini(codice, session);
+	}
 	
 }

@@ -135,6 +135,10 @@
 		        <input id="fileupload" accept=".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.btm,.BTM,.tiff,.TIFF"  type="file" name="fileupload" class="form-control" required/>
 		   	 </span>
 		</div>
+		
+		<div class=col-md-3>
+		       <label style="margin-top:25px">Attezione! Si raccomanda l'uso di un logo di dimensioni 800x400</label>
+		</div>
 		</div><br><br>
 			<div class="row">
 		
@@ -318,7 +322,7 @@
 		</div><br>
 		
 		<div class="row">
-		<div class=col-md-5>
+		<div class="col-md-5">
 		<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un logo...</span>
@@ -326,6 +330,10 @@
 		        <input id="mod_fileupload" accept=".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.btm,.BTM,.tiff,.TIFF"  type="file" name="mod_fileupload" class="form-control" />
 		   	 </span>
 		   	 <label id="label_nome_file"></label>
+		</div>
+		
+		<div class="col-md-5">
+		       <label >Attezione! Si raccomanda l'uso di un logo di dimensioni 800x400</label>
 		</div>
 		</div>
 		

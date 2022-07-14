@@ -1575,7 +1575,7 @@ var listaStrumenti = ${listaCampioniJson};
      	 	$('#empty').html("");
      	 	$('#dettaglioTab').tab('show');
      	 	$('body').removeClass('noScroll');
-     	 	$('#modal-backdrop').hide();
+     	 	$('.modal-backdrop').hide();
      	 	resetCalendar("#prenotazioneCalendario");
      	 	
      	});

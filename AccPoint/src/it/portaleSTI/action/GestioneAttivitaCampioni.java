@@ -22,9 +22,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
@@ -150,55 +152,72 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String stato = ret.get("stato");
 				String campo_sospesi = ret.get("campo_sospesi");
 				String operatore = ret.get("operatore");				
+				String id_affini_checked = ret.get("id_affini_checked");
 				
-				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);				
+				int index = 1;
+				String[] id_campioni = idC.split("_");
 				
-				AcAttivitaCampioneDTO attivita = new AcAttivitaCampioneDTO();
-				attivita.setCampione(campione);
-				attivita.setTipo_attivita(new AcTipoAttivitaCampioniDTO(Integer.parseInt(tipo_attivita),""));
-				DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-				Date date = format.parse(data_attivita);
-				attivita.setData(date);				
-				attivita.setDescrizione_attivita(descrizione);
-				attivita.setObsoleta("N");
-				if(operatore!=null && !operatore.equals("")) {
-					UtenteDTO user = GestioneUtenteBO.getUtenteById(operatore, session);
-					attivita.setOperatore(user);
+				if(id_affini_checked!=null && !id_affini_checked.equals("")) {
+					id_campioni = id_affini_checked.split(";");
+					index = id_campioni.length;
 				}
-				if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
-					attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
-				}
-				if(Integer.parseInt(tipo_attivita)==2 || Integer.parseInt(tipo_attivita)==3) {
-					attivita.setEnte(ente);					
-					attivita.setData_scadenza(format.parse(data_scadenza));
-					attivita.setEtichettatura(etichettatura);
-					attivita.setStato(stato);
-					attivita.setCampo_sospesi(campo_sospesi);
-					if(id_certificato!=null && !id_certificato.equals("")) {
-						CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
-						attivita.setCertificato(certificato);
+				
+				for (int i = 0; i < index; i++) {
+					CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campioni[i]);				
+					
+					AcAttivitaCampioneDTO attivita = new AcAttivitaCampioneDTO();
+					attivita.setCampione(campione);
+					attivita.setTipo_attivita(new AcTipoAttivitaCampioniDTO(Integer.parseInt(tipo_attivita),""));
+					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = format.parse(data_attivita);
+					attivita.setData(date);				
+					attivita.setDescrizione_attivita(descrizione);
+					attivita.setObsoleta("N");
+					if(operatore!=null && !operatore.equals("")) {
+						UtenteDTO user = GestioneUtenteBO.getUtenteById(operatore, session);
+						attivita.setOperatore(user);
+					}
+					if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
+						attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
+					}
+					if(Integer.parseInt(tipo_attivita)==2 || Integer.parseInt(tipo_attivita)==3) {
+						attivita.setEnte(ente);					
+						attivita.setData_scadenza(format.parse(data_scadenza));
+						attivita.setEtichettatura(etichettatura);
+						attivita.setStato(stato);
+						attivita.setCampo_sospesi(campo_sospesi);
+						if(id_certificato!=null && !id_certificato.equals("")) {
+							CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
+							attivita.setCertificato(certificato);
+						}
+						
+					}				
+					
+					
+					if(Integer.parseInt(tipo_attivita)==3 || Integer.parseInt(tipo_attivita)==1) {
+						if(attivita.getCampione().getStatoCampione().equals("N")) {
+							attivita.getCampione().setStatoCampione("S");
+						}
 					}
 					
-				}				
-				
-				
-				if(Integer.parseInt(tipo_attivita)==3 || Integer.parseInt(tipo_attivita)==1) {
-					if(attivita.getCampione().getStatoCampione().equals("N")) {
-						attivita.getCampione().setStatoCampione("S");
-					}
-				}
-				
-				if(fileItem!=null && !filename.equals("")) {
+					if(fileItem!=null && !filename.equals("")) {
 
-					saveFile(fileItem, campione.getId(),filename);
-					attivita.setAllegato(filename);
+						File f = saveFile(fileItem, campione.getId(),filename);
+						if(f == null) {
+							
+							FileUtils.copyFile(new File(Costanti.PATH_FOLDER+"//Campioni//"+id_campioni[i-1]+"//Allegati//AttivitaManutenzione//"+filename), new File(Costanti.PATH_FOLDER+"//Campioni//"+id_campioni[i]+"//Allegati//AttivitaManutenzione//"+filename));
+						}
+						attivita.setAllegato(filename);
+					}
+					
+					if(tipo_attivita.equals("2") || (tipo_attivita.equals("1") && tipo_manutenzione!=null && tipo_manutenzione.equals("1"))) {
+						GestioneAttivitaCampioneBO.updateObsolete(id_campioni[i], Integer.parseInt(tipo_attivita),null, session);
+					}
+					
+					session.save(attivita);
 				}
 				
-				if(tipo_attivita.equals("2") || (tipo_attivita.equals("1") && tipo_manutenzione!=null && tipo_manutenzione.equals("1"))) {
-					GestioneAttivitaCampioneBO.updateObsolete(idC, Integer.parseInt(tipo_attivita),null, session);
-				}
 				
-				session.save(attivita);
 				
 								
 				session.getTransaction().commit();
@@ -280,7 +299,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					attivita.setAllegato(filename);
 				}
 				
-				if(tipo_attivita.equals("2") || (tipo_attivita.equals("1") && tipo_manutenzione!=null && tipo_manutenzione.equals("1"))) {
+				if(tipo_attivita.equals("2") || (tipo_attivita.equals("1"))) {
 					GestioneAttivitaCampioneBO.updateObsolete(""+attivita.getCampione().getId(), Integer.parseInt(tipo_attivita),attivita.getData(), session);
 				}
 				
@@ -600,6 +619,41 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				
 				
 			}
+			
+			
+			else if(action.equals("codici_affini")) {
+				
+				ajax = true;
+				
+				String id_campione = request.getParameter("id_campione");
+
+				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
+				
+				ArrayList<CampioneDTO>  lista_campioni_affini = new ArrayList<CampioneDTO>();
+				
+				if(campione.getCodice().contains("/")) {
+				
+					 lista_campioni_affini = GestioneAttivitaCampioneBO.getListaCampioniAffini(campione.getCodice().split("/")[0], session);
+					 if(lista_campioni_affini.size()==1) {
+						 lista_campioni_affini = new ArrayList<CampioneDTO>();
+					 }
+				}
+			
+				
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				Gson g = new Gson();
+				
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.add("lista_campioni_affini", g.toJsonTree(lista_campioni_affini));
+				out.print(myObj);
+				
+				
+			}
+			
 		}catch (Exception e) {
 			session.getTransaction().rollback();
         	session.close();
@@ -621,7 +675,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 	}
 	
 	
-	 private void saveFile(FileItem item, int id_campione, String filename) {
+	 private File saveFile(FileItem item, int id_campione, String filename) {
 
 		 	String path_folder = Costanti.PATH_FOLDER+"//Campioni//"+id_campione+"//Allegati//AttivitaManutenzione//";
 			File folder=new File(path_folder);
@@ -630,26 +684,29 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				folder.mkdirs();
 			}
 		
-			
+			File file=null;
 			while(true)
 			{
-				File file=null;
+			
 				
 				
 				file = new File(path_folder+filename);					
 				
 					try {
 						item.write(file);
+					
 						break;
 
 					} catch (Exception e) 
 					{
-
+						file = null;
 						e.printStackTrace();
 						break;
 					}
 			}
 		
+			
+			return file;
 		}
 
 }

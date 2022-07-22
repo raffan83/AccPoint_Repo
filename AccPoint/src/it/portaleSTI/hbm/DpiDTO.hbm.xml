@@ -34,6 +34,17 @@
  <property name="collettivo" type="int">
             <column name="collettivo" />
         </property>
+        
+         <property name="data_controllo" type="java.sql.Date">
+            <column name="data_controllo" />
+        </property>
+        
+        <property name="frequenza" type="int">
+            <column name="frequenza" />
+        </property>
+         <property name="data_scadenza_controllo" type="java.sql.Date">
+            <column name="data_scadenza_controllo" />
+        </property>
 
 <property name="assegnato" type="int">
             <column name="assegnato" />

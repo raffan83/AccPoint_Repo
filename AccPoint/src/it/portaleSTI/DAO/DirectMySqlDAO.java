@@ -1613,8 +1613,8 @@ public class DirectMySqlDAO {
 			{
 				if(idSede.equals("0")) {
 					pst=con.prepareStatement(sqlDatiStrumentiPerGraficoTrasSediAll);
-					pst.setInt(1,idCompany);
-					pst.setString(2, idCliente);
+			
+					pst.setString(1, idCliente);
 					
 				}else {
 					pst=con.prepareStatement(sqlDatiStrumentiPerGraficoTras);

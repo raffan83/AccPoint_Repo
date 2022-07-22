@@ -15,7 +15,7 @@
 </div><br>
 </c:if>
 
-<c:if test="${userObj.checkRuolo('F2') }"> 
+<c:if test="${userObj.checkRuolo('F2') ||userObj.checkRuolo('F3') }"> 
 <div class="row">
 <div class="col-xs-12">
  <a class="btn btn-danger pull-right" onClick="scaricaTutti(${corso.id})"style="margin-right:5px"><i class="fa fa-arrow-down"></i> Scarica tutti gli attestati</a>

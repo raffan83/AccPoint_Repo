@@ -71,6 +71,10 @@
 <th>Conformità</th>
 
 <th>Data scadenza</th>
+<th>Data controllo</th>
+<th>Frequenza</th>
+
+<th>Data scadenza controllo</th>
 <th>Archiviato</th>
 <th>Azioni</th>
  </tr></thead>
@@ -102,6 +106,9 @@
 	<td>${dpi.conformita }</td>
 
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_scadenza }"></fmt:formatDate></td>
+	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_controllo }"></fmt:formatDate></td>
+	<td>${dpi.frequenza }</td>
+	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_scadenza_controllo }"></fmt:formatDate></td>
 	<td>
 	<c:if test="${dpi.disabilitato == 1 }">
 	SI
@@ -109,7 +116,7 @@
 	</td>
 	<td>	
 
- 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaDpi('${dpi.id }','${dpi.tipo.id }','${dpi.collettivo }','${dpi.company.id }','${utl:escapeJS(dpi.modello) }','${utl:escapeJS(dpi.conformita) }','${utl:escapeJS(dpi.descrizione) }','${dpi.data_scadenza }')" title="Click per modificare la dpi"><i class="fa fa-edit"></i></a>
+ 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaDpi('${dpi.id }','${dpi.tipo.id }','${dpi.collettivo }','${dpi.company.id }','${utl:escapeJS(dpi.modello) }','${utl:escapeJS(dpi.conformita) }','${utl:escapeJS(dpi.descrizione) }','${dpi.data_scadenza }','${dpi.data_controllo }','${dpi.frequenza }','${dpi.data_scadenza_controllo }')" title="Click per modificare la dpi"><i class="fa fa-edit"></i></a>
  	  <c:if test="${dpi.assegnato == 0 && dpi.disabilitato == 0}">
  	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaDpi('${dpi.id }')" title="Click per archiviare il dpi"><i class="fa fa-trash"></i></a>
  	  </c:if>   
@@ -253,6 +260,42 @@
        	</div>       	
        </div><br>
        
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data controllo</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="data_controllo" name="data_controllo" class="form-control datepicker" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Frequenza (Mesi)</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="frequenza" name="frequenza" class="form-control" type="number" min="0" step="1" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data scadenza controllo</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="data_scadenza_controllo" name="data_scadenza_controllo" class="form-control datepicker" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
    
        
        </div>
@@ -382,6 +425,42 @@
        	<div class="col-sm-9">      
        	  	
         <input id="data_scadenza_mod" name="data_scadenza_mod" class="form-control datepicker" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data controllo</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="data_controllo_mod" name="data_controllo_mod" class="form-control datepicker" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Frequenza (Mesi)</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="frequenza_mod" name="frequenza_mod" class="form-control" type="number" min="0" step="1" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data scadenza controllo</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="data_scadenza_controllo_mod" name="data_scadenza_controllo_mod" class="form-control datepicker" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -757,7 +836,103 @@ function assegnaValoreOpzione(){
 }
 
 
-function modalModificaDpi(id,id_tipo, collettivo,company, modello, conformita, descrizione, data_scadenza){
+$('#data_controllo').change(function(){
+	
+	var frequenza_controllo = $('#frequenza').val()
+	
+	if(frequenza_controllo!=null && frequenza_controllo !=''){
+		
+		var date = $('#data_controllo').val();
+		var d = moment(date, "DD-MM-YYYY");
+		if(date!='' && d._isValid){
+			
+			   var year = d._pf.parsedDateParts[0];
+			   var month = d._pf.parsedDateParts[1];
+			   var day = d._pf.parsedDateParts[2];
+			   var c = new Date(year, month + parseInt(frequenza_controllo), day);
+			    $('#data_scadenza_controllo').val(formatDate(c));
+			    $('#datepicker_data_scadenza_controllo').datepicker("setDate", c );
+			
+		}
+	}
+	
+	
+});
+
+
+$('#data_controllo_mod').change(function(){
+	
+	var frequenza_controllo = $('#frequenza_mod').val()
+	
+	if(frequenza_controllo!=null && frequenza_controllo !=''){
+		
+		var date = $('#data_controllo_mod').val();
+		var d = moment(date, "DD-MM-YYYY");
+		if(date!='' && d._isValid){
+			
+			   var year = d._pf.parsedDateParts[0];
+			   var month = d._pf.parsedDateParts[1];
+			   var day = d._pf.parsedDateParts[2];
+			   var c = new Date(year, month + parseInt(frequenza_controllo), day);
+			    $('#data_scadenza_controllo_mod').val(formatDate(c));
+			    $('#datepicker_data_scadenza_controllo_mod').datepicker("setDate", c );
+			
+		}
+	}
+	
+	
+});
+
+$('#frequenza').change(function(){
+	
+	var data_controllo = $('#data_controllo').val();
+	var frequenza_controllo = $('#frequenza').val();
+	
+	if(data_controllo!=null && data_controllo !=''){
+		
+		var date = $('#data_controllo').val();
+		var d = moment(date, "DD-MM-YYYY");
+		if(date!='' && d._isValid){
+			
+			   var year = d._pf.parsedDateParts[0];
+			   var month = d._pf.parsedDateParts[1];
+			   var day = d._pf.parsedDateParts[2];
+			   var c = new Date(year, month + parseInt(frequenza_controllo), day);
+			    $('#data_scadenza_controllo').val(formatDate(c));
+			    $('#datepicker_data_scadenza_controllo').datepicker("setDate", c );
+			
+		}
+	}
+	
+	
+});
+
+
+$('#frequenza_mod').change(function(){
+	
+	var data_controllo = $('#data_controllo_mod').val();
+	var frequenza_controllo = $('#frequenza_mod').val();
+	
+	if(data_controllo!=null && data_controllo !=''){
+		
+		var date = $('#data_controllo_mod').val();
+		var d = moment(date, "DD-MM-YYYY");
+		if(date!='' && d._isValid){
+			
+			   var year = d._pf.parsedDateParts[0];
+			   var month = d._pf.parsedDateParts[1];
+			   var day = d._pf.parsedDateParts[2];
+			   var c = new Date(year, month + parseInt(frequenza_controllo), day);
+			    $('#data_scadenza_controllo_mod').val(formatDate(c));
+			    $('#datepicker_data_scadenza_controllo_mod').datepicker("setDate", c );
+			
+		}
+	}
+	
+	
+});
+
+function modalModificaDpi(id,id_tipo, collettivo,company, modello, conformita, descrizione, data_scadenza, data_controllo, frequenza, data_scadenza_controllo){
 	
 	$('#id_dpi').val(id);
 	
@@ -776,6 +951,15 @@ function modalModificaDpi(id,id_tipo, collettivo,company, modello, conformita, d
 	$('#descrizione_mod').val(descrizione);
 	if(data_scadenza!=null && data_scadenza!=''){
 		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));	
+	}
+	if(data_scadenza_controllo!=null && data_scadenza_controllo!=''){
+		$('#data_scadenza_controllo_mod').val(Date.parse(data_scadenza_controllo).toString("dd/MM/yyyy"));	
+	}
+	if(data_controllo!=null && data_controllo!=''){
+		$('#data_controllo_mod').val(Date.parse(data_controllo).toString("dd/MM/yyyy"));	
+	}
+	if(frequenza!=null && frequenza!=''){
+		$('#frequenza_mod').val(frequenza);	
 	}
 	
 	$('#company_mod').val(company);
@@ -836,6 +1020,18 @@ function aggiungiOpzione(mod){
 	}
 	
 	
+}
+
+
+function formatDate(data){
+	
+	   var mydate = new Date(data);
+	   
+	   if(!isNaN(mydate.getTime())){
+	   
+		   str = mydate.toString("dd/MM/yyyy");
+	   }			   
+	   return str;	 		
 }
 
 $(document).ready(function() {
@@ -903,7 +1099,7 @@ $('#company_mod').select2();
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 9 },
+		    	  { responsivePriority: 1, targets: 12 },
 		    	  
 		    	  
 		               ], 	        

@@ -215,13 +215,10 @@ public class CreateCertificatoSE {
 		session.update(strumento);
 		
 		
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		report.addParameter("prossima_verifica", df.format(sqlDateProssimaVerifica));
 		
-		if(certificato.getMisura().getStrumento().getDataProssimaVerifica()!=null) {		
-			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-			report.addParameter("prossima_verifica", df.format(certificato.getMisura().getStrumento().getDataProssimaVerifica()));	
-		}else {
-			report.addParameter("prossima_verifica", "");
-		}		
+			
 		report.addParameter("strumento_utilizzato", "STI 244");
 		report.addParameter("tipo_strumento", "SECUTEST 0751/601");
 		report.addParameter("produttore_strumento", "GOSSEN-METRAWATT");

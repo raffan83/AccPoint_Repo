@@ -379,7 +379,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				if(utente.checkRuolo("F2")) {
 					lista_corsi = GestioneFormazioneBO.getListaCorsiCliente(utente.getIdCliente(), utente.getIdSede(), session);
-				}else {
+				}
+				else if(utente.checkRuolo("F3")) {
+					lista_corsi = GestioneFormazioneBO.getListaCorsiClienteSupervisore(utente.getIdCliente(),  session);	
+				}
+				else {
 					lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
 					
 //					
@@ -802,7 +806,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				if(utente.checkRuolo("F2")) {
 					listaPartecipanti = GestioneFormazioneBO.getListaPartecipantiCorsoCliente(corso.getId(),utente.getIdCliente(),utente.getIdSede(),session); 
-				}else {
+				}
+				else if(utente.checkRuolo("F3")) {
+					listaPartecipanti = GestioneFormazioneBO.getListaPartecipantiCorsoClienteSupervisore(corso.getId(),utente.getIdCliente(),session);
+				}
+				else {
 					listaPartecipanti = GestioneFormazioneBO.getListaPartecipantiCorso(corso.getId(),session); 
 				}
 				
@@ -823,7 +831,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					lista_partecipanti = GestioneFormazioneBO.getListaPartecipantiCliente(utente.getIdCliente(), utente.getIdSede(), session);
 							
-				}else {
+				}
+				else if(utente.checkRuolo("F3")) {
+					lista_partecipanti = GestioneFormazioneBO.getListaPartecipantiClienteSupervisore(utente.getIdCliente(),  session);
+				}
+				else {
 					
 					lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti(session); 
 					List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
@@ -1171,7 +1183,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				if(utente.checkRuolo("F2")) {
 					lista_partecipanti_corso = GestioneFormazioneBO.getListaPartecipantiCorsoCliente(Integer.parseInt(id_corso), utente.getIdCliente(), utente.getIdSede(), session);
-				}else {
+				}
+				else if(utente.checkRuolo("F3")) {
+					lista_partecipanti_corso = GestioneFormazioneBO.getListaPartecipantiCorsoClienteSupervisore(Integer.parseInt(id_corso), utente.getIdCliente(),  session);
+				}
+				else {
 					lista_partecipanti_corso = GestioneFormazioneBO.getListaPartecipantiCorso(Integer.parseInt(id_corso), session); 
 				}
 				
@@ -1344,7 +1360,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				if(utente.checkRuolo("F2")) {
 					lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorsoCliente(dateFrom, dateTo, tipo_data, utente.getIdCliente(),utente.getIdSede(), session);
-				}else {
+				}
+				else if(utente.checkRuolo("F3")){
+					lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorsoClienteSupervisore(dateFrom, dateTo, tipo_data, utente.getIdCliente(), session);
+				}
+				else {
 					lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, null, null, session);
 					
 					
@@ -1789,7 +1809,25 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						c.getCorso().setListaPartecipanti(new HashSet<ForPartecipanteDTO>(lista_partecipanti));
 					}
 					
-				}else {
+				}
+				else if(utente.checkRuolo("F3")){
+					
+					lista_corsi = GestioneFormazioneBO.getListaCorsiConsuntivo(dateFrom, dateTo, utente.getIdCliente(), utente.getIdSede(), session);
+					
+					
+					for (ForPartecipanteRuoloCorsoDTO c : lista_corsi) {
+						List<ForPartecipanteDTO> lista_partecipanti = new ArrayList<ForPartecipanteDTO>();
+						for (ForPartecipanteDTO p : c.getCorso().getListaPartecipanti()) {							
+							if(p.getId_azienda() == utente.getIdCliente()) {
+								lista_partecipanti.add(p);
+							}
+						}
+						c.getCorso().setListaPartecipanti(new HashSet<ForPartecipanteDTO>(lista_partecipanti));
+					}
+					
+				}
+				
+				else {
 					lista_corsi = GestioneFormazioneBO.getListaCorsiConsuntivo(dateFrom, dateTo, 0, 0, session);	
 				}
 				request.getSession().setAttribute("lista_corsi", lista_corsi);

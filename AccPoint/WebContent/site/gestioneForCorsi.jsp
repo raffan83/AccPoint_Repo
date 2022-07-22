@@ -703,21 +703,29 @@ function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_sc
 	
 	var json = JSON.parse(docenti);
 	
-	$('#docente_mod option').attr("selected", false);
+
+	
+	//$('#docente_mod option').attr("selected", false);
 	$('#id_docenti_mod').val("")
 	$('#id_docenti_dissocia').val("")
 	$('#id_corso').val(id_corso);
 	$('#categoria_mod').val(id_categoria);
 	$('#categoria_mod').change();
-	for (var i = 0; i < json.lista_docenti.length; i++) {
+	
+	var x = []
+	
+for (var i = 0; i < json.lista_docenti.length; i++) {
 		
-		$('#docente_mod option[value="'+json.lista_docenti[i].id+'"]').attr("selected", true);
+		//$('#docente_mod option[value="'+json.lista_docenti[i].id+'"]').attr("selected", true);
+		x.push(json.lista_docenti[i].id);
 
-		$('#docente_mod').change();
+		
 		$('#id_docenti_mod').val($('#id_docenti_mod').val()+json.lista_docenti[i].id+";")
 	}
-		
-		
+
+	
+	$('#docente_mod').val(x);	
+$('#docente_mod').change();	
 	$('#commessa_mod').val(commessa);
 	$('#commessa_mod').change();
 	if(data_inizio!=null && data_inizio!=''){
@@ -749,6 +757,10 @@ function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_sc
 	$('#myModalModificaCorso').modal();
 }
 
+
+$('#myModalModificaCorso').on("hidden.bs.modal", function(){
+	$('#docente_mod option').attr("selected", false);
+});
 
 
 $('#check_e_learning').on('ifClicked',function(e){

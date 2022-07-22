@@ -149,6 +149,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_scadenza = ret.get("data_scadenza");
 				String nuovo_tipo_dpi = ret.get("nuovo_tipo_dpi");
 				String collettivo = ret.get("collettivo");
+				String data_controllo = ret.get("data_controllo");
+				String frequenza = ret.get("frequenza");
+				String data_scadenza_controllo = ret.get("data_scadenza_controllo");
 
 				DpiDTO dpi = new DpiDTO();				
 				
@@ -183,6 +186,16 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				if(data_scadenza!=null && !data_scadenza.equals("")) {
 					dpi.setData_scadenza(df.parse(data_scadenza));	
 				}	
+				if(data_controllo!=null && !data_controllo.equals("")) {
+					dpi.setData_controllo(df.parse(data_controllo));	
+				}
+				if(data_scadenza_controllo!=null && !data_scadenza_controllo.equals("")) {
+					dpi.setData_scadenza_controllo(df.parse(data_scadenza_controllo));	
+				}
+				
+				if(frequenza!=null && !frequenza.equals("")) {
+					dpi.setFrequenza(Integer.parseInt(frequenza));
+				}
 				
 				session.save(dpi);				
 				
@@ -233,6 +246,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_scadenza = ret.get("data_scadenza_mod");
 				String nuovo_tipo_dpi = ret.get("nuovo_tipo_dpi_mod");
 				String collettivo = ret.get("collettivo_mod");
+				String data_controllo = ret.get("data_controllo_mod");
+				String frequenza = ret.get("frequenza_mod");
+				String data_scadenza_controllo = ret.get("data_scadenza_controllo_mod");
 
 				DpiDTO dpi = GestioneDpiBO.getDpiFormId(Integer.parseInt(id_dpi), session);				
 				
@@ -266,6 +282,18 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				}
 
 				dpi.setCollettivo(Integer.parseInt(collettivo));
+				
+				if(data_controllo!=null && !data_controllo.equals("")) {
+					dpi.setData_controllo(df.parse(data_controllo));	
+				}
+				if(data_scadenza_controllo!=null && !data_scadenza_controllo.equals("")) {
+					dpi.setData_scadenza_controllo(df.parse(data_scadenza_controllo));	
+				}
+				
+				if(frequenza!=null && !frequenza.equals("")) {
+					dpi.setFrequenza(Integer.parseInt(frequenza));
+				}
+				
 				session.update(dpi);				
 				
 				myObj = new JsonObject();

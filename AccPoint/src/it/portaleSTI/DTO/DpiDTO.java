@@ -10,6 +10,9 @@ public class DpiDTO {
 	private String descrizione;
 	private String modello;
 	private String conformita;
+	private Date data_controllo;
+	private Date data_scadenza_controllo;
+	private int frequenza;
 	private Date data_scadenza;
 	private int collettivo;
 	private int assegnato;
@@ -83,6 +86,25 @@ public class DpiDTO {
 	}
 	public void setDisabilitato(int disabilitato) {
 		this.disabilitato = disabilitato;
+	}
+	public int getFrequenza() {
+		return frequenza;
+	}
+	public void setFrequenza(int frequenza) {
+		this.frequenza = frequenza;
+	}
+	
+	public Date getData_controllo() {
+		return data_controllo;
+	}
+	public void setData_controllo(Date data_controllo) {
+		this.data_controllo = data_controllo;
+	}
+	public Date getData_scadenza_controllo() {
+		return data_scadenza_controllo;
+	}
+	public void setData_scadenza_controllo(Date data_scadenza_controllo) {
+		this.data_scadenza_controllo = data_scadenza_controllo;
 	}
 	
 	

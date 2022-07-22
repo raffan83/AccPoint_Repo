@@ -212,6 +212,12 @@
  	<mapping class="GPDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/GPDTO.hbm.xml"/>
  			
  	<mapping class="FirmaClienteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/FirmaClienteDTO.hbm.xml"/>
- 			
+ 	
+ 	<mapping class="CoTipoAttrezzaturaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CoTipoAttrezzaturaDTO.hbm.xml"/>
+ 	<mapping class="CoTipoControlloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CoTipoControlloDTO.hbm.xml"/>
+ 	<mapping class="CoControlloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CoControlloDTO.hbm.xml"/>
+ 	<mapping class="CoAttrezzaturaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CoAttrezzaturaDTO.hbm.xml"/>
+ 	<mapping class="CoAttrezzaturaTipoControlloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CoAttrezzaturaTipoControlloDTO.hbm.xml"/>	
+ 	<mapping class="CoAllegatoAttrezzaturaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CoAllegatoAttrezzaturaDTO.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

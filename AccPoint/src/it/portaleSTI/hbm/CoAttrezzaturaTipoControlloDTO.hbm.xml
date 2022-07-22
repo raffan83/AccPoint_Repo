@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.CoAttrezzaturaTipoControlloDTO" table="co_attrezzatura_tipo_controllo">
+	
+	<composite-id >
+    
+    	<key-many-to-one name="attrezzatura" column="id_attrezzatura" lazy="false"/>
+    
+        <key-many-to-one name="tipo_controllo" column="id_tipo_controllo" lazy="false"/>   
+      
+    </composite-id>
+	
+	        
+       <property name="esito" type="java.lang.String">
+            <column name="esito" />
+        </property>
+        
+
+
+   
+      
+	</class>
+</hibernate-mapping>

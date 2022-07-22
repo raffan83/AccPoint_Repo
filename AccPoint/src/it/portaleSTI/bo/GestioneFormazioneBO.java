@@ -34,6 +34,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -1127,6 +1128,25 @@ public class GestioneFormazioneBO {
 	public static ArrayList<ForCorsoDTO> getListaCorsiDocente(String dateFrom, String dateTo, int id_docente,	Session session) throws Exception, Exception {
 		
 		return GestioneFormazioneDAO.getListaCorsiDocente(dateFrom, dateTo, id_docente, session);
+	}
+
+	public static ArrayList<ForCorsoDTO> getListaCorsiClienteSupervisore(int idCliente, Session session) {
+		// 
+		return GestioneFormazioneDAO.getListaCorsiClienteSupervisore( idCliente,  session);
+	}
+
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiCorsoClienteSupervisore(int id,int idCliente, Session session) {
+		return GestioneFormazioneDAO.getListaPartecipantiCorsoClienteSupervisore(id, idCliente,  session) ;
+	}
+
+	public static ArrayList<ForPartecipanteDTO> getListaPartecipantiClienteSupervisore(int idCliente, Session session) {
+		
+		return GestioneFormazioneDAO.getListaPartecipantiClienteSupervisore( idCliente,  session);
+	}
+
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiRuoloCorsoClienteSupervisore(String dateFrom, String dateTo, String tipo_data, int idCliente, Session session) throws HibernateException, ParseException {
+	
+		return GestioneFormazioneDAO.getListaPartecipantiRuoloCorsoClienteSupervisore( dateFrom,  dateTo,  tipo_data,  idCliente,  session);
 	}
 
 	

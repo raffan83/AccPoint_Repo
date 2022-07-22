@@ -621,4 +621,69 @@ public class GestioneFormazioneDAO {
 	
 	}
 
+	public static ArrayList<ForCorsoDTO> getListaCorsiClienteSupervisore(int idCliente, Session session) {
+		ArrayList<ForCorsoDTO> lista = null;		
+
+		Query query =  session.createQuery("select distinct corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda =:_id_cliente and visibile='1' and disabilitato = 0"); 
+		query.setParameter("_id_cliente", idCliente);	
+			
+		lista = (ArrayList<ForCorsoDTO>) query.list();		
+				
+		return lista;
+	}
+
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiCorsoClienteSupervisore(int id_corso,int idCliente, Session session) {
+
+		ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
+		
+		
+		Query query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso.id = :_id_corso and p.partecipante.id_azienda =:_id_cliente and p.corso.disabilitato = 0");
+		query.setParameter("_id_corso", id_corso);
+		query.setParameter("_id_cliente", idCliente);	
+		
+		lista = (ArrayList<ForPartecipanteRuoloCorsoDTO>) query.list();
+		
+		
+		return lista;
+	}
+
+	public static ArrayList<ForPartecipanteDTO> getListaPartecipantiClienteSupervisore(int idCliente, Session session) {
+		
+		ArrayList<ForPartecipanteDTO> lista = null;		
+
+		Query query =  session.createQuery("from ForPartecipanteDTO where id_azienda =:_id_cliente "); 
+		query.setParameter("_id_cliente", idCliente);	
+			
+		lista = (ArrayList<ForPartecipanteDTO>) query.list();		
+				
+		return lista;
+	}
+
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaPartecipantiRuoloCorsoClienteSupervisore(
+			String dateFrom, String dateTo, String tipo_data, int idCliente, Session session) throws HibernateException, ParseException {
+ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = null;
+		
+		if(dateFrom !=null && dateTo!=null && tipo_data!=null) {
+			
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where p.corso."+tipo_data+" between :_dateFrom and :_dateTo and p.partecipante.id_azienda =:_id_cliente  and p.corso.disabilitato = 0 and p.corso.visibile = 1");	
+			query.setParameter("_dateFrom", sdf.parse(dateFrom));
+			query.setParameter("_dateTo", sdf.parse(dateTo));
+			
+		}else {
+			
+			query = session.createQuery("from ForPartecipanteRuoloCorsoDTO p where  p.partecipante.id_azienda =:_id_cliente  and p.corso.disabilitato = 0  and p.corso.visibile = 1"); 
+			
+		}		
+		query.setParameter("_id_cliente", idCliente);	
+			
+		lista = (ArrayList<ForPartecipanteRuoloCorsoDTO>) query.list();
+		
+				
+		return lista;
+	}
+
 }

@@ -556,7 +556,7 @@ NO
 	
 	  function filtraMisure(filtro){
 		  table
-	        .columns( 13 )
+	        .columns( 15 )
 	        .search( filtro )
 	        .draw();
 		  if(filtro==''){

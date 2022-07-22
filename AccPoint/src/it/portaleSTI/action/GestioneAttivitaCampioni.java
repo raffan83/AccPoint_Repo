@@ -23,6 +23,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -684,29 +685,40 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				folder.mkdirs();
 			}
 		
+			int index = 1;
+			String ext1 = FilenameUtils.getExtension(item.getName());
 			File file=null;
 			while(true)
 			{
-			
 				
 				
-				file = new File(path_folder+filename);					
 				
+				file = new File(path_folder+filename);			
+				if(file.exists()) {
+					filename = filename.replace("_"+(index-1), "").replace("."+ext1, "_"+index+"."+ext1);				
+					index++;
+				}
+				else {
 					try {
+						
 						item.write(file);
-					
 						break;
 
 					} catch (Exception e) 
 					{
-						file = null;
+
 						e.printStackTrace();
 						break;
 					}
+				}
+				
+				
 			}
 		
 			
 			return file;
 		}
+	 
+	
 
 }

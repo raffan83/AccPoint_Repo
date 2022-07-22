@@ -367,7 +367,7 @@
            <% }%>
            
            
-             <%--  <% if(user.checkRuolo("AM") || user.checkPermesso("CONTOLLI_OPERATIVI")){%>  
+           <% if(user.checkRuolo("AM") || user.checkPermesso("CONTOLLI_OPERATIVI")){%>  
            <li class="header">CONTROLLI OPERATIVI</li>
 
          <li class="treeview">
@@ -385,7 +385,7 @@
           </ul>
         </li> 
            <% }%>
-            --%>
+          
            
          
           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_DEVICE")){%>  

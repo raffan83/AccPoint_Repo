@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.CoControlloDTO" table="co_controllo">
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>	
+
+       <many-to-one name="attrezzatura" class="it.portaleSTI.DTO.CoAttrezzaturaDTO" fetch="join" lazy="false">
+            <column name="id_attrezzatura" />
+        </many-to-one>
+        
+	
+	<property name="esito_generale" type="java.lang.String">
+            <column name="esito_generale" />
+        </property>
+
+	<property name="disabilitato" type="int">
+            <column name="disabilitato" />
+        </property>
+        
+        <property name="data_controllo" type="java.sql.Date">
+            <column name="data_controllo" />
+        </property>
+        
+        <property name="data_prossimo_controllo" type="java.sql.Date">
+            <column name="data_prossimo_controllo" />
+        </property>
+        
+        <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
+        
+	</class>
+</hibernate-mapping>

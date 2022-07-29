@@ -68,7 +68,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[SI]]></text>
+				<text><![CDATA[SÌ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="462" y="87" width="44" height="21" uuid="103093d3-d478-4491-8449-af67162272ab"/>
@@ -195,7 +195,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 					<paragraph leftIndent="2"/>
 				</textElement>
-				<text><![CDATA[Nota: segnare per ciascun controllo della “check list” la corrispondente casella SI/NO o N/A (non applicabile) con la lettera “X” maiuscola.]]></text>
+				<text><![CDATA[Nota: segnare per ciascun controllo della “check list” la corrispondente casella SÌ/NO o N/A (non applicabile) con la lettera “X” maiuscola.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="170" y="643" width="110" height="31" uuid="2b805536-08e4-436a-b359-685dea285284"/>

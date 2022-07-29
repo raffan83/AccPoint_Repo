@@ -61,7 +61,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[SI]]></text>
+				<text><![CDATA[SÌ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="462" y="87" width="44" height="21" uuid="1b9e51aa-5911-4d14-a699-eb64a738df15"/>
@@ -92,7 +92,7 @@
 					<font size="9" isBold="false" isItalic="true"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<text><![CDATA[A) Verificare se lo strumento di misura sottoposto a verificazione è munito dell’ulteriore documentazione indicata nell’Attestazione/Certificazione di esame CE/UE del tipo o di progetto, es. manuale istruzione, manuale di uso e manutenzione, data sheet, eventuali specifiche dei componenti software, ecc.]]></text>
+				<text><![CDATA[A) Verificare se lo strumento di misura sottoposto a verificazione è munito dell’ulteriore documentazione indicata nell’Attestazione/Certificazione di esame CE/UE del tipo o di progetto, es. manuale istruzione, manuale di uso e manutenzione, data sheet, eventuali specifiche dei componenti software, ecc...;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="165" width="416" height="38" uuid="fecd7d8b-0725-4c16-b3a5-461de4cb4530"/>
@@ -103,7 +103,7 @@
 					<font size="9" isBold="false" isItalic="true"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<text><![CDATA[B) Verificare l'esistenza e la corrispondenza sullo strumento di misura delle iscrizioni regolamentari previste nel corrispondente attestazione/Certificazione di esame CE/UE del tipo o di progetto.]]></text>
+				<text><![CDATA[B) Verificare l'esistenza e la corrispondenza sullo strumento di misura delle iscrizioni regolamentari previste nel corrispondente attestazione/Certificazione di esame CE/UE del tipo o di progetto;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="203" width="416" height="40" uuid="a9e432f1-7ce7-4a3e-93ea-d66bd324b5dc"/>
@@ -114,7 +114,7 @@
 					<font size="9" isBold="false" isItalic="true"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<text><![CDATA[C) Accertare la presenza, integrità, leggibilità e rispondenza ai documenti di omologazione e piani di legalizzazione dello strumento di misura, delle impronte di verificazione prima CE, oppure di verifica CE.]]></text>
+				<text><![CDATA[C) Accertare la presenza, integrità, leggibilità e rispondenza ai documenti di omologazione e piani di legalizzazione dello strumento di misura, delle impronte di verificazione prima CE, oppure di verifica CE;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="243" width="416" height="24" uuid="4e94ad84-e3af-465c-a8ec-c0cc667bb1d8"/>
@@ -125,7 +125,7 @@
 					<font size="9" isBold="false" isItalic="true"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<text><![CDATA[D) Verificare l'esistenza sullo strumento di misura dei sigilli o di altri elementi di protezione in rispondenza a Attestazione/Certificazione di esame CE/UE del tipo o di progetto ]]></text>
+				<text><![CDATA[D) Verificare l'esistenza sullo strumento di misura dei sigilli o di altri elementi di protezione in rispondenza a Attestazione/Certificazione di esame CE/UE del tipo o di progetto;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="267" width="416" height="36" uuid="082bbd54-3fdf-425f-a39f-eabd1d307111"/>
@@ -152,7 +152,7 @@ Se applicabile, procedere con i seguenti punti 1, 2 e 3.
 In caso di non applicabilità, procedere al successivo punto G
 1. Verificare presenza della dichiarazione (o sua copia) rilasciata al titolare dello strumento dal riparatore, contenente la descrizione dell’intervento effettuato e dei sigilli provvisori applicati e di cui è stata informata la CCIAA competente per territorio;
 2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sulla dichiarazione di cui al precedente punto F.1.
-3. Annotare sul libretto metrologico la dichiarazione di riparazione (o sua copia) rilasciata al titolare dello strumento dal riparatore indicata al precedente punto F.1.]]></text>
+3. Annotare sul libretto metrologico la dichiarazione di riparazione (o sua copia) rilasciata al titolare dello strumento dal riparatore indicata al precedente punto F.1.;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="434" width="416" height="80" uuid="da86f1f1-fe5a-4c11-9152-5355c030a25a"/>
@@ -166,7 +166,7 @@ In caso di non applicabilità, procedere al successivo punto G
 				<text><![CDATA[G) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) successivamente alla prima verificazione periodica:
 Se applicabile, procedere con i seguenti punti 1 e 2.
 1. Verificare la presenza dell’annotazione della riparazione effettuata dal riparatore all’interno del libretto metrologico dello strumento di misura;
-2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sul libretto metrologico di cui al precedente punto G.1.]]></text>
+2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sul libretto metrologico di cui al precedente punto G.1.;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="514" width="416" height="30" uuid="4a4310ec-180a-42c3-b5e4-4e957d8cec7f"/>
@@ -199,7 +199,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 					<paragraph leftIndent="2"/>
 				</textElement>
-				<text><![CDATA[Nota: segnare per ciascun controllo della “check list” la corrispondente casella SI/NO o N/A (non applicabile) con la lettera “X” maiuscola.]]></text>
+				<text><![CDATA[Nota: segnare per ciascun controllo della “check list” la corrispondente casella SÌ/NO o N/A (non applicabile) con la lettera “X” maiuscola.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="170" y="643" width="110" height="31" uuid="e3b43ecf-65cb-407f-a4c8-aa74e0c4c714"/>

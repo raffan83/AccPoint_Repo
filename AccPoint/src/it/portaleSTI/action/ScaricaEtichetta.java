@@ -144,7 +144,7 @@ public class ScaricaEtichetta extends HttpServlet {
 			if(misura.getStrumento().getDataProssimaVerifica()!=null) {
 				report.addParameter("dataProVerifica",sdf.format(misura.getStrumento().getDataProssimaVerifica()));
 			}else {
-				report.addParameter("dataProVerifica","");
+				report.addParameter("dataProVerifica","- - ");
 			}
 			
 			report.addParameter("nScheda",misura.getnCertificato());

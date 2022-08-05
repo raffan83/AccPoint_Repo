@@ -3474,7 +3474,7 @@ Non presente
  <th class="text-center">Indicazione Tara Attiva<br><br>${misura.verStrumento.um }</th> 
  <th class="text-center">Carico effettivo di tara<br><br>${misura.verStrumento.um }</th>
  
- <c:if test="${misura.verStrumento.tipo.id == 5 }">
+ <c:if test="${misura.verStrumento.tipologia.id == 2 }">
   <th class="text-center">Max Valore Tara<br><br>${misura.verStrumento.um }</th>
  </c:if>
  
@@ -3496,7 +3496,7 @@ Non presente
 <td align="center">N/A</td>
 <td align="center">N/A</td>
 <td align="center">N/A</td>
- <c:if test="${misura.verStrumento.tipo.id == 5 }">
+ <c:if test="${misura.verStrumento.tipologia.id == 2 }">
  <td align="center">N/A</td>
 </c:if>
 
@@ -3518,7 +3518,7 @@ Non presente
 <td align="center">${item.posizione}</td>
 <td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
 <td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
- <c:if test="${misura.verStrumento.tipologia.id == 1 || misura.verStrumento.tipo.id == 5 }">
+ <c:if test="${misura.verStrumento.tipologia.id == 2 }">
  <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
  </c:if>
 

@@ -1618,7 +1618,7 @@ public class CreateVerRapporto {
 			report.addColumn(col.column("Rif.","rif", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));			
 	 		report.addColumn(col.column("Indicazione Tara Attiva  <br> "+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Carico effettivo di Tara <br> "+"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		if(tipologia_strumento != 1 || strumento.getTipo().getId()==5) {
+	 		if(tipologia_strumento == 2) {
 	 			//report.addColumn(col.column("Carico aggiuntivo  <br> <i>ΔL </i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
 	 			report.addColumn(col.column("Max Valore Tara  <br>  <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		}
@@ -2219,7 +2219,7 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 		String[] listaCodici = null;
 			
 		
-		if(tipologia_strumento != 1|| strumento.getTipo().getId()==5) {
+		if(tipologia_strumento == 2) {
 			listaCodici = new String[7];			
 			
 			listaCodici[0]="rif";
@@ -2281,7 +2281,7 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 							}else {
 								arrayPs.add("");
 							}
-							if(tipologia_strumento == 1 || strumento.getTipo().getId()==5) {
+							if(tipologia_strumento == 2 ) {
 								if(item.getCaricoAgg()!=null) {
 									arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(risoluzioneBilancia, RoundingMode.HALF_UP).toPlainString()));	
 								}else {

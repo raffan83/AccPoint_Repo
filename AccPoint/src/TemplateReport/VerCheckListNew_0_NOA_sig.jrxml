@@ -68,7 +68,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[SI]]></text>
+				<text><![CDATA[SÌ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="462" y="87" width="44" height="21" uuid="0fa4cab3-ebac-44eb-9d50-3705561d978a"/>
@@ -99,7 +99,7 @@
 					<font size="9" isBold="false" isItalic="true"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<text><![CDATA[A) Verificare se lo strumento di misura sottoposto a verificazione è munito dell’ulteriore documentazione indicata nel Decreto di ammissione a verifica es. manuale istruzione, manuale di uso e manutenzione, data sheet, ecc.]]></text>
+				<text><![CDATA[A) Verificare se lo strumento di misura sottoposto a verificazione è munito dell’ulteriore documentazione indicata nel Decreto di ammissione a verifica es. manuale istruzione, manuale di uso e manutenzione, data sheet, ecc...;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="149" width="416" height="38" uuid="e7b4cf76-4f3b-4e91-b762-c3ea5badc57a"/>
@@ -110,7 +110,7 @@
 					<font size="9" isBold="false" isItalic="true"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<text><![CDATA[B) Verificare l'esistenza e la corrispondenza sullo strumento di misura delle iscrizioni regolamentari previste nel corrispondente decreto di ammissione a verifica.]]></text>
+				<text><![CDATA[B) Verificare l'esistenza e la corrispondenza sullo strumento di misura delle iscrizioni regolamentari previste nel corrispondente decreto di ammissione a verifica;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="187" width="416" height="33" uuid="fa088517-7a83-41ab-befb-68ce6612d51f"/>
@@ -121,7 +121,7 @@
 					<font size="9" isBold="false" isItalic="true"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<text><![CDATA[C) Accertare la presenza, integrità, leggibilità e rispondenza ai documenti di omologazione e piani di legalizzazione dello strumento di misura, delle  impronte di verificazione prima nazionale.]]></text>
+				<text><![CDATA[C) Accertare la presenza, integrità, leggibilità e rispondenza ai documenti di omologazione e piani di legalizzazione dello strumento di misura, delle  impronte di verificazione prima nazionale;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="220" width="416" height="24" uuid="15c42f72-9126-4dc5-a880-c2babc5732f9"/>
@@ -132,7 +132,7 @@
 					<font size="9" isBold="false" isItalic="true"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<text><![CDATA[D) Verificare l’esistenza sullo strumento di misura dei sigilli o di altri elementi di protezione in rispondenza a decreto di ammissione a verifica.]]></text>
+				<text><![CDATA[D) Verificare l’esistenza sullo strumento di misura dei sigilli o di altri elementi di protezione in rispondenza a decreto di ammissione a verifica;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="244" width="416" height="131" uuid="0a36fe7c-f824-44da-a565-7f19f5b64677"/>
@@ -148,7 +148,7 @@ Se applicabile, procedere con i seguenti punti 1, 2 e 3.
 In caso di non applicabilità, procedere al successivo punto F
 1. Verificare presenza della dichiarazione (o sua copia) rilasciata al titolare dello strumento dal riparatore, contenente la descrizione dell’intervento effettuato e dei sigilli provvisori applicati e di cui è stata informata la CCIAA competente per territorio;
 2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sulla dichiarazione di cui al precedente punto E.1.
-3. Annotare sul libretto metrologico la dichiarazione di riparazione (o sua copia) rilasciata al titolare dello strumento dal riparatore indicata al precedente punto E.1.]]></text>
+3. Annotare sul libretto metrologico la dichiarazione di riparazione (o sua copia) rilasciata al titolare dello strumento dal riparatore indicata al precedente punto E.1.;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="375" width="416" height="80" uuid="3ff2bc15-832a-416b-b2b2-a57d96e66508"/>
@@ -162,7 +162,7 @@ In caso di non applicabilità, procedere al successivo punto F
 				<text><![CDATA[F) Strumento di misura sottoposto a riparazione (ove siano stati rimossi i sigilli di protezione anche di tipo elettronico) successivamente alla prima verificazione periodica:
 Se applicabile, procedere con i seguenti punti 1 e 2.
 1. Verificare la presenza dell’annotazione della riparazione effettuata dal riparatore all’interno del libretto metrologico dello strumento di misura;
-2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sul libretto metrologico di cui al precedente punto F.1.]]></text>
+2. Verificare la corrispondenza tra i sigilli provvisori applicati sullo strumento dal riparatore e la descrizione della riparazione effettuata annotata sul libretto metrologico di cui al precedente punto F.1.;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="455" width="416" height="30" uuid="62c23c1e-d5de-4db9-b747-e08f8fc1e797"/>
@@ -184,7 +184,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 					<font size="9" isBold="false" isItalic="true"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<text><![CDATA[H) Controllare la presenza e lo stato di aggiornamento del libretto metrologico dello strumento sottoposto a verificazione.]]></text>
+				<text><![CDATA[H) Controllare la presenza e lo stato di aggiornamento del libretto metrologico dello strumento sottoposto a verificazione;]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="170" y="643" width="110" height="31" uuid="1a1591f5-5273-4ca3-a75e-843afdc88fbd"/>
@@ -525,7 +525,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 					<font size="9" isBold="false" isItalic="true"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<text><![CDATA[I) Rilascio libretto metrologico (art. 4, c.12 DM93/17)]]></text>
+				<text><![CDATA[I) Rilascio libretto metrologico (art. 4, c.12 DM93/17);]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="566" width="548" height="31" uuid="a721b365-beb4-4de9-9db6-09fda7cb4729"/>
@@ -536,7 +536,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 					<paragraph leftIndent="2"/>
 				</textElement>
-				<text><![CDATA[Nota: segnare per ciascun controllo della “check list” la corrispondente casella SI/NO o N/A (non applicabile) con la lettera “X” maiuscola.]]></text>
+				<text><![CDATA[Nota: segnare per ciascun controllo della “check list” la corrispondente casella SÌ/NO o N/A (non applicabile) con la lettera “X” maiuscola.]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="462" y="517" width="44" height="25" uuid="a8ec7cd8-6731-4a72-ab12-1f607da6df93"/>
@@ -607,7 +607,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 					<font size="9" isBold="false" isItalic="true"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<text><![CDATA[L) Compilazione libretto metrologico esistente]]></text>
+				<text><![CDATA[L) Compilazione libretto metrologico esistente.]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement x="250" y="608" width="19" height="17" uuid="ebcd3102-b4fc-49f7-88b2-272b7b41c10b"/>
@@ -633,7 +633,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 			</textField>
 			<staticText>
 				<reportElement x="282" y="609" width="20" height="14" uuid="8f087019-c8a3-4453-825a-5cec0d4b7ad7"/>
-				<text><![CDATA[SI]]></text>
+				<text><![CDATA[SÌ]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement x="250" y="629" width="19" height="17" uuid="00a71f3e-9857-4014-bcf3-65e7e8acea6b"/>

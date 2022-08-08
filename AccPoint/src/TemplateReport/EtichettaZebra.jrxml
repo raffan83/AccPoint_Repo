@@ -16,44 +16,44 @@
 	<detail>
 		<band height="66" splitType="Stretch">
 			<textField>
-				<reportElement positionType="Float" x="96" y="5" width="7" height="58" uuid="2084735c-2329-4645-b2e6-ec280dfcab0f"/>
+				<reportElement positionType="Float" x="98" y="8" width="6" height="55" uuid="2084735c-2329-4645-b2e6-ec280dfcab0f"/>
 				<textElement rotation="Right">
-					<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="5" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{codiceInterno}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="103" y="5" width="7" height="58" uuid="5378a99e-5d86-412b-bcfe-3b4ea4bd1afd"/>
+				<reportElement x="104" y="8" width="6" height="55" uuid="5378a99e-5d86-412b-bcfe-3b4ea4bd1afd"/>
 				<textElement rotation="Right">
-					<font fontName="Arial" size="6" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font fontName="Arial" size="5" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Codice Interno]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="89" y="5" width="7" height="58" uuid="db8e1b06-decb-4ae0-94ca-449080848a3e"/>
+				<reportElement x="92" y="8" width="6" height="55" uuid="db8e1b06-decb-4ae0-94ca-449080848a3e"/>
 				<textElement rotation="Right">
-					<font fontName="Arial" size="6" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font fontName="Arial" size="5" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Matricola]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="Float" x="82" y="5" width="7" height="58" uuid="83a5aa6d-0692-4511-b29c-84b7c51794a7"/>
+				<reportElement positionType="Float" x="86" y="8" width="6" height="55" uuid="83a5aa6d-0692-4511-b29c-84b7c51794a7"/>
 				<textElement rotation="Right">
-					<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="5" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="75" y="5" width="7" height="58" uuid="60cce8bd-8132-4ad7-9a92-1968098043ce"/>
+				<reportElement x="80" y="8" width="6" height="55" uuid="60cce8bd-8132-4ad7-9a92-1968098043ce"/>
 				<textElement rotation="Right">
-					<font fontName="Arial" size="6" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font fontName="Arial" size="5" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Data Verifica]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="Float" x="68" y="5" width="7" height="58" uuid="fd85a54f-9068-45f5-be2d-7105906a6ccf"/>
+				<reportElement positionType="Float" x="74" y="8" width="6" height="55" uuid="fd85a54f-9068-45f5-be2d-7105906a6ccf"/>
 				<textElement rotation="Right">
-					<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="5" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dataVerifica}]]></textFieldExpression>
 			</textField>
@@ -62,34 +62,34 @@
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="2" y="5" width="38" height="58" uuid="690d5338-f1e9-4109-834b-bac1e12aa6cf"/>
+				<reportElement x="2" y="5" width="43" height="58" uuid="690d5338-f1e9-4109-834b-bac1e12aa6cf"/>
 				<imageExpression><![CDATA[$P{qr}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="61" y="5" width="7" height="58" uuid="939d9dc2-9bf8-46c1-b66c-f68227ffc5fd"/>
+				<reportElement x="68" y="8" width="6" height="55" uuid="939d9dc2-9bf8-46c1-b66c-f68227ffc5fd"/>
 				<textElement rotation="Right">
-					<font fontName="Arial" size="6" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font fontName="Arial" size="5" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Pross. verifica]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="Float" x="54" y="5" width="7" height="58" uuid="dc6efb79-1e2e-42e1-a696-3d9c64fdbe6b"/>
+				<reportElement positionType="Float" x="62" y="8" width="6" height="55" uuid="dc6efb79-1e2e-42e1-a696-3d9c64fdbe6b"/>
 				<textElement rotation="Right">
-					<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="5" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dataProVerifica}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="47" y="5" width="7" height="58" uuid="2327048e-9d22-45ca-bc51-c6916f8cce48"/>
+				<reportElement x="56" y="8" width="6" height="55" uuid="2327048e-9d22-45ca-bc51-c6916f8cce48"/>
 				<textElement rotation="Right">
-					<font fontName="Arial" size="6" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font fontName="Arial" size="5" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[N° scheda]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="Float" x="40" y="5" width="7" height="58" uuid="c8dddb66-11ca-4419-9ad2-2ae92918f58b"/>
+				<reportElement positionType="Float" x="50" y="8" width="6" height="55" uuid="c8dddb66-11ca-4419-9ad2-2ae92918f58b"/>
 				<textElement rotation="Right">
-					<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="5" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nScheda}]]></textFieldExpression>
 			</textField>

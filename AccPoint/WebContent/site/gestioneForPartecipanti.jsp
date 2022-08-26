@@ -96,7 +96,7 @@
 	
 	<a class="btn btn-info" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
-	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${partecipante.nome }','${partecipante.cognome.replace('\'','&prime;')}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }','${partecipante.luogo_nascita.replace('\'','&prime;') }','${partecipante.cf }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${utl:escapeJS(partecipante.nome) }','${utl:escapeJS(partecipante.cognome)}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }','${utl:escapeJS(partecipante.luogo_nascita) }','${partecipante.cf }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a>
 
 	 <a class="btn btn-danger" title="Click per eliminare il partecipante" onClick="modalEliminaPartecipante('${partecipante.id}')"><i class="fa fa-times"></i></a>
 	 	</c:if>
@@ -531,6 +531,7 @@
        <option value="1">Alessandro Di Vito</option>
        <option value="2">Antonio Accettola</option>
        <option value="3">Gabriella Mammone</option>
+       <option value="10">Nessuna Firma</option>
        </select>
        </div>
        </div><br>
@@ -544,6 +545,7 @@
        <option value="0">Default</option>       
        <option value="1">Antonio Accettola</option>
        <option value="2">Gabriella Mammone</option>
+           <option value="10">Nessuna Firma</option>
        </select>
        </div>
        </div><br>
@@ -557,6 +559,7 @@
        <option value="0">Default</option>       
        <option value="1">Antonio Accettola</option>
        <option value="2">Gabriella Mammone</option>
+           <option value="10">Nessuna Firma</option>
        </select>
        </div>
        </div>

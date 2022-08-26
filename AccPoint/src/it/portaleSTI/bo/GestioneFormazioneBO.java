@@ -795,10 +795,14 @@ public class GestioneFormazioneBO {
 			partecipante.setAttestato(filename+".pdf");
 			session.update(partecipante);
 			
-			
-			addSign(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf", filename,0, partecipante.getFirma_responsabile(),partecipante.getFirma_centro_formazione());	
+			int firma_legale_rap = partecipante.getFirma_legale_rappresentante();
 		
-			if(partecipante.getFirma_legale_rappresentante()>0) {
+			if(firma_legale_rap!=10) {
+				firma_legale_rap = 0;
+			}
+			addSign(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf", filename,firma_legale_rap, partecipante.getFirma_responsabile(),partecipante.getFirma_centro_formazione());	
+		
+			if(partecipante.getFirma_legale_rappresentante()>0 && partecipante.getFirma_legale_rappresentante()!=10) {
 				addSign(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf", filename, partecipante.getFirma_legale_rappresentante(), 0,0);
 			}
 			
@@ -997,7 +1001,7 @@ public class GestioneFormazioneBO {
 		   // System.out.println(Arrays.toString(fontPosition));
 			System.out.println(Arrays.toString(fontPosition));
 	    	
-	    }else {
+	    }else if(firma_legale_rappresentante!=10){
 	    	Image image = null;
 	    	
 	    	if(firma_legale_rappresentante == 1) {
@@ -1041,7 +1045,7 @@ public class GestioneFormazioneBO {
 	    
 
 	    
-	    if(firma_centro_formazione >0) {
+	    if(firma_centro_formazione >0 && firma_centro_formazione!=10) {
 	    	
 	    	Image image =  null;
 	    	

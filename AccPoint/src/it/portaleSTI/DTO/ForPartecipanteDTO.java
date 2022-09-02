@@ -17,6 +17,7 @@ public class ForPartecipanteDTO {
 	private String cf;
 	private String luogo_nascita;
 	private int nominativo_irregolare;
+	private int duplicato;
 	private String note;
 	
 	public String getCf() {
@@ -123,6 +124,14 @@ public class ForPartecipanteDTO {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public int getDuplicato() {
+		return duplicato;
+	}
+
+	public void setDuplicato(int duplicato) {
+		this.duplicato = duplicato;
 	}
 
 

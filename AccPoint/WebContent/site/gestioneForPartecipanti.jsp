@@ -628,6 +628,9 @@
 
 <a class="btn btn-primary" onClick="invertiNomeCognome()">Inverti Nome e Cognome</a>
 
+<div style="display:none" id="label_duplicati" >
+<br><br><label style="color:#ff8080" >In rosso i possibili nominativi duplicati</label>
+</div>
  <table id="tabImportPartecipante" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
@@ -1557,6 +1560,7 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 	 var table_data = [];
 	 
 	 var nomi_irregolari = [];
+	 var duplicati = [];
 	  var col_cf = [];
 	  
 	  if(lista_partecipanti_import!=null){
@@ -1578,6 +1582,11 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 			  if(lista_partecipanti_import[i].nominativo_irregolare == 1){
 				  nomi_irregolari.push(lista_partecipanti_import[i].cf);
 			  }
+			  
+			  if(lista_partecipanti_import[i].duplicato == 1){
+				  duplicati.push(lista_partecipanti_import[i].cf);
+			  }
+			  
 			   col_cf.push(lista_partecipanti_import[i].cf);
 			  table_data.push(dati);
 			  }
@@ -1593,6 +1602,19 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 					if(col_cf[j] == nomi_irregolari[i]){
 						var x = $('#content_corsi_'+col_cf[j])[0].parentNode.parentNode;
 						$(x).css("background-color","#F8F26D")
+					}
+				}
+			}
+			
+			$('#label_duplicati').hide();
+			
+			for(var i = 0;i<duplicati.length;i++){
+				$('#label_duplicati').show();
+				
+				for(var j = 0; j<col_cf.length;j++){
+					if(col_cf[j] == duplicati[i]){
+						var x = $('#content_corsi_'+col_cf[j])[0].parentNode.parentNode;
+						$(x).css("background-color","#ff8080")
 					}
 				}
 			}

@@ -686,4 +686,31 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		return lista;
 	}
 
+	public static boolean controllaDuplicato(String nome, String cognome, String cf, Session session) {
+		
+		ArrayList<ForPartecipanteDTO> lista = null;
+		boolean result = false;
+		
+		Query query = session.createQuery("from ForPartecipanteDTO where (nome =:_nome and cognome =:_cognome) or (cognome =:_nome and nome =:_cognome)"); 
+				
+		query.setParameter("_nome", nome);			
+		query.setParameter("_cognome", cognome);	
+		
+		
+		lista = (ArrayList<ForPartecipanteDTO>) query.list();
+		
+		
+		for(int i = 0; i<lista.size();i++) {
+			if(!lista.get(i).getCf().equals(cf)) {
+				result =  true;
+				break;
+			}
+		}
+			
+		return result;
+		
+		
+		
+	}
+
 }

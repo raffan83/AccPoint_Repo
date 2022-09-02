@@ -98,10 +98,10 @@
                         <c:forEach items="${lista_partecipanti}" var="part">
                        		<c:choose>
                      			 <c:when test="${corso.listaPartecipanti.contains(part) }">
-                      				<option value="${part.id }" disabled>${part.nome} ${part.cognome }</option> 
+                      				<option value="${part.id }" disabled>${part.nome} ${part.cognome } - ${part.cf }</option> 
                     			 </c:when>
                      			 <c:otherwise>
-                    				<option value="${part.id }">${part.nome} ${part.cognome }</option> 
+                    				<option value="${part.id }">${part.nome} ${part.cognome } - ${part.cf }</option> 
                      			 </c:otherwise>
                       		</c:choose>
                      	</c:forEach>

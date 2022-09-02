@@ -659,6 +659,11 @@ public class GestioneFormazioneBO {
 						}
 					}
 					
+					if(controllaDuplicato(partecipante.getNome(), partecipante.getCognome(), cf, session)) {
+						partecipante.setDuplicato(1);
+					}else {
+						partecipante.setDuplicato(0);
+					}
 					
 					partecipante.setCf(cf);
 					partecipante.setData_nascita(df.parse(data_nascita));
@@ -698,6 +703,13 @@ public class GestioneFormazioneBO {
 
 	
 	
+	private static boolean controllaDuplicato(String nome, String cognome,String cf, Session session) {
+		
+		boolean result = GestioneFormazioneDAO.controllaDuplicato(nome, cognome,cf, session);
+	
+		return result;
+	}
+
 	static boolean checkCFPattern(String cf) {
 		
 		 // String patternStr = "/^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$/";
@@ -771,8 +783,17 @@ public class GestioneFormazioneBO {
 		for (ForPartecipanteRuoloCorsoDTO partecipante : lista_partecipanti) {
 			Splitter splitter = new Splitter(); 
 			for (int i = 1; i <= pageNumber; i++) {
-				String[] text = getText(reader, i); 
-				String pdftext = text[0];
+				
+				
+				String pdftext = getPDFText(reader, i).replaceAll("\\n", " ");
+				
+				if(pdftext.contains("SICERTIFICACHE")) {
+					String[] text = getText(reader, i); 
+					pdftext = text[0];
+				}
+				
+				//String[] text = getText(reader, i); 
+				//String pdftext = text[0];
 				
 				if(StringUtils.containsIgnoreCase(pdftext, keyFirstPage) &&  StringUtils.containsIgnoreCase(pdftext, partecipante.getPartecipante().getCf())) {				
 					splitter.setStartPage(i);

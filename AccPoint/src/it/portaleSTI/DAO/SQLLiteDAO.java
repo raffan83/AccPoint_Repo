@@ -237,7 +237,8 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 										 "applicabile varchar(1)," +
 										 "dgt varchar(255)," +
 										 "file_att blob,"+
-										 "file_att_prec blob);";
+										 "file_att_prec blob,"+
+										 "inc_composta varchar(255));";
 
 private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";

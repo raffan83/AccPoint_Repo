@@ -602,13 +602,13 @@ public class CreateVerRapporto {
 		if(misura.getNomeRiparatore()!=null) {
 			report.addParameter("nome_riparatore", misura.getNomeRiparatore());
 		}else {
-			report.addParameter("nome_riparatore","");
+			report.addParameter("nome_riparatore","N/A");
 		}
 		
 		if(misura.getDataRiparazione()!=null) {
 			report.addParameter("data_riparazione", df.format(misura.getDataRiparazione()));
 		}else {
-			report.addParameter("data_riparazione","");
+			report.addParameter("data_riparazione","N/A");
 		}
 		
 		

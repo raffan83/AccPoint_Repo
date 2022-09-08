@@ -100,6 +100,8 @@ public class ScaricaEtichetta extends HttpServlet {
 		{	
 			String idMisura=request.getParameter("idMisura");
 			idMisura = Utility.decryptData(idMisura);
+			
+			String check_fuori_servizio = request.getParameter("check_fuori_servizio");
 
 			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(idMisura));	
 			ajax = false;

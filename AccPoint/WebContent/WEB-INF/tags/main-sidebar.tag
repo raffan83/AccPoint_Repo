@@ -1,4 +1,3 @@
-
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@tag import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>

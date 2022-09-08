@@ -269,7 +269,7 @@ NO
 		<div class="col-xs-12"  style="text-align:center">
 		
 
-               <input type="checkbox" id="check_fs" name="check_fs"><label> Fuori Servizio</label>
+               <input type="checkbox" id="check_fs" name="check_fs"><label>&nbsp Fuori Servizio</label>
         
 		
 		</div>

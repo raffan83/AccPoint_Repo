@@ -143,12 +143,21 @@ public class ScaricaEtichetta extends HttpServlet {
 				report.addParameter("dataVerifica","");	
 			}
 			
-			if(misura.getStrumento().getDataProssimaVerifica()!=null) {
-				report.addParameter("dataProVerifica",sdf.format(misura.getStrumento().getDataProssimaVerifica()));
-			}else {
-				report.addParameter("dataProVerifica","- - ");
-			}
 			
+			if(check_fuori_servizio.equals("1")) 
+			{
+				report.addParameter("labDataProVerifica","Stato Strumento");
+				report.addParameter("dataProVerifica","FUORI SERVIZIO");
+			}
+			else 
+			{
+				report.addParameter("labDataProVerifica","Pross. Verifica");
+				if(misura.getStrumento().getDataProssimaVerifica()!=null) {
+					report.addParameter("dataProVerifica",sdf.format(misura.getStrumento().getDataProssimaVerifica()));
+				}else {
+					report.addParameter("dataProVerifica","- - ");
+				}
+			}
 			report.addParameter("nScheda",misura.getnCertificato());
 
 			createQR(misura.getStrumento(),nomePack);

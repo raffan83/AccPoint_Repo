@@ -130,7 +130,8 @@
   	<c:set var="certificato" value="${entry.value}"/>
   	<c:if test="${certificato.stato.id == 2}">
 		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${utl:encryptData(certificato.nomeCertificato)}&pack=${utl:encryptData(misura.intervento.nomePack)}" ><i class="fa fa-file-pdf-o"></i></a>
-		<a  target="_blank" class="btn btn-primary customTooltip" title="Click per scaricare il PDF dell'etichetta"  href="scaricaEtichetta.do?action=stampaEtichetta&idMisura=${utl:encryptData(misura.id)}" ><i class="fa fa-print"></i></a>
+		<%-- <a  target="_blank" class="btn btn-primary customTooltip" title="Click per scaricare il PDF dell'etichetta"  href="scaricaEtichetta.do?action=stampaEtichetta&idMisura=${utl:encryptData(misura.id)}" ><i class="fa fa-print"></i></a> --%>
+		<a  class="btn btn-primary customTooltip" title="Click per scaricare il PDF dell'etichetta" onclick="openModalStampa('${utl:encryptData(misura.id)}')"  ><i class="fa fa-print"></i></a>
 	<c:set var = "flag" value="1"/>
 	</c:if>
 	<c:if test="${certificato.stato.id == 4}">
@@ -173,7 +174,54 @@
         </div>
         <!-- /.col -->
  
- 
+ <div id="modalStampaEtichetta" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Stampa Etichetta</h4>
+      </div>
+       <div class="modal-body">
+		
+		<div class="row">
+
+		<div class="col-xs-12" style="text-align:center">
+		
+				<a target="_blank"  style="height:50px;width:220px" class="btn btn-primary btn-lg" href='' onclick="this.href='scaricaEtichetta.do?action=stampaEtichetta&idMisura='+document.getElementById('id_misura_stampa').value+'&check_fuori_servizio='+document.getElementById('check_fuori_servizio').value">Stampa </a>
+
+        
+      
+        
+		
+		</div>
+<!-- <div class="col-xs-3">
+	</div> -->
+		</div>
+	
+	<br>
+	<div class="row">
+
+		<div class="col-xs-12"  style="text-align:center">
+		
+
+               <input type="checkbox" id="check_fs" name="check_fs"><label>&nbsp Fuori Servizio</label>
+        
+		
+		</div>
+
+		</div>
+	
+	
+	
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+		<input id="check_fuori_servizio" name="check_fuori_servizio" value="0" type="hidden">
+		<input  id="id_misura_stampa" name="id_misura_stampa" type="hidden">
+      </div>
+    </div>
+  </div>
+</div> 
  
  
  <form id="formCertificato" name="formCertificato">
@@ -351,6 +399,37 @@
    </script>
 
   <script type="text/javascript">
+  
+  
+  
+function openModalStampa(idMisura){
+	  
+	  
+	  $('#id_misura_stampa').val(idMisura);
+	  
+	  $('#modalStampaEtichetta').modal();
+  }
+  
+  
+  $('#modalStampaEtichetta').on("hidden.bs.modal", function(){
+	  
+		$('#check_fs').iCheck('uncheck');
+		$('#check_fuori_servizio').val(0); 
+	  
+  });
+  
+  $('#check_fs').on('ifClicked',function(e){
+		if($('#check_fs').is( ':checked' )){
+			$('#check_fs').iCheck('uncheck');
+			$('#check_fuori_servizio').val(0); 
+		}else{
+			$('#check_fs').iCheck('check');
+			$('#check_fuori_servizio').val(1); 
+		}
+	});
+
+  
+  
 
   function modalAllegati(pack,id_misura, note){
 	  $('#myModalAllegati').modal();

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.NoteSicurezzaCommessaDTO" table="note_sicurezza_commessa">
+	
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+       <property name="commessa" type="java.lang.String">
+            <column name="commessa" />
+        </property>
+       <property name="nota" type="java.lang.String">
+            <column name="nota" />
+        </property>
+        
+       <many-to-one name="utente_modifica" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="utente_modifica" />
+        </many-to-one>
+        
+        <property name="data_modifica" type="java.util.Date">
+            <column name="data_modifica" />
+        </property>
+              
+	</class>
+</hibernate-mapping>

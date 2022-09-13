@@ -3,12 +3,16 @@ package it.portaleSTI.DAO;
 import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.NoteSicurezzaCommessaDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 public class GestioneCommesseDAO {
 
@@ -743,6 +747,23 @@ public class GestioneCommesseDAO {
 		throw e;
 		}
 		return listaCommesse;
+	}
+
+	public static NoteSicurezzaCommessaDTO getNotaSicurezzaCommessa(String commessa, Session session) {
+		
+		NoteSicurezzaCommessaDTO result = null;
+		ArrayList<NoteSicurezzaCommessaDTO> lista = null;
+		
+		Query query = session.createQuery("from NoteSicurezzaCommessaDTO where commessa = :_commessa");
+		query.setParameter("_commessa", commessa);
+		
+		lista = (ArrayList<NoteSicurezzaCommessaDTO>) query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
 	}
 
 	

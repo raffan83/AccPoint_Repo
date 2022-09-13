@@ -143,6 +143,40 @@
 </div>
 
 </div>
+
+
+
+
+ <div class="row">
+        <div class="col-xs-12">
+<div class="box box-danger box-solid collapsed-box">
+<div class="box-header with-border">
+	Aspetti di sicurezza
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+<textarea rows="6" style="width:100%" class="form-control" id="nota_sicurezza" name="nota_sicurezza">${nota_sicurezza }</textarea>
+
+             
+</div>
+</div>
+
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>       
+
+
+
+
+
+
+
              <div class="row">
         <div class="col-xs-12">
 <div class="box box-danger box-solid collapsed-box">
@@ -894,6 +928,34 @@ tableAttiìvita.columns.adjust().draw();
       }); */
  
     
+      
+      
+      $('#nota_sicurezza').focusout(function(){
+    	 
+    	  var nota = $(this).val();
+    	  
+    	  dataObj = {}
+    	  
+    	  dataObj.nota = nota;
+    	  dataObj.commessa = "${commessa.ID_COMMESSA}";
+    	  
+    	  callAjax(dataObj,"gestioneIntervento.do?action=nota_sicurezza", function(datab, textstatusb){
+    		  
+    		  if(datab.success){
+    			  
+    		  }else{
+    			  alert("error")
+    		  }
+    		  
+    	  });
+    	  
+    	  
+      });
+      
+      
+      
+      
+      
   </script>
   
 </jsp:attribute> 

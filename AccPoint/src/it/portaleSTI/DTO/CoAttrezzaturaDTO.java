@@ -15,6 +15,7 @@ public class CoAttrezzaturaDTO {
 	private int disabilitato;
 	private Date data_scadenza;
 	private int frequenza_controllo;
+	private String marca;
 	
 	Set<CoTipoControlloDTO> listaTipiControllo = new HashSet<CoTipoControlloDTO>();
 	
@@ -72,6 +73,12 @@ public class CoAttrezzaturaDTO {
 	}
 	public void setFrequenza_controllo(int frequenza_controllo) {
 		this.frequenza_controllo = frequenza_controllo;
+	}
+	public String getMarca() {
+		return marca;
+	}
+	public void setMarca(String marca) {
+		this.marca = marca;
 	}
 	
 	

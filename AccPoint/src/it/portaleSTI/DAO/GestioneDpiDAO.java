@@ -222,12 +222,21 @@ public class GestioneDpiDAO {
 		return result;
 	}
 
-	public static ArrayList<DpiAllegatiDTO> getListaAllegati(int id_manuale, Session session) {
+	public static ArrayList<DpiAllegatiDTO> getListaAllegati(int id_manuale, int id_dpi, Session session) {
 		
-		ArrayList<DpiAllegatiDTO> lista = null;	
+		ArrayList<DpiAllegatiDTO> lista = null;
 		
-		Query query = session.createQuery("from DpiAllegatiDTO where id_manuale =:_id and disabilitato = 0");
-		query.setParameter("_id", id_manuale);
+
+		Query query = null;
+		if(id_manuale!=0) {
+			query = session.createQuery("from DpiAllegatiDTO where id_manuale =:_id and disabilitato = 0");
+			query.setParameter("_id", id_manuale);
+		}else {
+	
+			query = session.createQuery("from DpiAllegatiDTO where id_dpi =:_id and disabilitato = 0");
+			query.setParameter("_id", id_dpi);
+		}
+
 		
 		lista = (ArrayList<DpiAllegatiDTO>) query.list();		
 	

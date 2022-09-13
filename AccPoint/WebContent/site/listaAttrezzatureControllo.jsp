@@ -67,6 +67,8 @@
 <th>Descrizione</th>
 <th>Codice</th>
 <th>Modello</th>
+<th>Marca</th>
+<th>Frequenza controllo (Mesi)</th>
 <th>Data scadenza</th>
 <th>Azioni</th>
  </tr></thead>
@@ -82,10 +84,12 @@
 	<td>${attrezzatura.descrizione }</td>
 	<td>${attrezzatura.codice }</td>
 	<td>${attrezzatura.modello }</td>	
+	<td>${attrezzatura.marca }</td>
+	<td>${attrezzatura.frequenza_controllo }</td>		
 <td><fmt:formatDate pattern="dd/MM/yyyy" value="${attrezzatura.data_scadenza }"></fmt:formatDate></td>	
 	<td>	
 
- 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.tipo.id }','${utl:escapeJS(attrezzatura.descrizione) }','${utl:escapeJS(attrezzatura.modello) }','${utl:escapeJS(attrezzatura.codice) }','${attrezzatura.data_scadenza }','${attrezzatura.frequenza_controllo }')" title="Click per modificare l'attrezzatura"><i class="fa fa-edit"></i></a>
+ 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.tipo.id }','${utl:escapeJS(attrezzatura.descrizione) }','${utl:escapeJS(attrezzatura.modello) }','${utl:escapeJS(attrezzatura.marca) }','${utl:escapeJS(attrezzatura.codice) }','${attrezzatura.data_scadenza }','${attrezzatura.frequenza_controllo }')" title="Click per modificare l'attrezzatura"><i class="fa fa-edit"></i></a>
 	  <a class="btn btn-primary customTooltip" onClicK="modalAllegati('${attrezzatura.id }')" title="Click per visualizzare gli allegati"><i class="fa fa-archive"></i></a>
  	<a class="btn btn-danger customTooltip" onClicK="modalEliminaAttrezzatura('${attrezzatura.id }')" title="Click per eliminare l'attrezzatura"><i class="fa fa-trash"></i></a>
 
@@ -170,7 +174,7 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Descrizione</label>
+       		<label>Descrizione attrezzatura</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -187,6 +191,19 @@
        	<div class="col-sm-9">      
        	  	
         <input id="modello" name="modello" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Marca</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="marca" name="marca" class="form-control" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -307,7 +324,7 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Descrizione</label>
+       		<label>Descrizione attrezzatura</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -324,6 +341,18 @@
        	<div class="col-sm-9">      
        	  	
         <input id="modello_mod" name="modello_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Marca</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="marca_mod" name="marca_mod" class="form-control" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -603,7 +632,7 @@ function assegnaValoreOpzione(){
 
 
 
-function modalModificaAttrezzatura(id,id_tipo, descrizione, modello, codice, data_scadenza,frequenza_controllo ){
+function modalModificaAttrezzatura(id,id_tipo, descrizione, modello, marca, codice, data_scadenza,frequenza_controllo ){
 	
 	dataObj = {};
 	
@@ -632,7 +661,9 @@ function modalModificaAttrezzatura(id,id_tipo, descrizione, modello, codice, dat
 	$('#frequenza_controllo_mod').val(frequenza_controllo);
 	$('#tipo_attrezzatura_mod').val(id_tipo);
 	$('#tipo_attrezzatura_mod').change();
+	$('#marca_mod').val(marca);
 		
+	
 	if(data_scadenza!=null && data_scadenza!=''){
 		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));	
 	}
@@ -685,16 +716,7 @@ $("#tabAttrezzature").on( 'init.dt', function ( e, settings ) {
 
 function aggiungiOpzione(tag){
 
-/* 	if(mod){
-		
-		$('#isMod').val(1);
-		$('#tipo_attrezzatura_mod').select2('close');
-		modalNuovoTipoControllo(true);
-	}else{
-		$('#isMod').val(0);
-		$('#tipo_attrezzatura').select2('close');
-		modalNuovoTipoControllo(false);
-	} */
+
 	
 	$('#isMod').val(tag);
 	

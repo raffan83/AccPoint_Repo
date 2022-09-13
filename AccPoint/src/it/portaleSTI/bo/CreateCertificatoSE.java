@@ -175,6 +175,8 @@ public class CreateCertificatoSE {
 			report.addParameter("altro","");
 		}
 		
+		boolean esito_negativo = false;
+		
 		if(misura_se.getCOND_PROT()!=null && misura_se.getCOND_PROT().equals("OK") 
 			    && misura_se.getINVOLUCRO()!=null && misura_se.getINVOLUCRO().equals("OK")
 				&& misura_se.getFUSIBILI()!=null && misura_se.getFUSIBILI().equals("OK")
@@ -185,6 +187,7 @@ public class CreateCertificatoSE {
 				report.addParameter("verifica_sicurezza", "[ OK ]");
 			}else {
 				report.addParameter("altro", "[ KO ]");
+				esito_negativo = true;
 			}
 				
 		report.addParameter("parti_non_sicure", "");
@@ -202,22 +205,25 @@ public class CreateCertificatoSE {
 		
 		java.sql.Date sqlDate = new java.sql.Date(strumento.getDataUltimaVerifica().getTime());
 
-		
-		Calendar data = Calendar.getInstance();
-		
-		data.setTime(sqlDate);
-		data.add(Calendar.MONTH,strumento.getFrequenza());
-		
-		java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
+		if(esito_negativo==false) {			
+
+			Calendar data = Calendar.getInstance();
 			
-		strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
-		
-		session.update(strumento);
-		
-		
-		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		report.addParameter("prossima_verifica", df.format(sqlDateProssimaVerifica));
-		
+			data.setTime(sqlDate);
+			data.add(Calendar.MONTH,strumento.getFrequenza());
+			
+			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
+				
+			strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
+			
+			session.update(strumento);
+			
+			
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			report.addParameter("prossima_verifica", df.format(sqlDateProssimaVerifica));
+		}else {
+			report.addParameter("prossima_verifica", "/");
+		}
 			
 		report.addParameter("strumento_utilizzato", "STI 244");
 		report.addParameter("tipo_strumento", "SECUTEST 0751/601");

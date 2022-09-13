@@ -156,6 +156,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String nuovo_tipo_controllo = ret.get("nuovo_tipo_controllo");
 				String data_scadenza = ret.get("data_scadenza");
 				String frequenza_controllo = ret.get("frequenza_controllo");
+				String marca = ret.get("marca");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -194,6 +195,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				attrezzatura.setDescrizione(descrizione);
 				attrezzatura.setCodice(codice);
 				attrezzatura.setModello(modello);
+				attrezzatura.setMarca(marca);
 				if(data_scadenza!=null && !data_scadenza.equals("")) {
 					attrezzatura.setData_scadenza(df.parse(data_scadenza));
 				}
@@ -254,7 +256,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String nuovo_tipo_controllo = ret.get("nuovo_tipo_controllo_mod");
 				String data_scadenza = ret.get("data_scadenza_mod");
 				String frequenza_controllo = ret.get("frequenza_controllo_mod");
-				
+				String marca = ret.get("marca_mod");
 				
 				CoAttrezzaturaDTO attrezzatura = GestioneControlliOperativiBO.getElement(new CoAttrezzaturaDTO(), Integer.parseInt(id_attrezzatura), session);			
 				
@@ -303,6 +305,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				attrezzatura.setDescrizione(descrizione);
 				attrezzatura.setCodice(codice);
 				attrezzatura.setModello(modello);
+				attrezzatura.setMarca(marca);
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				if(data_scadenza!=null && !data_scadenza.equals("")) {
 					attrezzatura.setData_scadenza(df.parse(data_scadenza));

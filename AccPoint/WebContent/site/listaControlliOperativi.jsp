@@ -64,6 +64,7 @@
 
 <th>ID</th>
 <th>Attrezzatura</th>
+<th>Codice Attrezzatura</th>
 <th>Data controllo</th>
 <th>Data prossimo controllo</th>
 <th>Esito Generale</th>
@@ -79,6 +80,7 @@
 
 	<td>${controllo.id }</td>	
 	<td>${controllo.attrezzatura.descrizione }</td>
+	<td>${controllo.attrezzatura.codice }</td>
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${controllo.data_controllo }"></fmt:formatDate></td>	
 			<td><fmt:formatDate pattern="dd/MM/yyyy" value="${controllo.data_prossimo_controllo }"></fmt:formatDate></td>	
 		<td>
@@ -93,8 +95,8 @@
 	<td>${controllo.note }</td>
 
 	<td>	
-
-  <a class="btn btn-warning customTooltip" onClicK="modalModificaControllo('${controllo.id }', '${controllo.attrezzatura.id }', '${controllo.data_controllo}', '${controllo.data_prossimo_controllo }', '${utl:escapeJS(controllo.note) }', '${controllo.attrezzatura.frequenza_controllo }')" title="Click per modificare il controllo"><i class="fa fa-edit"></i></a>
+<a class="btn btn-info customTooltip" onClicK="modalModificaControllo('${controllo.id }', '${controllo.attrezzatura.id }', '${controllo.data_controllo}', '${controllo.data_prossimo_controllo }', '${utl:escapeJS(controllo.note) }', '${controllo.attrezzatura.frequenza_controllo }', true)" title="Click per aprire il dettaglio"><i class="fa fa-search"></i></a>
+  <a class="btn btn-warning customTooltip" onClicK="modalModificaControllo('${controllo.id }', '${controllo.attrezzatura.id }', '${controllo.data_controllo}', '${controllo.data_prossimo_controllo }', '${utl:escapeJS(controllo.note) }', '${controllo.attrezzatura.frequenza_controllo }', false)" title="Click per modificare il controllo"><i class="fa fa-edit"></i></a>
 	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaControllo('${controllo.id }')" title="Click per eliminare il controllo"><i class="fa fa-trash"></i></a>
  	 
 
@@ -144,7 +146,7 @@
                 <option value=""></option>
                       <c:forEach items="${lista_attrezzature}" var="attrezzatura">
                      
-                           <option value="${attrezzatura.id}">${attrezzatura.descrizione} </option> 
+                           <option value="${attrezzatura.id}">${attrezzatura.descrizione} - ${attrezzatura.codice}</option> 
                          
                      </c:forEach>
 				
@@ -227,8 +229,8 @@
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Controllo</h4>
+        <button type="button" id="close_button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modalModificaControllo').modal('hide')"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modalModificaLabel">Modifica Controllo</h4>
       </div>
        <div class="modal-body">
        
@@ -307,6 +309,7 @@
   		 
       <div class="modal-footer">
 
+	<input type="hidden" id="dettaglio" name="dettaglio">
 	<input type="hidden" id="id_controllo" name="id_controllo">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
@@ -537,6 +540,22 @@ $('#attrezzatura_mod').on('change', function() {
 			
 		}
 		
+		if($('#dettaglio').val()=="1"){
+		
+			$("#modalModificaControllo" ).each(function(){
+			    $(this).find(':input').attr("disabled", true) //<-- Should return all input elements in that specific form.
+			    
+			    
+			    $(this).find(':radio').attr('disabled', true);
+			    
+			    $('#modalModificaLabel').html("Dettaglio Controllo");
+			    
+			    $('#close_button').attr("disabled", false);
+			});	
+		}else{
+			  $('#modalModificaLabel').html("Modifica Controllo");
+		}
+		
 		
 		$('#modalModificaControllo').modal();
 	});
@@ -546,23 +565,27 @@ $('#attrezzatura_mod').on('change', function() {
 
 function clickRadio(element){
 	
-var id = element.id;	
+if(!element.disabled){
+	var id = element.id;	
 
-var mod = "";
-if(id.includes("_mod")){
-	mod = "_mod"
-}
-	
-	if(element.checked){
-	
-		if(id.includes("positivo")){
-			$('#negativo_'+id.split("_")[1]+mod).attr('checked', false);
-		}else{
-			$('#positivo_'+id.split("_")[1]+mod).attr('checked', false);
-		}
-
+	var mod = "";
+	if(id.includes("_mod")){
+		mod = "_mod"
 	}
+		
+		if(element.checked){
+		
+			if(id.includes("positivo")){
+				$('#negativo_'+id.split("_")[1]+mod).attr('checked', false);
+			}else{
+				$('#positivo_'+id.split("_")[1]+mod).attr('checked', false);
+			}
+
+		}
+		
+}	
 	
+
 	
 }
 
@@ -649,7 +672,7 @@ function assegnaValoreOpzione(){
 }
 
 
-function modalModificaControllo(id,id_attrezzatura, data_controllo, data_prossimo_controllo, note, frequenza){
+function modalModificaControllo(id,id_attrezzatura, data_controllo, data_prossimo_controllo, note, frequenza, dettaglio){
 	
 
 	$('#id_controllo').val(id);
@@ -671,7 +694,14 @@ function modalModificaControllo(id,id_attrezzatura, data_controllo, data_prossim
 	$('#attrezzatura_mod').change();
 		
 	
-	
+	if(dettaglio){
+		
+		$('#dettaglio').val(1);
+		
+	}else{
+		
+		$('#dettaglio').val(0);
+	}
 }
 
 

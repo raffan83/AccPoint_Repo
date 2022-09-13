@@ -13,6 +13,10 @@
        <property name="nome_file" type="java.lang.String">
             <column name="nome_file" />
         </property>
+        
+        	<property name="id_dpi" type="int">
+            <column name="id_dpi" />
+        </property>
 
         
 	<property name="id_manuale" type="int">
@@ -21,6 +25,10 @@
      
        <property name="disabilitato" type="int">
             <column name="disabilitato" />
+        </property>
+        
+        <property name="data_caricamento" type="java.sql.Date">
+            <column name="data_caricamento" />
         </property>
 	</class>
 </hibernate-mapping>

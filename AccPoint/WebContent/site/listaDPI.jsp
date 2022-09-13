@@ -120,6 +120,8 @@
  	  <c:if test="${dpi.assegnato == 0 && dpi.disabilitato == 0}">
  	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaDpi('${dpi.id }')" title="Click per archiviare il dpi"><i class="fa fa-trash"></i></a>
  	  </c:if>   
+ 	  
+ 	  <a class="btn btn-primary customTooltip" onClick="modalAllegati('${dpi.id}')" title="Click per aprire gli allegati"><i class="fa fa-archive"></i></a>
 <%-- 	  <c:if test="${dpi.is_restituzione==0 }">
 	  <a class="btn btn-success customTooltip" onClicK="modalCreaRestituzione('${dpi.id }', ${dpi.quantita })" title="Crea restituzione DPI"><i class="fa fa-arrow-left"></i></a>
 	  </c:if> --%>
@@ -591,6 +593,27 @@
 </form>
 
 
+  <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Allegati</h4>
+      </div>
+       <div class="modal-body">       
+      <div id="content_allegati"></div>
+      	</div>
+      <div class="modal-footer">      
+      
+		<a class="btn btn-primary" onclick="$('#myModalAllegati').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 
 <div id="myModalStorico" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -671,6 +694,12 @@ function modalEliminaDpi(id_dpi){
 	
 }
 
+
+function modalAllegati(id_dpi){
+	
+	 exploreModal("gestioneDpi.do","action=lista_allegati_dpi&id_dpi="+id_dpi,"#content_allegati");
+	 $('#myModalAllegati').modal();
+}
 
 function eliminaDpi(){
 	

@@ -3,9 +3,12 @@ package it.portaleSTI.bo;
 import it.portaleSTI.DAO.GestioneCommesseDAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.NoteSicurezzaCommessaDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
 import java.util.ArrayList;
+
+import org.hibernate.Session;
 
 public class GestioneCommesseBO {
 
@@ -19,6 +22,11 @@ public class GestioneCommesseBO {
 		
 		
 		return GestioneCommesseDAO.getCommessaById(idCommessa);
+	}
+
+	public static NoteSicurezzaCommessaDTO getNotaSicurezzaCommessa(String commessa, Session session) {
+		
+		return GestioneCommesseDAO.getNotaSicurezzaCommessa(commessa, session);
 	}
 
 

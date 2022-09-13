@@ -78,9 +78,9 @@ public class GestioneDpiBO {
 		return GestioneDpiDAO.getAllegatoFromID(id_allegato, session);
 	}
 
-	public static ArrayList<DpiAllegatiDTO> getListaAllegati(int id_manuale, Session session) {
+	public static ArrayList<DpiAllegatiDTO> getListaAllegati(int id_manuale,int id_dpi, Session session) {
 
-		return GestioneDpiDAO.getListaAllegati(id_manuale, session);
+		return GestioneDpiDAO.getListaAllegati(id_manuale, id_dpi,session);
 	}
 
 	public static void sendEmailDpiScadenza() throws ParseException, Exception {

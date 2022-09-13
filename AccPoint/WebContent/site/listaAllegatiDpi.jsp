@@ -24,12 +24,39 @@
 <c:choose>
 <c:when test="${lista_allegati!=null && lista_allegati.size()>0}">
 <ul class="list-group list-group-bordered">
+<c:if test="${id_dpi!=null && id_dpi!=0 }">
+ <li class="list-group-item">
+  <div class="row">
+                
+	                <div class="col-xs-8">
+	                  <b>File</b>
+	                  </div>
+	                  <div class="col-xs-2">
+	                 
+	                   <b>Data</b>
+	              
+	                  
+	                  
+	                  </div>
+	                  <div class="col-xs-2 pull-right"> 	           
+	               
+	                  </div>
+                  </div>
+ </li>
+ </c:if>
 <c:forEach items="${lista_allegati }" var="allegato">
                 <li class="list-group-item">
                 <div class="row">
                 
-	                <div class="col-xs-10">
+	                <div class="col-xs-8">
 	                  <b>${allegato.nome_file }</b>
+	                  </div>
+	                  <div class="col-xs-2">
+	                  <c:if test="${allegato.data_caricamento!=null }">
+	                   <b><fmt:formatDate pattern="dd/MM/yyyy" value="${allegato.data_caricamento }"></fmt:formatDate></b>
+	                  </c:if>
+	                  
+	                  
 	                  </div>
 	                  <div class="col-xs-2 pull-right"> 	           
 	               
@@ -114,7 +141,7 @@ $('#myModalAllegati').on('hidden.bs.modal',function(){
 
 
 $('#fileupload').fileupload({
-	 url: "gestioneDpi.do?action=upload_allegati&id_manuale=${id_manuale}"	,
+	 url: "gestioneDpi.do?action=upload_allegati&id_manuale=${id_manuale}&id_dpi=${id_dpi}",
 	 dataType: 'json',	 
 	 getNumberOfFiles: function () {
 	     return this.filesContainer.children()
@@ -167,7 +194,7 @@ $('#fileupload').fileupload({
 			$('#myModalError').on("hidden.bs.modal",function(){
 								
 			
-				exploreModal("gestioneDpi.do","action=lista_allegati_dpi&id_manuale=${id_manuale}","#content_allegati");
+				exploreModal("gestioneDpi.do","action=lista_allegati_dpi&id_manuale=${id_manuale}&id_dpi=${id_dpi}","#content_allegati");
 				
 				
 			   $('.modal-backdrop').hide()    	
@@ -229,7 +256,7 @@ function eliminaAllegatoDpi(id_allegato ){
 			$('#myModalError').on("hidden.bs.modal",function(){
 								
 			
-				exploreModal("gestioneDpi.do","action=lista_allegati_dpi&id_manuale=${id_manuale}","#content_allegati");
+				exploreModal("gestioneDpi.do","action=lista_allegati_dpi&id_manuale=${id_manuale}&id_dpi=${id_dpi}","#content_allegati");
 				
 				
 			   $('.modal-backdrop').hide()    	

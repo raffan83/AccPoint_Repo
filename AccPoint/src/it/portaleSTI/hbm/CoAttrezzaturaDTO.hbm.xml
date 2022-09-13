@@ -26,6 +26,9 @@
         <property name="modello" type="java.lang.String">
             <column name="modello" />
         </property>
+        <property name="marca" type="java.lang.String">
+            <column name="marca" />
+        </property>
       
         
             <set name="listaTipiControllo" table="co_attrezzatura_tipo_controllo"

@@ -380,7 +380,7 @@ public class GestioneFormazioneBO {
 		     
 			 Row rowHeader = sheet0.createRow(0);
 
-			 for(int j = 0; j<9; j++) {
+			 for(int j = 0; j<12; j++) {
 				 rowHeader.createCell(j);
 				 
 				 rowHeader.getCell(j).setCellStyle(greenStyle);
@@ -401,9 +401,15 @@ public class GestioneFormazioneBO {
 			 		 
 			 sheet0.getRow(0).getCell(6).setCellValue("Corso");		 
 			 
-			 sheet0.getRow(0).getCell(7).setCellValue("Commessa");
+			 sheet0.getRow(0).getCell(7).setCellValue("Categoria");
 			 
-			 sheet0.getRow(0).getCell(8).setCellValue("Ore partecipate");		 
+			 sheet0.getRow(0).getCell(8).setCellValue("Data inizio");
+			 
+			 sheet0.getRow(0).getCell(9).setCellValue("Data scadenza");
+			 
+			 sheet0.getRow(0).getCell(10).setCellValue("Commessa");
+			 
+			 sheet0.getRow(0).getCell(11).setCellValue("Ore partecipate");		 
 			 			 
 	  
 		     int row_index = 0;	        
@@ -468,6 +474,33 @@ public class GestioneFormazioneBO {
 		    	 
 		    	 cell.setCellValue(partecipante.getCorso().getDescrizione());
 		    	 
+		    	 
+		    	 col++;
+		    	 cell = row.createCell(col);
+		    	 
+		    	 cell.setCellValue(partecipante.getCorso().getCorso_cat().getDescrizione());
+		    	 
+		    	 col++;
+		    	 cell = row.createCell(col);
+		    	 
+		    
+		    	 if(partecipante.getCorso().getData_corso()!=null) {
+		    		 cell.setCellValue(df.format(partecipante.getCorso().getData_corso())); 
+		    	 }else {
+		    		 cell.setCellValue("");
+		    	 }
+		    	 
+		    	 
+		    	 col++;
+		    	 cell = row.createCell(col);
+		    	 
+		    	 
+		    	 if(partecipante.getCorso().getData_scadenza()!=null) {
+		    		 cell.setCellValue(df.format(partecipante.getCorso().getData_scadenza()));
+		    	 }else {
+		      		 cell.setCellValue("");
+		    	 }
+		    	 
 		    	 col++;
 		    	 cell = row.createCell(col);
 		    	 
@@ -487,7 +520,7 @@ public class GestioneFormazioneBO {
 						row_index++;
 			}
 		     		     
-		    	 for(int j = 0; j<10;j++) {
+		    	 for(int j = 0; j<3;j++) {
 		    		 sheet0.autoSizeColumn(j);
 		    	 }
 		     

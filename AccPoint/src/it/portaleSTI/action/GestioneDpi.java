@@ -708,13 +708,23 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			
 			else  if(action.equals("lista_allegati_dpi")) {
 				
-				String id_manuale = request.getParameter("id_manuale");	
+				String id_manuale = request.getParameter("id_manuale");
+				String id_dpi= request.getParameter("id_dpi");	
+			
 				
-				ArrayList<DpiAllegatiDTO> lista_allegati = GestioneDpiBO.getListaAllegati(Integer.parseInt(id_manuale), session);
+				if(id_manuale==null) {
+					id_manuale = "0";
+				}
+					
+				if(id_dpi == null) {
+					id_dpi = "0";
+				}
+				ArrayList<DpiAllegatiDTO> lista_allegati = GestioneDpiBO.getListaAllegati(Integer.parseInt(id_manuale), Integer.parseInt(id_dpi),session);
 				
 				request.getSession().setAttribute("lista_allegati", lista_allegati);
 
 				request.getSession().setAttribute("id_manuale", id_manuale);
+				request.getSession().setAttribute("id_dpi", id_dpi);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAllegatiDpi.jsp");
 		     	dispatcher.forward(request,response);	
@@ -728,6 +738,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				ajax = true;
 				
 				String id_manuale = request.getParameter("id_manuale");
+				String id_dpi= request.getParameter("id_dpi");	
 								
 				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 				PrintWriter out = response.getWriter();
@@ -738,9 +749,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						if (!item.isFormField()) {							
 																
 							DpiAllegatiDTO allegato = new DpiAllegatiDTO();
-							allegato.setId_manuale(Integer.parseInt(id_manuale));
+							if(id_manuale!=null && !id_manuale.equals("0")) {
+								allegato.setId_manuale(Integer.parseInt(id_manuale));
+							}else {
+								allegato.setId_dpi(Integer.parseInt(id_dpi));
+								allegato.setData_caricamento(new Date());
+							}
 							allegato.setNome_file(item.getName().replaceAll("'", "_"));
-							saveFile(item, id_manuale, item.getName());	
+							saveFile(item, id_manuale, id_dpi, item.getName());	
 							session.save(allegato);
 																					
 						}
@@ -756,12 +772,19 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			else if(action.equals("download_allegato")){
 				
 				String id_manuale = request.getParameter("id_manuale");
+				String id_dpi = request.getParameter("id_dpi");
 				
 				String id_allegato = request.getParameter("id_allegato");	
 				
 					
 				DpiAllegatiDTO allegato = GestioneDpiBO.getAllegatoFromID(Integer.parseInt(id_allegato), session);
-				String path = Costanti.PATH_FOLDER+"\\GestioneDPI\\Allegati\\Manuali\\"+id_manuale+"\\"+allegato.getNome_file();
+				String path = "";
+				if(id_manuale!=null) {
+					path = Costanti.PATH_FOLDER+"\\GestioneDPI\\Allegati\\Manuali\\"+id_manuale+"\\"+allegato.getNome_file();
+				}else {
+					path = Costanti.PATH_FOLDER+"\\GestioneDPI\\Allegati\\Manuali\\"+id_dpi+"\\"+allegato.getNome_file();
+				}
+				
 				
 				response.setHeader("Content-Disposition","attachment;filename="+ allegato.getNome_file());
 								
@@ -837,9 +860,16 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		}
 		
 	}
-	private void saveFile(FileItem item, String id_manuale, String filename) {
+	private void saveFile(FileItem item, String id_manuale, String dpi, String filename) {
 
-	 	String path_folder = Costanti.PATH_FOLDER+"\\GestioneDpi\\Allegati\\Manuali\\"+id_manuale+"\\";
+	 	String path_folder =""; 
+	 	
+	 	if(id_manuale!=null) {
+	 		path_folder = 	Costanti.PATH_FOLDER+"\\GestioneDpi\\Allegati\\Manuali\\"+id_manuale+"\\";
+	 	}else {
+	 		path_folder = 	Costanti.PATH_FOLDER+"\\GestioneDpi\\Allegati\\"+dpi+"\\";
+	 	}
+	 
 		File folder=new File(path_folder);
 		
 		if(!folder.exists()) {

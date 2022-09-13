@@ -44,6 +44,7 @@ import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.NoteSicurezzaCommessaDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 
 import it.portaleSTI.DTO.StatoCertificatoDTO;
@@ -131,6 +132,14 @@ public class GestioneIntervento extends HttpServlet {
 					intervento.setStatoIntervento(stato);
 					GestioneInterventoBO.update(intervento, session);
 				}
+			}
+			
+			NoteSicurezzaCommessaDTO nota_sicurezza_commessa = GestioneCommesseBO.getNotaSicurezzaCommessa(idCommessa, session);
+			
+			if(nota_sicurezza_commessa!=null) {
+				request.getSession().setAttribute("nota_sicurezza", nota_sicurezza_commessa.getNota());	
+			}else {
+				request.getSession().setAttribute("nota_sicurezza", null);	
 			}
 			
 			request.getSession().setAttribute("listaInterventi", listaInterventi);
@@ -592,6 +601,30 @@ public class GestioneIntervento extends HttpServlet {
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaConsegnaInterventi.jsp");
 	     	dispatcher.forward(request,response);
+			
+		}
+		else if(action!=null && action.equals("nota_sicurezza")) {
+			
+			String commessa = request.getParameter("commessa");
+			String nota = request.getParameter("nota");
+			
+			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+			
+			NoteSicurezzaCommessaDTO nota_sicurezza = GestioneCommesseBO.getNotaSicurezzaCommessa(commessa, session);
+			if(nota_sicurezza==null) {
+				nota_sicurezza = new NoteSicurezzaCommessaDTO();		
+				nota_sicurezza.setCommessa(commessa);
+			}
+			
+			nota_sicurezza.setNota(nota);
+			nota_sicurezza.setData_modifica(new Date(System.currentTimeMillis()));
+			nota_sicurezza.setUtente_modifica(utente);
+			
+			session.save(nota_sicurezza);
+			
+			myObj.addProperty("success", true);					
+
+			out.print(myObj);
 			
 		}
 	

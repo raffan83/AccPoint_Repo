@@ -148,7 +148,7 @@ public class CreateVerCertificato {
 		
 			int index = 1;
 			for (VerLegalizzazioneBilanceDTO legalizzazione : misura.getVerStrumento().getLista_legalizzazione_bilance()) {
-				if(index<4) {
+				if(index<5) {
 					report.addParameter("tipo_approvazione_"+index, legalizzazione.getTipo_approvazione().getDescrizione());
 					report.addParameter("numero_provvedimento_"+index, legalizzazione.getNumero_provvedimento());
 					if(legalizzazione.getTipo_approvazione().getId()==1) {
@@ -170,6 +170,10 @@ public class CreateVerCertificato {
 				report.addParameter("tipo_approvazione_3","");
 				report.addParameter("numero_provvedimento_3", "");
 				report.addParameter("data_provvedimento_3", "");
+				
+				report.addParameter("tipo_approvazione_4","");
+				report.addParameter("numero_provvedimento_4", "");
+				report.addParameter("data_provvedimento_4", "");
 			}
 			
 			if(index == 3) {		
@@ -177,6 +181,18 @@ public class CreateVerCertificato {
 				report.addParameter("tipo_approvazione_3","");
 				report.addParameter("numero_provvedimento_3", "");
 				report.addParameter("data_provvedimento_3", "");
+				
+				report.addParameter("tipo_approvazione_4","");
+				report.addParameter("numero_provvedimento_4", "");
+				report.addParameter("data_provvedimento_4", "");
+			}
+			
+			
+			if(index == 4) {		
+				
+				report.addParameter("tipo_approvazione_4","");
+				report.addParameter("numero_provvedimento_4", "");
+				report.addParameter("data_provvedimento_4", "");
 			}
 			
 		}else {
@@ -198,6 +214,9 @@ public class CreateVerCertificato {
 			report.addParameter("numero_provvedimento_3", "");
 			report.addParameter("data_provvedimento_3", "");
 		
+			report.addParameter("tipo_approvazione_4","");
+			report.addParameter("numero_provvedimento_4", "");
+			report.addParameter("data_provvedimento_4", "");
 			
 		}
 		

@@ -215,6 +215,12 @@
 	 $('#myModalAllegati').modal();
 }
  
+ function modalCertificatiCampione(id_rilievo){
+	 dataString ="rilievi=true&id_rilievo="+id_rilievo;
+     exploreModal("listaCampioni.do",dataString,"#body_certificati_campione",function(datab,textStatusb){});
+     
+    $('#myModalCertificatiCampione').modal();
+ }
  
  function clonaRilievoModal(id_rilievo){
 	 

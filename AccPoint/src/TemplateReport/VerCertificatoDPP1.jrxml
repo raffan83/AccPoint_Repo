@@ -325,11 +325,11 @@
 			</textField>
 			<textField>
 				<reportElement x="131" y="442" width="421" height="18" uuid="99adc12b-0666-4b93-b182-b47e5eb635f9"/>
-				<textFieldExpression><![CDATA[$P{tipo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{tipologia}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="442" width="101" height="18" uuid="d1db1f65-6564-48a3-99ed-ba4061bc30ca"/>
-				<text><![CDATA[Tipo di strumento:]]></text>
+				<text><![CDATA[Tipologia:]]></text>
 			</staticText>
 			<line>
 				<reportElement x="170" y="692" width="120" height="1" uuid="68316226-134b-4a6b-aa77-2cdcea41ab10"/>
@@ -386,11 +386,11 @@
 			</staticText>
 			<textField>
 				<reportElement x="131" y="460" width="421" height="18" uuid="50ba3a53-9df5-479d-8551-850de39bb0b5"/>
-				<textFieldExpression><![CDATA[$P{tipologia}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{tipo}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="460" width="101" height="18" uuid="89bb3aed-e81b-40ef-b9be-bc4028abaa8d"/>
-				<text><![CDATA[Tipologia:]]></text>
+				<text><![CDATA[Tipo di strumento:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="131" y="424" width="421" height="18" uuid="f620145a-7465-46bf-ad49-950f63562aa3"/>
@@ -553,6 +553,39 @@
 			<textField>
 				<reportElement x="0" y="406" width="120" height="18" uuid="e2f61016-8c31-46cb-8219-f7db015dd0e8"/>
 				<textFieldExpression><![CDATA[$P{tipo_data_marcatura}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="370" y="443" width="123" height="16" isRemoveLineWhenBlank="true" uuid="c6e55074-242b-479e-9790-2d61f18f7fbc"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font size="10"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_provvedimento_4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="493" y="443" width="67" height="16" isRemoveLineWhenBlank="true" uuid="e34b9f8e-4767-4da7-8091-af034bb8de68"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data_provvedimento_4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="290" y="443" width="80" height="16" isRemoveLineWhenBlank="true" uuid="4a1860ff-3d64-4967-8c4a-989cceb9d57c"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipo_approvazione_4}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

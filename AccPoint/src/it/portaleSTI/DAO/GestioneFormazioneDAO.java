@@ -713,4 +713,22 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		
 	}
 
+	public static ArrayList<ForCorsoDTO> getListaCorsiCategoria(int id_categoria, Session session) {
+
+
+		ArrayList<ForCorsoDTO> lista = null;
+		
+		Query query = session.createQuery("from ForCorsoDTO where corso_cat.id = :_id_categoria and disabilitato = 0"); 
+				
+		query.setParameter("_id_categoria", id_categoria);			
+	
+		
+		lista = (ArrayList<ForCorsoDTO>) query.list();
+		
+				
+		return lista;
+	}
+
+	
+
 }

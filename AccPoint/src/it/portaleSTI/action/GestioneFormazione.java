@@ -355,6 +355,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String codice = ret.get("codice_mod");
 				String descrizione = ret.get("descrizione_mod");
 				String frequenza = ret.get("frequenza_mod");
+				String mod_freq = request.getParameter("mod_freq");
 				
 
 				ForCorsoCatDTO categoria = GestioneFormazioneBO.getCategoriaCorsoFromId(Integer.parseInt(id_categoria),session);		
@@ -364,6 +365,23 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				categoria.setFrequenza(Integer.parseInt(frequenza));
 								
 				session.update(categoria);
+				
+				if(mod_freq.equals("1")) {
+					
+					ArrayList<ForCorsoDTO> lista_corsi = GestioneFormazioneBO.getListaCorsiCategoria(Integer.parseInt(id_categoria), session);
+					
+					for (ForCorsoDTO forCorsoDTO : lista_corsi) {
+						
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(forCorsoDTO.getData_corso());
+						calendar.add(Calendar.MONTH, categoria.getFrequenza());
+						
+						Date data_scadenza = calendar.getTime();
+						
+						forCorsoDTO.setData_scadenza(data_scadenza);
+					}
+					
+				}
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();

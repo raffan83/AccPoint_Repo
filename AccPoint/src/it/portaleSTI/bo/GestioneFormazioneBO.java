@@ -1207,6 +1207,13 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getListaPartecipantiRuoloCorsoClienteSupervisore( dateFrom,  dateTo,  tipo_data,  idCliente,  session);
 	}
 
+	public static ArrayList<ForCorsoDTO> getListaCorsiCategoria(int id_categoria, Session session) {
+
+		return GestioneFormazioneDAO.getListaCorsiCategoria(id_categoria, session);
+	}
+
+	
+
 	
 	
 }

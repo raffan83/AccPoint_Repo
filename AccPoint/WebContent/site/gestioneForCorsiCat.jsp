@@ -284,6 +284,28 @@
 </div>
 
 
+  <div id="modalModificaFrequenza" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	La frequenza è stata modificata, vuoi estendere la modifica a tutti i corsi di questa categoria?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="elimina_rilievo_id">
+      <a class="btn btn-primary" onclick="modificaForCategoriaCorso(1)" >SI</a>
+		<a class="btn btn-primary" onclick="modificaForCategoriaCorso(0)" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 
 </div>
    <t:dash-footer />
@@ -333,6 +355,7 @@ function modificaCategoriaModal(id_categoria, codice, descrizione,frequenza, dur
 	$('#descrizione_mod').val(descrizione);
 	$('#frequenza_mod').val(frequenza);
 	
+	frequenza_modifica = frequenza;
 
 	$('#myModalModificaCategoria').modal();
 }
@@ -374,7 +397,7 @@ $('#myModalArchivio').modal();
 }
 
 
-
+var frequenza_modifica;
 
 $(document).ready(function() {
  
@@ -470,7 +493,17 @@ $(document).ready(function() {
 
 $('#modificaCategoriaForm').on('submit', function(e){
 	 e.preventDefault();
-	 modificaForCategoriaCorso();
+	 
+	 if($('#frequenza_mod').val() != frequenza_modifica){
+		 
+		 $('#modalModificaFrequenza').modal();
+		 
+		 
+	 }else{
+		 modificaForCategoriaCorso(0);
+	 }
+	 
+	 
 });
  
 

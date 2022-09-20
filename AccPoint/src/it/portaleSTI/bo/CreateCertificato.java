@@ -59,6 +59,7 @@ import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.ImageScale;
 import net.sf.dynamicreports.report.constant.Markup;
 import net.sf.dynamicreports.report.constant.SplitType;
 import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
@@ -506,6 +507,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				tipo_firma = misura.getTipoFirma();
 			}
 			
+			String nota_firma = "Documento firmato digitalmente con firma elettronica digitale certificata (PAdES)";
+			
+			
 			String footer_right = CostantiCertificato.FOOTER_RIGHT;
 			if(conf!=null && conf.getRevisione_certificato()!=null && !conf.getRevisione_certificato().equals("")) {
 				footer_right = conf.getRevisione_certificato();
@@ -645,7 +649,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 						),
 
 						cmp.line().setFixedHeight(1),
-						
+						cmp.text(nota_firma).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(footerStyle),
 						cmp.horizontalList(
 							cmp.text(getFooterLeft(tipoScheda, tipo_firma, conf)).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 							cmp.pageXslashY(),
@@ -686,7 +690,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 						cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 						cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 						//cmp.verticalGap(10),
-						cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
+						//cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
+						cmp.image(image).setHeight(20).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
 			}else {
 				vertList.add(					
 						cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
@@ -750,7 +755,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					),
 
 					cmp.line().setFixedHeight(1),
-					
+					cmp.text(nota_firma).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(footerStyle),
 					cmp.horizontalList(
 						cmp.text(getFooterLeft(tipoScheda, tipo_firma, conf)).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 						cmp.pageXslashY(),
@@ -785,7 +790,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				vertList.add(
 						cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 						cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-						cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
+						//cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
+				cmp.image(image).setHeight(20).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
 			}else {
 				vertList.add(
 						cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
@@ -839,7 +845,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					),
 
 					cmp.line().setFixedHeight(1),
-					
+					cmp.text(nota_firma).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(footerStyle),
 					cmp.horizontalList(
 						cmp.text(getFooterLeft(tipoScheda, tipo_firma, conf)).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 						cmp.pageXslashY(),
@@ -894,7 +900,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					),
 
 					cmp.line().setFixedHeight(1),
-					
+					cmp.text(nota_firma).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(footerStyle),
 					cmp.horizontalList(
 						cmp.text(getFooterLeft(tipoScheda, tipo_firma, conf)).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 						cmp.pageXslashY(),
@@ -1558,9 +1564,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			Session session =SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
 			
-			UtenteDTO utente = GestioneUtenteBO.getUtenteById("11", session);
+			UtenteDTO utente = GestioneUtenteBO.getUtenteById("40", session);
 
-			GestioneCertificatoBO.createCertificato("290",session, null, utente);
+			GestioneCertificatoBO.createCertificato("28735",session, null, utente);
 			
 		}
 }

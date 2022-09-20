@@ -473,7 +473,8 @@
        	<div class="col-sm-9">      
        	  	
         <select id="dipendente_mod" name="dipendente_mod" data-placeholder="Seleziona operatore..." class="form-control select2" style="width:100%" >
-        <option value=""></option>
+        
+          <option value="">Nessun Operatore</option>
         <c:forEach items="${lista_dipendenti }" var="dipendente">
         <option value="${dipendente.id }">${dipendente.cognome } ${dipendente.nome }</option>
         

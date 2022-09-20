@@ -12745,7 +12745,7 @@ function nuovoForCategoriaCorso(){
 
 
 
-function modificaForCategoriaCorso(){
+function modificaForCategoriaCorso(mod_freq){
 	
 	
 	pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -12757,7 +12757,7 @@ function modificaForCategoriaCorso(){
 		  var id_categoria = $('#id_categoria').val();
   $.ajax({
 	  type: "POST",
-	  url: "gestioneFormazione.do?action=modifica_categoria&id_categoria="+id_categoria,
+	  url: "gestioneFormazione.do?action=modifica_categoria&id_categoria="+id_categoria+"&mod_freq="+mod_freq,
 	  data: formData,
 	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
 	  processData: false, // NEEDED, DON'T OMIT THIS

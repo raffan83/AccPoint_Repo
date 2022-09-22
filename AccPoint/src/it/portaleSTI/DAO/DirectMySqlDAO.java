@@ -3033,6 +3033,80 @@ public static ArrayList<ForCorsoDTO> getListaCorsiDirect(Session session) throws
 	}
 	
 	
+
+
+
+public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String marca, String modello, String matricola, String codice_interno, int id_company) throws Exception {
+	
+	ArrayList<StrumentoDTO> lista = new ArrayList<StrumentoDTO>();
+	
+	
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	
+	try {
+		con=getConnection();
+
+		
+
+	String query = "select distinct id_strumento, id__stato_strumento_, denominazione, codice_interno, matricola, costruttore, modello, frequenza, campo_misura, risoluzione, tipo.nome from misura mis join strumento str on mis.id_strumento = str.__id join tipo_strumento tipo on tipo.__id = str.id__tipo_strumento_ where str.denominazione like ? "
+			+ "and str.costruttore like ? "
+			+ "and str.modello like ? "
+			+ "and str.matricola like ? "
+			+ "and str.codice_interno like ? "
+			+ "and str.id__company_ = ?";
+	
+	pst=con.prepareStatement(query);
+	
+	pst.setString(1, "%"+nome+"%");
+	pst.setString(2, "%"+marca+"%");
+	pst.setString(3, "%"+modello+"%");
+	pst.setString(4, "%"+matricola+"%");
+	pst.setString(5, "%"+codice_interno+"%");
+	pst.setInt(6, id_company);
+	
+	
+	rs=pst.executeQuery();
+	
+	StrumentoDTO strumento = null;
+	
+	while(rs.next())
+	{
+		strumento = new StrumentoDTO();
+		
+		strumento.set__id(rs.getInt(1));
+		strumento.setStato_strumento(new StatoStrumentoDTO(rs.getInt(2), ""));		
+		strumento.setDenominazione(rs.getString(3));
+		strumento.setCodice_interno(rs.getString(4));
+		strumento.setMatricola(rs.getString(5));
+		strumento.setCostruttore(rs.getString(6));
+		strumento.setModello(rs.getString(7));
+		strumento.setFrequenza(rs.getInt(8));
+		strumento.setCampo_misura(rs.getString(9));
+		strumento.setRisoluzione(rs.getString(10));
+		strumento.setTipo_strumento(new TipoStrumentoDTO(0, rs.getString(11)));
+		
+		lista.add(strumento);
+
+		
+	}
+	
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+
+	return lista;
+}
+
 }
 
 

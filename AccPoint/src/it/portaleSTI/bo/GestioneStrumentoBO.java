@@ -484,9 +484,10 @@ public class GestioneStrumentoBO {
 		return arrayStrumenti;
 	}
 
-	public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String marca, String modello, String matricola, String codice_interno, int id_company) {
+	public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String marca, String modello, String matricola, String codice_interno, int id_company) throws Exception {
 		
-		return GestioneStrumentoDAO.getStrumentiFiltrati(nome, marca, modello, matricola, codice_interno, id_company);
+		//return GestioneStrumentoDAO.getStrumentiFiltrati(nome, marca, modello, matricola, codice_interno, id_company);
+		return DirectMySqlDAO.getStrumentiFiltrati(nome, marca, modello, matricola, codice_interno, id_company);
 	}
 
 	public static ArrayList<StrumentoDTO> getlistaStrumentiFromCompany(Integer id_company, Session session) {

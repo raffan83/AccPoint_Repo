@@ -61,25 +61,16 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                      
                        <th>Matricola</th>
             
-                       <th>Tipo Strumento</th>
+                        <th>Tipo Strumento</th> 
+                        
+                         <th>Costruttore</th>
+                           <th>Modello</th>
                        <th>Freq. Verifica</th>
-                       <th>Data Ultima Verifica</th>
-                       <th>Data Prossima Verifica</th>
-                       <th>Reparto</th>
-                        <th>Tipo Rapporto</th>
-                         <th>Utilizzatore</th>
-                          <th>Luogo Verifica</th>
-                            <!-- <th>Interpolazione</th>  -->
-                            <th>Classificazione</th>
-                             <th>Company</th>
-                              <th>Data Modifica</th>
-                             <th>Utente Modifica</th> 
- 						 <th>Costurttore</th>
-                       <th>Modello</th>
-                        <th>Divisione</th>
-                       <th>Campo Misura</th>
-                       <th>Note</th>
-                       <td style="min-width:100px;">Azioni</td>
+                       
+                        <th>Campo Misura</th>
+                           <th>Divisione</th>
+                       
+
  </tr></thead>
  
  <tbody>
@@ -102,25 +93,32 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								
 
 	 								 <td><%=strumento.get__id()%></td>
-	 								 <td id="stato_<%=strumento.get__id() %>"><span class="label
+	 								 <td id="stato_<%=strumento.get__id() %>">  <span class="label
 	 								 <% if(strumento.getStato_strumento().getId()==7225){
-	 									 out.print("label-warning");
-	 								}else if(strumento.getStato_strumento().getId()==7226){
-	 									 out.print("label-success");
-	 								}else {
-	 									 out.print("label-default");
-	 								}
+	 									 out.print("label-warning"); %>
+	 									 ">Fuori Servizio</span>
+	 									 
+	 							<%	}else if(strumento.getStato_strumento().getId()==7226){
+	 									 out.print("label-success"); %>
+	 									 
+	 									 ">In Servizio</span>
+	 							<%	}else {
+	 									 out.print("label-default");%>
+	 									 
+	 									  ">Annullato</span>
+	 						<%		}
 	 								%>
-                       				"><%=strumento.getStato_strumento().getNome() %></span></td>
+                       				  </td>
                        			     <td><%=strumento.getDenominazione()%></td>
                     	             <td><%=strumento.getCodice_interno() %></td>
                     	            
                     	             
                     	             <td><%=strumento.getMatricola()%></td>
                     	            
-                    	             <td><%=strumento.getTipo_strumento().getNome() %></td>
-                    	             
-                    	             <td><%
+                    	              <td> <%=strumento.getTipo_strumento().getNome() %></td> 
+                    	          <td><%=strumento.getCostruttore()%></td>
+	  							<td><%=strumento.getModello()%></td>
+                    	             <td> <%
 
                     	             if(strumento.getFrequenza() != 0){
                     	            	
@@ -133,95 +131,15 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                    	            	 	<%	 
                    	             	  }
                     	             
-                    	             %></td>
-                    	             <td><%
-                    	             if(strumento.getDataUltimaVerifica()!= null){
-                    	            	 
-                    	            	 out.println(sdf.format(strumento.getDataUltimaVerifica()));
-                    	            	 
-                    	            	 
-                    	             }else{
-                    	            	 %> 
-                    	            	 -
-                    	            	 <%	 
-                    	             }
+                    	             %> </td>
                     	             
-                    	             %></td>
-                    	             
-                    	             <td><%
-                    	             if(strumento.getDataProssimaVerifica() != null){
-                    	            	 
-                    	            		 out.println(sdf.format(strumento.getDataProssimaVerifica()));
-                    	            	 
-                    	            	 
-                    	             }else{
-                    	            	 %> 
-                    	            	 -
-                    	            	 <%	 
-                    	             }
-                    	             
-                    	             %></td>
-                    	             <td><%=strumento.getReparto()%></td>
-                    	             
-                    	             <td><%
-                    	             if(strumento.getTipoRapporto() != null){
-                    	            	 
-                    	            		 out.println(strumento.getTipoRapporto().getNoneRapporto());
-                    	            	 
-                    	            	 
-                    	             }else{
-                    	            	 %> 
-                    	            	 -
-                    	            	 <%	 
-                    	             }
-                    	             %></td>
-                    	             
-                    	             <td><%=strumento.getUtilizzatore()%></td>
-                    	             <td><% 
-                    	             if(strumento.getLuogo()!=null){
-                    	            	 out.println(strumento.getLuogo().getDescrizione());
-                    	            	 
-                    	             }
-                    	             %></td>
-                    	           <%-- <td><%
-                    	             if(strumento.getInterpolazione()!=null){
-                    	            	 out.println(strumento.getInterpolazione());
-                    	             }
-                    	             %></td>  --%>
-                    	             <td><%=strumento.getClassificazione().getDescrizione()%></td>
-                    	             <td><%=strumento.getCompany().getDenominazione()%></td>
-								 <td><%
-                    	            	 if(strumento.getDataModifica() != null){
-                    	            		 out.println(sdf.format(strumento.getDataModifica()));
-                    	        		 }else{
-                    	            	 %> 
-                    	            	 -
-                    	            	 <%	 
-                    	             }
-                    	             
-                    	             %></td>
-								<td><%
-                    	            	 if(strumento.getUserModifica() != null){
-                    	            		 out.println(strumento.getUserModifica().getNominativo());
-                    	        		 }else{
-                    	            	 %> 
-                    	            	 -
-                    	            	 <%	 
-                    	             }
-                    	             
-                    	             %></td>
-                    	             <td><%=strumento.getCostruttore()%></td>
-	  							<td><%=strumento.getModello()%></td>
-                    	             <td><%=strumento.getRisoluzione()%></td>
+                    	           
                     	             <td><%=strumento.getCampo_misura()%></td>
-                    	             <td><%=strumento.getNote() %></td>
-                    	               <td>
-	 									
-	 									<%if(strumento.getUltimaMisura()!=null) {%>
-	 									<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'ultima Misura"  href="dettaglioMisura.do?idMisura=<%=Utility.encryptData(String.valueOf(strumento.getUltimaMisura().getId())) %>" ><i class="fa fa-tachometer"></i></a>
-										<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'ultimo Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=<%=Utility.encryptData(String.valueOf(strumento.getUltimaMisura().getIntervento().getId())) %>')"><i class="fa fa-file-text-o"></i>  </a>
-	 									<%} %>
-	 								</td>  
+                    	             
+                    	                        <td><%=strumento.getRisoluzione()%></td>
+                    	                        
+                    	                        
+                    	              
 	
 	</tr>
 <% 	 
@@ -527,16 +445,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
-	      order:[[2, "desc"]],
+	      order:[[1, "desc"]],
 	      columnDefs: [
-					   { responsivePriority: 1, targets: 1 },
-	                   { responsivePriority: 3, targets: 3 },
-	                   { responsivePriority: 4, targets: 4 },
-	                   { responsivePriority: 2, targets: 7 },
-	                   { responsivePriority: 5, targets: 12 },
-	                   { responsivePriority: 6, targets: 23 },
-	                   { responsivePriority: 7, targets: 13 },
-	                  /*  { orderable: false, targets: 6 }, */
+					 /*   { responsivePriority: 1, targets: 1 },
+	            
+	                  /*  { orderable: false, targets: 6 }, */ 
 	               ],
         
 	               buttons: [ {
@@ -603,7 +516,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        	//	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
        	}
        	
-       	
+if(contentID == "noteStrumentoTab"){
+    		
+       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str="+datax[1],"","#notestrumento")
+       	 }
+       		
        	
 
  		});

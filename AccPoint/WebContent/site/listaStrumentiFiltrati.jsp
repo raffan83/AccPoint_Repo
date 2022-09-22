@@ -61,10 +61,12 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                      
                        <th>Matricola</th>
             
-                        <th>Tipo Strumento</th> 
+                       <th>Modello</th>
                         
                          <th>Costruttore</th>
-                           <th>Modello</th>
+                         
+                          <th>Tipo Strumento</th> 
+                           
                        <th>Freq. Verifica</th>
                        
                         <th>Campo Misura</th>
@@ -115,9 +117,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             
                     	             <td><%=strumento.getMatricola()%></td>
                     	            
-                    	              <td> <%=strumento.getTipo_strumento().getNome() %></td> 
+                    	        <td><%=strumento.getModello()%></td>   
                     	          <td><%=strumento.getCostruttore()%></td>
-	  							<td><%=strumento.getModello()%></td>
+	  							
+	  							
+	  							   <td> <%=strumento.getTipo_strumento().getNome() %></td> 
                     	             <td> <%
 
                     	             if(strumento.getFrequenza() != 0){

@@ -55,12 +55,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  							<th></th>
  						<th>ID</th>
  						  
-            	       <th>Stato Strumento</th>		   
+            		   
             		   <th>Denominazione</th>
                        <th>Codice Interno</th>
                      
                        <th>Matricola</th>
-            
+             <th>Costruttore</th>
+                    <th>Stato Strumento</th>	
                        <th>Tipo Strumento</th>
                        <th>Freq. Verifica</th>
                        <th>Data Ultima Verifica</th>
@@ -74,7 +75,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                              <th>Company</th>
                               <th>Data Modifica</th>
                              <th>Utente Modifica</th> 
- 						 <th>Costruttore</th>
+ 						
                        <th>Modello</th>
                         <th>Divisione</th>
                        <th>Campo Misura</th>
@@ -101,18 +102,21 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								
 
 	 								 <td><%=strumento.get__id()%></td>
-	 								 
-                       				 <td><%if(strumento.getStato_strumento()!=null){
-                       					out.print(strumento.getStato_strumento().getNome());
-                       				 }else{
-                       					out.print("NULLO");
-                       				 } %>
-                       				 </td>
+	 							
                        			     <td><%=strumento.getDenominazione()%></td>
                     	             <td><%=strumento.getCodice_interno()%></td>
                     	            
                     	             
                     	             <td><%=strumento.getMatricola()%></td>
+                    	             
+                    	             <td><%=strumento.getCostruttore()%></td>
+                    	            
+                    	             <td><%if(strumento.getStato_strumento()!=null){
+                       					out.print(strumento.getStato_strumento().getNome());
+                       				 }else{
+                       					out.print("NULLO");
+                       				 } %>
+                       				 </td>
                     	            
                     	             <td><%=strumento.getTipo_strumento().getNome() %></td>
                     	             
@@ -201,7 +205,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             }
                     	             
                     	             %></td>
-                    	             <td><%=strumento.getCostruttore()%></td>
+                    	             
 	  							<td><%=strumento.getModello()%></td>
                     	             <td><%=strumento.getRisoluzione()%></td>
                     	             <td><%=strumento.getCampo_misura()%></td>
@@ -298,14 +302,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      order:[[1, "desc"]],
 	      columnDefs: [
 					
-	                   { responsivePriority: 1, targets: 0 },
-	                   { responsivePriority: 2, targets: 1 },
-	                   { responsivePriority: 3, targets: 7 },
-	                   { responsivePriority: 4, targets: 3 },	                 
-	                   { responsivePriority: 5, targets: 4 },
-	                   { responsivePriority: 6, targets: 12 },
-	                   { responsivePriority: 7, targets: 22 }, 
-	                   { responsivePriority: 8, targets: 13 },
+	                   { responsivePriority: 1, targets: 0 }
+	              
 	               
 	               ],
         

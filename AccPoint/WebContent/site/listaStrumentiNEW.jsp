@@ -47,11 +47,11 @@
 
           <div class="row">            
               <div class="form-group">
-                <div class="col-xs-2">
+                <div class="col-xs-4">
             <label>ID</label>
             <input class="form-control" type="text" id="filtro_id_str" name="filtro_id_str">
             </div>
-            <div class="col-xs-2">
+     <!--        <div class="col-xs-2">
             <label>Nome Strumento</label>
             <input class="form-control" type="text" id="filtro_denominazione_str" name="filtro_denominazione_str">
             </div>
@@ -62,12 +62,12 @@
             <div class="col-xs-2">
             <label>Modello</label>            
             <input class="form-control" type="text" id="filtro_modello_str" name="filtro_modello_str">
-            </div>
-            <div class="col-xs-2">
+            </div> -->
+            <div class="col-xs-4">
             <label>Matricola</label>            
             <input class="form-control" type="text" id="filtro_matricola_str" name="filtro_matricola_str">
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-4">
             <label>Cod. Interno</label>            
             <input class="form-control" type="text" id="filtro_codice_interno_str" name="filtro_codice_interno_str">
             </div>
@@ -109,7 +109,7 @@
 
           <div class="row">            
               <div class="form-group">
-            <div class="col-xs-2">
+           <!--  <div class="col-xs-2">
             <label>Nome Strumento</label>
             <input class="form-control" type="text" id="filtro_denominazione" name="filtro_denominazione">
             </div>
@@ -120,12 +120,12 @@
             <div class="col-xs-2">
             <label>Modello</label>            
             <input class="form-control" type="text" id="filtro_modello" name="filtro_modello">
-            </div>
-            <div class="col-xs-2">
+            </div> -->
+            <div class="col-xs-5">
             <label>Matricola</label>            
             <input class="form-control" type="text" id="filtro_matricola" name="filtro_matricola">
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-5">
             <label>Cod. Interno</label>            
             <input class="form-control" type="text" id="filtro_codice_interno" name="filtro_codice_interno">
             </div>
@@ -574,13 +574,17 @@
   
   function filtra(){
 	  
-	  var nome =$('#filtro_denominazione').val();
+	 /*  var nome =$('#filtro_denominazione').val();
 	  var marca = $('#filtro_marca').val();
-	  var modello = $('#filtro_modello').val();
+	  var modello = $('#filtro_modello').val(); */
+	  var nome = "";
+	  var marca = "";
+	  var modello = "";
 	  var matricola = $('#filtro_matricola').val();
 	  var codice_int = $('#filtro_codice_interno').val();
 	  
 	  var dataString =  "action=filtra_misure&nome="+nome+ "&marca="+marca +"&modello="+modello +"&matricola="+matricola+"&codice_interno="+codice_int;
+	 // var dataString =  "action=filtra_misure&matricola="+matricola+"&codice_interno="+codice_int;
 	  exploreModal("gestioneStrumento.do",dataString,"#posTab",function(data,textStatus){
 		  
 	  });
@@ -590,13 +594,17 @@
 function filtraStrumentiGenerale(){
 	
 	  var id =$('#filtro_id_str').val();
-	  var nome =$('#filtro_denominazione_str').val();
-	  var marca = $('#filtro_marca_str').val();
-	  var modello = $('#filtro_modello_str').val();
+	//  var nome =$('#filtro_denominazione_str').val();
+	 // var marca = $('#filtro_marca_str').val();
+	 // var modello = $('#filtro_modello_str').val();
+	   var nome = "";
+	  var marca = "";
+	  var modello = "";
 	  var matricola = $('#filtro_matricola_str').val();
 	  var codice_int = $('#filtro_codice_interno_str').val();
 	  
 	  var dataString =  "action=filtra_generali&id="+id+"&nome="+nome+ "&marca="+marca +"&modello="+modello +"&matricola="+matricola+"&codice_interno="+codice_int;
+	  //var dataString =  "action=filtra_generali&id="+id+"&matricola="+matricola+"&codice_interno="+codice_int;
 	  exploreModal("gestioneStrumento.do",dataString,"#posTab",function(data,textStatus){
 		  
 	  });

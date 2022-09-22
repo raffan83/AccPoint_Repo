@@ -618,7 +618,7 @@ public class CreateVerRapporto {
 			report.addParameter("data_verificazione","");
 		}
 		
-		if(misura.getNomeRiparatore()!=null) {
+		if(misura.getNomeRiparatore()!=null && !misura.getNomeRiparatore().equals("")) {
 			report.addParameter("nome_riparatore", misura.getNomeRiparatore());
 		}else {
 			report.addParameter("nome_riparatore","N/A");

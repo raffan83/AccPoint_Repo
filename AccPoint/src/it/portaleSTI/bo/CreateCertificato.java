@@ -601,7 +601,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 						),
 
 						cmp.line().setFixedHeight(1),
-						
+						cmp.text(nota_firma).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(footerStyle),
 						cmp.horizontalList(
 							cmp.text(getFooterLeft(tipoScheda, tipo_firma, conf)).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 							cmp.pageXslashY(),

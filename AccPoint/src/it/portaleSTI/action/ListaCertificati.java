@@ -41,6 +41,7 @@ import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -56,6 +57,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateCertificatoSE;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
@@ -340,12 +342,17 @@ public class ListaCertificati extends HttpServlet {
 				response.setContentType("application/json");
 				List<FileItem> items = uploadHandler.parseRequest(request);
 				
+				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
 				for (FileItem item : items) {
 					if (!item.isFormField()) {
 						if(item.getName()!="") {	
 							InputStream is = item.getInputStream();
 							
-							new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), is, utente,null, session);
+							new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), is, utente,null,listaSedi, session);
 						}								
 					}
 				}
@@ -663,8 +670,13 @@ public class ListaCertificati extends HttpServlet {
 					}
 				}
 				
+				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
 				if(certificato_new.getMisura().getMisuraLAT().getMisura_lat().getId()== 1) {
-					new CreaCertificatoLivellaBolla(certificato_new, certificato_new.getMisura().getMisuraLAT(), is, utente, certificato_old,   session);
+					new CreaCertificatoLivellaBolla(certificato_new, certificato_new.getMisura().getMisuraLAT(), is, utente, certificato_old, listaSedi,   session);
 				}
 				
 				if(certificato_new.getMisura().getMisuraLAT().getMisura_lat().getId()== 2) {

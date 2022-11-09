@@ -12,6 +12,7 @@ public class CoAttrezzaturaDTO {
 	private String descrizione;
 	private String codice;
 	private String modello;
+	private String portata_max;
 	private int disabilitato;
 	private Date data_scadenza;
 	private int frequenza_controllo;
@@ -79,6 +80,12 @@ public class CoAttrezzaturaDTO {
 	}
 	public void setMarca(String marca) {
 		this.marca = marca;
+	}
+	public String getPortata_max() {
+		return portata_max;
+	}
+	public void setPortata_max(String portata_max) {
+		this.portata_max = portata_max;
 	}
 	
 	

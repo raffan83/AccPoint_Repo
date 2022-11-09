@@ -122,12 +122,12 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  						   <th>Costruttore</th> 						      
  						      <th>Modello</th> 					   
             	       <th>Campo Misura</th>
-            	       <th>Divisione</th>
-            	       <th>Altre Matricole</th>
+            	      
             	        <th>Reparto</th>
             	          <th>Utilizzatore</th>
             	               <th>Freq. Verifica</th> 
-                   
+                    <th>Divisione</th>
+            	       <th>Altre Matricole</th>
                        <th>Data Ultima Verifica</th>
                        <th>Data Prossima Verifica</th>    
                           <th>Tipo Strumento</th>
@@ -184,14 +184,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								
                        			       <td><%=strumento.getCampo_misura()%></td>
                     	            
-                    	             <td><%=strumento.getRisoluzione()%></td>
-                    	             <td>
-                    	             <%if(strumento.getAltre_matricole()!=null){ %>
-                    	             <%=strumento.getAltre_matricole() %>
-                    	             <% }else{%>
-                    	             <%out.print("");
-                    	             } %>
-                    	             </td>
+                    	             
                     	             <td><%=strumento.getReparto()%></td>
                     	             
                     	                <td><%=strumento.getUtilizzatore()%></td>
@@ -214,7 +207,14 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	              
                     	             </td> 
                     	            
-                    	           
+                    	           <td><%=strumento.getRisoluzione()%></td>
+                    	             <td>
+                    	             <%if(strumento.getAltre_matricole()!=null){ %>
+                    	             <%=strumento.getAltre_matricole() %>
+                    	             <% }else{%>
+                    	             <%out.print("");
+                    	             } %>
+                    	             </td>
                     	             
                     	            
                     	             <td>

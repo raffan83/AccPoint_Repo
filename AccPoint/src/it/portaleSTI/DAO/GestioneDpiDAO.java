@@ -244,5 +244,19 @@ public class GestioneDpiDAO {
 		return lista;
 	}
 
+	public static ArrayList<ConsegnaDpiDTO> getListaConsegneDpiNonRest(Session session) {
+		
+		ArrayList<ConsegnaDpiDTO> lista = null;
+		
+
+		Query query =  session.createQuery("from ConsegnaDpiDTO where riconsegnato = 0 and is_restituzione = 0 and restituzione.id is null");
+
+		
+		lista = (ArrayList<ConsegnaDpiDTO>) query.list();		
+	
+		
+		return lista;
+	}
+
 
 }

@@ -58,6 +58,14 @@
 </div><br>
 
 <div class="row">
+<div class="col-xs-12">
+ 
+<button class="btn btn-info pull-left" id="btn_tutti" onClick="callAction('gestioneDpi.do?action=lista_schede_consegna')"><i class="fa fa-plus" ></i> Tutti</button> 
+<button class="btn btn-info pull-left" style="margin-left:5px"  id="btn_filtro" onClick="callAction('gestioneDpi.do?action=filtra_non_riconsegnati')"><i class="fa fa-plus"></i> Filtra non riconsegnati</button>
+</div>
+</div><br>
+
+<div class="row">
 <div class="col-sm-12">
 
  <table id="tabConsegne" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -77,6 +85,7 @@
 <th>Lavoratore</th>
 <th>Ricevuto</th>
 <th>Riconsegnato</th>
+<th>Motivazione</th>
 <th>ID Riconsegna</th>
 <th>Azioni</th>
  </tr></thead>
@@ -116,6 +125,7 @@
 	<c:if test="${consegna.riconsegnato == 0}">NO</c:if>
 	<c:if test="${consegna.riconsegnato == 1}">SI</c:if>
 </td>
+<td>${consegna.motivazione }</td>
 	<td>${consegna.restituzione.id }</td>		
 	<td>	
   <c:if test="${!utente.checkRuolo('DP') }">
@@ -672,6 +682,16 @@ function aggiungiOpzione(mod){
 $(document).ready(function() {
  
 //$('.select2').select2();
+
+var filtro_on = "${filtro_on}";
+
+if(filtro_on ==1){
+	$('#btn_filtro').attr("disabled", true);
+	$('#btn_tutti').attr("disabled", false);
+}else{
+	$('#btn_filtro').attr("disabled", false);
+	$('#btn_tutti').attr("disabled", true);
+}
 
 $('#id_dpi').select2()
 

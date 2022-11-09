@@ -109,4 +109,9 @@ public class GestioneDpiBO {
 		
 	}
 
+	public static ArrayList<ConsegnaDpiDTO> getListaConsegneDpiNonRest(Session session) {
+		
+		return GestioneDpiDAO.getListaConsegneDpiNonRest(session);
+	}
+
 }

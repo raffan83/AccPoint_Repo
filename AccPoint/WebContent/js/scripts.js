@@ -2286,6 +2286,12 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
         			  	$('#myModalError').removeClass();
         				$('#myModalError').addClass("modal modal-success");
         				$('#myModalError').modal('show');
+        				
+        				$('#myModalError').on('hidden.bs.modal', function(){	         			
+        					
+        					 location.reload()
+        				});
+        			  	
         			  	
         		
         		  }else{

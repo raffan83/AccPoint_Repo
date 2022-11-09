@@ -314,6 +314,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				request.getSession().setAttribute("lista_dpi", lista_dpi);
 				request.getSession().setAttribute("lista_consegne", lista_consegne);
 				request.getSession().setAttribute("lista_dipendenti", lista_dipendenti);
+				request.getSession().setAttribute("filtro_on", "0");
 				
 				session.getTransaction().commit();
 				session.close();
@@ -834,6 +835,23 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.getTransaction().commit();
 				session.close();
 				
+			}
+			else if(action.equals("filtra_non_riconsegnati")) {
+				
+				
+				ArrayList<DpiDTO> lista_dpi = GestioneDpiBO.getListaDpi(session);
+				ArrayList<ConsegnaDpiDTO> lista_consegne = GestioneDpiBO.getListaConsegneDpiNonRest(session);
+				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0, 0, session);
+				
+				request.getSession().setAttribute("lista_dpi", lista_dpi);
+				request.getSession().setAttribute("lista_consegne", lista_consegne);
+				request.getSession().setAttribute("lista_dipendenti", lista_dipendenti);
+				request.getSession().setAttribute("filtro_on", "1");
+				
+				session.getTransaction().commit();
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaConsegneDPI.jsp");
+		     	dispatcher.forward(request,response);
 			}
 			
 		}catch(Exception e) {

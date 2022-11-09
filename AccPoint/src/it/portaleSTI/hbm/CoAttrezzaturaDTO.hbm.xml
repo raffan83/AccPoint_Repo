@@ -30,6 +30,9 @@
             <column name="marca" />
         </property>
       
+        <property name="portata_max" type="java.lang.String">
+            <column name="portata_max" />
+        </property>
         
             <set name="listaTipiControllo" table="co_attrezzatura_tipo_controllo"
         	inverse="false" lazy="false" fetch="select" cascade="all" >

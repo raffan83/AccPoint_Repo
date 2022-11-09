@@ -194,10 +194,12 @@
        	</div>
        	<div class="col-sm-9">
        	<select class="form-control select2" data-placeholder="Seleziona Classe..." id="classe" name="classe" style="width:100%" required>
-       		<option value=1>1</option>
-       		<option value=2>2</option>
-       		<option value=3>3</option>
-       		<option value=4>4</option>
+		<option value="1">1</option>
+       		<option value="2">2</option>
+       		<option value="3">3</option>
+       		<option value="4">4</option>
+       		<option value="5">1 - lettura fine</option>
+       		<option value="6">2 - lettura fine</option>
        		
        		</select>
        		<!-- <input type="number" class="form-control" id="classe" min="1" max="4" name="classe" style="width:100%" required> -->       	
@@ -569,11 +571,12 @@
        	</div>
        	<div class="col-sm-9">
        		<select class="form-control select2" data-placeholder="Seleziona Classe..." id="classe_mod" name="classe_mod" style="width:100%" required>
-       		<option value=1>1</option>
-       		<option value=2>2</option>
-       		<option value=3>3</option>
-       		<option value=4>4</option>
-       		
+       		<option value="1">1</option>
+       		<option value="2">2</option>
+       		<option value="3">3</option>
+       		<option value="4">4</option>
+       		<option value="5">1 - lettura fine</option>
+       		<option value="6">2 - lettura fine</option>
        		</select>
        		<!-- <input type="number" class="form-control" id="classe_mod" min="1" max="4" name="classe_mod" style="width:100%" required> -->       	
        	</div>
@@ -880,7 +883,7 @@
        		<label>Classe</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" class="form-control" id="classe_dtl" min="1" max="4" name="classe_dtl" style="width:100%" disabled>       	
+       		<input type="number" class="form-control" id="classe_dtl" min="1" max="6" name="classe_dtl" style="width:100%" disabled>       	
        	</div>
        </div><br>
        <div class="row">
@@ -1669,7 +1672,7 @@ $('#tipo_ver_strumento_mod').change(function(){
 });
 
 
-$('#classe').change(function(){
+/* $('#classe').change(function(){
 
 	var val = $(this).val();
 	
@@ -1692,7 +1695,7 @@ $('#classe_mod').change(function(){
 		$(this).val(4);
 	}
 	
-});
+}); */
 
 var columsDatatables = [];
 

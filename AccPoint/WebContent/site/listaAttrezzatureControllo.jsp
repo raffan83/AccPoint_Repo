@@ -66,34 +66,66 @@
 <th>Tipo Attrezzatura</th>
 <th>Descrizione</th>
 <th>Codice</th>
-<th>Modello</th>
+
 <th>Marca</th>
+<th>Modello</th>
+<th>Portata massima</th>
 <th>Frequenza controllo (Mesi)</th>
 <th>Data scadenza</th>
+<th>Scaduta</th>
 <th>Azioni</th>
+
  </tr></thead>
  
  <tbody>
  
  	<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
 	<c:if test="${attrezzatura.disabilitato ==0 }">
- 	<tr id="row_${loop.index}" >
+	<jsp:useBean id="now" class="java.util.Date"/>
+	<c:choose>
+
+	<c:when test="${attrezzatura.data_scadenza lt now}">
+	
+	<tr id="row_${loop.index}" style="background-color:#FA8989">
+	</c:when>
+	<c:otherwise>
+		<tr id="row_${loop.index}" >
+	</c:otherwise>
+	</c:choose>
+	
+ 
 
 	<td>${attrezzatura.id }</td>	
 	<td>${attrezzatura.tipo.descrizione }</td>
 	<td>${attrezzatura.descrizione }</td>
 	<td>${attrezzatura.codice }</td>
-	<td>${attrezzatura.modello }</td>	
+
 	<td>${attrezzatura.marca }</td>
+		<td>${attrezzatura.modello }</td>
+		<td>${attrezzatura.portata_max }</td>		
 	<td>${attrezzatura.frequenza_controllo }</td>		
 <td><fmt:formatDate pattern="dd/MM/yyyy" value="${attrezzatura.data_scadenza }"></fmt:formatDate></td>	
+		<td>
+	<c:choose>
+
+	<c:when test="${attrezzatura.data_scadenza lt now}">
+	SI
+	
+	</c:when>
+	<c:otherwise>
+	NO
+	</c:otherwise>
+	</c:choose>
+	</td>
+	
 	<td>	
 
- 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.tipo.id }','${utl:escapeJS(attrezzatura.descrizione) }','${utl:escapeJS(attrezzatura.modello) }','${utl:escapeJS(attrezzatura.marca) }','${utl:escapeJS(attrezzatura.codice) }','${attrezzatura.data_scadenza }','${attrezzatura.frequenza_controllo }')" title="Click per modificare l'attrezzatura"><i class="fa fa-edit"></i></a>
+ 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.tipo.id }','${utl:escapeJS(attrezzatura.descrizione) }','${utl:escapeJS(attrezzatura.modello) }','${utl:escapeJS(attrezzatura.marca) }','${utl:escapeJS(attrezzatura.codice) }','${attrezzatura.data_scadenza }','${attrezzatura.frequenza_controllo }','${attrezzatura.portata_max }')" title="Click per modificare l'attrezzatura"><i class="fa fa-edit"></i></a>
 	  <a class="btn btn-primary customTooltip" onClicK="modalAllegati('${attrezzatura.id }')" title="Click per visualizzare gli allegati"><i class="fa fa-archive"></i></a>
  	<a class="btn btn-danger customTooltip" onClicK="modalEliminaAttrezzatura('${attrezzatura.id }')" title="Click per eliminare l'attrezzatura"><i class="fa fa-trash"></i></a>
 
-	</td>
+	</td >
+
 	</tr>
 	</c:if>
 	</c:forEach>
@@ -183,7 +215,22 @@
        	</div>       	
        </div><br>
        
-                <div class="row">
+                
+       
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Marca</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="marca" name="marca" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       <div class="row">
        
        	<div class="col-sm-3">
        		<label>Modello</label>
@@ -195,15 +242,14 @@
        	</div>       	
        </div><br>
        
-       
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Marca</label>
+       		<label>Portata massima</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="marca" name="marca" class="form-control" type="text" style="width:100%" >
+        <input id="portata_max" name="portata_max" class="form-control" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -333,6 +379,19 @@
        	</div>       	
        </div><br>
        
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Marca</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="marca_mod" name="marca_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
                 <div class="row">
        
        	<div class="col-sm-3">
@@ -345,14 +404,14 @@
        	</div>       	
        </div><br>
        
-       <div class="row">
+                <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Marca</label>
+       		<label>Portata massima</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="marca_mod" name="marca_mod" class="form-control" type="text" style="width:100%" >
+        <input id="portata_max_mod" name="portata_max_mod" class="form-control" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -632,7 +691,7 @@ function assegnaValoreOpzione(){
 
 
 
-function modalModificaAttrezzatura(id,id_tipo, descrizione, modello, marca, codice, data_scadenza,frequenza_controllo ){
+function modalModificaAttrezzatura(id,id_tipo, descrizione, modello, marca, codice, data_scadenza,frequenza_controllo, portata_max){
 	
 	dataObj = {};
 	
@@ -662,7 +721,7 @@ function modalModificaAttrezzatura(id,id_tipo, descrizione, modello, marca, codi
 	$('#tipo_attrezzatura_mod').val(id_tipo);
 	$('#tipo_attrezzatura_mod').change();
 	$('#marca_mod').val(marca);
-		
+	$('#portata_max_mod').val(portata_max);
 	
 	if(data_scadenza!=null && data_scadenza!=''){
 		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));	
@@ -797,16 +856,15 @@ $('#company_mod').select2();
 		      ordering: true,
 		      info: true, 
 		      searchable: true, 
-		      targets: 0,
+		    
 		      responsive: true,
 		      scrollX: false,
 		      stateSave: true,	
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 4 },
-		    	  
-		    	  
+		    	  { responsivePriority: 1, targets: 10 },
+		    	  { responsivePriority: 2, targets: 9 },
 		               ], 	        
 	  	      buttons: [   
 	  	          {
@@ -834,8 +892,7 @@ $('#company_mod').select2();
 	          .draw();
 	  } );
 	} );  
-	
-	
+	 	 
 	
 		table.columns.adjust().draw();
 		

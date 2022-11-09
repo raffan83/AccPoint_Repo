@@ -106,7 +106,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				String id = request.getParameter("id");
 				
-				CoAttrezzaturaDTO attrezzatura = GestioneControlliOperativiBO.getElement(new CoAttrezzaturaDTO(), Integer.parseInt(id), session);
+				CoAttrezzaturaDTO attrezzatura = GestioneControlliOperativiBO.getElement(new CoAttrezzaturaDTO(), Integer.parseInt(id.split("_")[0]), session);
 				
 				Gson g = new Gson();
 				
@@ -157,6 +157,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_scadenza = ret.get("data_scadenza");
 				String frequenza_controllo = ret.get("frequenza_controllo");
 				String marca = ret.get("marca");
+				String portata_max = ret.get("portata_max");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -196,6 +197,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				attrezzatura.setCodice(codice);
 				attrezzatura.setModello(modello);
 				attrezzatura.setMarca(marca);
+				attrezzatura.setPortata_max(portata_max);
 				if(data_scadenza!=null && !data_scadenza.equals("")) {
 					attrezzatura.setData_scadenza(df.parse(data_scadenza));
 				}
@@ -257,6 +259,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_scadenza = ret.get("data_scadenza_mod");
 				String frequenza_controllo = ret.get("frequenza_controllo_mod");
 				String marca = ret.get("marca_mod");
+				String portata_max = ret.get("portata_max_mod");
 				
 				CoAttrezzaturaDTO attrezzatura = GestioneControlliOperativiBO.getElement(new CoAttrezzaturaDTO(), Integer.parseInt(id_attrezzatura), session);			
 				
@@ -306,6 +309,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				attrezzatura.setCodice(codice);
 				attrezzatura.setModello(modello);
 				attrezzatura.setMarca(marca);
+				attrezzatura.setPortata_max(portata_max);
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				if(data_scadenza!=null && !data_scadenza.equals("")) {
 					attrezzatura.setData_scadenza(df.parse(data_scadenza));
@@ -404,7 +408,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
-				CoAttrezzaturaDTO attrezzatura = GestioneControlliOperativiBO.getElement(new CoAttrezzaturaDTO(), Integer.parseInt(id_attrezzatura), session);			
+				CoAttrezzaturaDTO attrezzatura = GestioneControlliOperativiBO.getElement(new CoAttrezzaturaDTO(), Integer.parseInt(id_attrezzatura.split("_")[0]), session);			
 				
 				String esito_generale = "P";
 				
@@ -450,7 +454,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				ajax = true;
 				String id = request.getParameter("id_attrezzatura");
 				
-				ArrayList<CoAttrezzaturaTipoControlloDTO> lista_controlli = GestioneControlliOperativiBO.getListaAttrezzaturaTipoControllo( Integer.parseInt(id), session);
+				ArrayList<CoAttrezzaturaTipoControlloDTO> lista_controlli = GestioneControlliOperativiBO.getListaAttrezzaturaTipoControllo( Integer.parseInt(id.split("_")[0]), session);
 				
 				Gson g = new Gson();
 				

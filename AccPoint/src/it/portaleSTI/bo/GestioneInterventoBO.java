@@ -35,6 +35,7 @@ import it.portaleSTI.DTO.StatoRicezioneStrumentoDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 
@@ -240,6 +241,7 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setDataProssimaVerifica(strumentoDaFile.getDataProssimaVerifica());
 		   		strumentoModificato.setDataUltimaVerifica(strumentoDaFile.getDataUltimaVerifica());
 		   		strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
+		   		strumentoModificato.setTipo_strumento(new TipoStrumentoDTO(strumentoDaFile.getTipo_strumento().getId(), ""));
 		   		
 		   		GestioneStrumentoBO.update(strumentoModificato, session);
 		   	}

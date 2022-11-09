@@ -135,23 +135,49 @@
        
        
              <div class="row">
+             
+              
+       
+       	<div class="col-sm-3">
+       		<label>Filtra frequenza controllo</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+                   <select name="filtro_frequenza" id="filtro_frequenza" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Attrezzatura..." data-live-search="true" style="width:50%" >
+                <option value="0" selected>TUTTE</option>
+                <option value="1">MENSILI</option>
+                <option value="3">TRIMESTRALI</option>
+                <option value="4">QUADRIMESTRALI</option>
+           
+				
+                  </select> 
+    
+       			
+       	</div>       	
+       </div><br>
+                    
+             <div class="row">
        
        	<div class="col-sm-3">
        		<label>Attrezzatura</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        
-    <select name="attrezzatura" id="attrezzatura" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Attrezzatura..." data-live-search="true" style="width:100%" required >
+          <div style="display:none"> 
+    <select name="attrezzatura_opt" id="attrezzatura_opt" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Attrezzatura..." data-live-search="true" style="display:none">
                 <option value=""></option>
                       <c:forEach items="${lista_attrezzature}" var="attrezzatura">
-                     
-                           <option value="${attrezzatura.id}">${attrezzatura.descrizione} - ${attrezzatura.codice}</option> 
-                         
+                     <c:if test="${attrezzatura.disabilitato ==0 }">
+                           <option value="${attrezzatura.id}_${attrezzatura.frequenza_controllo}">${attrezzatura.descrizione} - ${attrezzatura.codice} - Freq. ${attrezzatura.frequenza_controllo}</option> 
+                         </c:if>
                      </c:forEach>
 				
                   </select> 
        			
+       			
+       			</div>
+       	<select name="attrezzatura" id="attrezzatura" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Attrezzatura..." data-live-search="true" style="width:100%" required>
+       	</select>		
        	</div>       	
        </div><br>
        
@@ -234,23 +260,43 @@
       </div>
        <div class="modal-body">
        
-       
-             <div class="row">
+          <div class="row">
+             
+              
        
        	<div class="col-sm-3">
-       		<label>Controllo</label>
+       		<label>Filtra frequenza controllo</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        
-    <select name="attrezzatura_mod" id="attrezzatura_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Attrezzatura..." data-live-search="true" style="width:100%" required >
+                   <select name="filtro_frequenza_mod" id="filtro_frequenza_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Attrezzatura..." data-live-search="true" style="width:50%" >
+                <option value="0" selected>TUTTE</option>
+                <option value="1">MENSILI</option>
+                <option value="3">TRIMESTRALI</option>
+                <option value="4">QUADRIMESTRALI</option>
+           
+				
+                  </select> 
+    
+       			
+       	</div>       	
+       </div><br>
+             <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Attrezzatura</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        	<select name="attrezzatura_mod" id="attrezzatura_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Attrezzatura..." data-live-search="true" style="width:100%" required>
+<%--     <select name="attrezzatura_mod" id="attrezzatura_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Attrezzatura..." data-live-search="true" style="width:100%" required >
                 <option value=""></option>
                       <c:forEach items="${lista_attrezzature}" var="attrezzatura">
-                     
+                        <c:if test="${attrezzatura.disabilitato ==0 }">
                            <option value="${attrezzatura.id}">${attrezzatura.descrizione} </option> 
-                         
+                         </c:if>
                      </c:forEach>
-				
+				 --%>
                   </select> 
        			
        	</div>       	
@@ -453,6 +499,62 @@ $('#attrezzatura').on('change', function() {
 });
 
 
+
+
+$('#filtro_frequenza').change(function(){
+	
+	var tutte_opt = $('#attrezzatura_opt option').clone();
+	
+	var filtro_opt = [];
+	
+	
+	var value = $(this).val();
+	
+	if(value == "0"){
+		$('#attrezzatura').html(tutte_opt);
+	}
+	else{
+		
+		tutte_opt.each(function(index, item){
+			filtro_opt.push("<option value=''></option>")
+			if(item.value!='' && item.value.split("_")[1]==value){
+				filtro_opt.push(item);
+			}
+		});
+		$('#attrezzatura').html(filtro_opt);
+	}
+	
+});
+
+
+
+$('#filtro_frequenza_mod').change(function(){
+	
+	var tutte_opt = $('#attrezzatura_opt option').clone();
+	
+	var filtro_opt = [];
+	
+	
+	var value = $(this).val();
+	
+	if(value == "0"){
+		$('#attrezzatura_mod').html(tutte_opt);
+	}
+	else{
+		
+		tutte_opt.each(function(index, item){
+			filtro_opt.push("<option value=''></option>")
+			if(item.value!='' && item.value.split("_")[1]==value){
+				filtro_opt.push(item);
+			}
+		});
+		$('#attrezzatura_mod').html(filtro_opt);
+	}
+	
+});
+
+
+
 var frequenza_controllo;
 
 
@@ -553,6 +655,16 @@ $('#attrezzatura_mod').on('change', function() {
 			    $('#close_button').attr("disabled", false);
 			});	
 		}else{
+			
+			$("#modalModificaControllo" ).each(function(){
+			    $(this).find(':input').attr("disabled", false) //<-- Should return all input elements in that specific form.
+			    
+			    
+			    $(this).find(':radio').attr('disabled', false);
+			    
+			    
+			    $('#close_button').attr("disabled", false);
+			});	
 			  $('#modalModificaLabel').html("Modifica Controllo");
 		}
 		
@@ -674,6 +786,8 @@ function assegnaValoreOpzione(){
 
 function modalModificaControllo(id,id_attrezzatura, data_controllo, data_prossimo_controllo, note, frequenza, dettaglio){
 	
+	$('#filtro_frequenza_mod').change();
+	
 
 	$('#id_controllo').val(id);
 	
@@ -689,7 +803,7 @@ function modalModificaControllo(id,id_attrezzatura, data_controllo, data_prossim
 
 	frequenza_controllo = frequenza;
 	
-	$('#attrezzatura_mod').val(id_attrezzatura);
+	$('#attrezzatura_mod').val(id_attrezzatura+"_"+frequenza);
 
 	$('#attrezzatura_mod').change();
 		
@@ -757,6 +871,9 @@ function aggiungiOpzione(tag){
 
 $(document).ready(function() {
  
+	
+	$('#filtro_frequenza').change()
+	
 //$('.select2').select2();
 
 $('#tipo_attrezzatura')

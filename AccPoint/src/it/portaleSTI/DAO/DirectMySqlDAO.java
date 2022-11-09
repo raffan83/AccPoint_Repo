@@ -445,6 +445,8 @@ public class DirectMySqlDAO {
 		{
 			ex.printStackTrace();
 			session.getTransaction().rollback();
+			
+			session.close();
 			throw ex;
 		}
 

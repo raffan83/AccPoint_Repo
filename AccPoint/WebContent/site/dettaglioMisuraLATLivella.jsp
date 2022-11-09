@@ -197,7 +197,7 @@
 <div class="col-xs-12">
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Semiscala Positiva SX
+	 Semiscala Negativa SX
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -288,7 +288,7 @@
 	</c:choose>	
 	<c:choose>
 	<c:when test="${punto.div_dex.abs()>0 && lista_neg!=null}">
-		<td>${punto.div_dex.abs().subtract(utl:getAverageLivella(null, lista_neg, 1)).stripTrailingZeros() }</td>
+		<td>${punto.div_dex.abs().subtract(utl:getAverageLivella(lista_pos, lista_neg, 2)).stripTrailingZeros() }</td>
 	</c:when>
 	<c:otherwise>
 	<td></td>
@@ -449,7 +449,7 @@
 	</c:choose>	
 	<c:choose>
 	<c:when test="${punto.div_dex.abs()>0 && lista_pos!=null}">
-		<td>${punto.div_dex.abs().subtract(utl:getAverageLivella(lista_pos, null, 0)).stripTrailingZeros() }</td>
+		<td>${punto.div_dex.abs().subtract(utl:getAverageLivella(lista_pos, lista_neg, 2)).stripTrailingZeros() }</td>
 	</c:when>
 	<c:otherwise>
 	<td></td>

@@ -892,14 +892,16 @@ public class CreateVerRapporto {
 				InputStream im2 = PivotTemplateImage.class.getResourceAsStream("tipo_2.png");
 				InputStream im3 = PivotTemplateImage.class.getResourceAsStream("tipo_3.png");
 				InputStream im4 = PivotTemplateImage.class.getResourceAsStream("tipo_4.png");
-				HorizontalListBuilder hl_ricettori = cmp.horizontalList(cmp.horizontalGap(115),cmp.image(im0).setFixedDimension(60, 60), cmp.horizontalGap(5), cmp.image(im1).setFixedDimension(60, 60), cmp.horizontalGap(5), cmp.image(im2).setFixedDimension(60, 60),cmp.horizontalGap(5), cmp.image(im3).setFixedDimension(60, 60), cmp.horizontalGap(5),cmp.image(im4).setFixedDimension(60, 60));
-				HorizontalListBuilder hl_rettangoli = cmp.horizontalList(cmp.horizontalGap(137));
+				InputStream im5 = PivotTemplateImage.class.getResourceAsStream("tipo_5.png");
+				HorizontalListBuilder hl_ricettori = cmp.horizontalList(cmp.horizontalGap(95),cmp.image(im0).setFixedDimension(60, 60), cmp.horizontalGap(5), cmp.image(im1).setFixedDimension(60, 60), cmp.horizontalGap(5), cmp.image(im2).setFixedDimension(60, 60),cmp.horizontalGap(5), cmp.image(im3).setFixedDimension(60, 60), cmp.horizontalGap(5),cmp.image(im4).setFixedDimension(60, 60), cmp.horizontalGap(5), cmp.image(im5).setFixedDimension(60, 60));
+				HorizontalListBuilder hl_rettangoli = cmp.horizontalList(cmp.horizontalGap(117));
 				StyleBuilder style = stl.style().setBorder(stl.penThin()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(14);
 				String lbl0 = "";
 				String lbl1 = "";
 				String lbl2 = "";
 				String lbl3 = "";
 				String lbl4 = "";
+				String lbl5 = "";
 				
 				if(lista_decentramento.get(i*6).getTipoRicettore()==0) {
 					lbl0 = "X";
@@ -907,33 +909,45 @@ public class CreateVerRapporto {
 					lbl2 = "";
 					lbl3 = "";
 					lbl4 = "";
+					lbl5 = "";
 				}else if(lista_decentramento.get(i*6).getTipoRicettore()==1) {
 					lbl0 = "";
 					lbl1 = "X";
 					lbl2 = "";
 					lbl3 = "";
 					lbl4 = "";
+					lbl5 = "";
 				}else if(lista_decentramento.get(i*6).getTipoRicettore()==2) {
 					lbl0 = "";
 					lbl1 = "";
 					lbl2 = "X";
 					lbl3 = "";
 					lbl4 = "";
+					lbl5 = "";
 				}else if(lista_decentramento.get(i*6).getTipoRicettore()==3) {
 					lbl0 = "";
 					lbl1 = "";
 					lbl2 = "";
 					lbl3 = "X";
 					lbl4 = "";
-				}else {
+					lbl5 = "";
+				}else if(lista_decentramento.get(i*6).getTipoRicettore()==4){
 					lbl0 = "";
 					lbl1 = "";
 					lbl2 = "";
 					lbl3 = "";
 					lbl4 = "X";
+					lbl5 = "";
+				}else {
+					lbl0 = "";
+					lbl1 = "";
+					lbl2 = "";
+					lbl3 = "";
+					lbl4 = "";
+					lbl5 = "X";
 				}
 				
-				hl_rettangoli.add(cmp.text(lbl0).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl1).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl2).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl3).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl4).setStyle(style).setFixedDimension(15, 15));
+				hl_rettangoli.add(cmp.text(lbl0).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl1).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl2).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl3).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl4).setStyle(style).setFixedDimension(15, 15),cmp.horizontalGap(50),cmp.text(lbl5).setStyle(style).setFixedDimension(15, 15));
 				String speciale = "";
 				if(lista_decentramento.get(0).getSpeciale().equals("N")) {
 					speciale = "No";
@@ -1957,72 +1971,79 @@ public class CreateVerRapporto {
 		
 			dataSource = new DRDataSource(listaCodici);			
 		
-			for (VerDecentramentoDTO item : lista_decentramento) {				
-				if(item.getMassa()!=null && item.getCampo()==campo) {
+			for (VerDecentramentoDTO item : lista_decentramento) {			
+				if(item.getTipoRicettore()==5 && item.getPosizione()>7) {
 					
-					
-					int risoluzioneBilanciaE0=0;
-					int risoluzioneBilancia=0;
-					int risoluzioneIndicazione=0;
-					
-					if(tipologia_strumento == 1) {
-						risoluzioneBilanciaE0=getE(campo, BigDecimal.ZERO).scale()+1;
-						risoluzioneBilancia=getE(campo,item.getMassa()).scale()+1;
-						risoluzioneIndicazione=getE(campo,item.getMassa()).scale();
-					}else {
-						 risoluzioneBilanciaE0=getE(campo, BigDecimal.ZERO).scale()+2;
-						 risoluzioneBilancia=getE(campo,item.getMassa()).scale()+2;
-						 risoluzioneIndicazione=getE(campo,item.getMassa()).scale()+1;
-					}
-					
-					
-					ArrayList<String> arrayPs = new ArrayList<String>();		
-					if((item.getPosizione()%2)!=0) {
-						arrayPs.add("<i><i>E<sub>0</sub></i></i>");
-					}else {
-						arrayPs.add(String.valueOf(item.getPosizione()/2));
-					}					
-					arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
-					if(item.getIndicazione()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(risoluzioneIndicazione, RoundingMode.HALF_UP).toPlainString()));	
-					}else {
-						arrayPs.add("");
-					}
-					if(tipologia_strumento == 1 && classe_strumento!=5 && classe_strumento!=6) {
-						if(item.getCaricoAgg()!=null) {
-							arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(risoluzioneBilancia, RoundingMode.HALF_UP).toPlainString()));
+				}else {
+					if(item.getMassa()!=null && item.getCampo()==campo) {
+						
+						
+						int risoluzioneBilanciaE0=0;
+						int risoluzioneBilancia=0;
+						int risoluzioneIndicazione=0;
+						
+						if(tipologia_strumento == 1) {
+							risoluzioneBilanciaE0=getE(campo, BigDecimal.ZERO).scale()+1;
+							risoluzioneBilancia=getE(campo,item.getMassa()).scale()+1;
+							risoluzioneIndicazione=getE(campo,item.getMassa()).scale();
+						}else {
+							 risoluzioneBilanciaE0=getE(campo, BigDecimal.ZERO).scale()+2;
+							 risoluzioneBilancia=getE(campo,item.getMassa()).scale()+2;
+							 risoluzioneIndicazione=getE(campo,item.getMassa()).scale()+1;
+						}
+						
+						
+						ArrayList<String> arrayPs = new ArrayList<String>();		
+						if((item.getPosizione()%2)!=0) {
+							arrayPs.add("<i><i>E<sub>0</sub></i></i>");
+						}else {
+							arrayPs.add(String.valueOf(item.getPosizione()/2));
+						}					
+						arrayPs.add(Utility.changeDotComma(item.getMassa().stripTrailingZeros().toPlainString()));
+						if(item.getIndicazione()!=null) {
+							arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(risoluzioneIndicazione, RoundingMode.HALF_UP).toPlainString()));	
 						}else {
 							arrayPs.add("");
 						}
-					}
-					
-					if(item.getErrore()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErrore().setScale(risoluzioneBilanciaE0, RoundingMode.HALF_UP).toPlainString()));	
-					}else {
-						arrayPs.add("");
-					}
-					if(item.getErroreCor()!=null) {
-						if((item.getPosizione()%2)!=0) {
-							arrayPs.add("/");
+						if(tipologia_strumento == 1 && classe_strumento!=5 && classe_strumento!=6) {
+							if(item.getCaricoAgg()!=null) {
+								arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(risoluzioneBilancia, RoundingMode.HALF_UP).toPlainString()));
+							}else {
+								arrayPs.add("");
+							}
+						}
+						
+						if(item.getErrore()!=null) {
+							arrayPs.add(Utility.changeDotComma(item.getErrore().setScale(risoluzioneBilanciaE0, RoundingMode.HALF_UP).toPlainString()));	
 						}else {
-							arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(risoluzioneBilanciaE0, RoundingMode.HALF_UP).toPlainString()));	
+							arrayPs.add("");
+						}
+						if(item.getErroreCor()!=null) {
+							if((item.getPosizione()%2)!=0) {
+								arrayPs.add("/");
+							}else {
+								arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(risoluzioneBilanciaE0, RoundingMode.HALF_UP).toPlainString()));	
+							}
+								
+						}else {
+							arrayPs.add("");
+						}
+						if(item.getMpe()!=null) {
+//							if((item.getPosizione()%2)!=0){
+//								arrayPs.add(Utility.changeDotComma(item.getMpe().toPlainString()));	
+//							}else {
+								arrayPs.add(Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()));		
+//							}
+							
+						}else {
+							arrayPs.add("");
 						}
 							
-					}else {
-						arrayPs.add("");
-					}
-					if(item.getMpe()!=null) {
-//						if((item.getPosizione()%2)!=0){
-//							arrayPs.add(Utility.changeDotComma(item.getMpe().toPlainString()));	
-//						}else {
-							arrayPs.add(Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()));		
-//						}
+						dataSource.add(arrayPs.toArray());
 						
-					}else {
-						arrayPs.add("");
-					}
-						
-					dataSource.add(arrayPs.toArray());
+				}
+				
+				
 					
 				}				
 			}			

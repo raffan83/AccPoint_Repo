@@ -123,9 +123,15 @@
 	</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_corso}" /></td>	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso.data_scadenza}" /></td>
-		<td>${corso.docente.nome } ${corso.docente.cognome }</td>
-	
+		<%-- <td>${corso.docente.nome } ${corso.docente.cognome }</td> --%>
 	<td>
+	<c:forEach items="${corso.getListaDocenti() }" var="docente">
+	${docente.nome} ${docente.cognome }<br>
+	</c:forEach>
+	</td>
+	
+	
+		<td>
 
 	<a class="btn btn-info" onClick="dettaglioCorso('${utl:encryptData(corso.id)}')"><i class="fa fa-search"></i></a>
 		 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 

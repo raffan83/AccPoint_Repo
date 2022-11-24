@@ -680,17 +680,20 @@ public class GestioneCampioneDAO {
 				
 			if(registro!=null) {
 				for (RegistroEventiDTO r : registro) {
-					if(r.getTipo_evento().getId()== 1 && r.getCampione().getFrequenza_manutenzione()!=0) {						
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTime(r.getData_evento());
-						calendar.add(Calendar.MONTH, r.getCampione().getFrequenza_manutenzione());
-							
-						Date date = calendar.getTime();
-						if(df.format(date).equals(data_start) || ( date.after(df.parse(data_start)) && date.before(df.parse(data_end)))) {
-							lista.add(r.getCampione());
-							lista_tipo.add(1);
-							lista_date.add(df.format(date));
+					if(r.getTipo_evento().getId()== 1) {
+						
+						if(r.getCampione().getFrequenza_manutenzione()!=0) {						
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(r.getData_evento());
+							calendar.add(Calendar.MONTH, r.getCampione().getFrequenza_manutenzione());
 								
+							Date date = calendar.getTime();
+							if(df.format(date).equals(data_start) || ( date.after(df.parse(data_start)) && date.before(df.parse(data_end)))) {
+								lista.add(r.getCampione());
+								lista_tipo.add(1);
+								lista_date.add(df.format(date));
+									
+							}
 						}
 					}else {
 						if(r.getData_scadenza()!=null && (df.format(r.getData_scadenza()).equals(data_start) || ( r.getData_scadenza().after(df.parse(data_start)) && r.getData_scadenza().before(df.parse(data_end))))) {
@@ -851,11 +854,12 @@ public static void updateManutenzioniObsolete(CampioneDTO campione, Session sess
 }
 
 
-public static void updateTaratureObsolete(CampioneDTO campione, Session session) {
+public static void updateTaratureObsolete(CampioneDTO campione, String tipo_evento,Session session) {
 
-	Query query = session.createQuery("update RegistroEventiDTO set obsoleta='S' where id_campione =:_id_campione and tipo_evento=2  ");
+	Query query = session.createQuery("update RegistroEventiDTO set obsoleta='S' where id_campione =:_id_campione and tipo_evento =:_tipo_evento  ");
 	
 	query.setParameter("_id_campione", campione.getId());
+	query.setParameter("_tipo_evento", Integer.parseInt(tipo_evento));
 	
 	query.executeUpdate();
 	

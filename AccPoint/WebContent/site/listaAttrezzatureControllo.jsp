@@ -72,6 +72,7 @@
 <th>Portata massima</th>
 <th>Frequenza controllo (Mesi)</th>
 <th>Data scadenza</th>
+<th>Company</th>
 <th>Scaduta</th>
 <th>Azioni</th>
 
@@ -105,6 +106,7 @@
 		<td>${attrezzatura.portata_max }</td>		
 	<td>${attrezzatura.frequenza_controllo }</td>		
 <td><fmt:formatDate pattern="dd/MM/yyyy" value="${attrezzatura.data_scadenza }"></fmt:formatDate></td>	
+<td>${attrezzatura.company }</td>		
 		<td>
 	<c:choose>
 
@@ -120,7 +122,7 @@
 	
 	<td>	
 
- 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.tipo.id }','${utl:escapeJS(attrezzatura.descrizione) }','${utl:escapeJS(attrezzatura.modello) }','${utl:escapeJS(attrezzatura.marca) }','${utl:escapeJS(attrezzatura.codice) }','${attrezzatura.data_scadenza }','${attrezzatura.frequenza_controllo }','${attrezzatura.portata_max }')" title="Click per modificare l'attrezzatura"><i class="fa fa-edit"></i></a>
+ 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.tipo.id }','${utl:escapeJS(attrezzatura.descrizione) }','${utl:escapeJS(attrezzatura.modello) }','${utl:escapeJS(attrezzatura.marca) }','${utl:escapeJS(attrezzatura.codice) }','${attrezzatura.data_scadenza }','${attrezzatura.frequenza_controllo }','${attrezzatura.portata_max }','${attrezzatura.company }')" title="Click per modificare l'attrezzatura"><i class="fa fa-edit"></i></a>
 	  <a class="btn btn-primary customTooltip" onClicK="modalAllegati('${attrezzatura.id }')" title="Click per visualizzare gli allegati"><i class="fa fa-archive"></i></a>
  	<a class="btn btn-danger customTooltip" onClicK="modalEliminaAttrezzatura('${attrezzatura.id }')" title="Click per eliminare l'attrezzatura"><i class="fa fa-trash"></i></a>
 
@@ -262,6 +264,18 @@
        	<div class="col-sm-9">      
        	  	
         <input id="codice" name="codice" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+          <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Company</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="company" name="company" class="form-control" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -424,6 +438,18 @@
        	<div class="col-sm-9">      
        	  	
         <input id="codice_mod" name="codice_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Company</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="company_mod" name="company_mod" class="form-control" type="text" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -673,7 +699,7 @@ function assegnaValoreOpzione(){
 		
 
 		$('#'+tag).append(newOption).trigger('change');
-		$('#'+tag).val(0)
+		$('#'+tag+' option[value="'+0+'"]').prop("selected", true)
 		
 		if(tag.includes("tipo_controllo")){
 			$('#nuovo_'+tag).val($('#nuovo_'+tag).val()+$('#descrizione_nuovo_tipo').val()+";");
@@ -691,7 +717,7 @@ function assegnaValoreOpzione(){
 
 
 
-function modalModificaAttrezzatura(id,id_tipo, descrizione, modello, marca, codice, data_scadenza,frequenza_controllo, portata_max){
+function modalModificaAttrezzatura(id,id_tipo, descrizione, modello, marca, codice, data_scadenza,frequenza_controllo, portata_max, company){
 	
 	dataObj = {};
 	
@@ -722,6 +748,7 @@ function modalModificaAttrezzatura(id,id_tipo, descrizione, modello, marca, codi
 	$('#tipo_attrezzatura_mod').change();
 	$('#marca_mod').val(marca);
 	$('#portata_max_mod').val(portata_max);
+	$('#company_mod').val(company);
 	
 	if(data_scadenza!=null && data_scadenza!=''){
 		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));	
@@ -818,8 +845,8 @@ $('#lavoratore').select2();
 $('#lavoratore_mod').select2();
 $('#tipo_scheda').select2();
 $('#lavoratore_scheda').select2();
-$('#company').select2();
-$('#company_mod').select2();
+/* $('#company').select2();
+$('#company_mod').select2(); */
 	
      $('.dropdown-toggle').dropdown();
      $('.datepicker').datepicker({
@@ -863,8 +890,8 @@ $('#company_mod').select2();
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 10 },
-		    	  { responsivePriority: 2, targets: 9 },
+		    	  { responsivePriority: 1, targets: 11 },
+		    	  { responsivePriority: 2, targets: 10 },
 		               ], 	        
 	  	      buttons: [   
 	  	          {

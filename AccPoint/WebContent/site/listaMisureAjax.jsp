@@ -47,6 +47,7 @@
        <th>Codice Interno</th>
    <th>Stato Ricezione</th>
     <th>Obsoleta</th>
+    <th>Note Obsolescenza</th>
      <th>Certificato</th>
      <th>Allegati</th>
      <th>Note Allegati</th>
@@ -70,7 +71,7 @@
 <td>${misura.statoRicezione.nome}</td>
 <td align="center">			
 	<span class="label bigLabelTable <c:if test="${misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${misura.obsoleto == 'N'}">label-success </c:if>">${misura.obsoleto}</span> </td>
-</td>
+<td>${misura.note_obsolescenza }</td>
 <td align="center">			
  <c:set var = "certificato" value = '${arrCartificati[""+misura.id]}'/>
 
@@ -374,7 +375,7 @@
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 1 },
   	                   { responsivePriority: 2, targets: 2 },
-  	                 	{ responsivePriority: 3, targets: 7 },
+  	                 	{ responsivePriority: 3, targets: 8 },
   	                   { responsivePriority: 4, targets: 3 }
   	                
   	                  

@@ -341,9 +341,9 @@ public class RegistroEventi extends HttpServlet {
 					
 					if(tipo_evento.equals("1") && tipo_manutenzione.equals("1")) {
 						GestioneCampione.updateManutenzioniObsolete(campione, session);
-					}else if(tipo_evento.equals("2")) {
+					}else if(tipo_evento.equals("2")||tipo_evento.equals("5")) {
 						
-						GestioneCampioneDAO.updateTaratureObsolete(campione, session);
+						GestioneCampioneDAO.updateTaratureObsolete(campione,tipo_evento, session);
 						
 					}
 					

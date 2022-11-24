@@ -504,15 +504,18 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 		
 		if(registro!=null) {
 			for (RegistroEventiDTO r : registro) {
-				if(tipo_evento.equals("1") && r.getCampione().getFrequenza_manutenzione()!=0) {
+				if(tipo_evento.equals("1")){
+						
+					if(r.getCampione().getFrequenza_manutenzione()!=0) {
 									
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(r.getData_evento());
-					calendar.add(Calendar.MONTH, r.getCampione().getFrequenza_manutenzione());
-					
-					Date date = calendar.getTime();
-					if(df.format(date).equals(data) && !lista.contains(r.getCampione())) {
-						lista.add(r.getCampione());	
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(r.getData_evento());
+						calendar.add(Calendar.MONTH, r.getCampione().getFrequenza_manutenzione());
+						
+						Date date = calendar.getTime();
+						if(df.format(date).equals(data) && !lista.contains(r.getCampione())) {
+							lista.add(r.getCampione());	
+						}
 					}
 				}else  {
 					lista.add(r.getCampione());	

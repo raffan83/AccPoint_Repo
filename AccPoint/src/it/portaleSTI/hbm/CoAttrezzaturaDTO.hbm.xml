@@ -56,6 +56,10 @@
         <property name="data_scadenza" type="java.sql.Date">
             <column name="data_scadenza" />
         </property>
+        
+         <property name="company" type="java.lang.String">
+            <column name="company" />
+        </property>
               
 	</class>
 </hibernate-mapping>

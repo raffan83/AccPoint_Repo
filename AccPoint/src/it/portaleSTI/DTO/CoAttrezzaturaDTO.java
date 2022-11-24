@@ -17,6 +17,7 @@ public class CoAttrezzaturaDTO {
 	private Date data_scadenza;
 	private int frequenza_controllo;
 	private String marca;
+	private String company;
 	
 	Set<CoTipoControlloDTO> listaTipiControllo = new HashSet<CoTipoControlloDTO>();
 	
@@ -86,6 +87,12 @@ public class CoAttrezzaturaDTO {
 	}
 	public void setPortata_max(String portata_max) {
 		this.portata_max = portata_max;
+	}
+	public String getCompany() {
+		return company;
+	}
+	public void setCompany(String company) {
+		this.company = company;
 	}
 	
 	

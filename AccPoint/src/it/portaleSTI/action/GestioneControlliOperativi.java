@@ -158,6 +158,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String frequenza_controllo = ret.get("frequenza_controllo");
 				String marca = ret.get("marca");
 				String portata_max = ret.get("portata_max");
+				String cmp = ret.get("company");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -198,6 +199,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				attrezzatura.setModello(modello);
 				attrezzatura.setMarca(marca);
 				attrezzatura.setPortata_max(portata_max);
+				attrezzatura.setCompany(cmp);
 				if(data_scadenza!=null && !data_scadenza.equals("")) {
 					attrezzatura.setData_scadenza(df.parse(data_scadenza));
 				}
@@ -260,6 +262,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String frequenza_controllo = ret.get("frequenza_controllo_mod");
 				String marca = ret.get("marca_mod");
 				String portata_max = ret.get("portata_max_mod");
+				String cmp = ret.get("company_mod");
 				
 				CoAttrezzaturaDTO attrezzatura = GestioneControlliOperativiBO.getElement(new CoAttrezzaturaDTO(), Integer.parseInt(id_attrezzatura), session);			
 				
@@ -310,6 +313,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				attrezzatura.setModello(modello);
 				attrezzatura.setMarca(marca);
 				attrezzatura.setPortata_max(portata_max);
+				attrezzatura.setCompany(cmp);
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				if(data_scadenza!=null && !data_scadenza.equals("")) {
 					attrezzatura.setData_scadenza(df.parse(data_scadenza));

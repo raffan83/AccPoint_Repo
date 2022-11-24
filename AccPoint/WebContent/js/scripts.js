@@ -22,7 +22,7 @@ function Registrazione() {
 	var cap_ck = /[0-9]{5}/;
 	var login = /^[a-z0-9A-Z\.]{8,50}$/;
 	var letter_num = /^[a-z0-9A-Z\s]{1,}$/;
-	var email_ck=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+	var email_ck=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/
 	var telefono_ck=/[0-9]{8,}$/
 	
 	var user = $("#user").val();
@@ -1391,8 +1391,8 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 			$('#report_button').show();
 			$('#visualizza_report').show();
 			$('#myModalError').modal('show');			
-		
-		  }
+	
+	}	
 	},
 
 	error: function( data, textStatus) {

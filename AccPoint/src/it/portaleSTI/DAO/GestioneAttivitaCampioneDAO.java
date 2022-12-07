@@ -390,6 +390,24 @@ public static ArrayList<HashMap<String, Integer>> getListaRegistroEventiScadenzi
 
     }
 	
+	if(verificazione==null) {
+		query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and tipo_campione.id = 4");
+		lista_campioni = query.list();
+		
+		for (CampioneDTO campioneDTO : lista_campioni) {
+			if(campioneDTO.getDataScadenza()!=null ) {
+				
+				int i=1;
+				if(mapTarature.get(sdf.format(campioneDTO.getDataScadenza()))!=null) {
+					i= mapTarature.get(sdf.format(campioneDTO.getDataScadenza()))+1;
+				}
+				
+				mapTarature.put(sdf.format(campioneDTO.getDataScadenza()), i);
+				
+			}
+		}
+	}
+	
 //	if(verificazione!=null) {
 //		query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and campione_verificazione = 1 and  codice not like '%CDT%'");	
 //	}else {
@@ -481,22 +499,40 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 	
 	}else {
 		
-		
-		if(tipo_evento.equals("1")) {
+		if(verificazione!=0) {
+			if(tipo_evento.equals("1")) {
+				
+				query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = :_tipo_evento and campione.campione_verificazione = :_campione_verificazione and campione.statoCampione!='F' and (obsoleta = null or obsoleta = 'N')");
+				query.setParameter("_tipo_evento", Integer.parseInt(tipo_evento));
+				query.setParameter("_campione_verificazione",verificazione);
+				
+				
+			}else {
+				query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = :_tipo_evento and data_scadenza = :_data_scadenza and campione.campione_verificazione = :_campione_verificazione and campione.statoCampione!='F' and (obsoleta is null or obsoleta = 'N')");
+				query.setParameter("_tipo_evento", Integer.parseInt(tipo_evento));
+				query.setParameter("_campione_verificazione",verificazione);
+				query.setParameter("_data_scadenza",df.parse(data));
 			
-			query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = :_tipo_evento and campione.campione_verificazione = :_campione_verificazione and campione.statoCampione!='F' and (obsoleta = null or obsoleta = 'N')");
-			query.setParameter("_tipo_evento", Integer.parseInt(tipo_evento));
-			query.setParameter("_campione_verificazione",verificazione);
-			registro = (ArrayList<RegistroEventiDTO>) query.list();
-			
+				
+				
+			}
 			
 		}else {
-			query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = :_tipo_evento and data_scadenza = :_data_scadenza and campione.campione_verificazione = :_campione_verificazione and campione.statoCampione!='F' and (obsoleta = null or obsoleta = 'N')");
-			query.setParameter("_tipo_evento", Integer.parseInt(tipo_evento));
-			query.setParameter("_campione_verificazione",verificazione);
-			query.setParameter("_data_scadenza",df.parse(data));
-		
+			if(tipo_evento.equals("1")) {
+				
+				query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = :_tipo_evento and campione.statoCampione!='F' and (obsoleta = null or obsoleta = 'N')");
+				query.setParameter("_tipo_evento", Integer.parseInt(tipo_evento));
 			
+				
+				
+			}else {
+				query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = :_tipo_evento and data_scadenza = :_data_scadenza and campione.statoCampione!='F' and (obsoleta is null or obsoleta = 'N')");
+				query.setParameter("_tipo_evento", Integer.parseInt(tipo_evento));
+				query.setParameter("_data_scadenza",df.parse(data));
+			
+				
+				
+			}
 			
 		}
 		
@@ -522,6 +558,18 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 				}
 			}
 		}
+		
+		if(verificazione==0) {
+			query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and tipo_campione.id = 4 and data_scadenza = :_data_scadenza ");
+			query.setParameter("_data_scadenza",df.parse(data));
+			ArrayList<CampioneDTO> lista_campioni = (ArrayList<CampioneDTO>) query.list();
+			
+			for (CampioneDTO campioneDTO : lista_campioni) {
+	
+				lista.add(campioneDTO);
+			}
+		}
+		
 	}	
 	session.close();
 	return lista;

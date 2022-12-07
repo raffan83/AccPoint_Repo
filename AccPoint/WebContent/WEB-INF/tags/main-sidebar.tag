@@ -272,9 +272,10 @@
             <li><a href="#" onclick="callAction('gestioneVerMisura.do?action=lista',null,true);">Lista Misure</a></li>
     
             <li><a href="#" onclick="callAction('scadenzarioVerificazione.do',null,true);">Scadenzario Strumenti</a></li>
+             <% if(user.checkRuolo("AM") || user.checkRuolo("VE")){%>
             <li><a href="#" onclick="callAction('listaCampioni.do?campioni_verificazione=1',null,true);">Lista Campioni</a></li>
             <li><a href="#" onclick="callAction('scadenziario.do?action=campioni_verificazione&verificazione=1',null,true);">Scadenzario Campioni</a></li>
-            
+            <%} %>
             <% if(user.checkRuolo("AM") || !user.checkRuolo("VC")){%>
              <li><a href="#" onclick="callAction('gestioneVerLegalizzazioneBilance.do?action=lista',null,true);">Accertamento conformità</a></li>
              <li><a href="#" onclick="callAction('gestioneVerDocumenti.do?action=lista',null,true);">Documentazione Tecnica</a></li>
@@ -470,7 +471,7 @@
           </a>
           <ul class="treeview-menu">          
        
-			<li><a href="downloadCalver.do?action=calverdesktop">DasmTar v2.3.7</a></li>
+			<li><a href="downloadCalver.do?action=calverdesktop">DasmTar v2.3.8</a></li>
 
 			<li><a href="downloadCalver.do?action=dasmtarLat">DasmTarLAT v1.0.3</a></li>
 

@@ -705,6 +705,21 @@ public class GestioneCampioneDAO {
 					}
 				}
 			}
+			
+			if(verificazione==0) {
+				query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and tipo_campione.id = 4 and data_scadenza between :_data_inizio and :_data_fine ");
+				query.setParameter("_data_inizio",df.parse(data_start));
+				query.setParameter("_data_fine",df.parse(data_end));
+				ArrayList<CampioneDTO> lista_campioni = (ArrayList<CampioneDTO>) query.list();
+				
+				for (CampioneDTO campioneDTO : lista_campioni) {
+	
+					lista.add(campioneDTO);
+					lista_tipo.add(2);
+					lista_date.add(df.format(campioneDTO.getDataScadenza()));
+				}
+			}
+			
 		}	
 			
 		Gson gson = new Gson(); 
@@ -856,7 +871,7 @@ public static void updateManutenzioniObsolete(CampioneDTO campione, Session sess
 
 public static void updateTaratureObsolete(CampioneDTO campione, String tipo_evento,Session session) {
 
-	Query query = session.createQuery("update RegistroEventiDTO set obsoleta='S' where id_campione =:_id_campione and tipo_evento =:_tipo_evento  ");
+	Query query = session.createQuery("update RegistroEventiDTO set obsoleta='S' where id_campione =:_id_campione and tipo_evento.id =:_tipo_evento  ");
 	
 	query.setParameter("_id_campione", campione.getId());
 	query.setParameter("_tipo_evento", Integer.parseInt(tipo_evento));

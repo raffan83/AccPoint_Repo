@@ -317,6 +317,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				if(data_scadenza!=null && !data_scadenza.equals("")) {
 					attrezzatura.setData_scadenza(df.parse(data_scadenza));
+				}else {
+					attrezzatura.setData_scadenza(null);
 				}
 				
 				if(frequenza_controllo!=null && !frequenza_controllo.equals("")) {

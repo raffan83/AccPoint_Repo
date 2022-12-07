@@ -189,7 +189,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-                <input id="data_controllo" name="data_controllo" class="form-control datepicker" type="text" style="width:100%" >
+                <input id="data_controllo" name="data_controllo" class="form-control datepicker" type="text"  style="width:100%" >
     
        			
        	</div>       	
@@ -491,7 +491,10 @@ $('#attrezzatura').on('change', function() {
 			$('#content_controlli').html(str+"</ul>");
 			
 			frequenza_controllo = datab.attrezzatura.frequenza_controllo;
-			
+
+			$('#data_controllo').val(formatDate(new Date()));
+			$('#data_controllo').change();
+
 		}
 		
 	});

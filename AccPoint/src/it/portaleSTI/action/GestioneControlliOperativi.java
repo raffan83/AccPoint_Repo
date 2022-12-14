@@ -514,7 +514,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
 				CoControlloDTO controllo = GestioneControlliOperativiBO.getElement(new CoControlloDTO(), Integer.parseInt(id_controllo), session);
-				CoAttrezzaturaDTO attrezzatura = GestioneControlliOperativiBO.getElement(new CoAttrezzaturaDTO(), Integer.parseInt(id_attrezzatura), session);			
+				CoAttrezzaturaDTO attrezzatura = GestioneControlliOperativiBO.getElement(new CoAttrezzaturaDTO(), Integer.parseInt(id_attrezzatura.split("_")[0]), session);			
 				
 
 				String esito_generale = "P";

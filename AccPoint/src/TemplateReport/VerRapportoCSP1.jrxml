@@ -208,28 +208,28 @@
 				<text><![CDATA[Data riparazione]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="49" y="759" width="120" height="22" uuid="d8ee5068-a2be-4060-96dc-5da1d21cebb5"/>
+				<reportElement x="49" y="757" width="120" height="22" uuid="d8ee5068-a2be-4060-96dc-5da1d21cebb5"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Data emissione]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="49" y="779" width="120" height="22" uuid="6f5c99ba-cd68-4bbb-a69f-d0fbcae96146"/>
+				<reportElement x="49" y="771" width="120" height="22" uuid="6f5c99ba-cd68-4bbb-a69f-d0fbcae96146"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="386" y="757" width="120" height="22" uuid="9b246a95-9797-4f4a-9b02-0df32a2aab76"/>
+				<reportElement x="386" y="755" width="120" height="22" uuid="9b246a95-9797-4f4a-9b02-0df32a2aab76"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Firma operatore tecnico]]></text>
 			</staticText>
 			<line>
-				<reportElement x="50" y="797" width="119" height="1" uuid="44cdbfd7-9ec3-4705-aca5-09a4c4fb5f54"/>
+				<reportElement x="50" y="787" width="119" height="1" uuid="44cdbfd7-9ec3-4705-aca5-09a4c4fb5f54"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="386" y="798" width="119" height="1" uuid="3c89736b-8aff-4fac-ba2b-eccc784650af"/>
+				<reportElement x="386" y="787" width="119" height="1" uuid="3c89736b-8aff-4fac-ba2b-eccc784650af"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
@@ -319,7 +319,7 @@
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
 			<image hAlign="Center" onErrorType="Blank">
-				<reportElement x="386" y="778" width="120" height="21" uuid="c30cbb0b-8238-4ff1-8796-b42c8ff2bd05"/>
+				<reportElement x="386" y="767" width="120" height="21" uuid="c30cbb0b-8238-4ff1-8796-b42c8ff2bd05"/>
 				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
 			</image>
 			<textField>
@@ -543,6 +543,13 @@
 					<paragraph lineSpacingSize="1.0"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{data_provvedimento_4}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Page">
+				<reportElement x="0" y="790" width="190" height="11" uuid="cf10c580-c58e-4e3e-bcb0-f3002db9f239"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codifica}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

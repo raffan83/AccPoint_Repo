@@ -598,7 +598,7 @@ public class CreateVerRapporto {
 		
 		report.addParameter("registro", misura.getId()+"_"+misura.getVerStrumento().getId()); //MANCA REGISTRO
 		//report.addParameter("procedura", "PT-020 Rev. E"); 
-		report.addParameter("procedura", "PDI-001 Rev. D");
+		report.addParameter("procedura", "PDI-001 Rev. E");
 		
 		if(utente.getFile_firma()!=null) {
 			if(firma!=null) {
@@ -632,6 +632,12 @@ public class CreateVerRapporto {
 		
 		
 		report.addParameter("data_emissione", df.format(new Date()));
+		
+		if(misura.getTipoRisposta()==0) {
+			report.addParameter("codifica", "MOD-PDI001-02 Rev. 0 del 21/12/2022");
+		}else {
+			report.addParameter("codifica", "MOD-PDI001-04 Rev. 0 del 21/12/2022");
+		}
 		
 		
 		
@@ -713,7 +719,11 @@ public class CreateVerRapporto {
 		
 		reportP2.addParameter("data_emissione", df.format(new Date()));
 		
-		
+		if(misura.getTipoRisposta()==0) {
+			reportP2.addParameter("codifica", "MOD-PDI001-02 Rev. 0 del 21/12/2022");
+		}else {
+			reportP2.addParameter("codifica", "MOD-PDI001-04 Rev. 0 del 21/12/2022");
+		}
 				
 		File logo_accredia = new File(PivotTemplateLAT_Image.class.getResource("accredia.png").getPath());
 		File logo_sti = new File(PivotTemplateLAT_Image.class.getResource("logo_sti_indirizzo_ver.png").getPath());
@@ -1088,7 +1098,7 @@ public class CreateVerRapporto {
 								
 								cmp.horizontalList(cmp.text("  - Prova di eccentricità: non applicabile per le condizioni di esclusione previste dalla procedura di verificazione;").setStyle(stl.style().setFontName("Trebuchet MS"))),
 								cmp.horizontalList(cmp.text("  - Prova di accuratezza dispositivo di tara: non applicabile, vedi EN 45501: 2015 par. 4.13.3. e 6.3.5;").setStyle(stl.style().setFontName("Trebuchet MS"))),
-								cmp.horizontalList(cmp.text("  - In fase preliminare è stata eseguita una prova con inversione della posizione dei carichi dal “piatto antagonista” al “piatto merce”, con i medesimi campioni dell’organismo utilizzati durante la prova di linearità. Il test permette di escludere eventuali problematiche del giogo pendolare o dei campioni di corredo;").setStyle(stl.style().setFontName("Trebuchet MS"))),
+								cmp.horizontalList(cmp.text("  - In fase preliminare è stata eseguita una prova con inversione della posizione dei carichi dal “piatto antagonista” al “piatto merce” e viceversa, simulando quanto previsto dalla prova di pesatura. Il test permette di escludere eventuali problematiche del giogo pendolare o dei campioni di corredo;").setStyle(stl.style().setFontName("Trebuchet MS"))),
 								cmp.horizontalList(cmp.text("  - Si individua come piatto di dx (indicato semplicemente con dx) il “PIATTO MERCE”, adiacente la posizione del pomello che aziona il blocco del giogo pendolare (ossia il lato esercente). Con piatto di sx (semplicemente sx) si individua il ricettore di posizionamento delle masse di corredo. Il “piatto merce” è riconoscibile dal diametro maggiore tra i due.").setStyle(stl.style().setFontName("Trebuchet MS")))
 								);
 					
@@ -1121,7 +1131,7 @@ public class CreateVerRapporto {
 					
 					vl_linearita = cmp.verticalList();
 					vl_linearita.add(
-					cmp.text("Prova di Linearità (Rif.UNI CEI EN 45501:2015 - A.4.4.1 - A.4.2.3)").setStyle(boldStyle)
+					cmp.text("Prova di Pesatura (Rif.UNI CEI EN 45501:2015 - A.4.4.1 - A.4.2.3)").setStyle(boldStyle)
 						);
 					nTabLinearita = lista_linearita.size()/3;
 					
@@ -1152,7 +1162,7 @@ public class CreateVerRapporto {
 					vl_linearita =  cmp.verticalList(
 							cmp.text(campo).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(boldStyle),
 							cmp.verticalGap(5),
-							cmp.text("Prova di Linearità (Rif.UNI CEI EN 45501:2015 - A.4.4.1 - A.4.2.3)").setStyle(boldStyle), 
+							cmp.text("Prova di Pesatura (Rif.UNI CEI EN 45501:2015 - A.4.4.1 - A.4.2.3)").setStyle(boldStyle), 
 							cmp.text("Tipo dispositivo di azzeramento: " + azzeramento).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 							cmp.verticalGap(10),
 							subreport_linearita,
@@ -1165,7 +1175,7 @@ public class CreateVerRapporto {
 					vl_linearita =  cmp.verticalList(
 							cmp.text(campo).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(boldStyle),
 							cmp.verticalGap(5),
-							cmp.text("Prova di Linearità (Rif.UNI CEI EN 45501:2015 - A.4.4.1 - A.4.2.3)").setStyle(boldStyle), 
+							cmp.text("Prova di Pesatura (Rif.UNI CEI EN 45501:2015 - A.4.4.1 - A.4.2.3)").setStyle(boldStyle), 
 							cmp.text("Tipo dispositivo di azzeramento: " + azzeramento).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 							cmp.verticalGap(10),
 							subreport_linearita,
@@ -1335,7 +1345,7 @@ public class CreateVerRapporto {
 								vl_accuratezza,
 								cmp.verticalGap(20),
 								vl_mobilita,
-								cmp.verticalGap(20),
+								cmp.verticalGap(15),
 								cmp.text(conformita).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle.setFontSize(12)),
 								cmp.pageBreak()
 								);
@@ -1355,7 +1365,7 @@ public class CreateVerRapporto {
 								cmp.verticalGap(50),
 								vl_mobilita,
 								
-								cmp.verticalGap(30),
+								cmp.verticalGap(25),
 								cmp.text(conformita).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle.setFontSize(12)),
 								cmp.pageBreak()
 								);
@@ -1389,7 +1399,7 @@ public class CreateVerRapporto {
 								vl_criteri,
 								cmp.verticalGap(20),
 								vl_masse_campioni,
-								cmp.verticalGap(65),
+								cmp.verticalGap(60),
 								cmp.text(conformita).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle.setFontSize(12)),
 								cmp.pageBreak()
 								);
@@ -1410,7 +1420,7 @@ public class CreateVerRapporto {
 								vl_criteri,
 								cmp.verticalGap(20),
 								vl_masse_campioni,
-								cmp.verticalGap(65),
+								cmp.verticalGap(60),
 								cmp.text(conformita).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle.setFontSize(12)),
 								cmp.pageBreak()
 								);
@@ -1443,6 +1453,14 @@ public class CreateVerRapporto {
 			
 			String data_emissione = df.format(new Date());
 			
+			String codifica = "";
+			
+			if(misura.getTipoRisposta()==0) {
+				codifica = "MOD-PDI001-03 Rev. 0 del 21/12/2022";
+			}else {
+				codifica = "MOD-PDI001-05 Rev. 0 del 21/12/2022";
+			}
+			
 			if(utente.getFile_firma()!=null) {
 				if(firma!=null) {
 					
@@ -1461,8 +1479,10 @@ public class CreateVerRapporto {
 									cmp.text(""),
 									cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setFixedHeight(18)
 									)
-							)
-							);
+							) ,
+							cmp.text(codifica).setStyle(stl.style().setFontSize(6).setFontName("Trebuchet MS"))
+						
+							).setLastPageFooterSplitType(SplitType.PREVENT);
 				}
 			}else {
 				reportP3.pageFooter(
@@ -1479,8 +1499,10 @@ public class CreateVerRapporto {
 								cmp.horizontalGap(178),
 								cmp.text("........................................")
 								)
-						)
-						);
+						),
+						cmp.text(codifica).setStyle(stl.style().setFontSize(6).setFontName("Trebuchet MS"))
+
+						).setLastPageFooterSplitType(SplitType.PREVENT);
 			}
 			
 			

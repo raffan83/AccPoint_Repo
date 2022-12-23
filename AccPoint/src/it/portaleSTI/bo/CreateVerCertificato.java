@@ -555,6 +555,13 @@ public class CreateVerCertificato {
 			}
 		}
 		
+		if(misura.getTipoRisposta()==0) {
+			report.addParameter("codifica", "MOD-PDI001-03 Rev. 0 del 21/12/2022");
+		}else {
+			report.addParameter("codifica", "MOD-PDI001-05 Rev. 0 del 21/12/2022");
+		}
+		
+		
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
 		JasperPrint jasperPrint1 = report.toJasperPrint();
 		jasperPrintList.add(jasperPrint1);
@@ -600,7 +607,11 @@ public class CreateVerCertificato {
 			}
 		}
 		
-		
+		if(misura.getTipoRisposta()==0) {
+			reportP2.addParameter("codifica", "MOD-PDI001-03 Rev. 0 del 21/12/2022");
+		}else {
+			reportP2.addParameter("codifica", "MOD-PDI001-05 Rev. 0 del 21/12/2022");
+		}
 		reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
 		//reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver_NEW.png"));
 		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	

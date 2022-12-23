@@ -34,7 +34,7 @@
 		</band>
 	</title>
 	<columnHeader>
-		<band height="721" splitType="Stretch">
+		<band height="727" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="44" width="553" height="15" uuid="e7fd7847-ef5e-4a57-9285-a397ccb3e2f3"/>
 				<textElement textAlignment="Center">
@@ -198,14 +198,14 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 				<text><![CDATA[Nota: segnare per ciascun controllo della “check list” la corrispondente casella SÌ/NO o N/A (non applicabile) con la lettera “X” maiuscola.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="170" y="643" width="110" height="31" uuid="2b805536-08e4-436a-b359-685dea285284"/>
+				<reportElement x="170" y="610" width="110" height="31" uuid="2b805536-08e4-436a-b359-685dea285284"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Controllo preliminare]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="280" y="643" width="140" height="31" uuid="90b5751c-ef3d-4fcc-a91b-2feff54851e8"/>
+				<reportElement x="280" y="610" width="140" height="31" uuid="90b5751c-ef3d-4fcc-a91b-2feff54851e8"/>
 				<textElement verticalAlignment="Middle">
 					<font pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -452,28 +452,28 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 				<textFieldExpression><![CDATA[$P{x_103}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="49" y="677" width="120" height="22" uuid="b6cfdaf7-0bac-45f9-8bfd-bde08c63ccfb"/>
+				<reportElement x="49" y="644" width="120" height="22" uuid="b6cfdaf7-0bac-45f9-8bfd-bde08c63ccfb"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Data emissione]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="49" y="697" width="120" height="22" uuid="aa3fbbaf-8ead-4312-bdfb-df56fd1efec6"/>
+				<reportElement x="49" y="664" width="120" height="22" uuid="aa3fbbaf-8ead-4312-bdfb-df56fd1efec6"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="386" y="675" width="120" height="22" uuid="c6aec85e-a8c8-49c6-9fcd-f70472c43510"/>
+				<reportElement x="386" y="642" width="120" height="22" uuid="c6aec85e-a8c8-49c6-9fcd-f70472c43510"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Firma operatore tecnico]]></text>
 			</staticText>
 			<line>
-				<reportElement x="49" y="713" width="120" height="1" uuid="042a2cf9-9530-48c4-ac14-bcfad8da2535"/>
+				<reportElement x="49" y="680" width="120" height="1" uuid="042a2cf9-9530-48c4-ac14-bcfad8da2535"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="388" y="713" width="120" height="1" uuid="ba046c1c-38d7-4852-8b17-a15bf8350a36"/>
+				<reportElement x="388" y="680" width="120" height="1" uuid="ba046c1c-38d7-4852-8b17-a15bf8350a36"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
@@ -507,7 +507,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
 			<image hAlign="Center" onErrorType="Blank">
-				<reportElement x="386" y="690" width="120" height="21" uuid="7e90a7b9-6c95-4354-a4ee-beeaf8501699"/>
+				<reportElement x="386" y="657" width="120" height="21" uuid="7e90a7b9-6c95-4354-a4ee-beeaf8501699"/>
 				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
 			</image>
 			<staticText>
@@ -527,6 +527,13 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Rapporto di verificazione periodica numero:]]></text>
 			</staticText>
+			<textField evaluationTime="Page">
+				<reportElement x="0" y="716" width="190" height="11" uuid="3aeb9e35-4c68-4f80-981d-8e2195067d4c"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codifica}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 </jasperReport>

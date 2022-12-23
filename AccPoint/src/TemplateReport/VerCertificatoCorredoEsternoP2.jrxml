@@ -34,7 +34,7 @@
 		</band>
 	</title>
 	<columnHeader>
-		<band height="732" splitType="Stretch">
+		<band height="739" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="2" width="551" height="21" uuid="9485e1bc-c5e7-4038-809b-c08c12821669"/>
 				<textElement textAlignment="Center"/>
@@ -286,6 +286,13 @@
 			<line>
 				<reportElement x="314" y="165" width="120" height="1" uuid="891c1834-e83d-462d-92f0-b707c6a463a2"/>
 			</line>
+			<textField evaluationTime="Page">
+				<reportElement x="0" y="728" width="190" height="11" uuid="af1d2d66-f013-427b-871a-ba92850bb847"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codifica}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 </jasperReport>

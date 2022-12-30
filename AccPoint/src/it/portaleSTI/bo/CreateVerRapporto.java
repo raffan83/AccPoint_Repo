@@ -2310,7 +2310,12 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 			if(lista_accuratezza.size()>0) {
 				if(lista_accuratezza.get(0).getTipoTara()==2) {
 					
-					dataSource.add("N/A", "N/A", "N/A","N/A","N/A","N/A");
+					if(tipologia_strumento == 2) {
+						dataSource.add("N/A", "N/A", "N/A","N/A","N/A","N/A", "N/A");
+					}else {
+						dataSource.add("N/A", "N/A", "N/A","N/A","N/A","N/A");
+					}
+				
 					
 				}else {
 					for (VerAccuratezzaDTO item : lista_accuratezza) {				

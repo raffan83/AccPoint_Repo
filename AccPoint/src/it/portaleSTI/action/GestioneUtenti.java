@@ -353,12 +353,7 @@ public class GestioneUtenti extends HttpServlet {
 		    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
 	    	 				utente.setCompany(company);
 	    	 			}
-	    	 			if(tipoutente != null && tipoutente.equals("1")) {
-	    	 				utente.setTrasversale(1);
-	    	 			}else {
-	    	 				utente.setTrasversale(0);
-	    	 			}
-	    	 			
+
 	    	 			
     	 				if(fileItem != null && fileItem.getName() != null && !fileItem.getName().equals("")) {
 	    	    	 			File directory =new File(Costanti.PATH_FOLDER+"//Curriculum");

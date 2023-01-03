@@ -60,7 +60,14 @@
 		                        </c:otherwise>
 		                        </c:choose>
 		                      <c:forEach items="${listaClienti}" var="cliente">
-		                           <option value="${cliente.key}">${cliente.value}</option>                   
+		                        <c:choose>
+		                       <c:when test="${userObj.isTras() }">
+		                       <option value="${cliente.key}">${cliente.value}</option>  
+		                       </c:when>
+		                        <c:otherwise>
+		                           <option value="${cliente.key}_${userObj.company.id }">${cliente.value}</option>   
+		                           </c:otherwise>
+		                        </c:choose>                
 		                     </c:forEach>
 		                    </select>
 		              </div>

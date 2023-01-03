@@ -35,7 +35,14 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="738" splitType="Stretch">
+		<band height="739" splitType="Stretch">
+			<textField evaluationTime="Page">
+				<reportElement x="0" y="728" width="190" height="11" uuid="cecd97e7-ec11-4962-a962-06f1b24aedf7"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codifica}]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="1" y="64" width="553" height="20" uuid="b8e0f4e7-62b8-4d12-bf2d-1b8314702609"/>
 				<textElement textAlignment="Center">
@@ -305,7 +312,7 @@
 				<text><![CDATA[Data emissione]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="49" y="715" width="120" height="22" uuid="d0766b49-be31-4776-b767-a92850a23e12"/>
+				<reportElement x="49" y="712" width="120" height="22" uuid="d0766b49-be31-4776-b767-a92850a23e12"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
@@ -315,13 +322,13 @@
 				<text><![CDATA[Firma operatore tecnico]]></text>
 			</staticText>
 			<line>
-				<reportElement x="50" y="733" width="119" height="1" uuid="24f280a9-9810-43f2-bbeb-6eb3a77a2039"/>
+				<reportElement x="50" y="729" width="119" height="1" uuid="24f280a9-9810-43f2-bbeb-6eb3a77a2039"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="386" y="733" width="119" height="1" uuid="3668e53c-2298-4cc4-9e89-fe5e216b9003"/>
+				<reportElement x="386" y="730" width="119" height="1" uuid="3668e53c-2298-4cc4-9e89-fe5e216b9003"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
@@ -374,7 +381,7 @@
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
 			<image hAlign="Center" onErrorType="Blank">
-				<reportElement x="386" y="715" width="120" height="21" uuid="8b92832b-3fcf-4702-800c-26d9d976e7fb"/>
+				<reportElement x="386" y="710" width="120" height="21" uuid="8b92832b-3fcf-4702-800c-26d9d976e7fb"/>
 				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
 			</image>
 			<staticText>

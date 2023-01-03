@@ -36,5 +36,9 @@
             <column name="note" />
         </property>
         
+            <many-to-one name="stato" class="it.portaleSTI.DTO.CoStatoControlloDTO" fetch="join" lazy="false">
+            <column name="co_stato_controllo" />
+        </many-to-one>
+        
 	</class>
 </hibernate-mapping>

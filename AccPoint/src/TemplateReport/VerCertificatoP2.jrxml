@@ -217,6 +217,13 @@
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement stretchType="ContainerHeight" x="0" y="728" width="171" height="11" uuid="39876608-94b7-4bca-a852-ae3f4cb7e440"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codifica}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 </jasperReport>

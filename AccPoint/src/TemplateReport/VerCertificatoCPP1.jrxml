@@ -592,6 +592,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tipo_approvazione_4}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement stretchType="ContainerHeight" x="0" y="728" width="180" height="11" uuid="dcf41eb2-ee9a-4ff4-9da7-475969203db0"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codifica}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 </jasperReport>

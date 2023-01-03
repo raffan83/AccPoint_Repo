@@ -165,7 +165,7 @@ public class CreateSchedaScadenzarioCampioni {
 				{
 					ArrayList<String> arrayPs = new ArrayList<String>();
 					String tipo = "";
-					if(campioni.get(i).getDataScadenza()!=null && !campioni.get(i).getCodice().equals("NA")) 
+					if(!campioni.get(i).getCodice().equals("NA")) 
 					{
 	 				arrayPs.add(campioni.get(i).getCodice());
 	 				arrayPs.add(campioni.get(i).getNome());

@@ -113,7 +113,11 @@ public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato,int fil
 		}
 		
 	}else {
-		s_query ="from VerCertificatoDTO certificato WHERE certificato.misura.verIntervento.id_cliente = :_id_cliente and certificato.misura.verIntervento.id_sede = :_id_sede"; 
+		s_query ="from VerCertificatoDTO certificato WHERE certificato.misura.verIntervento.id_cliente = :_id_cliente and certificato.misura.verIntervento.id_sede = :_id_sede";
+		
+		if(company!=null && !company.equals("")) {
+			s_query = s_query +" and certificato.misura.verIntervento.company.id =:_company";
+		}
 	}		
 	
 	if(obsoleti) {

@@ -34,7 +34,7 @@
 		</band>
 	</title>
 	<columnHeader>
-		<band height="723" splitType="Stretch">
+		<band height="733" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="44" width="553" height="15" uuid="eb03d2e5-d2eb-494e-a877-943a0193a247"/>
 				<textElement textAlignment="Center">
@@ -441,28 +441,28 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 				<textFieldExpression><![CDATA[$P{x_83}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="49" y="677" width="120" height="22" uuid="f6fb0dc2-7e28-4b90-bffb-2cc3fdfafe83"/>
+				<reportElement x="49" y="675" width="120" height="22" uuid="f6fb0dc2-7e28-4b90-bffb-2cc3fdfafe83"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Data emissione]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="49" y="697" width="120" height="22" uuid="8367488b-0d6d-44b1-b166-d99fb0b34496"/>
+				<reportElement x="49" y="695" width="120" height="22" uuid="8367488b-0d6d-44b1-b166-d99fb0b34496"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="386" y="675" width="120" height="22" uuid="290610c5-d65d-4848-b59b-02be378f9405"/>
+				<reportElement x="386" y="674" width="120" height="22" uuid="290610c5-d65d-4848-b59b-02be378f9405"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Firma operatore tecnico]]></text>
 			</staticText>
 			<line>
-				<reportElement x="49" y="713" width="120" height="1" uuid="6b506e64-fc80-479c-886a-7a842ee6b472"/>
+				<reportElement x="49" y="711" width="120" height="1" uuid="6b506e64-fc80-479c-886a-7a842ee6b472"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="388" y="713" width="120" height="1" uuid="c67fe8fd-258d-418e-b15e-fe8315d20735"/>
+				<reportElement x="388" y="715" width="120" height="1" uuid="c67fe8fd-258d-418e-b15e-fe8315d20735"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
@@ -496,7 +496,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
 			<image hAlign="Center" onErrorType="Blank">
-				<reportElement x="386" y="690" width="120" height="21" uuid="139b02ed-64f8-4490-9249-f5347ce68a39"/>
+				<reportElement x="386" y="689" width="120" height="21" uuid="139b02ed-64f8-4490-9249-f5347ce68a39"/>
 				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
 			</image>
 			<staticText>
@@ -649,6 +649,13 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 				<reportElement x="281" y="629" width="20" height="14" uuid="b9c1e365-23ad-43e8-9f2a-4588ef37d9be"/>
 				<text><![CDATA[NO]]></text>
 			</staticText>
+			<textField evaluationTime="Page">
+				<reportElement x="0" y="722" width="190" height="11" uuid="8eb272fe-0120-4f65-a3c7-39e16046d09b"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codifica}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 </jasperReport>

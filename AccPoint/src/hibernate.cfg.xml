@@ -219,6 +219,7 @@
  	<mapping class="CoAttrezzaturaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CoAttrezzaturaDTO.hbm.xml"/>
  	<mapping class="CoAttrezzaturaTipoControlloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CoAttrezzaturaTipoControlloDTO.hbm.xml"/>	
  	<mapping class="CoAllegatoAttrezzaturaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CoAllegatoAttrezzaturaDTO.hbm.xml"/>
+ 	<mapping class="CoStatoControlloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CoStatoControlloDTO.hbm.xml"/>
  	
  	<mapping class="NoteSicurezzaCommessaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/NoteSicurezzaCommessaDTO.hbm.xml"/>
   </session-factory>

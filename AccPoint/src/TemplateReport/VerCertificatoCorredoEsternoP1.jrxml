@@ -438,6 +438,13 @@
 				<reportElement x="1" y="419" width="119" height="18" uuid="03921246-aa2f-486d-bdea-ed41843e026d"/>
 				<textFieldExpression><![CDATA[$P{tipo_data_marcatura}]]></textFieldExpression>
 			</textField>
+			<textField evaluationTime="Page">
+				<reportElement x="0" y="728" width="190" height="11" uuid="e46008d1-f966-4cee-a721-17cb2265aebc"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codifica}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 </jasperReport>

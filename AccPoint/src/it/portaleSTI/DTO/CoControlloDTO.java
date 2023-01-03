@@ -10,6 +10,7 @@ public class CoControlloDTO {
 	private Date data_controllo;
 	private Date data_prossimo_controllo;
 	private String note;
+	private CoStatoControlloDTO stato;
 	
 	public int getId() {
 		return id;
@@ -52,6 +53,12 @@ public class CoControlloDTO {
 	}
 	public void setNote(String note) {
 		this.note = note;
+	}
+	public CoStatoControlloDTO getStato() {
+		return stato;
+	}
+	public void setStato(CoStatoControlloDTO stato) {
+		this.stato = stato;
 	}
 	
 	

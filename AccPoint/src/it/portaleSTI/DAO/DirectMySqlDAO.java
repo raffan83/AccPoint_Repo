@@ -627,8 +627,10 @@ public class DirectMySqlDAO {
 		}
 		finally
 		{
-			pstINS.close();
-		
+			if(pstINS!=null) 
+			{
+				pstINS.close();
+			}
 		}	
 	}
 	public static void insertListaCampioniLAT(Connection conSQLLite, CompanyDTO cmp)  throws Exception {

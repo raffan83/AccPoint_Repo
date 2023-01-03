@@ -458,6 +458,11 @@
 			  
 			  <li><a href="gestioneTabelle.do"><i class="glyphicon glyphicon-th"></i>Gestione Tabelle</a></li>
 			  <li><a href="gestioneTipoStrumento.do"><i class="glyphicon glyphicon-wrench"></i>Gestione Tipo Strumento</a></li>
+			  		<% if(user.checkRuolo("AM")){%>
+							<li>
+								<a href="gestioneVersionePortale.do"><i class="fa fa-code-fork""></i>Gestione Versioni Portale</a>
+							</li>
+						<% }%>
           </ul>
            
         </li>

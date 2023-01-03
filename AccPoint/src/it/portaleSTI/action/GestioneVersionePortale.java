@@ -78,7 +78,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				request.getSession().setAttribute("lista_versioni", lista_versioni);
 				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneVersionePortale.jsp");
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneVersionePortale.jsp");
 		     	dispatcher.forward(request,response);
 				
 			}

@@ -28,11 +28,12 @@ import it.portaleSTI.DTO.TipoTrendDTO;
 import it.portaleSTI.DTO.TrendDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneBachecaBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneTrendBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
-import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneVersionePortaleBO;
 
 /**
  * Servlet implementation class Login
@@ -64,6 +65,8 @@ public class Login extends HttpServlet {
 				
 				GestioneUtenteBO.updateUltimoAccesso(utente.getId());
 				
+				 
+			        
 				if(utente.checkRuolo("CL")) {
 	
 	
@@ -198,7 +201,8 @@ public class Login extends HttpServlet {
 			        request.getSession().setAttribute("id_Cliente",utente.getIdCliente());
 			        request.getSession().setAttribute("id_Sede",utente.getIdSede());
 			      
-	
+			     
+			        
 					dispatcher = getServletContext().getRequestDispatcher("/site/dashboardCliente.jsp");
 					
 				}else {
@@ -259,6 +263,9 @@ public class Login extends HttpServlet {
 	        String pwd=request.getParameter("pwd");
 	        
 	        UtenteDTO utente=GestioneAccessoDAO.controllaAccesso(user,pwd);
+	        
+	        String versione_portale = GestioneVersionePortaleBO.getVersioneCorrente(session);
+	        request.getSession().setAttribute("versione_portale",versione_portale);
 	        
 	        if(utente!=null && utente.getAbilitato()==1)
 	        {

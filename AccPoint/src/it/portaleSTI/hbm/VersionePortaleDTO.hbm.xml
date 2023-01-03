@@ -4,7 +4,7 @@
 <!-- Generated 15-feb-2017 11.20.27 by Hibernate Tools 3.4.0.CR1 -->
 
 <hibernate-mapping>
-    <class name="it.portalECI.DTO.VersionePortaleDTO" table="versione_portale">
+    <class name="it.portaleSTI.DTO.VersionePortaleDTO" table="versione_portale">
         <id name="id" type="int">
             <column name="id" />
             <generator class="native" />

@@ -222,5 +222,6 @@
  	<mapping class="CoStatoControlloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CoStatoControlloDTO.hbm.xml"/>
  	
  	<mapping class="NoteSicurezzaCommessaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/NoteSicurezzaCommessaDTO.hbm.xml"/>
+  	<mapping class="VersionePortaleDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VersionePortaleDTO.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

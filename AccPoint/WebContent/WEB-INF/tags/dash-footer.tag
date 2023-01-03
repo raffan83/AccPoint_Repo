@@ -29,5 +29,5 @@
     </div>
     <!-- Default to the left -->
     <strong>Copyright &copy; 2020 <a href="#">NCS NETWORK COMMERCIAL SYSTEMS S.R.L.</a></strong> All rights reserved.
-    
+    <strong class="pull-right">Versione ${versione_portale }</strong> 
   </footer>

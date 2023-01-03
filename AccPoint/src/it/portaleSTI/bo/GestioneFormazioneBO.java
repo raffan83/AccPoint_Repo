@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,6 +45,8 @@ import com.google.gson.JsonObject;
 import com.itextpdf.text.Annotation;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.AcroFields.Item;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
@@ -538,6 +543,38 @@ public class GestioneFormazioneBO {
 		        workbook.close();
 		  
 		}
+	
+	public static void importaQuestionario() throws Exception {
+		
+		
+		PdfReader pdfReader = new PdfReader("C:\\Users\\antonio.dicivita\\Desktop\\test certificato.pdf");
+		 PdfReader.unethicalreading = true;
+		 
+			
+			String timestamp = ""+System.currentTimeMillis();
+		 
+		  //  PdfStamper stamper = new PdfStamper(pdfReader, new FileOutputStream("C:\\Users\\antonio.dicivita\\Desktop\\"+timestamp+".pdf"));
+		   
+		    //AcroFields acroFields = pdfReader.getAcroFields();
+		//    AcroFields acroFields = stamper.getAcroFields();
+		    AcroFields acroFields = pdfReader.getAcroFields();
+		    
+		    Map<String, Item> fields = acroFields.getFields();
+		    Set<Entry<String, Item>> entrySet = fields.entrySet();
+		    for (Entry<String, Item> entry : entrySet) {
+
+		    	String x = acroFields.getField(entry.getKey());
+		    	System.out.println(x);
+		    //	acroFields.setField(entry.getKey(), "");
+		        
+		    }
+		
+		
+	}
+	
+	public static void main(String[] args) throws Exception{
+		importaQuestionario();
+	}
 
 	public static JsonObject importaDaPDF(FileItem fileItem,ClienteDTO cl, SedeDTO sd, Session session) throws Exception {
 		

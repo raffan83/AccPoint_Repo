@@ -47,6 +47,10 @@
 <div class="row">
 <div class="col-xs-12">
 
+<button class="btn btn-primary pull-left" id="attivi_btn" disabled onClick="filtraControlli('NO')"> Attivi</button>
+<button class="btn btn-primary pull-left" id="obsoleti_btn"  style="margin-left:5px" onClick="filtraControlli('SI')"> Obsoleti</button>
+<button class="btn btn-primary pull-left" id="tutti_btn"  style="margin-left:5px"  onClick="filtraControlli('')">Tutti</button>
+
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
 <a class="btn btn-primary pull-right" onClick="modalNuovoControllo()"><i class="fa fa-plus"></i> Nuovo Controllo Operativo</a> 
 
@@ -69,6 +73,8 @@
 <th>Data prossimo controllo</th>
 <th>Esito Generale</th>
 <th>Note</th>
+<th>Stato</th>
+<th>Obsoleti</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -76,7 +82,17 @@
  
  	<c:forEach items="${lista_controlli}" var="controllo" varStatus="loop">
 	<c:if test="${controllo.disabilitato ==0 }">
- 	<tr id="row_${loop.index}" >
+	
+ 	<c:if test="${controllo.stato.id==1 }">
+
+ 	<tr id="row_${loop.index}">
+ 	</c:if>
+ 	<c:if test="${controllo.stato.id==2 }">
+	<tr id="row_${loop.index}" style="background-color:#F8F26D" >
+	</c:if>
+	 	<c:if test="${controllo.stato.id==3 }">
+	<tr id="row_${loop.index}" style="background-color:#FA8989" >
+	</c:if>
 
 	<td>${controllo.id }</td>	
 	<td>${controllo.attrezzatura.descrizione }</td>
@@ -93,11 +109,17 @@
 		</td>	
 	
 	<td>${controllo.note }</td>
-
+<td>${controllo.stato.descrizione }</td>
+<td>
+<c:if test="${controllo.obsoleto == 1 }">SI</c:if>
+<c:if test="${controllo.obsoleto == 0 }">NO</c:if>
+</td>
 	<td>	
 <a class="btn btn-info customTooltip" onClicK="modalModificaControllo('${controllo.id }', '${controllo.attrezzatura.id }', '${controllo.data_controllo}', '${controllo.data_prossimo_controllo }', '${utl:escapeJS(controllo.note) }', '${controllo.attrezzatura.frequenza_controllo }', true)" title="Click per aprire il dettaglio"><i class="fa fa-search"></i></a>
   <a class="btn btn-warning customTooltip" onClicK="modalModificaControllo('${controllo.id }', '${controllo.attrezzatura.id }', '${controllo.data_controllo}', '${controllo.data_prossimo_controllo }', '${utl:escapeJS(controllo.note) }', '${controllo.attrezzatura.frequenza_controllo }', false)" title="Click per modificare il controllo"><i class="fa fa-edit"></i></a>
 	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaControllo('${controllo.id }')" title="Click per eliminare il controllo"><i class="fa fa-trash"></i></a>
+	  <a class="btn btn-primary customTooltip" onClicK="modalDuplicaControllo('${controllo.id }', '${controllo.attrezzatura.id }', '${controllo.data_controllo}', '${controllo.data_prossimo_controllo }', '${utl:escapeJS(controllo.note) }', '${controllo.attrezzatura.frequenza_controllo }', true)" title="Click per duplicare il dettaglio"><i class="fa fa-copy"></i></a>
+	  
  	 
 
 	</td>
@@ -501,7 +523,29 @@ $('#attrezzatura').on('change', function() {
 	
 });
 
-
+function filtraControlli(filtro){
+	  table
+      .columns( 8 )
+      .search( filtro )
+      .draw();
+	  if(filtro==''){
+		  $("#obsoleti_btn").prop("disabled",false);
+		  $("#attivi_btn").prop("disabled",false);
+		  $("#tutti_btn").prop("disabled",true);
+	  }
+	  else if(filtro=='SI'){
+		  $("#obsoleti_btn").prop("disabled",true);
+		  $("#attivi_btn").prop("disabled",false);
+		  $("#tutti_btn").prop("disabled",false);
+	  }
+	  else{
+		  $("#obsoleti_btn").prop("disabled",false);
+		  $("#attivi_btn").prop("disabled",true);
+		  $("#tutti_btn").prop("disabled",false);
+	  }
+	  
+	 
+}
 
 
 $('#filtro_frequenza').change(function(){
@@ -823,6 +867,40 @@ function modalModificaControllo(id,id_attrezzatura, data_controllo, data_prossim
 
 
 
+function modalDuplicaControllo(id,id_attrezzatura, data_controllo, data_prossimo_controllo, note, frequenza, dettaglio){
+	
+	$('#filtro_frequenza').change();
+	
+
+
+	if(data_controllo!=null && data_controllo!=''){
+		$('#data_controllo').val(Date.parse(data_controllo).toString("dd/MM/yyyy"));	
+	}
+	if(data_prossimo_controllo!=null && data_prossimo_controllo!=''){
+		$('#data_prossimo_controllo').val(Date.parse(data_prossimo_controllo).toString("dd/MM/yyyy"));	
+	}
+	
+	
+	$('#note').val(note);
+
+	frequenza_controllo = frequenza;
+	
+	$('#attrezzatura').val(id_attrezzatura+"_"+frequenza);
+
+	$('#attrezzatura').change();
+		
+	
+
+	$('#dettaglio').val(0);
+	
+	$('#modalNuovoControllo').modal()
+	
+	
+	
+}
+
+
+
 
 
 var columsDatatables = [];
@@ -873,6 +951,8 @@ function aggiungiOpzione(tag){
 }
 
 $(document).ready(function() {
+	
+	
  
 	
 	$('#filtro_frequenza').change()
@@ -949,7 +1029,7 @@ $('.select2').select2();
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 3 },
+		    	  { responsivePriority: 1, targets: 9 },
 		    	  
 		    	  
 		               ], 	        
@@ -1001,7 +1081,7 @@ $('.select2').select2();
 	
 	
 
-	
+	filtraControlli('NO');
 	
 });
 

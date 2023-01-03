@@ -8,6 +8,7 @@ import org.hibernate.criterion.Restrictions;
 
 import it.portaleSTI.DTO.CoAllegatoAttrezzaturaDTO;
 import it.portaleSTI.DTO.CoAttrezzaturaTipoControlloDTO;
+import it.portaleSTI.DTO.CoControlloDTO;
 
 public class GestioneControlliOperativiDAO {
 
@@ -89,6 +90,20 @@ public class GestioneControlliOperativiDAO {
 		
 
 		return  lista;
+	}
+
+	public static ArrayList<CoControlloDTO> getListaControlliAttrezzatura(int id_attrezzatura, Session session) {
+
+		ArrayList<CoControlloDTO> lista = null;	
+
+		Query query = session.createQuery("from CoControlloDTO where id_attrezzatura =:_id_attrezzatura and disabilitato = 0");
+		query.setParameter("_id_attrezzatura", id_attrezzatura);
+		
+		lista =(ArrayList<CoControlloDTO>) query.list();
+		
+
+		return  lista;
+			
 	}
 
 }

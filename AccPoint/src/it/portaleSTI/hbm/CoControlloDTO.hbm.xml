@@ -40,5 +40,9 @@
             <column name="co_stato_controllo" />
         </many-to-one>
         
+        
+        	<property name="obsoleto" type="int">
+            <column name="obsoleto" />
+        </property>
 	</class>
 </hibernate-mapping>

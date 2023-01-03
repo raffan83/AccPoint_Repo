@@ -880,7 +880,7 @@ public class CreateVerRapporto {
 					 vl_ripetibilita= cmp.verticalList(
 							 cmp.text(campo).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(boldStyle),
 								cmp.text("Prova di Ripetibilità (Rif.UNI CEI EN 45501:2015 - A.4.10)").setStyle(boldStyle),			
-								cmp.verticalGap(8),
+								cmp.verticalGap(5),
 								hl_ripetibilita, 
 								cmp.verticalGap(5),
 								cmp.horizontalList(cmp.text(ceq).setFixedWidth(150),cmp.horizontalGap(250), 
@@ -987,19 +987,19 @@ public class CreateVerRapporto {
 						cmp.text("Prova di Decentramento (Rif.UNI CEI EN 45501:2015 - A.4.7)").setStyle(boldStyle),
 						//cmp.verticalGap(5),
 						cmp.text("Tipologie di ricettori di carico").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle),
-						cmp.verticalGap(4),
+						cmp.verticalGap(3),
 						hl_ricettori,
 						hl_rettangoli,
-						cmp.verticalGap(5),
+						cmp.verticalGap(3),
 //						cmp.horizontalList(cmp.text("Punti di appoggio decentrati: "+ appoggio),
 //								cmp.horizontalGap(20), 
 //								cmp.text("Carico: " + Utility.changeDotComma(lista_decentramento.get(i*10).getCarico().stripTrailingZeros().toPlainString()) +" " + misura.getVerStrumento().getUm())),
 						cmp.horizontalList(cmp.text("Punti di appoggio decentrati: "+ appoggio),cmp.horizontalGap(20), cmp.text("Strumento \"Speciale\": "+ speciale)),
 						//cmp.verticalGap(5),
 						//cmp.text("Strumento \"Speciale\": "+ speciale),		
-						cmp.verticalGap(5),
+						cmp.verticalGap(3),
 						cmp.horizontalList(cmp.horizontalGap(100),subreport_decentramento),
-						cmp.verticalGap(5),
+						cmp.verticalGap(3),
 						cmp.horizontalList(cmp.horizontalGap(400),cmp.text("ESITO: "+ esito_decentramento).setStyle(boldStyle))
 						);
 				
@@ -1010,19 +1010,19 @@ public class CreateVerRapporto {
 							cmp.text("Prova di Decentramento (Rif.UNI CEI EN 45501:2015 - A.4.7)").setStyle(boldStyle),
 							cmp.verticalGap(5),
 							cmp.text("Tipologie di ricettori di carico").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(boldStyle),
-							cmp.verticalGap(8),
+							cmp.verticalGap(5),
 							hl_ricettori,
 							hl_rettangoli,
-							cmp.verticalGap(8),
+							cmp.verticalGap(5),
 //							cmp.horizontalList(cmp.text("Punti di appoggio decentrati: "+ appoggio),
 //									cmp.horizontalGap(20), 
 //									cmp.text("Carico: " + Utility.changeDotComma(lista_decentramento.get(i*10).getCarico().stripTrailingZeros().toPlainString()) +" " + misura.getVerStrumento().getUm())),
 							cmp.horizontalList(cmp.text("Punti di appoggio decentrati: "+ appoggio)),
-							cmp.verticalGap(5),
+							cmp.verticalGap(3),
 							cmp.text("Strumento \"Speciale\": "+ speciale),		
-							cmp.verticalGap(8),
+							cmp.verticalGap(3),
 							cmp.horizontalList(cmp.horizontalGap(100),subreport_decentramento),
-							cmp.verticalGap(8),
+							cmp.verticalGap(5),
 							cmp.horizontalList(cmp.horizontalGap(400),cmp.text("ESITO: "+ esito_decentramento).setStyle(boldStyle))
 							);
 				}
@@ -1326,7 +1326,7 @@ public class CreateVerRapporto {
 				int vartical_gap = 0;
 				
 				if(misura.gettInizio()!=0 && misura.gettFine()!=0) {
-					vartical_gap = 7;
+					vartical_gap = 5;
 				}else {
 					vartical_gap = 50;
 				}

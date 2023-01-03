@@ -11,6 +11,7 @@ public class CoControlloDTO {
 	private Date data_prossimo_controllo;
 	private String note;
 	private CoStatoControlloDTO stato;
+	private int obsoleto;
 	
 	public int getId() {
 		return id;
@@ -59,6 +60,12 @@ public class CoControlloDTO {
 	}
 	public void setStato(CoStatoControlloDTO stato) {
 		this.stato = stato;
+	}
+	public int getObsoleto() {
+		return obsoleto;
+	}
+	public void setObsoleto(int obsoleto) {
+		this.obsoleto = obsoleto;
 	}
 	
 	

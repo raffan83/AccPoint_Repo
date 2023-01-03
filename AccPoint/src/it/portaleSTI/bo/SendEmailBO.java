@@ -957,8 +957,10 @@ DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 	  //email.addTo("giuseppe.gabriele@stisrl.com");
 	  //email.addTo("sara.massaro@stisrl.com");
+String nominativo = "";
 if(attivita.getDevice().getDipendente()!=null && attivita.getDevice().getDipendente().getEmail()!=null && !attivita.getDevice().getDipendente().getEmail().equals("")) {
 	email.addTo(attivita.getDevice().getDipendente().getEmail());
+	nominativo = "Gentile "+attivita.getDevice().getDipendente().getNome()+" "+attivita.getDevice().getDipendente().getCognome()+" <br>";
 }
 
 String[] to = referenti.split(";");
@@ -981,7 +983,7 @@ for (String string : to) {
 //				  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
 		  
 		  
-	  email.setHtmlMsg(messaggio.replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;")
+	  email.setHtmlMsg(nominativo+messaggio.replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;")
 				  
 			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
 

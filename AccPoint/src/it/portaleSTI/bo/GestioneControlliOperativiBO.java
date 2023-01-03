@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DAO.GestioneControlliOperativiDAO;
 import it.portaleSTI.DTO.CoAllegatoAttrezzaturaDTO;
 import it.portaleSTI.DTO.CoAttrezzaturaTipoControlloDTO;
+import it.portaleSTI.DTO.CoControlloDTO;
 
 public class GestioneControlliOperativiBO {
 
@@ -38,6 +39,12 @@ public class GestioneControlliOperativiBO {
 	public static ArrayList<CoAllegatoAttrezzaturaDTO> getListaAllegatiAttrezzatura(int id_attrezzatura, Session session) {
 		// 
 		return GestioneControlliOperativiDAO.getListaAllegatiAttrezzatura(id_attrezzatura, session);
+	}
+
+
+	public static ArrayList<CoControlloDTO> getListaControlliAttrezzatura(int id, Session session) {
+
+		return GestioneControlliOperativiDAO.getListaControlliAttrezzatura(id, session);
 	}
 
 }

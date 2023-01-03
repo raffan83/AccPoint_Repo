@@ -3,6 +3,7 @@
 <%@page import="it.portaleSTI.DTO.MagPaccoDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="it.portaleSTI.DTO.ClienteDTO"%>
+<%@page import="java.util.Date"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
@@ -880,14 +881,18 @@
                 </select>
 		</div>
 		<div class="form-group">
+	<%-- 	<jsp:useBean id="currentYear" class="java.util.Date" />
+		<fmt:formatDate value="${currentYear}" pattern="yyyy" /> --%>
 		  <label for="anno_scn">Anno:</label>
 		 <select class="form-control select2" data-placeholder="Seleziona Anno Di Riferimento..." id="anno_scn" name="anno_scn" style="width:100%" required>
 			  <option value=""></option>
+		 
               <option value="2018">2018</option>
               <option value="2019">2019</option>
               <option value="2020">2020</option>
               <option value="2021">2021</option>
-              <option value="2022" selected>2022</option>
+              <option value="2022" >2022</option>
+               <option value="2023" selected>2023</option>
                 </select>
 		</div>
         <div class="form-group">

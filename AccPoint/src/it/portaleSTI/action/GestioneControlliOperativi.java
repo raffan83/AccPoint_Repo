@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -32,6 +34,7 @@ import it.portaleSTI.DTO.CoAllegatoAttrezzaturaDTO;
 import it.portaleSTI.DTO.CoAttrezzaturaDTO;
 import it.portaleSTI.DTO.CoAttrezzaturaTipoControlloDTO;
 import it.portaleSTI.DTO.CoControlloDTO;
+import it.portaleSTI.DTO.CoStatoControlloDTO;
 import it.portaleSTI.DTO.CoTipoAttrezzaturaDTO;
 import it.portaleSTI.DTO.CoTipoControlloDTO;
 import it.portaleSTI.DTO.CompanyDTO;
@@ -416,6 +419,15 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				CoAttrezzaturaDTO attrezzatura = GestioneControlliOperativiBO.getElement(new CoAttrezzaturaDTO(), Integer.parseInt(id_attrezzatura.split("_")[0]), session);			
 				
+				ArrayList<CoControlloDTO> lista_controlli_attrezzatura = GestioneControlliOperativiBO.getListaControlliAttrezzatura(attrezzatura.getId(), session);
+				
+				for (CoControlloDTO coControlloDTO : lista_controlli_attrezzatura) {
+										
+					
+					coControlloDTO.setObsoleto(1);
+					session.update(coControlloDTO);
+				}
+				
 				String esito_generale = "P";
 				
 				for (String string : lista_esiti) {
@@ -444,8 +456,26 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				ctr.setEsito_generale(esito_generale);
 				ctr.setNote(note);
+				CoStatoControlloDTO stato = new CoStatoControlloDTO();
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				calendar.add(Calendar.DAY_OF_MONTH,-10);
+				
+				Date data10 = calendar.getTime();
+				
+				
+				if(df.parse(data_prossimo_controllo).after(new Date())) {
+					stato.setId(1);
+				}else if(df.parse(data_prossimo_controllo).after(data10) && (df.parse(data_prossimo_controllo).before(new Date()) || df.parse(data_prossimo_controllo).equals(new Date()))){
+					stato.setId(2);
+				}else {
+					stato.setId(3);
+				}
+				ctr.setStato(stato);
 				
 				session.save(ctr);
+				
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();

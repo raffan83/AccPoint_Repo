@@ -60,7 +60,8 @@
  													<div class="clearfix"></div>
  													<div class="row" style="margin-top:20px;">
 														<div class="col-lg-12">
-														<a class="btn btn-primary" onClick="modalNuovaVersione()"><i class="fa fa-plus"> Nuova versione</i></a>
+														<button class="btn btn-primary" onClick="modalNuovaVersione()"><i class="fa fa-plus"></i> Nuova versione</button>
+														 
 														</div>
 														</div>
 													<div class="row" style="margin-top:20px;">
@@ -103,6 +104,8 @@
             						<!-- /.box-body -->
           						</div>
           						<!-- /.box -->
+        					</div>
+        					</div>
         					</div>
         					<!-- /.col -->
 

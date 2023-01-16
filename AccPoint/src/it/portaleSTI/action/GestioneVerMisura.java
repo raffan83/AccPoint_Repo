@@ -130,11 +130,12 @@ public class GestioneVerMisura extends HttpServlet {
 				esito_globale = false;			
 			}
 			
+			if(misura.getSeqRisposte().length()>4) {
 			String[] arrayRisposte = misura.getSeqRisposte().substring(0, misura.getSeqRisposte().length()-4).split(";");
-			if(new ArrayList<String>(Arrays.asList(arrayRisposte)).contains("1")) {
-				esitoCheck= "0";
+				if(new ArrayList<String>(Arrays.asList(arrayRisposte)).contains("1")) {
+					esitoCheck= "0";
+				}
 			}
-			
 			request.getSession().setAttribute("lista_ripetibilita", lista_ripetibilita);
 			request.getSession().setAttribute("lista_decentramento", lista_decentramento);
 			request.getSession().setAttribute("lista_linearita", lista_linearita);

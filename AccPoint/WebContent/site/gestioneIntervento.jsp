@@ -497,6 +497,9 @@
 
 <jsp:attribute name="extra_css">
 
+ <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.css"> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.2.2/ol.css">
+
 
 </jsp:attribute>
 
@@ -505,7 +508,12 @@
  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDssNibshh7Dy58qH70-1ooKXu5z9Ybk-o&region=IT"></script> -->
  <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyCuBQxPwqQMTjowOqSX4z-7wZtgZDXNaVI&sensor=false"></script> -->
  <!-- <script src="http://www.openlayers.org/api/OpenLayers.js"></script>  -->
- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js"></script>
+ <!-- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js"></script> -->
+
+<script src="https://cdn.jsdelivr.net/npm/ol@v7.2.2/dist/ol.js"></script> 
+
+
+ 
  <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <!-- <script src="plugins/jbdemonte-gmap3/dist/gmap3.min.js"></script> -->
  
@@ -608,13 +616,9 @@
 
 			var vectorLayer = new ol.layer.Vector({
 			  source: vectorSource
-			});
-		
-		   var map = new ol.Map({			
-			  controls : ol.control.defaults({
-       		  attribution : false,
-       		  rotate: false,       		 
-  		  }),
+			});		
+  		  
+  		 	   var map = new ol.Map({		
 			    target: 'map',
 			    layers: [
 			      new ol.layer.Tile({

@@ -72,7 +72,10 @@ public class Scadenziario extends HttpServlet {
 		
 		if(action == null) {
 			
+		
 			request.getSession().setAttribute("verificazione", null);
+			String lat = request.getParameter("lat");
+			request.getSession().setAttribute("lat", lat);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenziario.jsp");
 		    dispatcher.forward(request,response);// TODO Auto-generated method stub
@@ -180,6 +183,7 @@ public class Scadenziario extends HttpServlet {
 	}else if(action.equals("campioni_verificazione")) {
 		
 		request.getSession().setAttribute("verificazione", "1");
+		request.getSession().setAttribute("lat", null);
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenziario.jsp");
 	    dispatcher.forward(request,response);// TODO Auto-generated method stub

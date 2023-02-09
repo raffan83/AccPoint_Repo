@@ -207,7 +207,7 @@
               </c:if>
                <c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li></c:if>
                
-               <c:if test="${utente.checkPermesso('REGISTRO_EVENTI_CAMPIONE')}"> <li class=""><a href="#registro_eventi" data-toggle="tab" aria-expanded="false"   id="registro_eventiTab"> Registro Eventi</a></li></c:if>
+               <%-- <c:if test="${utente.checkPermesso('REGISTRO_EVENTI_CAMPIONE')}"> <li class=""><a href="#registro_eventi" data-toggle="tab" aria-expanded="false"   id="registro_eventiTab"> Registro Eventi</a></li></c:if> --%>
                
                 <li class=""><a href="#registro_attivita" data-toggle="tab" aria-expanded="false"   id="registro_attivitaTab"> Registro Attivita</a></li>
                 
@@ -1468,14 +1468,14 @@ var listaStrumenti = ${listaCampioniJson};
 
 		 }
 		 
-		 if(campioneSelected.codice.startsWith('CDT')){
+/* 		 if(campioneSelected.codice.startsWith('CDT')){
 			 $('#registro_eventiTab').hide();
 			 $('#registro_attivitaTab').show();
 		 }else{
 			 $('#registro_attivitaTab').hide();
 			 $('#registro_eventiTab').show();
 		 }
-   	    
+   	     */
 
   		
      	});

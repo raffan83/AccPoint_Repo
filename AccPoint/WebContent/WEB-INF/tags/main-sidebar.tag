@@ -135,7 +135,8 @@
 			 <% if(user.checkRuolo("AM") || (user.checkPermesso("CAMPIONI_MENU_METROLOGIA") && !user.checkRuolo("PV"))){%>
 			<li><a href="listaCampioniPrenotabili.do">Campioni  Prenotabili</a></li>
 			<li><a href="scadenziario.do">Scadenziario</a></li>
-			<li><a href="scadenziario.do?action=campioni&scadenzario_lat_generale=1">Scadenziario LAT</a></li>
+			<!-- <li><a href="scadenziario.do?action=campioni&scadenzario_lat_generale=1">Scadenziario LAT</a></li> -->
+			<li><a href="scadenziario.do?lat=CDT">Scadenziario LAT</a></li>
 			  <% }%>
           </ul>
         </li>

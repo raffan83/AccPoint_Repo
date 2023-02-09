@@ -82,17 +82,22 @@
  
  	<c:forEach items="${lista_controlli}" var="controllo" varStatus="loop">
 	<c:if test="${controllo.disabilitato ==0 }">
-	
- 	<c:if test="${controllo.stato.id==1 }">
+	<c:choose>
+	<c:when test="${controllo.stato.id==1 }">
 
  	<tr id="row_${loop.index}">
- 	</c:if>
- 	<c:if test="${controllo.stato.id==2 }">
+ 	</c:when>
+ 	<c:when test="${controllo.stato.id==2 }">
 	<tr id="row_${loop.index}" style="background-color:#F8F26D" >
-	</c:if>
-	 	<c:if test="${controllo.stato.id==3 }">
+	</c:when>
+	 	<c:when test="${controllo.stato.id==3 && controllo.obsoleto == 0}">
 	<tr id="row_${loop.index}" style="background-color:#FA8989" >
-	</c:if>
+	</c:when>
+	<c:otherwise>
+	<tr id="row_${loop.index}">
+	</c:otherwise>
+	</c:choose>
+ 	
 
 	<td>${controllo.id }</td>	
 	<td>${controllo.attrezzatura.descrizione }</td>

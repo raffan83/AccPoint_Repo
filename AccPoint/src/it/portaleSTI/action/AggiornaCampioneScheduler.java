@@ -20,7 +20,7 @@ public class AggiornaCampioneScheduler implements Job{
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 
 		try {
-			DirectMySqlDAO.updateStatoCampioneScheduler();
+			//DirectMySqlDAO.updateStatoCampioneScheduler();
 			InterventoDTO intervento=  new InterventoDTO();
 			intervento.setId(100);
 			GestioneStrumentoDAO.getListaStrumentiIntervento(intervento);

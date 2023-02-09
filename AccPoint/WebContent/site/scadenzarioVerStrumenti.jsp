@@ -196,8 +196,8 @@ $(document).ready(function() {
 	 	});
 	  	
 	  	if(start!=null && start!=""){
-	 	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
-	 	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
+	 	 	$('#datarange').data('daterangepicker').setStartDate(start);
+	 	 	$('#datarange').data('daterangepicker').setEndDate(end);
 	 	
 	 	 }
 	

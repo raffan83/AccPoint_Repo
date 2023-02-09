@@ -131,6 +131,23 @@
             <column name="campione_verificazione" />
         </property>
    
+   
+           <property name="dataManutenzione" type="java.util.Date">
+            <column name="data_manutenzione" />
+        </property>
+        
+                <property name="dataScadenzaManutenzione" type="java.util.Date">
+            <column name="data_scadenza_manutenzione" />
+        </property>
+        
+                <property name="dataVerificaIntermedia" type="java.util.Date">
+            <column name="data_verifica_intermedia" />
+        </property>
+        
+                <property name="dataScadenzaVerificaIntermedia" type="java.util.Date">
+            <column name="data_scadenza_verifica_intermedia" />
+        </property>
+   
 <!--             <set name="listaDocumentiEsterni" table="documenti_esterni_campione"
 				inverse="true" lazy="false" fetch="select" >
             <key>

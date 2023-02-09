@@ -88,7 +88,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <c:if test="${(attivita.tipo_attivita.id==2 || attivita.tipo_attivita.id==3) }">
 <button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.campo_sospesi }','${utl:escapeJS(attivita.operatore.nominativo) }','${attivita.certificato.misura.nCertificato }','${attivita.certificato.misura.id }','${utl:encryptData(attivita.certificato.misura.id)}')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data}','${attivita.tipo_manutenzione }','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.campo_sospesi) }','${attivita.operatore.id }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.certificato.id }', '${attivita.pianificata }')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
+<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data}','${attivita.tipo_manutenzione }','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.campo_sospesi) }','${attivita.operatore.id }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.certificato.id }', '${attivita.pianificata }', '${attivita.numero_certificato }')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
  <c:if test="${attivita.allegato!=null && !attivita.allegato.equals('') }">
  	<button class="btn customTooltip btn-danger" onClick="callAction('gestioneAttivitaCampioni.do?action=download_allegato&id_attivita=${utl:encryptData(attivita.id)}')" title="Click per scaricare l'allegato"><i class="fa fa-file-pdf-o"></i></button>
  </c:if>
@@ -155,11 +155,72 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
         </div>
        </div>      
        
-       <div id="content">
+    <div id="content"> 
+       
+       <%--
+       <div id="content_1" >
+       
+        <div class="form-group">
+         
+        <div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione" id="select_tipo_manutenzione" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+			  <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>
+			 <div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">
+	     	 <input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div></div>
+        			 
+        </div><div class="form-group">
+			 <div class="col-sm-2"><label class="pull-left">Operatore:</label></div><div class="col-sm-4">
+			 <select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div></div>
+			 <div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>
+			 <div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div><div class="row"><div class="col-sm-2"><span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Allegato...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_all" name="fileupload_all" type="file"></span></div><div class="col-xs-5"><label id="label_file"></label></div> </div>
+	</div>
+
+	 
+    <div id="content_2" style="display:none">
+		
+		 
+		<div class="form-group"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>
+	     	 <div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">
+	     	 <input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>
+	     	</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interna</label><br><input  id="check_esterna" name="check_esterna" type="checkbox"/>
+	     	<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>
+	     	<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>
+	     	<div class="col-sm-2"><label>Note:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>  	
+	     	<div class="col-sm-2"><label class="pull-right">Certificato:</label></div><div class="col-sm-2"><input class="form-control" id="id_certificato" name="id_certificato" type="text" readonly/></div>
+	     	<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>
+	</div>
+		 
+  <div id="content_3" style="display:none">
+			
+		<div class="form-group"><div class="col-sm-2"><label >Ente:</label></div><div class="col-sm-4"><input class="form-control" id="ente" name="ente" type="text"/></div>
+     	<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">
+     	<input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>
+     	</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interna</label><br><input  id="check_esterna" name="check_esterna" type="checkbox"/>
+     	<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>
+     	<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>')
+     	<div class="col-sm-2"><label>Note:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>
+     	<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>
+     	<div class="col-sm-2" style="margin-top:15px"><label>Certificato:</label></div><div class="col-sm-4" style="margin-top:15px"><input class="form-control" id="id_certificato" name="id_certificato" type="text" readonly/></div><div>
+     	<div class="col-sm-2" style="margin-top:15px"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>
+	
+		 
+	 </div>
+	 
+	  <div id="content_4" style="display:none">
+			
+		 <div class='form-group'>			
+			 <div class='col-sm-2'><label>Operatore:</label></div><div class='col-sm-4'>
+			 <select class='form-control select2' data-placeholder='Seleziona Operatore...' id='operatore' name='operatore'><option value=''></option><c:forEach items='${lista_utenti}' var='utente'><option value='${utente.id}'>${utente.nominativo}</option></c:forEach></select></div></div>
+			 <div class='form-group'> <div class='col-sm-2'><label >Descrizione Attività:</label></div>
+			 <div class='col-sm-10'><textarea rows='5' style='width:100%' id='descrizione' name='descrizione' required></textarea></div></div><div class='row'><div class='col-sm-2'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Allegato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_all' name='fileupload_all' type='file'></span></div><div class='col-xs-5'><label id='label_file'></label></div> </div>
+ 
+       
+       
+       </div>
+        --%>
    
   
    
-	</div>    
+	 </div>     
 
   		 </div>
       <div class="modal-footer">
@@ -707,19 +768,32 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	 var str_html="";
 	
 	 if($(this).val()==1){		 
+
+		 str_html=' <div class="form-group"> <div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione" id="select_tipo_manutenzione" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
+			.concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')
+			.concat('	 <div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">')
+			.concat('<input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div></div>')
+	        .concat('</div><div class="form-group">')
+	        .concat(' <div class="col-sm-2"><label class="pull-left">Operatore:</label></div><div class="col-sm-4">')
+	        .concat(' <select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div></div>')
+	        .concat(' <div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
+	        .concat(' <div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div><div class="row"><div class="col-sm-2"><span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Allegato...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_all" name="fileupload_all" type="file"></span></div><div class="col-xs-5"><label id="label_file"></label></div> </div>')
 		 
-		
-		 str_html='<div class="form-group"><div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione" id="select_tipo_manutenzione" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
+		 
+		/*  str_html='<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">'
+			 .concat('<input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')	
+		 .concat('<div class="form-group"><div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione" id="select_tipo_manutenzione" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>')
 			 .concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')	
 			 .concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4">')
 			 .concat('<select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div></div>')
 			 .concat('<div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
-			 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div><div class="row"><div class="col-sm-2"><span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Allegato...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_all" name="fileupload_all" type="file"></span></div><div class="col-xs-5"><label id="label_file"></label></div> </div>');
+			 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div><div class="row"><div class="col-sm-2"><span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Allegato...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_all" name="fileupload_all" type="file"></span></div><div class="col-xs-5"><label id="label_file"></label></div> </div>'); */
 	 }
 	 
 	 else if($(this).val()==2 ){
 		
-		 
+
+		 if(${campione.getCodice().startsWith('CDT')}){	 
 		 str_html = '<div class="form-group"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>'
 	     	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">')
 	     	 .concat('<input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
@@ -730,27 +804,52 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	     	.concat('<div class="col-sm-2"><label class="pull-right">Certificato:</label></div><div class="col-sm-2"><input class="form-control" id="id_certificato" name="id_certificato" type="text" readonly/></div>')
 	     	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
 	
-		 
+	 }else{
+		 	str_html = '<div class="row"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore">'
+		       	.concat('<option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div><div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div>')
+			    .concat('<div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura"><input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div></div>')
+		        .concat('</div><div class="row"><div class="col-sm-2"><label >Laboratorio:</label></div><div class="col-sm-4"> <input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interno</label><br> <input  id="check_esterna" name="check_esterna" type="checkbox"/>')
+			    .concat('<label >Esterno  </label> <input type="text" class ="form-control pull-right" style="width:60%" id="presso" name="presso" readonly></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
+			    .concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div></div><br><div class="row"><div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
+			    .concat('<div class="col-sm-2"><label class="pull-right">Numero Certificato:</label></div><div class="col-sm-3"><input class="form-control" id="numero_certificato" name="numero_certificato" type="text"/></div></div><div class="row"><div class="col-sm-2">')
+			    .concat('<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload" name="fileupload" type="file"></span></div><div class="col-xs-5"><label id="label_file"></label></div></div>');
+		
+	 }
 	 }
 	 else if($(this).val()==3){
+		 
+
+		 
+		 if(${campione.getCodice().startsWith('CDT')}){
+			 str_html = '<div class="form-group"><div class="col-sm-2"><label >Ente:</label></div><div class="col-sm-4"><input class="form-control" id="ente" name="ente" type="text"/></div>'
+		     	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">')
+		     	 .concat('<input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
+		     	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interna</label><br><input  id="check_esterna" name="check_esterna" type="checkbox"/>')
+		     	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
+		     	.concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>')
+		     	.concat('<div class="col-sm-2"><label>Note:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
+		     	.concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>')
+		     	.concat('<div class="col-sm-2" style="margin-top:15px"><label>Certificato:</label></div><div class="col-sm-4" style="margin-top:15px"><input class="form-control" id="id_certificato" name="id_certificato" type="text" readonly/></div><div>')
+		     	.concat('<div class="col-sm-2" style="margin-top:15px"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
+		 }else{
+				str_html = '<div class="row"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore">'
+			       	.concat('<option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div><div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div>')
+				    .concat('<div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura"><input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div></div>')
+			        .concat('</div><div class="row"><div class="col-sm-2"><label >Laboratorio:</label></div><div class="col-sm-4"> <input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interno</label><br> <input  id="check_esterna" name="check_esterna" type="checkbox"/>')
+				    .concat('<label >Esterno  </label> <input type="text" class ="form-control pull-right" style="width:60%" id="presso" name="presso" readonly></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
+				    .concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div></div><br><div class="row"><div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
+				    .concat('<div class="col-sm-2"><label class="pull-right">Numero Certificato:</label></div><div class="col-sm-3"><input class="form-control" id="numero_certificato" name="numero_certificato" type="text"/></div></div><div class="row"><div class="col-sm-2">')
+				    .concat('<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload" name="fileupload" type="file"></span></div><div class="col-xs-5"><label id="label_file"></label></div></div>');
+		 }
 			
-		 str_html = '<div class="form-group"><div class="col-sm-2"><label >Ente:</label></div><div class="col-sm-4"><input class="form-control" id="ente" name="ente" type="text"/></div>'
-     	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">')
-     	 .concat('<input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
-     	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interna</label><br><input  id="check_esterna" name="check_esterna" type="checkbox"/>')
-     	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
-     	.concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>')
-     	.concat('<div class="col-sm-2"><label>Note:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
-     	.concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>')
-     	.concat('<div class="col-sm-2" style="margin-top:15px"><label>Certificato:</label></div><div class="col-sm-4" style="margin-top:15px"><input class="form-control" id="id_certificato" name="id_certificato" type="text" readonly/></div><div>')
-     	.concat('<div class="col-sm-2" style="margin-top:15px"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
-	
+		 
 		 
 	 }
 	 
 	 
 	 else if($(this).val()==4){
 			
+
 		 str_html="<div class='form-group'>"				
 			 .concat("<div class='col-sm-2'><label>Operatore:</label></div><div class='col-sm-4'>")
 			 .concat("<select class='form-control select2' data-placeholder='Seleziona Operatore...' id='operatore' name='operatore'><option value=''></option><c:forEach items='${lista_utenti}' var='utente'><option value='${utente.id}'>${utente.nominativo}</option></c:forEach></select></div></div>")
@@ -809,16 +908,40 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	
 	 if($(this).val()==1){
 		 
-		 str_html='<div class="form-group"><div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione_mod" id="select_tipo_manutenzione_mod" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
+		 
+/* 		 str_html=' <div class="form-group"> <div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione" id="select_tipo_manutenzione" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
+				.concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')
+				.concat('	 <div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">')
+				.concat('<input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div></div>')
+		        .concat('</div><div class="form-group">')
+		        .concat(' <div class="col-sm-2"><label class="pull-left">Operatore:</label></div><div class="col-sm-4">')
+		        .concat(' <select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div></div>')
+		        .concat(' <div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
+		        .concat(' <div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div><div class="row"><div class="col-sm-2"><span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Allegato...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_all" name="fileupload_all" type="file"></span></div><div class="col-xs-5"><label id="label_file"></label></div> </div>')
+			 */
+		 
+		          str_html=' <div class="form-group"> <div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione_mod" id="select_tipo_manutenzione_mod" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
+				.concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')
+				.concat('	 <div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura_mod">')
+				.concat('<input class="form-control  required" id="data_scadenza_mod" type="text" name="data_scadenza_mod" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div></div>')
+		        .concat('</div><div class="form-group">')	  
+		 .concat('<div class="col-sm-2"><label class="pull-left">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore_mod" name="operatore_mod" style="width:100%"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div></div>')
+		 .concat('<div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
+		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione_mod" name="descrizione_mod" required></textarea></div></div><div class="row"><div class="col-sm-2"><span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Allegato...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_all_mod" name="fileupload_all_mod" type="file"></span></div><div class="col-xs-5"><label id="label_file_mod"></label></div> </div>')
+		 
+		 
+		/*  str_html='<div class="form-group"><div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione_mod" id="select_tipo_manutenzione_mod" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
 		 .concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')	  
 		 .concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore_mod" name="operatore_mod" style="width:100%"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div></div>')
 		 .concat('<div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
-		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione_mod" name="descrizione_mod" required></textarea></div></div><div class="row"><div class="col-sm-2"><span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Allegato...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_all_mod" name="fileupload_all_mod" type="file"></span></div><div class="col-xs-5"><label id="label_file_mod"></label></div> </div>')
+		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione_mod" name="descrizione_mod" required></textarea></div></div><div class="row"><div class="col-sm-2"><span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Allegato...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_all_mod" name="fileupload_all_mod" type="file"></span></div><div class="col-xs-5"><label id="label_file_mod"></label></div> </div>') */
 
 	 }
 	 
 	 else if($(this).val()==2){
 			
+		 
+	 if(${campione.getCodice().startsWith('CDT')}){
 		 str_html = '<div class="form-group"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore_mod" name="operatore_mod" style="width:100%"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>'
      	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura_mod">')
      	 .concat('<input class="form-control  required" id="data_scadenza_mod" type="text" name="data_scadenza_mod" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
@@ -829,23 +952,50 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      	.concat('<div class="col-sm-2"><label class="pull-right">Certificato:</label></div><div class="col-sm-2"><input class="form-control" id="id_certificato_mod" name="id_certificato_mod" type="text" readonly/></div>')
      	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
 	
-		 
+	 }else{
+		 str_html = '<div class="row"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore_mod" name="operatore_mod" style="width:100%">'
+		       	.concat('<option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div><div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div>')
+			    .concat('<div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura_mod"><input class="form-control  required" id="data_scadenza_mod" type="text" name="data_scadenza_mod" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div></div>')
+		        .concat('</div><div class="row"><div class="col-sm-2"><label >Laboratorio:</label></div><div class="col-sm-4"> <input id="check_interna_mod" name="check_interna_mod" type="checkbox"/><label >Interno</label><br> <input  id="check_esterna_mod" name="check_esterna_mod" type="checkbox"/>')
+			    .concat('<label >Esterno  </label> <input type="text" class ="form-control pull-right" style="width:60%" id="presso_mod" name="presso_mod" readonly></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea_mod" name="check_idonea_mod" type="checkbox" checked/><label >Idonea</label><br>')
+			    .concat('<input  id="check_non_idonea_mod" name="check_non_idonea_mod" type="checkbox"/><label >Non Ideonea</label></div></div><br><div class="row"><div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
+			    .concat('<div class="col-sm-2"><label class="pull-right">Numero Certificato:</label></div><div class="col-sm-3"><input class="form-control" id="numero_certificato_mod" name="numero_certificato_mod" type="text"/></div></div><div class="row"><div class="col-sm-2">')
+			    .concat('<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_mod" name="fileupload_mod" type="file"></span></div><div class="col-xs-5"><label id="label_file_mod"></label></div></div>');
 	 }
+ }
 	 else if($(this).val()==3){
-			
-		 str_html = '<div class="form-group"><div class="col-sm-2"><label >Ente:</label></div><div class="col-sm-4"><input class="form-control" id="ente_mod" name="ente_mod" type="text"/></div>'
-     	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura_mod">')
-     	 .concat('<input class="form-control  required" id="data_scadenza_mod" type="text" name="data_scadenza_mod" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
-     	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna_mod" name="check_interna_mod" type="checkbox"/><label >Interna</label><br><input  id="check_esterna_mod" name="check_esterna_mod" type="checkbox"/>')
-     	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea_mod" name="check_idonea_mod" type="checkbox" /><label >Idonea</label><br>')
-     	.concat('<input  id="check_non_idonea_mod" name="check_non_idonea_mod" type="checkbox"/><label >Non Ideonea</label></div>')
-     	.concat('<div class="col-sm-2"><label>Note:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
-     	.concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore_mod" name="operatore_mod" style="width:100%"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>')
-     	.concat('<div class="col-sm-2" style="margin-top:15px"><label>Certificato:</label></div><div class="col-sm-4" style="margin-top:15px"><input class="form-control" id="id_certificato_mod" name="id_certificato_mod" type="text" readonly/></div><div>')
-     	.concat('<div class="col-sm-2" style="margin-top:15px"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
 	
 		 
+		 if(${campione.getCodice().startsWith('CDT')}){
+				
+			 str_html = '<div class="form-group"><div class="col-sm-2"><label >Ente:</label></div><div class="col-sm-4"><input class="form-control" id="ente_mod" name="ente_mod" type="text"/></div>'
+	     	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura_mod">')
+	     	 .concat('<input class="form-control  required" id="data_scadenza_mod" type="text" name="data_scadenza_mod" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
+	     	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna_mod" name="check_interna_mod" type="checkbox"/><label >Interna</label><br><input  id="check_esterna_mod" name="check_esterna_mod" type="checkbox"/>')
+	     	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea_mod" name="check_idonea_mod" type="checkbox" /><label >Idonea</label><br>')
+	     	.concat('<input  id="check_non_idonea_mod" name="check_non_idonea_mod" type="checkbox"/><label >Non Ideonea</label></div>')
+	     	.concat('<div class="col-sm-2"><label>Note:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
+	     	.concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore_mod" name="operatore_mod" style="width:100%"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>')
+	     	.concat('<div class="col-sm-2" style="margin-top:15px"><label>Certificato:</label></div><div class="col-sm-4" style="margin-top:15px"><input class="form-control" id="id_certificato_mod" name="id_certificato_mod" type="text" readonly/></div><div>')
+	     	.concat('<div class="col-sm-2" style="margin-top:15px"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
+		
+		 }else{
+			 str_html = '<div class="row"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore_mod" name="operatore_mod" style="width:100%">'
+			       	.concat('<option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div><div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div>')
+				    .concat('<div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura_mod"><input class="form-control  required" id="data_scadenza_mod" type="text" name="data_scadenza_mod" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div></div>')
+			        .concat('</div><div class="row"><div class="col-sm-2"><label >Laboratorio:</label></div><div class="col-sm-4"> <input id="check_interna_mod" name="check_interna_mod" type="checkbox"/><label >Interno</label><br> <input  id="check_esterna_mod" name="check_esterna_mod" type="checkbox"/>')
+				    .concat('<label >Esterno  </label> <input type="text" class ="form-control pull-right" style="width:60%" id="presso_mod" name="presso_mod" readonly></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea_mod" name="check_idonea_mod" type="checkbox" checked/><label >Idonea</label><br>')
+				    .concat('<input  id="check_non_idonea_mod" name="check_non_idonea_mod" type="checkbox"/><label >Non Ideonea</label></div></div><br><div class="row"><div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
+				    .concat('<div class="col-sm-2"><label class="pull-right">Numero Certificato:</label></div><div class="col-sm-3"><input class="form-control" id="numero_certificato_mod" name="numero_certificato_mod" type="text"/></div></div><div class="row"><div class="col-sm-2">')
+				    .concat('<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_mod" name="fileupload_mod" type="file"></span></div><div class="col-xs-5"><label id="label_file_mod"></label></div></div>');
+		 }
+		 
+		 
+		 
+		 
 	 }
+	 
+
 	 
 	 else if($(this).val()==4){
 			
@@ -955,7 +1105,7 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
  };
  
  
- function modificaAttivita(id, tipo_attivita, descrizione, data, tipo_manutenzione, ente, data_scadenza, campo_sospesi, operatore, etichettatura, stato, id_certificato, pianificata){
+ function modificaAttivita(id, tipo_attivita, descrizione, data, tipo_manutenzione, ente, data_scadenza, campo_sospesi, operatore, etichettatura, stato, id_certificato, pianificata, numero_certificato){
 	 
 	 if(pianificata == 1){
 		 
@@ -990,14 +1140,18 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	 $('#id_attivita').val(id);
 	 $('#operatore_mod').val(operatore);
 	 $('#operatore_mod').change();
+	 var date = formatDate(data_scadenza);
+	 $('#data_scadenza_mod').val(date);
 	 
 	 $('#id_certificato_mod').val(id_certificato);
 	 if(tipo_attivita==2 || tipo_attivita==3){
 		 $('#ente_mod').val(ente);
-		 var date = formatDate(data_scadenza);
-		 $('#data_scadenza_mod').val(date);
+		
 		 $('#campo_sospesi_mod').val(campo_sospesi);
 		 
+		 if(numero_certificato!=null){
+			 $('#numero_certificato_mod').val(numero_certificato);
+		 }
 		 
 		 if(etichettatura=='Interna'){
 			 $('#check_interna_mod').prop("checked", true); 
@@ -1070,7 +1224,7 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 			format: "yyyy-mm-dd"
 		});
 	 	
-	  $('#modalCertificati').css("overflow", "hidden");
+	  $('#modalCertificati').css("overflow", "visible");
 	  $('#modalModificaAttivita').css("overflow", "hidden");
 	  $('#modalNuovaAttivita').css("overflow", "hidden");
  tab = $('#tabAttivitaCampione').DataTable({
@@ -1328,7 +1482,10 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
 		  if($('#select_tipo_attivita').val()==2){
 			  frequenza =  <%=campione.getFrequenza_verifica_intermedia()%>
 		  }
-		  else{
+		  else if($('#select_tipo_attivita').val()==1){
+			  frequenza =  <%=campione.getFrequenza_manutenzione()%>
+		  }
+		  else if($('#select_tipo_attivita').val()==3){
 			  frequenza =  <%=campione.getFreqTaraturaMesi()%>			  
 		  }
 		  
@@ -1345,10 +1502,12 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
 		  if($('#select_tipo_attivita_mod').val()==2){
 			  frequenza =  <%=campione.getFrequenza_verifica_intermedia()%>
 		  }
-		  else{
+		  else if($('#select_tipo_attivita_mod').val()==1){
+			  frequenza =  <%=campione.getFrequenza_manutenzione()%>
+		  }
+		  else if($('#select_tipo_attivita_mod').val()==3){
 			  frequenza =  <%=campione.getFreqTaraturaMesi()%>			  
 		  }
-		  
 		  var data = new Date($('#data_attivita_mod').val());		 
 		 var data_scadenza = data.addMonths(frequenza);
 		  $('#data_scadenza_mod').val(formatDate(data_scadenza));

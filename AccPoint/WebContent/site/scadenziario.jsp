@@ -52,7 +52,7 @@
 	<div class="col-xs-12">
 	
 	<!-- <a target="_blank" class="btn btn-danger pull-right" href="listaCampioni.do?action=campioni_scadenza&data_start=+$('#data_start').val()+&data_end=+$('#data_end').val()">Esporta Campioni in scadenza</a> -->
-	<a class="btn btn-danger pull-right" onClick="esportaCampioniScadenzario('${verificazione}')">Esporta Campioni in scadenza</a>
+	<a class="btn btn-danger pull-right" onClick="esportaCampioniScadenzario('${verificazione}', '${lat }')">Esporta Campioni in scadenza</a>
 	
 	</div>
 	<div class="col-xs-12">
@@ -122,7 +122,7 @@
 
 $(function () {
 	
-	addCalendar(0, ${verificazione});
+	addCalendar(0, "${verificazione}", "${lat}");
 
 	});
 	

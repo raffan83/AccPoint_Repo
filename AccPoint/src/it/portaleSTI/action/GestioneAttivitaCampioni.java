@@ -98,7 +98,9 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 			if(action.equals("lista")) {
 				String idC = request.getParameter("idCamp");
 				
-				ArrayList<AcAttivitaCampioneDTO> lista_attivita = GestioneAttivitaCampioneBO.getListaAttivita(Integer.parseInt(idC), session);
+				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
+				
+				ArrayList<AcAttivitaCampioneDTO> lista_attivita = GestioneAttivitaCampioneBO.getListaAttivita(campione.getId(), session);
 				ArrayList<AcTipoAttivitaCampioniDTO> lista_tipo_attivita = GestioneAttivitaCampioneBO.getListaTipoAttivitaCampione(session);
 				
 				//CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
@@ -112,6 +114,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				request.getSession().setAttribute("lista_attivita", lista_attivita);
 				request.getSession().setAttribute("lista_tipo_attivita_campioni", lista_tipo_attivita);
 				request.getSession().setAttribute("lista_utenti", lista_utenti);
+				request.getSession().setAttribute("campione", campione);
 				
 				session.close();
 				
@@ -154,6 +157,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String campo_sospesi = ret.get("campo_sospesi");
 				String operatore = ret.get("operatore");				
 				String id_affini_checked = ret.get("id_affini_checked");
+				String numero_certificato = ret.get("numero_certificato");
 				
 				int index = 1;
 				String[] id_campioni = idC.split("_");
@@ -171,7 +175,8 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					attivita.setTipo_attivita(new AcTipoAttivitaCampioniDTO(Integer.parseInt(tipo_attivita),""));
 					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 					Date date = format.parse(data_attivita);
-					attivita.setData(date);				
+					attivita.setData(date);		
+					attivita.setData_scadenza(format.parse(data_scadenza));
 					attivita.setDescrizione_attivita(descrizione);
 					attivita.setObsoleta("N");
 					if(operatore!=null && !operatore.equals("")) {
@@ -179,7 +184,9 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 						attivita.setOperatore(user);
 					}
 					if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
-						attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
+						attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));
+						campione.setDataManutenzione(date);
+						campione.setDataScadenzaManutenzione(format.parse(data_scadenza));
 					}
 					if(Integer.parseInt(tipo_attivita)==2 || Integer.parseInt(tipo_attivita)==3) {
 						attivita.setEnte(ente);					
@@ -191,7 +198,17 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 							CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
 							attivita.setCertificato(certificato);
 						}
-						
+						if(numero_certificato!=null && !numero_certificato.equals("")) {
+							attivita.setNumero_certificato(numero_certificato);
+						}
+						if(Integer.parseInt(tipo_attivita)==2) {
+							campione.setDataVerificaIntermedia(date);
+							campione.setDataScadenzaVerificaIntermedia(format.parse(data_scadenza));
+						}else {
+							campione.setDataVerifica(date);
+							campione.setDataScadenza(format.parse(data_scadenza));
+							campione.setDataScadenzaVerificaIntermedia(format.parse(data_scadenza));
+						}
 					}				
 					
 					
@@ -214,7 +231,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					if(tipo_attivita.equals("2") || (tipo_attivita.equals("1") && tipo_manutenzione!=null && tipo_manutenzione.equals("1"))) {
 						GestioneAttivitaCampioneBO.updateObsolete(id_campioni[i], Integer.parseInt(tipo_attivita),null, session);
 					}
-					
+					session.update(campione);
 					session.save(attivita);
 				}
 				
@@ -266,13 +283,16 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String campo_sospesi = ret.get("campo_sospesi_mod");
 				String operatore = ret.get("operatore_mod");
 				String id_certificato = ret.get("id_certificato_mod");
+				String numero_certificato = ret.get("numero_certificato_mod");
 				
 				AcAttivitaCampioneDTO attivita = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(id_attivita), session);
+				CampioneDTO campione = attivita.getCampione();
 				
 				attivita.setTipo_attivita(new AcTipoAttivitaCampioniDTO(Integer.parseInt(tipo_attivita),""));
 				DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				Date date = format.parse(data_attivita);
 				attivita.setData(date);
+				attivita.setData_scadenza(format.parse(data_scadenza));
 				attivita.setDescrizione_attivita(descrizione);
 				if(operatore!=null && !operatore.equals("")) {
 					UtenteDTO user = GestioneUtenteBO.getUtenteById(operatore, session);
@@ -280,6 +300,8 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				}
 				if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
 					attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
+					campione.setDataManutenzione(date);
+					campione.setDataScadenzaManutenzione(format.parse(data_scadenza));
 				}
 				
 				if(Integer.parseInt(tipo_attivita)==2 || Integer.parseInt(tipo_attivita)==3) {
@@ -291,6 +313,19 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					if(id_certificato!=null && !id_certificato.equals("")) {
 						CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
 						attivita.setCertificato(certificato);
+					}
+					if(numero_certificato!=null && !numero_certificato.equals("")) {
+						attivita.setNumero_certificato(numero_certificato);
+					}
+					if(Integer.parseInt(tipo_attivita)==2) {
+						campione.setDataVerificaIntermedia(date);
+						campione.setDataScadenzaVerificaIntermedia(format.parse(data_scadenza));
+					}else {
+						campione.setDataVerifica(date);
+						campione.setDataScadenza(format.parse(data_scadenza));
+						campione.setDataScadenzaVerificaIntermedia(format.parse(data_scadenza));
+						
+						
 					}
 				}
 				
@@ -304,6 +339,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					GestioneAttivitaCampioneBO.updateObsolete(""+attivita.getCampione().getId(), Integer.parseInt(tipo_attivita),attivita.getData(), session);
 				}
 				
+				session.update(campione);
 				session.update(attivita);
 				session.getTransaction().commit();
 				session.close();
@@ -461,7 +497,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				
 				AcAttivitaCampioneDTO attivita = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(id_attivita), session);
 				
-				String path = Costanti.PATH_FOLDER+"//Campioni//"+attivita.getCampione().getId()+"//Allegati//AttivitaManutenzione//"+attivita.getAllegato();
+				String path = Costanti.PATH_FOLDER+"//Campioni//"+attivita.getCampione().getId()+"//Allegati//"+attivita.getAllegato();
 				File file = new File(path);
 				
 				FileInputStream fileIn = new FileInputStream(file);

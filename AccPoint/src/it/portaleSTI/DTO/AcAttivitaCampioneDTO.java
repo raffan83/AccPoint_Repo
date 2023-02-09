@@ -21,6 +21,7 @@ public class AcAttivitaCampioneDTO {
 	private String obsoleta;
 	private int disabilitata;
 	private int pianificata;
+	private String numero_certificato;
 	
 	public String getCampo_sospesi() {
 		return campo_sospesi;
@@ -123,6 +124,12 @@ public class AcAttivitaCampioneDTO {
 	}
 	public void setPianificata(int pianificata) {
 		this.pianificata = pianificata;
+	}
+	public String getNumero_certificato() {
+		return numero_certificato;
+	}
+	public void setNumero_certificato(String numero_certificato) {
+		this.numero_certificato = numero_certificato;
 	}
 	
 }

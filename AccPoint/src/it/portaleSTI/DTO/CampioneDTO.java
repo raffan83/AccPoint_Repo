@@ -87,6 +87,12 @@ public class CampioneDTO implements Serializable {
 	private Date data_messa_in_servizio;
 	private int campione_verificazione;
 	private String numeroCertificatoPunto;
+	private Date dataScadenzaManutenzione;
+
+	private Date dataManutenzione;
+	private Date dataScadenzaVerificaIntermedia;
+
+	private Date dataVerificaIntermedia;
 	
 	
 	public Integer getId_strumento() {
@@ -482,6 +488,38 @@ public class CampioneDTO implements Serializable {
 
 	public void setNumeroCertificatoPunto(String numeroCertificatoPunto) {
 		this.numeroCertificatoPunto = numeroCertificatoPunto;
+	}
+
+	public Date getDataScadenzaManutenzione() {
+		return dataScadenzaManutenzione;
+	}
+
+	public void setDataScadenzaManutenzione(Date dataScadenzaManutenzione) {
+		this.dataScadenzaManutenzione = dataScadenzaManutenzione;
+	}
+
+	public Date getDataManutenzione() {
+		return dataManutenzione;
+	}
+
+	public void setDataManutenzione(Date dataManutenzione) {
+		this.dataManutenzione = dataManutenzione;
+	}
+
+	public Date getDataScadenzaVerificaIntermedia() {
+		return dataScadenzaVerificaIntermedia;
+	}
+
+	public void setDataScadenzaVerificaIntermedia(Date dataScadenzaVerificaIntermedia) {
+		this.dataScadenzaVerificaIntermedia = dataScadenzaVerificaIntermedia;
+	}
+
+	public Date getDataVerificaIntermedia() {
+		return dataVerificaIntermedia;
+	}
+
+	public void setDataVerificaIntermedia(Date dataVerificaIntermedia) {
+		this.dataVerificaIntermedia = dataVerificaIntermedia;
 	}
 
 	

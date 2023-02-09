@@ -26,6 +26,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneAttivitaCampioneDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -79,9 +81,22 @@ public class ListaCampioni extends HttpServlet {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 
+	
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		response.setContentType("text/html");
+	
+		
+		try {
+		//	GestioneAttivitaCampioneDAO.mergeTabelleAttivita(session);
+		//	GestioneAttivitaCampioneDAO.aggiornaCampioni(session);
+		//	GestioneAttivitaCampioneDAO.mergeRenameAllegati(session);
+		//	GestioneAttivitaCampioneDAO.aggiornaObsolete(session);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		JsonObject myObj = new JsonObject();
 		boolean ajax = false;
@@ -106,10 +121,10 @@ public class ListaCampioni extends HttpServlet {
 			if(action==null) {
 	
 				String date =request.getParameter("date");
-				String tipo_data_lat =request.getParameter("tipo_data_lat");
-				String manutenzione =request.getParameter("manutenzione");
+				String tipo_data =request.getParameter("tipo_data");
+				//String manutenzione =request.getParameter("manutenzione");
 				String verificazione = (String) request.getSession().getAttribute("verificazione");
-				String tipo_evento = request.getParameter("tipo_evento");
+				//String tipo_evento = request.getParameter("tipo_evento");
 				String campioni_verificazione = request.getParameter("campioni_verificazione");
 	
 				ArrayList<CampioneDTO> listaCampioni=new ArrayList<CampioneDTO>();
@@ -119,33 +134,7 @@ public class ListaCampioni extends HttpServlet {
 					if(campioni_verificazione!=null) {
 						listaCampioni =GestioneCampioneDAO.getListaCampioniVerificazione(session);	
 						
-						
-//						for (CampioneDTO campioneDTO : listaCampioni) {
-//							ArrayList<RegistroEventiDTO> lista = GestioneCampioneBO.getListaEvento(campioneDTO.getId(), 5, session);
-//							if(lista.size()==0) {
-//								RegistroEventiDTO evento = new RegistroEventiDTO();
-//								evento.setTipo_evento(new TipoEventoRegistroDTO(5, ""));
-//								evento.setCampione(campioneDTO);
-//								
-//								Calendar c = Calendar.getInstance();
-//								c.setTime(campioneDTO.getDataVerifica());
-//								if(campioneDTO.getFrequenza_verifica_intermedia()==0) {
-//									c.add(Calendar.MONTH, 12);
-//								}else {
-//									c.add(Calendar.MONTH, campioneDTO.getFrequenza_verifica_intermedia());	
-//								}
-//								
-//								
-//								evento.setData_scadenza(c.getTime());
-//								evento.setPianificato(1);
-//								session.save(evento);
-//							}
-//						}
-						
-						
-						
-						
-						
+	
 					}else {
 						listaCampioni =GestioneCampioneDAO.getListaCampioni(null,idCompany, session);
 						
@@ -154,36 +143,37 @@ public class ListaCampioni extends HttpServlet {
 				}
 				else
 				{
-					if(tipo_data_lat!=null) {
+					if(tipo_data!=null) {
 						if(date.length()>=10)
 						{
-//							boolean manutenzione = false;
-//							if(tipo_data_lat.equals("1")) {
-//								manutenzione = true;
-//							}
-							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data_lat, null, 0);
-						}
-					}else if(manutenzione!= null) {
-						if(date.length()>=10)
-						{						
-							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), null, null, 0);
+						
+							if(verificazione==null) {
+								verificazione = "0";
+							}
+							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data , verificazione, session);
 						}
 					}
-					else if(verificazione!=null) {
-						if(date.length()>=10)
-						{						
-							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data_lat, tipo_evento, Integer.parseInt(verificazione));
-						}
-					}
-					
-					
-					else {
-						if(date.length()>=10)
-						{
-							//listaCampioni =GestioneCampioneDAO.getListaCampioni(date.substring(0,10),idCompany, session);
-							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data_lat, tipo_evento, 0);
-						}
-					}
+//					else if(manutenzione!= null) {
+//						if(date.length()>=10)
+//						{						
+//							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), null, null, 0);
+//						}
+//					}
+//					else if(verificazione!=null) {
+//						if(date.length()>=10)
+//						{						
+//							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data_lat, tipo_evento, Integer.parseInt(verificazione));
+//						}
+//					}
+//					
+//					
+//					else {
+//						if(date.length()>=10)
+//						{
+//							//listaCampioni =GestioneCampioneDAO.getListaCampioni(date.substring(0,10),idCompany, session);
+//							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data_lat, tipo_evento, 0);
+//						}
+//					}
 					
 				}
 				
@@ -291,7 +281,7 @@ public class ListaCampioni extends HttpServlet {
 				String verificazione = request.getParameter("verificazione");
 				
 				boolean lat = false;
-				if(tipo!=null && tipo.equals("1")) {
+				if(tipo!=null && tipo.equals("CDT")) {
 					lat = true;
 				}
 				
@@ -301,7 +291,7 @@ public class ListaCampioni extends HttpServlet {
 				
 				PrintWriter out = response.getWriter();
 							
-				JsonArray listaCampioni = GestioneCampioneBO.getCampioniScadenzaDate(data_start, data_end, lat, cmp.getId(), Integer.parseInt(verificazione));
+				JsonArray listaCampioni = GestioneCampioneBO.getCampioniScadenzaDate(data_start, data_end, lat, cmp.getId(), Integer.parseInt(verificazione), session);
 			
 				JsonArray campioni = (JsonArray) listaCampioni.get(0);
 				JsonArray descrizioni = (JsonArray)listaCampioni.get(1);

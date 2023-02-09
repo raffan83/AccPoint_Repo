@@ -204,12 +204,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      	</div>
    </div>
    
-                   <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Frequenza Manutenzioni:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="" type="text" name="frequenza_manutenzione" disabled="disabled"  value="<%if(campione.getFrequenza_manutenzione()!=0){out.println(campione.getFrequenza_manutenzione());} %>"/>
-    </div>
-       </div>
+
        
               <div class="form-group">
         <label for="attivita_di_taratura" class="col-sm-3 control-label">Attività Di Taratura:</label>
@@ -228,12 +223,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
     </div>
        </div> 
        
-                <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Frequenza Taratura:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="" type="text" name="freqTaratura" disabled="disabled"  value="<%=campione.getFreqTaraturaMesi() %>"/>
-    </div>
-       </div> 
+
        
               <div class="form-group">
         <label for="campo_accettabilita" class="col-sm-3 control-label">Campo Di Accettabilità:</label>
@@ -250,19 +240,75 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
        </div> 
        
 <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
+        <label for="inputName" class="col-sm-3 control-label">Data Taratura:</label>
         <div class="col-sm-9">
                       <input class="form-control datepicker" id="" type="text" name="dataVerifica" disabled="disabled"  required value="<% if(campione.getDataVerifica()!=null){out.println(sdf.format(campione.getDataVerifica()));} %>" data-date-format="dd/mm/yyyy"/>
 
     </div>
        </div> 
        
+                       <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Frequenza Taratura:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="" type="text" name="freqTaratura" disabled="disabled"  value="<%=campione.getFreqTaraturaMesi() %>"/>
+    </div>
+       </div> 
+       
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Data Scadenza:</label>
+        <label for="inputName" class="col-sm-3 control-label">Data Scadenza Taratura:</label>
         <div class="col-sm-9">
                       <input class="form-control datepicker" id="" type="text" name="dataScadenza" disabled="disabled"  datepicker  value="<% if(campione.getDataScadenza()!=null){out.println(sdf.format(campione.getDataScadenza()));} %>"  data-date-format="dd/mm/yyyy"/>                      
     </div>
        </div> 
+       
+       
+       <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Data Manutenzione:</label>
+        <div class="col-sm-9">
+                      <input class="form-control datepicker" id="" type="text" name="dataManutenzione" disabled="disabled"  required value="<% if(campione.getDataManutenzione()!=null){out.println(sdf.format(campione.getDataManutenzione()));} %>" data-date-format="dd/mm/yyyy"/>
+
+    </div>
+    
+       </div> 
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Frequenza Manutenzioni:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="" type="text" name="frequenza_manutenzione" disabled="disabled"  value="<%if(campione.getFrequenza_manutenzione()!=0){out.println(campione.getFrequenza_manutenzione());} %>"/>
+    </div>
+       </div>
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Data Scadenza Manutenzione:</label>
+        <div class="col-sm-9">
+                      <input class="form-control datepicker" id="" type="text" name="dataScadenza" disabled="disabled"  datepicker  value="<% if(campione.getDataScadenzaManutenzione()!=null){out.println(sdf.format(campione.getDataScadenzaManutenzione()));} %>"  data-date-format="dd/mm/yyyy"/>                      
+    </div>
+       </div> 
+       
+       
+
+              <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Data Verifica Intermedia:</label>
+        <div class="col-sm-9">
+                      <input class="form-control datepicker" id="" type="text" name="dataVerifica" disabled="disabled"  required value="<% if(campione.getDataVerificaIntermedia()!=null){out.println(sdf.format(campione.getDataVerificaIntermedia()));} %>" data-date-format="dd/mm/yyyy"/>
+
+    </div>
+    
+       </div> 
+       
+             <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Frequenza Verifica Intermedia:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="" type="text" name="frequenza_verifica_intermedia" disabled="disabled"  value="<%if(campione.getFrequenza_verifica_intermedia()!=0){out.println(campione.getFrequenza_verifica_intermedia());} %>"/>
+    </div>
+       </div>
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Data Scadenza Verifica Intermedia:</label>
+        <div class="col-sm-9">
+                      <input class="form-control datepicker" id="" type="text" name="dataScadenza" disabled="disabled"  datepicker  value="<% if(campione.getDataScadenzaVerificaIntermedia()!=null){out.println(sdf.format(campione.getDataScadenzaVerificaIntermedia()));} %>"  data-date-format="dd/mm/yyyy"/>                      
+    </div>
+       </div> 
+       
        
        
 	<%if(utente.checkPermesso("SCARICA_CERTIFICATO_CAMPIONE_METROLOGIA")){ %>
@@ -294,12 +340,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
     </div>
        </div> 
 
-                <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Frequenza Verifica Intermedia:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="" type="text" name="frequenza_verifica_intermedia" disabled="disabled"  value="<%if(campione.getFrequenza_verifica_intermedia()!=0){out.println(campione.getFrequenza_verifica_intermedia());} %>"/>
-    </div>
-       </div>
+
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Stato Campione:</label>

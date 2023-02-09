@@ -659,7 +659,8 @@ public class CreaCertificatoLivellaBolla {
 							if(cor_mm!= null && cor_mm.equals(BigDecimal.ZERO.setScale(scala+1))) {
 								arrayPs.add("0,0");
 							}else {
-								arrayPs.add(String.valueOf((punto.getMedia_corr_sec().subtract(punto.getValore_nominale_tratto_sec())).setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+								//arrayPs.add(String.valueOf((punto.getMedia_corr_sec().subtract(punto.getValore_nominale_tratto_sec())).setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+								arrayPs.add(Utility.getArcosec(cor_mm+"").setScale(1, RoundingMode.HALF_UP).toPlainString());
 							}							
 								
 						}else {

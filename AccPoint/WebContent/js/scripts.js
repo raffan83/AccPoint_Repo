@@ -1063,12 +1063,14 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 		         });
 	  }
  	 
-   function addCalendar(tipo_data, verificazione){
+   function addCalendar(tipo_data, verificazione, lat){
 
-	   if(verificazione!=null){
+	   if(verificazione!=null && verificazione!=''){
 		   var url = "Scadenziario_create.do?verificazione="+verificazione;
-	   }else {
-		   var url = "Scadenziario_create.do"
+	   }else if(lat!=null && lat!=''){
+		   var url = "Scadenziario_create.do?lat=CDT"
+	   }else{
+		   var url = "Scadenziario_create.do?";
 	   }
 	   
 	   
@@ -1134,18 +1136,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
    		        center: 'title',
    		        right: 'listYear,month,agendaWeek,agendaDay'
    		      },
-//   		    buttonText: {
-//   		        today: 'today',
-//   		        month: 'month',
-//   		        week: 'week',
-//   		        day: 'day'
-//   		      },
-//   			  eventRender: function(event, element, view) {
-//		             return $('<span class=\"badge bg-red bigText\"">' 
-//		             + event.title + 
-//		             '</span>');
-//		         },	 
-//		         
+		         
    			  viewRender: function (view, element)
   		    {
   		        intervalStart = view.intervalStart;
@@ -1181,32 +1172,14 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
    		           eventClick: function(calEvent, jsEvent, view) {
    		        	   
    		        	   
-//   		        	 eventClick: function(calEvent, jsEvent, view) {
-//   			        	var tipo_data;
-//   			        
-//   			        	   if(calEvent.backgroundColor=="#00a65a"){
-//   			        		   tipo_data = "1";	        		  
-//   			        	   }else if(calEvent.backgroundColor=="#777"){
-//   			        		   tipo_data = "3";
-//   			        	   }else if(calEvent.backgroundColor=="#9d201d"){
-//   			        		   tipo_data = "2";
-//   			        	   }
-//   			        	   
-//   			        //	callAction('listaAttrezzature.do?action=scadenzario&data='+moment(calEvent.start).format()+'&tipo_data='+tipo_data);
-//   			        	   callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_data_lat='+tipo_data);
-//   			        	
-//   			               $(this).css('border-color', '#228B22');
-//   			           }
-
-   		        	//explore('listaCampioni.do?date='+moment(calEvent.start).format());
    		        	if(calEvent.backgroundColor=="#00a65a"){
-   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_evento=1');	
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_data=data_scadenza_manutenzione');	
    		        	}
    		        	else if(calEvent.backgroundColor=="#777"){
-   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_evento=2');	
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_data=data_scadenza');	
    		        	}
    		        	else{
-   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+"&tipo_evento=5");
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+"&tipo_data=data_scadenza_verifica_intermedia");
    		        	}
    		        	
    		              // alert('Event: ' + moment(calEvent.start).format());              		

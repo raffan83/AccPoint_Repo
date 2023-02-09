@@ -7,13 +7,13 @@
        
         <id name="id" type="int">
             <column name="id" />
-            <generator class="native" />
+             <generator class="native" /> 
         </id>
         <property name="descrizione_attivita" type="java.lang.String">
             <column name="descrizione_attivita" />
         </property>
         <property name="data" type="java.util.Date">
-            <column name="data" />
+            <column name="data_attivita" />
         </property>
        <many-to-one name="tipo_attivita" class="it.portaleSTI.DTO.AcTipoAttivitaCampioniDTO" fetch="join" lazy="false">
             <column name="id_tipo_attivita" />
@@ -57,6 +57,10 @@
         </property>
         <property name="pianificata" type="int">
             <column name="pianificata" />
+        </property>
+        
+         <property name="numero_certificato" type="java.lang.String">
+            <column name="numero_certificato" />
         </property>
     </class>
 </hibernate-mapping>

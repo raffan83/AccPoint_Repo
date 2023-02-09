@@ -777,12 +777,12 @@ public class CreateVerRapporto {
 					reportP3.addParameter("altezza_util","N/A");
 				}
 				if(misura.getLatitudine_org()!=0) {
-					reportP3.addParameter("latitudine_org", (""+misura.getLatitudine_org()).replace(".", ","));
+					reportP3.addParameter("latitudine_org", String.format("%.5f",misura.getLatitudine_org()).replace(".", ","));
 				}else {
 					reportP3.addParameter("latitudine_org","N/A");
 				}
 				if(misura.getLatitudine_util()!=0) {
-					reportP3.addParameter("latitudine_util", (""+misura.getLatitudine_util()).replace(".", ","));
+					reportP3.addParameter("latitudine_util", String.format("%.5f",misura.getLatitudine_util()).replace(".", ","));
 				}else {
 					reportP3.addParameter("latitudine_util","N/A");
 				}

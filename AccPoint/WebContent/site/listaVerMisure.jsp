@@ -283,7 +283,7 @@ function resetData(){
 	callAction("gestioneVerMisura.do?action=lista");
 }
 
-function formatDate(data){
+/* function formatDate(data){
 	
 	   var mydate = new Date(data);
 	   
@@ -293,7 +293,7 @@ function formatDate(data){
 	   }			   
 	   return str;	 		
 }
-
+ */
 
   function cercaMisure(){
 		

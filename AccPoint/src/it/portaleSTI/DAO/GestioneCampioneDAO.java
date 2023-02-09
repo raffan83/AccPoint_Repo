@@ -573,155 +573,58 @@ public class GestioneCampioneDAO {
 		return lista;
 	}
 
-
-
-	
-	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end, boolean lat, int id_company, int verificazione) throws Exception {
+	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end, boolean lat, int id_company, int verificazione, Session session) throws Exception {
 
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");		
-		Session session = SessionFacotryDAO.get().openSession();
-		    
-		session.beginTransaction();
 
-		ArrayList<AcAttivitaCampioneDTO> attivita = null;
-		ArrayList<RegistroEventiDTO> registro = null;
-			
-		ArrayList<CampioneDTO> lista = new ArrayList<CampioneDTO>();			
+		ArrayList<CampioneDTO> result = new ArrayList<CampioneDTO>();
+		ArrayList<CampioneDTO> lista = new ArrayList<CampioneDTO>();
 		ArrayList<Integer> lista_tipo = new ArrayList<Integer>();
 		ArrayList<String> lista_date = new ArrayList<String>();
 		JsonArray list = new JsonArray();
 			
-		Query query = null;
+		
+		String not = "not";
 			
 		if(lat) {
+			not = "";		
+		}		
+				
 			
+		Query query = session.createQuery("from CampioneDTO WHERE (data_scadenza between :_date_start and :_date_end or data_scadenza_verifica_intermedia between :_date_start and :_date_end or data_scadenza_manutenzione between :_date_start and :_date_end) and id_Company=:_id_company and statoCampione != 'F' and codice "+not+" LIKE  '%CDT%' and campione_verificazione =:_verificazione");
 			
-			query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F' and codice LIKE  '%CDT%' ");
-			query.setParameter("_date_start", df.parse(data_start));
-			query.setParameter("_date_end", df.parse(data_end));
-			query.setParameter("_id_company", id_company);	
+		
+		query.setParameter("_date_start", df.parse(data_start));
+		query.setParameter("_date_end", df.parse(data_end));
+		query.setParameter("_id_company", id_company);
+		query.setParameter("_verificazione", verificazione);	
 			
-			lista = (ArrayList<CampioneDTO>) query.list();				
+		result = (ArrayList<CampioneDTO>) query.list();				
 			
-			for (CampioneDTO campioneDTO : lista) {
+		for (CampioneDTO campioneDTO : result) {
+				
+			if(campioneDTO.getDataScadenzaManutenzione()!=null && (campioneDTO.getDataScadenzaManutenzione().after(df.parse(data_start)) || campioneDTO.getDataScadenzaManutenzione().equals(df.parse(data_start))) && (campioneDTO.getDataScadenzaManutenzione().before( df.parse(data_end)) || campioneDTO.getDataScadenzaManutenzione().equals(df.parse(data_end)))) {
+				lista.add(campioneDTO);
+				lista_tipo.add(1);
+				lista_date.add(df.format(campioneDTO.getDataScadenzaManutenzione()));
+				System.out.println(campioneDTO.getCodice()+" data manutenzione: "+df.format(campioneDTO.getDataScadenzaManutenzione()));
+			}
+			if(campioneDTO.getDataScadenzaVerificaIntermedia()!=null && (campioneDTO.getDataScadenzaVerificaIntermedia().after(df.parse(data_start)) || campioneDTO.getDataScadenzaVerificaIntermedia().equals(df.parse(data_end))) && (campioneDTO.getDataScadenzaVerificaIntermedia().before( df.parse(data_end)) || campioneDTO.getDataScadenzaVerificaIntermedia().equals(df.parse(data_end)))) {
+				lista.add(campioneDTO);
+				lista_tipo.add(2);
+				lista_date.add(df.format(campioneDTO.getDataScadenzaVerificaIntermedia()));
+				System.out.println(campioneDTO.getCodice()+" data verifica intermedia: "+df.format(campioneDTO.getDataScadenzaVerificaIntermedia()));
+			}
+			if(campioneDTO.getDataScadenza()!=null && (campioneDTO.getDataScadenza().after(df.parse(data_start)) || campioneDTO.getDataScadenza().equals(df.parse(data_start))) && (campioneDTO.getDataScadenza().before( df.parse(data_end)) || campioneDTO.getDataScadenza().equals(df.parse(data_end)))) {
+				lista.add(campioneDTO);
 				lista_tipo.add(3);
 				lista_date.add(df.format(campioneDTO.getDataScadenza()));
+				System.out.println(campioneDTO.getCodice()+" data taratura: "+df.format(campioneDTO.getDataScadenza()));
 			}
+				
+		}
 
 				
-			query = session.createQuery("from AcAttivitaCampioneDTO where tipo_attivita.id != 3 and (data_scadenza=null or data_scadenza between :_date_start and :_date_end) and disabilitata = 0");	
-			query.setParameter("_date_start", df.parse(data_start));
-			query.setParameter("_date_end", df.parse(data_end));
-				
-			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
-				
-			if(attivita!=null) {
-				for (AcAttivitaCampioneDTO a : attivita) {
-					if(a.getTipo_attivita().getId()==2) {
-						lista.add(a.getCampione());	
-						lista_tipo.add(a.getTipo_attivita().getId());
-						lista_date.add(df.format(a.getData_scadenza()));
-							
-					}else {
-						if(a.getCampione().getFrequenza_manutenzione()!=0) {	
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTime(a.getData());
-						calendar.add(Calendar.MONTH, a.getCampione().getFrequenza_manutenzione());
-							
-						Date date = calendar.getTime();
-						if(date.after(df.parse(data_start)) && date.before(df.parse(data_end))) {
-							lista.add(a.getCampione());
-							lista_tipo.add(1);
-							lista_date.add(df.format(date));
-						}
-							
-					}
-				}
-						
-				}
-			}
-			
-		}else {
-			
-//			if(verificazione!=0) {
-//				query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F' and codice NOT LIKE  '%CDT%' and campione_verificazione = :_verificazione");	
-//			}else {
-//				query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F' and codice NOT LIKE  '%CDT%'");
-//			}
-//			
-//			query.setParameter("_date_start", df.parse(data_start));
-//			query.setParameter("_date_end", df.parse(data_end));
-//			query.setParameter("_id_company", id_company);		
-//			if(verificazione!=0) {
-//				query.setParameter("_verificazione", verificazione);	
-//			}
-//				
-//				
-//			lista = (ArrayList<CampioneDTO>) query.list();				
-//				
-//			for (CampioneDTO campioneDTO : lista) {
-//				lista_tipo.add(3);
-//				lista_date.add(df.format(campioneDTO.getDataScadenza()));
-//			}
-
-				
-			Query query_reg =	null;
-			
-			if(verificazione!=0) {
-				query_reg = session.createQuery("from RegistroEventiDTO where  campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')  and campione.campione_verificazione = :_verificazione");
-				query_reg.setParameter("_verificazione", verificazione);
-			}else {
-				query_reg = session.createQuery("from RegistroEventiDTO where  campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");
-			}
-			
-			
-				
-			registro = (ArrayList<RegistroEventiDTO>) query_reg.list();
-				
-			if(registro!=null) {
-				for (RegistroEventiDTO r : registro) {
-					if(r.getTipo_evento().getId()== 1) {
-						
-						if(r.getCampione().getFrequenza_manutenzione()!=0) {						
-							Calendar calendar = Calendar.getInstance();
-							calendar.setTime(r.getData_evento());
-							calendar.add(Calendar.MONTH, r.getCampione().getFrequenza_manutenzione());
-								
-							Date date = calendar.getTime();
-							if(df.format(date).equals(data_start) || ( date.after(df.parse(data_start)) && date.before(df.parse(data_end)))) {
-								lista.add(r.getCampione());
-								lista_tipo.add(1);
-								lista_date.add(df.format(date));
-									
-							}
-						}
-					}else {
-						if(r.getData_scadenza()!=null && (df.format(r.getData_scadenza()).equals(data_start) || ( r.getData_scadenza().after(df.parse(data_start)) && r.getData_scadenza().before(df.parse(data_end))))) {
-							lista.add(r.getCampione());
-							lista_tipo.add(r.getTipo_evento().getId());
-							lista_date.add(df.format(r.getData_scadenza()));
-								
-						}
-					}
-				}
-			}
-			
-			if(verificazione==0) {
-				query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and tipo_campione.id = 4 and data_scadenza between :_data_inizio and :_data_fine ");
-				query.setParameter("_data_inizio",df.parse(data_start));
-				query.setParameter("_data_fine",df.parse(data_end));
-				ArrayList<CampioneDTO> lista_campioni = (ArrayList<CampioneDTO>) query.list();
-				
-				for (CampioneDTO campioneDTO : lista_campioni) {
-	
-					lista.add(campioneDTO);
-					lista_tipo.add(2);
-					lista_date.add(df.format(campioneDTO.getDataScadenza()));
-				}
-			}
-			
-		}	
-			
 		Gson gson = new Gson(); 
 		      
 		JsonElement obj = gson.toJsonTree(lista);
@@ -731,10 +634,171 @@ public class GestioneCampioneDAO {
 		list.add(obj);
 		list.add(obj_tipo);
 		list.add(obj_date);
-		session.close();
+
 			
 		return list;		
 	}
+
+	
+//	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end, boolean lat, int id_company, int verificazione) throws Exception {
+//
+//		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");		
+//		Session session = SessionFacotryDAO.get().openSession();
+//		    
+//		session.beginTransaction();
+//
+//		ArrayList<AcAttivitaCampioneDTO> attivita = null;
+//		ArrayList<RegistroEventiDTO> registro = null;
+//			
+//		ArrayList<CampioneDTO> lista = new ArrayList<CampioneDTO>();			
+//		ArrayList<Integer> lista_tipo = new ArrayList<Integer>();
+//		ArrayList<String> lista_date = new ArrayList<String>();
+//		JsonArray list = new JsonArray();
+//			
+//		Query query = null;
+//			
+//		if(lat) {
+//			
+//			
+//			query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F' and codice LIKE  '%CDT%' ");
+//			query.setParameter("_date_start", df.parse(data_start));
+//			query.setParameter("_date_end", df.parse(data_end));
+//			query.setParameter("_id_company", id_company);	
+//			
+//			lista = (ArrayList<CampioneDTO>) query.list();				
+//			
+//			for (CampioneDTO campioneDTO : lista) {
+//				lista_tipo.add(3);
+//				lista_date.add(df.format(campioneDTO.getDataScadenza()));
+//			}
+//
+//				
+//			query = session.createQuery("from AcAttivitaCampioneDTO where tipo_attivita.id != 3 and (data_scadenza=null or data_scadenza between :_date_start and :_date_end) and disabilitata = 0");	
+//			query.setParameter("_date_start", df.parse(data_start));
+//			query.setParameter("_date_end", df.parse(data_end));
+//				
+//			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
+//				
+//			if(attivita!=null) {
+//				for (AcAttivitaCampioneDTO a : attivita) {
+//					if(a.getTipo_attivita().getId()==2) {
+//						lista.add(a.getCampione());	
+//						lista_tipo.add(a.getTipo_attivita().getId());
+//						lista_date.add(df.format(a.getData_scadenza()));
+//							
+//					}else {
+//						if(a.getCampione().getFrequenza_manutenzione()!=0) {	
+//						Calendar calendar = Calendar.getInstance();
+//						calendar.setTime(a.getData());
+//						calendar.add(Calendar.MONTH, a.getCampione().getFrequenza_manutenzione());
+//							
+//						Date date = calendar.getTime();
+//						if(date.after(df.parse(data_start)) && date.before(df.parse(data_end))) {
+//							lista.add(a.getCampione());
+//							lista_tipo.add(1);
+//							lista_date.add(df.format(date));
+//						}
+//							
+//					}
+//				}
+//						
+//				}
+//			}
+//			
+//		}else {
+//			
+////			if(verificazione!=0) {
+////				query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F' and codice NOT LIKE  '%CDT%' and campione_verificazione = :_verificazione");	
+////			}else {
+////				query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F' and codice NOT LIKE  '%CDT%'");
+////			}
+////			
+////			query.setParameter("_date_start", df.parse(data_start));
+////			query.setParameter("_date_end", df.parse(data_end));
+////			query.setParameter("_id_company", id_company);		
+////			if(verificazione!=0) {
+////				query.setParameter("_verificazione", verificazione);	
+////			}
+////				
+////				
+////			lista = (ArrayList<CampioneDTO>) query.list();				
+////				
+////			for (CampioneDTO campioneDTO : lista) {
+////				lista_tipo.add(3);
+////				lista_date.add(df.format(campioneDTO.getDataScadenza()));
+////			}
+//
+//				
+//			Query query_reg =	null;
+//			
+//			if(verificazione!=0) {
+//				query_reg = session.createQuery("from RegistroEventiDTO where  campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')  and campione.campione_verificazione = :_verificazione");
+//				query_reg.setParameter("_verificazione", verificazione);
+//			}else {
+//				query_reg = session.createQuery("from RegistroEventiDTO where  campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");
+//			}
+//			
+//			
+//				
+//			registro = (ArrayList<RegistroEventiDTO>) query_reg.list();
+//				
+//			if(registro!=null) {
+//				for (RegistroEventiDTO r : registro) {
+//					if(r.getTipo_evento().getId()== 1) {
+//						
+//						if(r.getCampione().getFrequenza_manutenzione()!=0) {						
+//							Calendar calendar = Calendar.getInstance();
+//							calendar.setTime(r.getData_evento());
+//							calendar.add(Calendar.MONTH, r.getCampione().getFrequenza_manutenzione());
+//								
+//							Date date = calendar.getTime();
+//							if(df.format(date).equals(data_start) || ( date.after(df.parse(data_start)) && date.before(df.parse(data_end)))) {
+//								lista.add(r.getCampione());
+//								lista_tipo.add(1);
+//								lista_date.add(df.format(date));
+//									
+//							}
+//						}
+//					}else {
+//						if(r.getData_scadenza()!=null && (df.format(r.getData_scadenza()).equals(data_start) || ( r.getData_scadenza().after(df.parse(data_start)) && r.getData_scadenza().before(df.parse(data_end))))) {
+//							lista.add(r.getCampione());
+//							lista_tipo.add(r.getTipo_evento().getId());
+//							lista_date.add(df.format(r.getData_scadenza()));
+//								
+//						}
+//					}
+//				}
+//			}
+//			
+//			if(verificazione==0) {
+//				query  = session.createQuery( "from CampioneDTO where statoCampione != 'F' and tipo_campione.id = 4 and data_scadenza between :_data_inizio and :_data_fine ");
+//				query.setParameter("_data_inizio",df.parse(data_start));
+//				query.setParameter("_data_fine",df.parse(data_end));
+//				ArrayList<CampioneDTO> lista_campioni = (ArrayList<CampioneDTO>) query.list();
+//				
+//				for (CampioneDTO campioneDTO : lista_campioni) {
+//	
+//					lista.add(campioneDTO);
+//					lista_tipo.add(2);
+//					lista_date.add(df.format(campioneDTO.getDataScadenza()));
+//				}
+//			}
+//			
+//		}	
+//			
+//		Gson gson = new Gson(); 
+//		      
+//		JsonElement obj = gson.toJsonTree(lista);
+//		JsonElement obj_tipo = gson.toJsonTree(lista_tipo);
+//		JsonElement obj_date = gson.toJsonTree(lista_date);
+//			
+//		list.add(obj);
+//		list.add(obj_tipo);
+//		list.add(obj_date);
+//		session.close();
+//			
+//		return list;		
+//	}
 
 
 
@@ -925,68 +989,102 @@ public static ArrayList<CampioneDTO> getListaCampioniInServizio(Session session,
 
 
 
+//public static void updateCampioneScheduler() {
+//	
+//	Session session = SessionFacotryDAO.get().openSession();
+//    
+//	session.beginTransaction();
+//	
+//	Query query = session.createQuery("select a.campione, a.data from AcAttivitaCampioneDTO a where a.campione.tipo_campione.id = 3 and a.tipo_attivita.id = 1 and a.campione.statoCampione!='F' and a.obsoleta!='S'");	
+//
+//	List<Object[]> result = (List<Object[]>)query.list();
+//
+//	if(result.size()>0 ) {		
+//	
+//		for (Object[] object : result) {
+//			CampioneDTO campione =  (CampioneDTO) object[0];
+//			Date data = (Date) object[1];
+//			Calendar calendar = Calendar.getInstance();
+//			calendar.setTime(data);
+//			calendar.add(Calendar.MONTH, campione.getFrequenza_manutenzione());
+//
+//			Date date = calendar.getTime();
+//			
+//			if(date.before(new Date())) {
+//				campione.setStatoCampione("N");
+//				session.update(campione);
+//			}
+//			
+//		}
+//	}
+//	
+//	query = session.createQuery("select a.campione, a.data_evento from RegistroEventiDTO a where a.campione.tipo_campione.id = 3 and (a.tipo_evento.id = 1 or a.tipo_evento.id = 5) and a.campione.statoCampione!='F'  and a.obsoleta!='S'");
+//	
+//	
+//	result = (List<Object[]>)query.list();
+//
+//  
+//	if(result.size()>0 ) {		
+//	
+//		for (Object[] object : result) {
+//			CampioneDTO campione =  (CampioneDTO) object[0];
+//			Date data = (Date) object[1];
+//			Calendar calendar = Calendar.getInstance();
+//			calendar.setTime(data);
+//			calendar.add(Calendar.MONTH, campione.getFrequenza_manutenzione());
+//
+//			Date date = calendar.getTime();
+//			
+//			if(date.before(new Date())) {
+//				campione.setStatoCampione("N");
+//				session.update(campione);
+//			}
+//			
+//		}
+//	}
+//
+//	session.getTransaction().commit();
+//	session.close();
+//			
+//
+//}
+
+
 public static void updateCampioneScheduler() {
 	
 	Session session = SessionFacotryDAO.get().openSession();
     
 	session.beginTransaction();
 	
-	Query query = session.createQuery("select a.campione, a.data from AcAttivitaCampioneDTO a where a.campione.tipo_campione.id = 3 and a.tipo_attivita.id = 1 and a.campione.statoCampione!='F' and a.obsoleta!='S'");	
+	Query query = session.createQuery(" from CampioneDTO where statoCampione!='F'");	
 
-	List<Object[]> result = (List<Object[]>)query.list();
+	List<CampioneDTO> result = (List<CampioneDTO>)query.list();
 
 	if(result.size()>0 ) {		
 	
-		for (Object[] object : result) {
-			CampioneDTO campione =  (CampioneDTO) object[0];
-			Date data = (Date) object[1];
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(data);
-			calendar.add(Calendar.MONTH, campione.getFrequenza_manutenzione());
-
-			Date date = calendar.getTime();
+		for (CampioneDTO campione : result) {
 			
-			if(date.before(new Date())) {
+			Date data_manutenzione = campione.getDataScadenzaManutenzione();
+			Date data_verifica_intermedia = campione.getDataScadenzaVerificaIntermedia();
+			Date data_taratura = campione.getDataScadenza();
+			
+			
+			if((data_manutenzione!=null && data_manutenzione.before(new Date())) || (data_verifica_intermedia!=null && data_verifica_intermedia.before(new Date())) || (data_taratura!=null && data_taratura.before(new Date()))) {
 				campione.setStatoCampione("N");
 				session.update(campione);
+				
 			}
 			
 		}
 	}
 	
-	query = session.createQuery("select a.campione, a.data_evento from RegistroEventiDTO a where a.campione.tipo_campione.id = 3 and (a.tipo_evento.id = 1 or a.tipo_evento.id = 5) and a.campione.statoCampione!='F'  and a.obsoleta!='S'");
 	
-	
-	result = (List<Object[]>)query.list();
-
-  
-	if(result.size()>0 ) {		
-	
-		for (Object[] object : result) {
-			CampioneDTO campione =  (CampioneDTO) object[0];
-			Date data = (Date) object[1];
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(data);
-			calendar.add(Calendar.MONTH, campione.getFrequenza_manutenzione());
-
-			Date date = calendar.getTime();
-			
-			if(date.before(new Date())) {
-				campione.setStatoCampione("N");
-				session.update(campione);
-			}
-			
-		}
-	}
 
 	session.getTransaction().commit();
 	session.close();
 			
 
 }
-
-
-
 
 public static ArrayList<RegistroEventiDTO> getListaEventiNonSti(Session session) {
 

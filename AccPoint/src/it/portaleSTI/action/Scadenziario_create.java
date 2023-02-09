@@ -78,12 +78,23 @@ public class Scadenziario_create extends HttpServlet {
 		CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 		
 		String verificazione = request.getParameter("verificazione");
+		String lat = request.getParameter("lat");
 		
 		JsonObject myObj = new JsonObject();
 
+		if(verificazione!=null && !verificazione.equals("")) {
+			verificazione = "1";
+		}else {
+			verificazione = "0";
+		}
+		
+		if(lat==null) {
+			lat="";
+		}
 		
 		
-		ArrayList<HashMap<String,Integer>> listaScadenze =  GestioneAttivitaCampioneDAO.getListaRegistroEventiScadenziario(verificazione, session);
+		//ArrayList<HashMap<String,Integer>> listaScadenze =  GestioneAttivitaCampioneDAO.getListaRegistroEventiScadenziario(verificazione, session);
+		ArrayList<HashMap<String,Integer>> listaScadenze =  GestioneAttivitaCampioneDAO.getListaScadenzeCampione(verificazione,cmp.getId(), lat, session);
 
 		
 		ArrayList<String> lista_tarature = new ArrayList<>();

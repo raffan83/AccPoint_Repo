@@ -51,6 +51,8 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
+import it.portaleSTI.DTO.VerLegalizzazioneBilanceDTO;
+import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.GestioneUtenti;
@@ -60,6 +62,7 @@ import it.portaleSTI.bo.GestioneConfigurazioneClienteBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
+import it.portaleSTI.bo.GestioneVerStrumentiBO;
 
 public class DirectMySqlDAO {
 
@@ -2420,7 +2423,7 @@ public class DirectMySqlDAO {
 
 	}
 
-	public static void insertStrumentiVerificazione(VerInterventoDTO intervento, Connection conSQLLite) throws Exception {
+	public static void insertStrumentiVerificazione(VerInterventoDTO intervento, Connection conSQLLite, Session session) throws Exception {
 
 		Connection con=null;
 		PreparedStatement pst=null;
@@ -2446,8 +2449,8 @@ public class DirectMySqlDAO {
 						+ "portata_min_C1,portata_max_C1,div_ver_C1,div_rel_C1,numero_div_C1,"
 						+ "portata_min_C2,portata_max_C2,div_ver_C2,div_rel_C2,numero_div_C2,"
 						+ "portata_min_C3,portata_max_C3,div_ver_C3,div_rel_C3,numero_div_C3,"
-						+ "id_cliente,id_sede,anno_marcatura_CE,data_ms,id_tipologia,freq_mesi,creato,famiglia_strumento) "
-						+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+						+ "id_cliente,id_sede,anno_marcatura_CE,data_ms,id_tipologia,freq_mesi,creato,famiglia_strumento,tipo_legalizzazione) "
+						+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
 				pstINS=conSQLLite.prepareStatement(sqlInsert);
 				pstMatricola=conSQLLite.prepareStatement("INSERT INTO ver_lista_matricole(matricola) VALUES(?)");
@@ -2489,6 +2492,30 @@ public class DirectMySqlDAO {
 				pstINS.setString(32, "N");
 				pstINS.setString(33,rs.getString("id_famiglia_strumento"));
 
+				VerStrumentoDTO strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(id, session); 
+				
+				Iterator<VerLegalizzazioneBilanceDTO> iter =strumento.getLista_legalizzazione_bilance().iterator();
+				
+				int indiceLegalizzazione=0;
+				
+				 while (iter.hasNext()) {
+					 VerLegalizzazioneBilanceDTO leg=iter.next();
+					 
+					 indiceLegalizzazione=leg.getTipo_approvazione().getId();
+					 
+					 if(leg.getTipo_approvazione().getId()==1) 
+					 {
+						 indiceLegalizzazione=0;
+					 }
+					 else 
+					 {
+						 indiceLegalizzazione=1;
+					 }
+					 break;
+			        }
+				
+				 pstINS.setInt(34,indiceLegalizzazione);
+				 
 				if(controlloID(id,intervento.getInterventoStrumenti()))
 				{
 					pstINS.execute();

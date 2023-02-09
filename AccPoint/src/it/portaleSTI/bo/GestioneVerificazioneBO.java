@@ -53,7 +53,7 @@ public class GestioneVerificazioneBO {
 		
 		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		
-		DirectMySqlDAO.insertStrumentiVerificazione(intervento,con);
+		DirectMySqlDAO.insertStrumentiVerificazione(intervento,con,session);
 		
 		
 		con.close();

@@ -1069,7 +1069,7 @@ public static void updateCampioneScheduler() {
 			Date data_taratura = campione.getDataScadenza();
 			
 			
-			if((data_manutenzione!=null && data_manutenzione.before(new Date())) || (data_verifica_intermedia!=null && data_verifica_intermedia.before(new Date())) || (data_taratura!=null && data_taratura.before(new Date()))) {
+			if((data_taratura!=null && data_taratura.before(new Date())) || (campione.getTipo_campione().getId()==3 && data_manutenzione!=null && data_manutenzione.before(new Date()))) {
 				campione.setStatoCampione("N");
 				session.update(campione);
 				

@@ -1173,13 +1173,13 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
    		        	   
    		        	   
    		        	if(calEvent.backgroundColor=="#00a65a"){
-   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_data=data_scadenza_manutenzione');	
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_data=data_scadenza_manutenzione&lat='+lat);	
    		        	}
    		        	else if(calEvent.backgroundColor=="#777"){
-   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_data=data_scadenza');	
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_data=data_scadenza&lat='+lat);
    		        	}
    		        	else{
-   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+"&tipo_data=data_scadenza_verifica_intermedia");
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+"&tipo_data=data_scadenza_verifica_intermedia&lat="+lat);
    		        	}
    		        	
    		              // alert('Event: ' + moment(calEvent.start).format());              		

@@ -132,6 +132,7 @@ public class ListaCampioni extends HttpServlet {
 				String verificazione = (String) request.getSession().getAttribute("verificazione");
 				//String tipo_evento = request.getParameter("tipo_evento");
 				String campioni_verificazione = request.getParameter("campioni_verificazione");
+				String lat = request.getParameter("lat");
 	
 				ArrayList<CampioneDTO> listaCampioni=new ArrayList<CampioneDTO>();
 	
@@ -156,7 +157,12 @@ public class ListaCampioni extends HttpServlet {
 							if(verificazione==null) {
 								verificazione = "0";
 							}
-							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data , verificazione, session);
+							
+							if(lat==null) {
+								lat = "";
+							}
+							
+							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data , verificazione, lat, session);
 						}
 					}
 //					else if(manutenzione!= null) {

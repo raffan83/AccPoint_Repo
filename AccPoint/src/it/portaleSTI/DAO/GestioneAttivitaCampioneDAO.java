@@ -790,13 +790,17 @@ for (AcAttivitaCampioneDTO attivita : lista) {
 
 
 
-public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String tipo_data,  String verificazione, Session session) throws Exception, ParseException {
+public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String tipo_data,  String verificazione, String lat, Session session) throws Exception, ParseException {
 	
 	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");			
 
 	ArrayList<CampioneDTO> lista = new ArrayList<CampioneDTO>();
 
-	Query query = session.createQuery("from CampioneDTO where "+tipo_data+"= :_date and statoCampione!='F' and campione_verificazione = :_verificazione");
+	String not = "not";
+	if(!lat.equals("")) {
+		not = "";
+	}
+	Query query = session.createQuery("from CampioneDTO where "+tipo_data+"= :_date and statoCampione!='F' and codice "+ not+" like '%CDT%' and campione_verificazione = :_verificazione");
 	query.setParameter("_date", df.parse(data));
 	query.setParameter("_verificazione", Integer.parseInt(verificazione));
 		

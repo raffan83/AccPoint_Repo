@@ -65,9 +65,9 @@ public class GestioneAttivitaCampioneBO {
 		
 		return GestioneAttivitaCampioneDAO.getListaAttivitaScadenziarioCampione(campione, session);
 	}
-	public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String tipo_data, String verificazione, Session session) throws ParseException, Exception {
+	public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String tipo_data, String verificazione, String lat, Session session) throws ParseException, Exception {
 		
-		return GestioneAttivitaCampioneDAO.getListaCampioniPerData(data,tipo_data, verificazione, session);
+		return GestioneAttivitaCampioneDAO.getListaCampioniPerData(data,tipo_data, verificazione,  lat, session);
 	}
 
 	public static void updateObsolete(String idC, int tipo_attivita, Date data,  Session session) {

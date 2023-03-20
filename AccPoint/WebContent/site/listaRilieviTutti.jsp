@@ -153,7 +153,8 @@
 			<i class="fa fa-edit"></i></a>
 			<%-- <a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievo('${rilievo.id}')"><i class="fa fa-clone"></i></a> --%>
 			<a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievoModal('${rilievo.id}')"><i class="fa fa-clone"></i></a>
-			<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiApriRilievo('${rilievo.id}',2)"><i class="glyphicon glyphicon-remove"></i></a>
+			<%-- <a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiApriRilievo('${rilievo.id}',2)"><i class="glyphicon glyphicon-remove"></i></a> --%>
+			<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="modalFirmaRilievo('${rilievo.id}',2)"><i class="glyphicon glyphicon-remove"></i></a> 
 			<a href="#" class="btn btn-danger customTooltip" title="Click per eliminare il rilievo" onclick="eliminaRilievoModal('${rilievo.id}')"><i class="fa fa-trash"></i></a>
 			<a target="_blank" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" href="gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>
 		</c:when>
@@ -164,9 +165,17 @@
 		</c:choose>
 		</c:if>
 		<%-- <a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-excel-o"></i></a> --%>
-		<c:if test="${ userObj.checkPermesso('VISUALIZZA_RILIEVI_DIMENSIONALI') && rilievo.stato_rilievo.id==2}">
-			<a  target="_blank" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" href="gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>		
+		<c:if test="${ userObj.checkPermesso('RILIEVI_DIMENSIONALI') && rilievo.stato_rilievo.id==2}">
+			<%-- <a  target="_blank" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" href="gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a> --%>
+		 <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare la scheda del rilievo" href="gestioneRilievi.do?action=download_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>
+		 <c:if test="${userObj.checkRuolo('AM')  && rilievo.controfirmato==0}">
+		 <a  class="btn btn-success customTooltip" title="Click per approvare la scheda rilievo" onClick="modalApprovaRilievo('${rilievo.id}')"><i class="fa fa-check"></i></a>
+		 </c:if> 		
 		</c:if>
+		<c:if test="${ userObj.checkRuolo('RL') && rilievo.controfirmato==1}">
+		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare la scheda del rilievo" href="gestioneRilievi.do?action=download_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>
+		</c:if>
+		
 		</td>
 		<td>
 		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
@@ -215,6 +224,24 @@
 
  <script type="text/javascript">
  
+ 
+ function approvaRilievo(id_rilievo){
+	 dataObj={};
+	 dataObj.id_rilievo = id_rilievo;
+	 
+	 callAjax(dataObj,"gestioneRilievi.do?action=approva_rilievo");
+	 
+ }
+ 
+ 
+ function modalApprovaRilievo(id_rilievo){
+	
+	 $('#approva_rilievo_id').val(id_rilievo);
+     
+    $('#myModalApprovaRilievo').modal();
+ }
+ 
+ 
  function modalCertificatiCampione(id_rilievo){
 	 dataString ="rilievi=true&id_rilievo="+id_rilievo;
      exploreModal("listaCampioni.do",dataString,"#body_certificati_campione",function(datab,textStatusb){});
@@ -243,6 +270,14 @@
 	 $('#myModalYesOrNo').modal();
  }
  
+ 
+ function modalFirmaRilievo(id_rilievo){
+	 
+	 $('#firma_rilievo_id').val(id_rilievo);
+	 $('#myModalFirmaRilievo').modal();
+	 
+ }
+ 
  function modalAllegati(id_rilievo){
 	 
 	 $('#id_rilievo').val(id_rilievo);
@@ -255,23 +290,7 @@
 	 $('#myModalAllegatiImg').modal();
 }
  
-/*  function modalListaSchedeConsegna(){
-	 exploreModal('showSchedeConsegna.do','action=rilievi','#content_schede_consegna');
-	 $('#myModalListaSchedeConsegna').modal();
-	 $('#myModalListaSchedeConsegna').on('shown.bs.modal', function (){
-	    	table = $('#tabPM').DataTable();
-   		 table.columns().eq( 0 ).each( function ( colIdx ) {
-  			 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-  				 table
-  			      .column( colIdx )
-  			      .search( this.value )
-  			      .draw();
-  			 } );
-  			 } );    
-  		table.columns.adjust().draw(); 
-   });
- } */
- 
+
  function modalSchedaConsegna(){
 	 
 	 if($('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){

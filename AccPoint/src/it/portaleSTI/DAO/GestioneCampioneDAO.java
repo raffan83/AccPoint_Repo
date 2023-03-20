@@ -603,19 +603,19 @@ public class GestioneCampioneDAO {
 			
 		for (CampioneDTO campioneDTO : result) {
 				
-			if(campioneDTO.getDataScadenzaManutenzione()!=null && (campioneDTO.getDataScadenzaManutenzione().after(df.parse(data_start)) || campioneDTO.getDataScadenzaManutenzione().equals(df.parse(data_start))) && (campioneDTO.getDataScadenzaManutenzione().before( df.parse(data_end)) || campioneDTO.getDataScadenzaManutenzione().equals(df.parse(data_end)))) {
+			if(campioneDTO.getDataScadenzaManutenzione()!=null && (campioneDTO.getDataScadenzaManutenzione().after(df.parse(data_start)) || campioneDTO.getDataScadenzaManutenzione().getTime() == df.parse(data_start).getTime()) && (campioneDTO.getDataScadenzaManutenzione().before( df.parse(data_end)) || campioneDTO.getDataScadenzaManutenzione().getTime() == df.parse(data_end).getTime())) {
 				lista.add(campioneDTO);
 				lista_tipo.add(1);
 				lista_date.add(df.format(campioneDTO.getDataScadenzaManutenzione()));
 				System.out.println(campioneDTO.getCodice()+" data manutenzione: "+df.format(campioneDTO.getDataScadenzaManutenzione()));
 			}
-			if(campioneDTO.getDataScadenzaVerificaIntermedia()!=null && (campioneDTO.getDataScadenzaVerificaIntermedia().after(df.parse(data_start)) || campioneDTO.getDataScadenzaVerificaIntermedia().equals(df.parse(data_end))) && (campioneDTO.getDataScadenzaVerificaIntermedia().before( df.parse(data_end)) || campioneDTO.getDataScadenzaVerificaIntermedia().equals(df.parse(data_end)))) {
+			if(campioneDTO.getDataScadenzaVerificaIntermedia()!=null && (campioneDTO.getDataScadenzaVerificaIntermedia().after(df.parse(data_start)) || campioneDTO.getDataScadenzaVerificaIntermedia().getTime() == df.parse(data_end).getTime()) && (campioneDTO.getDataScadenzaVerificaIntermedia().before( df.parse(data_end)) || campioneDTO.getDataScadenzaVerificaIntermedia().getTime() == df.parse(data_end).getTime())) {
 				lista.add(campioneDTO);
 				lista_tipo.add(2);
 				lista_date.add(df.format(campioneDTO.getDataScadenzaVerificaIntermedia()));
 				System.out.println(campioneDTO.getCodice()+" data verifica intermedia: "+df.format(campioneDTO.getDataScadenzaVerificaIntermedia()));
 			}
-			if(campioneDTO.getDataScadenza()!=null && (campioneDTO.getDataScadenza().after(df.parse(data_start)) || campioneDTO.getDataScadenza().equals(df.parse(data_start))) && (campioneDTO.getDataScadenza().before( df.parse(data_end)) || campioneDTO.getDataScadenza().equals(df.parse(data_end)))) {
+			if(campioneDTO.getDataScadenza()!=null && (campioneDTO.getDataScadenza().after(df.parse(data_start)) || campioneDTO.getDataScadenza().getTime() == df.parse(data_start).getTime()) && (campioneDTO.getDataScadenza().before( df.parse(data_end)) || campioneDTO.getDataScadenza().getTime() == df.parse(data_end).getTime())) {
 				lista.add(campioneDTO);
 				lista_tipo.add(3);
 				lista_date.add(df.format(campioneDTO.getDataScadenza()));
@@ -1069,7 +1069,7 @@ public static void updateCampioneScheduler() {
 			Date data_taratura = campione.getDataScadenza();
 			
 			
-			if((data_manutenzione!=null && data_manutenzione.before(new Date())) || (data_verifica_intermedia!=null && data_verifica_intermedia.before(new Date())) || (data_taratura!=null && data_taratura.before(new Date()))) {
+			if((data_taratura!=null && data_taratura.before(new Date())) || (campione.getTipo_campione().getId()==3 && data_manutenzione!=null && data_manutenzione.before(new Date()))) {
 				campione.setStatoCampione("N");
 				session.update(campione);
 				

@@ -148,28 +148,34 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
                     	             }
                     	             
                     	             %></td>
+                    	             
+
 	 							
 	 							<td id="stato_<%=intervento.getId() %>">
 	 							<% if(intervento.getStatoIntervento().getId() == 0){ %>
+	 							
+	 								<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','chiusura', '<%=intervento.getId()%>')" > <span class="label label-info"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
 									
-									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-info">
+									<%-- <a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-info">
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
-	 								</span></a> 
+	 								</span></a>  --%>
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 1){ %>
-									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-success"> 
+	 							<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','chiusura', '<%=intervento.getId()%>')"  > <span class="label label-success"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
+	 							
+								<%-- 	<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-success"> 
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
-	 								</span></a> 
+	 								</span></a>  --%>
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 2){ %>
 									
-	 							 
-	 							<a class="customTooltip" title="Click per aprire l'Intervento"  href="#" onClick="apriIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId()))  %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>">
+	 							  <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','apertura', '<%=intervento.getId()%>')"  > <span class="label label-warning"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
+	 							<%-- <a class="customTooltip" title="Click per aprire l'Intervento"  href="#" onClick="apriIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId()))  %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>">
 									 <span class="label label-warning"> 
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
-	 								</span></a> 
+	 								</span></a>  --%>
 	 							<%  } %>
 	 						
 	 							</td>
@@ -220,6 +226,40 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	    	} );
 
 	} );
+	
+	
+	
+	function openModalComunicazione(id_intervento, apertura_chiusura){
+		
+		$('#id_int').val(id_intervento);		
+		
+		
+		if(apertura_chiusura == 'apertura'){
+			$('#label_chiusura').hide();
+			$('#label_apertura').show();
+		}else{
+			$('#label_apertura').hide();
+			$('#label_chiusura').show();
+		}
+		
+		
+		$('#apertura_chiusura').val(apertura_chiusura);
+		$('#modalComunicazione').modal()
+	}
+	
+	
+	function cambiaStatoIntervento(id_intervento, comunicazione){
+		
+
+		if($('#apertura_chiusura').val() == 'apertura'){
+			apriIntervento($('#id_int').val(),2,0, comunicazione)
+		}else{
+			chiudiIntervento($('#id_int').val(),2,0, comunicazione)
+		}
+		
+		
+	}
+
 
  $(document).ready(function(){
 	

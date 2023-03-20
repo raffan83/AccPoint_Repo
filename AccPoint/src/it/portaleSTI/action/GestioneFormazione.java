@@ -89,7 +89,8 @@ public class GestioneFormazione extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		doPost(request, response);
+		doPost(request, response);		
+				
 	}
 
 	/**
@@ -434,6 +435,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		     	dispatcher.forward(request,response);
 				
 			}
+			
+			
+			
+			
+			
 			else if(action.equals("nuovo_corso")) {
 				
 				ajax = true;
@@ -897,6 +903,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		     	dispatcher.forward(request,response);
 				
 			}
+			
+			
+			
 			else if(action.equals("nuovo_partecipante")) {
 				
 				ajax = true;
@@ -1221,24 +1230,31 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				for (ForPartecipanteRuoloCorsoDTO p : lista_partecipanti_corso) {
 					File input = new File(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+p.getPartecipante().getId()+"//"+p.getAttestato());
 					
-					String name=input.getName().replace(".pdf","").replace(".PDF", "");
+					//String name=input.getName().replace(".pdf","").replace(".PDF", "");
+					
+					String name= p.getPartecipante().getNome()+"_"+p.getPartecipante().getCognome();
+					name = name.replaceAll("'", "");
+					
 					  ZipEntry ze = null;
-					if(!filenames.contains(input.getName())) {
-						filenames.add(input.getName());
-						fis = new FileInputStream(input);
-		                 ze = new ZipEntry(input.getName());
-		                System.out.println("Zipping the file: "+input.getName());
+					  File input_renamed = null;
+					if(!filenames.contains(name)) {
+						input_renamed = new File(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+p.getPartecipante().getId()+"//"+name+".pdf");
+//						input.renameTo(input_renamed);						
+//						filenames.add(input.getName());
+//						fis = new FileInputStream(input_renamed);
+//		                 ze = new ZipEntry(input_renamed.getName());
+//		                System.out.println("Zipping the file: "+input.getName());
 					}else {
-						File input_renamed = new File(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+p.getPartecipante().getId()+"//"+name+"_"+p.getPartecipante().getId()+".pdf");
-						input.renameTo(input_renamed);
-						
-						fis = new FileInputStream(input_renamed);
-						ze = new ZipEntry(input_renamed.getName());
-		                System.out.println("Zipping the file: "+input_renamed.getName());
-		                p.setAttestato(input_renamed.getName());
-		                session.update(p);
-					}									
-
+						 input_renamed = new File(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+p.getPartecipante().getId()+"//"+name+"_"+p.getPartecipante().getId()+".pdf");
+					}				
+					filenames.add(input_renamed.getName());
+					input.renameTo(input_renamed);
+					fis = new FileInputStream(input_renamed);
+					ze = new ZipEntry(input_renamed.getName());
+	                System.out.println("Zipping the file: "+input_renamed.getName());
+	                p.setAttestato(input_renamed.getName());
+	                session.update(p);
+					
 	                zipOut.putNextEntry(ze);
 	                byte[] tmp = new byte[4*1024];
 	                int size = 0;

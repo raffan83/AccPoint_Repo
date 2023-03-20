@@ -128,8 +128,14 @@
 		<a href="#" class="btn btn-success customTooltip" title="Click per riaprire il rilievo" onClick="chiudiApriRilievo('${rilievo.id}',1)"><i class="fa fa-unlock"></i></a>
 		</c:if>
 		<%-- <a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-excel-o"></i></a> --%>
-		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" href="gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>
-		
+		<%-- <a  target="_blank" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" href="gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a> --%>
+		 <%-- <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare la scheda del rilievo" href="gestioneRilievi.do?action=download_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a> --%>
+		 <c:if test="${userObj.checkRuolo('AM') && rilievo.controfirmato==0}">
+		 <a  class="btn btn-success customTooltip" title="Click per approvare la scheda rilievo" onClick="modalApprovaRilievo('${rilievo.id}')"><i class="fa fa-check"></i></a>
+		 </c:if> 
+		 <c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') || (userObj.checkRuolo('RL') && rilievo.controfirmato==1)}">
+		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare la scheda del rilievo" href="gestioneRilievi.do?action=download_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>
+		</c:if>
 		</td>
 		<td>
 		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
@@ -168,6 +174,21 @@
 
  <script type="text/javascript">
  
+ function approvaRilievo(id_rilievo){
+	 dataObj={};
+	 dataObj.id_rilievo = id_rilievo;
+	 
+	 callAjax(dataObj,"gestioneRilievi.do?action=approva_rilievo");
+	 
+ }
+ 
+ 
+ function modalApprovaRilievo(id_rilievo){
+	
+	 $('#approva_rilievo_id').val(id_rilievo);
+     
+    $('#myModalApprovaRilievo').modal();
+ }
  
  function modalAllegati(id_rilievo){
 	 

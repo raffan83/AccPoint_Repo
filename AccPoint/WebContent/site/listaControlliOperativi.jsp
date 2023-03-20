@@ -506,7 +506,7 @@ $('#attrezzatura').on('change', function() {
 	
 	callAjax(dataObj, "gestioneControlliOperativi.do?action=dettaglio_attrezzatura", function(datab,textStatusb){
 		
-		var str = "<ul class='list-group list-group-unbordered'><li class='list-group-item'><label>Controllo</label> <label class='pull-right'>Esito</label></li>";
+		var str = "<ul class='list-group list-group-unbordered'><li class='list-group-item'><div class='row'> <div class='col-xs-8'><label>Controllo</label></div><div class='col-xs-2'> <label>Tutti P.</label> <input class='pull-right' type='radio' id='checkall' onclick='checkAll()'> </div><div class='col-xs-2'><label class='pull-right'>Esito</label></div></li>";
 
 		if(datab.success){
 			
@@ -527,6 +527,38 @@ $('#attrezzatura').on('change', function() {
 	});
 	
 });
+
+
+function checkAll(mod){
+	
+	 var radios = document.getElementsByTagName('input');
+	    for (i = 0; i < radios.length; i++) {
+	    	
+	    		if (radios[i].type == 'radio' && radios[i].id.startsWith("positivo_")) {
+		        	$("#"+radios[i].id).prop("checked", true);
+		        	clickRadio(radios[i]);
+		        }
+	    	}
+	    	
+	        
+	    
+	
+}
+
+
+function checkAllMod(){
+	
+	 var radios = document.getElementsByTagName('input');
+	    for (i = 0; i < radios.length; i++) {
+	    	
+	    		if (radios[i].type == 'radio' && radios[i].id.startsWith("positivo_") && radios[i].id.includes("_mod")) {
+		        	$("#"+radios[i].id).prop("checked", true);
+		        	clickRadio(radios[i]);
+		        }
+	    }
+	   
+}
+
 
 function filtraControlli(filtro){
 	  table
@@ -675,6 +707,7 @@ $('#attrezzatura_mod').on('change', function() {
 	callAjax(dataObj, "gestioneControlliOperativi.do?action=lista_controlli_attrezzatura", function(datab,textStatusb){
 		
 		var str = "<ul class='list-group list-group-unbordered'><li class='list-group-item'><label>Controllo</label> <label class='pull-right'>Esito</label></li>";
+		var str = "<ul class='list-group list-group-unbordered'><li class='list-group-item'><div class='row'> <div class='col-xs-8'><label>Controllo</label></div><div class='col-xs-2'> <label>Tutti P.</label><input class='pull-right' type='radio' id='checkallmod' onclick='checkAllMod()'> </div><div class='col-xs-2'><label class='pull-right'>Esito</label></div></li>";
 
 		if(datab.success){
 			

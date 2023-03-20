@@ -44,6 +44,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import antlr.Utils;
+import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
@@ -1443,20 +1444,62 @@ public class GestioneRilievi extends HttpServlet {
 					}				
 					
 					rilievo.setNumero_scheda("SRD_"+(ultima_scheda));
+					
+					
+					String path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";		
+					List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+					if(rilievo.getTipo_rilievo().getId()!=2) {
+						new CreateSchedaRilievo(rilievo, listaSedi, path_simboli,  ultima_scheda, session);
+					}else {
+						new CreateSchedaRilievoCMCMK(rilievo, listaSedi, path_simboli, ultima_scheda, session);
+					}	
+					rilievo.setControfirmato(0);										
+					
+					
+					ArubaSignService.signRilievoPades(rilievo.getUtente(), rilievo.getUtente().getNominativo(), rilievo);
+					rilievo.setFirmato(1);
 				}
 				
-				session.getTransaction().commit();
-				session.close();
+			
 				myObj.addProperty("success", true);
 				if(stato.equals("1")) {
 					myObj.addProperty("messaggio", "Rilievo aperto con successo!");
+					rilievo.setControfirmato(0);
+					rilievo.setFirmato(0);
+					
 				}else {
 					myObj.addProperty("messaggio", "Rilievo chiuso con successo!");	
 				}
 				
+				session.getTransaction().commit();
+				session.close();
+				
 				out.print(myObj);
 				
 			}
+			
+			else if(action.equals("approva_rilievo")) {
+				
+				ajax = true;
+				PrintWriter out = response.getWriter();
+				String id_rilievo = request.getParameter("id_rilievo");
+				
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
+				
+				ArubaSignService.signRilievoPades(rilievo.getUtente(), "Terenzio Fantauzzi", rilievo);
+				
+				rilievo.setControfirmato(1);
+				
+				session.getTransaction().commit();
+				session.close();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Rilievo approvato con successo!");
+				
+				
+				out.print(myObj);
+				
+			}
+			
 			
 			else if(action.equals("upload_allegato")) {
 								
@@ -1481,6 +1524,17 @@ public class GestioneRilievi extends HttpServlet {
 					
 					ArrayList<File> certificati = new ArrayList<File>();
 					ArrayList<Integer> lista_falliti = new ArrayList<Integer>();
+					
+					if(rilievo.getAllegato()!=null && !rilievo.getAllegato().equals("") && !rilievo.getAllegato().equals("certificatoCampioneAllegato.pdf")) {
+						ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampioneAllegato.pdf");
+						ut.addSource(new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\"+rilievo.getAllegato()));
+						rilievo.setAllegato("certificatoCampioneAllegato.pdf");
+					}else {
+						ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampione.pdf");
+						rilievo.setAllegato("certificatoCampione.pdf");
+					}				
+					
+					
 					for(int i=0; i<jsArr.size(); i++){
 						String id =  jsArr.get(i).toString().replaceAll("\"", "");
 	
@@ -1505,14 +1559,7 @@ public class GestioneRilievi extends HttpServlet {
 							f.mkdirs();
 						}
 						
-						if(rilievo.getAllegato()!=null && !rilievo.getAllegato().equals("") && !rilievo.getAllegato().equals("certificatoCampioneAllegato.pdf")) {
-							ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampioneAllegato.pdf");
-							ut.addSource(new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\"+rilievo.getAllegato()));
-							rilievo.setAllegato("certificatoCampioneAllegato.pdf");
-						}else {
-							ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampione.pdf");
-							rilievo.setAllegato("certificatoCampione.pdf");
-						}
+						
 						ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());						
 						
 						if(!lista_falliti.isEmpty()) {
@@ -1556,6 +1603,8 @@ public class GestioneRilievi extends HttpServlet {
 							if(item.getName()!="") {
 								GestioneRilieviBO.uploadAllegato(item, rilievo.getId(),false,false, session);
 								if(rilievo.getAllegato()!=null && rilievo.getAllegato().equals("certificatoCampione.pdf")) {
+
+									
 									ut.addSource(new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\"+item.getName()));
 									ut.addSource(new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampione.pdf"));
 									ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampioneAllegato.pdf");
@@ -1756,6 +1805,8 @@ public class GestioneRilievi extends HttpServlet {
 				}else {
 					new CreateSchedaRilievoCMCMK(rilievo, listaSedi, path_simboli, ultima_scheda, session);
 				}				
+				rilievo.setFirmato(0);
+				rilievo.setControfirmato(0);
 				rilievo.setNumero_scheda("SRD_"+(ultima_scheda));
 				session.update(rilievo);
 				session.getTransaction().commit();
@@ -2402,6 +2453,48 @@ public class GestioneRilievi extends HttpServlet {
 				session.getTransaction().commit();
 				session.close();
 				out.print(myObj);
+				
+			}
+			
+			else if(action.equals("download_scheda_rilievo")) {
+				
+				ajax = false;
+				String id_rilievo= request.getParameter("id_rilievo");	
+				String filename = request.getParameter("filename");
+				
+				id_rilievo = Utility.decryptData(id_rilievo);
+				
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
+				String path = Costanti.PATH_FOLDER+"RilieviDimensionali\\Schede\\"+rilievo.getId()+"\\"+rilievo.getNumero_scheda()+".pdf";
+				
+				File file = new File(path);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				if(filename!=null && (filename.endsWith("pdf")||filename.endsWith("PDF"))) {
+					response.setContentType("application/pdf");
+				}
+				else if(filename==null) {
+					response.setContentType("application/pdf");
+				}
+				else {
+					response.setContentType("application/octet-stream");
+					response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				}
+				 
+				  
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    session.close();
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
 				
 			}
 

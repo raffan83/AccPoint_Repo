@@ -224,14 +224,14 @@ public class CreaCertificatoLivellaBolla {
 		}
 		
 		
-		
-		
+		ClienteDTO cliente_utilizzatore = GestioneAnagraficaRemotaBO.getClienteById(""+misura.getIntervento().getId_cliente());
+		SedeDTO sede_utilizzatore = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, misura.getIntervento().getIdSede(), misura.getIntervento().getId_cliente());
 		String indirizzo_sd="";
 		String cap_sd="";
 		String citta_sd="";
 		String provincia_sd="";
 		
-		if(sede!=null) {
+		if(sede_utilizzatore!=null) {
 			if(sede.getIndirizzo()!=null) {
 				indirizzo_sd = sede.getIndirizzo();				
 				}
@@ -245,17 +245,17 @@ public class CreaCertificatoLivellaBolla {
 					provincia_sd = sede.getSiglaProvincia();
 				}
 		}else {
-			if( cliente.getIndirizzo()!=null) {
-				indirizzo_sd = cliente.getIndirizzo();				
+			if( cliente_utilizzatore.getIndirizzo()!=null) {
+				indirizzo_sd = cliente_utilizzatore.getIndirizzo();				
 				}
 				if(cliente.getCap()!=null) {
-					cap_sd = cliente.getCap();
+					cap_sd = cliente_utilizzatore.getCap();
 				}
 				if(cliente.getCitta()!=null) {
-					citta_sd = cliente.getCitta();
+					citta_sd = cliente_utilizzatore.getCitta();
 				}
 				if(cliente.getProvincia()!=null) {
-					provincia_sd = cliente.getProvincia();
+					provincia_sd = cliente_utilizzatore.getProvincia();
 				}
 		}
 		
@@ -660,7 +660,7 @@ public class CreaCertificatoLivellaBolla {
 								arrayPs.add("0,0");
 							}else {
 								//arrayPs.add(String.valueOf((punto.getMedia_corr_sec().subtract(punto.getValore_nominale_tratto_sec())).setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
-								arrayPs.add(Utility.getArcosec(cor_mm+"").setScale(1, RoundingMode.HALF_UP).toPlainString());
+								arrayPs.add(Utility.getArcosec(cor_mm+"").setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",","));
 							}							
 								
 						}else {

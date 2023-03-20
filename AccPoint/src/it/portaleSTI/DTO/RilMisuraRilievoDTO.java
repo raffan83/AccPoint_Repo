@@ -34,7 +34,9 @@ public class RilMisuraRilievoDTO {
 	private String numero_scheda;
 	private int pezzi_ingresso;
 	private Double tempo_scansione;
-	 
+	private int firmato;
+	private int controfirmato;
+	
 	public int getN_pezzi_tot() {
 		return n_pezzi_tot;
 	}
@@ -215,5 +217,17 @@ public class RilMisuraRilievoDTO {
 	}
 	public void setTempo_scansione(Double tempo_scansione) {
 		this.tempo_scansione = tempo_scansione;
+	}
+	public int getFirmato() {
+		return firmato;
+	}
+	public void setFirmato(int firmato) {
+		this.firmato = firmato;
+	}
+	public int getControfirmato() {
+		return controfirmato;
+	}
+	public void setControfirmato(int controfirmato) {
+		this.controfirmato = controfirmato;
 	}
 }

@@ -134,6 +134,30 @@
 </div>
 
 
+  <div id="modalComunicazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">
+			<label id="label_chiusura">Vuoi inviare la comunicazione di avvenuta chiusura intervento?</label>
+   <label id="label_apertura">Vuoi inviare la comunicazione di avvenuta apertura intervento?</label>
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer" id="myModalFooter">
+ 	<input id="id_int" type="hidden">
+ 	<input id="apertura_chiusura" type="hidden">
+ 	
+ 
+ 		<button type="button" class="btn btn-primary" onClick="cambiaStatoIntervento($('#id_int').val(), 1)">SI</button>
+        <button type="button" class="btn btn-primary"  onClick="cambiaStatoIntervento($('#id_int').val(), 0)">NO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
   <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">

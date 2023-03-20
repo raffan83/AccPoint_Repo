@@ -43,6 +43,7 @@ import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Pkcs7SignV2Respo
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.SignRequestV2;
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.TypeTransport;
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.Util.Costanti;
@@ -450,6 +451,111 @@ public static JsonObject signCertificatoPades(UtenteDTO utente,String keyWord, b
 
 
 }
+
+
+
+public static JsonObject signRilievoPades(UtenteDTO utente,String keyWord, RilMisuraRilievoDTO rilievo) throws TypeOfTransportNotImplementedException, IOException {
+	
+
+	ArubaSignServiceServiceStub stub = new ArubaSignServiceServiceStub();
+	
+	
+	PdfsignatureV2E request= new PdfsignatureV2E();
+	PdfsignatureV2 pkcs = new PdfsignatureV2();
+	
+	SignRequestV2  sign = new SignRequestV2();
+	
+	
+	sign.setCertID("AS0");
+	
+	Auth identity = new Auth();
+	identity.setDelegated_domain("faSTI");
+	identity.setTypeOtpAuth("faSTI");
+	identity.setOtpPwd("dsign");
+	identity.setTypeOtpAuth("faSTI");
+	
+	identity.setUser(utente.getIdFirma());
+	
+	identity.setDelegated_user("admin.firma");
+	identity.setDelegated_password("uBFqc8YYslTG");
+	
+	sign.setIdentity(identity);
+	
+	String path = Costanti.PATH_FOLDER+"RilieviDimensionali\\Schede\\"+rilievo.getId()+"\\"+rilievo.getNumero_scheda()+".pdf";
+	
+	File f = new File(path);
+
+	URI uri = f.toURI();	
+
+
+	javax.activation.DataHandler dh = new DataHandler(uri.toURL());
+	
+	sign.setBinaryinput(dh);
+
+	sign.setTransport(TypeTransport.BYNARYNET);	
+
+	pkcs.setSignRequestV2(sign);
+	pkcs.setPdfprofile(PdfProfile.BASIC);
+ 	request.setPdfsignatureV2(pkcs);
+ 	
+ 	PdfSignApparence apparence = new PdfSignApparence();
+	
+	if(utente.getFile_firma()!=null && !utente.getFile_firma().equals("")) {
+		
+	    PdfReader reader = new PdfReader(path);
+		
+	    Integer[] fontPosition = null;
+		for(int i = 1;i<=reader.getNumberOfPages();i++) {
+			fontPosition = getFontPosition(reader, keyWord, i);
+			
+			if(fontPosition[0] != null && fontPosition[1] != null) {
+				apparence.setPage(i);
+				break;
+			}
+		}
+				
+	
+	    System.out.println(Arrays.toString(fontPosition));
+	
+	    
+	    apparence.setImage("C:\\PortalECI\\FileFirme\\"+utente.getFile_firma());
+	  
+	   apparence.setLeftx(fontPosition[0] - 15 );        	
+	   apparence.setLefty(fontPosition[1] - 35);
+	   apparence.setRightx(fontPosition[0] + 70);
+	   apparence.setRighty(fontPosition[1]-5);
+	    apparence.setImageOnly(true);
+	    
+	    apparence.setResizeMode(1);
+	    pkcs.setApparence(apparence);
+	    reader.close();
+	}
+	
+    
+     PdfsignatureV2ResponseE response= stub.pdfsignatureV2(request);
+     
+     JsonObject myObj = new JsonObject();
+     		
+     if( !response.getPdfsignatureV2Response().get_return().getStatus().equals("KO")) {
+
+     	DataHandler fileReturn=response.getPdfsignatureV2Response().get_return().getBinaryoutput();
+     	//File targetFile=  new File(path);
+     	File targetFile=  new File(path);
+     			     			
+     	FileUtils.copyInputStreamToFile(fileReturn.getInputStream(), targetFile);
+     	myObj.addProperty("success", true);
+     }else {
+    	 myObj.addProperty("succes", false);
+     }
+
+	
+	
+	return myObj;
+
+
+}
+
+
 
 
 private static Integer[] getFontPosition(  PdfReader pdfReader, final String keyWord, Integer pageNum) throws IOException {

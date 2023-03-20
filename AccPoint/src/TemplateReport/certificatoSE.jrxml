@@ -364,7 +364,7 @@
 			<staticText>
 				<reportElement x="0" y="242" width="161" height="21" uuid="c4d6b58c-ed9a-4f8a-a977-ac0d2af44703"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<text><![CDATA[MOD-P6I016-10]]></text>
+				<text><![CDATA[MOD-PGI016-10]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="391" y="243" width="161" height="21" uuid="1237b720-52f0-4691-a616-385ac8fe6234"/>

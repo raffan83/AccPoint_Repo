@@ -1011,4 +1011,100 @@ public static void aggiornaObsolete(Session session) {
 }
 
 
+public static void aggiornaTar(Session session) {
+	ArrayList<AcAttivitaCampioneDTO> lista=null;
+	ArrayList<AcAttivitaCampioneDTO> listaObsolete=null;
+
+	Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.codice like '%CDT%' and data_attivita = '2022-12-23 00:00:00' and tipo_attivita.id = 2");		
+	
+	
+	listaObsolete= (ArrayList<AcAttivitaCampioneDTO>)query.list();	
+	
+	
+	for (AcAttivitaCampioneDTO a : listaObsolete) {
+		
+		System.out.println("CAMPIONE: "+a.getCampione().getCodice()+" data scadenza old: "+a.getCampione().getDataScadenza()+" data scadenza new: "+a.getData_scadenza());
+		
+		a.setTipo_attivita(new AcTipoAttivitaCampioniDTO(3, ""));
+		a.getCampione().setDataVerifica(a.getData());
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(a.getData());
+		calendar.add(Calendar.MONTH, a.getCampione().getFreqTaraturaMesi());
+		
+		Date date = calendar.getTime();
+		
+		a.getCampione().setDataScadenza(date);
+		a.setData_scadenza(date);
+	
+		
+		if(a.getCampione().getDataScadenza().after(new Date())) {
+			a.getCampione().setStatoCampione("S");
+		}
+		
+		
+				
+		//session.update(a);
+		//session.update(a.getCampione());
+	}
+	
+	//session.getTransaction().commit();
+	//session.close();
+	
+}
+
+public static void aggiornaTarCampioni(Session session) {
+	ArrayList<CampioneDTO> lista=null;
+	ArrayList<AcAttivitaCampioneDTO> listaObsolete=null;
+
+	Query query = session.createQuery("from CampioneDTO where data_scadenza > '2023-02-14 00:00:00' and statoCampione = 'N'");		
+	
+	
+	lista= (ArrayList<CampioneDTO>)query.list();	
+	
+	
+	for (CampioneDTO a : lista) {
+		
+		
+		
+		if(a.getDataScadenza().after(new Date())) {
+			a.setStatoCampione("S");
+		}
+		
+		
+				
+		session.update(a);
+		//session.update(a.getCampione());
+	}
+	
+	//session.getTransaction().commit();
+	//session.close();
+	
+}
+
+
+public static void aggiornaLaboratorio(Session session) {
+
+	
+	ArrayList<AcAttivitaCampioneDTO> lista=null;
+
+	Query query = session.createQuery("from AcAttivitaCampioneDTO where ente is not null and ente !='Interno' AND ente NOT LIKE '%STI%'  AND ente NOT LIKE '%S.T.I.%' ");		
+	
+	
+	lista= (ArrayList<AcAttivitaCampioneDTO>)query.list();	
+	
+	
+	for (AcAttivitaCampioneDTO a : lista) {
+		
+		
+	a.setEtichettatura("Esterna");
+		
+		
+				
+		session.update(a);
+		//session.update(a.getCampione());
+	}
+}
+
+
 }

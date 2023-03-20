@@ -868,12 +868,18 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	 $('#check_interna').click(function(){
 		$('#check_esterna').prop("checked", false); 
 		$('#etichettatura').val("Interna");
+		$('#laboratorio').val("Interno");
+		$('#presso').prop("readonly", true);
 	 });
 	 
 	 $('#check_esterna').click(function(){
 		$('#check_interna').prop("checked", false);
 		$('#etichettatura').val("Esterna");
+		$('#laboratorio').val("Esterno");
+		$('#presso').prop("readonly", false);
 	 });
+	 
+
 	 
 	 $('#check_idonea').click(function(){
 		 $('#check_non_idonea').prop("checked", false);
@@ -1023,11 +1029,15 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	 $('#check_interna_mod').click(function(){
 		$('#check_esterna_mod').prop("checked", false); 
 		$('#etichettatura_mod').val("Interna");
+		$('#laboratorio_mod').val("Interna");
+		$('#presso_mod').prop("readonly", true);
 	 });
 	 
 	 $('#check_esterna_mod').click(function(){
 		$('#check_interna_mod').prop("checked", false);
 		$('#etichettatura_mod').val("Esterna");
+		$('#laboratorio_mod').val("Esterna");
+		$('#presso_mod').prop("readonly", false);
 	 });
 	 
 	 $('#check_idonea_mod').click(function(){
@@ -1146,6 +1156,9 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	 $('#id_certificato_mod').val(id_certificato);
 	 if(tipo_attivita==2 || tipo_attivita==3){
 		 $('#ente_mod').val(ente);
+		 $('#presso_mod').val(ente);
+		 
+			
 		
 		 $('#campo_sospesi_mod').val(campo_sospesi);
 		 
@@ -1156,9 +1169,11 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 		 if(etichettatura=='Interna'){
 			 $('#check_interna_mod').prop("checked", true); 
 			 $('#etichettatura_mod').val("Interna");
+			 $('#presso_mod').prop("readonly", true);
 		 }else{
 			 $('#check_esterna_mod').prop("checked", true); 
 			 $('#etichettatura_mod').val("Esterna");
+			 $('#presso_mod').prop("readonly", false);
 		 }
 		 if(stato=='Idonea'){
 			 $('#check_idonea_mod').prop("checked", true);

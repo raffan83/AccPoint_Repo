@@ -231,7 +231,7 @@
         <option value="${cmp.id }">${cmp.ragione_sociale }</option>
         
         </c:forEach>
-        
+        <option value="0">NESSUNA COMPANY</option>
         </select>
        			
        	</div>       	
@@ -246,6 +246,7 @@
        	  	
         <select id="dipendente" name="dipendente" data-placeholder="Seleziona operatore..." class="form-control select2" style="width:100%" >
         <option value=""></option>
+                  <option value="0">Nessun Operatore</option>
         <c:forEach items="${lista_dipendenti }" var="dipendente">
         <option value="${dipendente.id }">${dipendente.cognome } ${dipendente.nome } </option>
         
@@ -293,7 +294,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="distributore" name="distributore" class="form-control" type="text" style="width:100%" required>
+        <input id="distributore" name="distributore" class="form-control" type="text" style="width:100%" >
        			
        	</div>          	
        	
@@ -459,7 +460,7 @@
         <option value="${cmp.id }">${cmp.ragione_sociale }</option>
         
         </c:forEach>
-        
+          <option value="0">NESSUNA COMPANY</option>
         </select>
        			
        	</div>       	
@@ -475,6 +476,7 @@
         <select id="dipendente_mod" name="dipendente_mod" data-placeholder="Seleziona operatore..." class="form-control select2" style="width:100%" >
         
           <option value="">Nessun Operatore</option>
+          <option value="0">Nessun Operatore</option>
         <c:forEach items="${lista_dipendenti }" var="dipendente">
         <option value="${dipendente.id }">${dipendente.cognome } ${dipendente.nome }</option>
         
@@ -522,7 +524,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="distributore_mod" name="distributore_mod" class="form-control" type="text" style="width:100%" required>
+        <input id="distributore_mod" name="distributore_mod" class="form-control" type="text" style="width:100%" >
        			
        	</div>          	
        	
@@ -1529,7 +1531,13 @@ function modificaDevice(id_device, codice_interno, id_tipo_device, id_company, d
 	$('#codice_interno_mod').val(codice_interno);
 	$('#tipo_device_mod').val(id_tipo_device);
 	$('#tipo_device_mod').change();
-	$('#company_mod').val(id_company);
+	
+	if(id_company==null){
+		$('#company_mod').val(0);
+	}else{
+		$('#company_mod').val(id_company);	
+	}
+	
 	$('#company_mod').change();
 	$('#denominazione_mod').val(denominazione);
 	$('#costruttore_mod').val(costruttore);

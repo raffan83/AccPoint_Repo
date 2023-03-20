@@ -222,13 +222,17 @@ public class CreateSchedaRilievo {
 				report.addParameter("operatore", "");
 			}
 			
-			File firma = new File(Costanti.PATH_FOLDER + "FileFirme\\"+rilievo.getUtente().getFile_firma());
+//			File firma = new File(Costanti.PATH_FOLDER + "FileFirme\\"+rilievo.getUtente().getFile_firma());
+//			
+//			if(firma.exists()) {
+//				report.addParameter("firma",firma);			
+//			}else {
+//				
+//			}
 			
-			if(firma.exists()) {
-				report.addParameter("firma",firma);			
-			}else {
-				report.addParameter("firma","");
-			}
+			report.addParameter("firma","");
+			
+			report.addParameter("responsabile","Terenzio Fantauzzi");
 						
 			File imageCenter = null;
 			if(rilievo.getImmagine_frontespizio()!= null && !rilievo.getImmagine_frontespizio().equals("")) {
@@ -305,7 +309,7 @@ public class CreateSchedaRilievo {
 
 			report_table.pageFooter(cmp.verticalList(
 					cmp.line().setFixedHeight(1),
-					cmp.horizontalList(cmp.pageXslashY()))
+					cmp.horizontalList(cmp.text("MOD-PGI016-13").setStyle(stl.style().setFontSize(6)),cmp.pageXslashY(), cmp.text("Rev. 0 del 20/03/2023 ").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setStyle(stl.style().setFontSize(6))))
 					);
 			}
 			List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();

@@ -1,14 +1,24 @@
 package it.portaleSTI.DAO;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import it.portaleSTI.DTO.CoAllegatoAttrezzaturaDTO;
+import it.portaleSTI.DTO.CoAttrezzaturaDTO;
 import it.portaleSTI.DTO.CoAttrezzaturaTipoControlloDTO;
 import it.portaleSTI.DTO.CoControlloDTO;
+import it.portaleSTI.DTO.DevRegistroAttivitaDTO;
+import it.portaleSTI.DTO.DevTestoEmailDTO;
+import it.portaleSTI.bo.SendEmailBO;
 
 public class GestioneControlliOperativiDAO {
 
@@ -105,5 +115,66 @@ public class GestioneControlliOperativiDAO {
 		return  lista;
 			
 	}
+
+	public static ArrayList<CoControlloDTO> getControlliScadenza(String data, Session session) throws HibernateException, ParseException {
+		
+		ArrayList<CoControlloDTO> lista = null;	
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		Query query = session.createQuery("from CoControlloDTO where data_prossimo_controllo =:_data and disabilitato = 0 and obsoleto = 0");
+		query.setParameter("_data", sdf.parseObject(data));
+		
+		lista =(ArrayList<CoControlloDTO>) query.list();
+		
+
+		return  lista;
+	}
+
+	public static ArrayList<CoAttrezzaturaDTO> getAttrezzatureScadenza(String data, Session session) throws HibernateException, ParseException {
+		ArrayList<CoAttrezzaturaDTO> lista = null;	
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		Query query = session.createQuery("from CoAttrezzaturaDTO where data_scadenza =:_data and disabilitato = 0");
+		query.setParameter("_data", sdf.parseObject(data));
+		
+		lista =(ArrayList<CoAttrezzaturaDTO>) query.list();
+		
+
+		return  lista;
+	}
+
+	public static void aggiornaStatoControlli() throws HibernateException, ParseException {
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		ArrayList<CoControlloDTO> lista = null;	
+		Date today = new Date();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(today);
+		cal.add(Calendar.DATE, 10);
+		Date nextDate = cal.getTime();
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+		Query query = session.createQuery("update CoControlloDTO set stato.id = 3 where data_prossimo_controllo < :_today");
+		query.setParameter("_today",df.parse(df.format(today)));
+		query.executeUpdate();
+		query = session.createQuery("update CoControlloDTO set stato.id = 2 where data_prossimo_controllo >= :_today and data_prossimo_controllo < :_data");
+		query.setParameter("_data", df.parse(df.format(nextDate)));
+		query.setParameter("_today",df.parse( df.format(today)));
+		
+		
+		query.executeUpdate();
+	//	lista =(ArrayList<CoControlloDTO>) query.list();
+		
+
+		session.getTransaction().commit();
+		session.close();
+		
+		
+	}
+
 
 }

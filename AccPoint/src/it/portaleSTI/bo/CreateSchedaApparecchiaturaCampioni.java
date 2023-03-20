@@ -23,11 +23,11 @@ public class CreateSchedaApparecchiaturaCampioni {
 	}
 	
 	
-	private void build(CampioneDTO campione, boolean registro_eventi, Session session) throws Exception {
+	private void build(CampioneDTO campione, boolean isCDT, Session session) throws Exception {
 
 		InputStream is =  null;
 		
-		if(registro_eventi) {
+		if(!isCDT) {
 			is = PivotTemplate.class.getResourceAsStream("scheda_apparecchiatura_evento.jrxml");
 		}else {
 			is = PivotTemplate.class.getResourceAsStream("scheda_anagrafica_campione.jrxml");			
@@ -72,7 +72,7 @@ public class CreateSchedaApparecchiaturaCampioni {
 				report.addParameter("ubicazione", "");
 			}
 			
-			if(registro_eventi) {
+			if(!isCDT) {
 				if(campione.getCampo_accettabilita()!=null) {
 					report.addParameter("campo_accettabilita", campione.getCampo_accettabilita());
 				}else {
@@ -195,12 +195,8 @@ public class CreateSchedaApparecchiaturaCampioni {
 			
 			report.setDataSource(new JREmptyDataSource());
 			
-			String path = "";
-			if(registro_eventi) {
-				path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\RegistroEventi\\SchedaApparecchiatura\\";
-			}else {
-				path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaApparecchiatura\\";
-			}
+			String path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaApparecchiatura\\";
+
 			 
 			  java.io.File folder = new java.io.File(path);
 			  if(!folder.exists()) {

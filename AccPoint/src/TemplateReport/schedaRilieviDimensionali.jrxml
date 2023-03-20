@@ -5,9 +5,6 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<title>
 		<band height="68" splitType="Stretch">
 			<image scaleImage="FillFrame" hAlign="Center">
@@ -338,13 +335,13 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="134" splitType="Stretch">
+		<band height="138" splitType="Stretch">
 			<staticText>
 				<reportElement x="-1" y="83" width="151" height="20" uuid="d10629d5-a5d6-454a-8735-ac1787318470"/>
 				<text><![CDATA[Data verifica: ...........................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="360" y="83" width="169" height="20" uuid="7f148b1c-5cf4-4ef3-a0b8-076ce3043c8a"/>
+				<reportElement x="205" y="83" width="169" height="20" uuid="7f148b1c-5cf4-4ef3-a0b8-076ce3043c8a"/>
 				<text><![CDATA[Operatore: .....................................]]></text>
 			</staticText>
 			<textField>
@@ -352,7 +349,7 @@
 				<textFieldExpression><![CDATA[$P{data_verifica}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="415" y="80" width="129" height="20" uuid="2f04557b-da33-4ae6-abca-8527ce75e204"/>
+				<reportElement x="260" y="80" width="129" height="20" uuid="2f04557b-da33-4ae6-abca-8527ce75e204"/>
 				<textFieldExpression><![CDATA[$P{operatore}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -379,13 +376,39 @@
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="360" y="118" width="169" height="13" uuid="2fa56088-0aab-41e6-abdd-214b90248911"/>
+				<reportElement x="205" y="116" width="169" height="13" uuid="2fa56088-0aab-41e6-abdd-214b90248911"/>
 				<text><![CDATA[Firma: .............................................]]></text>
 			</staticText>
 			<image scaleImage="FillFrame" hAlign="Center" onErrorType="Blank">
-				<reportElement x="407" y="107" width="94" height="20" uuid="8464e200-60df-4e5b-a81d-2a66c4086504"/>
+				<reportElement x="252" y="105" width="94" height="20" uuid="8464e200-60df-4e5b-a81d-2a66c4086504"/>
 				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="384" y="83" width="169" height="20" uuid="d86b99f8-8d30-47e0-b990-b0758b7a2c2e"/>
+				<text><![CDATA[Responsabile: .....................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="116" width="169" height="13" uuid="28bc390c-9952-4916-b8f8-3313e43fed18"/>
+				<text><![CDATA[Firma: .................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="129" width="74" height="9" uuid="b1046e0a-dc63-4907-8132-bd3f4fa5f5b5"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[MOD-PGI016-13]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="458" y="129" width="100" height="9" uuid="a6dd58cf-95c4-498d-99a8-102d535ed0a5"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Rev. 0 del 20/03/2023 ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="450" y="80" width="129" height="20" uuid="c4e5587c-88f7-4b63-adf4-395d61391352"/>
+				<textFieldExpression><![CDATA[$P{responsabile}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

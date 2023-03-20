@@ -92,6 +92,12 @@ public class ListaCampioni extends HttpServlet {
 		//	GestioneAttivitaCampioneDAO.aggiornaCampioni(session);
 		//	GestioneAttivitaCampioneDAO.mergeRenameAllegati(session);
 		//	GestioneAttivitaCampioneDAO.aggiornaObsolete(session);
+		//	GestioneAttivitaCampioneDAO.aggiornaTar(session);
+		//	GestioneAttivitaCampioneDAO.aggiornaTarCampioni(session);
+		//	GestioneAttivitaCampioneDAO.aggiornaLaboratorio(session);
+			
+			
+			
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -136,7 +142,7 @@ public class ListaCampioni extends HttpServlet {
 						
 	
 					}else {
-						listaCampioni =GestioneCampioneDAO.getListaCampioni(null,idCompany, session);
+						listaCampioni =GestioneCampioneDAO.getListaCampioni(null,idCompany, session);						
 						
 					}
 					

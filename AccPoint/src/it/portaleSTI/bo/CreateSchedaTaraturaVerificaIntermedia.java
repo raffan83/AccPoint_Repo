@@ -32,17 +32,22 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaTaraturaVerificaIntermedia {
 	
-public CreateSchedaTaraturaVerificaIntermedia(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<RegistroEventiDTO> lista_tarature_evento,ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio,ArrayList<RegistroEventiDTO> lista_fuori_servizio_ev,CampioneDTO campione) throws Exception {
+public CreateSchedaTaraturaVerificaIntermedia(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver,ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio,CampioneDTO campione) throws Exception {
 		
-		build(lista_tar_ver,lista_tarature_evento,lista_fuori_servizio,lista_fuori_servizio_ev, campione);		
+		build(lista_tar_ver,lista_fuori_servizio, campione);		
 	}
 
 
-private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<RegistroEventiDTO> lista_tarature_evento, ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio,ArrayList<RegistroEventiDTO> lista_fuori_servizio_ev,CampioneDTO campione) throws Exception {
+private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio,CampioneDTO campione) throws Exception {
 	
 	InputStream is =  PivotTemplate.class.getResourceAsStream("schedaManutenzioniCampione.jrxml");
 		
 		JasperReportBuilder report = DynamicReports.report();		
+		
+		boolean isCDT = false;
+		if(lista_tar_ver.size()>0 && lista_tar_ver.get(0).getCampione().getCodice().contains("CDT")){
+			isCDT = true;
+		}
 		
 		report.setTemplateDesign(is);
 		report.setTemplate(Templates.reportTemplate);
@@ -57,7 +62,7 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<Reg
 		
 		}
 		
-		if(lista_tarature_evento!=null) {
+		if(!isCDT) {
 			report.addParameter("titolo", "SCHEDA TARATURA APPARECCHIATURA (STA)");
 		}else {
 			report.addParameter("titolo", "SCHEDA TARATURA / CONFERMA APPARECCHIATURA (STCA)");	
@@ -80,8 +85,8 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<Reg
 		
 		SubreportBuilder subreport = null;
 		
-		if(lista_tarature_evento!=null) {
-			subreport = cmp.subreport(getTableReportEvento(lista_tarature_evento));
+		if(!isCDT) {
+			subreport = cmp.subreport(getTableReportEvento(lista_tar_ver));
 		}else {
 			subreport = cmp.subreport(getTableReport(lista_tar_ver));	
 		}		
@@ -93,16 +98,17 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<Reg
 			
 			VerticalListBuilder vl = cmp.verticalList(cmp.verticalGap(25), cmp.text("Attività fuori servizio").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER), cmp.verticalGap(15), subreport_fs);
 			report.addDetail(vl);
-		}else if(lista_fuori_servizio_ev!=null && lista_fuori_servizio_ev.size()>0){
-			SubreportBuilder subreport_fs =	cmp.subreport(getTableReportFsEv(lista_fuori_servizio_ev)); 
-			
-			VerticalListBuilder vl = cmp.verticalList(cmp.verticalGap(25), cmp.text("Attività fuori servizio").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER), cmp.verticalGap(15), subreport_fs);
-			report.addDetail(vl);
 		}
+//		}else if(lista_fuori_servizio_ev!=null && lista_fuori_servizio_ev.size()>0){
+//			SubreportBuilder subreport_fs =	cmp.subreport(getTableReportFsEv(lista_fuori_servizio_ev)); 
+//			
+//			VerticalListBuilder vl = cmp.verticalList(cmp.verticalGap(25), cmp.text("Attività fuori servizio").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER), cmp.verticalGap(15), subreport_fs);
+//			report.addDetail(vl);
+//		}
 		
 		
 		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(8).setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
-		if(lista_tarature_evento!=null) {
+		if(!isCDT) {
 			report.addPageFooter(cmp.horizontalList(
 					cmp.text("MOD-PGI009-03").setStyle(footerStyle),
 					cmp.horizontalGap(370),
@@ -119,12 +125,12 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<Reg
 		
 		//String path = "C:\\Users\\antonio.dicivita\\Desktop\\";
 		
-		String path = "";
-		if(lista_tarature_evento!=null) {
-			path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\RegistroEventi\\Taratura\\"; 
-		}else {
-			path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaVerificaIntermedia\\";
-		}
+		String path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaVerificaIntermedia\\";
+//		if(lista_tarature_evento!=null) {
+//			path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\RegistroEventi\\Taratura\\"; 
+//		}else {
+//			path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaVerificaIntermedia\\";
+//		}
 		
 		  java.io.File folder = new java.io.File(path);
 		  if(!folder.exists()) {
@@ -199,7 +205,7 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 
 
 	
-	private JasperReportBuilder getTableReportEvento(ArrayList<RegistroEventiDTO> lista_tarature_evento) throws Exception {
+	private JasperReportBuilder getTableReportEvento(ArrayList<AcAttivitaCampioneDTO> lista_tarature_evento) throws Exception {
 		
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -280,7 +286,7 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 		 	}
 		
 	
-	private JRDataSource createDataSourceEvento(ArrayList<RegistroEventiDTO> lista_tarature_evento)throws Exception {
+	private JRDataSource createDataSourceEvento(ArrayList<AcAttivitaCampioneDTO> lista_tarature_evento)throws Exception {
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
 			
@@ -298,24 +304,24 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 			
 			SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
 			if(lista_tarature_evento.size()>0) {
-				for (RegistroEventiDTO evento : lista_tarature_evento) {						
-					if(evento!=null && evento.getPianificato()==0){
+				for (AcAttivitaCampioneDTO evento : lista_tarature_evento) {						
+					if(evento!=null && evento.getPianificata()==0){
 						ArrayList<String> arrayPs = new ArrayList<String>();						
 														
 						
-						if(evento.getTipo_evento().getId()==2) {
+						if(evento.getTipo_attivita().getId()==2) {
 							arrayPs.add("Taratura");
 						}else {
 							arrayPs.add("Verifica intermedia");
 						}
-						arrayPs.add(dt.format(evento.getData_evento()));
+						arrayPs.add(dt.format(evento.getData()));
 						if(evento.getStato().equals("Idonea")) {
 							arrayPs.add(dt.format(evento.getData_scadenza()));	
 						}else {
 							arrayPs.add("");
 						}
-						if(evento.getLaboratorio()!=null) {
-							arrayPs.add(evento.getLaboratorio());	
+						if(evento.getEnte()!=null) {
+							arrayPs.add(evento.getEnte());	
 						}else {
 							arrayPs.add("");
 						}

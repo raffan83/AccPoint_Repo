@@ -1134,6 +1134,46 @@ public static void sendEmailDPIInScadenza(ArrayList<DpiDTO> lista_dpi) throws Em
 	
 
 
+
+public static void sendEmailControlli(String messaggio) throws EmailException {
+	
+
+	
+	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	
+
+		
+		
+		 HtmlEmail email = new HtmlEmail();
+		  email.setHostName("smtps.aruba.it");
+			 //email.setDebug(true);
+		  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+	email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+	email.getMailSession().getProperties().put("mail.debug", "true");
+	email.getMailSession().getProperties().put("mail.smtp.port", "465");
+	email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+
+	email.addTo("giuseppe.gabriele@stisrl.com");
+	//email.addTo("antoniodicivita@live.it");
+
+		  
+		  email.setFrom("calver@accpoint.it", "Calver - Gestione CONTROLLI OPERATIVI");
+		
+
+			  email.setSubject("AVVISO CONTROLLI OPERATIVI IN SCADENZA");
+			  
+			  email.setHtmlMsg("<html>Si riporta di seguito l&lsquo;elenco dei controlli operativi e delle attrezzature in scadenza:<br><br>"
+					  	 +messaggio+"</html>");
+			  
+		  email.send();
+	}
+	
+
 }
 
 

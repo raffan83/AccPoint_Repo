@@ -500,14 +500,14 @@
 				<textElement verticalAlignment="Bottom">
 					<font fontName="Trebuchet MS" size="6"/>
 				</textElement>
-				<text><![CDATA[MOD-SGI-031]]></text>
+				<text><![CDATA[MOD-PGI016-12]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="453" y="620" width="100" height="8" uuid="fabe649e-6f29-44a6-8458-622643ee4562"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="Trebuchet MS" size="6"/>
 				</textElement>
-				<text><![CDATA[Rev. A del 16/05/2016]]></text>
+				<text><![CDATA[Rev. 0 del 13/02/2023]]></text>
 			</staticText>
 			<image hAlign="Center" onErrorType="Blank">
 				<reportElement x="10" y="525" width="259" height="21" uuid="0a85e4d2-64db-48db-926f-47f324441590"/>

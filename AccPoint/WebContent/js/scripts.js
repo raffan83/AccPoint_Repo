@@ -5572,10 +5572,16 @@ function eliminaCompany(){
 	    				  
 	    				  if(datatable == 1){
 	 	    				  var oTable = $('#tabPM').dataTable();
-		    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'apertura\')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 4 );
+		    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'apertura\')"><span class="label label-warning">CHIUSO</span></a>', index, 4 );
 		    			  }else if(datatable == 2){
-		    				  var oTable = $('#tabPM').dataTable();
-		    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'apertura\')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 5 );
+		    				  var oTable = $('#tabPM').DataTable(); 
+		    				  
+		    				  var UpdateTD = $('#stato_'+data.id_intervento);
+		    				  oTable.cell(UpdateTD).data('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'apertura\')"><span class="label label-warning">CHIUSO</span></a>').draw();
+		    				  
+		    				  
+		    				  //var oTable = $('#tabPM').dataTable();
+		    				//  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'apertura\')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 5 );
 		    			  }else{
 		    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'apertura\')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>');
 		    			  }
@@ -5646,10 +5652,17 @@ function eliminaCompany(){
 	    			 
 	    			  if(datatable == 1){
  	    				  var oTable = $('#tabPM').dataTable();
-	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'chiusura\')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>', index, 4 );
+ 	    				   	    				  
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'chiusura\')" ><span class="label label-success">APERTO</span></a>', index, 4 );
 	    			  }else if(datatable == 2){
-	    				  var oTable = $('#tabPM').dataTable();
-	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'chiusura\')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>', index, 5 );
+	    				  
+	    				  var oTable = $('#tabPM').DataTable(); 
+	    				  
+	    				  var UpdateTD = $('#stato_'+data.id_intervento);
+	    				  oTable.cell(UpdateTD).data('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'chiusura\')" ><span class="label label-success">APERTO</span></a>').draw();
+	    				  
+	    				//  var oTable = $('#tabPM').dataTable();
+	    				//  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'chiusura\')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>', index, 5 );
 	    			  }else{
 	    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'chiusura\')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>');
 	    			  }
@@ -9067,7 +9080,9 @@ function filtraCertificati(){
   
   
 function chiudiApriRilievo(id_rilievo,stato){
-	  
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
 	  var dataObj = {};
 		dataObj.id_rilievo = id_rilievo;
 		dataObj.stato = stato
@@ -9082,6 +9097,10 @@ function chiudiApriRilievo(id_rilievo,stato){
     	  //var dataRsp = JSON.parse(dataResp);
     	  if(data.success)
   		  {  
+    		  
+    		  pleaseWaitDiv.hide();
+    		  $('#myModalApprovaRilievo').hide();
+    		  $('#myModalFirmaRilievo').hide();
     			$('#report_button').hide();
   				$('#visualizza_report').hide();
   				$('#myModalErrorContent').html(data.messaggio);
@@ -9098,6 +9117,7 @@ function chiudiApriRilievo(id_rilievo,stato){
          			
          			       });
          			      $(this).off('hidden.bs.modal');
+         			 	$('.modal-backdrop').hide();
         			});
 		  
   		  }else{

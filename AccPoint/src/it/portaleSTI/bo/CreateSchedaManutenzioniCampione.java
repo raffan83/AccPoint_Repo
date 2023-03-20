@@ -31,16 +31,21 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaManutenzioniCampione {
 	
-	public CreateSchedaManutenzioniCampione(ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni,ArrayList<RegistroEventiDTO> lista_evento_manutenzione,ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio,ArrayList<RegistroEventiDTO> lista_fuori_servizio_ev, CampioneDTO campione) throws Exception {
+	public CreateSchedaManutenzioniCampione(ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni,ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio, CampioneDTO campione) throws Exception {
 		
-		build(lista_manutenzioni,lista_evento_manutenzione,lista_fuori_servizio, lista_fuori_servizio_ev,campione);		
+		build(lista_manutenzioni,lista_fuori_servizio, campione);		
 	}
 	
-	private void build(ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni,ArrayList<RegistroEventiDTO> lista_evento_manutenzione, ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio,ArrayList<RegistroEventiDTO> lista_fuori_servizio_ev,CampioneDTO campione) throws Exception {
+	private void build(ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni, ArrayList<AcAttivitaCampioneDTO> lista_fuori_servizio,CampioneDTO campione) throws Exception {
 		
 	InputStream is =  PivotTemplate.class.getResourceAsStream("schedaManutenzioniCampione.jrxml");
 		
 		JasperReportBuilder report = DynamicReports.report();		
+		
+		boolean isCDT = false;
+		if(lista_manutenzioni.size()>0 && lista_manutenzioni.get(0).getCampione().getCodice().contains("CDT")){
+			isCDT = true;
+		}
 		
 		report.setTemplateDesign(is);
 		report.setTemplate(Templates.reportTemplate);
@@ -74,8 +79,8 @@ public class CreateSchedaManutenzioniCampione {
 		
 		SubreportBuilder subreport = null;
 		
-		if(lista_evento_manutenzione!=null) {
-			subreport = cmp.subreport(getTableReportEvento(lista_evento_manutenzione));
+		if(!isCDT) {
+			subreport = cmp.subreport(getTableReportEvento(lista_manutenzioni));
 		}else {
 			subreport =	cmp.subreport(getTableReport(lista_manutenzioni)); 
 		}
@@ -89,15 +94,16 @@ public class CreateSchedaManutenzioniCampione {
 			
 			VerticalListBuilder vl = cmp.verticalList(cmp.verticalGap(25), cmp.text("Attività fuori servizio").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER), cmp.verticalGap(15), subreport_fs);
 			report.addDetail(vl);
-		}else if(lista_fuori_servizio_ev!=null && lista_fuori_servizio_ev.size()>0){
-			SubreportBuilder subreport_fs =	cmp.subreport(getTableReportFsEv(lista_fuori_servizio_ev)); 
-			
-			VerticalListBuilder vl = cmp.verticalList(cmp.verticalGap(25), cmp.text("Attività fuori servizio").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER), cmp.verticalGap(15), subreport_fs);
-			report.addDetail(vl);
 		}
+//		else if(lista_fuori_servizio_ev!=null && lista_fuori_servizio_ev.size()>0){
+//			SubreportBuilder subreport_fs =	cmp.subreport(getTableReportFsEv(lista_fuori_servizio_ev)); 
+//			
+//			VerticalListBuilder vl = cmp.verticalList(cmp.verticalGap(25), cmp.text("Attività fuori servizio").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER), cmp.verticalGap(15), subreport_fs);
+//			report.addDetail(vl);
+//		}
 		
 		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(8).setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
-		if(lista_evento_manutenzione!=null) {
+		if(!isCDT) {
 			report.addPageFooter(cmp.horizontalList(
 					cmp.text("MOD-PGI009-02").setStyle(footerStyle),
 					cmp.horizontalGap(370),
@@ -112,13 +118,13 @@ public class CreateSchedaManutenzioniCampione {
 		}
 		
 		//String path = "C:\\Users\\antonio.dicivita\\Desktop\\";
-		String path = "";
+		String path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaManutenzione\\";	
 		
-		if(lista_evento_manutenzione!=null) {
-			path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\RegistroEventi\\SchedaManutenzione\\";
-		}else {
-			path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaManutenzione\\";			
-		}				
+//		if(lista_evento_manutenzione!=null) {
+//			path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\RegistroEventi\\SchedaManutenzione\\";
+//		}else {
+//			path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaManutenzione\\";			
+//		}				
 				
 		  java.io.File folder = new java.io.File(path);
 		  if(!folder.exists()) {
@@ -134,7 +140,7 @@ public class CreateSchedaManutenzioniCampione {
 		  
 	}
 
-	private JasperReportBuilder getTableReportEvento(ArrayList<RegistroEventiDTO> lista_evento_manutenzione) throws Exception {
+	private JasperReportBuilder getTableReportEvento(ArrayList<AcAttivitaCampioneDTO> lista_evento_manutenzione) throws Exception {
 		
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -246,7 +252,7 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 		 		    return dataSource;
 		 	}
 		
-	private JRDataSource createDataSourceEvento(ArrayList<RegistroEventiDTO> lista_evento_manutenzione)throws Exception {
+	private JRDataSource createDataSourceEvento(ArrayList<AcAttivitaCampioneDTO> lista_evento_manutenzione)throws Exception {
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
 			
@@ -261,17 +267,17 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 			
 			SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
 			if(lista_evento_manutenzione.size()>0) {
-				for (RegistroEventiDTO manutenzione : lista_evento_manutenzione) {						
+				for (AcAttivitaCampioneDTO manutenzione : lista_evento_manutenzione) {						
 					if(manutenzione!=null){
 						ArrayList<String> arrayPs = new ArrayList<String>();
 							
-						arrayPs.add(dt.format(manutenzione.getData_evento()));
-						if(manutenzione.getTipo_manutenzione().getId()==1) {
+						arrayPs.add(dt.format(manutenzione.getData()));
+						if(manutenzione.getTipo_manutenzione()==1) {
 							arrayPs.add("Preventiva");
 						}else {
 							arrayPs.add("Straordinaria");
 						}
-						arrayPs.add(manutenzione.getDescrizione());
+						arrayPs.add(manutenzione.getDescrizione_attivita());
 						if(manutenzione.getOperatore()!=null) {
 							arrayPs.add(manutenzione.getOperatore().getNominativo());	
 						}else {

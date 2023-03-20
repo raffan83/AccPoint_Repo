@@ -151,6 +151,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String id_certificato = ret.get("id_certificato");
 				
 				String ente = ret.get("ente");
+				String presso = ret.get("presso");
 				String data_scadenza = ret.get("data_scadenza");
 				String etichettatura = ret.get("etichettatura");
 				String stato = ret.get("stato");
@@ -189,7 +190,14 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 						campione.setDataScadenzaManutenzione(format.parse(data_scadenza));
 					}
 					if(Integer.parseInt(tipo_attivita)==2 || Integer.parseInt(tipo_attivita)==3) {
-						attivita.setEnte(ente);					
+						
+						if(ente!=null) {
+							attivita.setEnte(ente);	
+						}
+						if(presso!=null) {
+							attivita.setEnte(presso);
+						}
+											
 						attivita.setData_scadenza(format.parse(data_scadenza));
 						attivita.setEtichettatura(etichettatura);
 						attivita.setStato(stato);
@@ -382,7 +390,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				}else {
 					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
 				}
-				new CreateSchedaManutenzioniCampione(lista_manutenzioni,null, lista_fuori_servizio, null, campione);
+				new CreateSchedaManutenzioniCampione(lista_manutenzioni, lista_fuori_servizio,  campione);
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaManutenzione\\sma_"+id_campione+".pdf";
 				File file = new File(path);
@@ -424,7 +432,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				}else {
 					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
 				}
-				new CreateSchedaTaraturaVerificaIntermedia(lista_verifiche,null,lista_fuori_servizio, null, campione);
+				new CreateSchedaTaraturaVerificaIntermedia(lista_verifiche,lista_fuori_servizio,  campione);
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaVerificaIntermedia\\stca_"+id_campione+".pdf";
 				File file = new File(path);
@@ -459,8 +467,11 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				
 				//ArrayList<AcAttivitaCampioneDTO> lista_verifiche = GestioneAttivitaCampioneBO.getListaTaratureVerificheIntermedie(Integer.parseInt(id_campione), session);
 				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
-				
-				new CreateSchedaApparecchiaturaCampioni(campione,false, session);
+				boolean isCDT = false;
+				if(campione.getCodice().contains("CDT")) {
+					isCDT = true;
+				}
+				new CreateSchedaApparecchiaturaCampioni(campione,isCDT, session);
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaApparecchiatura\\sa_"+id_campione+".pdf";
 				File file = new File(path);

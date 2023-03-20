@@ -817,6 +817,48 @@
 </div>
 
 
+  <div id="myModalFirmaRilievo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler chiudere e firmare il rilievo?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="firma_rilievo_id">
+      <a class="btn btn-primary" onclick="chiudiApriRilievo($('#firma_rilievo_id').val(),2)" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalFirmaRilievo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  <div id="myModalApprovaRilievo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler approvare e firmare il rilievo?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="approva_rilievo_id">
+      <a class="btn btn-primary" onclick="approvaRilievo($('#approva_rilievo_id').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalApprovaRilievo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 
 <form name="scaricaSchedaConsegnaRilieviForm" method="post" id="scaricaSchedaConsegnaRilieviForm" action="scaricaSchedaConsegna.do?action=rilievi_dimensionali">
 <div id="myModalSchedaConsegna" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">

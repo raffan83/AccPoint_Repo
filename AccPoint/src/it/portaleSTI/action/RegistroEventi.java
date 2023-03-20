@@ -504,7 +504,7 @@ public class RegistroEventi extends HttpServlet {
 				}else {
 					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
 				}
-				new CreateSchedaManutenzioniCampione(null,lista_manutenzioni,null, lista_fuori_servizio, campione);
+				//new CreateSchedaManutenzioniCampione(null,lista_manutenzioni,null, lista_fuori_servizio, campione);
 				
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\RegistroEventi\\SchedaManutenzione\\"+"sma_"+id_campione+".pdf";
@@ -553,7 +553,7 @@ public class RegistroEventi extends HttpServlet {
 					lista_tarature.addAll(lista_verifiche);
 				}
 				
-				new CreateSchedaTaraturaVerificaIntermedia(null,lista_tarature,null, lista_fuori_servizio, campione);
+				//new CreateSchedaTaraturaVerificaIntermedia(null,lista_tarature,null, lista_fuori_servizio, campione);
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\RegistroEventi\\Taratura\\stca_"+id_campione+".pdf";
 				File file = new File(path);

@@ -101,7 +101,12 @@
         <property name="tempo_scansione" type="java.lang.Double">
             <column name="tempo_scansione" />
         </property>
-
+		<property name="firmato" type="int">
+            <column name="firmato" />
+        </property>
+        <property name="controfirmato" type="int">
+            <column name="controfirmato" />
+        </property>
 
 	</class>
 </hibernate-mapping>

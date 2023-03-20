@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -35,6 +37,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.HibernateException;
@@ -48,6 +51,7 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.AcroFields.Item;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.parser.ImageRenderInfo;
@@ -56,6 +60,7 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.itextpdf.text.pdf.parser.RenderListener;
 import com.itextpdf.text.pdf.parser.TextRenderInfo;
 
+import TemplateReport.PivotTemplate;
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DTO.ClienteDTO;
@@ -547,33 +552,275 @@ public class GestioneFormazioneBO {
 	public static void importaQuestionario() throws Exception {
 		
 		
-		PdfReader pdfReader = new PdfReader("C:\\Users\\antonio.dicivita\\Desktop\\test certificato.pdf");
+		PdfReader pdfReader = new PdfReader("C:\\Users\\antonio.dicivita\\Desktop\\gradimento_mariconte_23_02_2023.pdf");
+		//PdfReader pdfReader = new PdfReader("C:\\Users\\antonio.dicivita\\Desktop\\questionario regione definitivo.pdf");
+	
 		 PdfReader.unethicalreading = true;
 		 
+	
 			
 			String timestamp = ""+System.currentTimeMillis();
 		 
-		  //  PdfStamper stamper = new PdfStamper(pdfReader, new FileOutputStream("C:\\Users\\antonio.dicivita\\Desktop\\"+timestamp+".pdf"));
+		    PdfStamper stamper = new PdfStamper(pdfReader, new FileOutputStream("C:\\Users\\antonio.dicivita\\Desktop\\"+timestamp+".pdf"));
 		   
 		    //AcroFields acroFields = pdfReader.getAcroFields();
-		//    AcroFields acroFields = stamper.getAcroFields();
-		    AcroFields acroFields = pdfReader.getAcroFields();
+		    //AcroFields acroFields = stamper.getAcroFields();
+		    AcroFields acroFields1 = pdfReader.getAcroFields();
+		    AcroFields acroFields = stamper.getAcroFields();
 		    
 		    Map<String, Item> fields = acroFields.getFields();
 		    Set<Entry<String, Item>> entrySet = fields.entrySet();
-		    for (Entry<String, Item> entry : entrySet) {
-
-		    	String x = acroFields.getField(entry.getKey());
-		    	System.out.println(x);
-		    //	acroFields.setField(entry.getKey(), "");
-		        
+		    int i = 1;
+		    Map<String, String>map = new LinkedHashMap<String, String>();
+		    
+		    for (Map.Entry<String, Item> entry : fields.entrySet()) {
+		    	
+		    	map.put(entry.getKey(), entry.getValue()+"");
+		    	//acroFields.renameField(entry.getKey(), ""+i);
+		        System.out.println("Key = " + entry.getKey() + ", Value = " + acroFields.getField(entry.getKey()));
+		       // i++;
 		    }
-		
+
+//		    acroFields.renameField("Text1", "annualita");
+//		    acroFields.renameField("Text2", "denominazione_ente");
+//		    acroFields.renameField("Text3", "titolo");
+//		   //.renameField("Text4", "annualita");
+//		    acroFields.renameField("Text4", "codice");
+//		    acroFields.renameField("Text6", "annualita");
+//		    acroFields.renameField("Text7", "annualita");
+//		    acroFields.renameField("Text8", "provincia");
+//		    acroFields.renameField("Text9", "eta");
+//		    acroFields.renameField("Text21", "annualita");
+//		    acroFields.renameField("Text32", "annualita");
+//		    acroFields.renameField("Text44", "annualita");
+//		    acroFields.renameField("Text55", "annualita");
+//		    acroFields.renameField("Text66", "annualita");
+//		    acroFields.renameField("Text74", "annualita");
+//		    acroFields.renameField("Text77", "suggerimenti");
+//		    acroFields.renameField("Text78", "annualita");
+//		    acroFields.renameField("Button5", "fonte_finanziamento");
+//		    acroFields.renameField("Button10", "genere");
+//		    acroFields.renameField("Button11", "nazionalita");
+//		    acroFields.renameField("Button12", "condizione_occupazionale");
+//		    acroFields.renameField("Button13", "titolo_studio");
+//		    acroFields.renameField("Button15", "altri_corsi_prov");
+//		    acroFields.renameField("Button16", "altri_corsi_priv");
+//		    acroFields.renameField("Button17", "motivazione");
+//		    acroFields.renameField("Button18", "ric_cred");
+//		    acroFields.renameField("Button19", "ric_ric_cred");
+//		    acroFields.renameField("Button20", "spec_cred");
+//		    
+//		    
+//		    for(int j = 0;j<3;j++) {
+//		    	acroFields.renameField("Button"+(22+j), "0_"+(j+1));	
+//	    		    	
+//		    }
+//		    
+//		    for(int j = 0;j<3;j++) {
+//		    	acroFields.renameField("Button"+(26+j), "1_"+(j+1));	
+//	    		    	
+//		    }
+//		    
+//		    
+//		    for(int j = 0;j<3;j++) {
+//		    	acroFields.renameField("Button"+(29+j), "2_"+(j+1));	
+//	    		    	
+//		    }
+//		    
+//		    acroFields.renameField("Button33", "2_4");
+//		    acroFields.renameField("Button34", "2_5");
+//		    for(int j = 0;j<7;j++) {
+//		    	acroFields.renameField("Button"+(35+j), "3_"+(j+1));	
+//	    		    	
+//		    }
+//		    
+//		    acroFields.renameField("Button42", "4");
+//		    acroFields.renameField("Button43", "4_1");
+//		    
+//		    for(int j = 0;j<4;j++) {
+//		    	acroFields.renameField("Button"+(45+j), "4_"+(j+2));	
+//	    		    	
+//		    }
+//		    acroFields.renameField("Button49", "5");
+//		    
+//		    for(int j = 0;j<5;j++) {
+//		    	acroFields.renameField("Button"+(50+j), "5_"+(j+1));	
+//	    		    	
+//		    }
+//		    
+//		    acroFields.renameField("Button56", "5_6");
+//		    acroFields.renameField("Button57", "5_7");
+//		    acroFields.renameField("Button58", "6");
+//		    
+//		    for(int j = 0;j<7;j++) {
+//		    	acroFields.renameField("Button"+(59+j), "6_"+(j+1));	
+//	    		    	
+//		    }
+//		    
+//		    
+//		    acroFields.renameField("Button67", "6_8");
+//		    acroFields.renameField("Button68", "6_9");
+//		    acroFields.renameField("Button69", "7");
+//		    
+//		    for(int j = 0;j<3;j++) {
+//		    	acroFields.renameField("Button"+(70+j), "7_"+(j+1));	
+//	    		    	
+//		    }
+//		    
+//		    acroFields.renameField("Button73", "7_4");
+//		    
+//		    
+//		    acroFields.renameField("Button75", "7_5");
+//		    
+//		    acroFields.renameField("Button2", "8");
+//		    
+//		    acroFields.renameField("Button79", "9");
+		    
+		    
+//		    acroFields.renameField("Button2", "genere");
+//		    acroFields.renameField("Button3", "occupazione");
+//		    acroFields.renameField("Button23", "nazionalita");
+//		    acroFields.renameField("Button4", "studio");
+//		    acroFields.renameField("Button5", "0_0");
+//		    acroFields.renameField("Button6", "0_1");
+//		    acroFields.renameField("Button7", "0_2");
+//		    acroFields.renameField("Button8", "1_1");
+//		    acroFields.renameField("Button39", "1_2");
+//		    
+//		    acroFields.renameField("Button9", "1_3");
+//		    
+//		    for(int j = 0;j<5;j++) {
+//		    	//if(j!=1) {
+//		    		acroFields.renameField("Button"+(10+j), "1_"+(j+4));	
+//		    	//}		    	
+//		    }
+//		    
+//		    for(int j = 0;j<7;j++) {
+//		    	
+//		    		acroFields.renameField("Button"+(15+j), "3_"+(j+1));	
+//		    }
+//		    
+//		    acroFields.renameField("Button21", "2_1");
+//		    acroFields.renameField("Text22", "2_2_1");
+//		    acroFields.renameField("Text23", "2_2_2");
+//		    acroFields.renameField("Button41", "4_1");
+//		    
+//		    for(int j = 0;j<5;j++) {
+//		    	
+//	    		acroFields.renameField("Button"+(24+j), "4_"+(j+2));	
+//	    	
+//		    }
+//		    
+//		    acroFields.renameField("Button28", "4");
+//		    acroFields.renameField("Button29", "4_7");
+//		    acroFields.renameField("Button30", "5");
+//		    
+//		    for(int j = 0;j<6;j++) {
+//		    	
+//	    		acroFields.renameField("Button"+(31+j), "7_"+(j+1));	
+//	    
+//	    	
+//		    }
+//		    
+//		    acroFields.renameField("Text37", "7");
+//		    
+		    
+//		    for (Map.Entry<String, Item> entry : fields.entrySet()) {
+//		    	
+//		    	map.put(entry.getKey(), entry.getValue()+"");
+//		    	//acroFields.renameField(entry.getKey(), ""+i);
+//		        System.out.println("Key = " + entry.getKey() + ", Value = " + acroFields.getField(entry.getKey()));
+//		      //  acroFields.setField(entry.getKey(), "Off");
+//		       // i++;
+//		    }
+//		    System.out.println();
+//	    	 System.out.println();
+//		    for (Map.Entry<String, String> entry : map.entrySet()) {
+//		    	
+//		    	
+////		    	 System.out.println(entry.getKey() + ", Value = " + acroFields1.getField(entry.getKey()));
+//		    	// acroFields1.setFieldProperty(entry.getKey(), "setfflags", PdfFormField.FF_READ_ONLY, null);
+//		    	// acroFields.setField(entry.getKey(), "Off");
+//		    	 
+////		    	 System.out.println(entry.getKey() + ", Value = " + acroFields.getField(entry.getKey()));
+////		    	if(entry.getKey().startsWith("Text")) {
+////		    		//acroFields.renameField(entry.getKey(), "text_"+i);
+////		    		 System.out.println(entry.getKey() + ", Value = " + acroFields.getField("text_"+i));
+////		    	}else {
+////		    		//acroFields.renameField(entry.getKey(), "radio_"+i);
+////		    		 System.out.println(entry.getKey(), Value = " + acroFields.getField("radio_"+i));
+////		    	}
+////		    	
+//		       
+//		        i++;
+//		    }
+		  
+		    stamper.close();
+		    pdfReader.close();
 		
 	}
 	
+	
+	
+	public static void compilaExcelQuestionario() throws Exception {
+	
+		
+		PdfReader pdfReader = new PdfReader("C:\\Users\\antonio.dicivita\\Desktop\\gradimento_mariconte_23_02_2023.pdf");	
+		PdfReader.unethicalreading = true;
+			String timestamp = ""+System.currentTimeMillis();
+		 
+		    PdfStamper stamper = new PdfStamper(pdfReader, new FileOutputStream("C:\\Users\\antonio.dicivita\\Desktop\\"+timestamp+".pdf"));
+
+		    AcroFields acroFields1 = pdfReader.getAcroFields();
+		    AcroFields acroFields = stamper.getAcroFields();
+		    
+		    Map<String, Item> fields = acroFields.getFields();
+		    Set<Entry<String, Item>> entrySet = fields.entrySet();
+		    int i = 1;
+		    Map<String, String>map = new LinkedHashMap<String, String>();
+		    
+		    for (Map.Entry<String, Item> entry : fields.entrySet()) {
+		    	
+		    	map.put(entry.getKey(), acroFields.getField(entry.getKey())+"");
+		     //   System.out.println("Key = " + entry.getKey() + ", Value = " + acroFields.getField(entry.getKey()));
+		 
+		    }
+		
+		
+		   // InputStream file = PivotTemplate.class.getResourceAsStream("template_questionario.xlsx");
+		    InputStream file = new FileInputStream("C:\\Users\\antonio.dicivita\\Desktop\\template_questionario.xlsx");
+
+
+	         XSSFWorkbook workbook = new XSSFWorkbook(file);         
+	            
+			 XSSFSheet sheet0 = workbook.getSheetAt(1);
+			 sheet0.setSelected(true);
+			 workbook.getSheetAt(0).setSelected(false);
+			 
+				     
+			 System.out.println(map.get("provincia"));
+			 
+			 sheet0.getDataValidations().get(1);
+			 
+			 sheet0.getRow(2).getCell(2).setCellValue(map.get("provincia"));
+			 sheet0.getRow(2).getCell(3).setCellValue(map.get("eta"));
+			 sheet0.getRow(2).getCell(4).setCellValue(map.get("genere"));
+			 
+			 
+			 FileOutputStream fileOut = new FileOutputStream("C:\\Users\\antonio.dicivita\\Desktop\\"+timestamp+"_"+".xlsx");
+		        workbook.write(fileOut);
+		        fileOut.close();
+
+		        workbook.close();
+		    		
+	}
+	
+	
+	
+	
+	
 	public static void main(String[] args) throws Exception{
-		importaQuestionario();
+		compilaExcelQuestionario();
 	}
 
 	public static JsonObject importaDaPDF(FileItem fileItem,ClienteDTO cl, SedeDTO sd, Session session) throws Exception {

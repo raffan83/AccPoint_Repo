@@ -35,12 +35,13 @@ import it.portaleSTI.DTO.DevRegistroAttivitaDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.DpiDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
+import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.GPDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.action.AggiornaCampioneScheduler;
+
 
 public class SendEmailBO {
 	public static void sendEmailCertificato(CertificatoDTO certificato, String mailTo, ServletContext ctx) throws Exception {
@@ -523,7 +524,7 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 	         message.saveChanges();      // don't forget this
 	         tr.sendMessage(message, message.getAllRecipients());
 	         tr.close();
-	
+	         
 
 	}
 
@@ -1172,9 +1173,79 @@ public static void sendEmailControlli(String messaggio) throws EmailException {
 			  
 		  email.send();
 	}
+
+
+
+public static void sendEmailCorsiInScadenza(String messaggio, ForCorsoDTO corso,String path) throws EmailException {
+	
+
+	
+	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	
+
+		
+		
+		 HtmlEmail email = new HtmlEmail();
+		  email.setHostName("smtps.aruba.it");
+			 //email.setDebug(true);
+		  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+	email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+	email.getMailSession().getProperties().put("mail.debug", "true");
+	email.getMailSession().getProperties().put("mail.smtp.port", "465");
+	email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+
+	//email.addTo("giuseppe.gabriele@stisrl.com");
+	
+	
+	for(ForReferenteDTO referente : corso.getListaReferenti()) {
+		if(referente.getEmail()!=null && !referente.getEmail().equals("")) {
+			email.addTo(referente.getEmail());
+		}
+	}
+	email.addTo("lisa.lombardozzi@crescosrl.net");
+	email.addTo("segreteria@crescosrl.net");
+		  
+		  email.setFrom("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl");
+		
+
+			  email.setSubject("SCADENZE CORSI OBBLIGATORI");
+			  
+			  File image = new File(path.replace("WEB-INF/classes", "")+"/images/calver_cresco.png");
+			  String cid = email.embed(image, "Calver logo");
+			  
+			  messaggio += "<font size='2'>La presente e-mail &egrave; stata generata automaticamente da un indirizzo di posta elettronica di solo invio; si chiede pertanto di non rispondere al messaggio. <br>";
+			  messaggio += "Per qualsiasi informazione si prega di contattare CRESCO Formazione e Consulenza Srl all'indirizzo </em>segreteria@crescosrl.net o ai numeri 0776/1815104 - 0776/1815115</font><br><br><br>";
+			  
+			  messaggio += "<em><b>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
+					
+						"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
+						"Tel int. +39 0776.1815115 - Fax +39 0776.814169</em> <br> "
+						+ "Web: </em>www.crescosrl.net<br>" 
+						+ "Mail: </em>segreteria@crescosrl.net<br>" + 
+				
+						"<br/></html>"
+			  	
+			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"cid:"+cid+"\"><a><br>" ;
+		
+			
+			  
+			  email.setHtmlMsg("<html>"
+					  	 +messaggio+"</html>");
+			  
+		  email.send();
+	}
+	
+
+
 	
 
 }
+
 
 
 

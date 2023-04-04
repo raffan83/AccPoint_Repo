@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -177,7 +178,10 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 					Date date = format.parse(data_attivita);
 					attivita.setData(date);		
-					attivita.setData_scadenza(format.parse(data_scadenza));
+					if(data_scadenza!=null) {
+						attivita.setData_scadenza(format.parse(data_scadenza));	
+					}
+					
 					attivita.setDescrizione_attivita(descrizione);
 					attivita.setObsoleta("N");
 					if(operatore!=null && !operatore.equals("")) {
@@ -215,7 +219,12 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 						}else {
 							campione.setDataVerifica(date);
 							campione.setDataScadenza(format.parse(data_scadenza));
-							campione.setDataScadenzaVerificaIntermedia(format.parse(data_scadenza));
+							
+							Calendar cal = Calendar.getInstance();
+							cal.setTime(date);
+							cal.add(Calendar.MONTH, campione.getFrequenza_verifica_intermedia());
+							Date nextDate = cal.getTime();
+							campione.setDataScadenzaVerificaIntermedia(nextDate);
 						}
 					}				
 					
@@ -331,7 +340,11 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					}else {
 						campione.setDataVerifica(date);
 						campione.setDataScadenza(format.parse(data_scadenza));
-						campione.setDataScadenzaVerificaIntermedia(format.parse(data_scadenza));
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(date);
+						cal.add(Calendar.MONTH, campione.getFrequenza_verifica_intermedia());
+						Date nextDate = cal.getTime();
+						campione.setDataScadenzaVerificaIntermedia(nextDate);
 						
 						
 					}

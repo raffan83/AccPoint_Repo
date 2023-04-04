@@ -380,6 +380,7 @@ public class GestioneDevice extends HttpServlet {
 				DevDeviceDTO device = GestioneDeviceBO.getDeviceFromID(Integer.parseInt(id_device), session);
 				
 				String stringaModifica=("Modifica attributi device|");
+				boolean modifica_effettuata = false;
 				
 				DocumFornitoreDTO company = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
 				DevTipoDeviceDTO tipo = GestioneDeviceBO.getTipoDeviceFromID(Integer.parseInt(id_tipo_device), session);
@@ -397,12 +398,14 @@ public class GestioneDevice extends HttpServlet {
 						stringaModifica=stringaModifica+"Company("+device.getCompany().getRagione_sociale()+","+company.getRagione_sociale()+")|";
 					}
 					device.setData_cambio_company(new Date());					
+					modifica_effettuata = true;
 				}
 				
 				if(device.getTipo_device()!=null && device.getTipo_device().getId() !=Integer.parseInt(id_tipo_device))
 				{
 					
-					stringaModifica=stringaModifica+"Tipo Device("+device.getTipo_device().getDescrizione()+","+tipo.getDescrizione()+")|";	
+					stringaModifica=stringaModifica+"Tipo Device("+device.getTipo_device().getDescrizione()+","+tipo.getDescrizione()+")|";
+					modifica_effettuata = true;
 										
 				}
 				
@@ -410,11 +413,13 @@ public class GestioneDevice extends HttpServlet {
 				{
 					
 					stringaModifica=stringaModifica+"Dipendente("+device.getTipo_device().getDescrizione()+","+dipendente.getNome()+" "+dipendente.getCognome()+")|";	
-										
+					modifica_effettuata = true;				
 				}else {
 					if(device.getDipendente()== null && dipendente!=null) {
 						stringaModifica=stringaModifica+"Dipendente([VUOTO],"+dipendente.getNome()+" "+dipendente.getCognome()+")|";
+						modifica_effettuata = true;
 					}
+					
 				}
 				
 				
@@ -425,10 +430,12 @@ public class GestioneDevice extends HttpServlet {
 					}else {
 						if(denominazione.equals("")) {
 							stringaModifica=stringaModifica+"Denominazione("+device.getDenominazione()+",[VUOTO])|";	
+						}else {
+							stringaModifica=stringaModifica+"Denominazione("+device.getDenominazione()+","+denominazione+")|";	
 						}
-						stringaModifica=stringaModifica+"Denominazione("+device.getDenominazione()+","+denominazione+")|";	
+							
 					}
-					
+					modifica_effettuata = true;
 				}
 				
 				if(device.getCostruttore()!=null && !device.getCostruttore().equals(costruttore))
@@ -438,10 +445,12 @@ public class GestioneDevice extends HttpServlet {
 					}else {
 						if(costruttore.equals("")) {
 							stringaModifica=stringaModifica+"Costruttore("+device.getCostruttore()+",[VUOTO])|";
+						}else {
+							stringaModifica=stringaModifica+"Costruttore("+device.getCostruttore()+","+costruttore+")|";	
 						}
-						stringaModifica=stringaModifica+"Costruttore("+device.getCostruttore()+","+costruttore+")|";	
+							
 					}
-					
+					modifica_effettuata = true;
 				}
 				
 				if(device.getModello()!=null && !device.getModello().equals(modello))
@@ -452,10 +461,12 @@ public class GestioneDevice extends HttpServlet {
 						if(modello.equals("")) {
 							
 							stringaModifica=stringaModifica+"Modello("+device.getModello()+",[VUOTO])|";
+						}else {
+							stringaModifica=stringaModifica+"Modello("+device.getModello()+","+modello+")|";	
 						}
-						stringaModifica=stringaModifica+"Modello("+device.getModello()+","+modello+")|";	
+							
 					}
-					
+					modifica_effettuata = true;
 				}
 				
 				if(device.getDistributore()!=null && !device.getDistributore().equals(distributore))
@@ -465,20 +476,23 @@ public class GestioneDevice extends HttpServlet {
 					}else {
 						if(distributore.equals("")) {
 							stringaModifica=stringaModifica+"Distributore("+device.getDistributore()+",[VUOTO])|";	
+						}else {
+							stringaModifica=stringaModifica+"Distributore("+device.getDistributore()+","+distributore+")|";	
 						}
-						stringaModifica=stringaModifica+"Distributore("+device.getDistributore()+","+distributore+")|";	
+							
 					}
-					
+					modifica_effettuata = true;
 				}
 				
 				if(device.getData_acquisto()!=null && data_acquisto!=null && !data_acquisto.equals("") && !device.getData_acquisto().equals(df.parse(data_acquisto)))
 				{					
 						
 						stringaModifica=stringaModifica+"Data acquisto("+device.getData_acquisto()+","+df.parse(data_acquisto)+")|";	
-										
+						modifica_effettuata = true;		
 				}else {
 					if(device.getData_acquisto()==null && !data_acquisto.equals("")) {
 						stringaModifica=stringaModifica+"Data acquisto([VUOTO],"+df.parse(data_acquisto)+")|";
+						modifica_effettuata = true;
 					}
 					else if(device.getData_acquisto()==null && data_acquisto.equals("")) {
 						
@@ -486,8 +500,9 @@ public class GestioneDevice extends HttpServlet {
 					else {
 						if(data_acquisto==null || data_acquisto.equals("")) {
 							stringaModifica=stringaModifica+"Data acquisto("+df.format(device.getData_acquisto())+",[VUOTO])|";
+							modifica_effettuata = true;
 						}
-						stringaModifica=stringaModifica+"Data acquisto("+df.format(device.getData_acquisto())+","+data_acquisto+")|";
+						//stringaModifica=stringaModifica+"Data acquisto("+df.format(device.getData_acquisto())+","+data_acquisto+")|";
 					}
 				}
 				
@@ -496,10 +511,11 @@ public class GestioneDevice extends HttpServlet {
 				{					
 						
 						stringaModifica=stringaModifica+"Data creazione("+device.getData_acquisto()+","+df.parse(data_creazione)+")|";	
-										
+						modifica_effettuata = true;				
 				}else {
 					if(device.getData_creazione()==null && !data_creazione.equals("")) {
 						stringaModifica=stringaModifica+"Data creazione([VUOTO],"+df.parse(data_creazione)+")|";
+						modifica_effettuata = true;
 					}
 					else if(device.getData_creazione()==null && data_creazione.equals("")) {
 						
@@ -507,8 +523,9 @@ public class GestioneDevice extends HttpServlet {
 					else {
 						if(data_creazione==null || data_creazione.equals("")) {
 							stringaModifica=stringaModifica+"Data creazione("+df.format(device.getData_creazione())+",[VUOTO])|";
+							modifica_effettuata = true;
 						}
-						stringaModifica=stringaModifica+"Data creazione("+df.format(device.getData_creazione())+","+data_creazione+")|";
+						//stringaModifica=stringaModifica+"Data creazione("+df.format(device.getData_creazione())+","+data_creazione+")|";
 					}
 				}
 				
@@ -519,10 +536,12 @@ public class GestioneDevice extends HttpServlet {
 					}else {
 						if(ubicazione.equals("")) {
 							stringaModifica=stringaModifica+"Ubicazione("+device.getUbicazione()+",[VUOTO])|";	
+						}else {
+							stringaModifica=stringaModifica+"Ubicazione("+device.getUbicazione()+","+ubicazione+")|";		
 						}
-						stringaModifica=stringaModifica+"Ubicazione("+device.getUbicazione()+","+ubicazione+")|";	
+						
 					}
-					
+					modifica_effettuata = true;
 				}
 				
 				if(device.getConfigurazione()!=null && !device.getConfigurazione().equals(configurazione))
@@ -532,10 +551,12 @@ public class GestioneDevice extends HttpServlet {
 					}else {
 						if(configurazione.equals("")) {
 							stringaModifica=stringaModifica+"Configurazione("+device.getConfigurazione()+",[VUOTO])|";	
+						}else {
+							stringaModifica=stringaModifica+"Configurazione("+device.getConfigurazione()+","+configurazione+")|";	
 						}
-						stringaModifica=stringaModifica+"Configurazione("+device.getConfigurazione()+","+configurazione+")|";	
+							
 					}
-					
+					modifica_effettuata = true;
 				}
 				
 						
@@ -567,17 +588,24 @@ public class GestioneDevice extends HttpServlet {
 					device.setDipendente(null);
 				}
 				
+				
+				
+				
 				session.update(device);				
 				
-				DevRegistroAttivitaDTO attivita = new DevRegistroAttivitaDTO();
-				attivita.setDevice(device);
-				attivita.setData_evento(new Date());
-				attivita.setTipo_evento(new DevTipoEventoDTO(1, ""));
-				attivita.setDescrizione(stringaModifica);
-				attivita.setUtente(utente);
 				
+				if(modifica_effettuata) {
+					DevRegistroAttivitaDTO attivita = new DevRegistroAttivitaDTO();
+					attivita.setDevice(device);
+					attivita.setData_evento(new Date());
+					attivita.setTipo_evento(new DevTipoEventoDTO(1, ""));
+					attivita.setDescrizione(stringaModifica);
+					attivita.setUtente(utente);
+					
+					
+					session.save(attivita);
+				}
 				
-				session.save(attivita);
 				
 				if(nuova_label_configurazione!=null && !nuova_label_configurazione.equals("")) {
 					for(int i = 0;i<nuova_label_configurazione.split(";").length;i++) {
@@ -889,6 +917,8 @@ public class GestioneDevice extends HttpServlet {
 				}
 				if(data_prossima!=null && !data_prossima.equals("")) {
 					attivita.setData_prossima(df.parse(data_prossima));
+				}else {
+					attivita.setData_prossima(null);
 				}
 				attivita.setUtente(utente);
 				attivita.setNote_evento(note_evento);

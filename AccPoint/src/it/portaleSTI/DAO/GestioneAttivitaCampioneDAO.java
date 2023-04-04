@@ -800,9 +800,17 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 	if(!lat.equals("")) {
 		not = "";
 	}
-	Query query = session.createQuery("from CampioneDTO where "+tipo_data+"= :_date and statoCampione!='F' and codice "+ not+" like '%CDT%' and campione_verificazione = :_verificazione");
+	Query query = null;
+	
+	if(verificazione.equals("1")) {
+		query = session.createQuery("from CampioneDTO where "+tipo_data+"= :_date and statoCampione!='F' and codice "+ not+" like '%CDT%' and campione_verificazione = :_verificazione");
+		query.setParameter("_verificazione", Integer.parseInt(verificazione));
+	}else {
+		query = session.createQuery("from CampioneDTO where "+tipo_data+"= :_date and statoCampione!='F' and codice "+ not+" like '%CDT%'");
+	}
+	
 	query.setParameter("_date", df.parse(data));
-	query.setParameter("_verificazione", Integer.parseInt(verificazione));
+
 		
 	lista = (ArrayList<CampioneDTO>) query.list();
 		
@@ -881,9 +889,20 @@ public static ArrayList<HashMap<String, Integer>> getListaScadenzeCampione(Strin
 		not = "";
 	}
 	
-	Query query = session.createQuery("from CampioneDTO where codice "+ not+" like '%CDT%' and id_company = :_idCmp and campione_verificazione = :_verificazione and statoCampione != 'F'");
-	query.setParameter("_verificazione", Integer.parseInt(verificazione));
-	query.setParameter("_idCmp", id_company);
+	Query query = null;
+	
+	if(verificazione.equals("1")) {
+		query = session.createQuery("from CampioneDTO where codice "+ not+" like '%CDT%' and campione_verificazione = :_verificazione and statoCampione != 'F'");
+		query.setParameter("_verificazione", Integer.parseInt(verificazione));
+	}else {
+		//query = session.createQuery("from CampioneDTO where codice "+ not+" like '%CDT%' and id_company = :_idCmp and statoCampione != 'F'");
+		query = session.createQuery("from CampioneDTO where codice "+ not+" like '%CDT%' and statoCampione != 'F'");
+	}
+	
+	
+	//Query query = session.createQuery("from CampioneDTO where codice "+ not+" like '%CDT%' and id_company = :_idCmp and campione_verificazione = :_verificazione and statoCampione != 'F'");
+	
+	//query.setParameter("_idCmp", id_company);
 		
 	
 	lista= (ArrayList<CampioneDTO>)query.list();	

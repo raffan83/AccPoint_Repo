@@ -279,9 +279,9 @@ public class GestioneRilieviBO {
 		
 	}
 
-	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviInLavorazione(int id_stato_lavorazione, int anno, Session session) {
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviInLavorazione(int id_stato_lavorazione, int anno,String controfirmato, Session session) {
 		
-		return GestioneRilieviDAO.getListaRilieviInLavorazione(id_stato_lavorazione, anno, session);
+		return GestioneRilieviDAO.getListaRilieviInLavorazione(id_stato_lavorazione, anno,controfirmato, session);
 	}
 
 	public static void updateQuota(RilQuotaDTO quota, int id_impronta, Session session) {
@@ -295,9 +295,9 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getMaxIdRipetizione(lista_impronte, session);
 	}
 
-	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente, int anno, Session session) {
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente, int anno,String controfirmato,  Session session) {
 	
-		return GestioneRilieviDAO.getListaRilieviFiltrati(id_stato_lavorazione, cliente, anno, session);
+		return GestioneRilieviDAO.getListaRilieviFiltrati(id_stato_lavorazione, cliente, anno,controfirmato,  session);
 	}
 
 	public static RilMisuraRilievoDTO getRilievoFromId(int id_rilievo, Session session) {

@@ -729,6 +729,20 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		return lista;
 	}
 
-	
+	public static ArrayList<ForCorsoDTO> getListaCorsiInScadenza(String date, Session session) throws Exception, ParseException {
+
+		ArrayList<ForCorsoDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = session.createQuery("from ForCorsoDTO a where data_scadenza = :_date and disabilitato = 0 and email_inviata = 0");	
+		query.setParameter("_date", sdf.parse(date));
+			
+			
+		lista = (ArrayList<ForCorsoDTO>) query.list();
+		
+				
+		return lista;
+	}
 
 }

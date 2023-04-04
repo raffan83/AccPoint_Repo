@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -62,8 +63,12 @@ import com.itextpdf.text.pdf.parser.TextRenderInfo;
 
 import TemplateReport.PivotTemplate;
 import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneControlliOperativiDAO;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CoAttrezzaturaDTO;
+import it.portaleSTI.DTO.CoControlloDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
@@ -1494,6 +1499,49 @@ public class GestioneFormazioneBO {
 	public static ArrayList<ForCorsoDTO> getListaCorsiCategoria(int id_categoria, Session session) {
 
 		return GestioneFormazioneDAO.getListaCorsiCategoria(id_categoria, session);
+	}
+
+	public static void sendEmailCorsiInScadenza(String path) throws ParseException, Exception {
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		Date today = new Date();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(today);
+		cal.add(Calendar.DATE, 59);
+		Date nextDate = cal.getTime();
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		ArrayList<ForCorsoDTO> lista_corsi = GestioneFormazioneDAO.getListaCorsiInScadenza(df.format(nextDate), session);
+	
+		df = new SimpleDateFormat("dd/MM/yyyy");
+		
+		String messaggio = "";
+		
+		
+		
+		for (ForCorsoDTO corso : lista_corsi) {
+			
+			messaggio = "Gentile Utente <br>Si comunica che il seguente corso &egrave; in scadenza il "+df.format(nextDate)+":<br><br>";
+			
+			messaggio += "- " +corso.getCorso_cat().getDescrizione() +" - "+corso.getDescrizione()+"<br><br>";
+			
+			messaggio += 	"Siamo a disposizione per supportarvi nell'organizzazione e pianificazione dei corsi.<br>"
+				  	+"Cordiali saluti.<br><br>";
+			
+			SendEmailBO.sendEmailCorsiInScadenza(messaggio, corso, path);
+			corso.setEmail_inviata(1);
+			
+		}
+		
+				
+		session.getTransaction().commit();
+		session.close();
+		
+		
 	}
 
 	

@@ -55,7 +55,21 @@
 <input type="text" id="importo_assegnato" class="form-control pull-left" readonly style="width:100%;text-align:right;">
 
 </div>
-</div><br>
+<div class="col-sm-6">
+    
+    
+     	<c:choose>
+	<c:when test="${userObj.checkRuolo('AM') && lista_rilievi.size()>0 && lista_rilievi.get(0).controfirmato == 0}">
+	<c:set var="tab_da_approvare" value="${1 }"></c:set>
+	</c:when>
+	<c:otherwise>
+	<c:set var="tab_da_approvare" value="${0 }"></c:set>
+	</c:otherwise>
+	</c:choose>
+<c:if test="${tab_da_approvare == 1 }">
+<a id="approva_tutti" style="margin-top:25px" onClick="approvaSelezionati()"class="btn btn-success pull-right">Approva selezionati</a>
+</c:if>
+</div>
 </div><br>
 
 <div class="row">
@@ -63,7 +77,13 @@
 
  <table id="tabRilievi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+ 
 
+
+<c:if test="${tab_da_approvare == 1}">
+<th></th>
+<th style="max-width:20px"><input id="selectAlltabPM" type="checkbox" /></th>
+</c:if>
 <th>Numero Scheda</th>
 <th>Mese di riferimento</th>
 <th>Disegno</th>
@@ -85,7 +105,7 @@
 <th>Materiale</th>
 <th>Classe di tolleranza</th>
 <th>Utente</th>
-<th style="min-width:150px">Azioni</th>
+<th style="min-width:190px">Azioni</th>
 <th>Allegati Scheda</th>
 <th>Archivio</th>
 <th>Scheda Consegna</th>
@@ -97,7 +117,9 @@
  
  	<c:forEach items="${lista_rilievi }" var="rilievo" varStatus="loop">
 	<tr id="row_${loop.index}" >
-		
+
+	
+<c:if test="${tab_da_approvare == 1}"><td></td><td></td></c:if>
 		<td>${rilievo.numero_scheda }</td>
 		<td>${rilievo.mese_riferimento }</td>
 		<td>${rilievo.disegno }</td>
@@ -173,6 +195,64 @@
 </div>
 
  <script type="text/javascript">
+ 
+ 
+ 
+ function approvaSelezionati(){
+	 
+
+		  
+			var dataSelected = table.rows( { selected: true } ).data();
+			
+			if(dataSelected.length>0){
+				
+				pleaseWaitDiv = $('#pleaseWaitDialog');
+			 	pleaseWaitDiv.modal();
+				
+				var ids = "";
+		  		for(i=0; i< dataSelected.length; i++){
+		  			dataSelected[i];
+		  			ids += dataSelected[i][26]+";";
+		  		}
+		  		
+		  	dataObj = {};
+		  	dataObj.ids = ids;
+		  		
+				callAjax(dataObj, "gestioneRilievi.do?action=approva_selezionati")
+				
+				
+			}else{
+
+		 		$('#myModalErrorContent').html("Selezionare almeno un rilievo!");
+	 			$('#myModalError').removeClass();
+	 			$('#myModalError').addClass("modal modal-default");
+	 			$('#myModalError').modal('show');
+			}
+			
+	  		
+	 
+	 
+ }
+ 
+ $('#selectAlltabPM').iCheck({
+     checkboxClass: 'icheckbox_square-blue',
+     radioClass: 'iradio_square-blue',
+     increaseArea: '20%' // optional
+   });
+
+ 
+	$('input').on('ifChecked', function(event){  		
+  		
+		   //table.rows().select();
+		   table.rows({ filter : 'applied'}).select();
+		      	  
+});
+$('input').on('ifUnchecked', function(event){
+	
+		 table.rows().deselect();
+	  
+});
+ 
  
  function approvaRilievo(id_rilievo){
 	 dataObj={};
@@ -360,7 +440,17 @@ $('#myModalArchivio').modal();
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	  var title = $('#tabRilievi thead th').eq( $(this).index() ).text();
 	    	
-	    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	    	  if(${tab_da_approvare == 1}){
+	    		  if($(this).index() !=0 && $(this).index()!=1){
+		    		  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');  
+		    	  }
+	    	  }else{
+	    		  
+		    		 $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');  
+		    	  
+	    	  }
+	    	 
+	    	  
 	    	
 	    	} );
 	    
@@ -456,9 +546,36 @@ $(document).ready(function() {
      $('#anno').val(anno_riferimento);
      $('#anno').change();
      
+     
+     var col_def = [];
+     
+     col_def =  [
+
+   	  { responsivePriority: 1, targets: 1 },
+   	  { responsivePriority: 2, targets: 20 }
+              ] 
+     
+     sel ={};
+     
+     if(${tab_da_approvare==1}){
+    
+    	 col_def = [{ className: "select-checkbox", targets: 1,  orderable: false },
+    		 { targets: 0,  orderable: false},
+    		 { responsivePriority: 1, targets: 1 },
+    	   	  { responsivePriority: 2, targets: 22 }];
+    	 
+    	 sel ={
+	        	style:    'multi+shift',
+	        	selector: 'td:nth-child(2)'
+	    	}
+     }
+     
+     
+     
      commessa_options = $('#commessa option').clone();
 	 
 	 $('.dropdown-toggle').dropdown();
+	 
 	 table = $('#tabRilievi').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -492,11 +609,8 @@ $(document).ready(function() {
 		      responsive: true,
 		      scrollX: false,
 		      stateSave: true,
-		      columnDefs: [
-
-		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 20 }
-		               ], 	        
+		      columnDefs: col_def,      
+		      select: sel,
 	  	      buttons: [   
 	  	          {
 	  	            extend: 'colvis',
@@ -794,12 +908,18 @@ function contaImportoTotale(table){
 	
 	//var table = $("#tabPM").DataTable();
 	
+	var col = 5;
+	
+	if(${tab_da_approvare==1}){
+		col = 7;
+	}
+	
 	var data = table
      .rows({ search: 'applied' })
      .data();
 	var somma = 0.0;
 	for(var i=0;i<data.length;i++){	
-		var num = parseFloat(stripHtml(data[i][5]));
+		var num = parseFloat(stripHtml(data[i][col]));
 		somma = somma + num;
 	}
 	$('#importo_assegnato').val(somma);

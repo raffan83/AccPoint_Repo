@@ -591,13 +591,23 @@ public class GestioneCampioneDAO {
 		}		
 				
 			
-		Query query = session.createQuery("from CampioneDTO WHERE (data_scadenza between :_date_start and :_date_end or data_scadenza_verifica_intermedia between :_date_start and :_date_end or data_scadenza_manutenzione between :_date_start and :_date_end) and id_Company=:_id_company and statoCampione != 'F' and codice "+not+" LIKE  '%CDT%' and campione_verificazione =:_verificazione");
+		Query query = null;
+		
+		if(verificazione == 1) {
+			//query = session.createQuery("from CampioneDTO WHERE (data_scadenza between :_date_start and :_date_end or data_scadenza_verifica_intermedia between :_date_start and :_date_end or data_scadenza_manutenzione between :_date_start and :_date_end) and id_Company=:_id_company and statoCampione != 'F' and codice "+not+" LIKE  '%CDT%' and campione_verificazione =:_verificazione");
+			query = session.createQuery("from CampioneDTO WHERE (data_scadenza between :_date_start and :_date_end or data_scadenza_verifica_intermedia between :_date_start and :_date_end or data_scadenza_manutenzione between :_date_start and :_date_end) and statoCampione != 'F' and codice "+not+" LIKE  '%CDT%' and campione_verificazione =:_verificazione");
+			query.setParameter("_verificazione", verificazione);	
+		}else {
+			//query = session.createQuery("from CampioneDTO WHERE (data_scadenza between :_date_start and :_date_end or data_scadenza_verifica_intermedia between :_date_start and :_date_end or data_scadenza_manutenzione between :_date_start and :_date_end) and id_Company=:_id_company and statoCampione != 'F' and codice "+not+" LIKE  '%CDT%'");
+			query = session.createQuery("from CampioneDTO WHERE (data_scadenza between :_date_start and :_date_end or data_scadenza_verifica_intermedia between :_date_start and :_date_end or data_scadenza_manutenzione between :_date_start and :_date_end) and statoCampione != 'F' and codice "+not+" LIKE  '%CDT%'");
+		}
+		
 			
 		
 		query.setParameter("_date_start", df.parse(data_start));
 		query.setParameter("_date_end", df.parse(data_end));
-		query.setParameter("_id_company", id_company);
-		query.setParameter("_verificazione", verificazione);	
+		//query.setParameter("_id_company", id_company);
+		
 			
 		result = (ArrayList<CampioneDTO>) query.list();				
 			

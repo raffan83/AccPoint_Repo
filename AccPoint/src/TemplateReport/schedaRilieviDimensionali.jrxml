@@ -409,6 +409,13 @@
 				<reportElement x="450" y="80" width="129" height="20" uuid="c4e5587c-88f7-4b63-adf4-395d61391352"/>
 				<textFieldExpression><![CDATA[$P{responsabile}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="-1" y="129" width="552" height="9" uuid="39c51f23-8327-4139-895c-5ba02b10eca8"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="5"/>
+				</textElement>
+				<text><![CDATA[Documento firmato digitalmente con firma elettronica digitale certificata (PAdES)]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 </jasperReport>

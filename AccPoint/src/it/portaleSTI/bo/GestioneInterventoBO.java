@@ -819,9 +819,141 @@ public class GestioneInterventoBO {
 			
 			Connection con =SQLLiteDAO.getConnection(nomeDB);
 			
+			
+			if(GestioneInterventoBO.isElectric(esito)) {
+				
+				InterventoDatiDTO interventoDati = esito.getInterventoDati();
+				ArrayList<SicurezzaElettricaDTO> listaMisure=SQLLiteDAO.getListaMisureElettriche(con,intervento);
+				
+				for (int i = 0; i < listaMisure.size(); i++) 
+			    {
+			    	SicurezzaElettricaDTO sicurezza = listaMisure.get(i);
+			    
+			    	StrumentoDTO strumento = sicurezza.getStrumento();
+			    	
+		
+			    	
+			   	if(sicurezza.getStrumento().getStrumentoModificato()!=null && sicurezza.getStrumento().getStrumentoModificato().equals("S")) {
+			   		
+			   		StrumentoDTO strumentoModificato=new StrumentoDTO();
+			   		
+			   		strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+sicurezza.getStrumento().get__id(),session);
+			   		
+			   		StrumentoDTO strumentoDaFile = sicurezza.getStrumento();
+			   		
+			   		strumentoModificato.setUserModifica(utente);
+			   		strumentoModificato.setDataModifica(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+			   		
+			   		TipoRapportoDTO tipoRapp = new TipoRapportoDTO(strumentoDaFile.getIdTipoRapporto(),"");
+			   		strumentoModificato.setTipoRapporto(tipoRapp);
+			   		
+			   		ClassificazioneDTO classificazione = new ClassificazioneDTO(strumentoDaFile.getIdClassificazione(),"");		   		
+			   		strumentoModificato.setClassificazione(classificazione);
+			   		strumentoModificato.setFrequenza(strumentoDaFile.getFrequenza());
+			   		strumentoModificato.setDenominazione(strumentoDaFile.getDenominazione());   	
+			   		strumentoModificato.setCodice_interno(strumentoDaFile.getCodice_interno());
+			   		strumentoModificato.setCostruttore(strumentoDaFile.getCostruttore());
+			   		strumentoModificato.setModello(strumentoDaFile.getModello());
+			   		strumentoModificato.setReparto(strumentoDaFile.getReparto());
+			   		strumentoModificato.setUtilizzatore(strumentoDaFile.getUtilizzatore());
+			   		strumentoModificato.setMatricola(strumentoDaFile.getMatricola());
+			   		strumentoModificato.setCampo_misura(strumentoDaFile.getCampo_misura());
+			   		strumentoModificato.setRisoluzione(strumentoDaFile.getRisoluzione());
+			   		strumentoModificato.setNote(strumentoDaFile.getNote());
+			   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
+			   		strumentoModificato.setProcedura(strumentoDaFile.getProcedura());
+			   		strumentoModificato.setDataProssimaVerifica(strumentoDaFile.getDataProssimaVerifica());
+			   		strumentoModificato.setDataUltimaVerifica(strumentoDaFile.getDataUltimaVerifica());
+			   		
+			   		GestioneStrumentoBO.update(strumentoModificato, session);
+			   		strumento=strumentoModificato;
+			   	}
+			   	
+			   	else 
+			   	{
+			   	StrumentoDTO	strumentoAggiormanentoScadenza = GestioneStrumentoBO.getStrumentoById(""+sicurezza.getStrumento().get__id(),session);
+			   	strumentoAggiormanentoScadenza.setDataProssimaVerifica(sicurezza.getStrumento().getDataProssimaVerifica());
+			   	strumentoAggiormanentoScadenza.setDataUltimaVerifica(sicurezza.getStrumento().getDataUltimaVerifica());
+		   		
+		   		
+		   		GestioneStrumentoBO.update(strumentoAggiormanentoScadenza, session);
+			   	}
+			   	
+			    MisuraDTO misura= new MisuraDTO();
+			    
+			    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy");
+			   	
+			    misura.setIntervento(intervento);
+			   	misura.setInterventoDati(interventoDati);
+			   	misura.setStrumento(strumento);
+			    misura.setUser(utente);
+			    misura.setDataMisura(sdf.parse(sicurezza.getDATA()));
+			    misura.setLat("E");
+			    misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(8901));
+			    misura.setObsoleto("N");
+			    
+			   if(utente.getContatoreUtente()!=null) 
+			   {
+				   
+				   ContatoreUtenteDTO contatore=utente.getContatoreUtente();
+				   
+				   int count=contatore.getContatoreSE();
+				   
+				   String codice="SSE"+contatore.getCodiceSE()+count;
+				  
+				   misura.setnCertificato(codice);
+				   
+				   utente.getContatoreUtente().setContatoreSE(count+1);
+				  
+				   GestioneSicurezzaElettricaBO.updateContatoreUtente(utente);
+				 //  session.update(utente.getContatoreUtente());
+				   
+			   }
+			    
+			    
+
+			    		int idMis =saveMisura(misura,session);
+			    		sicurezza.setId_misura(idMis);
+
+			    		/*
+			    		 * Salvo scadenza 
+			    		 */
+//			    		ScadenzaDTO scadenza =sicurezza.getStrumento().getScadenzaDTO();
+//			    		scadenza.setIdStrumento(misura.getStrumento().get__id());
+//				    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
+//			    		GestioneStrumentoBO.saveScadenza(scadenza,session);
+			    		
+			    		
+			    		saveSicurezza(sicurezza,session);
+				
+			    		intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
+			    		interventoDati.setNumStrMis(interventoDati.getNumStrMis()+1);
+			    		
+			    		
+			    	
+			    		
+			    		update(intervento, session);
+			    		session.update(interventoDati);
+			    		
+			    		
+			    		CertificatoDTO certificato = new CertificatoDTO();
+			    		certificato.setMisura(misura);
+			    		certificato.setStato(new StatoCertificatoDTO(1));
+			    		certificato.setUtente(misura.getUser());
+
+			    		saveCertificato(certificato,session);
+			    		GestioneInterventoDAO.update(intervento,session);
+				
+				
+				
+			    
+			    }
+				
+			}else {
+			
 			ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
 			
-			
+						
 			for (int i = 0; i < listaMisure.size(); i++) 
 			{
 				MisuraDTO misura = listaMisure.get(i);
@@ -943,9 +1075,23 @@ public class GestioneInterventoBO {
 		    		
 		    		saveCertificato(certificato,session);
 				}
+			
+								
 				
+				}
+			
 			}
 		
+				
+				
+			
+			
+			
+			
+			
+			
+			
+			
 		}catch (Exception e) {
 				e.printStackTrace();
 				esito.setEsito(0);

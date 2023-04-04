@@ -31,6 +31,8 @@ public class ForCorsoDTO {
 	private Set<ForReferenteDTO> listaReferenti = new HashSet<ForReferenteDTO>(0);
 	private Set<ForDocenteDTO> listaDocenti = new HashSet<ForDocenteDTO>(0);
 	
+	private int email_inviata;
+	
 	public ForCorsoDTO() {
 		super();
 	}
@@ -179,6 +181,12 @@ public class ForCorsoDTO {
 		}
 		
 		return jobj;
+	}
+	public int getEmail_inviata() {
+		return email_inviata;
+	}
+	public void setEmail_inviata(int email_inviata) {
+		this.email_inviata = email_inviata;
 	}
 
 }

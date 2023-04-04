@@ -89,5 +89,9 @@
                    <property name="scheda_consegna_inviata" type="int" >
             <column name="scheda_consegna_inviata" />
         </property>
+        
+         <property name="email_inviata" type="int" >
+            <column name="email_inviata" />
+        </property>
     </class>
 </hibernate-mapping>

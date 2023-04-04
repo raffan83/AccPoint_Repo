@@ -348,22 +348,24 @@ public class GestioneRilieviDAO {
 
 
 
-	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviInLavorazione(int id_stato_lavorazione,int anno, Session session) {
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviInLavorazione(int id_stato_lavorazione,int anno, String controfirmato, Session session) {
 
 		ArrayList<RilMisuraRilievoDTO>  lista = null;
 		
 		Query query = null;
 		if(id_stato_lavorazione !=0) {
 			
-			
+					
 			if(anno !=0) {
-				query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and disabilitato=0 and YEAR(data_inizio_rilievo) = :_anno");
+				query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and disabilitato=0 and YEAR(data_inizio_rilievo) = :_anno and controfirmato = :_controfirmato");
 				query.setParameter("_anno", anno);	
 			}else {
-				query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and disabilitato=0");
+				query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and disabilitato=0 and controfirmato = :_controfirmato" );
 			}
 			
 			query.setParameter("_id_stato_lavorazione", id_stato_lavorazione);
+			query.setParameter("_controfirmato", Integer.parseInt(controfirmato));
+			
 			
 		}else {
 			
@@ -450,19 +452,21 @@ public class GestioneRilieviDAO {
 
 
 
-	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente, int anno, Session session) {
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente, int anno, String controfirmato, Session session) {
 		
 		ArrayList<RilMisuraRilievoDTO>  lista = null;
 		
 		Query query = null;
 		String s_query = null;
 		if(id_stato_lavorazione!=0) {
-			s_query = "from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and id_cliente_util = :_cliente and disabilitato=0 ";
+			s_query = "from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and id_cliente_util = :_cliente and disabilitato=0 and controfirmato = :_controfirmato ";
 			if(anno !=0) {
 				s_query = s_query +"and YEAR(data_inizio_rilievo) = :_anno";
 			}			
 		query = session.createQuery(s_query);
 		query.setParameter("_id_stato_lavorazione", id_stato_lavorazione);
+		query.setParameter("_controfirmato", Integer.parseInt(controfirmato));
+		
 		}else {
 			s_query = "from RilMisuraRilievoDTO where id_cliente_util = :_cliente and disabilitato=0";
 			if(anno !=0) {

@@ -306,7 +306,7 @@
 				<textElement>
 					<font size="9" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[PT-008 Rev. A]]></text>
+				<text><![CDATA[PT008 Rev. B]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="368" y="200" width="70" height="20" uuid="818de048-7525-4387-a36c-9a9ea109576a"/>

@@ -115,8 +115,33 @@
  </tr></thead>
  
  <tbody>
+
+ 
  
  	<c:forEach items="${lista_rilievi }" var="rilievo" varStatus="loop">
+ 	
+ 	 <c:choose>
+ <c:when test="${userObj.checkRuolo('RL')}">
+	  <c:choose>
+	 <c:when test="${rilievo.stato_rilievo.id==1 || rilievo.controfirmato==1}">
+	  <c:set var="cliente_rl" value="${1 }"></c:set>
+	
+	 </c:when>
+	 <c:otherwise>
+	 <c:set var="cliente_rl" value="${0 }"></c:set>
+	 
+	</c:otherwise>
+	 </c:choose>
+
+ </c:when>
+ 
+<c:otherwise>
+ <c:set var="cliente_rl" value="${0 }"></c:set>
+</c:otherwise>
+ </c:choose>
+ 	
+ 	
+ 	<c:if test="${cliente_rl==1 || userObj.checkPermesso('RILIEVI_DIMENSIONALI')  }">
 	<tr id="row_${loop.index}" >
 		
 		<td>${rilievo.numero_scheda }</td>
@@ -211,7 +236,7 @@
 		<td>${rilievo.id }</td>
 		
 		<td>${rilievo.note }</td>
-	</tr>
+	</tr></c:if>
 	</c:forEach>
 
  </tbody>

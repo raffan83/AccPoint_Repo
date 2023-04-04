@@ -395,7 +395,7 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 				<textElement>
 					<font size="9" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[PT-001 Rev.0]]></text>
+				<text><![CDATA[PT001 Rev.A]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="426" y="239" width="70" height="15" uuid="9d146338-0bcd-4b07-b318-fac8c3dadacb"/>

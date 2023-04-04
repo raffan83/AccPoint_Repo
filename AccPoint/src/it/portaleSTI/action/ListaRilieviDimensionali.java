@@ -129,6 +129,7 @@ public class ListaRilieviDimensionali extends HttpServlet {
 					request.getSession().setAttribute("cliente_filtro", Utility.decryptData(cliente_filtro));
 					request.getSession().setAttribute("filtro_rilievi", Utility.decryptData(id_stato_lavorazione));
 				}
+				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilievi.jsp");
 		  	    dispatcher.forward(request,response);	
@@ -172,11 +173,15 @@ public class ListaRilieviDimensionali extends HttpServlet {
 					anno = cal.get(Calendar.YEAR);
 				}
 				
+				String controfirmato = "0";
+				if(id_stato_lavorazione.split("_").length>1) {
+					controfirmato = id_stato_lavorazione.split("_")[1];
+				}
 				
 				if(cliente_filtro!=null && !cliente_filtro.equals("") && !cliente_filtro.equals("0")) {
-					 lista_rilievi = GestioneRilieviBO.getListaRilieviFiltrati(Integer.parseInt(id_stato_lavorazione), Integer.parseInt(cliente_filtro), anno, session);
+					 lista_rilievi = GestioneRilieviBO.getListaRilieviFiltrati(Integer.parseInt(id_stato_lavorazione.split("_")[0]), Integer.parseInt(cliente_filtro), anno, controfirmato, session);
 				}else{
-					 lista_rilievi = GestioneRilieviBO.getListaRilieviInLavorazione(Integer.parseInt(id_stato_lavorazione), anno, session);	
+					 lista_rilievi = GestioneRilieviBO.getListaRilieviInLavorazione(Integer.parseInt(id_stato_lavorazione.split("_")[0]), anno, controfirmato, session);	
 				}
 				
 				
@@ -186,7 +191,8 @@ public class ListaRilieviDimensionali extends HttpServlet {
 					}
 					rilievo.setNome_sede_util(listaSediAll.get(rilievo.getId_cliente_util()+"_"+rilievo.getId_sede_util()));
 				}
-				session.close();
+				
+		
 				request.getSession().setAttribute("lista_rilievi", lista_rilievi);
 				request.getSession().setAttribute("lista_clienti", listaClienti);				
 				request.getSession().setAttribute("lista_sedi", listaSedi);
@@ -208,10 +214,13 @@ public class ListaRilieviDimensionali extends HttpServlet {
 					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilieviLavorati.jsp");
 		  	    	dispatcher.forward(request,response);	
 				}
+				session.getTransaction().commit();
+				session.close();
 				
 			}
 
 		} catch (Exception e) {
+			session.getTransaction().rollback();
 			session.close();
 			e.printStackTrace();
 			 request.setAttribute("error",STIException.callException(e));

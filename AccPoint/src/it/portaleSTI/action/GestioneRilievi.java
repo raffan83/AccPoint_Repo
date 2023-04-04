@@ -74,6 +74,7 @@ import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 
 
 /**
@@ -1486,14 +1487,42 @@ public class GestioneRilievi extends HttpServlet {
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
 				
-				ArubaSignService.signRilievoPades(rilievo.getUtente(), "Terenzio Fantauzzi", rilievo);
+				ArubaSignService.signRilievoPades(GestioneUtenteBO.getUtenteById(""+utente.getId(), session), "Terenzio Fantauzzi", rilievo);
 				
 				rilievo.setControfirmato(1);
-				
+				session.update(rilievo);
 				session.getTransaction().commit();
 				session.close();
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Rilievo approvato con successo!");
+				
+				
+				out.print(myObj);
+				
+			}
+			
+			else if(action.equals("approva_selezionati")) {
+				
+				ajax = true;
+				PrintWriter out = response.getWriter();
+				String ids = request.getParameter("ids");
+				
+				String[] id_rilievi = ids.split(";"); 
+				
+				for (int i = 0; i<id_rilievi.length;i++) {
+					
+					RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievi[i]), session);
+					ArubaSignService.signRilievoPades(GestioneUtenteBO.getUtenteById(""+utente.getId(), session), "Terenzio Fantauzzi", rilievo);
+					
+					rilievo.setControfirmato(1);
+					session.update(rilievo);
+				}
+								
+				
+				session.getTransaction().commit();
+				session.close();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Rilievi approvati con successo!");
 				
 				
 				out.print(myObj);

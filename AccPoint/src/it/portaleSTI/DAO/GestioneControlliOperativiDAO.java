@@ -121,8 +121,9 @@ public class GestioneControlliOperativiDAO {
 		ArrayList<CoControlloDTO> lista = null;	
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-		Query query = session.createQuery("from CoControlloDTO where data_prossimo_controllo =:_data and disabilitato = 0 and obsoleto = 0");
-		query.setParameter("_data", sdf.parseObject(data));
+		Query query = session.createQuery("from CoControlloDTO where data_prossimo_controllo = '"+data+"' and disabilitato = 0 and obsoleto = 0");
+		
+		//query.setParameter("_data", sdf.parseObject(data));
 		
 		lista =(ArrayList<CoControlloDTO>) query.list();
 		
@@ -134,8 +135,8 @@ public class GestioneControlliOperativiDAO {
 		ArrayList<CoAttrezzaturaDTO> lista = null;	
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-		Query query = session.createQuery("from CoAttrezzaturaDTO where data_scadenza =:_data and disabilitato = 0");
-		query.setParameter("_data", sdf.parseObject(data));
+		Query query = session.createQuery("from CoAttrezzaturaDTO where data_scadenza = '"+data+"'  and disabilitato = 0");
+		//query.setParameter("_data", sdf.parseObject(data));
 		
 		lista =(ArrayList<CoAttrezzaturaDTO>) query.list();
 		
@@ -158,10 +159,10 @@ public class GestioneControlliOperativiDAO {
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-		Query query = session.createQuery("update CoControlloDTO set stato.id = 3 where data_prossimo_controllo < :_today");
+		Query query = session.createQuery("update CoControlloDTO set co_stato_controllo = 3 where data_prossimo_controllo < :_today");
 		query.setParameter("_today",df.parse(df.format(today)));
 		query.executeUpdate();
-		query = session.createQuery("update CoControlloDTO set stato.id = 2 where data_prossimo_controllo >= :_today and data_prossimo_controllo < :_data");
+		query = session.createQuery("update CoControlloDTO set co_stato_controllo = 2 where data_prossimo_controllo between :_today and :_data");
 		query.setParameter("_data", df.parse(df.format(nextDate)));
 		query.setParameter("_today",df.parse( df.format(today)));
 		

@@ -1,6 +1,10 @@
 package it.portaleSTI.action;
 
+import java.text.ParseException;
+
+import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -29,6 +33,15 @@ public class SendEmailControlliOperativi implements Job{
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public static void main(String[] args) throws JobExecutionException, HibernateException, ParseException, EmailException {
+		
+		
+		
+		
+		GestioneControlliOperativiBO.aggiornaStatoControlli();
+		GestioneControlliOperativiBO.sendEmailControlliOperativi();
 	}
 
 }

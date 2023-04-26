@@ -1,5 +1,7 @@
 package it.portaleSTI.bo;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -22,15 +25,25 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.pdfbox.multipdf.Splitter;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.poi.hssf.model.InternalSheet;
+import org.apache.poi.hssf.record.DVRecord;
+import org.apache.poi.hssf.record.aggregates.DataValidityTable;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataValidation;
+import org.apache.poi.ss.usermodel.DataValidationConstraint;
+import org.apache.poi.ss.usermodel.DataValidationHelper;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -39,8 +52,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddressList;
+import org.apache.poi.xssf.usermodel.XSSFDataValidationHelper;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.xmlbeans.impl.xb.xsdschema.FieldDocument.Field;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -563,8 +579,8 @@ public class GestioneFormazioneBO {
 		 PdfReader.unethicalreading = true;
 		 
 	
+		 String timestamp = ""+System.currentTimeMillis();
 			
-			String timestamp = ""+System.currentTimeMillis();
 		 
 		    PdfStamper stamper = new PdfStamper(pdfReader, new FileOutputStream("C:\\Users\\antonio.dicivita\\Desktop\\"+timestamp+".pdf"));
 		   
@@ -607,7 +623,7 @@ public class GestioneFormazioneBO {
 //		    acroFields.renameField("Button10", "genere");
 //		    acroFields.renameField("Button11", "nazionalita");
 //		    acroFields.renameField("Button12", "condizione_occupazionale");
-//		    acroFields.renameField("Button13", "titolo_studio");
+		    acroFields.renameField("altri_corsi_priv", "altri_corsi_prov");
 //		    acroFields.renameField("Button15", "altri_corsi_prov");
 //		    acroFields.renameField("Button16", "altri_corsi_priv");
 //		    acroFields.renameField("Button17", "motivazione");
@@ -767,57 +783,494 @@ public class GestioneFormazioneBO {
 	
 	
 	
-	public static void compilaExcelQuestionario() throws Exception {
+	public static JsonObject compilaExcelQuestionario(String filename) throws Exception {
 	
+	JsonObject obj = new JsonObject();
 		
-		PdfReader pdfReader = new PdfReader("C:\\Users\\antonio.dicivita\\Desktop\\gradimento_mariconte_23_02_2023.pdf");	
-		PdfReader.unethicalreading = true;
-			String timestamp = ""+System.currentTimeMillis();
-		 
-		    PdfStamper stamper = new PdfStamper(pdfReader, new FileOutputStream("C:\\Users\\antonio.dicivita\\Desktop\\"+timestamp+".pdf"));
-
-		    AcroFields acroFields1 = pdfReader.getAcroFields();
-		    AcroFields acroFields = stamper.getAcroFields();
-		    
-		    Map<String, Item> fields = acroFields.getFields();
-		    Set<Entry<String, Item>> entrySet = fields.entrySet();
-		    int i = 1;
-		    Map<String, String>map = new LinkedHashMap<String, String>();
-		    
-		    for (Map.Entry<String, Item> entry : fields.entrySet()) {
-		    	
-		    	map.put(entry.getKey(), acroFields.getField(entry.getKey())+"");
-		     //   System.out.println("Key = " + entry.getKey() + ", Value = " + acroFields.getField(entry.getKey()));
-		 
-		    }
+		String zipPath = Costanti.PATH_FOLDER+"//Formazione//temp//"+filename;
 		
+		ZipFile zipFile = new ZipFile(zipPath);
+
+	    Enumeration<? extends ZipEntry> entries = zipFile.entries();
+	    
+	    InputStream file = new FileInputStream(Costanti.PATH_FOLDER+"//Formazione//Questionari//template_questionari_regionali.xlsx");	    
+	    XSSFWorkbook workbook = new XSSFWorkbook(file);   
+	    int sheets = workbook.getNumberOfSheets();
+		 XSSFSheet sheet0 = workbook.getSheetAt(1);
+		 XSSFSheet sheet = null;
+		 int row = 2;
+		 for(int i = 1;i<sheets;i++) {					
+				 sheet = workbook.getSheetAt(i);						
+					 
+				 String text = sheet0.getRow(row).getCell(0).getStringCellValue();
+				if(text.equals(""))	{
+					break;
+				}
+		 }
+
 		
-		   // InputStream file = PivotTemplate.class.getResourceAsStream("template_questionario.xlsx");
-		    InputStream file = new FileInputStream("C:\\Users\\antonio.dicivita\\Desktop\\template_questionario.xlsx");
+		 sheet.setSelected(true);
+		 workbook.getSheetAt(0).setSelected(false);
+	    while(entries.hasMoreElements()){
+	        ZipEntry zentry = entries.nextElement();
+	        InputStream stream = zipFile.getInputStream(zentry);
+	        
+	        
+	        //PdfReader pdfReader = new PdfReader("C:\\Users\\antonio.dicivita\\Desktop\\gradimento_mariconte_23_02_2023.pdf");	
+	        PdfReader pdfReader = new PdfReader(stream);
+			PdfReader.unethicalreading = true;
+				
+			 
+			   // PdfStamper stamper = new PdfStamper(pdfReader, new FileOutputStream("C:\\Users\\antonio.dicivita\\Desktop\\"+timestamp+".pdf"));
 
-
-	         XSSFWorkbook workbook = new XSSFWorkbook(file);         
-	            
-			 XSSFSheet sheet0 = workbook.getSheetAt(1);
-			 sheet0.setSelected(true);
-			 workbook.getSheetAt(0).setSelected(false);
+			    AcroFields acroFields = pdfReader.getAcroFields();
+			  //  AcroFields acroFields1 = stamper.getAcroFields();			    
+			  
+			    
+			    acroFields.renameField("altri_corsi_priv", "altri_corsi_prov");
+			    acroFields.renameField("motivazione", "altri_corsi_priv");
+			    acroFields.renameField("ric_cred", "motivazione");
+			    acroFields.renameField("ric_ric_cred", "ric_cred");
+			    acroFields.renameField("spec_cred", "ric_ric_cred");
+			    acroFields.renameField("Button20", "spec_cred");
+			    
+			    Map<String, Item> fields = acroFields.getFields();
+			    
+			    Set<Entry<String, Item>> entrySet = fields.entrySet();
+			
+			    Map<String, String>map = new LinkedHashMap<String, String>();
+			    
+			    for (Map.Entry<String, Item> entry : fields.entrySet()) {
+			    	
+			    	map.put(entry.getKey(), acroFields.getField(entry.getKey())+"");
+			       // System.out.println("Key = " + entry.getKey() + ", Value = " + acroFields.getField(entry.getKey()));
 			 
-				     
-			 System.out.println(map.get("provincia"));
-			 
-			 sheet0.getDataValidations().get(1);
-			 
-			 sheet0.getRow(2).getCell(2).setCellValue(map.get("provincia"));
-			 sheet0.getRow(2).getCell(3).setCellValue(map.get("eta"));
-			 sheet0.getRow(2).getCell(4).setCellValue(map.get("genere"));
-			 
-			 
-			 FileOutputStream fileOut = new FileOutputStream("C:\\Users\\antonio.dicivita\\Desktop\\"+timestamp+"_"+".xlsx");
-		        workbook.write(fileOut);
-		        fileOut.close();
-
-		        workbook.close();
+			    }
+			
+			    if(map.isEmpty()) {
+			    	obj.addProperty("success", false);
+			    	obj.addProperty("messaggio", "Attenzione! uno o più file errati!");
+			    	return obj;
+			    }
+			
+			
+				 if(row==2) {
+					 sheet.getRow(row).getCell(0).setCellValue(map.get("titolo"));	 
+				 }
+				 
+				 if(!map.get("provincia").equals("Off")) {
+					 String provincia =  map.get("provincia");		
+					 boolean altro = true;
+					 for (int j = 0; j < 5; j++) {
+						
+						 String prov_tab =  sheet.getRow(3+j).getCell(230).getStringCellValue();
+						 if(provincia.equalsIgnoreCase(prov_tab)) {
+							 sheet.getRow(row).getCell(2).setCellValue(prov_tab);
+							 altro = false;
+							 break;
+						 }
+					}
+					if(altro) {
+						sheet.getRow(row).getCell(2).setCellValue("Altro");
+					}
+					 
+				 }
+				 
+				
+				 
+				 if(!map.get("eta").equals("Off")) {
+					 int index =  Integer.parseInt(map.get("eta"));
+					 sheet.getRow(row).getCell(3).setCellValue(index);
+				 }
+				 
+				 
+				 
+				 
+				 if(!map.get("genere").equals("Off")) {
+					 int index =  Integer.parseInt(map.get("genere"));			 
+					 String genere =  sheet.getRow(2+index).getCell(231).getStringCellValue();
+					 sheet.getRow(row).getCell(4).setCellValue(genere);
+				 }
+				
+				 if(!map.get("nazionalita").equals("Off")) {
+					 int index = Integer.parseInt(map.get("nazionalita"));			 
+					 String nazionalita =  sheet.getRow(2+index).getCell(232).getStringCellValue();	 
+					 sheet.getRow(row).getCell(5).setCellValue(nazionalita);
+				 }
+				 
+				 if(!map.get("condizione_occupazionale").equals("Off")) {
+					 int index =Integer.parseInt(map.get("condizione_occupazionale"));			 
+					 String condizione_occupazionale =  sheet0.getRow(2+index).getCell(233).getStringCellValue();	
+					 sheet.getRow(row).getCell(6).setCellValue(condizione_occupazionale);
+				 }
+				 
+				 if(!map.get("titolo_studio").equals("Off")) {
+					 int  index = Integer.parseInt(map.get("titolo_studio"));			 
+					 String titolo_studio =  sheet.getRow(2+index).getCell(234).getStringCellValue();	
+					 sheet.getRow(row).getCell(7).setCellValue(titolo_studio);
+				 }
+				 
+				 if(!map.get("altri_corsi_prov").equals("Off")) {
+					 int index = Integer.parseInt(map.get("altri_corsi_prov"));			 
+					 String altri_corsi_prov =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
+					 sheet.getRow(row).getCell(8).setCellValue(altri_corsi_prov);
+				 }
+				 
+				 if(!map.get("altri_corsi_priv").equals("Off")) {
+					 int index =Integer.parseInt(map.get("altri_corsi_priv"));			 
+					 String altri_corsi_priv =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
+					 sheet.getRow(row).getCell(9).setCellValue(altri_corsi_priv);
+				 }
+				 
+				 if(!map.get("motivazione").equals("Off")) {
+					 int index = Integer.parseInt(map.get("motivazione"));			 
+					 String motivazione =  sheet.getRow(2+index).getCell(237).getStringCellValue();	
+					 sheet.getRow(row).getCell(10).setCellValue(motivazione);
+				 }
+				 
+				 if(!map.get("ric_cred").equals("Off")) {
+					 int index = Integer.parseInt(map.get("ric_cred"));			 
+					 String ric_cred =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
+					 sheet.getRow(row).getCell(11).setCellValue(ric_cred);
+				 }
+				 
+				 if(!map.get("ric_ric_cred").equals("Off")) {
+					 int index =Integer.parseInt(map.get("ric_ric_cred"));			 
+					 String ric_ric_cred =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
+					 sheet.getRow(row).getCell(12).setCellValue(ric_ric_cred);
+				 }
+				 
+				 if(!map.get("spec_cred").equals("Off")) {
+					 int index = Integer.parseInt(map.get("spec_cred"));			 
+					 String spec_cred =  sheet.getRow(2+index).getCell(241).getStringCellValue();	
+					 sheet.getRow(row).getCell(13).setCellValue(spec_cred);
+				 }
+				 
+				 if(!map.get("0_1").equals("Off")) {
+					 int index = Integer.parseInt(map.get("0_1"));						 
+					 int dom0_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(14).setCellValue(dom0_1);
+				 }
+			
+				 if(!map.get("0_2").equals("Off")) {
+					 int index = Integer.parseInt(map.get("0_2"));						 
+					 int dom0_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(15).setCellValue(dom0_2);
+				 }
+				 
+				 if(!map.get("0_3").equals("Off")) {
+					 int index = Integer.parseInt(map.get("0_3"));						 
+					 int dom0_3 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(16).setCellValue(dom0_3);
+				 }
+				 
+			//da qui				 
+				 
+				 if(!map.get("1_1").equals("Off")) {
+					 int index = Integer.parseInt(map.get("1_1"));						 
+					 int dom1_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(17).setCellValue(dom1_1);
+				 }
+				 
+				 if(!map.get("1_2").equals("Off")) {
+					 int index = Integer.parseInt(map.get("1_2"));						 
+					 int dom1_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(18).setCellValue(dom1_2);
+				 }
+				 
+				 if(!map.get("1_3").equals("Off")) {
+					 int index = Integer.parseInt(map.get("1_3"));						 
+					 int dom1_3 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(19).setCellValue(dom1_3);
+				 }
+				
+				 if(!map.get("2_1").equals("Off")) {
+					 int index = Integer.parseInt(map.get("2_1"));						 
+					 int dom2_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(20).setCellValue(dom2_1);
+				 }
+				 
+				 if(!map.get("2_2").equals("Off")) {
+					 int index = Integer.parseInt(map.get("2_2"));						 
+					 int dom2_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(21).setCellValue(dom2_2);
+				 }
+				 
+				 if(!map.get("2_3").equals("Off")) {
+					 int index = Integer.parseInt(map.get("2_3"));						 
+					 int dom2_3 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(22).setCellValue(dom2_3);
+				 }
+				 
+				 if(!map.get("2_4").equals("Off")) {				 
+					 int index = Integer.parseInt(map.get("2_4"));			 
+					 String dom2_4 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
+					 sheet.getRow(row).getCell(23).setCellValue(dom2_4);
+				 }
+				 
+				 if(!map.get("2_5").equals("Off")) {				 
+					 int index = Integer.parseInt(map.get("2_5"));			 
+					 int dom2_5 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(24).setCellValue(dom2_5);
+				 }
+				 
+				 if(!map.get("3_1").equals("Off")) {
+					 int index = Integer.parseInt(map.get("3_1"));						 
+					 int dom3_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(25).setCellValue(dom3_1);
+				 }
+				 
+				 if(!map.get("3_2").equals("Off")) {
+					 int index = Integer.parseInt(map.get("3_2"));						 
+					 int dom3_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(26).setCellValue(dom3_2);
+				 }
+				 
+				 if(!map.get("3_3").equals("Off")) {
+					 int index = Integer.parseInt(map.get("3_3"));						 
+					 int dom3_3 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(27).setCellValue(dom3_3);
+				 }
+				 
+				 if(!map.get("3_4").equals("Off")) {				 
+					 int index = Integer.parseInt(map.get("3_4"));			 
+					 int dom3_4 = (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(28).setCellValue(dom3_4);
+				 }
+				 
+				 if(!map.get("3_5").equals("Off")) {				 
+					 int index = Integer.parseInt(map.get("3_5"));			 
+					 int dom3_5 = (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(29).setCellValue(dom3_5);
+				 }
+				 
+				 if(!map.get("3_6").equals("Off")) {				 
+					 int index = Integer.parseInt(map.get("3_6"));			 
+					 int dom3_6 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(30).setCellValue(dom3_6);
+				 }
+				 
+				 if(!map.get("3_7").equals("Off")) {				 
+					 int index = Integer.parseInt(map.get("3_7"));			 
+					 int dom3_7 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 sheet.getRow(row).getCell(31).setCellValue(dom3_7);
+				 }
+				 
+				 if(!map.get("4").equals("Off")) {				 
+					int index = Integer.parseInt(map.get("4"));			 
+				 	String dom4 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
+				 	sheet.getRow(row).getCell(32).setCellValue(dom4);
+				 }
+				 
+				 if(!map.get("4_1").equals("Off")) {
+					 int index = Integer.parseInt(map.get("4_1"));			 
+					 int dom4_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(33).setCellValue(dom4_1);
+				 }
+				 
+				 if(!map.get("4_2").equals("Off")) {
+					 int index = Integer.parseInt(map.get("4_2"));			 
+					 int dom4_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(34).setCellValue(dom4_2);
+				 }
+				 
+				 if(!map.get("4_3").equals("Off")) {
+					 int index = Integer.parseInt(map.get("4_3"));			 
+					 int dom4_3 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(35).setCellValue(dom4_3);
+				 }
+				 
+				 if(!map.get("4_4").equals("Off")) {
+					 int index = Integer.parseInt(map.get("4_4"));			 
+					 int dom4_4 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(36).setCellValue(dom4_4);
+				 }
+				 
+				 if(!map.get("4_5").equals("Off")) {
+					 int index = Integer.parseInt(map.get("4_5"));			 
+					 int dom4_5 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(37).setCellValue(dom4_5);
+				 }
+					 
+				 if(!map.get("5").equals("Off")) {
+					 int index = Integer.parseInt(map.get("5"));			 
+					 String dom5 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
+					 sheet.getRow(row).getCell(38).setCellValue(dom5);	
+				 }
+				 
+				 if(!map.get("5_1").equals("Off")) {
+					 int index = Integer.parseInt(map.get("5_1"));			 
+					 int dom5_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(39).setCellValue(dom5_1);
+				 }
+				 
+				 if(!map.get("5_2").equals("Off")) {
+					 int index = Integer.parseInt(map.get("5_2"));			 
+					 int dom5_2 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(40).setCellValue(dom5_2);
+				 }
+				 
+				 if(!map.get("5_3").equals("Off")) {
+					 int index = Integer.parseInt(map.get("5_3"));			 
+					 int dom5_3 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(41).setCellValue(dom5_3);
+				 }
+				 
+				 if(!map.get("5_4").equals("Off")) {
+					 int index = Integer.parseInt(map.get("5_4"));			 
+					 int dom5_4 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(42).setCellValue(dom5_4);
+				 }
+				 
+				 if(!map.get("5_5").equals("Off")) {
+					 int index = Integer.parseInt(map.get("5_5"));			 
+					 int dom5_5 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(43).setCellValue(dom5_5);
+				 }				 
+				 
+				 if(!map.get("5_6").equals("Off")) {
+					 int index = Integer.parseInt(map.get("5_6"));			 
+					 String dom5_6 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
+					 	sheet.getRow(row).getCell(44).setCellValue(dom5_6);
+				 }	
+								 
+				 if(!map.get("5_7").equals("Off")) {
+					 int index = Integer.parseInt(map.get("5_7"));			 
+					 int dom5_7 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(45).setCellValue(dom5_7);
+				 }	
+					 
+				 if(!map.get("6").equals("Off")) {
+					 int index = Integer.parseInt(map.get("6"));			 
+					 String dom6 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
+					 sheet.getRow(row).getCell(46).setCellValue(dom6);
+				 }
+				 
+				 if(!map.get("6_1").equals("Off")) {
+					 int index = Integer.parseInt(map.get("6_1"));			 
+					 int dom6_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(47).setCellValue(dom6_1);
+				 }
+				 
+				 if(!map.get("6_2").equals("Off")) {
+					 int index = Integer.parseInt(map.get("6_2"));			 
+					 int dom6_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(48).setCellValue(dom6_2);
+				 }
+				 
+				 if(!map.get("6_3").equals("Off")) {
+					 int index = Integer.parseInt(map.get("6_3"));			 
+					 int dom6_3 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(49).setCellValue(dom6_3);
+				 }
+				 
+				 if(!map.get("6_4").equals("Off")) {
+					 int index = Integer.parseInt(map.get("6_4"));			 
+					 int dom6_4 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(50).setCellValue(dom6_4);
+				 }
+				 
+				 if(!map.get("6_5").equals("Off")) {
+					 int index = Integer.parseInt(map.get("6_5"));			 
+					 int dom6_5 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(51).setCellValue(dom6_5);
+				 }
+				 
+				 if(!map.get("6_6").equals("Off")) {
+					 int index = Integer.parseInt(map.get("6_6"));			 
+					 int dom6_6 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(52).setCellValue(dom6_6);
+				 }
+				 
+				 if(!map.get("6_7").equals("Off")) {
+					 int index = Integer.parseInt(map.get("6_7"));			 
+					 int dom6_7 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(53).setCellValue(dom6_7);
+				 }
+				 
+								 
+				 if(!map.get("6_8").equals("Off")) {
+					 int index = Integer.parseInt(map.get("6_8"));			 
+					 String dom6_8 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
+					 sheet.getRow(row).getCell(54).setCellValue(dom6_8);
+				 }
+				 
+				 if(!map.get("6_9").equals("Off")) {
+					 int index = Integer.parseInt(map.get("6_9"));			 
+					 int dom6_9 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(55).setCellValue(dom6_9);
+				 }
+				 
+				 if(!map.get("7").equals("Off")) {
+					 int index = Integer.parseInt(map.get("7"));			 
+					 String dom7 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
+					 sheet.getRow(row).getCell(56).setCellValue(dom7);
+				 }
+				
+				 if(!map.get("7_1").equals("Off")) {
+					 int index = Integer.parseInt(map.get("7_1"));			 
+					 int dom7_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(57).setCellValue(dom7_1);
+				 }
+				 
+				 if(!map.get("7_2").equals("Off")) {
+					 int index = Integer.parseInt(map.get("7_2"));			 
+					 int dom7_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(58).setCellValue(dom7_2);
+				 }
+				 
+				 if(!map.get("7_3").equals("Off")) {
+					 int index = Integer.parseInt(map.get("7_3"));			 
+					 int dom7_3 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+					 	sheet.getRow(row).getCell(59).setCellValue(dom7_3);
+				 }
+				
+				 
+				 if(!map.get("7_4").equals("Off")) {
+					int index = Integer.parseInt(map.get("7_4"));			 
+					String dom7_4 =  sheet.getRow(2+index).getCell(242).getStringCellValue();	
+					sheet.getRow(row).getCell(60).setCellValue(dom7_4);
+				 }
+				 
+				 if(!map.get("7_5").equals("Off")) {
+						int index = Integer.parseInt(map.get("7_5"));			 
+						int dom7_5 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+						sheet.getRow(row).getCell(61).setCellValue(dom7_5);
+				 }
+				 
+				 if(!map.get("8").equals("Off")) {
+					 int index = Integer.parseInt(map.get("8"));	
+					 String dom8 =   sheet.getRow(2+index).getCell(239).getStringCellValue();	
+					 sheet.getRow(row).getCell(62).setCellValue(dom8);
+				 }
+				 			 
+				 
+				 if(!map.get("9").equals("Off")) {
+						int index = Integer.parseInt(map.get("9"));			 
+						int dom9 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
+						sheet.getRow(row).getCell(61).setCellValue(dom9);
+				 }
+				
+				 
+				 sheet.getRow(row).getCell(64).setCellValue(map.get("suggerimenti"));
+				 
+				
+			        
+			        row++;
+	    }
+		
+	    workbook.getCreationHelper().createFormulaEvaluator().evaluateAll();
+	  //  FileOutputStream fileOut = new FileOutputStream("C:\\Users\\antonio.dicivita\\Desktop\\"+timestamp+"_"+".xlsx");
+	    FileOutputStream fileOut = new FileOutputStream( Costanti.PATH_FOLDER+"//Formazione//Questionari//template_questionari_regionali.xlsx");
+        workbook.write(fileOut);
+        fileOut.close();
+        
+        workbook.close();
+		zipFile.close();
 		    		
+		obj.addProperty("success", true);
+		obj.addProperty("messaggio", "Questionari corso caricati con successo!");
+		return obj;
 	}
 	
 	
@@ -825,7 +1278,7 @@ public class GestioneFormazioneBO {
 	
 	
 	public static void main(String[] args) throws Exception{
-		compilaExcelQuestionario();
+		compilaExcelQuestionario("");
 	}
 
 	public static JsonObject importaDaPDF(FileItem fileItem,ClienteDTO cl, SedeDTO sd, Session session) throws Exception {

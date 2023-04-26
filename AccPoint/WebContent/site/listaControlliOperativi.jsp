@@ -877,7 +877,7 @@ function modalModificaControllo(id,id_attrezzatura, data_controllo, data_prossim
 	$('#id_controllo').val(id);
 	
 	if(data_controllo!=null && data_controllo!=''){
-		$('#data_controllo_mod').val(Date.parse(data_controllo).toString("dd/MM/yyyy"));	
+		$('#data_controllo_mod').val(Date.parse(data_controllo).toString("dd/MM/yyyy HH:mm:ss"));	
 	}
 	if(data_prossimo_controllo!=null && data_prossimo_controllo!=''){
 		$('#data_prossimo_controllo_mod').val(Date.parse(data_prossimo_controllo).toString("dd/MM/yyyy"));	

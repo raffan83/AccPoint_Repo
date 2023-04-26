@@ -340,9 +340,9 @@ public static ArrayList<DevRegistroAttivitaDTO> getListaScadenze(String dateFrom
 
 	String str = "";
 	if(company == 0) {
-		str = "from DevRegistroAttivitaDTO where data_prossima between :_data_start and :_data_end";
+		str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and a.device.disabilitato = 0";
 	}else {
-		str = "from DevRegistroAttivitaDTO where data_prossima between :_data_start and :_data_end and id_company = :_id_company";
+		str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and id_company = :_id_company and a.device.disabilitato = 0";
 	}
 
 	Query query = session.createQuery(str);

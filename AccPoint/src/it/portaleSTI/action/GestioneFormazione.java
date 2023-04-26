@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -2394,11 +2395,94 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				request.getSession().setAttribute("dateTo", dateTo);
 			
 								
-				//session.getTransaction().commit();
+				session.getTransaction().commit();
 				session.close();
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/consuntivoDocenteFormazione.jsp");
 		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("download_template_questionari")) {
+				
+			
+				String path = Costanti.PATH_FOLDER+"//Formazione//Questionari//template_questionari_regionali.xlsx";
+				response.setContentType("application/octet-stream");	
+				response.setHeader("Content-Disposition","attachment;filename=template_questionari_regionali.xlsx");
+				downloadFile(path, response.getOutputStream());
+				
+				
+				session.getTransaction().commit();
+				session.close();
+			}
+			
+			else if(action.equals("carica_file_questionari")) {
+				
+				
+				ajax=true;
+			
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+				String filename="";
+				response.setContentType("application/json");
+				PrintWriter writer = response.getWriter();
+				List<FileItem> items = uploadHandler.parseRequest(request);
+				for (FileItem item : items) {
+					if (!item.isFormField()) {
+
+						saveFile(item, "temp//",item.getName());
+						filename=item.getName();					
+						
+					}
+			
+				}
+				myObj = GestioneFormazioneBO.compilaExcelQuestionario(filename);
+			
+				PrintWriter  out = response.getWriter();
+			
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+			}
+			
+			else if(action.equals("gestione_questionari")) {			
+				
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneQuestionari.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("upload_consuntivo_questionari")) {
+				
+				ajax=true;
+				
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+
+				response.setContentType("application/json");
+				PrintWriter writer = response.getWriter();
+				List<FileItem> items = uploadHandler.parseRequest(request);
+				
+				
+				
+				for (FileItem item : items) {
+					if (!item.isFormField()) {
+
+						saveFile(item, "Questionari//","template_questionari_regionali.xlsx");
+							
+						
+					}
+								
+				}
+							
+				PrintWriter  out = response.getWriter();
+			
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "File caricato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+				
 				
 			}
 			

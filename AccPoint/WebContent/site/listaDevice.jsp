@@ -1468,14 +1468,14 @@ function salvaValidazione(){
 	
 	
 	var oTable = $('#tabSoftwareTot').dataTable();
-//	var table =  $('#tabSoftwareTot').DataTable();
+	var table =  $('#tabSoftwareTot').DataTable();
 	
 	//var data = table.rows().data();
 /*  	for(var i = 0;i<lista_software_associati.length;i++){
 	
 		var val = lista_software_associati[i].software.id; */
 		var index = $('#row_sw_'+val)[0]._DT_RowIndex;	
-		//table.row( "#row_sw_"+ val, { page:   'all'}).select();
+		table.row( "#row_sw_"+ val, { page:   'all'}).select();
 	 	
 	 	//oTable.fnUpdate(lista_software_associati[i].stato_validazione.id , index, 5 );
 	 	
@@ -1656,7 +1656,10 @@ $(document).ready(function() {
 				$('#codice_interno_dtl').val(device.codice_interno);
 				$('#tipo_device_dtl').val(device.tipo_device.id);
 				$('#tipo_device_dtl').change();
-				$('#company_dtl').val(device.company.id);
+				if(device.company!=null){
+					$('#company_dtl').val(device.company.id);	
+				}
+				
 				$('#company_dtl').change();
 				$('#denominazione_dtl').val(device.denominazione);
 				$('#costruttore_dtl').val(device.costruttore);
@@ -1735,7 +1738,9 @@ $(document).ready(function() {
     				$('#codice_interno_dtl').val(device.codice_interno);
     				$('#tipo_device_dtl').val(device.tipo_device.id);
     				$('#tipo_device_dtl').change();
-    				$('#company_dtl').val(device.company.id);
+    				if(device.company!=null){
+    					$('#company_dtl').val(device.company.id);
+    				}   					
     				$('#company_dtl').change();
     				$('#denominazione_dtl').val(device.denominazione);
     				$('#costruttore_dtl').val(device.costruttore);

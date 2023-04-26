@@ -307,6 +307,9 @@
 			<%} %>
 			<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_corsi',null,true);">Gestione Corsi</a></li>
 	      	<li><a href="#" onclick="callAction('gestioneFormazione.do?action=scadenzario',null,true);">Scadenzario</a></li>
+	      			<% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_FORMAZIONE_ADMIN")){%>		
+	      	<li><a href="#" onclick="callAction('gestioneFormazione.do?action=gestione_questionari',null,true);">Gestione questionari</a></li>
+	      	<%} %>
           </ul>
         </li> 
            <% }%>

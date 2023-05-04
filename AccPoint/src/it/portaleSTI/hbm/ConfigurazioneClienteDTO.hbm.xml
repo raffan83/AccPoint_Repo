@@ -45,7 +45,7 @@
             <column name="revisione_lista_strumenti" />
         </property>
         
-         <property name="fmt_data_mese_anno" type="int">
+         <property name="fmt_data_mese_anno" type="java.lang.String">
             <column name="fmt_data_mese_anno" />
         </property>
         

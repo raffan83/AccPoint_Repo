@@ -88,6 +88,12 @@
 			</c:forEach>
 			</select>
 			</div>
+			<div id="content_formato_data" style="display:none">
+			<div class="col-xs-2">
+			<label>Formato Data Anno/Mese</label><br>
+			<input type="checkbox" id="check_fmt_data" name="check_fmt_data" />			
+			</div>
+			</div>
 		</div><br>
 		<div class="row">
 
@@ -144,6 +150,7 @@
 		
 		<div class="col-md-12">
 		<input type="hidden" name="seleziona_tutte" id="seleziona_tutte">
+		<input type="hidden" name="formato_mese_anno" id="formato_mese_anno">
 
 			<!-- <a class="btn btn-primary" id="salva_btn" onClick="inserisciNuovaConfigurazione()">Salva</a> -->
 			<button class="btn btn-primary pull-right" id="salva_btn" type="submit">Salva</button>
@@ -220,7 +227,7 @@
 		<td>${configurazione.revisione_lista_strumenti}</td>
 		<td>
 		<%-- <a class="btn btn-warning" onClick="modalModifica('${configurazione.id_cliente}','${configurazione.nome_cliente}','${configurazione.id_sede }','${configurazione.nome_sede }','${configurazione.tipo_rapporto.id}','${configurazione.nome_file_logo }','${configurazione.id_firma }')"><i class="fa fa-edit"></i></a> --%>
-		<a class="btn btn-warning custom toolTip" title="Click per modificare la configurazione"  onClick="modalModifica('${configurazione.id_cliente}','${configurazione.id_sede }','${configurazione.tipo_rapporto.id }','${configurazione.nome_file_logo }','${configurazione.id_firma }','${configurazione.modello_certificato }','${configurazione.revisione_certificato }','${configurazione.modello_lista_strumenti }','${configurazione.revisione_lista_strumenti }')"><i class="fa fa-edit"></i></a>
+		<a class="btn btn-warning custom toolTip" title="Click per modificare la configurazione"  onClick="modalModifica('${configurazione.id_cliente}','${configurazione.id_sede }','${configurazione.tipo_rapporto.id }','${configurazione.nome_file_logo }','${configurazione.id_firma }','${configurazione.modello_certificato }','${configurazione.revisione_certificato }','${configurazione.modello_lista_strumenti }','${configurazione.revisione_lista_strumenti }','${configurazione.fmt_data_mese_anno }')"><i class="fa fa-edit"></i></a>
 		<a class="btn btn-primary custom toolTip" title="Click per scaricare il logo" onClick="callAction('gestioneConfigurazioniClienti.do?action=download_logo&id_cliente=${utl:encryptData(configurazione.id_cliente)}&id_sede=${utl:encryptData(configurazione.id_sede) }&tipo_rapporto=${utl:encryptData(configurazione.tipo_rapporto.id) }')"><i class="fa fa-image"></i></a>
 		</td>
 	</tr>
@@ -235,7 +242,7 @@
 </div>
 
 <form name="modificaConfigurazioneForm" method="post" id="modificaConfigurazioneForm" action="gestioneConfigurazioniClienti.do?action=modifica" enctype="multipart/form-data">
-<div id="myModalModifica" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="myModalModifica" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalLabel">
   
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -269,7 +276,7 @@
 			</select>
 			</div>
 			<div class="col-md-1">
-			<label>Tutte</label>
+			<label>Tutte</label><br>
 			<input type="checkbox" id="mod_check_all" name="mod_check_all" />			
 			</div>
 			<div class="col-md-3">
@@ -280,6 +287,13 @@
 			 <option value="${tipo_rapporto.id}">${tipo_rapporto.noneRapporto}</option>     
 			</c:forEach>
 			</select>
+			</div>
+			
+			<div class="col-xs-2" >
+			<div id="content_formato_data_mod" style="display:none;margin-bottom:25px">
+			<label>Formato Data Anno/Mese</label><br>
+			<input type="checkbox" id="check_fmt_data_mod" name="check_fmt_data_mod" />			
+			</div>
 			</div>
 		</div><br>
 		<div class="row">
@@ -314,15 +328,17 @@
 		<input type="text" class="form-control" id="modello_lista_strumenti_mod" name="modello_lista_strumenti_mod">
 		</div>
 		
-						<div class="col-md-3">
+
+		
+		</div>
+		
+		 <div class="row"> 
+		 						<div class="col-md-3">
 		<label>Revisione Lista Strumenti</label>
 		<input type="text" class="form-control" id="revisione_lista_strumenti_mod" name="revisione_lista_strumenti_mod">
 		</div>
-		
-		</div><br>
-		
-		<div class="row">
-		<div class="col-md-5">
+		 
+		<div class="col-md-4" style="margin-top:25px">
 		<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un logo...</span>
@@ -332,10 +348,10 @@
 		   	 <label id="label_nome_file"></label>
 		</div>
 		
-		<div class="col-md-5">
+		<div class="col-md-5" style="margin-top:25px">
 		       <label >Attezione! Si raccomanda l'uso di un logo di dimensioni 800x400</label>
 		</div>
-		</div>
+		 </div> 
 		
 		<br>
 		<div class="row">
@@ -344,6 +360,7 @@
 		<input type="hidden" name="cliente_old" id="cliente_old">
 		<input type="hidden" name="sede_old" id="sede_old">
 		<input type="hidden" name="tipo_rapporto_old" id="tipo_rapporto_old">
+		<input type="hidden" name="formato_mese_anno_mod" id="formato_mese_anno_mod">
 
 			<!-- <a class="btn btn-primary" id="salva_btn" onClick="inserisciNuovaConfigurazione()">Salva</a> -->
 			     <button class="btn btn-primary pull-right" id="mod_salva_btn" type="submit">Salva</button>
@@ -451,6 +468,35 @@ $('#nuovaConfigurazioneForm').on('submit', function(e){
 	  inserisciNuovaConfigurazione();
 }); 
 
+
+$('#tipo_rapporto').change(function(){
+	
+	var value = $(this).val();
+	
+	if(value==7201){
+		$('#content_formato_data').show();
+	}else{
+		$('#check_fmt_data').iCheck('uncheck');
+		$('#content_formato_data').hide();
+	}
+	
+})
+
+$('#mod_tipo_rapporto').change(function(){
+	
+	var value = $(this).val();
+	
+	if(value==7201){
+		$('#content_formato_data_mod').show();
+	}else{
+		$('#check_fmt_data_mod').iCheck('uncheck');
+		$('#content_formato_data_mod').hide();
+	}
+	
+})
+
+
+
 $('#modificaConfigurazioneForm').on('submit', function(e){
 	 e.preventDefault();
 
@@ -494,6 +540,30 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
 	$('#mod_sede').prop("required", true);
 	$('#mod_sede').prop("disabled", false);
 
+	});
+
+
+
+$('#check_fmt_data').on('ifChecked', function (ev) {
+
+
+	$('#formato_mese_anno').val("S");
+
+  	});
+$('#check_fmt_data').on('ifUnchecked', function (ev) {
+
+	$('#formato_mese_anno').val("N");
+	});
+
+$('#check_fmt_data_mod').on('ifChecked', function (ev) {
+
+
+	$('#formato_mese_anno_mod').val("S");
+
+  	});
+$('#check_fmt_data_mod').on('ifUnchecked', function (ev) {
+
+	$('#formato_mese_anno_mod').val("N");
 	});
 
      $(document).ready(function() {
@@ -683,7 +753,7 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
      
      
      
-     function modalModifica(id_cliente,  id_sede,  tipo_rapporto, nome_file, firma, modello, revisione, modello_lista_strumenti, revisione_lista_strumenti){
+     function modalModifica(id_cliente,  id_sede,  tipo_rapporto, nome_file, firma, modello, revisione, modello_lista_strumenti, revisione_lista_strumenti, formato_anno_data){
     	 
     	
     	 $('#mod_cliente').val(id_cliente);
@@ -706,7 +776,10 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
     	 
     	 $('#label_nome_file').html(nome_file);
     	 
-  
+  		if(formato_anno_data!=null && formato_anno_data=="S"){
+  			$('#content_formato_data_mod').show();
+  			$('#check_fmt_data_mod').iCheck("check");
+  		}
     	 
     	 $('#cliente_old').val(id_cliente);
     	 $('#sede_old').val(id_sede+"_"+id_cliente);

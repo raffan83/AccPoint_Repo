@@ -145,6 +145,7 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 					String revisione = null;
 					String modello_lista_strumenti = null;
 					String revisione_lista_strumenti = null;
+					String formato_mese_anno = "N";
 					FileItem file = null;
 					
 					for (FileItem item : items) {
@@ -176,6 +177,10 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							else if(item.getFieldName().equals("modello_lista_strumenti")) {
 								modello_lista_strumenti = item.getString();
 							}	
+
+							else if(item.getFieldName().equals("formato_mese_anno")) {
+								formato_mese_anno = item.getString();
+							}
 						}
 						else {
 							file = item;
@@ -208,6 +213,7 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							configurazione.setRevisione_certificato(revisione);
 							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
 							configurazione.setModello_lista_strumenti(modello_lista_strumenti);
+							configurazione.setFmt_data_mese_anno(formato_mese_anno);
 							session.save(configurazione);
 							
 							
@@ -232,6 +238,7 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 										configurazione.setRevisione_certificato(revisione);
 										configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
 										configurazione.setModello_lista_strumenti(modello_lista_strumenti);
+										configurazione.setFmt_data_mese_anno(formato_mese_anno);
 										//if(j==0) {
 										//	GestioneConfigurazioneClienteBO.uploadFile(file, s.getId__cliente_(), s.get__id());
 											//GestioneConfigurazioneBO.uploadFile(file, lista_sedi_cliente.get(j).getId__cliente_(), lista_sedi_cliente.get(j).get__id());
@@ -285,6 +292,7 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							configurazione.setRevisione_certificato(revisione);
 							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
 							configurazione.setModello_lista_strumenti(modello_lista_strumenti);
+							configurazione.setFmt_data_mese_anno(formato_mese_anno);
 							session.save(configurazione);
 							myObj.addProperty("success", true);
 							myObj.addProperty("messaggio", "Configurazione inserita con successo!");
@@ -314,6 +322,7 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							configurazione.setRevisione_certificato(revisione);
 							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
 							configurazione.setModello_lista_strumenti(modello_lista_strumenti);
+							configurazione.setFmt_data_mese_anno(formato_mese_anno);
 							session.save(configurazione);
 							myObj.addProperty("success", true);
 							myObj.addProperty("messaggio", "Configurazione inserita con successo!");
@@ -349,7 +358,7 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 					String revisione = null;
 					String modello_lista_strumenti = null;
 					String revisione_lista_strumenti = null;
-					
+					String formato_mese_anno = "N";
 					FileItem file = null;
 					
 					String cliente_old = null;
@@ -394,6 +403,9 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							else if(item.getFieldName().equals("modello_lista_strumenti_mod")) {
 								modello_lista_strumenti = item.getString();
 							}	
+							else if(item.getFieldName().equals("formato_mese_anno_mod")) {
+								formato_mese_anno = item.getString();
+							}
 						}
 						else {
 							file = item;
@@ -428,6 +440,7 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 										configurazione.setRevisione_certificato(revisione);
 										configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
 										configurazione.setModello_lista_strumenti(modello_lista_strumenti);
+										configurazione.setFmt_data_mese_anno(formato_mese_anno);
 										if(filename!=null && !filename.equals("")) {
 											if(i==0) {
 												GestioneConfigurazioneClienteBO.uploadFile(file, lista_sedi_cliente.get(i).getId__cliente_(), lista_sedi_cliente.get(i).get__id());
@@ -455,6 +468,7 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							configurazione.setRevisione_certificato(revisione);
 							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
 							configurazione.setModello_lista_strumenti(modello_lista_strumenti);
+							configurazione.setFmt_data_mese_anno(formato_mese_anno);
 							if(filename!=null && !filename.equals("")) {
 								GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
 								configurazione.setNome_file_logo(filename);
@@ -486,6 +500,7 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							configurazione.setRevisione_certificato(revisione);
 							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
 							configurazione.setModello_lista_strumenti(modello_lista_strumenti);
+							configurazione.setFmt_data_mese_anno(formato_mese_anno);
 							session.update(configurazione);
 							myObj.addProperty("success", true);
 							myObj.addProperty("messaggio", "Configurazione modificata con successo!");

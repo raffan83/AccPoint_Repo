@@ -16,6 +16,7 @@ public class ConfigurazioneClienteDTO implements Serializable{
 	private String revisione_certificato;
 	private String modello_lista_strumenti;
 	private String revisione_lista_strumenti;
+	private int fmt_data_mese_anno;
 	
 	public int getId_cliente() {
 		return id_cliente;
@@ -83,6 +84,12 @@ public class ConfigurazioneClienteDTO implements Serializable{
 	}
 	public void setRevisione_certificato(String revisione_certificato) {
 		this.revisione_certificato = revisione_certificato;
+	}
+	public int getFmt_data_mese_anno() {
+		return fmt_data_mese_anno;
+	}
+	public void setFmt_data_mese_anno(int fmt_data_mese_anno) {
+		this.fmt_data_mese_anno = fmt_data_mese_anno;
 	}
 
 }

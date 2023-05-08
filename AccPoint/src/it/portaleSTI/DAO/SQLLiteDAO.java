@@ -260,7 +260,7 @@ private static String sqlCreateTipoStumento="CREATE TABLE tbl_tipoStrumento(id I
 																			"descrizione Varchar(255));";
 			
 private static String sqlCreateGeneral="CREATE TABLE tbl_general(id Integer ," +
-																	"sede varchar(255),upload varchar(1));";
+																	"sede varchar(255),upload varchar(1),formatoData varchar(1));";
 
 private static String sqlCreateFattoriMoltiplicativi="CREATE TABLE tbl_fattori_moltiplicativi (descrizione varchar(20)," +
 																							   "sigla varchar(2)," +

@@ -1391,7 +1391,7 @@ public class DirectMySqlDAO {
 
 	}
 
-	public static void insertGeneral(Connection conSQLLite, String nome_sede) throws Exception {
+	public static void insertGeneral(Connection conSQLLite, String nome_sede,String formatoData) throws Exception {
 
 		Connection con=null;
 		PreparedStatement pst=null;
@@ -1404,13 +1404,14 @@ public class DirectMySqlDAO {
 			conSQLLite.setAutoCommit(false);
 			pst=con.prepareStatement("SELECT * FROM tipo_strumento");
 
-			String sqlInsert="INSERT INTO tbl_general VALUES(?,?,?)";
+			String sqlInsert="INSERT INTO tbl_general VALUES(?,?,?,?)";
 
 			pstINS=conSQLLite.prepareStatement(sqlInsert);
 
 			pstINS.setInt(1, 1);
 			pstINS.setString(2, nome_sede);
 			pstINS.setString(3,"N");
+			pstINS.setString(4,formatoData);
 
 			pstINS.execute();	
 

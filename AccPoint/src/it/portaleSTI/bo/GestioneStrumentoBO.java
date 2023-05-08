@@ -20,6 +20,7 @@ import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
 import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -115,13 +116,23 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertTipoStrumento(con);
 		
+		
+		
 		if(commessa!=null) 
 		{
 			DirectMySqlDAO.insertListaAttivita(con,commessa);
 		}
 		if(intervento.getNome_sede()!=null && intervento.getNome_sede().length()>0)
 		{
-			DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
+			ConfigurazioneClienteDTO conf=GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromId(intervento.getId_cliente(), intervento.getIdSede(),Costanti.ID_TIPO_RAPPORTO_SVT, session);
+			
+			String formatoData="N";
+			
+			if(conf!=null) 
+			{
+			formatoData=conf.getFmt_data_mese_anno();
+			}
+			DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede(),formatoData);
 		}
 		
 		con.close();
@@ -280,7 +291,15 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertTipoStrumento(con);
 		
-		DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
+		ConfigurazioneClienteDTO conf=GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromId(intervento.getId_cliente(), intervento.getIdSede(),Costanti.ID_TIPO_RAPPORTO_SVT, session);
+		
+		String formatoData="N";
+		
+		if(conf!=null) 
+		{
+		formatoData=conf.getFmt_data_mese_anno();
+		}
+		DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede(),formatoData);
 		
 		DirectMySqlDAO.insertLuogoVerifica(con);
 		
@@ -334,7 +353,7 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertTipoStrumento(con);
 		
-		DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
+		DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede(),"N");
 		
 		DirectMySqlDAO.insertLuogoVerifica(con);
 		

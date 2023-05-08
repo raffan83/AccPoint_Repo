@@ -318,8 +318,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 									<%} %>
 	 									<%if(strumento.getStato_strumento().getId() != 7227){ %> 
 	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Cambia Stato</button>
-	 									<% if(user.checkRuolo("AM")){ %>
-	 									<button  class="btn btn-danger" onClick="annullaStrumento('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Annulla</button>
+	 									<% if(user.checkRuolo("AM") || user.checkRuolo("OP")){ %>
+	 									<button  class="btn btn-danger" onClick="annullaStrumentoModal('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Annulla</button>
+	 									
 	 									<%} %>
 	 									<%}else{ %>
 	 									<% if(user.checkRuolo("AM")){ %>
@@ -338,6 +339,38 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  </table>  
 </div>
 </div>
+
+
+
+
+   <div id="modalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler annullare lo strumento?
+      	</div>
+      <div class="modal-footer">
+		<input id="id_strumento" type="hidden">
+		<input id="id_sede" type="hidden">
+		<input id="id_cliente" type="hidden">
+        <button  class="btn btn-primary" onClick="annullaStrumento($('#id_strumento').val(),$('#id_sede').val(),$('#id_cliente').val())">SI</button>
+	               
+	                
+	   
+      
+      
+		<a class="btn btn-primary" onclick="$('#modalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 
 <%-- <div id="modalNuovoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -628,6 +661,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
  <script>
+ 
+ function annullaStrumentoModal(id_strumento, id_sede, id_cliente){
+	 $('#id_strumento').val(id_strumento);	 
+	 $('#id_sede').val(id_sede);	 
+	 $('#id_cliente').val(id_cliente);	 
+	$('#modalYesOrNo').modal();
+ }
  
  
  function modalSposta(id_strumento, id_sede, id_cliente){

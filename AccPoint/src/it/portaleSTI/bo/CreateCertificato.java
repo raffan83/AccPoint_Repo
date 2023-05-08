@@ -35,7 +35,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -203,14 +207,25 @@ public class CreateCertificato {
 					
 					
 					if(misura.getDataMisura()!=null){
+						
 						report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
+											
+						
 					}else {
 						report.addParameter("dataVerifica"," ");			
 					}
 					
 				
 					if(strumento.getDataProssimaVerifica()!=null){
-						report.addParameter("dataProssimaVerifica",""+sdf.format(strumento.getDataProssimaVerifica()));
+						if(conf!=null && conf.getFmt_data_mese_anno()!=null && conf.getFmt_data_mese_anno().equals("S")) {
+							LocalDate dataMisura = strumento.getDataProssimaVerifica().toLocalDate();
+							
+							 String formattedDate = dataMisura.format(DateTimeFormatter.ofPattern("MMMM/yyyy"));
+							report.addParameter("dataProssimaVerifica",formattedDate.toUpperCase());
+						}else {
+							report.addParameter("dataProssimaVerifica",""+sdf.format(strumento.getDataProssimaVerifica()));
+						}							
+						
 					}else {
 						report.addParameter("dataProssimaVerifica","/");			
 					}

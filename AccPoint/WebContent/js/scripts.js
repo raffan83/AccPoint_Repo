@@ -2110,6 +2110,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
     			  exploreModal("dettaglioStrumento.do","id_str="+idStrumento,"#dettaglio");
     			  pleaseWaitDiv.modal('hide');  
     			  $('#report_button').hide();
+    			  $("#modalYesOrNo").modal('hide');  
     				$('#visualizza_report').hide();
     			  $("#myModalErrorContent").html("Strumento annullato con successo");
 		 	        $("#myModalError").modal();

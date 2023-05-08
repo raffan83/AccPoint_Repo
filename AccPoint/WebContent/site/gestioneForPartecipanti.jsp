@@ -47,6 +47,30 @@
 <div class="box-body">
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 <div class="row">
+
+ <div class="col-lg-2">
+       <label>Filtra Azienda</label>
+       </div>
+        <div class="col-xs-5">
+        
+         <select id="azienda_filtro" name="azienda_filtro" class="form-control select2"  data-placeholder="Seleziona Azienda..." aria-hidden="true" data-live-search="true" style="width:100%"  >
+         <option value=""></option>
+       <option value="0">TUTTE</option>
+      	<c:forEach items="${listaAziendePartecipanti}" var="azienda" >
+      	<c:if test="${azienda.split('!')[0] == id_azienda}">
+      	<option value="${utl:encryptData(azienda.split('!')[0])}" selected>${azienda.split('!')[1]}</option>
+      	</c:if>
+      	<c:if test="${azienda.split('!')[0] != id_azienda}">
+      	<option value="${utl:encryptData(azienda.split('!')[0])}">${azienda.split('!')[1]}</option>
+      	</c:if>
+      	
+      	</c:forEach>
+      
+      </select>
+
+</div>
+</div><br> <br>
+<div class="row">
 <div class="col-xs-12">
 
 <!-- <a class="btn btn-primary pull-left" onClick="callAction('gestioneFormazione.do?action=report_partecipanti')">Crea report partecipanti</a> -->
@@ -983,6 +1007,14 @@ $('#myModalReportPartecipanti').on('hidden.bs.modal', function(){
 	$("#sede_report").prop("disabled", true);
 });
 
+
+$('#azienda_filtro').change(function(){
+	
+	callAction("gestioneFormazione.do?action=lista_partecipanti&id_azienda="+$(this).val());
+	
+});
+
+
 var dataSelect2 = {};
 
 $(document).ready(function() {
@@ -1006,6 +1038,7 @@ $(document).ready(function() {
   $('#sede_import').select2();
   $('#sede_report').select2();
   $('#azienda_report').select2();
+  $('#azienda_filtro').select2();
   $('#sede_import_general').select2();
   $('#corsi').select2();
   $('#ruoli').select2();
@@ -1112,6 +1145,7 @@ $(document).ready(function() {
 
 	});
 	
+
 	
 	const editableCell = function(cell) {
 		
@@ -1236,6 +1270,27 @@ $(document).ready(function() {
 
 	
 	
+	 	     
+	 		var usedNames = {};
+	 		var selectedAzienda;
+	 		$("select[name='azienda_filtro'] > option").each(function () {
+	 		    if(usedNames[this.text]&&this.selected == false) {
+	 		        $(this).remove();
+	 		    } 
+	 		    if(this.selected){
+	 		    	selectedAzienda = this.value;
+	 		    }
+	 		    else {
+	 		        usedNames[this.text] = this.value;
+	 		    }
+	 		});
+	 		
+	 		$("select[name='azienda_filtro'] > option").each(function () {
+	 		    if(this.value == selectedAzienda && this.selected==false) {
+	 		        $(this).remove();
+	 		    } 
+	 		 });
+	 		
 });
 
 

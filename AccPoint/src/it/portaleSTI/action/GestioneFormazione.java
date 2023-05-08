@@ -404,7 +404,31 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					lista_corsi = GestioneFormazioneBO.getListaCorsiClienteSupervisore(utente.getIdCliente(),  session);	
 				}
 				else {
-					lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
+					
+					String dateFrom = request.getParameter("dateFrom");
+					String dateTo = request.getParameter("dateTo");
+					
+					if(dateFrom == null && dateTo == null) {
+						DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						
+						Date today = new Date();
+						
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(today);
+						
+						dateTo = df.format(cal.getTime());
+						
+						cal.add(Calendar.DATE, -90);
+						Date startDate = cal.getTime();
+						
+						
+						dateFrom = df.format(startDate);
+						
+						
+					}
+					
+					lista_corsi = GestioneFormazioneBO.getListaCorsiDate(dateFrom, dateTo, session);
+				//	lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
 					
 //					
 //					for (ForCorsoDTO corso : lista_corsi) {
@@ -426,6 +450,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					request.getSession().setAttribute("lista_docenti", lista_docenti);
 					request.getSession().setAttribute("lista_corsi_cat", lista_corsi_cat);
 					request.getSession().setAttribute("lista_commesse", lista_commesse);
+					request.getSession().setAttribute("dateTo", dateTo);
+					request.getSession().setAttribute("dateFrom", dateFrom);
 				}
 			
 				request.getSession().setAttribute("lista_corsi", lista_corsi);				
@@ -862,7 +888,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				}
 				else {
 					
-					lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti(session); 
+					
 					List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
 					if(listaClienti==null) {
 						listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
@@ -873,6 +899,17 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 					}
 					
+					String id_azienda = request.getParameter("id_azienda");
+					
+					if(id_azienda!=null && id_azienda.equals("0")) {
+						lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti(session);	
+					}else if(id_azienda!=null){
+						id_azienda = Utility.decryptData(id_azienda);
+						lista_partecipanti = GestioneFormazioneBO.getListaPartecipantiClienteSupervisore(Integer.parseInt(id_azienda), session);
+					}else {
+						lista_partecipanti = new ArrayList<ForPartecipanteDTO>();
+					}
+					 
 			
 					ArrayList<String> listaAziendePartecipanti = GestioneFormazioneBO.getListaAziendeConPartecipanti(session);
 					
@@ -890,6 +927,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					request.getSession().setAttribute("json_cf", json_cf);
 					request.getSession().setAttribute("lista_corsi", lista_corsi);
 					request.getSession().setAttribute("lista_ruoli", lista_ruoli);
+					request.getSession().setAttribute("id_azienda", id_azienda);
 					
 				}
 				

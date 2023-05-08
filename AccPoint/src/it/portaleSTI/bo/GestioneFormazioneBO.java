@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,9 +30,11 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.pdfbox.multipdf.Splitter;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -63,10 +67,12 @@ import org.hibernate.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.itextpdf.text.Annotation;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.AcroFields.Item;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfReader;
@@ -802,7 +808,7 @@ public class GestioneFormazioneBO {
 		 for(int i = 1;i<sheets;i++) {					
 				 sheet = workbook.getSheetAt(i);						
 					 
-				 String text = sheet0.getRow(row).getCell(0).getStringCellValue();
+				 String text = sheet.getRow(row).getCell(0).getStringCellValue();
 				if(text.equals(""))	{
 					break;
 				}
@@ -847,9 +853,11 @@ public class GestioneFormazioneBO {
 			 
 			    }
 			
-			    if(map.isEmpty()) {
+			    if(map.size()<68) {
 			    	obj.addProperty("success", false);
-			    	obj.addProperty("messaggio", "Attenzione! uno o più file errati!");
+			    	obj.addProperty("messaggio", "Attenzione! Il file "+zentry.getName()+" presenta degli errori!");
+			    	File f = new File(zipPath);
+					f.delete();
 			    	return obj;
 			    }
 			
@@ -858,7 +866,7 @@ public class GestioneFormazioneBO {
 					 sheet.getRow(row).getCell(0).setCellValue(map.get("titolo"));	 
 				 }
 				 
-				 if(!map.get("provincia").equals("Off")) {
+				 if(!map.get("provincia").equals("Off") && !map.get("4_2").equals("Off")) {
 					 String provincia =  map.get("provincia");		
 					 boolean altro = true;
 					 for (int j = 0; j < 5; j++) {
@@ -878,7 +886,7 @@ public class GestioneFormazioneBO {
 				 
 				
 				 
-				 if(!map.get("eta").equals("Off")) {
+				 if(!map.get("eta").equals("Off") && !map.get("eta").equals("")) {
 					 int index =  Integer.parseInt(map.get("eta"));
 					 sheet.getRow(row).getCell(3).setCellValue(index);
 				 }
@@ -886,79 +894,79 @@ public class GestioneFormazioneBO {
 				 
 				 
 				 
-				 if(!map.get("genere").equals("Off")) {
+				 if(!map.get("genere").equals("Off") && !map.get("genere").equals("")) {
 					 int index =  Integer.parseInt(map.get("genere"));			 
 					 String genere =  sheet.getRow(2+index).getCell(231).getStringCellValue();
 					 sheet.getRow(row).getCell(4).setCellValue(genere);
 				 }
 				
-				 if(!map.get("nazionalita").equals("Off")) {
+				 if(!map.get("nazionalita").equals("Off") && !map.get("nazionalita").equals("")) {
 					 int index = Integer.parseInt(map.get("nazionalita"));			 
 					 String nazionalita =  sheet.getRow(2+index).getCell(232).getStringCellValue();	 
 					 sheet.getRow(row).getCell(5).setCellValue(nazionalita);
 				 }
 				 
-				 if(!map.get("condizione_occupazionale").equals("Off")) {
+				 if(!map.get("condizione_occupazionale").equals("Off") && !map.get("condizione_occupazionale").equals("")) {
 					 int index =Integer.parseInt(map.get("condizione_occupazionale"));			 
 					 String condizione_occupazionale =  sheet0.getRow(2+index).getCell(233).getStringCellValue();	
 					 sheet.getRow(row).getCell(6).setCellValue(condizione_occupazionale);
 				 }
 				 
-				 if(!map.get("titolo_studio").equals("Off")) {
+				 if(!map.get("titolo_studio").equals("Off") && !map.get("titolo_studio").equals("")) {
 					 int  index = Integer.parseInt(map.get("titolo_studio"));			 
 					 String titolo_studio =  sheet.getRow(2+index).getCell(234).getStringCellValue();	
 					 sheet.getRow(row).getCell(7).setCellValue(titolo_studio);
 				 }
 				 
-				 if(!map.get("altri_corsi_prov").equals("Off")) {
+				 if(!map.get("altri_corsi_prov").equals("Off") && !map.get("altri_corsi_prov").equals("")) {
 					 int index = Integer.parseInt(map.get("altri_corsi_prov"));			 
 					 String altri_corsi_prov =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
 					 sheet.getRow(row).getCell(8).setCellValue(altri_corsi_prov);
 				 }
 				 
-				 if(!map.get("altri_corsi_priv").equals("Off")) {
+				 if(!map.get("altri_corsi_priv").equals("Off") && !map.get("altri_corsi_priv").equals("")) {
 					 int index =Integer.parseInt(map.get("altri_corsi_priv"));			 
 					 String altri_corsi_priv =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
 					 sheet.getRow(row).getCell(9).setCellValue(altri_corsi_priv);
 				 }
 				 
-				 if(!map.get("motivazione").equals("Off")) {
+				 if(!map.get("motivazione").equals("Off") && !map.get("motivazione").equals("")) {
 					 int index = Integer.parseInt(map.get("motivazione"));			 
 					 String motivazione =  sheet.getRow(2+index).getCell(237).getStringCellValue();	
 					 sheet.getRow(row).getCell(10).setCellValue(motivazione);
 				 }
 				 
-				 if(!map.get("ric_cred").equals("Off")) {
+				 if(!map.get("ric_cred").equals("Off") && !map.get("ric_cred").equals("")) {
 					 int index = Integer.parseInt(map.get("ric_cred"));			 
 					 String ric_cred =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
 					 sheet.getRow(row).getCell(11).setCellValue(ric_cred);
 				 }
 				 
-				 if(!map.get("ric_ric_cred").equals("Off")) {
+				 if(!map.get("ric_ric_cred").equals("Off") && !map.get("ric_ric_cred").equals("")) {
 					 int index =Integer.parseInt(map.get("ric_ric_cred"));			 
 					 String ric_ric_cred =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
 					 sheet.getRow(row).getCell(12).setCellValue(ric_ric_cred);
 				 }
 				 
-				 if(!map.get("spec_cred").equals("Off")) {
+				 if(!map.get("spec_cred").equals("Off") && !map.get("spec_cred").equals("")) {
 					 int index = Integer.parseInt(map.get("spec_cred"));			 
 					 String spec_cred =  sheet.getRow(2+index).getCell(241).getStringCellValue();	
 					 sheet.getRow(row).getCell(13).setCellValue(spec_cred);
 				 }
 				 
-				 if(!map.get("0_1").equals("Off")) {
+				 if(!map.get("0_1").equals("Off") && !map.get("0_1").equals("")) {
 					 int index = Integer.parseInt(map.get("0_1"));						 
 					 int dom0_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(14).setCellValue(dom0_1);
 				 }
 			
-				 if(!map.get("0_2").equals("Off")) {
+				 if(!map.get("0_2").equals("Off") && !map.get("0_2").equals("")) {
 					 int index = Integer.parseInt(map.get("0_2"));						 
 					 int dom0_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(15).setCellValue(dom0_2);
 				 }
 				 
-				 if(!map.get("0_3").equals("Off")) {
+				 if(!map.get("0_3").equals("Off") && !map.get("0_3").equals("")) {
 					 int index = Integer.parseInt(map.get("0_3"));						 
 					 int dom0_3 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(16).setCellValue(dom0_3);
@@ -966,286 +974,286 @@ public class GestioneFormazioneBO {
 				 
 			//da qui				 
 				 
-				 if(!map.get("1_1").equals("Off")) {
+				 if(!map.get("1_1").equals("Off") && !map.get("1_1").equals("")) {
 					 int index = Integer.parseInt(map.get("1_1"));						 
 					 int dom1_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(17).setCellValue(dom1_1);
 				 }
 				 
-				 if(!map.get("1_2").equals("Off")) {
+				 if(!map.get("1_2").equals("Off") && !map.get("1_2").equals("")) {
 					 int index = Integer.parseInt(map.get("1_2"));						 
 					 int dom1_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(18).setCellValue(dom1_2);
 				 }
 				 
-				 if(!map.get("1_3").equals("Off")) {
+				 if(!map.get("1_3").equals("Off") && !map.get("1_3").equals("")) {
 					 int index = Integer.parseInt(map.get("1_3"));						 
 					 int dom1_3 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(19).setCellValue(dom1_3);
 				 }
 				
-				 if(!map.get("2_1").equals("Off")) {
+				 if(!map.get("2_1").equals("Off") && !map.get("2_1").equals("")) {
 					 int index = Integer.parseInt(map.get("2_1"));						 
 					 int dom2_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(20).setCellValue(dom2_1);
 				 }
 				 
-				 if(!map.get("2_2").equals("Off")) {
+				 if(!map.get("2_2").equals("Off") && !map.get("2_2").equals("")) {
 					 int index = Integer.parseInt(map.get("2_2"));						 
 					 int dom2_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(21).setCellValue(dom2_2);
 				 }
 				 
-				 if(!map.get("2_3").equals("Off")) {
+				 if(!map.get("2_3").equals("Off") && !map.get("2_3").equals("")) {
 					 int index = Integer.parseInt(map.get("2_3"));						 
 					 int dom2_3 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(22).setCellValue(dom2_3);
 				 }
 				 
-				 if(!map.get("2_4").equals("Off")) {				 
+				 if(!map.get("2_4").equals("Off") && !map.get("2_4").equals("")) {				 
 					 int index = Integer.parseInt(map.get("2_4"));			 
 					 String dom2_4 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
 					 sheet.getRow(row).getCell(23).setCellValue(dom2_4);
 				 }
 				 
-				 if(!map.get("2_5").equals("Off")) {				 
+				 if(!map.get("2_5").equals("Off") && !map.get("2_5").equals("")) {				 
 					 int index = Integer.parseInt(map.get("2_5"));			 
 					 int dom2_5 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(24).setCellValue(dom2_5);
 				 }
 				 
-				 if(!map.get("3_1").equals("Off")) {
+				 if(!map.get("3_1").equals("Off") && !map.get("3_1").equals("")) {
 					 int index = Integer.parseInt(map.get("3_1"));						 
 					 int dom3_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(25).setCellValue(dom3_1);
 				 }
 				 
-				 if(!map.get("3_2").equals("Off")) {
+				 if(!map.get("3_2").equals("Off") && !map.get("3_2").equals("")) {
 					 int index = Integer.parseInt(map.get("3_2"));						 
 					 int dom3_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(26).setCellValue(dom3_2);
 				 }
 				 
-				 if(!map.get("3_3").equals("Off")) {
+				 if(!map.get("3_3").equals("Off") && !map.get("3_3").equals("")) {
 					 int index = Integer.parseInt(map.get("3_3"));						 
 					 int dom3_3 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(27).setCellValue(dom3_3);
 				 }
 				 
-				 if(!map.get("3_4").equals("Off")) {				 
+				 if(!map.get("3_4").equals("Off") && !map.get("3_4").equals("")) {				 
 					 int index = Integer.parseInt(map.get("3_4"));			 
 					 int dom3_4 = (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(28).setCellValue(dom3_4);
 				 }
 				 
-				 if(!map.get("3_5").equals("Off")) {				 
+				 if(!map.get("3_5").equals("Off") && !map.get("3_5").equals("")) {				 
 					 int index = Integer.parseInt(map.get("3_5"));			 
 					 int dom3_5 = (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(29).setCellValue(dom3_5);
 				 }
 				 
-				 if(!map.get("3_6").equals("Off")) {				 
+				 if(!map.get("3_6").equals("Off") && !map.get("3_6").equals("")) {				 
 					 int index = Integer.parseInt(map.get("3_6"));			 
 					 int dom3_6 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(30).setCellValue(dom3_6);
 				 }
 				 
-				 if(!map.get("3_7").equals("Off")) {				 
+				 if(!map.get("3_7").equals("Off") && !map.get("3_7").equals("")) {				 
 					 int index = Integer.parseInt(map.get("3_7"));			 
 					 int dom3_7 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 sheet.getRow(row).getCell(31).setCellValue(dom3_7);
 				 }
 				 
-				 if(!map.get("4").equals("Off")) {				 
+				 if(!map.get("4").equals("Off") && !map.get("4").equals("")) {				 
 					int index = Integer.parseInt(map.get("4"));			 
 				 	String dom4 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
 				 	sheet.getRow(row).getCell(32).setCellValue(dom4);
 				 }
 				 
-				 if(!map.get("4_1").equals("Off")) {
+				 if(!map.get("4_1").equals("Off") && !map.get("4_1").equals("")) {
 					 int index = Integer.parseInt(map.get("4_1"));			 
 					 int dom4_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(33).setCellValue(dom4_1);
 				 }
 				 
-				 if(!map.get("4_2").equals("Off")) {
+				 if(!map.get("4_2").equals("Off") && !map.get("4_2").equals("")) {
 					 int index = Integer.parseInt(map.get("4_2"));			 
 					 int dom4_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(34).setCellValue(dom4_2);
 				 }
 				 
-				 if(!map.get("4_3").equals("Off")) {
+				 if(!map.get("4_3").equals("Off") && !map.get("4_3").equals("")) {
 					 int index = Integer.parseInt(map.get("4_3"));			 
 					 int dom4_3 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(35).setCellValue(dom4_3);
 				 }
 				 
-				 if(!map.get("4_4").equals("Off")) {
+				 if(!map.get("4_4").equals("Off") && !map.get("4_4").equals("")) {
 					 int index = Integer.parseInt(map.get("4_4"));			 
 					 int dom4_4 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(36).setCellValue(dom4_4);
 				 }
 				 
-				 if(!map.get("4_5").equals("Off")) {
+				 if(!map.get("4_5").equals("Off") && !map.get("4_5").equals("")) {
 					 int index = Integer.parseInt(map.get("4_5"));			 
 					 int dom4_5 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(37).setCellValue(dom4_5);
 				 }
 					 
-				 if(!map.get("5").equals("Off")) {
+				 if(!map.get("5").equals("Off") && !map.get("5").equals("")) {
 					 int index = Integer.parseInt(map.get("5"));			 
 					 String dom5 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
 					 sheet.getRow(row).getCell(38).setCellValue(dom5);	
 				 }
 				 
-				 if(!map.get("5_1").equals("Off")) {
+				 if(!map.get("5_1").equals("Off") && !map.get("5_1").equals("")) {
 					 int index = Integer.parseInt(map.get("5_1"));			 
 					 int dom5_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(39).setCellValue(dom5_1);
 				 }
 				 
-				 if(!map.get("5_2").equals("Off")) {
+				 if(!map.get("5_2").equals("Off") && !map.get("5_2").equals("")) {
 					 int index = Integer.parseInt(map.get("5_2"));			 
 					 int dom5_2 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(40).setCellValue(dom5_2);
 				 }
 				 
-				 if(!map.get("5_3").equals("Off")) {
+				 if(!map.get("5_3").equals("Off") && !map.get("5_3").equals("")) {
 					 int index = Integer.parseInt(map.get("5_3"));			 
 					 int dom5_3 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(41).setCellValue(dom5_3);
 				 }
 				 
-				 if(!map.get("5_4").equals("Off")) {
+				 if(!map.get("5_4").equals("Off") && !map.get("5_4").equals("")) {
 					 int index = Integer.parseInt(map.get("5_4"));			 
 					 int dom5_4 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(42).setCellValue(dom5_4);
 				 }
 				 
-				 if(!map.get("5_5").equals("Off")) {
+				 if(!map.get("5_5").equals("Off") && !map.get("5_5").equals("")) {
 					 int index = Integer.parseInt(map.get("5_5"));			 
 					 int dom5_5 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(43).setCellValue(dom5_5);
 				 }				 
 				 
-				 if(!map.get("5_6").equals("Off")) {
+				 if(!map.get("5_6").equals("Off") && !map.get("5_6").equals("")) {
 					 int index = Integer.parseInt(map.get("5_6"));			 
 					 String dom5_6 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
 					 	sheet.getRow(row).getCell(44).setCellValue(dom5_6);
 				 }	
 								 
-				 if(!map.get("5_7").equals("Off")) {
+				 if(!map.get("5_7").equals("Off") && !map.get("5_7").equals("")) {
 					 int index = Integer.parseInt(map.get("5_7"));			 
 					 int dom5_7 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(45).setCellValue(dom5_7);
 				 }	
 					 
-				 if(!map.get("6").equals("Off")) {
+				 if(!map.get("6").equals("Off") && !map.get("6").equals("")) {
 					 int index = Integer.parseInt(map.get("6"));			 
 					 String dom6 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
 					 sheet.getRow(row).getCell(46).setCellValue(dom6);
 				 }
 				 
-				 if(!map.get("6_1").equals("Off")) {
+				 if(!map.get("6_1").equals("Off") && !map.get("6_1").equals("")) {
 					 int index = Integer.parseInt(map.get("6_1"));			 
 					 int dom6_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(47).setCellValue(dom6_1);
 				 }
 				 
-				 if(!map.get("6_2").equals("Off")) {
+				 if(!map.get("6_2").equals("Off") && !map.get("6_2").equals("")) {
 					 int index = Integer.parseInt(map.get("6_2"));			 
 					 int dom6_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(48).setCellValue(dom6_2);
 				 }
 				 
-				 if(!map.get("6_3").equals("Off")) {
+				 if(!map.get("6_3").equals("Off") && !map.get("6_3").equals("")) {
 					 int index = Integer.parseInt(map.get("6_3"));			 
 					 int dom6_3 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(49).setCellValue(dom6_3);
 				 }
 				 
-				 if(!map.get("6_4").equals("Off")) {
+				 if(!map.get("6_4").equals("Off") && !map.get("6_4").equals("")) {
 					 int index = Integer.parseInt(map.get("6_4"));			 
 					 int dom6_4 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(50).setCellValue(dom6_4);
 				 }
 				 
-				 if(!map.get("6_5").equals("Off")) {
+				 if(!map.get("6_5").equals("Off") && !map.get("6_5").equals("")) {
 					 int index = Integer.parseInt(map.get("6_5"));			 
 					 int dom6_5 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(51).setCellValue(dom6_5);
 				 }
 				 
-				 if(!map.get("6_6").equals("Off")) {
+				 if(!map.get("6_6").equals("Off") && !map.get("6_6").equals("")) {
 					 int index = Integer.parseInt(map.get("6_6"));			 
 					 int dom6_6 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(52).setCellValue(dom6_6);
 				 }
 				 
-				 if(!map.get("6_7").equals("Off")) {
+				 if(!map.get("6_7").equals("Off") && !map.get("6_7").equals("")) {
 					 int index = Integer.parseInt(map.get("6_7"));			 
 					 int dom6_7 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(53).setCellValue(dom6_7);
 				 }
 				 
 								 
-				 if(!map.get("6_8").equals("Off")) {
+				 if(!map.get("6_8").equals("Off") && !map.get("6_8").equals("")) {
 					 int index = Integer.parseInt(map.get("6_8"));			 
 					 String dom6_8 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
 					 sheet.getRow(row).getCell(54).setCellValue(dom6_8);
 				 }
 				 
-				 if(!map.get("6_9").equals("Off")) {
+				 if(!map.get("6_9").equals("Off") && !map.get("6_9").equals("")) {
 					 int index = Integer.parseInt(map.get("6_9"));			 
 					 int dom6_9 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(55).setCellValue(dom6_9);
 				 }
 				 
-				 if(!map.get("7").equals("Off")) {
+				 if(!map.get("7").equals("Off") && !map.get("7").equals("")) {
 					 int index = Integer.parseInt(map.get("7"));			 
 					 String dom7 =  sheet.getRow(2+index).getCell(236).getStringCellValue();	
 					 sheet.getRow(row).getCell(56).setCellValue(dom7);
 				 }
 				
-				 if(!map.get("7_1").equals("Off")) {
+				 if(!map.get("7_1").equals("Off") && !map.get("7_1").equals("")) {
 					 int index = Integer.parseInt(map.get("7_1"));			 
 					 int dom7_1 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(57).setCellValue(dom7_1);
 				 }
 				 
-				 if(!map.get("7_2").equals("Off")) {
+				 if(!map.get("7_2").equals("Off") && !map.get("7_2").equals("")) {
 					 int index = Integer.parseInt(map.get("7_2"));			 
 					 int dom7_2 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(58).setCellValue(dom7_2);
 				 }
 				 
-				 if(!map.get("7_3").equals("Off")) {
+				 if(!map.get("7_3").equals("Off") && !map.get("7_3").equals("")) {
 					 int index = Integer.parseInt(map.get("7_3"));			 
 					 int dom7_3 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 					 	sheet.getRow(row).getCell(59).setCellValue(dom7_3);
 				 }
 				
 				 
-				 if(!map.get("7_4").equals("Off")) {
+				 if(!map.get("7_4").equals("Off") && !map.get("7_4").equals("")) {
 					int index = Integer.parseInt(map.get("7_4"));			 
 					String dom7_4 =  sheet.getRow(2+index).getCell(242).getStringCellValue();	
 					sheet.getRow(row).getCell(60).setCellValue(dom7_4);
 				 }
 				 
-				 if(!map.get("7_5").equals("Off")) {
+				 if(!map.get("7_5").equals("Off") && !map.get("7_5").equals("")) {
 						int index = Integer.parseInt(map.get("7_5"));			 
 						int dom7_5 =  (int) sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 						sheet.getRow(row).getCell(61).setCellValue(dom7_5);
 				 }
 				 
-				 if(!map.get("8").equals("Off")) {
+				 if(!map.get("8").equals("Off") && !map.get("8").equals("")) {
 					 int index = Integer.parseInt(map.get("8"));	
 					 String dom8 =   sheet.getRow(2+index).getCell(239).getStringCellValue();	
 					 sheet.getRow(row).getCell(62).setCellValue(dom8);
 				 }
 				 			 
 				 
-				 if(!map.get("9").equals("Off")) {
+				 if(!map.get("9").equals("Off") && !map.get("9").equals("")) {
 						int index = Integer.parseInt(map.get("9"));			 
 						int dom9 = (int)  sheet.getRow(3+index).getCell(238).getNumericCellValue();	
 						sheet.getRow(row).getCell(61).setCellValue(dom9);
@@ -1267,18 +1275,20 @@ public class GestioneFormazioneBO {
         
         workbook.close();
 		zipFile.close();
+		
+		File f = new File(zipPath);
+		f.delete();
 		    		
 		obj.addProperty("success", true);
 		obj.addProperty("messaggio", "Questionari corso caricati con successo!");
 		return obj;
 	}
 	
-	
-	
-	
+
 	
 	public static void main(String[] args) throws Exception{
-		compilaExcelQuestionario("");
+		//compilaExcelQuestionario("");
+		
 	}
 
 	public static JsonObject importaDaPDF(FileItem fileItem,ClienteDTO cl, SedeDTO sd, Session session) throws Exception {
@@ -1995,6 +2005,12 @@ public class GestioneFormazioneBO {
 		session.close();
 		
 		
+	}
+
+	public static ArrayList<ForCorsoDTO> getListaCorsiDate(String dateFrom, String dateTo, Session session) throws HibernateException, ParseException {
+		
+		
+		return GestioneFormazioneDAO.getListaCorsiDate(dateFrom, dateTo, session);
 	}
 
 	

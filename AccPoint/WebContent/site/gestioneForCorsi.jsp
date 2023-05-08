@@ -31,7 +31,45 @@
     <div style="clear: both;"></div>    
     <!-- Main content -->
      <section class="content">
+               <div class="box">
+          <div class="box-header">
+   	 <%-- <c:if test="${userObj.checkPermesso('CAMPIONI_COMPANY_METROLOGIA')}"> 	 
+          <button class="btn btn-info" onclick="callAction('listaCampioni.do?p=mCMP');">I miei Campioni</button>
+                  </c:if>
+          <button class="btn btn-info" onclick="callAction('listaCampioni.do');">Tutti i Campioni</button> --%>
+         
+          </div>
+            <div class="box-body">
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+     <div class="row">
+
+	<div class="col-xs-5">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Filtra Data:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraDate()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
+
+	</div>
+	
+
+
+</div><br>
+     </c:if>
 <div class="row">
+
+
+
       <div class="col-xs-12">
 
  <div class="box box-primary box-solid">
@@ -169,8 +207,9 @@
  
 </div>
 </div>
-
-
+</div>
+</div>
+</div>
 </section>
 
 
@@ -1062,6 +1101,46 @@ function setVisibilita(id_corso, visibile){
 }
 
 
+function formatDate(data){
+	
+	   var mydate =  Date.parse(data);
+	   
+	   if(!isNaN(mydate.getTime())){
+	   
+		var   str = mydate.toString("dd/MM/yyyy");
+	   }			   
+	   return str;	 		
+}
+
+
+function filtraDate(){
+	
+	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+ 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+ 	dataString = "action=lista_corsi&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+ 			endDatePicker.format('YYYY-MM-DD');
+ 	
+ 	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+ 	callAction("gestioneFormazione.do?"+ dataString, false,true);
+
+ 	//exploreModal("gestioneFormazione.do", dataString, '#content_consuntivo');
+}
+
+
+
+
+function resetDate(){
+pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+callAction("gestioneFormazione.do?action=lista_corsi");
+
+}
+
+
+
+
 var admin = "";
 $(document).ready(function() {
  
@@ -1082,6 +1161,29 @@ $(document).ready(function() {
      
      $('.select2').select2();
 
+     
+     
+     var start = "${dateFrom}";
+   	var end = "${dateTo}";
+
+   	$('input[name="datarange"]').daterangepicker({
+  	    locale: {
+  	      format: 'DD/MM/YYYY'
+  	    
+  	    }
+  	}, 
+  	function(start, end, label) {
+
+  	});
+   	
+   	if(start!=null && start!=""){
+  	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
+  	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
+  	
+  	 }
+     
+     
+     
      table = $('#tabForCorso').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",

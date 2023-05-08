@@ -745,4 +745,26 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		return lista;
 	}
 
+	public static ArrayList<ForCorsoDTO> getListaCorsiDate(String dateFrom, String dateTo, Session session) throws HibernateException, ParseException {
+		
+		ArrayList<ForCorsoDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = null;
+		
+		query = session.createQuery("from ForCorsoDTO where data_corso between :_dateFrom and :_dateTo and  disabilitato = 0"); 
+				
+					
+		query.setParameter("_dateFrom", sdf.parse(dateFrom));
+		query.setParameter("_dateTo", sdf.parse(dateTo));
+			
+			
+		lista = (ArrayList<ForCorsoDTO>) query.list();
+		
+				
+		return lista;
+		
+	}
+
 }

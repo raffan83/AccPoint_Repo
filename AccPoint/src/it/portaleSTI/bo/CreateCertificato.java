@@ -259,7 +259,7 @@ public class CreateCertificato {
 					GestioneStrumentoBO.update(strumento, session);
 					if(!multi) {
 						report.addParameter("dataEmissione",""+sdf.format(new Date()));
-					//	report.addParameter("dataEmissione","22/12/2021");
+					//	report.addParameter("dataEmissione","17/03/2023");
 					}else {
 						report.addParameter("dataEmissione",""+sdf.format(certificato.getDataCreazione()));	
 					}
@@ -1270,9 +1270,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		report_header.setColumnTitleStyle(textStyle);
 		report_header.setColumnStyle(textStyle);
 		
-		
+		String um = (String) listaReport.get(0).getUnitaDiMisura().get(0).get("um");
 		for(int i = 0; i<6;i++) {
-			report_header.addColumn(col.column("posizione "+(i+1)+" <br> g","posizione_"+(i+1),type.stringType()).setHeight(41));
+			report_header.addColumn(col.column("posizione "+(i+1)+" <br> "+um,"posizione_"+(i+1),type.stringType()).setHeight(41));
 		}
 				
 		String[] listaCodici = new String[6];		
@@ -1308,9 +1308,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			report.setColumnTitleStyle(colStyle);
 			
 			report.addColumn(col.componentColumn("Posizione Massa", subreport).setFixedWidth(80));
-			report.addColumn(col.column("Massa Applicata <br/><i>g</i>","massa_applicata",type.stringType()).setFixedWidth(60));
+			report.addColumn(col.column("Massa Applicata <br/><i>"+um+"</i>","massa_applicata",type.stringType()).setFixedWidth(60));
 			report.addColumn(col.componentColumn("Verifica all'eccentricità del carico 50% f.s", subreport_header));
-			report.addColumn(col.column("Scostamento massimo ecc. <br/><i>g</i>","scostamento",type.stringType()).setFixedWidth(60));
+			report.addColumn(col.column("Scostamento massimo ecc. <br/><i>"+um+"</i>","scostamento",type.stringType()).setFixedWidth(60));
 
 			report.setDetailSplitType(SplitType.PREVENT);
 			

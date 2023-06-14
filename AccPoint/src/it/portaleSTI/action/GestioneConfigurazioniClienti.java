@@ -207,7 +207,9 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							
 							configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
 							configurazione.setId_firma(Integer.parseInt(firma));
-							GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
+							if(filename!=null && !filename.equals("")) {
+								GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
+							}
 							configurazione.setNome_file_logo(filename);
 							configurazione.setModello_certificato(modello);
 							configurazione.setRevisione_certificato(revisione);
@@ -286,7 +288,9 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							
 							configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
 							configurazione.setId_firma(Integer.parseInt(firma));
-							GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
+							if(filename!=null && !filename.equals("")) {
+								GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
+							}
 							configurazione.setNome_file_logo(filename);
 							configurazione.setModello_certificato(modello);
 							configurazione.setRevisione_certificato(revisione);
@@ -315,7 +319,10 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							}
 							configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
 							configurazione.setId_firma(Integer.parseInt(firma));
-							GestioneConfigurazioneClienteBO.uploadFile(file,cliente.get__id(), Integer.parseInt(id_sede.split("_")[0]));
+							if(filename!=null && !filename.equals("")) {
+								GestioneConfigurazioneClienteBO.uploadFile(file,cliente.get__id(), Integer.parseInt(id_sede.split("_")[0]));	
+							}
+							
 							
 							configurazione.setNome_file_logo(filename);
 							configurazione.setModello_certificato(modello);
@@ -406,6 +413,7 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							else if(item.getFieldName().equals("formato_mese_anno_mod")) {
 								formato_mese_anno = item.getString();
 							}
+							
 						}
 						else {
 							file = item;
@@ -443,14 +451,17 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 										configurazione.setFmt_data_mese_anno(formato_mese_anno);
 										if(filename!=null && !filename.equals("")) {
 											if(i==0) {
+												
 												GestioneConfigurazioneClienteBO.uploadFile(file, lista_sedi_cliente.get(i).getId__cliente_(), lista_sedi_cliente.get(i).get__id());
+												
 											}else{
 												String filePath = Costanti.PATH_FOLDER+"\\"+"LoghiCompany\\ConfigurazioneClienti\\";
 												FileUtils.copyFile(new File(filePath + lista_sedi_cliente.get(i-1).getId__cliente_()+"\\"+lista_sedi_cliente.get(i-1).get__id()+"\\"+filename),
 														new File(filePath + lista_sedi_cliente.get(i).getId__cliente_()+"\\"+lista_sedi_cliente.get(i).get__id()+"\\"+filename));
 											}											
-											configurazione.setNome_file_logo(filename);
-										}										
+											
+										}				
+										configurazione.setNome_file_logo(filename);
 										session.update(configurazione);										
 								}
 							}
@@ -471,8 +482,9 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							configurazione.setFmt_data_mese_anno(formato_mese_anno);
 							if(filename!=null && !filename.equals("")) {
 								GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
-								configurazione.setNome_file_logo(filename);
-							}							
+								
+							}			
+							configurazione.setNome_file_logo(filename);
 							session.update(configurazione);
 							myObj.addProperty("success", true);
 							myObj.addProperty("messaggio", "Configurazione modificata con successo!");
@@ -494,8 +506,9 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							configurazione.setId_firma(Integer.parseInt(firma));
 							if(filename!=null && !filename.equals("")) {
 								GestioneConfigurazioneClienteBO.uploadFile(file,cliente.get__id(), Integer.parseInt(id_sede.split("_")[0]));
-								configurazione.setNome_file_logo(filename);
+								
 							}
+							configurazione.setNome_file_logo(filename);
 							configurazione.setModello_certificato(modello);
 							configurazione.setRevisione_certificato(revisione);
 							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);

@@ -110,6 +110,7 @@
 <th>Comunicazione Preventiva</th>
 <th>Comunicazione Esito</th>
 <th>Classe strumento</th>
+<th>Certificato Riemesso</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -175,6 +176,13 @@
 	</c:if>
 	</td>
 	<td>${misura.verStrumento.classe }</td>
+	<td>
+	<c:if test="${misura.id_misura_old != null && misura.id_misura_old!=0}">
+	X
+	
+	</c:if>
+	
+	</td>
 	<td>
 	<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
 	</td>

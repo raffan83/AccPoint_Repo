@@ -17,6 +17,10 @@
    <property name="referenti" type="java.lang.String">
             <column name="referenti" />
         </property>
+        
+         <property name="sollecito" type="java.lang.String">
+            <column name="sollecito" />
+        </property>
 	
 	</class>
 </hibernate-mapping>

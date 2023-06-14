@@ -121,7 +121,8 @@ public class GestioneControlliOperativiDAO {
 		ArrayList<CoControlloDTO> lista = null;	
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-		Query query = session.createQuery("from CoControlloDTO where data_prossimo_controllo = '"+data+"' and disabilitato = 0 and obsoleto = 0");
+		//Query query = session.createQuery("from CoControlloDTO where data_prossimo_controllo = '"+data+"' and disabilitato = 0 and obsoleto = 0");
+		Query query = session.createQuery("from CoControlloDTO where co_stato_controllo = 2 and disabilitato = 0 and obsoleto = 0 and email_inviata = 0");
 		
 		//query.setParameter("_data", sdf.parseObject(data));
 		

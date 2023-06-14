@@ -16,6 +16,7 @@ public class DevRegistroAttivitaDTO {
 	private String tipo_intervento;
 	private DocumFornitoreDTO company;
 	private int email_inviata;
+	private int sollecito_inviato;
 	
 	public int getId() {
 		return id;
@@ -88,6 +89,12 @@ public class DevRegistroAttivitaDTO {
 	}
 	public void setEmail_inviata(int email_inviata) {
 		this.email_inviata = email_inviata;
+	}
+	public int getSollecito_inviato() {
+		return sollecito_inviato;
+	}
+	public void setSollecito_inviato(int sollecito_inviato) {
+		this.sollecito_inviato = sollecito_inviato;
 	}
 	
 	

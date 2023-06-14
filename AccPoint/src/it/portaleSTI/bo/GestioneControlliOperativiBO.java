@@ -84,20 +84,20 @@ public class GestioneControlliOperativiBO {
 		if(lista_controlli.size()>0 || lista_attrezzature.size()>0)	{
 			
 			if(lista_controlli.size()>0) {
-				messaggio += "Si comunica che i seguenti controlli operativi sono in scadenza il "+df.format(nextDate)+"<br>";
+				messaggio += "Si comunica che i seguenti controlli operativi sono in scadenza:<br>";
 				
 				for (CoControlloDTO controllo : lista_controlli) {
 					
-					messaggio += "<br>ID controllo: "+controllo.getId()+" - Attrezzatura: ID("+controllo.getAttrezzatura().getId()+") "+controllo.getAttrezzatura().getDescrizione()+"<br><br>";
+					messaggio += "<br>ID controllo: "+controllo.getId()+" - Attrezzatura: ID("+controllo.getAttrezzatura().getId()+") "+controllo.getAttrezzatura().getDescrizione()+" - Scadenza "+df.format(controllo.getData_prossimo_controllo())+"<br><br>";
 						
 				}
 			}
 			if(lista_attrezzature.size()>0) {
-				messaggio += "Si comunica che le seguenti attrezzature sono in scadenza il "+df.format(nextDate)+"<br>";
+				messaggio += "Si comunica che le seguenti attrezzature sono in scadenza:<br>";
 				
 				for (CoAttrezzaturaDTO attrezzatura : lista_attrezzature) {
 					
-					messaggio += "<br>ID Attrezzatura: "+attrezzatura.getId()+" - Codice: "+attrezzatura.getCodice();
+					messaggio += "<br>ID Attrezzatura: "+attrezzatura.getId()+" - Codice: "+attrezzatura.getCodice()+" - Scadenza "+df.format(attrezzatura.getData_scadenza());
 						
 				}
 			}
@@ -105,6 +105,14 @@ public class GestioneControlliOperativiBO {
 			
 			
 			SendEmailBO.sendEmailControlli(messaggio);
+			
+			
+			for (CoControlloDTO controllo : lista_controlli) {
+				controllo.setEmail_inviata(1);
+				session.update(controllo);
+			}
+			
+			
 		}
 		
 		

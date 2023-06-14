@@ -14,8 +14,8 @@
             <column name="codice_interno" />
         </property>
         
-       <many-to-one name="company" class="it.portaleSTI.DTO.DocumFornitoreDTO" fetch="join" lazy="false">
-            <column name="id_company" />
+       <many-to-one name="company_util" class="it.portaleSTI.DTO.DocumFornitoreDTO" fetch="join" lazy="false">
+            <column name="id_company_util" />
         </many-to-one>
         
         <many-to-one name="tipo_device" class="it.portaleSTI.DTO.DevTipoDeviceDTO" fetch="join" lazy="false">
@@ -83,5 +83,14 @@
 	<property name="data_cambio_company" type="java.sql.Date">
             <column name="data_cambio_company" />
         </property>
+        
+        <property name="rif_fattura" type="java.lang.String">
+            <column name="rif_fattura" />
+        </property>
+        
+        
+         <many-to-one name="company_proprietaria" class="it.portaleSTI.DTO.DocumFornitoreDTO" fetch="join" lazy="false">
+            <column name="id_company_proprietaria" />
+        </many-to-one>
 	</class>
 </hibernate-mapping>

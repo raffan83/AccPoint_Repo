@@ -12,6 +12,7 @@ public class CoControlloDTO {
 	private String note;
 	private CoStatoControlloDTO stato;
 	private int obsoleto;
+	private int email_inviata;
 	
 	public int getId() {
 		return id;
@@ -66,6 +67,12 @@ public class CoControlloDTO {
 	}
 	public void setObsoleto(int obsoleto) {
 		this.obsoleto = obsoleto;
+	}
+	public int getEmail_inviata() {
+		return email_inviata;
+	}
+	public void setEmail_inviata(int email_inviata) {
+		this.email_inviata = email_inviata;
 	}
 	
 	

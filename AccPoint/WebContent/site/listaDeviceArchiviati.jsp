@@ -23,7 +23,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Lista Device
+        Lista Device Archiviati
         <!-- <small></small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
@@ -36,7 +36,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista Device
+	 Lista Device Archiviati
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -48,10 +48,10 @@
 
 <div class="row">
 <div class="col-xs-12">
-<a class="btn btn-primary pull-left" onClick="callAction('gestioneDevice.do?action=lista_archiviati')">Device Archiviati</a> 
+<a class="btn btn-primary pull-left" onClick="callAction('gestioneDevice.do?action=lista_device')">Lista Device</a> 
 
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
-<a class="btn btn-primary pull-right" onClick="modalNuovoDevice()"><i class="fa fa-plus"></i> Nuovo Device</a> 
+
 
 
 
@@ -137,7 +137,7 @@
 	<a class="btn btn-info customTooltip" onClicK="$(this).dblclick()" title="Click per aprire il dettaglio device"><i class="fa fa-search"></i></a>
 	 <a class="btn btn-warning customTooltip" onClicK="modificaDevice('${device.id}', '${device.codice_interno }','${device.tipo_device.id }','${device.company_util.id }','${utl:escapeJS(device.denominazione) }','${utl:escapeJS(device.costruttore) }','${utl:escapeJS(device.modello) }','${utl:escapeJS(device.distributore) }','${device.data_acquisto }','${utl:escapeJS(device.ubicazione) }','${device.dipendente.id }', '${utl:escapeJS(device.configurazione) }','${device.data_creazione }','${device.company_proprietaria.id }', '${device.rif_fattura }')" title="Click per modificare il tipo device"><i class="fa fa-edit"></i></a> 
 	 <a class="btn btn-info customTooltip" onClicK="modalSoftware('${device.id}')" title="Click per associare un software al device"><i class="fa fa-file-code-o"></i></a>
-	 <a class="btn btn-danger customTooltip"onClicK="modalYesOrNo('${device.id}')" title="Click per eliminare il device"><i class="fa fa-trash"></i></a>
+	 
 	</td>
 	</tr>
 	</c:forEach>
@@ -1189,7 +1189,147 @@
 
 
 
+<form id="formNuovaAttivita" name="formNuovaAttivita" >
+<div id="modalNuovaAttivita" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" onclick="$('#modalNuovaAttivita').modal('hide')"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nuova Attivita</h4>
+      </div>
+       <div class="modal-body">     
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Tipo evento</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <select id="tipo_evento" name="tipo_evento" data-placeholder="Seleziona tipo evento..." class="form-control select2" style="width:100%" required>
+        <option value=""></option>
+        <c:forEach items="${lista_tipi_evento }" var="tipo">
+        <c:if test="${tipo.id == 2}">
+        <option value="${tipo.id }" selected>${tipo.descrizione }</option>
+        </c:if>
+         <c:if test="${tipo.id != 2}">
+        <option value="${tipo.id }">${tipo.descrizione }</option>
+        </c:if>
+        
+        
+        </c:forEach>
+        
+        </select>
+       			
+       	</div>       	
+       </div><br>  
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Descrizione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input type="text"  class="form-control" id="descrizione" name="descrizione" required>
+       			
+       	</div>       	
+       </div><br>  
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Label tipo intervento</label>
+       	</div>
+       	<div class="col-sm-8">      
+       	  	
+        <select id="label_tipo" name="label_tipo" data-placeholder="Seleziona label..." class="form-control select2" style="width:100%" multiple>
+        <option value=""></option>
+        <c:forEach items="${lista_label_tipo_intervento }" var="tipo">
+        
+        <option value="${tipo.id }">${tipo.descrizione }</option>
+      
+        </c:forEach>
+        
+        </select>
+       			
+       	</div>       
+       	<div class="col-sm-1">  
+		<a class="btn btn-primary customTooltip pull-right" title="Crea nuova label" onClick="modalNuovaLabelTipo('')"><i class="fa fa-plus"></i></a>
+	
+	  </div>  	
+       </div><br> 
+        <div class="row">
+         	<div class="col-sm-3">
+       		<label>Tipo intervento</label>
+       	</div>
+       <div class="col-xs-9">
+       
 
+       <textarea id="tipo_intervento" name="tipo_intervento" rows="3" class="form-control" ></textarea>
+       </div>
+       </div><br>
+       
+              
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Frequenza</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input type="number" step="1" min="0" class="form-control " id="frequenza" name="frequenza" >
+       			
+       	</div>       	
+       </div><br> 
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input type="text" class="form-control datepicker" id="data" name="data" required>
+       			
+       	</div>       	
+       </div><br> 
+       
+
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data prossima</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input type="text" class="form-control datepicker" id="data_prossima" name="data_prossima">
+       			
+       	</div>       	
+       </div><br> 
+      
+        <div class="row">
+       <div class="col-xs-12">
+       <label>Note evento</label>
+
+       <textarea id="note_evento" name="note_evento" rows="3" class="form-control" ></textarea>
+       </div>
+       </div>
+      	
+      	</div>
+      <div class="modal-footer">
+	<input type="hidden"  class="form-control" id="id_device" name="id_device" value="${id_device }">
+      <input type="hidden" id="nuova_label_tipo" name="nuova_label_tipo">
+      <!-- <a class="btn btn-primary" onclick="associaPartecipanteCorso()" >Associa</a> -->
+		 <button class="btn btn-primary" type="submit" >Salva</button> 
+      </div>
+    </div>
+  </div>
+
+</div>
+</form>
 
 
 
@@ -2234,14 +2374,12 @@ $('body').removeClass('noScroll')
 	
 	 var id_company = $(this).val()
 	 
-	 callAction('gestioneDevice.do?action=lista_device&id_company='+id_company);
+	 callAction('gestioneDevice.do?action=lista_archiviati&id_company='+id_company);
 	 
 	 
  });
  
  
-
-
   </script>
   
 </jsp:attribute> 

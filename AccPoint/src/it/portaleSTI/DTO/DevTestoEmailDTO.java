@@ -3,6 +3,7 @@ package it.portaleSTI.DTO;
 public class DevTestoEmailDTO {
 	private int id;
 	private String descrizione;
+	private String sollecito;
 	private String referenti;
 	
 	public int getId() {
@@ -22,6 +23,12 @@ public class DevTestoEmailDTO {
 	}
 	public void setReferenti(String referenti) {
 		this.referenti = referenti;
+	}
+	public String getSollecito() {
+		return sollecito;
+	}
+	public void setSollecito(String sollecito) {
+		this.sollecito = sollecito;
 	}
 
 }

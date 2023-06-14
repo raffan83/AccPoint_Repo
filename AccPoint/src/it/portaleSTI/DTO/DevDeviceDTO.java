@@ -8,7 +8,7 @@ public class DevDeviceDTO {
 	
 	private int id;
 	private String codice_interno;
-	private DocumFornitoreDTO company;
+	private DocumFornitoreDTO company_util;
 	private DevTipoDeviceDTO tipo_device;
 	private Date data_creazione;
 	private String denominazione;
@@ -23,6 +23,9 @@ public class DevDeviceDTO {
 	private Set<DevProceduraDTO> listaProcedure = new HashSet<DevProceduraDTO>();
 	private int disabilitato;
 	private Date data_cambio_company;
+	private String rif_fattura;
+	private DocumFornitoreDTO company_proprietaria;
+	
 	
 	public int getId() {
 		return id;
@@ -99,12 +102,7 @@ public class DevDeviceDTO {
 		this.listaSoftware = listaSoftware;
 	}
 	
-	public DocumFornitoreDTO getCompany() {
-		return company;
-	}
-	public void setCompany(DocumFornitoreDTO company) {
-		this.company = company;
-	}
+
 	public DevTipoDeviceDTO getTipo_device() {
 		return tipo_device;
 	}
@@ -128,6 +126,24 @@ public class DevDeviceDTO {
 	}
 	public void setData_cambio_company(Date data_cambio_company) {
 		this.data_cambio_company = data_cambio_company;
+	}
+	public String getRif_fattura() {
+		return rif_fattura;
+	}
+	public void setRif_fattura(String rif_fattura) {
+		this.rif_fattura = rif_fattura;
+	}
+	public DocumFornitoreDTO getCompany_util() {
+		return company_util;
+	}
+	public void setCompany_util(DocumFornitoreDTO company_util) {
+		this.company_util = company_util;
+	}
+	public DocumFornitoreDTO getCompany_proprietaria() {
+		return company_proprietaria;
+	}
+	public void setCompany_proprietaria(DocumFornitoreDTO company_proprietaria) {
+		this.company_proprietaria = company_proprietaria;
 	}
 	
 	

@@ -169,6 +169,7 @@ public class GestioneDeviceBO {
 				SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getDescrizione(), testo_email.getReferenti());	
 				attivita.setEmail_inviata(1);
 				session.update(attivita);
+				
 			}
 		}
 		session.getTransaction().commit();
@@ -176,6 +177,59 @@ public class GestioneDeviceBO {
 		
 	}
 
+	
+	
+public static void sendEmailAttivitaScaduteSollecito() throws ParseException, Exception {
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+	
+		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenzeEmailInviata(session);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		for (DevRegistroAttivitaDTO attivita : lista_scadenze) {
+			Date data_attivita = attivita.getData_evento();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(data_attivita);
+			cal.add(Calendar.DATE, 45);
+			Date nextDate = cal.getTime();
+			if(!nextDate.after(new Date())) {
+			
+				ArrayList<DevRegistroAttivitaDTO> lista_manutenzioni = GestioneDeviceDAO.getListaManutenzioniSuccessive(df.format(nextDate), attivita.getDevice().getId(),session);
+				
+				if(lista_manutenzioni.size()==0) {
+					DevTestoEmailDTO testo_email = getTestoEmail(session);
+					//SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getSollecito(), testo_email.getReferenti());
+					attivita.setSollecito_inviato(1);
+					session.update(attivita);
+				}
+			}
+			
+			
+		}
+//		Calendar cal = Calendar.getInstance();
+//		cal.setTime(today);
+//		cal.add(Calendar.DATE, 30);
+//		Date nextDate = cal.getTime();
+//		
+//	
+//		
+//		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenze(df.format(nextDate), df.format(nextDate), 0,session);
+//		
+//		DevTestoEmailDTO testo_email = getTestoEmail(session);
+//		
+//		for (DevRegistroAttivitaDTO attivita : lista_scadenze) {
+//			
+//			if(attivita.getEmail_inviata()==0) {
+//				SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getDescrizione(), testo_email.getReferenti());	
+//				attivita.setEmail_inviata(1);
+//				session.update(attivita);
+//			}
+//		}
+		session.getTransaction().commit();
+		session.close();
+		
+	}
+	
 	public static DevTestoEmailDTO getTestoEmail(Session session) {
 		
 		return GestioneDeviceDAO.getTestoEmail(session);
@@ -184,5 +238,10 @@ public class GestioneDeviceBO {
 	public static void dissociaProcedura(int id, Session session) {
 		
 		GestioneDeviceDAO.dissociaProcedura(id, session);
+	}
+
+	public static ArrayList<DevDeviceDTO> getListaDeviceArchiviati(int id_company, Session session) {
+		
+		return GestioneDeviceDAO.getListaDeviceArchiviati(id_company, session);
 	}
 }

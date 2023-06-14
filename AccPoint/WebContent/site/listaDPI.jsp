@@ -113,6 +113,9 @@
 	<c:if test="${dpi.disabilitato == 1 }">
 	SI
 	</c:if>
+	<c:if test="${dpi.disabilitato == 0 }">
+	NO
+	</c:if>
 	</td>
 	<td>	
 

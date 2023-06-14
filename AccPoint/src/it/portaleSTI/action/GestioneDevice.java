@@ -260,6 +260,7 @@ public class GestioneDevice extends HttpServlet {
 		
 				String codice_interno = ret.get("codice_interno");
 				String id_company = ret.get("company");
+				String id_company_proprietaria = ret.get("company_proprietaria");
 				String id_tipo_device = ret.get("tipo_device");
 				String denominazione = ret.get("denominazione");
 				String costruttore = ret.get("costruttore");
@@ -271,6 +272,7 @@ public class GestioneDevice extends HttpServlet {
 				String configurazione = ret.get("configurazione");
 				String id_dipendente = ret.get("dipendente");
 				String nuova_label_configurazione = ret.get("nuova_label_configurazione");
+				String rif_fattura = ret.get("rif_fattura");
 				
 				if(id_dipendente.equals("0")) {
 					id_dipendente=null;
@@ -281,13 +283,18 @@ public class GestioneDevice extends HttpServlet {
 				DevDeviceDTO device = new DevDeviceDTO();
 				device.setCodice_interno(codice_interno);
 				DocumFornitoreDTO company = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
-				device.setCompany(company);
+				device.setCompany_util(company);
+				DocumFornitoreDTO company_proprietaria = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company_proprietaria), session);
+				device.setCompany_proprietaria(company_proprietaria);
+				
 				device.setTipo_device(new DevTipoDeviceDTO(Integer.parseInt(id_tipo_device), ""));
 				
 				device.setDenominazione(denominazione);
 				device.setCostruttore(costruttore);
 				device.setModello(modello);
 				device.setDistributore(distributore);
+				device.setRif_fattura(rif_fattura);
+				
 				if(data_acquisto!=null && !data_acquisto.equals("")) {
 					device.setData_acquisto(df.parse(data_acquisto));
 				}
@@ -299,7 +306,7 @@ public class GestioneDevice extends HttpServlet {
 				device.setUbicazione(ubicazione);
 				device.setConfigurazione(configurazione);
 				if(id_dipendente!=null && !id_dipendente.equals("")) {
-					DocumDipendenteFornDTO dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_dipendente), session);
+					DocumDipendenteFornDTO dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_dipendente.split("_")[0]), session);
 					device.setDipendente(dipendente);
 				}else {
 					device.setDipendente(null);
@@ -357,6 +364,7 @@ public class GestioneDevice extends HttpServlet {
 		        String id_device = ret.get("id_device");
 				String codice_interno = ret.get("codice_interno_mod");
 				String id_company = ret.get("company_mod");
+				String id_company_proprietaria = ret.get("company_proprietaria_mod");
 				String id_tipo_device = ret.get("tipo_device_mod");
 				String data_creazione = ret.get("data_creazione_mod");
 				String denominazione = ret.get("denominazione_mod");
@@ -368,6 +376,7 @@ public class GestioneDevice extends HttpServlet {
 				String configurazione = ret.get("configurazione_mod");
 				String id_dipendente = ret.get("dipendente_mod");
 				String nuova_label_configurazione = ret.get("nuova_label_configurazione_mod");
+				String rif_fattura = ret.get("rif_fattura_mod");
 				
 				if(id_dipendente.equals("0")) {
 					id_dipendente=null;
@@ -383,21 +392,34 @@ public class GestioneDevice extends HttpServlet {
 				boolean modifica_effettuata = false;
 				
 				DocumFornitoreDTO company = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
+				DocumFornitoreDTO company_proprietaria = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company_proprietaria), session);
+		
 				DevTipoDeviceDTO tipo = GestioneDeviceBO.getTipoDeviceFromID(Integer.parseInt(id_tipo_device), session);
 				DocumDipendenteFornDTO dipendente = null;
 				if(id_dipendente!=null && !id_dipendente.equals("")) {
-					 dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_dipendente), session);	
+					 dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_dipendente.split("_")[0]), session);	
 				}
 				
 				
-				if(device.getCompany()!=null && device.getCompany().getId() !=Integer.parseInt(id_company))
+				if(device.getCompany_util()!=null && device.getCompany_util().getId() !=Integer.parseInt(id_company))
 				{
 					if(company==null) {
-						stringaModifica=stringaModifica+"Company("+device.getCompany().getRagione_sociale()+", Nessuna Company)|";
+						stringaModifica=stringaModifica+"Company("+device.getCompany_util().getRagione_sociale()+", Nessuna Company)|";
 					}else {
-						stringaModifica=stringaModifica+"Company("+device.getCompany().getRagione_sociale()+","+company.getRagione_sociale()+")|";
+						stringaModifica=stringaModifica+"Company("+device.getCompany_util().getRagione_sociale()+","+company.getRagione_sociale()+")|";
 					}
 					device.setData_cambio_company(new Date());					
+					modifica_effettuata = true;
+				}
+				
+				if(device.getCompany_proprietaria()!=null && device.getCompany_proprietaria().getId() !=Integer.parseInt(id_company_proprietaria))
+				{
+					if(company_proprietaria==null) {
+						stringaModifica=stringaModifica+"Company("+device.getCompany_proprietaria().getRagione_sociale()+", Nessuna Company)|";
+					}else {
+						stringaModifica=stringaModifica+"Company("+device.getCompany_proprietaria().getRagione_sociale()+","+company_proprietaria.getRagione_sociale()+")|";
+					}
+					//device.setData_cambio_company(new Date());					
 					modifica_effettuata = true;
 				}
 				
@@ -409,7 +431,7 @@ public class GestioneDevice extends HttpServlet {
 										
 				}
 				
-				if(device.getDipendente()!=null &&  dipendente!=null && device.getDipendente().getId() !=Integer.parseInt(id_dipendente))
+				if(device.getDipendente()!=null &&  dipendente!=null && device.getDipendente().getId() !=Integer.parseInt(id_dipendente.split("_")[0]))
 				{
 					
 					stringaModifica=stringaModifica+"Dipendente("+device.getTipo_device().getDescrizione()+","+dipendente.getNome()+" "+dipendente.getCognome()+")|";	
@@ -559,16 +581,34 @@ public class GestioneDevice extends HttpServlet {
 					modifica_effettuata = true;
 				}
 				
+				if(device.getRif_fattura()!=null && !device.getRif_fattura().equals(rif_fattura))
+				{
+					if(device.getRif_fattura().equals("")) {
+						stringaModifica=stringaModifica+"Rif. fattura([VUOTO],"+rif_fattura+")|";
+					}else {
+						if(denominazione.equals("")) {
+							stringaModifica=stringaModifica+"Rif. fattura("+device.getRif_fattura()+",[VUOTO])|";	
+						}else {
+							stringaModifica=stringaModifica+"Rif. fattura("+device.getRif_fattura()+","+rif_fattura+")|";	
+						}
+							
+					}
+					modifica_effettuata = true;
+				}
+				
 						
 				device.setCodice_interno(codice_interno);
 				
-				device.setCompany(company);
+				device.setCompany_util(company);
+				device.setCompany_proprietaria(company_proprietaria);
 				device.setTipo_device(tipo);
 				device.setData_creazione(new Date());
 				device.setDenominazione(denominazione);
 				device.setCostruttore(costruttore);
 				device.setModello(modello);
 				device.setDistributore(distributore);
+				
+				device.setRif_fattura(rif_fattura);
 				if(data_creazione!=null && !data_creazione.equals("") ) {
 					device.setData_creazione(df.parse(data_creazione));
 				}else {
@@ -770,7 +810,7 @@ public class GestioneDevice extends HttpServlet {
 				DevDeviceDTO device = GestioneDeviceBO.getDeviceFromID(Integer.parseInt(id_device), session);
 				
 				if(id_company == null || id_company.equals("")) {
-					id_company = device.getCompany().getId()+"";
+					id_company = device.getCompany_util().getId()+"";
 				}
 				
 				ArrayList<DevRegistroAttivitaDTO> registro_attivita = GestioneDeviceBO.getRegistroAttivitaFromDevice(device, Integer.parseInt(id_company), session);
@@ -846,7 +886,7 @@ public class GestioneDevice extends HttpServlet {
 				attivita.setNote_evento(note_evento);
 
 				//if(attivita.getTipo_evento().getId()==2) {
-				attivita.setCompany(device.getCompany());
+				attivita.setCompany(device.getCompany_util());
 				//}
 				session.save(attivita);				
 				
@@ -1445,6 +1485,7 @@ public class GestioneDevice extends HttpServlet {
 				
 				String testo = request.getParameter("testo");
 				String referenti = request.getParameter("referenti");
+				String sollecito = request.getParameter("sollecito");
 				
 				DevTestoEmailDTO testo_email = (DevTestoEmailDTO) request.getSession().getAttribute("testo_email");
 					
@@ -1454,6 +1495,7 @@ public class GestioneDevice extends HttpServlet {
 				
 				testo_email.setDescrizione(testo.replaceAll("\n", "<br>"));
 				testo_email.setReferenti(referenti);
+				testo_email.setSollecito(sollecito.replaceAll("\n", "<br>"));
 				session.saveOrUpdate(testo_email);
 				
 				
@@ -1464,6 +1506,39 @@ public class GestioneDevice extends HttpServlet {
 				myObj.addProperty("messaggio", "Salvato con successo!");
 				out.print(myObj);
 				
+			}
+			
+			else if(action.equals("lista_archiviati")) {
+				
+				String id_company = request.getParameter("id_company");
+				
+				if(id_company == null) {
+					id_company = "0";
+				}else {
+					id_company = Utility.decryptData(id_company);	
+				}				
+				
+				
+				ArrayList<DevDeviceDTO> lista_device = GestioneDeviceBO.getListaDeviceArchiviati(Integer.parseInt(id_company),session);
+				ArrayList<DevTipoDeviceDTO> lista_tipi_device = GestioneDeviceBO.getListaTipiDevice(session);
+				ArrayList<DocumFornitoreDTO> lista_company = GestioneDocumentaleBO.getListaDocumFornitori(session);
+				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0, 0, session);
+				ArrayList<DevLabelConfigDTO> lista_configurazioni = GestioneDeviceBO.getListaLabelConfigurazioni(session);
+				ArrayList<DevStatoValidazioneDTO> lista_stati_validazione = GestioneDeviceBO.getListaStatiValidazione(session);
+				 
+				
+				Collections.sort(lista_dipendenti);
+				
+				request.getSession().setAttribute("lista_device", lista_device);
+				request.getSession().setAttribute("lista_tipi_device", lista_tipi_device);
+				request.getSession().setAttribute("lista_company", lista_company);
+				request.getSession().setAttribute("lista_dipendenti", lista_dipendenti);
+				request.getSession().setAttribute("lista_configurazioni", lista_configurazioni);
+				request.getSession().setAttribute("lista_stati_validazione", lista_stati_validazione);
+				request.getSession().setAttribute("id_company", id_company);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDeviceArchiviati.jsp");
+		     	dispatcher.forward(request,response);
 			}
 			
 			session.getTransaction().commit();

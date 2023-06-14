@@ -69,8 +69,10 @@
  <td>
  <c:if test="${attivita.tipo_evento.id == 2 }">
  
- <a class="btn btn-warning customTooltip" onClicK="modificaAttivita('${attivita.id}','${attivita.tipo_evento.id }','${utl:escapeJS(attivita.descrizione) }','${attivita.data_evento}','${attivita.frequenza }','${attivita.data_prossima }','${utl:escapeJS(attivita.note_evento) }','${utl:escapeJS(attivita.tipo_intervento) }')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></a>
+ <a class="btn btn-warning customTooltip customLink" onClicK="modificaAttivita('${attivita.id}','${attivita.tipo_evento.id }','${utl:escapeJS(attivita.descrizione) }','${attivita.data_evento}','${attivita.frequenza }','${attivita.data_prossima }','${utl:escapeJS(attivita.note_evento) }','${utl:escapeJS(attivita.tipo_intervento) }')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></a>
+ <a class="btn btn-info customTooltip customLink" onClicK="rinnovaManutenzione('${attivita.id}','${attivita.tipo_evento.id }','${utl:escapeJS(attivita.descrizione) }','${attivita.frequenza }','${utl:escapeJS(attivita.note_evento) }','${utl:escapeJS(attivita.tipo_intervento) }')" title="Click per rinnovare l'attività"><i class="fa fa-copy"></i></a>
  </c:if>
+ 
  </td>
  
  </tr>
@@ -126,7 +128,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input type="text"  class="form-control" id="descrizione" name="descrizione" required>
+        <input type="text"  class="form-control" id="descrizione" name="descrizione" required onkeydown="preventEnter(event)">
        			
        	</div>       	
        </div><br>  
@@ -138,7 +140,7 @@
        	</div>
        	<div class="col-sm-8">      
        	  	
-        <select id="label_tipo" name="label_tipo" data-placeholder="Seleziona label..." class="form-control select2" style="width:100%" multiple>
+        <select id="label_tipo" name="label_tipo" data-placeholder="Seleziona label..." class="form-control select2" style="width:100%" multiple >
         <option value=""></option>
         <c:forEach items="${lista_label_tipo_intervento }" var="tipo">
         
@@ -165,19 +167,7 @@
        </div>
        </div><br>
        
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input type="text" class="form-control datepicker" id="data" name="data" required>
-       			
-       	</div>       	
-       </div><br> 
-       
-       
+              
        <div class="row">
        
        	<div class="col-sm-3">
@@ -185,10 +175,24 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input type="number" step="1" min="0" class="form-control " id="frequenza" name="frequenza" >
+        <input type="number" step="1" min="0" class="form-control " id="frequenza" name="frequenza" onkeydown="preventEnter(event)">
        			
        	</div>       	
        </div><br> 
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input type="text" class="form-control datepicker" id="data" name="data" required onkeydown="preventEnter(event)">
+       			
+       	</div>       	
+       </div><br> 
+       
+
        
        <div class="row">
        
@@ -197,7 +201,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input type="text" class="form-control datepicker" id="data_prossima" name="data_prossima">
+        <input type="text" class="form-control datepicker" id="data_prossima" name="data_prossima" onkeydown="preventEnter(event)">
        			
        	</div>       	
        </div><br> 
@@ -206,7 +210,7 @@
        <div class="col-xs-12">
        <label>Note evento</label>
 
-       <textarea id="note_evento" name="note_evento" rows="3" class="form-control" ></textarea>
+       <textarea id="note_evento" name="note_evento" rows="3" class="form-control"></textarea>
        </div>
        </div>
       	
@@ -222,7 +226,6 @@
 
 </div>
 </form>
-
 
 <form id="formModificaAttivita" name="formNuovaAttivita" >
 <div id="modalModificaAttivita" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
@@ -266,7 +269,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input type="text"  class="form-control" id="descrizione_mod" name="descrizione_mod" required>
+        <input type="text"  class="form-control" id="descrizione_mod" name="descrizione_mod" required onkeydown="preventEnter(event)">
        			
        	</div>       	
        </div><br>  
@@ -305,17 +308,7 @@
        </div>
        </div><br>
        
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input type="text" class="form-control datepicker" id="data_mod" name="data_mod" required>
-       			
-       	</div>       	
-       </div><br> 
+     
        
        
        <div class="row">
@@ -325,7 +318,19 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input type="number" step="1" min="0" class="form-control " id="frequenza_mod" name="frequenza_mod" >
+        <input type="number" step="1" min="0" class="form-control " id="frequenza_mod" name="frequenza_mod" onkeydown="preventEnter(event)">
+       			
+       	</div>       	
+       </div><br> 
+       
+          <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input type="text" class="form-control datepicker" id="data_mod" name="data_mod" required onkeydown="preventEnter(event)">
        			
        	</div>       	
        </div><br> 
@@ -337,7 +342,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input type="text" class="form-control datepicker" id="data_prossima_mod" name="data_prossima_mod">
+        <input type="text" class="form-control datepicker" id="data_prossima_mod" name="data_prossima_mod" onkeydown="preventEnter(event)">
        			
        	</div>       	
        </div><br> 
@@ -396,7 +401,7 @@
 
 console.log("test2")
 
-$('#data').change(function(){
+$('#data').focusout(function(){
 	
 	var frequenza = $('#frequenza').val();
 	
@@ -409,14 +414,23 @@ $('#data').change(function(){
 			   var month = d._pf.parsedDateParts[1];
 			   var day = d._pf.parsedDateParts[2];
 			   var c = new Date(year, month + parseInt(frequenza), day);
-			    $('#data_prossima').val(formatDate(c));
-			 //   $('#datepicker_data_prossima').datepicker("setDate", c );
+			    //$('#data_prossima').val(formatDate(c));
+			    $('#data_prossima').datepicker("setDate", c );
 			
 		}
 		
 	}
 	
 });
+
+
+
+
+
+//$('#data').keydown(myfunction);
+
+
+
 
 
 function modalNuovaLabelTipo(isMod){
@@ -479,7 +493,7 @@ function formatDate(data){
 	   return str;	 		
 }
 
-$('#data_mod').change(function(){
+$('#data_mod').focusout(function(){
 	
 	var frequenza = $('#frequenza_mod').val();
 	
@@ -492,8 +506,8 @@ $('#data_mod').change(function(){
 			   var month = d._pf.parsedDateParts[1];
 			   var day = d._pf.parsedDateParts[2];
 			   var c = new Date(year, month + parseInt(frequenza), day);
-			    $('#data_prossima_mod').val(formatDate(c));
-			 //   $('#datepicker_data_prossima').datepicker("setDate", c );
+			   // $('#data_prossima_mod').val(formatDate(c));
+			    $('#data_prossima_mod').datepicker("setDate", c );
 			
 		}
 		
@@ -629,16 +643,44 @@ if(value!=null){
 		$('#modalModificaAttivita').modal();
 	}
  
+ 
+ 
+ function rinnovaManutenzione(id_attivita, tipo_evento, descrizione, frequenza,  note, tipo_intervento){
+	 
+
+		$('#tipo_evento').val(tipo_evento);
+		$('#tipo_evento').change()
+		$('#descrizione').val(descrizione);
+		$('#frequenza').val(frequenza);
+
+		$('#data').val(Date.parse(new Date()).toString("dd/MM/yyyy"));
+		
+		
+		$('#data').focusout();
+		
+		$('#note_evento').val(note);
+		$('#tipo_intervento').val(tipo_intervento);
+		
+		
+		$('#modalNuovaAttivita').modal();
+ }
 
 $(document).ready(function(){
 
 	 $('.dropdown-toggle').dropdown();
      $('.select2').select2();
      
-     $('.datepicker').datepicker({
+      $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
-	 }); 
+	 });  
+	 
 
+	 
+	 
+
+
+
+	 
 	var tableNote = $('#tabAttivita').DataTable({
 		 language: {
 	       	emptyTable : 	"Nessun dato presente nella tabella",
@@ -733,6 +775,12 @@ $(document).ready(function(){
  
  $('#formModificaAttivita').on('submit', function(e){
 		
+	 if(e.key === "Enter"){
+			e.preventDefault()
+			alert("inside")
+		}
+	 
+	 
 	 e.preventDefault();
 	 callAjaxForm('#formModificaAttivita', 'gestioneDevice.do?action=modifica_attivita', function(data, textStatus){
 		 
@@ -756,6 +804,11 @@ $(document).ready(function(){
 	 });
  });
  
- 
+ function preventEnter(event) {
+	    if (event.keyCode === 13) {
+	      event.preventDefault(); // Previeni l'invio del modulo se il tasto premuto è Enter (codice 13)
+	    }
+	  }
+	 
 
 </script>

@@ -2864,7 +2864,8 @@ tableModRil = $('#tabItemModRil').DataTable({
      	 {"data" : "id_proprio"},
      	 {"data" : "disegno"},
      	 {"data" : "variante"},
-     	 {"data" : "pezzi_ingresso"},
+     	 //{"data" : "pezzi_ingresso", createdCell: editableCell},
+     	{"data" : "pezzi_ingresso"},
      	 {"data": "note_rilievo"},
      	{"data" : "action"}
 
@@ -3552,6 +3553,55 @@ else{
 	     	    },
 	     	  });
 	     }
+	     
+	     
+	     
+	     
+	     const editableCell = function(cell) {
+	    		
+	    		
+	   	  let original
+
+	   	  cell.setAttribute('contenteditable', true)
+	   	  cell.setAttribute('spellcheck', false)
+	   	  var index = cell._DT_CellIndex;
+	   	  cell.setAttribute('id',""+index.row+""+index.column)	
+	   	   $(cell).css('text-align', 'center');
+	   	  
+	   	  
+	   	  cell.addEventListener('focus', function(e) {
+	   	    original = e.target.textContent
+
+	   	     $(cell).css('border', '2px solid red');
+	   	    
+	   	  })
+	   	
+	   	   cell.addEventListener('focusout', function(e) {
+	   	    original = stripHtml(e.target.textContent)
+	   	
+	   	    $(cell).css('border', '1px solid #d1d1d1');
+	   	   $(cell).css('border-bottom-width', '0px');
+	   	    $(cell).css('border-left-width', '0px');
+	   	     
+	   	     
+	   	    //$(e.currentTarget).html('<input type="text" value="'+original+'" onChange="salvaModificaQuestionario()">');
+	   	  })
+	   	  
+	   	  cell.addEventListener('blur', function(e) {
+	   	    if (original !== e.target.textContent) {
+	   	      const row = tableModRil.row(e.target.parentElement)
+	   	      tableModRil.cell(row.index(),e.target.cellIndex).data(e.target.textContent).draw();
+	   	      var x = tableModRil.rows().data();
+	   	      
+	   	   items_rilievo[row.index()].pezzi_ingresso = e.target.textContent;
+	   	      	//salvaModificaQuestionario();
+	   	      console.log('Row changed: ', row.data())
+	   	    }
+	   	  })
+	   	  
+	   	
+	   }
+
 	     
 </script>
   

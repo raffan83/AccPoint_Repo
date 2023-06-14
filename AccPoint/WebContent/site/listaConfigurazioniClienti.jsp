@@ -138,7 +138,7 @@
 		        <i class="glyphicon glyphicon-plus "></i>
 		        <span>Seleziona un logo...</span>
 
-		        <input id="fileupload" accept=".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.btm,.BTM,.tiff,.TIFF"  type="file" name="fileupload" class="form-control" required/>
+		        <input id="fileupload" accept=".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.btm,.BTM,.tiff,.TIFF"  type="file" name="fileupload" class="form-control" />
 		   	 </span>
 		</div>
 		
@@ -228,7 +228,9 @@
 		<td>
 		<%-- <a class="btn btn-warning" onClick="modalModifica('${configurazione.id_cliente}','${configurazione.nome_cliente}','${configurazione.id_sede }','${configurazione.nome_sede }','${configurazione.tipo_rapporto.id}','${configurazione.nome_file_logo }','${configurazione.id_firma }')"><i class="fa fa-edit"></i></a> --%>
 		<a class="btn btn-warning custom toolTip" title="Click per modificare la configurazione"  onClick="modalModifica('${configurazione.id_cliente}','${configurazione.id_sede }','${configurazione.tipo_rapporto.id }','${configurazione.nome_file_logo }','${configurazione.id_firma }','${configurazione.modello_certificato }','${configurazione.revisione_certificato }','${configurazione.modello_lista_strumenti }','${configurazione.revisione_lista_strumenti }','${configurazione.fmt_data_mese_anno }')"><i class="fa fa-edit"></i></a>
+		<c:if test="${configurazione.nome_file_logo!=null && configurazione.nome_file_logo!='' }">
 		<a class="btn btn-primary custom toolTip" title="Click per scaricare il logo" onClick="callAction('gestioneConfigurazioniClienti.do?action=download_logo&id_cliente=${utl:encryptData(configurazione.id_cliente)}&id_sede=${utl:encryptData(configurazione.id_sede) }&tipo_rapporto=${utl:encryptData(configurazione.tipo_rapporto.id) }')"><i class="fa fa-image"></i></a>
+		</c:if>
 		</td>
 	</tr>
 	</c:forEach>
@@ -338,7 +340,7 @@
 		<input type="text" class="form-control" id="revisione_lista_strumenti_mod" name="revisione_lista_strumenti_mod">
 		</div>
 		 
-		<div class="col-md-4" style="margin-top:25px">
+		<div class="col-md-3" style="margin-top:25px">
 		<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un logo...</span>
@@ -348,9 +350,15 @@
 		   	 <label id="label_nome_file"></label>
 		</div>
 		
-		<div class="col-md-5" style="margin-top:25px">
-		       <label >Attezione! Si raccomanda l'uso di un logo di dimensioni 800x400</label>
+		<div class="col-md-4" style="margin-top:25px">
+		       <label >Attenzione! Si raccomanda l'uso di un logo di dimensioni 800x400</label>
 		</div>
+		
+		<div class="col-md-1">
+			<label>Rimuovi Logo</label><br>
+			<input type="checkbox" id="mod_rimuovi_logo" name="mod_rimuovi_logo" />			
+			</div>
+		
 		 </div> 
 		
 		<br>
@@ -449,6 +457,7 @@ $("#tabConfigurazioni").on( 'init.dt', function ( e, settings ) {
 $('#mod_fileupload').change(function(){
 	var str = $('#mod_fileupload').val();
 	$('#label_nome_file').html(str.split("\\")[2]);
+	$('#mod_rimuovi_logo').iCheck("uncheck")
 });
 
 $('#nuovaConfigurazioneForm').on('submit', function(e){
@@ -541,6 +550,16 @@ $('#mod_check_all').on('ifUnchecked', function (ev) {
 	$('#mod_sede').prop("disabled", false);
 
 	});
+	
+	
+$('#mod_rimuovi_logo').on('ifChecked', function (ev) {
+	
+	$('#mod_fileupload').val("");
+	$('#label_nome_file').html("");
+
+
+  	});
+
 
 
 

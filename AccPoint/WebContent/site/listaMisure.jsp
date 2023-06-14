@@ -453,7 +453,8 @@ function openModalStampa(idMisura){
 	$("#fileupload_pdf").change(function(event){
 		
 		var fileExtension = 'pdf';
-        if ($(this).val().split('.').pop()!= fileExtension) {
+		var fileExtension2 = 'PDF';
+        if ($(this).val().split('.').pop()!= fileExtension && $(this).val().split('.').pop()!= fileExtension2) {
         	
         
         	$('#myModalErrorContent').html("Attenzione! Inserisci solo pdf!");

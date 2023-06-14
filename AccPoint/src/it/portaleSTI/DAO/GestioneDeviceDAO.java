@@ -64,7 +64,7 @@ public class GestioneDeviceDAO {
 		if(id_company == 0) {
 			query = session.createQuery("from DevDeviceDTO where disabilitato = 0");
 		}else {
-			query = session.createQuery("from DevDeviceDTO where id_company = :_id_company and disabilitato = 0");	
+			query = session.createQuery("from DevDeviceDTO where id_company_util = :_id_company and disabilitato = 0");	
 			query.setParameter("_id_company", id_company);
 		}
 		
@@ -362,6 +362,7 @@ public static DevTestoEmailDTO getTestoEmail(Session session) {
 	ArrayList<DevTestoEmailDTO> lista = null;
 	DevTestoEmailDTO result = new DevTestoEmailDTO();
 	
+
 	Query query = session.createQuery("from DevTestoEmailDTO");
 	
 	lista = (ArrayList<DevTestoEmailDTO>) query.list();
@@ -378,6 +379,48 @@ public static void dissociaProcedura(int id, Session session) {
 	query.setParameter("_id_device", id);
 	query.executeUpdate();
 	
+}
+
+public static ArrayList<DevDeviceDTO> getListaDeviceArchiviati(int id_company,  Session session) {
+	ArrayList<DevDeviceDTO> lista = null;
+	
+	Query query = null;
+	
+	if(id_company == 0) {
+		query = session.createQuery("from DevDeviceDTO where disabilitato = 1");
+	}else {
+		query = session.createQuery("from DevDeviceDTO where id_company_util = :_id_company and disabilitato = 1");	
+		query.setParameter("_id_company", id_company);
+	}
+	
+	
+	lista = (ArrayList<DevDeviceDTO>) query.list();
+	
+	return lista;
+}
+
+public static ArrayList<DevRegistroAttivitaDTO> getListaScadenzeEmailInviata(Session session) {
+	
+	ArrayList<DevRegistroAttivitaDTO> lista = null;
+	
+	Query query = session.createQuery("from DevRegistroAttivitaDTO where email_inviata = 1 and device.disabilitato = 0 and sollecito_inviato = 0 and id_tipo_evento = 2 ");	
+	
+	lista = (ArrayList<DevRegistroAttivitaDTO>) query.list();
+	
+	return lista;
+}
+
+public static ArrayList<DevRegistroAttivitaDTO> getListaManutenzioniSuccessive(String date, int id_device, Session session) throws HibernateException, ParseException {
+	
+	ArrayList<DevRegistroAttivitaDTO> lista = null;
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	Query query = session.createQuery("from DevRegistroAttivitaDTO where device.id = :_id_device and (tipo_evento.id = 2 or tipo_evento.id = 3) and data_evento >= :_date");
+	query.setParameter("_id_device", id_device);
+	query.setParameter("_date", sdf.parse(date));
+	
+	lista = (ArrayList<DevRegistroAttivitaDTO>) query.list();
+	
+	return lista;
 }
 
 }

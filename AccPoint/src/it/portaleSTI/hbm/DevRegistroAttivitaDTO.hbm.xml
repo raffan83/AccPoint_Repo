@@ -53,5 +53,8 @@
          <property name="email_inviata" type="int">
             <column name="email_inviata" />
         </property>
+          <property name="sollecito_inviato" type="int">
+            <column name="sollecito_inviato" />
+        </property>
 	</class>
 </hibernate-mapping>

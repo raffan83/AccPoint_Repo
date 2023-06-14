@@ -959,10 +959,10 @@ DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	  //email.addTo("giuseppe.gabriele@stisrl.com");
 	  //email.addTo("sara.massaro@stisrl.com");
 String nominativo = "";
-if(attivita.getDevice().getDipendente()!=null && attivita.getDevice().getDipendente().getEmail()!=null && !attivita.getDevice().getDipendente().getEmail().equals("")) {
-	email.addTo(attivita.getDevice().getDipendente().getEmail());
-	nominativo = "Gentile "+attivita.getDevice().getDipendente().getNome()+" "+attivita.getDevice().getDipendente().getCognome()+" <br>";
-}
+//if(attivita.getDevice().getDipendente()!=null && attivita.getDevice().getDipendente().getEmail()!=null && !attivita.getDevice().getDipendente().getEmail().equals("")) {
+//	email.addTo(attivita.getDevice().getDipendente().getEmail());
+//	nominativo = "Gentile "+attivita.getDevice().getDipendente().getNome()+" "+attivita.getDevice().getDipendente().getCognome()+" <br>";
+//}
 
 String[] to = referenti.split(";");
 
@@ -1160,7 +1160,7 @@ public static void sendEmailControlli(String messaggio) throws EmailException {
 
 
 	email.addTo("giuseppe.gabriele@stisrl.com");
-	//email.addTo("antoniodicivita@live.it");
+	email.addTo("antonio.dicivita@ncsnetwork.it");
 
 		  
 		  email.setFrom("calver@accpoint.it", "Calver - Gestione CONTROLLI OPERATIVI");

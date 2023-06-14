@@ -100,6 +100,9 @@
        
        <label>Messaggio</label>
        <textarea class="form-control" id="testo_email" rows="5" style="width:100%">${utl:escapeJS(testo_email.descrizione) }</textarea> 
+       
+       <label>Messaggio Sollecito</label>
+       <textarea class="form-control" id="testo_email_sollecito" rows="5" style="width:100%">${utl:escapeJS(testo_email.sollecito) }</textarea>
       	
       	</div>
       <div class="modal-footer">
@@ -187,6 +190,7 @@ function salvaTestoEmail(){
 	dataObj = {}
 	dataObj.testo = $('#testo_email').val();
 	dataObj.referenti = $('#referenti').val();
+	dataObj.sollecito = $('#testo_email_sollecito').val();
 	
 	callAjax(dataObj, "gestioneDevice.do?action=salva_testo_email");
 }

@@ -414,7 +414,7 @@ public static JsonObject signCertificatoPades(UtenteDTO utente,String keyWord, b
 	
 	    System.out.println(Arrays.toString(fontPosition));
 	
-	    apparence.setImage("C:\\PortalECI\\FileFirme\\"+utente.getFile_firma());
+	    apparence.setImage(Costanti.PATH_FOLDER+"FileFirme\\"+utente.getFile_firma());
 	
 	  
 	   apparence.setLeftx(fontPosition[0] - 15 );        	
@@ -518,7 +518,7 @@ public static JsonObject signRilievoPades(UtenteDTO utente,String keyWord, RilMi
 	    System.out.println(Arrays.toString(fontPosition));
 	
 	    
-	    apparence.setImage("C:\\PortalECI\\FileFirme\\"+utente.getFile_firma());
+	    apparence.setImage(Costanti.PATH_FOLDER+"\\FileFirme\\"+utente.getFile_firma());
 	  
 	   apparence.setLeftx(fontPosition[0] - 15 );        	
 	   apparence.setLefty(fontPosition[1] - 35);

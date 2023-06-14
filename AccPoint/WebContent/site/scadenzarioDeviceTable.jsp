@@ -63,7 +63,7 @@
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${scadenza.data_evento }"></fmt:formatDate></td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${scadenza.data_prossima }"></fmt:formatDate></td>
 	<td>${scadenza.device.tipo_device.descrizione }</td>
-	<td>${scadenza.device.company.ragione_sociale }</td>
+	<td>${scadenza.device.company_util.ragione_sociale }</td>
 	<td>${scadenza.device.denominazione }</td>
 	<td>${scadenza.device.costruttore }</td>
 	<td>${scadenza.device.modello }</td>

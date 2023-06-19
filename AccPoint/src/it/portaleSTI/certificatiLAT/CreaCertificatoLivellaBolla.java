@@ -400,12 +400,12 @@ public class CreaCertificatoLivellaBolla {
 		
 		reportP2.addParameter("um", "mm/m");
 		if(misura.getStrumento().getCampo_misura()!=null) {
-			reportP2.addParameter("campo_misura", misura.getStrumento().getCampo_misura());
+			reportP2.addParameter("campo_misura", "± "+misura.getCampo_misura()+" mm/m");
 		}else {
 			reportP2.addParameter("campo_misura", "");	
 		}
 		if(misura.getStrumento().getRisoluzione()!=null) {
-			reportP2.addParameter("sensibilita", misura.getStrumento().getRisoluzione());	
+			reportP2.addParameter("sensibilita", misura.getSensibilita()+" mm/m");	
 		}else {
 			reportP2.addParameter("sensibilita", "");
 		}

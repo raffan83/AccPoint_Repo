@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.MagAllegatoItemDTO" table="mag_allegato_item">
+	
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>	
+        <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_utente" />
+        </many-to-one>
+    
+     
+        <property name="nome_file" type="java.lang.String">
+            <column name="nome_file" />
+        </property>
+
+
+        <property name="data" type="java.sql.Date">
+            <column name="data" />
+        </property>
+        
+
+		<property name="id_item" type="int">
+            <column name="id_item" />
+        </property>
+	
+	</class>
+</hibernate-mapping>

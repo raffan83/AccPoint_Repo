@@ -223,5 +223,7 @@
  	
  	<mapping class="NoteSicurezzaCommessaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/NoteSicurezzaCommessaDTO.hbm.xml"/>
   	<mapping class="VersionePortaleDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VersionePortaleDTO.hbm.xml"/>
+  	
+  	<mapping class="MagAllegatoItemDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagAllegatoItemDTO.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

@@ -20,5 +20,8 @@
         <property name="cv" type="java.lang.String" >
             <column name="cv" />
         </property>
+         <property name="email" type="java.lang.String" >
+            <column name="email" />
+        </property>
     </class>
 </hibernate-mapping>

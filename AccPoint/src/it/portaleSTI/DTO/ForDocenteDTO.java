@@ -7,6 +7,7 @@ public class ForDocenteDTO {
 	private String cognome;
 	private int formatore;
 	private String cv;
+	private String email;
 	
 	
 	public ForDocenteDTO(int id) {
@@ -48,6 +49,14 @@ public class ForDocenteDTO {
 
 	public void setFormatore(int formatore) {
 		this.formatore = formatore;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

@@ -99,6 +99,7 @@ import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForEmailDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
+import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
@@ -2011,6 +2012,13 @@ public class GestioneFormazioneBO {
 		
 		
 		return GestioneFormazioneDAO.getListaCorsiDate(dateFrom, dateTo, session);
+	}
+
+	public static ForPiaPianificazioneDTO getPianificazioneFromId(int id, Session session) {
+		
+		
+		return GestioneFormazioneDAO.getPianificazioneFromId( id,  session);
+	
 	}
 
 	

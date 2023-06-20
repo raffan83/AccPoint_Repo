@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-mag-2017 15.44.30 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.ForPiaPianificazioneDTO" table="for_pia_pianificazione">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+              
+        <many-to-one name="stato" class="it.portaleSTI.DTO.ForPiaStatoDTO" fetch="join" lazy="false">
+            <column name="id_stato" />
+        </many-to-one>
+        
+        <many-to-one name="tipo" class="it.portaleSTI.DTO.ForPiaTipoDTO" fetch="join" lazy="false">
+            <column name="id_tipo" />
+        </many-to-one>
+        
+        <property name="id_commessa" type="java.lang.String" >
+            <column name="id_commessa" />
+        </property>
+        
+        <property name="data" type="java.sql.Date" >
+            <column name="data" />
+        </property>
+        
+        <property name="ora_inizio" type="java.lang.String" >
+            <column name="ora_inizio" />
+        </property>
+        
+        <property name="ora_fine" type="java.lang.String" >
+            <column name="ora_fine" />
+        </property>
+     
+
+		<property name="nUtenti" type="int" >
+            <column name="nUtenti" />
+        </property>
+        
+        	<property name="note" type="java.lang.String" >
+            <column name="note" />
+        </property>
+        
+         <set name="listaDocenti" table="for_pia_pianificazione_docente"
+				inverse="false" lazy="false" fetch="select" >
+            <key>
+                <column name="id_pianificazione" />                
+            </key>
+            <many-to-many entity-name="it.portaleSTI.DTO.ForDocenteDTO">
+                <column name="id_docente" not-null="true" />
+            </many-to-many>
+        	
+        </set> 
+        
+    </class>
+</hibernate-mapping>

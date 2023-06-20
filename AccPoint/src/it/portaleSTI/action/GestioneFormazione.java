@@ -58,6 +58,7 @@ import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForEmailDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
+import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
@@ -2522,6 +2523,23 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.close();
 				
 				
+			}
+				else if(action.equals("gestione_pianificazione")) 
+			{
+				
+				ForPiaPianificazioneDTO pianificazione= GestioneFormazioneBO.getPianificazioneFromId(1, session);
+				
+				
+				
+				request.getSession().setAttribute("note", pianificazione.getNote());
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestionePianificazione.jsp");
+		     	dispatcher.forward(request,response);
+		     	
+					
 			}
 			
 		}catch(Exception e) {

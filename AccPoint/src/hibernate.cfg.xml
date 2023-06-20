@@ -225,5 +225,11 @@
   	<mapping class="VersionePortaleDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VersionePortaleDTO.hbm.xml"/>
   	
   	<mapping class="MagAllegatoItemDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagAllegatoItemDTO.hbm.xml"/>
+  	
+  	<mapping class="ForPiaStatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForPiaStatoDTO.hbm.xml"/> 	    
+ 	<mapping class="ForPiaTipoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForPiaTipoDTO.hbm.xml"/>
+ 	<mapping class="ForPiaPianificazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForPiaPianificazioneDTO.hbm.xml"/> 	
+ 
+ 	
   </session-factory>
 </hibernate-configuration>

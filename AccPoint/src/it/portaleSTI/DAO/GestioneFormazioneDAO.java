@@ -22,6 +22,7 @@ import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForEmailDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
+import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
@@ -765,6 +766,23 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 				
 		return lista;
 		
+	}
+
+	public static ForPiaPianificazioneDTO getPianificazioneFromId(int id, Session session) {
+		
+		ArrayList<ForPiaPianificazioneDTO> lista = null;
+		ForPiaPianificazioneDTO result = null;
+		
+		Query query = session.createQuery("from ForPiaPianificazioneDTO where id = :_id");
+		query.setParameter("_id", id);
+		
+		lista = (ArrayList<ForPiaPianificazioneDTO>) query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
 	}
 
 }

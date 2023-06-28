@@ -8,6 +8,7 @@ public class ForDocenteDTO {
 	private int formatore;
 	private String cv;
 	private String email;
+	private String utenteMilestone;
 	
 	
 	public ForDocenteDTO(int id) {
@@ -58,6 +59,15 @@ public class ForDocenteDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getUtenteMilestone() {
+		return utenteMilestone;
+	}
+
+	public void setUtenteMilestone(String utenteMilestone) {
+		this.utenteMilestone = utenteMilestone;
+	}
+	
 	
 	
 

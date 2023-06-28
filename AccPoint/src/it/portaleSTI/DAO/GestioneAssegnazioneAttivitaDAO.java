@@ -1,15 +1,21 @@
 package it.portaleSTI.DAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portaleSTI.DTO.AgendaMilestoneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.MilestoneOperatoreDTO;
 
@@ -105,6 +111,45 @@ public class GestioneAssegnazioneAttivitaDAO {
 		}
 		
 		return result;
+	}
+
+	public static void inserisciAgenda(AgendaMilestoneDTO agenda) throws Exception {
+		
+	List<ClienteDTO> lista =new ArrayList<ClienteDTO>();
+		
+		Connection con=null;
+		PreparedStatement pst = null;
+		SimpleDateFormat sdf =new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		
+		try {
+			con=ManagerSQLServer.getConnectionSQL();
+			pst=con.prepareStatement("INSERT INTO [dbo].[BWT_AGENDA]([USERNAME],[STATO],[SOGGETTO],[DESCRIZIONE],[LABEL],"
+					+ 				 "[STARTIME],[ENDTIME],[ID_ANAGEN],[ID_COMM]) VALUES (?,?,?,?,?,?,?,?,?)"); 
+
+			pst.setString(1, agenda.getUSERNAME());
+			pst.setInt(2, agenda.getSTATO());
+			pst.setString(3, agenda.getSOGGETTO());
+			pst.setString(4, agenda.getDESCRIZIONE());
+			pst.setInt(5,agenda.getLABEL());
+			pst.setString(6,sdf.format(agenda.getSTARTDATE()));
+			pst.setString(7,sdf.format(agenda.getENDTDATE()));
+			pst.setInt(8, agenda.getID_ANAGEN());
+			pst.setString(9, agenda.getID_COMMESSA());
+		
+			pst.execute();
+			
+		} catch (Exception e) {
+			
+			
+			e.printStackTrace();
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+		
 	}
 
 }

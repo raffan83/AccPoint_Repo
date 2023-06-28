@@ -23,5 +23,8 @@
          <property name="email" type="java.lang.String" >
             <column name="email" />
         </property>
+          <property name="utenteMilestone" type="java.lang.String" >
+            <column name="utente_milestone" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -618,6 +618,7 @@ public class GestioneVerCertificati extends HttpServlet {
 				newMisura.setVerStrumento(misura.getVerStrumento());
 				newMisura.setId_misura_old(misura.getId());
 				newMisura.setObsoleta("N");
+				newMisura.setNote_combinazioni(misura.getNote_combinazioni());
 				
 				session.save(newMisura);
 				
@@ -633,7 +634,7 @@ public class GestioneVerCertificati extends HttpServlet {
 					punto.setMpe(item.getMpe());
 					punto.setNumeroRipetizione(item.getNumeroRipetizione());
 					punto.setPortata(item.getPortata());
-					
+					punto.setPosizione(item.getPosizione());
 					session.save(punto);
 					
 				}				
@@ -695,6 +696,8 @@ public class GestioneVerCertificati extends HttpServlet {
 					punto.setIndicazioneSalita(item.getIndicazioneSalita());
 					punto.setRiferimento(item.getRiferimento());
 					punto.setTipoAzzeramento(item.getTipoAzzeramento());
+					punto.setPosizione_discesa(item.getPosizione_discesa());
+					punto.setPosizione_salita(item.getPosizione_salita());
 					
 					session.save(punto);
 				}

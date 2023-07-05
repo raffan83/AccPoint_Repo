@@ -5866,9 +5866,9 @@ function eliminaCompany(){
 					    
 					    item.variante = data[i][2];
 					    item.pezzi_ingresso = data[i][3];
-					    
-					    item.action = '<button class="btn btn-danger" onClick="eliminaRilievoTable(null,\''+ item.id_proprio+'\')"><i class="fa fa-trash"></i></button>';
 					    item.id = data[i][6];
+					    item.action = '<button class="btn btn-warning" onClick="modificaRilievoTable(\''+ item.id+'\', this)"><i class="fa fa-edit"></i></button> <button class="btn btn-danger" onClick="eliminaRilievoTable(null,\''+ item.id_proprio+'\')"><i class="fa fa-trash"></i></button>';
+					    
 					    item.note_rilievo = data[i][4];
 					    items_rilievo.push(item);	
 					    	    

@@ -2,6 +2,7 @@ package it.portaleSTI.DAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ import java.sql.PreparedStatement;
 
 import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAllegatoDTO;
+import it.portaleSTI.DTO.MagAllegatoItemDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
@@ -1227,6 +1229,45 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		lista= (ArrayList<MagItemPaccoDTO>)query.list();
 		
 		return lista;
+	}
+
+
+	public static ArrayList<MagAllegatoItemDTO> getListaAllegatiItem(MagPaccoDTO pacco, Session session) throws Exception {
+		
+		ArrayList<MagAllegatoItemDTO> result=new ArrayList<MagAllegatoItemDTO>();
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+		
+		try{
+			con = DirectMySqlDAO.getConnection();	
+			pst=con.prepareStatement("SELECT a.id_item, a.nome_file FROM mag_allegato_item AS a JOIN mag_item_pacco AS b ON a.id_item = b.id_item WHERE b.id_pacco=?");
+			pst.setInt(1,pacco.getId());
+			
+			rs=pst.executeQuery();
+			
+			while(rs.next())
+			{
+				MagAllegatoItemDTO allegato = new MagAllegatoItemDTO();
+				allegato.setId_item(rs.getInt("id_item"));
+				allegato.setNome_file(rs.getString("nome_file"));
+				result.add(allegato);
+			}
+		
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			throw ex;
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+
+			
+			return result;
 	}
 
 

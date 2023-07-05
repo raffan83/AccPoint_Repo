@@ -19,9 +19,11 @@ public class MagItemDTO implements Serializable{
 	private String codice_interno;
 	private MagAttivitaItemDTO attivita_item;
 	
+	
 	private String disegno;
 	private String variante;
 	private int pezzi_ingresso;
+	private String allegato_rilievi;
 
 	
 	public String getMatricola() {
@@ -113,6 +115,12 @@ public class MagItemDTO implements Serializable{
 	}
 	public void setPezzi_ingresso(int pezzi_ingresso) {
 		this.pezzi_ingresso = pezzi_ingresso;
+	}
+	public String getAllegato_rilievi() {
+		return allegato_rilievi;
+	}
+	public void setAllegato_rilievi(String allegato_rilievi) {
+		this.allegato_rilievi = allegato_rilievi;
 	}
 	
 

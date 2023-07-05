@@ -19,5 +19,11 @@ public class ForPiaTipoDTO {
 
 
 
-	
+	public ForPiaTipoDTO() {
+		super();
+	}
+	public ForPiaTipoDTO(int id, String descrizione) {
+		this.id = id;
+		this.descrizione= descrizione;
+	}
 }

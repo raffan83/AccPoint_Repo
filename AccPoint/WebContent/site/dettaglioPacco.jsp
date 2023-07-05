@@ -250,7 +250,7 @@ String permesso = "0";
  <td>
  <a class="btn btn-primary pull-center customTooltip"  title="Click per cambiare lo stato dell'Item"   onClick="cambiaStatoItem('${item_pacco.item.id}','${item_pacco.item.stato.id}')"><i class="glyphicon glyphicon-refresh"></i></a>
  <c:if test="${item_pacco.item.tipo_item.id==1 }">
- <a class="btn btn-warning pull-center customTooltip"  title="Click per modificare l'Item"   onClick="modificaCampiItemModal('${item_pacco.item.id}','${item_pacco.item.matricola }','${item_pacco.item.codice_interno }','${item_pacco.item.descrizione }')"><i class="glyphicon glyphicon-pencil"></i></a>
+ <a class="btn btn-warning pull-center customTooltip"  title="Click per modificare l'Item"   onClick="modificaCampiItemModal('${item_pacco.item.id}','${utl:escapeJS(item_pacco.item.matricola) }','${utl:escapeJS(item_pacco.item.codice_interno) }','${utl:escapeJS(item_pacco.item.descrizione) }')"><i class="glyphicon glyphicon-pencil"></i></a>
  </c:if>
  </td>
 </c:when>
@@ -999,6 +999,11 @@ String permesso = "0";
 		<textarea name="note" form="ModificaPaccoForm" id="note" class="form-control" rows=3 style="width:100%">${pacco.ddt.note }</textarea></a> 
  
  </div>
+ 
+ 
+ 
+ 
+ 
 
 </div>
 
@@ -1086,7 +1091,7 @@ String permesso = "0";
  <label>Item Nel Pacco</label>
  <div class="table-responsive">
  <table id="tabItemModRil" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
+ <thead><tr class="active" >
  <th>ID Item</th>
   <th>Disegno</th>
  <th>Variante</th>
@@ -1128,6 +1133,11 @@ String permesso = "0";
 		<input type="hidden" class="pull-right" id="select_fornitore" name="select_fornitore" value=""> 
 		<input type="hidden" class="pull-right" id="configurazione" name="configurazione" > 
 		<input type="hidden" class="pull-right" id="ritardo" name="ritardo" value="${pacco.ritardo }">
+		<!--  <input type="file" id="modifica_pezzi_rilievo_upload" name="modifica_pezzi_rilievo_upload[]" style="display:none" multiple> --> 
+		<input type="hidden" id="modifica_pezzi_rilievo_id" name="modifica_pezzi_rilievo_id" >
+		
+		<div id="fileInputsContainer"></div>
+		
 		<!-- <button class="btn btn-default pull-left" onClick="modificaPaccoSubmit()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button> -->  
 		<!-- <button class="btn btn-default pull-left" onClick="modalConfigurazione()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button> -->
   <button class="btn btn-default pull-left" onClick="chooseSubmit()" id="button_submit"><i class="glyphicon glyphicon"></i> Modifica Pacco</button>
@@ -1137,6 +1147,65 @@ String permesso = "0";
     
       </div>
 </div>
+
+
+
+
+
+
+
+ <div id="modalModificaPezziIngresso" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabelCommessa">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica pezzi in ingresso </h4>
+      </div>
+       <div class="modal-body" >
+       
+       <div class="row">
+       <div class="col-xs-12">
+       <label>Numero Pezzi</label>
+       <input type="number" min="0" step="1" class="form-control" id="pezzi_ingresso_mod" name="pezzi_ingresso_mod"/>
+       </div>
+       </div><br><br>
+       
+       <div class="row">
+       <div class="col-xs-12">
+       
+       </div>
+       <div class="col-xs-4">
+        		
+ 		
+ 				<!-- 	<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica File...</span>
+				<input id="fileupload_rilievi" accept=".pdf, .PDF" type="file" name="fileupload_rilievi" class="form-control"/>
+				<input id="modifica_pezzi_rilievo_upload" accept=".pdf, .PDF" type="file" name="modifica_pezzi_rilievo_upload" multiple class="form-control"/>
+		       
+		   	 </span> -->
+		   	 <button class="btn btn-primary" id="btnAddFileInput">Aggiungi File</button>
+       </div>
+        <div class="col-xs-8">
+		 <label id="label_file_rilievi"></label>
+		 </div>
+       </div>
+   
+
+  		 </div>
+      <div class="modal-footer">
+ 
+		<input id="id_item_rilievi_modifica"  type="hidden"  /> 
+		<input id="id_row_rilievi"  type="hidden"  /> 
+
+	<button  class="btn btn-primary" id="salva_btn_rilievi" disabled onclick="aggiornaTabellaRilievi($('#pezzi_ingresso_mod').val())">Salva</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+
  </form>  
  
    <div id="myModalItem" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
@@ -1464,7 +1533,59 @@ String permesso = "0";
   </div>
 </div>
 
+
+
+
+
+
+  <!--  <div id="modalModificaPezziIngresso" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabelCommessa">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica pezzi in ingresso </h4>
+      </div>
+       <div class="modal-body" >
+       
+       <div class="row">
+       <div class="col-xs-12">
+       <label>Numero Pezzi</label>
+       <input type="number" min="0" step="1" class="form-control" id="pezzi_ingresso_mod" name="pezzi_ingresso_mod"/>
+       </div>
+       </div><br><br>
+       
+       <div class="row">
+       <div class="col-xs-12">
+       
+       </div>
+       <div class="col-xs-4">
+        		
+ 		
+ 					<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica File...</span>
+				<input id="fileupload_rilievi" accept=".pdf, .PDF" type="file" name="fileupload_rilievi" class="form-control"/>
+		       
+		   	 </span>
+       </div>
+        <div class="col-xs-8">
+		 <label id="label_file_rilievi"></label>
+		 </div>
+       </div>
    
+
+  		 </div>
+      <div class="modal-footer">
+ 
+		<input id="id_item_rilievi_modifica"  type="hidden"  /> 
+		<input id="id_row_rilievi"  type="hidden"  /> 
+
+	<button  class="btn btn-primary" id="salva_btn_rilievi" disabled onclick="aggiornaTabellaRilievi($('#pezzi_ingresso_mod').val())">Salva</button>
+       
+      </div>
+    </div>
+  </div>
+</div> -->
 </div>
   <!-- /.content-wrapper -->
 
@@ -1712,6 +1833,18 @@ String permesso = "0";
 		$('#myModalAllegatiPacco').modal();
 
 	}
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
  	$('#select_fornitore').change(function(){
@@ -2391,8 +2524,8 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 				rilievo.variante = $('#variante').val();
 				rilievo.pezzi_ingresso = $('#pezzi_ingresso').val();
 				rilievo.note_rilievo = $('#note_rilievo').val();
-				rilievo.action = '<button class="btn btn-danger" onClick="eliminaRilievoTable(\''+ $('#disegno').val()+'\')"><i class="fa fa-trash"></i></button>';
-				
+				/* rilievo.action = '<button class="btn btn-danger" onClick="eliminaRilievoTable(\''+ $('#disegno').val()+'\')"><i class="fa fa-trash"></i></button>'; */
+				rilievo.action = '<button class="btn btn-warning" onClick="modificaRilievoTable(\''+ rilievo.id+'\', this)"><i class="fa fa-edit"></i></button> <button class="btn btn-danger" onClick="eliminaRilievoTable(null,\''+ item.id_proprio+'\')"><i class="fa fa-trash"></i></button>';
 				items_rilievo.push(rilievo)
 				
 				   var table_ril = $('#tabItemModRil').DataTable();
@@ -2430,7 +2563,8 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 	}
 
 	
-	function eliminaRilievoTable(disegno, id){
+	function eliminaRilievoTable(disegno, id){	
+		
 		
 		new_items_rilievo=[];
 		
@@ -2472,7 +2606,80 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 			table_ril.columns.adjust().draw();
 	}
 
+	$('#btnAddFileInput').on('click', function() {
+        createFileInput();
+        var input = $('#fileInputsContainer input[type="file"]:last');
+        input.trigger('click');
+      });
 	
+	 function createFileInput() {
+	        var input = $('<input type="file">');
+	        id = $('#id_item_rilievi_modifica').val()
+	        
+	        input.attr('name', 'modifica_pezzi_rilievo_upload_' + id);
+	        input.attr("accept", ".pdf,.PDF");
+	        
+	        // Assegna il file selezionato all'input corrispondente
+	        input.on('change', function() {
+	          var file = this.files[0];
+	          console.log('File selezionato:', file);
+	          $('#label_file_rilievi').html($(this).val().split("\\")[2]);
+	  		if($(this).val()!=null && $(this).val()!='' && $('#pezzi_ingresso_mod').val()!=null && $('#pezzi_ingresso_mod').val()!=''){
+	  			$('#salva_btn_rilievi').attr('disabled', false);
+	  		}else{
+	  			$('#salva_btn_rilievi').attr('disabled', true);
+	  		}
+	        });
+	        
+	        // Aggiungi l'input al container
+	        $('#fileInputsContainer').append(input);
+	        input.hide();
+	        
+	  
+	      }
+	
+	$('#fileupload_rilievi').change(function(){
+		
+		$('#label_file_rilievi').html($(this).val().split("\\")[2]);
+		if($(this).val()!=null && $(this).val()!='' && $('#pezzi_ingresso_mod').val()!=null && $('#pezzi_ingresso_mod').val()!=''){
+			$('#salva_btn_rilievi').attr('disabled', false);
+		}else{
+			$('#salva_btn_rilievi').attr('disabled', true);
+		}
+
+	})
+	
+	
+	function modificaRilievoTable(id_item,button){
+		console.log(id_item);
+		$('#id_item_rilievi_modifica').val(id_item);
+		
+		 var component = $(button);
+		  var rowId = component.closest('tr').attr('id');
+		$('#id_row_rilievi').val(rowId);
+		
+		
+		console.log(id_item_rilievi_modifica);
+		$('#modalModificaPezziIngresso').modal();
+		
+	
+
+		
+		$('#pezzi_ingresso_mod').change(function(){
+			
+			if($(this).val()!=null && $(this).val()!='' && $('#label_file_rilievi').html()!=null && $('#label_file_rilievi').html()!=''){
+				$('#salva_btn_rilievi').attr('disabled', false);
+			}else{
+			
+				$('#salva_btn_rilievi').attr('disabled', true);
+			}
+			
+		});
+		
+		
+	}
+	
+	var id_item_rilievi_modifica = null;
  	var stato_lav = null;
  	 
  	var commessa_options;
@@ -2498,7 +2705,7 @@ function modalSpostaStrumenti(id_util, id_sede_util){
  	
    $(document).ready(function() {
 	   
-	  
+	  console.log("test")
 	   
 	   commessa_options = $('#commessa option').clone();
 	   
@@ -2860,6 +3067,13 @@ tableModRil = $('#tabItemModRil').DataTable({
       scrollX: false,
       stateSave: true,
       fixedColumns: false,
+      rowCallback: function(row, data, index) {
+    	    // Genera un ID univoco per ogni riga
+    	    var rowId = 'row_' + index;
+    	    
+    	    // Assegna l'ID alla riga
+    	    $(row).attr('id', rowId);
+    	  },
       columns : [
      	 {"data" : "id_proprio"},
      	 {"data" : "disegno"},
@@ -2891,7 +3105,7 @@ tableModRil.buttons().container().appendTo( '#tabItemModRil_wrapper .col-sm-6:eq
     });     
 
 
-  tableModRil = $('#tabItemModRil').DataTable();
+  /* tableModRil = $('#tabItemModRil').DataTable(); */
 
 tableModRil.columns().eq( 0 ).each( function ( colIdx ) {
 $( 'input', tableModRil.column( colIdx ).header() ).on( 'keyup', function () {
@@ -3477,6 +3691,47 @@ else{
      }
    	    
    	}); 
+     
+     
+     
+     function aggiornaTabellaRilievi(numero_pezzi, item){
+    	 
+   
+    	 var row = $('#id_row_rilievi').val();
+    	 
+    	    	 
+    
+    	    var colIndex = 3;
+    	    var rowIndex = parseInt(row.split("_")[1]);
+    	    
+    	    var n_pezzi_old = tableModRil.cell(rowIndex, colIndex).data();
+    	    var note = tableModRil.cell(rowIndex, 4).data();
+    	    
+    	    tableModRil.cell(rowIndex, colIndex).data(numero_pezzi);
+    	    var oggi = new Date();
+    	    var giorno = oggi.getDate();
+    	    var mese = oggi.getMonth() + 1;
+    	    var anno = oggi.getFullYear();
+    	    if(mese<10){
+    	    	mese = "0"+mese;
+    	    }
+
+    	    var dataOggi = giorno + '/' + mese + '/' + anno;
+    	    tableModRil.cell(rowIndex, 4).data(note+"- N. pezzi mod. da "+n_pezzi_old+" a " +numero_pezzi+" in data "+dataOggi+" da ${utente.getNominativo()} ");
+    	   // tableModRil.columns.adjust().draw();
+    	
+    	$('#modalModificaPezziIngresso').modal("hide");
+     }
+     
+     
+     $('#modalModificaPezziIngresso').on("hidden.bs.modal", function(){
+    	
+    	 $('#pezzi_ingresso_mod').val("");
+    	 $('#fileupload_rilievi').val(null);
+    	 $('#label_file_rilievi').html("");
+    	 
+    	 
+     });
 
 
 	     function accettaItem(){

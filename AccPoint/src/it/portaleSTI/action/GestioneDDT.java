@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -30,6 +32,7 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.MagAllegatoItemDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagCausaleDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
@@ -218,7 +221,23 @@ public class GestioneDDT extends HttpServlet {
 			id_ddt = Utility.decryptData(id_ddt);
 			MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoByDDT(Integer.parseInt(id_ddt), session);
 			String path = Costanti.PATH_FOLDER+"Magazzino\\DDT\\PC_"+ pacco.getId() + "\\" + pacco.getDdt().getLink_pdf(); 
-			File file = new File(path);
+			
+			ArrayList<MagAllegatoItemDTO> lista_allegati_item = GestioneMagazzinoBO.getListaAllegatiItem(pacco, session);
+			if(lista_allegati_item.size()>0) {
+				PDFMergerUtility merger = new PDFMergerUtility();
+		;
+				 merger.addSource(path);
+				for (MagAllegatoItemDTO magAllegatoItemDTO : lista_allegati_item) {
+					
+					  
+					  merger.addSource(Costanti.PATH_FOLDER+"Magazzino\\AllegatiItem\\"+magAllegatoItemDTO.getId_item()+"\\"+magAllegatoItemDTO.getNome_file());
+				}
+				merger.setDestinationFileName(Costanti.PATH_FOLDER+"Magazzino\\DDT\\PC_"+ pacco.getId() + "\\merged.pdf");
+		        merger.mergeDocuments();
+		        
+			}
+			
+			File file = new File(Costanti.PATH_FOLDER+"Magazzino\\DDT\\PC_"+ pacco.getId() + "\\merged.pdf");
 			
 			FileInputStream fileIn = new FileInputStream(file);
 			 

@@ -18,6 +18,11 @@ public class ForPiaStatoDTO {
 	}
 
 
-
-	
+public ForPiaStatoDTO() {
+	super();
+}
+public ForPiaStatoDTO(int id, String descrizione) {
+	this.id = id;
+	this.descrizione= descrizione;
+}
 }

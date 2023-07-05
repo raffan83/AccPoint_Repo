@@ -23,6 +23,8 @@ import it.portaleSTI.DTO.ForEmailDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
+import it.portaleSTI.DTO.ForPiaStatoDTO;
+import it.portaleSTI.DTO.ForPiaTipoDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
@@ -782,6 +784,88 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 			result = lista.get(0);
 		}
 		
+		return result;
+	}
+
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioni(String anno, Session session) {
+		ArrayList<ForPiaPianificazioneDTO> lista = null;
+		
+		Query query = session.createQuery("from ForPiaPianificazioneDTO where YEAR(data) = :_anno");
+		query.setParameter("_anno", Integer.parseInt(anno));
+		
+		
+		lista = (ArrayList<ForPiaPianificazioneDTO>) query.list();
+		
+		
+		
+		return lista;
+	}
+
+	public static ArrayList<ForPiaStatoDTO> getListaStati(Session session) {
+		ArrayList<ForPiaStatoDTO> lista = null;
+		
+		Query query = session.createQuery("from ForPiaStatoDTO");
+		
+		
+		lista = (ArrayList<ForPiaStatoDTO>) query.list();
+		
+		
+		
+		return lista;
+	}
+	
+	public static ArrayList<ForPiaTipoDTO> getListaTipi(Session session) {
+		ArrayList<ForPiaTipoDTO> lista = null;
+		
+		Query query = session.createQuery("from ForPiaTipoDTO");
+		
+		
+		lista = (ArrayList<ForPiaTipoDTO>) query.list();
+		
+		
+		
+		return lista;
+	}
+
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioniStato(int stato, Session session) {
+		
+		ArrayList<ForPiaPianificazioneDTO> lista = null;
+		
+		Query query = session.createQuery("from ForPiaPianificazioneDTO where stato.id =:_stato");
+		query.setParameter("_stato", stato);
+		
+		lista = (ArrayList<ForPiaPianificazioneDTO>) query.list();
+		
+		
+		
+		return lista;
+	}
+
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioniDocente(String dateFrom, String dateTo,	int id_docente, Session session) throws HibernateException, ParseException {
+		
+		ArrayList<ForPiaPianificazioneDTO> lista = null;
+		ArrayList<ForPiaPianificazioneDTO> result = new ArrayList<ForPiaPianificazioneDTO>();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+
+		Query query = session.createQuery("from ForPiaPianificazioneDTO  where data between :_dateFrom and :_dateTo"); 
+					
+		query.setParameter("_dateFrom", sdf.parse(dateFrom));
+		query.setParameter("_dateTo", sdf.parse(dateTo));
+			
+			
+		lista = (ArrayList<ForPiaPianificazioneDTO>) query.list();
+		
+		for (ForPiaPianificazioneDTO pianificazione : lista) {
+			for (ForDocenteDTO docente : pianificazione.getListaDocenti()) {
+				if(docente.getId()==id_docente) {
+					result.add(pianificazione);
+				}
+			}
+			
+		}
+				
 		return result;
 	}
 

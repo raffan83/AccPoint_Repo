@@ -52,7 +52,9 @@
         <property name="pezzi_ingresso" type="int">
             <column name="pezzi_ingresso" />
         </property>	
-
+ <property name="allegato_rilievi" type="java.lang.String">
+            <column name="allegato_rilievi" />
+        </property>
   
 
 	

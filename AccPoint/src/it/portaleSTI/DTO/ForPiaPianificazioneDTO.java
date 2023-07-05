@@ -19,6 +19,8 @@ public class ForPiaPianificazioneDTO {
 	private String ora_fine;
 	private int nUtenti;
 	private String note;
+	private int nCella;
+	private Date data_reminder;
 
 	private Set<ForDocenteDTO> listaDocenti = new HashSet<ForDocenteDTO>(0);
 	
@@ -167,6 +169,30 @@ public class ForPiaPianificazioneDTO {
 		}
 		
 		return jobj;
+	}
+
+
+
+	public int getnCella() {
+		return nCella;
+	}
+
+
+
+	public void setnCella(int nCella) {
+		this.nCella = nCella;
+	}
+
+
+
+	public Date getData_reminder() {
+		return data_reminder;
+	}
+
+
+
+	public void setData_reminder(Date data_reminder) {
+		this.data_reminder = data_reminder;
 	}
 	
 }

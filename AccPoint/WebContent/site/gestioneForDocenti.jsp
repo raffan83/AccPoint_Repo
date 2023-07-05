@@ -93,8 +93,9 @@
 	<c:if test="${docente.cv !=null && docente.cv != '' }">
 	<a target="_blank" class="btn btn-danger customTooltip" href="gestioneFormazione.do?action=download_curriculum&id_docente=${utl:encryptData(docente.id)}" title="Click per scaricare il cv"><i class="fa fa-file-pdf-o"></i></a>
 	</c:if>
-	<a class="btn btn-warning customTooltip" onClicK="modificaDocenteModal('${docente.id}','${utl:escapeJS(docente.nome) }','${utl:escapeJS(docente.cognome)}','${docente.formatore }','${docente.cv }')" title="Click per modificare il docente"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning customTooltip" onClicK="modificaDocenteModal('${docente.id}','${utl:escapeJS(docente.nome) }','${utl:escapeJS(docente.cognome)}','${docente.formatore }','${docente.cv }','${docente.email }', '${docente.utenteMilestone }')" title="Click per modificare il docente"><i class="fa fa-edit"></i></a>
 	<a class="btn btn-info customTooltip" onClicK="modalConsuntivoDocente('${docente.id}', '${utl:escapeJS(docente.nome) }','${utl:escapeJS(docente.cognome)}')" title="Click per visualizzare il consuntivo docente"><i class="fa fa-search"></i></a> 
+	<a class="btn btn-info customTooltip" onClicK="modalConsuntivoDocente('${docente.id}', '${utl:escapeJS(docente.nome) }','${utl:escapeJS(docente.cognome)}', 1)" title="Click per visualizzare il consuntivo ore pianificate docente"><i class="fa fa-calendar"></i></a>
 	</td>
 	</tr>
 	</c:forEach>
@@ -169,14 +170,35 @@
        	<div class="col-sm-9">             	  	
         
        	<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload" name="fileupload" type="file" ></span><label id="label_file"></label></div>
-       	</div>		
+       	</div>		<br>
             	
        
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Email</label>
+       	</div>
+       	<div class="col-sm-9">             	  	
+        
+          <input id="email" name="email" class="form-control" type="text" style="width:100%" >
+       	</div>	
        
        
+       </div><br>
        
-       </div>
-  		 
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Username Milestone</label>
+       	</div>
+       	<div class="col-sm-9">             	  	
+        
+          <input id="user_milestone" name="user_milestone" class="form-control" type="text" style="width:100%" >
+       	</div>	
+       
+       
+       </div><br>
+  		 </div>
       <div class="modal-footer">
 		<input type="hidden" id="formatore" name="formatore">
 		<button class="btn btn-primary" type="submit">Salva</button> 
@@ -244,8 +266,32 @@
        	<div class="col-sm-9">             	  	
         
        	<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload_mod" name="fileupload_mod" type="file" ></span><label id="label_file_mod"></label></div>
-       	</div>		
-            	
+       	</div>		<br>
+       	
+       	<div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Email</label>
+       	</div>
+       	<div class="col-sm-9">             	  	
+        
+          <input id="email_mod" name="email_mod" class="form-control" type="text" style="width:100%" >
+       	</div>	
+       
+       
+       </div><br>
+            	 <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Username Milestone</label>
+       	</div>
+       	<div class="col-sm-9">             	  	
+        
+          <input id="user_milestone_mod" name="user_milestone_mod" class="form-control" type="text" style="width:100%" >
+       	</div>	
+       
+       
+       </div><br>
        
        </div>
   		 
@@ -337,6 +383,7 @@
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="docente_id">
+      <input type="hidden" id="pianificazione">
    
 		<a class="btn btn-primary" onclick="$('#myModalConsuntivoDocente').modal('hide')" >Chiudi</a>
       </div>
@@ -386,9 +433,10 @@ function modalNuovoDocente(){
 	
 }
 
-function modalConsuntivoDocente(id_docente, nome, cognome){
+function modalConsuntivoDocente(id_docente, nome, cognome, pianificazione){
 	
 	$('#docente_id').val(id_docente);
+	$('#pianificazione').val(pianificazione);
 	
 	$('#myModalLabelDocente').html("Consuntivo docente: "+nome+" "+cognome);
 	
@@ -401,8 +449,9 @@ function filtraDate(){
 	
 	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
  	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
- 	var docente = $('#docente_id').val()
- 	dataString = "action=consuntivo_docente&docente="+docente+"&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+ 	var docente = $('#docente_id').val();
+ 	var pianificazione = $('#pianificazione').val();
+ 	dataString = "action=consuntivo_docente&pianificazione="+pianificazione+"&docente="+docente+"&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
  			endDatePicker.format('YYYY-MM-DD');
  	
  	 pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -424,7 +473,7 @@ function resetDate(){
 
 
 
-function modificaDocenteModal(id_docente, nome, cognome, formatore, cv){
+function modificaDocenteModal(id_docente, nome, cognome, formatore, cv, email, user_milestone){
 	
 	$('#id_docente').val(id_docente);
 	$('#nome_mod').val(nome);
@@ -437,7 +486,9 @@ function modificaDocenteModal(id_docente, nome, cognome, formatore, cv){
 		$('#check_formatore_mod').iCheck('uncheck');
 		$('#formatore_mod').val(0);
 	}
+	$('#email_mod').val(email);
 	
+	$('#user_milestone_mod').val(user_milestone);
 	
 	$('#label_file_mod').html(cv);
 

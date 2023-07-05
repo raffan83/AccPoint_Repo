@@ -888,7 +888,7 @@ $('#cf').focusout(function(){
 		var cf = JSON.parse(json_cf);
 		
 		if(cf.includes($(this).val())){
-			$('#cf').css('border', '1px solid #f00');
+			$('#cf').css('border', '1px solid #f00');S
 			$('#label_error').show();
 			$('#save_btn').attr("disabled",true);
 		}

@@ -42,7 +42,9 @@ import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DpiAllegatiDTO;
 import it.portaleSTI.DTO.MagAllegatoDTO;
+import it.portaleSTI.DTO.MagAllegatoItemDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagCausaleDTO;
@@ -173,8 +175,13 @@ public class GestionePacco extends HttpServlet {
 		String sede_util = "";
 		String ritardo = "";
 		String pezzi_ingresso="";
+		Map<String, String> filename_allegato_rilievo = new HashMap<String,String>();
+		String data_json_rilievi ="";
+		String modifica_pezzi_rilievo_id = "";
 		
 		FileItem pdf = null;
+		
+		Map<String,FileItem> allegato_rilievo = new HashMap<String,FileItem>();
 		MagPaccoDTO pacco = new MagPaccoDTO();
 		MagDdtDTO ddt = new MagDdtDTO();
 		 Map<MagItemDTO, String> map = new HashMap<MagItemDTO, String>();
@@ -277,90 +284,90 @@ public class GestionePacco extends HttpServlet {
 					}
 					if(item.getFieldName().equals("json_rilievi")) {
 						
-						
-						String data_json = item.getString();
-					    if(data_json!=null && !data_json.equals("")) {
-						JsonElement jelement = new JsonParser().parse(data_json);
-						JsonArray json_array = jelement.getAsJsonArray();
-						
-						
-						for(int i = 0 ; i<json_array.size();i++) {
-							
-							rilievi=true;
-							JsonObject json_obj = json_array.get(i).getAsJsonObject();
-							
-							String id_proprio = null;
-							
-							if(json_obj.get("id_proprio")!=null) {
-								id_proprio =json_obj.get("id_proprio").getAsString(); 
-							}									
-							String disegno = json_obj.get("disegno").getAsString();
-							String variante = json_obj.get("variante").getAsString();
-	 						pezzi_ingresso = json_obj.get("pezzi_ingresso").getAsString();
-	 						String note_rilievo = json_obj.get("note_rilievo").getAsString();
-						//	String quantita = json_obj.get("quantita").getAsString();
-	 						String id = null;
-							if(json_obj.get("id")!=null) {
-								id = json_obj.get("id").getAsString();
-							}
-							
-							MagItemDTO mag_item = 	null;
-							
-	 						if(id!=null) {
-	 							rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_proprio), session);
-	 							mag_item = GestioneMagazzinoBO.getItemById(Integer.parseInt(id), session);
-	 						}else {
-	 							rilievo = new RilMisuraRilievoDTO();
-	 							mag_item = 	new MagItemDTO();
-	 							rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
-	 						}
-							rilievo.setDisegno(disegno);
-							rilievo.setVariante(variante);
-							rilievo.setCifre_decimali(3);
-							
-							if(pezzi_ingresso!= null && !pezzi_ingresso.equals("")) {
-								rilievo.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));	
-							}
-							
-							
-							rilievo.setId_cliente_util(Integer.parseInt(cliente_util));
-							//rilievo.setNome_cliente_util(util.getNome());
-							rilievo.setId_sede_util(Integer.parseInt(sede_util.split("_")[0]));
-							rilievo.setData_inizio_rilievo(new Date());
-							rilievo.setCommessa(commessa);
-							rilievo.setClasse_tolleranza("m");
-							
-						
-							
-							if(id!=null) {
-								session.update(rilievo);
-							}else {
-								session.save(rilievo);
-							}
-							
-							mag_item.setId_tipo_proprio(rilievo.getId());							
-							
-							mag_item.setTipo_item(new MagTipoItemDTO(4, ""));
-							mag_item.setDescrizione(disegno+" "+variante);
-							mag_item.setDisegno(disegno);
-							mag_item.setVariante(variante);
-							if(pezzi_ingresso!= null && !pezzi_ingresso.equals("")) {
-								mag_item.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));
-							}
-							
-							
-							map.put(mag_item, "0_"+note_rilievo);
-							
-							if(id!=null) {
-								
-								session.update(mag_item);
-							}else {
-								
-								GestioneMagazzinoBO.saveItem(mag_item, session);
-							}
-						}
-							
-						}
+						data_json_rilievi = item.getString();
+						//String data_json = item.getString();
+//					    if(data_json!=null && !data_json.equals("")) {
+//						JsonElement jelement = new JsonParser().parse(data_json);
+//						JsonArray json_array = jelement.getAsJsonArray();
+//						
+//						
+//						for(int i = 0 ; i<json_array.size();i++) {
+//							
+//							rilievi=true;
+//							JsonObject json_obj = json_array.get(i).getAsJsonObject();
+//							
+//							String id_proprio = null;
+//							
+//							if(json_obj.get("id_proprio")!=null) {
+//								id_proprio =json_obj.get("id_proprio").getAsString(); 
+//							}									
+//							String disegno = json_obj.get("disegno").getAsString();
+//							String variante = json_obj.get("variante").getAsString();
+//	 						pezzi_ingresso = json_obj.get("pezzi_ingresso").getAsString();
+//	 						String note_rilievo = json_obj.get("note_rilievo").getAsString();
+//						//	String quantita = json_obj.get("quantita").getAsString();
+//	 						String id = null;
+//							if(json_obj.get("id")!=null) {
+//								id = json_obj.get("id").getAsString();
+//							}
+//							
+//							MagItemDTO mag_item = 	null;
+//							
+//	 						if(id!=null) {
+//	 							rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_proprio), session);
+//	 							mag_item = GestioneMagazzinoBO.getItemById(Integer.parseInt(id), session);
+//	 						}else {
+//	 							rilievo = new RilMisuraRilievoDTO();
+//	 							mag_item = 	new MagItemDTO();
+//	 							rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
+//	 						}
+//							rilievo.setDisegno(disegno);
+//							rilievo.setVariante(variante);
+//							rilievo.setCifre_decimali(3);
+//							
+//							if(pezzi_ingresso!= null && !pezzi_ingresso.equals("")) {
+//								rilievo.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));	
+//							}
+//							
+//							
+//							rilievo.setId_cliente_util(Integer.parseInt(cliente_util));
+//							//rilievo.setNome_cliente_util(util.getNome());
+//							rilievo.setId_sede_util(Integer.parseInt(sede_util.split("_")[0]));
+//							rilievo.setData_inizio_rilievo(new Date());
+//							rilievo.setCommessa(commessa);
+//							rilievo.setClasse_tolleranza("m");
+//							
+//						
+//							
+//							if(id!=null) {
+//								session.update(rilievo);
+//							}else {
+//								session.save(rilievo);
+//							}
+//							
+//							mag_item.setId_tipo_proprio(rilievo.getId());							
+//							
+//							mag_item.setTipo_item(new MagTipoItemDTO(4, ""));
+//							mag_item.setDescrizione(disegno+" "+variante);
+//							mag_item.setDisegno(disegno);
+//							mag_item.setVariante(variante);
+//							if(pezzi_ingresso!= null && !pezzi_ingresso.equals("")) {
+//								mag_item.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));
+//							}
+//							
+//							
+//							map.put(mag_item, "0_"+note_rilievo);
+//							
+//							if(id!=null) {
+//								
+//								session.update(mag_item);
+//							}else {
+//								
+//								GestioneMagazzinoBO.saveItem(mag_item, session);
+//							}
+//						}
+//							
+//						}
 						
 					}
 					if(item.getFieldName().equals("select1")) {
@@ -520,18 +527,130 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("ritardo")) {
 						ritardo = item.getString();
 					}
+					if(item.getFieldName().equals("modifica_pezzi_rilievo_id")) {
+						modifica_pezzi_rilievo_id = item.getString();
+					}
 				}else {
 					
-					if(item.getName()!="") {
+					if(item.getName()!="" && !item.getFieldName().startsWith("modifica_pezzi_rilievo_upload")) {
 					pdf = item;
 					link_pdf = item.getName();
 					
+					}
+					else if(item.getFieldName().startsWith("modifica_pezzi_rilievo_upload")) {
+						
+						allegato_rilievo.put(item.getFieldName().split("_")[4], item);
+						System.out.println(item.getSize());
+						filename_allegato_rilievo.put(item.getFieldName().split("_")[4], item.getName());
 					}
 					
 				}
 			
 		}
 	
+			
+			if(data_json_rilievi!=null && !data_json_rilievi.equals("")) {
+				JsonElement jelement = new JsonParser().parse(data_json_rilievi);
+				JsonArray json_array = jelement.getAsJsonArray();
+				
+				
+				for(int i = 0 ; i<json_array.size();i++) {
+					
+					rilievi=true;
+					JsonObject json_obj = json_array.get(i).getAsJsonObject();
+					
+					String id_proprio = null;
+					
+					if(json_obj.get("id_proprio")!=null) {
+						id_proprio =json_obj.get("id_proprio").getAsString(); 
+					}									
+					String disegno = json_obj.get("disegno").getAsString();
+					String variante = json_obj.get("variante").getAsString();
+						pezzi_ingresso = json_obj.get("pezzi_ingresso").getAsString();
+						String note_rilievo = json_obj.get("note_rilievo").getAsString();
+				//	String quantita = json_obj.get("quantita").getAsString();
+						String id = null;
+					if(json_obj.get("id")!=null) {
+						id = json_obj.get("id").getAsString();
+					}
+					
+					MagItemDTO mag_item = 	null;
+					
+						if(id!=null) {
+							rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_proprio), session);
+							mag_item = GestioneMagazzinoBO.getItemById(Integer.parseInt(id), session);							
+							
+							if(allegato_rilievo.size()>0 && allegato_rilievo.containsKey(id)) {
+								
+								String filename = saveFile(allegato_rilievo.get(id), id, filename_allegato_rilievo.get(id));
+								DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+								//note_rilievo = "N. pezzi mod. da "+mag_item.getPezzi_ingresso()+" a " +pezzi_ingresso+" in data "+df.format(new Date())+" da "+utente.getNominativo();
+								MagAllegatoItemDTO allegato = new MagAllegatoItemDTO();
+								allegato.setData(new Date());
+								allegato.setNome_file(filename);
+								allegato.setUtente(utente);
+								allegato.setId_item(Integer.parseInt(id));
+								session.save(allegato);
+							}
+							
+							
+						}else {
+							rilievo = new RilMisuraRilievoDTO();
+							mag_item = 	new MagItemDTO();
+							rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
+						}
+					rilievo.setDisegno(disegno);
+					rilievo.setVariante(variante);
+					rilievo.setCifre_decimali(3);
+					
+					if(pezzi_ingresso!= null && !pezzi_ingresso.equals("")) {
+						rilievo.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));	
+					}
+					
+					
+					rilievo.setId_cliente_util(Integer.parseInt(cliente_util));
+					//rilievo.setNome_cliente_util(util.getNome());
+					rilievo.setId_sede_util(Integer.parseInt(sede_util.split("_")[0]));
+					rilievo.setData_inizio_rilievo(new Date());
+					rilievo.setCommessa(commessa);
+					rilievo.setClasse_tolleranza("m");
+					
+				
+					
+					if(id!=null) {
+						session.update(rilievo);
+					}else {
+						session.save(rilievo);
+					}
+					
+					mag_item.setId_tipo_proprio(rilievo.getId());							
+					
+					mag_item.setTipo_item(new MagTipoItemDTO(4, ""));
+					mag_item.setDescrizione(disegno+" "+variante);
+					mag_item.setDisegno(disegno);
+					mag_item.setVariante(variante);
+					if(pezzi_ingresso!= null && !pezzi_ingresso.equals("")) {
+						mag_item.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));
+					}
+					
+					
+					map.put(mag_item, "0_"+note_rilievo);
+					
+					if(id!=null) {
+						
+						session.update(mag_item);
+					}else {
+						
+						GestioneMagazzinoBO.saveItem(mag_item, session);
+					}
+				}
+					
+				}
+			
+			
+			
+			
+			
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			new SimpleDateFormat("HH:mm");
 	
@@ -778,7 +897,12 @@ public class GestionePacco extends HttpServlet {
 						
 						}
 					if(str.length>1) {
-					item_pacco.setNote(str[1]);
+						if(allegato_rilievo.size()>0 && item_pacco.getNote()!=null && !item_pacco.getNote().equals("")) {
+							item_pacco.setNote(item_pacco.getNote()+" - "+str[1]);
+						}else {
+							item_pacco.setNote(str[1]);
+						}
+					
 					}	
 				}
 
@@ -797,6 +921,8 @@ public class GestionePacco extends HttpServlet {
 			if(pdf!=null) {
 				GestioneMagazzinoBO.uploadPdf(pdf, pacco.getId(), pdf.getName());
 			}
+			
+			
 						
 
 			
@@ -1572,6 +1698,42 @@ public class GestionePacco extends HttpServlet {
 			
 		}
 	
+		
+		else if(action.equals("upload_allegato_rilievi")) {
+			ajax = true;
+			String id_item = request.getParameter("id_item_rilievo");
+							
+			ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+			PrintWriter out = response.getWriter();
+			response.setContentType("application/json");						
+				
+				List<FileItem> items = uploadHandler.parseRequest(request);
+				for (FileItem item : items) {
+					if (!item.isFormField()) {							
+															
+						if(id_item!=null) {
+						MagAllegatoItemDTO allegato = new MagAllegatoItemDTO();
+						allegato.setData(new Date());
+						allegato.setId_item(Integer.parseInt(id_item));
+						
+						allegato.setUtente(utente);
+						
+						String filename = saveFile(item,  id_item, item.getName());	
+						allegato.setNome_file(filename);
+						session.save(allegato);
+						}														
+					}
+				}
+
+				JsonObject myObj = new JsonObject();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Upload effettuato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+			
+		}
+		
 		}catch(Exception e) {
 			
 			session.getTransaction().rollback();
@@ -1595,6 +1757,48 @@ public class GestionePacco extends HttpServlet {
 			
 		}
 	}
+	
+	private String saveFile(FileItem item,String id_item, String filename) {
+
+	 	String path_folder =Costanti.PATH_FOLDER+"\\Magazzino\\AllegatiItem\\"+id_item+"\\";
+	 	
+	 
+		File folder=new File(path_folder);
+		
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+	
+		int index = 1;
+		
+		while(true)
+		{
+			File file=null;
+			
+			
+			file = new File(path_folder+filename);			
+			
+			if(file.exists()) {
+				filename = filename.replace(".pdf", "").replace(".PDF", "").replace("_"+(index-1), "")+"_"+index+".pdf";
+				index++;
+			}else {
+				try {
+					item.write(file);
+					break;
+
+				} catch (Exception e) 
+				{
+
+					e.printStackTrace();
+					break;
+				}
+			}
+			
+				
+		}
+		return filename;
+	}
+
 
 
 }

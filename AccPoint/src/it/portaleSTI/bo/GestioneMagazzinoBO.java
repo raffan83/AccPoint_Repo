@@ -21,6 +21,7 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAllegatoDTO;
+import it.portaleSTI.DTO.MagAllegatoItemDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
@@ -465,6 +466,11 @@ public static ArrayList<MagItemPaccoDTO> getListaStrumentiInMagazzino(Session se
 public static ArrayList<MagItemPaccoDTO> getListaItemPaccoPerData(String dateFrom, String dateTo, String tipo_data, int stato, Session session) throws Exception {
 	
 	return GestioneMagazzinoDAO.getListaItemPaccoPerData(dateFrom, dateTo, tipo_data, stato, session);
+}
+
+public static ArrayList<MagAllegatoItemDTO> getListaAllegatiItem(MagPaccoDTO pacco, Session session) throws Exception {
+	// TODO Auto-generated method stub
+	return GestioneMagazzinoDAO.getListaAllegatiItem(pacco, session);
 }
 
 

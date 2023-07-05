@@ -1,8 +1,10 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@tag import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
+<%@ tag import="java.util.Calendar" %>
 <% 
 	UtenteDTO user =(UtenteDTO)request.getSession().getAttribute("userObj");
+	int anno = Calendar.getInstance().get(Calendar.YEAR);
 %>
 
 
@@ -309,7 +311,9 @@
 	      	<li><a href="#" onclick="callAction('gestioneFormazione.do?action=scadenzario',null,true);">Scadenzario</a></li>
 	      			<% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_FORMAZIONE_ADMIN")){%>		
 	      	<li><a href="#" onclick="callAction('gestioneFormazione.do?action=gestione_questionari',null,true);">Gestione questionari</a></li>
-	      	<li><a href="#" onclick="callAction('gestioneFormazione.do?action=gestione_pianificazione',null,true);">Pianificazione</a></li>
+	      	
+	      
+	      	<li><a href="#" onclick="callAction('gestioneFormazione.do?action=gestione_pianificazione&anno=<%=anno %>',null,true);">Pianificazione</a></li>
 	      	<%} %>
           </ul>
         </li> 

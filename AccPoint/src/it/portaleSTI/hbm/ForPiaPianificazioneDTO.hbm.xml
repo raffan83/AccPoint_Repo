@@ -52,6 +52,13 @@
             </many-to-many>
         	
         </set> 
+        <property name="nCella" type="int" >
+            <column name="nCella" />
+        </property>
+        
+          <property name="data_reminder" type="java.util.Date" >
+            <column name="data_reminder" />
+        </property>
         
     </class>
 </hibernate-mapping>

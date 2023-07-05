@@ -12,6 +12,9 @@ import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -100,12 +103,15 @@ import it.portaleSTI.DTO.ForEmailDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
+import it.portaleSTI.DTO.ForPiaStatoDTO;
+import it.portaleSTI.DTO.ForPiaTipoDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Costanti;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.mail.EmailException;
 
 public class GestioneFormazioneBO {
 	static final Logger logger = Logger.getLogger(GestioneFormazioneBO.class);
@@ -2019,6 +2025,68 @@ public class GestioneFormazioneBO {
 		
 		return GestioneFormazioneDAO.getPianificazioneFromId( id,  session);
 	
+	}
+
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioni(String anno, Session session) {
+		
+		return GestioneFormazioneDAO.getListaPianificazioni(anno, session);
+	}
+
+	public static ArrayList<ForPiaStatoDTO> getListaStati(Session session) {
+		
+		return GestioneFormazioneDAO.getListaStati(session);
+	}
+
+	public static ArrayList<ForPiaTipoDTO> getListaTipi(Session session) {
+		
+		return GestioneFormazioneDAO.getListaTipi(session);
+	}
+
+	public static void sendEmailAttestatiNonConsegnati(String path) throws EmailException {
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni_fatturate = GestioneFormazioneDAO.getListaPianificazioniStato(4, session);
+		
+		LocalDate today = LocalDate.now();
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	
+		for (ForPiaPianificazioneDTO p : lista_pianificazioni_fatturate) {
+			
+			if(p.getData_reminder()!=null) {
+				
+				LocalDate date =  p.getData_reminder().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				
+				if(date.equals(today)) {
+					
+					String messaggio = "Si comunica che dalla pianificazione corsi emerge che per la commessa "+p.getId_commessa()+" &egrave; presente un item nello stato \"FATTURATO SENZA ATTESTATI\" in data "+df.format(p.getData())+".";
+					SendEmailBO.sendEmailReminderPianificazione(messaggio,  path);
+					
+					
+					p.setData_reminder(Date.from(date.plusWeeks(1).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+					session.update(p);
+				}
+			}
+		}
+		
+	
+			
+		
+		
+			
+	
+				
+		session.getTransaction().commit();
+		session.close();
+		
+		
+	}
+
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioniDocente(String dateFrom, String dateTo,
+			int parseInt, Session session) throws HibernateException, ParseException {
+		
+		return GestioneFormazioneDAO.getListaPianificazioniDocente( dateFrom,  dateTo,
+				 parseInt,  session);
 	}
 
 	

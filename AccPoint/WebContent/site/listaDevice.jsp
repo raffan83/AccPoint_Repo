@@ -100,7 +100,8 @@
 <th>ID</th>
 <th>Codice Interno</th>
 <th>Tipo Device</th>
-<th>Company</th>
+<th>Company Proprietaria</th>
+<th>Company Utilizzatrice</th>
 <th>Dipendente</th>
 <th>Costruttore</th>
 <th>Modello</th>
@@ -122,6 +123,7 @@
 	<td>${device.id }</td>	
 	<td>${device.codice_interno }</td>
 	<td>${device.tipo_device.descrizione }</td>
+	<td>${device.company_proprietaria.ragione_sociale }</td>
 	<td>${device.company_util.ragione_sociale }</td>
 	<td>${device.dipendente.nome } ${device.dipendente.cognome }</td>
 	<td>${device.costruttore }</td>
@@ -529,7 +531,7 @@
                <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Company</label>
+       		<label>Company Utilizzatrice</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -1992,7 +1994,7 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 13 },		    	  
+		    	  { responsivePriority: 1, targets: 14 },		    	  
 		    	  
 		               ], 	        
 	  	      buttons: [   

@@ -152,6 +152,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_controllo = ret.get("data_controllo");
 				String frequenza = ret.get("frequenza");
 				String data_scadenza_controllo = ret.get("data_scadenza_controllo");
+				String note = ret.get("note");
 
 				DpiDTO dpi = new DpiDTO();				
 				
@@ -176,6 +177,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				dpi.setDescrizione(descrizione);
 				dpi.setModello(modello);
 				dpi.setConformita(conformita);
+				dpi.setNote(note);
 				
 				if(collettivo == null) {
 					collettivo = "0";
@@ -249,6 +251,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_controllo = ret.get("data_controllo_mod");
 				String frequenza = ret.get("frequenza_mod");
 				String data_scadenza_controllo = ret.get("data_scadenza_controllo_mod");
+				String note = ret.get("note_mod");
 
 				DpiDTO dpi = GestioneDpiBO.getDpiFormId(Integer.parseInt(id_dpi), session);				
 				
@@ -273,6 +276,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				dpi.setTipo(tipo);	
 				dpi.setDescrizione(descrizione);
 				dpi.setModello(modello);
+				dpi.setNote(note);
 				dpi.setConformita(conformita);
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				if(data_scadenza!=null && !data_scadenza.equals("")) {

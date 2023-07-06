@@ -54,5 +54,9 @@
             <column name="disabilitato" />
         </property>
         
+         <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
+        
     </class>
 </hibernate-mapping>

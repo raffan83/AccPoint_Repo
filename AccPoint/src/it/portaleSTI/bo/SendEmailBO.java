@@ -1270,8 +1270,8 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
 			email.addTo(docente.getEmail());
 		}
 	}
-//	email.addTo("lisa.lombardozzi@crescosrl.net");
-//	email.addTo("segreteria@crescosrl.net");
+	email.addTo("lisa.lombardozzi@crescosrl.net");
+	email.addTo("segreteria@crescosrl.net");
 	String messaggio = null;
 	if(pianificazione.getOra_inizio()!=null && !pianificazione.getOra_inizio().equals("")) {
 		messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" dalle ore "+pianificazione.getOra_inizio()+" per la commessa "+pianificazione.getId_commessa()+": <br><br>";
@@ -1342,9 +1342,8 @@ public static void sendEmailReminderPianificazione(String messaggio, String path
 
 
 	
-	email.addTo("antonio.dicivita@ncsnetwork.it");
-//	email.addTo("lisa.lombardozzi@crescosrl.net");
-//	email.addTo("segreteria@crescosrl.net");
+	email.addTo("lisa.lombardozzi@crescosrl.net");
+	email.addTo("segreteria@crescosrl.net");
 		  
 		  email.setFrom("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl");
 		
@@ -1396,7 +1395,7 @@ public static void sendEmailEliminaPianificazione(ForPiaPianificazioneDTO pianif
 	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
 
 	
-	email.addTo("antonio.dicivita@ncsnetwork.it");
+	
 	
 	for (ForDocenteDTO docente : pianificazione.getListaDocenti()) {
 		if(docente.getEmail()!=null && !docente.getEmail().equals("")) {
@@ -1405,8 +1404,8 @@ public static void sendEmailEliminaPianificazione(ForPiaPianificazioneDTO pianif
 		
 	}
 	
-//	email.addTo("lisa.lombardozzi@crescosrl.net");
-//	email.addTo("segreteria@crescosrl.net");
+	email.addTo("lisa.lombardozzi@crescosrl.net");
+	email.addTo("segreteria@crescosrl.net");
 		  
 		  email.setFrom("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl");
 		

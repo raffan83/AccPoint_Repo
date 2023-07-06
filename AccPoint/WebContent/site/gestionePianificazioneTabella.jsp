@@ -107,7 +107,9 @@ int anno = (Integer) request.getSession().getAttribute("anno");
          <td id="stato_${commessa.ID_COMMESSA.replace('/','')}"></td>
          <c:forEach var="day" begin="1" end="${daysNumber}" step="1">
 
-         	<td id="${commessa.ID_COMMESSA.replace('/','')}_${day}" ondblclick="modalPianificazione('${day}', '${commessa.ID_COMMESSA }')"></td>
+         	<td id="${commessa.ID_COMMESSA.replace('/','')}_${day}"></td> 
+         	<%-- <td id="${commessa.ID_COMMESSA.replace('/','')}_${day}" ondblclick="modalPianificazione('${day}', '${commessa.ID_COMMESSA }')"></td> --%>
+         	<%-- <td id="${commessa.ID_COMMESSA.replace('/','')}_${day}"></td> --%>
          </c:forEach>
          
 
@@ -200,6 +202,27 @@ overflow-x: hidden;
 .legend-label {
   margin-left: 5px;
 }
+
+
+    .riquadro {
+      border: 1px solid red;
+      padding: 5px;
+}
+
+
+/*   .button_add {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #337ab7;
+      text-align: center;
+      line-height: 10px;
+      font-size: 3px;
+      cursor: pointer;
+    }
+ */
+
 </style>
 
 
@@ -210,7 +233,7 @@ overflow-x: hidden;
     
 
 
-function modalPianificazione(day, commessa){
+function modalPianificazione(day, commessa, id){
 	
 
 	
@@ -226,9 +249,9 @@ function modalPianificazione(day, commessa){
 	
 		$('#title_pianificazione').html("Pianificazione "+formattedDate+" Commessa: "+commessa)
 	
-	if(nota!=null && nota!=''){
+	if(nota!=null && nota!='' && id!=null){
 		
-		var id = cell.attr("name");
+		//var id = cell.attr("name");
 		
 		dataObj ={};
 		dataObj.id = id;
@@ -294,6 +317,9 @@ $('#tabForPianificazione thead th').each( function () {
 
 
 
+
+
+
 var settings ={
 		language: {
         	emptyTable : 	"Nessun dato presente nella tabella",
@@ -338,25 +364,56 @@ var settings ={
       stateSave: false,	
            
       columnDefs: [
-    	  
+    	  {
+    		  targets: '_all',
+    		  createdCell: editableCell
+    	  }
     	 
     	  
                ], 	        
 	      buttons: [   
-	         /*  {
-	            extend: 'colvis',
-	            text: 'Nascondi Colonne'  	                   
-			  },  */{
+	     {
 				 extend: 'excel',
   	            text: 'Esporta Excel'  
 			  } ]
                
-    }
+    } 
 
 
-$(document).ready(function() { 
-	pleaseWaitDiv = $('#pleaseWaitDialog');
-	  pleaseWaitDiv.modal();
+    function editableCell(cell) {
+	
+	
+	 $(cell).on('click', function() {
+         $('.selected-cell').removeClass('selected-cell');
+         $('.button_add').remove();
+         $(this).addClass('selected-cell');
+         var cellId = $(this).attr('id');
+         var rowId =  $(this).closest('tr').attr('id');
+         
+         if(document.getElementById('button_add_'+cellId) != null){
+        		 
+         }else{
+        	 $(this).append('<button class="button_add btn btn-primary btn-sm" id="button_add_'+cellId+'\" onclick="modalPianificazione(\''+cellId.split("_")[3]+'\', \''+rowId+'\')" style="margin-top:5px"><i class="fa fa-plus"></i></button> '); 
+         }
+         
+       });
+
+	
+	
+	} 
+
+
+
+$(window).on('load', function() {
+	
+	  pleaseWaitDiv.modal('hide');
+});
+
+$(document).ready(function() {
+	
+	console.log("dentro")
+	
+ 	
 	
 	
 	console.log("test")
@@ -372,9 +429,13 @@ $(document).ready(function() {
 	    $('[data-toggle="tooltip"]').tooltip();
 
 	    $(document.body).css('padding-right', '0px');
-		   pleaseWaitDiv.modal('hide');
+
 	    
 });
+
+
+
+
 
 function fillTable(anno){
 
@@ -388,54 +449,71 @@ function fillTable(anno){
 		  success: function(response) {
 		    // Recupera il JSONElement dalla risposta
 		    var lista_pianificazioni = response.lista_pianificazioni;
+		    var is_modifica = response.is_modifica;
 		    
 		    var array = [];
 		    var day = [];
 		    var map = {};
 		    
+		
+		    var t = document.getElementById("tabForPianificazione");
+		    var rows = t.rows;
+		    for (var i = 1; i < rows.length; i++) {
+		        var cells = rows[i].cells;
+		        for (var j = 3; j < cells.length; j++) {
+		          cells[j].innerHTML = "";
+		        }
+		      }
 		    for (var i = 0; i < lista_pianificazioni.length; i++) {
 		    	var id = lista_pianificazioni[i].id_commessa.replace("/","")+"_"+lista_pianificazioni[i].nCella;
 				var cell = $("#"+id);
 				if(lista_pianificazioni[i].note.length>20){
-					cell.html(lista_pianificazioni[i].note.substring(0,20)+"...");
+				
+						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro'  style='margin-top:5px' ondblclick='modalPianificazione('"+lista_pianificazioni[i].nCella+"', '"+lista_pianificazioni[i].id_commessa+"','"+lista_pianificazioni[i].id+"')'>"+lista_pianificazioni[i].note.substring(0,20)+"...</div>");	
+			
 					
 				}else{
-					cell.html(lista_pianificazioni[i].note);
+					
+						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+lista_pianificazioni[i].note+"</div>");	
+						 
+					
 					
 				}
 				cell.attr("name", lista_pianificazioni[i].id)
-				
-				
-				
+
+		 		 
+				var riquadro = $('#riquadro_'+lista_pianificazioni[i].id);
 				if(lista_pianificazioni[i].stato.id != 5){
 					
 					var cell_stato = $("#stato_"+lista_pianificazioni[i].id_commessa.replace("/",""));
 					cell_stato.html("In Corso");
+					
 					if(lista_pianificazioni[i].stato.id == 1){
-						cell.css("background-color", "#DCDCDC");
+						riquadro.css("background-color", "#DCDCDC");
+						riquadro.css("border-color", "#C0C0C0");
 					}else if(lista_pianificazioni[i].stato.id == 2){
-						cell.css("background-color", "#FFFFE0");
+						riquadro.css("background-color", "#FFFFE0");
+						riquadro.css("border-color", "#FFD700");
 					}else if(lista_pianificazioni[i].stato.id == 3){
-						cell.css("background-color", "#90EE90");
+						riquadro.css("background-color", "#90EE90");
+						riquadro.css("border-color", "#A0CE00");
 					}else if (lista_pianificazioni[i].stato.id == 4){
-						cell.css("background-color", "#ADD8E6");
+						riquadro.css("background-color", "#ADD8E6");
+						riquadro.css("border-color", "#1E90FF");
 					}
 					
 					
 					var indice = array.indexOf(lista_pianificazioni[i].id_commessa.replace("/",""));
-				//	var indice2 = day.indexOf(lista_pianificazioni[i].nCella);
 					if (indice !== -1) {
 					  array.splice(indice, 1);
-				// day.splice(indice,1)
 					}
 					
 				
 					
 			}else{
-			//	var cell_stato = $("#stato_"+lista_pianificazioni[i].id_commessa.replace("/",""));
-			//	cell_stato.html("Da Chiudere");
-				cell.css("background-color", "#F7BEF6");
-			
+
+				riquadro.css("background-color", "#F7BEF6");
+				riquadro.css("border-color", "#FF69B4");
 				array.push(lista_pianificazioni[i].id_commessa.replace("/",""));
 							
 					
@@ -446,20 +524,27 @@ function fillTable(anno){
 		    }
 		    
 		   
-		     for (var i = 0; i < array.length; i++) {
+ 		     for (var i = 0; i < array.length; i++) {
 		    		var commessa_da_chiudere = true;			
 					var riga_vuota = true;
 		    	  $("#" + array[i] + " td").slice(3).each(function() {
-		    		    var testoCella = $(this).text().trim();
-		    		    if (testoCella !== "") {
-		    		    	var coloreCella = $(this).css('background-color');
-			            	riga_vuota = false;
+		    		  
+		    		  var riquadri = $(this).find(".riquadro");
+		    		  
+		    		  if(riquadri.length>0){
+		    			  for (var j = 0; j < riquadri.length; j++) {
+							var id_riquadro = riquadri[j].id;
+							var coloreRiquadro = $("#"+id_riquadro).css('background-color');
+							riga_vuota = false;
 			            	
-			            	if(rgbToHex(coloreCella).toUpperCase() != "#F7BEF6"){
+			            	if(rgbToHex(coloreRiquadro).toUpperCase() != "#F7BEF6"){
 			            		commessa_da_chiudere = false;
 			            		return false;
 			            	}
-		    		    }
+						}
+
+		    		  }
+		    		    
 		    		  });
 		        
 		        var cell = $("#stato_"+array[i]);
@@ -472,16 +557,21 @@ function fillTable(anno){
 		        	cell.html("In Corso");
 		        }
 				
-			}
+			} 
 		     	    
-		
+			console.log("ciao")
 		    
 			var today = "${today}"
+			
+		
+			
 				if(table == null){
 				    table = $('#tabForPianificazione').DataTable(settings);
 				}else{
 					table = $('#tabForPianificazione').DataTable();
 				}
+			
+			
 
 			    
 	    $('.inputsearchtable').on('input', function() {

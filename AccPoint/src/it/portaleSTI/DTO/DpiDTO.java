@@ -18,6 +18,7 @@ public class DpiDTO {
 	private int assegnato;
 	private String nome_lavoratore;
 	private int disabilitato;
+	private String note;
 	
 	public int getId() {
 		return id;
@@ -105,6 +106,12 @@ public class DpiDTO {
 	}
 	public void setData_scadenza_controllo(Date data_scadenza_controllo) {
 		this.data_scadenza_controllo = data_scadenza_controllo;
+	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
 	}
 	
 	

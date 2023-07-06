@@ -223,9 +223,11 @@ public class GestioneDDT extends HttpServlet {
 			String path = Costanti.PATH_FOLDER+"Magazzino\\DDT\\PC_"+ pacco.getId() + "\\" + pacco.getDdt().getLink_pdf(); 
 			
 			ArrayList<MagAllegatoItemDTO> lista_allegati_item = GestioneMagazzinoBO.getListaAllegatiItem(pacco, session);
+			
+			File file = null;
 			if(lista_allegati_item.size()>0) {
 				PDFMergerUtility merger = new PDFMergerUtility();
-		;
+		
 				 merger.addSource(path);
 				for (MagAllegatoItemDTO magAllegatoItemDTO : lista_allegati_item) {
 					
@@ -234,10 +236,12 @@ public class GestioneDDT extends HttpServlet {
 				}
 				merger.setDestinationFileName(Costanti.PATH_FOLDER+"Magazzino\\DDT\\PC_"+ pacco.getId() + "\\merged.pdf");
 		        merger.mergeDocuments();
-		        
+		        file = new File(Costanti.PATH_FOLDER+"Magazzino\\DDT\\PC_"+ pacco.getId() + "\\merged.pdf");
+			}else {
+				file = new File(path);
 			}
 			
-			File file = new File(Costanti.PATH_FOLDER+"Magazzino\\DDT\\PC_"+ pacco.getId() + "\\merged.pdf");
+			
 			
 			FileInputStream fileIn = new FileInputStream(file);
 			 

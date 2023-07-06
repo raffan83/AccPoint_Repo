@@ -470,6 +470,11 @@ function eliminaPianificazione(){
 
 
 $(document).ready(function($) { 
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	
+	$('#pleaseWaitDialog').css("z-index","9999");
+	  pleaseWaitDiv.modal();
 	
 	$('.select2').select2()
 	 $.page_zoom();
@@ -493,17 +498,17 @@ $(document).ready(function($) {
     	});
     
 	
-	 $('#ora_inizio').val("");
-	 $('#ora_fine').val("");
+
 	 
 	   $('.timepicker').timepicker({	    	
 	     	 showMeridian:false,	   
 	     	 minuteStep: 1
 	      }); 
 		
-	 
+		 $('#ora_inizio').val("");
+		 $('#ora_fine').val("");
 		  
-	
+	   
 });
 
 

@@ -76,6 +76,7 @@
 
 <th>Data scadenza controllo</th>
 <th>Archiviato</th>
+<th>Note</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -117,9 +118,10 @@
 	NO
 	</c:if>
 	</td>
+	<td>${utl:escapeJS(dpi.note) }</td>
 	<td>	
 
- 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaDpi('${dpi.id }','${dpi.tipo.id }','${dpi.collettivo }','${dpi.company.id }','${utl:escapeJS(dpi.modello) }','${utl:escapeJS(dpi.conformita) }','${utl:escapeJS(dpi.descrizione) }','${dpi.data_scadenza }','${dpi.data_controllo }','${dpi.frequenza }','${dpi.data_scadenza_controllo }')" title="Click per modificare la dpi"><i class="fa fa-edit"></i></a>
+ 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaDpi('${dpi.id }','${dpi.tipo.id }','${dpi.collettivo }','${dpi.company.id }','${utl:escapeJS(dpi.modello) }','${utl:escapeJS(dpi.conformita) }','${utl:escapeJS(dpi.descrizione) }','${dpi.data_scadenza }','${dpi.data_controllo }','${dpi.frequenza }','${dpi.data_scadenza_controllo }', '${utl:escapeJS(dpi.note) }')" title="Click per modificare la dpi"><i class="fa fa-edit"></i></a>
  	  <c:if test="${dpi.assegnato == 0 && dpi.disabilitato == 0}">
  	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaDpi('${dpi.id }')" title="Click per archiviare il dpi"><i class="fa fa-trash"></i></a>
  	  </c:if>   
@@ -300,7 +302,19 @@
        			
        	</div>       	
        </div><br>
+         <div class="row">
        
+       	<div class="col-sm-3">
+       		<label>Note</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+       	  	
+       	 <textarea rows="5" style="width:100%" id="note" name="note"></textarea> 	
+        
+       			
+       	</div>       	
+       </div><br>
    
        
        </div>
@@ -470,7 +484,19 @@
        	</div>       	
        </div><br>
        
-   
+   <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Note</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+       	  	
+       	 <textarea rows="5" style="width:100%" id="note_mod" name="note_mod"></textarea> 	
+        
+       			
+       	</div>       	
+       </div><br>
        
        </div>
   		 
@@ -964,7 +990,7 @@ $('#frequenza_mod').change(function(){
 	
 });
 
-function modalModificaDpi(id,id_tipo, collettivo,company, modello, conformita, descrizione, data_scadenza, data_controllo, frequenza, data_scadenza_controllo){
+function modalModificaDpi(id,id_tipo, collettivo,company, modello, conformita, descrizione, data_scadenza, data_controllo, frequenza, data_scadenza_controllo, note){
 	
 	$('#id_dpi').val(id);
 	
@@ -993,6 +1019,8 @@ function modalModificaDpi(id,id_tipo, collettivo,company, modello, conformita, d
 	if(frequenza!=null && frequenza!=''){
 		$('#frequenza_mod').val(frequenza);	
 	}
+	
+	$('#note_mod').val(note);
 	
 	$('#company_mod').val(company);
 	$('#company_mod').change();
@@ -1131,7 +1159,7 @@ $('#company_mod').select2();
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 12 },
+		    	  { responsivePriority: 1, targets: 13 },
 		    	  
 		    	  
 		               ], 	        

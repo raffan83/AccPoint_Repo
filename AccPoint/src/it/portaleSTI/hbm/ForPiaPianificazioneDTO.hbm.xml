@@ -60,5 +60,9 @@
             <column name="data_reminder" />
         </property>
         
+        
+        	<property name="pausa_pranzo" type="java.lang.String" >
+            <column name="pausa_pranzo" />
+        </property>
     </class>
 </hibernate-mapping>

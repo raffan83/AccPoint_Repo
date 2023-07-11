@@ -18,8 +18,9 @@
 <th>Stato</th>
 <th>Data</th>
 <th>Note</th>
-<th>Ora inizio</th>
+<th>Ora Inizio</th>
 <th>Ora Fine</th>
+<th>Pausa Pranzo</th>
 
 
  </tr></thead>
@@ -43,7 +44,7 @@ ${utl:escapeJS(pianificazione.note) }
 </td>
 <td class="col_inizio">${pianificazione.ora_inizio }</td>
 <td class="col_fine">${pianificazione.ora_fine }</td>
-
+<td class="pausa_pranzo">${pianificazione.pausa_pranzo }</td>
 	</tr>
 	</c:forEach>
 	 
@@ -105,29 +106,52 @@ ${utl:escapeJS(pianificazione.note) }
  
  function sommaDati(){
 	 
-	 var sommaDifferenze = moment.duration(); // Creazione di un'istanza di Moment.js per la somma delle differenze
+	 var sommaOre = 0; // Variabile per la somma delle ore
+	  var sommaMinuti = 0;
 
 
 	  $('.riga').each(function() {
 	    var orario1 = $(this).find('.col_inizio').text().trim(); // Ottieni il testo della colonna1 e rimuovi spazi bianchi
 	    var orario2 = $(this).find('.col_fine').text().trim(); // Ottieni il testo della colonna2 e rimuovi spazi bianchi
-
+		var pausa_pranzo = $(this).find('.pausa_pranzo').text().trim();
+	    
 	    if (orario1 && orario2) {
 	      // Trasforma gli orari in istanze di Moment.js
 	      var orarioMoment1 = moment(orario1, "HH:mm");
 	      var orarioMoment2 = moment(orario2, "HH:mm");
+	      
 
 	      // Calcola la differenza tra gli orari e aggiungila alla somma delle differenze
-	      var differenza = moment.duration(orarioMoment2.diff(orarioMoment1));
-	      sommaDifferenze.add(differenza);
+	      if(pausa_pranzo == "SI"){
+	    	 
+	    	  var differenza = moment.duration(orarioMoment2.diff(orarioMoment1));
+	    	  differenza.subtract(moment.duration({ hours: 1 }));
+	      }else{
+	    	  var differenza = moment.duration(orarioMoment2.diff(orarioMoment1));
+	      }
+	    
+	      
+	      
+	      sommaOre += differenza.hours();
+	      sommaMinuti += differenza.minutes();
+
+	      // Aggiungi 1 all'ora se i minuti superano 59
+	      if (sommaMinuti >= 60) {
+	        sommaOre += Math.floor(sommaMinuti / 60);
+	        sommaMinuti = sommaMinuti % 60;
+	      }
 	    }
 	  });
 
 	  // Formatta la somma delle differenze
-	  var sommaFormattata = moment.utc(sommaDifferenze.asMilliseconds()).format("HH:mm");
+	 // var sommaFormattata = moment.utc(sommaDifferenze.asMilliseconds()).format("HH:mm");
+	  var oreFormattate = sommaOre.toString().padStart(2, '0');
+	  var minutiFormattati = sommaMinuti.toString().padStart(2, '0');
 
-	 
-	 $('#tot_durata').val(sommaFormattata);
+	  // Crea la stringa formattata "HH:mm"
+	  var sommaFormattata = oreFormattate + ":" + minutiFormattati;
+
+	  $('#tot_durata').val(sommaFormattata);
 
 	 
  }

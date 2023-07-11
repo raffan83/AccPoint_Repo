@@ -335,7 +335,7 @@
 
 
 
-<div id="myModalConsuntivoDocente" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+<div id="myModalConsuntivoDocente" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">

@@ -21,6 +21,7 @@ public class ForPiaPianificazioneDTO {
 	private String note;
 	private int nCella;
 	private Date data_reminder;
+	private String pausa_pranzo;
 
 	private Set<ForDocenteDTO> listaDocenti = new HashSet<ForDocenteDTO>(0);
 	
@@ -193,6 +194,18 @@ public class ForPiaPianificazioneDTO {
 
 	public void setData_reminder(Date data_reminder) {
 		this.data_reminder = data_reminder;
+	}
+
+
+
+	public String getPausa_pranzo() {
+		return pausa_pranzo;
+	}
+
+
+
+	public void setPausa_pranzo(String pausa_pranzo) {
+		this.pausa_pranzo = pausa_pranzo;
 	}
 	
 }

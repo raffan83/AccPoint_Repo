@@ -310,14 +310,14 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 				<text><![CDATA[Per tacche negative si intendono quelle a sinistra della bolla guardando la livella in modo che le scritte siano al dritto. Si intende come tacca zero, sia per la semiscala sinistra che per la destra, la tacca cui la bolla è tangente quando è centrata rispetto alla scala (vedi foto). Il valore medio di una divisione è risultato pari a:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="221" y="421" width="70" height="21" uuid="cbd3b4e0-4d80-4883-8c36-4bc293bfec23"/>
+				<reportElement x="170" y="421" width="70" height="21" uuid="cbd3b4e0-4d80-4883-8c36-4bc293bfec23"/>
 				<textElement textAlignment="Center">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{val_medio_divisione}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="290" y="421" width="41" height="21" uuid="3cdc24d3-b3b7-4fd2-a550-4806956b1f60"/>
+				<reportElement x="239" y="421" width="41" height="21" uuid="3cdc24d3-b3b7-4fd2-a550-4806956b1f60"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -331,14 +331,14 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 				<text><![CDATA[Qualora si intenda utilizzare tale valor medio, l'incertezza estesa da associare è pari a:	]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="221" y="460" width="70" height="21" uuid="b516c8cb-23d9-49ae-a05d-7a7121c930b9"/>
+				<reportElement x="170" y="460" width="70" height="21" uuid="b516c8cb-23d9-49ae-a05d-7a7121c930b9"/>
 				<textElement textAlignment="Center">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{incertezza_ass_media}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="290" y="460" width="41" height="21" uuid="dd9abb67-bc0c-4cbb-a7d0-beee6674cb15"/>
+				<reportElement x="239" y="460" width="41" height="21" uuid="dd9abb67-bc0c-4cbb-a7d0-beee6674cb15"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -366,7 +366,7 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 				<textFieldExpression><![CDATA[$P{certificati_campione}]]></textFieldExpression>
 			</textField>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="1" y="486" width="553" height="64" uuid="50c7b6fa-32f6-4299-843e-2316db5ca701"/>
+				<reportElement x="320" y="421" width="234" height="129" uuid="50c7b6fa-32f6-4299-843e-2316db5ca701"/>
 				<imageExpression><![CDATA[$P{immagine}]]></imageExpression>
 			</image>
 			<staticText>

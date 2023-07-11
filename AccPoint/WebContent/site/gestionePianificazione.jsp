@@ -76,7 +76,7 @@
 			</select>
              </div>
              <div class="col-xs-3">
-             
+             <a class="btn btn-primary" style="margin-top:25px" onclick="vaiAOggi('${currentYear}')">Vai a Oggi</a>
              </div>
              
              <div class="col-xs-3">
@@ -87,11 +87,23 @@
 <a href="#" class="btn btn-primary zoom_out pull-right" style="margin-right:5px">Zoom Out</a>
 <a href="#" class="btn btn-primary zoom_in pull-right"  style="margin-right:5px">Zoom In</a>
              </div>
-            </div> 
+            </div> <br><br>
+               <div class="row">
+				 <div class="col-xs-12">
+				 <a class="btn btn-primary pull-left" onclick="subTrimestre('${start_date }', '${anno}')" ><i class="fa fa-arrow-left"></i></a>
+				 
+				 <a class="btn btn-primary pull-right" onclick="addTrimestre('${end_date }', '${anno}')" ><i class="fa fa-arrow-right"></i></a>
+				 </div>
+               
+               
+               
+               </div>
+            
             <br>
             <div class="row">
             <div class="col-xs-12">
-            <jsp:include page="gestionePianificazioneTabella.jsp" ></jsp:include>
+           <%--  <jsp:include page="gestionePianificazioneTabella.jsp" ></jsp:include> --%>
+            <jsp:include page="gestionePianificazioneTabellaBimestre.jsp" ></jsp:include>
             
             </div>
             
@@ -154,7 +166,7 @@
        <div class="row">
        <div class="col-xs-12">
        <label>Docenti</label>
-       <select class="form-control select2" id="docente" name="docente" style="width:100%" multiple required data-placeholder="Seleziona Docenti...">
+       <select class="form-control select2" id="docente" name="docente" style="width:100%" multiple  data-placeholder="Seleziona Docenti...">
        <option value=""></option>
        <c:forEach items="${lista_docenti }" var="docente">
        <option value="${docente.id }">${docente.nome } ${docente.cognome }</option>
@@ -187,15 +199,16 @@
         </div><br>
         
 		<div class="row">
-		<div class='col-xs-6'><label>Ora inzio</label><div class='input-group'>
+		<div class='col-xs-4'><label>Ora inzio</label><div class='input-group'>
 					<input type='text' id='ora_inizio' name='ora_inizio'  class='form-control timepicker' style='width:100%'><span class='input-group-addon'>
 		            <span class='fa fa-clock-o'></span></span></div></div>
 
-<div class='col-xs-6'><label>Ora fine</label><div class='input-group'>
+<div class='col-xs-4'><label>Ora fine</label><div class='input-group'>
 					<input type='text' id='ora_fine' name='ora_fine'   class='form-control timepicker' style='width:100%'><span class='input-group-addon'>
 		            <span class='fa fa-clock-o'></span></span></div></div>
 
-		
+		<div class='col-xs-3'><label>Pausa pranzo</label><br>
+					<input type='checkbox' id='pausa_pranzo' name='pausa_pranzo' class='form-control' style='width:100%'></div>
 		
 		</div><br>
         
@@ -216,6 +229,8 @@
       <input type="hidden" id="id_docenti_dissocia" name="id_docenti_dissocia">
       <input type="hidden" id="check_mail" name="check_mail">
       <input type="hidden" id="check_agenda" name="check_agenda">
+      <input type="hidden" id="check_pausa_pranzo" name="check_pausa_pranzo">
+      
       
       
       
@@ -249,6 +264,12 @@
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="elimina_partecipante_id">
+      <input type="hidden" id="check_email_eliminazione">
+      <div class="pull-left">
+        <label>Invia Email Eliminazione</label>
+          <input class="form-control "  type="checkbox" id="email_elimina" name="email_elimina" style="width:100%">
+          
+          </div>
       <a class="btn btn-primary" onclick="eliminaPianificazione()" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
@@ -302,6 +323,43 @@
 
 <script type="text/javascript">  
 
+
+
+function subTrimestre(data_inizio, anno){
+	
+	if(data_inizio==1){
+		$('#anno').val(parseInt(anno)-1);
+		$('#anno').change()
+		data_inizio = 366	
+	}
+	
+	callAction('gestioneFormazione.do?action=gestione_pianificazione&move=back&data_inizio='+data_inizio+'&anno='+$('#anno').val());
+}
+
+function addTrimestre(data_fine, anno){
+	
+	if(data_fine==365|| data_fine==366){
+		$('#anno').val(parseInt(anno)+1);
+		$('#anno').change()
+		data_fine = 1;
+	}
+	
+	callAction('gestioneFormazione.do?action=gestione_pianificazione&move=forward&data_inizio='+data_fine+'&anno='+$('#anno').val());
+}
+
+function vaiAOggi(anno){
+	
+
+	$('#anno').val(parseInt(anno));
+	$('#anno').change()
+
+
+callAction('gestioneFormazione.do?action=gestione_pianificazione&anno='+$('#anno').val());
+
+
+	
+}
+
 $('#anno').change(function(){
 	var value = $('#anno').val();
 	var commesse = $('#commesse').val();
@@ -325,7 +383,7 @@ $('#tipo').change(function(){
 		$('#docente').change();
 		$('#id_docenti').val("");
 		$('#docente').attr("disabled", true);
-		$('#docente').attr("required", false);
+		//$('#docente').attr("required", false);
 		$('#content_agenda').hide();
 		$('#check_agenda').val("0");
 		$('#n_utenti_content').show();
@@ -335,7 +393,7 @@ $('#tipo').change(function(){
 		$('#n_utenti_content').hide();
 		$('#content_agenda').show();
 		$('#docente').attr("disabled", false);
-		$('#docente').attr("required", true);
+		//$('#docente').attr("required", true);
 	}
 	
 });
@@ -439,6 +497,28 @@ $('input:checkbox').on('ifToggled', function() {
 	
 	});
 	
+	$('#email_elimina').on('ifChecked', function(event){
+		$('#check_email_eliminazione').val(1);
+	
+	});
+	
+	$('#email_elimina').on('ifUnchecked', function(event) {
+		
+		$('#check_email_eliminazione').val(0);
+	
+	});
+	
+	$('#pausa_pranzo').on('ifChecked', function(event){
+		$('#check_pausa_pranzo').val("SI");
+	
+	});
+	
+	$('#pausa_pranzo').on('ifUnchecked', function(event) {
+		
+		$('#check_pausa_pranzo').val("NO");
+	
+	});
+	
 })
 
 
@@ -446,25 +526,10 @@ function eliminaPianificazione(){
 	
 	dataObj = {};
 	dataObj.id_pianificazione = $('#id_pianificazione').val();
+	dataObj.check_email_eliminazione = $('#check_email_eliminazione').val();
 	
 	 	callAjax(dataObj, 'gestioneFormazione.do?action=elimina_pianificazione')
-	
-/* 	callAjax(dataObj, 'gestioneFormazione.do?action=elimina_pianificazione', function(datab){
-		
-		if(datab.success){
-			fillTable();
-			$('#myModalYesOrNo').modal('hide');
-			$('#modalPianificazione').modal("hide");
-		}else{
-			$('#myModalErrorContent').html(data.messaggio);
-		  	$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-danger");
-			$('#report_button').show();
-			$('#visualizza_report').show();
-				$('#myModalError').modal('show');
-		}
-		
-	}); */
+
 }
 
 
@@ -549,9 +614,20 @@ $('#modalPianificazione').on("hidden.bs.modal", function(){
 	 $('#n_utenti').val("");
 	 $('#email').iCheck('uncheck');
 	 $('#agenda').iCheck('uncheck');
+	 $('#pausa_pranzo').iCheck('uncheck');
+		
+});
+
+
+$('#myModalYesOrNo').on("hidden.bs.modal", function(){
+	
+
+	 $('#email_elimina').iCheck('uncheck');
+
 	 
 		
 });
+
 $(document.body).css('padding-right', '0px');
 </script>
 

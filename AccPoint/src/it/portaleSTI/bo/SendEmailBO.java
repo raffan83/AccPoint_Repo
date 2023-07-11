@@ -31,6 +31,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.apache.log4j.Logger;
 
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
 import it.portaleSTI.DTO.DevRegistroAttivitaDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
@@ -1243,7 +1244,7 @@ public static void sendEmailCorsiInScadenza(String messaggio, ForCorsoDTO corso,
 		  email.send();
 	}
 
-public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazione,  ServletContext ctx) throws EmailException {
+public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazione, CommessaDTO commessa, ServletContext ctx) throws EmailException {
 
 	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
@@ -1270,16 +1271,18 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
 			email.addTo(docente.getEmail());
 		}
 	}
-	email.addTo("lisa.lombardozzi@crescosrl.net");
-	email.addTo("segreteria@crescosrl.net");
+	//email.addTo("lisa.lombardozzi@crescosrl.net");
+	//email.addTo("segreteria@crescosrl.net");
 	String messaggio = null;
+	
+	
 	if(pianificazione.getOra_inizio()!=null && !pianificazione.getOra_inizio().equals("")) {
-		messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" dalle ore "+pianificazione.getOra_inizio()+" per la commessa "+pianificazione.getId_commessa()+": <br><br>";
+		messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" dalle ore "+pianificazione.getOra_inizio()+" per la commessa "+pianificazione.getId_commessa()+" - Cliente: "+commessa.getID_ANAGEN_NOME()+": <br><br>";
 		if(pianificazione.getOra_fine()!=null && !pianificazione.getOra_fine().equals("")) {
-			messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" dalle ore "+pianificazione.getOra_inizio()+ " alle ore " +pianificazione.getOra_fine() +" per la commessa "+pianificazione.getId_commessa()+": <br><br>";
+			messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" dalle ore "+pianificazione.getOra_inizio()+ " alle ore " +pianificazione.getOra_fine() +" per la commessa "+pianificazione.getId_commessa()+" - Cliente: "+commessa.getID_ANAGEN_NOME()+": <br><br>";
 		}
 	}else {
-		messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" per la commessa "+pianificazione.getId_commessa()+": <br><br>";
+		messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" per la commessa "+pianificazione.getId_commessa()+" - Cliente: "+commessa.getID_ANAGEN_NOME()+": <br><br>";
 	}
 	
 	

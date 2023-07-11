@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -2582,93 +2583,174 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				
 			}
+			
 				else if(action.equals("gestione_pianificazione")) 
-			{
-				String anno = request.getParameter("anno");
-				String commesse = request.getParameter("commesse");
-				if(anno==null) {
-					anno = ""+Calendar.getInstance().get(Calendar.YEAR);
-				}
-					
-				boolean soloAperte = true;
-				if(commesse!=null && !commesse.equals("0")) {
-					soloAperte = false;
-				}
-				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseDAO.getListaCommesseFormazione(company, "FES;FCS", utente, 0, soloAperte);
-				if(commesse!=null && commesse.equals("1")) {
-					ArrayList<CommessaDTO> lista_commesse_chiuse = new ArrayList<CommessaDTO>();
-					for (CommessaDTO commessaDTO : lista_commesse) {
-						if(commessaDTO.getSYS_STATO().equals("1CHIUSA")) {
-							lista_commesse_chiuse.add(commessaDTO);
-						}
+				{
+					String anno = request.getParameter("anno");
+					String commesse = request.getParameter("commesse");
+					String data_inizio = request.getParameter("data_inizio");
+					String move = request.getParameter("move");
+					if(anno==null) {
+						anno = ""+Calendar.getInstance().get(Calendar.YEAR);
 					}
-					lista_commesse = lista_commesse_chiuse;
-				}
-				
-				ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);
-				ArrayList<ForPiaStatoDTO> lista_stati = GestioneFormazioneBO.getListaStati(session);
-				ArrayList<ForPiaTipoDTO> lista_tipi = GestioneFormazioneBO.getListaTipi(session);
-				
-				int daysNumber = 365;
-				if(LocalDate.ofYearDay(Integer.parseInt(anno), 1).isLeapYear()) {
-					daysNumber = 366;
-				}
-				
-				ArrayList<LocalDate> festivitaItaliane = new ArrayList<>();
-			    festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 1, 1));
-			    festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 1, 6));
-
-			 // Pasqua - data variabile (calcolata tramite algoritmo)
-			   LocalDate pasqua = Utility.calculatePasqua(Integer.parseInt(anno));
-			    festivitaItaliane.add(pasqua);
-
-			 // Lunedì di Pasqua
-			 festivitaItaliane.add(pasqua.plusDays(1));
-
-			 // Festa della Liberazione - 25 aprile
-			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 4, 25));
-
-			 // Festa dei Lavoratori - 1 maggio
-			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 5, 1));
-
-			 // Festa della Repubblica - 2 giugno
-			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 6, 2));
-
-			 // Ferragosto - 15 agosto
-			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 8, 15));
-
-			 // Tutti i Santi - 1 novembre
-			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 11, 1));
-
-			 // Immacolata Concezione - 8 dicembre
-			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 12, 8));
-
-			 // Natale - 25 dicembre
-			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 12, 25));
-
-			 // Santo Stefano - 26 dicembre
-			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 12, 26));
-			
-				request.getSession().setAttribute("lista_commesse", lista_commesse);			
-				request.getSession().setAttribute("lista_docenti", lista_docenti);
-				request.getSession().setAttribute("lista_tipi", lista_tipi);
-				request.getSession().setAttribute("lista_stati", lista_stati);
-				request.getSession().setAttribute("today", LocalDate.now().getDayOfYear());
-				request.getSession().setAttribute("anno", Integer.parseInt(anno));
-				request.getSession().setAttribute("daysNumber", daysNumber);
-				request.getSession().setAttribute("festivitaItaliane", festivitaItaliane);
-				request.getSession().setAttribute("commesse", commesse);
-			
-				
-				
-				session.getTransaction().commit();
-				session.close();
-				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestionePianificazione.jsp");
-		     	dispatcher.forward(request,response);
-		     	
+						
+					boolean soloAperte = true;
+					if(commesse!=null && !commesse.equals("0")) {
+						soloAperte = false;
+					}
+					ArrayList<CommessaDTO> lista_commesse = GestioneCommesseDAO.getListaCommesseFormazione(company, "FES;FCS", utente, 0, soloAperte);
+					if(commesse!=null && commesse.equals("1")) {
+						ArrayList<CommessaDTO> lista_commesse_chiuse = new ArrayList<CommessaDTO>();
+						for (CommessaDTO commessaDTO : lista_commesse) {
+							if(commessaDTO.getSYS_STATO().equals("1CHIUSA")) {
+								lista_commesse_chiuse.add(commessaDTO);
+							}
+						}
+						lista_commesse = lista_commesse_chiuse;
+					}
 					
-			}
+					ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);
+					ArrayList<ForPiaStatoDTO> lista_stati = GestioneFormazioneBO.getListaStati(session);
+					ArrayList<ForPiaTipoDTO> lista_tipi = GestioneFormazioneBO.getListaTipi(session);
+					
+					LocalDate dataCorrente = null;
+					 
+					if(data_inizio == null && Integer.parseInt(anno) == LocalDate.now().getYear()) {
+						dataCorrente = LocalDate.now();
+					}
+					else if(data_inizio == null && Integer.parseInt(anno) != LocalDate.now().getYear()) {
+						dataCorrente = LocalDate.ofYearDay(Integer.parseInt(anno), 1);
+					}
+					else {						
+						if(Integer.parseInt(data_inizio) == 366 && !LocalDate.ofYearDay(Integer.parseInt(anno), 1).isLeapYear()) {
+							data_inizio = 365+"";
+						}
+				         dataCorrente = LocalDate.ofYearDay(Integer.parseInt(anno), Integer.parseInt(data_inizio));				       
+					}
+					 							 
+							 
+					
+					int meseCorrente = 0;
+					int monthsToAdd = 3;
+					
+					if(move!=null && move.equals("back")) {
+						if(dataCorrente.getMonthValue()==12) {
+							meseCorrente = dataCorrente.getMonthValue()-1;
+						}else {
+							meseCorrente = dataCorrente.getMonthValue()-2;
+						}
+						
+					}else if(move!=null && move.equals("forward")) {
+						if(dataCorrente.getMonthValue()+1==12) {
+							meseCorrente = dataCorrente.getMonthValue()+1;
+							monthsToAdd = 2;
+						}
+						else if(dataCorrente.getMonthValue()+2==12) {
+							meseCorrente = dataCorrente.getMonthValue()+2;
+							monthsToAdd = 2;
+							
+						}
+						else if(dataCorrente.getMonthValue()==1) {
+							meseCorrente = dataCorrente.getMonthValue();
+						}
+						else {
+							meseCorrente = dataCorrente.getMonthValue()+2;	
+						}
+										
+					}else {
+						meseCorrente = dataCorrente.getMonthValue();
+					}
+					
+					
+					int mesePrecedente = 0;
+					if(meseCorrente>1) {
+						mesePrecedente =  meseCorrente - 1;
+					}else {
+						mesePrecedente = meseCorrente;
+					}
+					
+					
+					LocalDate inizioBimestre = LocalDate.of(dataCorrente.getYear(), mesePrecedente, 1);
+					LocalDate fineBimestre = inizioBimestre.plusMonths(monthsToAdd).minusDays(1);
+
+					
+			        
+			        int start_date = inizioBimestre.getDayOfYear();
+			        int end_date = fineBimestre.getDayOfYear();
+					
+//					int daysNumber = 365;
+//					if(LocalDate.ofYearDay(Integer.parseInt(anno), 1).isLeapYear()) {
+//						daysNumber = 366;
+//					}
+					int daysNumber = end_date - start_date;
+					
+					
+					ArrayList<LocalDate> festivitaItaliane = new ArrayList<>();
+				    festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 1, 1));
+				    festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 1, 6));
+
+				 // Pasqua - data variabile (calcolata tramite algoritmo)
+				   LocalDate pasqua = Utility.calculatePasqua(Integer.parseInt(anno));
+				    festivitaItaliane.add(pasqua);
+
+				 // Lunedì di Pasqua
+				 festivitaItaliane.add(pasqua.plusDays(1));
+
+				 // Festa della Liberazione - 25 aprile
+				 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 4, 25));
+
+				 // Festa dei Lavoratori - 1 maggio
+				 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 5, 1));
+
+				 // Festa della Repubblica - 2 giugno
+				 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 6, 2));
+
+				 // Ferragosto - 15 agosto
+				 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 8, 15));
+
+				 // Tutti i Santi - 1 novembre
+				 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 11, 1));
+
+				 // Immacolata Concezione - 8 dicembre
+				 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 12, 8));
+
+				 // Natale - 25 dicembre
+				 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 12, 25));
+
+				 // Santo Stefano - 26 dicembre
+				 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 12, 26));
+				
+				 
+				 long today = 0;
+				 
+				 if(Integer.parseInt(anno)==Integer.parseInt(LocalDate.now().getYear()+"")) {
+					 today = ChronoUnit.DAYS.between(inizioBimestre, dataCorrente);
+				 }
+				 
+				 
+					request.getSession().setAttribute("lista_commesse", lista_commesse);			
+					request.getSession().setAttribute("lista_docenti", lista_docenti);
+					request.getSession().setAttribute("lista_tipi", lista_tipi);
+					request.getSession().setAttribute("lista_stati", lista_stati);
+					//request.getSession().setAttribute("today", LocalDate.now().getDayOfYear());
+					request.getSession().setAttribute("today", today);
+					request.getSession().setAttribute("anno", Integer.parseInt(anno));
+					request.getSession().setAttribute("daysNumber", daysNumber);
+					request.getSession().setAttribute("festivitaItaliane", festivitaItaliane);
+					request.getSession().setAttribute("commesse", commesse);
+					request.getSession().setAttribute("start_date", start_date);
+					request.getSession().setAttribute("end_date", end_date);
+				
+					
+					
+					session.getTransaction().commit();
+					session.close();
+					
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestionePianificazione.jsp");
+			     	dispatcher.forward(request,response);
+			     	
+						
+				}
 			
 				else if(action.equals("nuova_pianificazione")) {
 					
@@ -2712,6 +2794,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String n_utenti = ret.get("n_utenti");
 					String check_mail = ret.get("check_mail");
 					String check_agenda = ret.get("check_agenda");
+					String check_pausa_pranzo = ret.get("check_pausa_pranzo");
 				
 					
 					ForPiaPianificazioneDTO pianificazione = null;
@@ -2730,6 +2813,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					pianificazione.setnCella(Integer.parseInt(day));
 					pianificazione.setOra_inizio(ora_inizio);
 					pianificazione.setOra_fine(ora_fine);
+					pianificazione.setPausa_pranzo(check_pausa_pranzo);
 					if(n_utenti!=null && !n_utenti.equals("")) {
 						pianificazione.setnUtenti(Integer.parseInt(n_utenti));
 					}
@@ -2771,8 +2855,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					session.saveOrUpdate(pianificazione);
 					session.getTransaction().commit();
 					
+					CommessaDTO commessa = GestioneCommesseDAO.getCommessaById(id_commessa);
+					
 					if(check_mail!=null && check_mail.equals("1")) {
-						SendEmailBO.sendEmailPianificazione(pianificazione, request.getServletContext());
+						SendEmailBO.sendEmailPianificazione(pianificazione, commessa, request.getServletContext());
 					}
 					
 					if(check_agenda!=null && check_agenda.equals("1")) {
@@ -2782,7 +2868,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 								agenda.setUSERNAME(docente.getUtenteMilestone());
 								agenda.setSTATO(1);
 								agenda.setSOGGETTO("Pianificazione formazione");
-								agenda.setDESCRIZIONE(nota);
+								agenda.setDESCRIZIONE(nota +" - Commessa: "+commessa.getID_COMMESSA()+" Cliente: "+commessa.getID_ANAGEN_NOME());
 								agenda.setLABEL(3);
 								Calendar calendar = Calendar.getInstance();
 								if(ora_inizio!=null && !ora_inizio.equals("")) {
@@ -2800,9 +2886,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 								}
 								agenda.setENDTDATE(calendar.getTime());
 								
-								CommessaDTO commessa = GestioneCommesseDAO.getCommessaById(id_commessa);
-								agenda.setID_ANAGEN(commessa.getID_ANAGEN()); //N.C.S
-								agenda.setID_COMMESSA(id_commessa);
+							//	CommessaDTO commessa_fissa = GestioneCommesseDAO.getCommessaById(id_commessa);
+								agenda.setID_ANAGEN(1428); //N.C.S
+								agenda.setID_COMMESSA("AM_TSC_0113/23");
 								GestioneAssegnazioneAttivitaBO.inserisciAppuntamento(agenda);
 							}
 						}
@@ -2837,11 +2923,15 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 					ajax = true;
 					String id_pianificazione = request.getParameter("id_pianificazione");
+					String check_email_eliminazione = request.getParameter("check_email_eliminazione");
 				
 					
 					ForPiaPianificazioneDTO pianificazione =  GestioneFormazioneBO.getPianificazioneFromId(Integer.parseInt(id_pianificazione), session);
 					
-					SendEmailBO.sendEmailEliminaPianificazione(pianificazione, request.getServletContext());
+					if(check_email_eliminazione!=null && check_email_eliminazione.equals("1")) {
+						SendEmailBO.sendEmailEliminaPianificazione(pianificazione, request.getServletContext());	
+					}
+					
 					
 					session.delete(pianificazione);
 

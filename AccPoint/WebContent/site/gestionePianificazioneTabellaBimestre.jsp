@@ -44,13 +44,9 @@ int anno = (Integer) request.getSession().getAttribute("anno");
         <div class="legend-label">FATTURATO CON ATTESTATI</div>
     </div>
 </div>
-<c:if test="${LocalDate.ofYearDay(LocalDate.now().getYear(), 1).isLeapYear()}">
-<c:set var="nGiorni" value="366"></c:set>
-</c:if>
 
-<c:if test="${!LocalDate.ofYearDay(LocalDate.now().getYear(), 1).isLeapYear()}">
-<c:set var="nGiorni" value="365"></c:set>
-</c:if>
+
+
 
  <table id="tabForPianificazione" class="table table-primary table-bordered table-hover dataTable table-striped " role="grid" width="100%"  >
         <thead>
@@ -59,7 +55,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
                <th>COMMESSA <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
                 <th>STATO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
                            
-         <c:forEach var="day" begin="1" end="${daysNumber }" step="1">
+         <c:forEach var="day" begin="${start_date }" end="${end_date }" step="1">
       <% 
         int dayValue = (Integer) pageContext.getAttribute("day");
         LocalDate localDate = LocalDate.ofYearDay(anno, dayValue);
@@ -110,7 +106,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
          </td>
          <td>${commessa.ID_COMMESSA}</td>
          <td id="stato_${commessa.ID_COMMESSA.replace('/','')}"></td>
-         <c:forEach var="day" begin="1" end="${daysNumber}" step="1">
+         <c:forEach var="day" begin="${start_date }" end="${end_date}" step="1">
 
          	<td id="${commessa.ID_COMMESSA.replace('/','')}_${day}"></td> 
          	<%-- <td id="${commessa.ID_COMMESSA.replace('/','')}_${day}" ondblclick="modalPianificazione('${day}', '${commessa.ID_COMMESSA }')"></td> --%>
@@ -351,7 +347,7 @@ var settings ={
     },
     dom: 'rt<"bottom"ip>',
     pageLength: 100,
-    "order": [[ parseInt("${today}")+2, "desc" ]],
+  
       paging: false, 
       ordering: true,
       info: true, 
@@ -398,7 +394,9 @@ var settings ={
          if(document.getElementById('button_add_'+cellId) != null){
         		 
          }else{
-        	 $(this).append('<button class="button_add btn btn-primary btn-sm" id="button_add_'+cellId+'\" onclick="modalPianificazione(\''+cellId.split("_")[3]+'\', \''+rowId+'\')" style="margin-top:5px"><i class="fa fa-plus"></i></button> '); 
+        	 var comm = rowId.substring(0,rowId.length-2)+"/"+rowId.substring(rowId.length-2,rowId.length);
+        	 
+        	 $(this).append('<button class="button_add btn btn-primary btn-sm" id="button_add_'+cellId+'\" onclick="modalPianificazione(\''+cellId.split("_")[3]+'\', \''+comm+'\')" style="margin-top:5px"><i class="fa fa-plus"></i></button> '); 
          }
          
        });
@@ -413,6 +411,9 @@ $(window).on('load', function() {
 	
 	  pleaseWaitDiv.modal('hide');
 });
+
+
+var order = 1;
 
 $(document).ready(function() {
 	
@@ -567,8 +568,14 @@ console.log("dddd")
 		     	    
 			console.log("ciao")
 		    
-			var today = "${today}"
 			
+			
+			var today = "${today}"
+			if(today>"${daysNumber}"){
+				today = null;
+			}else{
+				order = parseInt(today) +3
+			}
 		
 			
 				if(table == null){
@@ -595,9 +602,16 @@ console.log("dddd")
  	       e.stopPropagation();    
  	    });
 			
-	  table.columns().draw();
+	
 	  
-			 scrollToColumn(parseInt(today)-3);
+	  if(today!=null){
+		  scrollToColumn(parseInt(today)-3);
+		 
+          table.order([order, 'desc']).draw()
+	  }else{
+		  table.columns().draw();
+	  }
+			
 		  
 			  $(document.body).css('padding-right', '0px');
 		  },

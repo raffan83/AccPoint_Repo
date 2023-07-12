@@ -399,13 +399,15 @@ public class CreaCertificatoLivellaBolla {
 		}
 		
 		reportP2.addParameter("um", "mm/m");
-		if(misura.getStrumento().getCampo_misura()!=null) {
-			reportP2.addParameter("campo_misura", "± "+misura.getCampo_misura()+" mm/m");
+		int scl=getScale(misura.getCampo_misura().stripTrailingZeros(),misura.getSensibilita().stripTrailingZeros());
+		
+		if(misura.getCampo_misura()!=null) {
+			reportP2.addParameter("campo_misura", "± "+misura.getCampo_misura().setScale(scl, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")+" mm/m");
 		}else {
 			reportP2.addParameter("campo_misura", "");	
 		}
-		if(misura.getStrumento().getRisoluzione()!=null) {
-			reportP2.addParameter("sensibilita", misura.getSensibilita()+" mm/m");	
+		if(misura.getSensibilita()!=null) {
+			reportP2.addParameter("sensibilita", misura.getSensibilita().setScale(scl, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")+" mm/m");	
 		}else {
 			reportP2.addParameter("sensibilita", "");
 		}
@@ -571,6 +573,22 @@ public class CreaCertificatoLivellaBolla {
 		
 	}
 	
+	private int getScale(BigDecimal campo_misura, BigDecimal sensibilita) {
+		int scala=0;
+		
+		if(campo_misura!=null && campo_misura.scale()>scala) 
+		{
+			scala=campo_misura.scale();
+		}
+		if(sensibilita!=null && sensibilita.scale()>scala) 
+		{
+			scala=sensibilita.scale();
+		}
+		
+		return scala;
+	}
+
+
 	private String paddingZero(int seq) {
 		
 		int size=4-(""+seq).length();

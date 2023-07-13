@@ -1271,8 +1271,8 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
 			email.addTo(docente.getEmail());
 		}
 	}
-	//email.addTo("lisa.lombardozzi@crescosrl.net");
-	//email.addTo("segreteria@crescosrl.net");
+	email.addTo("lisa.lombardozzi@crescosrl.net");
+	email.addTo("segreteria@crescosrl.net");
 	String messaggio = null;
 	
 	

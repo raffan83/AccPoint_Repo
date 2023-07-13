@@ -162,6 +162,7 @@ public class DettaglioMisura extends HttpServlet {
 								}
 							}
 						}
+						request.setAttribute("scala", 2);
 						request.setAttribute("lista_pos", lista_pos);
 						request.setAttribute("lista_neg", lista_neg);
 						request.setAttribute("misura_lat", misuraLat);

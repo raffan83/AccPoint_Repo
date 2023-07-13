@@ -1465,7 +1465,7 @@ public class Utility extends HttpServlet {
 				{
 					if(puntoSX.getDiv_dex()!=null && puntoSX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
 					{
-						media=media.add(puntoSX.getDiv_dex().abs() );
+						media=media.add(puntoSX.getDiv_dex());
 						index++;
 					}
 				}
@@ -1486,11 +1486,11 @@ public class Utility extends HttpServlet {
 			}
 			if(media.compareTo(BigDecimal.ZERO)!=0 && index>0)
 			{
-				return media.divide(new BigDecimal(index),CostantiCertificato.RISOLUZIONE_LIVELLA_BOLLA+2, RoundingMode.HALF_UP);
+				return media.divide(new BigDecimal(index), RoundingMode.HALF_UP);			
 			}
 			else 
 			{
-				return BigDecimal.ZERO.setScale(CostantiCertificato.RISOLUZIONE_LIVELLA_BOLLA+2,RoundingMode.HALF_UP);
+				return BigDecimal.ZERO;
 			}
 		}
 		
@@ -1536,7 +1536,7 @@ public class Utility extends HttpServlet {
 				{
 					if(puntoSX.getDiv_dex()!=null && puntoSX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
 					{
-						double val = Math.pow(puntoSX.getDiv_dex().abs().subtract(mediaGlobale).doubleValue(), 2D);
+						double val = Math.pow(puntoSX.getDiv_dex().subtract(mediaGlobale).doubleValue(), 2D);
 		                 media = media.add(new BigDecimal(val));
 		                 index++;
 					}
@@ -1568,11 +1568,11 @@ public class Utility extends HttpServlet {
 				Double d1=b.doubleValue();
 				
 				d1=Math.sqrt(d1);
-				return  new BigDecimal(d1).setScale(CostantiCertificato.RISOLUZIONE_LIVELLA_BOLLA+2,RoundingMode.HALF_UP);
+				return  new BigDecimal(d1);
 			}
 			else 
 			{
-				return BigDecimal.ZERO.setScale(CostantiCertificato.RISOLUZIONE_LIVELLA_BOLLA+2,RoundingMode.HALF_UP);
+				return BigDecimal.ZERO;
 			}
 			
 		}

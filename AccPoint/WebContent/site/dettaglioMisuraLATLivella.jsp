@@ -154,7 +154,7 @@
 <label>S. Media Totale</label>
 <c:choose>
 <c:when test="${lista_pos!=null && lista_neg!=null }">
-<input class="form-control" value="${utl:getAverageLivella(lista_pos, lista_neg, 2) }" readonly>
+<input class="form-control" value="${utl:getAverageLivella(lista_pos, lista_neg, 2).setScale(scala+3,4) }" readonly>
 </c:when>
 <c:otherwise>
 <input class="form-control" value="" readonly>
@@ -166,7 +166,7 @@
 <label>Dev. Std Totale</label>
 <c:choose>
 <c:when test="${lista_pos!=null && lista_neg!=null }">
-<input class="form-control" value="${utl:getDevStdLivella(lista_pos, lista_neg, 2) }" readonly>
+<input class="form-control" value="${utl:getDevStdLivella(lista_pos, lista_neg, 2).setScale(scala+3,4) }" readonly>
 </c:when>
 <c:otherwise>
 <input class="form-control" value="" readonly>
@@ -179,7 +179,7 @@
 <label>SCmax</label>
 <c:choose>
 <c:when test="${lista_pos!=null && lista_neg!=null }">
-<input class="form-control" value="${utl:getScMaxLivella(lista_pos, lista_neg).stripTrailingZeros() }" readonly>
+<input class="form-control" value="${utl:getScMaxLivella(lista_pos, lista_neg).stripTrailingZeros().setScale(scala+3,4) }" readonly>
 </c:when>
 <c:otherwise>
 <input class="form-control" value="" readonly>
@@ -235,23 +235,23 @@
  <tr role="row">
 
 	<td>${punto.rif_tacca }</td>
-	<td>${punto.valore_nominale_tratto.stripTrailingZeros() }</td>
-	<td>${punto.valore_nominale_tratto_sec.stripTrailingZeros() }</td>
-	<td>${punto.p1_andata.stripTrailingZeros() }</td>
-	<td>${punto.p1_ritorno.stripTrailingZeros() }</td>
-	<td>${punto.p1_media.stripTrailingZeros() }</td>
-	<td>${punto.p1_diff.stripTrailingZeros() }</td>
-	<td>${punto.p2_andata.stripTrailingZeros() }</td>
-	<td>${punto.p2_ritorno.stripTrailingZeros() }</td>
-	<td>${punto.p2_media.stripTrailingZeros() }</td>
-	<td>${punto.p2_diff.stripTrailingZeros() }</td>
-	<td>${punto.media.stripTrailingZeros() }</td>
-	<td>${punto.errore_cum.stripTrailingZeros() }</td>
-	<td>${punto.media_corr_sec.stripTrailingZeros()}</td>
-	<td>${punto.media_corr_mm.stripTrailingZeros() }</td>
-	<td>${punto.div_dex.stripTrailingZeros() }</td>
-	<td>${punto.corr_boll_mm.stripTrailingZeros() }</td>
-	<td>${punto.corr_boll_sec.stripTrailingZeros() }</td>
+	<td>${punto.valore_nominale_tratto.setScale(scala) }</td>
+	<td>${punto.valore_nominale_tratto_sec.setScale(scala) }</td>
+	<td>${punto.p1_andata.setScale(scala) }</td>
+	<td>${punto.p1_ritorno.setScale(scala) }</td>
+	<td>${punto.p1_media.setScale(scala) }</td>
+	<td>${punto.p1_diff.setScale(scala) }</td>
+	<td>${punto.p2_andata.setScale(scala) }</td>
+	<td>${punto.p2_ritorno.setScale(scala) }</td>
+	<td>${punto.p2_media.setScale(scala) }</td>
+	<td>${punto.p2_diff.setScale(scala) }</td>
+	<td>${punto.media.setScale(scala) }</td>
+	<td>${punto.errore_cum.setScale(scala+2) }</td>
+	<td>${punto.media_corr_sec.setScale(scala+2)}</td>
+	<td>${punto.media_corr_mm.setScale(scala+3) }</td>
+	<td>${punto.div_dex.setScale(scala+3) }</td>
+	<td>${punto.corr_boll_mm.setScale(scala+3) }</td>
+	<td>${punto.corr_boll_sec.setScale(scala+3) }</td>
 
 	</tr>
   
@@ -288,7 +288,7 @@
 	</c:choose>	
 	<c:choose>
 	<c:when test="${punto.div_dex.abs()>0 && lista_neg!=null}">
-		<td>${punto.div_dex.abs().subtract(utl:getAverageLivella(lista_pos, lista_neg, 2)).stripTrailingZeros() }</td>
+		<td>${punto.div_dex.abs().setScale(scala+3).subtract(utl:getAverageLivella(lista_pos, lista_neg, 2).setScale(scala+3,4)) }</td>
 	</c:when>
 	<c:otherwise>
 	<td></td>
@@ -312,8 +312,8 @@
 <div class="col-xs-4">
 <label>S. Media</label>
 <c:choose>
-<c:when test="${lista_pos!=null }">
-<input class="form-control" value="${utl:getAverageLivella(null, lista_neg, 1) }" readonly>
+<c:when test="${lista_neg!=null }">
+<input class="form-control" value="${utl:getAverageLivella(null, lista_neg, 1).setScale(scala+3,4) }" readonly>
 </c:when>
 <c:otherwise>
 <input class="form-control" value="" readonly>
@@ -325,7 +325,7 @@
 <label>Dev. Std.</label>
 <c:choose>
 <c:when test="${lista_neg!=null }">
-<input class="form-control" value="${utl:getDevStdLivella(null, lista_neg, 1) }" readonly>
+<input class="form-control" value="${utl:getDevStdLivella(null, lista_neg, 1).setScale(scala+3,4) }" readonly>
 </c:when>
 <c:otherwise>
 <input class="form-control" value="" readonly>
@@ -395,23 +395,23 @@
  <tr role="row">
 
 	<td>${punto.rif_tacca }</td>
-	<td>${punto.valore_nominale_tratto.stripTrailingZeros() }</td>
-	<td>${punto.valore_nominale_tratto_sec.stripTrailingZeros() }</td>
-	<td>${punto.p1_andata.stripTrailingZeros() }</td>
-	<td>${punto.p1_ritorno.stripTrailingZeros() }</td>
-	<td>${punto.p1_media.stripTrailingZeros() }</td>
-	<td>${punto.p1_diff.stripTrailingZeros() }</td>
-	<td>${punto.p2_andata.stripTrailingZeros() }</td>
-	<td>${punto.p2_ritorno.stripTrailingZeros() }</td>
-	<td>${punto.p2_media.stripTrailingZeros() }</td>
-	<td>${punto.p2_diff.stripTrailingZeros() }</td>
-	<td>${punto.media.stripTrailingZeros() }</td>
-	<td>${punto.errore_cum.stripTrailingZeros() }</td>
-	<td>${punto.media_corr_sec.stripTrailingZeros() }</td>
-	<td>${punto.media_corr_mm.stripTrailingZeros() }</td>
-	<td>${punto.div_dex.stripTrailingZeros() }</td>
-	<td>${punto.corr_boll_mm.stripTrailingZeros() }</td>
-	<td>${punto.corr_boll_sec.stripTrailingZeros() }</td>
+	<td>${punto.valore_nominale_tratto.setScale(scala) }</td>
+	<td>${punto.valore_nominale_tratto_sec.setScale(scala) }</td>
+	<td>${punto.p1_andata.setScale(scala) }</td>
+	<td>${punto.p1_ritorno.setScale(scala) }</td>
+	<td>${punto.p1_media.setScale(scala) }</td>
+	<td>${punto.p1_diff.setScale(scala) }</td>
+	<td>${punto.p2_andata.setScale(scala) }</td>
+	<td>${punto.p2_ritorno.setScale(scala) }</td>
+	<td>${punto.p2_media.setScale(scala) }</td>
+	<td>${punto.p2_diff.setScale(scala) }</td>
+	<td>${punto.media.setScale(scala) }</td>
+	<td>${punto.errore_cum.setScale(scala+2) }</td>
+	<td>${punto.media_corr_sec.setScale(scala+2)}</td>
+	<td>${punto.media_corr_mm.setScale(scala+3) }</td>
+	<td>${punto.div_dex.setScale(scala+3) }</td>
+	<td>${punto.corr_boll_mm.setScale(scala+3) }</td>
+	<td>${punto.corr_boll_sec.setScale(scala+3) }</td>
 
 	</tr>
   
@@ -449,7 +449,7 @@
 	</c:choose>	
 	<c:choose>
 	<c:when test="${punto.div_dex.abs()>0 && lista_pos!=null}">
-		<td>${punto.div_dex.abs().subtract(utl:getAverageLivella(lista_pos, lista_neg, 2)).stripTrailingZeros() }</td>
+		<td>${punto.div_dex.abs().setScale(scala+3).subtract(utl:getAverageLivella(lista_pos, lista_neg, 2).setScale(scala+3,4)) }</td>
 	</c:when>
 	<c:otherwise>
 	<td></td>
@@ -473,7 +473,7 @@
 <label>S. Media</label>
 <c:choose>
 <c:when test="${lista_pos!=null }">
-<input class="form-control" value="${utl:getAverageLivella(lista_pos, null, 0) }" readonly>
+<input class="form-control" value="${utl:getAverageLivella(lista_pos, null, 0).setScale(scala+3,4) }" readonly>
 </c:when>
 <c:otherwise>
 <input class="form-control" value="" readonly>
@@ -483,7 +483,7 @@
 <label>Dev. Std.</label>
 <c:choose>
 <c:when test="${lista_pos!=null }">
-<input class="form-control" value="${utl:getDevStdLivella(lista_pos, null, 0) }" readonly>
+<input class="form-control" value="${utl:getDevStdLivella(lista_pos, null, 0).setScale(scala+3,4) }" readonly>
 </c:when>
 <c:otherwise>
 <input class="form-control" value="" readonly>

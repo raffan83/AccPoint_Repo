@@ -2852,8 +2852,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 										
 					}
 					
-					session.saveOrUpdate(pianificazione);
-					session.getTransaction().commit();
+					
 					
 					CommessaDTO commessa = GestioneCommesseDAO.getCommessaById(id_commessa);
 					
@@ -2889,12 +2888,15 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 							//	CommessaDTO commessa_fissa = GestioneCommesseDAO.getCommessaById(id_commessa);
 								agenda.setID_ANAGEN(1428); //N.C.S
 								agenda.setID_COMMESSA("AM_TSC_0113/23");
-								GestioneAssegnazioneAttivitaBO.inserisciAppuntamento(agenda);
+								int idAgendaMilestone =GestioneAssegnazioneAttivitaBO.inserisciAppuntamento(agenda);
+								pianificazione.setIdAgendaMilestone(idAgendaMilestone);
 							}
 						}
 					}
 					
 					
+					session.saveOrUpdate(pianificazione);
+					session.getTransaction().commit();
 					session.close();
 					PrintWriter out = response.getWriter();
 					myObj.addProperty("success", true);
@@ -2927,6 +2929,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 					
 					ForPiaPianificazioneDTO pianificazione =  GestioneFormazioneBO.getPianificazioneFromId(Integer.parseInt(id_pianificazione), session);
+					
+					if(pianificazione.getIdAgendaMilestone()!=0) 
+					{
+						GestioneAssegnazioneAttivitaBO.eliminaAppuntamento(pianificazione.getIdAgendaMilestone());
+					}
 					
 					if(check_email_eliminazione!=null && check_email_eliminazione.equals("1")) {
 						SendEmailBO.sendEmailEliminaPianificazione(pianificazione, request.getServletContext());	

@@ -22,6 +22,7 @@ public class ForPiaPianificazioneDTO {
 	private int nCella;
 	private Date data_reminder;
 	private String pausa_pranzo;
+	private int idAgendaMilestone;
 
 	private Set<ForDocenteDTO> listaDocenti = new HashSet<ForDocenteDTO>(0);
 	
@@ -207,5 +208,17 @@ public class ForPiaPianificazioneDTO {
 	public void setPausa_pranzo(String pausa_pranzo) {
 		this.pausa_pranzo = pausa_pranzo;
 	}
+
+
+
+	public int getIdAgendaMilestone() {
+		return idAgendaMilestone;
+	}
+
+
+	public void setIdAgendaMilestone(int idAgendaMilestone) {
+		this.idAgendaMilestone = idAgendaMilestone;
+	}
+	
 	
 }

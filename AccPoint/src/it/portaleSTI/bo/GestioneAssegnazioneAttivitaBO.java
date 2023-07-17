@@ -8,6 +8,7 @@ import org.hibernate.Session;
 
 import groovy.ui.SystemOutputInterceptor;
 import it.portaleSTI.DAO.GestioneAssegnazioneAttivitaDAO;
+import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DTO.AgendaMilestoneDTO;
 import it.portaleSTI.DTO.MilestoneOperatoreDTO;
 
@@ -33,9 +34,10 @@ public class GestioneAssegnazioneAttivitaBO {
 		return GestioneAssegnazioneAttivitaDAO.getMilestone(id_assegnazione,session);
 	}
 
-	public static void inserisciAppuntamento(AgendaMilestoneDTO agenda) throws Exception 
+	public static int inserisciAppuntamento(AgendaMilestoneDTO agenda) throws Exception 
 	{
-		GestioneAssegnazioneAttivitaDAO.inserisciAgenda(agenda);
+		
+		return GestioneAssegnazioneAttivitaDAO.inserisciAgenda(agenda);
 	}
 	
 	public static void main(String[] args) {
@@ -62,6 +64,11 @@ public class GestioneAssegnazioneAttivitaBO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+
+	public static void eliminaAppuntamento(int idAgendaMilestone) throws Exception {
+		GestioneAssegnazioneAttivitaDAO.eliminaAgenda(idAgendaMilestone);
 		
 	}
 

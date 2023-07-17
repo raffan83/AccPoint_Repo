@@ -64,5 +64,9 @@
         	<property name="pausa_pranzo" type="java.lang.String" >
             <column name="pausa_pranzo" />
         </property>
+        
+        <property name="idAgendaMilestone" type="int" >
+            <column name="idAgendaMilestone" />
+        </property>
     </class>
 </hibernate-mapping>

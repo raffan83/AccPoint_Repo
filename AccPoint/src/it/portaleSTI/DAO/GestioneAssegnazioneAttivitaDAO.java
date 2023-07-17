@@ -3,6 +3,7 @@ package it.portaleSTI.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -113,18 +114,20 @@ public class GestioneAssegnazioneAttivitaDAO {
 		return result;
 	}
 
-	public static void inserisciAgenda(AgendaMilestoneDTO agenda) throws Exception {
+	public static int inserisciAgenda(AgendaMilestoneDTO agenda) throws Exception {
 		
 	List<ClienteDTO> lista =new ArrayList<ClienteDTO>();
 		
 		Connection con=null;
 		PreparedStatement pst = null;
 		SimpleDateFormat sdf =new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		ResultSet generatedKeys=null;
 		
+         
 		try {
 			con=ManagerSQLServer.getConnectionSQL();
 			pst=con.prepareStatement("INSERT INTO [dbo].[BWT_AGENDA]([USERNAME],[STATO],[SOGGETTO],[DESCRIZIONE],[LABEL],"
-					+ 				 "[STARTIME],[ENDTIME],[ID_ANAGEN],[ID_COMM]) VALUES (?,?,?,?,?,?,?,?,?)"); 
+					+ 				 "[STARTIME],[ENDTIME],[ID_ANAGEN],[ID_COMM]) VALUES (?,?,?,?,?,?,?,?,?)",pst.RETURN_GENERATED_KEYS); 
 
 			pst.setString(1, agenda.getUSERNAME());
 			pst.setInt(2, agenda.getSTATO());
@@ -136,20 +139,65 @@ public class GestioneAssegnazioneAttivitaDAO {
 			pst.setInt(8, agenda.getID_ANAGEN());
 			pst.setString(9, agenda.getID_COMMESSA());
 		
-			pst.execute();
+			pst.executeUpdate();
 			
-		} catch (Exception e) {
+			generatedKeys = pst.getGeneratedKeys();
 			
+			if (generatedKeys.next()) {
+			    int generatedId = generatedKeys.getInt(1);
+			    
+			 
+			   return generatedId;
+			}
+			
+		} catch (Exception e){
 			
 			e.printStackTrace();
+			throw e;
 			
 		}finally
 		{
+			generatedKeys.close();
 			pst.close();
 			con.close();
 		}
+		return 0;
 		
 		
+	}
+	
+	public static void eliminaAgenda(int id_agenda) throws Exception {
+		
+	
+		
+		Connection con=null;
+		PreparedStatement pst = null;
+	
+	
+		
+         
+		try {
+			con=ManagerSQLServer.getConnectionSQL();
+			pst=con.prepareStatement("DELETE FROM [dbo].[BWT_AGENDA] WHERE ID_AGENDA=?"); 
+
+		
+			pst.setInt(1, id_agenda);
+		
+			pst.execute();
+			
+			
+		} catch (Exception e){
+			
+			e.printStackTrace();
+			throw e;
+			
+		}finally
+		{
+			
+			pst.close();
+			con.close();
+		}
+			
 	}
 
 }

@@ -224,7 +224,10 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 							cal.setTime(date);
 							cal.add(Calendar.MONTH, campione.getFrequenza_verifica_intermedia());
 							Date nextDate = cal.getTime();
-							campione.setDataScadenzaVerificaIntermedia(nextDate);
+							if(campione.getFrequenza_verifica_intermedia()!=0) 
+							{
+								campione.setDataScadenzaVerificaIntermedia(nextDate);
+							}
 						}
 					}				
 					

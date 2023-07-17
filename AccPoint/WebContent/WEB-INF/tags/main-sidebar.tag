@@ -421,7 +421,7 @@
         
          <% if(user.checkPermesso("GREEN_PASS")){%> 
          
-           <li class="header">GREEN PASS</li>
+        <!--    <li class="header">GREEN PASS</li>
 
          <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Green Pass</span>
@@ -436,6 +436,7 @@
 	      	
           </ul>
         </li> 
+         -->
          <%} %>
         
         

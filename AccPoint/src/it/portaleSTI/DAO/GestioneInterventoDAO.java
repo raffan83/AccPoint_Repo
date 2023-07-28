@@ -143,17 +143,18 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 
 
 
-	public static void misuraObsoleta(MisuraDTO misura, Session session) throws Exception
+	public static void misuraObsoleta(MisuraDTO misura,String note, Session session) throws Exception
 	{
 		
 		Query query=null;
 		
 	
 		
-		String s_query = "update MisuraDTO SET obsoleto='S' WHERE id = :_id";
+		String s_query = "update MisuraDTO SET obsoleto='S' , note_obsolescenza = :_note WHERE id = :_id";
 						  
 	    query = session.createQuery(s_query);
 	    query.setParameter("_id",misura.getId());
+	    query.setParameter("_note",note);
 		
 	   query.executeUpdate();	
 	     	
@@ -190,7 +191,7 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 	    
 		session.beginTransaction();
 		
-		String s_query = "from MisuraDTO WHERE intervento.id = :_idIntervento AND strumento.__id=:_idStrumento";
+		String s_query = "from MisuraDTO WHERE intervento.id = :_idIntervento AND strumento.__id=:_idStrumento AND obsoleto='N'";
 					  //  from MisuraDTO WHERE intervento.id =36              
 	    query = session.createQuery(s_query);
 	    query.setParameter("_idIntervento",id);

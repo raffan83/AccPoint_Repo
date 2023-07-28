@@ -445,7 +445,7 @@ public class GestioneIntervento extends HttpServlet {
 						
 						for (MisuraDTO mis : misuraObsoleta) 
 						{
-							GestioneInterventoDAO.misuraObsoleta(mis,session);
+							GestioneInterventoDAO.misuraObsoleta(mis,note_obsolescenza,session);
 						}
 						
 					}

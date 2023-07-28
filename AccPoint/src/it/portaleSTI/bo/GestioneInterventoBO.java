@@ -1015,7 +1015,7 @@ public class GestioneInterventoBO {
 							int idTemp=misura.getId();
 							misura.setInterventoDati(esito.getInterventoDati());
 							misura.setUser(utente);
-							misura.setNote_obsolescenza(note_obsolescenza);
+						//	misura.setNote_obsolescenza(note_obsolescenza);
 							if(esito.isLAT())
 							{
 								listaMisure.get(i).setLat("S");
@@ -1075,7 +1075,8 @@ public class GestioneInterventoBO {
 							ArrayList<MisuraDTO> listaMisuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),idStr);
 							for (MisuraDTO misuraObsoleta : listaMisuraObsoleta) 
 							{
-								GestioneInterventoDAO.misuraObsoleta(misuraObsoleta,session);
+								
+								GestioneInterventoDAO.misuraObsoleta(misuraObsoleta,note_obsolescenza,session);
 								GestioneInterventoDAO.puntoMisuraObsoleto(misuraObsoleta.getId(),session);		
 							}
 

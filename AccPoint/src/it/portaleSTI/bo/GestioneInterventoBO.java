@@ -833,6 +833,10 @@ public class GestioneInterventoBO {
 				{
 					SicurezzaElettricaDTO sicurezza = listaMisure.get(i);
 
+					if(sicurezza.getStrumento().get__id()==Integer.parseInt(idStr)) 
+					{
+						
+					
 					StrumentoDTO strumento = sicurezza.getStrumento();
 
 
@@ -951,7 +955,7 @@ public class GestioneInterventoBO {
 					GestioneInterventoDAO.update(intervento,session);
 
 
-
+					}
 
 				}
 

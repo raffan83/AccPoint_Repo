@@ -87,7 +87,20 @@
 <a href="#" class="btn btn-primary zoom_out pull-right" style="margin-right:5px">Zoom Out</a>
 <a href="#" class="btn btn-primary zoom_in pull-right"  style="margin-right:5px">Zoom In</a>
              </div>
-            </div> <br><br>
+            </div><br>
+            
+<div class="row">
+<div class="col-xs-12">
+<button class="btn btn-primary" ${filtro_tipo_pianificazioni == 0  ? "disabled" : ""} onclick='fillTable("${anno}",0)' id="btn_tutte">Tutte le pianificazioni</button>
+<button class="btn btn-primary" ${filtro_tipo_pianificazioni == 3  ? "disabled" : ""} onclick='fillTable("${anno}",3)' id="btn_elearning">E-Learning</button>
+<!-- <button class="btn btn-primary"  onclick='filterTable()' id="">Filtra</button> -->
+
+</div>
+</div>
+
+
+
+<br><br>
                <div class="row">
 				 <div class="col-xs-12">
 				 <a class="btn btn-primary pull-left" onclick="subTrimestre('${start_date }', '${anno}')" ><i class="fa fa-arrow-left"></i></a>
@@ -155,6 +168,16 @@
 
         </div><br>
         
+        <div class="row" >
+        <div class="col-xs-12">
+        <label>Descrizione</label>
+
+         <textarea rows="4" style="width:100%" id="descrizione" name="descrizione" required></textarea>
+        </div>
+
+        </div><br>
+        
+        
         <div class="row" style="display:none" id="n_utenti_content">
         <div class="col-xs-12">
         <label>N. Utenti</label>
@@ -187,16 +210,21 @@
                 <div class="col-xs-6" style="margin-top:25px">
         <label>Invia Email</label>
           <input class="form-control"  type="checkbox" id="email" name="email" style="width:100%">
-       
+               <label id="label_email" class="pull-right" style="font-size: 70%;display:none">Email inviata</label>
        </div>
-       
-           <div class="col-xs-6" style="margin-top:25px" id = "content_agenda">
-        <label>Aggiungi evento ad agenda docente</label>
-          <input class="form-control"  type="checkbox" id="agenda" name="agenda" style="width:100%">
-       
-       </div>
-        
+ 
         </div><br>
+              <div class="row">
+              <div class="col-xs-3 "></div>
+           <div class="col-xs-6 " style="margin-top:25px" id = "content_agenda">
+        <label >Aggiungi evento ad agenda docente</label>
+          <input class="form-control "   type="checkbox" id="agenda" name="agenda" style="width:100%">
+      
+       </div>
+       <div class="col-xs-3 pull-right" style="margin-top:25px;display:none" id = "label_agenda" >
+        <label class="pull-right" style="font-size: 70%"  > Evento aggiunto agenda docente</label>
+       </div>
+         </div><br>
         
 		<div class="row">
 		<div class='col-xs-4'><label>Ora inzio</label><div class='input-group'>
@@ -215,7 +243,7 @@
         <div class="row">
         <div class="col-xs-12">
         <label>Testo Note</label>
-          <textarea rows="5" style="width:100%" id="nota" name="nota" required></textarea>
+          <textarea rows="5" style="width:100%" id="nota" name="nota" class="form-control"></textarea>
         </div>
         </div><br>
        
@@ -452,7 +480,7 @@ function nuovaPianificazione(){
 		
 		$(document.body).css('padding-right', '0px');
 		if(datab.success){
-			fillTable("${anno}");
+			fillTable("${anno}", "${filtro_tipo_pianificazioni}");
 		//	controllaColoreCella(table, "#F7BEF6");
 			
 			$('#modalPianificazione').modal("hide");
@@ -612,6 +640,7 @@ $('#modalPianificazione').on("hidden.bs.modal", function(){
 	 $('#ora_inizio').val("");
 	 $('#ora_fine').val("");
 	 $('#n_utenti').val("");
+	 $('#descrizione').val("");
 	 $('#email').iCheck('uncheck');
 	 $('#agenda').iCheck('uncheck');
 	 $('#pausa_pranzo').iCheck('uncheck');

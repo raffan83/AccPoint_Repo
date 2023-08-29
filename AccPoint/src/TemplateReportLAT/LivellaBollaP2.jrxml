@@ -304,7 +304,7 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 			</textField>
 			<staticText>
 				<reportElement x="0" y="387" width="561" height="48" uuid="0a4070a0-2b38-441e-995b-94ad47182495"/>
-				<textElement>
+				<textElement textAlignment="Justified">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Per tacche negative si intendono quelle a sinistra della bolla guardando la livella in modo che le scritte siano al dritto. Si intende come tacca zero, sia per la semiscala sinistra che per la destra, la tacca cui la bolla è tangente quando è centrata rispetto alla scala (vedi foto). Il valore medio di una divisione è risultato pari a:]]></text>

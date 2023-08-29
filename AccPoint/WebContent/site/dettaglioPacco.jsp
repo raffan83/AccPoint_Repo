@@ -1159,13 +1159,13 @@ String permesso = "0";
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica pezzi in ingresso </h4>
+        <h4 class="modal-title" id="myModalLabel">Aggiungi pezzi in ingresso </h4>
       </div>
        <div class="modal-body" >
        
        <div class="row">
        <div class="col-xs-12">
-       <label>Numero Pezzi</label>
+       <label>Numero Pezzi Da Aggiungere</label>
        <input type="number" min="0" step="1" class="form-control" id="pezzi_ingresso_mod" name="pezzi_ingresso_mod"/>
        </div>
        </div><br><br>
@@ -3707,7 +3707,8 @@ else{
     	    var n_pezzi_old = tableModRil.cell(rowIndex, colIndex).data();
     	    var note = tableModRil.cell(rowIndex, 4).data();
     	    
-    	    tableModRil.cell(rowIndex, colIndex).data(numero_pezzi);
+    	    var tot = parseInt(numero_pezzi)+parseInt(n_pezzi_old);
+    	    tableModRil.cell(rowIndex, colIndex).data(tot);
     	    var oggi = new Date();
     	    var giorno = oggi.getDate();
     	    var mese = oggi.getMonth() + 1;
@@ -3717,7 +3718,7 @@ else{
     	    }
 
     	    var dataOggi = giorno + '/' + mese + '/' + anno;
-    	    tableModRil.cell(rowIndex, 4).data(note+"- N. pezzi mod. da "+n_pezzi_old+" a " +numero_pezzi+" in data "+dataOggi+" da ${utente.getNominativo()} ");
+    	    tableModRil.cell(rowIndex, 4).data(note+"- N. pezzi mod. da "+n_pezzi_old+" a " +tot+" in data "+dataOggi+" da ${utente.getNominativo()} ");
     	   // tableModRil.columns.adjust().draw();
     	
     	$('#modalModificaPezziIngresso').modal("hide");

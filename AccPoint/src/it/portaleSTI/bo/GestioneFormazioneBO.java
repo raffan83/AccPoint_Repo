@@ -2027,9 +2027,9 @@ public class GestioneFormazioneBO {
 	
 	}
 
-	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioni(String anno, Session session) {
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioni(String anno,String filtro_tipo, Session session) {
 		
-		return GestioneFormazioneDAO.getListaPianificazioni(anno, session);
+		return GestioneFormazioneDAO.getListaPianificazioni(anno,filtro_tipo, session);
 	}
 
 	public static ArrayList<ForPiaStatoDTO> getListaStati(Session session) {
@@ -2087,6 +2087,13 @@ public class GestioneFormazioneBO {
 		
 		return GestioneFormazioneDAO.getListaPianificazioniDocente( dateFrom,  dateTo,
 				 parseInt,  session);
+	}
+
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioniData(String dateFrom, String dateTo,	Session session) throws HibernateException, ParseException {
+	
+		return GestioneFormazioneDAO.getListaPianificazioniData(dateFrom, dateTo, session);
+		
+		
 	}
 
 	

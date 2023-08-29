@@ -309,7 +309,7 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 						ArrayList<String> arrayPs = new ArrayList<String>();						
 														
 						
-						if(evento.getTipo_attivita().getId()==2) {
+						if(evento.getTipo_attivita().getId()==3) {
 							arrayPs.add("Taratura");
 						}else {
 							arrayPs.add("Verifica intermedia");

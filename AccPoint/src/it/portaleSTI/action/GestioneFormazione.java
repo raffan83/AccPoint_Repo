@@ -107,16 +107,24 @@ public class GestioneFormazione extends HttpServlet {
 			Session session=SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
 			String anno = request.getParameter("anno");
+			String filtro_tipo_pianificazioni = request.getParameter("filtro_tipo_pianificazioni");
+			
 			if(anno == null) {
 				anno = ""+Calendar.getInstance().get(Calendar.YEAR);
 			}
 			Gson g = new Gson();
-			ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni = GestioneFormazioneBO.getListaPianificazioni(anno, session);
+			ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni = GestioneFormazioneBO.getListaPianificazioni(anno, filtro_tipo_pianificazioni,session);
 				
 			JsonObject myObj = new JsonObject();
 			PrintWriter out = response.getWriter();
 			myObj.addProperty("success", true);
 			myObj.add("lista_pianificazioni",g.toJsonTree(lista_pianificazioni));
+			
+			if(filtro_tipo_pianificazioni==null) {
+				filtro_tipo_pianificazioni = "0";
+			}
+			request.getSession().setAttribute("filtro_tipo_pianificazioni", filtro_tipo_pianificazioni);
+			
         	out.print(myObj);
         	session.getTransaction().commit();
         	session.close();
@@ -2586,10 +2594,21 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			
 				else if(action.equals("gestione_pianificazione")) 
 				{
+					
+					
+//					ArrayList<ForPiaPianificazioneDTO> pia = GestioneFormazioneBO.getListaPianificazioni(2023+"", session);
+//					for (ForPiaPianificazioneDTO forPiaPianificazioneDTO : pia) {
+//						forPiaPianificazioneDTO.setDescrizione(forPiaPianificazioneDTO.getNote());
+//						session.update(forPiaPianificazioneDTO);
+//					}
+					
 					String anno = request.getParameter("anno");
 					String commesse = request.getParameter("commesse");
 					String data_inizio = request.getParameter("data_inizio");
 					String move = request.getParameter("move");
+				
+					
+										
 					if(anno==null) {
 						anno = ""+Calendar.getInstance().get(Calendar.YEAR);
 					}
@@ -2740,7 +2759,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					request.getSession().setAttribute("commesse", commesse);
 					request.getSession().setAttribute("start_date", start_date);
 					request.getSession().setAttribute("end_date", end_date);
-				
+					request.getSession().setAttribute("filtro_tipo_pianificazioni", 0);
 					
 					
 					session.getTransaction().commit();
@@ -2795,13 +2814,18 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String check_mail = ret.get("check_mail");
 					String check_agenda = ret.get("check_agenda");
 					String check_pausa_pranzo = ret.get("check_pausa_pranzo");
+					String descrizione = ret.get("descrizione");
 				
 					
 					ForPiaPianificazioneDTO pianificazione = null;
 					if(id_pianificazione!=null && !id_pianificazione.equals("")) {
 						pianificazione = GestioneFormazioneBO.getPianificazioneFromId(Integer.parseInt(id_pianificazione), session);
+						if(pianificazione.getStato().getId()!=Integer.parseInt(stato) || pianificazione.getData_cambio_stato()==null) {
+							pianificazione.setData_cambio_stato(new Date());
+						}
 					}else {
 						pianificazione = new ForPiaPianificazioneDTO();
+						pianificazione.setData_cambio_stato(new Date());
 					}
 					
 					
@@ -2809,6 +2833,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					pianificazione.setTipo(new ForPiaTipoDTO(Integer.parseInt(tipo), ""));
 					pianificazione.setNote(nota);
+					pianificazione.setDescrizione(descrizione);
 					pianificazione.setId_commessa(id_commessa);
 					pianificazione.setnCella(Integer.parseInt(day));
 					pianificazione.setOra_inizio(ora_inizio);
@@ -2858,6 +2883,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					if(check_mail!=null && check_mail.equals("1")) {
 						SendEmailBO.sendEmailPianificazione(pianificazione, commessa, request.getServletContext());
+						pianificazione.setEmail_inviata(1);
 					}
 					
 					if(check_agenda!=null && check_agenda.equals("1")) {
@@ -2866,8 +2892,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 								AgendaMilestoneDTO agenda = new AgendaMilestoneDTO();
 								agenda.setUSERNAME(docente.getUtenteMilestone());
 								agenda.setSTATO(1);
-								agenda.setSOGGETTO("Pianificazione formazione");
-								agenda.setDESCRIZIONE(nota +" - Commessa: "+commessa.getID_COMMESSA()+" Cliente: "+commessa.getID_ANAGEN_NOME());
+								agenda.setSOGGETTO("Commessa: "+commessa.getID_COMMESSA()+" Cliente: "+commessa.getID_ANAGEN_NOME());
+								//agenda.setNOTA(pianificazione.getDescrizione() +" - "+ nota +" - Commessa: "+commessa.getID_COMMESSA()+" Cliente: "+commessa.getID_ANAGEN_NOME());
+								agenda.setNOTA(nota);
+								agenda.setDESCRIZIONE(pianificazione.getDescrizione());
 								agenda.setLABEL(3);
 								Calendar calendar = Calendar.getInstance();
 								if(ora_inizio!=null && !ora_inizio.equals("")) {
@@ -2892,6 +2920,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 								pianificazione.setIdAgendaMilestone(idAgendaMilestone);
 							}
 						}
+						
+						pianificazione.setAggiunto_agenda(1);
 					}
 					
 					
@@ -2949,6 +2979,87 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					myObj.addProperty("messaggio", "Pianificazione eliminata con successo!");
 		        	out.print(myObj);
 		        	
+				}
+			
+				else if(action.equals("lista_pianificazioni")) {
+					
+					
+					String dateFrom = request.getParameter("dateFrom");
+					String dateTo = request.getParameter("dateTo");
+					
+					if(dateFrom == null && dateTo == null) {
+						DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						
+						Date today = new Date();
+						
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(today);
+						
+						cal.add(Calendar.DATE, -30);
+						Date startDate = cal.getTime();
+						
+						
+						dateFrom = df.format(startDate);
+						
+						cal.add(Calendar.DATE, 60);
+						
+						dateTo = df.format(cal.getTime());
+						
+						
+					}
+					
+					ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni = GestioneFormazioneBO.getListaPianificazioniData(dateFrom, dateTo, session);
+					
+					request.getSession().setAttribute("lista_pianificazioni", lista_pianificazioni);
+					
+					request.getSession().setAttribute("dateTo", dateTo);
+					request.getSession().setAttribute("dateFrom", dateFrom);
+					
+					session.getTransaction().commit();
+					session.close();
+					
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPianificazioni.jsp");
+			     	dispatcher.forward(request,response);
+			     	
+					
+				}
+			
+			
+				else if(action.equals("cambia_stato_pianificazione")) {
+			
+					ajax = true;
+					
+					String id = request.getParameter("id");
+					String stato = request.getParameter("stato");
+					
+					ForPiaPianificazioneDTO pianificazione = GestioneFormazioneBO.getPianificazioneFromId(Integer.parseInt(id), session);
+					
+					String descrizione = "NON CONFERMATO"; 
+					if(stato.equals("2")) {
+						descrizione = "CONFERMATO";
+					}else if(stato.equals("3")) {
+						descrizione = "EROGATO";
+					}else if(stato.equals("4")) {
+						descrizione = "FATTURATO SENZA ATTESTATI";
+					}else if(stato.equals("5")) {
+						descrizione = "FATTURATO CON ATTESTATI";
+					}
+					pianificazione.setStato(new ForPiaStatoDTO(Integer.parseInt(stato),descrizione));
+					
+					session.update(pianificazione);
+					
+					session.getTransaction().commit();
+					session.close();
+					PrintWriter out = response.getWriter();
+					
+					Gson g = new Gson();
+					
+					myObj.addProperty("success", true);
+					myObj.add("pianificazione", g.toJsonTree(pianificazione));
+		        	out.print(myObj);
+					
+					
+					
 				}
 			
 		}catch(Exception e) {

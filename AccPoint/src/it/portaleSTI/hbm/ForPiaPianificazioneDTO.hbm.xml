@@ -68,5 +68,23 @@
         <property name="idAgendaMilestone" type="int" >
             <column name="idAgendaMilestone" />
         </property>
+        
+        
+        	<property name="descrizione" type="java.lang.String" >
+            <column name="descrizione" />
+        </property>
+        
+        <property name="data_cambio_stato" type="java.util.Date" >
+            <column name="data_cambio_stato" />
+        </property>
+        
+          <property name="email_inviata" type="int" >
+            <column name="email_inviata" />
+        </property>
+        
+          <property name="aggiunto_agenda" type="int" >
+            <column name="aggiunto_agenda" />
+        </property>
+        
     </class>
 </hibernate-mapping>

@@ -283,8 +283,18 @@ function modalPianificazione(day, commessa, id){
 			$('#ora_fine').val(pianificazione.ora_fine);
 			$('#n_cella').val(pianificazione.nCella);
 			$('#n_utenti').val(pianificazione.nUtenti);
+			$('#descrizione').val(pianificazione.descrizione)
+			if(pianificazione.email_inviata==1){
+				$('#label_email').show();
+			}else{
+				$('#label_email').hide();
+			}
 			
-
+			if(pianificazione.aggiunto_agenda==1){
+				$('#label_agenda').show();
+			}else{
+				$('#label_agenda').hide();
+			}
 			$('#btn_elimina').show()
 		
 				
@@ -426,7 +436,7 @@ $(document).ready(function() {
 	
 
 
-         fillTable("${anno}");
+         fillTable("${anno}",'${filtro_tipo_pianificazioni}');
 	
 	
 
@@ -443,13 +453,21 @@ $(document).ready(function() {
 
 
 
-function fillTable(anno){
+function fillTable(anno, filtro){
 
 
 console.log("dddd")
+
+if(filtro!=3){
+    $('#btn_tutte').attr("disabled",true)
+    $('#btn_elearning').attr("disabled",false)
+}else{
+    $('#btn_tutte').attr("disabled",false)
+    $('#btn_elearning').attr("disabled",true)
+}
 	
 	$.ajax({
-		  url: 'gestioneFormazione.do?action=lista_pianificazioni&anno='+anno, // Specifica l'URL della tua servlet
+		  url: 'gestioneFormazione.do?action=lista_pianificazioni&anno='+anno+"&filtro_tipo_pianificazioni="+filtro, // Specifica l'URL della tua servlet
 		  method: 'GET',
 		  dataType: 'json',
 		  success: function(response) {
@@ -474,14 +492,14 @@ console.log("dddd")
 		    for (var i = 0; i < lista_pianificazioni.length; i++) {
 		    	var id = lista_pianificazioni[i].id_commessa.replace("/","")+"_"+lista_pianificazioni[i].nCella;
 				var cell = $("#"+id);
-				if(lista_pianificazioni[i].note.length>20){
+				if(lista_pianificazioni[i].descrizione.length>20){
 				
 						//cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro'  style='margin-top:5px' ondblclick='modalPianificazione('"+lista_pianificazioni[i].nCella+"', '"+lista_pianificazioni[i].id_commessa+"','"+lista_pianificazioni[i].id+"')'>"+lista_pianificazioni[i].note.substring(0,20)+"...</div>");	
-						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+lista_pianificazioni[i].note.substring(0,20)+"...</div>");	
+						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+lista_pianificazioni[i].descrizione.substring(0,20)+"...</div>");	
 					
 				}else{
 					
-						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+lista_pianificazioni[i].note+"</div>");	
+						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+lista_pianificazioni[i].descrizione+"</div>");	
 						 
 					
 					
@@ -596,6 +614,11 @@ console.log("dddd")
 		   // var x = table.column(columnIndex).data();
 		    
 		    table.column(columnIndex).search(searchValue).draw();
+		    
+		  
+		
+		    
+		    
 		  });
 	  
 	  $('.inputsearchtable').on('click', function(e){
@@ -613,15 +636,50 @@ console.log("dddd")
 	  }
 			
 		  
+	  
+			  
+	  
 			  $(document.body).css('padding-right', '0px');
 		  },
 		  error: function(xhr, status, error) {
 		    // Gestisci eventuali errori
 		    console.error(error);
 		  }
+		  
+		  
+		  
+
+		  
 		});
 	
+	
+	
+
 }
+
+
+function filterTable() {
+    var table = $('#tabForPianificazione');
+    var rows = table.find('tr:gt(0)');
+    
+    rows.each(function() {
+        var row = $(this);
+        var hideRow = true;
+        
+        row.find('td:gt(2)').each(function() { // Inizia dalla quarta colonna (indice 3)
+          if ($(this).text() !== '') {
+            hideRow = false;
+            return false; // Esci dal loop interno se una cella non è vuota
+          }
+        });
+        
+        if (hideRow) {
+          row.hide(); // Nascondi le righe con tutte le celle vuote a partire dalla quarta colonna
+        } else {
+          row.show(); // Mostra le righe con almeno una cella piena a partire dalla quarta colonna
+        }
+      });
+  }
 
 
 function scrollToColumn(columnIndex) {

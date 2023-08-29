@@ -314,6 +314,7 @@
 	      	
 	      
 	      	<li><a href="#" onclick="callAction('gestioneFormazione.do?action=gestione_pianificazione&anno=<%=anno %>',null,true);">Pianificazione</a></li>
+	      	<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_pianificazioni',null,true);">Lista Pianificazioni</a></li>
 	      	<%} %>
           </ul>
         </li> 

@@ -303,13 +303,16 @@
     			</div> 
 
               <!-- /.tab-pane -->
+              
+               <c:set var="risoluzione" value="${misura.misuraLAT.sensibilita.stripTrailingZeros().scale() }"></c:set>
+              
               <div class="tab-pane table-responsive" id="prova_lineare">
               
               <div class="row">
               <div class="col-xs-12">
               <table id="tabellaLinearita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
 				 <thead><tr class="active">
-				 <th>Punto</th>
+				 <th>Punto </th>
 				 <th>Valore Nominale</th>
 				 <th>[A] Taratura</th>
 				 <th>[A] Campione</th>
@@ -335,10 +338,10 @@
 				 	
 				 	<td>${punto.punto }</td>
 				 	<td>${punto.valore_nominale.stripTrailingZeros().toPlainString()}</td>
-				 	<td>${punto.valore_andata_taratura.stripTrailingZeros().toPlainString()  }</td>
-				 	<td>${punto.valore_andata_campione.stripTrailingZeros().toPlainString()  }</td>
-				 	<td>${punto.valore_ritorno_taratura.stripTrailingZeros().toPlainString()  }</td>
-				 	<td>${punto.valore_ritorno_campione.stripTrailingZeros().toPlainString()  }</td>
+				 	<td>${punto.valore_andata_taratura.setScale(risoluzione, 3) }</td>
+				 	<td>${punto.valore_andata_campione.setScale(risoluzione, 3)  }</td>
+				 	<td>${punto.valore_ritorno_taratura.setScale(risoluzione, 3) }</td>
+				 	<td>${punto.valore_ritorno_campione.setScale(risoluzione, 3) }</td>
 				 	<td>${punto.andata_scostamento_campione.stripTrailingZeros().toPlainString()  }</td>				
 				 	<td>${punto.andata_correzione_campione.stripTrailingZeros().toPlainString()  }</td>
 				 	<td>${punto.ritorno_scostamento_campione.stripTrailingZeros().toPlainString()  }</td>

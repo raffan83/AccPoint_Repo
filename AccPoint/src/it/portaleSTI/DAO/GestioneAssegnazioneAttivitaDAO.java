@@ -127,18 +127,18 @@ public class GestioneAssegnazioneAttivitaDAO {
 		try {
 			con=ManagerSQLServer.getConnectionSQL();
 			pst=con.prepareStatement("INSERT INTO [dbo].[BWT_AGENDA]([USERNAME],[STATO],[SOGGETTO],[DESCRIZIONE],[LABEL],"
-					+ 				 "[STARTIME],[ENDTIME],[ID_ANAGEN],[ID_COMM]) VALUES (?,?,?,?,?,?,?,?,?)",pst.RETURN_GENERATED_KEYS); 
+					+ 				 "[STARTIME],[ENDTIME],[ID_ANAGEN],[ID_COMM],[LOCATION]) VALUES (?,?,?,?,?,?,?,?,?,?)",pst.RETURN_GENERATED_KEYS); 
 
 			pst.setString(1, agenda.getUSERNAME());
 			pst.setInt(2, agenda.getSTATO());
 			pst.setString(3, agenda.getSOGGETTO());
-			pst.setString(4, agenda.getDESCRIZIONE());
+			pst.setString(4, agenda.getNOTA());
 			pst.setInt(5,agenda.getLABEL());
 			pst.setString(6,sdf.format(agenda.getSTARTDATE()));
 			pst.setString(7,sdf.format(agenda.getENDTDATE()));
 			pst.setInt(8, agenda.getID_ANAGEN());
 			pst.setString(9, agenda.getID_COMMESSA());
-		
+			pst.setString(10, agenda.getDESCRIZIONE());
 			pst.executeUpdate();
 			
 			generatedKeys = pst.getGeneratedKeys();

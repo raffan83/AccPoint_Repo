@@ -23,9 +23,37 @@ public class ForPiaPianificazioneDTO {
 	private Date data_reminder;
 	private String pausa_pranzo;
 	private int idAgendaMilestone;
-
+	private String descrizione;
+	private Date data_cambio_stato;
+	private int aggiunto_agenda;
+	private int email_inviata;
+	
 	private Set<ForDocenteDTO> listaDocenti = new HashSet<ForDocenteDTO>(0);
 	
+
+
+	public String getDescrizione() {
+		return descrizione;
+	}
+
+
+
+	public void setDescrizione(String descrizione) {
+		this.descrizione = descrizione;
+	}
+
+
+
+	public Date getData_cambio_stato() {
+		return data_cambio_stato;
+	}
+
+
+
+	public void setData_cambio_stato(Date data_cambio_stato) {
+		this.data_cambio_stato = data_cambio_stato;
+	}
+
 
 
 	public int getId() {
@@ -218,6 +246,30 @@ public class ForPiaPianificazioneDTO {
 
 	public void setIdAgendaMilestone(int idAgendaMilestone) {
 		this.idAgendaMilestone = idAgendaMilestone;
+	}
+
+
+
+	public int getAggiunto_agenda() {
+		return aggiunto_agenda;
+	}
+
+
+
+	public void setAggiunto_agenda(int aggiunto_agenda) {
+		this.aggiunto_agenda = aggiunto_agenda;
+	}
+
+
+
+	public int getEmail_inviata() {
+		return email_inviata;
+	}
+
+
+
+	public void setEmail_inviata(int email_inviata) {
+		this.email_inviata = email_inviata;
 	}
 	
 	

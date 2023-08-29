@@ -787,10 +787,15 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		return result;
 	}
 
-	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioni(String anno, Session session) {
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioni(String anno, String filtro_tipo,Session session) {
 		ArrayList<ForPiaPianificazioneDTO> lista = null;
 		
-		Query query = session.createQuery("from ForPiaPianificazioneDTO where YEAR(data) = :_anno");
+		String filtro="";
+		if(filtro_tipo!=null && !filtro_tipo.equals("0")) {
+			filtro = " and tipo.id = 3";
+		}
+		
+		Query query = session.createQuery("from ForPiaPianificazioneDTO where YEAR(data) = :_anno"+filtro);
 		query.setParameter("_anno", Integer.parseInt(anno));
 		
 		
@@ -867,6 +872,27 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		}
 				
 		return result;
+	}
+
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioniData(String dateFrom, String dateTo, Session session) throws HibernateException, ParseException {
+		
+	ArrayList<ForPiaPianificazioneDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = null;
+		
+		query = session.createQuery("from ForPiaPianificazioneDTO where data between :_dateFrom and :_dateTo"); 
+				
+					
+		query.setParameter("_dateFrom", sdf.parse(dateFrom));
+		query.setParameter("_dateTo", sdf.parse(dateTo));
+			
+			
+		lista = (ArrayList<ForPiaPianificazioneDTO>) query.list();
+		
+				
+		return lista;
 	}
 
 }

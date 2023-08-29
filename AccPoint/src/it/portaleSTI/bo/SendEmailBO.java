@@ -1295,7 +1295,7 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
 			  File image = new File(ctx.getRealPath("images/calver_cresco.png"));
 			  String cid = email.embed(image, "Calver logo");
 			  
-			  messaggio += pianificazione.getNote().replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;");
+			  messaggio += pianificazione.getDescrizione().replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;");
 			  
 			  
 			  messaggio += "<br><br><font size='2'>La presente e-mail &egrave; stata generata automaticamente da un indirizzo di posta elettronica di solo invio; si chiede pertanto di non rispondere al messaggio. <br>";

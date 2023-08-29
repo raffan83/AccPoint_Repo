@@ -303,7 +303,10 @@
         </li>
         
         <c:choose>
-        <c:when test="${intervento.nStrumentiMisurati > 0 || intervento.nStrumentiNuovi > 0}">
+      <c:when test="${intervento.nStrumentiMisurati > 0 || intervento.nStrumentiNuovi > 0}"> 
+ 
+        
+
  				   <li class="list-group-item">
  				   <h4>Download Schede</h4>
  				<button class="btn btn-default " onClick="scaricaSchedaConsegnaModal()"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>

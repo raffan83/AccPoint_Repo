@@ -91,7 +91,7 @@
             
 <div class="row">
 <div class="col-xs-12">
-<button class="btn btn-primary" ${filtro_tipo_pianificazioni == 0  ? "disabled" : ""} onclick='fillTable("${anno}",0)' id="btn_tutte">Tutte le pianificazioni</button>
+<button class="btn btn-primary" ${filtro_tipo_pianificazioni == 0  ? "disabled" : ""} onclick='fillTable("${anno}",0)' id="btn_tutte">Tutte le classi</button>
 <button class="btn btn-primary" ${filtro_tipo_pianificazioni == 3  ? "disabled" : ""} onclick='fillTable("${anno}",3)' id="btn_elearning">E-Learning</button>
 <!-- <button class="btn btn-primary"  onclick='filterTable()' id="">Filtra</button> -->
 
@@ -172,7 +172,7 @@
         <div class="col-xs-12">
         <label>Descrizione</label>
 
-         <textarea rows="4" style="width:100%" id="descrizione" name="descrizione" required></textarea>
+         <textarea rows="4" style="width:100%" id="descrizione" name="descrizione" class="form-control" required></textarea>
         </div>
 
         </div><br>

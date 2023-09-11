@@ -299,18 +299,9 @@ $("#tabForPianificazione").on( 'init.dt', function ( e, settings ) {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
     	  var title = $('#tabForPianificazione thead th').eq( $(this).index() ).text();
     	
-    	  //if($(this).index()!=0 && $(this).index()!=1){
-    		  
-    		  if(admin=='1' && $(this).index()==1){
-    			 // $(this).append( '<div><input  style="width:100%"  type="checkbox" id="checkall" name="checkall"/></div>');
-    			  
-    			 
-    		  }else{
+    	
     			  $(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');  
-    		  }
-		    		
-	    	//}
-
+    	
     	} );
     
     

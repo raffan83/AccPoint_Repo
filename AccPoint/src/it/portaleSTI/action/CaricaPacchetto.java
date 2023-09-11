@@ -280,7 +280,7 @@ public class CaricaPacchetto extends HttpServlet {
 					}
 					
 					
-					ArrayList<MisuraDTO> listaMisure= GestioneInterventoBO.getListaMirureByIntervento(intervento.getId());
+					ArrayList<MisuraDTO> listaMisure= GestioneInterventoBO.getListaMirureByIntervento(intervento.getId(), session);
 					for (MisuraDTO misura : listaMisure) {
 						if(misura.getTipoFirma()==2 || misura.getTipoFirma()==3) {
 							misura.setNome_firma(nome_cliente);

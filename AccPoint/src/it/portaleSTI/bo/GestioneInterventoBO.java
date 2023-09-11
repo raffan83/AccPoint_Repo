@@ -1116,10 +1116,10 @@ public class GestioneInterventoBO {
 			
 		
 	}
-	public static ArrayList<MisuraDTO> getListaMirureByIntervento(int idIntervento)throws Exception
+	public static ArrayList<MisuraDTO> getListaMirureByIntervento(int idIntervento, Session session)throws Exception
 	{
 		
-			return GestioneInterventoDAO.getListaMirureByIntervento(idIntervento);
+			return GestioneInterventoDAO.getListaMirureByIntervento(idIntervento, session);
 			
 		
 	}

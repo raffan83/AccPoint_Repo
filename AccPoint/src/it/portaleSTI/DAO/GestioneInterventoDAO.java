@@ -241,13 +241,13 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 		return misura;
 	}
 
-	public static ArrayList<MisuraDTO> getListaMirureByIntervento(int idIntervento) {
+	public static ArrayList<MisuraDTO> getListaMirureByIntervento(int idIntervento, Session session) {
 		Query query=null;
 		
 		ArrayList<MisuraDTO> misura=null;
 		try {
-		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+		//Session session =SessionFacotryDAO.get().openSession();
+		//session.beginTransaction();
 		
 		
 		String s_query = "from MisuraDTO WHERE intervento.id = :_idIntervento";
@@ -256,7 +256,7 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 	    query.setParameter("_idIntervento",idIntervento);
 		
 	    misura=(ArrayList<MisuraDTO>)query.list();
-	    session.close();
+	//    session.close();
 	     } 
 		catch(Exception e)
 	     {

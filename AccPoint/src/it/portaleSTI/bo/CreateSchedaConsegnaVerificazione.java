@@ -226,29 +226,29 @@ public class CreateSchedaConsegnaVerificazione {
  		    return dataSource;
  	}
 	
-	public static void main(String[] args) throws HibernateException, Exception {
-		
-		InterventoDTO intervento = GestioneInterventoBO.getIntervento("97");
-	
-		ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId());
-		ArrayList<StrumentoDTO> listaStrumenti = new ArrayList<StrumentoDTO>();
-		
-		for (MisuraDTO misura : listaMisure) {
-			listaStrumenti.add(misura.getStrumento());
-		}
-		String note = "wesdfgvsdzv sdfsdf vdsfp+ sd\n" + 
-				"f sd\n" + 
-				"fs \n" + 
-				"dsf\n" + 
-				" sd\n" + 
-				"f \n" + 
-				"sdf\n" + 
-				" sdfsdxzfdsfdsf\n" + 
-				"ds f\n" + 
-				"sd\n" + 
-				" f dsfdsf dkfnjhg vinskfjd hiusdhfiusdhiuf hdsifh iosdhf iusdhf isdilu vhdsiuf iusdhf iudslifuhdlsiufh dilsuhf ilusdhf ilusdfilusdilufh sdilu iulsdhfi lusdhiluf hdisluh ilsudhf ilusdhfil hdsiluf hdilsuf ";
-		new CreateSchedaConsegnaMetrologia(intervento, note, 0 ,"ca", listaStrumenti,null,null);
-	}
+//	public static void main(String[] args) throws HibernateException, Exception {
+//		
+//		InterventoDTO intervento = GestioneInterventoBO.getIntervento("97");
+//	
+//		ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId());
+//		ArrayList<StrumentoDTO> listaStrumenti = new ArrayList<StrumentoDTO>();
+//		
+//		for (MisuraDTO misura : listaMisure) {
+//			listaStrumenti.add(misura.getStrumento());
+//		}
+//		String note = "wesdfgvsdzv sdfsdf vdsfp+ sd\n" + 
+//				"f sd\n" + 
+//				"fs \n" + 
+//				"dsf\n" + 
+//				" sd\n" + 
+//				"f \n" + 
+//				"sdf\n" + 
+//				" sdfsdxzfdsfdsf\n" + 
+//				"ds f\n" + 
+//				"sd\n" + 
+//				" f dsfdsf dkfnjhg vinskfjd hiusdhfiusdhiuf hdsifh iosdhf iusdhf isdilu vhdsiuf iusdhf iudslifuhdlsiufh dilsuhf ilusdhf ilusdfilusdilufh sdilu iulsdhfi lusdhiluf hdisluh ilsudhf ilusdhfil hdsiluf hdilsuf ";
+//		new CreateSchedaConsegnaMetrologia(intervento, note, 0 ,"ca", listaStrumenti,null,null);
+//	}
 	
 	
 }

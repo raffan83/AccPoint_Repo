@@ -725,7 +725,7 @@ public class GestioneIntervento extends HttpServlet {
 		
 		
 		ArrayList<StrumentoDTO> lista_duplicati = new ArrayList<StrumentoDTO>();
-		ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId());
+		ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId(), session);
 		
 	    for (int i = 0; i < listaMisure.size(); i++) 
 	    {

@@ -81,7 +81,7 @@ public class ScaricaListaCampioni extends HttpServlet {
 			
 			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
 			
-			ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId());
+			ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId(), session);
 			ArrayList<CampioneDTO> listaCampioni = new ArrayList<CampioneDTO>();
 			
 			HashMap<String,String> hmap = new HashMap<String,String>();

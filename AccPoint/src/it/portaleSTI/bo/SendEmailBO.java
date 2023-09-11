@@ -404,7 +404,9 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
        props.put("mail.smtps.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
        props.put("mail.smtps.socketFactory.fallback", "false");
        props.put("mail.smtps.ssl.enable", true);
-       props.put("mail.smtps.ssl.protocols", "TLSv1.2");
+       //props.put("mail.smtps.ssl.protocols", "TLSv1.2");
+       props.put("mail.smtps.ssl.protocols", "TLSv1 TLSv1.1 TLSv1.2");
+       
        
        
        Session mailSession = Session.getDefaultInstance(props);

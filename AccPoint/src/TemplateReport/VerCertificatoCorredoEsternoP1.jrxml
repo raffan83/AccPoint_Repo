@@ -58,7 +58,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="138" width="553" height="20" uuid="193e7300-a073-4006-8afe-55d68345ca5f"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ATTESTA]]></text>

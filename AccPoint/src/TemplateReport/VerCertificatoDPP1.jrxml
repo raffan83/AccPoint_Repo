@@ -64,12 +64,12 @@
 				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="92" width="553" height="42" uuid="b5f0fe1d-1afa-4eb2-9c89-1c430bf74879"/>
+				<reportElement x="0" y="92" width="553" height="38" uuid="b5f0fe1d-1afa-4eb2-9c89-1c430bf74879"/>
 				<text><![CDATA[Il sottoscritto Eliseo Crescenzi responsabile dell'Organismo S.T.I. S.r.l. idoneo allo svolgimento della verificazione periodica di strumenti per pesare a funzionamento non automatico (NAWI), ai sensi del Decreto Ministeriale n. 93 del 21 Aprile 2017,]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="124" width="553" height="20" uuid="c8325c23-17fc-488a-82cd-ff9987eb4cac"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ATTESTA]]></text>

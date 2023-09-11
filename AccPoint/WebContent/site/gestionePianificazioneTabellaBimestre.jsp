@@ -476,6 +476,7 @@ if(filtro!=3){
 		    var is_modifica = response.is_modifica;
 		    
 		    var array = [];
+		    var array_in_corso = [];
 		    var day = [];
 		    var map = {};
 		    
@@ -532,6 +533,7 @@ if(filtro!=3){
 					if (indice !== -1) {
 					  array.splice(indice, 1);
 					}
+					array_in_corso.push(lista_pianificazioni[i].id_commessa.replace("/",""));
 					
 				
 					
@@ -539,7 +541,10 @@ if(filtro!=3){
 
 				riquadro.css("background-color", "#F7BEF6");
 				riquadro.css("border-color", "#FF69B4");
-				array.push(lista_pianificazioni[i].id_commessa.replace("/",""));
+				if(!array.includes(lista_pianificazioni[i].id_commessa.replace("/","")) && !array_in_corso.includes(lista_pianificazioni[i].id_commessa.replace("/",""))){
+					array.push(lista_pianificazioni[i].id_commessa.replace("/",""));	
+				}
+				
 							
 					
 				
@@ -549,7 +554,40 @@ if(filtro!=3){
 		    }
 		    
 		   
- 		     for (var i = 0; i < array.length; i++) {
+	
+		    
+		     for (var i = 0; i < array.length; i++) {
+		    	 
+		 	    var oggettiFiltrati = $.grep(lista_pianificazioni, function(obj) {
+			    	  return obj.id_commessa.replace("/","") === array[i];
+			    	});
+			    
+		    	 
+		    		var commessa_da_chiudere = true;			
+					var riga_vuota = true;
+					
+					
+					$.each(oggettiFiltrati, function(index, oggetto) {
+						  // Ottieni lo stato dall'oggetto
+						  var stato = oggetto.stato.id;
+
+						  var cell = $("#stato_"+array[i]);
+						  if (stato == 5) {
+							  cell.html("Da Chiudere");
+						  } else {
+							  cell.html("In Corso");
+						  }
+						});
+					
+
+
+				
+			}
+		    
+		    
+		    
+		    
+/*  		     for (var i = 0; i < array.length; i++) {
 		    		var commessa_da_chiudere = true;			
 					var riga_vuota = true;
 		    	  $("#" + array[i] + " td").slice(3).each(function() {
@@ -582,7 +620,7 @@ if(filtro!=3){
 		        	cell.html("In Corso");
 		        }
 				
-			} 
+			} */ 
 		     	    
 			console.log("ciao")
 		    

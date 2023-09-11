@@ -187,19 +187,19 @@ public class CreateSchedaListaCampioni {
  		    return dataSource;
  	}
 	
-	public static void main(String[] args) throws HibernateException, Exception {
-		
-		InterventoDTO intervento = GestioneInterventoBO.getIntervento("97");
-	
-		ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId());
-		ArrayList<CampioneDTO> listaCampioni = new ArrayList<CampioneDTO>();
-		
-		for (MisuraDTO misura : listaMisure) {
-		//	List<CampioneDTO> listaCampioniMisura = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
-		//	listaCampioni.addAll(listaCampioniMisura);
-		}
-		
-		
-		new CreateSchedaListaCampioni(intervento, listaCampioni,null,null);
-	}
+//	public static void main(String[] args) throws HibernateException, Exception {
+//		
+//		InterventoDTO intervento = GestioneInterventoBO.getIntervento("97");
+//	
+//		ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId());
+//		ArrayList<CampioneDTO> listaCampioni = new ArrayList<CampioneDTO>();
+//		
+//		for (MisuraDTO misura : listaMisure) {
+//		//	List<CampioneDTO> listaCampioniMisura = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
+//		//	listaCampioni.addAll(listaCampioniMisura);
+//		}
+//		
+//		
+//		new CreateSchedaListaCampioni(intervento, listaCampioni,null,null);
+//	}
 }

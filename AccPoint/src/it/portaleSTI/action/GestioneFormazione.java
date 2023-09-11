@@ -2596,7 +2596,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				{
 					
 					
-//					ArrayList<ForPiaPianificazioneDTO> pia = GestioneFormazioneBO.getListaPianificazioni(2023+"", session);
+//					ArrayList<ForPiaPianificazioneDTO> pia = GestioneFormazioneBO.getListaPianificazioni(2023+"",null, session);
 //					for (ForPiaPianificazioneDTO forPiaPianificazioneDTO : pia) {
 //						forPiaPianificazioneDTO.setDescrizione(forPiaPianificazioneDTO.getNote());
 //						session.update(forPiaPianificazioneDTO);

@@ -142,6 +142,14 @@ public class StrumentiMisurati extends HttpServlet {
 								 arrCartificati.put(""+misura.getId(), certificato);
 							 }
 							 
+							 if(misura.getStrumento().getTipoRapporto().getId()==7201) {
+								 if(misura.getIndice_prestazione()==null) {
+									 String indice_prestazione = GestioneMisuraBO.calcolaIndicePrestazione(misura);
+									 misura.setIndice_prestazione(indice_prestazione);
+									 session.update(misura);
+								 }
+							 }
+							 
 					 
 						}
 						

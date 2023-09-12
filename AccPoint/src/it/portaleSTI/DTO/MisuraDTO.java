@@ -65,6 +65,8 @@ public class MisuraDTO implements Serializable {
 	
 	private String notaModifica;
 	
+	private String indice_prestazione;
+	
     public String getObsoleto() {
 		return obsoleto;
 	}
@@ -275,6 +277,14 @@ public class MisuraDTO implements Serializable {
 
 	public void setNotaModifica(String notaModifica) {
 		this.notaModifica = notaModifica;
+	}
+
+	public String getIndice_prestazione() {
+		return indice_prestazione;
+	}
+
+	public void setIndice_prestazione(String indice_prestazione) {
+		this.indice_prestazione = indice_prestazione;
 	}
 
 

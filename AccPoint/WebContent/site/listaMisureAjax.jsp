@@ -13,8 +13,26 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 	<%
 	%>
-	
 
+<style>
+.lamp {
+    height: 20px;
+    width: 20px;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 15px;
+}
+.lampRed {
+    background-color: #dd4b39;
+}
+.lampGreen {
+    background-color: green;
+}
+.lampYellow {
+    background-color: yellow;
+}
+
+</style>
 
 
 <div class="row">
@@ -45,12 +63,15 @@
  <th>Data Misura</th>
   <th>Strumento</th>
        <th>Codice Interno</th>
+    
    <th>Stato Ricezione</th>
     <th>Obsoleta</th>
     <th>Note Obsolescenza</th>
-     <th>Certificato</th>
+     <th>Certificato</th>  
+       <th>Indice Prestazione</th>
      <th>Allegati</th>
      <th>Note Allegati</th>
+    
  </tr></thead>
  
  <tbody>
@@ -88,6 +109,24 @@
 </c:forEach>
 
 </td>
+<td style="text-align:center">
+<c:if test="${misura.indice_prestazione=='V' }">
+<div class="lamp lampGreen" style="margin:auto"></div>
+</c:if>
+
+<c:if test="${misura.indice_prestazione=='G' }">
+ <div class="lamp lampYellow"  style="margin:auto"></div> 
+</c:if>
+
+<c:if test="${misura.indice_prestazione=='R' }">
+ <div class="lamp lampRed" style="margin:auto"></div> 
+</c:if>
+
+<c:if test="${misura.indice_prestazione=='X' }">
+<b>X</b>
+</c:if>
+
+</td>
 <td>
 <c:if test="${misura.file_allegato!=null &&  misura.file_allegato!=''}">
 <a target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" href="scaricaCertificato.do?action=download_allegato&id_misura=${utl:encryptData(misura.id)}" ><i class="fa fa-file-pdf-o"></i></a>
@@ -98,6 +137,9 @@
 </c:if>
 </td>
 <td>${misura.note_allegato }</td>
+
+
+
 	</tr>
 	
 	 
@@ -109,8 +151,41 @@
 
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
 
 
+<c:if test="${listaMisure.size()>0 && listaMisure.get(0).getStrumento().getTipoRapporto().getId()==7201}">
+<div class="row">
+<div class="col-xs-5"></div>
+<div class="col-xs-4">
+<label>Legenda Indice Prestazione</label>
+
+</div>
+<div class="col-xs-4"></div>
+</div><br>
+<div class="row">
+<div class="col-xs-4"></div>
+<div class="col-xs-1" >
+<label>BUONO</label>
+<div class="lamp lampGreen" ></div>
+</div>
+<div class="col-xs-1">
+<label>ALLERTA</label>
+<div class="lamp lampYellow"></div>
+</div>
+<div class="col-xs-1">
+<label>DERIVA</label>
+<div class="lamp lampRed"></div>
+</div>
+<div class="col-xs-2">
+<label>FUORI SERVIZIO</label>
+<div ><b>X</b></div>
+</div>
+</div>
+</c:if>
 
   <div id="modalStampaEtichetta" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-sm" role="document">
@@ -229,6 +304,8 @@
   </div>
 </div>
 
+
+
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
@@ -236,6 +313,10 @@
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
 <script src="plugins/iCheck/icheck.min.js"></script> 
 <script src="plugins/iCheck/icheck.js"></script> 
+
+
+
+
 
   <script type="text/javascript">
   $('input').iCheck({

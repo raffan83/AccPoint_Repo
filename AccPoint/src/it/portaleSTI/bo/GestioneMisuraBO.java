@@ -7,8 +7,11 @@ import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.Util.Costanti;
+import javassist.expr.NewArray;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Blob;
 
 import java.util.ArrayList;
@@ -251,6 +254,33 @@ public class GestioneMisuraBO {
 	public static ArrayList<MisuraDTO> getListaMisurePerData(Date start, Date now, boolean lat, Session session) {
 	
 		return GestioneMisuraDAO.getListaMisurePerData(start, now, lat, session);
+	}
+
+
+	public static String calcolaIndicePrestazione(MisuraDTO misura) {
+		
+		BigDecimal max = BigDecimal.ZERO;
+		String indice = null;
+		
+		for (PuntoMisuraDTO punto : misura.getListaPunti()) {
+			BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),3,RoundingMode.HALF_UP);
+			if(indice_prestazione.compareTo(max)==1) {
+				max = indice_prestazione;
+			}
+					
+		}
+		
+		if(max.compareTo(new BigDecimal(25))==-1 || max.compareTo(new BigDecimal(25))==0) {
+			indice = "V";
+		}else if(max.compareTo(new BigDecimal(25))==1 && (max.compareTo(new BigDecimal(75))==-1 || max.compareTo(new BigDecimal(75))==0)) {
+			indice = "G";
+		}else if(max.compareTo(new BigDecimal(75))==1 && (max.compareTo(new BigDecimal(100))==-1 || max.compareTo(new BigDecimal(100))==0)) {
+			indice = "R";
+		}else {
+			indice = "X";
+		}
+		
+		return indice;
 	}
 
 }

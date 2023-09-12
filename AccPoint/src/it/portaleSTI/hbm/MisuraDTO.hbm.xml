@@ -101,7 +101,9 @@
        <property name="notaModifica" type="java.lang.String">
             <column name="nota_modifica" />
         </property>
-    
+      <property name="indice_prestazione" type="java.lang.String">
+            <column name="indice_prestazione" />
+        </property>
         
     </class>
 </hibernate-mapping>

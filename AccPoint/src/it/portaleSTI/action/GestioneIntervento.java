@@ -557,7 +557,7 @@ public class GestioneIntervento extends HttpServlet {
 			response.setContentType("application/json");
 			
 			
-			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura));
+			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura), session);
 			String filename = "";
 			
 			List<FileItem> items;

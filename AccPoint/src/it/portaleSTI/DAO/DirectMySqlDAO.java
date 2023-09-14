@@ -245,12 +245,12 @@ public class DirectMySqlDAO {
 		return toReturn;
 	}
 
-	public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, String nomeCliente, Connection conSQLite,String indirizzoSede,UtenteDTO utente) throws Exception {
+	public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, String nomeCliente, Connection conSQLite,String indirizzoSede,UtenteDTO utente, Session session) throws Exception {
 
 
-		Session session = SessionFacotryDAO.get().openSession();
+		//Session session = SessionFacotryDAO.get().openSession();
 
-		session.beginTransaction();
+		//session.beginTransaction();
 
 		PreparedStatement pstINS=null;
 
@@ -349,7 +349,7 @@ public class DirectMySqlDAO {
 				if(idMisura!=null && idMisura!=0)
 				{
 					System.out.println(idMisura);
-					MisuraDTO misura =GestioneMisuraDAO.getMiruraByID(idMisura);
+					MisuraDTO misura =GestioneMisuraDAO.getMiruraByID(idMisura, session);
 
 
 					pstINS=conSQLite.prepareStatement("INSERT INTO tblMisure(id,id_str,tipoFirma,statoMisura) VALUES(?,?,?,?)");
@@ -442,14 +442,14 @@ public class DirectMySqlDAO {
 			System.out.println("INSERT "+i+" STR");
 			conSQLite.commit();
 
-			session.close();
+			//session.close();
 		}
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			session.getTransaction().rollback();
+			//session.getTransaction().rollback();
 			
-			session.close();
+			//session.close();
 			throw ex;
 		}
 

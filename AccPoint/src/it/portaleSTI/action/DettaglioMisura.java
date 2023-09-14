@@ -95,7 +95,7 @@ public class DettaglioMisura extends HttpServlet {
 			if(action==null || action.equals("")) {
 				
 			idMisura = Utility.decryptData(idMisura);
-			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(idMisura));	
+			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(idMisura), session);	
 			
 //			Set<ScadenzaDTO> listaScadenzeDTO= new HashSet<>();
 //			ScadenzaDTO scadenza = new ScadenzaDTO();
@@ -274,7 +274,7 @@ public class DettaglioMisura extends HttpServlet {
 			else if(action.equals("select_tabella")) {
 				
 				String id = request.getParameter("id_misura");
-				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id));	
+				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id), session);	
 				
 				
 					int numeroTabelle = GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());

@@ -37,13 +37,13 @@ public class GestioneMisuraDAO {
 		return 0;
 	}
 	
-	public static MisuraDTO getMiruraByID(int idMisura) {
+	public static MisuraDTO getMiruraByID(int idMisura, Session session) {
 		
 		MisuraDTO misura=null;
 		try {
-			Session session =SessionFacotryDAO.get().openSession();
+			//Session session =SessionFacotryDAO.get().openSession();
 			misura =  (MisuraDTO) session.get(MisuraDTO.class, idMisura);
-			session.close();
+			//session.close();
 	     } 
 		catch(Exception e)
 	     {

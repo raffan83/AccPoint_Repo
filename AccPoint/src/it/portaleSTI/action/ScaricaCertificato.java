@@ -258,7 +258,7 @@ public class ScaricaCertificato extends HttpServlet {
 				String pack = request.getParameter("pack");
 				String note = "";				
 				String filename = "";
-				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura));
+				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura), session);
 				List<FileItem> items;
 				
 					items = uploadHandler.parseRequest(request);

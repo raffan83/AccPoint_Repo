@@ -102,7 +102,7 @@ public class GestioneStrumentoBO {
 
 		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		
-		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede(),intervento.getUser());
+		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede(),intervento.getUser(), session);
 		
 		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
 		
@@ -279,7 +279,7 @@ public class GestioneStrumentoBO {
 
 		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		
-		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede(),intervento.getUser());
+		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede(),intervento.getUser(), session);
 		
 		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
 		
@@ -341,7 +341,7 @@ public class GestioneStrumentoBO {
 
 		DirectMySqlDAO.insertListaCampioniLAT(con,cmp);
 		
-		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede(),intervento.getUser());
+		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede(),intervento.getUser(), session);
 		
 		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
 		

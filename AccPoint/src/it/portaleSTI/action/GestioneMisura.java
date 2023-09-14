@@ -179,7 +179,7 @@ public class GestioneMisura extends HttpServlet {
 				
 				id_misura = Utility.decryptData(id_misura);
 				
-				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura));
+				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura), session);
 				
 				String path = Costanti.PATH_FOLDER+misura.getIntervento().getNomePack()+"\\CondizioniAmbientali\\"+misura.getFile_condizioni_ambientali();
 				

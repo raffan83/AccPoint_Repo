@@ -182,6 +182,9 @@ public class ScaricaPackGenerato extends HttpServlet {
 	        	request.getSession().setAttribute("exception", ex);
 	        	myObj = STIException.getException(ex);
 	        	out.print(myObj);
+	        	
+	        	session.getTransaction().rollback();
+	    		session.close();
         	}else {
 	    		 ex.printStackTrace();
 	    		 session.getTransaction().rollback();

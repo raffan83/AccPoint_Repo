@@ -57,14 +57,14 @@ public class CreateSchedaListaStrumenti {
 	public CreateSchedaListaStrumenti( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, Session session, ServletContext context, ConfigurazioneClienteDTO conf,UtenteDTO user, String nome_cliente, String nome_sede) throws Exception {
 		try {
 		
-			build(listaStrumenti,cliente, sede , context,conf, user, nome_cliente, nome_sede);
+			build(listaStrumenti,cliente, sede , context,conf, user, nome_cliente, nome_sede, session);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			throw e;
 		} 
 	}
-	private void build( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, ServletContext context, ConfigurazioneClienteDTO conf,UtenteDTO user, String nome_cliente, String nome_sede) throws Exception {
+	private void build( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, ServletContext context, ConfigurazioneClienteDTO conf,UtenteDTO user, String nome_cliente, String nome_sede, Session session) throws Exception {
 		
 		InputStream is = PivotTemplate.class.getResourceAsStream("schedaListaStrumentiMetrologiaMOD-LAB-013V.jrxml");
 		 
@@ -134,7 +134,7 @@ public class CreateSchedaListaStrumenti {
  
 			report.setColumnStyle(textStyle); //AGG
 
-			SubreportBuilder subreport = cmp.subreport(getTableReport(listaStrumenti));
+			SubreportBuilder subreport = cmp.subreport(getTableReport(listaStrumenti, session));
 			
 			report.addDetail(subreport);
 		
@@ -167,7 +167,7 @@ public class CreateSchedaListaStrumenti {
 		//return report;
 	}
 
-	public JasperReportBuilder getTableReport(ArrayList<StrumentoDTO> listaStrumenti) throws Exception{
+	public JasperReportBuilder getTableReport(ArrayList<StrumentoDTO> listaStrumenti, Session session) throws Exception{
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(7);//AGG
 		
@@ -204,7 +204,7 @@ public class CreateSchedaListaStrumenti {
 	 		
 			report.setDetailSplitType(SplitType.PREVENT);
 			
-			report.setDataSource(createDataSource(listaStrumenti));
+			report.setDataSource(createDataSource(listaStrumenti, session));
 	  
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -213,7 +213,7 @@ public class CreateSchedaListaStrumenti {
 		return report;
 	}
 
-	private JRDataSource createDataSource(ArrayList<StrumentoDTO> listaStrumenti)throws Exception {
+	private JRDataSource createDataSource(ArrayList<StrumentoDTO> listaStrumenti, Session session)throws Exception {
 			
 		
 		ArrayList<String> listaString = new ArrayList<String>();
@@ -283,7 +283,7 @@ public class CreateSchedaListaStrumenti {
 	 					int idMisura = listaMisure.get(strumento.get__id());
 	 					
 	 					
-	 					MisuraDTO misura = GestioneMisuraBO.getMiruraByID(idMisura);
+	 					MisuraDTO misura = GestioneMisuraBO.getMiruraByID(idMisura, session);
 	 					if(misura!=null) 
 	 					{
 	 						arrayPs.add(misura.getnCertificato());

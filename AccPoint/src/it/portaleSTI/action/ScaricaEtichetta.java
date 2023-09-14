@@ -103,7 +103,7 @@ public class ScaricaEtichetta extends HttpServlet {
 			
 			String check_fuori_servizio = request.getParameter("check_fuori_servizio");
 
-			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(idMisura));	
+			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(idMisura), session);	
 			ajax = false;
 
 			String nomePack=misura.getIntervento().getNomePack();

@@ -35,10 +35,10 @@ import it.portaleSTI.DTO.PuntoMisuraDTO;
 
 public class GestioneMisuraBO {
 
-	public static MisuraDTO getMiruraByID(int idMisura)throws Exception
+	public static MisuraDTO getMiruraByID(int idMisura, Session session)throws Exception
 	{
 		
-			return GestioneMisuraDAO.getMiruraByID(idMisura);
+			return GestioneMisuraDAO.getMiruraByID(idMisura, session);
 		
 	}
 	

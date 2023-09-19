@@ -50,7 +50,7 @@ public class StrumentoDTO {
 			 private String procedureString = "";
 			 
 			 private String altre_matricole;
-			 
+			 private String indice_prestazione;
 			 
 			 //------
 			 
@@ -436,6 +436,14 @@ public class StrumentoDTO {
 
 			public void setListaNoteStrumento(Set<StrumentoNoteDTO> listaNoteStrumento) {
 				this.listaNoteStrumento = listaNoteStrumento;
+			}
+
+			public String getIndice_prestazione() {
+				return indice_prestazione;
+			}
+
+			public void setIndice_prestazione(String indice_prestazione) {
+				this.indice_prestazione = indice_prestazione;
 			}
 
 			

@@ -262,6 +262,10 @@ public class GestioneMisuraBO {
 		BigDecimal max = BigDecimal.ZERO;
 		String indice = null;
 		
+		if(misura.getListaPunti().size()==0) 
+		{
+			return null;
+		}
 		for (PuntoMisuraDTO punto : misura.getListaPunti()) {
 			BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),3,RoundingMode.HALF_UP);
 			if(indice_prestazione.compareTo(max)==1) {

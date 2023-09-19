@@ -2,6 +2,7 @@ package it.portaleSTI.bo;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -262,16 +263,21 @@ public class GestioneInterventoBO {
 		    		misura.setLat("N");
 		    		
 		    		int idTemp=misura.getId();
-
+		    		
+		    		
+		    		ArrayList<PuntoMisuraDTO> listaPuntiMisuraPerCalcoloIndice = SQLLiteDAO.getListaPunti(con,idTemp,0);
+		    		
+		    		String indicePrestazione=null;
+		    		
+		    		
+		    		if(misura.getStrumento().getIdTipoRapporto()==Costanti.ID_TIPO_RAPPORTO_SVT)
+		    		{
+		    			indicePrestazione=calcolaIndicePrestazione(listaPuntiMisuraPerCalcoloIndice);
+		    		}
+		    		
+		    		misura.setIndice_prestazione(indicePrestazione);
+		    		
 		    		saveMisura(misura,session);
-
-		    		/*
-		    		 * Salvo scadenza 
-		    		 */
-//		    		ScadenzaDTO scadenza =misura.getStrumento().getScadenzaDTO();
-//		    		scadenza.setIdStrumento(misura.getStrumento().get__id());
-//			    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
-//		    		GestioneStrumentoBO.saveScadenza(scadenza,session);
 		    		
 		    		ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
 		    		
@@ -288,6 +294,8 @@ public class GestioneInterventoBO {
 		    			
 		    			StrumentoDTO strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
 		    			
+		    			strumentoModificato.setIndice_prestazione(indicePrestazione);
+		    			//strumentoModificato
 		    			if(idoneo) 
 		    			{
 		    			 	
@@ -351,6 +359,37 @@ public class GestioneInterventoBO {
 		return esito;
 	}
 	
+	private static String calcolaIndicePrestazione(ArrayList<PuntoMisuraDTO> listaPuntiMisura) {
+		
+		BigDecimal max = BigDecimal.ZERO;
+		String indice = null;
+		
+		if(listaPuntiMisura.size()==0) 
+		{
+			return null;
+		}
+		for (PuntoMisuraDTO punto : listaPuntiMisura) {
+			BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),3,RoundingMode.HALF_UP);
+			if(indice_prestazione.compareTo(max)==1) {
+				max = indice_prestazione;
+			}
+					
+		}
+		
+		if(max.compareTo(new BigDecimal(25))==-1 || max.compareTo(new BigDecimal(25))==0) {
+			indice = "V";
+		}else if(max.compareTo(new BigDecimal(25))==1 && (max.compareTo(new BigDecimal(75))==-1 || max.compareTo(new BigDecimal(75))==0)) {
+			indice = "G";
+		}else if(max.compareTo(new BigDecimal(75))==1 && (max.compareTo(new BigDecimal(100))==-1 || max.compareTo(new BigDecimal(100))==0)) {
+			indice = "R";
+		}else {
+			indice = "X";
+		}
+		
+		return indice;
+	}
+	
+
 	public static ObjSavePackDTO saveDataDBSicurezzaElettrica(ObjSavePackDTO esito, InterventoDTO intervento,UtenteDTO utente, Session session) throws Exception {
 		InterventoDatiDTO interventoDati = new InterventoDatiDTO();
 		

@@ -352,7 +352,11 @@ public class GestioneIntervento extends HttpServlet {
 							data_misura = item.getString();
 						}
 						else if(item.getFieldName().equals("indice_prestazione")) {
-							indice_prestazione = item.getString();
+							if(!item.getString().equals("")) {
+								indice_prestazione = item.getString();	
+							}
+							
+							
 						}
 					}
 					else {

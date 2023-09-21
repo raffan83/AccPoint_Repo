@@ -136,7 +136,27 @@
 					
 					</c:if>
   				 
-  				 
+  				 					<c:if test="${misura.indice_prestazione!=null }">
+						<li class="list-group-item">
+		                  <b>Indice di Prestazione</b> 
+		                  
+							 <c:if test="${misura.indice_prestazione=='V' }">
+								<div class="lamp lampGreen pull-right" style="margin:auto"></div>
+								</c:if>
+								
+								<c:if test="${misura.indice_prestazione=='G' }">
+								 <div class="lamp lampYellow pull-right"  style="margin:auto"></div> 
+								</c:if>
+								
+								<c:if test="${misura.indice_prestazione=='R' }">
+								 <div class="lamp lampRed pull-right" style="margin:auto"></div> 
+								</c:if>
+								
+								<c:if test="${misura.indice_prestazione=='X' }">
+								<div class="lamp lampNI pull-right" style="margin:auto"></div> 
+								</c:if>
+		  				 </li>
+  				 </c:if>
                 
                
         </ul>

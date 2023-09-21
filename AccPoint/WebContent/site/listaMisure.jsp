@@ -88,6 +88,7 @@
     <th>Note obsolescenza</th>
     <%-- <c:if test="${misura.lat=='S' }"><th>Registro Laboratorio</th></c:if> --%>
     <th>Registro Laboratorio</th>
+    <th>Indice Prestazione</th>
     <th>Certificato/File Excel/Stampa etichetta</th>
     <th>Allegati</th>
     <th>Note Allegati</th>
@@ -122,6 +123,25 @@
     <td>
     <c:if test="${misura.lat=='S' }">${misura.intervento.id}_${misura.misuraLAT.id }_${misura.strumento.__id}</c:if> 
     </td>
+    
+    <td style="text-align:center" >
+<c:if test="${misura.indice_prestazione=='V' }">
+<div class="lamp lampGreen" style="margin:auto"></div>
+</c:if>
+
+<c:if test="${misura.indice_prestazione=='G' }">
+ <div class="lamp lampYellow"  style="margin:auto"></div> 
+</c:if>
+
+<c:if test="${misura.indice_prestazione=='R' }">
+ <div class="lamp lampRed" style="margin:auto"></div> 
+</c:if>
+
+<c:if test="${misura.indice_prestazione=='X' }">
+<div class="lamp lampNI" style="margin:auto"></div> 
+</c:if>
+
+</td>
    
 <td>
 <c:forEach var="entry" items="${arrCartificati}">
@@ -388,7 +408,29 @@
 
 <jsp:attribute name="extra_css">
 
+<style>
+.lamp {
+    height: 20px;
+    width: 20px;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 15px;
+}
+.lampRed {
+    background-color: #FF8C00;
+}
+.lampGreen {
+    background-color: green;
+}
+.lampYellow {
+    background-color: yellow;
+}
 
+.lampNI {
+    background-color: #8B0000;
+}
+
+</style>
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
@@ -562,9 +604,14 @@ function openModalStampa(idMisura){
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	        if($(this).index()!= 0){
+	        if($(this).index()!= 0 && $(this).index()!= 12){
 	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	        }
+	        
+	        if($(this).index()==12){
+	    		   columsDatatables[$(this).index()].search.search = "";
+	    		   $(this).append( '<div id="filtro_select"></div>')
+	    		   }
 	    } );
 	} );
 
@@ -607,12 +654,18 @@ function openModalStampa(idMisura){
   	      responsive: true,
   	      scrollX: false,
   	      stateSave: true,
+  	    stateSaveParams: function (settings, data) {
+	          // Rimuovi i dati relativi alla colonna che vuoi escludere (ad esempio, colonna 2)
+	          var columnIndexToExclude = 12;
+	          data.columns.splice(columnIndexToExclude, 1);
+	      },
+  	    select: 'single',
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 1 },
   	                   { responsivePriority: 2, targets: 2 },
   	                   { responsivePriority: 3, targets: 3 },
-  	                 { responsivePriority: 4, targets: 12 },
-  	                 { responsivePriority: 5, targets: 9 }
+  	                 { responsivePriority: 4, targets: 13 },
+  	                 { responsivePriority: 5, targets: 10 }
   	               ],
   	     
   	               buttons: [ {
@@ -718,6 +771,54 @@ function openModalStampa(idMisura){
  
     });
 
+	
+	
+	 var uniqueClasses = [];
+	    table.column(12).data().each(function(value, index) {
+	    	if(value!=null && value!=''){
+	    		 var classes = $(value).attr('class').split(' ');
+	 	        for (var i = 0; i < classes.length; i++) {
+	 	            var className = classes[i];
+	 	            if (uniqueClasses.indexOf(className) === -1) {
+	 	                uniqueClasses.push(className);
+	 	            }
+	 	        }
+	    	}
+	    
+	       
+	    });
+	
+    var select = $('<select id="filtro_indice" class="form-control select2" style="max-width:100px"><option value="" selected>TUTTI</option></select>')
+    .appendTo($('#filtro_select'))
+        .on('change', function() {
+            var selectedClass = $(this).val();
+            table = $('#tabPM').DataTable();
+            
+            table.column(12).search(selectedClass)
+            
+            table.draw();
+        });
+
+    // Popolare il filtro select con le classi CSS uniche
+    for (var i = 0; i < uniqueClasses.length; i++) {
+    	
+    	if(uniqueClasses[i]=="lampGreen"){
+    		select.append('<option value="' + uniqueClasses[i] + '">PERFORMANTE</option>');
+    	}else if(uniqueClasses[i]=="lampYellow"){
+    		select.append('<option value="' + uniqueClasses[i] + '">STABILE</option>');
+    	}else if(uniqueClasses[i]=="lampRed"){
+    		select.append('<option value="' + uniqueClasses[i] + '">ALLERTA</option>');
+    	}else if(uniqueClasses[i]=="lampNI"){
+    		select.append('<option value="' + uniqueClasses[i] + '">NON IDONEO</option>');
+    	}
+    
+        
+    }
+ 
+ 
+    $('#filtro_indice').select2()
+	
+	
 });
   </script>
 </jsp:attribute> 

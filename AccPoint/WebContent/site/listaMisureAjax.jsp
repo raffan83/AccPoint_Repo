@@ -147,6 +147,7 @@
 <c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP")}'>
 		<select class="form-control indicePrest" id="indice_prestazione_${misura.id}" onchange="aggiornaIndicePrestazione('${misura.id}')" data-placeholder="Aggiorna indice di prestazione" style ="width:80%">
 		<option value=""></option>
+		<option value="0">NON PRESENTE</option>
 		<option value="V">PERFORMANTE</option>
 		<option value="G">STABILE</option>
 		<option value="R">ALLERTA</option>
@@ -375,10 +376,13 @@
 					  html = '<div class="lamp lampRed" style="margin:auto"></div>'
 						  var opzioneDaAggiungere = "lampRed"
 						  var text = "ALLERTA"
-				  }else{
+				  }else if(stato == "X"){
 					  html = '<div class="lamp lampNI" style="margin:auto"></div>';
 					  	  var text = "NON IDONEO"
 						  var opzioneDaAggiungere = "lampNI"
+				  }else{
+					  html = '';
+				  	  
 				  }
 				  
 					var cell = $("#ind_prest_"+id_misura);

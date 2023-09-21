@@ -269,6 +269,19 @@ public class GestioneFormazioneBO {
 							else if(cell.getColumnIndex()==1) {
 								cognome = cell.getStringCellValue();
 							}	
+							else if(cell.getColumnIndex()==2) {
+								
+								SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+						        dateFormat.setLenient(false);
+						        Date date = null;
+						        try {
+						            date = dateFormat.parse(cell.getStringCellValue());
+						        } catch (Exception e) {
+						            // In caso di errore di parsing, date rimarrà null
+						        }
+						        data_nascita = date;
+						        
+							}
 							else if(cell.getColumnIndex()==3) {
 								luogo_nascita = cell.getStringCellValue();
 							}
@@ -283,7 +296,8 @@ public class GestioneFormazioneBO {
 						
 						if(cell.getDateCellValue()!=null && cell.getColumnIndex()==2) {							
 							data_nascita = cell.getDateCellValue();						
-						}						
+						}				
+						
 						else if(cell.getColumnIndex()==5 ) {
 							id_corso = (int) cell.getNumericCellValue();
 						}

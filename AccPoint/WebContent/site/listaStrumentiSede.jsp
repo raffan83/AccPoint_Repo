@@ -54,7 +54,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 <style>
 .table th input {
-    min-width: 25px !important;
+    min-width: 45px !important;
 }
 
 .lamp {

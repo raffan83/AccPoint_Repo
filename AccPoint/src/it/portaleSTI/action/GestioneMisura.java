@@ -294,6 +294,10 @@ public class GestioneMisura extends HttpServlet {
 				String id_misura = request.getParameter("id_misura");
 				String stato = request.getParameter("stato");
 				
+				if(stato.equals("0")) {
+					stato = null;
+				}
+								
 				String id_strumento = "";
 				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura), session);
 				misura.setIndice_prestazione(stato);

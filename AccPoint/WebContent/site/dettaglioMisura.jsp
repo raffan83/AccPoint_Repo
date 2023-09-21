@@ -52,7 +52,7 @@
 
 	</div>
 </div>
-<div class="box-body">
+<div class="box-body graficoIncertezza" >
 
         <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
@@ -117,13 +117,32 @@
 		  				 </li>
 		  				 <li class="list-group-item">
 		                  <b>Note Allegato</b> 
-		                   <a class="pull-right">${misura.note_allegato}</a>
+		                   ${misura.note_allegato}</a>
 		  				 </li>
 					
 					</c:if>
 					</c:if>
-
-  				 
+					<c:if test="${misura.indice_prestazione!=null }">
+						<li class="list-group-item">
+		                  <b>Indice di Prestazione</b> 
+		                  
+							 <c:if test="${misura.indice_prestazione=='V' }">
+								<div class="lamp lampGreen pull-right" style="margin:auto"></div>
+								</c:if>
+								
+								<c:if test="${misura.indice_prestazione=='G' }">
+								 <div class="lamp lampYellow pull-right"  style="margin:auto"></div> 
+								</c:if>
+								
+								<c:if test="${misura.indice_prestazione=='R' }">
+								 <div class="lamp lampRed pull-right" style="margin:auto"></div> 
+								</c:if>
+								
+								<c:if test="${misura.indice_prestazione=='X' }">
+								<div class="lamp lampNI pull-right" style="margin:auto"></div> 
+								</c:if>
+		  				 </li>
+  				 </c:if>
   				 
                 
                
@@ -1082,7 +1101,29 @@
 
 
 <jsp:attribute name="extra_css">
+<style>
+.lamp {
+    height: 20px;
+    width: 20px;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 15px;
+}
+.lampRed {
+    background-color: #FF8C00;
+}
+.lampGreen {
+    background-color: green;
+}
+.lampYellow {
+    background-color: yellow;
+}
 
+.lampNI {
+    background-color: #8B0000;
+}
+
+</style>
 
 </jsp:attribute>
 
@@ -1642,7 +1683,7 @@
 		    		
 		    		dataset1.backgroundColor = dataset1.backgroundColor.concat(colorBg);
 	    			dataset1.borderColor = dataset1.borderColor.concat(colorLine);
-		    		$(".graficoIncertezza").height("390");
+		    		$(".graficoIncertezza").height("430");
  		    		
 		    		if(tipoRapporto=="SVT"){
 		    			dataset2.backgroundColor = dataset2.backgroundColor.concat(colorBg2);

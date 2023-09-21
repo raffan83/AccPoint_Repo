@@ -92,6 +92,19 @@ public class GestioneMisura extends HttpServlet {
 			if(action.equals("lista")) {
 				
 				
+//				ArrayList<MisuraDTO> lista_misureAll = GestioneMisuraDAO.getListaMisure(session);
+//				
+//				for (MisuraDTO misuraDTO : lista_misureAll) {
+//					if(misuraDTO.getStrumento().getTipoRapporto().getId()==7201) {
+//						String indice = GestioneMisuraBO.calcolaIndicePrestazione(misuraDTO);
+//						misuraDTO.setIndice_prestazione(indice);
+//						misuraDTO.getStrumento().setIndice_prestazione(indice);
+//						session.update(misuraDTO);
+//						session.update(misuraDTO.getStrumento());
+//					}
+//				}
+//				
+				
 				String date_from = request.getParameter("date_from");
 				String date_to = request.getParameter("date_to");
 				
@@ -273,6 +286,37 @@ public class GestioneMisura extends HttpServlet {
 				session.close();
 				
 			}
+			
+			else if(action.equals("aggiorna_indice_prestazione")) {
+				
+				
+				ajax = true;
+				String id_misura = request.getParameter("id_misura");
+				String stato = request.getParameter("stato");
+				
+				String id_strumento = "";
+				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura), session);
+				misura.setIndice_prestazione(stato);
+				if(misura.getStrumento().getDataUltimaVerifica() == null || misura.getStrumento().getDataUltimaVerifica().equals(misura.getDataMisura())) {
+					misura.getStrumento().setIndice_prestazione(stato);
+					id_strumento = misura.getStrumento().get__id()+"";
+				}
+				
+				session.update(misura);
+				session.update(misura.getStrumento());
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("id_strumento", id_strumento);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				PrintWriter out = response.getWriter();
+				out.print(myObj);
+				
+				
+			}
+					
 		}catch(Exception e) {
 			
 			session.getTransaction().rollback();

@@ -267,10 +267,13 @@ public class GestioneMisuraBO {
 			return null;
 		}
 		for (PuntoMisuraDTO punto : misura.getListaPunti()) {
-			BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),3,RoundingMode.HALF_UP);
-			if(indice_prestazione.compareTo(max)==1) {
-				max = indice_prestazione;
+			if(punto.getAccettabilita()!=null && punto.getAccettabilita().compareTo(BigDecimal.ZERO)==1) {
+				BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),5,RoundingMode.HALF_UP);
+				if(indice_prestazione.compareTo(max)==1) {
+					max = indice_prestazione;
+				}
 			}
+			
 					
 		}
 		

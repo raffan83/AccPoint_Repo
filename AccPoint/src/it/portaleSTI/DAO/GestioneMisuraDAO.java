@@ -197,5 +197,17 @@ public class GestioneMisuraDAO {
 				
 		return lista;
 	}
+
+	public static ArrayList<MisuraDTO> getListaMisure(Session session) {
+		
+		ArrayList<MisuraDTO> lista = null;
+		
+		Query query = session.createQuery("from MisuraDTO order by id asc");	
+		
+		lista = (ArrayList<MisuraDTO>) query.list();
+		
+				
+		return lista;
+	}
 	
 }

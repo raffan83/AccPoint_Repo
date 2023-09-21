@@ -1065,13 +1065,16 @@ public class CreateVerRapporto {
 				if(tipologia_strumento == 2 && lista_accuratezza.size()>0 && lista_accuratezza.get(0).getMassa()!=null) {
 					 vl_criteri = cmp.verticalList(cmp.text("CRITERI").setStyle(stl.style().setFontName("Trebuchet MS")), 
 								cmp.horizontalList(cmp.text("  - Per la/le prova/e di ripetibilità:").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(160),
-										cmp.text("|Pmax - Pmin|").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(68),
-										cmp.text(" ≤ EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35)).setGap(0),
+										cmp.text("Pmax - Pmin").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(62),
+										cmp.text(" ≤ |EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35),
+										cmp.text("p").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
+										cmp.text("|").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35)).setGap(0),
 								cmp.horizontalList(cmp.text("  - Per le ulteriori prove: ").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(115), 
 										cmp.text("|Ec").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(17),
 										cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
-										cmp.text("| ≤ EMT").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS")),
-										cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS"))),
+										cmp.text("| ≤ |EMT").setFixedWidth(43).setStyle(stl.style().setFontName("Trebuchet MS")),
+										cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
+										cmp.text("|").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS"))).setGap(0),
 								cmp.horizontalList(cmp.text("  - Per i punti E").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(70), 
 										cmp.text("0").setFixedWidth(7).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
 										cmp.text("e E").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(15),
@@ -1084,13 +1087,16 @@ public class CreateVerRapporto {
 					
 					 vl_criteri = cmp.verticalList(cmp.text("CRITERI").setStyle(stl.style().setFontName("Trebuchet MS")), 
 								cmp.horizontalList(cmp.text("  - Per la/le prova/e di ripetibilità:").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(160),
-										cmp.text("|Pmax - Pmin|").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(68),
-										cmp.text(" ≤ EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35)).setGap(0),
+										cmp.text("Pmax - Pmin").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(62),
+										cmp.text(" ≤ |EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35),
+										cmp.text("p").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
+							 			cmp.text("|").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS"))).setGap(0),
 								cmp.horizontalList(cmp.text("  - Per le ulteriori prove: ").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(115), 
 										cmp.text("|Ec").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(17),
 										cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
-										cmp.text("| ≤ EMT").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS")),
-										cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS"))),
+										cmp.text("| ≤ |EMT").setFixedWidth(43).setStyle(stl.style().setFontName("Trebuchet MS")),
+										cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
+										cmp.text("|").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS"))).setGap(0),
 								cmp.horizontalList(cmp.text("  - Per il punto E").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(75), 
 										cmp.text("0").setFixedWidth(5).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
 										cmp.text(":").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(8),
@@ -1108,15 +1114,35 @@ public class CreateVerRapporto {
 				
 				
 				
+//				 vl_criteri = cmp.verticalList(cmp.text("CRITERI").setStyle(stl.style().setFontName("Trebuchet MS")), 
+//						cmp.horizontalList(cmp.text("  - Per la/le prova/e di ripetibilità:").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(160),
+//								cmp.text("|Pmax - Pmin|").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(68),
+//								cmp.text(" ≤ EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35)).setGap(0),
+//						cmp.horizontalList(cmp.text("  - Per le ulteriori prove: ").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(115), 
+//								cmp.text("|Ec").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(17),
+//								cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
+//								cmp.text("| ≤ EMT").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS")),
+//								cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS"))),
+//						cmp.horizontalList(cmp.text("  - Per il punto E").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(75), 
+//								cmp.text("0").setFixedWidth(5).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
+//								cmp.text(":").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(8),
+//								cmp.text("Ec = E").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(35))
+//						);
+//				 
+				 
+
 				 vl_criteri = cmp.verticalList(cmp.text("CRITERI").setStyle(stl.style().setFontName("Trebuchet MS")), 
 						cmp.horizontalList(cmp.text("  - Per la/le prova/e di ripetibilità:").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(160),
-								cmp.text("|Pmax - Pmin|").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(68),
-								cmp.text(" ≤ EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35)).setGap(0),
+								cmp.text("Pmax - Pmin").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(62),
+								cmp.text(" ≤ |EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35),
+						cmp.text("p").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
+			 			cmp.text("|").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS"))).setGap(0),
 						cmp.horizontalList(cmp.text("  - Per le ulteriori prove: ").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(115), 
-								cmp.text("|Ec").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(17),
+								cmp.text("|Ec").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(19),
 								cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
-								cmp.text("| ≤ EMT").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS")),
-								cmp.text("i").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS"))),
+								cmp.text("| ≤ |EMT").setFixedWidth(43).setStyle(stl.style().setFontName("Trebuchet MS")),
+								cmp.text("i").setFixedWidth(2).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
+								cmp.text("|").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS"))).setGap(0),
 						cmp.horizontalList(cmp.text("  - Per il punto E").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(75), 
 								cmp.text("0").setFixedWidth(5).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
 								cmp.text(":").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(8),
@@ -1587,18 +1613,18 @@ public class CreateVerRapporto {
 
 		report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 		report.addColumn(col.column("Posizione n°","n_posizione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));		
- 		report.addColumn(col.column("Massa  <br><i> L</i> <br>"+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
- 		report.addColumn(col.column("Indicazione  <br><i> I </i> <br>"+"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
+ 		report.addColumn(col.column("Massa  <br><i> L</i> /"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+ 		report.addColumn(col.column("Indicazione  <br><i> I </i> /"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
 
  		if(tipologia_strumento == 1 && classe_strumento!=5 && classe_strumento!=6) {
- 			report.addColumn(col.column("Carico aggiuntivo  <br><i> ΔL </i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));	
+ 			report.addColumn(col.column("Carico aggiuntivo  <br><i> ΔL </i> /"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));	
  		}
  		
  		report.addColumn(col.column("Errore  <br><i> E </i> <br> "+"/"+um,"e", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
  	//	if(tipologia_strumento == 1 && classe_strumento!=5 && classe_strumento!=6) {
- 			report.addColumn(col.column("Errore Corretto <br><i> Ec </i> <br>"+"/"+um,"ec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+ 			report.addColumn(col.column("Errore Corretto <br><i> Ec </i> /"+um,"ec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
  	//	}
- 		report.addColumn(col.column("Errore Massimo Tollerato <br> ± EMT  <br> " +"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(90));
+ 		report.addColumn(col.column("Errore Massimo Tollerato <br> ± EMT /"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(90));
  			 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 	
@@ -1631,27 +1657,28 @@ public class CreateVerRapporto {
 	 		if(strumento.getTipo().getId()==4) {
 	 			report.addColumn(col.column("Pos. Salita <br> Ceq <br> "+"","posizone_up", type.stringType()).setStretchWithOverflow(false).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(35));
 		 		report.addColumn(col.column("Pos. Discesa <br> Ceq <br> "+"","posizone_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(35));
-		 		report.addColumn(col.column("Carico di Equilibrio Salita <br>  <br> "+"/"+um,"carico_aggiuntivo_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-		 		report.addColumn(col.column("Carico di Equilibrio Discesa <br>  <br> "+"/"+um,"carico_aggiuntivo_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-		 		report.addColumn(col.column("Indicazione Stimata Salita <br> <br> "+"/"+um,"indicazione_up", type.stringType()).setStretchWithOverflow(false).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
-		 		report.addColumn(col.column("Indicazione Stimata Discesa <br>  <br> "+"/"+um,"indicazione_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
+		 		report.addColumn(col.column("Carico di Equilibrio Salita /"+um,"carico_aggiuntivo_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 		//report.addColumn(col.column("Carico di Equilibrio Discesa <br>  <br> "+"/"+um,"carico_aggiuntivo_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 		report.addColumn(col.column("Carico di Equilibrio Discesa /"+um,"carico_aggiuntivo_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 		report.addColumn(col.column("Indicazione Stimata Salita /"+um,"indicazione_up", type.stringType()).setStretchWithOverflow(false).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
+		 		report.addColumn(col.column("Indicazione Stimata Discesa /"+um,"indicazione_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
 	 		}else {
-	 			report.addColumn(col.column("Indicazione Salita <br> <i>I</i> <br> "+"/"+um,"indicazione_up", type.stringType()).setStretchWithOverflow(false).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-		 		report.addColumn(col.column("Indicazione Discesa <br> <i>I</i> <br> "+"/"+um,"indicazione_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 			report.addColumn(col.column("Indicazione Salita <br> <i>I</i> /"+um,"indicazione_up", type.stringType()).setStretchWithOverflow(false).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 		report.addColumn(col.column("Indicazione Discesa <br> <i>I</i> /"+um,"indicazione_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		}
 	 		
 	 		if(tipologia_strumento == 1 && classe_strumento!=5 && classe_strumento!=6 &&strumento.getTipo().getId()!=4) {
-	 			report.addColumn(col.column("Carico aggiuntivo Salita <br> <i> ΔL</i> <br> "+"/"+um,"carico_aggiuntivo_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-		 		report.addColumn(col.column("Carico aggiuntivo Discesa <br> <i> ΔL</i> <br> "+"/"+um,"carico_aggiuntivo_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
+	 			report.addColumn(col.column("Carico aggiuntivo Salita <br> <i> ΔL</i> /"+um,"carico_aggiuntivo_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 		report.addColumn(col.column("Carico aggiuntivo Discesa <br> <i> ΔL</i> /"+um,"carico_aggiuntivo_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
 	 		}
 	 		
-	 		report.addColumn(col.column("Errore Salita <br> <i> E </i> <br><br>"+"/"+um,"e_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Errore Discesa<br> <i> E </i> <br><br>"+"/"+um,"e_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Errore Salita <br> <i> E </i> /"+um,"e_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Errore Discesa<br> <i> E </i> /"+um,"e_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		//if(tipologia_strumento == 1 && classe_strumento!=5 && classe_strumento!=6) {
-	 			report.addColumn(col.column("Errore Corretto Salita <br> <i> Ec </i> <br>"+"/"+um,"ec_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 			report.addColumn(col.column("Errore Corretto Discesa <br> <i> Ec </i> <br>" +"/"+ um,"ec_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 			report.addColumn(col.column("Errore Corretto Salita <br> <i> Ec </i> /"+um,"ec_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 			report.addColumn(col.column("Errore Corretto Discesa <br> <i> Ec </i> /"+ um,"ec_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		//}
-	 		report.addColumn(col.column("Errore Massimo Tollerato <br> ± EMT  <br>"+"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Errore Massimo Tollerato <br> ± EMT /"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	
 			
 		
@@ -1671,18 +1698,18 @@ public class CreateVerRapporto {
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			report.addColumn(col.column("Rif.","rif", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));			
-	 		report.addColumn(col.column("Indicazione Tara Attiva  <br> "+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Carico effettivo di Tara <br> "+"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Indicazione Tara Attiva /"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Carico effettivo di Tara /"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		if(tipologia_strumento == 2) {
 	 			//report.addColumn(col.column("Carico aggiuntivo  <br> <i>ΔL </i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
-	 			report.addColumn(col.column("Max Valore Tara  <br>  <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 			report.addColumn(col.column("Max Valore Tara /"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		}
 	 			 		
-	 		report.addColumn(col.column("Errore <br> <i>E </i> <br>"+"/"+um,"e", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Errore <br> <i>E </i> /"+um,"e", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	//	if(tipologia_strumento == 1) {
-	 			report.addColumn(col.column("Errore Corretto  <br><i> Ec </i> <br>"+"/"+um,"ec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 			report.addColumn(col.column("Errore Corretto  <br><i> Ec </i> /"+um,"ec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	//	}
-	 		report.addColumn(col.column("Errore Massimo Tollerato <br> ± EMT  <br> "+"/"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Errore Massimo Tollerato <br> ± EMT /"+um,"mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		
 	 		//report.getReport().setColspan(2, 2, "Estimated");
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
@@ -1706,20 +1733,20 @@ public class CreateVerRapporto {
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			report.addColumn(col.column("N° Ripet.","n_ripetizioni", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
-	 		report.addColumn(col.column("Massa  <br> <i>L </i> <br>"+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 		report.addColumn(col.column("Massa  <br> <i>L </i> /"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		
 	 		if(strumento.getTipo().getId()==4) {
 	 			report.addColumn(col.column("Posizione" +"<br>Ceq","indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
-	 			report.addColumn(col.column("Carico di equilibrio  <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 			report.addColumn(col.column("Carico di equilibrio  /"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		}else {
-	 			report.addColumn(col.column("Indicazione  <br><i> I </i> <br>" +"/"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));	
+	 			report.addColumn(col.column("Indicazione  <br><i> I </i> /"+um,"indicazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));	
 	 		}
 	 		
 	 		
 	 		if(tipologia_strumento == 1 && classe_strumento!=5 && classe_strumento!=6 && strumento.getTipo().getId()!=4) {
-	 			report.addColumn(col.column("Carico aggiuntivo   <br><i> ΔL </i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 			report.addColumn(col.column("Carico aggiuntivo   <br><i> ΔL </i> /"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		}
-	 		report.addColumn(col.column("Indicazione  <br> <i>P </i> <br> "+"/"+um,"p", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
+	 		report.addColumn(col.column("Indicazione  <br> <i>P </i> /"+um,"p", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
 	 			 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 		
@@ -1800,34 +1827,34 @@ public class CreateVerRapporto {
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			
 			report.addColumn(col.column("Carico","carico", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));			
-	 		report.addColumn(col.column("Massa <br> <i>L </i> <br> "+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Massa <br> <i>L </i> /"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		
 	 		if(strumento.getTipo().getId()==4) {
 	 			
-	 			report.addColumn(col.column("Indicazione <br><i> L<sub>1</sub> </i> <br>"+"/"+um,"i1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-		 		report.addColumn(col.column("Carico aggiuntivo =<br> |EMTcarico| <br> <i>ΔL</i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-		 		report.addColumn(col.column("Indicazione <br><i> L<sub>2</sub> </i> <br>"+"/"+um,"i2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-		 		report.addColumn(col.column("Differenza  <br><i> L<sub>2</sub> - L<sub>1</sub></i> <br>"+"/"+um,"differenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 			report.addColumn(col.column("Indicazione <br><i> L<sub>1</sub> </i> /"+um,"i1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+		 		report.addColumn(col.column("Carico aggiuntivo =<br> |EMTcarico| <br> <i>ΔL</i> /"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+		 		report.addColumn(col.column("Indicazione <br><i> L<sub>2</sub> </i> /"+um,"i2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+		 		report.addColumn(col.column("Differenza  <br><i> L<sub>2</sub> - L<sub>1</sub></i> /"+um,"differenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		 		if(caso==1) {
-		 			report.addColumn(col.column("Div. reale strumento <br> d  <br>"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 			report.addColumn(col.column("Div. reale strumento <br> d /"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 			 		report.addColumn(col.column("Check <br> <i>I<sub>2</sub> - I<sub>1</sub> </i>≥ <i>d</i <br>","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
 		 		}else {
-		 			report.addColumn(col.column("0,7 Carico aggiuntivo =  <br> 0,7 |EMT| </i> <br>"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 			report.addColumn(col.column("0,7 Carico aggiuntivo =  <br> 0,7 |EMT| </i> /"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 			 		report.addColumn(col.column("Check  <br> <i>L<sub>2</sub> - L<sub>1</sub></i> ≥<br>0,7 EMT ","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		 		}
 	 			
 	 			
 	 		}else {
 	 			
-	 			report.addColumn(col.column("Indicazione <br><i> I<sub>1</sub> </i> <br>"+"/"+um,"i1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-		 		report.addColumn(col.column("Carico aggiuntivo =<br> |EMTcarico| <br> <i>ΔL</i> <br>"+"/"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-		 		report.addColumn(col.column("Indicazione <br><i> I<sub>2</sub> </i> <br>"+"/"+um,"i2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-		 		report.addColumn(col.column("Differenza  <br><i> I<sub>2</sub> - I<sub>1</sub></i> <br>"+"/"+um,"differenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 			report.addColumn(col.column("Indicazione <br><i> I<sub>1</sub> </i> /"+um,"i1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+		 		report.addColumn(col.column("Carico aggiuntivo =<br> |EMTcarico| <br> <i>ΔL</i> /"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+		 		report.addColumn(col.column("Indicazione <br><i> I<sub>2</sub> </i> /"+um,"i2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
+		 		report.addColumn(col.column("Differenza  <br><i> I<sub>2</sub> - I<sub>1</sub></i> /"+um,"differenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		 		if(caso==1) {
-		 			report.addColumn(col.column("Div. reale strumento <br> d  <br>"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 			report.addColumn(col.column("Div. reale strumento <br> d /"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 			 		report.addColumn(col.column("Check <br> <i>I<sub>2</sub> - I<sub>1</sub> </i>≥ <i>d</i <br>","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
 		 		}else {
-		 			report.addColumn(col.column("0,7 Carico aggiuntivo =  <br> 0,7 |EMT| </i> <br>"+"/"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 			report.addColumn(col.column("0,7 Carico aggiuntivo =  <br> 0,7 |EMT| </i> /"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 			 		report.addColumn(col.column("Check  <br> <i>I<sub>2</sub> - I<sub>1</sub></i> ≥<br>0,7 EMT ","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		 		}
 	 			

@@ -323,6 +323,7 @@ public class GestioneIntervento extends HttpServlet {
 				String non_sovrascrivere = null;
 				String data_emissione = null;
 				String data_misura = null;
+				String indice_prestazione = null;
 				
 				for (FileItem item : items) {
 					if (item.isFormField()) {
@@ -349,6 +350,9 @@ public class GestioneIntervento extends HttpServlet {
 						}
 						else if(item.getFieldName().equals("data_misura")) {
 							data_misura = item.getString();
+						}
+						else if(item.getFieldName().equals("indice_prestazione")) {
+							indice_prestazione = item.getString();
 						}
 					}
 					else {
@@ -454,7 +458,7 @@ public class GestioneIntervento extends HttpServlet {
 		    		misura.setIntervento(intervento);
 	
 		    		misura.setStrumento(strumento);
-		    		
+		    		misura.setIndice_prestazione(indice_prestazione);
 		    		
 		    		
 		    		if(data_misura!=null && !data_misura.equals("")) {
@@ -469,6 +473,7 @@ public class GestioneIntervento extends HttpServlet {
 						Date date = calendar.getTime();
 						
 						strumento.setDataProssimaVerifica(new java.sql.Date(date.getTime()));
+						
 		    			}
 						
 					
@@ -488,7 +493,7 @@ public class GestioneIntervento extends HttpServlet {
 	 					}
 	 				}
 		    		
-		    		
+		    		strumento.setIndice_prestazione(indice_prestazione);
 		    		
 		    		misura.setTemperatura(new BigDecimal(20));
 		    		misura.setUmidita(new BigDecimal(50) );

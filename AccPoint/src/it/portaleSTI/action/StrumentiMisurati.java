@@ -145,8 +145,12 @@ public class StrumentiMisurati extends HttpServlet {
 							 if(misura.getStrumento().getTipoRapporto().getId()==7201) {
 								 if(misura.getIndice_prestazione()==null) {
 									 String indice_prestazione = GestioneMisuraBO.calcolaIndicePrestazione(misura);
-									 misura.setIndice_prestazione(indice_prestazione);
+									 misura.setIndice_prestazione(indice_prestazione);									 
 									 session.update(misura);
+									 if(misura.getStrumento().getDataUltimaVerifica().equals(misura.getDataMisura())) {
+										 misura.getStrumento().setIndice_prestazione(indice_prestazione);
+										 session.update(misura.getStrumento());
+									 }
 								 }
 							 }
 							 

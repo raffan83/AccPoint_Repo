@@ -651,7 +651,28 @@
 		 <label id="label_certificato"></label>
 		 </div>
 		</div> 
+		<br>
 		
+		<div class="row">
+      <!--  <div class="col-xs-12"> -->
+   
+       <div class="col-xs-4">
+        <label>Indice di prestazione:</label>
+       </div>
+           <div class="col-xs-8">
+				<select class="form-control select2" id="indice_prestazione" name="indice_prestazione" data-placeholder="Indice di prestazione" style ="width:100%">
+		<option value=""></option>
+		<option value="V">PERFORMANTE</option>
+		<option value="G">STABILE</option>
+		<option value="R">ALLERTA</option>
+		<option value="X">NON IDONEO</option>
+		
+		</select>
+		
+		
+		</div>
+		</div>
+
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer" >

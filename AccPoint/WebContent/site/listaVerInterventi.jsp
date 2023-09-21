@@ -47,7 +47,29 @@
 <div class="box-body">
 
 <div class="row">
+
+<!-- 	<div class="col-xs-5">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Filtra Data:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraDate()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
+
+	</div> -->
+
 <div class="col-xs-12">
+
+
 
 <c:if test="${userObj.isTras() }">
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 

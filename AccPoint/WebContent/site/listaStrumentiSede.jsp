@@ -51,6 +51,35 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
 %>
+
+<style>
+.table th input {
+    min-width: 25px !important;
+}
+
+.lamp {
+    height: 20px;
+    width: 20px;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 15px;
+}
+.lampRed {
+    background-color: #FF8C00;
+}
+.lampGreen {
+    background-color: green;
+}
+.lampYellow {
+    background-color: yellow;
+}
+
+.lampNI {
+    background-color: #8B0000;
+}
+
+</style>
+
 <%-- <% if(user.checkPermesso("NUOVO_STRUMENTO_METROLOGIA")){ %>
 <div class="row">
 <div class="col-lg-12">
@@ -115,6 +144,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        
                        <th></th>
  						<th>ID</th>
+ 						<th>Ind. Prestazione</th>
   						<th>Stato Strumento</th>
  						  <th>Codice Interno</th>
  						  <th>Matricola</th>
@@ -164,6 +194,36 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								
 
 	 								 <td><%=strumento.get__id()%></td>
+	 								 <td id="indice_prestazione_str_<%=strumento.get__id()%>">
+	 								 <c:set var="indice" value="<%=strumento.getIndice_prestazione() %>"></c:set>
+	 								 
+	 								<c:if test='${indice.equals("V") }'>
+	 								<div class="lamp lampGreen" style="margin:auto"></div>
+	 								</c:if>
+	 								<c:if test='${indice.equals("G") }'>
+	 								<div class="lamp lampYellow" style="margin:auto"></div>
+	 								</c:if>
+	 								<c:if test='${indice.equals("R") }'>
+	 								<div class="lamp lampRed" style="margin:auto"></div>
+	 								</c:if>
+	 								<c:if test='${indice.equals("X") }'>
+	 							<div class="lamp lampNI" style="margin:auto"></div>
+	 								</c:if>
+	 								
+	 	
+	 								 
+	 								<%--   <% if(strumento.getIndice_prestazione().equals("V")){%>
+	 									<div class="lamp lampGreen" style="margin:auto"></div>
+	 							<%	}else if(strumento.getIndice_prestazione().equals("G")){%>
+	 										<div class="lamp lampYellow" style="margin:auto"></div>
+	 									<%	}else if(strumento.getIndice_prestazione().equals("R")){%>
+	 									 	<div class="lamp lampRed" style="margin:auto"></div>
+	 								<%}else{ %>
+	 								
+	 								<div class="lamp lampNI" style="margin:auto"></div>
+	 							<%} %> --%>
+	 								 
+	 								 </td>
 	 								   <td id="stato_<%=strumento.get__id() %>"><span class="label
 	 								 <% if(strumento.getStato_strumento().getId()==7225){
 	 									 out.print("label-warning");
@@ -704,7 +764,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    		state.columns.forEach(function(item, index, array){
 	    		
 	    			if(item.visible){
-	    				columsDatatables.push(item);
+	    				if( !item.search.search.startsWith("lamp")){
+	    					columsDatatables.push(item);	
+	    				}else{
+	    					item.search.search = "";
+	    					columsDatatables.push(item);
+	    				}
+	    				
 	    			}
 	    		   });
 	    		
@@ -716,11 +782,18 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	   var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	    	   if($(this).index()!= 0){
+	    	   if($(this).index()!= 0 && $(this).index()!= 1 && $(this).index()!= 2){
 	    
-	    			   $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');   
+	    			   $(this).append( '<div ><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');   
 	    	
+	    	   } 
+	    	   if($(this).index()==1){
+	    		   $(this).append( '<div ><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:30px !important"  type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
 	    	   }
+	    	   if($(this).index()==2){
+	    		   columsDatatables[$(this).index()].search.search = "";
+	    		   $(this).append( '<div id="filtro_select"></div>')
+	    		   }
 	    	  
 	    	} );
 
@@ -768,8 +841,15 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
+	      stateSaveParams: function (settings, data) {
+	          // Rimuovi i dati relativi alla colonna che vuoi escludere (ad esempio, colonna 2)
+	          var columnIndexToExclude = 2;
+	          data.columns.splice(columnIndexToExclude, 1);
+	      },
 	      order:[[1, "desc"]],
+	      select: 'single',
 	      columnDefs: [
+	     
 					 /* 
 	                   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
@@ -778,8 +858,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	                   { responsivePriority: 5, targets: 4 },
 	                   { responsivePriority: 6, targets: 5 },
 	                   { responsivePriority: 7, targets: 23 }, 
-	                   { responsivePriority: 8, targets: 8},
-	                  /*  { orderable: false, targets: 6 }, */
+	                   { responsivePriority: 8, targets: 8}, */
+	                    { orderable: false, targets: 2 }, 
 	               ],
         
 	               buttons: [ {
@@ -809,6 +889,64 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    	
 	      
 	    });
+	 
+	 
+	 var uniqueClasses = [];
+	    table.column(2).data().each(function(value, index) {
+	    	if(value!=null && value!=''){
+	    		 var classes = $(value).attr('class').split(' ');
+	 	        for (var i = 0; i < classes.length; i++) {
+	 	            var className = classes[i];
+	 	            if (uniqueClasses.indexOf(className) === -1) {
+	 	                uniqueClasses.push(className);
+	 	            }
+	 	        }
+	    	}
+	    
+	       
+	    });
+
+	    // Creare il filtro select
+	  //     .appendTo($('#filtro_select').find('.dataTables_filter'))
+	    var select = $('<select id="filtro_indice" class="form-control select2" style="max-width:100px"><option value="" selected>TUTTI</option></select>')
+	    .appendTo($('#filtro_select'))
+	        .on('change', function() {
+	            var selectedClass = $(this).val();
+	            table = $('#tabPM').DataTable();
+	            
+	            table.column(2).search(selectedClass)
+	            
+	            table.draw();
+	        });
+
+	    // Popolare il filtro select con le classi CSS uniche
+	    for (var i = 0; i < uniqueClasses.length; i++) {
+	    	
+	    	if(uniqueClasses[i]=="lampGreen"){
+	    		select.append('<option value="' + uniqueClasses[i] + '">PERFORMANTE</option>');
+	    	}else if(uniqueClasses[i]=="lampYellow"){
+	    		select.append('<option value="' + uniqueClasses[i] + '">STABILE</option>');
+	    	}else if(uniqueClasses[i]=="lampRed"){
+	    		select.append('<option value="' + uniqueClasses[i] + '">ALLERTA</option>');
+	    	}else if(uniqueClasses[i]=="lampNI"){
+	    		select.append('<option value="' + uniqueClasses[i] + '">NON IDONEO</option>');
+	    	}
+	    
+	        
+	    }
+	 
+	 
+	    $('#filtro_indice').select2()
+	    
+	    var maxColumnWidth = table.column(1).data().reduce(function(max, data) {
+	        var cellWidth = $('<div>').css('display', 'inline').html(data).appendTo('body').width();
+	        return cellWidth > max ? cellWidth : max;
+	    }, 0);
+
+	    // Imposta la larghezza massima della colonna 1
+	    table.column(1).nodes().to$().css('width', maxColumnWidth + 'px');
+	    
+	    
 	table.buttons().container()
    .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
 	   
@@ -868,10 +1006,6 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
   	});
   	    
   	    
-		
-  	
-  		
-    
 
 
 

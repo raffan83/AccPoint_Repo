@@ -23,13 +23,17 @@
     border-radius: 15px;
 }
 .lampRed {
-    background-color: #dd4b39;
+    background-color: #FF8C00;
 }
 .lampGreen {
     background-color: green;
 }
 .lampYellow {
     background-color: yellow;
+}
+
+.lampNI {
+    background-color: #8B0000;
 }
 
 </style>
@@ -71,6 +75,7 @@
        <th>Indice Prestazione</th>
      <th>Allegati</th>
      <th>Note Allegati</th>
+     <th>Azioni</th>
     
  </tr></thead>
  
@@ -109,7 +114,7 @@
 </c:forEach>
 
 </td>
-<td style="text-align:center">
+<td style="text-align:center" id="ind_prest_${misura.id }">
 <c:if test="${misura.indice_prestazione=='V' }">
 <div class="lamp lampGreen" style="margin:auto"></div>
 </c:if>
@@ -123,7 +128,7 @@
 </c:if>
 
 <c:if test="${misura.indice_prestazione=='X' }">
-<b>X</b>
+<div class="lamp lampNI" style="margin:auto"></div> 
 </c:if>
 
 </td>
@@ -137,7 +142,20 @@
 </c:if>
 </td>
 <td>${misura.note_allegato }</td>
+<td>
+<%-- <a class="btn btn-primary customTooltip" title="Aggiorna indice di prestazione" onclick="aggiornaIndicePrestazione('${misura.id}')"><i class="fa fa-refresh"></i></a> --%>
+<c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP")}'>
+		<select class="form-control indicePrest" id="indice_prestazione_${misura.id}" onchange="aggiornaIndicePrestazione('${misura.id}')" data-placeholder="Aggiorna indice di prestazione" style ="width:80%">
+		<option value=""></option>
+		<option value="V">PERFORMANTE</option>
+		<option value="G">STABILE</option>
+		<option value="R">ALLERTA</option>
+		<option value="X">NON IDONEO</option>
+		
+		</select>
 
+</c:if>
+</td>
 
 
 	</tr>
@@ -169,20 +187,20 @@
 <div class="row">
 <div class="col-xs-4"></div>
 <div class="col-xs-1" >
-<label>BUONO</label>
+<label>PERFORMANTE</label>
 <div class="lamp lampGreen" ></div>
 </div>
 <div class="col-xs-1">
-<label>ALLERTA</label>
+<label>STABILE</label>
 <div class="lamp lampYellow"></div>
 </div>
 <div class="col-xs-1">
-<label>DERIVA</label>
+<label>ALLERTA</label>
 <div class="lamp lampRed"></div>
 </div>
 <div class="col-xs-2">
-<label>FUORI SERVIZIO</label>
-<div ><b>X</b></div>
+<label>NON IDONEO</label>
+<div class="lamp lampNI"></div>
 </div>
 </div>
 </c:if>
@@ -319,6 +337,96 @@
 
 
   <script type="text/javascript">
+  
+  
+  $(".indicePrest").select2();
+  function aggiornaIndicePrestazione(id_misura){
+	  
+	  
+	  var stato = $('#indice_prestazione_'+id_misura).val()
+	  
+	  
+	  
+	  $.ajax({
+		  url: 'gestioneMisura.do?action=aggiorna_indice_prestazione&id_misura='+id_misura+"&stato="+stato, // Specifica l'URL della tua servlet
+		  method: 'POST',
+		  dataType: 'json',
+		  success: function(response) {
+		   
+		if(response.success){
+			var id_strumento = response.id_strumento;
+			 var t = document.getElementById("tabMisure");
+			    var rows = t.rows;
+			   
+			  
+			    tableMisure = $('#tabMisure').DataTable();
+				  
+				  var html = "";
+			    	
+				  if(stato == "V"){
+					  html = '<div class="lamp lampGreen" style="margin:auto"></div>'
+						  var opzioneDaAggiungere = "lampGreen";
+					  var text = "PERFORMANTE"
+				  }else if(stato == "G"){
+					  html = '<div class="lamp lampYellow" style="margin:auto"></div>'
+						  var opzioneDaAggiungere = "lampYellow";
+					 	 var text = "STABILE"
+				  }else if(stato == "R"){
+					  html = '<div class="lamp lampRed" style="margin:auto"></div>'
+						  var opzioneDaAggiungere = "lampRed"
+						  var text = "ALLERTA"
+				  }else{
+					  html = '<div class="lamp lampNI" style="margin:auto"></div>';
+					  	  var text = "NON IDONEO"
+						  var opzioneDaAggiungere = "lampNI"
+				  }
+				  
+					var cell = $("#ind_prest_"+id_misura);
+					cell.html(html);
+					
+				
+			
+					var cell2 = $("#indice_prestazione_str_"+id_strumento);
+					cell2.html(html);
+					
+					table.cell(cell2).invalidate();
+					table =  $('#tabPM').DataTable();
+					table.draw(false);
+					
+					var select = $("#filtro_indice");
+		            ; // Valore dell'opzione da aggiungere
+
+		            // Verifica se l'opzione esiste già
+		            var opzioneEsistente = select.find('option[value="' + opzioneDaAggiungere + '"]').length > 0;
+
+		            // Se l'opzione non esiste, aggiungila
+		            if (!opzioneEsistente) {
+		                select.append($('<option>', {
+		                    value: opzioneDaAggiungere,
+		                    text: text // Testo da visualizzare per l'opzione
+		                }));
+		            }
+		            
+		            
+		            
+		            var selectedClass = $('#filtro_indice').val();
+		            
+		            
+		            var x = table.rows().data();
+		            table.column(2).search(selectedClass).draw();
+		         
+		} 
+		   
+			
+	
+		  }
+	
+	});
+	  
+  }
+  
+  
+
   $('input').iCheck({
       checkboxClass: 'icheckbox_square-blue',
       radioClass: 'iradio_square-blue',
@@ -397,7 +505,7 @@
 	    $('#tabMisure thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabMisure thead th').eq( $(this).index() ).text();
-	        if($(this).index()!= 0){
+	        if($(this).index()!= 0 ){
 	        	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	        }
 	    } );
@@ -457,9 +565,10 @@
 						   { responsivePriority: 1, targets: 1 },
   	                   { responsivePriority: 2, targets: 2 },
   	                 	{ responsivePriority: 3, targets: 8 },
-  	                   { responsivePriority: 4, targets: 3 }
+  	                   { responsivePriority: 4, targets: 3 },
   	                
-  	                  
+  	                  { responsivePriority: 4, targets: 12 },
+ 	                  { responsivePriority: 4, targets: 9 }
   	               ],
   	     
   	               buttons: [ {

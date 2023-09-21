@@ -303,6 +303,7 @@ public class GestioneFormazioneBO {
 					partecipante.setId_sede(id_sede);
 					partecipante.setNome_azienda(nome_azienda);
 					partecipante.setNome_sede(nome_sede);	
+					codiciFiscali.add(cf);
 					
 				}else {
 					partecipante = getPartecipanteFromCf(cf, session);

@@ -244,8 +244,8 @@ $(document).ready(function() {
                 if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
                     uploadErrors.push('Tipo File non accettato. ');
                 } 
-                if(data.originalFiles[0]['size'] > 100000000) {
-                    uploadErrors.push('File troppo grande, dimensione massima 100mb');
+                if(data.originalFiles[0]['size'] > 200000000) {
+                    uploadErrors.push('File troppo grande, dimensione massima 200mb');
                 }
                 if(uploadErrors.length > 0) {
                 	//$('#files').html(uploadErrors.join("\n"));

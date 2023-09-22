@@ -2082,7 +2082,17 @@ public class GestioneFormazioneBO {
 					session.update(p);
 				}
 			}
-		}
+			
+			if(p.getData_cambio_stato()!=null) {
+				LocalDate dataCambioStato = p.getData_cambio_stato().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				
+				if(p.getTipo().getId()==3 && dataCambioStato.plusMonths(6).isEqual(today)) {
+					String messaggio = "Si comunica che dalla pianificazione corsi emerge che per la commessa "+p.getId_commessa()+" &egrave; presente un item E-LEARNING nello stato \"FATTURATO SENZA ATTESTATI\" DA 6 MESI - Data pianificazione "+df.format(p.getData())+".";
+					SendEmailBO.sendEmailReminderPianificazione(messaggio,  path);
+				}
+			}	
+			}
+			
 		
 	
 			
@@ -2112,7 +2122,6 @@ public class GestioneFormazioneBO {
 	}
 
 	
-
 	
 	
 }

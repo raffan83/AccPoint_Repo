@@ -47,6 +47,7 @@ public class VerStrumentoDTO {
 	private int posizione_cambio;
 	private String masse_corredo;
 	private int tipo_indicazione;
+	private int obsoleto;
 	
 	public String getCreato() {
 		return creato;
@@ -288,6 +289,12 @@ public class VerStrumentoDTO {
 	}
 	public void setTipo_indicazione(int tipo_indicazione) {
 		this.tipo_indicazione = tipo_indicazione;
+	}
+	public int getObsoleto() {
+		return obsoleto;
+	}
+	public void setObsoleto(int obsoleto) {
+		this.obsoleto = obsoleto;
 	}
 	
 }

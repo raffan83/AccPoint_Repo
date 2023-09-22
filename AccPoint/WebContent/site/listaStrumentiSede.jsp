@@ -196,6 +196,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								 <td><%=strumento.get__id()%></td>
 	 								 <td id="indice_prestazione_str_<%=strumento.get__id()%>">
 	 								 <c:set var="indice" value="<%=strumento.getIndice_prestazione() %>"></c:set>
+	 								 <c:if test='${indice == null || indice.equals("") }'>
+	 								<div class="lampNP" style="margin:auto">NON DETERMINATO</div>
+	 								</c:if>
 	 								 
 	 								<c:if test='${indice.equals("V") }'>
 	 								<div class="lamp lampGreen" style="margin:auto"></div>
@@ -913,18 +916,26 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	        .on('change', function() {
 	            var selectedClass = $(this).val();
 	            table = $('#tabPM').DataTable();
+	            if(selectedClass!="lampNP"){
+	            	table.column(2).search(selectedClass)	
+	            }else{
+	            	table.column(2).search("NON DETERMINATO")	
+	            }
 	            
-	            table.column(2).search(selectedClass)
-	            
+	            var x = table.rows().data()
 	            table.draw();
 	        });
 
 	    // Popolare il filtro select con le classi CSS uniche
 	    for (var i = 0; i < uniqueClasses.length; i++) {
 	    	
-	    	if(uniqueClasses[i]=="lampGreen"){
+	    	if(uniqueClasses[i]=="lampNP"){
+	    		select.append('<option value="' + uniqueClasses[i] + '">NON DETERMINATO</option>');
+	    	}
+	    	else if(uniqueClasses[i]=="lampGreen"){
 	    		select.append('<option value="' + uniqueClasses[i] + '">PERFORMANTE</option>');
-	    	}else if(uniqueClasses[i]=="lampYellow"){
+	    	}
+	    	else if(uniqueClasses[i]=="lampYellow"){
 	    		select.append('<option value="' + uniqueClasses[i] + '">STABILE</option>');
 	    	}else if(uniqueClasses[i]=="lampRed"){
 	    		select.append('<option value="' + uniqueClasses[i] + '">ALLERTA</option>');

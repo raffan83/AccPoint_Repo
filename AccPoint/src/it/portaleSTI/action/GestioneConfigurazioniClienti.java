@@ -200,23 +200,29 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 						ArrayList<String> lista_id_sedi_esistenti = new ArrayList<String>(); 
 						if(lista_sedi_cliente.size()>0) {	
 							
-							ConfigurazioneClienteDTO configurazione = new ConfigurazioneClienteDTO();
-							configurazione.setId_cliente(cliente.get__id());
-							configurazione.setNome_cliente(cliente.getNome());
-							configurazione.setId_sede(0);
-							
-							configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
-							configurazione.setId_firma(Integer.parseInt(firma));
-							if(filename!=null && !filename.equals("")) {
-								GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
+							if(GestioneConfigurazioneClienteBO.checkPresente(cliente.get__id(), 0, Integer.parseInt(tipo_rapporto), session)) {
+								lista_id_sedi_esistenti.add("Non Associate");
+//								
+							}else {
+								ConfigurazioneClienteDTO configurazione = new ConfigurazioneClienteDTO();
+								configurazione.setId_cliente(cliente.get__id());
+								configurazione.setNome_cliente(cliente.getNome());
+								configurazione.setId_sede(0);
+								
+								configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
+								configurazione.setId_firma(Integer.parseInt(firma));
+								if(filename!=null && !filename.equals("")) {
+									GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
+								}
+								configurazione.setNome_file_logo(filename);
+								configurazione.setModello_certificato(modello);
+								configurazione.setRevisione_certificato(revisione);
+								configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
+								configurazione.setModello_lista_strumenti(modello_lista_strumenti);
+								configurazione.setFmt_data_mese_anno(formato_mese_anno);
+								session.save(configurazione);
 							}
-							configurazione.setNome_file_logo(filename);
-							configurazione.setModello_certificato(modello);
-							configurazione.setRevisione_certificato(revisione);
-							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
-							configurazione.setModello_lista_strumenti(modello_lista_strumenti);
-							configurazione.setFmt_data_mese_anno(formato_mese_anno);
-							session.save(configurazione);
+
 							
 							
 							
@@ -227,7 +233,7 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 										lista_id_sedi_esistenti.add(s.getDescrizione());
 									}else {
 										
-										configurazione = new ConfigurazioneClienteDTO();
+										ConfigurazioneClienteDTO configurazione = new ConfigurazioneClienteDTO();
 										configurazione.setId_cliente(cliente.get__id());
 										configurazione.setNome_cliente(cliente.getNome());
 										configurazione.setId_sede(s.get__id());
@@ -245,9 +251,11 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 										//	GestioneConfigurazioneClienteBO.uploadFile(file, s.getId__cliente_(), s.get__id());
 											//GestioneConfigurazioneBO.uploadFile(file, lista_sedi_cliente.get(j).getId__cliente_(), lista_sedi_cliente.get(j).get__id());
 										//}else{
+										if(filename!=null && !filename.equals("")){
 											String filePath = Costanti.PATH_FOLDER+"\\"+"LoghiCompany\\ConfigurazioneClienti\\";
 											FileUtils.copyFile(new File(filePath + lista_sedi_cliente.get(j).getId__cliente_()+"\\"+0+"\\"+filename),
 													new File(filePath + lista_sedi_cliente.get(j).getId__cliente_()+"\\"+lista_sedi_cliente.get(j).get__id()+"\\"+filename));
+										}
 										//}									
 										configurazione.setNome_file_logo(filename);
 										session.save(configurazione);
@@ -316,6 +324,10 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							if(!id_sede.equals("0")) {
 								sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), cliente.get__id()); 
 								configurazione.setNome_sede(sede.getDescrizione() +" - "+sede.getIndirizzo());
+								configurazione.setId_sede(sede.get__id());
+							}else {
+								configurazione.setNome_sede("Non Associate");
+								configurazione.setId_sede(0);
 							}
 							configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
 							configurazione.setId_firma(Integer.parseInt(firma));
@@ -529,6 +541,27 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 					
 		        	out.print(myObj);
 				
+			}
+			else if(action.equals("elimina")) {
+				
+				ajax = true;
+				
+				String id_cliente = request.getParameter("id_cliente");
+				String id_sede = request.getParameter("id_sede");
+				String tipo_rapporto = request.getParameter("tipo_rapporto");
+				
+				ConfigurazioneClienteDTO configurazione = GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromId(Integer.parseInt(id_cliente), Integer.parseInt(id_sede), Integer.parseInt(tipo_rapporto), session);
+				session.delete(configurazione);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				PrintWriter out = response.getWriter();
+				
+	    
+	        	myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Configurazione eliminata con successo!");
+				out.print(myObj);
 			}
 			else if(action.equals("download_logo")) {
 				

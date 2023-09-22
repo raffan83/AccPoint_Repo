@@ -1349,6 +1349,7 @@ public static void sendEmailReminderPianificazione(String messaggio, String path
 	
 	email.addTo("lisa.lombardozzi@crescosrl.net");
 	email.addTo("segreteria@crescosrl.net");
+	email.addTo("antonio.dicivita@ncsnetwork.it");
 		  
 		  email.setFrom("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl");
 		

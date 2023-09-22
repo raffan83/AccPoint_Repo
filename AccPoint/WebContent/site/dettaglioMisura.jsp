@@ -125,21 +125,24 @@
 					<c:if test="${misura.indice_prestazione!=null }">
 						<li class="list-group-item">
 		                  <b>Indice di Prestazione</b> 
-		                  
-							 <c:if test="${misura.indice_prestazione=='V' }">
+		            	 <c:if test="${misura.indice_prestazione=='V' }">
 								<div class="lamp lampGreen pull-right" style="margin:auto"></div>
+								<a class="pull-right" style="margin-right:3px">PERFORMANTE</a>
 								</c:if>
 								
 								<c:if test="${misura.indice_prestazione=='G' }">
-								 <div class="lamp lampYellow pull-right"  style="margin:auto"></div> 
+								 <div class="lamp lampYellow pull-right"  style="margin:auto"></div>
+								 <a class="pull-right"  style="margin-right:3px">STABILE</a> 
 								</c:if>
 								
 								<c:if test="${misura.indice_prestazione=='R' }">
-								 <div class="lamp lampRed pull-right" style="margin:auto"></div> 
+								 <div class="lamp lampRed pull-right" style="margin:auto"></div>
+								 <a class="pull-right"  style="margin-right:3px">ALLERTA</a> 
 								</c:if>
 								
 								<c:if test="${misura.indice_prestazione=='X' }">
-								<div class="lamp lampNI pull-right" style="margin:auto"></div> 
+								<div class="lamp lampNI pull-right" style="margin:auto"></div>
+								<a class="pull-right"  style="margin-right:3px">NON IDONEO</a> 
 								</c:if>
 		  				 </li>
   				 </c:if>

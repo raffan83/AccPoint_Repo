@@ -34,6 +34,7 @@
 <th>Tipologia</th>
 <th>Data ultima verifica</th>
 <th>Data prossima verifica</th>
+<th>Obsoleto</th>
 <td style="min-width:145px">Azioni</td>
  </tr></thead>
  
@@ -51,18 +52,26 @@
 	<td>${strumento.tipologia.descrizione }</td>		
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_ultima_verifica }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_prossima_verifica }" /></td>
+	<td>
+	<c:if test="${strumento.obsoleto == 1 }">
+	SI
+	</c:if>
+	<c:if test="${strumento.obsoleto != 1 }">
+	NO
+	</c:if>
+	</td>
 	<td style="min-width:130px">
 	<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento.id }','${strumento.famiglia_strumento.id }','${strumento.freqMesi }','${utl:escapeJS(strumento.denominazione) }','${utl:escapeJS(strumento.costruttore) }','${utl:escapeJS(strumento.modello) }','${strumento.matricola }',
 	'${strumento.classe }','${strumento.tipo.id }','${strumento.data_ultima_verifica }','${strumento.data_prossima_verifica }','${strumento.um }','${strumento.portata_min_C1 }',
 	'${strumento.portata_max_C1 }','${strumento.div_ver_C1 }','${strumento.div_rel_C1 }','${strumento.numero_div_C1 }',	'${strumento.portata_min_C2 }','${strumento.portata_max_C2 }',
 	'${strumento.div_ver_C2 }','${strumento.div_rel_C2 }','${strumento.numero_div_C2 }','${strumento.portata_min_C3 }','${strumento.portata_max_C3 }','${strumento.div_ver_C3 }',
-	'${strumento.div_rel_C3 }','${strumento.numero_div_C3 }','${strumento.anno_marcatura_ce }','${strumento.data_messa_in_servizio }','${strumento.tipologia.id }')"><i class="fa fa-search"></i></a>
+	'${strumento.div_rel_C3 }','${strumento.numero_div_C3 }','${strumento.anno_marcatura_ce }','${strumento.data_messa_in_servizio }','${strumento.tipologia.id }', '${strumento.obsoleto }')"><i class="fa fa-search"></i></a>
 	
 	<a class="btn btn-warning" onClick="modalModificaVerStrumento('${strumento.id }','${strumento.freqMesi }','${strumento.famiglia_strumento.id }','${strumento.id_cliente }','${strumento.id_sede }','${utl:escapeJS(strumento.denominazione) }','${utl:escapeJS(strumento.costruttore) }',
 	'${utl:escapeJS(strumento.modello) }','${strumento.matricola }','${strumento.classe }','${strumento.tipo.id }','${strumento.data_ultima_verifica }',
 	'${strumento.data_prossima_verifica }','${strumento.um }','${strumento.portata_min_C1 }','${strumento.portata_max_C1 }','${strumento.div_ver_C1 }','${strumento.div_rel_C1 }','${strumento.numero_div_C1 }',
 	'${strumento.portata_min_C2 }','${strumento.portata_max_C2 }','${strumento.div_ver_C2 }','${strumento.div_rel_C2 }','${strumento.numero_div_C2 }',
-	'${strumento.portata_min_C3 }','${strumento.portata_max_C3 }','${strumento.div_ver_C3 }','${strumento.div_rel_C3 }','${strumento.numero_div_C3 }','${strumento.anno_marcatura_ce }','${strumento.data_messa_in_servizio }','${strumento.tipologia.id }')"><i class="fa fa-edit"></i></a>
+	'${strumento.portata_min_C3 }','${strumento.portata_max_C3 }','${strumento.div_ver_C3 }','${strumento.div_rel_C3 }','${strumento.numero_div_C3 }','${strumento.anno_marcatura_ce }','${strumento.data_messa_in_servizio }','${strumento.tipologia.id }', '${strumento.obsoleto }')"><i class="fa fa-edit"></i></a>
 	
 	<a class="btn btn-primary customTooltip customLink" title="Associa a provvedimento di legalizzazione bilance" onClick="modalAssociaProvvedimento('${strumento.id}')"><i class="fa fa-plus"></i></a>
 	<a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegati('${strumento.id }')"><i class="fa fa-archive"></i></a>
@@ -401,6 +410,19 @@
        
         </div>
         
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Obsoleto</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-contol select2" id="obsoleto" name="obsoleto" >
+       		<option value="1">SI</option>
+       		<option value="0" selected>NO</option>
+       		</select>
+       	</div>
+       </div> <br> 
+        
+        
          <div class="row">
        <div class="col-sm-4">
       
@@ -425,6 +447,9 @@
         <label id="label_provvedimenti"></label>
         </div>
         </div>
+        
+        
+        
        </div>
 
   		 
@@ -774,6 +799,20 @@
        		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c3_mod" name="numero_div_c3_mod" >
        	</div>
        </div> <br> 
+       
+       
+               <div class="row">
+       	<div class="col-sm-3">
+       		<label>Obsoleto</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-contol select2" id="obsoleto_mod" name="obsoleto_mod" >
+       		<option value="1">SI</option>
+       		<option value="0">NO</option>
+       		</select>
+       	</div>
+       </div> <br> 
+       
         </div>
        </div>
 
@@ -1080,6 +1119,19 @@
        		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c3_dtl" name="numero_div_c3_dtl" disabled>
        	</div>
        </div> <br> 
+
+
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Obsoleto</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-contol select2" id="obsoleto_dtl" name="obsoleto_dtl" disabled>
+       		<option value="1">SI</option>
+       		<option value="0" selected>NO</option>
+       		</select>
+       	</div>
+       </div> <br>
 
         </div>
         
@@ -1472,7 +1524,7 @@ $('#myModalAllegati').on('hidden.bs.modal',function(){
 
 function modalModificaVerStrumento(id_strumento, freq_mesi, famiglia_strumento, id_cliente, id_sede, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
 		data_prossima_verifica, um, portata_min_c1, portata_max_c1, div_ver_c1, div_rel_c1, numero_div_c1,
-		portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3, anno_marcatura_ce, data_messa_in_servizio,tipologia){
+		portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3, anno_marcatura_ce, data_messa_in_servizio,tipologia, obsoleto){
 	
 	
 	$('#multipla_mod').hide();
@@ -1480,7 +1532,14 @@ function modalModificaVerStrumento(id_strumento, freq_mesi, famiglia_strumento, 
 	$('#cliente_mod').change();
 	initSelect2('#cliente_mod');
 	
-	
+	if(obsoleto == 1){
+		$('#obsoleto_mod').val(1);
+		$('#obsoleto_mod').change();
+	}else{
+		$('#obsoleto_mod').val(0);
+		$('#obsoleto_mod').change();
+	}
+	$('#obsoleto_mod').select2();
 	$('#sede_mod').select2();
 	$('#classe_mod').select2();
 	if(id_sede!='0'){
@@ -1545,7 +1604,7 @@ function modalModificaVerStrumento(id_strumento, freq_mesi, famiglia_strumento, 
 
 function modalDettaglioVerStrumento(id_strumento,famiglia_strumento, freq_mesi, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
 		data_prossima_verifica, um, portata_min_c1, portata_max_c1, div_ver_c1, div_rel_c1, numero_div_c1,
-		portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3, anno_marcatura_ce, data_messa_in_servizio,tipologia){
+		portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3, anno_marcatura_ce, data_messa_in_servizio,tipologia, obsoleto){
 	
 	$('#multipla_dtl').hide();
 	$('#denominazione_dtl').val(denominazione);
@@ -1574,6 +1633,15 @@ function modalDettaglioVerStrumento(id_strumento,famiglia_strumento, freq_mesi, 
 		  $('#data_messa_in_servizio_dtl').val(Date.parse(data_messa_in_servizio).toString("dd/MM/yyyy"));
 	  }
 
+	
+	if(obsoleto == 1){
+		$('#obsoleto_dtl').val(1);
+		$('#obsoleto_dtl').change();
+	}else{
+		$('#obsoleto_dtl').val(0);
+		$('#obsoleto_dtl').change();
+	}
+	$('#obsoleto_dtl').select2();
 	$('#portata_min_c1_dtl').val(portata_min_c1);
 	$('#portata_max_c1_dtl').val(portata_max_c1);
 	$('#div_ver_c1_dtl').val(div_ver_c1);
@@ -1843,7 +1911,7 @@ $(document).ready(function() {
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 10 }
+		    	  { responsivePriority: 2, targets: 11 }
 		    	  
 		               ], 	        
 	  	      buttons: [   

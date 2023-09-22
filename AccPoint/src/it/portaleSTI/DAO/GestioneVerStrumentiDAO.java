@@ -179,10 +179,10 @@ public class GestioneVerStrumentiDAO {
 		
 		
 		if(utente.checkRuolo("VC")) {
-			query = session.createQuery("select verStrumento from VerMisuraDTO m where m.verStrumento.data_prossima_verifica between :_dateFrom and :_dateTo and m.verIntervento.company.id = :_id_company and m.obsoleta = 'N'");
+			query = session.createQuery("select verStrumento from VerMisuraDTO m where m.verStrumento.data_prossima_verifica between :_dateFrom and :_dateTo and m.verIntervento.company.id = :_id_company and m.obsoleta = 'N' and  m.verStrumento.obsoleto = 0");
 			query.setParameter("_id_company", utente.getCompany().getId());
 		}else {
-			query = session.createQuery("from VerStrumentoDTO where data_prossima_verifica between :_dateFrom and :_dateTo");
+			query = session.createQuery("from VerStrumentoDTO where data_prossima_verifica between :_dateFrom and :_dateTo and obsoleto = 0");
 		}
 		
 		query.setParameter("_dateFrom", sdf.parse(dateFrom));

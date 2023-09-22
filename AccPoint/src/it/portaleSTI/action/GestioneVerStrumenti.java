@@ -224,6 +224,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				String famiglia_strumento = ret.get("famiglia_strumento");
 				String freq_mesi = ret.get("freq_mesi");
 				String selezionati = ret.get("provv_legalizzazione_selezionati");
+				String obsoleto = ret.get("obsoleto");
 				
 				VerStrumentoDTO strumento = new VerStrumentoDTO();
 				
@@ -257,6 +258,11 @@ public class GestioneVerStrumenti extends HttpServlet {
 				strumento.setTipo(new VerTipoStrumentoDTO(Integer.parseInt(tipo_ver_strumento),""));
 				strumento.setTipologia(new VerTipologiaStrumentoDTO(Integer.parseInt(tipologia),""));
 				strumento.setFreqMesi(Integer.parseInt(freq_mesi));
+				if(obsoleto == null) {
+					strumento.setObsoleto(0);
+				}else {
+					strumento.setObsoleto(Integer.parseInt(obsoleto));
+				}
 				if(div_rel_c1!=null && !div_rel_c1.equals("")) {
 					strumento.setDiv_rel_C1(new BigDecimal(div_rel_c1));	
 				}
@@ -420,6 +426,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				String tipologia = ret.get("tipologia_mod");
 				String famiglia_strumento = ret.get("famiglia_strumento_mod");
 				String freq_mesi = ret.get("freq_mesi_mod");
+				String obsoleto = ret.get("obsoleto_mod");
 				
 				VerStrumentoDTO strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(id_strumento), session);
 				
@@ -436,6 +443,11 @@ public class GestioneVerStrumenti extends HttpServlet {
 					strumento.setNome_sede("Non associate");
 				}
 								
+				if(obsoleto == null) {
+					strumento.setObsoleto(0);
+				}else {
+					strumento.setObsoleto(Integer.parseInt(obsoleto));
+				}
 				strumento.setCostruttore(costruttore);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				if(data_prossima_verifica!=null && !data_prossima_verifica.equals("")) {

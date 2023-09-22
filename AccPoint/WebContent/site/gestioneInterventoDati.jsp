@@ -606,7 +606,7 @@
        </div>
            <div class="col-xs-8">
 				<select class="form-control select2" id="indice_prestazione" name="indice_prestazione" style ="width:100%">
-		<option value="" selected>NON PRESENTE</option>
+		<option value="" selected>NON DETERMINATO</option>
 		<option value="V">PERFORMANTE</option>
 		<option value="G">STABILE</option>
 		<option value="R">ALLERTA</option>

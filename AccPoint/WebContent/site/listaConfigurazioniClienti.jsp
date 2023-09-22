@@ -194,7 +194,7 @@
 <th>Revisione Certificato</th>
 <th>Modello Lista Strumenti</th>
 <th>Revisione Lista Strumenti</th>
-<th>Azioni</th>
+<th style="min-width:130px">Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -231,6 +231,7 @@
 		<c:if test="${configurazione.nome_file_logo!=null && configurazione.nome_file_logo!='' }">
 		<a class="btn btn-primary custom toolTip" title="Click per scaricare il logo" onClick="callAction('gestioneConfigurazioniClienti.do?action=download_logo&id_cliente=${utl:encryptData(configurazione.id_cliente)}&id_sede=${utl:encryptData(configurazione.id_sede) }&tipo_rapporto=${utl:encryptData(configurazione.tipo_rapporto.id) }')"><i class="fa fa-image"></i></a>
 		</c:if>
+		<a class="btn btn-danger custom toolTip" title="Click per eliminare la configurazione"  onClick="modalElimina('${configurazione.id_cliente}','${configurazione.id_sede }','${configurazione.tipo_rapporto.id }')"><i class="fa fa-trash"></i></a>
 		</td>
 	</tr>
 	</c:forEach>
@@ -390,6 +391,33 @@
   </form>
   </div>
 </div>
+
+
+
+  <div id="modalElimina" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare la configurazione cliente?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_cliente_elimina">
+      <input type="hidden" id="id_sede_elimina">
+      <input type="hidden" id="tipo_rapporto_elimina">
+      <a class="btn btn-primary" onclick="eliminaConfigurazione($('#id_cliente_elimina').val(), $('#id_sede_elimina').val(), $('#tipo_rapporto_elimina').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#modalElimina').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 
 <!-- </div>
 
@@ -770,7 +798,28 @@ $('#check_fmt_data_mod').on('ifUnchecked', function (ev) {
      });
      
      
+     function modalElimina(id_cliente, id_sede, tipo_rapporto){
+    	 
+    	 $('#id_cliente_elimina').val(id_cliente);
+    	 $('#id_sede_elimina').val(id_sede);
+    	 $('#tipo_rapporto_elimina').val(tipo_rapporto);
+    	 
+    	 $('#modalElimina').modal();
+    	 
+     }
      
+     
+     function eliminaConfigurazione(id_cliente, id_sede, tipo_rapporto){
+    	 
+    	 dataObj = {};
+    	 dataObj.id_cliente = id_cliente;
+    	 dataObj.id_sede = id_sede;
+    	 dataObj.tipo_rapporto = tipo_rapporto;
+    	 
+    	 callAjax(dataObj, "gestioneConfigurazioniClienti.do?action=elimina");
+    	 
+    	 
+     }
      
      function modalModifica(id_cliente,  id_sede,  tipo_rapporto, nome_file, firma, modello, revisione, modello_lista_strumenti, revisione_lista_strumenti, formato_anno_data){
     	 

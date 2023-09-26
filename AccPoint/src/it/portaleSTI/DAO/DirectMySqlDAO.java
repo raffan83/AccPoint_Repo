@@ -352,11 +352,13 @@ public class DirectMySqlDAO {
 					MisuraDTO misura =GestioneMisuraDAO.getMiruraByID(idMisura, session);
 
 
-					pstINS=conSQLite.prepareStatement("INSERT INTO tblMisure(id,id_str,tipoFirma,statoMisura) VALUES(?,?,?,?)");
+					
+					pstINS=conSQLite.prepareStatement("INSERT INTO tblMisure(id,id_str,tipoFirma,statoMisura,indicePrestazione) VALUES(?,?,?,?,?)");
 					pstINS.setInt(1, idMisuraSQLite);
 					pstINS.setInt(2, id);
 					pstINS.setInt(3, misura.getTipoFirma());
 					pstINS.setInt(4, 2);
+					pstINS.setString(5, misura.getIndice_prestazione());
 
 					pstINS.execute();
 

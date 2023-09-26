@@ -164,7 +164,7 @@ private static String sqlCreateCMPTableLAT="CREATE TABLE tblCampioni(id_camp Int
 																	  "tipoGrandezza varchar(255)," +
 																	  "abilitato varchar(1));";
 
-private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura decimal(30,15) , umidita decimal(30,15),tipoFirma Integer ,statoRicezione Intgeger,statoMisura Integer);";
+private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura decimal(30,15) , umidita decimal(30,15),tipoFirma Integer ,statoRicezione Intgeger,statoMisura Integer,indicePrestazione varchar);";
 
 /*private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer primary key autoincrement,id_misura Integer," +
 																	 "id_tabella Integer," +

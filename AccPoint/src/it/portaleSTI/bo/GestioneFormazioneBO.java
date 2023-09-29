@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -94,12 +95,16 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CoAttrezzaturaDTO;
 import it.portaleSTI.DTO.CoControlloDTO;
+import it.portaleSTI.DTO.ForConfInvioEmailDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
+import it.portaleSTI.DTO.ForCorsoMoodleDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForEmailDTO;
+import it.portaleSTI.DTO.ForGruppoMoodleDTO;
+import it.portaleSTI.DTO.ForMembriGruppoDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
@@ -2119,6 +2124,26 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getListaPianificazioniData(dateFrom, dateTo, session);
 		
 		
+	}
+
+	public static ArrayList<ForConfInvioEmailDTO> getListaConfigurazioniInvioEmail(Session session) {
+		
+		return GestioneFormazioneDAO.getListaConfigurazioniInvioEmail(session);
+	}
+
+	public static ArrayList<ForCorsoMoodleDTO> getListaCorsiInvioEmail() throws Exception {
+
+		return GestioneFormazioneDAO.getListaCorsiInvioEmail();
+	}
+
+	public static ArrayList<ForGruppoMoodleDTO> getGruppiFromCorso(int parseInt) throws Exception {
+		
+		return GestioneFormazioneDAO.getGruppiFromCorso(parseInt);
+	}
+
+	public static ArrayList<ForMembriGruppoDTO> getMembriGruppo(int parseInt) throws Exception{
+		// TODO Auto-generated method stub
+		return GestioneFormazioneDAO.getMembriGruppo(parseInt);
 	}
 
 	

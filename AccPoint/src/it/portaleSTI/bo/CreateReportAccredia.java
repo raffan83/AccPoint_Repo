@@ -169,7 +169,7 @@ private DRDataSource createDataSourceReport(ArrayList<MisuraDTO> lista_misure) t
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			
 				//CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura);
-				if(datiCert.get(1)!=null) {
+				if(datiCert.get(1)!=null && !datiCert.get(1).equals("null")) {
 					arrayPs.add(df.format(df.parse(datiCert.get(1))));
 				}else {
 					arrayPs.add("");

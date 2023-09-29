@@ -315,6 +315,7 @@
 	      
 	      	<li><a href="#" onclick="callAction('gestioneFormazione.do?action=gestione_pianificazione&anno=<%=anno %>',null,true);">Pianificazione</a></li>
 	      	<li><a href="#" onclick="callAction('gestioneFormazione.do?action=lista_pianificazioni',null,true);">Lista Pianificazioni</a></li>
+	      	<li><a href="#" onclick="callAction('gestioneFormazione.do?action=gestione_conf_email',null,true);">Configurazione Invio Email</a></li>
 	      	<%} %>
           </ul>
         </li> 

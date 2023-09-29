@@ -800,7 +800,12 @@
        	</div>
        </div> <br> 
        
+
        
+        </div>
+        
+        
+               
                <div class="row">
        	<div class="col-sm-3">
        		<label>Obsoleto</label>
@@ -812,8 +817,7 @@
        		</select>
        	</div>
        </div> <br> 
-       
-        </div>
+        
        </div>
 
   		 
@@ -1121,6 +1125,10 @@
        </div> <br> 
 
 
+        </div>
+        
+        
+
         <div class="row">
        	<div class="col-sm-3">
        		<label>Obsoleto</label>
@@ -1132,8 +1140,6 @@
        		</select>
        	</div>
        </div> <br>
-
-        </div>
         
                 <div class="row">
        	<div class="col-sm-6">
@@ -1856,6 +1862,7 @@ $(document).ready(function() {
     $('.dropdown-toggle').dropdown();
     $('#famiglia_strumento').select2();
     $('#tipo_ver_strumento').select2();
+    $('#obsoleto').select2();
     $('#tipologia').select2();
     $('#um').select2();
     $('#famiglia_strumento_mod').select2();

@@ -93,5 +93,12 @@
          <property name="email_inviata" type="int" >
             <column name="email_inviata" />
         </property>
+        
+        	<property name="efei" type="int" >
+            <column name="efei" />
+        </property>
+        	<property name="n_attestati" type="int" >
+            <column name="n_attestati" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -32,6 +32,8 @@ public class ForCorsoDTO {
 	private Set<ForDocenteDTO> listaDocenti = new HashSet<ForDocenteDTO>(0);
 	
 	private int email_inviata;
+	private int efei;
+	private int n_attestati;
 	
 	public ForCorsoDTO() {
 		super();
@@ -187,6 +189,18 @@ public class ForCorsoDTO {
 	}
 	public void setEmail_inviata(int email_inviata) {
 		this.email_inviata = email_inviata;
+	}
+	public int getN_attestati() {
+		return n_attestati;
+	}
+	public void setN_attestati(int n_attestati) {
+		this.n_attestati = n_attestati;
+	}
+	public int getEfei() {
+		return efei;
+	}
+	public void setEfei(int efei) {
+		this.efei = efei;
 	}
 
 }

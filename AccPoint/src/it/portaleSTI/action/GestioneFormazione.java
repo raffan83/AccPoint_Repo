@@ -55,12 +55,16 @@ import it.portaleSTI.DTO.AgendaMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.ForConfInvioEmailDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
+import it.portaleSTI.DTO.ForCorsoMoodleDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForEmailDTO;
+import it.portaleSTI.DTO.ForGruppoMoodleDTO;
+import it.portaleSTI.DTO.ForMembriGruppoDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
@@ -559,6 +563,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String commessa = ret.get("commessa");
 				String e_learning = ret.get("e_learning");
 				String durata = ret.get("durata");
+				String efei = ret.get("efei");
 				
 				ForCorsoDTO corso = new ForCorsoDTO();		
 				
@@ -583,6 +588,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				corso.setTipologia(tipologia);
 				corso.setCommessa(commessa);
 				corso.setDurata(Integer.parseInt(durata));
+				corso.setEfei(Integer.parseInt(efei));
+				
 				
 				if(filename!=null && !filename.equals("")) {
 					corso.setDocumento_test(filename);
@@ -648,6 +655,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String commessa = ret.get("commessa_mod");
 				String e_learning = ret.get("e_learning_mod");
 				String durata = ret.get("durata_mod");
+				String efei = ret.get("efei_mod");
 				
 				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso),session);		
 				
@@ -684,6 +692,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				if(commessa!=null && !commessa.equals("")) {
 					corso.setCommessa(commessa);
 				}
+				corso.setEfei(Integer.parseInt(efei));
 				
 				if(filename!=null && !filename.equals("")) {
 					corso.setDocumento_test(filename);
@@ -1196,6 +1205,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String ore_partecipate = ret.get("ore_partecipate");
 				
 				ForPartecipanteRuoloCorsoDTO part_ruolo_cor = new ForPartecipanteRuoloCorsoDTO();
+								
 				
 				part_ruolo_cor.setCorso(new ForCorsoDTO(Integer.parseInt(id_corso)));
 				part_ruolo_cor.setPartecipante(new ForPartecipanteDTO(Integer.parseInt(id_partecipante)));
@@ -3059,6 +3069,147 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		        	out.print(myObj);
 					
 					
+					
+				}
+			
+				else if(action.equals("gestione_conf_email")) {
+					
+					ajax = false;
+					
+					ArrayList<ForConfInvioEmailDTO> lista_configurazioni = GestioneFormazioneBO.getListaConfigurazioniInvioEmail(session);
+					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = GestioneFormazioneBO.getListaCorsiInvioEmail();
+									
+					
+					
+					request.getSession().setAttribute("lista_configurazioni", lista_configurazioni);
+					request.getSession().setAttribute("lista_corsi_moodle", lista_corsi_moodle);
+					
+					session.getTransaction().commit();
+					session.close();
+					
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaConfigurazioniInvioEmail.jsp");
+			     	dispatcher.forward(request,response);
+					
+				}
+				else if(action.equals("gruppi_corso")) {
+					
+					
+					ajax = true;
+					
+					String id_corso = request.getParameter("corso");
+					
+					ArrayList<ForGruppoMoodleDTO> lista_gruppi = GestioneFormazioneBO.getGruppiFromCorso(Integer.parseInt(id_corso));
+					
+					Gson g = new Gson();
+					
+				
+					PrintWriter out = response.getWriter();
+					
+				
+					
+					myObj.addProperty("success", true);
+					myObj.add("gruppi", g.toJsonTree(lista_gruppi));
+					request.getSession().setAttribute("lista_gruppi_moodle", lista_gruppi);
+		        	out.print(myObj);
+		        	session.getTransaction().commit();
+					session.close();
+					
+				}
+			
+			
+				else if(action.equals("membri_gruppo")) {
+					
+					
+					ajax = true;
+					
+					String id_gruppo = request.getParameter("gruppo");
+					
+					ArrayList<ForMembriGruppoDTO> lista_membri_gruppo = GestioneFormazioneBO.getMembriGruppo(Integer.parseInt(id_gruppo));
+					
+					Gson g = new Gson();
+					
+				
+					PrintWriter out = response.getWriter();
+					
+				
+					
+					myObj.addProperty("success", true);
+					myObj.add("membri", g.toJsonTree(lista_membri_gruppo));
+		        	out.print(myObj);
+		        	session.getTransaction().commit();
+					session.close();
+					
+				}
+			
+				else if(action.equals("nuova_configurazione_invio")) {
+					
+					ajax = true;
+					
+					response.setContentType("application/json");
+					List<FileItem> items = null;
+			        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+			        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+			        	}
+			        
+			       
+					FileItem fileItem = null;
+					String filename= null;
+			        Hashtable<String,String> ret = new Hashtable<String,String>();
+			      
+			        for (FileItem item : items) {
+		            	 if (!item.isFormField()) {
+		            		
+		                     fileItem = item;
+		                     filename = item.getName();
+		                     
+		            	 }else
+		            	 {
+		                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+		            	 }
+		            	
+		            }
+					
+					String id_corso = ret.get("corsi");
+					String id_gruppo = ret.get("gruppi");
+					String frequenza = ret.get("frequenza");
+					String data_inizio_invio = ret.get("data_inizio_invio");
+					String data_prossimo_invio = ret.get("data_prossimo_invio");
+				
+					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = (ArrayList<ForCorsoMoodleDTO>) request.getSession().getAttribute("lista_corsi_moodle");
+					ArrayList<ForGruppoMoodleDTO> lista_gruppi_moodle = (ArrayList<ForGruppoMoodleDTO>) request.getSession().getAttribute("lista_gruppi_moodle");
+					ForConfInvioEmailDTO configurazione = new ForConfInvioEmailDTO();
+					configurazione.setId_corso(Integer.parseInt(id_corso));
+					configurazione.setId_gruppo(Integer.parseInt(id_gruppo));
+					for (ForCorsoMoodleDTO corso : lista_corsi_moodle) {
+					    if (corso.getId() == Integer.parseInt(id_corso)) {
+					        configurazione.setDescrizione_corso(corso.getDescrizione());
+					    }
+					}		
+					
+					for (ForGruppoMoodleDTO gruppo : lista_gruppi_moodle) {
+					    if (gruppo.getId() == Integer.parseInt(id_gruppo)) {
+					        configurazione.setDescrizione_gruppo(gruppo.getDescrizione());
+					    }
+					}
+					
+					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+					configurazione.setFrequenza_invio(Integer.parseInt(frequenza));
+					configurazione.setData_inizio_invio(df.parse(data_inizio_invio));
+					configurazione.setData_prossimo_invio(df.parse(data_prossimo_invio));
+					
+					session.save(configurazione);
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter out = response.getWriter();
+					
+					
+					myObj.addProperty("success", true);
+					
+		        	out.print(myObj);
+		        
 					
 				}
 			

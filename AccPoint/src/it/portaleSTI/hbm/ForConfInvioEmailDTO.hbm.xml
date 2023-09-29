@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-mag-2017 15.44.30 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.ForConfInvioEmailDTO" table="for_conf_invio_email">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id> 
+        <property name="stato_invio" type="int" >
+            <column name="stato_invio" />
+        </property>
+        <property name="id_corso" type="int" >
+            <column name="id_corso" />
+        </property>
+        <property name="id_gruppo" type="int" >
+            <column name="id_gruppo" />
+        </property>     
+        <property name="data_inizio_invio" type="java.sql.Date" >
+            <column name="data_inizio_invio" />
+        </property>
+         <property name="data_prossimo_invio" type="java.sql.Date" >
+            <column name="data_prossimo_invio" />
+        </property>
+         <property name="data_scadenza" type="java.sql.Date" >
+            <column name="data_scadenza" />
+        </property> 
+		<property name="frequenza_invio" type="int" >
+            <column name="frequenza_invio" />
+        </property>     
+    </class>
+</hibernate-mapping>

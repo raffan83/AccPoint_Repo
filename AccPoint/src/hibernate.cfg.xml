@@ -170,7 +170,8 @@
  	<mapping class="ForCorsoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForCorsoDTO.hbm.xml"/>
  	<mapping class="ForQuestionarioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForQuestionarioDTO.hbm.xml"/>
  	<mapping class="ForReferenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForReferenteDTO.hbm.xml"/>
- 	<mapping class="ForEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForEmailDTO.hbm.xml"/> 	
+ 	<mapping class="ForEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForEmailDTO.hbm.xml"/>
+ 	<mapping class="ForConfInvioEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForConfInvioEmailDTO.hbm.xml"/> 	
  	    
  	 
  	<mapping class="DocumTLStatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTLStatoDTO.hbm.xml"/>

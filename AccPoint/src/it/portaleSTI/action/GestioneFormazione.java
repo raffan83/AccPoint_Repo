@@ -3175,29 +3175,40 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String frequenza = ret.get("frequenza");
 					String data_inizio_invio = ret.get("data_inizio_invio");
 					String data_prossimo_invio = ret.get("data_prossimo_invio");
+					String data_scadenza = ret.get("data_scadenza");
 				
 					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = (ArrayList<ForCorsoMoodleDTO>) request.getSession().getAttribute("lista_corsi_moodle");
 					ArrayList<ForGruppoMoodleDTO> lista_gruppi_moodle = (ArrayList<ForGruppoMoodleDTO>) request.getSession().getAttribute("lista_gruppi_moodle");
 					ForConfInvioEmailDTO configurazione = new ForConfInvioEmailDTO();
 					configurazione.setId_corso(Integer.parseInt(id_corso));
-					configurazione.setId_gruppo(Integer.parseInt(id_gruppo));
+					
+					
 					for (ForCorsoMoodleDTO corso : lista_corsi_moodle) {
 					    if (corso.getId() == Integer.parseInt(id_corso)) {
 					        configurazione.setDescrizione_corso(corso.getDescrizione());
 					    }
 					}		
 					
-					for (ForGruppoMoodleDTO gruppo : lista_gruppi_moodle) {
-					    if (gruppo.getId() == Integer.parseInt(id_gruppo)) {
-					        configurazione.setDescrizione_gruppo(gruppo.getDescrizione());
-					    }
+					if(id_gruppo!=null && !id_gruppo.equals("")) {
+						configurazione.setId_gruppo(Integer.parseInt(id_gruppo));
+						for (ForGruppoMoodleDTO gruppo : lista_gruppi_moodle) {
+						    if (gruppo.getId() == Integer.parseInt(id_gruppo)) {
+						        configurazione.setDescrizione_gruppo(gruppo.getDescrizione());
+						    }
+						}
+					}else {
+						configurazione.setId_gruppo(0);
 					}
+					
 					
 					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					
 					configurazione.setFrequenza_invio(Integer.parseInt(frequenza));
 					configurazione.setData_inizio_invio(df.parse(data_inizio_invio));
 					configurazione.setData_prossimo_invio(df.parse(data_prossimo_invio));
+					if(data_scadenza!=null && !data_scadenza.equals("")) {
+						configurazione.setData_scadenza(df.parse(data_scadenza));
+					}
 					
 					session.save(configurazione);
 					session.getTransaction().commit();
@@ -3207,9 +3218,115 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					
 					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Configurazione salvata con successo!");
 					
 		        	out.print(myObj);
 		        
+					
+				}
+			
+				else if(action.equals("modifica_configurazione_invio")) {
+					
+					ajax = true;
+					
+					response.setContentType("application/json");
+					List<FileItem> items = null;
+			        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+			        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+			        	}
+			        
+			       
+					FileItem fileItem = null;
+					String filename= null;
+			        Hashtable<String,String> ret = new Hashtable<String,String>();
+			      
+			        for (FileItem item : items) {
+		            	 if (!item.isFormField()) {
+		            		
+		                     fileItem = item;
+		                     filename = item.getName();
+		                     
+		            	 }else
+		            	 {
+		                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+		            	 }
+		            	
+		            }
+					
+			        String id_configurazione = ret.get("id_configurazione");
+					String id_corso = ret.get("corsi_mod");
+					String id_gruppo = ret.get("gruppi_mod");
+					String frequenza = ret.get("frequenza_mod");
+					String data_inizio_invio = ret.get("data_inizio_invio_mod");
+					String data_prossimo_invio = ret.get("data_prossimo_invio_mod");
+					String data_scadenza = ret.get("data_scadenza_mod");
+				
+					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = (ArrayList<ForCorsoMoodleDTO>) request.getSession().getAttribute("lista_corsi_moodle");
+					ArrayList<ForGruppoMoodleDTO> lista_gruppi_moodle = (ArrayList<ForGruppoMoodleDTO>) request.getSession().getAttribute("lista_gruppi_moodle");
+					ForConfInvioEmailDTO configurazione = GestioneFormazioneBO.getConfigurazioneInvioEmail(Integer.parseInt(id_configurazione),session);
+					configurazione.setId_corso(Integer.parseInt(id_corso));
+					
+					for (ForCorsoMoodleDTO corso : lista_corsi_moodle) {
+					    if (corso.getId() == Integer.parseInt(id_corso)) {
+					        configurazione.setDescrizione_corso(corso.getDescrizione());
+					    }
+					}		
+					
+					
+					
+					if(id_gruppo!=null && !id_gruppo.equals("")) {
+						configurazione.setId_gruppo(Integer.parseInt(id_gruppo));
+						for (ForGruppoMoodleDTO gruppo : lista_gruppi_moodle) {
+						    if (gruppo.getId() == Integer.parseInt(id_gruppo)) {
+						        configurazione.setDescrizione_gruppo(gruppo.getDescrizione());
+						    }
+						}
+					}else {
+						configurazione.setId_gruppo(0);
+					}
+					
+					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+					configurazione.setFrequenza_invio(Integer.parseInt(frequenza));
+					configurazione.setData_inizio_invio(df.parse(data_inizio_invio));
+					configurazione.setData_prossimo_invio(df.parse(data_prossimo_invio));
+					if(data_scadenza!=null && !data_scadenza.equals("")) {
+						configurazione.setData_scadenza(df.parse(data_scadenza));
+					}
+					session.update(configurazione);
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter out = response.getWriter();
+					
+					
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Configurazione salvata con successo!");
+					
+		        	out.print(myObj);
+		        
+					
+				}else if(action.equals("elimina_configurazione")) {
+					
+					ajax = true;
+					
+					String id = request.getParameter("id_configurazione_elimina");
+					
+					ForConfInvioEmailDTO configuraizone = GestioneFormazioneBO.getConfigurazioneInvioEmail(Integer.parseInt(id), session);
+					configuraizone.setDisabilitato(1);
+					
+					session.update(configuraizone);
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter out = response.getWriter();
+					
+					
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Configurazione eliminata con successo!");
+					
+		        	out.print(myObj);
 					
 				}
 			

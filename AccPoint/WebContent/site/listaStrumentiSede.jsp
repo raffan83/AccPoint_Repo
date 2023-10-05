@@ -195,7 +195,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 						 <td></td>		
 	 								
 
-	 								 <td><%=strumento.get__id()%></td>
+	 								 <td id="row_<%=strumento.get__id()%>"><%=strumento.get__id()%></td>
 	 								 <c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP") || userObj.checkRuolo("CI")}'>
 	 								 <td id="indice_prestazione_str_<%=strumento.get__id()%>">
 	 								 <c:set var="indice" value="<%=strumento.getIndice_prestazione() %>"></c:set>
@@ -992,13 +992,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 
 	    $('#filtro_indice').select2()
 	    
-	    var maxColumnWidth = table.column(1).data().reduce(function(max, data) {
+/* 	    var maxColumnWidth = table.column(1).data().reduce(function(max, data) {
 	        var cellWidth = $('<div>').css('display', 'inline').html(data).appendTo('body').width();
 	        return cellWidth > max ? cellWidth : max;
 	    }, 0);
 
 	    // Imposta la larghezza massima della colonna 1
-	    table.column(1).nodes().to$().css('width', maxColumnWidth + 'px');
+	    table.column(1).nodes().to$().css('width', maxColumnWidth + 'px'); */
 	    
 	    
 	table.buttons().container()
@@ -1788,8 +1788,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		    }
 		}, 
 		function(start, end, label) {
-		      /* startDatePicker = start;
-		      endDatePicker = end; */
+
 		});
  });
 

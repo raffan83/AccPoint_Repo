@@ -25,12 +25,15 @@ import org.hibernate.Session;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
@@ -43,6 +46,7 @@ import it.portaleSTI.bo.CreateSchedaConsegnaMetrologia;
 import it.portaleSTI.bo.CreateSchedaConsegnaVerificazione;
 import it.portaleSTI.bo.CreateSchedaConsegnaRilieviDimensionali;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
@@ -85,13 +89,55 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 		session.beginTransaction();	
 		
 		String action = request.getParameter("action");
-		
+		boolean ajax = false;
+		JsonObject myObj = new JsonObject();
 		try
 		{
 			if(action==null) {
-				
+				ajax = true;
 				
 				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
+				
+				String idIntervento= request.getParameter("idIntervento");
+
+				
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+				CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+				
+				ArrayList<CertificatoDTO> listaCertificati = GestioneCertificatoBO.getListaCertificatoByIntervento(new StatoCertificatoDTO(2), intervento,cmp,utente,"N",""+intervento.getId_cliente(),""+intervento.getIdSede());
+				
+				
+				ArrayList<MisuraDTO> listaMisureInt = GestioneInterventoBO.getListaMirureNonObsoleteByIntervento(intervento.getId());
+				ArrayList<StrumentoDTO> listaStrumenti = new ArrayList<StrumentoDTO>();
+			
+				
+				for (MisuraDTO misura : listaMisureInt) {
+					listaStrumenti.add(misura.getStrumento());
+				}
+				
+				PrintWriter out = response.getWriter();
+				
+				if(listaStrumenti.size()!=listaCertificati.size()) {
+				
+				
+		        	myObj.addProperty("successo", false);
+		        	
+				}else {
+					myObj.addProperty("successo", true);
+				}
+				myObj.addProperty("success", true);
+			
+	
+				request.getSession().setAttribute("listaStrumentiInt", listaStrumenti);
+				session.getTransaction().commit();
+				session.close();
+				
+				out.print(myObj);
+				    
+			}
+			else if(action.equals("scheda_consegna_metrologia")) {
+				
 				
 				String idIntervento= request.getParameter("idIntervento");
 				String notaConsegna= request.getParameter("notaConsegna");
@@ -101,16 +147,14 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				idIntervento = Utility.decryptData(idIntervento);
 				
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
-				
-				ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureNonObsoleteByIntervento(intervento.getId());
-				ArrayList<StrumentoDTO> listaStrumenti = new ArrayList<StrumentoDTO>();
-				
-				for (MisuraDTO misura : listaMisure) {
-					listaStrumenti.add(misura.getStrumento());
-				}
-				
-				new CreateSchedaConsegnaMetrologia(intervento,notaConsegna,Integer.parseInt(stato),corteseAttenzione,listaStrumenti,session,getServletContext());
 		
+				
+				ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumentiInt");
+			
+				
+			
+				new CreateSchedaConsegnaMetrologia(intervento,notaConsegna,Integer.parseInt(stato),corteseAttenzione,listaStrumenti,session,getServletContext());
+				
 				File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//SchedaDiConsegna.pdf");
 				
 				 FileInputStream fileIn = new FileInputStream(d);
@@ -132,9 +176,12 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				    fileIn.close();
 				    outp.flush();
 				    outp.close();
-				    
-				    
-			}else if(action.equals("rilievi_dimensionali")){
+					session.getTransaction().commit();
+					session.close();
+			}
+			
+			
+			else if(action.equals("rilievi_dimensionali")){
 				
 				String notaConsegna= request.getParameter("notaConsegna");
 				String corteseAttenzione= request.getParameter("corteseAttenzione");
@@ -266,13 +313,22 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 		catch(Exception e)
     	{
 			session.getTransaction().rollback();
-			session.close();
-			
-			e.printStackTrace();
-			request.setAttribute("error",STIException.callException(e));
-			request.getSession().setAttribute("exception", e);
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-			dispatcher.forward(request,response);	
+        	session.close();
+			if(ajax) {
+				PrintWriter out = response.getWriter();
+				e.printStackTrace();
+	        	
+	        	request.getSession().setAttribute("exception", e);
+	        	myObj = STIException.getException(e);
+	        	out.print(myObj);
+        	}else {
+   			    			
+    			e.printStackTrace();
+    			request.setAttribute("error",STIException.callException(e));
+    	  	     request.getSession().setAttribute("exception", e);
+    			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+    		     dispatcher.forward(request,response);	
+        	}
 			
     	}  
 		

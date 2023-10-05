@@ -14,6 +14,7 @@ public class ForConfInvioEmailDTO {
 	private int frequenza_invio;
 	private String descrizione_corso;
 	private String descrizione_gruppo;
+	private int disabilitato;
 	
 	
 	public int getId() {
@@ -76,6 +77,12 @@ public class ForConfInvioEmailDTO {
 	}
 	public void setDescrizione_gruppo(String descrizione_gruppo) {
 		this.descrizione_gruppo = descrizione_gruppo;
+	}
+	public int getDisabilitato() {
+		return disabilitato;
+	}
+	public void setDisabilitato(int disabilitato) {
+		this.disabilitato = disabilitato;
 	}
 	
 	

@@ -72,6 +72,7 @@
 <th>Data inizio invio</th>
 <th>Frequenza (Mesi)</th>
 <th>Data prossimo invio</th>
+<th>Data scadenza</th>
 <th>Stato invio</th>
 <th>Azioni</th>
  </tr></thead>
@@ -84,15 +85,22 @@
 	<td>${configurazione.id }</td>	
 	<td>${configurazione.descrizione_corso }</td>
 	<td>${configurazione.descrizione_gruppo }</td>
-		<td>${configurazione.data_inizio_invio }</td>
+
+		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${configurazione.data_inizio_invio }"></fmt:formatDate></td>
 	<td>${configurazione.frequenza_invio}</td>	
-		<td>${configurazione.data_prossimo_invio }</td>
-		<td>${configurazione.stato_invio }</td>
+		
+		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${configurazione.data_prossimo_invio }"></fmt:formatDate></td>
+		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${configurazione.data_scadenza }"></fmt:formatDate></td>
+		<td>
+		<c:if test="${configurazione.stato_invio == 0}">In corso</c:if>
+		<c:if test="${configurazione.stato_invio == 1 }">Comunicazione inviata</c:if>
+		<c:if test="${configurazione.stato_invio == 2}">Scaduta</c:if>
+		</td>
 	<td>
-<%-- 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
-	<a  class="btn btn-warning" onClicK="modificaConfigurazioneModal('${configurazione.id}','${configurazione.codice }','${configurazione.descrizione.replace('\'','&prime;')}','${configurazione.frequenza }')" title="Click per modificare la Configurazione"><i class="fa fa-edit"></i></a>
-	<a href="#" class="btn btn-primary customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${configurazione.id }')"><i class="fa fa-archive"></i></a>
-	</c:if> --%>
+ 	
+	<a  class="btn btn-warning" onClicK="modificaConfigurazioneModal('${configurazione.id}','${configurazione.id_corso}','${configurazione.id_gruppo}','${configurazione.data_inizio_invio}','${configurazione.frequenza_invio }','${configurazione.data_prossimo_invio}','${configurazione.stato_invio }')" title="Click per modificare la Configurazione"><i class="fa fa-edit"></i></a>
+	<a  class="btn btn-danger" onClicK="eliminaConfigurazioneModal('${configurazione.id}')" title="Click per eliminare la configurazione"><i class="fa fa-trash"></i></a>
+
 	</td>
 	</tr>
 	</c:forEach>
@@ -115,27 +123,7 @@
 
 
 
-  <div id="myModalArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-  
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Allegati</h4>
-      </div>
-       <div class="modal-body">
-       <div class="row">
-        <div class="col-xs-12">
-       <div id="tab_allegati"></div>
-</div>
-  		 </div>
-  		 </div>
-      <div class="modal-footer">
-      </div>
-   
-  </div>
-  </div>
-</div>
+
 
 <form id="nuovaConfigurazioneForm" name="nuovoDocenteForm">
 <div id="myModalnuovaConfigurazione" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
@@ -154,7 +142,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-       <select id="corsi" name="corsi" class="form-control select2" style="width:100%" title="Seleziona corso..." onchange="getGruppiFromCorso()">
+       <select id="corsi" name="corsi" class="form-control select2" style="width:100%" data-placeholder="Seleziona corso..." onchange="getGruppiFromCorso()">
        <option value=""></option>
        <c:forEach items="${lista_corsi_moodle}" var="corso">
        <option value="${corso.id}">${corso.descrizione }</option>
@@ -171,7 +159,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-       <select id="gruppi" name="gruppi" class="form-control select2" style="width:100%" title="Seleziona gruppo..." disabled onchange="getMembriGruppo()">
+       <select id="gruppi" name="gruppi" class="form-control select2" style="width:100%" data-placeholder="Seleziona gruppo..." disabled onchange="getMembriGruppo()">
 
        </select>
        			
@@ -256,6 +244,26 @@
        	</div>       	
        </div><br>
        
+       
+          <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data scadenza</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+               	  	
+         <div class='input-group date datepicker' id='datepicker_data_prossimo'>
+               <input type='text' class="form-control input-small" id="data_scadenza" name="data_scadenza">
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       			
+       	</div>       	
+       </div><br>
+       
        </div>
   		 
       <div class="modal-footer">
@@ -286,25 +294,62 @@
         <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Codice</label>
+       		<label>Corsi</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="codice_mod" name="codice_mod" class="form-control" type="text" style="width:100%" required>
+       <select id="corsi_mod" name="corsi_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona corso..." onchange="getGruppiFromCorso('mod')">
+       <option value=""></option>
+       <c:forEach items="${lista_corsi_moodle}" var="corso">
+       <option value="${corso.id}">${corso.descrizione }</option>
+       </c:forEach>
+       </select>
        			
        	</div>       	
        </div><br>
-       <div class="row">
+       
+             <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Descrizione</label>
+       		<label>Gruppi</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <input id="descrizione_mod" name="descrizione_mod" class="form-control" type="text" style="width:100%" required>
+       <select id="gruppi_mod" name="gruppi_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona gruppo..." onchange="getMembriGruppo('mod')">
+
+       </select>
        			
        	</div>       	
        </div><br>
+       
+       
+      <div class="row" style="display:none" id="content_membri_mod">
+       
+       	<div class="col-sm-12">
+       		<label>Utenti nel gruppo</label>
+       	</div>
+       	<div class="col-sm-12">      
+		<table class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+    		<thead>
+        <tr>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody id="body_membri_mod">
+    </tbody>
+</table>
+       			
+       	</div>       	
+       </div><br>
+       
+
+       		
+
+       
+       		
+       		
        <div class="row">
        
        	<div class="col-sm-3">
@@ -316,15 +361,69 @@
        			
        	</div>       	
        </div><br>
+   
+       <div class="row">
        
-	
-            	       
+       	<div class="col-sm-3">
+       		<label>Data inizio invio</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+               	  	
+         <div class='input-group date datepicker' id='datepicker_data_inizio'>
+               <input type='text' class="form-control input-small" id="data_inizio_invio_mod" name="data_inizio_invio_mod" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       			
+       	</div>       	
+       </div><br>
+
+   <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data prossimo invio</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+               	  	
+         <div class='input-group date datepicker' id='datepicker_data_prossimo'>
+               <input type='text' class="form-control input-small" id="data_prossimo_invio_mod" name="data_prossimo_invio_mod" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       			
+       	</div>       	
+       </div><br>
+       
+                 <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data scadenza</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+               	  	
+         <div class='input-group date datepicker' id='datepicker_data_prossimo'>
+               <input type='text' class="form-control input-small" id="data_scadenza_mod" name="data_scadenza_mod">
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       			
+       	</div>       	
+       </div><br>
        
        </div>
   		 
       <div class="modal-footer">
 		
-		<input type="hidden" id="id_Configurazione" name="id_Configurazione"> 
+		<input type="hidden" id="id_configurazione" name="id_configurazione"> 
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -348,11 +447,11 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      	Sei sicuro di voler eliminare l'allegato?
+      	Sei sicuro di voler eliminare la configurazione?
       	</div>
       <div class="modal-footer">
-      <input type="hidden" id="elimina_rilievo_id">
-      <a class="btn btn-primary" onclick="eliminaRilievo($('#elimina_rilievo_id').val())" >SI</a>
+      <input type="hidden" id="elimina_configurazione_id">
+      <a class="btn btn-primary" onclick="eliminaConfigurazione($('#elimina_configurazione_id').val())" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
     </div>
@@ -361,26 +460,7 @@
 </div>
 
 
-  <div id="modalModificaFrequenza" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
-   
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
-      </div>
-       <div class="modal-body">       
-      	La frequenza è stata modificata, vuoi estendere la modifica a tutti i corsi di questa Configurazione?
-      	</div>
-      <div class="modal-footer">
-      <input type="hidden" id="elimina_rilievo_id">
-      <a class="btn btn-primary" onclick="modificaForConfigurazioneInvioEmail(1)" >SI</a>
-		<a class="btn btn-primary" onclick="modificaForConfigurazioneInvioEmail(0)" >NO</a>
-      </div>
-    </div>
-  </div>
 
-</div>
 
 
 
@@ -423,18 +503,48 @@ function modalnuovaConfigurazione(){
 	
 }
 
-
-
-function modificaConfigurazioneModal(id_Configurazione, codice, descrizione,frequenza, durata){
+function eliminaConfigurazioneModal(id_conf){
 	
-	$('#id_Configurazione').val(id_Configurazione);
-	$('#codice_mod').val(codice);
-	$('#descrizione_mod').val(descrizione);
+	$('#elimina_configurazione_id').val(id_conf)
+	
+	$('#myModalYesOrNo').modal();
+	
+}
+
+function eliminaConfigurazione(){
+	
+	dataObj = {};
+	dataObj.id_configurazione_elimina = $('#elimina_configurazione_id').val();
+	
+	callAjax(dataObj, "gestioneFormazione.do?action=elimina_configurazione");
+	
+}
+
+function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, data_inizio, frequenza, data_prossimo_invio, stato, data_scadenza){
+	
+	$('#id_configurazione').val(id_configurazione);
+	$('#corsi_mod').val(id_corso);
+	$('#corsi_mod').change();
+	
+	
+	
+
 	$('#frequenza_mod').val(frequenza);
+	$('#data_inizio_invio_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy"));
+	$('#data_prossimo_invio_mod').val(Date.parse(data_prossimo_invio).toString("dd/MM/yyyy"));
+	if(data_scadenza!=null && data_scadenza!=''){
+		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));
+	}
 	
-	frequenza_modifica = frequenza;
-
-	$('#myModalModificaConfigurazione').modal();
+	if(id_gruppo!=null && id_gruppo!=0){
+		getGruppiFromCorso("mod", id_gruppo)	
+		
+		
+	}else{
+	
+		
+		$('#myModalModificaConfigurazione').modal();
+	}
 }
 
 var columsDatatables = [];
@@ -463,9 +573,15 @@ $("#tabForConf").on( 'init.dt', function ( e, settings ) {
 } );
 
 
-function getGruppiFromCorso(){
+
+function getGruppiFromCorso(mod, id_gruppo){
 	
-	var corso = $('#corsi').val();
+	if(mod!=null){
+		var corso = $('#corsi_mod').val();
+	}else{
+		var corso = $('#corsi').val();	
+	}
+	
 	
 	dataObj={};
 	dataObj.corso = corso;
@@ -477,15 +593,24 @@ function getGruppiFromCorso(){
 			var gruppi = data.gruppi;
 				
 				var html = '<option value=""></option>';
-				
+				html = html+'<option value="0">Nessun gruppo</option>';
 				for (var i = 0; i < gruppi.length; i++) {
 					html = html+'<option value="'+gruppi[i].id+'">'+gruppi[i].descrizione+'</option>';
 				}
 				
-				
-			$('#gruppi').html(html);
-			$('#gruppi').attr("disabled", false);
-			
+				if(mod!=null){	
+					$('#gruppi_mod').html(html);
+					$('#gruppi_mod').val(id_gruppo)
+					$('#gruppi_mod').attr("disabled", false);
+					getMembriGruppo('mod');
+					
+					
+					
+					
+				}else{
+					$('#gruppi').html(html);
+					$('#gruppi').attr("disabled", false);
+				}
 			
 		}
 		
@@ -495,9 +620,14 @@ function getGruppiFromCorso(){
 }
 
 
-function getMembriGruppo(){
+function getMembriGruppo(mod){
 	
-var gruppo = $('#gruppi').val();
+	if(mod!=null){
+		var gruppo = $('#gruppi_mod').val();
+	}else{
+		var gruppo = $('#gruppi').val();
+	}
+
 
 if(gruppo!=null && gruppo!=''){
 	dataObj={};
@@ -511,7 +641,11 @@ if(gruppo!=null && gruppo!=''){
 				
 				
 			if(membri.length==0){
-				$("#body_membri").html("Nessun utente nel gruppo selezionato");
+				if(mod!=null){
+					$("#body_membri_mod").html("Nessun utente nel gruppo selezionato");
+				}else{
+					$("#body_membri").html("Nessun utente nel gruppo selezionato");
+				}
 			}else{
 				 var row = "";
 				    $.each(membri, function(index, item) {
@@ -523,11 +657,16 @@ if(gruppo!=null && gruppo!=''){
 				       
 				    });
 						
-				    $("#body_membri").html(row);
+				    if(mod!=null){
+				    	$("#body_membri_mod").html(row);
+				    	$('#content_membri_mod').show()
+				    	$('#myModalModificaConfigurazione').modal();
+				    }else{
+				    	$("#body_membri").html(row);
+				    	$('#content_membri').show()
+				    }
 			}
 			
-			
-			$('#content_membri').show()
 			
 		}
 		
@@ -569,6 +708,39 @@ $('#frequenza').change(function(){
 	  }
 	 
 });
+
+
+
+$('#data_inizio_invio_mod').change(function(){
+	
+	  var frequenza = $('#frequenza_mod').val();
+	  
+	  if(frequenza!=null && frequenza!=''){
+	
+		  var data =  Date.parse(formatDate($('#data_inizio_invio_mod').val()));	
+		  var data_scadenza = data.addMonths(parseInt(frequenza));
+		  $('#data_prossimo_invio_mod').val(formatDate(data_scadenza));
+	  }
+	 
+});
+
+
+$('#frequenza_mod').change(function(){
+	
+	  var frequenza = $('#frequenza_mod').val();
+	  
+	  if(frequenza!=null && frequenza!=''){
+	
+		  if($('#data_inizio_invio_mod').val()!=null && $('#data_inizio_invio_mod').val()!=''){
+			  var data =  Date.parse(formatDate($('#data_inizio_invio_mod').val()));	
+			  var data_scadenza = data.addMonths(parseInt(frequenza));
+			  $('#data_prossimo_invio_mod').val(formatDate(data_scadenza));
+		  }
+		
+	  }
+	 
+});
+
 
 function formatDate(data){
 	
@@ -692,15 +864,7 @@ $(document).ready(function() {
 $('#modificaConfigurazioneForm').on('submit', function(e){
 	 e.preventDefault();
 	 
-	 if($('#frequenza_mod').val() != frequenza_modifica){
-		 
-		 $('#modalModificaFrequenza').modal();
-		 
-		 
-	 }else{
-		 modificaForConfigurazioneInvioEmail(0);
-	 }
-	 
+	 callAjaxForm("#modificaConfigurazioneForm", "gestioneFormazione.do?action=modifica_configurazione_invio")
 	 
 });
  

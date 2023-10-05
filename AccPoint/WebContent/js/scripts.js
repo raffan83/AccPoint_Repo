@@ -2030,29 +2030,33 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 		         		 
 			           $('.modal-backdrop').hide();
 			           
-			           dataString ="idSede="+ sede+";"+cliente;
-			           exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(data,textStatus){
-			         	  $('#myModal').on('hidden.bs.modal', function (e) {
-			              	  	$('#noteApp').val("");
-			              	 	$('#empty').html("");
-			              	 	$('body').removeClass('noScroll');
-			              	 	$(document.body).css('padding-right', '0px');
-			              	});
-			         	  
-			  			
-//			         	  $('#myModalError').on('hidden.bs.modal', function (e) {
-//			         		  
-//			         		  var input = $("#uploadSuccess").val();
-//			         		  if(input){
-//			         			  $('#myModal').modal("hide");
-//			 						
-//			         		  }
+			           var riga = $('#row_'+idStrumento); // Ottieni la riga corrente
+			           table.row(riga).remove().draw();
+			           
+			           
+//			           dataString ="idSede="+ sede+";"+cliente;
+//			           exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(data,textStatus){
+//			         	  $('#myModal').on('hidden.bs.modal', function (e) {
+//			              	  	$('#noteApp').val("");
+//			              	 	$('#empty').html("");
+//			              	 	$('body').removeClass('noScroll');
+//			              	 	$(document.body).css('padding-right', '0px');
+//			              	});
+//			         	  
+//			  			
+////			         	  $('#myModalError').on('hidden.bs.modal', function (e) {
+////			         		  
+////			         		  var input = $("#uploadSuccess").val();
+////			         		  if(input){
+////			         			  $('#myModal').modal("hide");
+////			 						
+////			         		  }
+////
+////			         	   	 	
+////			         	   	 	
+////			         	   	});
 //
-//			         	   	 	
-//			         	   	 	
-//			         	   	});
-
-		 	       });
+//		 	       });
 			           $(this).off('hidden.bs.modal');
 		 	       });
 		 	        
@@ -5892,7 +5896,7 @@ function eliminaCompany(){
   
 
   function scaricaSchedaConsegna(idIntervento){
-	  callAction("scaricaSchedaConsegna.do?idIntervento="+idIntervento,"#scaricaSchedaConsegnaForm",false);
+	  callAction("scaricaSchedaConsegna.do?action=scheda_consegna_metrologia&idIntervento="+idIntervento,"#scaricaSchedaConsegnaForm",false);
 	  $("#myModalDownloadSchedaConsegna").modal('hide');
   }
   

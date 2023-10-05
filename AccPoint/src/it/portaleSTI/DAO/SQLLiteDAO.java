@@ -884,16 +884,18 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		strumento.setFrequenza(rs.getInt("freq_verifica_mesi"));
 		strumento.setTipoRapporto(new TipoRapportoDTO(rs.getInt("tipoRapporto"), ""));
 		
+		misura.setDataMisura(sdf.parse(rs.getString("dataMisura")));
+		
 		if(strumento.getTipoRapporto().getId()==Costanti.ID_TIPO_RAPPORTO_SVT)
 		{
 			Date date = new Date();
-			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+			java.sql.Date sqlDate = new java.sql.Date(misura.getDataMisura().getTime());
 			
 			strumento.setDataUltimaVerifica(sqlDate);
 			
 			Calendar data = Calendar.getInstance();
 			
-			data.setTime(date);
+			data.setTime(misura.getDataMisura());
 			data.add(Calendar.MONTH,strumento.getFrequenza());
 			
 			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
@@ -917,7 +919,7 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		strumento.setProcedura(rs.getString("procedura"));
 		
 		misura.setStrumento(strumento);
-		misura.setDataMisura(sdf.parse(rs.getString("dataMisura")));
+		
 		misura.setTemperatura(rs.getBigDecimal("temperatura"));
 		misura.setUmidita(rs.getBigDecimal("umidita"));
 		misura.setTipoFirma(rs.getInt("tipoFirma"));

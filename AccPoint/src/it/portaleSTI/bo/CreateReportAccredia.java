@@ -160,6 +160,7 @@ private DRDataSource createDataSourceReport(ArrayList<MisuraDTO> lista_misure) t
 			ArrayList<String> arrayPs = new ArrayList<String>();
 			
 			ArrayList<String> datiCert = DirectMySqlDAO.getCertificatoFromMisura(misura);
+			System.out.println(misura.getId()+" - "+datiCert);
 			if(!datiCert.get(0).equals("3") && misura.getnCertificato()!=null && !misura.getnCertificato().equals("")) {
 				if(misura.getnCertificato()!=null) {
 					arrayPs.add(misura.getnCertificato());

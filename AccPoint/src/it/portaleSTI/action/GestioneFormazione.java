@@ -3123,8 +3123,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					ajax = true;
 					
 					String id_gruppo = request.getParameter("gruppo");
+					String id_corso = request.getParameter("corso");
 					
-					ArrayList<ForMembriGruppoDTO> lista_membri_gruppo = GestioneFormazioneBO.getMembriGruppo(Integer.parseInt(id_gruppo));
+					ArrayList<ForMembriGruppoDTO> lista_membri_gruppo = GestioneFormazioneBO.getMembriGruppo(Integer.parseInt(id_gruppo), Integer.parseInt(id_corso));
+					ArrayList<ForMembriGruppoDTO> lista_membri_nc = GestioneFormazioneDAO.getListaUtentiNonCompleti(Integer.parseInt(id_corso), Integer.parseInt(id_gruppo));
 					
 					Gson g = new Gson();
 					
@@ -3135,6 +3137,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					myObj.addProperty("success", true);
 					myObj.add("membri", g.toJsonTree(lista_membri_gruppo));
+					myObj.add("membri_nc", g.toJsonTree(lista_membri_nc));
 		        	out.print(myObj);
 		        	session.getTransaction().commit();
 					session.close();
@@ -3215,8 +3218,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					session.close();
 					
 					PrintWriter out = response.getWriter();
-					
-					
+					java.net.URL resource = getClass().getResource("/");
+					String path = resource.getPath();	
+					GestioneFormazioneBO.sendEmailCorsiNonCompleti(path);
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio", "Configurazione salvata con successo!");
 					

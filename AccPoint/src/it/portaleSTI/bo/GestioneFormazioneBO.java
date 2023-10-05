@@ -2142,9 +2142,9 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getGruppiFromCorso(parseInt);
 	}
 
-	public static ArrayList<ForMembriGruppoDTO> getMembriGruppo(int parseInt) throws Exception{
+	public static ArrayList<ForMembriGruppoDTO> getMembriGruppo(int gruppo, int corso) throws Exception{
 		// TODO Auto-generated method stub
-		return GestioneFormazioneDAO.getMembriGruppo(parseInt);
+		return GestioneFormazioneDAO.getMembriGruppo(gruppo, corso);
 	}
 
 	public static ForConfInvioEmailDTO getConfigurazioneInvioEmail(int id_conf,Session session) {
@@ -2168,7 +2168,7 @@ public class GestioneFormazioneBO {
 			
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(conf.getData_prossimo_invio());
-			cal.add(Calendar.MONTH, conf.getFrequenza_invio());
+			cal.add(Calendar.DAY_OF_YEAR, conf.getFrequenza_invio());
 			
 			conf.setData_prossimo_invio(cal.getTime());
 			

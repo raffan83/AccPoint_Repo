@@ -1045,7 +1045,7 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		
 	}
 
-	public static ArrayList<ForMembriGruppoDTO> getMembriGruppo(int gruppo) throws Exception {
+	public static ArrayList<ForMembriGruppoDTO> getMembriGruppo(int gruppo, int corso) throws Exception {
 		
 		ArrayList<ForMembriGruppoDTO> lista = new ArrayList<ForMembriGruppoDTO>();
 		
@@ -1059,12 +1059,23 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 
 			
 
-		String query = "SELECT a.id, a.firstname, a.lastname, a.email FROM mdl_user AS a JOIN mdl_groups_members AS b ON a.id = b.userid WHERE b.groupid = ?";
-
+		String query = "";
+		
+		if(gruppo == 0) {
+			query = "SELECT a.id, a.firstname, a.lastname, a.email, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ?";
+		}else {
+			query = "SELECT a.id, a.firstname, a.lastname, a.email FROM mdl_user AS a JOIN mdl_groups_members AS b ON a.id = b.userid WHERE b.groupid = ?";
+		}
+		
+		
 		
 		pst=con.prepareStatement(query);
+		if(gruppo == 0) {
+			pst.setInt(1, corso);
+		}else {
+			pst.setInt(1, gruppo);
+		}
 		
-		pst.setInt(1, gruppo);
 		
 		
 		rs=pst.executeQuery();

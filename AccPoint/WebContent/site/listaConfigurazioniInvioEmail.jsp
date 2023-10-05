@@ -70,7 +70,7 @@
 <th>Corso</th>
 <th>Gruppo</th>
 <th>Data inizio invio</th>
-<th>Frequenza (Mesi)</th>
+<th>Frequenza (Giorni)</th>
 <th>Data prossimo invio</th>
 <th>Data scadenza</th>
 <th>Stato invio</th>
@@ -197,7 +197,7 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Frequenza (Mesi)</label>
+       		<label>Frequenza (Giorni)</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -353,7 +353,7 @@
        <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Frequenza (Mesi)</label>
+       		<label>Frequenza (Giorni)</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -624,46 +624,68 @@ function getMembriGruppo(mod){
 	
 	if(mod!=null){
 		var gruppo = $('#gruppi_mod').val();
+		var corso = $('#corsi_mod').val();
 	}else{
 		var gruppo = $('#gruppi').val();
+		var corso = $('#corsi').val();
 	}
 
 
 if(gruppo!=null && gruppo!=''){
 	dataObj={};
 	dataObj.gruppo = gruppo;
+	dataObj.corso = corso;
 	
 	callAjax(dataObj, "gestioneFormazione.do?action=membri_gruppo",function(data, textStatus){
 		
 		if(data.success){
 			
 			var membri = data.membri;
-				
+			var membri_nc = data.membri_nc	
 				
 			if(membri.length==0){
 				if(mod!=null){
 					$("#body_membri_mod").html("Nessun utente nel gruppo selezionato");
+					$('#content_membri_mod').show();
+					$('#myModalModificaConfigurazione').modal();
 				}else{
 					$("#body_membri").html("Nessun utente nel gruppo selezionato");
+					$('#content_membri').show();
 				}
 			}else{
+				
+				var array_email =[]; 
+				 $.each(membri_nc, function(index, item) {
+					 array_email.push(item.email);
+				 });
+				
 				 var row = "";
 				    $.each(membri, function(index, item) {
-				        row += "<tr>";
-				        row += "<td>" + item.nome + "</td>";
-				        row += "<td>" + item.cognome + "</td>";
-				        row += "<td>" + item.email + "</td>";
-				        row += "</tr>";
+				    	
+				    	if(array_email.includes(item.email)){
+				    		row += "<tr style='background-color:#FA8989'>";
+					        row += "<td>" + item.nome + "</td>";
+					        row += "<td>" + item.cognome + "</td>";
+					        row += "<td>" + item.email + "</td>";
+					        row += "</tr>";
+				    	}else{
+				    		row += "<tr>";
+					        row += "<td>" + item.nome + "</td>";
+					        row += "<td>" + item.cognome + "</td>";
+					        row += "<td>" + item.email + "</td>";
+					        row += "</tr>";
+				    	}
+				        
 				       
 				    });
 						
 				    if(mod!=null){
 				    	$("#body_membri_mod").html(row);
-				    	$('#content_membri_mod').show()
+				    	$('#content_membri_mod').show();
 				    	$('#myModalModificaConfigurazione').modal();
 				    }else{
 				    	$("#body_membri").html(row);
-				    	$('#content_membri').show()
+				    	$('#content_membri').show();
 				    }
 			}
 			
@@ -686,7 +708,7 @@ $('#data_inizio_invio').change(function(){
 	  if(frequenza!=null && frequenza!=''){
 	
 		  var data =  Date.parse(formatDate($('#data_inizio_invio').val()));	
-		  var data_scadenza = data.addMonths(parseInt(frequenza));
+		  var data_scadenza = data.addDays(parseInt(frequenza));
 		  $('#data_prossimo_invio').val(formatDate(data_scadenza));
 	  }
 	 
@@ -701,7 +723,7 @@ $('#frequenza').change(function(){
 	
 		  if($('#data_inizio_invio').val()!=null && $('#data_inizio_invio').val()!=''){
 			  var data =  Date.parse(formatDate($('#data_inizio_invio').val()));	
-			  var data_scadenza = data.addMonths(parseInt(frequenza));
+			  var data_scadenza = data.addDays(parseInt(frequenza));
 			  $('#data_prossimo_invio').val(formatDate(data_scadenza));
 		  }
 		
@@ -718,7 +740,7 @@ $('#data_inizio_invio_mod').change(function(){
 	  if(frequenza!=null && frequenza!=''){
 	
 		  var data =  Date.parse(formatDate($('#data_inizio_invio_mod').val()));	
-		  var data_scadenza = data.addMonths(parseInt(frequenza));
+		  var data_scadenza = data.addDays(parseInt(frequenza));
 		  $('#data_prossimo_invio_mod').val(formatDate(data_scadenza));
 	  }
 	 
@@ -733,7 +755,7 @@ $('#frequenza_mod').change(function(){
 	
 		  if($('#data_inizio_invio_mod').val()!=null && $('#data_inizio_invio_mod').val()!=''){
 			  var data =  Date.parse(formatDate($('#data_inizio_invio_mod').val()));	
-			  var data_scadenza = data.addMonths(parseInt(frequenza));
+			  var data_scadenza = data.addDays(parseInt(frequenza));
 			  $('#data_prossimo_invio_mod').val(formatDate(data_scadenza));
 		  }
 		

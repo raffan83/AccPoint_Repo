@@ -1455,18 +1455,21 @@ public static void sendEmailCorsoMoodle(String email_addr, String descrizione_co
 	
 
 		 HtmlEmail email = new HtmlEmail();
-		  email.setHostName("smtps.aruba.it");
-			 //email.setDebug(true);
-		  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
 
-	email.getMailSession().getProperties().put("mail.smtp.auth", "true");
-	email.getMailSession().getProperties().put("mail.debug", "true");
-	email.getMailSession().getProperties().put("mail.smtp.port", "465");
-	email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
-	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
-	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
 
+	
+	  email.setHostName("mail.vianova.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("segreteria@crescosrl.net", Costanti.PASS_EMAIL_CRESCO);
+
+    email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+    email.getMailSession().getProperties().put("mail.debug", "true");
+    email.getMailSession().getProperties().put("mail.smtp.port", "587");
+    email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "587");
+    email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+    email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "true");
+    email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
+	
 	
 	//email.addTo(email_addr);	
 
@@ -1475,7 +1478,7 @@ public static void sendEmailCorsoMoodle(String email_addr, String descrizione_co
 	//email.addTo("segreteria@crescosrl.net");
 	email.addTo("antonio.dicivita@ncsnetwork.it");
 		  
-		  email.setFrom("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl");
+		  email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
 		
 
 			  email.setSubject("Remind corso "+descrizione_corso);

@@ -29,5 +29,14 @@
 		<property name="frequenza_invio" type="int" >
             <column name="frequenza_invio" />
         </property>     
+        <property name="descrizione_corso" type="java.lang.String" >
+            <column name="descrizione_corso" />
+        </property>  
+        <property name="descrizione_gruppo" type="java.lang.String" >
+            <column name="descrizione_gruppo" />
+        </property>  
+        <property name="disabilitato" type="int" >
+            <column name="disabilitato" />
+        </property>    
     </class>
 </hibernate-mapping>

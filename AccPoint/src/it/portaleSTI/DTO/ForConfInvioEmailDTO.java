@@ -12,6 +12,9 @@ public class ForConfInvioEmailDTO {
 	private Date data_prossimo_invio;
 	private Date data_scadenza;
 	private int frequenza_invio;
+	private String descrizione_corso;
+	private String descrizione_gruppo;
+	private int disabilitato;
 	
 	
 	public int getId() {
@@ -62,6 +65,24 @@ public class ForConfInvioEmailDTO {
 	}
 	public void setFrequenza_invio(int frequenza) {
 		this.frequenza_invio = frequenza;
+	}
+	public String getDescrizione_corso() {
+		return descrizione_corso;
+	}
+	public void setDescrizione_corso(String descrizione_corso) {
+		this.descrizione_corso = descrizione_corso;
+	}
+	public String getDescrizione_gruppo() {
+		return descrizione_gruppo;
+	}
+	public void setDescrizione_gruppo(String descrizione_gruppo) {
+		this.descrizione_gruppo = descrizione_gruppo;
+	}
+	public int getDisabilitato() {
+		return disabilitato;
+	}
+	public void setDisabilitato(int disabilitato) {
+		this.disabilitato = disabilitato;
 	}
 	
 	

@@ -1448,7 +1448,65 @@ public static void sendEmailEliminaPianificazione(ForPiaPianificazioneDTO pianif
 	
 
 
+public static void sendEmailCorsoMoodle(String email_addr, String descrizione_corso, String path) throws EmailException {
+
+
+	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
+
+		 HtmlEmail email = new HtmlEmail();
+		  email.setHostName("smtps.aruba.it");
+			 //email.setDebug(true);
+		  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+	email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+	email.getMailSession().getProperties().put("mail.debug", "true");
+	email.getMailSession().getProperties().put("mail.smtp.port", "465");
+	email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+	
+	//email.addTo(email_addr);	
+
+	
+	//email.addTo("lisa.lombardozzi@crescosrl.net");
+	//email.addTo("segreteria@crescosrl.net");
+	email.addTo("antonio.dicivita@ncsnetwork.it");
+		  
+		  email.setFrom("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl");
+		
+
+			  email.setSubject("Remind corso "+descrizione_corso);
+			  
+			  File image = new File(path.replace("WEB-INF/classes", "")+"/images/cresco.jpg");
+			  String cid = email.embed(image, "Calver logo");
+			  
+			  String messaggio = "Gentile Utente<br>Vi ricordiamo di effettuare il corso obbligatorio <b>"+descrizione_corso +"</b> presente in piattaforma https://formazione.crescosrl.net/login/index.php accedendo con le credenziali che vi sono state inviate.<br><br>Restiamo a disposizione per eventuali chiarimenti";
+			  
+			  messaggio += "<br><br>Segreteria CRESCO Formazione e Consulenza Srl <br>Per Assistenza e Tutoraggio dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:<br>Tel. Interno: 0776.1815115 - 0776.1815104<br>Cell: 392.9318177<br><br>Cordiali saluti";
+			  
+						  
+			  messaggio += "<em><b><br><br>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
+					
+						"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
+						"Tel int. +39 0776.1815115 - Fax +39 0776.814169</em> <br> "
+						+ "Web: </em>www.crescosrl.net<br>" 
+						+ "Mail: </em>segreteria@crescosrl.net<br>" + 
+				
+						"<br/></html>"
+			  	
+			  		+" <br /><a href='https://formazione.crescosrl.net/login/index.php'> <img width='160' src=\"cid:"+cid+"\"><a><br>" ;
+		
+			
+			  
+			  email.setHtmlMsg("<html>"
+					  	 +messaggio+"</html>");
+			  
+		  email.send();
+	
+}
 
 }
 

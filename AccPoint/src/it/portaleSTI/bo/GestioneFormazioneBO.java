@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -94,12 +95,17 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CoAttrezzaturaDTO;
 import it.portaleSTI.DTO.CoControlloDTO;
+import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
+import it.portaleSTI.DTO.ForConfInvioEmailDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
+import it.portaleSTI.DTO.ForCorsoMoodleDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForEmailDTO;
+import it.portaleSTI.DTO.ForGruppoMoodleDTO;
+import it.portaleSTI.DTO.ForMembriGruppoDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
@@ -2119,6 +2125,80 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getListaPianificazioniData(dateFrom, dateTo, session);
 		
 		
+	}
+
+	public static ArrayList<ForConfInvioEmailDTO> getListaConfigurazioniInvioEmail(Session session) {
+		
+		return GestioneFormazioneDAO.getListaConfigurazioniInvioEmail(session);
+	}
+
+	public static ArrayList<ForCorsoMoodleDTO> getListaCorsiInvioEmail() throws Exception {
+
+		return GestioneFormazioneDAO.getListaCorsiInvioEmail();
+	}
+
+	public static ArrayList<ForGruppoMoodleDTO> getGruppiFromCorso(int parseInt) throws Exception {
+		
+		return GestioneFormazioneDAO.getGruppiFromCorso(parseInt);
+	}
+
+	public static ArrayList<ForMembriGruppoDTO> getMembriGruppo(int parseInt) throws Exception{
+		// TODO Auto-generated method stub
+		return GestioneFormazioneDAO.getMembriGruppo(parseInt);
+	}
+
+	public static ForConfInvioEmailDTO getConfigurazioneInvioEmail(int id_conf,Session session) {
+		// TODO Auto-generated method stub
+		return GestioneFormazioneDAO.getConfigurazioneInvioEmail(id_conf,session);
+	}
+
+	public static void sendEmailCorsiNonCompleti(String path) throws Exception {
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		ArrayList<ForConfInvioEmailDTO> lista_conf = getListaConfigurazioniInvioEmailData(new Date(),session);
+		for (ForConfInvioEmailDTO conf : lista_conf) {
+			ArrayList<ForMembriGruppoDTO> lista_utenti = GestioneFormazioneDAO.getListaUtentiNonCompleti(conf.getId_corso(), conf.getId_gruppo());
+			
+			for (ForMembriGruppoDTO utente : lista_utenti) {
+				System.out.println(utente.getNome()+" "+utente.getCognome()+" "+utente.getEmail());
+				SendEmailBO.sendEmailCorsoMoodle(utente.getEmail(), conf.getDescrizione_corso(), path);
+			}
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(conf.getData_prossimo_invio());
+			cal.add(Calendar.MONTH, conf.getFrequenza_invio());
+			
+			conf.setData_prossimo_invio(cal.getTime());
+			
+			session.update(conf);
+			
+		}
+		
+		lista_conf = getListaConfigurazioniInvioEmailScadenza(new Date(),session);
+		
+		
+		for (ForConfInvioEmailDTO conf : lista_conf) {			
+			
+			conf.setStato_invio(1);
+			session.update(conf);
+		}
+		
+		session.getTransaction().commit();
+		session.close();
+		
+	}
+
+	private static ArrayList<ForConfInvioEmailDTO> getListaConfigurazioniInvioEmailData(Date date, Session session) {
+		
+		return GestioneFormazioneDAO.getListaConfigurazioniInvioEmailData(date, session);
+	}
+
+	private static ArrayList<ForConfInvioEmailDTO> getListaConfigurazioniInvioEmailScadenza(Date date,
+			Session session) {
+		
+		return GestioneFormazioneDAO.getListaConfigurazioniInvioEmailScadenza(date, session);
 	}
 
 	

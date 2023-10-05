@@ -117,6 +117,8 @@
 <th>Data Inizio</th>
 <th>Data Scadenza</th>
 <th>Docente</th>
+<th>N. Attestati</th>
+<th>Efei</th>
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 <th style="min-width:235px">Azioni</th>
 </c:if>
@@ -167,14 +169,18 @@
 	${docente.nome} ${docente.cognome }<br>
 	</c:forEach>
 	</td>
-	
+	<td>${corso.getListaPartecipanti().size() }</td>
+	<td>
+<c:if test="${corso.efei==1 }">SI</c:if>
+<c:if test="${corso.efei!=1 }">NO</c:if>
+</td>
 	
 		<td>
 
 	<a class="btn btn-info" onClick="dettaglioCorso('${utl:encryptData(corso.id)}')"><i class="fa fa-search"></i></a>
 		 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 	<%-- 	 	<c:if test="${corso.e_learning == 0}"> --%>
-				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${utl:escapeJS(corso.getDocentiCorsoJson())}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }', ${corso.durata })" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
+				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${utl:escapeJS(corso.getDocentiCorsoJson())}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }', '${corso.durata }','${corso.efei }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
 	<%-- 	 	</c:if>
 	<c:if test="${corso.e_learning == 1}">
 				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }',0,'${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${corso.descrizione }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
@@ -393,8 +399,20 @@
        	    <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload" name="fileupload" type="file" ></span><label id="label_file"></label>
        	    </div>
         
+       	</div><br>
+            	         
+            	         
+           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Corso Efei</label>
        	</div>
-            	
+       	<div class="col-sm-9">      
+       	  	
+        <input id="check_efei" name="check_efei" class="form-control" type="checkbox" style="width:100%" >
+       			
+       	</div>       	
+       </div>
        
        
        </div>
@@ -402,7 +420,7 @@
       <div class="modal-footer">
 		<input type="hidden" id="e_learning" name="e_learning">
 		<input type="hidden" id="id_docenti" name="id_docenti">
-		
+		<input type="hidden" id="efei" name="efei">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -578,6 +596,24 @@
        	    </div>
         
        	</div>
+       	
+       	
+       	
+       	<br>
+            	         
+            	         
+           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Corso Efei</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="check_efei_mod" name="check_efei_mod" class="form-control" type="checkbox" style="width:100%" >
+       			
+       	</div>       	
+       </div>
+       	
        	</div>		
      
        
@@ -587,6 +623,7 @@
 		
 		<input type="hidden" id="id_corso" name="id_corso">
 		<input type="hidden" id="e_learning_mod" name="e_learning_mod">
+		<input type="hidden" id="efei_mod" name="efei_mod">
 		<input type="hidden" id="id_docenti_mod" name="id_docenti_mod">
 		<input type="hidden" id="id_docenti_dissocia" name="id_docenti_dissocia">
 		
@@ -744,7 +781,7 @@ $('#docente_mod').on('change', function() {
   });
 
 
-function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_scadenza, documento_test, descrizione, tipologia, commessa,e_learning, durata){
+function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_scadenza, documento_test, descrizione, tipologia, commessa,e_learning, durata, efei){
 	
 	var json = JSON.parse(docenti);
 	
@@ -799,6 +836,20 @@ $('#docente_mod').change();
 		$('#docente_mod').attr('required', true);
 	}
 	
+	
+	
+	if(efei =='1'){	
+
+		$('#check_efei_mod').iCheck('check');
+		$('#efei_mod').val(1); 
+
+	}else{
+		$('#check_efei_mod').iCheck('uncheck');
+		$('#efei_mod').val(0);
+
+	}
+	
+	
 	$('#myModalModificaCorso').modal();
 }
 
@@ -833,6 +884,45 @@ $('#check_e_learning_mod').on('ifClicked',function(e){
 	}
 });
 
+
+$('#check_efei').on('ifClicked',function(e){
+	if($('#check_efei').is( ':checked' )){
+		$('#check_efei').iCheck('uncheck');
+		$('#efei').val(0); 
+	
+	}else{
+		$('#check_efei').iCheck('check');
+		$('#efei').val(1); 
+	
+	}
+});
+	 
+
+$('#check_efei_mod').on('ifClicked',function(e){
+	if($('#check_efei_mod').is( ':checked' )){
+		$('#check_efei_mod').iCheck('uncheck');
+		$('#efei_mod').val(0); 
+	
+	}else{
+		$('#check_efei_mod').iCheck('check');
+		$('#efei_mod').val(1); 
+
+	}
+});
+
+
+
+
+if(efei =='1'){	
+
+	$('#check_efei_mod').iCheck('check');
+	$('#efei_mod').val(1); 
+
+}else{
+	$('#check_efei_mod').iCheck('uncheck');
+	$('#efei_mod').val(0);
+
+}
 
 
 $('#fileupload').change(function(){
@@ -987,7 +1077,7 @@ $('input:checkbox').on('ifToggled', function() {
 	
 	var id ="#"+$(this)[0].id;
 	
-	if(id!='#checkall' && id!='#check_e_learning' && id!='#check_e_learning_mod'){
+	if(id!='#checkall' && id!='#check_e_learning' && id!='#check_e_learning_mod' && id!='#check_efei' && id!='#check_efei_mod'){
 		$(id).on('ifChecked', function(event){
 			  setVisibilita(id, 1);
 			  
@@ -1147,7 +1237,7 @@ $(document).ready(function() {
 	//changeSkin();
 	admin="${admin}";
 	
-	var col_azioni = 10;
+	var col_azioni = 12;
 	
 	if(admin == "1"){
 		col_azioni++;

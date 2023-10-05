@@ -144,7 +144,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        
                        <th></th>
  						<th>ID</th>
+ 						<c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP") || userObj.checkRuolo("CI")}'>
  						<th>Ind. Prestazione</th>
+ 						</c:if>
   						<th>Stato Strumento</th>
  						  <th>Codice Interno</th>
  						  <th>Matricola</th>
@@ -193,7 +195,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 						 <td></td>		
 	 								
 
-	 								 <td><%=strumento.get__id()%></td>
+	 								 <td id="row_<%=strumento.get__id()%>"><%=strumento.get__id()%></td>
+	 								 <c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP") || userObj.checkRuolo("CI")}'>
 	 								 <td id="indice_prestazione_str_<%=strumento.get__id()%>">
 	 								 <c:set var="indice" value="<%=strumento.getIndice_prestazione() %>"></c:set>
 	 								 <c:if test='${indice == null || indice.equals("") }'>
@@ -214,19 +217,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								</c:if>
 	 								
 	 	
-	 								 
-	 								<%--   <% if(strumento.getIndice_prestazione().equals("V")){%>
-	 									<div class="lamp lampGreen" style="margin:auto"></div>
-	 							<%	}else if(strumento.getIndice_prestazione().equals("G")){%>
-	 										<div class="lamp lampYellow" style="margin:auto"></div>
-	 									<%	}else if(strumento.getIndice_prestazione().equals("R")){%>
-	 									 	<div class="lamp lampRed" style="margin:auto"></div>
-	 								<%}else{ %>
-	 								
-	 								<div class="lamp lampNI" style="margin:auto"></div>
-	 							<%} %> --%>
-	 								 
 	 								 </td>
+	 								 </c:if>
 	 								   <td id="stato_<%=strumento.get__id() %>"><span class="label
 	 								 <% if(strumento.getStato_strumento().getId()==7225){
 	 									 out.print("label-warning");
@@ -793,19 +785,53 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    	   if($(this).index()==1){
 	    		   $(this).append( '<div ><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:30px !important"  type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
 	    	   }
-	    	   if($(this).index()==2){
-	    		   columsDatatables[$(this).index()].search.search = "";
-	    		   $(this).append( '<div id="filtro_select"></div>')
+	    	  
+	    		   if($(this).index()==2 ){
+	    			   if(${userObj.checkRuolo('AM') || userObj.checkRuolo('OP') || userObj.checkRuolo('CI')}){
+			    		   columsDatatables[$(this).index()].search.search = "";
+			    		   $(this).append( '<div id="filtro_select"></div>')
+		    		   }else{
+		    			   $(this).append( '<div ><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');	   
+		    		   }
+	    	  
+	    		   
 	    		   }
 	    	  
 	    	} );
 
 	    //console.log(new Date());
 	} );
+	
+ 	var param =null;
+ 	var col_data_prossima = 15;
+ 	var col_data_ultima = 14;
+ 	var col_def = [];
 
  //$(function(){
  $(document).ready(function() {
 	 //$('.select2').select2();
+	 
+	 
+
+	
+	if(${userObj.checkRuolo('AM') || userObj.checkRuolo('OP') || userObj.checkRuolo('CI')}){
+	 
+    param = function (settings, data) {
+        // Rimuovi i dati relativi alla colonna che vuoi escludere (ad esempio, colonna 2)
+        var columnIndexToExclude = 2;
+        data.columns.splice(columnIndexToExclude, 1);
+
+    }
+    
+    
+ 	 col_data_prossima = 16;
+ 	 col_data_ultima = 15;
+ 	col_def = [
+	     
+		 
+        { orderable: false, targets: 2 }
+   ]
+	}
 	 
 	 console.log("test")
  
@@ -844,26 +870,15 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
-	      stateSaveParams: function (settings, data) {
+	      stateSaveParams: param,
+	      /* stateSaveParams: function (settings, data) {
 	          // Rimuovi i dati relativi alla colonna che vuoi escludere (ad esempio, colonna 2)
 	          var columnIndexToExclude = 2;
 	          data.columns.splice(columnIndexToExclude, 1);
-	      },
+	      }, */
 	      order:[[1, "desc"]],
 	      select: 'single',
-	      columnDefs: [
-	     
-					 /* 
-	                   { responsivePriority: 1, targets: 0 },
-	                   { responsivePriority: 2, targets: 1 },
-	                   { responsivePriority: 3, targets: 2 },
-	                   { responsivePriority: 4, targets: 3 },	                 
-	                   { responsivePriority: 5, targets: 4 },
-	                   { responsivePriority: 6, targets: 5 },
-	                   { responsivePriority: 7, targets: 23 }, 
-	                   { responsivePriority: 8, targets: 8}, */
-	                    { orderable: false, targets: 2 }, 
-	               ],
+	      columnDefs: col_def,
         
 	               buttons: [ {
 	                   extend: 'copy',
@@ -895,7 +910,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 
 	 
 	 var uniqueClasses = [];
-	    table.column(2).data().each(function(value, index) {
+	 uniqueClasses.push("lampNP");
+	 uniqueClasses.push("lampGreen");
+	 uniqueClasses.push("lampYellow");
+	 uniqueClasses.push("lampRed");
+/* 	    table.column(2).data().each(function(value, index) {
 	    	if(value!=null && value!=''){
 	    		 var classes = $(value).attr('class').split(' ');
 	 	        for (var i = 0; i < classes.length; i++) {
@@ -907,23 +926,47 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    	}
 	    
 	       
-	    });
+	    }); */
 
 	    // Creare il filtro select
 	  //     .appendTo($('#filtro_select').find('.dataTables_filter'))
 	    var select = $('<select id="filtro_indice" class="form-control select2" style="max-width:100px"><option value="" selected>TUTTI</option></select>')
 	    .appendTo($('#filtro_select'))
 	        .on('change', function() {
-	            var selectedClass = $(this).val();
+/* 	            var selectedClass = $(this).val();
 	            table = $('#tabPM').DataTable();
 	            if(selectedClass!="lampNP"){
 	            	table.column(2).search(selectedClass)	
-	            }else{
+	         	}else{
 	            	table.column(2).search("NON DETERMINATO")	
-	            }
+	            } 
 	            
 	            var x = table.rows().data()
+	            table.draw(); */
+	            
+	            
+	            var selectedClass = $(this).val();
+	            table = $('#tabPM').DataTable();
+	        	$.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+	                if (selectedClass === "") {
+	                    return true; // Nessun filtro, mostra tutte le righe
+	                }
+	                
+	                var cell = table.cell(dataIndex, 2).node();
+	                var divElement = $(cell).find('div');
+	                var cellClasses = divElement[0].className.split(" ");
+	                
+	                // Controlla se la classe selezionata è presente nella cella
+	                return cellClasses.includes(selectedClass);
+	            });
+	            
+	            // Esegui la ricerca
 	            table.draw();
+	            
+	            // Rimuovi la funzione di ricerca personalizzata dopo aver completato la ricerca
+	            $.fn.dataTable.ext.search.pop();
+	            
+	            
 	        });
 
 	    // Popolare il filtro select con le classi CSS uniche
@@ -949,13 +992,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 
 	    $('#filtro_indice').select2()
 	    
-	    var maxColumnWidth = table.column(1).data().reduce(function(max, data) {
+/* 	    var maxColumnWidth = table.column(1).data().reduce(function(max, data) {
 	        var cellWidth = $('<div>').css('display', 'inline').html(data).appendTo('body').width();
 	        return cellWidth > max ? cellWidth : max;
 	    }, 0);
 
 	    // Imposta la larghezza massima della colonna 1
-	    table.column(1).nodes().to$().css('width', maxColumnWidth + 'px');
+	    table.column(1).nodes().to$().css('width', maxColumnWidth + 'px'); */
 	    
 	    
 	table.buttons().container()
@@ -1745,8 +1788,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		    }
 		}, 
 		function(start, end, label) {
-		      /* startDatePicker = start;
-		      endDatePicker = end; */
+
 		});
  });
 
@@ -1755,7 +1797,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
  minDateFilter = "";
  maxDateFilter = "";
  dataType = "";
- 
+
   $.fn.dataTableExt.afnFiltering.push(
 		  
   
@@ -1764,9 +1806,9 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	   
 		if(oSettings.nTable.getAttribute('id') == "tabPM"){
 			 if(dataType == "prossima"){
-				   if (aData[15]) {
+				   if (aData[col_data_prossima]) {
 
-			    	 	var dd = aData[15].split("/");
+			    	 	var dd = aData[col_data_prossima].split("/");
 
 			       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
 			       console.log("Prossima:"+minDateFilter);
@@ -1779,9 +1821,9 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 			     }
 				   
 			   }else{
-				   if (aData[14]) {
+				   if (aData[col_data_ultima]) {
 
-			    	 	var dd = aData[14].split("/");
+			    	 	var dd = aData[col_data_ultima].split("/");
 
 			       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
 			       console.log("Ultima:"+minDateFilter);
@@ -1926,6 +1968,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 	});
  </script>
+ 
  
  
  

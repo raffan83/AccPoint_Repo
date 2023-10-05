@@ -1,11 +1,14 @@
 package it.portaleSTI.DAO;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,12 +17,16 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.ForConfInvioEmailDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
+import it.portaleSTI.DTO.ForCorsoMoodleDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForEmailDTO;
+import it.portaleSTI.DTO.ForGruppoMoodleDTO;
+import it.portaleSTI.DTO.ForMembriGruppoDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
@@ -29,6 +36,10 @@ import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.Util.Costanti;
 
 public class GestioneFormazioneDAO {
 
@@ -892,6 +903,332 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		lista = (ArrayList<ForPiaPianificazioneDTO>) query.list();
 		
 				
+		return lista;
+	}
+
+	public static ArrayList<ForConfInvioEmailDTO> getListaConfigurazioniInvioEmail(Session session) {
+		
+		ArrayList<ForConfInvioEmailDTO> lista = null;
+		
+
+		Query query =  session.createQuery("from ForConfInvioEmailDTO where disabilitato = 0"); 
+			
+		lista = (ArrayList<ForConfInvioEmailDTO>) query.list();
+		
+				
+		return lista;
+	}
+
+	
+	public static Connection getConnection()throws Exception {
+		Connection con = null;
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			con = DriverManager.getConnection("jdbc:mysql://vm9155.seewebcloud.it:3306/crescosrl_db2?user=crescosrl_user1&password=h98mShTz6");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		return con;
+	}
+	
+	public static ArrayList<ForCorsoMoodleDTO> getListaCorsiInvioEmail() throws Exception {
+		
+		ArrayList<ForCorsoMoodleDTO> lista = new ArrayList<ForCorsoMoodleDTO>();
+		
+		
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
+		
+		try {
+			con=getConnection();
+
+			
+
+		String query = "select id, fullname from mdl_course";
+		
+		pst=con.prepareStatement(query);
+		
+		
+		rs=pst.executeQuery();
+		
+	
+		
+		while(rs.next())
+		{
+			ForCorsoMoodleDTO corso = new ForCorsoMoodleDTO();
+			
+			corso.setId(rs.getInt(1));
+			corso.setDescrizione(rs.getString(2));
+			
+	
+			
+			lista.add(corso);
+
+			
+		}
+		
+		} catch (Exception e) {
+			
+			throw e;
+		//	e.printStackTrace();
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+
+		return lista;
+		
+		
+		
+	}
+
+	public static ArrayList<ForGruppoMoodleDTO> getGruppiFromCorso(int corso) throws Exception {
+		
+		ArrayList<ForGruppoMoodleDTO> lista = new ArrayList<ForGruppoMoodleDTO>();
+		
+		
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
+		
+		try {
+			con=getConnection();
+
+			
+
+		String query = "select id, name from mdl_groups where courseid = ?";
+		
+		pst=con.prepareStatement(query);
+		
+		pst.setInt(1, corso);
+		
+		
+		rs=pst.executeQuery();
+		
+	
+		
+		while(rs.next())
+		{
+			ForGruppoMoodleDTO gruppo = new ForGruppoMoodleDTO();
+			
+			gruppo.setId(rs.getInt(1));
+			gruppo.setDescrizione(rs.getString(2));
+			
+	
+			
+			lista.add(gruppo);
+
+			
+		}
+		
+		} catch (Exception e) {
+			
+			throw e;
+		//	e.printStackTrace();
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+
+		return lista;
+		
+	}
+
+	public static ArrayList<ForMembriGruppoDTO> getMembriGruppo(int gruppo) throws Exception {
+		
+		ArrayList<ForMembriGruppoDTO> lista = new ArrayList<ForMembriGruppoDTO>();
+		
+		
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
+		
+		try {
+			con=getConnection();
+
+			
+
+		String query = "SELECT a.id, a.firstname, a.lastname, a.email FROM mdl_user AS a JOIN mdl_groups_members AS b ON a.id = b.userid WHERE b.groupid = ?";
+
+		
+		pst=con.prepareStatement(query);
+		
+		pst.setInt(1, gruppo);
+		
+		
+		rs=pst.executeQuery();
+		
+	
+		
+		while(rs.next())
+		{
+			ForMembriGruppoDTO membro = new ForMembriGruppoDTO();
+			
+			membro.setId(rs.getInt(1));
+			membro.setNome(rs.getString(2));
+			membro.setCognome(rs.getString(3));
+			membro.setEmail(rs.getString(4));
+			
+	
+			
+			lista.add(membro);
+
+			
+		}
+		
+		} catch (Exception e) {
+			
+			throw e;
+		//	e.printStackTrace();
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+
+		return lista;
+	}
+
+	public static ForConfInvioEmailDTO getConfigurazioneInvioEmail(int id,Session session) {
+	
+			
+			ArrayList<ForConfInvioEmailDTO> lista = null;
+			ForConfInvioEmailDTO res = null;
+			
+			Query query = session.createQuery("from ForConfInvioEmailDTO where id = :_id"); 
+						
+							
+			query.setParameter("_id", id);
+				
+					
+					
+			lista = (ArrayList<ForConfInvioEmailDTO>) query.list();
+			
+			if(lista.size()>0) {
+				res = lista.get(0);
+			}
+				
+						
+			return res;
+			
+
+	}
+
+	public static ArrayList<ForMembriGruppoDTO>  getListaUtentiNonCompleti(int id_corso, int id_gruppo) throws Exception {
+		
+		
+		ArrayList<ForMembriGruppoDTO> lista = new ArrayList<ForMembriGruppoDTO>();
+		
+		
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
+		
+		try {
+			con=getConnection();
+
+			
+
+		String query = "";
+		
+		if(id_gruppo!=0) {
+			query = "SELECT a.id, a.firstname, a.lastname, a.email, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16)) AND a.id IN (SELECT userid FROM mdl_groups_members WHERE groupid = ?)";
+		}else {
+			query = "SELECT a.id, a.firstname, a.lastname, a.email, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16))";
+		}
+		
+
+		
+		pst=con.prepareStatement(query);
+		
+		pst.setInt(1, id_corso);
+		pst.setInt(2, id_corso);
+		if(id_gruppo!=0) {
+			pst.setInt(3, id_gruppo);
+		}
+		
+		
+		rs=pst.executeQuery();
+		
+	
+		
+		while(rs.next())
+		{
+			ForMembriGruppoDTO membro = new ForMembriGruppoDTO();
+			
+			membro.setId(rs.getInt(1));
+			membro.setNome(rs.getString(2));
+			membro.setCognome(rs.getString(3));
+			membro.setEmail(rs.getString(4));
+			
+	
+			
+			lista.add(membro);
+
+			
+		}
+		
+		} catch (Exception e) {
+			
+			throw e;
+		//	e.printStackTrace();
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+
+		return lista;
+		
+	}
+
+	public static ArrayList<ForConfInvioEmailDTO> getListaConfigurazioniInvioEmailScadenza(Date date, Session session) {
+		
+		
+		ArrayList<ForConfInvioEmailDTO> lista = null;
+	
+		
+		Query query = session.createQuery("from ForConfInvioEmailDTO where data_scadenza = :_date and disabilitato = 0"); 
+					
+						
+		query.setParameter("_date",date);			
+				
+				
+		lista = (ArrayList<ForConfInvioEmailDTO>) query.list();
+		
+		
+		return lista;
+	}
+
+	public static ArrayList<ForConfInvioEmailDTO> getListaConfigurazioniInvioEmailData(Date date, Session session) {
+		
+	ArrayList<ForConfInvioEmailDTO> lista = null;
+	
+		
+		Query query = session.createQuery("from ForConfInvioEmailDTO where data_prossimo_invio = :_date and disabilitato = 0 and stato_invio = 0"); 
+					
+						
+		query.setParameter("_date",date);			
+				
+				
+		lista = (ArrayList<ForConfInvioEmailDTO>) query.list();
+		
+		
 		return lista;
 	}
 

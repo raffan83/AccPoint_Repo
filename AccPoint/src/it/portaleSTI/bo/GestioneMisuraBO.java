@@ -7,9 +7,12 @@ import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.action.ContextListener;
 import javassist.expr.NewArray;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Blob;
@@ -23,6 +26,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.type.BlobType;
@@ -290,4 +298,87 @@ public class GestioneMisuraBO {
 		return indice;
 	}
 
+	
+	
+	public static class ExcelReader {
+	    public static boolean confrontaStringaConPrimaColonna(String filePath, String searchString, Session session) throws Exception {
+	        try {
+	            FileInputStream fileInputStream = new FileInputStream(filePath);
+	            Workbook workbook = new XSSFWorkbook(fileInputStream);
+	            ArrayList<String> lista_ci = new ArrayList<String>();
+	            ArrayList<String> lista_ci2 = new ArrayList<String>();
+	            
+	            // Assumiamo che vogliamo lavorare con il primo foglio del file Excel
+	            Sheet sheet = workbook.getSheetAt(0);
+	            
+	            // Iteriamo sulle righe del foglio Excel
+	            int count = 1;
+	            for (Row row : sheet) {
+	                // Otteniamo il valore della cella nella prima colonna (indice 0)
+	            
+	                Cell cell = row.getCell(0);
+		                if (cell != null) {
+		                    // Confrontiamo il valore della cella con la stringa desiderata
+		                    String cellValue = cell.getStringCellValue();
+		                    
+		                   lista_ci.add(cellValue);
+	            	}
+		                count++;
+	            }
+	            
+	            
+	            ArrayList<MisuraDTO> lista_misure= GestioneInterventoBO.getListaMirureByIntervento(7884, session);
+	            for (MisuraDTO misuraDTO : lista_misure) {
+	            	if(!lista_ci2.contains(misuraDTO.getStrumento().getCodice_interno())) {
+	            		lista_ci2.add(misuraDTO.getStrumento().getCodice_interno());	
+	            	}
+					
+				}
+	            
+	            for (String s : lista_ci2) {
+					if(!lista_ci.contains(s)) {
+						 System.out.println("strumento non misurato "+s);
+					}else {
+						 System.out.println("strumento  misurato "+s);
+					}
+				}
+	            
+	            
+	            System.out.println("righe "+count);
+	            // Chiudiamo il file Excel
+	            fileInputStream.close();
+	            workbook.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        
+	        // La stringa non è stata trovata nella prima colonna
+	        return false;
+	    }
+
+	    public static void main(String[] args) throws Exception {
+	        String filePath = "C:\\Users\\antonio.dicivita\\Desktop\\Cartel1.xlsx";
+	        String searchString = "stringaDaCercare";
+	        new ContextListener().configCostantApplication();
+	        Session session=SessionFacotryDAO.get().openSession();
+			session.beginTransaction();
+	        boolean trovato = confrontaStringaConPrimaColonna(filePath, searchString, session);
+	        session.close();
+
+	        if (trovato) {
+	            System.out.println("La stringa è stata trovata nella prima colonna.");
+	        } else {
+	            System.out.println("La stringa non è stata trovata nella prima colonna.");
+	        }
+	    }
+	}
+	
+
+
+
+
+
+
+	
+	
 }

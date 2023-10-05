@@ -309,7 +309,8 @@
 
  				   <li class="list-group-item">
  				   <h4>Download Schede</h4>
- 				<button class="btn btn-default " onClick="scaricaSchedaConsegnaModal()"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
+ 				<!-- <button class="btn btn-default " onClick="scaricaSchedaConsegnaModal()"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button> -->
+ 				 <button class="btn btn-default " onClick="checkCertificati('${intervento.id}')"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
  				<button class="btn btn-info customTooltip " title="Click per aprire le schede di consegna" onClick="showSchedeConsegna('${utl:encryptData(intervento.id)}')"><i class="fa fa-file-text-o"></i> Visualizza Scheda Consegna </button>
    				</li>
  				   <li class="list-group-item">
@@ -1738,6 +1739,30 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 		 $(".check_firma_cliente").attr('checked', false);
 		 $("#check_"+id).prop('checked', true);
 		 $("#check_"+id).val(1);
+	 }
+	 
+	 
+	 
+	 function checkCertificati(id_intervento){
+		 
+		 dataObj ={}
+		 dataObj.idIntervento = id_intervento;
+		 
+		 callAjax(dataObj, "scaricaSchedaConsegna.do", function(datab, textstatus){
+			
+			 
+			 if(datab.successo){
+				 scaricaSchedaConsegnaModal();
+			 }else{
+				 $('#myModalErrorContent').html("Attenzione! Uno o più certificati non sono stati approvati!");
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+
+					$('#myModalError').modal('show');
+			 }
+			 
+		 });
+		 
 	 }
 	 
     $(document).ready(function() { 

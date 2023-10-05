@@ -122,7 +122,8 @@
 					
 					</c:if>
 					</c:if>
-					<c:if test="${misura.indice_prestazione!=null }">
+					<c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP") || userObj.checkRuolo("CI")}'>
+					<c:if test="${misura.indice_prestazione !=null }">
 						<li class="list-group-item">
 		                  <b>Indice di Prestazione</b> 
 		            	 <c:if test="${misura.indice_prestazione=='V' }">
@@ -145,6 +146,7 @@
 								<a class="pull-right"  style="margin-right:3px">NON IDONEO</a> 
 								</c:if>
 		  				 </li>
+		  				 </c:if>
   				 </c:if>
   				 
                 

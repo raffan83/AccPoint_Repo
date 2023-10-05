@@ -72,7 +72,9 @@
     <th>Obsoleta</th>
     <th>Note Obsolescenza</th>
      <th>Certificato</th>  
+     <c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP") || userObj.checkRuolo("CI")}'>
        <th>Indice Prestazione</th>
+       </c:if>
      <th>Allegati</th>
      <th>Note Allegati</th>
      <th>Azioni</th>
@@ -114,6 +116,7 @@
 </c:forEach>
 
 </td>
+<c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP") || userObj.checkRuolo("CI")}'>
 <td style="text-align:center" id="ind_prest_${misura.id }">
 <c:if test="${misura.indice_prestazione=='V' }">
 <div class="lamp lampGreen" style="margin:auto"></div>
@@ -132,6 +135,7 @@
 </c:if>
 
 </td>
+</c:if>
 <td>
 <c:if test="${misura.file_allegato!=null &&  misura.file_allegato!=''}">
 <a target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" href="scaricaCertificato.do?action=download_allegato&id_misura=${utl:encryptData(misura.id)}" ><i class="fa fa-file-pdf-o"></i></a>
@@ -531,6 +535,31 @@
   
     $(document).ready(function() {
     
+    	
+    	var colDef =[];
+    	
+    	if("${userObj.checkRuolo('AM') || userObj.checkRuolo('OP') || userObj.checkRuolo('CI')}"){
+    		colDef=	[
+				   { responsivePriority: 1, targets: 1 },
+           { responsivePriority: 2, targets: 2 },
+         	{ responsivePriority: 3, targets: 8 },
+           { responsivePriority: 4, targets: 3 },
+        
+          { responsivePriority: 4, targets: 12 },
+          { responsivePriority: 4, targets: 9 }
+        
+       ]
+    	}else{
+    		colDef=	[
+				   { responsivePriority: 1, targets: 1 },
+              { responsivePriority: 2, targets: 2 },
+            	{ responsivePriority: 3, targets: 8 },
+              { responsivePriority: 4, targets: 3 },
+           
+             { responsivePriority: 4, targets: 11 }
+           
+          ]
+    	}
 
     	console.log("test");
 

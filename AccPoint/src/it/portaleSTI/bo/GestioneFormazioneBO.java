@@ -2163,7 +2163,7 @@ public class GestioneFormazioneBO {
 			
 			for (ForMembriGruppoDTO utente : lista_utenti) {
 				System.out.println(utente.getNome()+" "+utente.getCognome()+" "+utente.getEmail());
-				SendEmailBO.sendEmailCorsoMoodle(utente.getEmail(), conf.getDescrizione_corso(), path);
+				//SendEmailBO.sendEmailCorsoMoodle(utente.getEmail(), conf.getDescrizione_corso(), path);
 			}
 			
 			Calendar cal = Calendar.getInstance();
@@ -2173,6 +2173,9 @@ public class GestioneFormazioneBO {
 			conf.setData_prossimo_invio(cal.getTime());
 			
 			session.update(conf);
+			
+			
+			SendEmailBO.sendEmailReportCorsiMoodle(conf, lista_utenti);
 			
 		}
 		

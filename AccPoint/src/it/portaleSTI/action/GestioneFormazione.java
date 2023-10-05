@@ -3201,6 +3201,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						}
 					}else {
 						configurazione.setId_gruppo(0);
+						configurazione.setDescrizione_gruppo("Nessun gruppo specificato");
 					}
 					
 					
@@ -3208,7 +3209,17 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					configurazione.setFrequenza_invio(Integer.parseInt(frequenza));
 					configurazione.setData_inizio_invio(df.parse(data_inizio_invio));
-					configurazione.setData_prossimo_invio(df.parse(data_prossimo_invio));
+					if(df.parse(data_inizio_invio).equals(new Date()) || df.parse(data_inizio_invio).before(new Date())) {
+						Calendar calendar = Calendar.getInstance();
+						calendar.add(Calendar.DAY_OF_YEAR, 1);
+
+								
+						configurazione.setData_prossimo_invio(calendar.getTime());
+					}else {
+						configurazione.setData_prossimo_invio(df.parse(data_prossimo_invio));
+					}
+					
+					
 					if(data_scadenza!=null && !data_scadenza.equals("")) {
 						configurazione.setData_scadenza(df.parse(data_scadenza));
 					}
@@ -3218,9 +3229,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					session.close();
 					
 					PrintWriter out = response.getWriter();
-					java.net.URL resource = getClass().getResource("/");
-					String path = resource.getPath();	
-					GestioneFormazioneBO.sendEmailCorsiNonCompleti(path);
+					
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio", "Configurazione salvata con successo!");
 					
@@ -3288,15 +3297,26 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						}
 					}else {
 						configurazione.setId_gruppo(0);
+						configurazione.setDescrizione_gruppo("Nessun gruppo specificato");
 					}
 					
 					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					
 					configurazione.setFrequenza_invio(Integer.parseInt(frequenza));
 					configurazione.setData_inizio_invio(df.parse(data_inizio_invio));
-					configurazione.setData_prossimo_invio(df.parse(data_prossimo_invio));
+					if(df.parse(data_inizio_invio).equals(new Date()) || df.parse(data_inizio_invio).before(new Date())) {
+						Calendar calendar = Calendar.getInstance();
+						calendar.add(Calendar.DAY_OF_YEAR, 1);
+
+								
+						configurazione.setData_prossimo_invio(calendar.getTime());
+					}else {
+						configurazione.setData_prossimo_invio(df.parse(data_prossimo_invio));
+					}
 					if(data_scadenza!=null && !data_scadenza.equals("")) {
 						configurazione.setData_scadenza(df.parse(data_scadenza));
+					}else {
+						configurazione.setData_scadenza(null);
 					}
 					session.update(configurazione);
 					session.getTransaction().commit();

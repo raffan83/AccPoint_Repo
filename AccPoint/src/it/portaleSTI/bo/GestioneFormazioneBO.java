@@ -1,12 +1,16 @@
 package it.portaleSTI.bo;
 
 import java.io.BufferedInputStream;
+
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
@@ -29,6 +33,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -116,6 +121,8 @@ import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
 
@@ -295,6 +302,15 @@ public class GestioneFormazioneBO {
 								cf = cell.getStringCellValue();
 							}
 							
+							
+							else if(cell.getColumnIndex()==5 ) {
+								id_corso = Integer.parseInt(cell.getStringCellValue());
+							}
+							else if(cell.getColumnIndex()==6 ) {
+								id_ruolo =  Integer.parseInt(cell.getStringCellValue());							
+							}else if(cell.getColumnIndex()==7 ) {
+								ore_partecipate = cell.getStringCellValue();
+							}
 							
 						}
 						
@@ -2152,7 +2168,8 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getConfigurazioneInvioEmail(id_conf,session);
 	}
 
-	public static void sendEmailCorsiNonCompleti(String path) throws Exception {
+	public static void sendEmailCorsiNonCompleti(String path) throws Exception  {
+		ArrayList<ForMembriGruppoDTO> lista_utenti_mancanti = new ArrayList<ForMembriGruppoDTO>();
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
@@ -2161,11 +2178,43 @@ public class GestioneFormazioneBO {
 		for (ForConfInvioEmailDTO conf : lista_conf) {
 			ArrayList<ForMembriGruppoDTO> lista_utenti = GestioneFormazioneDAO.getListaUtentiNonCompleti(conf.getId_corso(), conf.getId_gruppo());
 			
+	
+			lista_utenti_mancanti.addAll(lista_utenti);
 			for (ForMembriGruppoDTO utente : lista_utenti) {
+				try{
+		
 				System.out.println(utente.getNome()+" "+utente.getCognome()+" "+utente.getEmail());
-				//SendEmailBO.sendEmailCorsoMoodle(utente.getEmail(), conf.getDescrizione_corso(), path);
+				SendEmailBO.sendEmailCorsoMoodle(utente, conf.getDescrizione_corso(),conf.getOggetto_email(), path);
+				TimeUnit.SECONDS.sleep(2);
+				lista_utenti_mancanti.remove(utente);
+		
+				}catch(Exception e) {
+					
+					e.printStackTrace();
+					StringWriter sw = new StringWriter();
+					PrintWriter pw = new PrintWriter(sw);
+					e.printStackTrace(pw);
+					
+					String messaggio ="<html>Non è stato possibile inviare il Remind dei corsi ai seguenti utenti:<br><br>";
+					
+					for (ForMembriGruppoDTO user : lista_utenti_mancanti) {
+						messaggio+= user.getNome() +" "+ user.getCognome()+" email: "+user.getEmail()+"<br>";	
+					}
+					
+					
+					messaggio+="<br><br>Dettaglio errore:<br><br>"+sw.toString()+"</html>";
+					
+					try {
+						Utility.sendEmail("lisa.lombardozzi@crescosrl.net","Errore invio Remind corsi Moodle",messaggio);
+						//Utility.sendEmail("antonio.dicivita@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					break;
+				}
 			}
-			
+			logger.error("Lista utenti stampata correttamente");
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(conf.getData_prossimo_invio());
 			cal.add(Calendar.DAY_OF_YEAR, conf.getFrequenza_invio());
@@ -2174,8 +2223,9 @@ public class GestioneFormazioneBO {
 			
 			session.update(conf);
 			
-			
+		
 			SendEmailBO.sendEmailReportCorsiMoodle(conf, lista_utenti);
+			logger.error("Report inviato correttamente");
 			
 		}
 		
@@ -2190,6 +2240,8 @@ public class GestioneFormazioneBO {
 		
 		session.getTransaction().commit();
 		session.close();
+		
+		
 		
 	}
 

@@ -3179,6 +3179,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String data_inizio_invio = ret.get("data_inizio_invio");
 					String data_prossimo_invio = ret.get("data_prossimo_invio");
 					String data_scadenza = ret.get("data_scadenza");
+					String oggetto_email = ret.get("oggetto_email");
 				
 					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = (ArrayList<ForCorsoMoodleDTO>) request.getSession().getAttribute("lista_corsi_moodle");
 					ArrayList<ForGruppoMoodleDTO> lista_gruppi_moodle = (ArrayList<ForGruppoMoodleDTO>) request.getSession().getAttribute("lista_gruppi_moodle");
@@ -3204,7 +3205,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						configurazione.setDescrizione_gruppo("Nessun gruppo specificato");
 					}
 					
-					
+					configurazione.setOggetto_email(oggetto_email);
 					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					
 					configurazione.setFrequenza_invio(Integer.parseInt(frequenza));
@@ -3274,6 +3275,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String data_inizio_invio = ret.get("data_inizio_invio_mod");
 					String data_prossimo_invio = ret.get("data_prossimo_invio_mod");
 					String data_scadenza = ret.get("data_scadenza_mod");
+					String oggetto_email = ret.get("oggetto_email_mod");
 				
 					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = (ArrayList<ForCorsoMoodleDTO>) request.getSession().getAttribute("lista_corsi_moodle");
 					ArrayList<ForGruppoMoodleDTO> lista_gruppi_moodle = (ArrayList<ForGruppoMoodleDTO>) request.getSession().getAttribute("lista_gruppi_moodle");
@@ -3302,8 +3304,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					
+					configurazione.setOggetto_email(oggetto_email);
 					configurazione.setFrequenza_invio(Integer.parseInt(frequenza));
 					configurazione.setData_inizio_invio(df.parse(data_inizio_invio));
+					
 					if(df.parse(data_inizio_invio).equals(new Date()) || df.parse(data_inizio_invio).before(new Date())) {
 						Calendar calendar = Calendar.getInstance();
 						calendar.add(Calendar.DAY_OF_YEAR, 1);

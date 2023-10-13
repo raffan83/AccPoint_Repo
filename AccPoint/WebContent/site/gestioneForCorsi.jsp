@@ -420,7 +420,7 @@
       <div class="modal-footer">
 		<input type="hidden" id="e_learning" name="e_learning">
 		<input type="hidden" id="id_docenti" name="id_docenti">
-		<input type="hidden" id="efei" name="efei">
+		<input type="hidden" id="efei" name="efei" value="0">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>

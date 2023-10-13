@@ -98,7 +98,7 @@
 		</td>
 	<td>
  	
-	<a  class="btn btn-warning" onClicK="modificaConfigurazioneModal('${configurazione.id}','${configurazione.id_corso}','${configurazione.id_gruppo}','${configurazione.data_inizio_invio}','${configurazione.frequenza_invio }','${configurazione.data_prossimo_invio}','${configurazione.stato_invio }')" title="Click per modificare la Configurazione"><i class="fa fa-edit"></i></a>
+	<a  class="btn btn-warning" onClicK="modificaConfigurazioneModal('${configurazione.id}','${configurazione.id_corso}','${configurazione.id_gruppo}','${configurazione.data_inizio_invio}','${configurazione.frequenza_invio }','${configurazione.data_prossimo_invio}','${configurazione.stato_invio }','${configurazione.data_scadenza}','${utl:escapeJS(configurazione.oggetto_email) }')" title="Click per modificare la Configurazione"><i class="fa fa-edit"></i></a>
 	<a  class="btn btn-danger" onClicK="eliminaConfigurazioneModal('${configurazione.id}')" title="Click per eliminare la configurazione"><i class="fa fa-trash"></i></a>
 
 	</td>
@@ -264,6 +264,22 @@
        	</div>       	
        </div><br>
        
+       
+                 <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Oggetto email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+               	  	
+     
+               <input type='text' class="form-control" id="oggetto_email" name="oggetto_email" required>
+     
+       			
+       	</div>       	
+       </div><br>
+       
        </div>
   		 
       <div class="modal-footer">
@@ -419,6 +435,23 @@
        	</div>       	
        </div><br>
        
+       
+              
+                 <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Oggetto email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+               	  	
+     
+               <input type='text' class="form-control" id="oggetto_email_mod" name="oggetto_email_mod" required>
+     
+       			
+       	</div>       	
+       </div><br>
+       
        </div>
   		 
       <div class="modal-footer">
@@ -520,14 +553,14 @@ function eliminaConfigurazione(){
 	
 }
 
-function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, data_inizio, frequenza, data_prossimo_invio, stato, data_scadenza){
+function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, data_inizio, frequenza, data_prossimo_invio, stato, data_scadenza, oggetto_email){
 	
 	$('#id_configurazione').val(id_configurazione);
 	$('#corsi_mod').val(id_corso);
 	$('#corsi_mod').change();
 	
 	
-	
+	$('#oggetto_email_mod').val(oggetto_email);
 
 	$('#frequenza_mod').val(frequenza);
 	$('#data_inizio_invio_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy"));

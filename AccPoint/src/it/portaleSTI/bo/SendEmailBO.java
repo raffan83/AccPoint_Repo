@@ -1450,7 +1450,7 @@ public static void sendEmailEliminaPianificazione(ForPiaPianificazioneDTO pianif
 	
 
 
-public static void sendEmailCorsoMoodle(String email_addr, String descrizione_corso, String path) throws EmailException {
+public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descrizione_corso, String oggetto,String path) throws EmailException {
 
 
 
@@ -1471,24 +1471,33 @@ public static void sendEmailCorsoMoodle(String email_addr, String descrizione_co
     email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 	
 	
-	//email.addTo(email_addr);	
+	email.addTo(utente.getEmail());	
 
 	
 	//email.addTo("lisa.lombardozzi@crescosrl.net");
 	//email.addTo("segreteria@crescosrl.net");
-	email.addTo("antonio.dicivita@ncsnetwork.it");
+	//email.addTo("antonio.dicivita@ncsnetwork.it");
 		  
 		  email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
 		
 
-			  email.setSubject("Remind corso "+descrizione_corso);
+			  email.setSubject(oggetto);
 			  
 			  File image = new File(path.replace("WEB-INF/classes", "")+"/images/cresco.jpg");
 			  String cid = email.embed(image, "Calver logo");
 			  
-			  String messaggio = "Gentile Utente<br>Vi ricordiamo di effettuare il corso obbligatorio <b>"+descrizione_corso +"</b> presente in piattaforma https://formazione.crescosrl.net/login/index.php accedendo con le credenziali che vi sono state inviate.<br><br>Restiamo a disposizione per eventuali chiarimenti";
+			  String messaggio = "Gentile "+utente.getNome() +" " +utente.getCognome()+",<br>Ci risulta che ad oggi lei non abbia completato il <b>percorso formativo obbligatorio</b> <b>\""+descrizione_corso +"\"</b>. La invitiamo, pertanto, a completarlo quanto prima accedendo al presente <a href='https://formazione.crescosrl.net/login/index.php'>Link</a>, con il seguente <b>USERNAME</b>:<br><br>"+utente.getUsername();
 			  
-			  messaggio += "<br><br>Segreteria CRESCO Formazione e Consulenza Srl <br>Per Assistenza e Tutoraggio dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:<br>Tel. Interno: 0776.1815115 - 0776.1815104<br>Cell: 392.9318177<br><br>Cordiali saluti";
+			  
+			  messaggio += "<br><br>Nel caso in cui non ricordasse la password, pu&ograve; reimpostarla direttamente dalla piattaforma.";
+			  
+			  messaggio += "<br><br>Le ricordiamo che la formazione &egrave; un obbligo del lavoratore secondo quanto riportato nell.art. 20, comma 2, lettera h) del D. Lgs. 81/08 e che la mancata esecuzione del corso potrebbe esporla a possibili sanzioni (rif. art. 59 del D. Lgs. 81/08), salvo ulteriori provvedimenti da parte della Direzione del personale.";
+			  
+			  messaggio += "<br><br><U>Qualora, nel frattempo,  abbia gi&agrave; provveduto a completare l'intero percorso, le chiediamo di non considerare questa comunicazione.</U>";
+			  
+			  messaggio += "<br><br>Restando a sua disposizione per eventuali chiarimenti, salutiamo cordialmente.";
+			  
+			  messaggio += "<br><br>Segreteria CRESCO Formazione e Consulenza Srl <br>Per Assistenza e Tutoraggio dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:<br>Tel. Interno: 0776.1815115 - 0776.1815104<br>Cell: 392.9318177<br>";
 			  
 						  
 			  messaggio += "<em><b><br><br>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
@@ -1508,6 +1517,8 @@ public static void sendEmailCorsoMoodle(String email_addr, String descrizione_co
 					  	 +messaggio+"</html>");
 			  
 		  email.send();
+		  
+		 
 	
 }
 

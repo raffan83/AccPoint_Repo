@@ -15,6 +15,7 @@ public class ForConfInvioEmailDTO {
 	private String descrizione_corso;
 	private String descrizione_gruppo;
 	private int disabilitato;
+	private String oggetto_email;
 	
 	
 	public int getId() {
@@ -83,6 +84,12 @@ public class ForConfInvioEmailDTO {
 	}
 	public void setDisabilitato(int disabilitato) {
 		this.disabilitato = disabilitato;
+	}
+	public String getOggetto_email() {
+		return oggetto_email;
+	}
+	public void setOggetto_email(String oggetto_email) {
+		this.oggetto_email = oggetto_email;
 	}
 	
 	

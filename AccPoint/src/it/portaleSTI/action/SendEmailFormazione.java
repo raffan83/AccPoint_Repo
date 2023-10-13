@@ -35,6 +35,7 @@ public class SendEmailFormazione  implements Job {
 			
 		} catch (Exception e) {
 		
+			logger.error(e);
 			e.printStackTrace();
 		}
 		

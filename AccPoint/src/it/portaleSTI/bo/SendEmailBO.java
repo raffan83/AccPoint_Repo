@@ -1547,6 +1547,8 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
 
 email.addTo("lisa.lombardozzi@crescosrl.net");
+email.addTo("raffaele.fantini@ncsnetwork.it");
+email.addTo("antonio.dicivita@ncsnetwork.it");
 //email.addTo("segreteria@crescosrl.net");
 
 	  

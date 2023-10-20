@@ -22,6 +22,24 @@
             <button id="annullaSelected" class="btn btn-danger">Annulla Selezionati</button>
          </div>
 	  </div>
+	  
+	  <c:if test="${userObj.checkRuolo('AM') }">
+	  	<div class="row" >
+	  		<div class="col-sm-3">
+       		<label>Data Emissione</label>
+       	</div>
+	     <div class="col-xs-12" >
+	              <div class='input-group date datepicker' id='datepicker_data_emissione' style="width:370px">
+               <input type='text' class="form-control input-small" id="data_emissione" name="data_emissione" >
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+	     </div>
+	     </div><br>
+	  
+	  </c:if>
 	<div class="row" >
 	     <div class="col-xs-12" >
 	     
@@ -678,7 +696,9 @@ function getListaCertificatiprecedenti(id_strumento, id_certificato, lat_master)
 	} );
  
     $(document).ready(function() {
-    
+        $('.datepicker').datepicker({
+   		 format: "dd/mm/yyyy"
+   	 });   
     	
     	table = $('#tabPM').DataTable({
     		pageLength: 100,

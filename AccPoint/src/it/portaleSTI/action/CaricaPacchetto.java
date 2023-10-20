@@ -31,7 +31,6 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
-import it.portaleSTI.DTO.FirmaClienteDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
@@ -42,7 +41,6 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneConfigurazioneClienteBO;
-import it.portaleSTI.bo.GestioneFirmaClienteBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -75,7 +73,7 @@ public class CaricaPacchetto extends HttpServlet {
 		JsonObject jsono = new JsonObject();
 		PrintWriter writer = response.getWriter();
 		
-
+		ArrayList<ConfigurazioneClienteDTO> configurazioneCliente= null;
 		InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
 		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 		
@@ -123,19 +121,16 @@ public class CaricaPacchetto extends HttpServlet {
 									
 									ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
 									
+									configurazioneCliente=GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromIdCliente_idSede(intervento.getId_cliente(), intervento.getIdSede(), session);
+									
 									for (MisuraDTO mis : listaMisure) 
 									{
-										if(mis.getTipoFirma()==2 || mis.getTipoFirma()==3) {
+										if((mis.getTipoFirma()==2 || mis.getTipoFirma()==3) && (configurazioneCliente==null || configurazioneCliente.size()==0)) {
 											firma_cliente = true;
 										}
 									}
 									
-									ArrayList<ConfigurazioneClienteDTO> configurazioneCliente=GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromIdCliente_idSede(intervento.getId_cliente(), intervento.getIdSede(), session);
 									
-									if(configurazioneCliente!=null) 
-									{
-										firma_cliente = true;
-									}
 									
 								}else 
 								{
@@ -161,6 +156,7 @@ public class CaricaPacchetto extends HttpServlet {
 								GestioneInterventoBO.setControllato(intervento.getId(), utente.getId(), 0, session);
 
 							}
+							Gson gson = new Gson();
 							if(esito.getEsito()==1 && esito.isDuplicati()==true)
 							{
 								for (int i = 0; i < esito.getListaStrumentiDuplicati().size(); i++) 
@@ -170,7 +166,7 @@ public class CaricaPacchetto extends HttpServlet {
 
 								}
 								
-								Gson gson = new Gson();
+								
 								String jsonInString = gson.toJson(esito.getListaStrumentiDuplicati());
 								
 								jsono.addProperty("success", true);                      				
@@ -180,6 +176,7 @@ public class CaricaPacchetto extends HttpServlet {
 							if(esito.getEsito() == 1 && firma_cliente) {
 								jsono.addProperty("success", true);
 								jsono.addProperty("hasFirmaCliente", true);
+					
 							}
 							
 							
@@ -253,8 +250,8 @@ public class CaricaPacchetto extends HttpServlet {
 					if(!check.equals("")) {
 						
 						String id = check.split("_")[1];
-						firma= GestioneConfigurazioneClienteBO.get.getFirmaCliente(Integer.parseInt(id), session);
-						filename_firma = firma.getNome_file();
+					//	firma= GestioneConfigurazioneClienteBO.get.getFirmaCliente(Integer.parseInt(id), session);
+					//	filename_firma = firma.getNome_file();
 						nome_cliente = firma.getNominativo_firma();
 					}
 					
@@ -268,7 +265,7 @@ public class CaricaPacchetto extends HttpServlet {
 						
 
 						if(!check.equals("")){
-							Files.copy(Paths.get(Costanti.PATH_FOLDER+"\\FirmeCliente\\"+firma.getId_cliente()+"\\"+firma.getId_sede()+"\\"+firma.getNome_file()), Paths.get(folder.getPath() +"\\"+ filename_firma), StandardCopyOption.REPLACE_EXISTING);
+						//	Files.copy(Paths.get(Costanti.PATH_FOLDER+"\\FirmeCliente\\"+firma.getId_cliente()+"\\"+firma.getId_sede()+"\\"+firma.getNome_file()), Paths.get(folder.getPath() +"\\"+ filename_firma), StandardCopyOption.REPLACE_EXISTING);
 						}else {
 							File f = new File(folder.getPath() +"\\"+ filename_firma);
 							while(true) {		

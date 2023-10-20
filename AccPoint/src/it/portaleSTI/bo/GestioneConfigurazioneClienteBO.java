@@ -18,13 +18,13 @@ public class GestioneConfigurazioneClienteBO {
 		return GestioneConfigurazioneClienteDAO.getListaConfigurazioneCliente(session);
 	}
 
-	public static void uploadFile(FileItem item, int id_cliente, int id_sede) throws Exception{
+	public static void uploadFile(FileItem item, int id_cliente, int id_sede, String path) throws Exception{
 
-		File folder = new File(Costanti.PATH_FOLDER+"\\LoghiCompany\\ConfigurazioneClienti\\"+id_cliente+"\\"+id_sede);
+		File folder = new File(path+id_cliente+"\\"+id_sede);
 		if(!folder.exists()) {
 			folder.mkdirs();
 		}
-		File file = new File(Costanti.PATH_FOLDER+"\\"+"LoghiCompany\\ConfigurazioneClienti\\"+id_cliente+"\\"+id_sede+"\\"+item.getName());
+		File file = new File(path+id_cliente+"\\"+id_sede+"\\"+item.getName());
 		
 		while(true) {
 			item.write(file);			

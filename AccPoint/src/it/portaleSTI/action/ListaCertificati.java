@@ -309,6 +309,7 @@ public class ListaCertificati extends HttpServlet {
 	
 				
 				String idCertificato = request.getParameter("idCertificato");
+				String data_emissione = request.getParameter("data_emissione");
 				
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
 				
@@ -319,7 +320,7 @@ public class ListaCertificati extends HttpServlet {
 //						//new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), path_immagine, session);						
 //					}					
 //				}else {
-				String resultFirma = GestioneCertificatoBO.createCertificato(idCertificato,session,context, utente);	
+				String resultFirma = GestioneCertificatoBO.createCertificato(idCertificato, data_emissione,session,context, utente);	
 //				}
 					
 				
@@ -482,7 +483,7 @@ public class ListaCertificati extends HttpServlet {
  				
  				
 				String selezionati = request.getParameter("dataIn");
-				
+				String data_emissione = request.getParameter("data_emissione");
 				
 				JsonElement jelement = new JsonParser().parse(selezionati);
 				JsonObject jsonObj = jelement.getAsJsonObject();
@@ -505,7 +506,7 @@ public class ListaCertificati extends HttpServlet {
 					}
 					
 					else {
-						GestioneCertificatoBO.createCertificato(id,session,context, utente);	
+						GestioneCertificatoBO.createCertificato(id,data_emissione, session,context, utente);	
 					}
 					
 				}				
@@ -562,7 +563,7 @@ public class ListaCertificati extends HttpServlet {
 				
 					ServletContext context =getServletContext();
 					CertificatoDTO cert = GestioneCertificatoBO.getCertificatoById(id);
-					File certificato = GestioneCertificatoBO.createCertificatoMulti(id,session,context, cert.getUtenteApprovazione());	
+					File certificato = GestioneCertificatoBO.createCertificatoMulti(id,"",session,context, cert.getUtenteApprovazione());	
 
 					ut.addSource(certificato);
 					if(cert.getMisura().getLat().equals("N")) {

@@ -145,7 +145,35 @@
 		<div class=col-md-3>
 		       <label style="margin-top:25px">Attezione! Si raccomanda l'uso di un logo di dimensioni 800x400</label>
 		</div>
-		</div><br><br>
+		</div><br>
+		
+				<div class="row">
+		
+			<div class="col-md-3">
+		<label>Nominativo firma</label>
+		<input type="text" class="form-control" id="nominativo_firma" name="nominativo_firma">
+		</div>
+		 
+		<div class="col-md-3" style="margin-top:25px">
+		<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un'immagine firma...</span>
+
+		        <input id="fileupload_firma" accept=".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.btm,.BTM,.tiff,.TIFF"  type="file" name="fileupload_firma" class="form-control" />
+		   	 </span>
+		   	 <label id="label_nome_file_firma"></label>
+		</div>
+		
+
+		
+<!-- 		<div class="col-md-1">
+			<label>Rimuovi Firma</label><br>
+			<input type="checkbox" id="rimuovi_firma" name="rimuovi_firma" />			
+			</div> -->
+		</div>
+		
+		
+		<br><br>
 			<div class="row">
 		
 		<div class="col-md-12">
@@ -227,12 +255,16 @@
 		<td>${configurazione.revisione_lista_strumenti}</td>
 		<td>
 		<%-- <a class="btn btn-warning" onClick="modalModifica('${configurazione.id_cliente}','${configurazione.nome_cliente}','${configurazione.id_sede }','${configurazione.nome_sede }','${configurazione.tipo_rapporto.id}','${configurazione.nome_file_logo }','${configurazione.id_firma }')"><i class="fa fa-edit"></i></a> --%>
-		<a class="btn btn-warning custom toolTip" title="Click per modificare la configurazione"  onClick="modalModifica('${configurazione.id_cliente}','${configurazione.id_sede }','${configurazione.tipo_rapporto.id }','${configurazione.nome_file_logo }','${configurazione.id_firma }','${configurazione.modello_certificato }','${configurazione.revisione_certificato }','${configurazione.modello_lista_strumenti }','${configurazione.revisione_lista_strumenti }','${configurazione.fmt_data_mese_anno }')"><i class="fa fa-edit"></i></a>
+		<a class="btn btn-warning custom toolTip" title="Click per modificare la configurazione"  onClick="modalModifica('${configurazione.id_cliente}','${configurazione.id_sede }','${configurazione.tipo_rapporto.id }','${configurazione.nome_file_logo }','${configurazione.id_firma }','${configurazione.modello_certificato }','${configurazione.revisione_certificato }','${configurazione.modello_lista_strumenti }','${configurazione.revisione_lista_strumenti }','${configurazione.fmt_data_mese_anno }','${configurazione.nome_file_firma }','${configurazione.nominativo_firma }')"><i class="fa fa-edit"></i></a>
 		<c:if test="${configurazione.nome_file_logo!=null && configurazione.nome_file_logo!='' }">
 		<a class="btn btn-primary custom toolTip" title="Click per scaricare il logo" onClick="callAction('gestioneConfigurazioniClienti.do?action=download_logo&id_cliente=${utl:encryptData(configurazione.id_cliente)}&id_sede=${utl:encryptData(configurazione.id_sede) }&tipo_rapporto=${utl:encryptData(configurazione.tipo_rapporto.id) }')"><i class="fa fa-image"></i></a>
 		</c:if>
 		<a class="btn btn-danger custom toolTip" title="Click per eliminare la configurazione"  onClick="modalElimina('${configurazione.id_cliente}','${configurazione.id_sede }','${configurazione.tipo_rapporto.id }')"><i class="fa fa-trash"></i></a>
+		<c:if test="${configurazione.nome_file_firma!=null && configurazione.nome_file_firma!='' }">
+		<a class="btn btn-info customTooltip" onClicK="callAction('gestioneConfigurazioniClienti.do?action=download_firma&id_cliente=${configurazione.id_cliente}&id_sede=${configurazione.id_sede }&tipo_rapporto=${configurazione.tipo_rapporto.id }')" title="Click per scaricare la firma"><i class="fa fa-image"></i></a>
+		</c:if>
 		</td>
+		
 	</tr>
 	</c:forEach>
 
@@ -348,7 +380,7 @@
 
 		        <input id="mod_fileupload" accept=".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.btm,.BTM,.tiff,.TIFF"  type="file" name="mod_fileupload" class="form-control" />
 		   	 </span>
-		   	 <label id="label_nome_file"></label>
+		   	 <label id="label_nome_file_mod"></label>
 		</div>
 		
 		<div class="col-md-4" style="margin-top:25px">
@@ -363,6 +395,32 @@
 		 </div> 
 		
 		<br>
+		
+		<div class="row">
+		
+			<div class="col-md-3">
+		<label>Nominativo firma</label>
+		<input type="text" class="form-control" id="nominativo_firma_mod" name="nominativo_firma_mod">
+		</div>
+		 
+		<div class="col-md-3" style="margin-top:25px">
+		<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un'immagine firma...</span>
+
+		        <input id="fileupload_firma_mod" accept=".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.btm,.BTM,.tiff,.TIFF"  type="file" name="fileupload_firma_mod" class="form-control" />
+		   	 </span>
+		   	 <label id="label_nome_file_firma_mod"></label>
+		</div>
+		
+
+		
+		<div class="col-md-1">
+			<label>Rimuovi Firma</label><br>
+			<input type="checkbox" id="mod_rimuovi_firma" name="mod_rimuovi_firma" />			
+			</div>
+		</div>
+
 		<div class="row">
 		<div class="col-md-12">
 		<input type="hidden" name="mod_seleziona_tutte" id="mod_seleziona_tutte">
@@ -486,6 +544,44 @@ $('#mod_fileupload').change(function(){
 	var str = $('#mod_fileupload').val();
 	$('#label_nome_file').html(str.split("\\")[2]);
 	$('#mod_rimuovi_logo').iCheck("uncheck")
+	
+});
+
+$('#fileupload_firma_mod').change(function(){
+	var str = $('#fileupload_firma_mod').val();
+	$('#label_nome_file_firma_mod').html(str.split("\\")[2]);
+	$('#mod_rimuovi_firma').iCheck("uncheck")
+	$('#nominativo_firma_mod').attr("required", true)
+	
+});
+
+$('#fileupload_firma').change(function(){
+	var str = $('#fileupload_firma').val();
+	$('#label_nome_file_firma').html(str.split("\\")[2]);
+	//$('#mod_rimuovi_firma').iCheck("uncheck")
+	$('#nominativo_firma').attr("required", true)
+	
+});
+
+$('#nominativo_firma').change(function(){
+	
+	if($('#nominativo_firma').val()!=''){
+		$('#fileupload_firma').attr("required", true);
+	}else{
+		$('#fileupload_firma').attr("required", false);
+	}
+	
+});
+
+
+$('#nominativo_firma_mod').change(function(){
+	
+	if($('#nominativo_firma_mod').val()!=''){
+		$('#fileupload_firma_mod').attr("required", true);
+	}else{
+		$('#fileupload_firma_mod').attr("required", false);
+	}
+	
 });
 
 $('#nuovaConfigurazioneForm').on('submit', function(e){
@@ -588,7 +684,13 @@ $('#mod_rimuovi_logo').on('ifChecked', function (ev) {
 
   	});
 
+$('#mod_rimuovi_firma').on('ifChecked', function (ev) {
+	
+	$('#fileupload_firma_mod').val("");
+	$('#label_nome_file_firma').html("");
 
+
+  	});
 
 
 $('#check_fmt_data').on('ifChecked', function (ev) {
@@ -821,7 +923,7 @@ $('#check_fmt_data_mod').on('ifUnchecked', function (ev) {
     	 
      }
      
-     function modalModifica(id_cliente,  id_sede,  tipo_rapporto, nome_file, firma, modello, revisione, modello_lista_strumenti, revisione_lista_strumenti, formato_anno_data){
+     function modalModifica(id_cliente,  id_sede,  tipo_rapporto, nome_file, firma, modello, revisione, modello_lista_strumenti, revisione_lista_strumenti, formato_anno_data, nome_file_firma, nominativo_firma){
     	 
     	
     	 $('#mod_cliente').val(id_cliente);
@@ -842,8 +944,9 @@ $('#check_fmt_data_mod').on('ifUnchecked', function (ev) {
     	 $('#mod_firma').val(firma);
     	 $('#mod_firma').change();
     	 
-    	 $('#label_nome_file').html(nome_file);
-    	 
+    	 $('#label_nome_file_mod').html(nome_file);
+    	 $('#label_nome_file_firma_mod').html(nome_file_firma);
+    	 $('#nominativo_firma_mod').val(nominativo_firma);
   		if(formato_anno_data!=null && formato_anno_data=="S"){
   			$('#content_formato_data_mod').show();
   			$('#check_fmt_data_mod').iCheck("check");

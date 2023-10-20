@@ -2096,10 +2096,11 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	       		if($('#myModalError').hasClass('modal-success')){
 	       			if(firmaCliente){
 	       				
-	       				modalFirmeCliente('${intervento.id_cliente}','${intervento.idSede }');
+	       				//modalFirmeCliente('${intervento.id_cliente}','${intervento.idSede }');
 	       				
 	       				
-	       				//$('#modalFirmaCliente').modal();
+	       				$('#modalFirmaCliente').modal();
+	       				firmaCliente = false;
 	       				
 	       			}else{
 	       				callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');	

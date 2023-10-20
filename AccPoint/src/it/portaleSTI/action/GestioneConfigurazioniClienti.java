@@ -146,7 +146,10 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 					String modello_lista_strumenti = null;
 					String revisione_lista_strumenti = null;
 					String formato_mese_anno = "N";
-					FileItem file = null;
+					FileItem file_logo = null;
+					FileItem file_firma = null;
+					String nome_file_firma = null;
+					String nominativo_firma = null;
 					
 					for (FileItem item : items) {
 						if (item.isFormField()) {
@@ -181,10 +184,20 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							else if(item.getFieldName().equals("formato_mese_anno")) {
 								formato_mese_anno = item.getString();
 							}
+							else if(item.getFieldName().equals("nominativo_firma")) {
+								nominativo_firma = item.getString();
+							}
+							
 						}
 						else {
-							file = item;
-							filename = item.getName();
+							if(item.getFieldName().equals("fileupload_firma")) {
+								file_firma = item;
+								nome_file_firma = item.getName();
+							}else {
+								file_logo = item;
+								filename = item.getName();
+							}
+						
 						}
 					}
 					
@@ -211,8 +224,16 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 								
 								configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
 								configurazione.setId_firma(Integer.parseInt(firma));
+								configurazione.setNominativo_firma(nominativo_firma);
+								if(nome_file_firma!=null && !nome_file_firma.equals("")) {
+									
+									GestioneConfigurazioneClienteBO.uploadFile(file_firma, cliente.get__id(), 0, Costanti.PATH_FOLDER+"\\FirmeCliente\\");
+									
+									configurazione.setNome_file_firma(nome_file_firma);	
+								}
+								
 								if(filename!=null && !filename.equals("")) {
-									GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
+									GestioneConfigurazioneClienteBO.uploadFile(file_logo, cliente.get__id(), 0, Costanti.PATH_FOLDER+"\\"+"LoghiCompany\\ConfigurazioneClienti\\");
 								}
 								configurazione.setNome_file_logo(filename);
 								configurazione.setModello_certificato(modello);
@@ -251,6 +272,16 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 										//	GestioneConfigurazioneClienteBO.uploadFile(file, s.getId__cliente_(), s.get__id());
 											//GestioneConfigurazioneBO.uploadFile(file, lista_sedi_cliente.get(j).getId__cliente_(), lista_sedi_cliente.get(j).get__id());
 										//}else{
+										configurazione.setNominativo_firma(nominativo_firma);
+										if(nome_file_firma!=null && !nome_file_firma.equals("")) {
+											
+											String filePath = Costanti.PATH_FOLDER+"\\FirmeCliente\\";
+											FileUtils.copyFile(new File(filePath + lista_sedi_cliente.get(j).getId__cliente_()+"\\"+0+"\\"+nome_file_firma),
+													new File(filePath + lista_sedi_cliente.get(j).getId__cliente_()+"\\"+lista_sedi_cliente.get(j).get__id()+"\\"+nome_file_firma));
+											
+											configurazione.setNome_file_firma(nome_file_firma);	
+										}
+										
 										if(filename!=null && !filename.equals("")){
 											String filePath = Costanti.PATH_FOLDER+"\\"+"LoghiCompany\\ConfigurazioneClienti\\";
 											FileUtils.copyFile(new File(filePath + lista_sedi_cliente.get(j).getId__cliente_()+"\\"+0+"\\"+filename),
@@ -296,8 +327,17 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							
 							configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
 							configurazione.setId_firma(Integer.parseInt(firma));
+							configurazione.setNominativo_firma(nominativo_firma);
+							
+							if(nome_file_firma!=null && !nome_file_firma.equals("")) {
+								
+									GestioneConfigurazioneClienteBO.uploadFile(file_firma, cliente.get__id(), 0, Costanti.PATH_FOLDER+"\\FirmeCliente\\");
+								
+								configurazione.setNome_file_firma(nome_file_firma);	
+							}
+							
 							if(filename!=null && !filename.equals("")) {
-								GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
+								GestioneConfigurazioneClienteBO.uploadFile(file_logo, cliente.get__id(), 0,Costanti.PATH_FOLDER+"\\"+"LoghiCompany\\ConfigurazioneClienti\\");
 							}
 							configurazione.setNome_file_logo(filename);
 							configurazione.setModello_certificato(modello);
@@ -331,8 +371,17 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							}
 							configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
 							configurazione.setId_firma(Integer.parseInt(firma));
+							configurazione.setNominativo_firma(nominativo_firma);
+							if(nome_file_firma!=null && !nome_file_firma.equals("")) {
+								
+								GestioneConfigurazioneClienteBO.uploadFile(file_firma, cliente.get__id(), 0, Costanti.PATH_FOLDER+"\\FirmeCliente\\");
+							
+							configurazione.setNome_file_firma(nome_file_firma);	
+						}
+							
+							
 							if(filename!=null && !filename.equals("")) {
-								GestioneConfigurazioneClienteBO.uploadFile(file,cliente.get__id(), Integer.parseInt(id_sede.split("_")[0]));	
+								GestioneConfigurazioneClienteBO.uploadFile(file_logo,cliente.get__id(), Integer.parseInt(id_sede.split("_")[0]), Costanti.PATH_FOLDER+"\\"+"LoghiCompany\\ConfigurazioneClienti\\");	
 							}
 							
 							
@@ -378,11 +427,14 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 					String modello_lista_strumenti = null;
 					String revisione_lista_strumenti = null;
 					String formato_mese_anno = "N";
-					FileItem file = null;
+					FileItem file_logo = null;
+					FileItem file_firma = null;
 					
 					String cliente_old = null;
 					String sede_old = null;
 					String tipo_rapporto_old = null;
+					String nome_file_firma = null;
+					String nominativo_firma = null;
 					
 					for (FileItem item : items) {
 						if (item.isFormField()) {
@@ -425,11 +477,20 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							else if(item.getFieldName().equals("formato_mese_anno_mod")) {
 								formato_mese_anno = item.getString();
 							}
+							else if(item.getFieldName().equals("nominativo_firma_mod")) {
+								nominativo_firma = item.getString();
+							}
 							
 						}
 						else {
-							file = item;
-							filename = item.getName();
+							if(item.getFieldName().equals("fileupload_firma_mod")) {
+								file_firma = item;
+								nome_file_firma = item.getName();
+							}else {
+								file_logo = item;
+								filename = item.getName();
+							}
+						
 						}
 					}
 					
@@ -461,10 +522,23 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 										configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
 										configurazione.setModello_lista_strumenti(modello_lista_strumenti);
 										configurazione.setFmt_data_mese_anno(formato_mese_anno);
+										configurazione.setNominativo_firma(nominativo_firma);
+										
+										if(nome_file_firma!=null && !nome_file_firma.equals("")) {
+											if(i==0) {
+												GestioneConfigurazioneClienteBO.uploadFile(file_firma, lista_sedi_cliente.get(i).getId__cliente_(), lista_sedi_cliente.get(i).get__id(), Costanti.PATH_FOLDER+"\\FirmeCliente\\");
+											}else {
+												String filePath = Costanti.PATH_FOLDER+"\\FirmeCliente\\";
+												FileUtils.copyFile(new File(filePath + lista_sedi_cliente.get(i-1).getId__cliente_()+"\\"+lista_sedi_cliente.get(i-1).get__id()+"\\"+nome_file_firma),
+														new File(filePath + lista_sedi_cliente.get(i).getId__cliente_()+"\\"+lista_sedi_cliente.get(i).get__id()+"\\"+nome_file_firma));
+											}
+											configurazione.setNome_file_firma(nome_file_firma);	
+										}
+										
 										if(filename!=null && !filename.equals("")) {
 											if(i==0) {
 												
-												GestioneConfigurazioneClienteBO.uploadFile(file, lista_sedi_cliente.get(i).getId__cliente_(), lista_sedi_cliente.get(i).get__id());
+												GestioneConfigurazioneClienteBO.uploadFile(file_logo, lista_sedi_cliente.get(i).getId__cliente_(), lista_sedi_cliente.get(i).get__id(), Costanti.PATH_FOLDER+"\\LoghiCompany\\ConfigurazioneClienti\\");
 												
 											}else{
 												String filePath = Costanti.PATH_FOLDER+"\\"+"LoghiCompany\\ConfigurazioneClienti\\";
@@ -492,8 +566,18 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);
 							configurazione.setModello_lista_strumenti(modello_lista_strumenti);
 							configurazione.setFmt_data_mese_anno(formato_mese_anno);
+							
+							configurazione.setNominativo_firma(nominativo_firma);
+							
+							if(nome_file_firma!=null && !nome_file_firma.equals("")) {
+								
+									GestioneConfigurazioneClienteBO.uploadFile(file_firma, cliente.get__id(), 0, Costanti.PATH_FOLDER+"\\FirmeCliente\\");
+								
+								configurazione.setNome_file_firma(nome_file_firma);	
+							}
+							
 							if(filename!=null && !filename.equals("")) {
-								GestioneConfigurazioneClienteBO.uploadFile(file, cliente.get__id(), 0);
+								GestioneConfigurazioneClienteBO.uploadFile(file_logo, cliente.get__id(), 0, Costanti.PATH_FOLDER+"\\"+"LoghiCompany\\ConfigurazioneClienti\\");
 								
 							}			
 							configurazione.setNome_file_logo(filename);
@@ -516,8 +600,17 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							}
 							configurazione.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(tipo_rapporto),""));
 							configurazione.setId_firma(Integer.parseInt(firma));
+							configurazione.setNominativo_firma(nominativo_firma);
+							
+							if(nome_file_firma!=null && !nome_file_firma.equals("")) {
+								
+									GestioneConfigurazioneClienteBO.uploadFile(file_firma, cliente.get__id(), 0, Costanti.PATH_FOLDER+"\\FirmeCliente\\");
+								
+								configurazione.setNome_file_firma(nome_file_firma);	
+							}
+							
 							if(filename!=null && !filename.equals("")) {
-								GestioneConfigurazioneClienteBO.uploadFile(file,cliente.get__id(), Integer.parseInt(id_sede.split("_")[0]));
+								GestioneConfigurazioneClienteBO.uploadFile(file_logo,cliente.get__id(), Integer.parseInt(id_sede.split("_")[0]), Costanti.PATH_FOLDER+"\\"+"LoghiCompany\\ConfigurazioneClienti\\");
 								
 							}
 							configurazione.setNome_file_logo(filename);
@@ -600,6 +693,45 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 				    fileIn.close();
 				    outp.flush();
 				    outp.close();
+			}
+			
+			
+			else if(action.equals("download_firma")) {
+				
+				ajax = false;
+				
+				String id_cliente= request.getParameter("id_cliente");
+				String id_sede = request.getParameter("id_sede");
+				String tipo_rapporto = request.getParameter("tipo_rapporto");				
+				
+		
+				
+				ConfigurazioneClienteDTO configurazione = GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromId(Integer.parseInt(id_cliente), Integer.parseInt(id_sede), Integer.parseInt(tipo_rapporto), session);
+				
+				String filePath = Costanti.PATH_FOLDER+"\\"+"FirmeCliente\\"+id_cliente+"\\"+id_sede+"\\"+configurazione.getNome_file_firma();
+				
+				File file = new File(filePath);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    session.close();
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				
 			}
 			
 		}catch (Exception e) {

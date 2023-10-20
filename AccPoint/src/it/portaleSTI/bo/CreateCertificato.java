@@ -86,10 +86,10 @@ public class CreateCertificato {
 	public File file;
 	public JsonObject firmato;
 
-	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati, Boolean multi, UtenteDTO utente) throws Exception {
+	public CreateCertificato(MisuraDTO misura, String data_emissione, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati, Boolean multi, UtenteDTO utente) throws Exception {
 		try {
 			 Utility.memoryInfo();
-			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,idoneo,session,context,appenCertificati,multi, utente);
+			build(misura,data_emissione, certificato,lista, listaCampioni, listaProcedure, strumento,idoneo,session,context,appenCertificati,multi, utente);
 			 Utility.memoryInfo();
 		} catch (Exception e) {
 			
@@ -99,7 +99,7 @@ public class CreateCertificato {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati, Boolean multi, UtenteDTO utente) throws Exception {
+	private void build(MisuraDTO misura, String data_emissione,CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati, Boolean multi, UtenteDTO utente) throws Exception {
 		String tipoScheda="";
 		
 		InputStream is = null;
@@ -258,7 +258,13 @@ public class CreateCertificato {
 					
 					GestioneStrumentoBO.update(strumento, session);
 					if(!multi) {
-						report.addParameter("dataEmissione",""+sdf.format(new Date()));
+						if(data_emissione!=null && !data_emissione.equals("")) {
+							report.addParameter("dataEmissione",data_emissione);
+						}else {
+							report.addParameter("dataEmissione",""+sdf.format(new Date()));
+						}
+						
+					
 					//	report.addParameter("dataEmissione","17/03/2023");
 					}else {
 						report.addParameter("dataEmissione",""+sdf.format(certificato.getDataCreazione()));	
@@ -283,7 +289,12 @@ public class CreateCertificato {
 					GestioneStrumentoBO.update(strumento, session);
 					
 					if(!multi) {
-						report.addParameter("dataEmissione",""+sdf.format(new Date()));
+						if(data_emissione!=null && !data_emissione.equals("")) {
+							report.addParameter("dataEmissione",data_emissione);
+						}else {
+							report.addParameter("dataEmissione",""+sdf.format(new Date()));
+						}
+						
 					}else {
 						report.addParameter("dataEmissione",""+sdf.format(certificato.getDataCreazione()));	
 					}
@@ -693,12 +704,22 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			}
 			
 			String cliente_label = "";
-			if(misura.getNome_firma()!=null && !misura.getNome_firma().equals("")) {
+			String path = "";
+			if(conf!=null && conf.getNome_file_firma()!=null && !conf.getNome_file_firma().equals("")) {
+				cliente_label = conf.getNominativo_firma();
+				path = Costanti.PATH_FOLDER+"\\FirmeCliente\\" +conf.getId_cliente()+"\\"+conf.getId_sede()+"\\"+conf.getNome_file_firma();
+			}
+			else if(misura.getNome_firma()!=null && !misura.getNome_firma().equals("")) {
 				cliente_label = misura.getNome_firma();
+				path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\FileFirmaCliente\\" +misura.getFile_firma();
 			}
 			VerticalListBuilder vertList = cmp.verticalList();
-			if(misura.getFile_firma()!=null && !misura.getFile_firma().equals("")) {
-				String path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\FileFirmaCliente\\" +misura.getFile_firma();
+			
+			
+			
+			
+			if(!cliente_label.equals("") && !path.equals("")) {
+				
 				File file = new File(path);
 				Image image = ImageIO.read(file);
 				vertList.add(
@@ -787,10 +808,19 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				);
 		}else if(tipo_firma == 3){//Firma OP + CL
 			
+		
+			
 			String cliente_label = "";
-			if(misura.getNome_firma()!=null && !misura.getNome_firma().equals("")) {
-				cliente_label = misura.getNome_firma();
+			String path = "";
+			if(conf!=null && conf.getNome_file_firma()!=null && !conf.getNome_file_firma().equals("")) {
+				cliente_label = conf.getNominativo_firma();
+				path = Costanti.PATH_FOLDER+"\\FirmeCliente\\" +conf.getId_cliente()+"\\"+conf.getId_sede()+"\\"+conf.getNome_file_firma();
 			}
+			else if(misura.getNome_firma()!=null && !misura.getNome_firma().equals("")) {
+				cliente_label = misura.getNome_firma();
+				path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\FileFirmaCliente\\" +misura.getFile_firma();
+			}
+			
 			
 			footer_right = CostantiCertificato.FOOTER_RIGHT;
 			if(conf!=null && conf.getRevisione_certificato()!=null && !conf.getRevisione_certificato().equals("")) {
@@ -798,8 +828,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			}
 			
 			VerticalListBuilder vertList = cmp.verticalList();
-			if(misura.getFile_firma()!=null && !misura.getFile_firma().equals("")) {
-				String path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\FileFirmaCliente\\" +misura.getFile_firma();
+			if(!cliente_label.equals("") && !path.equals("")) {
+				
 				File file = new File(path);
 				Image image = ImageIO.read(file);
 				vertList.add(
@@ -1581,7 +1611,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			
 			UtenteDTO utente = GestioneUtenteBO.getUtenteById("40", session);
 
-			GestioneCertificatoBO.createCertificato("28735",session, null, utente);
+			GestioneCertificatoBO.createCertificato("28735","",session, null, utente);
 			
 		}
 }

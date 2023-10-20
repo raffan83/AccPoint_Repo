@@ -3615,9 +3615,12 @@ function eliminaCompany(){
   function creaCertificato(idCertificato){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
+	  
+	  var data_emissione = $('#data_emissione').val();
+	  
 	  $.ajax({
     	  type: "POST",
-    	  url: "listaCertificati.do?action=creaCertificato&idCertificato="+idCertificato,
+    	  url: "listaCertificati.do?action=creaCertificato&idCertificato="+idCertificato+"&data_emissione="+data_emissione,
     	  dataType: "json",
 
     	  success: function( data, textStatus) {
@@ -3948,11 +3951,13 @@ function eliminaCompany(){
   }
   function approvaCertificatiMulti(selezionati){
 		
+	  var data_emissione = $('#data_emissione').val();
+	  
 	  $.ajax({
     	  type: "POST",
     	  url: "listaCertificati.do?action=approvaCertificatiMulti",
     	  dataType: "json",
-    	  data: "dataIn="+JSON.stringify(selezionati),
+    	  data: "dataIn="+JSON.stringify(selezionati)+"&data_emissione="+data_emissione,
     	  success: function( data, textStatus) {
     		  pleaseWaitDiv.modal('hide');
     		  if(data.success)

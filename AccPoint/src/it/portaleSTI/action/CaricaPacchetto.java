@@ -30,6 +30,7 @@ import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
 import it.portaleSTI.DTO.FirmaClienteDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -40,6 +41,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneConfigurazioneClienteBO;
 import it.portaleSTI.bo.GestioneFirmaClienteBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
@@ -121,10 +123,18 @@ public class CaricaPacchetto extends HttpServlet {
 									
 									ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
 									
-									for (MisuraDTO mis : listaMisure) {
+									for (MisuraDTO mis : listaMisure) 
+									{
 										if(mis.getTipoFirma()==2 || mis.getTipoFirma()==3) {
 											firma_cliente = true;
 										}
+									}
+									
+									ArrayList<ConfigurazioneClienteDTO> configurazioneCliente=GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromIdCliente_idSede(intervento.getId_cliente(), intervento.getIdSede(), session);
+									
+									if(configurazioneCliente!=null) 
+									{
+										firma_cliente = true;
 									}
 									
 								}else 
@@ -239,11 +249,11 @@ public class CaricaPacchetto extends HttpServlet {
 					}
 					
 					
-					FirmaClienteDTO firma = null;
+					ConfigurazioneClienteDTO firma = null;
 					if(!check.equals("")) {
 						
 						String id = check.split("_")[1];
-						firma= GestioneFirmaClienteBO.getFirmaCliente(Integer.parseInt(id), session);
+						firma= GestioneConfigurazioneClienteBO.get.getFirmaCliente(Integer.parseInt(id), session);
 						filename_firma = firma.getNome_file();
 						nome_cliente = firma.getNominativo_firma();
 					}

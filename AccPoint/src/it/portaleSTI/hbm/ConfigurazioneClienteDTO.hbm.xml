@@ -49,5 +49,13 @@
             <column name="fmt_data_mese_anno" />
         </property>
         
+        <property name="nominativo_firma" type="java.lang.String">
+            <column name="nominativo_firma" />
+        </property>
+        
+        <property name="nome_file_firma" type="java.lang.String">
+            <column name="nome_file_firma" />
+        </property>
+        
     </class>
 </hibernate-mapping>

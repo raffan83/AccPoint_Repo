@@ -17,6 +17,8 @@ public class ConfigurazioneClienteDTO implements Serializable{
 	private String modello_lista_strumenti;
 	private String revisione_lista_strumenti;
 	private String fmt_data_mese_anno;
+	private String nominativo_firma;
+	private String nome_file_firma;
 	
 	public int getId_cliente() {
 		return id_cliente;
@@ -90,6 +92,18 @@ public class ConfigurazioneClienteDTO implements Serializable{
 	}
 	public void setFmt_data_mese_anno(String fmt_data_mese_anno) {
 		this.fmt_data_mese_anno = fmt_data_mese_anno;
+	}
+	public String getNominativo_firma() {
+		return nominativo_firma;
+	}
+	public void setNominativo_firma(String nominativo_firma) {
+		this.nominativo_firma = nominativo_firma;
+	}
+	public String getNome_file_firma() {
+		return nome_file_firma;
+	}
+	public void setNome_file_firma(String nome_file_firma) {
+		this.nome_file_firma = nome_file_firma;
 	}
 
 }

@@ -77,4 +77,23 @@ public class GestioneConfigurazioneClienteDAO {
 		return conf;
 	}
 
+	public static ArrayList<ConfigurazioneClienteDTO> getConfigurazioneClienteFromIdCliente_idSede(int id_cliente, int id_sede,
+			Session session) {
+		ArrayList<ConfigurazioneClienteDTO> lista=null;
+		ConfigurazioneClienteDTO conf = null;
+		Query query = null;
+		
+	
+		query = session.createQuery("from ConfigurazioneClienteDTO a where a.id_cliente = :_id_cliente and a.id_sede = :_id_sede");
+		
+		query.setParameter("_id_sede",id_sede);
+		query.setParameter("_id_cliente",id_cliente);		
+		
+		lista= (ArrayList<ConfigurazioneClienteDTO>)query.list();
+		
+	
+		return lista;
+	}
+
+
 }

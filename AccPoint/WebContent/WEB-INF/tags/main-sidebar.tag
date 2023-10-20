@@ -86,9 +86,7 @@
     			<li><a href="#" onclick="callAction('gestioneMisura.do?action=lista',null,true);">Lista Misure</a></li>
     				<% }%>
     				
-    				<% if(user.checkRuolo("AM") || (user.checkPermesso("GESTIONE_FIRME_CLIENTI"))){%>
-    				<li><a href="#" onclick="callAction('gestioneFirmaCliente.do?action=lista',null,true);">Gestione Firme Clienti</a></li>
-    				<% }%>
+    				
           </ul>
         </li>
          <% }%>

@@ -42,5 +42,10 @@ public class GestioneConfigurazioneClienteBO {
 		
 		return GestioneConfigurazioneClienteDAO.getConfigurazioneClienteFromId(id_cliente, id_sede, tipo_rapporto, session);
 	}
+	
+	public static ArrayList<ConfigurazioneClienteDTO> getConfigurazioneClienteFromIdCliente_idSede(int id_cliente, int id_sede, Session session) {
+		
+		return GestioneConfigurazioneClienteDAO.getConfigurazioneClienteFromIdCliente_idSede(id_cliente, id_sede, session);
+	}
 
 }

@@ -551,7 +551,12 @@ $('#fileupload_firma_mod').change(function(){
 	var str = $('#fileupload_firma_mod').val();
 	$('#label_nome_file_firma_mod').html(str.split("\\")[2]);
 	$('#mod_rimuovi_firma').iCheck("uncheck")
-	$('#nominativo_firma_mod').attr("required", true)
+	if(str!=''){
+		$('#nominativo_firma_mod').attr("required", true)
+	}else{
+		$('#nominativo_firma_mod').attr("required", false)
+	}
+	
 	
 });
 
@@ -559,8 +564,12 @@ $('#fileupload_firma').change(function(){
 	var str = $('#fileupload_firma').val();
 	$('#label_nome_file_firma').html(str.split("\\")[2]);
 	//$('#mod_rimuovi_firma').iCheck("uncheck")
-	$('#nominativo_firma').attr("required", true)
-	
+
+	if(str!=''){
+		$('#nominativo_firma').attr("required", true)
+	}else{
+		$('#nominativo_firma').attr("required", false)
+	}
 });
 
 $('#nominativo_firma').change(function(){
@@ -687,7 +696,7 @@ $('#mod_rimuovi_logo').on('ifChecked', function (ev) {
 $('#mod_rimuovi_firma').on('ifChecked', function (ev) {
 	
 	$('#fileupload_firma_mod').val("");
-	$('#label_nome_file_firma').html("");
+	$('#label_nome_file_firma_mod').html("");
 
 
   	});
@@ -946,7 +955,8 @@ $('#check_fmt_data_mod').on('ifUnchecked', function (ev) {
     	 
     	 $('#label_nome_file_mod').html(nome_file);
     	 $('#label_nome_file_firma_mod').html(nome_file_firma);
-    	 $('#nominativo_firma_mod').val(nominativo_firma);
+    	 $('#
+').val(nominativo_firma);
   		if(formato_anno_data!=null && formato_anno_data=="S"){
   			$('#content_formato_data_mod').show();
   			$('#check_fmt_data_mod').iCheck("check");

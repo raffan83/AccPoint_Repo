@@ -85,10 +85,10 @@ public class CreateSchedaListaStrumenti {
 			report.setTemplate(Templates.reportTemplate);
 			
 			Object imageHeader = null;
-			if(conf!=null) {
+			if(conf!=null && conf.getNome_file_logo()!=null && !conf.getNome_file_logo().equals("")) {
 				imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+ "\\ConfigurazioneClienti\\"+conf.getId_cliente()+"\\"+conf.getId_sede()+"\\"+conf.getNome_file_logo());
 			}else {
-				imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+user.getCompany().getNomeLogo());
+				imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+user.getCompany().getNomeLogo());
 			}
 			 
 					

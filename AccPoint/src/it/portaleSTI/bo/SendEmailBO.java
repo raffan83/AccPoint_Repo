@@ -1450,7 +1450,7 @@ public static void sendEmailEliminaPianificazione(ForPiaPianificazioneDTO pianif
 	
 
 
-public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descrizione_corso, String oggetto,String path) throws EmailException {
+public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descrizione_corso, String oggetto,File image) throws EmailException {
 
 
 
@@ -1483,7 +1483,7 @@ public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descri
 
 			  email.setSubject(oggetto);
 			  
-			  File image = new File(path.replace("WEB-INF/classes", "")+"/images/cresco.jpg");
+			//  File image = new File(path.replace("WEB-INF/classes", "")+"/images/cresco.jpg");
 			  String cid = email.embed(image, "Calver logo");
 			  
 			  String messaggio = "Gentile "+utente.getNome() +" " +utente.getCognome()+",<br>Ci risulta che ad oggi lei non abbia completato il <b>percorso formativo obbligatorio</b> <b>\""+descrizione_corso +"\"</b>. La invitiamo, pertanto, a completarlo quanto prima accedendo al presente <a href='https://formazione.crescosrl.net/login/index.php'>Link</a>, con il seguente <b>USERNAME</b>:<br><br><b>"+utente.getUsername()+"</b>";

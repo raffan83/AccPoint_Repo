@@ -222,6 +222,7 @@
 <th>Revisione Certificato</th>
 <th>Modello Lista Strumenti</th>
 <th>Revisione Lista Strumenti</th>
+<th>Nominativo Firma</th>
 <th style="min-width:130px">Azioni</th>
  </tr></thead>
  
@@ -253,6 +254,7 @@
 		<td>${configurazione.revisione_certificato}</td>
 		<td>${configurazione.modello_lista_strumenti }</td>
 		<td>${configurazione.revisione_lista_strumenti}</td>
+		<td>${configurazione.nominativo_firma }</td>
 		<td>
 		<%-- <a class="btn btn-warning" onClick="modalModifica('${configurazione.id_cliente}','${configurazione.nome_cliente}','${configurazione.id_sede }','${configurazione.nome_sede }','${configurazione.tipo_rapporto.id}','${configurazione.nome_file_logo }','${configurazione.id_firma }')"><i class="fa fa-edit"></i></a> --%>
 		<a class="btn btn-warning custom toolTip" title="Click per modificare la configurazione"  onClick="modalModifica('${configurazione.id_cliente}','${configurazione.id_sede }','${configurazione.tipo_rapporto.id }','${configurazione.nome_file_logo }','${configurazione.id_firma }','${configurazione.modello_certificato }','${configurazione.revisione_certificato }','${configurazione.modello_lista_strumenti }','${configurazione.revisione_lista_strumenti }','${configurazione.fmt_data_mese_anno }','${configurazione.nome_file_firma }','${configurazione.nominativo_firma }')"><i class="fa fa-edit"></i></a>
@@ -955,8 +957,7 @@ $('#check_fmt_data_mod').on('ifUnchecked', function (ev) {
     	 
     	 $('#label_nome_file_mod').html(nome_file);
     	 $('#label_nome_file_firma_mod').html(nome_file_firma);
-    	 $('#
-').val(nominativo_firma);
+    	 $('#nominativo_firma_mod').val(nominativo_firma);
   		if(formato_anno_data!=null && formato_anno_data=="S"){
   			$('#content_formato_data_mod').show();
   			$('#check_fmt_data_mod').iCheck("check");

@@ -2175,6 +2175,8 @@ public class GestioneFormazioneBO {
 		session.beginTransaction();
 		
 		ArrayList<ForConfInvioEmailDTO> lista_conf = getListaConfigurazioniInvioEmailData(new Date(),session);
+		 File image = new File(path.replace("WEB-INF/classes", "")+"/images/cresco.jpg");
+		
 		for (ForConfInvioEmailDTO conf : lista_conf) {
 			ArrayList<ForMembriGruppoDTO> lista_utenti = GestioneFormazioneDAO.getListaUtentiNonCompleti(conf.getId_corso(), conf.getId_gruppo());
 			
@@ -2184,18 +2186,20 @@ public class GestioneFormazioneBO {
 				try{
 		
 				System.out.println(utente.getNome()+" "+utente.getCognome()+" "+utente.getEmail());
-				SendEmailBO.sendEmailCorsoMoodle(utente, conf.getDescrizione_corso(),conf.getOggetto_email(), path);
+				SendEmailBO.sendEmailCorsoMoodle(utente, conf.getDescrizione_corso(),conf.getOggetto_email(), image);
 				TimeUnit.SECONDS.sleep(2);
 				lista_utenti_mancanti.remove(utente);
 		
 				}catch(Exception e) {
+					
+					logger.error(e);
 					
 					e.printStackTrace();
 					StringWriter sw = new StringWriter();
 					PrintWriter pw = new PrintWriter(sw);
 					e.printStackTrace(pw);
 					
-					String messaggio ="<html>Non è stato possibile inviare il Remind dei corsi ai seguenti utenti:<br><br>";
+					String messaggio ="<html>Non è stato possibile inviare il Remind del corso ID:"+conf.getId_corso()+" ai seguenti utenti:<br><br>";
 					
 					for (ForMembriGruppoDTO user : lista_utenti_mancanti) {
 						messaggio+= user.getNome() +" "+ user.getCognome()+" email: "+user.getEmail()+"<br>";	
@@ -2206,7 +2210,8 @@ public class GestioneFormazioneBO {
 					
 					try {
 						Utility.sendEmail("lisa.lombardozzi@crescosrl.net","Errore invio Remind corsi Moodle",messaggio);
-						//Utility.sendEmail("antonio.dicivita@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
+						Utility.sendEmail("antonio.dicivita@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
+						Utility.sendEmail("raffaele.fantini@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

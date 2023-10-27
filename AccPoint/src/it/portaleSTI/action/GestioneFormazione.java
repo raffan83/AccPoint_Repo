@@ -952,7 +952,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
 					if(listaClienti==null) {
-						listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
+						//listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
+						listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(""+1428);
 					}
 					
 					List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");

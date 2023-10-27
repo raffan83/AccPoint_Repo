@@ -631,7 +631,8 @@ public class CreateVerRapporto {
 		}
 		
 		
-		report.addParameter("data_emissione", df.format(new Date()));
+		//report.addParameter("data_emissione", df.format(new Date()));
+		report.addParameter("data_emissione", "");
 		
 		if(misura.getTipoRisposta()==0) {
 			report.addParameter("codifica", "MOD-PDI001-02 Rev. 0 del 21/12/2022");
@@ -717,7 +718,8 @@ public class CreateVerRapporto {
 			reportP2.addParameter("firma_operatore", ""); 
 		}
 		
-		reportP2.addParameter("data_emissione", df.format(new Date()));
+		//reportP2.addParameter("data_emissione", df.format(new Date()));
+		reportP2.addParameter("data_emissione", "");
 		
 		if(misura.getTipoRisposta()==0) {
 			reportP2.addParameter("codifica", "MOD-PDI001-02 Rev. 0 del 21/12/2022");
@@ -1477,7 +1479,8 @@ public class CreateVerRapporto {
 				//reportP3.ignorePagination();
 			}
 			
-			String data_emissione = df.format(new Date());
+			String data_emissione = "";
+			//String data_emissione = df.format(new Date());
 			
 			String codifica = "";
 			
@@ -1501,7 +1504,7 @@ public class CreateVerRapporto {
 							cmp.horizontalList(
 									cmp.horizontalGap(60),
 									cmp.text(data_emissione),
-									cmp.horizontalGap(25),
+									cmp.horizontalGap(35),
 									cmp.text(""),
 									cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setFixedHeight(18)
 									)
@@ -1522,7 +1525,7 @@ public class CreateVerRapporto {
 						cmp.horizontalList(
 								cmp.horizontalGap(60),
 								cmp.text(data_emissione),
-								cmp.horizontalGap(178),
+								cmp.horizontalGap(188),
 								cmp.text("........................................")
 								)
 						),

@@ -675,7 +675,8 @@ public class CreateVerCertificato {
 			reportP2.addParameter("nome_operatore", "");
 		}
 		
-		reportP2.addParameter("data_emissione", df.format(new Date()));
+		//reportP2.addParameter("data_emissione", df.format(new Date()));
+		reportP2.addParameter("data_emissione", "");
 		//reportP2.addParameter("responsabile", "Eliseo Crescenzi");
 		
 		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	

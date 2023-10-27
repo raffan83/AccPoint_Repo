@@ -3,6 +3,7 @@ package it.portaleSTI.bo;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -179,108 +180,168 @@ public class GestioneVerCertificatoBO {
 	
 	
 
-	public static JsonObject addFirmaResponsabile(UtenteDTO utente_firma, VerCertificatoDTO certificato) throws Exception {
+	public static JsonObject addFirmaResponsabile(UtenteDTO utente_firma, VerCertificatoDTO certificato, boolean isRapporto) throws Exception {
 		
-		String path = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\"+certificato.getNomeCertificato();
+		String path = ""; 
+				
+		if(!isRapporto) {
+			path = 	Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\"+certificato.getNomeCertificato();
+		}else {
+			path = 	Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\Rapporto\\"+certificato.getNomeRapporto();
+		}
+			
 		
 		PdfReader reader = new PdfReader(path);
 	    
 	    String filename = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
 	  
 	    PdfStamper stamper = new PdfStamper(reader,new FileOutputStream(Costanti.PATH_FOLDER+"\\temp\\"+filename+".pdf"));
-	    PdfContentByte content = stamper.getOverContent(2);	   
-	    PdfContentByte content1 = stamper.getOverContent(1);
+	    PdfContentByte content = null;;	   
+	    PdfContentByte content1 = null;
 		Image image = null;
 	    	
 		 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
 	    	
 		    String keyWord = "Il Responsabile dell'Organismo";
 		    Integer[] fontPosition = null;
-		   
-		if(utente_firma.getId()!=86) {
-			 String[] text = getText(reader, 1);
-				
-			    StringBuffer sb = new StringBuffer();
-			      for(int i = 0; i < text.length; i++) {
-			         sb.append(text[i]);
-			      }
-			      String str = sb.toString();
-			      
-			      Rectangle rect1 = new Rectangle(20, 665, 600, 630);
-			      rect1.setBackgroundColor(BaseColor.WHITE);
-			    
-			      
-			  String sub =  str.substring(str.indexOf("Il sottoscritto"), (str.indexOf("della verificazione periodica")+20));
-			  sub = sub.replace("Eliseo Crescenzi", utente_firma.getNominativo()+" Sostituto");
-			    content1.rectangle(rect1);
-			    
-			    content1.beginText();
-				content1.setFontAndSize(bf, 10);
-				content1.setTextMatrix(20, 650);		
-				content1.showText(sub);
-				content1.endText();
-				
-				
-				
-				String sub1 =  str.substring(str.indexOf("di strumenti"), (str.indexOf("del 21 Aprile")));
-				sub1 = "periodica "+sub1;
-				content1.beginText();
-					content1.setFontAndSize(bf, 10);
-					content1.setTextMatrix(20, 638);		
-					content1.showText(sub1);
-					content1.endText();
-				
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");   
+		if(!isRapporto) {
+			
+			   content = stamper.getOverContent(2);	   
+			   content1 = stamper.getOverContent(1);
+			
+			if(utente_firma.getId()!=86) {
+				 String[] text = getText(reader, 1);
 					
-					content1.beginText();
+				    StringBuffer sb = new StringBuffer();
+				      for(int i = 0; i < text.length; i++) {
+				         sb.append(text[i]);
+				      }
+				      String str = sb.toString();
+				      
+				      Rectangle rect1 = new Rectangle(20, 665, 600, 630);
+				      rect1.setBackgroundColor(BaseColor.WHITE);
+				    
+				      
+				  String sub =  str.substring(str.indexOf("Il sottoscritto"), (str.indexOf("della verificazione periodica")+20));
+				  sub = sub.replace("Eliseo Crescenzi", utente_firma.getNominativo()+" Sostituto");
+				    content1.rectangle(rect1);
+				    
+				    content1.beginText();
 					content1.setFontAndSize(bf, 10);
-					content1.setTextMatrix(20, 626);		
-					content1.showText("del 21 Aprile 2017,");
+					content1.setTextMatrix(20, 650);		
+					content1.showText(sub);
 					content1.endText();
-		}
-		   
+					
+					
+					
+					String sub1 =  str.substring(str.indexOf("di strumenti"), (str.indexOf("del 21 Aprile")));
+					sub1 = "periodica "+sub1;
+					content1.beginText();
+						content1.setFontAndSize(bf, 10);
+						content1.setTextMatrix(20, 638);		
+						content1.showText(sub1);
+						content1.endText();
+					
+						
+						content1.beginText();
+						content1.setFontAndSize(bf, 10);
+						content1.setTextMatrix(20, 626);		
+						content1.showText("del 21 Aprile 2017,");
+						content1.endText();
+			}
+			   
+					
+					fontPosition = getFontPosition(reader, keyWord, 2);
+					
+					if(fontPosition[0] != null && fontPosition[1] != null) {
+						
+						int x = fontPosition[0] ;
+						int y = fontPosition[1] -15;
+						int w = x + 85;
+						int h = y + 31;
+						
+						 Rectangle rect = new Rectangle(x, y, w, h);
+					    
+						   image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\"+utente_firma.getFile_firma());
+					    	
+					    	image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	   
+						    
+							 image.scaleAbsolute(rect);
+							
+							image.setAbsolutePosition(fontPosition[0] + 35 , fontPosition[1] -45);
+							
+							if(utente_firma.getId()!=86) {
+							Rectangle rect1 = new Rectangle(x-40, y+25, x+200, y+10);
+						      rect1.setBackgroundColor(BaseColor.WHITE);
+							
+						      content.rectangle(rect1);
+						      content.beginText();
+								content.setFontAndSize(bf, 10);
+								content.setTextMatrix(x-25, y+15);		
+								content.showText("Il Sostituto Responsabile dell'Organismo");
+								content.endText();
+							}
+							
+							content.addImage(image);
+							content.beginText();
+							content.setFontAndSize(bf, 10);
+							content.setTextMatrix(x+35, y);
+							content.showText(utente_firma.getNominativo());
+							content.endText();
+				}
 				
-				fontPosition = getFontPosition(reader, keyWord, 2);
-				
+	   
+					System.out.println(Arrays.toString(fontPosition));
+		 
+					
+					fontPosition = getFontPosition(reader, "Data emissione", 2);
+					if(fontPosition[0] != null && fontPosition[1] != null) {
+						
+						int x = fontPosition[0] ;
+						int y = fontPosition[1] -15;
+			
+							Rectangle rect1 = new Rectangle(x, y, x+200, y+10);
+						      rect1.setBackgroundColor(BaseColor.WHITE);
+							
+						      content.rectangle(rect1);
+						      content.beginText();
+								content.setFontAndSize(bf, 10);
+								content.setTextMatrix(x+10, y);	
+						
+								content.showText(df.format(new Date()));
+								content.endText();
+						
+						
+				}
+		}else {
+
+			
+			for(int i= 1;i<=reader.getNumberOfPages();i++) {
+				content = stamper.getOverContent(i);	   
+			
+				fontPosition = getFontPosition(reader, "Data emissione", i);
 				if(fontPosition[0] != null && fontPosition[1] != null) {
 					
 					int x = fontPosition[0] ;
 					int y = fontPosition[1] -15;
-					int w = x + 85;
-					int h = y + 31;
-					
-					 Rectangle rect = new Rectangle(x, y, w, h);
-				    
-					   image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\"+utente_firma.getFile_firma());
-				    	
-				    	image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	   
-					    
-						 image.scaleAbsolute(rect);
-						
-						image.setAbsolutePosition(fontPosition[0] + 35 , fontPosition[1] -45);
-						
-						if(utente_firma.getId()!=86) {
-						Rectangle rect1 = new Rectangle(x-40, y+25, x+200, y+10);
+		
+						Rectangle rect1 = new Rectangle(x, y, x+200, y+10);
 					      rect1.setBackgroundColor(BaseColor.WHITE);
 						
 					      content.rectangle(rect1);
 					      content.beginText();
 							content.setFontAndSize(bf, 10);
-							content.setTextMatrix(x-25, y+15);		
-							content.showText("Il Sostituto Responsabile dell'Organismo");
+							content.setTextMatrix(x+10, y);							
+							content.showText(df.format(new Date()));
 							content.endText();
-						}
-						
-						content.addImage(image);
-						content.beginText();
-						content.setFontAndSize(bf, 10);
-						content.setTextMatrix(x+35, y);
-						content.showText(utente_firma.getNominativo());
-						content.endText();
+					
+					
+			}
 			}
 			
-   
-				System.out.println(Arrays.toString(fontPosition));
-	 
+		}
+		
 	    
 	    stamper.close();
 		reader.close();

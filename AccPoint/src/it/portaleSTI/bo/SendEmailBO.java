@@ -1513,13 +1513,7 @@ public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descri
 			  email.setHtmlMsg("<html>"
 					  	 +messaggio+"</html>");
 		
-			  
-		if(!utente.getEmail().equals("chiara.beghelli@ilsole24ore.com")) 
-		{
-			Object o =null;
-			o.toString();
-		}	  
-			  
+
 		  email.send();
 		  
 		  System.out.println("Invio completato per :" +utente.getNome()+" "+utente.getCognome()+" "+utente.getEmail());

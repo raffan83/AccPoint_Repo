@@ -1,25 +1,16 @@
 package it.portaleSTI.bo;
 
-import java.io.BufferedInputStream;
-
-
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.sql.SQLException;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -34,29 +25,19 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.apache.pdfbox.multipdf.Splitter;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.poi.hssf.model.InternalSheet;
-import org.apache.poi.hssf.record.DVRecord;
-import org.apache.poi.hssf.record.aggregates.DataValidityTable;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.DataValidation;
-import org.apache.poi.ss.usermodel.DataValidationConstraint;
-import org.apache.poi.ss.usermodel.DataValidationHelper;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -64,26 +45,19 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.CellRangeAddressList;
-import org.apache.poi.xssf.usermodel.XSSFDataValidationHelper;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.xmlbeans.impl.xb.xsdschema.FieldDocument.Field;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.itextpdf.text.Annotation;
-import com.itextpdf.text.Element;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.AcroFields.Item;
-import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.parser.ImageRenderInfo;
@@ -92,15 +66,10 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.itextpdf.text.pdf.parser.RenderListener;
 import com.itextpdf.text.pdf.parser.TextRenderInfo;
 
-import TemplateReport.PivotTemplate;
 import it.portaleSTI.DAO.DirectMySqlDAO;
-import it.portaleSTI.DAO.GestioneControlliOperativiDAO;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
-import it.portaleSTI.DTO.CoAttrezzaturaDTO;
-import it.portaleSTI.DTO.CoControlloDTO;
-import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
 import it.portaleSTI.DTO.ForConfInvioEmailDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
@@ -122,13 +91,15 @@ import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.mail.EmailException;
+import it.portaleSTI.action.ContextListener;
 
 public class GestioneFormazioneBO {
 	static final Logger logger = Logger.getLogger(GestioneFormazioneBO.class);
 
+	static ArrayList<ForMembriGruppoDTO> lista_utenti_mancanti= null;
+	
+	static ArrayList<ForMembriGruppoDTO> lista_utenti_inviati= null;
+	
 	public static ArrayList<ForDocenteDTO> getListaDocenti(Session session) {
 	
 		return GestioneFormazioneDAO.getListaDocenti(session);
@@ -2169,57 +2140,66 @@ public class GestioneFormazioneBO {
 	}
 
 	public static void sendEmailCorsiNonCompleti(String path) throws Exception  {
-		ArrayList<ForMembriGruppoDTO> lista_utenti_mancanti = new ArrayList<ForMembriGruppoDTO>();
+		
+		
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
 		ArrayList<ForConfInvioEmailDTO> lista_conf = getListaConfigurazioniInvioEmailData(new Date(),session);
-		 File image = new File(path.replace("WEB-INF/classes", "")+"/images/cresco.jpg");
-		
+
 		for (ForConfInvioEmailDTO conf : lista_conf) {
+			
+			lista_utenti_mancanti = new ArrayList<ForMembriGruppoDTO>();
+			
+			lista_utenti_inviati = new ArrayList<ForMembriGruppoDTO>();
+			
 			ArrayList<ForMembriGruppoDTO> lista_utenti = GestioneFormazioneDAO.getListaUtentiNonCompleti(conf.getId_corso(), conf.getId_gruppo());
 			
 	
-			lista_utenti_mancanti.addAll(lista_utenti);
-			for (ForMembriGruppoDTO utente : lista_utenti) {
-				try{
-		
-				System.out.println(utente.getNome()+" "+utente.getCognome()+" "+utente.getEmail());
-				SendEmailBO.sendEmailCorsoMoodle(utente, conf.getDescrizione_corso(),conf.getOggetto_email(), image);
+			
+			for (ForMembriGruppoDTO utente : lista_utenti) 
+			{
+
+				System.out.println("Tentativo invio " +utente.getNome()+" "+utente.getCognome()+" "+utente.getEmail());
+				SendEmailBO.sendEmailCorsoMoodle(utente, conf.getDescrizione_corso(),conf.getOggetto_email());
 				TimeUnit.SECONDS.sleep(2);
-				lista_utenti_mancanti.remove(utente);
-		
-				}catch(Exception e) {
-					
-					logger.error(e);
-					
-					e.printStackTrace();
-					StringWriter sw = new StringWriter();
-					PrintWriter pw = new PrintWriter(sw);
-					e.printStackTrace(pw);
-					
-					String messaggio ="<html>Non è stato possibile inviare il Remind del corso ID:"+conf.getId_corso()+" ai seguenti utenti:<br><br>";
-					
-					for (ForMembriGruppoDTO user : lista_utenti_mancanti) {
-						messaggio+= user.getNome() +" "+ user.getCognome()+" email: "+user.getEmail()+"<br>";	
-					}
-					
-					
-					messaggio+="<br><br>Dettaglio errore:<br><br>"+sw.toString()+"</html>";
-					
-					try {
-						Utility.sendEmail("lisa.lombardozzi@crescosrl.net","Errore invio Remind corsi Moodle",messaggio);
-						Utility.sendEmail("antonio.dicivita@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
-						Utility.sendEmail("raffaele.fantini@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					break;
+				
+			}
+			
+			if(lista_utenti_mancanti.size()>0) 
+			{
+				String messaggio ="<html>Non è stato possibile inviare il Remind del corso ID:"+conf.getId()+" ("+conf.getDescrizione_corso()+") ai seguenti utenti:<br><br>";
+				
+				for (ForMembriGruppoDTO user : lista_utenti_mancanti) {
+					messaggio+= user.getNome() +" "+ user.getCognome()+" email: "+user.getEmail()+" Errore: "+user.getDescrizioneErrore()+"<br>";	
+				}
+				
+				try {
+					Utility.sendEmail("antonio.dicivita@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
+					Utility.sendEmail("raffaele.fantini@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
-			logger.error("Lista utenti stampata correttamente");
+			
+			if(lista_utenti_inviati.size()>0) 
+			{
+			
+				try 
+				{
+					SendEmailBO.sendEmailReportCorsiMoodle(conf, lista_utenti_inviati);
+					logger.error("Report inviato correttamente");
+				}
+				catch (Exception e) 
+				{
+					logger.error(e);
+					e.printStackTrace();
+				}
+				
+			}
+	
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(conf.getData_prossimo_invio());
 			cal.add(Calendar.DAY_OF_YEAR, conf.getFrequenza_invio());
@@ -2227,11 +2207,7 @@ public class GestioneFormazioneBO {
 			conf.setData_prossimo_invio(cal.getTime());
 			
 			session.update(conf);
-			
-		
-			SendEmailBO.sendEmailReportCorsiMoodle(conf, lista_utenti);
-			logger.error("Report inviato correttamente");
-			
+
 		}
 		
 		lista_conf = getListaConfigurazioniInvioEmailScadenza(new Date(),session);
@@ -2261,7 +2237,29 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getListaConfigurazioniInvioEmailScadenza(date, session);
 	}
 
-	
-	
+	public static File convertInputStreamToFile(InputStream inputStream, String outputPath) {
+        File outputFile = new File(outputPath);
+
+        try {
+            OutputStream outputStream = new FileOutputStream(outputFile);
+            byte[] buffer = new byte[1024];
+            int length;
+            
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+
+            return outputFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (inputStream != null) inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+	}
 	
 }

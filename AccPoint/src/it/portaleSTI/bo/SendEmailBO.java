@@ -1450,17 +1450,16 @@ public static void sendEmailEliminaPianificazione(ForPiaPianificazioneDTO pianif
 	
 
 
-public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descrizione_corso, String oggetto,File image) throws EmailException {
+public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descrizione_corso, String oggetto) {
 
 
+	try {
 
-		 HtmlEmail email = new HtmlEmail();
+	HtmlEmail email = new HtmlEmail();
 
-
-	
-	  email.setHostName("mail.vianova.it");
+	email.setHostName("mail.vianova.it");
 		 //email.setDebug(true);
-	  email.setAuthentication("segreteria@crescosrl.net", Costanti.PASS_EMAIL_CRESCO);
+	email.setAuthentication("segreteria@crescosrl.net", Costanti.PASS_EMAIL_CRESCO);
 
     email.getMailSession().getProperties().put("mail.smtp.auth", "true");
     email.getMailSession().getProperties().put("mail.debug", "true");
@@ -1471,12 +1470,10 @@ public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descri
     email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 	
 	
-	email.addTo(utente.getEmail());	
+    //email.addTo(utente.getEmail());	
 
-	
-	//email.addTo("lisa.lombardozzi@crescosrl.net");
-	//email.addTo("segreteria@crescosrl.net");
-	//email.addTo("antonio.dicivita@ncsnetwork.it");
+    /*Email Test servizio*/
+	email.addTo("raffaele.fantini@ncsnetwork.it");
 		  
 		  email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
 		
@@ -1484,7 +1481,7 @@ public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descri
 			  email.setSubject(oggetto);
 			  
 			//  File image = new File(path.replace("WEB-INF/classes", "")+"/images/cresco.jpg");
-			  String cid = email.embed(image, "Calver logo");
+			//  String cid = email.embed(image, "Calver logo");
 			  
 			  String messaggio = "Gentile "+utente.getNome() +" " +utente.getCognome()+",<br>Ci risulta che ad oggi lei non abbia completato il <b>percorso formativo obbligatorio</b> <b>\""+descrizione_corso +"\"</b>. La invitiamo, pertanto, a completarlo quanto prima accedendo al presente <a href='https://formazione.crescosrl.net/login/index.php'>Link</a>, con il seguente <b>USERNAME</b>:<br><br><b>"+utente.getUsername()+"</b>";
 			  
@@ -1509,16 +1506,31 @@ public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descri
 				
 						"<br/></html>"
 			  	
-			  		+" <br /><a href='https://formazione.crescosrl.net/login/index.php'> <img width='160' src=\"cid:"+cid+"\"><a><br>" ;
+			  		+" <br /><a href='https://formazione.crescosrl.net/login/index.php'> <img width='160' src=\"https://www.calver.it/images/cresco.jpg\"><a><br>" ;
 		
 			
 			  
 			  email.setHtmlMsg("<html>"
 					  	 +messaggio+"</html>");
+		
+			  
+		if(!utente.getEmail().equals("chiara.beghelli@ilsole24ore.com")) 
+		{
+			Object o =null;
+			o.toString();
+		}	  
 			  
 		  email.send();
 		  
-		 
+		  System.out.println("Invio completato per :" +utente.getNome()+" "+utente.getCognome()+" "+utente.getEmail());
+		  
+		  GestioneFormazioneBO.lista_utenti_inviati.add(utente);
+		  
+	}catch (Exception e) 
+	{
+		utente.setDescrizioneErrore(e.getMessage());
+		GestioneFormazioneBO.lista_utenti_mancanti.add(utente);
+	} 
 	
 }
 
@@ -1543,13 +1555,11 @@ email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "
 email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
 
-//email.addTo(email_addr);	
 
-
-email.addTo("lisa.lombardozzi@crescosrl.net");
+//email.addTo("lisa.lombardozzi@crescosrl.net");
 email.addTo("raffaele.fantini@ncsnetwork.it");
 email.addTo("antonio.dicivita@ncsnetwork.it");
-//email.addTo("segreteria@crescosrl.net");
+
 
 	  
 	  email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");

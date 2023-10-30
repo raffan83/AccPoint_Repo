@@ -7,6 +7,7 @@ public class ForMembriGruppoDTO {
 	String cognome;
 	String email;
 	String username;
+	String descrizioneErrore;
 	
 	public int getId() {
 		return id;
@@ -37,6 +38,12 @@ public class ForMembriGruppoDTO {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getDescrizioneErrore() {
+		return descrizioneErrore;
+	}
+	public void setDescrizioneErrore(String descrizioneErrore) {
+		this.descrizioneErrore = descrizioneErrore;
 	}
 	
 	

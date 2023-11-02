@@ -369,10 +369,13 @@ public class GestioneInterventoBO {
 			return null;
 		}
 		for (PuntoMisuraDTO punto : listaPuntiMisura) {
-			BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),3,RoundingMode.HALF_UP);
-			if(indice_prestazione.compareTo(max)==1) {
-				max = indice_prestazione;
+			if(!punto.getTipoProva().equals("D")){
+				BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),3,RoundingMode.HALF_UP);
+				if(indice_prestazione.compareTo(max)==1) {
+					max = indice_prestazione;
+				}
 			}
+			
 					
 		}
 		

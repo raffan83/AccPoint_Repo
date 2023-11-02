@@ -99,7 +99,7 @@ public class GestioneUtenteBO {
 		      
 		      String token = ""+rand_int1;
 		        
-		      String hmtlMex = "<h3>Salve "+utente.getNominativo()+", <br /> Per recuperare la tua password fare click sul link seguente<br /><a href='"+url+"?action=resetPass&token="+token+"'>Reset Password</a></h3><br />Se hai ricevuto per sbaglio questa mail ignora il contenuto.<br />Grazie<br /><br />AccPoint";
+		      String hmtlMex = "<h3>Salve "+utente.getNominativo()+", <br /> Per recuperare la tua password fare click sul link seguente<br /><a href='"+url+"?action=resetPass&token="+token+"'>Reset Password</a></h3><br />Se hai ricevuto per sbaglio questa mail ignora il contenuto.<br />Grazie<br /><br />Calver.it";
 
 			  Utility.sendEmail(to,subject,hmtlMex);
 
@@ -123,7 +123,7 @@ public class GestioneUtenteBO {
 		 if(utente != null && utente.getResetToken() != null && !utente.getResetToken().equals("") && utente.getResetToken().equals(token)){
 			  String to = utente.getEMail();
 			  String subject = "Calver.it Conferma Reset Password";
-			  String hmtlMex = "<h3>Salve "+utente.getNominativo()+", <br /> La tua password è stata cambiata con successo<br /></h3><br />Se hai ricevuto per sbaglio questa mail ignora il suo contenuto.<br />Grazie<br /><br />AccPoint";
+			  String hmtlMex = "<h3>Salve "+utente.getNominativo()+", <br /> La tua password è stata cambiata con successo<br /></h3><br />Se hai ricevuto per sbaglio questa mail ignora il suo contenuto.<br />Grazie<br /><br />Calver.it";
 
 			  Utility.sendEmail(to,subject,hmtlMex);
 			  
@@ -152,7 +152,7 @@ public class GestioneUtenteBO {
 			  
 		      String hmtlMex = "<h3><img src=\"https://www.calver.it/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	&Eacute; stato creato il suo utente per l'accesso a Calver.it <br /><br/>Utente: "+username+"<br  />Password: "+passw+"<br  /><br />Per modificare la password è sufficiente accedere al sito e andare nella sezione di modifica password . \r\n" + 
 		      		"Grazie e buon lavoro.\r\n" + 
-		      		"<br/><br/><br />AccPoint";
+		      		"<br/><br/><br />Calver.it";
 		      	      
 			  Utility.sendEmail(to,subject,hmtlMex);
 
@@ -190,7 +190,7 @@ public class GestioneUtenteBO {
 			  
 		      String hmtlMex2 = "<h3><img src=\"https://www.calver.it/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	la registrazione &egrave; andata a buon fine, verr&agrave; ricontattato da un nostro operatore non appena saranno validate le Sue credenziali.<br /><br/> \r\n" + 
 		      		"Grazie e buon lavoro.\r\n" + 
-		      		"<br/><br/><br />AccPoint";
+		      		"<br/><br/><br />Calver.it";
 		      	      
 			  Utility.sendEmail(to2,subject2,hmtlMex2);
 			  
@@ -199,7 +199,7 @@ public class GestioneUtenteBO {
 			  
 		      String hmtlMex = "<h3><img src=\"https://www.calver.it/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />L'utente "+utente.getNominativo()+"<br /> ha chiesto la registrazione per l'accesso a Calver.it <br /><br/>Dati:<br /><br/>Utente: "+utente.getUser()+"<br  />Email: "+utente.getEMail()+"<br  />Telefono: "+utente.getTelefono()+"<br  />Company: "+utente.getDescrizioneCompany()+"<br  /> Area d'interesse: "+area_interesse+"<br /> \r\n" + 
 		      		"Grazie e buon lavoro.\r\n" + 
-		      		"<br/><br/><br />AccPoint";
+		      		"<br/><br/><br />Calver.it";
 		      	      
 			  Utility.sendEmail(to,subject,hmtlMex);
 

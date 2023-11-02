@@ -383,7 +383,7 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
     </div>
         <%} %>
    </div>       
-          
+     <% if(user.checkRuolo("AM") || user.checkRuolo("OP")){ %>
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Note tecniche:</label>
         <%if(strumento.getNote_tecniche()!=null) {%>
@@ -395,6 +395,8 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
                       <textarea class="form-control" id="note_tecniche"  name="note_tecniche" disabled="disabled" ></textarea>
     </div>
     <%} %>
+    <%} %>
+    
        </div> 
         </form>
 

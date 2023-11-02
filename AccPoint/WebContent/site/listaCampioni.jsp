@@ -41,7 +41,7 @@
         Lista Campioni
         <small>Fai doppio click per entrare nel dettaglio</small>
       </h1>
-       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+       <a class="btn btn-default pull-right" href="/"><i class="fa fa-dashboard"></i> Home</a>
     </section>
     <div style="clear: both;"></div>  
     <!-- Main content -->

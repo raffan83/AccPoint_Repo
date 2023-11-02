@@ -23,4 +23,7 @@
       <taglib-location>/WEB-INF/tld/utilities.tld</taglib-location>
     </taglib>
   </jsp-config>
+  <listener>
+    <listener-class>it.portaleSTI.action.ContextListener</listener-class>
+</listener>
 </web-app>

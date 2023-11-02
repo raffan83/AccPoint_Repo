@@ -31,7 +31,7 @@
         
       </h1>
       
-       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+       <a class="btn btn-default pull-right" href="/"><i class="fa fa-dashboard"></i> Home</a>
        <a class="btn btn-default pull-right" style="margin-right:5px" onClick="callAction('listaRilieviDimensionali.do?id_stato_lavorazione=${utl:encryptData(filtro_rilievi)}&cliente_filtro=${utl:encryptData(cliente_filtro) }',null,true)"><i class="fa fa-dashboard"></i> Torna alla lista rilievi</a>
     </section>
     <div style="clear: both;"></div>    

@@ -36,7 +36,7 @@
     <section class="content">
     <h4 class="display-2">Si è verificato un errore durante la gestione della richiesta.</h4>
  
-    <p><button class="btn btn-primary" title="Click per inviare il report dell'errore" onClick="sendReport('${error}')">Invia Report</button>&nbsp;<a class="btn btn-primary" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a></p>
+    <p><button class="btn btn-primary" title="Click per inviare il report dell'errore" onClick="sendReport('${error}')">Invia Report</button>&nbsp;<a class="btn btn-primary" href="/"><i class="fa fa-dashboard"></i> Home</a></p>
 
   
 </section>

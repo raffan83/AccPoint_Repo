@@ -1470,10 +1470,10 @@ public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descri
     email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 	
 	
-    //email.addTo(utente.getEmail());	
+    email.addTo(utente.getEmail());	
 
     /*Email Test servizio*/
-	email.addTo("raffaele.fantini@ncsnetwork.it");
+	//email.addTo("raffaele.fantini@ncsnetwork.it");
 		  
 		  email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
 		
@@ -1550,7 +1550,7 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
 
 
-//email.addTo("lisa.lombardozzi@crescosrl.net");
+email.addTo("lisa.lombardozzi@crescosrl.net");
 email.addTo("raffaele.fantini@ncsnetwork.it");
 email.addTo("antonio.dicivita@ncsnetwork.it");
 

@@ -22,7 +22,7 @@
         <small></small>
       </h1>
          
-        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+        <a class="btn btn-default pull-right" href="/"><i class="fa fa-dashboard"></i> Home</a>
       
       <c:if test="${userObj.checkPermesso('NUOVO_INTERVENTO_METROLOGIA') && commessa.SYS_STATO=='1APERTA'}">  <button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()" style="margin-right:5px"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button></c:if>
     </section>

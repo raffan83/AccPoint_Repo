@@ -203,7 +203,7 @@
     
       </div>
 	<div class="col-xs-10">
-       <p  align="justify">presta il proprio consenso, libero ed informato, al trattamento dei propri dati personali identificativi da parte del Titolare e dei responsabili interni ed esterni del trattamento dei dati, per le operazioni connesse all'accesso e utilizzo della piattaforma Calver presente sul sito <u><a target="_blank" href="/AccPoint">www.calver.it</a></u>, nelle modalità indicate nell'informativa e nei limiti della stessa;</p>
+       <p  align="justify">presta il proprio consenso, libero ed informato, al trattamento dei propri dati personali identificativi da parte del Titolare e dei responsabili interni ed esterni del trattamento dei dati, per le operazioni connesse all'accesso e utilizzo della piattaforma Calver presente sul sito <u><a target="_blank" href="/">www.calver.it</a></u>, nelle modalità indicate nell'informativa e nei limiti della stessa;</p>
       </div>
       </div>
       <div class="row">
@@ -245,7 +245,7 @@
 
 
  <div class="box-footer with-border">
-   <a id="home" class="btn btn-primary btn-flat" href="/AccPoint">Home</a>
+   <a id="home" class="btn btn-primary btn-flat" href="/">Home</a>
  <a id="submitregistrazione"  class="btn btn-danger  btn-flat disabled" onclick="Registrazione()" >Registrati</a>
 
  </div>

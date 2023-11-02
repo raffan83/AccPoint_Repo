@@ -451,7 +451,12 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
              <input id="data_scadenza_dtl" class="form-control" readonly>
         </div>
         <div class="col-sm-6">
+        <c:if test="${campione.getCodice().startsWith('CDT')}">
         <label >Etichettatura di conferma:</label>
+        </c:if>
+          <c:if test="${!campione.getCodice().startsWith('CDT')}">
+        <label >Laboratorio:</label>
+        </c:if>
              <input id="etichettatura_dtl" class="form-control" readonly>
         </div>
         <div class="col-sm-6">
@@ -1028,15 +1033,27 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 
 	 $('#check_interna_mod').click(function(){
 		$('#check_esterna_mod').prop("checked", false); 
-		$('#etichettatura_mod').val("Interna");
-		$('#laboratorio_mod').val("Interna");
+		if(${campione.codice.startsWith('CDT')}){
+			$('#etichettatura_mod').val("Interna");
+		}else{
+			$('#etichettatura_mod').val("Interno");	
+		}
+		
+		$('#laboratorio_mod').val("Interno");
+		$('#presso_mod').val("");
 		$('#presso_mod').prop("readonly", true);
 	 });
 	 
 	 $('#check_esterna_mod').click(function(){
 		$('#check_interna_mod').prop("checked", false);
-		$('#etichettatura_mod').val("Esterna");
-		$('#laboratorio_mod').val("Esterna");
+		if(${campione.codice.startsWith('CDT')}){
+			$('#etichettatura_mod').val("Esterna");
+		}else{
+			$('#etichettatura_mod').val("Esterno");	
+		}
+		
+		$('#laboratorio_mod').val("Esterno");
+		
 		$('#presso_mod').prop("readonly", false);
 	 });
 	 
@@ -1085,7 +1102,10 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	$('#tipo_attivita_dtl').val(tipo_attivita);
 	$('#data_attivita_dtl').val(formatDate(data_attivita));
 	$('#ente_dtl').val(ente);
+
 	$('#etichettatura_dtl').val(etichettatura);
+
+	
 	$('#stato_dtl').val(stato);
 	$('#campo_sospesi_dtl').val(campo_sospesi);
 	$('#operatore_dtl').val(operatore);
@@ -1166,7 +1186,7 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 			 $('#numero_certificato_mod').val(numero_certificato);
 		 }
 		 
-		 if(etichettatura=='Interna'){
+		 if(etichettatura=='Interna' || etichettatura == 'Interno'){
 			 $('#check_interna_mod').prop("checked", true); 
 			 $('#etichettatura_mod').val("Interna");
 			 $('#presso_mod').prop("readonly", true);

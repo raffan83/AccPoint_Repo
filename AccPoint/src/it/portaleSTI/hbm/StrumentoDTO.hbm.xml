@@ -127,6 +127,12 @@
    <property name="indice_prestazione" type="java.lang.String">
             <column name="indice_prestazione" />
         </property>		
+        
+        
+        
+           <property name="note_tecniche" type="java.lang.String">
+            <column name="note_tecniche" />
+        </property>		
  </class>
  
 </hibernate-mapping>

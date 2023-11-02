@@ -327,6 +327,15 @@ String idCliente = (String)session.getAttribute("id_Cliente");
                                             </select>
     </div>
        </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Note tecniche:</label>
+
+    <div class="col-sm-10">
+                      <textarea class="form-control" id="note_tecniche"  name="note_tecniche" ></textarea>
+    </div>
+
+       </div> 
 
                 <button type="submit" class="btn btn-primary" >Salva</button>
         

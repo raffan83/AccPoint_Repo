@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SchedaListaStrumentiNoteTecniche" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c81e9dbc-3e30-4968-a4d1-81a5d6d89168">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="51" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="800" height="30" backcolor="#7EBD68" uuid="bec6a839-6b00-4698-851c-d9e14291ace0">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<staticText>
+					<reportElement mode="Transparent" x="0" y="1" width="730" height="30" uuid="6fa42089-589e-4474-8a64-3ff428762361"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Trebuchet MS" size="12" isBold="true" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[ELENCO STRUMENTI]]></text>
+				</staticText>
+				<image hAlign="Right" vAlign="Middle">
+					<reportElement mode="Transparent" x="550" y="0" width="250" height="30" uuid="b272c649-7c1b-4c2f-86a7-1dd3b3769947">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+					<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+				</image>
+				<textField>
+					<reportElement x="2" y="16" width="278" height="34" uuid="f0674f47-2fcb-48c0-907d-cc0b9b92e74d">
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Trebuchet MS" size="8" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{sede}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="2" y="3" width="278" height="15" uuid="c024377a-f250-4cc4-a258-741ebed1a03b">
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Trebuchet MS" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="490" y="12" width="60" height="10" uuid="182caacc-26c1-4ff6-bfcf-98fd438863a7"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Trebuchet MS" size="6" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="450" y="12" width="40" height="10" uuid="ced713f8-6418-45ce-b7b6-2d7ee96f7ef4"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Trebuchet MS" size="6" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[Aggiornato al]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+</jasperReport>

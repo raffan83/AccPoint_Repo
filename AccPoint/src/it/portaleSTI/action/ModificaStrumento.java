@@ -170,7 +170,8 @@ public class ModificaStrumento extends HttpServlet {
 				String procedura = request.getParameter("procedura");
 
 				String altre_matricole = request.getParameter("altre_matricole");
-
+				String note_tecniche = request.getParameter("note_tecniche");
+				
 				String stringaModifica=("Modifica attributi strumento|");
 
 				if(strumento.getDenominazione()!=null && !strumento.getDenominazione().equals(denominazione))
@@ -297,7 +298,7 @@ public class ModificaStrumento extends HttpServlet {
 
 				if(strumento.getProcedura()!=null && !strumento.getProcedura().equals(procedura))
 				{
-					if(strumento.getDenominazione().equals("")) {
+					if(strumento.getProcedura().equals("")) {
 						stringaModifica=stringaModifica+"Procedure([VUOTO],"+procedura+")|";
 					}else {
 						if(procedura.equals("")) {
@@ -350,6 +351,18 @@ public class ModificaStrumento extends HttpServlet {
 				{
 					stringaModifica=stringaModifica+"Luogo("+strumento.getLuogo().getDescrizione()+","+getLuogoVerifica(listaLuogoVerifica,luogo_verifica)+")";
 				}
+				if(strumento.getNote_tecniche()!=null && !strumento.getNote_tecniche().equals(note))
+				{
+					if(strumento.getNote_tecniche().equals("")) {
+						stringaModifica=stringaModifica+"Note tecniche([VUOTO],"+note_tecniche+")|";
+					}else {
+						if(note_tecniche.equals("")) {
+							note_tecniche = "[VUOTO]";
+						}
+						stringaModifica=stringaModifica+"Note tecniche("+strumento.getNote_tecniche()+","+note_tecniche+")|";
+					}
+				}
+				strumento.setNote_tecniche(note_tecniche);
 				strumento.setDenominazione(denominazione);
 				strumento.setCodice_interno(codice_interno);
 				strumento.setCostruttore(costruttore);

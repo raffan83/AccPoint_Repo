@@ -108,7 +108,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
      <button class="btn btn-primary" onClick="filtraStrumenti(7225,<%=idCliente %>,<%=idSede %>)" id="fuori_servizio">Fuori Servizio</button>
      <button class="btn btn-primary" onClick="filtraStrumenti(7227,<%=idCliente %>,<%=idSede %>)" id="annullati">Annullati</button>
 	<button class="btn btn-warning" id="downloadfiltrati" onClick="downloadStrumentiFiltrati()" >Download PDF</button>
- 
+	<c:if test="${userObj.checkRuolo('OP') || userObj.checkRuolo('AM') }">
+	<button class="btn btn-warning" id="downloadNoteTecniche" onClick="downloadNoteTecniche()" >Download Note tecniche</button>
+ </c:if>
 </div>
  <div class="col-xs-12" id="divFiltroDate" style="">
 

@@ -1676,6 +1676,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  var interpolazione=$('#interpolazione').val();
 	  var classificazione=$('#classificazione').val();
 	  var altre_matricole = $('#altre_matricole').val();
+	  var note_tecniche = $('#note_tecniche').val();
 
 	  		
 	  		  var dataObj = {};
@@ -1703,6 +1704,8 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  		dataObj.interpolazione = interpolazione;
 	  		dataObj.classificazione = classificazione;
 	  		dataObj.altre_matricole = altre_matricole;
+	  		dataObj.note_tecniche = note_tecniche;
+	  		
 	  		
 	            $.ajax({
 	          	  type: "POST",
@@ -1864,6 +1867,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  var classificazione=$('#classificazione_mod').val();
 	  var procedura = $('#procedura_mod').val();
 	  var altre_matricole = $('#altre_matricole_mod').val();
+	  var note_tecniche = $('#note_tecniche_mod').val();
 
 	  		
 	  		  var dataObj = {};
@@ -1887,6 +1891,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  		dataObj.classificazione = classificazione;
 	  		dataObj.procedura = procedura;
 	  		dataObj.altre_matricole = altre_matricole;
+	  		dataObj.note_tecniche = note_tecniche;
 	  		
 	            $.ajax({
 	          	  type: "POST",
@@ -7886,6 +7891,54 @@ function filtraCertificati(){
 	   
    }
  
+   
+   
+   function downloadNoteTecniche(){
+	   
+	   console.log(table.rows( { filter : 'applied'} ).data().toArray()); 
+	   data = table.rows( { filter : 'applied'} ).data().toArray();
+	   var stringid = "";
+	   data.forEach(function(row, i) {
+		   //console.log(row[1])
+		   if(i!=0){
+			   stringid+=";";
+		   }
+		   stringid+=""+row[1];
+		   
+		 });
+	   
+	   if(stringid==""){
+		   
+		   $('#myModalErrorContent').html("Nessuno strumento presente!");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			
+			$('#myModalError').modal('show');
+	   }else{
+		   cliente = $("#select1").val();
+		   sede = $("#select2").val();
+		   
+
+		   sede = sede.split("_")[0];
+		   
+		   nome_cliente = $("#select1")[0].parentNode.innerText;
+		   nome_sede = $("#select2 option:selected").text();
+		   
+		   if(sede == 0){
+			   nome_sede = "";
+		   }
+		   
+		 	$.form("gestioneStrumento.do?action=note_tecniche_strumenti", {"idstrumenti" : stringid,  "cliente" : cliente, "sede" : sede , "nome_cliente" : nome_cliente, "nome_sede" : nome_sede  }, 'POST').submit();
+		 	
+	   }
+	   
+
+	  
+	 	
+	 	
+	   
+   }
+   
    
    function inviaEmailAttivazione(idUser){
 		

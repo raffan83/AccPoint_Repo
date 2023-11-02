@@ -109,6 +109,7 @@ public class NuovoStrumento extends HttpServlet {
 				String ref_tipo_rapporto = request.getParameter("ref_tipo_rapporto");		
 				
 				String altre_matricole = request.getParameter("altre_matricole");
+				String note_tecniche = request.getParameter("note_tecniche");
 				
 				StrumentoDTO strumento = new StrumentoDTO();
 				strumento.setStato_strumento(new StatoStrumentoDTO(Integer.parseInt(ref_stato_strumento),""));
@@ -151,7 +152,7 @@ public class NuovoStrumento extends HttpServlet {
 			//		strumento.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
 			//	}
 				strumento.setTipoRapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
-				
+				strumento.setNote_tecniche(note_tecniche);
 				
 			
 				/*

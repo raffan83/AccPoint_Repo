@@ -223,6 +223,19 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
     </div>
        </div> 
 
+
+  <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Note tecniche:</label>
+        <%if(strumento.getNote_tecniche()!=null) {%>
+        <div class="col-sm-10">
+                      <textarea class="form-control" id="note_tecniche_mod"  name="note_tecniche_mod"  ><%=strumento.getNote_tecniche() %></textarea>
+    </div>
+    <%}else{ %>
+    <div class="col-sm-10">
+                      <textarea class="form-control" id="note_tecniche_mod"  name="note_tecniche_mod" ></textarea>
+    </div>
+    <%} %>
+       </div> 
        
                 <button type="submit" class="btn btn-primary" >Salva</button>
         

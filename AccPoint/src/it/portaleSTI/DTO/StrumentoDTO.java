@@ -51,6 +51,7 @@ public class StrumentoDTO {
 			 
 			 private String altre_matricole;
 			 private String indice_prestazione;
+			 private String note_tecniche;
 			 
 			 //------
 			 
@@ -444,6 +445,14 @@ public class StrumentoDTO {
 
 			public void setIndice_prestazione(String indice_prestazione) {
 				this.indice_prestazione = indice_prestazione;
+			}
+
+			public String getNote_tecniche() {
+				return note_tecniche;
+			}
+
+			public void setNote_tecniche(String note_tecniche) {
+				this.note_tecniche = note_tecniche;
 			}
 
 			

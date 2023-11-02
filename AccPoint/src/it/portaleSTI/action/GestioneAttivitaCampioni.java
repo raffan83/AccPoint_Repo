@@ -295,7 +295,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String data_attivita = ret.get("data_attivita_mod");
 				String descrizione = ret.get("descrizione_mod");
 				String tipo_manutenzione = ret.get("select_tipo_manutenzione_mod");				
-			
+				String presso = ret.get("presso_mod");
 				String ente = ret.get("ente_mod");
 				String data_scadenza = ret.get("data_scadenza_mod");
 				String etichettatura = ret.get("etichettatura_mod");
@@ -325,7 +325,13 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				}
 				
 				if(Integer.parseInt(tipo_attivita)==2 || Integer.parseInt(tipo_attivita)==3) {
-					attivita.setEnte(ente);					
+					if(ente!=null) {
+						attivita.setEnte(ente);	
+					}
+					if(presso!=null) {
+						attivita.setEnte(presso);
+					}
+											
 					attivita.setData_scadenza(format.parse(data_scadenza));
 					attivita.setEtichettatura(etichettatura);
 					attivita.setStato(stato);

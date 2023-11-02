@@ -42,6 +42,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaListaStrumenti;
+import it.portaleSTI.bo.CreateSchedaNoteTecnicheStrumenti;
 import it.portaleSTI.bo.GestioneConfigurazioneClienteBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
@@ -196,6 +197,49 @@ public class GestioneStrumento extends HttpServlet {
 				
 				
 				
+			}
+			else if(action.equals("note_tecniche_strumenti")) {
+				
+				
+				ajax=false;
+				String idsStrumenti = request.getParameter("idstrumenti");
+				
+ 				String cliente = request.getParameter("cliente");
+				String sede = request.getParameter("sede");
+				String nome_cliente = request.getParameter("nome_cliente");
+				String nome_sede = request.getParameter("nome_sede");
+				
+				UtenteDTO user=(UtenteDTO)request.getSession().getAttribute("userObj");
+				
+				ArrayList<StrumentoDTO> arrayStrumenti = GestioneStrumentoBO.getStrumentiByIds(idsStrumenti, session);
+				
+			
+				new CreateSchedaNoteTecnicheStrumenti(arrayStrumenti,cliente, sede ,session,getServletContext(),  user, nome_cliente, nome_sede);
+				
+				
+				File output = new File(Costanti.PATH_FOLDER+"//temp//SchedaNoteTecnicheStrumenti.pdf");
+				
+				 FileInputStream fileIn = new FileInputStream(output);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename=SchedaNoteTecnicheStrumenti.pdf");
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+
+				    Utility.removeDirectory(new File(Costanti.PATH_FOLDER+"//temp//"));
 			}
 			
 			else if(action.equals("filtra_misure")) {

@@ -611,9 +611,9 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 							
 							if(filename!=null && !filename.equals("")) {
 								GestioneConfigurazioneClienteBO.uploadFile(file_logo,cliente.get__id(), Integer.parseInt(id_sede.split("_")[0]), Costanti.PATH_FOLDER+"\\"+"LoghiCompany\\ConfigurazioneClienti\\");
-								
+								configurazione.setNome_file_logo(filename);
 							}
-							configurazione.setNome_file_logo(filename);
+							
 							configurazione.setModello_certificato(modello);
 							configurazione.setRevisione_certificato(revisione);
 							configurazione.setRevisione_lista_strumenti(revisione_lista_strumenti);

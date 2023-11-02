@@ -384,7 +384,18 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
         <%} %>
    </div>       
           
-
+	                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Note tecniche:</label>
+        <%if(strumento.getNote_tecniche()!=null) {%>
+        <div class="col-sm-10">
+                      <textarea class="form-control" id="note_tecniche"  name="note_tecniche" disabled="disabled" ><%=strumento.getNote_tecniche() %></textarea>
+    </div>
+    <%}else{ %>
+    <div class="col-sm-10">
+                      <textarea class="form-control" id="note_tecniche"  name="note_tecniche" disabled="disabled" ></textarea>
+    </div>
+    <%} %>
+       </div> 
         </form>
 
 				

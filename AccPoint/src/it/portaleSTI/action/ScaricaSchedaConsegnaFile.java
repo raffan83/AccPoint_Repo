@@ -73,17 +73,20 @@ public class ScaricaSchedaConsegnaFile extends HttpServlet {
 			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
 		
 			path = Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+nomeFile;
+			response.setHeader("Content-Disposition","attachment;filename="+intervento.getIdCommessa().replace("/", "_")+".pdf");
 		}
 		else if(verIntervento!=null && !verIntervento.equals("")){
 			verIntervento = Utility.decryptData(verIntervento);
 			VerInterventoDTO intervento = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(verIntervento), session);
 		
 			path = Costanti.PATH_FOLDER+"//"+intervento.getNome_pack()+"//"+nomeFile;
+			response.setHeader("Content-Disposition","attachment;filename="+intervento.getCommessa().replace("/", "_")+".pdf");
 		}else {
 			id_scheda = Utility.decryptData(id_scheda);
 			SchedaConsegnaRilieviDTO scheda = GestioneSchedaConsegnaBO.getSchedaConsegnaRilievoFromId(Integer.parseInt(id_scheda), session);
 			path = Costanti.PATH_FOLDER+"\\RilieviDimensionali\\SchedeConsegna\\"+scheda.getId_cliente()+"\\"+scheda.getId_sede()+
 					"\\"+scheda.getAnno()+"\\"+scheda.getMese()+"\\"+scheda.getFile();
+			response.setHeader("Content-Disposition","attachment;filename="+nomeFile);
 		}
 		
 		File d = new File(path);
@@ -91,7 +94,7 @@ public class ScaricaSchedaConsegnaFile extends HttpServlet {
 		 
 		 response.setContentType("application/octet-stream");
 		  
-		 response.setHeader("Content-Disposition","attachment;filename="+nomeFile);
+		 
 		 
 		 ServletOutputStream outp = response.getOutputStream();
 		     

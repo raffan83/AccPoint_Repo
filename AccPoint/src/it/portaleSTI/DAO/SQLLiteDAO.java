@@ -79,7 +79,8 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"dataProssimaVerifica Date," +
 																		"nCertificato varchar(255)," +
 																		"strumentoModificato varchar(1)," +
-																		"luogo_verifica varchar(255));";
+																		"luogo_verifica varchar(255),"+
+																		"note_tecniche varchar(1024));";
 
 private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id Integer primary key autoincrement," + 
 													" denominazione varchar(255) NOT NULL," + 

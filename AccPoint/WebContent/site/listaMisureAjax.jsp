@@ -190,6 +190,13 @@ NON DETERMINATO
 			<option value="R">ALLERTA</option>
 			<option value="X" selected>NON IDONEO</option>
 		</c:when>
+			<c:when test="${misura.indice_prestazione == null || misura.indice_prestazione == '' }">
+			<option value="0"selected>NON DETERMINATO</option>
+			<option value="V">PERFORMANTE</option>
+			<option value="G">STABILE</option>
+			<option value="R">ALLERTA</option>
+			<option value="X" >NON IDONEO</option>
+		</c:when>
 		<c:otherwise>
 			<option value="0">NON DETERMINATO</option>
 			<option value="V">PERFORMANTE</option>

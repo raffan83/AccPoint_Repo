@@ -85,8 +85,9 @@
     		<% if(user.checkRuolo("AM") || (user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")&& !user.checkRuolo("PV"))){%>
     			<li><a href="#" onclick="callAction('gestioneMisura.do?action=lista',null,true);">Lista Misure</a></li>
     				<% }%>
-    				
-    				
+    		<% if(user.checkRuolo("AM") || user.checkRuolo("OP")){%>	
+    			<li><a href="gestioneConfigurazioniClienti.do?action=lista"><i class="fa fa-industry"></i>Gestione Clienti</a></li>	
+    		<% }%>		
           </ul>
         </li>
          <% }%>
@@ -456,7 +457,7 @@
 			<li><a href="listaCompany.do"><i class="fa fa-industry"></i>Gestione Company</a></li>
 			<li><a href="listaRuoli.do"><i class="fa fa-hand-stop-o"></i>Gestione Ruoli</a></li>
 			<li><a href="listaPermessi.do"><i class="fa fa-hand-pointer-o"></i>Gestione Permessi</a></li>
-			<li><a href="gestioneConfigurazioniClienti.do?action=lista"><i class="fa fa-industry"></i>Gestione Clienti</a></li>
+			
 			  <% }%>
 			<li><a href="gestioneAssociazioni.do"><i class="fa fa-hand-peace-o"></i>Gestione Associazioni</a></li>
 			 <% }%>
@@ -486,12 +487,12 @@
           </a>
           <ul class="treeview-menu">          
        
-			<li><a href="downloadCalver.do?action=calverdesktop">DasmTar v2.6.2</a></li>
+			<li><a href="downloadCalver.do?action=calverdesktop">DasmTar v2.7.1</a></li>
 
 			<li><a href="downloadCalver.do?action=dasmtarLat">DasmTarLAT v1.0.6</a></li>
 
 			<li><a href="downloadCalver.do?action=sicurettaElettrica">DasmTarSE v0.0.1</a></li>
-			<li><a href="downloadCalver.do?action=dasmtarVerificazione">DasmTarVER v3.2.1</a></li>
+			<li><a href="downloadCalver.do?action=dasmtarVerificazione">DasmTarVER v3.2.2</a></li>
 			<li><a href="downloadCalver.do?action=printLabel">PrintLabel v1.1.5</a></li>
 			<li><a href="downloadCalver.do?action=librerie">Librerie</a></li>
 			<li><a href="downloadCalver.do?action=convertitore">Convertitore</a></li>

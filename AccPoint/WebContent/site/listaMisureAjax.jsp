@@ -134,6 +134,9 @@
 <div class="lamp lampNI" style="margin:auto"></div> 
 </c:if>
 
+<c:if test="${misura.indice_prestazione==NULL || misura.indice_prestazione==''}">
+NON DETERMINATO
+</c:if>
 </td>
 </c:if>
 <td>
@@ -151,11 +154,50 @@
 <c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP")}'>
 		<select class="form-control indicePrest" id="indice_prestazione_${misura.id}" onchange="aggiornaIndicePrestazione('${misura.id}')" data-placeholder="Aggiorna indice di prestazione" style ="width:80%">
 		<option value=""></option>
-		<option value="0">NON DETERMINATO</option>
-		<option value="V">PERFORMANTE</option>
-		<option value="G">STABILE</option>
-		<option value="R">ALLERTA</option>
-		<option value="X">NON IDONEO</option>
+		<c:choose>
+		<c:when test="${misura.indice_prestazione == '0' }">
+			<option value="0" selected>NON DETERMINATO</option>
+			<option value="V">PERFORMANTE</option>
+			<option value="G">STABILE</option>
+			<option value="R">ALLERTA</option>
+			<option value="X">NON IDONEO</option>
+		</c:when>
+		<c:when test="${misura.indice_prestazione == 'V' }">
+			<option value="0">NON DETERMINATO</option>
+			<option value="V" selected>PERFORMANTE</option>
+			<option value="G">STABILE</option>
+			<option value="R">ALLERTA</option>
+			<option value="X">NON IDONEO</option>
+		</c:when>
+		<c:when test="${misura.indice_prestazione == 'G' }">
+			<option value="0">NON DETERMINATO</option>
+			<option value="V">PERFORMANTE</option>
+			<option value="G" selected>STABILE</option>
+			<option value="R">ALLERTA</option>
+			<option value="X">NON IDONEO</option>
+		</c:when>
+		<c:when test="${misura.indice_prestazione == 'R' }">
+			<option value="0">NON DETERMINATO</option>
+			<option value="V">PERFORMANTE</option>
+			<option value="G">STABILE</option>
+			<option value="R" selected>ALLERTA</option>
+			<option value="X">NON IDONEO</option>
+		</c:when>
+		<c:when test="${misura.indice_prestazione == 'X' }">
+			<option value="0">NON DETERMINATO</option>
+			<option value="V">PERFORMANTE</option>
+			<option value="G">STABILE</option>
+			<option value="R">ALLERTA</option>
+			<option value="X" selected>NON IDONEO</option>
+		</c:when>
+		<c:otherwise>
+			<option value="0">NON DETERMINATO</option>
+			<option value="V">PERFORMANTE</option>
+			<option value="G">STABILE</option>
+			<option value="R">ALLERTA</option>
+			<option value="X">NON IDONEO</option>
+		</c:otherwise>
+		</c:choose>
 		
 		</select>
 

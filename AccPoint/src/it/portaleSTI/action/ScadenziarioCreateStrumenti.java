@@ -92,9 +92,7 @@ public class ScadenziarioCreateStrumenti extends HttpServlet {
 	            myObj.addProperty("success", true);
 	  
 	        myObj.add("dataInfo", obj); 
-	        
-	        System.out.println(myObj.toString());
-	       
+	              
 	        out.println(myObj.toString());
 
 	        out.close();

@@ -3141,6 +3141,76 @@ public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String m
 	return lista;
 }
 
+public static HashMap<String, Integer> getListaStrumentiScadenziario(UtenteDTO user) {
+	String query="";
+	HashMap<String, Integer> listMap= new HashMap<String, Integer>();
+	try {
+		
+	Connection  con =getConnection();
+    PreparedStatement pst=null;
+    ResultSet rs=null;
+	
+	
+	if(user.isTras())
+	{
+		query  = "select data_prossima_verifica from strumento  WHERE data_prossima_verifica IS NOT NULL";
+		pst=con.prepareStatement(query);
+		rs=pst.executeQuery();
+	}
+	else
+	{
+			if(user.getIdSede() != 0 && user.getIdCliente() != 0) {
+				query  = "select data_prossima_verifica from strumento  WHERE data_prossima_verifica IS NOT NULL AND id__company_=?  AND id__sede_new =? AND id_cliente=?";
+				pst=con.prepareStatement(query);
+				
+				pst.setInt(1, user.getCompany().getId());
+				pst.setInt(2,user.getIdSede());
+				pst.setInt(3, user.getIdCliente());
+				
+				rs=pst.executeQuery();
+		
+			}else if(user.getIdSede() == 0 && user.getIdCliente() != 0) {
+				query  = "select data_prossima_verifica from strumento  WHERE data_prossima_verifica IS NOT NULL AND id__company_=? AND id_cliente=?";
+				pst=con.prepareStatement(query);
+				
+				pst.setInt(1, user.getCompany().getId());
+				pst.setInt(2, user.getIdCliente());
+				
+				rs=pst.executeQuery();
+		
+			}else {
+				
+				query  = "select data_prossima_verifica from strumento  WHERE data_prossima_verifica IS NOT NULL AND id__company_=?";
+				pst=con.prepareStatement(query);
+				
+				pst.setInt(1, user.getCompany().getId());
+				
+				rs=pst.executeQuery();
+			}
+	}
+	
+	while(rs.next()) {
+	
+		String data=rs.getString(1);
+		
+			int i=1;
+			
+			if(listMap.get(data)!=null)
+			{
+				i= listMap.get(data)+1;
+			}
+			
+				listMap.put(data,i);
+			}
+
+    } 
+	catch(Exception e)
+     {
+    	 e.printStackTrace();
+     } 
+	return listMap;
+}
+
 }
 
 

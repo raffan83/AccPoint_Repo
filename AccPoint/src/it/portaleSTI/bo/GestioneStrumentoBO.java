@@ -454,7 +454,9 @@ public class GestioneStrumentoBO {
 
 	public static HashMap<String, Integer> getListaStrumentiScadenziario(UtenteDTO user) {
 		
-		return GestioneStrumentoDAO.getListaStrumentiScadenziario(user);
+		//return GestioneStrumentoDAO.getListaStrumentiScadenziario(user);
+		
+		return DirectMySqlDAO.getListaStrumentiScadenziario(user);
 
 	}
 

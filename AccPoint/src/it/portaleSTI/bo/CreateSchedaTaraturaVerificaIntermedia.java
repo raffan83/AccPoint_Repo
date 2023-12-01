@@ -328,7 +328,11 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 								arrayPs.add(evento.getEtichettatura());	
 							}
 							
-						}else {
+						
+						}else if(evento.getEtichettatura()==null && evento.getEnte()!=null) {
+							arrayPs.add(evento.getEnte());	
+						}
+						else {
 							arrayPs.add("");	
 						}
 						

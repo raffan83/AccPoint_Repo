@@ -1,6 +1,8 @@
 package it.portaleSTI.DTO;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AMAttivitaManutenzioneDTO {
 	
@@ -10,8 +12,15 @@ public class AMAttivitaManutenzioneDTO {
 	private int periodicita;
 	private Date dataUltimaManutenzione;
 	private Date dataProssimaManutenzione;
+	Set<AMInterventoDTO> listaInterventi = new HashSet<AMInterventoDTO>(0);
 	
 	
+	public Set<AMInterventoDTO> getListaInterventi() {
+		return listaInterventi;
+	}
+	public void setListaInterventi(Set<AMInterventoDTO> listaInterventi) {
+		this.listaInterventi = listaInterventi;
+	}
 	public int getId() {
 		return id;
 	}
@@ -50,6 +59,6 @@ public class AMAttivitaManutenzioneDTO {
 		this.periodicita = periodicita;
 	}
 	
-	
+
 
 }

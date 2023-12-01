@@ -54,10 +54,32 @@ int anno = (Integer) request.getSession().getAttribute("anno");
                <th>CLIENTE <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
                <th>COMMESSA <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
                 <th>STATO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
-                           
+           <c:set var ="nuovoAnno" value="${anno + 1}"></c:set>                
          <c:forEach var="day" begin="${start_date }" end="${end_date }" step="1">
+         
       <% 
-        int dayValue = (Integer) pageContext.getAttribute("day");
+      int dayValue =  (Integer) pageContext.getAttribute("day");
+   
+      int end_date =  (Integer) request.getSession().getAttribute("end_date");
+     
+/*       if(LocalDate.ofYearDay(anno, 1).isLeapYear()){
+    	 if(dayValue>366){
+    		 System.out.println("Bisestile");
+    		 dayValue =  dayValue-366;
+    		 anno = Integer.parseInt(""+pageContext.getAttribute("nuovoAnno"));
+    	 }
+    	  
+      }else{ */
+    	  if(dayValue>365){
+     		 dayValue = dayValue-365 ;
+     		 anno = Integer.parseInt(""+pageContext.getAttribute("nuovoAnno"));
+     	 }
+    //  }
+      if (dayValue <= 0) {
+    	    dayValue = 1;
+    	}
+      
+ 
         LocalDate localDate = LocalDate.ofYearDay(anno, dayValue);
         LocalDateTime localDateTime = localDate.atStartOfDay();
         Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());

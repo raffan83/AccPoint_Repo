@@ -1312,7 +1312,7 @@ public class GestioneFormazioneBO {
 		JsonObject obj = new JsonObject();
 		Gson g = new Gson();
 		boolean esito = true;
-		String messaggio = "";
+		String messaggio = "Attenzione! Formato codice fiscale errato per ";
 		
 		ArrayList<ForPartecipanteDTO> lista = new ArrayList<ForPartecipanteDTO>();
 		PdfReader reader = new PdfReader(fileItem.getInputStream());
@@ -1483,8 +1483,8 @@ public class GestioneFormazioneBO {
 					
 					
 				}else {
-					messaggio = "Attenzione! Formato codice fiscale errato per "+nominativo;
-					break;
+					messaggio += "<br>"+ nominativo;
+					
 				}
 				
 			}

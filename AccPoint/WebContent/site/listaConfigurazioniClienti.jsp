@@ -178,7 +178,7 @@
 		
 		<div class="col-md-12">
 		<input type="hidden" name="seleziona_tutte" id="seleziona_tutte">
-		<input type="hidden" name="formato_mese_anno" id="formato_mese_anno">
+		<input type="hidden" name="formato_mese_anno" id="formato_mese_anno" value="N">
 
 			<!-- <a class="btn btn-primary" id="salva_btn" onClick="inserisciNuovaConfigurazione()">Salva</a> -->
 			<button class="btn btn-primary pull-right" id="salva_btn" type="submit">Salva</button>

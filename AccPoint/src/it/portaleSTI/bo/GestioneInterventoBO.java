@@ -359,7 +359,7 @@ public class GestioneInterventoBO {
 		return esito;
 	}
 	
-	private static String calcolaIndicePrestazione(ArrayList<PuntoMisuraDTO> listaPuntiMisura) {
+	private static String calcolaIndicePrestazione(ArrayList<PuntoMisuraDTO> listaPuntiMisura) throws Exception {
 		
 		BigDecimal max = BigDecimal.ZERO;
 		String indice = null;
@@ -369,7 +369,7 @@ public class GestioneInterventoBO {
 			return null;
 		}
 		for (PuntoMisuraDTO punto : listaPuntiMisura) {
-			if(!punto.getTipoProva().equals("D")){
+			if(!punto.getTipoProva().equals("D") && punto.getApplicabile().equals("S")){
 				BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),3,RoundingMode.HALF_UP);
 				if(indice_prestazione.compareTo(max)==1) {
 					max = indice_prestazione;

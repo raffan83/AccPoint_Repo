@@ -272,10 +272,16 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			ArrayList<StrumentoDTO> lista_strumenti = null;
 			String id_cliente = request.getParameter("id_cliente");
 			String id_sede = request.getParameter("id_sede");
+			String id_company = request.getParameter("id_company");
+			
+			if(id_company==null) {
+				id_company = ""+cmp.getId();
+			}
+			
 			if(id_cliente!=null && !id_cliente.equals("") && id_sede!=null && !id_sede.equals("")) {
-				lista_strumenti = GestioneStrumentoDAO.getListaStrumenti(id_cliente,id_sede,cmp.getId(),session, user);				
+				lista_strumenti = GestioneStrumentoDAO.getListaStrumenti(id_cliente,id_sede,Integer.parseInt(id_company),session, user);				
 			}else {
-				lista_strumenti = GestioneStrumentoBO.getlistaStrumentiFromCompany(cmp.getId(),session);	
+				lista_strumenti = GestioneStrumentoBO.getlistaStrumentiFromCompany(Integer.parseInt(id_company),session);	
 			}			
 			
 			JsonObject myObj = new JsonObject();

@@ -484,7 +484,7 @@
               		<c:if test="${lista_decentramento.get(0).getMassa()!=null }"> 
               		<li class="" id="tab3"><a href="#decentramento" data-toggle="tab" aria-expanded="false"   id="decentramentoTab">Decentramento</a></li>
               		</c:if>
-              		<li class="" id="tab4"><a href="#linearita" data-toggle="tab" aria-expanded="false"   id="linearitaTab">Linearità</a></li>
+              		<li class="" id="tab4"><a href="#linearita" data-toggle="tab" aria-expanded="false"   id="linearitaTab">Pesatura</a></li>
               		 <c:if test="${misura.verStrumento.tipologia.id==2 }"> 
               		 <c:if test="${lista_accuratezza.get(0).getMassa()!=null }"> 
               		<li class="" id="tab5"><a href="#accuratezza" data-toggle="tab" aria-expanded="false"   id="accuratezzaTab">Accuratezza</a></li>

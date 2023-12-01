@@ -659,7 +659,7 @@ public static void sendEmailDocumento(DocumTLDocumentoDTO documento, String mail
 		  email.setHtmlMsg("<html>Il documento "+documento.getNome_documento()+" &egrave scaduto! "
 			  		+ "Fai click sul link per ricaricare il documento aggiornato"
 			  		+ "<br /> "
-			  		+ "http://portale.ecisrl.it/FormInputDoc/index.jsp?id_documento="+Utility.encryptData(documento.getId()+"")
+			  		+ "https://portale.ecisrl.it/FormInputDoc/index.jsp?id_documento="+Utility.encryptData(documento.getId()+"")
 			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
 			  		//+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.PATH_FOLDER_LOGHI +"\\sito_calver.png"+" \"></html>");
 
@@ -834,7 +834,7 @@ public static void sendEmailAccettazioneConsegna(ConsegnaDpiDTO consegna, Servle
 				  +"<br>DESCRIZIONE: "+consegna.getDpi().getDescrizione()
 				  +"<br>MODELLO: " +consegna.getDpi().getModello()
 				  //+"<br><br>http://portale.ecisrl.it/FormInputDoc/accettazioneDpi.jsp?id_consegna="+Utility.encryptData(""+consegna.getId())
-				  +"<br><br><a class='btn btn-primary' href='http://portale.ecisrl.it/FormInputDoc/accettazioneDpi.jsp?id_consegna="+Utility.encryptData(""+consegna.getId())+"'> Clicca qui per accettare la consegna</a>"
+				  +"<br><br><a class='btn btn-primary' href='https://portale.ecisrl.it/FormInputDoc/accettazioneDpi.jsp?id_consegna="+Utility.encryptData(""+consegna.getId())+"'> Clicca qui per accettare la consegna</a>"
 				  
 			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
 			  		//+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.PATH_FOLDER_LOGHI +"\\sito_calver.png"+" \"></html>");
@@ -877,7 +877,7 @@ public static void sendEmailRiconsegnaDPI(ConsegnaDpiDTO consegna, ServletContex
 				  +"<br>DESCRIZIONE: "+consegna.getDpi().getDescrizione()
 				  +"<br>MODELLO: " +consegna.getDpi().getModello()
 				  +"<br>MOTIVAZIONE: "+consegna.getRestituzione().getMotivazione()
-				  +"<br><br><a class='btn btn-primary' href='http://portale.ecisrl.it/FormInputDoc/accettazioneDpi.jsp?id_consegna="+Utility.encryptData(""+consegna.getId())+"&id_riconsegna="+Utility.encryptData(""+consegna.getRestituzione().getId())+"'> Clicca qui per confermare la riconsegna</a>"
+				  +"<br><br><a class='btn btn-primary' href='https://portale.ecisrl.it/FormInputDoc/accettazioneDpi.jsp?id_consegna="+Utility.encryptData(""+consegna.getId())+"&id_riconsegna="+Utility.encryptData(""+consegna.getRestituzione().getId())+"'> Clicca qui per confermare la riconsegna</a>"
 				  
 				  
 			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");

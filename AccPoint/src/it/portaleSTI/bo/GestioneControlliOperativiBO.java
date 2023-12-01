@@ -68,7 +68,7 @@ public class GestioneControlliOperativiBO {
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(today);
-		cal.add(Calendar.DATE, 10);
+		cal.add(Calendar.DATE, 3);
 		Date nextDate = cal.getTime();
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");

@@ -2705,9 +2705,23 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 
 					
 			        
-			        int start_date = inizioBimestre.getDayOfYear();
-			        int end_date = fineBimestre.getDayOfYear();
-					
+			        int start_date = 0; 
+			        int end_date = 0; 
+			        
+					if(inizioBimestre.getYear() == fineBimestre.getYear()) {
+						start_date = inizioBimestre.getDayOfYear();
+				        end_date = fineBimestre.getDayOfYear();
+					}else if(inizioBimestre.getYear() < fineBimestre.getYear()) {
+						start_date = inizioBimestre.getDayOfYear();
+						 if(LocalDate.ofYearDay(Integer.parseInt(anno), 1).isLeapYear()){
+							 end_date = fineBimestre.getDayOfYear() +366;
+						 }else {
+							 end_date = fineBimestre.getDayOfYear() +365;
+						 }
+				        
+					}
+			        
+			        
 //					int daysNumber = 365;
 //					if(LocalDate.ofYearDay(Integer.parseInt(anno), 1).isLeapYear()) {
 //						daysNumber = 366;

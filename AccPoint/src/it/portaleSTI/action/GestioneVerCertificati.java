@@ -439,7 +439,10 @@ public class GestioneVerCertificati extends HttpServlet {
 					UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);
 					
 					GestioneVerCertificatoBO.addFirmaResponsabile(utente_firma, certificato, false);
-					GestioneVerCertificatoBO.addFirmaResponsabile(utente_firma, certificato, true);
+					if(certificato.getNomeRapporto()!=null) {
+						GestioneVerCertificatoBO.addFirmaResponsabile(utente_firma, certificato, true);
+					}
+					
 					myObj = ArubaSignService.signVerificazione(utente_firma.getIdFirma(),certificato);
 					
 					//myObj.addProperty("success", true);

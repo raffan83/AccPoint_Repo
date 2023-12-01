@@ -329,7 +329,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         <div class="col-sm-2">
           <input class="form-control" id="strumento" name="strumento" value="<%if(campione.getId_strumento()!=null){out.println(campione.getId_strumento());}%>" readonly> 
     </div>
-    <div class="col-sm-4"><a class="btn btn-primary"onClick="caricaListaStrumenti()">Seleziona</a></div>
+    <div class="col-sm-4"><a class="btn btn-primary"onClick="caricaListaStrumenti(<%=campione.getCompany().getId()%>)">Seleziona</a></div>
        </div> 
          <%if(campione.getCampione_verificazione()==1){      	%>
         
@@ -397,9 +397,9 @@ $('#check_verificazione_mod').on('ifClicked',function(e){
 
 
 
-function caricaListaStrumenti(){
+function caricaListaStrumenti(id_company){
 	
-	exploreModal("listaStrumentiSedeNew.do","action=lista_strumenti_campione","#strumenti_content");
+	exploreModal("listaStrumentiSedeNew.do","action=lista_strumenti_campione&id_company="+id_company,"#strumenti_content");
 	$('#modalStrumenti').modal();
 	
  	$('#modalStrumenti').on('shown.bs.modal', function (){

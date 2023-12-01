@@ -208,6 +208,9 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 					}
 					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
 					
+					if(formato_mese_anno.equals("")) {
+						formato_mese_anno = "N";
+					}
 					if(seleziona_tutte.equals("YES")) {
 						ArrayList<SedeDTO> lista_sedi_cliente = GestioneAnagraficaRemotaBO.getSediFromCliente(listaSedi, cliente.get__id());						
 						ArrayList<String> lista_id_sedi_esistenti = new ArrayList<String>(); 
@@ -501,6 +504,10 @@ public class GestioneConfigurazioniClienti extends HttpServlet {
 					}
 					
 					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
+					
+					if(formato_mese_anno.equals("")) {
+						formato_mese_anno = "N";
+					}
 					
 					if(seleziona_tutte.equals("YES")) {
 						ArrayList<SedeDTO> lista_sedi_cliente = GestioneAnagraficaRemotaBO.getSediFromCliente(listaSedi, cliente.get__id());

@@ -1067,7 +1067,7 @@ public class CreateVerRapporto {
 				if(tipologia_strumento == 2 && lista_accuratezza.size()>0 && lista_accuratezza.get(0).getMassa()!=null) {
 					 vl_criteri = cmp.verticalList(cmp.text("CRITERI").setStyle(stl.style().setFontName("Trebuchet MS")), 
 								cmp.horizontalList(cmp.text("  - Per la/le prova/e di ripetibilità:").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(160),
-										cmp.text("Pmax - Pmin").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(62),
+										cmp.text("Pmax - Pmin").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(61),
 										cmp.text(" ≤ |EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35),
 										cmp.text("p").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
 										cmp.text("|").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35)).setGap(0),
@@ -1089,7 +1089,7 @@ public class CreateVerRapporto {
 					
 					 vl_criteri = cmp.verticalList(cmp.text("CRITERI").setStyle(stl.style().setFontName("Trebuchet MS")), 
 								cmp.horizontalList(cmp.text("  - Per la/le prova/e di ripetibilità:").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(160),
-										cmp.text("Pmax - Pmin").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(62),
+										cmp.text("Pmax - Pmin").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(61),
 										cmp.text(" ≤ |EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35),
 										cmp.text("p").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
 							 			cmp.text("|").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS"))).setGap(0),
@@ -1135,7 +1135,7 @@ public class CreateVerRapporto {
 
 				 vl_criteri = cmp.verticalList(cmp.text("CRITERI").setStyle(stl.style().setFontName("Trebuchet MS")), 
 						cmp.horizontalList(cmp.text("  - Per la/le prova/e di ripetibilità:").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(160),
-								cmp.text("Pmax - Pmin").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(62),
+								cmp.text("Pmax - Pmin").setStyle(stl.style().italic().setFontName("Trebuchet MS")).setFixedWidth(61),
 								cmp.text(" ≤ |EMT").setStyle(stl.style().setFontName("Trebuchet MS")).setFixedWidth(35),
 						cmp.text("p").setFixedWidth(3).setStyle(stl.style().setVerticalAlignment(VerticalAlignment.BOTTOM).italic().setFontSize(7).setFontName("Trebuchet MS")),
 			 			cmp.text("|").setFixedWidth(35).setStyle(stl.style().setFontName("Trebuchet MS"))).setGap(0),
@@ -1654,7 +1654,7 @@ public class CreateVerRapporto {
 
 			
 			report.addColumn(col.column("Rif.","rif", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(25));			
-	 		report.addColumn(col.column("Massa  <br> <i>L </i> <br> "+"/"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(30));
+	 		report.addColumn(col.column("Massa  <br> <i>L </i> /"+um,"massa", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(30));
 	 	//	report.addColumn(col.column("Indicazione Salita </i> <br> I </i> <br> "+"/"+um,"indicazione_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		
 	 		if(strumento.getTipo().getId()==4) {
@@ -1805,7 +1805,7 @@ public class CreateVerRapporto {
 			DRDataSource dataSource = new DRDataSource(listaCodici);
 			for (VerRipetibilitaDTO item : lista_ripetibilita) {
 				if(item.getMpe()!=null && item.getCampo() == campo) {
-					dataSource.add("± EMT <br>(associato al \"carico di prova\"):", Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()), um);
+					dataSource.add("± EMT <br>(associato al \"carico di prova\" <i>p</i>):", Utility.changeDotComma(item.getMpe().stripTrailingZeros().toPlainString()), um);
 					break;
 				}
 			}

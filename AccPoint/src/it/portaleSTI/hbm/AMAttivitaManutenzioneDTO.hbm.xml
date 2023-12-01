@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.AMAttivitaManutenzioneDTO" table="am_attivita_manutenzione">
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>	
+       <property name="descrizioneManutenzione" type="java.lang.String">
+            <column name="descrizione_manutenzione" />
+        </property>
+        
+       <many-to-one name="sistema" class="it.portaleSTI.DTO.AMSistemaDTO" fetch="join" lazy="false">
+            <column name="id_sistema" />
+        </many-to-one>
+        
+
+ 		<property name="dataUltimaManutenzione" type="java.sql.Date">
+            <column name="data_ultima_manutenzione" />
+        </property>
+        
+         		<property name="dataProssimaManutenzione" type="java.sql.Date">
+            <column name="data_prossima_manutenzione" />
+        </property>
+	
+	<property name="periodicita" type="int">
+            <column name="pariodicita" />
+        </property>
+        
+          <set name="listaInterventi" table="am_intervento"
+            inverse="false" lazy="false" fetch="select" cascade="all">
+            <key>
+                <column name="id_attivita_manutenzione" not-null="true" />
+            </key>
+           <one-to-many class="it.portaleSTI.DTO.AMInterventoDTO" />
+                        
+        </set>
+        
+	</class>
+</hibernate-mapping>

@@ -631,14 +631,12 @@ function getGruppiFromCorso(mod, id_gruppo){
 					html = html+'<option value="'+gruppi[i].id+'">'+gruppi[i].descrizione+'</option>';
 				}
 				
-				if(mod!=null){	
+				if(mod!=null &&  id_gruppo != null && id_gruppo!=''){	
 					$('#gruppi_mod').html(html);
+					$('#gruppi_mod').attr("disabled", false);					
 					$('#gruppi_mod').val(id_gruppo)
-					$('#gruppi_mod').attr("disabled", false);
+					$('#gruppi_mod').change()
 					getMembriGruppo('mod');
-					
-					
-					
 					
 				}else{
 					$('#gruppi').html(html);

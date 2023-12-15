@@ -2452,8 +2452,8 @@ public class DirectMySqlDAO {
 						+ "portata_min_C1,portata_max_C1,div_ver_C1,div_rel_C1,numero_div_C1,"
 						+ "portata_min_C2,portata_max_C2,div_ver_C2,div_rel_C2,numero_div_C2,"
 						+ "portata_min_C3,portata_max_C3,div_ver_C3,div_rel_C3,numero_div_C3,"
-						+ "id_cliente,id_sede,anno_marcatura_CE,data_ms,id_tipologia,freq_mesi,creato,famiglia_strumento,tipo_legalizzazione) "
-						+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+						+ "id_cliente,id_sede,anno_marcatura_CE,data_ms,id_tipologia,freq_mesi,creato,famiglia_strumento,tipo_legalizzazione,luogo_verifica) "
+						+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
 				pstINS=conSQLLite.prepareStatement(sqlInsert);
 				pstMatricola=conSQLLite.prepareStatement("INSERT INTO ver_lista_matricole(matricola) VALUES(?)");
@@ -2518,6 +2518,8 @@ public class DirectMySqlDAO {
 			        }
 				
 				 pstINS.setInt(34,indiceLegalizzazione);
+				 
+				 pstINS.setInt(35,intervento.getIn_sede_cliente());
 				 
 				if(controlloID(id,intervento.getInterventoStrumenti()))
 				{

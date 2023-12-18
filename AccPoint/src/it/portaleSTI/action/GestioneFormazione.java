@@ -2868,7 +2868,16 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						pianificazione.setnUtenti(Integer.parseInt(n_utenti));
 					}
 					int anno = (int) request.getSession().getAttribute("anno");
-			        LocalDate localDate = LocalDate.ofYearDay(anno, Integer.parseInt(day));
+					LocalDate localDate = null;
+					if(Integer.parseInt(day)>366 && LocalDate.ofYearDay(anno, 1).isLeapYear()) {
+						localDate = LocalDate.ofYearDay(anno, (Integer.parseInt(day)-366));
+					}else if(Integer.parseInt(day)>365 && !LocalDate.ofYearDay(anno, 1).isLeapYear()) {
+						localDate = LocalDate.ofYearDay(anno, (Integer.parseInt(day)-365));
+					}else {
+						localDate = LocalDate.ofYearDay(anno, Integer.parseInt(day));
+					}
+					
+			        
 			        LocalDateTime localDateTime = localDate.atStartOfDay();
 			        Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 					
@@ -3208,7 +3217,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					    }
 					}		
 					
-					if(id_gruppo!=null && !id_gruppo.equals("")) {
+					if(id_gruppo!=null && !id_gruppo.equals("") && !id_gruppo.equals("0")) {
 						configurazione.setId_gruppo(Integer.parseInt(id_gruppo));
 						for (ForGruppoMoodleDTO gruppo : lista_gruppi_moodle) {
 						    if (gruppo.getId() == Integer.parseInt(id_gruppo)) {
@@ -3225,7 +3234,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					configurazione.setFrequenza_invio(Integer.parseInt(frequenza));
 					configurazione.setData_inizio_invio(df.parse(data_inizio_invio));
-					if(df.parse(data_inizio_invio).equals(new Date()) || df.parse(data_inizio_invio).before(new Date())) {
+					if(df.parse(data_prossimo_invio).equals(new Date()) || df.parse(data_prossimo_invio).before(new Date())) {
 						Calendar calendar = Calendar.getInstance();
 						calendar.add(Calendar.DAY_OF_YEAR, 1);
 
@@ -3305,7 +3314,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					
 					
-					if(id_gruppo!=null && !id_gruppo.equals("")) {
+					if(id_gruppo!=null && !id_gruppo.equals("") && !id_gruppo.equals("0")) {
 						configurazione.setId_gruppo(Integer.parseInt(id_gruppo));
 						for (ForGruppoMoodleDTO gruppo : lista_gruppi_moodle) {
 						    if (gruppo.getId() == Integer.parseInt(id_gruppo)) {
@@ -3323,7 +3332,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					configurazione.setFrequenza_invio(Integer.parseInt(frequenza));
 					configurazione.setData_inizio_invio(df.parse(data_inizio_invio));
 					
-					if(df.parse(data_inizio_invio).equals(new Date()) || df.parse(data_inizio_invio).before(new Date())) {
+					if(df.parse(data_prossimo_invio).equals(new Date()) || df.parse(data_prossimo_invio).before(new Date())) {
 						Calendar calendar = Calendar.getInstance();
 						calendar.add(Calendar.DAY_OF_YEAR, 1);
 

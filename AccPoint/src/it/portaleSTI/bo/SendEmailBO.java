@@ -578,7 +578,20 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 			}
 			if(origine.split(";").length>3) {
 				
-				msg.append(" - " + origine.split(";")[3]+"<br>");
+				msg.append(" - " + origine.split(";")[3]);
+				
+				if(origine.split(";").length>4) {
+					
+					msg.append(" - " + origine.split(";")[4]);
+				}else {
+					msg.append("<br>");
+				}
+				if(origine.split(";").length>5) {
+					
+					msg.append(" - " + origine.split(";")[5]+"<br>");
+				}else {
+					msg.append("<br>");
+				}
 			}else {
 				msg.append("<br>");
 			}

@@ -447,7 +447,7 @@
                	  	
      
                <input type='text' class="form-control" id="oggetto_email_mod" name="oggetto_email_mod" required>
-     
+     <input type='hidden' id="id_gruppo_mod">
        			
        	</div>       	
        </div><br>
@@ -553,32 +553,30 @@ function eliminaConfigurazione(){
 	
 }
 
-function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, data_inizio, frequenza, data_prossimo_invio, stato, data_scadenza, oggetto_email){
-	
-	$('#id_configurazione').val(id_configurazione);
-	$('#corsi_mod').val(id_corso);
-	$('#corsi_mod').change();
-	
-	
-	$('#oggetto_email_mod').val(oggetto_email);
 
-	$('#frequenza_mod').val(frequenza);
-	$('#data_inizio_invio_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy"));
-	$('#data_prossimo_invio_mod').val(Date.parse(data_prossimo_invio).toString("dd/MM/yyyy"));
-	if(data_scadenza!=null && data_scadenza!=''){
-		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));
-	}
-	
-	if(id_gruppo!=null && id_gruppo!=0){
-		getGruppiFromCorso("mod", id_gruppo)	
-		
-		
-	}else{
-	
-		
-		$('#myModalModificaConfigurazione').modal();
-	}
+
+
+
+function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, data_inizio, frequenza, data_prossimo_invio, stato, data_scadenza, oggetto_email) {
+    
+	$('#id_gruppo_mod').val(id_gruppo);
+	$('#id_configurazione').val(id_configurazione);
+    $('#corsi_mod').val(id_corso);
+    $('#corsi_mod').change()
+    //$('#gruppi_mod').val(id_gruppo);
+  //  $('#gruppi_mod').change()
+    $('#oggetto_email_mod').val(oggetto_email);
+    $('#frequenza_mod').val(frequenza);
+    $('#data_inizio_invio_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy"));
+    $('#data_prossimo_invio_mod').val(Date.parse(data_prossimo_invio).toString("dd/MM/yyyy"));
+
+    if (data_scadenza != null && data_scadenza != '') {
+        $('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));
+    }
+
+
 }
+
 
 var columsDatatables = [];
 
@@ -609,44 +607,58 @@ $("#tabForConf").on( 'init.dt', function ( e, settings ) {
 
 function getGruppiFromCorso(mod, id_gruppo){
 	
+	
+
 	if(mod!=null){
 		var corso = $('#corsi_mod').val();
 	}else{
 		var corso = $('#corsi').val();	
 	}
 	
-	
-	dataObj={};
-	dataObj.corso = corso;
-	
-	callAjax(dataObj, "gestioneFormazione.do?action=gruppi_corso",function(data, textStatus){
+	if(corso!=null && corso!=''){
+		dataObj={};
+		dataObj.corso = corso;
 		
-		if(data.success){
+		callAjax(dataObj, "gestioneFormazione.do?action=gruppi_corso",function(data, textStatus){
 			
-			var gruppi = data.gruppi;
+			if(data.success){
 				
-				var html = '<option value=""></option>';
-				html = html+'<option value="0">Nessun gruppo</option>';
-				for (var i = 0; i < gruppi.length; i++) {
-					html = html+'<option value="'+gruppi[i].id+'">'+gruppi[i].descrizione+'</option>';
-				}
-				
-				if(mod!=null &&  id_gruppo != null && id_gruppo!=''){	
-					$('#gruppi_mod').html(html);
-					$('#gruppi_mod').attr("disabled", false);					
-					$('#gruppi_mod').val(id_gruppo)
-					$('#gruppi_mod').change()
-					getMembriGruppo('mod');
+				var gruppi = data.gruppi;
 					
-				}else{
-					$('#gruppi').html(html);
-					$('#gruppi').attr("disabled", false);
-				}
+					var html = '<option value=""></option>';
+					html = html+'<option value="0">Nessun gruppo specificato</option>';
+					for (var i = 0; i < gruppi.length; i++) {
+						html = html+'<option value="'+gruppi[i].id+'">'+gruppi[i].descrizione+'</option>';
+					}
+					
+					if(id_gruppo == null || id_gruppo ==''){
+						id_gruppo = "0";
+					}
+					
+					if(mod!=null){	
+						$('#gruppi_mod').html(html);
+						$('#gruppi_mod').attr("disabled", false);	
+						if($('#id_gruppo_mod').val()!=null && $('#id_gruppo_mod').val()!=''){
+					/* 	 if(id_gruppo!=null && id_gruppo!=''){ */
+							$('#gruppi_mod').val($('#id_gruppo_mod').val())
+							$('#gruppi_mod').change()						
+						}else{
+							$('#gruppi_mod').val(0)
+							$('#gruppi_mod').change()	
+						}
+						//
+						
+					}else{
+						$('#gruppi').html(html);
+						$('#gruppi').attr("disabled", false);
+					}
+				
+			}
 			
-		}
-		
-		
-	});
+			
+		});
+	}
+	
 	
 }
 
@@ -661,6 +673,9 @@ function getMembriGruppo(mod){
 		var corso = $('#corsi').val();
 	}
 
+	if(gruppo==''){
+		gruppo = "0";
+	}
 
 if(gruppo!=null && gruppo!=''){
 	dataObj={};
@@ -723,7 +738,7 @@ if(gruppo!=null && gruppo!=''){
 			
 		}
 		
-		
+		$('#id_gruppo_mod').val(null)
 	});
 }
 	

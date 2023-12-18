@@ -1136,6 +1136,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		
 		ArrayList<String> lista_non_segnalati = new ArrayList<String>();
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 		for (MagPaccoDTO pacco : lista) {
 			
@@ -1155,8 +1156,12 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 					if(pacco.getCommessa()!=null) {
 						toAdd = toAdd +";"+pacco.getCommessa();
 					}
-														
-					
+					if(pacco.getData_arrivo()!=null) {
+						toAdd = toAdd +";Data arrivo: "+df.format(pacco.getData_arrivo()); 
+					}
+					if(pacco.getData_lavorazione()!=null) {
+						toAdd = toAdd +";Data creazione: "+df.format(pacco.getData_lavorazione()); 
+					}
 					
 					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(pacco.getOrigine(), session);
 					
@@ -1189,6 +1194,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 		if(lista_origini.size()>0 && Costanti.MAIL_DEST_ALERT_PACCO.split(";").length>0) {
 			SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);
+			
 		}
 		
 		session.getTransaction().commit();
@@ -1268,6 +1274,24 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 			
 			return result;
+	}
+
+
+	public static ArrayList<MagItemDTO> getListaRilieviSpediti(String origine, int id_tipo_proprio, Session session) {
+		
+		ArrayList<MagItemDTO> lista = null;
+		
+		
+		
+		Query query = session.createQuery("select a.item from MagItemPaccoDTO a where a.pacco.origine = :_origine and a.item.id_tipo_proprio = :_id_tipo_proprio and (a.pacco.stato_lavorazione.id = 3 or a.pacco.stato_lavorazione.id = 4)");
+		query.setParameter("_origine", origine);
+		query.setParameter("_id_tipo_proprio", id_tipo_proprio);
+
+		lista = (ArrayList<MagItemDTO>)query.list();	
+		
+	
+
+		return lista;
 	}
 
 

@@ -1770,6 +1770,8 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
     	
     	$('.select2').select2();
     	
+    	$('#check_lat').trigger('ifClicked');
+    	
    	 $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
 	 });

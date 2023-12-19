@@ -1815,7 +1815,7 @@ sottoposto a verificazione</td>
  <div class="row">
 
               <div class="col-xs-3">
-              <label style="margin-top:15px">Posizione organismo (g)</label>
+              <label style="margin-top:15px">Posizione organismo (g) / Luogo verificazione (g)</label>
                </div>
                
                <div class="col-xs-2">
@@ -1842,7 +1842,7 @@ sottoposto a verificazione</td>
                
                 <div class="row">
               <div class="col-xs-3">
-              <label>Posizione utilizzo (g)</label>
+              <label>Posizione utilizzo (g) / Servizio (g)</label>
                </div>
                
                  <div class="col-xs-2">

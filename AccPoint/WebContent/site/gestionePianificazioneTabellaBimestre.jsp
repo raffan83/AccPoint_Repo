@@ -129,8 +129,18 @@ int anno = (Integer) request.getSession().getAttribute("anno");
          <td>${commessa.ID_COMMESSA}</td>
          <td id="stato_${commessa.ID_COMMESSA.replace('/','')}"></td>
          <c:forEach var="day" begin="${start_date }" end="${end_date}" step="1">
-
-         	<td id="${commessa.ID_COMMESSA.replace('/','')}_${day}"></td> 
+			<c:if test="${LocalDate.ofYearDay(anno, 1).isLeapYear() && day>366 }">
+			<td id="${commessa.ID_COMMESSA.replace('/','')}_${day-366}"></td> 
+			</c:if>
+			<c:if test="${!LocalDate.ofYearDay(anno, 1).isLeapYear() && day>365 }">
+			<td id="${commessa.ID_COMMESSA.replace('/','')}_${day-365}"></td> 
+			</c:if>
+			<c:if test="${LocalDate.ofYearDay(anno, 1).isLeapYear() && day<=366 }">
+			<td id="${commessa.ID_COMMESSA.replace('/','')}_${day}"></td> 
+			</c:if>
+         	<c:if test="${!LocalDate.ofYearDay(anno, 1).isLeapYear() && day<=365 }">
+			<td id="${commessa.ID_COMMESSA.replace('/','')}_${day}"></td> 
+			</c:if>
          	<%-- <td id="${commessa.ID_COMMESSA.replace('/','')}_${day}" ondblclick="modalPianificazione('${day}', '${commessa.ID_COMMESSA }')"></td> --%>
          	<%-- <td id="${commessa.ID_COMMESSA.replace('/','')}_${day}"></td> --%>
          </c:forEach>

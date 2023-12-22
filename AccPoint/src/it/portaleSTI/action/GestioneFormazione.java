@@ -16,6 +16,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -106,10 +107,13 @@ public class GestioneFormazione extends HttpServlet {
 		
 		String action = request.getParameter("action");
 		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		JsonObject myObj = new JsonObject();
+		try {
 		
 		if(action!=null && action.equals("lista_pianificazioni")) {
-			Session session=SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
+	
 			String anno = request.getParameter("anno");
 			String filtro_tipo_pianificazioni = request.getParameter("filtro_tipo_pianificazioni");
 			
@@ -119,7 +123,19 @@ public class GestioneFormazione extends HttpServlet {
 			Gson g = new Gson();
 			ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni = GestioneFormazioneBO.getListaPianificazioni(anno, filtro_tipo_pianificazioni,session);
 				
-			JsonObject myObj = new JsonObject();
+			Date today = new Date();
+			if(today.after(new GregorianCalendar(Integer.parseInt(anno), Calendar.NOVEMBER, 01).getTime())){
+				ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni_anno_succ = GestioneFormazioneBO.getListaPianificazioni((Calendar.getInstance().get(Calendar.YEAR)+1)+"", filtro_tipo_pianificazioni,session);
+				lista_pianificazioni.addAll(lista_pianificazioni_anno_succ);
+			}
+			
+			if(today.before(new GregorianCalendar(Integer.parseInt(anno), Calendar.FEBRUARY, 01).getTime())) {
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni_anno_rec = GestioneFormazioneBO.getListaPianificazioniData((Calendar.getInstance().get(Calendar.YEAR)-1)+"-11-01", ""+df.format(today), session);
+				lista_pianificazioni.addAll(lista_pianificazioni_anno_rec);
+			}
+			
+			
 			PrintWriter out = response.getWriter();
 			myObj.addProperty("success", true);
 			myObj.add("lista_pianificazioni",g.toJsonTree(lista_pianificazioni));
@@ -137,7 +153,21 @@ public class GestioneFormazione extends HttpServlet {
 			doPost(request, response);		
 		}
 		
+		}catch(Exception e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+        	session.close();
 		
+				
+			PrintWriter out = response.getWriter();
+				
+			myObj.addProperty("success", false);
+	        request.getSession().setAttribute("exception", e);
+	        myObj = STIException.getException(e);
+	        out.print(myObj);
+        	
+			
+		}
 		
 				
 	}
@@ -2860,7 +2890,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					pianificazione.setNote(nota);
 					pianificazione.setDescrizione(descrizione);
 					pianificazione.setId_commessa(id_commessa);
-					pianificazione.setnCella(Integer.parseInt(day));
+				
 					pianificazione.setOra_inizio(ora_inizio);
 					pianificazione.setOra_fine(ora_fine);
 					pianificazione.setPausa_pranzo(check_pausa_pranzo);
@@ -2870,11 +2900,17 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					int anno = (int) request.getSession().getAttribute("anno");
 					LocalDate localDate = null;
 					if(Integer.parseInt(day)>366 && LocalDate.ofYearDay(anno, 1).isLeapYear()) {
+						anno = anno+1;
 						localDate = LocalDate.ofYearDay(anno, (Integer.parseInt(day)-366));
+						pianificazione.setnCella(Integer.parseInt(day)-366);
+						
 					}else if(Integer.parseInt(day)>365 && !LocalDate.ofYearDay(anno, 1).isLeapYear()) {
+						anno = anno+1;
 						localDate = LocalDate.ofYearDay(anno, (Integer.parseInt(day)-365));
+						pianificazione.setnCella(Integer.parseInt(day)-365);
 					}else {
 						localDate = LocalDate.ofYearDay(anno, Integer.parseInt(day));
+						pianificazione.setnCella(Integer.parseInt(day));
 					}
 					
 			        

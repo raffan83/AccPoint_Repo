@@ -366,7 +366,7 @@ function subTrimestre(data_inizio, anno){
 
 function addTrimestre(data_fine, anno){
 	
-	if(data_fine==365|| data_fine==366){
+	if(data_fine>=365|| data_fine>=366){
 		$('#anno').val(parseInt(anno)+1);
 		$('#anno').change()
 		data_fine = 1;

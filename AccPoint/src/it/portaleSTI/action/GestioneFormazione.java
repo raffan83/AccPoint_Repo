@@ -131,7 +131,7 @@ public class GestioneFormazione extends HttpServlet {
 			
 			if(today.before(new GregorianCalendar(Integer.parseInt(anno), Calendar.FEBRUARY, 01).getTime())) {
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni_anno_rec = GestioneFormazioneBO.getListaPianificazioniData((Calendar.getInstance().get(Calendar.YEAR)-1)+"-11-01", ""+df.format(today), session);
+				ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni_anno_rec = GestioneFormazioneBO.getListaPianificazioniData((Calendar.getInstance().get(Calendar.YEAR)-1)+"-11-01", ""+(Calendar.getInstance().get(Calendar.YEAR)-1)+"-12-31", session);
 				lista_pianificazioni.addAll(lista_pianificazioni_anno_rec);
 			}
 			

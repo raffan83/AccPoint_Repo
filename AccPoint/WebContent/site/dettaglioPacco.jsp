@@ -1133,6 +1133,8 @@ String permesso = "0";
 		<input type="hidden" class="pull-right" id="select_fornitore" name="select_fornitore" value=""> 
 		<input type="hidden" class="pull-right" id="configurazione" name="configurazione" > 
 		<input type="hidden" class="pull-right" id="ritardo" name="ritardo" value="${pacco.ritardo }">
+		<input type="hidden" class="pull-right" id="data_lavorazione" name="data_lavorazione" value="${pacco.data_lavorazione}">
+		
 		<!--  <input type="file" id="modifica_pezzi_rilievo_upload" name="modifica_pezzi_rilievo_upload[]" style="display:none" multiple> --> 
 		<input type="hidden" id="modifica_pezzi_rilievo_id" name="modifica_pezzi_rilievo_id" >
 		

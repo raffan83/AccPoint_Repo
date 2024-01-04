@@ -178,6 +178,7 @@ public class GestionePacco extends HttpServlet {
 		Map<String, String> filename_allegato_rilievo = new HashMap<String,String>();
 		String data_json_rilievi ="";
 		String modifica_pezzi_rilievo_id = "";
+		String data_lavorazione = "";
 		
 		FileItem pdf = null;
 		
@@ -390,6 +391,9 @@ public class GestionePacco extends HttpServlet {
 					}
 					if(item.getFieldName().equals("tipo_trasporto")) {
 						 tipo_trasporto =	item.getString();
+					}
+					if(item.getFieldName().equals("data_lavorazione")) {
+						data_lavorazione =	item.getString();
 					}
 					if(item.getFieldName().equals("tipo_porto")) {
 						 tipo_porto =	item.getString();
@@ -809,6 +813,10 @@ public class GestionePacco extends HttpServlet {
 			
 			if(id_pacco == null || id_pacco.equals("")) {
 				pacco.setData_lavorazione(new Date());	
+			}else {
+				if(!data_lavorazione.equals("")&& data_lavorazione!=null) {
+					pacco.setData_lavorazione(format.parse(data_lavorazione));
+				}
 			}
 			
 				

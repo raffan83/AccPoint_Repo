@@ -807,7 +807,10 @@ public class GestionePacco extends HttpServlet {
 				}
 			}
 			
-			pacco.setData_lavorazione(new Date());	
+			if(id_pacco == null || id_pacco.equals("")) {
+				pacco.setData_lavorazione(new Date());	
+			}
+			
 				
 			pacco.setStato_lavorazione(new MagStatoLavorazioneDTO(Integer.parseInt(stato_lavorazione), ""));
 			
@@ -1028,6 +1031,7 @@ public class GestionePacco extends HttpServlet {
 			request.getParameter("ddt");
 			String strumenti_json = request.getParameter("strumenti_json");
 			String sede_fornitore = request.getParameter("sede_fornitore");
+			String pezzi_json = request.getParameter("pezzi_json");
 			
 			ArrayList<MagPaccoDTO> lista_pacchi = (ArrayList<MagPaccoDTO>) request.getSession().getAttribute("lista_pacchi");
 		
@@ -1189,9 +1193,18 @@ public class GestionePacco extends HttpServlet {
 					if(stato_pacco.equals("2")) {
 						
 						ArrayList<Integer> lista_strumenti = new ArrayList<Integer>();
+						ArrayList<Integer> lista_pezzi = new ArrayList<Integer>();
 						String [] lista_id_strumenti = strumenti_json.split(";");
+						if(pezzi_json!=null && !pezzi_json.equals("")) {
+							String [] lista_pezzi_uscita = pezzi_json.split(";");
+							for(int i = 0; i<lista_pezzi_uscita.length; i++) {
+								lista_pezzi.add(Integer.parseInt(lista_pezzi_uscita[i]));
+								
+							}
+						}
 						for(int i = 0; i<lista_id_strumenti.length; i++) {
 							lista_strumenti.add(Integer.parseInt(lista_id_strumenti[i]));
+							
 						}
 						ArrayList<MagItemPaccoDTO> lista_item_pacco= GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
 						
@@ -1200,9 +1213,24 @@ public class GestionePacco extends HttpServlet {
 							MagItemPaccoDTO item_pacco = new MagItemPaccoDTO();
 							for(int j=0;j<lista_strumenti.size();j++) {								
 								if(lista_item_pacco.get(i).getItem().getId_tipo_proprio()==lista_strumenti.get(j)) {
-									item_pacco.setItem(lista_item_pacco.get(i).getItem());
+									if(lista_pezzi.size()>0) {
+										MagItemDTO item = new MagItemDTO();
+										item.setVariante(lista_item_pacco.get(i).getItem().getVariante());
+										item.setDisegno(lista_item_pacco.get(i).getItem().getDisegno());
+										item.setId_tipo_proprio(lista_item_pacco.get(i).getItem().getId_tipo_proprio());
+										item.setPezzi_ingresso(lista_pezzi.get(i));				
+										item.setTipo_item(lista_item_pacco.get(i).getItem().getTipo_item());
+										item_pacco.setItem(item);
+										item_pacco.setQuantita(lista_pezzi.get(i));
+										session.save(item);
+									}else {
+										item_pacco.setItem(lista_item_pacco.get(i).getItem());
+										item_pacco.setQuantita(lista_item_pacco.get(i).getQuantita());
+									}
+									
+									
 									item_pacco.setPacco(newPacco);
-									item_pacco.setQuantita(lista_item_pacco.get(i).getQuantita());
+									
 									item_pacco.setNote(lista_item_pacco.get(i).getNote());
 									GestioneMagazzinoBO.saveItemPacco(item_pacco, session);
 								}
@@ -1543,6 +1571,20 @@ public class GestionePacco extends HttpServlet {
 			
 			ArrayList<MagItemPaccoDTO> item_pacco_fornitore = GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
 			ArrayList<MagItemDTO> item_spediti = GestioneMagazzinoBO.getListaItemSpediti(Integer.parseInt(id_pacco), session);
+			
+			if(item_pacco_fornitore.size()>0 && item_pacco_fornitore.get(0).getItem().getTipo_item().getId()==4) {
+				
+				for (MagItemPaccoDTO item_pacco : item_pacco_fornitore) {
+					int somma = 0;
+					ArrayList<MagItemDTO> lista_rilievi_iviati = GestioneMagazzinoBO.getListaRilieviSpediti(item_pacco.getPacco().getOrigine(), item_pacco.getItem().getId_tipo_proprio(), session);
+					for (MagItemDTO magItemDTO : lista_rilievi_iviati) {
+						somma =somma+ magItemDTO.getPezzi_ingresso();
+					}
+				item_pacco.setGia_spediti(somma);	
+				}
+			}
+			
+			
 			session.close();
 			
 			request.getSession().setAttribute("item_pacco_fornitore", item_pacco_fornitore);

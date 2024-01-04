@@ -79,7 +79,7 @@ public class ScaricaListaCampioni extends HttpServlet {
 			String corteseAttenzione= request.getParameter("corteseAttenzione");
 			String stato= request.getParameter("gridRadios");
 			
-			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 			
 			ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId(), session);
 			ArrayList<CampioneDTO> listaCampioni = new ArrayList<CampioneDTO>();

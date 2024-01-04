@@ -1099,6 +1099,32 @@ ${pacco.id}
 </div>
 
 
+<div id="modalPezziInUscita" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabelFornitore">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Seleziona Numero Pezzi Da Inviare </h4>
+      </div>
+       <div class="modal-body">
+       <div id="body_pezzi_uscita"></div>
+       
+  
+   </div>
+  		
+      <div class="modal-footer">
+     
+		
+	<button class="btn btn-primary"  onClick="inviaItemUscitaRilievi()">Salva</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 
 <div id="myModalArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
   
@@ -1539,7 +1565,7 @@ function eliminaRilievoTable(disegno){
 }
 
 
-const editableCell = function(cell) {
+/* const editableCell = function(cell) {
 	
 	
 	  let original
@@ -1583,7 +1609,7 @@ const editableCell = function(cell) {
 	   	  
 	  
 	
-}
+} */
 
 
 function pacchiEsterno(){
@@ -2310,40 +2336,136 @@ function inserisciItem(){
 			pacco_selected=id_pacco;
 		} 
 	
+	 	
+	 	var isRilievi;
+	 	
+	 	
+	 	
+	 	function limitaValoreMax(id) {
+	 	
+	 		  var inputElement = document.getElementById("pezzi_uscita_"+id); // Sostituisci 'pezzi_uscita' con l'id del tuo input
+	 		  var valoreMassimo = parseInt(inputElement.getAttribute('max')); // Sostituisci con il tuo valore massimo
+
+	 		  // Aggiungi un evento di input all'elemento input
+	 		  inputElement.addEventListener('input', function() {
+	 		    // Controlla se il valore supera il massimo consentito
+	 		    if (parseInt(inputElement.value) > valoreMassimo) {
+	 		      // Se supera, imposta il valore al massimo consentito
+	 		      inputElement.value = valoreMassimo;
+	 		    }
+	 		  });
+	 		}
+	 	
 	function inviaItemUscita(){
 		
-		var strumenti=[];	
-			
-		   var tabella = $('#tabUscita').DataTable();
+		 var tabella = $('#tabUscita').DataTable();
 		   var data = tabella
 		     .rows()
 		     .data();
 		   
+			
+		
+		if(isRilievi=="1") {
+			
+			var str_html = "";
+			
+			
 			for(var i=0; i<data.length; i++){
 				 if($('#checkbox_'+data[i][0]).is( ':checked' )){					 
-					 strumenti.push(data[i][0]);
-					
+					 var match = data[i][3].match(/Spediti (\d+)/);
+					 var totale = data[i][3];
+					 if(match){
+						 totale = parseInt(totale) - parseInt(match[1], 10);
+					 }
+					str_html+= "<div class='row'><div class='col-xs-6' style='white-space: nowrap;'><label>ID: "+data[i][0]+" - Disegno: "+data[i][1]+" - Variante: "+data[i][2]+"</label></div><div class='col-xs-6'><input id='pezzi_uscita_"+data[i][0]+"' class='form-control' onchange='limitaValoreMax("+data[i][0]+")' style='width:30%; display: inline-block; text-align: right;' step='1' type='number' max='"+data[i][3]+"' min='1' value='"+totale+"'><label style='display: inline-block;'>/"+totale+"</label></div></div><br>"				
 				 }
-			}			
+			}		
+			$('#body_pezzi_uscita').html(str_html);
+		//  limitaValoreMax();
+			$('#modalPezziInUscita').modal()
 			
-			if(strumenti.length==0){
-				$('#myModalErrorContent').html("Attenzione! Nessuno Strumento selezionato!");
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");	  
-				$('#myModalError').modal('show');
+		}else{
+			var strumenti=[];	
+			
+		
+			   
+				for(var i=0; i<data.length; i++){
+					 if($('#checkbox_'+data[i][0]).is( ':checked' )){					 
+						 strumenti.push(data[i][0]);
+						
+					 }
+				}			
 				
-			}else{
-			
-				var strumenti_json = "";
-				for(var i = 0; i<strumenti.length;i++){
-					strumenti_json = strumenti_json+strumenti[i]+";";
+				if(strumenti.length==0){
+					$('#myModalErrorContent').html("Attenzione! Nessuno Strumento selezionato!");
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");	  
+					$('#myModalError').modal('show');
+					
+				}else{
+				
+					var strumenti_json = "";
+					for(var i = 0; i<strumenti.length;i++){
+						strumenti_json = strumenti_json+strumenti[i]+";";
+					}
+					
+				//var strumenti_json = JSON.stringify(strumenti);
+				
+				cambiaStatoPacco(pacco_selected,2, null, strumenti_json);
 				}
-				
-			//var strumenti_json = JSON.stringify(strumenti);
-			
-			cambiaStatoPacco(pacco_selected,2, null, strumenti_json);
-			}
 		}
+		
+
+		}
+	
+	
+	
+	
+	
+	function inviaItemUscitaRilievi(){
+		
+		
+		
+		 var tabella = $('#tabUscita').DataTable();
+		   var data = tabella
+		     .rows()
+		     .data();
+		   
+			
+	
+			var strumenti=[];	
+			var pezzi = [];
+		
+			   
+				for(var i=0; i<data.length; i++){
+					 if($('#checkbox_'+data[i][0]).is( ':checked' )){					 
+						 strumenti.push(data[i][0]);
+						 pezzi.push($('#pezzi_uscita_'+data[i][0]).val());
+					 }
+				}			
+				
+				if(strumenti.length==0){
+					$('#myModalErrorContent').html("Attenzione! Nessuno Strumento selezionato!");
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");	  
+					$('#myModalError').modal('show');
+					
+				}else{
+				
+					var strumenti_json = "";
+					var pezzi_json = "";
+					for(var i = 0; i<strumenti.length;i++){
+						strumenti_json = strumenti_json+strumenti[i]+";";
+						pezzi_json = pezzi_json+pezzi[i]+";";
+					}
+					
+				//var strumenti_json = JSON.stringify(strumenti);
+				
+				cambiaStatoPacco(pacco_selected,2, null, strumenti_json, pezzi_json);
+				}
+		
+		
+	}
 	
 	
 	function salvaConfigurazione(conf, ddt_form){
@@ -2397,7 +2519,7 @@ function inserisciItem(){
 	}
 	
 	
-	function cambiaStatoPacco(id_pacco,stato, fornitore, strumenti_json){
+	function cambiaStatoPacco(id_pacco,stato, fornitore, strumenti_json, pezzi_json){
 		var codice = "PC_"+${(pacco.id)+1};
 		var ddt = ${(pacco.id)+1};
 		var sede_fornitore = $('#select_sede_fornitore').val();
@@ -2413,7 +2535,7 @@ function inserisciItem(){
 			$('#myModalError').modal('show');
 		}else{
 			dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&fornitore="+fornitore+"&stato="+stato+"&ddt="+
-					+ddt+"&strumenti_json="+strumenti_json+"&sede_fornitore="+sede_fornitore;
+					+ddt+"&strumenti_json="+strumenti_json+"&sede_fornitore="+sede_fornitore+"&pezzi_json="+pezzi_json;
 			callAction("gestionePacco.do"+dataString, false, true);
 		}
 	}
@@ -2651,7 +2773,8 @@ $(document).ready(function() {
     	$(this).append( '<div><input class="inputsearchtable" style="width:100%" id="search_item_'+$(this).index()+'" type="text"  value=""/></div>');
     	
     	});
-	
+    
+
 	
 
 	

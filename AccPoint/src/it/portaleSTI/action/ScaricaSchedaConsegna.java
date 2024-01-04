@@ -101,7 +101,7 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				String idIntervento= request.getParameter("idIntervento");
 
 				
-				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 				CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 				UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 				
@@ -146,7 +146,7 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				
 				idIntervento = Utility.decryptData(idIntervento);
 				
-				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 		
 				
 				ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumentiInt");

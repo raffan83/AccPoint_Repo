@@ -462,9 +462,9 @@ public class GestioneStrumentoBO {
 
 
 
-	public static ArrayList<StrumentoDTO> getListaStrumentiIntervento(InterventoDTO intervento) {
+	public static ArrayList<StrumentoDTO> getListaStrumentiIntervento(InterventoDTO intervento, Session session) {
 		// TODO Auto-generated method stub
-		return GestioneStrumentoDAO.getListaStrumentiIntervento(intervento);
+		return GestioneStrumentoDAO.getListaStrumentiIntervento(intervento, session);
 	}
 
 	public static DocumentiEsterniStrumentoDTO getDocumentoEsterno(String idDocumento, Session session) {

@@ -473,6 +473,11 @@ public static ArrayList<MagAllegatoItemDTO> getListaAllegatiItem(MagPaccoDTO pac
 	return GestioneMagazzinoDAO.getListaAllegatiItem(pacco, session);
 }
 
+public static ArrayList<MagItemDTO> getListaRilieviSpediti(String origine, int id_tipo_proprio, Session session) {
+
+	return GestioneMagazzinoDAO.getListaRilieviSpediti(origine, id_tipo_proprio, session);
+}
+
 
 
 

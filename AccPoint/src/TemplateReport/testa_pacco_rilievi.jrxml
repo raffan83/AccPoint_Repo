@@ -66,17 +66,6 @@
 				<reportElement x="72" y="154" width="203" height="32" uuid="4c784de6-b460-4135-93d3-cc59fc5618fd"/>
 				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="294" y="100" width="77" height="21" uuid="053c0141-9f50-4fa7-932b-8d8e087d9bde"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[DATA ARRIVO:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="373" y="100" width="178" height="21" uuid="4cb84182-1b30-4056-90c5-1d172a33b2b5"/>
-				<textFieldExpression><![CDATA[$P{data_lavorazione}]]></textFieldExpression>
-			</textField>
 			<image>
 				<reportElement x="2" y="0" width="554" height="70" uuid="d806efef-ee1c-49e3-933c-2666e2e416e4"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
@@ -90,17 +79,6 @@
 			<rectangle>
 				<reportElement x="0" y="190" width="281" height="39" uuid="14724fee-25cc-4683-a2b6-86f7e45f55e9"/>
 			</rectangle>
-			<textField>
-				<reportElement x="81" y="199" width="102" height="21" uuid="0ac68a7e-d217-48e1-af8b-e43118f082ed"/>
-				<textFieldExpression><![CDATA[$P{commessa}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="16" y="199" width="63" height="21" uuid="37f43607-df32-4ae3-9cdc-f6d16212fb54"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[COMMESSA:]]></text>
-			</staticText>
 			<rectangle>
 				<reportElement x="281" y="190" width="275" height="39" uuid="688e0746-3d63-45f7-8f4c-c555c3eb0c33"/>
 			</rectangle>
@@ -115,6 +93,45 @@
 				<reportElement x="360" y="198" width="191" height="21" uuid="de61a767-25ce-48f2-aa86-ec71901e8b77"/>
 				<textFieldExpression><![CDATA[$P{corriere}]]></textFieldExpression>
 			</textField>
+			<rectangle>
+				<reportElement x="281" y="89" width="275" height="61" uuid="2919faa4-c1a6-43ed-9726-7e9c01380063"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="398" y="120" width="178" height="21" uuid="3e408e69-eca5-482a-b3b0-e1d073203385"/>
+				<textFieldExpression><![CDATA[$P{data_arrivo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="398" y="100" width="178" height="21" uuid="d438c31c-eb9a-4525-a9f6-3682728facf9"/>
+				<textFieldExpression><![CDATA[$P{data_lavorazione}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="295" y="100" width="102" height="21" uuid="f345866f-138c-42c0-966f-9550399f994b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA CREAZIONE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="120" width="77" height="21" uuid="cc17f33b-a8a3-4998-9f44-902fe639df56"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA ARRIVO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="81" y="199" width="194" height="21" uuid="dc4a9b83-b3f4-478d-9e88-c8ea07f5dd9a"/>
+				<textFieldExpression><![CDATA[$P{commessa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="13" y="199" width="77" height="21" uuid="ccc461a1-9a13-4ba4-a4ce-52bb7dac1e9f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COMMESSA:]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

@@ -71,9 +71,9 @@ public class GestioneInterventoBO {
 
 	}
 
-	public static InterventoDTO getIntervento(String idIntervento) {
+	public static InterventoDTO getIntervento(String idIntervento, Session session) {
 
-		return GestioneInterventoDAO.getIntervento(idIntervento);
+		return GestioneInterventoDAO.getIntervento(idIntervento, session);
 
 	}
 

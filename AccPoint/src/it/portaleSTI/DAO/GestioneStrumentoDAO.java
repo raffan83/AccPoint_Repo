@@ -405,11 +405,10 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 
 
 	
-	public static ArrayList<StrumentoDTO> getListaStrumentiIntervento(InterventoDTO intervento) {
+	public static ArrayList<StrumentoDTO> getListaStrumentiIntervento(InterventoDTO intervento, Session session) {
 		
 		ArrayList<StrumentoDTO> list=null;
-		Session session = SessionFacotryDAO.get().openSession(); 
-		session.beginTransaction();
+		
 		try {
 		
 			String s_query = "SELECT m.strumento from MisuraDTO m WHERE m.intervento =:_intervento GROUP BY m.strumento";
@@ -421,8 +420,7 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 			
 			list = (ArrayList<StrumentoDTO>)query.list();
 			
-			session.getTransaction().commit();
-			session.close();
+			
 		
 		}catch(Exception e)
 	    {

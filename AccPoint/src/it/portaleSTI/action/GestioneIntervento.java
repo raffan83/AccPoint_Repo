@@ -211,7 +211,7 @@ public class GestioneIntervento extends HttpServlet {
 			String comunicazione = request.getParameter("comunicazione" );
 			idIntervento = Utility.decryptData(idIntervento);
 					
-			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 			
 				StatoInterventoDTO stato = new StatoInterventoDTO();
 				stato.setId(2);
@@ -245,7 +245,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 			idIntervento = Utility.decryptData(idIntervento);
 
-			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 			
 				StatoInterventoDTO stato = new StatoInterventoDTO();
 				stato.setId(1);
@@ -278,7 +278,7 @@ public class GestioneIntervento extends HttpServlet {
 			String id_intervento = request.getParameter("id_intervento");
 			String nome_sede = request.getParameter("nome_sede");
 			
-			InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento);
+			InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento, session);
 			
 			intervento.setNome_sede(nome_sede);
 			
@@ -377,7 +377,7 @@ public class GestioneIntervento extends HttpServlet {
 				
 				StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(id_strumento, session);
 				
-				InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento);
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento, session);
 				
 				boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),strumento,session);
 				ArrayList<StrumentoDTO> lista_duplicati = new ArrayList<StrumentoDTO>();

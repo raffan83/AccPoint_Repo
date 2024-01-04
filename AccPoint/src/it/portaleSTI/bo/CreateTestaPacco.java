@@ -29,6 +29,7 @@ import com.lowagie.text.Image;
 import com.lowagie.text.pdf.BarcodeEAN;
 
 import TemplateReport.PivotTemplate;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
@@ -116,14 +117,25 @@ public class CreateTestaPacco {
 				String data;
 				
 				if( pacco.getData_arrivo()==null) {
-					report.addParameter("data_lavorazione","");
+					report.addParameter("data_arrivo","");
 					
 				}else {
 					data = dt.format(pacco.getData_arrivo());
+					report.addParameter("data_arrivo",data);					
+				}
+				
+				if( pacco.getData_lavorazione()==null) {
+					report.addParameter("data_lavorazione","");
+					
+				}else {
+					data = dt.format(pacco.getData_lavorazione());
 					report.addParameter("data_lavorazione",data);					
 				}
+				
 				if(pacco.getCommessa()!=null) {
-					report.addParameter("commessa", pacco.getCommessa());
+					CommessaDTO commessa = GestioneCommesseBO.getCommessaById(pacco.getCommessa());
+					
+					report.addParameter("commessa", pacco.getCommessa()+" del " +dt.format(commessa.getDT_COMMESSA()));
 				}else {
 					report.addParameter("commessa", "");
 				}

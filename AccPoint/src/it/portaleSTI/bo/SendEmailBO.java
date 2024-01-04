@@ -567,38 +567,99 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 	  StringBuffer msg = new StringBuffer();
 	  msg.append("<html><body>");
 	  msg.append("<html><br>" + 
-	  		"Si comunica la presenza in magazzino dei seguenti pacchi in attesa di lavorazione:<br />");
+	  		"Si comunica la presenza in magazzino dei seguenti pacchi in attesa di lavorazione:<br /><br />");
+	  
+	  
+	  
+	  msg.append("<table style='border-collapse: collapse; width: 100%; border: 1px solid #dddddd;'><thead><tr><th style=\"border: 1px solid #dddddd;\">Pacco Origine</th><th style=\"border: 1px solid #dddddd;\">Cliente</th><th style=\"border: 1px solid #dddddd;\">Commessa</th><th style=\"border: 1px solid #dddddd;\">Data arrivo</th><th style=\"border: 1px solid #dddddd;\">Data creazione</th><th style=\"border: 1px solid #dddddd;\">Note</th></tr></thead><tbody>");
 	  
 	  for (String origine : lista_string_origini) {
-		msg.append("- "+origine.split(";")[0]+" - "+origine.split(";")[1]);
-		
-		if(origine.split(";").length>2) {
-			if(!origine.split(";")[2].equals("")) {
-				msg.append(" - Commessa: "+origine.split(";")[2]);
-			}
-			if(origine.split(";").length>3) {
-				
-				msg.append(" - " + origine.split(";")[3]);
+		  msg.append("<tr>");
+		  
+		  msg.append("<td style=\"border: 1px solid #dddddd;\">"+origine.split(";")[0]+"</td>");
+		  msg.append("<td style=\"border: 1px solid #dddddd;\">"+origine.split(";")[1]+"</td>");	  
+			
+			if(origine.split(";").length>2) {
+				if(!origine.split(";")[2].equals("")) {
+					msg.append("<td style=\"border: 1px solid #dddddd;\">"+origine.split(";")[2]+"</td>");
+				}else {
+					msg.append("<td style=\"border: 1px solid #dddddd;\"></td>");
+				}
+				if(origine.split(";").length>3) {
+					
+					msg.append("<td style=\"border: 1px solid #dddddd;\">"+origine.split(";")[3]+"</td>");
+				}else {
+					msg.append("<td style=\"border: 1px solid #dddddd;\"></td><td style=\"border: 1px solid #dddddd;\"></td><td style=\"border: 1px solid #dddddd;\"></td>");
+				}
 				
 				if(origine.split(";").length>4) {
 					
-					msg.append(" - " + origine.split(";")[4]);
+					msg.append("<td style=\"border: 1px solid #dddddd;\">"+origine.split(";")[4]+"</td>");
 				}else {
-					msg.append("<br>");
+					msg.append("<td></td><td></td>");
 				}
 				if(origine.split(";").length>5) {
+					msg.append("<td style=\"border: 1px solid #dddddd;\">"+origine.split(";")[5]+"</td>");
 					
-					msg.append(" - " + origine.split(";")[5]+"<br>");
 				}else {
-					msg.append("<br>");
+					msg.append("<td style=\"border: 1px solid #dddddd;\"></td>");
 				}
+				
+				
+				msg.append("</tr>");
+				
+				
 			}else {
-				msg.append("<br>");
+				
+				msg.append("<td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+				//msg.append("<br>");
 			}
-		}else {
-			msg.append("<br>");
-		}
-	  }
+		  }
+		  
+		  
+	  msg.append("</tbody></table>");
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+//		msg.append("- "+origine.split(";")[0]+" - "+origine.split(";")[1]);
+//		
+//		if(origine.split(";").length>2) {
+//			if(!origine.split(";")[2].equals("")) {
+//				msg.append(" - Commessa: "+origine.split(";")[2]);
+//			}
+//			if(origine.split(";").length>3) {
+//				
+//				msg.append(" - " + origine.split(";")[3]);
+//				
+//				if(origine.split(";").length>4) {
+//					
+//					msg.append(" - " + origine.split(";")[4]);
+//				}else {
+//					msg.append("<br>");
+//				}
+//				if(origine.split(";").length>5) {
+//					
+//					msg.append(" - " + origine.split(";")[5]+"<br>");
+//				}else {
+//					msg.append("<br>");
+//				}
+//			}else {
+//				msg.append("<br>");
+//			}
+//		}else {
+//			msg.append("<br>");
+//		}
+//	  }
 	  msg.append(" <br />  <br /> <br /></html>");
 
 	  email.setHtmlMsg(msg.toString());

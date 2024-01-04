@@ -22,7 +22,12 @@
 <td>${item_pacco.item.id_tipo_proprio }</td>
 <td>${item_pacco.item.disegno }</td>
 <td>${item_pacco.item.variante }</td>
+<c:if test="${item_pacco.gia_spediti!=null && item_pacco.gia_spediti!=0 }">
+<td>${item_pacco.item.pezzi_ingresso } (Spediti ${item_pacco.gia_spediti })</td>
+</c:if>
+<c:if test="${item_pacco.gia_spediti==null || item_pacco.gia_spediti==0 }">
 <td>${item_pacco.item.pezzi_ingresso }</td>
+</c:if>
 <td>${item_pacco.note}</td>
 
 <td><input class="check_strumenti" type="checkbox" id="checkbox_${item_pacco.item.id_tipo_proprio }"></td> 
@@ -86,11 +91,12 @@
 
 </c:otherwise>
 
+
+
 </c:choose>
 
 
-
-
+<input type="hidden" id="totale">
 
  
  
@@ -158,11 +164,17 @@
  $(document).ready(function() {
 	 $('#label_spediti').hide();
 	 
+	 console.log("itemUscita")
+
+ 
 	 var ril = "${rilievi_dimensionali}";
 	 if(ril=="1"){
+		 isRilievi = "1";
 		 coldef = [	 { responsivePriority: 1, targets: 0 },			 
-			  {orderable: false, targets: 5}];
+			  {orderable: false, targets: 5}]
+		
 	 }else{
+		 isRilievi = "0";
 		 coldef = [	 { responsivePriority: 1, targets: 0 },
 			  { responsivePriority: 2, targets: 8 },	    	  
 			   { responsivePriority: 3, targets: 10 },

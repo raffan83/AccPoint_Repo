@@ -29,8 +29,10 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -989,6 +991,7 @@ public class Utility extends HttpServlet {
 			yearList.add(2021);
 			yearList.add(2022);
 			yearList.add(2023);
+			yearList.add(2024);
 			
 			return yearList;
 		}
@@ -1978,6 +1981,70 @@ public class Utility extends HttpServlet {
 			        int day = ((h + L - 7 * m + 114) % 31) + 1;
 
 			        return LocalDate.of(year, month, day);
+			    }
+			   
+			   
+			   public static LocalDate sommaGiorniLavorativi(LocalDate dataIniziale, int giorniLavorativi) {
+			        LocalDate dataCorrente = dataIniziale;
+
+			        for (int i = 0; i < giorniLavorativi; ) {
+			            // Aggiungi un giorno alla data corrente
+			            dataCorrente = dataCorrente.plusDays(1);
+
+			            // Verifica se il giorno è lavorativo (dal lunedì al venerdì e non festivo)
+			            if (isGiornoLavorativo(dataCorrente) && !isFestivitaItaliana(dataCorrente)) {
+			                i++; // Incrementa solo se il giorno è lavorativo e non festivo
+			            }
+			        }
+
+			        return dataCorrente;
+			    }
+
+			    public static boolean isGiornoLavorativo(LocalDate data) {
+			        // Verifica se il giorno è dal lunedì al venerdì
+			        DayOfWeek dayOfWeek = data.getDayOfWeek();
+			        return dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY;
+			    }
+
+			    public static boolean isFestivitaItaliana(LocalDate data) {
+			        // Elenco delle festività italiane
+			    	ArrayList<LocalDate> festivitaItaliane = new ArrayList<>();
+				    festivitaItaliane.add(LocalDate.of(data.getYear(), 1, 1));
+				    festivitaItaliane.add(LocalDate.of(data.getYear(), 1, 6));
+
+				 // Pasqua - data variabile (calcolata tramite algoritmo)
+				   LocalDate pasqua = calculatePasqua(data.getYear());
+				    festivitaItaliane.add(pasqua);
+				    
+				 // Lunedì di Pasqua
+				 festivitaItaliane.add(pasqua.plusDays(1));
+
+				 // Festa della Liberazione - 25 aprile
+				 festivitaItaliane.add(LocalDate.of(data.getYear(), 4, 25));
+
+				 // Festa dei Lavoratori - 1 maggio
+				 festivitaItaliane.add(LocalDate.of(data.getYear(), 5, 1));
+
+				 // Festa della Repubblica - 2 giugno
+				 festivitaItaliane.add(LocalDate.of(data.getYear(), 6, 2));
+
+				 // Ferragosto - 15 agosto
+				 festivitaItaliane.add(LocalDate.of(data.getYear(), 8, 15));
+
+				 // Tutti i Santi - 1 novembre
+				 festivitaItaliane.add(LocalDate.of(data.getYear(), 11, 1));
+
+				 // Immacolata Concezione - 8 dicembre
+				 festivitaItaliane.add(LocalDate.of(data.getYear(), 12, 8));
+
+				 // Natale - 25 dicembre
+				 festivitaItaliane.add(LocalDate.of(data.getYear(), 12, 25));
+
+				 // Santo Stefano - 26 dicembre
+				 festivitaItaliane.add(LocalDate.of(data.getYear(), 12, 26));
+
+			        // Verifica se il giorno è una festività italiana
+			        return festivitaItaliane.contains(data);
 			    }
 			
 }

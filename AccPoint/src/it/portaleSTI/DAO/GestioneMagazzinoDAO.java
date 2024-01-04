@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -1140,15 +1143,16 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 		for (MagPaccoDTO pacco : lista) {
 			
-			Date data_arrivo = pacco.getData_arrivo();
-			if(data_arrivo!=null) {
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(data_arrivo);
-				calendar.add(Calendar.DATE, 4);
-
-				Date date = calendar.getTime();
+			Date data_creazione = pacco.getData_lavorazione();
+			if(data_creazione!=null) {
+							
+				java.util.Date utilDate = new java.util.Date(data_creazione.getTime());
+				Instant instant = utilDate.toInstant();
 				
-				if(Utility.getRapportoLavorati(pacco)!=1 && date.before(new Date())) {
+				LocalDate date10 = Utility.sommaGiorniLavorativi(instant.atZone(ZoneId.systemDefault()).toLocalDate(), 9);
+				
+				
+				if(pacco.getStato_lavorazione().getId()==1 && Utility.getRapportoLavorati(pacco)!=1 && date10.isBefore(LocalDate.now())) {
 
 					
 					String toAdd = pacco.getOrigine()+";"+pacco.getNome_cliente();
@@ -1157,10 +1161,10 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 						toAdd = toAdd +";"+pacco.getCommessa();
 					}
 					if(pacco.getData_arrivo()!=null) {
-						toAdd = toAdd +";Data arrivo: "+df.format(pacco.getData_arrivo()); 
+						toAdd = toAdd +";"+df.format(pacco.getData_arrivo()); 
 					}
 					if(pacco.getData_lavorazione()!=null) {
-						toAdd = toAdd +";Data creazione: "+df.format(pacco.getData_lavorazione()); 
+						toAdd = toAdd +";"+df.format(pacco.getData_lavorazione()); 
 					}
 					
 					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(pacco.getOrigine(), session);
@@ -1183,7 +1187,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 					
 					if(!note_pacco.equals("")) {
 						note_pacco = note_pacco.substring(0, note_pacco.length()-3).replace("\r\n", "").replace("\n", "");
-						toAdd = toAdd+";Note: - "+note_pacco;
+						toAdd = toAdd+";"+note_pacco;
 					}
 					
 					lista_origini.add(toAdd);
@@ -1193,7 +1197,9 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		}
 
 		if(lista_origini.size()>0 && Costanti.MAIL_DEST_ALERT_PACCO.split(";").length>0) {
+		
 			SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);
+			
 			
 		}
 		

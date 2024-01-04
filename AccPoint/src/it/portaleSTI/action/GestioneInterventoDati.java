@@ -15,10 +15,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
 import com.google.gson.Gson;
 import com.ibm.wsdl.util.IOUtils;
 
 import it.portaleSTI.DAO.GestioneInterventoDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
@@ -64,13 +67,14 @@ public class GestioneInterventoDati extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 
 		String idIntervento=request.getParameter("idIntervento");
-		
+		Session session = SessionFacotryDAO.get().openSession(); 
+		session.beginTransaction();
 		try {
 		
 		idIntervento = Utility.decryptData(idIntervento);
+	
 		
-		
-		InterventoDTO intervento=GestioneInterventoBO.getIntervento(idIntervento);
+		InterventoDTO intervento=GestioneInterventoBO.getIntervento(idIntervento, session);
 		
 		HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
 		HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();
@@ -80,7 +84,7 @@ public class GestioneInterventoDati extends HttpServlet {
 		HashMap<String,Integer> utilizzatoreStrumenti = new HashMap<String,Integer>();
 		
 
-		ArrayList<StrumentoDTO> listaStrumentiPerIntervento =  GestioneStrumentoBO.getListaStrumentiIntervento(intervento);
+		ArrayList<StrumentoDTO> listaStrumentiPerIntervento =  GestioneStrumentoBO.getListaStrumentiIntervento(intervento, session);
 
 		for(StrumentoDTO strumentoDTO: listaStrumentiPerIntervento) {
 
@@ -185,12 +189,15 @@ public class GestioneInterventoDati extends HttpServlet {
 		}
 		request.getSession().setAttribute("userCliente", userCliente);
 
-		
+		session.getTransaction().commit();
+		session.close();
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoDati.jsp");
      	dispatcher.forward(request,response);
      	
      	
 		} catch (Exception e) {
+			session.getTransaction().rollback();
+			session.close();
 			request.setAttribute("error",STIException.callException(e));
 	   		request.getSession().setAttribute("exception", e);
 	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

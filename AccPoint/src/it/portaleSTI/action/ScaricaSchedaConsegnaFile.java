@@ -70,7 +70,7 @@ public class ScaricaSchedaConsegnaFile extends HttpServlet {
 		String path = "";
 		if(idIntervento!=null && !idIntervento.equals("")) {
 			idIntervento = Utility.decryptData(idIntervento);
-			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 		
 			path = Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+nomeFile;
 			response.setHeader("Content-Disposition","attachment;filename="+intervento.getIdCommessa().replace("/", "_")+".pdf");

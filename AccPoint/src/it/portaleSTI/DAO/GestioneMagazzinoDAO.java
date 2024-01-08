@@ -24,6 +24,7 @@ import org.hibernate.Session;
 import com.google.gson.JsonArray;
 import java.sql.PreparedStatement;
 
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAllegatoItemDTO;
@@ -1149,7 +1150,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 				java.util.Date utilDate = new java.util.Date(data_creazione.getTime());
 				Instant instant = utilDate.toInstant();
 				
-				LocalDate date10 = Utility.sommaGiorniLavorativi(instant.atZone(ZoneId.systemDefault()).toLocalDate(), 9);
+				LocalDate date10 = Utility.sommaGiorniLavorativi(instant.atZone(ZoneId.systemDefault()).toLocalDate(), 6);
 				
 				
 				if(pacco.getStato_lavorazione().getId()==1 && Utility.getRapportoLavorati(pacco)!=1 && date10.isBefore(LocalDate.now())) {
@@ -1159,6 +1160,8 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 					
 					if(pacco.getCommessa()!=null) {
 						toAdd = toAdd +";"+pacco.getCommessa();
+						CommessaDTO commessa = GestioneCommesseDAO.getCommessaById(pacco.getCommessa());
+						toAdd = toAdd +";"+df.format(commessa.getDT_COMMESSA());
 					}
 					if(pacco.getData_arrivo()!=null) {
 						toAdd = toAdd +";"+df.format(pacco.getData_arrivo()); 
@@ -1166,6 +1169,10 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 					if(pacco.getData_lavorazione()!=null) {
 						toAdd = toAdd +";"+df.format(pacco.getData_lavorazione()); 
 					}
+					
+					
+					
+					
 					
 					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(pacco.getOrigine(), session);
 					
@@ -1197,7 +1204,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		}
 
 		if(lista_origini.size()>0 && Costanti.MAIL_DEST_ALERT_PACCO.split(";").length>0) {
-		
+			
 			SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);
 			
 			

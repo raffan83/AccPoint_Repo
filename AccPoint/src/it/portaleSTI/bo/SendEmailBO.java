@@ -571,7 +571,7 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 	  
 	  
 	  
-	  msg.append("<table style='border-collapse: collapse; width: 100%; border: 1px solid #dddddd;'><thead><tr><th style=\"border: 1px solid #dddddd;\">Pacco Origine</th><th style=\"border: 1px solid #dddddd;\">Cliente</th><th style=\"border: 1px solid #dddddd;\">Commessa</th><th style=\"border: 1px solid #dddddd;\">Data arrivo</th><th style=\"border: 1px solid #dddddd;\">Data creazione</th><th style=\"border: 1px solid #dddddd;\">Note</th></tr></thead><tbody>");
+	  msg.append("<table style='border-collapse: collapse; width: 100%; border: 1px solid #dddddd;'><thead><tr><th style=\"border: 1px solid #dddddd;\">Pacco Origine</th><th style=\"border: 1px solid #dddddd;\">Cliente</th><th style=\"border: 1px solid #dddddd;\">Commessa</th><th style=\"border: 1px solid #dddddd;\">Data Commessa</th><th style=\"border: 1px solid #dddddd;\">Data arrivo</th><th style=\"border: 1px solid #dddddd;\">Data creazione</th><th style=\"border: 1px solid #dddddd;\">Note</th></tr></thead><tbody>");
 	  
 	  for (String origine : lista_string_origini) {
 		  msg.append("<tr>");
@@ -604,6 +604,12 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 				}else {
 					msg.append("<td style=\"border: 1px solid #dddddd;\"></td>");
 				}
+				if(origine.split(";").length>6) {
+					msg.append("<td style=\"border: 1px solid #dddddd;\">"+origine.split(";")[6]+"</td>");
+					
+				}else {
+					msg.append("<td style=\"border: 1px solid #dddddd;\"></td>");
+				}
 				
 				
 				msg.append("</tr>");
@@ -611,7 +617,7 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 				
 			}else {
 				
-				msg.append("<td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+				msg.append("<td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
 				//msg.append("<br>");
 			}
 		  }

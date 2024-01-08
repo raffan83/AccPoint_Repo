@@ -441,6 +441,26 @@
          <%} %>
         
         
+<%--  <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_MANUTENZIONI AM") || user.checkRuolo("MN")){%>  
+           <li class="header">MANUTENZIONE SISTEMI</li>
+
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Gestione Sistemi</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+			<li><a href="gestioneSistemiManutenzione.do?action=lista_sistemi">Lista Sistemi</a></li>
+	
+			<li><a href="gestioneSistemiManutenzione.do?action=lista_tipi_manutenzione">Gestione Tipo Attività</a></li>		
+
+	      	
+          </ul>
+        </li> 
+           <% }%> --%>
+        
+        
            <% if(user.checkRuolo("AM") || user.checkPermesso("ADMIN CONFIG")){%>
         <li class="header">-----------</li>
              <li class="treeview">

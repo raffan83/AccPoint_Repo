@@ -1226,10 +1226,10 @@ public class GestionePacco extends HttpServlet {
 										item.setVariante(lista_item_pacco.get(i).getItem().getVariante());
 										item.setDisegno(lista_item_pacco.get(i).getItem().getDisegno());
 										item.setId_tipo_proprio(lista_item_pacco.get(i).getItem().getId_tipo_proprio());
-										item.setPezzi_ingresso(lista_pezzi.get(i));				
+										item.setPezzi_ingresso(lista_pezzi.get(j));				
 										item.setTipo_item(lista_item_pacco.get(i).getItem().getTipo_item());
 										item_pacco.setItem(item);
-										item_pacco.setQuantita(lista_pezzi.get(i));
+										item_pacco.setQuantita(lista_pezzi.get(j));
 										session.save(item);
 									}else {
 										item_pacco.setItem(lista_item_pacco.get(i).getItem());

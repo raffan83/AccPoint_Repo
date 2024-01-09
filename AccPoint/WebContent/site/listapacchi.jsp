@@ -2410,8 +2410,8 @@ function inserisciItem(){
 					}
 					
 				//var strumenti_json = JSON.stringify(strumenti);
-				
-				cambiaStatoPacco(pacco_selected,2, null, strumenti_json);
+				var pezzi_json = "";
+				cambiaStatoPacco(pacco_selected,2, null, strumenti_json, pezzi_json);
 				}
 		}
 		

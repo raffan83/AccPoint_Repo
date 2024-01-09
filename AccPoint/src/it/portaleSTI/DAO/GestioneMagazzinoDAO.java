@@ -1133,7 +1133,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		ArrayList<MagPaccoDTO> lista = null;
 		
-		Query query = session.createQuery("select distinct a.pacco from MagItemPaccoDTO a where a.pacco.chiuso = 0 and a.item.stato = 1");
+		Query query = session.createQuery("select distinct a.pacco from MagItemPaccoDTO a where a.pacco.chiuso = 0 and a.pacco.stato_lavorazione.id = 1 and a.item.stato = 1");
 				
 		//lista = (ArrayList<MagItemPaccoDTO>) query.list();
 		lista = (ArrayList<MagPaccoDTO>) query.list();
@@ -1144,24 +1144,33 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 		for (MagPaccoDTO pacco : lista) {
 			
-			Date data_creazione = pacco.getData_lavorazione();
-			if(data_creazione!=null) {
-							
-				java.util.Date utilDate = new java.util.Date(data_creazione.getTime());
+			java.util.Date utilDate = null;
+			Date dataCommessa = null;
+			if(pacco.getCommessa()!=null) {
+				CommessaDTO commessa = GestioneCommesseDAO.getCommessaById(pacco.getCommessa());
+				dataCommessa = commessa.getDT_COMMESSA();
+			}
+			
+
+			if(dataCommessa!=null && pacco.getData_arrivo().before(dataCommessa)) {
+				utilDate = new java.util.Date(dataCommessa.getTime());
+			}else {
+				utilDate = new java.util.Date(pacco.getData_arrivo().getTime());
+			}
+				 
 				Instant instant = utilDate.toInstant();
 				
 				LocalDate date10 = Utility.sommaGiorniLavorativi(instant.atZone(ZoneId.systemDefault()).toLocalDate(), 6);
 				
 				
-				if(pacco.getStato_lavorazione().getId()==1 && Utility.getRapportoLavorati(pacco)!=1 && date10.isBefore(LocalDate.now())) {
+				if(Utility.getRapportoLavorati(pacco)!=1 && date10.isBefore(LocalDate.now())) {
 
 					
 					String toAdd = pacco.getOrigine()+";"+pacco.getNome_cliente();
 					
 					if(pacco.getCommessa()!=null) {
 						toAdd = toAdd +";"+pacco.getCommessa();
-						CommessaDTO commessa = GestioneCommesseDAO.getCommessaById(pacco.getCommessa());
-						toAdd = toAdd +";"+df.format(commessa.getDT_COMMESSA());
+						toAdd = toAdd +";"+df.format(dataCommessa);
 					}
 					if(pacco.getData_arrivo()!=null) {
 						toAdd = toAdd +";"+df.format(pacco.getData_arrivo()); 
@@ -1200,14 +1209,13 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 					lista_origini.add(toAdd);
 
 				}
-			}			
+			
 		}
 
 		if(lista_origini.size()>0 && Costanti.MAIL_DEST_ALERT_PACCO.split(";").length>0) {
-			
+				
 			SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);
-			
-			
+						
 		}
 		
 		session.getTransaction().commit();

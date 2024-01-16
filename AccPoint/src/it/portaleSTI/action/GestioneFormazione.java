@@ -2985,7 +2985,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 								
 							//	CommessaDTO commessa_fissa = GestioneCommesseDAO.getCommessaById(id_commessa);
 								agenda.setID_ANAGEN(1428); //N.C.S
-								agenda.setID_COMMESSA("AM_TSC_0113/23");
+								agenda.setID_COMMESSA("AM_TSC_0116/24");
 								int idAgendaMilestone =GestioneAssegnazioneAttivitaBO.inserisciAppuntamento(agenda);
 								pianificazione.setIdAgendaMilestone(idAgendaMilestone);
 							}

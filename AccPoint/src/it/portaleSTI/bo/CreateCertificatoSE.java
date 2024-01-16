@@ -50,13 +50,13 @@ public class CreateCertificatoSE {
 	
 	public File file;
 	public String messaggio_firma;
-	public CreateCertificatoSE(CertificatoDTO certificato,UtenteDTO utente,  Session session) throws Exception {
+	public CreateCertificatoSE(CertificatoDTO certificato,String data_emissione, UtenteDTO utente,  Session session) throws Exception {
 		
-		build(certificato,utente, session);
+		build(certificato,data_emissione, utente, session);
 	}
 
 	
-	void build(CertificatoDTO certificato,UtenteDTO utente,  Session session) throws Exception {
+	void build(CertificatoDTO certificato,String data_emissione,UtenteDTO utente,  Session session) throws Exception {
 		
 		InputStream is =  PivotTemplate.class.getResourceAsStream("certificatoSE.jrxml");
 		
@@ -230,11 +230,18 @@ public class CreateCertificatoSE {
 		report.addParameter("produttore_strumento", "GOSSEN-METRAWATT");
 		report.addParameter("operatore", certificato.getUtente().getNominativo());
 		report.addParameter("firma_operatore", Costanti.PATH_FOLDER + "FileFirme\\"+certificato.getUtente().getFile_firma());
-		if(misura_se.getDATA()!=null) {
-			report.addParameter("data", misura_se.getDATA());	
+		if(data_emissione!=null && !data_emissione.equals("")) {
+			
+			report.addParameter("data", data_emissione);	
+			
 		}else {
-			report.addParameter("data", "");
+			if(misura_se.getDATA()!=null) {
+				report.addParameter("data", misura_se.getDATA());	
+			}else {
+				report.addParameter("data", "");
+			}
 		}
+		
 		
 		
 		SubreportBuilder subreport; 

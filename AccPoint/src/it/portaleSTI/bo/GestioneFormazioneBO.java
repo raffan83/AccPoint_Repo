@@ -92,6 +92,7 @@ import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
+import it.portaleSTI.action.SendEmailFormazione;
 
 public class GestioneFormazioneBO {
 	static final Logger logger = Logger.getLogger(GestioneFormazioneBO.class);
@@ -1980,44 +1981,52 @@ public class GestioneFormazioneBO {
 	}
 
 	public static void sendEmailCorsiInScadenza(String path) throws ParseException, Exception {
-		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
-		
-		Date today = new Date();
-		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(today);
-		cal.add(Calendar.DATE, 59);
-		Date nextDate = cal.getTime();
-		
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		
-		ArrayList<ForCorsoDTO> lista_corsi = GestioneFormazioneDAO.getListaCorsiInScadenza(df.format(nextDate), session);
-	
-		df = new SimpleDateFormat("dd/MM/yyyy");
-		
-		String messaggio = "";
-		
-		
-		
-		for (ForCorsoDTO corso : lista_corsi) {
+		try {
 			
-			messaggio = "Gentile Utente <br>Si comunica che il seguente corso &egrave; in scadenza il "+df.format(nextDate)+":<br><br>";
 			
-			messaggio += "- " +corso.getCorso_cat().getDescrizione() +" - "+corso.getDescrizione()+"<br><br>";
+			Date today = new Date();
 			
-			messaggio += 	"Siamo a disposizione per supportarvi nell'organizzazione e pianificazione dei corsi.<br>"
-				  	+"Cordiali saluti.<br><br>";
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.add(Calendar.DATE, 59);
+			Date nextDate = cal.getTime();
 			
-			SendEmailBO.sendEmailCorsiInScadenza(messaggio, corso, path);
-			corso.setEmail_inviata(1);
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			
+			ArrayList<ForCorsoDTO> lista_corsi = GestioneFormazioneDAO.getListaCorsiInScadenza(df.format(nextDate), session);
+		
+			df = new SimpleDateFormat("dd/MM/yyyy");
+			
+			String messaggio = "";
+			
+			
+			
+			for (ForCorsoDTO corso : lista_corsi) {
+				
+				messaggio = "Gentile Utente <br>Si comunica che il seguente corso &egrave; in scadenza il "+df.format(nextDate)+":<br><br>";
+				
+				messaggio += "- " +corso.getCorso_cat().getDescrizione() +" - "+corso.getDescrizione()+"<br><br>";
+				
+				messaggio += 	"Siamo a disposizione per supportarvi nell'organizzazione e pianificazione dei corsi.<br>"
+					  	+"Cordiali saluti.<br><br>";
+				
+				SendEmailBO.sendEmailCorsiInScadenza(messaggio, corso, path);
+				corso.setEmail_inviata(1);
+				
+			}
+			
+					
+			session.getTransaction().commit();
+			session.close();
+		}catch(Exception e) {
+			session.getTransaction().rollback();
+			session.close();
+			e.printStackTrace();
+			logger.error(e);
 		}
 		
-				
-		session.getTransaction().commit();
-		session.close();
 		
 		
 	}
@@ -2050,9 +2059,11 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getListaTipi(session);
 	}
 
-	public static void sendEmailAttestatiNonConsegnati(String path) throws EmailException {
+	public static void sendEmailAttestatiNonConsegnati(String path) throws Exception {
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
+		
+		try {
 		
 		ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni_fatturate = GestioneFormazioneDAO.getListaPianificazioniStato(4, session);
 		
@@ -2096,7 +2107,12 @@ public class GestioneFormazioneBO {
 				
 		session.getTransaction().commit();
 		session.close();
-		
+	}catch(Exception e) {
+		session.getTransaction().rollback();
+		session.close();
+		e.printStackTrace();
+		logger.error(e);
+	}
 		
 	}
 
@@ -2142,9 +2158,9 @@ public class GestioneFormazioneBO {
 	public static void sendEmailCorsiNonCompleti(String path) throws Exception  {
 		
 		
-		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
+		try {
 		
 		ArrayList<ForConfInvioEmailDTO> lista_conf = getListaConfigurazioniInvioEmailData(new Date(),session);
 
@@ -2222,7 +2238,12 @@ public class GestioneFormazioneBO {
 		session.getTransaction().commit();
 		session.close();
 		
-		
+	}catch(Exception e) {
+		session.getTransaction().rollback();
+		session.close();
+		e.printStackTrace();
+		logger.error(e);
+	}
 		
 	}
 

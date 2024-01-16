@@ -1228,6 +1228,7 @@ public class GestionePacco extends HttpServlet {
 										item.setId_tipo_proprio(lista_item_pacco.get(i).getItem().getId_tipo_proprio());
 										item.setPezzi_ingresso(lista_pezzi.get(j));				
 										item.setTipo_item(lista_item_pacco.get(i).getItem().getTipo_item());
+										item.setDescrizione(lista_item_pacco.get(i).getItem().getDescrizione());
 										item_pacco.setItem(item);
 										item_pacco.setQuantita(lista_pezzi.get(j));
 										session.save(item);

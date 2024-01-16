@@ -224,7 +224,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 							cal.setTime(date);
 							cal.add(Calendar.MONTH, campione.getFrequenza_verifica_intermedia());
 							Date nextDate = cal.getTime();
-							if(campione.getFrequenza_verifica_intermedia()!=0) 
+							if(campione.getFrequenza_verifica_intermedia()!=0 && (campione.getCampione_verificazione()==1 || campione.getCodice().startsWith("CDT"))) 
 							{
 								campione.setDataScadenzaVerificaIntermedia(nextDate);
 							}
@@ -353,8 +353,11 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 						cal.setTime(date);
 						cal.add(Calendar.MONTH, campione.getFrequenza_verifica_intermedia());
 						Date nextDate = cal.getTime();
-						campione.setDataScadenzaVerificaIntermedia(nextDate);
 						
+						if(campione.getFrequenza_verifica_intermedia()!=0 && (campione.getCampione_verificazione()==1 || campione.getCodice().startsWith("CDT"))) 
+						{
+							campione.setDataScadenzaVerificaIntermedia(nextDate);
+						}
 						
 					}
 				}

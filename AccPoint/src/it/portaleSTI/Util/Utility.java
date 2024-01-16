@@ -28,9 +28,11 @@ import java.nio.charset.Charset;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.sql.Types;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -2045,6 +2047,65 @@ public class Utility extends HttpServlet {
 
 			        // Verifica se il giorno è una festività italiana
 			        return festivitaItaliane.contains(data);
+			    }
+			    
+			    
+			    public static Date getFirstDayOfMonth(String month, int year) throws ParseException {
+			        Calendar calendar = Calendar.getInstance();
+			        
+			        calendar.setTime(new SimpleDateFormat("MMMM").parse(month));
+			        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+			        calendar.set(Calendar.YEAR, year);
+			        setToBeginningOfDay(calendar);
+			        return calendar.getTime();
+			    }
+
+			    public static Date getLastDayOfMonth(String month, int year) throws ParseException {
+			        Calendar calendar = Calendar.getInstance();
+			        
+			        calendar.setTime(new SimpleDateFormat("MMMM").parse(month));
+			        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			        calendar.set(Calendar.YEAR, year);
+			        setToEndOfDay(calendar);
+			        return calendar.getTime();
+			    }
+
+			    private static void setToBeginningOfDay(Calendar calendar) {
+			        calendar.set(Calendar.HOUR_OF_DAY, 0);
+			        calendar.set(Calendar.MINUTE, 0);
+			        calendar.set(Calendar.SECOND, 0);
+			        calendar.set(Calendar.MILLISECOND, 0);
+			    }
+
+			    private static void setToEndOfDay(Calendar calendar) {
+			        calendar.set(Calendar.HOUR_OF_DAY, 23);
+			        calendar.set(Calendar.MINUTE, 59);
+			        calendar.set(Calendar.SECOND, 59);
+			        calendar.set(Calendar.MILLISECOND, 999);
+			    }
+			    
+			    
+			    public static long giorniLavorativiTraDate(LocalDate startDate, LocalDate endDate) {
+			        long giorniLavorativi = 0;
+			  		        
+			        int segno = 1;
+			        if (startDate.isAfter(endDate)) {
+			            // Inverti le date se la data di inizio è successiva alla data di fine
+			            LocalDate temp = startDate;
+			            startDate = endDate;
+			            endDate = temp;
+			            segno = -1;
+			        }
+			        LocalDate dataCorrente = startDate;
+
+			        while (!dataCorrente.isAfter(endDate) && !dataCorrente.equals(endDate)) {
+			            if (dataCorrente.getDayOfWeek() != DayOfWeek.SATURDAY && dataCorrente.getDayOfWeek() != DayOfWeek.SUNDAY && !isFestivitaItaliana(dataCorrente)) {
+			                giorniLavorativi++;
+			            }
+			            dataCorrente = dataCorrente.plus(1, ChronoUnit.DAYS);
+			        }
+
+			        return giorniLavorativi*segno;
 			    }
 			
 }

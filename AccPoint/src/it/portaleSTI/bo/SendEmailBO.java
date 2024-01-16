@@ -571,7 +571,7 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 	  
 	  
 	  
-	  msg.append("<table style='border-collapse: collapse; width: 100%; border: 1px solid #dddddd;'><thead><tr><th style=\"border: 1px solid #dddddd\">Pacco Origine</th><th style=\"border: 1px solid #dddddd;\">Cliente</th><th style=\"border: 1px solid #dddddd;\">Commessa</th><th style=\"border: 1px solid #dddddd;width:110px\">Data Commessa</th><th style=\"border: 1px solid #dddddd;width:110px\">Data arrivo</th><th style=\"border: 1px solid #dddddd;width:110px\">Data creazione</th><th style=\"border: 1px solid #dddddd;\">Note</th></tr></thead><tbody>");
+	  msg.append("<table style='border-collapse: collapse; width: 100%; border: 1px solid #dddddd;'><thead><tr><th style=\"border: 1px solid #dddddd\">Pacco Origine</th><th style=\"border: 1px solid #dddddd;\">Cliente</th><th style=\"border: 1px solid #dddddd;\">Commessa</th><th style=\"border: 1px solid #dddddd;width:110px\">Data Commessa</th><th style=\"border: 1px solid #dddddd;width:110px\">Data arrivo</th><th style=\"border: 1px solid #dddddd;width:110px\">Data creazione</th><th style=\"border: 1px solid #dddddd;\">Diff.</th><th style=\"border: 1px solid #dddddd;\">Note</th></tr></thead><tbody>");
 	  
 	  for (String origine : lista_string_origini) {
 		  msg.append("<tr>");
@@ -610,6 +610,12 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 				}else {
 					msg.append("<td style=\"border: 1px solid #dddddd;\"></td>");
 				}
+				if(origine.split(";").length>7) {
+					msg.append("<td style=\"border: 1px solid #dddddd;\">"+origine.split(";")[7]+"</td>");
+					
+				}else {
+					msg.append("<td style=\"border: 1px solid #dddddd;\"></td>");
+				}
 				
 				
 				msg.append("</tr>");
@@ -617,7 +623,7 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
 				
 			}else {
 				
-				msg.append("<td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+				msg.append("<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
 				//msg.append("<br>");
 			}
 		  }
@@ -847,8 +853,8 @@ public static void sendEmailFormazione(ForCorsoDTO corso, String mailTo, Servlet
 	  
 	  DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
-	  File image = new File(ctx.getRealPath("images/calver_cresco.png"));
-	  String cid = email.embed(image, "Calver logo");
+	//  File image = new File(ctx.getRealPath("images/calver_cresco.png"));
+	//  String cid = email.embed(image, "Calver logo");
 
 		  email.setHtmlMsg("<html>Gentile Cliente,<br>"
 		  
@@ -869,7 +875,8 @@ public static void sendEmailFormazione(ForCorsoDTO corso, String mailTo, Servlet
 				
 						"<br/></html>"
 			  	
-			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"cid:"+cid+"\"><a><br>"
+			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"https:/www.calver.it/images/cresco.jpg\"><a><br>"
+			  		
 			  		
 				  +"<font size='1'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
 			  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio &egrave; vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.<br><br>" + 
@@ -1303,8 +1310,8 @@ public static void sendEmailCorsiInScadenza(String messaggio, ForCorsoDTO corso,
 
 			  email.setSubject("SCADENZE CORSI OBBLIGATORI");
 			  
-			  File image = new File(path.replace("WEB-INF/classes", "")+"/images/calver_cresco.png");
-			  String cid = email.embed(image, "Calver logo");
+		//	  File image = new File(path.replace("WEB-INF/classes", "")+"/images/calver_cresco.png");
+		//	  String cid = email.embed(image, "Calver logo");
 			  
 			  messaggio += "<font size='2'>La presente e-mail &egrave; stata generata automaticamente da un indirizzo di posta elettronica di solo invio; si chiede pertanto di non rispondere al messaggio. <br>";
 			  messaggio += "Per qualsiasi informazione si prega di contattare CRESCO Formazione e Consulenza Srl all'indirizzo </em>segreteria@crescosrl.net o ai numeri 0776/1815104 - 0776/1815115</font><br><br><br>";
@@ -1318,7 +1325,7 @@ public static void sendEmailCorsiInScadenza(String messaggio, ForCorsoDTO corso,
 				
 						"<br/></html>"
 			  	
-			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"cid:"+cid+"\"><a><br>" ;
+			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"https:/www.calver.it/images/cresco.jpg\"><a><br>" ;
 		
 			
 			  
@@ -1376,8 +1383,8 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
 
 			  email.setSubject("PIANIFICAZIONE CORSO - DATA "+df.format(pianificazione.getData()));
 			  
-			  File image = new File(ctx.getRealPath("images/calver_cresco.png"));
-			  String cid = email.embed(image, "Calver logo");
+		//	  File image = new File(ctx.getRealPath("images/calver_cresco.png"));
+		//	  String cid = email.embed(image, "Calver logo");
 			  
 			  messaggio += pianificazione.getDescrizione().replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;");
 			  
@@ -1394,7 +1401,7 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
 				
 						"<br/></html>"
 			  	
-			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"cid:"+cid+"\"><a><br>" ;
+			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'><img width='450' src=\"https:/www.calver.it/images/cresco.jpg\"><a><br>" ;
 		
 			
 			  
@@ -1438,8 +1445,8 @@ public static void sendEmailReminderPianificazione(String messaggio, String path
 
 			  email.setSubject("CORSI FATTURATI SENZA ATTESTATI");
 			  
-			  File image = new File(path.replace("WEB-INF/classes", "")+"/images/calver_cresco.png");
-			  String cid = email.embed(image, "Calver logo");
+			 // File image = new File(path.replace("WEB-INF/classes", "")+"/images/calver_cresco.png");
+			//  String cid = email.embed(image, "Calver logo");
 			  
 			  messaggio += "<br><br><font size='2'>La presente e-mail &egrave; stata generata automaticamente da un indirizzo di posta elettronica di solo invio; si chiede pertanto di non rispondere al messaggio. <br>";
 			  messaggio += "Per qualsiasi informazione si prega di contattare CRESCO Formazione e Consulenza Srl all'indirizzo </em>segreteria@crescosrl.net o ai numeri 0776/1815104 - 0776/1815115</font><br><br><br>";
@@ -1453,7 +1460,7 @@ public static void sendEmailReminderPianificazione(String messaggio, String path
 				
 						"<br/></html>"
 			  	
-			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"cid:"+cid+"\"><a><br>" ;
+			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"https:/www.calver.it/images/cresco.jpg\"><a><br>" ;
 		
 			
 			  
@@ -1500,8 +1507,8 @@ public static void sendEmailEliminaPianificazione(ForPiaPianificazioneDTO pianif
 
 			  email.setSubject("Eliminazione pianificazione corso del" + df.format(pianificazione.getData())+" - Commessa: "+pianificazione.getId_commessa());
 			  
-			  File image = new File(ctx.getRealPath("images/calver_cresco.png"));
-			  String cid = email.embed(image, "Calver logo");
+			//  File image = new File(ctx.getRealPath("images/calver_cresco.png"));
+			//  String cid = email.embed(image, "Calver logo");
 			  
 			  String messaggio = "Si comunica che la pianificazione corso del "+ df.format(pianificazione.getData()) +" della  Commessa: "+pianificazione.getId_commessa()+" &egrave; stata eliminata.";
 			  
@@ -1517,7 +1524,7 @@ public static void sendEmailEliminaPianificazione(ForPiaPianificazioneDTO pianif
 				
 						"<br/></html>"
 			  	
-			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"cid:"+cid+"\"><a><br>" ;
+			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"https:/www.calver.it/images/cresco.jpg\"><a><br>" ;
 		
 			
 			  

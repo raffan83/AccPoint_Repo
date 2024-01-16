@@ -388,10 +388,11 @@ public class ListaCertificati extends HttpServlet {
 				PrintWriter out = response.getWriter();				
 				
 				String idCertificato = request.getParameter("idCertificato");
+				String data_emissione = request.getParameter("data_emissione");
 							
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
 				
-				CreateCertificatoSE resultFirma = new CreateCertificatoSE(certificato,utente,session);				
+				CreateCertificatoSE resultFirma = new CreateCertificatoSE(certificato,data_emissione, utente,session);				
 			
 //				}
 					
@@ -496,7 +497,7 @@ public class ListaCertificati extends HttpServlet {
 					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id);
 					
 					if(certificato.getMisura().getLat().equals("E")) {
-						new CreateCertificatoSE(certificato,utente,session);
+						new CreateCertificatoSE(certificato,data_emissione,utente,session);
 					}
 					else if(certificato.getMisura().getMisuraLAT()!=null && certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
 //						new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), null,utente, session);

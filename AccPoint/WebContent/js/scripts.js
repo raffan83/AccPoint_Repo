@@ -3720,9 +3720,12 @@ function eliminaCompany(){
   function creaCertificatoSE(idCertificato){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
+	  
+	  var data_emissione = $('#data_emissione').val();
+	  
 	  $.ajax({
     	  type: "POST",
-    	  url: "listaCertificati.do?action=creaCertificatoSE&idCertificato="+idCertificato,
+    	  url: "listaCertificati.do?action=creaCertificatoSE&idCertificato="+idCertificato+"&data_emissione="+data_emissione,
     	  dataType: "json",
 
     	  success: function( data, textStatus) {

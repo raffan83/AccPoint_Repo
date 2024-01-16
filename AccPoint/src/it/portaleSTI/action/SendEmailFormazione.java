@@ -15,7 +15,7 @@ import it.portaleSTI.bo.SendEmailBO;
 
 public class SendEmailFormazione  implements Job {
 	
-	static final Logger logger = Logger.getLogger(SendEmailFormazione.class);
+	static final public Logger logger = Logger.getLogger(SendEmailFormazione.class);
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {

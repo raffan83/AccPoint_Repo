@@ -9,8 +9,11 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1162,6 +1165,9 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 				
 				LocalDate date10 = Utility.sommaGiorniLavorativi(instant.atZone(ZoneId.systemDefault()).toLocalDate(), 6);
 				
+				LocalDate date15 = Utility.sommaGiorniLavorativi(instant.atZone(ZoneId.systemDefault()).toLocalDate(), 14);
+				
+				
 				
 				if(Utility.getRapportoLavorati(pacco)!=1 && date10.isBefore(LocalDate.now())) {
 
@@ -1180,8 +1186,14 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 					}
 					
 					
+					long giorniMancanti = Utility.giorniLavorativiTraDate(LocalDate.now(), date15);
 					
-					
+										
+					if(giorniMancanti>0) {
+						toAdd = toAdd +";"+" - "+giorniMancanti;
+					}else {
+						toAdd = toAdd +";"+" + "+Math.abs(giorniMancanti);
+					}
 					
 					ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(pacco.getOrigine(), session);
 					
@@ -1212,9 +1224,36 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			
 		}
 
-		if(lista_origini.size()>0 && Costanti.MAIL_DEST_ALERT_PACCO.split(";").length>0) {
+	//	if(lista_origini.size()>0 && Costanti.MAIL_DEST_ALERT_PACCO.split(";").length>0) {
+		if(lista_origini.size()>0 ) {
 				
-			SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);
+			
+			Collections.sort(lista_origini, new Comparator<String>() {
+			    @Override
+			    public int compare(String s1, String s2) {
+			        // Ottieni i giorni mancanti dai due elementi della lista
+			        int giorniMancanti1 = 0;
+			        int giorniMancanti2 = 0;
+
+			        if(s1.split(";").length>7) {
+			        	giorniMancanti1 = Integer.parseInt(s1.split(";")[s1.split(";").length - 2].replaceAll("[^\\d-]", "").trim());
+			        }else {
+			        	giorniMancanti1 = Integer.parseInt(s1.split(";")[s1.split(";").length - 1].replaceAll("[^\\d-]", "").trim());
+			        }
+			        
+			        if(s2.split(";").length>7) {
+			        	giorniMancanti2 = Integer.parseInt(s2.split(";")[s2.split(";").length - 2].replaceAll("[^\\d-]", "").trim());
+			        }else {
+			        	giorniMancanti2 = Integer.parseInt(s2.split(";")[s2.split(";").length - 1].replaceAll("[^\\d-]", "").trim());
+			        }
+			        
+			        // Ordina in modo decrescente
+			        return Integer.compare(giorniMancanti2, giorniMancanti1);
+			    }
+			});
+			
+			//SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);
+			SendEmailBO.sendEmailPaccoInRitardo(lista_origini, "antonio.dicivita@ncsnetwork.it");
 						
 		}
 		

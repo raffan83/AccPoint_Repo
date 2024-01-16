@@ -104,6 +104,7 @@
  <th>Tipo Campione</th>
  <th>Codice</th>
  <th>Costruttore</th>
+ <th>N. Certificato</th>
  <th>Descrizione</th>
  <th>Data Taratura</th>
  <th>Data Scadenza</th>
@@ -127,6 +128,7 @@
 	<td>${campione.tipo_campione.nome}</td>
 	<td>${campione.codice}</td>
 	<td>${campione.costruttore}</td>
+	<td>${campione.numeroCertificato }</td>
 	<td>${campione.descrizione}</td>
 
 <td>
@@ -1393,7 +1395,7 @@ var listaStrumenti = ${listaCampioniJson};
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 },
   	                   { responsivePriority: 4, targets: 6 },
-  	                 { responsivePriority: 5, targets: 10 }
+  	                 { responsivePriority: 5, targets: 11 }
   	               ],
   	     
   	               buttons: [ {

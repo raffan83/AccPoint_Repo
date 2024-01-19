@@ -36,6 +36,7 @@ import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
+import it.portaleSTI.DTO.IngIngressoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -178,6 +179,8 @@ public class DirectMySqlDAO {
 	private static String sqlCommittentiPerFornitore = "SELECT a.id_committente, b.nome_cliente, b.indirizzo_cliente FROM docum_committente_fornitore a LEFT JOIN docum_committente b on a.id_committente = b.id WHERE a.id_fornitore = ?";
 	
 	private static String sqlInsertDocumentoDocumentale = "INSERT INTO  docum_tl_documento(id_committente, id_fornitore, nome_documento, numero_documento, data_caricamento, frequenza_rinnovo_mesi, rilasciato, data_scadenza, nome_file, stato, documento_sostituito) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+	
+	private static String sqlInsertIngresso="INSERT INTO ing_ingresso(tipo_registrazione,nome_ditta, nominativo_visitatore, data_ingresso, data_uscita, id_reparto, id_area, modalita_ingresso, telefono, tipo_merce, targa) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
@@ -3211,6 +3214,145 @@ public static HashMap<String, Integer> getListaStrumentiScadenziario(UtenteDTO u
     	 e.printStackTrace();
      } 
 	return listMap;
+}
+
+public static void saveIngresso(IngIngressoDTO ingresso) throws Exception {
+
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	try
+	{
+		con = getConnection();
+		con.setAutoCommit(false);
+		pst=con.prepareStatement(sqlInsertIngresso);
+		if(ingresso.getTipo_registrazione()!=null) {
+			pst.setInt(1, ingresso.getTipo_registrazione());
+		}else {
+			pst.setInt(1, 0);
+		}
+		
+		pst.setString(2, ingresso.getNome_ditta());
+		pst.setString(3, ingresso.getNominativo());
+		if(ingresso.getId_reparto()!=null) {
+			pst.setDate(4, new java.sql.Date(ingresso.getData_ingresso().getTime()));
+		}else {
+			pst.setDate(4,null);
+		}
+		if(ingresso.getId_reparto()!=null) {
+			pst.setDate(5, new java.sql.Date(ingresso.getData_uscita().getTime()));
+		}else {
+			pst.setDate(5, null);
+		}
+		
+		
+		if(ingresso.getId_reparto()!=null) {
+			pst.setInt(6, ingresso.getId_reparto());
+		}else {
+			pst.setInt(6, 0);
+		}
+		
+		if(ingresso.getId_area()!=null) {
+			pst.setInt(7, ingresso.getId_area());
+		}else {
+			pst.setInt(7, 0);
+		}
+	
+		if(ingresso.getModalita_ingresso()!=null) {
+			pst.setInt(8, ingresso.getModalita_ingresso());
+		}else {
+			pst.setInt(8, 0);
+		}
+	
+		pst.setString(9, ingresso.getTelefono());
+		
+		if(ingresso.getTipo_merce()!=null) {
+			pst.setInt(10, ingresso.getTipo_merce());
+		}else {
+			pst.setInt(10, 0);
+		}
+		
+	
+		pst.setString(11, ingresso.getTarga());
+
+		pst.execute();
+
+		con.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+		throw ex;
+	}
+	finally
+	{
+		pst.close();
+		//	conSQLLite.close();
+
+	}	
+	
+}
+
+public static ArrayList<IngIngressoDTO> getListaIngressi() throws Exception {
+	
+	ArrayList<IngIngressoDTO> lista = new ArrayList<IngIngressoDTO>();
+		
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	
+	try {
+		con=getConnection();
+
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+	String query = "select distinct id, tipo_registrazione, nome_ditta, nominativo_visitatore, data_ingresso, data_uscita, id_reparto, id_area, modalita_ingresso, telefono, tipo_merce, targa from ing_ingresso";
+	
+	pst=con.prepareStatement(query);
+	
+
+	rs=pst.executeQuery();
+	
+	IngIngressoDTO ingresso = null;
+	
+	while(rs.next())
+	{
+		ingresso = new IngIngressoDTO();
+		
+		ingresso.setId(rs.getInt(1));
+		ingresso.setTipo_registrazione(rs.getInt(2));
+		ingresso.setNome_ditta(rs.getString(3));
+		ingresso.setNominativo(rs.getString(4));
+		ingresso.setData_ingresso(rs.getDate(5));
+		ingresso.setData_uscita(rs.getDate(6));
+		ingresso.setId_reparto(rs.getInt(7));
+		ingresso.setId_area(rs.getInt(8));
+		ingresso.setModalita_ingresso(rs.getInt(9));
+		ingresso.setTelefono(rs.getString(10));
+		ingresso.setTipo_merce(rs.getInt(11));
+		ingresso.setTarga(rs.getString(12));
+		
+
+		lista.add(ingresso);
+
+		
+	}
+	
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+
+	return lista;
 }
 
 }

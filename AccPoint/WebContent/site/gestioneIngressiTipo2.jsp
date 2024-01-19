@@ -18,7 +18,7 @@
 
 
 
-  <form id="tipo1Form" name="tipo1Form" method="post" action="gestioneIngressi.do?action=tipo_ingresso"onsubmit="return validateForm();">
+  <form id="tipo2Form" name="tipo2Form" method="post">
  <div class="row">
  <div class="col-xs-12 "></div></div><br><br>
   <div class="row">
@@ -77,7 +77,7 @@
 			              <div class="col-xs-12 ">
 			              
 			             Inserire Data Uscita *
-			            <div class="input-group date datepicker" id="datepicker_data_inizio"><input type="text" class="form-control input-small" name="data_ingresso" id="data_uscita" required><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>
+			            <div class="input-group date datepicker" id="datepicker_data_inizio"><input type="text" class="form-control input-small" name="data_uscita" id="data_uscita" required><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>
 			              </div></div><br>
 			              
 			                <div class="row">
@@ -120,10 +120,28 @@
 			              <div class="col-xs-12 ">
 			              
 			             Inserire contatto telefonico *
-			            <input type="text" id="targa" name="targa" class="form-control" required>
+			            <input type="text" id="telefono" name="telefono" class="form-control" required>
 			            </div>
 			            </div>
 			            <br>
+			            
+			            
+			            
+			               <div class="row">
+			              <div class="col-xs-12 ">
+			              
+			             Informazioni di sicurezza
+			            <img src="./images/info_sicurezza.jpeg" style="width: 100%">
+			         
+			              </div></div><br>
+			              
+			               <div class="row">
+			                <div class="col-xs-12 ">
+			              
+			              <input type="checkbox" id="check_sicurezza" name="tipoIngresso" required value="tipo_1"> <label>Confermo di aver letto le informazioni di sicurezza *</label><br>
+			              
+			              <!-- <input type="radio"  id="tipo_3" name="tipoIngresso" value="tipo_3"> <label>Prelievo Chiavi</label><br> -->
+			              </div></div><br>
 			              
 			              <div class="row">
 			              <div class="col-xs-12 ">
@@ -132,13 +150,15 @@
 			              </div><br>
 			              <div class="row">
 			              <div class="col-xs-6 ">
-			              <button type="submit" class="btn btn-primary" style="width:100%" onClick="callAction('gestioneIngressi.do?action=ingresso')" >Indietro</button>
+			              <button type="button" class="btn btn-primary" style="width:100%" onClick="callAction('gestioneIngressi.do?action=ingresso')" >Indietro</button>
 			              </div>
 			              <div class="col-xs-6 ">
-			              <button type="submit" class="btn btn-primary" style="width:100%" >Invia</button>
+			              <button type="submit" class="btn btn-primary" style="width:100%">Invia</button>
 			              </div><br>
 			               <div class="col-xs-12 ">
 			               <label id="label_error" style="color:red;display:none">Compilare le domande obbligatorie!</label>
+			               
+			                <input type="hidden" id="tipo_registrazione" name="tipo_registrazione" class="form-control" value="2">
 			               </div>
 			             </div>
 			             <br><br>
@@ -239,6 +259,21 @@ $('.datepicker').datepicker({
 		 callAjaxForm('#tipoIngressoForm','gestioneIngressi.do?action=tipo_ingresso');
 		
 	}); */
+	
+	$('#tipo2Form').on("submit", function(e){
+		e.preventDefault();
+		
+		
+		callAjaxForm('#tipo2Form', 'gestioneIngressi.do?action=salva');
+	});
+	
+		
+	
+		
+		
+		
+
+	
 	</script>
 
 </jsp:attribute>

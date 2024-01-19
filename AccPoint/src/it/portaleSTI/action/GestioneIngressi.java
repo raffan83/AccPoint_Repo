@@ -2,6 +2,9 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -19,9 +22,11 @@ import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.IngIngressoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 
@@ -74,29 +79,6 @@ public class GestioneIngressi extends HttpServlet {
 			}
 			else if(action.equals("tipo_ingresso")) {
 				
-				
-//			  	List<FileItem> items = null;
-//		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
-//
-//		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-//		        	}		        
-//		       
-//				FileItem fileItem = null;
-//				String filename= null;
-//		        Hashtable<String,String> ret = new Hashtable<String,String>();
-//		      
-//		        for (FileItem item : items) {
-//	            	 if (!item.isFormField()) {
-//	            		
-//	                     fileItem = item;
-//	                     filename = item.getName();
-//	                     
-//	            	 }else
-//	            	 {
-//	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
-//	            	 }
-//	            	
-//	            }
 		
 				String tipo = request.getParameter("tipoIngresso");
 				if(tipo.equals("tipo_1")) {
@@ -106,6 +88,107 @@ public class GestioneIngressi extends HttpServlet {
 					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneIngressiTipo2.jsp");
 			     	dispatcher.forward(request,response);	
 				}
+			
+				
+				
+			}
+			else if(action.equals("salva")) {
+				
+				
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		        
+		        
+		        String nominativo = ret.get("nominativo");
+		        String targa = ret.get("targa");
+		        String tipo_merce = ret.get("tipo_merce");
+		        String tipo_registrazione = ret.get("tipo_registrazione");
+		        String nome_ditta = ret.get("nome_ditta");
+		        String data_ingresso = ret.get("data_ingresso");
+		        String data_uscita = ret.get("data_uscita");		        
+		        String id_reparto = ret.get("reparto");
+		        String modalita_ingresso = ret.get("modalita_ingresso");		        
+		        String telefono = ret.get("telefono");
+		        String id_area = ret.get("area");
+		        
+		        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		        
+		        IngIngressoDTO ingresso = new IngIngressoDTO();
+		        ingresso.setNominativo(nominativo);
+		        ingresso.setTarga(targa);
+		        if(tipo_merce!=null && !tipo_merce.equals("")) {
+		        	  ingresso.setTipo_merce(Integer.parseInt(tipo_merce));
+		        }
+		      
+		        if(tipo_registrazione!=null && !tipo_registrazione.equals("")) {
+		        	 ingresso.setTipo_registrazione(Integer.parseInt(tipo_registrazione));
+		        }
+		       
+		        ingresso.setNome_ditta(nome_ditta);
+		        if(data_ingresso!=null && !data_ingresso.equals("")) {
+		        	ingresso.setData_ingresso(df.parse(data_ingresso));
+		        }
+		        
+		        if(data_uscita!=null && !data_uscita.equals("")) {
+		        	ingresso.setData_uscita(df.parse(data_uscita));
+		        }
+		        
+		        if(id_reparto!=null && !id_reparto.equals("")) {
+		        	ingresso.setId_reparto(Integer.parseInt(id_reparto));
+		        }
+		        
+		        if(modalita_ingresso!=null && !modalita_ingresso.equals("")) {
+		        	ingresso.setModalita_ingresso(Integer.parseInt(modalita_ingresso));
+		        }
+		        
+		        ingresso.setTelefono(telefono);
+		        if(id_area!=null && !id_area.equals("")) {
+		        	ingresso.setId_area(Integer.parseInt(id_area));
+		        }
+		        
+		        DirectMySqlDAO.saveIngresso(ingresso);
+		        
+		        response.setContentType("application/json");
+		        PrintWriter out = response.getWriter();
+		        
+		        
+		        myObj.addProperty("messaggio", "Salvato con successo");
+		        myObj.addProperty("success", true);
+	        	out.print(myObj);
+		        
+				
+			}
+			
+			else if(action.equals("lista_ingressi")) {
+				
+				ArrayList<IngIngressoDTO> lista_ingressi = DirectMySqlDAO.getListaIngressi();
+
+
+				request.getSession().setAttribute("lista_ingressi", lista_ingressi);
+			
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaIngressi.jsp");
+			    dispatcher.forward(request,response);	
+			
 			
 				
 				

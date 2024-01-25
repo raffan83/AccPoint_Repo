@@ -86,7 +86,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <button class="btn customTooltip btn-info" onClick="dettaglioFuoriServizio('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di fuori servizio"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <c:if test="${(attivita.tipo_attivita.id==2 || attivita.tipo_attivita.id==3) }">
-<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.campo_sospesi }','${utl:escapeJS(attivita.operatore.nominativo) }','${attivita.certificato.misura.nCertificato }','${attivita.certificato.misura.id }','${utl:encryptData(attivita.certificato.misura.id)}')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.campo_sospesi }','${utl:escapeJS(attivita.operatore.nominativo) }','${attivita.certificato.misura.nCertificato }','${attivita.certificato.misura.id }','${utl:encryptData(attivita.certificato.misura.id)}','${attivita.numero_certificato }')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data}','${attivita.tipo_manutenzione }','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.campo_sospesi) }','${attivita.operatore.id }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.certificato.id }', '${attivita.pianificata }', '${attivita.numero_certificato }')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
  <c:if test="${attivita.allegato!=null && !attivita.allegato.equals('') }">
@@ -1095,7 +1095,7 @@ function caricaMisura(){
 });
 } 
 
-function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scadenza, etichettatura, stato, campo_sospesi, operatore, certificato, misura, misura_encrypted){
+function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scadenza, etichettatura, stato, campo_sospesi, operatore, certificato, misura, misura_encrypted, numero_certificato){
 	
 	$('#myModalLabeldtl').html("Dettaglio "+tipo_attivita);
 	
@@ -1110,7 +1110,14 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	$('#campo_sospesi_dtl').val(campo_sospesi);
 	$('#operatore_dtl').val(operatore);
 	$('#data_scadenza_dtl').val(formatDate(data_scadenza));
-	$('#certificato_dtl').val(certificato);
+	
+	if(certificato!=null && certificato!=''){
+		$('#certificato_dtl').val(certificato);
+	}else{
+		$('#certificato_dtl').val(numero_certificato);
+	}
+		
+	
 	$('#misura_dtl').val(misura);
 	if(misura==''){
 		$('#btn_dtl').addClass("disabled");

@@ -260,7 +260,12 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 						if(attivita.getCertificato()!=null) {
 							arrayPs.add(attivita.getCertificato().getMisura().getnCertificato());	
 						}else {
-							arrayPs.add("");
+							if(attivita.getNumero_certificato()!=null) {
+								arrayPs.add(attivita.getNumero_certificato());
+							}else {
+								arrayPs.add("");
+							}
+							
 						}
 						arrayPs.add(dt.format(attivita.getData_scadenza()));
 						arrayPs.add(attivita.getEtichettatura());

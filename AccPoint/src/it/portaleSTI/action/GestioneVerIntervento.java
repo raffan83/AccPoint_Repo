@@ -99,6 +99,30 @@ public class GestioneVerIntervento extends HttpServlet {
 			
 			if(action.equals("lista")) {
 				
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");
+				
+				if(dateFrom == null && dateTo == null) {
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+					
+					Date today = new Date();				
+					
+					
+					Calendar cal = Calendar.getInstance();
+					
+					cal.setTime(today);
+					
+					dateTo = df.format(cal.getTime());
+					
+					cal.add(Calendar.DATE, -60);
+					Date startDate = cal.getTime();
+					
+					
+					dateFrom = df.format(startDate);					
+					
+					
+				}
+				
 				if(request.getSession().getAttribute("listaClientiAll")==null) 
 				{
 					request.getSession().setAttribute("listaClientiAll",GestioneAnagraficaRemotaBO.getListaClientiAll());
@@ -120,7 +144,7 @@ public class GestioneVerIntervento extends HttpServlet {
 				}
 				
 				
-				ArrayList<VerInterventoDTO> lista_interventi = GestioneVerInterventoBO.getListaVerInterventi(utente,session);
+				ArrayList<VerInterventoDTO> lista_interventi = GestioneVerInterventoBO.getListaVerInterventi(utente, dateFrom, dateTo, session);
 
 				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0, true);
 				ArrayList<UtenteDTO> lista_tecnici = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
@@ -133,6 +157,8 @@ public class GestioneVerIntervento extends HttpServlet {
 				request.getSession().setAttribute("lista_sedi", listaSedi);
 				request.getSession().setAttribute("lista_comuni", lista_comuni);
 				
+				request.getSession().setAttribute("dateTo", dateTo);
+				request.getSession().setAttribute("dateFrom", dateFrom);
 				
 				
 				session.getTransaction().commit();

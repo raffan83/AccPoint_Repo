@@ -48,9 +48,9 @@
 
 <div class="row">
 
-<!-- 	<div class="col-xs-5">
+ 	<div class="col-xs-5">
 			 <div class="form-group">
-				 <label for="datarange" class="control-label">Filtra Data:</label>
+				 <label for="datarange" class="control-label">Filtra Data Creazione:</label>
 					<div class="col-md-10 input-group" >
 						<div class="input-group-addon">
 				             <i class="fa fa-calendar"></i>
@@ -65,7 +65,7 @@
 			 
 			 
 
-	</div> -->
+	</div> 
 
 <div class="col-xs-12">
 
@@ -381,6 +381,30 @@ function modalNuovoIntervento(){
 
 
 
+function filtraDate(){
+	
+	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+ 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+ 	dataString = "action=lista&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+ 			endDatePicker.format('YYYY-MM-DD');
+ 	
+ 	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+ 	callAction("gestioneVerIntervento.do?"+ dataString, false,true);
+
+ 	//exploreModal("gestioneFormazione.do", dataString, '#content_consuntivo');
+}
+
+function resetDate(){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+	callAction("gestioneVerIntervento.do?action=lista");
+
+	}
+
+
+
 function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico_verificatore, sede_cliente, data_prevista){
 
 	
@@ -626,6 +650,17 @@ function comunicazionePreventiva(){
 	}
 }
 
+function formatDate(data){
+	
+	   var mydate =  Date.parse(data);
+	   
+	   if(!isNaN(mydate.getTime())){
+	   
+		var   str = mydate.toString("dd/MM/yyyy");
+	   }			   
+	   return str;	 		
+}
+
 var commessa_options;
 $(document).ready(function() {
  
@@ -640,6 +675,27 @@ $(document).ready(function() {
 		 format: "dd/mm/yyyy"
 	 }); 
      $('.dropdown-toggle').dropdown();
+     
+     
+     var start = "${dateFrom}";
+    	var end = "${dateTo}";
+
+    	$('input[name="datarange"]').daterangepicker({
+   	    locale: {
+   	      format: 'DD/MM/YYYY'
+   	    
+   	    }
+   	}, 
+   	function(start, end, label) {
+
+   	});
+    	
+    	if(start!=null && start!=""){
+   	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
+   	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
+   	
+   	 }
+      
      
      
 

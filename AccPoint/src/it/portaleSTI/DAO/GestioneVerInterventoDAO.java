@@ -1,8 +1,11 @@
 package it.portaleSTI.DAO;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -15,19 +18,24 @@ import it.portaleSTI.DTO.VerStrumentoDTO;
 
 public class GestioneVerInterventoDAO {
 
-	public static ArrayList<VerInterventoDTO> getListaVerInterventi(UtenteDTO utente, Session session) {
+	public static ArrayList<VerInterventoDTO> getListaVerInterventi(UtenteDTO utente, String dateFrom, String dateTo, Session session) throws HibernateException, ParseException {
 		
 		ArrayList<VerInterventoDTO> lista = null;
 		Query query = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		if(utente.isTras()) {
 						
-			query = session.createQuery("from VerInterventoDTO");
+			query = session.createQuery("from VerInterventoDTO where data_creazione between :_dateFrom and :_dateTo");
 			
 		}else {
 			
-			query = session.createQuery("from VerInterventoDTO where company.id = :_id_company");
+			query = session.createQuery("from VerInterventoDTO where company.id = :_id_company and data_creazione between :_dateFrom and :_dateTo");
 			query.setParameter("_id_company", utente.getCompany().getId());
 		}		
+		
+		query.setParameter("_dateFrom", sdf.parse(dateFrom));
+		query.setParameter("_dateTo", sdf.parse(dateTo));
 		
 		lista = (ArrayList<VerInterventoDTO>) query.list();
 		

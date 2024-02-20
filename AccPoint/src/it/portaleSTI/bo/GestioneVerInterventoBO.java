@@ -2,6 +2,7 @@ package it.portaleSTI.bo;
 
 import java.io.File;
 import java.sql.Connection;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -9,6 +10,7 @@ import java.util.Date;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneInterventoDAO;
@@ -42,9 +44,9 @@ import it.portaleSTI.Util.Utility;
 
 public class GestioneVerInterventoBO {
 
-	public static ArrayList<VerInterventoDTO> getListaVerInterventi(UtenteDTO utente,Session session) {
+	public static ArrayList<VerInterventoDTO> getListaVerInterventi(UtenteDTO utente,String dateFrom, String dateTo, Session session) throws HibernateException, ParseException {
 		
-		return GestioneVerInterventoDAO.getListaVerInterventi(utente, session);
+		return GestioneVerInterventoDAO.getListaVerInterventi(utente, dateFrom, dateTo,session);
 	}
 
 	public static VerInterventoDTO getInterventoFromId(int id_intervento, Session session) {

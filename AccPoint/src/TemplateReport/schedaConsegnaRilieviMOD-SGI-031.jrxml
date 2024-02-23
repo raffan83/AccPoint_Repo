@@ -534,7 +534,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Mese di riferimento:]]></text>
+				<text><![CDATA[]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="20" width="556" height="1" uuid="0daf93fd-c423-493c-901a-510a282a73f4"/>

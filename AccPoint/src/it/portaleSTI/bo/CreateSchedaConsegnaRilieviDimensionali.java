@@ -39,13 +39,13 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaConsegnaRilieviDimensionali {
-	public CreateSchedaConsegnaRilieviDimensionali(ArrayList<RilMisuraRilievoDTO> lista_rilievi, String commessa, String consegnaDi, int checkStato, String ca, List<SedeDTO> listaSedi, String path_firma, UtenteDTO utente, String anno, Session session) throws Exception {
+	public CreateSchedaConsegnaRilieviDimensionali(ArrayList<RilMisuraRilievoDTO> lista_rilievi, String commessa, String consegnaDi, int checkStato, String ca, List<SedeDTO> listaSedi, String path_firma, UtenteDTO utente, String anno, String mese, Session session) throws Exception {
 	
-			build(lista_rilievi, commessa, consegnaDi,checkStato, ca, listaSedi, path_firma, utente, anno, session);
+			build(lista_rilievi, commessa, consegnaDi,checkStato, ca, listaSedi, path_firma, utente, anno, mese, session);
 		
 	}
 	
-	private void build(ArrayList<RilMisuraRilievoDTO> lista_rilievi, String id_commessa, String consegnaDi, int checkStato, String ca, List<SedeDTO> listaSedi, String path_firma, UtenteDTO utente, String anno, Session session) throws Exception {
+	private void build(ArrayList<RilMisuraRilievoDTO> lista_rilievi, String id_commessa, String consegnaDi, int checkStato, String ca, List<SedeDTO> listaSedi, String path_firma, UtenteDTO utente, String anno, String mese,Session session) throws Exception {
 
 		
 		InputStream is = PivotTemplate.class.getResourceAsStream("schedaConsegnaRilieviMOD-SGI-031.jrxml");
@@ -69,17 +69,24 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 			int tot_quote = 0;
 			int tot_pezzi = 0;
 			double tot_ore = 0.0; 
+			ArrayList<RilMisuraRilievoDTO> lista_non_lavorati = new ArrayList<RilMisuraRilievoDTO>();
 			
 			for (RilMisuraRilievoDTO rilievo : lista_rilievi) {
-				tot_quote = tot_quote + rilievo.getN_quote();
-				tot_pezzi = tot_pezzi + rilievo.getN_pezzi_tot();
-				if(rilievo.getTempo_scansione()!=null) {
-					tot_ore = tot_ore + rilievo.getTempo_scansione();	
+				if(rilievo.getNon_lavorato()==0) {
+					tot_quote = tot_quote + rilievo.getN_quote();
+					tot_pezzi = tot_pezzi + rilievo.getN_pezzi_tot();
+					if(rilievo.getTempo_scansione()!=null) {
+						tot_ore = tot_ore + rilievo.getTempo_scansione();	
+					}
 				}
-				
+				else {
+					lista_non_lavorati.add(rilievo);
+				}
 				rilievo.setScheda_consegna(1);
 			}
 
+			
+		
 			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/1428_header_sc.jpg");
 			
 			if(imageHeader!=null && imageHeader.exists()) {
@@ -132,7 +139,12 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 			if(consegnaDi!=null && !consegnaDi.equals("") && !consegnaDi.equals("EFFETTUATI CONTROLLI DIMENSIONALI SU N PARTICOLARI CON UN TOTALE DI N QUOTE E DI N ORE SCANSIONE")) {
 				report.addParameter("consegnaDi",consegnaDi);	
 			}else {
-				report.addParameter("consegnaDi","EFFETTUATI CONTROLLI DIMENSIONALI SU N° "+tot_pezzi+" PARTICOLARI CON UN TOTALE DI "+tot_quote+" QUOTE E DI "+tot_ore+" ORE SCANSIONE");
+				if(lista_rilievi.get(0).getTipo_rilievo().getId()==3) {
+					report.addParameter("consegnaDi","EFFETTUATA SCANSIONE LASER CON SOVRAPPOSIZIONE A MODELLO MATEMATICO PER CALCOLO DEVIAZIONE.");
+				}else {
+					report.addParameter("consegnaDi","EFFETTUATI CONTROLLI DIMENSIONALI SU N° "+tot_pezzi+" PARTICOLARI CON UN TOTALE DI "+tot_quote+" QUOTE E DI "+tot_ore+" ORE SCANSIONE");	
+				}
+				
 			}
 			
 			if(commessa.getDESCR()!=null) {
@@ -167,11 +179,11 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(lista_rilievi.get(0).getData_consegna());
 
-			if(lista_rilievi.size()>0) {
-				report.addParameter("mese",lista_rilievi.get(0).getMese_riferimento() + " " + anno);
-			}else {
+		//	if(lista_rilievi.size()>0) {
+	//			report.addParameter("mese",lista_rilievi.get(0).getMese_riferimento() + " " + anno);
+			//}else {
 				report.addParameter("mese","");	
-			}
+		//	}
 			
 			
 			//File firma = new File(path_firma + utente.getNominativo().replace(" ", "_").toUpperCase() + ".jpg" );
@@ -184,21 +196,29 @@ public class CreateSchedaConsegnaRilieviDimensionali {
  
 			report.setColumnStyle(textStyle); //AGG
 
-			SubreportBuilder subreport = cmp.subreport(getTableReport(lista_rilievi));
+			SubreportBuilder subreport = cmp.subreport(getTableReport(lista_rilievi, false));
 			SubreportBuilder subreport2 = cmp.subreport(getTableReport2(lista_rilievi, tot_quote, tot_pezzi, tot_ore));
 			report.addDetail(subreport);
 			
-			report.addDetail(cmp.horizontalList(cmp.horizontalGap(360), subreport2));
+			report.addDetail(cmp.horizontalList(cmp.horizontalGap(335), subreport2));
+			
+		
+			
+			if(lista_non_lavorati.size()>0) {
+				SubreportBuilder subreport3 = cmp.subreport(getTableReport(lista_non_lavorati, true));
+				report.addDetail(cmp.verticalList(cmp.verticalGap(50), cmp.text("RILIEVI NON LAVORATI").setStyle(stl.style().setFontSize(16).setBold(true)), cmp.verticalGap(10)));
+				report.addDetail(subreport3);
+			}
 			
 			report.setDataSource(new JREmptyDataSource());
 			File folder = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\SchedeConsegna\\"+lista_rilievi.get(0).getId_cliente_util()+"\\"+lista_rilievi.get(0).getId_sede_util()+
-					"\\"+anno+"\\"+lista_rilievi.get(0).getMese_riferimento());
+					"\\"+anno+"\\"+mese);
 			if(!folder.exists()) {
 				folder.mkdirs();
 			}
 			String filename = lista_rilievi.get(0).getCommessa().replace("/", "_");
 			File file = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\SchedeConsegna\\"+lista_rilievi.get(0).getId_cliente_util()+"\\"+lista_rilievi.get(0).getId_sede_util()+
-					"\\"+anno+"\\"+lista_rilievi.get(0).getMese_riferimento()+"\\SCN_"+filename+".pdf");
+					"\\"+anno+"\\"+mese+"\\SCN_"+filename+".pdf");
 			
 			
 			FileOutputStream fos = new FileOutputStream(file);
@@ -211,7 +231,7 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 	
 	
 	
-	public JasperReportBuilder getTableReport(ArrayList<RilMisuraRilievoDTO> lista_rilievi) throws Exception{
+	public JasperReportBuilder getTableReport(ArrayList<RilMisuraRilievoDTO> lista_rilievi, boolean non_lavorati) throws Exception{
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(10);//AGG
 		
@@ -223,18 +243,26 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(10).setBorder(stl.penThin()));
 
 			report.setColumnStyle(textStyle); //AGG
-			report.addColumn(col.column("Disegno", "disegno", type.stringType()).setFixedWidth(75));
- 	 		report.addColumn(col.column("Variante", "variante", type.stringType()).setFixedWidth(75));
-	 		report.addColumn(col.column("Fornitore", "fornitore", type.stringType()).setFixedWidth(75));
-	 		report.addColumn(col.column("Apparecchio", "apparecchio", type.stringType()).setFixedWidth(70));
-	 		report.addColumn(col.column("Mese", "mese", type.stringType()).setFixedWidth(65));
-	 		report.addColumn(col.column("N° Pezzi", "n_pezzi", type.stringType()).setFixedWidth(65));
-	 		report.addColumn(col.column("N° Quote", "n_quote", type.stringType()).setFixedWidth(65));
-	 		report.addColumn(col.column("Tempo scansione (Ore)", "tempo_scansione", type.stringType()).setFixedWidth(65));
-
+			if(!non_lavorati) {
+				report.addColumn(col.column("Disegno", "disegno", type.stringType()).setFixedWidth(85));
+	 	 		report.addColumn(col.column("Variante", "variante", type.stringType()).setFixedWidth(85));
+		 		report.addColumn(col.column("Fornitore", "fornitore", type.stringType()).setFixedWidth(85));
+		 		report.addColumn(col.column("Apparecchio", "apparecchio", type.stringType()).setFixedWidth(80));
+			}else {
+				report.addColumn(col.column("Disegno", "disegno", type.stringType()).setFixedWidth(140));
+	 	 		report.addColumn(col.column("Variante", "variante", type.stringType()).setFixedWidth(140));
+		 		report.addColumn(col.column("Fornitore", "fornitore", type.stringType()).setFixedWidth(140));
+		 		report.addColumn(col.column("Apparecchio", "apparecchio", type.stringType()).setFixedWidth(135));
+			}
+	 		//report.addColumn(col.column("Mese", "mese", type.stringType()).setFixedWidth(65));
+	 		if(!non_lavorati) {
+	 			report.addColumn(col.column("N° Pezzi", "n_pezzi", type.stringType()).setFixedWidth(75));
+	 			report.addColumn(col.column("N° Quote", "n_quote", type.stringType()).setFixedWidth(75));
+	 			report.addColumn(col.column("Tempo scansione (Ore)", "tempo_scansione", type.stringType()).setFixedWidth(70));
+	 		}
 			report.setDetailSplitType(SplitType.PREVENT);
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(10).setBorder(stl.penThin()));
-			report.setDataSource(createDataSource(lista_rilievi));
+			report.setDataSource(createDataSource(lista_rilievi, non_lavorati));
 			
 			
 
@@ -252,9 +280,9 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 			report.setTemplate(Templates.reportTemplate);
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(10).setBorder(stl.penThin()));
 
-	 		report.addColumn(col.column("Tot. Pezzi", "tot_pezzi", type.stringType()).setFixedWidth(65));
-	 		report.addColumn(col.column("Tot. Quote", "tot_quote", type.stringType()).setFixedWidth(65));
-	 		report.addColumn(col.column("Tot. Ore", "tot_ore", type.stringType()).setFixedWidth(65));
+	 		report.addColumn(col.column("Tot. Pezzi", "tot_pezzi", type.stringType()).setFixedWidth(75));
+	 		report.addColumn(col.column("Tot. Quote", "tot_quote", type.stringType()).setFixedWidth(75));
+	 		report.addColumn(col.column("Tot. Ore", "tot_ore", type.stringType()).setFixedWidth(70));
 	 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(10).setBorder(stl.penThin()));
 	 		report.setDetailSplitType(SplitType.PREVENT);
 			report.setDataSource(createDataSource2(lista_rilievi, tot_quote, tot_pezzi, tot_ore));
@@ -262,41 +290,53 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 		return report;
 	}
 
-	private JRDataSource createDataSource(ArrayList<RilMisuraRilievoDTO> lista_rilievi)throws Exception {
+	private JRDataSource createDataSource(ArrayList<RilMisuraRilievoDTO> lista_rilievi, boolean non_lavorati)throws Exception {
 			
 			
-		String[] listaCodici = new String[8];
+		String[] listaCodici = null;
+		
+		if(non_lavorati) {
+			listaCodici = new String[4];
+		}else {
+			listaCodici = new String[7];	
+		}
+		
 		
 		listaCodici[0]="disegno";
 		listaCodici[1]="variante";
 		listaCodici[2]="fornitore";
 		listaCodici[3]="apparecchio";
-		listaCodici[4]="mese";
-		listaCodici[5]="n_pezzi";
-		listaCodici[6]="n_quote";
-		listaCodici[7]="tempo_scansione";
-		
+	//	listaCodici[4]="mese";
+		if(!non_lavorati) {
+			listaCodici[4]="n_pezzi";
+			listaCodici[5]="n_quote";
+			listaCodici[6]="tempo_scansione";
+		}
 		DRDataSource dataSource = new DRDataSource(listaCodici);
 
 			for (RilMisuraRilievoDTO rilievo : lista_rilievi) {
-				ArrayList<String> arrayPs = new ArrayList<String>();
-				
-				arrayPs.add(rilievo.getDisegno());
-				arrayPs.add(rilievo.getVariante());
-				arrayPs.add(rilievo.getFornitore());
-				arrayPs.add(rilievo.getApparecchio());
-				arrayPs.add(rilievo.getMese_riferimento());
-				arrayPs.add(String.valueOf(rilievo.getN_pezzi_tot()));
-				arrayPs.add(String.valueOf(rilievo.getN_quote()));
-				if(rilievo.getTempo_scansione()!=null) {
-					arrayPs.add(""+rilievo.getTempo_scansione());
-				}else {
-					arrayPs.add("");	
+				if(rilievo.getNon_lavorato()==0 || non_lavorati) {
+					ArrayList<String> arrayPs = new ArrayList<String>();
+					
+					arrayPs.add(rilievo.getDisegno());
+					arrayPs.add(rilievo.getVariante());
+					arrayPs.add(rilievo.getFornitore());
+					arrayPs.add(rilievo.getApparecchio());
+				//	arrayPs.add(rilievo.getMese_riferimento());
+					if(!non_lavorati) {
+						arrayPs.add(String.valueOf(rilievo.getN_pezzi_tot()));
+						arrayPs.add(String.valueOf(rilievo.getN_quote()));
+						if(rilievo.getTempo_scansione()!=null) {
+							arrayPs.add(""+rilievo.getTempo_scansione());
+						}else {
+							arrayPs.add("");	
+						}
+					}
+			        Object[] listaValori = arrayPs.toArray();
+			        
+			        dataSource.add(listaValori);	
 				}
-				
-		        Object[] listaValori = arrayPs.toArray();
-		        
-		        dataSource.add(listaValori);		    
+					    
 			}
  		    return dataSource;
  	}

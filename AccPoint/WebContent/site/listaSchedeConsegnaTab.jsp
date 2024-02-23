@@ -164,13 +164,20 @@ Fatturata
 							 <span class="input-group-btn">
 				               <button type="button" class="btn btn-info btn-flat" onclick="filtraSchedePerDataRil()">Cerca</button>
 				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
-				             </span>				                     
-  					</div>  								
+				               
+				             </span>	
+				            			                     
+  					</div>  		
+  											
 			 </div>	
 			 
 			 
 
 	</div>
+	<div class="col-xs-6">
+	 <button type="button" style="margin-left:5px" class="btn btn-primary pull-right" onclick="modalCreaSchede()">Crea Schede Consegna</button>
+	 
+	 </div>
 
 </div>
 </div>
@@ -329,6 +336,70 @@ Fatturata
 
 
 
+  <div id="modalCreaSchede" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Cerca Rilievi</h4>
+      </div>
+       <div class="modal-body">
+              <div class="row">
+			<div class="col-sm-6">
+				
+						 <div class="form-group">
+							 <label for="datarange" class="control-label">Ricerca Data:</label>
+								<div class="col-md-12 input-group" >
+									<div class="input-group-addon">
+							             <i class="fa fa-calendar"></i>
+							        </div>				                  	
+									 <input type="text" class="form-control" id="datarangeSchede" name="datarangeSchede" value=""/> 						    
+										 <span class="input-group-btn">
+							               <button type="button" class="btn btn-info btn-flat" onclick="cercaRilieviSchede()">Cerca</button>
+							               
+							             </span>				                     
+			  					</div>  								
+						 </div>	
+						 </div>
+						 </div>
+						 <div class="row" id="content_schede" style="display:none">
+      	<div class="col-xs-12">
+      	<table id="table_crea_schede" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+      	 <thead><tr class="active">
+
+		<td align="center"><input style="margin-top:15px" id="selectAlltabPM" type="checkbox" /></td>
+		<th>Commessa</th>
+		<th>Cliente</th>
+		<th>Sede</th>
+		
+		
+		 </tr></thead>
+		 
+		 <tbody>
+		</tbody>
+      	</table>
+      	 </div>
+      	
+      	
+      	</div>
+						 
+			
+			
+			
+		
+  		 </div>
+      <div class="modal-footer">
+      
+      <a class="btn btn-primary" onclick="creaSchedeCosegna()">Crea Schede Consegna</a>
+      
+      </div>
+   
+
+  </div>
+</div>
+</div>
+
 </section>
   </div>
   <!-- /.content-wrapper -->
@@ -388,6 +459,14 @@ Fatturata
   	
 
 	}); */
+	
+	
+	
+	function modalCreaSchede(){
+		
+			$('#modalCreaSchede').modal();
+
+	}
   
   
   function filtraSchedePerData(){
@@ -438,6 +517,66 @@ Fatturata
 					
 	}
 	
+	  function cercaRilieviSchede(){
+		  
+			var startDatePicker = $("#datarangeSchede").data('daterangepicker').startDate;
+			var endDatePicker = $("#datarangeSchede").data('daterangepicker').endDate;
+			
+			dataString = "?action=cerca_rilievi_schede&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + +"&verificazione=1";
+				 	
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+			
+			 dataObj={};
+			 dataObj.dateFrom = startDatePicker.format('YYYY-MM-DD');
+			 dataObj.dateTo = endDatePicker.format('YYYY-MM-DD');
+			 
+			 callAjax(dataObj,"listaRilieviDimensionali.do?action=cerca_rilievi_schede", function(data){
+				
+				 if(data.success){
+					 var table_data = [];
+					 var lista_clienti = data.lista_clienti;
+					 
+					 for(var i = 0; i<lista_clienti.length;i++){
+			  			  var dati = {};
+			  			  
+			  			  
+			  			  dati.select = '<td></td>';		  		
+			  			  dati.commessa = lista_clienti[i].split(";")[0];
+			  			dati.cliente = lista_clienti[i].split(";")[1];
+			  			if(lista_clienti[i].split(";")[2]!=null && lista_clienti[i].split(";")[2]!="null"){
+			  				dati.sede = lista_clienti[i].split(";")[2];	
+			  			}else{
+			  				dati.sede ="";
+			  			}
+			  			
+			  			
+			  			  
+			  			  table_data.push(dati);
+			  			
+			  		  }
+				   
+				   
+				   var table = $('#table_crea_schede').DataTable();
+			  		  
+		   		   table.clear().draw();
+		   		   
+		   			table.rows.add(table_data).draw();
+		   			
+		   			table.columns.adjust().draw();
+		 			
+		   			
+		   			$('#content_schede').show();
+					 
+				 }
+				 
+			 });
+
+
+		  
+	  }
+	  
+	  
 	 function resetDate(){
 			pleaseWaitDiv = $('#pleaseWaitDialog');
 			pleaseWaitDiv.modal();
@@ -584,7 +723,21 @@ Fatturata
 			function(start, end, label) {
 
 			});
+	 	 
+			
+	 	 $('input[name="datarangeSchede"]').daterangepicker({
+			    locale: {
+			      format: 'DD/MM/YYYY'
+			    
+			    }
+			}, 
+			function(start, end, label) {
+
+			});
  	 
+	 	 
+	 	
+	 	 
  	 var startScheda = "${dateFromScheda}";
  	 var endScheda = "${dateToScheda}";
  	 var startSchedaRil = "${dateFromRil}";
@@ -847,14 +1000,145 @@ $('.removeDefault').each(function() {
 
 });
 	
+	
+	
+	
+table_crea_schede = $('#table_crea_schede').DataTable({
+	language: {
+        	emptyTable : 	"Nessun dato presente nella tabella",
+        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+        	infoPostFix:	"",
+        infoThousands:	".",
+        lengthMenu:	"Visualizza _MENU_ elementi",
+        loadingRecords:	"Caricamento...",
+        	processing:	"Elaborazione...",
+        	search:	"Cerca:",
+        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+        	paginate:	{
+	        	first:	"Inizio",
+	        	previous:	"Precedente",
+	        	next:	"Successivo",
+	        last:	"Fine",
+        	},
+        aria:	{
+	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+        }
+    },
+    pageLength: 25,
+    "order": [[ 1, "desc" ]],
+      paging: false, 
+      ordering: false,
+      info: false, 
+      searchable: true, 
+      targets: 0,
+      responsive: true,  
+      scrollX: false,
+      stateSave: false,	
+      "searching": false,
+      select: {
+        	style:    'multi',
+        	selector: 'td:nth-child(1)'
+    	},
+      columns : [
+
+
+		{"data" : "select"},	
+      	{"data" : "commessa"},	
+      	{"data" : "cliente"},
+      	{"data" : "sede"}
+       ],	
+           
+      columnDefs: [
+    	  
+    	  { responsivePriority: 1, targets: 1 },
+    	  { className: "select-checkbox", targets: 0,  orderable: false }
+    	  ],
+    	  
+     	          
+	 
+               
+    });
+
+
+$('#table_crea_schede thead th').each( function () {
+var title = $('#table_crea_schede thead th').eq( $(this).index() ).text();
+$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
+} );
+
+
+
+
+ table_crea_schede.columns().eq( 0 ).each( function ( colIdx ) {
+$( 'input', table_crea_schede.column( colIdx ).header() ).on( 'keyup', function () {
+	table_crea_schede
+  .column( colIdx )
+  .search( this.value )
+  .draw();
+} );
+} ); 
+
+
 
 	
 	
 });
     
     
+function creaSchedeCosegna(){
+	
+	
+	  var table = $('#table_crea_schede').DataTable();
+		var dataSelected = table.rows( { selected: true } ).data();
+
+		var commesse = "";
+		for (var i = 0; i < dataSelected.length; i++) {
+			commesse += dataSelected[i].commessa;
+		}
+	
+		console.log(dataSelected);
+		
+	
+		if(commesse != null && commesse==""){
+			
+				$('#myModalErrorContent').html("Seleziona una commessa!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+	
+				$('#myModalError').modal('show')
+		}else{
+			var startDatePicker = $("#datarangeSchede").data('daterangepicker').startDate;
+			var endDatePicker = $("#datarangeSchede").data('daterangepicker').endDate;
+			 dataObj={};
+			 dataObj.dateFrom = startDatePicker.format('YYYY-MM-DD');
+			 dataObj.dateTo = endDatePicker.format('YYYY-MM-DD');
+			 dataObj.commesse = commesse;
+			   	pleaseWaitDiv = $('#pleaseWaitDialog');
+			 	pleaseWaitDiv.modal();
+			 
+			callAjax(dataObj,"scaricaSchedaConsegna.do?action=rilievi_dimensionali")
+			
+		}
+		table.rows().deselect();
+	
+}    
     
     
+    
+    
+	$('#selectAlltabPM').on('ifChecked', function(event){  		
+  		
+		 var table = $('#table_crea_schede').DataTable();
+		   table.rows({ filter : 'applied'}).select();
+		      	  
+});
+$('#selectAlltabPM').on('ifUnchecked', function(event){
+	 var table = $('#table_crea_schede').DataTable();
+		 table.rows().deselect();
+	  
+});
     	
   </script>
 </jsp:attribute> 

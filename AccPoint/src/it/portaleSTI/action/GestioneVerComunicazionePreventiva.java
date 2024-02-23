@@ -74,7 +74,44 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+		
+		if(Utility.validateSession(request,response,getServletContext()))return;
+	
+		String action = request.getParameter("action");
+		JsonObject myObj = new JsonObject();
+		try {
+			
+			response.setContentType("application/json");
+			if(action!=null && action.equals("lista_clienti")) {
+				
+				
+		
+				String id_company = request.getParameter("id_company");
+				
+				
+				List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(id_company);
+				Gson gson = new GsonBuilder().create();
+				
+				myObj.add("lista_clienti", gson.toJsonTree(listaClienti));
+		
+				myObj.addProperty("success", true);
+				
+				PrintWriter  out = response.getWriter();
+				out.print(myObj);
+				
+			}else {
+				doPost(request, response);
+			}
+		} catch (Exception e) {
+		
+				PrintWriter out = response.getWriter();
+				e.printStackTrace();
+	        	
+	        	request.getSession().setAttribute("exception", e);
+	        	myObj = STIException.getException(e);
+	        	out.print(myObj);
+        	
+		}
 	}
 
 	/**
@@ -110,10 +147,10 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 						request.getSession().setAttribute("listaSediAll",GestioneAnagraficaRemotaBO.getListaSediAll());				
 				}			
 		
-				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
-				if(listaClienti==null) {
-					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
-				}
+			//	List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+			//	if(listaClienti==null) {
+				//	listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
+			//	}
 				
 				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 				if(listaSedi== null) {
@@ -127,14 +164,14 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				
 				request.getSession().setAttribute("lista_commesse", lista_commesse);
 				request.getSession().setAttribute("lista_tecnici", lista_tecnici);				
-				request.getSession().setAttribute("lista_clienti", listaClienti);				
+			//	request.getSession().setAttribute("lista_clienti", listaClienti);				
 				request.getSession().setAttribute("lista_sedi", listaSedi);
 				request.getSession().setAttribute("lista_company", lista_company);
 
 				Gson gson = new GsonBuilder().create();
-				JsonArray listaCl = gson.toJsonTree(listaClienti).getAsJsonArray();
+			//	JsonArray listaCl = gson.toJsonTree(listaClienti).getAsJsonArray();
 				
-				request.getSession().setAttribute("listaCl", listaCl.toString().replace("\'", ""));
+			//	request.getSession().setAttribute("listaCl", listaCl.toString().replace("\'", ""));
 				
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneVerComunicazionePreventiva.jsp");

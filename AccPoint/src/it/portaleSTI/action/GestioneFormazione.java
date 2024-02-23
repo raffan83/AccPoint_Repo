@@ -1522,6 +1522,24 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String dateTo = request.getParameter("dateTo");
 				String tipo_data = request.getParameter("tipo_data");
 				
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				
+				if(tipo_data == null) {
+					tipo_data = "data_scadenza";
+					if(dateFrom == null) {
+						dateFrom = "" +df.format(new Date());
+						
+					}
+					if(dateTo ==null) {
+						Calendar c = Calendar.getInstance();
+						Date scadenza = new Date();
+						c.add(Calendar.DAY_OF_MONTH, 60);
+						dateTo ="" +df.format(c.getTime());
+					}
+				}
+				
+				
+				
 				ArrayList<ForPartecipanteRuoloCorsoDTO> lista_corsi = null;
 				
 				if(utente.checkRuolo("F2")) {

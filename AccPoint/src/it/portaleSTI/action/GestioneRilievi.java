@@ -39,6 +39,8 @@ import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -51,6 +53,7 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.RilAllegatiDTO;
+import it.portaleSTI.DTO.RilInterventoDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilParticolareDTO;
 import it.portaleSTI.DTO.RilPuntoDTO;
@@ -1429,7 +1432,10 @@ public class GestioneRilievi extends HttpServlet {
 				PrintWriter out = response.getWriter();
 				String id_rilievo = request.getParameter("id_rilievo");
 				String stato = request.getParameter("stato");
+				String smaltimento = request.getParameter("smaltimento");
+				String non_lavorato = request.getParameter("non_lavorato");
 				
+					
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
 				rilievo.setStato_rilievo(new RilStatoRilievoDTO(Integer.parseInt(stato), ""));
 				
@@ -1456,6 +1462,13 @@ public class GestioneRilievi extends HttpServlet {
 					}	
 					rilievo.setControfirmato(0);										
 					
+					if(smaltimento!=null && !smaltimento.equals("")) {
+						rilievo.setSmaltimento(Integer.parseInt(smaltimento));
+					}
+					
+					if(non_lavorato!=null && !non_lavorato.equals("")) {
+						rilievo.setNon_lavorato(Integer.parseInt(non_lavorato));
+					}
 					
 					ArubaSignService.signRilievoPades(rilievo.getUtente(), rilievo.getUtente().getNominativo(), rilievo);
 					rilievo.setFirmato(1);
@@ -2315,9 +2328,11 @@ public class GestioneRilievi extends HttpServlet {
 			else if(action.equals("clona_rilievo")) {
 				
 				String id_rilievo = request.getParameter("id_rilievo");
+				String id_intervento = request.getParameter("id_intervento");
+				String id_rilievo_new = request.getParameter("id_rilievo_new");
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
-				RilMisuraRilievoDTO new_rilievo = new RilMisuraRilievoDTO();
+				RilMisuraRilievoDTO new_rilievo =  GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo_new), session);
 				new_rilievo.setApparecchio(rilievo.getApparecchio());
 				new_rilievo.setDenominazione(rilievo.getDenominazione());				
 				new_rilievo.setCifre_decimali(rilievo.getCifre_decimali());
@@ -2326,27 +2341,36 @@ public class GestioneRilievi extends HttpServlet {
 				}else {
 					new_rilievo.setClasse_tolleranza("m");
 				}				
-				new_rilievo.setCommessa(rilievo.getCommessa());
+				if(id_intervento!=null && !id_intervento.equals("")) {
+					//new_rilievo.setId_intervento(Integer.parseInt(id_intervento));	
+					RilInterventoDTO intervento = GestioneRilieviBO.getInterventoFromId(Integer.parseInt(id_intervento), session);
+					new_rilievo.setIntervento(intervento);
+					new_rilievo.setId_cliente_util(intervento.getId_cliente());
+					new_rilievo.setId_sede_util(intervento.getId_sede());
+					new_rilievo.setNome_cliente_util(intervento.getNome_cliente());
+					new_rilievo.setNome_sede_util(intervento.getNome_sede());
+				}
+				
+				//new_rilievo.setCommessa(intervento.getCommessa());
 				new_rilievo.setData_inizio_rilievo(new Date());
 				new_rilievo.setDisegno(rilievo.getDisegno());
 				new_rilievo.setFornitore(rilievo.getFornitore());
-				new_rilievo.setId_cliente_util(rilievo.getId_cliente_util());
-				new_rilievo.setId_sede_util(rilievo.getId_sede_util());
+				//new_rilievo.setId_cliente_util(rilievo.getId_cliente_util());
+				//new_rilievo.setId_sede_util(rilievo.getId_sede_util());
 				new_rilievo.setMateriale(rilievo.getMateriale());
 				new_rilievo.setN_pezzi_tot(rilievo.getN_pezzi_tot());
 				new_rilievo.setN_quote(0);
-				new_rilievo.setNome_cliente_util(rilievo.getNome_cliente_util());
-				new_rilievo.setNome_sede_util(rilievo.getNome_sede_util());
+			
 				new_rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
 				new_rilievo.setTipo_rilievo(rilievo.getTipo_rilievo());
 				new_rilievo.setUtente(utente);
 				new_rilievo.setVariante(rilievo.getVariante());
 				DateFormatSymbols dfs = new DateFormatSymbols(Locale.ITALY);
-		        String[] months = dfs.getMonths();
-		        String mese = months[Calendar.getInstance().get(Calendar.MONTH)];
-				new_rilievo.setMese_riferimento(mese.substring(0, 1).toUpperCase() + mese.substring(1));
+		       // String[] months = dfs.getMonths();
+		      //  String mese = months[Calendar.getInstance().get(Calendar.MONTH)];
+				//new_rilievo.setMese_riferimento(mese.substring(0, 1).toUpperCase() + mese.substring(1));
 				
-				session.save(new_rilievo);
+				session.update(new_rilievo);
 				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(Integer.parseInt(id_rilievo), session);
 				
 				for (RilParticolareDTO particolare : lista_particolari) {
@@ -2483,6 +2507,7 @@ public class GestioneRilievi extends HttpServlet {
 				session.close();
 				out.print(myObj);
 				
+				
 			}
 			
 			else if(action.equals("download_scheda_rilievo")) {
@@ -2527,6 +2552,24 @@ public class GestioneRilievi extends HttpServlet {
 				
 			}
 
+			else if(action.equals("cerca_rilievi")) {
+				
+				String disegno = request.getParameter("disegno_clona");
+				String variante = request.getParameter("variante_clona");
+				
+				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilieviDisVar(disegno, variante, session);
+				
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				 Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+				myObj.addProperty("success", true);
+				myObj.add("lista_rilievi", g.toJsonTree(lista_rilievi));
+				PrintWriter out = response.getWriter();
+				out.print(myObj);
+				
+			}
 
 		} catch (Exception e) {
 			session.getTransaction().rollback();

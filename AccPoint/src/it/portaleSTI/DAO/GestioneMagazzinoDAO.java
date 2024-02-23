@@ -1151,7 +1151,9 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			Date dataCommessa = null;
 			if(pacco.getCommessa()!=null) {
 				CommessaDTO commessa = GestioneCommesseDAO.getCommessaById(pacco.getCommessa());
-				dataCommessa = commessa.getDT_COMMESSA();
+				if(commessa!=null) {
+					dataCommessa = commessa.getDT_COMMESSA();
+				}
 			}
 			
 

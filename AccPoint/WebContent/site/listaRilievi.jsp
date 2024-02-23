@@ -893,16 +893,16 @@
     <div class="modal-content">
        <div class="modal-body" id="myModalDownloadSchedaConsegnaContent">
  
- <div class="form-group">
+ <%-- <div class="form-group">
 		  <label for="cliente_scn">Cliente:</label>
 		  
 		  <input id="cliente_scn" name="cliente_scn" type ="text" class="form-control" style="width:100%">
-		 <%--  <select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_scn" name="cliente_scn" style="width:100%" required>
+		  <select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_scn" name="cliente_scn" style="width:100%" required>
        		<option value=""></option>
        			 <c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
        				<option value="${cliente.__id}">${cliente.nome }</option>
        			</c:forEach> 
-       		</select>  --%>
+       		</select> 
 		</div>
 		<div class="form-group">
 		  <label for="sede_scn">Sede:</label>
@@ -918,11 +918,11 @@
 		  <select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa_scn" name="commessa_scn" style="width:100%" required>
        		<option value=""></option>
        		<c:forEach items="${lista_commesse }" var="commessa" varStatus="loop">
-       				<%-- <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option> --%>
+       				<option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option>
        				<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}@${commessa.getK2_ANAGEN_INDR()}@${commessa.getK2_ANAGEN_INDR_UTIL()}">${commessa.ID_COMMESSA}</option>
        			</c:forEach>
        		</select>
-		</div>
+		</div> --%>
 		<div class="form-group">
 		  <label for="mese_scn">Mese di Riferimento:</label>
 		 <select class="form-control select2" data-placeholder="Seleziona Mese Di Riferimento..." id="mese_scn" name="mese_scn" style="width:100%" required>
@@ -963,10 +963,10 @@
 		  <textarea class="form-control" rows="5" name="notaConsegna" id="notaConsegna">EFFETTUATI CONTROLLI DIMENSIONALI SU N PARTICOLARI CON UN TOTALE DI N QUOTE E DI N ORE SCANSIONE</textarea>
 		</div>
 		
-		<div class="form-group">
+<!-- 		<div class="form-group">
 		  <label for="notaConsegna">Cortese Attenzione di:</label>
 		  <input class="form-control" id="corteseAttenzione" name="corteseAttenzione" />
-		</div>
+		</div> 
 		
       <fieldset class="form-group">
 		  <label for="gridRadios">Stato Intervento:</label>
@@ -983,7 +983,7 @@
           </label>
 
       </div>
-    </fieldset>	     
+    </fieldset>	 -->     
  
   		 </div>
       
@@ -1161,7 +1161,10 @@
  
  $('#scaricaSchedaConsegnaRilieviForm').on('submit', function(e){
 	 e.preventDefault();
-	 $('#scaricaSchedaConsegnaRilieviForm')[0].submit();
+	// $('#scaricaSchedaConsegnaRilieviForm')[0].submit();
+	 
+	 callAjaxForm('#scaricaSchedaConsegnaRilieviForm', "scaricaSchedaConsegna.do?action=rilievi_dimensionali");
+	 
 	 $("#myModalSchedaConsegna").modal('hide');	
  });
  

@@ -218,7 +218,7 @@
 				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="386" y="755" width="120" height="22" uuid="9b246a95-9797-4f4a-9b02-0df32a2aab76"/>
+				<reportElement x="386" y="755" width="120" height="16" uuid="9b246a95-9797-4f4a-9b02-0df32a2aab76"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Firma operatore tecnico]]></text>
 			</staticText>
@@ -318,8 +318,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Center" onErrorType="Blank">
-				<reportElement x="386" y="767" width="120" height="21" uuid="c30cbb0b-8238-4ff1-8796-b42c8ff2bd05"/>
+			<image scaleImage="FillFrame" hAlign="Center" onErrorType="Blank">
+				<reportElement x="411" y="768" width="70" height="19" uuid="c30cbb0b-8238-4ff1-8796-b42c8ff2bd05"/>
 				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
 			</image>
 			<textField>

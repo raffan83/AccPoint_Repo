@@ -55,26 +55,31 @@
   <div class="col-md-6" style="display:none">  
                   <label>Cliente</label>
                <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                 
                 
-                      <c:forEach items="${lista_clienti}" var="cliente">
+                <%--      <c:forEach items="${lista_clienti}" var="cliente">
                      
                            <option value="${cliente.__id}">${cliente.nome}</option> 
                          
-                     </c:forEach>
+                     </c:forEach>  --%>
 
                   </select> 
                 
         </div> 
        <div class="col-xs-6">
        <label>Cliente</label>
-        <input id="cliente" name="cliente" class="form-control" style="width:100%">
-      <%--  <select id="cliente" name="cliente" class="form-control select2"  data-placeholder="Seleziona Cliente..." aria-hidden="true" data-live-search="true" style="width:100%">
-       <option value=""></option>
+       <div id="content_cliente">
+         <!-- <input id="cliente" name="cliente" class="form-control" style="width:100%"> -->
+         </div>  
+      <!--   <select name="cliente" id="cliente" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required> -->
+        <!-- <select id="cliente" name="cliente" class="form-control select2"  data-placeholder="Seleziona Cliente..." aria-hidden="true" data-live-search="true" style="width:100%"> -->
+<%--        <option value=""></option>
       	<c:forEach items="${lista_clienti}" var="cl">
       	<option value="${cl.__id }">${cl.nome }</option>
-      	</c:forEach>
+      	</c:forEach> --%>
       
-      </select> --%>
+<!--       </select>  -->
+     <!--  </select> -->
       </div>
       <div class="col-xs-6">
       <label>Sede</label>
@@ -426,7 +431,8 @@ function validateStrumentias(){
 
 }
   
-  $("#cliente").change(function() {
+
+function changeCliente(){
 	  
 	  if ($(this).data('options') == undefined) 
 	  {
@@ -435,85 +441,92 @@ function validateStrumentias(){
 	  }
 	  
 	  
-	  var selection = $(this).val()	 
+	  var selection = $("#cliente").val()	 
 	  var id = selection
 	  var options = $(this).data('options');
 
 	  var opt=[];
 	
-	  opt.push("<option value = 0 selected>Non Associate</option>");
+	  if(id!=null && id!=''){
+		  opt.push("<option value = 0 selected>Non Associate</option>");
 
-	   for(var  i=0; i<options.length;i++)
-	   {
-		var str=options[i].value; 
-	
-		//if(str.substring(str.indexOf("_")+1,str.length)==id)
-		if(str.substring(str.indexOf("_")+1, str.length)==id)
-		{
-
-			opt.push(options[i]);
-		}   
-	   }
-	 $("#sede").prop("disabled", false);
-	 
-	  $('#sede').html(opt);
-	  
-	  $("#sede").trigger("chosen:updated");
-	  
-
-		$("#sede").change();  
-		
-		
-		$("#commessa").prop("disabled", false);
-		
-		  var id_cliente = selection.split("_")[0];
-		  
-
-		  var opt=[];
-			opt.push("");
 		   for(var  i=0; i<options.length;i++)
 		   {
-			   if(str!='' && str.split("_")[1]==id)
-				{
-					opt.push(options[i]);
-				}   
-		   } 
-		   
-		   
-		   var options = commessa_options;
+			var str=options[i].value; 
+		
+			//if(str.substring(str.indexOf("_")+1,str.length)==id)
+			if(str.substring(str.indexOf("_")+1, str.length)==id)
+			{
+
+				opt.push(options[i]);
+			}   
+		   }
+		 $("#sede").prop("disabled", false);
+		 
+		  $('#sede').html(opt);
+		  
+		  $("#sede").trigger("chosen:updated");
+		  
+
+			$("#sede").change();  
+			
+			
+			$("#commessa").prop("disabled", false);
+			
+			  var id_cliente = selection.split("_")[0];
+			  
+
 			  var opt=[];
 				opt.push("");
 			   for(var  i=0; i<options.length;i++)
 			   {
-				var str=options[i].value; 		
-				
-				if(str.split("*")[1] == id_cliente||str.split("*")[2]==id_cliente)	
-				{
-
-					opt.push(options[i]);
-				}   
-		    
+				   if(str!='' && str.split("_")[1]==id)
+					{
+						opt.push(options[i]);
+					}   
 			   } 
 			   
-			   if(opt.length == 1){
-				   opt.push("<option vlaue='NON PRESENTE' selected>NON PRESENTE</option>");
-				   $('#commessa').html(opt);
-			   }else{
-				   $('#commessa').html(opt);
-				   $('#commessa').val("");
-			   }
 			   
-			
-			$("#commessa").change();
-		   
-		/*    dataString = "action=lista&id_cliente="+$(this).val()+"&id_sede="+$('#sede').val();
-		   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab'); */
+			   var options = commessa_options;
+				  var opt=[];
+					opt.push("");
+				   for(var  i=0; i<options.length;i++)
+				   {
+					var str=options[i].value; 		
+					
+					if(str.split("*")[1] == id_cliente||str.split("*")[2]==id_cliente)	
+					{
 
-	});
-  
+						opt.push(options[i]);
+					}   
+			    
+				   } 
+				   
+				   if(opt.length == 1){
+					   opt.push("<option vlaue='NON PRESENTE' selected>NON PRESENTE</option>");
+					   $('#commessa').html(opt);
+				   }else{
+					   $('#commessa').html(opt);
+					   $('#commessa').val("");
+				   }
+				   
+				
+				$("#commessa").change();
+			   
+			   
+	  }
+	
+		
+	}
+
   
   
 $("#company").change(function() {
+	
+	$('#content_cliente').html("")
+	
+/* 	$('#sede').val("");
+	$('#sede').prop("disabled", true); */
 	  
 	  if ($(this).data('options') == undefined) 
 	  {
@@ -542,11 +555,47 @@ $("#company").change(function() {
 	 
 	 
 	  $('#tecnico_verificatore').html(opt);
-	  
-
-	});
-  
-  
+	
+	 
+	  $.ajax({
+		  url: 'gestioneVerComunicazionePreventiva.do?action=lista_clienti&id_company='+id, // Specifica l'URL della tua servlet
+		  method: 'GET',
+		  dataType: 'json',
+		  success: function(response) {
+		    // Recupera il JSONElement dalla risposta
+		    var lista_clienti = response.lista_clienti;		
+		    
+		    var cl_opt=[];
+		    cl_opt.push("<option value = ''></option>");
+		    
+		    for (var i = 0; i < lista_clienti.length; i++) {
+		    	
+		    	
+		    	cl_opt.push("<option value = '"+lista_clienti[i].__id+"'>"+lista_clienti[i].nome+"</option>");
+		    }
+		    	 		   
+		    
+			  cl_options = null;
+			  
+				
+				var html = '<input id="cliente" name="cliente" class="form-control" style="width:100%" >';
+				 
+				$('#content_cliente').html(html);
+			
+			
+		    $('#cliente_appoggio').html(cl_opt);
+		  
+		    
+		    cl_options =  $('#cliente_appoggio option').clone(); 
+		    
+			initSelect2("#cliente")
+			
+			
+			$('#content_cliente').on('change', '#cliente', changeCliente);
+			
+		  }
+	  });
+});
   
   $('#sede').change(function(){
 	  
@@ -556,27 +605,29 @@ $("#company").change(function() {
   
   
   var commessa_options;    
+  var cl_options = null;
     $(document).ready(function() {
+    	console.log("inside")
     	$('.datepicker').datepicker({
    		 format: "dd/mm/yyyy"
    	 }); 
     	$('.dropdown-toggle').dropdown();
-    	initSelect2('#cliente');
+    	
     	$('#sede').select2();
     	$('#commessa').select2();
     	$('#tecnico_verificatore').select2();
     	$('#luogo').select2();
     	$('#company').select2();
-    	
+    	$("#company").change();
     	
     	commessa_options = $('#commessa option').clone();
     });
     
 
     
-    var options =  $('#cliente_appoggio option').clone();
+
     function mockData() {
-    	  return _.map(options, function(i) {		  
+    	  return _.map(cl_options, function(i) {		  
     	    return {
     	      id: i.value,
     	      text: i.text,

@@ -25,7 +25,7 @@
 <div class="col-sm-12" >
 
  <!-- <button class="btn btn-info pull-right" title="Click per aprire la lista delle schede di consegna"  onClick="modalListaSchedeConsegna()"><i class="fa fa-list-ul"></i></button> -->
-<button class="btn btn-primary pull-left" style="margin-right:5px" onClick="modalSchedaConsegna()"><i class="fa fa-plus"></i> Crea Scheda Consegna</button>
+<!-- <button class="btn btn-primary pull-left" style="margin-right:5px" onClick="modalSchedaConsegna()"><i class="fa fa-plus"></i> Crea Scheda Consegna</button> -->
 
 <button class="btn btn-info pull-left" title="Click per aprire la lista delle schede di consegna"  onClick="callAction('showSchedeConsegna.do?action=rilievi')"><i class="fa fa-list-ul"></i> Lista Schede di Consegna</button> 
 	</div>
@@ -85,7 +85,7 @@
  <thead><tr class="active">
 
 <th>Numero Scheda</th>
-<th>Mese di riferimento</th>
+
 <th>Disegno</th>
 <th>Variante</th>
 <th>Tipo Rilievo</th>
@@ -104,6 +104,11 @@
 <th>Materiale</th>
 <th>Classe di tolleranza</th>
 <th>Utente</th>
+<th>Mese di riferimento</th>
+<c:if test="${!userObj.checkRuolo('RL') }">
+<th style="max-width:35px">ID Intervento</th>
+<th>Pacco</th>
+</c:if>
 <th style="min-width:230px">Azioni</th>
 <th>Allegati Scheda</th>
 <th>Archivio</th>
@@ -145,7 +150,7 @@
 	<tr id="row_${loop.index}" >
 		
 		<td>${rilievo.numero_scheda }</td>
-		<td>${rilievo.mese_riferimento }</td>
+	
 		<td>${rilievo.disegno }</td>
 		<td>${rilievo.variante }</td>
 		<td>${rilievo.tipo_rilievo.descrizione }</td>
@@ -165,6 +170,24 @@
 		<td>${rilievo.materiale }</td>
 		<td>${rilievo.classe_tolleranza }</td>
 		<td>${rilievo.utente.nominativo }</td>
+			<td>${rilievo.mese_riferimento }</td>
+				<c:if test="${!userObj.checkRuolo('RL') }">
+		<td>
+		<c:if test="${rilievo.intervento.id !=0}">
+		
+		<a target="_blank" class=" btn customTooltip customlink" href="listaRilieviDimensionali.do?action=lista_rilievi_intervento&id_intervento=${rilievo.intervento.id}">${rilievo.intervento.id}</a>
+		</c:if>
+		</td>
+		<td>
+		<c:if test="${rilievo.intervento.id_pacco !=0}">
+		<a target="_blank" class=" btn customTooltip customlink" href="gestionePacco.do?action=dettaglio&id_pacco=${utl:encryptData(rilievo.intervento.id_pacco)}">
+		<c:if test="${rilievo.intervento.id_pacco!=null && rilievo.intervento.id_pacco!=0}">
+			PC_${rilievo.intervento.id_pacco }
+			</c:if>
+		</a>
+		</c:if>
+		</td>
+		</c:if>
 		<td>
 		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') || (userObj.checkPermesso('VISUALIZZA_RILIEVI_DIMENSIONALI') && rilievo.stato_rilievo.id==2)}">
 		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${utl:encryptData(rilievo.id)}')"><i class="fa fa-search"></i></a>
@@ -505,8 +528,14 @@ $('#myModalArchivio').modal();
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	  var title = $('#tabRilievi thead th').eq( $(this).index() ).text();
 	    	
-	    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	    	  //$(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    	
+	    	  if($(this).index()==1 && ${!userObj.checkRuolo('RL')}){
+	    		  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:25px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	    	  }else{
+	    		  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');  
+	    	  }
+	    	  
 	    	} );
 	    
 	    
@@ -644,7 +673,12 @@ $(document).ready(function() {
 	 
 	 $('.dropdown-toggle').dropdown();
 	 
-
+	var col_azioni = 20;
+	
+	if(${!userObj.checkRuolo('RL')}){
+		col_azioni = 22
+	}
+	 
 	 table = $('#tabRilievi').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -683,7 +717,7 @@ $(document).ready(function() {
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 20 }
+		    	  { responsivePriority: 2, targets: col_azioni }
 		               ], 	        
 	  	      buttons: [   
 	  	          {
@@ -720,7 +754,7 @@ $(document).ready(function() {
 
 	});
 	
-	$('#tabRilievi').DataTable().order([23, "desc"]).draw();
+	$('#tabRilievi').DataTable().order([25, "desc"]).draw();
 	
 	contaImportoTotale(table);
 
@@ -1028,12 +1062,15 @@ function contaImportoTotale(table){
 	
 	//var table = $("#tabPM").DataTable();
 	
+	var colonna = 5;
+
+	
 	var data = table
      .rows({ search: 'applied' })
      .data();
 	var somma = 0.0;
 	for(var i=0;i<data.length;i++){	
-		var num = parseFloat(stripHtml(data[i][5]));
+		var num = parseFloat(stripHtml(data[i][colonna]));
 		somma = somma + num;
 	}
 	$('#importo_assegnato').val(somma);

@@ -5,9 +5,13 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,18 +19,24 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.fileupload.FileItem;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+//import com.sun.corba.se.impl.util.Utility;
+
 import it.portaleSTI.DTO.RilParticolareDTO;
 import it.portaleSTI.DTO.RilAllegatiDTO;
+import it.portaleSTI.DTO.RilInterventoDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaFunzionaleDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.RilTipoRilievoDTO;
+import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.bo.GestioneRilieviBO;
 
@@ -765,6 +775,139 @@ public class GestioneRilieviDAO {
 			else {
 				return res; 
 			}
+	}
+
+
+
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviDate(Date startDate, Date endDate, Session session) throws ParseException {
+		
+		ArrayList<RilMisuraRilievoDTO>  lista = null;
+	//	Date startDate = Utility.getFirstDayOfMonth(mese, anno);
+     //   Date endDate = Utility.getLastDayOfMonth(mese, anno);
+        
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = session.createQuery("from RilMisuraRilievoDTO where disabilitato=0 and (data_consegna = :_start_date or data_consegna = :_end_date or data_consegna between :_start_date and :_end_date) and controfirmato = 1 and scheda_consegna = 0");
+		query.setParameter("_start_date", startDate);
+		query.setParameter("_end_date", endDate);
+		
+		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
+
+		return lista;
+	}
+
+
+
+	public static ArrayList<RilInterventoDTO> getListaInterventi(int id_cliente, int stato, Session session) {
+		
+		ArrayList<RilInterventoDTO>  lista = null;
+
+		String q = "from RilInterventoDTO ";
+		
+		Query query = null;
+		if(id_cliente!=0 && stato!=0) {
+			q += "where id_cliente = :_id_cliente and stato_intervento = :_stato";
+			query = session.createQuery(q);
+			query.setParameter("_id_cliente", id_cliente);
+			query.setParameter("_stato", stato);
+		}
+		else if(id_cliente == 0 && stato !=0) {
+			q += "where stato_intervento = :_stato";
+			query = session.createQuery(q);		
+			query.setParameter("_stato", stato);
+		}	
+		else if(id_cliente != 0 && stato ==0) {
+			q += "where id_cliente = :_id_cliente";
+			query = session.createQuery(q);		
+			query.setParameter("_id_cliente", id_cliente);
+			
+		}else {
+			query = session.createQuery(q);		
+		}
+	
+		
+		lista = (ArrayList<RilInterventoDTO>)query.list();
+
+		return lista;
+	}
+
+
+
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviIntervento(int id_intervento, Session session) {
+	
+		ArrayList<RilMisuraRilievoDTO>  lista = null;
+	        
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = session.createQuery("from RilMisuraRilievoDTO where disabilitato=0 and id_intervento = :_id_intervento");
+		query.setParameter("_id_intervento", id_intervento);
+		
+		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
+		return lista;
+	}
+
+
+
+	public static RilInterventoDTO getInterventoFromId(int id_intervento, Session session) {
+		ArrayList<RilInterventoDTO>  lista = null;        
+		RilInterventoDTO result = null;
+		
+		Query query = session.createQuery("from RilInterventoDTO where id = :_id_intervento");
+		query.setParameter("_id_intervento", id_intervento);
+		
+		lista = (ArrayList<RilInterventoDTO>)query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		return result;
+	}
+
+
+
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviDisVar(String disegno, String variante, Session session) {
+		ArrayList<RilMisuraRilievoDTO>  lista = null;        
+		
+		String str = "from RilMisuraRilievoDTO where ";
+		
+		if(disegno!=null && !disegno.equals("") && variante !=null && !variante.equals("")) {
+			str += "disegno like '%"+disegno+"%' and variante like '%"+variante+"%'";
+		}
+		else if(disegno !=null && (variante == null || variante.equals(""))) {
+			str += "disegno like '%"+disegno+"%'";
+		}
+		else if((disegno ==null || disegno.equals("")) && variante != null) {
+			str += "variante like '%"+variante+"%'";
+		}
+		
+		Query query = session.createQuery(str);
+
+		
+		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
+		
+		
+		return lista;
+	}
+
+
+
+	public static ArrayList<RilMisuraRilievoDTO> getRilieviDateSchedeConsegna(String dateFrom, String dateTo,
+			Session session) throws Exception, ParseException {
+	
+		ArrayList<RilMisuraRilievoDTO> lista=null;
+
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+		
+		Query query = session.createQuery("from RilMisuraRilievoDTO where controfirmato = 1 and data_consegna between :dateFrom and :dateTo and scheda_consegna = 0");
+		
+		
+		query.setParameter("dateFrom",df.parse(dateFrom));
+		query.setParameter("dateTo",df.parse(dateTo));
+		
+		lista= (ArrayList<RilMisuraRilievoDTO>)query.list();
+		
+		return lista;
+		
 	}
 
 	

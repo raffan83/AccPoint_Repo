@@ -11,7 +11,7 @@
 <div class="col-sm-12" >
 
  <!-- <button class="btn btn-info pull-right" title="Click per aprire la lista delle schede di consegna"  onClick="modalListaSchedeConsegna()"><i class="fa fa-list-ul"></i></button> -->
-<button class="btn btn-primary pull-left" style="margin-right:5px" onClick="modalSchedaConsegna()"><i class="fa fa-plus"></i> Crea Scheda Consegna</button>
+<!-- <button class="btn btn-primary pull-left" style="margin-right:5px" onClick="modalSchedaConsegna()"><i class="fa fa-plus"></i> Crea Scheda Consegna</button> -->
 
 <button class="btn btn-info pull-left" title="Click per aprire la lista delle schede di consegna"  onClick="callAction('showSchedeConsegna.do?action=rilievi')"><i class="fa fa-list-ul"></i> Lista Schede di Consegna</button> 
 	</div>
@@ -85,7 +85,7 @@
 <th style="max-width:20px"><input id="selectAlltabPM" type="checkbox" /></th>
 </c:if>
 <th>Numero Scheda</th>
-<th>Mese di riferimento</th>
+
 <th>Disegno</th>
 <th>Variante</th>
 <th>Tipo Rilievo</th>
@@ -105,6 +105,11 @@
 <th>Materiale</th>
 <th>Classe di tolleranza</th>
 <th>Utente</th>
+<th>Mese di riferimento</th>
+<c:if test="${!userObj.checkRuolo('RL') }">
+<th>ID Intervento</th>
+<th>Pacco</th>
+</c:if>
 <th style="min-width:190px">Azioni</th>
 <th>Allegati Scheda</th>
 <th>Archivio</th>
@@ -121,7 +126,7 @@
 	
 <c:if test="${tab_da_approvare == 1}"><td></td><td></td></c:if>
 		<td>${rilievo.numero_scheda }</td>
-		<td>${rilievo.mese_riferimento }</td>
+
 		<td>${rilievo.disegno }</td>
 		<td>${rilievo.variante }</td>
 		<td>${rilievo.tipo_rilievo.descrizione }</td>
@@ -140,6 +145,24 @@
 		<td>${rilievo.materiale }</td>
 		<td>${rilievo.classe_tolleranza }</td>
 		<td>${rilievo.utente.nominativo }</td>
+		<td>${rilievo.mese_riferimento }</td>
+				<c:if test="${!userObj.checkRuolo('RL') }">
+	<td>
+		<c:if test="${rilievo.intervento.id !=0}">
+		
+		<a target="_blank" class=" btn customTooltip customlink" href="listaRilieviDimensionali.do?action=lista_rilievi_intervento&id_intervento=${rilievo.intervento.id}">${rilievo.intervento.id}</a>
+		</c:if>
+		</td>
+		<td>
+		<c:if test="${rilievo.intervento.id_pacco !=0}">
+		<a target="_blank" class=" btn customTooltip customlink" href="gestionePacco.do?action=dettaglio&id_pacco=${utl:encryptData(rilievo.intervento.id_pacco)}">
+		<c:if test="${rilievo.intervento.id_pacco!=null && rilievo.intervento.id_pacco!=0}">
+			PC_${rilievo.intervento.id_pacco }
+			</c:if>
+		</a>
+		</c:if>
+		</td>
+		</c:if>
 		<td>
 		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') || (userObj.checkPermesso('VISUALIZZA_RILIEVI_DIMENSIONALI') && rilievo.stato_rilievo.id==2)}">
 		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${utl:encryptData(rilievo.id)}')"><i class="fa fa-search"></i></a>
@@ -562,7 +585,7 @@ $(document).ready(function() {
     	 col_def = [{ className: "select-checkbox", targets: 1,  orderable: false },
     		 { targets: 0,  orderable: false},
     		 { responsivePriority: 1, targets: 1 },
-    	   	  { responsivePriority: 2, targets: 22 }];
+    	   	  { responsivePriority: 2, targets: 24 }];
     	 
     	 sel ={
 	        	style:    'multi+shift',
@@ -908,7 +931,10 @@ function contaImportoTotale(table){
 	
 	//var table = $("#tabPM").DataTable();
 	
+
+	
 	var col = 5;
+	
 	
 	if(${tab_da_approvare==1}){
 		col = 7;

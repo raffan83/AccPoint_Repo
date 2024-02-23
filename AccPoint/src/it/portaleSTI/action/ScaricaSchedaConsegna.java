@@ -9,7 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,6 +22,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -183,70 +189,175 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 			
 			else if(action.equals("rilievi_dimensionali")){
 				
-				String notaConsegna= request.getParameter("notaConsegna");
-				String corteseAttenzione= request.getParameter("corteseAttenzione");
-				String stato= request.getParameter("gridRadios");
+				ajax = true;
+				
+				
+				//String corteseAttenzione= request.getParameter("corteseAttenzione");
+				//String stato= request.getParameter("gridRadios");
 								
-				String id_cliente = request.getParameter("cliente_scn");
-				String id_sede = request.getParameter("sede_scn");
-				String mese = request.getParameter("mese_scn");
-				String anno = request.getParameter("anno_scn");
-				String commessa = request.getParameter("commessa_scn");
+				//String id_cliente = request.getParameter("cliente_scn");
+				//String id_sede = request.getParameter("sede_scn");
+		
+				//String commessa = request.getParameter("commessa_scn");
 				
-				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 				
-				SchedaConsegnaRilieviDTO scheda_consegna = new SchedaConsegnaRilieviDTO();
+				response.setContentType("application/json");
+//				List<FileItem> items = null;
+//		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+//
+//		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+//		        	}
+//		        
+//		       
+//	
+//		        Hashtable<String,String> ret = new Hashtable<String,String>();
+//		      
+//		        for (FileItem item : items) {
+//	            	 if (item.isFormField()) {
+//	            		
+//	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+//	            	 }
+//	            	
+//	            }
+//				
+		        
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");
+				String commesse= request.getParameter("commesse");
 				
-				scheda_consegna.setId_cliente(Integer.parseInt(id_cliente));
-				scheda_consegna.setId_sede(Integer.parseInt(id_sede.split("_")[0]));
-				scheda_consegna.setData_creazione(new Date());
-				scheda_consegna.setMese(mese);
-				scheda_consegna.setAnno(Integer.parseInt(anno));
-				scheda_consegna.setNome_cliente(GestioneAnagraficaRemotaBO.getClienteById(id_cliente).getNome());	
-				
-				scheda_consegna.setCommessa(commessa.split("\\*")[0]);
-				if(!id_sede.split("_")[0].equals("0")) {
-					scheda_consegna.setNome_sede(GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), Integer.parseInt(id_cliente)).getDescrizione());
-				}
-								
 				UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 				
-				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilieviSchedaConsegna(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]), mese,commessa.split("\\*")[0], session);
-				String path_firma =  getServletContext().getRealPath("/images") + "\\firme_rilievi\\";
+				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
 				
-				new CreateSchedaConsegnaRilieviDimensionali(lista_rilievi,commessa.split("\\*")[0],notaConsegna,Integer.parseInt(stato),corteseAttenzione, listaSedi, path_firma,utente, anno, session);
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				ArrayList<RilMisuraRilievoDTO> lista_rilievi_mese = GestioneRilieviBO.getListaRilieviDate(df.parse(dateFrom),df.parse(dateTo), session);
+				Map<String, ArrayList<RilMisuraRilievoDTO>> rilievi_commessa = new HashMap<String, ArrayList<RilMisuraRilievoDTO>>();
 				
-				scheda_consegna.setFile("SCN_"+lista_rilievi.get(0).getCommessa().replace("/", "_")+".pdf");
+				for (RilMisuraRilievoDTO rilievo : lista_rilievi_mese) {
+					
+					ArrayList<RilMisuraRilievoDTO> rilieviCorrispondenti = rilievi_commessa.get(rilievo.getCommessa());
+					if(rilieviCorrispondenti == null) {
+						rilieviCorrispondenti = new ArrayList<RilMisuraRilievoDTO>();
+						
+						if(commesse.contains(rilievo.getCommessa())) {
+							rilievi_commessa.put(rilievo.getCommessa(), rilieviCorrispondenti);	
+						}
+						
+					}
+					if(commesse.contains(rilievo.getCommessa())) {
+						rilieviCorrispondenti.add(rilievo);	
+					}
+					
+				}
 				
-				session.save(scheda_consegna);
+				for (Map.Entry<String, ArrayList<RilMisuraRilievoDTO>> entry : rilievi_commessa.entrySet()) {
+					
+					  
+					String commessa = entry.getKey();
+					    
+					ArrayList<RilMisuraRilievoDTO> rilieviCorrispondenti = entry.getValue();
+					
+					SchedaConsegnaRilieviDTO scheda_consegna = new SchedaConsegnaRilieviDTO();
+					
+					if(rilieviCorrispondenti!=null && rilieviCorrispondenti.size()>0) {
+						RilMisuraRilievoDTO rilievo = rilieviCorrispondenti.get(0);
+						
+						scheda_consegna.setId_cliente(rilievo.getId_cliente_util());
+						scheda_consegna.setId_sede(rilievo.getId_sede_util());
+						scheda_consegna.setData_creazione(new Date());
+						scheda_consegna.setMese(new SimpleDateFormat("MMMM").format(df.parse(dateTo)));
+						 Calendar cal = Calendar.getInstance();
+				           cal.setTime(df.parse(dateTo));
+						scheda_consegna.setAnno(cal.get(Calendar.YEAR));
+						scheda_consegna.setNome_cliente(rilievo.getNome_cliente_util());	
+						
+						scheda_consegna.setCommessa(rilievo.getCommessa());
+						if(rilievo.getNome_sede_util()!=null) {
+							scheda_consegna.setNome_sede(rilievo.getNome_sede_util());
+					
+					
+					}
+								
+					
+					
+					//ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilieviSchedaConsegna(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]), mese,commessa.split("\\*")[0], session);
+					String path_firma =  getServletContext().getRealPath("/images") + "\\firme_rilievi\\";
+					
+					new CreateSchedaConsegnaRilieviDimensionali(rilieviCorrispondenti,commessa.split("\\*")[0],"",0,"", listaSedi, path_firma,utente, cal.get(Calendar.YEAR)+"",new SimpleDateFormat("MMMM").format(df.parse(dateTo))+"", session);
+					
+					scheda_consegna.setFile("SCN_"+rilieviCorrispondenti.get(0).getCommessa().replace("/", "_")+".pdf");
+					
+					session.save(scheda_consegna);
+					
+					}
+				}
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Schede consegna geneate con successo");
+				
+				
+
 				session.getTransaction().commit();
 				session.close();
+				PrintWriter out = response.getWriter();
+				out.print(myObj);
 				
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(lista_rilievi.get(0).getData_consegna());
 				
-				File d = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\SchedeConsegna\\"+lista_rilievi.get(0).getId_cliente_util()+"\\"+lista_rilievi.get(0).getId_sede_util()+
-						"\\"+anno+"\\"+lista_rilievi.get(0).getMese_riferimento()+"\\SCN_"+lista_rilievi.get(0).getCommessa().replace("/", "_")+".pdf");
-				
-				 FileInputStream fileIn = new FileInputStream(d);
-				 
-				 response.setContentType("application/octet-stream");
-				  
-				 response.setHeader("Content-Disposition","attachment;filename=SCN_"+lista_rilievi.get(0).getCommessa().replace("/", "_")+".pdf");
-				 
-				 ServletOutputStream outp = response.getOutputStream();
-				     
-				    byte[] outputByte = new byte[1];
-				    
-				    while(fileIn.read(outputByte, 0, 1) != -1)
-				    {
-				    	outp.write(outputByte, 0, 1);
-				    }
-				    
-				    
-				    fileIn.close();
-				    outp.flush();
-				    outp.close();
+//				SchedaConsegnaRilieviDTO scheda_consegna = new SchedaConsegnaRilieviDTO();
+//				
+//				scheda_consegna.setId_cliente(Integer.parseInt(id_cliente));
+//				scheda_consegna.setId_sede(Integer.parseInt(id_sede.split("_")[0]));
+//				scheda_consegna.setData_creazione(new Date());
+//				scheda_consegna.setMese(mese);
+//				scheda_consegna.setAnno(Integer.parseInt(anno));
+//				scheda_consegna.setNome_cliente(GestioneAnagraficaRemotaBO.getClienteById(id_cliente).getNome());	
+//				
+//				scheda_consegna.setCommessa(commessa.split("\\*")[0]);
+//				if(!id_sede.split("_")[0].equals("0")) {
+//					scheda_consegna.setNome_sede(GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), Integer.parseInt(id_cliente)).getDescrizione());
+//				}
+//								
+//				UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+//				
+//				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilieviSchedaConsegna(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]), mese,commessa.split("\\*")[0], session);
+//				String path_firma =  getServletContext().getRealPath("/images") + "\\firme_rilievi\\";
+//				
+//				new CreateSchedaConsegnaRilieviDimensionali(lista_rilievi,commessa.split("\\*")[0],notaConsegna,Integer.parseInt(stato),corteseAttenzione, listaSedi, path_firma,utente, anno, session);
+//				
+//				scheda_consegna.setFile("SCN_"+lista_rilievi.get(0).getCommessa().replace("/", "_")+".pdf");
+//				
+//				session.save(scheda_consegna);
+//				session.getTransaction().commit();
+//				session.close();
+//				
+//				Calendar cal = Calendar.getInstance();
+//				cal.setTime(lista_rilievi.get(0).getData_consegna());
+//				
+//				File d = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\SchedeConsegna\\"+lista_rilievi.get(0).getId_cliente_util()+"\\"+lista_rilievi.get(0).getId_sede_util()+
+//						"\\"+anno+"\\"+lista_rilievi.get(0).getMese_riferimento()+"\\SCN_"+lista_rilievi.get(0).getCommessa().replace("/", "_")+".pdf");
+//				
+//				 FileInputStream fileIn = new FileInputStream(d);
+//				 
+//				 response.setContentType("application/octet-stream");
+//				  
+//				 response.setHeader("Content-Disposition","attachment;filename=SCN_"+lista_rilievi.get(0).getCommessa().replace("/", "_")+".pdf");
+//				 
+//				 ServletOutputStream outp = response.getOutputStream();
+//				     
+//				    byte[] outputByte = new byte[1];
+//				    
+//				    while(fileIn.read(outputByte, 0, 1) != -1)
+//				    {
+//				    	outp.write(outputByte, 0, 1);
+//				    }
+//				    
+//				    
+//				    fileIn.close();
+//				    outp.flush();
+//				    outp.close();
 
 			}
 			else if(action.equals("verificazione")) {

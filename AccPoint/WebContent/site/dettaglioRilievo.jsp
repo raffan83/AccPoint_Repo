@@ -22,7 +22,16 @@
         <small></small>
       </h1>     
          <a class="btn btn-default pull-right"  href="/"><i class="fa fa-dashboard"></i> Home</a>
-      <a class="btn btn-default pull-right" style="margin-right:5px" onClick="callAction('listaRilieviDimensionali.do?id_stato_lavorazione=${utl:encryptData(filtro_rilievi)}&cliente_filtro=${utl:encryptData(cliente_filtro) }',null,true)"><i class="fa fa-dashboard"></i> Torna alla lista rilievi</a>
+         <c:choose>
+         <c:when test="${filtro_rilievi!=null && filtro_rilievi!='' }">
+      <a class="btn btn-default pull-right" style="margin-right:5px" onClick="callAction('listaRilieviDimensionali.do?id_stato_lavorazione=${utl:encryptData(filtro_rilievi)}&cliente_filtro=${utl:encryptData(cliente_filtro) }',null,true)"><i class="fa fa-dashboard"></i> Torna alla lista rilievi</a>   
+         </c:when>
+         <c:otherwise>
+       <a class="btn btn-default pull-right" style="margin-right:5px" onClick="callAction('listaRilieviDimensionali.do?action=lista_rilievi_intervento&id_intervento=${rilievo.intervento.id}')"><i class="fa fa-dashboard"></i> Torna all'intervento</a>  
+         </c:otherwise>
+         </c:choose>
+      
+       
          
     </section>
 <div style="clear: both;"></div>

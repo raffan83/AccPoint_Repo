@@ -2,7 +2,9 @@ package it.portaleSTI.bo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Query;
@@ -12,6 +14,7 @@ import it.portaleSTI.DAO.GestioneRilieviDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.RilParticolareDTO;
 import it.portaleSTI.DTO.RilAllegatiDTO;
+import it.portaleSTI.DTO.RilInterventoDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
@@ -389,6 +392,38 @@ public class GestioneRilieviBO {
 	public static int getMaxIdRipetizioneImpronta(RilParticolareDTO part, Session session) {
 		
 		return GestioneRilieviDAO.getMaxIdRipetizioneImpronta(part, session);
+	}
+
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviDate(Date startDate, Date endDate,  Session session) throws ParseException {
+		
+		return GestioneRilieviDAO.getListaRilieviDate(startDate, endDate, session);
+	}
+
+	public static ArrayList<RilInterventoDTO> getListaInterventi(int id_cliente, int stato, Session session) {
+		
+		return GestioneRilieviDAO.getListaInterventi(id_cliente, stato, session);
+	}
+
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviIntervento(int id_intervento, Session session) {
+	
+		return GestioneRilieviDAO.getListaRilieviIntervento(id_intervento, session);
+	}
+
+	public static RilInterventoDTO getInterventoFromId(int id_intervento, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneRilieviDAO.getInterventoFromId(id_intervento, session);
+	}
+
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviDisVar(String disegno, String variante,
+			Session session) {
+		// TODO Auto-generated method stub
+		return GestioneRilieviDAO.getListaRilieviDisVar(disegno, variante, session);
+	}
+
+	public static ArrayList<RilMisuraRilievoDTO> getRilieviDateSchedeConsegna(String dateFrom, String dateTo,
+			Session session) throws ParseException, Exception {
+		// TODO Auto-generated method stub
+		return GestioneRilieviDAO.getRilieviDateSchedeConsegna(dateFrom, dateTo, session);
 	}
 
 

@@ -36,6 +36,10 @@ public class RilMisuraRilievoDTO {
 	private Double tempo_scansione;
 	private int firmato;
 	private int controfirmato;
+	//private int id_intervento;
+	private RilInterventoDTO intervento;
+	private int non_lavorato;
+	private int smaltimento;
 	
 	public int getN_pezzi_tot() {
 		return n_pezzi_tot;
@@ -229,5 +233,29 @@ public class RilMisuraRilievoDTO {
 	}
 	public void setControfirmato(int controfirmato) {
 		this.controfirmato = controfirmato;
+	}
+//	public int getId_intervento() {
+//		return id_intervento;
+//	}
+//	public void setId_intervento(int id_intervento) {
+//		this.id_intervento = id_intervento;
+//	}
+	public RilInterventoDTO getIntervento() {
+		return intervento;
+	}
+	public void setIntervento(RilInterventoDTO intervento) {
+		this.intervento = intervento;
+	}
+	public int getNon_lavorato() {
+		return non_lavorato;
+	}
+	public void setNon_lavorato(int non_lavorato) {
+		this.non_lavorato = non_lavorato;
+	}
+	public int getSmaltimento() {
+		return smaltimento;
+	}
+	public void setSmaltimento(int smaltimento) {
+		this.smaltimento = smaltimento;
 	}
 }

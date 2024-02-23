@@ -46,7 +46,7 @@ import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.NoteSicurezzaCommessaDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
-
+import it.portaleSTI.DTO.RilInterventoDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
@@ -65,6 +65,7 @@ import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
+import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.SendEmailBO;
 
@@ -209,9 +210,23 @@ public class GestioneIntervento extends HttpServlet {
 			
 			String idIntervento = request.getParameter("idIntervento" );
 			String comunicazione = request.getParameter("comunicazione" );
+			String rilievi = request.getParameter("rilievi");
+			
+			
 			idIntervento = Utility.decryptData(idIntervento);
 					
-			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
+			RilInterventoDTO ril_intervento = null;
+			InterventoDTO intervento = null;
+			
+			if(rilievi!=null && rilievi.equals("1")) {
+				
+				ril_intervento = GestioneRilieviBO.getInterventoFromId(Integer.parseInt(idIntervento), session);
+				ril_intervento.setStato_intervento(2);
+				ril_intervento.setData_chiusura(new Date());
+				session.update(ril_intervento);
+			}else {
+			
+			 intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 			
 				StatoInterventoDTO stato = new StatoInterventoDTO();
 				stato.setId(2);
@@ -220,9 +235,9 @@ public class GestioneIntervento extends HttpServlet {
 	
 				GestioneInterventoBO.update(intervento,session);
 				
-				
+			}
 				if(comunicazione != null && comunicazione.equals("1")) {
-					SendEmailBO.sendEmailAperturaChiusuraIntevento("C",request.getServletContext(), intervento);	
+					SendEmailBO.sendEmailAperturaChiusuraIntevento("C",request.getServletContext(), intervento, ril_intervento, session);	
 				}
 				
 				Gson gson = new Gson();
@@ -242,21 +257,35 @@ public class GestioneIntervento extends HttpServlet {
 			 			
 			String idIntervento = request.getParameter("idIntervento" );
 			String comunicazione = request.getParameter("comunicazione" );
+			String rilievi = request.getParameter("rilievi");
+			
+			RilInterventoDTO ril_intervento = null;
+			InterventoDTO intervento = null;
 			
 			idIntervento = Utility.decryptData(idIntervento);
 
-			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
-			
+			if(rilievi!=null && rilievi.equals("1")) {
+				
+				ril_intervento = GestioneRilieviBO.getInterventoFromId(Integer.parseInt(idIntervento), session);
+				ril_intervento.setStato_intervento(1);
+				ril_intervento.setData_chiusura(null);
+				session.update(ril_intervento);
+			}else {
+				intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
+				
 				StatoInterventoDTO stato = new StatoInterventoDTO();
 				stato.setId(1);
 				intervento.setStatoIntervento(stato);		
 						
-	
+
 				GestioneInterventoBO.update(intervento,session);
-				
-				if(comunicazione != null && comunicazione.equals("1")) {
-					SendEmailBO.sendEmailAperturaChiusuraIntevento("A",request.getServletContext(), intervento);	
-				}
+			}
+			
+			
+			
+			if(comunicazione != null && comunicazione.equals("1")) {
+				SendEmailBO.sendEmailAperturaChiusuraIntevento("A",request.getServletContext(), intervento, ril_intervento, session);	
+			}
 				
 				
 				
@@ -430,7 +459,11 @@ public class GestioneIntervento extends HttpServlet {
 		    		
 		    		session.update(intervento);
 		    		session.save(interventoDati);
-		    		String nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),interventoDati.getId(),id_strumento);
+		    		String nomeFilePdfCertificato= "";
+		    		if(file_pdf!=null && !file_pdf.getName().equals("")) {
+		    			saveExcelPDF(file_pdf,intervento.getNomePack(),interventoDati.getId(),id_strumento);	
+		    		}
+		    		
 		    		LatMisuraDTO misuraLAT = new LatMisuraDTO();
 		    		
 		    		if(lat_master!=null && !lat_master.equals("")) {
@@ -533,7 +566,10 @@ public class GestioneIntervento extends HttpServlet {
 		    			certificato.setStato(new StatoCertificatoDTO(4));
 		    		}	    		
 		    		certificato.setUtente(misura.getUser());
-		    		certificato.setNomeCertificato(nomeFilePdfCertificato);
+		    		if(file_pdf.getName()!=null && !file_pdf.getName().equals("")) {
+		    			certificato.setNomeCertificato(nomeFilePdfCertificato);	
+		    		}
+		    		
 		    		if(data_emissione!=null && !data_emissione.equals("")) {
 		    			certificato.setDataCreazione(sdf.parse(data_emissione));
 		    		}else {

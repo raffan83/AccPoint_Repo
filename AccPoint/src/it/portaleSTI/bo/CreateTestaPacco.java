@@ -132,10 +132,14 @@ public class CreateTestaPacco {
 					report.addParameter("data_lavorazione",data);					
 				}
 				
-				if(pacco.getCommessa()!=null) {
+				if(pacco.getCommessa()!=null && !pacco.getCommessa().equals("")) {
 					CommessaDTO commessa = GestioneCommesseBO.getCommessaById(pacco.getCommessa());
+					if(commessa!=null && commessa.getDT_COMMESSA()!=null) {
+						report.addParameter("commessa", pacco.getCommessa()+" del " +dt.format(commessa.getDT_COMMESSA()));
+					}else {
+						report.addParameter("commessa", pacco.getCommessa());
+					}
 					
-					report.addParameter("commessa", pacco.getCommessa()+" del " +dt.format(commessa.getDT_COMMESSA()));
 				}else {
 					report.addParameter("commessa", "");
 				}

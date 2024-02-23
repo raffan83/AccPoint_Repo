@@ -5561,12 +5561,13 @@ function eliminaCompany(){
 		  }
 	  }
 	  
-  function chiudiIntervento(idIntervento,datatable,index, comunicazione){
+  function chiudiIntervento(idIntervento,datatable,index, comunicazione, rilievi){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 	  var dataObj = {};
 	  dataObj.idIntervento = idIntervento;
 	  dataObj.comunicazione = comunicazione;
+	  dataObj.rilievi = rilievi;
 	  $.ajax({
 	    	  type: "POST",
 	    	  url: "gestioneIntervento.do?action=chiudi",
@@ -5590,18 +5591,19 @@ function eliminaCompany(){
 	    				  
 	    				  if(datatable == 1){
 	 	    				  var oTable = $('#tabPM').dataTable();
-		    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'apertura\')"><span class="label label-warning">CHIUSO</span></a>', index, 4 );
+		    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'apertura\', \''+rilievi+'\')"><span class="label label-warning">CHIUSO</span></a>', index, 4 );
 		    			  }else if(datatable == 2){
 		    				  var oTable = $('#tabPM').DataTable(); 
 		    				  
 		    				  var UpdateTD = $('#stato_'+data.id_intervento);
-		    				  oTable.cell(UpdateTD).data('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'apertura\')"><span class="label label-warning">CHIUSO</span></a>').draw();
+		    				  oTable.cell(UpdateTD).data('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'apertura\', \''+rilievi+'\')"><span class="label label-warning">CHIUSO</span></a>').draw();
 		    				  
 		    				  
 		    				  //var oTable = $('#tabPM').dataTable();
 		    				//  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'apertura\')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 5 );
 		    			  }else{
-		    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'apertura\')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>');
+		    				 
+		    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'apertura\', \''+rilievi+'\')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>');
 		    			  }
 	    			 
 	    			 
@@ -5641,12 +5643,13 @@ function eliminaCompany(){
       });
   }
   
-  function apriIntervento(idIntervento,datatable,index, comunicazione){
+  function apriIntervento(idIntervento,datatable,index, comunicazione, rilievi){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 	  var dataObj = {};
 	  dataObj.idIntervento = idIntervento;
 	  dataObj.comunicazione = comunicazione;
+	  dataObj.rilievi = rilievi;
 	  $.ajax({
 	    	  type: "POST",
 	    	  url: "gestioneIntervento.do?action=apri",
@@ -5658,31 +5661,24 @@ function eliminaCompany(){
 	    		  $(".ui-tooltip").remove();
 	    		  if(data.success)
 	    		  { 
-//	    			  if(datatable == 1){
-// 	    				  var oTable = $('#tabPM').dataTable();
-//	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento(\''+idIntervento+'\',1,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>', index, 4 );
-//	    			  }else if(datatable == 2){
-//	    				  var oTable = $('#tabPM').dataTable();
-//	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento(\''+idIntervento+'\',2,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>', index, 5 );
-//	    			  }else{
-//	    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento(\''+idIntervento+'\',0,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>');
-//	    			  }
+
 	    			 
 	    			  if(datatable == 1){
  	    				  var oTable = $('#tabPM').dataTable();
  	    				   	    				  
-	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'chiusura\')" ><span class="label label-success">APERTO</span></a>', index, 4 );
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'chiusura\', \''+rilievi+'\')" ><span class="label label-success">APERTO</span></a>', index, 4 );
 	    			  }else if(datatable == 2){
 	    				  
 	    				  var oTable = $('#tabPM').DataTable(); 
 	    				  
 	    				  var UpdateTD = $('#stato_'+data.id_intervento);
-	    				  oTable.cell(UpdateTD).data('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'chiusura\')" ><span class="label label-success">APERTO</span></a>').draw();
+	    				  oTable.cell(UpdateTD).data('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'chiusura\', \''+rilievi+'\')" ><span class="label label-success">APERTO</span></a>').draw();
 	    				  
 	    				//  var oTable = $('#tabPM').dataTable();
 	    				//  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\''+index+'\',\'chiusura\')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>', index, 5 );
 	    			  }else{
-	    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'chiusura\')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>');
+	    				  //("#statoa_"+data.id_intervento).html("");
+	    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="openModalComunicazione(\''+idIntervento+'\',\'chiusura\', \''+rilievi+'\')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>');
 	    			  }
 	    			  
 	    			  $('#report_button').hide();
@@ -8740,8 +8736,14 @@ function filtraCertificati(){
 	         				 $('#myModalModificaRilievo').modal('hide');
 	         				 var stato_lavorazione = $('#filtro_rilievi').val();	 
 	    	       			 var cliente_filtro = $('#cliente_filtro').val();
-	    	       			dataString ="action=filtra&id_stato_lavorazione="+ stato_lavorazione+"&cliente_filtro="+cliente_filtro;
-	         				exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){ });
+	    	       			 
+	    	       			 if(cliente_filtro!=null){
+
+	 	    	       			dataString ="action=filtra&id_stato_lavorazione="+ stato_lavorazione+"&cliente_filtro="+cliente_filtro;
+	 	         				exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){ }); 
+	    	       			 }else{
+	    	       				location.reload()
+	    	       			 }
 	         				$(this).off('hidden.bs.modal');
 	        			});
 	      		
@@ -8773,7 +8775,11 @@ function filtraCertificati(){
    
   function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo, mese_riferimento,cifre_decimali, classe_tolleranza, denominazione, materiale, note){
 	  
-	  if($('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){
+	  $('#myModalModificaRilievo').modal();
+	  
+	  if($('#cliente_filtro').val()!=null && $('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){
+		   		  
+		  
 	  var mod_opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone()
 		//$('#mod_cliente').html(mod_opt)
 	  $('#mod_cliente').val($('#cliente_filtro').val());
@@ -8812,7 +8818,7 @@ function filtraCertificati(){
 		  
 		  $('#id_rilievo').val(id_rilievo);
 		  
-		  $('#myModalModificaRilievo').modal();
+		
 		  
 	  }
  
@@ -9145,13 +9151,15 @@ function filtraCertificati(){
   
   
   
-function chiudiApriRilievo(id_rilievo,stato){
+function chiudiApriRilievo(id_rilievo,stato, smaltimento, non_lavorato){
 
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	pleaseWaitDiv.modal();
 	  var dataObj = {};
 		dataObj.id_rilievo = id_rilievo;
-		dataObj.stato = stato
+		dataObj.stato = stato	
+		dataObj.smaltimento = smaltimento
+		dataObj.non_lavorato = non_lavorato
 						
 	  $.ajax({
       type: "POST",
@@ -9160,6 +9168,7 @@ function chiudiApriRilievo(id_rilievo,stato){
       dataType: "json",
       //if received a response from the server
       success: function( data, textStatus) {
+    	  
     	  //var dataRsp = JSON.parse(dataResp);
     	  if(data.success)
   		  {  
@@ -9175,13 +9184,22 @@ function chiudiApriRilievo(id_rilievo,stato){
       				$('#myModalError').modal('show');      				
          			$('#myModalError').on('hidden.bs.modal', function(){	         			
        				  
-         				 var value = $('#filtro_rilievi').val();	 
+         				 var value = $('#filtro_rilievi').val();
+         				 
+         				 if(value!=null && value!=''){
+         					dataString ="action=filtra&id_stato_lavorazione="+ value;
+          			       exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
+          			     });
+          			       
 
-         				 dataString ="action=filtra&id_stato_lavorazione="+ value;
-         			       exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
+         				 }else{
+         					 
+         					 location.reload()
+         				 }
 
+         				 
          			
-         			       });
+         			     
          			      $(this).off('hidden.bs.modal');
          			 	$('.modal-backdrop').hide();
         			});
@@ -9498,11 +9516,14 @@ function submitFormAllegatiRilievi(stato_lav, cliente_filtro){
     				$('#myModalError').on('hidden.bs.modal', function(){	 
     					
     					$('#myModalAllegati').modal('hide');
-    					
+    					if(stato_lav==null && cliente_filtro == null){
+    						location.reload();
+    					}else{
         				 dataString ="action=filtra&id_stato_lavorazione="+stato_lav+"&cliente_filtro="+cliente_filtro;
         			     exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
         			
-        			       });	       	
+        			       });	   
+    					}
         			     $(this).off('hidden.bs.modal');
        			});	
     			
@@ -9564,12 +9585,18 @@ function submitFormAllegatiRilieviImg(stato_lav,cliente_filtro){
   				    		
 				$('#myModalError').on('hidden.bs.modal', function(){	 
 					
+					
 					$('#myModalAllegatiImg').modal('hide');
 					
-    				 dataString ="action=filtra&id_stato_lavorazione="+stato_lav+"&cliente_filtro="+cliente_filtro;
-    			     exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
-    			
-    			       });	       	
+					if(stato_lav==null && cliente_filtro == null){
+					location.reload();
+				}else{
+					dataString ="action=filtra&id_stato_lavorazione="+stato_lav+"&cliente_filtro="+cliente_filtro;
+   			     exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
+   			
+   			       });	  	
+				}
+    				      	
     			     $(this).off('hidden.bs.modal');
    			});	
   			
@@ -9936,10 +9963,12 @@ function aggiungiCertCampioneRilievo(selezionati, id_rilievo){
 }
 
 
-function clonaRilievo(id_rilievo){
+function clonaRilievo(id_rilievo, id_rilievo_new, id_intervento){
 	
 	 var dataObj = {};
 		dataObj.id_rilievo = id_rilievo;
+		dataObj.id_intervento = id_intervento;
+		dataObj.id_rilievo_new = id_rilievo_new;
 						
 	  $.ajax({
    type: "POST",
@@ -9961,10 +9990,16 @@ function clonaRilievo(id_rilievo){
     				
       				var value = $('#filtro_rilievi').val();	 
 
-      				 dataString ="action=filtra&id_stato_lavorazione="+ value;
-      			       exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
-      			    	
-      			       });	  
+      				if(value!=null){
+      					dataString ="action=filtra&id_stato_lavorazione="+ value;
+       			       exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
+       			    	
+       			       });
+      				}     				 	  
+      			       else
+      			    	   {
+      			    	   location.reload()
+      			    	   }
       			     $(this).off('hidden.bs.modal');
      			});			  
 		  }else{

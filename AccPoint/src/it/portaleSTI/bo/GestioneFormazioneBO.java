@@ -2007,7 +2007,7 @@ public class GestioneFormazioneBO {
 				
 				messaggio = "Gentile Utente <br>Si comunica che il seguente corso &egrave; in scadenza il "+df.format(nextDate)+":<br><br>";
 				
-				messaggio += "- " +corso.getCorso_cat().getDescrizione() +" - "+corso.getDescrizione()+"<br><br>";
+				messaggio += "ID Corso: "+corso.getId()+" - " +corso.getCorso_cat().getDescrizione() +" - "+corso.getDescrizione()+"<br><br>";
 				
 				messaggio += 	"Siamo a disposizione per supportarvi nell'organizzazione e pianificazione dei corsi.<br>"
 					  	+"Cordiali saluti.<br><br>";

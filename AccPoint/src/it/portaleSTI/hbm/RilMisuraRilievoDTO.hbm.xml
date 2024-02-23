@@ -107,6 +107,19 @@
         <property name="controfirmato" type="int">
             <column name="controfirmato" />
         </property>
+<!--            <property name="id_intervento" type="int">
+            <column name="id_intervento" />
+        </property>
+         -->
+            <many-to-one name="intervento" class="it.portaleSTI.DTO.RilInterventoDTO" fetch="join" lazy="false">
+            <column name="id_intervento" />
+        </many-to-one>
+        <property name="non_lavorato" type="int">
+            <column name="non_lavorato" />
+        </property>
+        <property name="smaltimento" type="int">
+            <column name="smaltimento" />
+        </property>
 
 	</class>
 </hibernate-mapping>

@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,11 +19,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.RilInterventoDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilTipoRilievoDTO;
+import it.portaleSTI.DTO.SchedaConsegnaDTO;
+import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -31,6 +38,7 @@ import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
+import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 
 /**
  * Servlet implementation class ListaRilieviDimensionali
@@ -65,6 +73,8 @@ public class ListaRilieviDimensionali extends HttpServlet {
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+		boolean ajax = false;
+		JsonObject myObj = new JsonObject();
 		
 		String action = request.getParameter("action");
 	
@@ -219,14 +229,118 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				
 			}
 
+			
+			else if(action.equals("lista_interventi")) {
+				
+				
+				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+				if(listaClienti==null) {
+					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));	
+				}
+				request.getSession().setAttribute("lista_clienti", listaClienti);		
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilInterventi.jsp");
+		  	    dispatcher.forward(request,response);	
+			
+				session.getTransaction().commit();
+				session.close();
+			}
+			else if(action.equals("filtra_interventi_rilievi")) {
+				
+				String id_cliente = request.getParameter("id_cliente");
+				String stato = request.getParameter("stato");
+				
+				ArrayList<RilInterventoDTO> lista_interventi = GestioneRilieviBO.getListaInterventi(Integer.parseInt(id_cliente), Integer.parseInt(stato), session);
+				
+				request.getSession().setAttribute("lista_interventi", lista_interventi);		
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilInterventiFiltro.jsp");
+		  	    dispatcher.forward(request,response);	
+			
+				session.getTransaction().commit();
+				session.close();
+			}
+			else if(action.equals("lista_rilievi_intervento")) {
+				
+				String id_intervento = request.getParameter("id_intervento");
+				RilInterventoDTO intervento = GestioneRilieviBO.getInterventoFromId(Integer.parseInt(id_intervento), session);
+				
+				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilieviIntervento(Integer.parseInt(id_intervento), session);
+				
+				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+				if(listaClienti==null) {
+					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));	
+				}
+				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				ArrayList<RilTipoRilievoDTO> lista_tipo_rilievo = GestioneRilieviBO.getListaTipoRilievo(session);					
+				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0, true);
+				request.getSession().setAttribute("lista_tipo_rilievo", lista_tipo_rilievo);
+				request.getSession().setAttribute("lista_commesse", lista_commesse);	
+				request.getSession().setAttribute("lista_clienti", listaClienti);	
+				request.getSession().setAttribute("lista_sedi", listaSedi);	
+				request.getSession().setAttribute("lista_rilievi", lista_rilievi);		
+				request.getSession().setAttribute("intervento", intervento);	
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilieviIntervento.jsp");
+		  	    dispatcher.forward(request,response);	
+			
+				session.getTransaction().commit();
+				session.close();
+			}
+			
+			else if(action.equals("cerca_rilievi_schede")) {
+				 response.setContentType("application/json");
+				
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");
+
+				ArrayList<String> lista_clienti = new ArrayList<String>();
+				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getRilieviDateSchedeConsegna(dateFrom, dateTo, session);
+			
+				for (RilMisuraRilievoDTO rilievo : lista_rilievi) {
+					if(!lista_clienti.contains(rilievo.getCommessa()+";"+rilievo.getNome_cliente_util()+";"+rilievo.getNome_sede_util())) {
+						lista_clienti.add(rilievo.getCommessa()+";"+rilievo.getNome_cliente_util()+";"+rilievo.getNome_sede_util());	
+					}
+					
+				}
+			
+				
+				session.close();
+				
+				
+				PrintWriter out = response.getWriter();
+				
+				Gson g = new Gson();
+				
+				myObj.addProperty("success", true);
+				myObj.add("lista_clienti", g.toJsonTree(lista_clienti));
+				
+				out.print(myObj);
+			
+				
+			}
+			
 		} catch (Exception e) {
 			session.getTransaction().rollback();
-			session.close();
-			e.printStackTrace();
-			 request.setAttribute("error",STIException.callException(e));
-	   	     request.getSession().setAttribute("exception", e);
-	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-	   	     dispatcher.forward(request,response);	
+        	session.close();
+			if(ajax) {
+				PrintWriter out = response.getWriter();
+				e.printStackTrace();
+	        	
+	        	request.getSession().setAttribute("exception", e);
+	        	myObj = STIException.getException(e);
+	        	out.print(myObj);
+        	}else {
+   			    			
+    			e.printStackTrace();
+    			request.setAttribute("error",STIException.callException(e));
+    	  	     request.getSession().setAttribute("exception", e);
+    			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+    		     dispatcher.forward(request,response);	
+        	}
 		}
 	}
 

@@ -170,7 +170,10 @@
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">             
+          <ul class="treeview-menu">   
+         <%if(!user.checkRuolo("RL")){ %> 
+          <li><a href="#" onclick="callAction('listaRilieviDimensionali.do?action=lista_interventi',null,true);">Lista Interventi</a></li>
+          <% }%>   
 			<li><a href="#" onclick="callAction('listaRilieviDimensionali.do',null,true);">Gestione Rilievi</a></li> 
 			
 				
@@ -419,6 +422,27 @@
           </ul>
         </li> 
            <% }%>
+        
+        
+                 
+          <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_PARCO_AUTO")){%>  
+           <li class="header">PARCO AUTO</li>
+
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Gestione Parco Auto</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+   
+		   <li><a href="gestioneParcoAuto.do?action=lista_veicoli">Gestione Auto</a></li>	
+		
+	      	
+          </ul>
+        </li> 
+           <% }%>
+        
         
          <% if(user.checkPermesso("GREEN_PASS")){%> 
          

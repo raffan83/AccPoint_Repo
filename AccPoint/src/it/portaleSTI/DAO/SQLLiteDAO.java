@@ -919,6 +919,7 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		strumento.setIdClassificazione(rs.getInt("classificazione"));
 		strumento.setFrequenza(rs.getInt("freq_verifica_mesi"));
 		strumento.setProcedura(rs.getString("procedura"));
+		strumento.setNote_tecniche(rs.getString("note_tecniche"));
 		
 		misura.setStrumento(strumento);
 		

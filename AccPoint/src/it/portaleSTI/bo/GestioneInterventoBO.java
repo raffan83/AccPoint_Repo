@@ -244,6 +244,8 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
 		   		strumentoModificato.setTipo_strumento(new TipoStrumentoDTO(strumentoDaFile.getTipo_strumento().getId(), ""));
 		   		
+		   		strumentoModificato.setNote_tecniche(strumentoDaFile.getNote_tecniche());
+		   		
 		   		GestioneStrumentoBO.update(strumentoModificato, session);
 		   	}
 		   	

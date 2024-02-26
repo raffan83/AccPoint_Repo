@@ -84,7 +84,7 @@
  <tbody>
  
  <c:forEach items="${listaMisure}" var="misura" varStatus="loop">
-
+<c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP") || (userObj.checkRuolo("CL") && misura.obsoleto=="N")}'>
 	 <tr role="row" id="${misura.id}-${loop.index}">
 	<td></td>
 	<td><a href="dettaglioMisura.do?idMisura=${utl:encryptData(misura.id)}" target="_blank">${misura.id}</a></td>
@@ -214,7 +214,7 @@ NON DETERMINATO
 
 	</tr>
 	
-	 
+</c:if>	 
 	</c:forEach>
  
 	

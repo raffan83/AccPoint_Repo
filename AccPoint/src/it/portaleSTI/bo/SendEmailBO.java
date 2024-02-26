@@ -995,9 +995,9 @@ public static void sendEmailAperturaChiusuraIntevento(String apertura_chiusura,S
 
  DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-	//  email.addTo("giuseppe.gabriele@stisrl.com");
-	 // email.addTo("sara.massaro@stisrl.com");
- email.addTo("antonio.dicivita@ncsnetwork.it");
+	  email.addTo("giuseppe.gabriele@stisrl.com");
+	  email.addTo("sara.massaro@stisrl.com");
+// email.addTo("antonio.dicivita@ncsnetwork.it");
 	  email.setFrom("calver@accpoint.it", "Calver");
 	  File image = new File(ctx.getRealPath("images/logo_calver_v2.png"));
 	  String cid = email.embed(image, "Calver logo");

@@ -1149,7 +1149,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			
 			java.util.Date utilDate = null;
 			Date dataCommessa = null;
-			if(pacco.getCommessa()!=null) {
+			if(pacco.getCommessa()!=null && !pacco.getCommessa().equals("")) {
 				CommessaDTO commessa = GestioneCommesseDAO.getCommessaById(pacco.getCommessa());
 				if(commessa!=null) {
 					dataCommessa = commessa.getDT_COMMESSA();
@@ -1178,7 +1178,11 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 					
 					if(pacco.getCommessa()!=null) {
 						toAdd = toAdd +";"+pacco.getCommessa();
-						toAdd = toAdd +";"+df.format(dataCommessa);
+						if(!pacco.getCommessa().equals("")) {
+							toAdd = toAdd +";"+df.format(dataCommessa);
+						}else {
+							toAdd = toAdd +";";
+						}
 					}
 					if(pacco.getData_arrivo()!=null) {
 						toAdd = toAdd +";"+df.format(pacco.getData_arrivo()); 
@@ -1219,14 +1223,14 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 						note_pacco = note_pacco.substring(0, note_pacco.length()-3).replace("\r\n", "").replace("\n", "");
 						toAdd = toAdd+";"+note_pacco;
 					}
-					
+					System.out.println(toAdd);
 					lista_origini.add(toAdd);
 
 				}
 			
 		}
 
-		if(lista_origini.size()>0 && Costanti.MAIL_DEST_ALERT_PACCO.split(";").length>0) {
+		if(lista_origini.size()>0 && Costanti.MAIL_DEST_ALERT_PACCO.split(";").length>0) {		
 	
 				
 			
@@ -1237,24 +1241,41 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			        int giorniMancanti1 = 0;
 			        int giorniMancanti2 = 0;
 
-			        if(s1.split(";").length>7) {
-			        	giorniMancanti1 = Integer.parseInt(s1.split(";")[s1.split(";").length - 2].replaceAll("[^\\d-]", "").trim());
-			        }else {
-			        	giorniMancanti1 = Integer.parseInt(s1.split(";")[s1.split(";").length - 1].replaceAll("[^\\d-]", "").trim());
+			       // String s1n1 = s1.split(";")[s1.split(";").length - 3].replaceAll("[^\\d-]", "").trim();
+			        String s1n1 = s1.split(";")[s1.split(";").length - 3].replaceAll("[^\\d\\/-]", "").trim();
+			        String s1n2 = s1.split(";")[s1.split(";").length - 2].replaceAll("[^\\d\\/-]", "").trim();
+			        String s1n3 = s1.split(";")[s1.split(";").length - 1].replaceAll("[^\\d\\/-]", "").trim();
+			        
+			        if(s1n1.matches("-?[0-9]+")) {
+			        	giorniMancanti1 = Integer.parseInt(s1n1);
+			        }else if(s1n2.matches("-?[0-9]+")) {
+			        	giorniMancanti1 = Integer.parseInt(s1n2);
+			        }else if(s1n3.matches("-?[0-9]+")) {
+			        	giorniMancanti1 = Integer.parseInt(s1n3);
 			        }
 			        
-			        if(s2.split(";").length>7) {
-			        	giorniMancanti2 = Integer.parseInt(s2.split(";")[s2.split(";").length - 2].replaceAll("[^\\d-]", "").trim());
-			        }else {
-			        	giorniMancanti2 = Integer.parseInt(s2.split(";")[s2.split(";").length - 1].replaceAll("[^\\d-]", "").trim());
+			        String s2n1 = s2.split(";")[s2.split(";").length - 3].replaceAll("[^\\d\\/-]", "").trim();
+			        String s2n2 = s2.split(";")[s2.split(";").length - 2].replaceAll("[^\\d\\/-]", "").trim();
+			        String s2n3 = s2.split(";")[s2.split(";").length - 1].replaceAll("[^\\d\\/-]", "").trim();
+			        
+			
+			        if(s2n1.matches("-?[0-9]+")) {
+			        	giorniMancanti2 = Integer.parseInt(s2n1);
+			        }else if(s2n2.matches("-?[0-9]+")) {
+			        	giorniMancanti2 = Integer.parseInt(s2n2);
+			        }else if(s2n3.matches("-?[0-9]+")) {
+			        	giorniMancanti2 = Integer.parseInt(s2n3);
 			        }
 			        
+			     			        
 			        // Ordina in modo decrescente
 			        return Integer.compare(giorniMancanti2, giorniMancanti1);
 			    }
 			});
 			
-			SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);
+			//SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);
+			SendEmailBO.sendEmailPaccoInRitardo(lista_origini,"antonio.dicivita@ncsnetwork.it" );
+			
 			
 						
 		}

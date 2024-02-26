@@ -20,12 +20,13 @@ public class SendEmailPaccoRitardoScheduler implements Job{
 
 			GestioneMagazzinoDAO.getItemInRitardo();
 			
-			logger.debug("Invio email pacchi in ritardo eseguito con successo dallo scheduler di Quartz!");
+			
 			logger.error("Invio email pacchi in ritardo eseguito con successo dallo scheduler di Quartz!");
 			
 			
 		} catch (Exception e) {
 		
+			logger.error(e);
 			e.printStackTrace();
 		}
 		

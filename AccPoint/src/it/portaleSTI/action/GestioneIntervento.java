@@ -461,7 +461,7 @@ public class GestioneIntervento extends HttpServlet {
 		    		session.save(interventoDati);
 		    		String nomeFilePdfCertificato= "";
 		    		if(file_pdf!=null && !file_pdf.getName().equals("")) {
-		    			saveExcelPDF(file_pdf,intervento.getNomePack(),interventoDati.getId(),id_strumento);	
+		    			nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),interventoDati.getId(),id_strumento);	
 		    		}
 		    		
 		    		LatMisuraDTO misuraLAT = new LatMisuraDTO();

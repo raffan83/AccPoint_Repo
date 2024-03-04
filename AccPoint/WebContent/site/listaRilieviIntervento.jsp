@@ -1081,6 +1081,7 @@
     	$('#radio_smaltimento').iCheck('check');
     	$('#radio_riconsegna').iCheck('uncheck');
     	$('#smaltimento').val(1);
+    	$('#check_non_lavorato')
     	
     });
     

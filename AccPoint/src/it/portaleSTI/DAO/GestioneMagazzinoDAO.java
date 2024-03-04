@@ -1223,7 +1223,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 						note_pacco = note_pacco.substring(0, note_pacco.length()-3).replace("\r\n", "").replace("\n", "");
 						toAdd = toAdd+";"+note_pacco;
 					}
-					System.out.println(toAdd);
+				
 					lista_origini.add(toAdd);
 
 				}
@@ -1273,8 +1273,8 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			    }
 			});
 			
-			//SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);
-			SendEmailBO.sendEmailPaccoInRitardo(lista_origini,"antonio.dicivita@ncsnetwork.it" );
+			SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);
+			
 			
 			
 						

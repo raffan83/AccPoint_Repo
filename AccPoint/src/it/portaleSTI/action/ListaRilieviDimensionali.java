@@ -139,6 +139,49 @@ public class ListaRilieviDimensionali extends HttpServlet {
 					request.getSession().setAttribute("cliente_filtro", Utility.decryptData(cliente_filtro));
 					request.getSession().setAttribute("filtro_rilievi", Utility.decryptData(id_stato_lavorazione));
 				}
+				
+//				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilievi();
+//				ArrayList<String> lista_comm =  new ArrayList<String>();
+//				
+//				for (RilMisuraRilievoDTO r : lista_rilievi) {
+//					
+//					if(!lista_comm.contains(r.getCommessa())) {
+//						RilInterventoDTO intervento = new RilInterventoDTO();
+//						intervento.setCommessa(r.getCommessa());
+//						intervento.setData_apertura(r.getData_inizio_rilievo());
+//						intervento.setData_chiusura(r.getData_consegna());
+//						intervento.setId_cliente(r.getId_cliente_util());
+//						intervento.setId_sede(r.getId_sede_util());
+//						intervento.setNome_cliente(r.getNome_cliente_util());
+//						intervento.setNome_sede(r.getNome_sede_util());
+//						intervento.setStato_intervento(r.getStato_rilievo().getId());
+//						
+//						lista_comm.add(r.getCommessa());
+//						session.save(intervento);
+//						
+//						
+//						r.setIntervento(intervento);
+//					
+//						
+//					}else {
+//						
+//						ArrayList<RilInterventoDTO> lista_int = GestioneRilieviBO.getListaInterventi(r.getId_cliente_util(), 0, session);
+//						
+//						for (RilInterventoDTO intervento : lista_int) {
+//							
+//							if(intervento.getCommessa().equals(r.getCommessa())) {
+//								r.setIntervento(intervento);
+//								break;
+//							}
+//							
+//						}
+//						
+//					}
+//					session.update(r);
+//				}
+//				
+//				
+				
 				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilievi.jsp");
@@ -283,6 +326,7 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				request.getSession().setAttribute("lista_sedi", listaSedi);	
 				request.getSession().setAttribute("lista_rilievi", lista_rilievi);		
 				request.getSession().setAttribute("intervento", intervento);	
+				request.getSession().setAttribute("filtro_rilievi", "");
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilieviIntervento.jsp");
 		  	    dispatcher.forward(request,response);	

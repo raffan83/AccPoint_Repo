@@ -233,15 +233,16 @@
  	<mapping class="ForPiaTipoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForPiaTipoDTO.hbm.xml"/>
  	<mapping class="ForPiaPianificazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForPiaPianificazioneDTO.hbm.xml"/> 	
  	
- <!-- 	
+ 	
  	<mapping class="AMAttivitaManutenzioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMAttivitaManutenzioneDTO.hbm.xml"/>
  	<mapping class="AMInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMInterventoDTO.hbm.xml"/>
  	<mapping class="AMSistemaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMSistemaDTO.hbm.xml"/>
  	<mapping class="AMTipoManutenzioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMTipoManutenzioneDTO.hbm.xml"/>
  	
- 	 
+ 	
  	<mapping class="PaaVeicoloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PaaVeicoloDTO.hbm.xml"/>
--->
+ 	<mapping class="PaaPrenotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PaaPrenotazioneDTO.hbm.xml"/>
+
  	
   </session-factory>
 </hibernate-configuration>

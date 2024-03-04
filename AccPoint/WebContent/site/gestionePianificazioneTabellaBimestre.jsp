@@ -268,10 +268,10 @@ overflow-x: hidden;
 
 function modalPianificazione(day, commessa, id){
 	
-
+	var currentYear = new Date().getFullYear()
 	
 	var dayValue = parseInt(day);
-	var localDate = new Date(Date.UTC(2023, 0, dayValue));
+	var localDate = new Date(Date.UTC(currentYear, 0, dayValue));
 	var d = localDate.getUTCDate();
 	var month = localDate.getUTCMonth() + 1; 
 	var year = localDate.getUTCFullYear();

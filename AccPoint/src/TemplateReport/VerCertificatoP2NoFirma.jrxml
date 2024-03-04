@@ -141,11 +141,11 @@
 				<text><![CDATA[Note:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="51" y="530" width="501" height="90" uuid="66d5bef9-5050-4186-8c46-2e5a48837458"/>
+				<reportElement x="51" y="530" width="501" height="131" uuid="66d5bef9-5050-4186-8c46-2e5a48837458"/>
 				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="414" y="629" width="141" height="20" uuid="5f3aabcc-971e-4bc0-b059-8b87aa93741c"/>
+				<reportElement x="414" y="661" width="141" height="20" uuid="5f3aabcc-971e-4bc0-b059-8b87aa93741c"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Il Responsabile dell'Organismo]]></text>
 			</staticText>
@@ -199,12 +199,12 @@
 				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="15" y="629" width="80" height="20" uuid="1eee5125-eb77-4aa1-9ed1-aac1be73f518"/>
+				<reportElement x="15" y="661" width="80" height="20" uuid="1eee5125-eb77-4aa1-9ed1-aac1be73f518"/>
 				<textElement textAlignment="Left"/>
 				<text><![CDATA[Data emissione]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="2" y="646" width="95" height="20" uuid="50d8a408-bc08-4a6e-a0f7-35943ebabe84"/>
+				<reportElement x="2" y="678" width="95" height="20" uuid="50d8a408-bc08-4a6e-a0f7-35943ebabe84"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>

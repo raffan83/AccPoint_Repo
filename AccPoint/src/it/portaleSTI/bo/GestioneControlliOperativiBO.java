@@ -97,7 +97,7 @@ public class GestioneControlliOperativiBO {
 				
 				for (CoAttrezzaturaDTO attrezzatura : lista_attrezzature) {
 					
-					messaggio += "<br>ID Attrezzatura: "+attrezzatura.getId()+" - Codice: "+attrezzatura.getCodice()+" - Scadenza "+df.format(attrezzatura.getData_scadenza());
+					messaggio += "<br>ID Attrezzatura: "+attrezzatura.getId()+" - Codice: "+attrezzatura.getCodice()+" - Descrizione: "+attrezzatura.getDescrizione()+" - Scadenza "+df.format(attrezzatura.getData_scadenza());
 						
 				}
 			}

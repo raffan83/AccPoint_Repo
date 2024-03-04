@@ -135,7 +135,7 @@
 ${misura.split(';;')[11] }
 </c:if>
 </td>
-<td>${misura.split(';;')[17] }</td>
+<td>${misura.split(';;')[18] }</td>
 <td>${misura.split(';;')[5]}</td>
 <td>${misura.split(';;')[2]}</td>
 <td>${misura.split(';;')[3]} | ${misura.split(';;')[4]}</td>

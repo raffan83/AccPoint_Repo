@@ -12,6 +12,8 @@
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 	<%
+	
+	UtenteDTO userObj = (UtenteDTO)session.getAttribute("userObj");
 	%>
 
 <style>
@@ -40,9 +42,7 @@
 
 <div class="row">
         <div class="col-xs-12">
-        <c:if test="${userObj.checkRuolo('AM') }">
-        <a class="btn btn-primary pull-right" onClick="modalNuovaMisura()">Nuova Misura</a>
-        </c:if>
+     
         </div>
         </div><br><br>
 <div class="row">
@@ -56,7 +56,11 @@
             
             <c:if test="${listaMisure.size()>1}">
                                     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12">   
+        
+        <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('CM')}">
+        <a class="btn btn-primary pull-left" onClick="modalNuovaMisura()">Nuova Misura</a>
+        </c:if>
         <a class="btn btn-primary pull-right" target="_blank" href="dettaglioMisura.do?action=andamento_temporale&id_strumento=${id_strumento}">Vedi andamento temporale </a>
         </div>
         </div><br>

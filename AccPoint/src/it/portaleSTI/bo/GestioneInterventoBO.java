@@ -1237,6 +1237,16 @@ public class GestioneInterventoBO {
 		return GestioneInterventoDAO.getListaInterventiConsegna(session);
 	}
 
+	public static InterventoDTO getUltimoIntervento(Integer id_cliente, Integer id_sede, Session session) {
+		
+		return GestioneInterventoDAO.getUltimoIntervento(id_cliente, id_sede, session);
+	}
+
+	public static ArrayList<InterventoDTO> getListaInterventiUtente(int id_utente,int id_cliente, int id_sede,  Session session) {
+		
+		return GestioneInterventoDAO.getListaInterventiUtente(id_utente,  id_cliente,  id_sede,  session);
+	}
+
 
 
 	

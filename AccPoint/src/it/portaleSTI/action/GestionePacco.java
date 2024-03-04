@@ -591,7 +591,7 @@ public class GestionePacco extends HttpServlet {
 			pacco.setId_sede_util(Integer.parseInt(sede_util.split("_")[0]));
 			
 			
-			if(data_json_rilievi!=null && !data_json_rilievi.equals("")) {
+			if(data_json_rilievi!=null && !data_json_rilievi.equals("") && !data_json_rilievi.equals("[]")) {
 				JsonElement jelement = new JsonParser().parse(data_json_rilievi);
 				JsonArray json_array = jelement.getAsJsonArray();
 				

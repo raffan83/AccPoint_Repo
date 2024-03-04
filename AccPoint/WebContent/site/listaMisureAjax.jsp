@@ -38,7 +38,13 @@
 
 </style>
 
-
+<div class="row">
+        <div class="col-xs-12">
+        <c:if test="${userObj.checkRuolo('AM') }">
+        <a class="btn btn-primary pull-right" onClick="modalNuovaMisura()">Nuova Misura</a>
+        </c:if>
+        </div>
+        </div><br><br>
 <div class="row">
         <div class="col-xs-12">
           <div class="box">
@@ -308,9 +314,140 @@ NON DETERMINATO
   </div>
 </div> 
 
+
+
+
+
+<form id="formNuovaMisura" name="formNuovaMisura">
+  <div id="modalNuovaMisura" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" onclick="$('#modalNuovaMisura').modal('hide')" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nuova Misura</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-4">
+      <label>Intervento:</label> 
+       </div>
+       <div class="col-xs-8">
+       <select  class="form-control select2" id="id_intervento" name="id_intervento" required style ="width:100%" data-placeholder="Seleziona intervento...">
+   	<c:set var ="lista_interventi_utente_size" value="${lista_interventi_utente.size()  }"></c:set>
+   	<option value=""></option>
+       <c:forEach items="${lista_interventi_utente }" var ="intervento">
+       <fmt:formatDate value="${intervento.dataCreazione}" pattern="dd/MM/yyyy" var="formattedDate" />
+       <c:if test="${lista_interventi_utente.size()==1 }">
+        <option value="${intervento.id }" selected>ID55: ${intervento.id } - Data: ${formattedDate } - Utente: ${intervento.user.nominativo }</option>
+       </c:if>
+              <c:if test="${lista_interventi_utente.size()>1 }">
+        <option value="${intervento.id }">ID: ${intervento.id } - Data: ${formattedDate } - Utente: ${intervento.user.nominativo }</option>
+       </c:if>
+      
+       </c:forEach>
+       </select>
+       </div>
+       </div><br>
+
+         <div class="row">
+       <div class="col-xs-4">
+        <label>Data Misura:</label>
+       </div>
+       <div class="col-xs-8">
+              		<div class='input-group date datepicker' id='datepicker_data_misura'>
+               <input type='text' class="form-control input-small" id="data_misura" name="data_misura" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       
+       </div>
+       </div><br>
+       <div class="row">
+       <div class="col-xs-4">
+        <label>Numero Certificato:</label>
+       </div>
+       <div class="col-xs-8">
+       <input type="text" class="form-control" id="nCertificato" name="nCertificato" required>
+       </div>
+       </div><br>
+<!--               <div class="row">
+       <div class="col-xs-4">
+        <label>Data Emissione:</label>
+       </div>
+       <div class="col-xs-8">
+              		<div class='input-group date datepicker' id='datepicker_data_emissione'>
+               <input type='text' class="form-control input-small" id="data_emissione" name="data_emissione">
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       
+       </div>
+       </div><br> -->
+       
+       		<div class="row">
+      <!--  <div class="col-xs-12"> -->
+   
+       <div class="col-xs-4">
+        <label>Indice di prestazione:</label>
+       </div>
+           <div class="col-xs-8">
+				<select class="form-control select2" id="indice_prestazione" name="indice_prestazione" style ="width:100%">
+		<option value="" selected>NON DETERMINATO</option>
+		<option value="V">PERFORMANTE</option>
+		<option value="G">STABILE</option>
+		<option value="R">ALLERTA</option>
+		<option value="X">NON IDONEO</option>
+		
+		</select>
+		
+		
+		</div>
+		</div><br>
+       
+
+
+		<div class="row">
+      <!--  <div class="col-xs-12"> -->
+       <div class="col-xs-4">
+		   	 <span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica Certificato...</span>
+				<input accept=".pdf,.PDF"  id="fileupload_certificato" name="fileupload_certificato" type="file"  required>
+		       
+		   	 </span>
+   </div> 
+		 <div class="col-xs-8">
+		 <label id="label_certificato"></label>
+		 </div>
+		</div> 
+		<br>
+		
+
+
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer" >
+ 		<%-- <input type="hidden" id="id_intervento" name="id_intervento" value="${intervento.id }"> --%>
+ 		<input type="hidden"  id="id_strumento" name="id_strumento" value="${id_strumento }">
+
+        <button  class="btn btn-primary" type="submit">Salva</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+
+
+
            
 <form id="formAllegati" name="formAllegati">
-  <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div id="myModalAllegati" class="modal fade modal-md" role="dialog" aria-labelledby="myLargeModalLabel">
   
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
@@ -375,9 +512,10 @@ NON DETERMINATO
     </div>
   </div>
 </div>
+<%-- <jsp:attribute name="extra_css">
 
-
-
+<link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
+</jsp:attribute> --%>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
@@ -385,7 +523,9 @@ NON DETERMINATO
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
 <script src="plugins/iCheck/icheck.min.js"></script> 
 <script src="plugins/iCheck/icheck.js"></script> 
-
+<script type="text/javascript" src="plugins/datepicker/bootstrap-datepicker.js"></script> 
+<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script>  
+<script type="text/javascript" src="plugins/datejs/date.js"></script>
 
 
 
@@ -582,7 +722,52 @@ NON DETERMINATO
 		}
 	}
   
+	 function modalNuovaMisura(){
+		 
+		 var lista_interventi_utenti = "${lista_interventi_utente_size}";
+		 
+		 if(lista_interventi_utenti == "0"){
+			 $('#myModalErrorContent').html("Nessun intervento associato all'utente! Contattare l'amministratore");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#myModalError').modal();
+		 }else{
+			 $("#modalNuovaMisura").removeClass("modal-fullscreen");
+			 $('#modalNuovaMisura').modal();
+		 }
+		 
+		
+	 }
+	 
+	 $('#fileupload_certificato').change(function(){
+			$('#label_certificato').html($(this).val().split("\\")[2]);
+			 
+		 });
+	
+	 
+	 $('#formNuovaMisura').on('submit',function(e){
+		    e.preventDefault();
+		    
+		    $('#id_strumento').val("${id_strumento}")
+		    if($('#id_strumento').val()!=null && $('#id_strumento').val()!=''){
+		    	submitNuovaMisura(null,cliente);
+		    }else{
+		    	  $('#myModalErrorContent').html("Attenzione! Nessuno strumento selezionato!");
+	 			  	$('#myModalError').removeClass();
+	 				$('#myModalError').addClass("modal modal-danger");	 
+	 				$('#myModalError').modal('show');
+		    }
+		}); 
+	 
+	 
+   	 $('.datepicker').datepicker({
+		 format: "dd/mm/yyyy"
+	 });
+	 
     $(document).ready(function() {
+    	
+    	$('#id_intervento').select2();
+    	$('#indice_prestazione').select2();
     
     	
     	var colDef =[];
@@ -749,4 +934,6 @@ NON DETERMINATO
 
 
   
+ 
+
  

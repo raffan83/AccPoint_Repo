@@ -10310,7 +10310,7 @@ error: function( data, textStatus) {
 
 
 
-function submitNuovaMisura(note_obsolescenza){
+function submitNuovaMisura( note_obsolescenza, cliente){
 	 
 	  $('#isDuplicato').val(0);
 	  if(note_obsolescenza!=null){
@@ -10318,9 +10318,14 @@ function submitNuovaMisura(note_obsolescenza){
 	  }	  
 	  var form = $('#formNuovaMisura')[0]; 
 	  var formData = new FormData(form);
+	  
+	  var url = "gestioneIntervento.do?action=nuova_misura";
+	  if(cliente!=null){
+		  url = "gestioneIntervento.do?action=nuova_misura_cliente"
+	  }
      $.ajax({
    	  type: "POST",
-   	  url: "gestioneIntervento.do?action=nuova_misura",
+   	  url: url,
    	  data: formData,
    	  //dataType: "json",
    	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
@@ -10342,6 +10347,15 @@ function submitNuovaMisura(note_obsolescenza){
    			  	$('#myModalError').removeClass();
    				$('#myModalError').addClass("modal modal-success");
    				$('#myModalError').modal('show');
+   				$('#myModalError').on('hidden.bs.modal', function(e){
+   					
+   					if(cliente!=null){
+   						location.reload()
+   					}
+   					
+   				});
+   				
+   				
    			  }
 
    		  }else{

@@ -586,5 +586,37 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 
 
 
+	public static InterventoDTO getUltimoIntervento(Integer id_cliente, Integer id_sede, Session session) {
+	//	ArrayList<InterventoDTO> lista=null;
+		InterventoDTO result = null;
+
+	    Query query = session.createQuery("from InterventoDTO where id_cliente = :_id_cliente and id__sede_ = :_id_sede order by id desc");
+	    query.setParameter("_id_cliente", id_cliente);
+	    query.setParameter("_id_sede", id_sede);
+	    query.setMaxResults(1);
+
+	    result=(InterventoDTO)query.uniqueResult();
+		
+		return result;
+	}
+
+
+
+	public static ArrayList<InterventoDTO> getListaInterventiUtente(int id_utente, int id_cliente, int id_sede, Session session) {
+
+		ArrayList<InterventoDTO> lista=null;
+
+	    Query query = session.createQuery("from InterventoDTO where user.id = :_id_utente and id_cliente = :_id_cliente and id__sede_ = :_id_sede order by id desc");
+	    query.setParameter("_id_utente", id_utente);
+	    query.setParameter("_id_cliente", id_cliente);
+	    query.setParameter("_id_sede", id_sede);
+
+	    lista=(ArrayList<InterventoDTO>)query.list();
+		
+		return lista;
+	}
+
+
+
 
 }

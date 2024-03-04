@@ -241,6 +241,7 @@
  	
  	
  	<mapping class="PaaVeicoloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PaaVeicoloDTO.hbm.xml"/>
+ 	<mapping class="PaaPrenotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PaaPrenotazioneDTO.hbm.xml"/>
 
  	
   </session-factory>

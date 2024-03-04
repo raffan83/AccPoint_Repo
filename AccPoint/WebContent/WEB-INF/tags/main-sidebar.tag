@@ -425,7 +425,7 @@
         
         
                  
-          <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_PARCO_AUTO")){%>  
+           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_PARCO_AUTO")){%>  
            <li class="header">PARCO AUTO</li>
 
          <li class="treeview">
@@ -437,12 +437,12 @@
           <ul class="treeview-menu">
    
 		   <li><a href="gestioneParcoAuto.do?action=lista_veicoli">Gestione Auto</a></li>	
-		
+		<li><a href="gestioneParcoAuto.do?action=gestione_prenotazioni">Gestione Prenotazioni</a></li>	
 	      	
           </ul>
         </li> 
            <% }%>
-        
+         
         
          <% if(user.checkPermesso("GREEN_PASS")){%> 
          

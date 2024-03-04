@@ -24,8 +24,10 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -159,7 +161,14 @@ public class StrumentiMisurati extends HttpServlet {
 						
 						request.getSession().setAttribute("arrCartificati", arrCartificati);
 					}
+					UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+					
+					StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(id, session);
+					ArrayList<InterventoDTO> lista_interventi_utente = GestioneInterventoBO.getListaInterventiUtente(utente.getId(),strumento.getId_cliente(), strumento.getId__sede_(),session);
+					
+					
 					request.getSession().setAttribute("listaMisure", listaMisure);
+					request.getSession().setAttribute("lista_interventi_utente", lista_interventi_utente);
 					request.getSession().setAttribute("id_strumento", id);
 					
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisureAjax.jsp");

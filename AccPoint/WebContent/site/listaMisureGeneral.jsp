@@ -115,6 +115,7 @@
   <th>Sede</th>
   <th >Lat</th>
   <th>Misura obsoleta</th>
+  <th>Operatore</th>
   <th>Riemissione</th>
   <th>Azioni</th>
  </tr></thead>
@@ -172,6 +173,7 @@ SI
 NO
 </c:if>
 </td>
+<td>${misura.split(';;')[17] }</td>
 <td>
 <c:if test="${misura.split(';;')[13] == 'S' &&  !misura.split(';;')[11].equals('null')}">
 <i class="fa fa-check"></i>
@@ -180,6 +182,7 @@ NO
 
 </c:if>
 </td>
+
 <td>
 <c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
 <a class="btn btn-warning customTooltip" title="Click per modificare lo strumento" onClick="modalModificaStrumento('${misura.split(';;')[14]}')"><i class="fa fa-edit"></i></a>
@@ -726,7 +729,7 @@ NO
   	      stateSave: true,
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 1 },
-						   { responsivePriority: 2, targets: 13 },
+						   { responsivePriority: 2, targets: 14 },
 						   /* { responsivePriority: 3, targets: 14 }, */
   	                  
   	               ],

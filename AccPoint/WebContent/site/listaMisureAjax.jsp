@@ -54,17 +54,20 @@
           </div>
             <div class="box-body">
             
-            <c:if test="${listaMisure.size()>1}">
+            
                                     <div class="row">
         <div class="col-xs-12">   
         
         <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('CM')}">
         <a class="btn btn-primary pull-left" onClick="modalNuovaMisura()">Nuova Misura</a>
         </c:if>
+        <c:if test="${listaMisure.size()>1}">
         <a class="btn btn-primary pull-right" target="_blank" href="dettaglioMisura.do?action=andamento_temporale&id_strumento=${id_strumento}">Vedi andamento temporale </a>
+         </c:if>
         </div>
+        
         </div><br>
-            </c:if>
+           
             
               <div class="row">
         <div class="col-xs-12">
@@ -733,7 +736,7 @@ NON DETERMINATO
 		 if(lista_interventi_utenti == "0"){
 			 $('#myModalErrorContent').html("Nessun intervento associato all'utente! Contattare l'amministratore");
 			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");	  
+				$('#myModalError').addClass("modal modal-warning");	  
 				$('#myModalError').modal();
 		 }else{
 			 $("#modalNuovaMisura").removeClass("modal-fullscreen");
@@ -840,7 +843,7 @@ NON DETERMINATO
   	                 	{ responsivePriority: 3, targets: 8 },
   	                   { responsivePriority: 4, targets: 3 },
   	                
-  	                  { responsivePriority: 4, targets: 12 },
+  	               
  	                  { responsivePriority: 4, targets: 9 }
   	               ],
   	     

@@ -49,6 +49,9 @@ String idSede = (String)session.getAttribute("id_Sede");
 String idCliente = (String)session.getAttribute("id_Cliente");
 
 %>
+<c:set var="ruolo_cm" value="${userObj.checkRuolo('CM') }"></c:set>
+
+
 
 
          <div class="row">
@@ -63,7 +66,11 @@ String idCliente = (String)session.getAttribute("id_Cliente");
 
 
     <div class="form-group">
+    
+    <c:if test="${userObj.checkRuolo('CM')  }">
         <label for="inputEmail" class="col-sm-2 control-label">Cliente:</label>
+</c:if>
+
 
          <div class="col-sm-10">
     
@@ -450,6 +457,13 @@ String idCliente = (String)session.getAttribute("id_Cliente");
     		 }
     		 $("#sede_general").change()
     		 
+    	}
+    	
+    	var ruolo_cm = "${ruolo_cm}";
+    	
+    	if(ruolo_cm=="true"){
+    		 $("#cliente_general").attr("disabled", true);
+    		 $("#sede_general").attr("disabled", true);
     	}
     	
     });

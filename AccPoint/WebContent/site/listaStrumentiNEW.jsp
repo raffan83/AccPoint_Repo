@@ -256,13 +256,15 @@
         <button class="btn btn-info" onclick="spd()">Scarica Pacchetto Dati</button> 
 
        
+
+
+</c:if>		
+
         <c:if test="${userObj.checkPermesso('NUOVO_STRUMENTO_METROLOGIA')}"> 
 
 <button class="btn btn-primary pull-right" onClick="nuovoStrumentoGeneral()">Nuovo Strumento</button>
 <div id="errorMsg" ></div>
 </c:if> 
-
-</c:if>		
         </div>
 </div>
           </div>

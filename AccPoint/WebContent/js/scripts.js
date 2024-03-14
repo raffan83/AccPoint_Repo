@@ -11055,7 +11055,7 @@ function nuovoVerStrumento(){
 	      				$('#myModalError').modal('show');
 	      				
 	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
-	       				
+	       				$('#posTab').html("");
 	         				 dataString = "action=lista&id_cliente="+$($('#cliente')).val()+"&id_sede="+$('#sede').val();
 	         				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
 	         				  $('.modal-backdrop').hide();

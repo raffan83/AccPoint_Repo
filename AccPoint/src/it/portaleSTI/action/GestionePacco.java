@@ -605,7 +605,7 @@ public class GestionePacco extends HttpServlet {
 					ril_intervento.setCommessa(commessa);
 					ril_intervento.setStato_intervento(1);
 					ril_intervento.setNome_cliente(util.getNome());
-					ril_intervento.setId(pacco.getId());
+					ril_intervento.setId_pacco(pacco.getId());
 					
 					if(!sede_util.equals("0")) {
 						ril_intervento.setNome_sede(sd_util.getDescrizione() + " - "+sd_util.getIndirizzo());
@@ -615,6 +615,9 @@ public class GestionePacco extends HttpServlet {
 					}
 					
 					session.save(ril_intervento);
+				}else {
+					
+					ril_intervento = GestioneRilieviBO.getIntrventoFromPacco(Integer.parseInt(id_pacco), session);
 				}
 				
 				//rilievo.setId_intervento(ril_intervento.getId());
@@ -682,9 +685,9 @@ public class GestionePacco extends HttpServlet {
 					rilievo.setCommessa(commessa);
 					rilievo.setClasse_tolleranza("m");
 					
-					if(id_pacco==null || id_pacco.equals("")) {
+					//if(id_pacco==null || id_pacco.equals("")) {
 						rilievo.setIntervento(ril_intervento);	
-					}
+					//}
 					
 					
 					if(id!=null) {

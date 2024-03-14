@@ -375,7 +375,9 @@ public class ScaricaCertificato extends HttpServlet {
 						}
 					}
 					
+					String filename=pack+"_"+certificato.getMisura().getInterventoDati().getId()+""+certificato.getMisura().getStrumento().get__id()+".pdf";
 					certificato.setStato(new StatoCertificatoDTO(2));
+					certificato.setNomeCertificato(filename);
 				
 					session.update(certificato);
 					session.getTransaction().commit();

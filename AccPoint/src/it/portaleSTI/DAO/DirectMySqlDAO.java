@@ -1612,7 +1612,8 @@ public class DirectMySqlDAO {
 					pst.setString(2, idCliente);
 					
 				}else {
-					pst=con.prepareStatement(sqlDatiStrumentiPerGrafico);
+
+pst=con.prepareStatement(sqlDatiStrumentiPerGrafico);
 					pst.setInt(1,idCompany);
 					pst.setString(2, idCliente);
 					pst.setString(3, idSede);

@@ -426,6 +426,11 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getRilieviDateSchedeConsegna(dateFrom, dateTo, session);
 	}
 
+	public static RilInterventoDTO getIntrventoFromPacco(int id, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneRilieviDAO.getIntrventoFromPacco(id, session);
+	}
+
 
 
 }

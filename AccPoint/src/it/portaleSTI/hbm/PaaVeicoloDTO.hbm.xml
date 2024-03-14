@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 6-giu-2017 12.16.10 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.PaaVeicoloDTO" table="paa_veicolo">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <property name="targa" type="java.lang.String">
+            <column name="targa" />
+        </property>
+        <property name="modello" type="java.lang.String">
+            <column name="modello" />
+        </property>
+           <many-to-one name="company" class="it.portaleSTI.DTO.DocumCommittenteDTO" fetch="join" lazy="false">
+            <column name="id_company" />
+        </many-to-one>
+         <property name="carta_circolazione" type="java.lang.String">
+            <column name="carta_circolazione" />
+        </property>
+         <property name="km_percorsi" type="int">
+            <column name="km_percorsi" />
+        </property>
+         <property name="portata_max_veicolo" type="java.lang.String">
+            <column name="portata_max_veicolo" />
+        </property>
+          <property name="immagine_veicolo" type="java.lang.String">
+            <column name="immagine_veicolo" />
+        </property>
+          <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
+     <many-to-one name="user_update" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_user_update" />
+        </many-to-one>
+        <property name="data_update" type="java.util.Date">
+            <column name="data_update" />
+        </property>
+    </class>
+</hibernate-mapping>

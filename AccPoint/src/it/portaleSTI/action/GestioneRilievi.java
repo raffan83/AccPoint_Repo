@@ -329,7 +329,7 @@ public class GestioneRilievi extends HttpServlet {
 				ajax = true;
 				PrintWriter out = response.getWriter();
 				RilMisuraRilievoDTO rilievo = (RilMisuraRilievoDTO)request.getSession().getAttribute("rilievo");
-				
+				rilievo = GestioneRilieviBO.getMisuraRilieviFromId(rilievo.getId(), session);
 				String numero_impronte = request.getParameter("numero_impronte");
 				String n_pezzi = request.getParameter("n_pezzi");
 				String quote_pezzo = request.getParameter("quote_pezzo");
@@ -387,6 +387,18 @@ public class GestioneRilievi extends HttpServlet {
 				
 				ArrayList<RilParticolareDTO> lista_impronte = GestioneRilieviBO.getListaParticolariPerMisura(rilievo.getId(), session);
 				
+				int pezzi_tot=0;
+				for (RilParticolareDTO part : lista_impronte) {
+					//pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+					if(rilievo.getTipo_rilievo().getId()!=2) {
+						pezzi_tot = pezzi_tot + part.getNumero_pezzi();	
+					}else {
+						pezzi_tot = pezzi_tot + GestioneRilieviBO.getNumeroPezziCPCPK(part.getId(), session);
+					}
+				}
+							
+				rilievo.setN_pezzi_tot(pezzi_tot);
+				session.update(rilievo);
 				
 				request.getSession().setAttribute("numero_pezzi", n_pezzi);
 				request.getSession().setAttribute("lista_impronte", lista_impronte);
@@ -633,6 +645,8 @@ public class GestioneRilievi extends HttpServlet {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", "Attenzione! Impossibile calcolare le tolleranze per i valori inseriti!");
 				}
+				
+				session.getTransaction().commit();
 				session.close();
 				out.print(myObj);
 				

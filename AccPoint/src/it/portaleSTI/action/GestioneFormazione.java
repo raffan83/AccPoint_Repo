@@ -2744,6 +2744,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					if(meseCorrente>1) {
 						mesePrecedente =  meseCorrente - 1;
 					}else {
+						if(meseCorrente == 0) {
+							meseCorrente = 1;
+						}
 						mesePrecedente = meseCorrente;
 					}
 					

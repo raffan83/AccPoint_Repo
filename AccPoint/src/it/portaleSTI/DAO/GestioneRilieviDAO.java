@@ -910,5 +910,23 @@ public class GestioneRilieviDAO {
 		
 	}
 
+
+
+	public static RilInterventoDTO getIntrventoFromPacco(int id_pacco, Session session) {
+
+		ArrayList<RilInterventoDTO>  lista = null;        
+		RilInterventoDTO result = null;
+		
+		Query query = session.createQuery("from RilInterventoDTO where id_pacco = :_id_pacco");
+		query.setParameter("_id_pacco", id_pacco);
+		
+		lista = (ArrayList<RilInterventoDTO>)query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		return result;
+	}
+
 	
 }

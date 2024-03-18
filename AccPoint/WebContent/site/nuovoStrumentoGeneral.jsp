@@ -67,9 +67,9 @@ String idCliente = (String)session.getAttribute("id_Cliente");
 
     <div class="form-group">
     
-    <c:if test="${userObj.checkRuolo('CM')  }">
+
         <label for="inputEmail" class="col-sm-2 control-label">Cliente:</label>
-</c:if>
+
 
 
          <div class="col-sm-10">

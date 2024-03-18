@@ -260,10 +260,10 @@
 	 
 	  $('#sede').html(opt);
 	  
-	  $("#sede").trigger("chosen:updated");
+	  //$("#sede").trigger("chosen:updated");
 	  
 
-		$("#sede").change();  
+		//$("#sede").change();  
 		
 		  var id_cliente = selection.split("_")[0];
 		  

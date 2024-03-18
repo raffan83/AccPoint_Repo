@@ -11054,12 +11054,14 @@ function nuovoVerStrumento(){
 	      				$('#myModalError').addClass("modal modal-success");
 	      				$('#myModalError').modal('show');
 	      				
-	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
-	       				$('#posTab').html("");
+	         			//$('#myModalError').on('hidden.bs.modal', function(){	         			
+	       				
 	         				 dataString = "action=lista&id_cliente="+$($('#cliente')).val()+"&id_sede="+$('#sede').val();
 	         				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
 	         				  $('.modal-backdrop').hide();
-	        			});
+	         				  
+	         				 $('#pleaseWaitDialog').hide();
+	        		//	});pleaseWaitDiv.modal('hide');
 	      		
 	      		  }else{
 	      			  $('#myModalErrorContent').html(data.messaggio);
@@ -11118,12 +11120,13 @@ function modificaVerStrumento(){
 	      				$('#myModalError').addClass("modal modal-success");
 	      				$('#myModalError').modal('show');
 	      				
-	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
+	         			//$('#myModalError').on('hidden.bs.modal', function(){	         			
 	       				
 	         				 dataString = "action=lista&id_cliente="+$($('#cliente')).val()+"&id_sede="+$('#sede').val();
 	         				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
 	         				  $('.modal-backdrop').hide();
-	        			});
+	         				 $('#pleaseWaitDialog').hide();
+	        			//});
 	      		
 	      		  }else{
 	      			  $('#myModalErrorContent').html(data.messaggio);

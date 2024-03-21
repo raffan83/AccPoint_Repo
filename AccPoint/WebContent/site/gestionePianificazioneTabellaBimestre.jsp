@@ -53,6 +53,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
             <tr>
                <th>CLIENTE <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
                <th>COMMESSA <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
+               <th>OGGETTO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
                 <th>STATO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
            <c:set var ="nuovoAnno" value="${anno + 1}"></c:set>                
          <c:forEach var="day" begin="${start_date }" end="${end_date }" step="1">
@@ -127,6 +128,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
           </c:if>
          </td>
          <td>${commessa.ID_COMMESSA}</td>
+         <td>${commessa.DESCR}</td>
          <td id="stato_${commessa.ID_COMMESSA.replace('/','')}"></td>
          <c:forEach var="day" begin="${start_date }" end="${end_date}" step="1">
 			<c:if test="${LocalDate.ofYearDay(anno, 1).isLeapYear() && day>366 }">
@@ -401,7 +403,7 @@ var settings ={
       scrollY: "700px",
       
        fixedColumns: {
-          leftColumns: 3, // Numero di colonne fisse
+          leftColumns: 4, // Numero di colonne fisse
       }, 
       
       stateSave: false,	
@@ -518,7 +520,7 @@ if(filtro!=3){
 		    for (var i = 1; i < rows.length; i++) {
 		    	
 		        var cells = rows[i].cells;
-		        for (var j = 3; j < cells.length; j++) {
+		        for (var j = 4; j < cells.length; j++) {
 		          cells[j].innerHTML = "";
 		        }
 		      }

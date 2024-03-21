@@ -66,8 +66,9 @@
  <thead><tr class="active">
 
 
-<th>ID</th>
+<th style="max-width:50px">ID</th>
 <th>Targa</th>
+<th>Immagine</th>
 <th>Modello</th>
 <th>Company</th>
 <th>Km Percorsi</th>
@@ -84,7 +85,11 @@
 	<tr id="row_${loop.index}" >
 
 	<td>${veicolo.id }</td>	
+	
 	<td>${veicolo.targa }</td>
+	<td class="img-container"><c:if test="${veicolo.immagine_veicolo!=null }">
+	<img src="gestioneParcoAuto.do?action=download_file&tipo_file=immagine_veicolo&id_veicolo=${veicolo.id}" alt="Descrizione Immagine">
+	</c:if></td>
 	<td>${veicolo.modello }</td>
 	<td>${veicolo.company.nome_cliente }</td>
 	<td>${veicolo.km_percorsi }</td>
@@ -426,7 +431,18 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
 
+<style>
+      .img-container {
+            max-width: 200px;
+            max-height: 200px;
+            overflow: hidden;
+        }
+        .img-container img {
+            width: 100%;
+            height: auto;
+        }
 
+</style>
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
@@ -577,7 +593,7 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 1 },
+		    	  { responsivePriority: 1, targets: 8 },
 		    	  
 		    	  
 		               ], 	        

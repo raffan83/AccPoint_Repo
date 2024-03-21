@@ -67,7 +67,7 @@
              <a class="btn btn-primary" style="margin-top:25px" onclick="vaiAOggi('${currentYear}')">Vai a Oggi</a>
              </div>
              
-             <div class="col-xs-3">
+             <div class="col-xs-6">
                            <!-- Zoom In -->
 
 <!-- Reset -->
@@ -125,14 +125,14 @@
   </div>
   <!-- /.content-wrapper -->
 
-<form id="formNuovaPrenotazione" name="formNuovaPrenotazione">
+<form id="formNuovaPrenotazione" name="formNuovaPrenotazione" >
        <div id="modalPrenotazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
    
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_prenotazione"></h4>
+        <h4 class="modal-title" id="title_prenotazione">Prenotazione Veicolo</h4>
       </div>
        <div class="modal-body"> 
              <div class="row">
@@ -152,7 +152,7 @@
         <div class="col-xs-6">
         <label>Data inizio prenotazione</label>
 
-           <input id="data_inizio" name="data_inizio" class="form-control datepicker" type="text" style="width:100%" >
+           <input id="data_inizio" name="data_inizio" class="form-control datepicker" type="text" style="width:100%" required>
         </div>
         
        
@@ -167,7 +167,7 @@
         <div class="row">
         <div class="col-xs-6">
         <label>Data fine prenotazione</label>
-           <input id="data_fine" name="data_fine" class="form-control datepicker" type="text" style="width:100%" >
+           <input id="data_fine" name="data_fine" class="form-control datepicker" type="text" style="width:100%" required>
         </div>
 
 
@@ -197,7 +197,7 @@
         <div class="row">
         <div class="col-xs-12">
         <label>Testo Note</label>
-          <textarea rows="5" style="width:100%" id="nota" name="nota" class="form-control"></textarea>
+          <textarea rows="5" style="width:100%" id="note" name="note" class="form-control"></textarea>
         </div>
         </div><br>
        
@@ -454,30 +454,84 @@ $('#docente').on('change', function() {
   });
 
 function nuovaPrenotazione(){
+	
+	
+	var inizio = moment($('#data_inizio').val()+" "+ $('#ora_inizio').val(), "DD/MM/YYYY HH:mm");
+    var fine = moment($('#data_fine').val()+" "+ $('#ora_fine').val(), "DD/MM/YYYY HH:mm");
+
+
+    var sovrapposizione = orariDisabilitati.some(function(prenotazione) {
+    	
+    	if($('#id_prenotazione').val()!=prenotazione.id && prenotazione.id_veicolo == $('#id_veicolo').val()){
+    		 var inizioPrenotazione = moment(prenotazione.inizio, "DD/MM/YYYY HH:mm");
+    	        var finePrenotazione = moment(prenotazione.fine, "DD/MM/YYYY HH:mm");
+
+    	      /*   return (inizio.isBetween(inizioPrenotazione, finePrenotazione, undefined, '[)') ||
+    	                fine.isBetween(inizioPrenotazione, finePrenotazione, undefined, '(]') ||
+    	                (inizioPrenotazione.isBetween(inizio, fine, undefined, '(]') &&
+    	                 finePrenotazione.isBetween(inizio, fine, undefined, '[)'))); */
+    	                 
+    	        /* return (
+    	                inizio.isBetween(inizioPrenotazione, finePrenotazione, undefined, '[)') ||
+    	                fine.isBetween(inizioPrenotazione, finePrenotazione, undefined, '(]') ||
+    	                (inizioPrenotazione.isBetween(inizio, fine) && finePrenotazione.isBetween(inizio, fine))
+    	            ); */
+    	                 
+    	        return (
+    	                (inizio.isBetween(inizioPrenotazione, finePrenotazione) || fine.isBetween(inizioPrenotazione, finePrenotazione)) ||
+    	                (inizioPrenotazione.isBetween(inizio, fine) && finePrenotazione.isBetween(inizio, fine)) ||
+    	                (inizio.isSameOrBefore(inizioPrenotazione) && fine.isSameOrAfter(finePrenotazione))
+    	            );
+    	}
+       
+    });
+	
+
+	if(sovrapposizione){
+		
+		$('#myModalErrorContent').html("Attenzione! Esiste già una prenotazione per l'orario selezionato!");
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-default");
+		
+		$('#myModalError').modal('show');
+	
+		
+	}else if(fine<=inizio){
+		
+		$('#myModalErrorContent').html("Attenzione! Ora fine precedente o uguale ad ora inizio!");
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-default");
+		
+		$('#myModalError').modal('show');
+		
+	}else {
+		callAjaxForm('#formNuovaPrenotazione', 'gestioneParcoAuto.do?action=nuova_prenotazione', function(datab){
+			
+			
+			$(document.body).css('padding-right', '0px');
+			if(datab.success){
+				location.reload()
+				//fillTable("${anno}", "${filtro_tipo_pianificazioni}");
+			//	controllaColoreCella(table, "#F7BEF6");
+				
+				$('#modalPrenotazione').modal("hide");
+				
+				 $('.modal-backdrop').hide();
+			}else{
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+			}
+			
+		});
+		$(document.body).css('padding-right', '0px');
+	}
 		
 	
-	callAjaxForm('#formNuovaPrenotazione', 'gestioneParcoAuto.do?action=nuova_prenotazione', function(datab){
-		
-		
-		$(document.body).css('padding-right', '0px');
-		if(datab.success){
-			fillTable("${anno}", "${filtro_tipo_pianificazioni}");
-		//	controllaColoreCella(table, "#F7BEF6");
-			
-			$('#modalPrenotazione').modal("hide");
-			
-			 $('.modal-backdrop').hide();
-		}else{
-			$('#myModalErrorContent').html(data.messaggio);
-		  	$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-danger");
-			$('#report_button').show();
-			$('#visualizza_report').show();
-				$('#myModalError').modal('show');
-		}
-		
-	});
-	$(document.body).css('padding-right', '0px');
+	
 }
 
 
@@ -548,6 +602,8 @@ $(document).ready(function($) {
     $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
 	 }); 
+    
+    $('.dropdown-toggle').dropdown();
 	
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	
@@ -577,14 +633,9 @@ $(document).ready(function($) {
     
 	
 
-	 
-	   $('.timepicker').timepicker({	    	
-	     	 showMeridian:false,	   
-	     	 minuteStep: 5,
-	     	 timeFormat: 'HH:mm',
-	     	 minTime: '00:00',
-	     	maxTime: '23:59',
-	      }); 
+	      
+	      
+	      
 		
 		 $('#ora_inizio').val("");
 		 $('#ora_fine').val("");
@@ -593,119 +644,21 @@ $(document).ready(function($) {
 });
 
 var orariDisabilitati = [];
-/* $('#ora_inizio, #ora_fine').change(function() {
-	var inizio = moment($('#ora_inizio').val(), "HH:mm");
-    var fine = moment($('#ora_fine').val(), "HH:mm");
-
-    // Controlla se l'intervallo selezionato si sovrappone con qualche prenotazione esistente
-    var sovrapposizione = orariDisabilitati.some(function(prenotazione) {
-        var inizioPrenotazione = moment(prenotazione.inizio, "HH:mm");
-        var finePrenotazione = moment(prenotazione.fine, "HH:mm");
-
-        return (inizio.isBetween(inizioPrenotazione, finePrenotazione, undefined, '[)') ||
-                fine.isBetween(inizioPrenotazione, finePrenotazione, undefined, '(]') ||
-                (inizioPrenotazione.isBetween(inizio, fine, undefined, '(]') &&
-                 finePrenotazione.isBetween(inizio, fine, undefined, '[)')));
-    });
-
-    if (sovrapposizione) {
-        // Se l'intervallo selezionato si sovrappone con una prenotazione esistente, mostra un messaggio di errore
-        $('#myModalErrorContent').html("L'intervallo selezionato si sovrappone con una prenotazione esistente. Seleziona un altro intervallo.");
-        $('#myModalError').addClass("modal modal-danger");
-        $('#myModalError').modal();
-        // Resetta l'input delle ore
-        $('#ora_inizio, #ora_fine').val('');
-    }
-    // Altrimenti, controlla se l'ora di fine è precedente all'ora di inizio
-    if (moment(fine, "HH:mm") < moment(inizio, "HH:mm")) {
-        $('#myModalErrorContent').html("L'ora di fine corso non può essere inferiore all'ora di inizio");
-        $('#myModalError').addClass("modal modal-danger");
-        $('#myModalError').modal();
-        $('#ora_fine').val(inizio);
-    }
-   
-  }); */
-
   
   
-  
-  $('#ora_inizio, #ora_fine').change(function() {
-	    var inizio = moment($('#ora_inizio').val(), "HH:mm");
-	    var fine = moment($('#ora_fine').val(), "HH:mm");
-
-	    // Verifica se l'intervallo selezionato si sovrappone con qualche prenotazione esistente
-	    var sovrapposizione = orariDisabilitati.some(function(prenotazione) {
-	        var inizioPrenotazione = moment(prenotazione.inizio, "HH:mm");
-	        var finePrenotazione = moment(prenotazione.fine, "HH:mm");
-
-	        return (
-	            inizio.isBetween(inizioPrenotazione, finePrenotazione, undefined, '[)') ||
-	            fine.isBetween(inizioPrenotazione, finePrenotazione, undefined, '(]') ||
-	            (inizioPrenotazione.isBetween(inizio, fine, undefined, '(]') &&
-	                finePrenotazione.isBetween(inizio, fine, undefined, '[)'))
-	        );
-	    });
-
-	    if (sovrapposizione) {
-	        // Se l'intervallo selezionato si sovrappone con una prenotazione esistente, mostra un messaggio di errore
-	        $('#myModalErrorContent').html("L'intervallo selezionato si sovrappone con una prenotazione esistente. Seleziona un altro intervallo.");
-	        $('#myModalError').addClass("modal modal-danger");
-	        $('#myModalError').modal();
-	        // Resetta l'input delle ore
-	        $('#ora_inizio, #ora_fine').val('');
-	    }
-
-	    // Verifica se l'ora di fine è precedente all'ora di inizio
-	    if (moment(fine, "HH:mm") < moment(inizio, "HH:mm")) {
-	        $('#myModalErrorContent').html("L'ora di fine corso non può essere inferiore all'ora di inizio");
-	        $('#myModalError').addClass("modal modal-danger");
-	        $('#myModalError').modal();
-	        $('#ora_fine').val(inizio);
-	    }
-
-	    // Disabilita gli intervalli di orari disabilitati nei timepicker
-	    $('#ora_inizio, #ora_fine').prop('disabled', function() {
-	        var disabled = false;
-	        orariDisabilitati.forEach(function(prenotazione) {
-	            var inizioPrenotazione = moment(prenotazione.inizio, "HH:mm");
-	            var finePrenotazione = moment(prenotazione.fine, "HH:mm");
-	            if (
-	                (inizio.isBetween(inizioPrenotazione, finePrenotazione, undefined, '[)') ||
-	                    fine.isBetween(inizioPrenotazione, finePrenotazione, undefined, '(]') ||
-	                    (inizioPrenotazione.isBetween(inizio, fine, undefined, '(]') &&
-	                        finePrenotazione.isBetween(inizio, fine, undefined, '[)')))
-	            ) {
-	                disabled = true;
-	                return false; // Esci dal ciclo forEach se trovi un intervallo disabilitato
-	            }
-	        });
-	        return disabled;
-	    });
-	});
+	
 
 $('#modalPrenotazione').on("hidden.bs.modal", function(){
 	
 	
-	
-	$('#docente').prop('selectedIndex', -1);
-	$('#docente').change();	
 
-	$('#stato').prop('selectedIndex', -1);
-	$('#stato').change();	
-	$('#tipo').prop('selectedIndex', -1);
-	$('#tipo').change();	
-	$('#nota').val("");
-	$('#id_pianificazione').val("");
-	$('#commessa').val("");
+	$('#btn_elimina').hide()
+	
+	$('#note').val("");
+	$('#id_prenotazione').val("");
 	$('#day').val("")
-	$('#n_cella').val("")
-	 $('#ora_inizio').val("");
-	 $('#ora_fine').val("");
-	 $('#n_utenti').val("");
-	 $('#descrizione').val("");
-	 $('#email').iCheck('uncheck');
-	 $('#agenda').iCheck('uncheck');
-	 $('#pausa_pranzo').iCheck('uncheck');
+
+
 		
 });
 

@@ -84,7 +84,7 @@ public class GestioneParcoAuto extends HttpServlet {
 			if(anno == null) {
 				anno = ""+Calendar.getInstance().get(Calendar.YEAR);
 			}
-			Gson g = new Gson();
+			Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create(); 		
 			ArrayList<PaaPrenotazioneDTO> lista_prenotazioni = GestioneParcoAutoBO.getListaPrenotazioni(session);
 				
 //			Date today = new Date();
@@ -136,6 +136,7 @@ public class GestioneParcoAuto extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		if(Utility.validateSession(request,response,getServletContext()))return;
 
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();

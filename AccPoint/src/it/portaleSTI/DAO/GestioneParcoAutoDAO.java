@@ -7,6 +7,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DTO.PaaPrenotazioneDTO;
 import it.portaleSTI.DTO.PaaVeicoloDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 
 public class GestioneParcoAutoDAO {
 
@@ -42,7 +43,6 @@ public class GestioneParcoAutoDAO {
 		return  result;
 	}
 
-
 	public static ArrayList<PaaPrenotazioneDTO> getListaPrenotazioni(Session session) {
 
 		ArrayList<PaaPrenotazioneDTO> lista = null;
@@ -54,6 +54,22 @@ public class GestioneParcoAutoDAO {
 
 		return  lista;
 	}
+
+	public static ArrayList<PaaPrenotazioneDTO> getListaPrenotazioniPerUtente(UtenteDTO utente,Session session) {
+
+		ArrayList<PaaPrenotazioneDTO> lista = null;
+		
+		Query query = session.createQuery("from PaaPrenotazioneDTO p WHERE p.utente.id=:_id_utente");
+		
+		query.setParameter("_id_utente", utente.getId());
+		
+		lista =(ArrayList<PaaPrenotazioneDTO>) query.list();
+		
+
+		return  lista;
+	}
+	
+
 	
 	public static PaaPrenotazioneDTO getPrenotazioneFromId(int id, Session session) {
 		ArrayList<PaaPrenotazioneDTO> lista = null;

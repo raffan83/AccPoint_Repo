@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DAO.GestioneParcoAutoDAO;
 import it.portaleSTI.DTO.PaaPrenotazioneDTO;
 import it.portaleSTI.DTO.PaaVeicoloDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 
 public class GestioneParcoAutoBO {
 
@@ -23,6 +24,11 @@ public class GestioneParcoAutoBO {
 	public static ArrayList<PaaPrenotazioneDTO> getListaPrenotazioni(Session session) {
 		// TODO Auto-generated method stub
 		return GestioneParcoAutoDAO.getListaPrenotazioni(session);
+	}
+	
+	public static ArrayList<PaaPrenotazioneDTO> getListaPrenotazioniPerUtente(UtenteDTO utente, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneParcoAutoDAO.getListaPrenotazioniPerUtente(utente,session);
 	}
 
 	public static PaaPrenotazioneDTO getPrenotazioneFromId(int id, Session session) {

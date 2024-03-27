@@ -225,7 +225,14 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   		 </div>
       <div class="modal-footer">
       <input type="hidden" id="stato" name="stato" value="Idonea"/>
-      <input type="hidden" id="etichettatura" name="etichettatura" value="Interna"/>
+         <c:if test="${campione.getCodice().startsWith('CDT')}">
+          <input type="hidden" id="etichettatura" name="etichettatura" value="Interna"/>
+         </c:if>
+         
+            <c:if test="${!campione.getCodice().startsWith('CDT')}">
+             <input type="hidden" id="etichettatura" name="etichettatura" value="Interno"/>
+            </c:if>
+     
       <input type="hidden" id="id_affini_checked" name="id_affini_checked"> 
         <button type="submit" class="btn btn-primary" >Salva</button>
        
@@ -872,14 +879,24 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 
 	 $('#check_interna').click(function(){
 		$('#check_esterna').prop("checked", false); 
-		$('#etichettatura').val("Interna");
+		
+		if(${campione.getCodice().startsWith('CDT')}){
+			$('#etichettatura').val("Interna");
+		}else{
+			$('#etichettatura').val("Interno");
+		}
 		$('#laboratorio').val("Interno");
 		$('#presso').prop("readonly", true);
 	 });
 	 
 	 $('#check_esterna').click(function(){
 		$('#check_interna').prop("checked", false);
-		$('#etichettatura').val("Esterna");
+		if(${campione.getCodice().startsWith('CDT')}){
+			$('#etichettatura').val("Esterna");
+		}else{
+			$('#etichettatura').val("Esterno");
+		}
+		
 		$('#laboratorio').val("Esterno");
 		$('#presso').prop("readonly", false);
 	 });
@@ -1195,11 +1212,11 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 		 
 		 if(etichettatura=='Interna' || etichettatura == 'Interno'){
 			 $('#check_interna_mod').prop("checked", true); 
-			 $('#etichettatura_mod').val("Interna");
+			 $('#etichettatura_mod').val(etichettatura);
 			 $('#presso_mod').prop("readonly", true);
 		 }else{
 			 $('#check_esterna_mod').prop("checked", true); 
-			 $('#etichettatura_mod').val("Esterna");
+			 $('#etichettatura_mod').val(etichettatura);
 			 $('#presso_mod').prop("readonly", false);
 		 }
 		 if(stato=='Idonea'){

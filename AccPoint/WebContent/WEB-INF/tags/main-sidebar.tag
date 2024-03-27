@@ -438,7 +438,7 @@
    
 		   <li><a href="gestioneParcoAuto.do?action=lista_veicoli">Gestione Auto</a></li>	
 		<li><a href="gestioneParcoAuto.do?action=gestione_prenotazioni">Gestione Prenotazioni</a></li>	
-	      	
+	      	<li><a href="confermaPrenotazione.do">Conferma Prenotazioni</a></li>
           </ul>
         </li> 
            <% }%>

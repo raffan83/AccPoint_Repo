@@ -254,7 +254,12 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 						if(attivita.getEnte()!=null) {
 							arrayPs.add(attivita.getEnte());	
 						}else {
-							arrayPs.add("");
+							if(attivita.getEtichettatura()!=null) {
+								arrayPs.add(attivita.getEtichettatura());
+							}else {
+								arrayPs.add("");	
+							}
+							
 						}											
 						arrayPs.add(dt.format(attivita.getData()));
 						if(attivita.getCertificato()!=null) {
@@ -327,7 +332,7 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 						}
 						
 						if(evento.getEtichettatura()!=null) {
-							if(evento.getEnte()!=null) {
+							if(evento.getEnte()!=null && !evento.getEnte().equals("")) {
 								arrayPs.add(evento.getEnte());	
 							}else {
 								arrayPs.add(evento.getEtichettatura());	

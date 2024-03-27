@@ -109,6 +109,18 @@ public static String getIdFirmaDigitale(int id, Session session) {
 	return result;
 }
 
+public static ArrayList<UtenteDTO> getDipendenti(Session session) {
+	
+	ArrayList<UtenteDTO> lista = null;
+	
+	Query query  = session.createQuery( "from UtenteDTO WHERE tipoutente = 1");
+	
+	lista =(ArrayList<UtenteDTO>) query.list();
+	
+	
+	return lista;
+}
+
 
 
 

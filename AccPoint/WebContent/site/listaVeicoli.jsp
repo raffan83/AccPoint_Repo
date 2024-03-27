@@ -66,7 +66,7 @@
  <thead><tr class="active">
 
 
-<th style="max-width:50px">ID</th>
+<th style="max-width:40px">ID</th>
 <th>Targa</th>
 <th>Immagine</th>
 <th>Modello</th>
@@ -186,7 +186,7 @@
                            <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Committente</label>
+       		<label>Company</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -319,7 +319,7 @@
                            <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Committente</label>
+       		<label>Company</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
@@ -441,6 +441,10 @@
             width: 100%;
             height: auto;
         }
+        
+        .table th input {
+    min-width: 45px !important;
+}
 
 </style>
 </jsp:attribute>
@@ -523,7 +527,7 @@ function eliminaVeicolo(){
 
 var columsDatatables = [];
 
-$("#tabVeicoli").on( 'init.dt', function ( e, settings ) {
+ $("#tabVeicoli").on( 'init.dt', function ( e, settings ) {
     var api = new $.fn.dataTable.Api( settings );
     var state = api.state.loaded();
  
@@ -537,74 +541,89 @@ $("#tabVeicoli").on( 'init.dt', function ( e, settings ) {
     	  var title = $('#tabVeicoli thead th').eq( $(this).index() ).text();
     	
     	  //if($(this).index()!=0 && $(this).index()!=1){
-		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
+		    //	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
 	    	//}
 
+		    	if($(this).index() == 0){
+	 				$(this).append( '<div><input class="inputsearchtable"  style="width:15px !important" type="text" /></div>');
+	 			}else{
+	 				$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');	
+	 			}
+    	  
     	} );
     
     
 
 } );
-
+ 
 
 
 $(document).ready(function() {
  
 
      $('.dropdown-toggle').dropdown();
-     
+     $('.select2').select2()
      
   
 
-     table = $('#tabVeicoli').DataTable({
-			language: {
-		        	emptyTable : 	"Nessun dato presente nella tabella",
-		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-		        	infoPostFix:	"",
-		        infoThousands:	".",
-		        lengthMenu:	"Visualizza _MENU_ elementi",
-		        loadingRecords:	"Caricamento...",
-		        	processing:	"Elaborazione...",
-		        	search:	"Cerca:",
-		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-		        	paginate:	{
-	  	        	first:	"Inizio",
-	  	        	previous:	"Precedente",
-	  	        	next:	"Successivo",
-	  	        last:	"Fine",
-		        	},
-		        aria:	{
-	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-		        }
-	        },
-	        pageLength: 25,
-	        "order": [[ 0, "desc" ]],
-		      paging: true, 
-		      ordering: true,
-		      info: true, 
-		      searchable: true, 
-		      targets: 0,
-		      responsive: true,
-		      scrollX: false,
-		      stateSave: true,	
-		           
-		      columnDefs: [
-		    	  
-		    	  { responsivePriority: 1, targets: 8 },
-		    	  
-		    	  
-		               ], 	        
-	  	      buttons: [   
-	  	          {
-	  	            extend: 'colvis',
-	  	            text: 'Nascondi Colonne'  	                   
-	 			  } ]
-		               
-		    });
-		
+
+ 		
+ 		
+
+ 	     table = $('#tabVeicoli').DataTable({
+ 				language: {
+ 			        	emptyTable : 	"Nessun dato presente nella tabella",
+ 			        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+ 			        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+ 			        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+ 			        	infoPostFix:	"",
+ 			        infoThousands:	".",
+ 			        lengthMenu:	"Visualizza _MENU_ elementi",
+ 			        loadingRecords:	"Caricamento...",
+ 			        	processing:	"Elaborazione...",
+ 			        	search:	"Cerca:",
+ 			        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+ 			        	paginate:	{
+ 		  	        	first:	"Inizio",
+ 		  	        	previous:	"Precedente",
+ 		  	        	next:	"Successivo",
+ 		  	        last:	"Fine",
+ 			        	},
+ 			        aria:	{
+ 		  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+ 		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+ 			        }
+ 		        },
+ 		        pageLength: 25,
+ 		        "order": [[ 0, "desc" ]],
+ 			      paging: true, 
+ 			      ordering: true,
+ 			      info: true, 
+ 			      searchable: true, 
+ 			      targets: 0,
+ 			      responsive: true,
+ 			      scrollX: false,
+ 			      stateSave: true,	
+ 			           
+ 			      columnDefs: [
+ 			    	  
+ 			    	  { responsivePriority: 1, targets: 8 },
+ 			    	  
+ 			    	  
+ 			               ], 	        
+ 		  	      buttons: [   
+ 		  	          {
+ 		  	            extend: 'colvis',
+ 		  	            text: 'Nascondi Colonne'  	                   
+ 		 			  } ]
+ 			               
+ 			    });
+ 		
+ 		
+ 	     
+  
+  		
+     
 		table.buttons().container().appendTo( '#tabVeicoli_wrapper .col-sm-6:eq(1)');
 	 	    $('.inputsearchtable').on('click', function(e){
 	 	       e.stopPropagation();    
@@ -621,6 +640,7 @@ $(document).ready(function() {
 	
 	
 	
+	 	     
 		table.columns.adjust().draw();
 		
 

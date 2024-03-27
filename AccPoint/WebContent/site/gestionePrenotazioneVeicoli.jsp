@@ -617,7 +617,22 @@ $(document).ready(function($) {
 		    zoom_in: '.zoom_in',
 		    zoom_out: '.zoom_out',
 		    zoom_reset: '.zoom_reset'
-		  }
+		  },
+	onZoomIn: function() {
+			    // Azioni da eseguire quando avviene lo zoom in
+			    console.log('Zoom in eseguito');
+			    fillTable("${anno}",'${filtro_tipo_pianificazioni}');
+			  },
+			  onZoomOut: function() {
+			    // Azioni da eseguire quando avviene lo zoom out
+			    console.log('Zoom out eseguito');
+			    fillTable("${anno}",'${filtro_tipo_pianificazioni}');
+			  },
+			  onZoomReset: function() {
+			    // Azioni da eseguire quando viene eseguito il ripristino dello zoom
+			    console.log('Zoom ripristinato');
+			    fillTable("${anno}",'${filtro_tipo_pianificazioni}');
+			  }
 		});
 	
 	
@@ -651,9 +666,15 @@ var orariDisabilitati = [];
 $('#modalPrenotazione').on("hidden.bs.modal", function(){
 	
 	
-
+	$('#utente').val("");
+	$('#utente').change();
 	$('#btn_elimina').hide()
 	
+	
+	$('#data_inizio').val("");
+	$('#data_fine').val("");
+	$('#ora_inizio').val("");
+	$('#ora_fine').val("");
 	$('#note').val("");
 	$('#id_prenotazione').val("");
 	$('#day').val("")

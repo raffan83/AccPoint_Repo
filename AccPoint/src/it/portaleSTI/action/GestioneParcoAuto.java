@@ -87,18 +87,7 @@ public class GestioneParcoAuto extends HttpServlet {
 			Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create(); 		
 			ArrayList<PaaPrenotazioneDTO> lista_prenotazioni = GestioneParcoAutoBO.getListaPrenotazioni(session);
 				
-//			Date today = new Date();
-//			if(today.after(new GregorianCalendar(Integer.parseInt(anno), Calendar.NOVEMBER, 01).getTime())){
-//				ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni_anno_succ = GestioneFormazioneBO.getListaPianificazioni((Calendar.getInstance().get(Calendar.YEAR)+1)+"", filtro_tipo_pianificazioni,session);
-//				lista_prenotazioni.addAll(lista_pianificazioni_anno_succ);
-//			}
-//			
-//			if(today.before(new GregorianCalendar(Integer.parseInt(anno), Calendar.FEBRUARY, 01).getTime())) {
-//				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-//				ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni_anno_rec = GestioneFormazioneBO.getListaPianificazioniData((Calendar.getInstance().get(Calendar.YEAR)-1)+"-11-01", ""+(Calendar.getInstance().get(Calendar.YEAR)-1)+"-12-31", session);
-//				lista_prenotazioni.addAll(lista_pianificazioni_anno_rec);
-//			}
-			
+
 			
 			PrintWriter out = response.getWriter();
 			myObj.addProperty("success", true);
@@ -387,7 +376,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				
 				ArrayList<PaaVeicoloDTO> lista_veicoli = GestioneParcoAutoBO.getListaVeicoli(session);
 				ArrayList<DocumCommittenteDTO> lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);		
-				ArrayList<UtenteDTO> lista_utenti = GestioneUtenteBO.getAllUtenti(session);		
+				ArrayList<UtenteDTO> lista_utenti = GestioneUtenteBO.getDipendenti(session);		
 				
 				String anno = request.getParameter("anno");
 				String data_inizio = request.getParameter("data_inizio");
@@ -450,11 +439,19 @@ public class GestioneParcoAuto extends HttpServlet {
 				if(meseCorrente>1) {
 					mesePrecedente =  meseCorrente - 1;
 				}else {
-					mesePrecedente = meseCorrente;
+					if(meseCorrente==0) {
+						meseCorrente = 12;
+						mesePrecedente = 10;
+						anno = ""+(Integer.parseInt(anno)-1);
+					}else {
+						mesePrecedente = meseCorrente;	
+					}
+					
 				}
 				
 				
-				LocalDate inizioBimestre = LocalDate.of(dataCorrente.getYear(), mesePrecedente, 1);
+				
+				LocalDate inizioBimestre = LocalDate.of(Integer.parseInt(anno), mesePrecedente, 1);
 				LocalDate fineBimestre = inizioBimestre.plusMonths(monthsToAdd).minusDays(1);
 
 				
@@ -578,6 +575,7 @@ public class GestioneParcoAuto extends HttpServlet {
 					prenotazione = GestioneParcoAutoBO.getPrenotazioneFromId(Integer.parseInt(id_prenotazione), session);					
 				}else {
 					prenotazione = new PaaPrenotazioneDTO();
+					prenotazione.setStato_prenotazione(1);
 				}
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -586,7 +584,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				prenotazione.setVeicolo(GestioneParcoAutoBO.getVeicoloFromId(Integer.parseInt(id_veicolo), session));
 				prenotazione.setUtente(GestioneUtenteBO.getUtenteById(id_utente, session));
 				
-				prenotazione.setStato_prenotazione(1);
+				
 				
 				prenotazione.setNote(note);
 				Date data_start = df.parse(data_inizio);
@@ -662,6 +660,8 @@ public class GestioneParcoAuto extends HttpServlet {
 			
 			else if(action.equals("dettaglio_prenotazione")) {
 				
+				ajax = true;
+				
 				String id = request.getParameter("id");
 				
 				PaaPrenotazioneDTO prenotazione = GestioneParcoAutoBO.getPrenotazioneFromId(Integer.parseInt(id), session);
@@ -677,6 +677,7 @@ public class GestioneParcoAuto extends HttpServlet {
 			
 			else if(action.equals("elimina_prenotazione")) {
 				
+				ajax = true;
 				
 				String id = request.getParameter("id_prenotazione");
 				

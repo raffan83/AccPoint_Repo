@@ -266,4 +266,10 @@ public class GestioneUtenteBO {
 		return GestioneUtenteDAO.getIdFirmaDigitale(id, session);
 	}
 
+
+	public static ArrayList<UtenteDTO> getDipendenti(Session session) {
+		
+		return GestioneUtenteDAO.getDipendenti(session);
+	}
+
 }

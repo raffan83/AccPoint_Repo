@@ -77,8 +77,13 @@
 <td><c:out value="${prenotazione.id}"/></td>
 	
 	<td><c:out value="${prenotazione.veicolo.targa}"/></td>
-	<td><c:out value="${prenotazione.data_inizio_prenotazione}"/></td>
-	<td><c:out value="${prenotazione.data_fine_prenotazione}"/></td>
+	<td>
+	<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${prenotazione.data_inizio_prenotazione}" />
+	
+	<%-- <c:out value="${prenotazione.data_inizio_prenotazione}"/> --%></td>
+	<td>
+	<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${prenotazione.data_fine_prenotazione}" />
+	<%-- <c:out value="${prenotazione.data_fine_prenotazione}"/ --%></td>
 
 	<td class="centered">
 
@@ -96,9 +101,12 @@
 </td>
 		<td>
 			<%-- <a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');"> --%>
-			<a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('confermaPrenotazione.do?confermaPrenotazione=${prenotazione.id}');">
-                <i class="fa fa-arrow-right"></i>
+			<c:if test="${prenotazione.stato_prenotazione == '1' }">
+			<a class="btn btn-success customTooltip" title="Click per confermare la prenotazione" onclick="confermaPrenotazione('${prenotazione.id}')">
+                <i class="fa fa-check"></i>
+          
             </a>
+                  </c:if>
         </td>
 	</tr>
 	
@@ -148,7 +156,7 @@
   </div>
 </div>
 
-<!--   <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+   <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -168,7 +176,7 @@
       </div>
     </div>
   </div>
-</div> -->
+</div> 
 
      <div id="errorMsg"><!-- Place at bottom of page --></div> 
   
@@ -203,6 +211,17 @@
 <jsp:attribute name="extra_js_footer">
 
   <script type="text/javascript">
+  
+  
+  
+  function confermaPrenotazione(id_prenotazione){
+	  
+	  var dataObj = {};
+	  dataObj.id_prenotazione = id_prenotazione;
+	  
+	  callAjax(dataObj, "confermaPrenotazione.do?action=conferma_prenotazione");
+	  
+  }
 
   var columsDatatables = [];
   

@@ -235,7 +235,7 @@
 				var ids = "";
 		  		for(i=0; i< dataSelected.length; i++){
 		  			dataSelected[i];
-		  			ids += dataSelected[i][26]+";";
+		  			ids += dataSelected[i][28]+";";
 		  		}
 		  		
 		  	dataObj = {};

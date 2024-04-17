@@ -75,13 +75,13 @@ public class CreateTabellaRilievoPDF {
 		
 		JasperReportBuilder report = DynamicReports.report();
 		
-		report.setTemplateDesign(is);
-		report.setTemplate(Templates.reportTemplate);
+	//	report.setTemplateDesign(is);
+	//	report.setTemplate(Templates.reportTemplate);
 		report.setDataSource(new JREmptyDataSource());
 		
 		JasperReportBuilder report_table = DynamicReports.report();
 		report_table.setDataSource(new JREmptyDataSource());
-		report_table.setDataSource(new JREmptyDataSource());
+		
 		report_table.setPageFormat(PageType.A4, PageOrientation.LANDSCAPE);
 
 		//RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(lista_quote.get(0).getImpronta().getId(), session);
@@ -91,127 +91,129 @@ public class CreateTabellaRilievoPDF {
 		ArrayList<RilParticolareDTO> lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(rilievo.getId(), session);
 		ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(rilievo.getId(), session);
 		File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"4133_header.jpg");
-		if(imageHeader!=null) {
-			report.addParameter("logo",imageHeader);
-		}
-		
-				
-		if(rilievo.getId_cliente_util()!=0) {
-			if(rilievo.getId_sede_util()!=0) {
-				report.addParameter("cliente", GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, rilievo.getId_sede_util(), rilievo.getId_cliente_util()).getDescrizione());	
-			}else {
-				report.addParameter("cliente", GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(rilievo.getId_cliente_util())).getNome());
-			}
-			
-		}else {
-			report.addParameter("cliente", "");
-		}
-		
-		report.addParameter("numero_scheda", "SRD "+ultima_scheda);
-		
-		if(rilievo.getDenominazione()!=null) {
-			report.addParameter("denominazione", rilievo.getDenominazione());	
-		}else {
-			report.addParameter("denominazione", "");
-		}
-					
-		if(rilievo.getDisegno()!=null) {
-			report.addParameter("disegno", rilievo.getDisegno());	
-		}else {
-			report.addParameter("disegno", "");
-		}
-		
-		if(rilievo.getVariante()!=null){
-			report.addParameter("variante", rilievo.getVariante());
-		}else {
-			report.addParameter("variante", "");
-		}
-		
-		if(rilievo.getMateriale()!=null) {
-			report.addParameter("materiale", rilievo.getMateriale());
-		}else {
-			report.addParameter("materiale", "");	
-		}
-					
-		if(rilievo.getFornitore()!=null) {
-			report.addParameter("fornitore", rilievo.getFornitore());	
-		}else {
-			report.addParameter("fornitore", "");
-		}
-		
-		if(rilievo.getApparecchio()!=null) {
-			report.addParameter("apparecchio", rilievo.getApparecchio());	
-		}else {
-			report.addParameter("apparecchio", "");
-		}
-		
-		if(lista_impronte.size()>0) {
-			report.addParameter("numero_impronte", lista_impronte.size());
-		}else {
-			report.addParameter("numero_impronte", "");
-		}
-		
-		if(lista_impronte.size()>0) {
-			report.addParameter("numero_pezzi", lista_impronte.get(0).getNumero_pezzi());
-		}else {
-			if(lista_particolari.size()>0) {
-				report.addParameter("numero_pezzi", lista_particolari.get(0).getNumero_pezzi());
-			}else {
-				report.addParameter("numero_pezzi", "");
-			}
-		}
-		
-		if(lista_impronte.size()>0) {
-			report.addParameter("numero_pezzi_totale", lista_impronte.get(0).getNumero_pezzi()*lista_impronte.size());
-		}else {
-			if(lista_particolari.size()>0) {
-				report.addParameter("numero_pezzi_totale", lista_particolari.get(0).getNumero_pezzi());
-			}else {
-				report.addParameter("numero_pezzi_totale", "");
-			}				
-		}
-		if(rilievo.getNote()!=null) {
-			report.addParameter("note_rilievo", rilievo.getNote());
-		}else {
-			report.addParameter("note_rilievo", "");
-		}
-		if(rilievo.getTipo_rilievo()!=null) {
-			report.addParameter("tipo_rilievo", rilievo.getTipo_rilievo().getDescrizione());
-		}else {
-			report.addParameter("tipo_rilievo", "");
-		}
-		if(rilievo.getData_consegna()!=null) {
-			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
-			String strDate = formatter.format(rilievo.getData_consegna());  
-			report.addParameter("data_verifica", strDate);
-		}else {
-			report.addParameter("data_verifica", "");	
-		}
-		
-		if(rilievo.getUtente()!=null) {
-			report.addParameter("operatore", rilievo.getUtente().getNominativo());
-		}else {
-			report.addParameter("operatore", "");
-		}
-		
-		File firma = new File(Costanti.PATH_FOLDER + "FileFirme\\" + rilievo.getUtente().getFile_firma());
-		
-		if(firma.exists()) {
-			report.addParameter("firma",firma);			
-		}else {
-			report.addParameter("firma","");
-		}
-		
-		File imageCenter = null;
-		if(rilievo.getImmagine_frontespizio()!= null && !rilievo.getImmagine_frontespizio().equals("")) {
-			imageCenter = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\Immagini\\"+rilievo.getId()+"\\"+rilievo.getImmagine_frontespizio());
-		}
-		if(imageCenter!=null) {
-			report.addParameter("immagine_frontespizio",imageCenter);
-		
-		}else {
-			report.addParameter("immagine_frontespizio","");
-		}
+//		if(imageHeader!=null) {
+//			report.addParameter("logo",imageHeader);
+//		}
+//		
+//				
+//		if(rilievo.getId_cliente_util()!=0) {
+//			if(rilievo.getId_sede_util()!=0) {
+//				report.addParameter("cliente", GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, rilievo.getId_sede_util(), rilievo.getId_cliente_util()).getDescrizione());	
+//			}else {
+//				report.addParameter("cliente", GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(rilievo.getId_cliente_util())).getNome());
+//			}
+//			
+//		}else {
+//			report.addParameter("cliente", "");
+//		}
+//		
+//		report.addParameter("numero_scheda", "SRD "+ultima_scheda);
+//		
+//		if(rilievo.getDenominazione()!=null) {
+//			report.addParameter("denominazione", rilievo.getDenominazione());	
+//		}else {
+//			report.addParameter("denominazione", "");
+//		}
+//					
+//		if(rilievo.getDisegno()!=null) {
+//			report.addParameter("disegno", rilievo.getDisegno());	
+//		}else {
+//			report.addParameter("disegno", "");
+//		}
+//		
+//		if(rilievo.getVariante()!=null){
+//			report.addParameter("variante", rilievo.getVariante());
+//		}else {
+//			report.addParameter("variante", "");
+//		}
+//		
+//		if(rilievo.getMateriale()!=null) {
+//			report.addParameter("materiale", rilievo.getMateriale());
+//		}else {
+//			report.addParameter("materiale", "");	
+//		}
+//					
+//		if(rilievo.getFornitore()!=null) {
+//			report.addParameter("fornitore", rilievo.getFornitore());	
+//		}else {
+//			report.addParameter("fornitore", "");
+//		}
+//		
+//		if(rilievo.getApparecchio()!=null) {
+//			report.addParameter("apparecchio", rilievo.getApparecchio());	
+//		}else {
+//			report.addParameter("apparecchio", "");
+//		}
+//		
+//		if(lista_impronte.size()>0) {
+//			report.addParameter("numero_impronte", lista_impronte.size());
+//		}else {
+//			report.addParameter("numero_impronte", "");
+//		}
+//		
+//		if(lista_impronte.size()>0) {
+//			report.addParameter("numero_pezzi", lista_impronte.get(0).getNumero_pezzi());
+//		}else {
+//			if(lista_particolari.size()>0) {
+//				report.addParameter("numero_pezzi", lista_particolari.get(0).getNumero_pezzi());
+//			}else {
+//				report.addParameter("numero_pezzi", "");
+//			}
+//		}
+//		
+//		if(lista_impronte.size()>0) {
+//			report.addParameter("numero_pezzi_totale", lista_impronte.get(0).getNumero_pezzi()*lista_impronte.size());
+//		}else {
+//			if(lista_particolari.size()>0) {
+//				report.addParameter("numero_pezzi_totale", lista_particolari.get(0).getNumero_pezzi());
+//			}else {
+//				report.addParameter("numero_pezzi_totale", "");
+//			}				
+//		}
+//		if(rilievo.getNote()!=null) {
+//			report.addParameter("note_rilievo", rilievo.getNote());
+//		}else {
+//			report.addParameter("note_rilievo", "");
+//		}
+//		if(rilievo.getTipo_rilievo()!=null) {
+//			report.addParameter("tipo_rilievo", rilievo.getTipo_rilievo().getDescrizione());
+//		}else {
+//			report.addParameter("tipo_rilievo", "");
+//		}
+//		if(rilievo.getData_consegna()!=null) {
+//			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
+//			String strDate = formatter.format(rilievo.getData_consegna());  
+//			report.addParameter("data_verifica", strDate);
+//		}else {
+//			report.addParameter("data_verifica", "");	
+//		}
+//		
+//		if(rilievo.getUtente()!=null) {
+//			report.addParameter("operatore", rilievo.getUtente().getNominativo());
+//		}else {
+//			report.addParameter("operatore", "");
+//		}
+//		
+//		report.addParameter("responsabile","Terenzio Fantauzzi");
+//		
+//		File firma = new File(Costanti.PATH_FOLDER + "FileFirme\\" + rilievo.getUtente().getFile_firma());
+//		
+//		if(firma.exists()) {
+//			report.addParameter("firma",firma);			
+//		}else {
+//			report.addParameter("firma","");
+//		}
+//		
+//		File imageCenter = null;
+//		if(rilievo.getImmagine_frontespizio()!= null && !rilievo.getImmagine_frontespizio().equals("")) {
+//			imageCenter = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\Immagini\\"+rilievo.getId()+"\\"+rilievo.getImmagine_frontespizio());
+//		}
+//		if(imageCenter!=null) {
+//			report.addParameter("immagine_frontespizio",imageCenter);
+//		
+//		}else {
+//			report.addParameter("immagine_frontespizio","");
+//		}
 		
 		if(rilievo.getTipo_rilievo().getId()!=3) {
 		int indice_particolare = 1;
@@ -275,8 +277,8 @@ public class CreateTabellaRilievoPDF {
 				);
 		}
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
-		JasperPrint jasperPrint1 = report.toJasperPrint();
-		jasperPrintList.add(jasperPrint1);
+		//JasperPrint jasperPrint1 = report.toJasperPrint();
+		//jasperPrintList.add(jasperPrint1);
 		if(rilievo.getTipo_rilievo().getId()!=3) {
 			JasperPrint jasperPrint2 = report_table.toJasperPrint();
 			jasperPrintList.add(jasperPrint2);

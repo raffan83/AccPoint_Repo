@@ -332,7 +332,7 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 					$('#day').val(day);
 					$('#id_veicolo').val(id_veicolo);
 					
-					initializeTimepicker();
+					initializeTimepicker("08:00", "17:00");
 				});
 				
 

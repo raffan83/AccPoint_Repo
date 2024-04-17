@@ -11029,8 +11029,8 @@ function nuovoVerStrumento(){
 	
 	 if($("#nuovoVerStrumentoForm").valid()){
 		   $('#label').hide();
-	   pleaseWaitDiv = $('#pleaseWaitDialog');
-		  pleaseWaitDiv.modal();
+	  // pleaseWaitDiv = $('#pleaseWaitDialog');
+	//	  pleaseWaitDiv.modal();
 	   
 			  var form = $('#nuovoVerStrumentoForm')[0]; 
 			  var formData = new FormData(form);
@@ -11042,7 +11042,7 @@ function nuovoVerStrumento(){
 	      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
 	      	  processData: false, // NEEDED, DON'T OMIT THIS
 	      	  success: function( data, textStatus) {
-	      		pleaseWaitDiv.modal('hide');
+	      	//	pleaseWaitDiv.modal('hide');
 	      		  	      		  
 	      		  if(data.success)
 	      		  { 
@@ -11060,7 +11060,7 @@ function nuovoVerStrumento(){
 	         				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
 	         				  $('.modal-backdrop').hide();
 	         				  
-	         				 $('#pleaseWaitDialog').hide();
+	         			//	 pleaseWaitDiv.hide();
 	        		//	});pleaseWaitDiv.modal('hide');
 	      		
 	      		  }else{
@@ -11074,7 +11074,7 @@ function nuovoVerStrumento(){
 	      	  },
 
 	      	  error: function(jqXHR, textStatus, errorThrown){
-	      		  pleaseWaitDiv.modal('hide');
+	      	//	  pleaseWaitDiv.modal('hide');
 
 	      		  $('#myModalErrorContent').html(textStatus);
 				  	$('#myModalError').removeClass();
@@ -11095,8 +11095,8 @@ function modificaVerStrumento(){
 	
 	 if($("#modificaVerStrumentoForm").valid()){
 		   $('#label').hide();
-	   pleaseWaitDiv = $('#pleaseWaitDialog');
-		  pleaseWaitDiv.modal();
+	  // pleaseWaitDiv = $('#pleaseWaitDialog');
+		//  pleaseWaitDiv.modal();
 	   
 			  var form = $('#modificaVerStrumentoForm')[0]; 
 			  var formData = new FormData(form);
@@ -11108,7 +11108,7 @@ function modificaVerStrumento(){
 	      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
 	      	  processData: false, // NEEDED, DON'T OMIT THIS
 	      	  success: function( data, textStatus) {
-	      		pleaseWaitDiv.modal('hide');
+	      		//pleaseWaitDiv.modal('hide');
 	      		  	      		  
 	      		  if(data.success)
 	      		  { 
@@ -11125,7 +11125,7 @@ function modificaVerStrumento(){
 	         				 dataString = "action=lista&id_cliente="+$($('#cliente')).val()+"&id_sede="+$('#sede').val();
 	         				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
 	         				  $('.modal-backdrop').hide();
-	         				 $('#pleaseWaitDialog').hide();
+	         				 //$('#pleaseWaitDialog').hide();
 	        			//});
 	      		
 	      		  }else{
@@ -11139,7 +11139,7 @@ function modificaVerStrumento(){
 	      	  },
 
 	      	  error: function(jqXHR, textStatus, errorThrown){
-	      		  pleaseWaitDiv.modal('hide');
+	      	//	  pleaseWaitDiv.modal('hide');
 
 	      		  $('#myModalErrorContent').html(textStatus);
 				  	$('#myModalError').removeClass();

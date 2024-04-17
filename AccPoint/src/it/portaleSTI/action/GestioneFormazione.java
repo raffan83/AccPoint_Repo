@@ -1354,6 +1354,12 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				 FileOutputStream fos = null;
 			     ZipOutputStream zipOut = null;
 			     FileInputStream fis = null;
+			     
+			     File zipFile = new File(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+"zipfile.zip");
+			     if(zipFile.exists()) {
+			    	 zipFile.delete();
+			     }
+			     
 			     fos = new FileOutputStream(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+"zipfile.zip");
 		         zipOut = new ZipOutputStream(new BufferedOutputStream(fos));
 		            

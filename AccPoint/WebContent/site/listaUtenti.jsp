@@ -321,7 +321,7 @@
          <div class="form-group">
         <label for="cliente" class="col-sm-2 control-label">Cliente:</label>
         <div class="col-sm-10">
-                     
+                      
 			
                       
                       <select id="cliente" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" disabled name="cliente"  >
@@ -557,14 +557,22 @@
          <div class="form-group">
         <label for="modcliente" class="col-sm-2 control-label">Cliente:</label>
         <div class="col-sm-10">
+                      <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
+              
+                      <c:forEach items="${lista_clienti}" var="cliente">
                      
+                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
 			
-                      
-                      <select id="modcliente" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" name="modcliente" disabled  >
+                      <input class="form-control" data-placeholder="Seleziona Cliente..." id="modcliente" name="modcliente" style="width:100%" >
+                   <!--    <select id="modcliente" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" name="modcliente" disabled  >
 	                    <option value="">Seleziona un Cliente</option>
 	                    
 	
-	                  </select>
+	                  </select> -->
                       
                       
     </div>
@@ -796,7 +804,17 @@
 
   
     $(document).ready(function() {
-     	$(".select2").select2({"width":"100%"});
+     	//$(".select2").select2({"width":"100%"});
+     	
+     	$('#modsede').select2({"width":"100%"});
+     	$('#company').select2({"width":"100%"});
+    	$('#modcompany').select2({"width":"100%"});
+     	$('#sede').select2({"width":"100%"});
+     	$('#area_interesse').select2({"width":"100%"});
+     	$('#modarea_interesse').select2({"width":"100%"});
+     	
+     	initSelect2("#cliente");
+     	
     	$("#clienteblock").hide();
     	$("#modclienteblock").hide();
     	$("#modcurriculumdiv").show();
@@ -1127,6 +1145,56 @@
 			}
  		
   		});
+	    
+	    
+	    
+	    
+	    function mockData() {
+	    	var options =  $('#cliente_appoggio option').clone();
+	    	  return _.map(options, function(i) {		  
+	    	    return {
+	    	      id: i.value,
+	    	      text: i.text,
+	    	    };
+	    	  });
+	    	}
+	    	
+
+
+	    function initSelect2(id_input) {
+	   	 
+	
+
+	    	$(id_input).select2({
+	    	    data: mockData(),
+	    	    placeholder: 'search',
+	    	    multiple: false,
+	    	    // query with pagination
+	     	    query: function(q) {
+	    	      var pageSize,
+	    	        results,
+	    	        that = this;
+	    	      pageSize = 20; // or whatever pagesize
+	    	      results = [];
+	    	      if (q.term && q.term !== '') {
+	    	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+	    	        results = _.filter( function(e) {
+	    	        	
+	    	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+	    	        });
+	    	      } else if (q.term === '') {
+	    	        results = that.data;
+	    	      }
+	    	      q.callback({
+	    	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+	    	        more: results.length >= q.page * pageSize,
+	    	      });
+	    	    }, 
+	    	  });
+	    	
+	    	
+	    }
+	    
 
   </script>
 </jsp:attribute> 

@@ -99,12 +99,12 @@
  
  function sommaDati(){
 	 
-	 var table = $('#tabConsuntivo').DataTable();
+	 var tabella = $('#tabConsuntivo').DataTable();
 	 
 
 	 var tot_ore = 0;
 	 
-	 var data = table.rows({ search: 'applied' }).data();
+	 var data = tabella.rows({ search: 'applied' }).data();
 	 
 	 for(var i = 0; i<data.length; i++){
 		 
@@ -156,7 +156,7 @@
  	
  	 }
 
-     table = $('#tabConsuntivo').DataTable({
+     tabella = $('#tabConsuntivo').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -210,14 +210,14 @@
 		               
 		    });
 		
-		table.buttons().container().appendTo( '#tabConsuntivo_wrapper .col-sm-6:eq(1)');
+		tabella.buttons().container().appendTo( '#tabConsuntivo_wrapper .col-sm-6:eq(1)');
 	 	    $('.inputsearchtable').on('click', function(e){
 	 	       e.stopPropagation();    
 	 	    });
 
-	 	     table.columns().eq( 0 ).each( function ( colIdx ) {
-	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-	      table
+	 	     tabella.columns().eq( 0 ).each( function ( colIdx ) {
+	  $( 'input', tabella.column( colIdx ).header() ).on( 'keyup', function () {
+	      tabella
 	          .column( colIdx )
 	          .search( this.value )
 	          .draw();
@@ -227,7 +227,7 @@
 	
 	
 	
-		table.columns.adjust().draw();
+		tabella.columns.adjust().draw();
 		
 
 	$('#tabConsuntivo').on( 'page.dt', function () {

@@ -191,7 +191,7 @@ ${utl:escapeJS(pianificazione.note) }
  	
  	 }
 
-     table = $('#tabConsuntivo').DataTable({
+     tab = $('#tabConsuntivo').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -245,14 +245,14 @@ ${utl:escapeJS(pianificazione.note) }
 		               
 		    });
 		
-		table.buttons().container().appendTo( '#tabConsuntivo_wrapper .col-sm-6:eq(1)');
+		tab.buttons().container().appendTo( '#tabConsuntivo_wrapper .col-sm-6:eq(1)');
 	 	    $('.inputsearchtable').on('click', function(e){
 	 	       e.stopPropagation();    
 	 	    });
 
-	 	     table.columns().eq( 0 ).each( function ( colIdx ) {
-	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-	      table
+	 	     tab.columns().eq( 0 ).each( function ( colIdx ) {
+	  $( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
+	      tab
 	          .column( colIdx )
 	          .search( this.value )
 	          .draw();
@@ -262,7 +262,7 @@ ${utl:escapeJS(pianificazione.note) }
 	
 	
 	
-		table.columns.adjust().draw();
+		tab.columns.adjust().draw();
 		
 
 	$('#tabConsuntivo').on( 'page.dt', function () {

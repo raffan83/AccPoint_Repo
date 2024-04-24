@@ -2625,11 +2625,13 @@ function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
     			  	  
     			  	
     			  	  $(idclienteitem).prop("disabled", false);  			  	 
-    			  	  $(idclienteitem).html(opt);  
+    			  	 // $(idclienteitem).html(opt);  
+    			  	 $("#cliente_appoggio").html(opt);
     			  	 if(tipo=="mod"){
      			  		$(idclienteitem).val(utente.idCliente);
      			  	  }
-    			   			  	    			  	      			  	
+    			   			  	    			  	      
+    			  	 initSelect2(idclienteitem);
     			  	  
     			  	optionsSedi = JSON.parse(data.sedi);
     			  	var optsedi=[];

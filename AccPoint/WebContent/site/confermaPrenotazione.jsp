@@ -95,7 +95,7 @@
     <span class="label label-success">PRENOTATO</span>
   </c:when>
   <c:otherwise>
-    <span class="label label-info">-</span>
+    <span class="label label-info">RIENTRATO</span>
   </c:otherwise>
 </c:choose> 
 </td>

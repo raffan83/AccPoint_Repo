@@ -11,6 +11,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
@@ -87,7 +89,12 @@ public class GestioneParcoAuto extends HttpServlet {
 			Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create(); 		
 			ArrayList<PaaPrenotazioneDTO> lista_prenotazioni = GestioneParcoAutoBO.getListaPrenotazioni(session);
 				
-
+			Collections.sort(lista_prenotazioni, new Comparator<PaaPrenotazioneDTO>() {
+			    @Override
+			    public int compare(PaaPrenotazioneDTO p1, PaaPrenotazioneDTO p2) {
+			        return Integer.compare(p1.getVeicolo().getId(), p2.getVeicolo().getId());
+			    }
+			});
 			
 			PrintWriter out = response.getWriter();
 			myObj.addProperty("success", true);
@@ -201,6 +208,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				String portata_max_veicolo = ret.get("portata_max");
 				//String immagine_veicolo = ret.get("immagine_veicolo");
 				String note = ret.get("note");
+				String dispositivo_pedaggio = ret.get("dispositivo_pedaggio");
 
 				PaaVeicoloDTO veicolo = new PaaVeicoloDTO();
 				
@@ -217,7 +225,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				}
 				veicolo.setUser_update(utente);
 				veicolo.setData_update(new Date());
-				
+				veicolo.setDispositivo_pedaggio(dispositivo_pedaggio);
 				
 				session.save(veicolo);
 				
@@ -291,7 +299,8 @@ public class GestioneParcoAuto extends HttpServlet {
 				String portata_max_veicolo = ret.get("portata_max_mod");
 				//String immagine_veicolo = ret.get("immagine_veicolo");
 				String note = ret.get("note_mod");
-
+				String dispositivo_pedaggio = ret.get("dispositivo_pedaggio_mod");
+				
 				PaaVeicoloDTO veicolo = GestioneParcoAutoBO.getVeicoloFromId(Integer.parseInt(id_veicolo), session);			
 				
 				
@@ -306,6 +315,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				}
 				veicolo.setUser_update(utente);
 				veicolo.setData_update(new Date());
+				veicolo.setDispositivo_pedaggio(dispositivo_pedaggio);
 				
 			
 				session.update(veicolo);
@@ -568,6 +578,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				String id_prenotazione = ret.get("id_prenotazione");
 				String ora_inizio = ret.get("ora_inizio");
 				String ora_fine = ret.get("ora_fine");
+				String stato = ret.get("stato");
 
 				
 				PaaPrenotazioneDTO prenotazione = null;
@@ -578,12 +589,20 @@ public class GestioneParcoAuto extends HttpServlet {
 					prenotazione.setStato_prenotazione(1);
 				}
 				
+				if(stato!=null && !stato.equals("")) {
+					prenotazione.setStato_prenotazione(Integer.parseInt(stato));
+				}
+				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 				
 				prenotazione.setVeicolo(GestioneParcoAutoBO.getVeicoloFromId(Integer.parseInt(id_veicolo), session));
-				prenotazione.setUtente(GestioneUtenteBO.getUtenteById(id_utente, session));
 				
+				if(id_utente!=null && !id_utente.equals("")) {
+					prenotazione.setUtente(GestioneUtenteBO.getUtenteById(id_utente, session));	
+				}else {
+					prenotazione.setManutenzione(1);
+				}
 				
 				
 				prenotazione.setNote(note);

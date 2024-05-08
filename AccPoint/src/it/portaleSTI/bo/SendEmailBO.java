@@ -433,16 +433,24 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 		  msg.append("<html><body>");
 		  if(certificato.getNomeRapporto()!=null) {
 			  msg.append("<html>Gentile Cliente, <br /> " + 
-			  		"Inviamo in allegato il Rapporto e l'Attestato di verificazione periodica dei Vs. strumenti di misura. <br /> " + 
-			  		"Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata, unitamente al libretto metrologico, per tutto il periodo di validit&agrave; della verificazione (tre anni dalla data di svolgimento), ed esibita agli Enti incaricati in occasione delle attivit&agrave; di vigilanza e controllo. <br /> " + 		
-			  		"<br />Restiamo a disposizione per qualsiasi chiarimento in merito.<br>" + 
-			  		"Distinti saluti." + 
-			  		"  <br /> <br />"
-			  		+ "<em><b>S.T.I. Sviluppo Tecnologie Industriali Srl</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br><br>" + 
-			  		"<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> "
-			  		+ "Mail: </em>commerciale@stisrl.com<br>" + 
-			  		"<em>Web: </em>http://www.stisrl.com<br>" + 
-			  		"<br/></html>");
+				  		"Inviamo in allegato il Rapporto e l'Attestato di verificazione periodica dei Vs. strumenti di misura. <br /> " + 
+				  		"Si ricorda che tale documentazione deve essere conservata, unitamente al libretto metrologico, per tutto il periodo di utilizzo degli strumenti di misura, ed esibita agli Enti incaricati in occasione delle attivit&agrave; di vigilanza e controllo. <br /> " +
+				  		
+				  		"Con l'occasione si comunica che, in caso di smarrimento del libretto originale, lo scrivente Organismo potr&agrave; fornire una copia (duplicato) dello stesso solo a seguito del rilascio da parte del Titolare dello strumento di un'apposita dichiarazione di smarrimento firmata ed autenticata ai sensi dell'art. 21 del DPR 445/2000 da un Notaio o dall'Ufficio anagrafe del comune di competenza e sottoposta all'imposta di bollo dovuta per l'autentica della firma."+
+				  		"<br>Si riportano infine gli ulteriori obblighi per i titolari di strumenti di misura con funzione di misura legale:"+
+				  		"<ul><li>sottoporre gli strumenti a verificazione periodica secondo le periodicit&agrave; definite dal DM 93/17 o a seguito di riparazione dello strumento se comportante la rimozione di sigilli di protezione anche di tipo elettronico. Il titolare dello strumento di misura richiede una nuova verificazione periodica almeno cinque giorni lavorativi prima della scadenza della precedente o entro dieci giorni lavorativi dall'avvenuta riparazione dei propri strumenti se tale riparazione ha comportato la rimozione di etichette o di ogni altro sigillo anche di tipo elettronico;</li>"+
+				  		"<li>comunicare entro 30 giorni alla Camera di commercio della circoscrizione in cui lo strumento &egrave; in servizio, la data di inizio dell'utilizzo degli strumenti e quella di fine dell'utilizzo;</li>"+
+				  		"<li>mantenere l'integrit&agrave; del contrassegno apposto in sede di verificazione periodica, nonch&eacute; di ogni altro marchio, sigillo, anche di tipo elettronico, o elemento di protezione;</li>"+
+				  		"<li>curare l'integrit&agrave; dei sigilli provvisori applicati dal riparatore;</li>"+
+				  		"<li>curare il corretto funzionamento degli strumenti e non utilizzarli quando sono palesemente difettosi o inaffidabili dal punto di vista metrologico.</li></ul>"+
+				  		"Restiamo a disposizione per qualsiasi chiarimento in merito.<br>" + 
+				  		"Distinti saluti." + 
+				  		"  <br /> <br />"
+				  		+ "<em><b>S.T.I. Sviluppo Tecnologie Industriali Srl</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br>" + 
+				  		"<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> "
+				  		+ "Mail: </em>commerciale@stisrl.com<br>" + 
+				  		"<em>Web: </em>http://www.stisrl.com<br>" + 
+				  		"<br/></html>");
 			//  msg.append("<img width='350' src=cid:").append(message.embed(img)).append(">");
 			  msg.append("<a href='www.stisrl.com'><img width='350' src=\"cid:image1\"></a>");
 			  msg.append("<a href='www.stisrl.com/servizi/piattaforma-calver'> <img width='350' src=\"cid:image2\"></a>");
@@ -454,11 +462,19 @@ public static void sendPECCertificatoVerificazione(VerCertificatoDTO certificato
 		  }else {
 			  msg.append("<html>Gentile Cliente, <br /> " + 
 				  		"Inviamo in allegato l'Attestato di verificazione periodica dei Vs. strumenti di misura. <br /> " + 
-				  		"Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata, unitamente al libretto metrologico, per tutto il periodo di validit&agrave; della verificazione (tre anni dalla data di svolgimento), ed esibita agli Enti incaricati in occasione delle attivit&agrave; di vigilanza e controllo. <br /> " + 		
-				  		"<br />Restiamo a disposizione per qualsiasi chiarimento in merito.<br>" + 
+				  		"Si ricorda che tale documentazione deve essere conservata, unitamente al libretto metrologico, per tutto il periodo di utilizzo degli strumenti di misura, ed esibita agli Enti incaricati in occasione delle attivit&agrave; di vigilanza e controllo. <br /> " +
+				  		
+				  		"Con l'occasione si comunica che, in caso di smarrimento del libretto originale, lo scrivente Organismo potr&agrave; fornire una copia (duplicato) dello stesso solo a seguito del rilascio da parte del Titolare dello strumento di un'apposita dichiarazione di smarrimento firmata ed autenticata ai sensi dell'art. 21 del DPR 445/2000 da un Notaio o dall'Ufficio anagrafe del comune di competenza e sottoposta all'imposta di bollo dovuta per l'autentica della firma."+
+				  		"<br>Si riportano infine gli ulteriori obblighi per i titolari di strumenti di misura con funzione di misura legale:"+
+				  		"<ul><li>sottoporre gli strumenti a verificazione periodica secondo le periodicit&agrave; definite dal DM 93/17 o a seguito di riparazione dello strumento se comportante la rimozione di sigilli di protezione anche di tipo elettronico. Il titolare dello strumento di misura richiede una nuova verificazione periodica almeno cinque giorni lavorativi prima della scadenza della precedente o entro dieci giorni lavorativi dall'avvenuta riparazione dei propri strumenti se tale riparazione ha comportato la rimozione di etichette o di ogni altro sigillo anche di tipo elettronico;</li>"+
+				  		"<li>comunicare entro 30 giorni alla Camera di commercio della circoscrizione in cui lo strumento &egrave; in servizio, la data di inizio dell'utilizzo degli strumenti e quella di fine dell'utilizzo;</li>"+
+				  		"<li>mantenere l'integrit&agrave; del contrassegno apposto in sede di verificazione periodica, nonch&eacute; di ogni altro marchio, sigillo, anche di tipo elettronico, o elemento di protezione;</li>"+
+				  		"<li>curare l'integrit&agrave; dei sigilli provvisori applicati dal riparatore;</li>"+
+				  		"<li>curare il corretto funzionamento degli strumenti e non utilizzarli quando sono palesemente difettosi o inaffidabili dal punto di vista metrologico.</li></ul>"+
+				  		"Restiamo a disposizione per qualsiasi chiarimento in merito.<br>" + 
 				  		"Distinti saluti." + 
 				  		"  <br /> <br />"
-				  		+ "<em><b>S.T.I. Sviluppo Tecnologie Industriali Srl</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br><br>" + 
+				  		+ "<em><b>S.T.I. Sviluppo Tecnologie Industriali Srl</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br>" + 
 				  		"<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> "
 				  		+ "Mail: </em>commerciale@stisrl.com<br>" + 
 				  		"<em>Web: </em>http://www.stisrl.com<br>" + 

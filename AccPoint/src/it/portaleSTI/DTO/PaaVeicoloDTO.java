@@ -15,6 +15,8 @@ public class PaaVeicoloDTO {
 	private String note;
 	private UtenteDTO user_update;
 	private Date data_update;
+	private String dispositivo_pedaggio;
+	
 	public int getId() {
 		return id;
 	}
@@ -80,6 +82,12 @@ public class PaaVeicoloDTO {
 	}
 	public void setData_update(Date data_update) {
 		this.data_update = data_update;
+	}
+	public String getDispositivo_pedaggio() {
+		return dispositivo_pedaggio;
+	}
+	public void setDispositivo_pedaggio(String dispositivo_pedaggio) {
+		this.dispositivo_pedaggio = dispositivo_pedaggio;
 	}
 	
 	

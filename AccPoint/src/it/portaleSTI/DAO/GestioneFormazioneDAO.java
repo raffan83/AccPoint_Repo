@@ -1156,9 +1156,11 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		String query = "";
 		
 		if(id_gruppo!=0) {
-			query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16)) AND a.id IN (SELECT userid FROM mdl_groups_members WHERE groupid = ?)";
+			//query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16)) AND a.id IN (SELECT userid FROM mdl_groups_members WHERE groupid = ?)";
+			query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 45)) AND a.id IN (SELECT userid FROM mdl_groups_members WHERE groupid = ?)";
 		}else {
-			query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16))";
+			//query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16))";
+			query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 45))";
 		}
 		
 

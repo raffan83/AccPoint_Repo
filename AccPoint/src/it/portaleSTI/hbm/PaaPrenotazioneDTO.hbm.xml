@@ -37,5 +37,9 @@
          <property name="cella_fine" type="int">
             <column name="cella_fine" />
         </property>
+        
+           <property name="manutenzione" type="int">
+            <column name="manutenzione" />
+        </property>
     </class>
 </hibernate-mapping>

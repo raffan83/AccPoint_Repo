@@ -14,6 +14,7 @@ public class PaaPrenotazioneDTO {
 	private int stato_prenotazione;
 	private int cella_inizio;
 	private int cella_fine;
+	private int manutenzione;
 	
 	public int getId() {
 		return id;
@@ -74,6 +75,12 @@ public class PaaPrenotazioneDTO {
 	}
 	public void setCella_fine(int cella_fine) {
 		this.cella_fine = cella_fine;
+	}
+	public int getManutenzione() {
+		return manutenzione;
+	}
+	public void setManutenzione(int manutenzione) {
+		this.manutenzione = manutenzione;
 	}
 	
 	

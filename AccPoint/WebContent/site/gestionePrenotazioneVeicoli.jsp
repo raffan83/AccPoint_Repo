@@ -95,9 +95,10 @@
             <br>
             <div class="row">
             <div class="col-xs-12">
-           <%--  <jsp:include page="gestionePianificazioneTabella.jsp" ></jsp:include> --%>
-            <jsp:include page="gestionePrenotazioneVeicoliTabella.jsp" ></jsp:include>
-            
+          
+            <jsp:include page="gestionePrenotazioneVeicoliTabella.jsp" ></jsp:include> 
+             <%--  <jsp:include page="gestionePrenotazioneiTabellaTest.jsp" ></jsp:include> --%>
+             
             </div>
             
             </div>
@@ -136,13 +137,34 @@
       </div>
        <div class="modal-body"> 
              <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-9">
         <label>Utente</label>
           <select class="form-control select2" id="utente" name="utente" style="width:100%" data-placeholder="Seleziona Utente..." required>
        <option value=""></option>
+
        <c:forEach items="${lista_utenti }" var="utente">
        <option value="${utente.id }">${utente.nominativo }</option>
        </c:forEach>
+       </select>
+        </div>
+		 <div class="col-xs-3">
+		   <label>Manutenzione</label><br>
+          <input class="form-control"  type="checkbox" id="manutenzione" name="manutenzione" style="width:100%">
+		 
+		 </div>
+        </div><br>
+        
+        
+            <div class="row" id="content_stato" style="display:none">
+        <div class="col-xs-12">
+        <label>Stato</label>
+          <select class="form-control select2" id="stato" name="stato" style="width:100%" data-placeholder="Seleziona Stato..." >
+       <option value=""></option>
+     
+       <option value="1">IN PRENOTAZIONE</option>
+       <option value="2">PRENOTATO</option>
+       <option value="3">RIENTRATO</option>
+
        </select>
         </div>
 
@@ -263,6 +285,7 @@
 <jsp:attribute name="extra_css">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css">
 <style>
 
 
@@ -277,6 +300,47 @@
 .table th.festivita {
   background-color: #FA8989 !important;
 }
+
+
+/*  .tooltip {
+    position: fixed;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  
+
+
+} */
+
+
+.custom-menu {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: sans-serif;     
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    
+}
+
+.custom-menu li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.custom-menu li:hover {
+    background-color: #DEF;
+}
+
+
   </style>
 </jsp:attribute>
 
@@ -291,10 +355,27 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
+	
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"></script> 
 
 <script type="text/javascript">  
 
+$('input:checkbox').on('ifToggled', function() {
+	
+	$('#manutenzione').on('ifChecked', function(event){
+		
+		$('#utente').attr("disabled", true);
+	});
+	
+	$('#manutenzione').on('ifUnchecked', function(event) {
+		
+		$('#utente').attr("disabled", false);
+	
+	});
+	
 
+	
+})
 
 function subTrimestre(data_inizio, anno){
 	
@@ -453,6 +534,9 @@ $('#docente').on('change', function() {
 	
   });
 
+
+var isPaste = false;
+
 function nuovaPrenotazione(){
 	
 	
@@ -461,10 +545,16 @@ function nuovaPrenotazione(){
 
 
     var sovrapposizione = orariDisabilitati.some(function(prenotazione) {
+    	console.log(prenotazione.id)
     	
-    	if($('#id_prenotazione').val()!=prenotazione.id && prenotazione.id_veicolo == $('#id_veicolo').val()){
+    	if(($('#id_prenotazione').val()!="" && $('#id_prenotazione').val()!=prenotazione.id && prenotazione.id_veicolo == $('#id_veicolo').val())){
     		 var inizioPrenotazione = moment(prenotazione.inizio, "DD/MM/YYYY HH:mm");
     	        var finePrenotazione = moment(prenotazione.fine, "DD/MM/YYYY HH:mm");
+    	        
+    	        console.log(inizioPrenotazione)
+    	        console.log(inizio)
+    	        console.log(finePrenotazione)
+    	        console.log(fine)
 
     	      /*   return (inizio.isBetween(inizioPrenotazione, finePrenotazione, undefined, '[)') ||
     	                fine.isBetween(inizioPrenotazione, finePrenotazione, undefined, '(]') ||
@@ -505,6 +595,10 @@ function nuovaPrenotazione(){
 		$('#myModalError').modal('show');
 		
 	}else {
+		if($('#id_prenotazione').val()==0){
+			$('#id_prenotazione').val("")
+		}
+	
 		callAjaxForm('#formNuovaPrenotazione', 'gestioneParcoAuto.do?action=nuova_prenotazione', function(datab){
 			
 			
@@ -525,7 +619,7 @@ function nuovaPrenotazione(){
 				$('#visualizza_report').show();
 					$('#myModalError').modal('show');
 			}
-			
+			isPaste = false;
 		});
 		$(document.body).css('padding-right', '0px');
 	}
@@ -595,10 +689,10 @@ function eliminaPrenotazione(){
 }
 
 
-
+var zoom_level;
 $(document).ready(function($) { 
 
-	
+
     $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
 	 }); 
@@ -612,6 +706,10 @@ $(document).ready(function($) {
 	
 	$('.select2').select2()
 	 $.page_zoom();
+	
+	
+	
+	
 	$.page_zoom({
 		  selectors: {
 		    zoom_in: '.zoom_in',
@@ -620,18 +718,25 @@ $(document).ready(function($) {
 		  },
 	onZoomIn: function() {
 			    // Azioni da eseguire quando avviene lo zoom in
+			    
+			    zoom_level += 0.1;
 			    console.log('Zoom in eseguito');
 			    fillTable("${anno}",'${filtro_tipo_pianificazioni}');
+			   
 			  },
 			  onZoomOut: function() {
 			    // Azioni da eseguire quando avviene lo zoom out
+			     zoom_level -= 0.1;
 			    console.log('Zoom out eseguito');
 			    fillTable("${anno}",'${filtro_tipo_pianificazioni}');
+			   
 			  },
 			  onZoomReset: function() {
 			    // Azioni da eseguire quando viene eseguito il ripristino dello zoom
+			     zoom_level = 1;
 			    console.log('Zoom ripristinato');
 			    fillTable("${anno}",'${filtro_tipo_pianificazioni}');
+			    
 			  }
 		});
 	
@@ -654,9 +759,126 @@ $(document).ready(function($) {
 		
 		 $('#ora_inizio').val("");
 		 $('#ora_fine').val("");
-		  
-	   
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+
+		 
+			
 });
+
+
+$('#tabPrenotazione tbody td').on('contextmenu', 'div',  function(e) {
+	if($(this).hasClass("riquadro")){
+	    selectedDiv = $(this);
+	    e.preventDefault(); // Prevent default context menu
+	}
+
+	}); 
+
+var cellIndex;
+function initContextMenu(){
+	
+	$("#tabPrenotazione tbody td").bind("contextmenu", function (event) {
+		
+	     
+	     // Avoid the real one
+	     event.preventDefault();
+
+	     var cell = $("#"+event.currentTarget.id).offset();
+	     cellIndex = event.currentTarget.id
+
+	 	      var x  = cell.left -210;
+	 	var y  = cell.top - 210; 
+	     
+
+	     // Show contextmenu
+	     $(".custom-menu").finish().toggle(). 
+	     css({
+	         top: y + "px",
+	         left: x + "px"
+	     });
+	     
+	     
+	     //alert("X:"+(x-240) +"Y:"+ (y-280))
+	 });
+
+
+	 // If the document is clicked somewhere
+	 $(document).bind("mousedown", function (e) {
+	     
+	     // If the clicked element is not the menu
+	     if (!$(e.target).parents(".custom-menu").length > 0) {
+	         
+	         // Hide it
+	         $(".custom-menu").hide(100);
+	     }
+	 });
+
+
+	 // If the menu element is clicked
+	 $(".custom-menu li").click(function(e){
+	     
+
+		 
+	     // This is the triggered action name
+	     switch($(this).attr("data-action")) {
+	         
+	         // A case for each action. Your actions here
+	     case 'copy':
+             // Implement copy functionality
+              if (selectedDiv) {
+             	 
+             	 cellCopy = selectedDiv[0].id.split("_")[1];
+             	 
+             var divData = selectedDiv.text();
+             console.log('Copy:', divData);
+         } else {
+             console.log('No div selected to copy.');
+         }
+             break;
+         case 'paste':
+             
+         	if(cellCopy!=null){
+         		
+         		pastePrenotazione(cellIndex.split("_")[1], cellIndex.split("_")[0])
+         		
+         	}
+         	                	
+            
+             break;
+         case 'delete':
+             // Implement delete functionality
+             if (selectedDiv) {
+             	 cellCopy = selectedDiv[0].id.split("_")[1];
+             	 
+             	 $('#id_prenotazione').val(cellCopy)
+             	 $('#myModalYesOrNo').modal()
+          
+         } else {
+             console.log('No div selected to delete.');
+         }
+             break;
+	     }
+	   
+	     // Hide it AFTER the action was triggered
+	     $(".custom-menu").hide(100);
+	   });
+
+
+
+
+	  
+	
+}
+
+
+
 
 var orariDisabilitati = [];
   
@@ -669,8 +891,11 @@ $('#modalPrenotazione').on("hidden.bs.modal", function(){
 	$('#utente').val("");
 	$('#utente').change();
 	$('#btn_elimina').hide()
+	$('#manutenzione').iCheck("uncheck")
 	
-	
+	$('#stato').val("");
+	$('#stato').change();
+	$('#content_stato').hide()
 	$('#data_inizio').val("");
 	$('#data_fine').val("");
 	$('#ora_inizio').val("");

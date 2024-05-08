@@ -38,5 +38,9 @@
         <property name="data_update" type="java.util.Date">
             <column name="data_update" />
         </property>
+        
+         <property name="dispositivo_pedaggio" type="java.lang.String">
+            <column name="dispositivo_pedaggio" />
+        </property>
     </class>
 </hibernate-mapping>

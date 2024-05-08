@@ -7,20 +7,17 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<columnHeader>
-		<band height="61" splitType="Stretch">
-			<rectangle>
-				<reportElement x="0" y="0" width="551" height="61" uuid="8512c95e-e1d3-43e1-8225-4d29189ff6de"/>
-			</rectangle>
+	<pageHeader>
+		<band height="61">
 			<staticText>
-				<reportElement x="0" y="0" width="551" height="61" uuid="a9457410-7524-46e0-99f5-730b65a7d5d7"/>
+				<reportElement x="0" y="0" width="551" height="61" uuid="9315e70f-5180-45ee-a32e-dbc6198f783b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="20"/>
 				</textElement>
 				<text><![CDATA[SCHEDA CONSEGNA DPI]]></text>
 			</staticText>
 		</band>
-	</columnHeader>
+	</pageHeader>
 	<detail>
 		<band height="150" splitType="Stretch">
 			<staticText>
@@ -67,10 +64,10 @@
 			</staticText>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="90" splitType="Stretch">
+	<pageFooter>
+		<band height="90">
 			<staticText>
-				<reportElement x="0" y="9" width="551" height="81" uuid="8e2686fe-83ac-4866-93b4-fd323cf45b40"/>
+				<reportElement x="0" y="9" width="551" height="81" uuid="09810e75-c658-4aff-8cbf-7be8c403f05d"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -82,5 +79,5 @@
 ]]></text>
 			</staticText>
 		</band>
-	</columnFooter>
+	</pageFooter>
 </jasperReport>

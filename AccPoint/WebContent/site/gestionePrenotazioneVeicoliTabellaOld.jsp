@@ -108,16 +108,16 @@ int anno = (Integer) request.getSession().getAttribute("anno");
 
          <c:forEach var="day" begin="${start_date }" end="${end_date}" step="1">
 			<c:if test="${LocalDate.ofYearDay(anno, 1).isLeapYear() && day>366 }">
-			<td  id="${veicolo.id}_${day-366}" style="position:relative"></td> 
+			<td  id="${veicolo.id}_${day-366}" ></td> 
 			</c:if>
 			<c:if test="${!LocalDate.ofYearDay(anno, 1).isLeapYear() && day>365 }">
-			<td id="${veicolo.id}_${day-365}" style="position:relative"></td> 
+			<td id="${veicolo.id}_${day-365}" ></td> 
 			</c:if>
 			<c:if test="${LocalDate.ofYearDay(anno, 1).isLeapYear() && day<=366 }">
-			<td  id="${veicolo.id}_${day}" style="position:relative"></td> 
+			<td  id="${veicolo.id}_${day}" ></td> 
 			</c:if>
          	<c:if test="${!LocalDate.ofYearDay(anno, 1).isLeapYear() && day<=365 }">
-			<td  id="${veicolo.id}_${day}" style="position:relative"></td> 
+			<td  id="${veicolo.id}_${day}" ></td> 
 			</c:if>
          	<%-- <td id="${veicolo.id}_${day}" ondblclick="modalPrenotazione('${day}', '${commessa.ID_COMMESSA }')"></td> --%>
          	<%-- <td id="${veicolo.id}_${day}"></td> --%>
@@ -136,11 +136,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
     
    
 
-    <ul class='custom-menu'>
-  <li data-action = "copy">Copia</li>
-  <li data-action = "paste">Incolla</li>
-  <li data-action = "delete">Elimina</li>
-</ul>
+    
 
     
     <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -173,7 +169,6 @@ int anno = (Integer) request.getSession().getAttribute("anno");
 
 
 
-
         .prenotato {
         
     }
@@ -181,15 +176,15 @@ int anno = (Integer) request.getSession().getAttribute("anno");
      .riquadro {
       border: 1px solid red;
       padding: 5px;
-      position:absolute;
+      position: absolute;
  
 } 
 
 #tabPrenotazione tbody tr {
     width: auto !important;
     height: 100px !important;
-    overflow: hidden;
 }
+ 
 
 
 </style>
@@ -471,7 +466,7 @@ var settings ={
       responsive: false,
       scrollX: "100%",
       searching: true,      
-     scrollY: "1500px",
+     // scrollY: "700px",
       "autoWidth": false,
       
          fixedColumns: {
@@ -480,6 +475,7 @@ var settings ={
       },   
       
       stateSave: false,	
+           
       columnDefs: [
     	  {
     		  targets: '_all',
@@ -488,10 +484,7 @@ var settings ={
     	  
     	  
                ], 	
-               fixedHeader: {
-                   header: true, // Imposta a true per mantenere l'header fisso
-                   footer: false // Imposta a true se vuoi mantenere il footer fisso
-               } , 
+               
 
    
 	      buttons: [   
@@ -518,7 +511,7 @@ var settings ={
 
 	        // Creazione del contenitore per il pulsante e il contenuto della cella
 	        var $container = $('<div>').css('position', 'relative').css('height', 'auto');
-	        var $buttonContainer = $('<div>').css('position', 'relative').css('top', '0').css('left', '0');
+	        var $buttonContainer = $('<div>').css('position', 'absolute').css('top', '0').css('left', '0');
 	        var $contentContainer = $('<div>').css('margin-top', '0px'); // Aggiungi margine per il pulsante
 
 	        // Aggiungi il contenitore del pulsante e il contenitore del contenuto alla cella
@@ -574,7 +567,7 @@ $(window).on('load', function() {
 });
 
 
-function pastePrenotazione(day, veicolo){
+function pastePrenotazione(day){
 	
 	var id = cellCopy;
 	
@@ -629,7 +622,7 @@ function pastePrenotazione(day, veicolo){
 			initializeTimepicker(prenotazione.data_inizio_prenotazione.split(" ")[1], prenotazione.data_fine_prenotazione.split(" ")[1]);
 
 		$('#day').val(day);
-		$('#id_veicolo').val(veicolo);
+		$('#id_veicolo').val(prenotazione.veicolo.id);
 		
 		$('#note').val(prenotazione.note);
 	
@@ -637,12 +630,11 @@ function pastePrenotazione(day, veicolo){
 		  obj.inizio =  prenotazione.data_inizio_prenotazione
           obj.fine =  prenotazione.data_fine_prenotazione
           obj.id = prenotazione.id
-          obj.id_veicolo = parseInt(veicolo)
+          obj.id_veicolo = prenotazione.veicolo.id 
       	
           orariDisabilitati.push(obj); 
 		  
 		  isPaste = true;
-		  $('#id_prenotazione').val(0)
 
 		nuovaPrenotazione();
 	});
@@ -651,30 +643,15 @@ function pastePrenotazione(day, veicolo){
 }
 
 var selectedDiv = null;
-var offsetX;
-var offsetY;
-/* $('#tabPrenotazione tbody td').on('contextmenu', 'div',  function(e) {
+$('#tabPrenotazione tbody td').on('contextmenu', 'div', function(e) {
 	if($(this).hasClass("riquadro")){
 	    selectedDiv = $(this);
 	    e.preventDefault(); // Prevent default context menu
 	}
 
-}); */
+});
 
 
-
-
-
-
-/* 
-$(document).bind("contextmenu", function(e) {
-	
-	var x  = $('#'+e.target.id).offset().left / zoom_level;
-	var y  = $('#'+e.target.id).offset().top / zoom_level;
-    $(".tooltip").css({left:x, top:y});
-   // $('.tooltip').show();
-    e.preventDefault();
-}); */
 
 var order = 1;
 
@@ -685,7 +662,7 @@ var cellCopy;
 $(document).ready(function() {
 	
 	console.log("dentro")
-zoom_level  = parseFloat(Cookies.get('page_zoom'));
+
 
          fillTable("${anno}",'${filtro_tipo_pianificazioni}');
 	
@@ -694,88 +671,6 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
 
 	    $(document.body).css('padding-right', '0px');
-	    
-	    initContextMenu()
-	    
-
-	    
-	    /* $.contextMenu({
-	        selector: '#tabPrenotazione tbody td',
-	        callback: function(key, options) {
-	           // var cellIndex = table.cell(this).index();
-	            var cellIndex = $(this)[0].id;
-	           // var cellData = table.cell(cellIndex.row, cellIndex.column).data();
-	            
-	            // Perform action based on selected menu item
-	            switch(key) {
-	                case 'copy':
-	                    // Implement copy functionality
-	                     if (selectedDiv) {
-	                    	 
-	                    	 cellCopy = selectedDiv[0].id.split("_")[1];
-	                    	 
-	                    var divData = selectedDiv.text();
-	                    console.log('Copy:', divData);
-	                } else {
-	                    console.log('No div selected to copy.');
-	                }
-	                    break;
-	                case 'paste':
-	                    
-	                	if(cellCopy!=null){
-	                		
-	                		pastePrenotazione(cellIndex.split("_")[1], cellIndex.split("_")[0])
-	                		
-	                	}
-	                	                	
-	                   
-	                    break;
-	                case 'delete':
-	                    // Implement delete functionality
-	                    if (selectedDiv) {
-	                    	 cellCopy = selectedDiv[0].id.split("_")[1];
-	                    	 
-	                    	 $('#id_prenotazione').val(cellCopy)
-	                    	 $('#myModalYesOrNo').modal()
-	                 
-	                } else {
-	                    console.log('No div selected to delete.');
-	                }
-	                    break;
-	            }
-	        },
-	        items: {
-	            copy: {name: "Copia"},
-	            paste: {name: "Incolla"},
-	            delete: {name: "Elimina"}
-	        }/* ,
-	        position: function(opt, x, y){
-	        	var offsetX = opt.$trigger.offset().left;
-                var offsetY = opt.$trigger.offset().top;
-                var adjustedX = offsetX / zoom_level;
-                var adjustedY = offsetY / zoom_level;
-                opt.$menu.css({"z-index": 9999});
-	            opt.$menu.css({"top": (x+50), "left": (y+150)});
-	        }  */
-	        
-	   /*       events: {
-	        	
-	      
-	        	
-	            show: function(opt) {
-	            	var offsetX = opt.$trigger.offset().left;
-	                var offsetY = opt.$trigger.offset().top;
-
-	                // Adatta la posizione del menu contestuale allo zoom della pagina
-	                var adjustedX = offsetX / zoom_level;
-	                var adjustedY = offsetY / zoom_level;
-
-	                // Imposta la posizione del menu contestuale
-	                opt.$menu.css({top: 100, left: 100});
-	        } 
-	        } 
-	    }); */
-		
 
 });
 
@@ -845,20 +740,20 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                var larghezzaTesto = getTextWidth(testo, '12px Arial') + 20; // Aggiungi un margine per una migliore presentazione
 
 	 	                var larghezza =  Math.abs(posizioneArrivo.left - posizionePartenza.left + cellaInizio.outerWidth());
-	 	               //var larghezza = 115;
+
 	 	   
 	 	                var altezza = 36;
-	 	                 if(larghezzaTesto>=larghezza){
+	 	                if(larghezzaTesto>larghezza){
 	 	                	altezza = altezza * 2;
-	 	                	//larghezza = larghezzaTesto
-	 	                } 
+	 	                	
+	 	                }
 	 	                
 	 	     
 	 	                var numeroRiquadri = cellaInizio.find('.riquadro').length;
 	 	                
 	 	                var cellaPrecedente = null;
 	 	                var cellaSuccessiva = null;
-	 	                 if(numeroRiquadri === 0 && cellaInizio.hasClass('prenotato_multi')){
+	 	                if(numeroRiquadri === 0 && cellaInizio.hasClass('prenotato')){
 	 	                	 cellaPrecedente = cellaInizio.prev();
 	 	     	            while (cellaPrecedente.length > 0) {
 	 	     	            	numeroRiquadri = cellaPrecedente.find('.riquadro').length;
@@ -870,7 +765,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                	
 	 	                }
 	 	                
-	 	                if(numeroRiquadri === 0 && cellaFine.hasClass('prenotato_multi')){
+	 	                if(numeroRiquadri === 0 && cellaFine.hasClass('prenotato')){
 	 	                	 cellaSuccessiva = cellaInizio.next();
 	 	     	            while (cellaSuccessiva.length > 0) {
 	 	     	            	numeroRiquadri = cellaSuccessiva.find('.riquadro').length;
@@ -880,10 +775,10 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	     	               cellaSuccessiva = cellaSuccessiva.next();
 	 	     	            }
 	 	                	
-	 	                } 
+	 	                }
 	 	                
 	 	                var celleTraCelle = null;
-	 	                 if (numeroRiquadri === 0 && id_inizio != id_fine && cellaInizio.length > 0 && cellaFine.length > 0) {
+	 	                if (numeroRiquadri === 0 && id_inizio != id_fine && cellaInizio.length > 0 && cellaFine.length > 0) {
 	 	                	celleTraCelle =  cellaInizio.nextUntil(cellaFine);
 	 	                	 numeroRiquadri = 0
 	 	                    celleTraCelle.each(function() {
@@ -892,7 +787,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                        	numeroRiquadri = n;
 	 	                        }
 	 	                    });
-	 	                } 
+	 	                }
 	 	                
 	 	                nCelle = 1;
 	 	                
@@ -900,7 +795,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                	nCelle=parseInt(id_fine.split("_")[1]) - parseInt(id_inizio.split("_")[1])
 	 	                }
 	 	                
-	 	                for (var j = 0; j < nCelle; j++) {
+	 	                for (var j = 0; j <= nCelle; j++) {
 	 						$('#'+id_inizio.split("_")[0]+"_"+(parseInt(id_inizio.split("_")[1]) + j)).addClass('prenotato');
 	 						var x = '#'+id_inizio.split("_")[0]+"_"+parseInt(id_inizio.split("_")[1]) + j
 	 						if(id_inizio!=id_fine){
@@ -908,14 +803,12 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 						}
 	 					}
 	 	               
-						 if(id_inizio!=id_fine){
-							var larghezza =  larghezza - 5;
-						} 
+
 	 	       
-	 	               //var sinistra = posizionePartenza.left - $('#tabPrenotazione').offset().left;
-	 	                var sinistra = 0;
-	 	                //var alto = posizionePartenza.top - $('#tabPrenotazione').offset().top;
-	 	                var alto = 0;
+	 	                var sinistra = posizionePartenza.left - $('#tabPrenotazione').offset().left;
+	 	               // var sinistra = 0;
+	 	                var alto = posizionePartenza.top - $('#tabPrenotazione').offset().top;
+	 	               // var alto = 0;
 	 	                
 	 	     
 	 	                
@@ -941,8 +834,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
 	 	                if (numeroRiquadri === 0) {
 	 	                    // Se non ci sono riquadri presenti, aggiungi normalmente il nuovo riquadro
-	 	                  $("<div  data-toggle='custom-menu' title='"+lista_prenotazioni[i].note+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
-	 	                	   // $("<div  data-toggle='tooltip' title='"+lista_prenotazioni[i].note+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
+	 	                    $("<div  data-toggle='tooltip' title='"+lista_prenotazioni[i].note+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
 	 	                        left: sinistra,
 	 	                        top: alto,
 	 	                        width: larghezza,
@@ -1023,7 +915,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
 	 	  
 	 	                 
-	 	                 $("<div data-toggle='custom-menu' title='"+lista_prenotazioni[i].note+"'  class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:5px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
+	 	                 $("<div data-toggle='tooltip' title='"+lista_prenotazioni[i].note+"'  class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:5px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
 	 	                    // left: posizioneUltimoRiquadro.left,
 	 	                     left: sinistra,
 	 	                     top: nuovaPosizioneVerticale,
@@ -1083,11 +975,11 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	     	       e.stopPropagation();    
 	     	    });
 	    			
-	    	//  $('[data-toggle="tooltip"]').tooltip();
+	    	  $('[data-toggle="tooltip"]').tooltip();
 	           
 	            table.columns.adjust().draw();
 	           
-	            scrollToColumn(parseInt(today) -1);
+	            scrollToColumn(parseInt(today) - 3);
 	            
 	            
 	            

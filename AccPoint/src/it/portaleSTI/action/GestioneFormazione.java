@@ -3406,6 +3406,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					}
 					if(data_scadenza!=null && !data_scadenza.equals("")) {
 						configurazione.setData_scadenza(df.parse(data_scadenza));
+						if(df.parse(data_scadenza).after(new Date())) {
+							configurazione.setStato_invio(0);
+						}
 					}else {
 						configurazione.setData_scadenza(null);
 					}

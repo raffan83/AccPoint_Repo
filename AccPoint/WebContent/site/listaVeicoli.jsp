@@ -74,7 +74,7 @@
 <th>Km Percorsi</th>
 
 <th>Portata Max</th>
-
+<th>Dispositivo Pedaggio</th>
 <th>Note</th>
 <th style="min-width:150px">Azioni</th>
  </tr></thead>
@@ -95,12 +95,12 @@
 	<td>${veicolo.km_percorsi }</td>
 
 	<td>${veicolo.portata_max_veicolo }</td>
-
+	<td>${veicolo.dispositivo_pedaggio }</td>
 	<td>${veicolo.note }</td>
 
 	<td>
 
-	<a class="btn btn-warning customTooltip" onClicK="modificaVeicolo('${veicolo.id}', '${veicolo.targa }', '${veicolo.modello }', '${veicolo.company.id }','${veicolo.km_percorsi }', '${veicolo.carta_circolazione }','${veicolo.portata_max_veicolo }','${veicolo.immagine_veicolo }')" title="Click per modificare il veicolo"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning customTooltip" onClicK="modificaVeicolo('${veicolo.id}', '${veicolo.targa }', '${veicolo.modello }', '${veicolo.company.id }','${veicolo.km_percorsi }', '${veicolo.carta_circolazione }','${veicolo.portata_max_veicolo }','${veicolo.immagine_veicolo }','${veicolo.dispositivo_pedaggio }')" title="Click per modificare il veicolo"><i class="fa fa-edit"></i></a>
 	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaVeicolo('${veicolo.id }')" title="Click per eliminare il veicolo manutenzione"><i class="fa fa-trash"></i></a>
 	  <c:if test="${veicolo.carta_circolazione!=null }">
 	  <a class="btn btn-info customTooltip" href="gestioneParcoAuto.do?action=download_file&tipo_file=carta_circolazione&id_veicolo=${veicolo.id}" title="Click per scaricare la carta di circolazione"><i class="fa fa-file-text-o"></i></a>
@@ -230,7 +230,17 @@
        </div><br>
        
        
-  
+  <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Dispositivo pedaggio</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="dispositivo_pedaggio" name="dispositivo_pedaggio" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
        
        
    <div class="row">
@@ -362,7 +372,17 @@
        	</div>       	
        </div><br>
        
+         <div class="row">
        
+       	<div class="col-sm-3">
+       		<label>Dispositivo pedaggio</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="dispositivo_pedaggio_mod" name="dispositivo_pedaggio_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
   
        
        
@@ -465,7 +485,7 @@ function modalNuovoVeicolo(){
 }
 
 
-function modificaVeicolo(id_veicolo, targa, modello, id_company, km_percorsi, carta_circolazione, portata_max_veicolo, immagine_veicolo){
+function modificaVeicolo(id_veicolo, targa, modello, id_company, km_percorsi, carta_circolazione, portata_max_veicolo, immagine_veicolo, dispositivo_pedaggio){
 	
 	$('#id_veicolo').val(id_veicolo);
 	$('#targa_mod').val(targa);
@@ -476,7 +496,7 @@ function modificaVeicolo(id_veicolo, targa, modello, id_company, km_percorsi, ca
 	$('#label_carta_circolazione_mod').html(carta_circolazione);
 	$('#portata_max_mod').val(portata_max_veicolo);
 	$('#label_immagine_veicolo_mod').html(immagine_veicolo);
-
+	$('#dispositivo_pedaggio_mod').val(dispositivo_pedaggio);
 
 	$('#myModalModificaVeicolo').modal();
 }

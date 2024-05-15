@@ -334,6 +334,34 @@
 .table th.festivita {
   background-color: #FA8989 !important;
 }
+
+
+
+.custom-menu {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: sans-serif;     
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    
+}
+
+.custom-menu li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.custom-menu li:hover {
+    background-color: #DEF;
+}
+
   </style>
 </jsp:attribute>
 
@@ -560,6 +588,116 @@ function eliminaPianificazione(){
 
 }
 
+
+$('#tabForPianificazione tbody td').on('contextmenu', 'div',  function(e) {
+	if($(this).hasClass("riquadro")){
+	    selectedDiv = $(this);
+	    e.preventDefault(); // Prevent default context menu
+	}
+
+	}); 
+
+
+var cellIndex;
+function initContextMenu(){
+	
+	$("#tabForPianificazione tbody td").bind("contextmenu", function (event) {
+		
+	     
+	     // Avoid the real one
+	     event.preventDefault();
+
+	     var cell = $("#"+event.currentTarget.id).offset();
+	     cellIndex = event.currentTarget.id
+
+	 	      var x  = cell.left -210;
+	  
+	 	var y  = cell.top - 330;
+	     
+
+	     // Show contextmenu
+	     $(".custom-menu").finish().toggle(). 
+	     css({
+	         top: y + "px",
+	         left: x + "px"
+	     });
+	     
+	     
+	     //alert("X:"+(x-240) +"Y:"+ (y-280))
+	 });
+
+
+	 // If the document is clicked somewhere
+	 $(document).bind("mousedown", function (e) {
+	     
+	     // If the clicked element is not the menu
+	     if (!$(e.target).parents(".custom-menu").length > 0) {
+	         
+	         // Hide it
+	         $(".custom-menu").hide(100);
+	     }
+	 });
+
+
+	 // If the menu element is clicked
+	 $(".custom-menu li").click(function(e){
+	     
+
+		 
+	     // This is the triggered action name
+	     switch($(this).attr("data-action")) {
+	         
+	         // A case for each action. Your actions here
+	     case 'copy':
+             // Implement copy functionality
+              if (selectedDiv) {
+             	 
+             	 cellCopy = selectedDiv[0].id.split("_")[1];
+             	 
+             var divData = selectedDiv.text()
+             console.log('Copy:', divData);
+         } else {
+             console.log('No div selected to copy.');
+         }
+             break;
+         case 'paste':
+             
+         	if(cellCopy!=null){
+         		
+         		var cell_comm = cellIndex.replace("_"+cellIndex.split("_")[3], "")
+         		
+         		var comm = cell_comm.substring(0,cell_comm.length-2)+"/"+cell_comm.substring(cell_comm.length-2,cell_comm.length);
+         		
+         		pastePianificazione(cellIndex.split("_")[3], comm)
+         		
+         	}
+         	                	
+            
+             break;
+         case 'delete':
+             // Implement delete functionality
+             if (selectedDiv) {
+             	 cellCopy = selectedDiv[0].id.split("_")[1];
+             	 
+             	 $('#id_pianificazione').val(cellCopy)
+             	 $('#myModalYesOrNo').modal()
+          
+         } else {
+             console.log('No div selected to delete.');
+         }
+             break;
+	     }
+	   
+	     // Hide it AFTER the action was triggered
+	     $(".custom-menu").hide(100);
+	   });
+
+
+
+
+	  
+	
+}
 
 
 $(document).ready(function($) { 

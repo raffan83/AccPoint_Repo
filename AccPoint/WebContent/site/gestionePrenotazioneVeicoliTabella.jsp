@@ -27,7 +27,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
  <table id="tabPrenotazione" class="table table-primary table-bordered table-hover dataTable table-striped " role="grid" width="100%"  >
         <thead>
             <tr>
-               <th>ID VEICOLO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
+               <th >ID VEICOLO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
                <th>TARGA <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
                 <th>MODELLO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
            <c:set var ="nuovoAnno" value="${anno + 1}"></c:set>                
@@ -101,10 +101,10 @@ int anno = (Integer) request.getSession().getAttribute("anno");
          <tr id="${veicolo.id}" >
         
          <td id = "col_1_${veicolo.id}">
-        ${veicolo.id}
+       <b>${veicolo.id}</b>
          </td>
-         <td id = "col_2_${veicolo.id}">${veicolo.targa}</td>
-         <td id = "col_3_${veicolo.id}">${veicolo.modello}</td>
+         <td id = "col_2_${veicolo.id}" ><b>${veicolo.targa}</b></td>
+         <td id = "col_3_${veicolo.id}"><b>${veicolo.modello}</b></td>
 
          <c:forEach var="day" begin="${start_date }" end="${end_date}" step="1">
 			<c:if test="${LocalDate.ofYearDay(anno, 1).isLeapYear() && day>366 }">
@@ -189,6 +189,18 @@ int anno = (Integer) request.getSession().getAttribute("anno");
     width: auto !important;
     height: 100px !important;
     overflow: hidden;
+}
+
+ .tooltip {
+    position: absolute;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  
+
+
 }
 
 
@@ -455,6 +467,7 @@ var settings ={
 	        	next:	"Successivo",
 	        last:	"Fine",
         	},
+        	
         aria:	{
 	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
 	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
@@ -470,6 +483,7 @@ var settings ={
 //      targets: 0,
       responsive: false,
       scrollX: "100%",
+      //scrollTo: 'cell',
       searching: true,      
      scrollY: "1500px",
       "autoWidth": false,
@@ -477,7 +491,7 @@ var settings ={
          fixedColumns: {
           leftColumns: 3,
           heightMatch: 'auto'// Numero di colonne fisse
-      },   
+      },    
       
       stateSave: false,	
       columnDefs: [
@@ -488,10 +502,7 @@ var settings ={
     	  
     	  
                ], 	
-               fixedHeader: {
-                   header: true, // Imposta a true per mantenere l'header fisso
-                   footer: false // Imposta a true se vuoi mantenere il footer fisso
-               } , 
+               fixedHeader: true, 
 
    
 	      buttons: [   
@@ -501,12 +512,16 @@ var settings ={
 			  } ]
                
     } 
+ 
+ 
 
 
+var scrollPos;
 	
 	function editableCell(cell) {
 	    $(cell).on('click', function() {
-	    	
+	    	 scrollPos = $(window).scrollTop();
+	    	 var scrollPosition = $(this).closest('.dataTables_scrollBody').scrollTop();
 	    	if(permesso == "true"){
 	    	
 	        $('.selected-cell').removeClass('selected-cell');
@@ -533,6 +548,8 @@ var settings ={
 
 	        table = $('#tabPrenotazione').DataTable()
 	        table.draw(); 
+	        $(window).scrollTop(scrollPos);
+	        $(this).closest('.dataTables_scrollBody').scrollTop(scrollPosition);
 	    	}
 	    });
 	}
@@ -637,7 +654,7 @@ function pastePrenotazione(day, veicolo){
 		  obj.inizio =  prenotazione.data_inizio_prenotazione
           obj.fine =  prenotazione.data_fine_prenotazione
           obj.id = prenotazione.id
-          obj.id_veicolo = parseInt(veicolo)
+          obj.id_veicolo = prenotazione.veicolo.id
       	
           orariDisabilitati.push(obj); 
 		  
@@ -676,6 +693,67 @@ $(document).bind("contextmenu", function(e) {
     e.preventDefault();
 }); */
 
+/* $(window).on('scroll', function() {
+    var windowScrollTop = $(window).scrollTop();
+    var tableHeaderHeight = $('.dataTables_scrollHead').outerHeight();
+    var scrollPosition = $('.dataTables_scrollBody').outerHeight();
+
+    // Se lo scroll della finestra è inferiore all'altezza dell'header della tabella,
+    // fai in modo che l'header della tabella sia posizionato in alto.
+   // if (windowScrollTop < tableHeaderHeight) {
+   //     $('.dataTables_scrollHead').css('top', -windowScrollTop);
+  // } else {
+        // Altrimenti, fai in modo che l'header della tabella sia posizionato al top della finestra.
+        
+        var windowHeight = $(window).height(); // Altezza della finestra del browser
+var scrollTop = $(window).scrollTop(); // Posizione dello scroll verticale
+var visibleHeight = windowHeight - scrollTop;
+        
+        $('.dataTables_scrollHead').css('top',windowScrollTop - windowHeight);
+  //  }
+}); */
+
+$(window).on('scroll', function() {
+    var windowScrollTop = $(window).scrollTop();
+    var tableHeaderHeight = $('.dataTables_scrollHead').outerHeight();
+    var tableHeaderWidth = $('.dataTables_scrollHead').outerWidth();
+    var fixedColumnsHeaderHeight = $('.DTFC_LeftHeadWrapper').outerHeight();
+    var fixedColumnsHeaderWidth = $('.DTFC_LeftHeadWrapper').outerWidth();
+
+
+    
+    var combinedHeaderHeight = tableHeaderHeight + fixedColumnsHeaderHeight;
+    // Se lo scroll della finestra è maggiore dell'altezza dell'header della tabella
+    
+    // sposta l'header sopra la finestra
+  //  if (windowScrollTop >= tableHeaderHeight) {
+	  if (windowScrollTop > combinedHeaderHeight) {
+        $('.dataTables_scrollHead').css({
+            'position': 'fixed',
+            'top': '0',
+            //'left': '0',
+            'width': '100%',
+            'z-index': '99'
+        });
+        
+        $('.DTFC_LeftHeadWrapper').css({
+            'position': 'fixed',
+            'top': '0',
+            'left':fixedColumnsHeaderWidth-102,
+            'z-index': '100', // Livello di z-index inferiore rispetto all'header principale
+        });
+    } else {
+        // Altrimenti, ripristina lo stile predefinito dell'header
+        $('.dataTables_scrollHead, .DTFC_LeftHeadWrapper').css({
+            'position': 'static'
+        });
+    }
+});
+
+
+
+
+
 var order = 1;
 
 var permesso = "${userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN')}";
@@ -691,91 +769,15 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	
 	
 
-
+       
 
 	    $(document.body).css('padding-right', '0px');
 	    
 	    initContextMenu()
 	    
 
-	    
-	    /* $.contextMenu({
-	        selector: '#tabPrenotazione tbody td',
-	        callback: function(key, options) {
-	           // var cellIndex = table.cell(this).index();
-	            var cellIndex = $(this)[0].id;
-	           // var cellData = table.cell(cellIndex.row, cellIndex.column).data();
-	            
-	            // Perform action based on selected menu item
-	            switch(key) {
-	                case 'copy':
-	                    // Implement copy functionality
-	                     if (selectedDiv) {
-	                    	 
-	                    	 cellCopy = selectedDiv[0].id.split("_")[1];
-	                    	 
-	                    var divData = selectedDiv.text();
-	                    console.log('Copy:', divData);
-	                } else {
-	                    console.log('No div selected to copy.');
-	                }
-	                    break;
-	                case 'paste':
-	                    
-	                	if(cellCopy!=null){
-	                		
-	                		pastePrenotazione(cellIndex.split("_")[1], cellIndex.split("_")[0])
-	                		
-	                	}
-	                	                	
-	                   
-	                    break;
-	                case 'delete':
-	                    // Implement delete functionality
-	                    if (selectedDiv) {
-	                    	 cellCopy = selectedDiv[0].id.split("_")[1];
-	                    	 
-	                    	 $('#id_prenotazione').val(cellCopy)
-	                    	 $('#myModalYesOrNo').modal()
-	                 
-	                } else {
-	                    console.log('No div selected to delete.');
-	                }
-	                    break;
-	            }
-	        },
-	        items: {
-	            copy: {name: "Copia"},
-	            paste: {name: "Incolla"},
-	            delete: {name: "Elimina"}
-	        }/* ,
-	        position: function(opt, x, y){
-	        	var offsetX = opt.$trigger.offset().left;
-                var offsetY = opt.$trigger.offset().top;
-                var adjustedX = offsetX / zoom_level;
-                var adjustedY = offsetY / zoom_level;
-                opt.$menu.css({"z-index": 9999});
-	            opt.$menu.css({"top": (x+50), "left": (y+150)});
-	        }  */
-	        
-	   /*       events: {
-	        	
-	      
-	        	
-	            show: function(opt) {
-	            	var offsetX = opt.$trigger.offset().left;
-	                var offsetY = opt.$trigger.offset().top;
-
-	                // Adatta la posizione del menu contestuale allo zoom della pagina
-	                var adjustedX = offsetX / zoom_level;
-	                var adjustedY = offsetY / zoom_level;
-
-	                // Imposta la posizione del menu contestuale
-	                opt.$menu.css({top: 100, left: 100});
-	        } 
-	        } 
-	    }); */
-		
+	    $('.dropdown-menu').css('z-index', 200);
+	   		
 
 });
 
@@ -941,7 +943,9 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
 	 	                if (numeroRiquadri === 0) {
 	 	                    // Se non ci sono riquadri presenti, aggiungi normalmente il nuovo riquadro
-	 	                  $("<div  data-toggle='custom-menu' title='"+lista_prenotazioni[i].note+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
+	 	                  $("<div  data-toggle='tooltip' title='"+escapeHtml(lista_prenotazioni[i].note)+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
+	 	                	 /* $("<div   title='"+escapeHtml(lista_prenotazioni[i].note)+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({ */
+	 	                  
 	 	                	   // $("<div  data-toggle='tooltip' title='"+lista_prenotazioni[i].note+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
 	 	                        left: sinistra,
 	 	                        top: alto,
@@ -1023,7 +1027,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
 	 	  
 	 	                 
-	 	                 $("<div data-toggle='custom-menu' title='"+lista_prenotazioni[i].note+"'  class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:5px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
+	 	                 $("<div data-toggle='tooltip' title='"+escapeHtml(lista_prenotazioni[i].note)+"'  class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:5px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
 	 	                    // left: posizioneUltimoRiquadro.left,
 	 	                     left: sinistra,
 	 	                     top: nuovaPosizioneVerticale,
@@ -1087,10 +1091,12 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	           
 	            table.columns.adjust().draw();
 	           
-	            scrollToColumn(parseInt(today) -1);
+	         //   scrollToColumn(parseInt(today) -1);
+
+	         var coltoday = getDaysUntilMonday(parseInt(today), parseInt("${start_date}")) +1
+	          scrollToColumn(today - coltoday) 
 	            
-	            
-	            
+	         $('[data-toggle="tooltip"]').tooltip();
 	        },
 	        error: function(xhr, status, error) {
 	            console.error(status);
@@ -1139,6 +1145,16 @@ function scrollToColumn(columnIndex) {
     scrollBody.animate({ scrollLeft: scrollLeft }, 500);
 }
 
+
+function getDaysUntilMonday(today, start_date) {
+    var currentYear = new Date().getFullYear();
+    var startDate = new Date(currentYear, 0); // Imposta la data al 1° gennaio dell'anno corrente
+    startDate.setDate((today+start_date)); // Imposta il giorno dell'anno fornito
+    var dayOfWeek = startDate.getDay(); // Ottiene il giorno della settimana (0 = Domenica, 1 = Lunedì, ..., 6 = Sabato)
+    var daysUntilMonday = (dayOfWeek === 0) ? 6 : dayOfWeek - 1; // Calcola i giorni che mancano al Lunedì
+  //  return (today > daysUntilMonday) ? 7 - today + daysUntilMonday : daysUntilMonday - today;
+    return daysUntilMonday;
+}
 
 function rgbToHex(rgb) {
 	  var parts = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);

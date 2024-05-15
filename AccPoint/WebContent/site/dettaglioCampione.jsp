@@ -7,6 +7,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" import="java.util.List" %>
 <%@ page language="java" import="java.util.ArrayList" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <% 
 	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 
@@ -322,6 +323,11 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                         <%}else{ %>
                         	<button class="btn" disabled="disabled">Scarica Certificato</button>
                         <%} %>
+                        <c:set var ="id_campione" value="<%=campione.getId()%>"></c:set>
+                   
+                        <a target="_blank"  class="btn btn-primary " href='' onclick="this.href='scaricaEtichetta.do?action=campione&id_campione=${id_campione}'">Stampa Etichetta</a>
+
+
 
     </div>
        </div> 

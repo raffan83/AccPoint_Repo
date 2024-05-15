@@ -41,7 +41,9 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import TemplateReport.PivotTemplate;
+import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -49,6 +51,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestioneConfigurazioneClienteBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
@@ -96,8 +99,12 @@ public class ScaricaEtichetta extends HttpServlet {
 
 		boolean ajax = false;
 
+		String action = request.getParameter("action");
+		
 		try
 		{	
+			
+		if(action == null || action.equals("stampaEtichetta")) {
 			String idMisura=request.getParameter("idMisura");
 			idMisura = Utility.decryptData(idMisura);
 			
@@ -200,6 +207,78 @@ public class ScaricaEtichetta extends HttpServlet {
 
 			outp.flush();
 			outp.close();
+		}
+		else if(action.equals("campione")) {
+			
+			String id_campione = request.getParameter("id_campione");
+			
+			CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			
+			JasperReportBuilder report = DynamicReports.report();
+			
+			InputStream is = PivotTemplate.class.getResourceAsStream("EtichettaZebraCampione.jrxml");
+
+			report.setTemplateDesign(is);
+			report.setTemplate(Templates.reportTemplate);
+
+			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/sti.jpg");				
+			
+			BufferedImage in = ImageIO.read(imageHeader);		
+			report.addParameter("logo",rotateClockwise90(in));
+			report.addParameter("codiceInterno",campione.getCodice());
+			report.addParameter("certificato",campione.getNumeroCertificato());
+			if(campione.getDataVerifica()!=null) {
+				report.addParameter("dataTaratura",sdf.format(campione.getDataVerifica()));
+			}else {
+				report.addParameter("dataTaratura","");	
+			}
+						
+			if(campione.getDataScadenza()!=null) {
+				report.addParameter("dataScadenzaTaratura",sdf.format(campione.getDataScadenza()));
+			}else {
+				report.addParameter("dataScadenzaTaratura","");	
+			}
+
+	
+			report.setDataSource(new JREmptyDataSource());
+
+			// java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//"+intervento.getNome_pack()+"//SchedaDiConsegna.pdf");
+			java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//Campioni//"+campione.getId()+"/ET_"+campione.getId()+".pdf");
+			FileOutputStream fos = new FileOutputStream(file);
+			report.toPdf(fos);
+
+			fos.flush();
+			fos.close();
+
+
+			File d = new File(Costanti.PATH_FOLDER+"//Campioni//"+campione.getId()+"/ET_"+campione.getId()+".pdf");
+
+			FileInputStream fileIn = new FileInputStream(d);
+
+			response.setContentType("application/pdf");
+
+			//	 response.setHeader("Content-Disposition","attachment;filename="+filename);
+
+			ServletOutputStream outp = response.getOutputStream();
+
+			byte[] outputByte = new byte[1];
+
+			while(fileIn.read(outputByte, 0, 1) != -1)
+			{
+				outp.write(outputByte, 0, 1);
+			}
+
+			session.close();
+			fileIn.close();
+
+			outp.flush();
+			outp.close();
+			
+			
+		}
+			
 
 		}
 		catch(Exception ex)

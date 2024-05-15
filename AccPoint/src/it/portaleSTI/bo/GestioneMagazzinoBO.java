@@ -478,6 +478,12 @@ public static ArrayList<MagItemDTO> getListaRilieviSpediti(String origine, int i
 	return GestioneMagazzinoDAO.getListaRilieviSpediti(origine, id_tipo_proprio, session);
 }
 
+public static boolean checkStrumentoCliente(String idCliente, String matricola,  String codice_interno,
+		Session session) {
+	// TODO Auto-generated method stub
+	return GestioneMagazzinoDAO.checkStrumentoCliente(idCliente, matricola,codice_interno,  session);
+}
+
 
 
 

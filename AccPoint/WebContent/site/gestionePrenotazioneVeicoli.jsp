@@ -551,10 +551,7 @@ function nuovaPrenotazione(){
     		 var inizioPrenotazione = moment(prenotazione.inizio, "DD/MM/YYYY HH:mm");
     	        var finePrenotazione = moment(prenotazione.fine, "DD/MM/YYYY HH:mm");
     	        
-    	        console.log(inizioPrenotazione)
-    	        console.log(inizio)
-    	        console.log(finePrenotazione)
-    	        console.log(fine)
+
 
     	      /*   return (inizio.isBetween(inizioPrenotazione, finePrenotazione, undefined, '[)') ||
     	                fine.isBetween(inizioPrenotazione, finePrenotazione, undefined, '(]') ||
@@ -687,6 +684,7 @@ function eliminaPrenotazione(){
 	 	callAjax(dataObj, 'gestioneParcoAuto.do?action=elimina_prenotazione')
 
 }
+
 
 
 var zoom_level;

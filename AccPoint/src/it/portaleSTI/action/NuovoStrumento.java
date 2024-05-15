@@ -34,6 +34,7 @@ import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
@@ -218,6 +219,20 @@ public class NuovoStrumento extends HttpServlet {
 			String tipo_strumento = request.getParameter("tipo_strumento");
 			String[] tipo_strumento_split = tipo_strumento.split("_");
 			int successInt=0;
+			
+			boolean presente = GestioneMagazzinoBO.checkStrumentoCliente(idCliente, matricola, codice_interno, session);
+			
+			String message = ""; 
+			Boolean success = true;
+			
+			if(presente) {
+				message = "Attenzione! Lo strumento che stai tentando di inserire esiste gi&agrave;!";
+				success = false;
+				
+			}else {
+				
+			
+			
 			for(int i=0; i<Integer.parseInt(quantita); i++) {
 				successInt=0;
 				StrumentoDTO strumento = new StrumentoDTO();
@@ -270,15 +285,14 @@ public class NuovoStrumento extends HttpServlet {
 				successInt =1;
 			}
 			
-		
-			String message = ""; 
-			Boolean success = true;
 			if(successInt>0){
 				message = "Salvato con Successo";
 			}else{
 				message = "Errore Salvataggio";
 				success = false;
 			}
+		}
+			
 			
 			session.getTransaction().commit();
 			session.close();	

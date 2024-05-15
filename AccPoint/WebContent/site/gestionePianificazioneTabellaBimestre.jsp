@@ -158,7 +158,11 @@ int anno = (Integer) request.getSession().getAttribute("anno");
                 </tbody>
     </table>
     
-    
+        <ul class='custom-menu'>
+  <li data-action = "copy">Copia</li>
+  <li data-action = "paste">Incolla</li>
+  <li data-action = "delete">Elimina</li>
+</ul>
     
 
     
@@ -458,14 +462,14 @@ $(window).on('load', function() {
 
 
 var order = 1;
-
+var cellCopy;
+var selectedDiv = null;
 $(document).ready(function() {
 	
 	console.log("dentro")
 	
  	
-	
-	
+
 	console.log("test")
 	
 
@@ -481,9 +485,141 @@ $(document).ready(function() {
 	    $(document.body).css('padding-right', '0px');
 
 	    
+	    initContextMenu()
+	    
 });
 
 
+
+function modalPianificazione(day, commessa, id){
+	
+	var currentYear = new Date().getFullYear()
+	
+	var dayValue = parseInt(day);
+	var localDate = new Date(Date.UTC(currentYear, 0, dayValue));
+	var d = localDate.getUTCDate();
+	var month = localDate.getUTCMonth() + 1; 
+	var year = localDate.getUTCFullYear();
+	var formattedDate = ('0' + d).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
+
+	var cell = $('#'+commessa.replace("/", "")+"_"+day);
+	var nota = cell.text()
+	
+		$('#title_pianificazione').html("Pianificazione "+formattedDate+" Commessa: "+commessa)
+	
+	if(nota!=null && nota!='' && id!=null){
+		
+		//var id = cell.attr("name");
+		
+		dataObj ={};
+		dataObj.id = id;
+		
+		callAjax(dataObj, "gestioneFormazione.do?action=dettaglio_pianificazione", function(data){
+			
+			var pianificazione = data.pianificazione;
+			var x = []
+			for (var i = 0; i < pianificazione.listaDocenti.length; i++) {
+				
+				//$('#docente_mod option[value="'+json.lista_docenti[i].id+'"]').attr("selected", true);
+				x.push(pianificazione.listaDocenti[i].id);
+
+				
+				$('#id_docenti').val($('#id_docenti').val()+pianificazione.listaDocenti[i].id+";")
+			}
+			$('#docente').val(x);
+			$('#docente').change();	
+			$('#stato').val(pianificazione.stato.id);
+			$('#stato').change();	
+			$('#tipo').val(pianificazione.tipo.id);
+			$('#tipo').change();	
+			$('#nota').val(pianificazione.note);
+			$('#id_pianificazione').val(pianificazione.id);
+			$('#commessa').val(pianificazione.id_commessa);
+			$('#day').val(pianificazione.nCella);
+			$('#ora_inizio').val(pianificazione.ora_inizio);
+			$('#ora_fine').val(pianificazione.ora_fine);
+			$('#n_cella').val(pianificazione.nCella);
+			$('#n_utenti').val(pianificazione.nUtenti);
+			$('#descrizione').val(pianificazione.descrizione)
+			if(pianificazione.email_inviata==1){
+				$('#label_email').show();
+			}else{
+				$('#label_email').hide();
+			}
+			
+			if(pianificazione.aggiunto_agenda==1){
+				$('#label_agenda').show();
+			}else{
+				$('#label_agenda').hide();
+			}
+			$('#btn_elimina').show()
+		
+				
+
+			
+			$('#modalPianificazione').modal()
+		});
+		
+		
+	}else{
+		$('#title_pianificazione').html("Pianificazione "+formattedDate+" Commessa: "+commessa)
+		$('#day').val(day);
+		$('#commessa').val(commessa);
+		$('#btn_elimina').hide()
+		$('#modalPianificazione').modal()
+	}
+	
+
+	
+}
+
+
+
+
+function pastePianificazione(day, commessa){
+	
+	var id = cellCopy;
+	
+	dataObj ={};
+	dataObj.id = id;
+	
+	callAjax(dataObj, "gestioneFormazione.do?action=dettaglio_pianificazione", function(data){
+		
+		
+		var pianificazione = data.pianificazione;
+		var x = []
+		for (var i = 0; i < pianificazione.listaDocenti.length; i++) {
+			
+			//$('#docente_mod option[value="'+json.lista_docenti[i].id+'"]').attr("selected", true);
+			x.push(pianificazione.listaDocenti[i].id);
+
+			
+			$('#id_docenti').val($('#id_docenti').val()+pianificazione.listaDocenti[i].id+";")
+		}
+		$('#docente').val(x);
+		$('#docente').change();	
+		$('#stato').val(pianificazione.stato.id);
+		$('#stato').change();	
+		$('#tipo').val(pianificazione.tipo.id);
+		$('#tipo').change();	
+		$('#nota').val(pianificazione.note);
+		$('#id_pianificazione').val("");
+		$('#commessa').val(commessa);
+		$('#day').val(day);
+		$('#ora_inizio').val(pianificazione.ora_inizio);
+		$('#ora_fine').val(pianificazione.ora_fine);
+		$('#n_cella').val(day);
+		$('#n_utenti').val(pianificazione.nUtenti);
+		$('#descrizione').val(pianificazione.descrizione)
+
+
+
+
+		nuovaPianificazione();
+	});
+	
+	
+}
 
 
 

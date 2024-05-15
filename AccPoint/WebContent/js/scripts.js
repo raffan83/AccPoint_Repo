@@ -1824,8 +1824,8 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.messaggio+"</h3>");
 	          			 $("#myModalErrorContent").html(data.messaggio);
 	          			$('#myModalError').addClass("modal modal-danger");
-	          			$('#report_button').show();
-	      				$('#visualizza_report').show();
+	          			$('#report_button').hide();
+	      				$('#visualizza_report').hide();
 						$('#myModalError').modal('show');
 
 	          		  }
@@ -16840,4 +16840,26 @@ $.ajax({
 	  }
 });
 	
+}
+
+
+function escapeJS(value) {
+    return escapeHtml(escapeJs(value));
+}
+
+function escapeJs(value) {
+    return value.replace(/\\/g, '\\\\') // Escape backslashes
+                .replace(/'/g, "\\'")     // Escape single quotes
+                .replace(/"/g, '\\"')     // Escape double quotes
+                .replace(/\r/g, '\\r')    // Escape carriage return
+                .replace(/\n/g, '\\n')    // Escape newline
+                .replace(/\t/g, '\\t');   // Escape tab
+}
+
+function escapeHtml(value) {
+    return value.replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
 }

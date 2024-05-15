@@ -2527,7 +2527,7 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 				rilievo.pezzi_ingresso = $('#pezzi_ingresso').val();
 				rilievo.note_rilievo = $('#note_rilievo').val();
 				/* rilievo.action = '<button class="btn btn-danger" onClick="eliminaRilievoTable(\''+ $('#disegno').val()+'\')"><i class="fa fa-trash"></i></button>'; */
-				rilievo.action = '<button class="btn btn-warning" onClick="modificaRilievoTable(\''+ rilievo.id+'\', this)"><i class="fa fa-edit"></i></button> <button class="btn btn-danger" onClick="eliminaRilievoTable(null,\''+ item.id_proprio+'\')"><i class="fa fa-trash"></i></button>';
+				rilievo.action = '<button class="btn btn-warning" onClick="modificaRilievoTable(\''+ rilievo.id+'\', this)"><i class="fa fa-edit"></i></button> <button class="btn btn-danger" onClick="eliminaRilievoTable(null,\''+ rilievo.id+'\')"><i class="fa fa-trash"></i></button>';
 				items_rilievo.push(rilievo)
 				
 				   var table_ril = $('#tabItemModRil').DataTable();

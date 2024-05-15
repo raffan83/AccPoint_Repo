@@ -1378,5 +1378,41 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
+	public static boolean checkStrumentoCliente(String idCliente, String matricola, String codice_interno, Session session) {
+		
+		ArrayList<StrumentoDTO> lista = null;
+		
+		String str = "from StrumentoDTO where id_cliente = :_id_cliente ";
+		
+		if(matricola!= null && !matricola.equals("")) {
+			str += "and matricola = :_matricola ";
+		}
+		
+		if(codice_interno!= null && !codice_interno.equals("")) {
+			str += "and codice_interno = :_codice_interno ";
+		}
+				
+		Query query = session.createQuery(str);
+		query.setParameter("_id_cliente", Integer.parseInt(idCliente));
+		if(matricola!= null && !matricola.equals("")) {
+			query.setParameter("_matricola", matricola);
+		}
+		
+		if(codice_interno!= null && !codice_interno.equals("")) {
+			query.setParameter("_codice_interno", codice_interno);
+		}
+	
+		lista = (ArrayList<StrumentoDTO>)query.list();	
+		
+		if(lista.size()>0) {
+			return true;
+		}else {
+			return false;	
+		}
+		
+		
+	}
+
+
 
 }

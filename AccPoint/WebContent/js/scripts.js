@@ -7305,7 +7305,7 @@ $.ajax({
 			  
 }
 
-function filtraCertificati(){
+function filtraCertificati(anno){
  
 
 	  var cliente=$('#selectCliente').val();
@@ -7330,9 +7330,13 @@ function filtraCertificati(){
 		 
 	  }
 	
+	  
    
 	  if(cliente!=null && tipologia != null && tipologia != "" && cliente != ""){
-		  	dataString ="cliente="+ cliente
+		  	dataString ="cliente="+ cliente;
+		  	if(anno!=null){
+				  dataString += "&anno="+anno
+			  }
 	        exploreModal("listaCertificati.do?action="+tipologia,dataString,"#tabellCertificati",function(datab,textStatusb){
 	
 	          });

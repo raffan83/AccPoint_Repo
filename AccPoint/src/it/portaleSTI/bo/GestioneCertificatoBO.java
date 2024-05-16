@@ -57,10 +57,10 @@ import net.sf.dynamicreports.report.datasource.DRDataSource;
 public class GestioneCertificatoBO {
 	
 	
-		public static ArrayList<CertificatoDTO> getListaCertificato(StatoCertificatoDTO stato,InterventoDatiDTO intervento, CompanyDTO cmp, UtenteDTO utente, String obsoleto, String idCliente, String idSede) throws Exception
+		public static ArrayList<CertificatoDTO> getListaCertificato(StatoCertificatoDTO stato,InterventoDatiDTO intervento, CompanyDTO cmp, UtenteDTO utente, String obsoleto, String idCliente, String idSede, int anno) throws Exception
 		{
 				
-				return GestioneCertificatoDAO.getListaCertificati(stato,intervento,cmp,utente, obsoleto, idCliente, idSede);
+				return GestioneCertificatoDAO.getListaCertificati(stato,intervento,cmp,utente, obsoleto, idCliente, idSede, anno);
 			
 		}
 		
@@ -879,6 +879,11 @@ public class GestioneCertificatoBO {
 	        }
 	    });
 	    return result;
+	}
+
+	public static ArrayList<Integer> getListaAnni(String idCliente, String idSede, Session session) {
+		
+		return GestioneCertificatoDAO.getListaAnni(idCliente, idSede, session);
 	}
 
 }

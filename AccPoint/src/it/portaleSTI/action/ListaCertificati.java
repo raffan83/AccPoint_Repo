@@ -164,7 +164,7 @@ public class ListaCertificati extends HttpServlet {
 					}
 				}
 				
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(null, null,cmp,utente,null,idCliente,idSede);
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(null, null,cmp,utente,null,idCliente,idSede,0);
 
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiTutti.jsp");
@@ -197,7 +197,7 @@ public class ListaCertificati extends HttpServlet {
 					}
 				}
 				
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"N",idCliente,idSede);
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"N",idCliente,idSede,0);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiInLavorazione.jsp");
 		     	dispatcher.forward(request,response);
@@ -230,7 +230,7 @@ public class ListaCertificati extends HttpServlet {
 					}
 				}
 				
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"S",idCliente,idSede);
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"S",idCliente,idSede,0);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiObsoleti.jsp");
 		     	dispatcher.forward(request,response);
@@ -243,6 +243,7 @@ public class ListaCertificati extends HttpServlet {
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
  				String idClienteSede =request.getParameter("cliente");
+ 				String anno = request.getParameter("anno");
 				
 				String idCliente = "";
 				String idSede = "";
@@ -261,10 +262,31 @@ public class ListaCertificati extends HttpServlet {
 						idSede = null;
 					}
 				}
+				int massimo = 0;
+								
+				ArrayList<Integer> listaAnni = GestioneCertificatoBO.getListaAnni(idCliente,idSede,session);
+				if(anno != null) {
+					massimo = Integer.parseInt(anno);
+				}else {
+					
+					
+					 massimo = listaAnni.get(0);
+
+				        // Itera sull'ArrayList per trovare il massimo
+				        for (int i = 1; i < listaAnni.size(); i++) {
+				            int elementoCorrente = listaAnni.get(i);
+				            if (elementoCorrente > massimo) {
+				                massimo = elementoCorrente;
+				            }
+				        }
+				}
 				
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null,cmp,utente,null,idCliente,idSede);
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null,cmp,utente,null,idCliente,idSede,massimo);
 				
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
+				request.getSession().setAttribute("listaAnni",listaAnni);
+				request.getSession().setAttribute("anno_corrente",massimo);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiChiusi.jsp");
 		     	dispatcher.forward(request,response);
 
@@ -294,7 +316,7 @@ public class ListaCertificati extends HttpServlet {
 					}
 				}
 				
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3), null,cmp,utente,null,idCliente,idSede);
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3), null,cmp,utente,null,idCliente,idSede,0);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiAnnullati.jsp");
 		     	dispatcher.forward(request,response);

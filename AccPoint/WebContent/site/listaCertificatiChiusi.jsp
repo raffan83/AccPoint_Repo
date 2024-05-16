@@ -19,6 +19,24 @@
 
 	     		 <input style="display:none" type="password" name="fakepasswordremembered"/>
 	<div class="row padding-bottom-30" >
+	<div class="col-xs-6">
+	<label>Anno di riferimento:</label>
+	<select id="anno" name="anno" class="form-control select2">
+	<c:forEach items="${listaAnni }" var="anno">
+	<c:if test="${anno == anno_corrente}">
+		<option value="${anno }" selected>${anno }</option>
+	</c:if>
+	<c:if test="${anno != anno_corrente }">
+		<option value="${anno }">${anno }</option>
+	</c:if>
+
+	</c:forEach>
+	
+	</select>
+	
+		</div>
+	
+	
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
             <button id="generaSelected" class="btn btn-success">Genera Selezionati</button>
             <form id="certificatiMulti" method="POST"><input type='hidden' id="dataInExport" name='dataIn' value=''></form>
@@ -736,7 +754,12 @@
 	
     });
 	
-	
+	$('#anno').change(function(){
+		
+		filtraCertificati($('#anno').val());
+		
+		
+	});
     
 
 

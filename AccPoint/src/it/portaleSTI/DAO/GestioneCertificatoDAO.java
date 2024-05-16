@@ -18,7 +18,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 
 public class GestioneCertificatoDAO {
 
-	public static ArrayList<CertificatoDTO> getListaCertificati(StatoCertificatoDTO stato,InterventoDatiDTO interventoDatiDTO, CompanyDTO cmp, UtenteDTO utente, String obsoleto, String idCliente, String idSede)throws Exception {
+	public static ArrayList<CertificatoDTO> getListaCertificati(StatoCertificatoDTO stato,InterventoDatiDTO interventoDatiDTO, CompanyDTO cmp, UtenteDTO utente, String obsoleto, String idCliente, String idSede, int anno)throws Exception {
 		
 		Query query=null;
 		ArrayList<CertificatoDTO>  listaCertificato=null;
@@ -29,10 +29,11 @@ public class GestioneCertificatoDAO {
 	    
 		session.beginTransaction();
 		
+		
 		String s_query ="from CertificatoDTO";
 		Boolean isWhere = true;
 		Boolean isAnd = false;
-					
+
 		if(stato!=null)
 		{
 			if(isWhere) {
@@ -132,6 +133,21 @@ public class GestioneCertificatoDAO {
 			 s_query += "misura.intervento.company.id = "+cmp.getId();
 
 			
+		}
+		
+		if(anno>0) {
+			if(isWhere) {
+				 s_query += " WHERE ";
+				 isWhere = false;
+			}
+			
+			if(isAnd) {
+				 s_query += " AND ";
+			}
+			isAnd = true;
+			
+			 s_query += "YEAR(dataCreazione) = "+anno;
+
 		}
 		
 		query = session.createQuery(s_query);
@@ -504,6 +520,23 @@ public static LinkedHashMap<String, String> getClientiPerCertificato(int id_comp
 
 	          
 		lista=(ArrayList<CertificatoDTO>)query.list();
+		
+		
+		return lista;
+	}
+
+
+	public static ArrayList<Integer> getListaAnni(String idCliente, String idSede, Session session) {
+		
+		ArrayList<Integer> lista = null;
+		
+		Query query =session.createQuery("select distinct YEAR(dataCreazione) from CertificatoDTO where stato.id = 2 and misura.intervento.id_cliente= :_id_cliente and misura.intervento.idSede = :_id_sede)");
+		query.setParameter("_id_cliente", Integer.parseInt(idCliente));
+		query.setParameter("_id_sede", Integer.parseInt(idSede));
+		
+
+	          
+		lista=(ArrayList<Integer>)query.list();
 		
 		
 		return lista;

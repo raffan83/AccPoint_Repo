@@ -1126,11 +1126,17 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
-	public static void getItemInRitardo() throws Exception {
+	public static ArrayList<String> getItemInRitardo(boolean login, Session s) throws Exception {
 		
 		
- 		Session session = SessionFacotryDAO.get().openSession();	    
-		session.beginTransaction();
+ 		Session session = null;
+ 		if(s!=null) {
+ 			session = s;
+ 		
+ 		}else {
+ 			session = SessionFacotryDAO.get().openSession();	    
+ 			session.beginTransaction();
+ 		}
 		
 		ArrayList<String> lista_origini = new ArrayList<String>();
 		
@@ -1229,49 +1235,50 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 				}
 			
 		}
+		
+		
+		Collections.sort(lista_origini, new Comparator<String>() {
+		    @Override
+		    public int compare(String s1, String s2) {
+		        // Ottieni i giorni mancanti dai due elementi della lista
+		        int giorniMancanti1 = 0;
+		        int giorniMancanti2 = 0;
 
-		if(lista_origini.size()>0 && Costanti.MAIL_DEST_ALERT_PACCO.split(";").length>0) {		
+		       // String s1n1 = s1.split(";")[s1.split(";").length - 3].replaceAll("[^\\d-]", "").trim();
+		        String s1n1 = s1.split(";")[s1.split(";").length - 3].replaceAll("[^\\d\\/-]", "").trim();
+		        String s1n2 = s1.split(";")[s1.split(";").length - 2].replaceAll("[^\\d\\/-]", "").trim();
+		        String s1n3 = s1.split(";")[s1.split(";").length - 1].replaceAll("[^\\d\\/-]", "").trim();
+		        
+		        if(s1n1.matches("-?[0-9]+")) {
+		        	giorniMancanti1 = Integer.parseInt(s1n1);
+		        }else if(s1n2.matches("-?[0-9]+")) {
+		        	giorniMancanti1 = Integer.parseInt(s1n2);
+		        }else if(s1n3.matches("-?[0-9]+")) {
+		        	giorniMancanti1 = Integer.parseInt(s1n3);
+		        }
+		        
+		        String s2n1 = s2.split(";")[s2.split(";").length - 3].replaceAll("[^\\d\\/-]", "").trim();
+		        String s2n2 = s2.split(";")[s2.split(";").length - 2].replaceAll("[^\\d\\/-]", "").trim();
+		        String s2n3 = s2.split(";")[s2.split(";").length - 1].replaceAll("[^\\d\\/-]", "").trim();
+		        
+		
+		        if(s2n1.matches("-?[0-9]+")) {
+		        	giorniMancanti2 = Integer.parseInt(s2n1);
+		        }else if(s2n2.matches("-?[0-9]+")) {
+		        	giorniMancanti2 = Integer.parseInt(s2n2);
+		        }else if(s2n3.matches("-?[0-9]+")) {
+		        	giorniMancanti2 = Integer.parseInt(s2n3);
+		        }
+		        
+		     			        
+		        // Ordina in modo decrescente
+		        return Integer.compare(giorniMancanti2, giorniMancanti1);
+		    }
+		});
+
+		if(lista_origini.size()>0 && Costanti.MAIL_DEST_ALERT_PACCO.split(";").length>0 && !login) {		
 	
 				
-			
-			Collections.sort(lista_origini, new Comparator<String>() {
-			    @Override
-			    public int compare(String s1, String s2) {
-			        // Ottieni i giorni mancanti dai due elementi della lista
-			        int giorniMancanti1 = 0;
-			        int giorniMancanti2 = 0;
-
-			       // String s1n1 = s1.split(";")[s1.split(";").length - 3].replaceAll("[^\\d-]", "").trim();
-			        String s1n1 = s1.split(";")[s1.split(";").length - 3].replaceAll("[^\\d\\/-]", "").trim();
-			        String s1n2 = s1.split(";")[s1.split(";").length - 2].replaceAll("[^\\d\\/-]", "").trim();
-			        String s1n3 = s1.split(";")[s1.split(";").length - 1].replaceAll("[^\\d\\/-]", "").trim();
-			        
-			        if(s1n1.matches("-?[0-9]+")) {
-			        	giorniMancanti1 = Integer.parseInt(s1n1);
-			        }else if(s1n2.matches("-?[0-9]+")) {
-			        	giorniMancanti1 = Integer.parseInt(s1n2);
-			        }else if(s1n3.matches("-?[0-9]+")) {
-			        	giorniMancanti1 = Integer.parseInt(s1n3);
-			        }
-			        
-			        String s2n1 = s2.split(";")[s2.split(";").length - 3].replaceAll("[^\\d\\/-]", "").trim();
-			        String s2n2 = s2.split(";")[s2.split(";").length - 2].replaceAll("[^\\d\\/-]", "").trim();
-			        String s2n3 = s2.split(";")[s2.split(";").length - 1].replaceAll("[^\\d\\/-]", "").trim();
-			        
-			
-			        if(s2n1.matches("-?[0-9]+")) {
-			        	giorniMancanti2 = Integer.parseInt(s2n1);
-			        }else if(s2n2.matches("-?[0-9]+")) {
-			        	giorniMancanti2 = Integer.parseInt(s2n2);
-			        }else if(s2n3.matches("-?[0-9]+")) {
-			        	giorniMancanti2 = Integer.parseInt(s2n3);
-			        }
-			        
-			     			        
-			        // Ordina in modo decrescente
-			        return Integer.compare(giorniMancanti2, giorniMancanti1);
-			    }
-			});
 			
 			SendEmailBO.sendEmailPaccoInRitardo(lista_origini, Costanti.MAIL_DEST_ALERT_PACCO);
 			
@@ -1280,8 +1287,12 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 						
 		}
 		
-		session.getTransaction().commit();
-		session.close();
+		if(s==null) {
+			session.getTransaction().commit();
+			session.close();
+		}
+		
+		return lista_origini;
 		
 	}
 

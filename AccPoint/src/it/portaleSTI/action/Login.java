@@ -21,6 +21,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneAccessoDAO;
+import it.portaleSTI.DAO.GestioneMagazzinoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.BachecaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -453,12 +454,14 @@ public class Login extends HttpServlet {
 			        		ArrayList<BachecaDTO> lista_messaggi = GestioneBachecaBO.getMessaggiPerUtente(utente.getId(), session);
 							request.getSession().setAttribute("lista_messaggi", lista_messaggi);
 							
-							
+							ArrayList<String> lista_pacchi = GestioneMagazzinoDAO.getItemInRitardo(true, session);
 							
 			        		request.getSession().setAttribute("tipoTrend", tipoTrend);
 			        		request.getSession().setAttribute("trend", trend);
 			        		request.getSession().setAttribute("trendJson", trendJson);
 			        		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
+			        		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
+			        		request.getSession().setAttribute("lista_pacchi_grafico", lista_pacchi);
 			        		
 			        		
 			        		dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");

@@ -7,6 +7,7 @@
  <%@page import="com.google.gson.Gson"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <%
@@ -162,6 +163,84 @@
 			            <!-- /.box-body -->
 			          </div>
 				</div>
+
+	
+	
+		<div class="col-sm-6 col-xs-12 ">	
+					<div class="box box-primary">
+			            <div class="box-header with-border">
+			              <h3 class="box-title">Pacchi in attesa di lavorazione</h3>
+		
+			              <div class="box-tools pull-right">
+			                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+			                </button>
+			                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+			              </div>
+			            </div>
+			            <div class="box-body">
+		 				<div class="table-responsive mailbox-messages">
+			            <table id="tabPacchi" class="table table-hover table-striped" role="grid" width="100%">
+						 <thead><tr class="active">
+						 <th>Pacco Origine</th>						
+						 <th>Cliente</th>
+						  <th>Commessa</th>
+						  <th>Data Commessa</th>
+						  <th>Data Arrivo</th>
+						  <th>Data Creazione</th>
+						  <th>Diff.</th>
+						  <th>Note</th>
+						<%--  <td></td> --%>
+						 						 
+						 </tr>
+						 </thead>
+						 
+						 <tbody >
+						 
+						  <c:forEach items="${lista_pacchi_grafico}" var="origine" varStatus="loop">
+                            <c:set var="splitted" value="${origine.split(';')}"/>
+                            <tr>
+                               <td>${splitted[0]}</td>
+                               <td>${splitted[1]}</td>
+                               <td>${splitted[2]}</td>
+                               <td>${splitted[3]}</td>
+                               <td>${splitted[4]}</td>
+                               <td>${splitted[5]}</td>
+                               <td>${splitted[6]}</td>
+                               <td>${splitted[7]}</td>
+              
+                            </tr>
+                        </c:forEach>
+						 
+						<%--  <c:forEach items="${lista_pacchi_grafico}" var="origine" varStatus="loop">
+							   <tr>
+                    <td>${fn:split(origine, ";")[0]}</td>
+                    <td>${fn:split(origine, ";")[1]}</td>
+                    <td>${fn:length(fn:split(origine, ";")) > 2 ? fn:split(origine, ";")[2] : ""}</td>
+                    <td>${fn:length(fn:split(origine, ";")) > 3 ? fn:split(origine, ";")[3] : ""}</td>
+                    <td>${fn:length(fn:split(origine, ";")) > 4 ? fn:split(origine, ";")[4] : ""}</td>
+                    <td>${fn:length(fn:split(origine, ";")) > 5 ? fn:split(origine, ";")[5] : ""}</td>
+                    <td>${fn:length(fn:split(origine, ";")) > 6 ? fn:split(origine, ";")[6] : ""}</td>
+                    <td>${fn:length(fn:split(origine, ";")) > 7 ? fn:split(origine, ";")[7] : ""}</td>
+                </tr>
+						  
+						  </c:forEach>
+						 --%>
+						</tbody>
+						 </table>
+   </div>
+
+
+			            </div>
+			            <!-- /.box-body -->
+			          </div>
+				</div>
+				
+				
+				
+				
+				
+				
+				
 				
 			</div>
 		
@@ -339,6 +418,82 @@
  });
 
     	 
+   
+   
+   
+	tab = $('#tabPacchi').DataTable({
+		language: {
+	        	emptyTable : 	"Nessun dato presente nella tabella",
+	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	        	infoPostFix:	"",
+	        infoThousands:	".",
+	       /*   lengthMenu:	"Visualizza _MENU_ elementi",  */
+	        loadingRecords:	"Caricamento...",
+	        	processing:	"Elaborazione...",
+	        	 search:	"Cerca:", 
+	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	        	paginate:	{
+  	        	first:	"Inizio",
+  	        	previous:	"Prec.",
+  	        	next:	"Succ.",
+  	        last:	"Fine",
+	        	},
+	        aria:	{
+  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	        }
+        },
+        
+  
+    	
+        pageLength: 5,
+         "order": [ 6, "asc" ],  
+	      paging: false, 
+	      ordering: true,
+	      info: true, 
+
+	      searchable: true,  
+	      targets: 0,
+	      responsive: false,
+	      scrollX: true,
+	      scrollY: "220px",
+	      stateSave: true,
+	      searching: true, 
+	     
+
+	      
+
+	    });
+	
+	   $('.inputsearchtable').on('click', function(e){
+	       e.stopPropagation();    
+	    }); 
+
+// Apply the search
+tab.columns().eq( 0 ).each( function ( colIdx ) {
+$( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
+	tab
+       .column( colIdx )
+       .search( this.value )
+       .draw();
+} );
+} ); 
+	table.columns.adjust().draw();  
+	
+
+$('#tabPacchi').on( 'page.dt', function () {
+	$('.customTooltip').tooltipster({
+     theme: 'tooltipster-light'
+ }); 
+	
+	$('.removeDefault').each(function() {
+	   $(this).removeClass('btn-default');
+	})  
+
+
+});
     	
     	
 if(trendJson!=null){

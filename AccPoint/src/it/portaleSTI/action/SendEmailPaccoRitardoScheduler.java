@@ -18,7 +18,7 @@ public class SendEmailPaccoRitardoScheduler implements Job{
 
 		try {
 
-			GestioneMagazzinoDAO.getItemInRitardo();
+			GestioneMagazzinoDAO.getItemInRitardo(false, null);
 			
 			
 			logger.error("Invio email pacchi in ritardo eseguito con successo dallo scheduler di Quartz!");

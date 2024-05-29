@@ -166,7 +166,7 @@
 
 	
 	
-		<div class="col-sm-6 col-xs-12 ">	
+		<div class="col-sm-12 col-xs-12 ">	
 					<div class="box box-primary">
 			            <div class="box-header with-border">
 			              <h3 class="box-title">Pacchi in attesa di lavorazione</h3>

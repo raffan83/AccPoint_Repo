@@ -181,6 +181,9 @@ public class DirectMySqlDAO {
 	private static String sqlInsertDocumentoDocumentale = "INSERT INTO  docum_tl_documento(id_committente, id_fornitore, nome_documento, numero_documento, data_caricamento, frequenza_rinnovo_mesi, rilasciato, data_scadenza, nome_file, stato, documento_sostituito) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 	
 	private static String sqlInsertIngresso="INSERT INTO ing_ingresso(tipo_registrazione,nome_ditta, nominativo_visitatore, data_ingresso, data_uscita, id_reparto, id_area, modalita_ingresso, telefono, tipo_merce, targa) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+	
+	private static String sqlOrePrevisteOreScaricate ="SELECT a.USERNAME,a.ID_COMM,format((select DT_COMMESSA from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA c WHERE c.ID_COMMESSA=a.ID_COMM  ),'dd/MM/yyyy') AS DATA_COMMESSA,(select TB_FASE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as CODICE_FASE,   (select ORE_PREVISTE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as ORE_PREVISTE,  sum(a.OREINT) as ORE_SCARICATE, a.GLB_FASE FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_AGENDA] a  WHERE a.ID_COMM like '%AM%' group by a.GLB_FASE,a.ID_COMM,a.USERNAME";
+		
 
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
@@ -3337,6 +3340,89 @@ public static ArrayList<IngIngressoDTO> getListaIngressi() throws Exception {
 		
 
 		lista.add(ingresso);
+
+		
+	}
+	
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+
+	return lista;
+}
+
+
+
+
+public static ArrayList<String> getOrePrevisteOreScaricate() throws Exception {
+	
+	ArrayList<String> lista = new ArrayList<String>();
+		
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	
+	try {
+		con=ManagerSQLServer.getConnectionSQL();
+
+		
+	pst=con.prepareStatement(sqlOrePrevisteOreScaricate);
+	
+
+	rs=pst.executeQuery();
+	
+	
+	
+	while(rs.next())
+	{
+		String str = "";
+		
+		if(rs.getString(1)!=null) {
+			str += rs.getString(1)+";";
+		}else {
+			str += ";";
+		}
+		if(rs.getString(2)!=null) {
+			str += rs.getString(2)+";";		
+		}else {
+			str += ";";		
+		}
+		if(rs.getString(3)!=null) {
+			str += rs.getString(3)+";";
+		}else {
+			str += ";";
+		}
+		if(rs.getString(4)!=null) {
+			str += rs.getString(4)+";";
+		}else {
+			str += ";";
+		}
+		if(rs.getString(5)!=null) {
+			str += rs.getString(5)+";";
+		}else {
+			str += ";";
+		}
+		if(rs.getString(6)!=null) {
+			str += rs.getString(6)+";";
+		}else {
+			str += ";";
+		}
+		if(rs.getString(7)!=null) {
+			str += rs.getString(7)+";";
+		}else {
+			str += ";";
+		}
+		
+				
+		lista.add(str);
 
 		
 	}

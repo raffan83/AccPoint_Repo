@@ -63,35 +63,55 @@
 
 <div class="row">
 	<div class="col-xs-12">
+	<label>Escludi Ore Previste &nbsp;</label>
+<input type="checkbox" id="excludeFilter"><br>
+</div>
+</div><br>
 
+<div class="row">
+	<div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
  <th>Username</th>
  <th>ID Commessa</th>
- <th>Data Commessa</th>
- <th>Codice Fase</th>
+ <th>Oggetto Commessa</th>
+ <th>Cliente</th>
+  <th>Data Commessa</th>
+ <th>Fase</th>
+<th>Milestone</th>
  <th>Ore Previste</th> 
   <th>Ore Scaricate</th>
-  <th>Fase</th>
-
+  <th>Scostamento</th>
+  
+  <th>Glb Fase</th>
+ 
  </tr></thead>
  
  <tbody>
  
- <c:forEach items="${listaOre}" var="str" varStatus="loop">
+ <c:forEach items="${listaOre}" var="ore" varStatus="loop">
 
-
+<c:if test="${ore.duplicato == 1 }">
+		 <tr role="row" style="background-color:#ffff99">
+</c:if>
+<c:if test="${ore.duplicato != 1 }">
 		 <tr role="row" >
+</c:if>
+	<td>${ore.username}</td>
+	<td>${ore.id_commessa}</td>
+	<td>${ore.oggetto_commessa}</td>
+	<td>${ore.cliente}</td>
+	<td> <fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${ore.data_commessa}" /></td>
+	<td>${ore.fase}</td>
+	<td>${ore.milestone }</td>
+	<td>${ore.ore_previste}</td>
+	<td>${ore.ore_scaricate}</td>
+	<td><fmt:formatNumber value="${ore.scostamento}"  minFractionDigits="2" maxFractionDigits="2"></fmt:formatNumber></td>
 
-	<td>${str.split(';')[0]}</td>
-	<td>${str.split(';')[1]}</td>
-	<td>${str.split(';')[2]}</td>
-	<td>${str.split(';')[3]}</td>
-	<td>${str.split(';')[4]}</td>
-	<td>${str.split(';')[5]}</td>
-	<td>${str.split(';')[6]}</td>
-	
+	<td>${ore.glb_fase }</td>
+
 
 	</tr>
 	 
@@ -99,7 +119,20 @@
  
 	
  </tbody>
- </table>  
+ </table> 
+  <div class="row">
+ <div class="col-xs-6"></div>
+ <div class="col-xs-2">
+ <label>Tot. Ore Previste</label>
+ <input class="form-control" readonly type="text" id="tot_previste" style="font-weight:bold;">
+ </div>
+ <div class="col-xs-2">
+ <label>Tot. Ore Scaricate</label>
+ <input class="form-control" readonly type="text" id="tot_scaricate" style="font-weight:bold;">
+ </div>
+
+ 
+ </div> 
  
  </div>
  </div>
@@ -169,7 +202,12 @@
 
 
 <jsp:attribute name="extra_css">
+<style>
+    .global-column {
 
+        hidden: ${global != null ?  'table-cell' : 'hidden'};
+    }
+</style>
 
 </jsp:attribute>
 
@@ -207,15 +245,53 @@
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	        if($(this).index()!= 0){
+
 	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	        }
+	        
 	    } );
 	} );
 
 	
 
+	 function sommaDati(){
+		 
+		 var table = $('#tabPM').DataTable();
+		 
+		 var tot_previste = 0;
+		 var tot_scaricate = 0;
+		 
+		 var data = table.rows({ search: 'applied' }).data();
+		 
+		 var fasi = [];
+		 for(var i = 0; i<data.length; i++){
+			 
+			 if(!fasi.includes(data[i][10]) && data[i][8]!=null && data[i][8]!=''){
+				 fasi.push(data[i][10]);		
+				 tot_previste = tot_previste + parseFloat(data[i][7]);
+			 }
+			 
+			 if(data[i][8]!=null && data[i][8]!=''){
+				 tot_scaricate = tot_scaricate  + parseFloat(data[i][8]);	 
+			 }
+			 
 
+			 
+			 
+		 }
+		 
+		 $('#tot_previste').val(tot_previste.toFixed(2));
+		 $('#tot_scaricate').val(tot_scaricate.toFixed(2));
+		 
+		 if(tot_previste>=tot_scaricate){
+			 $('#tot_previste').css("background-color", "#5DEB4F")
+			 $('#tot_scaricate').css("background-color", "#5DEB4F")
+		 }else{
+			 $('#tot_previste').css("background-color", "#EE894F")
+			 $('#tot_scaricate').css("background-color", "#EE894F")
+		 }
+		 
+	 }
+	 
 
 	
     $(document).ready(function() {
@@ -249,7 +325,7 @@
 	        pageLength: 100,
   	      paging: true, 
   	      ordering: true,
-  	    		order: [[ 1, "desc" ]],
+  	    		order: [[ 2, "desc" ]],
   	      info: true, 
   	      searchable: false, 
   	      targets: 0,
@@ -257,9 +333,9 @@
   	      scrollX: false,
   	      stateSave: true,
   	      columnDefs: [
-						   { responsivePriority: 1, targets: 1 },
+						   { responsivePriority: 1, targets: 1 }
 	
-  	                  
+						   
   	               ],
   	     
   	               buttons: [ {
@@ -306,6 +382,9 @@
   	      
   	    });
     	
+    	
+    
+    	
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
 
      	    
@@ -324,9 +403,10 @@
               .column( colIdx )
               .search( this.value )
               .draw();
+          sommaDati();
       } );
   } ); 
-  	table.columns.adjust().draw();
+
     	
 	
 	$('#tabPM').on( 'page.dt', function () {
@@ -341,8 +421,87 @@
  
     });
 	
+	if("${global}"!=null && "${global}"!=""){
+		table.column(10).visible(true);
+	}else{
+		table.column(10).visible(false);	
+	}
+	
+	
+	
+	
+	
+	$('input:checkbox').on('ifToggled', function() {
+		
+		$('#excludeFilter').on('ifChecked', function(event){
+			 var searchText = "0.0";
+		        table.search('').draw(); // Resetta la ricerca
+		        $.fn.dataTable.ext.search.push(
+		            function(settings, data, dataIndex) {
+		                // Controlla se uno dei valori nella riga corrisponde esattamente al testo da escludere
+		                for (var i = 0; i < data.length; i++) {
+		                    if (data[7].toLowerCase().trim() === searchText) {
+		                        return false;
+		                    }
+		                }
+		                return true;
+		            }
+		        );
+		        table.draw();
+		        $.fn.dataTable.ext.search.pop(); // Rimuovi il filtro personalizzato dopo la ricerca
+		        
+		        sommaDati()
+		
+		});
+		
+		$('#excludeFilter').on('ifUnchecked', function(event) {
+			
+			var searchText = "";
+	        table.search('').draw(); // Resetta la ricerca
+	        $.fn.dataTable.ext.search.push(
+	            function(settings, data, dataIndex) {
+	                // Controlla se uno dei valori nella riga corrisponde esattamente al testo da escludere
+	                for (var i = 0; i < data.length; i++) {
+	                    if (data[7].toLowerCase().trim() === searchText) {
+	                        return false;
+	                    }
+	                }
+	                return true;
+	            }
+	        );
+	        table.draw();
+	        $.fn.dataTable.ext.search.pop(); // Rimuovi il filtro personalizzato dopo la ricerca
+	        
+	        sommaDati()
+		
+		});
+		
+			})
+	
+	
 	
 
+    $('#excludeFilter').on('keyup', function() {
+        var searchText = this.value.toLowerCase().trim();
+        table.search('').draw(); // Resetta la ricerca
+        $.fn.dataTable.ext.search.push(
+            function(settings, data, dataIndex) {
+                // Controlla se uno dei valori nella riga corrisponde esattamente al testo da escludere
+                for (var i = 0; i < data.length; i++) {
+                    if (data[7].toLowerCase().trim() === searchText) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        );
+        table.draw();
+        $.fn.dataTable.ext.search.pop(); // Rimuovi il filtro personalizzato dopo la ricerca
+        
+        sommaDati()
+    });
+	
+  	table.columns.adjust().draw();
 });
     
     

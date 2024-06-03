@@ -2108,4 +2108,20 @@ public class Utility extends HttpServlet {
 			        return giorniLavorativi*segno;
 			    }
 			
+			    
+			    public static boolean isNumberDouble(String value) {
+					boolean flag=true;
+					
+					try 
+					{
+					 Double.parseDouble(value);		
+					} 
+					catch (NumberFormatException e) 
+					{
+						return false;
+					}
+					
+					
+					return flag;
+				}
 }

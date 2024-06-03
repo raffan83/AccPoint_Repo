@@ -3,6 +3,8 @@ package it.portaleSTI.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.map.HashedMap;
+
 import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DTO.ControlloOreDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 
@@ -35,7 +40,13 @@ public class GestioneOreScaricate extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		doPost(request, response);
+		if (request.getSession().getAttribute("userObj")==null ) {
+			request.getSession().setAttribute("urlStatico", "/gestioneOreScaricate.do?action=lista");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+            dispatcher.forward(request,response);
+		}else {
+			doPost(request, response);
+		}
 	}
 
 	/**
@@ -53,9 +64,24 @@ public class GestioneOreScaricate extends HttpServlet {
 			
 			if(action!=null && action.equals("lista")) {
 				
-				ArrayList<String> listaOre = DirectMySqlDAO.getOrePrevisteOreScaricate();
+				String global = request.getParameter("global");
+				ArrayList<ControlloOreDTO> listaOre = DirectMySqlDAO.getOrePrevisteOreScaricate();
+				Map<String, String> map = new HashMap<String, String>();
+				
+				for (int i=0;i<listaOre.size();i++) {
+					if(listaOre.get(i).getGlb_fase()!=null && map.containsKey(listaOre.get(i).getGlb_fase()) && listaOre.get(i).getDuplicato()!=1) {
+						for (int j=0;j<listaOre.size();j++) {
+							if(listaOre.get(j).getGlb_fase()!=null && listaOre.get(j).getGlb_fase().equals(listaOre.get(i).getGlb_fase())) {
+								listaOre.get(j).setDuplicato(1);
+							}
+						}
+					}else {
+						map.put(listaOre.get(i).getGlb_fase(), listaOre.get(i).getGlb_fase());
+					}
+				}
 				
 				request.getSession().setAttribute("listaOre", listaOre);
+				request.getSession().setAttribute("global", global);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaOreScaricate.jsp");
 		     	dispatcher.forward(request,response);

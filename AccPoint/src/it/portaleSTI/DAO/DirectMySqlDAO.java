@@ -32,6 +32,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ColonnaDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.ControlloOreDTO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
@@ -182,8 +183,8 @@ public class DirectMySqlDAO {
 	
 	private static String sqlInsertIngresso="INSERT INTO ing_ingresso(tipo_registrazione,nome_ditta, nominativo_visitatore, data_ingresso, data_uscita, id_reparto, id_area, modalita_ingresso, telefono, tipo_merce, targa) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 	
-	private static String sqlOrePrevisteOreScaricate ="SELECT a.USERNAME,a.ID_COMM,format((select DT_COMMESSA from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA c WHERE c.ID_COMMESSA=a.ID_COMM  ),'dd/MM/yyyy') AS DATA_COMMESSA,(select TB_FASE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as CODICE_FASE,   (select ORE_PREVISTE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as ORE_PREVISTE,  sum(a.OREINT) as ORE_SCARICATE, a.GLB_FASE FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_AGENDA] a  WHERE a.ID_COMM like '%AM%' group by a.GLB_FASE,a.ID_COMM,a.USERNAME";
-		
+	//private static String sqlOrePrevisteOreScaricate ="SELECT a.USERNAME,a.ID_COMM,format((select DT_COMMESSA from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA c WHERE c.ID_COMMESSA=a.ID_COMM  ),'dd/MM/yyyy') AS DATA_COMMESSA,(select TB_FASE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as CODICE_FASE,   (select ORE_PREVISTE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as ORE_PREVISTE,  sum(a.OREINT) as ORE_SCARICATE, a.GLB_FASE FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_AGENDA] a  WHERE a.ID_COMM like '%AM%' group by a.GLB_FASE,a.ID_COMM,a.USERNAME";
+	private static String sqlOrePrevisteOreScaricate = "SELECT a.USERNAME, a.ID_COMM, format((select DT_COMMESSA from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA c WHERE c.ID_COMMESSA=a.ID_COMM  ),'dd/MM/yyyy') AS DATA_COMMESSA, (select DESCR from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA c WHERE c.ID_COMMESSA=a.ID_COMM  ) as DESCRIZIONE_COMMESSA, (select NOME from [BTOMEN_CRESCO_DATI].[dbo].BWT_ANAGEN d where ID_ANAGEN = (select ID_ANAGEN from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA c WHERE c.ID_COMMESSA=a.ID_COMM  )) as NOME_CLIENTE, (select TB_FASE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as CODICE_FASE,(select DESCR_FASE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as DESCRIZIONE_FASE,(select ORE_PREVISTE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as ORE_PREVISTE,sum(a.OREINT) as ORE_SCARICATE,a.GLB_FASE, (select e.DESCR from [BTOMEN_CRESCO_DATI].[dbo].BWT_COMMESSA_AVANZ e WHERE e.SYS_CHIAVEGLOBALE= (select GLB_MILESTONE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI f where a.ID_COMM = f.ID_COMMESSA and f.SYS_CHIAVEGLOBALE = a.GLB_FASE) and e.TB_TIPO_MILE = 'MILE') as MILESTONE  FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_AGENDA] a  WHERE a.ID_COMM like '%AM%' group by a.GLB_FASE,a.ID_COMM,a.USERNAME order by a.USERNAME ASC";
 
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
@@ -3362,9 +3363,9 @@ public static ArrayList<IngIngressoDTO> getListaIngressi() throws Exception {
 
 
 
-public static ArrayList<String> getOrePrevisteOreScaricate() throws Exception {
+public static ArrayList<ControlloOreDTO> getOrePrevisteOreScaricate() throws Exception {
 	
-	ArrayList<String> lista = new ArrayList<String>();
+	ArrayList<ControlloOreDTO> lista = new ArrayList<ControlloOreDTO>();
 		
 	Connection con=null;
 	PreparedStatement pst = null;
@@ -3376,53 +3377,55 @@ public static ArrayList<String> getOrePrevisteOreScaricate() throws Exception {
 		
 	pst=con.prepareStatement(sqlOrePrevisteOreScaricate);
 	
+	SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 	rs=pst.executeQuery();
 	
-	
+	ControlloOreDTO result = null;
 	
 	while(rs.next())
 	{
-		String str = "";
+		result = new ControlloOreDTO();
 		
 		if(rs.getString(1)!=null) {
-			str += rs.getString(1)+";";
-		}else {
-			str += ";";
+			result.setUsername(rs.getString(1));
 		}
 		if(rs.getString(2)!=null) {
-			str += rs.getString(2)+";";		
-		}else {
-			str += ";";		
+			result.setId_commessa(rs.getString(2));	
 		}
 		if(rs.getString(3)!=null) {
-			str += rs.getString(3)+";";
-		}else {
-			str += ";";
+			result.setData_commessa(df.parse(rs.getString(3)));
 		}
 		if(rs.getString(4)!=null) {
-			str += rs.getString(4)+";";
-		}else {
-			str += ";";
+			result.setOggetto_commessa(rs.getString(4));
 		}
 		if(rs.getString(5)!=null) {
-			str += rs.getString(5)+";";
-		}else {
-			str += ";";
+			result.setCliente(rs.getString(5));
 		}
-		if(rs.getString(6)!=null) {
-			str += rs.getString(6)+";";
-		}else {
-			str += ";";
-		}
-		if(rs.getString(7)!=null) {
-			str += rs.getString(7)+";";
-		}else {
-			str += ";";
+		if(rs.getString(6)!=null) {			
+			result.setFase(rs.getString(6) +" - "+ rs.getString(7));
 		}
 		
+		if(rs.getString(8)!=null && !rs.getString(8).equals("")) {
+			result.setOre_previste(Double.parseDouble(rs.getString(8)));
+		}else {
+			result.setOre_previste(0.0);
+		}
+		if(rs.getString(9)!=null && !rs.getString(9).equals("")) {
+			result.setOre_scaricate(Double.parseDouble(rs.getString(9)));
+		}else {
+			result.setOre_scaricate(0.0);
+		}
+		if(rs.getString(10)!=null) {
+			result.setGlb_fase(rs.getString(10));
+		}
+		if(rs.getString(11)!=null) {
+			result.setMilestone(rs.getString(11));
+		}
+		
+		result.setScostamento(result.getOre_previste() - result.getOre_scaricate());
 				
-		lista.add(str);
+		lista.add(result);
 
 		
 	}

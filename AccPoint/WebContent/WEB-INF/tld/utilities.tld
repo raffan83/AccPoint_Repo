@@ -96,5 +96,10 @@
         <function-class>it.portaleSTI.Util.Utility</function-class>
         <function-signature> BigDecimal getE(int,it.portaleSTI.DTO.VerStrumentoDTO, java.math.BigDecimal)</function-signature>
     </function> 
+            <function>
+        <name>isNumberDouble</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature> boolean isNumberDouble(java.lang.String)</function-signature>
+    </function> 
   
 </taglib>

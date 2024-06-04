@@ -36,7 +36,7 @@
             
             <div class="row">
 
-	<div class="col-xs-3">
+	<div class="col-xs-3" style="display:none">
 			 <div class="form-group">
 				 <label for="datarange" class="control-label">Filtra Data Prossima Attività:</label>
 					<div class="col-md-10 input-group" >
@@ -52,7 +52,7 @@
 
 	</div>
 	
-	<div class="col-xs-3">
+	<div class="col-xs-6">
 	
 		<label>Filtra Company</label>
          
@@ -83,7 +83,7 @@
 	</div>
 
 
-</div>
+</div><br>
             
             
               <div id="modalTestoEmail" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
@@ -133,7 +133,7 @@
         </div>
         <!-- /.col -->
  </div>
-</div>
+</div><br><br>
 
 
 </section>

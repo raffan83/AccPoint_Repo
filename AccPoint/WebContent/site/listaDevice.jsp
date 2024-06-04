@@ -111,7 +111,10 @@
 <th>Ubicazione</th>
 <th>Denominazione</th>
 <th>Rif. fattura</th>
-
+<th>CPU</th>
+<th>Scheda Video</th>
+<th>Hard Disk</th>
+<th>Ram</th>
 <th style="min-width:150px">Azioni</th>
  </tr></thead>
  
@@ -134,6 +137,10 @@
 	<td>${device.ubicazione }</td>
 	<td>${device.denominazione }</td>
 	<td>${device.rif_fattura }</td>
+	<td>${device.cpu }</td>
+	<td>${device.scheda_video }</td>
+	<td>${device.hard_disk }</td>
+	<td>${device.ram }</td>
 	<td>
 
 	<a class="btn btn-info customTooltip" onClicK="$(this).dblclick()" title="Click per aprire il dettaglio device"><i class="fa fa-search"></i></a>
@@ -2479,7 +2486,7 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 14 },		    	  
+		    	  { responsivePriority: 1, targets: 18 },		    	  
 		    	  
 		               ], 	        
 	  	      buttons: [   

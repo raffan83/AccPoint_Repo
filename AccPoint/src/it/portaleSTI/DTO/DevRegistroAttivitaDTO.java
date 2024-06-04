@@ -17,6 +17,7 @@ public class DevRegistroAttivitaDTO {
 	private DocumFornitoreDTO company;
 	private int email_inviata;
 	private int sollecito_inviato;
+	private Integer tipo_manutenzione_straordinaria;
 	
 	public int getId() {
 		return id;
@@ -95,6 +96,12 @@ public class DevRegistroAttivitaDTO {
 	}
 	public void setSollecito_inviato(int sollecito_inviato) {
 		this.sollecito_inviato = sollecito_inviato;
+	}
+	public Integer getTipo_manutenzione_straordinaria() {
+		return tipo_manutenzione_straordinaria;
+	}
+	public void setTipo_manutenzione_straordinaria(Integer tipo_manutenzione_straordinaria) {
+		this.tipo_manutenzione_straordinaria = tipo_manutenzione_straordinaria;
 	}
 	
 	

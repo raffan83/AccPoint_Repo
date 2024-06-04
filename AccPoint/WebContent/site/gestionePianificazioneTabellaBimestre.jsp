@@ -580,6 +580,10 @@ function pastePianificazione(day, commessa){
 	
 	var id = cellCopy;
 	
+	if(cellCopy==null){
+		id= $('#cellCopy').val();
+	}
+		
 	dataObj ={};
 	dataObj.id = id;
 	

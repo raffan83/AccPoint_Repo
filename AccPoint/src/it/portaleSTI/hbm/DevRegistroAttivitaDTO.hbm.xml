@@ -56,5 +56,9 @@
           <property name="sollecito_inviato" type="int">
             <column name="sollecito_inviato" />
         </property>
+        
+        <property name="tipo_manutenzione_straordinaria" type="java.lang.Integer">
+            <column name="tipo_manutenzione_straordinaria" />
+        </property>
 	</class>
 </hibernate-mapping>

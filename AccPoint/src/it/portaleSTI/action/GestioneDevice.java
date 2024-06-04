@@ -29,10 +29,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.DevAllegatiDeviceDTO;
 import it.portaleSTI.DTO.DevAllegatiSoftwareDTO;
 import it.portaleSTI.DTO.DevDeviceDTO;
+import it.portaleSTI.DTO.DevDeviceMonitorDTO;
 import it.portaleSTI.DTO.DevDeviceSoftwareDTO;
 import it.portaleSTI.DTO.DevLabelConfigDTO;
 import it.portaleSTI.DTO.DevLabelTipoInterventoDTO;
@@ -45,6 +47,7 @@ import it.portaleSTI.DTO.DevTestoEmailDTO;
 import it.portaleSTI.DTO.DevTipoDeviceDTO;
 import it.portaleSTI.DTO.DevTipoEventoDTO;
 import it.portaleSTI.DTO.DevTipoProceduraDTO;
+import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -273,6 +276,10 @@ public class GestioneDevice extends HttpServlet {
 				String id_dipendente = ret.get("dipendente");
 				String nuova_label_configurazione = ret.get("nuova_label_configurazione");
 				String rif_fattura = ret.get("rif_fattura");
+				String ram = ret.get("ram");
+				String hard_disk = ret.get("hard_disk");
+				String cpu = ret.get("cpu");
+				String scheda_video = ret.get("scheda_video");
 				
 				if(id_dipendente.equals("0")) {
 					id_dipendente=null;
@@ -294,6 +301,10 @@ public class GestioneDevice extends HttpServlet {
 				device.setModello(modello);
 				device.setDistributore(distributore);
 				device.setRif_fattura(rif_fattura);
+				device.setRam(ram);
+				device.setCpu(cpu);
+				device.setHard_disk(hard_disk);
+				device.setScheda_video(scheda_video);
 				
 				if(data_acquisto!=null && !data_acquisto.equals("")) {
 					device.setData_acquisto(df.parse(data_acquisto));
@@ -377,6 +388,10 @@ public class GestioneDevice extends HttpServlet {
 				String id_dipendente = ret.get("dipendente_mod");
 				String nuova_label_configurazione = ret.get("nuova_label_configurazione_mod");
 				String rif_fattura = ret.get("rif_fattura_mod");
+				String ram = ret.get("ram_mod");
+				String hard_disk = ret.get("hard_disk_mod");
+				String cpu = ret.get("cpu_mod");
+				String scheda_video = ret.get("scheda_video_mod");
 				
 				if(id_dipendente.equals("0")) {
 					id_dipendente=null;
@@ -490,6 +505,72 @@ public class GestioneDevice extends HttpServlet {
 					}
 					modifica_effettuata = true;
 				}
+			
+				if(device.getRam()!=null && !device.getRam().equals(ram))
+				{
+					if(device.getRam().equals("")) {
+						stringaModifica=stringaModifica+"Ram([VUOTO],"+ram+")|";
+					}else {
+						if(ram.equals("")) {
+							
+							stringaModifica=stringaModifica+"Ram("+device.getRam()+",[VUOTO])|";
+						}else {
+							stringaModifica=stringaModifica+"Ram("+device.getRam()+","+ram+")|";	
+						}
+							
+					}
+					modifica_effettuata = true;
+				}
+				
+				if(device.getCpu()!=null && !device.getCpu().equals(cpu))
+				{
+					if(device.getCpu().equals("")) {
+						stringaModifica=stringaModifica+"Cpu([VUOTO],"+cpu+")|";
+					}else {
+						if(cpu.equals("")) {
+							
+							stringaModifica=stringaModifica+"Cpu("+device.getCpu()+",[VUOTO])|";
+						}else {
+							stringaModifica=stringaModifica+"Cpu("+device.getCpu()+","+cpu+")|";	
+						}
+							
+					}
+					modifica_effettuata = true;
+				}
+				
+				if(device.getHard_disk()!=null && !device.getHard_disk().equals(hard_disk))
+				{
+					if(device.getHard_disk().equals("")) {
+						stringaModifica=stringaModifica+"Hard Disk([VUOTO],"+modello+")|";
+					}else {
+						if(hard_disk.equals("")) {
+							
+							stringaModifica=stringaModifica+"Hard Disk("+device.getHard_disk()+",[VUOTO])|";
+						}else {
+							stringaModifica=stringaModifica+"Hard Disk("+device.getHard_disk()+","+hard_disk+")|";	
+						}
+							
+					}
+					modifica_effettuata = true;
+				}
+				
+				if(device.getScheda_video()!=null && !device.getScheda_video().equals(scheda_video))
+				{
+					if(device.getScheda_video().equals("")) {
+						stringaModifica=stringaModifica+"Modello([VUOTO],"+scheda_video+")|";
+					}else {
+						if(scheda_video.equals("")) {
+							
+							stringaModifica=stringaModifica+"Modello("+device.getScheda_video()+",[VUOTO])|";
+						}else {
+							stringaModifica=stringaModifica+"Modello("+device.getScheda_video()+","+modello+")|";	
+						}
+							
+					}
+					modifica_effettuata = true;
+				}
+				
+		
 				
 				if(device.getDistributore()!=null && !device.getDistributore().equals(distributore))
 				{
@@ -607,6 +688,11 @@ public class GestioneDevice extends HttpServlet {
 				device.setCostruttore(costruttore);
 				device.setModello(modello);
 				device.setDistributore(distributore);
+				device.setRam(ram);
+				device.setCodice_interno(codice_interno);
+				device.setCpu(cpu);
+				device.setHard_disk(hard_disk);
+				device.setScheda_video(scheda_video);
 				
 				device.setRif_fattura(rif_fattura);
 				if(data_creazione!=null && !data_creazione.equals("") ) {
@@ -865,7 +951,9 @@ public class GestioneDevice extends HttpServlet {
 				String note_evento = ret.get("note_evento");
 				String tipo_intervento = ret.get("tipo_intervento");
 				String nuova_label_tipo = ret.get("nuova_label_tipo");
-
+				String tipo_manutenzione_straordinaria = ret.get("tipo_manutenzione_straordinaria");
+				
+				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
 				
@@ -875,6 +963,11 @@ public class GestioneDevice extends HttpServlet {
 				attivita.setTipo_evento(new DevTipoEventoDTO(Integer.parseInt(tipo_evento),""));
 				attivita.setDescrizione(descrizione);
 				attivita.setData_evento(df.parse(data));
+				if(tipo_manutenzione_straordinaria!=null && !tipo_manutenzione_straordinaria.equals("")) {
+					attivita.setTipo_manutenzione_straordinaria(Integer.parseInt(tipo_manutenzione_straordinaria));
+				}else {
+					attivita.setTipo_manutenzione_straordinaria(null);
+				}
 				if(frequenza!=null && !frequenza.equals("")) {
 					attivita.setFrequenza(Integer.parseInt(frequenza));
 				}
@@ -942,6 +1035,7 @@ public class GestioneDevice extends HttpServlet {
 				String note_evento = ret.get("note_evento_mod");
 				String tipo_intervento = ret.get("tipo_intervento_mod");
 				String nuova_label_tipo = ret.get("nuova_label_tipo_mod");
+				String tipo_manutenzione_straordinaria = ret.get("tipo_manutenzione_straordinaria_mod");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -963,7 +1057,11 @@ public class GestioneDevice extends HttpServlet {
 				attivita.setUtente(utente);
 				attivita.setNote_evento(note_evento);
 				attivita.setTipo_intervento(tipo_intervento);
-				
+				if(tipo_manutenzione_straordinaria!=null && !tipo_manutenzione_straordinaria.equals("")) {
+					attivita.setTipo_manutenzione_straordinaria(Integer.parseInt(tipo_manutenzione_straordinaria));
+				}else {
+					attivita.setTipo_manutenzione_straordinaria(null);
+				}
 				session.update(attivita);		
 				
 				if(nuova_label_tipo!=null && !nuova_label_tipo.equals("")) {
@@ -1072,17 +1170,26 @@ public class GestioneDevice extends HttpServlet {
 			}
 			else if(action.equals("elimina_device")) {
 				ajax = true;
-				
-				String id_device = request.getParameter("id_device");				
+				myObj = new JsonObject();
+				String id_device = request.getParameter("id_device");		
+				String stato = request.getParameter("stato");
 				
 				DevDeviceDTO device = GestioneDeviceBO.getDeviceFromID(Integer.parseInt(id_device), session);
 				
-				device.setDisabilitato(1);
+				if(stato!=null && stato.equals("0")) {
+					device.setDisabilitato(0);
+					myObj.addProperty("messaggio", "Completato con successo!");
+				}else {
+					device.setDisabilitato(1);	
+					myObj.addProperty("messaggio", "Device eliminato con successo!");
+				}
+				
+				session.update(device);
 								
-				myObj = new JsonObject();
+				
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Device eliminato con successo!");
+				
 				out.print(myObj);	
 				
 			}
@@ -1540,6 +1647,106 @@ public class GestioneDevice extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDeviceArchiviati.jsp");
 		     	dispatcher.forward(request,response);
 			}
+			
+			else if(action.equals("esporta_lista_sw")) {
+				
+				String id_company = request.getParameter("id_company");
+														
+				
+				ArrayList<DevSoftwareDTO> lista_software = GestioneDeviceBO.getListaSoftwareCompany(Integer.parseInt(id_company),session);
+				DocumFornitoreDTO company = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
+ 				SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+				 
+				GestioneDeviceBO.esportaListaSoftware(lista_software, company.getRagione_sociale());
+				String path =  Costanti.PATH_FOLDER+"\\Device\\ListaSoftware"+ sdf.format(new Date())+".xlsx";									     
+				
+								
+				 File file = new File(path);
+					
+					FileInputStream fileIn = new FileInputStream(file);
+
+					ServletOutputStream outp = response.getOutputStream();
+					
+					response.setContentType("application/octet-stream");
+					
+					response.setHeader("Content-Disposition","attachment;filename=ListaSoftware"+ sdf.format(new Date())+".xlsx");
+				
+					
+			
+					    byte[] outputByte = new byte[1];
+					    
+					    while(fileIn.read(outputByte, 0, 1) != -1)
+					    {
+					    	outp.write(outputByte, 0, 1);
+					    }
+					    				    
+					 
+					    fileIn.close();
+					    outp.flush();
+					    outp.close();
+		
+								
+			}
+			
+			else if(action.equals("lista_monitor")) {
+				
+				ajax = true;
+				
+				String id_device = request.getParameter("id_device");
+				
+				ArrayList<DevDeviceDTO> lista_monitor = GestioneDeviceBO.getListaMonitor(session);
+				ArrayList<DevDeviceMonitorDTO> lista_monitor_device = null;
+				
+				if(id_device!=null) {
+					int id = Integer.parseInt(id_device);
+					lista_monitor_device = GestioneDeviceBO.getListaMonitorDevice(id,session);
+					
+				
+				}
+				
+				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+				
+			
+				PrintWriter out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.add("lista_monitor", g.toJsonTree(lista_monitor));
+				myObj.add("lista_monitor_device", g.toJsonTree(lista_monitor_device));
+				out.print(myObj);
+			}
+			else if(action.equals("associa_monitor")) {
+				
+				ajax = true;
+				
+				String id_device = request.getParameter("id_device");
+
+				String selezionati = request.getParameter("selezionati");
+				
+				DevDeviceDTO device = GestioneDeviceBO.getDeviceFromID(Integer.parseInt(id_device), session);
+				
+				
+				GestioneDeviceBO.dissociaMonitor(device.getId(), session);
+				if(selezionati!=null && !selezionati.equals("")) {
+					for(int i = 0; i<selezionati.split(";;").length;i++) {
+						
+						DevDeviceDTO monitor = GestioneDeviceBO.getDeviceFromID(Integer.parseInt(selezionati.split(";;")[i]), session);
+						DevDeviceMonitorDTO devmon = new DevDeviceMonitorDTO();					
+						
+						devmon.setDevice(device);
+						devmon.setMonitor(monitor);
+						
+						session.save(devmon);
+						
+					}
+				}
+				
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Operazione completata con successo!");
+				out.print(myObj);	
+			}
+			
 			
 			session.getTransaction().commit();
 			session.close();

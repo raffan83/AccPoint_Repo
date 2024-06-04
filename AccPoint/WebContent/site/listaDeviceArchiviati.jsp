@@ -137,6 +137,7 @@
 	<a class="btn btn-info customTooltip" onClicK="$(this).dblclick()" title="Click per aprire il dettaglio device"><i class="fa fa-search"></i></a>
 	 <a class="btn btn-warning customTooltip" onClicK="modificaDevice('${device.id}', '${device.codice_interno }','${device.tipo_device.id }','${device.company_util.id }','${utl:escapeJS(device.denominazione) }','${utl:escapeJS(device.costruttore) }','${utl:escapeJS(device.modello) }','${utl:escapeJS(device.distributore) }','${device.data_acquisto }','${utl:escapeJS(device.ubicazione) }','${device.dipendente.id }', '${utl:escapeJS(device.configurazione) }','${device.data_creazione }','${device.company_proprietaria.id }', '${device.rif_fattura }')" title="Click per modificare il tipo device"><i class="fa fa-edit"></i></a> 
 	 <a class="btn btn-info customTooltip" onClicK="modalSoftware('${device.id}')" title="Click per associare un software al device"><i class="fa fa-file-code-o"></i></a>
+	 <a class="btn btn-success customTooltip"onClicK="modalYesOrNo('${device.id}')" title="Click per rimettere in servizio il device"><i class="fa fa-check"></i></a>
 	 
 	</td>
 	</tr>
@@ -702,7 +703,7 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      	Sei sicuro di voler eliminare il device?
+      	Sei sicuro di voler rimettere in servizio il device?
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_elimina_device">
@@ -1881,6 +1882,7 @@ function eliminaDevice(id_device){
 	
 	var dataObj = {};
 	dataObj.id_device = id_device;
+	dataObj.stato = 0;
 	
 	callAjax(dataObj, "gestioneDevice.do?action=elimina_device");
 	

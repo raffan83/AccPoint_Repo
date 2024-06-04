@@ -541,7 +541,7 @@ function eliminaVeicolo(){
 	
 	dataObj.id_veicolo_elimina = $('#id_veicolo_elimina').val();
 	
-	callAjax(dataObj, "gestioneParcoVeicoli.do?action=elimina_veicolo");
+	callAjax(dataObj, "gestioneParcoAuto.do?action=elimina_veicolo");
 }
 
 

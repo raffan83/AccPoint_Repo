@@ -49,7 +49,7 @@
 <div class="row">
 <div class="col-xs-12">
 
-
+<a class="btn btn-primary pull-left" onClick="$('#modalEsporta').modal()"><i class="fa fa-plus"></i> Esporta</a> 
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
 <a class="btn btn-primary pull-right" onClick="modalNuovoSoftware()"><i class="fa fa-plus"></i> Nuovo Software</a> 
 
@@ -341,6 +341,48 @@
 
 
 
+<div id="modalEsporta" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Esporta Lista Software</h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="row">
+       
+       	<div class="col-sm-12">
+       		<label>Filtra Company</label>
+         
+       	  	
+        <select id="company" name="company" data-placeholder="Seleziona Company Proprietaria..." class="form-control select2" style="width:100%" >
+ 	 <option value="" ></option>
+        <c:forEach items="${lista_company }" var="cmp">
+
+        <option value="${cmp.id }" >${cmp.ragione_sociale }</option>
+
+        </c:forEach>
+        
+        </select>
+      
+       	</div>       	
+       </div><br>
+
+  		 </div>
+      <div class="modal-footer">
+
+		<button class="btn btn-primary" onclick="esportaListaSoftware()">Esporta</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
 
   <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
@@ -489,6 +531,18 @@ function modalAllegati(id_software){
 	 });
 	 
 }
+
+
+function esportaListaSoftware(){
+	
+	var id_company = $('#company').val();
+	
+	callAction("gestioneDevice.do?action=esporta_lista_sw&id_company="+id_company);
+	
+}
+
+
+
 
 $(document).ready(function() {
  

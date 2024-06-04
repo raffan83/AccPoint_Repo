@@ -228,7 +228,12 @@ public class ScaricaEtichetta extends HttpServlet {
 			BufferedImage in = ImageIO.read(imageHeader);		
 			report.addParameter("logo",rotateClockwise90(in));
 			report.addParameter("codiceInterno",campione.getCodice());
-			report.addParameter("certificato",campione.getNumeroCertificato());
+			if(campione.getNumeroCertificato()!=null) {
+				report.addParameter("certificato",campione.getNumeroCertificato());
+			}else {
+				report.addParameter("certificato","");
+			}
+			
 			if(campione.getDataVerifica()!=null) {
 				report.addParameter("dataTaratura",sdf.format(campione.getDataVerifica()));
 			}else {

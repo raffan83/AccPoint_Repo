@@ -2672,7 +2672,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String data_inizio = request.getParameter("data_inizio");
 					String move = request.getParameter("move");
 				
-					
+					String cellCopy = request.getParameter("cellCopy");
 										
 					if(anno==null) {
 						anno = ""+Calendar.getInstance().get(Calendar.YEAR);
@@ -2842,6 +2842,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					request.getSession().setAttribute("start_date", start_date);
 					request.getSession().setAttribute("end_date", end_date);
 					request.getSession().setAttribute("filtro_tipo_pianificazioni", 0);
+					request.getSession().setAttribute("cellCopy", cellCopy);
 					
 					
 					session.getTransaction().commit();

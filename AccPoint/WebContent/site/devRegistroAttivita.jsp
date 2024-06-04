@@ -35,7 +35,17 @@
  <c:set var = "descrizione_attivita" value = "${fn:split(attivita.getDescrizione(), '|')}" />
  <tr>
  <td >${attivita.id }</td>
-  <td >${attivita.tipo_evento.descrizione }</td>
+  <td >${attivita.tipo_evento.descrizione } 
+  <c:if test="${attivita.tipo_manutenzione_straordinaria ==1 }">
+   - Hardware
+  </c:if>
+    <c:if test="${attivita.tipo_manutenzione_straordinaria ==2 }">
+   - Software
+  </c:if>
+    <c:if test="${attivita.tipo_manutenzione_straordinaria ==3 }">
+   - Supporto Operatore
+  </c:if>
+  </td>
   <td >${attivita.company.ragione_sociale }</td>
  <td>
  <ul class="list-group ">
@@ -69,7 +79,7 @@
  <td>
  <c:if test="${attivita.tipo_evento.id == 2 }">
  
- <a class="btn btn-warning customTooltip customLink" onClicK="modificaAttivita('${attivita.id}','${attivita.tipo_evento.id }','${utl:escapeJS(attivita.descrizione) }','${attivita.data_evento}','${attivita.frequenza }','${attivita.data_prossima }','${utl:escapeJS(attivita.note_evento) }','${utl:escapeJS(attivita.tipo_intervento) }')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></a>
+ <a class="btn btn-warning customTooltip customLink" onClicK="modificaAttivita('${attivita.id}','${attivita.tipo_evento.id }','${utl:escapeJS(attivita.descrizione) }','${attivita.data_evento}','${attivita.frequenza }','${attivita.data_prossima }','${utl:escapeJS(attivita.note_evento) }','${utl:escapeJS(attivita.tipo_intervento) }','${attivita.tipo_manutenzione_straordinaria.id }')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></a>
  <a class="btn btn-info customTooltip customLink" onClicK="rinnovaManutenzione('${attivita.id}','${attivita.tipo_evento.id }','${utl:escapeJS(attivita.descrizione) }','${attivita.frequenza }','${utl:escapeJS(attivita.note_evento) }','${utl:escapeJS(attivita.tipo_intervento) }')" title="Click per rinnovare l'attività"><i class="fa fa-copy"></i></a>
  </c:if>
  
@@ -120,6 +130,27 @@
        			
        	</div>       	
        </div><br>  
+       
+      <div id="content_tipo_man" style="display:none">
+       <div class="row" >
+       	<div class="col-sm-3">
+       		<label>Tipo manutenzione straordinaria</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <select id="tipo_manutenzione_straordinaria" name="tipo_manutenzione_straordinaria" data-placeholder="Seleziona tipo manutenzione straordinaria..." class="form-control select2" style="width:100%" required>
+        <option value=""></option>
+         <option value="1">Hardware</option>
+          <option value="2">Software</option>
+           <option value="3">Supporto Operatore</option>
+           
+ 
+        </select>
+       			
+       	</div>       	
+       </div><br>
+       </div>
+       
        
        <div class="row">
        
@@ -260,6 +291,27 @@
        			
        	</div>       	
        </div><br>  
+       
+       
+       <div id="content_tipo_man_mod" style="display:none">
+       <div class="row" >
+       	<div class="col-sm-3">
+       		<label>Tipo manutenzione straordinaria</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <select id="tipo_manutenzione_straordinaria_mod" name="tipo_manutenzione_straordinaria_mod" data-placeholder="Seleziona tipo manutenzione straordinaria..." class="form-control select2" style="width:100%" required>
+        <option value=""></option>
+         <option value="1">Hardware</option>
+          <option value="2">Software</option>
+           <option value="3">Supporto Operatore</option>
+           
+ 
+        </select>
+       			
+       	</div>       	
+       </div><br>
+       </div>
        
        
        <div class="row">
@@ -622,7 +674,7 @@ if(value!=null){
 });
 
  
- function modificaAttivita(id_attivita, tipo_evento, descrizione, data, frequenza, data_prossima, note, tipo_intervento){
+ function modificaAttivita(id_attivita, tipo_evento, descrizione, data, frequenza, data_prossima, note, tipo_intervento, tipo_manutenzione_straordinaria){
 		
 		$('#id_attivita').val(id_attivita);
 		$('#tipo_evento_mod').val(tipo_evento);
@@ -638,6 +690,11 @@ if(value!=null){
 		
 		$('#note_evento_mod').val(note);
 		$('#tipo_intervento_mod').val(tipo_intervento);
+		
+		if(tipo_manutenzione_straordinaria!=null && tipo_manutenzione_straordinaria!=''){
+			$('#tipo_manutenzione_straordinaria_mod').val(tipo_intervento);
+			$('#tipo_manutenzione_straordinaria_mod').change();
+		}
 		
 		
 		$('#modalModificaAttivita').modal();
@@ -664,6 +721,36 @@ if(value!=null){
 		
 		$('#modalNuovaAttivita').modal();
  }
+ 
+ 
+ $('#tipo_evento').change(function(){
+	
+	 var val = $(this).val();
+	 
+	 if(val == 3){
+		 
+		 $('#content_tipo_man').show();
+		 
+	 }else{
+		 $('#content_tipo_man').hide();
+	 }
+	 
+ });
+ 
+ $('#tipo_evento_mod').change(function(){
+		
+	 var val = $(this).val();
+	 
+	 if(val == 3){
+		 
+		 $('#content_tipo_man_mod').show();
+		 
+	 }else{
+		 $('#content_tipo_man_mod').hide();
+	 }
+	 
+ });
+
 
 $(document).ready(function(){
 

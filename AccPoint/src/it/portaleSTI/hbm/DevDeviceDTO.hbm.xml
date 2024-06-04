@@ -54,6 +54,18 @@
             <column name="configurazione" />
         </property>
         
+        <property name="cpu" type="java.lang.String">
+            <column name="cpu" />
+        </property>
+        <property name="scheda_video" type="java.lang.String">
+            <column name="scheda_video" />
+        </property>
+        <property name="hard_disk" type="java.lang.String">
+            <column name="hard_disk" />
+        </property>
+        <property name="ram" type="java.lang.String">
+            <column name="ram" />
+        </property>
                 <set name="listaSoftware" table="dev_device_software"
         	inverse="false" lazy="false" fetch="select" cascade="all" >
             <key>
@@ -72,6 +84,18 @@
             <many-to-many entity-name="it.portaleSTI.DTO.DevProceduraDTO">
                 <column name="id_procedura" not-null="true" />
             </many-to-many>
+           
+   </set>
+   
+         <set name="listaMonitor" inverse="true" lazy="false" fetch="select" table="dev_device_monitor">
+            <key>
+                <column name="id_device" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portaleSTI.DTO.DevDeviceDTO">
+            <column name="id_monitor" not-null="true"/>
+            </many-to-many>
+               
+            
            
    </set>
         

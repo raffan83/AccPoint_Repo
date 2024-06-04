@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DTO.DevAllegatiDeviceDTO;
 import it.portaleSTI.DTO.DevAllegatiSoftwareDTO;
 import it.portaleSTI.DTO.DevDeviceDTO;
+import it.portaleSTI.DTO.DevDeviceMonitorDTO;
 import it.portaleSTI.DTO.DevDeviceSoftwareDTO;
 import it.portaleSTI.DTO.DevLabelConfigDTO;
 import it.portaleSTI.DTO.DevLabelTipoInterventoDTO;
@@ -340,14 +341,18 @@ public static ArrayList<DevRegistroAttivitaDTO> getListaScadenze(String dateFrom
 
 	String str = "";
 	if(company == 0) {
-		str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and a.device.disabilitato = 0";
+		//str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and a.device.disabilitato = 0";
+		str = "FROM DevRegistroAttivitaDTO d " +
+                "WHERE d.data_evento = (SELECT MAX(d2.data_evento) FROM DevRegistroAttivitaDTO d2 WHERE d2.device.id = d.device.id) and d.device.disabilitato = 0 GROUP BY d.device.id";
 	}else {
-		str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and id_company_util = :_id_company and a.device.disabilitato = 0";
+		//str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and id_company_util = :_id_company and a.device.disabilitato = 0";
+		str = "FROM DevRegistroAttivitaDTO d " +
+                "WHERE d.data_evento = (SELECT MAX(d2.data_evento) FROM DevRegistroAttivitaDTO d2 WHERE d2.device.id = d.device.id) and d.device.disabilitato = 0 and id_company_util = :_id_company GROUP BY d.device.id";
 	}
 
 	Query query = session.createQuery(str);
-	query.setParameter("_data_start", sdf.parse(dateFrom));
-	query.setParameter("_data_end", sdf.parse(dateTo));
+//	query.setParameter("_data_start", sdf.parse(dateFrom));
+//	query.setParameter("_data_end", sdf.parse(dateTo));
 	
 	if(company!=0) {
 		query.setParameter("_id_company", company);
@@ -421,6 +426,52 @@ public static ArrayList<DevRegistroAttivitaDTO> getListaManutenzioniSuccessive(S
 	lista = (ArrayList<DevRegistroAttivitaDTO>) query.list();
 	
 	return lista;
+}
+
+public static ArrayList<DevSoftwareDTO> getListaSoftwareCompany(int id_company, Session session) {
+	
+	ArrayList<DevSoftwareDTO> lista = null;
+	
+	Query query = session.createQuery("select distinct a.software from DevDeviceSoftwareDTO as a where a.device.company_proprietaria.id = :_id_company");
+	query.setParameter("_id_company", id_company);
+	
+	lista = (ArrayList<DevSoftwareDTO>) query.list();
+	
+	return lista;
+}
+
+public static ArrayList<DevDeviceDTO> getListaMonitor(Session session) {
+	
+	ArrayList<DevDeviceDTO> lista = null;
+	
+	Query query = session.createQuery("from DevDeviceDTO where tipo_device.id = 14 and disabilitato = 0");
+
+	
+	lista = (ArrayList<DevDeviceDTO>) query.list();
+	
+	return lista;
+}
+
+public static ArrayList<DevDeviceMonitorDTO> getListaMonitorDevice(int id_device, Session session) {
+	
+	ArrayList<DevDeviceMonitorDTO> lista = null;
+	
+	Query query = session.createQuery("from DevDeviceMonitorDTO where device.id = :_id_device");
+	query.setParameter("_id_device", id_device);
+	
+
+	
+	lista = (ArrayList<DevDeviceMonitorDTO>) query.list();
+	
+	return lista;
+}
+
+
+public static void dissociaMonitor(int id, Session session) {
+	
+	Query query = session.createQuery("delete from DevDeviceMonitorDTO where device.id =:_id_device");
+	query.setParameter("_id_device", id);
+	query.executeUpdate();
 }
 
 }

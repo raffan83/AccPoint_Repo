@@ -134,6 +134,8 @@ public class GestioneVerIntervento extends HttpServlet {
 				}			
 		
 				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+
+				
 				if(listaClienti==null) {
 					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
 				}

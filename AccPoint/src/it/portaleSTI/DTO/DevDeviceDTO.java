@@ -1,30 +1,58 @@
 package it.portaleSTI.DTO;
 
 import java.util.Date;
+import com.google.gson.annotations.Expose;
 import java.util.HashSet;
 import java.util.Set;
 
 public class DevDeviceDTO {
-	
+	 
 	private int id;
+	 
 	private String codice_interno;
+	 
 	private DocumFornitoreDTO company_util;
+	 
 	private DevTipoDeviceDTO tipo_device;
+	 
 	private Date data_creazione;
+	 
 	private String denominazione;
+	 
 	private String costruttore;
+	 
 	private String modello;
+	 
 	private String distributore;
+	 
 	private Date data_acquisto;
+	 
 	private String ubicazione;
+	 
 	private String configurazione;
+	 
 	private DocumDipendenteFornDTO dipendente;
+	 
 	private Set<DevSoftwareDTO> listaSoftware = new HashSet<DevSoftwareDTO>();
+	 
 	private Set<DevProceduraDTO> listaProcedure = new HashSet<DevProceduraDTO>();
+	private Set<DevDeviceDTO> listaMonitor = new HashSet<DevDeviceDTO>();
+	 
 	private int disabilitato;
+	 
 	private Date data_cambio_company;
+	 
 	private String rif_fattura;
+	 
 	private DocumFornitoreDTO company_proprietaria;
+	
+	private String ram;
+	
+	private String hard_disk;
+	
+	private String cpu;
+	
+	private String scheda_video;
 	
 	
 	public int getId() {
@@ -144,6 +172,36 @@ public class DevDeviceDTO {
 	}
 	public void setCompany_proprietaria(DocumFornitoreDTO company_proprietaria) {
 		this.company_proprietaria = company_proprietaria;
+	}
+	public Set<DevDeviceDTO> getListaMonitor() {
+		return listaMonitor;
+	}
+	public void setListaMonitor(Set<DevDeviceDTO> listaMonitor) {
+		this.listaMonitor = listaMonitor;
+	}
+	public String getRam() {
+		return ram;
+	}
+	public void setRam(String ram) {
+		this.ram = ram;
+	}
+	public String getHard_disk() {
+		return hard_disk;
+	}
+	public void setHard_disk(String hard_disk) {
+		this.hard_disk = hard_disk;
+	}
+	public String getCpu() {
+		return cpu;
+	}
+	public void setCpu(String cpu) {
+		this.cpu = cpu;
+	}
+	public String getScheda_video() {
+		return scheda_video;
+	}
+	public void setScheda_video(String scheda_video) {
+		this.scheda_video = scheda_video;
 	}
 	
 	

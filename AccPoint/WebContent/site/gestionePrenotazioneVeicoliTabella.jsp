@@ -1086,8 +1086,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	    	  $('.inputsearchtable').on('click', function(e){
 	     	       e.stopPropagation();    
 	     	    });
-	    			
-	    	//  $('[data-toggle="tooltip"]').tooltip();
+	    	
 	           
 	            table.columns.adjust().draw();
 	           
@@ -1096,7 +1095,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	         var coltoday = getDaysUntilMonday(parseInt(today), parseInt("${start_date}")) +1
 	          scrollToColumn(today - coltoday) 
 	            
-	         $('[data-toggle="tooltip"]').tooltip();
+	        // $('[data-toggle="tooltip"]').tooltip();
 	        },
 	        error: function(xhr, status, error) {
 	            console.error(status);

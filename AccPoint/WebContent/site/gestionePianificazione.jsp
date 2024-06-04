@@ -277,7 +277,9 @@
 </div>
 </form>
 	
-	
+
+       <input type="hidden" id="cellCopy" name="cellCopy" value="${cellCopy }">
+
 	
 	  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
@@ -381,6 +383,7 @@
 
 
 
+
 function subTrimestre(data_inizio, anno){
 	
 	if(data_inizio==1){
@@ -389,7 +392,9 @@ function subTrimestre(data_inizio, anno){
 		data_inizio = 366	
 	}
 	
-	callAction('gestioneFormazione.do?action=gestione_pianificazione&move=back&data_inizio='+data_inizio+'&anno='+$('#anno').val());
+	
+	
+	callAction('gestioneFormazione.do?action=gestione_pianificazione&move=back&data_inizio='+data_inizio+'&anno='+$('#anno').val()+'&cellCopy='+$('#cellCopy').val());
 }
 
 function addTrimestre(data_fine, anno){
@@ -400,7 +405,7 @@ function addTrimestre(data_fine, anno){
 		data_fine = 1;
 	}
 	
-	callAction('gestioneFormazione.do?action=gestione_pianificazione&move=forward&data_inizio='+data_fine+'&anno='+$('#anno').val());
+	callAction('gestioneFormazione.do?action=gestione_pianificazione&move=forward&data_inizio='+data_fine+'&anno='+$('#anno').val()+'&cellCopy='+$('#cellCopy').val());
 }
 
 function vaiAOggi(anno){
@@ -654,6 +659,8 @@ function initContextMenu(){
              	 
              	 cellCopy = selectedDiv[0].id.split("_")[1];
              	 
+             	$('#cellCopy').val(cellCopy);
+             	 
              var divData = selectedDiv.text()
              console.log('Copy:', divData);
          } else {
@@ -662,15 +669,14 @@ function initContextMenu(){
              break;
          case 'paste':
              
-         	if(cellCopy!=null){
-         		
+         	if(cellCopy!=null || $('#cellCopy').val()!=null)  {   		
          		var cell_comm = cellIndex.replace("_"+cellIndex.split("_")[3], "")
          		
          		var comm = cell_comm.substring(0,cell_comm.length-2)+"/"+cell_comm.substring(cell_comm.length-2,cell_comm.length);
          		
          		pastePianificazione(cellIndex.split("_")[3], comm)
          		
-         	}
+         	} 
          	                	
             
              break;

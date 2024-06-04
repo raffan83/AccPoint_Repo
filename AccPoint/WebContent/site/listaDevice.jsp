@@ -137,7 +137,7 @@
 	<td>
 
 	<a class="btn btn-info customTooltip" onClicK="$(this).dblclick()" title="Click per aprire il dettaglio device"><i class="fa fa-search"></i></a>
-	 <a class="btn btn-warning customTooltip" onClicK="modificaDevice('${device.id}', '${device.codice_interno }','${device.tipo_device.id }','${device.company_util.id }','${utl:escapeJS(device.denominazione) }','${utl:escapeJS(device.costruttore) }','${utl:escapeJS(device.modello) }','${utl:escapeJS(device.distributore) }','${device.data_acquisto }','${utl:escapeJS(device.ubicazione) }','${device.dipendente.id }', '${utl:escapeJS(device.configurazione) }','${device.data_creazione }','${device.company_proprietaria.id }', '${device.rif_fattura }')" title="Click per modificare il tipo device"><i class="fa fa-edit"></i></a> 
+	 <a class="btn btn-warning customTooltip" onClicK="modificaDevice('${device.id}', '${device.codice_interno }','${device.tipo_device.id }','${device.company_util.id }','${utl:escapeJS(device.denominazione) }','${utl:escapeJS(device.costruttore) }','${utl:escapeJS(device.modello) }','${utl:escapeJS(device.distributore) }','${device.data_acquisto }','${utl:escapeJS(device.ubicazione) }','${device.dipendente.id }', '${utl:escapeJS(device.configurazione) }','${device.data_creazione }','${device.company_proprietaria.id }', '${device.rif_fattura }','${utl:escapeJS(device.hard_disk) }','${utl:escapeJS(device.scheda_video) }','${utl:escapeJS(device.cpu) }','${utl:escapeJS(device.ram) }')" title="Click per modificare il tipo device"><i class="fa fa-edit"></i></a> 
 	 <a class="btn btn-info customTooltip" onClicK="modalSoftware('${device.id}')" title="Click per associare un software al device"><i class="fa fa-file-code-o"></i></a>
 	 <a class="btn btn-danger customTooltip"onClicK="modalYesOrNo('${device.id}')" title="Click per eliminare il device"><i class="fa fa-trash"></i></a>
 	</td>
@@ -238,12 +238,12 @@
         </select>
        			
        	</div>       	
-       </div><br>
+       </div>
        
 
        
-       <div class="row">
-       
+       <div class="row not_monitor">
+       <br>
        	<div class="col-sm-3">
        		<label>Operatore</label>
        	</div>
@@ -260,10 +260,10 @@
         </select>
        			
        	</div>       	
-       </div><br>
+       </div>
        
-               <div class="row">
-       
+               <div class="row not_monitor">
+       <br>
        	<div class="col-sm-3">
        		<label>Company Utilizzatrice</label>
        	</div>
@@ -347,10 +347,10 @@
         <input id="data_creazione" name="data_creazione" class="form-control datepicker" type="text" style="width:100%">
        			
        	</div>       	
-       </div><br>
+       </div>
        
-        <div class="row">
-       
+        <div class="row not_monitor">
+       <br>
        	<div class="col-sm-3">
        		<label>Ubicazione</label>
        	</div>
@@ -359,10 +359,57 @@
         <input id="ubicazione" name="ubicazione" class="form-control " type="text" style="width:100%" >
        			
        	</div>       	
-       </div><br>
+       </div>
        
-              <div class="row">
+        <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Ram</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="ram" name="ram" class="form-control " type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div>
        
+        <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Hard Disk</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="hard_disk" name="hard_disk" class="form-control " type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div>
+        <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		<label>CPU</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="cpu" name="cpu" class="form-control " type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div>
+        <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Scheda Video</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="scheda_video" name="scheda_video" class="form-control " type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div>
+       
+       
+              <div class="row not_monitor">
+       <br>
        	<div class="col-sm-3">
        		<label>Label configurazione predefinite</label>
        	</div>
@@ -382,10 +429,10 @@
 		<a class="btn btn-primary customTooltip pull-right" title="Crea nuova label" onClick="modalNuovaLabel('')"><i class="fa fa-plus"></i></a>
 	
 	  </div>    	
-       </div><br>
+       </div>
        
-               <div class="row">
-       
+               <div class="row not_monitor">
+       <br>
        	<div class="col-sm-3">
        		<label>Configurazione</label>
        	</div>
@@ -407,12 +454,27 @@
         <input id="rif_fattura" name="rif_fattura" class="form-control " type="text" style="width:100%" >
        			
        	</div>       	
+       </div>
+       
+       
+                    <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <a class="btn btn-primary pull_right" onclick="modalAssociaMonitor()"><i class="fa fa-plus"></i>Associa Monitor</a>
+       			
+       	</div>       	
        </div><br>
+       
        
        </div>
   		 
       <div class="modal-footer">
 <input type="hidden" id="nuova_label_configurazione" name="nuova_label_configurazione">
+<input type="hidden" id="id_monitor" name="id_monitor">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -502,12 +564,11 @@
         </select>
        			
        	</div>       	
-       </div><br>
-       
+       </div>
 
        
-       <div class="row">
-       
+       <div class="row not_monitor">
+       <br>
        	<div class="col-sm-3">
        		<label>Operatore</label>
        	</div>
@@ -525,11 +586,11 @@
         </select>
        			
        	</div>       	
-       </div><br>
+       </div>
        
        
-               <div class="row">
-       
+               <div class="row not_monitor">
+       <br>
        	<div class="col-sm-3">
        		<label>Company Utilizzatrice</label>
        	</div>
@@ -612,10 +673,10 @@
         <input id="data_creazione_mod" name="data_creazione_mod" class="form-control datepicker" type="text" style="width:100%" >
        			
        	</div>       	
-       </div><br>
+       </div>
        
-        <div class="row">
-       
+        <div class="row not_monitor">
+       <br>
        	<div class="col-sm-3">
        		<label>Ubicazione</label>
        	</div>
@@ -624,11 +685,58 @@
         <input id="ubicazione_mod" name="ubicazione_mod" class="form-control " type="text" style="width:100%" >
        			
        	</div>       	
-       </div><br>
+       </div>
        
        
-       <div class="row">
+        <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Ram</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="ram_mod" name="ram_mod" class="form-control " type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div>
        
+        <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Hard Disk</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="hard_disk_mod" name="hard_disk_mod" class="form-control " type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div>
+        <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		<label>CPU</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="cpu_mod" name="cpu_mod" class="form-control " type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div>
+        <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Scheda Video</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="scheda_video_mod" name="scheda_video_mod" class="form-control " type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div>
+       
+       
+       <div class="row not_monitor">
+       <br>
        	<div class="col-sm-3">
        		<label>Label configurazioni predefinite</label>
        	</div>
@@ -649,10 +757,10 @@
 	<a class="btn btn-primary customTooltip pull-right" title="Crea nuova label" onClick="modalNuovaLabel('_mod')"><i class="fa fa-plus"></i></a>
 	
 	  </div>  	
-       </div><br>
+       </div>
        
-               <div class="row">
-       
+               <div class="row not_monitor">
+       <br>
        	<div class="col-sm-3">
        		<label>Configurazione</label>
        	</div>
@@ -674,6 +782,18 @@
         <input id="rif_fattura_mod" name="rif_fattura_mod" class="form-control " type="text" style="width:100%" >
        			
        	</div>       	
+       </div>
+       
+                           <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <a class="btn btn-primary pull_right" onclick="modalAssociaMonitor('mod')"><i class="fa fa-plus"></i>Associa Monitor</a>
+       			
+       	</div>       	
        </div><br>
        
        </div>
@@ -681,6 +801,7 @@
       <div class="modal-footer">
 		<input type="hidden" id="nuova_label_configurazione_mod" name="nuova_label_configurazione_mod">
 		<input type="hidden" id="id_device" name="id_device">
+		<input type="hidden" id="id_monitor_mod" name="id_monitor_mod">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -1087,6 +1208,53 @@
        </div><br>
        
        
+        <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Ram</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="ram_dtl" name="ram_dtl" class="form-control " type="text" style="width:100%" readonly>
+       			
+       	</div>       	
+       </div>
+       
+        <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Hard Disk</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="hard_disk_dtl" name="hard_disk_dtl" class="form-control " type="text" style="width:100%" readonly>
+       			
+       	</div>       	
+       </div>
+        <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		<label>CPU</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="cpu_dtl" name="cpu_dtl" class="form-control " type="text" style="width:100%" readonly>
+       			
+       	</div>       	
+       </div>
+        <div class="row not_monitor">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Scheda Video</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="scheda_video_dtl" name="scheda_video_dtl" class="form-control " type="text" style="width:100%" readonly>
+       			
+       	</div>       	
+       </div><br>
+       
+       
              
                <div class="row">
        
@@ -1141,6 +1309,29 @@
 		 </table>  
        
        
+<div class="row">
+       
+       	<div class="col-sm-3">
+       	<label>Monitor Associati</label>
+       	</div>
+       	</div>
+       
+		          <table id="table_monitor_dtl" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+
+<th>ID</th>
+<th>Codice</th>
+<th>Denominazione</th>
+<th>Costruttore</th>
+<th>Modello</th>
+<th>Distributore</th>
+
+ </tr></thead>
+ 
+ <tbody>
+</tbody>
+</table> 
        
             
             </div>
@@ -1191,7 +1382,49 @@
 
 
 
+<div id="myModalAssociaMonitor" class="modal modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Associazione Monitor</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+        <div class="col-xs-12">
+      <table id="table_monitor" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
 
+<th style="max-width:15px"></th>
+<th style="max-width:15px"></th>
+<th>ID</th>
+<th>Codice</th>
+<th>Denominazione</th>
+<th>Costruttore</th>
+<th>Modello</th>
+<th>Distributore</th>
+
+ </tr></thead>
+ 
+ <tbody>
+</tbody>
+</table>
+</div>
+  		 </div>
+  		 </div>
+      <div class="modal-footer">
+      
+      
+      <input type="hidden" id="id_device_monitor" name="id_device_monitor">
+      <a class="btn btn-primary" onClick="associaMonitorSave()" id="button_salva">Salva</a>
+  
+       <a class="btn btn-primary pull-right"  style="margin-right:5px"  onClick="$('#myModalAssociaMonitor').modal('hide')">Chiudi</a>
+      </div>
+   
+  </div>
+  </div>
+</div>
 
 
 
@@ -1358,6 +1591,61 @@ function createTableAssociati(){
 	});
 }
 
+
+
+function createTableMonitorAssociati(){
+	
+	var id_device = $('#device_dettaglio').val()
+
+	
+	dataString ="action=lista_monitor&id_device="+ id_device;
+    exploreModal("gestioneDevice.do",dataString,null,function(datab,textStatusb){
+    	
+    	  var result = JSON.parse(datab);
+    	  
+    	  var table_data = [];
+    	  
+    	  var lista_monitor_device = result.lista_monitor_device;
+      	  
+      	  if(result.success){ 
+
+				var table_data = [];
+				
+
+		  		  for(var i = 0; i<lista_monitor_device.length;i++){
+		  			  var dati = {};
+		  		
+		  			  dati.id = lista_monitor_device[i].monitor.id;
+		  			  dati.codice = lista_monitor_device[i].monitor.codice_interno;
+		  			  dati.denominazione = lista_monitor_device[i].monitor.denominazione;
+		  			  dati.costruttore = lista_monitor_device[i].monitor.costruttore;
+		  			  dati.modello = lista_monitor_device[i].monitor.modello;
+		  			  dati.distributore = lista_monitor_device[i].monitor.distributore;	
+		  			  
+		  			  table_data.push(dati);
+		  			
+		  		  }
+				  			
+				var table = $('#table_monitor_dtl').DataTable();
+				
+				table.clear().draw();
+				
+				table.rows.add(table_data).draw();
+				
+				
+				
+				table.columns.adjust().draw();
+				
+				 $( "#myModal" ).modal();
+		       	    $('body').addClass('noScroll');
+				
+		       	 pleaseWaitDiv = $('#pleaseWaitDialog');
+		   	  pleaseWaitDiv.modal('hide');
+				
+			
+      	  }
+	});
+}
 
 function associaSoftware(){
 	
@@ -1638,7 +1926,7 @@ $('#modalValidazione').on('hidden.bs.modal', function(){
 	$('#autorizzazioni').change();
 });
 
-function modificaDevice(id_device, codice_interno, id_tipo_device, id_company, denominazione, costruttore, modello, distributore, data_acquisto, ubicazione, id_dipendente, configurazione, data_creazione, id_company_prop, rif_fattura){
+function modificaDevice(id_device, codice_interno, id_tipo_device, id_company, denominazione, costruttore, modello, distributore, data_acquisto, ubicazione, id_dipendente, configurazione, data_creazione, id_company_prop, rif_fattura, hard_disk, scheda_video, cpu, ram){
 	
 	$('#id_device').val(id_device);
 	$('#codice_interno_mod').val(codice_interno);
@@ -1665,6 +1953,10 @@ function modificaDevice(id_device, codice_interno, id_tipo_device, id_company, d
 	$('#distributore_mod').val(distributore);
 	$('#ubicazione_mod').val(ubicazione);
 	$('#rif_fattura_mod').val(rif_fattura);
+	$('#cpu_mod').val(cpu);
+	$('#ram_mod').val(ram);
+	$('#scheda_video_mod').val(scheda_video);
+	$('#hard_disk_mod').val(hard_disk);
 	if(data_acquisto!=null && data_acquisto!=''){
 		$('#data_acquisto_mod').val(Date.parse(data_acquisto).toString("dd/MM/yyyy"));	
 	}
@@ -1749,6 +2041,34 @@ function eliminaDevice(id_device){
 }
 
 var content_id = 0;
+
+
+$('#tipo_device').change(function(){
+	
+	var val = $('#tipo_device').val(); 
+	if(val==14){
+	$('.not_monitor').hide();
+	}else{
+		$('.not_monitor').show();
+	}
+
+	
+});
+
+
+$('#tipo_device_mod').change(function(){
+	
+	var val = $('#tipo_device_mod').val(); 
+	if(val==14){
+	$('.not_monitor').hide();
+	}else{
+		$('.not_monitor').show();
+	}
+
+	
+});
+
+
 
 $('#dipendente').change(function(){
 	
@@ -1836,12 +2156,16 @@ $(document).ready(function() {
 					$('#dipendente_dtl').val(device.dipendente.id);
 					$('#dipendente_dtl').change();
 				}
-								
+							
+				$('#cpu_dtl').val(device.cpu);
+				$('#ram_dtl').val(device.ram);
+				$('#scheda_video_dtl').val(device.scheda_video);
+				$('#hard_disk_dtl').val(device.hard_disk);
 				
 				$('#configurazione_dtl').val(device.configurazione);
 				
 				createTableAssociati()
-      			 
+				createTableMonitorAssociati()
       		 }
       		 
       		
@@ -1875,6 +2199,167 @@ $(document).ready(function() {
 		
 	});
     
+    
+    tab = $('#table_monitor').DataTable({
+		language: {
+	        	emptyTable : 	"Nessun dato presente nella tabella",
+	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	        	infoPostFix:	"",
+	        infoThousands:	".",
+	        lengthMenu:	"Visualizza _MENU_ elementi",
+	        loadingRecords:	"Caricamento...",
+	        	processing:	"Elaborazione...",
+	        	search:	"Cerca:",
+	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	        	paginate:	{
+  	        	first:	"Inizio",
+  	        	previous:	"Precedente",
+  	        	next:	"Successivo",
+  	        last:	"Fine",
+	        	},
+	        aria:	{
+  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	        }
+        },
+        pageLength: 25,
+        "order": [[ 2, "desc" ]],
+	      paging: false, 
+	      ordering: true,
+	      info: false, 
+	      searchable: true, 
+	      targets: 0,
+	      responsive: true,  
+	      scrollX: false,
+	      stateSave: false,	
+	      select: {
+	        	style:    'multi+shift',
+	        	selector: 'td:nth-child(2)'
+	    	},
+	      columns : [
+	    	{"data" : "empty"},  
+	    	{"data" : "check"},  
+	      	{"data" : "id"},
+	      	{"data" : "codice"},
+	      	{"data" : "denominazione"},
+	      	{"data" : "costruttore"},
+	      	{"data" : "modello"},
+	      	{"data" : "distributore"}
+	      
+	       ],	
+	           
+	      columnDefs: [
+	    	  
+	    	  { responsivePriority: 1, targets: 1 },
+	
+	    	  
+	    	  { className: "select-checkbox", targets: 1,  orderable: false }
+	    	  ],
+	    	  
+	     	          
+  	      buttons: [   
+  	          {
+  	            extend: 'colvis',
+  	            text: 'Nascondi Colonne'  	                   
+ 			  } ]
+	               
+	    });
+	
+	$('#table_monitor thead th').each( function () {
+		var title = $('#table_monitor thead th').eq( $(this).index() ).text();
+		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
+	} );
+	
+	
+	tab.buttons().container().appendTo( '#table_monitor_wrapper .col-sm-6:eq(1)');
+ 	    $('.inputsearchtable').on('click', function(e){
+ 	       e.stopPropagation();    
+ 	    });
+
+ 	     tab.columns().eq( 0 ).each( function ( colIdx ) {
+  $( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
+      tab
+          .column( colIdx )
+          .search( this.value )
+          .draw();
+  } );
+} );  
+ 	     
+ 	     
+ 	     
+ 	     
+ 	    t = $('#table_monitor_dtl').DataTable({
+ 			language: {
+ 		        	emptyTable : 	"Nessun dato presente nella tabella",
+ 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+ 		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+ 		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+ 		        	infoPostFix:	"",
+ 		        infoThousands:	".",
+ 		        lengthMenu:	"Visualizza _MENU_ elementi",
+ 		        loadingRecords:	"Caricamento...",
+ 		        	processing:	"Elaborazione...",
+ 		        	search:	"Cerca:",
+ 		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+ 		        	paginate:	{
+ 	  	        	first:	"Inizio",
+ 	  	        	previous:	"Precedente",
+ 	  	        	next:	"Successivo",
+ 	  	        last:	"Fine",
+ 		        	},
+ 		        aria:	{
+ 	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+ 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+ 		        }
+ 	        },
+ 	        pageLength: 25,
+ 	        "order": [[ 2, "desc" ]],
+ 		      paging: false, 
+ 		      ordering: true,
+ 		      info: false, 
+ 		      searchable: true, 
+ 		      targets: 0,
+ 		      responsive: true,  
+ 		      scrollX: false,
+ 		      stateSave: false,	
+ 		      select: {
+ 		        	style:    'multi+shift',
+ 		        	selector: 'td:nth-child(2)'
+ 		    	},
+ 		      columns : [
+ 		   
+ 		      	{"data" : "id"},
+ 		      	{"data" : "codice"},
+ 		      	{"data" : "denominazione"},
+ 		      	{"data" : "costruttore"},
+ 		      	{"data" : "modello"},
+ 		      	{"data" : "distributore"}
+ 		      
+ 		       ],	
+ 		           
+ 		      columnDefs: [
+ 		    	  
+ 		    	
+ 		    	  ],
+ 		    	  
+ 		     	          
+ 	  	      buttons: [   
+ 	  	          {
+ 	  	            extend: 'colvis',
+ 	  	            text: 'Nascondi Colonne'  	                   
+ 	 			  } ]
+ 		               
+ 		    });
+ 		
+
+ 		
+ 		
+
+
+ 	     
+ 	     
     
     
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -2242,6 +2727,149 @@ $('body').removeClass('noScroll')
  });
  
  
+ 
+ function modalAssociaMonitor(){
+	 
+	 var dataObj = {};
+	 dataObj.id_device = $('#id_device').val();
+	 
+	 callAjax(dataObj, "gestioneDevice.do?action=lista_monitor",function(data){
+		
+		 if(data.success){
+			 var lista_monitor = data.lista_monitor;
+			 var lista_monitor_device = data.lista_monitor_device;
+			 		  		 
+		  		  var table_data = [];
+		  		  
+
+		  		  for(var i = 0; i<lista_monitor.length;i++){
+		  			  var dati = {};
+		  			  dati.empty = '<td></td>';
+		  			  dati.check = '<td></td>';
+		  			  dati.id = lista_monitor[i].id;
+		  			  dati.codice = lista_monitor[i].codice_interno;
+		  			  dati.denominazione = lista_monitor[i].denominazione;
+		  			  dati.costruttore = lista_monitor[i].costruttore;
+		  			  dati.modello = lista_monitor[i].modello;
+		  			  dati.distributore = lista_monitor[i].distributore;	
+		  			  
+		  			  table_data.push(dati);
+		  			
+		  		  }
+		  		  var table = $('#table_monitor').DataTable();
+		  		  
+		   		   table.clear().draw();
+		   		   
+		   			table.rows.add(table_data).draw();
+		   			
+		   			table.columns.adjust().draw();
+		 			
+		   			$('#table_monitor tr').each(function(){
+		   				var val  = $(this).find('td:eq(2)').text();
+		   				$(this).attr("id", val)
+		   			});
+		   			 if(lista_monitor_device!=null){
+		   				controllaAssociatiMonitor(table,lista_monitor_device );	
+		   			} 
+		   			
+		   			$('#myModalAssociaMonitor').modal()
+		 }
+		  
+		 
+		 
+		 
+	 });
+	 
+ }
+
+ 
+ 
+ 
+ function associaMonitorSave(){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  var table = $('#table_monitor').DataTable();
+		var dataSelected = table.rows( { selected: true } ).data();
+		var selezionati = "";
+		for(i=0; i< dataSelected.length; i++){
+			dataSelected[i];
+			selezionati = selezionati +dataSelected[i].id+";;";
+		}
+		console.log(selezionati);
+		table.rows().deselect();
+		
+		 var dataObj = {};
+			dataObj.selezionati = selezionati;
+			dataObj.id_device = $('#id_device').val();
+			
+
+		 $.ajax({
+			 type: "POST",
+			 url: "gestioneDevice.do?action=associa_monitor",
+			 data: dataObj,
+			 dataType: "json",
+			 //if received a response from the server
+			 success: function( data, textStatus) {
+			 	pleaseWaitDiv.modal('hide');
+			 	  if(data.success)
+			 		  {  
+			 		 
+			 			$('#myModalErrorContent').html(data.messaggio);
+			 		  	$('#myModalError').removeClass();
+			 			$('#myModalError').addClass("modal modal-success");	  
+			 			$('#report_button').hide();
+			 			$('#visualizza_report').hide();
+			 			$('#myModalError').modal('show');	
+			 		 	 $('#myModalError').on('hidden.bs.modal', function () {
+			 			
+			 				   $('#myModalAssociaMonitor').hide();
+			 				   $('.modal-backdrop').hide();
+			 			 }); 
+			 			
+			 		  }else{
+			 			
+			 				$('#myModalErrorContent').html("Errore nell'associazione!");
+			 			  	$('#myModalError').removeClass();
+			 				$('#myModalError').addClass("modal modal-danger");	  
+			 				$('#report_button').show();
+			 				$('#visualizza_report').show();
+			 				$('#myModalError').modal('show');			
+			 		
+			 		  }
+			 },
+			 error: function( data, textStatus) {
+			 	  $('#myModalYesOrNo').modal('hide');
+			 	  $('#myModalErrorContent').html(data.messaggio);
+			 		  	$('#myModalError').removeClass();
+			 			$('#myModalError').addClass("modal modal-danger");	  
+			 			$('#report_button').show();
+			 			$('#visualizza_report').show();
+			 				$('#myModalError').modal('show');
+
+			 }
+		 });
+	}
+	
+
+
+function controllaAssociatiMonitor(table, lista_monitor_associati){
+	
+	//var dataSelected = table.rows( { selected: true } ).data();
+	var data = table.rows().data();
+	for(var i = 0;i<lista_monitor_associati.length;i++){
+	
+		table.row( "#"+lista_monitor_associati[i].monitor.id ).select();
+			
+		}
+		
+		
+	
+}
+
+
+
+
 
 
   </script>

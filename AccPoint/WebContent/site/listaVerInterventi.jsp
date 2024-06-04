@@ -1,9 +1,9 @@
 <%@page import="java.util.ArrayList"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+ <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%> 
 <%@page import="it.portaleSTI.DTO.MagPaccoDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="it.portaleSTI.DTO.ClienteDTO"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
@@ -71,11 +71,11 @@
 
 
 
-<c:if test="${userObj.isTras() }">
+ <c:if test="${userObj.isTras() }"> 
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
 <a class="btn btn-primary pull-right" onClick="callAction('gestioneVerComunicazionePreventiva.do',null,true)"><i class="fa fa-plus"></i> Nuovo Intervento</a> 
 <a class="btn btn-primary pull-right" onClick="comunicazionePreventiva()" style="margin-right:5px"><i class="fa fa-plus"></i> Comunicazione Preventiva</a>
-</c:if>
+ </c:if>  
 
 </div>
 
@@ -106,7 +106,7 @@
  
  <tbody>
  
- 	<c:forEach items="${lista_interventi }" var="intervento" varStatus="loop">
+ <c:forEach items="${lista_interventi }" var="intervento" varStatus="loop">
 	<tr id="row_${loop.index}" >
 	 <td></td>
  	<td class="select-checkbox"></td>
@@ -116,14 +116,7 @@
 	<td>${intervento.provincia}</td>
 	<td>${intervento.commessa }</td>
 	<td>
-	<%-- <c:choose>
-		<c:when test="${intervento.id_stato_intervento == 0}">
-		<span class="label label-success">APERTO</span>
-	</c:when>
-	<c:otherwise>
-		<span class="label label-warning">CHIUSO</span>
-	</c:otherwise>
-	</c:choose> --%>
+
 	
 	<c:if test="${intervento.id_stato_intervento == 0}">
 						<%-- <a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a> --%>
@@ -145,10 +138,10 @@
 	<td>${intervento.user_verificazione.nominativo }</td>	
 	<td>
 	<a class="btn btn-info" onClicK="callAction('gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
-	<a class="btn btn-warning" onClicK="modificaInterventoModal('${intervento.id}','${intervento.id_cliente }','${intervento.id_sede }','${intervento.commessa }','${intervento.user_verificazione.id }','${intervento.in_sede_cliente }','${intervento.data_prevista }')" title="Click per modificare l'intervento"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" onClicK="modificaInterventoModal('${intervento.id}','${intervento.id_cliente }','${intervento.id_sede }','${intervento.commessa }','${intervento.user_verificazione.id }','${intervento.in_sede_cliente }','${intervento.data_prevista }','${intervento.company.id }')" title="Click per modificare l'intervento"><i class="fa fa-edit"></i></a>
 	</td>
 	</tr>
-	</c:forEach>
+	</c:forEach> 
 	 
 
  </tbody>
@@ -162,7 +155,7 @@
  
 </div>
 </div>
-
+</div>
 
 </section>
 
@@ -188,23 +181,23 @@
        	<div class="col-sm-9">      
        	  <div class="col-md-6" style="display:none">  
                   <label>Cliente</label>
-               <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
-                    <c:forEach items="${lista_clienti}" var="cliente">
+               <select name="cliente_appoggio" id="cliente_appoggio" class="form-control " aria-hidden="true" data-live-search="true" style="width:100%" required>
+                        <%-- <c:forEach items="${lista_clienti}" var="cliente">
                      
                            <option value="${cliente.__id}">${cliente.nome}</option> 
                          
-                     </c:forEach>
+                     </c:forEach>    --%>
 
                   </select> 
                 
         </div>  	
         <input id="cliente_mod" name="cliente_mod" type ="text" class="form-control" style="width:100%">
-       		<%-- <select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_mod" name="cliente_mod" style="width:100%" required>
+       <%-- 		  <select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_mod" name="cliente_mod" style="width:100%" required>
        		<option value=""></option>
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
        				<option value="${cliente.__id}">${cliente.nome }</option>
-       			</c:forEach>
-       		</select>    --%>    	
+       			</c:forEach> 
+       		</select>  --%>        	
        	</div>       	
        </div><br>
        <div class="row">
@@ -214,9 +207,9 @@
        	<div class="col-sm-9">
        		<select class="form-control select2" data-placeholder="Seleziona Sede..." id="sede_mod" name="sede_mod" style="width:100%" disabled required>
        		<option value=""></option>
-       			<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
+       		 	<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
        				<option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo }</option>
-       			</c:forEach>
+       			</c:forEach> 
        		</select>
        	</div>
        </div><br>
@@ -227,7 +220,7 @@
        	<div class="col-sm-9">
        		<select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa_mod" name="commessa_mod" style="width:100%" >
        		<option value=""></option>
-       			<c:forEach items="${lista_commesse}" var="commessa" varStatus="loop">
+       			 <c:forEach items="${lista_commesse}" var="commessa" varStatus="loop">
        				<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}">${commessa.ID_COMMESSA}</option>
        			</c:forEach>
        		</select>
@@ -254,9 +247,9 @@
        	<div class="col-sm-9">
        		<select class="form-control select2" data-placeholder="Seleziona Tecnico verificatore..." id="tecnico_verificatore_mod" name="tecnico_verificatore_mod" style="width:100%" required>
        		<option value=""></option>
-       			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
+        			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
        				<option value="${tecnico.id}">${tecnico.nominativo}</option>
-       			</c:forEach>
+       			</c:forEach> 
        		</select>
        	</div>
        </div><br>
@@ -405,17 +398,19 @@ function resetDate(){
 
 
 
-function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico_verificatore, sede_cliente, data_prevista){
+function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico_verificatore, sede_cliente, data_prevista, company){
 
 	
-	initSelect2('#cliente_mod');
+	//initSelect2('#cliente_mod');
+	
+	updateSelectClienti(company, id_cliente, id_sede)
 	
 	$('#luogo_mod').val(sede_cliente);
 	$('#luogo_mod').change();
 	
 	
 	$('#id_intervento').val(id_intervento);
-	$('#cliente_mod').val(id_cliente);
+/* 	$('#cliente_mod').val(id_cliente);
 	$('#cliente_mod').change();
 	
 	// $("#cliente_mod").trigger("chosen:updated");
@@ -425,7 +420,7 @@ function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, t
 	}else{
 		$('#sede_mod').val(0);
 	}
-	$('#sede_mod').change();
+	$('#sede_mod').change(); */
 	
 	if(data_prevista!=null && data_prevista!=""){
 		  $('#data_prevista_mod').val(Date.parse(data_prevista).toString("dd/MM/yyyy"));
@@ -1006,8 +1001,9 @@ $(document).ready(function() {
 
  
  
- var options =  $('#cliente_appoggio option').clone();
+ 
  function mockData() {
+	 var options =  $('#cliente_appoggio option').clone();
  	  return _.map(options, function(i) {		  
  	    return {
  	      id: i.value,
@@ -1050,6 +1046,128 @@ $(document).ready(function() {
  	    },
  	  });
  }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ function updateSelectClienti(companyId, id_cliente, id_sede){
+		var dataObj = {};
+	
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+	
+		dataObj.company = companyId;
+		dataObj.tipo = "";
+		$.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneUtenti.do?action=clientisedi",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		 
+	    		  
+	    		  if(data.success)
+	    		  { 
+	    			  $('#report_button').hide();
+	    				$('#visualizza_report').hide();
+	    			  /* 	if(tipo=="new"){
+	    			  		idclienteitem="#cliente";
+	    			  		idsedeitem="#sede";
+	    			  		
+	    			  	}else{
+	    			  		idclienteitem="#modcliente";
+	    			  		idsedeitem="#modsede";
+	    			  		utente =  JSON.parse(data.utente);
+	    			  	} */
+	    			  	
+	    			  	optionsClienti = JSON.parse(data.clienti);
+	    			  	var opt=[];
+	    			  	
+	    			  	  opt.push("<option value = 0>Seleziona Cliente</option>");
+	    		
+	    			  	$.each(optionsClienti,function(index, value){
+
+	    			  	      opt.push("<option value='"+value.__id+"'>"+value.nome+"</option>");
+	    			  	});
+	    			  	  
+	    			  	
+	    			   
+	    			  	 $("#cliente_appoggio").html(opt);
+	    			   			  	    			  	      
+	    			  	 initSelect2("#cliente_mod");
+	    			  	  
+	    			  	optionsSedi = JSON.parse(data.sedi);
+	    			  	var optsedi=[];
+	    			  	
+	    			  	//optsedi.push("<option value = 0>Non Associato</option>");
+	    			  	$.each(optionsSedi,function(index, value){
+
+	    			  			optsedi.push("<option value='"+value.__id+"_"+value.id__cliente_+"'>"+value.descrizione+" - "+value.indirizzo+"</option>");
+	      			  	});
+	    			  	
+	    			  	$("#sede_mod").html(optsedi);  
+	    			
+	     			 /*    $("#cliente_mod").trigger("chosen:updated");	  	 
+	  			  	$("#cliente_mod").change();  */  
+	    			    
+	    			/* 	 if(tipo=="mod"){
+	    					if(utente.idSede!=0){
+	    						$(idsedeitem).val(utente.idSede+"_"+utente.idCliente);
+	    					}else{
+	    						$(idsedeitem).val(utente.idSede);
+	    					}
+	    			  	  } */
+	    				
+	  			  	/*  $(idsedeitem).trigger("chosen:updated");
+	  			  	 $(idsedeitem).change();  */  
+	  			  	 
+	  			  	 
+	  			  	 
+	  				$('#cliente_mod').val(id_cliente);
+	  				$('#cliente_mod').change();
+	  				
+	  				// $("#cliente_mod").trigger("chosen:updated");
+
+	  				if(id_sede!='0'){
+	  					$('#sede_mod').val(id_sede+"_"+id_cliente);	
+	  				}else{
+	  					$('#sede_mod').val(0);
+	  				}
+	  				$('#sede_mod').change();
+	  				
+	  				 pleaseWaitDiv.modal('hide');
+	    		
+	    		  }else{
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	      				$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+
+	    		  $('#myModalErrorContent').html(textStatus);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+	  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+	    
+	    	  }
+	      });
+	}
+ 
  
   </script>
   

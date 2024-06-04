@@ -180,7 +180,8 @@ public class CreaCertificatoLivellaElettronica {
 			}
 		
 		
-		ClienteDTO cliente_util = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(commessa.getID_ANAGEN_UTIL()));
+		//ClienteDTO cliente_util = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(commessa.getID_ANAGEN_UTIL()));
+		ClienteDTO cliente_util = GestioneAnagraficaRemotaBO.getClienteById(misura.getIntervento().getId_cliente()+"");
 		
 		
 		
@@ -190,7 +191,8 @@ public class CreaCertificatoLivellaElettronica {
 		String citta_util="";
 		String provincia_util="";
 		
-		if(commessa.getK2_ANAGEN_INDR_UTIL()!=0) {
+		//if(commessa.getK2_ANAGEN_INDR_UTIL()!=0) {
+		if(misura.getIntervento().getIdSede()!=0) {
 			
 			ArrayList<SedeDTO> listaSedi = (ArrayList<SedeDTO>) GestioneAnagraficaRemotaBO.getListaSedi();
 			

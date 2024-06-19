@@ -182,7 +182,7 @@ public class GestioneDeviceBO {
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
-		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenze(df.format(nextDate), df.format(nextDate), 0,session);
+		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenzeScheduler(df.format(nextDate), df.format(nextDate), 0,session);
 		
 		DevTestoEmailDTO testo_email = getTestoEmail(session);
 		
@@ -415,5 +415,10 @@ public static void sendEmailAttivitaScaduteSollecito() throws ParseException, Ex
 
 		GestioneDeviceDAO.dissociaMonitor(id, session);
 		
+	}
+
+	public static ArrayList<DevDeviceDTO> getListaDeviceNoMan(int id_company, Session session) {
+		
+		return GestioneDeviceDAO.getListaDeviceNoMan(id_company, session);
 	}
 }

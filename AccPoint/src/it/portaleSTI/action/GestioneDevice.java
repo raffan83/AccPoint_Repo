@@ -216,6 +216,8 @@ public class GestioneDevice extends HttpServlet {
 				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0, 0, session);
 				ArrayList<DevLabelConfigDTO> lista_configurazioni = GestioneDeviceBO.getListaLabelConfigurazioni(session);
 				ArrayList<DevStatoValidazioneDTO> lista_stati_validazione = GestioneDeviceBO.getListaStatiValidazione(session);
+				
+				ArrayList<DevDeviceDTO> lista_device_no_man = GestioneDeviceBO.getListaDeviceNoMan(Integer.parseInt(id_company),session);
 				 
 				
 				Collections.sort(lista_dipendenti);
@@ -227,6 +229,7 @@ public class GestioneDevice extends HttpServlet {
 				request.getSession().setAttribute("lista_configurazioni", lista_configurazioni);
 				request.getSession().setAttribute("lista_stati_validazione", lista_stati_validazione);
 				request.getSession().setAttribute("id_company", id_company);
+				request.getSession().setAttribute("lista_device_no_man", lista_device_no_man);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDevice.jsp");
 		     	dispatcher.forward(request,response);

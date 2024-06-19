@@ -170,9 +170,15 @@ public class CreateCertificatoSE {
 			report.addParameter("marchiature", "");
 		}
 		if(misura_se.getALTRO()!=null) {
-			report.addParameter("altro", "[ "+misura_se.getALTRO()+" ]");
+			report.addParameter("altro", "[ "+misura_se.getALTRO().split("@")[0]+" ]");
 		}else {
 			report.addParameter("altro","");
+		}
+		
+		if(misura_se.getALTRO()!=null && misura_se.getALTRO().split("@").length>1) {
+			report.addParameter("label_altro",": "+ misura_se.getALTRO().split("@")[1]);
+		}else {
+			report.addParameter("label_altro","");
 		}
 		
 		boolean esito_negativo = false;
@@ -182,7 +188,7 @@ public class CreateCertificatoSE {
 				&& misura_se.getFUSIBILI()!=null && misura_se.getFUSIBILI().equals("OK")
 				&& misura_se.getCONNETTORI()!=null && misura_se.getCONNETTORI().equals("OK")
 				&& misura_se.getMARCHIATURE()!=null && misura_se.getMARCHIATURE().equals("OK")
-				&& misura_se.getALTRO()!=null && misura_se.getALTRO().equals("OK")) {
+				&& misura_se.getALTRO()!=null && (misura_se.getALTRO().split("@")[0].equals("OK") || misura_se.getALTRO().split("@")[0].equals("NA"))) {
 				
 				report.addParameter("verifica_sicurezza", "[ OK ]");
 			}else {

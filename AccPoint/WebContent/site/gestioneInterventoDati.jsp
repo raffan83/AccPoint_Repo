@@ -684,6 +684,7 @@
  		<input type="hidden"  id="id_strumento" name="id_strumento" >
  		<input type="hidden"  id="note_obsolescenza_form" name="note_obsolescenza_form" >
  		<input type="hidden"  id="non_sovrascrivere_mis" name="non_sovrascrivere_mis" value="0">
+ 		<input type="hidden"  id="check_nome_lat" name="check_nome_lat" value="0">
  	<input type="hidden"  id="isDuplicato" name="isDuplicato" >
         <button  class="btn btn-primary" type="submit">Salva</button>
       </div>
@@ -783,6 +784,30 @@
     </div>
   </div>
 </div>
+
+
+  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Attenzione! Stai caricando un certificato che inizia per LAT ma non hai spuntato la relativa casella. Vuoi proseguire comunque?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="elimina_partecipante_id">
+      <a class="btn btn-primary" onclick="submitNuovaMisura(null,null, 1)" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 
 <form id="formFirmaCliente" name="formFirmaCliente">
   <div id="modalFirmaCliente" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-keyboard="false" data-backdrop="static" >

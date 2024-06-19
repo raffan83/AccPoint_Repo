@@ -579,6 +579,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				String ora_inizio = ret.get("ora_inizio");
 				String ora_fine = ret.get("ora_fine");
 				String stato = ret.get("stato");
+				String rifornimento = ret.get("rifornimento");
 
 				
 				PaaPrenotazioneDTO prenotazione = null;
@@ -602,6 +603,12 @@ public class GestioneParcoAuto extends HttpServlet {
 					prenotazione.setUtente(GestioneUtenteBO.getUtenteById(id_utente, session));	
 				}else {
 					prenotazione.setManutenzione(1);
+				}
+				
+				if(rifornimento!=null && rifornimento.equals("on")) {
+					prenotazione.setRifornimento(1);
+				}else {
+					prenotazione.setRifornimento(0);
 				}
 				
 				

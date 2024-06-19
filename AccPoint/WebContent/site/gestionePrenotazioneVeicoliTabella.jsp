@@ -204,6 +204,27 @@ int anno = (Integer) request.getSession().getAttribute("anno");
 }
 
 
+ .legend {
+  display: flex;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+}
+
+.legend-label {
+  margin-left: 5px;
+}
+
+
+
 </style>
 
 
@@ -211,6 +232,8 @@ int anno = (Integer) request.getSession().getAttribute("anno");
  
     <script type="text/javascript">  
     
+    
+
     
 
 
@@ -253,6 +276,13 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 					$('#manutenzione').iCheck('uncheck');
 					$('#utente').val(prenotazione.utente.id);
 					$('#utente').change();	
+				}
+				
+				if(prenotazione.rifornimento == 1){
+					$('#rifornimento').iCheck('check');
+				}else{
+					$('#rifornimento').iCheck('uncheck');
+				
 				}
 			
 				$('#stato').val(prenotazione.stato_prenotazione);
@@ -612,6 +642,13 @@ function pastePrenotazione(day, veicolo){
 			$('#utente').change();	
 		}
 	
+		
+		if(prenotazione.rifornimento == 1){
+			$('#rifornimento').iCheck('check');
+		}else{
+			$('#rifornimento').iCheck('uncheck');
+		
+		}
 		$('#stato').val(prenotazione.stato_prenotazione);
 		$('#stato').change();
 	
@@ -778,7 +815,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
 	    $('.dropdown-menu').css('z-index', 200);
 	   		
-
+	    
 });
 
  
@@ -840,6 +877,8 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	                }else{
 	                	var text = lista_prenotazioni[i].utente.nominativo;
 	                }
+	                
+	                
 	                
 	                if(posizionePartenza!=null){
 	                	
@@ -932,10 +971,20 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 			 	            var background_color = "#90EE90";
 	 	                }
 	 	               else if(lista_prenotazioni[i].stato_prenotazione == 3){
-	 	                	var border_color = "#1E90FF";
-			 	            var background_color = "#ADD8E6";
+	 	            	   
+	 	            	  if(lista_prenotazioni[i].rifornimento == 1){
+		 	            	  	var border_color = "#F2861B ";
+				 	            var background_color = "#F7BB80";
+							}else{
+								var border_color = "#1E90FF";
+				 	            var background_color = "#ADD8E6";
+							}
+	 	               
+	 	                	
 			 	
 	 	                }
+	 	                
+	 	           
 	 	          /*     else if(lista_prenotazioni[i].stato_prenotazione == 4){
 	 	                	var border_color = "#A0CE00";
 			 	            var background_color = "#90EE90";
@@ -1089,6 +1138,22 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	    	
 	           
 	            table.columns.adjust().draw();
+	            
+	            
+	    	    $('#tabPrenotazione_wrapper').prepend('<div class="legend"> '+
+	    	    	    '<div class="legend-item"> <div class="legend-color" style="background-color:#FFFFE0;"></div>'+
+	    	    	    '<div class="legend-label">IN PRENOTAZIONE</div></div> '+
+	    	    	    
+	    	    	    '<div class="legend-item"> <div class="legend-color" style="background-color:#90EE90;"></div>'+
+	    	    	    '<div class="legend-label">PRENOTATO</div> </div> '+
+	    	    	    
+	    	    	    '<div class="legend-item"> <div class="legend-color" style="background-color:#ADD8E6;"></div>'+
+	    	    	    '<div class="legend-label">RIENTRATO</div> </div>'+
+	    	    	    
+	    	    	    '<div class="legend-item"> <div class="legend-color" style="background-color:#F7BB80;"></div>'+
+	    	    	    '<div class="legend-label">RIFORNIMENTO EFFETTUATO</div> </div>'+
+	    	    	    
+	    	    	    '</div>');
 	           
 	         //   scrollToColumn(parseInt(today) -1);
 

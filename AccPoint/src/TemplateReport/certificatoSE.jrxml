@@ -221,6 +221,10 @@
 				<reportElement x="281" y="110" width="263" height="44" uuid="7d3e8038-15db-4729-b132-23103aae86ea"/>
 				<textFieldExpression><![CDATA[$P{indirizzo_verificatore}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="71" y="323" width="471" height="15" uuid="253923ea-c114-4e1e-b49d-a24a39bd001b"/>
+				<textFieldExpression><![CDATA[$P{label_altro}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<columnFooter>

@@ -10316,8 +10316,15 @@ error: function( data, textStatus) {
 
 
 
-function submitNuovaMisura( note_obsolescenza, cliente){
+function submitNuovaMisura( note_obsolescenza, cliente, check_nome_lat){
 	 
+	if(check_nome_lat!=null){
+		$('#check_nome_lat').val(check_nome_lat)
+	}else{
+		$('#check_nome_lat').val(0)
+	}
+	
+	
 	  $('#isDuplicato').val(0);
 	  if(note_obsolescenza!=null){
 		  $('#note_obsolescenza_form').val(note_obsolescenza);  
@@ -10346,21 +10353,28 @@ function submitNuovaMisura( note_obsolescenza, cliente){
    				createLDTable(data.duplicato, data.messaggio);	  
    				
    			  }else{
+   				  
+   				  if(data.check_lat){
+   					  
+   					$('#myModalYesOrNo').modal('show');
+   				  }else{
+   					  $('#report_button').hide();
+   					$('#visualizza_report').hide();
+   					$('#myModalErrorContent').html(data.messaggio);
+   	   			  	$('#myModalError').removeClass();
+   	   				$('#myModalError').addClass("modal modal-success");
+   	   				$('#myModalError').modal('show');
+   	   				$('#myModalError').on('hidden.bs.modal', function(e){
+   	   					
+   	   					if(cliente!=null){
+   	   						location.reload()
+   	   					}
+   	   					
+   	   				});
+   	   				
+   				  }
    			
-   			    $('#report_button').hide();
-				$('#visualizza_report').hide();
-				$('#myModalErrorContent').html(data.messaggio);
-   			  	$('#myModalError').removeClass();
-   				$('#myModalError').addClass("modal modal-success");
-   				$('#myModalError').modal('show');
-   				$('#myModalError').on('hidden.bs.modal', function(e){
-   					
-   					if(cliente!=null){
-   						location.reload()
-   					}
-   					
-   				});
-   				
+   			  
    				
    			  }
 
@@ -14916,15 +14930,21 @@ function modificaDocumento(){
 	
 }
 
-function eliminaDocumento(id_documento){
+function eliminaDocumento(id_documento, elimina){
 	
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 	  
+	  if(elimina == 1){
+		  var url =  "gestioneDocumentale.do?action=elimina_documento&id_documento="+id_documento;
+	  }else{
+		  var url = "gestioneDocumentale.do?action=rendi_obsoleto&id_documento="+id_documento;
+	  }
+	  
 	  dataObj = {}
     $.ajax({
   	  type: "POST",
-  	  url: "gestioneDocumentale.do?action=elimina_documento&id_documento="+id_documento,
+  	  url: url,
   	data: dataObj,
   	dataType: "json",
   	 

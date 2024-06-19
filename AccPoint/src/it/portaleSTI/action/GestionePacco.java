@@ -1831,6 +1831,29 @@ public class GestionePacco extends HttpServlet {
 			
 		}
 		
+		else if(action.equals("update_dashboard")) {
+			
+			
+			ajax = true;
+			
+			String origine = request.getParameter("origine");
+			String stato = request.getParameter("stato");
+			
+			GestioneMagazzinoBO.updateOrigineDashboard(origine, Integer.parseInt(stato), utente.getNominativo());
+			
+			
+			session.getTransaction().commit();
+			session.close();
+			JsonObject myObj = new JsonObject();
+			PrintWriter out = response.getWriter();
+			
+			myObj.addProperty("success", true);
+			
+			out.print(myObj);
+			
+			
+		}
+		
 		}catch(Exception e) {
 			
 			session.getTransaction().rollback();

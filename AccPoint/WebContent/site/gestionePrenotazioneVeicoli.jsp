@@ -156,7 +156,7 @@
         
         
             <div class="row" id="content_stato" style="display:none">
-        <div class="col-xs-12">
+        <div class="col-xs-9">
         <label>Stato</label>
           <select class="form-control select2" id="stato" name="stato" style="width:100%" data-placeholder="Seleziona Stato..." >
        <option value=""></option>
@@ -167,7 +167,11 @@
 
        </select>
         </div>
-
+ 		<div class="col-xs-3" id="rifornimento_content" style="display:none">
+		   <label>Rif. effettuato</label><br>
+          <input class="form-control"  type="checkbox" id="rifornimento" name="rifornimento" style="width:100%">
+		 
+		 </div>
         </div><br>
         
         <div class="row" >
@@ -685,6 +689,17 @@ function eliminaPrenotazione(){
 
 }
 
+$('#stato').change(function(){
+	
+	if($('#stato').val()== 3){
+		$('#rifornimento_content').show();
+	}else{
+		$('#rifornimento_content').hide();
+		$('#rifornimento').iCheck("uncheck")
+	}
+	
+	
+});
 
 
 var zoom_level;
@@ -890,6 +905,7 @@ $('#modalPrenotazione').on("hidden.bs.modal", function(){
 	$('#utente').change();
 	$('#btn_elimina').hide()
 	$('#manutenzione').iCheck("uncheck")
+	$('#rifornimento').iCheck("uncheck")
 	
 	$('#stato').val("");
 	$('#stato').change();

@@ -219,6 +219,20 @@ function filtraDate(jspDoc){
 
 }
 
+var nome_company = "ALL";
+$('#company').change(function(){
+ 	var company = $('#company').val();
+	dataString = "action=scadenzario_table&company="+company;
+	
+	nome_company = $('#company option:selected').text();
+
+pleaseWaitDiv = $('#pleaseWaitDialog');
+pleaseWaitDiv.modal();
+	
+	exploreModal("gestioneDevice.do", dataString, '#calendario');
+	
+})
+
 
 function filtraDateDipendenti(){
 	

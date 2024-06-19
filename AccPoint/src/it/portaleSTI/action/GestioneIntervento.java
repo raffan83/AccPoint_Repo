@@ -353,6 +353,7 @@ public class GestioneIntervento extends HttpServlet {
 				String data_emissione = null;
 				String data_misura = null;
 				String indice_prestazione = null;
+				String check_nome_lat = null;
 				
 				for (FileItem item : items) {
 					if (item.isFormField()) {
@@ -383,9 +384,10 @@ public class GestioneIntervento extends HttpServlet {
 						else if(item.getFieldName().equals("indice_prestazione")) {
 							if(!item.getString().equals("")) {
 								indice_prestazione = item.getString();	
-							}
-							
-							
+							}	
+						}
+						else if(item.getFieldName().equals("check_nome_lat")) {
+							check_nome_lat = item.getString();
 						}
 					}
 					else {
@@ -404,192 +406,201 @@ public class GestioneIntervento extends HttpServlet {
 					}
 				}
 				
-				StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(id_strumento, session);
 				
-				InterventoDTO intervento =  GestioneInterventoBO.getIntervento(id_intervento, session);	
-				
-				boolean isPresent = GestioneInterventoDAO.isPresentStrumento(intervento.getId(),strumento,session);
-				ArrayList<StrumentoDTO> lista_duplicati = new ArrayList<StrumentoDTO>();
-				if(!non_sovrascrivere.equals("1")&&(note_obsolescenza==null||note_obsolescenza.equals("")) && isPresent) {
-					lista_duplicati.add(strumento);
-					Gson gson = new Gson();
-					String jsonInString = gson.toJson(lista_duplicati);					
-					
-					if(lat_master!= null && !lat_master.equals("")) {
-						myObj.addProperty("lat", true);			
-					}
-					
+				if(lat_master == null && check_nome_lat.equals("0") && (filename_pdf.startsWith("LAT") || nCertificato.startsWith("LAT"))) {
 					myObj.addProperty("success", true);				
-					myObj.addProperty("duplicato",jsonInString);
+					myObj.addProperty("check_lat",true);
 					out.print(myObj);
-					
 				}else {
-				
-					InterventoDatiDTO interventoDati = new InterventoDatiDTO();
+					StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(id_strumento, session);
 					
-					String nomeFileExcel= "";
-					if(lat_master!=null && !lat_master.equals("")) {
-						if(file_excel.getName()!=null && !file_excel.getName().equals("")) {
-							nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), true,false);		
+					InterventoDTO intervento =  GestioneInterventoBO.getIntervento(id_intervento, session);	
+					
+					boolean isPresent = GestioneInterventoDAO.isPresentStrumento(intervento.getId(),strumento,session);
+					ArrayList<StrumentoDTO> lista_duplicati = new ArrayList<StrumentoDTO>();
+					if(!non_sovrascrivere.equals("1")&&(note_obsolescenza==null||note_obsolescenza.equals("")) && isPresent) {
+						lista_duplicati.add(strumento);
+						Gson gson = new Gson();
+						String jsonInString = gson.toJson(lista_duplicati);					
+						
+						if(lat_master!= null && !lat_master.equals("")) {
+							myObj.addProperty("lat", true);			
 						}
+						
+						myObj.addProperty("success", true);				
+						myObj.addProperty("duplicato",jsonInString);
+						out.print(myObj);
+						
 					}else {
-						if(file_excel!=null && file_excel.getName()!=null  && !file_excel.getName().equals("")) {
-							nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), false,false);
-						}
-					}
 					
-					if(cond_ambientali !=null && cond_ambientali.getName()!= null && !cond_ambientali.getName().equals("")) {
-						filename_cond_amb = saveExcelFile(cond_ambientali,intervento.getNomePack(), true,true);
-					}
-					
-					
-					
-					interventoDati.setId_intervento(intervento.getId());
-					interventoDati.setNomePack(nomeFileExcel);
-					interventoDati.setDataCreazione(new Date());
-					interventoDati.setStato(new StatoPackDTO(3));
-					interventoDati.setNumStrMis(1);
-					interventoDati.setNumStrNuovi(0);
-					interventoDati.setUtente(utente);
-					
-					if(lat_master!=null && !lat_master.equals("")) {
-						interventoDati.setLat("S");
-					}
-					
-					intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
-		    		
-		    		session.update(intervento);
-		    		session.save(interventoDati);
-		    		String nomeFilePdfCertificato= "";
-		    		if(file_pdf!=null && !file_pdf.getName().equals("")) {
-		    			nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),interventoDati.getId(),id_strumento);	
-		    		}
-		    		
-		    		LatMisuraDTO misuraLAT = new LatMisuraDTO();
-		    		
-		    		if(lat_master!=null && !lat_master.equals("")) {
-		    			
-			    		misuraLAT.setIntervento(intervento);	
-		 				misuraLAT.setIntervento_dati(interventoDati);
-		 				misuraLAT.setStrumento(strumento);
-		 				if(data_misura!=null && !data_misura.equals("")) {
-		 					misuraLAT.setData_misura(sdf.parse(data_misura));
-		 				}else {
-		 					misuraLAT.setData_misura(new Date());	
-		 				}
-		 				
-		 				misuraLAT.setUser(utente);
-		 				misuraLAT.setMisura_lat(new LatMasterDTO(Integer.parseInt(lat_master)));				
-						session.save(misuraLAT);
-		    		}
-					if(note_obsolescenza!=null && !note_obsolescenza.equals("")) {
-						ArrayList<MisuraDTO> misuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),String.valueOf(strumento.get__id()));
+						InterventoDatiDTO interventoDati = new InterventoDatiDTO();
 						
-						for (MisuraDTO mis : misuraObsoleta) 
-						{
-							GestioneInterventoDAO.misuraObsoleta(mis,note_obsolescenza,session);
+						String nomeFileExcel= "";
+						if(lat_master!=null && !lat_master.equals("")) {
+							if(file_excel.getName()!=null && !file_excel.getName().equals("")) {
+								nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), true,false);		
+							}
+						}else {
+							if(file_excel!=null && file_excel.getName()!=null  && !file_excel.getName().equals("")) {
+								nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), false,false);
+							}
 						}
 						
-					}
-					
-		    		MisuraDTO misura= new MisuraDTO();
-		    		misura.setIntervento(intervento);
-	
-		    		misura.setStrumento(strumento);
-		    		misura.setIndice_prestazione(indice_prestazione);
-		    		misura.setUserModifica(utente);
-		    		
-		    		if(data_misura!=null && !data_misura.equals("")) {
-		    			misura.setDataMisura(sdf.parse(data_misura));
-		    			strumento.setDataUltimaVerifica(new java.sql.Date(sdf.parse(data_misura).getTime()) );
-		    			
-		    			if(strumento.getFrequenza()!=0) {
-		    			Calendar calendar = Calendar.getInstance();
-						calendar.setTime(sdf.parse(data_misura));
-						calendar.add(Calendar.MONTH, strumento.getFrequenza());
+						if(cond_ambientali !=null && cond_ambientali.getName()!= null && !cond_ambientali.getName().equals("")) {
+							filename_cond_amb = saveExcelFile(cond_ambientali,intervento.getNomePack(), true,true);
+						}
 						
-						Date date = calendar.getTime();
 						
-						strumento.setDataProssimaVerifica(new java.sql.Date(date.getTime()));
 						
-		    			}
+						interventoDati.setId_intervento(intervento.getId());
+						interventoDati.setNomePack(nomeFileExcel);
+						interventoDati.setDataCreazione(new Date());
+						interventoDati.setStato(new StatoPackDTO(3));
+						interventoDati.setNumStrMis(1);
+						interventoDati.setNumStrNuovi(0);
+						interventoDati.setUtente(utente);
 						
-					
-		    			
-	 				}else {
-	 					misura.setDataMisura(new Date());	
-	 					strumento.setDataUltimaVerifica(new java.sql.Date(new Date().getTime()));
-	 					
-	 					if(strumento.getFrequenza()!=0) {
+						if(lat_master!=null && !lat_master.equals("")) {
+							interventoDati.setLat("S");
+						}
+						
+						intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
+			    		
+			    		session.update(intervento);
+			    		session.save(interventoDati);
+			    		String nomeFilePdfCertificato= "";
+			    		if(file_pdf!=null && !file_pdf.getName().equals("")) {
+			    			nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),interventoDati.getId(),id_strumento);	
+			    		}
+			    		
+			    		LatMisuraDTO misuraLAT = new LatMisuraDTO();
+			    		
+			    		if(lat_master!=null && !lat_master.equals("")) {
+			    			
+				    		misuraLAT.setIntervento(intervento);	
+			 				misuraLAT.setIntervento_dati(interventoDati);
+			 				misuraLAT.setStrumento(strumento);
+			 				if(data_misura!=null && !data_misura.equals("")) {
+			 					misuraLAT.setData_misura(sdf.parse(data_misura));
+			 				}else {
+			 					misuraLAT.setData_misura(new Date());	
+			 				}
+			 				
+			 				misuraLAT.setUser(utente);
+			 				misuraLAT.setMisura_lat(new LatMasterDTO(Integer.parseInt(lat_master)));				
+							session.save(misuraLAT);
+			    		}
+						if(note_obsolescenza!=null && !note_obsolescenza.equals("")) {
+							ArrayList<MisuraDTO> misuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),String.valueOf(strumento.get__id()));
+							
+							for (MisuraDTO mis : misuraObsoleta) 
+							{
+								GestioneInterventoDAO.misuraObsoleta(mis,note_obsolescenza,session);
+							}
+							
+						}
+						
+			    		MisuraDTO misura= new MisuraDTO();
+			    		misura.setIntervento(intervento);
+		
+			    		misura.setStrumento(strumento);
+			    		misura.setIndice_prestazione(indice_prestazione);
+			    		misura.setUserModifica(utente);
+			    		
+			    		if(data_misura!=null && !data_misura.equals("")) {
+			    			misura.setDataMisura(sdf.parse(data_misura));
+			    			strumento.setDataUltimaVerifica(new java.sql.Date(sdf.parse(data_misura).getTime()) );
+			    			
+			    			if(strumento.getFrequenza()!=0) {
 			    			Calendar calendar = Calendar.getInstance();
-							calendar.setTime(new Date());
+							calendar.setTime(sdf.parse(data_misura));
 							calendar.add(Calendar.MONTH, strumento.getFrequenza());
 							
 							Date date = calendar.getTime();
 							
 							strumento.setDataProssimaVerifica(new java.sql.Date(date.getTime()));
-	 					}
-	 				}
-		    		
-		    		strumento.setIndice_prestazione(indice_prestazione);
-		    		
-		    		misura.setTemperatura(new BigDecimal(20));
-		    		misura.setUmidita(new BigDecimal(50) );
-		    		misura.setTipoFirma(0);
-		    		misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(8901));
-		    		misura.setObsoleto("N");
-		    		if(nCertificato!=null &&lat_master!=null && !lat_master.equals("")) {
-		    			misura.setnCertificato(nCertificato.replaceAll(" ", ""));	
-		    		}else {
-		    			misura.setnCertificato(nCertificato);	
-		    		}
-		    		
-		    		misura.setInterventoDati(interventoDati);
-		    		misura.setUser(utente);		    		
-		    		
-		    		if(lat_master!=null && !lat_master.equals("")) {
-		    			misura.setMisuraLAT(misuraLAT);		
-		    			misura.setLat("S");
-		    		}else {
-		    			misura.setLat("N");
-		    		}
-		    		
-		    		misura.setFile_xls_ext(nomeFileExcel);
-		    		misura.setNote_obsolescenza(note_obsolescenza);
-		    		misura.setFile_condizioni_ambientali(filename_cond_amb);
-		    		session.save(misura);
-		    		session.update(strumento);
-		    		CertificatoDTO certificato = new CertificatoDTO();
-		    		certificato.setMisura(misura);
-		    		if(filename_pdf!=null && !filename_pdf.equals("")) {
-		    			certificato.setStato(new StatoCertificatoDTO(2));
-		    		}else {
-		    			certificato.setStato(new StatoCertificatoDTO(4));
-		    		}	    		
-		    		certificato.setUtente(misura.getUser());
-		    		if(file_pdf.getName()!=null && !file_pdf.getName().equals("")) {
-		    			certificato.setNomeCertificato(nomeFilePdfCertificato);	
-		    		}
-		    		
-		    		if(data_emissione!=null && !data_emissione.equals("")) {
-		    			certificato.setDataCreazione(sdf.parse(data_emissione));
-		    		}else {
-		    			certificato.setDataCreazione(new Date());	
-		    		}
-					
-					
-					int idItem=GestioneMagazzinoBO.checkStrumentoInMagazzino(misura.getStrumento().get__id(),misura.getIntervento().getIdCommessa());
-		    		
-		    		if(idItem!=0) 
-		    		{
-		    		 GestioneMagazzinoBO.cambiaStatoStrumento(idItem, 2, session);
-		    		}
-		    		GestioneInterventoBO.setControllato(intervento.getId(), utente.getId(), 0, session);
-		    		session.save(certificato);
-		    							
-					myObj.addProperty("success", true);				
-					myObj.addProperty("messaggio", "Misura inserita con successo!");
-					out.print(myObj);
+							
+			    			}
+							
+						
+			    			
+		 				}else {
+		 					misura.setDataMisura(new Date());	
+		 					strumento.setDataUltimaVerifica(new java.sql.Date(new Date().getTime()));
+		 					
+		 					if(strumento.getFrequenza()!=0) {
+				    			Calendar calendar = Calendar.getInstance();
+								calendar.setTime(new Date());
+								calendar.add(Calendar.MONTH, strumento.getFrequenza());
+								
+								Date date = calendar.getTime();
+								
+								strumento.setDataProssimaVerifica(new java.sql.Date(date.getTime()));
+		 					}
+		 				}
+			    		
+			    		strumento.setIndice_prestazione(indice_prestazione);
+			    		
+			    		misura.setTemperatura(new BigDecimal(20));
+			    		misura.setUmidita(new BigDecimal(50) );
+			    		misura.setTipoFirma(0);
+			    		misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(8901));
+			    		misura.setObsoleto("N");
+			    		if(nCertificato!=null &&lat_master!=null && !lat_master.equals("")) {
+			    			misura.setnCertificato(nCertificato.replaceAll(" ", ""));	
+			    		}else {
+			    			misura.setnCertificato(nCertificato);	
+			    		}
+			    		
+			    		misura.setInterventoDati(interventoDati);
+			    		misura.setUser(utente);		    		
+			    		
+			    		if(lat_master!=null && !lat_master.equals("")) {
+			    			misura.setMisuraLAT(misuraLAT);		
+			    			misura.setLat("S");
+			    		}else {
+			    			misura.setLat("N");
+			    		}
+			    		
+			    		misura.setFile_xls_ext(nomeFileExcel);
+			    		misura.setNote_obsolescenza(note_obsolescenza);
+			    		misura.setFile_condizioni_ambientali(filename_cond_amb);
+			    		session.save(misura);
+			    		session.update(strumento);
+			    		CertificatoDTO certificato = new CertificatoDTO();
+			    		certificato.setMisura(misura);
+			    		if(filename_pdf!=null && !filename_pdf.equals("")) {
+			    			certificato.setStato(new StatoCertificatoDTO(2));
+			    		}else {
+			    			certificato.setStato(new StatoCertificatoDTO(4));
+			    		}	    		
+			    		certificato.setUtente(misura.getUser());
+			    		if(file_pdf.getName()!=null && !file_pdf.getName().equals("")) {
+			    			certificato.setNomeCertificato(nomeFilePdfCertificato);	
+			    		}
+			    		
+			    		if(data_emissione!=null && !data_emissione.equals("")) {
+			    			certificato.setDataCreazione(sdf.parse(data_emissione));
+			    		}else {
+			    			certificato.setDataCreazione(new Date());	
+			    		}
+						
+						
+						int idItem=GestioneMagazzinoBO.checkStrumentoInMagazzino(misura.getStrumento().get__id(),misura.getIntervento().getIdCommessa());
+			    		
+			    		if(idItem!=0) 
+			    		{
+			    		 GestioneMagazzinoBO.cambiaStatoStrumento(idItem, 2, session);
+			    		}
+			    		GestioneInterventoBO.setControllato(intervento.getId(), utente.getId(), 0, session);
+			    		session.save(certificato);
+			    							
+						myObj.addProperty("success", true);				
+						myObj.addProperty("messaggio", "Misura inserita con successo!");
+						out.print(myObj);
+				}
+				
+				
 				
 				}
 		}

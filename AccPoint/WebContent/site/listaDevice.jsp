@@ -87,7 +87,17 @@
         
         </select>
       
-       	</div>       	
+       	</div >       
+       	<div class="col-sm-8">  
+       	<div class="legend pull-right" style="margin-top:30px">
+    <div class="legend-item">
+        <div class="legend-color" style="background-color:#D8796F;"></div>
+        <div class="legend-label">DEVICE SENZA MANUTENZIONE PREVENTIVA</div>
+    </div>
+    
+</div>
+       	
+       	</div>	
        </div><br>
 
 <div class="row">
@@ -121,7 +131,16 @@
  <tbody>
  
  	<c:forEach items="${lista_device }" var="device" varStatus="loop">
-	<tr id="row_${device.id }" >
+ 	
+ 	<c:choose>
+ 	<c:when test="${!lista_device_no_man.contains(device) }">
+ 	<tr id="row_${device.id }" >
+ 	</c:when>
+	
+	<c:otherwise>
+	<tr id="row_${device.id }" style="background-color:#D8796F">
+	</c:otherwise>
+	</c:choose>
 
 	<td>${device.id }</td>	
 	<td>${device.codice_interno }</td>
@@ -1450,9 +1469,28 @@
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
+<style>
 
+ .legend {
+  display: flex;
+}
 
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
 
+.legend-color {
+  width: 20px;
+  height: 20px;
+}
+
+.legend-label {
+  margin-left: 5px;
+}
+
+</style>
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
@@ -2114,8 +2152,8 @@ $(document).ready(function() {
 	
     $('#tabDevice').on( 'dblclick','tr', function () {   
     	
-    	pleaseWaitDiv = $('#pleaseWaitDialog');
-	   	  pleaseWaitDiv.modal('hide');
+     	pleaseWaitDiv = $('#pleaseWaitDialog');
+	   	  pleaseWaitDiv.hide(); 
     	var id = $(this).attr('id').split("_")[1];
     	
     	$('#device_dettaglio').val(id);
@@ -2267,6 +2305,7 @@ $(document).ready(function() {
 	    	  
 	     	          
   	      buttons: [   
+  	    	
   	          {
   	            extend: 'colvis',
   	            text: 'Nascondi Colonne'  	                   
@@ -2489,7 +2528,11 @@ $(document).ready(function() {
 		    	  { responsivePriority: 1, targets: 18 },		    	  
 		    	  
 		               ], 	        
-	  	      buttons: [   
+	  	      buttons: [  
+	  	    	 {
+	    	            extend: 'excel',
+	    	            text: 'Esporta Excel'  	                   
+	   			  },
 	  	          {
 	  	            extend: 'colvis',
 	  	            text: 'Nascondi Colonne'  	                   

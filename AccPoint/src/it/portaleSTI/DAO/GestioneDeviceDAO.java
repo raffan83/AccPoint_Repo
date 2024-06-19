@@ -336,6 +336,9 @@ public static ArrayList<DevLabelTipoInterventoDTO> geListaLabelTipoIntervento(Se
 public static ArrayList<DevRegistroAttivitaDTO> getListaScadenze(String dateFrom, String dateTo,int company,  Session session) throws Exception, ParseException {
 	
 	ArrayList<DevRegistroAttivitaDTO> lista = null;
+	ArrayList<DevRegistroAttivitaDTO> lista_no_event =new ArrayList<DevRegistroAttivitaDTO> ();
+	ArrayList<DevDeviceDTO> device_no_event =null;	
+	
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -343,11 +346,11 @@ public static ArrayList<DevRegistroAttivitaDTO> getListaScadenze(String dateFrom
 	if(company == 0) {
 		//str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and a.device.disabilitato = 0";
 		str = "FROM DevRegistroAttivitaDTO d " +
-                "WHERE d.data_evento = (SELECT MAX(d2.data_evento) FROM DevRegistroAttivitaDTO d2 WHERE d2.device.id = d.device.id) and d.device.disabilitato = 0 GROUP BY d.device.id";
+                "WHERE (d.tipo_evento.id = 2 or d.tipo_evento.id = 5) and d.device.tipo_device.id <> 14  and d.data_evento = (SELECT MAX(d2.data_evento) FROM DevRegistroAttivitaDTO d2 WHERE d2.device.id = d.device.id) and d.device.disabilitato = 0 GROUP BY d.device.id";
 	}else {
 		//str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and id_company_util = :_id_company and a.device.disabilitato = 0";
 		str = "FROM DevRegistroAttivitaDTO d " +
-                "WHERE d.data_evento = (SELECT MAX(d2.data_evento) FROM DevRegistroAttivitaDTO d2 WHERE d2.device.id = d.device.id) and d.device.disabilitato = 0 and id_company_util = :_id_company GROUP BY d.device.id";
+                "WHERE (d.tipo_evento.id = 2 or d.tipo_evento.id = 5) and d.device.tipo_device.id <> 14 and d.data_evento = (SELECT MAX(d2.data_evento) FROM DevRegistroAttivitaDTO d2 WHERE d2.device.id = d.device.id) and d.device.disabilitato = 0 and id_company_util = :_id_company GROUP BY d.device.id";
 	}
 
 	Query query = session.createQuery(str);
@@ -357,11 +360,43 @@ public static ArrayList<DevRegistroAttivitaDTO> getListaScadenze(String dateFrom
 	if(company!=0) {
 		query.setParameter("_id_company", company);
 	}
+	
+	lista = (ArrayList<DevRegistroAttivitaDTO>) query.list();
+	
+
+	
+	return lista;
+}
+
+
+public static ArrayList<DevRegistroAttivitaDTO> getListaScadenzeScheduler(String dateFrom, String dateTo,int company,  Session session) throws Exception, ParseException {
+	
+	ArrayList<DevRegistroAttivitaDTO> lista = null;
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+	String str = "";
+	if(company == 0) {
+		str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and a.device.disabilitato = 0";
+		
+	}else {
+		str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and id_company_util = :_id_company and a.device.disabilitato = 0";
+	
+	}
+
+	Query query = session.createQuery(str);
+	query.setParameter("_data_start", sdf.parse(dateFrom));
+	query.setParameter("_data_end", sdf.parse(dateTo));
+	
+	if(company!=0) {
+		query.setParameter("_id_company", company);
+	}
 
 	lista = (ArrayList<DevRegistroAttivitaDTO>) query.list();
 	
 	return lista;
 }
+
 
 public static DevTestoEmailDTO getTestoEmail(Session session) {
 	ArrayList<DevTestoEmailDTO> lista = null;
@@ -472,6 +507,25 @@ public static void dissociaMonitor(int id, Session session) {
 	Query query = session.createQuery("delete from DevDeviceMonitorDTO where device.id =:_id_device");
 	query.setParameter("_id_device", id);
 	query.executeUpdate();
+}
+
+public static ArrayList<DevDeviceDTO> getListaDeviceNoMan(int id_company, Session session) {
+	
+	ArrayList<DevDeviceDTO> lista = null;
+	
+	Query query = null;
+	
+	if(id_company == 0) {
+		query = session.createQuery("from DevDeviceDTO where disabilitato = 0 and tipo_device.id <> 14 and id NOT IN (select device.id from DevRegistroAttivitaDTO where tipo_evento.id = 2)");
+	}else {
+		query = session.createQuery("from DevDeviceDTO where id_company_util = :_id_company and disabilitato = 0 and tipo_device.id <> 14 and id NOT IN (select device.id from DevRegistroAttivitaDTO where tipo_evento.id = 2)");	
+		query.setParameter("_id_company", id_company);
+	}
+	
+	
+	lista = (ArrayList<DevDeviceDTO>) query.list();
+	
+	return lista;
 }
 
 }

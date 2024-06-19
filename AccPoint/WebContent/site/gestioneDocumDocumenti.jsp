@@ -173,6 +173,8 @@
 		<c:if test="${documento.aggiornabile_cl == 1 || (documento.stato.id==3 && ruolo == true) || (documento.stato.id==6 && ruolo == true)}">
 		<a class="btn btn-success customTooltip" title="Aggiorna documento" onClick="modalAggiornaDocumento('${documento.id}','${utl:escapeJS(documento.nome_documento) }','${documento.frequenza_rinnovo_mesi }')"><i class="fa fa-arrow-up"></i></a>
 		</c:if>
+		
+		<a class="btn btn-warning customTooltip" onClick="modalEliminaDocumento('${documento.id}')" title="Rendi obsoleto" ><i class="fa fa-close"></i></a>
 	</td>
 	</tr>
 	</c:forEach>
@@ -807,12 +809,13 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
-       <div class="modal-body">       
-      	Sei sicuro di voler eliminare il documento?
+       <div class="modal-body" id="body_yes_or_no">       
+    
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="elimina_documento_id">
-      <a class="btn btn-primary" onclick="eliminaDocumento($('#elimina_documento_id').val())" >SI</a>
+      <a class="btn btn-primary" id="btn_elimina_doc" onclick="eliminaDocumento($('#elimina_documento_id').val(), 1)" >SI</a>
+       <a class="btn btn-primary" id="btn_obsoleto_doc" onclick="eliminaDocumento($('#elimina_documento_id').val(), 0)" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
     </div>
@@ -1592,8 +1595,17 @@ function formatDate(data){
 	   return str;	 		
 }
 
-function modalEliminaDocumento(id_documento){	
+function modalEliminaDocumento(id_documento, elimina){	
 	
+	if(elimina ==1){
+		$('#body_yes_or_no').html("Sei sicuro di voler eliminare il documento?");
+		$('#btn_elimina_doc').show()
+		$('#btn_obsoleto_doc').hide()
+	}else{
+		$('#body_yes_or_no').html("Sei sicuro di voler rendere obsoleto il documento?");
+		$('#btn_elimina_doc').hide()
+		$('#btn_obsoleto_doc').show()
+	}
 	 $('#elimina_documento_id').val(id_documento);
 		$('#myModalYesOrNo').modal();
 }

@@ -20,6 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneMagazzinoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -454,7 +455,8 @@ public class Login extends HttpServlet {
 			        		ArrayList<BachecaDTO> lista_messaggi = GestioneBachecaBO.getMessaggiPerUtente(utente.getId(), session);
 							request.getSession().setAttribute("lista_messaggi", lista_messaggi);
 							
-							ArrayList<String> lista_pacchi = GestioneMagazzinoDAO.getItemInRitardo(true, session);
+							//ArrayList<String> lista_pacchi1 = GestioneMagazzinoDAO.getItemInRitardo(true, session);
+							ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemInRitardoDashboard(session);
 							
 			        		request.getSession().setAttribute("tipoTrend", tipoTrend);
 			        		request.getSession().setAttribute("trend", trend);

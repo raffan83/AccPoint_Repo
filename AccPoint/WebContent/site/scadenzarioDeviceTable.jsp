@@ -39,6 +39,7 @@
 <th>Codice Interno</th>
 <th>Data attività</th>
 <th>Data prossima attività</th>
+<th>Tipo Manutenzione</th>
 <th>Tipo Device</th>
 <th>Company Device</th>
 <th>Denominazione</th>
@@ -62,6 +63,13 @@
 	<td>${scadenza.device.codice_interno }</td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${scadenza.data_evento }"></fmt:formatDate></td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${scadenza.data_prossima }"></fmt:formatDate></td>
+	<td><c:if test="${scadenza.tipo_evento.id!=5 }">
+	INTERNA
+	</c:if>
+	<c:if test="${scadenza.tipo_evento.id ==5 }">
+	ESTERNA
+	</c:if>
+	</td>
 	<td>${scadenza.device.tipo_device.descrizione }</td>
 	<td>${scadenza.device.company_util.ragione_sociale }</td>
 	<td>${scadenza.device.denominazione }</td>
@@ -608,7 +616,12 @@ function createTableAssociati(){
 				  		  }else{
 				  			dati.product_key = '' 
 				  		  }
-					  dati.autorizzato = lista_software_associati[i].software.autorizzato;
+					  if(lista_software_associati[i].software.autorizzato!=null){
+						  dati.autorizzato = lista_software_associati[i].software.autorizzato; 
+					  }else{
+						  dati.autorizzato = '';
+					  }
+					  
 					  dati.versione =  lista_software_associati[i].software.versione;
 					  table_data.push(dati);
 				  }
@@ -737,6 +750,7 @@ function formatDate(data){
 }
 
 var content_id = 0
+
 $(document).ready(function() {
 	
 	console.log("test");
@@ -948,6 +962,7 @@ $('.select2').select2();
 	  	               },{
 	  	                   extend: 'excel',
 	  	                   text: 'Esporta Excel',
+	  	                   title: 'LTA-'+ nome_company,
 	  	                   /* exportOptions: {
 	  	                       modifier: {
 	  	                           page: 'current'

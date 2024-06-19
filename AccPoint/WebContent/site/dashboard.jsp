@@ -188,7 +188,9 @@
 						  <th>Data Arrivo</th>
 						  <th>Data Creazione</th>
 						  <th>Diff.</th>
-						  <th>Note</th>
+						 
+						  <th>Utente</th>
+						   <th>Note</th>
 						<%--  <td></td> --%>
 						 						 
 						 </tr>
@@ -198,15 +200,36 @@
 						 
 						  <c:forEach items="${lista_pacchi_grafico}" var="origine" varStatus="loop">
                             <c:set var="splitted" value="${origine.split(';')}"/>
-                            <tr>
-                               <td>${splitted[0]}</td>
-                               <td>${splitted[1]}</td>
-                               <td>${splitted[2]}</td>
-                               <td>${splitted[3]}</td>
-                               <td>${splitted[4]}</td>
-                               <td>${splitted[5]}</td>
-                               <td>${splitted[6]}</td>
-                               <td>${splitted[7]}</td>
+                          <%--   <c:if test="${fn:length(splitted)>9}">
+                            <c:if test="${splitted[7] == 0}">
+                            <tr style="position:relative" style="background-color:#F3F5A3">
+                           </c:if>
+                            <c:if test="${splitted[7] == 1}">
+                            <tr style="position:relative" style="background-color:#B1CE7B">
+                           </c:if>
+                            </c:if>
+                              <c:if test="${fn:length(splitted)<=9}">
+                            <tr style="position:relative">
+                            </c:if> --%>
+                            <c:if test="${splitted[7] == '1'}">
+                            <tr style="position:relative;background-color:#F3F5A3">
+                           </c:if>
+                            <c:if test="${splitted[7] == '2'}">
+                            <tr style="position:relative;background-color:#B1CE7B">
+                           </c:if>
+                           <c:if test="${splitted[7] == '0'}">
+                            <tr style="position:relative">
+                           </c:if>
+                           
+                               <td  id="${splitted[0]}_1" style="position:relative">${splitted[0]}</td>
+                               <td  id="${splitted[0]}_2" style="position:relative">${splitted[1]}</td>
+                               <td  id="${splitted[0]}_3" style="position:relative">${splitted[2]}</td>
+                               <td  id="${splitted[0]}_4" style="position:relative">${splitted[3]}</td>
+                               <td  id="${splitted[0]}_5" style="position:relative">${splitted[4]}</td>
+                               <td  id="${splitted[0]}_6" style="position:relative">${splitted[5]}</td>
+                               <td  id="${splitted[0]}_7" style="position:relative">${splitted[6]}</td>
+                               <td  id="${splitted[0]}_8" style="position:relative">${splitted[8]}</td>
+                               <td  id="${splitted[0]}_9" style="position:relative">${splitted[9]}</td>
               
                             </tr>
                         </c:forEach>
@@ -253,7 +276,10 @@
   <!-- /.content-wrapper -->
 
 
-
+    <ul class='custom-menu'><label>Seleziona stato</label>
+  <li data-action = "in_corso">In Corso</li>
+  <li data-action = "completato">Completato</li>
+</ul>
 	
   <t:dash-footer />
   
@@ -284,6 +310,57 @@
 </c:if>
 
 
+<style>
+
+.custom-menu {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: sans-serif;     
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    
+}
+
+.custom-menu li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.custom-menu li:hover {
+    background-color: #DEF;
+}
+
+
+
+ .legend {
+  display: flex;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+}
+
+.legend-label {
+  margin-left: 5px;
+}
+
+
+</style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css">
 
 
 </jsp:attribute>
@@ -293,6 +370,7 @@
   <script type="text/javascript" src="js/customCharts.js"></script>
  	<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 	<script src="https://cdn.datatables.net/plug-ins/1.10.16/sorting/date-euro.js"></script>
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"></script> 
 
 <script type="text/javascript">
 	var tipoTrendJson = ${tipoTrendJson};
@@ -327,7 +405,7 @@
 	 
 
 	
-    $(document).ready(function() { 
+    $(document).ready(function() {
     	$.fn.dataTable.moment( 'dd/MM/yyyy HH:mm:ss' );
     	
     	table = $('#tabBacheca').DataTable({
@@ -461,15 +539,32 @@
 	      scrollY: "220px",
 	      stateSave: true,
 	      searching: true, 
-	     
+	      columnDefs: [
+	         
+	          { type: 'num', targets: 6 }  // Assuming the second column "oggetto" contains numeric values
+	      ],
 
-	      
+        buttons: [  
+ 	    	 {
+   	            extend: 'excel',
+   	            text: 'Esporta Excel'  	                   
+  			  },
+ 	          {
+ 	            extend: 'colvis',
+ 	            text: 'Nascondi Colonne'  	                   
+			  } ]
+	               
+
+
 
 	    });
 	
 	   $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
 	    }); 
+	   
+		tab.buttons().container().appendTo( '#tabPacchi_wrapper .col-sm-6:eq(1)');
+
 
 // Apply the search
 tab.columns().eq( 0 ).each( function ( colIdx ) {
@@ -481,7 +576,7 @@ $( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
 } );
 } ); 
 	table.columns.adjust().draw();  
-	
+	 $('#tabPacchi_wrapper .col-sm-6:eq(0)').append('<div class="legend"> <div class="legend-item"> <div class="legend-color" style="background-color:#F3F5A3;"></div> <div class="legend-label">IN CORSO</div> </div> <div class="legend-item"> <div class="legend-color" style="background-color:#B1CE7B;"></div> <div class="legend-label">COMPLETATO</div> </div></div>');
 
 $('#tabPacchi').on( 'page.dt', function () {
 	$('.customTooltip').tooltipster({
@@ -492,8 +587,14 @@ $('#tabPacchi').on( 'page.dt', function () {
 	   $(this).removeClass('btn-default');
 	})  
 
+	
+	
+	
 
 });
+
+
+initContextMenu();
     	
     	
 if(trendJson!=null){
@@ -679,9 +780,126 @@ if(trendJson!=null){
 }
 });
 
-
-		
+/*     $('#tabPacchi tbody td').on('contextmenu',  function(e) {
     
+    	    e.preventDefault(); // Prevent default context menu
+    
+
+    	});  */
+	
+    	var cellIndex;
+    function initContextMenu(){
+    	
+    	$("#tabPacchi tbody td").bind("contextmenu", function (event) {
+    		
+    	     
+    	     // Avoid the real one
+    	     event.preventDefault();
+
+    	     var cell = $("#"+event.currentTarget.id).offset();
+    	     cellIndex = event.currentTarget.id
+
+    	 	 var x  = cell.left ;
+    	 	var y  = cell.top; 
+
+    	     
+
+    	     // Show contextmenu
+    	     $(".custom-menu").finish().toggle(). 
+    	     css({
+    	         top: y + "px",
+    	         left: x + "px"
+    	     });
+    	     
+    	     
+    	     //alert("X:"+(x-240) +"Y:"+ (y-280))
+    	 });
+
+
+    	 // If the document is clicked somewhere
+    	 $(document).bind("mousedown", function (e) {
+    	     
+    	     // If the clicked element is not the menu
+    	     if (!$(e.target).parents(".custom-menu").length > 0) {
+    	         
+    	         // Hide it
+    	         $(".custom-menu").hide(100);
+    	     }
+    	 });
+
+
+    	 // If the menu element is clicked
+    	 $(".custom-menu li").click(function(e){
+    	     
+
+    		 
+    	     // This is the triggered action name
+    	     switch($(this).attr("data-action")) {
+    	         
+    	         // A case for each action. Your actions here
+    	     case 'in_corso':
+                 // Implement copy functionality
+                 
+                 
+                 updateStato(cellIndex.split("_")[0]+"_"+cellIndex.split("_")[1], 1);
+                 
+                 
+                 break;
+             case 'completato':
+                 
+             		
+             		updateStato(cellIndex.split("_")[0]+"_"+cellIndex.split("_")[1], 2);
+                          	
+                
+                 break;
+    	     }
+    	   
+    	     // Hide it AFTER the action was triggered
+    	     $(".custom-menu").hide(100);
+    	   });
+
+
+
+
+    	  
+    	
+    }
+    	 
+    	 
+    	 
+    	 
+   function updateStato(origine, stato){
+	   
+   dataObj ={};
+   dataObj.origine = origine;
+   dataObj.stato = stato;
+   
+   callAjax(dataObj, "gestionePacco.do?action=update_dashboard", function(datab, status){
+	
+	   if(datab.success){
+		   
+		   location.reload()
+		   
+	   }else{
+		   
+		   
+		   
+	   }
+   
+   })
+   
+	   
+   
+    	 
+   }
+    	 
+    	 
+    	 
+    	 
+    	 
+    	 
+    	 
+    	 
 </script>
 </jsp:attribute> 
 </t:layout>

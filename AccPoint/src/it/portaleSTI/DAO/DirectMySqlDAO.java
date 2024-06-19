@@ -14,7 +14,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -39,6 +44,7 @@ import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.IngIngressoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 
@@ -65,6 +71,7 @@ import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.GestioneVerStrumentiBO;
+import it.portaleSTI.bo.SendEmailBO;
 
 public class DirectMySqlDAO {
 
@@ -3443,6 +3450,257 @@ public static ArrayList<ControlloOreDTO> getOrePrevisteOreScaricate() throws Exc
 	
 
 	return lista;
+}
+
+public static void updateOrigineDashboard(String origine, int stato, String utente) throws Exception {
+
+
+	Connection con=null;
+	PreparedStatement pst = null;
+	 ResultSet rs = null;
+	
+	try {
+		con=getConnection();
+
+		  String checkQuery = "SELECT COUNT(*) FROM mag_pacco_dashboard WHERE origine = ?";
+	        pst = con.prepareStatement(checkQuery);
+	        pst.setString(1, origine);
+	        rs = pst.executeQuery();
+	        rs.next();
+	        int count = rs.getInt(1);
+	        rs.close();
+	        pst.close();
+
+	        if (count > 0) {
+	            // Se esiste, esegui un UPDATE
+	            String updateQuery = "UPDATE mag_pacco_dashboard SET stato = ?, utente = ? WHERE origine = ?";
+	            pst = con.prepareStatement(updateQuery);
+	            pst.setInt(1, stato);
+	            pst.setString(2, utente);
+	            pst.setString(3, origine);
+	        } else {
+	            // Se non esiste, esegui un INSERT
+	            String insertQuery = "INSERT INTO mag_pacco_dashboard (origine, stato, utente) VALUES (?, ?, ?)";
+	            pst = con.prepareStatement(insertQuery);
+	            pst.setString(1, origine);
+	            pst.setInt(2, stato);
+	            pst.setString(3, utente);
+	        }
+
+			pst.executeUpdate();
+	
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+}
+
+public static ArrayList<String> getItemInRitardoDashboard(Session session) throws Exception {
+
+	ArrayList<String> lista = new ArrayList<String>();
+	ArrayList<MagPaccoDTO> lista_pacchi = new ArrayList<MagPaccoDTO>();
+	 List<Object[]> results = new ArrayList<Object[]>();
+	
+	Connection con=null;
+	PreparedStatement pst = null;
+	 ResultSet rs = null;
+	
+	try {
+		con=getConnection();
+
+		  String query = "SELECT distinct b.commessa,b.data_arrivo, b.data_lavorazione,b.origine,b.nome_cliente, d.stato, d.utente FROM mag_item_pacco a JOIN mag_pacco b ON a.id_pacco = b.id JOIN mag_item c ON a.id_item = c.id LEFT JOIN  mag_pacco_dashboard d ON b.origine = d.origine WHERE b.id_stato_lavorazione = 1 AND c.stato = 1 AND b.chiuso = 0";
+	        pst = con.prepareStatement(query);
+	       
+	        rs = pst.executeQuery();
+	        
+	        rs=pst.executeQuery();
+
+			MagPaccoDTO pacco_res= null;
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			while(rs.next()) 
+			{
+				pacco_res = new MagPaccoDTO();
+				pacco_res.setCommessa(rs.getString(1));
+				pacco_res.setData_arrivo(rs.getDate(2));
+				pacco_res.setData_lavorazione(rs.getDate(3));
+				pacco_res.setOrigine(rs.getString(4));
+				pacco_res.setNome_cliente(rs.getString(5));
+				Object[] result = new Object[3];
+				result[0] = pacco_res;
+				result[1] = rs.getInt(6);
+				result[2] = rs.getString(7);
+				results.add(result);
+			}
+	        
+	
+			
+			for (Object[] result : results) {
+		        MagPaccoDTO pacco = (MagPaccoDTO) result[0];
+		        Integer stato = (Integer) result[1];
+		        String utente = (String) result[2];
+
+				
+				java.util.Date utilDate = null;
+				java.util.Date dataCommessa = null;
+				if(pacco.getCommessa()!=null && !pacco.getCommessa().equals("")) {
+					CommessaDTO commessa = GestioneCommesseDAO.getCommessaById(pacco.getCommessa());
+					if(commessa!=null) {
+						dataCommessa = commessa.getDT_COMMESSA();
+					}
+				}
+				
+
+				if(dataCommessa!=null && pacco.getData_arrivo().before(dataCommessa)) {
+					utilDate = new java.util.Date(dataCommessa.getTime());
+				}else {
+					utilDate = new java.util.Date(pacco.getData_arrivo().getTime());
+				}
+					 
+					Instant instant = utilDate.toInstant();
+					
+					LocalDate date10 = Utility.sommaGiorniLavorativi(instant.atZone(ZoneId.systemDefault()).toLocalDate(), 6);
+					
+					LocalDate date15 = Utility.sommaGiorniLavorativi(instant.atZone(ZoneId.systemDefault()).toLocalDate(), 14);
+					
+					
+					
+					if(Utility.getRapportoLavorati(pacco)!=1 && date10.isBefore(LocalDate.now())) {
+
+						
+						String toAdd = pacco.getOrigine()+";"+pacco.getNome_cliente();
+						
+						if(pacco.getCommessa()!=null) {
+							toAdd = toAdd +";"+pacco.getCommessa();
+							if(!pacco.getCommessa().equals("")) {
+								toAdd = toAdd +";"+df.format(dataCommessa);
+							}else {
+								toAdd = toAdd +";";
+							}
+						}
+						if(pacco.getData_arrivo()!=null) {
+							toAdd = toAdd +";"+df.format(pacco.getData_arrivo()); 
+						}
+						if(pacco.getData_lavorazione()!=null) {
+							toAdd = toAdd +";"+df.format(pacco.getData_lavorazione()); 
+						}
+						
+						
+						long giorniMancanti = Utility.giorniLavorativiTraDate(LocalDate.now(), date15);
+						
+											
+						if(giorniMancanti>0) {
+							toAdd = toAdd +";"+" - "+giorniMancanti;
+						}else {
+							toAdd = toAdd +";"+" + "+Math.abs(giorniMancanti);
+						}
+						
+						ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigine(pacco.getOrigine(), session);
+						
+						String note_pacco = "";
+
+						for (MagPaccoDTO magPaccoDTO : lista_pacchi_origine) {
+							
+							magPaccoDTO.setRitardo(1);
+							
+							if(magPaccoDTO.getTipo_nota_pacco()!=null) {
+								note_pacco = note_pacco + magPaccoDTO.getTipo_nota_pacco().getDescrizione() +" - ";
+							}
+							
+						}		
+					
+						
+						if(stato!=null) {
+							toAdd = toAdd+";"+stato;
+						}else {
+							toAdd = toAdd+";";
+						}
+						if(utente!=null) {
+							toAdd = toAdd+";"+utente;
+						}else {
+							toAdd = toAdd+";";
+						}
+						
+						if(!note_pacco.equals("")) {
+							note_pacco = note_pacco.substring(0, note_pacco.length()-3).replace("\r\n", "").replace("\n", "");
+							toAdd = toAdd+";"+note_pacco;
+						}else {
+							toAdd = toAdd+";";
+						}
+					
+						lista.add(toAdd);
+
+					}
+				
+			}
+			
+			
+			Collections.sort(lista, new Comparator<String>() {
+			    @Override
+			    public int compare(String s1, String s2) {
+			        // Ottieni i giorni mancanti dai due elementi della lista
+			        int giorniMancanti1 = 0;
+			        int giorniMancanti2 = 0;
+
+			       // String s1n1 = s1.split(";")[s1.split(";").length - 3].replaceAll("[^\\d-]", "").trim();
+			        String s1n1 = s1.split(";")[s1.split(";").length - 3].replaceAll("[^\\d\\/-]", "").trim();
+			        String s1n2 = s1.split(";")[s1.split(";").length - 2].replaceAll("[^\\d\\/-]", "").trim();
+			        String s1n3 = s1.split(";")[s1.split(";").length - 1].replaceAll("[^\\d\\/-]", "").trim();
+			        
+			        if(s1n1.matches("-?[0-9]+")) {
+			        	giorniMancanti1 = Integer.parseInt(s1n1);
+			        }else if(s1n2.matches("-?[0-9]+")) {
+			        	giorniMancanti1 = Integer.parseInt(s1n2);
+			        }else if(s1n3.matches("-?[0-9]+")) {
+			        	giorniMancanti1 = Integer.parseInt(s1n3);
+			        }
+			        
+			        String s2n1 = s2.split(";")[s2.split(";").length - 3].replaceAll("[^\\d\\/-]", "").trim();
+			        String s2n2 = s2.split(";")[s2.split(";").length - 2].replaceAll("[^\\d\\/-]", "").trim();
+			        String s2n3 = s2.split(";")[s2.split(";").length - 1].replaceAll("[^\\d\\/-]", "").trim();
+			        
+			
+			        if(s2n1.matches("-?[0-9]+")) {
+			        	giorniMancanti2 = Integer.parseInt(s2n1);
+			        }else if(s2n2.matches("-?[0-9]+")) {
+			        	giorniMancanti2 = Integer.parseInt(s2n2);
+			        }else if(s2n3.matches("-?[0-9]+")) {
+			        	giorniMancanti2 = Integer.parseInt(s2n3);
+			        }
+			        
+			     			        
+			        // Ordina in modo decrescente
+			        return Integer.compare(giorniMancanti2, giorniMancanti1);
+			    }
+			});
+
+			
+			
+	       
+	        rs.close();
+	        pst.close();
+	    	
+			return lista;
+			
+
+	     
+	
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
 }
 
 }

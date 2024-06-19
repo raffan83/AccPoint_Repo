@@ -14,8 +14,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Locale;
 
 import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
@@ -146,6 +150,8 @@ public class ScaricaEtichetta extends HttpServlet {
 			report.addParameter("matricola",misura.getStrumento().getMatricola());
 			if(misura.getDataMisura()!=null) {
 				report.addParameter("dataVerifica",sdf.format(misura.getDataMisura()));
+			
+				
 			}else {
 				report.addParameter("dataVerifica","");	
 			}
@@ -160,7 +166,15 @@ public class ScaricaEtichetta extends HttpServlet {
 			{
 				report.addParameter("labDataProVerifica","Pross. Verifica");
 				if(misura.getStrumento().getDataProssimaVerifica()!=null) {
-					report.addParameter("dataProVerifica",sdf.format(misura.getStrumento().getDataProssimaVerifica()));
+					if(conf!=null &&conf.getFmt_data_mese_anno().equals("S")) {
+						LocalDate locDataMisura = misura.getStrumento().getDataProssimaVerifica().toLocalDate();
+
+						String formattedDate = locDataMisura.format(DateTimeFormatter.ofPattern("MMM/yyyy", Locale.ITALIAN));
+
+						report.addParameter("dataProVerifica",formattedDate.toUpperCase());
+					}else {
+						report.addParameter("dataProVerifica",sdf.format(misura.getStrumento().getDataProssimaVerifica()));
+					}
 				}else {
 					report.addParameter("dataProVerifica","- - ");
 				}

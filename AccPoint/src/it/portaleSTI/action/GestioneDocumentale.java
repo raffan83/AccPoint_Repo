@@ -2110,7 +2110,27 @@ public class GestioneDocumentale extends HttpServlet {
 				out.print(myObj);
 				
 			}
-
+			else if(action.equals("rendi_obsoleto")) {
+				
+				ajax = true;
+				
+				String id_documento = request.getParameter("id_documento");
+				
+				DocumTLDocumentoDTO documento = GestioneDocumentaleBO.getDocumentoFromId(Integer.parseInt(id_documento), session);
+				
+			
+				documento.setObsoleto(1);
+			
+								
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Completato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+				
+			}
 			
 		}catch(Exception e) {
 			

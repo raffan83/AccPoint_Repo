@@ -22,8 +22,10 @@
   						<th>Company</th>
  						  <th>Descrizione</th>
  						  <th>Data</th>
+ 						  
  						  <th>Frequenza (Mesi)</th>
  						  <th>Data prossima</th> 
+ 						  <th>Tipo Intervento</th>
  						  <th>Utente</th>         
  						  <th>Note evento</th>      
  						  <th>Azioni</th>         
@@ -72,15 +74,17 @@
   </td>
   <td><fmt:formatDate pattern="dd/MM/yyyy" value="${attivita.data_prossima }"></fmt:formatDate></td>
  
-
+<td>${attivita.tipo_intervento }</td>
  <td>${attivita.utente.nominativo }</td>
 
  <td>${attivita.note_evento }</td>
  <td>
- <c:if test="${attivita.tipo_evento.id == 2 }">
+ <c:if test="${attivita.tipo_evento.id == 2 || attivita.tipo_evento.id == 3 || attivita.tipo_evento.id == 5}">
  
- <a class="btn btn-warning customTooltip customLink" onClicK="modificaAttivita('${attivita.id}','${attivita.tipo_evento.id }','${utl:escapeJS(attivita.descrizione) }','${attivita.data_evento}','${attivita.frequenza }','${attivita.data_prossima }','${utl:escapeJS(attivita.note_evento) }','${utl:escapeJS(attivita.tipo_intervento) }','${attivita.tipo_manutenzione_straordinaria.id }')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></a>
+ <a class="btn btn-warning customTooltip customLink" onClicK="modificaAttivita('${attivita.id}','${attivita.tipo_evento.id }','${utl:escapeJS(attivita.descrizione) }','${attivita.data_evento}','${attivita.frequenza }','${attivita.data_prossima }','${utl:escapeJS(attivita.note_evento) }','${utl:escapeJS(attivita.tipo_intervento) }','${attivita.tipo_manutenzione_straordinaria }')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></a>
+ <c:if test="${attivita.tipo_evento.id == 2}">
  <a class="btn btn-info customTooltip customLink" onClicK="rinnovaManutenzione('${attivita.id}','${attivita.tipo_evento.id }','${utl:escapeJS(attivita.descrizione) }','${attivita.frequenza }','${utl:escapeJS(attivita.note_evento) }','${utl:escapeJS(attivita.tipo_intervento) }')" title="Click per rinnovare l'attività"><i class="fa fa-copy"></i></a>
+ </c:if>
  </c:if>
  
  </td>
@@ -138,7 +142,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <select id="tipo_manutenzione_straordinaria" name="tipo_manutenzione_straordinaria" data-placeholder="Seleziona tipo manutenzione straordinaria..." class="form-control select2" style="width:100%" required>
+        <select id="tipo_manutenzione_straordinaria" name="tipo_manutenzione_straordinaria" data-placeholder="Seleziona tipo manutenzione straordinaria..." class="form-control select2" style="width:100%">
         <option value=""></option>
          <option value="1">Hardware</option>
           <option value="2">Software</option>
@@ -300,7 +304,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <select id="tipo_manutenzione_straordinaria_mod" name="tipo_manutenzione_straordinaria_mod" data-placeholder="Seleziona tipo manutenzione straordinaria..." class="form-control select2" style="width:100%" required>
+        <select id="tipo_manutenzione_straordinaria_mod" name="tipo_manutenzione_straordinaria_mod" data-placeholder="Seleziona tipo manutenzione straordinaria..." class="form-control select2" style="width:100%" >
         <option value=""></option>
          <option value="1">Hardware</option>
           <option value="2">Software</option>
@@ -692,7 +696,7 @@ if(value!=null){
 		$('#tipo_intervento_mod').val(tipo_intervento);
 		
 		if(tipo_manutenzione_straordinaria!=null && tipo_manutenzione_straordinaria!=''){
-			$('#tipo_manutenzione_straordinaria_mod').val(tipo_intervento);
+			$('#tipo_manutenzione_straordinaria_mod').val(tipo_manutenzione_straordinaria);
 			$('#tipo_manutenzione_straordinaria_mod').change();
 		}
 		

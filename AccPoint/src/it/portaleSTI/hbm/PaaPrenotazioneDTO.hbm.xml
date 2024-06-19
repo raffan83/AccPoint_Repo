@@ -41,5 +41,8 @@
            <property name="manutenzione" type="int">
             <column name="manutenzione" />
         </property>
+        <property name="rifornimento" type="int">
+            <column name="rifornimento" />
+        </property>
     </class>
 </hibernate-mapping>

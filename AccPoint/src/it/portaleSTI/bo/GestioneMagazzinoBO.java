@@ -14,6 +14,7 @@ import org.hibernate.Session;
 
 import com.google.gson.JsonArray;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneCommesseDAO;
 import it.portaleSTI.DAO.GestioneMagazzinoDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
@@ -482,6 +483,12 @@ public static boolean checkStrumentoCliente(String idCliente, String matricola, 
 		Session session) {
 	// TODO Auto-generated method stub
 	return GestioneMagazzinoDAO.checkStrumentoCliente(idCliente, matricola,codice_interno,  session);
+}
+
+public static void updateOrigineDashboard(String origine, int stato, String utente) throws Exception{
+	
+	DirectMySqlDAO.updateOrigineDashboard(origine, stato, utente);
+	
 }
 
 

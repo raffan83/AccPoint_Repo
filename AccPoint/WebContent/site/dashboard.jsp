@@ -179,7 +179,7 @@
 			            </div>
 			            <div class="box-body">
 		 				<div class="table-responsive mailbox-messages">
-			            <table id="tabPacchi" class="table table-hover table-striped" role="grid" width="100%">
+			            <table id="tabPacchi" class="table table-hover " role="grid" width="100%">
 						 <thead><tr class="active">
 						 <th>Pacco Origine</th>						
 						 <th>Cliente</th>
@@ -277,6 +277,7 @@
 
 
     <ul class='custom-menu'><label>Seleziona stato</label>
+    <li data-action = "da_fare">Da Fare</li>
   <li data-action = "in_corso">In Corso</li>
   <li data-action = "completato">Completato</li>
 </ul>
@@ -525,7 +526,7 @@
         },
         
   
-    	
+        "stripeClasses": [],
         pageLength: 5,
          "order": [ 6, "asc" ],  
 	      paging: false, 
@@ -564,8 +565,7 @@
 	    }); 
 	   
 		tab.buttons().container().appendTo( '#tabPacchi_wrapper .col-sm-6:eq(1)');
-
-
+	
 // Apply the search
 tab.columns().eq( 0 ).each( function ( colIdx ) {
 $( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
@@ -576,7 +576,7 @@ $( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
 } );
 } ); 
 	table.columns.adjust().draw();  
-	 $('#tabPacchi_wrapper .col-sm-6:eq(0)').append('<div class="legend"> <div class="legend-item"> <div class="legend-color" style="background-color:#F3F5A3;"></div> <div class="legend-label">IN CORSO</div> </div> <div class="legend-item"> <div class="legend-color" style="background-color:#B1CE7B;"></div> <div class="legend-label">COMPLETATO</div> </div></div>');
+	 $('#tabPacchi_wrapper .col-sm-6:eq(0)').append('<div class="legend"> <div class="legend-item"> <div class="legend-color" style="background-color:#FFFBFB; border-color:#373737"></div> <div class="legend-label">DA FARE</div> </div><div class="legend-item"> <div class="legend-color" style="background-color:#F3F5A3;"></div> <div class="legend-label">IN CORSO</div> </div> <div class="legend-item"> <div class="legend-color" style="background-color:#B1CE7B;"></div> <div class="legend-label">COMPLETATO</div> </div></div>');
 
 $('#tabPacchi').on( 'page.dt', function () {
 	$('.customTooltip').tooltipster({
@@ -588,7 +588,9 @@ $('#tabPacchi').on( 'page.dt', function () {
 	})  
 
 	
-	
+	 $('#tabPacchi tr').removeClass('odd even');
+	 $('#tabPacchi tr').css('background-color', 'white');
+
 	
 
 });
@@ -837,10 +839,15 @@ if(trendJson!=null){
     	     switch($(this).attr("data-action")) {
     	         
     	         // A case for each action. Your actions here
+    	    case 'da_fare':
+                      
+                updateStato(cellIndex.split("_")[0]+"_"+cellIndex.split("_")[1], 0);                     
+                     
+             break;
+    	         
+    	         
     	     case 'in_corso':
-                 // Implement copy functionality
-                 
-                 
+              
                  updateStato(cellIndex.split("_")[0]+"_"+cellIndex.split("_")[1], 1);
                  
                  

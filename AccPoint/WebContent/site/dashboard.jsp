@@ -887,6 +887,8 @@ if(trendJson!=null){
 		   
 		   location.reload()
 		   
+		   //callAction("login.do");
+		   
 	   }else{
 		   
 		   

@@ -188,7 +188,7 @@ public class CreateCertificatoSE {
 				&& misura_se.getFUSIBILI()!=null && misura_se.getFUSIBILI().equals("OK")
 				&& misura_se.getCONNETTORI()!=null && misura_se.getCONNETTORI().equals("OK")
 				&& misura_se.getMARCHIATURE()!=null && misura_se.getMARCHIATURE().equals("OK")
-				&& misura_se.getALTRO()!=null && (misura_se.getALTRO().split("@")[0].equals("OK") || misura_se.getALTRO().split("@")[0].equals("NA"))) {
+				&& misura_se.getALTRO()!=null && (misura_se.getALTRO().split("@")[0].equals("OK") || misura_se.getALTRO().split("@")[0].equals("N/A"))) {
 				
 				report.addParameter("verifica_sicurezza", "[ OK ]");
 			}else {

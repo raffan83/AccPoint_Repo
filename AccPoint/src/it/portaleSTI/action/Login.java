@@ -214,13 +214,15 @@ public class Login extends HttpServlet {
 					ArrayList<TrendDTO> trend = (ArrayList<TrendDTO>)GestioneTrendBO.getListaTrendAttiviUser(""+utente.getCompany().getId(),hsession);
 					Gson gson = new GsonBuilder().setDateFormat("M/yyyy").create();
 					String trendJson = gson.toJson(trend);
+					
+					ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemInRitardoDashboard(hsession);
 	
 					
 					request.getSession().setAttribute("tipoTrend", tipoTrend);
 					request.getSession().setAttribute("trend", trend);
 					request.getSession().setAttribute("trendJson", trendJson);
 					request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
-					
+					request.getSession().setAttribute("lista_pacchi_grafico", lista_pacchi);
 					
 					
 					dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");

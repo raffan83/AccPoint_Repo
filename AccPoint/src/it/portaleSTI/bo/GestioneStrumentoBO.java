@@ -412,7 +412,7 @@ public class GestioneStrumentoBO {
 					Date prossimaVerifica=strumento.getDataProssimaVerifica();
 					
 					if(tipo_rapporto == 0) {
-						if(prossimaVerifica!=null && prossimaVerifica.after(sdf.parse(dateFrom))&& prossimaVerifica.before(sdf.parse(dateTo)))
+						if(prossimaVerifica!=null && prossimaVerifica.after(sdf.parse(dateFrom))&& (prossimaVerifica.before(sdf.parse(dateTo)) || prossimaVerifica.equals(sdf.parse(dateTo))))
 						{
 							if(nonContieneStrumento(listaFiltrata,strumento))
 							{
@@ -420,7 +420,7 @@ public class GestioneStrumentoBO {
 							}
 						}
 					}else {
-						if(strumento.getTipoRapporto().getId() == tipo_rapporto && prossimaVerifica!=null && prossimaVerifica.after(sdf.parse(dateFrom))&& prossimaVerifica.before(sdf.parse(dateTo)))
+						if(strumento.getTipoRapporto().getId() == tipo_rapporto && prossimaVerifica!=null && prossimaVerifica.after(sdf.parse(dateFrom))&& (prossimaVerifica.before(sdf.parse(dateTo)) || prossimaVerifica.equals(sdf.parse(dateTo))))
 						{
 							if(nonContieneStrumento(listaFiltrata,strumento))
 							{

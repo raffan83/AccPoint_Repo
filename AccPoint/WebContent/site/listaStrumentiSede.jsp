@@ -376,7 +376,12 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 									<%if(strumento.getStato_strumento().getId() != 7227){ %> 
 	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Cambia Stato</button>
 	 									<% if(user.checkRuolo("AM") || user.checkRuolo("OP")){ %>
-	 									<button  class="btn btn-danger" onClick="annullaStrumentoModal('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Annulla</button>
+	 									<button  class="btn btn-danger" onClick="annullaStrumentoModal('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>', 0)">Annulla</button>
+	 									
+	 									<%} %>
+	 									
+	 									<% if(user.checkRuolo("AM")){ %>
+	 									<button  class="btn btn-danger" onClick="annullaStrumentoModal('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>', 1)">Elimina</button>
 	 									
 	 									<%} %>
 	 									<%}else{ %>
@@ -415,7 +420,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 		<input id="id_strumento" type="hidden">
 		<input id="id_sede" type="hidden">
 		<input id="id_cliente" type="hidden">
-        <button  class="btn btn-primary" onClick="annullaStrumento($('#id_strumento').val(),$('#id_sede').val(),$('#id_cliente').val())">SI</button>
+		<input id="elimina" type="hidden">
+        <button  class="btn btn-primary" onClick="annullaStrumento($('#id_strumento').val(),$('#id_sede').val(),$('#id_cliente').val(),$('#elimina').val())">SI</button>
 	               
 	                
 	   
@@ -719,12 +725,15 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
  <script>
  
- function annullaStrumentoModal(id_strumento, id_sede, id_cliente){
+ function annullaStrumentoModal(id_strumento, id_sede, id_cliente, elimina){
 	 $('#id_strumento').val(id_strumento);	 
 	 $('#id_sede').val(id_sede);	 
-	 $('#id_cliente').val(id_cliente);	 
+	 $('#id_cliente').val(id_cliente);
+	 $('#elimina').val(elimina);	 
 	$('#modalYesOrNo').modal();
  }
+ 
+ 
  
  
  function modalSposta(id_strumento, id_sede, id_cliente){

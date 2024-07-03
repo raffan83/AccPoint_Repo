@@ -2090,12 +2090,12 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
   }
   
   
-  function annullaStrumento(idStrumento,idSede,idCliente){
+  function annullaStrumento(idStrumento,idSede,idCliente, elimina){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();  
 	  $.ajax({
     	  type: "POST",
-    	  url: "gestioneStrumento.do?action=annullaStrumento&idStrumento="+idStrumento+"&idSede="+idSede+"&idCliente="+idCliente,
+    	  url: "gestioneStrumento.do?action=annullaStrumento&idStrumento="+idStrumento+"&idSede="+idSede+"&idCliente="+idCliente+"&elimina="+elimina,
     	  dataType: "json",
     	  success: function( data, textStatus) {
 
@@ -2116,28 +2116,41 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 //
 //     			  }
 //    			  //exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
-    			  exploreModal("dettaglioStrumento.do","id_str="+idStrumento,"#dettaglio");
+    			  if(elimina!= 1){
+    				  exploreModal("dettaglioStrumento.do","id_str="+idStrumento,"#dettaglio");
+    			  }else{
+    				
+
+    		          dataString ="idSede="+ idSede+";"+idCliente;
+    		          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab")
+    			  }
+    			  
     			  pleaseWaitDiv.modal('hide');  
     			  $('#report_button').hide();
     			  $("#modalYesOrNo").modal('hide');  
     				$('#visualizza_report').hide();
-    			  $("#myModalErrorContent").html("Strumento annullato con successo");
+    			  $("#myModalErrorContent").html(messaggio);
 		 	        $("#myModalError").modal();
 
 
 
     		  }else{
+    			  $("#myModalError").removeClass("modal-success");
+    			  
+    			  $('#modalYesOrNo').hide()
     			  pleaseWaitDiv.modal('hide');  
     			  $('#report_button').show();
     				$('#visualizza_report').show();
-    			 $("#myModalErrorContent").html("Errore Salvataggio Strumento");
+    			 $("#myModalErrorContent").html(data.messaggio);
 		 	        $("#myModalError").modal();
+		 	       $('.modal-backdrop').hide();
     		  }
     	  },
 
     	  error: function(jqXHR, textStatus, errorThrown){
     	
-
+    		  $("#myModalError").removeClass();
+    		  $("#myModalError").addClass("modal-danger");
     		 $("#myModalErrorContent").html(textStatus);
     		 $('#report_button').show();
 				$('#visualizza_report').show();
@@ -6446,9 +6459,9 @@ function cambiaNotaPacco(id_pacco, nota){
   					}
   		  			if(priorita!=null){
   		  				if(priorita=="1"){	  		  			
-  		  					item.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" checked>'
+  		  					item.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" checked class="iCheck">'
   		  				}else{
-  		  					item.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'">'
+  		  					item.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" class="iCheck">'
   		  				}  			
   		  			}else{
   		  				item.priorita = "";
@@ -6474,9 +6487,9 @@ function cambiaNotaPacco(id_pacco, nota){
   						}
   			  			if(priorita!=null){
   			  				if(priorita=="1"){	  			  			
-  			  					item.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" checked>'
+  			  					item.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" checked class="iCheck">'
   			  				}else{
-  			  					item.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'">'
+  			  					item.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" class="iCheck">'
   			  				}  			
   			  			}else{
   			  				item.priorita = "";
@@ -6496,9 +6509,9 @@ function cambiaNotaPacco(id_pacco, nota){
   			if(priorita!=null){
   				if(priorita=="1"){	
   			
-  					accessorio.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" checked>'
+  					accessorio.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" checked class="iCheck">'
   				}else{
-  					accessorio.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'">'
+  					accessorio.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" class="iCheck">'
   				}  			
   			}else{
   				accessorio.priorita = "";
@@ -6577,6 +6590,15 @@ function cambiaNotaPacco(id_pacco, nota){
 	  	  items_json.forEach(function(item){
 			  $('attivita_item_'+item.id_proprio).select2();
 		  });
+	  	  
+	  	  
+	  	$('#tabItem').on('draw.dt', function() {
+	  	    $('input').iCheck({
+	  	        checkboxClass: 'icheckbox_square-blue',
+	  	        radioClass: 'iradio_square-blue',
+	  	        increaseArea: '20%' // optional
+	  	    });
+	  	});
 	}
   
 function eliminaEntryItem(id, tipo){

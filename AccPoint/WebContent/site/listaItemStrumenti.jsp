@@ -98,7 +98,7 @@ ArrayList<CompanyDTO> lista_company =(ArrayList)session.getAttribute("lista_comp
 </td>
 <td><input type="text" id="destinazione_item${strumento.__id }" style="width:100%"></td>
 <td><input type="text" id="note_item${strumento.__id}"  style="width:100%"></td> 
-<td><input type="checkbox" id="priorita_item${strumento.__id}"/></td> 
+<td style="text-align:center"><input type="checkbox" id="priorita_item${strumento.__id}"/></td> 
 
 	</tr>
 	
@@ -374,6 +374,15 @@ $('#close_button_modal').on('click', function(){
 
 		} );
  */
+ 
+ 
+	$('#tabStrumentiItem').on('draw.dt', function() {
+  	    $('input').iCheck({
+  	        checkboxClass: 'icheckbox_square-blue',
+  	        radioClass: 'iradio_square-blue',
+  	        increaseArea: '20%' // optional
+  	    });
+  	});
 
 		var columsDatatables = [];
 		 

@@ -392,7 +392,29 @@
 		 </table>  
        
        
+       <div class="row">
        
+       	<div class="col-sm-3">
+       	<label>Monitor Associati</label>
+       	</div>
+       	</div>
+       
+		          <table id="table_monitor_dtl" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+
+<th>ID</th>
+<th>Codice</th>
+<th>Denominazione</th>
+<th>Costruttore</th>
+<th>Modello</th>
+<th>Distributore</th>
+
+ </tr></thead>
+ 
+ <tbody>
+</tbody>
+</table> 
             
             </div>
             
@@ -635,12 +657,11 @@ function createTableAssociati(){
 				
 				
 				table.columns.adjust().draw();
-				
+				 pleaseWaitDiv = $('#pleaseWaitDialog');
+			   	  pleaseWaitDiv.modal('hide');
 				 $( "#myModal" ).modal();
 		       	    $('body').addClass('noScroll');
-				
-		       	 pleaseWaitDiv = $('#pleaseWaitDialog');
-		   	  pleaseWaitDiv.modal('hide');
+
 				
 				/* $('#modalSoftwareAssociati').on('shown.bs.modal', function () {
 				var table = $('#tabSoftware').DataTable();
@@ -648,6 +669,63 @@ function createTableAssociati(){
 				
 				}); */
 
+      	  }
+	});
+}
+
+
+function createTableMonitorAssociati(){
+	
+	var id_device = $('#device_dettaglio').val()
+
+	
+	dataString ="action=lista_monitor&id_device="+ id_device;
+    exploreModal("gestioneDevice.do",dataString,null,function(datab,textStatusb){
+    	
+    	  var result = JSON.parse(datab);
+    	  
+    	  var table_data = [];
+    	  
+    	  var lista_monitor_device = result.lista_monitor_device;
+      	  
+      	  if(result.success){ 
+
+				var table_data = [];
+				
+
+		  		  for(var i = 0; i<lista_monitor_device.length;i++){
+		  			  var dati = {};
+		  		
+		  			  dati.id = lista_monitor_device[i].monitor.id;
+		  			  dati.codice = lista_monitor_device[i].monitor.codice_interno;
+		  			  dati.denominazione = lista_monitor_device[i].monitor.denominazione;
+		  			  dati.costruttore = lista_monitor_device[i].monitor.costruttore;
+		  			  dati.modello = lista_monitor_device[i].monitor.modello;
+		  			  dati.distributore = lista_monitor_device[i].monitor.distributore;	
+		  			  
+		  			  table_data.push(dati);
+		  			
+		  		  }
+				  			
+				var table = $('#table_monitor_dtl').DataTable();
+				
+				table.clear().draw();
+				
+				table.rows.add(table_data).draw();
+				
+				
+				
+				table.columns.adjust().draw();
+				
+			   	 pleaseWaitDiv = $('#pleaseWaitDialog');
+			   	  pleaseWaitDiv.modal('hide');
+				
+				 $( "#myModal" ).modal();
+		       	    $('body').addClass('noScroll');
+				
+		    
+				
+			
       	  }
 	});
 }
@@ -763,38 +841,58 @@ $(document).ready(function() {
 	    	$('#device_dettaglio').val(id);
 	    	
 	      	if(content_id == 0){
-	      		
+	      		 pleaseWaitDiv = $('#pleaseWaitDialog');
+			   	  pleaseWaitDiv.modal('hide');
 	      	 exploreModal("gestioneDevice.do","action=dettaglio_device&id_device="+id, null, function(datab,textStatusb){
 	      		 
 	      		 var result = JSON.parse(datab);
 	      		 
 	      		 if(result.success){
 	      			 
-					var device = result.device;
+	      			var device = result.device;
 					
 					$('#id_device_dtl').val(device.id);
 					$('#codice_interno_dtl').val(device.codice_interno);
 					$('#tipo_device_dtl').val(device.tipo_device.id);
 					$('#tipo_device_dtl').change();
-					$('#company_dtl').val(device.tipo_device.id);
+					if(device.company_util!=null){
+						$('#company_dtl').val(device.company_util.id);	
+					}
+					
 					$('#company_dtl').change();
 					$('#denominazione_dtl').val(device.denominazione);
 					$('#costruttore_dtl').val(device.costruttore);
 					$('#modello_dtl').val(device.modello);
 					$('#distributore_dtl').val(device.distributore);
 					$('#ubicazione_dtl').val(device.ubicazione);
+					$('#rif_fattura_dtl').val(device.rif_fattura);
+					if(device.company_proprietaria!=null){
+						$('#company_proprietaria_dtl').val(device.company_proprietaria.id);
+						$('#company_proprietaria_dtl').change()
+					}
 					if(device.data_acquisto!=null && device.data_acquisto!=''){
 						$('#data_acquisto_dtl').val(Date.parse(device.data_acquisto).toString("dd/MM/yyyy"));	
+					}
+					if(device.data_creazione!=null && device.data_creazione!=''){
+						$('#data_creazione_dtl').val(Date.parse(device.data_creazione).toString("dd/MM/yyyy"));	
 					}
 					if(device.dipendente!=null){
 						$('#dipendente_dtl').val(device.dipendente.id);
 						$('#dipendente_dtl').change();
 					}
-									
+								
+					$('#cpu_dtl').val(device.cpu);
+					$('#ram_dtl').val(device.ram);
+					$('#scheda_video_dtl').val(device.scheda_video);
+					$('#hard_disk_dtl').val(device.hard_disk);
 					
 					$('#configurazione_dtl').val(device.configurazione);
 					
 					createTableAssociati()
+					createTableMonitorAssociati()
+					
+					 pleaseWaitDiv = $('#pleaseWaitDialog');
+				   	  pleaseWaitDiv.modal('hide');
 	      			 
 	      		 }
 	      		 
@@ -815,7 +913,7 @@ $(document).ready(function() {
 	      	if(content_id == 2){
 	      		
 	    		
-	      	   exploreModal("gestioneDevice.do","action=lista_procedure&id_device="+id,"#gestione_procedure");
+	      	   exploreModal("gestioneDevice.do","action=lista_procedure_device&id_device="+id,"#gestione_procedure");
 	      	    $( "#myModal" ).modal();
 	      	    $('body').addClass('noScroll');
 	       	}
@@ -830,6 +928,74 @@ $(document).ready(function() {
 		});
 	    
 	    
+	 t = $('#table_monitor_dtl').DataTable({
+			language: {
+		        	emptyTable : 	"Nessun dato presente nella tabella",
+		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+		        	infoPostFix:	"",
+		        infoThousands:	".",
+		        lengthMenu:	"Visualizza _MENU_ elementi",
+		        loadingRecords:	"Caricamento...",
+		        	processing:	"Elaborazione...",
+		        	search:	"Cerca:",
+		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+		        	paginate:	{
+	  	        	first:	"Inizio",
+	  	        	previous:	"Precedente",
+	  	        	next:	"Successivo",
+	  	        last:	"Fine",
+		        	},
+		        aria:	{
+	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+		        }
+	        },
+	        pageLength: 25,
+	        "order": [[ 2, "desc" ]],
+		      paging: false, 
+		      ordering: true,
+		      info: false, 
+		      searchable: true, 
+		      targets: 0,
+		      responsive: true,  
+		      scrollX: false,
+		      stateSave: false,	
+		      select: {
+		        	style:    'multi+shift',
+		        	selector: 'td:nth-child(2)'
+		    	},
+		      columns : [
+		   
+		      	{"data" : "id"},
+		      	{"data" : "codice"},
+		      	{"data" : "denominazione"},
+		      	{"data" : "costruttore"},
+		      	{"data" : "modello"},
+		      	{"data" : "distributore"}
+		      
+		       ],	
+		           
+		      columnDefs: [
+		    	  
+		    	
+		    	  ],
+		    	  
+		     	          
+	  	      buttons: [   
+	  	          {
+	  	            extend: 'colvis',
+	  	            text: 'Nascondi Colonne'  	                   
+	 			  } ]
+		               
+		    });
+		
+
+		
+		
+	 
+	 
 	    
 	    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
@@ -852,7 +1018,9 @@ $(document).ready(function() {
 	    				$('#codice_interno_dtl').val(device.codice_interno);
 	    				$('#tipo_device_dtl').val(device.tipo_device.id);
 	    				$('#tipo_device_dtl').change();
-	    				$('#company_dtl').val(device.tipo_device.id);
+	    				if(device.company_util!=null){
+							$('#company_dtl').val(device.company_util.id);	
+						}
 	    				$('#company_dtl').change();
 	    				$('#denominazione_dtl').val(device.denominazione);
 	    				$('#costruttore_dtl').val(device.costruttore);
@@ -888,7 +1056,7 @@ $(document).ready(function() {
 	    	if(contentID == "gestioneProcedureTab"){
 	      		
 	    		
-	       	   exploreModal("gestioneDevice.do","action=lista_procedure&id_device="+id,"#gestione_procedure");
+	       	   exploreModal("gestioneDevice.do","action=lista_procedure_device&id_device="+id,"#gestione_procedure");
 	       	    $( "#myModal" ).modal();
 	       	    $('body').addClass('noScroll');
 	        }

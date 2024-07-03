@@ -215,14 +215,14 @@ public class Login extends HttpServlet {
 					Gson gson = new GsonBuilder().setDateFormat("M/yyyy").create();
 					String trendJson = gson.toJson(trend);
 					
-					ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemInRitardoDashboard(hsession);
+					//ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemInRitardoDashboard(hsession);
 	
 					
 					request.getSession().setAttribute("tipoTrend", tipoTrend);
 					request.getSession().setAttribute("trend", trend);
 					request.getSession().setAttribute("trendJson", trendJson);
 					request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
-					request.getSession().setAttribute("lista_pacchi_grafico", lista_pacchi);
+					//request.getSession().setAttribute("lista_pacchi_grafico", lista_pacchi);
 					
 					
 					dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
@@ -458,14 +458,14 @@ public class Login extends HttpServlet {
 							request.getSession().setAttribute("lista_messaggi", lista_messaggi);
 							
 							//ArrayList<String> lista_pacchi1 = GestioneMagazzinoDAO.getItemInRitardo(true, session);
-							ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemInRitardoDashboard(session);
+							//ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemInRitardoDashboard(session);
 							
 			        		request.getSession().setAttribute("tipoTrend", tipoTrend);
 			        		request.getSession().setAttribute("trend", trend);
 			        		request.getSession().setAttribute("trendJson", trendJson);
 			        		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
 			        		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
-			        		request.getSession().setAttribute("lista_pacchi_grafico", lista_pacchi);
+			        		//request.getSession().setAttribute("lista_pacchi_grafico", lista_pacchi);
 			        		
 			        		
 			        		dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");

@@ -739,6 +739,12 @@ if(value!=null){
 		 $('#content_tipo_man').hide();
 	 }
 	 
+	 if(val==2){
+		 $('#data_prossima').prop("required", true);
+	 }else{
+		 $('#data_prossima').prop("required", false);
+	 }
+	 
  });
  
  $('#tipo_evento_mod').change(function(){
@@ -751,6 +757,12 @@ if(value!=null){
 		 
 	 }else{
 		 $('#content_tipo_man_mod').hide();
+	 }
+	 
+	 if(val==2){
+		 $('#data_prossima_mod').prop("required", true);
+	 }else{
+		 $('#data_prossima_mod').prop("required", false);
 	 }
 	 
  });
@@ -841,6 +853,12 @@ $(document).ready(function(){
  
  $('#formNuovaAttivita').on('submit', function(e){
 	
+	 if($('#tipo_evento').val()==2){
+		 $('#data_prossima').attr("required", true);
+	 }else{
+		 $('#data_prossima').attr("required", false);
+	 }
+	 
 	 e.preventDefault();
 	 callAjaxForm('#formNuovaAttivita', 'gestioneDevice.do?action=nuova_attivita', function(data, textStatus){
 		 
@@ -870,7 +888,7 @@ $(document).ready(function(){
 			e.preventDefault()
 			alert("inside")
 		}
-	 
+
 	 
 	 e.preventDefault();
 	 callAjaxForm('#formModificaAttivita', 'gestioneDevice.do?action=modifica_attivita', function(data, textStatus){

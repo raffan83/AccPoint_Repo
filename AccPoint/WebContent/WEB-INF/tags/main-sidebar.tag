@@ -230,6 +230,7 @@
           <li><a href="#" onclick="callAction('listaPacchi.do',null,true);">Stato Magazzino</a></li>
            <li><a href="#" onclick="callAction('listaItem.do?action=lista',null,true);">Stato Item Magazzino</a></li>
 		<li><a href="#" onclick="callAction('listaPacchi.do?action=lista_ddt',null,true);">Stato DDT</a></li>
+		<li><a href="#" onclick="callAction('gestionePacco.do?action=pacchi_lavorazione',null,true);">Attivit&agrave; in corso</a></li>
           </ul>
         </li>
           <% }%>
@@ -532,7 +533,7 @@
           </a>
           <ul class="treeview-menu">          
        
-			<li><a href="downloadCalver.do?action=calverdesktop">DasmTar v2.9.0</a></li>
+			<li><a href="downloadCalver.do?action=calverdesktop">DasmTar v2.9.2</a></li>
 
 			<li><a href="downloadCalver.do?action=dasmtarLat">DasmTarLAT v1.0.6</a></li>
 

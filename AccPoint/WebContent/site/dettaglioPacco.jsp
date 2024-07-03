@@ -2276,6 +2276,15 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 	} );    
 	
 
+ 	$('#tabItem').on('draw.dt', function() {
+  	    $('input').iCheck({
+  	        checkboxClass: 'icheckbox_square-blue',
+  	        radioClass: 'iradio_square-blue',
+  	        increaseArea: '20%' // optional
+  	    });
+  	});
+ 	
+ 	
 	var columsDatatables3 = [];
 	  
  	$("#tabAccettazione").on( 'init.dt', function ( e, settings ) {
@@ -2992,7 +3001,7 @@ table_items_ril.columns.adjust().draw();
      	 {"data" : "codice_interno"},
      	 {"data" : "attivita"},
      	 {"data" : "destinazione"},     	
-     	 {"data" : "priorita"},
+     	 {"data" : "priorita","className": "text-center"},
      	 {"data" : "note"},
      	 {"data" : "action"}
      	

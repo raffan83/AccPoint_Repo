@@ -18,6 +18,7 @@ public class DevRegistroAttivitaDTO {
 	private int email_inviata;
 	private int sollecito_inviato;
 	private Integer tipo_manutenzione_straordinaria;
+	private Date data_invio_sollecito;
 	
 	public int getId() {
 		return id;
@@ -102,6 +103,12 @@ public class DevRegistroAttivitaDTO {
 	}
 	public void setTipo_manutenzione_straordinaria(Integer tipo_manutenzione_straordinaria) {
 		this.tipo_manutenzione_straordinaria = tipo_manutenzione_straordinaria;
+	}
+	public Date getData_invio_sollecito() {
+		return data_invio_sollecito;
+	}
+	public void setData_invio_sollecito(Date data_invio_sollecito) {
+		this.data_invio_sollecito = data_invio_sollecito;
 	}
 	
 	

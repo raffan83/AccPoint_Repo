@@ -5,9 +5,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -149,6 +154,10 @@ public class GestioneStrumento extends HttpServlet {
 						myObj.addProperty("success", success);
 						myObj.addProperty("messaggio", message);
 				        out.println(myObj.toString());
+				        
+				        
+				        session.getTransaction().commit();
+						session.close();
 
 			}else if(action.equals("pdffiltrati")) {
 				
@@ -194,7 +203,8 @@ public class GestioneStrumento extends HttpServlet {
 
 				    Utility.removeDirectory(new File(Costanti.PATH_FOLDER+"//temp//"));
 			 
-				
+				    session.getTransaction().commit();
+					session.close();
 				
 				
 			}
@@ -239,6 +249,9 @@ public class GestioneStrumento extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 
+				    session.getTransaction().commit();
+					session.close();
+				    
 				    Utility.removeDirectory(new File(Costanti.PATH_FOLDER+"//temp//"));
 			}
 			
@@ -327,10 +340,15 @@ public class GestioneStrumento extends HttpServlet {
 
 					request.getSession().setAttribute("lista_strumenti_filtrati", lista_strumenti_filtrati);
 					
+				
+					
 					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiFiltrati.jsp");
 				     dispatcher.forward(request,response);
 
-				} 
+				}
+				
+				session.getTransaction().commit();
+				session.close();
 			}
 			
 //			else if(action.equals("filtra_generali")) {
@@ -466,7 +484,8 @@ public class GestioneStrumento extends HttpServlet {
 					}
 					
 				}
-				
+				session.getTransaction().commit();
+				session.close();
 				 out.println(myObj);
 			}
 			else if(action.equals("annullaStrumento")) {
@@ -485,19 +504,59 @@ public class GestioneStrumento extends HttpServlet {
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				
+				String elimina = request.getParameter("elimina");
 				
-				strumento.setStato_strumento(new StatoStrumentoDTO(7227, "Annullato"));
+				Boolean success = true;
+				String message = "";
+				if(elimina !=null && elimina.equals("1")) {
 			
-				JsonObject myObj = new JsonObject();
+					 try {
+					        session.delete(strumento);
+					        session.getTransaction().commit();
+					        message = "Strumento eliminato con successo!";
+							
+					    } catch (ConstraintViolationException  e) {
+					        success = false;
+					        SQLException sqlException = (SQLException) e.getCause();
+					        String sqlMessage = sqlException.getMessage();
+					        
+					        // Regex pattern per estrarre il nome della tabella dal messaggio di errore
+					        Pattern pattern = Pattern.compile("a foreign key constraint fails \\(`[^`]+`\\.([^,]+),");
+					        Matcher matcher = pattern.matcher(sqlMessage);
 
-				Boolean success = GestioneStrumentoBO.update(strumento, session);
+					        if (matcher.find()) {
+					            String referencedTable = matcher.group(1).trim();
+					            message = "Eliminazione non riuscita a causa di vincoli referenziali sulla tabella '" + referencedTable + "'.";
+					        } else {
+					        	message = "Eliminazione non riuscita a causa di vincoli referenziali: " + sqlMessage;
+					        }
+					    } catch (Exception e) {
+					        success = false;
+					        message = "Eliminazione non riuscita: " + e.getMessage();
+					    }
+					 
+					 session.close();
+				}else {
+					strumento.setStato_strumento(new StatoStrumentoDTO(7227, "Annullato"));
+					success = GestioneStrumentoBO.update(strumento, session);
 					
-					String message = "";
 					if(success){
-						message = "Salvato con Successo";
+						message = "Annullato con Successo";
 					}else{
 						message = "Errore Salvataggio";
 					}
+					
+					session.getTransaction().commit();
+					session.close();
+				}
+		
+			
+				JsonObject myObj = new JsonObject();
+
+				
+					
+					
+					
 				
 				
 					Gson gson = new Gson();
@@ -513,8 +572,7 @@ public class GestioneStrumento extends HttpServlet {
 				
 			}
 			
-		session.getTransaction().commit();
-		session.close();
+		
 
 	
 

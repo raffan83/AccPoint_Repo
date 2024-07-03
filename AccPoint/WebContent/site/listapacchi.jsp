@@ -3018,7 +3018,7 @@ table_item = $('#tabItem').DataTable({
          {"data" : "codice_interno"},
      	 {"data" : "attivita"},
      	 {"data" : "destinazione"},
-     	 {"data" : "priorita"},
+     	 {"data" : "priorita", "className": "text-center"},
      	 {"data" : "note"},
      	 {"data" : "action"}
      ],	

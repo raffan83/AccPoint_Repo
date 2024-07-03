@@ -3514,7 +3514,7 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 	try {
 		con=getConnection();
 
-		  String query = "SELECT distinct b.commessa,b.data_arrivo, b.data_lavorazione,b.origine,b.nome_cliente, d.stato, d.utente FROM mag_item_pacco a JOIN mag_pacco b ON a.id_pacco = b.id JOIN mag_item c ON a.id_item = c.id LEFT JOIN  mag_pacco_dashboard d ON b.origine = d.origine WHERE b.id_stato_lavorazione = 1 AND c.stato = 1 AND b.chiuso = 0";
+		  String query = "SELECT distinct b.commessa,b.data_arrivo, b.data_lavorazione,b.origine,b.nome_cliente, d.stato, d.utente, c.priorita FROM mag_item_pacco a JOIN mag_pacco b ON a.id_pacco = b.id JOIN mag_item c ON a.id_item = c.id LEFT JOIN  mag_pacco_dashboard d ON b.origine = d.origine WHERE b.id_stato_lavorazione = 1 AND c.stato = 1 AND b.chiuso = 0";
 	        pst = con.prepareStatement(query);
 	       
 	        rs = pst.executeQuery();
@@ -3531,10 +3531,11 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 				pacco_res.setData_lavorazione(rs.getDate(3));
 				pacco_res.setOrigine(rs.getString(4));
 				pacco_res.setNome_cliente(rs.getString(5));
-				Object[] result = new Object[3];
+				Object[] result = new Object[4];
 				result[0] = pacco_res;
 				result[1] = rs.getInt(6);
 				result[2] = rs.getString(7);
+				result[3] = rs.getInt(8);
 				results.add(result);
 			}
 	        
@@ -3544,6 +3545,7 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 		        MagPaccoDTO pacco = (MagPaccoDTO) result[0];
 		        Integer stato = (Integer) result[1];
 		        String utente = (String) result[2];
+		        Integer urgente = (Integer) result[3];
 
 				
 				java.util.Date utilDate = null;
@@ -3570,7 +3572,8 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 					
 					
 					
-					if(Utility.getRapportoLavorati(pacco)!=1 && date10.isBefore(LocalDate.now())) {
+					//if(Utility.getRapportoLavorati(pacco)!=1 && (date10.isBefore(LocalDate.now()) || date10.equals(LocalDate.now()))) {
+					if(Utility.getRapportoLavorati(pacco)!=1) {
 
 						
 						String toAdd = pacco.getOrigine()+";"+pacco.getNome_cliente();
@@ -3622,6 +3625,12 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 						}
 						if(utente!=null) {
 							toAdd = toAdd+";"+utente;
+						}else {
+							toAdd = toAdd+";";
+						}
+						
+						if(urgente!=null) {
+							toAdd = toAdd+";"+urgente;
 						}else {
 							toAdd = toAdd+";";
 						}

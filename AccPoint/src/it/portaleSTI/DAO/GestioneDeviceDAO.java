@@ -443,7 +443,7 @@ public static ArrayList<DevRegistroAttivitaDTO> getListaScadenzeEmailInviata(Ses
 	
 	ArrayList<DevRegistroAttivitaDTO> lista = null;
 	
-	Query query = session.createQuery("from DevRegistroAttivitaDTO where email_inviata = 1 and device.disabilitato = 0 and sollecito_inviato = 0 and id_tipo_evento = 2 ");	
+	Query query = session.createQuery("from DevRegistroAttivitaDTO where email_inviata = 1 and device.disabilitato = 0 and id_tipo_evento = 2 ");	
 	
 	lista = (ArrayList<DevRegistroAttivitaDTO>) query.list();
 	
@@ -454,7 +454,7 @@ public static ArrayList<DevRegistroAttivitaDTO> getListaManutenzioniSuccessive(S
 	
 	ArrayList<DevRegistroAttivitaDTO> lista = null;
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	Query query = session.createQuery("from DevRegistroAttivitaDTO where device.id = :_id_device and (tipo_evento.id = 2 or tipo_evento.id = 3) and data_evento >= :_date");
+	Query query = session.createQuery("from DevRegistroAttivitaDTO where device.id = :_id_device and tipo_evento.id = 2  and data_evento >= :_date");
 	query.setParameter("_id_device", id_device);
 	query.setParameter("_date", sdf.parse(date));
 	

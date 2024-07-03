@@ -1624,12 +1624,12 @@ function createTableAssociati(){
 				
 				
 				table.columns.adjust().draw();
-				
+				 pleaseWaitDiv = $('#pleaseWaitDialog');
+			   	  pleaseWaitDiv.modal('hide');
 				 $( "#myModal" ).modal();
 		       	    $('body').addClass('noScroll');
 				
-		       	 pleaseWaitDiv = $('#pleaseWaitDialog');
-		   	  pleaseWaitDiv.modal('hide');
+		       
 				
 			
       	  }
@@ -1681,11 +1681,13 @@ function createTableMonitorAssociati(){
 				
 				table.columns.adjust().draw();
 				
+			   	 pleaseWaitDiv = $('#pleaseWaitDialog');
+			   	  pleaseWaitDiv.modal('hide');
+				
 				 $( "#myModal" ).modal();
 		       	    $('body').addClass('noScroll');
 				
-		       	 pleaseWaitDiv = $('#pleaseWaitDialog');
-		   	  pleaseWaitDiv.modal('hide');
+		    
 				
 			
       	  }
@@ -2117,7 +2119,9 @@ $('#tipo_device_mod').change(function(){
 
 $('#dipendente').change(function(){
 	
-	var value = $(this).val().split("_")[1];
+	if($(this).val()!=null){
+		var value = $(this).val().split("_")[1];
+	}
 	if($(this).val()=="0"){
 		value = "0";
 	}
@@ -2131,14 +2135,25 @@ $('#dipendente').change(function(){
 
 $('#dipendente_mod').change(function(){
 	
-	var value = $(this).val().split("_")[1];
+	
+	if($(this).val()!=null){
+		var value = $(this).val().split("_")[1];
+	}
+	
 	if($(this).val()=="0"){
 		value = "0";
 	}
 	
 	if(value!=null && value!=''){
-		$('#company_mod').val(value);
-		$('#company_mod').change();
+		if(value=="0"){
+			$('#company_mod').attr("disabled", false)
+		}else{
+			$('#company_mod').attr("disabled", true)
+			$('#company_mod').val(value);
+			$('#company_mod').change();
+		}
+		
+		
 	}
 	
 });
@@ -2166,9 +2181,10 @@ $(document).ready(function() {
       	$('#li_gestione_procedure').removeClass("active");
       	$('#li_lista_allegati').removeClass("active");
       	
-
+		pleaseWaitDiv.hide(); 
+  		pleaseWaitDiv.modal('hide');
       	 exploreModal("gestioneDevice.do","action=dettaglio_device&id_device="+id, null, function(datab,textStatusb){
-      		 
+  
       		 var result = JSON.parse(datab);
       		 
       		 if(result.success){
@@ -2190,7 +2206,11 @@ $(document).ready(function() {
 				$('#distributore_dtl').val(device.distributore);
 				$('#ubicazione_dtl').val(device.ubicazione);
 				$('#rif_fattura_dtl').val(device.rif_fattura);
-				$('#company_proprietaria_dtl').val(device.company_proprietaria);
+				if(device.company_proprietaria!=null){
+					$('#company_proprietaria_dtl').val(device.company_proprietaria.id);
+					$('#company_proprietaria_dtl').change()
+				}
+				
 				if(device.data_acquisto!=null && device.data_acquisto!=''){
 					$('#data_acquisto_dtl').val(Date.parse(device.data_acquisto).toString("dd/MM/yyyy"));	
 				}
@@ -2211,6 +2231,9 @@ $(document).ready(function() {
 				
 				createTableAssociati()
 				createTableMonitorAssociati()
+				
+				pleaseWaitDiv.hide(); 
+		  		pleaseWaitDiv.modal('hide');
       		 }
       		 
       		
@@ -2417,6 +2440,9 @@ $(document).ready(function() {
     	
     	if(contentID == "dettaglioTab"){
     		
+    		pleaseWaitDiv = $('#pleaseWaitDialog');
+  	   	  pleaseWaitDiv.hide(); 
+  	   	pleaseWaitDiv.modal('hide');
     		 exploreModal("gestioneDevice.do","action=dettaglio_device&id_device="+id,null, function(datab,textStatusb){
           		 
           		 var result = JSON.parse(datab);

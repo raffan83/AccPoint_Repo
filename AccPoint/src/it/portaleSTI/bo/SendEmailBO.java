@@ -1137,10 +1137,10 @@ DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	  //email.addTo("giuseppe.gabriele@stisrl.com");
 	  //email.addTo("sara.massaro@stisrl.com");
 String nominativo = "";
-//if(attivita.getDevice().getDipendente()!=null && attivita.getDevice().getDipendente().getEmail()!=null && !attivita.getDevice().getDipendente().getEmail().equals("")) {
-//	email.addTo(attivita.getDevice().getDipendente().getEmail());
+if(attivita.getDevice().getDipendente()!=null && attivita.getDevice().getDipendente().getEmail()!=null && !attivita.getDevice().getDipendente().getEmail().equals("")) {
+	email.addTo(attivita.getDevice().getDipendente().getEmail());
 //	nominativo = "Gentile "+attivita.getDevice().getDipendente().getNome()+" "+attivita.getDevice().getDipendente().getCognome()+" <br>";
-//}
+}
 
 String[] to = referenti.split(";");
 

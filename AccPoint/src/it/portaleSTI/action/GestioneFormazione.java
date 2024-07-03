@@ -1404,13 +1404,15 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 	            }
 	            zipOut.close();
 	            System.out.println("Done... Zipped the files...");
+	            
+	            session.getTransaction().commit();
+				session.close();
 				
 				downloadFile(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+"zipfile.zip", response.getOutputStream());
 				
 				response.setContentType("application/octet-stream");	
 				
-				session.getTransaction().commit();
-				session.close();
+				
 			}
 			else if(action.equals("dissocia_partecipante_corso")) {
 				

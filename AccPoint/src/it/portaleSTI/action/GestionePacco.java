@@ -37,6 +37,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
@@ -1850,6 +1851,21 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("success", true);
 			
 			out.print(myObj);
+			
+			
+		}
+		else if(action.equals("pacchi_lavorazione")) {
+		
+			ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemInRitardoDashboard(session);
+			request.getSession().setAttribute("lista_pacchi_grafico", lista_pacchi);
+			
+			
+			session.getTransaction().commit();
+			session.close();
+			
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPacchiInLavorazione.jsp");
+	     	dispatcher.forward(request,response);
+			
 			
 			
 		}

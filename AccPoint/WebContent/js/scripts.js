@@ -8515,6 +8515,9 @@ function filtraCertificati(anno){
        				$('#select1').val("");
        			  	$('#select1').change();
        			  }       			  
+       			  
+       			var bf = $('#collapsed_box').find(".box-body, .box-footer");
+         	   bf.slideDown();
        			initSelect2('#select1');
        			  	if(nome_sede_cliente!=null && nome_sede_cliente!="" ){
        			  		//$('#select2 option[value="'+sede_destinazione+"_"+id_destinazione+"__"+nome_sede_cliente+'"]').attr("selected", true);

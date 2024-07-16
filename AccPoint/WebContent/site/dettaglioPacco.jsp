@@ -1781,22 +1781,31 @@ String permesso = "0";
 		$('#destinazione').change();		
 		$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true);  */
 		
-		$('#destinatario').val(destinatario);
-		$('#destinatario').change();	
-		if(sede_destinatario==0){
-			$('#sede_destinatario option[value="0"]').attr("selected", true);
-		}else{
-			$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);
+		
+		if($('#destinatario').val()== null || $('#destinatario').val()==''){
+			$('#destinatario').val(destinatario);
+			$('#destinatario').change();	
+			if(sede_destinatario==0){
+				$('#sede_destinatario option[value="0"]').attr("selected", true);
+			}else{
+				$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);
+			}
 		}
 		
 		
-		$('#destinazione').val(destinazione);
-		$('#destinazione').change();				
+		
+		if($('#destinazione').val()== null || $('#destinazione').val()==''){
+			$('#destinazione').val(destinazione);
+		$('#destinazione').change();	
+		
 		if(sede_destinazione==0){
 			$('#sede_destinazione option[value="0"]').attr("selected", true); 
 		}else{
 			$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true); 	
 		}
+		}
+					
+		
 		
 		initSelect2('#destinazione');
 		initSelect2('#destinatario');
@@ -3681,8 +3690,12 @@ else{
 
        
        $('#collapsed_box_btn').click(function(){
-    	   destinazioneBox();
+    	 //  destinazioneBox();
     	   var bf = $('#collapsed_box').find(".box-body, .box-footer");
+    	   
+    	   if (bf.is(':hidden')) {
+    	        destinazioneBox();
+    	    }
     	   bf.slideDown();
        });
        

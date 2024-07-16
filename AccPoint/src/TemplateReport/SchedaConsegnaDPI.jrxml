@@ -65,7 +65,7 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="90">
+		<band height="131">
 			<staticText>
 				<reportElement x="0" y="9" width="551" height="81" uuid="09810e75-c658-4aff-8cbf-7be8c403f05d"/>
 				<textElement>
@@ -78,6 +78,18 @@
 -	usare i D.P.I. ogni qualvolta ne è richiesta la necessità.
 ]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="0" y="109" width="101" height="21" uuid="1cb3debc-5200-44f4-99a6-adf98d73cc20"/>
+				<textFieldExpression><![CDATA[$P{data_stampa}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="430" y="100" width="121" height="30" uuid="1dd65ca5-c304-45d5-b46a-041b5bcde599"/>
+				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="390" y="109" width="51" height="21" uuid="ac0cd848-a3b8-4689-848a-54cf8457cb12"/>
+				<textFieldExpression><![CDATA[$P{firma_label}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

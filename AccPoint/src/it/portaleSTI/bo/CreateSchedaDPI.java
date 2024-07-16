@@ -38,6 +38,7 @@ import it.portaleSTI.DTO.DocumDipendenteFornDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
@@ -111,8 +112,49 @@ public class CreateSchedaDPI {
 				report.addParameter("sottoscritto",lavoratore.getNome().toUpperCase() +" " +lavoratore.getCognome().toUpperCase());
 				report.addParameter("societa", lavoratore.getFornitore().getRagione_sociale());
 			}
-				
+			
+						
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(tipo_scheda == 0) {
+				Date max = null;
+				String firma = "";
+				for (ConsegnaDpiDTO c : lista) {
+		            Date current = c.getData_accettazione();
+		            if (current != null) {
+		                if (max == null || current.after(max)) {
+		                    max = current;
+		                    int id_utente = c.getLavoratore().getId_utente();
+		                    UtenteDTO utente = GestioneUtenteBO.getUtenteById(""+id_utente, session);
+		                    if(utente!=null && utente.getFile_firma()!=null) {
+		                    	firma = utente.getFile_firma();
+		                    }
+		                    
+		                }
+		            }
+		        }
+				if(max!=null) {
+					String date = "Data: " +sdf.format(max);
+					report.addParameter("data_stampa", date);
+				
+				}else {
+					report.addParameter("data_stampa", "");
+				}
+				if(firma!=null && !firma.equals("")) {
+					report.addParameter("firma_label", "Firma:");
+					report.addParameter("firma", Costanti.PATH_FOLDER+"\\FileFirme\\"+firma);
+				}else {
+					report.addParameter("firma_label", "");
+					report.addParameter("firma", "");
+				}
+				
+				
+			}else {
+				report.addParameter("data_stampa", "");
+				report.addParameter("firma_label", "");
+				report.addParameter("firma", "");
+			}
+				
+			
 			
  
 			report.setColumnStyle(textStyle); //AGG

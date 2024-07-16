@@ -2247,7 +2247,7 @@ public class GestioneFormazioneBO {
 		
 	}
 
-	private static ArrayList<ForConfInvioEmailDTO> getListaConfigurazioniInvioEmailData(Date date, Session session) {
+	public static ArrayList<ForConfInvioEmailDTO> getListaConfigurazioniInvioEmailData(Date date, Session session) {
 		
 		return GestioneFormazioneDAO.getListaConfigurazioniInvioEmailData(date, session);
 	}

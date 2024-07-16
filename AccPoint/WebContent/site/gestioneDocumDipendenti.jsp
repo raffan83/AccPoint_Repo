@@ -103,7 +103,8 @@
 	<td>	
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('D1') }">
 	  <a class="btn btn-warning" onClicK="modificaDipendenteModal('${dipendente.committente.id }','${dipendente.id}','${dipendente.fornitore.id}','${utl:escapeJS(dipendente.nome)}','${utl:escapeJS(dipendente.cognome)}','${utl:escapeJS(dipendente.note)}',
-	   '${dipendente.qualifica}', '${dipendente.data_nascita }','${utl:escapeJS(dipendente.luogo_nascita) }','${dipendente.email }')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
+	   '${dipendente.qualifica}', '${dipendente.data_nascita }','${utl:escapeJS(dipendente.luogo_nascita) }','${dipendente.email }','${dipendente.id_utente }')" title="Click per modificare il Dipendente"><i class="fa fa-edit"></i></a>   
+	   
 	   <a class="btn btn-info customTooltip" title="Associa documenti" onClick="modalAssociaDocumenti('${dipendente.committente.id }','${dipendente.fornitore.id }','${dipendente.id}')"><i class="fa fa-plus"></i></a>
 	</c:if>
 	</td>
@@ -254,6 +255,29 @@
        	<div class="col-sm-9">      
        	  	
         <input id="email" name="email" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       
+                           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Utente Calver</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="utente_calver" id="utente_calver" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona utente Calver..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                <option value="0">NESSUN UTENTE</option>
+                      <c:forEach items="${lista_utenti}" var="utente">
+                     
+                           <option value="${utente.id}">${utente.nominativo}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
        			
        	</div>       	
        </div><br>
@@ -414,6 +438,29 @@
        	<div class="col-sm-9">      
        	  	
         <input id="email_mod" name="email_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       
+                               <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Utente Calver</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="utente_calver_mod" id="utente_calver_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona utente Calver..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                <option value="0">NESSUN UTENTE</option>
+                      <c:forEach items="${lista_utenti}" var="utente">
+                     
+                           <option value="${utente.id}">${utente.nominativo}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
        			
        	</div>       	
        </div><br>
@@ -708,7 +755,7 @@ function modalNuovoDipendente(){
 }
 
 
-function modificaDipendenteModal(id_committente, id_dipendente, fornitore, nome, cognome, note,  qualifica, data_nascita, luogo_nascita, email){
+function modificaDipendenteModal(id_committente, id_dipendente, fornitore, nome, cognome, note,  qualifica, data_nascita, luogo_nascita, email, id_utente){
 	
 	
 	$('#fornitore_temp').val(fornitore);
@@ -717,6 +764,12 @@ function modificaDipendenteModal(id_committente, id_dipendente, fornitore, nome,
 	
 	$('#committente_dip_mod').val(id_committente);
 	$('#committente_dip_mod').change();
+	
+	if(id_utente == null){
+		id_utente = 0;
+	}
+	$('#utente_calver_mod').val(id_utente);
+	$('#utente_calver_mod').change();
 	
 
 	$('#nome_mod').val(nome);
@@ -730,7 +783,8 @@ function modificaDipendenteModal(id_committente, id_dipendente, fornitore, nome,
 	}
 	
 	$('#luogo_nascita_mod').val(luogo_nascita);
-
+	
+	
 	
 	$('#myModalModificaDipendente').modal();
 }

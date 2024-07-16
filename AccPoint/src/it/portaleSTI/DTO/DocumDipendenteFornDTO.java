@@ -20,6 +20,7 @@ public class DocumDipendenteFornDTO implements Comparable<DocumDipendenteFornDTO
 	private String luogo_nascita;
 	private Date data_nascita;
 	private String email;
+	private int id_utente;
 	
 	private Set<DocumTLDocumentoDTO> listaDocumenti = new HashSet<DocumTLDocumentoDTO>(0);
 	
@@ -109,8 +110,15 @@ public class DocumDipendenteFornDTO implements Comparable<DocumDipendenteFornDTO
 		this.email = email;
 	}
 	
-
-//    public int compare(DocumDipendenteFornDTO o1, DocumDipendenteFornDTO o2) {
+	
+	
+	public int getId_utente() {
+		return id_utente;
+	}
+	public void setId_utente(int id_utente) {
+		this.id_utente = id_utente;
+	}
+	//    public int compare(DocumDipendenteFornDTO o1, DocumDipendenteFornDTO o2) {
 //        return o1.getCognome().compareTo(o2.getCognome());
 //    }
 	@Override

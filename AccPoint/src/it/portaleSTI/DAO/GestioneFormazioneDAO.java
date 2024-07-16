@@ -1062,9 +1062,9 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		String query = "";
 		
 		if(gruppo == 0) {
-			query = "SELECT a.id, a.firstname, a.lastname, a.email, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ?";
+			query = "SELECT a.id, a.firstname, a.lastname, a.email, b.enrolid, (SELECT data from mdl_user_info_data where userid = a.id and fieldid=3) AS cf FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ?";
 		}else {
-			query = "SELECT a.id, a.firstname, a.lastname, a.email FROM mdl_user AS a JOIN mdl_groups_members AS b ON a.id = b.userid WHERE b.groupid = ?";
+			query = "SELECT a.id, a.firstname, a.lastname, a.email, (SELECT data from mdl_user_info_data where userid = a.id and fieldid=3) AS cf FROM mdl_user AS a JOIN mdl_groups_members AS b ON a.id = b.userid WHERE b.groupid = ?";
 		}
 		
 		
@@ -1090,7 +1090,7 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 			membro.setNome(rs.getString(2));
 			membro.setCognome(rs.getString(3));
 			membro.setEmail(rs.getString(4));
-			
+			membro.setCf(rs.getString(5));
 	
 			
 			lista.add(membro);
@@ -1233,11 +1233,18 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		
 	ArrayList<ForConfInvioEmailDTO> lista = null;
 	
+	Query query = null;
+	
+		if(date!=null) {
+			query = session.createQuery("from ForConfInvioEmailDTO where data_prossimo_invio = :_date and disabilitato = 0 and stato_invio = 0");
+			query.setParameter("_date",date);	
+		}else {
+			query = session.createQuery("from ForConfInvioEmailDTO where disabilitato = 0 and stato_invio = 0");
+		}
 		
-		Query query = session.createQuery("from ForConfInvioEmailDTO where data_prossimo_invio = :_date and disabilitato = 0 and stato_invio = 0"); 
 					
 						
-		query.setParameter("_date",date);			
+				
 				
 				
 		lista = (ArrayList<ForConfInvioEmailDTO>) query.list();

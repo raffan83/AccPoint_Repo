@@ -396,7 +396,7 @@ public class GestioneDevice extends HttpServlet {
 				String cpu = ret.get("cpu_mod");
 				String scheda_video = ret.get("scheda_video_mod");
 				
-				if(id_dipendente.equals("0")) {
+				if(id_dipendente!=null && id_dipendente.equals("0")) {
 					id_dipendente=null;
 				}
 
@@ -710,12 +710,9 @@ public class GestioneDevice extends HttpServlet {
 				}
 				device.setUbicazione(ubicazione);
 				device.setConfigurazione(configurazione);
-				if(id_dipendente!=null && !id_dipendente.equals("")) {
-					
-					device.setDipendente(dipendente);
-				}else {
-					device.setDipendente(null);
-				}
+			
+				device.setDipendente(dipendente);
+				
 				
 				
 				

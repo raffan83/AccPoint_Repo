@@ -183,11 +183,11 @@ public class CreateCertificatoSE {
 		
 		boolean esito_negativo = false;
 		
-		if(misura_se.getCOND_PROT()!=null && misura_se.getCOND_PROT().equals("OK") 
-			    && misura_se.getINVOLUCRO()!=null && misura_se.getINVOLUCRO().equals("OK")
-				&& misura_se.getFUSIBILI()!=null && misura_se.getFUSIBILI().equals("OK")
-				&& misura_se.getCONNETTORI()!=null && misura_se.getCONNETTORI().equals("OK")
-				&& misura_se.getMARCHIATURE()!=null && misura_se.getMARCHIATURE().equals("OK")
+		if(misura_se.getCOND_PROT()!=null && (misura_se.getCOND_PROT().equals("OK") || misura_se.getCOND_PROT().equals("N/A")) 
+			    && misura_se.getINVOLUCRO()!=null && (misura_se.getINVOLUCRO().equals("OK") || misura_se.getINVOLUCRO().equals("N/A"))
+				&& misura_se.getFUSIBILI()!=null && (misura_se.getFUSIBILI().equals("OK") || misura_se.getFUSIBILI().equals("N/A"))
+				&& misura_se.getCONNETTORI()!=null && (misura_se.getCONNETTORI().equals("OK") || misura_se.getCONNETTORI().equals("N/A"))
+				&& misura_se.getMARCHIATURE()!=null && (misura_se.getMARCHIATURE().equals("OK") || misura_se.getMARCHIATURE().equals("N/A"))
 				&& misura_se.getALTRO()!=null && (misura_se.getALTRO().split("@")[0].equals("OK") || misura_se.getALTRO().split("@")[0].equals("N/A"))) {
 				
 				report.addParameter("verifica_sicurezza", "[ OK ]");

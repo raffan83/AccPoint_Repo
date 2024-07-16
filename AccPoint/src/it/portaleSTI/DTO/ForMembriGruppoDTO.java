@@ -8,6 +8,7 @@ public class ForMembriGruppoDTO {
 	String email;
 	String username;
 	String descrizioneErrore;
+	String cf;
 	
 	public int getId() {
 		return id;
@@ -44,6 +45,12 @@ public class ForMembriGruppoDTO {
 	}
 	public void setDescrizioneErrore(String descrizioneErrore) {
 		this.descrizioneErrore = descrizioneErrore;
+	}
+	public String getCf() {
+		return cf;
+	}
+	public void setCf(String cf) {
+		this.cf = cf;
 	}
 	
 	

@@ -68,5 +68,9 @@
             <column name="email" />
         </property>
         
+            <property name="id_utente" type="int" >
+            <column name="id_utente" />
+        </property>
+        
     </class>
 </hibernate-mapping>

@@ -56,6 +56,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneDocumentaleBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.SendEmailBO;
 
 /**
@@ -736,6 +737,7 @@ public class GestioneDocumentale extends HttpServlet {
 				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = null;
 				ArrayList<DocumFornitoreDTO> lista_fornitori = null;
 				ArrayList<DocumCommittenteDTO> lista_committenti = null;
+				ArrayList<UtenteDTO> lista_utenti = null;
 				
 				if(utente.getIdCliente()!=0) {
 					
@@ -748,12 +750,14 @@ public class GestioneDocumentale extends HttpServlet {
 					lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0,0,session);
 					lista_fornitori = GestioneDocumentaleBO.getListaDocumFornitori(session);
 					lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);
+					lista_utenti = GestioneUtenteBO.getDipendenti(session);
 					
 				}
 				
 				request.getSession().setAttribute("lista_dipendenti", lista_dipendenti);
 				request.getSession().setAttribute("lista_fornitori", lista_fornitori);
 				request.getSession().setAttribute("lista_committenti", lista_committenti);
+				request.getSession().setAttribute("lista_utenti", lista_utenti);
 					
 				session.getTransaction().commit();
 				session.close();
@@ -801,6 +805,7 @@ public class GestioneDocumentale extends HttpServlet {
 				String data_nascita = ret.get("data_nascita");
 				String luogo_nascita = ret.get("luogo_nascita");
 				String email = ret.get("email");
+				String utente_calver = ret.get("utente_calver");
 
 
 				DocumDipendenteFornDTO dipendente = new DocumDipendenteFornDTO();
@@ -822,6 +827,9 @@ public class GestioneDocumentale extends HttpServlet {
 				dipendente.setQualifica(qualifica);
 				dipendente.setEmail(email);
 			
+				if(utente_calver!=null && !utente_calver.equals("")) {
+					dipendente.setId_utente(Integer.parseInt(utente_calver));
+				}
 				dipendente.setNote(note);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			
@@ -891,6 +899,7 @@ public class GestioneDocumentale extends HttpServlet {
 				String data_nascita = ret.get("data_nascita_mod");
 				String luogo_nascita = ret.get("luogo_nascita_mod");
 				String email = ret.get("email_mod");
+				String utente_calver = ret.get("utente_calver_mod");
 
 
 				DocumDipendenteFornDTO dipendente = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_dipendente), session);
@@ -912,6 +921,11 @@ public class GestioneDocumentale extends HttpServlet {
 				dipendente.setCognome(cognome);
 				dipendente.setQualifica(qualifica);
 				
+				if(utente_calver!=null && !utente_calver.equals("")) {
+					dipendente.setId_utente(Integer.parseInt(utente_calver));
+				}else {
+					dipendente.setId_utente(0);
+				}
 				dipendente.setNote(note);
 				dipendente.setEmail(email);
 				

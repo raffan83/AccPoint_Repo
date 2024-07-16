@@ -88,8 +88,8 @@
                            <c:if test="${splitted[7] == '0' && splitted[9] == '0'}">
                             <tr style="position:relative">
                            </c:if>
-                           
-                               <td  id="${splitted[0]}_1" style="position:relative">${splitted[0]}</td>
+                            
+                               <td  id="${splitted[0]}_1" style="position:relative"><a href="gestionePacco.do?action=dettaglio&id_pacco=${utl:encryptData(splitted[0].split('_')[1])})" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" >${splitted[0]}</a></td>
                                <td  id="${splitted[0]}_2" style="position:relative">${splitted[1]}</td>
                                <td  id="${splitted[0]}_3" style="position:relative"><a href="gestioneIntervento.do?idCommessa=${utl:encryptData(splitted[2])}" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" >${splitted[2]}</a></td>
                                <td  id="${splitted[0]}_4" style="position:relative">${splitted[3]}</td>
@@ -221,6 +221,15 @@
 }
 
 
+.dataTables_wrapper .dataTables_scrollHead th.sorting:before,
+.dataTables_wrapper .dataTables_scrollHead th.sorting:after,
+.dataTables_wrapper .dataTables_scrollHead th.sorting_asc:before,
+.dataTables_wrapper .dataTables_scrollHead th.sorting_asc:after,
+.dataTables_wrapper .dataTables_scrollHead th.sorting_desc:before,
+.dataTables_wrapper .dataTables_scrollHead th.sorting_desc:after {
+    display: none;
+}
+
 </style>
 
 
@@ -239,17 +248,36 @@
 
 
 
+$("#tabPacchi th").on("click", function(e){
+	if (tab.settings()[0]._bInitComplete) {
+        tab.settings()[0].oFeatures.bSort = false;
+        $('.dataTables_wrapper .dataTables_scrollHead th').removeClass('sorting sorting_asc sorting_desc');
+    }
+	e.preventDefault()
+	
+});
+
+function dettaglioPaccoFromOrigine(origine){
+	
+	var id = origine.split("_")
+	dettaglioPacco(id[1]);
+	
+}
 
 
 
 $(document).ready(function() {
 	
-
+	let initialOrderExecuted = false;
 	   $.fn.dataTable.ext.order['priorita-si'] = function(settings, col) {
 		    return this.api().column(col, { order: 'index' }).nodes().map(function(td, i) {
 		        return $(td).text().trim() === 'SI' ? 0 : 1;  // 'SI' ha la priorità
 		    });
 		};
+		
+	    $.fn.dataTable.ext.type.order['num-custom-pre'] = function(data) {
+	        return parseFloat(data.replace(/[^0-9.-]/g, '')) || 0;
+	    };
  
 
      $('.dropdown-toggle').dropdown();
@@ -272,16 +300,16 @@ $(document).ready(function() {
    	        	next:	"Succ.",
    	        last:	"Fine",
  	        	},
- 	        aria:	{
+ 	         aria:	{
    	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
    	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
- 	        }
+ 	        } 
          },
          
    
          "stripeClasses": [],
          pageLength: 5,
-         "order": [ [8, 'desc'], [6, 'desc'] ],
+        
  	      paging: false, 
  	      ordering: true,
  	      info: true, 
@@ -291,12 +319,12 @@ $(document).ready(function() {
  	      responsive: false,
  	      scrollX: true,
  	      scrollY: "700px",
- 	      stateSave: true,
+ 	      stateSave: false,
  	      searching: true, 
  	      columnDefs: [
  	         
  	          { type: 'num', targets: 6 }, 
- 	          { orderDataType: 'priorita-si', targets: 8 } 
+ 	          { orderDataType: 'priorita-si', targets: 8}
  	      ],
 
          buttons: [  
@@ -349,9 +377,11 @@ $(document).ready(function() {
  	
  });
 
- tab.order([ [8, 'asc'], [6, 'asc'] ]).draw();
+ tab.order( [8, 'asc']).draw();
  initContextMenu();
- tab.settings()[0].oFeatures.bSort = false;
+
+ 
+
 
 });
 

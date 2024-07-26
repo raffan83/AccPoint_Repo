@@ -178,7 +178,9 @@
 		<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="modalFirmaRilievo('${rilievo.id}',2)"><i class="glyphicon glyphicon-remove"></i></a>
 		<%-- <a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiApriRilievo('${rilievo.id}',2)"><i class="glyphicon glyphicon-remove"></i></a> --%>
 		<a href="#" class="btn btn-danger customTooltip" title="Click per eliminare il rilievo" onclick="eliminaRilievoModal('${rilievo.id}')"><i class="fa fa-trash"></i></a>
+		<c:if test="${rilievo.tipo_rilievo!=null}">
 		<a target="_blank" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" href="gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>
+		</c:if>
 		</c:if>
 		
 		<c:if test="${ userObj.checkPermesso('VISUALIZZA_RILIEVI_DIMENSIONALI') && rilievo.stato_rilievo.id==2}">				

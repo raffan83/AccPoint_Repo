@@ -851,7 +851,11 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	        	    columsDatatables = state.columns;
 	        	    } 
 	        	    $('#tabPrenotazione thead th').each( function () {
-	        	    	  $('#inputsearchtable_'+$(this).index()).val(columsDatatables[$(this).index()].search.search);
+	        	    	
+	        	    	if(columsDatatables!=null && columsDatatables.length>0){
+	        	    		$('#inputsearchtable_'+$(this).index()).val(columsDatatables[$(this).index()].search.search);
+	        	    	}
+	        	    	  
 	        	    	 
 	        	    	}); 
 	        	     

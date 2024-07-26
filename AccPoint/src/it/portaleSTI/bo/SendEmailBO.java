@@ -1360,26 +1360,22 @@ public static void sendEmailCorsiInScadenza(String messaggio, ForCorsoDTO corso,
 	
 	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
-
-		
 		
 		 HtmlEmail email = new HtmlEmail();
-		  email.setHostName("smtps.aruba.it");
-			 //email.setDebug(true);
-		  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
 
-	email.getMailSession().getProperties().put("mail.smtp.auth", "true");
-	email.getMailSession().getProperties().put("mail.debug", "true");
-	email.getMailSession().getProperties().put("mail.smtp.port", "465");
-	email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
-	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
-	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
-
-
-	//email.addTo("giuseppe.gabriele@stisrl.com");
 	
+	email.setHostName("mail.vianova.it");
 	
+	 email.setAuthentication("segreteria@crescosrl.net", Costanti.PASS_EMAIL_CRESCO);
+
+	 email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+	 email.getMailSession().getProperties().put("mail.debug", "true");
+	 email.getMailSession().getProperties().put("mail.smtp.port", "587");
+	 email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "587");
+	 email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	 email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "true");
+	 email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
+
 	for(ForReferenteDTO referente : corso.getListaReferenti()) {
 		if(referente.getEmail()!=null && !referente.getEmail().equals("")) {
 			email.addTo(referente.getEmail());
@@ -1387,8 +1383,9 @@ public static void sendEmailCorsiInScadenza(String messaggio, ForCorsoDTO corso,
 	}
 	email.addTo("lisa.lombardozzi@crescosrl.net");
 	email.addTo("segreteria@crescosrl.net");
+	
 		  
-		  email.setFrom("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl");
+		  email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
 		
 
 			  email.setSubject("SCADENZE CORSI OBBLIGATORI");

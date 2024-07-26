@@ -2239,11 +2239,12 @@ public class GestioneFormazioneBO {
 		session.close();
 		
 	}catch(Exception e) {
-		session.getTransaction().rollback();
-		session.close();
-		e.printStackTrace();
-		logger.error(e);
+		
+		throw e;
+		
 	}
+		
+
 		
 	}
 

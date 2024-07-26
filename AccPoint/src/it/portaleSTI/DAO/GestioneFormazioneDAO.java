@@ -925,7 +925,7 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			con = DriverManager.getConnection("jdbc:mysql://vm9155.seewebcloud.it:3306/crescosrl_db2?user=crescosrl_user1&password=h98mShTz6");
+			con = DriverManager.getConnection("jdbc:mysql://85.94.217.202:3306/crescosrl_db2?user=crescosrl_user1&password=h98mShTz6");
 		}
 		catch(Exception e)
 		{

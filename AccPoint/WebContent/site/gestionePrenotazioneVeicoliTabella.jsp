@@ -27,9 +27,9 @@ int anno = (Integer) request.getSession().getAttribute("anno");
  <table id="tabPrenotazione" class="table table-primary table-bordered table-hover dataTable table-striped " role="grid" width="100%"  >
         <thead>
             <tr>
-               <th >ID VEICOLO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
-               <th>TARGA <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
-                <th>MODELLO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
+               <th >ID VEICOLO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  id="inputsearchtable_0" /></th>
+               <th>TARGA <input class="inputsearchtable" style="min-width:80px;width=100%" type="text" id="inputsearchtable_1"  /></th>
+                <th>MODELLO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text" id="inputsearchtable_2"  /></th>
            <c:set var ="nuovoAnno" value="${anno + 1}"></c:set>                
          <c:forEach var="day" begin="${start_date }" end="${end_date }" step="1">
          
@@ -474,6 +474,8 @@ function initializeTimepicker(start, end) {
 
 
  columsDatatables=[]
+	var columsDatatables = [];
+ 
 
 
 
@@ -523,7 +525,7 @@ var settings ={
           heightMatch: 'auto'// Numero di colonne fisse
       },    
       
-      stateSave: false,	
+      stateSave: true,	
       columnDefs: [
     	  {
     		  targets: '_all',
@@ -837,6 +839,25 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	        method: 'GET',
 	        dataType: 'json',
 	        success: function(response) {
+	        	
+	        	
+	        	$("#tabPrenotazione").on( 'init.dt', function ( e, settings ) {
+	        	    var api = new $.fn.dataTable.Api( settings );
+	        	    var state = api.state.loaded();
+	        	 
+	        	    if(state != null && state.columns!=null){
+	        	    		console.log(state.columns);
+	        	    
+	        	    columsDatatables = state.columns;
+	        	    } 
+	        	    $('#tabPrenotazione thead th').each( function () {
+	        	    	  $('#inputsearchtable_'+$(this).index()).val(columsDatatables[$(this).index()].search.search);
+	        	    	 
+	        	    	}); 
+	        	     
+
+	        	} ); 
+	        
 	            var lista_prenotazioni = response.lista_prenotazioni;
 	            $('.riquadro').remove();
 	            $('#tabPrenotazione td').removeClass('prenotato');

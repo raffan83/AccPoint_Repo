@@ -1430,12 +1430,13 @@ public class GestioneRilievi extends HttpServlet {
 						rilievo.setN_pezzi_tot(pezzi_tot);
 						session.update(rilievo);
 						
-						session.getTransaction().commit();
+						
 						myObj.addProperty("success", true);
 						
 						
 						}
 				}
+				session.getTransaction().commit();
 				session.close();
 				out.print(myObj);
 			}
@@ -1793,7 +1794,7 @@ public class GestioneRilievi extends HttpServlet {
 				    {
 				    	outp.write(outputByte, 0, 1);
 				    }
-				    
+				    session.getTransaction().commit();
 				    session.close();
 				    fileIn.close();
 				    outp.flush();
@@ -1827,7 +1828,7 @@ public class GestioneRilievi extends HttpServlet {
 				    {
 				    	outp.write(outputByte, 0, 1);
 				    }
-				    
+				    session.getTransaction().commit();
 				    session.close();
 				    fileIn.close();
 				    outp.flush();
@@ -1884,7 +1885,7 @@ public class GestioneRilievi extends HttpServlet {
 				    {
 				    	outp.write(outputByte, 0, 1);
 				    }
-				    				    
+				    session.getTransaction().commit();				    
 				    session.close();
 
 				    fileIn.close();
@@ -1927,7 +1928,7 @@ public class GestioneRilievi extends HttpServlet {
 				    {
 				    	outp.write(outputByte, 0, 1);
 				    }
-				    
+				    session.getTransaction().commit();
 				    session.close();
 				    fileIn.close();
 				    outp.flush();
@@ -1943,7 +1944,7 @@ public class GestioneRilievi extends HttpServlet {
 				
 				request.getSession().setAttribute("lista_allegati", lista_allegati);		
 				request.getSession().setAttribute("id_rilievo", id_rilievo);	
-				
+				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaFileArchivioRilievi.jsp");
 		  	    dispatcher.forward(request,response);
@@ -2107,6 +2108,7 @@ public class GestioneRilievi extends HttpServlet {
 				}
 								
 				request.getSession().setAttribute("lista_quote", lista_quote_filtrate);
+				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPuntiQuota.jsp");
 		  	    dispatcher.forward(request,response);
@@ -2171,6 +2173,8 @@ public class GestioneRilievi extends HttpServlet {
 				request.getSession().setAttribute("delta", delta.replace(",", "."));
 				request.getSession().setAttribute("filtro_da", "");
 				request.getSession().setAttribute("filtro_a", "");
+				
+				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPuntiQuota.jsp");
 		  	    dispatcher.forward(request,response);
@@ -2237,6 +2241,8 @@ public class GestioneRilievi extends HttpServlet {
 				}else {
 					request.getSession().setAttribute("empty", false);
 				}
+				
+				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPuntiQuota.jsp");
 		  	    dispatcher.forward(request,response);
@@ -2558,7 +2564,7 @@ public class GestioneRilievi extends HttpServlet {
 				    {
 				    	outp.write(outputByte, 0, 1);
 				    }
-				    
+				    session.getTransaction().commit();
 				    session.close();
 				    fileIn.close();
 				    outp.flush();

@@ -19,11 +19,11 @@ public class GestioneInvioReportVittoria {
 	public static void main(String[] args) {
 
 		try {
-			File fileCorsi=new File("C://Users/antonio.dicivita/Desktop/CorsiCalver.csv");
+			File fileCorsi=new File("C://Users/raffaele.fantini/Desktop/CorsiCalver.csv");
 			FileOutputStream fosCorsi= new FileOutputStream(fileCorsi);
 			PrintStream psCorsi= new PrintStream(fosCorsi);
 		
-			File filePartecipanti=new File("C://Users/antonio.dicivita/Desktop/PartecipantiCalver.csv");
+			File filePartecipanti=new File("C://Users/raffaele.fantini/Desktop/PartecipantiCalver.csv");
 			FileOutputStream fosPartecipanti= new FileOutputStream(filePartecipanti);
 			PrintStream psPartecipanti= new PrintStream(fosPartecipanti);
 			
@@ -48,13 +48,13 @@ public class GestioneInvioReportVittoria {
 					
 					
 					
-					String val = c.getId_corso()+"_"+c.getId_gruppo()+"|"+m.getCf()+"|"+isPresent(m.getId(),lista_membri_nc );
+					String val = c.getId_corso()+"_"+c.getId_gruppo()+"|"+m.getCf()+"||"+isPresent(m.getId(),lista_membri_nc );
 					
 					psPartecipanti.println(val);
 				}
 			}
 			
-			
+			System.out.println("Terminate");
 			
 			session.close();
 			

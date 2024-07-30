@@ -94,7 +94,7 @@
     <th>Sede</th>
     <th>ID Firma</th>
     <th>Area d'interesse</th>
-  <th style="width:110px">Azioni</th>
+  <th style="width:120px">Azioni</th>
  </tr></thead>
  
  <tbody>

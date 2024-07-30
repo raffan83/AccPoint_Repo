@@ -40,6 +40,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
 import it.portaleSTI.DTO.PaaPrenotazioneDTO;
+import it.portaleSTI.DTO.PaaRichiestaDTO;
 import it.portaleSTI.DTO.PaaVeicoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -716,6 +717,274 @@ public class GestioneParcoAuto extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Prenotazione eliminata con successo!");
 	        	out.print(myObj);
+			}
+			
+			else if(action.equals("gestione_richieste")) {
+				
+				ArrayList<PaaVeicoloDTO> lista_veicoli = GestioneParcoAutoBO.getListaVeicoli(session);
+				ArrayList<PaaRichiestaDTO> lista_richieste = GestioneParcoAutoBO.getListaRichieste(session);				
+			
+				request.getSession().setAttribute("lista_richieste", lista_richieste);
+				request.getSession().setAttribute("lista_veicoli", lista_veicoli);
+				
+								
+				request.getSession().setAttribute("userObj", utente);
+				
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRichiestePrenotazione.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			
+			else if(action.equals("nuova_richiesta")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+
+				String id_utente = ret.get("utente");
+				String data_inizio = ret.get("data_inizio");
+				String data_fine = ret.get("data_fine");
+		
+		
+				String ora_inizio = ret.get("ora_inizio");
+				String ora_fine = ret.get("ora_fine");
+				String note = ret.get("note");
+				
+				PaaRichiestaDTO richiesta = new PaaRichiestaDTO();				
+				
+				richiesta.setStato(1);
+				
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				DateFormat timeFormat = new SimpleDateFormat("HH:mm");							
+				
+				richiesta.setUtente(utente);					
+	
+				richiesta.setNote(note);
+				Date data_start = df.parse(data_inizio);
+				Date ora_start = timeFormat.parse(ora_inizio);
+				data_start.setHours(ora_start.getHours());
+				data_start.setMinutes(ora_start.getMinutes());
+				
+				Date data_end = df.parse(data_fine);
+				Date ora_end = timeFormat.parse(ora_fine);
+				data_end.setHours(ora_end.getHours());
+				data_end.setMinutes(ora_end.getMinutes());
+				
+				richiesta.setData_inizio(data_start);
+				richiesta.setData_fine(data_end);
+
+				session.save(richiesta);
+				
+				PrintWriter out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+	        	out.print(myObj);
+				
+			}
+			
+			
+			else if(action.equals("modifica_richiesta")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+
+				String id_richiesta = ret.get("id_richiesta");
+				String data_inizio = ret.get("data_inizio_mod");
+				String data_fine = ret.get("data_fine_mod");
+				String stato = ret.get("stato");		
+		
+				String ora_inizio = ret.get("ora_inizio_mod");
+				String ora_fine = ret.get("ora_fine_mod");
+				String note = ret.get("note_mod");
+				String veicolo = ret.get("veicoli");
+				
+				PaaRichiestaDTO richiesta = GestioneParcoAutoBO.getRichiestaFromID(Integer.parseInt(id_richiesta), session);				
+				
+			//	richiesta.setStato(Integer.parseInt(stato));
+				
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+	
+				richiesta.setNote(note);
+				Date data_start = df.parse(data_inizio);
+				Date ora_start = timeFormat.parse(ora_inizio);
+				data_start.setHours(ora_start.getHours());
+				data_start.setMinutes(ora_start.getMinutes());
+				
+				Date data_end = df.parse(data_fine);
+				Date ora_end = timeFormat.parse(ora_fine);
+				data_end.setHours(ora_end.getHours());
+				data_end.setMinutes(ora_end.getMinutes());
+				
+				richiesta.setData_inizio(data_start);
+				richiesta.setData_fine(data_end);
+
+				
+				
+				
+				if(veicolo!=null && !veicolo.equals("")) {
+					
+					PaaVeicoloDTO v = GestioneParcoAutoBO.getVeicoloFromId(Integer.parseInt(veicolo), session);
+					
+					PaaPrenotazioneDTO prenotazione = new PaaPrenotazioneDTO();
+					prenotazione.setVeicolo(v);
+					prenotazione.setData_inizio_prenotazione(data_start);
+					prenotazione.setData_fine_prenotazione(data_end);
+					prenotazione.setUtente(richiesta.getUtente());
+					prenotazione.setStato_prenotazione(1);
+					prenotazione.setNote("");
+					Calendar c = Calendar.getInstance();
+					c.setTime(df.parse(data_inizio));
+					
+					String day = ""+c.get(Calendar.DAY_OF_YEAR);
+					
+					
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+					
+					int anno = c.get(Calendar.YEAR);
+					
+					LocalDate start_date = LocalDate.parse(data_inizio, formatter);
+					LocalDate end_date = LocalDate.parse(data_fine, formatter);
+					
+					 long diffInDays = ChronoUnit.DAYS.between(start_date, end_date);
+					
+					
+					LocalDate localDate = null;
+					if(Integer.parseInt(day)>366 && LocalDate.ofYearDay(anno, 1).isLeapYear()) {
+						anno = anno+1;
+						localDate = LocalDate.ofYearDay(anno, (Integer.parseInt(day)-366));
+						prenotazione.setCella_inizio(Integer.parseInt(day)-366);
+						prenotazione.setCella_fine(Integer.parseInt(day)-366 + (int) diffInDays);
+						
+					}else if(Integer.parseInt(day)>365 && !LocalDate.ofYearDay(anno, 1).isLeapYear()) {
+						anno = anno+1;
+						localDate = LocalDate.ofYearDay(anno, (Integer.parseInt(day)-365));					
+						
+						prenotazione.setCella_inizio(Integer.parseInt(day)-365);
+						prenotazione.setCella_fine(Integer.parseInt(day)-365 + (int) diffInDays);
+					}else {
+						localDate = LocalDate.ofYearDay(anno, Integer.parseInt(day));					
+						
+						prenotazione.setCella_inizio(Integer.parseInt(day));
+						prenotazione.setCella_fine(Integer.parseInt(day)+  (int) diffInDays);
+					}
+					
+					richiesta.setStato(2);
+					
+					session.save(prenotazione);
+					
+				}
+				
+				
+				session.update(richiesta);
+				PrintWriter out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+	        	out.print(myObj);
+				
+			}
+			
+			
+			else if(action.equals("veicoli_disponibili")) {
+				
+				
+				String data_inizio = request.getParameter("data_inizio");
+				String data_fine = request.getParameter("data_fine");
+				String ora_inizio = request.getParameter("ora_inizio");
+				String ora_fine = request.getParameter("ora_fine");
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				DateFormat timeFormat = new SimpleDateFormat("HH:mm");	
+				
+				Date data_start = df.parse(data_inizio);
+				Date ora_start = timeFormat.parse(ora_inizio);
+				data_start.setHours(ora_start.getHours());
+				data_start.setMinutes(ora_start.getMinutes());
+				
+				Date data_end = df.parse(data_fine);
+				Date ora_end = timeFormat.parse(ora_fine);
+				data_end.setHours(ora_end.getHours());
+				data_end.setMinutes(ora_end.getMinutes());
+				
+				ArrayList<PaaVeicoloDTO> lista_veicoli_disponibili = GestioneParcoAutoBO.getListaVeicoliDisponibili(data_start, data_end, session);				
+			
+				
+				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create(); 	
+				PrintWriter out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.add("lista_veicoli", g.toJsonTree(lista_veicoli_disponibili));
+	        	out.print(myObj);
+				
+			}
+			
+			else if(action.equals("elimina_richiesta")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				
+				String id = request.getParameter("id_richiesta_elimina");
+
+				PaaRichiestaDTO richiesta = GestioneParcoAutoBO.getRichiestaFromID(Integer.parseInt(id), session);
+				richiesta.setDisabilitato(1);
+				session.update(richiesta);
+								
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Richiesta eliminata con successo!");
+				out.print(myObj);
+				
 			}
 			
 			session.getTransaction().commit();

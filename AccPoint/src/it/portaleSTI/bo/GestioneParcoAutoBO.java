@@ -1,11 +1,13 @@
 package it.portaleSTI.bo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneParcoAutoDAO;
 import it.portaleSTI.DTO.PaaPrenotazioneDTO;
+import it.portaleSTI.DTO.PaaRichiestaDTO;
 import it.portaleSTI.DTO.PaaVeicoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
@@ -34,6 +36,21 @@ public class GestioneParcoAutoBO {
 	public static PaaPrenotazioneDTO getPrenotazioneFromId(int id, Session session) {
 
 		return GestioneParcoAutoDAO.getPrenotazioneFromId(id, session);
+	}
+
+	public static ArrayList<PaaRichiestaDTO> getListaRichieste(Session session) {
+		// TODO Auto-generated method stub
+		return GestioneParcoAutoDAO.getListaRichieste(session);
+	}
+
+	public static PaaRichiestaDTO getRichiestaFromID(int parseInt, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneParcoAutoDAO.getRichiestaFromID(parseInt, session);
+	}
+
+	public static ArrayList<PaaVeicoloDTO> getListaVeicoliDisponibili(Date data_start, Date data_end, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneParcoAutoDAO.getListaVeicoliDisponibili(data_start, data_end, session);
 	}
 
 }

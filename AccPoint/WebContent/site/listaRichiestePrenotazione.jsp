@@ -349,7 +349,7 @@ function modalNuovaRichiesta(){
 function modificaRichiesta(id_richiesta, data_inizio, data_fine, note, is_admin){
 	
 	$("#content_veicoli").hide();
-	$('#note_mod').attr("readonly", false);
+
 	$('#data_inizio_mod').attr("readonly", false);
 	$('#data_fine_mod').attr("readonly", false);		
 	$('#ora_inizio_mod').attr("readonly", false);
@@ -380,7 +380,7 @@ function modificaRichiesta(id_richiesta, data_inizio, data_fine, note, is_admin)
 		
 		$("#content_veicoli").show();
 		$('#veicoli').attr("required", true)
-		$('#note_mod').attr("readonly", true);
+	
 		$('#data_inizio_mod').attr("readonly", true);
 		$('#data_fine_mod').attr("readonly", true);		
 		$('#ora_inizio_mod').attr("readonly", true);

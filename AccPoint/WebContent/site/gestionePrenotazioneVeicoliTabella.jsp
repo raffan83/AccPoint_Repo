@@ -833,7 +833,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
  
  function fillTable(anno, filtro) {
 	    console.log("dddd");
-
+	    pleaseWaitDiv.modal('show');
 	    $.ajax({
 	        url: 'gestioneParcoAuto.do?action=lista_prenotazioni&anno=' + anno,
 	        method: 'GET',
@@ -1183,8 +1183,11 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	         //   scrollToColumn(parseInt(today) -1);
 
 	         var coltoday = getDaysUntilMonday(parseInt(today), parseInt("${start_date}")) +1
+	        
+	         
 	          scrollToColumn(today - coltoday) 
 	            
+	         pleaseWaitDiv.modal('hide');
 	        // $('[data-toggle="tooltip"]').tooltip();
 	        },
 	        error: function(xhr, status, error) {
@@ -1219,6 +1222,9 @@ function filterTable() {
 
 
 function scrollToColumn(columnIndex) {
+	
+	
+
     var tableWrapper = $('#tabPrenotazione_wrapper');
     var scrollBody = tableWrapper.find('.dataTables_scrollBody');
     var scrollHead = tableWrapper.find('.dataTables_scrollHead');
@@ -1232,6 +1238,9 @@ function scrollToColumn(columnIndex) {
     }
     
     scrollBody.animate({ scrollLeft: scrollLeft }, 500);
+    
+    
+
 }
 
 

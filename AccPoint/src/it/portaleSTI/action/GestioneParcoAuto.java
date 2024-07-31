@@ -882,7 +882,7 @@ public class GestioneParcoAuto extends HttpServlet {
 					prenotazione.setData_fine_prenotazione(data_end);
 					prenotazione.setUtente(richiesta.getUtente());
 					prenotazione.setStato_prenotazione(1);
-					prenotazione.setNote("");
+					prenotazione.setNote(richiesta.getNote());
 					Calendar c = Calendar.getInstance();
 					c.setTime(df.parse(data_inizio));
 					

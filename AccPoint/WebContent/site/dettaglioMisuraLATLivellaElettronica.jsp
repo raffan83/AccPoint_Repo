@@ -338,10 +338,14 @@
 				 	
 				 	<td>${punto.punto }</td>
 				 	<td>${punto.valore_nominale.stripTrailingZeros().toPlainString()}</td>
-				 	<td>${punto.valore_andata_taratura.setScale(risoluzione, 3) }</td>
+				 	<%-- <td>${punto.valore_andata_taratura.setScale(risoluzione, 3) }</td>
 				 	<td>${punto.valore_andata_campione.setScale(risoluzione, 3)  }</td>
 				 	<td>${punto.valore_ritorno_taratura.setScale(risoluzione, 3) }</td>
-				 	<td>${punto.valore_ritorno_campione.setScale(risoluzione, 3) }</td>
+				 	<td>${punto.valore_ritorno_campione.setScale(risoluzione, 3) }</td> --%>
+				 	<td>${punto.valore_andata_taratura.stripTrailingZeros().toPlainString()  }</td>
+				 	<td>${punto.valore_andata_campione.stripTrailingZeros().toPlainString()   }</td>
+				 	<td>${punto.valore_ritorno_taratura.stripTrailingZeros().toPlainString() }</td>
+				 	<td>${punto.valore_ritorno_campione.stripTrailingZeros().toPlainString() }</td>
 				 	<td>${punto.andata_scostamento_campione.stripTrailingZeros().toPlainString()  }</td>				
 				 	<td>${punto.andata_correzione_campione.stripTrailingZeros().toPlainString()  }</td>
 				 	<td>${punto.ritorno_scostamento_campione.stripTrailingZeros().toPlainString()  }</td>

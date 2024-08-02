@@ -9,6 +9,7 @@ public class ForMembriGruppoDTO {
 	String username;
 	String descrizioneErrore;
 	String cf;
+	Long dataEsecuzione;
 	
 	public int getId() {
 		return id;
@@ -48,6 +49,12 @@ public class ForMembriGruppoDTO {
 	}
 	public String getCf() {
 		return cf;
+	}
+	public long getDataEsecuzione() {
+		return dataEsecuzione;
+	}
+	public void setDataEsecuzione(long dataEsecuzione) {
+		this.dataEsecuzione = dataEsecuzione;
 	}
 	public void setCf(String cf) {
 		this.cf = cf;

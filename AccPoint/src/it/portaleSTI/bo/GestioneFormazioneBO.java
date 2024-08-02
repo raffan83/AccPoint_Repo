@@ -2283,5 +2283,10 @@ public class GestioneFormazioneBO {
         }
         return null;
 	}
+
+	public static ArrayList<ForMembriGruppoDTO> getMembriGruppoVittoria(int id_gruppo, int id_corso) throws Exception {
+		
+		return GestioneFormazioneDAO.getMembriGruppoVittoria(id_gruppo, id_corso);
+	}
 	
 }

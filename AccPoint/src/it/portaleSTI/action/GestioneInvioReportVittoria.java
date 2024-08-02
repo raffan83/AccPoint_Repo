@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -19,11 +20,11 @@ public class GestioneInvioReportVittoria {
 	public static void main(String[] args) {
 
 		try {
-			File fileCorsi=new File("C://Users/raffaele.fantini/Desktop/CorsiCalver.csv");
+			File fileCorsi=new File("C://Users/antonio.dicivita/Desktop/CorsiCalver.csv");
 			FileOutputStream fosCorsi= new FileOutputStream(fileCorsi);
 			PrintStream psCorsi= new PrintStream(fosCorsi);
 		
-			File filePartecipanti=new File("C://Users/raffaele.fantini/Desktop/PartecipantiCalver.csv");
+			File filePartecipanti=new File("C://Users/antonio.dicivita/Desktop/PartecipantiCalver.csv");
 			FileOutputStream fosPartecipanti= new FileOutputStream(filePartecipanti);
 			PrintStream psPartecipanti= new PrintStream(fosPartecipanti);
 			
@@ -39,19 +40,21 @@ public class GestioneInvioReportVittoria {
 				String value = c.getId_corso()+"_"+c.getId_gruppo()+"|"+0+"|"+0+"|"+c.getDescrizione_corso();
 				psCorsi.println(value);
 				
-				
-				ArrayList<ForMembriGruppoDTO> lista_membri_gruppo = GestioneFormazioneBO.getMembriGruppo(c.getId_gruppo(), c.getId_corso());
-				
-				ArrayList<ForMembriGruppoDTO> lista_membri_nc = GestioneFormazioneDAO.getListaUtentiNonCompleti(c.getId_corso(), c.getId_gruppo());
-				
-				for (ForMembriGruppoDTO m : lista_membri_gruppo) {
+				if(c.getId_corso()==167 && c.getId_gruppo()==141) {
+					ArrayList<ForMembriGruppoDTO> lista_membri_gruppo = GestioneFormazioneBO.getMembriGruppoVittoria(c.getId_gruppo(), c.getId_corso());
 					
+					ArrayList<ForMembriGruppoDTO> lista_membri_nc = GestioneFormazioneDAO.getListaUtentiNonCompleti(c.getId_corso(), c.getId_gruppo());
 					
-					
-					String val = c.getId_corso()+"_"+c.getId_gruppo()+"|"+m.getCf()+"||"+isPresent(m.getId(),lista_membri_nc );
-					
-					psPartecipanti.println(val);
+					for (ForMembriGruppoDTO m : lista_membri_gruppo) {
+						
+						
+						
+						String val = c.getId_corso()+"_"+c.getId_gruppo()+"|"+m.getCf()+"|"+getDateFromLong(m.getDataEsecuzione()) +"|"+isPresent(m.getId(),lista_membri_nc );
+						
+						psPartecipanti.println(val);
+					}
 				}
+			
 			}
 			
 			System.out.println("Terminate");
@@ -64,6 +67,24 @@ public class GestioneInvioReportVittoria {
 			ex.printStackTrace();
 		}
 
+	}
+
+	private static String getDateFromLong(Long dataEsecuzione) {
+		
+		if(dataEsecuzione==0) 
+		{
+			return "";
+		}
+		
+		else 
+		
+		{
+		  Date d= new Date(dataEsecuzione*1000);
+		  
+		  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		  
+		  return sdf.format(d);
+		}
 	}
 
 	private static int isPresent(int id, ArrayList<ForMembriGruppoDTO> lista_membri_nc) {

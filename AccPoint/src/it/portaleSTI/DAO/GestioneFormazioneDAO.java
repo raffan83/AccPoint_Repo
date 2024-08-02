@@ -1064,7 +1064,7 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		if(gruppo == 0) {
 			query = "SELECT a.id, a.firstname, a.lastname, a.email, b.enrolid, (SELECT data from mdl_user_info_data where userid = a.id and fieldid=3) AS cf FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ?";
 		}else {
-			query = "SELECT a.id, a.firstname, a.lastname, a.email, (SELECT data from mdl_user_info_data where userid = a.id and fieldid=3) AS cf FROM mdl_user AS a JOIN mdl_groups_members AS b ON a.id = b.userid WHERE b.groupid = ?";
+			query = "SELECT a.id, a.firstname, a.lastname, a.email,  (SELECT data from mdl_user_info_data where userid = a.id and fieldid=3) AS cf FROM mdl_user AS a JOIN mdl_groups_members AS b ON a.id = b.userid WHERE b.groupid = ?";
 		}
 		
 		
@@ -1113,6 +1113,75 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		return lista;
 	}
 
+
+	public static ArrayList<ForMembriGruppoDTO> getMembriGruppoVittoria(int gruppo, int corso) throws Exception {
+		
+		ArrayList<ForMembriGruppoDTO> lista = new ArrayList<ForMembriGruppoDTO>();
+		
+		
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
+		
+		try {
+			con=getConnection();
+
+			
+
+		String query = "SELECT a.id, a.firstname, a.lastname, a.email," + 
+				"(SELECT timemodified FROM mdl_course_modules_completion c WHERE a.id = c.userid AND coursemoduleid = " + 
+				"(SELECT id FROM mdl_course_modules WHERE course = ? AND module = 45)) AS data_esecuzione,  (SELECT data from mdl_user_info_data where userid = a.id and fieldid=3) AS cf FROM mdl_user AS a JOIN mdl_groups_members AS b ON a.id = b.userid WHERE b.groupid = ?";
+		
+		
+		
+		
+		pst=con.prepareStatement(query);
+	
+		pst.setInt(1, corso);
+	
+		pst.setInt(2, gruppo);
+		
+		
+		
+		
+		rs=pst.executeQuery();
+		
+	
+		
+		while(rs.next())
+		{
+			ForMembriGruppoDTO membro = new ForMembriGruppoDTO();
+			
+			membro.setId(rs.getInt(1));
+			membro.setNome(rs.getString(2));
+			membro.setCognome(rs.getString(3));
+			membro.setEmail(rs.getString(4));
+			membro.setCf(rs.getString(6));
+			membro.setDataEsecuzione(rs.getLong(5));
+	
+			
+			lista.add(membro);
+
+			
+		}
+		
+		} catch (Exception e) {
+			
+			throw e;
+		//	e.printStackTrace();
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+
+		return lista;
+	}
+
+	
+	
 	public static ForConfInvioEmailDTO getConfigurazioneInvioEmail(int id,Session session) {
 	
 			

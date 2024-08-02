@@ -619,7 +619,7 @@ var scrollPos;
 	
 $(window).on('load', function() {
 	
-	  pleaseWaitDiv.modal('hide');
+	  //pleaseWaitDiv.modal('hide');
 });
 
 
@@ -801,6 +801,7 @@ var cellCopy;
 
 $(document).ready(function() {
 	
+	 pleaseWaitDiv.modal('show');
 	console.log("dentro")
 zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
@@ -816,7 +817,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	    
 
 	    $('.dropdown-menu').css('z-index', 200);
-	   		
+	   
 	    
 });
 
@@ -1181,6 +1182,8 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	    	    	    '</div>');
 	           
 	         //   scrollToColumn(parseInt(today) -1);
+	         
+	         pleaseWaitDiv.modal('show');
 
 	         var coltoday = getDaysUntilMonday(parseInt(today), parseInt("${start_date}")) +1
 	        
@@ -1188,6 +1191,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	          scrollToColumn(today - coltoday) 
 	            
 	         pleaseWaitDiv.modal('hide');
+	        // pleaseWaitDiv.modal('hide');
 	        // $('[data-toggle="tooltip"]').tooltip();
 	        },
 	        error: function(xhr, status, error) {
@@ -1239,7 +1243,7 @@ function scrollToColumn(columnIndex) {
     
     scrollBody.animate({ scrollLeft: scrollLeft }, 500);
     
-    
+    pleaseWaitDiv.modal('hide');
 
 }
 

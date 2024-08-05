@@ -20,11 +20,11 @@ public class GestioneInvioReportVittoria {
 	public static void main(String[] args) {
 
 		try {
-			File fileCorsi=new File("C://Users/antonio.dicivita/Desktop/CorsiCalver.csv");
+			File fileCorsi=new File("C://Users/raffaele.fantini/Desktop/CorsiCalver.csv");
 			FileOutputStream fosCorsi= new FileOutputStream(fileCorsi);
 			PrintStream psCorsi= new PrintStream(fosCorsi);
 		
-			File filePartecipanti=new File("C://Users/antonio.dicivita/Desktop/PartecipantiCalver.csv");
+			File filePartecipanti=new File("C://Users/raffaele.fantini/Desktop/PartecipantiCalver.csv");
 			FileOutputStream fosPartecipanti= new FileOutputStream(filePartecipanti);
 			PrintStream psPartecipanti= new PrintStream(fosPartecipanti);
 			
@@ -40,7 +40,7 @@ public class GestioneInvioReportVittoria {
 				String value = c.getId_corso()+"_"+c.getId_gruppo()+"|"+0+"|"+0+"|"+c.getDescrizione_corso();
 				psCorsi.println(value);
 				
-				if(c.getId_corso()==167 && c.getId_gruppo()==141) {
+			//	if(c.getId_corso()==167 && c.getId_gruppo()==141) {
 					ArrayList<ForMembriGruppoDTO> lista_membri_gruppo = GestioneFormazioneBO.getMembriGruppoVittoria(c.getId_gruppo(), c.getId_corso());
 					
 					ArrayList<ForMembriGruppoDTO> lista_membri_nc = GestioneFormazioneDAO.getListaUtentiNonCompleti(c.getId_corso(), c.getId_gruppo());
@@ -55,7 +55,7 @@ public class GestioneInvioReportVittoria {
 					}
 				}
 			
-			}
+			//}
 			
 			System.out.println("Terminate");
 			

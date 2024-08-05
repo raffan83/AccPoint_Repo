@@ -83,8 +83,16 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
  
  	<c:forEach items="${lista_richieste }" var="richiesta" varStatus="loop">
  	<c:if test="${ richiesta.utente.id == userObj.id  || userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN')}">
-	<tr id="row_${loop.index}" >
-
+	
+	
+	 <c:choose>
+  <c:when test="${richiesta.stato == '1'}">
+   <tr id="row_${loop.index}"  style="background-color:#eef578">
+  </c:when>
+  <c:when test="${richiesta.stato == '2'}">
+    <tr id="row_${loop.index}"  style="background-color:#90EE90">
+  </c:when>
+</c:choose>
 	<td>${richiesta.id }</td>	
 	<td>${richiesta.utente.nominativo }</td>
 	<td>   <fmt:formatDate pattern="dd/MM/yyyy HH:mm"   value="${richiesta.data_inizio}" /></td>

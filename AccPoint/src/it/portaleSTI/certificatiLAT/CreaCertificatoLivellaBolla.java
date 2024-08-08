@@ -129,6 +129,7 @@ public class CreaCertificatoLivellaBolla {
 		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd"); 
 		
 		report.addParameter("data_emissione", dt.format(new Date()));
+		
 		report.addParameter("numero_pagine","3");
 		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(misura.getIntervento().getIdCommessa());
 		

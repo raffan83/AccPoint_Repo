@@ -104,28 +104,28 @@
 				<text><![CDATA[Matricola:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="120" y="77" width="120" height="15" uuid="60ef889e-f952-42d4-b859-8084f164627b"/>
+				<reportElement x="120" y="77" width="134" height="15" uuid="60ef889e-f952-42d4-b859-8084f164627b"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{costruttore}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="120" y="61" width="120" height="15" uuid="17f37990-a737-476c-a333-aad290ad706e"/>
+				<reportElement x="120" y="61" width="134" height="15" uuid="17f37990-a737-476c-a333-aad290ad706e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Livella a bolla d'aria]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="120" y="93" width="120" height="15" uuid="182ae8aa-a6d4-4e5f-ac4a-1f0cc86167e2"/>
+				<reportElement x="120" y="93" width="134" height="15" uuid="182ae8aa-a6d4-4e5f-ac4a-1f0cc86167e2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{modello}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="109" width="120" height="15" uuid="25415e1e-6808-43ff-8d01-66f71911b8c6"/>
+				<reportElement x="120" y="109" width="134" height="15" uuid="25415e1e-6808-43ff-8d01-66f71911b8c6"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>

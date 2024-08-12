@@ -533,8 +533,13 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				
 				AcAttivitaCampioneDTO attivita = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(id_attivita), session);
 				
-				String path = Costanti.PATH_FOLDER+"//Campioni//"+attivita.getCampione().getId()+"//Allegati//"+attivita.getAllegato();
+				String path = Costanti.PATH_FOLDER+"//Campioni//"+attivita.getCampione().getId()+"//Allegati//AttivitaManutenzione//"+attivita.getAllegato();
 				File file = new File(path);
+				
+				if(!file.exists()) {
+					path = Costanti.PATH_FOLDER+"//Campioni//"+attivita.getCampione().getId()+"//Allegati//"+attivita.getAllegato();
+					file = new File(path);
+				}
 				
 				FileInputStream fileIn = new FileInputStream(file);
 				 

@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.hibernate.Session;
 
@@ -34,11 +35,16 @@ public class GestioneInvioReportVittoria {
 			Session session=SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
 			ArrayList<ForConfInvioEmailDTO> lista_conf = GestioneFormazioneBO.getListaConfigurazioniInvioEmailData(null,session);
-			
+			HashMap<String, String> listaCorsi=new HashMap<>();
 			
 			for (ForConfInvioEmailDTO c : lista_conf) {
-				String value = c.getId_corso()+"_"+c.getId_gruppo()+"|"+0+"|"+0+"|"+c.getDescrizione_corso();
-				psCorsi.println(value);
+				String value = c.getId_corso()+"|"+0+"|"+0+"|"+c.getDescrizione_corso();
+				
+				if(!listaCorsi.containsKey(value)) 
+				{
+					psCorsi.println(value);
+				}
+				listaCorsi.put(value, value);
 				
 			//	if(c.getId_corso()==167 && c.getId_gruppo()==141) {
 					ArrayList<ForMembriGruppoDTO> lista_membri_gruppo = GestioneFormazioneBO.getMembriGruppoVittoria(c.getId_gruppo(), c.getId_corso());
@@ -49,7 +55,7 @@ public class GestioneInvioReportVittoria {
 						
 						
 						
-						String val = c.getId_corso()+"_"+c.getId_gruppo()+"|"+m.getCf()+"|"+getDateFromLong(m.getDataEsecuzione()) +"|"+isPresent(m.getId(),lista_membri_nc );
+						String val = c.getId_corso()+"|"+m.getCf()+"|"+getDateFromLong(m.getDataEsecuzione()) +"|"+isPresent(m.getId(),lista_membri_nc );
 						
 						psPartecipanti.println(val);
 					}

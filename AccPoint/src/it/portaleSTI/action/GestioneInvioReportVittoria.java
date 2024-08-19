@@ -25,6 +25,8 @@ public class GestioneInvioReportVittoria {
 			FileOutputStream fosCorsi= new FileOutputStream(fileCorsi);
 			PrintStream psCorsi= new PrintStream(fosCorsi);
 		
+			System.out.println("Inizzialize");
+			
 			File filePartecipanti=new File("C://Users/raffaele.fantini/Desktop/PartecipantiCalver.csv");
 			FileOutputStream fosPartecipanti= new FileOutputStream(filePartecipanti);
 			PrintStream psPartecipanti= new PrintStream(fosPartecipanti);

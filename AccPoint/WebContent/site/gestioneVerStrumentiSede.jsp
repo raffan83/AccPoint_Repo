@@ -47,7 +47,19 @@
 	<td>${strumento.costruttore }</td>
 	<td>${strumento.modello }</td>
 	<td>${strumento.matricola }</td>
-	<td>${strumento.classe }</td>
+	<td>
+	<c:choose>
+	<c:when test="${strumento.classe == 5 }">
+	1 - Lettura fine
+	</c:when>
+	<c:when test="${strumento.classe == 6 }">
+	2 - Lettura fine
+	</c:when>
+	<c:otherwise>
+	${strumento.classe }
+	</c:otherwise>
+	</c:choose>
+	</td>
 	<td>${strumento.tipo.descrizione }</td>
 	<td>${strumento.tipologia.descrizione }</td>		
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_ultima_verifica }" /></td>

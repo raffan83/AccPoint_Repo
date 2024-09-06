@@ -2900,6 +2900,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String check_agenda = ret.get("check_agenda");
 					String check_pausa_pranzo = ret.get("check_pausa_pranzo");
 					String descrizione = ret.get("descrizione");
+					String durata_pausa_pranzo = ret.get("durata_pausa_pranzo");
 				
 					
 					ForPiaPianificazioneDTO pianificazione = null;
@@ -2924,6 +2925,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					pianificazione.setOra_inizio(ora_inizio);
 					pianificazione.setOra_fine(ora_fine);
 					pianificazione.setPausa_pranzo(check_pausa_pranzo);
+					pianificazione.setDurata_pausa_pranzo(durata_pausa_pranzo);
 					if(n_utenti!=null && !n_utenti.equals("")) {
 						pianificazione.setnUtenti(Integer.parseInt(n_utenti));
 					}

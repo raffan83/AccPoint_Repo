@@ -84,6 +84,20 @@
 
 
 </div><br>
+
+       	<div  class="row">       
+       	<div class="col-sm-12">  
+       	<div class="legend pull-right" style="margin-top:30px">
+
+        <div class="legend-item">
+        <div class="legend-color" style="background-color:#FAFAD2;"></div>
+        <div class="legend-label">DEVICE CON MANUTENZIONE PREVENTIVA SCADUTA</div>
+    </div>
+    
+</div>
+       	
+       	</div>	
+       </div><br>
             
             
               <div id="modalTestoEmail" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
@@ -174,6 +188,31 @@
     font-size: 12px;
     line-height: 1.42857;
 }
+</style>
+
+
+
+<style>
+
+ .legend {
+  display: flex;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+}
+
+.legend-label {
+  margin-left: 5px;
+}
+
 </style>
 </jsp:attribute>
 

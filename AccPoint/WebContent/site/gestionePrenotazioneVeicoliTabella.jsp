@@ -289,6 +289,12 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 				$('#stato').change();
 				$('#content_stato').show()
 				
+				if(prenotazione.id_richiesta != 0){
+					$('#label_elimina_richiesta').show()
+				}else{
+					$('#label_elimina_richiesta').hide()
+				}
+				
 				$('#data_inizio').val(prenotazione.data_inizio_prenotazione.split(" ")[0]);
 			
 				var dayValue = parseInt(prenotazione.cella_fine);

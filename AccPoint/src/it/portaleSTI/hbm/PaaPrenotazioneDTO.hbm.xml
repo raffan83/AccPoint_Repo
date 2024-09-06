@@ -44,5 +44,8 @@
         <property name="rifornimento" type="int">
             <column name="rifornimento" />
         </property>
+                <property name="id_richiesta" type="int">
+            <column name="id_richiesta" />
+        </property>
     </class>
 </hibernate-mapping>

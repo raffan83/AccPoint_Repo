@@ -227,16 +227,27 @@
          </div><br>
         
 		<div class="row">
-		<div class='col-xs-4'><label>Ora inzio</label><div class='input-group'>
+		<div class='col-xs-3'><label>Ora inzio</label><div class='input-group'>
 					<input type='text' id='ora_inizio' name='ora_inizio'  class='form-control timepicker' style='width:100%'><span class='input-group-addon'>
 		            <span class='fa fa-clock-o'></span></span></div></div>
 
-<div class='col-xs-4'><label>Ora fine</label><div class='input-group'>
+<div class='col-xs-3'><label>Ora fine</label><div class='input-group'>
 					<input type='text' id='ora_fine' name='ora_fine'   class='form-control timepicker' style='width:100%'><span class='input-group-addon'>
 		            <span class='fa fa-clock-o'></span></span></div></div>
 
-		<div class='col-xs-3'><label>Pausa pranzo</label><br>
-					<input type='checkbox' id='pausa_pranzo' name='pausa_pranzo' class='form-control' style='width:100%'></div>
+		<div class='col-xs-3' ><label>Pausa pranzo</label><br>
+					<input type='checkbox' id='pausa_pranzo' name='pausa_pranzo' class='form-control' style='width:100%'>
+					</div>
+			<div class='col-xs-3'> 	
+					 <label>Durata (min.)</label> 
+					<select id="durata_pausa_pranzo" name="durata_pausa_pranzo" disabled class='form-control select2' data-placeholder="Durata pausa pranzo...">
+					<option value=""></option>
+					<option value="15">15</option>
+					<option value="30">30</option>
+					<option value="45">45</option>
+					<option value="60">60</option>
+					</select>
+					</div>
 		
 		</div><br>
         
@@ -571,13 +582,17 @@ $('input:checkbox').on('ifToggled', function() {
 	
 	$('#pausa_pranzo').on('ifChecked', function(event){
 		$('#check_pausa_pranzo').val("SI");
-	
+		$('#durata_pausa_pranzo').attr("disabled", false);
+		$('#durata_pausa_pranzo').attr("required", true);
 	});
 	
 	$('#pausa_pranzo').on('ifUnchecked', function(event) {
 		
 		$('#check_pausa_pranzo').val("NO");
-	
+		$('#durata_pausa_pranzo').val("")
+		$('#durata_pausa_pranzo').change()
+		$('#durata_pausa_pranzo').attr("disabled", true);
+		$('#durata_pausa_pranzo').attr("required", false);
 	});
 	
 })

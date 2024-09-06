@@ -1,8 +1,10 @@
 package it.portaleSTI.DAO;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -522,6 +524,41 @@ public static ArrayList<DevDeviceDTO> getListaDeviceNoMan(int id_company, Sessio
 		query.setParameter("_id_company", id_company);
 	}
 	
+	
+	lista = (ArrayList<DevDeviceDTO>) query.list();
+	
+	return lista;
+}
+
+public static ArrayList<DevDeviceDTO> getListaDeviceManScad(int id_company, Session session) throws Exception, ParseException {
+	
+	ArrayList<DevDeviceDTO> lista = null;
+
+	Query query = null;
+	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	
+//	if(id_company == 0) {
+//		query = session.createQuery("from DevDeviceDTO where disabilitato = 0 and tipo_device.id <> 14 and id IN (select device.id from DevRegistroAttivitaDTO where tipo_evento.id = 2 "
+//				+ "AND id IN (SELECT MAX(id) FROM DevRegistroAttivitaDTO WHERE tipo_evento.id = 2 GROUP BY device.id) AND data_prossima < :_date)");
+//		query.setParameter("_date", df.parseObject(df.format(new Date())));
+//	}else {
+//		query = session.createQuery("from DevDeviceDTO where id_company_util = :_id_company and disabilitato = 0 and tipo_device.id <> 14 and id IN (select device.id from DevRegistroAttivitaDTO where tipo_evento.id = 2 "  
+//								+ " AND id IN (SELECT MAX(id)  FROM DevRegistroAttivitaDTO WHERE tipo_evento.id = 2 GROUP BY device.id) AND data_prossima < :_date)");	
+//		query.setParameter("_id_company", id_company);
+//		query.setParameter("_date", df.parseObject(df.format(new Date())));
+//	}
+	
+	
+	if(id_company == 0) {
+		query = session.createQuery("select device from DevRegistroAttivitaDTO a  where a.device.disabilitato = 0 and a.device.tipo_device.id <> 14 and a.tipo_evento.id = 2 "
+				+ "AND a.id IN (SELECT MAX(id) FROM DevRegistroAttivitaDTO WHERE tipo_evento.id = 2 GROUP BY device.id) AND a.data_prossima < :_date");
+		query.setParameter("_date", df.parseObject(df.format(new Date())));
+	}else {
+		query = session.createQuery("select device from DevRegistroAttivitaDTO a where a.device.id_company_util = :_id_company and a.device.disabilitato = 0 and a.device.tipo_device.id <> 14 and a.tipo_evento.id = 2 "  
+								+ " AND a.id IN (SELECT MAX(id)  FROM DevRegistroAttivitaDTO WHERE tipo_evento.id = 2 GROUP BY device.id) AND a.data_prossima < :_date)");	
+		query.setParameter("_id_company", id_company);
+		query.setParameter("_date", df.parseObject(df.format(new Date())));
+	}
 	
 	lista = (ArrayList<DevDeviceDTO>) query.list();
 	

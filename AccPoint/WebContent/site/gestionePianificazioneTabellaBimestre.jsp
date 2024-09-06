@@ -322,6 +322,15 @@ function modalPianificazione(day, commessa, id){
 			$('#n_cella').val(pianificazione.nCella);
 			$('#n_utenti').val(pianificazione.nUtenti);
 			$('#descrizione').val(pianificazione.descrizione)
+			if(pianificazione.pausa_pranzo=='SI'){
+				$('#pausa_pranzo').iCheck("check");
+				$('#durata_pausa_pranzo').val(pianificazione.durata_pausa_pranzo);
+				$('#durata_pausa_pranzo').change();
+			}else{
+				$('#pausa_pranzo').iCheck("uncheck");
+			}
+			
+			
 			if(pianificazione.email_inviata==1){
 				$('#label_email').show();
 			}else{
@@ -541,6 +550,14 @@ function modalPianificazione(day, commessa, id){
 			$('#n_cella').val(pianificazione.nCella);
 			$('#n_utenti').val(pianificazione.nUtenti);
 			$('#descrizione').val(pianificazione.descrizione)
+			if(pianificazione.pausa_pranzo=='SI'){
+				$('#pausa_pranzo').iCheck("check");
+				$('#durata_pausa_pranzo').val(pianificazione.durata_pausa_pranzo);
+				$('#durata_pausa_pranzo').change();
+			}else{
+				$('#pausa_pranzo').iCheck("uncheck");
+			}
+			
 			if(pianificazione.email_inviata==1){
 				$('#label_email').show();
 			}else{

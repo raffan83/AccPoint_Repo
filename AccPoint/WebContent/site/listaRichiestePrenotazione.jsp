@@ -107,7 +107,9 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
   <c:when test="${richiesta.stato == '2'}">
     <span class="label label-success">EVASA</span>
   </c:when>
-  
+    <c:when test="${richiesta.stato == '3'}">
+    <span class="label label-danger">ANNULLATA</span>
+  </c:when>
 </c:choose> 
 </td>
 	<td>

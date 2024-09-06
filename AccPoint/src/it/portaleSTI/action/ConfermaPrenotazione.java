@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -99,6 +100,7 @@ public class ConfermaPrenotazione extends HttpServlet {
 				
 				PaaPrenotazioneDTO prenotazione = GestioneParcoAutoBO.getPrenotazioneFromId(Integer.parseInt(id), session);
 				prenotazione.setStato_prenotazione(2);
+				prenotazione.setData_conferma(new Date());
 				
 				PrintWriter out = response.getWriter();
 				JsonObject myObj = new JsonObject();

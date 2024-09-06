@@ -16,6 +16,13 @@ public class PaaPrenotazioneDTO {
 	private int cella_fine;
 	private int manutenzione;
 	private int rifornimento;
+	public int getId_richiesta() {
+		return id_richiesta;
+	}
+	public void setId_richiesta(int id_richiesta) {
+		this.id_richiesta = id_richiesta;
+	}
+	private int id_richiesta;
 	
 	public int getId() {
 		return id;

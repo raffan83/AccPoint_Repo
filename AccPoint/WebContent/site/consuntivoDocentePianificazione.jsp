@@ -17,11 +17,12 @@
 <th>Tipo</th>
 <th>Stato</th>
 <th>Data</th>
+<th>Descrizione</th>
 <th>Note</th>
 <th>Ora Inizio</th>
 <th>Ora Fine</th>
 <th>Pausa Pranzo</th>
-
+<th>Durata Pausa pranzo (min.)</th>
 
  </tr></thead>
  
@@ -34,6 +35,8 @@
 <td>${pianificazione.tipo.descrizione }</td>
 <td>${pianificazione.stato.descrizione }</td>
 <td><fmt:formatDate value="${pianificazione.data }" pattern="dd/MM/yyyy"/></td>
+
+<td>${utl:escapeJS(pianificazione.descrizione) }</td>
 <td>
 <c:if test="${fn:length(pianificazione.note)>20 }">
 ${utl:escapeJS(pianificazione.note.substring(0,20)) }...
@@ -45,6 +48,7 @@ ${utl:escapeJS(pianificazione.note) }
 <td class="col_inizio">${pianificazione.ora_inizio }</td>
 <td class="col_fine">${pianificazione.ora_fine }</td>
 <td class="pausa_pranzo">${pianificazione.pausa_pranzo }</td>
+<td class="durata_pausa_pranzo">${pianificazione.durata_pausa_pranzo }</td>
 	</tr>
 	</c:forEach>
 	 
@@ -114,6 +118,7 @@ ${utl:escapeJS(pianificazione.note) }
 	    var orario1 = $(this).find('.col_inizio').text().trim(); // Ottieni il testo della colonna1 e rimuovi spazi bianchi
 	    var orario2 = $(this).find('.col_fine').text().trim(); // Ottieni il testo della colonna2 e rimuovi spazi bianchi
 		var pausa_pranzo = $(this).find('.pausa_pranzo').text().trim();
+		var durata_pausa_pranzo = $(this).find('.durata_pausa_pranzo').text().trim();
 	    
 	    if (orario1 && orario2) {
 	      // Trasforma gli orari in istanze di Moment.js
@@ -125,7 +130,13 @@ ${utl:escapeJS(pianificazione.note) }
 	      if(pausa_pranzo == "SI"){
 	    	 
 	    	  var differenza = moment.duration(orarioMoment2.diff(orarioMoment1));
-	    	  differenza.subtract(moment.duration({ hours: 1 }));
+	    	  if(durata_pausa_pranzo!=''){
+	    		  differenza.subtract(moment.duration({ minutes: durata_pausa_pranzo }));  
+	    	  }else{
+	    		  differenza.subtract(moment.duration({ hours: 1 }));  
+	    	  }
+	    	  
+	    	  
 	      }else{
 	    	  var differenza = moment.duration(orarioMoment2.diff(orarioMoment1));
 	      }

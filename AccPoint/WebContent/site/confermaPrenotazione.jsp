@@ -61,7 +61,8 @@
  <thead><tr class="active">
 
  <th>ID</th>
- <th>Veicolo</th>
+ <th>Targa Veicolo</th>
+ <th>Modello Veicolo</th>
  <th>Data Inizio Prenotazione</th>
  <th>Data Fine Prenotazione</th>
  <th>Stato Prenotazione</th>
@@ -77,6 +78,7 @@
 <td><c:out value="${prenotazione.id}"/></td>
 	
 	<td><c:out value="${prenotazione.veicolo.targa}"/></td>
+	<td><c:out value="${prenotazione.veicolo.modello}"/></td>
 	<td>
 	<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${prenotazione.data_inizio_prenotazione}" />
 	

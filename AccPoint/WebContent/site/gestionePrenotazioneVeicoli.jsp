@@ -261,6 +261,7 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
+       <div id="label_elimina_richiesta" style="display:none">Eliminare questa prenotazione annullerà la relativa richiesta.<br></div>
       	Sei sicuro di voler eliminare la pianificazione selezionata?
       	</div>
       <div class="modal-footer">

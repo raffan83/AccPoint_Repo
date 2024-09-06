@@ -57,7 +57,17 @@
  <tbody>
  
  	<c:forEach items="${lista_scadenze }" var="scadenza" varStatus="loop">
+	
+	 	<c:choose>
+
+ 	 	<c:when test="${lista_device_man_scad.contains(scadenza.device) }">
+ 	<tr id="row_${scadenza.device.id }" style="background-color:#FAFAD2">
+ 	</c:when>
+	
+	<c:otherwise>
 	<tr id="row_${scadenza.device.id }" >
+	</c:otherwise>
+	</c:choose>
 
 	<td>${scadenza.device.id }</td>	
 	<td>${scadenza.device.codice_interno }</td>

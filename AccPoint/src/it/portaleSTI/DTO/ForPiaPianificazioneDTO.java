@@ -27,6 +27,8 @@ public class ForPiaPianificazioneDTO {
 	private Date data_cambio_stato;
 	private int aggiunto_agenda;
 	private int email_inviata;
+	private String durata_pausa_pranzo;
+	
 	
 	private Set<ForDocenteDTO> listaDocenti = new HashSet<ForDocenteDTO>(0);
 	
@@ -270,6 +272,18 @@ public class ForPiaPianificazioneDTO {
 
 	public void setEmail_inviata(int email_inviata) {
 		this.email_inviata = email_inviata;
+	}
+
+
+
+	public String getDurata_pausa_pranzo() {
+		return durata_pausa_pranzo;
+	}
+
+
+
+	public void setDurata_pausa_pranzo(String durata_pausa_pranzo) {
+		this.durata_pausa_pranzo = durata_pausa_pranzo;
 	}
 	
 	

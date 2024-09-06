@@ -218,6 +218,8 @@ public class GestioneDevice extends HttpServlet {
 				ArrayList<DevStatoValidazioneDTO> lista_stati_validazione = GestioneDeviceBO.getListaStatiValidazione(session);
 				
 				ArrayList<DevDeviceDTO> lista_device_no_man = GestioneDeviceBO.getListaDeviceNoMan(Integer.parseInt(id_company),session);
+				
+				ArrayList<DevDeviceDTO> lista_device_man_scad = GestioneDeviceBO.getListaDeviceManScad(Integer.parseInt(id_company),session);
 				 
 				
 				Collections.sort(lista_dipendenti);
@@ -230,6 +232,7 @@ public class GestioneDevice extends HttpServlet {
 				request.getSession().setAttribute("lista_stati_validazione", lista_stati_validazione);
 				request.getSession().setAttribute("id_company", id_company);
 				request.getSession().setAttribute("lista_device_no_man", lista_device_no_man);
+				request.getSession().setAttribute("lista_device_man_scad", lista_device_man_scad);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDevice.jsp");
 		     	dispatcher.forward(request,response);
@@ -1576,8 +1579,10 @@ public class GestioneDevice extends HttpServlet {
 				String company = request.getParameter("company");	
 				
 				ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceBO.getListaScadenze(dateFrom,dateTo,Integer.parseInt(company), session);
+				ArrayList<DevDeviceDTO> lista_device_man_scad = GestioneDeviceBO.getListaDeviceManScad(Integer.parseInt(company), session);
 				
 				request.getSession().setAttribute("lista_scadenze", lista_scadenze);
+				request.getSession().setAttribute("lista_device_man_scad", lista_device_man_scad);
 				request.getSession().setAttribute("dateFrom", dateFrom);
 				request.getSession().setAttribute("dateTo", dateTo);				
 				

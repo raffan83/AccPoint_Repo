@@ -94,6 +94,10 @@
         <div class="legend-color" style="background-color:#D8796F;"></div>
         <div class="legend-label">DEVICE SENZA MANUTENZIONE PREVENTIVA</div>
     </div>
+        <div class="legend-item">
+        <div class="legend-color" style="background-color:#FAFAD2;"></div>
+        <div class="legend-label">DEVICE CON MANUTENZIONE PREVENTIVA SCADUTA</div>
+    </div>
     
 </div>
        	
@@ -133,12 +137,15 @@
  	<c:forEach items="${lista_device }" var="device" varStatus="loop">
  	
  	<c:choose>
- 	<c:when test="${!lista_device_no_man.contains(device) }">
- 	<tr id="row_${device.id }" >
+ 	<c:when test="${lista_device_no_man.contains(device) }">
+ 	<tr id="row_${device.id }" style="background-color:#D8796F">
+ 	</c:when>
+ 	 	<c:when test="${lista_device_man_scad.contains(device) }">
+ 	<tr id="row_${device.id }" style="background-color:#FAFAD2">
  	</c:when>
 	
 	<c:otherwise>
-	<tr id="row_${device.id }" style="background-color:#D8796F">
+	<tr id="row_${device.id }" >
 	</c:otherwise>
 	</c:choose>
 

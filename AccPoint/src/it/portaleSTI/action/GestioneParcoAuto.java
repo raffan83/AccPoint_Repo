@@ -710,6 +710,12 @@ public class GestioneParcoAuto extends HttpServlet {
 				
 				PaaPrenotazioneDTO prenotazione = GestioneParcoAutoBO.getPrenotazioneFromId(Integer.parseInt(id), session);
 				
+				if(prenotazione.getId_richiesta()!=0) {
+					PaaRichiestaDTO richiesta = GestioneParcoAutoBO.getRichiestaFromID(prenotazione.getId_richiesta(), session);
+					richiesta.setStato(3);
+					session.update(richiesta);
+				}
+				
 				session.delete(prenotazione);
 				
 					
@@ -883,6 +889,7 @@ public class GestioneParcoAuto extends HttpServlet {
 					prenotazione.setUtente(richiesta.getUtente());
 					prenotazione.setStato_prenotazione(1);
 					prenotazione.setNote(richiesta.getNote());
+					prenotazione.setId_richiesta(richiesta.getId());
 					Calendar c = Calendar.getInstance();
 					c.setTime(df.parse(data_inizio));
 					

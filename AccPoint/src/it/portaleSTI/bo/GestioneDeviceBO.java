@@ -446,4 +446,9 @@ public static void sendEmailAttivitaScaduteSollecito() throws ParseException, Ex
 		
 		return GestioneDeviceDAO.getListaDeviceNoMan(id_company, session);
 	}
+
+	public static ArrayList<DevDeviceDTO> getListaDeviceManScad(int id_company, Session session) throws ParseException, Exception {
+		// TODO Auto-generated method stub
+		return GestioneDeviceDAO.getListaDeviceManScad(id_company, session);
+	}
 }

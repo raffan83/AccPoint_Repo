@@ -86,5 +86,9 @@
             <column name="aggiunto_agenda" />
         </property>
         
+        <property name="durata_pausa_pranzo" type="java.lang.String" >
+            <column name="durata_pausa_pranzo" />
+        </property>
+        
     </class>
 </hibernate-mapping>

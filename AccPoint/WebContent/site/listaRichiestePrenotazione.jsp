@@ -184,10 +184,10 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         
        
         
-        		<div class='col-xs-4'><label>Ora inzio</label><div class='input-group'>
+        		<div class='col-xs-3'><label>Ora inzio</label><div class='input-group'>
 					<input type='text' id='ora_inizio' name='ora_inizio'  class='form-control timepicker' style='width:100%' required><span class='input-group-addon'>
 		            <span class='fa fa-clock-o'></span></span></div></div>
-   
+
         </div><br>
         
         
@@ -198,7 +198,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         </div>
 
 
-			<div class='col-xs-4'><label>Ora fine</label><div class='input-group'>
+			<div class='col-xs-3'><label>Ora fine</label><div class='input-group'>
 					<input type='text' id='ora_fine' name='ora_fine'   class='form-control timepicker' style='width:100%' required><span class='input-group-addon'>
 		            <span class='fa fa-clock-o'></span></span></div></div>
 
@@ -253,9 +253,14 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         
        
         
-        		<div class='col-xs-4'><label>Ora inzio</label><div class='input-group'>
+        		<div class='col-xs-3'><label>Ora inzio</label><div class='input-group'>
 					<input type='text' id='ora_inizio_mod' name='ora_inizio_mod'  class='form-control timepicker' style='width:100%' required><span class='input-group-addon'>
 		            <span class='fa fa-clock-o'></span></span></div></div>
+		            <div id="content_giornaliero" style="display:none">
+		             		<div class='col-xs-3' ><label>A/R giornaliero</label><br>
+					<input type='checkbox' id='giornaliero_mod' name='giornaliero_mod' class='form-control' style='width:100%'>
+					
+					</div></div>
    
         </div><br>
         
@@ -267,7 +272,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         </div>
 
 
-			<div class='col-xs-4'><label>Ora fine</label><div class='input-group'>
+			<div class='col-xs-3'><label>Ora fine</label><div class='input-group'>
 					<input type='text' id='ora_fine_mod' name='ora_fine_mod'   class='form-control timepicker' style='width:100%' required><span class='input-group-addon'>
 		            <span class='fa fa-clock-o'></span></span></div></div>
 
@@ -305,6 +310,8 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
   		 
       <div class="modal-footer">
 		
+		
+		<input type="hidden" id="check_giornaliero_mod" name="check_giornaliero_mod">
 		<input type="hidden" id="id_richiesta" name="id_richiesta">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
@@ -379,14 +386,25 @@ function modificaRichiesta(id_richiesta, data_inizio, data_fine, note, is_admin)
 	
 	$('#data_fine_mod').val(Date.parse(data_fine.split(" ")[0]).toString("dd/MM/yyyy"));
 	
+
+	
 	$('#ora_inizio_mod').val(data_inizio.split(" ")[1]);
 	$('#ora_fine_mod').val(data_fine.split(" ")[1]);
 	
 	initializeTimepicker(data_inizio.split(" ")[1], data_fine.split(" ")[1], "_mod");
 	
 	
-	
+	$('#content_giornaliero').hide();
 	if(is_admin== "1"){
+		
+		if(data_inizio.split(" ")[0] != data_fine.split(" ")[0]){
+			$('#content_giornaliero').show();			
+		}else{
+			$('#giornaliero_mod').iCheck("uncheck");
+			$('#content_giornaliero').hide();	
+		}
+
+
 		
 		$("#content_veicoli").show();
 		$('#veicoli').attr("required", true)
@@ -575,6 +593,29 @@ function initializeTimepicker(start, end, mod) {
         var fine = moment($('#ora_fine'+mod).val(), "HH:mm");
     });
 }
+
+
+$('#giornaliero').on('ifChecked', function(event){
+	$('#check_giornaliero').val("SI");
+	
+});
+
+$('#giornaliero').on('ifUnchecked', function(event) {
+	
+	$('#check_giornaliero').val("NO");
+
+});
+
+$('#giornaliero_mod').on('ifChecked', function(event){
+	$('#check_giornaliero_mod').val("SI");
+	
+});
+
+$('#giornaliero_mod').on('ifUnchecked', function(event) {
+	
+	$('#check_giornaliero_mod').val("NO");
+
+});
 
 
 $(document).ready(function() {

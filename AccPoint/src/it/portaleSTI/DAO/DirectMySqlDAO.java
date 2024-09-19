@@ -3572,8 +3572,8 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 					
 					
 					
-					//if(Utility.getRapportoLavorati(pacco)!=1 && (date10.isBefore(LocalDate.now()) || date10.equals(LocalDate.now()))) {
-					if(Utility.getRapportoLavorati(pacco)!=1) {
+					if(Utility.getRapportoLavorati(pacco)!=1 && (date10.isBefore(LocalDate.now()) || date10.equals(LocalDate.now()))) {
+					//if(Utility.getRapportoLavorati(pacco)!=1) {
 
 						
 						String toAdd = pacco.getOrigine()+";"+pacco.getNome_cliente();
@@ -3609,7 +3609,10 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 
 						for (MagPaccoDTO magPaccoDTO : lista_pacchi_origine) {
 							
+				
 							magPaccoDTO.setRitardo(1);
+					
+							
 							
 							if(magPaccoDTO.getTipo_nota_pacco()!=null) {
 								note_pacco = note_pacco + magPaccoDTO.getTipo_nota_pacco().getDescrizione() +" - ";

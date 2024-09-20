@@ -46,6 +46,7 @@ public class AreaUtente extends HttpServlet {
 	
 		try
 		{
+			System.out.print("test");
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 	

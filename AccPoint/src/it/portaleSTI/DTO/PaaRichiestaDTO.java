@@ -11,6 +11,7 @@ public class PaaRichiestaDTO {
 	private String note;
 	private UtenteDTO utente;
 	private int disabilitato;
+	private String luogo;
 	
 	
 	public int getId() {
@@ -54,6 +55,12 @@ public class PaaRichiestaDTO {
 	}
 	public void setDisabilitato(int disabilitato) {
 		this.disabilitato = disabilitato;
+	}
+	public String getLuogo() {
+		return luogo;
+	}
+	public void setLuogo(String luogo) {
+		this.luogo = luogo;
 	}
 
 }

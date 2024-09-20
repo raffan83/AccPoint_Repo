@@ -28,6 +28,9 @@
          <property name="disabilitato" type="int">
             <column name="disabilitato" />
         </property>
+        <property name="luogo" type="java.lang.String">
+            <column name="luogo" />
+        </property>
         
     </class>
 </hibernate-mapping>

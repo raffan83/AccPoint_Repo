@@ -16,6 +16,8 @@ public class PaaPrenotazioneDTO {
 	private int cella_fine;
 	private int manutenzione;
 	private int rifornimento;
+	private String luogo;
+	
 	public int getId_richiesta() {
 		return id_richiesta;
 	}
@@ -96,7 +98,12 @@ public class PaaPrenotazioneDTO {
 	public void setRifornimento(int rifornimento) {
 		this.rifornimento = rifornimento;
 	}
-	
+	public String getLuogo() {
+		return luogo;
+	}
+	public void setLuogo(String luogo) {
+		this.luogo = luogo;
+	}
 	
 
 }

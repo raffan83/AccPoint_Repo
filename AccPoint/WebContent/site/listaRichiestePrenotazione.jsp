@@ -82,7 +82,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
  <tbody>
  
  	<c:forEach items="${lista_richieste }" var="richiesta" varStatus="loop">
- 	<c:if test="${ richiesta.utente.id == userObj.id  || userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN')}">
+ 	<%-- <c:if test="${ richiesta.utente.id == userObj.id  || userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN')}"> --%>
 	
 	
 	 <c:choose>
@@ -114,17 +114,17 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 </td>
 	<td>
 	<c:if test="${userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN') && richiesta.stato == '1' }">
-	<a class="btn btn-info customTooltip" onClicK="modificaRichiesta('${richiesta.id}', '${richiesta.data_inizio }', '${richiesta.data_fine }','${utl:escapeJS(richiesta.note) }','1')" title="Gestisci richiesta"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-info customTooltip" onClicK="modificaRichiesta('${richiesta.id}', '${richiesta.data_inizio }', '${richiesta.data_fine }','${utl:escapeJS(richiesta.note) }','1','${utl:escapeJS(richiesta.luogo) }')" title="Gestisci richiesta"><i class="fa fa-edit"></i></a>
 	</c:if>
 
 	<c:if test="${richiesta.stato == 1 && richiesta.utente.id == userObj.id }">
- 	<a class="btn btn-warning customTooltip" onClicK="modificaRichiesta('${richiesta.id}', '${richiesta.data_inizio }', '${richiesta.data_fine }','${utl:escapeJS(richiesta.note) }','0')" title="Click per modificare la richiesta"><i class="fa fa-edit"></i></a>
+ 	<a class="btn btn-warning customTooltip" onClicK="modificaRichiesta('${richiesta.id}', '${richiesta.data_inizio }', '${richiesta.data_fine }','${utl:escapeJS(richiesta.note) }','0', '${utl:escapeJS(richiesta.luogo) }')" title="Click per modificare la richiesta"><i class="fa fa-edit"></i></a>
  	<a class="btn btn-danger customTooltip" onClicK="modalEliminaRichiesta('${richiesta.id }')" title="Click per eliminare la richiesta"><i class="fa fa-trash"></i></a>
  	</c:if>
 	  
  	</td>
 	</tr>
-	</c:if>
+<%-- 	</c:if> --%>
 	</c:forEach>
 	 
 
@@ -203,6 +203,18 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 		            <span class='fa fa-clock-o'></span></span></div></div>
 
         </div><br>
+        
+                        <div class="row">
+       <div class="col-sm-12">  
+       		<label>Luogo</label>
+      
+       	    
+       	  	
+        <input id="luogo" name="luogo" class="form-control" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+        
 
         <div class="row">
        <div class="col-sm-12">  
@@ -277,6 +289,17 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 		            <span class='fa fa-clock-o'></span></span></div></div>
 
         </div><br>
+        
+                <div class="row">
+       <div class="col-sm-12">  
+       		<label>Luogo</label>
+      
+       	    
+       	  	
+        <input id="luogo_mod" name="luogo_mod" class="form-control"  style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
 
         <div class="row">
        <div class="col-sm-12">  
@@ -363,7 +386,7 @@ function modalNuovaRichiesta(){
 }
 
 
-function modificaRichiesta(id_richiesta, data_inizio, data_fine, note, is_admin){
+function modificaRichiesta(id_richiesta, data_inizio, data_fine, note, is_admin, luogo){
 	
 	$("#content_veicoli").hide();
 
@@ -371,6 +394,7 @@ function modificaRichiesta(id_richiesta, data_inizio, data_fine, note, is_admin)
 	$('#data_fine_mod').attr("readonly", false);		
 	$('#ora_inizio_mod').attr("readonly", false);
 	$('#ora_fine_mod').attr("readonly", false);
+	
 	
 	$('#data_inizio_mod').bind('focus');
 	$('#data_fine_mod').bind('focus');	
@@ -380,6 +404,7 @@ function modificaRichiesta(id_richiesta, data_inizio, data_fine, note, is_admin)
 	
 	$('#id_richiesta').val(id_richiesta);
 	$('#note_mod').val(note);
+	$('#luogo_mod').val(luogo);
 	
 	$('#data_inizio_mod').val(Date.parse(data_inizio.split(" ")[0]).toString("dd/MM/yyyy"));
 	

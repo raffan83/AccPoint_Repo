@@ -47,5 +47,9 @@
                 <property name="id_richiesta" type="int">
             <column name="id_richiesta" />
         </property>
+        
+                <property name="luogo" type="java.lang.String">
+            <column name="luogo" />
+        </property>
     </class>
 </hibernate-mapping>

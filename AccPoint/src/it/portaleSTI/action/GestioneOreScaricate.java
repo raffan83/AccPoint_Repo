@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.log4j.Logger;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DTO.ControlloOreDTO;
@@ -26,6 +27,8 @@ import it.portaleSTI.Util.Utility;
 @WebServlet("/gestioneOreScaricate.do")
 public class GestioneOreScaricate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	static final Logger logger = Logger.getLogger(GestioneOreScaricate.class);
        
     /**
      * @see HttpServlet#HttpServlet()

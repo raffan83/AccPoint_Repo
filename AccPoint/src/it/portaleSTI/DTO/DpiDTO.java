@@ -5,7 +5,9 @@ import java.util.Date;
 public class DpiDTO {
 	
 	private int id;
-	private TipoDpiDTO tipo;
+	private int tipologia;
+	private TipoAccessorioDispositivoDTO tipo_accessorio;
+	private TipoDpiDTO tipo_dpi;
 	private DocumFornitoreDTO company;
 	private String descrizione;
 	private String modello;
@@ -26,12 +28,7 @@ public class DpiDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public TipoDpiDTO getTipo() {
-		return tipo;
-	}
-	public void setTipo(TipoDpiDTO tipo) {
-		this.tipo = tipo;
-	}
+	
 	public DocumFornitoreDTO getCompany() {
 		return company;
 	}
@@ -112,6 +109,25 @@ public class DpiDTO {
 	}
 	public void setNote(String note) {
 		this.note = note;
+	}
+	public int getTipologia() {
+		return tipologia;
+	}
+	public void setTipologia(int tipologia) {
+		this.tipologia = tipologia;
+	}
+
+	public TipoDpiDTO getTipo_dpi() {
+		return tipo_dpi;
+	}
+	public void setTipo_dpi(TipoDpiDTO tipo_dpi) {
+		this.tipo_dpi = tipo_dpi;
+	}
+	public TipoAccessorioDispositivoDTO getTipo_accessorio() {
+		return tipo_accessorio;
+	}
+	public void setTipo_accessorio(TipoAccessorioDispositivoDTO tipo_accessorio) {
+		this.tipo_accessorio = tipo_accessorio;
 	}
 	
 	

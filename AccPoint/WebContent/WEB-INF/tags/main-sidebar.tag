@@ -361,16 +361,16 @@
            <li class="header">DPI</li>
 
          <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Gestione DPI</span>
+          <a href="#"><i class="fa fa-link"></i> <span>Gestione Dispositivi</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
         <% if(!user.checkRuolo("DP")){%>  
-		   <li><a href="gestioneDpi.do?action=lista">Elenco DPI</a></li>	
+		   <li><a href="gestioneDpi.do?action=lista">Elenco Dispositivi</a></li>	
 		   <% }%>
-			<li><a href="gestioneDpi.do?action=lista_schede_consegna">Schede consegna DPI</a></li>
+			<li><a href="gestioneDpi.do?action=lista_schede_consegna">Schede consegna Dispositivi</a></li>
 			<% if(!user.checkRuolo("DP")){%>  
 			<li><a href="gestioneDpi.do?action=scadenzario">Scadenzario</a></li>		
 			<li><a href="gestioneDpi.do?action=lista_manuali_dpi">Gestione manuali DPI</a></li>	

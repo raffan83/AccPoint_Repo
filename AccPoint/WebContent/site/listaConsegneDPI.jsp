@@ -46,11 +46,11 @@
 
 <div class="row">
 <div class="col-xs-12">
-<a class="btn btn-primary pull-left" onClick="$('#modalScheda').modal()"><i class="fa fa-plus"></i> Crea Scheda DPI</a> 
+<a class="btn btn-primary pull-left" onClick="$('#modalScheda').modal()"><i class="fa fa-plus"></i> Crea Scheda Dispositivi</a> 
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> -->
  
    <c:if test="${!utente.checkRuolo('DP') }">
-<a class="btn btn-primary pull-right" onClick="modalnuovaConsegna()"><i class="fa fa-plus"></i> Nuova Consegna DPI</a> 
+<a class="btn btn-primary pull-right" onClick="modalnuovaConsegna()"><i class="fa fa-plus"></i> Nuova Consegna Dispositivo</a> 
 </c:if>
 
 
@@ -73,8 +73,11 @@
 
 
 <th>ID</th>
+
 <th>Tipo</th>
 <th>ID DPI</th>
+<th>Tipologia</th>
+<th>Tipo Accessorio</th>
 <th>Descrizione DPI</th>
 <th>DPI Collettivo</th>
 <th>Modello</th>
@@ -101,6 +104,20 @@
 	<c:if test="${consegna.is_restituzione==1 }">RICONSEGNA</c:if>
 	</td>
 	<td>${consegna.dpi.id }</td>
+	<td>
+	<c:if test="${consegna.dpi.tipologia == 1 }">
+	DPI
+	</c:if>
+	<c:if test="${consegna.dpi.tipologia == 2 }">
+	Accessorio
+	</c:if>
+	</td>
+	<c:if test="${consegna.dpi.tipo_accessorio.id!=null }">
+	<td>${consegna.dpi.tipo_accessorio.descrizione }</td>
+	</c:if>
+	<c:if test="${consegna.dpi.tipo_accessorio.id==null }">
+	<td></td>
+	</c:if>
 	<td>${consegna.dpi.descrizione }</td>
 	<td>
 	<c:if test="${consegna.dpi.collettivo == 1 }">
@@ -129,7 +146,7 @@
 	<td>${consegna.restituzione.id }</td>		
 	<td>	
   <c:if test="${!utente.checkRuolo('DP') }">
-	   <a class="btn btn-warning customTooltip" onClicK="modalModificaConsegna('${consegna.id }','${consegna.dpi.id }','${consegna.lavoratore.id }')" title="Click per modificare la consegna"><i class="fa fa-edit"></i></a>   
+	   <a class="btn btn-warning customTooltip" onClicK="modalModificaConsegna('${consegna.id }','${consegna.dpi.id }','${consegna.lavoratore.id }', '${consegna.dpi.tipologia }')" title="Click per modificare la consegna"><i class="fa fa-edit"></i></a>   
 	  <c:if test="${consegna.is_restituzione==0 && consegna.restituzione == null}">
 	  <a class="btn btn-success customTooltip" onClicK="modalCreaRestituzione('${consegna.id }')" title="Crea restituzione DPI"><i class="fa fa-arrow-left"></i></a>
 	  </c:if> 
@@ -162,13 +179,31 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuova Consegna DPI</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuova Consegna Dispositivo</h4>
       </div>
        <div class="modal-body">
        
+                     <div class="row">
        
-             <div class="row">
+       	<div class="col-sm-3">
+       		<label>Tipologia Dispositivo</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="tipologia" id="tipologia" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipologia Dispositivo..." data-live-search="true" style="width:100%" required >
+                <option value=""></option>
+                      <option value="1">DPI</option>
+                      <option value="2">Accessorio</option>
+				
+                  </select> 
+       			
+       	</div>       	
+       </div>
        
+       
+             <div class="row" id="content_dpi" style="display:none">
+       <br>
        	<div class="col-sm-3">
        		<label>DPI</label>
        	</div>
@@ -192,7 +227,37 @@
                   </select> 
        			
        	</div>       	
+       </div>
+       
+       
+       
+       <div class="row" id="content_accessorio" style="display:none">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Accessori</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="id_accessorio" id="id_accessorio" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona DPI..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <c:forEach items="${lista_accessori}" var="accessorio">
+                     
+                     <c:if test="${accessorio.assegnato == 0 && accessorio.disabilitato==0}">
+                     <option value="${accessorio.id}">${accessorio.descrizione} (ID ${accessorio.id })</option> 
+                     </c:if>
+                     <c:if test="${accessorio.assegnato == 1  && accessorio.disabilitato==0 }">
+                     <option value="${accessorio.id}" disabled>${accessorio.descrizione} (ID ${accessorio.id })</option> 
+                     </c:if>
+                           
+                         
+                     </c:forEach>
+				
+                  </select> 
+       			
+       	</div>       	
        </div><br>
+       
 
       <div class="row">
        
@@ -302,12 +367,12 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Consegna DPI</h4>
+        <h4 class="modal-title" id="myModalLabel">Modifica Consegna Dispositivo</h4>
       </div>
               <div class="modal-body">
        
        
-             <div class="row">
+             <div class="row" id="content_dpi_mod" style="display:none">
        
        	<div class="col-sm-3">
        		<label>DPI</label>
@@ -320,6 +385,30 @@
                       <c:forEach items="${lista_dpi}" var="dpi">
                      
                            <option value="${dpi.id}">${dpi.descrizione} </option> 
+                         
+                     </c:forEach>
+				
+                  </select> 
+       			
+       	</div>       	
+       </div>
+       
+       <div class="row" id="content_accessorio_mod" style="display:none">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Accessori</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="id_accessorio_mod" id="id_accessorio_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Accessorio..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                      <c:forEach items="${lista_accessori}" var="accessorio">
+                 
+                   
+                     <option value="${accessorio.id}">${accessorio.descrizione} (ID ${accessorio.id })</option> 
+                  
+                           
                          
                      </c:forEach>
 				
@@ -516,6 +605,7 @@
      		<option value="0">Scheda Consegna</option>
      		<option value="1">Scheda Riconsegna</option>
      		<option value="2">Scheda DPI Collettivi</option>
+     		<option value="3">Scheda Accessori</option>
      		</select>
        </div>
        </div>   <br>
@@ -582,11 +672,31 @@
 <script type="text/javascript">
 
 
+$('#tipologia, #tipologia_mod').change(function(){
+	
+	var val = $(this).val();
+	
+	if(val==1){
+		$('#content_dpi').show();
+		$('#content_accessorio').hide();
+	
+		
+	}else if(val==2){
+		$('#content_dpi').hide();	
+		$('#content_accessorio').show();
+
+	}
+	
+	
+	
+});
+
+
 
 $('#tipo_scheda').change(function(){
 	
 	var selection = $(this).val();
-	if(selection!=2){
+	if(selection!=2 && selection!=3 ){
 		$('#content_lavoratore').show();
 		$('#lavoratore_scheda').attr('required', true)
 	}else{
@@ -612,12 +722,22 @@ function modalNuovoTipoDPI(){
 
 
 
-function modalModificaConsegna(id,id_dpi, id_lavoratore){
+function modalModificaConsegna(id,id_dpi, id_lavoratore, tipologia){
 	
 	$('#id_consegna').val(id);
 	
-	$('#id_dpi_mod').val(id_dpi);
-	$('#id_dpi_mod').change();
+	if(tipologia == 1){
+		$('#content_accessorio_mod').hide();
+		$('#content_dpi_mod').show();
+		$('#id_dpi_mod').val(id_dpi);
+		$('#id_dpi_mod').change();
+	}else{
+		$('#content_accessorio_mod').show();
+		$('#content_dpi_mod').hide();
+		$('#id_accessorio_mod').val(id_dpi);
+		$('#id_accessorio_mod').change();
+	}
+
 		
 	$('#lavoratore_mod').val(id_lavoratore);
 	$('#lavoratore_mod').change();
@@ -694,10 +814,11 @@ if(filtro_on ==1){
 }
 
 $('#id_dpi').select2()
-
+$('#id_accessorio').select2()
+$('#tipologia').select2()
 
 $('#id_dpi_mod').select2()
-
+$('#id_accessorio_mod').select2()
 
 $('#lavoratore').select2();
 $('#lavoratore_mod').select2();

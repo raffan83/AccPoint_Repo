@@ -21,7 +21,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Lista DPI
+        Lista Dispositivi
         <!-- <small></small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/"><i class="fa fa-dashboard"></i> Home</a>
@@ -34,7 +34,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista  DPI
+	 Lista  Dispositivi
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -48,7 +48,7 @@
 <div class="col-xs-12">
 
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
-<a class="btn btn-primary pull-right" onClick="modalNuovoDPI()"><i class="fa fa-plus"></i> Nuovo DPI</a> 
+<a class="btn btn-primary pull-right" onClick="modalNuovoDPI()"><i class="fa fa-plus"></i> Nuovo Dispositivo</a> 
 
 
 
@@ -63,6 +63,8 @@
 
 
 <th>ID</th>
+<th>Tipologia Dispositivo</th>
+<th>Tipo Accessorio</th>
 <th>Tipo DPI</th>
 <th>Collettivo</th>
 <th>Company</th>
@@ -83,6 +85,8 @@
  <tbody>
  
  	<c:forEach items="${lista_dpi}" var="dpi" varStatus="loop">
+ 	
+ 	
  	<c:if test="${dpi.collettivo == 1 }">
  	<tr id="row_${loop.index}" ondblclick="openStoricoModal('${dpi.id }')" >
  	</c:if>
@@ -92,7 +96,23 @@
 	
 
 	<td>${dpi.id }</td>	
-	<td>${dpi.tipo.descrizione }</td>
+	<td>
+	<c:if test="${dpi.tipologia == 1 }">
+	DPI
+	</c:if>
+	<c:if test="${dpi.tipologia == 2 }">
+	Accessorio
+	</c:if>
+	</td>
+	<c:if test="${dpi.tipo_accessorio.id!=null }">
+	<td>${dpi.tipo_accessorio.descrizione }</td>
+	</c:if>
+	<c:if test="${dpi.tipo_accessorio.id==null }">
+	<td></td>
+	</c:if>
+			
+	
+	<td>${dpi.tipo_dpi.descrizione }</td>
 	<td>
 	<c:if test="${dpi.collettivo == 1 }">
 	SI
@@ -121,7 +141,7 @@
 	<td>${utl:escapeJS(dpi.note) }</td>
 	<td>	
 
- 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaDpi('${dpi.id }','${dpi.tipo.id }','${dpi.collettivo }','${dpi.company.id }','${utl:escapeJS(dpi.modello) }','${utl:escapeJS(dpi.conformita) }','${utl:escapeJS(dpi.descrizione) }','${dpi.data_scadenza }','${dpi.data_controllo }','${dpi.frequenza }','${dpi.data_scadenza_controllo }', '${utl:escapeJS(dpi.note) }')" title="Click per modificare la dpi"><i class="fa fa-edit"></i></a>
+ 	  <a class="btn btn-warning customTooltip" onClicK="modalModificaDpi('${dpi.id }','${dpi.tipo_dpi.id }','${dpi.collettivo }','${dpi.company.id }','${utl:escapeJS(dpi.modello) }','${utl:escapeJS(dpi.conformita) }','${utl:escapeJS(dpi.descrizione) }','${dpi.data_scadenza }','${dpi.data_controllo }','${dpi.frequenza }','${dpi.data_scadenza_controllo }', '${utl:escapeJS(dpi.note) }', '${dpi.tipologia }', '${dpi.tipo_accessorio.id }')" title="Click per modificare la dpi"><i class="fa fa-edit"></i></a>
  	  <c:if test="${dpi.assegnato == 0 && dpi.disabilitato == 0}">
  	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaDpi('${dpi.id }')" title="Click per archiviare il dpi"><i class="fa fa-trash"></i></a>
  	  </c:if>   
@@ -159,13 +179,30 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo DPI</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Dispositivo</h4>
       </div>
        <div class="modal-body">
        
+                    <div class="row">
        
-             <div class="row">
+       	<div class="col-sm-3">
+       		<label>Tipologia Dispositivo</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="tipologia" id="tipologia" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipologia Dispositivo..." data-live-search="true" style="width:100%" required >
+                <option value=""></option>
+                      <option value="1">DPI</option>
+                      <option value="2">Accessorio</option>
+				
+                  </select> 
+       			
+       	</div>       	
+       </div>
        
+                    <div class="row" id="content_dpi" style="display:none">
+       <br>
        	<div class="col-sm-3">
        		<label>Tipo DPI</label>
        	</div>
@@ -183,10 +220,32 @@
                   </select> 
        			
        	</div>       	
-       </div><br>
+       </div>
        
-              <div class="row">
        
+             <div class="row" id="content_accessorio" style="display:none">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Tipo Accessorio</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="tipo_accessorio" id="tipo_accessorio" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipo Accessorio..." data-live-search="true" style="width:100%" required >
+                <option value=""></option>
+                      <c:forEach items="${lista_tipi_accessorio}" var="tipo">
+                     
+                           <option value="${tipo.id}">${tipo.descrizione} </option> 
+                         
+                     </c:forEach>
+				
+                  </select> 
+       			
+       	</div>       	
+       </div>
+       
+              <div class="row" id="content_collettivo" style="display:none">
+       <br>
        	<div class="col-sm-3">
        		<label>Collettivo</label>
        	</div>
@@ -340,20 +399,64 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica DPI</h4>
+        <h4 class="modal-title" id="myModalLabel">Modifica Dispositivo</h4>
       </div>
               <div class="modal-body">
        
+                    <div class="row">
        
-             <div class="row">
+       	<div class="col-sm-3">
+       		<label>Tipologia Dispositivo</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="tipologia_mod" id="tipologia_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipologia Dispositivo..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                
+                     
+                           <option value="1">DPI</option> 
+                           <option value="2">Accessorio</option>
+                         
+                   
+				
+                  </select> 
+       			
+       	</div>       	
+       </div>
        
+       
+                           <div class="row"  id="content_accessorio_mod" style="display:none">
+       <br>
+       	<div class="col-sm-3">
+       		<label>Tipo Accessorio</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+    <select name="tipo_accessorio_mod" id="tipo_accessorio_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipo Accessorio..." data-live-search="true" style="width:100%" >
+                <option value=""></option>
+                 <c:forEach items="${lista_tipi_accessorio}" var="tipo">
+                     
+                           <option value="${tipo.id}">${tipo.descrizione} </option> 
+                         
+                     </c:forEach>
+				
+                  </select> 
+       			
+       	</div>       	
+       </div>
+       
+       
+             <div class="row" id="content_dpi_mod" style="display:none">
+       <br>
        	<div class="col-sm-3">
        		<label>Tipo DPI</label>
        	</div>
        	<div class="col-sm-9">      
        	  	
         
-    <select name="tipo_dpi_mod" id="tipo_dpi_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipi DPI..." data-live-search="true" style="width:100%" >
+    <select name="tipo_dpi_mod" id="tipo_dpi_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona Tipo DPI..." data-live-search="true" style="width:100%" >
                 <option value=""></option>
                       <c:forEach items="${lista_tipo_dpi}" var="tipo">
                      
@@ -364,10 +467,10 @@
                   </select> 
        			
        	</div>       	
-       </div><br>
+       </div>
        
-              <div class="row">
-       
+              <div class="row" id="content_collettivo_mod" style="display:none">
+       <br>
        	<div class="col-sm-3">
        		<label>Collettivo</label>
        	</div>
@@ -715,6 +818,57 @@
 <script type="text/javascript">
 
 
+$('#tipo_dpi, #tipo_dpi_mod').change(function(){
+	
+	$('#tipo_accessorio').val(null);
+	$('#tipo_accessorio_mod').val(null);
+	
+})
+
+$('#tipo_dpi, #tipo_accessorio_mod').change(function(){
+	
+	$('#tipo_accessorio').val(null);
+	$('#tipo_dpi_mod').val(null);
+	
+})
+
+$('#tipologia, #tipologia_mod').change(function(){
+	
+	var val = $(this).val();
+	
+	if(val==1){
+		$('#content_dpi').show();
+		$('#content_dpi_mod').show();
+		$('#content_collettivo').show();
+		$('#content_collettivo_mod').show();
+		$('#content_accessorio').hide();
+		$('#content_accessorio_mod').hide();
+		$('#tipo_accessorio_mod').attr("required", false);
+		$('#tipo_accessorio').attr("required", false);
+		$('#tipo_dpi_mod').attr("required", true);
+		$('#tipo_dpi').attr("required", true);
+		
+	}else if(val==2){
+		$('#content_dpi').hide();
+		$('#content_dpi_mod').hide();
+		$('#content_collettivo').hide();
+		$('#content_collettivo_mod').hide();
+		$('#content_accessorio').show();
+		$('#content_accessorio_mod').show();
+		$('#tipo_dpi_mod').attr("required", false);
+		$('#tipo_dpi').attr("required", false);
+		$('#tipo_accessorio_mod').attr("required", true);
+		$('#tipo_accessorio').attr("required", true);
+		$('#collettivo').val(0);
+		$('#collettivo_mod').val(0);
+	}
+	
+	
+	
+});
+
+
+
 function modalEliminaDpi(id_dpi){
 	
 	
@@ -990,9 +1144,15 @@ $('#frequenza_mod').change(function(){
 	
 });
 
-function modalModificaDpi(id,id_tipo, collettivo,company, modello, conformita, descrizione, data_scadenza, data_controllo, frequenza, data_scadenza_controllo, note){
+function modalModificaDpi(id,id_tipo, collettivo,company, modello, conformita, descrizione, data_scadenza, data_controllo, frequenza, data_scadenza_controllo, note, tipologia, tipo_accessorio){
 	
 	$('#id_dpi').val(id);
+	
+	$('#tipologia_mod').val(tipologia);
+	$('#tipologia_mod').change();
+	
+	$('#tipo_accessorio_mod').val(tipo_accessorio);
+	$('#tipo_accessorio_mod').change();
 	
 	$('#tipo_dpi_mod').val(id_tipo);
 	$('#tipo_dpi_mod').change();
@@ -1096,7 +1256,10 @@ function formatDate(data){
 
 $(document).ready(function() {
  
-//$('.select2').select2();
+$('#tipologia').select2();
+$('#tipologia_mod').select2();
+$('#tipo_accessorio').select2();
+$('#tipo_accessorio_mod').select2();
 
 $('#tipo_dpi')
     .select2()

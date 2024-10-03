@@ -21,7 +21,7 @@
     <section class="content-header">
      <h1 class="pull-left">
 
-      Scadenzario DPI
+      Scadenzario Dispositivi
    
       </h1><br><br>
       
@@ -40,7 +40,7 @@
 
 	<div class="col-xs-5">
 			 <div class="form-group">
-				 <label for="datarange" class="control-label">Filtra Data Scadenza DPI:</label>
+				 <label for="datarange" class="control-label">Filtra Data Scadenza Dispositivi:</label>
 					<div class="col-md-10 input-group" >
 						<div class="input-group-addon">
 				             <i class="fa fa-calendar"></i>

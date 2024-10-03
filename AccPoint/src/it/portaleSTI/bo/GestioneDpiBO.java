@@ -19,6 +19,7 @@ import it.portaleSTI.DTO.DevTestoEmailDTO;
 import it.portaleSTI.DTO.DpiAllegatiDTO;
 import it.portaleSTI.DTO.DpiDTO;
 import it.portaleSTI.DTO.DpiManualeDTO;
+import it.portaleSTI.DTO.TipoAccessorioDispositivoDTO;
 import it.portaleSTI.DTO.TipoDpiDTO;
 
 public class GestioneDpiBO {
@@ -112,6 +113,11 @@ public class GestioneDpiBO {
 	public static ArrayList<ConsegnaDpiDTO> getListaConsegneDpiNonRest(Session session) {
 		
 		return GestioneDpiDAO.getListaConsegneDpiNonRest(session);
+	}
+
+	public static ArrayList<TipoAccessorioDispositivoDTO> getListaAccessoriDispositivo(Session session) {
+		// TODO Auto-generated method stub
+		return  GestioneDpiDAO.getListaAccessoriDispositivo(session);
 	}
 
 }

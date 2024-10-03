@@ -193,6 +193,8 @@
  	<mapping class="DpiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DpiDTO.hbm.xml"/>
  	<mapping class="DpiManualeDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DpiManualeDTO.hbm.xml"/>
  	<mapping class="DpiAllegatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DpiAllegatiDTO.hbm.xml"/>
+ 	<mapping class="TipoAccessorioDispositivoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoAccessorioDispositivoDTO.hbm.xml"/>
+ 	
  	
  	
  	

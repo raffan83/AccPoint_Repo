@@ -100,11 +100,11 @@ int anno = (Integer) request.getSession().getAttribute("anno");
           <c:forEach  items="${lista_veicoli }" var="veicolo">
          <tr id="${veicolo.id}" >
         
-         <td id = "col_1_${veicolo.id}">
+         <td id = "col_1_${veicolo.id}" data-toggle='tooltip' title="Disp. Pedaggio: ${veicolo.dispositivo_pedaggio}">
        <b>${veicolo.id}</b>
          </td>
-         <td id = "col_2_${veicolo.id}" ><b>${veicolo.targa}</b></td>
-         <td id = "col_3_${veicolo.id}"><b>${veicolo.modello}</b></td>
+         <td id = "col_2_${veicolo.id}" data-toggle='tooltip' title="Disp. Pedaggio: ${veicolo.dispositivo_pedaggio}"><b >${veicolo.targa}</b><div></div></td>
+         <td id = "col_3_${veicolo.id}" data-toggle='tooltip' title="Disp. Pedaggio: ${veicolo.dispositivo_pedaggio}"><b>${veicolo.modello}</b></td>
 
          <c:forEach var="day" begin="${start_date }" end="${end_date}" step="1">
 			<c:if test="${LocalDate.ofYearDay(anno, 1).isLeapYear() && day>366 }">
@@ -269,6 +269,9 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 				var prenotazione = data.prenotazione;
 				
 				var obj = {};
+				
+				
+				$('#content_giornaliero').hide();
 	            
 				if(prenotazione.manutenzione == 1){
 					$('#manutenzione').iCheck('check');
@@ -284,6 +287,8 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 					$('#rifornimento').iCheck('uncheck');
 				
 				}
+				
+				
 			
 				$('#stato').val(prenotazione.stato_prenotazione);
 				$('#stato').change();
@@ -294,6 +299,8 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 				}else{
 					$('#label_elimina_richiesta').hide()
 				}
+				
+				$('#luogo').val(prenotazione.luogo);
 				
 				$('#data_inizio').val(prenotazione.data_inizio_prenotazione.split(" ")[0]);
 			
@@ -306,6 +313,14 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 				
 				
 				$('#data_fine').val(prenotazione.data_fine_prenotazione.split(" ")[0]);
+				
+			
+		/* 	 	if(prenotazione.data_inizio_prenotazione.split(" ")[0] != prenotazione.data_fine_prenotazione.split(" ")[0]){
+					$('#content_giornaliero').show();			
+				}else{
+					$('#giornaliero').iCheck("uncheck");
+					$('#content_giornaliero').hide();	
+				} */
 				
 				$('#ora_inizio').val(prenotazione.data_inizio_prenotazione.split(" ")[1]);
 				$('#ora_fine').val(prenotazione.data_fine_prenotazione.split(" ")[1]);
@@ -322,7 +337,7 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 			});
 			
 		}else{
-			
+		
 			if(cell.hasClass("prenotato")){
 				
 				var riquadriIds = cell.find('div').map(function() {
@@ -394,7 +409,7 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 					$('#data_fine').val(formattedDate);
 					$('#day').val(day);
 					$('#id_veicolo').val(id_veicolo);
-					
+					$('#content_giornaliero').show();	
 					initializeTimepicker("08:00", "17:00");
 				});
 				
@@ -411,6 +426,7 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 				$('#data_inizio').val(formattedDate);
 				$('#data_fine').val(formattedDate);
 				$('#id_veicolo').val(id_veicolo);
+				$('#content_giornaliero').show();	
 				$('#day').val(day);
 				
 				initializeTimepicker("08:00", "17:00");
@@ -819,7 +835,10 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
 	    $(document.body).css('padding-right', '0px');
 	    
-	    initContextMenu()
+	    if(permesso!=null &&  permesso=='true'){
+	    	initContextMenu()	
+	    }
+	    
 	    
 
 	    $('.dropdown-menu').css('z-index', 200);
@@ -835,6 +854,8 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	    var metrics = context.measureText(text);
 	    return metrics.width;
 	}
+
+ 
 
  
  
@@ -1015,7 +1036,11 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                	
 			 	
 	 	                }
-	 	                
+	 	               if(lista_prenotazioni[i].luogo!=null){
+	 	                	var title = escapeHtml(lista_prenotazioni[i].luogo);
+	 	                 }else{
+	 	                	 var title = '';
+	 	                 }
 	 	           
 	 	          /*     else if(lista_prenotazioni[i].stato_prenotazione == 4){
 	 	                	var border_color = "#A0CE00";
@@ -1024,7 +1049,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
 	 	                if (numeroRiquadri === 0) {
 	 	                    // Se non ci sono riquadri presenti, aggiungi normalmente il nuovo riquadro
-	 	                  $("<div  data-toggle='tooltip' title='"+escapeHtml(lista_prenotazioni[i].note)+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
+	 	                  $("<div  data-toggle='tooltip' title='"+title+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
 	 	                	 /* $("<div   title='"+escapeHtml(lista_prenotazioni[i].note)+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({ */
 	 	                  
 	 	                	   // $("<div  data-toggle='tooltip' title='"+lista_prenotazioni[i].note+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
@@ -1106,16 +1131,18 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                     }
 	 	                 }
 
-	 	  
+	 	              
+	 	  				
 	 	                 
-	 	                 $("<div data-toggle='tooltip' title='"+escapeHtml(lista_prenotazioni[i].note)+"'  class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:5px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
+	 	                 $("<div data-toggle='tooltip' title='"+title+"'  class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:5px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
 	 	                    // left: posizioneUltimoRiquadro.left,
 	 	                     left: sinistra,
 	 	                     top: nuovaPosizioneVerticale,
 	 	                     width: larghezza,
 	 	                     height: altezza,
 	 	                     'text-align': 'center',
-	 	                    'font-weight': 'bold'
+	 	                    'font-weight': 'bold',
+	 	                     "z-index" : "200px"
 	 	                 }).appendTo(cellaInizio);
 	 	                 
 	 	                 

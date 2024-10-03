@@ -8,7 +8,7 @@
             <column name="id" />
             <generator class="native" />
         </id>
-        <many-to-one name="tipo" class="it.portaleSTI.DTO.TipoDpiDTO" fetch="join" lazy="false">
+        <many-to-one name="tipo_dpi" class="it.portaleSTI.DTO.TipoDpiDTO" fetch="join" lazy="false">
             <column name="tipologia_dpi" />
         </many-to-one>
 
@@ -57,6 +57,16 @@
          <property name="note" type="java.lang.String">
             <column name="note" />
         </property>
+        
+        <property name="tipologia" type="int">
+            <column name="tipologia" />
+        </property>
+        
+           <many-to-one name="tipo_accessorio" class="it.portaleSTI.DTO.TipoAccessorioDispositivoDTO" fetch="join" lazy="false">
+            <column name="tipo_accessorio" />
+        </many-to-one>
+        
+
         
     </class>
 </hibernate-mapping>

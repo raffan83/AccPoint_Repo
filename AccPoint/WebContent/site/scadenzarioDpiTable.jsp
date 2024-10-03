@@ -37,6 +37,8 @@
 
 
 <th>ID</th>
+<th>Tipologia</th>
+<th>Tipo Accessorio</th>
 <th>Tipo DPI</th>
 <th>Collettivo</th>
 <th>Company</th>
@@ -61,7 +63,21 @@
 	
 
 	<td>${dpi.id }</td>	
-	<td>${dpi.tipo.descrizione }</td>
+	<td>
+	<c:if test="${dpi.tipologia == 1 }">
+	DPI
+	</c:if>
+	<c:if test="${dpi.tipologia == 2 }">
+	Accessorio
+	</c:if>
+	</td>
+	<c:if test="${dpi.tipo_accessorio.id!=null }">
+	<td>${dpi.tipo_accessorio.descrizione }</td>
+	</c:if>
+	<c:if test="${dpi.tipo_accessorio.id==null }">
+	<td></td>
+	</c:if>
+	<td>${dpi.tipo_dpi.descrizione }</td>
 	<td>
 	<c:if test="${dpi.collettivo == 1 }">
 	SI

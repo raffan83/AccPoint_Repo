@@ -14,6 +14,7 @@ import it.portaleSTI.DTO.DpiAllegatiDTO;
 import it.portaleSTI.DTO.DpiDTO;
 import it.portaleSTI.DTO.DpiManualeDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
+import it.portaleSTI.DTO.TipoAccessorioDispositivoDTO;
 import it.portaleSTI.DTO.TipoDpiDTO;
 
 public class GestioneDpiDAO {
@@ -81,13 +82,15 @@ public class GestioneDpiDAO {
 		Query query = null;
 		
 		if(tipo_scheda == 0) {
-			query = session.createQuery("from ConsegnaDpiDTO where is_restituzione = 0 and lavoratore.id = :_id_lavoratore");
+			query = session.createQuery("from ConsegnaDpiDTO where is_restituzione = 0 and lavoratore.id = :_id_lavoratore and dpi.tipologia = 1");
 			query.setParameter("_id_lavoratore", lavoratore.getId());
 		}else if(tipo_scheda == 1) {
-			query = session.createQuery("from ConsegnaDpiDTO where is_restituzione = 1 and lavoratore.id = :_id_lavoratore");
+			query = session.createQuery("from ConsegnaDpiDTO where is_restituzione = 1 and lavoratore.id = :_id_lavoratore  and dpi.tipologia = 1");
 			query.setParameter("_id_lavoratore", lavoratore.getId());
 		}else if(tipo_scheda == 2) {
 			query = session.createQuery("from ConsegnaDpiDTO where dpi.collettivo = 1");
+		}else if(tipo_scheda == 3) {
+			query = session.createQuery("from ConsegnaDpiDTO where  dpi.tipologia = 2");
 		}
 	
 		
@@ -253,6 +256,19 @@ public class GestioneDpiDAO {
 
 		
 		lista = (ArrayList<ConsegnaDpiDTO>) query.list();		
+	
+		
+		return lista;
+	}
+
+	public static ArrayList<TipoAccessorioDispositivoDTO> getListaAccessoriDispositivo(Session session) {
+		ArrayList<TipoAccessorioDispositivoDTO> lista = null;
+		
+
+		Query query =  session.createQuery("from TipoAccessorioDispositivoDTO");
+
+		
+		lista = (ArrayList<TipoAccessorioDispositivoDTO>) query.list();		
 	
 		
 		return lista;

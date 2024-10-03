@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SchedaAccessori" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="705694ed-86ea-4a3e-bb6f-6d6e20b53e7f">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<columnHeader>
+		<band height="109" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="550" height="61" uuid="c397da09-916f-45a9-a28a-f12f52d3a110"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[REGISTRO PRELIEVO/RICONSEGNA ACCESSORI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="90" width="360" height="19" uuid="a5055263-d78e-4bfe-acdf-3ed33cdcd6ec"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[PRELIEVO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="90" width="190" height="19" uuid="c421a13e-d4de-4679-9ab8-65f5cbfd02d6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[RICONSEGNA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+</jasperReport>

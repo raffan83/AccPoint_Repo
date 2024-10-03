@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -60,6 +61,8 @@ import it.portaleSTI.bo.GestioneUtenteBO;
 @WebServlet(name = "gestioneParcoAuto.do", urlPatterns = { "/gestioneParcoAuto.do" })
 public class GestioneParcoAuto extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	static final Logger logger = Logger.getLogger(GestioneParcoAuto.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -583,101 +586,242 @@ public class GestioneParcoAuto extends HttpServlet {
 				String ora_fine = ret.get("ora_fine");
 				String stato = ret.get("stato");
 				String rifornimento = ret.get("rifornimento");
-
-				
-				PaaPrenotazioneDTO prenotazione = null;
-				if(id_prenotazione!=null && !id_prenotazione.equals("")) {
-					prenotazione = GestioneParcoAutoBO.getPrenotazioneFromId(Integer.parseInt(id_prenotazione), session);					
-				}else {
-					prenotazione = new PaaPrenotazioneDTO();
-					prenotazione.setStato_prenotazione(1);
-				}
-				
-				if(stato!=null && !stato.equals("")) {
-					prenotazione.setStato_prenotazione(Integer.parseInt(stato));
-				}
+				String check_giornaliero = ret.get("check_giornaliero");
+				String luogo = ret.get("luogo");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 				
-				prenotazione.setVeicolo(GestioneParcoAutoBO.getVeicoloFromId(Integer.parseInt(id_veicolo), session));
-				
-				if(id_utente!=null && !id_utente.equals("")) {
-					prenotazione.setUtente(GestioneUtenteBO.getUtenteById(id_utente, session));	
-				}else {
-					prenotazione.setManutenzione(1);
-				}
-				
-				if(rifornimento!=null && rifornimento.equals("on")) {
-					prenotazione.setRifornimento(1);
-				}else {
-					prenotazione.setRifornimento(0);
-				}
-				
-				
-				prenotazione.setNote(note);
 				Date data_start = df.parse(data_inizio);
 				Date ora_start = timeFormat.parse(ora_inizio);
-				data_start.setHours(ora_start.getHours());
-				data_start.setMinutes(ora_start.getMinutes());
 				
 				Date data_end = df.parse(data_fine);
 				Date ora_end = timeFormat.parse(ora_fine);
-				data_end.setHours(ora_end.getHours());
-				data_end.setMinutes(ora_end.getMinutes());
 				
-				prenotazione.setData_inizio_prenotazione(data_start);
-				prenotazione.setData_fine_prenotazione(data_end);
-				
-				Calendar c = Calendar.getInstance();
-				c.setTime(df.parse(data_inizio));
-				if(c.get(Calendar.DAY_OF_YEAR)!=Integer.parseInt(day)) {
-					day = ""+c.get(Calendar.DAY_OF_YEAR);
+				long giorniDifferenza = 1;
+				if(check_giornaliero != null && check_giornaliero.equals("SI")) {
+			
+					
+					 LocalDate startDate = new java.sql.Date(data_start.getTime()).toLocalDate();
+				        LocalDate endDate = new java.sql.Date(data_end.getTime()).toLocalDate();
+
+				        // Calcolo della differenza in giorni
+				        giorniDifferenza = ChronoUnit.DAYS.between(startDate, endDate) + 1;					        
+				        
+				        
 				}
 				
-			
-			//	prenotazione.setOra_inizio(ora_inizio);
-			//	prenotazione.setOra_fine(ora_fine);
 				
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-				
-				int anno = (int) request.getSession().getAttribute("anno");
-				
-				LocalDate start_date = LocalDate.parse(data_inizio, formatter);
-				LocalDate end_date = LocalDate.parse(data_fine, formatter);
-				
-				 long diffInDays = ChronoUnit.DAYS.between(start_date, end_date);
-				
-				
-				LocalDate localDate = null;
-				if(Integer.parseInt(day)>366 && LocalDate.ofYearDay(anno, 1).isLeapYear()) {
-					anno = anno+1;
-					localDate = LocalDate.ofYearDay(anno, (Integer.parseInt(day)-366));
-					prenotazione.setCella_inizio(Integer.parseInt(day)-366);
-					prenotazione.setCella_fine(Integer.parseInt(day)-366 + (int) diffInDays);
+				for(int i = 0;i<giorniDifferenza;i++) {
 					
-				}else if(Integer.parseInt(day)>365 && !LocalDate.ofYearDay(anno, 1).isLeapYear()) {
-					anno = anno+1;
-					localDate = LocalDate.ofYearDay(anno, (Integer.parseInt(day)-365));					
+				
+					PaaPrenotazioneDTO prenotazione = null;
+					if(id_prenotazione!=null && !id_prenotazione.equals("")) {
+						prenotazione = GestioneParcoAutoBO.getPrenotazioneFromId(Integer.parseInt(id_prenotazione), session);					
+					}else {
+						prenotazione = new PaaPrenotazioneDTO();
+						prenotazione.setStato_prenotazione(1);
+					}
 					
-					prenotazione.setCella_inizio(Integer.parseInt(day)-365);
-					prenotazione.setCella_fine(Integer.parseInt(day)-365 + (int) diffInDays);
-				}else {
-					localDate = LocalDate.ofYearDay(anno, Integer.parseInt(day));					
+					if(stato!=null && !stato.equals("")) {
+						prenotazione.setStato_prenotazione(Integer.parseInt(stato));
+					}
 					
-					prenotazione.setCella_inizio(Integer.parseInt(day));
-					prenotazione.setCella_fine(Integer.parseInt(day)+  (int) diffInDays);
+					
+					
+					prenotazione.setVeicolo(GestioneParcoAutoBO.getVeicoloFromId(Integer.parseInt(id_veicolo), session));
+					
+					if(id_utente!=null && !id_utente.equals("")) {
+						prenotazione.setUtente(GestioneUtenteBO.getUtenteById(id_utente, session));	
+					}else {
+						prenotazione.setManutenzione(1);
+					}
+					
+					if(rifornimento!=null && rifornimento.equals("on")) {
+						prenotazione.setRifornimento(1);
+					}else {
+						prenotazione.setRifornimento(0);
+					}
+					
+					prenotazione.setLuogo(luogo);
+					prenotazione.setNote(note);
+					
+					data_start.setHours(ora_start.getHours());
+					data_start.setMinutes(ora_start.getMinutes());
+					
+				
+					data_end.setHours(ora_end.getHours());
+					data_end.setMinutes(ora_end.getMinutes());
+					
+					//prenotazione.setData_inizio_prenotazione(data_start);
+					//prenotazione.setData_fine_prenotazione(data_end);
+					
+					Calendar c = Calendar.getInstance();
+					c.setTime(data_start);
+					c.add(Calendar.DAY_OF_YEAR, i);
+					
+					
+					//c.setTime(df.parse(data_inizio));
+					if(c.get(Calendar.DAY_OF_YEAR)!=Integer.parseInt(day)) {
+						day = ""+c.get(Calendar.DAY_OF_YEAR);
+					}
+					
+					LocalDateTime  start_date = LocalDateTime.ofInstant(c.toInstant(),ZoneId.systemDefault());
+					
+
+					LocalDateTime end_date = null;
+					if(giorniDifferenza>1) {
+						
+						end_date = 	LocalDateTime.ofInstant(c.toInstant(),ZoneId.systemDefault());
+						end_date = end_date.withHour(ora_end.getHours());
+						end_date = end_date.withMinute(ora_end.getMinutes());
+						prenotazione.setData_inizio_prenotazione(Date.from(start_date.atZone(ZoneId.systemDefault()).toInstant()));
+						prenotazione.setData_fine_prenotazione(Date.from(end_date.atZone(ZoneId.systemDefault()).toInstant()));
+					}else {
+						
+						end_date = LocalDateTime.ofInstant(data_end.toInstant(),ZoneId.systemDefault());
+						prenotazione.setData_inizio_prenotazione(data_start);
+						prenotazione.setData_fine_prenotazione(data_end);
+					}
+				
+				//	prenotazione.setOra_inizio(ora_inizio);
+				//	prenotazione.setOra_fine(ora_fine);
+					
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+					
+					int anno = (int) request.getSession().getAttribute("anno");
+					
+				//	LocalDate start_date = LocalDate.parse(data_inizio, formatter);
+					//LocalDate end_date = LocalDate.parse(data_fine, formatter);
+					
+					 long diffInDays = ChronoUnit.DAYS.between(start_date, end_date);
+					
+					
+					LocalDate localDate = null;
+					if(Integer.parseInt(day)>366 && LocalDate.ofYearDay(anno, 1).isLeapYear()) {
+						anno = anno+1;
+						localDate = LocalDate.ofYearDay(anno, (Integer.parseInt(day)-366));
+						prenotazione.setCella_inizio(Integer.parseInt(day)-366);
+						prenotazione.setCella_fine(Integer.parseInt(day)-366 + (int) diffInDays);
+						
+					}else if(Integer.parseInt(day)>365 && !LocalDate.ofYearDay(anno, 1).isLeapYear()) {
+						anno = anno+1;
+						localDate = LocalDate.ofYearDay(anno, (Integer.parseInt(day)-365));					
+						
+						prenotazione.setCella_inizio(Integer.parseInt(day)-365);
+						prenotazione.setCella_fine(Integer.parseInt(day)-365 + (int) diffInDays);
+					}else {
+						localDate = LocalDate.ofYearDay(anno, Integer.parseInt(day));					
+						
+						prenotazione.setCella_inizio(Integer.parseInt(day));
+						prenotazione.setCella_fine(Integer.parseInt(day)+  (int) diffInDays);
+					}
+					
+			        
+			      //  LocalDateTime localDateTime = localDate.atStartOfDay();
+			     //   Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+					
+				//	prenotazione.setData(date);
+					
+				
+					
+					session.saveOrUpdate(prenotazione);
+					
+					
+				
+					
+//					PaaPrenotazioneDTO prenotazione = null;
+//					if(id_prenotazione!=null && !id_prenotazione.equals("")) {
+//						prenotazione = GestioneParcoAutoBO.getPrenotazioneFromId(Integer.parseInt(id_prenotazione), session);					
+//					}else {
+//						prenotazione = new PaaPrenotazioneDTO();
+//						prenotazione.setStato_prenotazione(1);
+//					}
+//					
+//					if(stato!=null && !stato.equals("")) {
+//						prenotazione.setStato_prenotazione(Integer.parseInt(stato));
+//					}
+//					
+//					
+//					
+//					prenotazione.setVeicolo(GestioneParcoAutoBO.getVeicoloFromId(Integer.parseInt(id_veicolo), session));
+//					
+//					if(id_utente!=null && !id_utente.equals("")) {
+//						prenotazione.setUtente(GestioneUtenteBO.getUtenteById(id_utente, session));	
+//					}else {
+//						prenotazione.setManutenzione(1);
+//					}
+//					
+//					if(rifornimento!=null && rifornimento.equals("on")) {
+//						prenotazione.setRifornimento(1);
+//					}else {
+//						prenotazione.setRifornimento(0);
+//					}
+//					
+//					prenotazione.setLuogo(luogo);
+//					prenotazione.setNote(note);
+//					
+//					data_start.setHours(ora_start.getHours());
+//					data_start.setMinutes(ora_start.getMinutes());
+//					
+//				
+//					data_end.setHours(ora_end.getHours());
+//					data_end.setMinutes(ora_end.getMinutes());
+//					
+//					prenotazione.setData_inizio_prenotazione(data_start);
+//					prenotazione.setData_fine_prenotazione(data_end);
+//					
+//					
+//					c.setTime(df.parse(data_inizio));
+//					if(c.get(Calendar.DAY_OF_YEAR)!=Integer.parseInt(day)) {
+//						day = ""+c.get(Calendar.DAY_OF_YEAR);
+//					}
+//					
+//				
+//				//	prenotazione.setOra_inizio(ora_inizio);
+//				//	prenotazione.setOra_fine(ora_fine);
+//					
+//					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//					
+//					int anno = (int) request.getSession().getAttribute("anno");
+//					
+//					LocalDate start_date = LocalDate.parse(data_inizio, formatter);
+//					LocalDate end_date = LocalDate.parse(data_fine, formatter);
+//					
+//					 long diffInDays = ChronoUnit.DAYS.between(start_date, end_date);
+//					
+//					
+//					LocalDate localDate = null;
+//					if(Integer.parseInt(day)>366 && LocalDate.ofYearDay(anno, 1).isLeapYear()) {
+//						anno = anno+1;
+//						localDate = LocalDate.ofYearDay(anno, (Integer.parseInt(day)-366));
+//						prenotazione.setCella_inizio(Integer.parseInt(day)-366);
+//						prenotazione.setCella_fine(Integer.parseInt(day)-366 + (int) diffInDays);
+//						
+//					}else if(Integer.parseInt(day)>365 && !LocalDate.ofYearDay(anno, 1).isLeapYear()) {
+//						anno = anno+1;
+//						localDate = LocalDate.ofYearDay(anno, (Integer.parseInt(day)-365));					
+//						
+//						prenotazione.setCella_inizio(Integer.parseInt(day)-365);
+//						prenotazione.setCella_fine(Integer.parseInt(day)-365 + (int) diffInDays);
+//					}else {
+//						localDate = LocalDate.ofYearDay(anno, Integer.parseInt(day));					
+//						
+//						prenotazione.setCella_inizio(Integer.parseInt(day));
+//						prenotazione.setCella_fine(Integer.parseInt(day)+  (int) diffInDays);
+//					}
+//					
+//			        
+//			      //  LocalDateTime localDateTime = localDate.atStartOfDay();
+//			     //   Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+//					
+//				//	prenotazione.setData(date);
+//					
+//				
+//					
+//					session.saveOrUpdate(prenotazione);
 				}
 				
-		        
-		      //  LocalDateTime localDateTime = localDate.atStartOfDay();
-		     //   Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-				
-			//	prenotazione.setData(date);
-				
-			
-				
-				session.saveOrUpdate(prenotazione);
 				
 				PrintWriter out = response.getWriter();
 				myObj.addProperty("success", true);
@@ -781,6 +925,8 @@ public class GestioneParcoAuto extends HttpServlet {
 				String ora_inizio = ret.get("ora_inizio");
 				String ora_fine = ret.get("ora_fine");
 				String note = ret.get("note");
+				String luogo = ret.get("luogo");
+				
 				
 				PaaRichiestaDTO richiesta = new PaaRichiestaDTO();				
 				
@@ -790,7 +936,8 @@ public class GestioneParcoAuto extends HttpServlet {
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				DateFormat timeFormat = new SimpleDateFormat("HH:mm");							
 				
-				richiesta.setUtente(utente);					
+				richiesta.setUtente(utente);			
+				richiesta.setLuogo(luogo);
 	
 				richiesta.setNote(note);
 				Date data_start = df.parse(data_inizio);
@@ -855,7 +1002,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				String note = ret.get("note_mod");
 				String veicolo = ret.get("veicoli");
 				String check_giornaliero =  ret.get("check_giornaliero_mod");
-				
+				String luogo =  ret.get("luogo_mod");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				DateFormat timeFormat = new SimpleDateFormat("HH:mm");
@@ -879,7 +1026,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				richiesta.setData_inizio(data_start);
 				richiesta.setData_fine(data_end);
 				
-				
+				richiesta.setLuogo(luogo);
 				
 				
 				if(veicolo!=null && !veicolo.equals("")) {
@@ -906,6 +1053,7 @@ public class GestioneParcoAuto extends HttpServlet {
 						prenotazione.setUtente(richiesta.getUtente());
 						prenotazione.setStato_prenotazione(1);
 						prenotazione.setNote(richiesta.getNote());
+						prenotazione.setLuogo(luogo);
 						prenotazione.setId_richiesta(richiesta.getId());
 						Calendar c = Calendar.getInstance();
 						c.setTime(data_start);
@@ -932,7 +1080,8 @@ public class GestioneParcoAuto extends HttpServlet {
 							prenotazione.setData_inizio_prenotazione(Date.from(start_date.atZone(ZoneId.systemDefault()).toInstant()));
 							prenotazione.setData_fine_prenotazione(Date.from(end_date.atZone(ZoneId.systemDefault()).toInstant()));
 						}else {
-							end_date = LocalDateTime.parse(data_fine, formatter);	
+							
+							end_date = LocalDateTime.ofInstant(data_end.toInstant(),ZoneId.systemDefault());
 							prenotazione.setData_inizio_prenotazione(data_start);
 							prenotazione.setData_fine_prenotazione(data_end);
 						}

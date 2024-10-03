@@ -175,7 +175,7 @@
         </div><br>
         
         <div class="row" >
-        <div class="col-xs-6">
+        <div class="col-xs-5">
         <label>Data inizio prenotazione</label>
 
            <input id="data_inizio" name="data_inizio" class="form-control datepicker" type="text" style="width:100%" required>
@@ -186,12 +186,16 @@
         		<div class='col-xs-4'><label>Ora inzio</label><div class='input-group'>
 					<input type='text' id='ora_inizio' name='ora_inizio'  class='form-control timepicker' style='width:100%' required><span class='input-group-addon'>
 		            <span class='fa fa-clock-o'></span></span></div></div>
-   
+          <div id="content_giornaliero">
+		             		<div class='col-xs-3' ><label>A/R giornaliero</label><br>
+					<input type='checkbox' id='giornaliero' name='giornaliero' class='form-control' style='width:100%'>
+					
+					</div></div>
         </div><br>
         
         
         <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-5">
         <label>Data fine prenotazione</label>
            <input id="data_fine" name="data_fine" class="form-control datepicker" type="text" style="width:100%" required>
         </div>
@@ -205,20 +209,17 @@
             
   
 
-        
-<!-- 		<div class="row">
-		<div class='col-xs-4'><label>Ora inzio</label><div class='input-group'>
-					<input type='text' id='ora_inizio' name='ora_inizio'  class='form-control timepicker' style='width:100%'><span class='input-group-addon'>
-		            <span class='fa fa-clock-o'></span></span></div></div>
-
-<div class='col-xs-4'><label>Ora fine</label><div class='input-group'>
-					<input type='text' id='ora_fine' name='ora_fine'   class='form-control timepicker' style='width:100%'><span class='input-group-addon'>
-		            <span class='fa fa-clock-o'></span></span></div></div>
-
-		<div class='col-xs-3'><label>Pausa pranzo</label><br>
-					<input type='checkbox' id='pausa_pranzo' name='pausa_pranzo' class='form-control' style='width:100%'></div>
-		
-		</div><br> -->
+    
+		                <div class="row">
+       <div class="col-sm-12">  
+       		<label>Luogo</label>
+      
+       	    
+       	  	
+        <input id="luogo" name="luogo" class="form-control"  style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
         
         <div class="row">
         <div class="col-xs-12">
@@ -233,7 +234,7 @@
       <input type="hidden" id="id_prenotazione" name="id_prenotazione">
       <input type="hidden" id="day" name="day">
       <input type="hidden" id="id_veicolo" name="id_veicolo">
-    
+    <input type="hidden" id="check_giornaliero" name="check_giornaliero">
       
       <a class="btn btn-danger pull-left" onclick="$('#myModalYesOrNo').modal()"  id="btn_elimina" style="display:none">Elimina</a>
         
@@ -381,6 +382,19 @@ $('input:checkbox').on('ifToggled', function() {
 
 	
 })
+
+
+ $('#giornaliero').on('ifChecked', function(event){
+		$('#check_giornaliero').val("SI");
+		
+	});
+
+	$('#giornaliero').on('ifUnchecked', function(event) {
+		
+		$('#check_giornaliero').val("NO");
+
+	});
+ 
 
 function subTrimestre(data_inizio, anno){
 	

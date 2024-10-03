@@ -935,7 +935,7 @@ public static void sendEmailAccettazioneConsegna(ConsegnaDpiDTO consegna, Servle
 	  	
 		  email.setHtmlMsg("<html>Gentile "+consegna.getLavoratore().getNome() + " "+consegna.getLavoratore().getCognome()+",<br>"
 		  	  	+"In data "+df.format(consegna.getData_consegna())+" ti &egrave; stato consegnato il seguente DPI: <br><br>"
-				  +"TIPO: "+consegna.getDpi().getTipo().getDescrizione()
+				  +"TIPO: "+consegna.getDpi().getTipo_dpi().getDescrizione()
 				  +"<br>DESCRIZIONE: "+consegna.getDpi().getDescrizione()
 				  +"<br>MODELLO: " +consegna.getDpi().getModello()
 				  //+"<br><br>http://portale.ecisrl.it/FormInputDoc/accettazioneDpi.jsp?id_consegna="+Utility.encryptData(""+consegna.getId())
@@ -978,7 +978,7 @@ public static void sendEmailRiconsegnaDPI(ConsegnaDpiDTO consegna, ServletContex
 	  	
 		  email.setHtmlMsg("<html>Gentile "+consegna.getLavoratore().getNome() + " "+consegna.getLavoratore().getCognome()+",<br>"
 		  	  	+"In data "+df.format(consegna.getRestituzione().getData_consegna())+" hai riconsegnato il seguente DPI: <br><br>"
-				  +"TIPO: "+consegna.getDpi().getTipo().getDescrizione()
+				  +"TIPO: "+consegna.getDpi().getTipo_dpi().getDescrizione()
 				  +"<br>DESCRIZIONE: "+consegna.getDpi().getDescrizione()
 				  +"<br>MODELLO: " +consegna.getDpi().getModello()
 				  +"<br>MOTIVAZIONE: "+consegna.getRestituzione().getMotivazione()
@@ -1274,7 +1274,7 @@ public static void sendEmailDPIInScadenza(ArrayList<DpiDTO> lista_dpi) throws Em
 			
 		
 				messaggio += "ID: "+dpi.getId()+" - ";
-				messaggio += "TIPO DPI: " + dpi.getTipo().getDescrizione()+" - ";
+				messaggio += "TIPO DPI: " + dpi.getTipo_dpi().getDescrizione()+" - ";
 				messaggio += "Company: " + dpi.getCompany().getRagione_sociale()+" - ";
 				messaggio += "Lavoratore: " + dpi.getNome_lavoratore()+" - ";
 				messaggio += "Data scadenza: " + df.format(dpi.getData_scadenza())+"<br>";

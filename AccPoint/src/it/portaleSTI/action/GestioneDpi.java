@@ -41,6 +41,7 @@ import it.portaleSTI.DTO.DpiAllegatiDTO;
 import it.portaleSTI.DTO.DpiDTO;
 import it.portaleSTI.DTO.DpiManualeDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
+import it.portaleSTI.DTO.TipoAccessorioDispositivoDTO;
 import it.portaleSTI.DTO.TipoDpiDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -100,10 +101,12 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				
 				ArrayList<TipoDpiDTO> lista_tipo_dpi = GestioneDpiBO.getListaTipoDPI(session);
 				ArrayList<DpiDTO> lista_dpi = GestioneDpiBO.getListaDpi(session);
+				ArrayList<TipoAccessorioDispositivoDTO> lista_tipo_accessorio = GestioneDpiBO.getListaAccessoriDispositivo(session);
 				ArrayList<DocumFornitoreDTO> lista_company = GestioneDocumentaleBO.getListaDocumFornitori(session);
 				request.getSession().setAttribute("lista_tipo_dpi", lista_tipo_dpi);
 				request.getSession().setAttribute("lista_dpi", lista_dpi);
 				request.getSession().setAttribute("lista_company", lista_company);
+				request.getSession().setAttribute("lista_tipi_accessorio", lista_tipo_accessorio);
 				
 				session.getTransaction().commit();
 				session.close();
@@ -153,12 +156,25 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String frequenza = ret.get("frequenza");
 				String data_scadenza_controllo = ret.get("data_scadenza_controllo");
 				String note = ret.get("note");
+				String id_tipologia = ret.get("tipologia");
+				String id_tipo_accessorio = ret.get("tipo_accessorio");
 
-				DpiDTO dpi = new DpiDTO();				
+				
+				DpiDTO dpi = new DpiDTO();	
+				
+				dpi.setTipologia(Integer.parseInt(id_tipologia));
+				if(id_tipo_accessorio == null || id_tipo_accessorio.equals("")) {
+					dpi.setTipo_accessorio(null);
+				}else {
+					dpi.setTipo_accessorio(new TipoAccessorioDispositivoDTO(Integer.parseInt(id_tipo_accessorio), ""));
+					tipo_dpi = null;
+				}
+
+							
 				
 				TipoDpiDTO tipo = null;
 				
-				if(tipo_dpi.equals("0")) {
+				if(tipo_dpi!=null && tipo_dpi.equals("0")) {
 					tipo = new TipoDpiDTO();
 					tipo.setDescrizione(nuovo_tipo_dpi);
 					if(collettivo == null) {
@@ -166,14 +182,20 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					}
 					tipo.setCollettivo(Integer.parseInt(collettivo));
 					session.save(tipo);
-				}else {
+					dpi.setTipo_accessorio(null);
+				}
+				else if(tipo_dpi == null || tipo_dpi.equals("")) {
+					dpi.setTipo_dpi(null);
+				}
+				else {
 					tipo = GestioneDpiBO.getTipoDPIFromId(Integer.parseInt(tipo_dpi), session); 
+					dpi.setTipo_accessorio(null);
 				}				
 				
 				DocumFornitoreDTO cmp = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
 				
 				dpi.setCompany(cmp);
-				dpi.setTipo(tipo);	
+				dpi.setTipo_dpi(tipo);	
 				dpi.setDescrizione(descrizione);
 				dpi.setModello(modello);
 				dpi.setConformita(conformita);
@@ -204,7 +226,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "DPI salvato con successo!");
+				myObj.addProperty("messaggio", "Dispositivo salvato con successo!");
 				out.print(myObj);
 				session.getTransaction().commit();
 				session.close();
@@ -252,8 +274,18 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String frequenza = ret.get("frequenza_mod");
 				String data_scadenza_controllo = ret.get("data_scadenza_controllo_mod");
 				String note = ret.get("note_mod");
+				String id_tipologia = ret.get("tipologia_mod");
+				String id_tipo_accessorio = ret.get("tipo_accessorio_mod");
 
-				DpiDTO dpi = GestioneDpiBO.getDpiFormId(Integer.parseInt(id_dpi), session);				
+				DpiDTO dpi = GestioneDpiBO.getDpiFormId(Integer.parseInt(id_dpi), session);			
+				
+				dpi.setTipologia(Integer.parseInt(id_tipologia));
+				if(id_tipo_accessorio == null || id_tipo_accessorio.equals("")) {
+					dpi.setTipo_accessorio(null);
+				}else {
+					dpi.setTipo_accessorio(new TipoAccessorioDispositivoDTO(Integer.parseInt(id_tipo_accessorio), ""));
+					tipo_dpi = null;
+				}
 				
 				TipoDpiDTO tipo = null;
 				
@@ -261,19 +293,25 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					collettivo = "0";
 				}
 				
-				if(tipo_dpi.equals("0")) {
+				if(tipo_dpi!=null && tipo_dpi.equals("0")) {
 					tipo = new TipoDpiDTO();
 					tipo.setDescrizione(nuovo_tipo_dpi);
 					tipo.setCollettivo(Integer.parseInt(collettivo));
 					session.save(tipo);
-				}else {
+					dpi.setTipo_accessorio(null);
+				}
+				else if(tipo_dpi == null || tipo_dpi.equals("")) {
+					dpi.setTipo_dpi(null);
+				}
+				else {
 					tipo = GestioneDpiBO.getTipoDPIFromId(Integer.parseInt(tipo_dpi), session); 
+					dpi.setTipo_accessorio(null);
 				}				
 				
 				DocumFornitoreDTO cmp = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
 				
 				dpi.setCompany(cmp);
-				dpi.setTipo(tipo);	
+				dpi.setTipo_dpi(tipo);	
 				dpi.setDescrizione(descrizione);
 				dpi.setModello(modello);
 				dpi.setNote(note);
@@ -303,7 +341,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "DPI salvato con successo!");
+				myObj.addProperty("messaggio", "Dispositivo salvato con successo!");
 				out.print(myObj);
 				session.getTransaction().commit();
 				session.close();
@@ -311,11 +349,24 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			
 			else if(action.equals("lista_schede_consegna")) {
 				
-				ArrayList<DpiDTO> lista_dpi = GestioneDpiBO.getListaDpi(session);
+				ArrayList<DpiDTO> lista_dispositivi = GestioneDpiBO.getListaDpi(session);
 				ArrayList<ConsegnaDpiDTO> lista_consegne = GestioneDpiBO.getListaConsegneDpi(session);
 				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0, 0, session);
 				
+				ArrayList<DpiDTO> lista_dpi = new ArrayList<DpiDTO>();
+				ArrayList<DpiDTO> lista_accessori = new ArrayList<DpiDTO>();
+				
+				for (DpiDTO dispositivo : lista_dispositivi) {
+					if(dispositivo.getTipologia()==1) {
+						lista_dpi.add(dispositivo);
+					}else {
+						lista_accessori.add(dispositivo);
+					}
+				}
+				
+				request.getSession().setAttribute("lista_dispositivi", lista_dispositivi);
 				request.getSession().setAttribute("lista_dpi", lista_dpi);
+				request.getSession().setAttribute("lista_accessori", lista_accessori);
 				request.getSession().setAttribute("lista_consegne", lista_consegne);
 				request.getSession().setAttribute("lista_dipendenti", lista_dipendenti);
 				request.getSession().setAttribute("filtro_on", "0");
@@ -356,28 +407,41 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 	            	
 	            }
 		
+		        String tipologia = ret.get("tipologia");
 				String id_dpi = ret.get("id_dpi");
+				String id_accessorio = ret.get("id_accessorio");
 				String id_lavoratore = ret.get("lavoratore");
 				String commessa = ret.get("commessa");
 
 				ConsegnaDpiDTO consegna = new ConsegnaDpiDTO();				
 				
-				DpiDTO dpi = GestioneDpiBO.getDpiFormId(Integer.parseInt(id_dpi), session);				
+				DpiDTO dispositivo = null;
 				
-				consegna.setDpi(dpi);	
+				if(tipologia!=null && tipologia.equals("1")) {
+					dispositivo = GestioneDpiBO.getDpiFormId(Integer.parseInt(id_dpi), session);		
+				}else {
+					dispositivo = GestioneDpiBO.getDpiFormId(Integer.parseInt(id_accessorio), session);		
+					consegna.setRicevuto(1);
+				}
+						
+				
+				consegna.setDpi(dispositivo);	
 				DocumDipendenteFornDTO lavoratore = GestioneDocumentaleBO.getDipendenteFromId(Integer.parseInt(id_lavoratore), session);
 				consegna.setLavoratore(lavoratore);
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				consegna.setData_consegna(new Date());
 				consegna.setCommessa(commessa);
 				
-				dpi.setAssegnato(1);
+				dispositivo.setAssegnato(1);
 				
 				session.save(consegna);
 				
-				session.update(dpi);
+				session.update(dispositivo);
 				
-				SendEmailBO.sendEmailAccettazioneConsegna(consegna, request.getServletContext());
+				if(tipologia!=null && tipologia.equals("1")) {
+					SendEmailBO.sendEmailAccettazioneConsegna(consegna, request.getServletContext());	
+				}
+				
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
@@ -418,6 +482,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 	            	
 	            }
 		
+		        
 		        String id_consegna = ret.get("id_consegna");
 				String id_dpi = ret.get("id_dpi_mod");
 				String id_lavoratore = ret.get("lavoratore_mod");
@@ -471,7 +536,12 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				consegna.setRestituzione(restituzione);
 				session.update(consegna);
 				
-				SendEmailBO.sendEmailRiconsegnaDPI(consegna, request.getServletContext());
+				if(consegna.getDpi().getTipologia()==1) {
+					SendEmailBO.sendEmailRiconsegnaDPI(consegna, request.getServletContext());
+				}else {
+					restituzione.setRiconsegnato(1);
+				}
+				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
@@ -507,6 +577,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					path = path + "SchedaRiconsegnaDPI.pdf";
 				}else if(Integer.parseInt(tipo_scheda) ==2) {
 					path = path + "SchedaDPICollettivi.pdf";
+				}
+				else if(Integer.parseInt(tipo_scheda) ==3) {
+					path = path + "SchedaAccessori.pdf";
 				}
 				
 				

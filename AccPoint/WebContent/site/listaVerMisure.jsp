@@ -106,10 +106,13 @@
 <th>Data Scadenza</th>
 <th>Campioni di lavoro</th>
 <th>N. Sigilli Usati</th>
+
 <th>Tecnico Verificatore</th>
 <th>Comunicazione Preventiva</th>
 <th>Comunicazione Esito</th>
 <th>Classe strumento</th>
+<th>Portata max</th>
+<th>Divisione di verifica</th>
 <th>Certificato Riemesso</th>
 <th>Azioni</th>
  </tr></thead>
@@ -176,6 +179,38 @@
 	</c:if>
 	</td>
 	<td>${misura.verStrumento.classe }</td>
+	<td>
+	<c:if test="${(misura.verStrumento.portata_max_C2 == null && misura.verStrumento.portata_max_C3 == null) || (misura.verStrumento.portata_max_C1 > misura.verStrumento.portata_max_C3 && misura.verStrumento.portata_max_C1 > misura.verStrumento.portata_max_C2)}">
+	
+	${misura.verStrumento.portata_max_C1 }
+	</c:if>
+	<c:if test="${misura.verStrumento.tipo.id!=1 }">
+	<c:if test="${misura.verStrumento.portata_max_C3 == null || (misura.verStrumento.portata_max_C2 >  misura.verStrumento.portata_max_C3 && misura.verStrumento.portata_max_C2 >  misura.verStrumento.portata_max_C1)}">
+	${misura.verStrumento.portata_max_C2} 
+	</c:if>
+	<c:if test="${misura.verStrumento.portata_max_C2 == null || (misura.verStrumento.portata_max_C3 >=  misura.verStrumento.portata_max_C2 && strumento.portata_max_C3 >=  misura.verStrumento.portata_max_C1)}">
+	${misura.verStrumento.portata_max_C3} 
+	</c:if>
+	
+	</c:if>
+	</td>
+	<td>
+		<c:if test="${(misura.verStrumento.div_ver_C2 == null && misura.verStrumento.div_ver_C3 == null) || (misura.verStrumento.div_ver_C1 > misura.verStrumento.div_ver_C3 && misura.verStrumento.div_ver_C1 > misura.verStrumento.div_ver_C2)}">
+	
+	${misura.verStrumento.div_ver_C1 }
+	</c:if>
+	<c:if test="${misura.verStrumento.tipo.id!=1 }">
+	<c:if test="${misura.verStrumento.div_ver_C3 == null || (misura.verStrumento.div_ver_C2 >  misura.verStrumento.div_ver_C3 && misura.verStrumento.div_ver_C2 >  misura.verStrumento.div_ver_C1)}">
+	${misura.verStrumento.div_ver_C2} 
+	</c:if>
+	<c:if test="${misura.verStrumento.div_ver_C2 == null || (misura.verStrumento.div_ver_C3 >=  misura.verStrumento.div_ver_C2 && strumento.div_ver_C3 >=  misura.verStrumento.div_ver_C1)}">
+	${misura.verStrumento.div_ver_C3} 
+	</c:if>
+	
+	</c:if>
+	
+	</td>
+	
 	<td>
 	<c:if test="${misura.id_misura_old != null && misura.id_misura_old!=0}">
 	X
@@ -442,7 +477,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	 
 		    	  { responsivePriority: 1, targets: 14 },
-		    	  { responsivePriority: 2, targets: 22 },
+		    	  { responsivePriority: 2, targets: 24 },
 		    	  { responsivePriority: 3, targets: 11 }
 		    	  
 		               ], 	        

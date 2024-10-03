@@ -88,6 +88,9 @@ public class CreateSchedaDPI {
 		}else if(tipo_scheda ==2) {
 			is = PivotTemplate.class.getResourceAsStream("SchedaDPICollettivi.jrxml");
 		}
+		else if(tipo_scheda ==3) {
+			is = PivotTemplate.class.getResourceAsStream("SchedaAccessori.jrxml");
+		}
 		
 		ArrayList<ConsegnaDpiDTO> lista = GestioneDpiDAO.getListaConsegnaRiconsegnaDPI(lavoratore, tipo_scheda, session);
 				
@@ -108,7 +111,7 @@ public class CreateSchedaDPI {
  			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
 
-			if(tipo_scheda!=2) {
+			if(tipo_scheda!=2 && tipo_scheda!=3) {
 				report.addParameter("sottoscritto",lavoratore.getNome().toUpperCase() +" " +lavoratore.getCognome().toUpperCase());
 				report.addParameter("societa", lavoratore.getFornitore().getRagione_sociale());
 			}
@@ -161,7 +164,7 @@ public class CreateSchedaDPI {
 
 			SubreportBuilder subreport = null;
 			
-			if(tipo_scheda!=2) {
+			if(tipo_scheda!=2 && tipo_scheda!=3) {
 				subreport = cmp.subreport(getTableReport(lista, tipo_scheda));
 			}else {
 				subreport = cmp.subreport(getTableReportCollettivi(lista, tipo_scheda));
@@ -180,6 +183,9 @@ public class CreateSchedaDPI {
 				path = folder + "SchedaRiconsegnaDPI.pdf";
 			}else if(tipo_scheda ==2) {
 				path = folder + "SchedaDPICollettivi.pdf";
+			}
+			else if(tipo_scheda ==3) {
+				path = folder + "SchedaAccessori.pdf";
 			}
 			
 			java.io.File fileFolder = new java.io.File(folder);
@@ -218,7 +224,10 @@ public class CreateSchedaDPI {
 
 			report.setColumnStyle(textStyle); //AGG
 			report.addColumn(col.column("ID", "id", type.stringType()));
-			report.addColumn(col.column("DPI", "dpi", type.stringType()));
+			
+			report.addColumn(col.column("DPI", "dpi", type.stringType()));	
+			
+			
 			report.addColumn(col.column("DESCRIZIONE", "descrizione", type.stringType()));
 	 		report.addColumn(col.column("MODELLO", "modello", type.stringType()));
 	 		report.addColumn(col.column("CONFORMITÀ", "conformita", type.stringType()));
@@ -273,7 +282,7 @@ public class CreateSchedaDPI {
 					ArrayList<String> arrayPs = new ArrayList<String>();
 					
 					arrayPs.add(consegna.getId()+"");
-					arrayPs.add(consegna.getDpi().getTipo().getDescrizione());
+					arrayPs.add(consegna.getDpi().getTipo_dpi().getDescrizione());
 					arrayPs.add(consegna.getDpi().getDescrizione());
 					arrayPs.add(consegna.getDpi().getModello());
 					arrayPs.add(consegna.getDpi().getConformita());
@@ -297,7 +306,7 @@ public class CreateSchedaDPI {
 					ArrayList<String> arrayPs = new ArrayList<String>();
 					
 					arrayPs.add(consegna.getId()+"");
-					arrayPs.add(consegna.getDpi().getTipo().getDescrizione());
+					arrayPs.add(consegna.getDpi().getTipo_dpi().getDescrizione());
 					arrayPs.add(consegna.getDpi().getDescrizione());
 					arrayPs.add(consegna.getDpi().getModello());
 					arrayPs.add(consegna.getDpi().getConformita());
@@ -338,7 +347,11 @@ public class CreateSchedaDPI {
 				report.setTemplate(Templates.reportTemplate);
 				report.setColumnStyle(textStyle); //AGG				
 			
-				report.addColumn(col.column("ID DPI", "id", type.stringType()).setFixedWidth(30));
+				if(tipo_scheda != 3) {
+					report.addColumn(col.column("ID DPI", "id", type.stringType()).setFixedWidth(30));
+				}else {
+					report.addColumn(col.column("ID Accessorio", "id", type.stringType()).setFixedWidth(30));	
+				}
 				report.addColumn(col.column("Data", "data_accettazione", type.stringType()).setFixedWidth(75));
 	 	 		report.addColumn(col.column("Nominativo", "nominativo", type.stringType()).setFixedWidth(190));
 		 		report.addColumn(col.column("Codice commessa", "commessa", type.stringType()).setFixedWidth(65));
@@ -385,11 +398,21 @@ public class CreateSchedaDPI {
 					
 					
 					arrayPs.add(consegna.getDpi().getId()+"");
-					if(consegna.getData_accettazione()!=null) {
-						arrayPs.add(df.format(consegna.getData_accettazione()));	
+					
+					if(tipo_scheda!=3) {
+						if(consegna.getData_accettazione()!=null) {
+							arrayPs.add(df.format(consegna.getData_accettazione()));	
+						}else {
+							arrayPs.add("");
+						}
 					}else {
-						arrayPs.add("");
+						if(consegna.getData_consegna()!=null) {
+							arrayPs.add(df.format(consegna.getData_consegna()));	
+						}else {
+							arrayPs.add("");
+						}
 					}
+					
 					
 					arrayPs.add(consegna.getLavoratore().getCognome()+" "+consegna.getLavoratore().getNome());
 					if(consegna.getCommessa()!=null) {

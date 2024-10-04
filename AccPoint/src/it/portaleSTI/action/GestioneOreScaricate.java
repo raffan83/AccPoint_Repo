@@ -69,7 +69,22 @@ public class GestioneOreScaricate extends HttpServlet {
 				
 				String global = request.getParameter("global");
 				ArrayList<ControlloOreDTO> listaOre = DirectMySqlDAO.getOrePrevisteOreScaricate();
+				Map<String, String> orePrevisteTotati = DirectMySqlDAO.getOrePrevisteTotali();
+				
 				Map<String, String> map = new HashMap<String, String>();
+				
+				for(int y=0;y<listaOre.size();y++) 
+				{
+			     String id_commessa=listaOre.get(y).getId_commessa();
+				 String oreTotali= 	orePrevisteTotati.get(id_commessa);
+				 
+				 if(oreTotali!=null) 
+				 {
+					listaOre.get(y).setId_commessa(id_commessa+"("+oreTotali+")"); 
+				 }
+				
+				}
+				
 				
 				for (int i=0;i<listaOre.size();i++) {
 					if(listaOre.get(i).getGlb_fase()!=null && map.containsKey(listaOre.get(i).getGlb_fase()) && listaOre.get(i).getDuplicato()!=1) {

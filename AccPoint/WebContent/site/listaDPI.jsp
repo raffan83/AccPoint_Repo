@@ -380,6 +380,7 @@
   		 
       <div class="modal-footer">
 <input type="hidden" id="nuovo_tipo_dpi" name="nuovo_tipo_dpi">
+<input type="hidden" id="nuovo_tipo_accessorio" name="nuovo_tipo_accessorio">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -606,6 +607,7 @@
       <div class="modal-footer">
 	<input type="hidden" id="id_dpi" name="id_dpi">
 		<input type="hidden" id="nuovo_tipo_dpi_mod" name="nuovo_tipo_dpi_mod">
+		<input type="hidden" id="nuovo_tipo_accessorio_mod" name="nuovo_tipo_accessorio_mod">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -652,7 +654,8 @@
        <div class="row">
        <div class="col-xs-12">
          <label>Descrizione</label>
-      <input class="form-control" type="text" id="descrizione_nuovo_tipo">
+      <input class="form-control" type="text" id="descrizione_nuovo_tipo" >
+      <input class="form-control" type="hidden" id="isAccessorio">
        </div>
        </div>   <br>
 
@@ -1023,25 +1026,52 @@ function assegnaValoreOpzione(){
 
 		var newOption = new Option(data.text, data.id, false, false);
 		
-		if($('#isMod').val()== 1){
+		if($('#isAccessorio').val()==1){
 			
-			$('#tipo_dpi_mod').append(newOption).trigger('change');
-			$('#tipo_dpi_mod').val(0)
+			if($('#isMod').val()== 1){
+				
+				$('#tipo_accessorio_mod').append(newOption).trigger('change');
+				$('#tipo_accessorio_mod').val(0)
+				
+				$('#nuovo_tipo_accessorio_mod').val($('#descrizione_nuovo_tipo').val());
 			
-			$('#nuovo_tipo_dpi_mod').val($('#descrizione_nuovo_tipo').val());
-		
 
-			$('#modalNuovoTipoDPI').modal('hide');
+				$('#modalNuovoTipoDPI').modal('hide');
+				
+			}else{
+				$('#tipo_accessorio').append(newOption).trigger('change');
+				$('#tipo_accessorio').val(0)
+				
 			
+				$('#nuovo_tipo_accessorio').val($('#descrizione_nuovo_tipo').val());
+			
+
+				$('#modalNuovoTipoDPI').modal('hide');
+			}
 		}else{
-			$('#tipo_dpi').append(newOption).trigger('change');
-			$('#tipo_dpi').val(0)
+			if($('#isMod').val()== 1){
+				
+				$('#tipo_dpi_mod').append(newOption).trigger('change');
+				$('#tipo_dpi_mod').val(0)
+				
 			
-			$('#nuovo_tipo_dpi').val($('#descrizione_nuovo_tipo').val());
-		
+				$('#nuovo_tipo_dpi_mod').val($('#descrizione_nuovo_tipo').val());
+			
 
-			$('#modalNuovoTipoDPI').modal('hide');
+				$('#modalNuovoTipoDPI').modal('hide');
+				
+			}else{
+				$('#tipo_dpi').append(newOption).trigger('change');
+				$('#tipo_dpi').val(0)
+				
+				$('#nuovo_tipo_dpi').val($('#descrizione_nuovo_tipo').val());
+			
+
+				$('#modalNuovoTipoDPI').modal('hide');
+			}
 		}
+		
+		
 		
 
 	
@@ -1226,17 +1256,35 @@ $("#tabDpi").on( 'init.dt', function ( e, settings ) {
 
 
 
-function aggiungiOpzione(mod){
+function aggiungiOpzione(mod, accessorio){
 
 	if(mod){
 		
 		$('#isMod').val(1);
-		$('#tipo_dpi_mod').select2('close');
-		modalNuovoTipoDPI(true);
+		if(accessorio == 1){
+			$('#isAccessorio').val(1);
+			$('#tipo_accessorio_mod').select2('close');
+			modalNuovoTipoDPI(true, true);
+		}else{
+			$('#isAccessorio').val(0);
+			$('#tipo_dpi_mod').select2('close');
+			modalNuovoTipoDPI(true, false);
+		}
+		
+		
 	}else{
 		$('#isMod').val(0);
-		$('#tipo_dpi').select2('close');
-		modalNuovoTipoDPI(false);
+		
+		if(accessorio == 1){
+			$('#isAccessorio').val(1);
+			$('#tipo_accessorio').select2('close');
+			modalNuovoTipoDPI(false, true);
+		}else{
+			$('#isAccessorio').val(0);
+			$('#tipo_dpi').select2('close');
+			modalNuovoTipoDPI(false, true);
+		}
+
 	}
 	
 	
@@ -1271,6 +1319,19 @@ $('#tipo_dpi_mod')
     .select2()
     .on('select2:open', () => {
         $(".select2-results:not(:has(a))").append('<a href="#" style="padding: 6px;height: 20px;display: inline-table;" onClick="aggiungiOpzione(true)">Crea Nuovo Tipo DPI</a>');
+});
+
+
+$('#tipo_accessorio')
+.select2()
+.on('select2:open', () => {
+    $(".select2-results:not(:has(a))").append('<a href="#" style="padding: 6px;height: 20px;display: inline-table;" onClick="aggiungiOpzione(false, 1)">Crea Nuovo Tipo Accessorio</a>');
+});
+
+$('#tipo_accessorio_mod')
+.select2()
+.on('select2:open', () => {
+    $(".select2-results:not(:has(a))").append('<a href="#" style="padding: 6px;height: 20px;display: inline-table;" onClick="aggiungiOpzione(true, 1)">Crea Nuovo Tipo Accessorio</a>');
 });
 
 $('#lavoratore').select2();

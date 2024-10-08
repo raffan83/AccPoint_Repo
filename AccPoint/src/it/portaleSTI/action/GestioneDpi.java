@@ -151,6 +151,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String conformita = ret.get("conformita");
 				String data_scadenza = ret.get("data_scadenza");
 				String nuovo_tipo_dpi = ret.get("nuovo_tipo_dpi");
+				String nuovo_tipo_accessorio = ret.get("nuovo_tipo_accessorio");
 				String collettivo = ret.get("collettivo");
 				String data_controllo = ret.get("data_controllo");
 				String frequenza = ret.get("frequenza");
@@ -165,7 +166,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				dpi.setTipologia(Integer.parseInt(id_tipologia));
 				if(id_tipo_accessorio == null || id_tipo_accessorio.equals("")) {
 					dpi.setTipo_accessorio(null);
-				}else {
+				}
+				else if(id_tipo_accessorio != null && id_tipo_accessorio.equals("0")) {
+					TipoAccessorioDispositivoDTO tipo_acc = new TipoAccessorioDispositivoDTO();
+					tipo_acc.setDescrizione(nuovo_tipo_accessorio);
+					session.save(tipo_acc);
+					dpi.setTipo_accessorio(tipo_acc);
+				}
+				else {
 					dpi.setTipo_accessorio(new TipoAccessorioDispositivoDTO(Integer.parseInt(id_tipo_accessorio), ""));
 					tipo_dpi = null;
 				}
@@ -269,6 +277,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String conformita = ret.get("conformita_mod");
 				String data_scadenza = ret.get("data_scadenza_mod");
 				String nuovo_tipo_dpi = ret.get("nuovo_tipo_dpi_mod");
+				String nuovo_tipo_accessorio = ret.get("nuovo_tipo_accessorio_mod");
 				String collettivo = ret.get("collettivo_mod");
 				String data_controllo = ret.get("data_controllo_mod");
 				String frequenza = ret.get("frequenza_mod");
@@ -282,7 +291,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				dpi.setTipologia(Integer.parseInt(id_tipologia));
 				if(id_tipo_accessorio == null || id_tipo_accessorio.equals("")) {
 					dpi.setTipo_accessorio(null);
-				}else {
+				}
+				else if(id_tipo_accessorio != null && id_tipo_accessorio.equals("0")) {
+					TipoAccessorioDispositivoDTO tipo_acc = new TipoAccessorioDispositivoDTO();
+					tipo_acc.setDescrizione(nuovo_tipo_accessorio);
+					session.save(tipo_acc);
+					dpi.setTipo_accessorio(tipo_acc);
+				}
+				else {
 					dpi.setTipo_accessorio(new TipoAccessorioDispositivoDTO(Integer.parseInt(id_tipo_accessorio), ""));
 					tipo_dpi = null;
 				}

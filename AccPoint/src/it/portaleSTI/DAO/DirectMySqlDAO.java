@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -193,6 +194,8 @@ public class DirectMySqlDAO {
 	//private static String sqlOrePrevisteOreScaricate ="SELECT a.USERNAME,a.ID_COMM,format((select DT_COMMESSA from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA c WHERE c.ID_COMMESSA=a.ID_COMM  ),'dd/MM/yyyy') AS DATA_COMMESSA,(select TB_FASE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as CODICE_FASE,   (select ORE_PREVISTE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as ORE_PREVISTE,  sum(a.OREINT) as ORE_SCARICATE, a.GLB_FASE FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_AGENDA] a  WHERE a.ID_COMM like '%AM%' group by a.GLB_FASE,a.ID_COMM,a.USERNAME";
 	private static String sqlOrePrevisteOreScaricate = "SELECT a.USERNAME, a.ID_COMM, format((select DT_COMMESSA from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA c WHERE c.ID_COMMESSA=a.ID_COMM  ),'dd/MM/yyyy') AS DATA_COMMESSA, (select DESCR from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA c WHERE c.ID_COMMESSA=a.ID_COMM  ) as DESCRIZIONE_COMMESSA, (select NOME from [BTOMEN_CRESCO_DATI].[dbo].BWT_ANAGEN d where ID_ANAGEN = (select ID_ANAGEN from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA c WHERE c.ID_COMMESSA=a.ID_COMM  )) as NOME_CLIENTE, (select TB_FASE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as CODICE_FASE,(select DESCR_FASE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as DESCRIZIONE_FASE,(select ORE_PREVISTE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI b WHERE a.GLB_FASE=b.SYS_CHIAVEGLOBALE) as ORE_PREVISTE,sum(a.OREINT) as ORE_SCARICATE,a.GLB_FASE, (select e.DESCR from [BTOMEN_CRESCO_DATI].[dbo].BWT_COMMESSA_AVANZ e WHERE e.SYS_CHIAVEGLOBALE= (select GLB_MILESTONE from [BTOMEN_CRESCO_DATI].[dbo].BWV_COMMESSA_FASI f where a.ID_COMM = f.ID_COMMESSA and f.SYS_CHIAVEGLOBALE = a.GLB_FASE) and e.TB_TIPO_MILE = 'MILE') as MILESTONE  FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_AGENDA] a  WHERE a.ID_COMM like '%AM%' group by a.GLB_FASE,a.ID_COMM,a.USERNAME order by a.USERNAME ASC";
 
+	private static String sqlOrePrevisteTotali="SELECT SUM (ORE_PREVISTE),ID_COMMESSA FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_COMMESSA_FASI] WHERE ID_COMMESSA like 'AM%' GROUP BY(ID_COMMESSA)";
+	
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
 		try
@@ -3672,6 +3675,46 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 		con.close();
 	}
 	
+}
+
+public static Map<String, String> getOrePrevisteTotali() throws Exception {
+	
+	
+	Map<String, String> lista = new HashMap<>();
+	
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	
+	try {
+		con=ManagerSQLServer.getConnectionSQL();
+
+		
+	pst=con.prepareStatement(sqlOrePrevisteTotali);
+	
+
+	rs=pst.executeQuery();
+	
+	
+	while(rs.next())
+	{
+		lista.put(rs.getString(2), rs.getString(1));
+		
+	}
+	
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+
+	return lista;
 }
 
 }

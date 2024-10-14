@@ -1254,9 +1254,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			//report.addColumn(col.column("Campione<br/><i>Cahampion</i>", "descrizioneCampione", type.stringType()).setFixedWidth(70).setFixedHeight(11).setStretchWithOverflow(false));
 			report.addColumn(col.componentColumn("Tipo Verifica <br/><i>Verification Type</i>", subreport));			
 			
-			report.addColumn(col.componentColumn("Misura<br/><i>Measure</i>", subreportVS).setFixedWidth(70).setTitleFixedHeight(15));
+			report.addColumn(col.componentColumn("Misura<br/><i>Measure</i>", subreportVS).setFixedWidth(35).setTitleFixedHeight(15));
 			
-			report.addColumn(col.column("ESITO<br/><i>results</i>", "esito", type.stringType()).setFixedWidth(70).setFixedHeight(11).setStretchWithOverflow(false));
+			report.addColumn(col.column("ESITO<br/><i>results</i>", "esito", type.stringType()).setFixedWidth(160).setFixedHeight(11).setStretchWithOverflow(false));
 			
 			report.setDetailSplitType(SplitType.PREVENT);
 			

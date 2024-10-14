@@ -710,6 +710,7 @@ function pastePrenotazione(day, veicolo){
 		$('#id_veicolo').val(veicolo);
 		
 		$('#note').val(prenotazione.note);
+		$('#luogo').val(prenotazione.luogo);
 	
 		obj = {};
 		  obj.inizio =  prenotazione.data_inizio_prenotazione

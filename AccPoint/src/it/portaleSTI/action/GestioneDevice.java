@@ -1734,11 +1734,13 @@ public class GestioneDevice extends HttpServlet {
 					for(int i = 0; i<selezionati.split(";;").length;i++) {
 						
 						DevDeviceDTO monitor = GestioneDeviceBO.getDeviceFromID(Integer.parseInt(selezionati.split(";;")[i]), session);
+						monitor.setDipendente(device.getDipendente());
 						DevDeviceMonitorDTO devmon = new DevDeviceMonitorDTO();					
 						
 						devmon.setDevice(device);
 						devmon.setMonitor(monitor);
 						
+						session.update(monitor);
 						session.save(devmon);
 						
 					}

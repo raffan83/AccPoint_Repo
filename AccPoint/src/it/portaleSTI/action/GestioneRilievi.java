@@ -1467,6 +1467,28 @@ public class GestioneRilievi extends HttpServlet {
 					
 					rilievo.setNumero_scheda("SRD_"+(ultima_scheda));
 					
+					ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(rilievo.getId(), session);
+				
+					int quote_tot=0;
+					int pezzi_tot=0;
+					
+					for (RilParticolareDTO part : lista_particolari) {
+						ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
+						//quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
+						quote_tot = quote_tot + GestioneRilieviBO.contaQuote(lista_quote);
+						//pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+						if(rilievo.getTipo_rilievo().getId()!=2) {
+							pezzi_tot = pezzi_tot + part.getNumero_pezzi();	
+						}else {
+							pezzi_tot = pezzi_tot + GestioneRilieviBO.getNumeroPezziCPCPK(part.getId(), session);
+						}
+					}
+					
+					
+					rilievo.setN_quote(quote_tot);
+					rilievo.setN_pezzi_tot(pezzi_tot);
+					session.update(rilievo);	
+					
 					
 					String path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";		
 					List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");

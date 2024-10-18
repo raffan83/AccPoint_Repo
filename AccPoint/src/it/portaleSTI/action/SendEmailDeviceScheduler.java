@@ -18,8 +18,9 @@ public class SendEmailDeviceScheduler implements Job{
 
 		try {
 			
-			GestioneDeviceBO.sendEmailAttivitaScadute();
 			GestioneDeviceBO.sendEmailAttivitaScaduteSollecito();
+			GestioneDeviceBO.sendEmailAttivitaScadute();
+			
 			
 			logger.error("Invio email device eseguito con successo dallo scheduler di Quartz!");
 			

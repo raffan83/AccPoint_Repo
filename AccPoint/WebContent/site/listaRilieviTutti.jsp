@@ -91,7 +91,7 @@
 <th>Tipo Rilievo</th>
 <th>Quote Totali</th>
 <th>Pezzi Totali</th>
-<th>Tempo scansione (Ore)</th>
+<th>Data Consegna</th>
 <th>Cliente</th>
 <th>Sede</th>
 <th>Apparecchio</th>
@@ -99,7 +99,8 @@
 <th>Stato Rilievo</th>
 <th>Commessa</th>
 <th>Data Inizio Rilievo</th>
-<th>Data Consegna</th>
+<th>Tempo scansione (Ore)</th>
+
 <th>Denominazione</th>
 <th>Materiale</th>
 <th>Classe di tolleranza</th>
@@ -156,7 +157,8 @@
 		<td>${rilievo.tipo_rilievo.descrizione }</td>
 		<td>${rilievo.n_quote }</td>
 		<td>${rilievo.n_pezzi_tot }</td>
-		<td>${rilievo.tempo_scansione }</td>
+		
+		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_consegna }" /></td>	
 		<td>${rilievo.nome_cliente_util }</td>
 		<td>${rilievo.nome_sede_util }</td>
 		<td>${rilievo.apparecchio }</td>	
@@ -165,7 +167,7 @@
 		
 		<td>${rilievo.commessa}</td>
 		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_inizio_rilievo }" /></td>	
-		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_consegna }" /></td>	
+		<td>${rilievo.tempo_scansione }</td>
 		<td>${rilievo.denominazione }</td>
 		<td>${rilievo.materiale }</td>
 		<td>${rilievo.classe_tolleranza }</td>

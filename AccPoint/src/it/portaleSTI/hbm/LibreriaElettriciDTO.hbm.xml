@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 19-lug-2017 12.41.35 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.LibreriaElettriciDTO" table="libreria_elettrici">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+ 
+        <property name="marca_strumento" type="java.lang.String">
+            <column name="marca_strumento" />
+        </property>
+        
+               <property name="modello_strumento" type="java.lang.String">
+            <column name="modello_strumento" />
+        </property>
+        
+               <property name="campione_riferimento" type="java.lang.String">
+            <column name="campione_riferimento" />
+        </property>
+        
+               <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
+ <property name="disabilitato" type="int">
+            <column name="disabilitato" />
+        </property>
+        
+          <property name="filename_config" type="java.lang.String">
+            <column name="filename_config" />
+        </property>
+
+    </class>
+</hibernate-mapping>

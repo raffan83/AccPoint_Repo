@@ -138,6 +138,7 @@
 			<li><a href="scadenziario.do">Scadenziario</a></li>
 			<!-- <li><a href="scadenziario.do?action=campioni&scadenzario_lat_generale=1">Scadenziario LAT</a></li> -->
 			<li><a href="scadenziario.do?lat=CDT">Scadenziario LAT</a></li>
+			<li><a href="gestioneLibrerieElettrici.do?action=lista">Librerie Elettrici</a></li>
 			  <% }%>
           </ul>
         </li>

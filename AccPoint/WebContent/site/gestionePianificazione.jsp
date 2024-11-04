@@ -515,7 +515,7 @@ function nuovaPianificazione(){
 		 }
 	 }
 
-	 
+
 	 $('#id_docenti').val(ids);
 	
 	

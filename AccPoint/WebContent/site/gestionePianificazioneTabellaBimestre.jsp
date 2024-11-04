@@ -43,6 +43,11 @@ int anno = (Integer) request.getSession().getAttribute("anno");
         <div class="legend-color" style="background-color: #F7BEF6;"></div>
         <div class="legend-label">FATTURATO CON ATTESTATI</div>
     </div>
+    
+        <div class="legend-item">
+<i class="fa fa-star" aria-hidden="true"></i>
+        <div class="legend-label">VIRTUALE</div>
+    </div>
 </div>
 
 
@@ -684,14 +689,31 @@ if(filtro!=3){
 		    for (var i = 0; i < lista_pianificazioni.length; i++) {
 		    	var id = lista_pianificazioni[i].id_commessa.replace("/","")+"_"+lista_pianificazioni[i].nCella;
 				var cell = $("#"+id);
+				
+				var str_docenti = "";
+				
+				for(var j = 0; j < lista_pianificazioni[i].listaDocenti.length; j++){
+					str_docenti += " - " + lista_pianificazioni[i].listaDocenti[j].nome +" "+ lista_pianificazioni[i].listaDocenti[j].cognome;
+				}
+				
+				var icon = "";
+				var orario = "";
+				if(lista_pianificazioni[i].tipo.id==2){
+					icon = '<i class="fa fa-star" aria-hidden="true"></i>   ';
+					if(!lista_pianificazioni[i].descrizione.replace(":","").replace(".","").startsWith(lista_pianificazioni[i].ora_inizio.replace(":",""))){
+						orario = lista_pianificazioni[i].ora_inizio+" - ";
+					}
+					
+				}
+				
 				if(lista_pianificazioni[i].descrizione.length>20){
 				
 						//cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro'  style='margin-top:5px' ondblclick='modalPianificazione('"+lista_pianificazioni[i].nCella+"', '"+lista_pianificazioni[i].id_commessa+"','"+lista_pianificazioni[i].id+"')'>"+lista_pianificazioni[i].note.substring(0,20)+"...</div>");	
-						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+lista_pianificazioni[i].descrizione.substring(0,20)+"...</div>");	
+						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+icon + orario + lista_pianificazioni[i].descrizione.substring(0,20)+"..."+str_docenti + "</div>");	
 					
 				}else{
 					
-						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+lista_pianificazioni[i].descrizione+"</div>");	
+						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+icon + orario + lista_pianificazioni[i].descrizione+str_docenti + "</div>");	
 						 
 					
 					

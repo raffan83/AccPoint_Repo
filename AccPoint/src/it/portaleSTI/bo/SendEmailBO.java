@@ -1153,7 +1153,7 @@ for (String string : to) {
 	  File image = new File(Costanti.PATH_FOLDER+"LoghiCompany\\logo_calver_v2.png");
 	  String cid = email.embed(image, "Calver logo");
 	 
-	  email.setSubject("Attività programmata sul device "+attivita.getDevice().getDenominazione() +"(ID: "+attivita.getDevice().getId()+")");
+	  email.setSubject("Attività programmata sul device "+attivita.getDevice().getDenominazione() +" ("+attivita.getDevice().getCodice_interno()+")");
 	   
 //	 email.setHtmlMsg("<html>Gentile utente,<br><br>"
 //			  	  	+"Si comunica che il giorno "+df.format(attivita.getData_prossima())+" &egrave; in scadenza un'attività programmata sul device in oggetto. "

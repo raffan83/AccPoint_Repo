@@ -1037,6 +1037,12 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                	
 			 	
 	 	                }
+	 	                
+	 	               if(lista_prenotazioni[i].manutenzione==1){
+	 	            	  var border_color = "#da70d6";
+			 	            var background_color = "#f7b8b8 ";
+	 	               }
+	 	                
 	 	               if(lista_prenotazioni[i].luogo!=null){
 	 	                	var title = escapeHtml(lista_prenotazioni[i].luogo);
 	 	                 }else{
@@ -1212,6 +1218,11 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	    	    	    
 	    	    	    '<div class="legend-item"> <div class="legend-color" style="background-color:#F7BB80;"></div>'+
 	    	    	    '<div class="legend-label">RIFORNIMENTO EFFETTUATO</div> </div>'+
+	    	    	    
+	    	    	     
+	    	    	    '<div class="legend-item"> <div class="legend-color" style="background-color:#f7b8b8;"></div>'+
+	    	    	    '<div class="legend-label">MANUTENZIONE</div> </div>'+
+	    	    	    
 	    	    	    
 	    	    	    '</div>');
 	           

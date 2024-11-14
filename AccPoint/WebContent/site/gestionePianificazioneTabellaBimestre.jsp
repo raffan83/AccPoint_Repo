@@ -56,8 +56,8 @@ int anno = (Integer) request.getSession().getAttribute("anno");
  <table id="tabForPianificazione" class="table table-primary table-bordered table-hover dataTable table-striped " role="grid" width="100%"  >
         <thead>
             <tr>
-               <th>CLIENTE <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
-               <th>COMMESSA <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
+               <th>CLIENTE <input class="inputsearchtable" style="min-width:80px;width=100%" type="text" id="inputsearchtable_0"/></th>
+               <th>COMMESSA <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"/></th>
                <th>OGGETTO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
                 <th>STATO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></th>
            <c:set var ="nuovoAnno" value="${anno + 1}"></c:set>                
@@ -478,14 +478,18 @@ $(window).on('load', function() {
 var order = 1;
 var cellCopy;
 var selectedDiv = null;
+
+let savedSearch = localStorage.getItem('lastSearch');
+let indexSearchbox = localStorage.getItem('indexSearch');
+
 $(document).ready(function() {
 	
 	console.log("dentro")
 	
- 	
 
 	console.log("test")
 	
+
 
 
          fillTable("${anno}",'${filtro_tipo_pianificazioni}');
@@ -501,6 +505,15 @@ $(document).ready(function() {
 	    
 	    initContextMenu()
 	    
+	    
+	     if (savedSearch && indexSearchbox!=null) {
+		    indexSearchbox = parseInt(indexSearchbox);
+
+		    // Imposta il valore di ricerca nella colonna corrispondente
+		    $('thead .inputsearchtable').eq(indexSearchbox).val(savedSearch);
+		
+          //table.column(indexSearchbox).search(savedSearch).draw();
+      }
 });
 
 
@@ -661,6 +674,9 @@ if(filtro!=3){
     $('#btn_tutte').attr("disabled",false)
     $('#btn_elearning').attr("disabled",true)
 }
+
+
+
 	
 	$.ajax({
 		  url: 'gestioneFormazione.do?action=lista_pianificazioni&anno='+anno+"&filtro_tipo_pianificazioni="+filtro, // Specifica l'URL della tua servlet
@@ -798,42 +814,7 @@ if(filtro!=3){
 			}
 		    
 		    
-		    
-		    
-/*  		     for (var i = 0; i < array.length; i++) {
-		    		var commessa_da_chiudere = true;			
-					var riga_vuota = true;
-		    	  $("#" + array[i] + " td").slice(3).each(function() {
-		    		  
-		    		  var riquadri = $(this).find(".riquadro");
-		    		  
-		    		  if(riquadri.length>0){
-		    			  for (var j = 0; j < riquadri.length; j++) {
-							var id_riquadro = riquadri[j].id;
-							var coloreRiquadro = $("#"+id_riquadro).css('background-color');
-							riga_vuota = false;
-			            	
-			            	if(rgbToHex(coloreRiquadro).toUpperCase() != "#F7BEF6"){
-			            		commessa_da_chiudere = false;
-			            		return false;
-			            	}
-						}
-
-		    		  }
-		    		    
-		    		  });
-		        
-		        var cell = $("#stato_"+array[i]);
-		        if(commessa_da_chiudere && !riga_vuota){
-		        		        
-		        	cell.html("Da Chiudere");
-		        }else if(riga_vuota){
-		        	
-		        }else{
-		        	cell.html("In Corso");
-		        }
-				
-			} */ 
+		
 		     	    
 			console.log("ciao")
 		    
@@ -846,23 +827,53 @@ if(filtro!=3){
 				order = parseInt(today) +3
 			}
 		
+			var columsDatatables = [];
 			
 				if(table == null){
-				    table = $('#tabForPianificazione').DataTable(settings);
+				    table = $('#tabForPianificazione').DataTable(settings)
+				    
+				  
+			     
+				 
 				}else{
 					table = $('#tabForPianificazione').DataTable();
 				}
 			
+			    if (savedSearch && indexSearchbox!=null) {
+				    indexSearchbox = parseInt(indexSearchbox);
+
+				    // Imposta il valore di ricerca nella colonna corrispondente
+				   // $('thead .inputsearchtable').eq(indexSearchbox).val(savedSearch);
+				
+		          table.column(indexSearchbox).search(savedSearch).draw();
+		      }
 			
+/* 
+				$("#tabForPianificazione").on( 'init.dt', function ( e, settings ) {
+							    var api = new $.fn.dataTable.Api( settings );
+							    var state = api.state.loaded();
+							 
+							    if(state != null && state.columns!=null){
+							    		console.log(state.columns);
+							    
+							    columsDatatables = state.columns;
+							    } 
+						   	   
+							     
+
+							} );  */
 
 			    
-	    $('.inputsearchtable').on('input', function() {
+	  /*   $('.inputsearchtable').on('input', function() {
 		    var columnIndex = $(this).closest('th').index(); // Ottieni l'indice della colonna
 		    var searchValue = $(this).val(); // Ottieni il valore di ricerca
 
-		   // columsDatatables[columnIndex].search.search = searchValue;
+		    if(columsDatatables.length>0){
+		    	 columsDatatables[columnIndex].search.search = searchValue;
+		    }
+		   
 
-		   // var x = table.column(columnIndex).data();
+		    var x = table.column(columnIndex).data();
 		    
 		    table.column(columnIndex).search(searchValue).draw();
 		    
@@ -870,13 +881,20 @@ if(filtro!=3){
 		
 		    
 		    
-		  });
+		  }); */
+							
+							
+							
 	  
 	  $('.inputsearchtable').on('click', function(e){
  	       e.stopPropagation();    
  	    });
 			
-	
+	  
+	  
+
+		 
+
 	  
 	  if(today!=null){
 		  scrollToColumn(parseInt(today)-3);
@@ -887,6 +905,18 @@ if(filtro!=3){
 	  }
 			
 		  
+
+
+      // Aggiungi eventi per salvare i filtri e la ricerca su localStorage
+    
+     
+      $('.inputsearchtable').on('input', function() {
+          var searchValue = $(this).val();
+          var columnIndex = $(this).closest('th').index();
+          localStorage.setItem('lastSearch', searchValue);
+          localStorage.setItem('indexSearch', columnIndex);
+          table.column(columnIndex).search(searchValue).draw();
+      });
 	  
 			  
 	  
@@ -907,6 +937,22 @@ if(filtro!=3){
 	
 
 }
+
+function rimuoviFiltri(){
+
+	    // Svuota tutti i searchbox
+	    $('.inputsearchtable').each(function() {
+	        $(this).val(''); // Pulisce il campo di input
+	    });
+
+	    // Rimuovi tutti i filtri dalla tabella
+	    table.columns().search('').draw();
+
+	    // Rimuovi i filtri salvati nel localStorage
+	    localStorage.removeItem('lastSearch');
+	    localStorage.removeItem('indexSearch');
+}
+
 
 
 function filterTable() {

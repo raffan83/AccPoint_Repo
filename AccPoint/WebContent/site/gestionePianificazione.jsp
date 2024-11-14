@@ -93,6 +93,7 @@
 <div class="col-xs-12">
 <button class="btn btn-primary" ${filtro_tipo_pianificazioni == 0  ? "disabled" : ""} onclick='fillTable("${anno}",0)' id="btn_tutte">Tutte le classi</button>
 <button class="btn btn-primary" ${filtro_tipo_pianificazioni == 3  ? "disabled" : ""} onclick='fillTable("${anno}",3)' id="btn_elearning">E-Learning</button>
+<button class="btn btn-primary pull-right"  onclick='rimuoviFiltri()'>Rimuovi Filtri</button>
 <!-- <button class="btn btn-primary"  onclick='filterTable()' id="">Filtra</button> -->
 
 </div>
@@ -598,6 +599,8 @@ $('input:checkbox').on('ifToggled', function() {
 })
 
 
+
+
 function eliminaPianificazione(){
 	
 	dataObj = {};
@@ -815,6 +818,10 @@ $('#myModalYesOrNo').on("hidden.bs.modal", function(){
 	 
 		
 });
+
+
+
+
 
 $(document.body).css('padding-right', '0px');
 </script>

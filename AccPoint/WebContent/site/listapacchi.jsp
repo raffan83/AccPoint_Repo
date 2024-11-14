@@ -2608,6 +2608,8 @@ function cambiaNota(){
 	
 	$(".select2").select2();
 	
+
+	
 	
 	
 $('#stato_lavorazione').change(function(){

@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -87,9 +89,9 @@ public class GestioneDeviceBO {
 		return  GestioneDeviceDAO.getSoftwareFromID(id_seftware,session);
 	}
 
-	public static ArrayList<DevRegistroAttivitaDTO> getRegistroAttivitaFromDevice(DevDeviceDTO device,int id_company, Session session) {
+	public static ArrayList<DevRegistroAttivitaDTO> getRegistroAttivitaFromDevice(DevDeviceDTO device,int id_company, int tipo_evento, Session session) {
 		
-		return GestioneDeviceDAO.getRegistroAttivitaFromDevice(device,id_company, session);
+		return GestioneDeviceDAO.getRegistroAttivitaFromDevice(device,id_company, tipo_evento, session);
 	}
 
 	public static ArrayList<DevTipoEventoDTO> geListaTipiEvento(Session session) {
@@ -177,20 +179,24 @@ public class GestioneDeviceBO {
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(today);
-		cal.add(Calendar.DATE, 15);
+	//	cal.add(Calendar.DATE, 15);
 		Date nextDate = cal.getTime();
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
-		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenzeScheduler(df.format(nextDate), df.format(nextDate), 0,session);
+		//ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenzeScheduler(df.format(nextDate), df.format(nextDate), 0,session);
+		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenzeScheduler(df.format(today),0,session);
 		
 		DevTestoEmailDTO testo_email = getTestoEmail(session);
 		
 		for (DevRegistroAttivitaDTO attivita : lista_scadenze) {
 			
 			if(attivita.getEmail_inviata()==0) {
-				SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getDescrizione(), testo_email.getReferenti());	
+				//SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getDescrizione(), testo_email.getReferenti());	
 				attivita.setEmail_inviata(1);
+				cal.setTime(today);
+				cal.add(Calendar.DATE, 45);				
+				attivita.setData_invio_sollecito(cal.getTime());
 				session.update(attivita);
 				
 			}
@@ -330,77 +336,167 @@ public class GestioneDeviceBO {
 		
 	}
 	
+//public static void sendEmailAttivitaScaduteSollecito() throws ParseException, Exception {
+//		
+//		Session session=SessionFacotryDAO.get().openSession();
+//		session.beginTransaction();
+//		
+//		
+//		
+//			
+//		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenzeEmailInviata(session);
+//		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//		for (DevRegistroAttivitaDTO attivita : lista_scadenze) {
+//			Date data_attivita = attivita.getData_evento();
+//			Calendar cal = Calendar.getInstance();
+//			cal.setTime(data_attivita);
+//			cal.add(Calendar.DATE, 45);
+//			Date nextDate = cal.getTime();
+//			if(!nextDate.after(new Date())) {
+//			
+//				ArrayList<DevRegistroAttivitaDTO> lista_manutenzioni = GestioneDeviceDAO.getListaManutenzioniSuccessive(df.format(nextDate), attivita.getDevice().getId(),session);
+//				
+//				if(lista_manutenzioni.size()==0) {
+//					DevTestoEmailDTO testo_email = getTestoEmail(session);
+//					
+//					
+//					if(attivita.getSollecito_inviato() == 1) {
+//						if(attivita.getData_invio_sollecito()!=null) {
+//							cal = Calendar.getInstance();
+//							cal.setTime(attivita.getData_invio_sollecito());
+//							cal.add(Calendar.DATE, 30);
+//							Date d = cal.getTime();
+//							
+//							if(d.equals(new Date()) || d.before(new Date())) {
+//							//	SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getSollecito(), testo_email.getReferenti());
+//								attivita.setData_invio_sollecito(new Date());
+//								session.update(attivita);
+//							}
+//							
+//						}
+//						
+//					}else {
+//					//	SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getSollecito(), testo_email.getReferenti());
+//						attivita.setSollecito_inviato(1);
+//						attivita.setData_invio_sollecito(new Date());
+//						session.update(attivita);
+//						
+//					}
+//					
+//				}
+//			}
+//			
+//			
+//		}
+////		Calendar cal = Calendar.getInstance();
+////		cal.setTime(today);
+////		cal.add(Calendar.DATE, 30);
+////		Date nextDate = cal.getTime();
+////		
+////	
+////		
+////		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenze(df.format(nextDate), df.format(nextDate), 0,session);
+////		
+////		DevTestoEmailDTO testo_email = getTestoEmail(session);
+////		
+////		for (DevRegistroAttivitaDTO attivita : lista_scadenze) {
+////			
+////			if(attivita.getEmail_inviata()==0) {
+////				SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getDescrizione(), testo_email.getReferenti());	
+////				attivita.setEmail_inviata(1);
+////				session.update(attivita);
+////			}
+////		}
+//		session.getTransaction().commit();
+//		session.close();
+//		
+//	}
+	
+	
+//public static void sendEmailAttivitaScaduteSollecito() throws ParseException, Exception {
+//		
+//		Session session=SessionFacotryDAO.get().openSession();
+//		session.beginTransaction();
+//		
+//		
+//		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenzeEmailInviata(session);
+//		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//		 LocalDate today = LocalDate.now();
+//
+//		for (DevRegistroAttivitaDTO attivita : lista_scadenze) {
+//			Date data_sollecito = attivita.getData_invio_sollecito();
+//			if(data_sollecito!=null) {
+//				System.out.println(data_sollecito);	
+//				java.sql.Date sqlDate = new java.sql.Date(data_sollecito.getTime());
+//				LocalDate dataSollecitoLocalDate = sqlDate.toLocalDate();
+//				 
+//			
+//			
+//			if(dataSollecitoLocalDate!=null && dataSollecitoLocalDate.equals(today)) {
+//				ArrayList<DevRegistroAttivitaDTO> lista_manutenzioni = GestioneDeviceDAO.getListaManutenzioniSuccessive(attivita.getId()+"", attivita.getDevice().getId(),session);
+//				
+//				if(lista_manutenzioni.size()==0) {
+//					DevTestoEmailDTO testo_email = getTestoEmail(session);
+//					
+//			
+//						Calendar cal = Calendar.getInstance();
+//						cal = Calendar.getInstance();
+//						
+//						cal.add(Calendar.DATE, 30);
+//						Date d = cal.getTime();
+//						
+//						attivita.setSollecito_inviato(1);
+//						
+//						//	SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getSollecito(), testo_email.getReferenti());
+//							attivita.setData_invio_sollecito(d);
+//							session.update(attivita);					
+//				
+//							
+//						
+//					}
+//				}
+//			
+//			
+//			}
+//			}
+//			
+//			
+//		
+//
+//		session.getTransaction().commit();
+//		session.close();
+//		
+//	}
+	
 public static void sendEmailAttivitaScaduteSollecito() throws ParseException, Exception {
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
+		Date today = new Date();
+
 		
-		
-			
-		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenzeEmailInviata(session);
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenzeScheduler(df.format(today), 1, session);
+
 		for (DevRegistroAttivitaDTO attivita : lista_scadenze) {
-			Date data_attivita = attivita.getData_evento();
+			DevTestoEmailDTO testo_email = getTestoEmail(session);
+			
+			
 			Calendar cal = Calendar.getInstance();
-			cal.setTime(data_attivita);
-			cal.add(Calendar.DATE, 45);
-			Date nextDate = cal.getTime();
-			if(!nextDate.after(new Date())) {
-			
-				ArrayList<DevRegistroAttivitaDTO> lista_manutenzioni = GestioneDeviceDAO.getListaManutenzioniSuccessive(df.format(nextDate), attivita.getDevice().getId(),session);
-				
-				if(lista_manutenzioni.size()==0) {
-					DevTestoEmailDTO testo_email = getTestoEmail(session);
-					
-					
-					if(attivita.getSollecito_inviato() == 1) {
-						if(attivita.getData_invio_sollecito()!=null) {
-							cal = Calendar.getInstance();
-							cal.setTime(attivita.getData_invio_sollecito());
-							cal.add(Calendar.DATE, 30);
-							Date d = cal.getTime();
+			cal = Calendar.getInstance();
 							
-							if(d.equals(new Date()) || d.before(new Date())) {
-								SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getSollecito(), testo_email.getReferenti());
-								attivita.setData_invio_sollecito(new Date());
-								session.update(attivita);
-							}
+			cal.add(Calendar.DATE, 30);
+			Date d = cal.getTime();
 							
-						}
-						
-					}else {
-						SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getSollecito(), testo_email.getReferenti());
-						attivita.setSollecito_inviato(1);
-						attivita.setData_invio_sollecito(new Date());
-						session.update(attivita);
-						
-					}
-					
-				}
-			}
-			
-			
+			attivita.setSollecito_inviato(1);
+							
+			//	SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getSollecito(), testo_email.getReferenti());
+			attivita.setData_invio_sollecito(d);
+			session.update(attivita);
 		}
-//		Calendar cal = Calendar.getInstance();
-//		cal.setTime(today);
-//		cal.add(Calendar.DATE, 30);
-//		Date nextDate = cal.getTime();
-//		
-//	
-//		
-//		ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenze(df.format(nextDate), df.format(nextDate), 0,session);
-//		
-//		DevTestoEmailDTO testo_email = getTestoEmail(session);
-//		
-//		for (DevRegistroAttivitaDTO attivita : lista_scadenze) {
-//			
-//			if(attivita.getEmail_inviata()==0) {
-//				SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getDescrizione(), testo_email.getReferenti());	
-//				attivita.setEmail_inviata(1);
-//				session.update(attivita);
-//			}
-//		}
+	
+
 		session.getTransaction().commit();
 		session.close();
 		

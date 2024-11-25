@@ -19,6 +19,8 @@ public class DevRegistroAttivitaDTO {
 	private int sollecito_inviato;
 	private Integer tipo_manutenzione_straordinaria;
 	private Date data_invio_sollecito;
+	private Date data_invio_email;
+	private String obsoleta;
 	
 	public int getId() {
 		return id;
@@ -109,6 +111,18 @@ public class DevRegistroAttivitaDTO {
 	}
 	public void setData_invio_sollecito(Date data_invio_sollecito) {
 		this.data_invio_sollecito = data_invio_sollecito;
+	}
+	public String getObsoleta() {
+		return obsoleta;
+	}
+	public void setObsoleta(String obsoleta) {
+		this.obsoleta = obsoleta;
+	}
+	public Date getData_invio_email() {
+		return data_invio_email;
+	}
+	public void setData_invio_email(Date data_invio_email) {
+		this.data_invio_email = data_invio_email;
 	}
 	
 	

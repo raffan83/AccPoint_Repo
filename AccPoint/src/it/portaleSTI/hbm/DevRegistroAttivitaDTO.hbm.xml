@@ -64,5 +64,13 @@
           <property name="data_invio_sollecito" type="java.sql.Date">
             <column name="data_invio_sollecito" />
         </property>
+         	<property name="obsoleta" type="java.lang.String">
+            <column name="obsoleta" />
+        </property>
+        
+         <property name="data_invio_email" type="java.sql.Date">
+            <column name="data_invio_email" />
+        </property>
+        
 	</class>
 </hibernate-mapping>

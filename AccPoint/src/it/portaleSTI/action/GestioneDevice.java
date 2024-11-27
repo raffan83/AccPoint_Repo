@@ -6,8 +6,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -201,6 +205,8 @@ public class GestioneDevice extends HttpServlet {
 			
 			else if(action.equals("lista_device")) {
 				
+		
+				
 				String id_company = request.getParameter("id_company");
 				
 				if(id_company == null) {
@@ -211,6 +217,38 @@ public class GestioneDevice extends HttpServlet {
 				
 				
 				ArrayList<DevDeviceDTO> lista_device = GestioneDeviceBO.getListaDevice(Integer.parseInt(id_company),session);
+				
+//				for (DevDeviceDTO device : lista_device) {
+//					ArrayList<DevRegistroAttivitaDTO> lista_manutenzioni = GestioneDeviceBO.getRegistroAttivitaFromDevice(device, 0, 2, session);
+//					
+//					int idMassimo = lista_manutenzioni.stream()
+//					        .mapToInt(DevRegistroAttivitaDTO::getId) // Estrai gli ID
+//					        .max() // Trova il massimo
+//					        .orElse(-1); // Valore di default (-1) se la lista è vuota
+//					
+//					for (DevRegistroAttivitaDTO a : lista_manutenzioni) {
+//						if(a.getId()!=idMassimo) {
+//							a.setObsoleta("S");
+//						}else {
+//							a.setObsoleta("N");
+//							Date data_prossima = a.getData_prossima();
+//							if(data_prossima!=null) {
+//								Calendar c = Calendar.getInstance(); // Ottieni un'istanza di Calendar
+//							    c.setTime(data_prossima); // Imposta la data di riferimento
+//							    c.add(Calendar.DATE, -15); // Aggiungi 15 giorni
+//							    a.setData_invio_email(c.getTime()); 
+//							}
+//						}
+//					}
+//					 
+//					    if (idMassimo != -1) {
+//					        System.out.println("ID massimo per il dispositivo " + device.getId() + ": " + idMassimo);
+//					    } else {
+//					        System.out.println("Nessuna manutenzione trovata per il dispositivo " + device.getId());
+//					    }
+//				}
+				
+				
 				ArrayList<DevTipoDeviceDTO> lista_tipi_device = GestioneDeviceBO.getListaTipiDevice(session);
 				ArrayList<DocumFornitoreDTO> lista_company = GestioneDocumentaleBO.getListaDocumFornitori(session);
 				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0, 0, session);
@@ -902,7 +940,7 @@ public class GestioneDevice extends HttpServlet {
 					id_company = device.getCompany_util().getId()+"";
 				}
 				
-				ArrayList<DevRegistroAttivitaDTO> registro_attivita = GestioneDeviceBO.getRegistroAttivitaFromDevice(device, Integer.parseInt(id_company), session);
+				ArrayList<DevRegistroAttivitaDTO> registro_attivita = GestioneDeviceBO.getRegistroAttivitaFromDevice(device, Integer.parseInt(id_company),0, session);
 				ArrayList<DevTipoEventoDTO> lista_tipi_evento = GestioneDeviceBO.geListaTipiEvento(session);
 				ArrayList<DevLabelTipoInterventoDTO> lista_label_tipo_intervento = GestioneDeviceBO.geListaLabelTipoIntervento(session);
 				
@@ -964,6 +1002,7 @@ public class GestioneDevice extends HttpServlet {
 				DevRegistroAttivitaDTO attivita = new DevRegistroAttivitaDTO();
 				attivita.setDevice(device);
 				attivita.setTipo_evento(new DevTipoEventoDTO(Integer.parseInt(tipo_evento),""));
+			
 				attivita.setDescrizione(descrizione);
 				attivita.setData_evento(df.parse(data));
 				if(tipo_manutenzione_straordinaria!=null && !tipo_manutenzione_straordinaria.equals("")) {
@@ -974,9 +1013,27 @@ public class GestioneDevice extends HttpServlet {
 				if(frequenza!=null && !frequenza.equals("")) {
 					attivita.setFrequenza(Integer.parseInt(frequenza));
 				}
+				
+				Date data_invio_email = null;
 				if(data_prossima!=null && !data_prossima.equals("")) {
 					attivita.setData_prossima(df.parse(data_prossima));
+					
+					Calendar c = Calendar.getInstance();
+					c.setTime(attivita.getData_prossima());
+					c.add(Calendar.DATE, -15);
+					data_invio_email = c.getTime();
 				}
+				
+				if(tipo_evento.equals("2")) {
+					ArrayList<DevRegistroAttivitaDTO> lista_attivita_precedenti = GestioneDeviceBO.getRegistroAttivitaFromDevice(device, 0, 2,session);
+					for (DevRegistroAttivitaDTO a : lista_attivita_precedenti) {
+						a.setObsoleta("S");
+					}
+					attivita.setObsoleta("N");
+					attivita.setData_invio_email(data_invio_email);
+				}
+				
+				
 				attivita.setUtente(utente);
 				attivita.setTipo_intervento(tipo_intervento);
 				attivita.setNote_evento(note_evento);

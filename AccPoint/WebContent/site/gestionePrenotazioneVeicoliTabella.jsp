@@ -402,6 +402,7 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 				// Attendere il completamento di tutte le chiamate AJAX
 				Promise.all(promises).then(function() {
 
+					$('#luogo').val("");
 					$('#utente').val("");
 					$('#utente').change();
 					$('#id_prenotazione').val("");			
@@ -419,7 +420,7 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 			}else{
 				
 				
-				
+				$('#luogo').val("");
 				$('#utente').val("");
 				$('#utente').change();
 				$('#id_prenotazione').val("");
@@ -824,6 +825,9 @@ var cellCopy;
 
 $(document).ready(function() {
 	
+	initializeTimepicker("08:00", "17:00");
+
+	
 	 pleaseWaitDiv.modal('show');
 	console.log("dentro")
 zoom_level  = parseFloat(Cookies.get('page_zoom'));
@@ -1017,6 +1021,9 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                var border_color;
 	 	                var background_color;
 	 	                
+	 	          
+		 	                
+	 	                
 	 	                if(lista_prenotazioni[i].stato_prenotazione == 1){
 	 	                   var border_color = "#FFD700";
 		 	               var background_color = "#FFFFE0";
@@ -1039,10 +1046,16 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                }
 	 	                
 	 	               if(lista_prenotazioni[i].manutenzione==1){
-	 	            	  var border_color = "#da70d6";
-			 	            var background_color = "#f7b8b8 ";
+	 	            	  if(lista_prenotazioni[i].stato_prenotazione == 3){
+	 	            		 var border_color = "#1E90FF";
+				 	            var background_color = "#ADD8E6";
+	 	            	
+	 	               }else{
+		 	            	  var border_color = "#da70d6";
+				 	            var background_color = "#f7b8b8 ";
 	 	               }
-	 	                
+		 	               }
+	 	              
 	 	               if(lista_prenotazioni[i].luogo!=null){
 	 	                	var title = escapeHtml(lista_prenotazioni[i].luogo);
 	 	                 }else{

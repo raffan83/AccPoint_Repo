@@ -133,17 +133,27 @@ public class GestioneDeviceDAO {
 		return result;
 	}
 
-	public static ArrayList<DevRegistroAttivitaDTO> getRegistroAttivitaFromDevice(DevDeviceDTO device,int id_company,  Session session) {
+	public static ArrayList<DevRegistroAttivitaDTO> getRegistroAttivitaFromDevice(DevDeviceDTO device,int id_company, int tipo, Session session) {
 
 		ArrayList<DevRegistroAttivitaDTO> lista = null;
 		
 		Query query = null;
 		
+		String q = "";
+		
 		if(id_company==0) {
-			query = session.createQuery("from DevRegistroAttivitaDTO where device.id = :_id_device");
+			q = "from DevRegistroAttivitaDTO where device.id = :_id_device";
+			if(tipo!=0) {
+				q+= " and tipo_evento.id = "+tipo;
+			}
+			query = session.createQuery(q);
 			query.setParameter("_id_device", device.getId());
 		}else {
-			query = session.createQuery("from DevRegistroAttivitaDTO where device.id = :_id_device and (company.id = :_id_company or data_evento >= :_data)");
+			q = "from DevRegistroAttivitaDTO where device.id = :_id_device and (company.id = :_id_company or data_evento >= :_data)";
+			if(tipo!=0) {
+				q+= " and tipo_evento.id = "+tipo;
+			}
+			query = session.createQuery(q);
 			query.setParameter("_id_device", device.getId());
 			query.setParameter("_id_company", id_company);
 			query.setParameter("_data", device.getData_cambio_company());	
@@ -371,28 +381,53 @@ public static ArrayList<DevRegistroAttivitaDTO> getListaScadenze(String dateFrom
 }
 
 
-public static ArrayList<DevRegistroAttivitaDTO> getListaScadenzeScheduler(String dateFrom, String dateTo,int company,  Session session) throws Exception, ParseException {
+//public static ArrayList<DevRegistroAttivitaDTO> getListaScadenzeScheduler(String dateFrom, String dateTo,int company,  Session session) throws Exception, ParseException {
+//	
+//	ArrayList<DevRegistroAttivitaDTO> lista = null;
+//	
+//	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//
+//	String str = "";
+//	if(company == 0) {
+//		str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and a.device.disabilitato = 0";
+//		
+//	}else {
+//		str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and id_company_util = :_id_company and a.device.disabilitato = 0";
+//	
+//	}
+//
+//	Query query = session.createQuery(str);
+//	query.setParameter("_data_start", sdf.parse(dateFrom));
+//	query.setParameter("_data_end", sdf.parse(dateTo));
+//	
+//	if(company!=0) {
+//		query.setParameter("_id_company", company);
+//	}
+//
+//	lista = (ArrayList<DevRegistroAttivitaDTO>) query.list();
+//	
+//	return lista;
+//}
+
+
+public static ArrayList<DevRegistroAttivitaDTO> getListaScadenzeScheduler(String date, int sollecito, Session session) throws Exception, ParseException {
 	
 	ArrayList<DevRegistroAttivitaDTO> lista = null;
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-	String str = "";
-	if(company == 0) {
-		str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and a.device.disabilitato = 0";
-		
-	}else {
-		str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and id_company_util = :_id_company and a.device.disabilitato = 0";
-	
+	String tipo_data = "data_invio_email";
+	String email_inviata = " and email_inviata = 0";
+	if(sollecito == 1) {
+		tipo_data = "data_invio_sollecito";
+		email_inviata = "";
 	}
+	
+	String str = "from DevRegistroAttivitaDTO as a where "+tipo_data+" = :_date and obsoleta = 'N' and a.device.disabilitato = 0"+email_inviata;
 
+	
 	Query query = session.createQuery(str);
-	query.setParameter("_data_start", sdf.parse(dateFrom));
-	query.setParameter("_data_end", sdf.parse(dateTo));
-	
-	if(company!=0) {
-		query.setParameter("_id_company", company);
-	}
+	query.setParameter("_date", sdf.parse(date));
+
 
 	lista = (ArrayList<DevRegistroAttivitaDTO>) query.list();
 	
@@ -452,13 +487,14 @@ public static ArrayList<DevRegistroAttivitaDTO> getListaScadenzeEmailInviata(Ses
 	return lista;
 }
 
-public static ArrayList<DevRegistroAttivitaDTO> getListaManutenzioniSuccessive(String date, int id_device, Session session) throws HibernateException, ParseException {
+public static ArrayList<DevRegistroAttivitaDTO> getListaManutenzioniSuccessive(String id, int id_device, Session session) throws HibernateException, ParseException {
 	
 	ArrayList<DevRegistroAttivitaDTO> lista = null;
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	Query query = session.createQuery("from DevRegistroAttivitaDTO where device.id = :_id_device and tipo_evento.id = 2  and data_evento >= :_date");
+	Query query = session.createQuery("from DevRegistroAttivitaDTO where device.id = :_id_device and tipo_evento.id = 2  and id > :_id");
 	query.setParameter("_id_device", id_device);
-	query.setParameter("_date", sdf.parse(date));
+	query.setParameter("_id", Integer.parseInt(id));
+	//query.setParameter("_date", sdf.parse(date));
 	
 	lista = (ArrayList<DevRegistroAttivitaDTO>) query.list();
 	

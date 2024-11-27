@@ -35,7 +35,7 @@ import it.portaleSTI.bo.GestioneUtenteBO;
 public class Version extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String DASM_VERSION = "3.1.1";
-	private static final String DASM_VER_VERSION ="3.4.1";
+	private static final String DASM_VER_VERSION ="3.4.2";
        
     /**
      * @see HttpServlet#HttpServlet()

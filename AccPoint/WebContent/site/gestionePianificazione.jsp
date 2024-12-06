@@ -270,6 +270,7 @@
       <input type="hidden" id="check_mail" name="check_mail">
       <input type="hidden" id="check_agenda" name="check_agenda">
       <input type="hidden" id="check_pausa_pranzo" name="check_pausa_pranzo">
+      <input type="hidden" id="anno_data" name="anno_data">
       
       
       

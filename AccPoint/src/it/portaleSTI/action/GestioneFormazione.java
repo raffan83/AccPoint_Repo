@@ -2901,7 +2901,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String check_pausa_pranzo = ret.get("check_pausa_pranzo");
 					String descrizione = ret.get("descrizione");
 					String durata_pausa_pranzo = ret.get("durata_pausa_pranzo");
-				
+					String anno_data = ret.get("anno_data");
 					
 					ForPiaPianificazioneDTO pianificazione = null;
 					if(id_pianificazione!=null && !id_pianificazione.equals("")) {
@@ -2929,7 +2929,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					if(n_utenti!=null && !n_utenti.equals("")) {
 						pianificazione.setnUtenti(Integer.parseInt(n_utenti));
 					}
-					int anno = (int) request.getSession().getAttribute("anno");
+					int anno = 0;
+					if(anno_data!=null && !anno_data.equals("")) {
+						anno = Integer.parseInt(anno_data);
+					}else {
+						anno = (int) request.getSession().getAttribute("anno");
+					}
+					
 					LocalDate localDate = null;
 					if(Integer.parseInt(day)>366 && LocalDate.ofYearDay(anno, 1).isLeapYear()) {
 						anno = anno+1;
@@ -2951,13 +2957,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					pianificazione.setData(date);
 					
-					if(stato.equals("4")) {
-						
-						localDateTime = localDate.plusWeeks(1).atStartOfDay();
-						pianificazione.setData_reminder(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
-					}else {
-						pianificazione.setData_reminder(null);
-					}
+//					if(stato.equals("4")) {
+//						
+//						localDateTime = localDate.plusWeeks(1).atStartOfDay();
+//						pianificazione.setData_reminder(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
+//					}else {
+//						pianificazione.setData_reminder(null);
+//					}
 					
 					if(id_docenti!=null && !id_docenti.equals("")) {
 						for (String id : id_docenti.split(";")) {

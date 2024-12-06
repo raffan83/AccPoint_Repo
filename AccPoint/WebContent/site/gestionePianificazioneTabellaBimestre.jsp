@@ -520,7 +520,15 @@ $(document).ready(function() {
 
 function modalPianificazione(day, commessa, id){
 	
-	var currentYear = new Date().getFullYear()
+	var cell = $('#'+commessa.replace("/", "")+"_"+day);
+	
+	var columnIndex = cell.index();
+
+	// Recupera il testo dell'header corrispondente
+	var headerText = cell.closest('table').find('thead th').eq(columnIndex).text();
+	
+	var currentYear = headerText.match(/\b\d{4}\b/)[0]
+	//var currentYear = new Date().getFullYear()
 	
 	var dayValue = parseInt(day);
 	var localDate = new Date(Date.UTC(currentYear, 0, dayValue));
@@ -529,7 +537,7 @@ function modalPianificazione(day, commessa, id){
 	var year = localDate.getUTCFullYear();
 	var formattedDate = ('0' + d).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
 
-	var cell = $('#'+commessa.replace("/", "")+"_"+day);
+
 	var nota = cell.text()
 	
 		$('#title_pianificazione').html("Pianificazione "+formattedDate+" Commessa: "+commessa)
@@ -589,7 +597,7 @@ function modalPianificazione(day, commessa, id){
 			}
 			$('#btn_elimina').show()
 		
-				
+			$('#anno_data').val(year);	
 
 			
 			$('#modalPianificazione').modal()
@@ -600,6 +608,7 @@ function modalPianificazione(day, commessa, id){
 		$('#title_pianificazione').html("Pianificazione "+formattedDate+" Commessa: "+commessa)
 		$('#day').val(day);
 		$('#commessa').val(commessa);
+		$('#anno_data').val(year);
 		$('#btn_elimina').hide()
 		$('#modalPianificazione').modal()
 	}
@@ -706,73 +715,88 @@ if(filtro!=3){
 		    	var id = lista_pianificazioni[i].id_commessa.replace("/","")+"_"+lista_pianificazioni[i].nCella;
 				var cell = $("#"+id);
 				
-				var str_docenti = "";
+			
+					var columnIndex = cell.index();
+					var headerText = cell.closest('table').find('thead th').eq(columnIndex).text();
+					
+					if(headerText!=null && headerText!=''){
+						var headerYear = headerText.match(/\b\d{4}\b/)[0]
+						var pianYear = lista_pianificazioni[i].data.match(/\b\d{4}\b/)[0]
+					}
 				
-				for(var j = 0; j < lista_pianificazioni[i].listaDocenti.length; j++){
-					str_docenti += " - " + lista_pianificazioni[i].listaDocenti[j].nome +" "+ lista_pianificazioni[i].listaDocenti[j].cognome;
-				}
 				
-				var icon = "";
-				var orario = "";
-				if(lista_pianificazioni[i].tipo.id==2){
-					icon = '<i class="fa fa-star" aria-hidden="true"></i>   ';
-					if(!lista_pianificazioni[i].descrizione.replace(":","").replace(".","").startsWith(lista_pianificazioni[i].ora_inizio.replace(":",""))){
-						orario = lista_pianificazioni[i].ora_inizio+" - ";
+				
+				if(  headerYear == pianYear){
+					var str_docenti = "";
+					
+					for(var j = 0; j < lista_pianificazioni[i].listaDocenti.length; j++){
+						str_docenti += " - " + lista_pianificazioni[i].listaDocenti[j].nome +" "+ lista_pianificazioni[i].listaDocenti[j].cognome;
 					}
 					
-				}
-				
-				if(lista_pianificazioni[i].descrizione.length>20){
-				
-						//cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro'  style='margin-top:5px' ondblclick='modalPianificazione('"+lista_pianificazioni[i].nCella+"', '"+lista_pianificazioni[i].id_commessa+"','"+lista_pianificazioni[i].id+"')'>"+lista_pianificazioni[i].note.substring(0,20)+"...</div>");	
-						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+icon + orario + lista_pianificazioni[i].descrizione.substring(0,20)+"..."+str_docenti + "</div>");	
+					var icon = "";
+					var orario = "";
+					if(lista_pianificazioni[i].tipo.id==2){
+						icon = '<i class="fa fa-star" aria-hidden="true"></i>   ';
+						if(!lista_pianificazioni[i].descrizione.replace(":","").replace(".","").startsWith(lista_pianificazioni[i].ora_inizio.replace(":",""))){
+							orario = lista_pianificazioni[i].ora_inizio+" - ";
+						}
+						
+					}
 					
+					if(lista_pianificazioni[i].descrizione.length>20){
+					
+							//cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro'  style='margin-top:5px' ondblclick='modalPianificazione('"+lista_pianificazioni[i].nCella+"', '"+lista_pianificazioni[i].id_commessa+"','"+lista_pianificazioni[i].id+"')'>"+lista_pianificazioni[i].note.substring(0,20)+"...</div>");	
+							cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+icon + orario + lista_pianificazioni[i].descrizione.substring(0,20)+"..."+str_docenti + "</div>");	
+						
+					}else{
+						
+							cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+icon + orario + lista_pianificazioni[i].descrizione+str_docenti + "</div>");	
+							 
+						
+						
+					}
+					cell.attr("name", lista_pianificazioni[i].id)
+
+			 		 
+					var riquadro = $('#riquadro_'+lista_pianificazioni[i].id);
+					if(lista_pianificazioni[i].stato.id != 5){
+						
+						var cell_stato = $("#stato_"+lista_pianificazioni[i].id_commessa.replace("/",""));
+						cell_stato.html("In Corso");
+						
+						if(lista_pianificazioni[i].stato.id == 1){
+							riquadro.css("background-color", "#DCDCDC");
+							riquadro.css("border-color", "#C0C0C0");
+						}else if(lista_pianificazioni[i].stato.id == 2){
+							riquadro.css("background-color", "#FFFFE0");
+							riquadro.css("border-color", "#FFD700");
+						}else if(lista_pianificazioni[i].stato.id == 3){
+							riquadro.css("background-color", "#90EE90");
+							riquadro.css("border-color", "#A0CE00");
+						}else if (lista_pianificazioni[i].stato.id == 4){
+							riquadro.css("background-color", "#ADD8E6");
+							riquadro.css("border-color", "#1E90FF");
+						}
+						
+						
+						var indice = array.indexOf(lista_pianificazioni[i].id_commessa.replace("/",""));
+						if (indice !== -1) {
+						  array.splice(indice, 1);
+						}
+						array_in_corso.push(lista_pianificazioni[i].id_commessa.replace("/",""));
+						
+					
+						
 				}else{
-					
-						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+icon + orario + lista_pianificazioni[i].descrizione+str_docenti + "</div>");	
-						 
-					
+
+					riquadro.css("background-color", "#F7BEF6");
+					riquadro.css("border-color", "#FF69B4");
+					if(!array.includes(lista_pianificazioni[i].id_commessa.replace("/","")) && !array_in_corso.includes(lista_pianificazioni[i].id_commessa.replace("/",""))){
+						array.push(lista_pianificazioni[i].id_commessa.replace("/",""));	
+					}
 					
 				}
-				cell.attr("name", lista_pianificazioni[i].id)
-
-		 		 
-				var riquadro = $('#riquadro_'+lista_pianificazioni[i].id);
-				if(lista_pianificazioni[i].stato.id != 5){
-					
-					var cell_stato = $("#stato_"+lista_pianificazioni[i].id_commessa.replace("/",""));
-					cell_stato.html("In Corso");
-					
-					if(lista_pianificazioni[i].stato.id == 1){
-						riquadro.css("background-color", "#DCDCDC");
-						riquadro.css("border-color", "#C0C0C0");
-					}else if(lista_pianificazioni[i].stato.id == 2){
-						riquadro.css("background-color", "#FFFFE0");
-						riquadro.css("border-color", "#FFD700");
-					}else if(lista_pianificazioni[i].stato.id == 3){
-						riquadro.css("background-color", "#90EE90");
-						riquadro.css("border-color", "#A0CE00");
-					}else if (lista_pianificazioni[i].stato.id == 4){
-						riquadro.css("background-color", "#ADD8E6");
-						riquadro.css("border-color", "#1E90FF");
-					}
-					
-					
-					var indice = array.indexOf(lista_pianificazioni[i].id_commessa.replace("/",""));
-					if (indice !== -1) {
-					  array.splice(indice, 1);
-					}
-					array_in_corso.push(lista_pianificazioni[i].id_commessa.replace("/",""));
-					
 				
-					
-			}else{
-
-				riquadro.css("background-color", "#F7BEF6");
-				riquadro.css("border-color", "#FF69B4");
-				if(!array.includes(lista_pianificazioni[i].id_commessa.replace("/","")) && !array_in_corso.includes(lista_pianificazioni[i].id_commessa.replace("/",""))){
-					array.push(lista_pianificazioni[i].id_commessa.replace("/",""));	
-				}
 				
 							
 					

@@ -192,7 +192,7 @@ public class GestioneDeviceBO {
 		for (DevRegistroAttivitaDTO attivita : lista_scadenze) {
 			
 			if(attivita.getEmail_inviata()==0) {
-				//SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getDescrizione(), testo_email.getReferenti());	
+				SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getDescrizione(), testo_email.getReferenti());	
 				attivita.setEmail_inviata(1);
 				cal.setTime(today);
 				cal.add(Calendar.DATE, 45);				
@@ -491,7 +491,7 @@ public static void sendEmailAttivitaScaduteSollecito() throws ParseException, Ex
 							
 			attivita.setSollecito_inviato(1);
 							
-			//	SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getSollecito(), testo_email.getReferenti());
+				SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getSollecito(), testo_email.getReferenti());
 			attivita.setData_invio_sollecito(d);
 			session.update(attivita);
 		}

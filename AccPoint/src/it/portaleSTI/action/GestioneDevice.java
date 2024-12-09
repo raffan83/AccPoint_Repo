@@ -1024,13 +1024,15 @@ public class GestioneDevice extends HttpServlet {
 					data_invio_email = c.getTime();
 				}
 				
-				if(tipo_evento.equals("2")) {
-					ArrayList<DevRegistroAttivitaDTO> lista_attivita_precedenti = GestioneDeviceBO.getRegistroAttivitaFromDevice(device, 0, 2,session);
-					for (DevRegistroAttivitaDTO a : lista_attivita_precedenti) {
-						a.setObsoleta("S");
+				if(tipo_evento.equals("2") || tipo_evento.equals("3")) {
+					if(data_prossima!=null && !data_prossima.equals("")) {
+						ArrayList<DevRegistroAttivitaDTO> lista_attivita_precedenti = GestioneDeviceBO.getRegistroAttivitaFromDevice(device, 0, 2,session);
+						for (DevRegistroAttivitaDTO a : lista_attivita_precedenti) {
+							a.setObsoleta("S");
+						}
+						attivita.setObsoleta("N");
+						attivita.setData_invio_email(data_invio_email);
 					}
-					attivita.setObsoleta("N");
-					attivita.setData_invio_email(data_invio_email);
 				}
 				
 				

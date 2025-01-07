@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,13 +134,14 @@ public class ScaricaCertificato extends HttpServlet {
 			 	pack = Utility.decryptData(pack);
 			 	
 			     File d = new File(Costanti.PATH_FOLDER+pack+"/"+filename);
-				 
+			/*	 
 				 FileInputStream fileIn = new FileInputStream(d);
 				 
 				 response.setContentType("application/pdf");
 				 
 			//	 response.setHeader("Content-Disposition","attachment;filename="+filename);
-				 
+				 response.setHeader("Content-Disposition", "inline; filename=\"Certificato_Ufficiale.pdf\"");
+
 				 ServletOutputStream outp = response.getOutputStream();
 				     
 				    byte[] outputByte = new byte[1];
@@ -153,7 +156,15 @@ public class ScaricaCertificato extends HttpServlet {
 				    fileIn.close();
 			
 				    outp.flush();
-				    outp.close();
+				    outp.close();*/
+			     
+			     String encodedPdfPath = URLEncoder.encode(d.getPath(), StandardCharsets.UTF_8.toString());
+			     
+			     request.setAttribute("pdfPath", encodedPdfPath);
+
+			        // Inoltra la richiesta alla JSP visualizzaPdf.jsp
+			        RequestDispatcher dispatcher = request.getRequestDispatcher("/site/visualizzaPdf.jsp");
+			        dispatcher.forward(request, response);
 			}
 			if(action.equals("certificatoStrumentoFirmato"))
 			{

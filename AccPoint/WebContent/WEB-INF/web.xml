@@ -25,5 +25,5 @@
   </jsp-config>
   <listener>
     <listener-class>it.portaleSTI.action.ContextListener</listener-class>
-</listener>
+  </listener>
 </web-app>

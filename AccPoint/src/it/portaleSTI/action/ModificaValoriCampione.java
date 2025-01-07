@@ -103,7 +103,8 @@ public class ModificaValoriCampione extends HttpServlet {
 			for (int i = 0; i < jsonElem.size(); i++) {
 				JsonObject objJson = jsonElem.get(i).getAsJsonObject();
 				JsonObject newobjJson = new JsonObject();
-				jsonElem.get(i).getAsJsonObject().get("campione").getAsJsonObject().remove("descrizione_manutenzione");
+				jsonElem.get(i).getAsJsonObject().remove("campione");
+				//jsonElem.get(i).getAsJsonObject().get("campione").getAsJsonObject().remove("descrizione_manutenzione");
 				
 				JsonObject umObj = objJson.get("unita_misura").getAsJsonObject();
 				JsonObject tgObj = objJson.get("tipo_grandezza").getAsJsonObject();

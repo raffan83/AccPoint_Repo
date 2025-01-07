@@ -144,14 +144,14 @@ public class GestioneDeviceDAO {
 		if(id_company==0) {
 			q = "from DevRegistroAttivitaDTO where device.id = :_id_device";
 			if(tipo!=0) {
-				q+= " and tipo_evento.id = "+tipo;
+				q+= " and tipo_evento.id = 2 or tipo_evento.id = 3";
 			}
 			query = session.createQuery(q);
 			query.setParameter("_id_device", device.getId());
 		}else {
 			q = "from DevRegistroAttivitaDTO where device.id = :_id_device and (company.id = :_id_company or data_evento >= :_data)";
 			if(tipo!=0) {
-				q+= " and tipo_evento.id = "+tipo;
+				q+= " and tipo_evento.id = 2 or tipo_evento.id = 3";
 			}
 			query = session.createQuery(q);
 			query.setParameter("_id_device", device.getId());
@@ -586,12 +586,12 @@ public static ArrayList<DevDeviceDTO> getListaDeviceManScad(int id_company, Sess
 	
 	
 	if(id_company == 0) {
-		query = session.createQuery("select device from DevRegistroAttivitaDTO a  where a.device.disabilitato = 0 and a.device.tipo_device.id <> 14 and a.tipo_evento.id = 2 "
-				+ "AND a.id IN (SELECT MAX(id) FROM DevRegistroAttivitaDTO WHERE tipo_evento.id = 2 GROUP BY device.id) AND a.data_prossima < :_date");
+		query = session.createQuery("select device from DevRegistroAttivitaDTO a  where a.device.disabilitato = 0 and a.device.tipo_device.id <> 14 and (a.tipo_evento.id = 2 or a.tipo_evento.id = 3) "
+				+ "AND a.id IN (SELECT MAX(id) FROM DevRegistroAttivitaDTO WHERE (tipo_evento.id = 2 or tipo_evento.id = 3) GROUP BY device.id) AND a.data_prossima < :_date");
 		query.setParameter("_date", df.parseObject(df.format(new Date())));
 	}else {
-		query = session.createQuery("select device from DevRegistroAttivitaDTO a where a.device.company_util.id = :_id_company and a.device.disabilitato = 0 and a.device.tipo_device.id <> 14 and a.tipo_evento.id = 2 "  
-								+ " AND a.id IN (SELECT MAX(id)  FROM DevRegistroAttivitaDTO WHERE tipo_evento.id = 2 GROUP BY device.id) AND a.data_prossima < :_date)");	
+		query = session.createQuery("select device from DevRegistroAttivitaDTO a where a.device.company_util.id = :_id_company and a.device.disabilitato = 0 and a.device.tipo_device.id <> 14 and (a.tipo_evento.id = 2 or a.tipo_evento.id = 3) "  
+								+ " AND a.id IN (SELECT MAX(id)  FROM DevRegistroAttivitaDTO (tipo_evento.id = 2 or tipo_evento.id = 3) GROUP BY device.id) AND a.data_prossima < :_date)");	
 		query.setParameter("_id_company", id_company);
 		query.setParameter("_date", df.parseObject(df.format(new Date())));
 	}

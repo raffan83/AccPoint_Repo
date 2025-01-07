@@ -20,12 +20,13 @@
 	     		 <input style="display:none" type="password" name="fakepasswordremembered"/>
 	     		  	<div class="row padding-bottom-30" >
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
+	    
             <button onClick="inviaSelected()" class="btn btn-info"><i class="fa fa-paper-plane-o"></i> Invia a selezionati</button>
             
           </div>
 	  </div> 
 	<div class="row" >
-	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
+	     <div class="col-xs-12" >
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th></th>
@@ -493,6 +494,13 @@
 	var indirizzo;
     $(document).ready(function() {
  
+    	 if($('#selectFiltri').val() == 'chiusi_1'){
+    		 $('#apporvaSelectedButtonGroup').show();
+    	 }else{
+    		 $('#apporvaSelectedButtonGroup').hide();
+    	 }
+    	
+    	
     	indirizzo = 2;
     	var maxSelect = 100;
 

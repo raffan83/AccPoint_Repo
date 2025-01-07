@@ -358,11 +358,11 @@ public static ArrayList<DevRegistroAttivitaDTO> getListaScadenze(String dateFrom
 	if(company == 0) {
 		//str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and a.device.disabilitato = 0";
 		str = "FROM DevRegistroAttivitaDTO d " +
-                "WHERE (d.tipo_evento.id = 2 or d.tipo_evento.id = 5) and d.device.tipo_device.id <> 14  and d.data_evento = (SELECT MAX(d2.data_evento) FROM DevRegistroAttivitaDTO d2 WHERE d2.device.id = d.device.id and (d2.tipo_evento.id = 2 or d2.tipo_evento.id = 5) ) and d.device.disabilitato = 0 GROUP BY d.device.id";
+                "WHERE (d.tipo_evento.id = 2 or d.tipo_evento.id = 5 or d.tipo_evento.id = 3) and d.device.tipo_device.id <> 14  and d.data_evento = (SELECT MAX(d2.data_evento) FROM DevRegistroAttivitaDTO d2 WHERE d2.device.id = d.device.id and (d2.tipo_evento.id = 2 or d2.tipo_evento.id = 5 or d2.tipo_evento.id = 3) ) and d.device.disabilitato = 0 GROUP BY d.device.id";
 	}else {
 		//str = "from DevRegistroAttivitaDTO as a where a.data_prossima between :_data_start and :_data_end and id_company_util = :_id_company and a.device.disabilitato = 0";
 		str = "FROM DevRegistroAttivitaDTO d " +
-                "WHERE (d.tipo_evento.id = 2 or d.tipo_evento.id = 5) and d.device.tipo_device.id <> 14 and d.data_evento = (SELECT MAX(d2.data_evento) FROM DevRegistroAttivitaDTO d2 WHERE d2.device.id = d.device.id and (d2.tipo_evento.id = 2 or d2.tipo_evento.id = 5) ) and d.device.disabilitato = 0 and id_company_util = :_id_company GROUP BY d.device.id";
+                "WHERE (d.tipo_evento.id = 2 or d.tipo_evento.id = 5 or d.tipo_evento.id = 3) and d.device.tipo_device.id <> 14 and d.data_evento = (SELECT MAX(d2.data_evento) FROM DevRegistroAttivitaDTO d2 WHERE d2.device.id = d.device.id and (d2.tipo_evento.id = 2 or d2.tipo_evento.id = 5  or d2.tipo_evento.id = 3) ) and d.device.disabilitato = 0 and id_company_util = :_id_company GROUP BY d.device.id";
 	}
 
 	Query query = session.createQuery(str);

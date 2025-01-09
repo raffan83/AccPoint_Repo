@@ -76,6 +76,8 @@ import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import TemplateReport.PivotTemplate;
@@ -986,12 +988,27 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 
 					}
 				  file = new java.io.File(Costanti.PATH_FOLDER+"//temp//"+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
+				  
+				  
+	              
 			  }
+			  
+			 
+              
 			  FileOutputStream fos = new FileOutputStream(file);
 			
 			  report.toPdf(fos);
 			  
+			  PDDocument document = PDDocument.load(file);
+			  PDDocumentInformation info = document.getDocumentInformation();
+              info.setTitle(file.getName()); // Modifica il titolo
+              document.setDocumentInformation(info);
+	
+              document.save(file);
+			  
 			  certificato.setNomeCertificato(file.getName());
+			
+			  
 			  if(!multi) {
 				  certificato.setDataCreazione(new Date());  
 			  }
@@ -1018,6 +1035,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				  addCertificatiCampioni(file,misura,strumento.getTipoRapporto());
 			  }
 			  
+		
 			  
 			  System.out.println("Generato Certificato: "+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
 			  

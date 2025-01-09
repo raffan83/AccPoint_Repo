@@ -134,13 +134,13 @@ public class ScaricaCertificato extends HttpServlet {
 			 	pack = Utility.decryptData(pack);
 			 	
 			     File d = new File(Costanti.PATH_FOLDER+pack+"/"+filename);
-			/*	 
+				 
 				 FileInputStream fileIn = new FileInputStream(d);
 				 
 				 response.setContentType("application/pdf");
 				 
 			//	 response.setHeader("Content-Disposition","attachment;filename="+filename);
-				 response.setHeader("Content-Disposition", "inline; filename=\"Certificato_Ufficiale.pdf\"");
+				 response.setHeader("Content-Disposition", "inline; filename="+filename);
 
 				 ServletOutputStream outp = response.getOutputStream();
 				     
@@ -156,15 +156,15 @@ public class ScaricaCertificato extends HttpServlet {
 				    fileIn.close();
 			
 				    outp.flush();
-				    outp.close();*/
+				    outp.close();
 			     
-			     String encodedPdfPath = URLEncoder.encode(d.getPath(), StandardCharsets.UTF_8.toString());
-			     
-			     request.setAttribute("pdfPath", encodedPdfPath);
-
-			        // Inoltra la richiesta alla JSP visualizzaPdf.jsp
-			        RequestDispatcher dispatcher = request.getRequestDispatcher("/site/visualizzaPdf.jsp");
-			        dispatcher.forward(request, response);
+//			     String encodedPdfPath = URLEncoder.encode(d.getPath(), StandardCharsets.UTF_8.toString());
+//			     
+//			     request.setAttribute("pdfPath", encodedPdfPath);
+//
+//			        // Inoltra la richiesta alla JSP visualizzaPdf.jsp
+//			        RequestDispatcher dispatcher = request.getRequestDispatcher("/site/visualizzaPdf.jsp");
+//			        dispatcher.forward(request, response);
 			}
 			if(action.equals("certificatoStrumentoFirmato"))
 			{

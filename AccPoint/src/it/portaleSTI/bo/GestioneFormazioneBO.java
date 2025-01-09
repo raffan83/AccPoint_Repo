@@ -1766,6 +1766,8 @@ public class GestioneFormazioneBO {
 				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_antonio_accettola.png");
 				    	}else if(firma_responsabile == 3) {
 				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_gabriella_mammone.png");
+				    	}else if(firma_responsabile == 4) {
+				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_lisa_lombardozzi.png");
 				    	}
 				    	
 				    	image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	   
@@ -1797,6 +1799,8 @@ public class GestioneFormazioneBO {
 				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_antonio_accettola.png");
 				    	}else if(firma_responsabile == 3) {
 				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_gabriella_mammone.png");
+				    	}else if(firma_responsabile == 4) {
+				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_lisa_lombardozzi.png");
 				    	}
 				    	
 

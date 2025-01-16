@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
@@ -41,6 +42,7 @@ import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
@@ -78,7 +80,7 @@ import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaElettronica;
 
 public class ListaCertificati extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(ListaCertificati.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -111,6 +113,9 @@ public class ListaCertificati extends HttpServlet {
 		Boolean ajax = false;
 		try 
 		{
+			
+	
+			
 			String action =request.getParameter("action");
 		
 			
@@ -121,6 +126,10 @@ public class ListaCertificati extends HttpServlet {
 			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 			UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);
+			
+			
+			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
+			
 			if(utente_firma.getIdFirma()!=null && !utente_firma.getIdFirma().equals("")) {
 				request.getSession().setAttribute("abilitato_firma", true);
 			}else {
@@ -333,23 +342,35 @@ public class ListaCertificati extends HttpServlet {
 				String idCertificato = request.getParameter("idCertificato");
 				String data_emissione = request.getParameter("data_emissione");
 				
+				
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
 				
-//				if(certificato.getMisura().getLat()!=null && certificato.getMisura().getLat().equals("S")) {
-//					if(certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
-//						String  path_immagine = getServletContext().getRealPath("/images");
-//						path_immagine=path_immagine+"/livella.png";
-//						//new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), path_immagine, session);						
-//					}					
-//				}else {
-				String resultFirma = GestioneCertificatoBO.createCertificato(idCertificato, data_emissione,session,context, utente);	
-//				}
-					
+				List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(certificato.getMisura().getListaPunti(),certificato.getMisura().getStrumento().getTipoRapporto());
 				
+				boolean dataCampioneSuccessiva = false;
+				for (CampioneDTO campioneDTO : listaCampioni) {
+					if(campioneDTO.getDataVerifica().after(certificato.getMisura().getDataMisura())) {
+						myObj.addProperty("success", false);
+						myObj.addProperty("messaggio", "Attenzione! La data verifica del campione è successiva alla data misura!");
+				        out.println(myObj.toString());
+				        dataCampioneSuccessiva = true;
+				        break;
+				        
+					}
+				}
+
+				
+				if(dataCampioneSuccessiva == false) {
+					String resultFirma = GestioneCertificatoBO.createCertificato(idCertificato, data_emissione,session,context, utente);	
+
+					
+					
 
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo <br>"+ resultFirma);
 			        out.println(myObj.toString());
+				}
+			
 			        
 			     
 			}
@@ -511,6 +532,7 @@ public class ListaCertificati extends HttpServlet {
 				JsonElement jelement = new JsonParser().parse(selezionati);
 				JsonObject jsonObj = jelement.getAsJsonObject();
 				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
+				boolean dataCampioneSuccessiva = false;
 			//	String resultFirma = "";
 				for(int i=0; i<jsArr.size(); i++){
 					String id =  jsArr.get(i).toString().replaceAll("\"", "");
@@ -529,13 +551,32 @@ public class ListaCertificati extends HttpServlet {
 					}
 					
 					else {
-						GestioneCertificatoBO.createCertificato(id,data_emissione, session,context, utente);	
+						
+						
+						List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(certificato.getMisura().getListaPunti(),certificato.getMisura().getStrumento().getTipoRapporto());
+						for (CampioneDTO campioneDTO : listaCampioni) {
+							if(campioneDTO.getDataVerifica().after(certificato.getMisura().getDataMisura())) {
+								myObj.addProperty("success", false);
+								myObj.addProperty("messaggio", "Attenzione! La data verifica del campione sul certificato ID "+certificato.getId()+" è successiva alla data misura!");
+						        out.println(myObj.toString());
+						        dataCampioneSuccessiva = true;
+						        break;
+						        
+							}
+						}
+						if(dataCampioneSuccessiva == false) {
+							GestioneCertificatoBO.createCertificato(id,data_emissione, session,context, utente);	
+						}
+							
 					}
 					
-				}				
+				}		
+				
+				if(dataCampioneSuccessiva == false) {
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio", "Sono stati approvati "+jsArr.size()+" certificati ");
 			        out.println(myObj.toString());
+				}
 			        
 			}else if(action.equals("annullaCertificatiMulti")){
 				

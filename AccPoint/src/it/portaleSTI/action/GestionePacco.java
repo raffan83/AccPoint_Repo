@@ -1860,8 +1860,16 @@ public class GestionePacco extends HttpServlet {
 		
 			ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemInRitardoDashboard(session);
 			
-			
-			
+//			Collections.sort(lista_pacchi, new Comparator<String>() {
+//			    @Override
+//			    public int compare(String s1, String s2) {
+//			        int giorniMancanti1 = estraiGiorniMancanti(s1);
+//			        int giorniMancanti2 = estraiGiorniMancanti(s2);
+//
+//			        // Ordina in modo decrescente
+//			        return Integer.compare(giorniMancanti2, giorniMancanti1);
+//			    }
+//			});
 			Collections.sort(lista_pacchi, new Comparator<String>() {
 			    @Override
 			    public int compare(String s1, String s2) {
@@ -1994,6 +2002,14 @@ public class GestionePacco extends HttpServlet {
 		return filename;
 	}
 
-
+    private int estraiGiorniMancanti(String s) {
+        String[] parts = s.split(";");
+        for (int i = parts.length - 5; i < parts.length; i++) {
+            if (i >= 0 && parts[i].matches("-?\\d+")) {
+                return Integer.parseInt(parts[i].trim());
+            }
+        }
+        return Integer.MIN_VALUE; // Valore predefinito se non ci sono giorni mancanti validi
+    }
 
 }

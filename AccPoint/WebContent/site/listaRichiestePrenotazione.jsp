@@ -72,10 +72,11 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 
 <th>ID</th>
 <th>Utente</th>
-<th>Data inizio</th>
-<th>Data fine</th>
+<th>Data inizio prenotazione</th>
+<th>Data fine prenotazione</th>
 <th>Luogo</th>
 <th>Note</th>
+<th>Data richiesta</th>
 <th>Stato</th>
 <th>Azioni</th>
  </tr></thead>
@@ -100,6 +101,9 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 	<td>   <fmt:formatDate pattern="dd/MM/yyyy HH:mm"   value="${richiesta.data_fine}" /></td>
 	<td>${richiesta.luogo }</td>
 	<td>${richiesta.note }</td>	
+	<td><c:if test="${richiesta.data_richiesta!=null }">
+	<fmt:formatDate pattern="dd/MM/yyyy HH:mm"   value="${richiesta.data_richiesta}" />
+	</c:if></td>	
 			<td class="centered">
 
  <c:choose>

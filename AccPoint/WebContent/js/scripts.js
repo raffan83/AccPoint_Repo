@@ -8220,6 +8220,7 @@ function filtraCertificati(anno){
 
 		  var dataObj = {};
 			dataObj.pin = pin;
+			
 		  $.ajax({
 	          type: "POST",
 	          url: "firmaDocumento.do?action=checkPIN",
@@ -8270,6 +8271,7 @@ function filtraCertificati(anno){
 		 
 		  var dataObj = {};
 			dataObj.filename = filename;
+			dataObj.format = $('input[name="format"]:checked').val();
 		  $.ajax({
 	          type: "POST",
 	          url: "firmaDocumento.do?action=firma",
@@ -8280,7 +8282,7 @@ function filtraCertificati(anno){
 	        	  //var dataRsp = JSON.parse(dataResp);
 	        	  if(data.success)
 	      		  {  
-	        		 callAction('firmaDocumento.do?action=download&filename='+filename);
+	        		 callAction('firmaDocumento.do?action=download&filename='+filename+'&format='+dataObj.format);
 	        		  
 	      		  }else{
 	      			

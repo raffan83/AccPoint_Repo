@@ -694,6 +694,22 @@ if(filtro!=3){
 		  success: function(response) {
 		    // Recupera il JSONElement dalla risposta
 		    var lista_pianificazioni = response.lista_pianificazioni;
+		    lista_pianificazioni.sort(function(a, b) {
+	            // Confronta le date
+	            var dataA = new Date(a.data);
+	            var dataB = new Date(b.data);
+
+	            if (dataA.getTime() === dataB.getTime()) {
+	                // Se le date sono uguali, confronta le ore di inizio
+	                var oraInizioA = a.ora_inizio.split(':').map(Number); // [hour, minute]
+	                var oraInizioB = b.ora_inizio.split(':').map(Number);
+
+	                return oraInizioA[0] - oraInizioB[0] || oraInizioA[1] - oraInizioB[1];
+	            }
+	            return dataA - dataB; // Ordina per data
+	        });
+		    
+		    
 		    var is_modifica = response.is_modifica;
 		    
 		    var array = [];

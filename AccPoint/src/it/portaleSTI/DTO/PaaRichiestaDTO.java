@@ -12,6 +12,7 @@ public class PaaRichiestaDTO {
 	private UtenteDTO utente;
 	private int disabilitato;
 	private String luogo;
+	private Date data_richiesta;
 	
 	
 	public int getId() {
@@ -61,6 +62,12 @@ public class PaaRichiestaDTO {
 	}
 	public void setLuogo(String luogo) {
 		this.luogo = luogo;
+	}
+	public Date getData_richiesta() {
+		return data_richiesta;
+	}
+	public void setData_richiesta(Date data_richiesta) {
+		this.data_richiesta = data_richiesta;
 	}
 
 }

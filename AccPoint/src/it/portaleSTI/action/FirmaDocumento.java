@@ -27,6 +27,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
@@ -130,6 +131,7 @@ public class FirmaDocumento extends HttpServlet {
 				ajax=true;
 			
 				String filename = request.getParameter("filename");
+				String format = request.getParameter("format");
 				Session session=SessionFacotryDAO.get().openSession();
 				session.beginTransaction();
 				
@@ -139,7 +141,12 @@ public class FirmaDocumento extends HttpServlet {
 		
 				PrintWriter writer = response.getWriter();
 				
-				jsono = ArubaSignService.signDocumento(utente_firma.getIdFirma(), filename);
+				if(format.equals("pades")) {					
+					jsono = ArubaSignService.signDocumentoPades(utente_firma.getIdFirma(), filename);
+				}else {
+					jsono = ArubaSignService.signDocumento(utente_firma.getIdFirma(), filename);
+				}
+				
 
 				session.getTransaction().commit();
 				session.close();
@@ -152,7 +159,8 @@ public class FirmaDocumento extends HttpServlet {
 				ajax=false;
 				
 				String filename = request.getParameter("filename");
-				downloadDocumentoFirmato(request, response, filename);
+				String format = request.getParameter("format"); 
+				downloadDocumentoFirmato(request, response, format, filename);
 				
 			}
 
@@ -198,10 +206,17 @@ public class FirmaDocumento extends HttpServlet {
 	
 	
 	
-	public static void downloadDocumentoFirmato(HttpServletRequest request, HttpServletResponse response, String filename) throws IOException {
+	public static void downloadDocumentoFirmato(HttpServletRequest request, HttpServletResponse response,String format, String filename) throws IOException {
 		
-		String fileNoExt = filename.substring(0, filename.length()-4);
-			String path = Costanti.PATH_FIRMA_DIGITALE+fileNoExt +".p7m"; 
+		
+			String path ="";
+			if(format.equals("pades")) {
+				path = Costanti.PATH_FIRMA_DIGITALE+filename;
+			}else {
+				String fileNoExt = filename.substring(0, filename.length()-4);
+				path = Costanti.PATH_FIRMA_DIGITALE+fileNoExt +".p7m"; 
+			}
+			
 			File file = new File(path);
 			
 			FileInputStream fileIn = new FileInputStream(file);

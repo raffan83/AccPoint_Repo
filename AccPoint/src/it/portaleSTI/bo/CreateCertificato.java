@@ -1001,7 +1001,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  
 			  PDDocument document = PDDocument.load(file);
 			  PDDocumentInformation info = document.getDocumentInformation();
-              info.setTitle(file.getName()); // Modifica il titolo
+              info.setTitle(file.getName().replace(".pdf", "").replace(".PDF", "")); // Modifica il titolo
               document.setDocumentInformation(info);
 	
               document.save(file);
@@ -1046,11 +1046,17 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  
 			//multi serve per non aggiungere la firma in caso di stampa di tanti certificati 
 			  if(!multi && certificato.getMisura().getInterventoDati().getUtente().getFile_firma()!=null && certificato.getMisura().getInterventoDati().getUtente().getIdFirma()!=null && !certificato.getMisura().getInterventoDati().getUtente().getIdFirma().equals("")) {
-				  jsonOP = ArubaSignService.signCertificatoPades(certificato.getMisura().getInterventoDati().getUtente(), CostantiCertificato.OPERATORE_LABEL,false, certificato);				  
+				  jsonOP = ArubaSignService.signCertificatoPades(certificato.getMisura().getInterventoDati().getUtente(), CostantiCertificato.OPERATORE_LABEL,false, certificato);
+				  
+				  if((jsonOP.get("success")==null || !jsonOP.get("success").getAsBoolean()) && certificato.getMisura().getInterventoDati().getUtente().getFile_firma()!=null) {
+					  jsonOP = GestioneCertificatoBO.addSign(certificato.getMisura().getInterventoDati().getUtente(), CostantiCertificato.OPERATORE_LABEL, multi,certificato);
+					  messaggio = "Non è stato possibile appore la firma digitale dell'operatore";
+				  }
 			  }			 
 			  else if(multi || (certificato.getMisura().getInterventoDati().getUtente().getFile_firma()!=null && (certificato.getMisura().getInterventoDati().getUtente().getIdFirma()==null || certificato.getMisura().getInterventoDati().getUtente().getIdFirma().equals("")))) {
 				  jsonOP = GestioneCertificatoBO.addSign(certificato.getMisura().getInterventoDati().getUtente(), CostantiCertificato.OPERATORE_LABEL, multi,certificato);
 			  }
+			  
 			  
 			  if(jsonOP.get("success")==null || !jsonOP.get("success").getAsBoolean() || certificato.getMisura().getInterventoDati().getUtente().getIdFirma()==null) {
 				  

@@ -275,9 +275,9 @@ $(document).ready(function() {
 		    });
 		};
 		
-	    $.fn.dataTable.ext.type.order['num-custom-pre'] = function(data) {
+/* 	    $.fn.dataTable.ext.type.order['num-custom-pre'] = function(data) {
 	        return parseFloat(data.replace(/[^0-9.-]/g, '')) || 0;
-	    };
+	    }; */
  
 
      $('.dropdown-toggle').dropdown();
@@ -311,7 +311,7 @@ $(document).ready(function() {
          pageLength: 5,
         
  	      paging: false, 
- 	      ordering: true,
+ 	      ordering: false,
  	      info: true, 
 
  	      searchable: true,  
@@ -323,7 +323,7 @@ $(document).ready(function() {
  	      searching: true, 
  	      columnDefs: [
  	         
- 	          { type: 'num', targets: 6 }, 
+ 	          //{ type: 'num', targets: 6 }, 
  	          { orderDataType: 'priorita-si', targets: 8}
  	      ],
 
@@ -377,13 +377,34 @@ $(document).ready(function() {
  	
  });
 
- tab.order( [8, 'asc']).draw();
+// tab.order( [8, 'asc']).draw();
+
+riorganizzaColonna8(tab)
  initContextMenu();
 
  
 
 
 });
+
+
+function riorganizzaColonna8(table) {
+
+
+	  var rows = table.rows().nodes();
+
+      // Converte le righe in un array per il riordino
+      var sortedRows = Array.from(rows).sort(function (rowA, rowB) {
+          var colA = $(rowA).find('td:eq(8)').text().trim(); // Colonna 8 (indice 4)
+          var colB = $(rowB).find('td:eq(8)').text().trim();
+          return colB.localeCompare(colA); // "SI" prima di "NO"
+      });
+
+      // Appendi le righe riordinate direttamente al corpo della tabella
+      $.each(sortedRows, function (index, row) {
+          $('#tabPacchi tbody').append(row);
+      });
+}
 
 
 var cellIndex;

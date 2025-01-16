@@ -41,6 +41,7 @@
           </div>
             <div class="box-body">
 
+
 <div class="row">
 	<div class="col-xs-12">
 	
@@ -54,8 +55,14 @@
 	</div>
 </div>
 <div class="box-body">
-
-
+            <div class="row">
+	<div class="col-xs-12">
+	<label>Seleziona tipo firma</label><br>
+	<input type="radio" id="pades" name="format" value="pades" checked><label>PAdES</label>
+	<input type="radio" id="cades" name="format" value="cades"><label>CAdES</label>
+	</div>
+	</div><br><br>
+<div class="row">
 <div class="col-xs-2">
 			    <span class="btn btn-primary fileinput-button pull-left">
 		        <i class="glyphicon glyphicon-plus"></i>
@@ -76,7 +83,7 @@
 			<div class="col-xs-4">
 		         <button class="btn btn-warning" onClick="openModalPin()"><i class="glyphicon glyphicon-pencil"></i> Firma</button> 
 	    </div>
-
+</div>
 </div>
 </div>
 </div>

@@ -952,6 +952,8 @@ public class GestioneParcoAuto extends HttpServlet {
 				
 				richiesta.setData_inizio(data_start);
 				richiesta.setData_fine(data_end);
+				
+				richiesta.setData_richiesta(new Date());
 
 				session.save(richiesta);
 				

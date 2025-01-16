@@ -42,6 +42,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -120,7 +121,7 @@ public class GestioneFormazione extends HttpServlet {
 			if(anno == null) {
 				anno = ""+Calendar.getInstance().get(Calendar.YEAR);
 			}
-			Gson g = new Gson();
+			Gson g = new GsonBuilder().setDateFormat("MM/dd/yyyy").create(); 	
 			ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni = GestioneFormazioneBO.getListaPianificazioni(anno, filtro_tipo_pianificazioni,session);
 				
 			Date today = new Date();

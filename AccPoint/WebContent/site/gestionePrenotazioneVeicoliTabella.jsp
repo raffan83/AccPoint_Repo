@@ -1194,7 +1194,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	            console.log("ciao");
 
 	            var today = "${today}";
-	            if (today > "${daysNumber}") {
+	            if (parseInt(today) > "${daysNumber}") {
 	                today = null;
 	            } else {
 	                order = parseInt(today) + 3;

@@ -32,5 +32,9 @@
             <column name="luogo" />
         </property>
         
+        <property name="data_richiesta" type="java.util.Date">
+            <column name="data_richiesta" />
+        </property>
+        
     </class>
 </hibernate-mapping>

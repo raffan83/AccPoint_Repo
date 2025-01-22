@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="com.google.gson.Gson"%>
@@ -179,6 +180,9 @@
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
+        </div>
+        
+        </div>
         </div>
         
         <!-- /.col -->
@@ -377,10 +381,26 @@
             </ul> -->
             <div class="tab-content">
               <div class="tab-pane  table-responsive active" id="nuovoCampione">
-
-
+  <div class="form-group">
+	<label  class="col-sm-2 control-label">Clona da...</label> <div class="col-sm-5"><select id="clona_campione" name="clona_campione" data-placeholder="Clona campione..."class="form-control select2" style="width:100%">
+	<option value=""></option>
+	<option value="0">NESSUNO</option>
+         <c:forEach items="${listaCampioni }" var="campione">
+       
+         <option value="${campione.id }" >${campione.codice }</option>
+      
+         
+         </c:forEach>
+         
+         </select>
+        </div>
+        <label  class="col-sm-2 control-label">Clona Valori Campione</label> 
         
-              
+        <div class="col-sm-3">
+        
+        <input  id="clona_valori_campione" type="checkbox" name="clona_valori_campione" value="0" disabled>
+              </div>
+              </div>
 
     <div class="form-group">
           <label for="inputEmail" class="col-sm-2 control-label">Proprietario:</label>
@@ -756,13 +776,14 @@
          </div>
 
 
+<div id="nuovi_val_campione_content">
 <table class="table table-bordered table-hover dataTable table-striped no-footer dtr-inline" id="tblAppendGrid">
 </table>
 
 
- 			
+ 	</div>		
 
-
+<div id="clona_val_campione_content" style="display:none">
     		
     		
         
@@ -1108,6 +1129,142 @@ var listaStrumenti = ${listaCampioniJson};
 	});
 	
 	
+	$('#clona_campione').change(function(){
+		
+		dataObj = {};
+		dataObj.idCamp = $('#clona_campione').val();
+		dataObj.ajax=true;
+		
+		if($('#clona_campione').val()!="0"){
+callAjax(dataObj, 'dettaglioCampione.do', function(data){
+		 		
+		 		var campione = data.dataInfo;
+		 		
+		 		$('#proprietario').val(campione.company.id);
+		 		$('#proprietario').change();
+		 		$('#utilizzatore').val(campione.company_utilizzatore.id);
+		 		$('#utilizzatore').change();
+		 		$('#settore').val(campione.settore);
+		 		$('#settore').change();
+		 		$('#tipoCampione').val(campione.tipo_campione.id);
+		 		$('#tipoCampione').change();
+		 		if(campione.campione_verificazione){
+		 			$('#campione_verificazione').iCheck("check");
+		 		}else{
+		 			$('#campione_verificazione').iCheck("uncheck");
+		 		}
+		 		
+		 		
+		 		$('#nome').val(campione.nome);
+		 		$('#descrizione').val(campione.descrizione);
+		 		$('#modello').val(campione.modello);
+		 		$('#costruttore').val(campione.costruttore);
+		 	
+		 		$('#distributore').val(campione.distributore);
+		 		$('#data_acquisto').val(campione.data_acquisto);
+		 		$('#data_messa_in_servizio').val(campione.data_messa_in_servizio);
+		 		$('#ubicazione').val(campione.ubicazione);
+		 		$('#campo_misura').val(campione.campo_misura);
+		 		$('#unita_formato').val(campione.unita_formato);
+		 		$('#descrizione_manutenzione').val(campione.descrizione_manutenzione);
+		 		$('#frequenza_manutenzione').val(campione.frequenza_manutenzione);
+		 		if(campione.attivita_di_taratura=="INTERNA"){
+		 			$('#attivita_di_taratura').val(1);
+			 	}else{
+			 		$('#attivita_di_taratura').val(0);
+			 	}
+		 		
+		 		$('#attivita_di_taratura').change();
+		 		$('#attivita_di_taratura_text').val(campione.attivita_di_taratura);
+		 		$('#note_attivita_taratura').val(campione.note_attivita);
+		 		
+		 		$('#freqTaratura').val(campione.freqTaraturaMesi);
+		 		
+
+		 		$('#campo_accettabilita').val(campione.campo_accettabilita);
+		 		$('#interpolazione').val(campione.interpolazionePermessa);
+		 		$('#interpolazione').change();
+		 		
+		 		$('#ente_certificatore').attr('disabled', false);
+				$('#descrizione_verifica_intermedia').attr('disabled', false);
+				$('#frequenza_verifica_intermedia').attr('disabled', false);
+		 		
+		 		$('#dataVerifica').val(campione.dataVerifica);
+		 		$('#ente_certificatore').val(campione.utilizzatore);
+		 		$('#descrizione_verifica_intermedia').val(campione.descrizione_verifica_intermedia);
+		 		$('#frequenza_verifica_intermedia').val(campione.frequenza_verifica_intermedia);
+		 		$('#statoCampione').val(campione.statoCampione);
+		 		$('#statoCampione').change();
+	
+		 		
+		 		
+		 		$('#clona_valori_campione').attr("disabled", false);
+		 	});
+		}else{
+
+		 		
+		 		$('#proprietario').val("");
+		 		$('#proprietario').change();
+		 		$('#utilizzatore').val("");
+		 		$('#utilizzatore').change();
+		 		$('#settore').val("");
+		 		$('#settore').change();
+		 		$('#tipoCampione').val("");
+		 		$('#tipoCampione').change();
+		 	
+		 		$('#campione_verificazione').iCheck("uncheck");
+		 	
+		 		
+		 		
+		 		$('#nome').val("");
+		 		$('#descrizione').val("");
+		 		$('#modello').val("");
+		 		$('#costruttore').val("");
+		 	
+		 		$('#distributore').val("");
+		 		$('#data_acquisto').val("");
+		 		$('#data_messa_in_servizio').val("");
+		 		$('#ubicazione').val("");
+		 		$('#campo_misura').val("");
+		 		$('#unita_formato').val("");
+		 		$('#descrizione_manutenzione').val("");
+		 		$('#frequenza_manutenzione').val("");
+
+		 		$('#attivita_di_taratura').val("");
+		 		
+		 		$('#attivita_di_taratura').change();
+		 		$('#attivita_di_taratura_text').val("");
+		 		$('#note_attivita_taratura').val("");
+		 		
+		 		$('#freqTaratura').val("");
+		 		
+
+		 		$('#campo_accettabilita').val("");
+		 		$('#interpolazione').val("");
+		 		$('#interpolazione').change();
+		 		
+		 		$('#ente_certificatore').attr('disabled', false);
+				$('#descrizione_verifica_intermedia').attr('disabled', false);
+				$('#frequenza_verifica_intermedia').attr('disabled', false);
+		 		
+		 		$('#dataVerifica').val("");
+		 		$('#ente_certificatore').val("");
+		 		$('#descrizione_verifica_intermedia').val("");
+		 		$('#frequenza_verifica_intermedia').val();
+		 		$('#statoCampione').val("");
+		 		$('#statoCampione').change();
+	
+		 		
+		 		
+		 		$('#clona_valori_campione').attr("disabled", true);
+	
+		}
+		 	
+		
+	});
+	
+	
+	
 	$('#tipoCampione').change(function(){
 		
 		if($(this).val() == 3){
@@ -1289,6 +1446,34 @@ var listaStrumenti = ${listaCampioniJson};
 	});  
 	
 	
+	$('#clona_valori_campione').on('ifClicked',function(e){
+		
+		 if($('#clona_valori_campione').is( ':checked' )){
+			
+			$('#clona_valori_campione').iCheck('uncheck');
+			$('#clona_val_campione_content').hide();
+			$('#nuovi_val_campione_content').show();
+			$('#clona_valori_campione').val(0);			
+		 }else{
+			
+			$('#clona_valori_campione').iCheck('check');	
+			$('#clona_valori_campione').val(1);	
+			
+			dataObj = {};
+			dataObj.idCamp = $('#clona_campione').val();
+			dataObj.ajax=true;
+			$('#clona_val_campione_content').show();
+			
+			 	exploreModal('modificaValoriCampione.do',"idC="+$('#clona_campione').val()+"&view=edit&clona=true", "#clona_val_campione_content")
+			
+			
+		
+			$('#nuovi_val_campione_content').hide();
+			
+		 }
+
+	});  
+	
 	
 	   $('#manuale').on('ifClicked',function(e){
 			
@@ -1318,6 +1503,7 @@ var listaStrumenti = ${listaCampioniJson};
     	$('#tipoCampione').select2();
     	$('#proprietario').select2();
     	$('#utilizzatore').select2();
+    	$('#clona_campione').select2();
     	
     	var permesso_prop_util = ${userObj.checkPermesso('PROPRIETARIO_UTILIZZATORE_CAMPIONI')}
     	
@@ -1383,7 +1569,7 @@ var listaStrumenti = ${listaCampioniJson};
 	        }, 
 	        pageLength: 100,
     		paging: true, 
-  	      ordering: true,
+  	      tblAppendGridAjaxing: true,
   	      info: true, 
   	      searchable: false, 
   	      targets: 0,

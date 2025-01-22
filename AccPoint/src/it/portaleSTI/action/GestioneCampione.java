@@ -218,6 +218,13 @@ public class GestioneCampione extends HttpServlet {
 			  String slash = (String)ret.get("slash");
 			  String proprietario = (String)ret.get("proprietario");
 			  String campione_verificazione = (String) ret.get("campione_verificazione");
+			  String clona_valori_campione = (String) ret.get("clona_valori_campione");
+			  
+			  if(clona_valori_campione!=null && !clona_valori_campione.equals("") && !clona_valori_campione.equals("0")) {
+				  clona_valori_campione = "Ajax";
+			  }else {
+				  clona_valori_campione  ="";
+			  }
 			  
 			  String attivita_di_taratura ="";
 			  
@@ -339,7 +346,7 @@ public class GestioneCampione extends HttpServlet {
 					campione.setPrenotabile("N");
 					
 				if(!tipoCampione.equals("3")) {
-				String rowOrder =  (String) ret.get("tblAppendGrid_rowOrder").replaceAll("\"", "");
+				String rowOrder =  (String) ret.get("tblAppendGrid"+clona_valori_campione+"_rowOrder").replaceAll("\"", "");
 				
 				String[] list = new String[0];
 				if(!rowOrder.equals(""))
@@ -349,16 +356,16 @@ public class GestioneCampione extends HttpServlet {
 		
 				for (int i = 0; i < list.length; i++) {
 					
-					String valNom =  (String) ret.get("tblAppendGrid_valore_nominale_"+list[i]);
-					String valTar =  (String) ret.get("tblAppendGrid_valore_taratura_"+list[i]);
-					String valInAs =  (String) ret.get("tblAppendGrid_incertezza_assoluta_"+list[i]);
-					String valInRel =  (String) ret.get("tblAppendGrid_incertezza_relativa_"+list[i]);
-					String valPT =  (String) ret.get("tblAppendGrid_parametri_taratura_"+list[i]);
-					String valUM =  (String) ret.get("tblAppendGrid_unita_misura_"+list[i]);
+					String valNom =  (String) ret.get("tblAppendGrid"+clona_valori_campione+"_valore_nominale_"+list[i]);
+					String valTar =  (String) ret.get("tblAppendGrid"+clona_valori_campione+"_valore_taratura_"+list[i]);
+					String valInAs =  (String) ret.get("tblAppendGrid"+clona_valori_campione+"_incertezza_assoluta_"+list[i]);
+					String valInRel =  (String) ret.get("tblAppendGrid"+clona_valori_campione+"_incertezza_relativa_"+list[i]);
+					String valPT =  (String) ret.get("tblAppendGrid"+clona_valori_campione+"_parametri_taratura_"+list[i]);
+					String valUM =  (String) ret.get("tblAppendGrid"+clona_valori_campione+"_unita_misura_"+list[i]);
 				//	String valInterp =  (String) ret.get("tblAppendGrid_interpolato_"+list[i]);
 				//	String valComp =  (String) ret.get("tblAppendGrid_valore_composto_"+list[i]);
-					String valDivUM =  (String) ret.get("tblAppendGrid_divisione_UM_"+list[i]);
-					String valTipoG =  (String) ret.get("tblAppendGrid_tipo_grandezza_"+list[i]);
+					String valDivUM =  (String) ret.get("tblAppendGrid"+clona_valori_campione+"_divisione_UM_"+list[i]);
+					String valTipoG =  (String) ret.get("tblAppendGrid"+clona_valori_campione+"_tipo_grandezza_"+list[i]);
 		
 					
 					ValoreCampioneDTO valc = new ValoreCampioneDTO();

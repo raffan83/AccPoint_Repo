@@ -1,6 +1,9 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -23,6 +27,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
+import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
@@ -64,6 +69,8 @@ public class DettaglioCampione extends HttpServlet {
 		
 	try{	
 		String idC = request.getParameter("idCamp");
+		
+		String ajax =  request.getParameter("ajax");
 
 		List<PrenotazioneDTO>  prenotazione=GestionePrenotazioniBO.getListaPrenotazione(idC);		
 		
@@ -72,10 +79,10 @@ public class DettaglioCampione extends HttpServlet {
 		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione(session);
 //		ArrayList<AttivitaManutenzioneDTO> lista_attivita_manutenzione = GestioneCampioneBO.getListaAttivitaManutenzione(Integer.parseInt(idC));
 //		ArrayList<RegistroEventiDTO> lista_eventi = GestioneCampioneBO.getListaRegistroEventi(idC, session);
-		 Gson gson = new Gson(); 
+		 Gson gson = null;
 	        JsonObject myObj = new JsonObject();
 
-	        JsonElement obj = gson.toJsonTree(dettaglio);
+	      
 	       
 
 	            myObj.addProperty("success", true);
@@ -92,17 +99,66 @@ public class DettaglioCampione extends HttpServlet {
 	          
 	            
 	       
-	        myObj.add("dataInfo", obj);
+	       
 	        
-	        request.getSession().setAttribute("myObj",myObj);
+	        
 	        request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
 //	        request.getSession().setAttribute("lista_attivita_manutenzione", lista_attivita_manutenzione);
 //	        request.getSession().setAttribute("lista_eventi", lista_eventi);
 	        
-	        session.getTransaction().commit();
-	        session.close();
-			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioCampione.jsp");
-		     dispatcher.forward(request,response);
+	      
+	        
+	        if(ajax!=null) {
+	        	
+	        	gson =	new GsonBuilder().setDateFormat("dd/MM/yyyy").create(); 
+	        	JsonElement obj = gson.toJsonTree(dettaglio);
+	        	
+	        	
+	    	    ArrayList<ValoreCampioneDTO> listaVCP = GestioneCampioneDAO.getListaValori(dettaglio.getId());
+	    	    
+	    		for (ValoreCampioneDTO valoreCampioneDTO : listaVCP) {
+	    			valoreCampioneDTO.getCampione().getCompany().setPwd_pec("");
+	    			valoreCampioneDTO.getCampione().getCompany().setHost_pec("");
+	    			valoreCampioneDTO.getCampione().getCompany().setEmail_pec("");
+	    			valoreCampioneDTO.getCampione().getCompany().setPorta_pec("");
+	    		}
+	    		
+	    		
+	    	        JsonObject myObjVC = new JsonObject();
+
+	    	        JsonElement objVC = gson.toJsonTree(listaVCP);
+	    	     
+
+	    	        myObjVC.addProperty("success", true);
+	    	       
+	    	        myObjVC.add("dataInfo", objVC);
+	    	        
+	    	        request.getSession().setAttribute("myObjValoriCampione",myObjVC);
+	        	  
+	        	 myObj.add("dataInfo", obj);
+	        	 response.setContentType("application/json;charset=UTF-8");
+	        	PrintWriter out =response.getWriter();
+	        	out.print(myObj);
+	        	  session.getTransaction().commit();
+	  	        session.close();
+	        }else {
+	        
+	        	gson =	new Gson(); 
+	        	JsonElement obj = gson.toJsonTree(dettaglio);
+	        	
+	        	 myObj.add("dataInfo", obj);
+	        	 
+	        	 request.getSession().setAttribute("myObj",myObj);
+	        	 
+	        	 
+	        	  session.getTransaction().commit();
+	  	        session.close();
+	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioCampione.jsp");
+			     dispatcher.forward(request,response);
+	        }
+	        
+	        
+			 
 
 	
 	}catch(Exception ex)

@@ -79,6 +79,7 @@ public class ModificaValoriCampione extends HttpServlet {
 		String idC = request.getParameter("idC");
 
 		String view = request.getParameter("view");
+		String clona = request.getParameter("clona");
 		
 		ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
 
@@ -174,9 +175,15 @@ public class ModificaValoriCampione extends HttpServlet {
 		        request.getSession().setAttribute("listaTipoGrandezza",tgArrJson);
 		        request.getSession().setAttribute("listaUnitaMisura",umArrJson);
 
-		        
-				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/modificaValoreCampione.jsp");
-			     dispatcher.forward(request,response);
+		        if(clona!=null) {
+		        	request.getSession().setAttribute("idCamp",idC);
+		        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/modificaValoreCampioneAjax.jsp");
+				     dispatcher.forward(request,response);
+		        }else {
+		        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/modificaValoreCampione.jsp");
+				     dispatcher.forward(request,response);
+		        }
+				 
 		}
 		
 		else if(view.equals("single_edit")) {
@@ -288,6 +295,71 @@ public class ModificaValoriCampione extends HttpServlet {
 			//	String valComp = request.getParameter("tblAppendGrid_valore_composto_"+list[i]);
 				String valDivUM = request.getParameter("tblAppendGrid_divisione_UM_"+list[i]);
 				String valTipoG = request.getParameter("tblAppendGrid_tipo_grandezza_"+list[i]);
+				
+				
+				ValoreCampioneDTO valc = new ValoreCampioneDTO();
+				valc.setValore_nominale(new BigDecimal(valNom));
+				valc.setValore_taratura(new BigDecimal(valTar));
+				if(valInAs.length()>0){
+					valc.setIncertezza_assoluta(new BigDecimal(valInAs));
+				}
+				if(valInRel.length()>0){
+					valc.setIncertezza_relativa(new BigDecimal(valInRel));
+				}
+				
+				UnitaMisuraDTO um = new UnitaMisuraDTO();
+				um.setId(Integer.parseInt(valUM));
+				
+				TipoGrandezzaDTO tipoGrandezzaDTO = new TipoGrandezzaDTO();
+				tipoGrandezzaDTO.setId(Integer.parseInt(valTipoG));
+				valc.setParametri_taratura(valPT);
+				valc.setUnita_misura(um);
+				//valc.setValore_composto(Integer.parseInt(valComp));
+				valc.setInterpolato(interpolato);
+				valc.setDivisione_UM(new BigDecimal(valDivUM));
+				valc.setTipo_grandezza(tipoGrandezzaDTO);
+				
+				valc.setCampione(dettaglio);
+				
+				listaValoriNew.add(valc);
+			}
+
+			GestioneCampioneBO.rendiObsoletiValoriCampione(session,dettaglio.getId());
+			
+			for (int i = 0; i < listaValoriNew.size(); i++) {
+				
+				
+				GestioneCampioneBO.saveValoreCampione(session,listaValoriNew.get(i));
+			}
+
+			myObj.addProperty("success", true);
+		}
+		
+		else if(view.equals("save_clona")){
+
+			//String result = request.getParameter("param");
+
+			String rowOrder = request.getParameter("tblAppendGridAjax_rowOrder");
+			
+			String[] list = rowOrder.split(",");
+
+			ArrayList<ValoreCampioneDTO> listaValoriNew = new ArrayList<ValoreCampioneDTO>();
+			
+			int interpolato=Integer.parseInt(request.getParameter("interpolato"));
+			String z = request.getParameter("tblAppendGridAjax_tipo_grandezza_2");
+			for (int i = 0; i < list.length; i++) {
+				
+				String valPT=request.getParameter("tblAppendGridAjax_parametri_taratura_"+list[i]);
+				String valNom = request.getParameter("tblAppendGridAjax_valore_nominale_"+list[i]);
+				String valTar = request.getParameter("tblAppendGridAjax_valore_taratura_"+list[i]);
+				String valInAs = request.getParameter("tblAppendGridAjax_incertezza_assoluta_"+list[i]);
+				String valInRel = request.getParameter("tblAppendGridAjax_incertezza_relativa_"+list[i]);
+				
+				String valUM = request.getParameter("tblAppendGridAjax_unita_misura_"+list[i]);
+			//	String valInterp = request.getParameter("tblAppendGridAjax_interpolato_"+list[i]);
+			//	String valComp = request.getParameter("tblAppendGridAjax_valore_composto_"+list[i]);
+				String valDivUM = request.getParameter("tblAppendGridAjax_divisione_UM_"+list[i]);
+				String valTipoG = request.getParameter("tblAppendGridAjax_tipo_grandezza_"+list[i]);
 				
 				
 				ValoreCampioneDTO valc = new ValoreCampioneDTO();

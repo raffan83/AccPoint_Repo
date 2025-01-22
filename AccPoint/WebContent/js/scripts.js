@@ -1521,15 +1521,19 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	
   }
   
-  function saveValoriCampione(idC){
+  function saveValoriCampione(idC, ajax){
 	 // alert($('#tblAppendGrid_unita_misura_1').val());
 	//	alert($('#tblAppendGrid_tipo_grandezza_1').val());
+	  
+	  if(ajax == null){
+		  ajax = "";
+	  }
 	  var valid=true;
-	  var count = $('#tblAppendGrid').appendGrid('getRowCount'), index = '';
+	  var count = $('#tblAppendGrid'+ajax).appendGrid('getRowCount'), index = '';
       for (var z = 0; z < count; z++) {
 
-        	  var elem1 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_assoluta', z);
-        	  var elem2 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_relativa', z);
+        	  var elem1 = $('#tblAppendGrid'+ajax).appendGrid('getCellCtrl', 'incertezza_assoluta', z);
+        	  var elem2 = $('#tblAppendGrid'+ajax).appendGrid('getCellCtrl', 'incertezza_relativa', z);
         	  if(elem1.value=="" && elem2.value==""){
         		  valid = false;
         	  }
@@ -1559,7 +1563,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 //	  }
 //	  
 	  var jsonMap = {};
-	  $('#tblAppendGrid tbody tr').each(function(){
+	  $('#tblAppendGrid'+ajax+' tbody tr').each(function(){
 			var td = $(this).find('td').eq(1);
 			attr = td.attr('id');
 		    valore = $("#" + attr  + " input").val();
@@ -1584,12 +1588,19 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 		});
 	  
 	  
-	  if($("#formAppGrid").valid() && valid && validCorr && validCorr2){
+	  if($("#formAppGrid"+ajax).valid() && valid && validCorr && validCorr2){
 		 
+		  var url = "modificaValoriCampione.do?view=save&idC="+idC;
+		  
+		  if(ajax!=null && ajax !=''){
+			  
+			  url ="modificaValoriCampione.do?view=save_clona&idC="+idC;
+		  }
+		  
 	  $.ajax({
           type: "POST",
-          url: "modificaValoriCampione.do?view=save&idC="+idC,
-          data: $( "#formAppGrid" ).serialize(),
+          url: url,
+          data: $( "#formAppGrid"+ajax ).serialize(),
           //if received a response from the server
           success: function( dataResp, textStatus) {
         	  var dataRsp = JSON.parse(dataResp);
@@ -1602,7 +1613,10 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
                		  $('#myModalSuccess').addClass("modal modal-success");
                		  $('#myModalSuccess').modal('show');
                		  $('#myModalSuccess').on('hidden.bs.modal', function (e) {
-               			  callAction('listaCampioni.do');
+               			  if(ajax==null || ajax == ''){
+               				callAction('listaCampioni.do');  
+               			  }
+               			  
                		  });
                             	 
                      
@@ -2210,13 +2224,19 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  var form = $('#formNuovoCampione')[0]; 
 	  var formData = new FormData(form);
 	  
+	  if($("#clona_valori_campione").val()!=0){
+		  var ajax = "Ajax";
+		  
+	  }else{
+		  ajax = "";
+	  }
 	  
 	  var valid=true;
-	  var count = $('#tblAppendGrid').appendGrid('getRowCount'), index = '';
+	  var count = $('#tblAppendGrid'+ajax).appendGrid('getRowCount'), index = '';
       for (var z = 0; z < count; z++) {
 
-        	  var elem1 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_assoluta', z);
-        	  var elem2 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_relativa', z);
+        	  var elem1 = $('#tblAppendGrid'+ajax).appendGrid('getCellCtrl', 'incertezza_assoluta', z);
+        	  var elem2 = $('#tblAppendGrid'+ajax).appendGrid('getCellCtrl', 'incertezza_relativa', z);
         	  if(elem1.required){
         		  if(elem1.value=="" && elem2.value==""){
             		  valid = false;
@@ -2228,7 +2248,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  var jsonMap = {};
 	  
 	  
-	  $('#tblAppendGrid tbody tr').each(function(){
+	  $('#tblAppendGrid'+ajax+' tbody tr').each(function(){
 			var td = $(this).find('td').eq(1);
 			attr = td.attr('id');
 		    valore = $("#" + attr  + " input").val();
@@ -2260,6 +2280,10 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  var form = $('#formNuovoCampione')[0]; 
 	  var formData = new FormData(form);
 	  formData.append("datagrid",$( "#formNuovoCampione" ).serialize());
+	  $('#formAppGridAjax').find(':input[name]').each(function() {
+		    var input = $(this);
+		    formData.append(input.attr('name'), input.val());
+		});
           $.ajax({
         	  type: "POST",
         	  url: "gestioneCampione.do?action=nuovo",
@@ -4669,8 +4693,11 @@ function eliminaCompany(){
 			  
   }
   
- function modificaValoriCampioneTrigger(umJson, index) {
+ function modificaValoriCampioneTrigger(umJson, index, ajax) {
 	  
+	 if(ajax ==null){
+		 ajax =""
+	 }
 	  
 	  $(".numberfloat").change(function(){
 
@@ -4689,7 +4716,7 @@ function eliminaCompany(){
 	    	
 	    	
 	    	
-	    	var taratura = $("#tblAppendGrid_valore_taratura_"+resId[3]).val();
+	    	var taratura = $("#tblAppendGrid"+ajax+"_valore_taratura_"+resId[3]).val();
 	    	if(taratura != 0 && taratura != ""){
 	    		Big.DP = 40;
 	    		Big.NE = -40
@@ -4698,7 +4725,7 @@ function eliminaCompany(){
 	    		
 	    		 var assoluta1 = x.times(y);
  	    		 //alert(assoluta1);
-		    	 $("#tblAppendGrid_incertezza_assoluta_"+resId[3]).val(assoluta1);
+		    	 $("#tblAppendGrid"+ajax+"_incertezza_assoluta_"+resId[3]).val(assoluta1);
 
 	    	}
 	    	
@@ -4745,11 +4772,11 @@ function eliminaCompany(){
 //  	});
   	
 	
-		$('#tblAppendGrid_tipo_grandezza_'+index).on("change",function(evt){
+		$('#tblAppendGrid'+ajax+'_tipo_grandezza_'+index).on("change",function(evt){
 	  		var str = $(this).attr("id");
 	  		var value = $(this).val();
 	  		var resId = str.split("_");
-	  		var select = $('#tblAppendGrid_unita_misura_'+resId[3]);   
+	  		var select = $('#tblAppendGrid'+ajax+'_unita_misura_'+resId[3]);   
 			select.empty();
 	  		if(value!=0 && value!=null){	
 	  			var umList = umJson[value];

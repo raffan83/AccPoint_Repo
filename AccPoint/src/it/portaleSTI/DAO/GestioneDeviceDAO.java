@@ -591,7 +591,7 @@ public static ArrayList<DevDeviceDTO> getListaDeviceManScad(int id_company, Sess
 		query.setParameter("_date", df.parseObject(df.format(new Date())));
 	}else {
 		query = session.createQuery("select device from DevRegistroAttivitaDTO a where a.device.company_util.id = :_id_company and a.device.disabilitato = 0 and a.device.tipo_device.id <> 14 and (a.tipo_evento.id = 2 or a.tipo_evento.id = 3) "  
-								+ " AND a.id IN (SELECT MAX(id)  FROM DevRegistroAttivitaDTO (tipo_evento.id = 2 or tipo_evento.id = 3) GROUP BY device.id) AND a.data_prossima < :_date)");	
+								+ " AND a.id IN (SELECT MAX(id)  FROM DevRegistroAttivitaDTO where (tipo_evento.id = 2 or tipo_evento.id = 3) GROUP BY device.id) AND a.data_prossima < :_date)");	
 		query.setParameter("_id_company", id_company);
 		query.setParameter("_date", df.parseObject(df.format(new Date())));
 	}

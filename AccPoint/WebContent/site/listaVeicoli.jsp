@@ -101,7 +101,7 @@
 	<td>
 
 	<a class="btn btn-warning customTooltip" onClicK="modificaVeicolo('${veicolo.id}', '${veicolo.targa }', '${veicolo.modello }', '${veicolo.company.id }','${veicolo.km_percorsi }', '${veicolo.carta_circolazione }','${veicolo.portata_max_veicolo }','${veicolo.immagine_veicolo }','${veicolo.dispositivo_pedaggio }')" title="Click per modificare il veicolo"><i class="fa fa-edit"></i></a>
-	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaVeicolo('${veicolo.id }')" title="Click per eliminare il veicolo manutenzione"><i class="fa fa-trash"></i></a>
+	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaVeicolo('${veicolo.id }')" title="Click per eliminare il veicolo"><i class="fa fa-trash"></i></a>
 	  <c:if test="${veicolo.carta_circolazione!=null }">
 	  <a class="btn btn-info customTooltip" href="gestioneParcoAuto.do?action=download_file&tipo_file=carta_circolazione&id_veicolo=${veicolo.id}" title="Click per scaricare la carta di circolazione"><i class="fa fa-file-text-o"></i></a>
 	  </c:if>
@@ -137,7 +137,7 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      	Sei sicuro di voler eliminare il veicolo manutenzione?
+      	Sei sicuro di voler eliminare il veicolo?
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_veicolo_elimina">
@@ -615,7 +615,7 @@ $(document).ready(function() {
  			        }
  		        },
  		        pageLength: 25,
- 		        "order": [[ 0, "desc" ]],
+ 		        "order": [[ 3, "asc" ]],
  			      paging: true, 
  			      ordering: true,
  			      info: true, 

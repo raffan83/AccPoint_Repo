@@ -16,6 +16,7 @@ public class PaaVeicoloDTO {
 	private UtenteDTO user_update;
 	private Date data_update;
 	private String dispositivo_pedaggio;
+	private int disabilitato;
 	
 	public int getId() {
 		return id;
@@ -88,6 +89,12 @@ public class PaaVeicoloDTO {
 	}
 	public void setDispositivo_pedaggio(String dispositivo_pedaggio) {
 		this.dispositivo_pedaggio = dispositivo_pedaggio;
+	}
+	public int getDisabilitato() {
+		return disabilitato;
+	}
+	public void setDisabilitato(int disabilitato) {
+		this.disabilitato = disabilitato;
 	}
 	
 	

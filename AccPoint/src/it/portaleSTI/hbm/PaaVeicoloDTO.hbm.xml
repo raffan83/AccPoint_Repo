@@ -42,5 +42,8 @@
          <property name="dispositivo_pedaggio" type="java.lang.String">
             <column name="dispositivo_pedaggio" />
         </property>
+        <property name="disabilitato" type="int">
+            <column name="disabilitato" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -212,9 +212,10 @@ public class ScaricaCertificato extends HttpServlet {
 				 
 				 FileInputStream fileIn = new FileInputStream(d);
 				 
-				 response.setContentType("application/octet-stream");
+				 response.setContentType("application/pdf");
 				 
-				 response.setHeader("Content-Disposition","attachment;filename="+certificatoCampione.getFilename());
+				// response.setHeader("Content-Disposition","attachment;filename="+certificatoCampione.getFilename());
+				 response.setHeader("Content-Disposition", "inline; filename="+certificatoCampione.getFilename());
 				 
 				 ServletOutputStream outp = response.getOutputStream();
 				     

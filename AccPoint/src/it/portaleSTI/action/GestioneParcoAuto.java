@@ -359,8 +359,9 @@ public class GestioneParcoAuto extends HttpServlet {
 				String id = request.getParameter("id_veicolo_elimina");
 
 				PaaVeicoloDTO veicolo = GestioneParcoAutoBO.getVeicoloFromId(Integer.parseInt(id), session);
+				veicolo.setDisabilitato(1);
 				
-				session.delete(veicolo);
+				session.update(veicolo);
 								
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();

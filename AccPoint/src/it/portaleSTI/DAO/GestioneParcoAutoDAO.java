@@ -20,7 +20,7 @@ public class GestioneParcoAutoDAO {
 
 		ArrayList<PaaVeicoloDTO> lista = null;
 		
-		Query query = session.createQuery("from PaaVeicoloDTO");
+		Query query = session.createQuery("from PaaVeicoloDTO where disabilitato = 0");
 		
 		lista =(ArrayList<PaaVeicoloDTO>) query.list();
 		
@@ -123,7 +123,7 @@ public class GestioneParcoAutoDAO {
 	public static ArrayList<PaaVeicoloDTO> getListaVeicoliDisponibili(Date data_start, Date data_end, Session session) {
 		ArrayList<PaaVeicoloDTO> lista = null;
 		
-		  String str = "from PaaVeicoloDTO veicolo where veicolo.id not in (" +
+		  String str = "from PaaVeicoloDTO veicolo where veicolo.disabilitato = 0 and veicolo.id not in (" +
 	                 "select prenotazione.veicolo.id from PaaPrenotazioneDTO prenotazione " +
 	                 "where prenotazione.data_inizio_prenotazione < :data_end and prenotazione.data_fine_prenotazione > :data_start)";
 

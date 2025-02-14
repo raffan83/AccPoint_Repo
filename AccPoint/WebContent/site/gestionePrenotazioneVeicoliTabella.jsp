@@ -530,7 +530,7 @@ var settings ={
     },
     dom: 'rt<"bottom"ip>',
     pageLength: 100,
-  
+    "order": [[ 2, "asc" ]],
       paging: false, 
       ordering: true,
       info: true, 

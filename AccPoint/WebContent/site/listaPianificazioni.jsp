@@ -6,6 +6,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
 <t:layout title="Dashboard" bodyClass="skin-blue-light sidebar-mini wysihtml5-supported">
@@ -124,7 +125,7 @@
 <th>Descrizione</th>
 <th>Tipo</th>
 <th>Docenti</th>
-
+<th>Computo ore</th>
 <th style="min-width:250px">Azioni</th>
 
  </tr></thead>
@@ -150,7 +151,61 @@
 	${docente.nome} ${docente.cognome }<br>
 	</c:forEach>
 	</td>
-	
+<td>
+    <c:set var="oraInizio" value="${pianificazione.ora_inizio}" />
+    <c:set var="oraFine" value="${pianificazione.ora_fine}" />
+    <c:set var="pausa" value="${pianificazione.pausa_pranzo}" />
+
+    <!-- Estrarre ore e minuti dall'orario di inizio e fine -->
+    <c:set var="oreInizio" value="${oraInizio.split(':')[0]}"/>
+    <c:set var="minutiInizio" value="${oraInizio.split(':')[1]}"/>
+    <c:set var="oreFine" value="${oraFine.split(':')[0]}"/>
+    <c:set var="minutiFine" value="${oraFine.split(':')[1]}"/>
+
+    <!-- Convertire ore e minuti in numeri interi -->
+    <fmt:parseNumber var="oreInizioInt" value="${oreInizio}" integerOnly="true"/>
+    <fmt:parseNumber var="minutiInizioInt" value="${minutiInizio}" integerOnly="true"/>
+    <fmt:parseNumber var="oreFineInt" value="${oreFine}" integerOnly="true"/>
+    <fmt:parseNumber var="minutiFineInt" value="${minutiFine}" integerOnly="true"/>
+
+    <!-- Calcolo totale minuti lavorati -->
+    <c:set var="minutiInizioTotale" value="${(oreInizioInt * 60) + minutiInizioInt}"/>
+    <c:set var="minutiFineTotale" value="${(oreFineInt * 60) + minutiFineInt}"/>
+    <c:set var="totMinuti" value="${minutiFineTotale - minutiInizioTotale}"/>
+
+    <!-- Sottrazione pausa pranzo se presente -->
+         <c:if test="${pausa == 'SI'}">
+        
+        <c:choose>
+            <c:when test="${not empty pianificazione.durata_pausa_pranzo}">
+             
+                <c:set var="totMinuti" value="${totMinuti - pianificazione.durata_pausa_pranzo}"/>
+            </c:when>
+            <c:otherwise>
+             
+                <c:set var="totMinuti" value="${totMinuti - 60}"/>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
+
+     
+     <%-- <fmt:formatNumber var="oreFinaliInt" value="${totMinuti div 60}" type="number" maxFractionDigits="0"/> --%>
+<%--      <c:set var="oreFinaliInt" value="${fn:substringBefore(totMinuti / 60, '.')}"/>
+      --%>
+    <fmt:formatNumber var="oreDecimali" value="${totMinuti / 60.0}" type="number" maxFractionDigits="1" groupingUsed="false" pattern="#0.0"/>
+
+
+     
+<%--     <c:set var="minutiFinali" value="${totMinuti % 60}"/>
+    <c:set var="totOre" value="${oreFinali}"/> --%>
+
+	<c:if test="${pianificazione.tipo.id !=3 }">
+	${oreDecimali.replace(',','.')}
+</c:if>
+     
+</td>
+
+
 	
 		<td>
 
@@ -452,7 +507,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 7 },
+		    	  { responsivePriority: 2, targets: 8 },
 	
 		    	  
 		               ], 	        

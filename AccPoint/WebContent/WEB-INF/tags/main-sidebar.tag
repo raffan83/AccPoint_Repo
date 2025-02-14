@@ -88,6 +88,11 @@
     		<% if(user.checkRuolo("AM") || user.checkRuolo("OP")){%>	
     			<li><a href="gestioneConfigurazioniClienti.do?action=lista"><i class="fa fa-industry"></i>Gestione Clienti</a></li>	
     		<% }%>		
+    		
+    		<% if(user.checkRuolo("AM") ){%>
+    		<li><a href="gestioneModificheAdmin.do">Gestione Modifiche Admin</a></li>	
+    		
+    		<% }%>	
           </ul>
         </li>
          <% }%>

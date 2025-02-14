@@ -349,7 +349,7 @@ public class ListaCertificati extends HttpServlet {
 				
 				boolean dataCampioneSuccessiva = false;
 				for (CampioneDTO campioneDTO : listaCampioni) {
-					if(campioneDTO.getDataVerifica().after(certificato.getMisura().getDataMisura())) {
+					if(campioneDTO.getDataVerifica()!= null && campioneDTO.getDataVerifica().after(certificato.getMisura().getDataMisura())) {
 						myObj.addProperty("success", false);
 						myObj.addProperty("messaggio", "Attenzione! La data verifica del campione è successiva alla data misura!");
 				        out.println(myObj.toString());

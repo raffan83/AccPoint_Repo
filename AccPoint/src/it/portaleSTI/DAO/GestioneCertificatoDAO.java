@@ -302,15 +302,13 @@ public static ArrayList<CertificatoDTO> getListaCertificatiByIntervento(StatoCer
 	}
 	
 
-	public static CertificatoDTO getCertificatoByMisura(MisuraDTO misuraDTO)throws Exception {
+	public static CertificatoDTO getCertificatoByMisura(MisuraDTO misuraDTO, Session session)throws Exception {
 		
 		Query query=null;
 		CertificatoDTO certificato = null;
 		try
 		{	
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+
 		
 		String s_query ="";
 		
@@ -328,8 +326,7 @@ public static ArrayList<CertificatoDTO> getListaCertificatiByIntervento(StatoCer
 				 certificato=listaCert.get(0);
 			 }
 			 
-		session.getTransaction().commit();
-		session.close();
+
 		
 		}
 		catch(Exception ex)

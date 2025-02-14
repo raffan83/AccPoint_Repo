@@ -875,7 +875,9 @@ public class GestioneParcoAuto extends HttpServlet {
 			else if(action.equals("gestione_richieste")) {
 				
 				ArrayList<PaaVeicoloDTO> lista_veicoli = GestioneParcoAutoBO.getListaVeicoli(session);
-				ArrayList<PaaRichiestaDTO> lista_richieste = GestioneParcoAutoBO.getListaRichieste(session);				
+				ArrayList<PaaRichiestaDTO> lista_richieste = GestioneParcoAutoBO.getListaRichieste(session);
+				
+				Collections.sort(lista_veicoli, Comparator.comparing(PaaVeicoloDTO::getModello));
 			
 				request.getSession().setAttribute("lista_richieste", lista_richieste);
 				request.getSession().setAttribute("lista_veicoli", lista_veicoli);
@@ -1156,6 +1158,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				
 				ArrayList<PaaVeicoloDTO> lista_veicoli_disponibili = GestioneParcoAutoBO.getListaVeicoliDisponibili(data_start, data_end, session);				
 			
+//				Collections.sort(lista_veicoli_disponibili, Comparator.comparing(PaaVeicoloDTO::getModello));
 				
 				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create(); 	
 				PrintWriter out = response.getWriter();

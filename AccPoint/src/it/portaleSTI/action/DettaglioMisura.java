@@ -26,7 +26,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.GestioneCertificatoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaDTO;
@@ -44,6 +46,7 @@ import it.portaleSTI.bo.GestioneLivellaElettronicaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneSicurezzaElettricaBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
+import it.portaleSTI.bo.GestioneVerCertificatoBO;
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -96,6 +99,7 @@ public class DettaglioMisura extends HttpServlet {
 				
 			idMisura = Utility.decryptData(idMisura);
 			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(idMisura), session);	
+			CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura, session);
 			
 //			Set<ScadenzaDTO> listaScadenzeDTO= new HashSet<>();
 //			ScadenzaDTO scadenza = new ScadenzaDTO();
@@ -106,6 +110,7 @@ public class DettaglioMisura extends HttpServlet {
 //			misura.getStrumento().setListaScadenzeDTO(listaScadenzeDTO);
 			
 			request.getSession().setAttribute("misura", misura);
+			request.setAttribute("cert", certificato);
 			
 				if(misura.getLat().equals("N")) {
 					int numeroTabelle = GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());
@@ -127,6 +132,7 @@ public class DettaglioMisura extends HttpServlet {
 					Gson gson = new Gson();
 					JsonArray listaPuntJson = gson.toJsonTree(arrayPunti).getAsJsonArray();
 					request.setAttribute("listaPuntJson", listaPuntJson);
+					
 					
 					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisura.jsp");
 			     	dispatcher.forward(request,response);

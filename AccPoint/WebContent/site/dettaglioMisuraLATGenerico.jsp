@@ -163,8 +163,11 @@
 		  				 </li>
   				 </c:if>
   				 </c:if>
-                
-               
+                <c:if test="${cert.stato.id == 2 }">
+                 <li class="list-group-item">
+                  <b>Download Certificato</b> <a target="_blank"   class="btn btn-danger customTooltip pull-right btn-xs" title="Click per scaricare il Cerificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${utl:encryptData(cert.nomeCertificato)}&pack=${utl:encryptData(misura.intervento.nomePack)}" ><i class="fa fa-file-pdf-o"></i></a>
+                </li>
+                </c:if>
         </ul>
 
 </div>

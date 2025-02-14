@@ -90,7 +90,7 @@ public class StrumentiMisurati extends HttpServlet {
 						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
 						for (MisuraDTO misura : listaMisure) {
 							
-							 CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura);
+							 CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura, session);
 							 if(certificato!=null) {
 								 arrCartificati.put(""+misura.getId(), certificato);
 							 }
@@ -139,7 +139,7 @@ public class StrumentiMisurati extends HttpServlet {
 						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
 						for (MisuraDTO misura : listaMisure) {
 							
-							 CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura);
+							 CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura, session);
 							 if(certificato!=null) {
 								 arrCartificati.put(""+misura.getId(), certificato);
 							 }
@@ -185,7 +185,7 @@ public class StrumentiMisurati extends HttpServlet {
 						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
 						for (MisuraDTO misura : listaMisure) {
 							
-							 CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura);
+							 CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura, session);
 							 if(certificato!=null) {
 								 arrCartificati.put(""+misura.getId(), certificato);
 							 }
@@ -211,7 +211,7 @@ public class StrumentiMisurati extends HttpServlet {
 						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
 						for (MisuraDTO misura : listaMisure) {
 							
-							 CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura);
+							 CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura, session);
 							 if(certificato!=null) {
 								 arrCartificati.put(""+misura.getId(), certificato);
 							 }

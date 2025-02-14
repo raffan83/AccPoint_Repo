@@ -12,6 +12,8 @@
 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 	<%
+	
+	UtenteDTO userObj = (UtenteDTO)session.getAttribute("userObj");
 	%>
 	
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
@@ -89,7 +91,7 @@
     <%-- <c:if test="${misura.lat=='S' }"><th>Registro Laboratorio</th></c:if> --%>
     <th>Registro Laboratorio</th>
     <th>Indice Prestazione</th>
-    <th>Certificato/File Excel/Stampa etichetta</th>
+    <th style="min-width:150px">Certificato/File Excel/Stampa etichetta</th>
     <th>Allegati</th>
     <th>Note Allegati</th>
     <th>Operatore</th>
@@ -154,13 +156,15 @@
 		<a  class="btn btn-primary customTooltip" title="Click per scaricare il PDF dell'etichetta" onclick="openModalStampa('${utl:encryptData(misura.id)}')"  ><i class="fa fa-print"></i></a>
 	<c:set var = "flag" value="1"/>
 	</c:if>
-	<c:if test="${certificato.stato.id == 4}">
+	
+	<c:set var="ruolo" value="${userObj.checkRuolo('AM') || userObj.checkRuolo('RS')}"></c:set>
+	<c:if test="${certificato.stato.id == 4 || (ruolo==true && certificato.misura.lat == 'S') }">
 	<a  target="_blank" class="btn btn-danger customTooltip" title="Click per aggiungere il Certificato" onClick="modalCertificato('${certificato.id}','${misura.intervento.nomePack}')"><i class="fa fa-arrow-up"></i></a>
 	</c:if>
 </c:if>
 </c:forEach>
 
-<c:if test="${misura.interventoDati.nomePack==''}">
+<c:if test="${misura.interventoDati.nomePack=='' || (ruolo==true && certificato.misura.lat == 'S')}">
 	<a  target="_blank" class="btn btn-success customTooltip" title="Click per aggiungere il file Excel" onClick="modalExcel('${misura.id}')"><i class="fa fa-arrow-up"></i></a>
 </c:if>
 </td>

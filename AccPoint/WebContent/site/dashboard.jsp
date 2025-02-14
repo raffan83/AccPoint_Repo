@@ -517,6 +517,7 @@ if(trendJson!=null){
         		             }],
         		             xAxes: [{
         		                 ticks: {
+        		                	 beginAtZero:true,
         		                     autoSkip: false
         		                 }
         		             }]

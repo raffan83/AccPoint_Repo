@@ -2326,7 +2326,10 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 
 	$(".select2").select2();
 	
-
+	$("#commessa").select2({
+        dropdownParent: $('#myModalModificaPacco')
+    });		
+	
 	
 	
 	
@@ -3807,6 +3810,7 @@ else{
 	   		  placeholder = "Seleziona Cliente...";
 	   	  }
 	     	$(id_input).select2({
+	     		dropdownParent: $('#myModalModificaPacco'),
 	     	    data: mockData(),
 	     	    placeholder: placeholder,
 	     	    multiple: false,

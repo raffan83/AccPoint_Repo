@@ -2292,5 +2292,10 @@ public class GestioneFormazioneBO {
 		
 		return GestioneFormazioneDAO.getMembriGruppoVittoria(id_gruppo, id_corso);
 	}
+
+	public static ArrayList<ForCorsoDTO> getlistaCorsiCommessa(String commessa, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneFormazioneDAO.getListaCorsiCommessa(commessa, session);
+	}
 	
 }

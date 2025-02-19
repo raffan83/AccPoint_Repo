@@ -2606,11 +2606,13 @@ function cambiaNota(){
 		}	
 	}
 	
-	$(".select2").select2();
+	$(".select2").select2();		
 	
 
 	
-	
+	$("#commessa").select2({
+        dropdownParent: $('#myModalCreaNuovoPacco')
+    });		
 	
 $('#stato_lavorazione').change(function(){
  		
@@ -2757,7 +2759,9 @@ function modalYesOrNo(id_allegato, id_pacco){
 var commessa_options;
 
 $(document).ready(function() {
-
+	
+	
+	
 	 commessa_options = $('#commessa option').clone();
 	$('.dropdown-toggle').dropdown();
 	
@@ -3612,6 +3616,7 @@ if($('#tipo_ddt').val() != 1){
 
   	$(id_input).select2({
   	    data: mockData(),
+  	  dropdownParent: $('#myModalCreaNuovoPacco'),
   	    placeholder: placeholder,
   	    multiple: false,
   	    // query with pagination

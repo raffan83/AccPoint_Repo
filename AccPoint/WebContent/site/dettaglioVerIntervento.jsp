@@ -315,7 +315,7 @@ via ${strumento_int.via } ${strumento_int.civico } ${strumento_int.comune.descri
 
 </td>
 <td>
-<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento_int.verStrumento.id}','${strumento_int.verStrumento.famiglia_strumento.descrizione }','${strumento_int.verStrumento.freqMesi }','${strumento_int.verStrumento.denominazione }','${strumento_int.verStrumento.costruttore }','${strumento_int.verStrumento.modello }','${strumento_int.verStrumento.matricola }',
+<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento_int.verStrumento.id}','${strumento_int.verStrumento.famiglia_strumento.descrizione }','${strumento_int.verStrumento.freqMesi }','${utl:escapeJS(strumento_int.verStrumento.denominazione) }','${utl:escapeJS(strumento_int.verStrumento.costruttore) }','${strumento_int.verStrumento.modello }','${strumento_int.verStrumento.matricola }',
 	'${strumento_int.verStrumento.classe }','${strumento_int.verStrumento.tipo.id }','${strumento_int.verStrumento.tipo.descrizione }','${strumento_int.verStrumento.data_ultima_verifica }','${strumento_int.verStrumento.data_prossima_verifica }','${strumento_int.verStrumento.um }','${strumento_int.verStrumento.portata_min_C1 }',
 	'${strumento_int.verStrumento.portata_max_C1 }','${strumento_int.verStrumento.div_ver_C1 }','${strumento_int.verStrumento.div_rel_C1 }','${strumento_int.verStrumento.numero_div_C1 }',	'${strumento_int.verStrumento.portata_min_C2 }','${strumento_int.verStrumento.portata_max_C2 }',
 	'${strumento_int.verStrumento.div_ver_C2 }','${strumento_int.verStrumento.div_rel_C2 }','${strumento_int.verStrumento.numero_div_C2 }','${strumento_int.verStrumento.portata_min_C3 }','${strumento_int.verStrumento.portata_max_C3 }','${strumento_int.verStrumento.div_ver_C3 }',

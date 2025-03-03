@@ -10,6 +10,7 @@ public class ForMembriGruppoDTO {
 	String descrizioneErrore;
 	String cf;
 	Long dataEsecuzione;
+	Long dataCreazioneUtente;
 	
 	public int getId() {
 		return id;
@@ -59,6 +60,13 @@ public class ForMembriGruppoDTO {
 	public void setCf(String cf) {
 		this.cf = cf;
 	}
+	public Long getDataCreazioneUtente() {
+		return dataCreazioneUtente;
+	}
+	public void setDataCreazioneUtente(Long dataCreazioneUtente) {
+		this.dataCreazioneUtente = dataCreazioneUtente;
+	}
+
 	
 	
 

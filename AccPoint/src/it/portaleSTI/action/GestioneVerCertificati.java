@@ -470,10 +470,16 @@ public class GestioneVerCertificati extends HttpServlet {
 				String indirizzo = "";
 				if(certificato.getMisura().getVerIntervento().getId_sede()==0) {
 					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(""+certificato.getMisura().getVerIntervento().getId_cliente());
-					indirizzo = cliente.getEmail();
+					indirizzo = cliente.getPec();
+					if(indirizzo == null) {
+						indirizzo = cliente.getEmail();
+					}
 				}else {
 					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteFromSede(""+certificato.getMisura().getVerIntervento().getId_cliente(), ""+certificato.getMisura().getVerIntervento().getId_sede());
-					indirizzo = cliente.getEmail();							
+					indirizzo = cliente.getPec();
+					if(indirizzo == null) {
+						indirizzo = cliente.getEmail();
+					}
 				}
 				if(indirizzo == null) {
 					indirizzo = "";

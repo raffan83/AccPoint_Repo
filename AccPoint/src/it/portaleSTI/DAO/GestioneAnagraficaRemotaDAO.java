@@ -68,7 +68,7 @@ public class GestioneAnagraficaRemotaDAO {
 		
 		try {
 			con=ManagerSQLServer.getConnectionSQL();
-			pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN_INDIR ");
+			pst=con.prepareStatement("SELECT a.*,(SELECT DESCR FROM BWT_PROVINCE b WHERE a.CODPROV = b.CODPROV) as provincia FROM BWT_ANAGEN_INDIR a");
 			rs=pst.executeQuery();
 			
 			SedeDTO sede=null;
@@ -80,7 +80,8 @@ public class GestioneAnagraficaRemotaDAO {
 				sede.setId__cliente_(rs.getInt("ID_ANAGEN"));
 				sede.setComune(rs.getString("CITTA"));
 				sede.setIndirizzo(rs.getString("INDIR"));
-				sede.setSiglaProvincia(rs.getString("CODPROV"));
+				//sede.setSiglaProvincia(rs.getString("CODPROV"));
+				sede.setSiglaProvincia(rs.getString("provincia"));
 				sede.setDescrizione(rs.getString("DESCR"));
 				sede.setCap(rs.getString("CAP")); 
 				sede.setN_REA(rs.getString("NREA"));
@@ -191,7 +192,7 @@ public class GestioneAnagraficaRemotaDAO {
 					cliente.setProvincia(rs.getString("CODPROV"));
 					cliente.setNumeroREA(rs.getString("N_REA"));
 					cliente.setEmail(rs.getString("EMAIL"));
-					
+					cliente.setPec(rs.getString("EMAIL_PEC"));
 				}
 				
 			} catch (Exception e) {
@@ -272,6 +273,7 @@ public class GestioneAnagraficaRemotaDAO {
 				cliente.setCitta(rs.getString("citta_sede"));
 				cliente.setNumeroREA(rs.getString("numeroREASede"));
 				cliente.setEmail(rs.getString("EMAIL"));
+				cliente.setPec(rs.getString("EMAIL_PEC"));
 			}
 			
 		} catch (Exception e) {

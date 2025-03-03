@@ -9,6 +9,7 @@ public class ForDocenteDTO {
 	private String cv;
 	private String email;
 	private String utenteMilestone;
+	private String fase;
 	
 	
 	public ForDocenteDTO(int id) {
@@ -66,6 +67,14 @@ public class ForDocenteDTO {
 
 	public void setUtenteMilestone(String utenteMilestone) {
 		this.utenteMilestone = utenteMilestone;
+	}
+
+	public String getFase() {
+		return fase;
+	}
+
+	public void setFase(String fase) {
+		this.fase = fase;
 	}
 	
 	

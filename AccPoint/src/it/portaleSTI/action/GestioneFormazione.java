@@ -3049,6 +3049,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String durata_pausa_pranzo = ret.get("durata_pausa_pranzo");
 					String anno_data = ret.get("anno_data");
 					
+					
 					ForPiaPianificazioneDTO pianificazione = null;
 					if(id_pianificazione!=null && !id_pianificazione.equals("")) {
 						pianificazione = GestioneFormazioneBO.getPianificazioneFromId(Integer.parseInt(id_pianificazione), session);
@@ -3110,11 +3111,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 //					}else {
 //						pianificazione.setData_reminder(null);
 //					}
-					
+				
 					if(id_docenti!=null && !id_docenti.equals("")) {
+			
 						for (String id : id_docenti.split(";")) {
 							ForDocenteDTO docente = GestioneFormazioneBO.getDocenteFromId(Integer.parseInt(id), session);
-							pianificazione.getListaDocenti().add(docente);
+							docente.setFase(ret.get("select_fasi_"+id));
+							pianificazione.getListaDocenti().add(docente);							
+							
 							
 						}
 						
@@ -3167,6 +3171,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 								}
 								agenda.setENDTDATE(calendar.getTime());
 								
+								
+								agenda.setFASE("BWT_COMMESSA_FASI~|~AM_TSC_0118/25~|~"+docente.getFase());
 							//	CommessaDTO commessa_fissa = GestioneCommesseDAO.getCommessaById(id_commessa);
 								agenda.setID_ANAGEN(1428); //N.C.S
 								agenda.setID_COMMESSA("AM_TSC_0118/25");
@@ -3600,6 +3606,40 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio", "Configurazione eliminata con successo!");
+					
+		        	out.print(myObj);
+					
+				}
+				else if(action.equals("lista_fasi")) {
+					
+					ajax = true;
+					
+					String id_docenti = request.getParameter("id_docenti");
+					
+					String docenti = "";
+					if(id_docenti!=null && !id_docenti.equals("")) {
+						for (String id : id_docenti.split(";")) {
+							ForDocenteDTO docente = GestioneFormazioneBO.getDocenteFromId(Integer.parseInt(id), session);
+							docenti += docente.getUtenteMilestone()+";";							
+						}						
+										
+					}
+					
+					
+					HashMap<String,ArrayList<String>> lista_fasi = GestioneAssegnazioneAttivitaBO.getListaFasiCommessa(docenti,id_docenti);
+					
+					
+					Gson g = new Gson();
+					
+					
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter out = response.getWriter();
+					
+					
+					myObj.addProperty("success", true);
+					myObj.add("lista_fasi", g.toJsonTree(lista_fasi));
 					
 		        	out.print(myObj);
 					

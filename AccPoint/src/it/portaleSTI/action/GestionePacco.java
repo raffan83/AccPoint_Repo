@@ -671,25 +671,28 @@ public class GestionePacco extends HttpServlet {
 							rilievo = new RilMisuraRilievoDTO();
 							mag_item = 	new MagItemDTO();
 							rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
+							
+							rilievo.setId_cliente_util(Integer.parseInt(cliente_util));
+							//rilievo.setNome_cliente_util(util.getNome());
+							rilievo.setId_sede_util(Integer.parseInt(sede_util.split("_")[0]));
+							rilievo.setData_inizio_rilievo(new Date());
+							rilievo.setCommessa(commessa);
+							rilievo.setClasse_tolleranza("m");
+							
+							//if(id_pacco==null || id_pacco.equals("")) {
+							rilievo.setDisegno(disegno);
+							rilievo.setVariante(variante);
+							rilievo.setCifre_decimali(3);
+							rilievo.setIntervento(ril_intervento);	
 						}
-					rilievo.setDisegno(disegno);
-					rilievo.setVariante(variante);
-					rilievo.setCifre_decimali(3);
+					
 					
 					if(pezzi_ingresso!= null && !pezzi_ingresso.equals("")) {
 						rilievo.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));	
 					}
 					
 					
-					rilievo.setId_cliente_util(Integer.parseInt(cliente_util));
-					//rilievo.setNome_cliente_util(util.getNome());
-					rilievo.setId_sede_util(Integer.parseInt(sede_util.split("_")[0]));
-					rilievo.setData_inizio_rilievo(new Date());
-					rilievo.setCommessa(commessa);
-					rilievo.setClasse_tolleranza("m");
 					
-					//if(id_pacco==null || id_pacco.equals("")) {
-						rilievo.setIntervento(ril_intervento);	
 					//}
 					
 					

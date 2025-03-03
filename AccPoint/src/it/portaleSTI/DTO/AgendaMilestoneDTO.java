@@ -15,6 +15,7 @@ public class AgendaMilestoneDTO {
 	private int ID_ANAGEN;
 	private String ID_COMMESSA;
 	private String DESCRIZIONE;
+	private String FASE;
 	public String getUSERNAME() {
 		return USERNAME;
 	}
@@ -74,6 +75,12 @@ public class AgendaMilestoneDTO {
 	}
 	public void setNOTA(String nOTA) {
 		NOTA = nOTA;
+	}
+	public String getFASE() {
+		return FASE;
+	}
+	public void setFASE(String fASE) {
+		FASE = fASE;
 	}
 	
 	

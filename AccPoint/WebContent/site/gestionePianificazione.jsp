@@ -216,7 +216,11 @@
  
         </div><br>
               <div class="row">
-              <div class="col-xs-3 "></div>
+              <div class="col-xs-3 ">
+              
+              
+              
+              </div>
            <div class="col-xs-6 " style="margin-top:25px" id = "content_agenda">
         <label >Aggiungi evento ad agenda docente</label>
           <input class="form-control "   type="checkbox" id="agenda" name="agenda" style="width:100%">
@@ -226,6 +230,16 @@
         <label class="pull-right" style="font-size: 70%"  > Evento aggiunto agenda docente</label>
        </div>
          </div><br>
+         <div class="row">
+          <div class="col-xs-12 ">
+                <div id="content_fasi" style="display:none">
+              
+              
+      
+              </div>
+          </div>
+         </div><br>
+   
         
 		<div class="row">
 		<div class='col-xs-3'><label>Ora inzio</label><div class='input-group'>
@@ -478,6 +492,54 @@ $('#formNuovaPianificazione').on("submit", function(e){
 })
 
 
+
+function getListaFasi(ids){
+		 dataObj = {};
+		    dataObj.id_docenti = ids;
+
+		    console.log("Invio richiesta AJAX...");
+		    callAjax(dataObj, "gestioneFormazione.do?action=lista_fasi", function(data){
+		        console.log("Risposta AJAX ricevuta", data);
+
+		        // Controllo se ci sono ancora elementi prima di crearne di nuovi
+		        if ($(".fasiClass").length > 0) {
+		            console.warn("Esistono ancora select! Qualcosa non sta funzionando...");
+		        }
+
+		        var fasi = Object.entries(data.lista_fasi).map(([key, values]) => ({
+		            key: key,
+		            values: values
+		        }));
+
+		        var str = "";
+		        for (var i = 0; i < fasi.length; i++) {
+		            str += "<div class='row' id='content_select_fasi_"+fasi[i].key+"'><div class='col-xs-3'><label id='label_fase_"+fasi[i].key+"'></label></div><div class='col-xs-9'><select id='select_fasi_" + fasi[i].key + "' name='select_fasi_" + fasi[i].key + "' class='form-control select2 fasiClass' data-placeholder='Seleziona fase...' style='width:100%'></select></div></div><br>";
+		        }
+
+		        $('#content_fasi').append(str);
+
+		        for (var i = 0; i < fasi.length; i++) {
+		            var opt = [];
+		            opt.push("<option value=''></option>");
+		            for (var j = 0; j < fasi[i].values.length; j++) {
+		                if (fasi[i].values[j].split(";;")[1] != "") {
+		                    opt.push("<option value='" + fasi[i].values[j].split(";;")[0] + "' >Docenza - " + fasi[i].values[j].split(";;")[1] + "</option>");
+		                } else {
+		                    opt.push("<option value='" + fasi[i].values[j].split(";;")[0] + "' >Docenza</option>");
+		                }
+		            }
+
+		            $('#select_fasi_' + fasi[i].key).html(opt);
+		            $('#select_fasi_' + fasi[i].key).select2();
+		            var docente = $("#docente option[value='" + fasi[i].key + "']").text();
+		            $('#label_fase_'+fasi[i].key).text(docente);
+		        }
+		        
+		    });
+	}
+	
+
+let previousValues = [];
 $('#docente').on('change', function() {
 	  
 	var selected = $(this).val();
@@ -504,6 +566,31 @@ $('#docente').on('change', function() {
 	 
 	
 	$('#id_docenti_dissocia').val(deselected)
+	
+	
+	
+	if ($('#agenda').prop('checked')) {
+		let currentValues = $(this).val() || [];		
+	
+		if(currentValues!=null){
+			var lastAdded = currentValues.filter(value => !previousValues.includes(value)).pop();	
+		}
+		if(previousValues!=null && selected!=null){
+			var lastRemoved = previousValues.filter(value => !selected.includes(value)).pop();	
+		}
+		
+		
+		if(lastAdded !=null ){
+			getListaFasi(lastAdded);	
+		}
+		if(lastRemoved!=null){
+			$('#content_select_fasi_'+lastRemoved).remove()
+		}
+		
+	}
+	if(selected!=null){
+		previousValues = [...selected];	
+	}
 	
   });
 
@@ -559,17 +646,58 @@ $('input:checkbox').on('ifToggled', function() {
 	
 	});
 	
+	
+	
+	
 
-	$('#agenda').on('ifChecked', function(event){
-		$('#check_agenda').val(1);
-	
+	$('#agenda').off("ifChecked").on('ifChecked', function(event){
+	    console.log("Check attivato");
+
+	    $('#check_agenda').val(1);
+
+	    // Distruggi select2 PRIMA di rimuovere gli elementi
+	    $(".fasiClass").each(function() {
+	        if ($.fn.select2) {
+	            $(this).select2('destroy');
+	        }
+	    });
+
+	    // Ora rimuovi completamente gli elementi
+	    $(".fasiClass").remove();
+	    $('#content_fasi').html("");
+
+	    var values = $('#docente').val();
+	    var ids = "";
+	    if (values != null) {
+	        for (var i = 0; i < values.length; i++) {
+	            ids += values[i] + ";";
+	        }
+	    }
+
+	   getListaFasi(ids);
+
+	        $('#content_fasi').show();
+	   
 	});
-	
-	$('#agenda').on('ifUnchecked', function(event) {
-		
-		$('#check_agenda').val(0);
-	
+
+	$('#agenda').off("ifUnchecked").on('ifUnchecked', function(event) {
+	    console.log("Check disattivato");
+
+	    $('#check_agenda').val(0);
+
+	    // Distruggi select2 PRIMA di rimuovere gli elementi
+	    $(".fasiClass").each(function() {
+	        if ($.fn.select2) {
+	            $(this).select2('destroy');
+	        }
+	    });
+
+	    // Ora rimuovi completamente gli elementi
+	    $(".fasiClass").remove();
+	    $('#content_fasi').html("");
+	    $('#content_fasi').hide();
 	});
+
 	
 	$('#email_elimina').on('ifChecked', function(event){
 		$('#check_email_eliminazione').val(1);
@@ -807,6 +935,9 @@ $('#modalPianificazione').on("hidden.bs.modal", function(){
 	 $('#email').iCheck('uncheck');
 	 $('#agenda').iCheck('uncheck');
 	 $('#pausa_pranzo').iCheck('uncheck');
+	 $('#label_email').hide();
+	 $('#label_agenda').hide();
+	 $('#content_fasi').hide()
 		
 });
 

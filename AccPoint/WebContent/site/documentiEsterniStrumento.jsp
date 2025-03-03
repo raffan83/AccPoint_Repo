@@ -49,7 +49,8 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
 		        <!-- The file input field used as target for the file upload widget -->
-		        		<input accept="application/pdf" id="fileupload" type="file" name="files">
+		        		<!-- <input accept="application/pdf" id="fileupload" type="file" name="files"> -->
+		        		 <input accept=".pdf,.xls,.xlsx,.docx,.doc,.jpg,.png" id="fileupload" type="file" name="files">
 		   	 </span>
 		       
 		    <!-- The container for the uploaded files -->
@@ -203,7 +204,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
         },
         add: function(e, data) {
             var uploadErrors = [];
-            var acceptFileTypes = /(\.|\/)(pdf)$/i;
+            var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls|xlsx|dxf|dwg|stp|igs|iges|catpart|eml|msg|rar|zip)$/i;
             if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
                 uploadErrors.push('Tipo File non accettato. ');
             }

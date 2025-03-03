@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -19,6 +20,7 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.MilestoneOperatoreDTO;
+import it.portaleSTI.DTO.SedeDTO;
 
 public class GestioneAssegnazioneAttivitaDAO {
 
@@ -127,7 +129,7 @@ public class GestioneAssegnazioneAttivitaDAO {
 		try {
 			con=ManagerSQLServer.getConnectionSQL();
 			pst=con.prepareStatement("INSERT INTO [dbo].[BWT_AGENDA]([USERNAME],[STATO],[SOGGETTO],[DESCRIZIONE],[LABEL],"
-					+ 				 "[STARTIME],[ENDTIME],[ID_ANAGEN],[ID_COMM],[LOCATION]) VALUES (?,?,?,?,?,?,?,?,?,?)",pst.RETURN_GENERATED_KEYS); 
+					+ 				 "[STARTIME],[ENDTIME],[ID_ANAGEN],[ID_COMM],[LOCATION],[GLB_FASE]) VALUES (?,?,?,?,?,?,?,?,?,?,?)",pst.RETURN_GENERATED_KEYS); 
 
 			pst.setString(1, agenda.getUSERNAME());
 			pst.setInt(2, agenda.getSTATO());
@@ -139,6 +141,7 @@ public class GestioneAssegnazioneAttivitaDAO {
 			pst.setInt(8, agenda.getID_ANAGEN());
 			pst.setString(9, agenda.getID_COMMESSA());
 			pst.setString(10, agenda.getDESCRIZIONE());
+			pst.setString(11, agenda.getFASE());
 			pst.executeUpdate();
 			
 			generatedKeys = pst.getGeneratedKeys();
@@ -198,6 +201,100 @@ public class GestioneAssegnazioneAttivitaDAO {
 			con.close();
 		}
 			
+	}
+
+	public static HashMap<String,ArrayList<String>>getListaFasiCommessa(String nomi_utenti,String id_docenti) throws Exception {
+
+
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
+		ArrayList<String> lista_fasi = new ArrayList<String>();
+		HashMap<String,ArrayList<String>> map = new HashMap<String,ArrayList<String>>();
+         
+		try {
+			con=ManagerSQLServer.getConnectionSQL();
+			String query = "SELECT K2_RIGA,NOTE,TB_RISORSA FROM [dbo].[BWT_COMMESSA_FASI] WHERE ID_COMMESSA=? AND TB_FASE = 'AM_F9' AND ";
+			
+			String[] utentiArray = nomi_utenti.split(";");
+	        String[] idArray = id_docenti.split(";");
+			
+	        HashMap<String, String> userIdMap = new HashMap<>();
+	        
+	        
+	        for (int i = 0; i < utentiArray.length; i++) {
+	            userIdMap.put(utentiArray[i], idArray[i]);  
+	        }
+	        
+			if(utentiArray.length==1) {
+				query += "TB_RISORSA =?";
+			}
+			else {
+				for(int i = 0; i<utentiArray.length;i++) {
+					if(i==0) {
+						query += "(TB_RISORSA =?";
+					}else {
+						query += " OR TB_RISORSA =?"; 
+					}
+					
+				}
+				query+=")";
+			}
+			pst=con.prepareStatement(query);
+		
+			pst.setString(1, "AM_TSC_0118/25");
+			//pst.setString(2, docenti.split(";")[0]);
+			
+			//if(docenti.split(";").length>1) {
+				for(int i = 0; i<utentiArray.length;i++) {
+					pst.setString(2+i, utentiArray[i]);
+				}
+				
+		//	}
+		
+			rs=pst.executeQuery();
+			int i = 0;
+			while(rs.next())
+			{
+				
+				String fase = rs.getString("K2_RIGA");
+				String note = rs.getString("NOTE");
+				String user = rs.getString("TB_RISORSA");
+				
+				String userId = userIdMap.get(user);
+				
+				if(note==null) {
+					note = "";
+				}
+				
+				
+				if(map.get(userId)==null) {
+					lista_fasi = new ArrayList<String>();
+					lista_fasi.add(fase+";;"+note);
+					map.put(userId, lista_fasi);
+				}else {
+					lista_fasi = map.get(userId);
+					lista_fasi.add(fase+";;"+note);
+					map.put(userId, lista_fasi);
+				}
+				
+				
+			}
+			
+			
+		} catch (Exception e){
+			
+			e.printStackTrace();
+			throw e;
+			
+		}finally
+		{
+			
+			pst.close();
+			con.close();
+		}
+		
+		return map;
 	}
 
 }

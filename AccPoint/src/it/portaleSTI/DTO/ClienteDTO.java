@@ -21,13 +21,14 @@ public class ClienteDTO implements Serializable{
 	 private String citta;
 	 private String provincia;
 	 private String numeroREA;
+	 private String pec;
 
 	  public ClienteDTO(){}
 
 	public ClienteDTO(int __id, String codice, String nome,
 			Integer committente_attivo, Integer destinatario_attivo,
 			String telefono, String fax, String partita_iva, String sito,
-			String email, String cellulare,String cf,String numeroREA) {
+			String email, String cellulare,String cf,String numeroREA,String pec) {
 		super();
 		this.__id = __id;
 		this.codice = codice;
@@ -42,6 +43,7 @@ public class ClienteDTO implements Serializable{
 		this.cellulare = cellulare;
 		this.cf=cf;
 		this.numeroREA=numeroREA;
+		this.pec = pec;
 	}
 
 	public String getCf() {
@@ -178,6 +180,14 @@ public class ClienteDTO implements Serializable{
 
 	public void setNumeroREA(String numeroREA) {
 		this.numeroREA = numeroREA;
+	}
+
+	public String getPec() {
+		return pec;
+	}
+
+	public void setPec(String pec) {
+		this.pec = pec;
 	};
 	  
 	  

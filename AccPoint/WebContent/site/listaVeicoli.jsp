@@ -100,7 +100,7 @@
 
 	<td>
 
-	<a class="btn btn-warning customTooltip" onClicK="modificaVeicolo('${veicolo.id}', '${veicolo.targa }', '${veicolo.modello }', '${veicolo.company.id }','${veicolo.km_percorsi }', '${veicolo.carta_circolazione }','${veicolo.portata_max_veicolo }','${veicolo.immagine_veicolo }','${veicolo.dispositivo_pedaggio }')" title="Click per modificare il veicolo"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning customTooltip" onClicK="modificaVeicolo('${veicolo.id}', '${veicolo.targa }', '${veicolo.modello }', '${veicolo.company.id }','${veicolo.km_percorsi }', '${veicolo.carta_circolazione }','${veicolo.portata_max_veicolo }','${veicolo.immagine_veicolo }','${veicolo.dispositivo_pedaggio }', '${utl:escapeJS(veicolo.note) }')" title="Click per modificare il veicolo"><i class="fa fa-edit"></i></a>
 	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaVeicolo('${veicolo.id }')" title="Click per eliminare il veicolo"><i class="fa fa-trash"></i></a>
 	  <c:if test="${veicolo.carta_circolazione!=null }">
 	  <a class="btn btn-info customTooltip" href="gestioneParcoAuto.do?action=download_file&tipo_file=carta_circolazione&id_veicolo=${veicolo.id}" title="Click per scaricare la carta di circolazione"><i class="fa fa-file-text-o"></i></a>
@@ -485,7 +485,7 @@ function modalNuovoVeicolo(){
 }
 
 
-function modificaVeicolo(id_veicolo, targa, modello, id_company, km_percorsi, carta_circolazione, portata_max_veicolo, immagine_veicolo, dispositivo_pedaggio){
+function modificaVeicolo(id_veicolo, targa, modello, id_company, km_percorsi, carta_circolazione, portata_max_veicolo, immagine_veicolo, dispositivo_pedaggio,note){
 	
 	$('#id_veicolo').val(id_veicolo);
 	$('#targa_mod').val(targa);
@@ -497,6 +497,7 @@ function modificaVeicolo(id_veicolo, targa, modello, id_company, km_percorsi, ca
 	$('#portata_max_mod').val(portata_max_veicolo);
 	$('#label_immagine_veicolo_mod').html(immagine_veicolo);
 	$('#dispositivo_pedaggio_mod').val(dispositivo_pedaggio);
+	$('#note_mod').val(note)
 
 	$('#myModalModificaVeicolo').modal();
 }

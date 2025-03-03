@@ -3,6 +3,7 @@ package it.portaleSTI.bo;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.hibernate.Session;
 
@@ -70,6 +71,11 @@ public class GestioneAssegnazioneAttivitaBO {
 	public static void eliminaAppuntamento(int idAgendaMilestone) throws Exception {
 		GestioneAssegnazioneAttivitaDAO.eliminaAgenda(idAgendaMilestone);
 		
+	}
+
+	public static HashMap<String,ArrayList<String>> getListaFasiCommessa(String nomi_utenti, String id_docenti) throws Exception {
+		// TODO Auto-generated method stub
+		return GestioneAssegnazioneAttivitaDAO.getListaFasiCommessa(nomi_utenti,id_docenti);
 	}
 
 }

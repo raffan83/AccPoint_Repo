@@ -462,7 +462,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="388" y="715" width="120" height="1" uuid="c67fe8fd-258d-418e-b15e-fe8315d20735"/>
+				<reportElement x="390" y="711" width="120" height="1" uuid="c67fe8fd-258d-418e-b15e-fe8315d20735"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
@@ -495,8 +495,8 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 				</textElement>
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Center" onErrorType="Blank">
-				<reportElement x="386" y="689" width="120" height="21" uuid="139b02ed-64f8-4490-9249-f5347ce68a39"/>
+			<image scaleImage="FillFrame" hAlign="Center" onErrorType="Blank">
+				<reportElement x="411" y="691" width="70" height="19" uuid="139b02ed-64f8-4490-9249-f5347ce68a39"/>
 				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
 			</image>
 			<staticText>

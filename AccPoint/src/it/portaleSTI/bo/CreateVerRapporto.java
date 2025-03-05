@@ -58,16 +58,19 @@ import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.ImageScale;
 import net.sf.dynamicreports.report.constant.Markup;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
 import net.sf.dynamicreports.report.constant.SplitType;
+import net.sf.dynamicreports.report.constant.StretchType;
 import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.type.StretchTypeEnum;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -1502,12 +1505,19 @@ public class CreateVerRapporto {
 									cmp.text("Firma operatore tecnico")
 									),
 							cmp.horizontalList(
-									cmp.horizontalGap(60),
-									cmp.text(data_emissione),
-									cmp.horizontalGap(35),
-									cmp.text(""),
-									cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setFixedHeight(18)
-									)
+						            cmp.text(data_emissione).setFixedWidth(100), // Data emissione allineata
+						            cmp.horizontalGap(310),
+						            cmp.image(Costanti.PATH_FOLDER + "FileFirme\\" + utente.getFile_firma())
+						                .setFixedDimension(70, 19)
+						                .setImageScale(ImageScale.FILL) // Firma con dimensione fissa
+						        )
+//							cmp.horizontalList(
+//									cmp.horizontalGap(60),
+//									cmp.text(data_emissione),
+//									cmp.horizontalGap(35),
+//									cmp.text(""),
+//									cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma()).setFixedDimension(70, 19).setImageScale(ImageScale.FILL)
+//									)
 							) ,
 							cmp.text(codifica).setStyle(stl.style().setFontSize(6).setFontName("Trebuchet MS"))
 						

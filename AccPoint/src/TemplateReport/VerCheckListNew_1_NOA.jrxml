@@ -541,7 +541,7 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
 			<image hAlign="Center" onErrorType="Blank">
-				<reportElement x="386" y="674" width="120" height="21" uuid="089acf97-190e-44d4-88c8-412ea290c422"/>
+				<reportElement x="414" y="676" width="70" height="19" uuid="089acf97-190e-44d4-88c8-412ea290c422"/>
 				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
 			</image>
 			<staticText>

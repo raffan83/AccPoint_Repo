@@ -506,8 +506,8 @@ Se applicabile, procedere con i seguenti punti 1 e 2.
 				</textElement>
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Center" onErrorType="Blank">
-				<reportElement x="386" y="657" width="120" height="21" uuid="7e90a7b9-6c95-4354-a4ee-beeaf8501699"/>
+			<image scaleImage="FillFrame" hAlign="Center" onErrorType="Blank">
+				<reportElement x="412" y="658" width="70" height="19" uuid="7e90a7b9-6c95-4354-a4ee-beeaf8501699"/>
 				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
 			</image>
 			<staticText>

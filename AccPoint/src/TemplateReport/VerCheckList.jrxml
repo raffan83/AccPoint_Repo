@@ -831,7 +831,7 @@
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
 			<image hAlign="Center" onErrorType="Blank">
-				<reportElement x="386" y="692" width="120" height="21" uuid="853138a4-e0fd-4bb7-85a2-611aaec1d598"/>
+				<reportElement x="411" y="695" width="70" height="19" uuid="853138a4-e0fd-4bb7-85a2-611aaec1d598"/>
 				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
 			</image>
 			<textField>

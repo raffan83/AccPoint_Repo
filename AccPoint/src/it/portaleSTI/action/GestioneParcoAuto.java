@@ -215,7 +215,8 @@ public class GestioneParcoAuto extends HttpServlet {
 				//String immagine_veicolo = ret.get("immagine_veicolo");
 				String note = ret.get("note");
 				String dispositivo_pedaggio = ret.get("dispositivo_pedaggio");
-
+				String autorizzazione = ret.get("autorizzazione");
+				
 				PaaVeicoloDTO veicolo = new PaaVeicoloDTO();
 				
 				
@@ -232,7 +233,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				veicolo.setUser_update(utente);
 				veicolo.setData_update(new Date());
 				veicolo.setDispositivo_pedaggio(dispositivo_pedaggio);
-				
+				veicolo.setAutorizzazione(autorizzazione);
 				session.save(veicolo);
 				
 				
@@ -306,6 +307,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				//String immagine_veicolo = ret.get("immagine_veicolo");
 				String note = ret.get("note_mod");
 				String dispositivo_pedaggio = ret.get("dispositivo_pedaggio_mod");
+				String autorizzazione = ret.get("autorizzazione_mod");
 				
 				PaaVeicoloDTO veicolo = GestioneParcoAutoBO.getVeicoloFromId(Integer.parseInt(id_veicolo), session);			
 				
@@ -322,7 +324,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				veicolo.setUser_update(utente);
 				veicolo.setData_update(new Date());
 				veicolo.setDispositivo_pedaggio(dispositivo_pedaggio);
-				
+				veicolo.setAutorizzazione(autorizzazione);
 			
 				session.update(veicolo);
 				

@@ -3430,6 +3430,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String data_prossimo_invio = ret.get("data_prossimo_invio");
 					String data_scadenza = ret.get("data_scadenza");
 					String oggetto_email = ret.get("oggetto_email");
+					String testo_email = ret.get("testo_email");
 				
 					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = (ArrayList<ForCorsoMoodleDTO>) request.getSession().getAttribute("lista_corsi_moodle");
 					ArrayList<ForGruppoMoodleDTO> lista_gruppi_moodle = (ArrayList<ForGruppoMoodleDTO>) request.getSession().getAttribute("lista_gruppi_moodle");
@@ -3456,6 +3457,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					}
 					
 					configurazione.setOggetto_email(oggetto_email);
+					configurazione.setTesto_email(testo_email);
 					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					
 					configurazione.setFrequenza_invio(Integer.parseInt(frequenza));
@@ -3526,6 +3528,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String data_prossimo_invio = ret.get("data_prossimo_invio_mod");
 					String data_scadenza = ret.get("data_scadenza_mod");
 					String oggetto_email = ret.get("oggetto_email_mod");
+					String testo_email = ret.get("testo_email_mod");
 				
 					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = (ArrayList<ForCorsoMoodleDTO>) request.getSession().getAttribute("lista_corsi_moodle");
 					ArrayList<ForGruppoMoodleDTO> lista_gruppi_moodle = (ArrayList<ForGruppoMoodleDTO>) request.getSession().getAttribute("lista_gruppi_moodle");
@@ -3555,6 +3558,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					
 					configurazione.setOggetto_email(oggetto_email);
+					configurazione.setTesto_email(testo_email);
 					configurazione.setFrequenza_invio(Integer.parseInt(frequenza));
 					configurazione.setData_inizio_invio(df.parse(data_inizio_invio));
 					

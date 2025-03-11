@@ -683,7 +683,7 @@ public class GestionePacco extends HttpServlet {
 							rilievo.setDisegno(disegno);
 							rilievo.setVariante(variante);
 							rilievo.setCifre_decimali(3);
-							rilievo.setIntervento(ril_intervento);	
+							
 						}
 					
 					
@@ -692,7 +692,7 @@ public class GestionePacco extends HttpServlet {
 					}
 					
 					
-					
+					rilievo.setIntervento(ril_intervento);	
 					//}
 					
 					

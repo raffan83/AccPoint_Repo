@@ -45,5 +45,9 @@
         <property name="disabilitato" type="int">
             <column name="disabilitato" />
         </property>
+        
+        <property name="autorizzazione" type="java.lang.String">
+            <column name="autorizzazione" />
+        </property>
     </class>
 </hibernate-mapping>

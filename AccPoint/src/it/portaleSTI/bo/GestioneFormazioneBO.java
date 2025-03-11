@@ -2182,7 +2182,7 @@ public class GestioneFormazioneBO {
 			{
 
 				System.out.println("Tentativo invio " +utente.getNome()+" "+utente.getCognome()+" "+utente.getEmail());
-				SendEmailBO.sendEmailCorsoMoodle(utente, conf.getDescrizione_corso(),conf.getOggetto_email());
+				SendEmailBO.sendEmailCorsoMoodle(utente, conf.getDescrizione_corso(),conf.getOggetto_email(), conf.getTesto_email());
 				TimeUnit.SECONDS.sleep(2);
 				
 			}

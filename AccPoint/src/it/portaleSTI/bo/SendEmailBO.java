@@ -1617,7 +1617,7 @@ public static void sendEmailEliminaPianificazione(ForPiaPianificazioneDTO pianif
 	
 
 
-public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descrizione_corso, String oggetto) {
+public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descrizione_corso, String oggetto, String messaggio) {
 
 
 	try {
@@ -1640,7 +1640,7 @@ public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descri
     email.addTo(utente.getEmail());	
 
     /*Email Test servizio*/
-	//email.addTo("raffaele.fantini@ncsnetwork.it");
+	
 		  
 		  email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
 		
@@ -1650,16 +1650,20 @@ public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descri
 			//  File image = new File(path.replace("WEB-INF/classes", "")+"/images/cresco.jpg");
 			//  String cid = email.embed(image, "Calver logo");
 			  
-			  String messaggio = "Gentile "+utente.getNome() +" " +utente.getCognome()+",<br>Ci risulta che ad oggi lei non abbia completato il <b>percorso formativo obbligatorio</b> <b>\""+descrizione_corso +"\"</b>. La invitiamo, pertanto, a completarlo quanto prima accedendo al presente <a href='https://formazione.crescosrl.net/login/index.php'>Link</a>, con il seguente <b>USERNAME</b>:<br><br><b>"+utente.getUsername()+"</b>";
+//			  String messaggio = "Gentile "+utente.getNome() +" " +utente.getCognome()+",<br>Ci risulta che ad oggi lei non abbia completato il <b>percorso formativo obbligatorio</b> <b>\""+descrizione_corso +"\"</b>. La invitiamo, pertanto, a completarlo quanto prima accedendo al presente <a href='https://formazione.crescosrl.net/login/index.php'>Link</a>, con il seguente <b>USERNAME</b>:<br><br><b>"+utente.getUsername()+"</b>";
+//			  
+//			  
+//			  messaggio += "<br><br>Nel caso in cui non ricordasse la password, pu&ograve; reimpostarla direttamente dalla piattaforma.";
+//			  
+//			  messaggio += "<br><br>Le ricordiamo che la formazione &egrave; un obbligo del lavoratore secondo quanto riportato nell.art. 20, comma 2, lettera h) del D. Lgs. 81/08 e che la mancata esecuzione del corso potrebbe esporla a possibili sanzioni (rif. art. 59 del D. Lgs. 81/08), salvo ulteriori provvedimenti da parte della Direzione del personale.";
+//			  
+//			  messaggio += "<br><br><U>Qualora, nel frattempo,  abbia gi&agrave; provveduto a completare l'intero percorso, le chiediamo di non considerare questa comunicazione.</U>";
+//			  
+//			  messaggio += "<br><br>Restando a sua disposizione per eventuali chiarimenti, salutiamo cordialmente.";
 			  
 			  
-			  messaggio += "<br><br>Nel caso in cui non ricordasse la password, pu&ograve; reimpostarla direttamente dalla piattaforma.";
+			  messaggio = messaggio.replace("{NOME}", utente.getNome()).replace("{COGNOME}", utente.getCognome()).replace("{USER_NAME}", utente.getUsername()).replace("{DESCRIZIONE_CORSO}", descrizione_corso);
 			  
-			  messaggio += "<br><br>Le ricordiamo che la formazione &egrave; un obbligo del lavoratore secondo quanto riportato nell.art. 20, comma 2, lettera h) del D. Lgs. 81/08 e che la mancata esecuzione del corso potrebbe esporla a possibili sanzioni (rif. art. 59 del D. Lgs. 81/08), salvo ulteriori provvedimenti da parte della Direzione del personale.";
-			  
-			  messaggio += "<br><br><U>Qualora, nel frattempo,  abbia gi&agrave; provveduto a completare l'intero percorso, le chiediamo di non considerare questa comunicazione.</U>";
-			  
-			  messaggio += "<br><br>Restando a sua disposizione per eventuali chiarimenti, salutiamo cordialmente.";
 			  
 			  messaggio += "<br><br>Segreteria CRESCO Formazione e Consulenza Srl <br>Per Assistenza e Tutoraggio dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:<br>Tel. Interno: 0776.1815115 - 0776.1815104<br>Cell: 392.9318177<br>";
 			  
@@ -1675,6 +1679,9 @@ public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descri
 			  	
 			  		+" <br /><a href='https://formazione.crescosrl.net/login/index.php'> <img width='160' src=\"https://www.calver.it/images/cresco.jpg\"><a><br>" ;
 		
+			
+			  
+			  
 			
 			  
 			  email.setHtmlMsg("<html>"

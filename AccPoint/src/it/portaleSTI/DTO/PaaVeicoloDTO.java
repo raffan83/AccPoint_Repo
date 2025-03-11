@@ -17,6 +17,7 @@ public class PaaVeicoloDTO {
 	private Date data_update;
 	private String dispositivo_pedaggio;
 	private int disabilitato;
+	private String autorizzazione;
 	
 	public int getId() {
 		return id;
@@ -95,6 +96,12 @@ public class PaaVeicoloDTO {
 	}
 	public void setDisabilitato(int disabilitato) {
 		this.disabilitato = disabilitato;
+	}
+	public String getAutorizzazione() {
+		return autorizzazione;
+	}
+	public void setAutorizzazione(String autorizzazione) {
+		this.autorizzazione = autorizzazione;
 	}
 	
 	

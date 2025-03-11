@@ -98,7 +98,7 @@
 		</td>
 	<td>
  	
-	<a  class="btn btn-warning" onClicK="modificaConfigurazioneModal('${configurazione.id}','${configurazione.id_corso}','${configurazione.id_gruppo}','${configurazione.data_inizio_invio}','${configurazione.frequenza_invio }','${configurazione.data_prossimo_invio}','${configurazione.stato_invio }','${configurazione.data_scadenza}','${utl:escapeJS(configurazione.oggetto_email) }')" title="Click per modificare la Configurazione"><i class="fa fa-edit"></i></a>
+	<a  class="btn btn-warning" onClicK="modificaConfigurazioneModal('${configurazione.id}','${configurazione.id_corso}','${configurazione.id_gruppo}','${configurazione.data_inizio_invio}','${configurazione.frequenza_invio }','${configurazione.data_prossimo_invio}','${configurazione.stato_invio }','${configurazione.data_scadenza}','${utl:escapeJS(configurazione.oggetto_email) }','${utl:escapeJS(configurazione.testo_email) }')" title="Click per modificare la Configurazione"><i class="fa fa-edit"></i></a>
 	<a  class="btn btn-danger" onClicK="eliminaConfigurazioneModal('${configurazione.id}')" title="Click per eliminare la configurazione"><i class="fa fa-trash"></i></a>
 
 	</td>
@@ -280,6 +280,24 @@
        	</div>       	
        </div><br>
        
+       
+       
+         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Testo email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+               	  	
+     
+               <textarea class="form-control" rows="5" style="width:100%" id="testo_email" name="testo_email" ></textarea>
+    
+       			
+       	</div>       	
+       </div><br>
+       
+       
        </div>
   		 
       <div class="modal-footer">
@@ -452,6 +470,25 @@
        	</div>       	
        </div><br>
        
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Testo email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+               	  	
+     
+               <textarea class="form-control" rows="5" style="width:100%" id="testo_email_mod" name="testo_email_mod" ></textarea>
+    
+       			
+       	</div>       	
+       </div><br>
+       
+       
+       
+       
        </div>
   		 
       <div class="modal-footer">
@@ -527,12 +564,18 @@
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
 <script type="text/javascript">
 
 
 function modalnuovaConfigurazione(){
 	
+
+	
+	
 	$('#myModalnuovaConfigurazione').modal();
+	 
 	
 }
 
@@ -554,10 +597,10 @@ function eliminaConfigurazione(){
 }
 
 
+var editorInstanceMod = null;
 
 
-
-function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, data_inizio, frequenza, data_prossimo_invio, stato, data_scadenza, oggetto_email) {
+function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, data_inizio, frequenza, data_prossimo_invio, stato, data_scadenza, oggetto_email, testo_email) {
     
 	$('#id_gruppo_mod').val(id_gruppo);
 	$('#id_configurazione').val(id_configurazione);
@@ -566,6 +609,7 @@ function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, dat
     //$('#gruppi_mod').val(id_gruppo);
   //  $('#gruppi_mod').change()
     $('#oggetto_email_mod').val(oggetto_email);
+    $('#testo_email_mod').val(testo_email);
     $('#frequenza_mod').val(frequenza);
     $('#data_inizio_invio_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy"));
     $('#data_prossimo_invio_mod').val(Date.parse(data_prossimo_invio).toString("dd/MM/yyyy"));
@@ -573,7 +617,19 @@ function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, dat
     if (data_scadenza != null && data_scadenza != '') {
         $('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));
     }
-
+    if (!editorInstanceMod) {
+        ClassicEditor
+            .create(document.querySelector('#testo_email_mod'))
+            .then(editor => {
+                editorInstanceMod = editor;
+            })
+            .catch(error => {
+                console.error('Errore durante l\'inizializzazione di CKEditor:', error);
+            });
+    }else {
+        // Se l'editor è già stato creato, aggiorna il contenuto
+        editorInstanceMod.setData(testo_email);
+    }
 
 }
 
@@ -829,6 +885,18 @@ $(document).ready(function() {
     var giorno = oggi.getDate();
     var mese = oggi.getMonth() + 1; 
     var anno = oggi.getFullYear();
+    
+    ClassicEditor
+    .create(document.querySelector('#testo_email'))
+    .then(editor => {
+      editorInstance = editor;
+    })
+    .catch(error => {
+      console.error('Errore durante l\'inizializzazione di CKEditor:', error);
+    });
+	
+ 
+	
 
 
     var dataOggi = (giorno < 10 ? '0' : '') + giorno + '/' + (mese < 10 ? '0' : '') + mese + '/' + anno;
@@ -843,6 +911,8 @@ $(document).ready(function() {
 		 format: "dd/mm/yyyy"
 	 });   
 
+    
+     
      table = $('#tabForConf').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -931,17 +1001,34 @@ $(document).ready(function() {
 
 $('#modificaConfigurazioneForm').on('submit', function(e){
 	 e.preventDefault();
+	 $('#testo_email_mod').val(editorInstanceMod.getData());
 	 
-	 callAjaxForm("#modificaConfigurazioneForm", "gestioneFormazione.do?action=modifica_configurazione_invio")
+	 if($('#testo_email_mod').val()==""){
+
+		 $('.ck-rounded-corners').css('border', '2px solid red');
+	 }else{
+		 callAjaxForm("#modificaConfigurazioneForm", "gestioneFormazione.do?action=modifica_configurazione_invio")
+	 }
+	 
 	 
 });
  
 
  
  $('#nuovaConfigurazioneForm').on('submit', function(e){
+	 
+ 
 	 e.preventDefault();
+	 $('#testo_email').val(editorInstance.getData());
+	 
+	 if($('#testo_email').val()==""){
 
-	 callAjaxForm("#nuovaConfigurazioneForm", "gestioneFormazione.do?action=nuova_configurazione_invio")
+		 $('.ck-rounded-corners').css('border', '2px solid red');
+	 }else{
+		 callAjaxForm("#nuovaConfigurazioneForm", "gestioneFormazione.do?action=nuova_configurazione_invio")	 
+	 }
+	 
+	 
 	 
 	})
  

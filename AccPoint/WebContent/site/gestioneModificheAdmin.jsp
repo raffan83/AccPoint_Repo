@@ -165,7 +165,7 @@ function ricerca(){
 	if($('#id').val()==''){
 		$('#id').css('border', '2px solid red');
 	}else{
-		exploreModal("gestioneModificheAdmin.do","action=ricerca&tipo_ricerca="+$('#tipo_ricerca').val()+"&id="+$('#id').val(),"#tabella");	
+		exploreModal("gestioneModificheAdmin.do","action=ricerca&tipo_ricerca="+$('#tipo_ricerca').val()+"&id="+$('#id').val().trim(),"#tabella");	
 	}
 	
 }

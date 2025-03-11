@@ -41,5 +41,8 @@
          <property name="oggetto_email" type="java.lang.String">
             <column name="oggetto_email" />
         </property>
+        <property name="testo_email" type="java.lang.String">
+            <column name="testo_email" />
+        </property>
     </class>
 </hibernate-mapping>

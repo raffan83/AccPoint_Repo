@@ -75,6 +75,7 @@
 
 <th>Portata Max</th>
 <th>Dispositivo Pedaggio</th>
+<th>Autorizzazione</th>
 <th>Note</th>
 <th style="min-width:150px">Azioni</th>
  </tr></thead>
@@ -96,11 +97,12 @@
 
 	<td>${veicolo.portata_max_veicolo }</td>
 	<td>${veicolo.dispositivo_pedaggio }</td>
+	<td>${veicolo.autorizzazione }</td>
 	<td>${veicolo.note }</td>
 
 	<td>
 
-	<a class="btn btn-warning customTooltip" onClicK="modificaVeicolo('${veicolo.id}', '${veicolo.targa }', '${veicolo.modello }', '${veicolo.company.id }','${veicolo.km_percorsi }', '${veicolo.carta_circolazione }','${veicolo.portata_max_veicolo }','${veicolo.immagine_veicolo }','${veicolo.dispositivo_pedaggio }', '${utl:escapeJS(veicolo.note) }')" title="Click per modificare il veicolo"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning customTooltip" onClicK="modificaVeicolo('${veicolo.id}', '${veicolo.targa }', '${veicolo.modello }', '${veicolo.company.id }','${veicolo.km_percorsi }', '${veicolo.carta_circolazione }','${veicolo.portata_max_veicolo }','${veicolo.immagine_veicolo }','${veicolo.dispositivo_pedaggio }', '${utl:escapeJS(veicolo.note) }', '${utl:escapeJS(veicolo.autorizzazione) }')" title="Click per modificare il veicolo"><i class="fa fa-edit"></i></a>
 	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaVeicolo('${veicolo.id }')" title="Click per eliminare il veicolo"><i class="fa fa-trash"></i></a>
 	  <c:if test="${veicolo.carta_circolazione!=null }">
 	  <a class="btn btn-info customTooltip" href="gestioneParcoAuto.do?action=download_file&tipo_file=carta_circolazione&id_veicolo=${veicolo.id}" title="Click per scaricare la carta di circolazione"><i class="fa fa-file-text-o"></i></a>
@@ -262,6 +264,17 @@
 			<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.jpg,.JPG,.png,.PNG"  id="fileupload_carta_circolazione" name="fileupload_carta_circolazione" type="file" ></span><label id="label_carta_circolazione"></label>
        	</div>       	
        </div><br> 
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Autorizzazione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="autorizzazione" name="autorizzazione" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
        
              <div class="row">
        
@@ -406,6 +419,18 @@
        	</div>       	
        </div><br> 
        
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Autorizzazione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="autorizzazione_mod" name="autorizzazione_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
              <div class="row">
        
        	<div class="col-sm-3">
@@ -485,7 +510,7 @@ function modalNuovoVeicolo(){
 }
 
 
-function modificaVeicolo(id_veicolo, targa, modello, id_company, km_percorsi, carta_circolazione, portata_max_veicolo, immagine_veicolo, dispositivo_pedaggio,note){
+function modificaVeicolo(id_veicolo, targa, modello, id_company, km_percorsi, carta_circolazione, portata_max_veicolo, immagine_veicolo, dispositivo_pedaggio,note, autorizzazione){
 	
 	$('#id_veicolo').val(id_veicolo);
 	$('#targa_mod').val(targa);
@@ -498,6 +523,7 @@ function modificaVeicolo(id_veicolo, targa, modello, id_company, km_percorsi, ca
 	$('#label_immagine_veicolo_mod').html(immagine_veicolo);
 	$('#dispositivo_pedaggio_mod').val(dispositivo_pedaggio);
 	$('#note_mod').val(note)
+	$('#autorizzazione_mod').val(autorizzazione)
 
 	$('#myModalModificaVeicolo').modal();
 }

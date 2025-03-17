@@ -1,5 +1,6 @@
 package it.portaleSTI.bo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -51,6 +52,12 @@ public class GestioneParcoAutoBO {
 	public static ArrayList<PaaVeicoloDTO> getListaVeicoliDisponibili(Date data_start, Date data_end, Session session) {
 		// TODO Auto-generated method stub
 		return GestioneParcoAutoDAO.getListaVeicoliDisponibili(data_start, data_end, session);
+	}
+
+	public static ArrayList<PaaPrenotazioneDTO> getListaPrenotazioniDate(LocalDate startDate, LocalDate endDate,
+			Session session) {
+		// TODO Auto-generated method stub
+		return GestioneParcoAutoDAO.getListaPrenotazioniDate(startDate, endDate, session);
 	}
 
 }

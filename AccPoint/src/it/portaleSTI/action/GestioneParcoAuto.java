@@ -88,12 +88,19 @@ public class GestioneParcoAuto extends HttpServlet {
 	
 			String anno = request.getParameter("anno");
 			
+			int start_date = (int) request.getSession().getAttribute("start_date");
+			int end_date = (int) request.getSession().getAttribute("end_date");
 			
 			if(anno == null) {
 				anno = ""+Calendar.getInstance().get(Calendar.YEAR);
 			}
 			Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create(); 		
-			ArrayList<PaaPrenotazioneDTO> lista_prenotazioni = GestioneParcoAutoBO.getListaPrenotazioni(session);
+			
+			LocalDate startDate = LocalDate.ofYearDay(Integer.parseInt(anno), start_date);
+		    LocalDate endDate = LocalDate.ofYearDay(Integer.parseInt(anno), end_date);
+			
+			//ArrayList<PaaPrenotazioneDTO> lista_prenotazioni = GestioneParcoAutoBO.getListaPrenotazioni(session);
+			ArrayList<PaaPrenotazioneDTO> lista_prenotazioni = GestioneParcoAutoBO.getListaPrenotazioniDate(startDate, endDate, session);
 				
 			Collections.sort(lista_prenotazioni, new Comparator<PaaPrenotazioneDTO>() {
 			    @Override

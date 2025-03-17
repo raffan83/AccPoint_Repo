@@ -1,5 +1,6 @@
 package it.portaleSTI.DAO;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -135,6 +136,22 @@ public class GestioneParcoAutoDAO {
 		
 
 		return  lista;
+	}
+
+
+	public static ArrayList<PaaPrenotazioneDTO> getListaPrenotazioniDate(LocalDate startDate, LocalDate endDate,	Session session) {
+		
+		ArrayList<PaaPrenotazioneDTO> lista = null;
+		
+		Query query = session.createQuery("FROM PaaPrenotazioneDTO p WHERE p.data_inizio_prenotazione BETWEEN :startDate AND :endDate");
+		
+		query.setParameter("startDate", java.sql.Date.valueOf(startDate));
+		query.setParameter("endDate", java.sql.Date.valueOf(endDate));
+
+		        // Esegue la query e restituisce la lista
+	   lista = (ArrayList<PaaPrenotazioneDTO>) query.list();
+
+	   return lista;
 	}
 
 }

@@ -42,6 +42,9 @@ public class PuntoMisuraDTO {
 	private String calibrazione="";
 	private byte[] file_att;
 	private String numero_certificato_campione;
+	private String mabba_val;
+	private String mabba_comparatore;
+	private BigDecimal mabba_mc;
 
 	
 	public BigDecimal getDgt() {
@@ -262,6 +265,24 @@ public class PuntoMisuraDTO {
 	}
 	public void setNumero_certificato_campione(String numero_certificato_campione) {
 		this.numero_certificato_campione = numero_certificato_campione;
+	}
+	public String getMabba_val() {
+		return mabba_val;
+	}
+	public void setMabba_val(String mabba_val) {
+		this.mabba_val = mabba_val;
+	}
+	public String getMabba_comparatore() {
+		return mabba_comparatore;
+	}
+	public void setMabba_comparatore(String mabba_comparatore) {
+		this.mabba_comparatore = mabba_comparatore;
+	}
+	public BigDecimal getMabba_mc() {
+		return mabba_mc;
+	}
+	public void setMabba_mc(BigDecimal mabba_mc) {
+		this.mabba_mc = mabba_mc;
 	}
 
 

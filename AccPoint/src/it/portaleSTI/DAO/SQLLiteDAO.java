@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -241,7 +242,10 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 										 "dgt varchar(255)," +
 										 "file_att blob,"+
 										 "file_att_prec blob,"+
-										 "inc_composta varchar(255));";
+										 "inc_composta varchar(255),"+
+										 "mabba_val varchar(255),"+
+										 "mabba_comparatore varchar(255),"+
+										 "mabba_mc Integer);";
 
 private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";
@@ -1137,6 +1141,21 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setLetturaCampione(rs.getBigDecimal("letturaCampione"));
 		punto.setObsoleto("N");
 		punto.setApplicabile(rs.getString("applicabile"));
+		
+		if(SQLiteColumnCheck(con, "tblTabelleMisura", "mabba_val")) 
+		{
+			punto.setMabba_val(rs.getString("mabba_val"));
+		}
+		if(SQLiteColumnCheck(con, "tblTabelleMisura", "mabba_comparatore")) 
+		{
+			punto.setMabba_comparatore(rs.getString("mabba_comparatore"));
+		}
+		if(SQLiteColumnCheck(con, "tblTabelleMisura", "mabba_mc")) 
+		{
+			punto.setMabba_mc(rs.getBigDecimal("mabba_mc"));
+		}
+		
+		
 		listaPuntoMisura.add(punto);
 		
 	}
@@ -1919,6 +1938,43 @@ private static LinkedHashSet<VerRipetibilitaDTO> getListaProvaRipetibilita(Conne
 	return listaRipetibilita;
 }
 
+
+    public static boolean SQLiteColumnCheck(Connection con,String tableName,String columnName) {
+       
+    	boolean esito=false;
+
+        
+        try {
+        
+                // Creazione della query per ottenere le informazioni delle colonne della tabella
+                String query = "PRAGMA table_info(" + tableName + ")";
+                
+                try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+                    boolean columnExists = false;
+
+                    // Itera attraverso le righe del risultato per verificare la presenza della colonna
+                    while (rs.next()) {
+                        String column = rs.getString("name");
+                        if (column.equalsIgnoreCase(columnName)) {
+                            columnExists = true;
+                            break;
+                        }
+                    }
+
+                    if (columnExists) {
+                       esito=true;
+                    } else {
+                        esito=false;
+                    }
+                }
+            
+        } catch (SQLException e) {
+           e.printStackTrace();
+        }
+        
+        
+		return esito;
+    }
 
 
 

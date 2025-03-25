@@ -21,13 +21,13 @@ public class GestioneInvioReportVittoria {
 	public static void main(String[] args) {
 
 		try {
-			File fileCorsi=new File("C://Users/raffaele.fantini/Desktop/CorsiCalver.csv");
+			File fileCorsi=new File("C://Users/raffaele.fantini/Desktop/CorsiCalver_.csv");
 			FileOutputStream fosCorsi= new FileOutputStream(fileCorsi);
 			PrintStream psCorsi= new PrintStream(fosCorsi);
 		
 			System.out.println("Inizzialize");
 			
-			File filePartecipanti=new File("C://Users/raffaele.fantini/Desktop/PartecipantiCalver.csv");
+			File filePartecipanti=new File("C://Users/raffaele.fantini/Desktop/PartecipantiCalver_.csv");
 			FileOutputStream fosPartecipanti= new FileOutputStream(filePartecipanti);
 			PrintStream psPartecipanti= new PrintStream(fosPartecipanti);
 			

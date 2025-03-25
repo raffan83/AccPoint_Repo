@@ -111,6 +111,18 @@
          <property name="numero_certificato_campione" type="java.lang.String">
             <column name="numero_certificato_campione" />
         </property>
+        
+         <property name="mabba_val" type="java.lang.String">
+            <column name="mabba_val" />
+        </property>
+        
+         <property name="mabba_comparatore" type="java.lang.String">
+            <column name="mabba_comparatore" />
+        </property>
+        
+        <property name="mabba_mc" type="java.math.BigDecimal">
+           <column name="mabba_mc" />
+        </property>
 
     </class>
 </hibernate-mapping>

@@ -47,6 +47,8 @@
 <div class="row">
 <div class="col-xs-12">
 
+<button class="btn btn-primary pull-left" onClick="filtra(0)" disabled id="btn_tutti"> Tutti</button> 
+<button class="btn btn-primary pull-left" onClick="filtra(1)" id="btn_disponibili" style="margin-left:5px"> Disponibili</button>
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
 <a class="btn btn-primary pull-right" onClick="modalNuovoDPI()"><i class="fa fa-plus"></i> Nuovo Dispositivo</a> 
 
@@ -78,7 +80,9 @@
 
 <th>Data scadenza controllo</th>
 <th>Archiviato</th>
+
 <th>Note</th>
+<th>Assegnato</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -139,6 +143,10 @@
 	</c:if>
 	</td>
 	<td>${utl:escapeJS(dpi.note) }</td>
+	<td>
+		<c:if test="${dpi.assegnato == 0}">NO</c:if>
+	<c:if test="${dpi.assegnato == 1}">SI</c:if>
+	</td>
 	<td>	
 
  	  <a class="btn btn-warning customTooltip" onClicK="modalModificaDpi('${dpi.id }','${dpi.tipo_dpi.id }','${dpi.collettivo }','${dpi.company.id }','${utl:escapeJS(dpi.modello) }','${utl:escapeJS(dpi.conformita) }','${utl:escapeJS(dpi.descrizione) }','${dpi.data_scadenza }','${dpi.data_controllo }','${dpi.frequenza }','${dpi.data_scadenza_controllo }', '${utl:escapeJS(dpi.note) }', '${dpi.tipologia }', '${dpi.tipo_accessorio.id }')" title="Click per modificare la dpi"><i class="fa fa-edit"></i></a>
@@ -821,6 +829,31 @@
 <script type="text/javascript">
 
 
+function filtra(tipo_filtro){
+	
+	if(tipo_filtro == 0){
+		
+		$("#input_search_15").val("");
+		$("#input_search_13").val("");
+	    table.column(15).search("").draw();
+	    table.column(13).search("").draw();
+	    $('#btn_tutti').attr("disabled", true);
+	    $('#btn_disponibili').attr("disabled", false);
+	    
+		
+	}else{
+		$("#input_search_15").val("NO");
+		$("#input_search_13").val("NO");
+	    table.column(15).search("NO").draw();
+	    table.column(13).search("NO").draw();
+	    $('#btn_tutti').attr("disabled", false);
+	    $('#btn_disponibili').attr("disabled", true);
+	}
+	
+	
+}
+
+
 $('#tipo_dpi, #tipo_dpi_mod').change(function(){
 	
 	$('#tipo_accessorio').val(null);
@@ -1232,20 +1265,20 @@ function modalCreaRestituzione(id_dpi, quantita){
 var columsDatatables = [];
 
 $("#tabDpi").on( 'init.dt', function ( e, settings ) {
-    var api = new $.fn.dataTable.Api( settings );
+ /*    var api = new $.fn.dataTable.Api( settings );
     var state = api.state.loaded();
  
     if(state != null && state.columns!=null){
     		console.log(state.columns);
     
-    columsDatatables = state.columns;
-    }
+    columsDatatables = state.columns; 
+    }*/
     $('#tabDpi thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
     	  var title = $('#tabDpi thead th').eq( $(this).index() ).text();
     	
     	  //if($(this).index()!=0 && $(this).index()!=1){
-		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
+		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" id="input_search_'+$(this).index()+'" value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
 	    	//}
 
     	} );
@@ -1304,6 +1337,7 @@ function formatDate(data){
 
 $(document).ready(function() {
  
+	
 $('#tipologia').select2();
 $('#tipologia_mod').select2();
 $('#tipo_accessorio').select2();
@@ -1383,7 +1417,7 @@ $('#company_mod').select2();
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 13 },
+		    	  { responsivePriority: 1, targets: 16 },
 		    	  
 		    	  
 		               ], 	        
@@ -1431,7 +1465,7 @@ $('#company_mod').select2();
 
 	});
 	
-	
+	filtra(0);
 	
 	  tab = $('#table_storico').DataTable({
 			language: {

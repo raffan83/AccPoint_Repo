@@ -1760,13 +1760,13 @@ public class GestioneFormazioneBO {
 					 Rectangle rect = new Rectangle(x, y, w, h);
 				    
 					 
-				    	if(firma_responsabile == 0 || firma_responsabile == 1) {
+				    	if(firma_responsabile == 1) {
 				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_alessandro_di_vito.png");	
 				    	}else if(firma_responsabile == 2) {
 				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_antonio_accettola.png");
 				    	}else if(firma_responsabile == 3) {
 				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_gabriella_mammone.png");
-				    	}else if(firma_responsabile == 4) {
+				    	}else if(firma_responsabile == 0 || firma_responsabile == 4) {
 				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_lisa_lombardozzi.png");
 				    	}
 				    	
@@ -1793,13 +1793,13 @@ public class GestioneFormazioneBO {
 					
 					 Rectangle rect = new Rectangle(x, y, w, h);
 					 
-				    	if(firma_responsabile == 0 || firma_responsabile == 1) {
+				    	if( firma_responsabile == 1) {
 				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_alessandro_di_vito.png");	
 				    	}else if(firma_responsabile == 2) {
 				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_antonio_accettola.png");
 				    	}else if(firma_responsabile == 3) {
 				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_gabriella_mammone.png");
-				    	}else if(firma_responsabile == 4) {
+				    	}else if(firma_responsabile == 0 || firma_responsabile == 4) {
 				    		image = Image.getInstance(Costanti.PATH_FOLDER + "FileFirme\\firma_lisa_lombardozzi.png");
 				    	}
 				    	

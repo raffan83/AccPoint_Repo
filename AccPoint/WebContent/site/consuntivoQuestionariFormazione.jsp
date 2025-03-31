@@ -243,8 +243,8 @@
 
         
         
-        var start = "${dateFrom}";
-      	var end = "${dateTo}";
+      //  var start = "${dateFrom}";
+     // 	var end = "${dateTo}";
 
       	$('input[name="datarange"]').daterangepicker({
      	    locale: {
@@ -256,11 +256,11 @@
 
      	});
       	
-      	if(start!=null && start!=""){
+   /*    	if(start!=null && start!=""){
      	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
      	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
      	
-     	 }
+     	 } */
     	
     	
     });

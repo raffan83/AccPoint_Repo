@@ -2133,6 +2133,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						ForQuestionarioDTO questionario = corso.getQuestionario();
 						if(Pattern.compile("\\d").matcher(questionario.getSeq_risposte()).find()) {
 							lista_questionari_compilati.add(1);
+							
 						}else {
 							lista_questionari_compilati.add(0);
 						}
@@ -2142,6 +2143,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						
 						parsedQuestionari.add(risposte);
 						maxDomande = Math.max(maxDomande, risposte.length);
+						
+						
 					}else {
 						lista_questionari_compilati.add(0);
 					}

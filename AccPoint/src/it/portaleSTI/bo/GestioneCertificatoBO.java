@@ -363,6 +363,211 @@ public class GestioneCertificatoBO {
 					
 				}
 			 }
+			 else if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("M")) {
+				 
+				 
+				 String[] strutturaProva=listaPuntiPerTabella.get(0).getTipoProva().split("_");
+					
+					int ripetizioni =Integer.parseInt(strutturaProva[1]);
+					int punti = 1;
+					 
+						
+						int indicePunto=0;
+						for (int a = 0; a < ripetizioni; a++) 
+						{
+							
+							ReportSVT_DTO data = new ReportSVT_DTO();
+							
+							
+							
+							Map<String, Object> values = new HashMap<String, Object>();
+							
+							List<Map<String, Object>> tipoVerifica = new ArrayList<Map<String, Object>>();
+						  	
+						  	
+							List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
+						  	
+						  	
+						  	
+						  	List<Map<String, Object>> vcs = new ArrayList<Map<String, Object>>();
+						  
+						  	
+						  	
+						  	List<Map<String, Object>> vss = new ArrayList<Map<String, Object>>();
+						  
+						  	List<Map<String, Object>> mabbaList = new ArrayList<Map<String, Object>>();
+						  	List<Map<String, Object>> differenzaMabba = new ArrayList<Map<String, Object>>();
+						  	List<Map<String, Object>> scostamentoMabba = new ArrayList<Map<String, Object>>();
+						  	
+						  	PuntoMisuraDTO punto=null;
+						  	BigDecimal sc = null;
+							BigDecimal mediaA = null;
+							BigDecimal mediaB = null;
+							int scala = 0;
+						  	for (int b = 0; b < punti; b++) 
+							{
+						  		
+								 punto =listaPuntiPerTabella.get(indicePunto);
+								 
+								
+									 data.setTipoProva(punto.getTipoProva());
+									 
+										values = new HashMap<String, Object>(); 
+										values.put("tv", punto.getTipoVerifica());
+										tipoVerifica.add(values);
+									  
+										/*ASLEFT - ASFOUND*/
+									    data.setAsLeftAsFound(punto.getCalibrazione());
+									  	
+									  	
+									  	values = new HashMap<String, Object>();
+									  	values.put("um", punto.getUm());
+									  	ums.add(values);
+									  
+									  	
+										values = new HashMap<String, Object>();
+									  	values.put("vc", Utility.changeDotComma(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));
+									  	vcs.add(values);
+									  
+									  	
+										values = new HashMap<String, Object>();
+									  	values.put("vs", Utility.changeDotComma(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+								 
+									  	vss.add(values);
+								 
+									  	
+									  	values = new HashMap<String, Object>();
+									  	
+										
+									  	for (int c = 0; c < punto.getMabba_val().split("@").length; c++) {
+									  		BigDecimal lettura = new BigDecimal(punto.getMabba_val().split("@")[c]);
+											if(c==0 || c==3) {
+												values.put("MABBA", "A");
+												if(mediaA==null) {
+													mediaA = lettura;
+												}else {
+													mediaA = (mediaA.add(lettura)).divide(new BigDecimal(2));
+												}
+											}else {
+												values.put("MABBA", "B");										
+												if(mediaB==null) {
+													mediaB = lettura;
+												}else {
+													mediaB = (mediaB.add(lettura)).divide(new BigDecimal(2));
+												}
+											}
+									  	
+										mabbaList.add(values);
+										
+										values = new HashMap<String, Object>();
+										
+										String vc = ""+punto.getValoreCampione();
+										BigDecimal valore_campione = new BigDecimal(vc.replace(",", "."));
+										BigDecimal diff = lettura.subtract(valore_campione);
+										String val_comparatore = punto.getMabba_comparatore().split("@")[1];
+										scala = val_comparatore.substring(val_comparatore.indexOf(".")+1).length();
+										
+										values.put("diff", ""+diff.setScale(scala, RoundingMode.HALF_UP));
+										differenzaMabba.add(values);
+								 
+									  	}
+								 
+									  	
+//									  	values = new HashMap<String, Object>();
+//									  	values.put("scostamenti", ""+sc);
+//									  	scostamentoMabba.add(values);
+									  	
+							  	indicePunto++;
+							  	
+							}
+						  	
+						  	sc = mediaB.subtract(mediaA);
+									data.setMabbaSC(""+sc.setScale(scala + 1, RoundingMode.HALF_UP));
+									data.setMabba(mabbaList);
+									data.setDifferenzaMabba(differenzaMabba);
+									
+									data.setMabbaMc(""+punto.getMabba_mc().setScale(scala + 1, RoundingMode.HALF_UP));
+									data.setMabbaComparatore(punto.getMabba_comparatore());
+									if(punto.getValoreMedioCampione()!=null) {
+										data.setValoreMedioCampione(Utility.changeDotComma(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));	
+									}
+									if(punto.getValoreMedioStrumento()!=null) {
+										data.setValoreMedioStrumento(Utility.changeDotComma(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+									}
+									if(tipoRapporto.equals("SVT")) 
+									{
+										data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura())+1, RoundingMode.HALF_UP).toPlainString()));
+									}
+									else 
+									{
+										data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));	
+									}
+								  //	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+
+									/*
+								  	 * Accetabilità 
+								  	 */
+								  	if(punto.getSelTolleranza()==0)
+								  	{
+								  		String um = "";
+								  		if(punto.getUm_calc()!=null && !punto.getUm_calc().equals("")){
+								  			um = punto.getUm_calc();
+								  		}else{
+								  			um = punto.getUm();
+								  		}
+								  		
+								  		data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()));
+								  	}
+									if(punto.getSelTolleranza()==1)
+								  	{
+										String perc = " (" + punto.getPer_util()+"%)";	
+									  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
+								  	}
+									if(punto.getSelTolleranza()==2)
+								  	{
+										String perc = " (" +Utility.changeDotComma(punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString())+"])";	
+									  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
+								  	}
+									if(punto.getSelTolleranza()==3)
+								  	{
+								   
+										BigDecimal valoreMisura = punto.getMisura();
+										Double percentualeUtil = punto.getPer_util();
+										
+										BigDecimal percentuale = valoreMisura.multiply(new BigDecimal(percentualeUtil)).divide(BigDecimal.valueOf(100),RoundingMode.HALF_UP);
+										
+										BigDecimal dgt = punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).subtract(percentuale).stripTrailingZeros();
+										
+										String perc ="("+ dgt +" + "+punto.getPer_util()+"%)";	
+										data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
+								  	}
+									
+								  	BigDecimal bd = punto.getIncertezza();
+									bd = bd.round(new MathContext(2, RoundingMode.HALF_UP));
+									data.setIncertezza(Utility.changeDotComma(bd.toPlainString()));
+								  	
+								  	data.setEsito(punto.getEsito());
+						  	 
+							data.setTipoVerifica(tipoVerifica);
+						  	data.setUnitaDiMisura(ums);
+						  	data.setValoreCampione(vcs);
+						  	data.setValoreStrumento(vss);
+						  	 
+							
+						  	dataSource.get(i).add(data);
+						}
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+			 }
 			 else
 			 {
 				 /*Gestione Ripetibilità*/ 
@@ -574,6 +779,10 @@ public class GestioneCertificatoBO {
 					{
 				  	listaTabelle.put("D_S_"+j,dataSource.get(j));
 					}	
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("M"))
+					{
+				  	listaTabelle.put("M_"+j,dataSource.get(j));
+					}	
 				
 				}
 				if(misura.getStrumento().getTipoRapporto().getNoneRapporto().equals("RDP")) 
@@ -610,7 +819,7 @@ public class GestioneCertificatoBO {
 				
 				if(listaPuntiPerTabella.size()>0)
 				{	
-				 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L") || listaPuntiPerTabella.get(0).getTipoProva().startsWith("D"))				
+				 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L") || listaPuntiPerTabella.get(0).getTipoProva().startsWith("D") || listaPuntiPerTabella.get(0).getTipoProva().startsWith("M"))				
 				 {
 					/*Gestione Linearità*/ 
 					for (int j = 0; j < listaPuntiPerTabella.size(); j++) 

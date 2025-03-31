@@ -107,6 +107,10 @@
         <div class="legend-color" style="background-color: #F7BEF6;"></div>
         <div class="legend-label">FATTURATO CON ATTESTATI</div>
     </div>
+    <div class="legend-item">
+        <div class="legend-color" style="background-color: #fa9d58;"></div>
+        <div class="legend-label">ATTESTATI SENZA FATTURA</div>
+    </div>
 </div>
 
 </div></div><br>
@@ -215,6 +219,7 @@
  	<a class="btn btn-default customTooltip" title="EROGATO"  style="background-color:#90EE90;" onClick="cambiaStato('${pianificazione.id}', 3)"><i class="glyphicon glyphicon-refresh"></i></a>
  	<a class="btn btn-default customTooltip" title="FATTURATO SENZA ATTESTATO"  style="background-color:#ADD8E6;" onClick="cambiaStato('${pianificazione.id}', 4)"><i class="glyphicon glyphicon-refresh"></i></a>
  	<a class="btn btn-default customTooltip" title="FATTURATO CON ATTESTATO"  style="background-color:#F7BEF6;" onClick="cambiaStato('${pianificazione.id}', 5)"><i class="glyphicon glyphicon-refresh"></i></a>
+ 	<a class="btn btn-default customTooltip" title="ATTESTATI SENZA FATTURA"  style="background-color:#fa9d58;" onClick="cambiaStato('${pianificazione.id}', 6)"><i class="glyphicon glyphicon-refresh"></i></a>
 
 	</td>
 	</tr>

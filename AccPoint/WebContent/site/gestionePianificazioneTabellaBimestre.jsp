@@ -43,6 +43,10 @@ int anno = (Integer) request.getSession().getAttribute("anno");
         <div class="legend-color" style="background-color: #F7BEF6;"></div>
         <div class="legend-label">FATTURATO CON ATTESTATI</div>
     </div>
+        <div class="legend-item">
+        <div class="legend-color" style="background-color: #fa9d58;"></div>
+        <div class="legend-label">ATTESTATI SENZA FATTURA</div>
+    </div>
     
         <div class="legend-item">
 <i class="fa fa-star" aria-hidden="true"></i>
@@ -792,6 +796,10 @@ if(filtro!=3){
 						}else if (lista_pianificazioni[i].stato.id == 4){
 							riquadro.css("background-color", "#ADD8E6");
 							riquadro.css("border-color", "#1E90FF");
+						}
+						else if (lista_pianificazioni[i].stato.id == 6){
+							riquadro.css("background-color", "#fa9d58");
+							riquadro.css("border-color", "#fa6c03");
 						}
 						
 						

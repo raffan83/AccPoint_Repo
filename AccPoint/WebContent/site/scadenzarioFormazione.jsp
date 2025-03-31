@@ -389,11 +389,9 @@ $(document).ready(function() {
   	        	    
   	        	    if(color == "rgb(250, 137, 137)" || color == "rgb(248, 242, 109)"){
   	        	    	text.corso = table.cell(index, 0).data();
-  	        	    	text.partecipante = stripHtml(table.cell(index, 2).data());
-  	        	    	if(text.partecipante.endsWith(" ")){
-  	        	    		text.partecipante = text.partecipante.substring(0, text.partecipante.length-1);
-  	        	    	}
   	        	    	
+  	        	    	
+  	        	    	text.partecipante = stripHtml(table.cell(index, 2).data()).trim();
   	        	    	text.color = color;
   	        	    	array_color.push(text);
   	        	    }
@@ -407,11 +405,13 @@ $(document).ready(function() {
                   $('row', sheet).each( function (row) {
                 	  
                 	  if($('v', this)[0]!=null){
+                		  
+                		  var id_corso = $('c[r^="A"]', this).text();
+                		  var partecipante = $('c[r^="C"]', this).text();
                 	  
                 	  for(var i = 0; i<array_color.length; i++){
                 		 
-                		  var id_corso = $('c[r^="A"]', this).text();
-                		  var partecipante = $('c[r^="C"]', this).text();
+                		  
                 		  
 	                		
 	                			if(id_corso == array_color[i].corso && partecipante == array_color[i].partecipante){

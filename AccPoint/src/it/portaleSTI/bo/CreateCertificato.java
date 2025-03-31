@@ -9,6 +9,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
 import it.arubapec.arubasignservice.ArubaSignService;
+import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
@@ -17,7 +18,7 @@ import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
-
+import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -61,11 +62,15 @@ import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
+import net.sf.dynamicreports.report.constant.ComponentPositionType;
+import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.ImageScale;
 import net.sf.dynamicreports.report.constant.Markup;
 import net.sf.dynamicreports.report.constant.SplitType;
+import net.sf.dynamicreports.report.constant.StretchType;
+import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
@@ -80,6 +85,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.jfree.ui.Align;
+
 import TemplateReport.PivotTemplate;
 import com.google.gson.JsonObject;
 
@@ -103,9 +110,11 @@ public class CreateCertificato {
 	@SuppressWarnings("deprecation")
 	private void build(MisuraDTO misura, String data_emissione,CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati, Boolean multi, UtenteDTO utente) throws Exception {
 		String tipoScheda="";
-		
+		boolean isMabba = false;
 		InputStream is = null;
-
+		String incertezzaMabba ="";
+		String um ="";
+		
 		Iterator itLista = lista.entrySet().iterator();
 		while (itLista.hasNext()) {
 
@@ -114,7 +123,7 @@ public class CreateCertificato {
 			List<ReportSVT_DTO> listItem = (List<ReportSVT_DTO>) pair.getValue();
 			SubreportBuilder subreport = null;
 			
-			if(pivot.startsWith("R_S") || pivot.startsWith("L_S") || pivot.startsWith("D_S")){
+			if(pivot.startsWith("R_S") || pivot.startsWith("L_S") || pivot.startsWith("D_S") || pivot.startsWith("M")){
 				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderSvt_EN.jrxml");
 				tipoScheda="SVT";
 			}
@@ -424,6 +433,20 @@ public class CreateCertificato {
 			report.detail(rifTextfield);
 			report.detail(cmp.verticalGap(2));
 			
+			Iterator it = lista.entrySet().iterator();
+			 while (it.hasNext()) {
+				 Map.Entry pair = (Map.Entry)it.next();
+					String pivot = pair.getKey().toString();
+					
+					List<ReportSVT_DTO> listItem = (List<ReportSVT_DTO>) pair.getValue();
+					if(listItem.get(0).getMabbaComparatore()!=null) {
+						String descrCampione = listItem.get(0).getMabbaComparatore().split("@")[0];
+						CampioneDTO campioneMABBA = GestioneCampioneDAO.getCampioneFromCodice(descrCampione);
+						listaCampioni.add(campioneMABBA);
+						break;
+					}
+			 }
+			
 			
 				SubreportBuilder campioniSubreport = cmp.subreport(getTableCampioni(listaCampioni, tipoScheda));
 				//if(!tipoScheda.equals("RDP")) {
@@ -451,12 +474,12 @@ public class CreateCertificato {
 			report.detail(ristTextfield);
 			report.detail(cmp.verticalGap(2));
 
-			 Iterator it = lista.entrySet().iterator();
+			
 			 int numberOfRow = 0;
 			 int numberOfRowBefore = 0;
 			 boolean validated=false;
 			 boolean isFirtsPage=true;
-
+			 it = lista.entrySet().iterator();
 			while (it.hasNext()) {
 				
 				numberOfRowBefore = numberOfRow;
@@ -495,6 +518,13 @@ public class CreateCertificato {
 					numberOfRow += 2 + listItem.size();
 					subreport = cmp.subreport(getTableReportDec(listItem, "RDT"));
 				}
+				
+				if(pivot.startsWith("M")) {
+					 um = (String) listItem.get(0).getUnitaDiMisura().get(0).get("um");
+					numberOfRow += 2 + listItem.size();
+					subreport = cmp.subreport(getTableReportMABBA(listItem, um));
+				}
+				
 				numberOfRow=numberOfRow - numberOfRowBefore;
 //				if(numberOfRow>11 && isFirtsPage){
 //					report.detail(cmp.pageBreak());
@@ -519,10 +549,28 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 	rifTextfield1.setStyle(styleTitleTableBold);
 	report.addDetail(rifTextfield1);
 }
-			
+			if(pivot.startsWith("M")) {
+				isMabba = true;
+				String mc = listItem.get(0).getMabbaMc();
+				incertezzaMabba = listItem.get(0).getIncertezza();		
+				report.detail(cmp.verticalGap(5),
+						cmp.horizontalList(cmp.horizontalGap(160),subreport),
+						cmp.verticalGap(8),
+						cmp.horizontalList(cmp.horizontalGap(165),cmp.text("Valore convenzionale misurato (mc) "+mc+" "+um)),
+						cmp.verticalGap(8),
+						cmp.horizontalList(cmp.horizontalGap(170),cmp.text("Incertezza associata allo strumento = "+Utility.changeDotComma(incertezzaMabba)+" "+um).setStyle(stl.style().bold())),
+						cmp.verticalList(cmp.horizontalGap(15),cmp.text("A = massa campione").setStyle(stl.style().bold()),
+								cmp.horizontalGap(15),cmp.text("B = massa da verificare").setStyle(stl.style().bold()),
+								cmp.horizontalGap(15),cmp.text("*differenze rispetto al valore di massa")
+								)
+						);
+			}else {
 				report.detail(subreport).setDetailSplitType(SplitType.IMMEDIATE);
-				
 				report.detail(cmp.verticalGap(10));
+			}
+				
+				
+				
 			
 				
 				it.remove();
@@ -543,16 +591,19 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				footer_right = conf.getRevisione_certificato();
 			}
 			
-			report.pageFooter(cmp.verticalList(
-					cmp.line().setFixedHeight(1),
-					cmp.horizontalList(
-							cmp.text(getFooterLeft(tipoScheda, tipo_firma, conf)).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
-							cmp.pageXslashY(),
-							//cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
-							cmp.text(footer_right).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
-							)
-					)
-				);
+			//if(!isMabba) {
+				report.pageFooter(cmp.verticalList(
+						cmp.line().setFixedHeight(1),
+						cmp.horizontalList(
+								cmp.text(getFooterLeft(tipoScheda, tipo_firma, conf)).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+								cmp.pageXslashY(),
+								//cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+								cmp.text(footer_right).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+								)
+						)
+					);
+		//	}
+			
 			
 			//FOOTER CERTIFICATO
 
@@ -563,7 +614,113 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				note_allegato = " - " + misura.getNote_allegato();
 			}
 			
-			
+//	if(isMabba) {//MABBA
+//		
+//		
+//			
+//		String cliente_label = "";
+//		String path = "";
+//		if(conf!=null && conf.getNome_file_firma()!=null && !conf.getNome_file_firma().equals("")) {
+//			cliente_label = conf.getNominativo_firma();
+//			path = Costanti.PATH_FOLDER+"\\FirmeCliente\\" +conf.getId_cliente()+"\\"+conf.getId_sede()+"\\"+conf.getNome_file_firma();
+//		}
+//		else if(misura.getNome_firma()!=null && !misura.getNome_firma().equals("")) {
+//			cliente_label = misura.getNome_firma();
+//			path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\FileFirmaCliente\\" +misura.getFile_firma();
+//		}
+//		
+//		
+//		footer_right = CostantiCertificato.FOOTER_RIGHT;
+//		if(conf!=null && conf.getRevisione_certificato()!=null && !conf.getRevisione_certificato().equals("")) {
+//			footer_right = conf.getRevisione_certificato();
+//		}
+//		
+//		VerticalListBuilder vertList = cmp.verticalList();
+//		if(!cliente_label.equals("") && !path.equals("")) {
+//			
+//			File file = new File(path);
+//			Image image = ImageIO.read(file);
+//			vertList.add(
+//					cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+//					cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+//					//cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
+//			cmp.image(image).setHeight(20).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
+//		}else {
+//			vertList.add(
+//					cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+//					cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+//					cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+//		}
+//		
+//		if(strumento.getNote()==null) {
+//			strumento.setNote("");
+//		}
+//		
+//		File file_incertezza = new File("C:\\Users\\antonio.dicivita\\Desktop\\immagine.png");
+//		Image image_incertezza = ImageIO.read(file_incertezza);
+//		
+//		report.detailFooter(cmp.verticalList(
+//				cmp.line().setFixedHeight(1),	
+//				cmp.verticalGap(1),
+//				cmp.line().setFixedHeight(1),
+//				cmp.horizontalList(
+//						cmp.verticalList(
+//								cmp.text("Incertezza associata allo strumento"),
+//								cmp.horizontalList(cmp.image(image_incertezza).setHeight(20).setHorizontalImageAlignment(HorizontalImageAlignment.LEFT),
+//										cmp.text(" = "+incertezzaMabba+" "+um)
+//										),
+//								cmp.text(CostantiCertificato.DESCRIZIONE_INCERTEZZA).setStyle(footerStyle),
+//								cmp.line().setFixedHeight(1),
+//								cmp.verticalList(
+//										cmp.horizontalList(
+//												cmp.text("Esito della verifica: "), 
+//												cmp.text(idoneo).setStyle(rootStyle)
+//												),
+//										cmp.text("(Sc nom ± U <= Accettabilità)")
+//										)
+//								
+//								),
+//						cmp.line().setFixedWidth(1).setStretchType(StretchType.CONTAINER_BOTTOM),
+//						cmp.verticalList(
+//								cmp.text("Note:"),
+//								cmp.verticalGap(25),
+//								cmp.line().setFixedHeight(1),
+//								cmp.horizontalList(
+//										
+//										cmp.verticalList(
+//												cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+//												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+//												//cmp.verticalGap(10)
+//												//cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(25)
+//											),
+//									//	
+//										cmp.line().setFixedWidth(1).setStretchType(StretchType.ELEMENT_GROUP_BOTTOM),
+//										cmp.verticalList(
+//												cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+//												cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+//												//cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+//											)
+//										
+//								)
+//						)
+//						
+//				
+//				),
+//				
+//				cmp.line().setFixedHeight(1),
+//				cmp.text(nota_firma).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(footerStyle),
+//				cmp.horizontalList(
+//						cmp.text("MOD-LAB-003").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+//						cmp.pageXslashY(),
+//						//cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+//						cmp.text("Rev. A del 01/06/2011").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+//					)
+//				));
+//		
+//		
+//		
+//	}else {
+		
 			if(tipo_firma == 0){
 				
 				String per ="";
@@ -965,6 +1122,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		}
 
 			
+			
+		//}
 
 			 // report.pageFooter(Templates.footerComponent);
 			  report.setDataSource(new JREmptyDataSource());
@@ -1156,10 +1315,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(7).setPadding(0);//AGG
 		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","left",null)).setDataSource(new SubreportData("tipoVerifica"));
-		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um","center",null)).setDataSource(new SubreportData("unitaDiMisura"));
-		SubreportBuilder subreportVC = cmp.subreport(new SubreportDesign("vc","center",null)).setDataSource(new SubreportData("valoreCampione"));
-		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center",null)).setDataSource(new SubreportData("valoreStrumento"));
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","left",null,11, null)).setDataSource(new SubreportData("tipoVerifica"));
+		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um","center",null,11, null)).setDataSource(new SubreportData("unitaDiMisura"));
+		SubreportBuilder subreportVC = cmp.subreport(new SubreportDesign("vc","center",null,11, null)).setDataSource(new SubreportData("valoreCampione"));
+		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center",null,11, null)).setDataSource(new SubreportData("valoreStrumento"));
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -1209,10 +1368,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(7).setPadding(0);//AGG
 		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","left",null)).setDataSource(new SubreportData("tipoVerifica"));
-		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um","center",null)).setDataSource(new SubreportData("unitaDiMisura"));
-		SubreportBuilder subreportVC = cmp.subreport(new SubreportDesign("vc","center",null)).setDataSource(new SubreportData("valoreCampione"));
-		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center",null)).setDataSource(new SubreportData("valoreStrumento"));
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","left",null,11, null)).setDataSource(new SubreportData("tipoVerifica"));
+		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um","center",null,11, null)).setDataSource(new SubreportData("unitaDiMisura"));
+		SubreportBuilder subreportVC = cmp.subreport(new SubreportDesign("vc","center",null,11,null)).setDataSource(new SubreportData("valoreCampione"));
+		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center",null, 11,null)).setDataSource(new SubreportData("valoreStrumento"));
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -1263,9 +1422,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(7).setPadding(0);//AGG
 		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","center",null)).setDataSource(new SubreportData("tipoVerifica"));
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","center",null,11 ,null)).setDataSource(new SubreportData("tipoVerifica"));
 		
-		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center",null)).setDataSource(new SubreportData("valoreStrumento"));
+		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center",null,11, null)).setDataSource(new SubreportData("valoreStrumento"));
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -1518,44 +1677,215 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		return report;
 	}
 	
+	
+	
+	public JasperReportBuilder getTableReportMABBA(List<ReportSVT_DTO> listaReport, String um) throws Exception{
+				
+		
+		
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE).setBorder(stl.penThin()).setFontSize(12).setPadding(0);//AGG
+		
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("MABBA","center",null,null, 12)).setDataSource(new SubreportData("mabba"));
+		SubreportBuilder subreportDiff = cmp.subreport(new SubreportDesign("diff","center",null,null, 12)).setDataSource(new SubreportData("differenzaMabba"));
+		
+	
+		
+		
+		JasperReportBuilder report = DynamicReports.report();
 
+		try {
+			//report.setTemplate(Templates.reportTemplate);
+
+			StyleBuilder	columnTitleStyle    = stl.style().setPadding(2).setFontName("Trebuchet MS")
+                    .setBorder(stl.penThin())
+                    .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+                    .setBackgroundColor(Color.LIGHT_GRAY)
+                    .bold()
+                    .setFontSize(12).setMarkup(Markup.HTML);
+			
+			StyleBuilder	componentStyle    = stl.style().setPadding(2).setFontName("Trebuchet MS").setFontSize(12)
+                    .setBorder(stl.penThin())
+                    .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)                    
+                    .setMarkup(Markup.HTML);
+			
+			
+			StyleBuilder subreportStyle = stl.style()
+				    .setFontSize(12)
+				    .setBorder(stl.penThin())
+				    .setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
+
+			
+			subreport.setStyle(subreportStyle);
+			subreportDiff.setStyle(subreportStyle);
+			report.fields(field("mabba", List.class),field("differenzaMabba", List.class));
+			  
+			//report.setColumnStyle(textStyle); //AGG
+			report.setColumnStyle(textStyle);
+			report.setColumnTitleStyle(columnTitleStyle);
+	
+			report.addColumn(col.componentColumn("Massa<br/>", subreport).setFixedWidth(65));
+			report.addColumn(col.componentColumn("Differenze rilevate<br>dalla bilancia*<br>"+um, cmp.verticalList(subreportDiff).setStyle(textStyle)).setFixedWidth(85));
+//			report.addColumn(
+//				    col.componentColumn("Massa", cmp.text("TEST").setStyle(textStyle))
+//				        .setFixedWidth(30)
+//				);
+//
+//				report.addColumn(
+//				    col.componentColumn("Differenze", cmp.text("PROVA").setStyle(textStyle))
+//				        .setFixedWidth(35)
+//				);
+			report.addColumn(col.column("Scostamento<br/>(Sc)<br><br>"+um, "mabbaSC", type.stringType()).setStyle(textStyle).setFixedWidth(85).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			
+			
+			report.setDetailSplitType(SplitType.PREVENT);
+			
+			report.setDataSource(new JRBeanCollectionDataSource(listaReport));
+	  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return report;
+		
+		
+	}
+	
+//	public JasperReportBuilder getTableReportMABBA(List<ReportSVT_DTO> listaReport, String um) throws Exception{
+//				
+//		
+//		
+//		StyleBuilder textStyle = stl.style(Templates.columnStyle).setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE).setBorder(stl.penThin()).setFontSize(7).setPadding(0);//AGG
+//		
+//		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("MABBA","center",null)).setDataSource(new SubreportData("mabba"));
+//		SubreportBuilder subreportDiff = cmp.subreport(new SubreportDesign("diff","center",null)).setDataSource(new SubreportData("differenzaMabba"));
+//		
+//
+//		JasperReportBuilder report = DynamicReports.report();
+//
+//		try {
+//			report.setTemplate(Templates.reportTemplate);
+//
+//
+//			report.fields(field("mabba", List.class),field("differenzaMabba", List.class));
+//			  
+//			report.setColumnStyle(textStyle); //AGG
+//	
+//			report.addColumn(col.componentColumn("Massa<br/>", subreport).setFixedWidth(30).setTitleFixedHeight(15));
+//			report.addColumn(col.componentColumn("Differenze rilevate<br>dalla bilancia*<br>"+um, subreportDiff).setFixedWidth(35));
+//			report.addColumn(col.column("Scostamento<br/>(Sc)<br><br>"+um, "mabbaSC", type.stringType()).setFixedWidth(35).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedHeight(11).setStretchWithOverflow(false));
+//			
+//			
+//			report.setDetailSplitType(SplitType.PREVENT);
+//			
+//			report.setDataSource(new JRBeanCollectionDataSource(listaReport));
+//	  
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return report;
+//		
+//		
+//	}
+	
 	
 	private class SubreportDesign extends AbstractSimpleExpression<JasperReportBuilder> {
 		private static final long serialVersionUID = 1L;
 		private String _tipo;
 		private String _alignment;
 		private Integer _fixedWidth;
-		public SubreportDesign(String tipo, String alignment, Integer fixedWidth) {
+		private Integer _fontSize;
+		private Integer _fixedHeigth;
+		public SubreportDesign(String tipo, String alignment, Integer fixedWidth,Integer fixedHeigth, Integer fontSize) {
 			_tipo = tipo;
 			_alignment = alignment;
 			_fixedWidth = fixedWidth;
+			_fontSize = fontSize;
+			_fixedHeigth = fixedHeigth;
 		}
 
 		@Override
 		public JasperReportBuilder evaluate(ReportParameters reportParameters) {
 			JasperReportBuilder report = report();
+			if(_fontSize==null) {
+				_fontSize = 7;
+			}
 			if(_alignment.equals("center")){
-				if(_fixedWidth != null){
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+				if(_fixedWidth != null){					
+					if(_fixedHeigth != null) {
+						report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false).setFixedHeight(_fixedHeigth).setFixedWidth(_fixedWidth));
+					}else {
+						report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+					}
 				}else{
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false));	
+					
+					if(_fixedHeigth != null) {
+						report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false).setFixedHeight(_fixedHeigth));
+					}else {
+						report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false));
+					}
 				}
 			}else if(_alignment.equals("left")){
 				if(_fixedWidth != null){
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+					if(_fixedHeigth != null) {
+						report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false).setFixedHeight(_fixedHeigth).setFixedWidth(_fixedWidth));	
+					}else {
+						report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+					}
+					
 				}else{
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false));
+					if(_fixedHeigth != null) {
+						report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false).setFixedHeight(_fixedHeigth));	
+					}else {
+						report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false));
+					}
+					
 				}
 			}else{
 				if(_fixedWidth != null){
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+					if(_fixedHeigth != null) {
+						report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false).setFixedHeight(_fixedHeigth).setFixedWidth(_fixedWidth));	
+					}else {
+						report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+					}
+					
 				}else{
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false));
+					if(_fixedHeigth != null) {
+						report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false).setFixedHeight(_fixedHeigth));	
+					}else {
+						report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false));
+					}
+					
 				}
 			}
 			return report;
 		}
 	}
+//		public JasperReportBuilder evaluate(ReportParameters reportParameters) {
+//			JasperReportBuilder report = report();
+//			if(_fontSize==null) {
+//				_fontSize = 7;
+//			}
+//			if(_alignment.equals("center")){
+//				if(_fixedWidth != null){
+//					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+//				}else{
+//					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false));	
+//				}
+//			}else if(_alignment.equals("left")){
+//				if(_fixedWidth != null){
+//					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+//				}else{
+//					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false));
+//				}
+//			}else{
+//				if(_fixedWidth != null){
+//					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+//				}else{
+//					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(_fontSize).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false));
+//				}
+//			}
+//			return report;
+//		}
+//	}
 	
 
 	private class SubreportData extends AbstractSimpleExpression<JRDataSource> {
@@ -1635,7 +1965,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			
 			UtenteDTO utente = GestioneUtenteBO.getUtenteById("40", session);
 
-			GestioneCertificatoBO.createCertificato("28735","",session, null, utente);
+			GestioneCertificatoBO.createCertificato("28895","",session, null, utente);
 			
 		}
 }

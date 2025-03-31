@@ -224,15 +224,7 @@
         <div class="col-xs-9">
         <!-- <input type="text" id="azienda" name="azienda" class="form-control" style="width:100%" required> -->
         <input class="form-control" data-placeholder="Seleziona Azienda..." id="azienda_mod" name="azienda_mod" style="width:100%" required>
-                       <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
-                
-                      <c:forEach items="${lista_clienti}" var="cliente">
-                     
-                           <option value="${cliente.__id}">${cliente.nome}</option> 
-                         
-                     </c:forEach>
-
-                  </select> 
+           
         </div>      
        </div>
        <br>

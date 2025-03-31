@@ -18,6 +18,13 @@ public class ReportSVT_DTO {
 	private String asLeftAsFound = "";
 	private boolean nonApplicabile;
 	private String descrizioneCampione;
+	private List<Map<String, Object>> mabba;
+	private List<Map<String, Object>> differenzaMabba;
+	private String mabbaSC;
+	
+	private String mabbaVal;
+	private String mabbaComparatore;
+	private String mabbaMc;
 	
 	public List<Map<String, Object>> getTipoVerifica() {
 		return tipoVerifica;
@@ -103,6 +110,44 @@ public class ReportSVT_DTO {
 	public void setDescrizioneCampione(String descrizioneCampione) {
 		this.descrizioneCampione = descrizioneCampione;
 	}
+	public String getMabbaVal() {
+		return mabbaVal;
+	}
+	public void setMabbaVal(String mabbaVal) {
+		this.mabbaVal = mabbaVal;
+	}
+	public String getMabbaComparatore() {
+		return mabbaComparatore;
+	}
+	public void setMabbaComparatore(String mabbaComparatore) {
+		this.mabbaComparatore = mabbaComparatore;
+	}
+	public String getMabbaMc() {
+		return mabbaMc;
+	}
+	public void setMabbaMc(String mabbaMc) {
+		this.mabbaMc = mabbaMc;
+	}
+	public List<Map<String, Object>> getMabba() {
+		return mabba;
+	}
+	public void setMabba(List<Map<String, Object>> mabba) {
+		this.mabba = mabba;
+	}
+	public List<Map<String, Object>> getDifferenzaMabba() {
+		return differenzaMabba;
+	}
+	public void setDifferenzaMabba(List<Map<String, Object>> differenzaMabba) {
+		this.differenzaMabba = differenzaMabba;
+	}
+	public String getMabbaSC() {
+		return mabbaSC;
+	}
+	public void setMabbaSC(String mabbaSC) {
+		this.mabbaSC = mabbaSC;
+	}
+	
+
 
 	
 }

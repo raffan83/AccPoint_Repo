@@ -420,9 +420,7 @@ public class GestioneCertificatoBO {
 									    data.setAsLeftAsFound(punto.getCalibrazione());
 									  	
 									  	
-									  	values = new HashMap<String, Object>();
-									  	values.put("um", punto.getUm());
-									  	ums.add(values);
+									  	
 									  
 									  	
 										values = new HashMap<String, Object>();
@@ -440,6 +438,12 @@ public class GestioneCertificatoBO {
 									  	
 										
 									  	for (int c = 0; c < punto.getMabba_val().split("@").length; c++) {
+									  		
+									  		values = new HashMap<String, Object>();
+										  	values.put("um", punto.getUm());
+										  	ums.add(values);
+									  		
+									  		
 									  		BigDecimal lettura = new BigDecimal(punto.getMabba_val().split("@")[c]);
 											if(c==0 || c==3) {
 												values.put("MABBA", "A");
@@ -467,7 +471,7 @@ public class GestioneCertificatoBO {
 										String val_comparatore = punto.getMabba_comparatore().split("@")[1];
 										scala = val_comparatore.substring(val_comparatore.indexOf(".")+1).length();
 										
-										values.put("diff", ""+diff.setScale(scala, RoundingMode.HALF_UP));
+										values.put("diff", Utility.changeDotComma(""+diff.setScale(scala, RoundingMode.HALF_UP)));
 										differenzaMabba.add(values);
 								 
 									  	}
@@ -482,11 +486,11 @@ public class GestioneCertificatoBO {
 							}
 						  	
 						  	sc = mediaB.subtract(mediaA);
-									data.setMabbaSC(""+sc.setScale(scala + 1, RoundingMode.HALF_UP));
+									data.setMabbaSC(Utility.changeDotComma(""+sc.setScale(scala + 1, RoundingMode.HALF_UP)));
 									data.setMabba(mabbaList);
 									data.setDifferenzaMabba(differenzaMabba);
-									
-									data.setMabbaMc(""+punto.getMabba_mc().setScale(scala + 1, RoundingMode.HALF_UP));
+								
+									data.setMabbaMc(Utility.changeDotComma(""+punto.getMabba_mc().setScale(scala + 1, RoundingMode.HALF_UP)));
 									data.setMabbaComparatore(punto.getMabba_comparatore());
 									if(punto.getValoreMedioCampione()!=null) {
 										data.setValoreMedioCampione(Utility.changeDotComma(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));	

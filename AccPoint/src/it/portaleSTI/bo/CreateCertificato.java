@@ -554,11 +554,12 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				String mc = listItem.get(0).getMabbaMc();
 				incertezzaMabba = listItem.get(0).getIncertezza();		
 				report.detail(cmp.verticalGap(5),
-						cmp.horizontalList(cmp.horizontalGap(160),subreport),
+						cmp.horizontalList(cmp.horizontalGap(135),subreport),
 						cmp.verticalGap(8),
 						cmp.horizontalList(cmp.horizontalGap(165),cmp.text("Valore convenzionale misurato (mc) "+mc+" "+um)),
 						cmp.verticalGap(8),
 						cmp.horizontalList(cmp.horizontalGap(170),cmp.text("Incertezza associata allo strumento = "+Utility.changeDotComma(incertezzaMabba)+" "+um).setStyle(stl.style().bold())),
+						cmp.verticalGap(20),
 						cmp.verticalList(cmp.horizontalGap(15),cmp.text("A = massa campione").setStyle(stl.style().bold()),
 								cmp.horizontalGap(15),cmp.text("B = massa da verificare").setStyle(stl.style().bold()),
 								cmp.horizontalGap(15),cmp.text("*differenze rispetto al valore di massa")
@@ -1683,10 +1684,11 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				
 		
 		
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE).setBorder(stl.penThin()).setFontSize(12).setPadding(0);//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE).setBorder(stl.penThin()).setFontSize(10).setPadding(0);//AGG
 		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("MABBA","center",null,null, 12)).setDataSource(new SubreportData("mabba"));
-		SubreportBuilder subreportDiff = cmp.subreport(new SubreportDesign("diff","center",null,null, 12)).setDataSource(new SubreportData("differenzaMabba"));
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("MABBA","center",null,null, 10)).setDataSource(new SubreportData("mabba"));
+		SubreportBuilder subreportDiff = cmp.subreport(new SubreportDesign("diff","center",null,null, 10)).setDataSource(new SubreportData("differenzaMabba"));
+		SubreportBuilder subreportUm = cmp.subreport(new SubreportDesign("um","center",null,null, 10)).setDataSource(new SubreportData("unitaDiMisura"));
 		
 	
 		
@@ -1701,30 +1703,33 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
                     .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
                     .setBackgroundColor(Color.LIGHT_GRAY)
                     .bold()
-                    .setFontSize(12).setMarkup(Markup.HTML);
+                    .setFontSize(10).setMarkup(Markup.HTML);
 			
-			StyleBuilder	componentStyle    = stl.style().setPadding(2).setFontName("Trebuchet MS").setFontSize(12)
+			StyleBuilder	componentStyle    = stl.style().setPadding(2).setFontName("Trebuchet MS").setFontSize(10)
                     .setBorder(stl.penThin())
                     .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)                    
                     .setMarkup(Markup.HTML);
 			
 			
 			StyleBuilder subreportStyle = stl.style()
-				    .setFontSize(12)
+				    .setFontSize(10)
 				    .setBorder(stl.penThin())
 				    .setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
 
 			
 			subreport.setStyle(subreportStyle);
 			subreportDiff.setStyle(subreportStyle);
-			report.fields(field("mabba", List.class),field("differenzaMabba", List.class));
+			report.fields(field("mabba", List.class),field("differenzaMabba", List.class), field("unitaDiMisura", List.class));
 			  
 			//report.setColumnStyle(textStyle); //AGG
 			report.setColumnStyle(textStyle);
 			report.setColumnTitleStyle(columnTitleStyle);
 	
 			report.addColumn(col.componentColumn("Massa<br/>", subreport).setFixedWidth(65));
-			report.addColumn(col.componentColumn("Differenze rilevate<br>dalla bilancia*<br>"+um, cmp.verticalList(subreportDiff).setStyle(textStyle)).setFixedWidth(85));
+			report.addColumn(col.componentColumn("UM<br/>", subreportUm).setFixedWidth(65));
+			//
+			report.addColumn(col.componentColumn("Differenze rilevate<br>dalla bilancia*", cmp.verticalList(subreportDiff).setStyle(textStyle)).setFixedWidth(100));
+			
 //			report.addColumn(
 //				    col.componentColumn("Massa", cmp.text("TEST").setStyle(textStyle))
 //				        .setFixedWidth(30)
@@ -1734,7 +1739,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 //				    col.componentColumn("Differenze", cmp.text("PROVA").setStyle(textStyle))
 //				        .setFixedWidth(35)
 //				);
-			report.addColumn(col.column("Scostamento<br/>(Sc)<br><br>"+um, "mabbaSC", type.stringType()).setStyle(textStyle).setFixedWidth(85).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			report.addColumn(col.column("Scostamento<br/>(Sc)", "mabbaSC", type.stringType()).setStyle(textStyle).setFixedWidth(85).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
 			
 			
 			report.setDetailSplitType(SplitType.PREVENT);

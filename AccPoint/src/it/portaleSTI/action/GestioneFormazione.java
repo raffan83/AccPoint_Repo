@@ -3306,6 +3306,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						descrizione = "FATTURATO SENZA ATTESTATI";
 					}else if(stato.equals("5")) {
 						descrizione = "FATTURATO CON ATTESTATI";
+					}else if(stato.equals("6")) {
+						descrizione = "ATTESTATI SENZA FATTURA";
 					}
 					pianificazione.setStato(new ForPiaStatoDTO(Integer.parseInt(stato),descrizione));
 					

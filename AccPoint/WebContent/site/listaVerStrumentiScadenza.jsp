@@ -23,6 +23,7 @@
 <th>Tipo</th>
 <th>Tipologia</th>
 <th>Portata max</th>
+<th>Unità di misura</th>
 <th>Data ultima verifica</th>
 <th>Data prossima verifica</th>
 <th>Ultimo verificatore</th>
@@ -59,6 +60,7 @@
 	</c:if>
 	
 	</td>
+	<td>${strumento.um }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_ultima_verifica }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_prossima_verifica }" /></td>
 	<td>${strumento.ultimo_verificatore }</td>
@@ -493,13 +495,13 @@
      if(state != null && state.columns!=null){
      		console.log(state.columns);
      
-     columsDatatables = state.columns;
+     //columsDatatables = state.columns;
      }
      $('#tabStrumenti thead th').each( function () {
       	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
      	  var title = $('#tabStrumenti thead th').eq( $(this).index() ).text();
      	
-     	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+     	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  ></div>');
      	
      	} );
      
@@ -570,9 +572,9 @@
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 12 },
-		    	  { responsivePriority: 2, targets: 10 },
-		    	  { responsivePriority: 2, targets: 11 }
+		    	  { responsivePriority: 2, targets: 13 },
+		    	  { responsivePriority: 2, targets: 11 },
+		    	  { responsivePriority: 2, targets: 10 }
 		    	  
 		               ], 	        
 	  	      buttons: [   
@@ -599,15 +601,37 @@
 	 	    });
 
 	table.columns().eq( 0 ).each( function ( colIdx ) {
-	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-	      table
-	          .column( colIdx )
-	          .search( this.value )
-	          .draw();
-	  } );
+		
+		
+			$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+				
+				let searchValue = $.fn.dataTable.util.escapeRegex(this.value);
+				if(colIdx!=11){
+			      table
+			          .column( colIdx )
+			          .search( searchValue)
+			          .draw();
+			      
+				}else{
+					 if (searchValue === "") {
+						 
+						 table.column(colIdx).search("").draw();
+					 }
+					 else {
+						 table
+				          .column( colIdx )
+				          .search("^" + searchValue + "$", true, false)
+				          .draw();
+					 
+					 }
+					 
+			  } 
+		
+			
+	  
 	} ); 
 		table.columns.adjust().draw();
-		
+	});
 
 	$('#tabStrumenti').on( 'page.dt', function () {
 		$('.customTooltip').tooltipster({

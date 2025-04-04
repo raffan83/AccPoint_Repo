@@ -25,6 +25,11 @@ public class ReportSVT_DTO {
 	private String mabbaVal;
 	private String mabbaComparatore;
 	private String mabbaMc;
+	private List<Map<String, Object>> letturaCampione;
+	
+	private String incertezzaPerc;
+	private String scostamentoPerc;
+	private String val_strumento;
 	
 	public List<Map<String, Object>> getTipoVerifica() {
 		return tipoVerifica;
@@ -145,6 +150,30 @@ public class ReportSVT_DTO {
 	}
 	public void setMabbaSC(String mabbaSC) {
 		this.mabbaSC = mabbaSC;
+	}
+	public List<Map<String, Object>> getLetturaCampione() {
+		return letturaCampione;
+	}
+	public void setLetturaCampione(List<Map<String, Object>> letturaCampione) {
+		this.letturaCampione = letturaCampione;
+	}
+	public String getIncertezzaPerc() {
+		return incertezzaPerc;
+	}
+	public void setIncertezzaPerc(String incertezzaPerc) {
+		this.incertezzaPerc = incertezzaPerc;
+	}
+	public String getScostamentoPerc() {
+		return scostamentoPerc;
+	}
+	public void setScostamentoPerc(String scostamentoPerc) {
+		this.scostamentoPerc = scostamentoPerc;
+	}
+	public String getVal_strumento() {
+		return val_strumento;
+	}
+	public void setVal_strumento(String val_strumento) {
+		this.val_strumento = val_strumento;
 	}
 	
 

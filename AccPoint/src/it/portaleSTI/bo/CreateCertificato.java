@@ -123,7 +123,7 @@ public class CreateCertificato {
 			List<ReportSVT_DTO> listItem = (List<ReportSVT_DTO>) pair.getValue();
 			SubreportBuilder subreport = null;
 			
-			if(pivot.startsWith("R_S") || pivot.startsWith("L_S") || pivot.startsWith("D_S") || pivot.startsWith("M")){
+			if(pivot.startsWith("R_S") || pivot.startsWith("L_S") || pivot.startsWith("D_S") || pivot.startsWith("M") || pivot.startsWith("S")){
 				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderSvt_EN.jrxml");
 				tipoScheda="SVT";
 			}
@@ -525,6 +525,12 @@ public class CreateCertificato {
 					subreport = cmp.subreport(getTableReportMABBA(listItem, um));
 				}
 				
+				if(pivot.startsWith("S")) {
+					um = (String) listItem.get(0).getUnitaDiMisura().get(0).get("um");
+					numberOfRow += 2 + listItem.size();
+					subreport = cmp.subreport(getTableReportS(listItem, um));
+				}
+				
 				numberOfRow=numberOfRow - numberOfRowBefore;
 //				if(numberOfRow>11 && isFirtsPage){
 //					report.detail(cmp.pageBreak());
@@ -565,7 +571,13 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 								cmp.horizontalGap(15),cmp.text("*differenze rispetto al valore di massa")
 								)
 						);
-			}else {
+			}
+			else if(pivot.startsWith("S")) {
+				report.detail(cmp.verticalGap(10));
+				report.detail(subreport).setDetailSplitType(SplitType.IMMEDIATE);
+				report.detail(cmp.verticalGap(10));
+			}
+			else {
 				report.detail(subreport).setDetailSplitType(SplitType.IMMEDIATE);
 				report.detail(cmp.verticalGap(10));
 			}
@@ -1754,42 +1766,74 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		
 	}
 	
-//	public JasperReportBuilder getTableReportMABBA(List<ReportSVT_DTO> listaReport, String um) throws Exception{
-//				
-//		
-//		
-//		StyleBuilder textStyle = stl.style(Templates.columnStyle).setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE).setBorder(stl.penThin()).setFontSize(7).setPadding(0);//AGG
-//		
-//		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("MABBA","center",null)).setDataSource(new SubreportData("mabba"));
-//		SubreportBuilder subreportDiff = cmp.subreport(new SubreportDesign("diff","center",null)).setDataSource(new SubreportData("differenzaMabba"));
-//		
-//
-//		JasperReportBuilder report = DynamicReports.report();
-//
-//		try {
-//			report.setTemplate(Templates.reportTemplate);
-//
-//
-//			report.fields(field("mabba", List.class),field("differenzaMabba", List.class));
-//			  
-//			report.setColumnStyle(textStyle); //AGG
-//	
-//			report.addColumn(col.componentColumn("Massa<br/>", subreport).setFixedWidth(30).setTitleFixedHeight(15));
-//			report.addColumn(col.componentColumn("Differenze rilevate<br>dalla bilancia*<br>"+um, subreportDiff).setFixedWidth(35));
-//			report.addColumn(col.column("Scostamento<br/>(Sc)<br><br>"+um, "mabbaSC", type.stringType()).setFixedWidth(35).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedHeight(11).setStretchWithOverflow(false));
-//			
-//			
-//			report.setDetailSplitType(SplitType.PREVENT);
-//			
-//			report.setDataSource(new JRBeanCollectionDataSource(listaReport));
-//	  
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return report;
-//		
-//		
-//	}
+public JasperReportBuilder getTableReportS(List<ReportSVT_DTO> listaReport, String um) throws Exception{
+				
+		
+		
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE).setBorder(stl.penThin()).setFontSize(10).setPadding(0);//AGG
+		
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("pesata","center",null,null, 10)).setDataSource(new SubreportData("letturaCampione"));
+		SubreportBuilder subreportVc = cmp.subreport(new SubreportDesign("vc","center",null,null, 10)).setDataSource(new SubreportData("valoreCampione"));
+		
+		
+	
+		
+		
+		JasperReportBuilder report = DynamicReports.report();
+
+		try {
+			//report.setTemplate(Templates.reportTemplate);
+
+			StyleBuilder	columnTitleStyle    = stl.style().setPadding(2).setFontName("Trebuchet MS")
+                    .setBorder(stl.penThin())
+                    .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+                    .setBackgroundColor(Color.LIGHT_GRAY)
+                    .bold()
+                    .setFontSize(10).setMarkup(Markup.HTML);
+			
+			StyleBuilder	componentStyle    = stl.style().setPadding(2).setFontName("Trebuchet MS").setFontSize(10)
+                    .setBorder(stl.penThin())
+                    .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)                    
+                    .setMarkup(Markup.HTML);
+			
+			
+			StyleBuilder subreportStyle = stl.style()
+				    .setFontSize(10)
+				    .setBorder(stl.penThin())
+				    .setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
+
+			
+			subreport.setStyle(subreportStyle);
+			subreportVc.setStyle(subreportStyle);
+			report.fields(field("letturaCampione", List.class),field("valoreCampione", List.class));
+			  
+			//report.setColumnStyle(textStyle); //AGG
+			report.setColumnStyle(textStyle);
+			report.setColumnTitleStyle(columnTitleStyle);
+	
+			report.addColumn(col.column("Valore nominale<br>"+um, "val_strumento", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			report.addColumn(col.componentColumn("Valore delle pesate<br>"+um, subreport).setFixedWidth(70));
+			report.addColumn(col.componentColumn("Valore corretto<br>"+um, subreportVc).setFixedWidth(70));
+			report.addColumn(col.column("Valore convenzionale<br>"+um, "valoreMedioCampione", type.stringType()).setStyle(textStyle).setFixedWidth(75).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			report.addColumn(col.column("Scostamento<br/><br>%", "scostamentoPerc", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));;
+			report.addColumn(col.column("Scostamento<br/><br>"+um, "scostamento_correzione", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			report.addColumn(col.column("Incertezza<br/>(U)<br>%", "incertezzaPerc", type.stringType()).setStyle(textStyle).setFixedWidth(65).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			report.addColumn(col.column("Incertezza<br/>(U)<br>"+um, "incertezza", type.stringType()).setStyle(textStyle).setFixedWidth(65).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			//report.addColumn(col.componentColumn("UM<br/>", subreportUm).setFixedWidth(65));
+		
+			
+			report.setDetailSplitType(SplitType.PREVENT);
+			
+			report.setDataSource(new JRBeanCollectionDataSource(listaReport));
+	  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return report;
+		
+		
+	}
+	
 	
 	
 	private class SubreportDesign extends AbstractSimpleExpression<JasperReportBuilder> {
@@ -1970,7 +2014,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			
 			UtenteDTO utente = GestioneUtenteBO.getUtenteById("40", session);
 
-			GestioneCertificatoBO.createCertificato("28895","",session, null, utente);
+			GestioneCertificatoBO.createCertificato("28896","",session, null, utente);
 			
 		}
 }

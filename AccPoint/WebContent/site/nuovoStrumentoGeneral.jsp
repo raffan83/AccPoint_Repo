@@ -504,6 +504,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
 
     	$(id_input).select2({
     	    data: mockDataGen(),
+    	    dropdownParent: $('#modalNuovoStrumentoGeneral'),
     	    placeholder: placeholder,
     	    multiple: false,
     	    // query with pagination

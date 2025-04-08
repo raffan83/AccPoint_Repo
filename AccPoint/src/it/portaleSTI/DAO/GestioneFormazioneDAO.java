@@ -1307,7 +1307,7 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 			query = session.createQuery("from ForConfInvioEmailDTO where data_prossimo_invio = :_date and disabilitato = 0 and stato_invio = 0");
 			query.setParameter("_date",date);	
 		}else {
-			query = session.createQuery("from ForConfInvioEmailDTO where disabilitato = 0 and stato_invio = 0");
+			query = session.createQuery("from ForConfInvioEmailDTO where disabilitato = 0 and stato_invio = 0 and report_vittoria = 1");
 		}
 		
 					

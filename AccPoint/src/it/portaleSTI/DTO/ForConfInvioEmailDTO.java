@@ -17,6 +17,7 @@ public class ForConfInvioEmailDTO {
 	private int disabilitato;
 	private String oggetto_email;
 	private String testo_email;
+	private int report_vittoria;
 	
 	
 	public int getId() {
@@ -97,6 +98,12 @@ public class ForConfInvioEmailDTO {
 	}
 	public void setTesto_email(String testo_email) {
 		this.testo_email = testo_email;
+	}
+	public int getReport_vittoria() {
+		return report_vittoria;
+	}
+	public void setReport_vittoria(int report_vittoria) {
+		this.report_vittoria = report_vittoria;
 	}
 	
 	

@@ -74,6 +74,7 @@
 <th>Data prossimo invio</th>
 <th>Data scadenza</th>
 <th>Stato invio</th>
+<th>Report Vittoria</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -96,9 +97,20 @@
 		<c:if test="${configurazione.stato_invio == 1 }">Comunicazione inviata</c:if>
 		<c:if test="${configurazione.stato_invio == 2}">Scaduta</c:if>
 		</td>
+	<c:if test="${configurazione.report_vittoria==0 }">
+	<td align="center">
+	<input type="checkbox" class="icheckbox" disabled="disabled" >
+	</td>
+	</c:if>
+	
+	<c:if test="${configurazione.report_vittoria==1 }">
+	<td align="center">
+	<input type="checkbox" checked class="icheckbox" disabled="disabled">
+	</td>
+	</c:if>	
 	<td>
  	
-	<a  class="btn btn-warning" onClicK="modificaConfigurazioneModal('${configurazione.id}','${configurazione.id_corso}','${configurazione.id_gruppo}','${configurazione.data_inizio_invio}','${configurazione.frequenza_invio }','${configurazione.data_prossimo_invio}','${configurazione.stato_invio }','${configurazione.data_scadenza}','${utl:escapeJS(configurazione.oggetto_email) }','${utl:escapeJS(configurazione.testo_email) }')" title="Click per modificare la Configurazione"><i class="fa fa-edit"></i></a>
+	<a  class="btn btn-warning" onClicK="modificaConfigurazioneModal('${configurazione.id}','${configurazione.id_corso}','${configurazione.id_gruppo}','${configurazione.data_inizio_invio}','${configurazione.frequenza_invio }','${configurazione.data_prossimo_invio}','${configurazione.stato_invio }','${configurazione.data_scadenza}','${utl:escapeJS(configurazione.oggetto_email) }','${utl:escapeJS(configurazione.testo_email) }','${configurazione.report_vittoria}')" title="Click per modificare la Configurazione"><i class="fa fa-edit"></i></a>
 	<a  class="btn btn-danger" onClicK="eliminaConfigurazioneModal('${configurazione.id}')" title="Click per eliminare la configurazione"><i class="fa fa-trash"></i></a>
 
 	</td>
@@ -280,6 +292,20 @@
        	</div>       	
        </div><br>
        
+                        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Report Vittoria</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+               	  	
+     
+               <input type='checkbox' class="form-control" id="report_vittoria" name="report_vittoria" >
+     
+       			
+       	</div>       	
+       </div><br>
        
        
          <div class="row">
@@ -455,7 +481,7 @@
        
        
               
-                 <div class="row">
+        <div class="row">
        
        	<div class="col-sm-3">
        		<label>Oggetto email</label>
@@ -466,6 +492,18 @@
      
                <input type='text' class="form-control" id="oggetto_email_mod" name="oggetto_email_mod" required>
      <input type='hidden' id="id_gruppo_mod">
+       			
+       	</div>       	
+       </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Report Vittoria</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="check_report_vittoria_mod" name="check_report_vittoria_mod" class="form-control" type="checkbox" style="width:100%" >
        			
        	</div>       	
        </div><br>
@@ -494,6 +532,7 @@
       <div class="modal-footer">
 		
 		<input type="hidden" id="id_configurazione" name="id_configurazione"> 
+		<input type="hidden" id="report_vittoria_mod" name="report_vittoria_mod">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -600,7 +639,7 @@ function eliminaConfigurazione(){
 var editorInstanceMod = null;
 
 
-function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, data_inizio, frequenza, data_prossimo_invio, stato, data_scadenza, oggetto_email, testo_email) {
+function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, data_inizio, frequenza, data_prossimo_invio, stato, data_scadenza, oggetto_email, testo_email,report_vittoria) {
     
 	$('#id_gruppo_mod').val(id_gruppo);
 	$('#id_configurazione').val(id_configurazione);
@@ -609,6 +648,19 @@ function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, dat
     //$('#gruppi_mod').val(id_gruppo);
   //  $('#gruppi_mod').change()
     $('#oggetto_email_mod').val(oggetto_email);
+    
+    if(report_vittoria =='1'){	
+
+		$('#check_report_vittoria_mod').iCheck('check');
+		$('#report_vittoria_mod').val(1); 
+
+	}else{
+		$('#check_report_vittoria_mod').iCheck('uncheck');
+		$('#report_vittoria_mod').val(0);
+
+	}
+    
+    
     $('#testo_email_mod').val(testo_email);
     $('#frequenza_mod').val(frequenza);
     $('#data_inizio_invio_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy"));
@@ -632,6 +684,16 @@ function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, dat
     }
 
 }
+
+$('#check_report_vittoria_mod').on('ifClicked',function(e){
+	if($('#check_report_vittoria_mod').is( ':checked' )){
+		$('#check_report_vittoria_mod').iCheck('uncheck');
+		$('#report_vittoria_mod').val(0); 
+	}else{
+		$('#check_report_vittoria_mod').iCheck('check');
+		$('#report_vittoria_mod').val(1); 
+	}
+});
 
 
 var columsDatatables = [];

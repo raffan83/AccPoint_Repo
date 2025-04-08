@@ -44,5 +44,8 @@
         <property name="testo_email" type="java.lang.String">
             <column name="testo_email" />
         </property>
+        <property name="report_vittoria" type="int" >
+            <column name="report_vittoria" />
+        </property>
     </class>
 </hibernate-mapping>

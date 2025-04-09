@@ -3487,7 +3487,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String data_scadenza = ret.get("data_scadenza");
 					String oggetto_email = ret.get("oggetto_email");
 					String testo_email = ret.get("testo_email");
+					String report_vittoria=ret.get("report_vittoria");
+					
 				
+					
 					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = (ArrayList<ForCorsoMoodleDTO>) request.getSession().getAttribute("lista_corsi_moodle");
 					ArrayList<ForGruppoMoodleDTO> lista_gruppi_moodle = (ArrayList<ForGruppoMoodleDTO>) request.getSession().getAttribute("lista_gruppi_moodle");
 					ForConfInvioEmailDTO configurazione = new ForConfInvioEmailDTO();
@@ -3533,7 +3536,16 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						configurazione.setData_scadenza(df.parse(data_scadenza));
 					}
 					
-					session.save(configurazione);
+					if(report_vittoria!=null) 
+					{
+						configurazione.setReport_vittoria(1);
+					}
+					else 
+					{
+						configurazione.setReport_vittoria(0);
+					}
+					
+				//	session.save(configurazione);
 					session.getTransaction().commit();
 					session.close();
 					
@@ -3585,6 +3597,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String data_scadenza = ret.get("data_scadenza_mod");
 					String oggetto_email = ret.get("oggetto_email_mod");
 					String testo_email = ret.get("testo_email_mod");
+					String report_vittoria=ret.get("report_vittoria_mod");
 				
 					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = (ArrayList<ForCorsoMoodleDTO>) request.getSession().getAttribute("lista_corsi_moodle");
 					ArrayList<ForGruppoMoodleDTO> lista_gruppi_moodle = (ArrayList<ForGruppoMoodleDTO>) request.getSession().getAttribute("lista_gruppi_moodle");
@@ -3617,6 +3630,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					configurazione.setTesto_email(testo_email);
 					configurazione.setFrequenza_invio(Integer.parseInt(frequenza));
 					configurazione.setData_inizio_invio(df.parse(data_inizio_invio));
+					configurazione.setReport_vittoria(Integer.parseInt(report_vittoria));
 					
 					if(df.parse(data_prossimo_invio).equals(new Date()) || df.parse(data_prossimo_invio).before(new Date())) {
 						Calendar calendar = Calendar.getInstance();

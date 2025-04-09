@@ -24,7 +24,7 @@ import it.portaleSTI.bo.GestioneFormazioneBO;
 
 public class GestioneInvioReportVittoria {
 
-	public static void main(String[] args) {
+	public static void inviaReportVittoria(){
 		
 		 String host = "sftp.vittoriarms.eu";
 	        int port = 22;
@@ -40,21 +40,29 @@ public class GestioneInvioReportVittoria {
 			
 			ContextListener.configCostantApplication();
 			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			
+			sdf.format(new Date());
+			
+			String path=Costanti.PATH_FOLDER+"ReportVittoria\\"+sdf.format(new Date());
+			
+			File f= new File(path);
+			
+			f.mkdir();
 		
 			Session session=SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
 			ArrayList<ForConfInvioEmailDTO> lista_conf = GestioneFormazioneBO.getListaConfigurazioniInvioEmailData(null,session);
 			HashMap<String, String> listaCorsi=new HashMap<>();
 			
-			String timeStamp=""+System.currentTimeMillis();
 			
-			File fileCorsi=new File(Costanti.PATH_FOLDER+"/ReportVittoria/CorsiCalver_"+timeStamp+".csv");
+			File fileCorsi=new File(path+"/CorsiCalver.csv");
 			FileOutputStream fosCorsi= new FileOutputStream(fileCorsi);
 			PrintStream psCorsi= new PrintStream(fosCorsi);
 		
 			System.out.println("Inizzialize");
 			
-			File filePartecipanti=new File(Costanti.PATH_FOLDER+"/ReportVittoria/PartecipantiCalver_"+timeStamp+".csv");
+			File filePartecipanti=new File(path+"/PartecipantiCalver.csv");
 			FileOutputStream fosPartecipanti= new FileOutputStream(filePartecipanti);
 			PrintStream psPartecipanti= new PrintStream(fosPartecipanti);
 			
@@ -95,14 +103,14 @@ public class GestioneInvioReportVittoria {
             channelSftp = (ChannelSftp) sessionSftp.openChannel("sftp");
             channelSftp.connect();
 
-            try (InputStream input = new FileInputStream(Costanti.PATH_FOLDER+"/ReportVittoria/CorsiCalver_"+timeStamp+".csv")) {
+            try (InputStream input = new FileInputStream(path+"/CorsiCalver.csv")) {
                 channelSftp.cd(remoteDir);
-                channelSftp.put(input, "CorsiCalver_"+timeStamp+".csv");
+                channelSftp.put(input, "CorsiCalver.csv");
             }
             
-            try (InputStream input = new FileInputStream(Costanti.PATH_FOLDER+"/ReportVittoria/PartecipantiCalver_"+timeStamp+".csv")) {
+            try (InputStream input = new FileInputStream(path+"/PartecipantiCalver.csv")) {
                 channelSftp.cd(remoteDir);
-                channelSftp.put(input, "PartecipantiCalver_"+timeStamp+".csv");
+                channelSftp.put(input, "PartecipantiCalver.csv");
             }
             
 
@@ -121,6 +129,12 @@ public class GestioneInvioReportVittoria {
 
 	}
 
+	
+	public static void main(String[] args) {
+		
+		inviaReportVittoria();
+	}
+	
 	private static String getDateFromLong(Long dataEsecuzione) {
 		
 		if(dataEsecuzione==0) 

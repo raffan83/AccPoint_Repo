@@ -11,6 +11,9 @@ import java.util.Date;
 import java.util.HashMap;
 
 import org.hibernate.Session;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -22,7 +25,15 @@ import it.portaleSTI.DTO.ForMembriGruppoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.bo.GestioneFormazioneBO;
 
-public class GestioneInvioReportVittoria {
+public class GestioneInvioReportVittoria implements Job{
+	
+	
+	@Override
+	public void execute(JobExecutionContext arg0) throws JobExecutionException {
+		
+		inviaReportVittoria();
+	}
+	
 
 	public static void inviaReportVittoria(){
 		

@@ -2153,58 +2153,109 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					//numero_partecipanti += GestioneFormazioneBO.getListaPartecipantiCorso(corso.getId(), session).size();
 				}
 				
-				int[][] sommaRisposte = new int[maxDomande][2];
+//				int[][] sommaRisposte = new int[maxDomande][2];
+//				
+//				
+//				 for (String[] risposte : parsedQuestionari) {
+//			            for (int i = 0; i < risposte.length; i++) {
+//			                String risposta = risposte[i].trim();
+//			                if (risposta.isEmpty() || risposta.equals(",,") || risposta.equals(",")) {
+//			                    continue; // Saltiamo domande senza risposta
+//			                }
+//
+//			                String[] valori = risposta.split(",");
+//			                int poco = 0, molto = 0;
+//
+//			                if (valori.length == 2) { 
+//			                    // Caso classico: "X,Y,"
+//			                    poco = valori[0].isEmpty() ? 0 : Integer.parseInt(valori[0]);
+//			                    molto = valori[1].isEmpty() ? 0 : Integer.parseInt(valori[1]);
+//			                } else if (valori.length == 1) {
+//			                	if (risposta.startsWith(",")) {
+//			                        molto = Integer.parseInt(valori[0]);
+//			                    } 
+//			                    // Caso speciale: "X,," → poco=X, molto=0
+//			                    else {
+//			                        poco = Integer.parseInt(valori[0]);
+//			                    }
+//			                }
+//			                else if (valori.length == 3) {
+//			                    // Caso speciale: ",,Y" → poco=0, molto=Y
+//			                    if (valori[0].isEmpty() && valori[1].isEmpty()) {
+//			                        molto = Integer.parseInt(valori[2]);
+//			                    }
+//			                }
+//			                // Sommiamo i valori
+//			                sommaRisposte[i][0] += poco;
+//			                sommaRisposte[i][1] += molto;
+//			            }
+//			        }
+//				
+//				
+//				StringBuilder risultato = new StringBuilder();
+//		        for (int i = 0; i < maxDomande; i++) {
+//		            if (sommaRisposte[i][0] == 0 && sommaRisposte[i][1] == 0) {
+//		                risultato.append(",,;");
+//		            } else {
+//		                risultato.append(sommaRisposte[i][0]).append(",").append(sommaRisposte[i][1]).append(";");
+//		            }
+//		        }
 				
-				
-				 for (String[] risposte : parsedQuestionari) {
-			            for (int i = 0; i < risposte.length; i++) {
-			                String risposta = risposte[i].trim();
-			                if (risposta.isEmpty() || risposta.equals(",,") || risposta.equals(",")) {
-			                    continue; // Saltiamo domande senza risposta
-			                }
+				int[][] sommaRisposte = new int[maxDomande][3]; // Aggiunto terzo valore per "non risposte"
 
-			                String[] valori = risposta.split(",");
-			                int poco = 0, molto = 0;
+				for (String[] risposte : parsedQuestionari) {
+				    for (int i = 0; i < risposte.length; i++) {
+				        String risposta = risposte[i].trim();
+				        if (risposta.isEmpty() || risposta.equals(",,") || risposta.equals(",")) {
+				            continue; // Saltiamo domande senza risposta
+				        }
 
-			                if (valori.length == 2) { 
-			                    // Caso classico: "X,Y,"
-			                    poco = valori[0].isEmpty() ? 0 : Integer.parseInt(valori[0]);
-			                    molto = valori[1].isEmpty() ? 0 : Integer.parseInt(valori[1]);
-			                } else if (valori.length == 1) {
-			                	if (risposta.startsWith(",")) {
-			                        molto = Integer.parseInt(valori[0]);
-			                    } 
-			                    // Caso speciale: "X,," → poco=X, molto=0
-			                    else {
-			                        poco = Integer.parseInt(valori[0]);
-			                    }
-			                }
-			                else if (valori.length == 3) {
-			                    // Caso speciale: ",,Y" → poco=0, molto=Y
-			                    if (valori[0].isEmpty() && valori[1].isEmpty()) {
-			                        molto = Integer.parseInt(valori[2]);
-			                    }
-			                }
-			                // Sommiamo i valori
-			                sommaRisposte[i][0] += poco;
-			                sommaRisposte[i][1] += molto;
-			            }
-			        }
-				
-				
+				        String[] valori = risposta.split(",");
+				        int poco = 0, molto = 0, nonRisposte = 0;
+
+				        if (valori.length == 3) {
+				            // Caso ",X,Y;" → poco=0, molto=X, nonRisposte=Y
+				            poco = 0;
+				            molto = valori[1].isEmpty() ? 0 : Integer.parseInt(valori[1]);
+				            nonRisposte = valori[2].isEmpty() ? 0 : Integer.parseInt(valori[2]);
+				        } else if (valori.length == 2) {
+				            // Caso "X,Y;" → poco=X, molto=Y
+				            poco = valori[0].isEmpty() ? 0 : Integer.parseInt(valori[0]);
+				            molto = valori[1].isEmpty() ? 0 : Integer.parseInt(valori[1]);
+				        } else if (valori.length == 1) {
+				            // Caso speciale ",Y;" → poco=0, molto=Y
+				            if (risposta.startsWith(",")) {
+				                molto = Integer.parseInt(valori[0]);
+				            } else {
+				                poco = Integer.parseInt(valori[0]);
+				            }
+				        }
+
+				        // Sommare i valori nell'array
+				        sommaRisposte[i][0] += poco;
+				        sommaRisposte[i][1] += molto;
+				        sommaRisposte[i][2] += nonRisposte; // Nuova colonna per non risposte
+				    }
+				}
+
+				// Costruzione della stringa risultato
 				StringBuilder risultato = new StringBuilder();
-		        for (int i = 0; i < maxDomande; i++) {
-		            if (sommaRisposte[i][0] == 0 && sommaRisposte[i][1] == 0) {
-		                risultato.append(",,;");
-		            } else {
-		                risultato.append(sommaRisposte[i][0]).append(",").append(sommaRisposte[i][1]).append(";");
-		            }
-		        }
-				
+				for (int i = 0; i < maxDomande; i++) {
+				    if (sommaRisposte[i][0] == 0 && sommaRisposte[i][1] == 0 && sommaRisposte[i][2] == 0) {
+				        risultato.append(",,;"); // Nessuna risposta registrata
+				    } else {
+				        risultato.append(sommaRisposte[i][0])
+				                .append(",")
+				                .append(sommaRisposte[i][1])
+				                .append(",")
+				                .append(sommaRisposte[i][2])
+				                .append(";");
+				    }
+				}
+
 				ForQuestionarioDTO questionario_result = new ForQuestionarioDTO();
-				
 				questionario_result.setSeq_risposte(risultato.toString());
-				
+						
 				 
 				//request.getSession().setAttribute("numero_partecipanti", numero_partecipanti);	
 				request.getSession().setAttribute("lista_corsi", lista_corsi);

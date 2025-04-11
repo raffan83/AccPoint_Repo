@@ -12,6 +12,7 @@ public class AmCampioneDTO {
     private String sondaCostruttore;
     private String sondaModello;
     private String sondaMatricola;
+    private String sondaFrequenza;
     private String sondaDimensione;
     private String sondaAngolo;
     private String sondaVelocita;
@@ -84,7 +85,15 @@ public class AmCampioneDTO {
         this.sondaMatricola = sondaMatricola;
     }
 
-    public String getSondaDimensione() {
+    public String getSondaFrequenza() {
+		return sondaFrequenza;
+	}
+
+	public void setSondaFrequenza(String sondaFrequenza) {
+		this.sondaFrequenza = sondaFrequenza;
+	}
+
+	public String getSondaDimensione() {
         return sondaDimensione;
     }
 

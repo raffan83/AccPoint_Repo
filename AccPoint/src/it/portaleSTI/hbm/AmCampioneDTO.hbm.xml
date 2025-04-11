@@ -18,6 +18,7 @@
         <property name="sondaCostruttore" column="sonda_costruttore"/>
         <property name="sondaModello" column="sonda_modello"/>
         <property name="sondaMatricola" column="sonda_matricola"/>
+        <property name="sondaFrequenza" column="sonda_frequenza"/>
         <property name="sondaDimensione" column="sonda_dimensione"/>
         <property name="sondaAngolo" column="sonda_angolo"/>
         <property name="sondaVelocita" column="sonda_velocita"/>

@@ -214,6 +214,8 @@
  	<mapping class="DevTestoEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevTestoEmailDTO.hbm.xml"/>
  	<mapping class="DevProceduraDeviceDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevProceduraDeviceDTO.hbm.xml"/>
  	<mapping class="DevDeviceMonitorDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevDeviceMonitorDTO.hbm.xml"/>
+ 	<mapping class="DevTipoLicenzaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevTipoLicenzaDTO.hbm.xml"/>
+ 	<mapping class="DevContrattoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DevContrattoDTO.hbm.xml"/>
  	
  	<mapping class="GPDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/GPDTO.hbm.xml"/>
  			
@@ -236,7 +238,8 @@
  	<mapping class="ForPiaTipoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForPiaTipoDTO.hbm.xml"/>
  	<mapping class="ForPiaPianificazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForPiaPianificazioneDTO.hbm.xml"/> 	
  	
- 	
+ 	<mapping class="AMInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMInterventoDTO.hbm.xml"/>
+ 	<mapping class="AMOperatoreDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMOperatoreDTO.hbm.xml"/>
 <!--  	<mapping class="AMAttivitaManutenzioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMAttivitaManutenzioneDTO.hbm.xml"/>
  	<mapping class="AMInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMInterventoDTO.hbm.xml"/>
  	<mapping class="AMSistemaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMSistemaDTO.hbm.xml"/>
@@ -249,7 +252,11 @@
  	
  	
  	<mapping class="LibreriaElettriciDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LibreriaElettriciDTO.hbm.xml"/>
-
+ 	
+ 	
+	<mapping class="ItTipoServizioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ItTipoServizioDTO.hbm.xml"/>
+	<mapping class="ItTipoRinnovoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ItTipoRinnovoDTO.hbm.xml"/>
+	<mapping class="ItServizioItDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ItServizioItDTO.hbm.xml"/>
  	
   </session-factory>
 </hibernate-configuration>

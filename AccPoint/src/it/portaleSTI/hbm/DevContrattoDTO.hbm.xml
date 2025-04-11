@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.DevContrattoDTO" table="dev_contratto">
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>	
+       <property name="fornitore" type="java.lang.String">
+            <column name="fornitore" />
+        </property>
+         <property name="permanente" type="java.lang.String">
+            <column name="permanente" />
+        </property>
+        
+     
+        
+ 		<property name="data_inizio" type="java.sql.Date">
+            <column name="data_inizio" />
+        </property>
+        <property name="data_scadenza" type="java.sql.Date">
+            <column name="data_scadenza" />
+        </property>
+	
+
+        <property name="disabilitato" type="int">
+            <column name="disabilitato" />
+        </property>
+	
+	   <property name="n_licenze" type="int">
+            <column name="n_licenze" />
+        </property>
+	
+	  <property name="data_invio_remind" type="java.sql.Date">
+            <column name="data_invio_remind" />
+        </property>
+	<property name="email_referenti" type="java.lang.String">
+            <column name="email_referenti" />
+        </property>
+	
+	</class>
+</hibernate-mapping>

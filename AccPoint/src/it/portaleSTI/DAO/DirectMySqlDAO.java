@@ -39,6 +39,10 @@ import it.portaleSTI.DTO.ColonnaDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ControlloOreDTO;
+import it.portaleSTI.DTO.DevContrattoDTO;
+import it.portaleSTI.DTO.DevDeviceDTO;
+import it.portaleSTI.DTO.DevSoftwareDTO;
+import it.portaleSTI.DTO.DevTipoLicenzaDTO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
@@ -3699,6 +3703,120 @@ public static Map<String, String> getOrePrevisteTotali() throws Exception {
 	while(rs.next())
 	{
 		lista.put(rs.getString(2), rs.getString(1));
+		
+	}
+	
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+
+	return lista;
+}
+
+public static ArrayList<DevSoftwareDTO> getListaSoftwareFiltro(int id_company) throws Exception {
+	
+	ArrayList<DevSoftwareDTO> lista = new ArrayList<DevSoftwareDTO>();
+	
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	
+	try {
+		con=getConnection();
+
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+
+		String query = "SELECT " + 
+				"    d.ragione_sociale AS company, " + 
+				"    e.nome AS nome_utente, " + 
+				"    e.cognome, " + 
+				"    b.*, " + 
+				"    a.id AS id_device, " + 
+				"    a.codice_interno, " + 
+				"    a.denominazione,  " + 
+				"    f.descrizione AS descr_tipo_licenza, "+
+				"    g.id AS id_contratto, "+
+				"    g.fornitore AS fornitore_contratto, "+
+				"    g.data_scadenza AS data_scadenza_contratto "+
+				"FROM dev_software b " + 
+				"LEFT JOIN dev_device_software c ON b.id = c.id_software " + 
+				"LEFT JOIN dev_device a ON c.id_device = a.id " + 
+				"LEFT JOIN docum_fornitore d ON a.id_company_util = d.id " + 
+				"LEFT JOIN docum_dipendente_forn e ON a.id_docum_dipendente_forn = e.id "+
+				"LEFT JOIN dev_tipo_licenza f on b.id_tipo_licenza = f.id "+
+				"LEFT JOIN dev_contratto g on b.id_contratto = g.id "+
+				"WHERE b.disabilitato = 0";
+	
+	if(id_company != 0) {
+		query += " AND a.id_company_util = "+id_company;
+	}
+	
+	pst=con.prepareStatement(query);
+	
+
+	rs=pst.executeQuery();
+	
+	DevSoftwareDTO software = null;
+	
+	while(rs.next())
+	{
+		software = new DevSoftwareDTO();
+		
+		software.setId(rs.getInt("Id"));
+		software.setNome(rs.getString("nome"));
+		software.setProduttore(rs.getString("produttore"));
+		software.setVersione(rs.getString("versione"));
+		software.setData_acquisto(rs.getDate("data_acquisto"));
+		software.setData_scadenza(rs.getDate("data_scadenza"));
+		software.setEmail_responsabile(rs.getString("email_responsabile"));
+		software.setObsoleto(rs.getString("obsoleto"));
+		software.setDisabilitato(rs.getInt("disabilitato"));
+		Integer tipo_licenza = rs.getInt("id_tipo_licenza");
+		if(tipo_licenza!=null && tipo_licenza!=0) {
+			software.setTipo_licenza(new DevTipoLicenzaDTO(tipo_licenza, rs.getString("descr_tipo_licenza")));	
+		}
+		if(rs.getString("nome_utente")!=null) {
+			software.setUtente(rs.getString("nome_utente")+ " "+ rs.getString("cognome"));
+		}else {
+			software.setUtente(null);
+		}
+		
+		software.setCompany(rs.getString("company"));
+		
+		Integer id_device = rs.getInt("id_device");
+		
+		if(id_device!=null && id_device!=0) {			
+			DevDeviceDTO device = new DevDeviceDTO();
+			device.setId(id_device);
+			device.setDenominazione(rs.getString("denominazione"));
+			device.setCodice_interno(rs.getString("codice_interno"));
+		
+			software.setDevice(device);
+		}
+		
+		Integer id_contratto = rs.getInt("id_contratto");
+		
+		if(id_contratto!=null && id_contratto!=0) {			
+			DevContrattoDTO contratto = new DevContrattoDTO();
+			contratto.setId(id_contratto);
+			contratto.setData_scadenza(rs.getDate("data_scadenza_contratto"));
+			contratto.setFornitore(rs.getString("fornitore_contratto"));
+		
+			software.setContratto(contratto);;
+		}
+		
+
+		lista.add(software);
+
 		
 	}
 	

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -33,10 +34,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-
+import it.portaleSTI.DAO.GestioneDeviceDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.DevAllegatiDeviceDTO;
 import it.portaleSTI.DTO.DevAllegatiSoftwareDTO;
+import it.portaleSTI.DTO.DevContrattoDTO;
 import it.portaleSTI.DTO.DevDeviceDTO;
 import it.portaleSTI.DTO.DevDeviceMonitorDTO;
 import it.portaleSTI.DTO.DevDeviceSoftwareDTO;
@@ -50,6 +52,7 @@ import it.portaleSTI.DTO.DevStatoValidazioneDTO;
 import it.portaleSTI.DTO.DevTestoEmailDTO;
 import it.portaleSTI.DTO.DevTipoDeviceDTO;
 import it.portaleSTI.DTO.DevTipoEventoDTO;
+import it.portaleSTI.DTO.DevTipoLicenzaDTO;
 import it.portaleSTI.DTO.DevTipoProceduraDTO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
@@ -795,9 +798,11 @@ public class GestioneDevice extends HttpServlet {
 				
 				ArrayList<DevSoftwareDTO> lista_software = GestioneDeviceBO.getListaSoftware(session);
 				ArrayList<DocumFornitoreDTO> lista_company = GestioneDocumentaleBO.getListaDocumFornitori(session);
+				ArrayList<DevTipoLicenzaDTO> lista_tipi_licenze = GestioneDeviceBO.getListaTipiLicenze(session);
 				
 				request.getSession().setAttribute("lista_software", lista_software);
 				request.getSession().setAttribute("lista_company", lista_company);
+				request.getSession().setAttribute("lista_tipi_licenze", lista_tipi_licenze);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSoftware.jsp");
 		     	dispatcher.forward(request,response);
@@ -858,6 +863,10 @@ public class GestioneDevice extends HttpServlet {
 				String data_validazione = ret.get("data_validazione");
 				String autorizzato = ret.get("autorizzato");
 				String versione = ret.get("versione");
+				String data_acquisto = ret.get("data_acquisto");
+				String data_scadenza = ret.get("data_scadenza");
+				String tipo_licenza = ret.get("tipo_licenza");
+				String email_responsabile = ret.get("email_referenti");
 
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -865,6 +874,23 @@ public class GestioneDevice extends HttpServlet {
 				software.setNome(nome);
 				software.setProduttore(produttore);
 				software.setVersione(versione);
+				
+				if(data_acquisto!=null && !data_acquisto.equals("")) {
+					software.setData_acquisto(df.parse(data_acquisto));
+				}
+				if(data_scadenza!=null && !data_scadenza.equals("")) {
+					Date dataScadenza = df.parse(data_scadenza);
+					software.setData_scadenza(dataScadenza);
+					Calendar c = Calendar.getInstance();
+					c.setTime(dataScadenza);
+					c.add(Calendar.DAY_OF_YEAR, -60);
+					software.setData_invio_remind(c.getTime());					
+				}
+				if(tipo_licenza!=null) {
+					software.setTipo_licenza(new DevTipoLicenzaDTO(Integer.parseInt(tipo_licenza),""));
+				}
+				software.setEmail_responsabile(email_responsabile);				
+				
 				session.save(software);				
 				
 				myObj = new JsonObject();
@@ -909,6 +935,10 @@ public class GestioneDevice extends HttpServlet {
 				String produttore = ret.get("produttore_mod");
 				String autorizzato = ret.get("autorizzato_mod");
 				String versione = ret.get("versione_mod");
+				String data_acquisto = ret.get("data_acquisto_mod");
+				String data_scadenza = ret.get("data_scadenza_mod");
+				String tipo_licenza = ret.get("tipo_licenza_mod");
+				String email_responsabile = ret.get("email_referenti_mod");
 
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -917,7 +947,22 @@ public class GestioneDevice extends HttpServlet {
 				software.setProduttore(produttore);
 				
 				software.setVersione(versione);
-				
+				if(data_acquisto!=null && !data_acquisto.equals("")) {
+					software.setData_acquisto(df.parse(data_acquisto));
+				}
+				if(data_scadenza!=null && !data_scadenza.equals("")) {
+					Date dataScadenza = df.parse(data_scadenza);
+					software.setData_scadenza(dataScadenza);
+					Calendar c = Calendar.getInstance();
+					c.setTime(dataScadenza);
+					c.add(Calendar.DAY_OF_YEAR, -60);
+					software.setData_invio_remind(c.getTime());
+					
+				}
+				if(tipo_licenza!=null && !tipo_licenza.equals("")) {
+					software.setTipo_licenza(new DevTipoLicenzaDTO(Integer.parseInt(tipo_licenza),""));
+				}
+				software.setEmail_responsabile(email_responsabile);
 				
 				session.update(software);	
 				
@@ -1143,13 +1188,25 @@ public class GestioneDevice extends HttpServlet {
 				ajax = true;
 				
 				String id_device = request.getParameter("id_device");
+				String id_contratto = request.getParameter("id_contratto");
 				
-				ArrayList<DevDeviceSoftwareDTO> lista_device_software = GestioneDeviceBO.getListaDeviceSoftware(Integer.parseInt(id_device), session);
 				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 				
 				
 				myObj = new JsonObject();
-				myObj.add("lista_software_associati", g.toJsonTree(lista_device_software));
+				
+			
+				if(id_device!=null) {
+					ArrayList<DevDeviceSoftwareDTO>lista_device_software = GestioneDeviceBO.getListaDeviceSoftware(Integer.parseInt(id_device), session);	
+					myObj.add("lista_software_associati", g.toJsonTree(lista_device_software));
+				}else {
+					ArrayList<DevSoftwareDTO>lista_software_associati = GestioneDeviceBO.getListaContrattoSoftware(Integer.parseInt(id_contratto), session);
+					
+					myObj.add("lista_software_associati", g.toJsonTree(lista_software_associati));
+				}
+				
+				
+				
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
 				out.print(myObj);	
@@ -1161,15 +1218,30 @@ public class GestioneDevice extends HttpServlet {
 				ajax = true;
 				
 				String id_device = request.getParameter("id_device");
+				String id_contratto = request.getParameter("id_contratto");
 				
-				ArrayList<DevSoftwareDTO> lista_software = GestioneDeviceBO.getListaSoftware(session);
-				ArrayList<DevDeviceSoftwareDTO> lista_device_software = GestioneDeviceBO.getListaDeviceSoftware(Integer.parseInt(id_device), session);
+				ArrayList<DevSoftwareDTO> lista_software = GestioneDeviceDAO.getListaSoftwareCount(session);
+				ArrayList<DevDeviceSoftwareDTO> lista_device_software = null;
+				if(id_device!=null) {
+					lista_device_software = GestioneDeviceBO.getListaDeviceSoftware(Integer.parseInt(id_device), session);	
+					
+				}
+				ArrayList<DevSoftwareDTO> lista_software_contratto = null;
+				if(id_contratto!=null){
+					lista_software_contratto =  GestioneDeviceBO.getListaContrattoSoftware(Integer.parseInt(id_contratto), session);
+					
+				}
 				
 				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 				
 				
 				myObj = new JsonObject();
-				myObj.add("lista_software_associati", g.toJsonTree(lista_device_software));
+				if(id_contratto!=null) {
+					myObj.add("lista_software_associati", g.toJsonTree(lista_software_contratto));
+				}else {
+					myObj.add("lista_software_associati", g.toJsonTree(lista_device_software));	
+				}
+				
 				myObj.add("lista_software", g.toJsonTree(lista_software));
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
@@ -1258,16 +1330,25 @@ public class GestioneDevice extends HttpServlet {
 			else if(action.equals("elimina_software")) {
 				ajax = true;
 				
-				String id_software = request.getParameter("id_software");				
+				String id_software = request.getParameter("id_software");
+				String stato = request.getParameter("stato");		
+				myObj = new JsonObject();
 				
 				DevSoftwareDTO software = GestioneDeviceBO.getSoftwareFromID(Integer.parseInt(id_software), session);
 				
-				software.setDisabilitato(1);
-								
-				myObj = new JsonObject();
+				if(stato!=null && stato.equals("0")) {
+					software.setDisabilitato(0);
+					myObj.addProperty("messaggio", "Completato con successo!");
+				}else {
+					software.setDisabilitato(1);	
+					myObj.addProperty("messaggio", "Software eliminato con successo!");
+				}
+				
+											
+				
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Software eliminato con successo!");
+				
 				out.print(myObj);	
 				
 			}
@@ -1806,11 +1887,293 @@ public class GestioneDevice extends HttpServlet {
 				}
 				
 				
+				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Operazione completata con successo!");
 				out.print(myObj);	
+			}
+			
+			
+			
+			else if(action.equals("ricerca_software")) {
+				
+				
+				ArrayList<DocumFornitoreDTO> lista_company = GestioneDocumentaleBO.getListaDocumFornitori(session);
+				ArrayList<DocumDipendenteFornDTO> lista_dipendenti = GestioneDocumentaleBO.getListaDipendenti(0, 0, session);
+				request.getSession().setAttribute("lista_company", lista_company);
+				request.getSession().setAttribute("lista_dipendenti", lista_dipendenti);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/ricercaSoftware.jsp");
+		     	dispatcher.forward(request,response);
+				
+				
+				
+			}
+			else if(action.equals("ricerca_software_filtro")) {
+				
+				String tipo_ricerca = request.getParameter("tipo_ricerca");
+				String dipendente = request.getParameter("utente");
+				String id_company = request.getParameter("company");
+				
+
+				
+				ArrayList<DevSoftwareDTO> lista_software = GestioneDeviceBO.getListaSoftwareFiltro(Integer.parseInt(id_company));
+				
+				
+				request.getSession().setAttribute("lista_software", lista_software);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/ricercaSoftwareTabella.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("lista_contratti")) {
+				
+				ArrayList<DevContrattoDTO> lista_contratto = GestioneDeviceBO.getListaContratto(session);
+				ArrayList<DevSoftwareDTO> lista_software = GestioneDeviceBO.getListaSoftware(session);
+				ArrayList<DocumFornitoreDTO> lista_company = GestioneDocumentaleBO.getListaDocumFornitori(session);
+				ArrayList<DevTipoLicenzaDTO> lista_tipi_licenze = GestioneDeviceBO.getListaTipiLicenze(session);
+				
+				request.getSession().setAttribute("lista_contratto", lista_contratto);
+				request.getSession().setAttribute("lista_software", lista_software);
+				request.getSession().setAttribute("lista_company", lista_company);
+				request.getSession().setAttribute("lista_tipi_licenze", lista_tipi_licenze);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaContrattiSoftware.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("nuovo_contratto")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	
+	            }
+		
+		        
+				String fornitore = ret.get("fornitore");
+				String data_inizio = ret.get("data_inizio");			
+				String data_scadenza = ret.get("data_scadenza");
+				String permanente = ret.get("permanente");
+				String id_software_associazione = ret.get("id_software_associazione");
+				String n_licenze = ret.get("n_licenze");
+				String email_referenti = ret.get("email_referenti");
+				
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				
+				DevContrattoDTO contratto = new DevContrattoDTO();
+				
+				contratto.setFornitore(fornitore);
+				contratto.setData_inizio(df.parse(data_inizio));
+				contratto.setEmail_referenti(email_referenti);
+				
+				if(data_scadenza!=null && !data_scadenza.equals("")) {
+					Date dataScadenza = df.parse(data_scadenza);
+					contratto.setData_scadenza(dataScadenza);	
+					Calendar c = Calendar.getInstance();
+					c.setTime(dataScadenza);
+					c.add(Calendar.DAY_OF_YEAR, -30);
+					contratto.setData_invio_remind(c.getTime());					
+				}else {
+					contratto.setData_scadenza(null);
+				}
+				
+				contratto.setPermanente(permanente);
+				if(n_licenze!=null) {
+					contratto.setN_licenze(Integer.parseInt(n_licenze));
+				}
+				
+				session.save(contratto);
+				
+				for (int i = 0; i < id_software_associazione.split(";").length; i++) {
+					DevSoftwareDTO s = GestioneDeviceBO.getSoftwareFromID(Integer.parseInt(id_software_associazione.split(";")[i]), session);
+					if(s.getContratto()!=null) {
+						DevSoftwareDTO new_software = new DevSoftwareDTO();
+						new_software.setCompany(s.getCompany());
+						new_software.setContratto(contratto);
+						new_software.setData_acquisto(s.getData_acquisto());
+						new_software.setData_scadenza(contratto.getData_scadenza());
+						if(contratto.getData_scadenza()!=null && contratto.getData_invio_remind()!=null) {
+							new_software.setData_invio_remind(null);
+						}
+						new_software.setEmail_responsabile(s.getEmail_responsabile());
+						new_software.setNome(s.getNome());
+						new_software.setProduttore(s.getProduttore());
+						new_software.setTipo_licenza(s.getTipo_licenza());
+						new_software.setVersione(s.getVersione());
+												
+						session.save(new_software);
+						
+
+						
+					}else {
+						if(contratto.getData_scadenza()!=null) {
+							s.setData_scadenza(contratto.getData_scadenza());
+						}
+						s.setContratto(contratto);
+							
+						session.update(s);
+					}
+					
+				}
+				
+				
+								
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Contratto salvato con successo!");
+				out.print(myObj);
+				
+				
+			}
+			
+			else if(action.equals("modifica_contratto")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	
+	            }
+		
+		        String id_contratto = ret.get("id_contratto");
+				String fornitore = ret.get("fornitore_mod");
+				String data_inizio = ret.get("data_inizio_mod");			
+				String data_scadenza = ret.get("data_scadenza_mod");
+				String permanente = ret.get("permanente_mod");
+				String id_software_associazione = ret.get("id_software_associazione_mod");
+				String n_licenze = ret.get("n_licenze_mod");
+				String email_referenti = ret.get("email_referenti_mod");
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				
+				DevContrattoDTO contratto = GestioneDeviceBO.getContrattoFromID(Integer.parseInt(id_contratto),session);
+				
+				contratto.setFornitore(fornitore);
+				contratto.setData_inizio(df.parse(data_inizio));
+			
+				contratto.setPermanente(permanente);
+				contratto.setEmail_referenti(email_referenti);
+				if(n_licenze!=null) {
+					contratto.setN_licenze(Integer.parseInt(n_licenze));
+				}
+				
+				if(data_scadenza!=null && !data_scadenza.equals("")) {
+					Date dataScadenza = df.parse(data_scadenza);
+					contratto.setData_scadenza(dataScadenza);	
+					Calendar c = Calendar.getInstance();
+					c.setTime(dataScadenza);
+					c.add(Calendar.DAY_OF_YEAR, -30);
+					contratto.setData_invio_remind(c.getTime());					
+				}else {
+					contratto.setData_scadenza(null);
+				}
+				
+				session.update(contratto);
+				
+				ArrayList<Integer>lista_id_associati = new ArrayList<Integer>();
+				ArrayList<DevSoftwareDTO> lista_softwareAssociati = GestioneDeviceBO.getListaContrattoSoftware(contratto.getId(), session);
+				for (DevSoftwareDTO devSoftwareDTO : lista_softwareAssociati) {
+					lista_id_associati.add(devSoftwareDTO.getId());
+				}
+				
+				ArrayList<Integer> lista_id_da_associare = new ArrayList<Integer>();
+				
+				for (int i = 0; i < id_software_associazione.split(";").length; i++) {
+					DevSoftwareDTO s = GestioneDeviceBO.getSoftwareFromID(Integer.parseInt(id_software_associazione.split(";")[i]), session);
+					lista_id_da_associare.add(Integer.parseInt(id_software_associazione.split(";")[i]));
+					if(s.getContratto()!=null && s.getContratto().getId()!=contratto.getId()) {
+						DevSoftwareDTO new_software = new DevSoftwareDTO();
+						new_software.setCompany(s.getCompany());
+						new_software.setContratto(contratto);
+						new_software.setData_acquisto(s.getData_acquisto());
+						new_software.setData_scadenza(contratto.getData_scadenza());
+						if(contratto.getData_scadenza()!=null && contratto.getData_invio_remind()!=null) {
+							new_software.setData_invio_remind(null);
+						}
+						new_software.setEmail_responsabile(s.getEmail_responsabile());
+						new_software.setNome(s.getNome());
+						new_software.setProduttore(s.getProduttore());
+						new_software.setTipo_licenza(s.getTipo_licenza());
+						new_software.setVersione(s.getVersione());
+												
+						session.save(new_software);
+						
+
+					}else {
+						if(contratto.getData_scadenza()!=null) {
+							s.setData_scadenza(contratto.getData_scadenza());
+						}
+						s.setContratto(contratto);
+						session.update(s);
+					}
+				}
+				
+				for (int i = 0; i < lista_id_associati.size(); i++) {
+					if(!lista_id_da_associare.contains(lista_id_associati.get(i))) {
+						DevSoftwareDTO s = GestioneDeviceBO.getSoftwareFromID(lista_id_associati.get(i), session);
+						s.setContratto(null);
+						session.update(s);
+					}
+				}
+								
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Contratto salvato con successo!");
+				out.print(myObj);
+				
+				
+			}
+			
+			
+			else if(action.equals("lista_sw_archiviati")) {
+				
+				ArrayList<DevSoftwareDTO> lista_software = GestioneDeviceBO.getListaSoftwareArchiviati(session);
+				ArrayList<DocumFornitoreDTO> lista_company = GestioneDocumentaleBO.getListaDocumFornitori(session);
+				ArrayList<DevTipoLicenzaDTO> lista_tipi_licenze = GestioneDeviceBO.getListaTipiLicenze(session);
+				
+				request.getSession().setAttribute("lista_software", lista_software);
+				request.getSession().setAttribute("lista_company", lista_company);
+				request.getSession().setAttribute("lista_tipi_licenze", lista_tipi_licenze);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSoftwareArchiviati.jsp");
+		     	dispatcher.forward(request,response);
 			}
 			
 			
@@ -1893,3 +2256,4 @@ private void downloadFile(String path,  ServletOutputStream outp) throws Excepti
  }
 	
 }
+

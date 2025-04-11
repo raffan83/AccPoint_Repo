@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.mail.EmailException;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -28,14 +29,16 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
-
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneDeviceDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.DevAllegatiDeviceDTO;
 import it.portaleSTI.DTO.DevAllegatiSoftwareDTO;
+import it.portaleSTI.DTO.DevContrattoDTO;
 import it.portaleSTI.DTO.DevDeviceDTO;
 import it.portaleSTI.DTO.DevDeviceMonitorDTO;
 import it.portaleSTI.DTO.DevDeviceSoftwareDTO;
@@ -49,11 +52,18 @@ import it.portaleSTI.DTO.DevStatoValidazioneDTO;
 import it.portaleSTI.DTO.DevTestoEmailDTO;
 import it.portaleSTI.DTO.DevTipoDeviceDTO;
 import it.portaleSTI.DTO.DevTipoEventoDTO;
+import it.portaleSTI.DTO.DevTipoLicenzaDTO;
 import it.portaleSTI.DTO.DevTipoProceduraDTO;
+import it.portaleSTI.DTO.ForMembriGruppoDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
 
 public class GestioneDeviceBO {
 
+	public static ArrayList<DevSoftwareDTO> lista_software_errori;
+	public static ArrayList<DevContrattoDTO> lista_contratti_errori;
+	
+	
 	public static ArrayList<DevTipoDeviceDTO> getListaTipiDevice(Session session) {
 		
 		return GestioneDeviceDAO.getListaTipiDevice(session);
@@ -546,5 +556,129 @@ public static void sendEmailAttivitaScaduteSollecito() throws ParseException, Ex
 	public static ArrayList<DevDeviceDTO> getListaDeviceManScad(int id_company, Session session) throws ParseException, Exception {
 		// TODO Auto-generated method stub
 		return GestioneDeviceDAO.getListaDeviceManScad(id_company, session);
+	}
+
+	public static ArrayList<DevTipoLicenzaDTO> getListaTipiLicenze(Session session) {
+		// TODO Auto-generated method stub
+		return GestioneDeviceDAO.getListaTipiLicenze(session);
+	}
+
+	public static ArrayList<DevSoftwareDTO> getListaSoftwareFiltro(int id_company) throws Exception {
+		// TODO Auto-generated method stub
+		return DirectMySqlDAO.getListaSoftwareFiltro(id_company);
+	}
+
+	public static void updateSoftwareObsoleti() {
+
+		GestioneDeviceDAO.updateSoftwareObsoleti();
+	}
+
+	public static void sendEmailScadenzaSoftware() throws Exception {
+
+		
+			
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+			Date today = new Date();
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+		//	cal.add(Calendar.DATE, 15);
+			Date nextDate = cal.getTime();
+			
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			
+			//ArrayList<DevRegistroAttivitaDTO> lista_scadenze = GestioneDeviceDAO.getListaScadenzeScheduler(df.format(nextDate), df.format(nextDate), 0,session);
+			ArrayList<DevSoftwareDTO> lista_scadenze_software = GestioneDeviceDAO.getListaScadenzeSoftware(df.format(today),session);
+			//ArrayList<DevContrattoDTO> lista_scadenze_contratti = GestioneDeviceDAO.getListaScadenzeContratto(df.format(today),session);
+			ArrayList<DevContrattoDTO> lista_scadenze_contratti = GestioneDeviceDAO.getListaRemindContratto(df.format(today),session);
+			
+			
+			lista_contratti_errori = new ArrayList<DevContrattoDTO>();
+			for (DevContrattoDTO c : lista_scadenze_contratti) {
+				
+				try {
+					
+					SendEmailBO.sendEmailScadenzaContratto(c);	
+				
+//					cal.setTime(today);
+//					cal.add(Calendar.DATE, 30);				
+//					software.setData_invio_remind(cal.getTime());
+//					session.update(software);
+				}catch (Exception e) {
+					e.printStackTrace();
+					lista_contratti_errori.add(c);
+					
+				}
+				
+			
+				
+			}
+			
+			
+			lista_software_errori = new ArrayList<DevSoftwareDTO>();
+			for (DevSoftwareDTO software : lista_scadenze_software) {
+				try {
+	
+					SendEmailBO.sendEmailScadenzaSoftware(software);	
+				
+					cal.setTime(today);
+					cal.add(Calendar.DATE, 30);				
+					software.setData_invio_remind(cal.getTime());
+					session.update(software);
+				}catch (Exception e) {
+					e.printStackTrace();
+					lista_software_errori.add(software);
+					
+				}
+				
+			}
+			session.getTransaction().commit();
+			session.close();
+			
+			if(lista_software_errori.size()>0) {
+				
+				String messaggio = "Non è stato possibile recapitare il remind di scadenza per i seguenti Software:<br><br>";
+				for (DevSoftwareDTO software : lista_software_errori) {
+					messaggio+= "ID: "+software.getId()+" Descrizione: "+software.getNome()+"<br>";	
+				}
+				
+			
+					Utility.sendEmail("antonio.dicivita@ncsnetwork.it","Errore invio Remind scadenza Software",messaggio);
+			}
+			
+		
+	}
+
+	public static ArrayList<DevContrattoDTO> getListaContratto(Session session) {
+		
+		return GestioneDeviceDAO.getListaContratto(session);
+	}
+
+	public static ArrayList<DevSoftwareDTO> getListaContrattoSoftware(int id_contratto, Session session) {
+		
+		return GestioneDeviceDAO.getListaContrattoSoftware(id_contratto, session);
+	}
+
+	public static DevContrattoDTO getContrattoFromID(int id_contratto, Session session) {
+		
+		return GestioneDeviceDAO.getContrattoFromId(id_contratto, session);
+	}
+
+	public static ArrayList<DevDeviceSoftwareDTO> getListaSoftwareDevice(int id, Session session) {
+		
+		return GestioneDeviceDAO.getListaSoftwareDevice(id, session);
+	}
+
+	public static void updateScadenzaContratti() throws HibernateException, ParseException {
+		
+		GestioneDeviceDAO.updateScadenzaContratti(); 
+	}
+
+	public static ArrayList<DevSoftwareDTO> getListaSoftwareArchiviati(Session session) {
+		
+		return GestioneDeviceDAO.getListaSoftwareArchiviati(session);
 	}
 }

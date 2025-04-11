@@ -23,7 +23,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Lista Software
+        Lista Software Archiviati
         <!-- <small></small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/"><i class="fa fa-dashboard"></i> Home</a>
@@ -36,7 +36,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista Software
+	 Lista Software Archiviati
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -46,14 +46,10 @@
 
 <div class="box-body">
 
+
 <div class="row">
 <div class="col-xs-12">
-
-<a class="btn btn-primary pull-left" onClick="$('#modalEsporta').modal()"><i class="fa fa-plus"></i> Esporta</a> 
-<a class="btn btn-primary pull-left" onClick="callAction('gestioneDevice.do?action=lista_sw_archiviati')" style="margin-left:5px">Software Archiviati</a> 
-<!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
-<a class="btn btn-primary pull-right" onClick="modalNuovoSoftware()"><i class="fa fa-plus"></i> Nuovo Software</a> 
-
+<a class="btn btn-primary pull-left" onClick="callAction('gestioneDevice.do?action=lista_software')" style="margin-left:5px">Software In Servizio</a>
 
 
 </div>
@@ -110,7 +106,7 @@
 	<td>
 
 	 <a class="btn btn-warning customTooltip" onClicK="modificaSoftware('${software.id}', '${utl:escapeJS(software.nome) }','${utl:escapeJS(software.produttore) }','${utl:escapeJS(software.versione) }','${software.data_acquisto }','${software.data_scadenza }','${software.tipo_licenza.id }', '${software.email_responsabile }')" title="Click per modificare il software"><i class="fa fa-edit"></i></a> 
-	  <a class="btn btn-danger customTooltip"onClicK="modalYesOrNo('${software.id}')" title="Click per eliminare il software"><i class="fa fa-trash"></i></a>
+	  <a class="btn btn-success customTooltip"onClicK="modalYesOrNo('${software.id}')" title="Click per rimettere in servizio il software"><i class="fa fa-check"></i></a>
 	  <a class="btn btn-primary customTooltip" onClick="modalAllegati('${software.id}')" title="Click per aprire gli allegati"><i class="fa fa-archive"></i></a>
 	</td>
 	</tr>
@@ -426,7 +422,7 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      Sei sicuro di voler eliminare il software?
+      Sei sicuro di voler rimettere in servizio il software?
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_elimina_software">
@@ -558,7 +554,7 @@ function eliminaSoftware(id_software){
 	
 	var dataObj = {};
 	dataObj.id_software = id_software;
-	dataObj.stato = "1";
+	dataObj.stato="0";
 	
 	callAjax(dataObj, "gestioneDevice.do?action=elimina_software");
 	

@@ -1,10 +1,9 @@
 package it.portaleSTI.DTO;
 
-public class AMSistemaDTO {
+public class DevTipoLicenzaDTO {
 
 	private int id;
 	private String descrizione;
-	
 	public int getId() {
 		return id;
 	}
@@ -17,6 +16,13 @@ public class AMSistemaDTO {
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
+
+	public DevTipoLicenzaDTO() {
+		super();
+	}
 	
-	
+	public DevTipoLicenzaDTO(int id, String descrizione) {
+		this.id = id;
+		this.descrizione = descrizione;
+	}
 }

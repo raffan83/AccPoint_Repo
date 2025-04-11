@@ -33,7 +33,9 @@ import org.apache.log4j.Logger;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
+import it.portaleSTI.DTO.DevContrattoDTO;
 import it.portaleSTI.DTO.DevRegistroAttivitaDTO;
+import it.portaleSTI.DTO.DevSoftwareDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.DpiDTO;
 import it.portaleSTI.DTO.ForConfInvioEmailDTO;
@@ -44,6 +46,7 @@ import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
 import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.GPDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.ItServizioItDTO;
 import it.portaleSTI.DTO.RilInterventoDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
@@ -1763,6 +1766,178 @@ email.addTo("antonio.dicivita@ncsnetwork.it");
 				  	 +messaggio+"</html>");
 		  
 	  email.send();
+}
+
+public static void sendEmailScadenzaSoftware(DevSoftwareDTO software) throws EmailException {
+	
+	
+	HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+email.getMailSession().getProperties().put("mail.debug", "true");
+email.getMailSession().getProperties().put("mail.smtp.port", "465");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+Date today = new Date();
+
+	  //email.addTo("giuseppe.gabriele@stisrl.com");
+	  //email.addTo("sara.massaro@stisrl.com");
+String nominativo = "";
+
+String[] to = software.getEmail_responsabile().split(";");
+
+
+for (String string : to) {
+	email.addTo(string);
+}
+	
+
+	  email.setFrom("calver@accpoint.it", "Calver");
+	  File image = new File(Costanti.PATH_FOLDER+"LoghiCompany\\logo_calver_v2.png");
+	  String cid = email.embed(image, "Calver logo");
+	 
+	  email.setSubject("Scadenza software ID: "+software.getId() +" - "+software.getNome());
+	  
+	  String scad = "in scadenza";
+	  if(today.equals(software.getData_scadenza())||today.after(software.getData_scadenza())) {
+		  scad = "scaduto";
+	  }
+	   
+	  String messaggio = "Si comunica che in data "+df.format(software.getData_scadenza()) +" è "+scad+" il seguente software:<br><br>"
+	  
+			  + software.getNome()+" (ID: "+software.getId()+").<br>"
+			  +"Si prega di provvedere all'eventuale rinnovo della licenza.<br><br>"
+			  ;
+
+  
+	  email.setHtmlMsg(nominativo+messaggio.replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;")
+				  
+			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
+
+
+	  email.send();
+	
+}
+
+public static void sendEmailRemindServizi(ItServizioItDTO servizio) throws Exception {
+	
+	HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+		email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+		email.getMailSession().getProperties().put("mail.debug", "true");
+		email.getMailSession().getProperties().put("mail.smtp.port", "465");
+		email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+		email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+		email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+		
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		Date today = new Date();
+		
+			  //email.addTo("giuseppe.gabriele@stisrl.com");
+			  //email.addTo("sara.massaro@stisrl.com");
+		String nominativo = "";
+		
+		String[] to = servizio.getEmail_referenti().split(";");
+		
+		
+		for (String string : to) {
+			email.addTo(string);
+		}
+	
+
+	  email.setFrom("calver@accpoint.it", "Calver");
+	  File image = new File(Costanti.PATH_FOLDER+"LoghiCompany\\logo_calver_v2.png");
+	  String cid = email.embed(image, "Calver logo");
+	 
+	  email.setSubject("Scadenza Servizio IT - ID: "+servizio.getId() +" - "+servizio.getDescrizione());
+	  
+	  String scad = "in scadenza";
+	  if(today.equals(servizio.getData_scadenza())||today.after(servizio.getData_scadenza())) {
+		  scad = "scaduto";
+	  }
+	   
+	  String messaggio = "Si comunica che in data "+df.format(servizio.getData_scadenza()) +" è "+scad+" il seguente servizio IT:<br><br> "
+	  
+			  + servizio.getDescrizione()+" (ID: "+servizio.getId()+").<br><br>"
+			  +"Si prega di provvedere all'eventuale rinnovo.<br><br>"
+			  ;
+
+
+	  email.setHtmlMsg(nominativo+messaggio.replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;")
+				  
+			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
+
+
+	  email.send();
+}
+
+public static void sendEmailScadenzaContratto(DevContrattoDTO c) throws EmailException {
+	
+	
+	HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+email.getMailSession().getProperties().put("mail.debug", "true");
+email.getMailSession().getProperties().put("mail.smtp.port", "465");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+Date today = new Date();
+
+	  //email.addTo("giuseppe.gabriele@stisrl.com");
+	  //email.addTo("sara.massaro@stisrl.com");
+String nominativo = "";
+
+String[] to = c.getEmail_referenti().split(";");
+
+
+for (String string : to) {
+	email.addTo(string);
+}
+	
+
+	  email.setFrom("calver@accpoint.it", "Calver");
+	  File image = new File(Costanti.PATH_FOLDER+"LoghiCompany\\logo_calver_v2.png");
+	  String cid = email.embed(image, "Calver logo");
+	 
+	  email.setSubject("Scadenza software ID: "+c.getId() +" - "+c.getFornitore());
+	  
+	  String scad = "in scadenza";
+	  if(today.equals(c.getData_scadenza())||today.after(c.getData_scadenza())) {
+		  scad = "scaduto";
+	  }
+	   
+	  String messaggio = "Si comunica che in data "+df.format(c.getData_scadenza()) +" è "+scad+" il seguente contratto:<br><br>"
+	  
+			  + c.getFornitore()+" (ID: "+c.getId()+").<br>"
+			  +"Si prega di provvedere all'eventuale rinnovo della licenza.<br><br>"
+			  ;
+
+
+	  email.setHtmlMsg(nominativo+messaggio.replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;")
+				  
+			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
+
+
+	  email.send();
+	
 }
 
 }

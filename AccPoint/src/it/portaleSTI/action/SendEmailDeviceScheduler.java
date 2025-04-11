@@ -6,6 +6,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import it.portaleSTI.bo.GestioneDeviceBO;
+import it.portaleSTI.bo.GestioneScadenzarioItBO;
 
 
 
@@ -17,8 +18,13 @@ public class SendEmailDeviceScheduler implements Job{
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 
 		try {
-			GestioneDeviceBO.sendEmailAttivitaScadute();
-			GestioneDeviceBO.sendEmailAttivitaScaduteSollecito();
+			GestioneDeviceBO.updateSoftwareObsoleti();
+			GestioneDeviceBO.updateScadenzaContratti();
+			GestioneDeviceBO.sendEmailScadenzaSoftware();
+			GestioneScadenzarioItBO.updateStatoServizi();
+			GestioneScadenzarioItBO.sendEmailRemindServizi();
+			//GestioneDeviceBO.sendEmailAttivitaScadute();
+			//GestioneDeviceBO.sendEmailAttivitaScaduteSollecito();
 			
 			
 			

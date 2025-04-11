@@ -26,6 +26,31 @@
        <property name="disabilitato" type="int">
             <column name="disabilitato" />
         </property>
+        
+        <property name="data_acquisto" type="java.sql.Date">
+            <column name="data_acquisto" />
+        </property>
+        <property name="data_scadenza" type="java.sql.Date">
+            <column name="data_scadenza" />
+        </property>
+        
+        <property name="obsoleto" type="java.lang.String">
+            <column name="obsoleto" />
+        </property>
+        
+         <many-to-one name="tipo_licenza" class="it.portaleSTI.DTO.DevTipoLicenzaDTO" fetch="join" lazy="false">
+            <column name="id_tipo_licenza" />
+        </many-to-one>
+        <property name="email_responsabile" type="java.lang.String">
+            <column name="email_responsabile" />
+        </property>
+        <property name="data_invio_remind" type="java.sql.Date">
+            <column name="data_invio_remind" />
+        </property>
+
+         <many-to-one name="contratto" class="it.portaleSTI.DTO.DevContrattoDTO" fetch="join" lazy="false">
+            <column name="id_contratto" />
+        </many-to-one>
 <!--         <set name="listaDevice" table="dev_device_software"
         	inverse="false" lazy="false" fetch="select" cascade="all" >
             <key>

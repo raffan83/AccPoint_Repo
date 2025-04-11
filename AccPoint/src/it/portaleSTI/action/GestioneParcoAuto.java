@@ -339,15 +339,11 @@ public class GestioneParcoAuto extends HttpServlet {
 				if(filenameCartaCircolazione!=null && !filenameCartaCircolazione.equals("")) {
 					saveFile(fileCartaCircolazione, veicolo.getId()+"\\CartaCircolazione\\", filenameCartaCircolazione);
 					veicolo.setCarta_circolazione(filenameCartaCircolazione);
-				}else {
-					veicolo.setCarta_circolazione(null);
 				}
 				
 				if(filenameImmagineVeicolo!=null && !filenameImmagineVeicolo.equals("")) {
 					saveFile(fileImmagineVeicolo, veicolo.getId()+"\\ImmagineVeicolo\\", filenameImmagineVeicolo);
 					veicolo.setImmagine_veicolo(filenameImmagineVeicolo);
-				}else {
-					veicolo.setImmagine_veicolo(null);
 				}
 								
 				myObj = new JsonObject();

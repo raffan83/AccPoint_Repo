@@ -499,8 +499,7 @@ $(document).ready(function() {
          fillTable("${anno}",'${filtro_tipo_pianificazioni}');
 	
 	
-
-	    
+  
 	    
 	    $('[data-toggle="tooltip"]').tooltip();
 
@@ -866,6 +865,8 @@ if(filtro!=3){
 		     	    
 			console.log("ciao")
 		    
+				
+	  
 			
 			
 			var today = "${today}"
@@ -942,15 +943,19 @@ if(filtro!=3){
 	  
 
 		 
-
-	  
-	  if(today!=null){
-		  scrollToColumn(parseInt(today)-3);
-		 
-          table.order([order, 'desc']).draw()
-	  }else{
-		  table.columns().draw();
-	  }
+		  var savedScrollLeft = localStorage.getItem('scrollLeftTablePianificazione');
+		    if (savedScrollLeft !== null) {
+		        $('#tabForPianificazione_wrapper .dataTables_scrollBody').scrollLeft(savedScrollLeft);
+		    }else{
+		    	  if(today!=null){
+		    		  scrollToColumn(parseInt(today)-3);
+		    		 
+		              table.order([order, 'desc']).draw()
+		    	  }else{
+		    		  table.columns().draw();
+		    	  }
+		    }
+	
 			
 		  
 
@@ -1026,6 +1031,12 @@ function filterTable() {
       });
   }
 
+
+
+window.addEventListener('beforeunload', function () {
+    var scrollLeft = $('#tabForPianificazione_wrapper .dataTables_scrollBody').scrollLeft();
+    localStorage.setItem('scrollLeftTablePianificazione', scrollLeft);
+});
 
 function scrollToColumn(columnIndex) {
     var tableWrapper = $('#tabForPianificazione_wrapper');

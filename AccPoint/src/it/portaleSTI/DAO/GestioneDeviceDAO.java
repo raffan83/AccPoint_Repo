@@ -3,8 +3,11 @@ package it.portaleSTI.DAO;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -12,6 +15,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DTO.DevAllegatiDeviceDTO;
 import it.portaleSTI.DTO.DevAllegatiSoftwareDTO;
+import it.portaleSTI.DTO.DevContrattoDTO;
 import it.portaleSTI.DTO.DevDeviceDTO;
 import it.portaleSTI.DTO.DevDeviceMonitorDTO;
 import it.portaleSTI.DTO.DevDeviceSoftwareDTO;
@@ -25,8 +29,10 @@ import it.portaleSTI.DTO.DevStatoValidazioneDTO;
 import it.portaleSTI.DTO.DevTestoEmailDTO;
 import it.portaleSTI.DTO.DevTipoDeviceDTO;
 import it.portaleSTI.DTO.DevTipoEventoDTO;
+import it.portaleSTI.DTO.DevTipoLicenzaDTO;
 import it.portaleSTI.DTO.DevTipoProceduraDTO;
 import it.portaleSTI.DTO.DpiDTO;
+import it.portaleSTI.bo.SendEmailBO;
 
 public class GestioneDeviceDAO {
 
@@ -104,6 +110,34 @@ public class GestioneDeviceDAO {
 		
 		return lista;
 	}
+	
+	public static ArrayList<DevSoftwareDTO> getListaSoftwareCount(Session session) {
+
+		ArrayList<DevSoftwareDTO> lista = new ArrayList<DevSoftwareDTO>();
+		
+		
+		//Query query = session.createQuery("select s.software, count(s.device) from DevDeviceSoftwareDTO s where s.software.disabilitato = 0 group by s.software");
+		
+		Query query = session.createQuery(
+			    "select s, " +
+			    "  (select count(*) " +
+			    "   from DevDeviceSoftwareDTO d " +
+			    "   where d.software = s) " +
+			    "from DevSoftwareDTO s " +
+			    "where s.disabilitato = 0"
+			);
+		
+		List<Object[]> result  =  query.list();
+		
+		for (Object[] row : result) {
+			DevSoftwareDTO software = (DevSoftwareDTO) row[0];
+			software.setN_device((Long) row[1]);
+			lista.add(software);
+		}
+		
+		return lista;
+	}
+	
 	
 	public static ArrayList<DevStatoValidazioneDTO> getListaStatiValidazione(Session session) {
 
@@ -319,6 +353,19 @@ public static ArrayList<DevDeviceSoftwareDTO> getListaDeviceSoftware(int id_devi
 	
 	Query query = session.createQuery("from DevDeviceSoftwareDTO where device.id =:_id_device and software.disabilitato = 0");
 	query.setParameter("_id_device", id_device);
+	
+	lista = (ArrayList<DevDeviceSoftwareDTO>) query.list();
+	
+		
+	return lista;
+}
+
+public static ArrayList<DevDeviceSoftwareDTO> getListaSoftwareDevice(int id_software, Session session) {
+	
+	ArrayList<DevDeviceSoftwareDTO> lista = null;
+	
+	Query query = session.createQuery("from DevDeviceSoftwareDTO where software.id =:_id_software");
+	query.setParameter("_id_software", id_software);
 	
 	lista = (ArrayList<DevDeviceSoftwareDTO>) query.list();
 	
@@ -600,5 +647,191 @@ public static ArrayList<DevDeviceDTO> getListaDeviceManScad(int id_company, Sess
 	
 	return lista;
 }
+
+public static ArrayList<DevTipoLicenzaDTO> getListaTipiLicenze(Session session) {
+ArrayList<DevTipoLicenzaDTO> lista = null;
+	
+	Query query = session.createQuery("from DevTipoLicenzaDTO");	
+	
+	
+	lista = (ArrayList<DevTipoLicenzaDTO>) query.list();
+	
+	return lista;
+}
+
+public static ArrayList<DevSoftwareDTO> getListSoftwareUtente(int id_utente, Session session) {
+
+	ArrayList<DevSoftwareDTO> lista = null;
+	
+	Query query = session.createQuery("select distinct a.software from DevDeviceSoftwareDTO as a where a.device.dipendente.id = :_id_utente");
+	query.setParameter("_id_utente", id_utente);
+	
+	lista = (ArrayList<DevSoftwareDTO>) query.list();
+	
+	return lista;
+}
+
+public static void updateSoftwareObsoleti() {
+	
+	Session session=SessionFacotryDAO.get().openSession();
+	session.beginTransaction();
+	
+	  LocalDate today = LocalDate.now();
+      java.sql.Date sqlToday = java.sql.Date.valueOf(today);
+	
+	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	ArrayList<DevSoftwareDTO> lista_scadenze = null;
+
+	Query query = session.createQuery("from DevSoftwareDTO where data_scadenza <= :_date");
+	query.setParameter("_date", sqlToday);
+	
+	lista_scadenze = (ArrayList<DevSoftwareDTO>) query.list();
+	for (DevSoftwareDTO software : lista_scadenze) {
+		software.setObsoleto("S");
+		session.update(software);
+	}
+	
+	
+
+	session.getTransaction().commit();
+	session.close();
+	
+}
+
+public static ArrayList<DevSoftwareDTO> getListaScadenzeSoftware(String date, Session session) throws HibernateException, ParseException {
+	
+ArrayList<DevSoftwareDTO> lista = null;
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+	
+	String str = "from DevSoftwareDTO as a where data_invio_remind = :_date and disabilitato = 0";
+
+	
+	Query query = session.createQuery(str);
+	query.setParameter("_date", sdf.parse(date));
+
+
+	lista = (ArrayList<DevSoftwareDTO>) query.list();
+	
+	return lista;
+}
+
+public static ArrayList<DevContrattoDTO> getListaContratto(Session session) {
+	
+	ArrayList<DevContrattoDTO> lista = null;
+	
+
+	String str = "from DevContrattoDTO  where  disabilitato = 0";
+
+	
+	Query query = session.createQuery(str);
+
+
+	lista = (ArrayList<DevContrattoDTO>) query.list();
+	
+	return lista;
+}
+
+
+public static DevContrattoDTO getContrattoFromId(int id, Session session) {
+	
+	ArrayList<DevContrattoDTO> lista = null;
+	DevContrattoDTO result = null;
+
+	String str = "from DevContrattoDTO  where  id =:_id";
+
+	
+	Query query = session.createQuery(str);
+	query.setParameter("_id", id);
+
+
+	lista = (ArrayList<DevContrattoDTO>) query.list();
+	
+	if(lista.size()>0) {
+		result = lista.get(0);
+	}
+	return result;
+}
+
+public static ArrayList<DevSoftwareDTO> getListaContrattoSoftware(int id_contratto, Session session) {
+	ArrayList<DevSoftwareDTO> lista = null;	
+
+
+	String str = "from DevSoftwareDTO  where  contratto.id =:_id and disabilitato = 0";
+
+	
+	Query query = session.createQuery(str);
+	query.setParameter("_id", id_contratto);
+
+
+	lista = (ArrayList<DevSoftwareDTO>) query.list();
+	
+
+	return lista;
+}
+
+public static void updateScadenzaContratti() throws HibernateException, ParseException {
+
+
+	Session session=SessionFacotryDAO.get().openSession();
+	session.beginTransaction();
+	
+	  LocalDate today = LocalDate.now();
+      java.sql.Date sqlToday = java.sql.Date.valueOf(today);
+	
+	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	ArrayList<DevContrattoDTO> lista_scadenze = null;
+
+	Query query = session.createQuery("from DevContrattoDTO where data_scadenza <= :_date");
+	query.setParameter("_date", sqlToday);
+	
+	lista_scadenze = (ArrayList<DevContrattoDTO>) query.list();
+	for (DevContrattoDTO c : lista_scadenze) {
+		c.setDisabilitato(1);
+		session.update(c);
+		ArrayList<DevSoftwareDTO> lista_software_contratto = GestioneDeviceDAO.getListaContrattoSoftware(c.getId(), session);
+		for (DevSoftwareDTO s : lista_software_contratto) {
+			s.setDisabilitato(1);
+			session.update(s);
+		}
+	}
+
+	session.getTransaction().commit();
+	session.close();
+	
+	
+}
+
+public static ArrayList<DevContrattoDTO> getListaRemindContratto(String date, Session session) throws HibernateException, ParseException {
+
+ArrayList<DevContrattoDTO> lista = null;
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+	
+	String str = "from DevContrattoDTO where data_invio_remind = :_date and disabilitato = 0";
+
+	
+	Query query = session.createQuery(str);
+	query.setParameter("_date", sdf.parse(date));
+
+
+	lista = (ArrayList<DevContrattoDTO>) query.list();
+	
+	return lista;
+}
+
+public static ArrayList<DevSoftwareDTO> getListaSoftwareArchiviati(Session session) {
+	
+	ArrayList<DevSoftwareDTO> lista = null;
+	
+	Query query = session.createQuery("from DevSoftwareDTO where disabilitato = 1");
+	
+	lista = (ArrayList<DevSoftwareDTO>) query.list();
+	
+	return lista;
+}
+
 
 }

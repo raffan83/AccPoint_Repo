@@ -911,6 +911,7 @@
 <th>ID</th>
 <th>Nome</th>
 <th>Produttore</th>
+<th>Dispositivi Associati</th>
 <th>Stato validazione</th>
 <th>Data validazione</th>
 <th>Product key</th>
@@ -1714,6 +1715,7 @@ function associaSoftware(){
 		var date_validazioni = "";
 		var product_key = "";
 		var autorizzazioni = "";
+		var dev_associati = "";
  		 for(i=0; i< dataSelected.length; i++){
 			dataSelected[i];
 			
@@ -1734,7 +1736,7 @@ function associaSoftware(){
 						
 			autorizzazioni = autorizzazioni +dataSelected[i].autorizzazioni+";;";
 			
-			
+						
 		}  
 		
 		console.log(selezionati);		
@@ -1766,19 +1768,19 @@ function controllaAssociati(table, lista_software_associati){
 	 	
 	 	
 	 	if(lista_software_associati[i].stato_validazione!=null){
-	 	    oTable.fnUpdate(lista_software_associati[i].stato_validazione.descrizione, index, 5 );
+	 	    oTable.fnUpdate(lista_software_associati[i].stato_validazione.descrizione, index, 6 );
 	 	}
 	 	
 	 	if(lista_software_associati[i].data_validazione!=null){
-	 		oTable.fnUpdate(lista_software_associati[i].data_validazione , index, 6 );
+	 		oTable.fnUpdate(lista_software_associati[i].data_validazione , index, 7 );
 	 	}
 	 	
 	 	if(lista_software_associati[i].product_key!=null){
-	 		oTable.fnUpdate(lista_software_associati[i].product_key , index, 7 );
+	 		oTable.fnUpdate(lista_software_associati[i].product_key , index, 8 );
 	 	}
 	 	
 	 	if(lista_software_associati[i].autorizzato!=null){
-	 		oTable.fnUpdate(lista_software_associati[i].autorizzato , index, 8 );
+	 		oTable.fnUpdate(lista_software_associati[i].autorizzato , index, 9 );
 	 	} 
 	 	
 	 	table.row( "#row_sw_"+ val, { page:   'all'}).select();
@@ -1813,11 +1815,19 @@ function modalSoftware(id_device){
   		  dati.id = lista_software[i].id; 
   		  dati.nome = lista_software[i].nome;
   		  dati.produttore = lista_software[i].produttore;
+  		if(lista_software[i].contratto!=null){
+  			dati.dev_associati = lista_software[i].n_device +"/"+lista_software[i].contratto.n_licenze;
+  		 }else{
+  			dati.dev_associati = '';
+  		 }
   		 dati.stato = '';
   		 dati.data_validazione ='';
   		 dati.product_key = '';
   		 dati.autorizzazioni = '';
   		 dati.versione = lista_software[i].versione;
+  		 
+  		 
+  		
   		  dati.validazione = '<td><a class="btn btn-primary customTooltip" title="Aggiungi validazione" onClick="modalValidazione('+lista_software[i].id+')"><i class="fa fa-plus">Validazione</i></a></td>'
   		t_data.push(dati);
   	  }
@@ -2678,6 +2688,28 @@ $(document).ready(function() {
       	style:    'multi-shift',
       	selector: 'td:nth-child(2)'
   	},
+  	rowCallback: function(row, data, index) {
+  	    const val = data.dev_associati;
+
+  	    let selezionabile = false;
+
+  	    if (!val || val.trim() === '') {
+  	        selezionabile = true;
+  	    } else {
+  	        const parts = val.split('/');
+  	        if (parts.length === 2) {
+  	            const num = parseInt(parts[0]);
+  	            const den = parseInt(parts[1]);
+  	            if (num < den) selezionabile = true;
+  	        }
+  	    }
+
+  	    if (!selezionabile ) {
+  	        $(row).addClass('non-selezionabile');
+  	    } else {
+  	        $(row).removeClass('non-selezionabile');
+  	    }
+  	},
 	  ordering: false,
 		  columns : [
 			  {"data" : "empty"},  
@@ -2685,7 +2717,9 @@ $(document).ready(function() {
 			  {"data" : "id"},
 	    	  {"data" : "nome"},
 	    	  {"data" : "produttore"},
+	    	  {"data" : "dev_associati"},
 	    	  {"data" : "stato"},
+	    	 
 	    	  {"data" : "data_validazione"},
 	    	  {"data" : "product_key"},
 	    	  {"data" : "autorizzazioni"},
@@ -2714,6 +2748,15 @@ $(document).ready(function() {
 	  
     });
 
+
+
+$('#tabSoftwareTot tbody').on('click', 'tr', function(e) {
+    const row = $(this);
+    if (row.hasClass('non-selezionabile')&& !row.hasClass('selected')) {
+        e.stopImmediatePropagation(); // blocca la selezione
+        
+    }
+});
 previouslySelected = []
     $('#label_config').on('change', function(e, params){
     	

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-feb-2017 15.54.27 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.ItServizioItDTO" table="it_servizio_it">
+       
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        
+         <many-to-one name="tipo_servizio" class="it.portaleSTI.DTO.ItTipoServizioDTO" fetch="join" lazy="false" cascade="save-update">
+            <column name="id_tipo_servizio" />
+        </many-to-one>
+        
+         <many-to-one name="tipo_rinnovo" class="it.portaleSTI.DTO.ItTipoRinnovoDTO" fetch="join" lazy="false" cascade="save-update">
+            <column name="id_tipo_rinnovo" />
+        </many-to-one>
+        
+        <property name="data_scadenza" type="java.sql.Date">
+            <column name="data_scadenza" />
+        </property>
+        <property name="data_acquisto" type="java.sql.Date">
+            <column name="data_acquisto" />
+        </property>
+        <property name="email_referenti" type="java.lang.String">
+            <column name="email_referenti" />
+        </property>
+        <property name="modalita_pagamento" type="java.lang.String">
+            <column name="modalita_pagamento" />
+        </property>
+         <property name="fornitore" type="java.lang.String">
+            <column name="fornitore" />
+        </property>
+      <property name="data_remind" type="java.sql.Date">
+            <column name="data_remind" />
+        </property>
+        
+        
+        <property name="disabilitato" type="int">
+            <column name="disabilitato" />
+        </property>
+        
+        <property name="stato" type="int">
+            <column name="stato" />
+        </property>
+        
+        
+              <many-to-one name="id_company" class="it.portaleSTI.DTO.DocumFornitoreDTO" fetch="join" lazy="false" cascade="save-update">
+            <column name="id_company" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

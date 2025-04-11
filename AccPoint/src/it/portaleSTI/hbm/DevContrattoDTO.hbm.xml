@@ -16,8 +16,7 @@
          <property name="permanente" type="java.lang.String">
             <column name="permanente" />
         </property>
-        
-     
+             
         
  		<property name="data_inizio" type="java.sql.Date">
             <column name="data_inizio" />

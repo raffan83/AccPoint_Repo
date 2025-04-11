@@ -14,7 +14,6 @@
             <column name="descrizione" />
         </property>
         
- 
-	
+ 	
 	</class>
 </hibernate-mapping>

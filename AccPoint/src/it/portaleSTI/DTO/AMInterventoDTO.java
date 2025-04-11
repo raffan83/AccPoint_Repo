@@ -3,30 +3,34 @@ package it.portaleSTI.DTO;
 import java.util.Date;
 
 public class AMInterventoDTO {
+	
 	private int id;
-	private AMAttivitaManutenzioneDTO attivita;
-	private AMTipoManutenzioneDTO tipoMAnutenzione;
+	private String nomeCliente;
+	private String nomeClienteUtilizzatore;
+	private String nomeSede;
+	private String nomeSedeUtilizzatore;
 	private Date dataIntervento;
-	private String esito;
-	private String descrizione_intervento;
-	private String operatore;
+	private String idCommessa;
+	private AMOperatoreDTO operatore;
+	private int stato;
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public AMAttivitaManutenzioneDTO getAttivita() {
-		return attivita;
+	public String getNomeCliente() {
+		return nomeCliente;
 	}
-	public void setAttivita(AMAttivitaManutenzioneDTO attivita) {
-		this.attivita = attivita;
+	public void setNomeCliente(String nomeCliente) {
+		this.nomeCliente = nomeCliente;
 	}
-	public AMTipoManutenzioneDTO getTipoMAnutenzione() {
-		return tipoMAnutenzione;
+	public String getNomeSede() {
+		return nomeSede;
 	}
-	public void setTipoMAnutenzione(AMTipoManutenzioneDTO tipoMAnutenzione) {
-		this.tipoMAnutenzione = tipoMAnutenzione;
+	public void setNomeSede(String nomeSede) {
+		this.nomeSede = nomeSede;
 	}
 	public Date getDataIntervento() {
 		return dataIntervento;
@@ -34,24 +38,37 @@ public class AMInterventoDTO {
 	public void setDataIntervento(Date dataIntervento) {
 		this.dataIntervento = dataIntervento;
 	}
-	public String getEsito() {
-		return esito;
+	
+	public String getIdCommessa() {
+		return idCommessa;
 	}
-	public void setEsito(String esito) {
-		this.esito = esito;
+	
+	public void setIdCommessa(String idCommessa) {
+		this.idCommessa = idCommessa;
 	}
-	public String getDescrizione_intervento() {
-		return descrizione_intervento;
-	}
-	public void setDescrizione_intervento(String descrizione_intervento) {
-		this.descrizione_intervento = descrizione_intervento;
-	}
-	public String getOperatore() {
+	public AMOperatoreDTO getOperatore() {
 		return operatore;
 	}
-	public void setOperatore(String operatore) {
+	public void setOperatore(AMOperatoreDTO operatore) {
 		this.operatore = operatore;
 	}
-
+	public int getStato() {
+		return stato;
+	}
+	public void setStato(int stato) {
+		this.stato = stato;
+	}
+	public String getNomeClienteUtilizzatore() {
+		return nomeClienteUtilizzatore;
+	}
+	public void setNomeClienteUtilizzatore(String nomeClienteUtilizzatore) {
+		this.nomeClienteUtilizzatore = nomeClienteUtilizzatore;
+	}
+	public String getNomeSedeUtilizzatore() {
+		return nomeSedeUtilizzatore;
+	}
+	public void setNomeSedeUtilizzatore(String nomeSedeUtilizzatore) {
+		this.nomeSedeUtilizzatore = nomeSedeUtilizzatore;
+	}
 	
 }

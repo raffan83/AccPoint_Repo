@@ -470,6 +470,22 @@
         </li> 
            <% }%>
          
+		<% if(user.checkRuolo("AM")){%>  
+           <li class="header">AM ENGINEERING</li>
+
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Area AM Engineering</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+		   <li><a href="amGestioneInterventi.do?action=lista">Lista Interventi</a></li>	
+		   <li><a href="amGestioneStrumenti.do">Lista Strumenti</a></li>	
+	       <li><a href="amGestioneProve.do">Lista prove</a></li>
+          </ul>
+        </li> 
+           <% }%> 
         
          <% if(user.checkPermesso("GREEN_PASS")){%> 
          

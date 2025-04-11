@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.AMInterventoDTO" table="am_interv">
+       
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <property name="nomeCliente" type="java.lang.String">
+            <column name="nome_cliente" />
+        </property>
+        
+         <property name="nomeClienteUtilizzatore" type="java.lang.String">
+            <column name="nome_cliente_utilizzatore" />
+        </property>
+        
+        <property name="nomeSede" type="java.lang.String">
+            <column name="sede_cliente" />
+        </property>
+        
+        <property name="nomeSedeUtilizzatore" type="java.lang.String">
+            <column name="sede_cliente_utilizzatore" />
+        </property>
+        
+        <property name="dataIntervento" type="java.util.Date">
+            <column name="data_intervento" />
+        </property>
+		
+		<property name="idCommessa" type="java.lang.String">
+            <column name="id_commessa" />
+        </property>
+ 		<many-to-one name="operatore" class="it.portaleSTI.DTO.AMOperatoreDTO" fetch="join" lazy="false">
+            <column name="id_operatore" />
+        </many-to-one>
+        
+        <property name="stato" type="int">
+            <column name="stato" />
+        </property>
+      
+    </class>
+</hibernate-mapping>

@@ -8,7 +8,6 @@
 <jsp:attribute name="body_area">
 
 <div class="wrapper">
-	
   <t:main-header  />
   <t:main-sidebar />
  

@@ -148,7 +148,7 @@
           </ul>
         </li>
             <% }%>
-              <% if(user.checkRuolo("AM") || user.checkPermesso("PRENOTAZIONE_CAMPIONE_MENU_METROLOGIA")){%>
+<%--               <% if(user.checkRuolo("AM") || user.checkPermesso("PRENOTAZIONE_CAMPIONE_MENU_METROLOGIA")){%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Prenotazione Campioni</span>
             <span class="pull-right-container">
@@ -165,7 +165,7 @@
 			
           </ul>
         </li>
-		<% }%>
+		<% }%> --%>
 		
 
 
@@ -187,11 +187,11 @@
           <%} %>
         </li>
 
-
+<%-- 
 <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_COMMESSE_CAMPIONAMENTO")){%>
-       <%--  <% if(!user.checkRuolo("CL")){%> --%>
+        <% if(!user.checkRuolo("CL")){%>
         <li class="header">CAMPIONAMENTO</li>
-      <%--    <% }%> --%>
+         <% }%>
            
          <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Commesse</span>
@@ -217,7 +217,7 @@
 			<li><a href="gestioneAssociazioniArticoli.do">Configurazione Articoli</a></li>
           </ul>
         </li>
-        <% }%>
+        <% }%> --%>
         
         
         <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_MAGAZZINO")){%>
@@ -241,7 +241,7 @@
         </li>
           <% }%>
           
- 	  <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_SEGRETERIA")){%> 
+ 	<%--   <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_SEGRETERIA")){%> 
 
         <li class="header">SEGRETERIA</li>
 
@@ -257,7 +257,7 @@
            
           </ul>
         </li>
-           <% }%>
+           <% }%> --%>
            
          <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_VER_STRUMENTI") || user.checkPermesso("GESTIONE_VER_STRUMENTI_CLIENTE")){%>  
            <li class="header">VERIFICAZIONE STRUMENTI</li>
@@ -422,15 +422,32 @@
    
 		   <li><a href="gestioneDevice.do?action=lista_tipi_device">Tipi Device</a></li>	
   			<li><a href="gestioneDevice.do?action=lista_device">Lista Device</a></li>
+  			<li><a href="gestioneDevice.do?action=lista_contratti">Lista Contratti</a></li>
   			<li><a href="gestioneDevice.do?action=lista_software">Lista Software</a></li>
   			<li><a href="gestioneDevice.do?action=lista_procedure">Lista Procedure</a></li>
   			<li><a href="gestioneDevice.do?action=scadenzario">LTA</a></li>
+  			<li><a href="gestioneDevice.do?action=ricerca_software">Ricerca Software</a></li>
 		
 	      	
           </ul>
         </li> 
            <% }%>
         
+        <% if(user.checkRuolo("AM") || user.checkPermesso("SCADENZARIO_IT")){%>  
+         <li class="header">DEVICE</li>
+          <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Scadenzario IT</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        	<ul class="treeview-menu">
+   
+		   <li><a href="gestioneScadenzarioIT.do?action=lista">Scadenzario IT</a></li>	
+		   
+		   </ul>
+		    </li> 
+        <% }%>
         
                  
            <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_PARCO_AUTO")){%>  

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="it.portaleSTI.DTO">
+
+    <class name="AmCampioneDTO" table="am_campione">
+        
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+
+        <property name="rilevatoreOut" column="rilevatore_out"/>
+        <property name="matricolaRilevatoreOut" column="matricola_rilevatore_out"/>
+        <property name="mezzoAccoppiante" column="mezzo_accoppiante"/>
+        <property name="bloccoRiferimento" column="blocco_riferimento"/>
+        <property name="sondaCostruttore" column="sonda_costruttore"/>
+        <property name="sondaModello" column="sonda_modello"/>
+        <property name="sondaMatricola" column="sonda_matricola"/>
+        <property name="sondaDimensione" column="sonda_dimensione"/>
+        <property name="sondaAngolo" column="sonda_angolo"/>
+        <property name="sondaVelocita" column="sonda_velocita"/>
+        <property name="certificato" column="certificato"/>
+        <property name="dataScadenzaCertifica" column="data_scadenza_certifica" type="date"/>
+
+    </class>
+
+</hibernate-mapping>

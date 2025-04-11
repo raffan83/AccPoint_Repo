@@ -1,5 +1,7 @@
 package it.portaleSTI.DTO;
 
+import java.util.Date;
+
 public class AmOggettoProvaDTO {
 
     private int id;
@@ -17,6 +19,9 @@ public class AmOggettoProvaDTO {
     private String materialeFondo;
     private String matricola;
     private String descrizione;
+    private Date dataVerifica;
+    private Date dataProssimaVerifica;
+    private int frequenza;
 
     // Getter e Setter
 
@@ -138,5 +143,28 @@ public class AmOggettoProvaDTO {
 
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
+    }
+    public Date getDataVerifica() {
+        return dataVerifica;
+    }
+
+    public void setDataVerifica(Date dataVerifica) {
+        this.dataVerifica = dataVerifica;
+    }
+
+    public Date getDataProssimaVerifica() {
+        return dataProssimaVerifica;
+    }
+
+    public void setDataProssimaVerifica(Date dataProssimaVerifica) {
+        this.dataProssimaVerifica = dataProssimaVerifica;
+    }
+
+    public int getFrequenza() {
+        return frequenza;
+    }
+
+    public void setFrequenza(int frequenza) {
+        this.frequenza = frequenza;
     }
 }

@@ -8,6 +8,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneAM_DAO;
 import it.portaleSTI.DTO.AMInterventoDTO;
+import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
 import it.portaleSTI.DTO.AMCampioneDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -35,6 +36,16 @@ public class GestioneAM_BO {
 	public static AMInterventoDTO getInterventoFromID(int id_intervento, Session session) {
 
 		return GestioneAM_DAO.getInterventoFromID(id_intervento, session);
+	}
+
+	public static ArrayList<AMOggettoProvaDTO> getListaStrumenti(Session session) {
+		
+		return GestioneAM_DAO.getListaStrumenti(session);
+	}
+
+	public static AMOggettoProvaDTO getOggettoProvaFromID(int id_strumento, Session session) {
+	
+		return GestioneAM_DAO.getOggettoProvaFromID(id_strumento, session);
 	}
 
 }

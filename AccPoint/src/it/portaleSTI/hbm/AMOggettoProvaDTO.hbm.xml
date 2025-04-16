@@ -26,7 +26,7 @@
         <property name="descrizione" column="descrizione"/>
         <property name="dataVerifica" column="data_verifica" type="date"/>
 		<property name="dataProssimaVerifica" column="data_prossima_verifica" type="date"/>
-		<property name="frequenza" column="frequenza"/>
+		<property name="frequenza" column="frequenza"/>		
 
     </class>
 

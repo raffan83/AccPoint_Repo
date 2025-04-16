@@ -662,6 +662,14 @@ $(document).ready(function() {
 	 	    });
 
 
+	 	     table.columns().eq( 0 ).each( function ( colIdx ) {
+	 	  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	 	  	      table
+	 	  	          .column( colIdx )
+	 	  	          .search( this.value )
+	 	  	          .draw();
+	 	  	  } );
+	 	  	} );  
 		table.columns.adjust().draw();
 		
 

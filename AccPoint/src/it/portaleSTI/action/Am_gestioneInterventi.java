@@ -1,11 +1,13 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -15,6 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -26,6 +31,10 @@ import it.portaleSTI.DTO.AMOperatoreDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DocumFornitoreDTO;
+import it.portaleSTI.DTO.ItServizioItDTO;
+import it.portaleSTI.DTO.ItTipoRinnovoDTO;
+import it.portaleSTI.DTO.ItTipoServizioDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
@@ -34,6 +43,8 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAM_BO;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
+import it.portaleSTI.bo.GestioneDocumentaleBO;
+import it.portaleSTI.bo.GestioneScadenzarioItBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
 
 /**
@@ -67,7 +78,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-//		if(Utility.validateSession(request,response,getServletContext()))return;
+		if(Utility.validateSession(request,response,getServletContext()))return;
 
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
@@ -156,8 +167,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 			request.getSession().setAttribute("dateFrom", dateFrom);
 			
 			
-			session.getTransaction().commit();
-			session.close();
+			
 			
 			
 			
@@ -165,6 +175,135 @@ public class Am_gestioneInterventi extends HttpServlet {
 	     	dispatcher.forward(request,response);
 	     
 		}
+			else if(action.equals("nuovo")) {
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+				String nome_cliente = ret.get("nomeCliente");
+				String nome_cliente_utilizzatore = ret.get("nomeClienteUtilizzatore");
+				String nome_sede= ret.get("nomeSede");
+				String nome_sede_utilizzatore = ret.get("nomeSedeUtilizzatore");
+				String commessa = ret.get("comm");
+				String operatore = ret.get("operatore");
+				String data_intervento = ret.get("data_intervento");
+				
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				
+				 
+				AMInterventoDTO intervento = new AMInterventoDTO();	
+				
+				intervento.setNomeCliente(nome_cliente);
+				intervento.setNomeClienteUtilizzatore(nome_cliente_utilizzatore);
+				intervento.setNomeSede(nome_sede);
+				intervento.setNomeSedeUtilizzatore(nome_sede_utilizzatore);
+				intervento.setOperatore(new AMOperatoreDTO(Integer.parseInt(operatore), "", ""));
+				intervento.setDataIntervento(df.parse(data_intervento));
+				
+				
+				
+				session.save(intervento);				
+							
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Intervento salvato con successo!");
+				out.print(myObj);
+				
+				
+			}else if(action.equals("modifica")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+		        String id_intervento = ret.get("id_intervento");
+				String nome_cliente = ret.get("nomeCliente_mod");
+				String nome_cliente_utilizzatore = ret.get("nomeClienteUtilizzatore_mod");
+				String nome_sede= ret.get("nomeSede_mod");
+				String nome_sede_utilizzatore = ret.get("nomeSedeUtilizzatore_mod");
+				String commessa = ret.get("comm_mod");
+				String operatore = ret.get("operatore_mod");
+				String data_intervento = ret.get("data_intervento_mod");
+				
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				
+				 
+				AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);	
+				
+				intervento.setNomeCliente(nome_cliente);
+				intervento.setNomeClienteUtilizzatore(nome_cliente_utilizzatore);
+				intervento.setNomeSede(nome_sede);
+				intervento.setNomeSedeUtilizzatore(nome_sede_utilizzatore);
+				intervento.setOperatore(new AMOperatoreDTO(Integer.parseInt(operatore), "", ""));
+				intervento.setDataIntervento(df.parse(data_intervento));
+				
+				
+				
+				session.update(intervento);				
+							
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Intervento salvato con successo!");
+				out.print(myObj);
+			}
+			
+			
+			session.getTransaction().commit();
+			session.close();
 			
 		} 
 		catch(Exception ex)

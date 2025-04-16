@@ -25,4 +25,9 @@ public class GestioneAM_BO {
 		
 	}
 
+	public static AMInterventoDTO getInterventoFromID(int id_intervento, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAM_DAO.getInterventoFromID(id_intervento, session);
+	}
+
 }

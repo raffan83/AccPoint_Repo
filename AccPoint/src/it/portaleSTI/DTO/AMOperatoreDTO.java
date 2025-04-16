@@ -24,6 +24,16 @@ public class AMOperatoreDTO {
 		this.pathPatentino = pathPatentino;
 	}
 	
+	
+	public AMOperatoreDTO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public AMOperatoreDTO(int id, String nome, String path) {
+		this.id = id;
+		this.nomeOperatore = nome;
+		this.pathPatentino = path;
+	}
 
 	
 }

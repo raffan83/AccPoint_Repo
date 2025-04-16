@@ -122,7 +122,7 @@
 	<td align="center">
 	<a class="btn btn-info" onClicK="callAction('gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
 
-	<a class="btn btn-warning" title="Click per modificare l'intervento"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaIntervento('${intervento.id}','${intervento.idCommessa}','${intervento.dataIntervento}', '${intervento.operatore.id}','${intervento.nomeCliente }','${intervento.nomeClienteUtilizzatore }','${intervento.nomeSede }','${intervento.nomeSedeUtilizzatore }')"><i class="fa fa-edit"></i></a>
 	</td>
 	</tr>
 	</c:forEach> 
@@ -147,153 +147,7 @@
 
 
 
-<form id="modificaInterventoForm" name="modificaInterventoForm">
-<div id="myModalModificaIntervento" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Intervento</h4>
-      </div>
-       <div class="modal-body">
-
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Cliente</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  <div class="col-md-6" style="display:none">  
-                  <label>Cliente</label>
-               <select name="cliente_appoggio" id="cliente_appoggio" class="form-control " aria-hidden="true" data-live-search="true" style="width:100%" required>
-                        <%-- <c:forEach items="${lista_clienti}" var="cliente">
-                     
-                           <option value="${cliente.__id}">${cliente.nome}</option> 
-                         
-                     </c:forEach>    --%>
-
-                  </select> 
-                
-        </div>  	
-        <input id="cliente_mod" name="cliente_mod" type ="text" class="form-control" style="width:100%">
-       <%-- 		  <select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_mod" name="cliente_mod" style="width:100%" required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
-       				<option value="${cliente.__id}">${cliente.nome }</option>
-       			</c:forEach> 
-       		</select>  --%>        	
-       	</div>       	
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Sede</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Sede..." id="sede_mod" name="sede_mod" style="width:100%" disabled required>
-       		<option value=""></option>
-       		 	<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
-       				<option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo }</option>
-       			</c:forEach> 
-       		</select>
-       	</div>
-       </div><br>
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Commessa</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa_mod" name="commessa_mod" style="width:100%" >
-       		<option value=""></option>
-       			 <c:forEach items="${lista_commesse}" var="commessa" varStatus="loop">
-       				<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}">${commessa.ID_COMMESSA}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Data prevista</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<div class='input-group date datepicker' id='datepicker_data_prevista'>
-               <input type='text' class="form-control input-small" id="data_prevista_mod" name="data_prevista_mod" required>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Tecnico Verificatore</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tecnico verificatore..." id="tecnico_verificatore_mod" name="tecnico_verificatore_mod" style="width:100%" required>
-       		<option value=""></option>
-        			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
-       				<option value="${tecnico.id}">${tecnico.nominativo}</option>
-       			</c:forEach> 
-       		</select>
-       	</div>
-       </div><br>
-       
-<%--         <div class="row">
-       	<div class="col-sm-3">
-       		<label>Tecnico Riparatore</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tecnico Riparatore..." id="tecnico_riparatore_mod" name="tecnico_riparatore_mod" style="width:100%" >
-       		<option value=""></option>
-       		<option value="0">Nessuno</option>
-       			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
-       				<option value="${tecnico.id}">${tecnico.nominativo}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br> --%>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Luogo</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select id="luogo_mod" name="luogo_mod" class="form-control select2" style="width:100%">
-				  <option value=0>In Sede</option>
-				  <option value=1>Presso il Cliente</option>
-				  <option value=2>Altro Luogo</option>				  
-				</select>
-       	</div>
-       </div>      <br>
-       
-         <div class="row">
-       	<div class="col-sm-3">
-       	<h4>STRUMENTI</h4>
-       	
-       	</div></div> 
-       <div id="tab_luogo">
-
-       	</div>
-
-      
-       
-       </div>
-  		 
-      <div class="modal-footer">
-      <!-- <label id="label" style="color:red" class="pull-left">Attenzione! Compila correttamente tutti i campi!</label> -->
-
-		 <!-- <a class="btn btn-primary"  onClick="inserisciRilievo()">Salva</a>  -->
-		<!--  <a class="btn btn-primary"  type="submit">Salva</a>  -->
-		<input type="hidden" id="id_intervento" name="id_intervento">
-		<input type="hidden" id="ids_strumenti" name="ids_strumenti">
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</form>
+<form id="nuovoInterventoForm">
 
   <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
@@ -391,11 +245,127 @@
   		 </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-danger"onclick="saveInterventoFromModal('${commessa.ID_COMMESSA}')"  >Salva</button>
+        <button type="submit" class="btn btn-danger"  >Salva</button>
       </div>
     </div>
   </div>
 </div>
+</form>
+
+
+
+<form id="modificaInterventoForm">
+<div id="myModalModificaIntervento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Intervento</h4>
+      </div>
+       <div class="modal-body">
+
+		<div class="row">
+       	<div class="col-sm-3">
+       		<label>Commessa</label>
+       	</div>
+       	<div class="col-sm-9">
+				<select  id="comm_mod" name="comm_mod" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+
+				<c:forEach items="${lista_commesse }" var="comm">
+				
+				<option value="${comm.ID_COMMESSA }@${comm.ID_ANAGEN_NOME}@${comm.INDIRIZZO_PRINCIPALE}@${comm.NOME_UTILIZZATORE}@${comm.INDIRIZZO_UTILIZZATORE}" >${comm.ID_COMMESSA }</option>
+					
+				</c:forEach>
+				</select>
+       	</div>
+       </div><br>
+       
+              <div class="row">
+       	<div class="col-sm-3">
+       		<label>Cliente</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="nomeCliente_mod" name="nomeCliente_mod" style="width:100%" required>       	
+       	</div>
+       </div><br>
+       
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Cliente Utilizzatore</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="nomeClienteUtilizzatore_mod" name="nomeClienteUtilizzatore_mod" style="width:100%" required>       	
+       	</div>
+       </div><br>
+       
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Sede</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="nomeSede_mod" name="nomeSede_mod" style="width:100%" required>       	
+       	</div>
+       </div><br>
+           <div class="row">
+       	<div class="col-sm-3">
+       		<label>Sede Utilizzatore</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="nomeSedeUtilizzatore_mod" name="nomeSedeUtilizzatore_mod" style="width:100%" required>       	
+       	</div>
+       </div><br>
+       
+              <div class="row">
+       	<div class="col-sm-3">
+       		<label>Data Intervento</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<div class='input-group date datepicker' id='datepicker_data_intervento'>
+               <input type='text' class="form-control input-small" id="data_intervento_mod" name="data_intervento_mod" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       	</div>
+       </div><br>
+       
+       		<div class="row">
+       	<div class="col-sm-3">
+       		<label>Responsabile</label>
+       	</div>
+       	<div class="col-sm-9">
+				<select  id="operatore_mod" name="operatore_mod" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+
+				<c:forEach items="${lista_operatori }" var="opr">
+				
+				<option value="${opr.id }" >${opr.nomeOperatore }</option>
+					
+				</c:forEach>
+				</select>
+       	</div>
+       </div><br>
+       
+
+  		  <div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+		<input type="hidden" id="id_intervento" name="id_intervento">
+        <button type="submit" class="btn btn-danger" >Salva</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</form>
+
+
+
+
+
+
+
+
 
 </div>
    <t:dash-footer />
@@ -447,39 +417,39 @@ function resetDate(){
 	callAction("gestioneVerIntervento.do?action=lista");
 
 	}
+	
 
 
+function modificaIntervento(id, id_commessa, data_intervento, id_operatore, nome_cliente, nome_cliente_util, nome_sede, nome_sede_util){
+	
+	$('#id_intervento').val(id);
+	
+	$('#comm_mod option').each(function() {
+	    if ($(this).val().startsWith(id_commessa + '@')) {
+	        $('#comm_mod').val($(this).val());
+	        $('#comm_mod').change();
+	        return false; // interrompe il ciclo una volta trovata la corrispondenza
+	    }
+	});
 
-function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico_verificatore, sede_cliente, data_prevista, company){
-
-	
-	//initSelect2('#cliente_mod');
-	
-	updateSelectClienti(company, id_cliente, id_sede)
-	
-	$('#luogo_mod').val(sede_cliente);
-	$('#luogo_mod').change();
-	
-	
-	$('#id_intervento').val(id_intervento);
-/* 	$('#cliente_mod').val(id_cliente);
-	$('#cliente_mod').change();
-	
-	// $("#cliente_mod").trigger("chosen:updated");
-
-	if(id_sede!='0'){
-		$('#sede_mod').val(id_sede+"_"+id_cliente);	
-	}else{
-		$('#sede_mod').val(0);
+	if(data_intervento!=null && data_intervento!=''){
+		var date = new Date(data_intervento);
+		const formattedDate = date.toLocaleDateString('it-IT'); 
+		$('#data_intervento_mod').val(formattedDate);	
 	}
-	$('#sede_mod').change(); */
+	 
+	 $('#operatore_mod').val(id_operatore);
+	 $('#operatore_mod').change();
+	 
+	 $("#nomeCliente_mod").val(nome_cliente);
+		$("#nomeSede_mod").val(nome_cliente_util);
+		$("#nomeClienteUtilizzatore_mod").val(nome_sede);
+		$("#nomeSedeUtilizzatore_mod").val(nome_sede_util);
 	
-	if(data_prevista!=null && data_prevista!=""){
-		  $('#data_prevista_mod').val(Date.parse(data_prevista).toString("dd/MM/yyyy"));
-	  }
-	getStrumentiIntervento(id_intervento, tecnico_verificatore);
-
+	 $('#myModalModificaIntervento').modal()
 }
+
+
 
 $('#myModalModificaIntervento').on('hidden.bs.modal',function(){
 	
@@ -508,6 +478,28 @@ $('#comm').on('change', function(){
 		$("#nomeSede").val(sedeCli);
 		$("#nomeClienteUtilizzatore").val(nomeCliUtil);
 		$("#nomeSedeUtilizzatore").val(sedeCliUtil);
+		
+	}
+});
+
+$('#comm_mod').on('change', function(){
+	
+	if($("#comm_mod").val()!=null && $("#comm_mod").val()!=''){		
+		id_commessa = $('#comm_mod').val();
+		
+		var nomeCli=$('#comm_mod').val().split("@")[1];
+		
+		var sedeCli=$('#comm_mod').val().split("@")[2];	
+		
+		var nomeCliUtil=$('#comm_mod').val().split("@")[3];
+		
+		var sedeCliUtil=$('#comm_mod').val().split("@")[4];
+		
+		
+		$("#nomeCliente_mod").val(nomeCli);
+		$("#nomeSede_mod").val(sedeCli);
+		$("#nomeClienteUtilizzatore_mod").val(nomeCliUtil);
+		$("#nomeSedeUtilizzatore_mod").val(sedeCliUtil);
 		
 	}
 });
@@ -721,30 +713,6 @@ $(document).ready(function() {
 });
 
 
- $('#modificaInterventoForm').on('submit', function(e){
-	 e.preventDefault();
-	 var row =  document.getElementById('tab_luogo').children;
-	  var string = '';
-	  for(var i = 0;i<row.length;i++){
-		  if(row[i].id!=null && row[i].id!=''){
-   		var id = row[i].id.split("_")[1];			
-			var ora = $('#ora_'+id).val();
-			
-			if(ora!='' && ora.length<5){
-				ora = "0"+ora;
-			}
-			if($('#luogo_mod').val()!="2"){
-				string = string + $('#id_'+id).val() + "_" +ora+";"	;
-			}else{
-				string = string + $('#id_'+id).val() + "_" + ora + "_" + $('#via_'+id).val() + "_" + $('#civico_'+id).val() + "_" + $('#comune_'+id).val() +";";
-			}
-		  }
-	  }
-	 
-	  $('#ids_strumenti').val(string);
-	 $('#luogo_mod').attr('disabled',false);
-	 modificaVerIntervento();
-});
 
  
  
@@ -908,123 +876,21 @@ $(document).ready(function() {
  
  
  
+ $('#modificaInterventoForm').on("submit", function(e){
+
+	 e.preventDefault();
+	 
+	 callAjaxForm('#modificaInterventoForm','amGestioneInterventi.do?action=modifica');
+	 
+ });
  
- 
- 
- 
- function updateSelectClienti(companyId, id_cliente, id_sede){
-		var dataObj = {};
-	
-			pleaseWaitDiv = $('#pleaseWaitDialog');
-			pleaseWaitDiv.modal();
-	
-		dataObj.company = companyId;
-		dataObj.tipo = "";
-		$.ajax({
-	    	  type: "POST",
-	    	  url: "gestioneUtenti.do?action=clientisedi",
-	    	  data: dataObj,
-	    	  dataType: "json",
-	    	  success: function( data, textStatus) {
-	    		  
-	    		 
-	    		  
-	    		  if(data.success)
-	    		  { 
-	    			  $('#report_button').hide();
-	    				$('#visualizza_report').hide();
-	    			  /* 	if(tipo=="new"){
-	    			  		idclienteitem="#cliente";
-	    			  		idsedeitem="#sede";
-	    			  		
-	    			  	}else{
-	    			  		idclienteitem="#modcliente";
-	    			  		idsedeitem="#modsede";
-	    			  		utente =  JSON.parse(data.utente);
-	    			  	} */
-	    			  	
-	    			  	optionsClienti = JSON.parse(data.clienti);
-	    			  	var opt=[];
-	    			  	
-	    			  	  opt.push("<option value = 0>Seleziona Cliente</option>");
-	    		
-	    			  	$.each(optionsClienti,function(index, value){
+ $('#nuovoInterventoForm').on("submit", function(e){
 
-	    			  	      opt.push("<option value='"+value.__id+"'>"+value.nome+"</option>");
-	    			  	});
-	    			  	  
-	    			  	
-	    			   
-	    			  	 $("#cliente_appoggio").html(opt);
-	    			   			  	    			  	      
-	    			  	 initSelect2("#cliente_mod");
-	    			  	  
-	    			  	optionsSedi = JSON.parse(data.sedi);
-	    			  	var optsedi=[];
-	    			  	
-	    			  	//optsedi.push("<option value = 0>Non Associato</option>");
-	    			  	$.each(optionsSedi,function(index, value){
-
-	    			  			optsedi.push("<option value='"+value.__id+"_"+value.id__cliente_+"'>"+value.descrizione+" - "+value.indirizzo+"</option>");
-	      			  	});
-	    			  	
-	    			  	$("#sede_mod").html(optsedi);  
-	    			
-	     			 /*    $("#cliente_mod").trigger("chosen:updated");	  	 
-	  			  	$("#cliente_mod").change();  */  
-	    			    
-	    			/* 	 if(tipo=="mod"){
-	    					if(utente.idSede!=0){
-	    						$(idsedeitem).val(utente.idSede+"_"+utente.idCliente);
-	    					}else{
-	    						$(idsedeitem).val(utente.idSede);
-	    					}
-	    			  	  } */
-	    				
-	  			  	/*  $(idsedeitem).trigger("chosen:updated");
-	  			  	 $(idsedeitem).change();  */  
-	  			  	 
-	  			  	 
-	  			  	 
-	  				$('#cliente_mod').val(id_cliente);
-	  				$('#cliente_mod').change();
-	  				
-	  				// $("#cliente_mod").trigger("chosen:updated");
-
-	  				if(id_sede!='0'){
-	  					$('#sede_mod').val(id_sede+"_"+id_cliente);	
-	  				}else{
-	  					$('#sede_mod').val(0);
-	  				}
-	  				$('#sede_mod').change();
-	  				
-	  				 pleaseWaitDiv.modal('hide');
-	    		
-	    		  }else{
-	    			  $('#myModalErrorContent').html(data.messaggio);
-	    			  	$('#myModalError').removeClass();
-	    				$('#myModalError').addClass("modal modal-danger");
-	    				$('#report_button').show();
-	      				$('#visualizza_report').show();
-						$('#myModalError').modal('show');
-	    			 
-	    		  }
-	    	  },
-
-	    	  error: function(jqXHR, textStatus, errorThrown){
-	    		  pleaseWaitDiv.modal('hide');
-
-	    		  $('#myModalErrorContent').html(textStatus);
-				  	$('#myModalError').removeClass();
-					$('#myModalError').addClass("modal modal-danger");
-					$('#report_button').show();
-	  				$('#visualizza_report').show();
-					$('#myModalError').modal('show');
-					
-	    
-	    	  }
-	      });
-	}
+	 e.preventDefault();
+	 
+	 callAjaxForm('#nuovoInterventoForm','amGestioneInterventi.do?action=nuovo');
+	 
+ });
  
  
   </script>

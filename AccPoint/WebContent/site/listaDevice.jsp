@@ -2706,8 +2706,10 @@ $(document).ready(function() {
 
   	    if (!selezionabile ) {
   	        $(row).addClass('non-selezionabile');
+  	        $(row).css("background-color", "#D8796F")
   	    } else {
   	        $(row).removeClass('non-selezionabile');
+  	      
   	    }
   	},
 	  ordering: false,
@@ -2750,13 +2752,13 @@ $(document).ready(function() {
 
 
 
-$('#tabSoftwareTot tbody').on('click', 'tr', function(e) {
+/* $('#tabSoftwareTot tbody').on('click', 'tr', function(e) {
     const row = $(this);
     if (row.hasClass('non-selezionabile')&& !row.hasClass('selected')) {
         e.stopImmediatePropagation(); // blocca la selezione
         
     }
-});
+}); */
 previouslySelected = []
     $('#label_config').on('change', function(e, params){
     	

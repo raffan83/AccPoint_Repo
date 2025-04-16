@@ -240,8 +240,8 @@
   	
  	<mapping class="AMInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMInterventoDTO.hbm.xml"/>
  	<mapping class="AMOperatoreDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMOperatoreDTO.hbm.xml"/>
-	<mapping class="AmOggettoProvaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AmOggettoProvaDTO.hbm.xml"/>
-	<mapping class="it.portaleSTI.DTO.AmCampioneDTO" resource="it/portaleSTI/hbm/AmCampioneDTO.hbm.xml"/>
+	<mapping class="AMOggettoProvaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMOggettoProvaDTO.hbm.xml"/>
+	<mapping class="AMCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMCampioneDTO.hbm.xml"/>
   
  	
  	

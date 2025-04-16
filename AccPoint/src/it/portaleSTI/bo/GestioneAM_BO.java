@@ -30,9 +30,10 @@ public class GestioneAM_BO {
 		
 		return GestioneAM_DAO.getListaCampioni(session);
 	}
+
 	
 	public static AMInterventoDTO getInterventoFromID(int id_intervento, Session session) {
-		// TODO Auto-generated method stub
+
 		return GestioneAM_DAO.getInterventoFromID(id_intervento, session);
 	}
 

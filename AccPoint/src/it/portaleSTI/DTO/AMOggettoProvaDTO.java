@@ -2,7 +2,7 @@ package it.portaleSTI.DTO;
 
 import java.util.Date;
 
-public class AmOggettoProvaDTO {
+public class AMOggettoProvaDTO {
 
     private int id;
     private String zonaRifFasciame;

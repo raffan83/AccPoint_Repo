@@ -1,6 +1,6 @@
 <%@page import="java.util.ArrayList"%>
  <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%> 
-<%@page import="it.portaleSTI.DTO.AmCampioneDTO"%>
+<%@page import="it.portaleSTI.DTO.AMCampioneDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="it.portaleSTI.DTO.ClienteDTO"%>
 <%@page import="it.portaleSTI.DTO.CommessaDTO"%>
@@ -37,7 +37,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista Interventi A.M. Engineering
+	 Lista Campioni A.M. Engineering
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -49,27 +49,10 @@
 
 <div class="row">
 
- 	<div class="col-xs-5">
-			 <div class="form-group">
-				 <label for="datarange" class="control-label">Filtra Data Creazione:</label>
-					<div class="col-md-10 input-group" >
-						<div class="input-group-addon">
-				             <i class="fa fa-calendar"></i>
-				        </div>				                  	
-						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
-							 <span class="input-group-btn">
-				               <button type="button" class="btn btn-info btn-flat" onclick="filtraDate()">Cerca</button>
-				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
-				             </span>				                     
-  					</div>  								
-			 </div>	
-			 
-			 
 
-	</div> 
 
 <div class="col-xs-12">
-<button class="btn btn-primary pull-right" onClick="nuovoInterventoFromModal()" style="margin-right:5px"><i class="fa fa-plus"></i> Nuovo Intervento</button> 
+<button class="btn btn-primary pull-right" onClick="nuovoCampioneFromModal()" style="margin-right:5px"><i class="fa fa-plus"></i> Nuovo Campione</button> 
 </div>
 
 </div><br>
@@ -80,7 +63,7 @@
  <table id="tabVerInterventi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 <th>ID</th>
-<th>Cliente</th>
+<!--<th>Cliente</th>
 <th>Cliente Utilizzatore</th>
 <th>Sede</th>
 <th>Sede Utilizzatore</th>
@@ -90,14 +73,14 @@
 <th>Stato</th>
 <th>Azioni</th>
  </tr></thead>
- 
+-->
  <tbody>
  
- <c:forEach items="${lista_interventi }" var="intervento" varStatus="loop">
+ <c:forEach items="${lista_campioni }" var="campione" varStatus="loop">
 	<tr id="row_${loop.index}" >
 	
-	<td>${intervento.id }</td>	
-	<td>${intervento.nomeCliente }</td>
+	<td>${campione.id }</td>	
+<!--  	<td>${intervento.nomeCliente }</td>
 	<td>${intervento.nomeClienteUtilizzatore }</td>
 	<td>${intervento.nomeSede }</td>
 	<td>${intervento.nomeSedeUtilizzatore }</td>
@@ -119,6 +102,7 @@
 					</c:if>
 	
 	</td>
+	-->
 	<td align="center">
 	<a class="btn btn-info" onClicK="callAction('gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
 
@@ -300,9 +284,9 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Intervento</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Campione</h4>
       </div>
-       <div class="modal-body">
+      <!--  <div class="modal-body">
 
 		<div class="row">
        	<div class="col-sm-3">
@@ -388,10 +372,10 @@
        
 
   		  <div id="empty" class="testo12"></div>
-  		 </div>
+  		 </div> -->
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-danger"onclick="saveInterventoFromModal('${commessa.ID_COMMESSA}')"  >Salva</button>
+        <button type="button" class="btn btn-danger"onclick="saveCampioneFromModal()"  >Salva</button>
       </div>
     </div>
   </div>
@@ -423,31 +407,15 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script> 
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
+
+
 <script type="text/javascript">
 
 
-function filtraDate(){
-	
-	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
- 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
- 	dataString = "action=lista&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
- 			endDatePicker.format('YYYY-MM-DD');
- 	
- 	 pleaseWaitDiv = $('#pleaseWaitDialog');
-	  pleaseWaitDiv.modal();
-
- 	callAction("gestioneVerIntervento.do?"+ dataString, false,true);
-
- 	//exploreModal("gestioneFormazione.do", dataString, '#content_consuntivo');
-}
-
-function resetDate(){
-	pleaseWaitDiv = $('#pleaseWaitDialog');
-		  pleaseWaitDiv.modal();
-	callAction("gestioneVerIntervento.do?action=lista");
-
+function nuovoCampioneFromModal()
+	{
+		$( "#myModal" ).modal();
 	}
-
 
 
 function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico_verificatore, sede_cliente, data_prevista, company){
@@ -547,20 +515,8 @@ $("#tabVerInterventi").on( 'init.dt', function ( e, settings ) {
 } );
 
 
-
-
-function formatDate(data){
-	
-	   var mydate =  Date.parse(data);
-	   
-	   if(!isNaN(mydate.getTime())){
-	   
-		var   str = mydate.toString("dd/MM/yyyy");
-	   }			   
-	   return str;	 		
-}
-
 var commessa_options;
+
 $(document).ready(function() {
  
 	
@@ -685,39 +641,6 @@ $(document).ready(function() {
 
 	});
 	
-	
-	
-	
-	
-   	$('#checkAll').on('ifChecked', function (ev) {
-
-		$("#checkAll").prop('checked', true);
-		table.rows().deselect();
-		var allData = table.rows({filter: 'applied'});
-		table.rows().deselect();
-		i = 0;
-		table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
-		    //if(i	<maxSelect){
-				 this.select();
-		   /*  }else{
-		    		tableLoop.exit;
-		    }
-		    i++; */
-		    
-		} );
-
-  	});
-	$('#checkAll').on('ifUnchecked', function (ev) {
-
-		
-			$("#checkAll").prop('checked', false);
-			table.rows().deselect();
-			var allData = table.rows({filter: 'applied'});
-			table.rows().deselect();
-
-	  	});
-	
-	
 });
 
 
@@ -746,287 +669,7 @@ $(document).ready(function() {
 	 modificaVerIntervento();
 });
 
- 
- 
- $("#cliente").change(function() {
-	  
-	  if ($(this).data('options') == undefined) 
-	  {
-	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-	    $(this).data('options', $('#sede option').clone());
-	  }
-	  
-	  var selection = $(this).val()	 
-	  var id = selection
-	  var options = $(this).data('options');
 
-	  var opt=[];
-	
-	  opt.push("<option value = 0>Non Associate</option>");
-
-	   for(var  i=0; i<options.length;i++)
-	   {
-		var str=options[i].value; 
-
-		if(str.substring(str.indexOf("_")+1, str.length)==id)
-		{
-			opt.push(options[i]);
-		}   
-	   }
-	 $("#sede").prop("disabled", false);
-	 
-	  $('#sede').html(opt);
-	  
-	  $("#sede").trigger("chosen:updated");
-
-		$("#sede").change();  
-
-		var id_cliente = selection.split("_")[0];
-		  
-		
-		  var options = commessa_options;
-		  var opt=[];
-			opt.push("");
-		   for(var  i=0; i<options.length;i++)
-		   {
-			var str=options[i].value; 		
-			
-			if(str.split("*")[1] == id_cliente || str.split("*")[2] == id_cliente)	
-			{
-				opt.push(options[i]);
-			}   
-	    
-		   } 
-		$('#commessa').html(opt);
-		$('#commessa').val("");
-		$("#commessa").change();  	
-	});
- 
- 
- $("#cliente_mod").change(function() {
-	  
-	  if ($(this).data('options') == undefined) 
-	  {
-	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-	    $(this).data('options', $('#sede_mod option').clone());
-	  }
-	  
-	  var selection = $(this).val()	 
-	  var id = selection
-	  var options = $(this).data('options');
-
-	  var opt=[];
-	
-	  opt.push("<option value = 0>Non Associate</option>");
-
-	   for(var  i=0; i<options.length;i++)
-	   {
-		var str=options[i].value; 
-
-		if(str.substring(str.indexOf("_")+1, str.length)==id)
-		{
-			opt.push(options[i]);
-		}   
-	   }
-	 $("#sede_mod").prop("disabled", false);
-	 
-	  $('#sede_mod').html(opt);
-	  
-	  $("#sede_mod").trigger("chosen:updated");
-
-		$("#sede_mod").change();  
-
-		var id_cliente = selection.split("_")[0];
-		  
-		
-		  var options = commessa_options;
-		  var opt=[];
-			opt.push("");
-		   for(var  i=0; i<options.length;i++)
-		   {
-			var str=options[i].value; 		
-			
-			if(str.split("*")[1] == id_cliente || str.split("*")[2] == id_cliente)	
-			{
-				opt.push(options[i]);
-			}   
-	    
-		   } 
-		$('#commessa_mod').html(opt);
-		$('#commessa_mod').val("");
-		$("#commessa_mod").change();  	
-	});
-
- 
- 
- 
- function mockData() {
-	 var options =  $('#cliente_appoggio option').clone();
- 	  return _.map(options, function(i) {		  
- 	    return {
- 	      id: i.value,
- 	      text: i.text,
- 	    };
- 	  });
- 	}
- 	
-
-
- function initSelect2(id_input, placeholder) {
-
-	 if(placeholder==null){
-		  placeholder = "Seleziona Cliente...";
-	  }
- 	$(id_input).select2({
- 	    data: mockData(),
- 	    placeholder: placeholder,
- 	    multiple: false,
- 	    // query with pagination
- 	    query: function(q) {
- 	      var pageSize,
- 	        results,
- 	        that = this;
- 	      pageSize = 20; // or whatever pagesize
- 	      results = [];
- 	      if (q.term && q.term !== '') {
- 	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
- 	        results = _.filter(x, function(e) {
- 	        	
- 	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
- 	        });
- 	      } else if (q.term === '') {
- 	        results = that.data;
- 	      }
- 	      q.callback({
- 	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
- 	        more: results.length >= q.page * pageSize,
- 	      });
- 	    },
- 	  });
- }
- 
- 
- 
- 
- 
- 
- 
- 
- function updateSelectClienti(companyId, id_cliente, id_sede){
-		var dataObj = {};
-	
-			pleaseWaitDiv = $('#pleaseWaitDialog');
-			pleaseWaitDiv.modal();
-	
-		dataObj.company = companyId;
-		dataObj.tipo = "";
-		$.ajax({
-	    	  type: "POST",
-	    	  url: "gestioneUtenti.do?action=clientisedi",
-	    	  data: dataObj,
-	    	  dataType: "json",
-	    	  success: function( data, textStatus) {
-	    		  
-	    		 
-	    		  
-	    		  if(data.success)
-	    		  { 
-	    			  $('#report_button').hide();
-	    				$('#visualizza_report').hide();
-	    			  /* 	if(tipo=="new"){
-	    			  		idclienteitem="#cliente";
-	    			  		idsedeitem="#sede";
-	    			  		
-	    			  	}else{
-	    			  		idclienteitem="#modcliente";
-	    			  		idsedeitem="#modsede";
-	    			  		utente =  JSON.parse(data.utente);
-	    			  	} */
-	    			  	
-	    			  	optionsClienti = JSON.parse(data.clienti);
-	    			  	var opt=[];
-	    			  	
-	    			  	  opt.push("<option value = 0>Seleziona Cliente</option>");
-	    		
-	    			  	$.each(optionsClienti,function(index, value){
-
-	    			  	      opt.push("<option value='"+value.__id+"'>"+value.nome+"</option>");
-	    			  	});
-	    			  	  
-	    			  	
-	    			   
-	    			  	 $("#cliente_appoggio").html(opt);
-	    			   			  	    			  	      
-	    			  	 initSelect2("#cliente_mod");
-	    			  	  
-	    			  	optionsSedi = JSON.parse(data.sedi);
-	    			  	var optsedi=[];
-	    			  	
-	    			  	//optsedi.push("<option value = 0>Non Associato</option>");
-	    			  	$.each(optionsSedi,function(index, value){
-
-	    			  			optsedi.push("<option value='"+value.__id+"_"+value.id__cliente_+"'>"+value.descrizione+" - "+value.indirizzo+"</option>");
-	      			  	});
-	    			  	
-	    			  	$("#sede_mod").html(optsedi);  
-	    			
-	     			 /*    $("#cliente_mod").trigger("chosen:updated");	  	 
-	  			  	$("#cliente_mod").change();  */  
-	    			    
-	    			/* 	 if(tipo=="mod"){
-	    					if(utente.idSede!=0){
-	    						$(idsedeitem).val(utente.idSede+"_"+utente.idCliente);
-	    					}else{
-	    						$(idsedeitem).val(utente.idSede);
-	    					}
-	    			  	  } */
-	    				
-	  			  	/*  $(idsedeitem).trigger("chosen:updated");
-	  			  	 $(idsedeitem).change();  */  
-	  			  	 
-	  			  	 
-	  			  	 
-	  				$('#cliente_mod').val(id_cliente);
-	  				$('#cliente_mod').change();
-	  				
-	  				// $("#cliente_mod").trigger("chosen:updated");
-
-	  				if(id_sede!='0'){
-	  					$('#sede_mod').val(id_sede+"_"+id_cliente);	
-	  				}else{
-	  					$('#sede_mod').val(0);
-	  				}
-	  				$('#sede_mod').change();
-	  				
-	  				 pleaseWaitDiv.modal('hide');
-	    		
-	    		  }else{
-	    			  $('#myModalErrorContent').html(data.messaggio);
-	    			  	$('#myModalError').removeClass();
-	    				$('#myModalError').addClass("modal modal-danger");
-	    				$('#report_button').show();
-	      				$('#visualizza_report').show();
-						$('#myModalError').modal('show');
-	    			 
-	    		  }
-	    	  },
-
-	    	  error: function(jqXHR, textStatus, errorThrown){
-	    		  pleaseWaitDiv.modal('hide');
-
-	    		  $('#myModalErrorContent').html(textStatus);
-				  	$('#myModalError').removeClass();
-					$('#myModalError').addClass("modal modal-danger");
-					$('#report_button').show();
-	  				$('#visualizza_report').show();
-					$('#myModalError').modal('show');
-					
-	    
-	    	  }
-	      });
-	}
- 
- 
   </script>
   
 </jsp:attribute> 

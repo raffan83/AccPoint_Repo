@@ -306,15 +306,28 @@ public class Am_gestioneInterventi extends HttpServlet {
 			session.close();
 			
 		} 
-		catch(Exception ex)
+		catch(Exception e)
     	{
 			
-			
-   		 	ex.printStackTrace();
-   		 	request.getSession().setAttribute("exception",ex);
-   	     	request.setAttribute("error",STIException.callException(ex));
-   		 	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-   	     	dispatcher.forward(request,response);	
+			e.printStackTrace();
+			session.getTransaction().rollback();
+        	session.close();
+			if(ajax) {
+				
+				PrintWriter out = response.getWriter();
+				
+	        	
+	        	request.getSession().setAttribute("exception", e);
+	        	myObj = STIException.getException(e);
+	        	out.print(myObj);
+        	}else {
+   			    			
+    			e.printStackTrace();
+    			request.setAttribute("error",STIException.callException(e));
+    	  	     request.getSession().setAttribute("exception", e);
+    			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+    		     dispatcher.forward(request,response);	
+        	}
     	} 
 	
 	}

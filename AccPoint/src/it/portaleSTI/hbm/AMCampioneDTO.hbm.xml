@@ -11,8 +11,16 @@
             <generator class="native"/>
         </id>
 
+        <property name="codiceInterno" column="codice_interno"/>
+        <property name="denominazione" column="denominazione"/>
+        <property name="matricola" column="matricola"/>
+        <property name="modello" column="modello"/>
+        <property name="costruttore" column="costruttore"/>
+        <property name="nCertificato" column="n_certificato"/>
+        <property name="dataTaratura" column="data_taratura" type="date"/>
+        <property name="frequenza" column="frequenza"/>
+        <property name="dataScadenzaCertifica" column="data_scadenza_certifica" type="date"/>
         <property name="rilevatoreOut" column="rilevatore_out"/>
-        <property name="matricolaRilevatoreOut" column="matricola_rilevatore_out"/>
         <property name="mezzoAccoppiante" column="mezzo_accoppiante"/>
         <property name="bloccoRiferimento" column="blocco_riferimento"/>
         <property name="sondaCostruttore" column="sonda_costruttore"/>
@@ -22,8 +30,6 @@
         <property name="sondaDimensione" column="sonda_dimensione"/>
         <property name="sondaAngolo" column="sonda_angolo"/>
         <property name="sondaVelocita" column="sonda_velocita"/>
-        <property name="certificato" column="certificato"/>
-        <property name="dataScadenzaCertifica" column="data_scadenza_certifica" type="date"/>
 
     </class>
 

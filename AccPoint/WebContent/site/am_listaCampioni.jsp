@@ -60,7 +60,7 @@
 <div class="row">
 <div class="col-sm-12">
 
- <table id="tabVerInterventi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <table id="tabAMCampioni" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 <th>ID</th>
 <!--<th>Cliente</th>
@@ -71,9 +71,10 @@
 <th>Data Intervento</th>
 <th>Responsabile</th>
 <th>Stato</th>
+-->
 <th>Azioni</th>
  </tr></thead>
--->
+
  <tbody>
  
  <c:forEach items="${lista_campioni }" var="campione" varStatus="loop">
@@ -483,31 +484,23 @@ $('#comm').on('change', function(){
 
 var columsDatatables = [];
 
-$("#tabVerInterventi").on( 'init.dt', function ( e, settings ) {
+$("#tabAMCampioni").on( 'init.dt', function ( e, settings ) {
     var api = new $.fn.dataTable.Api( settings );
+    
     var state = api.state.loaded();
  
     if(state != null && state.columns!=null){
-    		console.log(state.columns);
-    
-    columsDatatables = state.columns;
-    }
-    $('#tabVerInterventi thead th').each( function () {
+		console.log(state.columns);
+
+	columsDatatables = state.columns;
+	}
+
+    $('#tabAMCampioni thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-    	  var title = $('#tabVerInterventi thead th').eq( $(this).index() ).text();
-    	
-    	  
+    	  var title = $('#tabAMCampioni thead th').eq( $(this).index() ).text();
+     
 		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
-	    	
-	
-	    	/* $('#checkAll').iCheck({
-	             checkboxClass: 'icheckbox_square-blue',
-	             radioClass: 'iradio_square-blue',
-	             increaseArea: '20%' // optional
-	           }); 
-    	  */
-    	//  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-    	
+	    
     	} );
     
     
@@ -519,55 +512,7 @@ var commessa_options;
 
 $(document).ready(function() {
  
-	
-	
-	
-	commessa_options = $('#commessa_mod option').clone();
-	
-	$(".select2").select2();
-
-	
-	//initSelect2('#cliente_mod');
-	//$('#cliente_mod').change();
-	$('#sede_mod').select2();
-	$('#commessa_mod').select2();
-	$('#tecnico_verificatore_mod').select2();
-	$('#luogo_mod').select2();
-	$('.datepicker').datepicker({
-		 format: "dd/mm/yyyy"
-	 });
-	$('.datepicker').datepicker('setDate', new Date());
-    $('.dropdown-toggle').dropdown();
-     
-
-
-     
-    
-     
-     
-     var start = "${dateFrom}";
-    	var end = "${dateTo}";
-
-    	$('input[name="datarange"]').daterangepicker({
-   	    locale: {
-   	      format: 'DD/MM/YYYY'
-   	    
-   	    }
-   	}, 
-   	function(start, end, label) {
-
-   	});
-    	
-    	if(start!=null && start!=""){
-   	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
-   	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
-   	
-   	 }
-      
-     
-     
-
-     table = $('#tabVerInterventi').DataTable({
+     table = $('#tabAMCampioni').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -592,7 +537,7 @@ $(document).ready(function() {
 		        }
 	        },
 	        pageLength: 25,
-	        "order": [[ 2, "desc" ]],
+	        "order": [[ 0, "desc" ]],
 		      paging: true, 
 		      ordering: true,
 		      info: true, 
@@ -608,7 +553,7 @@ $(document).ready(function() {
 		    	},     
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 0, targets: 6 },
+		    	  { responsivePriority: 0, targets: 0 },
 		    	  
 		    	  
 		               ], 	        
@@ -620,7 +565,7 @@ $(document).ready(function() {
 		               
 		    });
 		
-		table.buttons().container().appendTo( '#tabVerInterventi_wrapper .col-sm-6:eq(1)');
+		table.buttons().container().appendTo( '#tabAMCampioni_wrapper .col-sm-6:eq(1)');
 	 	    $('.inputsearchtable').on('click', function(e){
 	 	       e.stopPropagation();    
 	 	    });
@@ -629,7 +574,7 @@ $(document).ready(function() {
 		table.columns.adjust().draw();
 		
 
-	$('#tabVerInterventi').on( 'page.dt', function () {
+	$('#tabAMCampioni').on( 'page.dt', function () {
 		$('.customTooltip').tooltipster({
 	        theme: 'tooltipster-light'
 	    });

@@ -5,8 +5,16 @@ import java.util.Date;
 public class AMCampioneDTO {
 
     private int id;
+    private String codiceInterno;
+    private String denominazione;
+    private String matricola;
+    private String modello;
+    private String costruttore;
+    private String nCertificato;
+    private Date dataTaratura;
+    private int frequenza;
+    private Date dataScadenzaCertifica;
     private String rilevatoreOut;
-    private String matricolaRilevatoreOut;
     private String mezzoAccoppiante;
     private String bloccoRiferimento;
     private String sondaCostruttore;
@@ -16,8 +24,6 @@ public class AMCampioneDTO {
     private String sondaDimensione;
     private String sondaAngolo;
     private String sondaVelocita;
-    private String certificato;
-    private Date dataScadenzaCertifica;
 
     // Getter e Setter
 
@@ -29,20 +35,84 @@ public class AMCampioneDTO {
         this.id = id;
     }
 
+    public String getCodiceInterno() {
+        return codiceInterno;
+    }
+
+    public void setCodiceInterno(String codiceInterno) {
+        this.codiceInterno = codiceInterno;
+    }
+
+    public String getDenominazione() {
+        return denominazione;
+    }
+
+    public void setDenominazione(String denominazione) {
+        this.denominazione = denominazione;
+    }
+
+    public String getMatricola() {
+        return matricola;
+    }
+
+    public void setMatricola(String matricola) {
+        this.matricola = matricola;
+    }
+
+    public String getModello() {
+        return modello;
+    }
+
+    public void setModello(String modello) {
+        this.modello = modello;
+    }
+
+    public String getCostruttore() {
+        return costruttore;
+    }
+
+    public void setCostruttore(String costruttore) {
+        this.costruttore = costruttore;
+    }
+
+    public String getnCertificato() {
+        return nCertificato;
+    }
+
+    public void setnCertificato(String nCertificato) {
+        this.nCertificato = nCertificato;
+    }
+
+    public Date getDataTaratura() {
+        return dataTaratura;
+    }
+
+    public void setDataTaratura(Date dataTaratura) {
+        this.dataTaratura = dataTaratura;
+    }
+
+    public int getFrequenza() {
+        return frequenza;
+    }
+
+    public void setFrequenza(int frequenza) {
+        this.frequenza = frequenza;
+    }
+
+    public Date getDataScadenzaCertifica() {
+        return dataScadenzaCertifica;
+    }
+
+    public void setDataScadenzaCertifica(Date dataScadenzaCertifica) {
+        this.dataScadenzaCertifica = dataScadenzaCertifica;
+    }
+
     public String getRilevatoreOut() {
         return rilevatoreOut;
     }
 
     public void setRilevatoreOut(String rilevatoreOut) {
         this.rilevatoreOut = rilevatoreOut;
-    }
-
-    public String getMatricolaRilevatoreOut() {
-        return matricolaRilevatoreOut;
-    }
-
-    public void setMatricolaRilevatoreOut(String matricolaRilevatoreOut) {
-        this.matricolaRilevatoreOut = matricolaRilevatoreOut;
     }
 
     public String getMezzoAccoppiante() {
@@ -86,14 +156,14 @@ public class AMCampioneDTO {
     }
 
     public String getSondaFrequenza() {
-		return sondaFrequenza;
-	}
+        return sondaFrequenza;
+    }
 
-	public void setSondaFrequenza(String sondaFrequenza) {
-		this.sondaFrequenza = sondaFrequenza;
-	}
+    public void setSondaFrequenza(String sondaFrequenza) {
+        this.sondaFrequenza = sondaFrequenza;
+    }
 
-	public String getSondaDimensione() {
+    public String getSondaDimensione() {
         return sondaDimensione;
     }
 
@@ -115,21 +185,5 @@ public class AMCampioneDTO {
 
     public void setSondaVelocita(String sondaVelocita) {
         this.sondaVelocita = sondaVelocita;
-    }
-
-    public String getCertificato() {
-        return certificato;
-    }
-
-    public void setCertificato(String certificato) {
-        this.certificato = certificato;
-    }
-
-    public Date getDataScadenzaCertifica() {
-        return dataScadenzaCertifica;
-    }
-
-    public void setDataScadenzaCertifica(Date dataScadenzaCertifica) {
-        this.dataScadenzaCertifica = dataScadenzaCertifica;
     }
 }

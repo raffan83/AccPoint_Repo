@@ -2,7 +2,7 @@ package it.portaleSTI.DTO;
 
 import java.util.Date;
 
-public class AmCampioneDTO {
+public class AMCampioneDTO {
 
     private int id;
     private String rilevatoreOut;

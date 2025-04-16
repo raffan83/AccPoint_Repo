@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DAO.GestioneAM_DAO;
 import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
+import it.portaleSTI.DTO.AMCampioneDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
 public class GestioneAM_BO {
@@ -23,6 +24,11 @@ public class GestioneAM_BO {
 		return GestioneAM_DAO.getListaOperatoriAll(session);
 		
 		
+	}
+
+	public static ArrayList<AMCampioneDTO> getListaCampioni(Session session) throws HibernateException, ParseException {
+		
+		return GestioneAM_DAO.getListaCampioni(session);
 	}
 
 }

@@ -4,7 +4,7 @@
 
 <hibernate-mapping package="it.portaleSTI.DTO">
 
-    <class name="AmOggettoProvaDTO" table="am_oggetto_prova">
+    <class name="AMOggettoProvaDTO" table="am_oggetto_prova">
         
         <id name="id" column="id">
             <generator class="native"/>

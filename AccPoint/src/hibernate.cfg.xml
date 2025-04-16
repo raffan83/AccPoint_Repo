@@ -237,15 +237,12 @@
   	<mapping class="ForPiaStatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForPiaStatoDTO.hbm.xml"/> 	    
  	<mapping class="ForPiaTipoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForPiaTipoDTO.hbm.xml"/>
  	<mapping class="ForPiaPianificazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForPiaPianificazioneDTO.hbm.xml"/> 	
- 	
+  	
  	<mapping class="AMInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMInterventoDTO.hbm.xml"/>
  	<mapping class="AMOperatoreDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMOperatoreDTO.hbm.xml"/>
 	<mapping class="AmOggettoProvaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AmOggettoProvaDTO.hbm.xml"/>
 	<mapping class="it.portaleSTI.DTO.AmCampioneDTO" resource="it/portaleSTI/hbm/AmCampioneDTO.hbm.xml"/>
-<!--  	<mapping class="AMAttivitaManutenzioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMAttivitaManutenzioneDTO.hbm.xml"/>
- 	<mapping class="AMInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMInterventoDTO.hbm.xml"/>
- 	<mapping class="AMSistemaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMSistemaDTO.hbm.xml"/>
- 	<mapping class="AMTipoManutenzioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMTipoManutenzioneDTO.hbm.xml"/> -->
+  
  	
  	
  	<mapping class="PaaVeicoloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PaaVeicoloDTO.hbm.xml"/>

@@ -11,6 +11,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
+import it.portaleSTI.DTO.AMCampioneDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
@@ -53,31 +54,7 @@ public class GestioneAM_DAO {
 		return lista;
 	}
 
-	public static AMInterventoDTO getInterventoFromID(int id_intervento, Session session) {
-		
-		ArrayList<AMInterventoDTO> lista = null;
-		AMInterventoDTO res = new AMInterventoDTO();
-		Query query = null;
-		
-		
-		query = session.createQuery("from AMInterventoDTO where id = :_id");			
-		
-		query.setParameter("_id", id_intervento);
-		
-		lista = (ArrayList<AMInterventoDTO>) query.list();
-		
-		if(lista.size()>0) {
-			res = lista.get(0);
-		}
-		
-		return res;
-
-
-	}
-	
-	
-	
-public static ArrayList<AMCampioneDTO> getListaCampioni(Session session) {
+	public static ArrayList<AMCampioneDTO> getListaCampioni(Session session) {
 		
 		ArrayList<AMCampioneDTO> lista = null;
 		

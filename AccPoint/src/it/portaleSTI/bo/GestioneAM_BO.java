@@ -33,19 +33,24 @@ public class GestioneAM_BO {
 	}
 
 	
-	public static AMInterventoDTO getInterventoFromID(int id_intervento, Session session) {
+	public static AMInterventoDTO getInterventoFromID(int id_intervento, Session session) throws HibernateException, ParseException {
 
 		return GestioneAM_DAO.getInterventoFromID(id_intervento, session);
 	}
 
-	public static ArrayList<AMOggettoProvaDTO> getListaStrumenti(Session session) {
+	public static ArrayList<AMOggettoProvaDTO> getListaStrumenti(Session session) throws HibernateException, ParseException {
 		
 		return GestioneAM_DAO.getListaStrumenti(session);
 	}
 
-	public static AMOggettoProvaDTO getOggettoProvaFromID(int id_strumento, Session session) {
+	public static AMOggettoProvaDTO getOggettoProvaFromID(int id_strumento, Session session) throws HibernateException, ParseException {
 	
 		return GestioneAM_DAO.getOggettoProvaFromID(id_strumento, session);
+	}
+
+	public static AMCampioneDTO getCampioneFromID(int id_campione, Session session) throws HibernateException, ParseException {
+		
+		return GestioneAM_DAO.getCampioneFromID(id_campione, session);
 	}
 
 }

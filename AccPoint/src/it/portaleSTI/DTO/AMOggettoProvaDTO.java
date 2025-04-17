@@ -4,24 +4,24 @@ import java.util.Date;
 
 public class AMOggettoProvaDTO {
 
-    private int id;
-    private String zonaRifFasciame;
-    private String spessoreFondo;
-    private String tipo;
-    private String volume;
-    private String materialeFasciame;
-    private String pressione;
-    private String costruttore;
-    private String nFabbrica;
-    private String zonaRifFondo;
-    private int anno;
-    private String spessoreFasciame;
-    private String materialeFondo;
-    private String matricola;
-    private String descrizione;
-    private Date dataVerifica;
-    private Date dataProssimaVerifica;
-    private int frequenza;
+    public int id;
+    public String zonaRifFasciame;
+    public String spessoreFondo;
+    public String tipo;
+    public String volume;
+    public String materialeFasciame;
+    public String pressione;
+    public String costruttore;
+    public String nFabbrica;
+    public String zonaRifFondo;
+    public int anno;
+    public String spessoreFasciame;
+    public String materialeFondo;
+    public String matricola;
+    public String descrizione;
+    public Date dataVerifica;
+    public Date dataProssimaVerifica;
+    public int frequenza;
 
     // Getter e Setter
 

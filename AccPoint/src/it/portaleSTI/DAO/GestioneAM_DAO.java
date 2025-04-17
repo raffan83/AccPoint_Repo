@@ -122,5 +122,23 @@ public static AMOggettoProvaDTO getOggettoProvaFromID(int id_strumento, Session 
 	return res;
 }
 
+public static AMCampioneDTO getCampioneFromID(int id_campione, Session session) {
+	ArrayList<AMCampioneDTO> lista = null;
+	AMCampioneDTO res = new AMCampioneDTO();
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMCampioneDTO where id = :_id");			
+	
+	query.setParameter("_id", id_campione);
+	
+	lista = (ArrayList<AMCampioneDTO>) query.list();
+	
+	if(lista.size()>0) {
+		res = lista.get(0);
+	}
+	
+	return res;
+}
 
 }

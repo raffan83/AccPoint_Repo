@@ -4,26 +4,26 @@ import java.util.Date;
 
 public class AMCampioneDTO {
 
-    private int id;
-    private String codiceInterno;
-    private String denominazione;
-    private String matricola;
-    private String modello;
-    private String costruttore;
-    private String nCertificato;
-    private Date dataTaratura;
-    private int frequenza;
-    private Date dataScadenzaCertifica;
-    private String rilevatoreOut;
-    private String mezzoAccoppiante;
-    private String bloccoRiferimento;
-    private String sondaCostruttore;
-    private String sondaModello;
-    private String sondaMatricola;
-    private String sondaFrequenza;
-    private String sondaDimensione;
-    private String sondaAngolo;
-    private String sondaVelocita;
+    public int id;
+    public String codiceInterno;
+    public String denominazione;
+    public String matricola;
+    public String modello;
+    public String costruttore;
+    public String nCertificato;
+    public Date dataTaratura;
+    public int frequenza;
+    public Date dataScadenzaCertifica;
+    public String rilevatoreOut;
+    public String mezzoAccoppiante;
+    public String bloccoRiferimento;
+    public String sondaCostruttore;
+    public String sondaModello;
+    public String sondaMatricola;
+    public String sondaFrequenza;
+    public String sondaDimensione;
+    public String sondaAngolo;
+    public String sondaVelocita;
 
     // Getter e Setter
 

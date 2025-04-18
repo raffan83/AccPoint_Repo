@@ -1,6 +1,6 @@
 <%@page import="java.util.ArrayList"%>
  <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%> 
-<%@page import="it.portaleSTI.DTO.AMCampioneDTO"%>
+<%@page import="it.portaleSTI.DTO.AMOperatoreDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="it.portaleSTI.DTO.ClienteDTO"%>
 <%@page import="it.portaleSTI.DTO.CommessaDTO"%>
@@ -24,7 +24,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Lista interventi
+        Lista Campioni AM
         <!-- <small></small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/"><i class="fa fa-dashboard"></i> Home</a>
@@ -52,7 +52,7 @@
 
 
 <div class="col-xs-12">
-<button class="btn btn-primary pull-right" onClick="nuovoCampioneFromModal()" style="margin-right:5px"><i class="fa fa-plus"></i> Nuovo Campione</button> 
+<button class="btn btn-primary pull-right" onClick="$('#modalNuovoCampione').modal()" style="margin-right:5px"><i class="fa fa-plus"></i> Nuovo Campione</button> 
 </div>
 
 </div><br>
@@ -63,51 +63,47 @@
  <table id="tabAMCampioni" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 <th>ID</th>
-<!--<th>Cliente</th>
-<th>Cliente Utilizzatore</th>
-<th>Sede</th>
-<th>Sede Utilizzatore</th>
-<th>Commessa</th>
-<th>Data Intervento</th>
-<th>Responsabile</th>
-<th>Stato</th>
--->
+<th>Tipo Campione</th>
+<th>Codice Interno</th>
+<th>Denominazione</th>
+<th>Matricola</th>
+<th>Modello</th>
+<th>Costruttore</th>
+<th>Numero di Certificato</th>
+<th>Data Taratura</th>
+<th>Frequenza</th>
+<th>Data Scadenza Certificato</th>
+
 <th>Azioni</th>
  </tr></thead>
-
+ 
  <tbody>
  
  <c:forEach items="${lista_campioni }" var="campione" varStatus="loop">
 	<tr id="row_${loop.index}" >
 	
 	<td>${campione.id }</td>	
-<!--  	<td>${intervento.nomeCliente }</td>
-	<td>${intervento.nomeClienteUtilizzatore }</td>
-	<td>${intervento.nomeSede }</td>
-	<td>${intervento.nomeSedeUtilizzatore }</td>
-	<td>${intervento.idCommessa }</td>
-	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.dataIntervento }" /></td>
-	<td>${intervento.operatore.nomeOperatore }</td>
-	<td>
+	<td>${campione.tipoCampione.denominazione }</td>
+	<td>${campione.codiceInterno}</td>
+	<td>${campione.denominazione}</td>
+	<td>${campione.matricola}</td>
+	<td>${campione.modello}</td>
+	<td>${campione.costruttore}</td>
+	<td>${campione.nCertificato}</td>
+
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${campione.dataTaratura }" /></td>
+	<td>${campione.frequenza}</td>
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${campione.dataScadenzaCertifica }" /></td>
 
 	
-	<c:if test="${intervento.stato== 0}">
-						
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiInterventoAM('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-success">APERTO</span></a>
-						
-					</c:if>
-					
-					<c:if test="${intervento.stato == 1}">
-						<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriVerIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">CHIUSO</span></a>
-						
-					</c:if>
-	
-	</td>
-	-->
+
 	<td align="center">
-	<a class="btn btn-info" onClicK="callAction('gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
+	<%-- <a class="btn btn-info" onClicK="callAction('gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
 
-	<a class="btn btn-warning" title="Click per modificare l'intervento"><i class="fa fa-edit"></i></a>
+	--%>
+	
+	<a class="btn btn-warning" title="Click per modificare il campione" onClick="modificaCampione('${campione.id}')"><i class="fa fa-edit"></i></a>
+ 
 	</td>
 	</tr>
 	</c:forEach> 
@@ -132,255 +128,282 @@
 
 
 
-<form id="modificaInterventoForm" name="modificaInterventoForm">
-<div id="myModalModificaIntervento" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Intervento</h4>
-      </div>
-       <div class="modal-body">
+<form id="nuovoCampioneForm">
 
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Cliente</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  <div class="col-md-6" style="display:none">  
-                  <label>Cliente</label>
-               <select name="cliente_appoggio" id="cliente_appoggio" class="form-control " aria-hidden="true" data-live-search="true" style="width:100%" required>
-                        <%-- <c:forEach items="${lista_clienti}" var="cliente">
-                     
-                           <option value="${cliente.__id}">${cliente.nome}</option> 
-                         
-                     </c:forEach>    --%>
-
-                  </select> 
-                
-        </div>  	
-        <input id="cliente_mod" name="cliente_mod" type ="text" class="form-control" style="width:100%">
-       <%-- 		  <select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_mod" name="cliente_mod" style="width:100%" required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
-       				<option value="${cliente.__id}">${cliente.nome }</option>
-       			</c:forEach> 
-       		</select>  --%>        	
-       	</div>       	
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Sede</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Sede..." id="sede_mod" name="sede_mod" style="width:100%" disabled required>
-       		<option value=""></option>
-       		 	<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
-       				<option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo }</option>
-       			</c:forEach> 
-       		</select>
-       	</div>
-       </div><br>
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Commessa</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa_mod" name="commessa_mod" style="width:100%" >
-       		<option value=""></option>
-       			 <c:forEach items="${lista_commesse}" var="commessa" varStatus="loop">
-       				<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}">${commessa.ID_COMMESSA}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Data prevista</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<div class='input-group date datepicker' id='datepicker_data_prevista'>
-               <input type='text' class="form-control input-small" id="data_prevista_mod" name="data_prevista_mod" required>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Tecnico Verificatore</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tecnico verificatore..." id="tecnico_verificatore_mod" name="tecnico_verificatore_mod" style="width:100%" required>
-       		<option value=""></option>
-        			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
-       				<option value="${tecnico.id}">${tecnico.nominativo}</option>
-       			</c:forEach> 
-       		</select>
-       	</div>
-       </div><br>
-       
-<%--         <div class="row">
-       	<div class="col-sm-3">
-       		<label>Tecnico Riparatore</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tecnico Riparatore..." id="tecnico_riparatore_mod" name="tecnico_riparatore_mod" style="width:100%" >
-       		<option value=""></option>
-       		<option value="0">Nessuno</option>
-       			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
-       				<option value="${tecnico.id}">${tecnico.nominativo}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br> --%>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Luogo</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select id="luogo_mod" name="luogo_mod" class="form-control select2" style="width:100%">
-				  <option value=0>In Sede</option>
-				  <option value=1>Presso il Cliente</option>
-				  <option value=2>Altro Luogo</option>				  
-				</select>
-       	</div>
-       </div>      <br>
-       
-         <div class="row">
-       	<div class="col-sm-3">
-       	<h4>STRUMENTI</h4>
-       	
-       	</div></div> 
-       <div id="tab_luogo">
-
-       	</div>
-
-      
-       
-       </div>
-  		 
-      <div class="modal-footer">
-      <!-- <label id="label" style="color:red" class="pull-left">Attenzione! Compila correttamente tutti i campi!</label> -->
-
-		 <!-- <a class="btn btn-primary"  onClick="inserisciRilievo()">Salva</a>  -->
-		<!--  <a class="btn btn-primary"  type="submit">Salva</a>  -->
-		<input type="hidden" id="id_intervento" name="id_intervento">
-		<input type="hidden" id="ids_strumenti" name="ids_strumenti">
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</form>
-
-  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div id="modalNuovoCampione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Nuovo Campione</h4>
       </div>
-      <!--  <div class="modal-body">
+       <div class="modal-body">
 
 		<div class="row">
-       	<div class="col-sm-3">
-       		<label>Commessa</label>
-       	</div>
-       	<div class="col-sm-9">
-				<select  id="comm" name="comm" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
-
-				<c:forEach items="${lista_commesse }" var="comm">
+	<div class="col-sm-3">
+		<label>Tipo Campione</label>
+	</div>
+	<div class="col-sm-9">
+	<select  id="tipoCampione" name="tipoCampione" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" data-placeholder="Seleziona Tipo Campione...">
+	<option value=""></option>
+				<c:forEach items="${lista_tipi_campione }" var="tipo">
 				
-				<option value="${comm.ID_COMMESSA }@${comm.ID_ANAGEN_NOME}@${comm.INDIRIZZO_PRINCIPALE}@${comm.NOME_UTILIZZATORE}@${comm.INDIRIZZO_UTILIZZATORE}" >${comm.ID_COMMESSA }</option>
+				<option value="${tipo.id }">${tipo.denominazione }</option>
 					
 				</c:forEach>
 				</select>
-       	</div>
-       </div><br>
-       
-              <div class="row">
-       	<div class="col-sm-3">
-       		<label>Cliente</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="nomeCliente" name="nomeCliente" style="width:100%" required>       	
-       	</div>
-       </div><br>
-       
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Cliente Utilizzatore</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="nomeClienteUtilizzatore" name="nomeClienteUtilizzatore" style="width:100%" required>       	
-       	</div>
-       </div><br>
-       
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Sede</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="nomeSede" name="nomeSede" style="width:100%" required>       	
-       	</div>
-       </div><br>
-           <div class="row">
-       	<div class="col-sm-3">
-       		<label>Sede Utilizzatore</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="nomeSedeUtilizzatore" name="nomeSedeUtilizzatore" style="width:100%" required>       	
-       	</div>
-       </div><br>
-       
-              <div class="row">
-       	<div class="col-sm-3">
-       		<label>Data Intervento</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<div class='input-group date datepicker' id='datepicker_data_intervento'>
-               <input type='text' class="form-control input-small" id="data_intervento" name="data_intervento" required>
+
+	</div>
+</div><br>
+
+<div class="row">
+	<div class="col-sm-3">
+		<label>Codice Interno</label>
+	</div>
+	<div class="col-sm-9">
+		<input class="form-control" id="codiceInterno" name="codiceInterno" style="width:100%" >
+	</div>
+</div><br>
+
+<div class="row">
+	<div class="col-sm-3">
+		<label>Denominazione</label>
+	</div>
+	<div class="col-sm-9">
+		<input class="form-control" id="denominazione" name="denominazione" style="width:100%" >
+	</div>
+</div><br>
+
+<div class="row">
+	<div class="col-sm-3">
+		<label>Matricola</label>
+	</div>
+	<div class="col-sm-9">
+		<input class="form-control" id="matricola" name="matricola" style="width:100%" >
+	</div>
+</div><br>
+
+<div class="row">
+	<div class="col-sm-3">
+		<label>Modello</label>
+	</div>
+	<div class="col-sm-9">
+		<input class="form-control" id="modello" name="modello" style="width:100%" >
+	</div>
+</div><br>
+
+<div class="row">
+	<div class="col-sm-3">
+		<label>Costruttore</label>
+	</div>
+	<div class="col-sm-9">
+		<input class="form-control" id="costruttore" name="costruttore" style="width:100%" >
+	</div>
+</div><br>
+
+<div class="row">
+	<div class="col-sm-3">
+		<label>Numero di Certificato</label>
+	</div>
+	<div class="col-sm-9">
+		<input class="form-control" id="nCertificato" name="nCertificato" style="width:100%" >
+	</div>
+</div><br>
+
+<div class="row">
+	<div class="col-sm-3">
+		<label>Data Taratura</label>
+	</div>
+	<div class="col-sm-9">
+		<div class='input-group date datepicker' id='datepicker_data_intervento'>
+               <input type='text' class="form-control input-small" id="data_taratura" name="data_taratura" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
                 </span>
-        </div> 
-       	</div>
-       </div><br>
-       
-       		<div class="row">
-       	<div class="col-sm-3">
-       		<label>Responsabile</label>
-       	</div>
-       	<div class="col-sm-9">
-				<select  id="operatore" name="operatore" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+	</div>
+</div>
+</div><br>
+<div class="row">
+	<div class="col-sm-3">
+		<label>Frequenza</label>
+	</div>
+	<div class="col-sm-9">
+		<input type="number" class="form-control" id="frequenza" name="frequenza" style="width:100%" >
+	</div>
+</div><br>
 
-				<c:forEach items="${lista_operatori }" var="opr">
-				
-				<option value="${opr.id }" >${opr.nomeOperatore }</option>
-					
-				</c:forEach>
-				</select>
-       	</div>
-       </div><br>
-       
+<div class="row">
+	<div class="col-sm-3">
+		<label>Data Scadenza Certificato</label>
+	</div>
+	<div class="col-sm-9">
+		<div class='input-group date datepicker' id='datepicker_data_intervento'>
+               <input type='text' class="form-control input-small" id="data_scadenza_certificato" name="data_scadenza_certificato" >
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+	</div>
+	</div>
+</div><br>
 
-  		  <div id="empty" class="testo12"></div>
-  		 </div> -->
+    
+      
+       
+       
+       <div id="content_tipoCampione" style="display:none">
+       
+       
+</div>       
+
+
+  		
+  		 </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-danger"onclick="saveCampioneFromModal()"  >Salva</button>
+        <button type="submit" class="btn btn-danger"  >Salva</button>
       </div>
     </div>
   </div>
 </div>
+</form>
+
+
+<form id="modificaCampioneForm">
+
+  <div id="modalModificaCampione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Campione</h4>
+      </div>
+      <div class="modal-body">
+
+	<div class="row">
+		<div class="col-sm-3">
+			<label>Tipo Campione</label>
+		</div>
+		<div class="col-sm-9">
+			<select id="tipoCampione_mod" name="tipoCampione_mod" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" data-placeholder="Seleziona Tipo Campione...">
+				<option value=""></option>
+				<c:forEach items="${lista_tipi_campione }" var="tipo">
+					<option value="${tipo.id }">${tipo.denominazione }</option>
+				</c:forEach>
+			</select>
+		</div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<label>Codice Interno</label>
+		</div>
+		<div class="col-sm-9">
+			<input class="form-control" id="codiceInterno_mod" name="codiceInterno_mod" style="width:100%">
+		</div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<label>Denominazione</label>
+		</div>
+		<div class="col-sm-9">
+			<input class="form-control" id="denominazione_mod" name="denominazione_mod" style="width:100%">
+		</div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<label>Matricola</label>
+		</div>
+		<div class="col-sm-9">
+			<input class="form-control" id="matricola_mod" name="matricola_mod" style="width:100%">
+		</div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<label>Modello</label>
+		</div>
+		<div class="col-sm-9">
+			<input class="form-control" id="modello_mod" name="modello_mod" style="width:100%">
+		</div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<label>Costruttore</label>
+		</div>
+		<div class="col-sm-9">
+			<input class="form-control" id="costruttore_mod" name="costruttore_mod" style="width:100%">
+		</div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<label>Numero di Certificato</label>
+		</div>
+		<div class="col-sm-9">
+			<input class="form-control" id="nCertificato_mod" name="nCertificato_mod" style="width:100%">
+		</div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<label>Data Taratura</label>
+		</div>
+		<div class="col-sm-9">
+			<div class='input-group date datepicker' id='datepicker_data_taratura_mod'>
+				<input type='text' class="form-control input-small" id="data_taratura_mod" name="data_taratura_mod">
+				<span class="input-group-addon">
+					<span class="fa fa-calendar"></span>
+				</span>
+			</div>
+		</div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<label>Frequenza</label>
+		</div>
+		<div class="col-sm-9">
+			<input type="number" class="form-control" id="frequenza_mod" name="frequenza_mod" style="width:100%">
+		</div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<label>Data Scadenza Certificato</label>
+		</div>
+		<div class="col-sm-9">
+			<div class='input-group date datepicker' id='datepicker_data_scadenza_certificato_mod'>
+				<input type='text' class="form-control input-small" id="data_scadenza_certificato_mod" name="data_scadenza_certificato_mod">
+				<span class="input-group-addon">
+					<span class="fa fa-calendar"></span>
+				</span>
+			</div>
+		</div>
+	</div><br>
+
+	<div id="content_tipoCampione_mod" style="display:none"></div>
+
+</div>
+
+      <div class="modal-footer">
+		<input type="hidden" id="id_campione" name="id_campione">
+        <button type="submit" class="btn btn-danger"  >Salva</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+
+
+
+
+
 
 </div>
    <t:dash-footer />
@@ -408,99 +431,76 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script> 
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
-
-
 <script type="text/javascript">
 
 
-function nuovoCampioneFromModal()
-	{
-		$( "#myModal" ).modal();
-	}
 
 
-function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico_verificatore, sede_cliente, data_prevista, company){
 
-	
-	//initSelect2('#cliente_mod');
-	
-	updateSelectClienti(company, id_cliente, id_sede)
-	
-	$('#luogo_mod').val(sede_cliente);
-	$('#luogo_mod').change();
-	
-	
-	$('#id_intervento').val(id_intervento);
-/* 	$('#cliente_mod').val(id_cliente);
-	$('#cliente_mod').change();
-	
-	// $("#cliente_mod").trigger("chosen:updated");
 
-	if(id_sede!='0'){
-		$('#sede_mod').val(id_sede+"_"+id_cliente);	
-	}else{
-		$('#sede_mod').val(0);
-	}
-	$('#sede_mod').change(); */
-	
-	if(data_prevista!=null && data_prevista!=""){
-		  $('#data_prevista_mod').val(Date.parse(data_prevista).toString("dd/MM/yyyy"));
-	  }
-	getStrumentiIntervento(id_intervento, tecnico_verificatore);
 
-}
+$('#modalNuovoCampione').on('hidden.bs.modal',function(){
 
-$('#myModalModificaIntervento').on('hidden.bs.modal',function(){
+	$('#tipoCampione').val("");
+	$('#tipoCampione').change();
+	$('#codiceInterno').val("");
+	$('#denominazione').val("");
+	$('#matricola').val("");
+	$('#modello').val("");
+	$('#costruttore').val("");
+	$('#nCertificato').val("");
+	$('#data_taratura').val("");
+	$('#frequenza').val("");
+	$('#data_scadenza_taratura').val("");
+	$('#content_tipoCampione').hide()
 	
-	$('#cliente_mod').val("");
-	$('#cliente_mod').change();
 	
 	$(document.body).css('padding-right', '0px');
 });
 
 
-$('#comm').on('change', function(){
+$('#modalModificaCampione').on('hidden.bs.modal',function(){
+
+	$('#tipoCampione_mod').val("");
+	$('#tipoCampione_mod').change();
+	$('#codiceInterno_mod').val("");
+	$('#denominazione_mod').val("");
+	$('#matricola_mod').val("");
+	$('#modello_mod').val("");
+	$('#costruttore_mod').val("");
+	$('#nCertificato_mod').val("");
+	$('#data_taratura_mod').val("");
+	$('#frequenza_mod').val("");
+	$('#data_scadenza_taratura_mod').val("");
+	$('#content_tipoCampione_mod').hide()
+	campioneCorrente = null;
 	
-	if($("#comm").val()!=null && $("#comm").val()!=''){		
-		id_commessa = $('#comm').val();
-		
-		var nomeCli=$('#comm').val().split("@")[1];
-		
-		var sedeCli=$('#comm').val().split("@")[2];	
-		
-		var nomeCliUtil=$('#comm').val().split("@")[3];
-		
-		var sedeCliUtil=$('#comm').val().split("@")[4];
-		
-		
-		$("#nomeCliente").val(nomeCli);
-		$("#nomeSede").val(sedeCli);
-		$("#nomeClienteUtilizzatore").val(nomeCliUtil);
-		$("#nomeSedeUtilizzatore").val(sedeCliUtil);
-		
-	}
+	
+	$(document.body).css('padding-right', '0px');
 });
+
 
 
 var columsDatatables = [];
 
 $("#tabAMCampioni").on( 'init.dt', function ( e, settings ) {
     var api = new $.fn.dataTable.Api( settings );
-    
     var state = api.state.loaded();
  
     if(state != null && state.columns!=null){
-		console.log(state.columns);
-
-	columsDatatables = state.columns;
-	}
-
+    		console.log(state.columns);
+    
+    columsDatatables = state.columns;
+    }
     $('#tabAMCampioni thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
     	  var title = $('#tabAMCampioni thead th').eq( $(this).index() ).text();
-     
+    	
+    	  
 		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
-	    
+	    	
+	
+	
     	} );
     
     
@@ -508,10 +508,174 @@ $("#tabAMCampioni").on( 'init.dt', function ( e, settings ) {
 } );
 
 
-var commessa_options;
 
+
+function formatDate(data){
+	
+	   var mydate =  Date.parse(data);
+	   
+	   if(!isNaN(mydate.getTime())){
+	   
+		var   str = mydate.toString("dd/MM/yyyy");
+	   }			   
+	   return str;	 		
+}
+
+
+
+function aggiornaDataProssima(mod) {
+    var frequenza = parseInt($('#frequenza'+mod).val(), 10);
+    var dataVerificaStr = $('#data_verifica'+mod).val(); // formato: dd/MM/yyyy
+
+    if (!isNaN(frequenza) && dataVerificaStr) {
+        var parts = dataVerificaStr.split('/');
+        var giorno = parseInt(parts[0], 10);
+        var mese = parseInt(parts[1], 10) - 1; // JavaScript usa 0-based per i mesi
+        var anno = parseInt(parts[2], 10);
+
+        var data = new Date(anno, mese, giorno);
+        data.setMonth(data.getMonth() + frequenza);
+
+        var nuovoGiorno = ('0' + data.getDate()).slice(-2);
+        var nuovoMese = ('0' + (data.getMonth() + 1)).slice(-2);
+        var nuovoAnno = data.getFullYear();
+
+        $('#data_prossima_verifica'+mod).val(nuovoGiorno + '/' + nuovoMese + '/' + nuovoAnno);
+    } else {
+        $('#data_prossima_verifica'+mod).val('');
+    }
+}
+
+$('#frequenza_mod, #data_verifica_mod').on('change input', function() {
+    aggiornaDataProssima("_mod");
+});
+
+
+$('#frequenza, #data_verifica').on('change input', function() {
+    aggiornaDataProssima("");
+});
+
+function camelCaseToLabel(str) {
+    return str
+      .replace(/([A-Z])/g, ' $1') // Spazio prima delle maiuscole
+      .replace(/^./, function(s) { return s.toUpperCase(); }); // Prima lettera maiuscola
+  }
+
+
+
+$('#tipoCampione, #tipoCampione_mod' ).change(function(){
+	
+	var value =$(this).val();
+	
+	if(value!=null && value!=''){
+		
+		dataObj={};
+		dataObj.id_tipo = value;
+		
+		var container = $('#content_'+$(this)[0].id)
+		
+		callAjax(dataObj, "amGestioneCampioni.do?action=get_tipo", function(data, textStatus){
+			
+			
+			container.html("");
+			container.hide()
+				
+				var tipo_campione = data.tipo_campione;
+			var promises = [];
+			
+			var keys = tipo_campione.visibilitaColonne.split(";")
+			
+				keys.forEach(function (key) {
+					
+					if(container[0].id.includes("_mod")){
+						key = key+"_mod";	
+						var campione = campioneCorrente;
+					}
+					
+					
+				      const label = camelCaseToLabel(key).replace("_mod","");
+				      const input = '<div class="row"><div class="col-sm-3"><label for="' + key + '">' + label + '</label></div><div class="col-sm-9"><input class="form-control" id="' + key + '" name="' + key + '" style="width:100%"></div></div><br>';
+										      
+				      container.append(input);
+				      if(container[0].id.includes("_mod")){
+				      	$('#' + key).val(campione[key.replace("_mod","")]);
+				      }
+				})
+				
+
+					container.show();
+
+			
+		}, "GET");
+	}
+	
+	
+	
+});
+
+var campioneCorrente
+
+function modificaCampione(id_campione){
+	
+	dataObj = {}
+	dataObj.id_campione = id_campione;
+
+	callAjax(dataObj, "amGestioneCampioni.do?action=get_campione", function(data, textStatus){
+		
+		
+			var campione = data.campione;
+			campioneCorrente = campione;
+				
+			$('#tipoCampione_mod').val(campione.tipoCampione.id);
+			$('#tipoCampione_mod').change()
+
+			$('#codiceInterno_mod').val(campione.codiceInterno);
+			$('#denominazione_mod').val(campione.denominazione);
+			$('#matricola_mod').val(campione.matricola);
+			$('#modello_mod').val(campione.modello);
+			$('#costruttore_mod').val(campione.costruttore);
+			$('#nCertificato_mod').val(campione.nCertificato);
+			$('#data_taratura_mod').val(campione.dataTaratura);
+			$('#frequenza_mod').val(campione.frequenza);
+			$('#data_scadenza_certificato_mod').val(campione.dataScadenzaCertifica);
+			
+			$('#id_campione').val(id_campione)
+
+
+			$('#modalModificaCampione').modal()
+			
+
+	}, "GET");
+
+	
+}
+
+var commessa_options;
 $(document).ready(function() {
  
+	
+	
+	
+	commessa_options = $('#commessa_mod option').clone();
+	
+	$(".select2").select2();
+
+	
+	//initSelect2('#cliente_mod');
+	//$('#cliente_mod').change();
+	$('#sede_mod').select2();
+	$('#commessa_mod').select2();
+	$('#tecnico_verificatore_mod').select2();
+	$('#luogo_mod').select2();
+	$('.datepicker').datepicker({
+		 format: "dd/mm/yyyy"
+	 });
+	//$('.datepicker').datepicker('setDate', new Date());
+    $('.dropdown-toggle').dropdown();
+     
+
+
+
      table = $('#tabAMCampioni').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -537,7 +701,7 @@ $(document).ready(function() {
 		        }
 	        },
 	        pageLength: 25,
-	        "order": [[ 0, "desc" ]],
+	        "order": [[ 2, "desc" ]],
 		      paging: true, 
 		      ordering: true,
 		      info: true, 
@@ -553,7 +717,7 @@ $(document).ready(function() {
 		    	},     
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 0, targets: 0 },
+		    	  { responsivePriority: 0, targets: 11 },
 		    	  
 		    	  
 		               ], 	        
@@ -570,6 +734,14 @@ $(document).ready(function() {
 	 	       e.stopPropagation();    
 	 	    });
 
+	 	     table.columns().eq( 0 ).each( function ( colIdx ) {
+	 	  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	 	  	      table
+	 	  	          .column( colIdx )
+	 	  	          .search( this.value )
+	 	  	          .draw();
+	 	  	  } );
+	 	  	} );  
 
 		table.columns.adjust().draw();
 		
@@ -586,35 +758,35 @@ $(document).ready(function() {
 
 	});
 	
+	
+	
+	
+
+	
+	
 });
 
 
- $('#modificaInterventoForm').on('submit', function(e){
+
+ 
+ 
+ $('#modificaCampioneForm').on("submit", function(e){
+
 	 e.preventDefault();
-	 var row =  document.getElementById('tab_luogo').children;
-	  var string = '';
-	  for(var i = 0;i<row.length;i++){
-		  if(row[i].id!=null && row[i].id!=''){
-   		var id = row[i].id.split("_")[1];			
-			var ora = $('#ora_'+id).val();
-			
-			if(ora!='' && ora.length<5){
-				ora = "0"+ora;
-			}
-			if($('#luogo_mod').val()!="2"){
-				string = string + $('#id_'+id).val() + "_" +ora+";"	;
-			}else{
-				string = string + $('#id_'+id).val() + "_" + ora + "_" + $('#via_'+id).val() + "_" + $('#civico_'+id).val() + "_" + $('#comune_'+id).val() +";";
-			}
-		  }
-	  }
 	 
-	  $('#ids_strumenti').val(string);
-	 $('#luogo_mod').attr('disabled',false);
-	 modificaVerIntervento();
-});
+	 callAjaxForm('#modificaCampioneForm','amGestioneCampioni.do?action=modifica');
+	 
+ });
+ 
+ $('#nuovoCampioneForm').on("submit", function(e){
 
-
+	 e.preventDefault();
+	 
+	 callAjaxForm('#nuovoCampioneForm','amGestioneCampioni.do?action=nuovo');
+	 
+ });
+ 
+ 
   </script>
   
 </jsp:attribute> 

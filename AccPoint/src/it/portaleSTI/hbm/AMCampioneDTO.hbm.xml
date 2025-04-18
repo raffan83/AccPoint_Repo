@@ -10,7 +10,9 @@
         <id name="id" column="id">
             <generator class="native"/>
         </id>
-
+		<many-to-one name="tipoCampione" class="it.portaleSTI.DTO.AMTipoCampioneDTO" fetch="join" lazy="false">
+            <column name="id_tipo_campione" />
+        </many-to-one>
         <property name="codiceInterno" column="codice_interno"/>
         <property name="denominazione" column="denominazione"/>
         <property name="matricola" column="matricola"/>
@@ -30,6 +32,9 @@
         <property name="sondaDimensione" column="sonda_dimensione"/>
         <property name="sondaAngolo" column="sonda_angolo"/>
         <property name="sondaVelocita" column="sonda_velocita"/>
+        <property name="misurazioneMassima" column="misurazioneMassima"/>
+        <property name="larghezzaManico" column="larghezzaManico"/>
+        <property name="spessorePunta" column="spessorePunta"/>
 
     </class>
 

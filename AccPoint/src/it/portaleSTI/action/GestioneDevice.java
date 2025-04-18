@@ -336,8 +336,10 @@ public class GestioneDevice extends HttpServlet {
 				
 				DevDeviceDTO device = new DevDeviceDTO();
 				device.setCodice_interno(codice_interno);
-				DocumFornitoreDTO company = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
-				device.setCompany_util(company);
+				if(id_company!=null && !id_company.equals("")) {
+					DocumFornitoreDTO company = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
+					device.setCompany_util(company);
+				}
 				DocumFornitoreDTO company_proprietaria = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company_proprietaria), session);
 				device.setCompany_proprietaria(company_proprietaria);
 				
@@ -1997,12 +1999,13 @@ public class GestioneDevice extends HttpServlet {
 				}
 				
 				contratto.setPermanente(permanente);
-				if(n_licenze!=null) {
+				if(n_licenze!=null&& !n_licenze.equals("")) {
 					contratto.setN_licenze(Integer.parseInt(n_licenze));
 				}
 				
 				session.save(contratto);
 				
+				if(id_software_associazione!=null && !id_software_associazione.equals("")) {
 				for (int i = 0; i < id_software_associazione.split(";").length; i++) {
 					DevSoftwareDTO s = GestioneDeviceBO.getSoftwareFromID(Integer.parseInt(id_software_associazione.split(";")[i]), session);
 					if(s.getContratto()!=null) {
@@ -2035,7 +2038,7 @@ public class GestioneDevice extends HttpServlet {
 					
 				}
 				
-				
+				}
 								
 				
 				myObj = new JsonObject();
@@ -2088,7 +2091,7 @@ public class GestioneDevice extends HttpServlet {
 			
 				contratto.setPermanente(permanente);
 				contratto.setEmail_referenti(email_referenti);
-				if(n_licenze!=null) {
+				if(n_licenze!=null&& !n_licenze.equals("")) {
 					contratto.setN_licenze(Integer.parseInt(n_licenze));
 				}
 				
@@ -2112,7 +2115,7 @@ public class GestioneDevice extends HttpServlet {
 				}
 				
 				ArrayList<Integer> lista_id_da_associare = new ArrayList<Integer>();
-				
+				if(id_software_associazione!=null && !id_software_associazione.equals("")) {
 				for (int i = 0; i < id_software_associazione.split(";").length; i++) {
 					DevSoftwareDTO s = GestioneDeviceBO.getSoftwareFromID(Integer.parseInt(id_software_associazione.split(";")[i]), session);
 					lista_id_da_associare.add(Integer.parseInt(id_software_associazione.split(";")[i]));
@@ -2141,6 +2144,7 @@ public class GestioneDevice extends HttpServlet {
 						s.setContratto(contratto);
 						session.update(s);
 					}
+				}
 				}
 				
 				for (int i = 0; i < lista_id_associati.size(); i++) {

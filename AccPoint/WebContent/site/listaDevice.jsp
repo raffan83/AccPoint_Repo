@@ -622,7 +622,7 @@
        </div>
        
        
-               <div class="row not_monitor">
+               <div class="row">
        <br>
        	<div class="col-sm-3">
        		<label>Company Utilizzatrice</label>

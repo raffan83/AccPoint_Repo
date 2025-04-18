@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
+import it.portaleSTI.DTO.AMTipoCampioneDTO;
 import it.portaleSTI.DTO.AMCampioneDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -133,6 +134,40 @@ public static AMCampioneDTO getCampioneFromID(int id_campione, Session session) 
 	query.setParameter("_id", id_campione);
 	
 	lista = (ArrayList<AMCampioneDTO>) query.list();
+	
+	if(lista.size()>0) {
+		res = lista.get(0);
+	}
+	
+	return res;
+}
+
+public static ArrayList<AMTipoCampioneDTO> getListaTipiCampione(Session session) {
+
+	ArrayList<AMTipoCampioneDTO> lista = null;
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMTipoCampioneDTO");			
+
+	
+	lista = (ArrayList<AMTipoCampioneDTO>) query.list();
+	
+
+	return lista;
+}
+
+public static AMTipoCampioneDTO getTipoCampioneFromID(int id_tipo, Session session) {
+	ArrayList<AMTipoCampioneDTO> lista = null;
+	AMTipoCampioneDTO res = new AMTipoCampioneDTO();
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMTipoCampioneDTO where id = :_id");			
+	
+	query.setParameter("_id", id_tipo);
+	
+	lista = (ArrayList<AMTipoCampioneDTO>) query.list();
 	
 	if(lista.size()>0) {
 		res = lista.get(0);

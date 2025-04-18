@@ -18,6 +18,8 @@ import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AM_CertificatoWrapper;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.action.ContextListener;
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -43,10 +45,14 @@ public class CreateCertificatoAM {
 		InputStream is  = PivotTemplate.class.getResourceAsStream("TemplateAM.jrxml");
 		
 		JasperReport report = JasperCompileManager.compileReport(is);
-
+		
+		
+		//JasperReportBuilder report = DynamicReports.report();
 		Map<String, Object> parameters = new HashMap<>(); // se hai parametri, altrimenti lascia vuoto
 
 		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listaWrapper);
+		
+	
 		
 		JasperPrint print = JasperFillManager.fillReport(report, parameters, dataSource);
 		

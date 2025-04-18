@@ -5,6 +5,7 @@ import java.util.Date;
 public class AMCampioneDTO {
 
     public int id;
+    public AMTipoCampioneDTO tipoCampione;
     public String codiceInterno;
     public String denominazione;
     public String matricola;
@@ -25,17 +26,55 @@ public class AMCampioneDTO {
     public String sondaAngolo;
     public String sondaVelocita;
 
+    public String spessorePunta;
+    public String larghezzaManico;
+    public String misurazioneMassima;
+    
     // Getter e Setter
+    
+    
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public String getSpessorePunta() {
+		return spessorePunta;
+	}
+
+	public void setSpessorePunta(String spessorePunta) {
+		this.spessorePunta = spessorePunta;
+	}
+
+	public String getLarghezzaManico() {
+		return larghezzaManico;
+	}
+
+	public void setLarghezzaManico(String larghezzaManico) {
+		this.larghezzaManico = larghezzaManico;
+	}
+
+	public String getMisurazioneMassima() {
+		return misurazioneMassima;
+	}
+
+	public void setMisurazioneMassima(String misurazioneMassima) {
+		this.misurazioneMassima = misurazioneMassima;
+	}
+
+	public void setId(int id) {
         this.id = id;
     }
 
-    public String getCodiceInterno() {
+    public AMTipoCampioneDTO getTipoCampione() {
+		return tipoCampione;
+	}
+
+	public void setTipoCampione(AMTipoCampioneDTO tipoCampione) {
+		this.tipoCampione = tipoCampione;
+	}
+
+	public String getCodiceInterno() {
         return codiceInterno;
     }
 

@@ -10,6 +10,7 @@ import it.portaleSTI.DAO.GestioneAM_DAO;
 import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
+import it.portaleSTI.DTO.AMTipoCampioneDTO;
 import it.portaleSTI.DTO.AMCampioneDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
@@ -51,6 +52,16 @@ public class GestioneAM_BO {
 	public static AMCampioneDTO getCampioneFromID(int id_campione, Session session) throws HibernateException, ParseException {
 		
 		return GestioneAM_DAO.getCampioneFromID(id_campione, session);
+	}
+
+	public static ArrayList<AMTipoCampioneDTO> getListaTipiCampione(Session session) {
+		
+		return GestioneAM_DAO.getListaTipiCampione(session);
+	}
+
+	public static AMTipoCampioneDTO getTipoCampioneFromID(int id_tipo, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAM_DAO.getTipoCampioneFromID(id_tipo, session);
 	}
 
 }

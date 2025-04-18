@@ -16631,11 +16631,14 @@ function nuovaNotaStrumento(form, action){
 
 
 
-function callAjax(dataObj, url, callback){
+function callAjax(dataObj, url, callback, method){
 	 
+	if(method==null){
+		method = "POST"
+	}
 
 	  $.ajax({
-type: "POST",
+type: method,
 url: url,
 data: dataObj,
 dataType: "json",

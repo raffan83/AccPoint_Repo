@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="it.portaleSTI.DTO">
+
+    <class name="AMProvaDTO" table="am_prova">
+
+         <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+
+		<many-to-one name="intervento" class="it.portaleSTI.DTO.AMInterventoDTO" column="id_intervento" fetch="join" lazy="false" />
+
+        <many-to-one name="tipoProva" class="it.portaleSTI.DTO.AMTipoProvaDTO" column="id_tipo_prova" fetch="join" lazy="false" />
+        
+        <property name="data" column="data" type="date" />
+        
+        <property name="esito" column="esito" type="string" />
+        
+        <property name="note" column="note" type="string" />
+        
+        <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_USER" />
+        </many-to-one>
+        
+        <property name="nRapporto" column="n_rapporto" type="string" />
+        
+        <property name="matrixSpess" column="matrix_spess" type="string" />
+
+    </class>
+</hibernate-mapping>
+

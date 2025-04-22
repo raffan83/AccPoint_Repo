@@ -243,7 +243,10 @@
 	<mapping class="AMOggettoProvaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMOggettoProvaDTO.hbm.xml"/>
 	<mapping class="AMCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMCampioneDTO.hbm.xml"/>
 	<mapping class="AMTipoCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMTipoCampioneDTO.hbm.xml"/>
-  
+	<mapping class="AMTipoProvaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMTipoProvaDTO.hbm.xml"/>
+	<mapping class="AMProvaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMProvaDTO.hbm.xml"/>
+	<mapping class="AMRapportoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMRapportoDTO.hbm.xml"/>
+	  
  	
  	
  	<mapping class="PaaVeicoloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PaaVeicoloDTO.hbm.xml"/>

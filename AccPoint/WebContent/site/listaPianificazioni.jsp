@@ -105,7 +105,7 @@
     </div>
     <div class="legend-item">
         <div class="legend-color" style="background-color: #F7BEF6;"></div>
-        <div class="legend-label">FATTURATO CON ATTESTATI</div>
+        <div class="legend-label">COMPLETATO</div>
     </div>
     <div class="legend-item">
         <div class="legend-color" style="background-color: #fa9d58;"></div>
@@ -130,6 +130,7 @@
 <th>Tipo</th>
 <th>Docenti</th>
 <th>Computo ore</th>
+<th>Fattura/Attestati</th>
 <th style="min-width:250px">Azioni</th>
 
  </tr></thead>
@@ -208,7 +209,15 @@
 </c:if>
      
 </td>
+<td id="check_${pianificazione.id }">
+<c:if test="${pianificazione.stato.id == 4  || pianificazione.stato.id == 5}">
+<input type="checkbox" disabled checked > <label>Fattura</label>
+</c:if>
 
+<c:if test="${pianificazione.stato.id == 5  || pianificazione.stato.id == 6}">
+<br><input type="checkbox" disabled checked ><label>Attestato</label>
+</c:if>
+</td>
 
 	
 		<td>
@@ -218,7 +227,7 @@
  	<a class="btn btn-default customTooltip" title="CONFERMATO"  style="background-color:#FFFFE0;" onClick="cambiaStato('${pianificazione.id}', 2)"><i class="glyphicon glyphicon-refresh"></i></a>
  	<a class="btn btn-default customTooltip" title="EROGATO"  style="background-color:#90EE90;" onClick="cambiaStato('${pianificazione.id}', 3)"><i class="glyphicon glyphicon-refresh"></i></a>
  	<a class="btn btn-default customTooltip" title="FATTURATO SENZA ATTESTATO"  style="background-color:#ADD8E6;" onClick="cambiaStato('${pianificazione.id}', 4)"><i class="glyphicon glyphicon-refresh"></i></a>
- 	<a class="btn btn-default customTooltip" title="FATTURATO CON ATTESTATO"  style="background-color:#F7BEF6;" onClick="cambiaStato('${pianificazione.id}', 5)"><i class="glyphicon glyphicon-refresh"></i></a>
+ 	<a class="btn btn-default customTooltip" title="COMPLETATO"  style="background-color:#F7BEF6;" onClick="cambiaStato('${pianificazione.id}', 5)"><i class="glyphicon glyphicon-refresh"></i></a>
  	<a class="btn btn-default customTooltip" title="ATTESTATI SENZA FATTURA"  style="background-color:#fa9d58;" onClick="cambiaStato('${pianificazione.id}', 6)"><i class="glyphicon glyphicon-refresh"></i></a>
 
 	</td>
@@ -328,8 +337,25 @@ function cambiaStato(id_pianificazione, stato){
 		    	
 				var cell = $("#"+id_pianificazione);
 				cell.text(pianificazione.stato.descrizione);
-			
-	
+				
+				
+			var cell_check= $('#check_'+id_pianificazione)
+				
+				var html = "";
+				if(pianificazione.stato.id == 4 || pianificazione.stato.id == 5){
+					html += '<input type="checkbox" class="iCheck" disabled checked > <label>Fattura</label>';
+				}
+				if(pianificazione.stato.id == 5 || pianificazione.stato.id ==6){
+					html += '<br><input type="checkbox" class="iCheck" disabled checked ><label>Attestato</label>';
+				}
+				
+				cell_check.html(html);
+				
+				$('.iCheck').iCheck({
+				      checkboxClass: 'icheckbox_square-blue',
+				      radioClass: 'iradio_square-blue',
+				      increaseArea: '20%' // optional
+				    }); 
 		  }
 	
 	});

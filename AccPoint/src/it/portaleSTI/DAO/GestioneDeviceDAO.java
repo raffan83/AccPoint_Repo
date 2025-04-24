@@ -783,7 +783,7 @@ public static void updateScadenzaContratti() throws HibernateException, ParseExc
 	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	ArrayList<DevContrattoDTO> lista_scadenze = null;
 
-	Query query = session.createQuery("from DevContrattoDTO where data_scadenza <= :_date");
+	Query query = session.createQuery("from DevContrattoDTO where data_scadenza <= :_date and permanente = 'NO'");
 	query.setParameter("_date", sqlToday);
 	
 	lista_scadenze = (ArrayList<DevContrattoDTO>) query.list();

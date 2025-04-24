@@ -67,6 +67,8 @@
 
 <th>ID</th>
 <th>Fornitore</th>
+<th>Descrizione</th>
+<th>Subscription</th>
 <th>Data inizio</th>
 <th>Data scadenza</th> 
  <th>Permanente</th>
@@ -81,13 +83,15 @@
 
 	<td>${contratto.id }</td>		
 	<td>${contratto.fornitore }</td>
+	<td>${contratto.descrizione }</td>
+	<td>${contratto.subscription }</td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${contratto.data_inizio }"></fmt:formatDate></td> 
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${contratto.data_scadenza }"></fmt:formatDate></td>
 		<td>${contratto.permanente }</td>
 <td>${contratto.n_licenze }</td>
 	<td>
 
-	  <a class="btn btn-warning customTooltip" onClicK="modificaContratto('${contratto.id}', '${utl:escapeJS(contratto.fornitore) }','${contratto.data_inizio }','${contratto.data_scadenza }', '${contratto.permanente }','${contratto.email_referenti }','${contratto.n_licenze }')" title="Click per modificare il contratto"><i class="fa fa-edit"></i></a> 
+	  <a class="btn btn-warning customTooltip" onClicK="modificaContratto('${contratto.id}', '${utl:escapeJS(contratto.fornitore) }','${contratto.data_inizio }','${contratto.data_scadenza }', '${contratto.permanente }','${contratto.email_referenti }','${contratto.n_licenze }', '${utl:escapeJS(contratto.descrizione) }','${utl:escapeJS(contratto.subscription) }')" title="Click per modificare il contratto"><i class="fa fa-edit"></i></a> 
 	 <%-- <a class="btn btn-danger customTooltip"onClicK="modalYesOrNo('${contratto.id}')" title="Click per eliminare il contratto"><i class="fa fa-trash"></i></a>
 	  <a class="btn btn-primary customTooltip" onClick="modalAllegati('${contratto.id}')" title="Click per aprire gli allegati"><i class="fa fa-archive"></i></a> --%>
 	</td>
@@ -138,7 +142,33 @@
        	   	
        </div><br>
        
-
+ <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Descrizione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="descrizione" name="descrizione" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>          	
+       	
+       	   	
+       </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Subscription</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="subscription" name="subscription" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>          	
+       	
+       	   	
+       </div><br>
        
                
         <div class="row">
@@ -261,7 +291,33 @@
        	   	
        </div><br>
        
-
+<div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Descrizione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="descrizione_mod" name="descrizione_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>          	
+       	
+       	   	
+       </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Subscription</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="subscription_mod" name="subscription_mod" class="form-control" type="text" style="width:100%" >
+       			
+       	</div>          	
+       	
+       	   	
+       </div><br>
        
                
         <div class="row">
@@ -845,7 +901,7 @@ function modalNuovoContratto(){
 }
 
 
-function modificaContratto(id_contratto, fornitore,    data_inizio, data_scadenza, permanente,email, n_licenze){
+function modificaContratto(id_contratto, fornitore,    data_inizio, data_scadenza, permanente,email, n_licenze, descrizione, subscription){
 	
 	$('#id_contratto').val(id_contratto);
 	$('#fornitore_mod').val(fornitore);
@@ -862,6 +918,8 @@ function modificaContratto(id_contratto, fornitore,    data_inizio, data_scadenz
 	$('#permanente_mod').change()
 	$('#email_referenti_mod').val(email);
 	$('#n_licenze_mod').val(n_licenze);
+	$('#descrizione_mod').val(descrizione);
+	$('#subscription_mod').val(subscription);
 	
 	createTableAssociati(null, id_contratto)
 
@@ -1127,7 +1185,10 @@ $('#modificaContrattoForm').on('submit', function(e){
 	 // Estrai la prima colonna e crea la stringa
 	 var firstColumnString = [];
 	 for (var i = 0; i < allData.length; i++) {
-	     firstColumnString.push(allData[i][0]); // Assumendo che i dati siano in formato array
+		 if(!allData[i][0].includes("Nessun")){
+			 firstColumnString.push(allData[i][0]); // Assumendo che i dati siano in formato array	 
+		 }
+	     
 	 }
 
 	 var resultString = firstColumnString.join(';');

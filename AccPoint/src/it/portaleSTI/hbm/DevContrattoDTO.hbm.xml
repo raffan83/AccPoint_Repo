@@ -41,5 +41,11 @@
             <column name="email_referenti" />
         </property>
 	
+	<property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        <property name="subscription" type="java.lang.String">
+            <column name="subscription" />
+        </property>
 	</class>
 </hibernate-mapping>

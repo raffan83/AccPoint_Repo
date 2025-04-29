@@ -13,6 +13,8 @@ public class DevContrattoDTO {
 	private int n_licenze;
 	private Date data_invio_remind;
 	private String email_referenti;
+	private String subscription;
+	private String descrizione;
 	
 
 	public int getN_licenze() {
@@ -119,6 +121,30 @@ public class DevContrattoDTO {
 
 	public void setEmail_referenti(String email_referenti) {
 		this.email_referenti = email_referenti;
+	}
+
+
+
+	public String getSubscription() {
+		return subscription;
+	}
+
+
+
+	public void setSubscription(String subscription) {
+		this.subscription = subscription;
+	}
+
+
+
+	public String getDescrizione() {
+		return descrizione;
+	}
+
+
+
+	public void setDescrizione(String descrizione) {
+		this.descrizione = descrizione;
 	}
 
 

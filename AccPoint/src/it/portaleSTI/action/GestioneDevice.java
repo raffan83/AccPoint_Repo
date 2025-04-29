@@ -891,7 +891,10 @@ public class GestioneDevice extends HttpServlet {
 				if(tipo_licenza!=null) {
 					software.setTipo_licenza(new DevTipoLicenzaDTO(Integer.parseInt(tipo_licenza),""));
 				}
-				software.setEmail_responsabile(email_responsabile);				
+				if(email_responsabile!=null) {
+					software.setEmail_responsabile(email_responsabile.trim());	
+				}
+								
 				
 				session.save(software);				
 				
@@ -964,7 +967,9 @@ public class GestioneDevice extends HttpServlet {
 				if(tipo_licenza!=null && !tipo_licenza.equals("")) {
 					software.setTipo_licenza(new DevTipoLicenzaDTO(Integer.parseInt(tipo_licenza),""));
 				}
-				software.setEmail_responsabile(email_responsabile);
+				if(email_responsabile!=null) {
+					software.setEmail_responsabile(email_responsabile.trim());	
+				}
 				
 				session.update(software);	
 				
@@ -1977,6 +1982,8 @@ public class GestioneDevice extends HttpServlet {
 				String id_software_associazione = ret.get("id_software_associazione");
 				String n_licenze = ret.get("n_licenze");
 				String email_referenti = ret.get("email_referenti");
+				String subscription = ret.get("subscription");
+				String descrizione = ret.get("descrizione");
 				
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -1985,8 +1992,12 @@ public class GestioneDevice extends HttpServlet {
 				
 				contratto.setFornitore(fornitore);
 				contratto.setData_inizio(df.parse(data_inizio));
-				contratto.setEmail_referenti(email_referenti);
+				if(email_referenti!=null) {
+					contratto.setEmail_referenti(email_referenti.trim());	
+				}
 				
+				contratto.setSubscription(subscription);
+				contratto.setDescrizione(descrizione);
 				if(data_scadenza!=null && !data_scadenza.equals("")) {
 					Date dataScadenza = df.parse(data_scadenza);
 					contratto.setData_scadenza(dataScadenza);	
@@ -2081,6 +2092,8 @@ public class GestioneDevice extends HttpServlet {
 				String id_software_associazione = ret.get("id_software_associazione_mod");
 				String n_licenze = ret.get("n_licenze_mod");
 				String email_referenti = ret.get("email_referenti_mod");
+				String subscription = ret.get("subscription_mod");
+				String descrizione = ret.get("descrizione_mod");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -2088,9 +2101,12 @@ public class GestioneDevice extends HttpServlet {
 				
 				contratto.setFornitore(fornitore);
 				contratto.setData_inizio(df.parse(data_inizio));
-			
+				contratto.setSubscription(subscription);
+				contratto.setDescrizione(descrizione);
 				contratto.setPermanente(permanente);
-				contratto.setEmail_referenti(email_referenti);
+				if(email_referenti!=null) {
+					contratto.setEmail_referenti(email_referenti.trim());	
+				}
 				if(n_licenze!=null&& !n_licenze.equals("")) {
 					contratto.setN_licenze(Integer.parseInt(n_licenze));
 				}

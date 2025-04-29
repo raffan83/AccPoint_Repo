@@ -3746,7 +3746,8 @@ public static ArrayList<DevSoftwareDTO> getListaSoftwareFiltro(int id_company) t
 				"    f.descrizione AS descr_tipo_licenza, "+
 				"    g.id AS id_contratto, "+
 				"    g.fornitore AS fornitore_contratto, "+
-				"    g.data_scadenza AS data_scadenza_contratto "+
+				"    g.data_scadenza AS data_scadenza_contratto, "+
+				"    g.subscription "+
 				"FROM dev_software b " + 
 				"LEFT JOIN dev_device_software c ON b.id = c.id_software " + 
 				"LEFT JOIN dev_device a ON c.id_device = a.id " + 
@@ -3810,6 +3811,8 @@ public static ArrayList<DevSoftwareDTO> getListaSoftwareFiltro(int id_company) t
 			contratto.setId(id_contratto);
 			contratto.setData_scadenza(rs.getDate("data_scadenza_contratto"));
 			contratto.setFornitore(rs.getString("fornitore_contratto"));
+			contratto.setSubscription(rs.getString("subscription"));
+			
 		
 			software.setContratto(contratto);;
 		}

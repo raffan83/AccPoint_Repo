@@ -80,7 +80,7 @@
 	<td>${software.versione }</td>
 	<td>
 	<c:if test="${software.contratto !=null }">
-	ID: ${software.contratto.id } - ${software.contratto.fornitore}
+	ID: ${software.contratto.id } - ${software.contratto.fornitore} <c:if test="${software.contratto.subscription !=null && software.contratto.subscription !=''}">- ${software.contratto.subscription }</c:if>
 	</c:if>
 	 </td>
 	 <td>

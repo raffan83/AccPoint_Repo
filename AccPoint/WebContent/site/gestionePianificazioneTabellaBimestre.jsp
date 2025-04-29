@@ -41,7 +41,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
     </div>
     <div class="legend-item">
         <div class="legend-color" style="background-color: #F7BEF6;"></div>
-        <div class="legend-label">FATTURATO CON ATTESTATI</div>
+        <div class="legend-label">COMPLETATO</div>
     </div>
         <div class="legend-item">
         <div class="legend-color" style="background-color: #fa9d58;"></div>
@@ -943,7 +943,7 @@ if(filtro!=3){
 	  
 
 		 
-		  var savedScrollLeft = localStorage.getItem('scrollLeftTablePianificazione');
+		/*   var savedScrollLeft = localStorage.getItem('scrollLeftTablePianificazione');
 		    if (savedScrollLeft !== null) {
 		        $('#tabForPianificazione_wrapper .dataTables_scrollBody').scrollLeft(savedScrollLeft);
 		    }else{
@@ -954,9 +954,15 @@ if(filtro!=3){
 		    	  }else{
 		    		  table.columns().draw();
 		    	  }
-		    }
+		    } */
 	
-			
+		    if(today!=null){
+				  scrollToColumn(parseInt(today)-3);
+				 
+		          table.order([order, 'desc']).draw()
+			  }else{
+				  table.columns().draw();
+			  }
 		  
 
 

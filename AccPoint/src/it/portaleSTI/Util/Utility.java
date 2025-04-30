@@ -66,11 +66,13 @@ import javax.mail.internet.MimeMultipart;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.sun.mail.smtp.SMTPMessage;
@@ -2134,4 +2136,65 @@ public class Utility extends HttpServlet {
 			        }
 			        return str.substring(0, 1).toUpperCase() + str.substring(1);
 			    }
+			    
+			    
+			    
+			    
+			    
+			    
+			    public static void saveFile(FileItem item, String path_folder, String filename) {
+
+			
+					File folder=new File(path_folder);
+					
+					if(!folder.exists()) {
+						folder.mkdirs();
+					}
+				
+					
+					while(true)
+					{
+						File file=null;
+						
+						
+						file = new File(path_folder+"\\"+filename);					
+						
+							try {
+								item.write(file);
+								break;
+
+							} catch (Exception e) 
+							{
+
+								e.printStackTrace();
+								break;
+							}
+					}
+				
+				}
+			 
+			 public static void downloadFile(String path,  ServletOutputStream outp) throws Exception {
+				 
+				 File file = new File(path);
+					
+					FileInputStream fileIn = new FileInputStream(file);
+
+
+					    byte[] outputByte = new byte[1];
+					    
+					    while(fileIn.read(outputByte, 0, 1) != -1)
+					    {
+					    	outp.write(outputByte, 0, 1);
+					    }
+					    				    
+					 
+					    fileIn.close();
+					    outp.flush();
+					    outp.close();
+			 }
+			    
+			    
+			    
+			    
+			    
 }

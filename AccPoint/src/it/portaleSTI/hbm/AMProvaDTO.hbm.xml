@@ -16,19 +16,25 @@
 
         <many-to-one name="tipoProva" class="it.portaleSTI.DTO.AMTipoProvaDTO" column="id_tipo_prova" fetch="join" lazy="false" />
         
+        <many-to-one name="strumento" class="it.portaleSTI.DTO.AMOggettoProvaDTO" column="id_strumento" fetch="join" lazy="false" />
+        
+        <many-to-one name="campione" class="it.portaleSTI.DTO.AMCampioneDTO" column="id_campione" fetch="join" lazy="false" />
+        
         <property name="data" column="data" type="date" />
         
         <property name="esito" column="esito" type="string" />
         
         <property name="note" column="note" type="string" />
         
-        <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+        <many-to-one name="operatore" class="it.portaleSTI.DTO.AMOperatoreDTO" fetch="join" lazy="false">
             <column name="id_USER" />
         </many-to-one>
         
         <property name="nRapporto" column="n_rapporto" type="string" />
         
         <property name="matrixSpess" column="matrix_spess" type="string" />
+        <property name="filename_excel" column="filename_excel" type="string" />
+        <property name="filename_img" column="filename_img" type="string" />
 
     </class>
 </hibernate-mapping>

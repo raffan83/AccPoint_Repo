@@ -10,9 +10,16 @@ public class AMProvaDTO {
 	private Date data;
 	private String esito;
 	private String note;
-	private UtenteDTO utente;
+	private AMOperatoreDTO operatore;
 	private String nRapporto;
 	private String matrixSpess;
+	private AMOggettoProvaDTO strumento;
+	private AMCampioneDTO campione;
+	private String filename_excel;
+	private String filename_img;
+	
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -51,12 +58,7 @@ public class AMProvaDTO {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	public UtenteDTO getUtente() {
-		return utente;
-	}
-	public void setUtente(UtenteDTO utente) {
-		this.utente = utente;
-	}
+
 	public String getnRapporto() {
 		return nRapporto;
 	}
@@ -68,6 +70,36 @@ public class AMProvaDTO {
 	}
 	public void setMatrixSpess(String matrixSpess) {
 		this.matrixSpess = matrixSpess;
+	}
+	public AMOggettoProvaDTO getStrumento() {
+		return strumento;
+	}
+	public void setStrumento(AMOggettoProvaDTO strumento) {
+		this.strumento = strumento;
+	}
+	public AMCampioneDTO getCampione() {
+		return campione;
+	}
+	public void setCampione(AMCampioneDTO campione) {
+		this.campione = campione;
+	}
+	public String getFilename_excel() {
+		return filename_excel;
+	}
+	public void setFilename_excel(String filename_excel) {
+		this.filename_excel = filename_excel;
+	}
+	public String getFilename_img() {
+		return filename_img;
+	}
+	public void setFilename_img(String filename_img) {
+		this.filename_img = filename_img;
+	}
+	public AMOperatoreDTO getOperatore() {
+		return operatore;
+	}
+	public void setOperatore(AMOperatoreDTO operatore) {
+		this.operatore = operatore;
 	}
 	
 	

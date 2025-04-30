@@ -12,7 +12,9 @@ import org.hibernate.Session;
 import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
+import it.portaleSTI.DTO.AMProvaDTO;
 import it.portaleSTI.DTO.AMTipoCampioneDTO;
+import it.portaleSTI.DTO.AMTipoProvaDTO;
 import it.portaleSTI.DTO.AMCampioneDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -168,6 +170,92 @@ public static AMTipoCampioneDTO getTipoCampioneFromID(int id_tipo, Session sessi
 	query.setParameter("_id", id_tipo);
 	
 	lista = (ArrayList<AMTipoCampioneDTO>) query.list();
+	
+	if(lista.size()>0) {
+		res = lista.get(0);
+	}
+	
+	return res;
+}
+
+public static ArrayList<AMProvaDTO> getListaProveIntervento(int id_intervento, Session session) {
+	ArrayList<AMProvaDTO> lista = null;
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMProvaDTO where intervento.id = :_id_intervento");			
+	query.setParameter("_id_intervento", id_intervento);
+
+	
+	lista = (ArrayList<AMProvaDTO>) query.list();
+	
+
+	return lista;
+}
+
+public static ArrayList<AMTipoProvaDTO> getListaTipiProva(Session session) {
+	ArrayList<AMTipoProvaDTO> lista = null;
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMTipoProvaDTO");
+
+	
+	lista = (ArrayList<AMTipoProvaDTO>) query.list();
+	
+
+	return lista;
+}
+
+public static AMOperatoreDTO getOperatoreFromID(int id_operatore, Session session) {
+	ArrayList<AMOperatoreDTO> lista = null;
+	AMOperatoreDTO res = new AMOperatoreDTO();
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMOperatoreDTO where id = :_id");			
+	
+	query.setParameter("_id", id_operatore);
+	
+	lista = (ArrayList<AMOperatoreDTO>) query.list();
+	
+	if(lista.size()>0) {
+		res = lista.get(0);
+	}
+	
+	return res;
+}
+
+public static AMTipoProvaDTO getTipoProvaFromID(int id_tipo_prova, Session session) {
+	ArrayList<AMTipoProvaDTO> lista = null;
+	AMTipoProvaDTO res = new AMTipoProvaDTO();
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMTipoProvaDTO where id = :_id");			
+	
+	query.setParameter("_id", id_tipo_prova);
+	
+	lista = (ArrayList<AMTipoProvaDTO>) query.list();
+	
+	if(lista.size()>0) {
+		res = lista.get(0);
+	}
+	
+	return res;
+}
+
+public static AMProvaDTO getProvaFromID(int id_prova, Session session) {
+	ArrayList<AMProvaDTO> lista = null;
+	AMProvaDTO res = new AMProvaDTO();
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMProvaDTO where id = :_id");			
+	
+	query.setParameter("_id", id_prova);
+	
+	lista = (ArrayList<AMProvaDTO>) query.list();
 	
 	if(lista.size()>0) {
 		res = lista.get(0);

@@ -912,6 +912,7 @@
 <th>Nome</th>
 <th>Produttore</th>
 <th>Dispositivi Associati</th>
+<th>Contratto</th>
 <th>Stato validazione</th>
 <th>Data validazione</th>
 <th>Product key</th>
@@ -1768,19 +1769,19 @@ function controllaAssociati(table, lista_software_associati){
 	 	
 	 	
 	 	if(lista_software_associati[i].stato_validazione!=null){
-	 	    oTable.fnUpdate(lista_software_associati[i].stato_validazione.descrizione, index, 6 );
+	 	    oTable.fnUpdate(lista_software_associati[i].stato_validazione.descrizione, index, 7 );
 	 	}
 	 	
 	 	if(lista_software_associati[i].data_validazione!=null){
-	 		oTable.fnUpdate(lista_software_associati[i].data_validazione , index, 7 );
+	 		oTable.fnUpdate(lista_software_associati[i].data_validazione , index, 8 );
 	 	}
 	 	
 	 	if(lista_software_associati[i].product_key!=null){
-	 		oTable.fnUpdate(lista_software_associati[i].product_key , index, 8 );
+	 		oTable.fnUpdate(lista_software_associati[i].product_key , index, 9 );
 	 	}
 	 	
 	 	if(lista_software_associati[i].autorizzato!=null){
-	 		oTable.fnUpdate(lista_software_associati[i].autorizzato , index, 9 );
+	 		oTable.fnUpdate(lista_software_associati[i].autorizzato , index, 10 );
 	 	} 
 	 	
 	 	table.row( "#row_sw_"+ val, { page:   'all'}).select();
@@ -1817,8 +1818,11 @@ function modalSoftware(id_device){
   		  dati.produttore = lista_software[i].produttore;
   		if(lista_software[i].contratto!=null){
   			dati.dev_associati = lista_software[i].n_device +"/"+lista_software[i].contratto.n_licenze;
+  			dati.contratto = "ID: "+lista_software[i].contratto.id+" - "+lista_software[i].contratto.fornitore + " - "+lista_software[i].contratto.subscription;
+  			
   		 }else{
   			dati.dev_associati = '';
+  			dati.contratto ='';
   		 }
   		 dati.stato = '';
   		 dati.data_validazione ='';
@@ -1874,10 +1878,15 @@ function modalValidazione(id){
 	
 	var table = $('#tabSoftwareTot').DataTable();
 	
-	var stato = table.cell("#row_sw_"+id, 5).data();
+/* 	var stato = table.cell("#row_sw_"+id, 5).data();
 	var data = table.cell("#row_sw_"+id, 6).data();
 	var pk = table.cell("#row_sw_"+id, 7).data();
-	var aut = table.cell("#row_sw_"+id, 8).data();
+	var aut = table.cell("#row_sw_"+id, 8).data(); */
+	
+	var stato = table.cell("#row_sw_"+id, 7).data();
+	var data = table.cell("#row_sw_"+id, 8).data();
+	var pk = table.cell("#row_sw_"+id, 9).data();
+	var aut = table.cell("#row_sw_"+id, 10).data();
 	
 	
 	if(stato!=null && stato == "VALIDATO"){
@@ -1946,17 +1955,17 @@ function salvaValidazione(){
 	 	
 	 	
 	 	if(data_val!=null){
-	 		oTable.fnUpdate(data_val , index, 6 , false);
+	 		oTable.fnUpdate(data_val , index, 8 , false);
 	 	}
 	 	
 	 	if(stato!=null){
-	 	    oTable.fnUpdate(stato , index, 5, false );
+	 	    oTable.fnUpdate(stato , index, 7, false );
 	 	}
 	 	if(pk!=null){
-	 	    oTable.fnUpdate(pk , index, 7, false  );
+	 	    oTable.fnUpdate(pk , index, 9, false  );
 	 	}
 	 	if(aut!=null){
-	 	    oTable.fnUpdate(aut , index, 8, false  );
+	 	    oTable.fnUpdate(aut , index, 10, false  );
 	 	}
 	 	
 	 	
@@ -2720,6 +2729,7 @@ $(document).ready(function() {
 	    	  {"data" : "nome"},
 	    	  {"data" : "produttore"},
 	    	  {"data" : "dev_associati"},
+	    	  {"data"  : "contratto"},
 	    	  {"data" : "stato"},
 	    	 
 	    	  {"data" : "data_validazione"},

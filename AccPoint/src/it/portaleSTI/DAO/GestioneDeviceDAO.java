@@ -119,12 +119,12 @@ public class GestioneDeviceDAO {
 		//Query query = session.createQuery("select s.software, count(s.device) from DevDeviceSoftwareDTO s where s.software.disabilitato = 0 group by s.software");
 		
 		Query query = session.createQuery(
-			    "select s, " +
-			    "  (select count(*) " +
-			    "   from DevDeviceSoftwareDTO d " +
-			    "   where d.software = s) " +
-			    "from DevSoftwareDTO s " +
-			    "where s.disabilitato = 0"
+				   "select s, " +
+						    "  (select count(distinct d.device.id) " +
+						    "   from DevDeviceSoftwareDTO d " +
+						    "   where d.software.contratto.id = s.contratto.id) " +
+						    "from DevSoftwareDTO s " +
+						    "where s.disabilitato = 0"
 			);
 		
 		List<Object[]> result  =  query.list();

@@ -120,7 +120,7 @@
 	
 	</td>
 	<td align="center">
-	<a class="btn btn-info" onClicK="callAction('gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
+	<a class="btn btn-info" onClicK="callAction('amGestioneInterventi.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
 
 	<a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaIntervento('${intervento.id}','${intervento.idCommessa}','${intervento.dataIntervento}', '${intervento.operatore.id}','${intervento.nomeCliente }','${intervento.nomeClienteUtilizzatore }','${intervento.nomeSede }','${intervento.nomeSedeUtilizzatore }')"><i class="fa fa-edit"></i></a>
 	</td>

@@ -302,6 +302,11 @@ public class Am_gestioneInterventi extends HttpServlet {
 				String operatore = ret.get("operatore_mod");
 				String data_intervento = ret.get("data_intervento_mod");
 				
+				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -312,10 +317,30 @@ public class Am_gestioneInterventi extends HttpServlet {
 				intervento.setId_sede(Integer.parseInt(id_sede.split("_")[0]));
 				intervento.setId_cliente_utilizzatore(Integer.parseInt(id_cliente_utilizzatore));
 				intervento.setId_sede_utilizzatore(Integer.parseInt(id_sede_utilizzatore.split("_")[0]));
-				intervento.setNomeCliente(nome_cliente);
-				intervento.setNomeClienteUtilizzatore(nome_cliente_utilizzatore);
-				intervento.setNomeSede(nome_sede);
-				intervento.setNomeSedeUtilizzatore(nome_sede_utilizzatore);
+				
+				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
+				
+				intervento.setNomeCliente(cl.getNome());
+				SedeDTO sd =null;
+				if(!id_sede.equals("0")) {
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), Integer.parseInt(id_cliente));
+					intervento.setNomeSede(sd.getDescrizione() + " - "+sd.getIndirizzo());
+				}else {
+					intervento.setNomeSede("Non associate");
+				}
+				
+				cl = GestioneAnagraficaRemotaBO.getClienteById(id_cliente_utilizzatore);
+				
+				intervento.setNomeClienteUtilizzatore(cl.getNome());
+				sd =null;
+				
+				if(!id_sede_utilizzatore.equals("0")) {
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_utilizzatore.split("_")[0]), Integer.parseInt(id_cliente_utilizzatore));
+					intervento.setNomeSedeUtilizzatore(sd.getDescrizione() + " - "+sd.getIndirizzo());
+				}else {
+					intervento.setNomeSedeUtilizzatore(cl.getNome() +" - "+cl.getIndirizzo());
+				}
+			
 				intervento.setOperatore(new AMOperatoreDTO(Integer.parseInt(operatore), "", ""));
 				intervento.setDataIntervento(df.parse(data_intervento));
 				intervento.setIdCommessa(commessa.split("@")[0]);
@@ -708,6 +733,15 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 			}
 			
+			else if(action.equals("lista_prove")) {
+				
+				ArrayList<AMProvaDTO> lista_prove = GestioneAM_BO.getListaProve(session);
+				request.setAttribute("lista_prove", lista_prove);
+
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_listaProve.jsp");
+				dispatcher.forward(request, response);
+			}
 			session.getTransaction().commit();
 			session.close();
 			

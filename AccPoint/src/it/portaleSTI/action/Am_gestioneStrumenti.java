@@ -166,7 +166,7 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				AMOggettoProvaDTO strumento = new AMOggettoProvaDTO();	
 				
 				strumento.setId_cliente(Integer.parseInt(id_cliente));
-				strumento.setId_cliente(Integer.parseInt(id_sede));
+				strumento.setId_cliente(Integer.parseInt(id_sede.split("_")[0]));
 				strumento.setDescrizione(descrizione);
 				strumento.setMatricola(matricola);
 				strumento.setZonaRifFasciame(zona_rif_fasciame);

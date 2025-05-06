@@ -122,7 +122,7 @@
 	<td align="center">
 	<a class="btn btn-info" onClicK="callAction('amGestioneInterventi.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
 
-	<a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaIntervento('${intervento.id}','${intervento.idCommessa}','${intervento.dataIntervento}', '${intervento.operatore.id}','${intervento.nomeCliente }','${intervento.nomeClienteUtilizzatore }','${intervento.nomeSede }','${intervento.nomeSedeUtilizzatore }')"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaIntervento('${intervento.id}','${intervento.idCommessa}','${intervento.dataIntervento}', '${intervento.operatore.id}','${intervento.nomeCliente }','${intervento.nomeClienteUtilizzatore }','${intervento.nomeSede }','${intervento.nomeSedeUtilizzatore }','${intervento.id_cliente }','${intervento.id_sede }','${intervento.id_cliente_utilizzatore }','${intervento.id_sede_utilizzatore }')"><i class="fa fa-edit"></i></a>
 	</td>
 	</tr>
 	</c:forEach> 
@@ -429,7 +429,7 @@
 		<input type="hidden" id="id_intervento" name="id_intervento">
 		<input type="hidden" id="nomeCliente_mod" name="nomeCliente_mod">
 		<input type="hidden" id="nomeSede_mod" name="nomeSede_mod">
-		<input type="hidden" id="nomeClienteUtilizzatore" name="nomeClienteUtilizzatore_mod">
+		<input type="hidden" id="nomeClienteUtilizzatore_mod" name="nomeClienteUtilizzatore_mod">
 		<input type="hidden" id="nomeSedeUtilizzatore_mod" name="nomeSedeUtilizzatore_mod">
 		
 		
@@ -500,7 +500,7 @@ function resetDate(){
 
 	}
 	
-
+var isModifica = false;
 
 function modificaIntervento(id, id_commessa, data_intervento, id_operatore, nome_cliente, nome_cliente_util, nome_sede, nome_sede_util, id_cliente, id_sede, id_cliente_utilizzatore, id_sede_utilizzatore){
 	
@@ -508,13 +508,14 @@ function modificaIntervento(id, id_commessa, data_intervento, id_operatore, nome
 	
 	
 	
-/* 	$('#comm_mod option').each(function() {
+ 	$('#comm_mod option').each(function() {
 	    if ($(this).val().startsWith(id_commessa + '@')) {
 	        $('#comm_mod').val($(this).val());
+	        isModifica = true;
 	        $('#comm_mod').change();
 	        return false; // interrompe il ciclo una volta trovata la corrispondenza
 	    }
-	}); */
+	}); 
 
 	if(data_intervento!=null && data_intervento!=''){
 		var date = new Date(data_intervento);
@@ -532,16 +533,30 @@ function modificaIntervento(id, id_commessa, data_intervento, id_operatore, nome
 		
 		 $('#cliente_mod').val(id_cliente);
 		 $('#cliente_mod').change();
-		 $('#sede_mod').val(id_sede);
+		 //$('#sede_mod').val(id_sede);
+		 if(id_sede!=0){
+				$('#sede_mod').val(id_sede+"_"+id_cliente);	
+			}else{
+				$('#sede_mod').val(id_sede);
+			}
 		 $('#sede_mod').change();
 		 $('#cliente_utilizzatore_mod').val(id_cliente_utilizzatore);
 		 $('#cliente_utilizzatore_mod').change();
-		 $('#sede_utilizzatore_mod').val(id_sede_utilizzatore);
+		// $('#sede_utilizzatore_mod').val(id_sede_utilizzatore);
+		 
+		 if(id_sede_utilizzatore!=0){
+				$('#sede_utilizzatore_mod').val(id_sede_utilizzatore+"_"+id_cliente_utilizzatore);	
+			}else{
+				$('#sede_utilizzatore_mod').val(id_sede_utilizzatore);
+			}
 		 $('#sede_utilizzatore_mod').change();
 		
 		 
-		
+		 initSelect2Gen('#cliente_mod', null, '#myModalModificaIntervento');
+			initSelect2Gen('#cliente_utilizzatore_mod', null, '#myModalModificaIntervento'); 
 	 $('#myModalModificaIntervento').modal()
+	 
+	 isModifica = false;
 }
 
 
@@ -582,24 +597,50 @@ var idClienteUtil = $('#comm').val().split("@")[7];
 			var idSedeUtil = $('#comm').val().split("@")[8];
 			
 		
- 		$("#nomeCliente").val(nomeCli);
+ 		/* $("#nomeCliente").val(nomeCli);
 		$("#nomeSede").val(sedeCli);
 		$("#nomeClienteUtilizzatore").val(nomeCliUtil);
-		$("#nomeSedeUtilizzatore").val(sedeCliUtil); 
+		$("#nomeSedeUtilizzatore").val(sedeCliUtil);  */
 		
 		$('#cliente').val(idCliente);
 		$('#cliente').change();
-		$('#sede').val(idSede);
+		if(idSede!=0){
+			$('#sede').val(idSede+"_"+idCliente);	
+		}else{
+			$('#sede').val(idSede);
+		}
+		
 		$('#sede').change();
 		$('#cliente_utilizzatore').val(idClienteUtil);
 		$('#cliente_utilizzatore').change();
-		$('#sede_utilizzatore').val(idSedeUtil);
+		
+		
+		if(idSedeUtil!=0){
+			$('#sede_utilizzatore').val(idSedeUtil+"_"+idClienteUtil);	
+		}else{
+			$('#sede_utilizzatore').val(idSedeUtil);
+		}
 		$('#sede_utilizzatore').change();
 		
-		/* initSelect2Gen('#cliente', null, '#myModal');
+		
+		if(nomeCli == '' ){
+			nomeCli = $('#cliente option:selected').text()
+		}
+		if(sedeCli == '' ){
+			sedeCli = $('#sede option:selected').text()
+		}
+		
+		if(nomeCliUtil == '' ){
+			nomeCliUtil = $('#cliente_utilizzatore option:selected').text()
+		}
+		if(sedeCliUtil == '' ){
+			sedeCliUtil = $('#sede_utilizzatore option:selected').text()
+		}
+		
+		 initSelect2Gen('#cliente', null, '#myModal');
 
 		initSelect2Gen('#cliente_utilizzatore', null, '#myModal');
-		 */
+		 
 		
 	}
 });
@@ -607,7 +648,7 @@ var idClienteUtil = $('#comm').val().split("@")[7];
 
 $('#comm_mod').on('change', function(){
 	
-	if($("#comm_mod").val()!=null && $("#comm_mod").val()!=''){		
+	if(!isModifica && $("#comm_mod").val()!=null && $("#comm_mod").val()!=''){		
 		id_commessa = $('#comm_mod').val();
 		
 		 var nomeCli=$('#comm_mod').val().split("@")[1];
@@ -628,24 +669,46 @@ var idClienteUtil = $('#comm_mod').val().split("@")[7];
 			
 			var idSedeUtil = $('#comm_mod').val().split("@")[8];
 			
+	
 		
+		$('#cliente_mod').val(idCliente);
+		if(idSede!=0){
+			$('#sede_mod').val(idSede+"_"+idCliente);	
+		}else{
+			$('#sede_mod').val(idSede);
+		}
+		$('#cliente_utilizzatore_mod').val(idClienteUtil);
+		if(idSedeUtil!=0){
+			$('#sede_utilizzatore_mod').val(idSedeUtil+"_"+idClienteUtil);	
+		}else{
+			$('#sede_utilizzatore_mod').val(idSedeUtil);
+		}
+		$('#cliente_mod').change();
+		$('#sede_mod').change();
+		$('#cliente_utilizzatore_mod').change();
+		$('#sede_utilizzatore_mod').change();
+		 
+		
+		if(nomeCli == '' ){
+			nomeCli = $('#cliente_mod option:selected').text()
+		}
+		if(sedeCli == '' ){
+			sedeCli = $('#sede_mod option:selected').text()
+		}
+		
+		if(nomeCliUtil == '' ){
+			nomeCliUtil = $('#cliente_utilizzatore_mod option:selected').text()
+		}
+		if(sedeCliUtil == '' ){
+			sedeCliUtil = $('#sede_utilizzatore_mod option:selected').text()
+		}
 		$("#nomeCliente_mod").val(nomeCli);
 		$("#nomeSede_mod").val(sedeCli);
 		$("#nomeClienteUtilizzatore_mod").val(nomeCliUtil);
 		$("#nomeSedeUtilizzatore_mod").val(sedeCliUtil); 
 		
-		$('#cliente_mod').val(idCliente);
-		$('#sede_mod').val(idSede);
-		$('#cliente_utilizzatore_mod').val(idClienteUtil);
-		$('#sede_utilizzatore_mod').val(idSedeUtil);
-		$('#cliente_mod').change();
-		$('#sede_mod').change();
-		$('#cliente_utilizzatore_mod').change();
-		$('#sede_utilizzatore_mod').change();
-		/* 
-		
 		initSelect2Gen('#cliente_mod', null, '#myModalModificaIntervento');
-		initSelect2Gen('#cliente_utilizzatore_mod', null, '#myModalModificaIntervento'); */
+		initSelect2Gen('#cliente_utilizzatore_mod', null, '#myModalModificaIntervento'); 
 	 	
 	}
 });
@@ -745,8 +808,8 @@ $(document).ready(function() {
 	$("#sede_utilizzatore_mod").select2();
 	
 	
-	initSelect2Gen('#cliente_mod', null, '#myModalModificaIntervento');
-	initSelect2Gen('#cliente_utilizzatore_mod', null, '#myModalModificaIntervento');
+	//initSelect2Gen('#cliente_mod', null, '#myModalModificaIntervento');
+	//initSelect2Gen('#cliente_utilizzatore_mod', null, '#myModalModificaIntervento');
 	initSelect2Gen('#cliente', null, '#myModal');
 	initSelect2Gen('#cliente_utilizzatore', null, '#myModal');
 	
@@ -812,7 +875,7 @@ $(document).ready(function() {
 		        }
 	        },
 	        pageLength: 25,
-	        "order": [[ 2, "desc" ]],
+	        "order": [[ 0, "desc" ]],
 		      paging: true, 
 		      ordering: true,
 		      info: true, 
@@ -821,11 +884,7 @@ $(document).ready(function() {
 		      responsive: true,
 		      scrollX: false,
 		      stateSave: true,	
-		      select: {		
-    	    	  
-		        	style:    'multi+shift',
-		        	selector: 'td:nth-child(2)'
-		    	},     
+		       
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 0, targets: 6 },

@@ -22,7 +22,8 @@ public class AMOggettoProvaDTO {
     public Date dataVerifica;
     public Date dataProssimaVerifica;
     public int frequenza;
-
+    private Integer id_cliente;
+	private Integer id_sede;
     // Getter e Setter
 
     public int getId() {
@@ -33,7 +34,23 @@ public class AMOggettoProvaDTO {
         this.id = id;
     }
 
-    public String getZonaRifFasciame() {
+    public Integer getId_cliente() {
+		return id_cliente;
+	}
+
+	public void setId_cliente(Integer id_cliente) {
+		this.id_cliente = id_cliente;
+	}
+
+	public Integer getId_sede() {
+		return id_sede;
+	}
+
+	public void setId_sede(Integer id_sede) {
+		this.id_sede = id_sede;
+	}
+
+	public String getZonaRifFasciame() {
         return zonaRifFasciame;
     }
 

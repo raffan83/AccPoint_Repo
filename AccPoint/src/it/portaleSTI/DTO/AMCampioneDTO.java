@@ -29,6 +29,7 @@ public class AMCampioneDTO {
     public String spessorePunta;
     public String larghezzaManico;
     public String misurazioneMassima;
+    public String file_certificato;
     
     // Getter e Setter
     
@@ -40,6 +41,14 @@ public class AMCampioneDTO {
 
     public String getSpessorePunta() {
 		return spessorePunta;
+	}
+
+	public String getFile_certificato() {
+		return file_certificato;
+	}
+
+	public void setFile_certificato(String file_certificato) {
+		this.file_certificato = file_certificato;
 	}
 
 	public void setSpessorePunta(String spessorePunta) {

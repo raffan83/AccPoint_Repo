@@ -15,10 +15,22 @@ public class DevContrattoDTO {
 	private String email_referenti;
 	private String subscription;
 	private String descrizione;
-	
+	private DocumFornitoreDTO company;
 
 	public int getN_licenze() {
 		return n_licenze;
+	}
+
+
+
+	public DocumFornitoreDTO getCompany() {
+		return company;
+	}
+
+
+
+	public void setCompany(DocumFornitoreDTO company) {
+		this.company = company;
 	}
 
 

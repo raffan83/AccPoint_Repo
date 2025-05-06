@@ -13,12 +13,43 @@ public class AMInterventoDTO {
 	private String idCommessa;
 	private AMOperatoreDTO operatore;
 	private int stato;
+	private Integer id_cliente;
+	private Integer id_sede;
+	private Integer id_cliente_utilizzatore;
+	private Integer id_sede_utilizzatore;
+	
 	
 	public int getId() {
 		return id;
 	}
+	public Integer getId_cliente_utilizzatore() {
+		return id_cliente_utilizzatore;
+	}
+	public void setId_cliente_utilizzatore(Integer id_cliente_utilizzatore) {
+		this.id_cliente_utilizzatore = id_cliente_utilizzatore;
+	}
+	public Integer getId_sede_utilizzatore() {
+		return id_sede_utilizzatore;
+	}
+	public void setId_sede_utilizzatore(Integer id_sede_utilizzatore) {
+		this.id_sede_utilizzatore = id_sede_utilizzatore;
+	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	
+	public Integer getId_cliente() {
+		return id_cliente;
+	}
+	public void setId_cliente(Integer id_cliente) {
+		this.id_cliente = id_cliente;
+	}
+	public Integer getId_sede() {
+		return id_sede;
+	}
+	public void setId_sede(Integer id_sede) {
+		this.id_sede = id_sede;
 	}
 	public String getNomeCliente() {
 		return nomeCliente;

@@ -35,6 +35,10 @@
         <property name="matrixSpess" column="matrix_spess" type="string" />
         <property name="filename_excel" column="filename_excel" type="string" />
         <property name="filename_img" column="filename_img" type="string" />
+        
+        <property name="spess_min_fondo_sup" column="spess_min_fondo_sup" type="string" />
+        <property name="spess_min_fondo_inf" column="spess_min_fondo_inf" type="string" />
+        <property name="spess_min_fasciame" column="spess_min_fasciame" type="string" />
 
     </class>
 </hibernate-mapping>

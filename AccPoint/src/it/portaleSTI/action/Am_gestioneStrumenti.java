@@ -26,10 +26,13 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
+import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAM_BO;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 
 /**
  * Servlet implementation class listaCampioni
@@ -83,9 +86,23 @@ public class Am_gestioneStrumenti extends HttpServlet {
 
 			if(action.equals("lista")) {
 				
+				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+
+				
+				if(listaClienti==null) {
+					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
+				}
+				
+				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
 				ArrayList<AMOggettoProvaDTO> lista_strumenti = GestioneAM_BO.getListaStrumenti(session);
 				
 				request.getSession().setAttribute("lista_strumenti", lista_strumenti);
+				request.getSession().setAttribute("lista_clienti", listaClienti);
+				request.getSession().setAttribute("lista_sedi", listaSedi);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_listaStrumenti.jsp");
 		     	dispatcher.forward(request,response);
@@ -122,6 +139,8 @@ public class Am_gestioneStrumenti extends HttpServlet {
 	            	
 	            }
 		
+		        String id_cliente = ret.get("cliente_general");
+		        String id_sede = ret.get("sede_general");
 		        String descrizione = ret.get("descrizione");
 		        String matricola = ret.get("matricola");
 		        String zona_rif_fasciame = ret.get("zona_rif_fasciame");
@@ -146,6 +165,8 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				 
 				AMOggettoProvaDTO strumento = new AMOggettoProvaDTO();	
 				
+				strumento.setId_cliente(Integer.parseInt(id_cliente));
+				strumento.setId_cliente(Integer.parseInt(id_sede));
 				strumento.setDescrizione(descrizione);
 				strumento.setMatricola(matricola);
 				strumento.setZonaRifFasciame(zona_rif_fasciame);
@@ -213,6 +234,8 @@ public class Am_gestioneStrumenti extends HttpServlet {
 	            }
 		
 		        String id = ret.get("id_strumento");
+		        String id_cliente = ret.get("cliente_general_mod");
+		        String id_sede = ret.get("sede_general_mod");		        
 		        String descrizione = ret.get("descrizione_mod");
 		        String matricola = ret.get("matricola_mod");
 		        String zona_rif_fasciame = ret.get("zona_rif_fasciame_mod");
@@ -237,6 +260,8 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				 
 				AMOggettoProvaDTO strumento = GestioneAM_BO.getOggettoProvaFromID(Integer.parseInt(id), session);	
 				
+				strumento.setId_cliente(Integer.parseInt(id_cliente));
+				strumento.setId_sede(Integer.parseInt(id_sede.split("_")[0]));
 				strumento.setDescrizione(descrizione);
 				strumento.setMatricola(matricola);
 				strumento.setZonaRifFasciame(zona_rif_fasciame);

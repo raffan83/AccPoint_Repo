@@ -43,6 +43,7 @@ import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAM_BO;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
@@ -228,6 +229,8 @@ public class Am_gestioneCampioni extends HttpServlet {
 				    campione.setModello(modello);
 				    campione.setCostruttore(costruttore);
 				    campione.setnCertificato(nCertificato);
+				    campione.setFile_certificato(filename);
+		
 				    
 				    if (dataTaratura != null && !dataTaratura.equals("")) {
 				    campione.setDataTaratura(df.parse(dataTaratura));
@@ -265,6 +268,12 @@ public class Am_gestioneCampioni extends HttpServlet {
 				    
 				    // Salvataggio nel database
 				    session.save(campione);
+				    
+				    if(filename!=null) {
+				    	
+				    	Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\Campioni\\"+campione.getId(), filename);
+				    	session.update(campione);
+				    }
 				    
 				    // Risposta JSON
 				    myObj = new JsonObject();
@@ -311,6 +320,7 @@ public class Am_gestioneCampioni extends HttpServlet {
 				    String dataTaratura = ret.get("data_taratura_mod");
 				    String frequenza = ret.get("frequenza_mod");
 				    String dataScadenzaCertifica = ret.get("data_scadenza_certificato_mod");
+				    String fileCertificato = ret.get("file_certificato_mod");
 				    
 				    // Gestione della data
 				    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -323,6 +333,7 @@ public class Am_gestioneCampioni extends HttpServlet {
 				    campione.setModello(modello);
 				    campione.setCostruttore(costruttore);
 				    campione.setnCertificato(nCertificato);
+				    campione.setFile_certificato(filename);
 				    
 				    if (dataTaratura != null && !dataTaratura.equals("")) {
 				    campione.setDataTaratura(df.parse(dataTaratura));
@@ -357,8 +368,16 @@ public class Am_gestioneCampioni extends HttpServlet {
 				        }
 				    }
 				    
+				    
+				    if(filename!=null) {
+				    	
+				    	Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\Campioni\\"+campione.getId(), filename);
+				    	
+				    }
+				    
 				    // Salvataggio nel database
 				    session.update(campione);
+				  
 				    
 				    // Risposta JSON
 				    myObj = new JsonObject();
@@ -366,7 +385,21 @@ public class Am_gestioneCampioni extends HttpServlet {
 				    myObj.addProperty("success", true);
 				    myObj.addProperty("messaggio", "Campione salvato con successo!");
 				    out.print(myObj);
-				}			
+				}		
+			
+		else if(action.equals("download_certificato")) {
+			
+	
+			ajax = true;
+			
+			String id_campione = request.getParameter("id_campione");
+			
+			AMCampioneDTO campione = GestioneAM_BO.getCampioneFromID(Integer.parseInt(id_campione), session);
+			
+			response.setContentType("application/pdf");	
+			Utility.downloadFile(Costanti.PATH_FOLDER+"\\AM_interventi\\Campioni\\"+campione.getId()+"\\"+campione.getFile_certificato(), response.getOutputStream());
+			
+		}
 			
 			session.getTransaction().commit();
 			session.close();

@@ -66,6 +66,7 @@
 
 
 <th>ID</th>
+<th>Company</th>
 <th>Fornitore</th>
 <th>Descrizione</th>
 <th>Subscription</th>
@@ -82,6 +83,7 @@
 	<tr id="row_${loop.index}" >
 
 	<td>${contratto.id }</td>		
+	<td>${contratto.company.ragione_sociale }</td>
 	<td>${contratto.fornitore }</td>
 	<td>${contratto.descrizione }</td>
 	<td>${contratto.subscription }</td>
@@ -91,7 +93,7 @@
 <td>${contratto.n_licenze }</td>
 	<td>
 
-	  <a class="btn btn-warning customTooltip" onClicK="modificaContratto('${contratto.id}', '${utl:escapeJS(contratto.fornitore) }','${contratto.data_inizio }','${contratto.data_scadenza }', '${contratto.permanente }','${contratto.email_referenti }','${contratto.n_licenze }', '${utl:escapeJS(contratto.descrizione) }','${utl:escapeJS(contratto.subscription) }')" title="Click per modificare il contratto"><i class="fa fa-edit"></i></a> 
+	  <a class="btn btn-warning customTooltip" onClicK="modificaContratto('${contratto.id}', '${utl:escapeJS(contratto.fornitore) }','${contratto.data_inizio }','${contratto.data_scadenza }', '${contratto.permanente }','${contratto.email_referenti }','${contratto.n_licenze }', '${utl:escapeJS(contratto.descrizione) }','${utl:escapeJS(contratto.subscription) }','${contratto.company.id }')" title="Click per modificare il contratto"><i class="fa fa-edit"></i></a> 
 	 <%-- <a class="btn btn-danger customTooltip"onClicK="modalYesOrNo('${contratto.id}')" title="Click per eliminare il contratto"><i class="fa fa-trash"></i></a>
 	  <a class="btn btn-primary customTooltip" onClick="modalAllegati('${contratto.id}')" title="Click per aprire gli allegati"><i class="fa fa-archive"></i></a> --%>
 	</td>
@@ -126,7 +128,23 @@
       </div>
        <div class="modal-body">
 
- 
+ <div class="row">
+ 	<div class="col-sm-3">
+       		<label>Company</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <select id="company"  name="company" data-placeholder="Seleziona company..." class="form-control select2" style="width:100%" required>
+        <option value=""></option>
+        <c:forEach items="${lista_company }" var="cmp">
+        <option value="${cmp.id }">${cmp.ragione_sociale }</option>
+        
+        </c:forEach>
+        <option value="0">NESSUNA COMPANY</option>
+        </select>
+       			
+       	</div>       	
+       </div><br>
        
        <div class="row">
        
@@ -274,9 +292,26 @@
         <h4 class="modal-title" id="myModalLabel">Modifica Contratto</h4>
       </div>
       <div class="modal-body">
-
+      
+      <div class="row">
+ 	<div class="col-sm-3">
+       		<label>Company</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <select id="company_mod"  name="company_mod" data-placeholder="Seleziona company..." class="form-control select2" style="width:100%" required>
+        <option value=""></option>
+        <c:forEach items="${lista_company }" var="cmp">
+        <option value="${cmp.id }">${cmp.ragione_sociale }</option>
+        
+        </c:forEach>
+        <option value="0">NESSUNA COMPANY</option>
+        </select>
+       			
+       	</div>       	
+       </div><br>
  
-       
+      
        <div class="row">
        
        	<div class="col-sm-3">
@@ -901,7 +936,7 @@ function modalNuovoContratto(){
 }
 
 
-function modificaContratto(id_contratto, fornitore,    data_inizio, data_scadenza, permanente,email, n_licenze, descrizione, subscription){
+function modificaContratto(id_contratto, fornitore,    data_inizio, data_scadenza, permanente,email, n_licenze, descrizione, subscription, id_company){
 	
 	$('#id_contratto').val(id_contratto);
 	$('#fornitore_mod').val(fornitore);
@@ -920,6 +955,8 @@ function modificaContratto(id_contratto, fornitore,    data_inizio, data_scadenz
 	$('#n_licenze_mod').val(n_licenze);
 	$('#descrizione_mod').val(descrizione);
 	$('#subscription_mod').val(subscription);
+	$('#company_mod').val(id_company);
+	$('#company_mod').change();
 	
 	createTableAssociati(null, id_contratto)
 
@@ -1038,7 +1075,7 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 1 },
+		    	  { responsivePriority: 1, targets: 9 },
 		    	  
 		    	  
 		               ], 	        

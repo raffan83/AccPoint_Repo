@@ -103,6 +103,13 @@
 	--%>
 	
 	<a class="btn btn-warning" title="Click per modificare il campione" onClick="modificaCampione('${campione.id}')"><i class="fa fa-edit"></i></a>
+	
+	<c:if test="${campione.file_certificato!=null && campione.file_certificato!='' }">
+	
+
+	<a target="_blank"   class="btn btn-danger customTooltip" title="Click per scaricare il Cerificato Campione"  href="amGestioneCampioni.do?action=download_certificato&id_campione=${campione.id}" > <i class="fa fa-file-pdf-o"></i></a>
+	
+	</c:if>
  
 	</td>
 	</tr>
@@ -201,14 +208,7 @@
 	</div>
 </div><br>
 
-<div class="row">
-	<div class="col-sm-3">
-		<label>Numero di Certificato</label>
-	</div>
-	<div class="col-sm-9">
-		<input class="form-control" id="nCertificato" name="nCertificato" style="width:100%" >
-	</div>
-</div><br>
+
 
 <div class="row">
 	<div class="col-sm-3">
@@ -248,7 +248,30 @@
 	</div>
 </div><br>
 
-    
+    	<div class="row">
+		<div class="col-sm-3">
+			<label>Numero di Certificato</label>
+		</div>
+		<div class="col-sm-9">
+			<input class="form-control" id="nCertificato" name="nCertificato" style="width:100%">
+		</div>
+	</div><br>
+	
+	
+	<div class="row">
+	
+		   <div class="col-xs-4">
+			<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica Certificato...</span>
+				<input accept=".pdf"  id="fileupload" name="fileupload" type="file" REQUIRED >
+		       
+		   	 </span>
+		   	</div> 
+		 <div class="col-xs-8">
+		 <label id="label_certificato"></label>
+		 </div>
+	</div><br>
       
        
        
@@ -340,14 +363,7 @@
 		</div>
 	</div><br>
 
-	<div class="row">
-		<div class="col-sm-3">
-			<label>Numero di Certificato</label>
-		</div>
-		<div class="col-sm-9">
-			<input class="form-control" id="nCertificato_mod" name="nCertificato_mod" style="width:100%">
-		</div>
-	</div><br>
+	
 
 	<div class="row">
 		<div class="col-sm-3">
@@ -384,6 +400,31 @@
 				</span>
 			</div>
 		</div>
+	</div><br>
+	
+	<div class="row">
+		<div class="col-sm-3">
+			<label>Numero di Certificato</label>
+		</div>
+		<div class="col-sm-9">
+			<input class="form-control" id="nCertificato_mod" name="nCertificato_mod" style="width:100%">
+		</div>
+	</div><br>
+	
+	
+	<div class="row">
+	
+		   <div class="col-xs-4">
+			<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica Certificato...</span>
+				<input accept=".pdf"  id="fileupload_mod" name="fileupload_mod" type="file" REQUIRED >
+		       
+		   	 </span>
+		   	</div> 
+		 <div class="col-xs-8">
+		 <label id="label_certificato_mod"></label>
+		 </div>
 	</div><br>
 
 	<div id="content_tipoCampione_mod" style="display:none"></div>
@@ -479,6 +520,18 @@ $('#modalModificaCampione').on('hidden.bs.modal',function(){
 	$(document.body).css('padding-right', '0px');
 });
 
+$('#fileupload').change(function(){
+	
+	
+	$('#label_certificato').html($(this).val().split("\\")[2]);
+});
+
+
+$('#fileupload_mod').change(function(){
+
+
+$('#label_certificato_mod').html($(this).val().split("\\")[2]);
+});
 
 
 var columsDatatables = [];
@@ -638,6 +691,7 @@ function modificaCampione(id_campione){
 			$('#data_taratura_mod').val(campione.dataTaratura);
 			$('#frequenza_mod').val(campione.frequenza);
 			$('#data_scadenza_certificato_mod').val(campione.dataScadenzaCertifica);
+			$('#label_file_certificato_mod').html(campione.file_certificato);
 			
 			$('#id_campione').val(id_campione)
 

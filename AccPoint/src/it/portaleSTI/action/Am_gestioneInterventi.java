@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -19,6 +20,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -50,6 +52,7 @@ import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateCertificatoAM;
 import it.portaleSTI.bo.GestioneAM_BO;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
@@ -169,8 +172,8 @@ public class Am_gestioneInterventi extends HttpServlet {
 			ArrayList<AMOperatoreDTO> listaOperatori = GestioneAM_BO.getListaOperatoriAll(session);
 			
 			request.getSession().setAttribute("lista_interventi", lista_interventi);
-		//	request.getSession().setAttribute("lista_clienti", listaClienti);				
-		//	request.getSession().setAttribute("lista_sedi", listaSedi);
+			request.getSession().setAttribute("lista_clienti", listaClienti);				
+			request.getSession().setAttribute("lista_sedi", listaSedi);
 			request.getSession().setAttribute("lista_commesse", lista_commesse);
 			request.getSession().setAttribute("lista_operatori", listaOperatori);
 			
@@ -215,6 +218,10 @@ public class Am_gestioneInterventi extends HttpServlet {
 	            	
 	            }
 		
+		        String id_cliente = ret.get("cliente");
+		        String id_sede = ret.get("sede");
+		        String id_cliente_utilizzatore = ret.get("cliente_utilizzatore");
+		        String id_sede_utilizzatore = ret.get("sede_utilizzatore");
 				String nome_cliente = ret.get("nomeCliente");
 				String nome_cliente_utilizzatore = ret.get("nomeClienteUtilizzatore");
 				String nome_sede= ret.get("nomeSede");
@@ -223,18 +230,22 @@ public class Am_gestioneInterventi extends HttpServlet {
 				String operatore = ret.get("operatore");
 				String data_intervento = ret.get("data_intervento");
 				
-				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
 				 
 				AMInterventoDTO intervento = new AMInterventoDTO();	
 				
+				intervento.setId_cliente(Integer.parseInt(id_cliente));
+				intervento.setId_sede(Integer.parseInt(id_sede.split("_")[0]));
+				intervento.setId_cliente_utilizzatore(Integer.parseInt(id_cliente_utilizzatore));
+				intervento.setId_sede_utilizzatore(Integer.parseInt(id_sede_utilizzatore.split("_")[0]));
 				intervento.setNomeCliente(nome_cliente);
 				intervento.setNomeClienteUtilizzatore(nome_cliente_utilizzatore);
 				intervento.setNomeSede(nome_sede);
 				intervento.setNomeSedeUtilizzatore(nome_sede_utilizzatore);
 				intervento.setOperatore(new AMOperatoreDTO(Integer.parseInt(operatore), "", ""));
 				intervento.setDataIntervento(df.parse(data_intervento));
+				intervento.setIdCommessa(commessa.split("@")[0]);
 				
 				
 				
@@ -278,6 +289,10 @@ public class Am_gestioneInterventi extends HttpServlet {
 	            	
 	            }
 		
+		        String id_cliente = ret.get("cliente_mod");
+		        String id_sede = ret.get("sede_mod");
+		        String id_cliente_utilizzatore = ret.get("cliente_utilizzatore_mod");
+		        String id_sede_utilizzatore = ret.get("sede_utilizzatore_mod");
 		        String id_intervento = ret.get("id_intervento");
 				String nome_cliente = ret.get("nomeCliente_mod");
 				String nome_cliente_utilizzatore = ret.get("nomeClienteUtilizzatore_mod");
@@ -290,15 +305,20 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
-				 
+				
 				AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);	
 				
+				intervento.setId_cliente(Integer.parseInt(id_cliente));
+				intervento.setId_sede(Integer.parseInt(id_sede.split("_")[0]));
+				intervento.setId_cliente_utilizzatore(Integer.parseInt(id_cliente_utilizzatore));
+				intervento.setId_sede_utilizzatore(Integer.parseInt(id_sede_utilizzatore.split("_")[0]));
 				intervento.setNomeCliente(nome_cliente);
 				intervento.setNomeClienteUtilizzatore(nome_cliente_utilizzatore);
 				intervento.setNomeSede(nome_sede);
 				intervento.setNomeSedeUtilizzatore(nome_sede_utilizzatore);
 				intervento.setOperatore(new AMOperatoreDTO(Integer.parseInt(operatore), "", ""));
 				intervento.setDataIntervento(df.parse(data_intervento));
+				intervento.setIdCommessa(commessa.split("@")[0]);
 				
 				
 				
@@ -320,7 +340,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);
 				
 				ArrayList<AMProvaDTO> lista_prove = GestioneAM_BO.getListaProveIntervento(Integer.parseInt(id_intervento), session);
-				ArrayList<AMOggettoProvaDTO> lista_strumenti = GestioneAM_BO.getListaStrumenti(session);
+				ArrayList<AMOggettoProvaDTO> lista_strumenti = GestioneAM_BO.getListaStrumentiClienteSede(intervento.getId_cliente(), intervento.getId_sede(),session);
 				ArrayList<AMCampioneDTO> lista_campioni = GestioneAM_BO.getListaCampioni(session);
 				ArrayList<AMTipoProvaDTO> lista_tipi_prova = GestioneAM_BO.getListaTipiProva(session);
 				ArrayList<AMOperatoreDTO> lista_operatori = GestioneAM_BO.getListaOperatoriAll(session);
@@ -385,6 +405,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				String id_intervento = ret.get("id_intervento");
 				String id_operatore= ret.get("operatore");
 				String id_tipo_prova = ret.get("tipo_prova");
+				String note = ret.get("note");
 				
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -404,21 +425,40 @@ public class Am_gestioneInterventi extends HttpServlet {
 				prova.setEsito(esito);
 				prova.setData(df.parse(data));
 				prova.setIntervento(intervento);
+				prova.setNote(note);
 				
 				prova.setOperatore(operatore);
 				
 				session.save(prova);			
 				boolean esito_import = true;
-				if(fileItem_excel!=null) {
+//				if(fileItem_excel!=null) {
+//					prova.setFilename_excel(filename_excel);
+//					Utility.saveFile(fileItem_excel, Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel", filename_excel);
+//					
+//					String matrix = GestioneAM_BO.getMatrix(Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel\\"+filename_excel);
+//					if(matrix.equals("[]")) {
+//						esito_import = false;
+//					}
+//					
+//					prova.setMatrixSpess(matrix);
+//				}
+				if(filename_excel!=null && !filename_excel.equals("")) {
 					prova.setFilename_excel(filename_excel);
 					Utility.saveFile(fileItem_excel, Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel", filename_excel);
 					
-					String matrix = GestioneAM_BO.getMatrix(Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel\\"+filename_excel);
-					if(matrix.equals("[]")) {
+					String[] values = GestioneAM_BO.getMatrix(Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel\\"+filename_excel);
+					
+					if(values[3].equals("[]")) {
 						esito_import = false;
 					}
 					
-					prova.setMatrixSpess(matrix);
+					
+					prova.setSpess_min_fasciame(values[0]);					
+					prova.setSpess_min_fondo_sup(values[1]);
+					prova.setSpess_min_fondo_inf(values[2]);
+					
+					prova.setMatrixSpess(values[3]);
+					
 				}
 				
 				if(filename_img!=null) {
@@ -490,6 +530,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				String id_operatore= ret.get("operatore_mod");
 				String id_tipo_prova = ret.get("tipo_prova_mod");
 				String id_prova = ret.get("id_prova");
+				String note = ret.get("note_mod");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -508,7 +549,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				prova.setEsito(esito);
 				prova.setData(df.parse(data));
 				prova.setIntervento(intervento);
-				
+				prova.setNote(note);
 				prova.setOperatore(operatore);
 		
 				boolean esito_import = true;
@@ -516,12 +557,19 @@ public class Am_gestioneInterventi extends HttpServlet {
 					prova.setFilename_excel(filename_excel);
 					Utility.saveFile(fileItem_excel, Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel", filename_excel);
 					
-					String matrix = GestioneAM_BO.getMatrix(Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel\\"+filename_excel);
-					if(matrix.equals("[]")) {
+					String[] values = GestioneAM_BO.getMatrix(Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel\\"+filename_excel);
+					
+					if(values[3].equals("[]")) {
 						esito_import = false;
 					}
 					
-					prova.setMatrixSpess(matrix);
+					
+					prova.setSpess_min_fasciame(values[0]);					
+					prova.setSpess_min_fondo_sup(values[1]);
+					prova.setSpess_min_fondo_inf(values[2]);
+					
+					prova.setMatrixSpess(values[3]);
+					
 				}
 				
 				if(filename_img!=null && !filename_img.equals("")) {
@@ -542,6 +590,119 @@ public class Am_gestioneInterventi extends HttpServlet {
 				}
 				
 				out.print(myObj);
+				
+				
+				
+			}
+			else if(action.equals("dettaglio_prova")) {
+				
+				String id_prova = request.getParameter("id_prova");
+				
+				id_prova = Utility.decryptData(id_prova);
+				
+				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);
+				request.getSession().setAttribute("prova", prova);
+				
+				String rawMatrix = prova.getMatrixSpess(); // es: "[{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}]"
+
+				// Rimuove i bordi esterni
+				rawMatrix = rawMatrix.replaceAll("^\\[|\\]$", "").trim();
+
+				// Split per righe (ogni gruppo tra graffe)
+				String[] rows = rawMatrix.split("\\},\\s*\\{");
+
+				List<List<Double>> matrixParsed = new ArrayList<>();
+
+				for (String row : rows) {
+				    // rimuove graffe residue
+				    row = row.replaceAll("[{}]", "");
+				    String[] nums = row.split(",");
+				    List<Double> rowList = new ArrayList<>();
+				    for (String num : nums) {
+				        rowList.add(Double.parseDouble(num.trim()));
+				    }
+				    matrixParsed.add(rowList);
+				}
+
+				// Set come attributo per la JSP
+				request.setAttribute("matrix_spess", matrixParsed);
+
+				// Colonne (A, B, C, ...)
+				int numCols = matrixParsed.get(0).size();
+				List<String> colonne = new ArrayList<>();
+				for (int i = 0; i < numCols; i++) {
+				    colonne.add(String.valueOf((char) ('A' + i)));
+				}
+				request.setAttribute("colonne", colonne);
+
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_dettaglioProva.jsp");
+				dispatcher.forward(request, response);
+			}
+			
+			else if (action.equals("immagine")) {
+				
+		        AMProvaDTO prova = (AMProvaDTO) request.getSession().getAttribute("prova");
+
+		        if (prova != null) {
+		        	
+		        	String imagePath =	Costanti.PATH_FOLDER+"\\AM_interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\img\\"+prova.getFilename_img();
+		         
+		            File imageFile = new File(imagePath);
+
+		            if (imageFile.exists()) {
+		                response.setContentType(getServletContext().getMimeType(imageFile.getName()));
+		               
+
+		                try (FileInputStream fis = new FileInputStream(imageFile);
+		                     OutputStream os = response.getOutputStream()) {
+
+		                    byte[] buffer = new byte[8192];
+		                    int bytesRead;
+		                    while ((bytesRead = fis.read(buffer)) != -1) {
+		                        os.write(buffer, 0, bytesRead);
+		                    }
+		                }
+
+		            } else {
+		                response.sendError(HttpServletResponse.SC_NOT_FOUND, "File immagine non trovato");
+		            }
+		        } else {
+		            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Prova non disponibile in sessione");
+		        }
+		    }
+			
+			else if(action.equals("genera_certificato")){
+				
+				ajax = true;
+				
+				String id_prova = request.getParameter("id_prova");
+				
+				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);
+				
+				CreateCertificatoAM cert = new CreateCertificatoAM(prova, session);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Certificato salvato con successo!");
+				out.print(myObj);
+				
+			}
+			
+			
+			else if(action.equals("download_certificato")) {
+				
+				
+				String id_prova = request.getParameter("id_prova");
+				
+				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);
+				
+				String path = Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\Certificati\\"+prova.getnRapporto()+".pdf";
+				
+				
+				response.setContentType("application/pdf");	
+				Utility.downloadFile(path, response.getOutputStream());
 				
 				
 				

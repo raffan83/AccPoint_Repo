@@ -18,9 +18,39 @@ public class ItServizioItDTO {
 	private int disabilitato;
 	private int stato;
 	private DocumFornitoreDTO id_company;
+	private int rinnovo_automatico;
+	private int frequenza_rinnovo; 
 	
 	
 	
+
+	public int getRinnovo_automatico() {
+		return rinnovo_automatico;
+	}
+
+
+
+
+	public void setRinnovo_automatico(int rinnovo_automatico) {
+		this.rinnovo_automatico = rinnovo_automatico;
+	}
+
+
+
+
+	public int getFrequenza_rinnovo() {
+		return frequenza_rinnovo;
+	}
+
+
+
+
+	public void setFrequenza_rinnovo(int frequenza_rinnovo) {
+		this.frequenza_rinnovo = frequenza_rinnovo;
+	}
+
+
+
 
 	public int getId() {
 		return id;

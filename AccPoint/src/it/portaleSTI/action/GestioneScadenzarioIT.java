@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -133,36 +134,24 @@ public class GestioneScadenzarioIT extends HttpServlet {
 				String descrizione = ret.get("descrizione");
 				String fornitore = ret.get("fornitore");
 				String email_referenti = ret.get("email_referenti");
-				String nuovo_tipo_servizio = ret.get("nuovo_tipo_servizio");
-				String nuovo_tipo_rinnovo = ret.get("nuovo_tipo_rinnovo");
 				String data_scadenza = ret.get("data_scadenza");
 				String data_acquisto = ret.get("data_acquisto");
 				String modalita_pagamento = ret.get("modalita_pagamento");
 				String company = ret.get("company");
+
+				String rinnovo_automatico = ret.get("rinnovo_automatico");
+				String frequenza_rinnovo =  ret.get("frequenza_rinnovo");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
 				ItServizioItDTO servizio = new ItServizioItDTO();	
+
 				
-				ItTipoServizioDTO tipo_servizio = null;
-				ItTipoRinnovoDTO tipo_rinnovo = null;
-				
-				if(nuovo_tipo_servizio!=null && !nuovo_tipo_servizio.equals("")) {
-					tipo_servizio = new ItTipoServizioDTO();
-					tipo_servizio.setDescrizione(nuovo_tipo_servizio);
-					session.save(tipo_servizio);
-				}else {
-					tipo_servizio = GestioneScadenzarioItBO.getElement(new ItTipoServizioDTO(),Integer.parseInt(id_tipo_servizio), session);
-				}
-				if(nuovo_tipo_rinnovo!=null && !nuovo_tipo_rinnovo.equals("")) {
-					
-						tipo_rinnovo = new ItTipoRinnovoDTO();
-						tipo_rinnovo.setDescrizione(nuovo_tipo_rinnovo);
-						
-						session.save(tipo_rinnovo);
-				}else {
-					tipo_rinnovo = GestioneScadenzarioItBO.getElement(new ItTipoRinnovoDTO(),Integer.parseInt(id_tipo_rinnovo), session);
-				}
+				ItTipoServizioDTO tipo_servizio = GestioneScadenzarioItBO.getElement(new ItTipoServizioDTO(),Integer.parseInt(id_tipo_servizio), session);
+			
+			
+				ItTipoRinnovoDTO tipo_rinnovo = GestioneScadenzarioItBO.getElement(new ItTipoRinnovoDTO(),Integer.parseInt(id_tipo_rinnovo), session);
+			
 			
 				servizio.setTipo_servizio(tipo_servizio);
 				servizio.setTipo_rinnovo(tipo_rinnovo);
@@ -181,23 +170,29 @@ public class GestioneScadenzarioIT extends HttpServlet {
 					servizio.setData_acquisto(df.parse(data_acquisto));
 				}
 				
+				if(rinnovo_automatico!=null && rinnovo_automatico.equals("1")) {
+					servizio.setRinnovo_automatico(1);
+					servizio.setFrequenza_rinnovo(Integer.parseInt(frequenza_rinnovo));
+				}else if(rinnovo_automatico!=null && rinnovo_automatico.equals("0")){
+					servizio.setRinnovo_automatico(0);
+				}
 			
-				if(data_scadenza!=null && !data_scadenza.equals("")) {
+				
+			
+if(data_scadenza!=null && !data_scadenza.equals("")) {
 					
 					servizio.setData_scadenza(df.parse(data_scadenza));
 					
 					Calendar c = Calendar.getInstance();
 					
-					if(df.parse(data_scadenza).before(new Date())) {
-						servizio.setStato(2);
-						c.setTime(new Date());
-						c.add(Calendar.DAY_OF_YEAR, 1);
-						servizio.setData_remind(c.getTime());
-					}else {
-						servizio.setStato(1);
-						c.setTime(df.parse(data_scadenza));
-						c.add(Calendar.DAY_OF_YEAR, -30);
-						if(c.getTime().before(new Date())) {
+					if(servizio.getRinnovo_automatico()==1) {
+						if(df.parse(data_scadenza).before(new Date())) {
+							servizio.setStato(2);
+							c.setTime(new Date());
+							c.add(Calendar.DAY_OF_YEAR, 1);
+							servizio.setData_remind(c.getTime());
+						}else {
+							servizio.setStato(1);
 							c.setTime(df.parse(data_scadenza));
 							c.add(Calendar.DAY_OF_YEAR, -15);
 							
@@ -206,16 +201,40 @@ public class GestioneScadenzarioIT extends HttpServlet {
 							}else {
 								servizio.setData_remind(c.getTime());
 							}
-							
-						}else {
+						}
+					}else {
+						if(df.parse(data_scadenza).before(new Date())) {
+							servizio.setStato(2);
+							c.setTime(new Date());
+							c.add(Calendar.DAY_OF_YEAR, 1);
 							servizio.setData_remind(c.getTime());
+						}else {
+							servizio.setStato(1);
+							c.setTime(df.parse(data_scadenza));
+							c.add(Calendar.DAY_OF_YEAR, -60);
+							if(c.getTime().before(new Date())) {
+								c.setTime(df.parse(data_scadenza));
+								c.add(Calendar.DAY_OF_YEAR, -30);
+								
+								if(c.getTime().before(new Date())) {
+									servizio.setData_remind(servizio.getData_scadenza());
+								}else {
+									servizio.setData_remind(c.getTime());
+								}
+								
+							}else {
+								servizio.setData_remind(c.getTime());
+							}
+							
 						}
 						
 					}
 					
 					
+					
 											
 				}
+				
 				
 				session.save(servizio);				
 							
@@ -263,36 +282,23 @@ public class GestioneScadenzarioIT extends HttpServlet {
 				String descrizione = ret.get("descrizione_mod");
 				String fornitore = ret.get("fornitore_mod");
 				String email_referenti = ret.get("email_referenti_mod");
-				String nuovo_tipo_servizio = ret.get("nuovo_tipo_servizio_mod");
-				String nuovo_tipo_rinnovo = ret.get("nuovo_tipo_rinnovo_mod");
 				String data_scadenza = ret.get("data_scadenza_mod");
 				String data_acquisto = ret.get("data_acquisto_mod");
 				String modalita_pagamento = ret.get("modalita_pagamento_mod");
 				String company = ret.get("company_mod");
+				String rinnovo_automatico = ret.get("rinnovo_automatico_mod");
+				String frequenza_rinnovo =  ret.get("frequenza_rinnovo_mod");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
 				ItServizioItDTO servizio = GestioneScadenzarioItBO.getElement(new ItServizioItDTO(),Integer.parseInt(id_servizio), session);	
 				
-				ItTipoServizioDTO tipo_servizio = null;
-				ItTipoRinnovoDTO tipo_rinnovo = null;
+	
 				
-				if(nuovo_tipo_servizio!=null && !nuovo_tipo_servizio.equals("")) {
-					tipo_servizio = new ItTipoServizioDTO();
-					tipo_servizio.setDescrizione(nuovo_tipo_servizio);
-					session.save(tipo_servizio);
-				}else {
-					tipo_servizio = GestioneScadenzarioItBO.getElement(new ItTipoServizioDTO(),Integer.parseInt(id_tipo_servizio), session);
-				}
-				if(nuovo_tipo_rinnovo!=null && !nuovo_tipo_rinnovo.equals("")) {
-					
-						tipo_rinnovo = new ItTipoRinnovoDTO();
-						tipo_rinnovo.setDescrizione(nuovo_tipo_rinnovo);
-						
-						session.save(tipo_rinnovo);
-				}else {
-					tipo_rinnovo = GestioneScadenzarioItBO.getElement(new ItTipoRinnovoDTO(),Integer.parseInt(id_tipo_rinnovo), session);
-				}
+				ItTipoServizioDTO tipo_servizio = GestioneScadenzarioItBO.getElement(new ItTipoServizioDTO(),Integer.parseInt(id_tipo_servizio), session);
+
+				ItTipoRinnovoDTO tipo_rinnovo =GestioneScadenzarioItBO.getElement(new ItTipoRinnovoDTO(),Integer.parseInt(id_tipo_rinnovo), session);
+				
 			
 				if(company!=null && !company.equals("")&& !company.equals("0")) {
 					DocumFornitoreDTO cmp = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(company), session);
@@ -306,6 +312,12 @@ public class GestioneScadenzarioIT extends HttpServlet {
 				servizio.setFornitore(fornitore);
 				servizio.setEmail_referenti(email_referenti);
 				servizio.setModalita_pagamento(modalita_pagamento);
+				if(rinnovo_automatico!=null && rinnovo_automatico.equals("1")) {
+					servizio.setRinnovo_automatico(1);
+					servizio.setFrequenza_rinnovo(Integer.parseInt(frequenza_rinnovo));
+				}else if(rinnovo_automatico!=null && rinnovo_automatico.equals("0")){
+					servizio.setRinnovo_automatico(0);
+				}
 			
 				
 				if(data_scadenza!=null && !data_scadenza.equals("")) {
@@ -314,30 +326,51 @@ public class GestioneScadenzarioIT extends HttpServlet {
 					
 					Calendar c = Calendar.getInstance();
 					
-					if(df.parse(data_scadenza).before(new Date())) {
-						servizio.setStato(2);
-						c.setTime(new Date());
-						c.add(Calendar.DAY_OF_YEAR, 1);
-						servizio.setData_remind(c.getTime());
-					}else {
-						servizio.setStato(1);
-						c.setTime(df.parse(data_scadenza));
-						c.add(Calendar.DAY_OF_YEAR, -60);
-						if(c.getTime().before(new Date())) {
+					if(servizio.getRinnovo_automatico()==1) {
+						if(df.parse(data_scadenza).before(new Date())) {
+							servizio.setStato(2);
+							c.setTime(new Date());
+							c.add(Calendar.DAY_OF_YEAR, 1);
+							servizio.setData_remind(c.getTime());
+						}else {
+							servizio.setStato(1);
 							c.setTime(df.parse(data_scadenza));
-							c.add(Calendar.DAY_OF_YEAR, -30);
+							c.add(Calendar.DAY_OF_YEAR, -15);
 							
 							if(c.getTime().before(new Date())) {
 								servizio.setData_remind(servizio.getData_scadenza());
 							}else {
 								servizio.setData_remind(c.getTime());
 							}
-							
-						}else {
+						}
+					}else {
+						if(df.parse(data_scadenza).before(new Date())) {
+							servizio.setStato(2);
+							c.setTime(new Date());
+							c.add(Calendar.DAY_OF_YEAR, 1);
 							servizio.setData_remind(c.getTime());
+						}else {
+							servizio.setStato(1);
+							c.setTime(df.parse(data_scadenza));
+							c.add(Calendar.DAY_OF_YEAR, -60);
+							if(c.getTime().before(new Date())) {
+								c.setTime(df.parse(data_scadenza));
+								c.add(Calendar.DAY_OF_YEAR, -30);
+								
+								if(c.getTime().before(new Date())) {
+									servizio.setData_remind(servizio.getData_scadenza());
+								}else {
+									servizio.setData_remind(c.getTime());
+								}
+								
+							}else {
+								servizio.setData_remind(c.getTime());
+							}
+							
 						}
 						
 					}
+					
 					
 					
 											
@@ -376,7 +409,31 @@ public class GestioneScadenzarioIT extends HttpServlet {
 			}
 			
 			
-			
+			else if(action.equals("salva_tipo")) {
+				
+				
+				ajax = true;
+				String descrizione = request.getParameter("text");
+				String tag = request.getParameter("tag");
+				
+				Serializable id;
+				if(tag.contains("tipo_servizio")) {
+					ItTipoServizioDTO tipo_servizio = new ItTipoServizioDTO();
+					tipo_servizio.setDescrizione(descrizione);
+					id=session.save(tipo_servizio);
+				}else {
+					ItTipoRinnovoDTO	tipo_rinnovo = new ItTipoRinnovoDTO();
+					tipo_rinnovo.setDescrizione(descrizione);
+					
+					id=session.save(tipo_rinnovo);
+				}
+				
+							
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("id", ""+id);
+				out.print(myObj);
+			}
 			
 			
 			

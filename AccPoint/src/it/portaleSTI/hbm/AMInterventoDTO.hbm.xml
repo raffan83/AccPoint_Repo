@@ -39,6 +39,22 @@
         <property name="stato" type="int">
             <column name="stato" />
         </property>
+        
+         <property name="id_cliente" type="int">
+            <column name="id_cliente" />
+        </property>
+        
+         <property name="id_sede" type="int">
+            <column name="id_sede" />
+        </property>
+        
+         <property name="id_cliente_utilizzatore" type="int">
+            <column name="id_cliente_utilizzatore" />
+        </property>
+        
+         <property name="id_sede_utilizzatore" type="int">
+            <column name="id_sede_utilizzatore" />
+        </property>
       
     </class>
 </hibernate-mapping>

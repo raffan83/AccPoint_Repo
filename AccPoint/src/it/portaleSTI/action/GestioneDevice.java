@@ -1984,6 +1984,7 @@ public class GestioneDevice extends HttpServlet {
 				String email_referenti = ret.get("email_referenti");
 				String subscription = ret.get("subscription");
 				String descrizione = ret.get("descrizione");
+				String id_company = ret.get("company");
 				
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -2010,6 +2011,15 @@ public class GestioneDevice extends HttpServlet {
 				}
 				
 				contratto.setPermanente(permanente);
+				
+				if(id_company!=null && !id_company.equals("")&& !id_company.equals("0")) {
+				
+					DocumFornitoreDTO cmp = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
+					contratto.setCompany(cmp);
+				}else {
+					contratto.setCompany(null);
+				}
+				
 				if(n_licenze!=null&& !n_licenze.equals("")) {
 					contratto.setN_licenze(Integer.parseInt(n_licenze));
 				}
@@ -2094,6 +2104,7 @@ public class GestioneDevice extends HttpServlet {
 				String email_referenti = ret.get("email_referenti_mod");
 				String subscription = ret.get("subscription_mod");
 				String descrizione = ret.get("descrizione_mod");
+				String id_company = ret.get("company_mod");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -2120,6 +2131,14 @@ public class GestioneDevice extends HttpServlet {
 					contratto.setData_invio_remind(c.getTime());					
 				}else {
 					contratto.setData_scadenza(null);
+				}
+				
+				if(id_company!=null && !id_company.equals("")&& !id_company.equals("0")) {
+					
+					DocumFornitoreDTO cmp = GestioneDocumentaleBO.getFornitoreFromId(Integer.parseInt(id_company), session);
+					contratto.setCompany(cmp);
+				}else {
+					contratto.setCompany(null);
 				}
 				
 				session.update(contratto);

@@ -47,5 +47,10 @@
         <property name="subscription" type="java.lang.String">
             <column name="subscription" />
         </property>
+        
+        
+        <many-to-one name="company" class="it.portaleSTI.DTO.DocumFornitoreDTO" fetch="join" lazy="false">
+            <column name="id_company" />
+        </many-to-one>
 	</class>
 </hibernate-mapping>

@@ -49,6 +49,14 @@
             <column name="stato" />
         </property>
         
+          <property name="rinnovo_automatico" type="int">
+            <column name="rinnovo_automatico" />
+        </property>
+        
+          <property name="frequenza_rinnovo" type="int">
+            <column name="frequenza_rinnovo" />
+        </property>
+        
         
               <many-to-one name="id_company" class="it.portaleSTI.DTO.DocumFornitoreDTO" fetch="join" lazy="false" cascade="save-update">
             <column name="id_company" />

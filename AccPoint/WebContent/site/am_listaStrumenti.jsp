@@ -111,7 +111,7 @@
 
 	--%>
 	
-	<a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaStrumento('${strumento.id}','${strumento.descrizione}','${strumento.matricola}','${strumento.zonaRifFasciame}','${strumento.spessoreFasciame}','${strumento.tipo}','${strumento.volume}','${strumento.materialeFasciame}','${strumento.pressione}','${strumento.costruttore}','${strumento.nFabbrica}','${strumento.zonaRifFondo}','${strumento.spessoreFondo}','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataVerifica}" />','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataProssimaVerifica}" />','${strumento.frequenza}','${strumento.anno}')"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaStrumento('${strumento.id}','${strumento.descrizione}','${strumento.matricola}','${strumento.zonaRifFasciame}','${strumento.spessoreFasciame}','${strumento.tipo}','${strumento.volume}','${strumento.materialeFasciame}','${strumento.pressione}','${strumento.costruttore}','${strumento.nFabbrica}','${strumento.zonaRifFondo}','${strumento.spessoreFondo}','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataVerifica}" />','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataProssimaVerifica}" />','${strumento.frequenza}','${strumento.anno}', '${strumento.id_cliente }','${strumento.id_sede }')"><i class="fa fa-edit"></i></a>
  
 	</td>
 	</tr>
@@ -147,6 +147,49 @@
         <h4 class="modal-title" id="myModalLabel">Nuovo Oggetto Prova</h4>
       </div>
        <div class="modal-body">
+       
+           <div class="row">
+    
+
+        <label for="inputEmail" class="col-sm-3 control-label">Cliente:</label>
+         <div class="col-sm-9">
+    
+    	                  <select name="cliente_appoggio_general" id="cliente_appoggio_general"  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
+							
+                  <option value=""></option>
+                      <c:forEach items="${lista_clienti}" var="cliente">
+                           <option value="${cliente.__id}">${cliente.nome} </option> 
+                     </c:forEach>
+                  
+	                  </select>
+    
+            
+                  <input  name="cliente_general" id="cliente_general"  class="form-control" style="width:100%" >
+   
+        </div>
+
+  </div><br>
+  
+       <div class="row">
+                 <label for="inputEmail" class="col-sm-3 control-label">Sede:</label>
+                  
+                     
+
+         <div class="col-sm-9">
+                  <select name="sede_general" id="sede_general" data-placeholder="Seleziona Sede..."  disabled class="form-control select2 classic_select" aria-hidden="true" data-live-search="true" style="width:100%">
+               
+                    	<option value=""></option>
+             			<c:forEach items="${lista_sedi}" var="sedi">
+             	
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
+                          	     
+                          
+                     	</c:forEach>
+                    
+                  </select>
+                  
+        </div>
+</div><br>
 
 		<div class="row">
        	<div class="col-sm-3">
@@ -331,6 +374,41 @@
         <h4 class="modal-title" id="myModalLabel">Modifica Strumento</h4>
       </div>
        <div class="modal-body">
+       
+        <div class="row">
+    
+
+        <label for="inputEmail" class="col-sm-3 control-label">Cliente:</label>
+         <div class="col-sm-9">
+    
+    	                     
+            
+                  <input  name="cliente_general_mod" id="cliente_general_mod"  class="form-control" style="width:100%" >
+   
+        </div>
+
+  </div><br>
+  
+       <div class="row">
+                 <label for="inputEmail" class="col-sm-3 control-label">Sede:</label>
+                  
+                     
+
+         <div class="col-sm-9">
+                  <select name="sede_general_mod" id="sede_general_mod" data-placeholder="Seleziona Sede..."  disabled class="form-control select2 classic_select" aria-hidden="true" data-live-search="true" style="width:100%">
+               
+                    	<option value=""></option>
+             			<c:forEach items="${lista_sedi}" var="sedi">
+             	
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
+                          	     
+                          
+                     	</c:forEach>
+                    
+                  </select>
+                  
+        </div>
+</div><br>
 
 		<div class="row">
        	<div class="col-sm-3">
@@ -539,7 +617,7 @@
 
 
 
-	function modificaStrumento(id, descrizione, matricola, zonaRifFasciame, spessoreFasciame, tipo, volume, materialeFasciame, pressione, costruttore, nFabbrica, zonaRifFondo, spessoreFondo, dataVerifica, dataProssimaVerifica, frequenza, anno) { 
+	function modificaStrumento(id, descrizione, matricola, zonaRifFasciame, spessoreFasciame, tipo, volume, materialeFasciame, pressione, costruttore, nFabbrica, zonaRifFondo, spessoreFondo, dataVerifica, dataProssimaVerifica, frequenza, anno, cliente, sede) { 
 
 	$('#id_strumento').val(id);
 	
@@ -560,6 +638,14 @@
 	    $('#data_prossima_verifica_mod').val(dataProssimaVerifica);
 	    $('#frequenza_mod').val(frequenza);
 	    $('#anno_mod').val(anno);
+	    
+	    $('#cliente_general_mod').val(cliente);
+	    $('#cliente_general_mod').change()
+	    $('#sede_general_mod').val(sede);
+	    $('#sede_general_mod').change()
+	    
+	    
+	    	initSelect2Gen('#cliente_general_mod', null, '#modalModificaStrumento');
 	
 	 $('#modalModificaStrumento').modal()
 }
@@ -658,7 +744,12 @@ $(document).ready(function() {
 	
 	commessa_options = $('#commessa_mod option').clone();
 	
-	$(".select2").select2();
+	//$(".select2").select2();
+
+	$("#sede_general").select2();
+	$("#sede_general_mod").select2();
+	
+	initSelect2Gen('#cliente_general', null, '#modalNuovoStrumento');
 
 	
 	//initSelect2('#cliente_mod');
@@ -785,6 +876,143 @@ $(document).ready(function() {
 	 callAjaxForm('#nuovoStrumentoForm','amGestioneStrumenti.do?action=nuovo');
 	 
  });
+ 
+ 
+ 
+ $("#cliente_general").change(function() {
+	    
+	  	  if ($(this).data('options') == undefined) 
+	  	  {
+	  	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	  	    $(this).data('options', $('#sede_general option').clone());
+	  	  }
+	  	  
+	  	  var id = $(this).val();
+	  	 
+	  	  var options = $(this).data('options');
+
+	  	  var opt=[];
+	  	
+	  	  opt.push("<option value = 0>Non Associate</option>");
+
+	  	   for(var  i=0; i<options.length;i++)
+	  	   {
+	  		var str=options[i].value; 
+	  	
+	  		if(str.substring(str.indexOf("_")+1,str.length)==id)
+	  		{
+	  			
+	  			//if(opt.length == 0){
+	  				
+	  			//}
+	  		
+	  			opt.push(options[i]);
+	  		}   
+	  	   }
+	  	 $("#sede_general").prop("disabled", false);
+	  	 
+	  	  $('#sede_general').html(opt);
+	  	  
+	  	  $("#sede_general").trigger("chosen:updated");
+	  	  
+	  	  //if(opt.length<2 )
+	  	  //{ 
+	  		$("#sede_general").change();  
+	  	  //}
+	  	  
+	  	
+	  	});
+ 
+ 
+ $("#cliente_general_mod").change(function() {
+	    
+ 	  if ($(this).data('options') == undefined) 
+ 	  {
+ 	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+ 	    $(this).data('options', $('#sede_general_mod option').clone());
+ 	  }
+ 	  
+ 	  var id = $(this).val();
+ 	 
+ 	  var options = $(this).data('options');
+
+ 	  var opt=[];
+ 	
+ 	  opt.push("<option value = 0>Non Associate</option>");
+
+ 	   for(var  i=0; i<options.length;i++)
+ 	   {
+ 		var str=options[i].value; 
+ 	
+ 		if(str.substring(str.indexOf("_")+1,str.length)==id)
+ 		{
+ 			
+ 			//if(opt.length == 0){
+ 				
+ 			//}
+ 		
+ 			opt.push(options[i]);
+ 		}   
+ 	   }
+ 	 $("#sede_general_mod").prop("disabled", false);
+ 	 
+ 	  $('#sede_general_mod').html(opt);
+ 	  
+ 	  $("#sede_general_mod").trigger("chosen:updated");
+ 	  
+ 	  //if(opt.length<2 )
+ 	  //{ 
+ 		$("#sede_general_mod").change();  
+ 	  //}
+ 	  
+ 	
+ 	});
+ 
+ var options_general =  $('#cliente_appoggio_general option').clone();
+ function mockDataGen() {
+ 	  return _.map(options_general, function(i) {		  
+ 	    return {
+ 	      id: i.value,
+ 	      text: i.text,
+ 	    };
+ 	  });
+ 	}
+ 
+ 
+ function initSelect2Gen(id_input, placeholder, modal) {
+ 	  if(placeholder==null){
+ 		  placeholder = "Seleziona Cliente...";
+ 	  }
+
+   	$(id_input).select2({
+   	    data: mockDataGen(),
+   	    dropdownParent: $(modal),
+   	    placeholder: placeholder,
+   	    multiple: false,
+   	    // query with pagination
+   	    query: function(q) {
+   	      var pageSize,
+   	        results,
+   	        that = this;
+   	      pageSize = 20; // or whatever pagesize
+   	      results = [];
+   	      if (q.term && q.term !== '') {
+   	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+   	        results = _.filter(x, function(e) {
+   	        	
+   	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+   	        });
+   	      } else if (q.term === '') {
+   	        results = that.data;
+   	      }
+   	      q.callback({
+   	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+   	        more: results.length >= q.page * pageSize,
+   	      });
+   	    },
+   	  });
+   	  	
+   }
  
  
   </script>

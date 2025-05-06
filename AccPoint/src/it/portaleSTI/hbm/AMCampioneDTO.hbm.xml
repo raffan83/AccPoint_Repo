@@ -35,6 +35,7 @@
         <property name="misurazioneMassima" column="misurazioneMassima"/>
         <property name="larghezzaManico" column="larghezzaManico"/>
         <property name="spessorePunta" column="spessorePunta"/>
+        <property name="file_certificato" column="file_certificato"/>
 
     </class>
 

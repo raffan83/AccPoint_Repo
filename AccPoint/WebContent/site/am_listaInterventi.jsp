@@ -163,12 +163,14 @@
        		<label>Commessa</label>
        	</div>
        	<div class="col-sm-9">
-				<select  id="comm" name="comm" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+				<select  id="comm" name="comm" class="form-control select2" data-placeholder="Seleziona Commessa..." aria-hidden="true" data-live-search="true" style="width:100%">
 
+	<option value=""></option>
 				<c:forEach items="${lista_commesse }" var="comm">
 				
-				<option value="${comm.ID_COMMESSA }@${comm.ID_ANAGEN_NOME}@${comm.INDIRIZZO_PRINCIPALE}@${comm.NOME_UTILIZZATORE}@${comm.INDIRIZZO_UTILIZZATORE}" >${comm.ID_COMMESSA }</option>
-					
+				<%-- <option value="${comm.ID_COMMESSA }@${comm.ID_ANAGEN_NOME}@${comm.INDIRIZZO_PRINCIPALE}@${comm.NOME_UTILIZZATORE}@${comm.INDIRIZZO_UTILIZZATORE}@${comm.ID_ANAGEN_UTIL}@${comm.getK2_ANAGEN_INDR_UTIL()}" >${comm.ID_COMMESSA }</option> --%>
+				<%-- <option value="${comm.ID_COMMESSA }@${comm.ID_ANAGEN}@${comm.getK2_ANAGEN_INDR()}@${comm.ID_ANAGEN_UTIL}@${comm.getK2_ANAGEN_INDR_UTIL()}" >${comm.ID_COMMESSA }</option> --%> 
+				<option value="${comm.ID_COMMESSA }@${comm.ID_ANAGEN_NOME}@${comm.INDIRIZZO_PRINCIPALE}@${comm.NOME_UTILIZZATORE}@${comm.INDIRIZZO_UTILIZZATORE}@${comm.ID_ANAGEN}@${comm.getK2_ANAGEN_INDR()}@${comm.ID_ANAGEN_UTIL}@${comm.getK2_ANAGEN_INDR_UTIL()}" >${comm.ID_COMMESSA }</option>	
 				</c:forEach>
 				</select>
        	</div>
@@ -179,33 +181,68 @@
        		<label>Cliente</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="nomeCliente" name="nomeCliente" style="width:100%" required>       	
+       		<!-- <input class="form-control" id="nomeCliente" name="nomeCliente" style="width:100%" required> -->     
+       		
+    	                  <select name="cliente_appoggio_general" id="cliente_appoggio_general"  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
+							
+                  <option value=""></option>
+                      <c:forEach items="${lista_clienti}" var="cliente">
+                           <option value="${cliente.__id}">${cliente.nome} </option> 
+                     </c:forEach>
+                  
+	                  </select>
+    
+            
+                  <input  name="cliente" id="cliente"  class="form-control" style="width:100%" required>  	
        	</div>
        </div><br>
-       
+           <div class="row">
+       	<div class="col-sm-3">
+       		<label>Sede</label>
+       	</div>
+       	<div class="col-sm-9">
+       	<!-- 	<input class="form-control" id="nomeSede" name="nomeSede" style="width:100%" required> -->       	
+       		 <select name="sede" id="sede" data-placeholder="Seleziona Sede..."  disabled class="form-control select2 classic_select" aria-hidden="true" data-live-search="true" style="width:100%">
+               
+                    	<option value=""></option>
+             			<c:forEach items="${lista_sedi}" var="sedi">
+             	
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
+                          	     
+                          
+                     	</c:forEach>
+                    
+                  </select>
+       	</div>
+       </div><br>
         <div class="row">
        	<div class="col-sm-3">
        		<label>Cliente Utilizzatore</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="nomeClienteUtilizzatore" name="nomeClienteUtilizzatore" style="width:100%" required>       	
+       	<input  name="cliente_utilizzatore" id="cliente_utilizzatore"  class="form-control" style="width:100%" >  	
+       		<!-- <input class="form-control" id="nomeClienteUtilizzatore" name="nomeClienteUtilizzatore" style="width:100%" required> -->       	
        	</div>
        </div><br>
        
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Sede</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="nomeSede" name="nomeSede" style="width:100%" required>       	
-       	</div>
-       </div><br>
+    
            <div class="row">
        	<div class="col-sm-3">
        		<label>Sede Utilizzatore</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="nomeSedeUtilizzatore" name="nomeSedeUtilizzatore" style="width:100%" required>       	
+       		<!-- <input class="form-control" id="nomeSedeUtilizzatore" name="nomeSedeUtilizzatore" style="width:100%" required> -->       	
+       		 <select name="sede_utilizzatore" id="sede_utilizzatore" data-placeholder="Seleziona Sede..."  disabled class="form-control select2 classic_select" aria-hidden="true" data-live-search="true" style="width:100%">
+               
+                    	<option value=""></option>
+             			<c:forEach items="${lista_sedi}" var="sedi">
+             	
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
+                          	     
+                          
+                     	</c:forEach>
+                    
+                  </select>
        	</div>
        </div><br>
        
@@ -244,6 +281,10 @@
   		  <div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
+<input type="hidden" id="nomeCliente" name="nomeCliente">
+		<input type="hidden" id="nomeSede" name="nomeSede">
+		<input type="hidden" id="nomeClienteUtilizzatore" name="nomeClienteUtilizzatore">
+		<input type="hidden" id="nomeSedeUtilizzatore" name="nomeSedeUtilizzatore">
 
         <button type="submit" class="btn btn-danger"  >Salva</button>
       </div>
@@ -273,45 +314,80 @@
 
 				<c:forEach items="${lista_commesse }" var="comm">
 				
-				<option value="${comm.ID_COMMESSA }@${comm.ID_ANAGEN_NOME}@${comm.INDIRIZZO_PRINCIPALE}@${comm.NOME_UTILIZZATORE}@${comm.INDIRIZZO_UTILIZZATORE}" >${comm.ID_COMMESSA }</option>
-					
+				 <option value="${comm.ID_COMMESSA }@${comm.ID_ANAGEN_NOME}@${comm.INDIRIZZO_PRINCIPALE}@${comm.NOME_UTILIZZATORE}@${comm.INDIRIZZO_UTILIZZATORE}@${comm.ID_ANAGEN}@${comm.getK2_ANAGEN_INDR()}@${comm.ID_ANAGEN_UTIL}@${comm.getK2_ANAGEN_INDR_UTIL()}" >${comm.ID_COMMESSA }</option>
+			<%-- 	<option value="${comm.ID_COMMESSA }@${comm.ID_ANAGEN}@${comm.getK2_ANAGEN_INDR()}@${comm.ID_ANAGEN_UTIL}@${comm.getK2_ANAGEN_INDR_UTIL()}" >${comm.ID_COMMESSA }</option> --%>	
 				</c:forEach>
 				</select>
        	</div>
        </div><br>
        
-              <div class="row">
+             <div class="row">
        	<div class="col-sm-3">
        		<label>Cliente</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="nomeCliente_mod" name="nomeCliente_mod" style="width:100%" required>       	
+       		<!-- <input class="form-control" id="nomeCliente" name="nomeCliente" style="width:100%" required> -->     
+       		
+    	                  <select name="cliente_appoggio_general" id="cliente_appoggio_general"  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
+							
+                  <option value=""></option>
+                      <c:forEach items="${lista_clienti}" var="cliente">
+                           <option value="${cliente.__id}">${cliente.nome} </option> 
+                     </c:forEach>
+                  
+	                  </select>
+    
+            
+                  <input  name="cliente_mod" id="cliente_mod"  class="form-control" style="width:100%" required>  	
        	</div>
        </div><br>
-       
+           <div class="row">
+       	<div class="col-sm-3">
+       		<label>Sede</label>
+       	</div>
+       	<div class="col-sm-9">
+       	<!-- 	<input class="form-control" id="nomeSede" name="nomeSede" style="width:100%" required> -->       	
+       		 <select name="sede_mod" id="sede_mod" data-placeholder="Seleziona Sede..."  disabled class="form-control select2 classic_select" aria-hidden="true" data-live-search="true" style="width:100%">
+               
+                    	<option value=""></option>
+             			<c:forEach items="${lista_sedi}" var="sedi">
+             	
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
+                          	     
+                          
+                     	</c:forEach>
+                    
+                  </select>
+       	</div>
+       </div><br>
         <div class="row">
        	<div class="col-sm-3">
        		<label>Cliente Utilizzatore</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="nomeClienteUtilizzatore_mod" name="nomeClienteUtilizzatore_mod" style="width:100%" required>       	
+       	<input  name="cliente_utilizzatore_mod" id="cliente_utilizzatore_mod"  class="form-control" style="width:100%" >  	
+       		<!-- <input class="form-control" id="nomeClienteUtilizzatore" name="nomeClienteUtilizzatore" style="width:100%" required> -->       	
        	</div>
        </div><br>
        
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Sede</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="nomeSede_mod" name="nomeSede_mod" style="width:100%" required>       	
-       	</div>
-       </div><br>
+    
            <div class="row">
        	<div class="col-sm-3">
        		<label>Sede Utilizzatore</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="nomeSedeUtilizzatore_mod" name="nomeSedeUtilizzatore_mod" style="width:100%" required>       	
+       		<!-- <input class="form-control" id="nomeSedeUtilizzatore" name="nomeSedeUtilizzatore" style="width:100%" required> -->       	
+       		 <select name="sede_utilizzatore_mod" id="sede_utilizzatore_mod" data-placeholder="Seleziona Sede..."  disabled class="form-control select2 classic_select" aria-hidden="true" data-live-search="true" style="width:100%">
+               
+                    	<option value=""></option>
+             			<c:forEach items="${lista_sedi}" var="sedi">
+             	
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
+                          	     
+                          
+                     	</c:forEach>
+                    
+                  </select>
        	</div>
        </div><br>
        
@@ -351,6 +427,12 @@
   		 </div>
       <div class="modal-footer">
 		<input type="hidden" id="id_intervento" name="id_intervento">
+		<input type="hidden" id="nomeCliente_mod" name="nomeCliente_mod">
+		<input type="hidden" id="nomeSede_mod" name="nomeSede_mod">
+		<input type="hidden" id="nomeClienteUtilizzatore" name="nomeClienteUtilizzatore_mod">
+		<input type="hidden" id="nomeSedeUtilizzatore_mod" name="nomeSedeUtilizzatore_mod">
+		
+		
         <button type="submit" class="btn btn-danger" >Salva</button>
       </div>
     </div>
@@ -420,17 +502,19 @@ function resetDate(){
 	
 
 
-function modificaIntervento(id, id_commessa, data_intervento, id_operatore, nome_cliente, nome_cliente_util, nome_sede, nome_sede_util){
+function modificaIntervento(id, id_commessa, data_intervento, id_operatore, nome_cliente, nome_cliente_util, nome_sede, nome_sede_util, id_cliente, id_sede, id_cliente_utilizzatore, id_sede_utilizzatore){
 	
 	$('#id_intervento').val(id);
 	
-	$('#comm_mod option').each(function() {
+	
+	
+/* 	$('#comm_mod option').each(function() {
 	    if ($(this).val().startsWith(id_commessa + '@')) {
 	        $('#comm_mod').val($(this).val());
 	        $('#comm_mod').change();
 	        return false; // interrompe il ciclo una volta trovata la corrispondenza
 	    }
-	});
+	}); */
 
 	if(data_intervento!=null && data_intervento!=''){
 		var date = new Date(data_intervento);
@@ -445,7 +529,18 @@ function modificaIntervento(id, id_commessa, data_intervento, id_operatore, nome
 		$("#nomeSede_mod").val(nome_cliente_util);
 		$("#nomeClienteUtilizzatore_mod").val(nome_sede);
 		$("#nomeSedeUtilizzatore_mod").val(nome_sede_util);
-	
+		
+		 $('#cliente_mod').val(id_cliente);
+		 $('#cliente_mod').change();
+		 $('#sede_mod').val(id_sede);
+		 $('#sede_mod').change();
+		 $('#cliente_utilizzatore_mod').val(id_cliente_utilizzatore);
+		 $('#cliente_utilizzatore_mod').change();
+		 $('#sede_utilizzatore_mod').val(id_sede_utilizzatore);
+		 $('#sede_utilizzatore_mod').change();
+		
+		 
+		
 	 $('#myModalModificaIntervento').modal()
 }
 
@@ -462,27 +557,101 @@ $('#myModalModificaIntervento').on('hidden.bs.modal',function(){
 
 $('#comm').on('change', function(){
 	
+
+ 	
+	
 	if($("#comm").val()!=null && $("#comm").val()!=''){		
 		id_commessa = $('#comm').val();
 		
-		var nomeCli=$('#comm').val().split("@")[1];
+		 var nomeCli=$('#comm').val().split("@")[1];
 		
 		var sedeCli=$('#comm').val().split("@")[2];	
 		
 		var nomeCliUtil=$('#comm').val().split("@")[3];
 		
 		var sedeCliUtil=$('#comm').val().split("@")[4];
+	var idCliente = $('#comm').val().split("@")[5];
 		
+		var idSede = $('#comm').val().split("@")[6];
+		 
+		 
 		
-		$("#nomeCliente").val(nomeCli);
+			
+var idClienteUtil = $('#comm').val().split("@")[7];
+			
+			var idSedeUtil = $('#comm').val().split("@")[8];
+			
+		
+ 		$("#nomeCliente").val(nomeCli);
 		$("#nomeSede").val(sedeCli);
 		$("#nomeClienteUtilizzatore").val(nomeCliUtil);
-		$("#nomeSedeUtilizzatore").val(sedeCliUtil);
+		$("#nomeSedeUtilizzatore").val(sedeCliUtil); 
+		
+		$('#cliente').val(idCliente);
+		$('#cliente').change();
+		$('#sede').val(idSede);
+		$('#sede').change();
+		$('#cliente_utilizzatore').val(idClienteUtil);
+		$('#cliente_utilizzatore').change();
+		$('#sede_utilizzatore').val(idSedeUtil);
+		$('#sede_utilizzatore').change();
+		
+		/* initSelect2Gen('#cliente', null, '#myModal');
+
+		initSelect2Gen('#cliente_utilizzatore', null, '#myModal');
+		 */
 		
 	}
 });
 
+
 $('#comm_mod').on('change', function(){
+	
+	if($("#comm_mod").val()!=null && $("#comm_mod").val()!=''){		
+		id_commessa = $('#comm_mod').val();
+		
+		 var nomeCli=$('#comm_mod').val().split("@")[1];
+		
+		var sedeCli=$('#comm_mod').val().split("@")[2];	
+		
+		var nomeCliUtil=$('#comm_mod').val().split("@")[3];
+		
+		var sedeCliUtil=$('#comm_mod').val().split("@")[4];
+	var idCliente = $('#comm_mod').val().split("@")[5];
+		
+		var idSede = $('#comm_mod').val().split("@")[6];
+		 
+		 
+		
+			
+var idClienteUtil = $('#comm_mod').val().split("@")[7];
+			
+			var idSedeUtil = $('#comm_mod').val().split("@")[8];
+			
+		
+		$("#nomeCliente_mod").val(nomeCli);
+		$("#nomeSede_mod").val(sedeCli);
+		$("#nomeClienteUtilizzatore_mod").val(nomeCliUtil);
+		$("#nomeSedeUtilizzatore_mod").val(sedeCliUtil); 
+		
+		$('#cliente_mod').val(idCliente);
+		$('#sede_mod').val(idSede);
+		$('#cliente_utilizzatore_mod').val(idClienteUtil);
+		$('#sede_utilizzatore_mod').val(idSedeUtil);
+		$('#cliente_mod').change();
+		$('#sede_mod').change();
+		$('#cliente_utilizzatore_mod').change();
+		$('#sede_utilizzatore_mod').change();
+		/* 
+		
+		initSelect2Gen('#cliente_mod', null, '#myModalModificaIntervento');
+		initSelect2Gen('#cliente_utilizzatore_mod', null, '#myModalModificaIntervento'); */
+	 	
+	}
+});
+
+
+/* $('#comm_mod').on('change', function(){
 	
 	if($("#comm_mod").val()!=null && $("#comm_mod").val()!=''){		
 		id_commessa = $('#comm_mod').val();
@@ -495,16 +664,22 @@ $('#comm_mod').on('change', function(){
 		
 		var sedeCliUtil=$('#comm_mod').val().split("@")[4];
 		
+		var idCliente = $('#comm_mod').val().split("@")[5];
+		
+		var idSede = $('#comm_mod').val().split("@")[6];
+		
 		
 		$("#nomeCliente_mod").val(nomeCli);
 		$("#nomeSede_mod").val(sedeCli);
 		$("#nomeClienteUtilizzatore_mod").val(nomeCliUtil);
 		$("#nomeSedeUtilizzatore_mod").val(sedeCliUtil);
+		$('#id_cliente_mod').val(idCliente);
+		$('#id_sede_mod').val(idSede);
 		
 	}
 });
 
-
+ */
 var columsDatatables = [];
 
 $("#tabVerInterventi").on( 'init.dt', function ( e, settings ) {
@@ -560,14 +735,23 @@ $(document).ready(function() {
 	
 	commessa_options = $('#commessa_mod option').clone();
 	
-	$(".select2").select2();
+	//$(".select2").select2();
 
+	$("#comm").select2();
+	$("#comm_mod").select2();
+	$("#sede").select2();
+	$("#sede_mod").select2();
+	$("#sede_utilizzatore").select2();
+	$("#sede_utilizzatore_mod").select2();
 	
-	//initSelect2('#cliente_mod');
-	//$('#cliente_mod').change();
-	$('#sede_mod').select2();
-	$('#commessa_mod').select2();
+	
+	initSelect2Gen('#cliente_mod', null, '#myModalModificaIntervento');
+	initSelect2Gen('#cliente_utilizzatore_mod', null, '#myModalModificaIntervento');
+	initSelect2Gen('#cliente', null, '#myModal');
+	initSelect2Gen('#cliente_utilizzatore', null, '#myModal');
+	
 	$('#tecnico_verificatore_mod').select2();
+	$('#tecnico_verificatore').select2();
 	$('#luogo_mod').select2();
 	$('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
@@ -773,9 +957,7 @@ $(document).ready(function() {
 			}   
 	    
 		   } 
-		$('#commessa').html(opt);
-		$('#commessa').val("");
-		$("#commessa").change();  	
+
 	});
  
  
@@ -828,59 +1010,16 @@ $(document).ready(function() {
 			}   
 	    
 		   } 
-		$('#commessa_mod').html(opt);
-		$('#commessa_mod').val("");
-		$("#commessa_mod").change();  	
+		
 	});
 
  
  
  
- function mockData() {
-	 var options =  $('#cliente_appoggio option').clone();
- 	  return _.map(options, function(i) {		  
- 	    return {
- 	      id: i.value,
- 	      text: i.text,
- 	    };
- 	  });
- 	}
+
  	
 
 
- function initSelect2(id_input, placeholder) {
-
-	 if(placeholder==null){
-		  placeholder = "Seleziona Cliente...";
-	  }
- 	$(id_input).select2({
- 	    data: mockData(),
- 	    placeholder: placeholder,
- 	    multiple: false,
- 	    // query with pagination
- 	    query: function(q) {
- 	      var pageSize,
- 	        results,
- 	        that = this;
- 	      pageSize = 20; // or whatever pagesize
- 	      results = [];
- 	      if (q.term && q.term !== '') {
- 	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
- 	        results = _.filter(x, function(e) {
- 	        	
- 	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
- 	        });
- 	      } else if (q.term === '') {
- 	        results = that.data;
- 	      }
- 	      q.callback({
- 	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
- 	        more: results.length >= q.page * pageSize,
- 	      });
- 	    },
- 	  });
- }
- 
  
  
  
@@ -899,6 +1038,234 @@ $(document).ready(function() {
 	 callAjaxForm('#nuovoInterventoForm','amGestioneInterventi.do?action=nuovo');
 	 
  });
+ 
+ $("#cliente").change(function() {
+	    
+ 	  if ($(this).data('options') == undefined) 
+ 	  {
+ 	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+ 	    $(this).data('options', $('#sede option').clone());
+ 	  }
+ 	  
+ 	  var id = $(this).val();
+ 	 
+ 	  var options = $(this).data('options');
+
+ 	  var opt=[];
+ 	
+ 	  opt.push("<option value = 0>Non Associate</option>");
+
+ 	   for(var  i=0; i<options.length;i++)
+ 	   {
+ 		var str=options[i].value; 
+ 	
+ 		if(str.substring(str.indexOf("_")+1,str.length)==id)
+ 		{
+ 			
+ 			//if(opt.length == 0){
+ 				
+ 			//}
+ 		
+ 			opt.push(options[i]);
+ 		}   
+ 	   }
+ 	 $("#sede").prop("disabled", false);
+ 	 
+ 	  $('#sede').html(opt);
+ 	  
+ 	  $("#sede").trigger("chosen:updated");
+ 	  
+ 	  //if(opt.length<2 )
+ 	  //{ 
+ 		$("#sede").change();  
+ 	  //}
+ 	  
+ 	
+ 	});
+
+
+$("#cliente_mod").change(function() {
+   
+  if ($(this).data('options') == undefined) 
+  {
+    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+    $(this).data('options', $('#sede_mod option').clone());
+  }
+  
+  var id = $(this).val();
+ 
+  var options = $(this).data('options');
+
+  var opt=[];
+
+  opt.push("<option value = 0>Non Associate</option>");
+
+   for(var  i=0; i<options.length;i++)
+   {
+	var str=options[i].value; 
+
+	if(str.substring(str.indexOf("_")+1,str.length)==id)
+	{
+		
+		//if(opt.length == 0){
+			
+		//}
+	
+		opt.push(options[i]);
+	}   
+   }
+ $("#sede_mod").prop("disabled", false);
+ 
+  $('#sede_mod').html(opt);
+  
+  $("#sede_mod").trigger("chosen:updated");
+  
+  //if(opt.length<2 )
+  //{ 
+	$("#sede_mod").change();  
+  //}
+  
+
+});
+
+
+
+$("#cliente_utilizzatore").change(function() {
+    
+	  if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    $(this).data('options', $('#sede_utilizzatore option').clone());
+	  }
+	  
+	  var id = $(this).val();
+	 
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	
+	  opt.push("<option value = 0>Non Associate</option>");
+
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+	
+		if(str.substring(str.indexOf("_")+1,str.length)==id)
+		{
+			
+			//if(opt.length == 0){
+				
+			//}
+		
+			opt.push(options[i]);
+		}   
+	   }
+	 $("#sede_utilizzatore").prop("disabled", false);
+	 
+	  $('#sede_utilizzatore').html(opt);
+	  
+	  $("#sede_utilizzatore").trigger("chosen:updated");
+	  
+	  //if(opt.length<2 )
+	  //{ 
+		$("#sede_utilizzatore").change();  
+	  //}
+	  
+	
+	});
+
+
+$("#cliente_utilizzatore_mod").change(function() {
+ 
+if ($(this).data('options') == undefined) 
+{
+  /*Taking an array of all options-2 and kind of embedding it on the select1*/
+  $(this).data('options', $('#sede_utilizzatore_mod option').clone());
+}
+
+var id = $(this).val();
+
+var options = $(this).data('options');
+
+var opt=[];
+
+opt.push("<option value = 0>Non Associate</option>");
+
+ for(var  i=0; i<options.length;i++)
+ {
+	var str=options[i].value; 
+
+	if(str.substring(str.indexOf("_")+1,str.length)==id)
+	{
+		
+		//if(opt.length == 0){
+			
+		//}
+	
+		opt.push(options[i]);
+	}   
+ }
+$("#sede_utilizzatore_mod").prop("disabled", false);
+
+$('#sede_utilizzatore_mod').html(opt);
+
+$("#sede_utilizzatore_mod").trigger("chosen:updated");
+
+//if(opt.length<2 )
+//{ 
+	$("#sede_utilizzatore_mod").change();  
+//}
+
+
+});
+
+
+
+var options_general =  $('#cliente_appoggio_general option').clone();
+function mockDataGen() {
+  return _.map(options_general, function(i) {		  
+    return {
+      id: i.value,
+      text: i.text,
+    };
+  });
+}
+
+
+function initSelect2Gen(id_input, placeholder, modal) {
+  if(placeholder==null){
+	  placeholder = "Seleziona Cliente...";
+  }
+
+	$(id_input).select2({
+	    data: mockDataGen(),
+	    dropdownParent: $(modal),
+	    placeholder: placeholder,
+	    multiple: false,
+	    // query with pagination
+	    query: function(q) {
+	      var pageSize,
+	        results,
+	        that = this;
+	      pageSize = 20; // or whatever pagesize
+	      results = [];
+	      if (q.term && q.term !== '') {
+	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+	        results = _.filter(x, function(e) {
+	        	
+	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+	        });
+	      } else if (q.term === '') {
+	        results = that.data;
+	      }
+	      q.callback({
+	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+	        more: results.length >= q.page * pageSize,
+	      });
+	    },
+	  });
+	  	
+}
  
  
   </script>

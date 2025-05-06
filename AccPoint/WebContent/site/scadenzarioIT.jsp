@@ -73,6 +73,8 @@
 <th>Data acquisto</th>
 <th>Email Referenti</th>
 <th>Modalità di pagamento</th>
+<th>Rinnovo automatico</th>
+<th>Frequenza rinnovo</th>
 <th>Azioni</th>
 
  </tr></thead>
@@ -105,10 +107,23 @@
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${servizio.data_acquisto }"></fmt:formatDate></td>	
 		<td>${servizio.email_referenti }</td>
 		<td>${servizio.modalita_pagamento }</td>		
+		<td>
+		<c:if test="${servizio.rinnovo_automatico ==1}">
+		SI
+		</c:if>
+		<c:if test="${servizio.rinnovo_automatico !=1}">
+		NO
+		</c:if>
+		</td>	
+		<td>
 		
+		<c:if test="${servizio.frequenza_rinnovo !=0}">
+		${servizio.frequenza_rinnovo }
+		</c:if>
+		</td>	
 	<td>	
 
-  	  <a class="btn btn-warning customTooltip" onClicK="modalModificaServizio('${servizio.id }','${servizio.tipo_servizio.id }','${servizio.tipo_rinnovo.id }','${utl:escapeJS(servizio.descrizione) }','${utl:escapeJS(servizio.fornitore) }','${utl:escapeJS(servizio.email_referenti) }','${utl:escapeJS(servizio.modalita_pagamento) }','${servizio.data_scadenza }','${servizio.data_acquisto }','${servizio.id_company.id }')" title="Click per modificare l'servizio"><i class="fa fa-edit"></i></a>
+  	  <a class="btn btn-warning customTooltip" onClicK="modalModificaServizio('${servizio.id }','${servizio.tipo_servizio.id }','${servizio.tipo_rinnovo.id }','${utl:escapeJS(servizio.descrizione) }','${utl:escapeJS(servizio.fornitore) }','${utl:escapeJS(servizio.email_referenti) }','${utl:escapeJS(servizio.modalita_pagamento) }','${servizio.data_scadenza }','${servizio.data_acquisto }','${servizio.id_company.id }','${servizio.rinnovo_automatico }', ${servizio.frequenza_rinnovo })" title="Click per modificare l'servizio"><i class="fa fa-edit"></i></a>
 	  
  	<a class="btn btn-danger customTooltip" onClicK="modalEliminaServizio('${servizio.id }')" title="Click per eliminare l'servizio"><i class="fa fa-trash"></i></a>
  
@@ -292,6 +307,30 @@
        	</div>       	
        </div><br>
        
+          <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Rinnovo automatico</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="rinnovo_automatico" name="rinnovo_automatico" class="form-control" type="checkbox" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+          <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Frequenza Rinnovo (Mesi)</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="frequenza_rinnovo" name="frequenza_rinnovo" min="0" step="1"  class="form-control" type="number" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
    
        
        </div>
@@ -467,6 +506,29 @@
        			
        	</div>       	
        </div><br>
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Rinnovo automatico</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="rinnovo_automatico_mod" name="rinnovo_automatico_mod" class="form-control" type="checkbox" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+          <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Frequenza Rinnovo (Mesi)</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="frequenza_rinnovo_mod" name="frequenza_rinnovo_mod" min="0" step="1"  class="form-control" type="number" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
        
        </div>
   		 
@@ -630,41 +692,97 @@ function modalNuovoTipoRinnovo(){
 
 
 
-
+$('#modalNuovoTipoRinnovo').on("hidden.bs.modal", function(){
+	
+	$('#descrizione_nuovo_tipo').val("");
+	
+});
 
 
 
 function assegnaValoreOpzione(){
 	
-
+	var tag = $('#isMod').val();
 	
 	var data = {
 		    id: 0,
-		    text: $('#descrizione_nuovo_tipo').val()
+		    text: $('#descrizione_nuovo_tipo').val(),
+		    tag: tag
 		};
-
-		var newOption = new Option(data.text, data.id, false, false);
-		var tag = $('#isMod').val();
-		
-
-		$('#'+tag).append(newOption).trigger('change');
-		$('#'+tag+' option[value="'+0+'"]').prop("selected", true)
-		
 	
-		$('#nuovo_'+tag).val($('#descrizione_nuovo_tipo').val());
-	
+	callAjax(data, "gestioneScadenzarioIT.do?action=salva_tipo", function(datab){
 		
-		
+		if(datab.success){
+			
+			data.id = parseInt(datab.id);
+			
+			
+			
+			var newOption = new Option(data.text, data.id, false, false);
+			
+			
 
-		$('#descrizione_nuovo_tipo').val("");
-		$('#modalNuovoTipoRinnovo').modal('hide');
+			$('#'+tag).append(newOption).trigger('change');
+			$('#'+tag+' option[value="'+data.id +'"]').prop("selected", true)
+			
+		
+			$('#nuovo_'+tag).val($('#descrizione_nuovo_tipo').val());
+		
+			
+			
+
+			$('#descrizione_nuovo_tipo').val("");
+			$('#modalNuovoTipoRinnovo').modal('hide');
+			
+		}
+		
+	})
+	
+	
+	
+	
+	
+
+		
 	
 }
 
 
+$('#rinnovo_automatico').on('ifToggled', function() {
+	$('#frequenza_rinnovo').attr("required", false)
+	$('#rinnovo_automatico').on('ifChecked', function(event){
+		$('#rinnovo_automatico').val(1);	
+		$('#frequenza_rinnovo').attr("required", true)
+	});
+	
+	$('#rinnovo_automatico').on('ifUnchecked', function(event) {
+		
+		$('#rinnovo_automatico').val(0);
+		$('#frequenza_rinnovo').attr("required", false)
+	});
+	
+});
 
 
-function modalModificaServizio(id,id_tipo_servizio, id_tipo_rinnovo, descrizione, fornitore, email_referenti, modalita_pagamento, data_scadenza,data_acquisto, id_company){
+$('#rinnovo_automatico_mod').on('ifToggled', function() {
+	$('#frequenza_rinnovo_mod').attr("required", false)
+	$('#rinnovo_automatico_mod').on('ifChecked', function(event){
+		$('#rinnovo_automatico_mod').val(1);	
+		$('#frequenza_rinnovo_mod').attr("required", true)
+	});
+	
+	$('#rinnovo_automatico_mod').on('ifUnchecked', function(event) {
+		
+		$('#rinnovo_automatico_mod').val(0);
+		$('#frequenza_rinnovo_mod').val("")
+		$('#frequenza_rinnovo_mod').attr("required", false)
+	});
+	
+});
+
+
+
+function modalModificaServizio(id,id_tipo_servizio, id_tipo_rinnovo, descrizione, fornitore, email_referenti, modalita_pagamento, data_scadenza,data_acquisto, id_company, rinnovo_automatico, frequenza_rinnovo){
 	
 	
 	$('#id_servizio').val(id);
@@ -680,6 +798,16 @@ function modalModificaServizio(id,id_tipo_servizio, id_tipo_rinnovo, descrizione
 	$('#modalita_pagamento_mod').val(modalita_pagamento);
 	$('#company_mod').val(id_company);
 	$('#company_mod').change();
+	
+	if(rinnovo_automatico == 1){
+		$('#rinnovo_automatico_mod').iCheck('check');
+		$('#rinnovo_automatico_mod').val(1);
+		
+		$('#frequenza_rinnovo_mod').val(frequenza_rinnovo)
+	}else{
+		$('#frequenza_rinnovo_mod').val("")
+	}
+	
 	
 	if(data_scadenza!=null && data_scadenza!=''){
 		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));	
@@ -806,7 +934,7 @@ $('#tipo_rinnovo_mod')
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 10 },
+		    	  { responsivePriority: 1, targets: 12 },
 		               ], 	        
 	  	      buttons: [   
 	  	          {
@@ -893,9 +1021,13 @@ $('#myModalNuovoServizio').on('hidden.bs.modal', function(){
 	$('#modalita_pagamento').val("");
 	$('#data_acquisto').val("");
 	$('#data_scadenza').val("");	
-	
+
+
 	
 });
+
+
+
 
  
   </script>

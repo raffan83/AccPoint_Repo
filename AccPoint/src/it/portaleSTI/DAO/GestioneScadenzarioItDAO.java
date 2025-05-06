@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -74,7 +76,7 @@ public class GestioneScadenzarioItDAO {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		ArrayList<ItServizioItDTO> lista = null;
 
-		Query query = session.createQuery("from ItServizioItDTO where data_scadenza <= :_date");
+		Query query = session.createQuery("from ItServizioItDTO where data_scadenza <= :_date and rinnovo_automatico = 0");
 		query.setParameter("_date", sqlToday);
 		
 		lista = (ArrayList<ItServizioItDTO>) query.list();
@@ -83,7 +85,27 @@ public class GestioneScadenzarioItDAO {
 			session.update(servizio);
 		}
 		
+		query = session.createQuery("from ItServizioItDTO where data_scadenza <= :_date and rinnovo_automatico = 1");
+		query.setParameter("_date", sqlToday);
 		
+		lista = (ArrayList<ItServizioItDTO>) query.list();
+		for (ItServizioItDTO servizio : lista) {
+			servizio.setStato(1);
+			Calendar c = Calendar.getInstance();
+			c.setTime(sqlToday);
+			c.add(Calendar.MONTH, servizio.getFrequenza_rinnovo());
+			servizio.setData_scadenza(c.getTime());
+			
+			c.add(Calendar.DAY_OF_YEAR, -15);
+			
+			if(c.getTime().before(new Date())) {
+				servizio.setData_remind(servizio.getData_scadenza());
+			}else {
+				servizio.setData_remind(c.getTime());
+			}
+			
+			session.update(servizio);
+		}
 
 		session.getTransaction().commit();
 		session.close();

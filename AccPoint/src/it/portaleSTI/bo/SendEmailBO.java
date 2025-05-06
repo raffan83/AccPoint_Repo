@@ -1866,10 +1866,21 @@ public static void sendEmailRemindServizi(ItServizioItDTO servizio) throws Excep
 	  if(today.equals(servizio.getData_scadenza())||today.after(servizio.getData_scadenza())) {
 		  scad = "scaduto";
 	  }
+	  
+	  String rinnovo = "NO";
+	  
+	  if(servizio.getRinnovo_automatico()==1) {
+		  rinnovo = "SI";
+	  }
 	   
 	  String messaggio = "Si comunica che in data "+df.format(servizio.getData_scadenza()) +" è "+scad+" il seguente servizio IT:<br><br> "
 	  
-			  + servizio.getDescrizione()+" (ID: "+servizio.getId()+").<br><br>"
+			  +"ID: "+servizio.getId()+"<br>"
+			  +"TIPO: "+servizio.getTipo_servizio().getDescrizione()+ "<br>"
+			  +"DESCRIZIONE: " +servizio.getDescrizione()+"<br>"
+			  +"FORNITORE: "+servizio.getFornitore()+"<br>"
+			  +"COMPANY: "+servizio.getId_company().getRagione_sociale()+"<br>"
+			  +"RINNOVO AUTOMATICO: "+rinnovo+"<br>"
 			  +"Si prega di provvedere all'eventuale rinnovo.<br><br>"
 			  ;
 

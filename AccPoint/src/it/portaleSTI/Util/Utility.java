@@ -2193,7 +2193,16 @@ public class Utility extends HttpServlet {
 					    outp.close();
 			 }
 			    
-			    
+			 public static String indiceToLettere(int index) {
+				    StringBuilder result = new StringBuilder();
+				    index++; // Excel-style (1-based)
+				    while (index > 0) {
+				        index--; // offset per 0-based
+				        result.insert(0, (char) ('A' + (index % 26)));
+				        index /= 26;
+				    }
+				    return result.toString();
+				}
 			    
 			    
 			    

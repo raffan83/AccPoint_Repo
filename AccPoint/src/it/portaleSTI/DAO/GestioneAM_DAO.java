@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
+import it.portaleSTI.DTO.AMProgressivoDTO;
 import it.portaleSTI.DTO.AMProvaDTO;
 import it.portaleSTI.DTO.AMTipoCampioneDTO;
 import it.portaleSTI.DTO.AMTipoProvaDTO;
@@ -262,6 +263,43 @@ public static AMProvaDTO getProvaFromID(int id_prova, Session session) {
 	}
 	
 	return res;
+}
+
+public static AMProgressivoDTO getProgressivo(String idCommessa, Session session) {
+
+	ArrayList<AMProgressivoDTO> lista = null;
+	AMProgressivoDTO res = null;
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMProgressivoDTO where commessa = :_commessa");			
+	
+	query.setParameter("_commessa",idCommessa);
+	
+	lista = (ArrayList<AMProgressivoDTO>) query.list();
+	
+	if(lista.size()>0) {
+		res = lista.get(0);
+	}
+	
+	return res;
+}
+
+public static ArrayList<AMOggettoProvaDTO> getListaStrumentiClienteSede(Integer id_cliente, Integer id_sede,
+		Session session) {
+	
+	ArrayList<AMOggettoProvaDTO> lista = null;
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMOggettoProvaDTO where id_cliente =:_id_cliente and id_sede =:_id_sede");			
+	
+	query.setParameter("_id_cliente",id_cliente);
+	query.setParameter("_id_sede",id_sede);
+	
+	lista = (ArrayList<AMOggettoProvaDTO>) query.list();
+	
+	return lista;
 }
 
 }

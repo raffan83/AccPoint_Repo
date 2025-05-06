@@ -184,13 +184,18 @@
 <td>${prova.nRapporto }</td>
 
 <td>
-
+<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della prova" onClick="callAction('amGestioneInterventi.do?action=dettaglio_prova&id_prova=${utl:encryptData(prova.id)}')"><i class="fa fa-search"></i></a>
 <c:if test="${prova.nRapporto==null || prova.nRapporto==''}">
-<a class="btn btn-warning customTooltip" title="Click per modificare della prova" onClick="modalModificaProva('${prova.id}','${prova.tipoProva.id}','${prova.data}','${prova.strumento.id}','${prova.campione.id}','${prova.operatore.id}','${prova.esito}', '${prova.filename_excel }','${prova.filename_img }')"><i class="fa fa-edit"></i></a>
-
+<a class="btn btn-warning customTooltip" title="Click per modificare della prova" onClick="modalModificaProva('${prova.id}','${prova.tipoProva.id}','${prova.data}','${prova.strumento.id}','${prova.campione.id}','${prova.operatore.id}','${prova.esito}', '${prova.filename_excel }','${prova.filename_img }','${utl:escapeJS(prova.note) }')"><i class="fa fa-edit"></i></a>
+<a class="btn btn-success customTooltip" title="Click per generare il certificato" onClick="generaCertificatoAM('${prova.id}')"><i class="fa fa-check"></i></a>
 </c:if>
-<%-- <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della prova" onClick="callAction('gestioneVerprova.do?action=dettaglio&id_prova=${utl:encryptData(prova.id)}')"><i class="fa fa-search"></i></a>
 
+
+<c:if test="${prova.nRapporto!=null && prova.nRapporto!=''}">
+<a target="_blank"   class="btn btn-danger customTooltip" title="Click per scaricare il Cerificato"  href="amGestioneInterventi.do?action=download_certificato&id_prova=${prova.id}" > <i class="fa fa-file-pdf-o"></i></a>
+ 
+ </c:if>
+<%--
 <a class="btn btn-danger customTooltip" title="Click per generare il certificato" onClick="callAction('gestioneVerprova.do?action=crea_certificato&id_prova=${utl:encryptData(prova.id)}')"><i class="fa fa-file-pdf-o"></i></a>
 <c:if test="${prova.nomeFile_inizio_prova!=null && prova.nomeFile_inizio_prova!=''}">
 <a class="btn btn-primary customTooltip" title="Click per scaricare l'immagine di inizio prova" onClick="callAction('gestioneVerprova.do?action=download_immagine&id_prova=${utl:encryptData(prova.id)}&filename=${prova.nomeFile_inizio_prova}&nome_pack=${prova.verIntervento.nome_pack }')"><i class="fa fa-image"></i></a>
@@ -406,6 +411,15 @@
 				</select>
        	</div>
        </div><br>
+       
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Note</label>
+       	</div>
+       	<div class="col-sm-9">
+				<textarea rows="3" style="width:100%" id="note" name="note"class="form-control" ></textarea>
+       	</div>
+       </div><br>
 </div>
   		 </div>
   		 </div>
@@ -569,6 +583,16 @@
 				</select>
        	</div>
        </div><br>
+       
+       
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Note</label>
+       	</div>
+       	<div class="col-sm-9">
+				<textarea rows="3" class="form-control" style="width:100%" id="note_mod" name="note_mod" ></textarea>
+       	</div>
+       </div><br>
 </div>
   		 </div>
   		 </div>
@@ -702,7 +726,7 @@ $('#fileupload_img_mod').change(function(){
 	$('#label_img_mod').html($(this).val().split("\\")[2]);
 });
 	
-function modalModificaProva(id_prova, id_tipo, data, id_strumento, id_campione, id_operatore, esito, filename_excel, filename_img){
+function modalModificaProva(id_prova, id_tipo, data, id_strumento, id_campione, id_operatore, esito, filename_excel, filename_img, note){
 	
 	$('#id_prova').val(id_prova);
 	$('#tipo_prova_mod').val(id_tipo);
@@ -719,6 +743,7 @@ function modalModificaProva(id_prova, id_tipo, data, id_strumento, id_campione, 
 	
 	$('#esito_mod').val(esito);
 	$('#esito_mod').change();
+	$('#note_mod').val(note);
 	
 	
 	if(data!=null && data!=''){
@@ -732,6 +757,15 @@ function modalModificaProva(id_prova, id_tipo, data, id_strumento, id_campione, 
 	$('#modalModificaProva').modal()
 	
 }	
+
+function generaCertificatoAM(id_prova){
+	
+	dataObj={};
+	dataObj.id_prova = id_prova;
+	pleaseWaitDiv.modal()
+	callAjax(dataObj, "amGestioneInterventi.do?action=genera_certificato")
+	
+}
 	
 	
     $(document).ready(function() { 

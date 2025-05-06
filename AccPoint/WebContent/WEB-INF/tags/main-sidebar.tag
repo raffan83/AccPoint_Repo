@@ -470,7 +470,7 @@
         </li> 
            <% }%>
          
-		<% if(user.checkRuolo("AM")){%>  
+		<% if(user.checkRuolo("AM") || user.checkRuolo("AE")){%>  
         <li class="header">AM ENGINEERING</li>
 
          <li class="treeview">
@@ -483,7 +483,7 @@
 		   <li><a href="amGestioneInterventi.do?action=lista">Lista Interventi</a></li>	
 		   <li><a href="amGestioneStrumenti.do?action=lista">Lista Strumenti</a></li>
 		   <li><a href="amGestioneCampioni.do?action=lista">Lista Campioni</a></li>	
-	       <li><a href="amGestioneProve.do">Lista prove</a></li>
+	     <!--   <li><a href="amGestioneProve.do">Lista prove</a></li> -->
           </ul>
         </li> 
            <% }%> 

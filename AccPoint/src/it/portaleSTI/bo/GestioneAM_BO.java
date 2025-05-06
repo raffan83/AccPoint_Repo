@@ -298,4 +298,9 @@ public class GestioneAM_BO {
 		return GestioneAM_DAO.getListaStrumentiClienteSede(id_cliente,id_sede, session);
 	}
 
+	public static ArrayList<AMProvaDTO> getListaProve(Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAM_DAO.getListaProve(session);
+	}
+
 }

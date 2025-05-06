@@ -240,31 +240,6 @@
 
 
 
-   <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" style="z-index:10000">
-   
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
-      </div>
-       <div class="modal-body">       
-      	Sei sicuro di voler riemettere il certificato selezionato?
-      	</div>
-      <div class="modal-footer">
-      <input type="hidden" id="id_certificato_riemissione">
-      
-      <a class="btn btn-primary" onclick="riemettiCertificato($('#id_certificato_riemissione').val())" >SI</a>
-		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
-
-
   
 
 

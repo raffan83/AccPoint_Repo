@@ -302,4 +302,18 @@ public static ArrayList<AMOggettoProvaDTO> getListaStrumentiClienteSede(Integer 
 	return lista;
 }
 
+public static ArrayList<AMProvaDTO> getListaProve(Session session) {
+	ArrayList<AMProvaDTO> lista = null;
+	
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMProvaDTO ");			
+
+	lista = (ArrayList<AMProvaDTO>) query.list();
+	
+	
+	return lista;
+}
+
 }

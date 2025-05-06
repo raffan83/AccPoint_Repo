@@ -108,7 +108,7 @@ public class CreateCertificatoAM {
 			ubicazione+= "\nPresso "+prova.getIntervento().getNomeClienteUtilizzatore();
 		}
 		
-		if(prova.getIntervento().getNomeSedeUtilizzatore()!=null) {
+		if(prova.getIntervento().getId_sede_utilizzatore()!=0) {
 			ubicazione+= " - "+ prova.getIntervento().getNomeSedeUtilizzatore();
 		}
 		

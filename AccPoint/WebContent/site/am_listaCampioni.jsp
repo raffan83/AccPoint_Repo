@@ -226,7 +226,7 @@
 </div><br>
 <div class="row">
 	<div class="col-sm-3">
-		<label>Frequenza</label>
+		<label>Frequenza (mesi)</label>
 	</div>
 	<div class="col-sm-9">
 		<input type="number" class="form-control" id="frequenza" name="frequenza" style="width:100%" >
@@ -381,7 +381,7 @@
 
 	<div class="row">
 		<div class="col-sm-3">
-			<label>Frequenza</label>
+			<label>Frequenza (mesi)</label>
 		</div>
 		<div class="col-sm-9">
 			<input type="number" class="form-control" id="frequenza_mod" name="frequenza_mod" style="width:100%">

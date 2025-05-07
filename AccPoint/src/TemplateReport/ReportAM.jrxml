@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_misura_spessimetrica" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a8b6b55f-2c85-4b85-a7a3-44e32f8cc63b">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportAM2" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e3dac1a0-d9ce-415a-b58a-56a3cde19985">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
 	<title>
-		<band height="408">
+		<band height="408" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="180" height="60" backcolor="#D2D2D2" uuid="276ba5be-7b90-4221-9ec5-869d9b7fce64"/>
+				<reportElement x="0" y="0" width="180" height="60" backcolor="#D2D2D2" uuid="4396f6c3-22f3-416a-8bee-1719a104cbbc"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -20,7 +25,7 @@ Via Tofaro, 42/d
 03039 - SORA (FR)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="180" y="0" width="190" height="60" backcolor="#D2D2D2" uuid="3f4e71dc-2d68-4b38-88f3-0a76005709d5"/>
+				<reportElement x="180" y="0" width="190" height="60" backcolor="#D2D2D2" uuid="eb9936e8-cc5e-400e-adf3-c97abf036abc"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -35,7 +40,7 @@ Via Tofaro, 42/d
 (rif. UNI EN ISO 16809:2019)]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="370" y="0" width="180" height="60" backcolor="#D2D2D2" uuid="57cbfa64-4055-4fa9-a183-35fc33a812bb"/>
+				<reportElement x="370" y="0" width="180" height="60" backcolor="#D2D2D2" uuid="5ed16775-34b9-4a15-acdc-55cf42a94f3b"/>
 				<box>
 					<pen lineWidth="1.0"/>
 				</box>
@@ -45,7 +50,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA["Rapporto n." + $P{n_rapporto}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="70" width="550" height="21" backcolor="#D2D2D2" uuid="d4307af1-c93e-4ee7-bc29-3795cabc777f"/>
+				<reportElement x="0" y="70" width="550" height="21" backcolor="#D2D2D2" uuid="590276f9-ebab-48bb-8637-fb3589cf3c5b"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -58,7 +63,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[UBICAZIONE ATTREZZATURA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="91" width="550" height="40" uuid="4d22809c-1b3b-49ec-bff3-617452f7a183"/>
+				<reportElement x="0" y="91" width="550" height="40" uuid="d8c2f833-c69a-4534-9902-f8fbcd96f649"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -69,7 +74,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{cliente_utilizzatore}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="139" width="552" height="21" backcolor="#D2D2D2" uuid="f1451bfa-59ae-4f7d-80c7-397f4b426c04"/>
+				<reportElement x="0" y="139" width="552" height="21" backcolor="#D2D2D2" uuid="87a66a8b-bbe7-4341-905c-c0559c2eaf33"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -82,7 +87,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[CARATTERISTICHE TECNICHE ATTREZZATURA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="270" width="552" height="21" backcolor="#D2D2D2" uuid="05e39a0f-cfab-4097-b34c-3b8001d8be33"/>
+				<reportElement x="0" y="270" width="552" height="21" backcolor="#D2D2D2" uuid="4c69921b-6fe3-4b01-b90b-25bde1969fe4"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -95,7 +100,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[STRUMENTAZIONE DI MISURA UTILIZZATA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="80" y="291" width="310" height="20" uuid="b80b7296-fb60-4c37-933a-2dd0b78be89d"/>
+				<reportElement x="80" y="291" width="310" height="20" uuid="be729d96-8b43-45ef-bc01-a22892bd2ac7"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -106,7 +111,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{rilevatore_out}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="160" width="70" height="20" uuid="e42ad5cb-b65a-4263-b0f0-3f73c8a8a9b0"/>
+				<reportElement x="1" y="160" width="70" height="20" uuid="fec3d4f4-2da4-4c0d-9bae-f75379101f09"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -119,7 +124,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[MATRICOLA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="71" y="160" width="70" height="20" uuid="7c659616-f50e-4361-bc6f-f7cc1dd2295d"/>
+				<reportElement x="71" y="160" width="70" height="20" uuid="cc69a00d-53ed-4297-9520-7c5c89978a93"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -132,7 +137,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[N. FABBRICA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="141" y="160" width="70" height="20" uuid="d2573076-3565-47dc-a144-906f8231acab"/>
+				<reportElement x="141" y="160" width="70" height="20" uuid="d01c0e0d-7552-4c12-851b-1eb419e80fcc"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -145,7 +150,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[TIPO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="211" y="160" width="70" height="20" uuid="3fda45f2-ef9c-4a1d-8c88-112bdc7ee2f0"/>
+				<reportElement x="211" y="160" width="70" height="20" uuid="a499f776-c801-4304-a030-3f6c92459aa2"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -158,7 +163,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[DESCRIZIONE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="281" y="160" width="69" height="20" uuid="9ba4b0d2-4704-41f8-b46d-b30262afa308"/>
+				<reportElement x="281" y="160" width="69" height="20" uuid="baaaea83-2b4f-4805-b683-33446642e5bd"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -171,7 +176,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[PRESSIONE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="350" y="160" width="70" height="20" uuid="2205ba42-1b62-42ae-9570-be06b73b1d51"/>
+				<reportElement x="350" y="160" width="70" height="20" uuid="f08e545b-632e-41c7-8338-b7442fde8d2a"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -184,7 +189,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[VOLUME]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="420" y="160" width="70" height="20" uuid="7db60c42-4fc9-4e19-8ea4-a68bc03920e4"/>
+				<reportElement x="420" y="160" width="70" height="20" uuid="f70be2ad-11c5-43a6-a39e-a7e43b05580d"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -197,7 +202,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[ANNO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="490" y="160" width="62" height="20" uuid="861db596-d1d8-4804-aaa6-e959cffaf757"/>
+				<reportElement x="490" y="160" width="62" height="20" uuid="1ea96f35-f10c-424e-acf7-4dacdbf3a7d3"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -210,7 +215,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[COSTRUTTORE]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="1" y="180" width="70" height="20" uuid="1882d7a3-a3c4-4d3f-a67c-2c9e2e4fcd65"/>
+				<reportElement x="1" y="180" width="70" height="20" uuid="d3157f76-4498-463c-9254-922e6d53ec0a"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -223,7 +228,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{matricola_strumento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="71" y="180" width="70" height="20" uuid="d6c88c67-b209-4ef4-868a-7c4e06f6afc6"/>
+				<reportElement x="71" y="180" width="70" height="20" uuid="15684464-72d2-45aa-92b2-0dff516cd5d7"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -236,7 +241,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{n_fabbrica}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="141" y="180" width="70" height="20" uuid="aeadcca2-0b8e-423b-9741-4ca423155376"/>
+				<reportElement x="141" y="180" width="70" height="20" uuid="f9112da7-8e05-4e03-b0d1-abd1982137c4"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -249,7 +254,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{tipo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="211" y="180" width="70" height="20" uuid="6b8f80f3-004b-46de-8b70-f54e04c4c3a6"/>
+				<reportElement x="211" y="180" width="70" height="20" uuid="222a84bb-989f-496b-b336-8b7aff9a1739"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -262,7 +267,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{descrizione}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="281" y="180" width="69" height="20" uuid="05d620be-73e5-4244-ad27-c73c590aaa3d"/>
+				<reportElement x="281" y="180" width="69" height="20" uuid="1f6b1735-5b6c-41b9-92b4-b122c349560f"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -275,7 +280,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{pressione}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="350" y="180" width="70" height="20" uuid="e403b6e6-6f27-4eed-bb65-17e5ed1abdf6"/>
+				<reportElement x="350" y="180" width="70" height="20" uuid="5a25966e-d97d-440f-8198-92ae580a95c0"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -288,7 +293,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{volume}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="420" y="180" width="70" height="20" uuid="31726e04-91cd-4095-a458-be88f48d11b0"/>
+				<reportElement x="420" y="180" width="70" height="20" uuid="6d1808d7-32a7-4195-ab68-e83a81276b71"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -301,7 +306,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{anno}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="490" y="180" width="62" height="20" uuid="0488f062-6f63-4f2a-b635-daf9ce03f9d1"/>
+				<reportElement x="490" y="180" width="62" height="20" uuid="04587e77-cdb6-4e4a-91fd-3d4447f7167f"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -314,7 +319,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{costruttore}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="200" width="140" height="20" uuid="86d866bc-6d40-4244-aec1-29803185d498"/>
+				<reportElement x="1" y="200" width="140" height="20" uuid="c6735dfa-6601-4f25-ba7c-4ab23059016f"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -327,7 +332,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[ZONA DI RIFERIMENTO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="141" y="200" width="209" height="20" uuid="970e197f-4a19-4355-8b8f-e3ce88976365"/>
+				<reportElement x="141" y="200" width="209" height="20" uuid="8454a2b3-6a7f-4750-902a-7e2cf7de1d92"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -340,7 +345,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[QUALITÀ DEI MATERIALI]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="350" y="200" width="202" height="20" uuid="e7b346f9-0f8e-4bfe-8582-483e60f35025"/>
+				<reportElement x="350" y="200" width="202" height="20" uuid="df73f621-8c8b-42cc-b483-bd524d522cdb"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -353,7 +358,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[SPESSORE NOMINALE]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="141" y="220" width="209" height="20" uuid="159d0dc4-463c-4984-baf7-9fc1405591d2"/>
+				<reportElement x="141" y="220" width="209" height="20" uuid="47629cc3-c40f-43c4-a486-dffe6d26b6fe"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -366,7 +371,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{materiale_fondo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="350" y="220" width="202" height="20" uuid="bb25bb45-5639-41be-a490-eb7e61c8ba4c"/>
+				<reportElement x="350" y="220" width="202" height="20" uuid="ed2e7d13-36b2-4989-8f73-b5683a3f7609"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -379,7 +384,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{spessore_fondo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="240" width="140" height="20" uuid="09fa8bc7-e3ab-4016-8f6a-a23f06d8c298"/>
+				<reportElement x="1" y="240" width="140" height="20" uuid="c6af9b9e-e349-47c7-8d1c-ae1d0eb22305"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -392,7 +397,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[FASCIAME]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="220" width="140" height="20" uuid="95fe272c-658e-40dd-8326-616a67bae456"/>
+				<reportElement x="1" y="220" width="140" height="20" uuid="756e6fae-48e7-4836-9b26-64680aae22c4"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -405,7 +410,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[FONDI]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="141" y="240" width="209" height="20" uuid="fa1f5592-f8ce-48e6-a55e-274407d1eb59"/>
+				<reportElement x="141" y="240" width="209" height="20" uuid="a882d555-658f-401a-9fd2-615123b57b5c"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -418,7 +423,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{materiale_fasciame}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="350" y="240" width="202" height="20" uuid="edfdf8f4-61ce-4287-8f85-11a293ed302e"/>
+				<reportElement x="350" y="240" width="202" height="20" uuid="6f4e2e4e-ce6e-41ee-93f6-6c9554ef8a4d"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -431,7 +436,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{spessore_fasciame}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="80" y="331" width="472" height="20" uuid="ab3db2fb-3780-4678-91dd-e0ef8c752804"/>
+				<reportElement x="80" y="331" width="472" height="20" uuid="f5433a40-2c15-4cf1-b66c-3e0911548830"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -441,7 +446,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{blocco_riferimento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="460" y="291" width="92" height="20" uuid="41ee003a-4c1f-4ad6-b1fc-03057183da05"/>
+				<reportElement x="460" y="291" width="92" height="20" uuid="1b5f61f5-b75e-42c7-a3ad-21a3ae1edec1"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -452,7 +457,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{matricola_campione}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="390" y="291" width="70" height="20" uuid="9941c20d-a4f5-4bc9-8410-66deb448d847"/>
+				<reportElement x="390" y="291" width="70" height="20" uuid="b5a1a7d5-24fe-4a25-afb6-2ef2add75053"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -465,7 +470,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[MATRICOLA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="80" y="351" width="70" height="20" uuid="21a7e008-a917-41c5-9f23-a77ee2dfdf21"/>
+				<reportElement x="80" y="351" width="70" height="20" uuid="cd8c59b1-b206-4f87-acd7-9457c706c2cd"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -478,7 +483,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[COSTRUTTORE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="150" y="351" width="70" height="20" uuid="27d1a5e5-66dc-4c34-aee6-40a569004f8c"/>
+				<reportElement x="150" y="351" width="70" height="20" uuid="ba78b561-2830-4ec9-94ca-b6c953c77681"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -491,7 +496,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[MODELLO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="490" y="351" width="62" height="20" uuid="905f313a-3fa9-40f8-a347-64a577ccfd51"/>
+				<reportElement x="490" y="351" width="62" height="20" uuid="c9dbbb88-e4d9-4700-9366-2f3de001b64f"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -504,7 +509,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[VELOCITÀ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="430" y="351" width="60" height="20" uuid="fd9f5a70-433e-473f-a8aa-a365ef864878"/>
+				<reportElement x="430" y="351" width="60" height="20" uuid="8b1e15b5-bb9d-4cea-9900-4a5de4286ae1"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -517,7 +522,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[ANGOLO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="360" y="351" width="70" height="20" uuid="528a8f72-1804-4a4b-9767-d8cc00adfba0"/>
+				<reportElement x="360" y="351" width="70" height="20" uuid="d084aa69-7f63-4002-860b-882e0c5c3287"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -530,7 +535,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[DIMENSIONE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="290" y="351" width="70" height="20" uuid="50f3ba05-fbdf-4d74-ac67-c7c3ae63d705"/>
+				<reportElement x="290" y="351" width="70" height="20" uuid="6637c8e8-86eb-4f0f-8b17-5a8805b921f0"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -543,7 +548,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[FREQUENZA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="220" y="351" width="70" height="20" uuid="067fba76-4705-41fd-b4eb-5a2f08783d0b"/>
+				<reportElement x="220" y="351" width="70" height="20" uuid="421ef625-54fb-41b2-acf9-a6c1fc4424e1"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -556,7 +561,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[MATRICOLA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="80" y="371" width="70" height="20" uuid="8ca21cba-de37-44c1-87f9-5b36521b4728"/>
+				<reportElement x="80" y="371" width="70" height="20" uuid="71a60ef7-dad5-4ab1-ac9d-e79e6d2817c1"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -569,7 +574,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{costruttore_sonda}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="150" y="371" width="70" height="20" uuid="aaf50fce-1269-426e-b92c-5b456f07b946"/>
+				<reportElement x="150" y="371" width="70" height="20" uuid="0fdf6e8a-2331-432d-a919-e1dff3b5cb02"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -582,7 +587,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{modello_sonda}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="490" y="371" width="62" height="20" uuid="c47317d6-9a78-4d8c-a4ea-281937dd94b4"/>
+				<reportElement x="490" y="371" width="62" height="20" uuid="b433edfa-8551-479a-82a6-aa7b1f9bb0a2"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -595,7 +600,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{velocita_sonda}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="430" y="371" width="60" height="20" uuid="a6dff05c-7184-42e0-8a09-4323cf904316"/>
+				<reportElement x="430" y="371" width="60" height="20" uuid="85040d30-a8b5-4a22-ac60-18a5937ac90d"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -608,7 +613,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{angolo_sonda}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="360" y="371" width="70" height="20" uuid="e0def4f6-7ac9-43cd-ae23-7bdcabce1b6b"/>
+				<reportElement x="360" y="371" width="70" height="20" uuid="f0cbc960-56fa-4969-9e5c-d811a2b49508"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -621,7 +626,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{dimensione_sonda}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="290" y="371" width="70" height="20" uuid="ba122adf-2aff-43df-9016-2a4a92922270"/>
+				<reportElement x="290" y="371" width="70" height="20" uuid="77420e07-42fc-4eda-b05f-9b9652833076"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -634,7 +639,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{frequenza_sonda}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="220" y="371" width="70" height="20" uuid="4a6b6830-0666-4310-b1e5-76fd25008e21"/>
+				<reportElement x="220" y="371" width="70" height="20" uuid="ecb35ff2-fcc3-4263-96d7-bcaefd91c8c1"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -647,7 +652,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{matricola_sonda}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="291" width="79" height="20" uuid="6bf47302-c98c-4905-b43e-b343dcdc65be"/>
+				<reportElement x="1" y="291" width="79" height="20" uuid="846305c2-3956-4244-8a22-af74cb6e692e"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -660,7 +665,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[COSTRUTTORE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="331" width="79" height="20" uuid="fd52d9c4-ce2a-4425-b815-377f1422c430"/>
+				<reportElement x="1" y="331" width="79" height="20" uuid="f1b0ac94-e81e-49fe-8124-e66ea1ab9321"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -673,7 +678,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[BLOCCO RIFERIMENTO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="351" width="79" height="40" uuid="d342e8ac-d1e5-4d14-ba81-af8f7acd76a0"/>
+				<reportElement x="1" y="351" width="79" height="40" uuid="5789e942-5324-48a4-b174-40b6340808d3"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -686,7 +691,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[SONDA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="311" width="79" height="20" uuid="b640ccd6-0f7b-4939-8954-61d71bbe1f23"/>
+				<reportElement x="1" y="311" width="79" height="20" uuid="8723df9a-d20f-4f3d-9903-ba63791f296c"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -699,7 +704,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[MEZZO ACCOPPIANTE]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="80" y="311" width="472" height="20" uuid="2f8a764a-3f01-4915-a106-6e0d0a9ed630"/>
+				<reportElement x="80" y="311" width="472" height="20" uuid="452a21b0-d3bc-4680-990d-28fe87312c5e"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -712,12 +717,12 @@ Via Tofaro, 42/d
 		</band>
 	</title>
 	<detail>
-		<band height="20"/>
+		<band height="20" splitType="Stretch"/>
 	</detail>
 	<pageFooter>
-		<band height="160">
+		<band height="184" splitType="Stretch">
 			<staticText>
-				<reportElement x="1" y="0" width="552" height="21" backcolor="#D2D2D2" uuid="2d43de1e-bdd4-42c9-9724-1e4bfb2dfc6c"/>
+				<reportElement x="1" y="0" width="552" height="21" backcolor="#D2D2D2" uuid="cd020fbb-cb73-40d9-826f-0d90391039a0"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -730,7 +735,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[ESITO VERIFICA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="21" width="552" height="20" uuid="29d8c52b-e06e-460c-852c-77e304ba6576"/>
+				<reportElement x="1" y="21" width="552" height="20" uuid="2dbe6b20-dc94-422f-9507-59944ad02070"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -743,7 +748,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[ESITO DELLA VERIFICA:                   CONFORME A SPECIFICA                                 NON CONFORME A SPECIFICA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="120" y="26" width="10" height="10" uuid="b9feae14-e1ab-4668-bf8b-1e3b25229d37"/>
+				<reportElement x="120" y="26" width="10" height="10" uuid="200fc9e5-bd51-4b56-b2aa-bfd0f0c51f5c"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -756,7 +761,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{esito_positivo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="290" y="26" width="10" height="10" uuid="5f3d39b0-881c-41ab-af44-f2e84893166c"/>
+				<reportElement x="290" y="26" width="10" height="10" uuid="d604e8cb-5fa4-4252-8fc0-b3d617ec28a9"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -769,7 +774,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{esito_negativo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="52" width="552" height="21" backcolor="#D2D2D2" uuid="f07285b5-e9c8-40d9-9bd9-abc40798f57d"/>
+				<reportElement x="0" y="52" width="552" height="21" backcolor="#D2D2D2" uuid="b27c8037-80a7-4d29-a0bb-626d008f9be4"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -782,7 +787,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[NOTE]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="73" width="552" height="20" uuid="bdbf1985-cfa3-4941-be77-62dbb10e9e9a"/>
+				<reportElement x="0" y="73" width="552" height="20" uuid="8e8c2734-ad32-4dc3-b9b8-1075166bc42f"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -795,7 +800,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="106" width="280" height="20" uuid="8da4da36-d07c-4e66-a286-83b0cd494e48"/>
+				<reportElement x="1" y="106" width="280" height="20" uuid="8c252586-e535-4890-9397-ba3124dfe787"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -808,7 +813,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[DATA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="281" y="106" width="272" height="20" uuid="365deb35-fb76-4653-99d8-e745343f9ee6"/>
+				<reportElement x="281" y="106" width="272" height="20" uuid="42c9bed2-94d1-455f-96ca-a314ef2fb264"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -821,7 +826,7 @@ Via Tofaro, 42/d
 				<text><![CDATA[FIRMA TECNICO]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="281" y="126" width="272" height="20" uuid="cd522b45-9393-4964-a556-4bf97e368914"/>
+				<reportElement x="281" y="126" width="272" height="44" uuid="2103b999-483c-40f7-810c-e78d2b929905"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -834,7 +839,7 @@ Via Tofaro, 42/d
 				<textFieldExpression><![CDATA[$P{firma}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="1" y="126" width="280" height="20" uuid="5711d406-ea87-4a43-b71e-fc470c24313e"/>
+				<reportElement x="1" y="126" width="280" height="44" uuid="416bf265-4591-405e-81e1-6c94f1681936"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -846,6 +851,10 @@ Via Tofaro, 42/d
 				</textElement>
 				<textFieldExpression><![CDATA[$P{data_prova}]]></textFieldExpression>
 			</textField>
+			<image hAlign="Center" onErrorType="Blank">
+				<reportElement x="360" y="140" width="115" height="26" uuid="68ef9142-2f14-4660-b99a-4b4d8d4e823e"/>
+				<imageExpression><![CDATA[$P{immagine_firma}]]></imageExpression>
+			</image>
 		</band>
 	</pageFooter>
 </jasperReport>

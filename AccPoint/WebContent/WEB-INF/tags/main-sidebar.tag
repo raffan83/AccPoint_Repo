@@ -480,10 +480,10 @@
             </span>
           </a>
           <ul class="treeview-menu">
-		   <li><a href="amGestioneInterventi.do?action=lista">Lista Interventi</a></li>	
-		   <li><a href="amGestioneStrumenti.do?action=lista">Lista Strumenti</a></li>
+		   <li><a href="amGestioneInterventi.do?action=lista">Lista Interventi Clienti</a></li>	
+		   <li><a href="amGestioneStrumenti.do?action=lista">Lista Attrezzature In Prova</a></li>
 		   <li><a href="amGestioneCampioni.do?action=lista">Lista Campioni</a></li>	
-	  <li><a href="amGestioneInterventi.do?action=lista_prove">Lista Prove</a></li> 
+	  <li><a href="amGestioneInterventi.do?action=lista_prove">Lista Prove Effettuate</a></li> 
           </ul>
         </li> 
            <% }%> 

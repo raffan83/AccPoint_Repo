@@ -107,7 +107,7 @@
                 </li>
                 
                 <li class="list-group-item">
-                  <b>Operatore</b> <a class="pull-right">${intervento.operatore.nomeOperatore}</a>
+                  <b>Operatore</b><a class="customTooltip pull-right  btn btn-warning btn-xs" title="Carica patentino" onclick="modalPatentino('${intervento.operatore.id}','${intervento.operatore.dicituraPatentino}','${intervento.operatore.pathPatentino }')"><i class="fa fa-file-text-o"></i></a> <a class="pull-right">${intervento.operatore.nomeOperatore}</a>
                 </li>
               
         </ul>
@@ -179,7 +179,14 @@
 <td>${prova.strumento.descrizione}</td>
 <td>${prova.strumento.matricola}</td>
 <td>${prova.campione.codiceInterno }</td>
-<td>${prova.esito }</td>
+<td>
+<c:if test="${prova.esito  == 'POSITIVO'}">
+CONFORME A SPECIFICA
+</c:if>
+<c:if test="${prova.esito  == 'NEGATIVO'}">
+NON CONFORME A SPECIFICA
+</c:if>
+</td>
 
 <td>${prova.nRapporto }</td>
 
@@ -187,7 +194,9 @@
 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della prova" onClick="callAction('amGestioneInterventi.do?action=dettaglio_prova&id_prova=${utl:encryptData(prova.id)}')"><i class="fa fa-search"></i></a>
 <c:if test="${prova.nRapporto==null || prova.nRapporto==''}">
 <a class="btn btn-warning customTooltip" title="Click per modificare della prova" onClick="modalModificaProva('${prova.id}','${prova.tipoProva.id}','${prova.data}','${prova.strumento.id}','${prova.campione.id}','${prova.operatore.id}','${prova.esito}', '${prova.filename_excel }','${prova.filename_img }','${utl:escapeJS(prova.note) }')"><i class="fa fa-edit"></i></a>
+<c:if test="${prova.matrixSpess!=null && prova.matrixSpess!=''}">
 <a class="btn btn-success customTooltip" title="Click per generare il certificato" onClick="generaCertificatoAM('${prova.id}')"><i class="fa fa-check"></i></a>
+</c:if>
 </c:if>
 
 
@@ -331,7 +340,7 @@
 			<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Carica Excel...</span>
-				<input accept=".xls,.xlsx,.xlsm,.xlsxm"  id="fileupload_excel" name="fileupload_excel" type="file" REQUIRED >
+				<input accept=".xls,.xlsx,.xlsm,.xlsxm"  id="fileupload_excel" name="fileupload_excel" type="file"  >
 		       
 		   	 </span>
 		   	</div> 
@@ -346,7 +355,7 @@
 			<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Carica Immagine...</span>
-				<input accept=".jpg,.png"  id="fileupload_img" name="fileupload_img" type="file" REQUIRED>
+				<input accept=".jpg,.png"  id="fileupload_img" name="fileupload_img" type="file" >
 		       
 		   	 </span>
 		   	</div> 
@@ -371,6 +380,7 @@
 				</c:forEach>
 				</select>
        	</div>
+       		
        </div><br>
 		
 		<div class="row">
@@ -378,10 +388,10 @@
        		<label>Esito</label>
        	</div>
        	<div class="col-sm-9">
-				<select  id="esito" name="esito" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona esito..." style="width:100%" required>
+				<select  id="esito" name="esito" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona esito..." style="width:100%" >
 				<option value="" ></option>
-				<option value="POSITIVO" >POSITIVO</option>
-				<option value="NEGATIVO" >NEGATIVO</option>
+				<option value="POSITIVO" >CONFORME A SPECIFICA</option>
+				<option value="NEGATIVO" >NON CONFORME A SPECIFICA</option>
 			
 				</select>
        	</div>
@@ -421,7 +431,7 @@
 
 
 
-<form id="modificaProvaForm" name="nuovaProvaForm">
+<form id="modificaProvaForm" name="modificaProvaForm">
    <div id="modalModificaProva" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" >
   
     <div class="modal-dialog modal-md" role="document">
@@ -534,7 +544,7 @@
        		<label>Operatore</label>
        	</div>
        	<div class="col-sm-9">
-				<select  id="operatore_mod" name="operatore_mod" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona operatore..." style="width:100%" required>
+				<select  id="operatore_mod" name="operatore_mod" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona operatore..." style="width:100%" >
 				<option value="" ></option>
 				<c:forEach items="${lista_operatori }" var="op">
 				
@@ -543,6 +553,7 @@
 				</c:forEach>
 				</select>
        	</div>
+     
        </div><br>
 		
 		<div class="row">
@@ -550,10 +561,10 @@
        		<label>Esito</label>
        	</div>
        	<div class="col-sm-9">
-				<select  id="esito_mod" name="esito_mod" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona esito..." style="width:100%" required>
+				<select  id="esito_mod" name="esito_mod" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona esito..." style="width:100%" >
 				<option value="" ></option>
-				<option value="POSITIVO" >POSITIVO</option>
-				<option value="NEGATIVO" >NEGATIVO</option>
+				<option value="POSITIVO" >CONFORME A SPECIFICA</option>
+				<option value="NEGATIVO" >NON CONFORME A SPECIFICA</option>
 			
 				</select>
        	</div>
@@ -585,6 +596,76 @@
   </div>
 </div>
 
+</form>
+
+
+<form id="formPatentino" name="formPatentino">
+
+<div id="modalPatentino" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Patentino</h4>
+      </div>
+       <div class="modal-body">
+		<div class="row">
+       	<div class="col-sm-3">
+       		<label>Dicitura Firma</label>
+       	</div>
+       	<div class="col-sm-9">
+       
+               <input type='text' class="form-control input-small" id="dicitura" name="dicitura" required>
+             
+        </div> 
+       	
+       </div><br>
+       
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Patentino</label>
+       	</div>
+       	<div class="col-sm-3">
+       			<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica Patentino...</span>
+				<input accept=".pdf"  id="file_patentino" name="file_patentino" type="file" >
+		       
+		   	 </span>
+		   	</div> 
+		 <div class="col-xs-6">
+		 <label id="label_patentino"></label>
+        </div> 
+       
+       </div><br>
+       
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Firma</label>
+       	</div>
+       	<div class="col-sm-3">
+       			<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica Firma...</span>
+				<input accept=".png, .jpg"  id="file_firma" name="file_firma" type="file" >
+		       
+		   	 </span>
+		   	</div> 
+		 <div class="col-xs-6">
+		 <label id="label_firma"></label>
+        </div> 
+       
+       </div><br>
+   
+  		 </div>
+      <div class="modal-footer" id="myModalFooter">
+      <input id="id_operatore" name="id_operatore" type="hidden">
+ 		
+       <button class="btn btn-primary" type="submit">Salva</button>
+      </div>
+    </div>
+  </div>
+</div>
 </form>
 	
   <t:dash-footer />
@@ -628,6 +709,27 @@
 	 $('#modalNuovaProva').modal();
  }
  
+ function modalPatentino(id_operatore, dicitura, filename){
+	 
+	 $('#dicitura').val(dicitura);
+	 $('#label_patentino').html(filename)
+	 
+	 $('#id_operatore').val(id_operatore);
+	 
+	 $('#modalPatentino').modal();
+ }
+ 
+ 
+
+ $('#formPatentino').on('submit', function(e){
+	 
+	 e.preventDefault()
+	 callAjaxForm('#formPatentino','amGestioneInterventi.do?action=salva_patentino');
+	 
+ })
+	 
+	 
+
  
  
  function modalYesOrNo(){
@@ -700,8 +802,22 @@ $('#fileupload_img_mod').change(function(){
 	
 	$('#label_img_mod').html($(this).val().split("\\")[2]);
 });
+
+
+$('#file_patentino').change(function(){
+	
+	
+	$('#label_patentino').html($(this).val().split("\\")[2]);
+});
+
+$('#file_firma').change(function(){
+	
+	
+	$('#label_firma').html($(this).val().split("\\")[2]);
+});
 	
 function modalModificaProva(id_prova, id_tipo, data, id_strumento, id_campione, id_operatore, esito, filename_excel, filename_img, note){
+	$('#isMod').val(1)
 	
 	$('#id_prova').val(id_prova);
 	$('#tipo_prova_mod').val(id_tipo);
@@ -732,6 +848,26 @@ function modalModificaProva(id_prova, id_tipo, data, id_strumento, id_campione, 
 	$('#modalModificaProva').modal()
 	
 }	
+
+$('#esito').change(function(){
+	
+	if($(this).val() == "POSITIVO"){
+		$('#note').val("NON SI RILEVANO SPESSORI INFERIORI A QUELLI MINIMI AMMISSIBILI / NOMINALI DICHIARATI DAL COSTRUTTORE")
+	}else if($(this).val() == "NEGATIVO"){
+		$('#note').val("SI RILEVANO SPESSORI INFERIORI A QUELLI MINIMI AMMISSIBILI / NOMINALI DICHIARATI DAL COSTRUTTORE");
+	}
+	
+});
+
+$('#esito_mod').change(function(){
+	
+	if($(this).val() == "POSITIVO"){
+		$('#note_mod').val("NON SI RILEVANO SPESSORI INFERIORI A QUELLI MINIMI AMMISSIBILI / NOMINALI DICHIARATI DAL COSTRUTTORE")
+	}else if($(this).val() == "NEGATIVO"){
+		$('#note_mod').val("SI RILEVANO SPESSORI INFERIORI A QUELLI MINIMI AMMISSIBILI / NOMINALI DICHIARATI DAL COSTRUTTORE");
+	}
+	
+});
 
 function generaCertificatoAM(id_prova){
 	

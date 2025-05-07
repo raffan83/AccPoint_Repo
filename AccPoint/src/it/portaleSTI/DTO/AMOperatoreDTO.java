@@ -5,6 +5,15 @@ public class AMOperatoreDTO {
 	private int id;
 	private String nomeOperatore;
 	private String pathPatentino;
+	private String dicituraPatentino;
+	private String firma;
+	
+	public String getFirma() {
+		return firma;
+	}
+	public void setFirma(String firma) {
+		this.firma = firma;
+	}
 	public int getId() {
 		return id;
 	}
@@ -25,6 +34,12 @@ public class AMOperatoreDTO {
 	}
 	
 	
+	public String getDicituraPatentino() {
+		return dicituraPatentino;
+	}
+	public void setDicituraPatentino(String dicituraPatentino) {
+		this.dicituraPatentino = dicituraPatentino;
+	}
 	public AMOperatoreDTO() {
 		// TODO Auto-generated constructor stub
 	}

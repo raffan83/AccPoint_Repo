@@ -206,7 +206,7 @@
                   <b>Angolo sonda</b> <a class="pull-right">${prova.campione.sondaAngolo}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Velocità sonda</b> <a class="pull-right">${prova.campione.sondaVelocita}</a>
+                  <b>Velocità sonda</b> <a class="pull-right">${prova.strumento.sondaVelocita}</a>
                 </li>
                 
                
@@ -344,9 +344,9 @@
  <c:when test="${prova.esito=='POSITIVO' }">
   <b>ESITO DELLA VERIFICA: CONFORME A SPECIFICA</b>
   </c:when>
-  <c:otherwise>
+  <c:when test="${prova.esito=='NEGATIVO' }">
   <b>ESITO GLOBALE: NON CONFORME A SPECIFICA</b>
-  </c:otherwise>
+  </c:when>
  </c:choose>
 
  </div>

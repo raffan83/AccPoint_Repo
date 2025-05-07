@@ -157,6 +157,8 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		        String frequenza = ret.get("frequenza");
 		        String data_verifica = ret.get("data_verifica");
 		        String data_prossima = ret.get("data_prossima_verifica");
+		        String sondaVelocita = ret.get("sonda_velocita");
+		        String materiale_fondo = ret.get("materiale_sonda");
 				
 				
 				
@@ -179,6 +181,8 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				strumento.setnFabbrica(numero_fabbrica);
 				strumento.setZonaRifFondo(zona_rif_fondo);
 				strumento.setSpessoreFondo(spessore_fondo);
+				strumento.setSondaVelocita(sondaVelocita);
+				strumento.setMaterialeFondo(materiale_fondo);
 				if(anno!=null && !anno.equals("")) {
 					strumento.setAnno(Integer.parseInt(anno));	
 				}
@@ -252,7 +256,8 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		        String frequenza = ret.get("frequenza_mod");
 		        String data_verifica = ret.get("data_verifica_mod");
 		        String data_prossima = ret.get("data_prossima_verifica_mod");
-
+		        String sondaVelocita = ret.get("sonda_velocita_mod");
+		        String materiale_fondo = ret.get("materiale_sonda_mod");
 				
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -273,7 +278,9 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				strumento.setCostruttore(costruttore);
 				strumento.setnFabbrica(numero_fabbrica);
 				strumento.setZonaRifFondo(zona_rif_fondo);
+				strumento.setSondaVelocita(sondaVelocita);
 				strumento.setSpessoreFondo(spessore_fondo);
+				strumento.setMaterialeFondo(materiale_fondo);
 				if(anno!=null && !anno.equals("")) {
 					strumento.setAnno(Integer.parseInt(anno));	
 				}

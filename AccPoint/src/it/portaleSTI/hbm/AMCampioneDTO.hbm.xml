@@ -31,11 +31,12 @@
         <property name="sondaFrequenza" column="sonda_frequenza"/>
         <property name="sondaDimensione" column="sonda_dimensione"/>
         <property name="sondaAngolo" column="sonda_angolo"/>
-        <property name="sondaVelocita" column="sonda_velocita"/>
+       
         <property name="misurazioneMassima" column="misurazioneMassima"/>
         <property name="larghezzaManico" column="larghezzaManico"/>
         <property name="spessorePunta" column="spessorePunta"/>
         <property name="file_certificato" column="file_certificato"/>
+        <property name="statoCampione" column="stato_campione"/>
 
     </class>
 

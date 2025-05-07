@@ -111,7 +111,8 @@
 
 	--%>
 	
-	<a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaStrumento('${strumento.id}','${strumento.descrizione}','${strumento.matricola}','${strumento.zonaRifFasciame}','${strumento.spessoreFasciame}','${strumento.tipo}','${strumento.volume}','${strumento.materialeFasciame}','${strumento.pressione}','${strumento.costruttore}','${strumento.nFabbrica}','${strumento.zonaRifFondo}','${strumento.spessoreFondo}','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataVerifica}" />','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataProssimaVerifica}" />','${strumento.frequenza}','${strumento.anno}', '${strumento.id_cliente }','${strumento.id_sede }')"><i class="fa fa-edit"></i></a>
+<a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaStrumento('${strumento.id}','${utl:escapeJS(strumento.descrizione)}','${utl:escapeJS(strumento.matricola)}','${utl:escapeJS(strumento.zonaRifFasciame)}','${utl:escapeJS(strumento.spessoreFasciame)}','${utl:escapeJS(strumento.tipo)}','${utl:escapeJS(strumento.volume)}','${utl:escapeJS(strumento.materialeFasciame)}','${utl:escapeJS(strumento.pressione)}','${utl:escapeJS(strumento.costruttore)}','${utl:escapeJS(strumento.nFabbrica)}','${utl:escapeJS(strumento.zonaRifFondo)}','${utl:escapeJS(strumento.spessoreFondo)}','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataVerifica}" />','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataProssimaVerifica}" />','${utl:escapeJS(strumento.frequenza)}','${utl:escapeJS(strumento.anno)}','${strumento.id_cliente}','${strumento.id_sede}','${utl:escapeJS(strumento.materialeFondo)}')"><i class="fa fa-edit"></i></a>
+
  
 	</td>
 	</tr>
@@ -211,22 +212,14 @@
        
         <div class="row">
        	<div class="col-sm-3">
-       		<label>Zona Riferimento Fasciame</label>
+       		<label>Numero di fabbrica</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="zona_rif_fasciame" name="zona_rif_fasciame" style="width:100%" required>       	
+				<input class="form-control" id="numero_fabbrica" name="numero_fabbrica" style="width:100%" required>
        	</div>
        </div><br>
        
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Spessore Fasciame</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="spessore_fasciame" name="spessore_fasciame" style="width:100%" required>       	
-       	</div>
-       </div><br>
-           <div class="row">
+         <div class="row">
        	<div class="col-sm-3">
        		<label>Tipo</label>
        	</div>
@@ -235,12 +228,51 @@
        	</div>
        </div><br>
        
+         <div class="row">
+       	<div class="col-sm-3">
+       		<label>Pressione</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input class="form-control" id="pressione" name="pressione" style="width:100%" required>
+       	</div>
+       </div><br>
+       
+       
+         
+       
               <div class="row">
        	<div class="col-sm-3">
        		<label>Volume</label>
        	</div>
        	<div class="col-sm-9">
        		<input class="form-control" id="volume" name="volume" style="width:100%" required>
+       	</div>
+       </div><br>
+       
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Anno</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input class="form-control" id="anno" name="anno"  type="number" step="1" min="0" style="width:100%" required>
+       	</div>
+       </div><br>
+       
+         <div class="row">
+       	<div class="col-sm-3">
+       		<label>Costruttore</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input class="form-control" id="costruttore" name="costruttore" style="width:100%" required>
+       	</div>
+       </div><br>
+       
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Zona Riferimento Fasciame</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="zona_rif_fasciame" name="zona_rif_fasciame" style="width:100%" required>       	
        	</div>
        </div><br>
        
@@ -253,33 +285,19 @@
        	</div>
        </div><br>
        
-       <div class="row">
+     
+       
+        <div class="row">
        	<div class="col-sm-3">
-       		<label>Pressione</label>
+       		<label>Spessore Fasciame</label>
        	</div>
        	<div class="col-sm-9">
-				<input class="form-control" id="pressione" name="pressione" style="width:100%" required>
+       		<input class="form-control" id="spessore_fasciame" name="spessore_fasciame" style="width:100%" required>       	
        	</div>
        </div><br>
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Costruttore</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="costruttore" name="costruttore" style="width:100%" required>
-       	</div>
-       </div><br>
+     
        
        
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Numero di fabbrica</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="numero_fabbrica" name="numero_fabbrica" style="width:100%" required>
-       	</div>
-       </div><br>
        
        <div class="row">
        	<div class="col-sm-3">
@@ -292,6 +310,15 @@
        
        <div class="row">
        	<div class="col-sm-3">
+       		<label>Materiale Fondo</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input class="form-control" id="materiale_fondo" name="materiale_fondo" style="width:100%" required>
+       	</div>
+       </div><br>
+       
+       <div class="row">
+       	<div class="col-sm-3">
        		<label>Spessore Fondo</label>
        	</div>
        	<div class="col-sm-9">
@@ -299,14 +326,7 @@
        	</div>
        </div><br>
        
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Anno</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="anno" name="anno"  type="number" step="1" min="0" style="width:100%" required>
-       	</div>
-       </div><br>
+       
        
         <div class="row">
        	<div class="col-sm-3">
@@ -430,22 +450,14 @@
        
         <div class="row">
        	<div class="col-sm-3">
-       		<label>Zona Riferimento Fasciame</label>
+       		<label>Numero di fabbrica</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="zona_rif_fasciame_mod" name="zona_rif_fasciame_mod" style="width:100%" required>       	
+				<input class="form-control" id="numero_fabbrica_mod" name="numero_fabbrica_mod" style="width:100%" required>
        	</div>
        </div><br>
        
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Spessore Fasciame</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="spessore_fasciame_mod" name="spessore_fasciame_mod" style="width:100%" required>       	
-       	</div>
-       </div><br>
-           <div class="row">
+         <div class="row">
        	<div class="col-sm-3">
        		<label>Tipo</label>
        	</div>
@@ -454,25 +466,7 @@
        	</div>
        </div><br>
        
-              <div class="row">
-       	<div class="col-sm-3">
-       		<label>Volume</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="volume_mod" name="volume_mod" style="width:100%" required>
-       	</div>
-       </div><br>
-       
-       		<div class="row">
-       	<div class="col-sm-3">
-       		<label>Materiale Fasciame</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="materiale_fasciame_mod" name="materiale_fasciame_mod" style="width:100%" required>
-       	</div>
-       </div><br>
-       
-       <div class="row">
+         <div class="row">
        	<div class="col-sm-3">
        		<label>Pressione</label>
        	</div>
@@ -481,40 +475,15 @@
        	</div>
        </div><br>
        
-       <div class="row">
+       
+         
+       
+              <div class="row">
        	<div class="col-sm-3">
-       		<label>Costruttore</label>
+       		<label>Volume</label>
        	</div>
        	<div class="col-sm-9">
-				<input class="form-control" id="costruttore_mod" name="costruttore_mod" style="width:100%" required>
-       	</div>
-       </div><br>
-       
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Numero di fabbrica</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="numero_fabbrica_mod" name="numero_fabbrica_mod" style="width:100%" required>
-       	</div>
-       </div><br>
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Zona Riferimento Fondo</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="zona_rif_fondo_mod" name="zona_rif_fondo_mod" style="width:100%" required>
-       	</div>
-       </div><br>
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Spessore Fondo</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="spessore_fondo_mod" name="spessore_fondo_mod" style="width:100%" required>
+       		<input class="form-control" id="volume_mod" name="volume_mod" style="width:100%" required>
        	</div>
        </div><br>
        
@@ -527,12 +496,82 @@
        	</div>
        </div><br>
        
+         <div class="row">
+       	<div class="col-sm-3">
+       		<label>Costruttore</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input class="form-control" id="costruttore_mod" name="costruttore_mod" style="width:100%" required>
+       	</div>
+       </div><br>
+       
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Zona Riferimento Fasciame</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="zona_rif_fasciame_mod" name="zona_rif_fasciame_mod" style="width:100%" required>       	
+       	</div>
+       </div><br>
+       
+       		<div class="row">
+       	<div class="col-sm-3">
+       		<label>Materiale Fasciame</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input class="form-control" id="materiale_fasciame_mod" name="materiale_fasciame_mod" style="width:100%" required>
+       	</div>
+       </div><br>
+       
+     
+       
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Spessore Fasciame</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="spessore_fasciame_mod" name="spessore_fasciame_mod" style="width:100%" required>       	
+       	</div>
+       </div><br>
+     
+       
+       
+       
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Zona Riferimento Fondo</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input class="form-control" id="zona_rif_fondo_mod" name="zona_rif_fondo_mod" style="width:100%" required>
+       	</div>
+       </div><br>
+       
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Materiale Fondo</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input class="form-control" id="materiale_fondo_mod" name="materiale_fondo_mod" style="width:100%" required>
+       	</div>
+       </div><br>
+       
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Spessore Fondo</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input class="form-control" id="spessore_fondo_mod" name="spessore_fondo_mod" style="width:100%" required>
+       	</div>
+       </div><br>
+       
+       
+       
         <div class="row">
        	<div class="col-sm-3">
        		<label>Frequenza (mesi)</label>
        	</div>
        	<div class="col-sm-9">
-				<input class="form-control" id="frequenza_mod" name="frequenza_mod"  type="number" step="1" min="0" style="width:100%" >
+				<input class="form-control" id="frequenza_mod" name="frequenza_mod" style="width:100%" >
        	</div>
        </div><br>
        
@@ -617,7 +656,7 @@
 
 
 
-	function modificaStrumento(id, descrizione, matricola, zonaRifFasciame, spessoreFasciame, tipo, volume, materialeFasciame, pressione, costruttore, nFabbrica, zonaRifFondo, spessoreFondo, dataVerifica, dataProssimaVerifica, frequenza, anno, cliente, sede) { 
+	function modificaStrumento(id, descrizione, matricola, zonaRifFasciame, spessoreFasciame, tipo, volume, materialeFasciame, pressione, costruttore, nFabbrica, zonaRifFondo, spessoreFondo, dataVerifica, dataProssimaVerifica, frequenza, anno, cliente, sede, materiale_fondo) { 
 
 	$('#id_strumento').val(id);
 	
@@ -638,10 +677,17 @@
 	    $('#data_prossima_verifica_mod').val(dataProssimaVerifica);
 	    $('#frequenza_mod').val(frequenza);
 	    $('#anno_mod').val(anno);
+	    $('#materiale_fondo_mod').val(materiale_fondo)
 	    
 	    $('#cliente_general_mod').val(cliente);
 	    $('#cliente_general_mod').change()
-	    $('#sede_general_mod').val(sede);
+	    
+	    if(sede!=0){
+	    	$('#sede_general_mod').val(sede+"_"+cliente);
+	    }else{
+	    	$('#sede_general_mod').val(sede);
+	    }
+	    
 	    $('#sede_general_mod').change()
 	    
 	    

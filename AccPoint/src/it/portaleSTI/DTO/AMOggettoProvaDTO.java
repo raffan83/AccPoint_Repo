@@ -24,9 +24,18 @@ public class AMOggettoProvaDTO {
     public int frequenza;
     private Integer id_cliente;
 	private Integer id_sede;
+    public String sondaVelocita;
     // Getter e Setter
 
-    public int getId() {
+    public String getSondaVelocita() {
+		return sondaVelocita;
+	}
+
+	public void setSondaVelocita(String sondaVelocita) {
+		this.sondaVelocita = sondaVelocita;
+	}
+
+	public int getId() {
         return id;
     }
 

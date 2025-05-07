@@ -28,7 +28,8 @@
 		<property name="dataProssimaVerifica" column="data_prossima_verifica" type="date"/>
 		<property name="frequenza" column="frequenza"/>
 		<property name="id_cliente" column="id_cliente"/>		
-		<property name="id_sede" column="id_sede"/>				
+		<property name="id_sede" column="id_sede"/>	
+		 <property name="sondaVelocita" column="sonda_velocita"/>			
 
     </class>
 

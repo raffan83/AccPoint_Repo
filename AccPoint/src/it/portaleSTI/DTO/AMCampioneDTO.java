@@ -24,16 +24,25 @@ public class AMCampioneDTO {
     public String sondaFrequenza;
     public String sondaDimensione;
     public String sondaAngolo;
-    public String sondaVelocita;
 
     public String spessorePunta;
     public String larghezzaManico;
     public String misurazioneMassima;
-    public String file_certificato;
+   
+
+	public String file_certificato;
+    
+    private String statoCampione;
     
     // Getter e Setter
     
-    
+    public String getStatoCampione() {
+		return statoCampione;
+	}
+
+	public void setStatoCampione(String statoCampione) {
+		this.statoCampione = statoCampione;
+	}
 
     public int getId() {
         return id;
@@ -227,11 +236,5 @@ public class AMCampioneDTO {
         this.sondaAngolo = sondaAngolo;
     }
 
-    public String getSondaVelocita() {
-        return sondaVelocita;
-    }
-
-    public void setSondaVelocita(String sondaVelocita) {
-        this.sondaVelocita = sondaVelocita;
-    }
+  
 }

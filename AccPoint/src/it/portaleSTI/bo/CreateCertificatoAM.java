@@ -14,6 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +34,11 @@ import it.portaleSTI.DTO.AMCampioneDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMProgressivoDTO;
 import it.portaleSTI.DTO.AMProvaDTO;
+import it.portaleSTI.DTO.AMRapportoDTO;
 import it.portaleSTI.DTO.AM_CertificatoWrapper;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
+import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
@@ -68,13 +71,13 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreateCertificatoAM {
 	
-	public CreateCertificatoAM(AMProvaDTO prova, Session session) {
-		build(prova, session);
+	public CreateCertificatoAM(AMProvaDTO prova, Session session, AMRapportoDTO rapporto) throws Exception {
+		build(prova, session, rapporto);
 	}
 	
-	public static void build(AMProvaDTO prova, Session session) 
+	public static void build(AMProvaDTO prova, Session session, AMRapportoDTO rapporto) throws Exception 
 	{
-		try {
+	
 		
 		List<AM_CertificatoWrapper> listaWrapper = new ArrayList<>();
 		
@@ -104,12 +107,9 @@ public class CreateCertificatoAM {
 			ubicazione+=prova.getIntervento().getNomeCliente();
 		}
 		
-		if(prova.getIntervento().getNomeClienteUtilizzatore()!=null) {
-			ubicazione+= "\nPresso "+prova.getIntervento().getNomeClienteUtilizzatore();
-		}
 		
 		if(prova.getIntervento().getId_sede_utilizzatore()!=0) {
-			ubicazione+= " - "+ prova.getIntervento().getNomeSedeUtilizzatore();
+			ubicazione+= "\nPresso "+ prova.getIntervento().getNomeSedeUtilizzatore();
 		}
 		
 		
@@ -120,6 +120,8 @@ public class CreateCertificatoAM {
 		if(progressivo!=null) {
 			
 			nRapporto = prova.getIntervento().getIdCommessa().split("_")[1]+prova.getIntervento().getIdCommessa().split("_")[2].split("/")[0]+"-"+String.format("%03d", progressivo.getProgressivo()+1);
+			progressivo.setProgressivo(progressivo.getProgressivo()+1);
+			session.update(progressivo);
 		}else {
 			nRapporto = prova.getIntervento().getIdCommessa().split("_")[1]+prova.getIntervento().getIdCommessa().split("_")[2].split("/")[0]+"-"+String.format("%03d", 1);
 			progressivo = new AMProgressivoDTO();
@@ -268,8 +270,8 @@ public class CreateCertificatoAM {
 			report.addParameter("angolo_sonda", "");
 		}
 		
-		if(prova.getCampione().getSondaVelocita()!=null) {
-			report.addParameter("velocita_sonda", prova.getCampione().getSondaVelocita());
+		if(prova.getStrumento().getSondaVelocita()!=null) {
+			report.addParameter("velocita_sonda", prova.getStrumento().getSondaVelocita());
 		}else {
 			report.addParameter("velocita_sonda", "");
 		}
@@ -298,9 +300,23 @@ public class CreateCertificatoAM {
 		}
 		
 		if(prova.getOperatore().getNomeOperatore()!=null) {
-			report.addParameter("firma", prova.getOperatore().getNomeOperatore());
+			if(prova.getOperatore().getDicituraPatentino()!=null){
+				report.addParameter("firma", prova.getOperatore().getNomeOperatore()+"\n"+prova.getOperatore().getDicituraPatentino());
+			}else {
+				report.addParameter("firma", prova.getOperatore().getNomeOperatore());
+			}
+			
 		}else {
 			report.addParameter("firma", "");
+		}
+		
+		if(prova.getOperatore().getFirma()!=null) {
+			File file_firma = new File(Costanti.PATH_FOLDER+"\\AM_Interventi\\Firme\\"+prova.getOperatore().getId()+"\\"+prova.getOperatore().getFirma());
+			Image image_firma = ImageIO.read(file_firma);
+			
+			report.addParameter("immagine_firma", image_firma);
+		}else {
+			report.addParameter("immagine_firma", "");
 		}
 		
 		
@@ -375,6 +391,11 @@ public class CreateCertificatoAM {
 			addAllegato(file_report, cert_campione);
 		}
 		
+		if(prova.getOperatore().getPathPatentino()!=null) {
+			File patentino = new File (Costanti.PATH_FOLDER+"\\AM_Interventi\\Patentini\\"+prova.getOperatore().getId()+"\\"+prova.getOperatore().getPathPatentino());
+			addAllegato(file_report, patentino);
+		}
+		
 	//	Map<String, Object> parameters = new HashMap<>(); // se hai parametri, altrimenti lascia vuoto
 
 	//	JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listaWrapper);
@@ -384,12 +405,19 @@ public class CreateCertificatoAM {
 		//JasperPrint print = JasperFillManager.fillReport(report, parameters, dataSource);
 		
 		//JasperExportManager.exportReportToPdfFile(print, System.getProperty("user.home")+"\\Desktop\\RapportoMisuraSpessimetrica.pdf");
+		
+	
+		rapporto.setData(new Date());
+		rapporto.setNomeFile(prova.getnRapporto()+".pdf");
+
+		rapporto.setStato(new StatoCertificatoDTO(2));
+		
+		session.update(rapporto);
+		
 		System.out.println("PDF generato con successo!");
 		
-		} catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
+		
+		
 	}
 	
 	
@@ -484,7 +512,7 @@ private static void addAllegato(File source, File allegato) throws IOException {
 			session.beginTransaction();
 			AMProvaDTO prova = GestioneAM_BO.getProvaFromID(6, session);
 		
-			new CreateCertificatoAM(prova, session);
+			new CreateCertificatoAM(prova, session, null);
 			session.getTransaction().commit();
 			session.close();
 		}

@@ -20,6 +20,7 @@ import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
 import it.portaleSTI.DTO.AMProgressivoDTO;
 import it.portaleSTI.DTO.AMProvaDTO;
+import it.portaleSTI.DTO.AMRapportoDTO;
 import it.portaleSTI.DTO.AMTipoCampioneDTO;
 import it.portaleSTI.DTO.AMTipoProvaDTO;
 import it.portaleSTI.DTO.AMCampioneDTO;
@@ -301,6 +302,11 @@ public class GestioneAM_BO {
 	public static ArrayList<AMProvaDTO> getListaProve(Session session) {
 		// TODO Auto-generated method stub
 		return GestioneAM_DAO.getListaProve(session);
+	}
+
+	public static AMRapportoDTO getRapportoFromProva(int id, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAM_DAO.getRapportoFromProva(id, session);
 	}
 
 }

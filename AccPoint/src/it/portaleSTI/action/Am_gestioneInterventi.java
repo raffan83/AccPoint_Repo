@@ -36,6 +36,7 @@ import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
 import it.portaleSTI.DTO.AMProvaDTO;
+import it.portaleSTI.DTO.AMRapportoDTO;
 import it.portaleSTI.DTO.AMTipoProvaDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
@@ -45,6 +46,7 @@ import it.portaleSTI.DTO.ItServizioItDTO;
 import it.portaleSTI.DTO.ItTipoRinnovoDTO;
 import it.portaleSTI.DTO.ItTipoServizioDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
@@ -232,6 +234,11 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
+				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
 				 
 				AMInterventoDTO intervento = new AMInterventoDTO();	
 				
@@ -239,10 +246,29 @@ public class Am_gestioneInterventi extends HttpServlet {
 				intervento.setId_sede(Integer.parseInt(id_sede.split("_")[0]));
 				intervento.setId_cliente_utilizzatore(Integer.parseInt(id_cliente_utilizzatore));
 				intervento.setId_sede_utilizzatore(Integer.parseInt(id_sede_utilizzatore.split("_")[0]));
-				intervento.setNomeCliente(nome_cliente);
-				intervento.setNomeClienteUtilizzatore(nome_cliente_utilizzatore);
-				intervento.setNomeSede(nome_sede);
-				intervento.setNomeSedeUtilizzatore(nome_sede_utilizzatore);
+				
+				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
+				
+				intervento.setNomeCliente(cl.getNome());
+				SedeDTO sd =null;
+				if(!id_sede.equals("0")) {
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), Integer.parseInt(id_cliente));
+					intervento.setNomeSede(sd.getDescrizione() + " - "+sd.getIndirizzo());
+				}else {
+					intervento.setNomeSede("Non associate");
+				}
+				
+				cl = GestioneAnagraficaRemotaBO.getClienteById(id_cliente_utilizzatore);
+				
+				intervento.setNomeClienteUtilizzatore(cl.getNome());
+				sd =null;
+				
+				if(!id_sede_utilizzatore.equals("0")) {
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_utilizzatore.split("_")[0]), Integer.parseInt(id_cliente_utilizzatore));
+					intervento.setNomeSedeUtilizzatore(sd.getDescrizione() + " - "+sd.getIndirizzo());
+				}else {
+					intervento.setNomeSedeUtilizzatore(cl.getNome() +" - "+cl.getIndirizzo()+"_"+cl.getCap()+"- "+cl.getCitta()+" ("+cl.getProvincia()+")");
+				}
 				intervento.setOperatore(new AMOperatoreDTO(Integer.parseInt(operatore), "", ""));
 				intervento.setDataIntervento(df.parse(data_intervento));
 				intervento.setIdCommessa(commessa.split("@")[0]);
@@ -329,6 +355,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 					intervento.setNomeSede("Non associate");
 				}
 				
+				
 				cl = GestioneAnagraficaRemotaBO.getClienteById(id_cliente_utilizzatore);
 				
 				intervento.setNomeClienteUtilizzatore(cl.getNome());
@@ -338,7 +365,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_utilizzatore.split("_")[0]), Integer.parseInt(id_cliente_utilizzatore));
 					intervento.setNomeSedeUtilizzatore(sd.getDescrizione() + " - "+sd.getIndirizzo());
 				}else {
-					intervento.setNomeSedeUtilizzatore(cl.getNome() +" - "+cl.getIndirizzo());
+					intervento.setNomeSedeUtilizzatore(cl.getNome() +" - "+cl.getIndirizzo()+"_"+cl.getCap()+"- "+cl.getCitta()+" ("+cl.getProvincia()+")");
 				}
 			
 				intervento.setOperatore(new AMOperatoreDTO(Integer.parseInt(operatore), "", ""));
@@ -365,7 +392,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);
 				
 				ArrayList<AMProvaDTO> lista_prove = GestioneAM_BO.getListaProveIntervento(Integer.parseInt(id_intervento), session);
-				ArrayList<AMOggettoProvaDTO> lista_strumenti = GestioneAM_BO.getListaStrumentiClienteSede(intervento.getId_cliente(), intervento.getId_sede(),session);
+				ArrayList<AMOggettoProvaDTO> lista_strumenti = GestioneAM_BO.getListaStrumentiClienteSede(intervento.getId_cliente_utilizzatore(), intervento.getId_sede_utilizzatore(),session);
 				ArrayList<AMCampioneDTO> lista_campioni = GestioneAM_BO.getListaCampioni(session);
 				ArrayList<AMTipoProvaDTO> lista_tipi_prova = GestioneAM_BO.getListaTipiProva(session);
 				ArrayList<AMOperatoreDTO> lista_operatori = GestioneAM_BO.getListaOperatoriAll(session);
@@ -495,6 +522,14 @@ public class Am_gestioneInterventi extends HttpServlet {
 				PrintWriter  out = response.getWriter();
 				if(esito_import) {
 					session.update(prova);
+					
+					AMRapportoDTO rapporto = new AMRapportoDTO();
+					rapporto.setProva(prova);
+					rapporto.setData(new Date());
+					rapporto.setUtente(utente);
+					rapporto.setStato(new StatoCertificatoDTO(1));
+					
+					session.save(rapporto);
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio", "Prova salvata con successo!");
 				}else {
@@ -539,6 +574,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 	            			 fileItem_img = item;
 	            			 filename_img = item.getName();
 	            		 }
+	            		
 	                     	                     
 	            	 }else
 	            	 {
@@ -576,6 +612,8 @@ public class Am_gestioneInterventi extends HttpServlet {
 				prova.setIntervento(intervento);
 				prova.setNote(note);
 				prova.setOperatore(operatore);
+				
+				
 		
 				boolean esito_import = true;
 				if(filename_excel!=null && !filename_excel.equals("")) {
@@ -606,6 +644,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				PrintWriter  out = response.getWriter();
 				if(esito_import) {
 					session.update(prova);
+					
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio", "Prova salvata con successo!");
 				}else {
@@ -629,37 +668,41 @@ public class Am_gestioneInterventi extends HttpServlet {
 				request.getSession().setAttribute("prova", prova);
 				
 				String rawMatrix = prova.getMatrixSpess(); // es: "[{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}]"
-
-				// Rimuove i bordi esterni
-				rawMatrix = rawMatrix.replaceAll("^\\[|\\]$", "").trim();
-
-				// Split per righe (ogni gruppo tra graffe)
-				String[] rows = rawMatrix.split("\\},\\s*\\{");
-
-				List<List<Double>> matrixParsed = new ArrayList<>();
-
-				for (String row : rows) {
-				    // rimuove graffe residue
-				    row = row.replaceAll("[{}]", "");
-				    String[] nums = row.split(",");
-				    List<Double> rowList = new ArrayList<>();
-				    for (String num : nums) {
-				        rowList.add(Double.parseDouble(num.trim()));
-				    }
-				    matrixParsed.add(rowList);
-				}
-
-				// Set come attributo per la JSP
-				request.setAttribute("matrix_spess", matrixParsed);
-
-				// Colonne (A, B, C, ...)
-				int numCols = matrixParsed.get(0).size();
 				List<String> colonne = new ArrayList<>();
-				for (int i = 0; i < numCols; i++) {
-				    colonne.add(String.valueOf((char) ('A' + i)));
-				}
-				request.setAttribute("colonne", colonne);
+				List<List<Double>> matrixParsed = new ArrayList<>();
+				// Rimuove i bordi esterni
+				if(rawMatrix!=null) {
+					rawMatrix = rawMatrix.replaceAll("^\\[|\\]$", "").trim();
 
+					// Split per righe (ogni gruppo tra graffe)
+					String[] rows = rawMatrix.split("\\},\\s*\\{");
+
+					
+
+					for (String row : rows) {
+					    // rimuove graffe residue
+					    row = row.replaceAll("[{}]", "");
+					    String[] nums = row.split(",");
+					    List<Double> rowList = new ArrayList<>();
+					    for (String num : nums) {
+					        rowList.add(Double.parseDouble(num.trim()));
+					    }
+					    matrixParsed.add(rowList);
+					}
+
+					// Set come attributo per la JSP
+					
+
+					// Colonne (A, B, C, ...)
+					int numCols = matrixParsed.get(0).size();
+					
+					for (int i = 0; i < numCols; i++) {
+					    colonne.add(String.valueOf((char) ('A' + i)));
+					}
+				}
+				
+				request.setAttribute("colonne", colonne);
+				request.setAttribute("matrix_spess", matrixParsed);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_dettaglioProva.jsp");
 				dispatcher.forward(request, response);
@@ -669,7 +712,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 		        AMProvaDTO prova = (AMProvaDTO) request.getSession().getAttribute("prova");
 
-		        if (prova != null) {
+		        if (prova != null && prova.getFilename_img()!=null && !prova.getFilename_img().equals("")) {
 		        	
 		        	String imagePath =	Costanti.PATH_FOLDER+"\\AM_interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\img\\"+prova.getFilename_img();
 		         
@@ -693,7 +736,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 		                response.sendError(HttpServletResponse.SC_NOT_FOUND, "File immagine non trovato");
 		            }
 		        } else {
-		            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Prova non disponibile in sessione");
+		            response.sendError(HttpServletResponse.SC_NOT_FOUND, "File immagine non trovato");
 		        }
 		    }
 			
@@ -705,7 +748,9 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);
 				
-				CreateCertificatoAM cert = new CreateCertificatoAM(prova, session);
+				AMRapportoDTO rapporto = GestioneAM_BO.getRapportoFromProva(prova.getId(), session);
+				
+				CreateCertificatoAM cert = new CreateCertificatoAM(prova, session, rapporto);
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
@@ -741,6 +786,70 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_listaProve.jsp");
 				dispatcher.forward(request, response);
+			}
+			
+			else if(action.equals("salva_patentino")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+			
+				FileItem file_patentino = null;
+				String filename_patentino= null;
+				FileItem file_firma = null;
+				String filename_firma= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	            		  if(item.getFieldName().equals("file_patentino")) {
+	            			 file_patentino = item;
+	            			 filename_patentino = item.getName();
+	            		 }
+
+	            		  else if(item.getFieldName().equals("file_firma")) {
+	            			  file_firma = item;
+	            			  filename_firma = item.getName();
+		            		 }
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+				String id_operatore = ret.get("id_operatore");
+				String dicitura = ret.get("dicitura");
+				
+				AMOperatoreDTO operatore = GestioneAM_BO.getOperatoreFromID(Integer.parseInt(id_operatore),session);
+				operatore.setDicituraPatentino(dicitura);
+				operatore.setPathPatentino(filename_patentino);
+				if(filename_patentino!=null) {
+					Utility.saveFile(file_patentino, Costanti.PATH_FOLDER+"\\AM_interventi\\Patentini\\"+operatore.getId()+"\\", filename_patentino);
+				}
+				if(filename_firma!=null) {
+					Utility.saveFile(file_firma, Costanti.PATH_FOLDER+"\\AM_interventi\\Firme\\"+operatore.getId()+"\\", filename_firma);
+				}
+				operatore.setFirma(filename_firma);
+				session.update(operatore);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Patentino salvato con successo!");
+				out.print(myObj);
+				
+				
+			
 			}
 			session.getTransaction().commit();
 			session.close();

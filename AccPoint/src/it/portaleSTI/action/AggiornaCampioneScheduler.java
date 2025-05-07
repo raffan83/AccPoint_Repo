@@ -7,6 +7,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneAM_DAO;
 import it.portaleSTI.DAO.GestioneCampionamentoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneMagazzinoDAO;
@@ -28,6 +29,7 @@ public class AggiornaCampioneScheduler implements Job{
 			intervento.setId(100);
 			GestioneStrumentoDAO.getListaStrumentiIntervento(intervento, session);
 			GestioneCampioneDAO.updateCampioneScheduler();
+			GestioneAM_DAO.updateCampioneScheduler();
 			//GestioneMagazzinoDAO.getItemInRitardo();
 			logger.debug("Aggiornamento Stato Campione eseguito con successo dallo scheduler di Quartz!");
 			logger.error("Aggiornamento Stato Campione eseguito con successo dallo scheduler di Quartz!");

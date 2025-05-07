@@ -16,5 +16,11 @@
         <property name="pathPatentino" type="java.lang.String">
             <column name="path_patentino" />
         </property>
+        <property name="dicituraPatentino" type="java.lang.String">
+            <column name="dicitura_patentino" />
+        </property>
+        <property name="firma" type="java.lang.String">
+            <column name="firma" />
+        </property>
     </class>
 </hibernate-mapping>

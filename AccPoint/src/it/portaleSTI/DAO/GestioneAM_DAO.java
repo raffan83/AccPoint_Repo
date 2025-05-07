@@ -3,6 +3,7 @@ package it.portaleSTI.DAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -14,8 +15,10 @@ import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
 import it.portaleSTI.DTO.AMProgressivoDTO;
 import it.portaleSTI.DTO.AMProvaDTO;
+import it.portaleSTI.DTO.AMRapportoDTO;
 import it.portaleSTI.DTO.AMTipoCampioneDTO;
 import it.portaleSTI.DTO.AMTipoProvaDTO;
+import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.AMCampioneDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -314,6 +317,54 @@ public static ArrayList<AMProvaDTO> getListaProve(Session session) {
 	
 	
 	return lista;
+}
+
+public static AMRapportoDTO getRapportoFromProva(int id, Session session) {
+	ArrayList<AMRapportoDTO> lista = null;
+	AMRapportoDTO res = null;
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMRapportoDTO where prova.id = :_id");			
+	
+	query.setParameter("_id",id);
+	
+	lista = (ArrayList<AMRapportoDTO>) query.list();
+	
+	if(lista.size()>0) {
+		res = lista.get(0);
+	}
+	
+	return res;
+}
+
+public static void updateCampioneScheduler() {
+Session session = SessionFacotryDAO.get().openSession();
+    
+	session.beginTransaction();
+	
+	Query query = session.createQuery(" from AMCampioneDTO");	
+
+	List<AMCampioneDTO> result = (List<AMCampioneDTO>)query.list();
+
+	if(result.size()>0 ) {		
+	
+		for (AMCampioneDTO campione : result) {
+			
+			if(campione.getDataScadenzaCertifica().before(new Date())) {
+	        	campione.setStatoCampione("F");
+	        }else {
+	        	campione.setStatoCampione("S");
+	        }
+			session.update(campione);
+		}
+	}
+	
+	
+
+	session.getTransaction().commit();
+	session.close();
+	
 }
 
 }

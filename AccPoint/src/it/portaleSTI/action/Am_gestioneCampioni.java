@@ -241,8 +241,13 @@ public class Am_gestioneCampioni extends HttpServlet {
 				    }
 				    if (dataScadenzaCertifica != null && !dataScadenzaCertifica.equals("")) {
 				        
-				        campione.setDataScadenzaCertifica(df.parse(dataScadenzaCertifica));
-				        
+				    	Date dataScadenza = df.parse(dataScadenzaCertifica);
+				        campione.setDataScadenzaCertifica(dataScadenza);
+				        if(dataScadenza.before(new Date())) {
+				        	campione.setStatoCampione("F");
+				        }else {
+				        	campione.setStatoCampione("S");
+				        }
 				    }
 				    
 				    // Recupero il tipo di campione e ottengo la visibilità delle colonne
@@ -344,8 +349,13 @@ public class Am_gestioneCampioni extends HttpServlet {
 				    }
 				    if (dataScadenzaCertifica != null && !dataScadenzaCertifica.equals("")) {
 				        
-				        campione.setDataScadenzaCertifica(df.parse(dataScadenzaCertifica));
-				        
+				    	Date dataScadenza = df.parse(dataScadenzaCertifica);
+				        campione.setDataScadenzaCertifica(dataScadenza);
+				        if(dataScadenza.before(new Date())) {
+				        	campione.setStatoCampione("F");
+				        }else {
+				        	campione.setStatoCampione("S");
+				        }
 				    }
 				    
 				    // Recupero il tipo di campione e ottengo la visibilità delle colonne

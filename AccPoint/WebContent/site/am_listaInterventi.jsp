@@ -806,6 +806,7 @@ $(document).ready(function() {
 	$("#sede_mod").select2();
 	$("#sede_utilizzatore").select2();
 	$("#sede_utilizzatore_mod").select2();
+
 	
 	
 	//initSelect2Gen('#cliente_mod', null, '#myModalModificaIntervento');
@@ -813,8 +814,8 @@ $(document).ready(function() {
 	initSelect2Gen('#cliente', null, '#myModal');
 	initSelect2Gen('#cliente_utilizzatore', null, '#myModal');
 	
-	$('#tecnico_verificatore_mod').select2();
-	$('#tecnico_verificatore').select2();
+	$('#operatore').select2();
+	$('#operatore_mod').select2();
 	$('#luogo_mod').select2();
 	$('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"

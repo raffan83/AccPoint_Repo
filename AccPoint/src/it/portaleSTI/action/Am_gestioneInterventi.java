@@ -391,7 +391,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				id_intervento = Utility.decryptData(id_intervento);
 				AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);
 				
-				ArrayList<AMProvaDTO> lista_prove = GestioneAM_BO.getListaProveIntervento(Integer.parseInt(id_intervento), session);
+				ArrayList<AMRapportoDTO> lista_rapporti = GestioneAM_BO.getListaRapportiIntervento(Integer.parseInt(id_intervento), session);
 				ArrayList<AMOggettoProvaDTO> lista_strumenti = GestioneAM_BO.getListaStrumentiClienteSede(intervento.getId_cliente_utilizzatore(), intervento.getId_sede_utilizzatore(),session);
 				ArrayList<AMCampioneDTO> lista_campioni = GestioneAM_BO.getListaCampioni(session);
 				ArrayList<AMTipoProvaDTO> lista_tipi_prova = GestioneAM_BO.getListaTipiProva(session);
@@ -399,7 +399,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 				
 				request.getSession().setAttribute("intervento", intervento);
-				request.getSession().setAttribute("lista_prove", lista_prove);
+				request.getSession().setAttribute("lista_rapporti", lista_rapporti);
 				request.getSession().setAttribute("lista_strumenti", lista_strumenti);
 				request.getSession().setAttribute("lista_campioni", lista_campioni);
 				request.getSession().setAttribute("lista_tipi_prova", lista_tipi_prova);
@@ -808,15 +808,15 @@ public class Am_gestioneInterventi extends HttpServlet {
 				String filename_firma= null;
 		        Hashtable<String,String> ret = new Hashtable<String,String>();
 		      
+		        
 		        for (FileItem item : items) {
 	            	 if (!item.isFormField()) {
 	            		
-	            		  if(item.getFieldName().equals("file_patentino")) {
+	            		  if(item.getFieldName().equals("file_patentino") && !item.getName().equals("")) {
 	            			 file_patentino = item;
 	            			 filename_patentino = item.getName();
 	            		 }
-
-	            		  else if(item.getFieldName().equals("file_firma")) {
+	            		  else if(item.getFieldName().equals("file_firma") && !item.getName().equals("")) {
 	            			  file_firma = item;
 	            			  filename_firma = item.getName();
 		            		 }
@@ -832,14 +832,16 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 				AMOperatoreDTO operatore = GestioneAM_BO.getOperatoreFromID(Integer.parseInt(id_operatore),session);
 				operatore.setDicituraPatentino(dicitura);
-				operatore.setPathPatentino(filename_patentino);
+				
 				if(filename_patentino!=null) {
 					Utility.saveFile(file_patentino, Costanti.PATH_FOLDER+"\\AM_interventi\\Patentini\\"+operatore.getId()+"\\", filename_patentino);
+					operatore.setPathPatentino(filename_patentino);
 				}
 				if(filename_firma!=null) {
 					Utility.saveFile(file_firma, Costanti.PATH_FOLDER+"\\AM_interventi\\Firme\\"+operatore.getId()+"\\", filename_firma);
+					operatore.setFirma(filename_firma);
 				}
-				operatore.setFirma(filename_firma);
+				
 				session.update(operatore);
 				
 				myObj = new JsonObject();

@@ -4,7 +4,23 @@ import java.util.Date;
 
 public class AMOggettoProvaDTO {
 
-    public int id;
+    public String getNomeClienteUtilizzatore() {
+		return nomeClienteUtilizzatore;
+	}
+
+	public void setNomeClienteUtilizzatore(String nomeClienteUtilizzatore) {
+		this.nomeClienteUtilizzatore = nomeClienteUtilizzatore;
+	}
+
+	public String getNomeSedeUtilizzatore() {
+		return nomeSedeUtilizzatore;
+	}
+
+	public void setNomeSedeUtilizzatore(String nomeSedeUtilizzatore) {
+		this.nomeSedeUtilizzatore = nomeSedeUtilizzatore;
+	}
+
+	public int id;
     public String zonaRifFasciame;
     public String spessoreFondo;
     public String tipo;
@@ -25,6 +41,8 @@ public class AMOggettoProvaDTO {
     private Integer id_cliente;
 	private Integer id_sede;
     public String sondaVelocita;
+    public String nomeClienteUtilizzatore;
+    public String nomeSedeUtilizzatore;
     // Getter e Setter
 
     public String getSondaVelocita() {

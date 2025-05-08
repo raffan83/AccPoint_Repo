@@ -197,6 +197,21 @@ public static ArrayList<AMProvaDTO> getListaProveIntervento(int id_intervento, S
 	return lista;
 }
 
+public static ArrayList<AMRapportoDTO> getListaRapportiIntervento(int id_intervento, Session session) {
+	ArrayList<AMRapportoDTO> lista = null;
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMRapportoDTO where prova.intervento.id = :_id_intervento");			
+	query.setParameter("_id_intervento", id_intervento);
+
+	
+	lista = (ArrayList<AMRapportoDTO>) query.list();
+	
+
+	return lista;
+}
+
 public static ArrayList<AMTipoProvaDTO> getListaTipiProva(Session session) {
 	ArrayList<AMTipoProvaDTO> lista = null;
 	Query query = null;

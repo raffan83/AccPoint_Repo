@@ -756,7 +756,7 @@ Via Tofaro, 42/d
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{esito_positivo}]]></textFieldExpression>
 			</textField>
@@ -769,7 +769,7 @@ Via Tofaro, 42/d
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{esito_negativo}]]></textFieldExpression>
 			</textField>

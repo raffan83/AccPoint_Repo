@@ -116,23 +116,34 @@ public class CreateCertificatoAM {
 		report.addParameter("cliente_utilizzatore", ubicazione);
 		
 		String nRapporto="";
-		AMProgressivoDTO progressivo = GestioneAM_BO.getProgressivo(prova.getIntervento().getIdCommessa(), session);
-		if(progressivo!=null) {
+		
+		
+		if(prova.getnRapporto()!=null && !prova.getnRapporto().equals("")) {
 			
-			nRapporto = prova.getIntervento().getIdCommessa().split("_")[1]+prova.getIntervento().getIdCommessa().split("_")[2].split("/")[0]+"-"+String.format("%03d", progressivo.getProgressivo()+1);
-			progressivo.setProgressivo(progressivo.getProgressivo()+1);
-			session.update(progressivo);
+			report.addParameter("n_rapporto", prova.getnRapporto());
+			
 		}else {
-			nRapporto = prova.getIntervento().getIdCommessa().split("_")[1]+prova.getIntervento().getIdCommessa().split("_")[2].split("/")[0]+"-"+String.format("%03d", 1);
-			progressivo = new AMProgressivoDTO();
-			progressivo.setCommessa(prova.getIntervento().getIdCommessa());
-			progressivo.setProgressivo(1);
-			session.save(progressivo);
+			
+			AMProgressivoDTO progressivo = GestioneAM_BO.getProgressivo(prova.getIntervento().getIdCommessa(), session);
+			if(progressivo!=null) {
+				
+				nRapporto = prova.getIntervento().getIdCommessa().split("_")[1]+prova.getIntervento().getIdCommessa().split("_")[2].split("/")[0]+"-"+String.format("%03d", progressivo.getProgressivo()+1);
+				progressivo.setProgressivo(progressivo.getProgressivo()+1);
+				session.update(progressivo);
+			}else {
+				nRapporto = prova.getIntervento().getIdCommessa().split("_")[1]+prova.getIntervento().getIdCommessa().split("_")[2].split("/")[0]+"-"+String.format("%03d", 1);
+				progressivo = new AMProgressivoDTO();
+				progressivo.setCommessa(prova.getIntervento().getIdCommessa());
+				progressivo.setProgressivo(1);
+				session.save(progressivo);
+			}
+			report.addParameter("n_rapporto", nRapporto);
+			prova.setnRapporto(nRapporto);
 		}
 		
-		report.addParameter("n_rapporto", nRapporto);
 		
-		prova.setnRapporto(nRapporto);
+		
+		
 		session.update(prova);
 		
 		if(prova.getStrumento().getMatricola()!=null) {
@@ -331,13 +342,13 @@ public class CreateCertificatoAM {
 		String min_fondo_inf="";
 		
 		if(prova.getSpess_min_fasciame()!=null) {
-			min_fasciame = "Spessore minimo FASCIAME "+prova.getSpess_min_fasciame();
+			min_fasciame = "Spessore minimo FASCIAME "+prova.getSpess_min_fasciame()+" mm";
 		}
 		if(prova.getSpess_min_fondo_inf()!=null) {
-			min_fondo_inf = "Spessore minimo FONDO INFERIORE "+prova.getSpess_min_fondo_inf();
+			min_fondo_inf = "Spessore minimo FONDO INFERIORE "+prova.getSpess_min_fondo_inf()+" mm";
 		}
 		if(prova.getSpess_min_fondo_sup()!=null) {
-			min_fondo_sup = "Spessore minimo FONDO SUPERIORE "+prova.getSpess_min_fondo_sup();
+			min_fondo_sup = "Spessore minimo FONDO SUPERIORE "+prova.getSpess_min_fondo_sup()+" mm";
 		}
 		
 		HorizontalListBuilder hl = cmp.horizontalList(
@@ -463,7 +474,7 @@ public class CreateCertificatoAM {
 			        Object[] valori = new Object[maxColonne + 1];
 			        valori[0] = String.valueOf(i + 1); // numerazione riga
 			        for (int j = 0; j < maxColonne; j++) {
-			            valori[j + 1] = (j < riga.size()) ? riga.get(j) : "";
+			            valori[j + 1] = (j < riga.size()) ? riga.get(j).replace(".", ",") : "";
 			        }
 			        ds.add(valori);
 			    }
@@ -475,14 +486,20 @@ public class CreateCertificatoAM {
 	 			String text = colName;
 	 			if(colName.equals("Riga")) {
 	 				text = "";
+	 				report.addColumn(
+	 		 		        Columns.column(text, colName, type.stringType())
+	 		 		               .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnTitleStyle)
+	 		 		    );
+	 			}else {
+	 				report.addColumn(
+	 		 		        Columns.column(text, colName, type.stringType())
+	 		 		               .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setBorder(stl.penThin()))
+	 		 		    );
 	 			}
-	 		    report.addColumn(
-	 		        Columns.column(text, colName, type.stringType())
-	 		               .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
-	 		    );
+	 		    
 	 		}
 	 	
-	 		report.setColumnStyle(Templates.columnStyle.setBorder(stl.penThin())); // celle dati
+	 		//report.setColumnStyle(Templates.columnStyle.setBorder(stl.penThin())); // celle dati
 	 		report.setColumnTitleStyle(Templates.columnTitleStyle);
 			
 		} catch (Exception e) {

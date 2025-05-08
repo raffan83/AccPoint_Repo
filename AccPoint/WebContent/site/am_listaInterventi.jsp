@@ -888,7 +888,7 @@ $(document).ready(function() {
 		       
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 0, targets: 6 },
+		    	  { responsivePriority: 0, targets: 9 },
 		    	  
 		    	  
 		               ], 	        

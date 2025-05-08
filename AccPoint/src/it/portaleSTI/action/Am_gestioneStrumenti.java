@@ -99,6 +99,20 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				}
 				
 				ArrayList<AMOggettoProvaDTO> lista_strumenti = GestioneAM_BO.getListaStrumenti(session);
+				for (AMOggettoProvaDTO s : lista_strumenti) {
+					ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(""+s.getId_cliente());
+					
+					s.setNomeClienteUtilizzatore(cl.getNome());
+					SedeDTO sd =null;
+					if(s.getId_sede()!=0) {
+						sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, s.getId_sede(), s.getId_cliente());
+						s.setNomeSedeUtilizzatore(sd.getDescrizione() + " - "+sd.getIndirizzo());
+					}else {
+						s.setNomeSedeUtilizzatore("Non associate");
+					}
+					
+					
+				}
 				
 				request.getSession().setAttribute("lista_strumenti", lista_strumenti);
 				request.getSession().setAttribute("lista_clienti", listaClienti);

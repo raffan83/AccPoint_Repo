@@ -182,99 +182,48 @@ public class GestioneAM_BO {
 	
 	
 	private static String getFirstNumericValueInRow(Row row, int excludeIndex) {
-		
-		 for (int i = 0; i < row.getLastCellNum(); i++) {
-		        if (i == excludeIndex) continue;
+	    for (int i = 0; i < row.getLastCellNum(); i++) {
+	        if (i == excludeIndex) continue;
 
-		        Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+	        Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+	        if (cell == null) continue;
 
-		        if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-		            return String.valueOf(cell.getNumericCellValue());
-		        } else if (cell.getCellType() ==Cell.CELL_TYPE_STRING) {
-		            String value = cell.getStringCellValue().trim();
-		          
-		                return value;
-		        
-		        }
-		    }
-		    return null;
-//	    if (cell == null) return null;
-//
-//	    switch (cell.getCellType()) {
-//	        case Cell.CELL_TYPE_NUMERIC:
-//	            return String.valueOf(cell.getNumericCellValue());
-//	        case Cell.CELL_TYPE_STRING:
-//	            return cell.getStringCellValue();
-//	        case Cell.CELL_TYPE_BLANK:
-//	            return null;
-//	        default:
-//	            return null;
-//	    }
+	        if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+	            double num = cell.getNumericCellValue();
+	            return String.valueOf(num).replace(".", ",");
+
+	        } else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+	            String value = cell.getStringCellValue().trim();
+
+	            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("[-+]?\\d*\\.?\\d+").matcher(value);
+	            if (matcher.find()) {
+	                String number = matcher.group();
+	                return number.replace(".", ",");
+	            }
+
+	        } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+	            int resultType = cell.getCachedFormulaResultType();
+
+	            if (resultType == Cell.CELL_TYPE_NUMERIC) {
+	                double num = cell.getNumericCellValue();
+	                return String.valueOf(num).replace(".", ",");
+
+	            } else if (resultType == Cell.CELL_TYPE_STRING) {
+	                String value = cell.getStringCellValue().trim();
+
+	                java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("[-+]?\\d*\\.?\\d+").matcher(value);
+	                if (matcher.find()) {
+	                    String number = matcher.group();
+	                    return number.replace(".", ",");
+	                }
+	            }
+	        }
+	    }
+	    return null;
 	}
-	
-//	public static String getMatrix(String filePath) {
-//		
-//		 String[] spessori = new String[3];
-//		StringBuilder matrix = new StringBuilder();
-//		matrix.append("[");
-//
-//        try (FileInputStream fis = new FileInputStream(new File(filePath));
-//             Workbook workbook = new XSSFWorkbook(fis)) {
-//
-//            Sheet sheet = workbook.getSheetAt(0);
-//
-//            if (sheet.getPhysicalNumberOfRows() == 0) {
-//                throw new IllegalArgumentException("Il foglio è vuoto.");
-//            }
-//
-//            int expectedCols = -1;
-//            int rowCount = 0;
-//
-//            for (Row row : sheet) {
-//                if (rowCount > 0) matrix.append(", ");
-//                matrix.append("{");
-//
-//                int cellCount = 0;
-//                int actualCols = row.getLastCellNum();
-//
-//                if (expectedCols == -1) {
-//                    expectedCols = actualCols;
-//                } else if (actualCols != expectedCols) {
-//                    throw new IllegalArgumentException("Righe con numero diverso di colonne.");
-//                }
-//
-//                for (int i = 0; i < actualCols; i++) {
-//                    if (i > 0) matrix.append(", ");
-//                    Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-//
-//                    if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-//                    	matrix.append(cell.getNumericCellValue());
-//                    } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
-//                    	matrix.append("null");
-//                    } else {
-//                        throw new IllegalArgumentException("Cella non numerica alla riga " +
-//                                                           (row.getRowNum() + 1) + ", colonna " + (i + 1));
-//                    }
-//                    cellCount++;
-//                }
-//
-//                matrix.append("}");
-//                rowCount++;
-//            }
-//
-//        } catch (IllegalArgumentException e) {
-//            System.err.println("Errore di struttura: " + e.getMessage());
-//            return "[]";
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "[]";
-//        }
-//
-//        matrix.append("]");
-//        return matrix.toString();
-//		
-//	}
 
+
+	
 	public static AMTipoProvaDTO getTipoProvaFromID(int id_tipo_prova, Session session) {
 		// TODO Auto-generated method stub
 		return GestioneAM_DAO.getTipoProvaFromID(id_tipo_prova, session);
@@ -307,6 +256,11 @@ public class GestioneAM_BO {
 	public static AMRapportoDTO getRapportoFromProva(int id, Session session) {
 		// TODO Auto-generated method stub
 		return GestioneAM_DAO.getRapportoFromProva(id, session);
+	}
+
+	public static ArrayList<AMRapportoDTO> getListaRapportiIntervento(int id_intervento, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAM_DAO.getListaRapportiIntervento(id_intervento, session);
 	}
 
 }

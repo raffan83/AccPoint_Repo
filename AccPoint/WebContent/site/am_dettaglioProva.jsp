@@ -269,7 +269,7 @@
  </div>
   <div class="col-xs-5">
 
- <input class="form-control" readonly type="text" value="${prova.spess_min_fasciame }">
+ <input class="form-control" readonly type="text" value="${prova.spess_min_fasciame } mm">
  </div>
 
  
@@ -281,7 +281,7 @@
  </div>
   <div class="col-xs-5">
 
- <input class="form-control" readonly type="text" value="${prova.spess_min_fondo_sup }">
+ <input class="form-control" readonly type="text" value="${prova.spess_min_fondo_sup } mm">
  </div>
 
  
@@ -293,7 +293,7 @@
  </div>
   <div class="col-xs-5">
 
- <input class="form-control" readonly type="text" value="${prova.spess_min_fondo_inf }">
+ <input class="form-control" readonly type="text" value="${prova.spess_min_fondo_inf } mm">
  </div>
 
  
@@ -497,51 +497,6 @@
  <script type="text/javascript">
  
  
- $('#note_attestato').change(function(){
-	
-	 pleaseWaitDiv = $('#pleaseWaitDialog');
-	  pleaseWaitDiv.modal();
-	  
-	  dataObj = {}
-	  dataObj.note = $(this).val();
-   $.ajax({
- 	  type: "POST",
- 	  url: "gestioneVerMisura.do?action=note_attestato&id_misura="+${misura.id},
- 	data: dataObj,
- 	dataType: "json",
- 	 
- 	  success: function( data, textStatus) {
- 		pleaseWaitDiv.modal('hide');
- 		  	      		  
- 		 
- 		
- 		  if(!data.success){
- 			  
- 		  
- 			  $('#myModalErrorContent').html("Errone nel salvataggio delle note attestato!");
- 			  	$('#myModalError').removeClass();
- 				$('#myModalError').addClass("modal modal-danger");
- 				$('#report_button').show();
- 				$('#visualizza_report').show();
-					$('#myModalError').modal('show');	      			 
- 		  }
- 	  },
-
- 	  error: function(jqXHR, textStatus, errorThrown){
- 		  pleaseWaitDiv.modal('hide');
-
- 		  $('#myModalErrorContent').html("Errore nella modifica!");
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");
-				$('#report_button').show();
-				$('#visualizza_report').show();
-				$('#myModalError').modal('show');
-				
- 
- 	  }
-   });
-	 
- });
  
 	function formatDate(data){
 		
@@ -554,51 +509,8 @@
 		   return str;	 		
 	}
  
- function modalListaFile(filename){	 
-	 
-	 dataString ="filename="+ filename;
-       exploreModal("scaricaPacchettoVerificazione.do?action=lista_file",dataString,null,function(datab,textStatusb){
-
-    	   var result = JSON.parse(datab);
-    	   if(result.success){
-    		   var lista_file = result.lista_file;
-    		   var lista_date = result.lista_date;
-    		   if(lista_file.length>0){
-    			   var html = '<li class="list-group-item"><div class="row"><div class="col-xs-4"><b>Pacchetto</b></div><div class="col-xs-5"><b class="pull-right" style="margin-right:10px">Ultima modifica</b></div><div class="col-xs-3"> </div></div></li>';    		   
-        		   for(var i = 0;i<lista_file.length;i++){
-        			   html = html +' <li class="list-group-item"><div class="row"><div class="col-xs-4"><b>'+lista_file[i]+'</b></div><div class="col-xs-5"><b class="pull-right">'+new Date(parseInt(lista_date[i])).toString("dd/MM/yyyy HH:mm:ss")+'</b></div><div class="col-xs-3"> <a class="btn btn-default btn-sm pull-right" href="scaricaPacchettoVerificazione.do?action=download&filename='+lista_file[i]+'" ><i class="fa fa-arrow-down"></i></a></div></div></li>';
-        		   }
-    		   }else{
-    			   var html = '<b>Non sono presenti pacchetti!</b>'
-    		   }
-				
-    	   }
-    	  
-    	   $('#file_content').html(html);
-    	   
-     	  $("#myModalFile").modal();
-     	  
-       });
-	 
- }
  
- $('#myModalFile').on('hidden.bs.modal',function(){
-	 $(document.body).css('padding-right', '0px');
- });
-   
-    $(document).ready(function() {
-    	
-    	$('.dropdown-toggle').dropdown();
-    	
-			   $('#myModalDettaglioStrumento').on('hidden.bs.modal', function (e) {
 
-		    	 	$('#dettaglioTab').tab('show');
-		    	 	$('body').removeClass('noScroll');
-		    	 	$(document.body).css('padding-right', '0px');
-		    	});
-    	
-
-	});
 
 
   </script>

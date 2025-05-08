@@ -24,7 +24,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Lista oggetti in prova
+        Lista attrezzature in prova
         <!-- <small></small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/"><i class="fa fa-dashboard"></i> Home</a>
@@ -37,7 +37,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista oggetti in prova A.M. Engineering
+	 Lista attrezzature in prova
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -52,7 +52,7 @@
 
 
 <div class="col-xs-12">
-<button class="btn btn-primary pull-right" onClick="$('#modalNuovoStrumento').modal()" style="margin-right:5px"><i class="fa fa-plus"></i> Nuovo Strumento</button> 
+<button class="btn btn-primary pull-right" onClick="$('#modalNuovoStrumento').modal()" style="margin-right:5px"><i class="fa fa-plus"></i> Nuova Attrezzatura</button> 
 </div>
 
 </div><br>
@@ -63,6 +63,8 @@
  <table id="tabAMStrumenti" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 <th>ID</th>
+<th>Cliente utilizzatore</th>
+<th>Sede utilizzatore</th>
 <th>Descrizione</th>
 <th>Matricola</th>
 <th>Zona Riferimento Fasciame</th>
@@ -87,7 +89,9 @@
  <c:forEach items="${lista_strumenti }" var="strumento" varStatus="loop">
 	<tr id="row_${loop.index}" >
 	
-	<td>${strumento.id }</td>	
+	<td>${strumento.id }</td>
+	<td>${strumento.nomeClienteUtilizzatore }</td>	
+	<td>${strumento.nomeSedeUtilizzatore }</td>		
 	<td>${strumento.descrizione }</td>
 	<td>${strumento.matricola }</td>
 	<td>${strumento.zonaRifFasciame }</td>
@@ -838,7 +842,7 @@ $(document).ready(function() {
 		        }
 	        },
 	        pageLength: 25,
-	        "order": [[ 2, "desc" ]],
+	        "order": [[ 0, "desc" ]],
 		      paging: true, 
 		      ordering: true,
 		      info: true, 
@@ -854,7 +858,7 @@ $(document).ready(function() {
 		    	},     
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 0, targets: 17 },
+		    	  { responsivePriority: 0, targets: 19 },
 		    	  
 		    	  
 		               ], 	        

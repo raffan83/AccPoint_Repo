@@ -107,7 +107,7 @@
                 </li>
                 
                 <li class="list-group-item">
-                  <b>Operatore</b><a class="customTooltip pull-right  btn btn-warning btn-xs" title="Carica patentino" onclick="modalPatentino('${intervento.operatore.id}','${intervento.operatore.dicituraPatentino}','${intervento.operatore.pathPatentino }')"><i class="fa fa-file-text-o"></i></a> <a class="pull-right">${intervento.operatore.nomeOperatore}</a>
+                  <b>Operatore</b><a class="customTooltip pull-right  btn btn-warning btn-xs" title="Carica patentino" onclick="modalPatentino('${intervento.operatore.id}','${intervento.operatore.dicituraPatentino}','${intervento.operatore.pathPatentino }','${intervento.operatore.firma }')"><i class="fa fa-file-text-o"></i></a> <a class="pull-right">${intervento.operatore.nomeOperatore}</a>
                 </li>
               
         </ul>
@@ -168,40 +168,40 @@
  
  <tbody>
  
- <c:forEach items="${lista_prove}" var="prova">
+ <c:forEach items="${lista_rapporti}" var="rapporto">
  
- 	<tr role="row" id="${prova.id}">
+ 	<tr role="row" id="${rapporto.prova.id}">
 
 
- 	<td>${prova.id}</td>
-<td>${prova.tipoProva.descrizione}</td>
-<td> <fmt:formatDate pattern="dd/MM/yyyy"  value="${prova.data}" />	</td>
-<td>${prova.strumento.descrizione}</td>
-<td>${prova.strumento.matricola}</td>
-<td>${prova.campione.codiceInterno }</td>
+ 	<td>${rapporto.prova.id}</td>
+<td>${rapporto.prova.tipoProva.descrizione}</td>
+<td> <fmt:formatDate pattern="dd/MM/yyyy"  value="${rapporto.prova.data}" />	</td>
+<td>${rapporto.prova.strumento.descrizione}</td>
+<td>${rapporto.prova.strumento.matricola}</td>
+<td>${rapporto.prova.campione.codiceInterno }</td>
 <td>
-<c:if test="${prova.esito  == 'POSITIVO'}">
+<c:if test="${rapporto.prova.esito  == 'POSITIVO'}">
 CONFORME A SPECIFICA
 </c:if>
-<c:if test="${prova.esito  == 'NEGATIVO'}">
+<c:if test="${rapporto.prova.esito  == 'NEGATIVO'}">
 NON CONFORME A SPECIFICA
 </c:if>
 </td>
 
-<td>${prova.nRapporto }</td>
+<td>${rapporto.prova.nRapporto }</td>
 
 <td>
-<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della prova" onClick="callAction('amGestioneInterventi.do?action=dettaglio_prova&id_prova=${utl:encryptData(prova.id)}')"><i class="fa fa-search"></i></a>
-<c:if test="${prova.nRapporto==null || prova.nRapporto==''}">
-<a class="btn btn-warning customTooltip" title="Click per modificare della prova" onClick="modalModificaProva('${prova.id}','${prova.tipoProva.id}','${prova.data}','${prova.strumento.id}','${prova.campione.id}','${prova.operatore.id}','${prova.esito}', '${prova.filename_excel }','${prova.filename_img }','${utl:escapeJS(prova.note) }')"><i class="fa fa-edit"></i></a>
-<c:if test="${prova.matrixSpess!=null && prova.matrixSpess!=''}">
-<a class="btn btn-success customTooltip" title="Click per generare il certificato" onClick="generaCertificatoAM('${prova.id}')"><i class="fa fa-check"></i></a>
+<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della prova" onClick="callAction('amGestioneInterventi.do?action=dettaglio_prova&id_prova=${utl:encryptData(rapporto.prova.id)}')"><i class="fa fa-search"></i></a>
+<c:if test="${rapporto.stato.id == 1}">
+<a class="btn btn-warning customTooltip" title="Click per modificare della prova" onClick="modalModificaProva('${rapporto.prova.id}','${rapporto.prova.tipoProva.id}','${rapporto.prova.data}','${rapporto.prova.strumento.id}','${rapporto.prova.campione.id}','${rapporto.prova.operatore.id}','${rapporto.prova.esito}', '${rapporto.prova.filename_excel }','${rapporto.prova.filename_img }','${utl:escapeJS(rapporto.prova.note) }')"><i class="fa fa-edit"></i></a>
+<c:if test="${rapporto.prova.matrixSpess!=null && rapporto.prova.matrixSpess!=''}">
+<a class="btn btn-success customTooltip" title="Click per generare il certificato" onClick="generaCertificatoAM('${rapporto.prova.id}')"><i class="fa fa-check"></i></a>
 </c:if>
 </c:if>
 
 
-<c:if test="${prova.nRapporto!=null && prova.nRapporto!=''}">
-<a target="_blank"   class="btn btn-danger customTooltip" title="Click per scaricare il Cerificato"  href="amGestioneInterventi.do?action=download_certificato&id_prova=${prova.id}" > <i class="fa fa-file-pdf-o"></i></a>
+<c:if test="${rapporto.stato.id == 2}">
+<a target="_blank"   class="btn btn-danger customTooltip" title="Click per scaricare il Cerificato"  href="amGestioneInterventi.do?action=download_certificato&id_prova=${rapporto.prova.id}" > <i class="fa fa-file-pdf-o"></i></a>
  
  </c:if>
 <%--
@@ -709,10 +709,12 @@ NON CONFORME A SPECIFICA
 	 $('#modalNuovaProva').modal();
  }
  
- function modalPatentino(id_operatore, dicitura, filename){
+ function modalPatentino(id_operatore, dicitura, filename_patentino, filename_firma){
 	 
 	 $('#dicitura').val(dicitura);
-	 $('#label_patentino').html(filename)
+	 $('#label_patentino').html(filename_patentino)
+	 
+	 $('#label_firma').html(filename_firma);
 	 
 	 $('#id_operatore').val(id_operatore);
 	 
@@ -921,7 +923,7 @@ function generaCertificatoAM(id_prova){
 	    	      responsive: true,
 	    	      scrollX: false,
 	    	      stateSave: true,
-	    	      order:[[2,'desc']],
+	    	      order:[[0,'desc']],
 	    	  
 	    	      columnDefs: [
 	    	   

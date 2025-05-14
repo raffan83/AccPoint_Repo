@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -17,6 +19,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DAO.GestioneAM_DAO;
 import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
+import it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
 import it.portaleSTI.DTO.AMProgressivoDTO;
 import it.portaleSTI.DTO.AMProvaDTO;
@@ -93,11 +96,100 @@ public class GestioneAM_BO {
 
 	
 	
+//	public static String[] getMatrix(String filePath) {
+//		
+//		StringBuilder matrix = new StringBuilder();
+//	    matrix.append("[");
+//	    String[] result = new String[4];
+//
+//	    try (FileInputStream fis = new FileInputStream(new File(filePath));
+//	         Workbook workbook = new XSSFWorkbook(fis)) {
+//
+//	        Sheet sheet = workbook.getSheetAt(0);
+//
+//	        if (sheet.getPhysicalNumberOfRows() == 0) {
+//	            throw new IllegalArgumentException("Il foglio è vuoto.");
+//	        }
+//
+//	        int expectedCols = -1;
+//	        int rowCount = 0;
+//
+//	        for (Row row : sheet) {
+//	            // --- Estrazione spessori ---
+//	            for (int i = 0; i < row.getLastCellNum(); i++) {
+//	                Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+//
+//	                if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+//	                    String testo = cell.getStringCellValue().trim().toLowerCase();
+//
+//	                    if (testo.contains("spessore minimo fasciame")) {
+//	                    	result[0] = getFirstNumericValueInRow(row, i);
+//	                    } else if (testo.contains("spessore minimo fondo superiore")) {
+//	                    	result[1] = getFirstNumericValueInRow(row, i);
+//	                    } else if (testo.contains("spessore minimo fondo inferiore")) {
+//	                    	result[2] = getFirstNumericValueInRow(row, i);
+//	                    }
+//	                }
+//	            }
+//
+//	            // --- Costruzione della matrice ---
+//	            if (rowCount > 0) matrix.append(", ");
+//	            StringBuilder riga = new StringBuilder();
+//	            riga.append("{");
+//
+//	            boolean hasValidData = false;
+//
+//	            for (int i = 0; i < row.getLastCellNum(); i++) {
+//	                Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+//
+//	                if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC || cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+//	                    if (riga.length() > 1) riga.append(", "); // se non è la prima cella
+//
+//	                    if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+//	                        riga.append(cell.getNumericCellValue());
+//	                        hasValidData = true;
+//	                    } else {
+//	                        riga.append("null");
+//	                    }
+//	                } else {
+//	                    break; // interrompe la riga se trova cella non numerica
+//	                }
+//	            }
+//
+//	            riga.append("}");
+//
+//	            if (hasValidData) {
+//	                matrix.append(riga);
+//	                rowCount++;
+//	            } else {
+//	                // riga ignorata completamente
+//	                if (rowCount > 0) matrix.setLength(matrix.length() - 2); // rimuove ", " finale
+//	            }
+//	        }
+//
+//	    } catch (IllegalArgumentException e) {
+//	        System.err.println("Errore di struttura: " + e.getMessage());
+//	        
+//	    } catch (Exception e) {
+//	        e.printStackTrace();
+//	       //
+//	    }
+//
+//	    matrix.append("]");
+//	    
+//	    result[3] = matrix.toString();
+//	    
+//	    return result;
+//		
+//	}
+	
+	
 	public static String[] getMatrix(String filePath) {
-		
-		StringBuilder matrix = new StringBuilder();
+
+	    StringBuilder matrix = new StringBuilder();
 	    matrix.append("[");
-	    String[] result = new String[4];
+	    StringBuilder testoSottoTabella = new StringBuilder();
+	    String[] result = new String[5]; // Aggiungiamo una 5ª posizione per il testo sotto la tabella
 
 	    try (FileInputStream fis = new FileInputStream(new File(filePath));
 	         Workbook workbook = new XSSFWorkbook(fis)) {
@@ -107,12 +199,15 @@ public class GestioneAM_BO {
 	        if (sheet.getPhysicalNumberOfRows() == 0) {
 	            throw new IllegalArgumentException("Il foglio è vuoto.");
 	        }
-
+	        FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 	        int expectedCols = -1;
 	        int rowCount = 0;
+	        boolean inTabella = true; // Indica se siamo ancora nella parte numerica
 
 	        for (Row row : sheet) {
-	            // --- Estrazione spessori ---
+	            boolean hasNumericData = false;
+
+	            // Estrazione spessori
 	            for (int i = 0; i < row.getLastCellNum(); i++) {
 	                Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 
@@ -120,64 +215,95 @@ public class GestioneAM_BO {
 	                    String testo = cell.getStringCellValue().trim().toLowerCase();
 
 	                    if (testo.contains("spessore minimo fasciame")) {
-	                    	result[0] = getFirstNumericValueInRow(row, i);
+	                        result[0] = getFirstNumericValueInRow(row, i);
 	                    } else if (testo.contains("spessore minimo fondo superiore")) {
-	                    	result[1] = getFirstNumericValueInRow(row, i);
+	                        result[1] = getFirstNumericValueInRow(row, i);
 	                    } else if (testo.contains("spessore minimo fondo inferiore")) {
-	                    	result[2] = getFirstNumericValueInRow(row, i);
+	                        result[2] = getFirstNumericValueInRow(row, i);
 	                    }
 	                }
 	            }
 
-	            // --- Costruzione della matrice ---
-	            if (rowCount > 0) matrix.append(", ");
+	            // Costruzione matrice numerica
 	            StringBuilder riga = new StringBuilder();
 	            riga.append("{");
-
-	            boolean hasValidData = false;
-
 	            for (int i = 0; i < row.getLastCellNum(); i++) {
 	                Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 
 	                if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC || cell.getCellType() == Cell.CELL_TYPE_BLANK) {
-	                    if (riga.length() > 1) riga.append(", "); // se non è la prima cella
-
+	                    if (riga.length() > 1) riga.append(", ");
 	                    if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
 	                        riga.append(cell.getNumericCellValue());
-	                        hasValidData = true;
+	                        hasNumericData = true;
 	                    } else {
 	                        riga.append("null");
 	                    }
 	                } else {
-	                    break; // interrompe la riga se trova cella non numerica
+	                    // Appena troviamo una cella non numerica, assumiamo che la tabella sia finita
+	                    inTabella = false;
+	                    break;
 	                }
 	            }
-
 	            riga.append("}");
 
-	            if (hasValidData) {
+	            if (inTabella && hasNumericData) {
+	                if (rowCount > 0) matrix.append(", ");
 	                matrix.append(riga);
 	                rowCount++;
-	            } else {
-	                // riga ignorata completamente
-	                if (rowCount > 0) matrix.setLength(matrix.length() - 2); // rimuove ", " finale
+	            } else if (!inTabella) {
+	                // Testo sotto tabella
+	            	
+	            	StringBuilder testoRiga = new StringBuilder();
+	            	for (Cell cell : row) {
+	            	    String valore = "";
+
+	            	    if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+	            	        CellValue cellValue = evaluator.evaluate(cell);
+
+	            	        if (cellValue != null) {
+	            	            if (cellValue.getCellType() == Cell.CELL_TYPE_STRING) {
+	            	                valore = cellValue.getStringValue();
+	            	            } else if (cellValue.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+	            	                valore = String.valueOf(cellValue.getNumberValue());
+	            	            } else if (cellValue.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+	            	                valore = String.valueOf(cellValue.getBooleanValue());
+	            	            }
+	            	        }
+
+	            	    } else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+	            	        valore = cell.getStringCellValue();
+
+	            	    } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+	            	        valore = String.valueOf(cell.getNumericCellValue());
+
+	            	    } else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+	            	        valore = String.valueOf(cell.getBooleanCellValue());
+	            	    }
+
+	            	    valore = valore.trim();
+	            	    if (!valore.isEmpty()) {
+	            	        if (testoRiga.length() > 0) testoRiga.append(" ");
+	            	        testoRiga.append(valore);
+	            	    }
+	            	}
+	            	
+	            	if (testoRiga.length() > 0) {
+	                    if (testoSottoTabella.length() > 0) testoSottoTabella.append(",");
+	                    testoSottoTabella.append("{").append(testoRiga).append("}");
+	                }
 	            }
 	        }
-
 	    } catch (IllegalArgumentException e) {
 	        System.err.println("Errore di struttura: " + e.getMessage());
-	        
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	       //
 	    }
 
 	    matrix.append("]");
-	    
 	    result[3] = matrix.toString();
-	    
+	    result[4] = testoSottoTabella.toString();
+
 	    return result;
-		
 	}
 	
 	
@@ -261,6 +387,11 @@ public class GestioneAM_BO {
 	public static ArrayList<AMRapportoDTO> getListaRapportiIntervento(int id_intervento, Session session) {
 		// TODO Auto-generated method stub
 		return GestioneAM_DAO.getListaRapportiIntervento(id_intervento, session);
+	}
+
+	public static AMOggettoProvaZonaRifDTO getZonaRiferimentoFromID(int idValue, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAM_DAO.getZonaRiferimentoFromID(idValue, session);
 	}
 
 }

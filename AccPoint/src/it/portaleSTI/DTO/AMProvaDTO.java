@@ -20,10 +20,17 @@ public class AMProvaDTO {
 	private String spess_min_fasciame;
 	private String spess_min_fondo_sup;
 	private String spess_min_fondo_inf;
+	private String label_minimi;
 	
 	
 	
 
+	public String getLabel_minimi() {
+		return label_minimi;
+	}
+	public void setLabel_minimi(String label_minimi) {
+		this.label_minimi = label_minimi;
+	}
 	public int getId() {
 		return id;
 	}

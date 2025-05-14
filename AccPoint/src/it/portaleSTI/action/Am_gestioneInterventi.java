@@ -510,6 +510,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 					prova.setSpess_min_fondo_inf(values[2]);
 					
 					prova.setMatrixSpess(values[3]);
+					prova.setLabel_minimi(values[4]);
 					
 				}
 				
@@ -625,7 +626,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 					if(values[3].equals("[]")) {
 						esito_import = false;
 					}
-					
+					prova.setLabel_minimi(values[4]);
 					
 					prova.setSpess_min_fasciame(values[0]);					
 					prova.setSpess_min_fondo_sup(values[1]);
@@ -701,6 +702,9 @@ public class Am_gestioneInterventi extends HttpServlet {
 					}
 				}
 				
+				AMRapportoDTO rapporto = GestioneAM_BO.getRapportoFromProva(prova.getId(), session);
+				
+				request.setAttribute("rapporto", rapporto);
 				request.setAttribute("colonne", colonne);
 				request.setAttribute("matrix_spess", matrixParsed);
 				
@@ -745,12 +749,18 @@ public class Am_gestioneInterventi extends HttpServlet {
 				ajax = true;
 				
 				String id_prova = request.getParameter("id_prova");
+				String anteprima = request.getParameter("isAnteprima");
 				
 				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);
 				
 				AMRapportoDTO rapporto = GestioneAM_BO.getRapportoFromProva(prova.getId(), session);
 				
-				CreateCertificatoAM cert = new CreateCertificatoAM(prova, session, rapporto);
+				boolean isAnteprima = false;
+				if(anteprima!=null && anteprima.equals("1")) {
+					isAnteprima = true;
+				}
+				
+				CreateCertificatoAM cert = new CreateCertificatoAM(prova, session, rapporto, isAnteprima);
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
@@ -765,13 +775,28 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 				
 				String id_prova = request.getParameter("id_prova");
+				String anteprima = request.getParameter("isAnteprima");
 				
 				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);
 				
-				String path = Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\Certificati\\"+prova.getnRapporto()+".pdf";
+				String path ="";
+				boolean isAnteprima = false;
+				if(anteprima!=null && anteprima.equals("1")) {
+					isAnteprima = true;
+				}
+				if(isAnteprima) {
+					path = Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\Certificati\\ANTEPRIMA.pdf";
+					response.setContentType("application/octet-stream");
+					  
+					 response.setHeader("Content-Disposition","attachment;filename=ANTEPRIMA.pdf");
+				}else {
+					path = Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\Certificati\\"+prova.getnRapporto()+".pdf";
+					response.setContentType("application/pdf");	
+				}
+						
 				
 				
-				response.setContentType("application/pdf");	
+				
 				Utility.downloadFile(path, response.getOutputStream());
 				
 				
@@ -853,6 +878,50 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 			
 			}
+			else if(action.equals("salva_prova_edit")) {
+				
+				ajax = true;
+				String matrix = request.getParameter("matrix");
+				String id_prova = request.getParameter("id_prova");
+				String label_minimi = request.getParameter("label_minimi");
+				String esito = request.getParameter("esito");
+				String note = request.getParameter("note");
+				
+				
+				
+				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);
+				
+				prova.setMatrixSpess(matrix);
+				prova.setNote(note);
+			
+				
+				if(esito.contains("NON CONFORME")) {
+					prova.setEsito("NEGATIVO");
+				}else {
+					prova.setEsito("POSITIVO");
+				}
+				prova.setLabel_minimi(label_minimi);
+				session.update(prova);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
+				
+			}
+			
+			else if(action.equals("scarica_template")) {
+				
+				String path = Costanti.PATH_FOLDER+"\\AM_Interventi\\TemplateAM.xlsx";
+					response.setContentType("application/octet-stream");
+					  
+					 response.setHeader("Content-Disposition","attachment;filename=TemplateAM.xlsx");
+				
+				
+				Utility.downloadFile(path, response.getOutputStream());
+			}
+			
 			session.getTransaction().commit();
 			session.close();
 			

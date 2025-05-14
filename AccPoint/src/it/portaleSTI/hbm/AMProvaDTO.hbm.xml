@@ -39,6 +39,7 @@
         <property name="spess_min_fondo_sup" column="spess_min_fondo_sup" type="string" />
         <property name="spess_min_fondo_inf" column="spess_min_fondo_inf" type="string" />
         <property name="spess_min_fasciame" column="spess_min_fasciame" type="string" />
+        <property name="label_minimi" column="label_minimi" type="string" />
 
     </class>
 </hibernate-mapping>

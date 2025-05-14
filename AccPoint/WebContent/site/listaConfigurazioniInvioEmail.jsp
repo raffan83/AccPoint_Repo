@@ -967,7 +967,21 @@ $(document).ready(function() {
 	$('#data_inizio_invio').val(dataOggi);
 
      $('.dropdown-toggle').dropdown();
-     $('.select2').select2();
+    // $('.select2').select2();
+     
+     
+     $("#corsi").select2({
+         dropdownParent: $('#myModalnuovaConfigurazione')
+     });		
+     $("#corsi_mod").select2({
+         dropdownParent: $('#myModalModificaConfigurazione')
+     });
+     $("#gruppi").select2({
+         dropdownParent: $('#myModalnuovaConfigurazione')
+     });
+     $("#gruppi_mod").select2({
+         dropdownParent: $('#myModalModificaConfigurazione')
+     });
      
      $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"

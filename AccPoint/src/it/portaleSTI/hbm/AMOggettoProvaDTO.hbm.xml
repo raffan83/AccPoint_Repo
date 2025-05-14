@@ -10,18 +10,15 @@
             <generator class="native"/>
         </id>
 
-        <property name="zonaRifFasciame" column="zona_rif_fasciame"/>
-        <property name="spessoreFondo" column="spessore_fondo"/>
+      
         <property name="tipo" column="tipo"/>
         <property name="volume" column="volume"/>
-        <property name="materialeFasciame" column="materiale_fasciame"/>
         <property name="pressione" column="pressione"/>
         <property name="costruttore" column="costruttore"/>
         <property name="nFabbrica" column="n_fabbrica"/>
-        <property name="zonaRifFondo" column="zona_rif_fondo"/>
+   
         <property name="anno" column="anno"/>
-        <property name="spessoreFasciame" column="spessore_fasciame"/>
-        <property name="materialeFondo" column="materiale_fondo"/>
+    
         <property name="matricola" column="matricola"/>
         <property name="descrizione" column="descrizione"/>
         <property name="dataVerifica" column="data_verifica" type="date"/>
@@ -29,7 +26,15 @@
 		<property name="frequenza" column="frequenza"/>
 		<property name="id_cliente" column="id_cliente"/>		
 		<property name="id_sede" column="id_sede"/>	
-		 <property name="sondaVelocita" column="sonda_velocita"/>			
+		 <property name="sondaVelocita" column="sonda_velocita"/>
+	 <set name="listaZoneRiferimento" table="am_oggetto_prova_zona_rif"
+				inverse="true" lazy="false" fetch="select" >
+            <key>
+                <column name="id_strumento" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO" />
+   </set>
+        		
 
     </class>
 

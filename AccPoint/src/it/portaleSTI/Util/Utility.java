@@ -75,6 +75,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.mail.smtp.SMTPMessage;
 import com.sun.mail.smtp.SMTPTransport;
 
@@ -2204,6 +2206,13 @@ public class Utility extends HttpServlet {
 				    return result.toString();
 				}
 			    
+			 
+			 public static String toJson(Object obj) {
+				 
+				 Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy").create(); 	
+			        
+			        return gson.toJson(obj);
+			    }
 			    
 			    
 }

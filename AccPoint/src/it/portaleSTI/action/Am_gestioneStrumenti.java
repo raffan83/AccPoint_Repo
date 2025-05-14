@@ -2,11 +2,16 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,11 +25,14 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
+import it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
@@ -173,6 +181,7 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		        String data_prossima = ret.get("data_prossima_verifica");
 		        String sondaVelocita = ret.get("sonda_velocita");
 		        String materiale_fondo = ret.get("materiale_sonda");
+		        String table_zone = ret.get("table_zone");
 				
 				
 				
@@ -185,18 +194,13 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				strumento.setId_cliente(Integer.parseInt(id_sede.split("_")[0]));
 				strumento.setDescrizione(descrizione);
 				strumento.setMatricola(matricola);
-				strumento.setZonaRifFasciame(zona_rif_fasciame);
-				strumento.setSpessoreFasciame(spessore_fasciame);
+				
 				strumento.setTipo(tipo);
 				strumento.setVolume(volume);
-				strumento.setMaterialeFasciame(materiale_fasciame);
 				strumento.setPressione(pressione);
 				strumento.setCostruttore(costruttore);
 				strumento.setnFabbrica(numero_fabbrica);
-				strumento.setZonaRifFondo(zona_rif_fondo);
-				strumento.setSpessoreFondo(spessore_fondo);
 				strumento.setSondaVelocita(sondaVelocita);
-				strumento.setMaterialeFondo(materiale_fondo);
 				if(anno!=null && !anno.equals("")) {
 					strumento.setAnno(Integer.parseInt(anno));	
 				}
@@ -211,8 +215,30 @@ public class Am_gestioneStrumenti extends HttpServlet {
 					strumento.setDataProssimaVerifica(df.parse(data_prossima));	
 				}
 				
+			
 				
-				session.save(strumento);				
+				session.save(strumento);			
+				
+				Gson g = new Gson();
+				Type listType = new TypeToken<List<List<String>>>() {}.getType();
+		        List<List<String>> rows = g.fromJson(table_zone, listType);
+		        
+		        for (List<String> row : rows) {
+		            String zona = row.size() > 0 ? row.get(0) : "";
+		            String materiale = row.size() > 1 ? row.get(1) : "";
+		            String spessore = row.size() > 2 ? row.get(2) : "";
+
+		           AMOggettoProvaZonaRifDTO z = new AMOggettoProvaZonaRifDTO();
+		           z.setZonaRiferimento(zona);
+		           z.setMateriale(materiale);
+		           z.setSpessore(spessore);
+		           
+		           z.setIdStrumento(strumento.getId());
+		           
+		           session.save(z);
+		           
+		           strumento.getListaZoneRiferimento().add(z);
+		        }
 							
 				
 				myObj = new JsonObject();
@@ -272,6 +298,7 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		        String data_prossima = ret.get("data_prossima_verifica_mod");
 		        String sondaVelocita = ret.get("sonda_velocita_mod");
 		        String materiale_fondo = ret.get("materiale_sonda_mod");
+		        String table_zone = ret.get("table_zone_mod");
 				
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -283,18 +310,12 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				strumento.setId_sede(Integer.parseInt(id_sede.split("_")[0]));
 				strumento.setDescrizione(descrizione);
 				strumento.setMatricola(matricola);
-				strumento.setZonaRifFasciame(zona_rif_fasciame);
-				strumento.setSpessoreFasciame(spessore_fasciame);
 				strumento.setTipo(tipo);
 				strumento.setVolume(volume);
-				strumento.setMaterialeFasciame(materiale_fasciame);
 				strumento.setPressione(pressione);
 				strumento.setCostruttore(costruttore);
 				strumento.setnFabbrica(numero_fabbrica);
-				strumento.setZonaRifFondo(zona_rif_fondo);
 				strumento.setSondaVelocita(sondaVelocita);
-				strumento.setSpessoreFondo(spessore_fondo);
-				strumento.setMaterialeFondo(materiale_fondo);
 				if(anno!=null && !anno.equals("")) {
 					strumento.setAnno(Integer.parseInt(anno));	
 				}
@@ -308,6 +329,53 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				if(data_prossima!=null && !data_prossima.equals("")) {
 					strumento.setDataProssimaVerifica(df.parse(data_prossima));	
 				}
+				
+				Gson g = new Gson();
+				Type listType = new TypeToken<List<List<String>>>() {}.getType();
+		        List<List<String>> rows = g.fromJson(table_zone, listType);
+		        Set<AMOggettoProvaZonaRifDTO> zoneDB = new HashSet<>(strumento.getListaZoneRiferimento());
+		        Set<Integer> idZoneRicevute = new HashSet<>();
+		        
+		        
+		        for (List<String> row : rows) {
+		            String zona = row.size() > 0 ? row.get(0) : "";
+		            String materiale = row.size() > 1 ? row.get(1) : "";
+		            String spessore = row.size() > 2 ? row.get(2) : "";
+		            String id_zona = row.size() > 3 ? row.get(3) : "";
+		            
+		            Pattern pattern = Pattern.compile("id\\s*=\\s*\"(\\d+)\"");
+		            Matcher matcher = pattern.matcher(id_zona);
+
+		            String idValue = null;
+		            if (matcher.find()) {
+		                idValue = matcher.group(1);
+		            }
+		           
+		            AMOggettoProvaZonaRifDTO z = null;
+		            if(idValue!=null) {
+		            
+		                idZoneRicevute.add(Integer.parseInt(idValue));
+		            	z = GestioneAM_BO.getZonaRiferimentoFromID(Integer.parseInt(idValue), session);
+		            }else {
+		            	z = new AMOggettoProvaZonaRifDTO();
+		            }
+		            
+		           z.setZonaRiferimento(zona);
+		           z.setMateriale(materiale);
+		           z.setSpessore(spessore);
+		           
+		           z.setIdStrumento(strumento.getId());
+		           
+		           session.saveOrUpdate(z);
+		           
+		           strumento.getListaZoneRiferimento().add(z);
+		        }
+		        
+		        for (AMOggettoProvaZonaRifDTO zonaEsistente : zoneDB) {
+		            if (!idZoneRicevute.contains(zonaEsistente.getId())) {
+		                session.delete(zonaEsistente);
+		            }
+		        }
 				
 				session.update(strumento);				
 							

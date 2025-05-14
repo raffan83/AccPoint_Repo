@@ -1,38 +1,21 @@
 package it.portaleSTI.DTO;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AMOggettoProvaDTO {
 
-    public String getNomeClienteUtilizzatore() {
-		return nomeClienteUtilizzatore;
-	}
-
-	public void setNomeClienteUtilizzatore(String nomeClienteUtilizzatore) {
-		this.nomeClienteUtilizzatore = nomeClienteUtilizzatore;
-	}
-
-	public String getNomeSedeUtilizzatore() {
-		return nomeSedeUtilizzatore;
-	}
-
-	public void setNomeSedeUtilizzatore(String nomeSedeUtilizzatore) {
-		this.nomeSedeUtilizzatore = nomeSedeUtilizzatore;
-	}
+ 
 
 	public int id;
-    public String zonaRifFasciame;
-    public String spessoreFondo;
+
     public String tipo;
     public String volume;
-    public String materialeFasciame;
     public String pressione;
     public String costruttore;
     public String nFabbrica;
-    public String zonaRifFondo;
     public int anno;
-    public String spessoreFasciame;
-    public String materialeFondo;
     public String matricola;
     public String descrizione;
     public Date dataVerifica;
@@ -43,10 +26,19 @@ public class AMOggettoProvaDTO {
     public String sondaVelocita;
     public String nomeClienteUtilizzatore;
     public String nomeSedeUtilizzatore;
+    public  Set<AMOggettoProvaZonaRifDTO> listaZoneRiferimento = new HashSet<AMOggettoProvaZonaRifDTO>(0);
     // Getter e Setter
 
     public String getSondaVelocita() {
 		return sondaVelocita;
+	}
+
+	public Set<AMOggettoProvaZonaRifDTO> getListaZoneRiferimento() {
+		return listaZoneRiferimento;
+	}
+
+	public void setListaZoneRiferimento(Set<AMOggettoProvaZonaRifDTO> listaZoneRiferimento) {
+		this.listaZoneRiferimento = listaZoneRiferimento;
 	}
 
 	public void setSondaVelocita(String sondaVelocita) {
@@ -77,21 +69,7 @@ public class AMOggettoProvaDTO {
 		this.id_sede = id_sede;
 	}
 
-	public String getZonaRifFasciame() {
-        return zonaRifFasciame;
-    }
 
-    public void setZonaRifFasciame(String zonaRifFasciame) {
-        this.zonaRifFasciame = zonaRifFasciame;
-    }
-
-    public String getSpessoreFondo() {
-        return spessoreFondo;
-    }
-
-    public void setSpessoreFondo(String spessoreFondo) {
-        this.spessoreFondo = spessoreFondo;
-    }
 
     public String getTipo() {
         return tipo;
@@ -109,13 +87,7 @@ public class AMOggettoProvaDTO {
         this.volume = volume;
     }
 
-    public String getMaterialeFasciame() {
-        return materialeFasciame;
-    }
 
-    public void setMaterialeFasciame(String materialeFasciame) {
-        this.materialeFasciame = materialeFasciame;
-    }
 
     public String getPressione() {
         return pressione;
@@ -141,13 +113,7 @@ public class AMOggettoProvaDTO {
         this.nFabbrica = nFabbrica;
     }
 
-    public String getZonaRifFondo() {
-        return zonaRifFondo;
-    }
 
-    public void setZonaRifFondo(String zonaRifFondo) {
-        this.zonaRifFondo = zonaRifFondo;
-    }
 
     public int getAnno() {
         return anno;
@@ -157,21 +123,7 @@ public class AMOggettoProvaDTO {
         this.anno = anno;
     }
 
-    public String getSpessoreFasciame() {
-        return spessoreFasciame;
-    }
 
-    public void setSpessoreFasciame(String spessoreFasciame) {
-        this.spessoreFasciame = spessoreFasciame;
-    }
-
-    public String getMaterialeFondo() {
-        return materialeFondo;
-    }
-
-    public void setMaterialeFondo(String materialeFondo) {
-        this.materialeFondo = materialeFondo;
-    }
 
     public String getMatricola() {
         return matricola;
@@ -211,4 +163,20 @@ public class AMOggettoProvaDTO {
     public void setFrequenza(int frequenza) {
         this.frequenza = frequenza;
     }
+    
+    public String getNomeClienteUtilizzatore() {
+ 		return nomeClienteUtilizzatore;
+ 	}
+
+ 	public void setNomeClienteUtilizzatore(String nomeClienteUtilizzatore) {
+ 		this.nomeClienteUtilizzatore = nomeClienteUtilizzatore;
+ 	}
+
+ 	public String getNomeSedeUtilizzatore() {
+ 		return nomeSedeUtilizzatore;
+ 	}
+
+ 	public void setNomeSedeUtilizzatore(String nomeSedeUtilizzatore) {
+ 		this.nomeSedeUtilizzatore = nomeSedeUtilizzatore;
+ 	}
 }

@@ -81,7 +81,26 @@
                 <li class="list-group-item">
                   <b>Sede Utilizzatore</b> <a class="pull-right">${prova.intervento.nomeSedeUtilizzatore}</a>
                 </li>
+                
+                <li class="list-group-item">
+                  <b>Rapporto</b> 
+                <c:if test="${rapporto.stato.id == 1}">
+                  <c:if test="${prova.matrixSpess!=null && prova.matrixSpess!=''}">
+
+<a class="btn btn-success btn-xs customTooltip pull-right" title="Click per generare il certificato" onClick="modalYesOrNo('${prova.id}')" style="margin-left:2px"><i class="fa fa-check"></i></a>
+<a class="btn btn-info btn-xs customTooltip pull-right" title="Click per generare l'anteprima di stampa" onClick="generaCertificatoAM('${prova.id}', 1)"><i class="fa fa-print"></i></a>
+
+</c:if>
+</c:if>
+                  <c:if test="${rapporto.stato.id == 2}">
+<a target="_blank"   class="btn btn-danger btn-xs customTooltip pull-right" title="Click per scaricare il Cerificato"  href="amGestioneInterventi.do?action=download_certificato&id_prova=${prova.id}" > <i class="fa fa-file-pdf-o"></i></a>
+ 
+ </c:if>
+                </li>
 				
+
+
+
 
         </ul>
 
@@ -130,30 +149,37 @@
                   <b>Costruttore</b> <a class="pull-right">${prova.strumento.costruttore}</a>
                 </li>
                 
-                <li class="list-group-item">
-                  <b>Zona di riferimento Fondo</b> <a class="pull-right">${prova.strumento.zonaRifFondo}</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Zona di riferimento Fasciame</b> <a class="pull-right">${prova.strumento.zonaRifFasciame}</a>
-                </li>
-                
-                 <li class="list-group-item">
-                  <b>Materiale Fondo</b> <a class="pull-right">${prova.strumento.materialeFondo}</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Materiale Fasciame</b> <a class="pull-right">${prova.strumento.materialeFasciame}</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Spessore nominale Fondo</b> <a class="pull-right">${prova.strumento.spessoreFondo}</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Spessore nominale  Fasciame</b> <a class="pull-right">${prova.strumento.spessoreFasciame}</a>
-                </li>
-                
+               
+               
                
         </ul>
         
+<div class="row">
+<div class="col-xs-12">
+<label>Zone di riferimento</label>
+       		
+       		 <table id="tabZone" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+    <thead>
+        <tr>
+            <th style="text-align:center">Zona</th>
+            <th style="text-align:center">Materiale</th>
+            <th style="text-align:center">Spessore</th>
+        </tr>
+    </thead>
+    <tbody>
+     <c:forEach items="${prova.strumento.getListaZoneRiferimento() }" var="item">
+     <tr>
+     <td style="text-align:center">${item.zonaRiferimento }</td>
+     <td style="text-align:center">${item.materiale }</td>
+     <td style="text-align:center">${item.spessore }</td>
+     </tr>
+     </c:forEach>
+    </tbody>
+</table>
 
+</div>
+
+</div>
 
 
 </div>
@@ -232,11 +258,27 @@
 </div>
 <div class="box-body">
 <div class="row">
+<c:if test="${fn:length(colonne)<=10}">
  <div class="col-xs-6">
-		<img src="amGestioneInterventi.do?action=immagine" alt="Immagine della prova" class="img-responsive" style="width: 100%; height: auto;"  />
- </div>
+</c:if>
+<c:if test="${fn:length(colonne)>10}">
+ <div class="col-xs-4">
  
-  <div class="col-xs-6">
+ </div>
+ <div class="col-xs-4">
+
+ </c:if>
+
+		<img src="amGestioneInterventi.do?action=immagine" alt="Immagine della prova" class="img-fluid d-block mx-auto" style="height: 300px; width: auto;" />
+		
+ </div><br>
+ 
+ <c:if test="${fn:length(colonne)<=10}">
+ <div class="col-xs-6">
+</c:if>
+<c:if test="${fn:length(colonne)>10}">
+ <div class="col-xs-12">
+ </c:if>
   
 <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
     <thead >
@@ -262,51 +304,40 @@
     </tbody>
 </table>
 <br>
+
+<%-- <c:forEach items="${prova.label_minimi.split(',') }" var="item" varStatus="loop">
+ <div class="row">
+ <div class="col-xs-6">
+
+  <input class="form-control label_minimi" readonly type="text" value="${item}">
+  </div>
+ 
+  </div><br>
+ </c:forEach> --%>
+ 
  <div class="row">
 
- <div class="col-xs-5">
-  <label>Spessore Minimo FASCIAME</label>
- </div>
-  <div class="col-xs-5">
+<div class="col-xs-6">
 
- <input class="form-control" readonly type="text" value="${prova.spess_min_fasciame } mm">
- </div>
+<textarea rows="4" style="width:100%" class="form-control" id="label_minimi" readonly>${prova.label_minimi }</textarea>
 
- 
- </div><br>
- <div class="row">
-
-  <div class="col-xs-5">
-   <label>Spessore Minimo FONDO SUPERIORE</label>
- </div>
-  <div class="col-xs-5">
-
- <input class="form-control" readonly type="text" value="${prova.spess_min_fondo_sup } mm">
- </div>
-
- 
- </div><br>
- <div class="row">
-
-  <div class="col-xs-5">
-   <label>Spessore Minimo FONDO INFERIORE</label>
- </div>
-  <div class="col-xs-5">
-
- <input class="form-control" readonly type="text" value="${prova.spess_min_fondo_inf } mm">
- </div>
-
- 
- </div>
-
- </div>
- 
+</div>
 </div><br>
+
+
+<c:if test="${rapporto!=null && rapporto.stato.id == 1 }">
+<div class="row" style="margin-top: 20px;">
+    <div class="col-xs-12 text-center">
+        <button class="btn btn-warning" onclick="abilitaModifica()">Abilita Modifica</button>
+        <button class="btn btn-success" id="btn_salva" onclick="salvaModifiche()" style="display:none">Salva</button>
+    </div>
+</div>
+</c:if>
 <div class="row">
 
 <div class="col-xs-12">
 <label>Note Prova</label>
-<textarea rows="3" style="width:100%" class="form-control">${prova.note }</textarea>
+<textarea rows="3" style="width:100%" class="form-control" id="note" readonly>${prova.note }</textarea>
 
 </div>
 </div>
@@ -342,10 +373,14 @@
  
  <c:choose>
  <c:when test="${prova.esito=='POSITIVO' }">
-  <b>ESITO DELLA VERIFICA: CONFORME A SPECIFICA</b>
+ <%-- <textarea rows="2" style="width:100%" class="form-control" id="esito" class="form-control">ESITO DELLA VERIFICA: CONFORME A SPECIFICA</textarea> --%>
+ <input id="esito" value="ESITO DELLA VERIFICA: CONFORME A SPECIFICA" class="form-control" readonly> 
+<label></label>
   </c:when>
-  <c:when test="${prova.esito=='NEGATIVO' }">
-  <b>ESITO GLOBALE: NON CONFORME A SPECIFICA</b>
+  <c:when test="${prova.esito=='NEGATIVO' }"> 
+<input id="esito" value="ESITO DELLA VERIFICA: NON CONFORME A SPECIFICA" class="form-control" readonly> 
+   <%-- <textarea rows="2" style="width:100%" class="form-control" id="esito" class="form-control">ESITO DELLA VERIFICA: NON CONFORME A SPECIFICA</textarea> --%>
+  
   </c:when>
  </c:choose>
 
@@ -373,98 +408,28 @@
 </div>
 
 
-  <div id="myModalFile" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Lista upload</h4>
-      </div>
-       <div class="modal-body">
-			<div id="file_content">
-			
-			</div>
+	<div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
-  		 </div>
-      <div class="modal-footer" id="myModalFooter">
- 
-       
-      </div>
-    </div>
-  </div>
-</div>
-
-  
-  <div id="myModalDettaglioStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Strumento</h4>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
-       <div class="modal-body">
-
-        <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-            
-              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
-              <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li>
-       <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li> -->
-        
- 		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
-               <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
-		</c:if>		
-		 <li class=""><a href="#documentiesterni" data-toggle="tab" aria-expanded="false" onclick="" id="documentiesterniTab">Documenti esterni</a></li>
-           
-            </ul>
-            <div class="tab-content">
-               <div class="tab-pane active" id="dettaglio">
-
-    			</div> 
-
-              <!-- /.tab-pane -->
-             
-			  <div class="tab-pane" id="misure">
-                
-
-         
-			 </div> 
-
-
-              <!-- /.tab-pane -->
-
-
-               		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
-              
-              			<div class="tab-pane" id="modifica">
-              
-
-              			</div> 
-              		</c:if>		
-              		
-              		<div class="tab-pane" id="documentiesterni">
-              
-
-              			</div> 
-              </div>  
-              <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-          </div>
-    
-        
-        
-        
-        
-  		<div id="empty" class="testo12"></div>
-  		 </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler generare il rapporto?
+      	</div>
       <div class="modal-footer">
-       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
-        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+      <input type="hidden" id="id_prova_rapporto">
+      <a class="btn btn-primary" onclick="generaCertificatoAM($('#id_prova_rapporto').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
     </div>
   </div>
+
+</div>
   
+
   
    
   </div>
@@ -497,6 +462,72 @@
  <script type="text/javascript">
  
  
+ function modalYesOrNo(id_prova){
+
+	 
+		$('#id_prova_rapporto').val(id_prova)
+		 
+		 
+		 $('#myModalYesOrNo').modal();
+	
+	
+
+}
+
+ function generaCertificatoAM(id_prova, isAnteprima){
+		
+		dataObj={};
+		dataObj.id_prova = id_prova;
+		dataObj.isAnteprima = isAnteprima;
+		pleaseWaitDiv.modal()
+		
+		if(isAnteprima!=null && isAnteprima ==1){
+			callAjax(dataObj, "amGestioneInterventi.do?action=genera_certificato",function(data){
+				
+				if(data.success){
+					callAction("amGestioneInterventi.do?action=download_certificato&isAnteprima=1&id_prova="+id_prova)
+				}
+				
+			});
+		}else{
+			callAjax(dataObj, "amGestioneInterventi.do?action=genera_certificato")
+		}
+		
+		
+	}
+ 
+ $(document).ready(function(){
+	 
+
+	 
+	var label_min = $('#label_minimi').val();
+	$('#label_minimi').html("")
+	
+	var values=label_min.split(",");
+	
+	for (var i = 0; i < values.length; i++) {
+		var str = values[i].replace(/[{}]/g, '')+"\n"; 
+		$('#label_minimi').append(str)
+	}
+	
+	
+ 
+ })
+ 
+ 
+ 
+ function abilitaModifica() {
+	    // Rende tutte le celle della tabella editabili
+	    $('#tabPM tbody td').attr('contenteditable', 'true');
+	    $('#tabPM tbody td').css('background-color', '#f9f9b7'); // colore per indicare che è editabile
+	    
+	    $('#label_minimi').attr("readonly", false);
+	    $('#note').attr("readonly", false);
+	    $('#esito').attr("readonly", false);
+	    $('#btn_salva').show()
+	       
+	}
+ 
  
 	function formatDate(data){
 		
@@ -510,8 +541,41 @@
 	}
  
  
+	function salvaModifiche() {
+		let result = [];
 
+	    $('#tabPM tbody tr').each(function () {
+            let row = [];
+            $(this).find('td').each(function () {
+                let value = $(this).text().trim().replace(',', '.'); // per compatibilità decimali
+                if (!isNaN(parseFloat(value))) {
+                    row.push(parseFloat(value));
+                }
+            });
+            if (row.length > 0) {
+                result.push("{" + row.join(",") + "}");
+            }
+        });
 
+        let formatted = "[" + result.join(",") + "]";
+        
+        var label_min = "";
+        let righe = $('#label_minimi').val().trim().split('\n'); // divide il testo in righe
+        for (var i = 0; i < righe.length; i++) {
+			label_min += "{"+righe[i]+"},"
+		}
+	   
+	    
+	    dataObj ={};
+	    dataObj.matrix = formatted;
+	    dataObj.id_prova = "${prova.id}"
+	    dataObj.label_minimi = label_min;
+	    dataObj.note = $('#note').val();
+	    dataObj.esito = $('#esito').val();
+	    
+	    callAjax(dataObj, "amGestioneInterventi.do?action=salva_prova_edit")
+	    
+	}
 
   </script>
   

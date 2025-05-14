@@ -613,7 +613,7 @@ function nuovaPianificazione(){
 		
 		$(document.body).css('padding-right', '0px');
 		if(datab.success){
-			fillTable("${anno}", "${filtro_tipo_pianificazioni}");
+			fillTable("${anno}", "${filtro_tipo_pianificazioni}", 1);
 		//	controllaColoreCella(table, "#F7BEF6");
 			
 			$('#modalPianificazione').modal("hide");

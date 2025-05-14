@@ -101,5 +101,11 @@
         <function-class>it.portaleSTI.Util.Utility</function-class>
         <function-signature> boolean isNumberDouble(java.lang.String)</function-signature>
     </function> 
+    
+    <function>
+        <name>toJson</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature> java.lang.String toJson(java.lang.Object)</function-signature>
+    </function> 
   
 </taglib>

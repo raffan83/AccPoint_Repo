@@ -67,16 +67,15 @@
 <th>Sede utilizzatore</th>
 <th>Descrizione</th>
 <th>Matricola</th>
-<th>Zona Riferimento Fasciame</th>
-<th>Spessore Fasciame</th>
+
 <th>Tipo</th>
 <th>Volume</th>
-<th>Materiale Fasciame</th>
+
 <th>Pressione</th>
 <th>Costruttore</th>
 <th>Numero di fabbrica</th>
-<th>Zona Riferimento Fondo</th>
-<th>Spessore Fondo</th>
+
+
 <th>Data Verifica</th>
 <th>Data Prossima Verifica</th>
 <th>Frequenza</th>
@@ -94,16 +93,12 @@
 	<td>${strumento.nomeSedeUtilizzatore }</td>		
 	<td>${strumento.descrizione }</td>
 	<td>${strumento.matricola }</td>
-	<td>${strumento.zonaRifFasciame }</td>
-	<td>${strumento.spessoreFasciame }</td>
 	<td>${strumento.tipo }</td>
 	<td>${strumento.volume }</td>
-	<td>${strumento.materialeFasciame }</td>
 	<td>${strumento.pressione }</td>
 	<td>${strumento.costruttore }</td>
 	<td>${strumento.nFabbrica }</td>
-	<td>${strumento.zonaRifFondo }</td>	
-	<td>${strumento.spessoreFondo }</td>
+
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.dataVerifica }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.dataProssimaVerifica }" /></td>
 	<td>${strumento.frequenza }</td>
@@ -115,9 +110,9 @@
 
 	--%>
 	
-<a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaStrumento('${strumento.id}','${utl:escapeJS(strumento.descrizione)}','${utl:escapeJS(strumento.matricola)}','${utl:escapeJS(strumento.zonaRifFasciame)}','${utl:escapeJS(strumento.spessoreFasciame)}','${utl:escapeJS(strumento.tipo)}','${utl:escapeJS(strumento.volume)}','${utl:escapeJS(strumento.materialeFasciame)}','${utl:escapeJS(strumento.pressione)}','${utl:escapeJS(strumento.costruttore)}','${utl:escapeJS(strumento.nFabbrica)}','${utl:escapeJS(strumento.zonaRifFondo)}','${utl:escapeJS(strumento.spessoreFondo)}','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataVerifica}" />','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataProssimaVerifica}" />','${utl:escapeJS(strumento.frequenza)}','${utl:escapeJS(strumento.anno)}','${strumento.id_cliente}','${strumento.id_sede}','${utl:escapeJS(strumento.materialeFondo)}')"><i class="fa fa-edit"></i></a>
+<%-- <a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaStrumento('${strumento.id}','${utl:escapeJS(strumento.descrizione)}','${utl:escapeJS(strumento.matricola)}','${utl:escapeJS(strumento.tipo)}','${utl:escapeJS(strumento.volume)}','${utl:escapeJS(strumento.pressione)}','${utl:escapeJS(strumento.costruttore)}','${utl:escapeJS(strumento.nFabbrica)}','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataVerifica}" />','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataProssimaVerifica}" />','${utl:escapeJS(strumento.frequenza)}','${utl:escapeJS(strumento.anno)}','${strumento.id_cliente}','${strumento.id_sede}',${utl:escapeJS(utl:toJson(strumento)) })"><i class="fa fa-edit"></i></a> --%>
 
- 
+ <a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaStrumento(${utl:escapeJS(utl:toJson(strumento)) })"><i class="fa fa-edit"></i></a>
 	</td>
 	</tr>
 	</c:forEach> 
@@ -271,66 +266,17 @@
        	</div>
        </div><br>
        
-        <div class="row">
+       
+         <div class="row">
        	<div class="col-sm-3">
-       		<label>Zona Riferimento Fasciame</label>
+       		<label>Velocità sonda</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="zona_rif_fasciame" name="zona_rif_fasciame" style="width:100%" required>       	
+				<input class="form-control" id="sonda_velocita" name="sonda_velocita" style="width:100%" required>
        	</div>
        </div><br>
        
-       		<div class="row">
-       	<div class="col-sm-3">
-       		<label>Materiale Fasciame</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="materiale_fasciame" name="materiale_fasciame" style="width:100%" required>
-       	</div>
-       </div><br>
-       
-     
-       
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Spessore Fasciame</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="spessore_fasciame" name="spessore_fasciame" style="width:100%" required>       	
-       	</div>
-       </div><br>
-     
-       
-       
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Zona Riferimento Fondo</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="zona_rif_fondo" name="zona_rif_fondo" style="width:100%" required>
-       	</div>
-       </div><br>
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Materiale Fondo</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="materiale_fondo" name="materiale_fondo" style="width:100%" required>
-       	</div>
-       </div><br>
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Spessore Fondo</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="spessore_fondo" name="spessore_fondo" style="width:100%" required>
-       	</div>
-       </div><br>
-       
-       
+           
        
         <div class="row">
        	<div class="col-sm-3">
@@ -372,14 +318,37 @@
         </div> 
        	</div>
        </div><br>
-       
+               <div class="row">
+       	<div class="col-sm-11">
+       		<label>Zone di riferimento</label>
+       		
+       		 <table id="tabZone" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+    <thead>
+        <tr>
+            <th>Zona</th>
+            <th>Materiale</th>
+            <th>Spessore</th>
+            <th style="max-width:10px text-align:center"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- righe dinamiche -->
+    </tbody>
+</table>
+
+
+       	</div>
+       	<div class="col-sm-1" style="margin-top:65px">
+       	<a  class="btn btn-primary btn-xs" onclick="addRow('')"><i class="fa fa-plus"></i></a>
+     </div>
+       </div><br>
        
        
 
   		  <div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-
+<input type="hidden" id="table_zone" name="table_zone">
         <button type="submit" class="btn btn-danger"  >Salva</button>
       </div>
     </div>
@@ -509,65 +478,14 @@
        	</div>
        </div><br>
        
-        <div class="row">
+              <div class="row">
        	<div class="col-sm-3">
-       		<label>Zona Riferimento Fasciame</label>
+       		<label>Velocità sonda</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="zona_rif_fasciame_mod" name="zona_rif_fasciame_mod" style="width:100%" required>       	
+				<input class="form-control" id="sonda_velocita_mod" name="sonda_velocita_mod" style="width:100%" required>
        	</div>
        </div><br>
-       
-       		<div class="row">
-       	<div class="col-sm-3">
-       		<label>Materiale Fasciame</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="materiale_fasciame_mod" name="materiale_fasciame_mod" style="width:100%" required>
-       	</div>
-       </div><br>
-       
-     
-       
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Spessore Fasciame</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="spessore_fasciame_mod" name="spessore_fasciame_mod" style="width:100%" required>       	
-       	</div>
-       </div><br>
-     
-       
-       
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Zona Riferimento Fondo</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="zona_rif_fondo_mod" name="zona_rif_fondo_mod" style="width:100%" required>
-       	</div>
-       </div><br>
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Materiale Fondo</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="materiale_fondo_mod" name="materiale_fondo_mod" style="width:100%" required>
-       	</div>
-       </div><br>
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Spessore Fondo</label>
-       	</div>
-       	<div class="col-sm-9">
-				<input class="form-control" id="spessore_fondo_mod" name="spessore_fondo_mod" style="width:100%" required>
-       	</div>
-       </div><br>
-       
        
        
         <div class="row">
@@ -610,6 +528,30 @@
         </div> 
        	</div>
        </div><br>
+        <div class="row">
+       	<div class="col-sm-11">
+       		<label>Zone di riferimento</label>
+       		
+       		 <table id="tabZone_mod" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+    <thead>
+        <tr>
+            <th>Zona</th>
+            <th>Materiale</th>
+            <th>Spessore</th>
+            <th style="max-width:10px text-align:center"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- righe dinamiche -->
+    </tbody>
+</table>
+
+
+       	</div>
+       	<div class="col-sm-1" style="margin-top:65px">
+       	<a id="addRow" class="btn btn-primary btn-xs" onclick="addRow('_mod')"><i class="fa fa-plus"></i></a>
+     </div>
+       </div><br>
        
        
 
@@ -617,6 +559,7 @@
   		 </div>
       <div class="modal-footer">
 		<input type="hidden" id="id_strumento" name="id_strumento">
+		<input type="hidden" id="table_zone_mod" name="table_zone_mod">
         <button type="submit" class="btn btn-danger"  >Salva</button>
       </div>
     </div>
@@ -660,28 +603,25 @@
 
 
 
-	function modificaStrumento(id, descrizione, matricola, zonaRifFasciame, spessoreFasciame, tipo, volume, materialeFasciame, pressione, costruttore, nFabbrica, zonaRifFondo, spessoreFondo, dataVerifica, dataProssimaVerifica, frequenza, anno, cliente, sede, materiale_fondo) { 
+/* 	function modificaStrumento(id, descrizione, matricola,  tipo, volume,  pressione, costruttore, nFabbrica, dataVerifica, dataProssimaVerifica, frequenza, anno, cliente, sede, lista_zone) { 
 
 	$('#id_strumento').val(id);
 	
 
 	  $('#descrizione_mod').val(descrizione);
 	    $('#matricola_mod').val(matricola);
-	    $('#zona_rif_fasciame_mod').val(zonaRifFasciame);
-	    $('#spessore_fasciame_mod').val(spessoreFasciame);
 	    $('#tipo_mod').val(tipo);
 	    $('#volume_mod').val(volume);
-	    $('#materiale_fasciame_mod').val(materialeFasciame);
+
 	    $('#pressione_mod').val(pressione);
 	    $('#costruttore_mod').val(costruttore);
 	    $('#numero_fabbrica_mod').val(nFabbrica);
-	    $('#zona_rif_fondo_mod').val(zonaRifFondo);
-	    $('#spessore_fondo_mod').val(spessoreFondo);
+
 	    $('#data_verifica_mod').val(dataVerifica);
 	    $('#data_prossima_verifica_mod').val(dataProssimaVerifica);
 	    $('#frequenza_mod').val(frequenza);
 	    $('#anno_mod').val(anno);
-	    $('#materiale_fondo_mod').val(materiale_fondo)
+
 	    
 	    $('#cliente_general_mod').val(cliente);
 	    $('#cliente_general_mod').change()
@@ -698,7 +638,89 @@
 	    	initSelect2Gen('#cliente_general_mod', null, '#modalModificaStrumento');
 	
 	 $('#modalModificaStrumento').modal()
-}
+} */
+	
+	function modificaStrumento(strumento) { 
+
+		$('#id_strumento').val(strumento.id);
+		
+
+		  $('#descrizione_mod').val(strumento.descrizione);
+		    $('#matricola_mod').val(strumento.matricola);
+		    $('#tipo_mod').val(strumento.tipo);
+		    $('#volume_mod').val(strumento.volume);
+
+		    $('#pressione_mod').val(strumento.pressione);
+		    $('#costruttore_mod').val(strumento.costruttore);
+		    $('#numero_fabbrica_mod').val(strumento.nFabbrica);
+
+		    $('#data_verifica_mod').val(strumento.dataVerifica);
+		    $('#data_prossima_verifica_mod').val(strumento.dataProssimaVerifica);
+		    $('#frequenza_mod').val(strumento.frequenza);
+		    $('#anno_mod').val(strumento.anno);
+		    $('#sonda_velocita_mod').val(strumento.sondaVelocita);
+
+		    
+		    $('#cliente_general_mod').val(strumento.id_cliente);
+		    $('#cliente_general_mod').change()
+		    
+		    if(strumento.id_sede!=0){
+		    	$('#sede_general_mod').val(strumento.id_sede+"_"+strumento.id_cliente);
+		    }else{
+		    	$('#sede_general_mod').val(strumento.id_sede);
+		    }
+		    
+		    $('#sede_general_mod').change()
+		    
+		    
+		    	initSelect2Gen('#cliente_general_mod', null, '#modalModificaStrumento');
+		    
+		    
+		    var lista_zone = strumento.listaZoneRiferimento;
+		/*      lista_zone
+		   
+		    var table = $('#tabZone_mod').DataTable({
+		        destroy: true, // se esiste già, la distrugge
+		        data: lista_zone,
+		        columns: [
+		            { data: 'zonaRiferimento' },     // campo della tua DTO
+		            { data: 'materiale' },       // esempio campo
+		            { data: 'spessore' },
+		            { data: '<a class="btn btn-danger btn-xs remove-btn"><i class="fa fa-minus"></a>'}// esempio campo
+		        ]
+		    }); */ 
+		    
+		    var table = $('#tabZone_mod').DataTable();
+		    table.clear();
+		    lista_zone.forEach(function(zona) {
+		        table.row.add([
+		            zona.zonaRiferimento,
+		            zona.materiale,
+		            zona.spessore,
+		           '<a class="btn btn-danger btn-xs remove-btn" id="'+zona.id+'"><i class="fa fa-minus"></a>'
+		        ]);
+		    });
+
+		    table.draw();
+		    
+		
+		    
+		    
+	/* 	   // var table = $('#tabellaZone').DataTable();
+		    table.clear();
+
+		    lista_zone.forEach(function(zona) {
+		        table.row.add([
+		            zona.nomeZona,
+		            zona.valore,
+		            zona.descrizione
+		        ]);
+		    });
+
+		    table.draw(); */
+		
+		 $('#modalModificaStrumento').modal()
+	}
 
 
 
@@ -710,8 +732,26 @@ $('#myModalModificaStrumento').on('hidden.bs.modal',function(){
 
 
 
+function addRow(mod){
+	var table = $('#tabZone'+mod).DataTable();
+    table.row.add([
+        '<td contenteditable="true"></td>',
+        '<td contenteditable="true"></td>',
+        '<td contenteditable="true"></td>',
+        '<a class="btn btn-danger btn-xs remove-btn"><i class="fa fa-minus"></a>'
+    ]).draw(false);
+}
 
 
+
+$('#tabZone  tbody').on('click', '.remove-btn', function() {
+    t.row($(this).parents('tr')).remove().draw();
+});
+
+
+$('#tabZone_mod  tbody').on('click', '.remove-btn', function() {
+    t_mod.row($(this).parents('tr')).remove().draw();
+});
 
 var columsDatatables = [];
 
@@ -858,7 +898,7 @@ $(document).ready(function() {
 		    	},     
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 0, targets: 19 },
+		    	  { responsivePriority: 0, targets: 14 },
 		    	  
 		    	  
 		               ], 	        
@@ -902,20 +942,212 @@ $(document).ready(function() {
 	
 	
 	
-
-	
+	 t = $('#tabZone').DataTable({
+		language: {
+	        	emptyTable : 	"Nessun dato presente nella tabella",
+	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	        	infoPostFix:	"",
+	        infoThousands:	".",
+	        lengthMenu:	"Visualizza _MENU_ elementi",
+	        loadingRecords:	"Caricamento...",
+	        	processing:	"Elaborazione...",
+	        	search:	"Cerca:",
+	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	        	paginate:	{
+  	        	first:	"Inizio",
+  	        	previous:	"Precedente",
+  	        	next:	"Successivo",
+  	        last:	"Fine",
+	        	},
+	        aria:	{
+  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	        }
+        },
+        pageLength: 25,
+	      paging: false, 
+	      ordering: false,
+	      info: false, 
+	      searchable: false, 
+	      targets: 0,
+	      responsive: false,
+	      scrollX: false,
+	      stateSave: false,	
+	     	columns: [{createdCell: editableCell},{createdCell: editableCell},{createdCell: editableCell},{}]
+	               
+	    });
+	 
+	 
+	 
+	 
+	 
+	 
+	 t_mod = $('#tabZone_mod').DataTable({
+			language: {
+		        	emptyTable : 	"Nessun dato presente nella tabella",
+		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+		        	infoPostFix:	"",
+		        infoThousands:	".",
+		        lengthMenu:	"Visualizza _MENU_ elementi",
+		        loadingRecords:	"Caricamento...",
+		        	processing:	"Elaborazione...",
+		        	search:	"Cerca:",
+		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+		        	paginate:	{
+			        	first:	"Inizio",
+			        	previous:	"Precedente",
+			        	next:	"Successivo",
+			        last:	"Fine",
+		        	},
+		        aria:	{
+			        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+			        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+		        }
+		    },
+		    pageLength: 25,
+		      paging: false, 
+		      ordering: false,
+		      info: false, 
+		      searchable: false, 
+		      targets: 0,
+		      responsive: false,
+		      scrollX: false,
+		      stateSave: false,	
+		     	columns: [{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell_mod},{}]
+		               
+		    });
+		 
 	
 });
 
 
+const editableCell_mod = function(cell) {
+	
+	
+	  let original
 
+	  cell.setAttribute('contenteditable', true)
+	  cell.setAttribute('spellcheck', false)
+	  var index = cell._DT_CellIndex;
+	  cell.setAttribute('id',""+index.row+""+index.column)	
+	   $(cell).css('text-align', 'center');
+	  
+	  
+	  cell.addEventListener('focus', function(e) {
+	    original = e.target.textContent
+
+	     $(cell).css('border', '2px solid red');
+	    
+	  })
+	
+	   cell.addEventListener('focusout', function(e) {
+	    original = stripHtml(e.target.textContent)
+	
+	    $(cell).css('border', '1px solid #d1d1d1');
+	   $(cell).css('border-bottom-width', '0px');
+	    $(cell).css('border-left-width', '0px');
+	     
+	     
+	    //$(e.currentTarget).html('<input type="text" value="'+original+'" onChange="salvaModificaQuestionario()">');
+	  })
+	  
+	   cell.addEventListener('blur', function(e) {
+	    if (original !== e.target.textContent) {
+	      const row = t_mod.row(e.target.parentElement)
+	      t_mod.cell(row.index(),e.target.cellIndex).data(e.target.textContent).draw();
+	      var x = t_mod.rows().data();
+	      //	salvaModificaQuestionario();
+	      console.log('Row changed: ', row.data())
+	    }
+	  }) 
+	  
+	
+	};
+
+
+
+
+
+	const editableCell = function(cell) {
+		
+		
+		  let original
+
+		  cell.setAttribute('contenteditable', true)
+		  cell.setAttribute('spellcheck', false)
+		  var index = cell._DT_CellIndex;
+		  cell.setAttribute('id',""+index.row+""+index.column)	
+		   $(cell).css('text-align', 'center');
+		  
+		  
+		  cell.addEventListener('focus', function(e) {
+		    original = e.target.textContent
+
+		     $(cell).css('border', '2px solid red');
+		    
+		  })
+		
+		   cell.addEventListener('focusout', function(e) {
+		    original = stripHtml(e.target.textContent)
+		
+		    $(cell).css('border', '1px solid #d1d1d1');
+		   $(cell).css('border-bottom-width', '0px');
+		    $(cell).css('border-left-width', '0px');
+		     
+		     
+		    //$(e.currentTarget).html('<input type="text" value="'+original+'" onChange="salvaModificaQuestionario()">');
+		  })
+		  
+		   cell.addEventListener('blur', function(e) {
+		    if (original !== e.target.textContent) {
+		      const row = t.row(e.target.parentElement)
+		      t.cell(row.index(),e.target.cellIndex).data(e.target.textContent).draw();
+		      var x = t.rows().data();
+		      //	salvaModificaQuestionario();
+		      console.log('Row changed: ', row.data())
+		    }
+		  }) 
+		  
+		
+		};
  
  
  $('#modificaStrumentoForm').on("submit", function(e){
 
 	 e.preventDefault();
 	 
-	 callAjaxForm('#modificaStrumentoForm','amGestioneStrumenti.do?action=modifica');
+	 var esito = true;
+	 var data = t_mod.rows().data().toArray();
+
+	 data.forEach(function(rowHtml) {
+		    // Crea un elemento temporaneo per lavorare sul contenuto HTML
+		    var temp = document.createElement('div');
+		    temp.innerHTML = rowHtml;
+
+		    var values = temp.innerHTML.split(",");
+
+		    for (var i = 0; i < values.length; i++) {
+		      if(values[i].trim() == ""){
+		            esito = false;
+		            $('#myModalErrorContent').html("Attenzione! Inserisci tutti i dati della zona di riferimento!");
+		            $('#myModalError').removeClass().addClass("modal modal-danger");
+		            $('#myModalError').modal();
+		            return; 
+		        }
+		    }
+		});
+	 
+	if(esito){
+		$('#table_zone_mod').val(JSON.stringify(data))
+		 
+		 
+		 callAjaxForm('#modificaStrumentoForm','amGestioneStrumenti.do?action=modifica');
+	}
+	
 	 
  });
  
@@ -923,7 +1155,34 @@ $(document).ready(function() {
 
 	 e.preventDefault();
 	 
-	 callAjaxForm('#nuovoStrumentoForm','amGestioneStrumenti.do?action=nuovo');
+	 var data = t.rows().data().toArray();
+	 
+		
+	  data.forEach(function(rowHtml) {
+		    // Crea un elemento temporaneo per lavorare sul contenuto HTML
+		    var temp = document.createElement('div');
+		    temp.innerHTML = rowHtml;
+
+		    var values = temp.innerHTML.split(",");
+
+		    for (var i = 0; i < values.length; i++) {
+		      if(values[i].trim() == ""){
+		            esito = false;
+		            $('#myModalErrorContent').html("Attenzione! Inserisci tutti i dati della zona di riferimento!");
+		            $('#myModalError').removeClass().addClass("modal modal-danger");
+		            $('#myModalError').modal();
+		            return; 
+		        }
+		    }
+		});
+	 
+	if(esito){
+		
+		$('#table_zone').val(JSON.stringify(data))
+		
+		 callAjaxForm('#nuovoStrumentoForm','amGestioneStrumenti.do?action=nuovo');
+	}
+	
 	 
  });
  

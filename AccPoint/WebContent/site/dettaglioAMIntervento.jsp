@@ -110,6 +110,10 @@
                   <b>Operatore</b><a class="customTooltip pull-right  btn btn-warning btn-xs" title="Carica patentino" onclick="modalPatentino('${intervento.operatore.id}','${intervento.operatore.dicituraPatentino}','${intervento.operatore.pathPatentino }','${intervento.operatore.firma }')"><i class="fa fa-file-text-o"></i></a> <a class="pull-right">${intervento.operatore.nomeOperatore}</a>
                 </li>
               
+              
+                 <li class="list-group-item">
+                  <b>Template Prova</b><a class="customTooltip pull-right  btn btn-success btn-xs" title="Scarica Template Excel" onclick="callAction('amGestioneInterventi.do?action=scarica_template')"><i class="fa fa-file-excel-o"></i></a>
+                </li>
         </ul>
         
    
@@ -194,8 +198,10 @@ NON CONFORME A SPECIFICA
 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della prova" onClick="callAction('amGestioneInterventi.do?action=dettaglio_prova&id_prova=${utl:encryptData(rapporto.prova.id)}')"><i class="fa fa-search"></i></a>
 <c:if test="${rapporto.stato.id == 1}">
 <a class="btn btn-warning customTooltip" title="Click per modificare della prova" onClick="modalModificaProva('${rapporto.prova.id}','${rapporto.prova.tipoProva.id}','${rapporto.prova.data}','${rapporto.prova.strumento.id}','${rapporto.prova.campione.id}','${rapporto.prova.operatore.id}','${rapporto.prova.esito}', '${rapporto.prova.filename_excel }','${rapporto.prova.filename_img }','${utl:escapeJS(rapporto.prova.note) }')"><i class="fa fa-edit"></i></a>
+
 <c:if test="${rapporto.prova.matrixSpess!=null && rapporto.prova.matrixSpess!=''}">
-<a class="btn btn-success customTooltip" title="Click per generare il certificato" onClick="generaCertificatoAM('${rapporto.prova.id}')"><i class="fa fa-check"></i></a>
+<a class="btn btn-info customTooltip" title="Click per generare l'anteprima di stampa" onClick="generaCertificatoAM('${rapporto.prova.id}', 1)"><i class="fa fa-print"></i></a>
+<a class="btn btn-success customTooltip" title="Click per generare il certificato" onClick="modalYesOrNo('${rapporto.prova.id}')"><i class="fa fa-check"></i></a>
 </c:if>
 </c:if>
 
@@ -204,15 +210,7 @@ NON CONFORME A SPECIFICA
 <a target="_blank"   class="btn btn-danger customTooltip" title="Click per scaricare il Cerificato"  href="amGestioneInterventi.do?action=download_certificato&id_prova=${rapporto.prova.id}" > <i class="fa fa-file-pdf-o"></i></a>
  
  </c:if>
-<%--
-<a class="btn btn-danger customTooltip" title="Click per generare il certificato" onClick="callAction('gestioneVerprova.do?action=crea_certificato&id_prova=${utl:encryptData(prova.id)}')"><i class="fa fa-file-pdf-o"></i></a>
-<c:if test="${prova.nomeFile_inizio_prova!=null && prova.nomeFile_inizio_prova!=''}">
-<a class="btn btn-primary customTooltip" title="Click per scaricare l'immagine di inizio prova" onClick="callAction('gestioneVerprova.do?action=download_immagine&id_prova=${utl:encryptData(prova.id)}&filename=${prova.nomeFile_inizio_prova}&nome_pack=${prova.verIntervento.nome_pack }')"><i class="fa fa-image"></i></a>
-</c:if>
-<c:if test="${prova.nomeFile_fine_prova!=null && prova.nomeFile_fine_prova!='' }">
 
-<a class="btn btn-primary customTooltip" title="Click per scaricare l'immagine di fine prova" onClick="callAction('gestioneVerprova.do?action=download_immagine&id_prova=${utl:encryptData(prova.id)}&filename=${prova.nomeFile_fine_prova}&nome_pack=${prova.verIntervento.nome_pack }')"><i class="fa fa-image"></i></a>
-</c:if> --%>
 </td>
 		
 		
@@ -668,6 +666,31 @@ NON CONFORME A SPECIFICA
 </div>
 </form>
 	
+	
+	
+	
+	
+	<div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler generare il rapporto?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_prova_rapporto">
+      <a class="btn btn-primary" onclick="generaCertificatoAM($('#id_prova_rapporto').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+	
   <t:dash-footer />
   
 
@@ -734,11 +757,11 @@ NON CONFORME A SPECIFICA
 
  
  
- function modalYesOrNo(){
+ function modalYesOrNo(id_prova){
 
 	 
-
-		 $('#id_certificato_riemissione').val(str);
+		$('#id_prova_rapporto').val(id_prova)
+		 
 		 
 		 $('#myModalYesOrNo').modal();
 	
@@ -871,12 +894,25 @@ $('#esito_mod').change(function(){
 	
 });
 
-function generaCertificatoAM(id_prova){
+function generaCertificatoAM(id_prova, isAnteprima){
 	
 	dataObj={};
 	dataObj.id_prova = id_prova;
+	dataObj.isAnteprima = isAnteprima;
 	pleaseWaitDiv.modal()
-	callAjax(dataObj, "amGestioneInterventi.do?action=genera_certificato")
+	
+	if(isAnteprima!=null && isAnteprima ==1){
+		callAjax(dataObj, "amGestioneInterventi.do?action=genera_certificato",function(data){
+			
+			if(data.success){
+				callAction("amGestioneInterventi.do?action=download_certificato&isAnteprima=1&id_prova="+id_prova)
+			}
+			
+		});
+	}else{
+		callAjax(dataObj, "amGestioneInterventi.do?action=genera_certificato")
+	}
+	
 	
 }
 	

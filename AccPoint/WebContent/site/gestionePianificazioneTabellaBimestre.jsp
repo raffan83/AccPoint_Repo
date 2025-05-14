@@ -103,7 +103,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
             </th>
             
             <%}else if(festivitaItaliane.contains(localDate)){ %>
-              <th >
+              <th class="weekend">
                 <fmt:formatDate value="<%= date %>" pattern="dd/MM/yyyy" />
                 
                 <div><input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></div>
@@ -674,7 +674,7 @@ function pastePianificazione(day, commessa){
 
 
 
-function fillTable(anno, filtro){
+function fillTable(anno, filtro, nuova_pianificazione){
 
 
 console.log("dddd")
@@ -956,7 +956,7 @@ if(filtro!=3){
 		    	  }
 		    } */
 	
-		    if(today!=null){
+		    if(today!=null && nuova_pianificazione ==null){
 				  scrollToColumn(parseInt(today)-3);
 				 
 		          table.order([order, 'desc']).draw()

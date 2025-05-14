@@ -8,6 +8,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
 import java.awt.Image;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,10 +30,22 @@ import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+
 import TemplateReport.PivotTemplate;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AMCampioneDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
+import it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO;
 import it.portaleSTI.DTO.AMProgressivoDTO;
 import it.portaleSTI.DTO.AMProvaDTO;
 import it.portaleSTI.DTO.AMRapportoDTO;
@@ -50,11 +64,16 @@ import net.sf.dynamicreports.report.builder.column.Columns;
 import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
+import net.sf.dynamicreports.report.builder.expression.Expressions;
+import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.Markup;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
 import net.sf.dynamicreports.report.constant.SplitType;
+import net.sf.dynamicreports.report.constant.StretchType;
+import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -71,14 +90,16 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreateCertificatoAM {
 	
-	public CreateCertificatoAM(AMProvaDTO prova, Session session, AMRapportoDTO rapporto) throws Exception {
-		build(prova, session, rapporto);
+	static Integer max_colonne;
+	
+	public CreateCertificatoAM(AMProvaDTO prova, Session session, AMRapportoDTO rapporto, boolean isAnteprima) throws Exception {
+		build(prova, session, rapporto,isAnteprima);
 	}
 	
-	public static void build(AMProvaDTO prova, Session session, AMRapportoDTO rapporto) throws Exception 
+	public static void build(AMProvaDTO prova, Session session, AMRapportoDTO rapporto, boolean isAnteprima) throws Exception 
 	{
 	
-		
+	
 		List<AM_CertificatoWrapper> listaWrapper = new ArrayList<>();
 		
 //		AMCampioneDTO campione =GestioneAM_BO.getCampioneFromID(1, session);
@@ -143,8 +164,9 @@ public class CreateCertificatoAM {
 		
 		
 		
-		
-		session.update(prova);
+		if(!isAnteprima) {
+			session.update(prova);
+		}
 		
 		if(prova.getStrumento().getMatricola()!=null) {
 			report.addParameter("matricola_strumento", prova.getStrumento().getMatricola());
@@ -196,31 +218,7 @@ public class CreateCertificatoAM {
 		}else {
 			report.addParameter("costruttore", "");
 		}
-		
-		if(prova.getStrumento().getMaterialeFondo()!=null) {
-			report.addParameter("materiale_fondo", prova.getStrumento().getMaterialeFondo());
-		}else {
-			report.addParameter("materiale_fondo", "");
-		}
-		
-		if(prova.getStrumento().getSpessoreFondo()!=null) {
-			report.addParameter("spessore_fondo", prova.getStrumento().getSpessoreFondo());
-		}else {
-			report.addParameter("spessore_fondo", "");
-		}
-		
-		if(prova.getStrumento().getSpessoreFasciame()!=null) {
-			report.addParameter("spessore_fasciame", prova.getStrumento().getSpessoreFasciame());
-		}else {
-			report.addParameter("spessore_fasciame", "");
-		}
-		
-		if(prova.getStrumento().getMaterialeFasciame()!=null) {
-			report.addParameter("materiale_fasciame", prova.getStrumento().getMaterialeFasciame());
-		}else {
-			report.addParameter("materiale_fasciame", "");
-		}
-		
+
 		if(prova.getCampione().getRilevatoreOut()!=null) {
 			report.addParameter("rilevatore_out", prova.getCampione().getRilevatoreOut());
 		}else {
@@ -298,7 +296,7 @@ public class CreateCertificatoAM {
 		
 		
 		if(prova.getNote()!=null) {
-			report.addParameter("note", prova.getNote());
+			report.addParameter("note", " " +prova.getNote());
 		}else {
 			report.addParameter("note", "");
 		}
@@ -331,44 +329,70 @@ public class CreateCertificatoAM {
 		}
 		
 		
+		SubreportBuilder subreportZone; 
+		subreportZone = cmp.subreport(getTableReportZone(prova.getStrumento().getListaZoneRiferimento()));
+		
 		SubreportBuilder subreport; 
 		subreport = cmp.subreport(getTableReport(prova));
 		
 		File file = new File(Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\img\\"+prova.getFilename_img());
 		Image image = ImageIO.read(file);
 		
-		String min_fasciame="";
-		String min_fondo_sup="";
-		String min_fondo_inf="";
+
 		
-		if(prova.getSpess_min_fasciame()!=null) {
-			min_fasciame = "Spessore minimo FASCIAME "+prova.getSpess_min_fasciame()+" mm";
-		}
-		if(prova.getSpess_min_fondo_inf()!=null) {
-			min_fondo_inf = "Spessore minimo FONDO INFERIORE "+prova.getSpess_min_fondo_inf()+" mm";
-		}
-		if(prova.getSpess_min_fondo_sup()!=null) {
-			min_fondo_sup = "Spessore minimo FONDO SUPERIORE "+prova.getSpess_min_fondo_sup()+" mm";
+		String[] label_minimi = prova.getLabel_minimi().split(",");
+		
+		String str = "";
+		for (String string : label_minimi) {
+			str+=string.replace("}", "").replace("{", "")+"\n";
 		}
 		
-		HorizontalListBuilder hl = cmp.horizontalList(
-				cmp.image(image).setFixedWidth(270).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER),
-				cmp.horizontalGap(25),
-				cmp.verticalList(
-						subreport, 
-						cmp.verticalGap(10),
-						cmp.text(min_fasciame).setStyle(Templates.rootStyle),
-						cmp.text(min_fondo_sup).setStyle(Templates.rootStyle),
-						cmp.text(min_fondo_inf).setStyle(Templates.rootStyle)
+		VerticalListBuilder vl = null;
+		
+		if(max_colonne <10) {
+			HorizontalListBuilder hl = cmp.horizontalList(
+					cmp.image(image).setFixedWidth(270).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER),
+					cmp.horizontalGap(25),
+					cmp.verticalList(
+							subreport.setWidth(553), 
+							cmp.verticalGap(5),
+							cmp.text(str)
+
+							)
+					);
+			
+			 vl = cmp.verticalList(hl, cmp.verticalGap(25));
+		}else {
+			 vl = cmp.verticalList(
+					 cmp.image(image).setFixedHeight(250).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER),
+					 
+					 cmp.verticalGap(5),
+					 subreport.setWidth(553), 
+					 cmp.text(str));
+
+					 
+		}
+		
+
+		
+		File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"\\immagine_am.png");
+		report.addParameter("immagine_am", imageHeader);
+		
+		report.columnHeader(subreportZone.setWidth(553), cmp.verticalGap(5)).setColumnHeaderPrintWhenExpression(Expressions.printInFirstPage());
+		report.addDetail(vl).setDetailSplitType(SplitType.IMMEDIATE);
+		
+		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
+		report.pageFooter(
+				cmp.horizontalList(
+						cmp.text("MOD-P0010-01").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+						cmp.pageXslashY(),
+						//cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+						cmp.text("Rev A. del 13/10/2022").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
 						)
 				);
+
 		
-		VerticalListBuilder vl2 = cmp.verticalList(hl, cmp.verticalGap(25));
-		
-		report.detail(vl2);
-		report.setDetailSplitType(SplitType.PREVENT);
-		
-		report.ignorePagination();
+		//report.ignorePagination();
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
 		JasperPrint jasperPrint1 = report.toJasperPrint();
 		jasperPrintList.add(jasperPrint1);
@@ -385,7 +409,14 @@ public class CreateCertificatoAM {
 			folder.mkdirs();
 		}
 		
-		String path = path_folder+prova.getnRapporto()+".pdf";
+		String path = "";
+		
+		if(isAnteprima) {
+			path = path_folder+"ANTEPRIMA.pdf";
+		}else {
+			path = path_folder+prova.getnRapporto()+".pdf";
+		}
+				
 		
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList)); 
@@ -394,6 +425,10 @@ public class CreateCertificatoAM {
 		configuration.setCreatingBatchModeBookmarks(true); 
 		exporter.setConfiguration(configuration);
 		exporter.exportReport();
+		
+		if(isAnteprima) {
+			addBozza(path,"");
+		}
 		
 		File file_report = new File(path);
 		
@@ -417,21 +452,69 @@ public class CreateCertificatoAM {
 		
 		//JasperExportManager.exportReportToPdfFile(print, System.getProperty("user.home")+"\\Desktop\\RapportoMisuraSpessimetrica.pdf");
 		
-	
-		rapporto.setData(new Date());
-		rapporto.setNomeFile(prova.getnRapporto()+".pdf");
+		if(!isAnteprima) {
+			rapporto.setData(new Date());
+			rapporto.setNomeFile(prova.getnRapporto()+".pdf");
 
-		rapporto.setStato(new StatoCertificatoDTO(2));
+			rapporto.setStato(new StatoCertificatoDTO(2));
 		
-		session.update(rapporto);
-		
+			session.update(rapporto);
+		}
 		System.out.println("PDF generato con successo!");
 		
 		
 		
 	}
 	
-	
+	public static void addBozza(String filepath, String newfile) {
+
+		try {
+			
+			File tmpFile = new File(filepath+"tmp");
+	        PdfReader reader = new PdfReader(filepath);
+	        FileOutputStream tmpfos = new FileOutputStream(tmpFile);
+	        PdfStamper stamper = new PdfStamper(reader, tmpfos);
+	        Font f = new Font(FontFamily.HELVETICA, 50);
+	        
+	        String bozza = "BOZZA";
+	        for(int i = 0; i<5;i++) {
+	        	bozza=bozza+" - BOZZA";
+	        }
+	        
+	        //f.setColor(BaseColor.RED);
+	        int pages = reader.getNumberOfPages();
+	        
+		        for (int i=0; i<pages; i++) {	        
+			        PdfContentByte over = stamper.getOverContent(i+1);
+			        Phrase p = new Phrase(String.format(bozza, newfile), f);
+			        over.saveState();
+			        PdfGState gs1 = new PdfGState();
+			        gs1.setFillOpacity(0.08f);			        
+			        over.setGState(gs1);
+			        for(int j = 0; j<13; j++) {
+			        	ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 300, (1000-(100*j)), 315);	
+			        }
+			        over.restoreState();
+		        }
+	        
+	        stamper.close();
+	        tmpfos.close();
+	        reader.close();
+	        File fil = new File (filepath);
+	        if(fil.exists()) {
+	        	fil.delete();
+	        }
+			tmpFile.renameTo(new File(filepath));
+		} catch (IOException e) {
+			System.out.println("IOException: " + e);
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			System.out.println("DocumentException: " + e);
+			e.printStackTrace();
+		}
+		
+		
+	}
 	
 	@SuppressWarnings("deprecation")
 	public static JasperReportBuilder getTableReport(AMProvaDTO prova) throws Exception{
@@ -439,7 +522,6 @@ public class CreateCertificatoAM {
 		JasperReportBuilder report = DynamicReports.report();
 
 		try {			
-
 			 report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			//report.addColumn(col.column("RISULTATI MISURE SPESSIMETRICHE [mm]","matrix", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 			 report.title(
@@ -482,6 +564,8 @@ public class CreateCertificatoAM {
 			
 	 		report.setDataSource(ds);
 	 		
+	 		max_colonne = maxColonne;
+	 		
 	 		for (String colName : nomiColonne) {
 	 			String text = colName;
 	 			if(colName.equals("Riga")) {
@@ -510,6 +594,61 @@ public class CreateCertificatoAM {
 		return report;
 	}
 	
+	
+	@SuppressWarnings("deprecation")
+	public static JasperReportBuilder getTableReportZone( Set<AMOggettoProvaZonaRifDTO> listaZoneRiferimento) throws Exception{
+
+		JasperReportBuilder report = DynamicReports.report();
+
+		try {			
+
+			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
+			
+			report.addColumn(
+		 		        Columns.column("ZONA DI RIFERIMENTO", "zona", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setBorder(stl.penThin()))
+		 		    );
+			report.addColumn(
+		 		        Columns.column("MATERIALE", "materiale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setBorder(stl.penThin()))
+		 		    );
+			report.addColumn(
+		 		        Columns.column("SPESSORE", "spessore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setBorder(stl.penThin()))
+		 		    );
+			
+			
+			
+			  
+			  String[] listaCodici = null;
+				
+				listaCodici = new String[3];
+				
+				listaCodici[0]="zona";
+				listaCodici[1]="materiale";
+				listaCodici[2]="spessore";	
+				
+				  DRDataSource ds = new DRDataSource(listaCodici);
+			for (AMOggettoProvaZonaRifDTO zona : listaZoneRiferimento) {
+				ArrayList<String> arrayPs = new ArrayList<String>();
+				arrayPs.add(zona.getZonaRiferimento());
+				arrayPs.add(zona.getMateriale());
+				arrayPs.add(zona.getSpessore());
+				
+				ds.add(arrayPs.toArray());
+			}
+			
+
+			
+	 		report.setDataSource(ds);
+		
+	 		report.setColumnTitleStyle(Templates.columnTitleStyle);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+
+		return report;
+	}
+	
 private static void addAllegato(File source, File allegato) throws IOException {
 		
 		PDFMergerUtility ut = new PDFMergerUtility();
@@ -527,9 +666,10 @@ private static void addAllegato(File source, File allegato) throws IOException {
 			new ContextListener().configCostantApplication();
 			Session session =SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
-			AMProvaDTO prova = GestioneAM_BO.getProvaFromID(6, session);
+			AMProvaDTO prova = GestioneAM_BO.getProvaFromID(11, session);
 		
-			new CreateCertificatoAM(prova, session, null);
+			AMRapportoDTO r = GestioneAM_BO.getRapportoFromProva(prova.getId(), session);
+			new CreateCertificatoAM(prova, session, r, false);
 			session.getTransaction().commit();
 			session.close();
 		}

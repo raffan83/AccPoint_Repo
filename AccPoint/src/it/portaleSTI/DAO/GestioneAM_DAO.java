@@ -12,6 +12,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
+import it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
 import it.portaleSTI.DTO.AMProgressivoDTO;
 import it.portaleSTI.DTO.AMProvaDTO;
@@ -380,6 +381,25 @@ Session session = SessionFacotryDAO.get().openSession();
 	session.getTransaction().commit();
 	session.close();
 	
+}
+
+public static AMOggettoProvaZonaRifDTO getZonaRiferimentoFromID(int idValue, Session session) {
+	ArrayList<AMOggettoProvaZonaRifDTO> lista = null;
+	AMOggettoProvaZonaRifDTO res = null;
+	Query query = null;
+	
+	
+	query = session.createQuery("from AMOggettoProvaZonaRifDTO where id = :_id");			
+	
+	query.setParameter("_id",idValue);
+	
+	lista = (ArrayList<AMOggettoProvaZonaRifDTO>) query.list();
+	
+	if(lista.size()>0) {
+		res = lista.get(0);
+	}
+	
+	return res;
 }
 
 }

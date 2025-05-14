@@ -94,6 +94,7 @@
     <th>Sede</th>
     <th>ID Firma</th>
     <th>Area d'interesse</th>
+    <th>Ultimo accesso</th>
   <th style="width:120px">Azioni</th>
  </tr></thead>
  
@@ -133,6 +134,7 @@
 	<c:if test="${utente.area_interesse == 3 }">Corsi di Formazione</c:if>
 	<c:if test="${utente.area_interesse == 4 }">Verificazione periodica</c:if>
 	</td>
+	<td> <fmt:formatDate value="${utente.ultimoAccesso}" pattern="dd/MM/yyyy HH:mm:ss" /> </td>
 	<td>
 	<c:if test="${utente.abilitato == 0}">
 			<a href="#" onClick="toggleAbilitaUtente(${utente.id},1)" class="btn btn-success"><i class="fa fa-check-circle"></i></a> 
@@ -973,7 +975,7 @@
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 },
   	                   { responsivePriority: 4, targets: 6 },
-  	                   { responsivePriority: 5, targets: 18 },
+  	                   { responsivePriority: 5, targets: 19 },
   	                  { responsivePriority: 6, targets: 10 },
   	                { responsivePriority: 7, targets: 11 },
   	               ],

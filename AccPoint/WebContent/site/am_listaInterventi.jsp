@@ -80,11 +80,11 @@
  <table id="tabVerInterventi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 <th>ID</th>
+<th>Commessa</th>
 <th>Cliente</th>
 <th>Cliente Utilizzatore</th>
 <th>Sede</th>
 <th>Sede Utilizzatore</th>
-<th>Commessa</th>
 <th>Data Intervento</th>
 <th>Responsabile</th>
 <th>Stato</th>
@@ -96,12 +96,12 @@
  <c:forEach items="${lista_interventi }" var="intervento" varStatus="loop">
 	<tr id="row_${loop.index}" >
 	
-	<td>${intervento.id }</td>	
+	<td>${intervento.id }</td>
+	<td>${intervento.idCommessa }</td>
 	<td>${intervento.nomeCliente }</td>
 	<td>${intervento.nomeClienteUtilizzatore }</td>
 	<td>${intervento.nomeSede }</td>
 	<td>${intervento.nomeSedeUtilizzatore }</td>
-	<td>${intervento.idCommessa }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.dataIntervento }" /></td>
 	<td>${intervento.operatore.nomeOperatore }</td>
 	<td>
@@ -270,8 +270,11 @@
 
 				<c:forEach items="${lista_operatori }" var="opr">
 				
+				<c:if test="${opr.responsabile==1}">
 				<option value="${opr.id }" >${opr.nomeOperatore }</option>
-					
+				</c:if>
+				
+				
 				</c:forEach>
 				</select>
        	</div>

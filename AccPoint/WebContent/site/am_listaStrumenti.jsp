@@ -70,7 +70,7 @@
 
 <th>Tipo</th>
 <th>Volume</th>
-
+<th>Velocità sonda</th>
 <th>Pressione</th>
 <th>Costruttore</th>
 <th>Numero di fabbrica</th>
@@ -95,6 +95,7 @@
 	<td>${strumento.matricola }</td>
 	<td>${strumento.tipo }</td>
 	<td>${strumento.volume }</td>
+	<td>${strumento.sondaVelocita }</td>
 	<td>${strumento.pressione }</td>
 	<td>${strumento.costruttore }</td>
 	<td>${strumento.nFabbrica }</td>
@@ -1154,7 +1155,7 @@ const editableCell_mod = function(cell) {
  $('#nuovoStrumentoForm').on("submit", function(e){
 
 	 e.preventDefault();
-	 
+	 var esito = true;
 	 var data = t.rows().data().toArray();
 	 
 		

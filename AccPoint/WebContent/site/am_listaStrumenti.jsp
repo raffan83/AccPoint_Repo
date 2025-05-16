@@ -141,7 +141,7 @@
 <form id="nuovoStrumentoForm">
 
   <div id="modalNuovoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -319,6 +319,27 @@
         </div> 
        	</div>
        </div><br>
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Numero porzioni</label>
+       	</div>
+       	<div class="col-sm-9">
+       			<input class="form-control" id="numero_porzioni" name="numero_porzioni" type="number" style="width:10%" required min="0" step="1" >
+       	</div>
+       </div><br>
+              <div class="row">
+       <div class="col-xs-3">
+			<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica Immagine...</span>
+				<input accept=".jpg,.png"  id="fileupload_img" name="fileupload_img" type="file" required="required">
+		       
+		   	 </span>
+		   	</div>
+		 <div class="col-xs-7">
+		 <label id="label_img"></label>
+		 </div> 
+       </div><br>
                <div class="row">
        	<div class="col-sm-11">
        		<label>Zone di riferimento</label>
@@ -329,6 +350,9 @@
             <th>Zona</th>
             <th>Materiale</th>
             <th>Spessore</th>
+            <th>Indicazione</th>
+            <th>Punto inizio</th>
+            <th>Punto fine</th>
             <th style="max-width:10px text-align:center"></th>
         </tr>
     </thead>
@@ -739,6 +763,9 @@ function addRow(mod){
         '<td contenteditable="true"></td>',
         '<td contenteditable="true"></td>',
         '<td contenteditable="true"></td>',
+        '<td contenteditable="true"></td>',
+        '<td contenteditable="true"></td>',
+        '<td contenteditable="true"></td>',
         '<a class="btn btn-danger btn-xs remove-btn"><i class="fa fa-minus"></a>'
     ]).draw(false);
 }
@@ -971,12 +998,13 @@ $(document).ready(function() {
 	      paging: false, 
 	      ordering: false,
 	      info: false, 
-	      searchable: false, 
+	      searchable: false,
+	      searching: false,
 	      targets: 0,
 	      responsive: false,
 	      scrollX: false,
 	      stateSave: false,	
-	     	columns: [{createdCell: editableCell},{createdCell: editableCell},{createdCell: editableCell},{}]
+	     	columns: [{createdCell: editableCell},{createdCell: editableCell},{createdCell: editableCell},{createdCell: editableCell},{createdCell: editableCell},{createdCell: editableCell},{}]
 	               
 	    });
 	 
@@ -1018,13 +1046,19 @@ $(document).ready(function() {
 		      responsive: false,
 		      scrollX: false,
 		      stateSave: false,	
-		     	columns: [{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell_mod},{}]
+		     	columns: [{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell},{createdCell: editableCell},{createdCell: editableCell},{}]
 		               
 		    });
 		 
 	
 });
 
+
+$('#fileupload_img').change(function(){
+	
+	
+	$('#label_img').html($(this).val().split("\\")[2]);
+});
 
 const editableCell_mod = function(cell) {
 	

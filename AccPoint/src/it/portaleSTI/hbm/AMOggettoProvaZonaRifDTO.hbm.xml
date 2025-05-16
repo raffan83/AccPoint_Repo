@@ -12,5 +12,8 @@
         <property name="materiale" column="materiale"/>
         <property name="spessore" column="spessore"/>
         <property name="zonaRiferimento" column="zona_riferimento"/>
+        <property name="indicazione" column="indicazione"/>
+        <property name="punto_intervallo_inizio" column="punto_intervallo_inizio"/>
+        <property name="punto_intervallo_fine" column="punto_intervallo_fine"/>
     </class>
 </hibernate-mapping>

@@ -545,12 +545,12 @@ public class Am_gestioneInterventi extends HttpServlet {
 					}
 					
 					
-					prova.setSpess_min_fasciame(values[0]);					
-					prova.setSpess_min_fondo_sup(values[1]);
-					prova.setSpess_min_fondo_inf(values[2]);
+				//	prova.setSpess_min_fasciame(values[0]);					
+				//	prova.setSpess_min_fondo_sup(values[1]);
+				//	prova.setSpess_min_fondo_inf(values[2]);
 					
 					prova.setMatrixSpess(values[3]);
-					prova.setLabel_minimi(values[4]);
+			//		prova.setLabel_minimi(values[4]);
 					
 				}
 				
@@ -666,11 +666,11 @@ public class Am_gestioneInterventi extends HttpServlet {
 					if(values[3].equals("[]")) {
 						esito_import = false;
 					}
-					prova.setLabel_minimi(values[4]);
+				//	prova.setLabel_minimi(values[4]);
 					
-					prova.setSpess_min_fasciame(values[0]);					
-					prova.setSpess_min_fondo_sup(values[1]);
-					prova.setSpess_min_fondo_inf(values[2]);
+			//		prova.setSpess_min_fasciame(values[0]);					
+			//		prova.setSpess_min_fondo_sup(values[1]);
+			//		prova.setSpess_min_fondo_inf(values[2]);
 					
 					prova.setMatrixSpess(values[3]);
 					
@@ -826,9 +826,10 @@ public class Am_gestioneInterventi extends HttpServlet {
 				}
 				if(isAnteprima) {
 					path = Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\Certificati\\ANTEPRIMA.pdf";
-					response.setContentType("application/octet-stream");
+				//	response.setContentType("application/octet-stream");
 					  
-					 response.setHeader("Content-Disposition","attachment;filename=ANTEPRIMA.pdf");
+				//	 response.setHeader("Content-Disposition","attachment;filename=ANTEPRIMA.pdf");
+					response.setContentType("application/pdf");	
 				}else {
 					path = Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\Certificati\\"+prova.getnRapporto()+".pdf";
 					response.setContentType("application/pdf");	
@@ -940,7 +941,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				}else {
 					prova.setEsito("POSITIVO");
 				}
-				prova.setLabel_minimi(label_minimi);
+		//		prova.setLabel_minimi(label_minimi);
 				session.update(prova);
 				
 				myObj = new JsonObject();

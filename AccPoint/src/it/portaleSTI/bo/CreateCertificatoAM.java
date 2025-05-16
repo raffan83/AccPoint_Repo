@@ -340,7 +340,7 @@ public class CreateCertificatoAM {
 		
 
 		
-		String[] label_minimi = prova.getLabel_minimi().split(",");
+		String[] label_minimi = {"Test","Test"};//prova.getLabel_minimi().split(",");
 		
 		String str = "";
 		for (String string : label_minimi) {

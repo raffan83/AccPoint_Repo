@@ -385,7 +385,7 @@
 <form id="modificaStrumentoForm">
 
   <div id="modalModificaStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -553,6 +553,27 @@
         </div> 
        	</div>
        </div><br>
+         <div class="row">
+       	<div class="col-sm-3">
+       		<label>Numero porzioni</label>
+       	</div>
+       	<div class="col-sm-9">
+       			<input class="form-control" id="numero_porzioni_mod" name="numero_porzioni_mod" type="number" style="width:10%" required min="0" step="1" >
+       	</div>
+       </div><br>
+              <div class="row">
+       <div class="col-xs-3">
+			<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica Immagine...</span>
+				<input accept=".jpg,.png"  id="fileupload_img_mod" name="fileupload_img_mod" type="file" >
+		       
+		   	 </span>
+		   	</div>
+		 <div class="col-xs-7">
+		 <label id="label_img_mod"></label>
+		 </div> 
+       </div><br>
         <div class="row">
        	<div class="col-sm-11">
        		<label>Zone di riferimento</label>
@@ -563,6 +584,9 @@
             <th>Zona</th>
             <th>Materiale</th>
             <th>Spessore</th>
+            <th>Indicazione</th>
+            <th>Punto inizio</th>
+            <th>Punto fine</th>
             <th style="max-width:10px text-align:center"></th>
         </tr>
     </thead>
@@ -695,6 +719,9 @@
 		    	$('#sede_general_mod').val(strumento.id_sede);
 		    }
 		    
+		    $('#numero_porzioni_mod').val(strumento.numero_porzioni);
+		    $('#label_img_mod').html(strumento.filename_img)
+		    
 		    $('#sede_general_mod').change()
 		    
 		    
@@ -702,18 +729,7 @@
 		    
 		    
 		    var lista_zone = strumento.listaZoneRiferimento;
-		/*      lista_zone
-		   
-		    var table = $('#tabZone_mod').DataTable({
-		        destroy: true, // se esiste già, la distrugge
-		        data: lista_zone,
-		        columns: [
-		            { data: 'zonaRiferimento' },     // campo della tua DTO
-		            { data: 'materiale' },       // esempio campo
-		            { data: 'spessore' },
-		            { data: '<a class="btn btn-danger btn-xs remove-btn"><i class="fa fa-minus"></a>'}// esempio campo
-		        ]
-		    }); */ 
+	
 		    
 		    var table = $('#tabZone_mod').DataTable();
 		    table.clear();
@@ -722,6 +738,9 @@
 		            zona.zonaRiferimento,
 		            zona.materiale,
 		            zona.spessore,
+		            zona.indicazione,
+		            zona.punto_intervallo_inizio,
+		            zona.punto_intervallo_fine,
 		           '<a class="btn btn-danger btn-xs remove-btn" id="'+zona.id+'"><i class="fa fa-minus"></a>'
 		        ]);
 		    });
@@ -1046,7 +1065,7 @@ $(document).ready(function() {
 		      responsive: false,
 		      scrollX: false,
 		      stateSave: false,	
-		     	columns: [{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell},{createdCell: editableCell},{createdCell: editableCell},{}]
+		      columns: [{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell_mod},{}]
 		               
 		    });
 		 
@@ -1058,6 +1077,12 @@ $('#fileupload_img').change(function(){
 	
 	
 	$('#label_img').html($(this).val().split("\\")[2]);
+});
+
+$('#fileupload_img_mod').change(function(){
+	
+	
+	$('#label_img_mod').html($(this).val().split("\\")[2]);
 });
 
 const editableCell_mod = function(cell) {

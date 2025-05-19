@@ -352,21 +352,7 @@ NON CONFORME A SPECIFICA
 		 </div>
 		<!-- </div>  -->
 		</div><br>
-	       <div class="row">
-       <!-- <div class="col-xs-12"> -->
-       <div class="col-xs-5">
-			<span class="btn btn-primary fileinput-button">
-		        <i class="glyphicon glyphicon-plus"></i>
-		        <span>Carica Immagine...</span>
-				<input accept=".jpg,.png"  id="fileupload_img" name="fileupload_img" type="file" >
-		       
-		   	 </span>
-		   	</div> 
-		 <div class="col-xs-7">
-		 <label id="label_img"></label>
-		 </div>
-		<!-- </div>  -->
-		</div><br>	
+	 
 		
 		
 			<div class="row">
@@ -525,21 +511,7 @@ NON CONFORME A SPECIFICA
 		 </div>
 		<!-- </div>  -->
 		</div><br>
-	       <div class="row">
-       <!-- <div class="col-xs-12"> -->
-       <div class="col-xs-5">
-			<span class="btn btn-primary fileinput-button">
-		        <i class="glyphicon glyphicon-plus"></i>
-		        <span>Carica Immagine...</span>
-				<input accept=".jpg,.png"  id="fileupload_img_mod" name="fileupload_img_mod" type="file" >
-		       
-		   	 </span>
-		   	</div> 
-		 <div class="col-xs-7">
-		 <label id="label_img_mod"></label>
-		 </div>
-		<!-- </div>  -->
-		</div><br>	
+	     
 		
 		
 			<div class="row">

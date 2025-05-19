@@ -221,7 +221,7 @@ public class Am_gestioneStrumenti extends HttpServlet {
 					strumento.setNumero_porzioni(1);
 				}
 				
-				strumento.setFilename_img(filename_img);
+				
 				
 				session.save(strumento);			
 				
@@ -255,6 +255,7 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		    	if(filename_img!=null) {
 					
 					Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId(), filename_img);
+					strumento.setFilename_img(filename_img);
 				}
 				
 				myObj = new JsonObject();
@@ -314,7 +315,10 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		        String data_prossima = ret.get("data_prossima_verifica_mod");
 		        String sondaVelocita = ret.get("sonda_velocita_mod");
 		        String materiale_fondo = ret.get("materiale_sonda_mod");
-		        String table_zone = ret.get("table_zone_mod");
+		        String table_zone = ret.get("table_zone_mod"); 
+		        String numeroPorzioni=ret.get("numero_porzioni_mod");
+		        
+				String filename_img=filename;
 				
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -332,6 +336,8 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				strumento.setCostruttore(costruttore);
 				strumento.setnFabbrica(numero_fabbrica);
 				strumento.setSondaVelocita(sondaVelocita);
+				
+				
 				if(anno!=null && !anno.equals("")) {
 					strumento.setAnno(Integer.parseInt(anno));	
 				}
@@ -357,7 +363,10 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		            String zona = row.size() > 0 ? row.get(0) : "";
 		            String materiale = row.size() > 1 ? row.get(1) : "";
 		            String spessore = row.size() > 2 ? row.get(2) : "";
-		            String id_zona = row.size() > 3 ? row.get(3) : "";
+		            String indicazione = row.size() > 3 ? row.get(3) : "";
+		            String punto_intervallo_inizio = row.size() > 4 ? row.get(4) : "";
+		            String punto_intervallo_fine = row.size() > 5 ? row.get(5) : "";
+		            String id_zona = row.size() > 6 ? row.get(6) : "";
 		            
 		            Pattern pattern = Pattern.compile("id\\s*=\\s*\"(\\d+)\"");
 		            Matcher matcher = pattern.matcher(id_zona);
@@ -379,6 +388,9 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		           z.setZonaRiferimento(zona);
 		           z.setMateriale(materiale);
 		           z.setSpessore(spessore);
+		           z.setIndicazione(indicazione);
+		           z.setPunto_intervallo_fine(Integer.parseInt(punto_intervallo_fine));
+		           z.setPunto_intervallo_inizio(Integer.parseInt(punto_intervallo_inizio));
 		           
 		           z.setIdStrumento(strumento.getId());
 		           
@@ -392,6 +404,20 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		                session.delete(zonaEsistente);
 		            }
 		        }
+		        
+		        if(numeroPorzioni.length()>0) 
+				{
+					strumento.setNumero_porzioni(Integer.parseInt(numeroPorzioni));
+				}else 
+				{
+					strumento.setNumero_porzioni(1);
+				}
+		        
+		        if(filename_img!=null&& !filename_img.equals("")) {
+					
+					Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId(), filename_img);
+					strumento.setFilename_img(filename_img);
+				}
 				
 				session.update(strumento);				
 							

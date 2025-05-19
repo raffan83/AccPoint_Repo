@@ -283,9 +283,10 @@
 <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
     <thead >
         <tr>
-            <th colspan="${fn:length(colonne) + 1}" style="text-align:center">RISULTATI MISURE SPESSIMETRICHE [mm]</th>
+            <th colspan="${fn:length(colonne) + 2}" style="text-align:center">RISULTATI MISURE SPESSIMETRICHE [mm]</th>
         </tr>
         <tr>
+            <th style="text-align:center"></th>
             <th style="text-align:center"></th>
             <c:forEach var="col" items="${colonne}">
                 <th style="text-align:center">${col}</th>
@@ -293,8 +294,20 @@
         </tr>
     </thead>
     <tbody>
+
+    <c:set var="row_span_index" value="0"></c:set>
+    <c:set var="indice" value="0"></c:set>
         <c:forEach var="riga" items="${matrix_spess}" varStatus="rowStatus">
             <tr>
+           
+             <c:if test="${rowStatus.index == 0 || rowStatus.index == row_span_index  }">
+            <th style="text-align:center;vertical-align: middle" rowspan="${entryList[indice].value - rowStatus.index }">${entryList[indice].key }</th>
+            <c:set var="row_span_index" value="${entryList[indice].value  }"></c:set>
+             <c:set var="indice" value="${indice +1 }"></c:set>
+            </c:if>
+          
+           
+                       
                 <th style="text-align:center">${rowStatus.index + 1}</th>
                 <c:forEach var="valore" items="${riga}">
                     <td style="text-align:center"><fmt:formatNumber value="${valore}" pattern="#0.00" /></td>
@@ -319,7 +332,7 @@
 
 <div class="col-xs-6">
 
-<textarea rows="4" style="width:100%" class="form-control" id="label_minimi" readonly>${prova.label_minimi }</textarea>
+<textarea rows="4" style="width:100%" class="form-control" id="label_minimi" readonly></textarea>
 
 </div>
 </div><br>
@@ -407,6 +420,7 @@
 </section>
 </div>
 
+<div id="lista_zone_minimi" style="display:none">${lista_zone_minimi}</div>
 
 	<div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
@@ -496,24 +510,50 @@
 		
 	}
  
+ 
+ var jsonText = document.getElementById('lista_zone_minimi').textContent;
+  var listaEntry = JSON.parse(jsonText);
  $(document).ready(function(){
 	 
-
-	 
-	var label_min = $('#label_minimi').val();
-	$('#label_minimi').html("")
-	
-	var values=label_min.split(",");
-	
-	for (var i = 0; i < values.length; i++) {
-		var str = values[i].replace(/[{}]/g, '')+"\n"; 
-		$('#label_minimi').append(str)
-	}
-	
-	
- 
+calcolaMinimi()
  })
  
+ function calcolaMinimi(){
+	 var testoMinimi = "";
+
+      // riga iniziale (assumendo che le righe sono 1-based)
+
+     listaEntry.forEach(function(entry, index) {
+     	let startRow = parseInt(entry.punto_intervallo_inizio); 
+         var endRow = parseInt(entry.punto_intervallo_fine); // punto_intervallo_fine per la zona
+         var minVal = Infinity;
+
+         // Ciclo sulle righe della tabella dal numero startRow a endRow
+         for (var r = startRow; r <= endRow; r++) {
+             // Seleziono la riga r-esima (attenzione: l'indice jQuery parte da 0)
+             var row = $('#tabPM tbody tr').eq(r - 1);
+             if (row.length === 0) continue;
+
+             // Prendo il testo della prima cella della riga, convertita a numero
+             
+             row.find('td').each(function() {
+		        var val = parseFloat($(this).text());
+		        if (!isNaN(val) && val < minVal) {
+		          minVal = val;
+		        }
+		      });
+             
+         }
+
+         testoMinimi += "Minimo " + entry.zonaRiferimento + ": " + minVal + " mm\n";
+
+         // Aggiorno startRow per la prossima zona
+         startRow = endRow + 1;
+     });
+
+     // Imposto il testo nel campo di testo (ad esempio con id='campoMinimi')
+     $('#label_minimi').val(testoMinimi);    
+ }
  
  
  function abilitaModifica() {
@@ -525,7 +565,20 @@
 	    $('#note').attr("readonly", false);
 	    $('#esito').attr("readonly", false);
 	    $('#btn_salva').show()
-	       
+	    
+	 /*    var jsonText = document.getElementById('lista_zone_minimi').textContent;
+	    var listaEntry = JSON.parse(jsonText);
+
+	    listaEntry.forEach(function(entry) {
+	      console.log(entry.key + ": " + entry.value);
+	    });
+	    
+	     */
+	     
+	    
+	 	  $('#tabPM tbody td').off('input').on('input', function() {
+	 	       calcolaMinimi();
+	 	  });
 	}
  
  
@@ -557,19 +610,11 @@
             }
         });
 
-        let formatted = "[" + result.join(",") + "]";
-        
-        var label_min = "";
-        let righe = $('#label_minimi').val().trim().split('\n'); // divide il testo in righe
-        for (var i = 0; i < righe.length; i++) {
-			label_min += "{"+righe[i]+"},"
-		}
-	   
+       
 	    
 	    dataObj ={};
 	    dataObj.matrix = formatted;
 	    dataObj.id_prova = "${prova.id}"
-	    dataObj.label_minimi = label_min;
 	    dataObj.note = $('#note').val();
 	    dataObj.esito = $('#esito').val();
 	    
@@ -577,6 +622,11 @@
 	    
 	}
 
+	
+	
+	
+	
+	
   </script>
   
 </jsp:attribute> 

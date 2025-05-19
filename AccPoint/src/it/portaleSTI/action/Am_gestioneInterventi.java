@@ -9,9 +9,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -35,6 +41,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AMCampioneDTO;
 import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
+import it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
 import it.portaleSTI.DTO.AMProvaDTO;
 import it.portaleSTI.DTO.AMRapportoDTO;
@@ -467,8 +474,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 		       
 				FileItem fileItem_excel = null;
 				String filename_excel= null;
-				FileItem fileItem_img = null;
-				String filename_img= null;
+				
 		        Hashtable<String,String> ret = new Hashtable<String,String>();
 		      
 		        for (FileItem item : items) {
@@ -478,9 +484,6 @@ public class Am_gestioneInterventi extends HttpServlet {
 	            			 fileItem_excel = item;
 	            			 filename_excel = item.getName();
 	            			 
-	            		 }else if(item.getFieldName().equals("fileupload_img")) {
-	            			 fileItem_img = item;
-	            			 filename_img = item.getName();
 	            		 }
 	                     	                     
 	            	 }else
@@ -552,13 +555,32 @@ public class Am_gestioneInterventi extends HttpServlet {
 					prova.setMatrixSpess(values[3]);
 			//		prova.setLabel_minimi(values[4]);
 					
+				}else {
+					int m = prova.getStrumento().getNumero_porzioni();
+					int n = 0;
+					AMOggettoProvaZonaRifDTO maxZona = null;
+					for (AMOggettoProvaZonaRifDTO zona : prova.getStrumento().getListaZoneRiferimento()) {
+					    if (maxZona == null || zona.getId() > maxZona.getId()) {
+					        maxZona = zona;
+					    }
+					}
+					
+					if(maxZona!=null) {
+						n = maxZona.getPunto_intervallo_fine();
+					}
+					
+					String matrix = "";
+					for (int i = 0; i < n; i++) {
+						matrix += "{";
+						for (int j = 0; j < m; j++) {
+							matrix += "0,";
+						}
+						matrix += "},";
+					}
+					prova.setMatrixSpess(matrix);
 				}
 				
-				if(filename_img!=null) {
-					prova.setFilename_img(filename_img);
-					Utility.saveFile(fileItem_img, Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\img", filename_img);
-				}
-							
+				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				if(esito_import) {
@@ -600,8 +622,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 		       
 				FileItem fileItem_excel = null;
 				String filename_excel= null;
-				FileItem fileItem_img = null;
-				String filename_img= null;
+				
 		        Hashtable<String,String> ret = new Hashtable<String,String>();
 		      
 		        for (FileItem item : items) {
@@ -611,9 +632,6 @@ public class Am_gestioneInterventi extends HttpServlet {
 	            			 fileItem_excel = item;
 	            			 filename_excel = item.getName();
 	            			 
-	            		 }else if(item.getFieldName().equals("fileupload_img_mod")) {
-	            			 fileItem_img = item;
-	            			 filename_img = item.getName();
 	            		 }
 	            		
 	                     	                     
@@ -674,12 +692,33 @@ public class Am_gestioneInterventi extends HttpServlet {
 					
 					prova.setMatrixSpess(values[3]);
 					
+				}else {
+					int m = prova.getStrumento().getNumero_porzioni();
+					int n = 0;
+					AMOggettoProvaZonaRifDTO maxZona = null;
+					for (AMOggettoProvaZonaRifDTO zona : prova.getStrumento().getListaZoneRiferimento()) {
+					    if (maxZona == null || zona.getId() > maxZona.getId()) {
+					        maxZona = zona;
+					    }
+					}
+					
+					if(maxZona!=null) {
+						n = maxZona.getPunto_intervallo_fine();
+					}
+					
+					String matrix = "";
+					for (int i = 0; i < n; i++) {
+						matrix += "{";
+						for (int j = 0; j < m; j++) {
+							matrix += "0,";
+						}
+						matrix += "},";
+					}
+					prova.setMatrixSpess(matrix);
 				}
 				
-				if(filename_img!=null && !filename_img.equals("")) {
-					prova.setFilename_img(filename_img);
-					Utility.saveFile(fileItem_img, Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\img", filename_img);
-				}
+				
+				
 					
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
@@ -741,12 +780,37 @@ public class Am_gestioneInterventi extends HttpServlet {
 					    colonne.add(String.valueOf((char) ('A' + i)));
 					}
 				}
+
+				Set<AMOggettoProvaZonaRifDTO> lista = prova.getStrumento().getListaZoneRiferimento();
+				List<AMOggettoProvaZonaRifDTO> sortedList = lista.stream()
+					    .sorted(Comparator.comparing(AMOggettoProvaZonaRifDTO::getId)) // o getIdZona() se hai un altro metodo
+					    .collect(Collectors.toList());
+
+					// Ora puoi iterare ordinato
+				Map<String, Integer> valori_span = new LinkedHashMap<>();
 				
+
+				
+					for (AMOggettoProvaZonaRifDTO zona : sortedList) {
+						valori_span.put(zona.getIndicazione(),zona.getPunto_intervallo_fine()); 
+					}
+				
+					List<Map.Entry<String, Integer>> listaEntry = new ArrayList<>(valori_span.entrySet());
+					
+					Gson g = new Gson();
+					
+					
 				AMRapportoDTO rapporto = GestioneAM_BO.getRapportoFromProva(prova.getId(), session);
 				
 				request.setAttribute("rapporto", rapporto);
 				request.setAttribute("colonne", colonne);
 				request.setAttribute("matrix_spess", matrixParsed);
+			
+				request.setAttribute("entryList", listaEntry);
+				request.setAttribute("lista_zone_minimi", g.toJson(sortedList));
+				 
+				
+				
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_dettaglioProva.jsp");
 				dispatcher.forward(request, response);
@@ -756,10 +820,10 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 		        AMProvaDTO prova = (AMProvaDTO) request.getSession().getAttribute("prova");
 
-		        if (prova != null && prova.getFilename_img()!=null && !prova.getFilename_img().equals("")) {
+		        if (prova != null && prova.getStrumento().getFilename_img()!=null && !prova.getStrumento().getFilename_img().equals("")) {
 		        	
-		        	String imagePath =	Costanti.PATH_FOLDER+"\\AM_interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\img\\"+prova.getFilename_img();
-		         
+		        	String imagePath =	Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+prova.getStrumento().getId()+"\\"+prova.getStrumento().getFilename_img();
+		        	
 		            File imageFile = new File(imagePath);
 
 		            if (imageFile.exists()) {

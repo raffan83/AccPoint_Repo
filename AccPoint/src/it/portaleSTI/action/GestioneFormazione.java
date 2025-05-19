@@ -3545,7 +3545,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						configurazione.setReport_vittoria(0);
 					}
 					
-				//	session.save(configurazione);
+					session.save(configurazione);
 					session.getTransaction().commit();
 					session.close();
 					

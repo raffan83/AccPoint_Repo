@@ -22,5 +22,10 @@
         <property name="firma" type="java.lang.String">
             <column name="firma" />
         </property>
+        
+       <property name="responsabile" type="java.lang.Integer">
+            <column name="responsabile" />
+        </property>
+        
     </class>
 </hibernate-mapping>

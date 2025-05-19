@@ -338,7 +338,7 @@ public class Am_gestioneCampioni extends HttpServlet {
 				    campione.setModello(modello);
 				    campione.setCostruttore(costruttore);
 				    campione.setnCertificato(nCertificato);
-				    campione.setFile_certificato(filename);
+				    
 				    
 				    if (dataTaratura != null && !dataTaratura.equals("")) {
 				    campione.setDataTaratura(df.parse(dataTaratura));
@@ -379,8 +379,8 @@ public class Am_gestioneCampioni extends HttpServlet {
 				    }
 				    
 				    
-				    if(filename!=null) {
-				    	
+				    if(filename!=null && filename.length()>0) {
+				    	campione.setFile_certificato(filename);
 				    	Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\Campioni\\"+campione.getId(), filename);
 				    	
 				    }
@@ -393,7 +393,7 @@ public class Am_gestioneCampioni extends HttpServlet {
 				    myObj = new JsonObject();
 				    PrintWriter out = response.getWriter();
 				    myObj.addProperty("success", true);
-				    myObj.addProperty("messaggio", "Campione salvato con successo!");
+				    myObj.addProperty("messaggio", "Campione modificato con successo!");
 				    out.print(myObj);
 				}		
 			

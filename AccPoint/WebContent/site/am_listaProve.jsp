@@ -70,6 +70,7 @@
  <th>Esito</th>	
 
  <th>Numero Rapporto</th>
+ <th>Assistente</th>
 
  <td style="min-width:150px">Azioni</td>
  </tr></thead>
@@ -95,6 +96,7 @@
 <td>${prova.esito }</td>
 
 <td>${prova.nRapporto }</td>
+<td>${prova.operatore.nomeOperatore }</td>
 
 <td>
 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della prova" onClick="callAction('amGestioneInterventi.do?action=dettaglio_prova&id_prova=${utl:encryptData(prova.id)}')"><i class="fa fa-search"></i></a>
@@ -697,7 +699,7 @@ $(document).ready(function() {
 	    
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 0, targets: 13 },
+		    	  { responsivePriority: 0, targets: 14 },
 		    	  
 		    	  
 		               ], 	        

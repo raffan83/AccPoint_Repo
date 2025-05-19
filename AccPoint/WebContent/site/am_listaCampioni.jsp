@@ -418,7 +418,7 @@
 			<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Carica Certificato...</span>
-				<input accept=".pdf"  id="fileupload_mod" name="fileupload_mod" type="file" REQUIRED >
+				<input accept=".pdf"  id="fileupload_mod" name="fileupload_mod" type="file"  >
 		       
 		   	 </span>
 		   	</div> 

@@ -28,6 +28,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -42,6 +43,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ItServizioItDTO;
 import it.portaleSTI.DTO.ItTipoRinnovoDTO;
 import it.portaleSTI.DTO.ItTipoServizioDTO;
@@ -59,6 +61,7 @@ import it.portaleSTI.bo.GestioneAM_BO;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneDocumentaleBO;
+import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneScadenzarioItBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
 import it.portaleSTI.bo.GestioneVerStrumentiBO;
@@ -285,7 +288,44 @@ public class Am_gestioneInterventi extends HttpServlet {
 				out.print(myObj);
 				
 				
-			}else if(action.equals("modifica")) {
+			} else if( action.equals("nuova_sede")) 
+			{
+				
+					PrintWriter  out = response.getWriter();
+					String id_intervento = request.getParameter("id_intervento");
+					
+					String pivot = request.getParameter("pivot");
+					
+					AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);
+					
+					if(pivot.equals("1")) 
+					{
+						String nome_sede = request.getParameter("nome_sede");
+						intervento.setNomeSede(nome_sede);
+						
+					}
+					else 
+					{
+						String nome_sede_util = request.getParameter("nome_sede");
+						intervento.setNomeSedeUtilizzatore(nome_sede_util);	
+					}
+			
+					
+					Gson gson = new Gson();
+					String jsonInString = gson.toJson(intervento);
+					
+					
+					myObj.addProperty("success", true);
+					myObj.addProperty("intervento", jsonInString);
+					myObj.addProperty("messaggio", "Sede aggiornata con successo!");
+				
+					out.print(myObj);
+					
+				
+			}
+			
+			
+			else if(action.equals("modifica")) {
 				
 				ajax = true;
 				
@@ -505,12 +545,12 @@ public class Am_gestioneInterventi extends HttpServlet {
 					}
 					
 					
-					prova.setSpess_min_fasciame(values[0]);					
-					prova.setSpess_min_fondo_sup(values[1]);
-					prova.setSpess_min_fondo_inf(values[2]);
+				//	prova.setSpess_min_fasciame(values[0]);					
+				//	prova.setSpess_min_fondo_sup(values[1]);
+				//	prova.setSpess_min_fondo_inf(values[2]);
 					
 					prova.setMatrixSpess(values[3]);
-					prova.setLabel_minimi(values[4]);
+			//		prova.setLabel_minimi(values[4]);
 					
 				}
 				
@@ -626,11 +666,11 @@ public class Am_gestioneInterventi extends HttpServlet {
 					if(values[3].equals("[]")) {
 						esito_import = false;
 					}
-					prova.setLabel_minimi(values[4]);
+				//	prova.setLabel_minimi(values[4]);
 					
-					prova.setSpess_min_fasciame(values[0]);					
-					prova.setSpess_min_fondo_sup(values[1]);
-					prova.setSpess_min_fondo_inf(values[2]);
+			//		prova.setSpess_min_fasciame(values[0]);					
+			//		prova.setSpess_min_fondo_sup(values[1]);
+			//		prova.setSpess_min_fondo_inf(values[2]);
 					
 					prova.setMatrixSpess(values[3]);
 					
@@ -786,9 +826,10 @@ public class Am_gestioneInterventi extends HttpServlet {
 				}
 				if(isAnteprima) {
 					path = Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\Certificati\\ANTEPRIMA.pdf";
-					response.setContentType("application/octet-stream");
+				//	response.setContentType("application/octet-stream");
 					  
-					 response.setHeader("Content-Disposition","attachment;filename=ANTEPRIMA.pdf");
+				//	 response.setHeader("Content-Disposition","attachment;filename=ANTEPRIMA.pdf");
+					response.setContentType("application/pdf");	
 				}else {
 					path = Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\Certificati\\"+prova.getnRapporto()+".pdf";
 					response.setContentType("application/pdf");	
@@ -900,7 +941,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				}else {
 					prova.setEsito("POSITIVO");
 				}
-				prova.setLabel_minimi(label_minimi);
+		//		prova.setLabel_minimi(label_minimi);
 				session.update(prova);
 				
 				myObj = new JsonObject();

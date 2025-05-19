@@ -38,6 +38,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAM_BO;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
@@ -143,9 +144,9 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 		        	}
 		        
-		       
 				FileItem fileItem = null;
 				String filename= null;
+
 		        Hashtable<String,String> ret = new Hashtable<String,String>();
 		      
 		        for (FileItem item : items) {
@@ -165,24 +166,20 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		        String id_sede = ret.get("sede_general");
 		        String descrizione = ret.get("descrizione");
 		        String matricola = ret.get("matricola");
-		        String zona_rif_fasciame = ret.get("zona_rif_fasciame");
-		        String spessore_fasciame = ret.get("spessore_fasciame");
 		        String tipo = ret.get("tipo");
 		        String volume = ret.get("volume");
-		        String materiale_fasciame = ret.get("materiale_fasciame");
 		        String pressione = ret.get("pressione");
 		        String costruttore = ret.get("costruttore");
 		        String numero_fabbrica = ret.get("numero_fabbrica");
-		        String zona_rif_fondo = ret.get("zona_rif_fondo");
-		        String spessore_fondo = ret.get("spessore_fondo");
 		        String anno = ret.get("anno");
 		        String frequenza = ret.get("frequenza");
 		        String data_verifica = ret.get("data_verifica");
 		        String data_prossima = ret.get("data_prossima_verifica");
 		        String sondaVelocita = ret.get("sonda_velocita");
-		        String materiale_fondo = ret.get("materiale_sonda");
+		        String numeroPorzioni=ret.get("numero_porzioni");
 		        String table_zone = ret.get("table_zone");
-				
+		        
+				String filename_img=filename;
 				
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -191,7 +188,7 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				AMOggettoProvaDTO strumento = new AMOggettoProvaDTO();	
 				
 				strumento.setId_cliente(Integer.parseInt(id_cliente));
-				strumento.setId_cliente(Integer.parseInt(id_sede.split("_")[0]));
+				strumento.setId_sede(Integer.parseInt(id_sede.split("_")[0]));
 				strumento.setDescrizione(descrizione);
 				strumento.setMatricola(matricola);
 				
@@ -201,6 +198,7 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				strumento.setCostruttore(costruttore);
 				strumento.setnFabbrica(numero_fabbrica);
 				strumento.setSondaVelocita(sondaVelocita);
+				
 				if(anno!=null && !anno.equals("")) {
 					strumento.setAnno(Integer.parseInt(anno));	
 				}
@@ -215,7 +213,15 @@ public class Am_gestioneStrumenti extends HttpServlet {
 					strumento.setDataProssimaVerifica(df.parse(data_prossima));	
 				}
 				
-			
+				if(numeroPorzioni.length()>0) 
+				{
+					strumento.setNumero_porzioni(Integer.parseInt(numeroPorzioni));
+				}else 
+				{
+					strumento.setNumero_porzioni(1);
+				}
+				
+				strumento.setFilename_img(filename_img);
 				
 				session.save(strumento);			
 				
@@ -227,11 +233,17 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		            String zona = row.size() > 0 ? row.get(0) : "";
 		            String materiale = row.size() > 1 ? row.get(1) : "";
 		            String spessore = row.size() > 2 ? row.get(2) : "";
+		            String indicazione = row.size() > 3 ? row.get(3) : "";
+		            String punto_intervallo_inizio = row.size() > 4 ? row.get(4) : "";
+		            String punto_intervallo_fine = row.size() > 5 ? row.get(5) : "";
 
 		           AMOggettoProvaZonaRifDTO z = new AMOggettoProvaZonaRifDTO();
 		           z.setZonaRiferimento(zona);
 		           z.setMateriale(materiale);
 		           z.setSpessore(spessore);
+		           z.setIndicazione(indicazione);
+		           z.setPunto_intervallo_inizio(Integer.parseInt(punto_intervallo_inizio));
+		           z.setPunto_intervallo_fine(Integer.parseInt(punto_intervallo_fine));
 		           
 		           z.setIdStrumento(strumento.getId());
 		           
@@ -239,7 +251,11 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		           
 		           strumento.getListaZoneRiferimento().add(z);
 		        }
-							
+				
+		    	if(filename_img!=null) {
+					
+					Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId(), filename_img);
+				}
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();

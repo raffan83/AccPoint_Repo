@@ -17,20 +17,8 @@ public class AMProvaDTO {
 	private AMCampioneDTO campione;
 	private String filename_excel;
 	private String filename_img;
-	private String spess_min_fasciame;
-	private String spess_min_fondo_sup;
-	private String spess_min_fondo_inf;
-	private String label_minimi;
+	private String ubicazione;
 	
-	
-	
-
-	public String getLabel_minimi() {
-		return label_minimi;
-	}
-	public void setLabel_minimi(String label_minimi) {
-		this.label_minimi = label_minimi;
-	}
 	public int getId() {
 		return id;
 	}
@@ -112,23 +100,11 @@ public class AMProvaDTO {
 	public void setOperatore(AMOperatoreDTO operatore) {
 		this.operatore = operatore;
 	}
-	public String getSpess_min_fasciame() {
-		return spess_min_fasciame;
+	public String getUbicazione() {
+		return ubicazione;
 	}
-	public void setSpess_min_fasciame(String spess_min_fasciame) {
-		this.spess_min_fasciame = spess_min_fasciame;
-	}
-	public String getSpess_min_fondo_sup() {
-		return spess_min_fondo_sup;
-	}
-	public void setSpess_min_fondo_sup(String spess_min_fondo_sup) {
-		this.spess_min_fondo_sup = spess_min_fondo_sup;
-	}
-	public String getSpess_min_fondo_inf() {
-		return spess_min_fondo_inf;
-	}
-	public void setSpess_min_fondo_inf(String spess_min_fondo_inf) {
-		this.spess_min_fondo_inf = spess_min_fondo_inf;
+	public void setUbicazione(String ubicazione) {
+		this.ubicazione = ubicazione;
 	}
 	
 	

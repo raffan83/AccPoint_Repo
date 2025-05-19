@@ -7,6 +7,7 @@ public class AMOperatoreDTO {
 	private String pathPatentino;
 	private String dicituraPatentino;
 	private String firma;
+	private int responsabile;
 	
 	public String getFirma() {
 		return firma;
@@ -44,11 +45,18 @@ public class AMOperatoreDTO {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public int getResponsabile() {
+		return responsabile;
+	}
+	public void setResponsabile(int responsabile) {
+		this.responsabile = responsabile;
+	}
 	public AMOperatoreDTO(int id, String nome, String path) {
 		this.id = id;
 		this.nomeOperatore = nome;
 		this.pathPatentino = path;
 	}
 
+	
 	
 }

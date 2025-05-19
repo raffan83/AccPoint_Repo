@@ -16,9 +16,7 @@
         <property name="pressione" column="pressione"/>
         <property name="costruttore" column="costruttore"/>
         <property name="nFabbrica" column="n_fabbrica"/>
-   
-        <property name="anno" column="anno"/>
-    
+        <property name="anno" column="anno"/>   
         <property name="matricola" column="matricola"/>
         <property name="descrizione" column="descrizione"/>
         <property name="dataVerifica" column="data_verifica" type="date"/>
@@ -26,7 +24,11 @@
 		<property name="frequenza" column="frequenza"/>
 		<property name="id_cliente" column="id_cliente"/>		
 		<property name="id_sede" column="id_sede"/>	
-		 <property name="sondaVelocita" column="sonda_velocita"/>
+		<property name="sondaVelocita" column="sonda_velocita"/>
+		<property name="filename_img" column="filename_img"/>
+		<property name="numero_porzioni" column="numero_porzioni"/>
+	
+	
 	 <set name="listaZoneRiferimento" table="am_oggetto_prova_zona_rif"
 				inverse="true" lazy="false" fetch="select" >
             <key>

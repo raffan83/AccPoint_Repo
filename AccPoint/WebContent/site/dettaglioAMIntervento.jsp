@@ -67,8 +67,9 @@
                   <a id="nome_sede" class="pull-right" style="padding-right:7px">${intervento.nomeCliente } </a>
                 </li>
                 <li class="list-group-item">
-                  <b>Sede</b> 
+                  <b>Sede</b> <a class="btn btn-warning pull-right btn-xs" title="Click per modificare la sede cliente" onClick="inserisciSede('${intervento.id}')"><i class="fa fa-edit"></i></a>
                   <a id="nome_sede" class="pull-right" style="padding-right:7px">${intervento.nomeSede } </a>
+                 
                 </li>
                 
                  <li class="list-group-item">
@@ -76,7 +77,7 @@
                   <a id="nome_sede" class="pull-right" style="padding-right:7px">${intervento.nomeClienteUtilizzatore } </a>
                 </li>
                 <li class="list-group-item">
-                  <b>Sede Utilizzatore</b> 
+                  <b>Sede Utilizzatore</b> <a class="btn btn-warning pull-right btn-xs" title="Click per modificare la sede cliente" onClick="inserisciSedeUtilizzatore('${intervento.id}')"><i class="fa fa-edit"></i></a>
                   <a id="nome_sede" class="pull-right" style="padding-right:7px">${intervento.nomeSedeUtilizzatore } </a>
                 </li>
                 <li class="list-group-item">
@@ -107,12 +108,13 @@
                 </li>
                 
                 <li class="list-group-item">
-                  <b>Operatore</b><a class="customTooltip pull-right  btn btn-warning btn-xs" title="Carica patentino" onclick="modalPatentino('${intervento.operatore.id}','${intervento.operatore.dicituraPatentino}','${intervento.operatore.pathPatentino }','${intervento.operatore.firma }')"><i class="fa fa-file-text-o"></i></a> <a class="pull-right">${intervento.operatore.nomeOperatore}</a>
+                  <b>Operatore</b> <a class="btn btn-warning  pull-right  btn-xs" title="Carica patentino" onclick="modalPatentino('${intervento.operatore.id}','${intervento.operatore.dicituraPatentino}','${intervento.operatore.pathPatentino }','${intervento.operatore.firma }')"><i class="fa fa-file-text-o"></i></a> 
+                   <a class="pull-right" style="padding-right:7px">${intervento.operatore.nomeOperatore} </a>
                 </li>
               
               
                  <li class="list-group-item">
-                  <b>Template Prova</b><a class="customTooltip pull-right  btn btn-success btn-xs" title="Scarica Template Excel" onclick="callAction('amGestioneInterventi.do?action=scarica_template')"><i class="fa fa-file-excel-o"></i></a>
+                  <b>Template Prova</b> <a class="customTooltip pull-right  btn btn-success btn-xs" title="Scarica Template Excel" onclick="callAction('amGestioneInterventi.do?action=scarica_template')"><i class="fa fa-file-excel-o"></i></a>
                 </li>
         </ul>
         
@@ -166,6 +168,8 @@
  <th>Esito</th>	
 
  <th>Numero Rapporto</th>
+ 
+ <th>Assistente</th>
 
  <td style="min-width:150px">Azioni</td>
  </tr></thead>
@@ -193,6 +197,7 @@ NON CONFORME A SPECIFICA
 </td>
 
 <td>${rapporto.prova.nRapporto }</td>
+<td>${rapporto.prova.operatore.nomeOperatore }</td>
 
 <td>
 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della prova" onClick="callAction('amGestioneInterventi.do?action=dettaglio_prova&id_prova=${utl:encryptData(rapporto.prova.id)}')"><i class="fa fa-search"></i></a>
@@ -366,7 +371,7 @@ NON CONFORME A SPECIFICA
 		
 			<div class="row">
        	<div class="col-sm-3">
-       		<label>Operatore</label>
+       		<label>Assistente</label>
        	</div>
        	<div class="col-sm-9">
 				<select  id="operatore" name="operatore" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona operatore..." style="width:100%" required>
@@ -496,7 +501,7 @@ NON CONFORME A SPECIFICA
        	</div>
        	<div class="col-sm-9">
        		<div class='input-group date datepicker' id='datepicker_data_prova'>
-               <input type='text' class="form-control input-small" id="data_prova_mod" name="data_prova_mod" required>
+               <input type='text' class="form-control input-small" id="data_prova_mod" name="data_prova_mod" required  >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -666,8 +671,59 @@ NON CONFORME A SPECIFICA
 </div>
 </form>
 	
-	
-	
+	   <div id="myModalCambiaSede" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Inserisci il nome della sede cliente</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       
+        <div class="form-inline" align="center"> 
+      <input style="width:80%"   type="text" class="form-control"   id="nome_sede_new" name="nome_sede_new" value="${intervento.nomeSede}"/>
+      <button id="nome_sede_button" class="btn btn-default" style="padding-left:17px" >Salva</button>
+	 
+ </div> 
+
+  </div>
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+	   <div id="myModalCambiaSedeUtilizzatore" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Inserisci il nome della sede utilizzatore</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       
+        <div class="form-inline" align="center"> 
+      <input style="width:80%"   type="text" class="form-control"   id="nome_sede_utilizzatore_new" name="nome_sede_utilizzatore_new" value="${intervento.nomeSedeUtilizzatore}"/>
+      <button id="nome_sede_utilizzatore_button" class="btn btn-default" style="padding-left:17px" >Salva</button>
+	 
+ </div> 
+
+  </div>
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+       
+      </div>
+    </div>
+  </div>
+</div>
 	
 	
 	<div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
@@ -690,6 +746,7 @@ NON CONFORME A SPECIFICA
   </div>
 
 </div>
+
 	
   <t:dash-footer />
   
@@ -924,7 +981,13 @@ function generaCertificatoAM(id_prova, isAnteprima){
     	$('.datepicker').datepicker({
    		 format: "dd/mm/yyyy"
    	 });
-	    	
+    
+	var dataIntervento = '${intervento.dataIntervento}';
+    var dateParts = dataIntervento.split(' ')[0];
+    var parts = dateParts.split('-'); 
+    var formattedDate = parts[2] + '/' + parts[1] + '/' + parts[0];
+    $('#data_prova').val(formattedDate);
+    	 
 	    	
 	    	table = $('#tabPM').DataTable({
 	    		language: {
@@ -964,7 +1027,7 @@ function generaCertificatoAM(id_prova, isAnteprima){
 	    	      columnDefs: [
 	    	   
 					  { responsivePriority: 1, targets: 0 },
-	    	          { responsivePriority: 2, targets: 8 }
+	    	          { responsivePriority: 2, targets: 9 }
 	    	               ],
 	             
 	    	               buttons: [ {
@@ -1144,9 +1207,33 @@ function generaCertificatoAM(id_prova, isAnteprima){
 	
     });
 
-	
-	
+    function inserisciSede(id_intervento){
+
+   	 $("#myModalCambiaSede").modal();
    
+    }
+    function inserisciSedeUtilizzatore(id_intervento){
+
+      	 $("#myModalCambiaSedeUtilizzatore").modal();
+      
+       }
+    
+	
+    $("#nome_sede_button").on('click', function(){
+   	 
+   	 var nome_sede = $("#nome_sede_new").val();
+   	 var id_intervento = '${intervento.id}';
+   	inserisciNuovaSedeAM(nome_sede, id_intervento,1);	
+   	 
+    })
+    
+    $("#nome_sede_utilizzatore_button").on('click', function(){
+   	 
+   	 var nome_sede = $("#nome_sede_utilizzatore_new").val();
+   	 var id_intervento = '${intervento.id}';
+   	inserisciNuovaSedeAM(nome_sede, id_intervento,2);	
+   	 
+    })
 	
 	
 	

@@ -125,7 +125,7 @@ public class CreateCertificatoAM {
 		String ubicazione="";
 		
 		if(prova.getIntervento().getNomeCliente()!=null) {
-			ubicazione+=prova.getIntervento().getNomeCliente();
+			ubicazione+=prova.getIntervento().getNomeCliente()+ " - "+prova.getIntervento().getNomeSede();
 		}
 		
 		
@@ -308,19 +308,19 @@ public class CreateCertificatoAM {
 			report.addParameter("data_prova", "");
 		}
 		
-		if(prova.getOperatore().getNomeOperatore()!=null) {
-			if(prova.getOperatore().getDicituraPatentino()!=null){
-				report.addParameter("firma", prova.getOperatore().getNomeOperatore()+"\n"+prova.getOperatore().getDicituraPatentino());
+		if(prova.getIntervento().getOperatore().getNomeOperatore()!=null) {
+			if(prova.getIntervento().getOperatore().getDicituraPatentino()!=null){
+				report.addParameter("firma", prova.getIntervento().getOperatore().getNomeOperatore()+"\n"+prova.getOperatore().getDicituraPatentino());
 			}else {
-				report.addParameter("firma", prova.getOperatore().getNomeOperatore());
+				report.addParameter("firma", prova.getIntervento().getOperatore().getNomeOperatore());
 			}
 			
 		}else {
 			report.addParameter("firma", "");
 		}
 		
-		if(prova.getOperatore().getFirma()!=null) {
-			File file_firma = new File(Costanti.PATH_FOLDER+"\\AM_Interventi\\Firme\\"+prova.getOperatore().getId()+"\\"+prova.getOperatore().getFirma());
+		if(prova.getIntervento().getOperatore().getFirma()!=null) {
+			File file_firma = new File(Costanti.PATH_FOLDER+"\\AM_Interventi\\Firme\\"+prova.getIntervento().getOperatore().getId()+"\\"+prova.getIntervento().getOperatore().getFirma());
 			Image image_firma = ImageIO.read(file_firma);
 			
 			report.addParameter("immagine_firma", image_firma);
@@ -340,7 +340,7 @@ public class CreateCertificatoAM {
 		
 
 		
-		String[] label_minimi = prova.getLabel_minimi().split(",");
+		String[] label_minimi = {"Test","Test"};//prova.getLabel_minimi().split(",");
 		
 		String str = "";
 		for (String string : label_minimi) {

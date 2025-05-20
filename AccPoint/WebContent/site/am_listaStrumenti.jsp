@@ -114,6 +114,8 @@
 <%-- <a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaStrumento('${strumento.id}','${utl:escapeJS(strumento.descrizione)}','${utl:escapeJS(strumento.matricola)}','${utl:escapeJS(strumento.tipo)}','${utl:escapeJS(strumento.volume)}','${utl:escapeJS(strumento.pressione)}','${utl:escapeJS(strumento.costruttore)}','${utl:escapeJS(strumento.nFabbrica)}','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataVerifica}" />','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataProssimaVerifica}" />','${utl:escapeJS(strumento.frequenza)}','${utl:escapeJS(strumento.anno)}','${strumento.id_cliente}','${strumento.id_sede}',${utl:escapeJS(utl:toJson(strumento)) })"><i class="fa fa-edit"></i></a> --%>
 
  <a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaStrumento(${utl:escapeJS(utl:toJson(strumento)) })"><i class="fa fa-edit"></i></a>
+ <a href="#" class="btn btn-primary customTooltip" title="Click per clonare oggetto in prova" onClick="clona('${strumento.id}')"><i class="fa fa-clone"></i></a>
+<a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegati('${strumento.id }')"><i class="fa fa-archive"></i></a>	
 	</td>
 	</tr>
 	</c:forEach> 
@@ -616,7 +618,27 @@
 </div>
 </form>
 
-
+  <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Allegati</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+        <div class="col-xs-12">
+       <div id="tab_allegati"></div>
+</div>
+  		 </div>
+  		 </div>
+      <div class="modal-footer">
+      </div>
+   
+  </div>
+  </div>
+</div>
 
 
 
@@ -841,6 +863,14 @@ function formatDate(data){
 }
 
 
+function clona(id_strumento)
+{
+	dataObj={};
+	dataObj.id_strumento = id_strumento;
+	
+	callAjax(dataObj, "amGestioneStrumenti.do?action=clona")
+	
+}
 
 function aggiornaDataProssima(mod) {
     var frequenza = parseInt($('#frequenza'+mod).val(), 10);
@@ -945,7 +975,7 @@ $(document).ready(function() {
 		    	},     
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 0, targets: 14 },
+		    	  { responsivePriority: 1, targets: 15 },
 		    	  
 		    	  
 		               ], 	        
@@ -1292,6 +1322,22 @@ const editableCell_mod = function(cell) {
 	  	
 	  	});
  
+function modalAllegati(id_strumento){
+
+   var dataString ="action=allegati&id_strumento="+ id_strumento;
+   exploreModal("amGestioneStrumenti.do",dataString,"#tab_allegati",function(datab,textStatusb){
+	   $('#myModalAllegati').modal();	   
+	   
+   });
+
+}
+
+
+$('#myModalAllegati').on('hidden.bs.modal',function(){
+	
+	$(document.body).css('padding-right', '0px');
+});
+
  
  $("#cliente_general_mod").change(function() {
 	    

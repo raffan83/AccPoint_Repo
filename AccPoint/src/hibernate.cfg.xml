@@ -241,6 +241,7 @@
  	<mapping class="AMInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMInterventoDTO.hbm.xml"/>
  	<mapping class="AMOperatoreDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMOperatoreDTO.hbm.xml"/>
 	<mapping class="AMOggettoProvaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMOggettoProvaDTO.hbm.xml"/>
+	<mapping class="AMOggettoProvaAllegatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMOggettoProvaAllegatoDTO.hbm.xml"/>
 	<mapping class="AMCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMCampioneDTO.hbm.xml"/>
 	<mapping class="AMTipoCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMTipoCampioneDTO.hbm.xml"/>
 	<mapping class="AMTipoProvaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMTipoProvaDTO.hbm.xml"/>

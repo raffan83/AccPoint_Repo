@@ -17,7 +17,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneAM_DAO;
+import it.portaleSTI.DAO.GestioneVerStrumentiDAO;
 import it.portaleSTI.DTO.AMInterventoDTO;
+import it.portaleSTI.DTO.AMOggettoProvaAllegatoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
@@ -392,6 +394,16 @@ public class GestioneAM_BO {
 	public static AMOggettoProvaZonaRifDTO getZonaRiferimentoFromID(int idValue, Session session) {
 		// TODO Auto-generated method stub
 		return GestioneAM_DAO.getZonaRiferimentoFromID(idValue, session);
+	}
+
+	public static ArrayList<AMOggettoProvaAllegatoDTO> getListaAllegatiStrumento(int id_strumento, Session session) {
+		
+		return GestioneAM_DAO.getListaAllegatiStrumento(id_strumento, session);
+	}
+
+	public static AMOggettoProvaAllegatoDTO getAllegatoStrumentoFormId(int id_allegato, Session session) {
+		
+		return GestioneAM_DAO.getAllegatoStrumentoFormId(id_allegato, session);
 	}
 
 }

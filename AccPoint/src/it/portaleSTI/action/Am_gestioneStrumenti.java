@@ -1,5 +1,7 @@
 package it.portaleSTI.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
@@ -8,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -15,6 +18,7 @@ import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,18 +34,20 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.AMInterventoDTO;
+import it.portaleSTI.DTO.AMOggettoProvaAllegatoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO;
-import it.portaleSTI.DTO.AMOperatoreDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerAllegatoStrumentoDTO;
+import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAM_BO;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneVerStrumentiBO;
 
 /**
  * Servlet implementation class listaCampioni
@@ -264,7 +270,77 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				myObj.addProperty("messaggio", "Oggetto prova salvato con successo!");
 				out.print(myObj);
 				
-			}else if(action.equals("modifica")) {
+			}else if(action.equals("clona")) {
+				
+				
+				ajax = true;
+				
+				String id_strumento = request.getParameter("id_strumento");
+				
+				AMOggettoProvaDTO strumento=GestioneAM_BO.getOggettoProvaFromID(Integer.parseInt(id_strumento), session);
+				
+				
+				AMOggettoProvaDTO nuovoStrumento= new AMOggettoProvaDTO();
+				
+				nuovoStrumento.setId_cliente(strumento.getId_cliente());
+				nuovoStrumento.setId_sede(strumento.getId_sede());
+				nuovoStrumento.setMatricola("CLONATO");
+				nuovoStrumento.setnFabbrica(strumento.getnFabbrica());
+				nuovoStrumento.setTipo(strumento.getTipo());
+				nuovoStrumento.setDescrizione(strumento.getDescrizione());
+				nuovoStrumento.setPressione(strumento.getPressione());
+				nuovoStrumento.setVolume(strumento.getVolume());
+				nuovoStrumento.setAnno(strumento.getAnno());
+				nuovoStrumento.setCostruttore(strumento.getCostruttore());
+				nuovoStrumento.setDataVerifica(strumento.getDataVerifica());
+				nuovoStrumento.setDataProssimaVerifica(strumento.getDataProssimaVerifica());
+				nuovoStrumento.setFrequenza(strumento.getFrequenza());
+				nuovoStrumento.setFilename_img(strumento.getFilename_img());
+				nuovoStrumento.setSondaVelocita(strumento.getSondaVelocita());
+				nuovoStrumento.setNumero_porzioni(strumento.getNumero_porzioni());
+
+				Set<AMOggettoProvaZonaRifDTO> listaZoneRif=strumento.getListaZoneRiferimento();
+				
+				Iterator<AMOggettoProvaZonaRifDTO> iter =listaZoneRif.iterator();
+				
+				session.save(nuovoStrumento);
+				
+				File folder=new File(Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+nuovoStrumento.getId());
+				
+				if(!folder.exists()) 
+				{
+					folder.mkdir();
+				}
+				
+				Utility.copiaFile(Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId()+"\\"+strumento.getFilename_img(), Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+nuovoStrumento.getId()+"\\"+strumento.getFilename_img());
+				
+				while(iter.hasNext()) 
+				{
+					AMOggettoProvaZonaRifDTO zona = iter.next();
+					
+					AMOggettoProvaZonaRifDTO nuovaZona= new AMOggettoProvaZonaRifDTO();					 
+					nuovaZona.setIdStrumento(nuovoStrumento.getId());
+					nuovaZona.setMateriale(zona.getMateriale());
+					nuovaZona.setSpessore(zona.getSpessore());
+					nuovaZona.setZonaRiferimento(zona.getZonaRiferimento());
+					nuovaZona.setIndicazione(zona.getIndicazione());
+					nuovaZona.setPunto_intervallo_inizio(zona.getPunto_intervallo_inizio());
+					nuovaZona.setPunto_intervallo_fine(zona.getPunto_intervallo_fine());
+					
+					session.save(nuovaZona);
+					
+					nuovoStrumento.getListaZoneRiferimento().add(nuovaZona);
+				}
+
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Oggetto prova clonato con successo!");
+				out.print(myObj);
+				
+				
+			}
+			else if(action.equals("modifica")) {
 				
 				ajax = true;
 				
@@ -299,22 +375,16 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		        String id_sede = ret.get("sede_general_mod");		        
 		        String descrizione = ret.get("descrizione_mod");
 		        String matricola = ret.get("matricola_mod");
-		        String zona_rif_fasciame = ret.get("zona_rif_fasciame_mod");
-		        String spessore_fasciame = ret.get("spessore_fasciame_mod");
 		        String tipo = ret.get("tipo_mod");
 		        String volume = ret.get("volume_mod");
-		        String materiale_fasciame = ret.get("materiale_fasciame_mod");
 		        String pressione = ret.get("pressione_mod");
 		        String costruttore = ret.get("costruttore_mod");
 		        String numero_fabbrica = ret.get("numero_fabbrica_mod");
-		        String zona_rif_fondo = ret.get("zona_rif_fondo_mod");
-		        String spessore_fondo = ret.get("spessore_fondo_mod");
 		        String anno = ret.get("anno_mod");
 		        String frequenza = ret.get("frequenza_mod");
 		        String data_verifica = ret.get("data_verifica_mod");
 		        String data_prossima = ret.get("data_prossima_verifica_mod");
 		        String sondaVelocita = ret.get("sonda_velocita_mod");
-		        String materiale_fondo = ret.get("materiale_sonda_mod");
 		        String table_zone = ret.get("table_zone_mod"); 
 		        String numeroPorzioni=ret.get("numero_porzioni_mod");
 		        
@@ -427,6 +497,96 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Oggetto prova salvato con successo!");
 				out.print(myObj);
+				
+			}else if(action.equals("allegati")) {
+				
+				String id_strumento = request.getParameter("id_strumento");
+							
+				ArrayList<AMOggettoProvaAllegatoDTO> lista_allegati_strumento = GestioneAM_BO.getListaAllegatiStrumento(Integer.parseInt(id_strumento), session);
+				
+				request.getSession().setAttribute("lista_allegati_strumento", lista_allegati_strumento);
+				
+				request.getSession().setAttribute("id_strumento", id_strumento);				
+				
+			
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAllegatiAMOggettoProva.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("upload_allegati")){
+				
+				ajax = true;
+				
+				String id_strumento = request.getParameter("id_strumento");			
+								
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+				PrintWriter out = response.getWriter();
+				response.setContentType("application/json");						
+					
+					List<FileItem> items = uploadHandler.parseRequest(request);
+					for (FileItem item : items) {
+						if (!item.isFormField()) {							
+								
+							AMOggettoProvaAllegatoDTO allegato_strumento = new AMOggettoProvaAllegatoDTO();
+							AMOggettoProvaDTO strumento = GestioneAM_BO.getOggettoProvaFromID(Integer.parseInt(id_strumento), session);
+							allegato_strumento.setStrumento(strumento);
+							allegato_strumento.setFilename(item.getName().replaceAll("'", "_"));
+							Utility.saveFile(item, Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId(),item.getName().replaceAll("'", "_"));	
+							session.save(allegato_strumento);							
+						}
+					}
+	
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Upload effettuato con successo!");
+					out.print(myObj);
+			}
+					else if(action.equals("download_allegato")){
+				
+				String id_strumento = request.getParameter("id_strumento");				
+				String id_allegato = request.getParameter("id_allegato");				
+			
+				AMOggettoProvaAllegatoDTO allegato_strumento = GestioneAM_BO.getAllegatoStrumentoFormId(Integer.parseInt(id_allegato), session);
+					
+				String percorso = Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+id_strumento+"//"+allegato_strumento.getFilename();
+				response.setContentType("application/octet-stream");
+				response.setHeader("Content-Disposition","attachment;filename="+ allegato_strumento.getFilename());
+		
+				ServletOutputStream outp = response.getOutputStream();
+				 File file = new File(percorso);
+					
+					FileInputStream fileIn = new FileInputStream(file);
+
+			
+					    byte[] outputByte = new byte[1];
+					    
+					    while(fileIn.read(outputByte, 0, 1) != -1)
+					    {
+					    	outp.write(outputByte, 0, 1);
+					    }
+					    				    
+					 
+					    fileIn.close();
+
+				
+			}
+			
+			
+			else if(action.equals("elimina_allegato")) {
+				
+				ajax=true;				
+
+				String id_allegato = request.getParameter("id_allegato");				
+			
+				AMOggettoProvaAllegatoDTO allegato_strumento = GestioneAM_BO.getAllegatoStrumentoFormId(Integer.parseInt(id_allegato), session);
+			
+				session.delete(allegato_strumento);	
+				
+				
+				PrintWriter out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Allegato eliminato con successo!");
+				out.print(myObj);
+				
 				
 			}
 			

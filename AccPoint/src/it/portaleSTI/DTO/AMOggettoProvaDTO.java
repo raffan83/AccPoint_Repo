@@ -1,7 +1,12 @@
 package it.portaleSTI.DTO;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class AMOggettoProvaDTO {
@@ -144,6 +149,16 @@ public class AMOggettoProvaDTO {
 		this.numero_porzioni = numero_porzioni;
 	}
 	public Set<AMOggettoProvaZonaRifDTO> getListaZoneRiferimento() {
+		
+		List<AMOggettoProvaZonaRifDTO> lista = new ArrayList<>(listaZoneRiferimento);
+        Collections.sort(lista, new Comparator<AMOggettoProvaZonaRifDTO>() {
+            @Override
+            public int compare(AMOggettoProvaZonaRifDTO o1, AMOggettoProvaZonaRifDTO o2) {
+                return Integer.compare(o1.getId(), o2.getId());
+            }
+        });
+        listaZoneRiferimento = new LinkedHashSet<>(lista);  // LinkedHashSet per mantenere l'ordine
+
 		return listaZoneRiferimento;
 	}
 	public void setListaZoneRiferimento(Set<AMOggettoProvaZonaRifDTO> listaZoneRiferimento) {

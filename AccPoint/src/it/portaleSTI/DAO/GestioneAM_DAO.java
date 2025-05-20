@@ -11,6 +11,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.AMInterventoDTO;
+import it.portaleSTI.DTO.AMOggettoProvaAllegatoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO;
 import it.portaleSTI.DTO.AMOperatoreDTO;
@@ -23,6 +24,7 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.AMCampioneDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerAllegatoStrumentoDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
@@ -400,6 +402,35 @@ public static AMOggettoProvaZonaRifDTO getZonaRiferimentoFromID(int idValue, Ses
 	}
 	
 	return res;
+}
+
+public static ArrayList<AMOggettoProvaAllegatoDTO> getListaAllegatiStrumento(int id_strumento, Session session) {
+	
+	ArrayList<AMOggettoProvaAllegatoDTO> lista = null;
+	
+	Query query = session.createQuery("from AMOggettoProvaAllegatoDTO a where a.strumento.id =:_id_strumento");
+	query.setParameter("_id_strumento", id_strumento);
+	
+	lista = (ArrayList<AMOggettoProvaAllegatoDTO>) query.list();
+	
+	return lista;
+}
+
+public static AMOggettoProvaAllegatoDTO getAllegatoStrumentoFormId(int id_allegato, Session session) {
+	
+	ArrayList<AMOggettoProvaAllegatoDTO> lista = null;
+	AMOggettoProvaAllegatoDTO result = null;
+	
+	Query query = session.createQuery("from AMOggettoProvaAllegatoDTO where id =:_id_allegato");
+	query.setParameter("_id_allegato", id_allegato);
+	
+	lista = (ArrayList<AMOggettoProvaAllegatoDTO>) query.list();
+	
+	if(lista.size()>0) {
+		result = lista.get(0);
+	}
+	
+	return result;
 }
 
 }

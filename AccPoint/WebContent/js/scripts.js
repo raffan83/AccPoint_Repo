@@ -14208,6 +14208,58 @@ function eliminaAllegatoVerStrumento(id_allegato){
     });
 }
 
+function eliminaAllegatoAMStrumento(id_allegato){
+	 
+	 var dataObj = {};
+	dataObj.id_allegato = id_allegato;
+	  $.ajax({
+   type: "POST",
+   url: "amGestioneStrumenti.do?action=elimina_allegato&id_allegato="+ id_allegato,
+   data: dataObj,
+   dataType: "json",
+   //if received a response from the server
+   success: function( data, textStatus) {
+  	 $('#myModalArchivio').hide();
+ 	  if(data.success)
+		  {  
+ 			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+   			  	$('#myModalError').removeClass();
+   				$('#myModalError').addClass("modal modal-success");
+   				$('#myModalError').modal('show');      				
+      			$('#myModalError').on('hidden.bs.modal', function(){	        			
+    				
+      				$('#myModalAllegati').hide();
+      				$('#myModalYesOrNo').hide();
+      				$('.modal-backdrop').hide();
+      				location.reload();
+				   $('.modal-backdrop').hide();
+      			    //  $(this).off('hidden.bs.modal');
+     			});			  
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+   },
+   error: function( data, textStatus) {
+ 	  $('#myModalYesOrNo').modal('hide');
+ 	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+   }
+   });
+}
 
 
 function addCalendarVerificazione(){ 

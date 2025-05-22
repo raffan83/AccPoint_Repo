@@ -277,7 +277,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_utilizzatore.split("_")[0]), Integer.parseInt(id_cliente_utilizzatore));
 					intervento.setNomeSedeUtilizzatore(sd.getDescrizione() + " - "+sd.getIndirizzo());
 				}else {
-					intervento.setNomeSedeUtilizzatore(cl.getNome() +" - "+cl.getIndirizzo()+"_"+cl.getCap()+"- "+cl.getCitta()+" ("+cl.getProvincia()+")");
+					intervento.setNomeSedeUtilizzatore(cl.getNome() +" - "+cl.getIndirizzo()+" - "+cl.getCap()+"- "+cl.getCitta()+" ("+cl.getProvincia()+")");
 				}
 				intervento.setOperatore(new AMOperatoreDTO(Integer.parseInt(operatore), "", ""));
 				intervento.setDataIntervento(df.parse(data_intervento));
@@ -412,7 +412,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_utilizzatore.split("_")[0]), Integer.parseInt(id_cliente_utilizzatore));
 					intervento.setNomeSedeUtilizzatore(sd.getDescrizione() + " - "+sd.getIndirizzo());
 				}else {
-					intervento.setNomeSedeUtilizzatore(cl.getNome() +" - "+cl.getIndirizzo()+"_"+cl.getCap()+"- "+cl.getCitta()+" ("+cl.getProvincia()+")");
+					intervento.setNomeSedeUtilizzatore(cl.getNome() +" - "+cl.getIndirizzo()+" - "+cl.getCap()+" - "+cl.getCitta()+" ("+cl.getProvincia()+")");
 				}
 			
 				intervento.setOperatore(new AMOperatoreDTO(Integer.parseInt(operatore), "", ""));
@@ -501,107 +501,110 @@ public class Am_gestioneInterventi extends HttpServlet {
 				String id_operatore= ret.get("operatore");
 				String id_tipo_prova = ret.get("tipo_prova");
 				String note = ret.get("note");
+				String ubicazione = ret.get("ubicazione");
 				
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
-				 
-				AMProvaDTO prova = new AMProvaDTO();	
-				
-				AMTipoProvaDTO tipo = GestioneAM_BO.getTipoProvaFromID(Integer.parseInt(id_tipo_prova), session);
-				AMCampioneDTO campione = GestioneAM_BO.getCampioneFromID(Integer.parseInt(id_campione), session);
 				AMOggettoProvaDTO strumento = GestioneAM_BO.getOggettoProvaFromID(Integer.parseInt(id_strumento), session);
-				AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);
-				AMOperatoreDTO operatore = GestioneAM_BO.getOperatoreFromID(Integer.parseInt(id_operatore), session);
 				
-				prova.setTipoProva(tipo);
-				prova.setCampione(campione);
-				prova.setStrumento(strumento);
-				prova.setEsito(esito);
-				prova.setData(df.parse(data));
-				prova.setIntervento(intervento);
-				prova.setNote(note);
-				
-				prova.setOperatore(operatore);
-				
-				session.save(prova);			
-				boolean esito_import = true;
-//				if(fileItem_excel!=null) {
-//					prova.setFilename_excel(filename_excel);
-//					Utility.saveFile(fileItem_excel, Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel", filename_excel);
-//					
-//					String matrix = GestioneAM_BO.getMatrix(Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel\\"+filename_excel);
-//					if(matrix.equals("[]")) {
-//						esito_import = false;
-//					}
-//					
-//					prova.setMatrixSpess(matrix);
-//				}
-				if(filename_excel!=null && !filename_excel.equals("")) {
-					prova.setFilename_excel(filename_excel);
-					Utility.saveFile(fileItem_excel, Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel", filename_excel);
-					
-					String[] values = GestioneAM_BO.getMatrix(Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel\\"+filename_excel);
-					
-					if(values[3].equals("[]")) {
-						esito_import = false;
-					}
-					
-					
-				//	prova.setSpess_min_fasciame(values[0]);					
-				//	prova.setSpess_min_fondo_sup(values[1]);
-				//	prova.setSpess_min_fondo_inf(values[2]);
-					
-					prova.setMatrixSpess(values[3]);
-			//		prova.setLabel_minimi(values[4]);
-					
-				}else {
-					int m = prova.getStrumento().getNumero_porzioni();
-					int n = 0;
-					AMOggettoProvaZonaRifDTO maxZona = null;
-					for (AMOggettoProvaZonaRifDTO zona : prova.getStrumento().getListaZoneRiferimento()) {
-					    if (maxZona == null || zona.getId() > maxZona.getId()) {
-					        maxZona = zona;
-					    }
-					}
-					
-					if(maxZona!=null) {
-						n = maxZona.getPunto_intervallo_fine();
-					}
-					
-					String matrix = "";
-					for (int i = 0; i < n; i++) {
-						matrix += "{";
-						for (int j = 0; j < m; j++) {
-							matrix += "0,";
-						}
-						matrix += "},";
-					}
-					prova.setMatrixSpess(matrix);
-				}
-				
-				
-				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
-				if(esito_import) {
-					session.update(prova);
+				
+				if(strumento.getFilename_img() == null || strumento.getFilename_img().equals("")) {
 					
-					AMRapportoDTO rapporto = new AMRapportoDTO();
-					rapporto.setProva(prova);
-					rapporto.setData(new Date());
-					rapporto.setUtente(utente);
-					rapporto.setStato(new StatoCertificatoDTO(1));
-					
-					session.save(rapporto);
-					myObj.addProperty("success", true);
-					myObj.addProperty("messaggio", "Prova salvata con successo!");
-				}else {
-					session.getTransaction().rollback();
 					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Formato matrice errato!");
-				}
+					myObj.addProperty("messaggio", "Attenzione! Sullo strumento selezionato non è presente l'immagine!");
 				
 				out.print(myObj);
+					
+				}else {
+					
+					AMTipoProvaDTO tipo = GestioneAM_BO.getTipoProvaFromID(Integer.parseInt(id_tipo_prova), session);
+					AMCampioneDTO campione = GestioneAM_BO.getCampioneFromID(Integer.parseInt(id_campione), session);
+					
+					AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);
+					AMOperatoreDTO operatore = GestioneAM_BO.getOperatoreFromID(Integer.parseInt(id_operatore), session);
+					
+					AMProvaDTO prova = new AMProvaDTO();	
+					
+					prova.setTipoProva(tipo);
+					prova.setCampione(campione);
+					prova.setStrumento(strumento);
+					prova.setEsito(esito);
+					prova.setData(df.parse(data));
+					prova.setIntervento(intervento);
+					prova.setNote(note);
+					prova.setUbicazione(ubicazione);
+					
+					prova.setOperatore(operatore);
+					
+					session.save(prova);			
+					boolean esito_import = true;
+
+					if(filename_excel!=null && !filename_excel.equals("")) {
+						prova.setFilename_excel(filename_excel);
+						Utility.saveFile(fileItem_excel, Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel", filename_excel);
+						
+						String[] values = GestioneAM_BO.getMatrix(Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel\\"+filename_excel);
+						
+						if(values[3].equals("[]")) {
+							esito_import = false;
+						}
+						
+						prova.setMatrixSpess(values[3]);
+		
+						
+					}else {
+						int m = prova.getStrumento().getNumero_porzioni();
+						int n = 0;
+						AMOggettoProvaZonaRifDTO maxZona = null;
+						for (AMOggettoProvaZonaRifDTO zona : prova.getStrumento().getListaZoneRiferimento()) {
+						    if (maxZona == null || zona.getId() > maxZona.getId()) {
+						        maxZona = zona;
+						    }
+						}
+						
+						if(maxZona!=null) {
+							n = maxZona.getPunto_intervallo_fine();
+						}
+						
+						String matrix = "";
+						for (int i = 0; i < n; i++) {
+							matrix += "{";
+							for (int j = 0; j < m; j++) {
+								matrix += "0,";
+							}
+							matrix += "},";
+						}
+						prova.setMatrixSpess(matrix);
+					}
+					
+					
+					myObj = new JsonObject();
+				
+					if(esito_import) {
+						session.update(prova);
+						
+						AMRapportoDTO rapporto = new AMRapportoDTO();
+						rapporto.setProva(prova);
+						rapporto.setData(new Date());
+						rapporto.setUtente(utente);
+						rapporto.setStato(new StatoCertificatoDTO(1));
+						
+						session.save(rapporto);
+						myObj.addProperty("success", true);
+						myObj.addProperty("messaggio", "Prova salvata con successo!");
+					}else {
+						session.getTransaction().rollback();
+						myObj.addProperty("success", false);
+						myObj.addProperty("messaggio", "Formato matrice errato!");
+					}
+					
+					out.print(myObj);
+					
+					
+				}
+				
 				
 				
 				
@@ -651,89 +654,99 @@ public class Am_gestioneInterventi extends HttpServlet {
 				String id_tipo_prova = ret.get("tipo_prova_mod");
 				String id_prova = ret.get("id_prova");
 				String note = ret.get("note_mod");
+				String ubicazione = ret.get("ubicazione_mod");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
-				 
-				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);	
-				
-				AMTipoProvaDTO tipo = GestioneAM_BO.getTipoProvaFromID(Integer.parseInt(id_tipo_prova), session);
-				AMCampioneDTO campione = GestioneAM_BO.getCampioneFromID(Integer.parseInt(id_campione), session);
 				AMOggettoProvaDTO strumento = GestioneAM_BO.getOggettoProvaFromID(Integer.parseInt(id_strumento), session);
-				AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);
-				AMOperatoreDTO operatore = GestioneAM_BO.getOperatoreFromID(Integer.parseInt(id_operatore), session);
-				
-				prova.setTipoProva(tipo);
-				prova.setCampione(campione);
-				prova.setStrumento(strumento);
-				prova.setEsito(esito);
-				prova.setData(df.parse(data));
-				prova.setIntervento(intervento);
-				prova.setNote(note);
-				prova.setOperatore(operatore);
-				
-				
-		
-				boolean esito_import = true;
-				if(filename_excel!=null && !filename_excel.equals("")) {
-					prova.setFilename_excel(filename_excel);
-					Utility.saveFile(fileItem_excel, Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel", filename_excel);
-					
-					String[] values = GestioneAM_BO.getMatrix(Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel\\"+filename_excel);
-					
-					if(values[3].equals("[]")) {
-						esito_import = false;
-					}
-				//	prova.setLabel_minimi(values[4]);
-					
-			//		prova.setSpess_min_fasciame(values[0]);					
-			//		prova.setSpess_min_fondo_sup(values[1]);
-			//		prova.setSpess_min_fondo_inf(values[2]);
-					
-					prova.setMatrixSpess(values[3]);
-					
-				}else {
-					int m = prova.getStrumento().getNumero_porzioni();
-					int n = 0;
-					AMOggettoProvaZonaRifDTO maxZona = null;
-					for (AMOggettoProvaZonaRifDTO zona : prova.getStrumento().getListaZoneRiferimento()) {
-					    if (maxZona == null || zona.getId() > maxZona.getId()) {
-					        maxZona = zona;
-					    }
-					}
-					
-					if(maxZona!=null) {
-						n = maxZona.getPunto_intervallo_fine();
-					}
-					
-					String matrix = "";
-					for (int i = 0; i < n; i++) {
-						matrix += "{";
-						for (int j = 0; j < m; j++) {
-							matrix += "0,";
-						}
-						matrix += "},";
-					}
-					prova.setMatrixSpess(matrix);
-				}
-				
-				
-				
-					
-				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
-				if(esito_import) {
-					session.update(prova);
-					
-					myObj.addProperty("success", true);
-					myObj.addProperty("messaggio", "Prova salvata con successo!");
-				}else {
+				
+				if(strumento.getFilename_img() == null || strumento.getFilename_img().equals("")) {
 					
 					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Formato matrice errato!");
-				}
+					myObj.addProperty("messaggio", "Attenzione! Sullo strumento selezionato non è presente l'immagine!");
 				
 				out.print(myObj);
+					
+				}else {
+					AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);	
+					
+					AMTipoProvaDTO tipo = GestioneAM_BO.getTipoProvaFromID(Integer.parseInt(id_tipo_prova), session);
+					AMCampioneDTO campione = GestioneAM_BO.getCampioneFromID(Integer.parseInt(id_campione), session);
+					AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);
+					AMOperatoreDTO operatore = GestioneAM_BO.getOperatoreFromID(Integer.parseInt(id_operatore), session);
+					
+					
+					prova.setTipoProva(tipo);
+					prova.setCampione(campione);
+					prova.setStrumento(strumento);
+					prova.setEsito(esito);
+					prova.setData(df.parse(data));
+					prova.setIntervento(intervento);
+					prova.setNote(note);
+					prova.setOperatore(operatore);
+					prova.setUbicazione(ubicazione);
+					
+			
+					boolean esito_import = true;
+					if(filename_excel!=null && !filename_excel.equals("")) {
+						prova.setFilename_excel(filename_excel);
+						Utility.saveFile(fileItem_excel, Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel", filename_excel);
+						
+						String[] values = GestioneAM_BO.getMatrix(Costanti.PATH_FOLDER+"\\AM_interventi\\"+intervento.getId()+"\\"+prova.getId()+"\\excel\\"+filename_excel);
+						
+						if(values[3].equals("[]")) {
+							esito_import = false;
+						}
+				
+						prova.setMatrixSpess(values[3]);
+						
+					}else {
+						int m = prova.getStrumento().getNumero_porzioni();
+						int n = 0;
+						AMOggettoProvaZonaRifDTO maxZona = null;
+						for (AMOggettoProvaZonaRifDTO zona : prova.getStrumento().getListaZoneRiferimento()) {
+						    if (maxZona == null || zona.getId() > maxZona.getId()) {
+						        maxZona = zona;
+						    }
+						}
+						
+						if(maxZona!=null) {
+							n = maxZona.getPunto_intervallo_fine();
+						}
+						
+						String matrix = "";
+						for (int i = 0; i < n; i++) {
+							matrix += "{";
+							for (int j = 0; j < m; j++) {
+								matrix += "0,";
+							}
+							matrix += "},";
+						}
+						prova.setMatrixSpess(matrix);
+					}
+					
+					
+					
+						
+					myObj = new JsonObject();
+					
+					if(esito_import) {
+						session.update(prova);
+						
+						myObj.addProperty("success", true);
+						myObj.addProperty("messaggio", "Prova salvata con successo!");
+					}else {
+						
+						myObj.addProperty("success", false);
+						myObj.addProperty("messaggio", "Formato matrice errato!");
+					}
+					
+					out.print(myObj);
+				}
+				
+				
+			
 				
 				
 				
@@ -857,20 +870,31 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);
 				
-				AMRapportoDTO rapporto = GestioneAM_BO.getRapportoFromProva(prova.getId(), session);
-				
-				boolean isAnteprima = false;
-				if(anteprima!=null && anteprima.equals("1")) {
-					isAnteprima = true;
-				}
-				
-				CreateCertificatoAM cert = new CreateCertificatoAM(prova, session, rapporto, isAnteprima);
-				
-				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
-				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Certificato salvato con successo!");
-				out.print(myObj);
+				
+				if(prova.getStrumento().getFilename_img() == null || prova.getStrumento().getFilename_img().equals("")) {
+					
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Attenzione! Sullo strumento selezionato non è presente l'immagine!");
+				
+					out.print(myObj);
+					
+				}else {
+					AMRapportoDTO rapporto = GestioneAM_BO.getRapportoFromProva(prova.getId(), session);
+					
+					boolean isAnteprima = false;
+					if(anteprima!=null && anteprima.equals("1")) {
+						isAnteprima = true;
+					}
+					
+					CreateCertificatoAM cert = new CreateCertificatoAM(prova, session, rapporto, isAnteprima);
+					
+					myObj = new JsonObject();
+					
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Certificato salvato con successo!");
+					out.print(myObj);
+				}
 				
 			}
 			
@@ -1005,7 +1029,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				}else {
 					prova.setEsito("POSITIVO");
 				}
-		//		prova.setLabel_minimi(label_minimi);
+
 				session.update(prova);
 				
 				myObj = new JsonObject();
@@ -1019,10 +1043,17 @@ public class Am_gestioneInterventi extends HttpServlet {
 			else if(action.equals("scarica_template")) {
 				
 				String path = Costanti.PATH_FOLDER+"\\AM_Interventi\\TemplateAM.xlsx";
-					response.setContentType("application/octet-stream");
-					  
-					 response.setHeader("Content-Disposition","attachment;filename=TemplateAM.xlsx");
 				
+				String isCad = request.getParameter("isCad");
+				
+				response.setContentType("application/octet-stream");
+				  
+				response.setHeader("Content-Disposition","attachment;filename=TemplateAM.xlsx");
+				
+				if(isCad!=null && isCad.equals("1")) {
+					path = Costanti.PATH_FOLDER+"\\AM_Interventi\\Disegno serbatoi.dwg";
+					response.setHeader("Content-Disposition","attachment;filename=Disegno serbatoi.dwg");
+				}
 				
 				Utility.downloadFile(path, response.getOutputStream());
 			}

@@ -258,7 +258,7 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		           strumento.getListaZoneRiferimento().add(z);
 		        }
 				
-		    	if(filename_img!=null) {
+		        if(filename_img!=null&& !filename_img.equals("")) {
 					
 					Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId(), filename_img);
 					strumento.setFilename_img(filename_img);
@@ -312,7 +312,9 @@ public class Am_gestioneStrumenti extends HttpServlet {
 					folder.mkdir();
 				}
 				
-				Utility.copiaFile(Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId()+"\\"+strumento.getFilename_img(), Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+nuovoStrumento.getId()+"\\"+strumento.getFilename_img());
+				if(strumento.getFilename_img()!=null && !strumento.getFilename_img().equals("")) {
+					Utility.copiaFile(Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId()+"\\"+strumento.getFilename_img(), Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+nuovoStrumento.getId()+"\\"+strumento.getFilename_img());
+				}
 				
 				while(iter.hasNext()) 
 				{

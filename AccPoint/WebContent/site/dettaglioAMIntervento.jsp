@@ -116,6 +116,10 @@
                  <li class="list-group-item">
                   <b>Template Prova</b> <a class="customTooltip pull-right  btn btn-success btn-xs" title="Scarica Template Excel" onclick="callAction('amGestioneInterventi.do?action=scarica_template')"><i class="fa fa-file-excel-o"></i></a>
                 </li>
+                
+                 <li class="list-group-item">
+                  <b>Template CAD</b> <a class="customTooltip pull-right  btn btn-danger btn-xs" title="Scarica Template CAD" onclick="callAction('amGestioneInterventi.do?action=scarica_template&isCad=1')"><i class="fa fa-file"></i></a>
+                </li>
         </ul>
         
    
@@ -202,7 +206,7 @@ NON CONFORME A SPECIFICA
 <td>
 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della prova" onClick="callAction('amGestioneInterventi.do?action=dettaglio_prova&id_prova=${utl:encryptData(rapporto.prova.id)}')"><i class="fa fa-search"></i></a>
 <c:if test="${rapporto.stato.id == 1}">
-<a class="btn btn-warning customTooltip" title="Click per modificare della prova" onClick="modalModificaProva('${rapporto.prova.id}','${rapporto.prova.tipoProva.id}','${rapporto.prova.data}','${rapporto.prova.strumento.id}','${rapporto.prova.campione.id}','${rapporto.prova.operatore.id}','${rapporto.prova.esito}', '${rapporto.prova.filename_excel }','${rapporto.prova.filename_img }','${utl:escapeJS(rapporto.prova.note) }')"><i class="fa fa-edit"></i></a>
+<a class="btn btn-warning customTooltip" title="Click per modificare della prova" onClick="modalModificaProva('${rapporto.prova.id}','${rapporto.prova.tipoProva.id}','${rapporto.prova.data}','${rapporto.prova.strumento.id}','${rapporto.prova.campione.id}','${rapporto.prova.operatore.id}','${rapporto.prova.esito}', '${rapporto.prova.filename_excel }','${rapporto.prova.filename_img }','${utl:escapeJS(rapporto.prova.note) }','${utl:escapeJS(rapporto.prova.ubicazione) }')"><i class="fa fa-edit"></i></a>
 
 <c:if test="${rapporto.prova.matrixSpess!=null && rapporto.prova.matrixSpess!=''}">
 <a class="btn btn-info customTooltip" title="Click per generare l'anteprima di stampa" onClick="generaCertificatoAM('${rapporto.prova.id}', 1)"><i class="fa fa-print"></i></a>
@@ -337,6 +341,16 @@ NON CONFORME A SPECIFICA
        	</div>
        </div><br>
        
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Ubicazione</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input type="text" class="form-control" id="ubicazione" name="ubicazione"> 
+       	</div>
+       		
+       </div><br>
+       
         <div class="row">
        <!-- <div class="col-xs-12"> -->
        <div class="col-xs-4">
@@ -357,7 +371,7 @@ NON CONFORME A SPECIFICA
 		
 			<div class="row">
        	<div class="col-sm-3">
-       		<label>Assistente</label>
+       		<label>Operatore</label>
        	</div>
        	<div class="col-sm-9">
 				<select  id="operatore" name="operatore" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona operatore..." style="width:100%" required>
@@ -494,6 +508,16 @@ NON CONFORME A SPECIFICA
                 </span>
         </div> 
        	</div>
+       </div><br>
+       
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Ubicazione</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input type="text" class="form-control" id="ubicazione_mod" name="ubicazione_mod"> 
+       	</div>
+       		
        </div><br>
        
         <div class="row">
@@ -870,7 +894,7 @@ $('#file_firma').change(function(){
 	$('#label_firma').html($(this).val().split("\\")[2]);
 });
 	
-function modalModificaProva(id_prova, id_tipo, data, id_strumento, id_campione, id_operatore, esito, filename_excel, filename_img, note){
+function modalModificaProva(id_prova, id_tipo, data, id_strumento, id_campione, id_operatore, esito, filename_excel, filename_img, note, ubicazione){
 	$('#isMod').val(1)
 	
 	$('#id_prova').val(id_prova);
@@ -889,6 +913,7 @@ function modalModificaProva(id_prova, id_tipo, data, id_strumento, id_campione, 
 	$('#esito_mod').val(esito);
 	$('#esito_mod').change();
 	$('#note_mod').val(note);
+	$('#ubicazione_mod').val(ubicazione)
 	
 	
 	if(data!=null && data!=''){
@@ -931,12 +956,18 @@ function generaCertificatoAM(id_prova, isAnteprima){
 	pleaseWaitDiv.modal()
 	
 	if(isAnteprima!=null && isAnteprima ==1){
-		callAjax(dataObj, "amGestioneInterventi.do?action=genera_certificato",function(data){
+		
+		var newTab = window.open('', '_blank');
+		callAjax(dataObj, "amGestioneInterventi.do?action=genera_certificato", function(data) {
 			
-			if(data.success){
-				callAction("amGestioneInterventi.do?action=download_certificato&isAnteprima=1&id_prova="+id_prova)
+			if (data.success) {
+				var url = "amGestioneInterventi.do?action=download_certificato&isAnteprima=1&id_prova=" + id_prova;
+
+				newTab.location.href = url;
+			} else {
+
+				newTab.close();
 			}
-			
 		});
 	}else{
 		callAjax(dataObj, "amGestioneInterventi.do?action=genera_certificato")
@@ -944,7 +975,6 @@ function generaCertificatoAM(id_prova, isAnteprima){
 	
 	
 }
-	
 	
     $(document).ready(function() { 
     	

@@ -16788,7 +16788,7 @@ success: function( data, textStatus) {
 		  $('#myModalErrorContent').html(data.messaggio);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#report_button').show();
+			$('#report_button').hide();
 			$('#visualizza_report').show();
 				$('#myModalError').modal('show');	      			 
 	  }
@@ -16854,7 +16854,7 @@ $.ajax({
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#report_button').show();
+				//$('#report_button').show();
 				$('#visualizza_report').show();
 					$('#myModalError').modal('show');	      			 
 		  }

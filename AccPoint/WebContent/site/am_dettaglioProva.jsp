@@ -88,7 +88,7 @@
                   <c:if test="${prova.matrixSpess!=null && prova.matrixSpess!=''}">
 
 <a class="btn btn-success btn-xs customTooltip pull-right" title="Click per generare il certificato" onClick="modalYesOrNo('${prova.id}')" style="margin-left:2px"><i class="fa fa-check"></i></a>
-<a class="btn btn-info btn-xs customTooltip pull-right" title="Click per generare l'anteprima di stampa" onClick="generaCertificatoAM('${prova.id}', 1)"><i class="fa fa-print"></i></a>
+<a class="btn btn-info btn-xs customTooltip pull-right"  title="Click per generare l'anteprima di stampa"  onClick="generaCertificatoAM('${prova.id}', 1)"><i class="fa fa-print"></i></a>
 
 </c:if>
 </c:if>
@@ -268,9 +268,16 @@
  <div class="col-xs-4">
 
  </c:if>
-
+ <c:choose>
+ <c:when test="${prova.strumento.filename_img !=null && prova.strumento.filename_img != '' }">
 		<img src="amGestioneInterventi.do?action=immagine" alt="Immagine della prova" class="img-fluid d-block mx-auto" style="height: 300px; width: auto;" />
-		
+		</c:when>
+		 <c:otherwise>
+		<label>Immagine assente</label>
+		</c:otherwise>
+ </c:choose>
+
+	
  </div><br>
  
  <c:if test="${fn:length(colonne)<=10}">
@@ -331,8 +338,20 @@
  <div class="row">
 
 <div class="col-xs-6">
+<table id="tabMinimi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+    <thead >
+        <tr>
+            <th style="text-align:center">Spessori Minimi</th>
+            <th style="min-width:100px">Valore</th>
+        </tr>
+      
+    </thead>
+    <tbody>
 
-<textarea rows="4" style="width:100%" class="form-control" id="label_minimi" readonly></textarea>
+   
+    </tbody>
+</table>
+<%-- <textarea rows="4" style="width:100%" class="form-control" id="label_minimi" readonly></textarea> --%>
 
 </div>
 </div><br>
@@ -496,12 +515,18 @@
 		pleaseWaitDiv.modal()
 		
 		if(isAnteprima!=null && isAnteprima ==1){
-			callAjax(dataObj, "amGestioneInterventi.do?action=genera_certificato",function(data){
+			
+			var newTab = window.open('', '_blank');
+			callAjax(dataObj, "amGestioneInterventi.do?action=genera_certificato", function(data) {
 				
-				if(data.success){
-					callAction("amGestioneInterventi.do?action=download_certificato&isAnteprima=1&id_prova="+id_prova)
+				if (data.success) {
+					var url = "amGestioneInterventi.do?action=download_certificato&isAnteprima=1&id_prova=" + id_prova;
+
+					newTab.location.href = url;
+				} else {
+
+					newTab.close();
 				}
-				
 			});
 		}else{
 			callAjax(dataObj, "amGestioneInterventi.do?action=genera_certificato")
@@ -515,12 +540,22 @@
   var listaEntry = JSON.parse(jsonText);
  $(document).ready(function(){
 	 
+	 var table =   $('#tabMinimi').DataTable({
+	        paging: false,        
+	        ordering: false,      
+	        searching: false,     
+	        info: false           
+	    });
+	 
 calcolaMinimi()
  })
  
  function calcolaMinimi(){
-	 var testoMinimi = "";
+	
+	 
+	 var table =   $('#tabMinimi').DataTable();
 
+	 table.clear();
       // riga iniziale (assumendo che le righe sono 1-based)
 
      listaEntry.forEach(function(entry, index) {
@@ -545,14 +580,23 @@ calcolaMinimi()
              
          }
 
-         testoMinimi += "Minimo " + entry.zonaRiferimento + ": " + minVal + " mm\n";
+        /*  testoMinimi += "Minimo " + entry.zonaRiferimento + ": " + minVal + " mm\n";
 
          // Aggiorno startRow per la prossima zona
-         startRow = endRow + 1;
+         startRow = endRow + 1; */
+         
+         table.row.add([
+             entry.zonaRiferimento,
+             minVal + ' mm'
+         ]);
+         
      });
 
      // Imposto il testo nel campo di testo (ad esempio con id='campoMinimi')
-     $('#label_minimi').val(testoMinimi);    
+     //$('#label_minimi').val(testoMinimi);    
+     
+
+     table.draw();
  }
  
  
@@ -566,15 +610,6 @@ calcolaMinimi()
 	    $('#esito').attr("readonly", false);
 	    $('#btn_salva').show()
 	    
-	 /*    var jsonText = document.getElementById('lista_zone_minimi').textContent;
-	    var listaEntry = JSON.parse(jsonText);
-
-	    listaEntry.forEach(function(entry) {
-	      console.log(entry.key + ": " + entry.value);
-	    });
-	    
-	     */
-	     
 	    
 	 	  $('#tabPM tbody td').off('input').on('input', function() {
 	 	       calcolaMinimi();
@@ -611,6 +646,7 @@ calcolaMinimi()
         });
 
        
+	    var formatted = "["+result.join(',')+"]";
 	    
 	    dataObj ={};
 	    dataObj.matrix = formatted;

@@ -334,7 +334,7 @@
 			<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Carica Immagine...</span>
-				<input accept=".jpg,.png"  id="fileupload_img" name="fileupload_img" type="file" required="required">
+				<input accept=".jpg,.png"  id="fileupload_img" name="fileupload_img" type="file" >
 		       
 		   	 </span>
 		   	</div>

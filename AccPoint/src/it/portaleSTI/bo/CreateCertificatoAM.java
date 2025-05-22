@@ -3,9 +3,19 @@ package it.portaleSTI.bo;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.col;
+import static net.sf.dynamicreports.report.builder.DynamicReports.field;
+import static net.sf.dynamicreports.report.builder.DynamicReports.report;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
+import static net.sf.dynamicreports.report.builder.DynamicReports.grp;
 
+import net.sf.dynamicreports.report.builder.style.BorderBuilder;
+import net.sf.dynamicreports.report.builder.style.ConditionalStyleBuilder;
+import net.sf.dynamicreports.report.builder.style.StyleBuilder;
+import net.sf.dynamicreports.report.builder.style.Styles;
+import net.sf.dynamicreports.report.definition.ReportParameters;
+
+import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,14 +24,19 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -49,8 +64,10 @@ import it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO;
 import it.portaleSTI.DTO.AMProgressivoDTO;
 import it.portaleSTI.DTO.AMProvaDTO;
 import it.portaleSTI.DTO.AMRapportoDTO;
+import it.portaleSTI.DTO.AMReportDTO;
 import it.portaleSTI.DTO.AM_CertificatoWrapper;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -59,22 +76,30 @@ import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.column.Columns;
+import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
+import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.expression.Expressions;
+import net.sf.dynamicreports.report.builder.group.GroupBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
+import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.LineStyle;
 import net.sf.dynamicreports.report.constant.Markup;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
 import net.sf.dynamicreports.report.constant.SplitType;
 import net.sf.dynamicreports.report.constant.StretchType;
+import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
+import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -83,6 +108,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
@@ -90,7 +116,6 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreateCertificatoAM {
 	
-	static Integer max_colonne;
 	
 	public CreateCertificatoAM(AMProvaDTO prova, Session session, AMRapportoDTO rapporto, boolean isAnteprima) throws Exception {
 		build(prova, session, rapporto,isAnteprima);
@@ -99,20 +124,8 @@ public class CreateCertificatoAM {
 	public static void build(AMProvaDTO prova, Session session, AMRapportoDTO rapporto, boolean isAnteprima) throws Exception 
 	{
 	
-	
-		List<AM_CertificatoWrapper> listaWrapper = new ArrayList<>();
-		
-//		AMCampioneDTO campione =GestioneAM_BO.getCampioneFromID(1, session);
-//		
-//		AMOggettoProvaDTO strumento= GestioneAM_BO.getOggettoProvaFromID(1, session);
-//
-//		
-//		listaWrapper.add(new AM_CertificatoWrapper(campione, strumento));
-//		
+
 		InputStream is  = PivotTemplate.class.getResourceAsStream("ReportAM.jrxml");
-		
-	//	JasperReport report = JasperCompileManager.compileReport(is);
-		
 		
 		JasperReportBuilder report = DynamicReports.report();
 		
@@ -125,12 +138,28 @@ public class CreateCertificatoAM {
 		String ubicazione="";
 		
 		if(prova.getIntervento().getNomeCliente()!=null) {
-			ubicazione+=prova.getIntervento().getNomeCliente()+ " - "+prova.getIntervento().getNomeSede();
+			
+			ubicazione+=prova.getIntervento().getNomeCliente();
+			
+			if(!prova.getIntervento().getNomeSede().equals("Non Associate")) {
+				ubicazione += " - "+prova.getIntervento().getNomeSede();
+			}
+			
 		}
 		
 		
-		if(prova.getIntervento().getId_sede_utilizzatore()!=0) {
-			ubicazione+= "\nPresso "+ prova.getIntervento().getNomeSedeUtilizzatore();
+		if(prova.getIntervento().getId_cliente()!=prova.getIntervento().getId_cliente_utilizzatore()) {
+			
+			if(!prova.getIntervento().getNomeSedeUtilizzatore().equals("Non Associate")) {
+				ubicazione+= "\nPresso "+ prova.getIntervento().getNomeSedeUtilizzatore();
+			}else {
+				ubicazione+= "\nPresso "+ prova.getIntervento().getNomeClienteUtilizzatore();
+			}
+			
+		}
+		
+		if(prova.getUbicazione()!=null) {
+			ubicazione+= " - "+prova.getUbicazione();
 		}
 		
 		
@@ -220,25 +249,25 @@ public class CreateCertificatoAM {
 		}
 
 		if(prova.getCampione().getRilevatoreOut()!=null) {
-			report.addParameter("rilevatore_out", prova.getCampione().getRilevatoreOut());
+			report.addParameter("rilevatore_out", " "+ prova.getCampione().getRilevatoreOut());
 		}else {
 			report.addParameter("rilevatore_out", "");
 		}
 		
 		if(prova.getCampione().getMezzoAccoppiante()!=null) {
-			report.addParameter("mezzo_accoppiante", prova.getCampione().getMezzoAccoppiante());
+			report.addParameter("mezzo_accoppiante", " "+ prova.getCampione().getMezzoAccoppiante());
 		}else {
 			report.addParameter("mezzo_accoppiante", "");
 		}
 		
 		if(prova.getCampione().getBloccoRiferimento()!=null) {
-			report.addParameter("blocco_riferimento", prova.getCampione().getBloccoRiferimento());
+			report.addParameter("blocco_riferimento", " "+ prova.getCampione().getBloccoRiferimento());
 		}else {
 			report.addParameter("blocco_riferimento", "");
 		}
 		
 		if(prova.getCampione().getMatricola()!=null) {
-			report.addParameter("matricola_campione", prova.getCampione().getMatricola());
+			report.addParameter("matricola_campione", " "+ prova.getCampione().getMatricola());
 		}else {
 			report.addParameter("matricola_campione", "");
 		}
@@ -331,45 +360,48 @@ public class CreateCertificatoAM {
 		
 		SubreportBuilder subreportZone; 
 		subreportZone = cmp.subreport(getTableReportZone(prova.getStrumento().getListaZoneRiferimento()));
-		
-		SubreportBuilder subreport; 
-		subreport = cmp.subreport(getTableReport(prova));
-		
-		File file = new File(Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\img\\"+prova.getFilename_img());
+
+		File file = new File(Costanti.PATH_FOLDER+"\\AM_Interventi\\Strumenti\\"+prova.getStrumento().getId()+"\\"+prova.getStrumento().getFilename_img());
 		Image image = ImageIO.read(file);
 		
-
 		
-		String[] label_minimi = {"Test","Test"};//prova.getLabel_minimi().split(",");
-		
-		String str = "";
-		for (String string : label_minimi) {
-			str+=string.replace("}", "").replace("{", "")+"\n";
-		}
+		String minimi = calcolaMinimi(prova);
+				
+		int max_colonne = calcolaMaxColonne(prova);
+		int max_righe = calcolaMaxRighe(prova);
 		
 		VerticalListBuilder vl = null;
-		
-		if(max_colonne <10) {
+		int larghezzaPagina = 553;
+		String str = "";	
+		if(max_colonne <11 && max_righe <20) {
+			
+			int larghezzaDisponibileSubreport = larghezzaPagina - 270 - 25;
+			
+			SubreportBuilder subreport = cmp.subreport(getTableReport(prova, larghezzaDisponibileSubreport, max_colonne, max_righe));
+			
 			HorizontalListBuilder hl = cmp.horizontalList(
 					cmp.image(image).setFixedWidth(270).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER),
 					cmp.horizontalGap(25),
 					cmp.verticalList(
-							subreport.setWidth(553), 
+							subreport, 
 							cmp.verticalGap(5),
-							cmp.text(str)
+							cmp.text(minimi).setStyle(Styles.style().setForegroundColor(Color.blue))
 
 							)
 					);
 			
-			 vl = cmp.verticalList(hl, cmp.verticalGap(25));
+			 vl = cmp.verticalList(cmp.verticalGap(5),hl, cmp.verticalGap(5));
 		}else {
+			
+			 SubreportBuilder subreport = cmp.subreport(getTableReport(prova, larghezzaPagina, max_colonne, max_righe));
 			 vl = cmp.verticalList(
-					 cmp.image(image).setFixedHeight(250).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER),
-					 
 					 cmp.verticalGap(5),
-					 subreport.setWidth(553), 
-					 cmp.text(str));
-
+					 cmp.image(image).setFixedHeight(250).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER),
+					 cmp.pageBreak(),
+					 cmp.verticalGap(15),
+					 subreport, 
+					 cmp.verticalGap(5),
+					 cmp.text(minimi).setStyle(Styles.style().setForegroundColor(Color.blue)));
 					 
 		}
 		
@@ -377,31 +409,37 @@ public class CreateCertificatoAM {
 		
 		File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"\\immagine_am.png");
 		report.addParameter("immagine_am", imageHeader);
+	
+		TextColumnBuilder<String> groupColumn = col.column("", "tabZone", type.stringType())
+			    .setStyle(stl.style().setPadding(0).setTopPadding(0));
+
 		
-		report.columnHeader(subreportZone.setWidth(553), cmp.verticalGap(5)).setColumnHeaderPrintWhenExpression(Expressions.printInFirstPage());
+		GroupBuilder group = grp.group(groupColumn);
+
+		// Aggiungo il subreport nella header del gruppo
+		group.addHeaderComponent(subreportZone.setStyle(
+		        stl.style().setPadding(0).setTopPadding(0).setBottomPadding(0)));
+		
+
+		report.addGroup(group);
+		group.setHeaderSplitType(SplitType.IMMEDIATE);
 		report.addDetail(vl).setDetailSplitType(SplitType.IMMEDIATE);
 		
+
 		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
 		report.pageFooter(
 				cmp.horizontalList(
 						cmp.text("MOD-P0010-01").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 						cmp.pageXslashY(),
-						//cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
 						cmp.text("Rev A. del 13/10/2022").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
 						)
 				);
 
 		
-		//report.ignorePagination();
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
 		JasperPrint jasperPrint1 = report.toJasperPrint();
 		jasperPrintList.add(jasperPrint1);
 		
-		
-	//	String path ="C:\\Users\\antonio.dicivita\\Desktop\\TestCeftificatoSE.pdf";
-
-		
-		 // System.getProperty("user.home")+"\\Desktop\\RapportoMisuraSpessimetrica.pdf";
 		String path_folder = Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\Certificati\\";
 		File folder = new File(path_folder);
 		
@@ -442,16 +480,6 @@ public class CreateCertificatoAM {
 			addAllegato(file_report, patentino);
 		}
 		
-	//	Map<String, Object> parameters = new HashMap<>(); // se hai parametri, altrimenti lascia vuoto
-
-	//	JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listaWrapper);
-		
-	
-		
-		//JasperPrint print = JasperFillManager.fillReport(report, parameters, dataSource);
-		
-		//JasperExportManager.exportReportToPdfFile(print, System.getProperty("user.home")+"\\Desktop\\RapportoMisuraSpessimetrica.pdf");
-		
 		if(!isAnteprima) {
 			rapporto.setData(new Date());
 			rapporto.setNomeFile(prova.getnRapporto()+".pdf");
@@ -466,6 +494,11 @@ public class CreateCertificatoAM {
 		
 	}
 	
+	private static int calcolaMaxRighe(AMProvaDTO prova) {
+		
+		return parseMatrice(prova.getMatrixSpess()).size();
+	}
+
 	public static void addBozza(String filepath, String newfile) {
 
 		try {
@@ -516,84 +549,151 @@ public class CreateCertificatoAM {
 		
 	}
 	
-	@SuppressWarnings("deprecation")
-	public static JasperReportBuilder getTableReport(AMProvaDTO prova) throws Exception{
-
-		JasperReportBuilder report = DynamicReports.report();
-
-		try {			
-			 report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
-			//report.addColumn(col.column("RISULTATI MISURE SPESSIMETRICHE [mm]","matrix", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-			 report.title(
-				        cmp.text("RISULTATI MISURE SPESSIMETRICHE [mm]")
-				           .setStyle(Templates.columnTitleStyle));
-			String matrice = prova.getMatrixSpess();
-			
-			 List<String> rows = new ArrayList<>();
-			 
-			 List<List<String>> data = new ArrayList<>();
-			    Pattern pattern = Pattern.compile("\\{([^}]*)\\}");
-			    Matcher matcher = pattern.matcher(matrice);
-			    while (matcher.find()) {
-			        String[] values = matcher.group(1).split(",");
-			        List<String> row = new ArrayList<>();
-			        for (String v : values) {
-			            row.add(v.trim());
-			        }
-			        data.add(row);
-			    }
-		        
-			    int maxColonne = data.stream().mapToInt(List::size).max().orElse(0);
-			    String[] nomiColonne = new String[maxColonne + 1];
-			    nomiColonne[0] = "Riga";
-			    for (int i = 0; i < maxColonne; i++) {
-			        nomiColonne[i + 1] = Utility.indiceToLettere(i); // ad es. A, B, C, ...
-			    }
-			    
-			    DRDataSource ds = new DRDataSource(nomiColonne);
-			    for (int i = 0; i < data.size(); i++) {
-			        List<String> riga = data.get(i);
-			        Object[] valori = new Object[maxColonne + 1];
-			        valori[0] = String.valueOf(i + 1); // numerazione riga
-			        for (int j = 0; j < maxColonne; j++) {
-			            valori[j + 1] = (j < riga.size()) ? riga.get(j).replace(".", ",") : "";
-			        }
-			        ds.add(valori);
-			    }
-			    
-			
-	 		report.setDataSource(ds);
-	 		
-	 		max_colonne = maxColonne;
-	 		
-	 		for (String colName : nomiColonne) {
-	 			String text = colName;
-	 			if(colName.equals("Riga")) {
-	 				text = "";
-	 				report.addColumn(
-	 		 		        Columns.column(text, colName, type.stringType())
-	 		 		               .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnTitleStyle)
-	 		 		    );
-	 			}else {
-	 				report.addColumn(
-	 		 		        Columns.column(text, colName, type.stringType())
-	 		 		               .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setBorder(stl.penThin()))
-	 		 		    );
-	 			}
-	 		    
-	 		}
-	 	
-	 		//report.setColumnStyle(Templates.columnStyle.setBorder(stl.penThin())); // celle dati
-	 		report.setColumnTitleStyle(Templates.columnTitleStyle);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-
-		return report;
-	}
 	
+
+
+@SuppressWarnings("deprecation")
+public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza_disponibile, int maxColonne, int maxRighe) throws Exception {
+    JasperReportBuilder report = DynamicReports.report();
+
+    int totaleColonne = maxColonne + 2; // Riga + colonne dati
+    double fattore = 0.15;
+    
+    if(maxColonne>=10 || maxRighe>=19) {
+    	fattore = 0.10;
+    }
+    
+    int larghezzaColonnaZona = (int)(larghezza_disponibile * fattore); 
+    int larghezzaRimanente = larghezza_disponibile - larghezzaColonnaZona;
+    int larghezzaColonna = larghezzaRimanente / (totaleColonne - 1);
+    try {
+        report.title(
+            cmp.text("RISULTATI MISURE SPESSIMETRICHE [mm]")
+               .setStyle(Templates.columnTitleStyle).setFixedWidth(larghezzaColonna * (totaleColonne-1) + larghezzaColonnaZona)
+        );
+
+        String matrice = prova.getMatrixSpess();
+        List<List<String>> data = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\{([^}]*)\\}");
+        Matcher matcher = pattern.matcher(matrice);
+        while (matcher.find()) {
+            String[] values = matcher.group(1).split(",");
+            List<String> row = new ArrayList<>();
+            for (String v : values) {
+                row.add(v.trim());
+            }
+            data.add(row);
+        }
+
+
+        String[] nomiColonne = new String[maxColonne + 1];
+        nomiColonne[0] = "Riga";
+        for (int i = 0; i < maxColonne; i++) {
+            nomiColonne[i + 1] = Utility.indiceToLettere(i); // A, B, C...
+        }
+
+        Map<Integer, String> rigaToZona = new HashMap<>();
+        Set<Integer> righeConZona = new HashSet<>();
+        
+        for (AMOggettoProvaZonaRifDTO z : prova.getStrumento().getListaZoneRiferimento()) {
+            int inizio = z.getPunto_intervallo_inizio();
+            int fine = z.getPunto_intervallo_fine();
+            for (int i = inizio; i <= fine; i++) {
+                rigaToZona.put(i, z.getIndicazione());
+            }
+            righeConZona.add(inizio);
+        }
+
+        // Raggruppa per zona
+        Map<String, List<Object[]>> datiPerZona = new LinkedHashMap<>();
+        for (int i = 0; i < data.size(); i++) {
+            int rigaCorrente = i + 1;
+            String zona = rigaToZona.getOrDefault(rigaCorrente, "");
+            List<String> riga = data.get(i);
+
+            Object[] valori = new Object[maxColonne + 1];
+            valori[0] = String.valueOf(rigaCorrente);
+            for (int j = 0; j < maxColonne; j++) {
+                valori[j + 1] = (j < riga.size()) ? riga.get(j).replace(".", ",") : "";
+            }
+
+            datiPerZona.computeIfAbsent(zona, k -> new ArrayList<>()).add(valori);
+        }
+
+
+        // Contenuto complessivo del report
+        VerticalListBuilder mainList = cmp.verticalList();
+
+        // Intestazione unica
+        HorizontalListBuilder header = cmp.horizontalList();
+        header.add(cmp.text("") // dummy per allineare con zonaBox
+                     .setStyle(Templates.columnTitleStyle.setFontSize(7))
+                     .setFixedWidth(larghezzaColonnaZona));
+        for (String col : nomiColonne) {
+        	if(col.equals("Riga")) {
+        		header.add(cmp.text("")
+                        .setStyle(Templates.columnTitleStyle.setFontSize(7))
+                        .setFixedWidth(larghezzaColonna));
+        	}else {
+        		header.add(cmp.text(col)
+                        .setStyle(Templates.columnTitleStyle.setFontSize(7))
+                        .setFixedWidth(larghezzaColonna));	
+        	}
+            
+        }
+        mainList.add(header);
+
+        // Aggiungi blocchi zona + righe dati
+        for (Map.Entry<String, List<Object[]>> entry : datiPerZona.entrySet()) {
+            String zona = entry.getKey();
+            List<Object[]> righe = entry.getValue();
+
+            ComponentBuilder<?, ?> zonaBox = cmp.text(zona)
+                    .setStyle(Templates.columnTitleStyle.setFontSize(7))
+                    .setHeight(15 * righe.size())
+                    .setFixedWidth(larghezzaColonnaZona); // larghezza coerente
+
+            VerticalListBuilder righeList = cmp.verticalList();
+            for (Object[] riga : righe) {
+                HorizontalListBuilder rigaComp = cmp.horizontalList();
+                for (int j = 0; j <= maxColonne; j++) {
+                	if(j==0) {
+                		 rigaComp.add(
+                                 cmp.text((String) riga[j])
+                                    .setStyle(Templates.columnTitleStyle.setFontSize(7))
+                                    .setFixedWidth(larghezzaColonna)
+                             );
+                	}else {
+                		 rigaComp.add(
+                                 cmp.text((String) riga[j])
+                                    .setStyle(Templates.columnStyle.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER))
+                                    .setFixedWidth(larghezzaColonna)
+                             );
+                	}
+                   
+                }
+                righeList.add(rigaComp);
+            }
+
+            mainList.add(cmp.horizontalList(
+                zonaBox,
+                righeList
+            ));
+        }
+
+        report.summary(mainList).setSummarySplitType(SplitType.IMMEDIATE);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw e;
+    }
+
+    return report;
+}
+
+
+
+
 	
 	@SuppressWarnings("deprecation")
 	public static JasperReportBuilder getTableReportZone( Set<AMOggettoProvaZonaRifDTO> listaZoneRiferimento) throws Exception{
@@ -602,18 +702,18 @@ public class CreateCertificatoAM {
 
 		try {			
 
-			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
+			report.setColumnStyle((Templates.boldCenteredStyle).setBorder(stl.pen1Point()).setFontSize(9));
 			
 			report.addColumn(
-		 		        Columns.column("ZONA DI RIFERIMENTO", "zona", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setBorder(stl.penThin()))
+		 		        Columns.column("ZONA DI RIFERIMENTO", "zona", type.stringType()).setFixedWidth(150).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setForegroundColor(Color.blue).setBorder(stl.pen1Point()))
 		 		    );
 			report.addColumn(
-		 		        Columns.column("MATERIALE", "materiale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setBorder(stl.penThin()))
+		 		        Columns.column("MATERIALE", "materiale", type.stringType()).setFixedWidth(150).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setForegroundColor(Color.blue).setBorder(stl.pen1Point()))
 		 		    );
 			report.addColumn(
-		 		        Columns.column("SPESSORE", "spessore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setBorder(stl.penThin()))
+		 		        Columns.column("SPESSORE", "spessore", type.stringType()).setFixedWidth(253).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
 		 		    );
-			
+			report.getReport().getTitleBand().setPrintWhenExpression(Expressions.printNotInFirstPage());
 			
 			
 			  
@@ -639,7 +739,7 @@ public class CreateCertificatoAM {
 			
 	 		report.setDataSource(ds);
 		
-	 		report.setColumnTitleStyle(Templates.columnTitleStyle);
+	 		report.setColumnTitleStyle(Templates.columnTitleStyle.setFontName("SansSerif").setBold(false).setFontSize(8).setForegroundColor(Color.black).setBorder(stl.pen1Point()));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -648,6 +748,9 @@ public class CreateCertificatoAM {
 
 		return report;
 	}
+	
+	
+
 	
 private static void addAllegato(File source, File allegato) throws IOException {
 		
@@ -666,7 +769,7 @@ private static void addAllegato(File source, File allegato) throws IOException {
 			new ContextListener().configCostantApplication();
 			Session session =SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
-			AMProvaDTO prova = GestioneAM_BO.getProvaFromID(11, session);
+			AMProvaDTO prova = GestioneAM_BO.getProvaFromID(15, session);
 		
 			AMRapportoDTO r = GestioneAM_BO.getRapportoFromProva(prova.getId(), session);
 			new CreateCertificatoAM(prova, session, r, false);
@@ -675,4 +778,98 @@ private static void addAllegato(File source, File allegato) throws IOException {
 		}
 
 		
+		
+		
+		private static int calcolaMaxColonne(AMProvaDTO prova) {
+		    String matrice = prova.getMatrixSpess();
+		    List<List<String>> data = new ArrayList<>();
+		    Pattern pattern = Pattern.compile("\\{([^}]*)\\}");
+		    Matcher matcher = pattern.matcher(matrice);
+		    while (matcher.find()) {
+		        String[] values = matcher.group(1).split(",");
+		        List<String> row = new ArrayList<>();
+		        for (String v : values) {
+		            row.add(v.trim());
+		        }
+		        data.add(row);
+		    }
+		    return data.stream().mapToInt(List::size).max().orElse(0);
+		}
+		
+
+		
+		private static String calcolaMinimi(AMProvaDTO prova) {
+			
+			List<List<Double>> matrice = parseMatrice(prova.getMatrixSpess());
+		
+			Set<AMOggettoProvaZonaRifDTO> lista = prova.getStrumento().getListaZoneRiferimento();
+			List<AMOggettoProvaZonaRifDTO> sortedList = lista.stream()
+				    .sorted(Comparator.comparing(AMOggettoProvaZonaRifDTO::getId)) // o getIdZona() 
+				    .collect(Collectors.toList());
+			
+			StringBuilder sb = new StringBuilder();
+		   
+
+		    for (AMOggettoProvaZonaRifDTO zona : sortedList) {
+		        int inizio = zona.getPunto_intervallo_inizio();
+		        int fine = zona.getPunto_intervallo_fine();
+		        
+		        if(inizio>0) {
+	        		inizio = inizio -1;
+	        	}
+		        if(fine>0) {
+	        		fine = fine -1;
+	        	}
+
+		        if (inizio >= 0 && fine >= 0 && inizio < matrice.size() && fine < matrice.size()) {
+		        	
+		        	
+		            int from = Math.min(inizio, fine);
+		            int to = Math.max(inizio, fine);
+
+		            double minimo = Double.MAX_VALUE;
+
+		            for (int i = from; i <= to; i++) {
+		                List<Double> riga = matrice.get(i);
+		                if (!riga.isEmpty()) {
+		                    double minRiga = Collections.min(riga);
+		                    if (minRiga < minimo) {
+		                        minimo = minRiga;
+		                    }
+		                }
+		            }
+
+		            sb.append("Spessore minimo ").append(zona.getZonaRiferimento()).append(": ")
+		              .append(minimo).append(" mm").append("\n");
+		        }
+		    }
+
+		    return sb.toString();
+		}
+		
+		
+		private static List<List<Double>> parseMatrice(String input) {
+		    List<List<Double>> matrice = new ArrayList<>();
+
+		    // Rimuove i primi e ultimi simboli quadri [ ]
+		    input = input.trim();
+		    if (input.startsWith("[")) input = input.substring(1);
+		    if (input.endsWith("]")) input = input.substring(0, input.length() - 1);
+
+		    // Divide per riga usando le parentesi graffe
+		    String[] righe = input.split("\\},\\{");
+
+		    for (String riga : righe) {
+		        // Pulisce le graffe residue
+		        riga = riga.replace("{", "").replace("}", "");
+		        String[] valori = riga.split(",");
+		        List<Double> rigaNumerica = new ArrayList<>();
+		        for (String val : valori) {
+		            rigaNumerica.add(Double.parseDouble(val.trim()));
+		        }
+		        matrice.add(rigaNumerica);
+		    }
+
+		    return matrice;
+		}
 }

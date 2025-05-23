@@ -296,7 +296,7 @@ Via Tofaro, 42/d
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Rapporto n." + $P{n_rapporto}]]></textFieldExpression>
 			</textField>

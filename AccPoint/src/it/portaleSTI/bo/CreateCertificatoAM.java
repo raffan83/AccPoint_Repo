@@ -339,7 +339,7 @@ public class CreateCertificatoAM {
 		
 		if(prova.getIntervento().getOperatore().getNomeOperatore()!=null) {
 			if(prova.getIntervento().getOperatore().getDicituraPatentino()!=null){
-				report.addParameter("firma", prova.getIntervento().getOperatore().getNomeOperatore()+"\n"+prova.getOperatore().getDicituraPatentino());
+				report.addParameter("firma", prova.getIntervento().getOperatore().getNomeOperatore()+"\n"+prova.getIntervento().getOperatore().getDicituraPatentino());
 			}else {
 				report.addParameter("firma", prova.getIntervento().getOperatore().getNomeOperatore());
 			}
@@ -475,8 +475,8 @@ public class CreateCertificatoAM {
 			addAllegato(file_report, cert_campione);
 		}
 		
-		if(prova.getOperatore().getPathPatentino()!=null) {
-			File patentino = new File (Costanti.PATH_FOLDER+"\\AM_Interventi\\Patentini\\"+prova.getOperatore().getId()+"\\"+prova.getOperatore().getPathPatentino());
+		if(prova.getIntervento().getOperatore().getPathPatentino()!=null) {
+			File patentino = new File (Costanti.PATH_FOLDER+"\\AM_Interventi\\Patentini\\"+prova.getIntervento().getOperatore().getId()+"\\"+prova.getIntervento().getOperatore().getPathPatentino());
 			addAllegato(file_report, patentino);
 		}
 		
@@ -557,7 +557,7 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
     JasperReportBuilder report = DynamicReports.report();
 
     int totaleColonne = maxColonne + 2; // Riga + colonne dati
-    double fattore = 0.15;
+    double fattore = 0.20;
     
     if(maxColonne>=10 || maxRighe>=19) {
     	fattore = 0.10;
@@ -627,7 +627,7 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
         // Intestazione unica
         HorizontalListBuilder header = cmp.horizontalList();
         header.add(cmp.text("") // dummy per allineare con zonaBox
-                     .setStyle(Templates.columnTitleStyle.setFontSize(7))
+                     .setStyle(Templates.columnTitleStyle.setFontSize(6))
                      .setFixedWidth(larghezzaColonnaZona));
         for (String col : nomiColonne) {
         	if(col.equals("Riga")) {
@@ -649,7 +649,7 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
             List<Object[]> righe = entry.getValue();
 
             ComponentBuilder<?, ?> zonaBox = cmp.text(zona)
-                    .setStyle(Templates.columnTitleStyle.setFontSize(7))
+                    .setStyle(Templates.columnTitleStyle.setFontSize(5))
                     .setHeight(15 * righe.size())
                     .setFixedWidth(larghezzaColonnaZona); // larghezza coerente
 

@@ -637,8 +637,8 @@ Via Tofaro, 42/d
 				</textElement>
 				<textFieldExpression><![CDATA[$P{firma}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Center" onErrorType="Blank">
-				<reportElement x="373" y="81" width="97" height="18" uuid="e7d2f2b0-0329-4d71-9cac-2e7e812a055e"/>
+			<image hAlign="Center" vAlign="Bottom" onErrorType="Blank">
+				<reportElement x="373" y="81" width="97" height="27" uuid="e7d2f2b0-0329-4d71-9cac-2e7e812a055e"/>
 				<imageExpression><![CDATA[$P{immagine_firma}]]></imageExpression>
 			</image>
 			<staticText>

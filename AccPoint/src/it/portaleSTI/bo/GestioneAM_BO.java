@@ -233,13 +233,15 @@ public class GestioneAM_BO {
 	                Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 
 	                if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC || cell.getCellType() == Cell.CELL_TYPE_BLANK) {
-	                    if (riga.length() > 1) riga.append(", ");
+	                    
 	                    if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+	                    	if (riga.length() > 1) riga.append(",");
 	                        riga.append(cell.getNumericCellValue());
 	                        hasNumericData = true;
-	                    } else {
-	                        riga.append("null");
 	                    }
+//	                    else {
+//	                        riga.append("null");
+//	                    }
 	                } else {
 	                    // Appena troviamo una cella non numerica, assumiamo che la tabella sia finita
 	                    inTabella = false;
@@ -249,7 +251,7 @@ public class GestioneAM_BO {
 	            riga.append("}");
 
 	            if (inTabella && hasNumericData) {
-	                if (rowCount > 0) matrix.append(", ");
+	                if (rowCount > 0) matrix.append(",");
 	                matrix.append(riga);
 	                rowCount++;
 	            } else if (!inTabella) {

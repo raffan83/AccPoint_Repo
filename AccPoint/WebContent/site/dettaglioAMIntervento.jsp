@@ -371,7 +371,7 @@ NON CONFORME A SPECIFICA
 		
 			<div class="row">
        	<div class="col-sm-3">
-       		<label>Operatore</label>
+       		<label>Assistente</label>
        	</div>
        	<div class="col-sm-9">
 				<select  id="operatore" name="operatore" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona operatore..." style="width:100%" required>
@@ -540,7 +540,7 @@ NON CONFORME A SPECIFICA
 		
 			<div class="row">
        	<div class="col-sm-3">
-       		<label>Operatore</label>
+       		<label>Assistente</label>
        	</div>
        	<div class="col-sm-9">
 				<select  id="operatore_mod" name="operatore_mod" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona operatore..." style="width:100%" >

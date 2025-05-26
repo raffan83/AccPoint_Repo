@@ -572,7 +572,7 @@ calcolaMinimi()
              // Prendo il testo della prima cella della riga, convertita a numero
              
              row.find('td').each(function() {
-		        var val = parseFloat($(this).text());
+		        var val = parseFloat($(this).text().replace(",","."));
 		        if (!isNaN(val) && val < minVal) {
 		          minVal = val;
 		        }

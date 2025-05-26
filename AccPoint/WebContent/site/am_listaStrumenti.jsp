@@ -750,7 +750,9 @@
 		    	initSelect2Gen('#cliente_general_mod', null, '#modalModificaStrumento');
 		    
 		    
-		    var lista_zone = strumento.listaZoneRiferimento;
+		    var lista_zone = strumento.listaZoneRiferimento.sort(function(a, b) {
+		    	  return a.id - b.id;
+		    });
 	
 		    
 		    var table = $('#tabZone_mod').DataTable();

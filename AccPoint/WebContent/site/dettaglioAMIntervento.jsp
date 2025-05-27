@@ -209,8 +209,8 @@ NON CONFORME A SPECIFICA
 <a class="btn btn-warning customTooltip" title="Click per modificare della prova" onClick="modalModificaProva('${rapporto.prova.id}','${rapporto.prova.tipoProva.id}','${rapporto.prova.data}','${rapporto.prova.strumento.id}','${rapporto.prova.campione.id}','${rapporto.prova.operatore.id}','${rapporto.prova.esito}', '${rapporto.prova.filename_excel }','${rapporto.prova.filename_img }','${utl:escapeJS(rapporto.prova.note) }','${utl:escapeJS(rapporto.prova.ubicazione) }')"><i class="fa fa-edit"></i></a>
 
 <c:if test="${rapporto.prova.matrixSpess!=null && rapporto.prova.matrixSpess!=''}">
-<a class="btn btn-info customTooltip" title="Click per generare l'anteprima di stampa" onClick="generaCertificatoAM('${rapporto.prova.id}', 1)"><i class="fa fa-print"></i></a>
-<a class="btn btn-success customTooltip" title="Click per generare il certificato" onClick="modalYesOrNo('${rapporto.prova.id}')"><i class="fa fa-check"></i></a>
+<a class="btn btn-info customTooltip" title="Click per generare l'anteprima di stampa" onClick="generaCertificatoAM('${utl:encryptData(rapporto.prova.id)}', 1)"><i class="fa fa-print"></i></a>
+<a class="btn btn-success customTooltip" title="Click per generare il certificato" onClick="modalYesOrNo('${utl:encryptData(rapporto.prova.id)}')"><i class="fa fa-check"></i></a>
 </c:if>
 </c:if>
 
@@ -319,8 +319,9 @@ NON CONFORME A SPECIFICA
 				<option value="" ></option>
 				<c:forEach items="${lista_campioni }" var="cmp">
 				
+				<c:if test="${cmp.statoCampione=='S' }">
 				<option value="${cmp.id }" >${cmp.denominazione } - ${cmp.codiceInterno }</option>
-					
+					</c:if>
 				</c:forEach>
 				</select>
        	</div>
@@ -488,7 +489,9 @@ NON CONFORME A SPECIFICA
 				<option value="" ></option>
 				<c:forEach items="${lista_campioni }" var="cmp">
 				
+				<c:if test="${cmp.statoCampione=='S' }">
 				<option value="${cmp.id }" >${cmp.denominazione } - ${cmp.codiceInterno }</option>
+					</c:if>
 					
 				</c:forEach>
 				</select>

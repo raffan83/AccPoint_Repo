@@ -886,6 +886,23 @@ public class GestioneDevice extends HttpServlet {
 					Calendar c = Calendar.getInstance();
 					c.setTime(dataScadenza);
 					c.add(Calendar.DAY_OF_YEAR, -60);
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						c.add(Calendar.DAY_OF_YEAR, -30);
+					}
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						c.add(Calendar.DAY_OF_YEAR, -15);
+					}
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						c.add(Calendar.DAY_OF_YEAR, -7);
+					}
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						
+					}	
+					
 					software.setData_invio_remind(c.getTime());					
 				}
 				if(tipo_licenza!=null) {
@@ -961,6 +978,21 @@ public class GestioneDevice extends HttpServlet {
 					Calendar c = Calendar.getInstance();
 					c.setTime(dataScadenza);
 					c.add(Calendar.DAY_OF_YEAR, -60);
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						c.add(Calendar.DAY_OF_YEAR, -30);
+					}
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						c.add(Calendar.DAY_OF_YEAR, -15);
+					}
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						c.add(Calendar.DAY_OF_YEAR, -7);
+					}
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);						
+					}
 					software.setData_invio_remind(c.getTime());
 					
 				}
@@ -2005,7 +2037,21 @@ public class GestioneDevice extends HttpServlet {
 					Calendar c = Calendar.getInstance();
 					c.setTime(dataScadenza);
 					c.add(Calendar.DAY_OF_YEAR, -30);
-					contratto.setData_invio_remind(c.getTime());					
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						c.add(Calendar.DAY_OF_YEAR, -15);
+					}
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						c.add(Calendar.DAY_OF_YEAR, -7);
+					}
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						
+					}					
+					contratto.setData_invio_remind(c.getTime());
+					
+										
 				}else {
 					contratto.setData_scadenza(null);
 				}
@@ -2128,6 +2174,18 @@ public class GestioneDevice extends HttpServlet {
 					Calendar c = Calendar.getInstance();
 					c.setTime(dataScadenza);
 					c.add(Calendar.DAY_OF_YEAR, -30);
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						c.add(Calendar.DAY_OF_YEAR, -15);
+					}
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						c.add(Calendar.DAY_OF_YEAR, -7);
+					}
+					if(c.getTime().before(new Date())) {
+						c.setTime(dataScadenza);
+						
+					}	
 					contratto.setData_invio_remind(c.getTime());					
 				}else {
 					contratto.setData_scadenza(null);

@@ -701,30 +701,31 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 						prova.setMatrixSpess(values[3]);
 						
-					}else {
-						int m = prova.getStrumento().getNumero_porzioni();
-						int n = 0;
-						AMOggettoProvaZonaRifDTO maxZona = null;
-						for (AMOggettoProvaZonaRifDTO zona : prova.getStrumento().getListaZoneRiferimento()) {
-						    if (maxZona == null || zona.getId() > maxZona.getId()) {
-						        maxZona = zona;
-						    }
-						}
-						
-						if(maxZona!=null) {
-							n = maxZona.getPunto_intervallo_fine();
-						}
-						
-						String matrix = "";
-						for (int i = 0; i < n; i++) {
-							matrix += "{";
-							for (int j = 0; j < m; j++) {
-								matrix += "0,";
-							}
-							matrix += "},";
-						}
-						prova.setMatrixSpess(matrix);
 					}
+//					else {
+//						int m = prova.getStrumento().getNumero_porzioni();
+//						int n = 0;
+//						AMOggettoProvaZonaRifDTO maxZona = null;
+//						for (AMOggettoProvaZonaRifDTO zona : prova.getStrumento().getListaZoneRiferimento()) {
+//						    if (maxZona == null || zona.getId() > maxZona.getId()) {
+//						        maxZona = zona;
+//						    }
+//						}
+//						
+//						if(maxZona!=null) {
+//							n = maxZona.getPunto_intervallo_fine();
+//						}
+//						
+//						String matrix = "";
+//						for (int i = 0; i < n; i++) {
+//							matrix += "{";
+//							for (int j = 0; j < m; j++) {
+//								matrix += "0,";
+//							}
+//							matrix += "},";
+//						}
+//						prova.setMatrixSpess(matrix);
+//					}
 					
 					
 					
@@ -762,7 +763,8 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 				String rawMatrix = prova.getMatrixSpess(); // es: "[{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}]"
 				List<String> colonne = new ArrayList<>();
-				List<List<Double>> matrixParsed = new ArrayList<>();
+				//List<List<Double>> matrixParsed = new ArrayList<>();
+				List<List<String>> matrixParsed = new ArrayList<>();
 				// Rimuove i bordi esterni
 				if(rawMatrix!=null) {
 					rawMatrix = rawMatrix.replaceAll("^\\[|\\]$", "").trim();
@@ -776,9 +778,11 @@ public class Am_gestioneInterventi extends HttpServlet {
 					    // rimuove graffe residue
 					    row = row.replaceAll("[{}]", "");
 					    String[] nums = row.split(",");
-					    List<Double> rowList = new ArrayList<>();
+					    //List<Double> rowList = new ArrayList<>();
+					    List<String> rowList = new ArrayList<>();
 					    for (String num : nums) {
-					        rowList.add(Double.parseDouble(num.trim()));
+					       // rowList.add(Double.parseDouble(num.trim()));
+					    	 rowList.add(num.trim());
 					    }
 					    matrixParsed.add(rowList);
 					}
@@ -868,6 +872,8 @@ public class Am_gestioneInterventi extends HttpServlet {
 				String id_prova = request.getParameter("id_prova");
 				String anteprima = request.getParameter("isAnteprima");
 				
+				id_prova = Utility.decryptData(id_prova);
+				
 				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);
 				
 				PrintWriter  out = response.getWriter();
@@ -904,6 +910,8 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 				String id_prova = request.getParameter("id_prova");
 				String anteprima = request.getParameter("isAnteprima");
+				
+				id_prova = Utility.decryptData(id_prova);
 				
 				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);
 				
@@ -1023,12 +1031,14 @@ public class Am_gestioneInterventi extends HttpServlet {
 				prova.setMatrixSpess(matrix);
 				prova.setNote(note);
 			
-				
-				if(esito.contains("NON CONFORME")) {
-					prova.setEsito("NEGATIVO");
-				}else {
-					prova.setEsito("POSITIVO");
+				if(esito!=null) {
+					if(esito.contains("NON CONFORME")) {
+						prova.setEsito("NEGATIVO");
+					}else {
+						prova.setEsito("POSITIVO");
+					}	
 				}
+				
 
 				session.update(prova);
 				

@@ -58,7 +58,7 @@
 					<text><![CDATA[N. FABBRICA]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="141" y="64" width="70" height="12" uuid="eb9cc512-f92e-4a41-aee2-111c58ddefbc"/>
+					<reportElement x="141" y="64" width="39" height="12" uuid="eb9cc512-f92e-4a41-aee2-111c58ddefbc"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -71,7 +71,7 @@
 					<text><![CDATA[TIPO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="211" y="64" width="70" height="12" uuid="777305a9-5a65-4715-8279-7c13012b57e8"/>
+					<reportElement x="180" y="64" width="101" height="12" uuid="777305a9-5a65-4715-8279-7c13012b57e8"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -149,7 +149,7 @@
 					<textFieldExpression><![CDATA[$P{n_fabbrica}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="141" y="76" width="70" height="12" forecolor="#0000FF" uuid="f759ca81-fcf5-464a-a67d-baf2526136d5"/>
+					<reportElement x="141" y="76" width="39" height="12" forecolor="#0000FF" uuid="f759ca81-fcf5-464a-a67d-baf2526136d5"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -162,7 +162,7 @@
 					<textFieldExpression><![CDATA[$P{tipo}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="211" y="76" width="70" height="12" forecolor="#0000FF" uuid="40e6fc87-35b2-44d7-a6c7-fa48e64789c9"/>
+					<reportElement x="180" y="76" width="101" height="12" forecolor="#0000FF" uuid="40e6fc87-35b2-44d7-a6c7-fa48e64789c9"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>

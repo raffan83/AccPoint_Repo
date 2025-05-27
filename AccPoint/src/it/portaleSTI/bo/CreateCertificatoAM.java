@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -576,11 +577,19 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
         List<List<String>> data = new ArrayList<>();
         Pattern pattern = Pattern.compile("\\{([^}]*)\\}");
         Matcher matcher = pattern.matcher(matrice);
+        DecimalFormat df = new DecimalFormat("0.00");
+        
         while (matcher.find()) {
             String[] values = matcher.group(1).split(",");
             List<String> row = new ArrayList<>();
             for (String v : values) {
-                row.add(v.trim());
+            	v = v.trim();
+                try {
+                    double num = Double.parseDouble(v);
+                    row.add(df.format(num));
+                } catch (NumberFormatException e) {
+                    row.add(v); 
+                }
             }
             data.add(row);
         }
@@ -642,44 +651,111 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
             
         }
         mainList.add(header);
+        
+        if(maxRighe != prova.getStrumento().getListaZoneRiferimento().size()) {
+        	
+        	 // Aggiungi blocchi zona + righe dati
+          for (Map.Entry<String, List<Object[]>> entry : datiPerZona.entrySet()) {
+              String zona = entry.getKey();
+              List<Object[]> righe = entry.getValue();
+  
+              ComponentBuilder<?, ?> zonaBox = cmp.text(zona)
+                      .setStyle(Templates.columnTitleStyle.setFontSize(5))
+                      .setHeight(15 * righe.size())
+                      .setFixedWidth(larghezzaColonnaZona); // larghezza coerente
+              
+//              VerticalListBuilder zonaBox = cmp.verticalList();
+//  
+//              for (int i = 0; i < righe.size(); i++) {
+//                  String text = (i == 0) ? zona : ""; 
+//                  zonaBox.add(
+//                      cmp.text(text)
+//                         .setStyle(Templates.columnTitleStyle.setFontSize(5))
+//                         .setStretchWithOverflow(true)
+//                         .setFixedWidth(larghezzaColonnaZona)
+//                         .setHeight(15) 
+//                  );
+//              }
+  
+              VerticalListBuilder righeList = cmp.verticalList();
+              for (Object[] riga : righe) {
+                  HorizontalListBuilder rigaComp = cmp.horizontalList();
+                  for (int j = 0; j <= maxColonne; j++) {
+                  	if(j==0) {
+                  		 rigaComp.add(
+                                   cmp.text((String) riga[j])
+                                      .setStyle(Templates.columnTitleStyle.setFontSize(7))
+                                      .setFixedWidth(larghezzaColonna)
+                               );
+                  	}else {
+                  		 rigaComp.add(
+                                   cmp.text((String) riga[j])
+                                      .setStyle(Templates.columnStyle.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER))
+                                      .setFixedWidth(larghezzaColonna)
+                               );
+                  	}
+                     
+                  }
+                  righeList.add(rigaComp);
+              }
+  
+              mainList.add(cmp.horizontalList(
+                      zonaBox,
+                      righeList
+                  ));
+          }
+        	
+        }else {
+        	
+        	 for (Map.Entry<String, List<Object[]>> entry : datiPerZona.entrySet()) {
+                 String zona = entry.getKey();
+                 List<Object[]> righe = entry.getValue();
 
-        // Aggiungi blocchi zona + righe dati
-        for (Map.Entry<String, List<Object[]>> entry : datiPerZona.entrySet()) {
-            String zona = entry.getKey();
-            List<Object[]> righe = entry.getValue();
+                 for (int i = 0; i < righe.size(); i++) {
+                     HorizontalListBuilder rigaComp = cmp.horizontalList();
 
-            ComponentBuilder<?, ?> zonaBox = cmp.text(zona)
-                    .setStyle(Templates.columnTitleStyle.setFontSize(5))
-                    .setHeight(15 * righe.size())
-                    .setFixedWidth(larghezzaColonnaZona); // larghezza coerente
+                     // Zona: solo nella prima riga
+                     String testoZona = (i == 0) ? zona : "";
+                     rigaComp.add(
+                         cmp.text(testoZona)
+                             .setStyle(Templates.columnTitleStyle.setFontSize(5))
+                             .setFixedWidth(larghezzaColonnaZona)
+                             .setStretchWithOverflow(true)
+                            
+                     );
 
-            VerticalListBuilder righeList = cmp.verticalList();
-            for (Object[] riga : righe) {
-                HorizontalListBuilder rigaComp = cmp.horizontalList();
-                for (int j = 0; j <= maxColonne; j++) {
-                	if(j==0) {
-                		 rigaComp.add(
+                     // Celle dati
+                     Object[] riga = righe.get(i);
+                     for (int j = 0; j <= maxColonne; j++) {
+                         if (j == 0) {
+                             rigaComp.add(
                                  cmp.text((String) riga[j])
-                                    .setStyle(Templates.columnTitleStyle.setFontSize(7))
-                                    .setFixedWidth(larghezzaColonna)
+                                     .setStyle(Templates.columnTitleStyle.setFontSize(7))
+                                     .setFixedWidth(larghezzaColonna)
                              );
-                	}else {
-                		 rigaComp.add(
+                         } else {
+                             rigaComp.add(
                                  cmp.text((String) riga[j])
-                                    .setStyle(Templates.columnStyle.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER))
-                                    .setFixedWidth(larghezzaColonna)
+                                     .setStyle(Templates.columnStyle.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER))
+                                     .setStretchWithOverflow(true)
+                                     .setFixedWidth(larghezzaColonna)
                              );
-                	}
-                   
-                }
-                righeList.add(rigaComp);
-            }
+                         }
+                     }
 
-            mainList.add(cmp.horizontalList(
-                zonaBox,
-                righeList
-            ));
+                     // Aggiungi la riga al report
+                     mainList.add(rigaComp);
+                 }
+                 
+                
+             }
+        	
         }
+
+       
+
+        
+       
 
         report.summary(mainList).setSummarySplitType(SplitType.IMMEDIATE);
 

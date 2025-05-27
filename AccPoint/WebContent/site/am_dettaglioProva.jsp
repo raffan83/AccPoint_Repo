@@ -87,8 +87,8 @@
                 <c:if test="${rapporto.stato.id == 1}">
                   <c:if test="${prova.matrixSpess!=null && prova.matrixSpess!=''}">
 
-<a class="btn btn-success btn-xs customTooltip pull-right" title="Click per generare il certificato" onClick="modalYesOrNo('${prova.id}')" style="margin-left:2px"><i class="fa fa-check"></i></a>
-<a class="btn btn-info btn-xs customTooltip pull-right"  title="Click per generare l'anteprima di stampa"  onClick="generaCertificatoAM('${prova.id}', 1)"><i class="fa fa-print"></i></a>
+<a class="btn btn-success btn-xs customTooltip pull-right" title="Click per generare il certificato" onClick="modalYesOrNo('${utl:encryptData(prova.id)}')" style="margin-left:2px"><i class="fa fa-check"></i></a>
+<a class="btn btn-info btn-xs customTooltip pull-right"  title="Click per generare l'anteprima di stampa"  onClick="generaCertificatoAM('${utl:encryptData(prova.id)}', 1)"><i class="fa fa-print"></i></a>
 
 </c:if>
 </c:if>
@@ -317,7 +317,16 @@
                        
                 <th style="text-align:center">${rowStatus.index + 1}</th>
                 <c:forEach var="valore" items="${riga}">
+                <c:choose>
+                 <c:when test="${valore!= 'NA' && valore!= 'na' && valore!= 'N/A' && valore!= 'n/a'}">
                     <td style="text-align:center"><fmt:formatNumber value="${valore}" pattern="#0.00" /></td>
+                </c:when>
+                <c:otherwise>
+                <td style="text-align:center">${valore} </td>
+                </c:otherwise>
+                </c:choose>
+        
+                
                 </c:forEach>
             </tr>
         </c:forEach>
@@ -562,6 +571,18 @@ calcolaMinimi()
      	let startRow = parseInt(entry.punto_intervallo_inizio); 
          var endRow = parseInt(entry.punto_intervallo_fine); // punto_intervallo_fine per la zona
          var minVal = Infinity;
+         
+         str = entry.spessore.replace(',', '.');
+            
+         const match = str.match(/[\d.]+/);
+              
+         if(parseFloat(match[0])!=null){
+        	  var minimo_spessore = match[0];
+         }else{
+        	 var minimo_spessore = null;
+         }
+         
+       
 
          // Ciclo sulle righe della tabella dal numero startRow a endRow
          for (var r = startRow; r <= endRow; r++) {
@@ -573,28 +594,44 @@ calcolaMinimi()
              
              row.find('td').each(function() {
 		        var val = parseFloat($(this).text().replace(",","."));
-		        if (!isNaN(val) && val < minVal) {
-		          minVal = val;
+		        if (!isNaN(val)) {
+		        	if(val < minVal) {
+		        		minVal = val;	
+		        	}  
+		        }else{
+		        	minVal = "NA"
 		        }
 		      });
              
          }
 
-        /*  testoMinimi += "Minimo " + entry.zonaRiferimento + ": " + minVal + " mm\n";
+     
+         if(minVal!="NA"){
+             var r = table.row.add([
+         	    entry.zonaRiferimento,
+         	    minVal + ' mm'
+         	]).node();
+             
+             
+             if (minVal < minimo_spessore) {
+         	    $(r).css('background-color', '#FA8989');
+         	}
+         }else{
+        	 
+        	 
+        	 var r = table.row.add([
+          	    entry.zonaRiferimento,
+          	    minVal 
+          	]).node();
+        	 
+        	 $(r).css('background-color', '#FA8989');
+         }
 
-         // Aggiorno startRow per la prossima zona
-         startRow = endRow + 1; */
          
-         table.row.add([
-             entry.zonaRiferimento,
-             minVal + ' mm'
-         ]);
+        
          
      });
 
-     // Imposto il testo nel campo di testo (ad esempio con id='campoMinimi')
-     //$('#label_minimi').val(testoMinimi);    
-     
 
      table.draw();
  }
@@ -614,6 +651,14 @@ calcolaMinimi()
 	 	  $('#tabPM tbody td').off('input').on('input', function() {
 	 	       calcolaMinimi();
 	 	  });
+	    
+	    $('#tabPM tbody td').off('focus').on('focus', function() {
+	        const range = document.createRange();
+	        const sel = window.getSelection();
+	        range.selectNodeContents(this);
+	        sel.removeAllRanges();
+	        sel.addRange(range);
+	    });
 	}
  
  
@@ -638,6 +683,10 @@ calcolaMinimi()
                 let value = $(this).text().trim().replace(',', '.'); // per compatibilità decimali
                 if (!isNaN(parseFloat(value))) {
                     row.push(parseFloat(value));
+                }else if(value == 'NA' || value == 'na' || value == 'N/A'|| value == 'n/a'){
+                	row.push(value);
+                }else{
+                	row.push("NA");
                 }
             });
             if (row.length > 0) {

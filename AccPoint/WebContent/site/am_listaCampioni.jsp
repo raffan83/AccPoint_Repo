@@ -63,6 +63,7 @@
  <table id="tabAMCampioni" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 <th>ID</th>
+<th>Stato</th>
 <th>Tipo Campione</th>
 <th>Codice Interno</th>
 <th>Denominazione</th>
@@ -82,7 +83,16 @@
  <c:forEach items="${lista_campioni }" var="campione" varStatus="loop">
 	<tr id="row_${loop.index}" >
 	
-	<td>${campione.id }</td>	
+	<td>${campione.id }</td>
+	<td>
+
+			<c:if test="${campione.statoCampione == 'S'}">
+				<span class="label  label-success">IN SERVIZIO</span>  
+			</c:if>
+			<c:if test="${campione.statoCampione == 'F'}">
+				<span class="label  label-danger">FUORI SERVIZIO</span> 
+			</c:if>
+	</td>		
 	<td>${campione.tipoCampione.denominazione }</td>
 	<td>${campione.codiceInterno}</td>
 	<td>${campione.denominazione}</td>
@@ -755,7 +765,7 @@ $(document).ready(function() {
 		        }
 	        },
 	        pageLength: 25,
-	        "order": [[ 2, "desc" ]],
+	        "order": [[ 0, "desc" ]],
 		      paging: true, 
 		      ordering: true,
 		      info: true, 
@@ -764,14 +774,10 @@ $(document).ready(function() {
 		      responsive: true,
 		      scrollX: false,
 		      stateSave: true,	
-		      select: {		
-    	    	  
-		        	style:    'multi+shift',
-		        	selector: 'td:nth-child(2)'
-		    	},     
+		    
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 0, targets: 11 },
+		    	  { responsivePriority: 0, targets: 12 },
 		    	  
 		    	  
 		               ], 	        

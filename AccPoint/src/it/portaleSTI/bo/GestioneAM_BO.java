@@ -408,4 +408,9 @@ public class GestioneAM_BO {
 		return GestioneAM_DAO.getAllegatoStrumentoFormId(id_allegato, session);
 	}
 
+	public static ArrayList<AMRapportoDTO> getListaRapportiProve(Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAM_DAO.getListaRapportiProve(session);
+	}
+
 }

@@ -111,6 +111,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.oasis.Style;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -386,7 +387,7 @@ public class CreateCertificatoAM {
 					cmp.verticalList(
 							subreport, 
 							cmp.verticalGap(5),
-							cmp.text(minimi).setStyle(Styles.style().setForegroundColor(Color.blue))
+							cmp.text(minimi).setStyle(Styles.style().setForegroundColor(Color.blue).setFontSize(8))
 
 							)
 					);
@@ -402,7 +403,7 @@ public class CreateCertificatoAM {
 					 cmp.verticalGap(15),
 					 subreport, 
 					 cmp.verticalGap(5),
-					 cmp.text(minimi).setStyle(Styles.style().setForegroundColor(Color.blue)));
+					 cmp.text(minimi).setStyle(Styles.style().setForegroundColor(Color.blue).setFontSize(8)));
 					 
 		}
 		
@@ -556,6 +557,15 @@ public class CreateCertificatoAM {
 @SuppressWarnings("deprecation")
 public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza_disponibile, int maxColonne, int maxRighe) throws Exception {
     JasperReportBuilder report = DynamicReports.report();
+    
+    StyleBuilder styleNormal = stl.style().setPadding(2).setFontName("Trebuchet MS").setFontSize(8);
+//    StyleBuilder styleTitle = Templates.columnTitleStyle;
+//    
+//    StyleBuilder styleTitle = stl.style().bold().setPadding(2).setFontName("Trebuchet MS").setFontSize(8);
+	StyleBuilder styleTitle = stl.style(stl.style().setPadding(2).setFontName("Trebuchet MS").setFontSize(8)).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setBold(false).setBorder(stl.penThin())
+            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+            .setBackgroundColor(Color.LIGHT_GRAY)            
+         .setMarkup(Markup.HTML);
 
     int totaleColonne = maxColonne + 2; // Riga + colonne dati
     double fattore = 0.20;
@@ -570,7 +580,7 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
     try {
         report.title(
             cmp.text("RISULTATI MISURE SPESSIMETRICHE [mm]")
-               .setStyle(Templates.columnTitleStyle).setFixedWidth(larghezzaColonna * (totaleColonne-1) + larghezzaColonnaZona)
+               .setStyle(styleTitle).setFixedWidth(larghezzaColonna * (totaleColonne-1) + larghezzaColonnaZona)
         );
 
         String matrice = prova.getMatrixSpess();
@@ -629,23 +639,27 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
             datiPerZona.computeIfAbsent(zona, k -> new ArrayList<>()).add(valori);
         }
 
-
+      
         // Contenuto complessivo del report
         VerticalListBuilder mainList = cmp.verticalList();
-
+       
         // Intestazione unica
         HorizontalListBuilder header = cmp.horizontalList();
         header.add(cmp.text("") // dummy per allineare con zonaBox
-                     .setStyle(Templates.columnTitleStyle.setFontSize(6))
+                     .setStyle(styleTitle.setFontSize(6))
                      .setFixedWidth(larghezzaColonnaZona));
         for (String col : nomiColonne) {
         	if(col.equals("Riga")) {
-        		header.add(cmp.text("")
-                        .setStyle(Templates.columnTitleStyle.setFontSize(7))
-                        .setFixedWidth(larghezzaColonna));
+//        		header.add(cmp.text("")
+//                        .setStyle(Templates.columnTitleStyle.setFontSize(7))
+//                        .setFixedWidth(larghezzaColonna));
+        		
+           		header.add(cmp.text("")
+                      .setStyle(styleTitle.setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
+                      .setFixedWidth(larghezzaColonna));
         	}else {
         		header.add(cmp.text(col)
-                        .setStyle(Templates.columnTitleStyle.setFontSize(7))
+                        .setStyle(styleTitle.setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
                         .setFixedWidth(larghezzaColonna));	
         	}
             
@@ -660,7 +674,7 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
               List<Object[]> righe = entry.getValue();
   
               ComponentBuilder<?, ?> zonaBox = cmp.text(zona)
-                      .setStyle(Templates.columnTitleStyle.setFontSize(5))
+                      .setStyle(styleTitle.setFontSize(5))
                       .setHeight(15 * righe.size())
                       .setFixedWidth(larghezzaColonnaZona); // larghezza coerente
               
@@ -684,13 +698,13 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
                   	if(j==0) {
                   		 rigaComp.add(
                                    cmp.text((String) riga[j])
-                                      .setStyle(Templates.columnTitleStyle.setFontSize(7))
+                                      .setStyle(styleTitle.setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
                                       .setFixedWidth(larghezzaColonna)
                                );
                   	}else {
                   		 rigaComp.add(
                                    cmp.text((String) riga[j])
-                                      .setStyle(Templates.columnStyle.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER))
+                                      .setStyle(styleTitle.setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER))
                                       .setFixedWidth(larghezzaColonna)
                                );
                   	}
@@ -718,7 +732,7 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
                      String testoZona = (i == 0) ? zona : "";
                      rigaComp.add(
                          cmp.text(testoZona)
-                             .setStyle(Templates.columnTitleStyle.setFontSize(5))
+                             .setStyle(styleTitle.setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
                              .setFixedWidth(larghezzaColonnaZona)
                              .setStretchWithOverflow(true)
                             
@@ -730,13 +744,13 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
                          if (j == 0) {
                              rigaComp.add(
                                  cmp.text((String) riga[j])
-                                     .setStyle(Templates.columnTitleStyle.setFontSize(7))
+                                     .setStyle(styleTitle.setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
                                      .setFixedWidth(larghezzaColonna)
                              );
                          } else {
                              rigaComp.add(
                                  cmp.text((String) riga[j])
-                                     .setStyle(Templates.columnStyle.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER))
+                                     .setStyle(styleNormal.setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER))
                                      .setStretchWithOverflow(true)
                                      .setFixedWidth(larghezzaColonna)
                              );
@@ -777,17 +791,24 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
 		JasperReportBuilder report = DynamicReports.report();
 
 		try {			
-
-			report.setColumnStyle((Templates.boldCenteredStyle).setBorder(stl.pen1Point()).setFontSize(9));
+			
+			StyleBuilder styleTitle = stl.style().bold().setPadding(2).setFontName("Trebuchet MS").setFontSize(8);
+			StyleBuilder styleTitle2 = stl.style(stl.style().setPadding(2).setFontName("Trebuchet MS").setFontSize(8)).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setBold(false).setBorder(stl.penThin())
+                    .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+                    .setBackgroundColor(Color.LIGHT_GRAY)
+                    .bold()
+                 .setMarkup(Markup.HTML);
+			
+			report.setColumnStyle((styleTitle).setBorder(stl.pen1Point()).setFontSize(9));
 			
 			report.addColumn(
-		 		        Columns.column("ZONA DI RIFERIMENTO", "zona", type.stringType()).setFixedWidth(150).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setForegroundColor(Color.blue).setBorder(stl.pen1Point()))
+		 		        Columns.column("ZONA DI RIFERIMENTO", "zona", type.stringType()).setFixedWidth(150).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(stl.style().setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
 		 		    );
 			report.addColumn(
-		 		        Columns.column("MATERIALE", "materiale", type.stringType()).setFixedWidth(150).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setForegroundColor(Color.blue).setBorder(stl.pen1Point()))
+		 		        Columns.column("MATERIALE", "materiale", type.stringType()).setFixedWidth(150).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(stl.style().setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
 		 		    );
 			report.addColumn(
-		 		        Columns.column("SPESSORE", "spessore", type.stringType()).setFixedWidth(253).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(Templates.columnStyle.setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
+		 		        Columns.column("SPESSORE", "spessore", type.stringType()).setFixedWidth(253).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(stl.style().setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
 		 		    );
 			report.getReport().getTitleBand().setPrintWhenExpression(Expressions.printNotInFirstPage());
 			
@@ -815,7 +836,7 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
 			
 	 		report.setDataSource(ds);
 		
-	 		report.setColumnTitleStyle(Templates.columnTitleStyle.setFontName("SansSerif").setBold(false).setFontSize(8).setForegroundColor(Color.black).setBorder(stl.pen1Point()));
+	 		report.setColumnTitleStyle(styleTitle2.setFontName("SansSerif").setBold(false).setFontSize(8).setForegroundColor(Color.black).setBorder(stl.pen1Point()));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

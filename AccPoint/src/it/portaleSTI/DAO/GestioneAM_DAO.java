@@ -433,4 +433,15 @@ public static AMOggettoProvaAllegatoDTO getAllegatoStrumentoFormId(int id_allega
 	return result;
 }
 
+public static ArrayList<AMRapportoDTO> getListaRapportiProve(Session session) {
+	ArrayList<AMRapportoDTO> lista = null;
+	
+	Query query = session.createQuery("from AMRapportoDTO");
+	
+	lista = (ArrayList<AMRapportoDTO>) query.list();
+	
+	
+	return lista;
+}
+
 }

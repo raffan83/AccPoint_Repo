@@ -397,7 +397,7 @@ String permesso = "0";
 <div class="col-12">
   <label>Note</label></div>
   <div class="col-12">
- <textarea id="note_pacco" name="note_pacco" rows="5" style= "background-color: white; width:100%" disabled>${pacco.note_pacco}</textarea></div><br>
+ <textarea id="note_pacco_dtl" name="note_pacco_dtl" rows="5" style= "background-color: white; width:100%" disabled>${pacco.note_pacco}</textarea></div><br>
 
 
  <%-- <button class="btn btn-primary" onClick="modificaPaccoModal(attivita_json, ${pacco.id_cliente}, ${pacco.id_sede })"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> --%> 

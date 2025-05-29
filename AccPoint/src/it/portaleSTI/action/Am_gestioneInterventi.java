@@ -942,7 +942,9 @@ public class Am_gestioneInterventi extends HttpServlet {
 			
 			else if(action.equals("lista_prove")) {
 				
-				ArrayList<AMProvaDTO> lista_prove = GestioneAM_BO.getListaProve(session);
+				//ArrayList<AMProvaDTO> lista_prove = GestioneAM_BO.getListaProve(session);
+				ArrayList<AMRapportoDTO> lista_prove = GestioneAM_BO.getListaRapportiProve(session);
+				
 				request.setAttribute("lista_prove", lista_prove);
 
 				
@@ -1066,6 +1068,46 @@ public class Am_gestioneInterventi extends HttpServlet {
 				}
 				
 				Utility.downloadFile(path, response.getOutputStream());
+			}
+			
+			else if(action.equals("rigenera_tabella")) {
+				
+				String id_prova = request.getParameter("id_prova");
+				
+				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);
+				
+				int m = prova.getStrumento().getNumero_porzioni();
+				int n = 0;
+				AMOggettoProvaZonaRifDTO maxZona = null;
+				for (AMOggettoProvaZonaRifDTO zona : prova.getStrumento().getListaZoneRiferimento()) {
+				    if (maxZona == null || zona.getId() > maxZona.getId()) {
+				        maxZona = zona;
+				    }
+				}
+				
+				if(maxZona!=null) {
+					n = maxZona.getPunto_intervallo_fine();
+				}
+				
+				String matrix = "";
+				for (int i = 0; i < n; i++) {
+					matrix += "{";
+					for (int j = 0; j < m; j++) {
+						matrix += "0,";
+					}
+					matrix += "},";
+				}
+				prova.setMatrixSpess(matrix);
+				
+				session.update(prova);
+				
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Tabella rigenerata con successo!");
+				out.print(myObj);
+				
 			}
 			
 			session.getTransaction().commit();

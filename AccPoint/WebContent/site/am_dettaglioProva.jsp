@@ -258,6 +258,11 @@
 </div>
 <div class="box-body">
 <div class="row">
+<div class="col-xs-12">
+<a class ="btn btn-primary pull-right" id="btn_rigenera" onclick="rigeneraTabella('${prova.id}')" style="display:none">Rigenera tabella</a>
+</div>
+</div>
+<div class="row">
 <c:if test="${fn:length(colonne)<=10}">
  <div class="col-xs-6">
 </c:if>
@@ -636,6 +641,17 @@ calcolaMinimi()
      table.draw();
  }
  
+ function rigeneraTabella(id_prova){
+	 
+	 dataObj = {};
+	 dataObj.id_prova = id_prova;
+	 
+	 callAjax(dataObj,"amGestioneInterventi.do?action=rigenera_tabella")
+	 
+	 
+ }
+		 
+ 
  
  function abilitaModifica() {
 	    // Rende tutte le celle della tabella editabili
@@ -646,6 +662,7 @@ calcolaMinimi()
 	    $('#note').attr("readonly", false);
 	    $('#esito').attr("readonly", false);
 	    $('#btn_salva').show()
+	    $('#btn_rigenera').show()
 	    
 	    
 	 	  $('#tabPM tbody td').off('input').on('input', function() {

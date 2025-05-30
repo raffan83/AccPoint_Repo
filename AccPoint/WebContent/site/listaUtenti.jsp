@@ -78,6 +78,7 @@
  <thead><tr class="active">
  <th>ID</th>
  <th>Username</th>
+ <th>e-mail</th>
   <th>Tipo Utente</th>
  <th>Nominativo</th>
  <th>Nome</th>
@@ -85,7 +86,6 @@
  <th>Indirizzo</th>
  <th>Comune</th>
  <th>Cap</th>
- <th>e-mail</th>
  <th>Telefono</th>
  <th>Abilitato</th>
  <th>Company</th>
@@ -106,6 +106,7 @@
 
 	<td>${utente.id}</td>
 	<td>${utente.user}</td>
+	<td>${utente.EMail}</td>
 	<td><c:if test="${utente.tipoutente == 1}">Dipendente</c:if>  <c:if test="${utente.tipoutente == 2}"> Cliente</c:if></td>
 	<td>${utente.nominativo}</td>
 	<td>${utente.nome}</td>
@@ -113,7 +114,7 @@
 	<td>${utente.indirizzo}</td>
 	<td>${utente.comune}</td>
 	<td>${utente.cap}</td>
-	<td>${utente.EMail}</td>
+	
 	<td>${utente.telefono}</td>
 	<td>
 	<c:if test="${utente.abilitato == 0 }">

@@ -34,6 +34,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.AMImmagineCampioneDTO;
 import it.portaleSTI.DTO.AMOggettoProvaAllegatoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO;
@@ -129,9 +130,12 @@ public class Am_gestioneStrumenti extends HttpServlet {
 					
 				}
 				
+				ArrayList<AMImmagineCampioneDTO> lista_immagini = GestioneAM_BO.getListaImmagineCampione(session);
+				
 				request.getSession().setAttribute("lista_strumenti", lista_strumenti);
 				request.getSession().setAttribute("lista_clienti", listaClienti);
 				request.getSession().setAttribute("lista_sedi", listaSedi);
+				request.getSession().setAttribute("lista_immagini", lista_immagini);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_listaStrumenti.jsp");
 		     	dispatcher.forward(request,response);

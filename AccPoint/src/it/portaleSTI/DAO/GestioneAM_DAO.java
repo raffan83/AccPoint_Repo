@@ -22,6 +22,7 @@ import it.portaleSTI.DTO.AMTipoCampioneDTO;
 import it.portaleSTI.DTO.AMTipoProvaDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.AMCampioneDTO;
+import it.portaleSTI.DTO.AMImmagineCampioneDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAllegatoStrumentoDTO;
@@ -442,6 +443,33 @@ public static ArrayList<AMRapportoDTO> getListaRapportiProve(Session session) {
 	
 	
 	return lista;
+}
+
+public static ArrayList<AMImmagineCampioneDTO> getListaImmagineCampione(Session session) {
+	ArrayList<AMImmagineCampioneDTO> lista = null;
+	
+	Query query = session.createQuery("from AMImmagineCampioneDTO where disabilitato = 0");
+	
+	lista = (ArrayList<AMImmagineCampioneDTO>) query.list();
+	
+	
+	return lista;
+}
+
+public static AMImmagineCampioneDTO getImmagineFromId(int id_immagine, Session session) {
+	ArrayList<AMImmagineCampioneDTO> lista = null;
+	AMImmagineCampioneDTO result = null;
+	
+	Query query = session.createQuery("from AMImmagineCampioneDTO where id =:_id_immagine");
+	query.setParameter("_id_immagine", id_immagine);
+	
+	lista = (ArrayList<AMImmagineCampioneDTO>) query.list();
+	
+	if(lista.size()>0) {
+		result = lista.get(0);
+	}
+	
+	return result;
 }
 
 }

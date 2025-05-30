@@ -39,6 +39,7 @@ import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AMCampioneDTO;
+import it.portaleSTI.DTO.AMImmagineCampioneDTO;
 import it.portaleSTI.DTO.AMInterventoDTO;
 import it.portaleSTI.DTO.AMOggettoProvaDTO;
 import it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO;
@@ -836,8 +837,10 @@ public class Am_gestioneInterventi extends HttpServlet {
 			else if (action.equals("immagine")) {
 				
 		        AMProvaDTO prova = (AMProvaDTO) request.getSession().getAttribute("prova");
+		        
+		       String id_immagine = request.getParameter("id_immagine");
 
-		        if (prova != null && prova.getStrumento().getFilename_img()!=null && !prova.getStrumento().getFilename_img().equals("")) {
+		        if (prova != null && prova.getStrumento().getFilename_img()!=null && !prova.getStrumento().getFilename_img().equals("")&& id_immagine==null) {
 		        	
 		        	String imagePath =	Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+prova.getStrumento().getId()+"\\"+prova.getStrumento().getFilename_img();
 		        	
@@ -860,11 +863,33 @@ public class Am_gestioneInterventi extends HttpServlet {
 		            } else {
 		                response.sendError(HttpServletResponse.SC_NOT_FOUND, "File immagine non trovato");
 		            }
-		        } else {
+		        }
+		        else if(id_immagine!=null) {
+		        	AMImmagineCampioneDTO immagine = GestioneAM_BO.getImmagineFromId(Integer.parseInt(id_immagine), session);
+		        	
+		        	String imagePath =	Costanti.PATH_FOLDER+"\\AM_interventi\\ImmaginiCampione\\"+immagine.getId()+"\\"+immagine.getNome_file();
+		        	
+		            File imageFile = new File(imagePath);
+
+		            if (imageFile.exists()) {
+		                response.setContentType(getServletContext().getMimeType(imageFile.getName()));
+		               
+
+		                try (FileInputStream fis = new FileInputStream(imageFile);
+		                     OutputStream os = response.getOutputStream()) {
+
+		                    byte[] buffer = new byte[8192];
+		                    int bytesRead;
+		                    while ((bytesRead = fis.read(buffer)) != -1) {
+		                        os.write(buffer, 0, bytesRead);
+		                    }
+		                }	
+		        }
+		        else {
 		            response.sendError(HttpServletResponse.SC_NOT_FOUND, "File immagine non trovato");
 		        }
 		    }
-			
+			}
 			else if(action.equals("genera_certificato")){
 				
 				ajax = true;
@@ -1108,6 +1133,150 @@ public class Am_gestioneInterventi extends HttpServlet {
 				myObj.addProperty("messaggio", "Tabella rigenerata con successo!");
 				out.print(myObj);
 				
+			}
+			
+			else if(action.equals("lista_immagini_campione")) {
+				
+				ArrayList<AMImmagineCampioneDTO> lista_immagini = GestioneAM_BO.getListaImmagineCampione(session);
+				
+				request.setAttribute("lista_immagini", lista_immagini);
+
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_listaImmaginiCampione.jsp");
+				dispatcher.forward(request, response);
+				
+			}else if(action.equals("nuova_immagine")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       			
+				FileItem fileItem = null;
+				String filename= null;
+			
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	            		  if(item.getFieldName().equals("fileupload") && !item.getName().equals("")) {
+	            			  fileItem = item;
+	            			  filename = item.getName();
+	            		 }
+	            		  
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+		        String descrizione = ret.get("descrizione");
+			
+				if(filename!=null) {
+					
+					AMImmagineCampioneDTO immagine = new AMImmagineCampioneDTO();
+					immagine.setNome_file(filename);
+					immagine.setDescrizione(descrizione);
+					
+					session.save(immagine);
+					
+					Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\ImmaginiCampione\\"+immagine.getId()+"\\", filename);
+					session.update(immagine);
+				}				
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Immagine salvata con successo!");
+				out.print(myObj);
+				
+				
+			}
+			
+			
+			else if(action.equals("modifica_immagine")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       			
+				FileItem fileItem = null;
+				String filename= null;
+			
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	            		  if(item.getFieldName().equals("fileupload_mod") && !item.getName().equals("")) {
+	            			  fileItem = item;
+	            			  filename = item.getName();
+	            		 }
+	            		  
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		
+		        String descrizione = ret.get("descrizione_mod");
+		        String id_immagine = ret.get("id_immagine");
+		        
+		        AMImmagineCampioneDTO immagine = GestioneAM_BO.getImmagineFromId(Integer.parseInt(id_immagine), session);
+		        immagine.setDescrizione(descrizione);
+			
+				if(filename!=null) {
+										
+					immagine.setNome_file(filename);
+
+					Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\ImmaginiCampione\\"+immagine.getId()+"\\", filename);
+					
+				}	
+				
+				session.update(immagine);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Immagine salvata con successo!");
+				out.print(myObj);
+				
+				
+			}
+			else if(action.equals("elimina_immagine")) {
+				
+				ajax = true;
+				
+				String id_immagine = request.getParameter("id_immagine");
+				
+				AMImmagineCampioneDTO immagine = GestioneAM_BO.getImmagineFromId(Integer.parseInt(id_immagine), session);
+				immagine.setDisabilitato(1);
+				
+				session.update(immagine);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Immagine eliminata con successo!");
+				out.print(myObj);
 			}
 			
 			session.getTransaction().commit();

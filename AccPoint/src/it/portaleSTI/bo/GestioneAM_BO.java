@@ -29,6 +29,7 @@ import it.portaleSTI.DTO.AMRapportoDTO;
 import it.portaleSTI.DTO.AMTipoCampioneDTO;
 import it.portaleSTI.DTO.AMTipoProvaDTO;
 import it.portaleSTI.DTO.AMCampioneDTO;
+import it.portaleSTI.DTO.AMImmagineCampioneDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
 public class GestioneAM_BO {
@@ -411,6 +412,16 @@ public class GestioneAM_BO {
 	public static ArrayList<AMRapportoDTO> getListaRapportiProve(Session session) {
 		// TODO Auto-generated method stub
 		return GestioneAM_DAO.getListaRapportiProve(session);
+	}
+
+	public static ArrayList<AMImmagineCampioneDTO> getListaImmagineCampione(Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAM_DAO.getListaImmagineCampione(session);
+	}
+
+	public static AMImmagineCampioneDTO getImmagineFromId(int id_immagine, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAM_DAO.getImmagineFromId(id_immagine, session);
 	}
 
 }

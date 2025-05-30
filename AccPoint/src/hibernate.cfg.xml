@@ -249,6 +249,7 @@
 	<mapping class="AMRapportoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMRapportoDTO.hbm.xml"/>
 	<mapping class="AMProgressivoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMProgressivoDTO.hbm.xml"/>
 	<mapping class="AMOggettoProvaZonaRifDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMOggettoProvaZonaRifDTO.hbm.xml"/>
+	<mapping class="AMImmagineCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AMImmagineCampioneDTO.hbm.xml"/>
 	  
  	
  	

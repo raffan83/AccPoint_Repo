@@ -7,6 +7,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.field;
 import static net.sf.dynamicreports.report.builder.DynamicReports.report;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
+import static org.junit.Assert.assertNotNull;
 import static net.sf.dynamicreports.report.builder.DynamicReports.grp;
 
 import net.sf.dynamicreports.report.builder.style.BorderBuilder;
@@ -352,9 +353,15 @@ public class CreateCertificatoAM {
 		
 		if(prova.getIntervento().getOperatore().getFirma()!=null) {
 			File file_firma = new File(Costanti.PATH_FOLDER+"\\AM_Interventi\\Firme\\"+prova.getIntervento().getOperatore().getId()+"\\"+prova.getIntervento().getOperatore().getFirma());
-			Image image_firma = ImageIO.read(file_firma);
+			try {
+				Image image_firma = ImageIO.read(file_firma);
+				report.addParameter("immagine_firma", image_firma);
+			}catch(Exception e) {
+				report.addParameter("immagine_firma", "");
+			}
 			
-			report.addParameter("immagine_firma", image_firma);
+			
+			
 		}else {
 			report.addParameter("immagine_firma", "");
 		}
@@ -362,11 +369,14 @@ public class CreateCertificatoAM {
 		
 		SubreportBuilder subreportZone; 
 		subreportZone = cmp.subreport(getTableReportZone(prova.getStrumento().getListaZoneRiferimento()));
-
+		Image image = null;
 		File file = new File(Costanti.PATH_FOLDER+"\\AM_Interventi\\Strumenti\\"+prova.getStrumento().getId()+"\\"+prova.getStrumento().getFilename_img());
-		Image image = ImageIO.read(file);
+		try {
+		 image = ImageIO.read(file);
 		
-		
+		}catch(Exception e) {
+			 image = null;
+		}
 		String minimi = calcolaMinimi(prova);
 				
 		int max_colonne = calcolaMaxColonne(prova);
@@ -424,7 +434,7 @@ public class CreateCertificatoAM {
 		
 
 		report.addGroup(group);
-		group.setHeaderSplitType(SplitType.IMMEDIATE);
+		group.setHeaderSplitType(SplitType.IMMEDIATE).setPadding(0);
 		report.addDetail(vl).setDetailSplitType(SplitType.IMMEDIATE);
 		
 
@@ -704,7 +714,7 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
                   	}else {
                   		 rigaComp.add(
                                    cmp.text((String) riga[j])
-                                      .setStyle(styleTitle.setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER))
+                                      .setStyle(styleNormal.setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER))
                                       .setFixedWidth(larghezzaColonna)
                                );
                   	}

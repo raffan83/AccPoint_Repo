@@ -563,11 +563,51 @@
        			<input class="form-control" id="numero_porzioni_mod" name="numero_porzioni_mod" type="number" style="width:10%" required min="0" step="1" >
        	</div>
        </div><br>
+       <div class="row">
+          	<div class="col-sm-3">
+       		<label>Immagine Campione</label>
+       	</div>
+       	<div class="col-sm-9">
+			<!-- Container della select personalizzata -->
+<div class="custom-select">
+  <div class="selected-option">Seleziona un'opzione</div>
+  <div class="options-list">
+  <c:forEach items="${lista_immagini }" var="immagine">
+ <div class="option" data-value="${immagine.id }">
+      <span>${immagine.descrizione }</span>
+      <!-- <img class="thumb" src="img/thumb1.jpg" data-large="img/large1.jpg" /> -->
+      <img class="thumb" src="amGestioneInterventi.do?action=immagine&id_immagine=${immagine.id }" data-large="amGestioneInterventi.do?action=immagine&id_immagine=${immagine.id }"  >
+    </div>
+  </c:forEach>
+ <!--  
+  <div class="custom-select">
+  <div class="selected-option">Seleziona un'opzione</div>
+  <div class="options-list">
+    <div class="option" data-value="1">
+      <span>Descrizione 1</span>
+      <img class="thumb" src="img1.jpg" />
+    </div>
+    <div class="option" data-value="2">
+      <span>Descrizione 2</span>
+      <img class="thumb" src="img2.jpg" />
+    </div>
+  </div>
+</div> -->
+  
+
+<!-- Popup per immagine ingrandita -->
+<div id="image-popup"><img id="popup-img" src="" /></div>
+			
+        </div> 
+       	</div>
+       
+       </div>
+       </div><br>
               <div class="row">
        <div class="col-xs-3">
 			<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
-		        <span>Carica Immagine...</span>
+		        <span>Carica Immagine Personalizzata...</span>
 				<input accept=".jpg,.png"  id="fileupload_img_mod" name="fileupload_img_mod" type="file" >
 		       
 		   	 </span>
@@ -660,6 +700,42 @@
 	<link type="text/css" href="css/bootstrap.min.css" />
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"> 
+	<style>
+.custom-select {
+  font-family: sans-serif;
+  width: 300px;
+}
+
+.option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.thumb {
+  max-height: 20px;
+  border: 1px solid #aaa;
+}
+
+#image-popup {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  background: #fff;
+  border: 1px solid #888;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+  padding: 5px;
+}
+
+#image-popup img {
+  max-width: 300;
+  max-height: 300px;
+}
+	</style>
 
 </jsp:attribute>
 
@@ -673,43 +749,6 @@
 <script type="text/javascript">
 
 
-
-/* 	function modificaStrumento(id, descrizione, matricola,  tipo, volume,  pressione, costruttore, nFabbrica, dataVerifica, dataProssimaVerifica, frequenza, anno, cliente, sede, lista_zone) { 
-
-	$('#id_strumento').val(id);
-	
-
-	  $('#descrizione_mod').val(descrizione);
-	    $('#matricola_mod').val(matricola);
-	    $('#tipo_mod').val(tipo);
-	    $('#volume_mod').val(volume);
-
-	    $('#pressione_mod').val(pressione);
-	    $('#costruttore_mod').val(costruttore);
-	    $('#numero_fabbrica_mod').val(nFabbrica);
-
-	    $('#data_verifica_mod').val(dataVerifica);
-	    $('#data_prossima_verifica_mod').val(dataProssimaVerifica);
-	    $('#frequenza_mod').val(frequenza);
-	    $('#anno_mod').val(anno);
-
-	    
-	    $('#cliente_general_mod').val(cliente);
-	    $('#cliente_general_mod').change()
-	    
-	    if(sede!=0){
-	    	$('#sede_general_mod').val(sede+"_"+cliente);
-	    }else{
-	    	$('#sede_general_mod').val(sede);
-	    }
-	    
-	    $('#sede_general_mod').change()
-	    
-	    
-	    	initSelect2Gen('#cliente_general_mod', null, '#modalModificaStrumento');
-	
-	 $('#modalModificaStrumento').modal()
-} */
 	
 	function modificaStrumento(strumento) { 
 
@@ -771,21 +810,7 @@
 
 		    table.draw();
 		    
-		
-		    
-		    
-	/* 	   // var table = $('#tabellaZone').DataTable();
-		    table.clear();
 
-		    lista_zone.forEach(function(zona) {
-		        table.row.add([
-		            zona.nomeZona,
-		            zona.valore,
-		            zona.descrizione
-		        ]);
-		    });
-
-		    table.draw(); */
 		
 		 $('#modalModificaStrumento').modal()
 	}
@@ -907,8 +932,48 @@ $('#frequenza, #data_verifica').on('change input', function() {
 });
 var commessa_options;
 $(document).ready(function() {
- 
 	
+	 $(".selected-option").click(function() {
+		    $(".options-list").toggle();
+		  });
+
+		  // Seleziona opzione
+		  $(".option").click(function() {
+		    $(".selected-option").html($(this).html());
+		    $(".options-list").hide();
+		  });
+
+		  // Mostra popup con immagine ingrandita
+		  $(".option").hover(function (e) {
+    const imgSrc = $(this).find("img").attr("src");
+    $("#popup-img").attr("src", imgSrc);
+    $("#image-popup").show();
+  }, function () {
+    $("#image-popup").hide();
+  });
+
+  $(".option").mousemove(function (e) {
+    const mouseX = e.clientX -450
+    const mouseY = e.clientY -450
+
+ //   console.log("Top: " + pos.top + ", Left: " + pos.left);
+    $("#image-popup").css({
+        top: mouseY +"px",
+        left: mouseX + "px"
+      });
+
+   /*  $("#image-popup").css({
+      top: mouseY + "px",
+      left: mouseX + "px"
+    }); */
+  });
+
+		  // Chiudi lista se clic fuori
+		  $(document).click(function(e) {
+		    if (!$(e.target).closest('.custom-select').length) {
+		      $(".options-list").hide();
+		    }
+		  });
 	
 	
 	commessa_options = $('#commessa_mod option').clone();

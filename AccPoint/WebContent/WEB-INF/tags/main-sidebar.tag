@@ -484,6 +484,7 @@
 		   <li><a href="amGestioneStrumenti.do?action=lista">Lista Tipologie Attrezzature</a></li>
 		   <li><a href="amGestioneCampioni.do?action=lista">Lista Campioni</a></li>	
 	  <li><a href="amGestioneInterventi.do?action=lista_prove">Lista Prove Effettuate</a></li> 
+	  	  <li><a href="amGestioneInterventi.do?action=lista_immagini_campione">Lista Immagini Campione</a></li> 
           </ul>
         </li> 
            <% }%> 

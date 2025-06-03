@@ -93,7 +93,7 @@
 </c:if>
 </c:if>
                   <c:if test="${rapporto.stato.id == 2}">
-<a target="_blank"   class="btn btn-danger btn-xs customTooltip pull-right" title="Click per scaricare il Cerificato"  href="amGestioneInterventi.do?action=download_certificato&id_prova=${prova.id}" > <i class="fa fa-file-pdf-o"></i></a>
+<a target="_blank"   class="btn btn-danger btn-xs customTooltip pull-right" title="Click per scaricare il Cerificato"  href="amGestioneInterventi.do?action=download_certificato&id_prova=${utl:encryptData(prova.id)}" > <i class="fa fa-file-pdf-o"></i></a>
  
  </c:if>
                 </li>

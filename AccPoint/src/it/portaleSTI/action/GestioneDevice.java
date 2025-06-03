@@ -57,6 +57,7 @@ import it.portaleSTI.DTO.DevTipoProceduraDTO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumDipendenteFornDTO;
 import it.portaleSTI.DTO.DocumFornitoreDTO;
+import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
@@ -2034,8 +2035,15 @@ public class GestioneDevice extends HttpServlet {
 				if(data_scadenza!=null && !data_scadenza.equals("")) {
 					Date dataScadenza = df.parse(data_scadenza);
 					contratto.setData_scadenza(dataScadenza);	
+					
 					Calendar c = Calendar.getInstance();
 					c.setTime(dataScadenza);
+					
+					if(c.getTime().before(new Date())) {
+						contratto.setStato("S");
+					}else {
+						contratto.setStato("C");
+					}
 					c.add(Calendar.DAY_OF_YEAR, -30);
 					if(c.getTime().before(new Date())) {
 						c.setTime(dataScadenza);
@@ -2151,10 +2159,22 @@ public class GestioneDevice extends HttpServlet {
 				String subscription = ret.get("subscription_mod");
 				String descrizione = ret.get("descrizione_mod");
 				String id_company = ret.get("company_mod");
+				String is_rinnova = ret.get("is_rinnova");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
-				DevContrattoDTO contratto = GestioneDeviceBO.getContrattoFromID(Integer.parseInt(id_contratto),session);
+				DevContrattoDTO contratto = null;
+				DevContrattoDTO contrattoOld = null;
+				if(is_rinnova!=null && is_rinnova.equals("1")) {
+					contratto = new DevContrattoDTO();
+					contrattoOld = GestioneDeviceBO.getContrattoFromID(Integer.parseInt(id_contratto),session);
+					contrattoOld.setDisabilitato(1);
+					session.update(contrattoOld);
+					contratto.setId_contratto_precedente(contrattoOld.getId());
+				}else {
+					contratto = GestioneDeviceBO.getContrattoFromID(Integer.parseInt(id_contratto),session);
+				}
+				 
 				
 				contratto.setFornitore(fornitore);
 				contratto.setData_inizio(df.parse(data_inizio));
@@ -2173,6 +2193,12 @@ public class GestioneDevice extends HttpServlet {
 					contratto.setData_scadenza(dataScadenza);	
 					Calendar c = Calendar.getInstance();
 					c.setTime(dataScadenza);
+					if(c.getTime().before(new Date())) {
+						contratto.setStato("S");
+					}else {
+						contratto.setStato("C");
+					}
+					
 					c.add(Calendar.DAY_OF_YEAR, -30);
 					if(c.getTime().before(new Date())) {
 						c.setTime(dataScadenza);
@@ -2199,54 +2225,73 @@ public class GestioneDevice extends HttpServlet {
 					contratto.setCompany(null);
 				}
 				
-				session.update(contratto);
+				session.saveOrUpdate(contratto);
 				
-				ArrayList<Integer>lista_id_associati = new ArrayList<Integer>();
-				ArrayList<DevSoftwareDTO> lista_softwareAssociati = GestioneDeviceBO.getListaContrattoSoftware(contratto.getId(), session);
-				for (DevSoftwareDTO devSoftwareDTO : lista_softwareAssociati) {
-					lista_id_associati.add(devSoftwareDTO.getId());
-				}
 				
-				ArrayList<Integer> lista_id_da_associare = new ArrayList<Integer>();
-				if(id_software_associazione!=null && !id_software_associazione.equals("")) {
-				for (int i = 0; i < id_software_associazione.split(";").length; i++) {
-					DevSoftwareDTO s = GestioneDeviceBO.getSoftwareFromID(Integer.parseInt(id_software_associazione.split(";")[i]), session);
-					lista_id_da_associare.add(Integer.parseInt(id_software_associazione.split(";")[i]));
-					if(s.getContratto()!=null && s.getContratto().getId()!=contratto.getId()) {
-						DevSoftwareDTO new_software = new DevSoftwareDTO();
-						new_software.setCompany(s.getCompany());
-						new_software.setContratto(contratto);
-						new_software.setData_acquisto(s.getData_acquisto());
-						new_software.setData_scadenza(contratto.getData_scadenza());
+				
+				if(is_rinnova!=null && is_rinnova.equals("1")) {
+					ArrayList<DevSoftwareDTO> lista_softwareAssociati = GestioneDeviceBO.getListaContrattoSoftware(contrattoOld.getId(), session);
+					
+					for (DevSoftwareDTO devSoftwareDTO : lista_softwareAssociati) {
+						devSoftwareDTO.setContratto(contratto);
+						devSoftwareDTO.setData_scadenza(contratto.getData_scadenza());
 						if(contratto.getData_scadenza()!=null && contratto.getData_invio_remind()!=null) {
-							new_software.setData_invio_remind(null);
+							devSoftwareDTO.setData_invio_remind(null);
 						}
-						new_software.setEmail_responsabile(s.getEmail_responsabile());
-						new_software.setNome(s.getNome());
-						new_software.setProduttore(s.getProduttore());
-						new_software.setTipo_licenza(s.getTipo_licenza());
-						new_software.setVersione(s.getVersione());
-												
-						session.save(new_software);
+						session.update(devSoftwareDTO);
 						
-
-					}else {
-						if(contratto.getData_scadenza()!=null) {
-							s.setData_scadenza(contratto.getData_scadenza());
-						}
-						s.setContratto(contratto);
-						session.update(s);
+					
 					}
-				}
+				}else {
+					
+					ArrayList<Integer>lista_id_associati = new ArrayList<Integer>();
+					ArrayList<DevSoftwareDTO> lista_softwareAssociati = GestioneDeviceBO.getListaContrattoSoftware(contratto.getId(), session);
+					for (DevSoftwareDTO devSoftwareDTO : lista_softwareAssociati) {
+						lista_id_associati.add(devSoftwareDTO.getId());
+					}
+					
+					ArrayList<Integer> lista_id_da_associare = new ArrayList<Integer>();
+					if(id_software_associazione!=null && !id_software_associazione.equals("")) {
+					for (int i = 0; i < id_software_associazione.split(";").length; i++) {
+						DevSoftwareDTO s = GestioneDeviceBO.getSoftwareFromID(Integer.parseInt(id_software_associazione.split(";")[i]), session);
+						lista_id_da_associare.add(Integer.parseInt(id_software_associazione.split(";")[i]));
+						if(s.getContratto()!=null && s.getContratto().getId()!=contratto.getId()) {
+							DevSoftwareDTO new_software = new DevSoftwareDTO();
+							new_software.setCompany(s.getCompany());
+							new_software.setContratto(contratto);
+							new_software.setData_acquisto(s.getData_acquisto());
+							new_software.setData_scadenza(contratto.getData_scadenza());
+							if(contratto.getData_scadenza()!=null && contratto.getData_invio_remind()!=null) {
+								new_software.setData_invio_remind(null);
+							}
+							new_software.setEmail_responsabile(s.getEmail_responsabile());
+							new_software.setNome(s.getNome());
+							new_software.setProduttore(s.getProduttore());
+							new_software.setTipo_licenza(s.getTipo_licenza());
+							new_software.setVersione(s.getVersione());
+													
+							session.save(new_software);
+							
+
+						}else {
+							if(contratto.getData_scadenza()!=null) {
+								s.setData_scadenza(contratto.getData_scadenza());
+							}
+							s.setContratto(contratto);
+							session.update(s);
+						}
+					}
+					}
+					
+					for (int i = 0; i < lista_id_associati.size(); i++) {
+						if(!lista_id_da_associare.contains(lista_id_associati.get(i))) {
+							DevSoftwareDTO s = GestioneDeviceBO.getSoftwareFromID(lista_id_associati.get(i), session);
+							s.setContratto(null);
+							session.update(s);
+						}
+					}
 				}
 				
-				for (int i = 0; i < lista_id_associati.size(); i++) {
-					if(!lista_id_da_associare.contains(lista_id_associati.get(i))) {
-						DevSoftwareDTO s = GestioneDeviceBO.getSoftwareFromID(lista_id_associati.get(i), session);
-						s.setContratto(null);
-						session.update(s);
-					}
-				}
 								
 				
 				myObj = new JsonObject();
@@ -2273,6 +2318,63 @@ public class GestioneDevice extends HttpServlet {
 		     	dispatcher.forward(request,response);
 			}
 			
+			else if(action.equals("rendi_obsoleto")) {
+				ajax = true;
+				
+				String id_contratto = request.getParameter("id_contratto");
+				
+				DevContrattoDTO contratto = GestioneDeviceBO.getContrattoFromID(Integer.parseInt(id_contratto), session);
+				
+				contratto.setDisabilitato(1);
+				session.update(contratto);
+				
+				ArrayList<DevSoftwareDTO> lista_software_contratto = GestioneDeviceDAO.getListaContrattoSoftware(contratto.getId(), session);
+				for (DevSoftwareDTO s : lista_software_contratto) {
+					s.setDisabilitato(1);
+					session.update(s);
+				}
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
+			}
+			else if (action.equals("storico_contratto")) {
+				
+				ajax=true;
+				
+				String id_contratto = request.getParameter("id_contratto");
+				
+				ArrayList<DevContrattoDTO> lista_contratti = new ArrayList<DevContrattoDTO>();
+				
+				DevContrattoDTO contratto= GestioneDeviceBO.getContrattoFromID(Integer.parseInt(id_contratto), session);
+								
+				lista_contratti.add(contratto);
+				
+				if(contratto.getId_contratto_precedente()!=null ) {
+					while(contratto.getId_contratto_precedente()!=null) {
+						DevContrattoDTO contrattoOld =  GestioneDeviceBO.getContrattoFromID(contratto.getId_contratto_precedente(), session);
+						lista_contratti.add(contrattoOld);
+						
+						contratto = contrattoOld;
+					}
+				}
+			
+				PrintWriter out = response.getWriter();
+				response.setContentType("application/json");
+				 Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create(); 			        			        
+			     			      		       
+			        myObj.addProperty("success", true);
+			
+			        myObj.add("lista_contratti", gson.toJsonTree(lista_contratti));			      
+			        
+			        out.println(myObj.toString());
+		
+			        out.close();
+			        
+			     
+			}
 			
 			session.getTransaction().commit();
 			session.close();

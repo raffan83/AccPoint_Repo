@@ -3,7 +3,6 @@
 <%@page import="it.portaleSTI.DTO.AMOperatoreDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="it.portaleSTI.DTO.ClienteDTO"%>
-<%@page import="it.portaleSTI.DTO.CommessaDTO"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
@@ -329,16 +328,38 @@
        			<input class="form-control" id="numero_porzioni" name="numero_porzioni" type="number" style="width:10%" required min="0" step="1" >
        	</div>
        </div><br>
+       <div class="row">
+          	<div class="col-sm-3">
+       		<label>Immagine Campione</label>
+       	</div>
+       	<div class="col-sm-9">
+			<!-- Container della select personalizzata -->
+			<select class="form-control select2" id="immagine_campione" name="immagine_campione" style="width:100%" data-placeholder="Seleziona immagine campione...">
+			<option value=""></option>
+			  <c:forEach items="${lista_immagini }" var="immagine">
+ <option class="option" value="${immagine.id }">
+      ${immagine.descrizione }
+     
+    </option>
+  </c:forEach>
+			</select>
+			
+			 <div id="image-popup"><img id="popup-img" src="" /></div> 
+
+       </div>
+       </div><br>
+       
+       
               <div class="row">
-       <div class="col-xs-3">
+       <div class="col-xs-4">
 			<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
-		        <span>Carica Immagine...</span>
+		        <span>Carica Immagine Personalizzata...</span>
 				<input accept=".jpg,.png"  id="fileupload_img" name="fileupload_img" type="file" >
 		       
 		   	 </span>
 		   	</div>
-		 <div class="col-xs-7">
+		 <div class="col-xs-8">
 		 <label id="label_img"></label>
 		 </div> 
        </div><br>
@@ -569,42 +590,22 @@
        	</div>
        	<div class="col-sm-9">
 			<!-- Container della select personalizzata -->
-<div class="custom-select">
-  <div class="selected-option">Seleziona un'opzione</div>
-  <div class="options-list">
-  <c:forEach items="${lista_immagini }" var="immagine">
- <div class="option" data-value="${immagine.id }">
-      <span>${immagine.descrizione }</span>
-      <!-- <img class="thumb" src="img/thumb1.jpg" data-large="img/large1.jpg" /> -->
-      <img class="thumb" src="amGestioneInterventi.do?action=immagine&id_immagine=${immagine.id }" data-large="amGestioneInterventi.do?action=immagine&id_immagine=${immagine.id }"  >
-    </div>
+			<select class="form-control select2" id="immagine_campione_mod" name="immagine_campione_mod" style="width:100%" data-placeholder="Seleziona immagine campione...">
+			<option value=""></option>
+			  <c:forEach items="${lista_immagini }" var="immagine">
+ <option class="option" value="${immagine.id }">
+      ${immagine.descrizione }
+     
+    </option>
   </c:forEach>
- <!--  
-  <div class="custom-select">
-  <div class="selected-option">Seleziona un'opzione</div>
-  <div class="options-list">
-    <div class="option" data-value="1">
-      <span>Descrizione 1</span>
-      <img class="thumb" src="img1.jpg" />
-    </div>
-    <div class="option" data-value="2">
-      <span>Descrizione 2</span>
-      <img class="thumb" src="img2.jpg" />
-    </div>
-  </div>
-</div> -->
-  
-
-<!-- Popup per immagine ingrandita -->
-<div id="image-popup"><img id="popup-img" src="" /></div>
+			</select>
 			
-        </div> 
-       	</div>
-       
+			 <div id="image-popup_mod"><img id="popup-img_mod" src="" /></div> 
+
        </div>
        </div><br>
               <div class="row">
-       <div class="col-xs-3">
+       <div class="col-xs-4">
 			<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Carica Immagine Personalizzata...</span>
@@ -612,7 +613,7 @@
 		       
 		   	 </span>
 		   	</div>
-		 <div class="col-xs-7">
+		 <div class="col-xs-8">
 		 <label id="label_img_mod"></label>
 		 </div> 
        </div><br>
@@ -701,40 +702,40 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"> 
 	<style>
-.custom-select {
-  font-family: sans-serif;
-  width: 300px;
-}
-
-.option {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  border: 1px solid #ccc;
-  margin-bottom: 5px;
-  cursor: pointer;
-}
-
-.thumb {
-  max-height: 20px;
-  border: 1px solid #aaa;
-}
-
-#image-popup {
+	
+	
+	#image-popup {
   display: none;
   position: absolute;
-  z-index: 1000;
+  z-index: 1000000;
   background: #fff;
   border: 1px solid #888;
   box-shadow: 0 0 6px rgba(0,0,0,0.3);
   padding: 5px;
+  pointer-events: none;
 }
-
 #image-popup img {
-  max-width: 300;
-  max-height: 300px;
+  max-width: 500px;
+  max-height: 500px;
 }
+	
+	
+		#image-popup_mod {
+  display: none;
+  position: absolute;
+  z-index: 1000000;
+  background: #fff;
+  border: 1px solid #888;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+  padding: 5px;
+  pointer-events: none;
+}
+#image-popup_mod img {
+  max-width: 500px;
+  max-height: 500px;
+}
+	
+
 	</style>
 
 </jsp:attribute>
@@ -930,55 +931,127 @@ $('#frequenza_mod, #data_verifica_mod').on('change input', function() {
 $('#frequenza, #data_verifica').on('change input', function() {
     aggiornaDataProssima("");
 });
-var commessa_options;
+
+
+function formatData (data) {
+	  if (!data.id|| data.id=="Nessuno") { return data.text; }
+	  var id_immagine = data.id.split("_")[0];
+	  
+
+	  var $result= $(
+			
+	  ' <span class="option-with-thumb" data-large="amGestioneInterventi.do?action=immagine&id_immagine='+id_immagine+'">  <span>'+data.text+'</span>   <img class="thumb" src="amGestioneInterventi.do?action=immagine&id_immagine='+id_immagine+'" style="max-height: 20px; margin-left: 10px; border: 1px solid #aaa;" />  </span>'
+	  );
+	  return $result;
+	};
+
+	
+	$('#immagine_campione_mod').on('select2:open', function () {
+		  // Aspetta un attimo che il DOM sia pronto
+		 const $dropdown = $('.select2-dropdown'); // Questo è il menu visibile
+  if ($('#image-popup_mod').length === 0) {
+    $dropdown.append('<div id="image-popup_mod"><img id="popup-img_mod" src="" /></div>');
+  } else {
+    $dropdown.append($('#image-popup_mod')); // sposta se già esiste
+  }
+		});
+	 
+	
+	$('#immagine_campione_mod').change(function(){
+		
+		if($(this).val()!=''){
+			$('#label_img_mod').html("");
+			$('#fileupload_img_mod').val(null);
+		}
+		
+		
+	});
+	
+	
+	$('#immagine_campione').on('select2:open', function () {
+		  // Aspetta un attimo che il DOM sia pronto
+		 const $dropdown = $('.select2-dropdown'); // Questo è il menu visibile
+if ($('#image-popup').length === 0) {
+  $dropdown.append('<div id="image-popup"><img id="popup-img" src="" /></div>');
+} else {
+  $dropdown.append($('#image-popup')); // sposta se già esiste
+}
+		});
+	 
+	
+	$('#immagine_campione').change(function(){
+		
+		if($(this).val()!=''){
+			$('#label_img').html("");
+			$('#fileupload_img').val(null);
+		}
+		
+		
+	});
+	
+
 $(document).ready(function() {
 	
-	 $(".selected-option").click(function() {
-		    $(".options-list").toggle();
-		  });
-
-		  // Seleziona opzione
-		  $(".option").click(function() {
-		    $(".selected-option").html($(this).html());
-		    $(".options-list").hide();
-		  });
-
-		  // Mostra popup con immagine ingrandita
-		  $(".option").hover(function (e) {
-    const imgSrc = $(this).find("img").attr("src");
-    $("#popup-img").attr("src", imgSrc);
-    $("#image-popup").show();
-  }, function () {
-    $("#image-popup").hide();
-  });
-
-  $(".option").mousemove(function (e) {
-    const mouseX = e.clientX -450
-    const mouseY = e.clientY -450
-
- //   console.log("Top: " + pos.top + ", Left: " + pos.left);
-    $("#image-popup").css({
-        top: mouseY +"px",
-        left: mouseX + "px"
-      });
-
-   /*  $("#image-popup").css({
-      top: mouseY + "px",
-      left: mouseX + "px"
-    }); */
-  });
-
-		  // Chiudi lista se clic fuori
-		  $(document).click(function(e) {
-		    if (!$(e.target).closest('.custom-select').length) {
-		      $(".options-list").hide();
-		    }
-		  });
+	$('#immagine_campione_mod').select2({
+		
+		templateResult: formatData,
+		  templateSelection: formatData
+	});
 	
 	
-	commessa_options = $('#commessa_mod option').clone();
+	$('#immagine_campione').select2({
+		
+		templateResult: formatData,
+		  templateSelection: formatData
+	});  
 	
-	//$(".select2").select2();
+	
+	
+	$(document).on('mousemove', '.select2-results__option', function (e) {
+		
+		 
+
+		  // Risali fino al select originale usando l'elemento di focus attivo
+		const id = $('.select2-container--open').prev('select').attr('id');
+		if(id=="immagine_campione_mod"){
+			 const thumbSpan = $(this).find('.option-with-thumb');
+			    if (thumbSpan.length > 0) {
+			      const largeSrc = thumbSpan.data('large');
+			      $('#popup-img_mod').attr('src', largeSrc);
+			      $('#image-popup_mod').css({
+			        display: 'block',
+			        top: e.pageY -450,
+			        left: e.pageX -420
+			      });
+			    }
+		}else{
+			 const thumbSpan = $(this).find('.option-with-thumb');
+			    if (thumbSpan.length > 0) {
+			      const largeSrc = thumbSpan.data('large');
+			      $('#popup-img').attr('src', largeSrc);
+			      $('#image-popup').css({
+			        display: 'block',
+			        top: e.pageY -450,
+			        left: e.pageX -420
+			      });
+			    }
+		}
+	   
+	  });
+
+	  $(document).on('mouseleave', '.select2-results__option', function () {
+		  const id = $('.select2-container--open').prev('select').attr('id');
+			if(id=="immagine_campione_mod"){
+			    $('#image-popup_mod').hide();
+			    $('#popup-img_mod').attr('src', '');
+			}else{
+			    $('#image-popup').hide();
+			    $('#popup-img').attr('src', '');
+			}
+	
+	  });
+
+	
 
 	$("#sede_general").select2();
 	$("#sede_general_mod").select2();
@@ -989,9 +1062,7 @@ $(document).ready(function() {
 	//initSelect2('#cliente_mod');
 	//$('#cliente_mod').change();
 	$('#sede_mod').select2();
-	$('#commessa_mod').select2();
-	$('#tecnico_verificatore_mod').select2();
-	$('#luogo_mod').select2();
+
 	$('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
 	 });
@@ -1035,11 +1106,7 @@ $(document).ready(function() {
 		      responsive: true,
 		      scrollX: false,
 		      stateSave: true,	
-		      select: {		
-    	    	  
-		        	style:    'multi+shift',
-		        	selector: 'td:nth-child(2)'
-		    	},     
+		
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 15 },
@@ -1178,7 +1245,8 @@ $('#fileupload_img').change(function(){
 
 $('#fileupload_img_mod').change(function(){
 	
-	
+	$('#immagine_campione_mod').val("")
+	$('#immagine_campione_mod').change()
 	$('#label_img_mod').html($(this).val().split("\\")[2]);
 });
 

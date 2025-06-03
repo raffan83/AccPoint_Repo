@@ -16,6 +16,8 @@ public class DevContrattoDTO {
 	private String subscription;
 	private String descrizione;
 	private DocumFornitoreDTO company;
+	private String stato;
+	private Integer id_contratto_precedente;
 
 	public int getN_licenze() {
 		return n_licenze;
@@ -157,6 +159,30 @@ public class DevContrattoDTO {
 
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
+	}
+
+
+
+	public String getStato() {
+		return stato;
+	}
+
+
+
+	public void setStato(String stato) {
+		this.stato = stato;
+	}
+
+
+
+	public Integer getId_contratto_precedente() {
+		return id_contratto_precedente;
+	}
+
+
+
+	public void setId_contratto_precedente(Integer id_contratto_precedente) {
+		this.id_contratto_precedente = id_contratto_precedente;
 	}
 
 

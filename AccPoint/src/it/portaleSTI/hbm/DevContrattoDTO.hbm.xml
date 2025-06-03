@@ -52,5 +52,13 @@
         <many-to-one name="company" class="it.portaleSTI.DTO.DocumFornitoreDTO" fetch="join" lazy="false">
             <column name="id_company" />
         </many-to-one>
+        
+        <property name="stato" type="java.lang.String">
+            <column name="stato" />
+        </property>
+        
+          <property name="id_contratto_precedente" type="int">
+            <column name="id_contratto_precedente" />
+        </property>
 	</class>
 </hibernate-mapping>

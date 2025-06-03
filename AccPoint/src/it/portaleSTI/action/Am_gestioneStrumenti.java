@@ -5,6 +5,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -188,6 +192,7 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		        String sondaVelocita = ret.get("sonda_velocita");
 		        String numeroPorzioni=ret.get("numero_porzioni");
 		        String table_zone = ret.get("table_zone");
+		        String immagine_campione = ret.get("immagine_campione");
 		        
 				String filename_img=filename;
 				
@@ -261,12 +266,21 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		           
 		           strumento.getListaZoneRiferimento().add(z);
 		        }
-				
-		        if(filename_img!=null&& !filename_img.equals("")) {
-					
-					Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId(), filename_img);
-					strumento.setFilename_img(filename_img);
-				}
+		        if(immagine_campione!=null && !immagine_campione.equals("")) {
+		        	
+		        	AMImmagineCampioneDTO immagine = GestioneAM_BO.getImmagineFromId(Integer.parseInt(immagine_campione), session);
+		        	String sourcePath = Costanti.PATH_FOLDER+"\\AM_interventi\\ImmaginiCampione\\"+immagine.getId()+"\\"+immagine.getNome_file();
+		        	Path destinationPath = Paths.get(Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId()+"\\"+immagine.getNome_file());
+		        	Files.createDirectories(destinationPath.getParent());
+		        	Files.copy(Paths.get(sourcePath),destinationPath, StandardCopyOption.REPLACE_EXISTING);
+		        	strumento.setFilename_img(immagine.getNome_file());
+		        }else {
+			        if(filename_img!=null&& !filename_img.equals("")) {
+						
+						Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId(), filename_img);
+						strumento.setFilename_img(filename_img);
+					}
+		        }
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
@@ -317,9 +331,9 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				}
 				
 				if(strumento.getFilename_img()!=null && !strumento.getFilename_img().equals("")) {
-					Utility.copiaFile(Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId()+"\\"+strumento.getFilename_img(), Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+nuovoStrumento.getId()+"\\"+strumento.getFilename_img());
+						Utility.copiaFile(Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId()+"\\"+strumento.getFilename_img(), Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+nuovoStrumento.getId()+"\\"+strumento.getFilename_img());
 				}
-				
+		 
 				while(iter.hasNext()) 
 				{
 					AMOggettoProvaZonaRifDTO zona = iter.next();
@@ -393,6 +407,7 @@ public class Am_gestioneStrumenti extends HttpServlet {
 		        String sondaVelocita = ret.get("sonda_velocita_mod");
 		        String table_zone = ret.get("table_zone_mod"); 
 		        String numeroPorzioni=ret.get("numero_porzioni_mod");
+		        String immagine_campione = ret.get("immagine_campione_mod");
 		        
 				String filename_img=filename;
 				
@@ -489,12 +504,21 @@ public class Am_gestioneStrumenti extends HttpServlet {
 					strumento.setNumero_porzioni(1);
 				}
 		        
-		        if(filename_img!=null&& !filename_img.equals("")) {
-					
-					Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId(), filename_img);
-					strumento.setFilename_img(filename_img);
-				}
-				
+		        if(immagine_campione!=null && !immagine_campione.equals("")) {
+		        	
+		        	AMImmagineCampioneDTO immagine = GestioneAM_BO.getImmagineFromId(Integer.parseInt(immagine_campione), session);
+		        	String sourcePath = Costanti.PATH_FOLDER+"\\AM_interventi\\ImmaginiCampione\\"+immagine.getId()+"\\"+immagine.getNome_file();
+		        	String destinationPath = Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId()+"\\"+immagine.getNome_file();
+		        	Files.copy(Paths.get(sourcePath),Paths.get(destinationPath), StandardCopyOption.REPLACE_EXISTING);
+		        	strumento.setFilename_img(immagine.getNome_file());
+		        }else {
+		        
+			        if(filename_img!=null&& !filename_img.equals("")) {
+						
+						Utility.saveFile(fileItem, Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId(), filename_img);
+						strumento.setFilename_img(filename_img);
+					}
+		        }
 				session.update(strumento);				
 							
 				

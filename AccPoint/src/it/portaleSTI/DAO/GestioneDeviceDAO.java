@@ -788,13 +788,14 @@ public static void updateScadenzaContratti() throws HibernateException, ParseExc
 	
 	lista_scadenze = (ArrayList<DevContrattoDTO>) query.list();
 	for (DevContrattoDTO c : lista_scadenze) {
-		c.setDisabilitato(1);
+		//c.setDisabilitato(1);
+		c.setStato("S");
 		session.update(c);
-		ArrayList<DevSoftwareDTO> lista_software_contratto = GestioneDeviceDAO.getListaContrattoSoftware(c.getId(), session);
-		for (DevSoftwareDTO s : lista_software_contratto) {
-			s.setDisabilitato(1);
-			session.update(s);
-		}
+//		ArrayList<DevSoftwareDTO> lista_software_contratto = GestioneDeviceDAO.getListaContrattoSoftware(c.getId(), session);
+//		for (DevSoftwareDTO s : lista_software_contratto) {
+//			s.setDisabilitato(1);
+//			session.update(s);
+//		}
 	}
 
 	session.getTransaction().commit();

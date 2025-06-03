@@ -74,14 +74,18 @@
 <th>Data scadenza</th> 
  <th>Permanente</th>
  <th>Numero licenze</th>
-<th>Azioni</th>
+<th style="min-width:180px">Azioni</th>
  </tr></thead>
  
  <tbody>
  
  	<c:forEach items="${lista_contratto }" var="contratto" varStatus="loop">
-	<tr id="row_${loop.index}" >
-
+ 	<c:if test="${contratto.stato=='S' }">
+	<tr id="row_${device.id }" style="background-color:#D8796F">
+</c:if>
+<c:if test="${contratto.stato!='S' }">
+	<tr id="row_${device.id }">
+</c:if>
 	<td>${contratto.id }</td>		
 	<td>${contratto.company.ragione_sociale }</td>
 	<td>${contratto.fornitore }</td>
@@ -93,9 +97,14 @@
 <td>${contratto.n_licenze }</td>
 	<td>
 
-	  <a class="btn btn-warning customTooltip" onClicK="modificaContratto('${contratto.id}', '${utl:escapeJS(contratto.fornitore) }','${contratto.data_inizio }','${contratto.data_scadenza }', '${contratto.permanente }','${contratto.email_referenti }','${contratto.n_licenze }', '${utl:escapeJS(contratto.descrizione) }','${utl:escapeJS(contratto.subscription) }','${contratto.company.id }')" title="Click per modificare il contratto"><i class="fa fa-edit"></i></a> 
+	  <a class="btn btn-warning customTooltip" onClicK="modificaContratto('${contratto.id}', '${utl:escapeJS(contratto.fornitore) }','${contratto.data_inizio }','${contratto.data_scadenza }', '${contratto.permanente }','${contratto.email_referenti }','${contratto.n_licenze }', '${utl:escapeJS(contratto.descrizione) }','${utl:escapeJS(contratto.subscription) }','${contratto.company.id }', 0)" title="Click per modificare il contratto"><i class="fa fa-edit"></i></a> 
 	 <%-- <a class="btn btn-danger customTooltip"onClicK="modalYesOrNo('${contratto.id}')" title="Click per eliminare il contratto"><i class="fa fa-trash"></i></a>
 	  <a class="btn btn-primary customTooltip" onClick="modalAllegati('${contratto.id}')" title="Click per aprire gli allegati"><i class="fa fa-archive"></i></a> --%>
+	  <a class="btn btn-success customTooltip" onclick="modificaContratto('${contratto.id}', '${utl:escapeJS(contratto.fornitore) }','${contratto.data_inizio }','${contratto.data_scadenza }', '${contratto.permanente }','${contratto.email_referenti }','${contratto.n_licenze }', '${utl:escapeJS(contratto.descrizione) }','${utl:escapeJS(contratto.subscription) }','${contratto.company.id }', 1)" title="Click per aggiornare il contratto"><i class="fa fa-arrow-up"></i></a>
+	    <c:if test="${contratto.id_contratto_precedente!=null }">
+	    <a class="btn btn-info customTooltip" title="Vai allo storico"  onclick="modalStorico('${contratto.id}')"><i class="fa fa-history"></i></a>
+	    </c:if>
+	    <a class="btn btn-danger customTooltip" onClick="modalYesOrNo('${contratto.id}')" title="Rendi obsoleto" ><i class="fa fa-close"></i></a>
 	</td>
 	</tr>
 	</c:forEach>
@@ -420,7 +429,7 @@
        </div><br>
        
        
-        <div class="row">
+        <div class="row"  id="content_associa">
        
        	<div class="col-sm-3">
        		<label>Associa software</label>
@@ -438,6 +447,8 @@
       <div class="modal-footer">
 		<input type="hidden" id="id_software_associazione_mod" name="id_software_associazione_mod">
 		<input type="hidden" id="id_contratto" name="id_contratto">
+		<input type="hidden" id="is_rinnova" name="is_rinnova">
+		
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -483,7 +494,7 @@
 
 
 
-  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
@@ -492,7 +503,7 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      Sei sicuro di voler eliminare il contratto?
+      Sei sicuro di voler rendere obsoleto il contratto?
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_elimina_contratto">
@@ -502,7 +513,59 @@
     </div>
   </div>
 
+</div> 
+
+
+
+
+<div id="myModalStorico" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h4 class="modal-title" id="myModalLabelHeader">Storico contratto</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-sm-12">
+			
+      
+        
+ <table id="table_storico" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+
+<th>ID</th>
+<th>Company</th>
+<th>Fornitore</th>
+<th>Descrizione</th>
+<th>Subscription</th>
+<th>Permanente</th>
+<th>Data inizio</th>
+
+<th>Data scadenza</th>
+<th>N. licenze</th>
+
+ </tr></thead>
+ 
+ <tbody>
+</tbody>
+</table>
 </div>
+		</div>
+
+     
+    </div>
+          <div class="modal-footer">
+ 		
+ 		<a class="btn btn-default pull-right" onClick="$('#myModalStorico').modal('hide')">Chiudi</a>
+         
+         
+         </div>
+  </div>
+</div>
+</div>
+
 
 
 
@@ -935,19 +998,105 @@ function modalNuovoContratto(){
 	
 }
 
+ 
+ function modalStorico(id_contratto){
+		
+	  dataString ="action=storico_contratto&id_contratto="+ id_contratto;
+     exploreModal("gestioneDevice.do",dataString,null,function(datab,textStatusb){
+   	  	
+   	  var result =datab;
+   	  
+   	  if(result.success){
+   		  
+   		 
+   		  var table_data = [];
+   		  
+   		  var lista_contratti = result.lista_contratti;
+   		  
+   		  for(var i = 0; i<lista_contratti.length;i++){
+   			  var dati = {};
+   			  if( lista_contratti[i].id!= id_contratto){
+   				  
+   			  
+   			  dati.id = lista_contratti[i].id;
+   			  dati.company = lista_contratti[i].company.ragione_sociale;
+   			  dati.fornitore = lista_contratti[i].fornitore;
+   			  dati.descrizione = lista_contratti[i].descrizione;
+   			  if(lista_contratti[i].subscription==null){
+   				  dati.subscription = ''; 
+   			  }else{
+   				  dati.subscription = lista_contratti[i].subscription;
+   			  }    	
+   			  dati.permanente = lista_contratti[i].permanente;
+   			 if(lista_contratti[i].n_licenze == null){
+   				 dati.n_licenze = '';
+   			 }else{
+   				 dati.n_licenze = lista_contratti[i].n_licenze;	 
+   			 }
+   			if(lista_contratti[i].data_inizio == null){
+  				 dati.data_inizio = '';
+  			 }else{
+  				 dati.data_inizio = lista_contratti[i].data_inizio;	 
+  			 }
+   			 
+   			 if(lista_contratti[i].data_scadenza == null){
+   				 dati.data_scadenza = '';
+   			 }else{
+   				 dati.data_scadenza = lista_contratti[i].data_scadenza;	 
+   			 }
+   			 if(lista_contratti[i].email_referenti == null){
+   				 dati.email_referenti = '';
+   			 }else{
+   				 dati.email_referenti = lista_contratti[i].email_referenti;	 
+   			 }
+   			
 
-function modificaContratto(id_contratto, fornitore,    data_inizio, data_scadenza, permanente,email, n_licenze, descrizione, subscription, id_company){
+   			  table_data.push(dati);
+   			  }
+   		  }
+   		  var table= $('#table_storico').DataTable();
+   		  
+   		  table.clear().draw();
+    		   
+   		  table.rows.add(table_data).draw();
+   		  table.columns.adjust().draw();
+  			
+  		  $('#myModalStorico').modal();
+  			
+   	  }
+   	  
+   	  $('#myModalStorico').on('shown.bs.modal', function () {
+   		  var table = $('#table_storico').DataTable();
+   		  
+   		  table.columns.adjust().draw();
+ 			
+   		})
+   	  
+     });
+	  
+
+	
+}
+ 
+
+function modificaContratto(id_contratto, fornitore,    data_inizio, data_scadenza, permanente,email, n_licenze, descrizione, subscription, id_company, isRinnova){
 	
 	$('#id_contratto').val(id_contratto);
 	$('#fornitore_mod').val(fornitore);
  
-	if(data_inizio!=null && data_inizio!=''){
-		$('#data_inizio_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy")); 	
+	if(isRinnova==1){
+		$('#is_rinnova').val(1)
+		$('#content_associa').hide()
+	}else{
+		$('#is_rinnova').val(0)
+		$('#content_associa').show()
+		if(data_inizio!=null && data_inizio!=''){
+			$('#data_inizio_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy")); 	
+		}
+		if(data_scadenza!=null && data_scadenza!=''){
+			$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy")); 	
+		}
 	}
-	if(data_scadenza!=null && data_scadenza!=''){
-		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy")); 	
-	}
-	
 	
 	$('#permanente_mod').val(permanente);
 	$('#permanente_mod').change()
@@ -959,6 +1108,8 @@ function modificaContratto(id_contratto, fornitore,    data_inizio, data_scadenz
 	$('#company_mod').change();
 	
 	createTableAssociati(null, id_contratto)
+	
+	
 
 	$('#myModalModificaContratto').modal();
 }
@@ -1003,7 +1154,7 @@ function eliminaContratto(id_contratto){
 	var dataObj = {};
 	dataObj.id_contratto = id_contratto;
 	
-	callAjax(dataObj, "gestioneDevice.do?action=elimina_contratto");
+	callAjax(dataObj, "gestioneDevice.do?action=rendi_obsoleto");
 	
 }
 
@@ -1023,6 +1174,22 @@ function esportaListaContratto(){
 	
 	callAction("gestioneDevice.do?action=esporta_lista_sw&id_company="+id_company);
 	
+}
+
+
+function modalEliminaDocumento(id_documento, elimina){	
+	
+	if(elimina ==1){
+		$('#body_yes_or_no').html("Sei sicuro di voler eliminare il documento?");
+		$('#btn_elimina_doc').show()
+		$('#btn_obsoleto_doc').hide()
+	}else{
+		$('#body_yes_or_no').html("Sei sicuro di voler rendere obsoleto il documento?");
+		$('#btn_elimina_doc').hide()
+		$('#btn_obsoleto_doc').show()
+	}
+	 $('#elimina_documento_id').val(id_documento);
+		$('#myModalYesOrNo').modal();
 }
 
 
@@ -1206,6 +1373,74 @@ $(document).ready(function() {
 	   	          .draw();
 	   	  } );
 	   	} );  
+	  
+	  
+	  
+	  
+	  
+	  tab = $('#table_storico').DataTable({
+			language: {
+		        	emptyTable : 	"Non sono presenti documenti precedenti",
+		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+		        	infoPostFix:	"",
+		        infoThousands:	".",
+		        lengthMenu:	"Visualizza _MENU_ elementi",
+		        loadingRecords:	"Caricamento...",
+		        	processing:	"Elaborazione...",
+		        	search:	"Cerca:",
+		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+		        	paginate:	{
+	  	        	first:	"Inizio",
+	  	        	previous:	"Precedente",
+	  	        	next:	"Successivo",
+	  	        last:	"Fine",
+		        	},
+		        aria:	{
+	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+		        }
+	        },
+	        pageLength: 25,
+	        "order": [[ 0, "desc" ]],
+		      paging: false, 
+		      ordering: true,
+		      info: false, 
+		      searchable: false, 
+		      targets: 0,
+		      responsive: true,  
+		      scrollX: false,
+		      stateSave: true,	
+		      columns : [
+		      	{"data" : "id"},
+		      	{"data" : "company"},
+		      	{"data" : "fornitore"},
+		      	{"data" : "descrizione"},
+		      	{"data" : "subscription"},
+		      	{"data" : "permanente"},
+		      	{"data" : "data_inizio"},
+		      	{"data" : "data_scadenza"},
+		      
+		      	{"data" : "n_licenze"},
+		    
+		       ],	
+		           
+		      columnDefs: [
+		    	  
+		    	  { responsivePriority: 1, targets: 1 },
+		    	  { responsivePriority: 2, targets: 7 },
+		    	  
+		    	  
+		               ], 	        
+	  	      buttons: [   
+	  	          {
+	  	            extend: 'colvis',
+	  	            text: 'Nascondi Colonne'  	                   
+	 			  } ]
+		               
+		    });
+	  
 	  
 	  
   });

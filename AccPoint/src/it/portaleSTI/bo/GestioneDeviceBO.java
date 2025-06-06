@@ -681,4 +681,9 @@ public static void sendEmailAttivitaScaduteSollecito() throws ParseException, Ex
 		
 		return GestioneDeviceDAO.getListaSoftwareArchiviati(session);
 	}
+
+	public static ArrayList<DevContrattoDTO> getListaContrattiObsoleti(Session session) {
+		
+		return GestioneDeviceDAO.getListaContrattiObsoleti(session);
+	}
 }

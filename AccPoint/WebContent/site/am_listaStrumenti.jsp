@@ -344,7 +344,7 @@
   </c:forEach>
 			</select>
 			
-			 <div id="image-popup"><img id="popup-img" src="" /></div> 
+			
 
        </div>
        </div><br>
@@ -600,7 +600,7 @@
   </c:forEach>
 			</select>
 			
-			 <div id="image-popup_mod"><img id="popup-img_mod" src="" /></div> 
+			
 
        </div>
        </div><br>
@@ -659,6 +659,9 @@
 </div>
 </form>
 
+ <div id="image-popup"><img id="popup-img" src="" /></div> 
+ <div id="image-popup_mod"><img id="popup-img_mod" src="" /></div> 
+
   <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
   
     <div class="modal-dialog modal-md" role="document">
@@ -704,38 +707,51 @@
 	<style>
 	
 	
-	#image-popup {
-  display: none;
-  position: absolute;
-  z-index: 1000000;
-  background: #fff;
-  border: 1px solid #888;
-  box-shadow: 0 0 6px rgba(0,0,0,0.3);
-  padding: 5px;
-  pointer-events: none;
-}
-#image-popup img {
-  max-width: 500px;
-  max-height: 500px;
-}
-	
-	
-		#image-popup_mod {
-  display: none;
-  position: absolute;
-  z-index: 1000000;
-  background: #fff;
-  border: 1px solid #888;
-  box-shadow: 0 0 6px rgba(0,0,0,0.3);
-  padding: 5px;
-  pointer-events: none;
-}
-#image-popup_mod img {
-  max-width: 500px;
-  max-height: 500px;
-}
-	
 
+
+#image-popup{
+  position: fixed;
+  display: none;
+  top: 20px;
+  right: 20px;
+  width: 400px;
+   max-height: calc(100vh - 40px);
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+}
+
+#image-popup_mod{
+  position: fixed;
+  display: none;
+  top: 20px;
+  right: 20px;
+  width: 400px;
+   max-height: calc(100vh - 40px);
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+}
+
+
+#image-popup img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+#image-popup_mod img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
 	</style>
 
 </jsp:attribute>
@@ -1005,13 +1021,56 @@ $(document).ready(function() {
 		  templateSelection: formatData
 	});  
 	
-	
-	
 	$(document).on('mousemove', '.select2-results__option', function (e) {
-		
-		 
+		  const id = $('.select2-container--open').prev('select').attr('id');
+		  const isMod = id === "immagine_campione_mod";
+		  const popupId = isMod ? '#image-popup_mod' : '#image-popup';
+		  const imgId = isMod ? '#popup-img_mod' : '#popup-img';
 
-		  // Risali fino al select originale usando l'elemento di focus attivo
+		  const thumbSpan = $(this).find('.option-with-thumb');
+		  if (thumbSpan.length > 0) {
+		    const largeSrc = thumbSpan.data('large');
+		    $(imgId).attr('src', largeSrc);
+
+		    // Coordinate dell'opzione attiva
+		    const optionOffset = $(this).offset();
+		    const optionHeight = $(this).outerHeight();
+		    const popupHeight = 160; // altezza stimata del popup
+		    const spaceBelow = $(window).height() - (optionOffset.top + optionHeight);
+		    const topPosition = spaceBelow > popupHeight
+		      ? optionOffset.top + optionHeight + 5   // sotto
+		      : optionOffset.top - popupHeight - 5;   // sopra
+
+		    // Posizione laterale: a destra della select
+		    const leftPosition = optionOffset.left + $(this).outerWidth() + 10;
+
+		    $(popupId).css({
+		      top: topPosition,
+		      left: leftPosition,
+		      display: 'block'
+		    });
+		  }
+		});
+
+		$(document).on('mouseleave', '.select2-results__option', function () {
+		  $('#image-popup_mod, #image-popup').fadeOut(150);
+		});
+	
+/* 	$(document).on('mousemove', '.select2-results__option', function (e) {
+		
+		  const id = $('.select2-container--open').prev('select').attr('id');
+		  const isMod = id === "immagine_campione_mod";
+		  const popupId = isMod ? '#image-popup_mod' : '#image-popup';
+		  const imgId = isMod ? '#popup-img_mod' : '#popup-img';
+
+		  const thumbSpan = $(this).find('.option-with-thumb');
+		  if (thumbSpan.length > 0) {
+		    const largeSrc = thumbSpan.data('large');
+		    $(imgId).attr('src', largeSrc);
+		    $(popupId).fadeIn(150);
+		  } */
+
+		/*   // Risali fino al select originale usando l'elemento di focus attivo
 		const id = $('.select2-container--open').prev('select').attr('id');
 		if(id=="immagine_campione_mod"){
 			 const thumbSpan = $(this).find('.option-with-thumb');
@@ -1035,9 +1094,9 @@ $(document).ready(function() {
 			        left: e.pageX -420
 			      });
 			    }
-		}
+		} */
 	   
-	  });
+	/*   });
 
 	  $(document).on('mouseleave', '.select2-results__option', function () {
 		  const id = $('.select2-container--open').prev('select').attr('id');
@@ -1049,7 +1108,7 @@ $(document).ready(function() {
 			    $('#popup-img').attr('src', '');
 			}
 	
-	  });
+	  }); */
 
 	
 

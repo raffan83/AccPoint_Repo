@@ -834,5 +834,16 @@ public static ArrayList<DevSoftwareDTO> getListaSoftwareArchiviati(Session sessi
 	return lista;
 }
 
+public static ArrayList<DevContrattoDTO> getListaContrattiObsoleti(Session session) {
+
+	ArrayList<DevContrattoDTO> lista = null;
+	
+	Query query = session.createQuery("from DevContrattoDTO where disabilitato = 1");
+	
+	lista = (ArrayList<DevContrattoDTO>) query.list();
+	
+	return lista;
+}
+
 
 }

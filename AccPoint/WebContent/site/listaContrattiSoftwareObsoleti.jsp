@@ -49,8 +49,7 @@
 <div class="row">
 <div class="col-xs-12">
 
-<a class="btn btn-primary pull-left" onClick="callAction('gestioneDevice.do?action=lista_contratti_obsoleti')">Contratti Obsoleti</a> 
-<a class="btn btn-primary pull-right" onClick="modalNuovoContratto()"><i class="fa fa-plus"></i> Nuovo Contratto</a> 
+<a class="btn btn-primary pull-left" onClick="callAction('gestioneDevice.do?action=lista_contratti')">Contratti In Corso</a> 
 
 
 
@@ -74,7 +73,7 @@
 <th>Data scadenza</th> 
  <th>Permanente</th>
  <th>Numero licenze</th>
-<th style="min-width:180px">Azioni</th>
+
  </tr></thead>
  
  <tbody>
@@ -95,17 +94,7 @@
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${contratto.data_scadenza }"></fmt:formatDate></td>
 		<td>${contratto.permanente }</td>
 <td>${contratto.n_licenze }</td>
-	<td>
 
-	  <a class="btn btn-warning customTooltip" onClicK="modificaContratto('${contratto.id}', '${utl:escapeJS(contratto.fornitore) }','${contratto.data_inizio }','${contratto.data_scadenza }', '${contratto.permanente }','${contratto.email_referenti }','${contratto.n_licenze }', '${utl:escapeJS(contratto.descrizione) }','${utl:escapeJS(contratto.subscription) }','${contratto.company.id }', 0)" title="Click per modificare il contratto"><i class="fa fa-edit"></i></a> 
-	 <%-- <a class="btn btn-danger customTooltip"onClicK="modalYesOrNo('${contratto.id}')" title="Click per eliminare il contratto"><i class="fa fa-trash"></i></a>
-	  <a class="btn btn-primary customTooltip" onClick="modalAllegati('${contratto.id}')" title="Click per aprire gli allegati"><i class="fa fa-archive"></i></a> --%>
-	  <a class="btn btn-success customTooltip" onclick="modificaContratto('${contratto.id}', '${utl:escapeJS(contratto.fornitore) }','${contratto.data_inizio }','${contratto.data_scadenza }', '${contratto.permanente }','${contratto.email_referenti }','${contratto.n_licenze }', '${utl:escapeJS(contratto.descrizione) }','${utl:escapeJS(contratto.subscription) }','${contratto.company.id }', 1)" title="Click per aggiornare il contratto"><i class="fa fa-arrow-up"></i></a>
-	    <c:if test="${contratto.id_contratto_precedente!=null }">
-	    <a class="btn btn-info customTooltip" title="Vai allo storico"  onclick="modalStorico('${contratto.id}')"><i class="fa fa-history"></i></a>
-	    </c:if>
-	    <a class="btn btn-danger customTooltip" onClick="modalYesOrNo('${contratto.id}')" title="Rendi obsoleto" ><i class="fa fa-close"></i></a>
-	</td>
 	</tr>
 	</c:forEach>
 	 
@@ -127,337 +116,6 @@
 
 
 
-<form id="nuovoContrattoForm" name="nuovoContrattoForm">
-<div id="myModalNuovoContratto" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Contratto</h4>
-      </div>
-       <div class="modal-body">
-
- <div class="row">
- 	<div class="col-sm-3">
-       		<label>Company</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <select id="company"  name="company" data-placeholder="Seleziona company..." class="form-control select2" style="width:100%" required>
-        <option value=""></option>
-        <c:forEach items="${lista_company }" var="cmp">
-        <option value="${cmp.id }">${cmp.ragione_sociale }</option>
-        
-        </c:forEach>
-        <option value="0">NESSUNA COMPANY</option>
-        </select>
-       			
-       	</div>       	
-       </div><br>
-       
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Fornitore</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="fornitore" name="fornitore" class="form-control" type="text" style="width:100%" required>
-       			
-       	</div>          	
-       	
-       	   	
-       </div><br>
-       
- <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Descrizione</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="descrizione" name="descrizione" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>          	
-       	
-       	   	
-       </div><br>
-       
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Subscription</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="subscription" name="subscription" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>          	
-       	
-       	   	
-       </div><br>
-       
-               
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data inizio</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="data_inizio" name="data_inizio" class="form-control datepicker" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br> 
-
-	<div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data scadenza</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="data_scadenza" name="data_scadenza" class="form-control datepicker" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br> 
-
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Permanente</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-      <select id="permanente" name="permanente" class="form-control select2" data-placeholder="Permanente..." style="width:100%">
-      <option value=""></option>
-      <option value="SI">SI</option>
-      <option value="NO">NO</option>
-      </select>
-       			
-       	</div>       	
-       </div><br>
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Numero Licenze</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="n_licenze" name="n_licenze" class="form-control " type="number" min="0" step="1"style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-       
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Email Referenti <small>inserire indirizzi separati da ";"</small></label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="email_referenti" name="email_referenti" class="form-control " type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Associa software</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <a class="btn btn-primary" onclick="modalSoftware(0)">Associa Software</a>
-       			
-       	</div>       	
-       </div><br>
-       <!-- <div class="row" style="display:none"> -->
-	<div id="modal_nuovo_content"></div>
-  		 </div>
-      <div class="modal-footer">
-
-<input type="hidden" id="id_software_associazione" name="id_software_associazione">
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</form>
-
-
-
-
-<form id="modificaContrattoForm" name="modificaContrattoForm">
-<div id="myModalModificaContratto" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Contratto</h4>
-      </div>
-      <div class="modal-body">
-      
-      <div class="row">
- 	<div class="col-sm-3">
-       		<label>Company</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <select id="company_mod"  name="company_mod" data-placeholder="Seleziona company..." class="form-control select2" style="width:100%" required>
-        <option value=""></option>
-        <c:forEach items="${lista_company }" var="cmp">
-        <option value="${cmp.id }">${cmp.ragione_sociale }</option>
-        
-        </c:forEach>
-        <option value="0">NESSUNA COMPANY</option>
-        </select>
-       			
-       	</div>       	
-       </div><br>
- 
-      
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Fornitore</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="fornitore_mod" name="fornitore_mod" class="form-control" type="text" style="width:100%" required>
-       			
-       	</div>          	
-       	
-       	   	
-       </div><br>
-       
-<div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Descrizione</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="descrizione_mod" name="descrizione_mod" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>          	
-       	
-       	   	
-       </div><br>
-       
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Subscription</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="subscription_mod" name="subscription_mod" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>          	
-       	
-       	   	
-       </div><br>
-       
-               
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data inizio</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="data_inizio_mod" name="data_inizio_mod" class="form-control datepicker" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br> 
-
-	<div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Data scadenza</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="data_scadenza_mod" name="data_scadenza_mod" class="form-control datepicker" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br> 
-
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Permanente</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        
-         <select id="permanente_mod" name="permanente_mod" class="form-control select2" data-placeholder="Permanente..." style="width:100%">
-      <option value=""></option>
-      <option value="SI">SI</option>
-      <option value="NO">NO</option>
-      </select>
-       			
-       	</div>       	
-       </div><br>
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Numero Licenze</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="n_licenze_mod" name="n_licenze_mod" class="form-control " type="number" min="0" step="1"style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-                       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Email Referenti <small>inserire indirizzi separati da ";"</small></label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="email_referenti_mod" name="email_referenti_mod" class="form-control " type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-       
-        <div class="row"  id="content_associa">
-       
-       	<div class="col-sm-3">
-       		<label>Associa software</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <a class="btn btn-primary" onclick="modalSoftware(1)">Associa Software</a>
-       			
-       	</div>       	
-       </div><br>
-       <!-- <div class="row" style="display:none"> -->
-		<div id="modal_modifica_content"></div>
-
-  		 </div>
-      <div class="modal-footer">
-		<input type="hidden" id="id_software_associazione_mod" name="id_software_associazione_mod">
-		<input type="hidden" id="id_contratto" name="id_contratto">
-		<input type="hidden" id="is_rinnova" name="is_rinnova">
-		
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</form>
 
 
 
@@ -954,44 +612,6 @@ function modalSoftware(is_modifica){
 
 
 
-/* function controllaAssociati(table, lista_software_associati){
-	
-	//var dataSelected = table.rows( { selected: true } ).data();
-	
-	var oTable = $('#tabSoftwareTot').dataTable();
-	var data = table.rows().data();
-	for(var i = 0;i<lista_software_associati.length;i++){
-	
-		var val = lista_software_associati[i].software.id;
-		
-	 	
-		var index = table.row("#row_sw_"+ val, { page: 'all' });
-	 	
-	 	
-	 	if(lista_software_associati[i].stato_validazione!=null){
-	 	    oTable.fnUpdate(lista_software_associati[i].stato_validazione.descrizione, index, 5 );
-	 	}
-	 	
-	 	if(lista_software_associati[i].data_validazione!=null){
-	 		oTable.fnUpdate(lista_software_associati[i].data_validazione , index, 6 );
-	 	}
-	 	
-	 	if(lista_software_associati[i].product_key!=null){
-	 		oTable.fnUpdate(lista_software_associati[i].product_key , index, 7 );
-	 	}
-	 	
-	 	if(lista_software_associati[i].autorizzato!=null){
-	 		oTable.fnUpdate(lista_software_associati[i].autorizzato , index, 8 );
-	 	} 
-	 	
-	 	table.row( "#row_sw_"+ val, { page:   'all'}).select();
-
-	}
-
-	
-}
- */
-
 function modalNuovoContratto(){
 	
 	$('#myModalNuovoContratto').modal();
@@ -1079,40 +699,6 @@ function modalNuovoContratto(){
 }
  
 
-function modificaContratto(id_contratto, fornitore,    data_inizio, data_scadenza, permanente,email, n_licenze, descrizione, subscription, id_company, isRinnova){
-	
-	$('#id_contratto').val(id_contratto);
-	$('#fornitore_mod').val(fornitore);
- 
-	if(isRinnova==1){
-		$('#is_rinnova').val(1)
-		$('#content_associa').hide()
-	}else{
-		$('#is_rinnova').val(0)
-		$('#content_associa').show()
-		if(data_inizio!=null && data_inizio!=''){
-			$('#data_inizio_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy")); 	
-		}
-		if(data_scadenza!=null && data_scadenza!=''){
-			$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy")); 	
-		}
-	}
-	
-	$('#permanente_mod').val(permanente);
-	$('#permanente_mod').change()
-	$('#email_referenti_mod').val(email);
-	$('#n_licenze_mod').val(n_licenze);
-	$('#descrizione_mod').val(descrizione);
-	$('#subscription_mod').val(subscription);
-	$('#company_mod').val(id_company);
-	$('#company_mod').change();
-	
-	createTableAssociati(null, id_contratto)
-	
-	
-
-	$('#myModalModificaContratto').modal();
-}
 
 
 var columsDatatables = [];
@@ -1159,38 +745,9 @@ function eliminaContratto(id_contratto){
 }
 
 
-function modalAllegati(id_contratto){
-	
-	 exploreModal("gestioneDevice.do","action=lista_allegati_contratto&id_contratto="+id_contratto,"#content_allegati", function(datab, status){
-		 $('#myModalAllegati').modal();	 
-	 });
-	 
-}
 
 
-function esportaListaContratto(){
-	
-	var id_company = $('#company').val();
-	
-	callAction("gestioneDevice.do?action=esporta_lista_sw&id_company="+id_company);
-	
-}
 
-
-function modalEliminaDocumento(id_documento, elimina){	
-	
-	if(elimina ==1){
-		$('#body_yes_or_no').html("Sei sicuro di voler eliminare il documento?");
-		$('#btn_elimina_doc').show()
-		$('#btn_obsoleto_doc').hide()
-	}else{
-		$('#body_yes_or_no').html("Sei sicuro di voler rendere obsoleto il documento?");
-		$('#btn_elimina_doc').hide()
-		$('#btn_obsoleto_doc').show()
-	}
-	 $('#elimina_documento_id').val(id_documento);
-		$('#myModalYesOrNo').modal();
-}
 
 
 var tabSw;
@@ -1242,7 +799,7 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 9 },
+		    	  { responsivePriority: 1, targets: 8 },
 		    	  
 		    	  
 		               ], 	        

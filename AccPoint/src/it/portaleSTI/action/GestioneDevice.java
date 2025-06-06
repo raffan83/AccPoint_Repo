@@ -2375,6 +2375,22 @@ public class GestioneDevice extends HttpServlet {
 			        
 			     
 			}
+			else if(action.equals("lista_contratti_obsoleti")) {
+				
+				ArrayList<DevContrattoDTO> lista_contratto = GestioneDeviceBO.getListaContrattiObsoleti(session);
+				ArrayList<DevSoftwareDTO> lista_software = GestioneDeviceBO.getListaSoftware(session);
+				ArrayList<DocumFornitoreDTO> lista_company = GestioneDocumentaleBO.getListaDocumFornitori(session);
+				ArrayList<DevTipoLicenzaDTO> lista_tipi_licenze = GestioneDeviceBO.getListaTipiLicenze(session);
+				
+				request.getSession().setAttribute("lista_contratto", lista_contratto);
+				request.getSession().setAttribute("lista_software", lista_software);
+				request.getSession().setAttribute("lista_company", lista_company);
+				request.getSession().setAttribute("lista_tipi_licenze", lista_tipi_licenze);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaContrattiSoftwareObsoleti.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
 			
 			session.getTransaction().commit();
 			session.close();

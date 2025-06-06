@@ -953,11 +953,19 @@ public class Utility extends HttpServlet {
     }
 	
 		public static String setDecimalDigits(int digits, String number) {
-			
+		
+			try {
 			if(number!=null && !number.equals("")) {
 				BigDecimal bd = new BigDecimal(number);
 				return bd.setScale(digits, BigDecimal.ROUND_HALF_UP).toPlainString();
 			}else {
+				return "";
+			}
+			}
+			catch (Exception e) {
+				
+			System.out.println("Errore su digit: "+digits+" "+number);
+				e.printStackTrace();
 				return "";
 			}
 			

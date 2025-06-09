@@ -709,7 +709,7 @@
 	
 
 
-#image-popup{
+ #image-popup{
   position: fixed;
   display: none;
   top: 20px;
@@ -751,7 +751,9 @@
   height: auto;
   display: block;
   border-radius: 6px;
-}
+} 
+
+
 	</style>
 
 </jsp:attribute>
@@ -1021,6 +1023,8 @@ $(document).ready(function() {
 		  templateSelection: formatData
 	});  
 	
+	
+	
 	$(document).on('mousemove', '.select2-results__option', function (e) {
 		  const id = $('.select2-container--open').prev('select').attr('id');
 		  const isMod = id === "immagine_campione_mod";
@@ -1035,7 +1039,7 @@ $(document).ready(function() {
 		    // Coordinate dell'opzione attiva
 		    const optionOffset = $(this).offset();
 		    const optionHeight = $(this).outerHeight();
-		    const popupHeight = 160; // altezza stimata del popup
+		    const popupHeight = 250; // altezza stimata del popup
 		    const spaceBelow = $(window).height() - (optionOffset.top + optionHeight);
 		    const topPosition = spaceBelow > popupHeight
 		      ? optionOffset.top + optionHeight + 5   // sotto

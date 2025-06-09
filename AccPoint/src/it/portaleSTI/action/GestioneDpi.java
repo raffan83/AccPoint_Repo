@@ -533,6 +533,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String id_consegna = request.getParameter("id_consegna");
 				String motivazione = request.getParameter("motivazione");	
 				String quantita = request.getParameter("quantita_rest");
+				String archivia = request.getParameter("archivia_value");
 				
 				ConsegnaDpiDTO consegna = GestioneDpiBO.getCosegnaFromID(Integer.parseInt(id_consegna), session);
 				
@@ -547,13 +548,17 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.save(restituzione);
 				
 				restituzione.getDpi().setAssegnato(0);
+				
+				if(archivia!=null && archivia.equals("1")) {
+					restituzione.getDpi().setDisabilitato(1);
+				}
 				session.update(restituzione.getDpi());
 				
 				consegna.setRestituzione(restituzione);
 				session.update(consegna);
 				
 				if(consegna.getDpi().getTipologia()==1) {
-					SendEmailBO.sendEmailRiconsegnaDPI(consegna, request.getServletContext());
+					//SendEmailBO.sendEmailRiconsegnaDPI(consegna, request.getServletContext());
 				}else {
 					restituzione.setRiconsegnato(1);
 				}

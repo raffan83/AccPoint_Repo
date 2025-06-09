@@ -536,24 +536,25 @@
        	  	
         <input id="motivazione" name="motivazione" class="form-control " type="text" style="width:100%" >
         
-       			
+       
        	</div>       	
        </div><br>
-<!--              	       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Quantità</label>
+         <div class="row">
+	<div class="col-sm-3">
+       		<label>Archivia Dispositivo</label>
        	</div>
        	<div class="col-sm-9">      
-       	  	
-        
-        <input id="quantita_rest" name="quantita_rest" class="form-control " type="number" step="1" style="width:100%" >
+               
+       		<input id="archivia" name="archivia" type="checkbox">	
+       	</div>       	
+       </div><br>
        			
        	</div>       	
-       </div> -->
-      	</div>
+
       <div class="modal-footer">
       <input type="hidden" id="id_consegna_restituzione">
+      <input type="hidden" id="archivia_value">
+      
       <a class="btn btn-primary" onclick="creaRestituzioneDPI($('#id_consegna_restituzione').val())" >Salva</a>
       </div>
     </div>
@@ -691,7 +692,15 @@ $('#tipologia, #tipologia_mod').change(function(){
 	
 });
 
-
+$('#archivia').on('ifClicked',function(e){
+	if($('#archivia').is( ':checked' )){
+		$('#archivia').iCheck('uncheck');
+		$('#archivia_value').val(0); 
+	}else{
+		$('#archivia').iCheck('check');
+		$('#archivia_value').val(1); 
+	}
+});
 
 $('#tipo_scheda').change(function(){
 	

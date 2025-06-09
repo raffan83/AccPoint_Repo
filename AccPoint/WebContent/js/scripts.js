@@ -16434,6 +16434,7 @@ function creaRestituzioneDPI(id_consegna){
 	  dataObj.id_consegna = id_consegna;
 	  dataObj.motivazione = $('#motivazione').val();
 	  dataObj.quantita_rest = $('#quantita_rest').val();
+	  dataObj.archivia_value = $('#archivia_value').val();
 	  
     $.ajax({
   	  type: "POST",

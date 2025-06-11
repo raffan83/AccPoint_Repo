@@ -54,7 +54,7 @@
 </div>
 <div class="box-body graficoIncertezza" >
 
-        <ul class="list-group list-group-unbordered">
+        <ul class="list-group list-group-unbordered" id="ul_dati_misura">
                 <li class="list-group-item">
                   <b>ID</b> <a class="pull-right">${misura.id}</a>
                 </li>
@@ -117,7 +117,7 @@
 		  				 </li>
 		  				 <li class="list-group-item">
 		                  <b>Note Allegato</b> 
-		                   ${misura.note_allegato}</a>
+		                  <a> ${misura.note_allegato}</a>
 		  				 </li>
 					
 					</c:if>
@@ -150,10 +150,12 @@
   				 </c:if>
   				 
   				 <c:if test="${cert.stato.id == 2 }">
-                 <li class="list-group-item">
-                  <b>Download Certificato</b> <a target="_blank"   class="btn btn-danger customTooltip pull-right btn-xs" title="Click per scaricare il Cerificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${utl:encryptData(cert.nomeCertificato)}&pack=${utl:encryptData(misura.intervento.nomePack)}" >Certificato <i class="fa fa-file-pdf-o"></i></a>
-                 
+                 <li class="list-group-item" >
+               
+                  <b>Download Certificato</b> <a target="_blank"  class="btn btn-danger customTooltip pull-right btn-xs" title="Click per scaricare il Cerificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${utl:encryptData(cert.nomeCertificato)}&pack=${utl:encryptData(misura.intervento.nomePack)}" >Certificato <i class="fa fa-file-pdf-o"></i></a>
+               
                 </li>
+            
                </c:if>
         </ul>
 
@@ -185,101 +187,7 @@
          
          
          
-         
-          <%-- <div class="row">
-<div class="col-md-12">
-<div class="box box-danger box-solid" id="grafico_deriva">
-<div class="box-header with-border">
-	 Grafico Deriva
-	<div class="box-tools pull-right">
-		
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
-
-	</div>
-</div>
-<div class="box-body">
-
-
-        <div class="graficoDeriva">
-        
-       
-        
-        <div class="nav-tabs-custom">
-            <ul id="mainTabs" class="nav nav-tabs">
-             <c:forEach items="${arrayPunti}" var="punti" varStatus="loopArrayPunti">
-             <c:if test="${loopArrayPunti.index == 0 }">
-             <c:set var="n_punti" value="${punti[loopArrayPunti.index].tipoProva.split('_')[1] }"></c:set>
-             
-             <c:if test="${fn:startsWith(punti[loopArrayPunti.index].tipoProva, 'L')}">
-             <li class="active" id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >LINEARIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]</a></li>
-             </c:if>
-             <c:if test="${fn:startsWith(punti[loopArrayPunti.index].tipoProva, 'R')}">
-             <li class="active" id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >RIPETIBILIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]</a></li>
-             </c:if>
-              
-              </c:if>
-              <c:if test="${loopArrayPunti.index != 0 }">
-              
-                <c:set var="n_punti" value="${punti[0].tipoProva.split('_')[1] }"></c:set>
-              
-               <c:if test="${fn:startsWith(punti[0].tipoProva, 'L')}"> 
-             <li id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >LINEARIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]</a></li>
-              </c:if>
-             <c:if test="${fn:startsWith(punti[0].tipoProva, 'R')}">
-             <li id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >RIPETIBILIT&Agrave; ${n_punti} PUNTI [${loopArrayPunti.index +1 }]</a></li>
-             </c:if> 
-              
-              <li  id="tab${loopArrayPunti.index }"><a href="#tab_grafico_${loopArrayPunti.index }" data-toggle="tab" aria-expanded="true" >Grafico Tabella ${loopArrayPunti.index +1 }</a></li> 
-              </c:if>
-              		</c:forEach>
-            </ul>
-             <div class="tab-content">
-             <c:forEach items="${arrayPunti}" var="punti" varStatus="loopArrayPunti">
-           
-              <c:if test="${loopArrayPunti.index == 0 }">
-              <div class="tab-pane active" id="tab_grafico_${loopArrayPunti.index }">
-	
-	  <canvas id="graficoDeriva${loopArrayPunti.index }"></canvas>
-	
-	
-    			</div> 
-    		</c:if>	
-    		
-    		<c:if test="${loopArrayPunti.index != 0 }">
-              <div class="tab-pane" id="tab_grafico_${loopArrayPunti.index }">
-	
-	  <canvas id="graficoDeriva${loopArrayPunti.index }"></canvas>
-	
-	
-    			</div> 
-    		</c:if>	
-    		
-    			
-    			</c:forEach>
-</div>
-              <!-- /.tab-pane -->
-             
-
-
-              <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-          </div>
-        
-        
      
-        
- 
-	 
-	
-</div>
-</div>
-</div>
-</div> --%>
-<!-- </div>
-   -->
-          
-
             <br>
               <div class="row">
         <div class="col-xs-12">
@@ -716,7 +624,8 @@
 
 
  
-  
+  </div>
+  </div>
 
   
 
@@ -1692,7 +1601,8 @@
 		    		
 		    		dataset1.backgroundColor = dataset1.backgroundColor.concat(colorBg);
 	    			dataset1.borderColor = dataset1.borderColor.concat(colorLine);
-		    		$(".graficoIncertezza").height("430");
+		    		/* $(".graficoIncertezza").height("430"); */
+		    		$(".graficoIncertezza").height($('#ul_dati_misura').height());
  		    		
 		    		if(tipoRapporto=="SVT"){
 		    			dataset2.backgroundColor = dataset2.backgroundColor.concat(colorBg2);

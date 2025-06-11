@@ -113,7 +113,10 @@
     </div>
 </div>
 
-</div></div><br>
+<!-- <a class="btn btn-primary pull-right" onClick="modalPianificazione()"><i class="fa fa-plus"></i> Nuova Pianificazione</a> -->
+</div>
+
+</div><br>
 <div class="row">
 <div class="col-sm-12">
 
@@ -131,6 +134,7 @@
 <th>Docenti</th>
 <th>Computo ore</th>
 <th>Fattura/Attestati</th>
+<th>Ore fatturate</th>
 <th style="min-width:250px">Azioni</th>
 
  </tr></thead>
@@ -218,7 +222,16 @@
 <br><input type="checkbox" disabled checked ><label>Attestato</label>
 </c:if>
 </td>
-
+<c:if test="${pianificazione.ore_fatturate==0 }">
+	<td>
+	<input type="checkbox" id="checkPianificazione_${pianificazione.id }" name="checkPianificazione_${pianificazione.id }"  class="icheckbox">
+	</td>
+	</c:if>
+	<c:if test="${pianificazione.ore_fatturate==1 }">
+	<td>
+	<input type="checkbox" id="checkPianificazione_${pianificazione.id }" name="checkPianificazione_${pianificazione.id }" checked   class="icheckbox">
+	</td>
+	</c:if>
 	
 		<td>
 
@@ -251,7 +264,189 @@
 </div>
 </section>
 
+<form id="formNuovaPianificazione" name="formaNuovaPianificazione">
+       <div id="modalPianificazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_pianificazione"></h4>
+      </div>
+       <div class="modal-body"> 
+       
+        <div class="row">
+        <div class="col-xs-12">
+        <label>Commessa</label>
+          <select class="form-control select2" id="commessa" name="commessa" style="width:100%" data-placeholder="Seleziona Commessa..." required>
+       <option value=""></option>
+       <c:forEach items="${lista_commesse }" var="commessa">
+      
+       <option value="${commessa.ID_COMMESSA }">${commessa.ID_COMMESSA }</option>
+       </c:forEach>
+       </select>
+        </div>
 
+        </div><br>
+       
+             <div class="row">
+        <div class="col-xs-12">
+        <label>Tipo</label>
+          <select class="form-control select2" id="tipo" name="tipo" style="width:100%" data-placeholder="Seleziona Tipo Commessa..." required>
+       <option value=""></option>
+       <c:forEach items="${lista_tipi }" var="tipo">
+   <option value="${tipo.id }">${tipo.descrizione }</option>
+       </c:forEach>
+       </select>
+        </div>
+
+        </div><br>
+        
+        <div class="row" >
+        <div class="col-xs-12">
+        <label>Descrizione</label>
+
+         <textarea rows="4" style="width:100%" id="descrizione" name="descrizione" class="form-control" required></textarea>
+        </div>
+
+        </div><br>
+        
+        
+        <div class="row" style="display:none" id="n_utenti_content">
+        <div class="col-xs-12">
+        <label>N. Utenti</label>
+         <input type="number" min="0" step="1" id="n_utenti" name="n_utenti" class="form-control" >
+        </div>
+
+        </div><br>
+            
+       <div class="row">
+       <div class="col-xs-12">
+       <label>Docenti</label>
+       <select class="form-control select2" id="docente" name="docente" style="width:100%" multiple  data-placeholder="Seleziona Docenti...">
+       <option value=""></option>
+       <c:forEach items="${lista_docenti }" var="docente">
+       <option value="${docente.id }">${docente.nome } ${docente.cognome }</option>
+       </c:forEach>
+       </select>
+       </div>
+        </div><br>
+          <div class="row">
+        <div class="col-xs-6">
+           <label>Stato</label>
+          <select class="form-control select2" id="stato" name="stato" style="width:100%" data-placeholder="Seleziona Stato Pianificazione..." required>
+       <option value=""></option>
+       <c:forEach items="${lista_stati }" var="stato">
+       <option value="${stato.id }">${stato.descrizione }</option>
+       </c:forEach>
+       </select>
+        </div>
+                <div class="col-xs-6" style="margin-top:25px">
+        <label>Invia Email</label>
+          <input class="form-control"  type="checkbox" id="email" name="email" style="width:100%">
+               <label id="label_email" class="pull-right" style="font-size: 70%;display:none">Email inviata</label>
+       </div>
+ 
+        </div><br>
+              <div class="row">
+              <div class="col-xs-3 ">
+              
+              
+              
+              </div>
+           <div class="col-xs-6 " style="margin-top:25px" id = "content_agenda">
+        <label >Aggiungi evento ad agenda docente</label>
+          <input class="form-control "   type="checkbox" id="agenda" name="agenda" style="width:100%">
+      
+       </div>
+       <div class="col-xs-3 pull-right" style="margin-top:25px;display:none" id = "label_agenda" >
+        <label class="pull-right" style="font-size: 70%"  > Evento aggiunto agenda docente</label>
+       </div>
+         </div><br>
+         <div class="row">
+          <div class="col-xs-12 ">
+                <div id="content_fasi" style="display:none">
+              
+              
+      
+              </div>
+          </div>
+         </div><br>
+   <div class="row">
+        <div class="col-xs-6">
+        <label>Data</label>
+          <div class='input-group date datepicker' id='datepicker_data_intervento'>
+               <input type='text' class="form-control input-small" id="data" name="data" >
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div>
+</div>
+        </div><br>
+        
+		<div class="row">
+		<div class='col-xs-3'><label>Ora inzio</label><div class='input-group'>
+					<input type='text' id='ora_inizio' name='ora_inizio'  class='form-control timepicker' style='width:100%'><span class='input-group-addon'>
+		            <span class='fa fa-clock-o'></span></span></div></div>
+
+<div class='col-xs-3'><label>Ora fine</label><div class='input-group'>
+					<input type='text' id='ora_fine' name='ora_fine'   class='form-control timepicker' style='width:100%'><span class='input-group-addon'>
+		            <span class='fa fa-clock-o'></span></span></div></div>
+
+		<div class='col-xs-3' ><label>Pausa pranzo</label><br>
+					<input type='checkbox' id='pausa_pranzo' name='pausa_pranzo' class='form-control' style='width:100%'>
+					</div>
+			<div class='col-xs-3'> 	
+					 <label>Durata (min.)</label> 
+					<select id="durata_pausa_pranzo" name="durata_pausa_pranzo" disabled class='form-control select2' data-placeholder="Durata pausa pranzo...">
+					<option value=""></option>
+					<option value="15">15</option>
+					<option value="30">30</option>
+					<option value="45">45</option>
+					<option value="60">60</option>
+					</select>
+					</div>
+		
+		</div><br>
+        
+        <div class="row">
+        <div class="col-xs-12">
+        <label>Testo Note</label>
+          <textarea rows="5" style="width:100%" id="nota" name="nota" class="form-control"></textarea>
+        </div>
+        </div><br>
+       
+      
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_pianificazione" name="id_pianificazione">
+      <input type="hidden" id="day" name="day">
+      <input type="hidden" id="commessa" name="commessa">
+      <input type="hidden" id="id_docenti" name="id_docenti">
+      <input type="hidden" id="id_docenti_dissocia" name="id_docenti_dissocia">
+      <input type="hidden" id="check_mail" name="check_mail">
+      <input type="hidden" id="check_agenda" name="check_agenda">
+      <input type="hidden" id="check_pausa_pranzo" name="check_pausa_pranzo">
+      <input type="hidden" id="anno_data" name="anno_data">
+      <input type="hidden" id="is_lista" name="is_lista" value="1">
+      
+      
+      
+      <a class="btn btn-danger pull-left" onclick="$('#myModalYesOrNo').modal()"  id="btn_elimina" style="display:none">Elimina</a>
+        
+	               <button class="btn btn-primary" type="submit"  >Salva</button>
+	                
+	   
+      
+      
+
+      </div>
+    </div>
+  </div>
+
+</div>
+</form>
 
 
 </div>
@@ -465,6 +660,103 @@ callAction("gestioneFormazione.do?action=lista_pianificazioni");
 }
 
 
+function modalPianificazione(data, commessa, id){
+	
+	
+		//$('#title_pianificazione').html("Pianificazione "+formattedDate+" Commessa: "+commessa)
+		//$('#day').val(day);
+		//$('#commessa').val(commessa);
+		$('#btn_elimina').hide()
+		$('#modalPianificazione').modal()
+	
+
+	
+}
+
+
+$('input:checkbox').on('ifToggled', function() {
+	
+	//var id =$(this)[0].id;
+	
+	var id ="#"+$(this)[0].id;
+	
+
+	if(id.startsWith("#checkPianificazione")){
+		
+
+	
+	
+ 	
+	
+		$(id).on('ifChecked', function(event){
+			  
+			  
+			 
+			checkPianificazione(id.split("_")[1], 1)
+
+
+		
+	});
+		
+		
+		$(id).on('ifUnchecked', function(event) {
+			
+			checkPianificazione(id.split("_")[1], 0)
+			  
+			
+		});
+	
+		
+		    	
+		    	
+					  
+		
+		
+}
+	
+	});
+	
+	
+	function checkPianificazione(id, value){
+		
+		 var dataObj = {};
+		 	dataObj.id_pianificazione = id;
+		 	dataObj.value = value;
+	
+		 $.ajax({
+		    	type: "POST",
+		    	url: "gestioneFormazione.do?action=ore_fatturate",
+		    	data: dataObj,
+		    	dataType: "json",
+		    	//if received a response from the server
+		    	success: function( data, textStatus) {
+		    		pleaseWaitDiv.modal('hide');
+		    		  if(data.success){	  			
+		   				  
+		    		  }else{
+		    			
+		    			$('#myModalErrorContent').html(data.messaggio);
+		    		  	$('#myModalError').removeClass();
+		    			$('#myModalError').addClass("modal modal-danger");	  
+		    			$('#report_button').hide();
+		    			$('#visualizza_report').hide();
+		    			$('#myModalError').modal('show');			
+		    		
+		    		  }
+		    	},
+		    	error: function( data, textStatus) {
+		    		  $('#myModalYesOrNo').modal('hide');
+		    		  $('#myModalErrorContent').html(data.messaggio);
+		    		  	$('#myModalError').removeClass();
+		    			$('#myModalError').addClass("modal modal-danger");	  
+		    			$('#report_button').show();
+		    			$('#visualizza_report').show();
+		    				$('#myModalError').modal('show');
+		    	
+		    	}
+		    	});
+	}
+	
 
 
 $(document).ready(function() {
@@ -538,7 +830,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 8 },
+		    	  { responsivePriority: 2, targets: 9 },
 	
 		    	  
 		               ], 	        
@@ -573,10 +865,146 @@ $(document).ready(function() {
 });
 
 
+$('#formNuovaPianificazione').on("submit", function(e){
+	e.preventDefault();
+	nuovaPianificazione();
+})
 
 
 
- 
+function nuovaPianificazione(){
+	
+	 var values = $('#docente').val();
+	 var ids = "";
+	 if(values!=null){
+		 for(var i = 0;i<values.length;i++){
+			 ids = ids + values[i]+";";
+		 }
+	 }
+
+
+	 $('#id_docenti').val(ids);
+	
+	
+	callAjaxForm('#formNuovaPianificazione', 'gestioneFormazione.do?action=nuova_pianificazione', function(datab){
+		
+		
+		$(document.body).css('padding-right', '0px');
+		if(datab.success){
+			//fillTable("${anno}", "${filtro_tipo_pianificazioni}", 1);
+		//	controllaColoreCella(table, "#F7BEF6");
+			
+			$('#modalPianificazione').modal("hide");
+			
+			 $('.modal-backdrop').hide();
+		}else{
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+		}
+		
+	});
+	$(document.body).css('padding-right', '0px');
+}
+
+
+$('input:checkbox').on('ifToggled', function() {
+	
+	$('#email').on('ifChecked', function(event){
+		$('#check_mail').val(1);
+	
+	});
+	
+	$('#email').on('ifUnchecked', function(event) {
+		
+		$('#check_mail').val(0);
+	
+	});
+	
+	
+	
+	
+
+	$('#agenda').off("ifChecked").on('ifChecked', function(event){
+	    console.log("Check attivato");
+
+	    $('#check_agenda').val(1);
+
+	    // Distruggi select2 PRIMA di rimuovere gli elementi
+	    $(".fasiClass").each(function() {
+	        if ($.fn.select2) {
+	            $(this).select2('destroy');
+	        }
+	    });
+
+	    // Ora rimuovi completamente gli elementi
+	    $(".fasiClass").remove();
+	    $('#content_fasi').html("");
+
+	    var values = $('#docente').val();
+	    var ids = "";
+	    if (values != null) {
+	        for (var i = 0; i < values.length; i++) {
+	            ids += values[i] + ";";
+	        }
+	    }
+
+	   getListaFasi(ids);
+
+	        $('#content_fasi').show();
+	   
+	});
+
+	$('#agenda').off("ifUnchecked").on('ifUnchecked', function(event) {
+	    console.log("Check disattivato");
+
+	    $('#check_agenda').val(0);
+
+	    // Distruggi select2 PRIMA di rimuovere gli elementi
+	    $(".fasiClass").each(function() {
+	        if ($.fn.select2) {
+	            $(this).select2('destroy');
+	        }
+	    });
+
+	    // Ora rimuovi completamente gli elementi
+	    $(".fasiClass").remove();
+	    $('#content_fasi').html("");
+	    $('#content_fasi').hide();
+	});
+
+	
+	$('#email_elimina').on('ifChecked', function(event){
+		$('#check_email_eliminazione').val(1);
+	
+	});
+	
+	$('#email_elimina').on('ifUnchecked', function(event) {
+		
+		$('#check_email_eliminazione').val(0);
+	
+	});
+	
+	$('#pausa_pranzo').on('ifChecked', function(event){
+		$('#check_pausa_pranzo').val("SI");
+		$('#durata_pausa_pranzo').attr("disabled", false);
+		$('#durata_pausa_pranzo').attr("required", true);
+	});
+	
+	$('#pausa_pranzo').on('ifUnchecked', function(event) {
+		
+		$('#check_pausa_pranzo').val("NO");
+		$('#durata_pausa_pranzo').val("")
+		$('#durata_pausa_pranzo').change()
+		$('#durata_pausa_pranzo').attr("disabled", true);
+		$('#durata_pausa_pranzo').attr("required", false);
+	});
+	
+})
+
  
  
   </script>

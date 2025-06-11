@@ -28,7 +28,7 @@ public class ForPiaPianificazioneDTO {
 	private int aggiunto_agenda;
 	private int email_inviata;
 	private String durata_pausa_pranzo;
-	
+	private int ore_fatturate;
 	
 	private Set<ForDocenteDTO> listaDocenti = new HashSet<ForDocenteDTO>(0);
 	
@@ -284,6 +284,18 @@ public class ForPiaPianificazioneDTO {
 
 	public void setDurata_pausa_pranzo(String durata_pausa_pranzo) {
 		this.durata_pausa_pranzo = durata_pausa_pranzo;
+	}
+
+
+
+	public int getOre_fatturate() {
+		return ore_fatturate;
+	}
+
+
+
+	public void setOre_fatturate(int ore_fatturate) {
+		this.ore_fatturate = ore_fatturate;
 	}
 	
 	

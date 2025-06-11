@@ -90,5 +90,8 @@
             <column name="durata_pausa_pranzo" />
         </property>
         
+        <property name="ore_fatturate" type="int" >
+            <column name="ore_fatturate" />
+        </property>
     </class>
 </hibernate-mapping>

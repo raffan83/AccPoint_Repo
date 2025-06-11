@@ -3719,6 +3719,27 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 				}
 			
+				else if(action.equals("ore_fatturate")) {
+					
+					ajax = true;
+									
+					String id_pianificazione = request.getParameter("id_pianificazione");
+					String value = request.getParameter("value");
+					
+					ForPiaPianificazioneDTO pianificazione = GestioneFormazioneBO.getPianificazioneFromId(Integer.parseInt(id_pianificazione), session);
+					pianificazione.setOre_fatturate(Integer.parseInt(value));			
+					session.update(pianificazione);
+
+					myObj = new JsonObject();
+					PrintWriter  out = response.getWriter();
+					
+					myObj.addProperty("success", true);
+					
+					out.print(myObj);
+					session.getTransaction().commit();
+					session.close();
+				}
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();

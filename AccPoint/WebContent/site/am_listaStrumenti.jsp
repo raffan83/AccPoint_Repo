@@ -965,6 +965,8 @@ function formatData (data) {
 
 	
 	$('#immagine_campione_mod').on('select2:open', function () {
+		
+		
 		  // Aspetta un attimo che il DOM sia pronto
 		 const $dropdown = $('.select2-dropdown'); // Questo è il menu visibile
   if ($('#image-popup_mod').length === 0) {
@@ -1014,6 +1016,7 @@ $(document).ready(function() {
 		
 		templateResult: formatData,
 		  templateSelection: formatData
+		//  dropdownParent: $('#modalModificaStrumento')
 	});
 	
 	
@@ -1021,6 +1024,7 @@ $(document).ready(function() {
 		
 		templateResult: formatData,
 		  templateSelection: formatData
+		//  dropdownParent: $('#modalNuovoStrumento')
 	});  
 	
 	

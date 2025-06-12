@@ -186,6 +186,24 @@
           </ul>
           <%} %>
         </li>
+        
+         <li class="treeview">
+ <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_RISORSE")){%>
+          <a href="#"><i class="fa fa-link"></i> <span>PIANIFICAZIONE RISORSE</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">   
+         <%if(!user.checkRuolo("RL")){ %> 
+          <li><a href="#" onclick="callAction('gestioneRisorse.do?action=lista_risorse',null,true);">Gestione Risorse</a></li>
+          <% }%>   
+			<li><a href="#" onclick="callAction('gestioneRisorse.do?action=lista_requisiti',null,true);">Gestione Requisiti</a></li> 
+			
+				
+          </ul>
+          <%} %>
+        </li>
 
 <%-- 
 <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_COMMESSE_CAMPIONAMENTO")){%>

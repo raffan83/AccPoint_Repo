@@ -264,6 +264,14 @@
 	<mapping class="ItTipoServizioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ItTipoServizioDTO.hbm.xml"/>
 	<mapping class="ItTipoRinnovoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ItTipoRinnovoDTO.hbm.xml"/>
 	<mapping class="ItServizioItDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ItServizioItDTO.hbm.xml"/>
+	
+	
+	
+	<mapping class="PRRisorsaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PRRisorsaDTO.hbm.xml"/>
+	<mapping class="PRRequisitoRisorsaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PRRequisitoRisorsaDTO.hbm.xml"/>
+	<mapping class="PRRequisitoDocumentaleDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PRRequisitoDocumentaleDTO.hbm.xml"/>
+	<mapping class="PRRequisitoSanitarioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PRRequisitoSanitarioDTO.hbm.xml"/>
+	
  	
   </session-factory>
 </hibernate-configuration>

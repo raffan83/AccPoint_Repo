@@ -571,6 +571,11 @@ calcolaMinimi()
 
 	 table.clear();
       // riga iniziale (assumendo che le righe sono 1-based)
+      
+      if($('#tabPM tbody td').attr('contenteditable')=="true"){
+    	  $('#tabPM tbody td').css('background-color', '#f9f9b7')  
+      }
+      
 
      listaEntry.forEach(function(entry, index) {
      	let startRow = parseInt(entry.punto_intervallo_inizio); 
@@ -596,20 +601,23 @@ calcolaMinimi()
              if (row.length === 0) continue;
 
              // Prendo il testo della prima cella della riga, convertita a numero
-             
+             var cella;
              row.find('td').each(function() {
 		        var val = parseFloat($(this).text().replace(",","."));
 		        if (!isNaN(val)) {
 		        	if(val < minVal) {
 		        		minVal = val;	
+		        		cella = $(this);
 		        	}  
 		        }else{
 		        	minVal = "NA"
+		        	cella = $(this);
 		        }
 		      });
              
          }
-
+         
+       
      
          if(minVal!="NA"){
              var r = table.row.add([
@@ -620,6 +628,7 @@ calcolaMinimi()
              
              if (minVal < minimo_spessore) {
          	    $(r).css('background-color', '#FA8989');
+         	   $(cella).css('background-color', '#FA8989');
          	}
          }else{
         	 
@@ -630,6 +639,7 @@ calcolaMinimi()
           	]).node();
         	 
         	 $(r).css('background-color', '#FA8989');
+        	 $(cella).css('background-color', '#FA8989');
          }
 
          

@@ -511,14 +511,14 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 				PrintWriter  out = response.getWriter();
 				
-				if(strumento.getFilename_img() == null || strumento.getFilename_img().equals("")) {
-					
-					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Attenzione! Sullo strumento selezionato non è presente l'immagine!");
-				
-				out.print(myObj);
-					
-				}else {
+//				if(strumento.getFilename_img() == null || strumento.getFilename_img().equals("")) {
+//					
+//					myObj.addProperty("success", false);
+//					myObj.addProperty("messaggio", "Attenzione! Sullo strumento selezionato non è presente l'immagine!");
+//				
+//				out.print(myObj);
+//					
+//				}else {
 					
 					AMTipoProvaDTO tipo = GestioneAM_BO.getTipoProvaFromID(Integer.parseInt(id_tipo_prova), session);
 					AMCampioneDTO campione = GestioneAM_BO.getCampioneFromID(Integer.parseInt(id_campione), session);
@@ -604,7 +604,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 					out.print(myObj);
 					
 					
-				}
+				//}
 				
 				
 				
@@ -662,14 +662,14 @@ public class Am_gestioneInterventi extends HttpServlet {
 				AMOggettoProvaDTO strumento = GestioneAM_BO.getOggettoProvaFromID(Integer.parseInt(id_strumento), session);
 				PrintWriter  out = response.getWriter();
 				
-				if(strumento.getFilename_img() == null || strumento.getFilename_img().equals("")) {
-					
-					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Attenzione! Sullo strumento selezionato non è presente l'immagine!");
-				
-				out.print(myObj);
-					
-				}else {
+//				if(strumento.getFilename_img() == null || strumento.getFilename_img().equals("")) {
+//					
+//					myObj.addProperty("success", false);
+//					myObj.addProperty("messaggio", "Attenzione! Sullo strumento selezionato non è presente l'immagine!");
+//				
+//				out.print(myObj);
+//					
+//				}else {
 					AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);	
 					
 					AMTipoProvaDTO tipo = GestioneAM_BO.getTipoProvaFromID(Integer.parseInt(id_tipo_prova), session);
@@ -745,7 +745,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 					}
 					
 					out.print(myObj);
-				}
+		//		}
 				
 				
 			

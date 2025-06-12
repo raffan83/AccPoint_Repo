@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-feb-2017 16.24.17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.PRRisorsaDTO" table="pr_risorsa">
+       
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+          <many-to-one name="partecipante" class="it.portaleSTI.DTO.ForPartecipanteDTO" fetch="join" lazy="false">
+            <column name="id_for_partecipante" />
+        </many-to-one>
+        
+          <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_user" />
+        </many-to-one>
+        
+         <set name="listaRequisiti" table="pr_req_risorsa"
+				inverse="true" lazy="false" fetch="select" >
+            <key>
+                <column name="id_pr_risorsa" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.PRRequisitoRisorsaDTO" />
+   </set>
+    </class>
+</hibernate-mapping>

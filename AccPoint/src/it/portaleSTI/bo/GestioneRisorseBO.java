@@ -6,6 +6,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneRisorseDAO;
 import it.portaleSTI.DTO.PRRequisitoDocumentaleDTO;
+import it.portaleSTI.DTO.PRRequisitoRisorsaDTO;
 import it.portaleSTI.DTO.PRRequisitoSanitarioDTO;
 import it.portaleSTI.DTO.PRRisorsaDTO;
 
@@ -28,6 +29,11 @@ public class GestioneRisorseBO {
 	public static ArrayList<PRRequisitoSanitarioDTO> getListaRequisitiSanitari(Session session) {
 		// TODO Auto-generated method stub
 		return GestioneRisorseDAO.getListaRequisitiSanitari(session);
+	}
+
+	public static ArrayList<PRRequisitoRisorsaDTO> getListaRequisitiRisorsa(int id, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneRisorseDAO.getListaRequisitiRisorsa(id, session);
 	}
 	
 	

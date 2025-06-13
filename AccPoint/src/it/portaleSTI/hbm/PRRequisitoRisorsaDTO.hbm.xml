@@ -27,6 +27,9 @@
         <property name="stato" type="int">
             <column name="stato" />
         </property>
+        <property name="risorsa" type="int">
+            <column name="id_pr_risorsa" />
+        </property>
       
     </class>
 </hibernate-mapping>

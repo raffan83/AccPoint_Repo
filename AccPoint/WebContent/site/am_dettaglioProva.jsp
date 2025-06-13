@@ -351,12 +351,14 @@
  
  <div class="row">
 
-<div class="col-xs-6">
+<div class="col-xs-8">
 <table id="tabMinimi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
     <thead >
         <tr>
-            <th style="text-align:center">Spessori Minimi</th>
-            <th style="min-width:100px">Valore</th>
+            <th style="min-width:100px;text-align:center">Spessori</th>
+            <th style="min-width:100px;text-align:center">Valore Minimo</th>
+            <th style="min-width:100px;text-align:center">Valore Medio</th>
+            <th style="min-width:100px;text-align:center">Valore Massimo</th>
         </tr>
       
     </thead>
@@ -564,7 +566,73 @@
 calcolaMinimi()
  })
  
- function calcolaMinimi(){
+ 
+ function calcolaMinimi() {
+    var table = $('#tabMinimi').DataTable();
+    table.clear();
+
+    if ($('#tabPM tbody td').attr('contenteditable') == "true") {
+        $('#tabPM tbody td').css('background-color', '#f9f9b7');
+    }
+
+    listaEntry.forEach(function(entry, index) {
+        let startRow = parseInt(entry.punto_intervallo_inizio); 
+        var endRow = parseInt(entry.punto_intervallo_fine);
+
+        let minVal = Infinity;
+        let maxVal = -Infinity;
+        let sum = 0;
+        let count = 0;
+        let cellaMin = null;
+
+        let str = entry.spessore.replace(',', '.');
+        const match = str.match(/[\d.]+/);
+        let minimo_spessore = match ? parseFloat(match[0]) : null;
+
+        // Ciclo sulle righe della tabella
+        for (var r = startRow; r <= endRow; r++) {
+            var row = $('#tabPM tbody tr').eq(r - 1);
+            if (row.length === 0) continue;
+
+            row.find('td').each(function() {
+                var val = parseFloat($(this).text().replace(",", "."));
+                if (!isNaN(val)) {
+                    if (val < minVal) {
+                        minVal = val;
+                        cellaMin = $(this);
+                    }
+                    if (val > maxVal) {
+                        maxVal = val;
+                    }
+                    sum += val;
+                    count++;
+                }
+            });
+        }
+
+        let avgVal = count > 0 ? (sum / count).toFixed(2) : "NA";
+        minVal = (count > 0) ? minVal : "NA";
+        maxVal = (count > 0) ? maxVal : "NA";
+
+        let riga = table.row.add([
+            entry.zonaRiferimento,
+            minVal !== "NA" ? minVal + " mm" : "NA",
+            avgVal !== "NA" ? avgVal + " mm" : "NA",
+            maxVal !== "NA" ? maxVal + " mm" : "NA"
+        ]).node();
+
+        if (minVal === "NA" || (minimo_spessore !== null && minVal < minimo_spessore)) {
+            $(riga).css('background-color', '#FA8989');
+            if (cellaMin) {
+                $(cellaMin).css('background-color', '#FA8989');
+            }
+        }
+    });
+
+    table.draw();
+}
+ 
+/*  function calcolaMinimi(){
 	
 	 
 	 var table =   $('#tabMinimi').DataTable();
@@ -650,7 +718,7 @@ calcolaMinimi()
 
      table.draw();
  }
- 
+  */
  function rigeneraTabella(id_prova){
 	 
 	 dataObj = {};

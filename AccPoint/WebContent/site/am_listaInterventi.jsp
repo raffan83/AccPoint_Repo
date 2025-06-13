@@ -108,13 +108,12 @@
 
 	
 	<c:if test="${intervento.stato== 0}">
-						
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiInterventoAM('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-success">APERTO</span></a>
+						 <span class="label label-success">APERTO</span>
 						
 					</c:if>
 					
 					<c:if test="${intervento.stato == 1}">
-						<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriVerIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">CHIUSO</span></a>
+					 <span class="label label-warning">CHIUSO</span>
 						
 					</c:if>
 	

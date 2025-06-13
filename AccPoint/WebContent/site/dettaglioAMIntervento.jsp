@@ -93,13 +93,13 @@
                   <b>Stato</b> <div class="pull-right">
                   
 					<c:if test="${intervento.stato == 0}">
-						<%-- <a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a> --%>
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiVerIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-success">APERTO</span></a>
+						
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="cambiaStatoInterventoAM('${intervento.id}',1)" id="statoa_${intervento.id}"> <span class="label label-success">APERTO</span></a>
 						
 					</c:if>
 					
 					<c:if test="${intervento.stato == 1}">
-						<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriVerIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">CHIUSO</span></a>
+						<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="cambiaStatoInterventoAM('${intervento.id}',0)" id="statoa_${intervento.id}"> <span class="label label-warning">CHIUSO</span></a>
 						
 					</c:if>
 					
@@ -782,6 +782,55 @@ NON CONFORME A SPECIFICA
   <script src="plugins/iCheck/icheck.min.js"></script>  -->
 
  <script type="text/javascript">
+ 
+ 
+ 
+
+ function cambiaStatoInterventoAM(id_intervento,stato){
+	 
+ 	  pleaseWaitDiv = $('#pleaseWaitDialog');
+ 	  pleaseWaitDiv.modal();
+ 	  var dataObj = {};
+ 	  dataObj.id_intervento = id_intervento;
+ 	  dataObj.stato = stato;
+ 	  callAjax(dataObj, "amGestioneInterventi.do?action=cambia_stato_intervento",function(data, textStatus){
+ 		 pleaseWaitDiv.modal('hide');
+		  $(".ui-tooltip").remove();
+		  if(data.success)
+		  { 
+			  if(stato == 1){
+				 $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="cambiaStatoInterventoAM(\''+id_intervento+'\',1)" id="statoa_'+data.id_intervento+'"><span  class="label label-success">APERTO</span></a>');
+			  }else{
+				 $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="cambiaStatoInterventoAM(\''+id_intervento+'\',0)" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>');
+			  }
+				 
+			 
+			  $('#report_button').hide();
+	  			$('#visualizza_report').hide();
+			  $('#myModalErrorContent').html(data.messaggio);
+			  $("#boxPacchetti").html("");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+	  			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+			 
+		  }
+ 	  })
+ 	  
+ 	
+ }
+
+ 
+ 
  
  
  function nuovaProva(){

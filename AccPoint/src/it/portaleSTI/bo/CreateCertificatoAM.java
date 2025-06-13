@@ -44,6 +44,8 @@ import javax.imageio.ImageIO;
 
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -464,7 +466,7 @@ public class CreateCertificatoAM {
 		if(isAnteprima) {
 			path = path_folder+"ANTEPRIMA.pdf";
 		}else {
-			path = path_folder+prova.getnRapporto()+".pdf";
+			path = path_folder+prova.getnRapporto()+"_NF"+prova.getStrumento().getnFabbrica()+".pdf";
 		}
 				
 		
@@ -476,6 +478,15 @@ public class CreateCertificatoAM {
 		exporter.setConfiguration(configuration);
 		exporter.exportReport();
 		
+		if(!isAnteprima) {
+			File f = new File(path);
+		 PDDocument document = PDDocument.load(f);
+		  PDDocumentInformation info = document.getDocumentInformation();
+        info.setTitle(prova.getnRapporto()+"_NF"+prova.getStrumento().getnFabbrica()+".pdf"); // Modifica il titolo
+        document.setDocumentInformation(info);
+
+        document.save(f);
+		}
 		if(isAnteprima) {
 			addBozza(path,"");
 		}
@@ -494,7 +505,7 @@ public class CreateCertificatoAM {
 		
 		if(!isAnteprima) {
 			rapporto.setData(new Date());
-			rapporto.setNomeFile(prova.getnRapporto()+".pdf");
+			rapporto.setNomeFile(prova.getnRapporto()+"_NF"+prova.getStrumento().getnFabbrica()+".pdf");
 
 			rapporto.setStato(new StatoCertificatoDTO(2));
 		

@@ -940,6 +940,8 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 				AMProvaDTO prova = GestioneAM_BO.getProvaFromID(Integer.parseInt(id_prova), session);
 				
+				
+				
 				String path ="";
 				boolean isAnteprima = false;
 				if(anteprima!=null && anteprima.equals("1")) {
@@ -952,8 +954,11 @@ public class Am_gestioneInterventi extends HttpServlet {
 				//	 response.setHeader("Content-Disposition","attachment;filename=ANTEPRIMA.pdf");
 					response.setContentType("application/pdf");	
 				}else {
-					path = Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+prova.getId()+"\\Certificati\\"+prova.getnRapporto()+".pdf";
+					AMRapportoDTO certificato = GestioneAM_BO.getRapportoFromProva(prova.getId(), session);
+					String filename = prova.getId()+"\\Certificati\\"+certificato.getNomeFile();
+					path = Costanti.PATH_FOLDER+"\\AM_Interventi\\"+prova.getIntervento().getId()+"\\"+filename;
 					response.setContentType("application/pdf");	
+					response.setHeader("Content-Disposition", "inline; filename="+filename);
 				}
 						
 				
@@ -1278,7 +1283,26 @@ public class Am_gestioneInterventi extends HttpServlet {
 				myObj.addProperty("messaggio", "Immagine eliminata con successo!");
 				out.print(myObj);
 			}
-			
+			else if(action.equals("cambia_stato_intervento")) {
+				
+				ajax = true;
+				
+				String id_intervento = request.getParameter("id_intervento");
+				String stato = request.getParameter("stato");
+				
+				AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);
+				
+				intervento.setStato(Integer.parseInt(stato));
+				
+				session.update(intervento);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
+				
+			}
 			session.getTransaction().commit();
 			session.close();
 			

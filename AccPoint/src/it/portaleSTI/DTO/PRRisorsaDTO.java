@@ -17,12 +17,25 @@ public class PRRisorsaDTO {
 	private UtenteDTO utente;
 	private ForPartecipanteDTO partecipante;
 	Set<PRRequisitoRisorsaDTO> listaRequisiti = new HashSet<PRRequisitoRisorsaDTO>();
+	private int disabilitato;
 	
 	
 	
 
 	public Set<PRRequisitoRisorsaDTO> getListaRequisiti() {
 		return listaRequisiti;
+	}
+
+
+	public int getDisabilitato() {
+		return disabilitato;
+	}
+
+
+
+
+	public void setDisabilitato(int disabilitato) {
+		this.disabilitato = disabilitato;
 	}
 
 

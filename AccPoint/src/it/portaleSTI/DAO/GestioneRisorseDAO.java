@@ -19,7 +19,7 @@ public class GestioneRisorseDAO {
 	public static ArrayList<PRRisorsaDTO> getListaRisorse(Session session) {
 		ArrayList<PRRisorsaDTO> lista = null;
 		
-		Query query = session.createQuery("from PRRisorsaDTO");
+		Query query = session.createQuery("from PRRisorsaDTO where disabilitato = 0");
 		
 		lista = (ArrayList<PRRisorsaDTO>) query.list();
 		return lista;

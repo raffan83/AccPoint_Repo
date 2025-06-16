@@ -75,7 +75,9 @@ public class GestioneRisorse extends HttpServlet {
 			if(action.equals("dettaglio_risorsa")) {
 				
 				String id = request.getParameter("id_risorsa");
-				ArrayList<PRRequisitoRisorsaDTO> lista_requisiti_risorsa = GestioneRisorseBO.getListaRequisitiRisorsa(Integer.parseInt(id),session);
+				PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id));
+				ArrayList<PRRequisitoRisorsaDTO> lista_requisiti_risorsa = GestioneRisorseBO.getListaRequisitiRisorsa(risorsa.getId(),session);
+				
 				
 				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 				
@@ -83,6 +85,7 @@ public class GestioneRisorse extends HttpServlet {
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
 				myObj.add("lista_requisiti_risorsa", g.toJsonTree(lista_requisiti_risorsa));
+				myObj.add("risorsa", g.toJsonTree(risorsa));
 				out.print(myObj);
 				
 			}
@@ -179,7 +182,7 @@ public class GestioneRisorse extends HttpServlet {
 				risorsa.setUtente(user);
 				risorsa.setPartecipante(partecipante);
 				
-				session.saveOrUpdate(risorsa);
+				
 				
 				if(id_req_documentali!= null || id_req_sanitari!=null) {
 					
@@ -191,7 +194,8 @@ public class GestioneRisorse extends HttpServlet {
 							req_risorsa.setRisorsa(risorsa.getId());
 							PRRequisitoDocumentaleDTO req_doc = (PRRequisitoDocumentaleDTO) session.get(PRRequisitoDocumentaleDTO.class, Integer.parseInt(id_req_documentali.split(";")[i]));
 							req_risorsa.setReq_documentale(req_doc);
-							session.save(req_risorsa);
+							//session.save(req_risorsa);
+							risorsa.getListaRequisiti().add(req_risorsa);
 							}
 						}
 						
@@ -212,14 +216,14 @@ public class GestioneRisorse extends HttpServlet {
 							req_risorsa.setReq_san_data_inizio(data_inizio);
 							req_risorsa.setReq_san_data_fine(data_fine);
 							req_risorsa.setStato(Integer.parseInt(stato));
-							session.save(req_risorsa);
+							risorsa.getListaRequisiti().add(req_risorsa);
 							}
 						}
 					
 					
 				}
 				
-				
+				session.saveOrUpdate(risorsa);
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
@@ -228,7 +232,113 @@ public class GestioneRisorse extends HttpServlet {
 				
 				
 			}
-			
+			else if(action.equals("modifica_risorsa")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}		        
+		       
+	
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	      
+	            	
+	            }
+		
+				String id_utente = ret.get("utente_mod");
+				String id_partecipante = ret.get("partecipante_mod");
+				String id_req_documentali = ret.get("id_req_documentali_mod");
+				String id_req_sanitari = ret.get("id_req_sanitari_mod");
+				String id_risorsa = ret.get("id_risorsa");
+				
+				PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id_risorsa));
+				UtenteDTO user = (UtenteDTO) session.get(UtenteDTO.class, Integer.parseInt(id_utente));
+				ForPartecipanteDTO partecipante = (ForPartecipanteDTO) session.get(ForPartecipanteDTO.class, Integer.parseInt(id_partecipante));
+				
+				risorsa.setUtente(user);
+				risorsa.setPartecipante(partecipante);
+				
+				//session.saveOrUpdate(risorsa);
+				
+				risorsa.getListaRequisiti().clear();
+				
+		
+				session.update(risorsa);
+				
+				if(id_req_documentali!= null || id_req_sanitari!=null) {
+					
+					if(id_req_documentali!=null && !id_req_documentali.equals("")) {
+						for (int i = 0; i < id_req_documentali.split(";").length;i++) {
+							
+							if(!id_req_documentali.split(";")[i].equals("")) {
+							PRRequisitoRisorsaDTO req_risorsa = new PRRequisitoRisorsaDTO();
+							req_risorsa.setRisorsa(risorsa.getId());
+							PRRequisitoDocumentaleDTO req_doc = (PRRequisitoDocumentaleDTO) session.get(PRRequisitoDocumentaleDTO.class, Integer.parseInt(id_req_documentali.split(";")[i]));
+							req_risorsa.setReq_documentale(req_doc);
+							//session.save(req_risorsa);
+							risorsa.getListaRequisiti().add(req_risorsa);
+							}
+						}
+						
+					}
+					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+					if(id_req_sanitari!=null && !id_req_sanitari.equals("")) {
+						for (int i = 0; i < id_req_sanitari.split(";").length;i++) {
+							PRRequisitoRisorsaDTO req_risorsa = new PRRequisitoRisorsaDTO();
+							req_risorsa.setRisorsa(risorsa.getId());
+							String[] str_sanitari = id_req_sanitari.split(";")[i].split(",");
+							PRRequisitoSanitarioDTO req_san = (PRRequisitoSanitarioDTO) session.get(PRRequisitoSanitarioDTO.class, Integer.parseInt(str_sanitari[0]));
+							String stato = str_sanitari[1];
+							Date data_inizio = df.parse(str_sanitari[2]);
+							Date data_fine = df.parse(str_sanitari[3]);
+							
+							req_risorsa.setReq_sanitario(req_san);
+							req_risorsa.setReq_san_data_inizio(data_inizio);
+							req_risorsa.setReq_san_data_fine(data_fine);
+							req_risorsa.setStato(Integer.parseInt(stato));
+							//session.save(req_risorsa);
+							risorsa.getListaRequisiti().add(req_risorsa);
+							}
+						}
+					
+					
+				}
+				session.update(risorsa);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
+				
+			}
+			else if(action.equals("elimina_risorsa")) {
+				
+				ajax = true;
+				String id_risorsa = request.getParameter("id_risorsa");
+				
+				PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id_risorsa));
+				risorsa.setDisabilitato(1);
+				
+				session.update(risorsa);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
+				
+			}
 			
 			session.getTransaction().commit();
 	    	session.close();

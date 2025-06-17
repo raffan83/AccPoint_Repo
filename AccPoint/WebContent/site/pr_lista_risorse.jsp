@@ -261,12 +261,9 @@
 			<select id="utente_mod" name="utente_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona utente..." required>
 			<option value=""></option>
 			<c:forEach items="${lista_utenti_all}" var="utente">
-				<c:if test="${!lista_utenti.contains(utente) }">
-			<option value="${utente.id }" disabled>${utente.nominativo }</option>
-			</c:if>
-			<c:if test="${lista_utenti.contains(utente) }">
-			<option value="${utente.id }">${utente.nominativo }</option>
-			</c:if>
+				
+			<option value="${utente.id }" >${utente.nominativo }</option>
+			
 			</c:forEach>
 			</select>
        	</div>       	
@@ -276,13 +273,19 @@
         
 			<select id="partecipante_mod" name="partecipante_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona partecipante..." required>
 			<option value=""></option>
-			<c:forEach items="${lista_partecipanti_all}" var="partecipante">
+			<%-- <c:forEach items="${lista_partecipanti_all}" var="partecipante">
 				<c:if test="${!lista_partecipanti.contains(partecipante) }">
 			<option value="${partecipante.id }" disabled>${partecipante.nome } ${partecipante.cognome }</option>
 			</c:if>
 			<c:if test="${lista_partecipanti.contains(partecipante) }">
 			<option value="${partecipante.id }">${partecipante.nome } ${partecipante.cognome }</option>
 			</c:if>
+			</c:forEach> --%>
+			<c:forEach items="${lista_partecipanti_all}" var="partecipante">
+			
+			<option value="${partecipante.id }" >${partecipante.nome } ${partecipante.cognome }</option>
+	
+		
 			</c:forEach>
 			</select>
        	</div>  
@@ -545,9 +548,10 @@ function eliminaRisorsa(id_risorsa){
 	
 } */
 
-
+var flag = false;
 function modificaRisorsaModal(id_risorsa){
 	
+	flag = true;
 	var response = getRisorsa(id_risorsa, null, function(response){
 	
 		    var lista_requisiti_risorsa = response.lista_requisiti_risorsa;
@@ -558,7 +562,7 @@ function modificaRisorsaModal(id_risorsa){
 		    $('#id_risorsa').val(id_risorsa)
 		
 	      	
-	      	 var table_data = [];
+/* 	      	 var table_data = [];
 	  		  
 
 	  		  for(var i = 0; i<lista_corsi.length;i++){
@@ -579,7 +583,7 @@ function modificaRisorsaModal(id_risorsa){
 	   		   
 	  		tableDoc.rows.add(table_data).draw();
 	   			
-	  		tableDoc.columns.adjust().draw(); 
+	  		tableDoc.columns.adjust().draw();  */
 	  		$('#utente_mod').val(risorsa.utente.id);
 			$('#partecipante_mod').val(risorsa.partecipante.id);
 			$('#partecipante_mod').change();
@@ -622,7 +626,7 @@ function modificaRisorsaModal(id_risorsa){
 			}
 			});
 			$('#modalModificaRisorsa').modal();
-		 
+		 flag = false;
 	
 }
 
@@ -659,7 +663,7 @@ let syncing = false;
 function sincronizzaSelect(sourceSelectId, targetSelectId) {
 	
 	 if (syncing) return;
-
+	 
 	    syncing = true;
 	    
     var selectedText = $('#' + sourceSelectId).find('option:selected').text().toLowerCase();
@@ -668,6 +672,7 @@ function sincronizzaSelect(sourceSelectId, targetSelectId) {
     $('#' + targetSelectId + ' option').each(function () {
         if ($(this).text().toLowerCase() === selectedText) {
             $(this).prop('selected', true);
+
             found = true;
             return false; // esci dal ciclo
         }

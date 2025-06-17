@@ -1334,4 +1334,20 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 			return lista;
 	}
 
+	public static ArrayList<ForCorsoDTO> getListaCorsiInCorsoPartecipante(int id, Session session) {
+		
+		ArrayList<ForCorsoDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = session.createQuery("select p.corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id = :_id_partecipante and p.corso.data_scadenza > NOW() and p.corso.disabilitato = 0 and p.corso.corso_cat.id IN (SELECT categoria.id from PRRequisitoDocumentaleDTO)");
+		query.setParameter("_id_partecipante", id);	
+		
+		lista = (ArrayList<ForCorsoDTO>) query.list();
+		
+				
+		return lista;
+		
+	}
+
 }

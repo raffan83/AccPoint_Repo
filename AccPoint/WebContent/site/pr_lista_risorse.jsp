@@ -121,10 +121,16 @@
         
 			<select id="utente" name="utente" class="form-control select2" style="width:100%" data-placeholder="Seleziona utente..." required>
 			<option value=""></option>
-			<c:forEach items="${lista_utenti}" var="utente">
 		
+				<c:forEach items="${lista_utenti_all}" var="utente">
+				<c:if test="${!lista_utenti.contains(utente) }">
+			<option value="${utente.id }" disabled>${utente.nominativo }</option>
+			</c:if>
+			<c:if test="${lista_utenti.contains(utente) }">
 			<option value="${utente.id }">${utente.nominativo }</option>
+			</c:if>
 			</c:forEach>
+			
 			</select>
        	</div>       	
        	
@@ -133,9 +139,15 @@
         
 			<select id="partecipante" name="partecipante" class="form-control select2" style="width:100%" data-placeholder="Seleziona partecipante..." required>
 			<option value=""></option>
-			<c:forEach items="${lista_partecipanti}" var="partecipante">
+			<c:forEach items="${lista_partecipanti_all}" var="partecipante">
+				<c:if test="${!lista_partecipanti.contains(partecipante) }">
+			<option value="${partecipante.id }" disabled>${partecipante.nome } ${partecipante.cognome }</option>
+			</c:if>
+			<c:if test="${lista_partecipanti.contains(partecipante) }">
 			<option value="${partecipante.id }">${partecipante.nome } ${partecipante.cognome }</option>
+			</c:if>
 			</c:forEach>
+		
 			</select>
        	</div>  
        </div><br>
@@ -150,15 +162,16 @@
  <table id="tabRequisitiDocumentali" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
-<td></td>
 <th>ID</th>
 <th>Codice</th>
+<th>Categoria</th>
 <th>Descrizione</th>
+<th>Data Scadenza</th>
  </tr></thead>
  
  <tbody>
  
- 	<c:forEach items="${lista_requisiti_documentali}" var="requisito" varStatus="loop">
+ 	<%-- <c:forEach items="${lista_requisiti_documentali}" var="requisito" varStatus="loop">
  
 	<tr id="row_${loop.index}" >
 	<td></td>
@@ -167,7 +180,7 @@
 	<td>${requisito.categoria.descrizione }</td>	
 	</tr>
 	</c:forEach>
-	 
+	  --%>
 
  </tbody>
  </table>  
@@ -248,7 +261,12 @@
 			<select id="utente_mod" name="utente_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona utente..." required>
 			<option value=""></option>
 			<c:forEach items="${lista_utenti_all}" var="utente">
+				<c:if test="${!lista_utenti.contains(utente) }">
+			<option value="${utente.id }" disabled>${utente.nominativo }</option>
+			</c:if>
+			<c:if test="${lista_utenti.contains(utente) }">
 			<option value="${utente.id }">${utente.nominativo }</option>
+			</c:if>
 			</c:forEach>
 			</select>
        	</div>       	
@@ -259,7 +277,12 @@
 			<select id="partecipante_mod" name="partecipante_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona partecipante..." required>
 			<option value=""></option>
 			<c:forEach items="${lista_partecipanti_all}" var="partecipante">
+				<c:if test="${!lista_partecipanti.contains(partecipante) }">
+			<option value="${partecipante.id }" disabled>${partecipante.nome } ${partecipante.cognome }</option>
+			</c:if>
+			<c:if test="${lista_partecipanti.contains(partecipante) }">
 			<option value="${partecipante.id }">${partecipante.nome } ${partecipante.cognome }</option>
+			</c:if>
 			</c:forEach>
 			</select>
        	</div>  
@@ -275,15 +298,16 @@
  <table id="tabRequisitiDocumentali_mod" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active" >
 
-<td></td>
 <th>ID</th>
 <th>Codice</th>
+<th>Categoria</th>
 <th>Descrizione</th>
+<th>Data Scadenza</th>
  </tr></thead>
  
  <tbody>
  
- 	<c:forEach items="${lista_requisiti_documentali}" var="requisito" varStatus="loop">
+<%--  	<c:forEach items="${lista_requisiti_documentali}" var="requisito" varStatus="loop">
  
 	<tr id="row_doc_mod_${requisito.id }">
 	<td></td>
@@ -291,7 +315,7 @@
 	<td>${requisito.categoria.codice }</td>
 	<td>${requisito.categoria.descrizione }</td>	
 	</tr>
-	</c:forEach>
+	</c:forEach> --%>
 	 
 
  </tbody>
@@ -433,7 +457,7 @@ function eliminaRisorsa(id_risorsa){
 }
 
 
-function modificaRisorsaModal(id_risorsa){
+/* function modificaRisorsaModal(id_risorsa){
 	
 	$.ajax({
 		  url: 'gestioneRisorse.do?action=dettaglio_risorsa&id_risorsa='+id_risorsa, // Specifica l'URL della tua servlet
@@ -443,10 +467,34 @@ function modificaRisorsaModal(id_risorsa){
 		
 		    var lista_requisiti_risorsa = response.lista_requisiti_risorsa;
 		    var risorsa = response.risorsa;
+		    var lista_corsi = response.lista_corsi
 		    
 		    var tableSan = $('#tabRequisitiSanitari_mod').DataTable();
-		    var tableDoc = $('#tabRequisitiDocumentali_mod').DataTable();
 		    $('#id_risorsa').val(id_risorsa)
+		
+	      	
+	      	 var table_data = [];
+	  		  
+
+	  		  for(var i = 0; i<lista_corsi.length;i++){
+	  			  var dati = {};
+	  			 
+	  			  dati.id = lista_corsi[i].id;
+	  			  dati.codice = lista_corsi[i].corso_cat.codice;
+	  			  dati.categoria = lista_corsi[i].corso_cat.descrizione;
+	  			  dati.descrizione = lista_corsi[i].descrizione;
+	  			  dati.data_scadenza = lista_corsi[i].data_scadenza;
+	  			  
+	  			  table_data.push(dati);
+	  			
+	  		  }
+	  		  var tableDoc = $('#tabRequisitiDocumentali_mod').DataTable();
+	  		  
+	  		tableDoc.clear().draw();
+	   		   
+	  		tableDoc.rows.add(table_data).draw();
+	   			
+	  		tableDoc.columns.adjust().draw();
 	
 			for (var i = 0; i < lista_requisiti_risorsa.length; i++) {
 				var r = lista_requisiti_risorsa[i];
@@ -455,10 +503,9 @@ function modificaRisorsaModal(id_risorsa){
 				$('#partecipante_mod').val(risorsa.partecipante.id);
 				$('#partecipante_mod').change();
 				$('#utente_mod').change();
-				if(r.req_documentale!=null){
-					
-					tableDoc.row( "#row_doc_mod_"+ r.req_documentale.id, { page:   'all'}).select();
-				}
+				
+				
+				
 				if(r.req_sanitario!=null){
 					
 					tableSan.row( "#row_san_mod_"+ r.req_sanitario.id, { page:   'all'}).select();
@@ -495,6 +542,87 @@ function modificaRisorsaModal(id_risorsa){
 	    console.error(error);
 	  }
 	});
+	
+} */
+
+
+function modificaRisorsaModal(id_risorsa){
+	
+	var response = getRisorsa(id_risorsa, null, function(response){
+	
+		    var lista_requisiti_risorsa = response.lista_requisiti_risorsa;
+		    var risorsa = response.risorsa;
+		    var lista_corsi = response.lista_corsi
+		    
+		     var tableSan = $('#tabRequisitiSanitari_mod').DataTable();
+		    $('#id_risorsa').val(id_risorsa)
+		
+	      	
+	      	 var table_data = [];
+	  		  
+
+	  		  for(var i = 0; i<lista_corsi.length;i++){
+	  			  var dati = {};
+	  			 
+	  			  dati.id = lista_corsi[i].id;
+	  			  dati.codice = lista_corsi[i].corso_cat.codice;
+	  			  dati.categoria = lista_corsi[i].corso_cat.descrizione;
+	  			  dati.descrizione = lista_corsi[i].descrizione;
+	  			  dati.data_scadenza = lista_corsi[i].data_scadenza;
+	  			  
+	  			  table_data.push(dati);
+	  			
+	  		  }
+	  		  var tableDoc = $('#tabRequisitiDocumentali_mod').DataTable();
+	  		  
+	  		tableDoc.clear().draw();
+	   		   
+	  		tableDoc.rows.add(table_data).draw();
+	   			
+	  		tableDoc.columns.adjust().draw(); 
+	  		$('#utente_mod').val(risorsa.utente.id);
+			$('#partecipante_mod').val(risorsa.partecipante.id);
+			$('#partecipante_mod').change();
+			$('#utente_mod').change();
+			
+	
+			for (var i = 0; i < lista_requisiti_risorsa.length; i++) {
+				var r = lista_requisiti_risorsa[i];
+				
+				
+	
+				if(r.req_sanitario!=null){
+					
+					tableSan.row( "#row_san_mod_"+ r.req_sanitario.id, { page:   'all'}).select();
+					
+					 var row = $("#row_san_mod_"+ r.req_sanitario.id);
+				       
+
+				        row.find('td').each(function(i, cell) {
+				            let testo = "";
+
+				           if (i === 3) {
+				                // SELECT
+				                let select = $(cell).find("select");
+				                
+				                $(select[0]).val(r.stato)
+				               
+				            } else if(i == 4){
+				                // Datepicker input
+				                let input = $(cell).find("input");
+				                $(input[0]).val(r.req_san_data_inizio)
+				            }
+				            else if(i == 5){
+				            	let input = $(cell).find("input");
+				                $(input[0]).val(r.req_san_data_fine)
+				            }
+				            
+				});
+				}	   
+			}
+			});
+			$('#modalModificaRisorsa').modal();
+		 
 	
 }
 
@@ -547,9 +675,14 @@ function sincronizzaSelect(sourceSelectId, targetSelectId) {
 
     if (found) {
         $('#' + targetSelectId).trigger('change'); // opzionale
+    }else{
+    	$('#' + targetSelectId).val("")
+    	$('#' + targetSelectId).trigger('change');
     }
     
     syncing = false;
+    
+    
 }
 
 $('#utente').on('change', function () {
@@ -558,6 +691,83 @@ $('#utente').on('change', function () {
 
 $('#partecipante').on('change', function () {
     sincronizzaSelect('partecipante', 'utente');
+    
+    var id_partecipante = $(this).val()
+    
+	var response = getRisorsa(null, id_partecipante, function(response){
+  
+    var lista_corsi = response.lista_corsi
+     	
+  	 var table_data = [];
+		  
+
+		  for(var i = 0; i<lista_corsi.length;i++){
+			  var dati = {};
+			 
+			  dati.id = lista_corsi[i].id;
+			  dati.codice = lista_corsi[i].corso_cat.codice;
+			  dati.categoria = lista_corsi[i].corso_cat.descrizione;
+			  dati.descrizione = lista_corsi[i].descrizione;
+			  dati.data_scadenza = lista_corsi[i].data_scadenza;
+			  
+			  table_data.push(dati);
+			
+		  }
+		  var tableDoc = $('#tabRequisitiDocumentali').DataTable();
+		  
+		tableDoc.clear().draw();
+		   
+		tableDoc.rows.add(table_data).draw();
+			
+		tableDoc.columns.adjust().draw();
+
+	});
+});
+
+$('#utente_mod').on('change', function () {
+    sincronizzaSelect('utente_mod', 'partecipante_mod');
+});
+
+$('#partecipante_mod').on('change', function () {
+    sincronizzaSelect('partecipante_mod', 'utente_mod');
+    
+   
+    var id_partecipante = $('#partecipante_mod').val()
+    
+    if(id_partecipante!=null){
+    	var response = getRisorsa(null, id_partecipante, function(response){
+    		  
+    	    var lista_corsi = response.lista_corsi
+    	     	
+    	  	 var table_data = [];
+    			  
+
+    	    if(lista_corsi!=null){
+    	    	 for(var i = 0; i<lista_corsi.length;i++){
+    				  var dati = {};
+    				 
+    				  dati.id = lista_corsi[i].id;
+    				  dati.codice = lista_corsi[i].corso_cat.codice;
+    				  dati.categoria = lista_corsi[i].corso_cat.descrizione;
+    				  dati.descrizione = lista_corsi[i].descrizione;
+    				  dati.data_scadenza = lista_corsi[i].data_scadenza;
+    				  
+    				  table_data.push(dati);
+    				
+    			  }
+    			
+    	    }
+    	    var tableDoc = $('#tabRequisitiDocumentali_mod').DataTable();
+    		  
+    		tableDoc.clear().draw();
+    		   
+    		tableDoc.rows.add(table_data).draw();
+    			
+    		tableDoc.columns.adjust().draw();
+    			 
+    	});
+    }
+	
 });
 
 var t2;
@@ -570,8 +780,10 @@ $(document).ready(function() {
 	
 	  t2 = initRequisitiSanitariTable('#tabRequisitiSanitari');
 	     t2_mod = initRequisitiSanitariTable('#tabRequisitiSanitari_mod');
-	     t1 = initRequisitiSanitariTable('#tabRequisitiDocumentali');
-	     t1_mod = initRequisitiSanitariTable('#tabRequisitiDocumentali_mod');
+	     //t1 = initRequisitiSanitariTable('#tabRequisitiDocumentali');
+	     //t1_mod = initRequisitiSanitariTable('#tabRequisitiDocumentali_mod');
+	     t1 = initRequisitiDocumentaliTable('#tabRequisitiDocumentali');
+	     t1_mod = initRequisitiDocumentaliTable('#tabRequisitiDocumentali_mod');
 
      $('.dropdown-toggle').dropdown();
      
@@ -897,6 +1109,88 @@ $('#modificaRisorsaForm').on('submit', function(e){
 	    return table;
 	}
 
+ 
+ 
+ function initRequisitiDocumentaliTable(selector) {
+	    const table = $(selector).DataTable({
+	        language: {
+	            emptyTable: "Nessun dato presente nella tabella",
+	            info: "Vista da _START_ a _END_ di _TOTAL_ elementi",
+	            infoEmpty: "Vista da 0 a 0 di 0 elementi",
+	            infoFiltered: "(filtrati da _MAX_ elementi totali)",
+	            infoThousands: ".",
+	            lengthMenu: "Visualizza _MENU_ elementi",
+	            loadingRecords: "Caricamento...",
+	            processing: "Elaborazione...",
+	            search: "Cerca:",
+	            zeroRecords: "La ricerca non ha portato alcun risultato.",
+	            paginate: {
+	                first: "Inizio",
+	                previous: "Precedente",
+	                next: "Successivo",
+	                last: "Fine"
+	            },
+	            aria: {
+	                srtAscending: ": attiva per ordinare la colonna in ordine crescente",
+	                sortDescending: ": attiva per ordinare la colonna in ordine decrescente"
+	            }
+	        },
+	        pageLength: 25,
+	        order: [[0, "desc"]],
+	        paging: false,
+	        ordering: true,
+	        info: true,
+	        searchable: false,
+	        targets: 0,
+	        responsive: true,
+	        scrollX: false,
+	        stateSave: true,
+	        columns : [
+		    	{"data" : "id"},  
+		    	{"data" : "codice"},  
+		    	{"data" : "categoria"},
+		      	{"data" : "descrizione"},
+		      	{"data" : "data_scadenza"}
+		      
+		       ],	
+	        columnDefs: [
+	            { responsivePriority: 1, targets: 1 }
+	            
+	        ],
+	        buttons: [{
+	            extend: 'colvis',
+	            text: 'Nascondi Colonne'
+	        }]
+	    });
+
+	    return table;
+	}
+ 
+ 
+ 
+ function getRisorsa(id_risorsa, id_partecipante, callback){
+	 
+	 dataObj = {};
+	 dataObj.id_risorsa = id_risorsa;
+	 dataObj.id_partecipante = id_partecipante;
+	 
+	 $.ajax({
+		  url: 'gestioneRisorse.do?action=dettaglio_risorsa',
+		  method: 'GET',
+		  dataType: 'json',
+		  data: dataObj,
+		  success: function(response) {
+		
+			  callback(response);
+		  },
+			error: function(xhr, status, error) {
+			    // Gestisci eventuali errori
+			    console.error(error);
+			  }
+			});
+	 
+	 
+ }
 
  
   </script>

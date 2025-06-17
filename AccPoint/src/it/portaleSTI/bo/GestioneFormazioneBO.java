@@ -2297,5 +2297,10 @@ public class GestioneFormazioneBO {
 		// TODO Auto-generated method stub
 		return GestioneFormazioneDAO.getListaCorsiCommessa(commessa, session);
 	}
+
+	public static ArrayList<ForCorsoDTO> getListaCorsiInCorsoPartecipante(int id, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneFormazioneDAO.getListaCorsiInCorsoPartecipante(id, session);
+	}
 	
 }

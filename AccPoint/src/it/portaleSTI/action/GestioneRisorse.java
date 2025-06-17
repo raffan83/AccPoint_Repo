@@ -30,7 +30,9 @@ import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
+import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.PRRequisitoDocumentaleDTO;
 import it.portaleSTI.DTO.PRRequisitoRisorsaDTO;
 import it.portaleSTI.DTO.PRRequisitoSanitarioDTO;
@@ -77,16 +79,33 @@ public class GestioneRisorse extends HttpServlet {
 			if(action.equals("dettaglio_risorsa")) {
 				
 				String id = request.getParameter("id_risorsa");
-				PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id));
-				ArrayList<PRRequisitoRisorsaDTO> lista_requisiti_risorsa = GestioneRisorseBO.getListaRequisitiRisorsa(risorsa.getId(),session);
+				String id_partecipante = request.getParameter("id_partecipante");
 				
 				
+				ArrayList<PRRequisitoRisorsaDTO> lista_requisiti_risorsa = null;
+				PRRisorsaDTO risorsa = null; 
+				if(id!=null && !id.equals("")) {
+				risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id));
+				
+				lista_requisiti_risorsa = GestioneRisorseBO.getListaRequisitiRisorsa(risorsa.getId(),session);				
+				
+				id_partecipante = ""+risorsa.getPartecipante().getId();
+				}
+				
+				ArrayList<ForCorsoDTO> lista_corsi = null;
+				if(id_partecipante!=null && !id_partecipante.equals("")) {
+					 lista_corsi = GestioneFormazioneBO.getListaCorsiInCorsoPartecipante(Integer.parseInt(id_partecipante), session);
+				}
+				
+						
+			
 				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
 				myObj.add("lista_requisiti_risorsa", g.toJsonTree(lista_requisiti_risorsa));
+				myObj.add("lista_corsi", g.toJsonTree(lista_corsi));
 				myObj.add("risorsa", g.toJsonTree(risorsa));
 				out.print(myObj);
 				
@@ -217,22 +236,22 @@ public class GestioneRisorse extends HttpServlet {
 				
 				
 				
-				if(id_req_documentali!= null || id_req_sanitari!=null) {
-					
-					if(id_req_documentali!=null && !id_req_documentali.equals("")) {
-						for (int i = 0; i < id_req_documentali.split(";").length;i++) {
-							
-							if(!id_req_documentali.split(";")[i].equals("")) {
-							PRRequisitoRisorsaDTO req_risorsa = new PRRequisitoRisorsaDTO();
-							req_risorsa.setRisorsa(risorsa.getId());
-							PRRequisitoDocumentaleDTO req_doc = (PRRequisitoDocumentaleDTO) session.get(PRRequisitoDocumentaleDTO.class, Integer.parseInt(id_req_documentali.split(";")[i]));
-							req_risorsa.setReq_documentale(req_doc);
-							//session.save(req_risorsa);
-							risorsa.getListaRequisiti().add(req_risorsa);
-							}
-						}
-						
-					}
+				if(id_req_sanitari!=null) {
+//					
+//					if(id_req_documentali!=null && !id_req_documentali.equals("")) {
+//						for (int i = 0; i < id_req_documentali.split(";").length;i++) {
+//							
+//							if(!id_req_documentali.split(";")[i].equals("")) {
+//							PRRequisitoRisorsaDTO req_risorsa = new PRRequisitoRisorsaDTO();
+//							req_risorsa.setRisorsa(risorsa.getId());
+//							PRRequisitoDocumentaleDTO req_doc = (PRRequisitoDocumentaleDTO) session.get(PRRequisitoDocumentaleDTO.class, Integer.parseInt(id_req_documentali.split(";")[i]));
+//							req_risorsa.setReq_documentale(req_doc);
+//							//session.save(req_risorsa);
+//							risorsa.getListaRequisiti().add(req_risorsa);
+//							}
+//						}
+//						
+//					}
 					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					
 					if(id_req_sanitari!=null && !id_req_sanitari.equals("")) {

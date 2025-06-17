@@ -705,7 +705,7 @@ $('#partecipante').on('change', function () {
      	
   	 var table_data = [];
 		  
-
+    if(lista_corsi!=null){
 		  for(var i = 0; i<lista_corsi.length;i++){
 			  var dati = {};
 			 
@@ -718,6 +718,7 @@ $('#partecipante').on('change', function () {
 			  table_data.push(dati);
 			
 		  }
+    }
 		  var tableDoc = $('#tabRequisitiDocumentali').DataTable();
 		  
 		tableDoc.clear().draw();
@@ -725,7 +726,7 @@ $('#partecipante').on('change', function () {
 		tableDoc.rows.add(table_data).draw();
 			
 		tableDoc.columns.adjust().draw();
-
+   
 	});
 });
 

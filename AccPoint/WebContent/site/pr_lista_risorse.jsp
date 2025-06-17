@@ -122,6 +122,7 @@
 			<select id="utente" name="utente" class="form-control select2" style="width:100%" data-placeholder="Seleziona utente..." required>
 			<option value=""></option>
 			<c:forEach items="${lista_utenti}" var="utente">
+		
 			<option value="${utente.id }">${utente.nominativo }</option>
 			</c:forEach>
 			</select>
@@ -246,7 +247,7 @@
         
 			<select id="utente_mod" name="utente_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona utente..." required>
 			<option value=""></option>
-			<c:forEach items="${lista_utenti}" var="utente">
+			<c:forEach items="${lista_utenti_all}" var="utente">
 			<option value="${utente.id }">${utente.nominativo }</option>
 			</c:forEach>
 			</select>
@@ -257,7 +258,7 @@
         
 			<select id="partecipante_mod" name="partecipante_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona partecipante..." required>
 			<option value=""></option>
-			<c:forEach items="${lista_partecipanti}" var="partecipante">
+			<c:forEach items="${lista_partecipanti_all}" var="partecipante">
 			<option value="${partecipante.id }">${partecipante.nome } ${partecipante.cognome }</option>
 			</c:forEach>
 			</select>
@@ -811,7 +812,7 @@ $('#modificaRisorsaForm').on('submit', function(e){
 	        pageLength: 25,
 	        order: [[1, "desc"]],
 	        paging: false,
-	        ordering: false,
+	        ordering: true,
 	        info: true,
 	        searchable: false,
 	        targets: 0,

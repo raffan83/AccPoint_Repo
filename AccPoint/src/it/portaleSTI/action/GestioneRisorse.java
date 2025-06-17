@@ -6,9 +6,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -133,14 +135,45 @@ public class GestioneRisorse extends HttpServlet {
 			if(action.equals("lista_risorse")) {
 				
 				ArrayList<PRRisorsaDTO> lista_risorse = GestioneRisorseBO.getListaRisorse(session);
-				ArrayList<UtenteDTO> lista_utenti = GestioneUtenteBO.getDipendenti(session);
-				ArrayList<ForPartecipanteDTO> lista_partecipanti = GestioneFormazioneBO.getListaPartecipantiCliente(4132, 0, session);
+				ArrayList<UtenteDTO> lista_utenti_all = GestioneUtenteBO.getDipendenti(session);				
+				ArrayList<ForPartecipanteDTO> lista_partecipanti_all = GestioneFormazioneBO.getListaPartecipantiCliente(4132, 0, session);
 				ArrayList<PRRequisitoDocumentaleDTO> lista_requisiti_documentali = GestioneRisorseBO.getListaRequisitiDocumentali(session);
 				ArrayList<PRRequisitoSanitarioDTO> lista_requisiti_sanitari = GestioneRisorseBO.getListaRequisitiSanitari(session);
 				
+		
+				Set<Integer> idUtentiInRisorse = new HashSet<>();
+				for (PRRisorsaDTO risorsa : lista_risorse) {
+				    if (risorsa.getUtente() != null) {
+				        idUtentiInRisorse.add(risorsa.getUtente().getId()); 
+				    }
+				}
+
+				ArrayList<UtenteDTO> lista_utenti_filtrata = new ArrayList<>();
+				for (UtenteDTO u : lista_utenti_all) {
+				    if (!idUtentiInRisorse.contains(u.getId())) {
+				        lista_utenti_filtrata.add(u);
+				    }
+				}
+				
+				Set<Integer> idPartecipantiInRisorse = new HashSet<>();
+				for (PRRisorsaDTO risorsa : lista_risorse) {
+				    if (risorsa.getPartecipante() != null) {
+				        idPartecipantiInRisorse.add(risorsa.getPartecipante().getId());
+				    }
+				}
+
+				ArrayList<ForPartecipanteDTO> lista_partecipanti_filtrata = new ArrayList<>();
+				for (ForPartecipanteDTO partecipante : lista_partecipanti_all) {
+				    if (!idPartecipantiInRisorse.contains(partecipante.getId())) {
+				        lista_partecipanti_filtrata.add(partecipante);
+				    }
+				}
+				
 				request.getSession().setAttribute("lista_risorse", lista_risorse);
-				request.getSession().setAttribute("lista_utenti", lista_utenti);
-				request.getSession().setAttribute("lista_partecipanti", lista_partecipanti);
+				request.getSession().setAttribute("lista_utenti", lista_utenti_filtrata);
+				request.getSession().setAttribute("lista_partecipanti", lista_partecipanti_filtrata);
+				request.getSession().setAttribute("lista_utenti_all", lista_utenti_all);
+				request.getSession().setAttribute("lista_partecipanti_all", lista_partecipanti_all);
 				request.getSession().setAttribute("lista_requisiti_documentali", lista_requisiti_documentali);
 				request.getSession().setAttribute("lista_requisiti_sanitari", lista_requisiti_sanitari);
 				

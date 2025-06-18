@@ -26,6 +26,8 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
+import it.portaleSTI.DTO.PRRequisitoDocumentaleDTO;
+import it.portaleSTI.DTO.PRRequisitoSanitarioDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -33,6 +35,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
+import it.portaleSTI.bo.GestioneRisorseBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
@@ -168,6 +171,7 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		
 		request.getSession().setAttribute("intervento", intervento);
+		request.getSession().setAttribute("listaRequisitiJson", gson.toJsonTree(intervento.getListaRequisiti()));
 		
 		Properties prop = new Properties();
 		String propFileName = "config.properties";
@@ -179,7 +183,11 @@ public class GestioneInterventoDati extends HttpServlet {
 		request.getSession().setAttribute("defaultNotaConsegna", prop.getProperty("DEFAULT_NOTE_CONSEGNA"));
 
 		
+		ArrayList<PRRequisitoDocumentaleDTO> lista_documentale = GestioneRisorseBO.getListaRequisitiDocumentali(session);
+		ArrayList<PRRequisitoSanitarioDTO> lista_sanitari = GestioneRisorseBO.getListaRequisitiSanitari(session);
 		
+		request.getSession().setAttribute("lista_documentale", lista_documentale);		
+		request.getSession().setAttribute("lista_sanitari", lista_sanitari);
 		
 		UtenteDTO user =(UtenteDTO)request.getSession().getAttribute("userObj");
 		

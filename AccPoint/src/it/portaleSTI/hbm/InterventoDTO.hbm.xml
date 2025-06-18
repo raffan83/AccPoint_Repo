@@ -66,5 +66,15 @@
             <one-to-many class="it.portaleSTI.DTO.SchedaConsegnaDTO" />
         </set> -->
         
+          <set name="listaRequisiti" table="pr_intervento_requisito"
+     cascade="all-delete-orphan" inverse="true" lazy="false" fetch="select" >
+            <key>
+                <column name="id_intervento" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.PRInterventoRequisitoDTO" />
+   </set>
+   
+
+        
     </class>
 </hibernate-mapping>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-feb-2017 16.24.17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.PRInterventoRequisitoDTO" table="pr_intervento_requisito">
+       
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+          <many-to-one name="requisito_documentale" class="it.portaleSTI.DTO.PRRequisitoDocumentaleDTO" fetch="join" lazy="false">
+            <column name="id_requisito_documentale" />
+        </many-to-one>
+        
+         <many-to-one name="requisito_sanitario" class="it.portaleSTI.DTO.PRRequisitoSanitarioDTO" fetch="join" lazy="false">
+            <column name="id_requisito_sanitario" />
+        </many-to-one>
+        
+       
+        <property name="id_intervento" type="int">
+            <column name="id_intervento" />
+        </property>
+       
+      
+    </class>
+</hibernate-mapping>

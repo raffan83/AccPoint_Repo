@@ -233,6 +233,89 @@
         </div>       
 
 
+
+<div class="row">
+        <div class="col-xs-12">
+<div class="box box-danger box-solid collapsed-box">
+<div class="box-header with-border">
+	 Gestione Requisiti
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+<a class="btn btn-primary pull-right" onClick='aggiungiRequisito()'><i class="fa fa-plus"></i> Aggiungi Requisito</a><br><br>
+<div class="row">
+        <div class="col-xs-12">
+        <label>REQUISITI DOCUMENTALI</label>
+              <table id="tabRequisitiDocumentali" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+ 	 <th>ID</th>
+  <th>Codice</th>
+ <th>Descrizione</th>
+ </tr></thead>
+ 
+ <tbody>
+
+ <c:forEach items="${intervento.listaRequisiti}" var="requisito" varStatus="loop">
+ <c:if test="${requisito.requisito_documentale!=null }">
+ <tr role="row">
+ <td>${requisito.requisito_documentale.id}</td>
+ 	<td>${requisito.requisito_documentale.categoria.codice}</td>
+	<td>
+  ${requisito.requisito_documentale.categoria.descrizione}
+	</td>
+		
+	</tr>
+ </c:if>
+	</c:forEach>
+ </tbody>
+ </table>
+ 
+ </div>
+ </div>  <br>
+ 
+ <div class="row">
+        <div class="col-xs-12">
+        
+        <label>REQUISITI SANITARI</label>
+              <table id="tabRequisitiSanitari" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+ 	 <th>ID</th>
+
+ <th>Descrizione</th>
+ </tr></thead>
+ 
+ <tbody>
+
+ <c:forEach items="${intervento.listaRequisiti}" var="requisito" varStatus="loop">
+  <c:if test="${requisito.requisito_sanitario!=null }">
+ <tr role="row" >
+ <td>${requisito.requisito_sanitario.id}</td>
+ 	<td>${requisito.requisito_sanitario.descrizione}</td>
+	
+		
+	</tr>
+ </c:if>
+	</c:forEach>
+ </tbody>
+ </table>
+ 
+ </div>
+ </div>  
+</div>
+</div>
+
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>       
+
+
+
       
       <c:if test="${userCliente == '0'}">
       
@@ -894,6 +977,103 @@
 </div>
 
 
+<form id="nuovoRequisitoForm" name="nuovoRequisitoForm">
+<div id="modalNuovoRequisito" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Aggiungi Requisiti</h4>
+      </div>
+       <div class="modal-body">
+
+        
+      
+      <div class="row">
+<div class="col-sm-12">
+<label>REQUISITI DOCUMENTALI</label>
+</div>
+</div>
+ <div class="row">
+<div class="col-sm-12">
+ <table id="tabRequisitiDocumentaliModal" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+<th></th>
+<th>ID</th>
+<th>Codice</th>
+<th>Descrizione</th>
+
+ </tr></thead>
+ 
+ <tbody>
+ 
+ 	<c:forEach items="${lista_documentale}" var="requisito" varStatus="loop">
+ 	
+	<tr id="row_doc_${requisito.id }">
+	<td></td>
+	<td>${requisito.id }</td>	
+	<td>${requisito.categoria.codice }</td>
+	<td>${requisito.categoria.descrizione }</td>
+	</tr>
+	</c:forEach>
+	 
+
+ </tbody>
+ </table>  
+</div>
+</div>
+       
+       
+             <div class="row">
+<div class="col-sm-12">
+<label>REQUISITI SANITARI</label>
+</div>
+</div>
+ <div class="row">
+<div class="col-sm-12">
+ <table id="tabRequisitiSanitariModal" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+<th></th>
+<th>ID</th>
+<th>Descrizione</th>
+
+ </tr></thead>
+ 
+ <tbody>
+ 
+ 	<c:forEach items="${lista_sanitari}" var="requisito" varStatus="loop">
+ 	
+	<tr id="row_san_${requisito.id }">
+	<td></td>
+	<td>${requisito.id }</td>	
+	<td>${requisito.descrizione }</td>
+	</tr>
+	</c:forEach>
+	 
+
+ </tbody>
+ </table>  
+</div>
+</div>
+       
+       </div>
+  		 
+      <div class="modal-footer">
+		<input id="id_req_documentali" name="id_req_documentali" type="hidden">
+		<input id="id_req_sanitari" name="id_req_sanitari" type="hidden">
+		<input type="hidden" id="id_intervento_req" name="id_intervento_req" value="${intervento.id }">
+		<button class="btn btn-primary" type="submit">Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</form>
+
  <div id="modalAttenzione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-keyboard="false" data-backdrop="static" >
     <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -1284,6 +1464,8 @@ function reloadDrive()   {
  
 
  <script type="text/javascript">
+ 
+ 
  
  
  function getFileToUpload(filename) {
@@ -1790,7 +1972,10 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 		 
 	 }
 	 
-    $(document).ready(function() { 
+    $(document).ready(function() {
+    	
+    	var t_doc = initRequisitiTable('#tabRequisitiDocumentaliModal')
+    	var t_san = initRequisitiTable('#tabRequisitiSanitariModal')
     	
     	
     	$('.select2').select2();
@@ -2084,6 +2269,120 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	     	    
 	     	 
 
+	        
+	        
+	        var t_req_doc = $('#tabRequisitiDocumentali').DataTable({
+	        	language: {
+	    	        	emptyTable : 	"Nessun dato presente nella tabella",
+	    	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	    	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	    	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	    	        	infoPostFix:	"",
+	    	        infoThousands:	".",
+	    	        lengthMenu:	"Visualizza _MENU_ elementi",
+	    	        loadingRecords:	"Caricamento...",
+	    	        	processing:	"Elaborazione...",
+	    	        	search:	"Cerca:",
+	    	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	    	        	paginate:	{
+	      	        	first:	"Inizio",
+	      	        	previous:	"Precedente",
+	      	        	next:	"Successivo",
+	      	        last:	"Fine",
+	    	        	},
+	    	        aria:	{
+	      	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	      	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	    	        }
+	          },
+	    	      paging: true, 
+	    	      pageLength: 5,
+	    	      ordering: true,
+	    	      info: true, 
+	    	      searchable: false, 
+	    	      targets: 0,
+	    	      responsive: true,
+	    	      scrollX: false,
+	    	      stateSave: true,
+	    	      order: [[ 0, "desc" ]],
+	    	         
+	    	      columnDefs: [
+	    	    	  /* {  className: "select-checkbox", targets: 1,  orderable: false },
+	    					   { responsivePriority: 1, targets: 0 },
+	    	                   { responsivePriority: 3, targets: 2 },
+	    	                   { responsivePriority: 4, targets: 3 },
+	    	                   {orderable: false, targets: 6} */
+	    	               ],
+	           
+	    	              
+	    	                      
+	    	    	
+	    	      
+	    	    });
+	 
+	    	   
+	        $('#tabRequisitiDocumentali').on( 'page.dt', function () {
+	    			$('.customTooltip').tooltipster({
+	    		        theme: 'tooltipster-light'
+	    		    });
+	    		  } );
+	        
+	        
+	        var t_req_san = $('#tabRequisitiSanitari').DataTable({
+	        	language: {
+	    	        	emptyTable : 	"Nessun dato presente nella tabella",
+	    	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	    	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	    	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	    	        	infoPostFix:	"",
+	    	        infoThousands:	".",
+	    	        lengthMenu:	"Visualizza _MENU_ elementi",
+	    	        loadingRecords:	"Caricamento...",
+	    	        	processing:	"Elaborazione...",
+	    	        	search:	"Cerca:",
+	    	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	    	        	paginate:	{
+	      	        	first:	"Inizio",
+	      	        	previous:	"Precedente",
+	      	        	next:	"Successivo",
+	      	        last:	"Fine",
+	    	        	},
+	    	        aria:	{
+	      	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	      	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	    	        }
+	          },
+	    	      paging: true, 
+	    	      pageLength: 5,
+	    	      ordering: true,
+	    	      info: true, 
+	    	      searchable: false, 
+	    	      targets: 0,
+	    	      responsive: true,
+	    	      scrollX: false,
+	    	      stateSave: true,
+	    	      order: [[ 0, "desc" ]],
+	    	         
+	    	      columnDefs: [
+	    	    	  /* {  className: "select-checkbox", targets: 1,  orderable: false },
+	    					   { responsivePriority: 1, targets: 0 },
+	    	                   { responsivePriority: 3, targets: 2 },
+	    	                   { responsivePriority: 4, targets: 3 },
+	    	                   {orderable: false, targets: 6} */
+	    	               ],
+	           
+	    	              
+	    	                      
+	    	    	
+	    	      
+	    	    });
+	 
+	    	   
+	        $('#tabRequisitiSanitari').on( 'page.dt', function () {
+	    			$('.customTooltip').tooltipster({
+	    		        theme: 'tooltipster-light'
+	    		    });
+	    		  } );
 
 
 	    $('.inputsearchtable').on('click', function(e){
@@ -2104,7 +2403,35 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	    tableAttiìvita.columns( [7] ).visible( false );
 	    tableAttiìvita.columns.adjust().draw();
 	        
-	   
+	    
+	    
+	  	    
+	    
+	    
+	    $('#nuovoRequisitoForm').on('submit', function(e){
+	      	 e.preventDefault();
+	      	 
+	      	    var id_req_documentali = "";
+	      	    t_doc.rows({ selected: true }).every(function () {
+	      	        var $row = $(this.node());
+	      	        var id = $row.find('td').eq(1).text().trim(); // Colonna ID
+	      	        id_req_documentali += id + ";";
+	      	    });
+
+	      	   var id_req_sanitari = "";
+	      	   t_san.rows({ selected: true }).every(function () {
+	      	        var $row = $(this.node());
+	      	        var valori = "";
+	      	      var id = $row.find('td').eq(1).text().trim(); 
+	      	        id_req_sanitari += id + ";";
+	      	    });
+	      	    
+	      	    
+	      	$('#id_req_sanitari').val(id_req_sanitari)
+	      	$('#id_req_documentali').val(id_req_documentali)
+	      	
+	      	callAjaxForm('#nuovoRequisitoForm','gestioneRisorse.do?action=aggiungi_requisiti');
+	      });
 	    
 	    
 	        $('#myModal').on('hidden.bs.modal', function (e) {
@@ -2796,6 +3123,99 @@ var config4 = {
     	 }
     
     });
+    
+    
+    
+    
+    
+    
+    
+    function initRequisitiTable(selector) {
+	    const table = $(selector).DataTable({
+	        language: {
+	            emptyTable: "Nessun dato presente nella tabella",
+	            info: "Vista da _START_ a _END_ di _TOTAL_ elementi",
+	            infoEmpty: "Vista da 0 a 0 di 0 elementi",
+	            infoFiltered: "(filtrati da _MAX_ elementi totali)",
+	            infoThousands: ".",
+	            lengthMenu: "Visualizza _MENU_ elementi",
+	            loadingRecords: "Caricamento...",
+	            processing: "Elaborazione...",
+	            search: "Cerca:",
+	            zeroRecords: "La ricerca non ha portato alcun risultato.",
+	            paginate: {
+	                first: "Inizio",
+	                previous: "Precedente",
+	                next: "Successivo",
+	                last: "Fine"
+	            },
+	            aria: {
+	                srtAscending: ": attiva per ordinare la colonna in ordine crescente",
+	                sortDescending: ": attiva per ordinare la colonna in ordine decrescente"
+	            }
+	        },
+	        pageLength: 25,
+	        order: [[1, "desc"]],
+	        paging: false,
+	        ordering: true,
+	        info: true,
+	        searchable: false,
+	        targets: 0,
+	        responsive: true,
+	        scrollX: false,
+	        stateSave: true,
+	        select: {
+	            style: 'multi+shift',
+	            selector: 'td:nth-child(1)'
+	        },
+	        columnDefs: [
+	            { responsivePriority: 1, targets: 1 },
+	            { className: "select-checkbox", targets: 0, orderable: false }
+	        ],
+	        buttons: [{
+	            extend: 'colvis',
+	            text: 'Nascondi Colonne'
+	        }]
+	    });
+
+	    
+	    
+	    
+	    return table;
+	}
+    
+    function aggiungiRequisito(){
+     	 
+    	var t_doc = $("#tabRequisitiDocumentaliModal").DataTable();
+    	var t_san = $("#tabRequisitiSanitariModal").DataTable();
+    	
+     	 var  listaRequisitiJson = ${listaRequisitiJson};
+     	 
+     	 for (var i = 0; i < listaRequisitiJson.length; i++) {
+     			var r = listaRequisitiJson[i];
+     			
+     			if(r.requisito_documentale!=null){
+     			
+     				t_doc.row( "#row_doc_"+ r.requisito_documentale.id, { page:   'all'}).select();
+     			}
+
+     			if(r.requisito_sanitario!=null){
+     				
+     				t_san.row( "#row_san_"+ r.requisito_sanitario.id, { page:   'all'}).select();
+     				
+     				
+     			            
+     			}
+     				   
+     		}
+     	 
+     	 
+     	 $('#modalNuovoRequisito').modal()
+     	 
+      }
+    
+    
+
   </script>
 </jsp:attribute> 
 </t:layout>

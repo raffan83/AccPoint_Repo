@@ -460,94 +460,6 @@ function eliminaRisorsa(id_risorsa){
 }
 
 
-/* function modificaRisorsaModal(id_risorsa){
-	
-	$.ajax({
-		  url: 'gestioneRisorse.do?action=dettaglio_risorsa&id_risorsa='+id_risorsa, // Specifica l'URL della tua servlet
-		  method: 'GET',
-		  dataType: 'json',
-		  success: function(response) {
-		
-		    var lista_requisiti_risorsa = response.lista_requisiti_risorsa;
-		    var risorsa = response.risorsa;
-		    var lista_corsi = response.lista_corsi
-		    
-		    var tableSan = $('#tabRequisitiSanitari_mod').DataTable();
-		    $('#id_risorsa').val(id_risorsa)
-		
-	      	
-	      	 var table_data = [];
-	  		  
-
-	  		  for(var i = 0; i<lista_corsi.length;i++){
-	  			  var dati = {};
-	  			 
-	  			  dati.id = lista_corsi[i].id;
-	  			  dati.codice = lista_corsi[i].corso_cat.codice;
-	  			  dati.categoria = lista_corsi[i].corso_cat.descrizione;
-	  			  dati.descrizione = lista_corsi[i].descrizione;
-	  			  dati.data_scadenza = lista_corsi[i].data_scadenza;
-	  			  
-	  			  table_data.push(dati);
-	  			
-	  		  }
-	  		  var tableDoc = $('#tabRequisitiDocumentali_mod').DataTable();
-	  		  
-	  		tableDoc.clear().draw();
-	   		   
-	  		tableDoc.rows.add(table_data).draw();
-	   			
-	  		tableDoc.columns.adjust().draw();
-	
-			for (var i = 0; i < lista_requisiti_risorsa.length; i++) {
-				var r = lista_requisiti_risorsa[i];
-				
-				$('#utente_mod').val(risorsa.utente.id);
-				$('#partecipante_mod').val(risorsa.partecipante.id);
-				$('#partecipante_mod').change();
-				$('#utente_mod').change();
-				
-				
-				
-				if(r.req_sanitario!=null){
-					
-					tableSan.row( "#row_san_mod_"+ r.req_sanitario.id, { page:   'all'}).select();
-					
-					 var row = $("#row_san_mod_"+ r.req_sanitario.id);
-				       
-
-				        row.find('td').each(function(i, cell) {
-				            let testo = "";
-
-				           if (i === 3) {
-				                // SELECT
-				                let select = $(cell).find("select");
-				                
-				                $(select[0]).val(r.stato)
-				               
-				            } else if(i == 4){
-				                // Datepicker input
-				                let input = $(cell).find("input");
-				                $(input[0]).val(r.req_san_data_inizio)
-				            }
-				            else if(i == 5){
-				            	let input = $(cell).find("input");
-				                $(input[0]).val(r.req_san_data_fine)
-				            }
-				            
-				});
-				}		    
-			}
-			$('#modalModificaRisorsa').modal();
-		  },
-	error: function(xhr, status, error) {
-	    // Gestisci eventuali errori
-	    console.error(error);
-	  }
-	});
-	
-} */
-
 var flag = false;
 function modificaRisorsaModal(id_risorsa){
 	
@@ -562,28 +474,6 @@ function modificaRisorsaModal(id_risorsa){
 		    $('#id_risorsa').val(id_risorsa)
 		
 	      	
-/* 	      	 var table_data = [];
-	  		  
-
-	  		  for(var i = 0; i<lista_corsi.length;i++){
-	  			  var dati = {};
-	  			 
-	  			  dati.id = lista_corsi[i].id;
-	  			  dati.codice = lista_corsi[i].corso_cat.codice;
-	  			  dati.categoria = lista_corsi[i].corso_cat.descrizione;
-	  			  dati.descrizione = lista_corsi[i].descrizione;
-	  			  dati.data_scadenza = lista_corsi[i].data_scadenza;
-	  			  
-	  			  table_data.push(dati);
-	  			
-	  		  }
-	  		  var tableDoc = $('#tabRequisitiDocumentali_mod').DataTable();
-	  		  
-	  		tableDoc.clear().draw();
-	   		   
-	  		tableDoc.rows.add(table_data).draw();
-	   			
-	  		tableDoc.columns.adjust().draw();  */
 	  		$('#utente_mod').val(risorsa.utente.id);
 			$('#partecipante_mod').val(risorsa.partecipante.id);
 			$('#partecipante_mod').change();

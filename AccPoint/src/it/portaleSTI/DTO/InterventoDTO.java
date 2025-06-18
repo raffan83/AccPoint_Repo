@@ -23,6 +23,7 @@ public class InterventoDTO {
 	private int nStrumentiMisurati;
 	private int nStrumentiNuovi;
 	private Set<InterventoDatiDTO> listaInterventoDatiDTO = new HashSet<InterventoDatiDTO>(0);
+	private Set<PRInterventoRequisitoDTO> listaRequisiti = new HashSet<PRInterventoRequisitoDTO>(0);
 	//private Set<SchedaConsegnaDTO> schedaConsegnaDTO = new HashSet<SchedaConsegnaDTO>(0);
 	
 	public Date getDataCreazione() {
@@ -166,6 +167,17 @@ public class InterventoDTO {
 			Set<InterventoDatiDTO> listaInterventoDatiDTO) {
 		this.listaInterventoDatiDTO = listaInterventoDatiDTO;
 	}
+
+
+	public Set<PRInterventoRequisitoDTO> getListaRequisiti() {
+		return listaRequisiti;
+	}
+
+
+	public void setListaRequisiti(Set<PRInterventoRequisitoDTO> listaRequisiti) {
+		this.listaRequisiti = listaRequisiti;
+	}
+
 
 
 //	public Set<SchedaConsegnaDTO> getSchedaConsegnaDTO() {

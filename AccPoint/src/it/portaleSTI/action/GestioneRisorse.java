@@ -33,6 +33,8 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
+import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.PRInterventoRequisitoDTO;
 import it.portaleSTI.DTO.PRRequisitoDocumentaleDTO;
 import it.portaleSTI.DTO.PRRequisitoRisorsaDTO;
 import it.portaleSTI.DTO.PRRequisitoSanitarioDTO;
@@ -42,6 +44,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneFormazioneBO;
+import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneRisorseBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
@@ -391,7 +394,86 @@ public class GestioneRisorse extends HttpServlet {
 				out.print(myObj);
 				
 			}
-			
+			else if(action.equals("aggiungi_requisiti")) {
+				
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}		        
+		       
+	
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	      
+	            	
+	            }
+		
+				String id_intervento = ret.get("id_intervento_req");
+				String id_req_documentali = ret.get("id_req_documentali");
+				String id_req_sanitari = ret.get("id_req_sanitari");
+				
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento, session);
+				
+				intervento.getListaRequisiti().clear();
+				
+				
+				session.update(intervento);
+				
+				if(id_req_documentali!= null || id_req_sanitari!=null) {
+					
+					if(id_req_documentali!=null && !id_req_documentali.equals("")) {
+						for (int i = 0; i < id_req_documentali.split(";").length;i++) {
+							
+							if(!id_req_documentali.split(";")[i].equals("")) {
+							
+								
+							PRRequisitoDocumentaleDTO req_doc = (PRRequisitoDocumentaleDTO) session.get(PRRequisitoDocumentaleDTO.class, Integer.parseInt(id_req_documentali.split(";")[i]));
+							
+							PRInterventoRequisitoDTO int_req = new PRInterventoRequisitoDTO();
+							int_req.setId_intervento(intervento.getId());
+							int_req.setRequisito_documentale(req_doc);
+							//session.save(int_req);
+							intervento.getListaRequisiti().add(int_req);
+							}
+						}
+						
+					}
+					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+					if(id_req_sanitari!=null && !id_req_sanitari.equals("")) {
+						for (int i = 0; i < id_req_sanitari.split(";").length;i++) {
+											
+							PRRequisitoSanitarioDTO req_san = (PRRequisitoSanitarioDTO) session.get(PRRequisitoSanitarioDTO.class, Integer.parseInt(id_req_sanitari.split(";")[i]));							
+							
+							PRInterventoRequisitoDTO int_req = new PRInterventoRequisitoDTO();
+							int_req.setId_intervento(intervento.getId());
+							int_req.setRequisito_sanitario(req_san);
+							//session.save(int_req);
+							
+							intervento.getListaRequisiti().add(int_req);
+							}
+						}
+					
+					
+				}
+				session.update(intervento);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
+				
+			}
 			session.getTransaction().commit();
 	    	session.close();
 	}catch(Exception e) {

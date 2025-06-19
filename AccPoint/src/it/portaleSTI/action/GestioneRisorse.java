@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -22,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.math3.analysis.function.Add;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -109,6 +114,58 @@ public class GestioneRisorse extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.add("lista_requisiti_risorsa", g.toJsonTree(lista_requisiti_risorsa));
 				myObj.add("lista_corsi", g.toJsonTree(lista_corsi));
+				myObj.add("risorsa", g.toJsonTree(risorsa));
+				out.print(myObj);
+				
+			}
+			
+			else if(action.equals("trova_interventi_disponibili")) {
+				
+				
+				String id = request.getParameter("id_risorsa");			
+				String data = request.getParameter("data");							
+
+				PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id));				
+				ArrayList<PRRequisitoRisorsaDTO>  lista_requisiti_risorsa = GestioneRisorseBO.getListaRequisitiRisorsa(risorsa.getId(),session);				
+				  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			        LocalDate date = LocalDate.parse(data, formatter);
+			        ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(date, date, session);
+			     
+			        
+			     // 1. ID dei requisiti sanitari associati alla risorsa
+			        Set<Integer> idRequisitiSanitariRisorsa = new HashSet<>();
+			        for (PRRequisitoRisorsaDTO req : lista_requisiti_risorsa) {
+			            if (req.getReq_sanitario() != null) {
+			                idRequisitiSanitariRisorsa.add(req.getReq_sanitario().getId());
+			            }
+			        }
+
+			        ArrayList<InterventoDTO> lista_interventi_disponibili = new ArrayList<>();
+
+			        // 2. Per ogni intervento, verifica che contenga tutti i requisiti sanitari della risorsa
+			        for (InterventoDTO interventoDTO : lista_interventi) {
+			            Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
+
+			            for (PRInterventoRequisitoDTO requisito : interventoDTO.getListaRequisiti()) {
+			                if (requisito.getRequisito_sanitario() != null) {
+			                    idRequisitiSanitariIntervento.add(requisito.getRequisito_sanitario().getId());
+			                }
+			            }
+
+			            // 3. Verifica che TUTTI i requisiti della risorsa siano presenti nell'intervento
+			            if (idRequisitiSanitariIntervento.containsAll(idRequisitiSanitariRisorsa)) {
+			                lista_interventi_disponibili.add(interventoDTO);
+			            }
+			        }
+
+			
+				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.add("lista_requisiti_risorsa", g.toJsonTree(lista_requisiti_risorsa));
+				myObj.add("lista_interventi", g.toJsonTree(lista_interventi_disponibili));
 				myObj.add("risorsa", g.toJsonTree(risorsa));
 				out.print(myObj);
 				
@@ -237,7 +294,7 @@ public class GestioneRisorse extends HttpServlet {
 				risorsa.setUtente(user);
 				risorsa.setPartecipante(partecipante);
 				
-				
+				session.saveOrUpdate(risorsa);
 				
 				if(id_req_sanitari!=null) {
 //					
@@ -472,6 +529,159 @@ public class GestioneRisorse extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Salvato con successo!");
 				out.print(myObj);
+				
+			}
+			
+			else if(action.equals("pianificazione_risorse")) {
+				
+				String anno = request.getParameter("anno");
+				String data_inizio = request.getParameter("data_inizio");
+				String move = request.getParameter("move");			
+				
+									
+				if(anno==null) {
+					anno = ""+Calendar.getInstance().get(Calendar.YEAR);
+				}
+
+				LocalDate dataCorrente = null;
+				 
+				if(data_inizio == null && Integer.parseInt(anno) == LocalDate.now().getYear()) {
+					dataCorrente = LocalDate.now();
+				}
+				else if(data_inizio == null && Integer.parseInt(anno) != LocalDate.now().getYear()) {
+					dataCorrente = LocalDate.ofYearDay(Integer.parseInt(anno), 1);
+				}
+				else {						
+					if(Integer.parseInt(data_inizio) == 366 && !LocalDate.ofYearDay(Integer.parseInt(anno), 1).isLeapYear()) {
+						data_inizio = 365+"";
+					}
+			         dataCorrente = LocalDate.ofYearDay(Integer.parseInt(anno), Integer.parseInt(data_inizio));				       
+				}				 							 
+						 
+				
+				int meseCorrente = 0;
+				int monthsToAdd = 3;
+				
+				if(move!=null && move.equals("back")) {
+					if(dataCorrente.getMonthValue()==12) {
+						meseCorrente = dataCorrente.getMonthValue()-1;
+					}else {
+						meseCorrente = dataCorrente.getMonthValue()-2;
+					}
+					
+				}else if(move!=null && move.equals("forward")) {
+					if(dataCorrente.getMonthValue()+1==12) {
+						meseCorrente = dataCorrente.getMonthValue()+1;
+						monthsToAdd = 2;
+					}
+					else if(dataCorrente.getMonthValue()+2==12) {
+						meseCorrente = dataCorrente.getMonthValue()+2;
+						monthsToAdd = 2;
+						
+					}
+					else if(dataCorrente.getMonthValue()==1) {
+						meseCorrente = dataCorrente.getMonthValue();
+					}
+					else {
+						meseCorrente = dataCorrente.getMonthValue()+2;	
+					}
+									
+				}else {
+					meseCorrente = dataCorrente.getMonthValue();
+				}
+				
+				
+				int mesePrecedente = 0;
+				if(meseCorrente>1) {
+					mesePrecedente =  meseCorrente - 1;
+				}else {
+					if(meseCorrente==0) {
+						meseCorrente = 12;
+						mesePrecedente = 10;
+						anno = ""+(Integer.parseInt(anno)-1);
+					}else {
+						mesePrecedente = meseCorrente;	
+					}
+					
+				}
+				
+				
+				
+				LocalDate inizioBimestre = LocalDate.of(Integer.parseInt(anno), mesePrecedente, 1);
+				LocalDate fineBimestre = inizioBimestre.plusMonths(monthsToAdd).minusDays(1);
+
+				
+		        
+		        int start_date = 0; 
+		        int end_date = 0; 
+		        
+				if(inizioBimestre.getYear() == fineBimestre.getYear()) {
+					start_date = inizioBimestre.getDayOfYear();
+			        end_date = fineBimestre.getDayOfYear();
+				}else if(inizioBimestre.getYear() < fineBimestre.getYear()) {
+					start_date = inizioBimestre.getDayOfYear();
+					 if(LocalDate.ofYearDay(Integer.parseInt(anno), 1).isLeapYear()){
+						 end_date = fineBimestre.getDayOfYear() +366;
+					 }else {
+						 end_date = fineBimestre.getDayOfYear() +365;
+					 }
+			        
+				}
+		        
+
+				int daysNumber = end_date - start_date;
+				
+				
+				ArrayList<LocalDate> festivitaItaliane = new ArrayList<>();
+			    festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 1, 1));
+			    festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 1, 6));
+
+			 // Pasqua - data variabile (calcolata tramite algoritmo)
+			   LocalDate pasqua = Utility.calculatePasqua(Integer.parseInt(anno));
+			    festivitaItaliane.add(pasqua);
+			 // Lunedì di Pasqua
+			 festivitaItaliane.add(pasqua.plusDays(1));
+			 // Festa della Liberazione - 25 aprile
+			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 4, 25));
+			 // Festa dei Lavoratori - 1 maggio
+			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 5, 1));
+			 // Festa della Repubblica - 2 giugno
+			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 6, 2));
+			 // Ferragosto - 15 agosto
+			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 8, 15));
+			 // Tutti i Santi - 1 novembre
+			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 11, 1));
+			 // Immacolata Concezione - 8 dicembre
+			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 12, 8));
+			 // Natale - 25 dicembre
+			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 12, 25));
+			 // Santo Stefano - 26 dicembre
+			 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 12, 26));
+			
+			 
+			 long today = 0;
+			 
+			 if(Integer.parseInt(anno)==Integer.parseInt(LocalDate.now().getYear()+"")) {
+				 today = ChronoUnit.DAYS.between(inizioBimestre, dataCorrente);
+			 }
+			 
+			 ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(inizioBimestre, fineBimestre, session);
+			 
+			 ArrayList<PRRisorsaDTO> lista_risorse = GestioneRisorseBO.getListaRisorse(session);
+
+				request.getSession().setAttribute("today", today);
+				request.getSession().setAttribute("anno", Integer.parseInt(anno));
+				request.getSession().setAttribute("daysNumber", daysNumber);
+				request.getSession().setAttribute("festivitaItaliane", festivitaItaliane);
+				request.getSession().setAttribute("start_date", start_date);
+				request.getSession().setAttribute("end_date", end_date);
+				request.getSession().setAttribute("filtro_tipo_pianificazioni", 0);
+			
+				request.getSession().setAttribute("lista_interventi", lista_interventi);
+				request.getSession().setAttribute("lista_risorse", lista_risorse);				
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/pr_gestionePianificazioneRisorse.jsp");
+		     	dispatcher.forward(request,response);
 				
 			}
 			session.getTransaction().commit();

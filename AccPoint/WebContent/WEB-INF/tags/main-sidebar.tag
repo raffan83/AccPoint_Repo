@@ -199,7 +199,7 @@
           <li><a href="#" onclick="callAction('gestioneRisorse.do?action=lista_risorse',null,true);">Gestione Risorse</a></li>
           <% }%>   
 			<li><a href="#" onclick="callAction('gestioneRisorse.do?action=lista_requisiti',null,true);">Gestione Requisiti</a></li> 
-			
+			<li><a href="#" onclick="callAction('gestioneRisorse.do?action=pianificazione_risorse',null,true);">Pianificazione Risorse</a></li> 
 				
           </ul>
           <%} %>

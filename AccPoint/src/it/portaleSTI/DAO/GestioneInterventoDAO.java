@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import java.sql.PreparedStatement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 import it.portaleSTI.DTO.ControlloAttivitaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
@@ -610,6 +611,21 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 	    query.setParameter("_id_utente", id_utente);
 	    query.setParameter("_id_cliente", id_cliente);
 	    query.setParameter("_id_sede", id_sede);
+
+	    lista=(ArrayList<InterventoDTO>)query.list();
+		
+		return lista;
+	}
+
+
+
+	public static ArrayList<InterventoDTO> getListainterventiDate(LocalDate inizioBimestre, LocalDate fineBimestre,
+			Session session) {
+		ArrayList<InterventoDTO> lista=null;
+
+	    Query query = session.createQuery("from InterventoDTO where dataCreazione BETWEEN :startDate AND :endDate");
+	    query.setParameter("startDate", java.sql.Date.valueOf(inizioBimestre));
+	    query.setParameter("endDate", java.sql.Date.valueOf(fineBimestre));
 
 	    lista=(ArrayList<InterventoDTO>)query.list();
 		

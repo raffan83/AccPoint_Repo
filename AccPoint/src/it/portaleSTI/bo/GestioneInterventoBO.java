@@ -6,6 +6,7 @@ import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -1245,6 +1246,12 @@ public class GestioneInterventoBO {
 	public static ArrayList<InterventoDTO> getListaInterventiUtente(int id_utente,int id_cliente, int id_sede,  Session session) {
 		
 		return GestioneInterventoDAO.getListaInterventiUtente(id_utente,  id_cliente,  id_sede,  session);
+	}
+
+	public static ArrayList<InterventoDTO> getListainterventiDate(LocalDate inizioBimestre, LocalDate fineBimestre,
+			Session session) {
+		// TODO Auto-generated method stub
+		return GestioneInterventoDAO.getListainterventiDate(inizioBimestre, fineBimestre, session);
 	}
 
 

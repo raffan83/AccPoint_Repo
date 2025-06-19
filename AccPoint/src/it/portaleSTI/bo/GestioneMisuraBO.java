@@ -8,6 +8,7 @@ import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.action.ContextListener;
+import it.portaleSTI.action.GestioneMisura;
 import javassist.expr.NewArray;
 
 import java.io.File;
@@ -360,12 +361,12 @@ public class GestioneMisuraBO {
 	    }
 
 	    public static void main(String[] args) throws Exception {
-	        String filePath = "C:\\Users\\antonio.dicivita\\Desktop\\Cartel1.xlsx";
-	        String searchString = "stringaDaCercare";
+	    //    String filePath = "C:\\Users\\antonio.dicivita\\Desktop\\Cartel1.xlsx";
+	     //   String searchString = "stringaDaCercare";
 	        new ContextListener().configCostantApplication();
 	        Session session=SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
-	        boolean trovato = confrontaStringaConPrimaColonna(filePath, searchString, session);
+	  /*      boolean trovato = confrontaStringaConPrimaColonna(filePath, searchString, session);
 	        session.close();
 
 	        if (trovato) {
@@ -373,6 +374,11 @@ public class GestioneMisuraBO {
 	        } else {
 	            System.out.println("La stringa non è stata trovata nella prima colonna.");
 	        }
+	 */
+			
+			MisuraDTO misura =GestioneMisuraBO.getMiruraByID(89486, session);
+			
+			System.out.println(calcolaIndicePrestazione(misura));
 	    }
 	}
 	

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -28,10 +29,13 @@ import it.portaleSTI.bo.GestioneFormazioneBO;
 public class GestioneInvioReportVittoria implements Job{
 	
 	
+	static final public Logger logger = Logger.getLogger(GestioneInvioReportVittoria.class);
+	
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		
 		inviaReportVittoria();
+		logger.error("Report Vittoria inviato correttamente !");
 	}
 	
 

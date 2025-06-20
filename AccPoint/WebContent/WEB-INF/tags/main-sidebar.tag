@@ -579,6 +579,7 @@
 			  		<% if(user.checkRuolo("AM")){%>
 							<li>
 								<a href="gestioneVersionePortale.do"><i class="fa fa-code-fork""></i>Gestione Versioni Portale</a>
+								<a href="gestioneLog.do"><i class="fa fa-pencil""></i>Logs</a>
 							</li>
 						<% }%>
           </ul>

@@ -1128,13 +1128,19 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 
 			
 // module = 16 --> quiz effettuato; module = 45 --> attestato scaricato
-		String query = "SELECT a.id, a.firstname, a.lastname, a.email, a.timecreated, " + 
+		String query  = "SELECT a.id, a.firstname, a.lastname, a.email, a.timecreated, " + 
 				"(SELECT timemodified FROM mdl_course_modules_completion c WHERE a.id = c.userid AND coursemoduleid = " + 
-				"(SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16 AND deletioninprogress = 0)) AS data_esecuzione,  (SELECT data from mdl_user_info_data where userid = a.id and fieldid=3) AS cf FROM mdl_user AS a JOIN mdl_groups_members AS b ON a.id = b.userid WHERE b.groupid = ? ";
+				"(SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16 AND deletioninprogress = 0)) AS data_esecuzione,  (SELECT data from mdl_user_info_data where userid = a.id and fieldid=3) AS cf " +
+				 "FROM mdl_user AS a JOIN mdl_groups_members AS b ON a.id = b.userid WHERE b.groupid = ? ";
 		
 		
+		String query2 ="SELECT  a.id,  a.firstname,  a.lastname,  a.email, a.timecreated, "+
+
+		  				"(SELECT timemodified FROM mdl_course_modules_completion c WHERE a.id = c.userid AND coursemoduleid IN (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16  AND deletioninprogress = 0)) AS data_esecuzione,"+
+		  				"(SELECT DATA  FROM mdl_user_info_data WHERE userid = a.id AND fieldid=3 ) AS cf "+
+		  				"FROM mdl_user AS a JOIN mdl_groups_members AS b ON a.id = b.userid WHERE b.groupid = ?";
 		
-		pst=con.prepareStatement(query);
+		pst=con.prepareStatement(query2);
 	
 		pst.setInt(1, corso);
 	

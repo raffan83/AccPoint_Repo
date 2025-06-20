@@ -276,7 +276,7 @@ function modalAssociaIntervento(day, id_risorsa, id_associazione){
 					 
 					  dati.sede = lista_interventi[i].nome_sede;
 					  dati.responsabile = lista_interventi[i].user.nominativo;
-					  dati.azioni = "";
+					  dati.azioni = "<a class='btn btn-primary'></a>";
 					  
 					  table_data.push(dati);
 					

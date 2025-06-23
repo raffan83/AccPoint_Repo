@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -19,9 +20,7 @@ import org.hibernate.Session;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Costanti;
 
 
 
@@ -78,6 +77,7 @@ public class GestioneLog extends HttpServlet {
 		            }
 		        }
 
+		        Collections.reverse(lines);
 		        request.setAttribute("lines", lines);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneLog.jsp");

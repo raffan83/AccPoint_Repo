@@ -23,6 +23,7 @@ import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ForConfInvioEmailDTO;
 import it.portaleSTI.DTO.ForMembriGruppoDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.bo.GestioneFormazioneBO;
 
@@ -58,7 +59,7 @@ public class GestioneInvioReportVittoria implements Job{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 			
 			sdf.format(new Date());
-			
+		
 			String path=Costanti.PATH_FOLDER+"ReportVittoria\\"+sdf.format(new Date());
 			
 			File f= new File(path);
@@ -139,6 +140,7 @@ public class GestioneInvioReportVittoria implements Job{
 		}
 		catch(Exception ex) 
 		{
+			logger.error("Errore durante l'invio del report", ex);
 			ex.printStackTrace();
 		}
 

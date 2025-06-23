@@ -1136,7 +1136,7 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		
 		String query2 ="SELECT  a.id,  a.firstname,  a.lastname,  a.email, a.timecreated, "+
 
-		  				"(SELECT timemodified FROM mdl_course_modules_completion c WHERE a.id = c.userid AND coursemoduleid IN (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16  AND deletioninprogress = 0)) AS data_esecuzione,"+
+		  				"(SELECT MAX(timemodified) FROM mdl_course_modules_completion c WHERE a.id = c.userid AND coursemoduleid IN (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16  AND deletioninprogress = 0)) AS data_esecuzione,"+
 		  				"(SELECT DATA  FROM mdl_user_info_data WHERE userid = a.id AND fieldid=3 ) AS cf "+
 		  				"FROM mdl_user AS a JOIN mdl_groups_members AS b ON a.id = b.userid WHERE b.groupid = ?";
 		

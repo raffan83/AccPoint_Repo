@@ -131,13 +131,20 @@ public class GestioneRisorse extends HttpServlet {
 			        LocalDate date = LocalDate.parse(data, formatter);
 			        ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(date, date, session);
 			     
-			        
+			        ArrayList<ForCorsoDTO>lista_corsi = GestioneFormazioneBO.getListaCorsiInCorsoPartecipante(risorsa.getPartecipante().getId(), session);
 			     // 1. ID dei requisiti sanitari associati alla risorsa
 			        Set<Integer> idRequisitiSanitariRisorsa = new HashSet<>();
+			        Set<Integer> idRequisitiDocumentaliRisorsa = new HashSet<>();
 			        for (PRRequisitoRisorsaDTO req : lista_requisiti_risorsa) {
 			            if (req.getReq_sanitario() != null) {
 			                idRequisitiSanitariRisorsa.add(req.getReq_sanitario().getId());
 			            }
+			        }
+			        
+			        for (ForCorsoDTO c : lista_corsi) {
+			           
+			        	idRequisitiDocumentaliRisorsa.add(c.getCorso_cat().getId());
+			           
 			        }
 
 			        ArrayList<InterventoDTO> lista_interventi_disponibili = new ArrayList<>();
@@ -145,17 +152,23 @@ public class GestioneRisorse extends HttpServlet {
 			        // 2. Per ogni intervento, verifica che contenga tutti i requisiti sanitari della risorsa
 			        for (InterventoDTO interventoDTO : lista_interventi) {
 			            Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
+			            Set<Integer> idRequisitiDocumentaliIntervento = new HashSet<>();
 
 			            for (PRInterventoRequisitoDTO requisito : interventoDTO.getListaRequisiti()) {
 			                if (requisito.getRequisito_sanitario() != null) {
 			                    idRequisitiSanitariIntervento.add(requisito.getRequisito_sanitario().getId());
 			                }
+			                if (requisito.getRequisito_documentale() != null) {
+			                	idRequisitiDocumentaliIntervento.add(requisito.getRequisito_documentale().getCategoria().getId());
+			                }
 			            }
 
 			            // 3. Verifica che TUTTI i requisiti della risorsa siano presenti nell'intervento
-			            if (idRequisitiSanitariIntervento.containsAll(idRequisitiSanitariRisorsa)) {
+			            if (idRequisitiSanitariRisorsa.containsAll(idRequisitiSanitariIntervento) && 
+			            		idRequisitiDocumentaliRisorsa.containsAll(idRequisitiDocumentaliIntervento)) {
 			                lista_interventi_disponibili.add(interventoDTO);
 			            }
+			           
 			        }
 
 			

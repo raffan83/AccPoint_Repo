@@ -126,7 +126,7 @@
 <form id="formNuovaAssociazione" name="formNuovaAssociazione" >
        <div id="modalAssociazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
    
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -135,16 +135,34 @@
        <div class="modal-body"> 
              <div class="row">
         <div class="col-xs-12">
-        <label>Utente</label>
-          <select class="form-control select2" id="intervento" name="intervento" style="width:100%" data-placeholder="Seleziona Utente..." required>
+        <table id="tabInterventi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+        <thead>
+        <tr>
+      
+        <th>ID</th>
+        <th>Commessa</th>
+        <th>Presso</th>
+        <th style="min-width:100px">Sede</th>
+        <th>Responsabile</th>
+        <th>Azioni</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        </tbody>
+        
+        </table>
+ <%--       <label>Utente</label>
+             <select class="form-control select2" id="intervento" name="intervento" style="width:100%" data-placeholder="Seleziona Intervento..." required>
        <option value=""></option>
 
-       <c:forEach items="${lista_interventi }" var="intervento">
+     <c:forEach items="${lista_interventi }" var="intervento">
        <option value="${intervento.id }">${intervento.id } - ${intervento.idCommessa } - ${intervento.nome_cliente } - ${intervento.nome_sede }</option>
-       </c:forEach>
-       </select>
+       </c:forEach> 
+       </select>--%>
         </div>
 	
+      	</div>
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_prenotazione" name="id_prenotazione">
@@ -707,8 +725,61 @@ $(document).ready(function($) {
 		 
 		 
 		 
-		 
-		 
+		 var table = $('#tabInterventi').DataTable({
+			  language: {
+			    emptyTable: "Nessun dato presente nella tabella",
+			    info: "Vista da _START_ a _END_ di _TOTAL_ elementi",
+			    infoEmpty: "Vista da 0 a 0 di 0 elementi",
+			    infoFiltered: "(filtrati da _MAX_ elementi totali)",
+			    lengthMenu: "Visualizza _MENU_ elementi",
+			    loadingRecords: "Caricamento...",
+			    processing: "Elaborazione...",
+			    search: "Cerca:",
+			    zeroRecords: "La ricerca non ha portato alcun risultato.",
+			    paginate: {
+			      first: "Inizio",
+			      previous: "Precedente",
+			      next: "Successivo",
+			      last: "Fine"
+			    },
+			    aria: {
+			      sortAscending: ": attiva per ordinare la colonna in ordine crescente",
+			      sortDescending: ": attiva per ordinare la colonna in ordine decrescente"
+			    }
+			  },
+			  pageLength: 25,
+		        order: [[1, "desc"]],
+		        paging: false,
+		        ordering: true,
+		        info: true,
+		        searchable: false,
+		        targets: 0,
+		        responsive: true,
+		        scrollX: false,
+		        stateSave: true,
+		      
+
+				  columns: [
+					   
+					    { data: "id" },
+					    { data: "commessa" },
+					    { data: "presso" },
+					    { data: "sede" },
+					    { data: "responsabile" },
+					    { data: "azioni" }
+					  ],
+		        columnDefs: [
+		            { responsivePriority: 1, targets: 1 }
+		        ],
+		        buttons: [{
+		            extend: 'colvis',
+		            text: 'Nascondi Colonne'
+		        }]
+		    });
+		
+		
+			table.columns.adjust().draw();
+			
 		 
 		 
 

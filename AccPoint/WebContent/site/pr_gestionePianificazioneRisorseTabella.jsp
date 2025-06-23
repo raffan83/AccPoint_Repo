@@ -126,11 +126,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
     
    
 
-    <ul class='custom-menu'>
-  <li data-action = "copy">Copia</li>
-  <li data-action = "paste">Incolla</li>
-  <li data-action = "delete">Elimina</li>
-</ul>
+   
 
     
     <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -252,15 +248,57 @@ function modalAssociaIntervento(day, id_risorsa, id_associazione){
 			
 			if(data.success){
 				
-				var x = data.lista_interventi;
-				var e = 2;
+				var lista_interventi = data.lista_interventi;
+				
+				var table_data = [];
+				
+				for(var i = 0; i<lista_interventi.length;i++){
+					  var dati = {};
+					  dati.check ="<td></td>";
+					  dati.id = lista_interventi[i].id;
+					  dati.commessa = lista_interventi[i].idCommessa;
+					
+					   var presso = lista_interventi[i].pressoDestinatario;
+					  	if(presso== 0){
+						  dati.presso = "In Sede";
+					 	 }else if(presso== 1){
+						  dati.presso = "Presso il Cliente";
+					  	}
+						else if(presso== 2){
+							 dati.presso = "Misto - Cliente - Sede";				  
+					 	}
+						else if(presso== 3){
+							 dati.presso = "Presso Laboratorio";
+						}
+						else if(presso== 4){
+							 dati.presso = "Presso Fornitore Esterno";
+						}
+					 
+					  dati.sede = lista_interventi[i].nome_sede;
+					  dati.responsabile = lista_interventi[i].user.nominativo;
+					  dati.azioni = "<a class='btn btn-primary'></a>";
+					  
+					  table_data.push(dati);
+					
+			
+		    }
+				  var t = $('#tabInterventi').DataTable();
+				  
+				t.clear().draw();
+				   
+				t.rows.add(table_data).draw();
+					
+				t.columns.adjust().draw();
+				
 			}
+		
+		$('#modalAssociazione').modal()
 			
 		}, "GET");
 		
 	  
 
-		$('#modalAssociazione').modal()
+		
 		
 	}
 	

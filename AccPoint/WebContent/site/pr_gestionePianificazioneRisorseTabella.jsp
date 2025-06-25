@@ -23,7 +23,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
 %>
 
 
- <table id="tabPrenotazione" class="table table-primary table-bordered table-hover dataTable table-striped " role="grid" width="100%"  >
+ <table id="tabPianificazioneRisorse" class="table table-primary table-bordered table-hover dataTable table-striped " role="grid" width="100%"  >
         <thead>
             <tr>
                <th >ID <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  id="inputsearchtable_0" /></th>
@@ -164,14 +164,14 @@ int anno = (Integer) request.getSession().getAttribute("anno");
         
     }
 
-     .riquadro {
+      .riquadro {
       border: 1px solid red;
-      padding: 5px;
-      position:absolute;
+     
+      /* position:absolute; */
  
 } 
 
-#tabPrenotazione tbody tr {
+#tabPianificazioneRisorse tbody tr {
     width: auto !important;
     height: 100px !important;
     overflow: hidden;
@@ -225,10 +225,11 @@ int anno = (Integer) request.getSession().getAttribute("anno");
 
 function modalAssociaIntervento(day, id_risorsa, id_associazione){
 	
+	$('#id_risorsa').val(id_risorsa)
+	$('#cella').val(day)
+	$('#id_risorsa').val(id_risorsa)
+	$('#calendario').val(1)
 	
-
-	if(permesso == "true"){
-		
 		var currentYear = new Date().getFullYear()
 		var dayValue = parseInt(day);
 		var localDate = new Date(Date.UTC(currentYear, 0, dayValue));
@@ -240,21 +241,31 @@ function modalAssociaIntervento(day, id_risorsa, id_associazione){
 		var cell = $('#'+id_risorsa+"_"+day);
 		var text = cell.text()
 		
+	
+		
 		dataObj = {};
 		dataObj.id_risorsa = id_risorsa;
 		dataObj.data = formattedDate;
+		
+		$('#data_pianificazione').val(formattedDate)
 		
 		callAjax(dataObj, "gestioneRisorse.do?action=trova_interventi_disponibili", function(data){
 			
 			if(data.success){
 				
+				var risorsa = data.risorsa;
 				var lista_interventi = data.lista_interventi;
+				var lista_interventi_risorsa = data.lista_interventi_risorsa;
+				lista_interventi_json = lista_interventi;
+				
+				$('#title_pianificazione').html("Associa intervento a " +risorsa.utente.nominativo+" in data "+formattedDate);
 				
 				var table_data = [];
 				
 				for(var i = 0; i<lista_interventi.length;i++){
 					  var dati = {};
-					  dati.check ="<td></td>";
+				/* 	  dati.check ="<td></td>"; */
+				  dati.check = null; 
 					  dati.id = lista_interventi[i].id;
 					  dati.commessa = lista_interventi[i].idCommessa;
 					
@@ -274,21 +285,44 @@ function modalAssociaIntervento(day, id_risorsa, id_associazione){
 							 dati.presso = "Presso Fornitore Esterno";
 						}
 					 
+					  dati.cliente = escapeHtml(lista_interventi[i].nome_cliente);
 					  dati.sede = lista_interventi[i].nome_sede;
 					  dati.responsabile = lista_interventi[i].user.nominativo;
-					  dati.azioni = "<a class='btn btn-primary'></a>";
+					  dati.azioni = "<a class='btn btn-primary' onClick='mostraRequisiti("+lista_interventi[i].id+")'>Requisiti</a>";
 					  
+					  
+					  dati.DT_RowId = dati.id;
 					  table_data.push(dati);
 					
 			
 		    }
-				  var t = $('#tabInterventi').DataTable();
-				  
+		/* 		var t = $('#tabInterventi').DataTable({
+				    createdRow: function(row, data, dataIndex) {
+				        $(row).attr('id', data.id);
+				    }
+				});
+				   */
+				   
+				   var t = $('#tabInterventi').DataTable()
 				t.clear().draw();
 				   
 				t.rows.add(table_data).draw();
 					
 				t.columns.adjust().draw();
+				
+				if(lista_interventi_risorsa!=null){
+					
+					for(var i = 0; i<lista_interventi_risorsa.length;i++){
+						
+						$('#tabInterventi').find("tr").each(function(){
+							if($(this).attr("id")  == lista_interventi_risorsa[i].id_intervento){
+								t.row( "#"+lista_interventi_risorsa[i].id_intervento ).select();
+							}
+						})
+						
+					}
+				}
+			
 				
 			}
 		
@@ -298,60 +332,37 @@ function modalAssociaIntervento(day, id_risorsa, id_associazione){
 		
 	  
 
-		
-		
-	}
+	
 	
 
 }
 
+var lista_interventi_json;
 
-
-
-function initializeTimepicker(start, end) {
-    $('#ora_inizio').timepicker({
-        minuteStep: 5,
-        disableTextInput: true,
-        showMeridian: false,
-        defaultTime: start, // Imposta l'orario di inizio predefinito
-        // Callback per disabilitare gli orari sovrapposti
-        
-        disableTimeRanges: orariDisabilitati,
-        beforeShow: function(input, instance) {
-            var inizioPrenotazione  = moment($('#ora_inizio').val(), "HH:mm");
-            var finePrenotazione  = moment($('#ora_fine').val(), "HH:mm");
-
-            instance.$input.timepicker('setTimeDisabled', function(time) {
-                return time.isBetween(inizioPrenotazione, finePrenotazione, null, '[)') ||
-                    time.isBetween(inizioPrenotazione, finePrenotazione, null, '(]') ||
-                    inizioPrenotazione.isBetween(time, finePrenotazione, null, '(]') ||
-                    finePrenotazione.isBetween(time, finePrenotazione, null, '[)');
-            });
-        }
-    }).on('changeTime.timepicker', function(e) {
-        var inizio = moment($('#ora_inizio').val(), "HH:mm");
-        var fine = moment($('#ora_fine').val(), "HH:mm");
-    });
-
-    $('#ora_fine').timepicker({
-        minuteStep: 5,
-        disableTextInput: true,
-        showMeridian: false,
-        defaultTime: end, // Imposta l'orario di fine predefinito
-        // Callback per disabilitare gli orari sovrapposti
-        beforeShow: function(input, instance) {
-            var inizio = moment($('#ora_inizio').val(), "HH:mm");
-            var fine = moment($('#ora_fine').val(), "HH:mm");
-
-            instance.$input.timepicker('setTimeDisabled', function(time) {
-                return time.isBetween(inizio, fine) || time.isSame(inizio) || time.isSame(fine);
-            });
-        }
-    }).on('changeTime.timepicker', function(e) {
-        var inizio = moment($('#ora_inizio').val(), "HH:mm");
-        var fine = moment($('#ora_fine').val(), "HH:mm");
-    });
+function mostraRequisiti(id_intervento){
+	
+	var intervento_json = lista_interventi_json.find(item => item.id === id_intervento);
+	var listaRequisiti = intervento_json.listaRequisiti;
+	var str_doc ="<ul class='list-group list-group-unbordered'>";
+	var str_san ="<ul class='list-group list-group-unbordered'>";
+	
+	for(var i = 0; i<listaRequisiti.length;i++){
+		if(listaRequisiti[i].requisito_documentale!=null){
+			str_doc+="<li class='list-group-item'>"+listaRequisiti[i].requisito_documentale.categoria.descrizione+"</li>"	
+		}
+		if(listaRequisiti[i].requisito_sanitario!=null){
+			str_san+="<li class='list-group-item'>"+listaRequisiti[i].requisito_sanitario.descrizione+"</li>"	
+		}
+		
+	}
+	str_doc +="</ul>";
+	str_san +="</ul>";
+	$("#content_requisiti_doc").html(str_doc);
+	$("#content_requisiti_san").html(str_san);
+	
+	$('#modalRequisiti').modal()
 }
+
 
 
 
@@ -389,7 +400,7 @@ var settings ={
     },
     dom: 'rt<"bottom"ip>',
     pageLength: 100,
-    "order": [[ 2, "asc" ]],
+    "order": [[0 , "asc" ]],
       paging: false, 
       ordering: true,
       info: true, 
@@ -403,7 +414,7 @@ var settings ={
       "autoWidth": false,
       
          fixedColumns: {
-          leftColumns: 3,
+          leftColumns: 2,
           heightMatch: 'auto'// Numero di colonne fisse
       },    
       
@@ -436,8 +447,7 @@ var scrollPos;
 	    $(cell).on('click', function() {
 	    	 scrollPos = $(window).scrollTop();
 	    	 var scrollPosition = $(this).closest('.dataTables_scrollBody').scrollTop();
-	    	if(permesso == "true"){
-	    	
+
 	        $('.selected-cell').removeClass('selected-cell');
 	        $('.button_add').remove();
 
@@ -460,11 +470,11 @@ var scrollPos;
 	                     .html('<i class="fa fa-plus"></i>')
 	                     .appendTo($buttonContainer);
 
-	        table = $('#tabPrenotazione').DataTable()
+	        table = $('#tabPianificazioneRisorse').DataTable()
 	        table.draw(); 
 	        $(window).scrollTop(scrollPos);
 	        $(this).closest('.dataTables_scrollBody').scrollTop(scrollPosition);
-	    	}
+	    
 	    });
 	}
 	
@@ -505,135 +515,14 @@ $(window).on('load', function() {
 });
 
 
-function pastePrenotazione(day, veicolo){
 	
-	var id = cellCopy;
-	
-	dataObj ={};
-	dataObj.id = id;
-	
-	callAjax(dataObj, "gestioneParcoAuto.do?action=dettaglio_prenotazione", function(data){
-		
-		var prenotazione = data.prenotazione;
-		
-		var obj = {};
-        
-		if(prenotazione.manutenzione == 1){
-			$('#manutenzione').iCheck('check');
-		}else{
-			$('#manutenzione').iCheck('uncheck');
-			$('#utente').val(prenotazione.utente.id);
-			$('#utente').change();	
-		}
-	
-		
-		if(prenotazione.rifornimento == 1){
-			$('#rifornimento').iCheck('check');
-		}else{
-			$('#rifornimento').iCheck('uncheck');
-		
-		}
-		$('#stato').val(prenotazione.stato_prenotazione);
-		$('#stato').change();
-	
-		
-		
-		var currentYear = new Date().getFullYear()
-		var dayValue = parseInt(day);
-		var localDate = new Date(Date.UTC(currentYear, 0, dayValue));
-		var d = localDate.getUTCDate();
-		var month = localDate.getUTCMonth() + 1; 
-		var year = localDate.getUTCFullYear();
-		var formattedDateInizio = ('0' + d).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
-		
-		$('#data_inizio').val(formattedDateInizio);
-	
-		
-		var lunghezzaIntervallo = prenotazione.cella_fine - prenotazione.cella_inizio;
-		
-		if(lunghezzaIntervallo>0){
-			var dayValue = parseInt(day)+lunghezzaIntervallo;
-			var localDate = new Date(Date.UTC(currentYear, 0, dayValue));
-			var d = localDate.getUTCDate();
-			var month = localDate.getUTCMonth() + 1; 
-			var year = localDate.getUTCFullYear();
-			var formattedDateFine= ('0' + d).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
-		}else{
-			var formattedDateFine=formattedDateInizio;
-		}
-		$('#data_fine').val(formattedDateFine);
-		$('#ora_inizio').val(prenotazione.data_inizio_prenotazione.split(" ")[1]);
-		$('#ora_fine').val(prenotazione.data_fine_prenotazione.split(" ")[1]);
-			initializeTimepicker(prenotazione.data_inizio_prenotazione.split(" ")[1], prenotazione.data_fine_prenotazione.split(" ")[1]);
-
-		$('#day').val(day);
-		$('#id_veicolo').val(veicolo);
-		
-		$('#note').val(prenotazione.note);
-		$('#luogo').val(prenotazione.luogo);
-	
-		obj = {};
-		  obj.inizio =  prenotazione.data_inizio_prenotazione
-          obj.fine =  prenotazione.data_fine_prenotazione
-          obj.id = prenotazione.id
-          obj.id_veicolo = prenotazione.veicolo.id
-      	
-          orariDisabilitati.push(obj); 
-		  
-		  isPaste = true;
-		  $('#id_prenotazione').val(0)
-
-		nuovaPrenotazione();
-	});
-	
-	
-}
 
 var selectedDiv = null;
 var offsetX;
 var offsetY;
-/* $('#tabPrenotazione tbody td').on('contextmenu', 'div',  function(e) {
-	if($(this).hasClass("riquadro")){
-	    selectedDiv = $(this);
-	    e.preventDefault(); // Prevent default context menu
-	}
-
-}); */
 
 
 
-
-
-
-/* 
-$(document).bind("contextmenu", function(e) {
-	
-	var x  = $('#'+e.target.id).offset().left / zoom_level;
-	var y  = $('#'+e.target.id).offset().top / zoom_level;
-    $(".tooltip").css({left:x, top:y});
-   // $('.tooltip').show();
-    e.preventDefault();
-}); */
-
-/* $(window).on('scroll', function() {
-    var windowScrollTop = $(window).scrollTop();
-    var tableHeaderHeight = $('.dataTables_scrollHead').outerHeight();
-    var scrollPosition = $('.dataTables_scrollBody').outerHeight();
-
-    // Se lo scroll della finestra è inferiore all'altezza dell'header della tabella,
-    // fai in modo che l'header della tabella sia posizionato in alto.
-   // if (windowScrollTop < tableHeaderHeight) {
-   //     $('.dataTables_scrollHead').css('top', -windowScrollTop);
-  // } else {
-        // Altrimenti, fai in modo che l'header della tabella sia posizionato al top della finestra.
-        
-        var windowHeight = $(window).height(); // Altezza della finestra del browser
-var scrollTop = $(window).scrollTop(); // Posizione dello scroll verticale
-var visibleHeight = windowHeight - scrollTop;
-        
-        $('.dataTables_scrollHead').css('top',windowScrollTop - windowHeight);
-  //  }
-}); */
 
 $(window).on('scroll', function() {
     var windowScrollTop = $(window).scrollTop();
@@ -678,31 +567,20 @@ $(window).on('scroll', function() {
 
 var order = 1;
 
-var permesso = "${userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN')}";
-
 var cellCopy;
 
 $(document).ready(function() {
 	
-	initializeTimepicker("08:00", "17:00");
-
 	
-	 pleaseWaitDiv.modal('show');
+	// pleaseWaitDiv.modal('show');
 	console.log("dentro")
 zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
-         fillTable("${anno}",'${filtro_tipo_pianificazioni}');
-	
-	
+        fillTable("${anno}",'${filtro_tipo_pianificazioni}');
+        
 
-       
 
 	    $(document.body).css('padding-right', '0px');
-	    
-	    if(permesso!=null &&  permesso=='true'){
-	    	initContextMenu()	
-	    }
-	    
 	    
 
 	    $('.dropdown-menu').css('z-index', 200);
@@ -725,15 +603,15 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
  
  function fillTable(anno, filtro) {
 	    console.log("dddd");
-	    pleaseWaitDiv.modal('show');
+	    pleaseWaitDiv.modal('hide');
 	    $.ajax({
-	        url: 'gestioneParcoAuto.do?action=lista_prenotazioni&anno=' + anno,
+	        url: 'gestioneRisorse.do?action=lista_associazioni&anno=' + anno,
 	        method: 'GET',
 	        dataType: 'json',
 	        success: function(response) {
 	        	
 	        	
-	        	$("#tabPrenotazione").on( 'init.dt', function ( e, settings ) {
+	        	$("#tabPianificazioneRisorse").on( 'init.dt', function ( e, settings ) {
 	        	    var api = new $.fn.dataTable.Api( settings );
 	        	    var state = api.state.loaded();
 	        	 
@@ -742,7 +620,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	        	    
 	        	    columsDatatables = state.columns;
 	        	    } 
-	        	    $('#tabPrenotazione thead th').each( function () {
+	        	    $('#tabPianificazioneRisorse thead th').each( function () {
 	        	    	
 	        	    	if(columsDatatables!=null && columsDatatables.length>0){
 	        	    		$('#inputsearchtable_'+$(this).index()).val(columsDatatables[$(this).index()].search.search);
@@ -754,301 +632,38 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
 	        	} ); 
 	        
-	            var lista_prenotazioni = response.lista_prenotazioni;
+	            var lista_associazioni = response.lista_associazioni;
 	            $('.riquadro').remove();
-	            $('#tabPrenotazione td').removeClass('prenotato');
+	            $('#tabPianificazioneRisorse td').removeClass('prenotato');
 	            if(table == null){
-				    table = $('#tabPrenotazione').DataTable(settings);
+				    table = $('#tabPianificazioneRisorse').DataTable(settings);
 				  
 				}else{
-					   $('#tabPrenotazione').DataTable().destroy();
-					table = $('#tabPrenotazione').DataTable(settings);
+					   $('#tabPianificazioneRisorse').DataTable().destroy();
+					table = $('#tabPianificazioneRisorse').DataTable(settings);
 				}
 
 	            
-	            for (var i = 0; i < lista_prenotazioni.length; i++) {
-	                var id_inizio = lista_prenotazioni[i].veicolo.id + "_" + lista_prenotazioni[i].cella_inizio;
-	                var id_fine = lista_prenotazioni[i].veicolo.id + "_" + lista_prenotazioni[i].cella_fine;
-	                var id_prenotazione = lista_prenotazioni[i].id;
+	            for (var i = 0; i < lista_associazioni.length; i++) {
+	                var id_cella = lista_associazioni[i].risorsa.id +"_"+lista_associazioni[i].cella;
+	                var id_associazione = lista_associazioni[i].id;
+	                var intervento = lista_associazioni[i].id_intervento;
 	                
-	                
-	                var obj = {};
-
-		            
-		            obj.inizio =  lista_prenotazioni[i].data_inizio_prenotazione
-		            obj.fine =  lista_prenotazioni[i].data_fine_prenotazione
-		            obj.id = id_prenotazione
-		            obj.id_veicolo = lista_prenotazioni[i].veicolo.id 
-		        	
-		            orariDisabilitati.push(obj); 
-	                
-					
-	                var cellaInizio = $("#" + id_inizio);
-	                var cellaFine = $("#" + id_fine);
-
-	                var posizionePartenza = cellaInizio.offset();
-	                var posizioneArrivo = cellaFine.offset();
-	                
-	                if(lista_prenotazioni[i].manutenzione==1){
-	                	var text = "MANUTENZIONE";
-	                }else{
-	                	var text = lista_prenotazioni[i].utente.nominativo;
-	                }
-	                
-	                
-	                
-	                if(posizionePartenza!=null){
-	                	
-	                	 var testo = text + " (" + lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - " + lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1] + ")";
-	 	                var larghezzaTesto = getTextWidth(testo, '12px Arial') + 20; // Aggiungi un margine per una migliore presentazione
-
-	 	                var larghezza =  Math.abs(posizioneArrivo.left - posizionePartenza.left + cellaInizio.outerWidth());
-	 	               //var larghezza = 115;
-	 	   
-	 	                var altezza = 36;
-	 	                 if(larghezzaTesto>=larghezza){
-	 	                	altezza = altezza * 2;
-	 	                	//larghezza = larghezzaTesto
-	 	                } 
-	 	                
-	 	     
-	 	                var numeroRiquadri = cellaInizio.find('.riquadro').length;
-	 	                
-	 	                var cellaPrecedente = null;
-	 	                var cellaSuccessiva = null;
-	 	                 if(numeroRiquadri === 0 && cellaInizio.hasClass('prenotato_multi')){
-	 	                	 cellaPrecedente = cellaInizio.prev();
-	 	     	            while (cellaPrecedente.length > 0) {
-	 	     	            	numeroRiquadri = cellaPrecedente.find('.riquadro').length;
-	 	     	                if (numeroRiquadri > 0) {
-	 	     	                    break; // Riquadro trovato nella cella precedente, interrompi il ciclo
-	 	     	                }
-	 	     	                cellaPrecedente = cellaPrecedente.prev();
-	 	     	            }
-	 	                	
-	 	                }
-	 	                
-	 	                if(numeroRiquadri === 0 && cellaFine.hasClass('prenotato_multi')){
-	 	                	 cellaSuccessiva = cellaInizio.next();
-	 	     	            while (cellaSuccessiva.length > 0) {
-	 	     	            	numeroRiquadri = cellaSuccessiva.find('.riquadro').length;
-	 	     	                if (numeroRiquadri > 0) {
-	 	     	                    break; // Riquadro trovato nella cella precedente, interrompi il ciclo
-	 	     	                }
-	 	     	               cellaSuccessiva = cellaSuccessiva.next();
-	 	     	            }
-	 	                	
-	 	                } 
-	 	                
-	 	                var celleTraCelle = null;
-	 	                 if (numeroRiquadri === 0 && id_inizio != id_fine && cellaInizio.length > 0 && cellaFine.length > 0) {
-	 	                	celleTraCelle =  cellaInizio.nextUntil(cellaFine);
-	 	                	 numeroRiquadri = 0
-	 	                    celleTraCelle.each(function() {
-	 	                        n = $(this).find('.riquadro').length;
-	 	                        if(n>numeroRiquadri){
-	 	                        	numeroRiquadri = n;
-	 	                        }
-	 	                    });
-	 	                } 
-	 	                
-	 	                nCelle = 1;
-	 	                
-	 	                if(id_inizio!=id_fine){
-	 	                	nCelle=parseInt(id_fine.split("_")[1]) - parseInt(id_inizio.split("_")[1])
-	 	                }
-	 	                
-	 	                for (var j = 0; j < nCelle; j++) {
-	 						$('#'+id_inizio.split("_")[0]+"_"+(parseInt(id_inizio.split("_")[1]) + j)).addClass('prenotato');
-	 						var x = '#'+id_inizio.split("_")[0]+"_"+parseInt(id_inizio.split("_")[1]) + j
-	 						if(id_inizio!=id_fine){
-	 							$('#'+id_inizio.split("_")[0]+"_"+(parseInt(id_inizio.split("_")[1]) + j)).addClass('prenotato_multi');
-	 						}
-	 					}
+	                var border_color = "#FFD700";
+	 	               var background_color = "#FFFFE0";
 	 	               
-						 if(id_inizio!=id_fine){
-							var larghezza =  larghezza - 5;
-						} 
-	 	       
-	 	               //var sinistra = posizionePartenza.left - $('#tabPrenotazione').offset().left;
-	 	                var sinistra = 0;
-	 	                //var alto = posizionePartenza.top - $('#tabPrenotazione').offset().top;
-	 	                var alto = 0;
-	 	                
-	 	     
-	 	                
-	 	                var border_color;
-	 	                var background_color;
-	 	                
-	 	          
-		 	                
-	 	                
-	 	                if(lista_prenotazioni[i].stato_prenotazione == 1){
-	 	                   var border_color = "#FFD700";
-		 	               var background_color = "#FFFFE0";
-	 	                }else if(lista_prenotazioni[i].stato_prenotazione == 2){
-	 	                	var border_color = "#A0CE00";
-			 	            var background_color = "#90EE90";
-	 	                }
-	 	               else if(lista_prenotazioni[i].stato_prenotazione == 3){
-	 	            	   
-	 	            	  if(lista_prenotazioni[i].rifornimento == 1){
-		 	            	  	var border_color = "#F2861B ";
-				 	            var background_color = "#F7BB80";
-							}else{
-								var border_color = "#1E90FF";
-				 	            var background_color = "#ADD8E6";
-							}
-	 	               
-	 	                	
-			 	
-	 	                }
-	 	                
-	 	               if(lista_prenotazioni[i].manutenzione==1){
-	 	            	  if(lista_prenotazioni[i].stato_prenotazione == 3){
-	 	            		 var border_color = "#1E90FF";
-				 	            var background_color = "#ADD8E6";
-	 	            	
-	 	               }else{
-		 	            	  var border_color = "#da70d6";
-				 	            var background_color = "#f7b8b8 ";
-	 	               }
-		 	               }
+	                var cella = $("#" + id_cella);
+	            
+	                cella.append("<div  data-toggle='tooltip' title='' class='riquadro' id='riquadro_"+id_associazione+"' style='text-align:center;font-weight:bold;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalAssociaIntervento("+id_cella.split("_")[1]+", "+id_cella.split("_")[0]+", "+id_associazione+")' >ID: "+intervento+ "<br>"+lista_associazioni[i].testo_riquadro+"</div>")
+	                	  
+	              
+	 	                 /*  $("<div  data-toggle='tooltip' title='' class='riquadro' id='riquadro_"+id_associazione+"' style='margin-top:35px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalAssociaIntervento("+id_cella.split("_")[1]+", "+id_cella.split("_")[0]+", "+id_associazione+")' >INTERVENTO ID: "+intervento.id+ "<br>"+intervento.nome_sede+"</div>").addClass('riquadro').css({
 	 	              
-	 	               if(lista_prenotazioni[i].luogo!=null){
-	 	                	var title = escapeHtml(lista_prenotazioni[i].luogo);
-	 	                 }else{
-	 	                	 var title = '';
-	 	                 }
-	 	           
-	 	          /*     else if(lista_prenotazioni[i].stato_prenotazione == 4){
-	 	                	var border_color = "#A0CE00";
-			 	            var background_color = "#90EE90";
-	 	                } */
-
-	 	                if (numeroRiquadri === 0) {
-	 	                    // Se non ci sono riquadri presenti, aggiungi normalmente il nuovo riquadro
-	 	                  $("<div  data-toggle='tooltip' title='"+title+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalAssociaIntervento("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
-	 	                	 /* $("<div   title='"+escapeHtml(lista_prenotazioni[i].note)+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalAssociaIntervento("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({ */
-	 	                  
-	 	                	   // $("<div  data-toggle='tooltip' title='"+lista_prenotazioni[i].note+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalAssociaIntervento("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
-	 	                        left: sinistra,
-	 	                        top: alto,
-	 	                        width: larghezza,
-	 	                        height: altezza,
 	 	                        'text-align': 'center',
 	 	                       'font-weight': 'bold'
-	 	                    }).appendTo(cellaInizio);
-	 	                    
-	 	                    var rowId = cellaInizio.closest('tr').attr('id');
-	 			            var altezzaRiga = $("#"+rowId).height();
-	 	                    
-	 	                    var nuovaAltezzaRiga = (numeroRiquadri + 1) * (altezza + 42); // +1 per includere il nuovo riquadro
-
-	 		                // Aggiorna l'altezza della riga
-	 		                if(nuovaAltezzaRiga>altezzaRiga){
-	 		                	cellaInizio.closest('tr').children('td').height(nuovaAltezzaRiga);
-	 		                }
-	 		                
-	 	                    
-
+	 	                    }).appendTo(cella); */
 	 	                
-	 	                } else {
-	 	                    // Se ci sono già riquadri presenti, aggiungi il nuovo riquadro sotto a quelli esistenti
-	 	                    if(cellaPrecedente!=null){
-	 	                    	var ultimoRiquadro = cellaPrecedente.find('.riquadro:last');
-	 	                    	var posizioneUltimoRiquadro = ultimoRiquadro.position();
-	 	                    	 posizioneUltimoRiquadro.left = ultimoRiquadro.position().left + cellaPrecedente.outerWidth();
-	 	                    	 //posizioneUltimoRiquadro.top = ultimoRiquadro.position().top;
-	 	                    	 posizioneUltimoRiquadro.top = ultimoRiquadro[0].offsetTop 
-	 	                    }
-	 	                    else if(cellaSuccessiva!=null){
-	 	                    	var ultimoRiquadro = cellaSuccessiva.find('.riquadro:last');
-	 	                    	var posizioneUltimoRiquadro = ultimoRiquadro.position();
-	 	                    	 posizioneUltimoRiquadro.left = ultimoRiquadro.position().left - cellaSuccessiva.outerWidth();
-	 	                    	 //posizioneUltimoRiquadro.top = ultimoRiquadro.position().top;
-	 	                    	 posizioneUltimoRiquadro.top = ultimoRiquadro[0].offsetTop 
-	 	                    }
-	 	                    else if(celleTraCelle!=null){
-	 	                    	var ultimoRiquadro = celleTraCelle.find('.riquadro:last');
-	 	                    	var posizioneUltimoRiquadro = ultimoRiquadro.position();
-	 	                    	 posizioneUltimoRiquadro.left = ultimoRiquadro.position().left - celleTraCelle.outerWidth();
-	 	                    	 //posizioneUltimoRiquadro.top = ultimoRiquadro.position().top;
-	 	                    	 posizioneUltimoRiquadro.top = ultimoRiquadro[0].offsetTop 
-	 	                    }
-	 	                    
-	 	                    else{
-	 	                    	var ultimoRiquadro = cellaInizio.find('.riquadro:last');
-	 	                    	var posizioneUltimoRiquadro = ultimoRiquadro.position();
-	 	                    	
-	 	                    	 posizioneUltimoRiquadro.left = ultimoRiquadro.position().left;
-	 	                    	 //posizioneUltimoRiquadro.top = ultimoRiquadro.position().top;
-	 	                    	 posizioneUltimoRiquadro.top = ultimoRiquadro[0].offsetTop
-	 	                    }
-	 	                    
-	 	                    var altezzaUltimoRiquadro = ultimoRiquadro.height();
-	 	                    
-	 	                    var distanzaVerticale = 15; // Distanza verticale tra i riquadri
-
-	 	                  
-
-	 	                 // Calcola la posizione verticale del nuovo riquadro
-	 	                 var nuovaPosizioneVerticale = posizioneUltimoRiquadro.top + altezzaUltimoRiquadro + distanzaVerticale;
-
-	 	                 // Verifica se il nuovo riquadro si sovrappone con il successivo
-	 	                 if (cellaInizio.find('.riquadro:eq(1)').length > 0) {
-	 	                     var altezzaRiquadroSuccessivo = cellaInizio.find('.riquadro:eq(1)').height();
-	 	                     if (nuovaPosizioneVerticale + altezza > posizioneUltimoRiquadro.top + altezzaRiquadroSuccessivo) {
-	 	                         nuovaPosizioneVerticale = posizioneUltimoRiquadro.top + altezzaRiquadroSuccessivo + distanzaVerticale;
-	 	                     }
-	 	                 }
-	 	                 
-	 	                 else if (cellaInizio!= cellaFine && cellaFine.find('.riquadro:eq(1)').length > 0) {
-	 	                     var altezzaRiquadroSuccessivo = cellaFine.find('.riquadro:eq(1)').height();
-	 	                     if (nuovaPosizioneVerticale + altezza > posizioneUltimoRiquadro.top + altezzaRiquadroSuccessivo) {
-	 	                         nuovaPosizioneVerticale = posizioneUltimoRiquadro.top + altezzaRiquadroSuccessivo + distanzaVerticale;
-	 	                     }
-	 	                 }
-
-	 	              
-	 	  				
-	 	                 
-	 	                 $("<div data-toggle='tooltip' title='"+title+"'  class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:5px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalAssociaIntervento("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
-	 	                    // left: posizioneUltimoRiquadro.left,
-	 	                     left: sinistra,
-	 	                     top: nuovaPosizioneVerticale,
-	 	                     width: larghezza,
-	 	                     height: altezza,
-	 	                     'text-align': 'center',
-	 	                    'font-weight': 'bold',
-	 	                     "z-index" : "200px"
-	 	                 }).appendTo(cellaInizio);
-	 	                 
-	 	                 
-	 	                  var ultimaPosizione = ultimoRiquadro[0].offsetTop +  ultimoRiquadro[0].offsetHeight + 3; // Aggiungi 5 pixel di spazio
-	 	                  //var ultimaPosizione = ultimoRiquadro[0].offsetTop +  altezza +3; // Aggiungi 5 pixel di spazio
-	 	               
-	 	  	           
-	 	  	          var rowId = cellaInizio.closest('tr').attr('id');
-	 		            var altezzaRiga = $("#"+rowId).height();
-	 	  	           // var nuovaAltezzaRiga = 35 + numeroRiquadri  * ultimoRiquadro[0].offsetHeight;
-	 	  	         //   var nuovaAltezzaRiga = altezzaRiga +  altezza ;
-	 	  	            var nuovaAltezzaRiga = 42+ (numeroRiquadri +1) * 75 ;
-	 	  	            if(altezzaRiga<=nuovaAltezzaRiga){
-	 	  	           // if(altezzaRiga<=ultimaPosizione){
-	 	  	            	   
-	 	  	            	 updatePosition(cellaInizio.closest('tr'), nuovaAltezzaRiga, altezzaRiga);
-	 	  	            	cellaInizio.closest('tr').children('td').height(nuovaAltezzaRiga);
-	 	  	            	var x = id_prenotazione;
-	 	  	            }
-	 	                 
-	 	                 
-	 	                }
-	 	               
-	 	            }
-
-	                
-	                }
+	            }
 	               
 	            console.log("ciao");
 
@@ -1077,37 +692,14 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	           
 	            table.columns.adjust().draw();
 	            
-	            /* 
-	    	    $('#tabPrenotazione_wrapper').prepend('<div class="legend"> '+
-	    	    	    '<div class="legend-item"> <div class="legend-color" style="background-color:#FFFFE0;"></div>'+
-	    	    	    '<div class="legend-label">IN PRENOTAZIONE</div></div> '+
-	    	    	    
-	    	    	    '<div class="legend-item"> <div class="legend-color" style="background-color:#90EE90;"></div>'+
-	    	    	    '<div class="legend-label">PRENOTATO</div> </div> '+
-	    	    	    
-	    	    	    '<div class="legend-item"> <div class="legend-color" style="background-color:#ADD8E6;"></div>'+
-	    	    	    '<div class="legend-label">RIENTRATO</div> </div>'+
-	    	    	    
-	    	    	    '<div class="legend-item"> <div class="legend-color" style="background-color:#F7BB80;"></div>'+
-	    	    	    '<div class="legend-label">RIFORNIMENTO EFFETTUATO</div> </div>'+
-	    	    	    
-	    	    	     
-	    	    	    '<div class="legend-item"> <div class="legend-color" style="background-color:#f7b8b8;"></div>'+
-	    	    	    '<div class="legend-label">MANUTENZIONE</div> </div>'+
-	    	    	    
-	    	    	    
-	    	    	    '</div>'); */
-	           
-	         //   scrollToColumn(parseInt(today) -1);
-	         
-	         pleaseWaitDiv.modal('show');
 
+	      
 	         var coltoday = getDaysUntilMonday(parseInt(today), parseInt("${start_date}")) +1
 	        
 	         
 	          scrollToColumn(today - coltoday) 
-	            
 	         pleaseWaitDiv.modal('hide');
+
 	        // pleaseWaitDiv.modal('hide');
 	        // $('[data-toggle="tooltip"]').tooltip();
 	        },
@@ -1119,7 +711,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
 
 function filterTable() {
-    var table = $('#tabPrenotazione');
+    var table = $('#tabPianificazioneRisorse');
     var rows = table.find('tr:gt(0)');
     
     rows.each(function() {
@@ -1146,7 +738,7 @@ function scrollToColumn(columnIndex) {
 	
 	
 
-    var tableWrapper = $('#tabPrenotazione_wrapper');
+    var tableWrapper = $('#tabPianificazioneRisorse_wrapper');
     var scrollBody = tableWrapper.find('.dataTables_scrollBody');
     var scrollHead = tableWrapper.find('.dataTables_scrollHead');
     var columnWidths = scrollHead.find('th').map(function() {

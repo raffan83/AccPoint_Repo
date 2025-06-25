@@ -528,7 +528,7 @@
          <%} %>
         
         
-<%--  <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_MANUTENZIONI AM") || user.checkRuolo("MN")){%>  
+  <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_MANUTENZIONI AM") || user.checkRuolo("MN")){%>  
            <li class="header">MANUTENZIONE SISTEMI</li>
 
          <li class="treeview">
@@ -545,7 +545,7 @@
 	      	
           </ul>
         </li> 
-           <% }%> --%>
+           <% }%> 
         
         
            <% if(user.checkRuolo("AM") || user.checkPermesso("ADMIN CONFIG")){%>

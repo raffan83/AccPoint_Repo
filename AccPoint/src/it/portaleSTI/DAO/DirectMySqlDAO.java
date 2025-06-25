@@ -51,6 +51,8 @@ import it.portaleSTI.DTO.IngIngressoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PRInterventoRisorsaDTO;
+import it.portaleSTI.DTO.PRRisorsaDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 
 import it.portaleSTI.DTO.StatoPackDTO;
@@ -3820,6 +3822,103 @@ public static ArrayList<DevSoftwareDTO> getListaSoftwareFiltro(int id_company) t
 
 		lista.add(software);
 
+		
+	}
+	
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+
+	return lista;
+}
+
+public static Map<Integer, Integer> getListaRelazioni() throws Exception {
+	Map<Integer, Integer> map= new HashMap<Integer, Integer>();
+	
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	
+	try {
+		con=getConnection();
+
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+
+		String query = "SELECT * from pr_req_relazioni";
+	
+	
+	pst=con.prepareStatement(query);
+	
+
+	rs=pst.executeQuery();
+	
+	while(rs.next())
+	{
+		
+		
+		Integer id_req_doc = rs.getInt("id_req_documentale");
+		Integer id_req_san = rs.getInt("id_req_sanitario");
+		
+		map.put(id_req_doc, id_req_san);
+		
+	}
+	
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+
+	return map;
+}
+
+public static ArrayList<PRInterventoRisorsaDTO> getListaInterventoRisorseAll(Session session) throws Exception {
+
+
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	ArrayList<PRInterventoRisorsaDTO> lista = new ArrayList<PRInterventoRisorsaDTO>();
+	try {
+		con=getConnection();
+
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+		
+		String query = "SELECT a.*, b.nome_cliente, b.nome_sede from pr_intervento_risorsa a join intervento b on a.id_intervento = b.id";
+	
+	
+	pst=con.prepareStatement(query);
+	
+
+	rs=pst.executeQuery();
+	
+	while(rs.next())
+	{
+		PRInterventoRisorsaDTO res = new PRInterventoRisorsaDTO();
+		res.setId(rs.getInt("a.id"));
+		res.setIntervento(rs.getInt("id_intervento"));
+		PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, rs.getInt("id_risorsa"));
+		res.setData(rs.getDate("data"));
+		res.setCella(rs.getInt("cella"));
+		res.setTesto_riquadro(rs.getString("nome_cliente")+" - "+rs.getString("nome_sede"));
+		res.setRisorsa(risorsa);
+		lista.add(res);
 		
 	}
 	

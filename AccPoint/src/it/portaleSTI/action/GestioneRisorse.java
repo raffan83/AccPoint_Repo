@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
@@ -40,6 +42,7 @@ import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.PRInterventoRequisitoDTO;
+import it.portaleSTI.DTO.PRInterventoRisorsaDTO;
 import it.portaleSTI.DTO.PRRequisitoDocumentaleDTO;
 import it.portaleSTI.DTO.PRRequisitoRisorsaDTO;
 import it.portaleSTI.DTO.PRRequisitoSanitarioDTO;
@@ -123,13 +126,25 @@ public class GestioneRisorse extends HttpServlet {
 				
 				
 				String id = request.getParameter("id_risorsa");			
-				String data = request.getParameter("data");							
+				String data = request.getParameter("data");		
+				
+				
+				  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				
+				 LocalDate date = LocalDate.parse(data, formatter);
+				int meseCorrente = date.getMonthValue();
+		
+				int anno = date.getYear();
+			
+				LocalDate inizioAnno = LocalDate.of(anno,1,1);
+	
 
 				PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id));				
 				ArrayList<PRRequisitoRisorsaDTO>  lista_requisiti_risorsa = GestioneRisorseBO.getListaRequisitiRisorsa(risorsa.getId(),session);				
-				  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-			        LocalDate date = LocalDate.parse(data, formatter);
-			        ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(date, date, session);
+				
+			       
+			        //ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(date, date, session);
+			        ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(inizioAnno, date, session);
 			     
 			        ArrayList<ForCorsoDTO>lista_corsi = GestioneFormazioneBO.getListaCorsiInCorsoPartecipante(risorsa.getPartecipante().getId(), session);
 			     // 1. ID dei requisiti sanitari associati alla risorsa
@@ -151,38 +166,136 @@ public class GestioneRisorse extends HttpServlet {
 
 			        // 2. Per ogni intervento, verifica che contenga tutti i requisiti sanitari della risorsa
 			        for (InterventoDTO interventoDTO : lista_interventi) {
-			            Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
-			            Set<Integer> idRequisitiDocumentaliIntervento = new HashSet<>();
-
-			            for (PRInterventoRequisitoDTO requisito : interventoDTO.getListaRequisiti()) {
-			                if (requisito.getRequisito_sanitario() != null) {
-			                    idRequisitiSanitariIntervento.add(requisito.getRequisito_sanitario().getId());
-			                }
-			                if (requisito.getRequisito_documentale() != null) {
-			                	idRequisitiDocumentaliIntervento.add(requisito.getRequisito_documentale().getCategoria().getId());
-			                }
-			            }
-
-			            // 3. Verifica che TUTTI i requisiti della risorsa siano presenti nell'intervento
-			            if (idRequisitiSanitariRisorsa.containsAll(idRequisitiSanitariIntervento) && 
-			            		idRequisitiDocumentaliRisorsa.containsAll(idRequisitiDocumentaliIntervento)) {
-			                lista_interventi_disponibili.add(interventoDTO);
-			            }
-			           
+			        	if(interventoDTO.getStatoIntervento().getId() == 1) {
+				            Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
+				            Set<Integer> idRequisitiDocumentaliIntervento = new HashSet<>();
+	
+				            for (PRInterventoRequisitoDTO requisito : interventoDTO.getListaRequisiti()) {
+				                if (requisito.getRequisito_sanitario() != null) {
+				                    idRequisitiSanitariIntervento.add(requisito.getRequisito_sanitario().getId());
+				                }
+				                if (requisito.getRequisito_documentale() != null) {
+				                	idRequisitiDocumentaliIntervento.add(requisito.getRequisito_documentale().getCategoria().getId());
+				                }
+				            }
+	
+				            // 3. Verifica che TUTTI i requisiti della risorsa siano presenti nell'intervento
+				            if (idRequisitiSanitariRisorsa.containsAll(idRequisitiSanitariIntervento) && 
+				            		idRequisitiDocumentaliRisorsa.containsAll(idRequisitiDocumentaliIntervento)) {
+				                lista_interventi_disponibili.add(interventoDTO);
+				            }
+			        	}
 			        }
 
+			        
+			    ArrayList<PRInterventoRisorsaDTO> lista_interventi_risorsa = GestioneRisorseBO.getListaInterventiRisorsa(risorsa.getId(), date,session);
+			        
 			
 				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+				response.setContentType("application/json; charset=UTF-8");
+				response.setCharacterEncoding("UTF-8");
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
 				myObj.add("lista_requisiti_risorsa", g.toJsonTree(lista_requisiti_risorsa));
+				myObj.add("lista_interventi_risorsa", g.toJsonTree(lista_interventi_risorsa));
 				myObj.add("lista_interventi", g.toJsonTree(lista_interventi_disponibili));
 				myObj.add("risorsa", g.toJsonTree(risorsa));
 				out.print(myObj);
 				
+			}else if(action.equals("lista_associazioni")) {
+				
+				ajax = true;
+				
+//				ArrayList<PRInterventoRisorsaDTO> lista_associazioni = GestioneRisorseBO.getListaInterventoRisorseAll(session);
+				ArrayList<PRInterventoRisorsaDTO> lista_associazioni =DirectMySqlDAO.getListaInterventoRisorseAll(session);
+								
+
+				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+				response.setContentType("application/json; charset=UTF-8");
+				response.setCharacterEncoding("UTF-8");
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.add("lista_associazioni", g.toJsonTree(lista_associazioni));
+				out.print(myObj);
+				
 			}
+			else if(action.equals("get_risorse_disponibili")) {
+				
+				ajax = true;
+				
+				String id_intervento = request.getParameter("id_intervento");
+				
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento, session);
+				
+				LocalDate localDate =	intervento.getDataCreazione().toInstant()
+				        .atZone(ZoneId.systemDefault())
+				        .toLocalDate();
+				
+				ArrayList<PRRisorsaDTO> lista_risorse_libere = GestioneRisorseBO.getListaRisorseLibere(localDate,session);
+				ArrayList<PRRisorsaDTO> lista_risorse_all = GestioneRisorseBO.getListaRisorse(session);
+				
+				 ArrayList<PRRisorsaDTO> lista_risorse_disponibili = new ArrayList<>();
+				
+			
+			        Set<Integer> idRequisitiSanitariRisorsa = new HashSet<>();
+			        Set<Integer> idRequisitiDocumentaliRisorsa = new HashSet<>();
+			        
+			        Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
+		            Set<Integer> idRequisitiDocumentaliIntervento = new HashSet<>();
+			        for (PRInterventoRequisitoDTO req : intervento.getListaRequisiti()) {
+			            if (req.getRequisito_sanitario() != null) {
+			            	idRequisitiSanitariIntervento.add(req.getRequisito_sanitario().getId());
+			            }
+			            if (req.getRequisito_documentale() != null) {
+			            	idRequisitiDocumentaliIntervento.add(req.getRequisito_documentale().getCategoria().getId());
+			            }
+			        }
+			        
+			        for (PRRisorsaDTO risorsa : lista_risorse_libere) {
+			        	for (PRRequisitoRisorsaDTO r : risorsa.getListaRequisiti()) {
+							
+							if(r.getReq_sanitario()!=null) {
+								idRequisitiSanitariRisorsa.add(r.getReq_sanitario().getId());
+							}
+							
+							
+						}
+			        	
+			        	
+			        	 ArrayList<ForCorsoDTO>lista_corsi = GestioneFormazioneBO.getListaCorsiInCorsoPartecipante(risorsa.getPartecipante().getId(), session);
+			        	 
+			        	 for (ForCorsoDTO c : lista_corsi) {
+					           
+					        	idRequisitiDocumentaliRisorsa.add(c.getCorso_cat().getId());
+					           
+					        }
+			        	 
+			        	if (idRequisitiSanitariRisorsa.containsAll(idRequisitiSanitariIntervento) && 
+			            		idRequisitiDocumentaliRisorsa.containsAll(idRequisitiDocumentaliIntervento)) {
+			        		lista_risorse_disponibili.add(risorsa);
+			            }
+			           			           
+			        }
+
+			
+				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+				response.setContentType("application/json; charset=UTF-8");
+				response.setCharacterEncoding("UTF-8");
+	
+
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.add("lista_risorse_disponibili", g.toJsonTree(lista_risorse_disponibili));
+				myObj.add("lista_risorse_all", g.toJsonTree(lista_risorse_all));
+				out.print(myObj);
+				
+			}
+			session.getTransaction().commit();
+	    	session.close();
 	}catch(Exception e) {
 		e.printStackTrace();
 		session.getTransaction().rollback();
@@ -310,21 +423,7 @@ public class GestioneRisorse extends HttpServlet {
 				session.saveOrUpdate(risorsa);
 				
 				if(id_req_sanitari!=null) {
-//					
-//					if(id_req_documentali!=null && !id_req_documentali.equals("")) {
-//						for (int i = 0; i < id_req_documentali.split(";").length;i++) {
-//							
-//							if(!id_req_documentali.split(";")[i].equals("")) {
-//							PRRequisitoRisorsaDTO req_risorsa = new PRRequisitoRisorsaDTO();
-//							req_risorsa.setRisorsa(risorsa.getId());
-//							PRRequisitoDocumentaleDTO req_doc = (PRRequisitoDocumentaleDTO) session.get(PRRequisitoDocumentaleDTO.class, Integer.parseInt(id_req_documentali.split(";")[i]));
-//							req_risorsa.setReq_documentale(req_doc);
-//							//session.save(req_risorsa);
-//							risorsa.getListaRequisiti().add(req_risorsa);
-//							}
-//						}
-//						
-//					}
+
 					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					
 					if(id_req_sanitari!=null && !id_req_sanitari.equals("")) {
@@ -697,6 +796,121 @@ public class GestioneRisorse extends HttpServlet {
 		     	dispatcher.forward(request,response);
 				
 			}
+			
+			else if(action.equals("associa_intervnto_risorsa")) {
+				
+				ajax = true;
+				
+	
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}		        
+		       
+	
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	      
+	            	
+	            }
+		
+				String id_intervento = ret.get("id_intervento");
+				String id_risorsa = ret.get("id_risorsa");
+				String cella = ret.get("cella");
+				String data = ret.get("data_pianificazione");
+				String calendario = ret.get("calendario");
+				String id_intervento_ris = ret.get("id_intervento_ris");
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				
+				
+				if(data == null || data.equals("")) {
+					data = df.format(new Date());
+				}
+				
+				if(id_intervento == null || id_intervento.equals("")) {
+					id_intervento = id_intervento_ris; 
+				}
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento, session);
+				
+			
+				String [] id_risorsa_multi = id_risorsa.split(",");
+				
+				int n = id_risorsa_multi.length;
+		
+				
+				if(calendario==null) {
+					intervento.getListaRisorse().clear();
+				}
+				
+				session.update(intervento);
+				
+				  Set<Integer> idRisorseIntervento = new HashSet<>();
+				  
+				  for (PRInterventoRisorsaDTO r : intervento.getListaRisorse()) {
+			            
+					  idRisorseIntervento.add(r.getRisorsa().getId());
+			           
+				  }
+			//	ArrayList<PRInterventoRisorsaDTO> lista_risorse_intervento = GestioneRisorseBO.getRisorsaIntervento(intervento.getId(), null, session);
+				if(id_risorsa!=null && !id_risorsa.equals("")) {
+				for(int i = 0; i<n ; i++) {
+					PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id_risorsa_multi[i]));
+				
+					PRInterventoRisorsaDTO intervento_risorsa = new PRInterventoRisorsaDTO();
+					
+					intervento_risorsa.setIntervento(intervento.getId());
+					intervento_risorsa.setRisorsa(risorsa);
+					intervento_risorsa.setData(df.parse(data));
+					
+					if(cella!=null) {
+						intervento_risorsa.setCella(Integer.parseInt(cella));	
+					}else {
+						
+						Calendar calendar = Calendar.getInstance();
+				        calendar.setTime(intervento.getDataCreazione());
+				        
+				        int giornoDellAnno = calendar.get(Calendar.DAY_OF_YEAR);
+						intervento_risorsa.setCella(giornoDellAnno);
+					}
+					if(!idRisorseIntervento.contains(risorsa.getId())) {
+						intervento.getListaRisorse().add(intervento_risorsa);
+					}
+					
+				}
+				
+				session.update(intervento);
+				}
+
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
+				
+			}
+			else if(action.equals("lista_requisiti")) {
+				
+		
+				 ArrayList<PRRequisitoDocumentaleDTO> lista_req_documentali = GestioneRisorseBO.getListaRequisitiDocumentali(session);
+				 ArrayList<PRRequisitoSanitarioDTO> lista_req_sanitari = GestioneRisorseBO.getListaRequisitiSanitari(session);
+				 
+				 
+					request.getSession().setAttribute("lista_req_documentali", lista_req_documentali);
+					request.getSession().setAttribute("lista_req_sanitari", lista_req_sanitari);			
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/pr_lista_requisiti.jsp");
+			     dispatcher.forward(request,response);
+				
+				
+			}
+			
 			session.getTransaction().commit();
 	    	session.close();
 	}catch(Exception e) {

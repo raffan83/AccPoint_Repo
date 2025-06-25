@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
@@ -20,14 +21,17 @@ import org.hibernate.Session;
 import com.google.gson.Gson;
 import com.ibm.wsdl.util.IOUtils;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
+import it.portaleSTI.DTO.PRInterventoRisorsaDTO;
 import it.portaleSTI.DTO.PRRequisitoDocumentaleDTO;
 import it.portaleSTI.DTO.PRRequisitoSanitarioDTO;
+import it.portaleSTI.DTO.PRRisorsaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -172,6 +176,14 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		request.getSession().setAttribute("intervento", intervento);
 		request.getSession().setAttribute("listaRequisitiJson", gson.toJsonTree(intervento.getListaRequisiti()));
+		
+		
+		Map<Integer,Integer> map_relazioni = DirectMySqlDAO.getListaRelazioni();
+		
+		//ArrayList<PRInterventoRisorsaDTO> risorse_intervento = GestioneRisorseBO.getRisorsaIntervento(intervento.getId(), intervento.getDataCreazione(), session);
+		
+		request.getSession().setAttribute("map_relazioni", gson.toJsonTree(map_relazioni));
+		request.getSession().setAttribute("risorse_intervento_json",gson.toJsonTree(intervento.getListaRisorse()));
 		
 		Properties prop = new Properties();
 		String propFileName = "config.properties";

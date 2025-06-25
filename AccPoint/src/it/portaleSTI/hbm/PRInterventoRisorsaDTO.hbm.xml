@@ -9,16 +9,25 @@
             <column name="id" />
             <generator class="native" />
         </id>
-          <many-to-one name="intervento" class="it.portaleSTI.DTO.InterventoDTO" fetch="join" lazy="false">
+   <!--        <many-to-one name="intervento" class="it.portaleSTI.DTO.InterventoDTO" fetch="join" lazy="false">
             <column name="id_intervento" />
-        </many-to-one>
+        </many-to-one> -->
+        
+          <property name="intervento" type="int">
+            <column name="id_intervento" />
+        </property>
         
          <many-to-one name="risorsa" class="it.portaleSTI.DTO.PRRisorsaDTO" fetch="join" lazy="false">
             <column name="id_risorsa" />
         </many-to-one>
         
-      
-       
+        
+       <property name="data" type="java.sql.Date">
+            <column name="data" />
+        </property>
+         <property name="cella" type="int">
+            <column name="cella" />
+        </property>
       
     </class>
 </hibernate-mapping>

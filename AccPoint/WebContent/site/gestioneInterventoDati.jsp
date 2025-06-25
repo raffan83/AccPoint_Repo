@@ -154,6 +154,22 @@
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
                 </li>
+                <li class="list-group-item">
+                  <b>Assegnato a</b>
+                    <c:if test="${intervento.getListaRisorse().size()==0 }">
+                   <a class="btn btn-primary pull-right btn-xs"  title="Click per assegnare l'intervento a una risorsa" onClick="assegnaRisorsa('${intervento.id}')"><i class="fa fa-plus"></i></a>
+                   </c:if>
+                  <c:forEach items="${intervento.getListaRisorse() }" var="risorsa_intervento" varStatus="loop">
+                     <c:if test="${loop.index == 0 }">
+                 <a class="btn btn-primary pull-right btn-xs"  title="Click per assegnare l'intervento a una risorsa" onClick="assegnaRisorsa('${intervento.id}')"><i class="fa fa-plus"></i></a>   
+                  </c:if>
+                  <a class="pull-right" style="padding-right:7px">${risorsa_intervento.risorsa.utente.nominativo}</a>
+               
+                  <br>
+                  
+                  </c:forEach>
+                
+                </li>
         </ul>
         
    
@@ -1169,6 +1185,44 @@
     </div>
   </div>
 </div>
+
+<form id="formAssegnaRisorsa" name="formAssegnaRisorsa">
+ <div id="modalRisorse" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Risorse disponibili</h4>
+      </div>
+       <div class="modal-body">      
+       <div class="row">
+       <div class="col-xs-12">
+       <label>Seleziona risorsa </label>
+       <select class="form-control select2" style="width:100%" multiple data-placeholder="Seleziona risorsa..." id="risorse_disponibili" name="risorse_disponibili"></select>
+      
+       </div>
+       
+       </div> 
+       
+
+   
+      	</div>
+      <div class="modal-footer">
+  
+  <input type="hidden" value="${intervento.id }" id="id_intervento_ris" name="id_intervento_ris">
+  <input type="hidden" id="id_risorsa" name="id_risorsa"> 
+   <input type="hidden"  id="id_int_risorsa" name="id_int_risorsa"> 
+  
+
+<button class="btn btn-primary" type="submit" >Salva</button>
+		<a class="btn btn-primary" onclick="$('#modalRisorse').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+  </form>
 
 <form id="formFirmaClienteCheck" name="formFirmaClienteCheck">
   <div id="myModalFirmeCliente" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato"  data-backdrop="static" >
@@ -3208,13 +3262,136 @@ var config4 = {
      			}
      				   
      		}
+     
      	 
      	 
      	 $('#modalNuovoRequisito').modal()
      	 
+     	let isSyncing = false;
+
+     	t_doc.on('select', function (e, dt, type, indexes) {
+     	    if (isSyncing) return;
+
+     	    if (type === 'row') {
+     	        const data = t_doc.row(indexes[0]).data();
+
+     	        if (map_relazioni.hasOwnProperty(data[1])) {
+     	            const valore = map_relazioni[data[1]];
+
+     	            isSyncing = true;
+     	            t_san.row("#row_san_" + valore, { page: 'all' }).select();
+     	            isSyncing = false;
+     	        }
+     	    }
+     	});
+
+     	t_san.on('select', function (e, dt, type, indexes) {
+     	    if (isSyncing) return;
+
+     	    if (type === 'row') {
+     	        const data = t_san.row(indexes[0]).data();
+
+     	        if (Object.values(map_relazioni).includes(Number(data[1]))) {
+     	            const chiave = Object.entries(map_relazioni).find(([k, v]) => v == data[1])?.[0];
+
+     	            if (chiave !== undefined) {
+     	                isSyncing = true;
+     	                t_doc.row("#row_doc_" + chiave, { page: 'all' }).select();
+     	                isSyncing = false;
+     	            }
+     	        }
+     	    }
+     	});
+
       }
     
+    var map_relazioni = ${map_relazioni};
+	
+ 	 
+    function assegnaRisorsa(id_intervento ){
+    	
+      	pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+    	dataObj ={};
+    	dataObj.id_intervento = id_intervento;
+    	
+  /*   	if(id_risorsa_precedente !=null){
+    		  $('#id_int_risorsa').val(id_risorsa_precedente);
+    	}else{
+    		$('#id_int_risorsa').val(null);
+    	}
+    	 */
+    	var risorse_intervento = ${risorse_intervento_json}
+    	
+    	callAjax(dataObj, "gestioneRisorse.do?action=get_risorse_disponibili", function(data){
+    		
+    		if(data.success){
+    			
+    			var lista_risorse = data.lista_risorse_disponibili;
+    			var lista_risorse_all = data.lista_risorse_all;
+    			
+    			 var id_risorse_disponibili = lista_risorse.map(function(r) { return r.id; });
+    			
+    			var $select = $("#risorse_disponibili").empty().append('<option value=""></option>');
+    			
+    			 $.each(lista_risorse_all, function(index, risorsa) {
+    			        var option = $('<option>', {
+    			            value: risorsa.id,
+    			            text: risorsa.utente.nominativo,
+    			            disabled: !id_risorse_disponibili.includes(risorsa.id)
+    			        });
+    			        $select.append(option);
+    			    });
+
+    			/* $.each(lista_risorse_all, function(index, risorsa) {
+    				if(lista_risorse.includes(risorsa)){
+    					$select.append($('<option>', {
+        			        value: risorsa.id,
+        			        text: risorsa.utente.nominativo
+        			        
+        			    }));	
+    				}
+    			    
+    				if(!lista_risorse.includes(risorsa)){
+	    			    $select.append($('<option>', {
+	    			        value: risorsa.id,
+	    			        text: risorsa.utente.nominativo,
+	    			        disabled: true
+	    			    }));
+    				}
+    			});
+    			 */
+    			if(risorse_intervento !=null){
+    				for (var i = 0; i < risorse_intervento.length; i++) {
+    					$('#risorse_disponibili option[value="'+risorse_intervento[i].risorsa.id+'"]').attr("selected", true);
+    					$('#risorse_disponibili').change();
+    					
+    					
+    					$('#id_int_risorsa').val($('#risorse_disponibili').val()+risorse_intervento[i].risorsa.id+";");
+    				}
+    		
+    			}
+    			$("#modalRisorse").modal();
+    			
+    		}
+    		pleaseWaitDiv.modal('hide');
+    	}, "GET")
+    	
+    }
     
+    
+    $('#formAssegnaRisorsa').on('submit', function(e){
+    	
+   	 e.preventDefault();
+   	 $('#id_risorsa').val($("#risorse_disponibili").val())
+
+ callAjaxForm('#formAssegnaRisorsa','gestioneRisorse.do?action=associa_intervnto_risorsa');
+
+    })
+    	
+  
+    	
+
 
   </script>
 </jsp:attribute> 

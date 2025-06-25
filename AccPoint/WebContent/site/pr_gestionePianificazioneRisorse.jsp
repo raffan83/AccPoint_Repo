@@ -130,7 +130,7 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_prenotazione">Associa Intervento</h4>
+        <h4 class="modal-title" id="title_pianificazione">Associa Intervento</h4>
       </div>
        <div class="modal-body"> 
              <div class="row">
@@ -138,10 +138,11 @@
         <table id="tabInterventi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
         <thead>
         <tr>
-      
+      	<th></th>
         <th>ID</th>
         <th>Commessa</th>
         <th>Presso</th>
+        <th>Cliente</th>
         <th style="min-width:100px">Sede</th>
         <th>Responsabile</th>
         <th>Azioni</th>
@@ -152,23 +153,17 @@
         </tbody>
         
         </table>
- <%--       <label>Utente</label>
-             <select class="form-control select2" id="intervento" name="intervento" style="width:100%" data-placeholder="Seleziona Intervento..." required>
-       <option value=""></option>
 
-     <c:forEach items="${lista_interventi }" var="intervento">
-       <option value="${intervento.id }">${intervento.id } - ${intervento.idCommessa } - ${intervento.nome_cliente } - ${intervento.nome_sede }</option>
-       </c:forEach> 
-       </select>--%>
         </div>
 	
       	</div>
       	</div>
       <div class="modal-footer">
-      <input type="hidden" id="id_prenotazione" name="id_prenotazione">
-      <input type="hidden" id="day" name="day">
-      <input type="hidden" id="id_veicolo" name="id_veicolo">
-    <input type="hidden" id="check_giornaliero" name="check_giornaliero">
+      <input type="hidden" id="id_intervento" name="id_intervento">
+      <input type="hidden" id="id_risorsa" name="id_risorsa">
+      <input type="hidden" id="cella" name="cella">
+      <input type="hidden" id="data_pianificazione" name="data_pianificazione">
+      <input type="hidden" id="calendario" name=calendario>
       
       <a class="btn btn-danger pull-left" onclick="$('#myModalYesOrNo').modal()"  id="btn_elimina" style="display:none">Elimina</a>
         
@@ -184,6 +179,43 @@
 
 </div>
 </form>
+
+
+ <div id="modalRequisiti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Requisiti Intervento</h4>
+      </div>
+       <div class="modal-body">      
+       <div class="row">
+       <div class="col-xs-12">
+       <label>REQUISITI DOCUMENTALI</label>
+       <div id="content_requisiti_doc"></div>
+       
+       </div>
+       
+       </div> 
+       
+        <div class="row">
+       <div class="col-xs-12">
+       <label>REQUISITI SANITARI</label>
+       <div id="content_requisiti_san"></div>
+       
+       </div>
+       
+       </div> 
+   
+      	</div>
+      <div class="modal-footer">
+  
+
+		<a class="btn btn-primary" onclick="$('#modalRequisiti').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
 	
 	
 	
@@ -226,6 +258,8 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css">
+		<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
+	<link type="text/css" href="css/bootstrap.min.css" />
 <style>
 
 
@@ -255,30 +289,6 @@
 } */
 
 
-.custom-menu {
-    display: none;
-    z-index: 1000;
-    position: absolute;
-    overflow: hidden;
-    white-space: nowrap;
-    font-family: sans-serif;     
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    
-}
-
-.custom-menu li {
-    padding: 8px 12px;
-    cursor: pointer;
-}
-
-.custom-menu li:hover {
-    background-color: #DEF;
-}
 
 
   </style>
@@ -294,40 +304,14 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script> 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
+<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 	
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"></script> 
 
 <script type="text/javascript">  
 
-$('input:checkbox').on('ifToggled', function() {
-	
-	$('#manutenzione').on('ifChecked', function(event){
-		
-		$('#utente').attr("disabled", true);
-	});
-	
-	$('#manutenzione').on('ifUnchecked', function(event) {
-		
-		$('#utente').attr("disabled", false);
-	
-	});
-	
 
-	
-})
-
-
- $('#giornaliero').on('ifChecked', function(event){
-		$('#check_giornaliero').val("SI");
-		
-	});
-
-	$('#giornaliero').on('ifUnchecked', function(event) {
-		
-		$('#check_giornaliero').val("NO");
-
-	});
  
 
 function subTrimestre(data_inizio, anno){
@@ -338,7 +322,7 @@ function subTrimestre(data_inizio, anno){
 		data_inizio = 366	
 	}
 	
-	callAction('gestioneParcoAuto.do?action=gestione_prenotazioni&move=back&data_inizio='+data_inizio+'&anno='+$('#anno').val());
+	callAction('gestioneRisorse.do?action=gestione_prenotazioni&move=back&data_inizio='+data_inizio+'&anno='+$('#anno').val());
 }
 
 function addTrimestre(data_fine, anno){
@@ -349,7 +333,7 @@ function addTrimestre(data_fine, anno){
 		data_fine = 1;
 	}
 	
-	callAction('gestioneParcoAuto.do?action=gestione_prenotazioni&move=forward&data_inizio='+data_fine+'&anno='+$('#anno').val());
+	callAction('gestioneRisorse.do?action=pianificazione_risorse&move=forward&data_inizio='+data_fine+'&anno='+$('#anno').val());
 }
 
 function vaiAOggi(anno){
@@ -359,7 +343,7 @@ function vaiAOggi(anno){
 	$('#anno').change()
 
 
-callAction('gestioneParcoAuto.do?action=gestione_prenotazioni&anno='+$('#anno').val());
+callAction('gestioneParcoAuto.do?action=pianificazione_risorse&anno='+$('#anno').val());
 
 
 	
@@ -428,67 +412,10 @@ function toDate(dateStr) {
 
 
 
-$('#tipo').change(function(){
-	
-	var value = $('#tipo').val();
-	
-	if(value==3){
-		$('#docente').prop('selectedIndex', -1);
-		$('#docente').change();
-		$('#id_docenti').val("");
-		$('#docente').attr("disabled", true);
-		//$('#docente').attr("required", false);
-		$('#content_agenda').hide();
-		$('#check_agenda').val("0");
-		$('#n_utenti_content').show();
-	}	
-	else{
-	
-		$('#n_utenti_content').hide();
-		$('#content_agenda').show();
-		$('#docente').attr("disabled", false);
-		//$('#docente').attr("required", true);
-	}
-	
-});
-
-$('#formNuovaPrenotazione').on("submit", function(e){
-	e.preventDefault();
-	nuovaPrenotazione();
-})
 
 
-$('#docente').on('change', function() {
-	  
-	var selected = $(this).val();
-	var selected_before = $('#id_docenti').val().split(";");
-	var deselected = "";
-	
+/* 
 
-	if(selected!=null && selected.length>0){
-		
-		for(var i = 0; i<selected_before.length;i++){
-			var found = false
-			for(var j = 0; j<selected.length;j++){
-				if(selected_before[i] == selected[j]){
-					found = true;
-				}
-			}
-			if(!found && selected_before[i]!=''){
-				deselected = deselected+selected_before[i]+";";
-			}
-		}
-	}else{
-		deselected = $('#id_docenti').val();
-	}
-	 
-	
-	$('#id_docenti_dissocia').val(deselected)
-	
-  });
-
-
-var isPaste = false;
 
 function nuovaPrenotazione(){
 	
@@ -506,16 +433,7 @@ function nuovaPrenotazione(){
     	        
 
 
-    	      /*   return (inizio.isBetween(inizioPrenotazione, finePrenotazione, undefined, '[)') ||
-    	                fine.isBetween(inizioPrenotazione, finePrenotazione, undefined, '(]') ||
-    	                (inizioPrenotazione.isBetween(inizio, fine, undefined, '(]') &&
-    	                 finePrenotazione.isBetween(inizio, fine, undefined, '[)'))); */
-    	                 
-    	        /* return (
-    	                inizio.isBetween(inizioPrenotazione, finePrenotazione, undefined, '[)') ||
-    	                fine.isBetween(inizioPrenotazione, finePrenotazione, undefined, '(]') ||
-    	                (inizioPrenotazione.isBetween(inizio, fine) && finePrenotazione.isBetween(inizio, fine))
-    	            ); */
+
     	                 
     	        return (
     	                (inizio.isBetween(inizioPrenotazione, finePrenotazione) || fine.isBetween(inizioPrenotazione, finePrenotazione)) ||
@@ -555,8 +473,7 @@ function nuovaPrenotazione(){
 			$(document.body).css('padding-right', '0px');
 			if(datab.success){
 				location.reload()
-				//fillTable("${anno}", "${filtro_tipo_pianificazioni}");
-			//	controllaColoreCella(table, "#F7BEF6");
+	
 				
 				$('#modalAssociaIntervento').modal("hide");
 				
@@ -576,9 +493,9 @@ function nuovaPrenotazione(){
 		
 	
 	
-}
+} */
 
-
+/* 
 $('input:checkbox').on('ifToggled', function() {
 	
 	$('#email').on('ifChecked', function(event){
@@ -628,7 +545,7 @@ $('input:checkbox').on('ifToggled', function() {
 	
 })
 
-
+ */
 function eliminaPrenotazione(){
 	
 	dataObj = {};
@@ -638,17 +555,6 @@ function eliminaPrenotazione(){
 
 }
 
-$('#stato').change(function(){
-	
-	if($('#stato').val()== 3){
-		$('#rifornimento_content').show();
-	}else{
-		$('#rifornimento_content').hide();
-		$('#rifornimento').iCheck("uncheck")
-	}
-	
-	
-});
 
 
 var zoom_level;
@@ -748,157 +654,62 @@ $(document).ready(function($) {
 			    }
 			  },
 			  pageLength: 25,
-		        order: [[1, "desc"]],
-		        paging: false,
-		        ordering: true,
-		        info: true,
-		        searchable: false,
-		        targets: 0,
-		        responsive: true,
-		        scrollX: false,
-		        stateSave: true,
-		      
+			  order: [[1, "desc"]],
+			  paging: true,
+			  ordering: true,
+			  info: true,
+			  searchable: true,
 
-				  columns: [
-					   
-					    { data: "id" },
-					    { data: "commessa" },
-					    { data: "presso" },
-					    { data: "sede" },
-					    { data: "responsabile" },
-					    { data: "azioni" }
-					  ],
-		        columnDefs: [
-		            { responsivePriority: 1, targets: 1 }
-		        ],
-		        buttons: [{
-		            extend: 'colvis',
-		            text: 'Nascondi Colonne'
-		        }]
-		    });
-		
-		
-			table.columns.adjust().draw();
-			
-		 
-		 
+			  responsive: true,
+			  scrollX: false,
+			  stateSave: true,
 
+			  select: {
+			    style: 'multi-shift',
+			    selector: 'td:first-child' // attenzione: meglio usare 'first-child' che 'nth-child(1)'
+			  },
+
+			  columns: [
+			    { data: null }, // <- questo va così se non c'è "check" nel JSON
+			    { data: "id" },
+			    { data: "commessa" },
+			    { data: "presso" },
+			    { data: "cliente"},
+			    { data: "sede" },
+			    { data: "responsabile" },
+			    { data: "azioni" }
+			  ],
+
+			  columnDefs: [
+			    {
+			      targets: 0,
+			      className: 'select-checkbox',
+			      orderable: false,
+			      defaultContent: ''
+			    },
+			    { responsivePriority: 1, targets: 1 }
+			  ],
+
+			  buttons: [{
+			    extend: 'colvis',
+			    text: 'Nascondi Colonne'
+			  }]
+			});
+
+		//	table.columns.adjust().draw();
 		 
 			
 });
 
 
-$('#tabPrenotazione tbody td').on('contextmenu', 'div',  function(e) {
+/* $('#tabPianificazioneRisorse tbody td').on('contextmenu', 'div',  function(e) {
 	if($(this).hasClass("riquadro")){
 	    selectedDiv = $(this);
 	    e.preventDefault(); // Prevent default context menu
 	}
 
-	}); 
+	});  */
 
-var cellIndex;
-function initContextMenu(){
-	
-	$("#tabPrenotazione tbody td").bind("contextmenu", function (event) {
-		
-	     
-	     // Avoid the real one
-	     event.preventDefault();
-
-	     var cell = $("#"+event.currentTarget.id).offset();
-	     cellIndex = event.currentTarget.id
-
-	 	      var x  = cell.left -210;
-	 	var y  = cell.top - 210; 
-	     
-
-	     // Show contextmenu
-	     $(".custom-menu").finish().toggle(). 
-	     css({
-	         top: y + "px",
-	         left: x + "px"
-	     });
-	     
-	     
-	     //alert("X:"+(x-240) +"Y:"+ (y-280))
-	 });
-
-
-	 // If the document is clicked somewhere
-	 $(document).bind("mousedown", function (e) {
-	     
-	     // If the clicked element is not the menu
-	     if (!$(e.target).parents(".custom-menu").length > 0) {
-	         
-	         // Hide it
-	         $(".custom-menu").hide(100);
-	     }
-	 });
-
-
-	 // If the menu element is clicked
-	 $(".custom-menu li").click(function(e){
-	     
-
-		 
-	     // This is the triggered action name
-	     switch($(this).attr("data-action")) {
-	         
-	         // A case for each action. Your actions here
-	     case 'copy':
-             // Implement copy functionality
-              if (selectedDiv) {
-             	 
-             	 cellCopy = selectedDiv[0].id.split("_")[1];
-             	 
-             var divData = selectedDiv.text();
-             console.log('Copy:', divData);
-         } else {
-             console.log('No div selected to copy.');
-         }
-             break;
-         case 'paste':
-             
-         	if(cellCopy!=null){
-         		
-         		pastePrenotazione(cellIndex.split("_")[1], cellIndex.split("_")[0])
-         		
-         	}
-         	                	
-            
-             break;
-         case 'delete':
-             // Implement delete functionality
-             if (selectedDiv) {
-             	 cellCopy = selectedDiv[0].id.split("_")[1];
-             	 
-             	 $('#id_prenotazione').val(cellCopy)
-             	 $('#myModalYesOrNo').modal()
-          
-         } else {
-             console.log('No div selected to delete.');
-         }
-             break;
-	     }
-	   
-	     // Hide it AFTER the action was triggered
-	     $(".custom-menu").hide(100);
-	   });
-
-
-
-
-	  
-	
-}
-
-
-
-
-var orariDisabilitati = [];
-  
-  
-	
 
 $('#modalAssociaIntervento').on("hidden.bs.modal", function(){
 	
@@ -932,6 +743,22 @@ $('#myModalYesOrNo').on("hidden.bs.modal", function(){
 
 	 
 		
+});
+
+
+$('#formNuovaAssociazione').on("submit", function(e){
+	
+	 e.preventDefault();
+	 
+	  var t1 = $('#tabInterventi').DataTable();
+	    t1.rows({ selected: true }).every(function () {
+	        var $row = $(this.node());
+	        var id = $row.find('td').eq(1).text().trim(); // Colonna ID
+	        $('#id_intervento').val(id);
+	    });
+	
+	 callAjaxForm('#formNuovaAssociazione','gestioneRisorse.do?action=associa_intervnto_risorsa');
+	
 });
 
 $(document.body).css('padding-right', '0px');

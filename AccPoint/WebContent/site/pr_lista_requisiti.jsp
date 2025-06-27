@@ -49,8 +49,8 @@
 <div class="row">
 <div class="col-xs-12">
 
-<a class="btn btn-primary pull-right" onClick="modalNuovaRisorsa()"><i class="fa fa-plus"></i> Nuovo Requisito Sanitario</a> 
-<a class="btn btn-primary pull-right" onClick="modalNuovaRisorsa()"><i class="fa fa-plus"></i> Nuovo Requisito Documentale</a>
+<a class="btn btn-primary pull-right" onClick="modalNuovoReqSanitario()"><i class="fa fa-plus"></i> Nuovo Requisito Sanitario</a> 
+<a class="btn btn-primary pull-right" style="margin-right:5px" onClick="modalNuovoReqDocumentale()"><i class="fa fa-plus"></i> Nuovo Requisito Documentale</a>
 </div>
 
 </div><br>
@@ -69,7 +69,7 @@
  
  <tbody>
  
- 	<c:forEach items="${lista_requisiti_sanitari}" var="req" varStatus="loop">
+ 	<c:forEach items="${lista_req_sanitari}" var="req" varStatus="loop">
 	<tr id="row_${loop.index}" >
 
 	<td>${req.id }</td>	
@@ -77,9 +77,9 @@
 	
 	<td>
 
- <%-- 	<a  class="btn btn-warning" onClicK="modificaRisorsaModal('${risorsa.id}')" title="Click per modificare la risorsa"><i class="fa fa-edit"></i></a>
- 	<a  class="btn btn-danger" onClicK="modalEliminaRisorsa('${risorsa.id}')" title="Click per eliminare la risorsa"><i class="fa fa-trash"></i></a>
- --%>
+	<a  class="btn btn-warning" onClicK="modificaRequisitoModal('${req.id}' ,'${req.descrizione }')" title="Click per modificare il requisito sanitario"><i class="fa fa-edit"></i></a>
+ 	<a  class="btn btn-danger" onClicK="modalEliminaRequisito('${req.id}')" title="Click per eliminare il requisito"><i class="fa fa-trash"></i></a>
+
 	</td>
 	</tr>
 	</c:forEach>
@@ -100,24 +100,19 @@
 <th>ID</th>
 <th>Codice</th>
 <th>Descrizione</th>
-<th>Azioni</th>
+
  </tr></thead>
  
  <tbody>
  
- 	<c:forEach items="${lista_requisiti_documentali}" var="req" varStatus="loop">
+ 	<c:forEach items="${lista_req_documentali}" var="req" varStatus="loop">
 	<tr id="row_${loop.index}" >
 
 	<td>${req.id }</td>	
 	<td>${req.categoria.codice }</td>
 	<td>${req.categoria.descrizione }</td>
 	
-	<td>
-
- <%-- 	<a  class="btn btn-warning" onClicK="modificaRisorsaModal('${risorsa.id}')" title="Click per modificare la risorsa"><i class="fa fa-edit"></i></a>
- 	<a  class="btn btn-danger" onClicK="modalEliminaRisorsa('${risorsa.id}')" title="Click per eliminare la risorsa"><i class="fa fa-trash"></i></a>
- --%>
-	</td>
+	
 	</tr>
 	</c:forEach>
 	 
@@ -138,134 +133,29 @@
 
 
 
-<form id="nuovaRisorsaForm" name="nuovaRisorsaForm">
-<div id="modalNuovaRisorsa" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
-    <div class="modal-dialog modal-lg" role="document">
+<form id="NuovoReqSanitario" name="NuovoReqSanitario">
+<div id="modalNuovoReqSanitario" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+    <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuova Risorsa</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Requisito Sanitario</h4>
       </div>
        <div class="modal-body">
 
         <div class="row">
        
-       	<div class="col-sm-6">
-       		<label>Utente</label>
+       	<div class="col-sm-12">
+       		<label>Descrizione</label>
         
-			<select id="utente" name="utente" class="form-control select2" style="width:100%" data-placeholder="Seleziona utente..." required>
-			<option value=""></option>
-		
-				<c:forEach items="${lista_utenti_all}" var="utente">
-				<c:if test="${!lista_utenti.contains(utente) }">
-			<option value="${utente.id }" disabled>${utente.nominativo }</option>
-			</c:if>
-			<c:if test="${lista_utenti.contains(utente) }">
-			<option value="${utente.id }">${utente.nominativo }</option>
-			</c:if>
-			</c:forEach>
-			
-			</select>
-       	</div>       	
-       	
-       	<div class="col-sm-6">
-       		<label>Partecipante</label>
-        
-			<select id="partecipante" name="partecipante" class="form-control select2" style="width:100%" data-placeholder="Seleziona partecipante..." required>
-			<option value=""></option>
-			<c:forEach items="${lista_partecipanti_all}" var="partecipante">
-				<c:if test="${!lista_partecipanti.contains(partecipante) }">
-			<option value="${partecipante.id }" disabled>${partecipante.nome } ${partecipante.cognome }</option>
-			</c:if>
-			<c:if test="${lista_partecipanti.contains(partecipante) }">
-			<option value="${partecipante.id }">${partecipante.nome } ${partecipante.cognome }</option>
-			</c:if>
-			</c:forEach>
-		
-			</select>
+			<input type="text" id="descrizione" name="descrizione" class="form-control">
        	</div>  
        </div><br>
       
-      <div class="row">
-<div class="col-sm-12">
-<label>REQUISITI DOCUMENTALI</label>
-</div>
-</div>
- <div class="row">
-<div class="col-sm-12">
- <table id="tabRequisitiDocumentali" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
-
-<th>ID</th>
-<th>Codice</th>
-<th>Categoria</th>
-<th>Descrizione</th>
-<th>Data Scadenza</th>
- </tr></thead>
- 
- <tbody>
- 
- 	<%-- <c:forEach items="${lista_requisiti_documentali}" var="requisito" varStatus="loop">
- 
-	<tr id="row_${loop.index}" >
-	<td></td>
-	<td>${requisito.id }</td>	
-	<td>${requisito.categoria.codice }</td>
-	<td>${requisito.categoria.descrizione }</td>	
-	</tr>
-	</c:forEach>
-	  --%>
-
- </tbody>
- </table>  
-</div>
-</div>
-       
-       
-             <div class="row">
-<div class="col-sm-12">
-<label>REQUISITI SANITARI</label>
-</div>
-</div>
- <div class="row">
-<div class="col-sm-12">
- <table id="tabRequisitiSanitari" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
-
-<td></td>
-<th>ID</th>
-<th>Descrizione</th>
-<th style="max-width:50px">Stato</th>
-<th style="max-width:100px">Data inizio</th>
-<th style="max-width:100px">Data fine</th>
-
- </tr></thead>
- 
- <tbody>
- 
- 	<c:forEach items="${lista_requisiti_sanitari}" var="requisito" varStatus="loop">
- 	
-	<tr >
-	<td></td>
-	<td>${requisito.id }</td>	
-	<td>${requisito.descrizione }</td>
-	<td id="stato_${requisito.id }"></td>	
-	<td id="datainizio_${requisito.id }"></td>
-	<td id="datafine_${requisito.id }"></td>
-	</tr>
-	</c:forEach>
-	 
-
- </tbody>
- </table>  
-</div>
-</div>
-       
        </div>
   		 
       <div class="modal-footer">
-		<input id="id_req_documentali" name="id_req_documentali" type="hidden">
-		<input id="id_req_sanitari" name="id_req_sanitari" type="hidden">
+	
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -277,135 +167,94 @@
 </form>
 
 
-<form id="modificaRisorsaForm" name="nuovaRisorsaForm">
-<div id="modalModificaRisorsa" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
-    <div class="modal-dialog modal-lg" role="document">
+<form id="ModificaReqSanitario" name="ModificaReqSanitario">
+<div id="modalModificaRequisito" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+    <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Risorsa</h4>
+        <h4 class="modal-title" id="myModalLabel">Modifica Requisito Sanitario</h4>
       </div>
        <div class="modal-body">
 
         <div class="row">
        
-       	<div class="col-sm-6">
-       		<label>Utente</label>
+       	<div class="col-sm-12">
+       		<label>Descrizione</label>
         
-			<select id="utente_mod" name="utente_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona utente..." required>
-			<option value=""></option>
-			<c:forEach items="${lista_utenti_all}" var="utente">
-				
-			<option value="${utente.id }" >${utente.nominativo }</option>
-			
-			</c:forEach>
-			</select>
-       	</div>       	
-       	
-       	<div class="col-sm-6">
-       		<label>Partecipante</label>
-        
-			<select id="partecipante_mod" name="partecipante_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona partecipante..." required>
-			<option value=""></option>
-			<%-- <c:forEach items="${lista_partecipanti_all}" var="partecipante">
-				<c:if test="${!lista_partecipanti.contains(partecipante) }">
-			<option value="${partecipante.id }" disabled>${partecipante.nome } ${partecipante.cognome }</option>
-			</c:if>
-			<c:if test="${lista_partecipanti.contains(partecipante) }">
-			<option value="${partecipante.id }">${partecipante.nome } ${partecipante.cognome }</option>
-			</c:if>
-			</c:forEach> --%>
-			<c:forEach items="${lista_partecipanti_all}" var="partecipante">
-			
-			<option value="${partecipante.id }" >${partecipante.nome } ${partecipante.cognome }</option>
-	
-		
-			</c:forEach>
-			</select>
+			<input type="text" id="descrizione_mod" name="descrizione_mod" class="form-control">
        	</div>  
        </div><br>
       
-      <div class="row">
-<div class="col-sm-12">
-<label>REQUISITI DOCUMENTALI</label>
-</div>
-</div>
- <div class="row">
-<div class="col-sm-12">
- <table id="tabRequisitiDocumentali_mod" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active" >
-
-<th>ID</th>
-<th>Codice</th>
-<th>Categoria</th>
-<th>Descrizione</th>
-<th>Data Scadenza</th>
- </tr></thead>
- 
- <tbody>
- 
-<%--  	<c:forEach items="${lista_requisiti_documentali}" var="requisito" varStatus="loop">
- 
-	<tr id="row_doc_mod_${requisito.id }">
-	<td></td>
-	<td>${requisito.id }</td>	
-	<td>${requisito.categoria.codice }</td>
-	<td>${requisito.categoria.descrizione }</td>	
-	</tr>
-	</c:forEach> --%>
-	 
-
- </tbody>
- </table>  
-</div>
-</div>
-       
-       
-             <div class="row">
-<div class="col-sm-12">
-<label>REQUISITI SANITARI</label>
-</div>
-</div>
- <div class="row">
-<div class="col-sm-12">
- <table id="tabRequisitiSanitari_mod" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
-
-<td></td>
-<th>ID</th>
-<th>Descrizione</th>
-<th style="max-width:50px">Stato</th>
-<th style="max-width:100px">Data inizio</th>
-<th style="max-width:100px">Data fine</th>
-
- </tr></thead>
- 
- <tbody>
- 
- 	<c:forEach items="${lista_requisiti_sanitari}" var="requisito" varStatus="loop">
- 	
-	<tr id="row_san_mod_${requisito.id }">
-	<td></td>
-	<td>${requisito.id }</td>	
-	<td>${requisito.descrizione }</td>
-	<td id="stato_mod_${requisito.id }"></td>	
-	<td id="datainizio_mod_${requisito.id }"></td>
-	<td id="datafine_mod_${requisito.id }"></td>
-	</tr>
-	</c:forEach>
-	 
-
- </tbody>
- </table>  
-</div>
-</div>
-       
        </div>
   		 
       <div class="modal-footer">
-      <input id="id_risorsa" name="id_risorsa" type="hidden">
-		<input id="id_req_documentali_mod" name="id_req_documentali_mod" type="hidden">
-		<input id="id_req_sanitari_mod" name="id_req_sanitari_mod" type="hidden">
+				<input type="hidden" id="id_requisito" name="id_requisito" class="form-control">
+		<button class="btn btn-primary" type="submit">Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</form>
+
+
+<form id="NuovoReqDocumentale" name="NuovoReqDocumentale">
+<div id="modalNuovoReqDocumentale" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">AGGIUNGI REQUISITI DOCUMENTALI</h4>
+      </div>
+       <div class="modal-body">
+
+      
+      
+      <div class="row">
+<div class="col-sm-12">
+<label>Categorie corsi</label>
+</div>
+</div>
+ <div class="row">
+<div class="col-sm-12">
+ <table id="tabCategorie" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active" >
+
+<td></td>
+<th>ID</th>
+<th>Codice</th>
+<th>Categoria</th>
+
+ </tr></thead>
+ 
+ <tbody>
+ 
+ 	<c:forEach items="${lista_categorie}" var="categoria" varStatus="loop">
+ 
+	<tr id="row_cat_${categoria.id }">
+	<td></td>
+	<td>${categoria.id }</td>	
+	<td>${categoria.codice }</td>
+	<td>${categoria.descrizione }</td>	
+	</tr>
+	</c:forEach> 
+	 
+
+ </tbody>
+ </table>  
+</div>
+</div>
+       
+       
+           
+       </div>
+  		 
+      <div class="modal-footer">
+     
+		<input id="id_categorie" name="id_categorie" type="hidden">
 		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
@@ -428,11 +277,11 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      	Sei sicuro di voler eliminare la risorsa?
+      	Sei sicuro di voler eliminare il requisito sanitario?
       	</div>
       <div class="modal-footer">
-      <input type="hidden" id="risorsa_elimina">
-      <a class="btn btn-primary" onclick="eliminaRisorsa($('#risorsa_elimina').val())" >SI</a>
+      <input type="hidden" id="id_requisito_elimina">
+      <a class="btn btn-primary" onclick="eliminaRisorsa($('#id_requisito_elimina').val())" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
     </div>
@@ -456,8 +305,7 @@
 
 
 <jsp:attribute name="extra_css">
-
-	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
 
 
@@ -473,84 +321,49 @@
 <script type="text/javascript">
 
 
-function modalNuovaRisorsa(){
+function modalNuovoReqDocumentale(){
 	
-	$('#modalNuovaRisorsa').modal();
+	
+	var lista_req_json =${lista_req_documentali_json};
+	
+	for (var i = 0; i < lista_req_json.length; i++) {
+		t2.row( "#row_cat_"+ lista_req_json[i].categoria.id, { page:   'all'}).select();
+		
+	}
+	
+	$('#modalNuovoReqDocumentale').modal();
 	
 }
-
-function modalEliminaRisorsa(id_risorsa){
+function modalNuovoReqSanitario(){
 	
-	$('#risorsa_elimina').val(id_risorsa)
+	$('#modalNuovoReqSanitario').modal();
+	
+}
+function modalEliminaRequisito(id_requisito){
+	
+	$('#id_requisito_elimina').val(id_requisito)
 	$('#myModalYesOrNo').modal()
 }
 
-function eliminaRisorsa(id_risorsa){
+function eliminaRisorsa(id_requisito){
 	
 	dataObj ={};
-	dataObj.id_risorsa = id_risorsa
-	callAjax(dataObj, "gestioneRisorse.do?action=elimina_risorsa")
+	dataObj.id_requisito = id_requisito
+	callAjax(dataObj, "gestioneRisorse.do?action=elimina_requisito")
 	
 }
 
+function modificaRequisitoModal(id_requisito, descrizione){
+	
 
-var flag = false;
-function modificaRisorsaModal(id_risorsa){
-	
-	flag = true;
-	var response = getRisorsa(id_risorsa, null, function(response){
-	
-		    var lista_requisiti_risorsa = response.lista_requisiti_risorsa;
-		    var risorsa = response.risorsa;
-		    var lista_corsi = response.lista_corsi
-		    
-		     var tableSan = $('#tabRequisitiSanitari_mod').DataTable();
-		    $('#id_risorsa').val(id_risorsa)
+		    $('#id_requisito').val(id_requisito)
 		
 	      	
-	  		$('#utente_mod').val(risorsa.utente.id);
-			$('#partecipante_mod').val(risorsa.partecipante.id);
-			$('#partecipante_mod').change();
-			$('#utente_mod').change();
+	  		$('#descrizione_mod').val(descrizione);
 			
 	
-			for (var i = 0; i < lista_requisiti_risorsa.length; i++) {
-				var r = lista_requisiti_risorsa[i];
-				
-				
-	
-				if(r.req_sanitario!=null){
-					
-					tableSan.row( "#row_san_mod_"+ r.req_sanitario.id, { page:   'all'}).select();
-					
-					 var row = $("#row_san_mod_"+ r.req_sanitario.id);
-				       
-
-				        row.find('td').each(function(i, cell) {
-				            let testo = "";
-
-				           if (i === 3) {
-				                // SELECT
-				                let select = $(cell).find("select");
-				                
-				                $(select[0]).val(r.stato)
-				               
-				            } else if(i == 4){
-				                // Datepicker input
-				                let input = $(cell).find("input");
-				                $(input[0]).val(r.req_san_data_inizio)
-				            }
-				            else if(i == 5){
-				            	let input = $(cell).find("input");
-				                $(input[0]).val(r.req_san_data_fine)
-				            }
-				            
-				});
-				}	   
-			}
-			});
-			$('#modalModificaRisorsa').modal();
-		 flag = false;
+			$('#modalModificaRequisito').modal();
+		
 	
 }
 
@@ -580,6 +393,31 @@ $("#tabReqDocumentali").on( 'init.dt', function ( e, settings ) {
 } );
 
 
+var columsDatatables1 = [];
+
+$("#tabReqSanitari").on( 'init.dt', function ( e, settings ) {
+    var api = new $.fn.dataTable.Api( settings );
+    var state = api.state.loaded();
+ 
+    if(state != null && state.columns!=null){
+    		console.log(state.columns);
+    
+    columsDatatables1 = state.columns;
+    }
+    $('#tabReqSanitari thead th').each( function () {
+     	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
+    	  var title = $('#tabReqSanitari thead th').eq( $(this).index() ).text();
+    	
+    	  //if($(this).index()!=0 && $(this).index()!=1){
+		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables1[$(this).index()].search.search+'" type="text" /></div>');	
+	    	//}
+
+    	} );
+    
+    
+
+} );
+
 
 $(document).ready(function() {
 	
@@ -587,7 +425,7 @@ $(document).ready(function() {
 
      $('.dropdown-toggle').dropdown();
 
-     table = $('tabReqDocumentali').DataTable({
+     table = $('#tabReqDocumentali').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -641,7 +479,7 @@ $(document).ready(function() {
 	 	       e.stopPropagation();    
 	 	    });
 
-	 	     table.columns().eq( 0 ).each( function ( colIdx ) {
+ 	  	     table.columns().eq( 0 ).each( function ( colIdx ) {
 	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
 	      table
 	          .column( colIdx )
@@ -649,7 +487,7 @@ $(document).ready(function() {
 	          .draw();
 	  } );
 
-	 	    } );
+	 	    } );  
 
 	
 	
@@ -660,7 +498,7 @@ $(document).ready(function() {
 		
 		
 		
-	     t = $('tabReqSanitari').DataTable({
+	     t = $('#tabReqSanitari').DataTable({
 				language: {
 			        	emptyTable : 	"Nessun dato presente nella tabella",
 			        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -709,19 +547,19 @@ $(document).ready(function() {
 			               
 			    });
 			
-			t.buttons().container().appendTo( '#tabtabReqSanitari_wrapper .col-sm-6:eq(1)');
+			 t.buttons().container().appendTo( '#tabtabReqSanitari_wrapper .col-sm-6:eq(1)');
 		 	    $('.inputsearchtable').on('click', function(e){
 		 	       e.stopPropagation();    
 		 	    });
 
-		 	     t.columns().eq( 0 ).each( function ( colIdx ) {
+ 		 	     t.columns().eq( 0 ).each( function ( colIdx ) {
 		  $( 'input', t.column( colIdx ).header() ).on( 'keyup', function () {
 		      t
 		          .column( colIdx )
 		          .search( this.value )
 		          .draw();
-		  } );
-		} );  
+		  } ); 
+		} );   
 		
 		
 		
@@ -732,31 +570,78 @@ $(document).ready(function() {
 
 	
 	
-	
+			 t2 = $('#tabCategorie').DataTable({
+					language: {
+				        	emptyTable : 	"Nessun dato presente nella tabella",
+				        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+				        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+				        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+				        	infoPostFix:	"",
+				        infoThousands:	".",
+				        lengthMenu:	"Visualizza _MENU_ elementi",
+				        loadingRecords:	"Caricamento...",
+				        	processing:	"Elaborazione...",
+				        	search:	"Cerca:",
+				        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+				        	paginate:	{
+			  	        	first:	"Inizio",
+			  	        	previous:	"Precedente",
+			  	        	next:	"Successivo",
+			  	        last:	"Fine",
+				        	},
+				        aria:	{
+			  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+			  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+				        }
+			        },
+			        pageLength: 25,
+			        "order": [[ 0, "desc" ]],
+				      paging: true, 
+				      ordering: true,
+				      info: true, 
+				      searchable: true, 
+				      targets: 0,
+				      responsive: true,
+				      scrollX: false,
+				      stateSave: true,	
+				      select: {
+						    style: 'multi-shift',
+						    selector: 'td:nth-child(1)' // attenzione: meglio usare 'first-child' che 'nth-child(1)'
+						  },   
+				      columnDefs: [
+						    {
+						      targets: 0,
+						      className: 'select-checkbox',
+						      orderable: false,
+						      defaultContent: ''
+						    }       
+						    ],
+			  	      buttons: [   
+			  	          {
+			  	            extend: 'colvis',
+			  	            text: 'Nascondi Colonne'  	                   
+			 			  } ]
+				               
+				    });
 	
 
     
 	
-	
+			 t2.columns.adjust().draw();
 });
 	
 
 
  
- $('#nuovaRisorsaForm').on('submit', function(e){
+ $('#NuovoReqDocumentale').on('submit', function(e){
 	 e.preventDefault();
 	 
-	    var id_req_documentali = "";
-	    t1.rows({ selected: true }).every(function () {
-	        var $row = $(this.node());
-	        var id = $row.find('td').eq(1).text().trim(); // Colonna ID
-	        id_req_documentali += id + ";";
-	    });
 
-	   var id_req_sanitari = "";
+	   var id_req_documentali = "";
+	    var valori = "";
 	   t2.rows({ selected: true }).every(function () {
 	        var $row = $(this.node());
-	        var valori = "";
+	    
 
 	        $row.find('td').each(function(i, cell) {
 	            let testo = "";
@@ -766,35 +651,34 @@ $(document).ready(function() {
 	            if (i === 1) {
 	                // ID
 	                testo = $(cell).text().trim();
-	            } else if (i === 3) {
-	                // SELECT
-	                let select = $(cell).find("select");
-	                if (select.length) {
-	                    testo = select.val();
-	                }
-	            } else {
-	                // Datepicker input
-	                let input = $(cell).find("input");
-	                if (input.length) {
-	                    testo = input.val();
-	                }
+	                id_req_documentali += testo +";";
 	            }
 
-	            valori += testo + ",";
 	        });
 
-	        id_req_sanitari += valori.slice(0, -1) + ";";
+	        
 	    });
 	    
 	    
-	$('#id_req_sanitari').val(id_req_sanitari)
-	$('#id_req_documentali').val(id_req_documentali)
+	$('#id_categorie').val(id_req_documentali);
 	
-	callAjaxForm('#nuovaRisorsaForm','gestioneRisorse.do?action=nuova_risorsa');
+	callAjaxForm('#NuovoReqDocumentale','gestioneRisorse.do?action=nuovo_requisito');
 });
  
  
-
+ $('#NuovoReqSanitario').on('submit', function(e){
+	 e.preventDefault();
+	 
+	
+	callAjaxForm('#NuovoReqSanitario','gestioneRisorse.do?action=nuovo_requisito');
+});
+ 
+ $('#ModificaReqSanitario').on('submit', function(e){
+	 e.preventDefault();
+	 
+	
+	callAjaxForm('#ModificaReqSanitario','gestioneRisorse.do?action=modifica_requisito');
+});
 
  
   </script>

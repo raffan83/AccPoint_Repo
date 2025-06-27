@@ -12,6 +12,10 @@
            <property name="descrizione" type="java.lang.String">
             <column name="descrizione" />
         </property>
+        
+         <property name="disabilitato" type="int">
+        <column name="disabilitato"></column>
+        </property>
       
     </class>
 </hibernate-mapping>

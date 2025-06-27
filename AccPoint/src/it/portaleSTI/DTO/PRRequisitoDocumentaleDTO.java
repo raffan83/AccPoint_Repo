@@ -4,6 +4,7 @@ public class PRRequisitoDocumentaleDTO {
 	
 	private int id;
 	private ForCorsoCatDTO categoria;
+	private int disabilitato;
 	
 	
 
@@ -27,6 +28,18 @@ public class PRRequisitoDocumentaleDTO {
 
 	public void setCategoria(ForCorsoCatDTO categoria) {
 		this.categoria = categoria;
+	}
+
+
+
+	public int getDisabilitato() {
+		return disabilitato;
+	}
+
+
+
+	public void setDisabilitato(int disabilitato) {
+		this.disabilitato = disabilitato;
 	}
 
 

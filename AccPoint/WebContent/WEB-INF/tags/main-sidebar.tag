@@ -597,7 +597,7 @@
        
 			<li><a href="downloadCalver.do?action=calverdesktop">DasmTar v3.2.2</a></li>
 
-			<li><a href="downloadCalver.do?action=dasmtarLat">DasmTarLAT v1.0.6</a></li>
+			<li><a href="downloadCalver.do?action=dasmtarLat">DasmTarLAT v1.0.7</a></li>
 
 			<li><a href="downloadCalver.do?action=sicurettaElettrica">DasmTarSE v1.0.2</a></li>
 			<li><a href="downloadCalver.do?action=dasmtarVerificazione">DasmTarVER v3.4.2</a></li>

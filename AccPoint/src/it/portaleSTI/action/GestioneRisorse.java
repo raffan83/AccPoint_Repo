@@ -37,6 +37,7 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
@@ -901,14 +902,166 @@ public class GestioneRisorse extends HttpServlet {
 		
 				 ArrayList<PRRequisitoDocumentaleDTO> lista_req_documentali = GestioneRisorseBO.getListaRequisitiDocumentali(session);
 				 ArrayList<PRRequisitoSanitarioDTO> lista_req_sanitari = GestioneRisorseBO.getListaRequisitiSanitari(session);
+				 ArrayList<ForCorsoCatDTO> lista_categorie = GestioneFormazioneBO.getListaCategorieCorsi(session);
 				 
-				 
+				 Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 					request.getSession().setAttribute("lista_req_documentali", lista_req_documentali);
-					request.getSession().setAttribute("lista_req_sanitari", lista_req_sanitari);			
+					request.getSession().setAttribute("lista_req_documentali_json", g.toJsonTree(lista_req_documentali));
+					request.getSession().setAttribute("lista_req_sanitari", lista_req_sanitari);		
+					request.getSession().setAttribute("lista_categorie", lista_categorie);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/pr_lista_requisiti.jsp");
 			     dispatcher.forward(request,response);
 				
 				
+			}else if(action.equals("nuovo_requisito")) {
+				
+				ajax = true;
+				
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}		        
+		       
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	      
+	            }
+		
+				String descrizione = ret.get("descrizione");
+				String id_categorie = ret.get("id_categorie");
+				
+
+				if(descrizione!=null)
+				{
+					PRRequisitoSanitarioDTO req_san = new PRRequisitoSanitarioDTO();
+					req_san.setDescrizione(descrizione);
+					
+					session.save(req_san);
+					
+				}else {
+					
+					ArrayList<PRRequisitoDocumentaleDTO> lista_req_doc = GestioneRisorseBO.getListaRequisitiDocumentali(session);
+					ArrayList<Integer> lista_id_req_doc = new ArrayList<Integer>();
+					ArrayList<Integer> lista_id_req_doc_new = new ArrayList<Integer>();
+					
+					for (PRRequisitoDocumentaleDTO req : lista_req_doc) {
+						lista_id_req_doc.add(req.getCategoria().getId());
+					}
+					
+					String[] ids =id_categorie.split(";");
+					
+					for (int i = 0; i < ids.length; i++) {
+						String string = ids[i];
+						
+						if(!string.equals("") && !lista_id_req_doc.contains(Integer.parseInt(string))) {
+						ForCorsoCatDTO categoria = GestioneFormazioneBO.getCategoriaCorsoFromId(Integer.parseInt(string), session);
+						PRRequisitoDocumentaleDTO req_doc =new PRRequisitoDocumentaleDTO();
+						req_doc.setCategoria(categoria);
+						
+						session.save(req_doc);
+						
+						
+						}
+						lista_id_req_doc_new.add(Integer.parseInt(string));
+						
+					}
+					
+					
+					for (int i = 0; i < lista_req_doc.size(); i++) {
+						if(!lista_id_req_doc_new.contains(lista_req_doc.get(i).getCategoria().getId())){
+							
+						
+							PRRequisitoDocumentaleDTO r = (PRRequisitoDocumentaleDTO) session.get(PRRequisitoDocumentaleDTO.class, lista_req_doc.get(i).getId());
+							r.setDisabilitato(1);
+							session.update(r);
+						}
+						
+					}
+					
+				}
+				
+			
+
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
+				
+				
+				
+			}else if(action.equals("modifica_requisito")) {
+				
+				ajax = true;
+				
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}		        
+		       
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	      
+	            }
+		
+				String descrizione = ret.get("descrizione_mod");
+				String id_requisito = ret.get("id_requisito");
+
+				if(id_requisito!=null)
+				{
+					PRRequisitoSanitarioDTO req_san = (PRRequisitoSanitarioDTO) session.get(PRRequisitoSanitarioDTO.class, Integer.parseInt(id_requisito));
+					req_san.setDescrizione(descrizione);
+					
+					session.update(req_san);
+					
+				}
+
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
+			}
+			else if(action.equals("elimina_requisito")) {
+				
+				ajax = true;
+				
+				
+				response.setContentType("application/json");
+		
+				String id_requisito = request.getParameter("id_requisito");
+
+				if(id_requisito!=null)
+				{
+					PRRequisitoSanitarioDTO req_san = (PRRequisitoSanitarioDTO) session.get(PRRequisitoSanitarioDTO.class, Integer.parseInt(id_requisito));
+					req_san.setDisabilitato(1);
+					
+					session.update(req_san);
+					
+				}
+
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
 			}
 			
 			session.getTransaction().commit();

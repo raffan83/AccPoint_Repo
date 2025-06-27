@@ -30,7 +30,7 @@ public class GestioneRisorseDAO {
 	public static ArrayList<PRRequisitoDocumentaleDTO> getListaRequisitiDocumentali(Session session) {
 		ArrayList<PRRequisitoDocumentaleDTO> lista = null;
 		
-		Query query = session.createQuery("from PRRequisitoDocumentaleDTO");
+		Query query = session.createQuery("from PRRequisitoDocumentaleDTO where disabilitato = 0");
 		
 		lista = (ArrayList<PRRequisitoDocumentaleDTO>) query.list();
 		return lista;
@@ -39,7 +39,7 @@ public class GestioneRisorseDAO {
 	public static ArrayList<PRRequisitoSanitarioDTO> getListaRequisitiSanitari(Session session) {
 		ArrayList<PRRequisitoSanitarioDTO> lista = null;
 		
-		Query query = session.createQuery("from PRRequisitoSanitarioDTO");
+		Query query = session.createQuery("from PRRequisitoSanitarioDTO where disabilitato = 0");
 		
 		lista = (ArrayList<PRRequisitoSanitarioDTO>) query.list();
 		return lista;

@@ -12,6 +12,10 @@
           <many-to-one name="categoria" class="it.portaleSTI.DTO.ForCorsoCatDTO" fetch="join" lazy="false">
             <column name="id_corso_cat" />
         </many-to-one>
+        
+        <property name="disabilitato" type="int">
+        <column name="disabilitato"></column>
+        </property>
       
     </class>
 </hibernate-mapping>

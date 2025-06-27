@@ -4,7 +4,7 @@ public class PRRequisitoSanitarioDTO {
 	
 	private int id;
 	private String descrizione;
-	
+	private int disabilitato;
 	
 	
 
@@ -34,6 +34,15 @@ public class PRRequisitoSanitarioDTO {
 	}
 
 
+	public int getDisabilitato() {
+		return disabilitato;
+	}
+
+
+
+	public void setDisabilitato(int disabilitato) {
+		this.disabilitato = disabilitato;
+	}
 
 
 	public PRRequisitoSanitarioDTO() {

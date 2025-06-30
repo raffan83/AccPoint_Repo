@@ -479,6 +479,8 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 
 				if(id_misura!=null && !id_misura.equals("")) {
 					misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura), session);
+					
+					dati.put("matricola", misura.getStrumento().getMatricola());
 				}else {
 					 int id = Integer.parseInt(idStr);
 					 

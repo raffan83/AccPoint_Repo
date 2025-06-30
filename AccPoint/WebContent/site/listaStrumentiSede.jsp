@@ -265,28 +265,43 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 	 								 <td id="row_<%=strumento.get__id()%>"><%=strumento.get__id()%></td>
 	 								 <c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP") || userObj.checkRuolo("CI")}'>
-	 								 <td id="indice_prestazione_str_<%=strumento.get__id()%>" onclick="openModal(<%=strumento.get__id()%>,null,event)" style="cursor: pointer;">
+	 								 
 	 								 <c:set var="indice" value="<%=strumento.getIndice_prestazione() %>"></c:set>
 	 								 <c:set var="ip" value="<%=strumento.getIp() %>"></c:set>
-	 								 <c:if test='${indice == null || indice.equals("") || ip==0 }'>
+	 								 <c:if test='${ip==0 }'>
+	 								
+	 								<td id="indice_prestazione_str_<%=strumento.get__id()%>" style="cursor: pointer;">
 	 								<div class="lampNP" style="margin:auto">NON DETERMINATO</div>
+	 								</td>
 	 								</c:if>
-	 								 
-	 								<c:if test='${indice.equals("V") && ip==1 }'>
+	 								 <c:if test="${ip==1  }">
+	 					
+	 								 <c:if test='${indice == null || indice.equals("")}'>
+	 								 <td id="indice_prestazione_str_<%=strumento.get__id()%>" style="cursor: pointer;">
+	 								<div class="lampNP" style="margin:auto">NON DETERMINATO</div>
+	 								</td>
+	 								</c:if> 
+	 								
+	 								<c:if test="${indice != null  && !indice.equals('') }">
+	 								 <td id="indice_prestazione_str_<%=strumento.get__id()%>" onclick="openModal(<%=strumento.get__id()%>,null,event)" style="cursor: pointer;">
+	 								<c:if test='${indice.equals("V") }'>
 	 								<div class="lamp lampGreen" style="margin:auto"></div>
 	 								</c:if>
-	 								<c:if test='${indice.equals("G") && ip==1}'>
+	 								<c:if test='${indice.equals("G")}'>
 	 								<div class="lamp lampYellow" style="margin:auto"></div>
 	 								</c:if>
-	 								<c:if test='${indice.equals("R") && ip==1}'>
+	 								<c:if test='${indice.equals("R")}'>
 	 								<div class="lamp lampRed" style="margin:auto"></div>
 	 								</c:if>
-	 								<c:if test='${indice.equals("X") && ip==1}'>
+	 								<c:if test='${indice.equals("X")}'>
 	 							<div class="lamp lampNI" style="margin:auto"></div>
 	 								</c:if>
-	 								
-	 	
 	 								 </td>
+	 								</c:if>
+	 	
+	 								
+	 								 
+	 								 </c:if>
 	 								 </c:if>
 	 								   <td id="stato_<%=strumento.get__id() %>"><span class="label
 	 								 <% if(strumento.getStato_strumento().getId()==7225){

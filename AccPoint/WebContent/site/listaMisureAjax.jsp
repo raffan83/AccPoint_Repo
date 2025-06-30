@@ -131,27 +131,41 @@
 </td>
 <c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP") || userObj.checkRuolo("CI")}'>
  <c:set var="ip" value="${misura.strumento.ip }"></c:set>
-<td style="text-align:center" id="ind_prest_${misura.id }"  onclick="openModal(null,${misura.id},event)">
-<c:if test="${misura.indice_prestazione=='V'&& ip==1 }">
+ <c:if test="${ip==0}">
+  <td style="text-align:center" id="ind_prest_${misura.id }">
+NON DETERMINATO
+</td>
+</c:if>
+ <c:if test="${ip==1 }">
+ <c:if test="${misura.indice_prestazione==NULL || misura.indice_prestazione.equals('')}">
+  <td style="text-align:center" id="ind_prest_${misura.id }">
+NON DETERMINATO
+</td>
+</c:if>
+ <c:if test="${misura.indice_prestazione!=NULL && !misura.indice_prestazione.equals('')}">
+ <td style="text-align:center" id="ind_prest_${misura.id }"  onclick="openModal(null,${misura.id},event)">
+<c:if test="${misura.indice_prestazione=='V' }">
 <div class="lamp lampGreen" style="margin:auto"></div>
 </c:if>
 
-<c:if test="${misura.indice_prestazione=='G'&& ip==1 }">
+<c:if test="${misura.indice_prestazione=='G' }">
  <div class="lamp lampYellow"  style="margin:auto"></div> 
 </c:if>
 
-<c:if test="${misura.indice_prestazione=='R'&& ip==1 }">
+<c:if test="${misura.indice_prestazione=='R' }">
  <div class="lamp lampRed" style="margin:auto"></div> 
 </c:if>
 
-<c:if test="${misura.indice_prestazione=='X' && ip==1}">
+<c:if test="${misura.indice_prestazione=='X'}">
 <div class="lamp lampNI" style="margin:auto"></div> 
 </c:if>
-
-<c:if test="${misura.indice_prestazione==NULL || misura.indice_prestazione==''  || ip==0 }">
-NON DETERMINATO
-</c:if>
 </td>
+ </c:if>
+ 
+
+
+
+</c:if>
 </c:if>
 <td>
 <c:if test="${misura.file_allegato!=null &&  misura.file_allegato!=''}">

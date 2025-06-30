@@ -541,6 +541,12 @@ public class GestioneStrumentoBO {
 		}
 	}
 
+	public static boolean updateStatoIp(String idStr, int stato) throws Exception {
+		
+		
+		return GestioneStrumentoDAO.updateStatoIp(idStr,stato) ;
+	}
+
 
 
 }

@@ -78,6 +78,37 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
     background-color: #8B0000;
 }
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Modale al centro */
+.modal-indice {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Pulsante X */
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 20px;
+  cursor: pointer;
+}
 </style>
 
 <%-- <% if(user.checkPermesso("NUOVO_STRUMENTO_METROLOGIA")){ %>
@@ -88,8 +119,19 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 </div>
 </div>
 <%  } %> --%>
-<div style="height:10px;"></div>
+
+ 
+	
+<div style="height:10px;">
+
+</div>
 <div class="row">
+<div id="modalOverlay" class="modal-overlay">
+  <div id="indiceModal" class="modal-indice">
+    <span class="close-button" onclick="closeModal()">×</span>
+    <div id="modalBody"></div>
+  </div>
+</div>
 <div class="col-xs-12">
  
  
@@ -199,22 +241,23 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 	 								 <td id="row_<%=strumento.get__id()%>"><%=strumento.get__id()%></td>
 	 								 <c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP") || userObj.checkRuolo("CI")}'>
-	 								 <td id="indice_prestazione_str_<%=strumento.get__id()%>">
+	 								 <td id="indice_prestazione_str_<%=strumento.get__id()%>" onclick="openModal(<%=strumento.get__id()%>,event)" style="cursor: pointer;">
 	 								 <c:set var="indice" value="<%=strumento.getIndice_prestazione() %>"></c:set>
-	 								 <c:if test='${indice == null || indice.equals("") }'>
+	 								 <c:set var="ip" value="<%=strumento.getIp() %>"></c:set>
+	 								 <c:if test='${indice == null || indice.equals("") || ip==0 }'>
 	 								<div class="lampNP" style="margin:auto">NON DETERMINATO</div>
 	 								</c:if>
 	 								 
-	 								<c:if test='${indice.equals("V") }'>
+	 								<c:if test='${indice.equals("V") && ip==1 }'>
 	 								<div class="lamp lampGreen" style="margin:auto"></div>
 	 								</c:if>
-	 								<c:if test='${indice.equals("G") }'>
+	 								<c:if test='${indice.equals("G") && ip==1}'>
 	 								<div class="lamp lampYellow" style="margin:auto"></div>
 	 								</c:if>
-	 								<c:if test='${indice.equals("R") }'>
+	 								<c:if test='${indice.equals("R") && ip==1}'>
 	 								<div class="lamp lampRed" style="margin:auto"></div>
 	 								</c:if>
-	 								<c:if test='${indice.equals("X") }'>
+	 								<c:if test='${indice.equals("X") && ip==1}'>
 	 							<div class="lamp lampNI" style="margin:auto"></div>
 	 								</c:if>
 	 								
@@ -720,9 +763,6 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 </div>
 
-
-	
-
  <script>
  
  function annullaStrumentoModal(id_strumento, id_sede, id_cliente, elimina){
@@ -755,6 +795,61 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 $('#myModalSposta').modal();
 	 
  }
+ 
+/* function openModal(id, event) {
+	  document.getElementById("modalBody").innerText =
+	    "Hai cliccato sull'indice di prestazione dello strumento con ID: " + id;
+	  document.getElementById("modalOverlay").style.display = "flex";
+	
+ 
+ }*/
+ 
+ function openModal(id, event) {
+	  const overlay = document.getElementById("modalOverlay");
+	  const modalBody = document.getElementById("modalBody");
+
+	  modalBody.innerText = "Caricamento...";
+
+	  
+
+	  dataObj = {};
+	  dataObj.id_str = id;
+		 
+		 callAjax(dataObj,"listaStrumentiSedeNew.do?action=dettaglioIndicePrestazione",function(data){
+			
+			if(data.success)
+			{
+				var dati=data.dati_indice
+				
+				 modalBody.innerHTML ='<h4>Indice di Prestazione</h4>'+
+				       ' <table style="width: 100%; border-collapse: collapse;">'+
+				        '  <tr><td><b>Matricola</b></td><td>'+dati.matricola+'</td></tr>'+
+				        '  <tr><td><b>Punto riferimento (WC):</b></td><td>'+dati.puntoRiferimento+'</td></tr>'+
+				        '  <tr><td><b>U</b></td><td>'+dati.incertezza+'</td></tr>'+
+				        '  <tr><td><b>Acc</b></td><td>'+dati.valAccettabilita+'</td></tr>'+
+				        '  <tr><td><b>iP</b></td><td>'+dati.indice+'</td></tr>'+
+				        '</table>';
+				 
+				        overlay.style.display = "flex";
+			}
+			
+		 });
+		
+	}
+
+	function closeModal() {
+	  document.getElementById("modalOverlay").style.display = "none";
+	}
+
+	// Chiudi la modale cliccando fuori dal contenuto
+	window.addEventListener("click", function (event) {
+	  const overlay = document.getElementById("modalOverlay");
+	  const modal = document.getElementById("indiceModal");
+	  if (event.target === overlay) {
+	    closeModal();
+	  }
+	});
+	
 
 	var columsDatatables = [];
 	 
@@ -1978,6 +2073,9 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		   } 
 
 	});
+ 
+
+ 
  </script>
  
  

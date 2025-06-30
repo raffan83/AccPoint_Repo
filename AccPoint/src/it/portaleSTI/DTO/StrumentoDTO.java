@@ -52,6 +52,7 @@ public class StrumentoDTO {
 			 private String altre_matricole;
 			 private String indice_prestazione;
 			 private String note_tecniche;
+			 private int ip;
 			 
 			 //------
 			 
@@ -453,6 +454,14 @@ public class StrumentoDTO {
 
 			public void setNote_tecniche(String note_tecniche) {
 				this.note_tecniche = note_tecniche;
+			}
+
+			public int getIp() {
+				return ip;
+			}
+
+			public void setIp(int ip) {
+				this.ip = ip;
 			}
 
 			

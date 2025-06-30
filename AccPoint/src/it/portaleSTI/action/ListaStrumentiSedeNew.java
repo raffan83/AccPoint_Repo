@@ -2,13 +2,12 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -31,16 +30,18 @@ import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
+import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
-import it.portaleSTI.DTO.StrumentoNoteDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
@@ -71,6 +72,9 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		response.setContentType("text/html");
 		String action = request.getParameter("action");
 
+		JsonObject myObjJSON = new JsonObject();
+		boolean ajax = true;
+		
 		try {
 		
 			if(action==null || action.equals("")) {
@@ -457,18 +461,136 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/nuovoStrumentoGeneral.jsp");
 		    dispatcher.forward(request,response);
 		}
+		else if(action.equals("dettaglioIndicePrestazione")) 
+		{ 
+			
+			
+			// Costruisci JSON
+			    response.setContentType("application/json");
+			    response.setCharacterEncoding("UTF-8");
+
+			    Map<String, String> dati = new HashMap<>();
+			    
+			    String idStr = request.getParameter("id_str");
+			    int id = Integer.parseInt(idStr);
+			    BigDecimal max = BigDecimal.ZERO;
+				String indice;
+
+				StrumentoDTO strumento=GestioneStrumentoBO.getStrumentoById(idStr, session);
+				dati.put("matricola", strumento.getMatricola());
+				ArrayList<MisuraDTO> listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(id, session);
+			
+				MisuraDTO misura= null;
+				
+				int idMisura=0;
+				for (MisuraDTO m : listaMisure) {
+					
+					if(m.getId()>idMisura) 
+					{
+						misura=m;
+						idMisura=m.getId();
+					}
+					
+				}
+				
+				for (PuntoMisuraDTO punto : misura.getListaPunti()) {
+						if(!punto.getTipoProva().equals("D")) {
+							if(punto.getAccettabilita()!=null && punto.getAccettabilita().compareTo(BigDecimal.ZERO)==1) {
+								BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),5,RoundingMode.HALF_UP);
+								if(indice_prestazione.compareTo(max)==1) {
+									max = indice_prestazione;
+									
+								    dati.put("puntoRiferimento",punto.getTipoVerifica());
+								    String u=punto.getIncertezza().setScale(2,RoundingMode.HALF_UP).toPlainString();
+								    String acc=punto.getAccettabilita().setScale(2,RoundingMode.HALF_UP).toPlainString();
+								    dati.put("incertezza", u);
+								    dati.put("valAccettabilita",acc );
+								    dati.put("indice","iP=("+u+" * 100 / "+acc+") ="+ max.setScale(2,RoundingMode.HALF_UP).toPlainString()+"%");
+								   
+								}
+							}
+						}
+						
+						
+								
+					}
+					
+					if(max.compareTo(new BigDecimal(25))==-1 || max.compareTo(new BigDecimal(25))==0) {
+						indice = "V";
+					}else if(max.compareTo(new BigDecimal(25))==1 && (max.compareTo(new BigDecimal(75))==-1 || max.compareTo(new BigDecimal(75))==0)) {
+						indice = "G";
+					}else if(max.compareTo(new BigDecimal(75))==1 && (max.compareTo(new BigDecimal(100))==-1 || max.compareTo(new BigDecimal(100))==0)) {
+						indice = "R";
+					}else {
+						indice = "X";
+					}
+					
+			    
+			    Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+				
+				myObjJSON = new JsonObject();
+				myObjJSON.add("dati_indice", g.toJsonTree(dati));
+				
+				PrintWriter  out = response.getWriter();
+				myObjJSON.addProperty("success", true);
+				
+				out.print(myObjJSON); 
+				out.flush();
+
+		}else if(action.equals("cambiaStatoIp")) 
+		{
+			ajax=true;
+			PrintWriter out = response.getWriter();
+		    response.setContentType("application/json");
+			String idStr=request.getParameter("idStrumento");
+			int stato =Integer.parseInt(request.getParameter("stato"));
+			
+			
+			
+			
+			
+			boolean success = GestioneStrumentoBO.updateStatoIp(idStr,stato);
+			
+				
+				String message = "";
+				if(success){
+					message = "Salvato con Successo";
+				}else{
+					message = "Errore Salvataggio";
+				}
+				
+				JsonObject myObj = new JsonObject();
+				
+				myObj.addProperty("success", success);
+				myObj.addProperty("messaggio", message);
+		        out.println(myObj.toString());
+		}
 			 
 		}
 
 		catch(Exception ex)
     	{
+			
+			
 		 session.getTransaction().rollback();
 		 session.close();
-   		 ex.printStackTrace();
-   	     request.setAttribute("error",STIException.callException(ex));
-   	     request.getSession().setAttribute("exception", ex);
-   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-   	     dispatcher.forward(request,response);	
+		 
+		    if(ajax) {
+				
+					PrintWriter out = response.getWriter();
+					
+		        	
+		        	request.getSession().setAttribute("exception", ex);
+		        	myObjJSON = STIException.getException(ex);
+		        	out.print(myObjJSON);
+		    	}
+		    else {
+		    	ex.printStackTrace();
+		   	     request.setAttribute("error",STIException.callException(ex));
+		   	     request.getSession().setAttribute("exception", ex);
+		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		   	     dispatcher.forward(request,response);	
+		    }
    	} 
 		
 	}

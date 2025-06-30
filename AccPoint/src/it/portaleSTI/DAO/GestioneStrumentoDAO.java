@@ -663,5 +663,36 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 		return lista;
 	}
 
+	public static boolean updateStatoIp(String idStr, int stato) throws Exception {
+		
+		Connection con=null; 
+		PreparedStatement pst=null;
+		int _return;
+		try {
+			
+			con =DirectMySqlDAO.getConnection();
+			
+			pst=con.prepareStatement("UPDATE strumento set ip=? WHERE __id=?");
+			
+			pst.setInt(1, stato);
+			pst.setString(2, idStr);
+			
+			_return=pst.executeUpdate();
+			
+			if(_return>0) 
+			{
+				return true;
+			}
+			else 
+			{
+				return false;
+			}
+			
+		} finally {
+			pst.close();
+			con.close();
+		}
+	}
+
 
 }

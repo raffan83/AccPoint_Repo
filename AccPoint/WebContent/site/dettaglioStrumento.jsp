@@ -16,6 +16,52 @@ String idSede = (String)session.getAttribute("id_Sede");
 String idCliente = (String)session.getAttribute("id_Cliente");
 UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
 %>
+
+<style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 28px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+</style>
 <% if(user.checkPermesso("CAMBIO_STATO_STRUMENTO_METROLOGIA")){ %>
 <button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%=idSede%>','<%=idCliente%>')">Cambia Stato</button>
 <% } %>
@@ -395,9 +441,85 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
                       <textarea class="form-control" id="note_tecniche"  name="note_tecniche" disabled="disabled" ></textarea>
     </div>
     <%} %>
-    <%} %>
     
-       </div> 
+    
+       </div>
+       <div class="form-group">
+  <label class="col-sm-2 control-label">Presenza Ic:</label>
+  <div class="col-sm-10">
+    <label class="switch">
+      <input type="checkbox" id="switchAttivo" <%= (strumento.getIp() == 1 ? "checked" : "") %> onClick="cambiaStatoIp('<%=strumento.get__id()%>')">
+      <span class="slider round"></span>
+    </label>
+  </div>
+</div> 
+       <%} %>
+       
         </form>
 
+<script>
+
+function cambiaStatoIp(idStrumento){
+	  const stato =   document.getElementById("switchAttivo").checked ? "1" : "0";
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();  
+	  $.ajax({
+  	  type: "POST",
+  	  url: "listaStrumentiSedeNew.do?action=cambiaStatoIp&idStrumento="+idStrumento+"&stato="+stato,
+  	  dataType: "json",
+  	  success: function( data, textStatus) {
+
+  		  if(data.success)
+  		  {
+  			  pleaseWaitDiv.modal('hide');  
+  			  $('#report_button').hide();
+  				$('#visualizza_report').hide();
+  			  $("#myModalErrorContent").html("Indice prestazione modificato con successo");
+  			  $("#myModalError").addClass("modal modal-success");
+		 	        $("#myModalError").modal();
+		 	        
+		 	        
+		 	       $('#myModalError').on('hidden.bs.modal', function (e) {
+		 			  
+		 	    	  var sede = $("#select2").val();
+			           var cliente = $("#select1").val();
+
+			           $(this).off('hidden.bs.modal');
+			           
+	          			  dataString ="idSede="+ sede+";"+cliente;
+	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
+	          	        	$('#myModal').modal('hide');
+	          	        	$('.modal-backdrop').hide();
+		          			
+	          	          });
+			           
+		 	       });
+		 	        
+  		  }else{
+  			  pleaseWaitDiv.modal('hide');  
+  			  $('#report_button').show();
+  				$('#visualizza_report').show();
+  			 $("#myModalErrorContent").html("Errore modifica cambio stato Indice prestazione");
+		 	        $("#myModalError").modal();
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  	
+
+  		 $("#myModalErrorContent").html(textStatus);
+  		 $('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+  		  //callAction('logout.do');
+  
+  	  }
+    });
+	  
+}
+
+	
+	
+</script>
 				

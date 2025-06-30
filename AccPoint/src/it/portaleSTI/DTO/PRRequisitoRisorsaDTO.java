@@ -11,6 +11,7 @@ public class PRRequisitoRisorsaDTO {
 	private int stato;
 	private Date req_san_data_inizio;
 	private Date req_san_data_fine;
+	private String note;
 	
 	
 
@@ -102,6 +103,20 @@ public class PRRequisitoRisorsaDTO {
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	
+	public String getNote() {
+		return note;
+	}
+
+
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+
+
 	@Override
 	public String toString() {
 	    return "PRRequisitoRisorsaDTO{" +

@@ -434,13 +434,15 @@ public class GestioneRisorse extends HttpServlet {
 							String[] str_sanitari = id_req_sanitari.split(";")[i].split(",");
 							PRRequisitoSanitarioDTO req_san = (PRRequisitoSanitarioDTO) session.get(PRRequisitoSanitarioDTO.class, Integer.parseInt(str_sanitari[0]));
 							String stato = str_sanitari[1];
-							Date data_inizio = df.parse(str_sanitari[2]);
-							Date data_fine = df.parse(str_sanitari[3]);
+							String note = str_sanitari[2];
+							Date data_inizio = df.parse(str_sanitari[3]);
+							Date data_fine = df.parse(str_sanitari[4]);
 							
 							req_risorsa.setReq_sanitario(req_san);
 							req_risorsa.setReq_san_data_inizio(data_inizio);
 							req_risorsa.setReq_san_data_fine(data_fine);
 							req_risorsa.setStato(Integer.parseInt(stato));
+							req_risorsa.setNote(note);
 							risorsa.getListaRequisiti().add(req_risorsa);
 							}
 						}

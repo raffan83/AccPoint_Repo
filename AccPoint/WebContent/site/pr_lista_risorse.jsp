@@ -201,9 +201,10 @@
 <td></td>
 <th>ID</th>
 <th>Descrizione</th>
-<th style="max-width:50px">Stato</th>
-<th style="max-width:100px">Data inizio</th>
-<th style="max-width:100px">Data fine</th>
+<th style="min-width:80px">Stato</th>
+<th style="min-width:80px">Note</th>
+<th style="min-width:100px">Data inizio</th>
+<th style="min-width:100px">Data fine</th>
 
  </tr></thead>
  
@@ -216,6 +217,7 @@
 	<td>${requisito.id }</td>	
 	<td>${requisito.descrizione }</td>
 	<td id="stato_${requisito.id }"></td>	
+	<td id="note_${requisito.id }"></td>
 	<td id="datainizio_${requisito.id }"></td>
 	<td id="datafine_${requisito.id }"></td>
 	</tr>
@@ -340,9 +342,10 @@
 <td></td>
 <th>ID</th>
 <th>Descrizione</th>
-<th style="max-width:50px">Stato</th>
-<th style="max-width:100px">Data inizio</th>
-<th style="max-width:100px">Data fine</th>
+<th style="min-width:80px">Stato</th>
+<th style="min-width:80px">Note</th>
+<th style="min-width:100px">Data inizio</th>
+<th style="min-width:100px">Data fine</th>
 
  </tr></thead>
  
@@ -355,6 +358,7 @@
 	<td>${requisito.id }</td>	
 	<td>${requisito.descrizione }</td>
 	<td id="stato_mod_${requisito.id }"></td>	
+	<td id="note_mod_${requisito.id }"></td>	
 	<td id="datainizio_mod_${requisito.id }"></td>
 	<td id="datafine_mod_${requisito.id }"></td>
 	</tr>
@@ -501,12 +505,17 @@ function modificaRisorsaModal(id_risorsa){
 				                
 				                $(select[0]).val(r.stato)
 				               
-				            } else if(i == 4){
+				            }else if(i == 4){
+				            	let input = $(cell).find("input");
+				                $(input[0]).val(r.note)
+				            }
+				           
+				           else if(i == 5){
 				                // Datepicker input
 				                let input = $(cell).find("input");
 				                $(input[0]).val(r.req_san_data_inizio)
 				            }
-				            else if(i == 5){
+				            else if(i == 6){
 				            	let input = $(cell).find("input");
 				                $(input[0]).val(r.req_san_data_fine)
 				            }
@@ -959,9 +968,14 @@ $('#modificaRisorsaForm').on('submit', function(e){
 		                    $cell.css('border', '1px solid red');
 
 		                    if (i === 3) {
-		                        const options = '<select required class="form-control select2" style="width:100%"> <option value="1">IN CORSO</option> <option value="2">SCADUTO</option> </select>';
+		                        const options = '<select required class="form-control select2" style="width:100%"> <option value="1">IDEONEO</option> <option value="2">NON IDONEO</option>  <option value="3">PARZIALMENTE IDONEO</option> </select>';
 		                        $cell.html(options);
-		                    } else if (i === 4 || i === 5) {
+		                    }
+		                    else if(i === 4){
+		                    	 const input = $('<textarea type="text" class="form-control" style="width:100%"/></textarea>');
+			                        $cell.html(input);	
+		                    }
+		                    else if (i === 5 || i === 6) {
 		                        const input = $('<div class="input-group date datepicker"><input type="text" required class="datepicker form-control" /><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>');
 		                        $cell.html(input);
 		                      //  input.datepicker({ dateFormat: "dd/MM/yyyy" });

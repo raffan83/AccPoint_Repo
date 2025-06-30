@@ -130,24 +130,25 @@
 
 </td>
 <c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP") || userObj.checkRuolo("CI")}'>
-<td style="text-align:center" id="ind_prest_${misura.id }">
-<c:if test="${misura.indice_prestazione=='V' }">
+ <c:set var="ip" value="${misura.strumento.ip }"></c:set>
+<td style="text-align:center" id="ind_prest_${misura.id }"  onclick="openModal(null,${misura.id},event)">
+<c:if test="${misura.indice_prestazione=='V'&& ip==1 }">
 <div class="lamp lampGreen" style="margin:auto"></div>
 </c:if>
 
-<c:if test="${misura.indice_prestazione=='G' }">
+<c:if test="${misura.indice_prestazione=='G'&& ip==1 }">
  <div class="lamp lampYellow"  style="margin:auto"></div> 
 </c:if>
 
-<c:if test="${misura.indice_prestazione=='R' }">
+<c:if test="${misura.indice_prestazione=='R'&& ip==1 }">
  <div class="lamp lampRed" style="margin:auto"></div> 
 </c:if>
 
-<c:if test="${misura.indice_prestazione=='X' }">
+<c:if test="${misura.indice_prestazione=='X' && ip==1}">
 <div class="lamp lampNI" style="margin:auto"></div> 
 </c:if>
 
-<c:if test="${misura.indice_prestazione==NULL || misura.indice_prestazione==''}">
+<c:if test="${misura.indice_prestazione==NULL || misura.indice_prestazione==''  || ip==0 }">
 NON DETERMINATO
 </c:if>
 </td>
@@ -501,6 +502,7 @@ NON DETERMINATO
 
 
 
+
   <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -538,7 +540,7 @@ NON DETERMINATO
 
 
   <script type="text/javascript">
-  
+ 
   
   $(".indicePrest").select2();
   function aggiornaIndicePrestazione(id_misura){

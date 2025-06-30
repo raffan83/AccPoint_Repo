@@ -126,12 +126,36 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 </div>
 <div class="row">
-<div id="modalOverlay" class="modal-overlay">
+<!--  <div id="modalOverlay" class="modal-overlay">
   <div id="indiceModal" class="modal-indice">
     <span class="close-button" onclick="closeModal()">×</span>
     <div id="modalBody"></div>
   </div>
-</div>
+</div>  -->
+ 
+
+   <div id="indiceModal" class="modal fade" role="dialog"  style="z-index:999999">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Indice di prestazione</h4>
+      </div>
+       <div class="modal-body" id="modalBody">       
+      
+      	</div>
+      <div class="modal-footer">
+	    
+		<a class="btn btn-primary" onclick="$('#indiceModal').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
+
+</div> 
+
+
+
 <div class="col-xs-12">
  
  
@@ -241,7 +265,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 	 								 <td id="row_<%=strumento.get__id()%>"><%=strumento.get__id()%></td>
 	 								 <c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP") || userObj.checkRuolo("CI")}'>
-	 								 <td id="indice_prestazione_str_<%=strumento.get__id()%>" onclick="openModal(<%=strumento.get__id()%>,event)" style="cursor: pointer;">
+	 								 <td id="indice_prestazione_str_<%=strumento.get__id()%>" onclick="openModal(<%=strumento.get__id()%>,null,event)" style="cursor: pointer;">
 	 								 <c:set var="indice" value="<%=strumento.getIndice_prestazione() %>"></c:set>
 	 								 <c:set var="ip" value="<%=strumento.getIp() %>"></c:set>
 	 								 <c:if test='${indice == null || indice.equals("") || ip==0 }'>
@@ -804,16 +828,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  
  }*/
  
- function openModal(id, event) {
-	  const overlay = document.getElementById("modalOverlay");
-	  const modalBody = document.getElementById("modalBody");
-
-	  modalBody.innerText = "Caricamento...";
-
-	  
+ function openModal(id, id_misura,event) {
 
 	  dataObj = {};
 	  dataObj.id_str = id;
+	  dataObj.id_misura = id_misura;
 		 
 		 callAjax(dataObj,"listaStrumentiSedeNew.do?action=dettaglioIndicePrestazione",function(data){
 			
@@ -821,8 +840,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 			{
 				var dati=data.dati_indice
 				
-				 modalBody.innerHTML ='<h4>Indice di Prestazione</h4>'+
-				       ' <table style="width: 100%; border-collapse: collapse;">'+
+				 modalBody.innerHTML = ' <table style="width: 100%; border-collapse: collapse;">'+
 				        '  <tr><td><b>Matricola</b></td><td>'+dati.matricola+'</td></tr>'+
 				        '  <tr><td><b>Punto riferimento (WC):</b></td><td>'+dati.puntoRiferimento+'</td></tr>'+
 				        '  <tr><td><b>U</b></td><td>'+dati.incertezza+'</td></tr>'+
@@ -830,26 +848,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 				        '  <tr><td><b>iP</b></td><td>'+dati.indice+'</td></tr>'+
 				        '</table>';
 				 
-				        overlay.style.display = "flex";
+				        $('#indiceModal').modal('show')
 			}
 			
 		 });
 		
 	}
 
-	function closeModal() {
-	  document.getElementById("modalOverlay").style.display = "none";
-	}
-
-	// Chiudi la modale cliccando fuori dal contenuto
-	window.addEventListener("click", function (event) {
-	  const overlay = document.getElementById("modalOverlay");
-	  const modal = document.getElementById("indiceModal");
-	  if (event.target === overlay) {
-	    closeModal();
-	  }
-	});
-	
 
 	var columsDatatables = [];
 	 

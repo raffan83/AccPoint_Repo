@@ -472,26 +472,36 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			    Map<String, String> dati = new HashMap<>();
 			    
 			    String idStr = request.getParameter("id_str");
-			    int id = Integer.parseInt(idStr);
+			    String id_misura = request.getParameter("id_misura");
 			    BigDecimal max = BigDecimal.ZERO;
-				String indice;
-
-				StrumentoDTO strumento=GestioneStrumentoBO.getStrumentoById(idStr, session);
-				dati.put("matricola", strumento.getMatricola());
-				ArrayList<MisuraDTO> listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(id, session);
-			
+			    String indice;
 				MisuraDTO misura= null;
+
+				if(id_misura!=null && !id_misura.equals("")) {
+					misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura), session);
+				}else {
+					 int id = Integer.parseInt(idStr);
+					 
+						
+					StrumentoDTO strumento=GestioneStrumentoBO.getStrumentoById(idStr, session);
+					dati.put("matricola", strumento.getMatricola());
+					ArrayList<MisuraDTO> listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(id, session);
 				
-				int idMisura=0;
-				for (MisuraDTO m : listaMisure) {
 					
-					if(m.getId()>idMisura) 
-					{
-						misura=m;
-						idMisura=m.getId();
+					
+					int idMisura=0;
+					
+					for (MisuraDTO m : listaMisure) {
+						
+						if(m.getId()>idMisura) 
+						{
+							misura=m;
+							idMisura=m.getId();
+						}
+						
 					}
-					
 				}
+				
 				
 				for (PuntoMisuraDTO punto : misura.getListaPunti()) {
 						if(!punto.getTipoProva().equals("D")) {

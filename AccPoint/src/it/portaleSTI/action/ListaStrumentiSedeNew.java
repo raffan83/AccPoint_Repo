@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,7 @@ import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.StrumentoNoteDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -541,22 +543,42 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				PrintWriter  out = response.getWriter();
 				myObjJSON.addProperty("success", true);
 				
+				session.getTransaction().commit();
+				session.close();
+				
+				
 				out.print(myObjJSON); 
 				out.flush();
 
-		}else if(action.equals("cambiaStatoIp")) 
+		}
+		
+		else if(action.equals("cambiaStatoIp")) 
 		{
 			ajax=true;
 			PrintWriter out = response.getWriter();
 		    response.setContentType("application/json");
 			String idStr=request.getParameter("idStrumento");
 			int stato =Integer.parseInt(request.getParameter("stato"));
+			UtenteDTO user=(UtenteDTO)request.getSession().getAttribute("userObj");
 			
+			StrumentoNoteDTO note  = new StrumentoNoteDTO();
+			note.setId_strumento(Integer.parseInt(idStr));		
+			note.setUser(user);
+			note.setData(new Date(System.currentTimeMillis()));
+			String descrizione="";
 			
-			
-			
+			if (stato==0) 
+			{
+				descrizione="Lo strumento è stato disabilitato alla visualizzazione dell Indice di prestazione"; 
+			}else 
+			{
+				descrizione="Lo strumento è stato abilitato alla visualizzazione dell Indice di prestazione";
+			}
+			note.setDescrizione(descrizione);
 			
 			boolean success = GestioneStrumentoBO.updateStatoIp(idStr,stato);
+			
+			success=GestioneStrumentoBO.saveNote(note, session);
 			
 				
 				String message = "";
@@ -566,12 +588,17 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 					message = "Errore Salvataggio";
 				}
 				
+				session.getTransaction().commit();
+				session.close();
+				
 				JsonObject myObj = new JsonObject();
 				
 				myObj.addProperty("success", success);
 				myObj.addProperty("messaggio", message);
 		        out.println(myObj.toString());
 		}
+			
+		
 			 
 		}
 

@@ -27,6 +27,7 @@ ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribu
 
 ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList)session.getAttribute("listaLuogoVerifica");
 ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttribute("listaClassificazione");
+UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
 %>
 
 
@@ -240,7 +241,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
     
        </div> 
        
-       
+
+           <%if(user.checkRuolo("AM") || user.checkRuolo("OP") || user.checkRuolo("CI")) {%>
                   <div class="form-group">
   <label class="col-sm-2 control-label">Presenza Ic:</label>
   <div class="col-sm-10">
@@ -250,8 +252,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
     </label>
   </div>
 </div> 
-     
-       
+      <%} %>
+   
                 <button type="submit" class="btn btn-primary" >Salva</button>
         
      

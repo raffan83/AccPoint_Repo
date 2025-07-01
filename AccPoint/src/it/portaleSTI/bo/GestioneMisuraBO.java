@@ -376,7 +376,7 @@ public class GestioneMisuraBO {
 	        }
 	 */
 			
-			MisuraDTO misura =GestioneMisuraBO.getMiruraByID(89486, session);
+			MisuraDTO misura =GestioneMisuraBO.getMiruraByID(89816, session);
 			
 			System.out.println(calcolaIndicePrestazione(misura));
 	    }

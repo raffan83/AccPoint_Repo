@@ -143,7 +143,7 @@ NON DETERMINATO
 </td>
 </c:if>
  <c:if test="${misura.indice_prestazione!=NULL && !misura.indice_prestazione.equals('')}">
- <td style="text-align:center" id="ind_prest_${misura.id }"  onclick="openModal(null,${misura.id},event)">
+ <td style="text-align:center;cursor: pointer" id="ind_prest_${misura.id }"  onclick="openModal(null,${misura.id},event)" >
 <c:if test="${misura.indice_prestazione=='V' }">
 <div class="lamp lampGreen" style="margin:auto"></div>
 </c:if>

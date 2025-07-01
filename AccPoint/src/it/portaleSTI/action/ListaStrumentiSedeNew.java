@@ -474,7 +474,13 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			    String idStr = request.getParameter("id_str");
 			    String id_misura = request.getParameter("id_misura");
 			    BigDecimal max = BigDecimal.ZERO;
-			    String indice;
+			    
+			    dati.put("puntoRiferimento","ND");
+			    dati.put("incertezza", "ND");
+			    dati.put("valAccettabilita","ND" );
+			    dati.put("indice","ND");
+			    dati.put("link", "ND");
+			    
 				MisuraDTO misura= null;
 
 				if(id_misura!=null && !id_misura.equals("")) {
@@ -518,7 +524,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 								    dati.put("incertezza", u);
 								    dati.put("valAccettabilita",acc );
 								    dati.put("indice","iP=("+u+" * 100 / "+acc+") ="+ max.setScale(2,RoundingMode.HALF_UP).toPlainString()+"%");
-								   
+								    dati.put("link", "<td><a href=\"dettaglioMisura.do?idMisura="+Utility.encryptData(""+misura.getId())+"\" target=\"_blank\">"+misura.getId()+"</a></td>");
 								}
 							}
 						}
@@ -526,18 +532,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 						
 								
 					}
-					
-					if(max.compareTo(new BigDecimal(25))==-1 || max.compareTo(new BigDecimal(25))==0) {
-						indice = "V";
-					}else if(max.compareTo(new BigDecimal(25))==1 && (max.compareTo(new BigDecimal(75))==-1 || max.compareTo(new BigDecimal(75))==0)) {
-						indice = "G";
-					}else if(max.compareTo(new BigDecimal(75))==1 && (max.compareTo(new BigDecimal(100))==-1 || max.compareTo(new BigDecimal(100))==0)) {
-						indice = "R";
-					}else {
-						indice = "X";
-					}
-					
-			    
+
 			    Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 				
 				myObjJSON = new JsonObject();

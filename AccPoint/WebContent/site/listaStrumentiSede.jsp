@@ -861,6 +861,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 				        '  <tr><td><b>U</b></td><td>'+dati.incertezza+'</td></tr>'+
 				        '  <tr><td><b>Acc</b></td><td>'+dati.valAccettabilita+'</td></tr>'+
 				        '  <tr><td><b>iP</b></td><td>'+dati.indice+'</td></tr>'+
+				        '<tr><td><b>Misura</b></td>'+dati.link+'</tr>'+
 				        '</table>';
 				 
 				        $('#indiceModal').modal('show')

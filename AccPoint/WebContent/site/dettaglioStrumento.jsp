@@ -443,81 +443,14 @@ input:checked + .slider:before {
     <%} %>
     
     
-       </div>
-       <div class="form-group">
-  <label class="col-sm-2 control-label">Presenza Ic:</label>
-  <div class="col-sm-10">
-    <label class="switch">
-      <input type="checkbox" id="switchAttivo" <%= (strumento.getIp() == 1 ? "checked" : "") %> onClick="cambiaStatoIp('<%=strumento.get__id()%>')">
-      <span class="slider round"></span>
-    </label>
-  </div>
-</div> 
+
        <%} %>
        
         </form>
 
 <script>
 
-function cambiaStatoIp(idStrumento){
-	  const stato =   document.getElementById("switchAttivo").checked ? "1" : "0";
-	  pleaseWaitDiv = $('#pleaseWaitDialog');
-	  pleaseWaitDiv.modal();  
-	  $.ajax({
-  	  type: "POST",
-  	  url: "listaStrumentiSedeNew.do?action=cambiaStatoIp&idStrumento="+idStrumento+"&stato="+stato,
-  	  dataType: "json",
-  	  success: function( data, textStatus) {
 
-  		  if(data.success)
-  		  {
-  			  pleaseWaitDiv.modal('hide');  
-  			  $('#report_button').hide();
-  				$('#visualizza_report').hide();
-  			  $("#myModalErrorContent").html("Indice prestazione modificato con successo");
-  			  $("#myModalError").addClass("modal modal-success");
-		 	        $("#myModalError").modal();
-		 	        
-		 	        
-		 	       $('#myModalError').on('hidden.bs.modal', function (e) {
-		 			  
-		 	    	  var sede = $("#select2").val();
-			           var cliente = $("#select1").val();
-
-			           $(this).off('hidden.bs.modal');
-			           
-	          			  dataString ="idSede="+ sede+";"+cliente;
-	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
-	          	        	$('#myModal').modal('hide');
-	          	        	$('.modal-backdrop').hide();
-		          			
-	          	          });
-			           
-		 	       });
-		 	        
-  		  }else{
-  			  pleaseWaitDiv.modal('hide');  
-  			  $('#report_button').show();
-  				$('#visualizza_report').show();
-  			 $("#myModalErrorContent").html("Errore modifica cambio stato Indice prestazione");
-		 	        $("#myModalError").modal();
-  		  }
-  	  },
-
-  	  error: function(jqXHR, textStatus, errorThrown){
-  	
-
-  		 $("#myModalErrorContent").html(textStatus);
-  		 $('#report_button').show();
-				$('#visualizza_report').show();
-				$('#myModalError').modal('show');
-				
-  		  //callAction('logout.do');
-  
-  	  }
-    });
-	  
-}
 
 	
 	

@@ -22,11 +22,18 @@
         </many-to-one>
         
         
-       <property name="data" type="java.sql.Date">
-            <column name="data" />
+       <property name="data_inizio" type="java.sql.Date">
+            <column name="data_inizio" />
         </property>
-         <property name="cella" type="int">
-            <column name="cella" />
+        
+             <property name="data_fine" type="java.sql.Date">
+            <column name="data_fine" />
+        </property>
+         <property name="cella_inizio" type="int">
+            <column name="cella_inizio" />
+        </property>
+        <property name="cella_fine" type="int">
+            <column name="cella_fine" />
         </property>
       
     </class>

@@ -163,8 +163,14 @@
                      <c:if test="${loop.index == 0 }">
                  <a class="btn btn-primary pull-right btn-xs"  title="Click per assegnare l'intervento a una risorsa" onClick="assegnaRisorsa('${intervento.id}')"><i class="fa fa-plus"></i></a>   
                   </c:if>
-                  <a class="pull-right" style="padding-right:7px">${risorsa_intervento.risorsa.utente.nominativo}</a>
+   					
+   					<c:if test="${risorsa_intervento.risorsa.isPreposto() }">
+                  <a class="pull-right" style="padding-right:7px">${risorsa_intervento.risorsa.utente.nominativo} [P]</a>
+               </c:if>
                
+               <c:if test="${!risorsa_intervento.risorsa.isPreposto() }">
+                  <a class="pull-right" style="padding-right:7px">${risorsa_intervento.risorsa.utente.nominativo}</a>
+               </c:if>
                   <br>
                   
                   </c:forEach>
@@ -262,8 +268,9 @@
 	</div>
 </div>
 <div class="box-body">
-
+  <c:if test="${intervento.getListaRisorse().size()==0 }">
 <a class="btn btn-primary pull-right" onClick='aggiungiRequisito()'><i class="fa fa-plus"></i> Aggiungi Requisito</a><br><br>
+</c:if>
 <div class="row">
         <div class="col-xs-12">
         <label>REQUISITI DOCUMENTALI</label>
@@ -277,7 +284,12 @@
  <tbody>
 
  <c:forEach items="${intervento.listaRequisiti}" var="requisito" varStatus="loop">
+ 
  <c:if test="${requisito.requisito_documentale!=null }">
+  <c:set var="requisito_preposto" value="0"></c:set>
+<c:if test="${requisito.requisito_documentale.categoria.id== 31 }">
+<c:set var="requisito_preposto" value="1"></c:set>
+</c:if>
  <tr role="row">
  <td>${requisito.requisito_documentale.id}</td>
  	<td>${requisito.requisito_documentale.categoria.codice}</td>
@@ -1023,9 +1035,9 @@
  </tr></thead>
  
  <tbody>
- 
+
  	<c:forEach items="${lista_documentale}" var="requisito" varStatus="loop">
- 	
+
 	<tr id="row_doc_${requisito.id }">
 	<td></td>
 	<td>${requisito.id }</td>	
@@ -1189,7 +1201,7 @@
 <form id="formAssegnaRisorsa" name="formAssegnaRisorsa">
  <div id="modalRisorse" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -1199,7 +1211,29 @@
        <div class="row">
        <div class="col-xs-12">
        <label>Seleziona risorsa </label>
-       <select class="form-control select2" style="width:100%" multiple data-placeholder="Seleziona risorsa..." id="risorse_disponibili" name="risorse_disponibili"></select>
+       <!-- <select class="form-control select2" style="width:100%" multiple data-placeholder="Seleziona risorsa..." id="risorse_disponibili" name="risorse_disponibili"></select> -->
+      
+       <div class="row">
+        <div class="col-xs-12">
+        <table id="tabRisorse" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+        <thead>
+        <tr>
+      	<th></th>
+        <th>ID</th>
+        <th style="max-width:100px">Nominativo</th>
+ 		<th style="min-width:100px">Data</th>
+        <th>Azioni</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        </tbody>
+        
+        </table>
+
+        </div>
+	
+      	</div>
       
        </div>
        
@@ -1223,6 +1257,45 @@
   </div>
   
   </form>
+  
+  
+  
+  <div id="modalRequisiti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Requisiti Risorsa</h4>
+      </div>
+       <div class="modal-body">      
+       <div class="row">
+       <div class="col-xs-12">
+       <label>REQUISITI DOCUMENTALI</label>
+       <div id="content_requisiti_doc"></div>
+       
+       </div>
+       
+       </div> 
+       
+        <div class="row">
+       <div class="col-xs-12">
+       <label>REQUISITI SANITARI</label>
+       <div id="content_requisiti_san"></div>
+       
+       </div>
+       
+       </div> 
+   
+      	</div>
+      <div class="modal-footer">
+  
+
+		<a class="btn btn-primary" onclick="$('#modalRequisiti').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
+	</div>
 
 <form id="formFirmaClienteCheck" name="formFirmaClienteCheck">
   <div id="myModalFirmeCliente" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato"  data-backdrop="static" >
@@ -2458,7 +2531,68 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	    tableAttiìvita.columns.adjust().draw();
 	        
 	    
-	    
+	    var tableRisorse = $('#tabRisorse').DataTable({
+			  language: {
+			    emptyTable: "Nessun dato presente nella tabella",
+			    info: "Vista da _START_ a _END_ di _TOTAL_ elementi",
+			    infoEmpty: "Vista da 0 a 0 di 0 elementi",
+			    infoFiltered: "(filtrati da _MAX_ elementi totali)",
+			    lengthMenu: "Visualizza _MENU_ elementi",
+			    loadingRecords: "Caricamento...",
+			    processing: "Elaborazione...",
+			    search: "Cerca:",
+			    zeroRecords: "La ricerca non ha portato alcun risultato.",
+			    paginate: {
+			      first: "Inizio",
+			      previous: "Precedente",
+			      next: "Successivo",
+			      last: "Fine"
+			    },
+			    aria: {
+			      sortAscending: ": attiva per ordinare la colonna in ordine crescente",
+			      sortDescending: ": attiva per ordinare la colonna in ordine decrescente"
+			    }
+			  },
+			  pageLength: 25,
+			  order: [[1, "desc"]],
+			  paging: true,
+			  ordering: true,
+			  info: true,
+			  searchable: true,
+
+			  responsive: true,
+			  scrollX: false,
+			  stateSave: true,
+
+			  select: {
+			    style: 'multi-shift',
+			    selector: 'td:first-child' // attenzione: meglio usare 'first-child' che 'nth-child(1)'
+			  },
+
+			  columns: [
+			    { data: null }, // <- questo va così se non c'è "check" nel JSON
+			    { data: "id" },
+			    { data: "nominativo" },
+			    { data: "data" },
+			    { data: "azioni" }
+			  ],
+
+			  columnDefs: [
+			    {
+			      targets: 0,
+			      className: 'select-checkbox',
+			      orderable: false,
+			      defaultContent: ''
+			    },
+			    { responsivePriority: 1, targets: 1 }
+			  ],
+
+			  buttons: [{
+			    extend: 'colvis',
+			    text: 'Nascondi Colonne'
+			  }]
+			});
+
 	  	    
 	    
 	    
@@ -3251,6 +3385,8 @@ var config4 = {
      			if(r.requisito_documentale!=null){
      			
      				t_doc.row( "#row_doc_"+ r.requisito_documentale.id, { page:   'all'}).select();
+     				
+     				
      			}
 
      			if(r.requisito_sanitario!=null){
@@ -3329,45 +3465,83 @@ var config4 = {
     			
     			var lista_risorse = data.lista_risorse_disponibili;
     			var lista_risorse_all = data.lista_risorse_all;
+    			lista_risorse_json = data.lista_risorse_all;
+    			lista_requisiti_doc_risorse = data.lista_req_doc_json;
     			
     			 var id_risorse_disponibili = lista_risorse.map(function(r) { return r.id; });
-    			
-    			var $select = $("#risorse_disponibili").empty().append('<option value=""></option>');
-    			
-    			 $.each(lista_risorse_all, function(index, risorsa) {
-    			        var option = $('<option>', {
-    			            value: risorsa.id,
-    			            text: risorsa.utente.nominativo,
-    			            disabled: !id_risorse_disponibili.includes(risorsa.id)
-    			        });
-    			        $select.append(option);
-    			    });
+    			 table_data = []
+    			 
+    			 for(var i = 0; i<lista_risorse.length;i++){
+					  var dati = {};
+				/* 	  dati.check ="<td></td>"; */
+				  dati.check = null; 
+					  dati.id = lista_risorse[i].id;
+					  if(lista_requisiti_doc_risorse[lista_risorse[i].id].find(item => item.id === 31)){
+						  dati.nominativo = lista_risorse[i].utente.nominativo +" [P]";
+					  }else{
+						  dati.nominativo = lista_risorse[i].utente.nominativo;  
+					  }
+					  
+			
+					  var risorsa_intervento = risorse_intervento.find(function(r) {
+						    return r.risorsa.id === lista_risorse[i].id;
+						});
+					  if(risorsa_intervento){
+						  dati.data = '<input type="text" style="width:100%" class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off" style="width:100%"   value="'+risorsa_intervento.data_inizio+' - '+risorsa_intervento.data_fine+'"/>';  
+					  }else{
+						  dati.data = '<input type="text"style="width:100%"  class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off" style="width:100%"  />';
+					  }
+					  
 
-    			/* $.each(lista_risorse_all, function(index, risorsa) {
-    				if(lista_risorse.includes(risorsa)){
-    					$select.append($('<option>', {
-        			        value: risorsa.id,
-        			        text: risorsa.utente.nominativo
-        			        
-        			    }));	
-    				}
-    			    
-    				if(!lista_risorse.includes(risorsa)){
-	    			    $select.append($('<option>', {
-	    			        value: risorsa.id,
-	    			        text: risorsa.utente.nominativo,
-	    			        disabled: true
-	    			    }));
-    				}
-    			});
-    			 */
+	
+					  dati.azioni = "<a class='btn btn-primary' onClick='mostraRequisiti("+lista_risorse[i].id+")'>Requisiti</a>";
+					  
+					  
+					  dati.DT_RowId = "riga_risorse_"+dati.id;
+					  table_data.push(dati);
+					  
+					  
+					
+			
+		    }
+
+				   
+				   var t = $('#tabRisorse').DataTable()
+				t.clear().draw();
+				   
+				t.rows.add(table_data).draw();
+					
+				t.columns.adjust().draw();
+
+		
+				
+				$('.daterange').daterangepicker({
+				    locale: {
+				        format: 'DD/MM/YYYY',
+				        applyLabel: 'Applica',
+				        cancelLabel: 'Annulla',
+				        daysOfWeek: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
+				        monthNames: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+				            'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
+				        firstDay: 1
+				    },
+				    autoUpdateInput: false
+				});
+
+				$('.daterange').on('apply.daterangepicker', function(ev, picker) {
+				    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+				});
+
+				$('.daterange').on('cancel.daterangepicker', function(ev, picker) {
+				    $(this).val('');
+				});
+    			
+    	
     			if(risorse_intervento !=null){
     				for (var i = 0; i < risorse_intervento.length; i++) {
-    					$('#risorse_disponibili option[value="'+risorse_intervento[i].risorsa.id+'"]').attr("selected", true);
-    					$('#risorse_disponibili').change();
     					
-    					
-    					$('#id_int_risorsa').val($('#risorse_disponibili').val()+risorse_intervento[i].risorsa.id+";");
+    					t.row( "#riga_risorse_"+risorse_intervento[i].risorsa.id ).select();
+    				
     				}
     		
     			}
@@ -3383,15 +3557,95 @@ var config4 = {
     $('#formAssegnaRisorsa').on('submit', function(e){
     	
    	 e.preventDefault();
-   	 $('#id_risorsa').val($("#risorse_disponibili").val())
+   	// $('#id_risorsa').val($("#risorse_disponibili").val())
+   	 
+   	 
+   	 	  var t1 = $('#tabRisorse').DataTable();
+   	 var valori = "";
+   	 var requisito_preposto = ${requisito_preposto};
+   	var preposto_selezionato = false;
+	    t1.rows({ selected: true }).every(function () {
+	        var $row = $(this.node());
+	        var id = $row.find('td').eq(1).text().trim(); 
+	        var nominativo = $row.find('td').eq(2).text().trim()
+	 
+	        var date = $row.find('td').eq(3).find('input').val(); // Colonna ID
+	        $row.find('td').eq(3).find('input').attr("required", true);
+	        
+	        valori += id+","+date + ";";
+	        
+	        if(nominativo.includes("[P]")){
+	        	preposto_selezionato = true;
+	        }
+	        
+	    });
+	    
+	    
+	    $('#id_risorsa').val(valori.slice(0, -1));
+	    
+	    if(requisito_preposto == 1){
+        	if(preposto_selezionato){
 
- callAjaxForm('#formAssegnaRisorsa','gestioneRisorse.do?action=associa_intervnto_risorsa');
+        		 callAjaxForm('#formAssegnaRisorsa','gestioneRisorse.do?action=associa_intervnto_risorsa');
+
+        	}else{
+        		$('#myModalErrorContent').html("Attenzione devi selezionare almeno un PREPOSTO [P] per questo intervento!")
+        		$('#myModalError').removeClass()
+        		$('#myModalError').addClass("modal modal-danger")
+        		$('#myModalError').modal()
+        	}
+        }else{
+
+        	 callAjaxForm('#formAssegnaRisorsa','gestioneRisorse.do?action=associa_intervnto_risorsa');
+
+        }
+
 
     })
     	
   
-    	
+    	var lista_risorse_json;
+    var lista_requisiti_doc_risorse;
+    
+function mostraRequisiti(id_risorsa){
+	
+	var str_doc ="<ul class='list-group list-group-unbordered'>";
+	var str_san ="<ul class='list-group list-group-unbordered'>";
+	
+	var risorsa_json = lista_risorse_json.find(item => item.id === id_risorsa);
+	
+	if(risorsa_json!=null){
+		var listaRequisiti = risorsa_json.listaRequisiti;
+		
+		var risorsa_doc_json = lista_requisiti_doc_risorse[id_risorsa];
+		
+		for(var i = 0; i<risorsa_doc_json.length;i++){
 
+			str_doc+="<li class='list-group-item'>"+risorsa_doc_json[i].descrizione+"</li>"	
+	}
+	for(var i = 0; i<listaRequisiti.length;i++){
+		if(listaRequisiti[i].req_sanitario!=null){
+			if(listaRequisiti[i].stato == 1){
+				stato = "IDONEO";
+			}else if(listaRequisiti[i].stato == 2){
+				stato = "NON IDONEO";
+			}else if(listaRequisiti[i].stato == 3){
+				stato = "PARZIALMENTE IDONEO ("+ listaRequisiti[i].note+")";
+			}
+			str_san+="<li class='list-group-item'>"+listaRequisiti[i].req_sanitario.descrizione+ " - " +stato+ " - Scadenza: "+ listaRequisiti[i].req_san_data_fine+"</li>"	
+		}
+		
+	}
+	}
+
+
+	str_doc +="</ul>";
+	str_san +="</ul>";
+	$("#content_requisiti_doc").html(str_doc);
+	$("#content_requisiti_san").html(str_san);
+	
+	$('#modalRequisiti').modal()
+}
 
   </script>
 </jsp:attribute> 

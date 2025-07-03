@@ -30,6 +30,9 @@
         <property name="risorsa" type="int">
             <column name="id_pr_risorsa" />
         </property>
+          <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
         
       
     </class>

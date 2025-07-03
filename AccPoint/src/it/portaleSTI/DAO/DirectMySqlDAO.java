@@ -3900,7 +3900,7 @@ public static ArrayList<PRInterventoRisorsaDTO> getListaInterventoRisorseAll(Ses
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 		
-		String query = "SELECT a.*, b.nome_cliente, b.nome_sede from pr_intervento_risorsa a join intervento b on a.id_intervento = b.id";
+		String query = "SELECT a.*, b.nome_cliente, b.nome_sede, b.id_commessa from pr_intervento_risorsa a join intervento b on a.id_intervento = b.id";
 	
 	
 	pst=con.prepareStatement(query);
@@ -3914,9 +3914,11 @@ public static ArrayList<PRInterventoRisorsaDTO> getListaInterventoRisorseAll(Ses
 		res.setId(rs.getInt("a.id"));
 		res.setIntervento(rs.getInt("id_intervento"));
 		PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, rs.getInt("id_risorsa"));
-		res.setData(rs.getDate("data"));
-		res.setCella(rs.getInt("cella"));
-		res.setTesto_riquadro(rs.getString("nome_cliente")+" - "+rs.getString("nome_sede"));
+		res.setData_inizio(rs.getDate("data_inizio"));
+		res.setData_fine(rs.getDate("data_fine"));
+		res.setCella_inizio(rs.getInt("cella_inizio"));
+		res.setCella_fine(rs.getInt("cella_fine"));
+		res.setTesto_riquadro(rs.getString("id_commessa") + " - " +rs.getString("nome_cliente")+" - "+rs.getString("nome_sede"));
 		res.setRisorsa(risorsa);
 		lista.add(res);
 		

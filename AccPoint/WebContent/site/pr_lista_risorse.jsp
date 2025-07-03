@@ -167,6 +167,7 @@
 <th>Categoria</th>
 <th>Descrizione</th>
 <th>Data Scadenza</th>
+<th>Attestato</th>
  </tr></thead>
  
  <tbody>
@@ -217,7 +218,7 @@
 	<td>${requisito.id }</td>	
 	<td>${requisito.descrizione }</td>
 	<td id="stato_${requisito.id }"></td>	
-	<td id="note_${requisito.id }"></td>
+	<td id="note_stato_${requisito.id }"></td>
 	<td id="datainizio_${requisito.id }"></td>
 	<td id="datafine_${requisito.id }"></td>
 	</tr>
@@ -308,6 +309,7 @@
 <th>Categoria</th>
 <th>Descrizione</th>
 <th>Data Scadenza</th>
+<th>Attestato</th>
  </tr></thead>
  
  <tbody>
@@ -358,7 +360,7 @@
 	<td>${requisito.id }</td>	
 	<td>${requisito.descrizione }</td>
 	<td id="stato_mod_${requisito.id }"></td>	
-	<td id="note_mod_${requisito.id }"></td>	
+	<td id="note_stato_mod_${requisito.id }"></td>	
 	<td id="datainizio_mod_${requisito.id }"></td>
 	<td id="datafine_mod_${requisito.id }"></td>
 	</tr>
@@ -506,7 +508,7 @@ function modificaRisorsaModal(id_risorsa){
 				                $(select[0]).val(r.stato)
 				               
 				            }else if(i == 4){
-				            	let input = $(cell).find("input");
+				            	let input = $(cell).find("textarea");
 				                $(input[0]).val(r.note)
 				            }
 				           
@@ -613,7 +615,7 @@ $('#partecipante').on('change', function () {
 			  dati.categoria = lista_corsi[i].corso_cat.descrizione;
 			  dati.descrizione = lista_corsi[i].descrizione;
 			  dati.data_scadenza = lista_corsi[i].data_scadenza;
-			  
+			  dati.attestato ='<a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_attestato&ajax=1&id_corso='+lista_corsi[i].id+'&id_partecipante='+id_partecipante+'" title="Click per scaricare l\'attestato"><i class="fa fa-file-pdf-o"></i></a>'
 			  table_data.push(dati);
 			
 		  }
@@ -656,7 +658,7 @@ $('#partecipante_mod').on('change', function () {
     				  dati.categoria = lista_corsi[i].corso_cat.descrizione;
     				  dati.descrizione = lista_corsi[i].descrizione;
     				  dati.data_scadenza = lista_corsi[i].data_scadenza;
-    				  
+    				  dati.attestato ='<a target="_blank" class="btn btn-danger" href="gestioneFormazione.do?action=download_attestato&ajax=1&id_corso='+lista_corsi[i].id+'&id_partecipante='+id_partecipante+'" title="Click per scaricare l\'attestato"><i class="fa fa-file-pdf-o"></i></a>'
     				  table_data.push(dati);
     				
     			  }
@@ -820,13 +822,23 @@ $('#modificaRisorsaForm').on('submit', function(e){
 	            if (i === 1) {
 	                // ID
 	                testo = $(cell).text().trim();
-	            } else if (i === 3) {
+	            } 
+	            
+	            else if (i === 3) {
 	                // SELECT
 	                let select = $(cell).find("select");
 	                if (select.length) {
 	                    testo = select.val();
 	                }
-	            } else {
+	            } 
+	            else if(i===4){
+	            	
+	            	let textarea = $(cell).find("textarea");
+	                if (textarea.length) {
+	                    testo = textarea.val();
+	                }
+	            }
+	            else {
 	                // Datepicker input
 	                let input = $(cell).find("input");
 	                if (input.length) {
@@ -879,7 +891,15 @@ $('#modificaRisorsaForm').on('submit', function(e){
 	                if (select.length) {
 	                    testo = select.val();
 	                }
-	            } else {
+	            }
+  				else if(i===4){
+	            	
+	            	let textarea = $(cell).find("textarea");
+	                if (textarea.length) {
+	                    testo = textarea.val();
+	                }
+	            }
+	            else {
 	                // Datepicker input
 	                let input = $(cell).find("input");
 	                if (input.length) {
@@ -952,6 +972,11 @@ $('#modificaRisorsaForm').on('submit', function(e){
 
 	    // Select row
 	    
+	    var mod = "";
+	    if(selector.includes("_mod")){
+	    	mod = "_mod";
+	    }
+	    
 	    if(selector.includes("Sanitari")){
 	    	$(selector).on('select.dt', function (e, dt, type, indexes) {
 		        if (type === 'row') {
@@ -968,11 +993,13 @@ $('#modificaRisorsaForm').on('submit', function(e){
 		                    $cell.css('border', '1px solid red');
 
 		                    if (i === 3) {
-		                        const options = '<select required class="form-control select2" style="width:100%"> <option value="1">IDEONEO</option> <option value="2">NON IDONEO</option>  <option value="3">PARZIALMENTE IDONEO</option> </select>';
+		                    	var id = $cell[0].id; 
+		                        const options = '<select required class="form-control select2" id="select_'+id+'" onchange="changeStato('+id+')" style="width:100%"> <option value="1">IDEONEO</option> <option value="2">NON IDONEO</option>  <option value="3">PARZIALMENTE IDONEO</option> </select>';
 		                        $cell.html(options);
 		                    }
 		                    else if(i === 4){
-		                    	 const input = $('<textarea type="text" class="form-control" style="width:100%"/></textarea>');
+		                    	var id = $cell[0].id;
+		                    	 const input = $('<textarea id="textarea_'+id+'" class="form-control" style="width:100%"/></textarea>');
 			                        $cell.html(input);	
 		                    }
 		                    else if (i === 5 || i === 6) {
@@ -1021,6 +1048,29 @@ $('#modificaRisorsaForm').on('submit', function(e){
 
  
  
+ function changeStato(td){
+	 
+	 var id = td.id;
+	
+	 var stato = $($('#select_'+id)).val();
+	 
+
+
+	 if(stato == 3){
+		 
+		 $('#textarea_note_'+id).attr("required", true)
+	 }else{
+		 $('#textarea_note_'+id).attr("required", false)
+	 }
+ }
+	 
+	
+	 
+	 
+	 
+ 
+ 
+ 
  function initRequisitiDocumentaliTable(selector) {
 	    const table = $(selector).DataTable({
 	        language: {
@@ -1060,7 +1110,8 @@ $('#modificaRisorsaForm').on('submit', function(e){
 		    	{"data" : "codice"},  
 		    	{"data" : "categoria"},
 		      	{"data" : "descrizione"},
-		      	{"data" : "data_scadenza"}
+		      	{"data" : "data_scadenza"},
+		      	{"data" : "attestato"}
 		      
 		       ],	
 	        columnDefs: [
@@ -1102,6 +1153,21 @@ $('#modificaRisorsaForm').on('submit', function(e){
 	 
  }
 
+ 
+ 
+ $('#modalModificaRisorsa').on("hidden.bs.modal", function(){
+	
+	 var tableSan = $('#tabRequisitiSanitari_mod').DataTable();
+	 tableSan.rows({ search: 'applied' }).deselect();
+ });
+ 
+ 
+ $('#modalNuovaRisorsa').on("hidden.bs.modal", function(){
+		
+	 var tableSan = $('#tabRequisitiSanitari').DataTable();
+	 tableSan.rows({ search: 'applied' }).deselect();
+ });
+ 
  
   </script>
   

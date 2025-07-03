@@ -19,12 +19,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ibm.wsdl.util.IOUtils;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.ForCorsoCatDTO;
+import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
@@ -37,6 +40,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCommesseBO;
+import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneRisorseBO;
@@ -163,7 +167,7 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		request.getSession().setAttribute("commessa", comm);
 		
-		Gson gson = new Gson(); 
+		Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create(); 
 		
 		request.getSession().setAttribute("statoStrumentiJson", gson.toJsonTree(statoStrumenti).toString());
 		request.getSession().setAttribute("tipoStrumentiJson", gson.toJsonTree(tipoStrumenti).toString());
@@ -183,6 +187,18 @@ public class GestioneInterventoDati extends HttpServlet {
 		//ArrayList<PRInterventoRisorsaDTO> risorse_intervento = GestioneRisorseBO.getRisorsaIntervento(intervento.getId(), intervento.getDataCreazione(), session);
 		
 		request.getSession().setAttribute("map_relazioni", gson.toJsonTree(map_relazioni));
+		
+		for (PRInterventoRisorsaDTO r : intervento.getListaRisorse()) {
+			ArrayList<ForCorsoDTO>lista_corsi = GestioneFormazioneBO.getListaCorsiInCorsoPartecipante(r.getRisorsa().getPartecipante().getId(), session);
+			 for (ForCorsoDTO c : lista_corsi) {
+
+		        	if(c.getCorso_cat().getId() == 31) {
+		        		r.getRisorsa().setPreposto(true);
+		        	}
+		        
+		        }
+		}
+		
 		request.getSession().setAttribute("risorse_intervento_json",gson.toJsonTree(intervento.getListaRisorse()));
 		
 		Properties prop = new Properties();

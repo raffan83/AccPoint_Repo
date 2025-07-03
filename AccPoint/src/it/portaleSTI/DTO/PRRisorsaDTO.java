@@ -18,6 +18,7 @@ public class PRRisorsaDTO {
 	private ForPartecipanteDTO partecipante;
 	Set<PRRequisitoRisorsaDTO> listaRequisiti = new HashSet<PRRequisitoRisorsaDTO>();
 	private int disabilitato;
+	private boolean isPreposto;
 	
 	
 	
@@ -88,6 +89,16 @@ public class PRRisorsaDTO {
 	}
 
 
+
+
+	public boolean isPreposto() {
+		return isPreposto;
+	}
+
+
+	public void setPreposto(boolean isPreposto) {
+		this.isPreposto = isPreposto;
+	}
 
 
 	public PRRisorsaDTO() {

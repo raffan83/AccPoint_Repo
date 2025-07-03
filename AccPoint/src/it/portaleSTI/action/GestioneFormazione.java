@@ -1323,11 +1323,19 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String id_corso = request.getParameter("id_corso");
 				String id_partecipante = request.getParameter("id_partecipante");				
 				String filename = request.getParameter("filename");
+				String download_ajax = request.getParameter("ajax");
 				
-				id_corso = Utility.decryptData(id_corso);
-				id_partecipante = Utility.decryptData(id_partecipante);
-				filename = Utility.decryptData(filename);
-								
+				if(download_ajax==null) {
+					id_corso = Utility.decryptData(id_corso);
+					id_partecipante = Utility.decryptData(id_partecipante);
+				}
+				
+				if(filename==null) {
+					ForPartecipanteRuoloCorsoDTO p = GestioneFormazioneBO.getPartecipanteFromCorso(Integer.parseInt(id_corso), Integer.parseInt(id_partecipante), 0, session);
+					filename = p.getAttestato();
+				}else {
+					filename = Utility.decryptData(filename);
+				}
 				String path = Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+id_partecipante+"//"+filename;
 				//response.setHeader("Content-disposition", "attachment; filename=\""+filename+"\"");
 				response.setContentType("application/pdf");	

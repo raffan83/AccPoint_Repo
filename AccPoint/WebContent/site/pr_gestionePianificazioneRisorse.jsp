@@ -78,6 +78,10 @@
 
 
 <br><br>
+ <div class="row">
+            <div class="col-xs-12">
+            <a class="btn btn-primary pull-right" onclick="$('#modalAssegnazioneDiretta').modal()"><i class="fa fa-plus"></i>Assegna Intervento</a>
+            </div></div><br>
                <div class="row">
 				 <div class="col-xs-12">
 				 <a class="btn btn-primary pull-left" onclick="subTrimestre('${start_date }', '${anno}')" ><i class="fa fa-arrow-left"></i></a>
@@ -90,6 +94,7 @@
                </div>
             
             <br>
+           
             <div class="row">
             <div class="col-xs-12">
           
@@ -133,6 +138,22 @@
         <h4 class="modal-title" id="title_pianificazione">Associa Intervento</h4>
       </div>
        <div class="modal-body"> 
+       
+       <div class="row">
+        <div class="col-xs-6">
+         <label>Data inizio assegnazione</label>
+
+           <input id="data_inizio" name="data_inizio" class="form-control datepicker" type="text" style="width:100%" required>
+        
+        </div>
+        
+        <div class="col-xs-6">
+         <label>Data fine assegnazione</label>
+
+           <input id="data_fine" name="data_fine" class="form-control datepicker" type="text" style="width:100%" required>
+        
+        </div>
+        </div><br>
              <div class="row">
         <div class="col-xs-12">
         <table id="tabInterventi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -144,7 +165,9 @@
         <th>Presso</th>
         <th>Cliente</th>
         <th style="min-width:100px">Sede</th>
-        <th>Responsabile</th>
+        
+        <th>Responsabile</th>    
+   
         <th>Azioni</th>
         </tr>
         </thead>
@@ -164,8 +187,7 @@
       <input type="hidden" id="cella" name="cella">
       <input type="hidden" id="data_pianificazione" name="data_pianificazione">
       <input type="hidden" id="calendario" name=calendario>
-      
-      <a class="btn btn-danger pull-left" onclick="$('#myModalYesOrNo').modal()"  id="btn_elimina" style="display:none">Elimina</a>
+
         
 	               <button class="btn btn-primary" type="submit"  >Salva</button>
 	                
@@ -181,13 +203,125 @@
 </form>
 
 
+
+<form id="formModificaAssociazione" name="formModificaAssociazione" >
+       <div id="modalModificaAssociazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
+   
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_pianificazione">Modifica Associazione Intervento</h4>
+      </div>
+       <div class="modal-body"> 
+        <div class="row">
+        <div class="col-xs-12">
+        <label id="label_intervento"></label>
+        </div>
+        </div><br>
+       <div class="row">
+        <div class="col-xs-6">
+         <label>Data inizio assegnazione</label>
+
+           <input id="data_inizio_mod" name="data_inizio_mod" class="form-control datepicker" type="text" style="width:100%" required>
+        
+        </div>
+        
+        <div class="col-xs-6">
+         <label>Data fine assegnazione</label>
+
+           <input id="data_fine_mod" name="data_fine_mod" class="form-control datepicker" type="text" style="width:100%" required>
+        
+        </div>
+        </div>
+      	</div>
+      <div class="modal-footer">
+     <input id="id_associazione" name="id_associazione"  type="hidden" style="width:100%" >
+<a class="btn btn-danger pull-left"  onclick="$('#myModalYesOrNo').modal()">Elimina</a>
+        
+	               <button class="btn btn-primary" type="submit"  >Salva</button>
+	                
+	   
+      
+      
+
+      </div>
+    </div>
+  </div>
+
+</div>
+</form>
+
+<form id="formAssegnazioneDiretta" name="formAssegnazioneDiretta" >
+<div id="modalAssegnazioneDiretta" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Assegna intervento</h4>
+      </div>
+       <div class="modal-body">      
+       <div class="row">
+       <div class="col-xs-12">
+      <select class="form-control select2" id="intervento_select" style="width:100%" data-placeholder="Seleziona intervento...">
+      <option value=""></option>
+      <c:forEach items="${lista_interventi }" var="intervento" >
+      <option value="${intervento.id }">ID: ${intervento.id } - COMM: ${intervento.idCommessa} - ${intervento.nome_cliente } - ${intervento.nome_sede }</option>
+      </c:forEach>
+      </select>
+       
+       </div>
+       
+       </div> <br>
+       
+        <div class="row">
+       <div class="col-xs-12">
+      <div class="row">
+        <div class="col-xs-12">
+        <table id="tabRisorse" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+        <thead>
+        <tr>
+      	<th></th>
+        <th>ID</th>
+        <th>Nominativo</th>
+ 		<th>Data</th>
+        <th>Azioni</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        </tbody>
+        
+        </table>
+
+        </div>
+	
+      	</div>
+       
+       </div>
+       
+       </div> 
+   
+      	</div>
+      <div class="modal-footer">
+    <input type="hidden"" id="id_intervento_ris" name="id_intervento_ris">
+  <input type="hidden" id="id_risorsa_direct" name="id_risorsa"> 
+<button class="btn btn-primary" type="submit" >Salva</button>
+		<a class="btn btn-primary" onclick="$('#modalAssegnazioneDiretta').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
+	</div>
+</form>
+
  <div id="modalRequisiti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Requisiti Intervento</h4>
+        <h4 class="modal-title" id="myModalLabel">Requisiti </h4>
       </div>
        <div class="modal-body">      
        <div class="row">
@@ -216,10 +350,10 @@
       </div>
     </div>
   </div>
+	</div>
 	
 	
-	
-	  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+	  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
    
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
@@ -228,14 +362,13 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-       <div id="label_elimina_richiesta" style="display:none">Eliminare questa prenotazione annullerà la relativa richiesta.<br></div>
+       
       	Sei sicuro di voler eliminare la pianificazione selezionata?
       	</div>
       <div class="modal-footer">
-      <input type="hidden" id="elimina_prenotazione_id">
 
 
-      <a class="btn btn-primary" onclick="eliminaPrenotazione()" >SI</a>
+      <a class="btn btn-primary" onclick="eliminaAssociazione()" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
     </div>
@@ -248,7 +381,7 @@
   <t:control-sidebar />
    
 
-</div>
+
 <!-- ./wrapper -->
 
 </jsp:attribute>
@@ -322,7 +455,7 @@ function subTrimestre(data_inizio, anno){
 		data_inizio = 366	
 	}
 	
-	callAction('gestioneRisorse.do?action=gestione_prenotazioni&move=back&data_inizio='+data_inizio+'&anno='+$('#anno').val());
+	callAction('gestioneRisorse.do?action=pianificazione_risorse&move=back&data_inizio='+data_inizio+'&anno='+$('#anno').val());
 }
 
 function addTrimestre(data_fine, anno){
@@ -343,7 +476,7 @@ function vaiAOggi(anno){
 	$('#anno').change()
 
 
-callAction('gestioneParcoAuto.do?action=pianificazione_risorse&anno='+$('#anno').val());
+callAction('gestioneRisorse.do?action=pianificazione_risorse&anno='+$('#anno').val());
 
 
 	
@@ -414,146 +547,121 @@ function toDate(dateStr) {
 
 
 
-/* 
 
-
-function nuovaPrenotazione(){
-	
-	
-	var inizio = moment($('#data_inizio').val()+" "+ $('#ora_inizio').val(), "DD/MM/YYYY HH:mm");
-    var fine = moment($('#data_fine').val()+" "+ $('#ora_fine').val(), "DD/MM/YYYY HH:mm");
-
-
-    var sovrapposizione = orariDisabilitati.some(function(prenotazione) {
-    	console.log(prenotazione.id)
-    	
-    	if(($('#id_prenotazione').val()!="" && $('#id_prenotazione').val()!=prenotazione.id && prenotazione.id_veicolo == $('#id_veicolo').val())){
-    		 var inizioPrenotazione = moment(prenotazione.inizio, "DD/MM/YYYY HH:mm");
-    	        var finePrenotazione = moment(prenotazione.fine, "DD/MM/YYYY HH:mm");
-    	        
-
-
-
-    	                 
-    	        return (
-    	                (inizio.isBetween(inizioPrenotazione, finePrenotazione) || fine.isBetween(inizioPrenotazione, finePrenotazione)) ||
-    	                (inizioPrenotazione.isBetween(inizio, fine) && finePrenotazione.isBetween(inizio, fine)) ||
-    	                (inizio.isSameOrBefore(inizioPrenotazione) && fine.isSameOrAfter(finePrenotazione))
-    	            );
-    	}
-       
-    });
-	
-
-	if(sovrapposizione){
-		
-		$('#myModalErrorContent').html("Attenzione! Esiste già una prenotazione per l'orario selezionato!");
-	  	$('#myModalError').removeClass();
-		$('#myModalError').addClass("modal modal-default");
-		
-		$('#myModalError').modal('show');
-	
-		
-	}else if(fine<=inizio){
-		
-		$('#myModalErrorContent').html("Attenzione! Ora fine precedente o uguale ad ora inizio!");
-	  	$('#myModalError').removeClass();
-		$('#myModalError').addClass("modal modal-default");
-		
-		$('#myModalError').modal('show');
-		
-	}else {
-		if($('#id_prenotazione').val()==0){
-			$('#id_prenotazione').val("")
-		}
-	
-		callAjaxForm('#formNuovaPrenotazione', 'gestioneParcoAuto.do?action=nuova_prenotazione', function(datab){
-			
-			
-			$(document.body).css('padding-right', '0px');
-			if(datab.success){
-				location.reload()
-	
-				
-				$('#modalAssociaIntervento').modal("hide");
-				
-				 $('.modal-backdrop').hide();
-			}else{
-				$('#myModalErrorContent').html(data.messaggio);
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");
-				$('#report_button').show();
-				$('#visualizza_report').show();
-					$('#myModalError').modal('show');
-			}
-			isPaste = false;
-		});
-		$(document.body).css('padding-right', '0px');
-	}
-		
-	
-	
-} */
-
-/* 
-$('input:checkbox').on('ifToggled', function() {
-	
-	$('#email').on('ifChecked', function(event){
-		$('#check_mail').val(1);
-	
-	});
-	
-	$('#email').on('ifUnchecked', function(event) {
-		
-		$('#check_mail').val(0);
-	
-	});
-	
-
-	$('#agenda').on('ifChecked', function(event){
-		$('#check_agenda').val(1);
-	
-	});
-	
-	$('#agenda').on('ifUnchecked', function(event) {
-		
-		$('#check_agenda').val(0);
-	
-	});
-	
-	$('#email_elimina').on('ifChecked', function(event){
-		$('#check_email_eliminazione').val(1);
-	
-	});
-	
-	$('#email_elimina').on('ifUnchecked', function(event) {
-		
-		$('#check_email_eliminazione').val(0);
-	
-	});
-	
-	$('#pausa_pranzo').on('ifChecked', function(event){
-		$('#check_pausa_pranzo').val("SI");
-	
-	});
-	
-	$('#pausa_pranzo').on('ifUnchecked', function(event) {
-		
-		$('#check_pausa_pranzo').val("NO");
-	
-	});
-	
-})
-
- */
-function eliminaPrenotazione(){
+function eliminaAssociazione(){
 	
 	dataObj = {};
-	dataObj.id_prenotazione = $('#id_prenotazione').val();
+	dataObj.id_associazione = $('#id_associazione').val();
 	
-	 	callAjax(dataObj, 'gestioneParcoAuto.do?action=elimina_prenotazione')
+	 	callAjax(dataObj, 'gestioneRisorse.do?action=elimina_associazione')
 
 }
+
+
+$('#intervento_select').on('change', function () {
+    
+	
+	
+	var val = $('#intervento_select').val()
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+    	dataObj ={};
+    	dataObj.id_intervento = val;
+    	
+
+    	
+    	
+    	callAjax(dataObj, "gestioneRisorse.do?action=get_risorse_disponibili", function(data){
+    		
+    		if(data.success){
+    			
+    			var risorse_intervento = data.risorse_intervento_json;
+    			
+    			var lista_risorse = data.lista_risorse_disponibili;
+    			var lista_risorse_all = data.lista_risorse_all;
+    			lista_requisiti_doc_risorse = data.lista_req_doc_json;
+    			lista_risorse_json = data.lista_risorse_all;
+    			
+    			 var id_risorse_disponibili = lista_risorse.map(function(r) { return r.id; });
+    			 table_data = []
+    			 
+    			 for(var i = 0; i<lista_risorse.length;i++){
+					  var dati = {};
+				/* 	  dati.check ="<td></td>"; */
+				  dati.check = null; 
+					  dati.id = lista_risorse[i].id;
+					  dati.nominativo = lista_risorse[i].utente.nominativo;
+			
+					  var risorsa_intervento = risorse_intervento.find(function(r) {
+						    return r.risorsa.id === lista_risorse[i].id;
+						});
+					  if(risorsa_intervento){
+						  dati.data = '<input type="text" style="width:100%" class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off" required value="'+risorsa_intervento.data_inizio+' - '+risorsa_intervento.data_fine+'"/>';  
+					  }else{
+						  dati.data = '<input type="text" style="width:100%" class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off" required />';
+					  }
+					  
+
+	
+					  dati.azioni = "<a class='btn btn-primary' onClick='mostraRequisitiRisorsa("+lista_risorse[i].id+")'>Requisiti</a>";
+					  
+					  
+					  dati.DT_RowId = "riga_risorse_"+dati.id;
+					  table_data.push(dati);
+					  
+					  
+					
+			
+		    }
+
+				   
+				   var t = $('#tabRisorse').DataTable()
+				t.clear().draw();
+				   
+				t.rows.add(table_data).draw();
+					
+				t.columns.adjust().draw();
+
+		
+				
+				$('.daterange').daterangepicker({
+				    locale: {
+				        format: 'DD/MM/YYYY',
+				        applyLabel: 'Applica',
+				        cancelLabel: 'Annulla',
+				        daysOfWeek: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
+				        monthNames: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+				            'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
+				        firstDay: 1
+				    },
+				    autoUpdateInput: false
+				});
+
+				$('.daterange').on('apply.daterangepicker', function(ev, picker) {
+				    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+				});
+
+				$('.daterange').on('cancel.daterangepicker', function(ev, picker) {
+				    $(this).val('');
+				});
+    			
+    	
+    			if(risorse_intervento !=null){
+    				for (var i = 0; i < risorse_intervento.length; i++) {
+    					
+    					t.row( "#riga_risorse_"+risorse_intervento[i].risorsa.id ).select();
+    				
+    				}
+    		
+    			}
+    			$("#modalRisorse").modal();
+    			
+    		}
+    		pleaseWaitDiv.modal('hide');
+    	}, "GET")
+	
+});
 
 
 
@@ -677,6 +785,7 @@ $(document).ready(function($) {
 			    { data: "cliente"},
 			    { data: "sede" },
 			    { data: "responsabile" },
+			
 			    { data: "azioni" }
 			  ],
 
@@ -746,20 +855,64 @@ $('#myModalYesOrNo').on("hidden.bs.modal", function(){
 });
 
 
+function modalEliminaShow(){
+	$('#modalRequisiti').modal()
+}
+
 $('#formNuovaAssociazione').on("submit", function(e){
 	
 	 e.preventDefault();
-	 
+	 var values ="";
 	  var t1 = $('#tabInterventi').DataTable();
 	    t1.rows({ selected: true }).every(function () {
 	        var $row = $(this.node());
 	        var id = $row.find('td').eq(1).text().trim(); // Colonna ID
-	        $('#id_intervento').val(id);
+	        values +=id+";"
 	    });
+	    
+	    $('#id_intervento').val(values);
 	
 	 callAjaxForm('#formNuovaAssociazione','gestioneRisorse.do?action=associa_intervnto_risorsa');
 	
 });
+
+
+$('#formModificaAssociazione').on("submit", function(e){
+	
+	 e.preventDefault();
+
+	
+	 callAjaxForm('#formModificaAssociazione','gestioneRisorse.do?action=modifica_associazione');
+	
+});
+
+
+
+$('#formAssegnazioneDiretta').on('submit', function(e){
+	
+  	 e.preventDefault();
+  	// $('#id_risorsa').val($("#risorse_disponibili").val())
+  	 
+  	 
+  	 	  var t1 = $('#tabRisorse').DataTable();
+  	 var valori = "";
+	    t1.rows({ selected: true }).every(function () {
+	        var $row = $(this.node());
+	        var id = $row.find('td').eq(1).text().trim(); 
+	        
+	       
+	        var date = $row.find('td').eq(3).find('input').val(); // Colonna ID
+	        
+	        $row.find('td').eq(3).find('input').attr("required", true);
+	        valori += id+","+date + ";";
+	    });
+	    
+	    $('#id_risorsa_direct').val(valori.slice(0, -1));
+	    $('#id_intervento_ris').val($('#intervento_select').val())
+
+callAjaxForm('#formAssegnazioneDiretta','gestioneRisorse.do?action=associa_intervnto_risorsa');
+
+   })
 
 $(document.body).css('padding-right', '0px');
 </script>

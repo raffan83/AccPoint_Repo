@@ -11,11 +11,16 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,6 +29,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -129,7 +135,6 @@ public class GestioneRisorse extends HttpServlet {
 				String id = request.getParameter("id_risorsa");			
 				String data = request.getParameter("data");		
 				
-				
 				  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 				
 				 LocalDate date = LocalDate.parse(data, formatter);
@@ -142,7 +147,7 @@ public class GestioneRisorse extends HttpServlet {
 
 				PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id));				
 				ArrayList<PRRequisitoRisorsaDTO>  lista_requisiti_risorsa = GestioneRisorseBO.getListaRequisitiRisorsa(risorsa.getId(),session);				
-				
+				 ArrayList<PRInterventoRisorsaDTO> lista_interventi_risorsa = GestioneRisorseBO.getListaInterventiRisorsa(risorsa.getId(), date,session);
 			       
 			        //ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(date, date, session);
 			        ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(inizioAnno, date, session);
@@ -151,8 +156,9 @@ public class GestioneRisorse extends HttpServlet {
 			     // 1. ID dei requisiti sanitari associati alla risorsa
 			        Set<Integer> idRequisitiSanitariRisorsa = new HashSet<>();
 			        Set<Integer> idRequisitiDocumentaliRisorsa = new HashSet<>();
+			        Set<Integer> idInterventiRisorsa = new HashSet<>();
 			        for (PRRequisitoRisorsaDTO req : lista_requisiti_risorsa) {
-			            if (req.getReq_sanitario() != null) {
+			            if (req.getReq_sanitario() != null && (req.getStato()==1 ||req.getStato()==3)) {
 			                idRequisitiSanitariRisorsa.add(req.getReq_sanitario().getId());
 			            }
 			        }
@@ -160,6 +166,12 @@ public class GestioneRisorse extends HttpServlet {
 			        for (ForCorsoDTO c : lista_corsi) {
 			           
 			        	idRequisitiDocumentaliRisorsa.add(c.getCorso_cat().getId());
+			           
+			        }
+			        
+			        for (PRInterventoRisorsaDTO ir : lista_interventi_risorsa) {
+				           
+			        	idInterventiRisorsa.add(ir.getIntervento());
 			           
 			        }
 
@@ -182,14 +194,15 @@ public class GestioneRisorse extends HttpServlet {
 	
 				            // 3. Verifica che TUTTI i requisiti della risorsa siano presenti nell'intervento
 				            if (idRequisitiSanitariRisorsa.containsAll(idRequisitiSanitariIntervento) && 
-				            		idRequisitiDocumentaliRisorsa.containsAll(idRequisitiDocumentaliIntervento)) {
+				            		idRequisitiDocumentaliRisorsa.containsAll(idRequisitiDocumentaliIntervento) && 
+				            		!idInterventiRisorsa.contains(interventoDTO.getId())) {
 				                lista_interventi_disponibili.add(interventoDTO);
 				            }
 			        	}
 			        }
 
 			        
-			    ArrayList<PRInterventoRisorsaDTO> lista_interventi_risorsa = GestioneRisorseBO.getListaInterventiRisorsa(risorsa.getId(), date,session);
+			   
 			        
 			
 				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
@@ -211,7 +224,6 @@ public class GestioneRisorse extends HttpServlet {
 				
 //				ArrayList<PRInterventoRisorsaDTO> lista_associazioni = GestioneRisorseBO.getListaInterventoRisorseAll(session);
 				ArrayList<PRInterventoRisorsaDTO> lista_associazioni =DirectMySqlDAO.getListaInterventoRisorseAll(session);
-								
 
 				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 				response.setContentType("application/json; charset=UTF-8");
@@ -235,7 +247,7 @@ public class GestioneRisorse extends HttpServlet {
 				        .atZone(ZoneId.systemDefault())
 				        .toLocalDate();
 				
-				ArrayList<PRRisorsaDTO> lista_risorse_libere = GestioneRisorseBO.getListaRisorseLibere(localDate,session);
+				//ArrayList<PRRisorsaDTO> lista_risorse_libere = GestioneRisorseBO.getListaRisorseLibere(localDate,session);
 				ArrayList<PRRisorsaDTO> lista_risorse_all = GestioneRisorseBO.getListaRisorse(session);
 				
 				 ArrayList<PRRisorsaDTO> lista_risorse_disponibili = new ArrayList<>();
@@ -246,19 +258,20 @@ public class GestioneRisorse extends HttpServlet {
 			        
 			        Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
 		            Set<Integer> idRequisitiDocumentaliIntervento = new HashSet<>();
+		            Map<Integer, ArrayList<ForCorsoCatDTO>> map_doc = new HashMap();
 			        for (PRInterventoRequisitoDTO req : intervento.getListaRequisiti()) {
 			            if (req.getRequisito_sanitario() != null) {
 			            	idRequisitiSanitariIntervento.add(req.getRequisito_sanitario().getId());
 			            }
-			            if (req.getRequisito_documentale() != null) {
+			            if (req.getRequisito_documentale() != null && req.getRequisito_documentale().getCategoria().getId() == 31) {
 			            	idRequisitiDocumentaliIntervento.add(req.getRequisito_documentale().getCategoria().getId());
 			            }
 			        }
 			        
-			        for (PRRisorsaDTO risorsa : lista_risorse_libere) {
+			        for (PRRisorsaDTO risorsa : lista_risorse_all) {
 			        	for (PRRequisitoRisorsaDTO r : risorsa.getListaRequisiti()) {
 							
-							if(r.getReq_sanitario()!=null) {
+							if(r.getReq_sanitario()!=null && (r.getStato()==1 ||r.getStato()==3)) {
 								idRequisitiSanitariRisorsa.add(r.getReq_sanitario().getId());
 							}
 							
@@ -271,17 +284,27 @@ public class GestioneRisorse extends HttpServlet {
 			        	 for (ForCorsoDTO c : lista_corsi) {
 					           
 					        	idRequisitiDocumentaliRisorsa.add(c.getCorso_cat().getId());
-					           
+					        	
+//					        	if(c.getCorso_cat().getId() == 31) {
+//					        		risorsa.getUtente().setNominativo(risorsa.getUtente().getNominativo()+" [P]");
+//					        	}
+					        	Integer id_risorsa = risorsa.getId();
+					        	if (!map_doc.containsKey(id_risorsa)) {
+					        	    map_doc.put(id_risorsa, new ArrayList<ForCorsoCatDTO>());
+					        	}
+					           map_doc.get(risorsa.getId()).add(c.getCorso_cat());
 					        }
 			        	 
 			        	if (idRequisitiSanitariRisorsa.containsAll(idRequisitiSanitariIntervento) && 
 			            		idRequisitiDocumentaliRisorsa.containsAll(idRequisitiDocumentaliIntervento)) {
+			        		
 			        		lista_risorse_disponibili.add(risorsa);
 			            }
 			           			           
 			        }
 
-			
+						        
+			        
 				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 				response.setContentType("application/json; charset=UTF-8");
 				response.setCharacterEncoding("UTF-8");
@@ -292,9 +315,30 @@ public class GestioneRisorse extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.add("lista_risorse_disponibili", g.toJsonTree(lista_risorse_disponibili));
 				myObj.add("lista_risorse_all", g.toJsonTree(lista_risorse_all));
+				myObj.add("risorse_intervento_json", g.toJsonTree(intervento.getListaRisorse()));
+				myObj.add("lista_req_doc_json", g.toJsonTree(map_doc));
+
 				out.print(myObj);
 				
 			}
+			else if(action.equals("get_associazione")) {
+				
+				String id_associazione = request.getParameter("id_associazione");
+				
+				PRInterventoRisorsaDTO associazione= (PRInterventoRisorsaDTO) session.get(PRInterventoRisorsaDTO.class, Integer.parseInt(id_associazione));
+				
+				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+				response.setContentType("application/json; charset=UTF-8");
+				response.setCharacterEncoding("UTF-8");
+	
+
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.add("associazione", g.toJsonTree(associazione));
+				out.print(myObj);
+			}
+			
 			session.getTransaction().commit();
 	    	session.close();
 	}catch(Exception e) {
@@ -486,6 +530,7 @@ public class GestioneRisorse extends HttpServlet {
 				String id_req_documentali = ret.get("id_req_documentali_mod");
 				String id_req_sanitari = ret.get("id_req_sanitari_mod");
 				String id_risorsa = ret.get("id_risorsa");
+			
 				
 				PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id_risorsa));
 				UtenteDTO user = (UtenteDTO) session.get(UtenteDTO.class, Integer.parseInt(id_utente));
@@ -526,13 +571,15 @@ public class GestioneRisorse extends HttpServlet {
 							String[] str_sanitari = id_req_sanitari.split(";")[i].split(",");
 							PRRequisitoSanitarioDTO req_san = (PRRequisitoSanitarioDTO) session.get(PRRequisitoSanitarioDTO.class, Integer.parseInt(str_sanitari[0]));
 							String stato = str_sanitari[1];
-							Date data_inizio = df.parse(str_sanitari[2]);
-							Date data_fine = df.parse(str_sanitari[3]);
+							String note = str_sanitari[2];
+							Date data_inizio = df.parse(str_sanitari[3]);
+							Date data_fine = df.parse(str_sanitari[4]);
 							
 							req_risorsa.setReq_sanitario(req_san);
 							req_risorsa.setReq_san_data_inizio(data_inizio);
 							req_risorsa.setReq_san_data_fine(data_fine);
 							req_risorsa.setStato(Integer.parseInt(stato));
+							req_risorsa.setNote(note);
 							//session.save(req_risorsa);
 							risorsa.getListaRequisiti().add(req_risorsa);
 							}
@@ -780,7 +827,11 @@ public class GestioneRisorse extends HttpServlet {
 				 today = ChronoUnit.DAYS.between(inizioBimestre, dataCorrente);
 			 }
 			 
-			 ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(inizioBimestre, fineBimestre, session);
+			 //ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(inizioBimestre, fineBimestre, session);
+			 
+			 LocalDate inizioAnno = LocalDate.of(Integer.parseInt(anno), 1, 1);
+				LocalDate fineAnno = LocalDate.of(Integer.parseInt(anno), 12, 31);
+			 ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(inizioAnno, fineAnno, session);
 			 
 			 ArrayList<PRRisorsaDTO> lista_risorse = GestioneRisorseBO.getListaRisorse(session);
 
@@ -826,70 +877,104 @@ public class GestioneRisorse extends HttpServlet {
 				String id_intervento = ret.get("id_intervento");
 				String id_risorsa = ret.get("id_risorsa");
 				String cella = ret.get("cella");
-				String data = ret.get("data_pianificazione");
+				String data_inizio = ret.get("data_inizio");
+				String data_fine = ret.get("data_fine");
 				String calendario = ret.get("calendario");
 				String id_intervento_ris = ret.get("id_intervento_ris");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
-				
-				if(data == null || data.equals("")) {
-					data = df.format(new Date());
-				}
-				
 				if(id_intervento == null || id_intervento.equals("")) {
 					id_intervento = id_intervento_ris; 
 				}
-				InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento, session);
+				int n_int = 1;
+				if(id_intervento.split(";").length>1) {
+					n_int =id_intervento.split(";").length; 
+				}
 				
+				for(int j = 0;j<n_int;j++) {
+					if(!id_intervento.split(";")[j].equals("")) {
+					InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento.split(";")[j], session);
+					
+					
+					String [] id_risorsa_multi = id_risorsa.split(";");
+					
+					int n = id_risorsa_multi.length;
 			
-				String [] id_risorsa_multi = id_risorsa.split(",");
-				
-				int n = id_risorsa_multi.length;
-		
-				
-				if(calendario==null) {
-					intervento.getListaRisorse().clear();
-				}
-				
-				session.update(intervento);
-				
-				  Set<Integer> idRisorseIntervento = new HashSet<>();
-				  
-				  for (PRInterventoRisorsaDTO r : intervento.getListaRisorse()) {
-			            
-					  idRisorseIntervento.add(r.getRisorsa().getId());
-			           
-				  }
-			//	ArrayList<PRInterventoRisorsaDTO> lista_risorse_intervento = GestioneRisorseBO.getRisorsaIntervento(intervento.getId(), null, session);
-				if(id_risorsa!=null && !id_risorsa.equals("")) {
-				for(int i = 0; i<n ; i++) {
-					PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id_risorsa_multi[i]));
-				
-					PRInterventoRisorsaDTO intervento_risorsa = new PRInterventoRisorsaDTO();
 					
-					intervento_risorsa.setIntervento(intervento.getId());
-					intervento_risorsa.setRisorsa(risorsa);
-					intervento_risorsa.setData(df.parse(data));
+					if(calendario==null) {
+						intervento.getListaRisorse().clear();
+					}
 					
-					if(cella!=null) {
-						intervento_risorsa.setCella(Integer.parseInt(cella));	
-					}else {
+					session.update(intervento);
+					
+					  Set<Integer> idRisorseIntervento = new HashSet<>();
+					  
+					  for (PRInterventoRisorsaDTO r : intervento.getListaRisorse()) {
+				            
+						  idRisorseIntervento.add(r.getRisorsa().getId());
+				           
+					  }
+				//	ArrayList<PRInterventoRisorsaDTO> lista_risorse_intervento = GestioneRisorseBO.getRisorsaIntervento(intervento.getId(), null, session);
+					if(id_risorsa!=null && !id_risorsa.equals("")) {
+					for(int i = 0; i<n ; i++) {
 						
-						Calendar calendar = Calendar.getInstance();
-				        calendar.setTime(intervento.getDataCreazione());
-				        
-				        int giornoDellAnno = calendar.get(Calendar.DAY_OF_YEAR);
-						intervento_risorsa.setCella(giornoDellAnno);
-					}
-					if(!idRisorseIntervento.contains(risorsa.getId())) {
-						intervento.getListaRisorse().add(intervento_risorsa);
+						String id_ris = id_risorsa_multi[i].split(",")[0];
+						
+						
+						
+						PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id_ris));
+					
+						PRInterventoRisorsaDTO intervento_risorsa = new PRInterventoRisorsaDTO();
+						
+						
+						intervento_risorsa.setIntervento(intervento.getId());
+						intervento_risorsa.setRisorsa(risorsa);
+						
+						if(data_inizio!=null && data_fine!=null) {
+							intervento_risorsa.setData_inizio(df.parse(data_inizio));
+							intervento_risorsa.setData_fine(df.parse(data_fine));
+						}else {
+							String date =id_risorsa_multi[i].split(",")[1];	
+							if(date.split(" - ").length>1) {
+								intervento_risorsa.setData_inizio(df.parse(date.split(" - ")[0]));
+								intervento_risorsa.setData_fine(df.parse(date.split(" - ")[1]));
+							}
+						}
+						
+
+					
+							Calendar calendar = Calendar.getInstance();
+					        calendar.setTime(intervento_risorsa.getData_inizio());
+					        
+					        int giornoInizio  = calendar.get(Calendar.DAY_OF_YEAR);
+							intervento_risorsa.setCella_inizio(giornoInizio );
+							calendar.setTime(intervento_risorsa.getData_fine());
+							long millisInizio = intervento_risorsa.getData_inizio().getTime();
+							long millisFine = intervento_risorsa.getData_fine().getTime();
+
+							// Calcolo differenza in giorni
+							long diffMillisecondi = millisFine - millisInizio;
+							int diffGiorni = (int) TimeUnit.MILLISECONDS.toDays(diffMillisecondi);
+
+							// Calcolo cella_fine
+							int cellaFine = giornoInizio + diffGiorni;
+							intervento_risorsa.setCella_fine(cellaFine);
+							
+					
+						if(!idRisorseIntervento.contains(risorsa.getId())) {
+							intervento.getListaRisorse().add(intervento_risorsa);
+						}
+						
+
+						
 					}
 					
+					session.update(intervento);
+					}
+					}
 				}
 				
-				session.update(intervento);
-				}
 
 				
 				myObj = new JsonObject();
@@ -1058,6 +1143,80 @@ public class GestioneRisorse extends HttpServlet {
 					
 				}
 
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
+			}
+			
+			else if(action.equals("modifica_associazione")) {
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}		        
+		       
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	      
+	            }
+		
+				String data_inizio = ret.get("data_inizio_mod");
+				String data_fine = ret.get("data_fine_mod");
+				String id_associazione = ret.get("id_associazione");
+							
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				
+				PRInterventoRisorsaDTO associazione= (PRInterventoRisorsaDTO) session.get(PRInterventoRisorsaDTO.class, Integer.parseInt(id_associazione));
+
+				associazione.setData_inizio(df.parse(data_inizio));
+				associazione.setData_fine(df.parse(data_fine));
+				
+			
+					Calendar calendar = Calendar.getInstance();
+			        calendar.setTime(associazione.getData_inizio());
+			        
+			        int giornoInizio  = calendar.get(Calendar.DAY_OF_YEAR);
+			        associazione.setCella_inizio(giornoInizio );
+					calendar.setTime(associazione.getData_fine());
+					long millisInizio = associazione.getData_inizio().getTime();
+					long millisFine = associazione.getData_fine().getTime();
+
+					// Calcolo differenza in giorni
+					long diffMillisecondi = millisFine - millisInizio;
+					int diffGiorni = (int) TimeUnit.MILLISECONDS.toDays(diffMillisecondi);
+
+					// Calcolo cella_fine
+					int cellaFine = giornoInizio + diffGiorni;
+					associazione.setCella_fine(cellaFine);
+	
+					session.update(associazione);
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
+			}
+			else if(action.equals("elimina_associazione")) {
+				
+				ajax = true;
+				
+				
+				response.setContentType("application/json");
+		
+				String id_associazione = request.getParameter("id_associazione");
+
+				PRInterventoRisorsaDTO associazione= (PRInterventoRisorsaDTO) session.get(PRInterventoRisorsaDTO.class, Integer.parseInt(id_associazione));
+
+				session.delete(associazione);
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();

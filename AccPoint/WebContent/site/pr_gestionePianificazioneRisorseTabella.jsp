@@ -23,6 +23,9 @@ int anno = (Integer) request.getSession().getAttribute("anno");
 %>
 
 
+
+
+
  <table id="tabPianificazioneRisorse" class="table table-primary table-bordered table-hover dataTable table-striped " role="grid" width="100%"  >
         <thead>
             <tr>
@@ -126,7 +129,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
     
    
 
-   
+    
 
     
     <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -164,15 +167,32 @@ int anno = (Integer) request.getSession().getAttribute("anno");
         
     }
 
-      .riquadro {
+/*       .riquadro {
       border: 1px solid red;
-     
-      /* position:absolute; */
+     padding: 5px;
+       position:absolute;  
  
-} 
+}  */
+
+.riquadro {
+     position: absolute; 
+    left: 0;
+    border: 1px solid #FFD700;
+    background-color: #FFFFE0;
+    text-align: center;
+    font-weight: bold;
+    padding: 4px; 
+    white-space: normal;
+    word-wrap: break-word;
+    border-radius: 4px;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+
 
 #tabPianificazioneRisorse tbody tr {
-    width: auto !important;
+   /*  width: auto !important; */
     height: 100px !important;
     overflow: hidden;
 }
@@ -218,36 +238,42 @@ int anno = (Integer) request.getSession().getAttribute("anno");
  
     <script type="text/javascript">  
     
-    
 
     
 
 
-function modalAssociaIntervento(day, id_risorsa, id_associazione){
+function modalAssociaIntervento(data_inizio,data_fine, id_risorsa, id_associazione){
 	
 	$('#id_risorsa').val(id_risorsa)
-	$('#cella').val(day)
+	$('#cella').val(data_inizio)
 	$('#id_risorsa').val(id_risorsa)
 	$('#calendario').val(1)
 	
 		var currentYear = new Date().getFullYear()
-		var dayValue = parseInt(day);
-		var localDate = new Date(Date.UTC(currentYear, 0, dayValue));
+		var dayInizio = parseInt(data_inizio);
+		var localDate = new Date(Date.UTC(currentYear, 0, dayInizio));
 		var d = localDate.getUTCDate();
 		var month = localDate.getUTCMonth() + 1; 
 		var year = localDate.getUTCFullYear();
-		var formattedDate = ('0' + d).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
+		var formattedDateInizio = ('0' + d).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
+		$('#data_inizio').val(formattedDateInizio)
 		
-		var cell = $('#'+id_risorsa+"_"+day);
-		var text = cell.text()
+		var dayFine = parseInt(data_fine);
+		var localDate = new Date(Date.UTC(currentYear, 0, dayFine));
+		var d = localDate.getUTCDate();
+		var month = localDate.getUTCMonth() + 1; 
+		var year = localDate.getUTCFullYear();
+		var formattedDateFine = ('0' + d).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
 		
-	
+		
+
+	$('#data_fine').val(formattedDateFine)
 		
 		dataObj = {};
 		dataObj.id_risorsa = id_risorsa;
-		dataObj.data = formattedDate;
+		dataObj.data = formattedDateFine;
 		
-		$('#data_pianificazione').val(formattedDate)
+		
 		
 		callAjax(dataObj, "gestioneRisorse.do?action=trova_interventi_disponibili", function(data){
 			
@@ -258,7 +284,7 @@ function modalAssociaIntervento(day, id_risorsa, id_associazione){
 				var lista_interventi_risorsa = data.lista_interventi_risorsa;
 				lista_interventi_json = lista_interventi;
 				
-				$('#title_pianificazione').html("Associa intervento a " +risorsa.utente.nominativo+" in data "+formattedDate);
+				$('#title_pianificazione').html("Associa intervento a " +risorsa.utente.nominativo);
 				
 				var table_data = [];
 				
@@ -288,6 +314,16 @@ function modalAssociaIntervento(day, id_risorsa, id_associazione){
 					  dati.cliente = escapeHtml(lista_interventi[i].nome_cliente);
 					  dati.sede = lista_interventi[i].nome_sede;
 					  dati.responsabile = lista_interventi[i].user.nominativo;
+					  
+					  var risorsa_intervento = lista_interventi_risorsa.find(function(r) {
+						    return r.id_intervento === lista_interventi[i].id;
+						});
+					/*   if(risorsa_intervento){
+						  dati.date = '<input type="text" class="form-control daterange" id="daterange_'+lista_interventi[i].id+'" autocomplete="off" value="'+risorsa_intervento.data_inizio+' - '+risorsa_intervento.data_fine+'"/>';  
+					  }else{
+						  dati.date = '<input type="text" class="form-control daterange" id="daterange_'+lista_interventi[i].id+'" autocomplete="off" />';
+					  } */
+					
 					  dati.azioni = "<a class='btn btn-primary' onClick='mostraRequisiti("+lista_interventi[i].id+")'>Requisiti</a>";
 					  
 					  
@@ -296,13 +332,9 @@ function modalAssociaIntervento(day, id_risorsa, id_associazione){
 					
 			
 		    }
-		/* 		var t = $('#tabInterventi').DataTable({
-				    createdRow: function(row, data, dataIndex) {
-				        $(row).attr('id', data.id);
-				    }
-				});
-				   */
-				   
+
+		
+				 
 				   var t = $('#tabInterventi').DataTable()
 				t.clear().draw();
 				   
@@ -315,15 +347,36 @@ function modalAssociaIntervento(day, id_risorsa, id_associazione){
 					for(var i = 0; i<lista_interventi_risorsa.length;i++){
 						
 						$('#tabInterventi').find("tr").each(function(){
-							if($(this).attr("id")  == lista_interventi_risorsa[i].id_intervento){
-								t.row( "#"+lista_interventi_risorsa[i].id_intervento ).select();
+							if($(this).attr("id")  == lista_interventi_risorsa[i].id_intervento && formattedDateInizio>= lista_interventi_risorsa[i].data_inizio && formattedDateFine<= lista_interventi_risorsa[i].data_fine ){
+								 /* var input = lista_interventi_risorsa[i].data_inizio +" - "+lista_interventi_risorsa[i].data_fine
+								t.row( "#"+lista_interventi_risorsa[i].id_intervento ).find("td").eq(7).find("input").val(input);*/
+								t.row( "#"+lista_interventi_risorsa[i].id_intervento ).select(); 
 							}
 						})
 						
 					}
 				}
 			
-				
+				$('.daterange').daterangepicker({
+				    locale: {
+				        format: 'DD/MM/YYYY',
+				        applyLabel: 'Applica',
+				        cancelLabel: 'Annulla',
+				        daysOfWeek: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
+				        monthNames: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+				            'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
+				        firstDay: 1
+				    },
+				    autoUpdateInput: false
+				});
+
+				$('.daterange').on('apply.daterangepicker', function(ev, picker) {
+				    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+				});
+
+				$('.daterange').on('cancel.daterangepicker', function(ev, picker) {
+				    $(this).val('');
+				});
 			}
 		
 		$('#modalAssociazione').modal()
@@ -341,20 +394,28 @@ var lista_interventi_json;
 
 function mostraRequisiti(id_intervento){
 	
-	var intervento_json = lista_interventi_json.find(item => item.id === id_intervento);
-	var listaRequisiti = intervento_json.listaRequisiti;
 	var str_doc ="<ul class='list-group list-group-unbordered'>";
 	var str_san ="<ul class='list-group list-group-unbordered'>";
 	
-	for(var i = 0; i<listaRequisiti.length;i++){
-		if(listaRequisiti[i].requisito_documentale!=null){
-			str_doc+="<li class='list-group-item'>"+listaRequisiti[i].requisito_documentale.categoria.descrizione+"</li>"	
-		}
-		if(listaRequisiti[i].requisito_sanitario!=null){
-			str_san+="<li class='list-group-item'>"+listaRequisiti[i].requisito_sanitario.descrizione+"</li>"	
-		}
+	
+	var intervento_json = lista_interventi_json.find(item => item.id === id_intervento);
+	
+
+	if(intervento_json!=null){
+		var listaRequisiti = intervento_json.listaRequisiti;
 		
+		for(var i = 0; i<listaRequisiti.length;i++){
+			if(listaRequisiti[i].requisito_documentale!=null){
+				str_doc+="<li class='list-group-item'>"+listaRequisiti[i].requisito_documentale.categoria.descrizione+"</li>"	
+			}
+			if(listaRequisiti[i].requisito_sanitario!=null){
+				str_san+="<li class='list-group-item'>"+listaRequisiti[i].requisito_sanitario.descrizione+"</li>"	
+			}
+			
+		}
 	}
+		
+
 	str_doc +="</ul>";
 	str_san +="</ul>";
 	$("#content_requisiti_doc").html(str_doc);
@@ -364,6 +425,49 @@ function mostraRequisiti(id_intervento){
 }
 
 
+
+var lista_requisiti_doc_risorse;
+var lista_risorse_json;
+
+function mostraRequisitiRisorsa(id_risorsa){
+	
+	var str_doc ="<ul class='list-group list-group-unbordered'>";
+	var str_san ="<ul class='list-group list-group-unbordered'>";
+	
+	var risorsa_json = lista_risorse_json.find(item => item.id === id_risorsa);
+	
+	if(risorsa_json!=null){
+		var listaRequisiti = risorsa_json.listaRequisiti;
+		
+		var risorsa_doc_json = lista_requisiti_doc_risorse[id_risorsa];
+		
+		for(var i = 0; i<risorsa_doc_json.length;i++){
+
+			str_doc+="<li class='list-group-item'>"+risorsa_doc_json[i].descrizione+"</li>"	
+	}
+	for(var i = 0; i<listaRequisiti.length;i++){
+		if(listaRequisiti[i].req_sanitario!=null){
+			if(listaRequisiti[i].stato == 1){
+				stato = "IDONEO";
+			}else if(listaRequisiti[i].stato == 2){
+				stato = "NON IDONEO";
+			}else if(listaRequisiti[i].stato == 3){
+				stato = "PARZIALMENTE IDONEO ("+ listaRequisiti[i].note+")";
+			}
+			str_san+="<li class='list-group-item'>"+listaRequisiti[i].req_sanitario.descrizione+ " - " +stato+ " - Scadenza: "+ listaRequisiti[i].req_san_data_fine+"</li>"	
+		}
+		
+	}
+	}
+
+
+	str_doc +="</ul>";
+	str_san +="</ul>";
+	$("#content_requisiti_doc").html(str_doc);
+	$("#content_requisiti_san").html(str_san);
+	
+	$('#modalRequisiti').modal()
+}
 
 
  columsDatatables=[]
@@ -466,7 +570,7 @@ var scrollPos;
 	        // Aggiungi il pulsante al contenitore del pulsante
 	        $('<button>').addClass('button_add btn btn-primary btn-sm')
 	                     .attr('id', 'button_add_' + cellId)
-	                     .attr('onclick', "modalAssociaIntervento('" + cellId.split("_")[1] + "', '" + cellId.split("_")[0] + "')")
+	                     .attr('onclick', "modalAssociaIntervento('" + cellId.split("_")[1] + "','" + cellId.split("_")[1] + "', '" + cellId.split("_")[0] + "')")
 	                     .html('<i class="fa fa-plus"></i>')
 	                     .appendTo($buttonContainer);
 
@@ -479,8 +583,9 @@ var scrollPos;
 	}
 	
 	
-	
+	 
 
+	
 
 	
 	function updatePosition(currentRow, newHeight, oldHeight, edit) {
@@ -490,9 +595,9 @@ var scrollPos;
 	      //  
 	        if(edit == 1){
 	        	var heightDifference = newHeight - oldHeight;
-	        }else{
+	         }else{
 	        	var heightDifference = 75;
-	        }
+	        } 
 	          
 
 	        // Aggiorna la posizione verticale di ciascun riquadro nella riga successiva
@@ -569,7 +674,77 @@ var order = 1;
 
 var cellCopy;
 
+
+
+
 $(document).ready(function() {
+	
+	
+	    	
+	
+	 var tableRisorse = $('#tabRisorse').DataTable({
+		  language: {
+		    emptyTable: "Nessun dato presente nella tabella",
+		    info: "Vista da _START_ a _END_ di _TOTAL_ elementi",
+		    infoEmpty: "Vista da 0 a 0 di 0 elementi",
+		    infoFiltered: "(filtrati da _MAX_ elementi totali)",
+		    lengthMenu: "Visualizza _MENU_ elementi",
+		    loadingRecords: "Caricamento...",
+		    processing: "Elaborazione...",
+		    search: "Cerca:",
+		    zeroRecords: "La ricerca non ha portato alcun risultato.",
+		    paginate: {
+		      first: "Inizio",
+		      previous: "Precedente",
+		      next: "Successivo",
+		      last: "Fine"
+		    },
+		    aria: {
+		      sortAscending: ": attiva per ordinare la colonna in ordine crescente",
+		      sortDescending: ": attiva per ordinare la colonna in ordine decrescente"
+		    }
+		  },
+		  pageLength: 25,
+		  order: [[1, "desc"]],
+		  paging: true,
+		  ordering: true,
+		  info: true,
+		  searchable: true,
+
+		  responsive: true,
+		  scrollX: false,
+		  stateSave: true,
+
+		  select: {
+		    style: 'multi-shift',
+		    selector: 'td:first-child' // attenzione: meglio usare 'first-child' che 'nth-child(1)'
+		  },
+
+		  columns: [
+		    { data: null }, // <- questo va così se non c'è "check" nel JSON
+		    { data: "id" },
+		    { data: "nominativo" },
+		    { data: "data" },
+		    { data: "azioni" }
+		  ],
+
+		  columnDefs: [
+		    {
+		      targets: 0,
+		      className: 'select-checkbox',
+		      orderable: false,
+		      defaultContent: ''
+		    },
+		    { responsivePriority: 1, targets: 1 }
+		  ],
+
+		  buttons: [{
+		    extend: 'colvis',
+		    text: 'Nascondi Colonne'
+		  }]
+		});
+
+ 	    
 	
 	
 	// pleaseWaitDiv.modal('show');
@@ -598,110 +773,291 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	}
 
  
-
- 
  
  function fillTable(anno, filtro) {
-	    console.log("dddd");
-	    pleaseWaitDiv.modal('hide');
+	    console.log("Avvio fillTable");
+	    pleaseWaitDiv.modal('show');
+	    
 	    $.ajax({
 	        url: 'gestioneRisorse.do?action=lista_associazioni&anno=' + anno,
 	        method: 'GET',
 	        dataType: 'json',
 	        success: function(response) {
-	        	
-	        	
-	        	$("#tabPianificazioneRisorse").on( 'init.dt', function ( e, settings ) {
-	        	    var api = new $.fn.dataTable.Api( settings );
-	        	    var state = api.state.loaded();
-	        	 
-	        	    if(state != null && state.columns!=null){
-	        	    		console.log(state.columns);
-	        	    
-	        	    columsDatatables = state.columns;
-	        	    } 
-	        	    $('#tabPianificazioneRisorse thead th').each( function () {
-	        	    	
-	        	    	if(columsDatatables!=null && columsDatatables.length>0){
-	        	    		$('#inputsearchtable_'+$(this).index()).val(columsDatatables[$(this).index()].search.search);
-	        	    	}
-	        	    	  
-	        	    	 
-	        	    	}); 
-	        	     
-
-	        	} ); 
-	        
 	            var lista_associazioni = response.lista_associazioni;
+
 	            $('.riquadro').remove();
-	            $('#tabPianificazioneRisorse td').removeClass('prenotato');
-	            if(table == null){
-				    table = $('#tabPianificazioneRisorse').DataTable(settings);
-				  
-				}else{
-					   $('#tabPianificazioneRisorse').DataTable().destroy();
-					table = $('#tabPianificazioneRisorse').DataTable(settings);
-				}
+	            $('#tabPianificazioneRisorse td').removeClass('prenotato_multi');
 
-	            
-	            for (var i = 0; i < lista_associazioni.length; i++) {
-	                var id_cella = lista_associazioni[i].risorsa.id +"_"+lista_associazioni[i].cella;
-	                var id_associazione = lista_associazioni[i].id;
-	                var intervento = lista_associazioni[i].id_intervento;
-	                
-	                var border_color = "#FFD700";
-	 	               var background_color = "#FFFFE0";
-	 	               
-	                var cella = $("#" + id_cella);
-	            
-	                cella.append("<div  data-toggle='tooltip' title='' class='riquadro' id='riquadro_"+id_associazione+"' style='text-align:center;font-weight:bold;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalAssociaIntervento("+id_cella.split("_")[1]+", "+id_cella.split("_")[0]+", "+id_associazione+")' >ID: "+intervento+ "<br>"+lista_associazioni[i].testo_riquadro+"</div>")
-	                	  
-	              
-	 	                 /*  $("<div  data-toggle='tooltip' title='' class='riquadro' id='riquadro_"+id_associazione+"' style='margin-top:35px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalAssociaIntervento("+id_cella.split("_")[1]+", "+id_cella.split("_")[0]+", "+id_associazione+")' >INTERVENTO ID: "+intervento.id+ "<br>"+intervento.nome_sede+"</div>").addClass('riquadro').css({
-	 	              
-	 	                        'text-align': 'center',
-	 	                       'font-weight': 'bold'
-	 	                    }).appendTo(cella); */
-	 	                
-	            }
-	               
-	            console.log("ciao");
-
-	            var today = "${today}";
-	            if (parseInt(today) > "${daysNumber}") {
-	                today = null;
+	            if (table == null) {
+	                table = $('#tabPianificazioneRisorse').DataTable(settings);
 	            } else {
-	                order = parseInt(today) + 3;
+	                $('#tabPianificazioneRisorse').DataTable().destroy();
+	                table = $('#tabPianificazioneRisorse').DataTable(settings);
 	            }
-
-	            
-	    	    $('.inputsearchtable').on('input', function() {
-	    		    var columnIndex = $(this).closest('th').index(); // Ottieni l'indice della colonna
-	    		    var searchValue = $(this).val(); // Ottieni il valore di ricerca
-
-	    		    table.column(columnIndex).search(searchValue).draw();
-	    		    
-	    		  
-	    		    
-	    		  });
-	    	  
-	    	  $('.inputsearchtable').on('click', function(e){
-	     	       e.stopPropagation();    
-	     	    });
-	    	
-	           
-	            table.columns.adjust().draw();
-	            
 
 	      
-	         var coltoday = getDaysUntilMonday(parseInt(today), parseInt("${start_date}")) +1
-	        
-	         
-	          scrollToColumn(today - coltoday) 
-	         pleaseWaitDiv.modal('hide');
+	          //  const larghezza = 95;
 
-	        // pleaseWaitDiv.modal('hide');
-	        // $('[data-toggle="tooltip"]').tooltip();
+	             for (var i = 0; i < lista_associazioni.length; i++) {
+	                var pren = lista_associazioni[i];
+	                var id_associazione = pren.id;
+	                var cella_inizio = pren.cella_inizio;
+	                var cella_fine = pren.cella_fine;
+	                var id_risorsa = pren.risorsa.id;
+
+	                var id_inizio = id_risorsa + "_" + cella_inizio;
+	                var id_fine = id_risorsa + "_" + cella_fine;
+
+	                var cellaInizio = $("#" + id_inizio);
+	                var cellaFine = $("#" + id_fine);
+
+	                var numeroRiquadri = cellaInizio.find('.riquadro').length;
+
+
+	                
+	                var cellaPrecedente = null;
+ 	                var cellaSuccessiva = null;
+ 	               var posizionePartenza = cellaInizio.offset();
+	                var posizioneArrivo = cellaFine.offset();
+	                
+	                if(posizionePartenza!=null){
+	                	
+	                
+	                if(id_inizio!=id_fine){
+ 	                	nCelle=parseInt(id_fine.split("_")[1]) - parseInt(id_inizio.split("_")[1])
+ 	                }else{
+ 	                	nCelle = 1
+ 	                }
+	               
+		            const distanza = 1;
+	                var testo = pren.testo_riquadro
+ 	                var larghezzaTesto = getTextWidth(testo, '12px Arial') + 20; // Aggiungi un margine per una migliore presentazione
+
+ 	                var larghezza =  posizioneArrivo.left - posizionePartenza.left + cellaInizio.outerWidth(true);
+ 	                
+ 	             	if(nCelle>1){
+ 	             		larghezza = 0;
+ 	             	for(var k = 0; k<nCelle; k++){
+ 	             		var cellaCorrente = $('#'+id_risorsa+"_"+(cella_inizio+k))
+ 	             		larghezza = larghezza + cellaCorrente.outerWidth();
+ 	             	}
+ 	             	
+ 	             		//larghezza =nCelle * cellaInizio.outerWidth(true) + cellaInizio.outerWidth(true)
+ 	             	}
+					
+ 	   
+ 	                var altezza = 45;
+ 	                 if(larghezzaTesto>=larghezza){
+ 	                	altezza = altezza * 2;
+ 	                	//larghezza = larghezzaTesto
+ 	                } 
+	                
+	                
+ 	                 if(numeroRiquadri === 0 && cellaInizio.hasClass('prenotato_multi')){
+ 	                	 cellaPrecedente = cellaInizio.prev();
+ 	     	            while (cellaPrecedente.length > 0) {
+ 	     	            	numeroRiquadri = cellaPrecedente.find('.riquadro').length;
+ 	     	                if (numeroRiquadri > 0) {
+ 	     	                    break; // Riquadro trovato nella cella precedente, interrompi il ciclo
+ 	     	                }
+ 	     	                cellaPrecedente = cellaPrecedente.prev();
+ 	     	            }
+ 	                	
+ 	                }
+ 	                
+ 	                if(numeroRiquadri === 0 && cellaFine.hasClass('prenotato_multi')){
+ 	                	 cellaSuccessiva = cellaInizio.next();
+ 	     	            while (cellaSuccessiva.length > 0) {
+ 	     	            	numeroRiquadri = cellaSuccessiva.find('.riquadro').length;
+ 	     	                if (numeroRiquadri > 0) {
+ 	     	                    break; // Riquadro trovato nella cella precedente, interrompi il ciclo
+ 	     	                }
+ 	     	               cellaSuccessiva = cellaSuccessiva.next();
+ 	     	            }
+ 	                	
+ 	                } 
+ 	                
+ 	                var celleTraCelle = null;
+ 	                 if (numeroRiquadri === 0 && id_inizio != id_fine && cellaInizio.length > 0 && cellaFine.length > 0) {
+ 	                	celleTraCelle =  cellaInizio.nextUntil(cellaFine);
+ 	                	 numeroRiquadri = 0
+ 	                    celleTraCelle.each(function() {
+ 	                        n = $(this).find('.riquadro').length;
+ 	                        if(n>numeroRiquadri){
+ 	                        	numeroRiquadri = n;
+ 	                        }
+ 	                    });
+ 	                } 
+ 	                 
+ 	                 
+ 	                
+ 	                
+ 	                for (var j = 0; j < nCelle; j++) {
+ 						$('#'+id_inizio.split("_")[0]+"_"+(parseInt(id_inizio.split("_")[1]) + j)).addClass('prenotato');
+ 						var x = '#'+id_inizio.split("_")[0]+"_"+parseInt(id_inizio.split("_")[1]) + j
+ 						if(id_inizio!=id_fine){
+ 							$('#'+id_inizio.split("_")[0]+"_"+(parseInt(id_inizio.split("_")[1]) + j)).addClass('prenotato_multi');
+ 						}
+ 					}
+ 	               
+					  if(id_inizio==id_fine){
+						var larghezza =  larghezza - 2;
+					}  
+
+	                
+	                var sinistra = 0;
+	                var alto = 0
+
+	                if(numeroRiquadri=== 0){
+	                	
+		                var riquadro = $("<div class='riquadro bg-warning text-dark p-2 rounded shadow-sm' style='margin-top:42px'></div>").css({
+		                	 left: sinistra,
+	 	                        top: alto,
+	 	                        width: larghezza,
+	 	                    
+	 	                        'text-align': 'center',
+	 	                        whiteSpace: "normal",
+	 		                    wordWrap: "break-word", 
+		                    fontWeight: "bold",
+		                    border: "1px solid #FFD700",
+		                    backgroundColor: "#FFFFE0",
+		                    textAlign: "center",		            
+		                }).html('ID: '+pren.id_intervento+'<br>'+pren.testo_riquadro).attr('ondblclick', 'modalModificaAssociazione('+id_associazione+',"'+pren.testo_riquadro+'")');
+
+	                
+		                cellaInizio.append(riquadro);
+		                
+		                 
+		                var rowId = cellaInizio.closest('tr').attr('id');
+ 			            var altezzaRiga = $("#"+rowId).height();
+ 			            
+ 			           var altezzaRiquadro = riquadro.height();
+ 	                    
+ 	                    //var nuovaAltezzaRiga = (numeroRiquadri + 1) * (altezza + 42); // +1 per includere il nuovo riquadro
+ 	                    var nuovaAltezzaRiga  = altezzaRiga + altezzaRiquadro -42
+
+ 		                // Aggiorna l'altezza della riga
+ 		                if(nuovaAltezzaRiga>altezzaRiga){
+ 		                	cellaInizio.closest('tr').children('td').height(nuovaAltezzaRiga);
+ 		                } 
+ 		                
+	                }else{
+	                	
+	                	
+	                	
+	                	if(cellaPrecedente!=null){
+ 	                    	var ultimoRiquadro = cellaPrecedente.find('.riquadro:last');
+ 	                    	var posizioneUltimoRiquadro = ultimoRiquadro.position();
+ 	                    	 posizioneUltimoRiquadro.left = ultimoRiquadro.position().left + cellaPrecedente.outerWidth();
+ 	                    	 //posizioneUltimoRiquadro.top = ultimoRiquadro.position().top;
+ 	                    	 posizioneUltimoRiquadro.top = ultimoRiquadro[0].offsetTop 
+ 	                    }
+ 	                    else if(cellaSuccessiva!=null){
+ 	                    	var ultimoRiquadro = cellaSuccessiva.find('.riquadro:last');
+ 	                    	var posizioneUltimoRiquadro = ultimoRiquadro.position();
+ 	                    	 posizioneUltimoRiquadro.left = ultimoRiquadro.position().left - cellaSuccessiva.outerWidth();
+ 	                    	 //posizioneUltimoRiquadro.top = ultimoRiquadro.position().top;
+ 	                    	 posizioneUltimoRiquadro.top = ultimoRiquadro[0].offsetTop 
+ 	                    }
+ 	                    else if(celleTraCelle!=null){
+ 	                    	var ultimoRiquadro = celleTraCelle.find('.riquadro:last');
+ 	                    	var posizioneUltimoRiquadro = ultimoRiquadro.position();
+ 	                    	 posizioneUltimoRiquadro.left = ultimoRiquadro.position().left - celleTraCelle.outerWidth();
+ 	                    	 //posizioneUltimoRiquadro.top = ultimoRiquadro.position().top;
+ 	                    	 posizioneUltimoRiquadro.top = ultimoRiquadro[0].offsetTop 
+ 	                    }
+ 	                    
+ 	                    else{
+ 	                    	var ultimoRiquadro = cellaInizio.find('.riquadro:last');
+ 	                    	var posizioneUltimoRiquadro = ultimoRiquadro.position();
+ 	                    	
+ 	                    	 posizioneUltimoRiquadro.left = ultimoRiquadro.position().left;
+ 	                    	 //posizioneUltimoRiquadro.top = ultimoRiquadro.position().top;
+ 	                    	 posizioneUltimoRiquadro.top = ultimoRiquadro[0].offsetTop
+ 	                    }
+ 	                    
+ 	                    var altezzaUltimoRiquadro = ultimoRiquadro.height();
+ 	                    
+ 	                    var distanzaVerticale = 15; // Distanza verticale tra i riquadri
+
+ 	                  
+
+ 	                 // Calcola la posizione verticale del nuovo riquadro
+ 	                 var nuovaPosizioneVerticale = posizioneUltimoRiquadro.top + altezzaUltimoRiquadro + distanzaVerticale;
+
+ 	                 // Verifica se il nuovo riquadro si sovrappone con il successivo
+ 	                 if (cellaInizio.find('.riquadro:eq(1)').length > 0) {
+ 	                     var altezzaRiquadroSuccessivo = cellaInizio.find('.riquadro:eq(1)').height();
+ 	                     if (nuovaPosizioneVerticale + altezza > posizioneUltimoRiquadro.top + altezzaRiquadroSuccessivo) {
+ 	                         nuovaPosizioneVerticale = posizioneUltimoRiquadro.top + altezzaRiquadroSuccessivo + distanzaVerticale;
+ 	                     }
+ 	                 }
+ 	                 
+ 	                 else if (cellaInizio!= cellaFine && cellaFine.find('.riquadro:eq(1)').length > 0) {
+ 	                     var altezzaRiquadroSuccessivo = cellaFine.find('.riquadro:eq(1)').height();
+ 	                     if (nuovaPosizioneVerticale + altezza > posizioneUltimoRiquadro.top + altezzaRiquadroSuccessivo) {
+ 	                         nuovaPosizioneVerticale = posizioneUltimoRiquadro.top + altezzaRiquadroSuccessivo + distanzaVerticale;
+ 	                     }
+ 	                 }
+ 	                 
+ 	                 
+ 	                var riquadro = $("<div class='riquadro bg-warning text-dark p-2 rounded shadow-sm' style='margin-top:5px'></div>").css({
+	                	 left: sinistra,
+	                        top: nuovaPosizioneVerticale,
+	                        width: larghezza,
+	                 
+	                        'text-align': 'center',
+	                         whiteSpace: "normal",
+		                    wordWrap: "break-word", 
+	                    fontWeight: "bold",
+	                    border: "1px solid #FFD700",
+	                    backgroundColor: "#FFFFE0",
+	                    textAlign: "center",	  
+ 	               }).html('ID: '+pren.id_intervento+'<br>'+pren.testo_riquadro).attr('ondblclick', 'modalModificaAssociazione('+id_associazione+',"'+pren.testo_riquadro+'")');
+
+               
+	                cellaInizio.append(riquadro);
+	                
+	                
+	                var rowId = cellaInizio.closest('tr').attr('id');
+ 		            var altezzaRiga = $("#"+rowId).height();
+
+ 	                    var altezzaRiquadro = riquadro.height();
+
+ 	                   var nuovaAltezzaRiga  = altezzaRiga + altezzaRiquadro
+ 	  	            if(altezzaRiga<=nuovaAltezzaRiga){
+ 	  	           // if(altezzaRiga<=ultimaPosizione){
+ 	  	            	   cellaInizio.closest('tr').children('td').height(nuovaAltezzaRiga);
+ 	  	            	 // updatePosition(cellaInizio.closest('tr'), nuovaAltezzaRiga, altezzaRiga); 
+ 	  	            	
+ 	  	            	
+ 	  	            }
+	                	
+	                }
+
+	            } 
+	                }
+	            
+	            // Ricostruzione ricerca
+	            $('.inputsearchtable').on('input', function() {
+	                var colIndex = $(this).closest('th').index();
+	                var val = $(this).val();
+	                table.column(colIndex).search(val).draw();
+	            });
+
+	            $('.inputsearchtable').on('click', function(e) {
+	                e.stopPropagation();
+	            });
+
+	            table.columns.adjust().draw();
+
+	            // Scroll automatico
+	            var today = "${today}";
+	            if (parseInt(today) > "${daysNumber}") today = null;
+	            var coltoday = getDaysUntilMonday(parseInt(today), parseInt("${start_date}")) + 1;
+	            scrollToColumn(today - coltoday);
+
+	            pleaseWaitDiv.modal('hide');
 	        },
 	        error: function(xhr, status, error) {
 	            console.error(status);
@@ -709,6 +1065,34 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	    });
 	}
 
+	    
+	    
+	function modalModificaAssociazione(id_associazione, testo){
+		
+		dataObj ={}
+		dataObj.id_associazione = id_associazione;
+		
+		
+		
+		$('#id_associazione').val(id_associazione)
+		callAjax(dataObj, "gestioneRisorse.do?action=get_associazione", function(data){
+			
+			if(data.success){
+				
+				var associazione = data.associazione;
+				
+				$('#label_intervento').html("Intervento ID: "+associazione.id_intervento+" - "+testo)
+				
+				$('#data_inizio_mod').val(associazione.data_inizio);
+				$('#data_fine_mod').val(associazione.data_fine);
+				
+			$('#modalModificaAssociazione').modal()
+			
+			}
+			
+		}, "GET");
+	
+	}
 
 function filterTable() {
     var table = $('#tabPianificazioneRisorse');

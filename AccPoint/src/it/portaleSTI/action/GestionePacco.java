@@ -598,17 +598,26 @@ public class GestionePacco extends HttpServlet {
 				JsonElement jelement = new JsonParser().parse(data_json_rilievi);
 				JsonArray json_array = jelement.getAsJsonArray();
 				
+
+				if(id_pacco!=null && !id_pacco.equals("")) {
+					ril_intervento = GestioneRilieviBO.getIntrventoFromPacco(Integer.parseInt(id_pacco), session);
+				}
 				
-				ril_intervento = new RilInterventoDTO();
-				
-				if(id_pacco==null || id_pacco.equals("")) {
+				if(ril_intervento== null) {
+					ril_intervento = new RilInterventoDTO();
+					
 					ril_intervento.setData_apertura(new Date());
 					ril_intervento.setId_cliente(Integer.parseInt(cliente_util));
 					ril_intervento.setId_sede(Integer.parseInt(sede_util.split("_")[0]));
 					ril_intervento.setCommessa(commessa);
 					ril_intervento.setStato_intervento(1);
 					ril_intervento.setNome_cliente(util.getNome());
-					ril_intervento.setId_pacco(pacco.getId());
+					if(id_pacco!=null && !id_pacco.equals("")) {
+						ril_intervento.setId_pacco(Integer.parseInt(id_pacco));	
+					}else {
+						ril_intervento.setId_pacco(pacco.getId());
+					}
+					
 					
 					if(!sede_util.equals("0")) {
 						ril_intervento.setNome_sede(sd_util.getDescrizione() + " - "+sd_util.getIndirizzo());
@@ -618,10 +627,32 @@ public class GestionePacco extends HttpServlet {
 					}
 					
 					session.save(ril_intervento);
-				}else {
-					
-					ril_intervento = GestioneRilieviBO.getIntrventoFromPacco(Integer.parseInt(id_pacco), session);
 				}
+				
+				
+//				ril_intervento = new RilInterventoDTO();
+//				
+//				if(id_pacco==null || id_pacco.equals("")) {
+//					ril_intervento.setData_apertura(new Date());
+//					ril_intervento.setId_cliente(Integer.parseInt(cliente_util));
+//					ril_intervento.setId_sede(Integer.parseInt(sede_util.split("_")[0]));
+//					ril_intervento.setCommessa(commessa);
+//					ril_intervento.setStato_intervento(1);
+//					ril_intervento.setNome_cliente(util.getNome());
+//					ril_intervento.setId_pacco(pacco.getId());
+//					
+//					if(!sede_util.equals("0")) {
+//						ril_intervento.setNome_sede(sd_util.getDescrizione() + " - "+sd_util.getIndirizzo());
+//					}else {
+//							
+//						ril_intervento.setNome_sede("Non associate");						
+//					}
+//					
+//					session.save(ril_intervento);
+//				}else {
+//					
+//					ril_intervento = GestioneRilieviBO.getIntrventoFromPacco(Integer.parseInt(id_pacco), session);
+//				}
 				
 				//rilievo.setId_intervento(ril_intervento.getId());
 				

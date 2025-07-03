@@ -67,9 +67,9 @@ public class GestioneRisorseDAO {
 	public static ArrayList<PRInterventoRisorsaDTO> getListaInterventiRisorsa(int id, LocalDate data, Session session) {
 	ArrayList<PRInterventoRisorsaDTO> lista = null;
 		
-		Query query = session.createQuery("from PRInterventoRisorsaDTO as a where a.risorsa.id = :_id_risorsa and a.data = :_data");
+		Query query = session.createQuery("from PRInterventoRisorsaDTO as a where a.risorsa.id = :_id_risorsa");
 		query.setParameter("_id_risorsa", id);
-		query.setParameter("_data", java.sql.Date.valueOf(data));
+		
 		
 		
 		lista = (ArrayList<PRInterventoRisorsaDTO>) query.list();

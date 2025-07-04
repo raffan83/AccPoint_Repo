@@ -490,7 +490,7 @@ function filtraDate(){
  	 pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 
- 	callAction("gestioneVerIntervento.do?"+ dataString, false,true);
+ 	callAction("amGestioneInterventi.do?"+ dataString, false,true);
 
  	//exploreModal("gestioneFormazione.do", dataString, '#content_consuntivo');
 }
@@ -498,7 +498,7 @@ function filtraDate(){
 function resetDate(){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 		  pleaseWaitDiv.modal();
-	callAction("gestioneVerIntervento.do?action=lista");
+	callAction("amGestioneInterventi.do?action=lista");
 
 	}
 	

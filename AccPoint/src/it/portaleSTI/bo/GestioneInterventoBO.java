@@ -15,6 +15,7 @@ import java.util.List;
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
@@ -1249,9 +1250,9 @@ public class GestioneInterventoBO {
 	}
 
 	public static ArrayList<InterventoDTO> getListainterventiDate(LocalDate inizioBimestre, LocalDate fineBimestre,
-			Session session) {
+			Session session) throws Exception {
 		// TODO Auto-generated method stub
-		return GestioneInterventoDAO.getListainterventiDate(inizioBimestre, fineBimestre, session);
+		return DirectMySqlDAO.getListainterventiDate(inizioBimestre, fineBimestre, session);
 	}
 
 

@@ -313,7 +313,7 @@ function modalAssociaIntervento(data_inizio,data_fine, id_risorsa, id_associazio
 					 
 					  dati.cliente = escapeHtml(lista_interventi[i].nome_cliente);
 					  dati.sede = lista_interventi[i].nome_sede;
-					  dati.responsabile = lista_interventi[i].user.nominativo;
+					 // dati.responsabile = lista_interventi[i].user.nominativo;
 					  
 					  var risorsa_intervento = lista_interventi_risorsa.find(function(r) {
 						    return r.id_intervento === lista_interventi[i].id;

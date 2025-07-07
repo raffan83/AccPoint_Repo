@@ -3,6 +3,7 @@ package it.portaleSTI.DAO;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Date;
@@ -48,13 +49,14 @@ import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.IngIngressoDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PRInterventoRisorsaDTO;
 import it.portaleSTI.DTO.PRRisorsaDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
-
+import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -267,6 +269,57 @@ public class DirectMySqlDAO {
 
 		return toReturn;
 	}
+	
+	
+
+//	public static String getPassword(String pwd) throws Exception
+//	{
+//		String toReturn="";
+//		PreparedStatement pst=null;
+//		ResultSet rs= null;
+//		Connection con=null;
+//		try{
+////			con = getConnection();	
+////			pst=con.prepareStatement(getPassword);
+////			pst.setString(1,pwd);
+////			rs=pst.executeQuery();
+////			rs.next();
+////			toReturn=rs.getString(1);
+//			 MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
+//	            
+//	            // 1  passaggio SHA1
+//	            byte[] stage1 = sha1.digest(pwd.getBytes("UTF-8"));
+//	            
+//	            // 2  passaggio SHA1 sull'hash del primo passo
+//	            byte[] stage2 = sha1.digest(stage1);
+//	            
+//	            StringBuilder sb = new StringBuilder();
+//	            for (byte b : stage2) {
+//	                // & 0xFF per trattare byte come unsigned
+//	                sb.append(String.format("%02x", b & 0xFF));
+//	            }
+//	            
+//	            // Converti in esadecimale maiuscolo con prefisso *
+//	            return "*" + sb.toString().toUpperCase();
+//			
+//			
+//		}catch(Exception ex)
+//		{
+//			ex.printStackTrace();
+//			throw ex;
+//
+//		}finally
+//		{
+//			//pst.close();
+//			//con.close();
+//		}
+//
+//		
+//		
+//		//return toReturn;
+//	}
+	
+	
 
 	public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, String nomeCliente, Connection conSQLite,String indirizzoSede,UtenteDTO utente, Session session) throws Exception {
 
@@ -3921,6 +3974,71 @@ public static ArrayList<PRInterventoRisorsaDTO> getListaInterventoRisorseAll(Ses
 		res.setTesto_riquadro(rs.getString("id_commessa") + " - " +rs.getString("nome_cliente")+" - "+rs.getString("nome_sede"));
 		res.setRisorsa(risorsa);
 		lista.add(res);
+		
+	}
+	
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+
+	return lista;
+}
+
+public static ArrayList<InterventoDTO> getListainterventiDate(LocalDate inizio, LocalDate fine,
+		Session session) throws Exception {
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	ArrayList<InterventoDTO> lista = new ArrayList<InterventoDTO>();
+	try {
+		con=getConnection();
+
+
+		String query = "SELECT * from intervento where data_creazione BETWEEN ? AND ? ";
+	
+	
+	pst=con.prepareStatement(query);
+	pst.setDate(1, java.sql.Date.valueOf(inizio));
+	pst.setDate(2, java.sql.Date.valueOf(fine));
+
+	rs=pst.executeQuery();
+	
+	while(rs.next())
+	{
+		InterventoDTO res = new InterventoDTO();
+		res.setId(rs.getInt("id"));
+		res.setPressoDestinatario(rs.getInt("presso_destinatario"));
+		//UtenteDTO user = GestioneUtenteBO.getUtenteById(""+rs.getInt("id__user_creation"), session);
+		//res.setUser(user);
+		
+        res.setIdSede(rs.getInt("id__sede_"));
+        res.setId_cliente(rs.getInt("id_cliente"));
+        res.setNome_cliente(rs.getString("nome_cliente"));
+        res.setNome_sede(rs.getString("nome_sede"));
+        res.setIdCommessa(rs.getString("id_commessa"));
+        res.setDataCreazione(rs.getDate("data_creazione"));
+        StatoInterventoDTO stato = new StatoInterventoDTO();
+        int id_stato = rs.getInt("id_stato_intervento");
+        stato.setId(id_stato);
+        if(id_stato == 1) {
+        	stato.setDescrizione("APERTO");
+        }else if(id_stato == 2) {
+        	stato.setDescrizione("CHIUSO");
+        }else if(id_stato ==3) {
+        	stato.setDescrizione("GENERATO");
+        }
+        res.setStatoIntervento(stato);
+       // res.setNomePack(rs.getString("nomePack"));
+
+        lista.add(res);
 		
 	}
 	

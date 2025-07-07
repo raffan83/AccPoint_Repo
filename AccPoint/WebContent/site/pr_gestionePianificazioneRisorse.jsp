@@ -166,7 +166,7 @@
         <th>Cliente</th>
         <th style="min-width:100px">Sede</th>
         
-        <th>Responsabile</th>    
+      <%--   <th>Responsabile</th>     --%>
    
         <th>Azioni</th>
         </tr>
@@ -597,9 +597,9 @@ $('#intervento_select').on('change', function () {
 						    return r.risorsa.id === lista_risorse[i].id;
 						});
 					  if(risorsa_intervento){
-						  dati.data = '<input type="text" style="width:100%" class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off" required value="'+risorsa_intervento.data_inizio+' - '+risorsa_intervento.data_fine+'"/>';  
+						  dati.data = '<input type="text" style="width:100%" class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off"  value="'+risorsa_intervento.data_inizio+' - '+risorsa_intervento.data_fine+'"/>';  
 					  }else{
-						  dati.data = '<input type="text" style="width:100%" class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off" required />';
+						  dati.data = '<input type="text" style="width:100%" class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off"  />';
 					  }
 					  
 
@@ -784,7 +784,7 @@ $(document).ready(function($) {
 			    { data: "presso" },
 			    { data: "cliente"},
 			    { data: "sede" },
-			    { data: "responsabile" },
+			   /*  { data: "responsabile" }, */
 			
 			    { data: "azioni" }
 			  ],

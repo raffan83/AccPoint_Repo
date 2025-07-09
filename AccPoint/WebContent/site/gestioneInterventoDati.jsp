@@ -282,11 +282,11 @@
  </tr></thead>
  
  <tbody>
-
+<c:set var="requisito_preposto" value="0"></c:set>
  <c:forEach items="${intervento.listaRequisiti}" var="requisito" varStatus="loop">
  
  <c:if test="${requisito.requisito_documentale!=null }">
-  <c:set var="requisito_preposto" value="0"></c:set>
+  
 <c:if test="${requisito.requisito_documentale.categoria.id== 31 }">
 <c:set var="requisito_preposto" value="1"></c:set>
 </c:if>
@@ -3545,6 +3545,19 @@ var config4 = {
     				}
     		
     			}
+    			
+    			t.on('select', function (e, dt, type, indexes) {
+    				
+    				var rowNode = t.row(indexes[0]).node();
+    				$(rowNode).find('td').eq(3).find('input').attr("required", true);
+    			});
+    			
+			t.on('deselect', function (e, dt, type, indexes) {
+    				
+    				var rowNode = t.row(indexes[0]).node();
+    				$(rowNode).find('td').eq(3).find('input').attr("required", false);
+    			});
+    			
     			$("#modalRisorse").modal();
     			
     		}
@@ -3562,8 +3575,13 @@ var config4 = {
    	 
    	 	  var t1 = $('#tabRisorse').DataTable();
    	 var valori = "";
-   	 var requisito_preposto = ${requisito_preposto};
+   	 var requisito_preposto = "${requisito_preposto}";
    	var preposto_selezionato = false;
+  /*   t1.rows({ selected: false }).every(function () {
+    	   var $row = $(this.node());
+    	$row.find('td').eq(3).find('input').attr("required", false);
+    }); */
+   	
 	    t1.rows({ selected: true }).every(function () {
 	        var $row = $(this.node());
 	        var id = $row.find('td').eq(1).text().trim(); 

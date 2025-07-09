@@ -582,6 +582,7 @@ $('#intervento_select').on('change', function () {
     			var lista_risorse_all = data.lista_risorse_all;
     			lista_requisiti_doc_risorse = data.lista_req_doc_json;
     			lista_risorse_json = data.lista_risorse_all;
+    			requisito_preposto = data.requisito_preposto
     			
     			 var id_risorse_disponibili = lista_risorse.map(function(r) { return r.id; });
     			 table_data = []
@@ -591,7 +592,12 @@ $('#intervento_select').on('change', function () {
 				/* 	  dati.check ="<td></td>"; */
 				  dati.check = null; 
 					  dati.id = lista_risorse[i].id;
-					  dati.nominativo = lista_risorse[i].utente.nominativo;
+					
+					  if(lista_requisiti_doc_risorse[lista_risorse[i].id].find(item => item.id === 31)){
+						  dati.nominativo = lista_risorse[i].utente.nominativo +" [P]";
+					  }else{
+						  dati.nominativo = lista_risorse[i].utente.nominativo;  
+					  }
 			
 					  var risorsa_intervento = risorse_intervento.find(function(r) {
 						    return r.risorsa.id === lista_risorse[i].id;
@@ -655,6 +661,20 @@ $('#intervento_select').on('change', function () {
     				}
     		
     			}
+    			
+    			
+t.on('select', function (e, dt, type, indexes) {
+    				
+    				var rowNode = t.row(indexes[0]).node();
+    				$(rowNode).find('td').eq(3).find('input').attr("required", true);
+    			});
+    			
+			t.on('deselect', function (e, dt, type, indexes) {
+    				
+    				var rowNode = t.row(indexes[0]).node();
+    				$(rowNode).find('td').eq(3).find('input').attr("required", false);
+    			});
+    			
     			$("#modalRisorse").modal();
     			
     		}
@@ -887,7 +907,7 @@ $('#formModificaAssociazione').on("submit", function(e){
 });
 
 
-
+var requisito_preposto;
 $('#formAssegnazioneDiretta').on('submit', function(e){
 	
   	 e.preventDefault();
@@ -896,21 +916,48 @@ $('#formAssegnazioneDiretta').on('submit', function(e){
   	 
   	 	  var t1 = $('#tabRisorse').DataTable();
   	 var valori = "";
+  	 
+   	 
+    	var preposto_selezionato = false;
+  	 
 	    t1.rows({ selected: true }).every(function () {
 	        var $row = $(this.node());
 	        var id = $row.find('td').eq(1).text().trim(); 
-	        
+	        var nominativo = $row.find('td').eq(2).text().trim()
 	       
 	        var date = $row.find('td').eq(3).find('input').val(); // Colonna ID
 	        
 	        $row.find('td').eq(3).find('input').attr("required", true);
 	        valori += id+","+date + ";";
+	        
+	        if(nominativo.includes("[P]")){
+	        	preposto_selezionato = true;
+	        }
 	    });
 	    
 	    $('#id_risorsa_direct').val(valori.slice(0, -1));
 	    $('#id_intervento_ris').val($('#intervento_select').val())
+	    
+	    if(requisito_preposto == 1){
+        	if(preposto_selezionato){
 
-callAjaxForm('#formAssegnazioneDiretta','gestioneRisorse.do?action=associa_intervnto_risorsa');
+        		 callAjaxForm('#formAssegnazioneDiretta','gestioneRisorse.do?action=associa_intervnto_risorsa');
+
+        	}else{
+        		$('#myModalErrorContent').html("Attenzione devi selezionare almeno un PREPOSTO [P] per questo intervento!")
+        		$('#myModalError').removeClass()
+        		$('#myModalError').addClass("modal modal-danger")
+        		$('#myModalError').modal()
+        	}
+        }else{
+
+        	 
+        	 callAjaxForm('#formAssegnazioneDiretta','gestioneRisorse.do?action=associa_intervnto_risorsa');
+
+        }
+	    
+
+
 
    })
 

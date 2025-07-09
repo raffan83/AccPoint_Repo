@@ -1080,8 +1080,10 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 			if(data.success){
 				
 				var associazione = data.associazione;
+				var id_encrypted = data.id_encrypted;
+		
 				
-				$('#label_intervento').html("Intervento ID: "+associazione.id_intervento+" - "+testo)
+				$('#label_intervento').html("Intervento ID: <a class='customTooltip' target='_blank' href='gestioneInterventoDati.do?idIntervento="+id_encrypted+"'>"+associazione.id_intervento+" </a>- "+testo)
 				
 				$('#data_inizio_mod').val(associazione.data_inizio);
 				$('#data_fine_mod').val(associazione.data_fine);

@@ -253,22 +253,30 @@ public class GestioneRisorse extends HttpServlet {
 				 ArrayList<PRRisorsaDTO> lista_risorse_disponibili = new ArrayList<>();
 				
 			
-			        Set<Integer> idRequisitiSanitariRisorsa = new HashSet<>();
-			        Set<Integer> idRequisitiDocumentaliRisorsa = new HashSet<>();
+			     
 			        
 			        Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
 		            Set<Integer> idRequisitiDocumentaliIntervento = new HashSet<>();
 		            Map<Integer, ArrayList<ForCorsoCatDTO>> map_doc = new HashMap();
+		            int requisito_preposto = 0;
+		            
 			        for (PRInterventoRequisitoDTO req : intervento.getListaRequisiti()) {
 			            if (req.getRequisito_sanitario() != null) {
 			            	idRequisitiSanitariIntervento.add(req.getRequisito_sanitario().getId());
 			            }
-			            if (req.getRequisito_documentale() != null && req.getRequisito_documentale().getCategoria().getId() == 31) {
+			            if (req.getRequisito_documentale() != null && req.getRequisito_documentale().getCategoria().getId() != 31) {
 			            	idRequisitiDocumentaliIntervento.add(req.getRequisito_documentale().getCategoria().getId());
+			            }
+			            if(req.getRequisito_documentale() != null && req.getRequisito_documentale().getCategoria().getId() == 31) {
+			            	requisito_preposto = 1;
 			            }
 			        }
 			        
 			        for (PRRisorsaDTO risorsa : lista_risorse_all) {
+			        	   Set<Integer> idRequisitiSanitariRisorsa = new HashSet<>();
+					        Set<Integer> idRequisitiDocumentaliRisorsa = new HashSet<>();
+			        	
+			        	
 			        	for (PRRequisitoRisorsaDTO r : risorsa.getListaRequisiti()) {
 							
 							if(r.getReq_sanitario()!=null && (r.getStato()==1 ||r.getStato()==3)) {
@@ -317,6 +325,7 @@ public class GestioneRisorse extends HttpServlet {
 				myObj.add("lista_risorse_all", g.toJsonTree(lista_risorse_all));
 				myObj.add("risorse_intervento_json", g.toJsonTree(intervento.getListaRisorse()));
 				myObj.add("lista_req_doc_json", g.toJsonTree(map_doc));
+				myObj.addProperty("requisito_preposto", requisito_preposto);
 
 				out.print(myObj);
 				
@@ -336,6 +345,7 @@ public class GestioneRisorse extends HttpServlet {
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
 				myObj.add("associazione", g.toJsonTree(associazione));
+				myObj.addProperty("id_encrypted", Utility.encryptData(""+associazione.getId_intervento()));
 				out.print(myObj);
 			}
 			

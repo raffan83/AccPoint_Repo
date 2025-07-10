@@ -40,6 +40,10 @@ public class VerMisuraDTO {
 	
 	private int numeroSigilli;
 	
+	private int numeroSigilli_presenti;
+	
+	private String versione_sw;
+	
 	private Set<VerDecentramentoDTO> listaPuntiDecentramento = new LinkedHashSet<VerDecentramentoDTO>(0);
 	
 	private Set<VerRipetibilitaDTO> listaPuntiRipetibilita = new LinkedHashSet<VerRipetibilitaDTO>(0);
@@ -458,6 +462,23 @@ public class VerMisuraDTO {
 	public void setNote_combinazioni(String note_combinazioni) {
 		this.note_combinazioni = note_combinazioni;
 	}
+
+	public int getNumeroSigilli_presenti() {
+		return numeroSigilli_presenti;
+	}
+
+	public void setNumeroSigilli_presenti(int numeroSigilli_presenti) {
+		this.numeroSigilli_presenti = numeroSigilli_presenti;
+	}
+
+	public String getVersione_sw() {
+		return versione_sw;
+	}
+
+	public void setVersione_sw(String versione_sw) {
+		this.versione_sw = versione_sw;
+	}
+	
 	
 	
 	

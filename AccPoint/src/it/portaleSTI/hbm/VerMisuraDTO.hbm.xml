@@ -126,6 +126,14 @@
         
         <property name="numeroSigilli" type="int">
             <column name="numero_sigilli" />
+        </property>
+         
+          <property name="numeroSigilli_presenti" type="int">
+            <column name="numero_sigilli_presenti" />
+        </property> 
+        
+              <property name="versione_sw" type="java.lang.String">
+            <column name="versione_sw" />
         </property> 
 	
 	<property name="tInizio" type="double">

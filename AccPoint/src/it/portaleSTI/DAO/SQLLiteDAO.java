@@ -563,7 +563,9 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 												" gOrg decimal(10,2),"+
 												" gUtil decimal(10,2),"+
 												" gFactor decimal(10,2),"+
-												" numeroSigilli int(1),"+
+												" numeroSigilli int(4),"+
+												" numeroSigilli_presenti int(1),"+
+												" versione_sw varchar(255),"+
 												" note_combinazioni varchar(255));";
 									
 			

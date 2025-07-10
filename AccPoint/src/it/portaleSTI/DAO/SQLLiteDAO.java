@@ -1589,6 +1589,13 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			
 			misura.setNumeroSigilli(rs.getInt("numeroSigilli"));
 			
+			
+			if(SQLiteColumnCheck(con, "ver_misura", "numeroSigilli_presenti")) 
+			{
+				misura.setNumeroSigilli_presenti(rs.getInt("numeroSigilli_presenti"));
+				misura.setVersione_sw(rs.getString("versione_sw"));
+			}
+			
 			misura.setNote_combinazioni(rs.getString("note_combinazioni"));
 
 			String dataRiparazione=rs.getString("data_riparazione");

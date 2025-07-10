@@ -8,8 +8,10 @@
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 <div class="row">
 <div class="col-xs-12">
+
  <a class="btn btn-primary pull-right" onClick="associaUtentiModal('${corso.id}')" title="Click per associare gli utenti al corso"><i class="fa fa-plus"></i> Aggiungi Partecipanti</a>
- <%-- <a class="btn btn-danger pull-right" href="gestioneFormazione.do?action=download_attestato_all&id_corso=${corso.id}" title="Click per associare gli utenti al corso"><i class="fa fa-plus"></i> Aggiungi Partecipanti</a> --%>
+ <a class="btn bg-olive pull-right" onClick="inviaEmail('${corso.id}')" style="margin-right:5px"><i class="fa fa-envelope"></i> Invia Email</a>
+ <a class="btn bg-purple pull-right" onClick="associaEmailMoodle('${corso.id}')" style="margin-right:5px"><i class="fa fa-users"></i> Associa Email da Moodle</a>
  <a class="btn btn-danger pull-right" onClick="scaricaTutti(${corso.id})"style="margin-right:5px"><i class="fa fa-arrow-down"></i> Scarica tutti gli attestati</a>
 </div>
 </div><br>
@@ -25,7 +27,10 @@
 <table id="tabPartecipanti" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
+<th style="max-width:65px" class="text-center"></th>
+
 <th>Nominativo</th>
+<th>Email</th>
 <th>Ruolo</th>
 <th>Ore partecipate</th>
 <th>Azioni</th>
@@ -35,7 +40,9 @@
  
  	<c:forEach items="${listaPartecipanti }" var="partecipante" varStatus="loop">
  	<tr id="row_${loop.index}" >
+ 	<td class="select-checkbox"></td>
  	<td><a class="btn customTooltip customlink" title="Vai al partecipante" onclick="callAction('gestioneFormazione.do?action=dettaglio_partecipante&id_partecipante=${utl:encryptData(partecipante.partecipante.id)}')">${partecipante.partecipante.nome } ${partecipante.partecipante.cognome }</a></td>
+	<td>${partecipante.partecipante.email }</td>
 	<td>${partecipante.ruolo.descrizione }</td>
 	<td>${partecipante.ore_partecipate }</td>
 	<td>
@@ -292,9 +299,17 @@ function associaUtentiModal(id_corso){
       	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
      	  var title = $('#tabForPartecipanti thead th').eq( $(this).index() ).text();
      	
-     	  //if($(this).index()!=0 && $(this).index()!=1){
+     	  if($(this).index()!=0){
  		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
- 	    	//}
+     	  }	
+      	 else if($(this).index() ==0){
+	    	  	$(this).append( '<input class="pull-left" id="checkAll" type="checkbox" />');
+	      }
+     	 $('#checkAll').iCheck({
+             checkboxClass: 'icheckbox_square-blue',
+             radioClass: 'iradio_square-blue',
+             increaseArea: '20%' // optional
+           });
 
      	} );
      
@@ -321,6 +336,27 @@ function associaUtentiModal(id_corso){
 	// location.reload()
  }
  
+ function inviaEmail(id_corso){
+	 
+	 alert("invia");
+//	 callAction("gestioneFormazione.do?action=download_attestato_all&id_corso="+id_corso, null, true);
+	 pleaseWaitDiv.modal('hide')
+	 
+
+	 
+	// location.reload()
+ }
+ 
+ function associaEmailMoodle(id_corso){
+	 
+	 alert('associa');
+//	 callAction("gestioneFormazione.do?action=download_attestato_all&id_corso="+id_corso, null, true);
+	 pleaseWaitDiv.modal('hide')
+	 
+
+	 
+	// location.reload()
+ }
  var partecipanti_options;
     $(document).ready(function() {
     	
@@ -365,7 +401,7 @@ function associaUtentiModal(id_corso){
   		      stateSave: true,	
   		           
   		      columnDefs: [
-  		    	  
+  		    	  { className: "select-checkbox", targets: 0,  orderable: false },
   		    	  { responsivePriority: 1, targets: 1 },
   		    	  
   		    	  
@@ -409,8 +445,37 @@ function associaUtentiModal(id_corso){
   		   $(this).removeClass('btn-default');
   		})
 
+  		
 
   	});
+  	
+   	$('#checkAll').on('ifChecked', function (ev) {
+
+		$("#checkAll").prop('checked', true);
+		table.rows().deselect();
+		var allData = table.rows({filter: 'applied'});
+		table.rows().deselect();
+		i = 0;
+		table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+		    //if(i	<maxSelect){
+				 this.select();
+		   /*  }else{
+		    		tableLoop.exit;
+		    }
+		    i++; */
+		    
+		} );
+
+  	});
+	$('#checkAll').on('ifUnchecked', function (ev) {
+
+		
+			$("#checkAll").prop('checked', false);
+			table.rows().deselect();
+			var allData = table.rows({filter: 'applied'});
+			table.rows().deselect();
+
+	  	});
      	
   		var n_partecipanti = table.rows()[0].length;
   		

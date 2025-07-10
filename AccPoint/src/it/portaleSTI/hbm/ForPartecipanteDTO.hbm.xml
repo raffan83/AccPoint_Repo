@@ -36,6 +36,9 @@
         <property name="cf" type="java.lang.String" >
             <column name="cf" />
         </property>
+        <property name="email" type="java.lang.String" >
+            <column name="email" />
+        </property>
         
        <!--  <many-to-one name="azienda" class="it.portaleSTI.DTO.ForAziendaDTO" fetch="join" lazy="false">
             <column name="id_azienda" />

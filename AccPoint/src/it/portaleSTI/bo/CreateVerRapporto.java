@@ -95,11 +95,14 @@ public class CreateVerRapporto {
 		InputStream is = null;
 		
 		if(misura.getVerStrumento().getTipo().getId()==1|| misura.getVerStrumento().getTipo().getId()==4|| misura.getVerStrumento().getTipo().getId()==5) {
-			is = PivotTemplate.class.getResourceAsStream("VerRapportoCSP1.jrxml");
+			//is = PivotTemplate.class.getResourceAsStream("VerRapportoCSP1.jrxml");
+			is = PivotTemplate.class.getResourceAsStream("VerRapportoCSP1_rev.jrxml");
 		}else if(misura.getVerStrumento().getTipo().getId()==2) {
-			is = PivotTemplate.class.getResourceAsStream("VerRapportoDPP1.jrxml");
+			//is = PivotTemplate.class.getResourceAsStream("VerRapportoDPP1.jrxml");
+			is = PivotTemplate.class.getResourceAsStream("VerRapportoDPP1_rev.jrxml");
 		}else {
-			is = PivotTemplate.class.getResourceAsStream("VerRapportoCPP1.jrxml");
+			//is = PivotTemplate.class.getResourceAsStream("VerRapportoCPP1.jrxml");
+			is = PivotTemplate.class.getResourceAsStream("VerRapportoCPP1_rev.jrxml");
 		}
 		
 		this.strumento = misura.getVerStrumento();
@@ -119,34 +122,37 @@ public class CreateVerRapporto {
 			
 			if(misura.getSeqRisposte().length()==19) {
 				if(misura.getTipoRisposta()==0) {
-					is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0_NOA_sig.jrxml");	
-					//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0.jrxml");
+				//	is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0_NOA_sig.jrxml");	
+					is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0_NOA_sig_rev.jrxml");
 				}else {
-					is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1_NOA_sig.jrxml");
-					//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1.jrxml");
+					//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1_NOA_sig.jrxml");
+					is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1_NOA_sig_rev.jrxml");
 				}
 			}else {
 				if(misura.getTipoRisposta()==0) {
-					is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0_NOA.jrxml");	
-					//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0.jrxml");
+					//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0_NOA.jrxml");	
+					is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_0_NOA_rev.jrxml");
 				}else {
-					is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1_NOA.jrxml");
-					//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1.jrxml");
+					//is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1_NOA.jrxml");
+					is2 = PivotTemplate.class.getResourceAsStream("VerCheckListNew_1_NOA_rev.jrxml");
 				}
 			}
 			
 			
 			
 		}else {
-			is2 = PivotTemplate.class.getResourceAsStream("VerCheckList.jrxml");
+			//is2 = PivotTemplate.class.getResourceAsStream("VerCheckList.jrxml");
+			is2 = PivotTemplate.class.getResourceAsStream("VerCheckList_rev.jrxml");
 		}
 			
 		InputStream is3 =  null;
 		
 		if(misura.gettInizio()==0 && misura.gettFine()==0) {
-			is3 = PivotTemplate.class.getResourceAsStream("VerRapportoHeader.jrxml");	
+			//is3 = PivotTemplate.class.getResourceAsStream("VerRapportoHeader.jrxml");	
+			is3 = PivotTemplate.class.getResourceAsStream("VerRapportoHeader_rev.jrxml");
 		}else {
-			is3 = PivotTemplate.class.getResourceAsStream("VerRapportoHeaderTemperatura.jrxml");
+			//is3 = PivotTemplate.class.getResourceAsStream("VerRapportoHeaderTemperatura.jrxml");
+			is3 = PivotTemplate.class.getResourceAsStream("VerRapportoHeaderTemperatura_rev.jrxml");
 		}
 		
 		
@@ -264,9 +270,31 @@ public class CreateVerRapporto {
 		
 		
 	
-		report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
-		//report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver_NEW.png"));
-		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));
+		//report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
+		report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_nawi_calver.png"));
+//
+		//report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));
+		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_nawi_calver1.png"));
+		
+		//report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("rapporto verificazione nawi_1.png"));	
+		
+		if(misura.getTipoRisposta() == 0) {
+			report.addParameter("versione_software_label", "");
+			report.addParameter("versione_software", "");
+		}else {
+			if(misura.getVersione_sw()!=null) {
+				report.addParameter("versione_software_label", "Versione software:");
+				report.addParameter("versione_software", misura.getVersione_sw());
+			}else {
+				report.addParameter("versione_software_label", "");
+				report.addParameter("versione_software", "");
+			}
+			
+		}
+	
+		report.addParameter("n_sigilli_presenti", misura.getNumeroSigilli_presenti());	
+		
+		
 		
 		File firma = new File(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma());
 		
@@ -601,7 +629,8 @@ public class CreateVerRapporto {
 		
 		report.addParameter("registro", misura.getId()+"_"+misura.getVerStrumento().getId()); //MANCA REGISTRO
 		//report.addParameter("procedura", "PT-020 Rev. E"); 
-		report.addParameter("procedura", "PDI-001 Rev. E");
+		//report.addParameter("procedura", "PDI-001 Rev. E");
+		report.addParameter("procedura", "PDI-001 Rev. G");
 		
 		if(utente.getFile_firma()!=null) {
 			if(firma!=null) {
@@ -638,9 +667,11 @@ public class CreateVerRapporto {
 		report.addParameter("data_emissione", "");
 		
 		if(misura.getTipoRisposta()==0) {
-			report.addParameter("codifica", "MOD-PDI001-02 Rev. 0 del 21/12/2022");
+			//report.addParameter("codifica", "MOD-PDI001-02 Rev. 0 del 21/12/2022");
+			report.addParameter("codifica", "MOD-PDI001-02 Rev. A");
 		}else {
-			report.addParameter("codifica", "MOD-PDI001-04 Rev. 0 del 21/12/2022");
+			//report.addParameter("codifica", "MOD-PDI001-04 Rev. 0 del 21/12/2022");
+			report.addParameter("codifica", "MOD-PDI001-04 Rev. A");
 		}
 		
 		
@@ -648,10 +679,11 @@ public class CreateVerRapporto {
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
 		
 
-		reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
-		//reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver_NEW.png"));
+		//reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
+		reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_nawi_calver.png"));
 		
-		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));
+		//reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));
+		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_nawi_calver1.png"));
 		
 		if(misura.getNumeroRapporto()!=null) {
 			reportP2.addParameter("numero_rapporto", misura.getNumeroRapporto().replace("_"," - "));
@@ -725,9 +757,11 @@ public class CreateVerRapporto {
 		reportP2.addParameter("data_emissione", "");
 		
 		if(misura.getTipoRisposta()==0) {
-			reportP2.addParameter("codifica", "MOD-PDI001-02 Rev. 0 del 21/12/2022");
+			//reportP2.addParameter("codifica", "MOD-PDI001-02 Rev. 0 del 21/12/2022");
+			reportP2.addParameter("codifica", "MOD-PDI001-02 Rev. A");
 		}else {
-			reportP2.addParameter("codifica", "MOD-PDI001-04 Rev. 0 del 21/12/2022");
+			//reportP2.addParameter("codifica", "MOD-PDI001-04 Rev. 0 del 21/12/2022");
+			reportP2.addParameter("codifica", "MOD-PDI001-04 Rev. A");
 		}
 				
 		File logo_accredia = new File(PivotTemplateLAT_Image.class.getResource("accredia.png").getPath());
@@ -736,12 +770,14 @@ public class CreateVerRapporto {
 		if(motivo!=2) {
 				
 			
-			//reportP3.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
-			//reportP3.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("sti.jpg"));
-			reportP3.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
-			//reportP3.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver_NEW.png"));
+		
+			//reportP3.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
+			reportP3.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_nawi_calver.png"));
 			
-			reportP3.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));
+
+			
+			//reportP3.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));
+			reportP3.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_nawi_calver1.png"));
 			
 			if(misura.getNumeroRapporto()!=null) {
 				reportP3.addParameter("numero_rapporto", misura.getNumeroRapporto().replace("_"," - "));
@@ -1488,9 +1524,12 @@ public class CreateVerRapporto {
 			String codifica = "";
 			
 			if(misura.getTipoRisposta()==0) {
-				codifica = "MOD-PDI001-03 Rev. 0 del 21/12/2022";
+				//codifica = "MOD-PDI001-03 Rev. 0 del 21/12/2022";
+				codifica ="MOD-PDI001-02 Rev. A";
 			}else {
-				codifica = "MOD-PDI001-05 Rev. 0 del 21/12/2022";
+				//codifica = "MOD-PDI001-05 Rev. 0 del 21/12/2022";
+				
+				codifica ="MOD-PDI001-05 Rev. A";
 			}
 			
 			if(utente.getFile_firma()!=null) {

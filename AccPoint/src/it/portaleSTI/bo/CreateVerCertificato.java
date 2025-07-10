@@ -74,31 +74,55 @@ public class CreateVerCertificato {
 		
 
 		if(misura.getVerStrumento().getTipo().getId()==1 || misura.getVerStrumento().getTipo().getId()==5) {
-			is = PivotTemplate.class.getResourceAsStream("VerCertificatoCSP1.jrxml");
+			//is = PivotTemplate.class.getResourceAsStream("VerCertificatoCSP1.jrxml");
+			is = PivotTemplate.class.getResourceAsStream("VerCertificatoCSP1_rev.jrxml");
 		}else if(misura.getVerStrumento().getTipo().getId()==2) {
-			is = PivotTemplate.class.getResourceAsStream("VerCertificatoDPP1.jrxml");
+			//is = PivotTemplate.class.getResourceAsStream("VerCertificatoDPP1.jrxml");
+			is = PivotTemplate.class.getResourceAsStream("VerCertificatoDPP1_rev.jrxml");
 		}else if(misura.getVerStrumento().getTipo().getId()==4) {
-			is = PivotTemplate.class.getResourceAsStream("VerCertificatoCorredoEsternoP1.jrxml");
+			//is = PivotTemplate.class.getResourceAsStream("VerCertificatoCorredoEsternoP1.jrxml");
+			is = PivotTemplate.class.getResourceAsStream("VerCertificatoCorredoEsternoP1_rev.jrxml");
 		}		
 		else {
-			is = PivotTemplate.class.getResourceAsStream("VerCertificatoCPP1.jrxml");
+			//is = PivotTemplate.class.getResourceAsStream("VerCertificatoCPP1.jrxml");
+			is = PivotTemplate.class.getResourceAsStream("VerCertificatoCPP1_rev.jrxml");
 		}
 	
 		InputStream is2 =  null;
 		
 		 if(misura.getVerStrumento().getTipo().getId()==4) {
-			 is2 = PivotTemplate.class.getResourceAsStream("VerCertificatoCorredoEsternoP2.jrxml");
+			// is2 = PivotTemplate.class.getResourceAsStream("VerCertificatoCorredoEsternoP2.jrxml");
+			 is2 = PivotTemplate.class.getResourceAsStream("VerCertificatoCorredoEsternoP2_rev.jrxml");
 		 }else {
-			 is2 = PivotTemplate.class.getResourceAsStream("VerCertificatoP2NoFirma.jrxml");
+			 //is2 = PivotTemplate.class.getResourceAsStream("VerCertificatoP2NoFirma.jrxml");
+			 is2 = PivotTemplate.class.getResourceAsStream("VerCertificatoP2NoFirma_rev.jrxml");
 		 }
 		
 		
 		JasperReportBuilder report = DynamicReports.report();
 		JasperReportBuilder reportP2 = DynamicReports.report();
 
-		report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
-		//report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver_NEW.png"));
-		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
+		//report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
+		report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_nawi_calver.png"));
+		
+		//report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));
+		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_nawi_calver1.png"));
+		//report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("rapporto verificazione nawi_1.png"));	
+		if(misura.getTipoRisposta() == 0) {
+			report.addParameter("versione_software_label", "");
+			report.addParameter("versione_software", "");
+		}else {
+			if(misura.getVersione_sw()!=null) {
+				report.addParameter("versione_software_label", "Versione software:");
+				report.addParameter("versione_software", misura.getVersione_sw());
+			}else {
+				report.addParameter("versione_software_label", "");
+				report.addParameter("versione_software", "");
+			}
+			
+		}
+	
+		report.addParameter("n_sigilli_presenti", misura.getNumeroSigilli_presenti());	
 
 		report.setTemplateDesign(is);
 		report.setTemplate(Templates.reportTemplate);
@@ -556,9 +580,11 @@ public class CreateVerCertificato {
 		}
 		
 		if(misura.getTipoRisposta()==0) {
-			report.addParameter("codifica", "MOD-PDI001-03 Rev. 0 del 21/12/2022");
+			//report.addParameter("codifica", "MOD-PDI001-03 Rev. 0 del 21/12/2022");
+			report.addParameter("codifica", "MOD-PDI001-03 Rev. A");
 		}else {
-			report.addParameter("codifica", "MOD-PDI001-05 Rev. 0 del 21/12/2022");
+			//report.addParameter("codifica", "MOD-PDI001-05 Rev. 0 del 21/12/2022");
+			report.addParameter("codifica", "MOD-PDI001-05 Rev. A");
 		}
 		
 		
@@ -608,13 +634,17 @@ public class CreateVerCertificato {
 		}
 		
 		if(misura.getTipoRisposta()==0) {
-			reportP2.addParameter("codifica", "MOD-PDI001-03 Rev. 0 del 21/12/2022");
+			//reportP2.addParameter("codifica", "MOD-PDI001-03 Rev. 0 del 21/12/2022");
+			reportP2.addParameter("codifica", "MOD-PDI001-03 Rev. A");
 		}else {
-			reportP2.addParameter("codifica", "MOD-PDI001-05 Rev. 0 del 21/12/2022");
+			//reportP2.addParameter("codifica", "MOD-PDI001-05 Rev. 0 del 21/12/2022");
+			reportP2.addParameter("codifica", "MOD-PDI001-05 Rev. A");
 		}
-		reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
-		//reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver_NEW.png"));
-		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
+		//reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_ver.png"));
+		reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_nawi_calver.png"));
+		
+		//reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
+		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_nawi_calver1.png"));
 		
 		if(misura.getNumeroAttestato()!=null) {
 			reportP2.addParameter("numero_certificato", misura.getNumeroAttestato().replace("_", " - "));
@@ -679,7 +709,8 @@ public class CreateVerCertificato {
 		reportP2.addParameter("data_emissione", "");
 		//reportP2.addParameter("responsabile", "Eliseo Crescenzi");
 		
-		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
+		//report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo_ver.png"));	
+		//report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_nawi_calver1.png"));
 	//	reportP2.addParameter("firma_responsabile", PivotTemplate.class.getResourceAsStream("FIRMA_ANTONIO_ACCETTOLA.png"));
 		//reportP2.addParameter("firma_responsabile", PivotTemplate.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
 		

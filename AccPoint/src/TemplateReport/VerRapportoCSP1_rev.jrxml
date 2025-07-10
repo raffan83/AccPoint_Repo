@@ -9,28 +9,6 @@
 	</background>
 	<detail>
 		<band height="802" splitType="Stretch">
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
-				<reportElement x="0" y="-14" width="129" height="76" uuid="6d3bbd1b-3b05-4209-8224-1077692b5c45"/>
-				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="97" y="-7" width="369" height="32" uuid="ebb4f16d-9199-44ef-94da-111492f67b1d"/>
-				<textElement textAlignment="Center">
-					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Organismo di Verificazione Periodica ]]></text>
-			</staticText>
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
-				<reportElement x="450" y="-14" width="103" height="76" uuid="1d0eac32-b0b3-49ad-b8da-e735a1b400fa"/>
-				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="97" y="11" width="369" height="32" uuid="d359a446-fc7c-457f-9a71-89eac3b964d6"/>
-				<textElement textAlignment="Center">
-					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[n. FR323 ai sensi del D.M. n. 93/2017]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="1" y="128" width="553" height="20" uuid="288dd149-248d-46ab-bcd8-d7358a5c78d2"/>
 				<textElement textAlignment="Center">
@@ -550,6 +528,44 @@
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{codifica}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="382" y="582" width="168" height="19" uuid="4b1d7c18-b85c-4d72-ada3-6efe38ca50b4"/>
+				<textFieldExpression><![CDATA[$P{n_sigilli_presenti}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="270" y="582" width="110" height="19" uuid="2c91dd72-809a-45b3-83f9-68d6ccc680df"/>
+				<text><![CDATA[N. sigilli presenti:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="382" y="561" width="167" height="19" uuid="1f0f2e68-8398-41ea-90de-a28ca4478a31"/>
+				<textFieldExpression><![CDATA[$P{versione_software}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="0" y="-12" width="149" height="94" uuid="1a98cbeb-3f9d-4970-b70a-70a1bfd9223b"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="97" y="-7" width="369" height="32" uuid="d5a35c5d-68ed-459b-a06c-a24c7f5964b4"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Organismo di Verificazione Periodica ]]></text>
+			</staticText>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="450" y="-7" width="103" height="76" uuid="64cd22d0-bfb6-4be1-b76f-9ec4542798aa"/>
+				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="97" y="11" width="369" height="32" uuid="da75f64b-7f68-4f1a-9b6c-06992ef658a8"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[n. FR323 ai sensi del D.M. n. 93/2017]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="270" y="561" width="110" height="19" uuid="27bd43af-fa2b-4905-af68-9d0f76bfc357"/>
+				<textFieldExpression><![CDATA[$P{versione_software_label}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

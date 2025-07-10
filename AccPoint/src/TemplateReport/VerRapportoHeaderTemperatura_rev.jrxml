@@ -8,76 +8,76 @@
 		<band splitType="Stretch"/>
 	</background>
 	<columnHeader>
-		<band height="109">
+		<band height="114">
 			<staticText>
-				<reportElement x="1" y="50" width="553" height="21" uuid="c712ad85-5f3e-40f8-b3c5-f98e9cc85580"/>
+				<reportElement x="1" y="55" width="553" height="21" uuid="c712ad85-5f3e-40f8-b3c5-f98e9cc85580"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Rapporto di verificazione periodica numero:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="1" y="65" width="553" height="21" uuid="473ed03a-2fd5-4e1f-9155-ec457b7bd1e5"/>
+				<reportElement x="1" y="70" width="553" height="21" uuid="473ed03a-2fd5-4e1f-9155-ec457b7bd1e5"/>
 				<textElement textAlignment="Center">
 					<font pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numero_rapporto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="505" y="88" width="12" height="16" uuid="0d59ff7f-3274-4fa0-a0ee-5303e06f73ba"/>
+				<reportElement x="505" y="93" width="12" height="16" uuid="0d59ff7f-3274-4fa0-a0ee-5303e06f73ba"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="517" y="88" width="7" height="16" uuid="d997d69e-3c78-4ef9-a8ff-6d9bef50e5f2"/>
+				<reportElement x="517" y="93" width="7" height="16" uuid="d997d69e-3c78-4ef9-a8ff-6d9bef50e5f2"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[di]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="477" y="88" width="28" height="16" uuid="8a81ea14-1615-4941-9cd6-e3075f5c1db0"/>
+				<reportElement x="477" y="93" width="28" height="16" uuid="8a81ea14-1615-4941-9cd6-e3075f5c1db0"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Pagina]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="526" y="88" width="17" height="16" uuid="f6fea9f8-e807-43bb-906e-09144449aa0a"/>
+				<reportElement x="526" y="93" width="17" height="16" uuid="f6fea9f8-e807-43bb-906e-09144449aa0a"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="77" width="553" height="21" uuid="7de2fd98-e414-4d6d-af39-b59713c16237"/>
+				<reportElement x="0" y="82" width="553" height="21" uuid="7de2fd98-e414-4d6d-af39-b59713c16237"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Allegato:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="92" width="553" height="15" uuid="4cca3a87-7166-4a07-ab07-cb12fd9dc087"/>
+				<reportElement x="0" y="97" width="553" height="15" uuid="4cca3a87-7166-4a07-ab07-cb12fd9dc087"/>
 				<textElement textAlignment="Center">
 					<font pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{allegato}]]></textFieldExpression>
 			</textField>
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
-				<reportElement x="0" y="-14" width="129" height="76" uuid="81d2cb57-5411-4799-bc23-2e7d950bf23f"/>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="0" y="-12" width="149" height="94" uuid="c785b05e-d927-41a6-a0da-736789bea2c8"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="97" y="-7" width="369" height="32" uuid="8b402f11-9ca2-4095-9440-fd7e37461e2d"/>
+				<reportElement x="97" y="-7" width="369" height="32" uuid="7d36e701-133f-4ebd-9ae9-112b8a9cf769"/>
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Organismo di Verificazione Periodica ]]></text>
 			</staticText>
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
-				<reportElement x="450" y="-14" width="103" height="76" uuid="7afefc94-dd0f-4942-a64b-e3ff92066add"/>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank" evaluationTime="Page">
+				<reportElement x="450" y="-7" width="103" height="76" uuid="a8e777e6-df19-45f8-aa34-ffd485b133eb"/>
 				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="97" y="11" width="369" height="32" uuid="c354d853-9bf3-4a22-926d-053ece7e2681"/>
+				<reportElement x="97" y="11" width="369" height="32" uuid="35e2607a-f86b-4878-80b0-2f66bb7007b3"/>
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>

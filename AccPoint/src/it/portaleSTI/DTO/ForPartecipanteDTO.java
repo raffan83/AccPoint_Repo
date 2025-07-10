@@ -19,6 +19,7 @@ public class ForPartecipanteDTO {
 	private int nominativo_irregolare;
 	private int duplicato;
 	private String note;
+	private String email;
 	
 	public String getCf() {
 		return cf;
@@ -134,6 +135,14 @@ public class ForPartecipanteDTO {
 		this.duplicato = duplicato;
 	}
 
+	public String getEmail() {
+		return email;
+	}
 
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	
 
 }

@@ -3992,8 +3992,7 @@ public static ArrayList<PRInterventoRisorsaDTO> getListaInterventoRisorseAll(Ses
 	return lista;
 }
 
-public static ArrayList<InterventoDTO> getListainterventiDate(LocalDate inizio, LocalDate fine,
-		Session session) throws Exception {
+public static ArrayList<InterventoDTO> getListainterventiAperti() throws Exception {
 	Connection con=null;
 	PreparedStatement pst = null;
 	ResultSet rs=null;
@@ -4002,12 +4001,12 @@ public static ArrayList<InterventoDTO> getListainterventiDate(LocalDate inizio, 
 		con=getConnection();
 
 
-		String query = "SELECT * from intervento where data_creazione BETWEEN ? AND ? ";
+		String query = "SELECT * from intervento where id_stato_intervento = 1";
 	
 	
 	pst=con.prepareStatement(query);
-	pst.setDate(1, java.sql.Date.valueOf(inizio));
-	pst.setDate(2, java.sql.Date.valueOf(fine));
+//	pst.setDate(1, java.sql.Date.valueOf(inizio));
+//	pst.setDate(2, java.sql.Date.valueOf(fine));
 
 	rs=pst.executeQuery();
 	

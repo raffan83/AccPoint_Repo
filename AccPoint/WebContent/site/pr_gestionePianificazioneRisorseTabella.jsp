@@ -310,7 +310,7 @@ function modalAssociaIntervento(data_inizio,data_fine, id_risorsa, id_associazio
 						else if(presso== 4){
 							 dati.presso = "Presso Fornitore Esterno";
 						}
-					 
+					 console.log(lista_interventi[i].id +" " +lista_interventi[i].nome_cliente)
 					  dati.cliente = escapeHtml(lista_interventi[i].nome_cliente);
 					  dati.sede = lista_interventi[i].nome_sede;
 					 // dati.responsabile = lista_interventi[i].user.nominativo;
@@ -833,10 +833,10 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	                var testo = pren.testo_riquadro
  	                var larghezzaTesto = getTextWidth(testo, '12px Arial') + 20; // Aggiungi un margine per una migliore presentazione
 
- 	                var larghezza =  posizioneArrivo.left - posizionePartenza.left + cellaInizio.outerWidth(true);
+ 	                var larghezza =  posizioneArrivo.left - posizionePartenza.left + cellaInizio.outerWidth();
  	                
  	             	if(nCelle>1){
- 	             		larghezza = 0;
+ 	             		larghezza = cellaInizio.outerWidth();
  	             	for(var k = 0; k<nCelle; k++){
  	             		var cellaCorrente = $('#'+id_risorsa+"_"+(cella_inizio+k))
  	             		larghezza = larghezza + cellaCorrente.outerWidth();

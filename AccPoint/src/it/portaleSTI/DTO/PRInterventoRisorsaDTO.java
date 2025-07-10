@@ -11,6 +11,7 @@ public class PRInterventoRisorsaDTO {
 	private int cella_inizio;
 	private int cella_fine;
 	String testo_riquadro;
+	private int forzato;
 	
 	public int getId() {
 		return id;
@@ -66,6 +67,12 @@ public class PRInterventoRisorsaDTO {
 	}
 	public void setCella_fine(int cella_fine) {
 		this.cella_fine = cella_fine;
+	}
+	public int getForzato() {
+		return forzato;
+	}
+	public void setForzato(int forzato) {
+		this.forzato = forzato;
 	}
 	
 	

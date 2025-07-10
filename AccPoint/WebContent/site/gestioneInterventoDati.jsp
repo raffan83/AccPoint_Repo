@@ -154,28 +154,7 @@
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
                 </li>
-                <li class="list-group-item">
-                  <b>Assegnato a</b>
-                    <c:if test="${intervento.getListaRisorse().size()==0 }">
-                   <a class="btn btn-primary pull-right btn-xs"  title="Click per assegnare l'intervento a una risorsa" onClick="assegnaRisorsa('${intervento.id}')"><i class="fa fa-plus"></i></a>
-                   </c:if>
-                  <c:forEach items="${intervento.getListaRisorse() }" var="risorsa_intervento" varStatus="loop">
-                     <c:if test="${loop.index == 0 }">
-                 <a class="btn btn-primary pull-right btn-xs"  title="Click per assegnare l'intervento a una risorsa" onClick="assegnaRisorsa('${intervento.id}')"><i class="fa fa-plus"></i></a>   
-                  </c:if>
-   					
-   					<c:if test="${risorsa_intervento.risorsa.isPreposto() }">
-                  <a class="pull-right" style="padding-right:7px">${risorsa_intervento.risorsa.utente.nominativo} [P]</a>
-               </c:if>
-               
-               <c:if test="${!risorsa_intervento.risorsa.isPreposto() }">
-                  <a class="pull-right" style="padding-right:7px">${risorsa_intervento.risorsa.utente.nominativo}</a>
-               </c:if>
-                  <br>
-                  
-                  </c:forEach>
-                
-                </li>
+              
         </ul>
         
    
@@ -270,7 +249,93 @@
 <div class="box-body">
   <c:if test="${intervento.getListaRisorse().size()==0 }">
 <a class="btn btn-primary pull-right" onClick='aggiungiRequisito()'><i class="fa fa-plus"></i> Aggiungi Requisito</a><br><br>
+ 
 </c:if>
+<a class="btn btn-primary pull-right"  title="Click per assegnare l'intervento a una risorsa" onClick="assegnaRisorsa('${intervento.id}')"><i class="fa fa-plus"></i>Assegna Risorsa</a>
+
+ 
+<div class="row">
+        <div class="col-xs-12">
+          <label>RISORSE ASSEGNATE ALL'INTERVENTO</label>
+          <div class="col-sm-12">  
+       	<div class="legend pull-right" >
+    <div class="legend-item">
+        <div class="legend-color" style="background-color:#FAFAD2;"></div>
+        <div class="legend-label">RISORSE PARZIALMENTE IDONEE</div>
+    </div>
+    <div class="legend-item">
+        <div class="legend-color" style="background-color:#D8796F;"></div>
+        <div class="legend-label">RISORSE FORZATE </div>
+    </div>
+        <div class="legend-item">
+        <div class="legend-color" style="background-color:#f7a54e;"></div>
+        <div class="legend-label">RISORSE FORZATE E PARZIALMENTE IDONEE</div>
+    </div>
+    </div>
+</div><BR><BR>
+        
+        <table id="tabRisorseAssegnate" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+ 	 <th>ID</th>
+  <th>Nominativo</th>
+
+  <th>Azioni</th>
+ 
+ </tr></thead>
+ 
+ <tbody>
+<c:set var="isPresentForzato" value="0"></c:set>
+ <c:forEach items="${intervento.getListaRisorse()}" var="risorsa_intervento" varStatus="loop">
+ 
+ <c:set var="trovato" value="false" />
+ <c:forEach items="${risorsa_intervento.risorsa.getListaRequisiti() }" var="req">
+
+ <c:if test="${!trovato && req.req_sanitario!=null && req.stato == 3 && risorsa_intervento.intervento.getListaRequisiti()}">
+ <c:set var="trovato" value="true" />
+ 
+
+   <tr role="row" style="background-color:#FAFAD2">
+ </c:if>
+ </c:forEach>
+ 
+
+ <c:if test="${risorsa_intervento.forzato==1 }">
+ <c:set var="isPresentForzato" value="1"></c:set>
+ 
+ <c:if test="${trovato }">
+   <tr role="row" style="background-color:#f7a54e">
+ </c:if>
+ 
+ <c:if test="${!trovato }">
+   <tr role="row" style="background-color:#D8796F">
+ </c:if>
+
+ </c:if>
+ <c:if test="${risorsa_intervento.forzato==0 }">
+ <tr role="row">
+ </c:if>
+ 
+ <td>${risorsa_intervento.risorsa.id}</td>
+ 	<td>
+ 	<c:if test="${risorsa_intervento.risorsa.isPreposto() }">
+ 	${risorsa_intervento.risorsa.utente.nominativo} [P]
+ 	</c:if>
+ 	<c:if test="${!risorsa_intervento.risorsa.isPreposto() }">
+ 	${risorsa_intervento.risorsa.utente.nominativo}
+ 	</c:if>
+ 	</td>
+	<td>
+	<a class='btn btn-primary' onClick='mostraRequisiti(${risorsa_intervento.risorsa.id})'>Requisiti</a>
+	</td>
+		
+	</tr>
+
+	</c:forEach>
+ </tbody>
+ </table>
+        
+        </div>
+        </div>
 <div class="row">
         <div class="col-xs-12">
         <label>REQUISITI DOCUMENTALI</label>
@@ -1205,14 +1270,19 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Risorse disponibili</h4>
+        <h4 class="modal-title" id="myModalLabel">Lista Risorse</h4>
       </div>
        <div class="modal-body">      
        <div class="row">
        <div class="col-xs-12">
        <label>Seleziona risorsa </label>
-       <!-- <select class="form-control select2" style="width:100%" multiple data-placeholder="Seleziona risorsa..." id="risorse_disponibili" name="risorse_disponibili"></select> -->
-      
+       
+        <div class="row">
+        <div class="col-xs-12">
+       <button class="btn btn-primary pull-left" type="button" id="risorse_requisiti_btn" disabled onclick="assegnaRisorsa('${intervento.id}',0)"> Risorse con requisiti</button>
+       <button class="btn btn-primary pull-left" type="button" style="margin-left:5px"id="risorse_tutte_btn"  onclick="assegnaRisorsa('${intervento.id}', 1)"> Tutte le risorse</button>
+        </div>
+        </div><br>
        <div class="row">
         <div class="col-xs-12">
         <table id="tabRisorse" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -1399,6 +1469,28 @@
 
 
 <jsp:attribute name="extra_css">
+<style>
+
+ .legend {
+  display: flex;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+}
+
+.legend-label {
+  margin-left: 5px;
+}
+
+</style>
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 
@@ -3444,70 +3536,166 @@ var config4 = {
     var map_relazioni = ${map_relazioni};
 	
  	 
-    function assegnaRisorsa(id_intervento ){
+    function assegnaRisorsa(id_intervento ,risorse_all){
     	
       	pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal();
     	dataObj ={};
     	dataObj.id_intervento = id_intervento;
+    	   var t = $('#tabRisorse').DataTable()
+			t.clear().draw();
     	
-  /*   	if(id_risorsa_precedente !=null){
-    		  $('#id_int_risorsa').val(id_risorsa_precedente);
-    	}else{
-    		$('#id_int_risorsa').val(null);
-    	}
-    	 */
+    	   if(risorse_all == null){
+    		   var forzato = ${isPresentForzato};
+    	   }else{
+    		   var forzato = 0;
+    	   }
+    	   
+
     	var risorse_intervento = ${risorse_intervento_json}
+    
     	
-    	callAjax(dataObj, "gestioneRisorse.do?action=get_risorse_disponibili", function(data){
+    	if((risorse_all!=null && risorse_all == 1) || forzato==1){
     		
-    		if(data.success){
-    			
-    			var lista_risorse = data.lista_risorse_disponibili;
-    			var lista_risorse_all = data.lista_risorse_all;
-    			lista_risorse_json = data.lista_risorse_all;
-    			lista_requisiti_doc_risorse = data.lista_req_doc_json;
-    			
-    			 var id_risorse_disponibili = lista_risorse.map(function(r) { return r.id; });
-    			 table_data = []
-    			 
-    			 for(var i = 0; i<lista_risorse.length;i++){
-					  var dati = {};
-				/* 	  dati.check ="<td></td>"; */
-				  dati.check = null; 
-					  dati.id = lista_risorse[i].id;
-					  if(lista_requisiti_doc_risorse[lista_risorse[i].id].find(item => item.id === 31)){
-						  dati.nominativo = lista_risorse[i].utente.nominativo +" [P]";
-					  }else{
-						  dati.nominativo = lista_risorse[i].utente.nominativo;  
-					  }
-					  
-			
-					  var risorsa_intervento = risorse_intervento.find(function(r) {
-						    return r.risorsa.id === lista_risorse[i].id;
-						});
-					  if(risorsa_intervento){
-						  dati.data = '<input type="text" style="width:100%" class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off" style="width:100%"   value="'+risorsa_intervento.data_inizio+' - '+risorsa_intervento.data_fine+'"/>';  
-					  }else{
-						  dati.data = '<input type="text"style="width:100%"  class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off" style="width:100%"  />';
-					  }
-					  
+    		 table_data = []
+    		
+    		 for(var i = 0; i<lista_risorse_json.length;i++){
+				  var dati = {};
+			/* 	  dati.check ="<td></td>"; */
+			  dati.check = null; 
+				  dati.id = lista_risorse_json[i].id;
+				  if(lista_requisiti_doc_risorse[lista_risorse_json[i].id]!=null && lista_requisiti_doc_risorse[lista_risorse_json[i].id].find(item => item.corso_cat.id === 31)){
+					  dati.nominativo = lista_risorse_json[i].utente.nominativo +" [P]";
+				  }else{
+					  dati.nominativo = lista_risorse_json[i].utente.nominativo;  
+				  }
+				  
+		
+				  var risorsa_intervento = risorse_intervento.find(function(r) {
+					    return r.risorsa.id === lista_risorse_json[i].id;
+					});
+				  if(risorsa_intervento){
+					  dati.data = '<input type="text" style="width:100%" class="form-control daterange" id="daterange_'+lista_risorse_json[i].id+'" autocomplete="off" style="width:100%"   value="'+risorsa_intervento.data_inizio+' - '+risorsa_intervento.data_fine+'"/>';  
+				  }else{
+					  dati.data = '<input type="text"style="width:100%"  class="form-control daterange" id="daterange_'+lista_risorse_json[i].id+'" autocomplete="off" style="width:100%"  />';
+				  }
+				  
 
-	
-					  dati.azioni = "<a class='btn btn-primary' onClick='mostraRequisiti("+lista_risorse[i].id+")'>Requisiti</a>";
-					  
-					  
-					  dati.DT_RowId = "riga_risorse_"+dati.id;
-					  table_data.push(dati);
-					  
-					  
+
+				  dati.azioni = "<a class='btn btn-primary' onClick='mostraRequisiti("+lista_risorse_json[i].id+")'>Requisiti</a>";
+				  
+				  
+				  dati.DT_RowId = "riga_risorse_"+dati.id;
+				  table_data.push(dati);
+				  
+				  
+    		 }
+					   
+					t.rows.add(table_data).draw();
+						
+					t.columns.adjust().draw();
+
+			
 					
-			
-		    }
+					$('.daterange').daterangepicker({
+					    locale: {
+					        format: 'DD/MM/YYYY',
+					        applyLabel: 'Applica',
+					        cancelLabel: 'Annulla',
+					        daysOfWeek: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
+					        monthNames: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+					            'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
+					        firstDay: 1
+					    },
+					    autoUpdateInput: false
+					});
 
-				   
-				   var t = $('#tabRisorse').DataTable()
-				t.clear().draw();
+					$('.daterange').on('apply.daterangepicker', function(ev, picker) {
+					    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+					});
+
+					$('.daterange').on('cancel.daterangepicker', function(ev, picker) {
+					    $(this).val('');
+					});
+	    			
+	    	
+	    			if(risorse_intervento !=null){
+	    				for (var i = 0; i < risorse_intervento.length; i++) {
+	    					
+	    					t.row( "#riga_risorse_"+risorse_intervento[i].risorsa.id ).select();
+	    				
+	    				}
+	    		
+	    			}
+	    			
+	    			t.on('select', function (e, dt, type, indexes) {
+	    				
+	    				var rowNode = t.row(indexes[0]).node();
+	    				$(rowNode).find('td').eq(3).find('input').attr("required", true);
+	    			});
+	    			
+				t.on('deselect', function (e, dt, type, indexes) {
+	    				
+	    				var rowNode = t.row(indexes[0]).node();
+	    				$(rowNode).find('td').eq(3).find('input').attr("required", false);
+	    			});
+	    			
+	    			$("#modalRisorse").modal();
+	    		
+		
+    		 pleaseWaitDiv.modal('hide');
+    		 
+    		 $('#risorse_requisiti_btn').attr("disabled", false);
+    		 $('#risorse_tutte_btn').attr("disabled", true);
+    		
+    	}else{
+    		callAjax(dataObj, "gestioneRisorse.do?action=get_risorse_disponibili", function(data){
+        		
+        		if(data.success){
+        			
+        			var lista_risorse = data.lista_risorse_disponibili;
+        			var lista_risorse_all = data.lista_risorse_all;
+        			//lista_risorse_json = data.lista_risorse_all;
+        			//lista_requisiti_doc_risorse = data.lista_req_doc_json;
+        			
+        			 var id_risorse_disponibili = lista_risorse.map(function(r) { return r.id; });
+        			 table_data = []
+        			 
+        			 for(var i = 0; i<lista_risorse.length;i++){
+    					  var dati = {};
+    				/* 	  dati.check ="<td></td>"; */
+    				  dati.check = null; 
+    					  dati.id = lista_risorse[i].id;
+    					  if(lista_requisiti_doc_risorse[lista_risorse_json[i].id]!=null && lista_requisiti_doc_risorse[lista_risorse[i].id].find(item => item.corso_cat.id === 31)){
+    						  dati.nominativo = lista_risorse[i].utente.nominativo +" [P]";
+    					  }else{
+    						  dati.nominativo = lista_risorse[i].utente.nominativo;  
+    					  }
+    					  
+    			
+    					  var risorsa_intervento = risorse_intervento.find(function(r) {
+    						    return r.risorsa.id === lista_risorse[i].id;
+    						});
+    					  if(risorsa_intervento){
+    						  dati.data = '<input type="text" style="width:100%" class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off" style="width:100%"   value="'+risorsa_intervento.data_inizio+' - '+risorsa_intervento.data_fine+'"/>';  
+    					  }else{
+    						  dati.data = '<input type="text"style="width:100%"  class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off" style="width:100%"  />';
+    					  }
+    					  
+
+    	
+    					  dati.azioni = "<a class='btn btn-primary' onClick='mostraRequisiti("+lista_risorse[i].id+")'>Requisiti</a>";
+    					  
+    					  
+    					  dati.DT_RowId = "riga_risorse_"+dati.id;
+    					  table_data.push(dati);
+    					  
+    					  
+    					
+    			
+    		    }
+  		   
+        			 
 				   
 				t.rows.add(table_data).draw();
 					
@@ -3561,8 +3749,20 @@ var config4 = {
     			$("#modalRisorse").modal();
     			
     		}
+        		
+        		
+        	;
+        		
     		pleaseWaitDiv.modal('hide');
+
+   		 
+    		
     	}, "GET")
+    	
+    	
+    		$('#risorse_requisiti_btn').attr("disabled", true);
+          		 $('#risorse_tutte_btn').attr("disabled", false)
+    }
     	
     }
     
@@ -3622,8 +3822,8 @@ var config4 = {
     })
     	
   
-    	var lista_risorse_json;
-    var lista_requisiti_doc_risorse;
+    	var lista_risorse_json = ${lista_risorse_json};
+    var lista_requisiti_doc_risorse = ${lista_req_doc_json};
     
 function mostraRequisiti(id_risorsa){
 	
@@ -3637,10 +3837,15 @@ function mostraRequisiti(id_risorsa){
 		
 		var risorsa_doc_json = lista_requisiti_doc_risorse[id_risorsa];
 		
-		for(var i = 0; i<risorsa_doc_json.length;i++){
+		if(risorsa_doc_json!=null){
+			for(var i = 0; i<risorsa_doc_json.length;i++){
 
-			str_doc+="<li class='list-group-item'>"+risorsa_doc_json[i].descrizione+"</li>"	
-	}
+				str_doc+='<li class="list-group-item">'+risorsa_doc_json[i].corso_cat.descrizione+' - Scadenza: '+ risorsa_doc_json[i].data_scadenza+' <b class="pull-right"><a target="_blank" class="btn btn-danger btn-xs" href="gestioneFormazione.do?action=download_attestato&ajax=1&id_corso='+risorsa_doc_json[i].id+'&id_partecipante='+risorsa_json.partecipante.id+'" title="Click per scaricare l\'attestato"><i class="fa fa-file-pdf-o"></i></a> </b></li>';
+				
+				
+		}
+		}
+		
 	for(var i = 0; i<listaRequisiti.length;i++){
 		if(listaRequisiti[i].req_sanitario!=null){
 			if(listaRequisiti[i].stato == 1){

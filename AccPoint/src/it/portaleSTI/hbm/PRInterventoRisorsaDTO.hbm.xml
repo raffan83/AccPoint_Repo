@@ -35,6 +35,10 @@
         <property name="cella_fine" type="int">
             <column name="cella_fine" />
         </property>
+        
+        <property name="forzato" type="int">
+            <column name="forzato" />
+        </property>
       
     </class>
 </hibernate-mapping>

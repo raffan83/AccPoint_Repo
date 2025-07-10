@@ -187,6 +187,7 @@
           <%} %>
         </li>
         
+              
          <li class="treeview">
  <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_RISORSE")){%>
           <a href="#"><i class="fa fa-link"></i> <span>PIANIFICAZIONE RISORSE</span>
@@ -205,7 +206,7 @@
           <%} %>
         </li>
 
-<%-- 
+
 <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_COMMESSE_CAMPIONAMENTO")){%>
         <% if(!user.checkRuolo("CL")){%>
         <li class="header">CAMPIONAMENTO</li>

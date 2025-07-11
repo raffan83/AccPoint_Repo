@@ -57,10 +57,19 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 			
 			String obj =request.getParameter("ids");
 			String note_obsolescenza = request.getParameter("note");
+			String non_sovrascrivere = request.getParameter("non_sovrascrivere");
 
 			esito =(ObjSavePackDTO)request.getSession().getAttribute("esito");	
-
-			if(obj!=null && obj.length()>0)
+			if(non_sovrascrivere!=null && non_sovrascrivere.equals("1")) {
+				
+				esito = GestioneInterventoBO.saveDataDB(esito, intervento, utente, true, session);
+				
+				jsono.addProperty("success", true);
+				jsono.addProperty("messaggio", "Sono stati salvati "+esito.getInterventoDati().getNumStrMis()+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
+				GestioneInterventoBO.setControllato(intervento.getId(), utente.getId(), 0, session);
+				
+			}
+			else if(obj!=null && obj.length()>0)
 			{
 				String[] lista =obj.split(",");
 				String[] note = note_obsolescenza.split(",");

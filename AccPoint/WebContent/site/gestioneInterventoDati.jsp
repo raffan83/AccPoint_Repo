@@ -290,10 +290,9 @@
  <c:set var="trovato" value="false" />
  <c:forEach items="${risorsa_intervento.risorsa.getListaRequisiti() }" var="req">
 
- <c:if test="${!trovato && req.req_sanitario!=null && req.stato == 3 && risorsa_intervento.intervento.getListaRequisiti()}">
+ <c:if test="${!trovato && req.req_sanitario!=null && req.stato == 3 }">
  <c:set var="trovato" value="true" />
  
-
    <tr role="row" style="background-color:#FAFAD2">
  </c:if>
  </c:forEach>
@@ -303,16 +302,28 @@
  <c:set var="isPresentForzato" value="1"></c:set>
  
  <c:if test="${trovato }">
+
    <tr role="row" style="background-color:#f7a54e">
  </c:if>
  
  <c:if test="${!trovato }">
+ 
    <tr role="row" style="background-color:#D8796F">
  </c:if>
 
  </c:if>
  <c:if test="${risorsa_intervento.forzato==0 }">
+ 
+  <c:if test="${trovato }">
+
+   <tr role="row" style="background-color:#FAFAD2">
+ </c:if>
+
+  <c:if test="${!trovato }">
+ 
  <tr role="row">
+ </c:if>
+
  </c:if>
  
  <td>${risorsa_intervento.risorsa.id}</td>
@@ -325,7 +336,7 @@
  	</c:if>
  	</td>
 	<td>
-	<a class='btn btn-primary' onClick='mostraRequisiti(${risorsa_intervento.risorsa.id})'>Requisiti</a>
+	<a class='btn btn-primary customTooltip' title="Vai al dettaglio Requisiti Risorsa" onClick='mostraRequisiti(${risorsa_intervento.risorsa.id})'><i class="fa fa-search"></i></a>
 	</td>
 		
 	</tr>
@@ -1883,7 +1894,12 @@ function reloadDrive()   {
 				if($('#isDuplicato').val()==1){
 					saveDuplicatiFromModalNuovaMisura();
 				}else{
-					saveDuplicatiFromModal();
+					if($('#non_sovrascrivere').is( ':checked' )){
+						saveDuplicatiFromModal(1);
+					}else{
+						saveDuplicatiFromModal();
+					}
+					
 				}
 		 }
 	}

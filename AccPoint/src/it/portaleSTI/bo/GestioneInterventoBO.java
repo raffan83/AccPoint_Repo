@@ -158,7 +158,7 @@ public class GestioneInterventoBO {
 		return SQLLiteDAO.checkFile(file.getPath());
 	}
 
-	public static ObjSavePackDTO saveDataDB(ObjSavePackDTO esito, InterventoDTO intervento,UtenteDTO utente, Session session) throws Exception {
+	public static ObjSavePackDTO saveDataDB(ObjSavePackDTO esito, InterventoDTO intervento,UtenteDTO utente, boolean non_sovrascrivere,Session session) throws Exception {
 		
 		InterventoDatiDTO interventoDati = new InterventoDatiDTO();
 		
@@ -195,7 +195,7 @@ public class GestioneInterventoBO {
 		    	
 		    boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
 				
-		    if(isPresent==false)
+		    if(isPresent==false || non_sovrascrivere== true)
 		    
 		    {
 		    		

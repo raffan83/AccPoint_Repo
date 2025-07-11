@@ -4129,7 +4129,7 @@ function eliminaCompany(){
   }
   
   
-  function saveDuplicatiFromModal(){
+  function saveDuplicatiFromModal(non_sovrascrivere){
 	  
 	  
 	  var ids = []; 
@@ -4160,6 +4160,7 @@ function eliminaCompany(){
 		  var  dataObj = {};
 	  	dataObj.ids =""+ ids+"";
 	  	dataObj.note = ""+note+"";
+	  	dataObj.non_sovrascrivere = non_sovrascrivere;
 	  
 		  $.ajax({
 	    	  type: "POST",

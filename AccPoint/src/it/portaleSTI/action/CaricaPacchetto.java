@@ -113,7 +113,7 @@ public class CaricaPacchetto extends HttpServlet {
 								
 								if(!isElectric)
 								{
-									esito = GestioneInterventoBO.saveDataDB(esito,intervento,utente,session);
+									esito = GestioneInterventoBO.saveDataDB(esito,intervento,utente,false,session);
 									
 									String nomeDB=esito.getPackNameAssigned().getPath();
 									

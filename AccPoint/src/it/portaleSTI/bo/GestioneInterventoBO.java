@@ -1249,10 +1249,9 @@ public class GestioneInterventoBO {
 		return GestioneInterventoDAO.getListaInterventiUtente(id_utente,  id_cliente,  id_sede,  session);
 	}
 
-	public static ArrayList<InterventoDTO> getListainterventiDate(LocalDate inizioBimestre, LocalDate fineBimestre,
-			Session session) throws Exception {
+	public static ArrayList<InterventoDTO> getListainterventiAperti() throws Exception {
 		// TODO Auto-generated method stub
-		return DirectMySqlDAO.getListainterventiDate(inizioBimestre, fineBimestre, session);
+		return DirectMySqlDAO.getListainterventiAperti();
 	}
 
 

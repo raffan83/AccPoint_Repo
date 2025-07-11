@@ -150,7 +150,7 @@ public class GestioneRisorse extends HttpServlet {
 				 ArrayList<PRInterventoRisorsaDTO> lista_interventi_risorsa = GestioneRisorseBO.getListaInterventiRisorsa(risorsa.getId(), date,session);
 			       
 			        //ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(date, date, session);
-			        ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(inizioAnno, date, session);
+			        ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiAperti();
 			     
 			        ArrayList<ForCorsoDTO>lista_corsi = GestioneFormazioneBO.getListaCorsiInCorsoPartecipante(risorsa.getPartecipante().getId(), session);
 			     // 1. ID dei requisiti sanitari associati alla risorsa
@@ -841,7 +841,7 @@ public class GestioneRisorse extends HttpServlet {
 			 
 			 LocalDate inizioAnno = LocalDate.of(Integer.parseInt(anno), 1, 1);
 				LocalDate fineAnno = LocalDate.of(Integer.parseInt(anno), 12, 31);
-			 ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiDate(inizioAnno, fineAnno, session);
+			 ArrayList<InterventoDTO> lista_interventi = GestioneInterventoBO.getListainterventiAperti();
 			 
 			 ArrayList<PRRisorsaDTO> lista_risorse = GestioneRisorseBO.getListaRisorse(session);
 
@@ -976,7 +976,46 @@ public class GestioneRisorse extends HttpServlet {
 							intervento.getListaRisorse().add(intervento_risorsa);
 						}
 						
+						
+						ArrayList<PRRequisitoRisorsaDTO>  lista_requisiti_risorsa = GestioneRisorseBO.getListaRequisitiRisorsa(risorsa.getId(),session);	
+					       
+					        ArrayList<ForCorsoDTO>lista_corsi = GestioneFormazioneBO.getListaCorsiInCorsoPartecipante(risorsa.getPartecipante().getId(), session);
+					     // 1. ID dei requisiti sanitari associati alla risorsa
+					        Set<Integer> idRequisitiSanitariRisorsa = new HashSet<>();
+					        Set<Integer> idRequisitiDocumentaliRisorsa = new HashSet<>();
+				
+					        for (PRRequisitoRisorsaDTO req : lista_requisiti_risorsa) {
+					            if (req.getReq_sanitario() != null && (req.getStato()==1 ||req.getStato()==3)) {
+					                idRequisitiSanitariRisorsa.add(req.getReq_sanitario().getId());
+					            }
+					        }
+					        
+					        for (ForCorsoDTO c : lista_corsi) {
+					           
+					        	
+					        		idRequisitiDocumentaliRisorsa.add(c.getCorso_cat().getId());	
+					     
+					           
+					        }
 
+						      Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
+						      Set<Integer> idRequisitiDocumentaliIntervento = new HashSet<>();
+			
+						       for (PRInterventoRequisitoDTO requisito : intervento.getListaRequisiti()) {
+						          if (requisito.getRequisito_sanitario() != null) {
+						              idRequisitiSanitariIntervento.add(requisito.getRequisito_sanitario().getId());
+						            }
+						          if (requisito.getRequisito_documentale() != null && requisito.getRequisito_documentale().getCategoria().getId()!=31) {
+						            idRequisitiDocumentaliIntervento.add(requisito.getRequisito_documentale().getCategoria().getId());
+						            }
+						        }
+			
+						            // 3. Verifica che TUTTI i requisiti della risorsa siano presenti nell'intervento
+						            if (!idRequisitiSanitariRisorsa.containsAll(idRequisitiSanitariIntervento) || 
+						            		!idRequisitiDocumentaliRisorsa.containsAll(idRequisitiDocumentaliIntervento)) {
+						            	intervento_risorsa.setForzato(1);
+						            }
+					
 						
 					}
 					

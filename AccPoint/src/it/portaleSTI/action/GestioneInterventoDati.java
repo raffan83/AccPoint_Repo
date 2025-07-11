@@ -187,17 +187,28 @@ public class GestioneInterventoDati extends HttpServlet {
 		//ArrayList<PRInterventoRisorsaDTO> risorse_intervento = GestioneRisorseBO.getRisorsaIntervento(intervento.getId(), intervento.getDataCreazione(), session);
 		
 		request.getSession().setAttribute("map_relazioni", gson.toJsonTree(map_relazioni));
+		 Map<Integer, ArrayList<ForCorsoDTO>> map_doc = new HashMap();
+		 
+			ArrayList<PRRisorsaDTO> lista_risorse_all = GestioneRisorseBO.getListaRisorse(session);
+		 
+		 for (PRRisorsaDTO risorsa : lista_risorse_all) {
+			 
+				//for (PRInterventoRisorsaDTO r : intervento.getListaRisorse()) {
+					ArrayList<ForCorsoDTO>lista_corsi = GestioneFormazioneBO.getListaCorsiInCorsoPartecipante(risorsa.getPartecipante().getId(), session);
+					 for (ForCorsoDTO c : lista_corsi) {
 		
-		for (PRInterventoRisorsaDTO r : intervento.getListaRisorse()) {
-			ArrayList<ForCorsoDTO>lista_corsi = GestioneFormazioneBO.getListaCorsiInCorsoPartecipante(r.getRisorsa().getPartecipante().getId(), session);
-			 for (ForCorsoDTO c : lista_corsi) {
-
-		        	if(c.getCorso_cat().getId() == 31) {
-		        		r.getRisorsa().setPreposto(true);
-		        	}
-		        
-		        }
-		}
+				        	if(c.getCorso_cat().getId() == 31) {
+				        		risorsa.setPreposto(true);
+				        	}
+				        	Integer id_risorsa = risorsa.getId();
+				        	if (!map_doc.containsKey(id_risorsa)) {
+				        	    map_doc.put(id_risorsa, new ArrayList<ForCorsoDTO>());
+				        	}
+				           map_doc.get(risorsa.getId()).add(c);
+				        
+				        }
+				//}
+		 }
 		
 		request.getSession().setAttribute("risorse_intervento_json",gson.toJsonTree(intervento.getListaRisorse()));
 		
@@ -213,9 +224,12 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		ArrayList<PRRequisitoDocumentaleDTO> lista_documentale = GestioneRisorseBO.getListaRequisitiDocumentali(session);
 		ArrayList<PRRequisitoSanitarioDTO> lista_sanitari = GestioneRisorseBO.getListaRequisitiSanitari(session);
+	
 		
 		request.getSession().setAttribute("lista_documentale", lista_documentale);		
 		request.getSession().setAttribute("lista_sanitari", lista_sanitari);
+		request.getSession().setAttribute("lista_risorse_json", gson.toJsonTree(lista_risorse_all));
+		request.getSession().setAttribute("lista_req_doc_json", gson.toJsonTree(map_doc));
 		
 		UtenteDTO user =(UtenteDTO)request.getSession().getAttribute("userObj");
 		

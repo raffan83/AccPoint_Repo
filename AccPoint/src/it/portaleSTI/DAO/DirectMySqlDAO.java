@@ -3082,6 +3082,7 @@ public static ArrayList<ForPartecipanteDTO> getListaPartecipantiDirect(Session s
 				partecipante.setNome_azienda(rs.getString("nome_azienda"));
 				partecipante.setNome_sede(rs.getString("nome_sede"));
 				partecipante.setNote(rs.getString("note"));
+				partecipante.setEmail(rs.getString("email"));
 				
 				
 				lista.add(partecipante);

@@ -42,7 +42,10 @@
  	<tr id="row_${loop.index}" >
  	<td class="select-checkbox"></td>
  	<td><a class="btn customTooltip customlink" title="Vai al partecipante" onclick="callAction('gestioneFormazione.do?action=dettaglio_partecipante&id_partecipante=${utl:encryptData(partecipante.partecipante.id)}')">${partecipante.partecipante.nome } ${partecipante.partecipante.cognome }</a></td>
-	<td>${partecipante.partecipante.email }</td>
+	<td>
+    <input type="text" class="form-control email-input" data-id="${partecipante.partecipante.id}"  value="${partecipante.partecipante.email}" style="width: 100%;">
+  </td>
+  
 	<td>${partecipante.ruolo.descrizione }</td>
 	<td>${partecipante.ore_partecipate }</td>
 	<td>
@@ -337,26 +340,36 @@ function associaUtentiModal(id_corso){
  }
  
  function inviaEmail(id_corso){
+	  dataObj = {};
+	  dataObj.id_corso = id_corso;
+		 
+		 callAjax(dataObj,"gestioneFormazione.do?action=inviaEmail",function(data){
+			
+			if(data.success)
+			{
+				
+			}
+		 });
+	 pleaseWaitDiv.modal('hide');
 	 
-	 alert("invia");
-//	 callAction("gestioneFormazione.do?action=download_attestato_all&id_corso="+id_corso, null, true);
-	 pleaseWaitDiv.modal('hide')
-	 
-
-	 
-	// location.reload()
  }
  
  function associaEmailMoodle(id_corso){
 	 
-	 alert('associa');
-//	 callAction("gestioneFormazione.do?action=download_attestato_all&id_corso="+id_corso, null, true);
-	 pleaseWaitDiv.modal('hide')
-	 
+	  dataObj = {};
+	  dataObj.id_corso = id_corso;
+		 
+		 callAjax(dataObj,"gestioneFormazione.do?action=associaEmail",function(data){
+			
+			if(data.success)
+			{
+				location.reload();     
+			}
+		 });
+	 pleaseWaitDiv.modal('hide');
 
-	 
-	// location.reload()
  }
+		 
  var partecipanti_options;
     $(document).ready(function() {
     	
@@ -512,4 +525,31 @@ function associaUtentiModal(id_corso){
     	modificaAssociazionePartecipanteCorso();
     });
 
+    $('.email-input').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          aggiornaEmail($(this));
+        }
+      });
+
+      // Evento su perdita del focus
+      $('.email-input').on('blur', function () {
+        aggiornaEmail($(this));
+      });
+
+    
+    function aggiornaEmail($input) {
+        const email = $input.val().trim();
+        const partecipanteId = $input.data('id');
+
+  	  dataObj = {};
+	  dataObj.id_partecipante = partecipanteId;
+	  dataObj.email = email;
+	  
+		 callAjax(dataObj,"gestioneFormazione.do?action=aggiornaEmail",function(data){
+			
+		 });
+	
+
+      }
   </script>

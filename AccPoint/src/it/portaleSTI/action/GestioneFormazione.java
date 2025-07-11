@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -76,7 +78,10 @@ import it.portaleSTI.DTO.ForPiaTipoDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
+import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
@@ -84,6 +89,8 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneAssegnazioneAttivitaBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
+import it.portaleSTI.bo.GestioneMisuraBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.SendEmailBO;
 
 /**
@@ -3746,7 +3753,119 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					out.print(myObj);
 					session.getTransaction().commit();
 					session.close();
+				}		
+				else if(action.equals("associaEmail")) 
+				{ 
+					
+					
+					// Costruisci JSON
+					    response.setContentType("application/json");
+					    response.setCharacterEncoding("UTF-8");
+
+					    Map<String, String> dati = new HashMap<>();
+					    
+					    String idCorso = request.getParameter("id_corso");
+					
+					    ArrayList<ForPartecipanteRuoloCorsoDTO> listaPartecipanti =GestioneFormazioneBO.getListaPartecipantiCorso(Integer.parseInt(idCorso), session);
+					    
+					    
+					    HashMap<String, String> listaEmailPartecipanti= GestioneFormazioneBO.listaCompletaEmailMoodle();
+					    
+					    
+					    for (ForPartecipanteRuoloCorsoDTO partecipanteCorso : listaPartecipanti) {
+							
+					    	ForPartecipanteDTO partecipante=partecipanteCorso.getPartecipante();
+					    	
+					    	if(partecipante.getEmail()==null) 
+					    	{
+					    		String email= listaEmailPartecipanti.get(partecipante.getCf());
+					    		
+					    		if(email!=null) 
+					    		{
+					    			partecipante.setEmail(email);
+					    			session.update(partecipante);
+					    		}
+					    	}
+						}
+					    
+					    
+					    Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+						
+					     myObj = new JsonObject();
+					     myObj.add("dati_indice", g.toJsonTree(dati));
+						
+						PrintWriter  out = response.getWriter();
+						myObj.addProperty("success", true);
+						
+						session.getTransaction().commit();
+						session.close();
+						
+						
+						out.print(myObj); 
+						out.flush();
+
+				}		
+				
+					else if(action.equals("inviaEmail")) 
+				{ 
+					
+						// Costruisci JSON
+					    response.setContentType("application/json");
+					    response.setCharacterEncoding("UTF-8");
+
+					    Map<String, String> dati = new HashMap<>();
+					    
+					    String idCorso = request.getParameter("id_corso");
+					
+					    Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+						
+					     myObj = new JsonObject();
+					     myObj.add("dati_indice", g.toJsonTree(dati));
+						
+						PrintWriter  out = response.getWriter();
+						myObj.addProperty("success", true);
+						
+						session.getTransaction().commit();
+						session.close();
+						
+						
+						out.print(myObj); 
+						out.flush();
+
 				}
+					else if(action.equals("aggiornaEmail")) 
+					{ 
+						
+							// Costruisci JSON
+						    response.setContentType("application/json");
+						    response.setCharacterEncoding("UTF-8");
+
+						    Map<String, String> dati = new HashMap<>();
+						    
+						    String idPartecipante = request.getParameter("id_partecipante");
+						    String email=request.getParameter("email");
+						    
+						    ForPartecipanteDTO partecipante=GestioneFormazioneBO.getPartecipanteFromId(Integer.parseInt(idPartecipante), session);
+						    
+						    partecipante.setEmail(email);
+						    session.update(partecipante);
+						    
+						    Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+							
+						     myObj = new JsonObject();
+						     myObj.add("dati_indice", g.toJsonTree(dati));
+							
+							PrintWriter  out = response.getWriter();
+							myObj.addProperty("success", true);
+							
+							session.getTransaction().commit();
+							session.close();
+							
+							
+							out.print(myObj); 
+							out.flush();
+
+					}
 			
 		}catch(Exception e) {
 			e.printStackTrace();

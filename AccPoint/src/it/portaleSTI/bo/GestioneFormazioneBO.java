@@ -2302,5 +2302,10 @@ public class GestioneFormazioneBO {
 		// TODO Auto-generated method stub
 		return GestioneFormazioneDAO.getListaCorsiInCorsoPartecipante(id, session);
 	}
+
+	public static HashMap<String, String> listaCompletaEmailMoodle() throws Exception {
+		// TODO Auto-generated method stub
+		return GestioneFormazioneDAO.listaCompletaEmailMoodle();
+	}
 	
 }

@@ -42,6 +42,23 @@ import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 
 public class GestioneFormazioneDAO {
+	
+	
+	public static Connection getConnection()throws Exception {
+		Connection con = null;
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			con = DriverManager.getConnection("jdbc:mysql://85.94.217.202:3306/crescosrl_db2?user=crescosrl_user1&password=h98mShTz6");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		return con;
+	}
+	
 
 	public static ArrayList<ForDocenteDTO> getListaDocenti(Session session) {
 		
@@ -920,20 +937,7 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 	}
 
 	
-	public static Connection getConnection()throws Exception {
-		Connection con = null;
-		try
-		{
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			con = DriverManager.getConnection("jdbc:mysql://85.94.217.202:3306/crescosrl_db2?user=crescosrl_user1&password=h98mShTz6");
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			throw e;
-		}
-		return con;
-	}
+
 	
 	public static ArrayList<ForCorsoMoodleDTO> getListaCorsiInvioEmail() throws Exception {
 		
@@ -1354,6 +1358,40 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 				
 		return lista;
 		
+	}
+
+
+	public static HashMap<String, String> listaCompletaEmailMoodle() throws Exception {
+	
+		HashMap<String, String> listaEmail= new HashMap<>();
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+		
+		try {
+			
+			con=getConnection();
+			pst=con.prepareStatement("SELECT a.email , b.data FROM mdl_user a JOIN mdl_user_info_data b ON a.id=b.userid WHERE fieldid=3 ");
+			
+			rs=pst.executeQuery();
+			
+			while(rs.next()) 
+			{
+				listaEmail.put(rs.getString("data"), rs.getString("email"));
+			}
+			
+		}catch (Exception e) 
+		{		
+			throw e;
+		}
+		finally {
+			pst.close();
+			con.close();
+		}
+		
+		
+		
+		return listaEmail;
 	}
 
 }

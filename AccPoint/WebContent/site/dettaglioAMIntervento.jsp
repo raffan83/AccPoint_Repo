@@ -163,7 +163,7 @@
 <%--  <th></th>
   <th style="max-width:65px" class="text-center"></th> --%>
   <th>ID</th>   
- <th>Tipo prova</th>
+ <th>Volume</th>
   <th>Data Prova</th>
   <th>Oggetto Prova</th>
 
@@ -186,7 +186,7 @@
 
 
  	<td>${rapporto.prova.id}</td>
-<td>${rapporto.prova.tipoProva.descrizione}</td>
+<td>${rapporto.prova.strumento.volume}</td>
 <td> <fmt:formatDate pattern="dd/MM/yyyy"  value="${rapporto.prova.data}" />	</td>
 <td>${rapporto.prova.strumento.descrizione}</td>
 <td>${rapporto.prova.strumento.matricola}</td>

@@ -2015,7 +2015,7 @@ if(p.getPartecipante().getEmail()!=null && !p.getPartecipante().getEmail().equal
 			
 					"<br/></html>"
 		  	
-		  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"https:/www.calver.it/images/cresco.jpg\"><a><br>" ;
+		  		+" <br /> <img width='150' src='https://www.calver.it/images/cresco.jpg'> <img width='150' src='https://www.calver.it/images/regione_lazio.png'><br>" ;
 	
 		  messaggio += "<font size='2'>Le informazioni trasmesse sono destinate esclusivamente alla persona o alla societ&agrave; in indirizzo e sono da intendersi confidenziali e riservate. Ogni trasmissione, inoltro, diffusione o altro uso di queste informazioni a persone o societ&agrave; differenti dal destinatario &egrave; proibita ai sensi del D. Lgs. 196/2003. Se Lei ha ricevuto questo messaggio di posta elettronica per errore, &egrave; pregato di avvisarci inviando un messaggio di posta elettronica all'indirizzo del mittente, e quindi cancellare e distruggere il messaggio dal Suo sistema. Grazie per la collaborazione\n </font><br><br><br>";
 		  
@@ -2075,7 +2075,14 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
 		 email.addTo(referente.getEmail());
 
-
+		 ArrayList<InternetAddress> lista_cc = new ArrayList<InternetAddress>();
+		 InternetAddress cc1 = new InternetAddress("segreteria@crescosrl.net");
+		 InternetAddress cc2 = new InternetAddress("lisa.lombardozzi@crescosrl.net");
+		 
+		 lista_cc.add(cc1);
+		 lista_cc.add(cc2);
+		 
+		 email.setCc(lista_cc);
 	
 	  email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
 	
@@ -2083,7 +2090,7 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 		  email.setSubject("Remind Valutazione Efficacia Corso");
 		  
 		  String messaggio = "Gentile "+referente.getNome()+" "+referente.getCognome()+",<br>";
-		  messaggio+="Le ricordiamo che ha l’obbligo di effettuare la valutazione dell’efficacia del corso "+corso.getDescrizione();
+		  messaggio+="Le ricordiamo che ha l'obbligo di effettuare la valutazione dell'efficacia del corso "+corso.getDescrizione();
 		  messaggio +=" effettuato in data "+df.format(corso.getData_corso())+".<br>";
 		  messaggio += "Restiamo a disposizione per eventuali chiarimenti<br><br>";
 		  
@@ -2101,7 +2108,7 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 			
 					"<br/></html>"
 		  	
-		  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'> <img width='450' src=\"https:/www.calver.it/images/cresco.jpg\"><a><br>" ;
+		  		+" <br /><img width='150' <img width='150' src='https://www.calver.it/images/cresco.jpg'> <img width='150' src='https://www.calver.it/images/regione_lazio.png'><br>" ;
 	
 		  messaggio += "<font size='2'>Le informazioni trasmesse sono destinate esclusivamente alla persona o alla societ&agrave; in indirizzo e sono da intendersi confidenziali e riservate. Ogni trasmissione, inoltro, diffusione o altro uso di queste informazioni a persone o societ&agrave; differenti dal destinatario &egrave; proibita ai sensi del D. Lgs. 196/2003. Se Lei ha ricevuto questo messaggio di posta elettronica per errore, &egrave; pregato di avvisarci inviando un messaggio di posta elettronica all'indirizzo del mittente, e quindi cancellare e distruggere il messaggio dal Suo sistema. Grazie per la collaborazione\n </font><br><br><br>";
 		  

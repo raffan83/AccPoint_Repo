@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -31,6 +33,7 @@ import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
+import it.portaleSTI.DTO.PRInterventoRequisitoDTO;
 import it.portaleSTI.DTO.PRInterventoRisorsaDTO;
 import it.portaleSTI.DTO.PRRequisitoDocumentaleDTO;
 import it.portaleSTI.DTO.PRRequisitoSanitarioDTO;
@@ -210,6 +213,14 @@ public class GestioneInterventoDati extends HttpServlet {
 				//}
 		 }
 		
+		 Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
+		 
+	     for (PRInterventoRequisitoDTO requisito : intervento.getListaRequisiti()) {
+	          if (requisito.getRequisito_sanitario() != null) {
+	              idRequisitiSanitariIntervento.add(requisito.getRequisito_sanitario().getId());
+	            }	        
+	        }
+		 
 		request.getSession().setAttribute("risorse_intervento_json",gson.toJsonTree(intervento.getListaRisorse()));
 		
 		Properties prop = new Properties();
@@ -230,6 +241,7 @@ public class GestioneInterventoDati extends HttpServlet {
 		request.getSession().setAttribute("lista_sanitari", lista_sanitari);
 		request.getSession().setAttribute("lista_risorse_json", gson.toJsonTree(lista_risorse_all));
 		request.getSession().setAttribute("lista_req_doc_json", gson.toJsonTree(map_doc));
+		request.getSession().setAttribute("idRequisitiSanitariIntervento", idRequisitiSanitariIntervento);
 		
 		UtenteDTO user =(UtenteDTO)request.getSession().getAttribute("userObj");
 		

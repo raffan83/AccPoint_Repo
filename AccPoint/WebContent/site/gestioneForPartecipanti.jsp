@@ -120,7 +120,7 @@
 	
 	<a class="btn btn-info" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
-	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${utl:escapeJS(partecipante.nome) }','${utl:escapeJS(partecipante.cognome)}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }','${utl:escapeJS(partecipante.luogo_nascita) }','${partecipante.cf }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${utl:escapeJS(partecipante.nome) }','${utl:escapeJS(partecipante.cognome)}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }','${utl:escapeJS(partecipante.luogo_nascita) }','${partecipante.cf }', '${partecipante.email }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a>
 
 	 <a class="btn btn-danger" title="Click per eliminare il partecipante" onClick="modalEliminaPartecipante('${partecipante.id}')"><i class="fa fa-times"></i></a>
 	 	</c:if>
@@ -286,6 +286,16 @@
         <input type="text" id="luogo_nascita" name="luogo_nascita" class="form-control" style="width:100%" required>
         </div>      
        </div><br>
+                      <div class="row">
+       <div class="col-xs-3">
+       <label>Email</label>
+       </div>
+        <div class="col-xs-9">
+        <input type="text" id="email" name="email" class="form-control" style="width:100%" >
+        </div>      
+       </div><br>
+       
+       
         <div class="row">
        <div class="col-xs-3">
        <label>Codice fiscale</label>
@@ -300,7 +310,9 @@
        <label style="color:red;display:none" id="label_error">Attenzione! Il Codice Fiscale inserito è già presente nel sistema!</label>
        </div>
     
-       </div>
+       </div> 
+       
+
       	</div>
       <div class="modal-footer">
       
@@ -389,6 +401,16 @@
         <input type="text" id="luogo_nascita_mod" name="luogo_nascita_mod" class="form-control" style="width:100%" required>
         </div>      
        </div><br>
+       
+         <div class="row">
+       <div class="col-xs-3">
+       <label>Email</label>
+       </div>
+        <div class="col-xs-9">
+        <input type="text" id="email_mod" name="email_mod" class="form-control" style="width:100%" required>
+        </div>      
+       </div><br>
+       
         <div class="row">
        <div class="col-xs-3">
        <label>Codice fiscale</label>
@@ -849,7 +871,7 @@ $('#file_excel').change(function(){
 	$('#label_excel').html($(this).val().split("\\")[2]);
 });
 
-function modificaPartecipanteModal(id_partecipante, nome, cognome, data_nascita, azienda, sede, luogo_nascita, cf){
+function modificaPartecipanteModal(id_partecipante, nome, cognome, data_nascita, azienda, sede, luogo_nascita, cf, email){
 	
 	$('#id_partecipante').val(id_partecipante);
 	$('#nome_mod').val(nome);
@@ -857,7 +879,7 @@ function modificaPartecipanteModal(id_partecipante, nome, cognome, data_nascita,
 	if(data_nascita!=null && data_nascita!=''){
 		$('#data_nascita_mod').val(Date.parse(data_nascita).toString("dd/MM/yyyy"));
 	}
-	
+	$('#email_mod').val(email)
 	if(azienda!=null && azienda!=''){
 		$('#azienda_mod').val(azienda);
 		$('#azienda_mod').change();	

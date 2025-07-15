@@ -397,10 +397,12 @@ function associaUtentiModal(id_corso){
 					$('#myModalError').addClass("modal modal-danger");
 					$('#myModalError').modal('show');
 			 }
+			 
+
+			 pleaseWaitDiv.modal('hide');
 		 });
 		 
 		 
-	 pleaseWaitDiv.modal('hide');
 	 
  }
  

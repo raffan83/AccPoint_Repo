@@ -290,7 +290,7 @@
  <c:set var="trovato" value="false" />
  <c:forEach items="${risorsa_intervento.risorsa.getListaRequisiti() }" var="req">
 
- <c:if test="${!trovato && req.req_sanitario!=null && req.stato == 3 }">
+ <c:if test="${!trovato && req.req_sanitario!=null && req.stato == 3 && idRequisitiSanitariIntervento.contains(req.req_sanitario.id)}">
  <c:set var="trovato" value="true" />
  
    <tr role="row" style="background-color:#FAFAD2">

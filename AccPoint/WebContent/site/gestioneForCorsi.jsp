@@ -818,7 +818,7 @@ function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_sc
 	$('#id_corso').val(id_corso);
 	$('#categoria_mod').val(id_categoria);
 	$('#categoria_mod').change();
-	$('#frequenza_remind').val(frequenza)
+	$('#frequenza_remind_mod').val(frequenza)
 	var x = []
 	
 for (var i = 0; i < json.lista_docenti.length; i++) {

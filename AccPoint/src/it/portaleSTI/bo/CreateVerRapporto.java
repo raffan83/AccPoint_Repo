@@ -668,10 +668,10 @@ public class CreateVerRapporto {
 		
 		if(misura.getTipoRisposta()==0) {
 			//report.addParameter("codifica", "MOD-PDI001-02 Rev. 0 del 21/12/2022");
-			report.addParameter("codifica", "MOD-PDI001-02 Rev. A");
+			report.addParameter("codifica", "MOD-PDI001-02 Rev. A del 15/07/2025");
 		}else {
 			//report.addParameter("codifica", "MOD-PDI001-04 Rev. 0 del 21/12/2022");
-			report.addParameter("codifica", "MOD-PDI001-04 Rev. A");
+			report.addParameter("codifica", "MOD-PDI001-04 Rev. A del 15/07/2025");
 		}
 		
 		
@@ -758,10 +758,10 @@ public class CreateVerRapporto {
 		
 		if(misura.getTipoRisposta()==0) {
 			//reportP2.addParameter("codifica", "MOD-PDI001-02 Rev. 0 del 21/12/2022");
-			reportP2.addParameter("codifica", "MOD-PDI001-02 Rev. A");
+			reportP2.addParameter("codifica", "MOD-PDI001-02 Rev. A del 15/07/2025");
 		}else {
 			//reportP2.addParameter("codifica", "MOD-PDI001-04 Rev. 0 del 21/12/2022");
-			reportP2.addParameter("codifica", "MOD-PDI001-04 Rev. A");
+			reportP2.addParameter("codifica", "MOD-PDI001-04 Rev. A del 15/07/2025");
 		}
 				
 		File logo_accredia = new File(PivotTemplateLAT_Image.class.getResource("accredia.png").getPath());
@@ -1525,11 +1525,11 @@ public class CreateVerRapporto {
 			
 			if(misura.getTipoRisposta()==0) {
 				//codifica = "MOD-PDI001-03 Rev. 0 del 21/12/2022";
-				codifica ="MOD-PDI001-02 Rev. A";
+				codifica ="MOD-PDI001-02 Rev. A del 15/07/2025";
 			}else {
 				//codifica = "MOD-PDI001-05 Rev. 0 del 21/12/2022";
 				
-				codifica ="MOD-PDI001-05 Rev. A";
+				codifica ="MOD-PDI001-05 Rev. A del 15/07/2025";
 			}
 			
 			if(utente.getFile_firma()!=null) {

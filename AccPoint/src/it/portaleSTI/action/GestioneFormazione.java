@@ -1108,6 +1108,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String sede = ret.get("sede");
 				String cf = ret.get("cf");
 				String luogo_nascita = ret.get("luogo_nascita");
+				String email = ret.get("email");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -1117,6 +1118,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				partecipante.setId_azienda(Integer.parseInt(id_azienda));
 				partecipante.setLuogo_nascita(luogo_nascita);
 				partecipante.setCf(cf);
+				partecipante.setEmail(email);
 				
 				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(id_azienda);
 				partecipante.setNome_azienda(cl.getNome());
@@ -1187,7 +1189,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String sede = ret.get("sede_mod");
 				String cf = ret.get("cf_mod");
 				String luogo_nascita = ret.get("luogo_nascita_mod");
-				
+				String email = ret.get("email_mod");
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 				ForPartecipanteDTO partecipante = GestioneFormazioneBO.getPartecipanteFromId(Integer.parseInt(id),session);	
@@ -1195,7 +1197,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				partecipante.setNome(nome);
 				partecipante.setLuogo_nascita(luogo_nascita);
 				partecipante.setCf(cf);
-				
+				partecipante.setEmail(email);
 				partecipante.setId_azienda(Integer.parseInt(id_azienda));
 				
 				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(id_azienda);
@@ -3842,6 +3844,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					    
 					    String errore = "";
 					    String[] id = id_partecipanti.split(";");
+					    ArrayList<String> inviati = new ArrayList<String>();
+					    
 					    for (int i = 0; i < id.length; i++) {
 							if(!id[i].equals("")) {
 					    	ForPartecipanteRuoloCorsoDTO p = GestioneFormazioneBO.getPartecipanteFromCorso(Integer.parseInt(idCorso), Integer.parseInt(id[i]), 0, session);
@@ -3858,6 +3862,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						    	  email.setDestinatario(p.getPartecipante().getEmail());
 						    	  email.setAttestato(1);
 						    	  session.save(email);
+						    	  inviati.add(p.getPartecipante().getNome()+" "+p.getPartecipante().getCognome());
 					    	 }
 					    	 
 					    						    	
@@ -3879,7 +3884,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						}else {
 							myObj.addProperty("success", true);
 							myObj.addProperty("errore", true);
-							myObj.addProperty("messaggio",errore);	
+							String messaggio = "";
+							
+							for (String string : inviati) {
+								messaggio +="Email inviata correttamente per "+ string+"<br>";
+							}
+							
+							myObj.addProperty("messaggio",messaggio+errore);	
 						}
 						
 						

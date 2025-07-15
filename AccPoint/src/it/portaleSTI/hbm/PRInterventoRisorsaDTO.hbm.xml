@@ -39,6 +39,12 @@
         <property name="forzato" type="int">
             <column name="forzato" />
         </property>
+         <property name="assenza" type="int">
+            <column name="assenza" />
+        </property>
+         <property name="permesso" type="int">
+            <column name="permesso" />
+        </property>
       
     </class>
 </hibernate-mapping>

@@ -593,12 +593,13 @@ public class GestioneFormazioneDAO {
 			
 	}
 
-	public static ArrayList<ForEmailDTO> getStoricoEmail(int id_corso, Session session) {
+	public static ArrayList<ForEmailDTO> getStoricoEmail(int id_corso, int attestato, Session session) {
 		
 		ArrayList<ForEmailDTO> lista = null;
 
-		Query query =  session.createQuery("from ForEmailDTO where corso.id = :_id_corso");
+		Query query =  session.createQuery("from ForEmailDTO where corso.id = :_id_corso and attestato = :_attestato");
 		query.setParameter("_id_corso", id_corso);
+		query.setParameter("_attestato", attestato);
 
 		
 		lista = (ArrayList<ForEmailDTO>) query.list();
@@ -1392,6 +1393,22 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		
 		
 		return listaEmail;
+	}
+
+
+	public static ArrayList<ForCorsoDTO> getListaCorsiEfficacia(Date date, Session session) {
+		
+		ArrayList<ForCorsoDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = session.createQuery("from ForCorsoDTO where data_remind = :_date");
+		query.setParameter("_date", date);	
+		
+		lista = (ArrayList<ForCorsoDTO>) query.list();
+		
+				
+		return lista;
 	}
 
 }

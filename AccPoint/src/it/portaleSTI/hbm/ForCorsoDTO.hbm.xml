@@ -100,5 +100,13 @@
         	<property name="n_attestati" type="int" >
             <column name="n_attestati" />
         </property>
+        
+        <property name="frequenza_remind" type="int" >
+            <column name="frequenza_remind" />
+        </property>
+        
+        <property name="data_remind" type="java.sql.Date" >
+            <column name="data_remind" />
+        </property>
     </class>
 </hibernate-mapping>

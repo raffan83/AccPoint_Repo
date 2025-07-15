@@ -891,140 +891,211 @@ public class GestioneRisorse extends HttpServlet {
 				String data_fine = ret.get("data_fine");
 				String calendario = ret.get("calendario");
 				String id_intervento_ris = ret.get("id_intervento_ris");
+				String check_assenza = ret.get("check_assenza");
+				String check_permesso = ret.get("check_permesso");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
-				if(id_intervento == null || id_intervento.equals("")) {
-					id_intervento = id_intervento_ris; 
-				}
-				int n_int = 1;
-				if(id_intervento.split(";").length>1) {
-					n_int =id_intervento.split(";").length; 
-				}
 				
-				for(int j = 0;j<n_int;j++) {
-					if(!id_intervento.split(";")[j].equals("")) {
-					InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento.split(";")[j], session);
+				
+				if((check_assenza!=null && check_assenza.equals("1")) || (check_permesso!=null && check_permesso.equals("1"))) {
 					
+					PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id_risorsa));
 					
-					String [] id_risorsa_multi = id_risorsa.split(";");
+					PRInterventoRisorsaDTO intervento_risorsa = new PRInterventoRisorsaDTO();
 					
-					int n = id_risorsa_multi.length;
-			
+					if(check_assenza.equals("1")) {
+						intervento_risorsa.setAssenza(1);
+					}
+					else if(check_permesso.equals("1")) {
+						intervento_risorsa.setPermesso(1);
+					}
+					intervento_risorsa.setRisorsa(risorsa);
 					
-					if(calendario==null) {
-						intervento.getListaRisorse().clear();
+					if(data_inizio!=null && data_fine!=null) {
+						intervento_risorsa.setData_inizio(df.parse(data_inizio));
+						intervento_risorsa.setData_fine(df.parse(data_fine));
 					}
 					
-					session.update(intervento);
+
+				
+						Calendar calendar = Calendar.getInstance();
+				        calendar.setTime(intervento_risorsa.getData_inizio());
+				        
+				        int giornoInizio  = calendar.get(Calendar.DAY_OF_YEAR);
+						intervento_risorsa.setCella_inizio(giornoInizio );
+						calendar.setTime(intervento_risorsa.getData_fine());
+						long millisInizio = intervento_risorsa.getData_inizio().getTime();
+						long millisFine = intervento_risorsa.getData_fine().getTime();
+
+						// Calcolo differenza in giorni
+						long diffMillisecondi = millisFine - millisInizio;
+						int diffGiorni = (int) TimeUnit.MILLISECONDS.toDays(diffMillisecondi);
+
+						// Calcolo cella_fine
+						int cellaFine = giornoInizio + diffGiorni;
+						intervento_risorsa.setCella_fine(cellaFine);
+						intervento_risorsa.setIntervento(null);
+						
+						session.save(intervento_risorsa);
+				}else {
 					
-					  Set<Integer> idRisorseIntervento = new HashSet<>();
-					  
-					  for (PRInterventoRisorsaDTO r : intervento.getListaRisorse()) {
-				            
-						  idRisorseIntervento.add(r.getRisorsa().getId());
-				           
-					  }
-				//	ArrayList<PRInterventoRisorsaDTO> lista_risorse_intervento = GestioneRisorseBO.getRisorsaIntervento(intervento.getId(), null, session);
-					if(id_risorsa!=null && !id_risorsa.equals("")) {
-					for(int i = 0; i<n ; i++) {
-						
-						String id_ris = id_risorsa_multi[i].split(",")[0];
-						
-						
-						
-						PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id_ris));
-					
-						PRInterventoRisorsaDTO intervento_risorsa = new PRInterventoRisorsaDTO();
+					if(id_intervento == null || id_intervento.equals("")) {
+						id_intervento = id_intervento_ris; 
+					}
+					int n_int = 1;
+					if(id_intervento.split(";").length>1) {
+						n_int =id_intervento.split(";").length; 
+					}
+								
+				
+					for(int j = 0;j<n_int;j++) {
+						if(!id_intervento.split(";")[j].equals("")) {
+						InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento.split(";")[j], session);
 						
 						
-						intervento_risorsa.setIntervento(intervento.getId());
-						intervento_risorsa.setRisorsa(risorsa);
+						String [] id_risorsa_multi = id_risorsa.split(";");
 						
-						if(data_inizio!=null && data_fine!=null) {
-							intervento_risorsa.setData_inizio(df.parse(data_inizio));
-							intervento_risorsa.setData_fine(df.parse(data_fine));
-						}else {
-							String date =id_risorsa_multi[i].split(",")[1];	
-							if(date.split(" - ").length>1) {
-								intervento_risorsa.setData_inizio(df.parse(date.split(" - ")[0]));
-								intervento_risorsa.setData_fine(df.parse(date.split(" - ")[1]));
-							}
+						int n = id_risorsa_multi.length;
+				
+						
+						if(calendario==null) {
+							intervento.getListaRisorse().clear();
 						}
 						
-
-					
-							Calendar calendar = Calendar.getInstance();
-					        calendar.setTime(intervento_risorsa.getData_inizio());
-					        
-					        int giornoInizio  = calendar.get(Calendar.DAY_OF_YEAR);
-							intervento_risorsa.setCella_inizio(giornoInizio );
-							calendar.setTime(intervento_risorsa.getData_fine());
-							long millisInizio = intervento_risorsa.getData_inizio().getTime();
-							long millisFine = intervento_risorsa.getData_fine().getTime();
-
-							// Calcolo differenza in giorni
-							long diffMillisecondi = millisFine - millisInizio;
-							int diffGiorni = (int) TimeUnit.MILLISECONDS.toDays(diffMillisecondi);
-
-							// Calcolo cella_fine
-							int cellaFine = giornoInizio + diffGiorni;
-							intervento_risorsa.setCella_fine(cellaFine);
+						session.update(intervento);
+						
+						  Set<Integer> idRisorseIntervento = new HashSet<>();
+						  
+						  for (PRInterventoRisorsaDTO r : intervento.getListaRisorse()) {
+					            
+							  idRisorseIntervento.add(r.getRisorsa().getId());
+					           
+						  }
+					//	ArrayList<PRInterventoRisorsaDTO> lista_risorse_intervento = GestioneRisorseBO.getRisorsaIntervento(intervento.getId(), null, session);
+						if(id_risorsa!=null && !id_risorsa.equals("")) {
+						for(int i = 0; i<n ; i++) {
 							
+							String id_ris = id_risorsa_multi[i].split(",")[0];
+							
+							
+							
+							PRRisorsaDTO risorsa = (PRRisorsaDTO) session.get(PRRisorsaDTO.class, Integer.parseInt(id_ris));
+						
+							PRInterventoRisorsaDTO intervento_risorsa = new PRInterventoRisorsaDTO();
+							
+							
+							intervento_risorsa.setIntervento(intervento.getId());
+							intervento_risorsa.setRisorsa(risorsa);
+							
+							Date data_inizio_assegnazione = null;
+							Date data_fine_assegnazione = null;
+							
+							if(data_inizio!=null && data_fine!=null) {
+								
+								data_inizio_assegnazione = df.parse(data_inizio);
+								data_fine_assegnazione = df.parse(data_fine);
+								
+							}else {
+								String date =id_risorsa_multi[i].split(",")[1];	
+								if(date.split(" - ").length>1) {
+							
+									data_inizio_assegnazione = df.parse(date.split(" - ")[0]);
+									data_fine_assegnazione = df.parse(date.split(" - ")[1]);
+								}
+							}
+							
+							
+							boolean assente = GestioneRisorseBO.getRisorsaAssente(risorsa.getId(), data_inizio_assegnazione, data_fine_assegnazione, session);
+							
+							if(assente) {
+								
+								
+								myObj = new JsonObject();
+								PrintWriter  out = response.getWriter();
+								myObj.addProperty("success", false);
+								myObj.addProperty("messaggio", "Attenzione! La risorsa " +risorsa.getUtente().getNominativo()+" risulta assente nelle date selezionate!");
+								out.print(myObj);
+								
+								return;
+							}else {
+								intervento_risorsa.setData_inizio(data_inizio_assegnazione);
+								intervento_risorsa.setData_fine(data_fine_assegnazione);
+		
+							
+									Calendar calendar = Calendar.getInstance();
+							        calendar.setTime(intervento_risorsa.getData_inizio());
+							        
+							        int giornoInizio  = calendar.get(Calendar.DAY_OF_YEAR);
+									intervento_risorsa.setCella_inizio(giornoInizio );
+									calendar.setTime(intervento_risorsa.getData_fine());
+									long millisInizio = intervento_risorsa.getData_inizio().getTime();
+									long millisFine = intervento_risorsa.getData_fine().getTime();
+		
+									// Calcolo differenza in giorni
+									long diffMillisecondi = millisFine - millisInizio;
+									int diffGiorni = (int) TimeUnit.MILLISECONDS.toDays(diffMillisecondi);
+		
+									// Calcolo cella_fine
+									int cellaFine = giornoInizio + diffGiorni;
+									intervento_risorsa.setCella_fine(cellaFine);
+									
+							
+								if(!idRisorseIntervento.contains(risorsa.getId())) {
+									intervento.getListaRisorse().add(intervento_risorsa);
+								}
+								
+								
+								ArrayList<PRRequisitoRisorsaDTO>  lista_requisiti_risorsa = GestioneRisorseBO.getListaRequisitiRisorsa(risorsa.getId(),session);	
+							       
+							        ArrayList<ForCorsoDTO>lista_corsi = GestioneFormazioneBO.getListaCorsiInCorsoPartecipante(risorsa.getPartecipante().getId(), session);
+							     // 1. ID dei requisiti sanitari associati alla risorsa
+							        Set<Integer> idRequisitiSanitariRisorsa = new HashSet<>();
+							        Set<Integer> idRequisitiDocumentaliRisorsa = new HashSet<>();
+						
+							        for (PRRequisitoRisorsaDTO req : lista_requisiti_risorsa) {
+							            if (req.getReq_sanitario() != null && (req.getStato()==1 ||req.getStato()==3)) {
+							                idRequisitiSanitariRisorsa.add(req.getReq_sanitario().getId());
+							            }
+							        }
+							        
+							        for (ForCorsoDTO c : lista_corsi) {
+							           
+							        	
+							        		idRequisitiDocumentaliRisorsa.add(c.getCorso_cat().getId());	
+							     
+							           
+							        }
+		
+								      Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
+								      Set<Integer> idRequisitiDocumentaliIntervento = new HashSet<>();
 					
-						if(!idRisorseIntervento.contains(risorsa.getId())) {
-							intervento.getListaRisorse().add(intervento_risorsa);
+								       for (PRInterventoRequisitoDTO requisito : intervento.getListaRequisiti()) {
+								          if (requisito.getRequisito_sanitario() != null) {
+								              idRequisitiSanitariIntervento.add(requisito.getRequisito_sanitario().getId());
+								            }
+								          if (requisito.getRequisito_documentale() != null && requisito.getRequisito_documentale().getCategoria().getId()!=31) {
+								            idRequisitiDocumentaliIntervento.add(requisito.getRequisito_documentale().getCategoria().getId());
+								            }
+								        }
+					
+								            // 3. Verifica che TUTTI i requisiti della risorsa siano presenti nell'intervento
+								            if (!idRequisitiSanitariRisorsa.containsAll(idRequisitiSanitariIntervento) || 
+								            		!idRequisitiDocumentaliRisorsa.containsAll(idRequisitiDocumentaliIntervento)) {
+								            	intervento_risorsa.setForzato(1);
+								            }
+							
+							}
+							
+							
 						}
 						
-						
-						ArrayList<PRRequisitoRisorsaDTO>  lista_requisiti_risorsa = GestioneRisorseBO.getListaRequisitiRisorsa(risorsa.getId(),session);	
-					       
-					        ArrayList<ForCorsoDTO>lista_corsi = GestioneFormazioneBO.getListaCorsiInCorsoPartecipante(risorsa.getPartecipante().getId(), session);
-					     // 1. ID dei requisiti sanitari associati alla risorsa
-					        Set<Integer> idRequisitiSanitariRisorsa = new HashSet<>();
-					        Set<Integer> idRequisitiDocumentaliRisorsa = new HashSet<>();
+						session.update(intervento);
+						}
+						}
+					}
 				
-					        for (PRRequisitoRisorsaDTO req : lista_requisiti_risorsa) {
-					            if (req.getReq_sanitario() != null && (req.getStato()==1 ||req.getStato()==3)) {
-					                idRequisitiSanitariRisorsa.add(req.getReq_sanitario().getId());
-					            }
-					        }
-					        
-					        for (ForCorsoDTO c : lista_corsi) {
-					           
-					        	
-					        		idRequisitiDocumentaliRisorsa.add(c.getCorso_cat().getId());	
-					     
-					           
-					        }
-
-						      Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
-						      Set<Integer> idRequisitiDocumentaliIntervento = new HashSet<>();
-			
-						       for (PRInterventoRequisitoDTO requisito : intervento.getListaRequisiti()) {
-						          if (requisito.getRequisito_sanitario() != null) {
-						              idRequisitiSanitariIntervento.add(requisito.getRequisito_sanitario().getId());
-						            }
-						          if (requisito.getRequisito_documentale() != null && requisito.getRequisito_documentale().getCategoria().getId()!=31) {
-						            idRequisitiDocumentaliIntervento.add(requisito.getRequisito_documentale().getCategoria().getId());
-						            }
-						        }
-			
-						            // 3. Verifica che TUTTI i requisiti della risorsa siano presenti nell'intervento
-						            if (!idRequisitiSanitariRisorsa.containsAll(idRequisitiSanitariIntervento) || 
-						            		!idRequisitiDocumentaliRisorsa.containsAll(idRequisitiDocumentaliIntervento)) {
-						            	intervento_risorsa.setForzato(1);
-						            }
-					
-						
-					}
-					
-					session.update(intervento);
-					}
-					}
 				}
-				
-
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
@@ -1222,7 +1293,12 @@ public class GestioneRisorse extends HttpServlet {
 				String data_fine = ret.get("data_fine_mod");
 				String id_associazione = ret.get("id_associazione");
 							
+				String check_assenza = ret.get("check_assenza_mod");
+				String check_permesso = ret.get("check_permesso_mod");
+				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				
+				
 				
 				PRInterventoRisorsaDTO associazione= (PRInterventoRisorsaDTO) session.get(PRInterventoRisorsaDTO.class, Integer.parseInt(id_associazione));
 
@@ -1246,6 +1322,17 @@ public class GestioneRisorse extends HttpServlet {
 					// Calcolo cella_fine
 					int cellaFine = giornoInizio + diffGiorni;
 					associazione.setCella_fine(cellaFine);
+					
+					if(check_assenza!=null && check_assenza.equals("1")) {
+						
+						associazione.setAssenza(1);
+						associazione.setPermesso(0);
+						associazione.setIntervento(null);
+					}else if(check_permesso!=null && check_permesso.equals("1")){
+						associazione.setPermesso(1);
+						associazione.setAssenza(0);
+						associazione.setIntervento(null);
+					}
 	
 					session.update(associazione);
 				myObj = new JsonObject();

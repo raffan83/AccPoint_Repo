@@ -34,6 +34,9 @@ public class ForCorsoDTO {
 	private int email_inviata;
 	private int efei;
 	private int n_attestati;
+	private int frequenza_remind;
+	private Date data_remind;
+	
 	
 	public ForCorsoDTO() {
 		super();
@@ -202,5 +205,18 @@ public class ForCorsoDTO {
 	public void setEfei(int efei) {
 		this.efei = efei;
 	}
+	public int getfrequenza_remind() {
+		return frequenza_remind;
+	}
+	public void setfrequenza_remind(int frequenza_remind) {
+		this.frequenza_remind = frequenza_remind;
+	}
+	public Date getData_remind() {
+		return data_remind;
+	}
+	public void setData_remind(Date data_remind) {
+		this.data_remind = data_remind;
+	}
 
+	
 }

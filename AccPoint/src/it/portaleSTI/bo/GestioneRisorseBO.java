@@ -62,6 +62,12 @@ public class GestioneRisorseBO {
 		// TODO Auto-generated method stub
 		return GestioneRisorseDAO.getListaRisorseLibere(date, session);
 	}
+
+	public static boolean getRisorsaAssente(int id_risorsa, Date data_inizio_assegnazione, Date data_fine_assegnazione,
+			Session session) {
+		// TODO Auto-generated method stub
+		return GestioneRisorseDAO.getRisorsaAssente(id_risorsa, data_inizio_assegnazione, data_fine_assegnazione, session);
+	}
 	
 	
 	

@@ -9,6 +9,8 @@ public class ForEmailDTO {
 	private Timestamp data;
 	private ForCorsoDTO corso;
 	private String destinatario;
+	private int attestato;
+	
 	public int getId() {
 		return id;
 	}
@@ -38,6 +40,12 @@ public class ForEmailDTO {
 	}
 	public void setDestinatario(String destinatario) {
 		this.destinatario = destinatario;
+	}
+	public int getAttestato() {
+		return attestato;
+	}
+	public void setAttestato(int attestato) {
+		this.attestato = attestato;
 	}
 	
 	

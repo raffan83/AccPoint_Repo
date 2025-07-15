@@ -907,6 +907,20 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	                
 	                var sinistra = 0;
 	                var alto = 0
+	                
+	                var backgroundColor = "#FFFFE0";
+	                var borderColor = "#FFD700";
+	                
+	                if(pren.assenza==1 || pren.permesso==1){
+	                    var backgroundColor = "#F7BB80";
+		                var borderColor = "#F2861B";
+	                }
+	                
+	                
+	                
+	                if(pren.assenza == 1 || pren.permesso==1){
+	                	var testo = pren.testo_riquadro;
+	                }
 
 	                if(numeroRiquadri=== 0){
 	                	
@@ -919,10 +933,10 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                        whiteSpace: "normal",
 	 		                    wordWrap: "break-word", 
 		                    fontWeight: "bold",
-		                    border: "1px solid #FFD700",
-		                    backgroundColor: "#FFFFE0",
+		                    border: "1px solid "+borderColor,
+		                    backgroundColor: backgroundColor,
 		                    textAlign: "center",		            
-		                }).html('ID: '+pren.id_intervento+'<br>'+pren.testo_riquadro).attr('ondblclick', 'modalModificaAssociazione('+id_associazione+',"'+pren.testo_riquadro+'")');
+		                }).html(testo).attr('ondblclick', 'modalModificaAssociazione('+id_associazione+',"'+pren.testo_riquadro+'")');
 
 	                
 		                cellaInizio.append(riquadro);
@@ -1010,10 +1024,10 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	                         whiteSpace: "normal",
 		                    wordWrap: "break-word", 
 	                    fontWeight: "bold",
-	                    border: "1px solid #FFD700",
-	                    backgroundColor: "#FFFFE0",
+	                    border: "1px solid "+borderColor,
+	                    backgroundColor: backgroundColor,
 	                    textAlign: "center",	  
- 	               }).html('ID: '+pren.id_intervento+'<br>'+pren.testo_riquadro).attr('ondblclick', 'modalModificaAssociazione('+id_associazione+',"'+pren.testo_riquadro+'")');
+ 	               }).html(testo).attr('ondblclick', 'modalModificaAssociazione('+id_associazione+',"'+pren.testo_riquadro+'")');
 
                
 	                cellaInizio.append(riquadro);
@@ -1082,8 +1096,18 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 				var associazione = data.associazione;
 				var id_encrypted = data.id_encrypted;
 		
-				
 				$('#label_intervento').html("Intervento ID: <a class='customTooltip' target='_blank' href='gestioneInterventoDati.do?idIntervento="+id_encrypted+"'>"+associazione.id_intervento+" </a>- "+testo)
+				
+				if(associazione.assenza == 1){
+					$('#assenza_mod').iCheck("check");
+					$('#label_intervento').html("")
+				}
+				else if(associazione.permesso == 1){
+					$('#permesso_mod').iCheck("check")
+					$('#label_intervento').html("")
+				}
+				
+				
 				
 				$('#data_inizio_mod').val(associazione.data_inizio);
 				$('#data_fine_mod').val(associazione.data_fine);

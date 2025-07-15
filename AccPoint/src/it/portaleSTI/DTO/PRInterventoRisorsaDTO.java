@@ -12,6 +12,8 @@ public class PRInterventoRisorsaDTO {
 	private int cella_fine;
 	String testo_riquadro;
 	private int forzato;
+	private int assenza;
+	private int permesso;
 	
 	public int getId() {
 		return id;
@@ -73,6 +75,18 @@ public class PRInterventoRisorsaDTO {
 	}
 	public void setForzato(int forzato) {
 		this.forzato = forzato;
+	}
+	public int getAssenza() {
+		return assenza;
+	}
+	public void setAssenza(int assenza) {
+		this.assenza = assenza;
+	}
+	public int getPermesso() {
+		return permesso;
+	}
+	public void setPermesso(int permesso) {
+		this.permesso = permesso;
 	}
 	
 	

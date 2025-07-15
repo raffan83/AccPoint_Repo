@@ -3954,7 +3954,7 @@ public static ArrayList<PRInterventoRisorsaDTO> getListaInterventoRisorseAll(Ses
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 		
-		String query = "SELECT a.*, b.nome_cliente, b.nome_sede, b.id_commessa from pr_intervento_risorsa a join intervento b on a.id_intervento = b.id";
+		String query = "SELECT a.*, b.nome_cliente, b.nome_sede, b.id_commessa from pr_intervento_risorsa a left join intervento b on a.id_intervento = b.id";
 	
 	
 	pst=con.prepareStatement(query);
@@ -3972,8 +3972,21 @@ public static ArrayList<PRInterventoRisorsaDTO> getListaInterventoRisorseAll(Ses
 		res.setData_fine(rs.getDate("data_fine"));
 		res.setCella_inizio(rs.getInt("cella_inizio"));
 		res.setCella_fine(rs.getInt("cella_fine"));
-		res.setTesto_riquadro(rs.getString("id_commessa") + " - " +rs.getString("nome_cliente")+" - "+rs.getString("nome_sede"));
+		
 		res.setRisorsa(risorsa);
+		res.setAssenza(rs.getInt("assenza"));
+		res.setPermesso(rs.getInt("permesso"));
+		
+		if(res.getAssenza()==1) {
+			res.setTesto_riquadro("ASSENZA");
+		}
+		else if(res.getPermesso()==1) {
+			res.setTesto_riquadro("PERMESSO");
+		}
+		else {
+			res.setTesto_riquadro(rs.getString("id_commessa") + " - " +rs.getString("nome_cliente")+" - "+rs.getString("nome_sede"));
+		}
+		
 		lista.add(res);
 		
 	}

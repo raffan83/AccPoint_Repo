@@ -1945,9 +1945,9 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getReferenteFromID(id_referente, session);
 	}
 
-	public static ArrayList<ForEmailDTO> getStoricoEmail(int id_corso, Session session) {
+	public static ArrayList<ForEmailDTO> getStoricoEmail(int id_corso, int attestato,Session session) {
 		
-		return GestioneFormazioneDAO.getStoricoEmail(id_corso, session);
+		return GestioneFormazioneDAO.getStoricoEmail(id_corso, attestato,session);
 	}
 
 	public static ArrayList<ForCorsoDTO> getListaCorsiSuccessivi(String dateTo, Session session) throws Exception, Exception {
@@ -2306,6 +2306,33 @@ public class GestioneFormazioneBO {
 	public static HashMap<String, String> listaCompletaEmailMoodle() throws Exception {
 		// TODO Auto-generated method stub
 		return GestioneFormazioneDAO.listaCompletaEmailMoodle();
+	}
+
+	public static void sendEmailValutazioneEfficacia(String path) throws Exception {
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		try {
+		
+		ArrayList<ForCorsoDTO> lista_corsi_val_efficazia = GestioneFormazioneDAO.getListaCorsiEfficacia(new Date(),session);
+
+		for (ForCorsoDTO corso : lista_corsi_val_efficazia) {
+			
+			for (ForReferenteDTO referente : corso.getListaReferenti()) {
+				SendEmailBO.sendEmailEfficaciaCorso(corso, referente);
+			}
+				
+	
+		}
+
+		
+		session.getTransaction().commit();
+		session.close();
+		
+	}catch(Exception e) {
+		
+		throw e;
+		
+	}
 	}
 	
 }

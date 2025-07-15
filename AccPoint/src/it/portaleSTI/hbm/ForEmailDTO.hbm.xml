@@ -21,5 +21,8 @@
         <property name="destinatario" type="java.lang.String">
             <column name="destinatario" />
         </property>
+         <property name="attestato" type="int">
+            <column name="attestato" />
+        </property>
     </class>
 </hibernate-mapping>

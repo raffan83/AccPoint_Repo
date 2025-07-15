@@ -25,6 +25,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -603,6 +604,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String e_learning = ret.get("e_learning");
 				String durata = ret.get("durata");
 				String efei = ret.get("efei");
+				String frequenza_remind = ret.get("frequenza_remind");
 				
 				ForCorsoDTO corso = new ForCorsoDTO();		
 				
@@ -640,6 +642,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				if(filename!=null && !filename.equals("")) {
 					
 					saveFile(fileItem, "DocumentiTest//"+corso.getId(), filename);
+				}
+				
+				if(frequenza_remind!=null && !frequenza_remind.equals("")) {
+					corso.setfrequenza_remind(Integer.parseInt(frequenza_remind));
+					Calendar c = Calendar.getInstance();
+					c.setTime(corso.getData_corso());
+					c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(frequenza_remind));
+					corso.setData_remind(c.getTime());
 				}
 				
 				myObj = new JsonObject();
@@ -695,6 +705,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String e_learning = ret.get("e_learning_mod");
 				String durata = ret.get("durata_mod");
 				String efei = ret.get("efei_mod");
+				String frequenza_remind = ret.get("frequenza_remind_mod");
+				
 				
 				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso),session);		
 				
@@ -736,6 +748,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				if(filename!=null && !filename.equals("")) {
 					corso.setDocumento_test(filename);
 					saveFile(fileItem, "DocumentiTest//"+corso.getId(), filename);
+				}
+				
+				if(frequenza_remind!=null && !frequenza_remind.equals("")) {
+					corso.setfrequenza_remind(Integer.parseInt(frequenza_remind));
+					Calendar c = Calendar.getInstance();
+					c.setTime(corso.getData_corso());
+					c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(frequenza_remind));
+					corso.setData_remind(c.getTime());
 				}
 				
 				corso.setDurata(Integer.parseInt(durata));
@@ -2721,8 +2741,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			}
 			else if(action.equals("storico_email")) {
 				String id_corso = request.getParameter("id_corso");
+				String attestato = request.getParameter("attestato");
 				
-				ArrayList<ForEmailDTO> lista_email = GestioneFormazioneBO.getStoricoEmail(Integer.parseInt(id_corso),session);
+				
+				ArrayList<ForEmailDTO> lista_email = GestioneFormazioneBO.getStoricoEmail(Integer.parseInt(id_corso),Integer.parseInt(attestato),session);
 				
 				
 				request.getSession().setAttribute("lista_email", lista_email);
@@ -3816,6 +3838,32 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					    Map<String, String> dati = new HashMap<>();
 					    
 					    String idCorso = request.getParameter("id_corso");
+					    String id_partecipanti = request.getParameter("id_partecipanti");
+					    
+					    String errore = "";
+					    String[] id = id_partecipanti.split(";");
+					    for (int i = 0; i < id.length; i++) {
+							if(!id[i].equals("")) {
+					    	ForPartecipanteRuoloCorsoDTO p = GestioneFormazioneBO.getPartecipanteFromCorso(Integer.parseInt(idCorso), Integer.parseInt(id[i]), 0, session);
+					    	
+					    	 String result = SendEmailBO.sendEmailConsegnaAttestati(p);
+					    	 if(!result.equals("")) {
+					    		result+="<br>";
+					    		errore +=result;
+					    	 }else {
+					    		 ForEmailDTO email = new ForEmailDTO();
+						    	  email.setCorso(p.getCorso());
+						    	  email.setUtente(utente);
+						    	  email.setData(new Timestamp(System.currentTimeMillis()));
+						    	  email.setDestinatario(p.getPartecipante().getEmail());
+						    	  email.setAttestato(1);
+						    	  session.save(email);
+					    	 }
+					    	 
+					    						    	
+					    	TimeUnit.SECONDS.sleep(2);
+							}
+						}
 					
 					    Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 						
@@ -3823,7 +3871,17 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					     myObj.add("dati_indice", g.toJsonTree(dati));
 						
 						PrintWriter  out = response.getWriter();
-						myObj.addProperty("success", true);
+						
+						
+						if(errore.equals("")) {
+							myObj.addProperty("success", true);
+							myObj.addProperty("messaggio", "Email inviate con successo!");
+						}else {
+							myObj.addProperty("success", true);
+							myObj.addProperty("errore", true);
+							myObj.addProperty("messaggio",errore);	
+						}
+						
 						
 						session.getTransaction().commit();
 						session.close();

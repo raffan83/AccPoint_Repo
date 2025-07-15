@@ -8,7 +8,7 @@
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 <div class="row">
 <div class="col-xs-12">
-
+<a class="btn btn-primary customTooltip pull-left" title="Vai allo storico email" onClick="modalStorico('${corso.id}')"><i class="fa fa-envelope"></i></a>
  <a class="btn btn-primary pull-right" onClick="associaUtentiModal('${corso.id}')" title="Click per associare gli utenti al corso"><i class="fa fa-plus"></i> Aggiungi Partecipanti</a>
  <a class="btn bg-olive pull-right" onClick="inviaEmail('${corso.id}')" style="margin-right:5px"><i class="fa fa-envelope"></i> Invia Email</a>
  <a class="btn bg-purple pull-right" onClick="associaEmailMoodle('${corso.id}')" style="margin-right:5px"><i class="fa fa-users"></i> Associa Email da Moodle</a>
@@ -39,7 +39,7 @@
  <tbody>
  
  	<c:forEach items="${listaPartecipanti }" var="partecipante" varStatus="loop">
- 	<tr id="row_${loop.index}" >
+ 	<tr id="row_${partecipante.partecipante.id}" >
  	<td class="select-checkbox"></td>
  	<td><a class="btn customTooltip customlink" title="Vai al partecipante" onclick="callAction('gestioneFormazione.do?action=dettaglio_partecipante&id_partecipante=${utl:encryptData(partecipante.partecipante.id)}')">${partecipante.partecipante.nome } ${partecipante.partecipante.cognome }</a></td>
 	<td>
@@ -234,11 +234,30 @@
 
 </div>
 </form>
+  <div id="myModalStorico" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Storico</h4>
+      </div>
+       <div class="modal-body">       
+      	<div id="content_storico"></div>
+      	</div>
+      <div class="modal-footer">
 
+      
+		<a class="btn btn-primary" onclick="$('#myModalStorico').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <style>
 
-
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 .table th {
     background-color: #3c8dbc !important;
   }</style>
@@ -340,16 +359,47 @@ function associaUtentiModal(id_corso){
  }
  
  function inviaEmail(id_corso){
+	 
+	 pleaseWaitDiv.modal('show');
 	  dataObj = {};
 	  dataObj.id_corso = id_corso;
-		 
-		 callAjax(dataObj,"gestioneFormazione.do?action=inviaEmail",function(data){
-			
-			if(data.success)
-			{
-				
-			}
+	  
+	  var id_partecipanti = "";
+	  
+	  var t = $('#tabPartecipanti').DataTable();
+	   t.rows({ selected: true }).every(function () {
+	        var $row = $(this.node());
+	    
+			id_partecipanti += $row[0].id.split("_")[1]+";";	        
+	    });
+	  
+	  
+	   dataObj.id_partecipanti = id_partecipanti;
+	   
+		 callAjax(dataObj,"gestioneFormazione.do?action=inviaEmail", function(data){
+			 if(data.success){
+				 if(data.errore){
+					 $('#myModalErrorContent').html(data.messaggio);
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-warning");
+				 }else{
+					 $('#myModalErrorContent').html(data.messaggio);
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-success");
+				 }
+					
+					
+					$('#myModalError').modal('show');
+				 
+			 }else{
+				 $('#myModalErrorContent').html(data.messaggio);
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');
+			 }
 		 });
+		 
+		 
 	 pleaseWaitDiv.modal('hide');
 	 
  }
@@ -412,7 +462,10 @@ function associaUtentiModal(id_corso){
   		      responsive: true,
   		      scrollX: false,
   		      stateSave: true,	
-  		           
+  		    select: {
+			    style: 'multi-shift',
+			    selector: 'td:nth-child(1)' // attenzione: meglio usare 'first-child' che 'nth-child(1)'
+			  }, 
   		      columnDefs: [
   		    	  { className: "select-checkbox", targets: 0,  orderable: false },
   		    	  { responsivePriority: 1, targets: 1 },
@@ -537,6 +590,18 @@ function associaUtentiModal(id_corso){
         aggiornaEmail($(this));
       });
 
+      
+      
+      function modalStorico(id_corso){
+    	  
+    	  dataString ="action=storico_email&id_corso="+ id_corso+"&attestato=1";
+         exploreModal("gestioneFormazione.do",dataString,"#content_storico",function(datab,textStatusb){
+         });
+    	  
+    	  $('#myModalStorico').modal()
+     }
+      
+      
     
     function aggiornaEmail($input) {
         const email = $input.val().trim();

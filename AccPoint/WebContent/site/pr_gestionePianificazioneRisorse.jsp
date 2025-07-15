@@ -138,7 +138,19 @@
         <h4 class="modal-title" id="title_pianificazione">Associa Intervento</h4>
       </div>
        <div class="modal-body"> 
+        <div class="row">
+        <div class="col-xs-6">
+        <label>Assenza</label>
+       <input type="checkbox" id="assenza" name="assenza">
        
+       </div>
+        <div class="col-xs-6">
+          <label>Permesso</label>
+       <input type="checkbox" id="permesso" name="permesso">
+       
+       </div>
+       
+       </div><br>
        <div class="row">
         <div class="col-xs-6">
          <label>Data inizio assegnazione</label>
@@ -154,7 +166,9 @@
         
         </div>
         </div><br>
-             <div class="row">
+        
+        
+             <div class="row" id="content_tabInterventi">
         <div class="col-xs-12">
         <table id="tabInterventi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
         <thead>
@@ -187,6 +201,8 @@
       <input type="hidden" id="cella" name="cella">
       <input type="hidden" id="data_pianificazione" name="data_pianificazione">
       <input type="hidden" id="calendario" name=calendario>
+      <input type="hidden" id="check_assenza" name=check_assenza>
+      <input type="hidden" id="check_permesso" name=check_permesso>
 
         
 	               <button class="btn btn-primary" type="submit"  >Salva</button>
@@ -219,6 +235,19 @@
         <label id="label_intervento"></label>
         </div>
         </div><br>
+            <div class="row">
+        <div class="col-xs-6">
+        <label>Assenza</label>
+       <input type="checkbox" id="assenza_mod" name="assenza_mod">
+       
+       </div>
+        <div class="col-xs-6">
+          <label>Permesso</label>
+       <input type="checkbox" id="permesso_mod" name="permesso_mod">
+       
+       </div>
+       
+       </div><br>
        <div class="row">
         <div class="col-xs-6">
          <label>Data inizio assegnazione</label>
@@ -237,6 +266,8 @@
       	</div>
       <div class="modal-footer">
      <input id="id_associazione" name="id_associazione"  type="hidden" style="width:100%" >
+           <input type="hidden" id="check_assenza_mod" name=check_assenza_mod>
+      <input type="hidden" id="check_permesso_mod" name=check_permesso_mod>
 <a class="btn btn-danger pull-left"  onclick="$('#myModalYesOrNo').modal()">Elimina</a>
         
 	               <button class="btn btn-primary" type="submit"  >Salva</button>
@@ -593,7 +624,7 @@ $('#intervento_select').on('change', function () {
 				  dati.check = null; 
 					  dati.id = lista_risorse[i].id;
 					
-					  if(lista_requisiti_doc_risorse[lista_risorse[i].id].find(item => item.id === 31)){
+					  if(lista_requisiti_doc_risorse[lista_risorse[i].id]!=null && lista_requisiti_doc_risorse[lista_risorse[i].id].find(item => item.id === 31)){
 						  dati.nominativo = lista_risorse[i].utente.nominativo +" [P]";
 					  }else{
 						  dati.nominativo = lista_risorse[i].utente.nominativo;  
@@ -837,7 +868,84 @@ $(document).ready(function($) {
 	    e.preventDefault(); // Prevent default context menu
 	}
 
-	});  */
+
+});  */
+
+
+$('input:checkbox').on('ifToggled', function() {
+	
+	$('#assenza').on('ifChecked', function(event){
+		$('#check_assenza').val(1);
+		$('#permesso').iCheck("uncheck")
+	
+		$('#content_tabInterventi').hide();
+	});
+	
+	$('#assenza').on('ifUnchecked', function(event) {
+		
+		$('#check_assenza').val(0);
+		if($('#permesso').is(':checked')){
+			$('#content_tabInterventi').hide();
+		}else{
+			$('#content_tabInterventi').show();
+		}
+		
+	
+	});
+	
+
+	$('#permesso').on('ifChecked', function(event){
+		$('#check_permesso').val(1);
+		$('#assenza').iCheck("uncheck")
+		$('#content_tabInterventi').hide();
+	
+	});
+	
+	$('#permesso').on('ifUnchecked', function(event) {
+		
+		$('#check_permesso').val(0);
+	
+		if($('#assenza').is(':checked')){
+			$('#content_tabInterventi').hide();
+		}else{
+			$('#content_tabInterventi').show();
+		}
+	});
+	
+	
+	
+	$('#assenza_mod').on('ifChecked', function(event){
+		$('#check_assenza_mod').val(1);
+		$('#permesso_mod').iCheck("uncheck")
+	
+	});
+	
+	$('#assenza_mod').on('ifUnchecked', function(event) {
+		
+		$('#check_assenza_mod').val(0);
+	
+	
+	});
+	
+
+	$('#permesso_mod').on('ifChecked', function(event){
+		$('#check_permesso_mod').val(1);
+		$('#assenza_mod').iCheck("uncheck")
+		
+	
+	});
+	
+	$('#permesso_mod').on('ifUnchecked', function(event) {
+		
+		$('#check_permesso_mod').val(0);
+	
+	});
+	
+	
+	
+})
+
+
 
 
 $('#modalAssociaIntervento').on("hidden.bs.modal", function(){

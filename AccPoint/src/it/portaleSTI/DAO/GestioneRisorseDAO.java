@@ -2,6 +2,7 @@ package it.portaleSTI.DAO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -108,6 +109,25 @@ public class GestioneRisorseDAO {
 			
 			
 			return lista;
+	}
+
+	public static boolean getRisorsaAssente(int id_risorsa, Date data_inizio_assegnazione, Date data_fine_assegnazione,
+			Session session) {
+		ArrayList<PRInterventoRisorsaDTO> lista = null;
+		
+		Query query = session.createQuery("from PRInterventoRisorsaDTO where risorsa.id = :_id_risorsa and assenza = 1 and data_inizio >= :_data_inizio and data_fine <= :_data_fine");
+
+		query.setParameter("_data_inizio", data_inizio_assegnazione);
+		query.setParameter("_data_fine", data_fine_assegnazione);
+		query.setParameter("_id_risorsa", id_risorsa);
+		
+		
+		lista = (ArrayList<PRInterventoRisorsaDTO>) query.list();
+		if(lista.size()>0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 }

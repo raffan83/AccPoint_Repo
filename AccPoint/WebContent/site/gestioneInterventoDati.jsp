@@ -2701,6 +2701,54 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 			  }]
 			});
 
+	    
+	    
+	    var tableRisorseAss = $('#tabRisorseAssegnate').DataTable({
+			  language: {
+			    emptyTable: "Nessun dato presente nella tabella",
+			    info: "Vista da _START_ a _END_ di _TOTAL_ elementi",
+			    infoEmpty: "Vista da 0 a 0 di 0 elementi",
+			    infoFiltered: "(filtrati da _MAX_ elementi totali)",
+			    lengthMenu: "Visualizza _MENU_ elementi",
+			    loadingRecords: "Caricamento...",
+			    processing: "Elaborazione...",
+			    search: "Cerca:",
+			    zeroRecords: "La ricerca non ha portato alcun risultato.",
+			    paginate: {
+			      first: "Inizio",
+			      previous: "Precedente",
+			      next: "Successivo",
+			      last: "Fine"
+			    },
+			    aria: {
+			      sortAscending: ": attiva per ordinare la colonna in ordine crescente",
+			      sortDescending: ": attiva per ordinare la colonna in ordine decrescente"
+			    }
+			  },
+			  pageLength: 25,
+			  order: [[1, "desc"]],
+			  paging: false,
+			  ordering: true,
+			  info: true,
+			  searchable: true,
+			  searching: false,
+			  responsive: true,
+			  scrollX: false,
+			  stateSave: false,
+
+			  columnDefs: [
+			    {
+			     	
+			    },
+			    { responsivePriority: 1, targets: 1 }
+			  ],
+
+			  buttons: [{
+			    extend: 'colvis',
+			    text: 'Nascondi Colonne'
+			  }]
+			});
+
 	  	    
 	    
 	    

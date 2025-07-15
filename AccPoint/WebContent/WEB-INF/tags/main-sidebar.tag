@@ -189,7 +189,7 @@
          
          <li class="treeview">
  <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_RISORSE")){%>
-          <a href="#"><i class="fa fa-link"></i> <span>PIANIFICAZIONE RISORSE</span>
+          <a href="#"><i class="fa fa-link"></i> <span>Pianificazione Risorse</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

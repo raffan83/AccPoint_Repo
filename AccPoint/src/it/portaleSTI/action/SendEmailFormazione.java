@@ -25,9 +25,9 @@ public class SendEmailFormazione  implements Job {
 		java.net.URL resource = getClass().getResource("/");
 		String path = resource.getPath();	
 		
-			//GestioneFormazioneBO.sendEmailCorsiInScadenza(path);
-			//GestioneFormazioneBO.sendEmailAttestatiNonConsegnati(path);
-			//GestioneFormazioneBO.sendEmailCorsiNonCompleti(path);	
+			GestioneFormazioneBO.sendEmailCorsiInScadenza(path);
+			GestioneFormazioneBO.sendEmailAttestatiNonConsegnati(path);
+			GestioneFormazioneBO.sendEmailCorsiNonCompleti(path);	
 			GestioneFormazioneBO.sendEmailValutazioneEfficacia(path);
 		
 		

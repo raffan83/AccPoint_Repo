@@ -346,7 +346,7 @@
  </table>
         
         </div>
-        </div>
+        </div><br><br>
 <div class="row">
         <div class="col-xs-12">
         <label>REQUISITI DOCUMENTALI</label>
@@ -380,7 +380,7 @@
  </table>
  
  </div>
- </div>  <br>
+ </div>  <br><br>
  
  <div class="row">
         <div class="col-xs-12">
@@ -2530,17 +2530,17 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	      	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	    	        }
 	          },
-	    	      paging: true, 
+	    	      paging: false, 
 	    	      pageLength: 5,
 	    	      ordering: true,
-	    	      info: true, 
+	    	      info: false, 
 	    	      searchable: false, 
 	    	      targets: 0,
 	    	      responsive: true,
 	    	      scrollX: false,
-	    	      stateSave: true,
+	    	      stateSave: false,
 	    	      order: [[ 0, "desc" ]],
-	    	         
+	    	      searching: false,
 	    	      columnDefs: [
 	    	    	  /* {  className: "select-checkbox", targets: 1,  orderable: false },
 	    					   { responsivePriority: 1, targets: 0 },
@@ -2587,17 +2587,17 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	      	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	    	        }
 	          },
-	    	      paging: true, 
+	    	      paging: false, 
 	    	      pageLength: 5,
 	    	      ordering: true,
-	    	      info: true, 
+	    	      info: false, 
 	    	      searchable: false, 
 	    	      targets: 0,
 	    	      responsive: true,
 	    	      scrollX: false,
-	    	      stateSave: true,
+	    	      stateSave: false,
 	    	      order: [[ 0, "desc" ]],
-	    	         
+	    	      searching: false,
 	    	      columnDefs: [
 	    	    	  /* {  className: "select-checkbox", targets: 1,  orderable: false },
 	    					   { responsivePriority: 1, targets: 0 },
@@ -2663,14 +2663,14 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 			  },
 			  pageLength: 25,
 			  order: [[1, "desc"]],
-			  paging: true,
+			  paging: false,
 			  ordering: true,
 			  info: true,
 			  searchable: true,
-
+			  searching: false,
 			  responsive: true,
 			  scrollX: false,
-			  stateSave: true,
+			  stateSave: false,
 
 			  select: {
 			    style: 'multi-shift',

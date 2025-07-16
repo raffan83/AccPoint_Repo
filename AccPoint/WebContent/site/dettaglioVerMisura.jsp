@@ -154,7 +154,13 @@
                   <b>Campioni di lavoro</b> <a class="pull-right">${misura.campioniLavoro}</a>
                 </li>
                  <li class="list-group-item">
-                  <b>Numero di sigilli usati</b> <a class="pull-right">${misura.numeroSigilli}</a>
+                  <b>Numero di sigilli ripristinati</b> <a class="pull-right">${misura.numeroSigilli}</a>
+                </li>
+                 <li class="list-group-item">
+                  <b>Numero di sigilli presenti</b> <a class="pull-right">${misura.numeroSigilli_presenti}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Versione software</b> <a class="pull-right">${misura.versione_sw}</a>
                 </li>
                 <c:if test="${misura.verStrumento.tipo.id == 1 || misura.verStrumento.tipo.id ==2 }">
                 	<li class="list-group-item">                

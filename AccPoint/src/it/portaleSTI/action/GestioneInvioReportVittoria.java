@@ -108,6 +108,10 @@ public class GestioneInvioReportVittoria implements Job{
 			
 			//}
 			
+			psCorsi.close();
+			psPartecipanti.close();
+			
+			
 			JSch jsch = new JSch();
 			sessionSftp = jsch.getSession(user, host, port);
 			sessionSftp.setPassword(password);
@@ -134,6 +138,7 @@ public class GestioneInvioReportVittoria implements Job{
             
 			
 			System.out.println("Terminate");
+			
 			
 			session.close();
 			

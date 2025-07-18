@@ -9,6 +9,8 @@ import org.hibernate.Session;
 import it.portaleSTI.DAO.GestioneParcoAutoDAO;
 import it.portaleSTI.DTO.PaaPrenotazioneDTO;
 import it.portaleSTI.DTO.PaaRichiestaDTO;
+import it.portaleSTI.DTO.PaaSegnalazioneDTO;
+import it.portaleSTI.DTO.PaaTipoSegnalazioneDTO;
 import it.portaleSTI.DTO.PaaVeicoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
@@ -60,4 +62,23 @@ public class GestioneParcoAutoBO {
 		return GestioneParcoAutoDAO.getListaPrenotazioniDate(startDate, endDate, session);
 	}
 
+	public static ArrayList<PaaTipoSegnalazioneDTO> getListaTipiSegnalazione(Session session) {
+		// TODO Auto-generated method stub
+		return GestioneParcoAutoDAO.getListaTipiSegnalazione(session);
+	}
+
+	public static ArrayList<PaaSegnalazioneDTO> getListaSegnalazioni(int veicolo, Date data, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneParcoAutoDAO.getListaSegnalazioni(veicolo, data, session);
+	}
+
+	public static void deleteSegnalazioni(int id_prenotazione, int id_tipo,Session session) {
+		// TODO Auto-generated method stub
+		 GestioneParcoAutoDAO.deleteSegnalazioni(id_prenotazione, id_tipo, session);
+	}
+
+	public static PaaSegnalazioneDTO getSegnalazione(int id_prenotazione, int id_tipo, Session session) {
+		
+		return GestioneParcoAutoDAO.getSegnalazione(id_prenotazione, id_tipo, session);
+	}
 }

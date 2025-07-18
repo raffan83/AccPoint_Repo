@@ -256,6 +256,8 @@
  	<mapping class="PaaVeicoloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PaaVeicoloDTO.hbm.xml"/>
  	<mapping class="PaaPrenotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PaaPrenotazioneDTO.hbm.xml"/>
  	<mapping class="PaaRichiestaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PaaRichiestaDTO.hbm.xml"/>
+ 	<mapping class="PaaTipoSegnalazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PaaTipoSegnalazioneDTO.hbm.xml"/>
+ 	<mapping class="PaaSegnalazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PaaSegnalazioneDTO.hbm.xml"/>
  	
  	
  	<mapping class="LibreriaElettriciDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LibreriaElettriciDTO.hbm.xml"/>

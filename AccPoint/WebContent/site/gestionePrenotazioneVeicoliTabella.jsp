@@ -140,6 +140,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
   <li data-action = "copy">Copia</li>
   <li data-action = "paste">Incolla</li>
   <li data-action = "delete">Elimina</li>
+  <li data-action = "segnalazione">Aggiungi segnalazione</li>
 </ul>
 
     
@@ -896,6 +897,8 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	        	} ); 
 	        
 	            var lista_prenotazioni = response.lista_prenotazioni;
+	            var lista_prenotazioni_con_segnalazione = response.lista_prenotazioni_con_segnalazione;
+	            
 	            $('.riquadro').remove();
 	            $('#tabPrenotazione td').removeClass('prenotato');
 	            if(table == null){
@@ -1066,10 +1069,17 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                	var border_color = "#A0CE00";
 			 	            var background_color = "#90EE90";
 	 	                } */
-
+						
+	 	                if(lista_prenotazioni_con_segnalazione.includes(id_prenotazione)){
+	 	                	  var icona_segnalazione = '<i class="fa fa-exclamation-triangle"></i>'
+	 	                }else{
+	 	                	  var icona_segnalazione = ''
+	 	                }
+	 	              
+	 	                
 	 	                if (numeroRiquadri === 0) {
 	 	                    // Se non ci sono riquadri presenti, aggiungi normalmente il nuovo riquadro
-	 	                  $("<div  data-toggle='tooltip' title='"+title+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
+	 	                  $("<div  data-toggle='tooltip' title='"+title+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+ icona_segnalazione+ " </div>").addClass('riquadro').css({
 	 	                	 /* $("<div   title='"+escapeHtml(lista_prenotazioni[i].note)+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:42px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({ */
 	 	                  
 	 	                	   // $("<div  data-toggle='tooltip' title='"+lista_prenotazioni[i].note+"' class='riquadro' id='riquadro_"+id_prenotazione+"' style='background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
@@ -1154,7 +1164,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	              
 	 	  				
 	 	                 
-	 	                 $("<div data-toggle='tooltip' title='"+title+"'  class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:5px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+"</div>").addClass('riquadro').css({
+	 	                 $("<div data-toggle='tooltip' title='"+title+"'  class='riquadro' id='riquadro_"+id_prenotazione+"' style='margin-top:5px;background-color:"+background_color+";border-color:"+border_color+"' ondblclick='modalPrenotazione("+id_inizio.split("_")[1]+", "+id_inizio.split("_")[0]+", "+id_prenotazione+")' >"+text+ " (" +lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - "+lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1]+ ")"+icona_segnalazione+"</div>").addClass('riquadro').css({
 	 	                    // left: posizioneUltimoRiquadro.left,
 	 	                     left: sinistra,
 	 	                     top: nuovaPosizioneVerticale,
@@ -1235,6 +1245,9 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	    	    	     
 	    	    	    '<div class="legend-item"> <div class="legend-color" style="background-color:#f7b8b8;"></div>'+
 	    	    	    '<div class="legend-label">MANUTENZIONE</div> </div>'+
+	    	    	    
+	    	    	    '<div class="legend-item"> <div><i class="fa fa-exclamation-triangle"></i></div>'+
+	    	    	    '<div class="legend-label">SEGNALAZIONE VEICOLO</div> </div>'+
 	    	    	    
 	    	    	    
 	    	    	    '</div>');

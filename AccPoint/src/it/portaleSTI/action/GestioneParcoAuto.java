@@ -44,6 +44,8 @@ import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
 import it.portaleSTI.DTO.PaaPrenotazioneDTO;
 import it.portaleSTI.DTO.PaaRichiestaDTO;
+import it.portaleSTI.DTO.PaaSegnalazioneDTO;
+import it.portaleSTI.DTO.PaaTipoSegnalazioneDTO;
 import it.portaleSTI.DTO.PaaVeicoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -109,17 +111,47 @@ public class GestioneParcoAuto extends HttpServlet {
 			    }
 			});
 			
+			ArrayList<Integer> lista_prenotazioni_con_segnalazione = new ArrayList<Integer>();
+			 ArrayList<PaaSegnalazioneDTO> lista_segnalazioni = GestioneParcoAutoBO.getListaSegnalazioni(0,null, session);
+			 for (PaaSegnalazioneDTO s : lista_segnalazioni) {
+				lista_prenotazioni_con_segnalazione.add(s.getPrenotazione().getId());
+			}
+			
 			PrintWriter out = response.getWriter();
 			myObj.addProperty("success", true);
-			myObj.add("lista_prenotazioni",g.toJsonTree(lista_prenotazioni));
 			
+			
+			myObj.add("lista_prenotazioni",g.toJsonTree(lista_prenotazioni));
+			myObj.add("lista_prenotazioni_con_segnalazione",g.toJsonTree(lista_prenotazioni_con_segnalazione));
 			
 
         	out.print(myObj);
         	session.getTransaction().commit();
         	session.close();
 			
-		}else {
+		}
+		else if(action!=null && action.equals("get_segnalazioni")) {
+			
+			String prenotazione = request.getParameter("id_prenotazione");
+			String cella = request.getParameter("cella");
+			
+			int annoCorrente = LocalDate.now(ZoneId.of("Europe/Rome")).getYear();
+		    ArrayList<PaaSegnalazioneDTO> lista_segnalazioni = GestioneParcoAutoBO.getListaSegnalazioni(Integer.parseInt(prenotazione),null, session);
+			
+		    
+		    PrintWriter out = response.getWriter();
+			myObj.addProperty("success", true);
+			Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create(); 		
+			myObj.add("lista_segnalazioni",g.toJsonTree(lista_segnalazioni));
+			
+			
+
+        	out.print(myObj);
+        	session.getTransaction().commit();
+        	session.close();
+		}
+		
+		else {
 			doPost(request, response);		
 		}
 		
@@ -531,6 +563,8 @@ public class GestioneParcoAuto extends HttpServlet {
 				 today = ChronoUnit.DAYS.between(inizioBimestre, dataCorrente);
 			 }
 			 
+			 ArrayList<PaaTipoSegnalazioneDTO> lista_tipi_segnalazione = GestioneParcoAutoBO.getListaTipiSegnalazione(session);
+			 
 
 				request.getSession().setAttribute("today", today);
 				request.getSession().setAttribute("anno", Integer.parseInt(anno));
@@ -542,7 +576,7 @@ public class GestioneParcoAuto extends HttpServlet {
 			
 				request.getSession().setAttribute("lista_committenti", lista_committenti);
 				request.getSession().setAttribute("lista_utenti", lista_utenti);
-				
+				request.getSession().setAttribute("lista_tipi_segnalazione", lista_tipi_segnalazione);
 				
 				request.getSession().setAttribute("lista_veicoli", lista_veicoli);				
 				
@@ -1190,6 +1224,119 @@ public class GestioneParcoAuto extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Richiesta eliminata con successo!");
 				out.print(myObj);
+				
+			}
+			
+			else if(action.equals("nuova_segnalazione")) {
+				
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+
+				String id_prenotazione = ret.get("id_prenotazione_segnalazione");
+				
+				String tipi_segnalazione = ret.get("tipo_segnalazione_str");
+				String note = ret.get("note_segnalazione");
+				String tipiDaRimuovere = ret.get("tipo_segnalazione_da_rimuovere");
+				
+				if (tipiDaRimuovere != null && !tipiDaRimuovere.isEmpty()) {
+					  String[] idDaRimuovere = tipiDaRimuovere.split(",");
+					    for (String idTipoStr : idDaRimuovere) {
+					    	GestioneParcoAutoBO.deleteSegnalazioni(Integer.parseInt(id_prenotazione), Integer.parseInt(idTipoStr), session);
+					    }
+				}
+				
+				if (tipi_segnalazione != null && !tipi_segnalazione.isEmpty()) {
+				    String[] ids = tipi_segnalazione.split(";");
+				    for (String id : ids) {
+				    	
+				    	PaaSegnalazioneDTO segnalazione = GestioneParcoAutoBO.getSegnalazione(Integer.parseInt(id_prenotazione), Integer.parseInt(id), session);
+				    	if(segnalazione == null) {
+				    		segnalazione = new PaaSegnalazioneDTO();
+					    	PaaPrenotazioneDTO prenotazione = (PaaPrenotazioneDTO) session.get(PaaPrenotazioneDTO.class, Integer.parseInt(id_prenotazione));
+					    	segnalazione.setPrenotazione(prenotazione);
+					    	PaaTipoSegnalazioneDTO tipo = (PaaTipoSegnalazioneDTO) session.get(PaaTipoSegnalazioneDTO.class, Integer.parseInt(id));
+					    	segnalazione.setTipo(tipo);
+					    	segnalazione.setNote(note);		
+					       segnalazione.setData_segnalazione(new Date());
+
+					       session.save(segnalazione);
+				    	}
+				    	 
+				       
+				    }
+				}
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Segnalazione salvata con successo!");
+				out.print(myObj);
+			}
+			
+			else if(action.equals("lista_segnalazioni")) {
+				
+				ArrayList<PaaSegnalazioneDTO> lista_segnalazioni = GestioneParcoAutoBO.getListaSegnalazioni(0, null, session);
+					
+				request.getSession().setAttribute("lista_segnalazioni", lista_segnalazioni);
+				
+		
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSegnalazioni.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("cambia_stato_segnalazione")) {
+				
+				ajax = true;
+				
+				String id_segnalazione = request.getParameter("id_segnalazione");
+				
+				PaaSegnalazioneDTO segnalazione = (PaaSegnalazioneDTO) session.get(PaaSegnalazioneDTO.class, Integer.parseInt(id_segnalazione));
+				
+				if(segnalazione.getStato() == 0) {
+					segnalazione.setStato(1);
+				}else {
+					segnalazione.setStato(0);
+				}
+				session.update(segnalazione);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Stato cambiato con successo!");
+				out.print(myObj);
+				
+			}
+			else if(action.equals("crea_rapporto_veicolo")) {
+				
+				String id_veicolo = request.getParameter("id_veicolo");
+				
+				ArrayList<PaaSegnalazioneDTO> lista_segnalazioni = GestioneParcoAutoBO.getListaSegnalazioni(Integer.parseInt(id_veicolo), null, session);
+				
+				
 				
 			}
 			

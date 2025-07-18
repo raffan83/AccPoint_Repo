@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 6-giu-2017 12.16.10 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.PaaSegnalazioneDTO" table="paa_segnalazione">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+
+
+       <property name="data_segnalazione" type="java.util.Date">
+            <column name="data_segnalazione" />
+        </property>
+
+          <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
+     <many-to-one name="prenotazione" class="it.portaleSTI.DTO.PaaPrenotazioneDTO" fetch="join" lazy="false">
+            <column name="id_prenotazione" />
+        </many-to-one>
+         <property name="stato" type="int">
+            <column name="stato" />
+        </property>
+     <many-to-one name="tipo" class="it.portaleSTI.DTO.PaaTipoSegnalazioneDTO" fetch="join" lazy="false">
+            <column name="id_tipo_segnalazione" />
+        </many-to-one>
+        
+      
+    </class>
+</hibernate-mapping>

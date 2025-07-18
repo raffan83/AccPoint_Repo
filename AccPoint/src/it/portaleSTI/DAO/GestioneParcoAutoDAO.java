@@ -10,6 +10,8 @@ import org.hibernate.Session;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.PaaPrenotazioneDTO;
 import it.portaleSTI.DTO.PaaRichiestaDTO;
+import it.portaleSTI.DTO.PaaSegnalazioneDTO;
+import it.portaleSTI.DTO.PaaTipoSegnalazioneDTO;
 import it.portaleSTI.DTO.PaaVeicoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
@@ -154,4 +156,79 @@ public class GestioneParcoAutoDAO {
 	   return lista;
 	}
 
+
+	public static ArrayList<PaaTipoSegnalazioneDTO> getListaTipiSegnalazione(Session session) {
+		
+		ArrayList<PaaTipoSegnalazioneDTO> lista = null;
+		
+		Query query = session.createQuery("FROM PaaTipoSegnalazioneDTO");
+		
+		        // Esegue la query e restituisce la lista
+	   lista = (ArrayList<PaaTipoSegnalazioneDTO>) query.list();
+
+	   return lista;
+	
+	}
+
+
+	public static ArrayList<PaaSegnalazioneDTO> getListaSegnalazioni(int prenotazione, Date data, Session session) {
+	ArrayList<PaaSegnalazioneDTO> lista = null;
+		
+	String q = "FROM PaaSegnalazioneDTO ";
+	if(prenotazione!=0 && data==null) {
+		q+= " where prenotazione.id = :_prenotazione";
+	}
+	else if(prenotazione==0 && data!=null) {
+		q+= " where data_segnalazione = :_data";
+	}
+	else if(prenotazione!=0 && data!=null) {
+		q+= " where data_segnalazione = :_data and prenotazione.id = :_prenotazione";
+	}
+	
+		Query query = session.createQuery(q);
+		if(prenotazione!=0) {
+			query.setParameter("_prenotazione", prenotazione);
+		}
+		if(data!=null) {
+			query.setParameter("_data", data);
+		}
+		
+		
+		
+		        // Esegue la query e restituisce la lista
+	   lista = (ArrayList<PaaSegnalazioneDTO>) query.list();
+
+	   return lista;
+	}
+
+
+	public static void deleteSegnalazioni(int id_prenotazione, int id_tipo, Session session) {
+
+		 String hqlDelete = "DELETE FROM PaaSegnalazioneDTO WHERE prenotazione.id = :idPrenotazione AND tipo.id = :idTipo";
+	        session.createQuery(hqlDelete)
+	            .setParameter("idPrenotazione", id_prenotazione)
+	            .setParameter("idTipo", id_tipo)
+	            .executeUpdate();		
+	}
+
+	
+	public static PaaSegnalazioneDTO getSegnalazione(int id_prenotazione, int id_tipo, Session session) {
+		
+		ArrayList<PaaSegnalazioneDTO> lista = null;
+		PaaSegnalazioneDTO res = null;
+		
+		Query query = session.createQuery("FROM PaaSegnalazioneDTO WHERE prenotazione.id = :idPrenotazione AND tipo.id = :idTipo")
+				.setParameter("idPrenotazione", id_prenotazione)
+	            .setParameter("idTipo", id_tipo);
+		
+		        // Esegue la query e restituisce la lista
+	   lista = (ArrayList<PaaSegnalazioneDTO>) query.list();
+
+	   if(lista.size()>0) {
+		   res = lista.get(0);
+	   }
+	   
+	   return res;
+	
+	}
 }

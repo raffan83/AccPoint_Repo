@@ -253,6 +253,55 @@
 	
 	
 	
+	<form id="formNuovaSegnalazione" name="formNuovaSegnalazione" >
+		  <div id="modalSegnalazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Aggiungi segalazione</h4>
+      </div>
+       <div class="modal-body">       
+
+       
+       <div class="row"> 
+       <div class="col-xs-12">
+       <label>Tipo segnalazione</label>
+       <select class="form-control select2" id="tipo_segnalazione" name="tipo_segnalazione" multiple data-placeholder="Seleziona tipo segnalazione" style="width:100%" >
+       <option value=""></option>
+       <c:forEach items="${lista_tipi_segnalazione }" var="tipo">
+       <option value="${tipo.id}">${tipo.descrizione }</option>
+       </c:forEach>
+       </select>
+        
+      </div> 
+      </div> <br>
+       <div class="row"> 
+       <div class="col-xs-12">
+       <label>Note</label>
+       <textarea rows="3" style="width:100%" id="note_segnalazione" name="note_segnalazione"  class="form-control"></textarea>
+       </div>
+       </div>
+	      </div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_prenotazione_segnalazione" name="id_prenotazione_segnalazione">
+      <input type="hidden" id="cella_segnalazione" name="cella_segnalazione">
+      <input type="hidden" id="tipo_segnalazione_precedente" name="tipo_segnalazione_precedente" value="">
+      <input type="hidden" id="tipo_segnalazione_str" name="tipo_segnalazione_str">
+      <input type="hidden" id="tipo_segnalazione_da_rimuovere" name="tipo_segnalazione_da_rimuovere" value="">
+      
+      
+
+
+   <button type="submit" class="btn btn-primary">Salva</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+	</form>
+	
 	  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
     <div class="modal-dialog modal-md" role="document">
@@ -365,6 +414,19 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"></script> 
 
 <script type="text/javascript">  
+
+$('#tipo_segnazione').change(function(){
+
+	var val = $(this).val();
+	
+	if(val == 4){
+		$("note_segnalazione").attr("required", true);
+	}else{
+		$("note_segnalazione").attr("required", false);
+	}
+	
+})
+
 
 $('input:checkbox').on('ifToggled', function() {
 	
@@ -522,6 +584,38 @@ $('#formNuovaPrenotazione').on("submit", function(e){
 	e.preventDefault();
 	nuovaPrenotazione();
 })
+
+/* $('#formNuovaSegnalazione').on("submit", function(e){
+	e.preventDefault();
+	
+	   var selectedValues = $('#tipo_segnalazione').val(); // array dei valori selezionati
+	    var tipoSegnalazioneStr = selectedValues ? selectedValues.join(';') : "";
+
+	    // Inserisci la stringa in un campo nascosto o inviala via AJAX
+	    $('#tipo_segnalazione_str').val(tipoSegnalazioneStr);
+	
+	callAjaxForm('#formNuovaSegnalazione', 'gestioneParcoAuto.do?action=nuova_segnalazione');
+}) */
+
+$('#formNuovaSegnalazione').on("submit", function(e){
+	e.preventDefault();
+
+	var selectedValues = $('#tipo_segnalazione').val() || [];
+	var tipoSegnalazioneStr = selectedValues.join(';');
+
+	// valori precedenti
+	var valoriPrecedenti = $('#tipo_segnalazione_precedente').val().split(';').filter(e => e !== "");
+
+	// calcola differenza: cosa è stato rimosso?
+	var rimossi = valoriPrecedenti.filter(id => !selectedValues.includes(id));
+	var rimossiStr = rimossi.join(';');
+
+	// aggiorna i campi nascosti
+	$('#tipo_segnalazione_str').val(tipoSegnalazioneStr);
+	$('#tipo_segnalazione_da_rimuovere').val(rimossiStr);
+
+	callAjaxForm('#formNuovaSegnalazione', 'gestioneParcoAuto.do?action=nuova_segnalazione');
+});
 
 
 $('#docente').on('change', function() {
@@ -736,6 +830,57 @@ $(document).ready(function($) {
 	 $.page_zoom();
 	
 	
+	 /* var t = $('#tabSegnalazioni').DataTable({
+		  language: {
+		    emptyTable: "Nessun dato presente nella tabella",
+		    info: "Vista da _START_ a _END_ di _TOTAL_ elementi",
+		    infoEmpty: "Vista da 0 a 0 di 0 elementi",
+		    infoFiltered: "(filtrati da _MAX_ elementi totali)",
+		    lengthMenu: "Visualizza _MENU_ elementi",
+		    loadingRecords: "Caricamento...",
+		    processing: "Elaborazione...",
+		    search: "Cerca:",
+		    zeroRecords: "La ricerca non ha portato alcun risultato.",
+		    paginate: {
+		      first: "Inizio",
+		      previous: "Precedente",
+		      next: "Successivo",
+		      last: "Fine"
+		    },
+		    aria: {
+		      sortAscending: ": attiva per ordinare la colonna in ordine crescente",
+		      sortDescending: ": attiva per ordinare la colonna in ordine decrescente"
+		    }
+		  },
+		  pageLength: 25,
+		  order: [[1, "desc"]],
+		  paging: false,
+		  ordering: true,
+		  info: false,
+		  searchable: true,
+			searching: false,
+		  responsive: true,
+		  scrollX: false,
+		  stateSave: false,
+
+		 
+
+		  columns: [
+		    { data: null }, // <- questo va così se non c'è "check" nel JSON
+		    { data: "id" },
+		    { data: "tipo" },
+		    { data: "note" },
+
+		    { data: "azioni" }
+		  ],
+
+		
+
+		  buttons: [{
+		    extend: 'colvis',
+		    text: 'Nascondi Colonne'
+		  }]
+		}); */
 	
 	
 	$.page_zoom({
@@ -892,8 +1037,24 @@ function initContextMenu(){
              console.log('No div selected to delete.');
          }
              break;
+	     
+	     
+	     
+	     case 'segnalazione':
+	    	 
+	    	 if (selectedDiv) {
+				var prenotazione = selectedDiv[0].id.split("_")[1];
+	
+				$('#id_prenotazione_segnalazione').val(prenotazione);
+				//$('#cella_segnalazione').val(cella);
+		
+				getSegnalazioni(prenotazione);
+			
+				selectedDiv = null;
+			}
+			
+			 break;
 	     }
-	   
 	     // Hide it AFTER the action was triggered
 	     $(".custom-menu").hide(100);
 	   });
@@ -906,7 +1067,42 @@ function initContextMenu(){
 }
 
 
+function getSegnalazioni(id_prenotazione){
+	
+	dataObj = {}
+	dataObj.id_prenotazione = id_prenotazione;
+	
+	callAjax(dataObj, "gestioneParcoAuto.do?action=get_segnalazioni", function(data){
+		
+		
+		if(data.success){
+			
+			var lista_segnalazioni = data.lista_segnalazioni;
+			var table_data = [];
+			let valoriCorrenti = $('#tipo_segnalazione').val() || [];
+			
+			for(var i = 0; i<lista_segnalazioni.length;i++){
+				
+			$('#note_segnalazione').val(lista_segnalazioni[i].note);
 
+				// Aggiungi un nuovo valore (es. "2"), se non è già presente
+				if (!valoriCorrenti.includes(lista_segnalazioni[i].tipo.id)) {
+				  valoriCorrenti.push(lista_segnalazioni[i].tipo.id);
+				}
+
+
+	    }
+			$('#tipo_segnalazione_precedente').val(valoriCorrenti);
+			$('#tipo_segnalazione').val(valoriCorrenti).trigger('change');
+			 
+
+			
+			$('#modalSegnalazione').modal();
+		}
+		
+	}, "GET");
+	
+}
 
 var orariDisabilitati = [];
   

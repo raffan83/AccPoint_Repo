@@ -67,9 +67,9 @@ public class GestioneParcoAutoBO {
 		return GestioneParcoAutoDAO.getListaTipiSegnalazione(session);
 	}
 
-	public static ArrayList<PaaSegnalazioneDTO> getListaSegnalazioni(int veicolo, Date data, Session session) {
+	public static ArrayList<PaaSegnalazioneDTO> getListaSegnalazioni(int prenotazione, int veicolo, Date data, Session session) {
 		// TODO Auto-generated method stub
-		return GestioneParcoAutoDAO.getListaSegnalazioni(veicolo, data, session);
+		return GestioneParcoAutoDAO.getListaSegnalazioni(prenotazione,veicolo, data, session);
 	}
 
 	public static void deleteSegnalazioni(int id_prenotazione, int id_tipo,Session session) {

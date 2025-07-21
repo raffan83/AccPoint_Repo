@@ -132,7 +132,7 @@
        <div class="modal-body">       
       	<div class="row">
       	<div class="col-xs-12">
-      	<select id="veicolo" name="veicolo" class="form-control select2" data-placeholder="Seleziona veicolo...">
+      	<select id="veicolo" name="veicolo" class="form-control select2" data-placeholder="Seleziona veicolo..." style="width:100%">
       	<option value=""></option>
       	<c:forEach items="${lista_veicoli }" var="veicolo">
       	<option value="${veicolo.id }">${veicolo.targa} - ${veicolo.modello }</option>

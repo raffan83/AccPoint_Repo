@@ -116,7 +116,7 @@ public class CreateVerCertificato {
 				report.addParameter("versione_software_label", "Versione software:");
 				report.addParameter("versione_software", misura.getVersione_sw());
 			}else {
-				report.addParameter("versione_software_label", "");
+				report.addParameter("versione_software_label", "Versione software: /");
 				report.addParameter("versione_software", "");
 			}
 			

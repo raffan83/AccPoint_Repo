@@ -171,7 +171,7 @@ public class GestioneParcoAutoDAO {
 	}
 
 
-	public static ArrayList<PaaSegnalazioneDTO> getListaSegnalazioni(int prenotazione, Date data, Session session) {
+	public static ArrayList<PaaSegnalazioneDTO> getListaSegnalazioni(int prenotazione,int id_veicolo, Date data, Session session) {
 	ArrayList<PaaSegnalazioneDTO> lista = null;
 		
 	String q = "FROM PaaSegnalazioneDTO ";
@@ -184,6 +184,9 @@ public class GestioneParcoAutoDAO {
 	else if(prenotazione!=0 && data!=null) {
 		q+= " where data_segnalazione = :_data and prenotazione.id = :_prenotazione";
 	}
+	if(id_veicolo!=0 && prenotazione== 0) {
+		q+= " where prenotazione.veicolo.id = :_veicolo";
+	}
 	
 		Query query = session.createQuery(q);
 		if(prenotazione!=0) {
@@ -191,6 +194,9 @@ public class GestioneParcoAutoDAO {
 		}
 		if(data!=null) {
 			query.setParameter("_data", data);
+		}
+		if(id_veicolo!=0 && prenotazione== 0) {
+			query.setParameter("_veicolo", id_veicolo);
 		}
 		
 		

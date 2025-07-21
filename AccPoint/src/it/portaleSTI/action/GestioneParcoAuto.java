@@ -51,6 +51,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateRapportoSegnalazioniVeicoli;
 import it.portaleSTI.bo.GestioneDocumentaleBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneParcoAutoBO;
@@ -112,7 +113,7 @@ public class GestioneParcoAuto extends HttpServlet {
 			});
 			
 			ArrayList<Integer> lista_prenotazioni_con_segnalazione = new ArrayList<Integer>();
-			 ArrayList<PaaSegnalazioneDTO> lista_segnalazioni = GestioneParcoAutoBO.getListaSegnalazioni(0,null, session);
+			 ArrayList<PaaSegnalazioneDTO> lista_segnalazioni = GestioneParcoAutoBO.getListaSegnalazioni(0,0,null, session);
 			 for (PaaSegnalazioneDTO s : lista_segnalazioni) {
 				lista_prenotazioni_con_segnalazione.add(s.getPrenotazione().getId());
 			}
@@ -136,7 +137,7 @@ public class GestioneParcoAuto extends HttpServlet {
 			String cella = request.getParameter("cella");
 			
 			int annoCorrente = LocalDate.now(ZoneId.of("Europe/Rome")).getYear();
-		    ArrayList<PaaSegnalazioneDTO> lista_segnalazioni = GestioneParcoAutoBO.getListaSegnalazioni(Integer.parseInt(prenotazione),null, session);
+		    ArrayList<PaaSegnalazioneDTO> lista_segnalazioni = GestioneParcoAutoBO.getListaSegnalazioni(Integer.parseInt(prenotazione),0,null, session);
 			
 		    
 		    PrintWriter out = response.getWriter();
@@ -1299,9 +1300,11 @@ public class GestioneParcoAuto extends HttpServlet {
 			
 			else if(action.equals("lista_segnalazioni")) {
 				
-				ArrayList<PaaSegnalazioneDTO> lista_segnalazioni = GestioneParcoAutoBO.getListaSegnalazioni(0, null, session);
+				ArrayList<PaaSegnalazioneDTO> lista_segnalazioni = GestioneParcoAutoBO.getListaSegnalazioni(0,0, null, session);
+				ArrayList<PaaVeicoloDTO> lista_veicoli = GestioneParcoAutoBO.getListaVeicoli(session);
 					
 				request.getSession().setAttribute("lista_segnalazioni", lista_segnalazioni);
+				request.getSession().setAttribute("lista_veicoli", lista_veicoli);
 				
 		
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSegnalazioni.jsp");
@@ -1334,9 +1337,19 @@ public class GestioneParcoAuto extends HttpServlet {
 				
 				String id_veicolo = request.getParameter("id_veicolo");
 				
-				ArrayList<PaaSegnalazioneDTO> lista_segnalazioni = GestioneParcoAutoBO.getListaSegnalazioni(Integer.parseInt(id_veicolo), null, session);
+				ArrayList<PaaSegnalazioneDTO> lista_segnalazioni = GestioneParcoAutoBO.getListaSegnalazioni(0,Integer.parseInt(id_veicolo), null, session);
 				
+				new CreateRapportoSegnalazioniVeicoli(lista_segnalazioni);
 				
+				String path_folder = Costanti.PATH_FOLDER+"\\ParcoAuto\\"+lista_segnalazioni.get(0).getPrenotazione().getVeicolo().getId()+"\\RapportoSegnalazione\\";
+								
+
+				String filename ="RAPPORTO"+lista_segnalazioni.get(0).getPrenotazione().getVeicolo().getTarga()+".pdf";
+				
+				response.setContentType("application/pdf");	
+				response.setHeader("Content-Disposition", "inline; filename="+filename);
+				
+				Utility.downloadFile(path_folder+filename, response.getOutputStream());
 				
 			}
 			

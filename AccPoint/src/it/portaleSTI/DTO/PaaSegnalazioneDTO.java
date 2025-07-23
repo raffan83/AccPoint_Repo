@@ -8,7 +8,9 @@ public class PaaSegnalazioneDTO {
 	private PaaTipoSegnalazioneDTO tipo;
 	private Date data_segnalazione;
 	private String note;
+	private String note_chiusura;
 	private int stato;
+	private UtenteDTO utente;
 	
 	public int getId() {
 		return id;
@@ -47,6 +49,18 @@ public class PaaSegnalazioneDTO {
 	}
 	public void setStato(int stato) {
 		this.stato = stato;
+	}
+	public String getNote_chiusura() {
+		return note_chiusura;
+	}
+	public void setNote_chiusura(String note_chiusura) {
+		this.note_chiusura = note_chiusura;
+	}
+	public UtenteDTO getUtente() {
+		return utente;
+	}
+	public void setUtente(UtenteDTO utente) {
+		this.utente = utente;
 	}
 	
 	

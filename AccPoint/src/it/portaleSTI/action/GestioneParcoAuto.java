@@ -1284,6 +1284,7 @@ public class GestioneParcoAuto extends HttpServlet {
 					    	segnalazione.setTipo(tipo);
 					    	segnalazione.setNote(note);		
 					       segnalazione.setData_segnalazione(new Date());
+					       segnalazione.setUtente(utente);
 
 					       session.save(segnalazione);
 				    	}
@@ -1316,6 +1317,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				ajax = true;
 				
 				String id_segnalazione = request.getParameter("id_segnalazione");
+				String note_chiusura = request.getParameter("note_chiusura");
 				
 				PaaSegnalazioneDTO segnalazione = (PaaSegnalazioneDTO) session.get(PaaSegnalazioneDTO.class, Integer.parseInt(id_segnalazione));
 				
@@ -1324,6 +1326,8 @@ public class GestioneParcoAuto extends HttpServlet {
 				}else {
 					segnalazione.setStato(0);
 				}
+				segnalazione.setNote_chiusura(note_chiusura);
+				
 				session.update(segnalazione);
 				
 				myObj = new JsonObject();

@@ -66,10 +66,12 @@
 <th style="max-width:40px">ID</th>
 <th>Targa</th>
 <th>Modello</th>
+<th>Utente</th>
 <th>Data Segnalazione</th>
 <th>Tipo Segnalazione</th>
 <th>Stato</th>
 <th>Note</th>
+<th>Note Chiusura</th>
 <th style="min-width:150px">Azioni</th>
  </tr></thead>
  
@@ -82,6 +84,7 @@
 	
 	<td>${segnalazione.prenotazione.veicolo.targa }</td>
 	<td>${segnalazione.prenotazione.veicolo.modello }</td>
+	<td>${segnalazione.utente.nominativo }</td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${segnalazione.data_segnalazione }"></fmt:formatDate></td>
 	<td>${segnalazione.tipo.descrizione }</td>
 	<td>
@@ -96,11 +99,17 @@
 	</td>
 
 	<td>${segnalazione.note }</td>
-
+<td>${segnalazione.note_chiusura }</td>
 	<td>
-
+<c:if test="${segnalazione.stato == 0 }">
+	
+	<a class="btn btn-info customTooltip" onClicK="modalYesOrNo('${segnalazione.id}')" title="Click per cambiare lo stato della segnalazione"><i class="glyphicon glyphicon-refresh"></i></a>
+	
+	</c:if>
+	<c:if test="${segnalazione.stato == 1 }">
+	
 	<a class="btn btn-info customTooltip" onClicK="cambiaStatoSegnalazione('${segnalazione.id}')" title="Click per cambiare lo stato della segnalazione"><i class="glyphicon glyphicon-refresh"></i></a>
- 
+ </c:if>
 	</td>
 	</tr>
 	</c:forEach>
@@ -161,11 +170,26 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      	Sei sicuro di voler eliminare il segnalazione?
+       <div class="row">
+       <div class="col-xs-12">
+       Sei sicuro di voler evadere la segnalazione?
+       </div>
+        </div><br>
+       <div class="row">
+       <div class="col-xs-12">
+     
+       		<label>Note chiusura</label>
+     
+       	  	
+        <textarea id="note_chiusura" name="note_chiusura" class="form-control" rows="5" style="width:100%" ></textarea>
+       			
+       	</div>       	
+       </div><br>
+      	
       	</div>
       <div class="modal-footer">
-      <input type="hidden" id="id_segnalazione_elimina">
-      <a class="btn btn-primary" onclick="eliminaSegnalazione($('#id_segnalazione_elimina').val())" >SI</a>
+      <input type="hidden" id="id_segnalazione" >
+      <a class="btn btn-primary" onclick="cambiaStatoSegnalazione($('#id_segnalazione').val(), $('#note_chiusura').val())" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
     </div>
@@ -173,313 +197,6 @@
 
 </div>
 
-
-<form id="nuovaSegnalazioneForm" name="nuovaSegnalazioneForm">
-<div id="myModalNuovoSegnalazione" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Segnalazione</h4>
-      </div>
-       <div class="modal-body">
-
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Modello</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="modello" name="modello" class="form-control" type="text" style="width:100%" required>
-       			
-       	</div>       	
-       </div><br>
-       
-         <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Targa</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="targa" name="targa" class="form-control" type="text" style="width:100%" required>
-       			
-       	</div>       	
-       </div><br>
-       
-                           <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Company</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        
-    <select name="company" id="company" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona company..." data-live-search="true" style="width:100%" >
-                <option value=""></option>
-                      <c:forEach items="${lista_committenti}" var="committente">
-                     
-                           <option value="${committente.id}">${committente.nome_cliente} - ${committente.indirizzo_cliente }</option> 
-                         
-                     </c:forEach>
-
-                  </select> 
-       			
-       	</div>       	
-       </div><br>
-       
-       
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Km Percorsi</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="km_percorsi" name="km_percorsi" class="form-control" type="number" step="1" min="0" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Portata max</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="portata_max" name="portata_max" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-       
-  <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Dispositivo pedaggio</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="dispositivo_pedaggio" name="dispositivo_pedaggio" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-       
-   <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Immagine Segnalazione</label>
-       	</div>
-       	<div class="col-sm-9">      
-			<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".jpg,.JPG,.png,.PNG"  id="fileupload_immagine_segnalazione" name="fileupload_immagine_segnalazione" type="file" ></span><label id="label_immagine_segnalazione"></label>
-       	</div>       	
-       </div><br> 
-       
-          <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Carta di circolazione</label>
-       	</div>
-       	<div class="col-sm-9">      
-			<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.jpg,.JPG,.png,.PNG"  id="fileupload_carta_circolazione" name="fileupload_carta_circolazione" type="file" ></span><label id="label_carta_circolazione"></label>
-       	</div>       	
-       </div><br> 
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Autorizzazione</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="autorizzazione" name="autorizzazione" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-             <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Note</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <textarea id="note" name="note" class="form-control" rows="5" style="width:100%" ></textarea>
-       			
-       	</div>       	
-       </div><br>
-       
-       </div>
-  		 
-      <div class="modal-footer">
-
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</form>
-
-
-
-
-<form id="modificaSegnalazioneForm" name="modificaSegnalazioneForm">
-<div id="myModalModificaSegnalazione" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Segnalazione</h4>
-      </div>
-          <div class="modal-body">
-
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Modello</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="modello_mod" name="modello_mod" class="form-control" type="text" style="width:100%" required>
-       			
-       	</div>       	
-       </div><br>
-       
-         <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Targa</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="targa_mod" name="targa_mod" class="form-control" type="text" style="width:100%" required>
-       			
-       	</div>       	
-       </div><br>
-       
-                           <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Company</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        
-    <select name="company_mod" id="company_mod" class="form-control select2" aria-hidden="true"  data-placeholder="Seleziona company..." data-live-search="true" style="width:100%" >
-                <option value=""></option>
-                      <c:forEach items="${lista_committenti}" var="committente">
-                     
-                           <option value="${committente.id}">${committente.nome_cliente} - ${committente.indirizzo_cliente }</option> 
-                         
-                     </c:forEach>
-
-                  </select> 
-       			
-       	</div>       	
-       </div><br>
-       
-       
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Km Percorsi</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="km_percorsi_mod" name="km_percorsi_mod" class="form-control" type="number" step="1" min="0" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Portata max</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="portata_max_mod" name="portata_max_mod" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-         <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Dispositivo pedaggio</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="dispositivo_pedaggio_mod" name="dispositivo_pedaggio_mod" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-  
-       
-       
-   <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Immagine Segnalazione</label>
-       	</div>
-       	<div class="col-sm-9">      
-			<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".jpg,.JPG,.png,.PNG"  id="fileupload_immagine_segnalazione_mod" name="fileupload_immagine_segnalazione_mod" type="file" ></span><label id="label_immagine_segnalazione_mod"></label>
-       	</div>       	
-       </div><br> 
-       
-          <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Carta di circolazione</label>
-       	</div>
-       	<div class="col-sm-9">      
-			<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.jpg,.JPG,.png,.PNG"  id="fileupload_carta_circolazione_mod" name="fileupload_carta_circolazione_mod" type="file" ></span><label id="label_carta_circolazione_mod"></label>
-       	</div>       	
-       </div><br> 
-       
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Autorizzazione</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="autorizzazione_mod" name="autorizzazione_mod" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-             <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Note</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <textarea id="note_mod" name="note_mod" class="form-control" rows="5" style="width:100%" ></textarea>
-       			
-       	</div>       	
-       </div><br>
-       
-       </div>
-  		 
-      <div class="modal-footer">
-		
-		<input type="hidden" id="id_segnalazione" name="id_segnalazione">
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</form>
 
 
 
@@ -526,9 +243,10 @@
 <script type="text/javascript">
 
 
-function cambiaStatoSegnalazione(id_segnalazione){
+function cambiaStatoSegnalazione(id_segnalazione, note_chiusura){
 	dataObj ={};
 	dataObj.id_segnalazione = id_segnalazione;
+	dataObj.note_chiusura = note_chiusura;
 	
 	callAjax(dataObj, "gestioneParcoAuto.do?action=cambia_stato_segnalazione");
 	
@@ -536,8 +254,9 @@ function cambiaStatoSegnalazione(id_segnalazione){
 
 function creaRapporto(id_veicolo){
 	
-	callAction("gestioneParcoAuto.do?action=crea_rapporto_veicolo&id_veicolo="+id_veicolo)
-	
+	//callAction("gestioneParcoAuto.do?action=crea_rapporto_veicolo&id_veicolo="+id_veicolo)
+	window.open("gestioneParcoAuto.do?action=crea_rapporto_veicolo&id_veicolo=" + id_veicolo, '_blank');
+
 }
 
 
@@ -568,46 +287,14 @@ function modificaSegnalazione(id_segnalazione, targa, modello, id_company, km_pe
 
 
 
-function modalEliminaSegnalazione(id_segnalazione){
+function modalYesOrNo(id_segnalazione){
 	
 	
-	$('#id_segnalazione_elimina').val(id_segnalazione);
+	$('#id_segnalazione').val(id_segnalazione);
 	$('#myModalYesOrNo').modal()
 	
 }
 
-
-$('#fileupload_immagine_segnalazione').change(function(){
-	$('#label_immagine_segnalazione').html($(this).val().split("\\")[2]);
-	 
- });
-
-
-$('#fileupload_carta_circolazione').change(function(){
-	$('#label_carta_circolazione').html($(this).val().split("\\")[2]);
-	 
- });
- 
- 
-$('#fileupload_immagine_segnalazione_mod').change(function(){
-	$('#label_immagine_segnalazione_mod').html($(this).val().split("\\")[2]);
-	 
- });
-
-
-$('#fileupload_carta_circolazione_mod').change(function(){
-	$('#label_carta_circolazione_mod').html($(this).val().split("\\")[2]);
-	 
- });
-
-function eliminaSegnalazione(){
-	
-	dataObj = {};
-	
-	dataObj.id_segnalazione_elimina = $('#id_segnalazione_elimina').val();
-	
-	callAjax(dataObj, "gestioneParcoAuto.do?action=elimina_segnalazione");
-}
 
 
 var columsDatatables = [];
@@ -692,7 +379,7 @@ $(document).ready(function() {
  			           
  			      columnDefs: [
  			    	  
- 			    	  { responsivePriority: 1, targets: 6 },
+ 			    	  { responsivePriority: 1, targets: 7 },
  			    	  
  			    	  
  			               ], 	        
@@ -700,7 +387,12 @@ $(document).ready(function() {
  		  	          {
  		  	            extend: 'colvis',
  		  	            text: 'Nascondi Colonne'  	                   
- 		 			  } ]
+ 		 			  },
+ 			          {
+ 	 		  	            extend: 'excel',
+ 	 		  	            text: 'Esporta Excel'  	                   
+ 	 		 			  }
+ 		 			  ]
  			               
  			    });
  		
@@ -750,21 +442,7 @@ $(document).ready(function() {
 });
 
 
-$('#modificaSegnalazioneForm').on('submit', function(e){
-	 e.preventDefault();
-	 callAjaxForm('#modificaSegnalazioneForm','gestioneParcoAuto.do?action=modifica_segnalazione');
-});
- 
 
- 
- $('#nuovaSegnalazioneForm').on('submit', function(e){
-	 e.preventDefault();
-	 
-	 callAjaxForm('#nuovaSegnalazioneForm','gestioneParcoAuto.do?action=nuova_segnalazione');
-	
-});
- 
- 
  
 
 

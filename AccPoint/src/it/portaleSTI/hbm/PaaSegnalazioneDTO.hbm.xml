@@ -17,6 +17,9 @@
           <property name="note" type="java.lang.String">
             <column name="note" />
         </property>
+          <property name="note_chiusura" type="java.lang.String">
+            <column name="note_chiusura" />
+        </property>
      <many-to-one name="prenotazione" class="it.portaleSTI.DTO.PaaPrenotazioneDTO" fetch="join" lazy="false">
             <column name="id_prenotazione" />
         </many-to-one>
@@ -26,7 +29,9 @@
      <many-to-one name="tipo" class="it.portaleSTI.DTO.PaaTipoSegnalazioneDTO" fetch="join" lazy="false">
             <column name="id_tipo_segnalazione" />
         </many-to-one>
-        
+        <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_utente" />
+        </many-to-one>
       
     </class>
 </hibernate-mapping>

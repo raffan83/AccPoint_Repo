@@ -137,9 +137,11 @@ int anno = (Integer) request.getSession().getAttribute("anno");
    
 
     <ul class='custom-menu'>
+    <c:if test="${userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN')}">
   <li data-action = "copy">Copia</li>
   <li data-action = "paste">Incolla</li>
   <li data-action = "delete">Elimina</li>
+  </c:if>
   <li data-action = "segnalazione">Aggiungi segnalazione</li>
 </ul>
 
@@ -841,10 +843,12 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
 	    $(document.body).css('padding-right', '0px');
 	    
-	    if(permesso!=null &&  permesso=='true'){
-	    	initContextMenu()	
+	  //  if(permesso!=null &&  permesso=='true'){
+	    	initContextMenu(permesso)	
+	  /*   }else{
+	    	initContextMenu(null)
 	    }
-	    
+	     */
 	    
 
 	    $('.dropdown-menu').css('z-index', 200);

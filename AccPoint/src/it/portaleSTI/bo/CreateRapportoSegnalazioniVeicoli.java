@@ -115,10 +115,10 @@ public class CreateRapportoSegnalazioniVeicoli {
 			report.setColumnStyle((styleTitle).setBorder(stl.pen1Point()).setFontSize(9));
 			
 			report.addColumn(
-		 		        Columns.column("TIPO SEGNALAZIONE", "tipo", type.stringType()).setFixedWidth(150).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(stl.style().setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
+		 		        Columns.column("TIPO SEGNALAZIONE", "tipo", type.stringType()).setFixedWidth(150).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(stl.style().setFontSize(8).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
 		 		    );
 			report.addColumn(
-		 		        Columns.column("NOTE", "note", type.stringType()).setFixedWidth(150).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(stl.style().setFontSize(8).setForegroundColor(Color.blue).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
+		 		        Columns.column("NOTE", "note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(stl.style().setFontSize(8).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
 		 		    );
 			
 			report.getReport().getTitleBand().setPrintWhenExpression(Expressions.printNotInFirstPage());
@@ -134,15 +134,18 @@ public class CreateRapportoSegnalazioniVeicoli {
 				
 				  DRDataSource ds = new DRDataSource(listaCodici);
 			for (PaaSegnalazioneDTO s : lista_segnalazioni) {
-				ArrayList<String> arrayPs = new ArrayList<String>();
-				arrayPs.add(s.getTipo().getDescrizione());
-				if(s.getNote()!=null) {
-					arrayPs.add(s.getNote());
-				}else {
-					arrayPs.add("");
+				if(s.getStato()==0) {
+					ArrayList<String> arrayPs = new ArrayList<String>();
+					arrayPs.add(s.getTipo().getDescrizione());
+					if(s.getNote()!=null) {
+						arrayPs.add(s.getNote());
+					}else {
+						arrayPs.add("");
+					}
+					
+					ds.add(arrayPs.toArray());
 				}
 				
-				ds.add(arrayPs.toArray());
 			}
 			
 

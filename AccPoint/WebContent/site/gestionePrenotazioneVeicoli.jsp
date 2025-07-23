@@ -955,7 +955,7 @@ $('#tabPrenotazione tbody td').on('contextmenu', 'div',  function(e) {
 	}); 
 
 var cellIndex;
-function initContextMenu(){
+function initContextMenu(permesso){
 	
 	$("#tabPrenotazione tbody td").bind("contextmenu", function (event) {
 		
@@ -1003,6 +1003,10 @@ function initContextMenu(){
 	     switch($(this).attr("data-action")) {
 	         
 	         // A case for each action. Your actions here
+	         
+	         
+	        	 
+	         
 	     case 'copy':
              // Implement copy functionality
               if (selectedDiv) {
@@ -1038,7 +1042,7 @@ function initContextMenu(){
          }
              break;
 	     
-	     
+	
 	     
 	     case 'segnalazione':
 	    	 
@@ -1107,7 +1111,10 @@ function getSegnalazioni(id_prenotazione){
 var orariDisabilitati = [];
   
   
-	
+$('#modalSegnalazione').on("hidden.bs.modal", function(){
+	$('#tipo_segnalazione').val([]);
+	$('#note_segnalazione').val("");
+});
 
 $('#modalPrenotazione').on("hidden.bs.modal", function(){
 	

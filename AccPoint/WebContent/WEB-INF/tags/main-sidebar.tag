@@ -484,7 +484,9 @@
 		<li><a href="gestioneParcoAuto.do?action=gestione_prenotazioni">Gestione Prenotazioni</a></li>	
 	      	<li><a href="confermaPrenotazione.do">Conferma Prenotazioni</a></li>
 	      		<li><a href="gestioneParcoAuto.do?action=gestione_richieste">Richieste Prenotazioni</a></li>
+	      		 <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_PARCO_AUTO_ADMIN")){%>  
 	      		<li><a href="gestioneParcoAuto.do?action=lista_segnalazioni">Lista Segnalazioni</a></li>
+	      		   <%} %>
           </ul>
         </li> 
            <% }%>
@@ -506,7 +508,24 @@
 	  	  <li><a href="amGestioneInterventi.do?action=lista_immagini_campione">Lista Immagini Attrezzatura</a></li> 
           </ul>
         </li> 
+        
+        
+        
+        <!-- 
+        <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Scadenzario Attività</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+		   <li><a href="amScGestioneScadenzario.do">Scadenzario Attività</a></li> 
+          </ul>
+        </li>  -->
+        
            <% }%> 
+           
+
         
          <% if(user.checkPermesso("GREEN_PASS")){%> 
          

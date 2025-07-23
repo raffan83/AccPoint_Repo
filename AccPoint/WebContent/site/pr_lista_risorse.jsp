@@ -571,7 +571,7 @@ function sincronizzaSelect(sourceSelectId, targetSelectId) {
     var found = false;
 
     $('#' + targetSelectId + ' option').each(function () {
-        if ($(this).text().toLowerCase() === selectedText) {
+        if ($(this).text().toLowerCase().includes(selectedText)) {
             $(this).prop('selected', true);
 
             found = true;
@@ -994,7 +994,7 @@ $('#modificaRisorsaForm').on('submit', function(e){
 
 		                    if (i === 3) {
 		                    	var id = $cell[0].id; 
-		                        const options = '<select required class="form-control select2" id="select_'+id+'" onchange="changeStato('+id+')" style="width:100%"> <option value="1">IDEONEO</option> <option value="2">NON IDONEO</option>  <option value="3">PARZIALMENTE IDONEO</option> </select>';
+		                        const options = '<select required class="form-control select2" id="select_'+id+'" onchange="changeStato('+id+')" style="width:100%"> <option value="1">IDONEO</option> <option value="2">NON IDONEO</option>  <option value="3">PARZIALMENTE IDONEO</option> </select>';
 		                        $cell.html(options);
 		                    }
 		                    else if(i === 4){

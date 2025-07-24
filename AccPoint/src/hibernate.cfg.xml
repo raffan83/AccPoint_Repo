@@ -275,6 +275,12 @@
 	<mapping class="PRRequisitoSanitarioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PRRequisitoSanitarioDTO.hbm.xml"/>
 	<mapping class="PRInterventoRequisitoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PRInterventoRequisitoDTO.hbm.xml"/>
 	<mapping class="PRInterventoRisorsaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PRInterventoRisorsaDTO.hbm.xml"/>
+	
+	
+	<mapping class="AmScAttrezzaturaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AmScAttrezzaturaDTO.hbm.xml"/>
+<mapping class="AmScAttivitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AmScAttivitaDTO.hbm.xml"/>
+<mapping class="AmScScadenzarioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AmScScadenzarioDTO.hbm.xml"/>
+	
  	
   </session-factory>
 </hibernate-configuration>

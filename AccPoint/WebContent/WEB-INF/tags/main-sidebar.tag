@@ -511,7 +511,7 @@
         
         
         
-        <!-- 
+         
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Scadenzario Attività</span>
             <span class="pull-right-container">
@@ -521,7 +521,7 @@
           <ul class="treeview-menu">
 		   <li><a href="amScGestioneScadenzario.do">Scadenzario Attività</a></li> 
           </ul>
-        </li>  -->
+        </li> 
         
            <% }%> 
            

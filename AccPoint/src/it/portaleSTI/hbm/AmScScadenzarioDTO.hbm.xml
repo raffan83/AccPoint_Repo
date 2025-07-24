@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.AmScScadenzarioDTO" table="am_sc_scadenzario">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="attrezzatura" class="it.portaleSTI.DTO.AmScAttrezzaturaDTO" column="id_attrezzatura" not-null="true"/>
+        <many-to-one name="attivita" class="it.portaleSTI.DTO.AmScAttivitaDTO" column="id_attivita" not-null="true"/>
+
+        <property name="frequenza" column="frequenza"/>
+        <property name="dataAttivita" column="data_attivita" type="date"/>
+        <property name="dataProssimaAttivita" column="data_prossima_attivita" type="date"/>
+        <property name="esito" column="esito" length="3"/>
+        <property name="note" column="note" type="text"/>
+    </class>
+</hibernate-mapping>

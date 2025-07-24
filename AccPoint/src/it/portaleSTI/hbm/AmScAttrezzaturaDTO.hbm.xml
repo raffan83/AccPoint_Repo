@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.AmScAttrezzaturaDTO" table="am_sc_attrezzatura">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        
+        <property name="descrizione" column="descrizione" length="765"/>
+        <property name="idCliente" column="id_cliente"/>
+        <property name="idSede" column="id_sede"/>
+        <property name="costruttore" column="costruttore" length="33"/>
+        <property name="matricola" column="matricola" length="765"/>
+        <property name="disabilitato" column="disabilitato"/>
+    </class>
+</hibernate-mapping>

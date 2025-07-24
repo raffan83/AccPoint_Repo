@@ -626,6 +626,11 @@ calcolaMinimi()
             if (cellaMin) {
                 $(cellaMin).css('background-color', '#FA8989');
             }
+        }else{
+            
+        	if (cellaMin) {
+                $(cellaMin).css('background-color', '#f7a54e');
+            }
         }
     });
 

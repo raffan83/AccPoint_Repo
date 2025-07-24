@@ -121,7 +121,7 @@
 	<td align="center">
 	<a class="btn btn-info" onClicK="callAction('amGestioneInterventi.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
 
-	<a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaIntervento('${intervento.id}','${intervento.idCommessa}','${intervento.dataIntervento}', '${intervento.operatore.id}','${intervento.nomeCliente }','${intervento.nomeClienteUtilizzatore }','${intervento.nomeSede }','${intervento.nomeSedeUtilizzatore }','${intervento.id_cliente }','${intervento.id_sede }','${intervento.id_cliente_utilizzatore }','${intervento.id_sede_utilizzatore }')"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaIntervento('${intervento.id}','${intervento.idCommessa}','${intervento.dataIntervento}', '${intervento.operatore.id}','${utl:escapeJS(intervento.nomeCliente) }','${utl:escapeJS(intervento.nomeClienteUtilizzatore) }','${utl:escapeJS(intervento.nomeSede) }','${utl:escapeJS(intervento.nomeSedeUtilizzatore) }','${intervento.id_cliente }','${intervento.id_sede }','${intervento.id_cliente_utilizzatore }','${intervento.id_sede_utilizzatore }')"><i class="fa fa-edit"></i></a>
 	</td>
 	</tr>
 	</c:forEach> 

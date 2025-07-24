@@ -49,7 +49,7 @@
 <div class="row">
 <div class="col-xs-12">
 
-<a class="btn btn-primary pull-right" onclick="$('#modalRapporto').modal()">Crea Rapporto</a>
+<!-- <a class="btn btn-primary pull-right" onclick="$('#modalRapporto').modal()">Crea Rapporto</a> -->
 
 
 </div>

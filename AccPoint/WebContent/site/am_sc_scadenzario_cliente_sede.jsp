@@ -71,13 +71,13 @@ String[] nomiMesi = {
 </div>
 
 
-<form id="nuovaScadenzaForm" name="nuovoStrumentoForm">
+<form id="nuovaScadenzaForm" name="nuovaScadenzaForm">
 <div id="myModalNuovaScadenza" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Inserisci Nuova Attivit‡</h4>
+        <h4 class="modal-title" id="myModalLabel">Inserisci Nuova Attivit√†</h4>
       </div>
        <div class="modal-body">
 
@@ -97,7 +97,7 @@ String[] nomiMesi = {
        </div><br>
         <div class="row">
       	<div class="col-sm-3">
-       		<label>Attivit‡</label>
+       		<label>Attivit‡†</label>
        	</div>
        	<div class="col-sm-9">
        	<a class="btn btn-primary" onclick="modalAggiungiAttivita()"><i class="fa fa-plus"></i></a>
@@ -110,7 +110,7 @@ String[] nomiMesi = {
        	</div>
        </div><br>
      
-       <div class="row">
+   <!--     <div class="row">
        	<div class="col-sm-3">
        		<label>Frequenza (mesi)</label>
        	</div>
@@ -121,7 +121,7 @@ String[] nomiMesi = {
       
        <div class="row">
        	<div class="col-sm-3">
-       		<label>Data scadenza attivit‡</label>
+       		<label>Data scadenza attivit√†</label>
        	</div>
        	<div class="col-sm-9">
        		<div class='input-group date datepicker' id='datepicker_data_scadenza'>
@@ -132,7 +132,7 @@ String[] nomiMesi = {
                 </span>
         </div> 
        	</div>
-       </div>
+       </div> -->
         
         
        </div>
@@ -141,11 +141,10 @@ String[] nomiMesi = {
       <div class="modal-footer">
     
 		<input type="hidden" id="id_attivita" name="id_attivita" >
-		<input type="hidden" id="id_cliente" name="id_cliente" value="$('#cliente).val()">
-		<input type="hidden" id="id_sede" name="id_sede" value="$('#sede).val()">
+
 
 		 
-		<button class="btn btn-primary" type="submit" id="save_btn" disabled>Salva</button> 
+		<button class="btn btn-primary" type="submit" >Salva</button> 
        
       </div>
     </div>
@@ -157,12 +156,12 @@ String[] nomiMesi = {
 
 
 
-<div id="myModalNuovaAttivita" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
-    <div class="modal-dialog modal-md" role="document">
+<div id="myModalNuovaAttivita" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
+    <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Inserisci Nuova Attivit‡</h4>
+        <h4 class="modal-title" id="myModalLabel">Inserisci Nuova Attivit‡†</h4>
       </div>
        <div class="modal-body">
 
@@ -173,8 +172,13 @@ String[] nomiMesi = {
   <thead>
     <tr class="active">
       <th></th>
-      <th>ID</th>
-      <th>Descrizione attivit‡</th>
+      <th style="max-width:20px">ID</th>
+      <th style="min-width:100px">Data Attivit‡†</th>
+      <th style="min-width:100px">Esito</th>
+      <th style="max-width:40px">Frequenza</th>
+      <th style="min-width:100px">Data Scadenza</th>
+      <th style="max-width:120px">Note</th>
+      <th style="min-width:120px">Descrizione attivitÚ†</th>
      
     </tr>
   </thead>
@@ -186,6 +190,12 @@ String[] nomiMesi = {
      
      <td></td>
         <td>${attivita.id }</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        
         <td>${attivita.descrizione }</td>
 
       </tr>
@@ -203,7 +213,7 @@ String[] nomiMesi = {
       <div class="modal-footer">
 
 		 
-		<button class="btn btn-primary" type="submit" id="save_btn" disabled>Salva</button> 
+		<a class="btn btn-primary" type="submit" onclick="assegnaIdAttivita()">Salva</a> 
        
       </div>
     </div>
@@ -348,10 +358,10 @@ String[] nomiMesi = {
        </div><br>
        <div class="row">
        <div class="col-sm-3">
-       		<label>Unit‡ di misura</label>
+       		<label>Unit√† di misura</label>
        	</div>
        	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Unit‡ di Misura..." id="um_mod" name="um_mod" style="width:100%" required>
+       		<select class="form-control select2" data-placeholder="Seleziona Unit√† di Misura..." id="um_mod" name="um_mod" style="width:100%" required>
        		<option value="kg">kg</option>
        		<option value="g">g</option>
        		
@@ -562,7 +572,7 @@ String[] nomiMesi = {
 
   		 
       <div class="modal-footer">
-<label id="label_matricola_mod" style="display:none;color:red" class="pull-left">Attenzione! La matricola inserita Ë gi‡ esistente!</label>
+<label id="label_matricola_mod" style="display:none;color:red" class="pull-left">Attenzione! La matricola inserita √® gi√† esistente!</label>
 
 		<input type="hidden" id="id_strumento" name="id_strumento">
 		<button class="btn btn-primary" type="submit" id="save_btn_mod">Salva</button> 
@@ -671,10 +681,10 @@ String[] nomiMesi = {
        </div><br>
        <div class="row">
        <div class="col-sm-3">
-       		<label>Unit‡ di misura</label>
+       		<label>Unit√† di misura</label>
        	</div>
        	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Unit‡ di Misura..." id="um_dtl" name="um_dtl" style="width:100%" disabled>
+       		<select class="form-control select2" data-placeholder="Seleziona Unit√† di Misura..." id="um_dtl" name="um_dtl" style="width:100%" disabled>
        		<option value="kg">kg</option>
        		<option value="g">g</option>
        		
@@ -1116,7 +1126,7 @@ $(document).ready(function() {
 	console.log("test");
     $('.dropdown-toggle').dropdown();
    
-   
+   $("#attrezzatura").select2()
 
      $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
@@ -1124,8 +1134,7 @@ $(document).ready(function() {
 
     
      
-     $('#id_cliente').val($('#cliente').val());
-     $('#id_sede').val($('#sede').val());
+  
     
    var table = $('#tabAttivita').DataTable({
 			language: {
@@ -1218,14 +1227,201 @@ $('#modificaVerStrumentoForm').on('submit', function(e){
 
 
 
-$('#nuovaAttivitaForm').on('submit', function(e){
+$('#nuovaScadenzaForm').on('submit', function(e){
 	 e.preventDefault();
-	 callAjax("#nuovaAttivitaForm", "amScGestioneScadenzario.do?action=nuova_attivita")
+	 callAjaxForm("#nuovaScadenzaForm", "amScGestioneScadenzario.do?action=nuova_scadenza")
 });
 
 
+/* function assegnaIdAttivita(){
+	
+	var id_attivita_selected = "";
+	var t = $('#tabAttivita').DataTable();
+    t.rows({ selected: true }).every(function () {
+        var $row = $(this.node());
+        var id = $row.find('td').eq(1).text().trim(); // Colonna ID
+        id_attivita_selected += id + ";";
+    });
+    
+    $('#id_attivita').val(id_attivita_selected)
+    
+    $('#myModalNuovaAttivita').modal("hide");
+} */
+
+
+function assegnaIdAttivita(){
+	
+	var id_attivita_selected = "";
+	var t = $('#tabAttivita').DataTable();
+    t.rows({ selected: true }).every(function () {
+        var $row = $(this.node());
+        var valori = "";
+
+        $row.find('td').each(function(i, cell) {
+            let testo = "";
+
+            if (i === 0 ) return; // Salta checkbox e descrizione
+
+            if (i === 1) {
+                // ID
+                testo = $(cell).text().trim();
+            } 
+            
+            else if (i === 3) {
+                // SELECT
+                let select = $(cell).find("select");
+                if (select.length) {
+                    testo = select.val();
+                }
+            } 
+            else if(i===6){
+            	
+            	let textarea = $(cell).find("textarea");
+                if (textarea.length) {
+                    testo = textarea.val();
+                }
+            }
+            else {
+                // Datepicker input
+                let input = $(cell).find("input");
+                if (input.length) {
+                    testo = input.val();
+                }
+            }
+
+            valori += testo + ",";
+        });
+
+        id_attivita_selected += valori.slice(0, -1) + ";";
+    });
+
+
+    
+    $('#id_attivita').val(id_attivita_selected)
+    
+    $('#myModalNuovaAttivita').modal("hide");
+}
 
 
 
 
+
+$('#tabAttivita').on('select.dt', function (e, dt, type, indexes) {
+    if (type === 'row') {
+        indexes.forEach(function(index) {
+            var row = dt.row(index).node();
+            var id =  $(row).find('td')[1].text();
+            $(row).find('td').each(function(i, cell) {
+                const $cell = $(cell);
+                
+                
+                if( i === 1 ){
+                	id = $(cell).text();
+                    
+                }
+                if (i === 0 || i===7) return;
+
+                if (!$cell.data('original-border')) {
+                    $cell.data('original-border', $cell.css('border'));
+                }
+
+                $cell.css('border', '1px solid red');
+
+                if (i === 4) {
+                	//var id = $cell[0].id; 
+                    const input = '<input type="number" step="1" min="0" required class="form-control" onchange="aggiornaDataScadenza('+id+')" id="frequenza_'+id+'"/>';
+                    $cell.html(input);
+                }
+                
+                if (i === 3) {
+                	//var id = $cell[0].id; 
+                    const options = '<select required class="form-control select2" id="esito_'+id+'"  style="width:100%"> <option value="P">POSITIVO</option> <option value="N">NEGATIVO</option>  </select>';
+                    $cell.html(options);
+                    
+                    $('#esito_'+id).select2()
+                }
+
+                else if (i === 2 ) {
+                    const input = $('<div class="input-group date datepicker"><input type="text" required class="datepicker form-control" id="data_attivita_'+id+'"/><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>');
+                    $cell.html(input);
+                  //  input.datepicker({ dateFormat: "dd/MM/yyyy" });
+                    
+                    $('.datepicker').datepicker({
+                		format : "dd/mm/yyyy"
+                	});
+                }
+                else if (i === 5 ) {
+                    const input = $('<div class="input-group date datepicker"><input type="text" readonly required class=" form-control" id="data_scadenza_'+id+'"/><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>');
+                    $cell.html(input);
+                  //  input.datepicker({ dateFormat: "dd/MM/yyyy" });
+                    
+                    
+                }
+              
+                
+                else if(i === 6){
+                	//var id = $cell[0].id;
+                	 const input = $('<textarea id="note_'+id+'" class="form-control" style="width:100%"/></textarea>');
+                        $cell.html(input);	
+                }
+            });
+        });
+    }
+    
+
+});
+
+// Deselect row
+$('#tabAttivita').on('deselect.dt', function (e, dt, type, indexes) {
+    if (type === 'row') {
+        indexes.forEach(function(index) {
+            var row = dt.row(index).node();
+            $(row).find('td').each(function(i, cell) {
+                const $cell = $(cell);
+                if (i === 0 || i === 1 || i === 2) return;
+
+                const originalBorder = $cell.data('original-border');
+                if (originalBorder !== undefined) {
+                    $cell.css('border', originalBorder);
+                    $cell.removeData('original-border');
+                }
+
+                $cell.text('');
+            });
+        });
+    }
+});
+
+function aggiornaDataScadenza(id) {
+    var frequenza = parseInt($('#frequenza_' + id).val());
+    var data_attivita_str = $('#data_attivita_' + id).val(); // es: "20/11/1991"
+
+    if (!data_attivita_str || isNaN(frequenza)) {
+        console.warn("Data attivita o frequenza non valida per id:", id);
+        return;
+    }
+
+    // Converte "DD/MM/YYYY" in oggetto Date
+    var [giorno, mese, anno] = data_attivita_str.split('/').map(Number);
+    var data_attivita = new Date(anno, mese - 1, giorno); // mese parte da 0
+
+    // Calcola la nuova data aggiungendo i mesi
+    var nuovaData = new Date(data_attivita);
+    nuovaData.setMonth(nuovaData.getMonth() + frequenza);
+
+    // Corregge l'eventuale overflow di giorni (es. 31 gennaio + 1 mese ‚Üí 3 marzo)
+    if (nuovaData.getDate() !== giorno) {
+        nuovaData.setDate(0); // imposta all'ultimo giorno del mese precedente
+    }
+
+    // Formatta in "DD/MM/YYYY"
+    var giornoN = String(nuovaData.getDate()).padStart(2, '0');
+    var meseN = String(nuovaData.getMonth() + 1).padStart(2, '0');
+    var annoN = nuovaData.getFullYear();
+
+    var dataFormattata = giornoN+"/"+meseN+"/"+annoN;
+
+    // Aggiorna il campo data_scadenza
+    $('#data_scadenza_' + id).val(dataFormattata);
+}
 </script>

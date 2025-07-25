@@ -1,5 +1,5 @@
 package it.portaleSTI.DTO;
-import java.sql.Date;
+import java.util.Date;
 
 public class AmScScadenzarioDTO {
     private Integer id;

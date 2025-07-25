@@ -2,6 +2,8 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
@@ -11,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -23,6 +26,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -133,10 +139,10 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     				for (AmScScadenzarioDTO scadenza : lista_scadenze) {
     				    AmScAttrezzaturaDTO attrezzatura = scadenza.getAttrezzatura();
     				    Integer idAttrezzatura = attrezzatura.getId();
-    				    java.sql.Date data = scadenza.getDataProssimaAttivita();
+    				    java.sql.Date data =  new java.sql.Date(scadenza.getDataProssimaAttivita().getTime());
 
     				    if (data != null) {
-    				        LocalDate localDate = data.toLocalDate(); // ✅ corretto
+    				        LocalDate localDate = data.toLocalDate(); 
     				        String mese = localDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ITALIAN).toUpperCase();
 
     				        // Recupera o crea la mappa dei conteggi per questa attrezzatura
@@ -187,6 +193,64 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     				
     				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_sc_lista_scadenze_attrezzatura.jsp");
     		     	dispatcher.forward(request,response);
+    			}
+    			else if(action.equals("nuova_scadenza")) {
+    				
+    				ajax = true;
+    				
+    				response.setContentType("application/json");
+    				List<FileItem> items = null;
+    		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+    		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+    		        	}
+    		        
+    		       
+    				FileItem fileItem = null;
+    				String filename= null;
+    		        Hashtable<String,String> ret = new Hashtable<String,String>();
+    		      
+    		        for (FileItem item : items) {
+    	            	 if (!item.isFormField()) {
+    	            		
+    	                     fileItem = item;
+    	                     filename = item.getName();
+    	                     
+    	            	 }else
+    	            	 {
+    	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+    	            	 }
+    	            	
+    	            }
+
+    				String id_attrezzatura = ret.get("attrezzatura");
+    				String id_attivita = ret.get("id_attivita");
+    				
+    				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    				for (String id : id_attivita.split(";")) {
+    					String[] values = id.split(",");
+    					
+    					AmScScadenzarioDTO s = new AmScScadenzarioDTO();
+        				AmScAttrezzaturaDTO attrezzatura = (AmScAttrezzaturaDTO) session.get(AmScAttrezzaturaDTO.class, Integer.parseInt(id_attrezzatura));
+        				s.setAttrezzatura(attrezzatura);
+        				AmScAttivitaDTO attivita = (AmScAttivitaDTO) session.get(AmScAttivitaDTO.class, Integer.parseInt(values[0]));
+        				s.setAttivita(attivita);
+        				s.setDataAttivita(df.parse(values[1]));
+        				s.setEsito(values[2]);
+        				s.setFrequenza(Integer.parseInt(values[3]));
+        				s.setDataProssimaAttivita(df.parse(values[4]));
+        				s.setNote(values[5]);
+        				session.save(s);
+					}
+    				
+    				
+    				myObj = new JsonObject();
+    				PrintWriter  out = response.getWriter();
+    				myObj.addProperty("success", true);
+    				myObj.addProperty("messaggio", "Scadenza salvata con successo!");
+    				out.print(myObj);
+
+    				
     			}
     			
     			session.getTransaction().commit();

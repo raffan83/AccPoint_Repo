@@ -6,6 +6,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page import="java.util.Calendar" %>
 
 <%
 String[] nomiMesi = {
@@ -13,12 +14,36 @@ String[] nomiMesi = {
 	    "LUGLIO", "AGOSTO", "SETTEMBRE", "OTTOBRE", "NOVEMBRE", "DICEMBRE"
 	};
     pageContext.setAttribute("nomiMesi", nomiMesi);
-%>
+    
 
+%>
+  <c:set var="currentYear" value="<%= Calendar.getInstance().get(Calendar.YEAR) %>" />
 <div class="row">
-<div class="col-sm-12">
+<div class="col-sm-9">
 <a class="btn btn-primary" onClick="modalNuovaScadenza()"><i class="fa fa-plus"></i> Nuova Scadenza</a>
+
+
 </div>
+
+            <div class="col-xs-3"> 
+            <label>Anno</label>
+         <select class="form-control select2" id="anno" name="anno" style="width:100%" onchange="cambiaAnno()">
+
+		
+			  <c:set var="startYear" value="${currentYear - 5}" />
+			  <c:set var="endYear" value="${currentYear + 5}" />
+			
+			  <c:forEach var="year" begin="${startYear}" end="${endYear}">
+			  <c:if test="${year == anno }">
+			  	    <option value="${year}" selected>${year}</option>
+			  </c:if>
+			   <c:if test="${year != anno }">
+			  	    <option value="${year}" >${year}</option>
+			  </c:if>
+		
+			  </c:forEach>
+			</select>
+             </div>
 </div><br>
 
 <!-- 
@@ -42,7 +67,7 @@ String[] nomiMesi = {
   </thead>
 
   <tbody>
-    <c:set var="anno" value="2025" />
+  <%--   <c:set var="anno" value="${anno }" /> --%>
     <c:forEach var="mese" begin="0" end="11" varStatus="status">
       <tr>
         <c:if test="${status.first}">
@@ -57,7 +82,7 @@ String[] nomiMesi = {
           <td style="text-align:center;">
             <c:choose>
               <c:when test="${attrezzatura.mapScadenze[nomiMesi[status.index]] != null}">
-                <a class="btn customLink" target="_blank" href="amScGestioneScadenzario.do?action=lista_scadenze_mese&id_attrezzatura=${attrezzatura.id }&mese=${mese}&anno=${anno}">${attrezzatura.mapScadenze[nomiMesi[status.index]]}</a>
+                <a class="btn customTooltip customlink" target="_blank" href="amScGestioneScadenzario.do?action=lista_scadenze_mese&id_attrezzatura=${attrezzatura.id }&mese=${mese}&anno=${anno}">${attrezzatura.mapScadenze[nomiMesi[status.index]]}</a>
               </c:when>
               <c:otherwise>-</c:otherwise>
             </c:choose>
@@ -77,7 +102,7 @@ String[] nomiMesi = {
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Inserisci Nuova Attività</h4>
+        <h4 class="modal-title" id="myModalLabel">Inserisci Nuova Attivit�</h4>
       </div>
        <div class="modal-body">
 
@@ -101,39 +126,10 @@ String[] nomiMesi = {
        	</div>
        	<div class="col-sm-9">
        	<a class="btn btn-primary" onclick="modalAggiungiAttivita()"><i class="fa fa-plus"></i></a>
-       		<%-- <select class="form-control select2" data-placeholder="Seleziona Sede..." id="attivita" name="attivita" style="width:100%" required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_attivita}" var="attivita" varStatus="loop">
-       				<option value="${attivita.id}">${attivita.descrizione}</option>
-       			</c:forEach>
-       		</select> --%>
+
        	</div>
        </div><br>
-     
-   <!--     <div class="row">
-       	<div class="col-sm-3">
-       		<label>Frequenza (mesi)</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="frequenza" type="number" step="1" min="0" name="frequenza" style="width:100%" required>       	
-       	</div>
-       </div><br>
-      
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Data scadenza attività</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<div class='input-group date datepicker' id='datepicker_data_scadenza'>
-               <input type='text' class="form-control input-small" id="data_scadenza" name="data_scadenza" required>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-       	</div>
-       </div> -->
-        
+
         
        </div>
 
@@ -168,7 +164,7 @@ String[] nomiMesi = {
         <div class="row">
         <div class="col-xs-12">
         
-         <table id="tabAttivita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+         <table id="tabAttivita" class="table table-bordered table-hover dataTable table-striped" role="grid" style="width:100%">
   <thead>
     <tr class="active">
       <th></th>
@@ -178,7 +174,7 @@ String[] nomiMesi = {
       <th style="max-width:40px">Frequenza</th>
       <th style="min-width:100px">Data Scadenza</th>
       <th style="max-width:120px">Note</th>
-      <th style="min-width:120px">Descrizione attivit�</th>
+      <th style="min-width:120px">Descrizione attivit�</th>
      
     </tr>
   </thead>
@@ -222,705 +218,7 @@ String[] nomiMesi = {
 </div>
 
 
-<%--
-<form id="modificaVerStrumentoForm" name="modificaVerStrumentoForm">
-<div id="myModalModificaVerStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Strumento</h4>
-      </div>
-       <div class="modal-body">
- <div class="row">
-       	<div class="col-sm-3">
-       		<label>Famiglia Strumento</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Famiglia Strumento..." id="famiglia_strumento_mod" name="famiglia_strumento_mod" style="width:100%" required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_famiglie_strumento}" var="famiglia" varStatus="loop">
-       				<option value="${famiglia.id}">${famiglia.descrizione}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br>
-         <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Cliente</label>
-       	</div>
-       	 <div class="col-sm-9" style="display:none">       	
-       		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_appoggio" name="cliente_appoggio" style="display:none">
-       		<option value=""></option>
-       			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
-       				<option value="${cliente.__id}">${cliente.nome }</option>
-       			</c:forEach>
-       		</select>       	
-       	</div>     
-       	
-        	<div class="col-sm-9">       	
-       		<input class="form-control" data-placeholder="Seleziona Cliente..." id="cliente_mod" name="cliente_mod" style="width:100%" required>
-       		
-       	</div>  
-       	  	
-       </div><br> 
-        <div class="row">
-      	<div class="col-sm-3">
-       		<label>Sede</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Sede..." id="sede_mod" name="sede_mod" style="width:100%" disabled required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
-       				<option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo }</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br> 
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Tipo</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tipo..." id="tipo_ver_strumento_mod" name="tipo_ver_strumento_mod" style="width:100%" required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_tipo_strumento}" var="tipo" varStatus="loop">
-       				<option value="${tipo.id}">${tipo.descrizione}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br>
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Tipologia</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tipologia..." id="tipologia_mod" name="tipologia_mod" style="width:100%" required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_tipologie_strumento}" var="tipologia" varStatus="loop">
-       				<option value="${tipologia.id}">${tipologia.descrizione}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Denominazione</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="denominazione_mod" name="denominazione_mod" style="width:100%" required>       	
-       	</div>
-       </div><br>
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Costruttore</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="costruttore_mod" name="costruttore_mod" style="width:100%" required>       	
-       	</div>
-       </div><br>
-       
-        <div class="row">
-        <div class="col-sm-3">
-       		<label>Modello</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="modello_mod" name="modello_mod" style="width:100%" required>       	
-       	</div>
-       </div><br>
-       
-       <div class="row">
-        <div class="col-sm-3">
-       		<label>Matricola</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="matricola_mod" name="matricola_mod" style="width:100%" required>       	
-       	</div>
-       </div><br>
-       
-       <div class="row">
-       <div class="col-sm-3">
-       		<label>Classe</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Classe..." id="classe_mod" name="classe_mod" style="width:100%" required>
-       		<option value="1">1</option>
-       		<option value="2">2</option>
-       		<option value="3">3</option>
-       		<option value="4">4</option>
-       		<option value="5">1 - lettura fine</option>
-       		<option value="6">2 - lettura fine</option>
-       		</select>
-       		<!-- <input type="number" class="form-control" id="classe_mod" min="1" max="4" name="classe_mod" style="width:100%" required> -->       	
-       	</div>
-       </div><br>
-       <div class="row">
-       <div class="col-sm-3">
-       		<label>Unità di misura</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Unità di Misura..." id="um_mod" name="um_mod" style="width:100%" required>
-       		<option value="kg">kg</option>
-       		<option value="g">g</option>
-       		
-       		</select>
-       	</div>
-       </div><br> 
-       <div class="row">
-       <div class="col-sm-3">
-       		<label>Anno marcatura CE</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" class="form-control" id="anno_marcatura_ce_mod" min="1900" max="2999" step="1" name="anno_marcatura_ce_mod" style="width:100%" required>
-       	</div>
-       </div><br> 
-       <div class="row">
-       <div class="col-sm-3">
-       		<label>Frequenza mesi</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" class="form-control" id="freq_mesi_mod" min="1" max="2999" step="1" name="freq_mesi_mod" style="width:100%" required>
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Data messa in servizio</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<div class='input-group date datepicker' id='datepicker_data_messa_in_servizio'>
-               <input type='text' class="form-control input-small" id="data_messa_in_servizio_mod" name="data_messa_in_servizio_mod" required>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Data Ultima Verifica</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<div class='input-group date datepicker' id='datepicker_data_ultima_verifica_mod'>
-               <input type='text' class="form-control input-small" id="data_ultima_verifica_mod" name="data_ultima_verifica_mod" >
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Data Prossima Verifica</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<div class='input-group date datepicker' id='datepicker_data_prossima_verifica_mod'>
-               <input type='text' class="form-control input-small" id="data_prossima_verifica_mod" name="data_prossima_verifica_mod" >
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-       	</div>
-       </div><br>
-       
-         <div class="row">
-       	<div class="col-sm-3">
-       		<label>Portata Min C1</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c1_mod" name="portata_min_c1_mod" style="-webkit-appearance:none;margin:0;" >
-       	</div>
-       </div> <br>    
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Portata Max C1</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c1_mod" name="portata_max_c1_mod" >
-       	</div>
-       </div> <br>   
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Divisione di verifica C1</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c1_mod" name="div_ver_c1_mod" >
-       	</div>
-       </div> <br> 
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Divisione reale C1</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c1_mod" name="div_rel_c1_mod" >
-       	</div>
-       </div> <br> 
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Numero Divisioni C1</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c1_mod" name="numero_div_c1_mod" >
-       	</div>
-       </div> <br> 
-       <div id="multipla_mod">
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Portata Min C2</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c2_mod" name="portata_min_c2_mod" >
-       	</div>
-       </div> <br>    
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Portata Max C2</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c2_mod" name="portata_max_c2_mod" >
-       	</div>
-       </div> <br>   
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Divisione di verifica C2</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c2_mod" name="div_ver_c2_mod" >
-       	</div>
-       </div> <br> 
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Divisione reale C2</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c2_mod" name="div_rel_c2_mod" >
-       	</div>
-       </div> <br> 
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Numero Divisioni C2</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c2_mod" name="numero_div_c2_mod" >
-       	</div>
-       </div> <br> 
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Portata Min C3</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c3_mod" name="portata_min_c3_mod" >
-       	</div>
-       </div> <br>    
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Portata Max C3</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c3_mod" name="portata_max_c3_mod" >
-       	</div>
-       </div> <br>   
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Divisione di verifica C3</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c3_mod" name="div_ver_c3_mod" >
-       	</div>
-       </div> <br> 
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Divisione reale C3</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c3_mod" name="div_rel_c3_mod" >
-       	</div>
-       </div> <br> 
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Numero Divisioni C3</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c3_mod" name="numero_div_c3_mod" >
-       	</div>
-       </div> <br> 
-       
 
-       
-        </div>
-        
-        
-               
-               <div class="row">
-       	<div class="col-sm-3">
-       		<label>Obsoleto</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-contol select2" id="obsoleto_mod" name="obsoleto_mod" >
-       		<option value="1">SI</option>
-       		<option value="0">NO</option>
-       		</select>
-       	</div>
-       </div> <br> 
-        
-       </div>
-
-  		 
-      <div class="modal-footer">
-<label id="label_matricola_mod" style="display:none;color:red" class="pull-left">Attenzione! La matricola inserita è già esistente!</label>
-
-		<input type="hidden" id="id_strumento" name="id_strumento">
-		<button class="btn btn-primary" type="submit" id="save_btn_mod">Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</form>
- --%>
-
-
-
-<div id="myModalDettaglioVerStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Dettaglio Strumento</h4>
-      </div>
-       <div class="modal-body">
-<div class="row">
-       	<div class="col-sm-3">
-       		<label>Famiglia Strumento</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Famiglia Strumento..." id="famiglia_strumento_dtl" name="famiglia_strumento_dtl" style="width:100%" disabled>
-       		<option value=""></option>
-       			<c:forEach items="${lista_famiglie_strumento}" var="famiglia" varStatus="loop">
-       				<option value="${famiglia.id}">${famiglia.descrizione}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br>
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Tipo</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tipo..." id="tipo_ver_strumento_dtl" name="tipo_ver_strumento_dtl" style="width:100%" disabled>
-       		<option value=""></option>
-       			<c:forEach items="${lista_tipo_strumento}" var="tipo" varStatus="loop">
-       				<option value="${tipo.id}">${tipo.descrizione}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br>
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Tipologia</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tipologia..." id="tipologia_dtl" name="tipologia_dtl" style="width:100%" disabled>
-       		<option value=""></option>
-       			<c:forEach items="${lista_tipologie_strumento}" var="tipologia" varStatus="loop">
-       				<option value="${tipologia.id}">${tipologia.descrizione}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Denominazione</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="denominazione_dtl" name="denominazione_dtl" style="width:100%" disabled>       	
-       	</div>
-       </div><br>
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Costruttore</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="costruttore_dtl" name="costruttore_dtl" style="width:100%" disabled>       	
-       	</div>
-       </div><br>
-       
-        <div class="row">
-        <div class="col-sm-3">
-       		<label>Modello</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="modello_dtl" name="modello_dtl" style="width:100%" disabled>       	
-       	</div>
-       </div><br>
-       
-       <div class="row">
-        <div class="col-sm-3">
-       		<label>Matricola</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input class="form-control" id="matricola_dtl" name="matricola_dtl" style="width:100%" disabled>       	
-       	</div>
-       </div><br>
-       
-       <div class="row">
-       <div class="col-sm-3">
-       		<label>Classe</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" class="form-control" id="classe_dtl" min="1" max="6" name="classe_dtl" style="width:100%" disabled>       	
-       	</div>
-       </div><br>
-       <div class="row">
-       <div class="col-sm-3">
-       		<label>Unità di misura</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Unità di Misura..." id="um_dtl" name="um_dtl" style="width:100%" disabled>
-       		<option value="kg">kg</option>
-       		<option value="g">g</option>
-       		
-       		</select>
-       	</div>
-       </div><br> 
-       <div class="row">
-       <div class="col-sm-3">
-       		<label>Anno marcatura CE</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" class="form-control" id="anno_marcatura_ce_dtl" min="1900" max="2999" step="1" name="anno_marcatura_ce_dtl" style="width:100%" disabled>
-       	</div>
-       </div><br> 
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Frequenza mesi</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" class="form-control" id="freq_mesi_dtl" min="1900" max="2999" step="1" name="freq_mesi_dtl" style="width:100%" disabled>
-        
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Data messa in servizio</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<div class='input-group date ' id='datepicker_data_messa_in_servizio'>
-               <input type='text' class="form-control input-small" id="data_messa_in_servizio_dtl" name="data_messa_in_servizio_dtl" disabled>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Data Ultima Verifica</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<div class='input-group date ' id='datepicker_data_ultima_verifica_mod'>
-               <input type='text' class="form-control input-small" id="data_ultima_verifica_dtl" name="data_ultima_verifica_dtl" disabled>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Data Prossima Verifica</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<div class='input-group date ' id='datepicker_data_prossima_verifica_mod'>
-               <input type='text' class="form-control input-small" id="data_prossima_verifica_dtl" name="data_prossima_verifica_dtl" disabled>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-       	</div>
-       </div><br>
-       
-         <div class="row">
-       	<div class="col-sm-3">
-       		<label>Portata Min C1</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c1_dtl" name="portata_min_c1_dtl" style="-webkit-appearance:none;margin:0;" disabled>
-       	</div>
-       </div> <br>    
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Portata Max C1</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c1_dtl" name="portata_max_c1_dtl" disabled>
-       	</div>
-       </div> <br>   
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Divisione di verifica C1</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c1_dtl" name="div_ver_c1_dtl" disabled>
-       	</div>
-       </div> <br> 
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Divisione reale C1</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c1_dtl" name="div_rel_c1_dtl" disabled>
-       	</div>
-       </div> <br> 
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Numero Divisioni C1</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c1_dtl" name="numero_div_c1_dtl" disabled>
-       	</div>
-       </div> <br> 
-       <div id="multipla_dtl">
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Portata Min C2</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c2_dtl" name="portata_min_c2_dtl" disabled>
-       	</div>
-       </div> <br>    
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Portata Max C2</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c2_dtl" name="portata_max_c2_dtl" disabled>
-       	</div>
-       </div> <br>   
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Divisione di verifica C2</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c2_dtl" name="div_ver_c2_dtl" disabled>
-       	</div>
-       </div> <br> 
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Divisione reale C2</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c2_dtl" name="div_rel_c2_dtl" disabled>
-       	</div>
-       </div> <br> 
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Numero Divisioni C2</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c2_dtl" name="numero_div_c2_dtl" disabled>
-       	</div>
-       </div> <br> 
-       
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Portata Min C3</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c3_dtl" name="portata_min_c3_dtl" disabled>
-       	</div>
-       </div> <br>    
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Portata Max C3</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c3_dtl" name="portata_max_c3_dtl" disabled>
-       	</div>
-       </div> <br>   
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Divisione di verifica C3</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c3_dtl" name="div_ver_c3_dtl" disabled>
-       	</div>
-       </div> <br> 
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Divisione reale C3</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c3_dtl" name="div_rel_c3_dtl" disabled>
-       	</div>
-       </div> <br> 
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Numero Divisioni C3</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c3_dtl" name="numero_div_c3_dtl" disabled>
-       	</div>
-       </div> <br> 
-
-
-        </div>
-        
-        
-
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Obsoleto</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-contol select2" id="obsoleto_dtl" name="obsoleto_dtl" disabled>
-       		<option value="1">SI</option>
-       		<option value="0" selected>NO</option>
-       		</select>
-       	</div>
-       </div> <br>
-        
-                <div class="row">
-       	<div class="col-sm-6">
-       		<label>Provvedimenti di Legalizzazione</label>
-       	</div>
-       	<div class="col-sm-12">
-       		<table id="table_legalizzazione_strumento" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
-
-
-<th>ID</th>
-<th>Tipo provvedimento</th>
-<th>Numero provvedimento</th>
-<th>Data provvedimento</th>
-
-<th>Azioni</th>
-
- </tr></thead>
- 
- <tbody>
-</tbody>
-</table>
-       	</div>
-       </div> <br> 
-        
-       </div>
-
-    </div>
-  </div>
-
-</div>
 
 
   <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -1058,6 +356,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 
+
 .vertical-text {
   border-right: 1px solid #ddd !important;
   writing-mode: vertical-rl;
@@ -1170,13 +469,21 @@ $(document).ready(function() {
 	        responsive: true,
 	        scrollX: false,
 	        stateSave: true,
+	 
 	        select: {
 	            style: 'multi+shift',
 	            selector: 'td:nth-child(1)'
 	        },
 	        columnDefs: [
 	            { responsivePriority: 1, targets: 1 },
-	            { className: "select-checkbox", targets: 0, orderable: false }
+	            { className: "select-checkbox", targets: 0, orderable: false },
+	            { targets: 1, width: "40px" },    // ID
+	            { targets: 2, width: "120px" },   // Data Attivit�
+	            { targets: 3, width: "80px" },   // Esito
+	            { targets: 4, width: "60px" },    // Frequenza
+	            { targets: 5, width: "120px" },   // Data Scadenza
+	            { targets: 6, width: "150px" },   // Note
+	            { targets: 7, width: "200px" }   
 	        ]	     
 			        
 	  	    
@@ -1229,9 +536,43 @@ $('#modificaVerStrumentoForm').on('submit', function(e){
 
 $('#nuovaScadenzaForm').on('submit', function(e){
 	 e.preventDefault();
-	 callAjaxForm("#nuovaScadenzaForm", "amScGestioneScadenzario.do?action=nuova_scadenza")
+	 callAjaxForm("#nuovaScadenzaForm", "amScGestioneScadenzario.do?action=nuova_scadenza", function(data){
+		 
+		 if(data.success){
+			 
+			 
+			 $('#report_button').hide();
+				$('#visualizza_report').hide();
+			  $("#modalNuovoReferente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+			 
+			 $('#myModalError').on("hidden.bs.modal", function(){
+				
+				 if($(this).hasClass("modal-success")){
+					 
+					 
+
+					  dataString = "action=lista&id_cliente="+$('#cliente').val()+"&id_sede="+$("#sede").val();
+					   exploreModal('amScGestioneScadenzario.do',dataString,'#posTab');
+					   
+					   $('.modal-backdrop').hide()
+					 }				 
+			 });
+			 
+		 }
+		 
+	 })
 });
 
+
+function cambiaAnno(){
+	  dataString = "action=lista&id_cliente="+$('#cliente').val()+"&id_sede="+$("#sede").val()+"&anno="+$('#anno').val();
+	   exploreModal('amScGestioneScadenzario.do',dataString,'#posTab');
+	   
+}
 
 /* function assegnaIdAttivita(){
 	
@@ -1249,7 +590,7 @@ $('#nuovaScadenzaForm').on('submit', function(e){
 } */
 
 
-function assegnaIdAttivita(){
+/* function assegnaIdAttivita(){
 	
 	var id_attivita_selected = "";
 	var t = $('#tabAttivita').DataTable();
@@ -1300,8 +641,84 @@ function assegnaIdAttivita(){
     $('#id_attivita').val(id_attivita_selected)
     
     $('#myModalNuovaAttivita').modal("hide");
-}
+} */
 
+
+
+
+function assegnaIdAttivita() {
+    var id_attivita_selected = "";
+    var t = $('#tabAttivita').DataTable();
+    var tuttoValido = true;
+
+    t.rows({ selected: true }).every(function () {
+        var $row = $(this.node());
+        var valori = "";
+
+        $row.find('td').each(function(i, cell) {
+            let testo = "";
+
+            if (i === 0) return; // Salta checkbox
+
+            if (i === 1) {
+                // ID (solo testo, quindi ammesso anche vuoto)
+                testo = $(cell).text().trim();
+            } 
+            else if (i === 3) {
+                // SELECT obbligatoria
+                let select = $(cell).find("select");
+                if (select.length) {
+                    testo = select.val();
+                    if (!testo) {
+                        alert("Seleziona un valore nella colonna " + (i+1));
+                        tuttoValido = false;
+                        return false;
+                    }
+                }
+            } 
+            else if (i === 6) {
+                // TEXTAREA facoltativa
+                let textarea = $(cell).find("textarea");
+                testo = textarea.length ? textarea.val() || "" : "";
+            } 
+            else {
+                // INPUT obbligatorio (es. datepicker)
+                let input = $(cell).find("input");
+                if (input.length) {
+                    testo = input.val();
+                    if (!testo || testo.trim() === "") {
+                    	
+                    	if(i == 2){
+                    		var col = "DATA ATTIVITA'"
+                    	}
+                    	if(i == 4){
+                    		var col = "FREQUENZA"
+                    	}
+                    	if(i == 5){
+                    		var col = "DATA SCADENZA"
+                    	}
+                    	
+                        alert("Compila il campo nella colonna " +col);
+                        tuttoValido = false;
+                        return false;
+                    }
+                }
+            }
+
+            valori += testo + ",";
+        });
+
+        if (!tuttoValido) return false; // blocca ciclo .every se un campo non va
+
+        id_attivita_selected += valori.slice(0, -1) + ";";
+    });
+
+    if (!tuttoValido) return;
+
+ $('#id_attivita').val(id_attivita_selected)
+    
+    $('#myModalNuovaAttivita').modal("hide");
+}
 
 
 
@@ -1310,66 +727,57 @@ $('#tabAttivita').on('select.dt', function (e, dt, type, indexes) {
     if (type === 'row') {
         indexes.forEach(function(index) {
             var row = dt.row(index).node();
-            var id =  $(row).find('td')[1].text();
+            var id = "";
+
             $(row).find('td').each(function(i, cell) {
                 const $cell = $(cell);
-                
-                
-                if( i === 1 ){
-                	id = $(cell).text();
-                    
-                }
-                if (i === 0 || i===7) return;
 
+                // Leggi ID dalla cella 1 ma NON applicare bordi o altro
+                if (i === 1) {
+                    id = $cell.text().trim();
+                }
+
+                // Salta checkbox (0), ID (1) e ultima colonna (7) per stile/modifica
+                if (i === 0 || i === 1 || i === 7) return;
+
+                // Salva bordo originale (per eventuale ripristino)
                 if (!$cell.data('original-border')) {
                     $cell.data('original-border', $cell.css('border'));
                 }
 
+                // Applica bordo rosso
                 $cell.css('border', '1px solid red');
 
+                // Inserisci input/select/datepicker a seconda della colonna
                 if (i === 4) {
-                	//var id = $cell[0].id; 
-                    const input = '<input type="number" step="1" min="0" required class="form-control" onchange="aggiornaDataScadenza('+id+')" id="frequenza_'+id+'"/>';
+                    const input = '<input type="number" step="1" min="0" required class="form-control" onchange="aggiornaDataScadenza(' + id + ')" id="frequenza_' + id + '"/>';
                     $cell.html(input);
                 }
-                
-                if (i === 3) {
-                	//var id = $cell[0].id; 
-                    const options = '<select required class="form-control select2" id="esito_'+id+'"  style="width:100%"> <option value="P">POSITIVO</option> <option value="N">NEGATIVO</option>  </select>';
+                else if (i === 3) {
+                    const options = '<select required class="form-control select2" id="esito_' + id + '" style="width:100%"> <option value="P">POSITIVO</option> <option value="N">NEGATIVO</option>  </select>';
                     $cell.html(options);
-                    
-                    $('#esito_'+id).select2()
+                    $('#esito_' + id).select2();
                 }
-
-                else if (i === 2 ) {
-                    const input = $('<div class="input-group date datepicker"><input type="text" required class="datepicker form-control" id="data_attivita_'+id+'"/><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>');
+                else if (i === 2) {
+                    const input = $('<div class="input-group date datepicker"><input type="text" required onchange="aggiornaDataScadenza(' + id + ')" class="datepicker  form-control" id="data_attivita_' + id + '"/><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>');
                     $cell.html(input);
-                  //  input.datepicker({ dateFormat: "dd/MM/yyyy" });
-                    
                     $('.datepicker').datepicker({
-                		format : "dd/mm/yyyy"
-                	});
+                        format: "dd/mm/yyyy"
+                    });
                 }
-                else if (i === 5 ) {
-                    const input = $('<div class="input-group date datepicker"><input type="text" readonly required class=" form-control" id="data_scadenza_'+id+'"/><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>');
+                else if (i === 5) {
+                    const input = $('<div class="input-group date datepicker"><input type="text" readonly required class="form-control" id="data_scadenza_' + id + '"/><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>');
                     $cell.html(input);
-                  //  input.datepicker({ dateFormat: "dd/MM/yyyy" });
-                    
-                    
                 }
-              
-                
-                else if(i === 6){
-                	//var id = $cell[0].id;
-                	 const input = $('<textarea id="note_'+id+'" class="form-control" style="width:100%"/></textarea>');
-                        $cell.html(input);	
+                else if (i === 6) {
+                    const input = $('<textarea id="note_' + id + '" class="form-control" style="width:100%"/></textarea>');
+                    $cell.html(input);
                 }
             });
         });
     }
-    
-
 });
+
 
 // Deselect row
 $('#tabAttivita').on('deselect.dt', function (e, dt, type, indexes) {
@@ -1378,7 +786,7 @@ $('#tabAttivita').on('deselect.dt', function (e, dt, type, indexes) {
             var row = dt.row(index).node();
             $(row).find('td').each(function(i, cell) {
                 const $cell = $(cell);
-                if (i === 0 || i === 1 || i === 2) return;
+                if (i === 0 || i === 1 || i === 7) return;
 
                 const originalBorder = $cell.data('original-border');
                 if (originalBorder !== undefined) {

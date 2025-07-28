@@ -171,6 +171,7 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     				
     				request.getSession().setAttribute("lista_attrezzature", lista_attrezzature);
     				request.getSession().setAttribute("lista_attivita", lista_attivita);
+    				request.getSession().setAttribute("anno", anno);
     				
     				
     				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_sc_scadenzario_cliente_sede.jsp");
@@ -190,6 +191,8 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     				ArrayList<AmScScadenzarioDTO> scadenze = GestioneAM_ScadenzarioBO.getListaScadenzeAttrezzatura(Integer.parseInt(id_attrezzatura), Integer.parseInt(mese), Integer.parseInt(anno), session);
     				
     				request.getSession().setAttribute("scadenze", scadenze);
+    				request.getSession().setAttribute("mese", Month.of(Integer.parseInt(mese)+1).getDisplayName(TextStyle.FULL, new Locale("it")).toUpperCase());
+    				request.getSession().setAttribute("anno", anno);
     				
     				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_sc_lista_scadenze_attrezzatura.jsp");
     		     	dispatcher.forward(request,response);
@@ -239,7 +242,9 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
         				s.setEsito(values[2]);
         				s.setFrequenza(Integer.parseInt(values[3]));
         				s.setDataProssimaAttivita(df.parse(values[4]));
-        				s.setNote(values[5]);
+        				if(values.length>5) {
+        					s.setNote(values[5]);
+        				}
         				session.save(s);
 					}
     				

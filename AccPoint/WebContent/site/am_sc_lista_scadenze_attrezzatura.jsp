@@ -69,7 +69,14 @@
 	
 	<td>${scadenza.id }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${scadenza.dataAttivita }" /></td>
-	<td>${scadenza.esito }</td>		
+	<td>
+	<c:if test="${scadenza.esito == 'P' }">
+	POSITIVO
+	</c:if>
+	<c:if test="${scadenza.esito == 'N' }">
+		NEGATIVO
+		</c:if>
+	</td>		
 	<td>${scadenza.frequenza }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${scadenza.dataProssimaAttivita }" /></td>
 	<td>${scadenza.note }</td>

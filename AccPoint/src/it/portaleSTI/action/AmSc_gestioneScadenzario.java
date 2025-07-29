@@ -234,9 +234,15 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     					String[] values = id.split(",");
     					
     					AmScScadenzarioDTO s = new AmScScadenzarioDTO();
-        				AmScAttrezzaturaDTO attrezzatura = (AmScAttrezzaturaDTO) session.get(AmScAttrezzaturaDTO.class, Integer.parseInt(id_attrezzatura));
+        				AmScAttrezzaturaDTO attrezzatura = (AmScAttrezzaturaDTO) session.get(AmScAttrezzaturaDTO.class, Integer.parseInt(id_attrezzatura));        			
         				s.setAttrezzatura(attrezzatura);
         				AmScAttivitaDTO attivita = (AmScAttivitaDTO) session.get(AmScAttivitaDTO.class, Integer.parseInt(values[0]));
+        				if(attivita == null) {
+        					attivita = new AmScAttivitaDTO();
+        					attivita.setId(Integer.parseInt(values[0]));
+        					attivita.setDescrizione(values[values.length-1]);
+        					session.save(attivita);
+        				}
         				s.setAttivita(attivita);
         				s.setDataAttivita(df.parse(values[1]));
         				s.setEsito(values[2]);
@@ -245,6 +251,7 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
         				if(values.length>5) {
         					s.setNote(values[5]);
         				}
+        				
         				session.save(s);
 					}
     				

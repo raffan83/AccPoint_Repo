@@ -175,6 +175,7 @@ String[] nomiMesi = {
       <th style="min-width:100px">Data Scadenza</th>
       <th style="max-width:120px">Note</th>
       <th style="min-width:120px">Descrizione attività </th>
+      <th></th>
      
     </tr>
   </thead>
@@ -193,12 +194,12 @@ String[] nomiMesi = {
         <td></td>
         
         <td>${attivita.descrizione }</td>
-
+   <td></td>
       </tr>
     </c:forEach>
   </tbody>
 </table>
-        
+        <a class="btn btn-primary btn-xs pull-right" onclick="addRow()"><i class="fa fa-plus"></i></a>
        </div>
        </div>
         
@@ -380,6 +381,58 @@ input[type=number]::-webkit-outer-spin-button {
 
 <script type="text/javascript">
 
+function addRow(){
+	var table = $('#tabAttivita').DataTable();
+	//var id = table.rows()[0].length +1;
+	var id = getMaxIdAttivita(table) + 1;
+	
+	var newRow = table.row.add([
+        '<td class="select-checkbox"></td>',
+        '<td >'+id+'</td>',
+        '<td ><div class="input-group date datepicker"><input type="text" required onchange="aggiornaDataScadenza(' + id + ')" class="datepicker  form-control" id="data_attivita_' + id + '"/><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div> </td>',
+        '<td ><select required class="form-control select2" id="esito_' + id + '" style="width:100%"> <option value="P">POSITIVO</option> <option value="N">NEGATIVO</option>  </select></td>',
+        '<td ><input type="number" step="1" min="0" required class="form-control" onchange="aggiornaDataScadenza(' + id + ')" id="frequenza_' + id + '"/></td>',
+        '<td ><div class="input-group date datepicker"><input type="text" readonly required class="form-control" id="data_scadenza_' + id + '"/><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div></td>',
+        '<td ><textarea id="note_' + id + '" class="form-control" style="width:100%"/></textarea></td>',
+        '<td ><textarea id="descrizione_attivita_' + id + '" class="form-control" style="width:100%"/></textarea></td>',
+         '<a class="btn btn-danger btn-xs remove-btn"><i class="fa fa-minus"></a>' 
+    ]).draw(false);
+    
+    table.row
+    
+    $('.datepicker').datepicker({
+		 format: "dd/mm/yyyy"
+	 }); 
+    
+    $('#esito_' + id).select2();
+    
+    var addedRowNode = newRow.node(); 
+    table.row(addedRowNode).select();
+    
+}
+
+$('#tabAttivita  tbody').on('click', '.remove-btn', function() {
+	var t = $('#tabAttivita').DataTable();
+    t.row($(this).parents('tr')).remove().draw();
+})
+
+
+function getMaxIdAttivita() {
+    var table = $('#tabAttivita').DataTable();
+    var max = 0;
+
+    table.rows().every(function () {
+        var rowNode = this.node();
+        var cellText = $('td:eq(1)', rowNode).text().trim(); // colonna 1
+
+        var value = parseInt(cellText);
+        if (!isNaN(value) && value > max) {
+            max = value;
+        }
+    });
+
+    return max;
+}
 
 function formatDate(data){
 	
@@ -681,6 +734,20 @@ function assegnaIdAttivita() {
                 let textarea = $(cell).find("textarea");
                 testo = textarea.length ? textarea.val() || "" : "";
             } 
+            else if (i === 7) {
+                // TEXTAREA obbligatoria solo se presente
+                let textarea = $(cell).find("textarea");
+                if (textarea.length) {
+                    testo = textarea.val();
+                    if (!testo || testo.trim() === "") {
+                        alert("Compila il campo nella colonna DESCRIZIONE ATTIVITÀ");
+                        tuttoValido = false;
+                        return false;
+                    }
+                } else {
+                    testo = "";
+                }
+            }
             else {
                 // INPUT obbligatorio (es. datepicker)
                 let input = $(cell).find("input");

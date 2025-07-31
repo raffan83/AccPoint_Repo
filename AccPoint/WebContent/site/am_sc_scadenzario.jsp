@@ -35,7 +35,7 @@
  <div class="col-md-6" style="display:none">  
                   <label>Cliente</label>
                <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
-                
+                 <option value="0">TUTTI</option> 
                       <c:forEach items="${lista_clienti}" var="cliente">
                      
                            <option value="${cliente.__id}">${cliente.nome}</option> 

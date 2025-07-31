@@ -54,7 +54,7 @@ String[] nomiMesi = {
 
 <div class="row">
 <div class="col-sm-12">
-
+<div style="overflow-x: auto; width: 100%;">
  <table id="tabScadenzario" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
   <thead>
     <tr class="active">
@@ -94,6 +94,7 @@ String[] nomiMesi = {
 </table>
 </div>
 </div>
+</div>
 
 
 <form id="nuovaScadenzaForm" name="nuovaScadenzaForm">
@@ -115,7 +116,7 @@ String[] nomiMesi = {
        		<select class="form-control select2" data-placeholder="Seleziona Attrezzatura..." id="attrezzatura" name="attrezzatura" style="width:100%" required>
        		<option value=""></option>
        			<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
-       				<option value="${attrezzatura.id}">${attrezzatura.descrizione }</option>
+       				<option value="${attrezzatura.id}">${attrezzatura.descrizione } - ${attrezzatura.matricola }</option>
        			</c:forEach>
        		</select>       	
        	</div>       	
@@ -573,8 +574,44 @@ $(document).ready(function() {
 	});  
 	
 	
-	
-	
+/* 	
+	  var t = $('#tabScadenzario').DataTable({
+			language: {
+		        	emptyTable : 	"Nessun dato presente nella tabella",
+		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+		        	infoPostFix:	"",
+		        infoThousands:	".",
+		        lengthMenu:	"Visualizza _MENU_ elementi",
+		        loadingRecords:	"Caricamento...",
+		        	processing:	"Elaborazione...",
+		        	search:	"Cerca:",
+		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+		        	paginate:	{
+	  	        	first:	"Inizio",
+	  	        	previous:	"Precedente",
+	  	        	next:	"Successivo",
+	  	        last:	"Fine",
+		        	},
+		        aria:	{
+	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+		        }
+	        },
+	       
+	      
+	        paging: false,
+	        ordering: false,
+	        info: false,
+	        searchable: false,
+	        searching: false,
+	       
+	        responsive: false,
+	        scrollX: true,
+	        stateSave: false  	    
+		               
+		    }); */
 	
 	
 });

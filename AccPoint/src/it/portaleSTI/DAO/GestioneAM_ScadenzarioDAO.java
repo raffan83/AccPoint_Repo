@@ -22,10 +22,17 @@ public class GestioneAM_ScadenzarioDAO {
 
 		ArrayList<AmScAttrezzaturaDTO> lista = null;
 		
-		Query query = session.createQuery("from AmScAttrezzaturaDTO where id_cliente = :_id_cliente and id_sede = :_id_sede");
-		query.setParameter("_id_cliente", id_cliente);
-		query.setParameter("_id_sede", id_sede);
+		String q = "from AmScAttrezzaturaDTO";
 		
+		if(id_cliente!=0) {
+			q +=" where id_cliente = :_id_cliente and id_sede = :_id_sede";
+		}
+		
+		Query query = session.createQuery(q);
+		if(id_cliente!=0) {
+			query.setParameter("_id_cliente", id_cliente);
+			query.setParameter("_id_sede", id_sede);
+		}
 		lista = (ArrayList<AmScAttrezzaturaDTO>) query.list();
 		
 		
@@ -46,9 +53,17 @@ public class GestioneAM_ScadenzarioDAO {
 		cal.set(Calendar.DAY_OF_MONTH, 31);
 		Date end = cal.getTime();
 		
-		Query query = session.createQuery("from AmScScadenzarioDTO as a where a.attrezzatura.idCliente  = :_id_cliente and a.attrezzatura.idSede = :_id_sede and  a.dataProssimaAttivita between :start and :end");
-		query.setParameter("_id_cliente", id_cliente);
-		query.setParameter("_id_sede", id_sede);
+		String q = "from AmScScadenzarioDTO as a where a.dataProssimaAttivita between :start and :end";
+		
+		if(id_cliente!=0) {
+			q += " and a.attrezzatura.idCliente  = :_id_cliente and a.attrezzatura.idSede = :_id_sede";
+		}
+		
+		Query query = session.createQuery(q);
+		if(id_cliente!=0) {
+			query.setParameter("_id_cliente", id_cliente);
+			query.setParameter("_id_sede", id_sede);
+		}
 		query.setParameter("start", start);
 		query.setParameter("end", end);
 		

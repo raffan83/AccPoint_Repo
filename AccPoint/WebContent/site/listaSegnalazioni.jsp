@@ -51,6 +51,30 @@
 
 <!-- <a class="btn btn-primary pull-right" onclick="$('#modalRapporto').modal()">Crea Rapporto</a> -->
 
+ <div class="col-xs-12" id="divFiltroDate" style="">
+
+						<div class="form-group">
+						        <label for="datarange" class="control-label">Filtro Data Segnalazione:</label>
+								<div class="row">
+						     		<div class="col-md-3">
+						     		<div class="input-group">
+				                    		 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+				                    		<input type="text" class="form-control" id="datarange" name="datarange" value=""/>
+				                  	</div>
+								    </div>
+								     <div class="col-md-9">
+ 				                      	<button type="button" class="btn btn-info" onclick="filtraSegnalazioniDate()">Filtra </button>
+ 				            
+ 				                      	
+				                   		  <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="location.reload()">Reset</button> 
+ 				                
+ 								</div>
+  								</div>
+						   </div> 
+
+
+	</div>
+
 
 </div>
 
@@ -437,13 +461,91 @@ $(document).ready(function() {
 	
 	
 
-	
+	$('input[name="datarange"]').daterangepicker({
+	    locale: {
+	      format: 'DD/MM/YYYY'
+	    }
+	}, 
+	function(start, end, label) {
+
+	});
 	
 });
 
+minDateFilter = "";
+maxDateFilter = "";
+dataType = "";
 
-
+ $.fn.dataTableExt.afnFiltering.push(
+		  
  
+  function(oSettings, aData, iDataIndex) {
+	   console.log(aData);
+	   
+		if(oSettings.nTable.getAttribute('id') == "tabSegnalazioni"){
+
+				   if (aData[4]) {
+
+			    	 	var dd = aData[4].split("/");
+
+			       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
+			       console.log("Prossima:"+minDateFilter);
+				   console.log("MIN:"+minDateFilter);
+				   console.log("MAX:"+maxDateFilter);
+				   console.log("VAL:"+aData._date);
+				   console.log( dd);
+
+
+			     }
+				   
+	
+			  
+		     if (minDateFilter && !isNaN(minDateFilter)) {
+		    	 if(isNaN(aData._date)){
+		    		 return false;
+		     
+		     }
+		       if (aData._date < minDateFilter) {
+		          return false;
+		       }
+		   		
+		     }
+
+		     if (maxDateFilter && !isNaN(maxDateFilter)) {
+		    	 if(isNaN(aData._date)){
+		    		 return false;
+		     
+		     }
+		       if (aData._date > maxDateFilter) {
+		    	  
+		         return false;
+		       }
+		      }
+
+		     
+		   }
+		  return true;
+		}	
+	   
+
+); 
+
+function filtraSegnalazioniDate(dataTypeStr){
+ 	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+ 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+ 	
+ 	startDatePicker._isUTC =  true;
+ 	endDatePicker._isUTC =  true;
+
+ 		minDateFilter = new Date(startDatePicker.format('YYYY-MM-DD') ).getTime();
+ 
+ 		maxDateFilter = new Date(endDatePicker.format('YYYY-MM-DD') ).getTime();
+ 		dataType = dataTypeStr; 
+ 		
+ 		var table = $('#tabSegnalazioni').DataTable();
+      table.draw();
+       
+}
 
 
  

@@ -55,10 +55,8 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestioneConfigurazioneClienteBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
-import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -165,7 +163,7 @@ public class ScaricaEtichetta extends HttpServlet {
 			else 
 			{
 				report.addParameter("labDataProVerifica","Pross. Verifica");
-				if(misura.getStrumento().getDataProssimaVerifica()!=null) {
+				if(misura.getStrumento().getTipoRapporto().getId() == 7201 && misura.getStrumento().getDataProssimaVerifica()!=null) {
 					if(conf!=null &&conf.getFmt_data_mese_anno().equals("S")) {
 						LocalDate locDataMisura = misura.getStrumento().getDataProssimaVerifica().toLocalDate();
 

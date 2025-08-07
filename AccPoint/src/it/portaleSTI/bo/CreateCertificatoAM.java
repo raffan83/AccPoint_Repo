@@ -466,7 +466,7 @@ public class CreateCertificatoAM {
 		if(isAnteprima) {
 			path = path_folder+"ANTEPRIMA.pdf";
 		}else {
-			path = path_folder+prova.getnRapporto()+"_NF"+prova.getStrumento().getnFabbrica()+".pdf";
+			path = path_folder+prova.getnRapporto()+"_NF"+prova.getStrumento().getnFabbrica().replaceAll("[\\\\/]", "_")+".pdf";
 		}
 				
 		
@@ -482,7 +482,7 @@ public class CreateCertificatoAM {
 			File f = new File(path);
 		 PDDocument document = PDDocument.load(f);
 		  PDDocumentInformation info = document.getDocumentInformation();
-        info.setTitle(prova.getnRapporto()+"_NF"+prova.getStrumento().getnFabbrica()+".pdf"); // Modifica il titolo
+        info.setTitle(prova.getnRapporto()+"_NF"+prova.getStrumento().getnFabbrica().replaceAll("[\\\\/]", "_")+".pdf"); // Modifica il titolo
         document.setDocumentInformation(info);
 
         document.save(f);
@@ -505,7 +505,7 @@ public class CreateCertificatoAM {
 		
 		if(!isAnteprima) {
 			rapporto.setData(new Date());
-			rapporto.setNomeFile(prova.getnRapporto()+"_NF"+prova.getStrumento().getnFabbrica()+".pdf");
+			rapporto.setNomeFile(prova.getnRapporto()+"_NF"+prova.getStrumento().getnFabbrica().replaceAll("[\\\\/]", "_")+".pdf");
 
 			rapporto.setStato(new StatoCertificatoDTO(2));
 		

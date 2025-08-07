@@ -555,7 +555,7 @@ public class ListaCertificati extends HttpServlet {
 						
 						List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(certificato.getMisura().getListaPunti(),certificato.getMisura().getStrumento().getTipoRapporto());
 						for (CampioneDTO campioneDTO : listaCampioni) {
-							if(campioneDTO.getDataVerifica().after(certificato.getMisura().getDataMisura())) {
+							if(campioneDTO.getDataVerifica()!= null && campioneDTO.getDataVerifica().after(certificato.getMisura().getDataMisura())) {
 								myObj.addProperty("success", false);
 								myObj.addProperty("messaggio", "Attenzione! La data verifica del campione sul certificato ID "+certificato.getId()+" è successiva alla data misura!");
 						        out.println(myObj.toString());

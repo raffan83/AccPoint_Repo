@@ -1,5 +1,8 @@
 package it.portaleSTI.action;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +21,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,6 +34,7 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -38,6 +43,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -52,6 +58,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneCommesseDAO;
@@ -3935,6 +3947,21 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 							out.flush();
 
 					}
+					else if(action.equals("crea_qr")) {
+						
+						String id_corso = request.getParameter("id_corso");
+						
+						id_corso = Utility.decryptData(id_corso);
+						
+						createQR(id_corso);
+						
+						downloadFile(Costanti.PATH_FOLDER+"\\Formazione\\QR\\"+id_corso+"\\qr.png", response.getOutputStream());
+						
+						response.setContentType("application/pdf");	
+						
+						session.close();
+						
+					}
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -4013,5 +4040,62 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			    outp.flush();
 			    outp.close();
 	 }
+	 
+	 public static void createQR(String id_corso) throws Exception
+		{
+			byte[] bytesEncoded = Base64.encodeBase64((""+id_corso).getBytes());
+			System.out.println("encoded value is " + new String(bytesEncoded));
+
+			String myCodeText = "http://localhost:8081/AccPoint/downloadAttestati.do?id_str="+Utility.encryptData(id_corso);
+
+			String filePath =Costanti.PATH_FOLDER+"\\Formazione\\QR\\"+id_corso+"\\";
+			             
+			
+			int size=80;
+			
+
+			String fileType = "png";
+			File dir = new File(filePath);
+			if(!dir.exists()) {
+				dir.mkdirs();
+			}
+			File myFile = new File(filePath+"qr.png");
+			
+			try {
+
+				Map<EncodeHintType, Object> hintMap = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+				hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+
+				// Now with zxing version 3.2.1 you could change border size (white border size to just 1)
+				hintMap.put(EncodeHintType.MARGIN, 0); /* default = 4 */
+				hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+
+				QRCodeWriter qrCodeWriter = new QRCodeWriter();
+				BitMatrix byteMatrix = qrCodeWriter.encode(myCodeText, BarcodeFormat.QR_CODE, size,
+						size, hintMap);
+				int CrunchifyWidth = byteMatrix.getWidth();
+				BufferedImage image = new BufferedImage(CrunchifyWidth, CrunchifyWidth,
+						BufferedImage.TYPE_INT_RGB);
+				image.createGraphics();
+
+				Graphics2D graphics = (Graphics2D) image.getGraphics();
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(0, 0, CrunchifyWidth, CrunchifyWidth);
+				graphics.setColor(Color.BLACK);
+
+				for (int i = 0; i < CrunchifyWidth; i++) {
+					for (int j = 0; j < CrunchifyWidth; j++) {
+						if (byteMatrix.get(i, j)) {
+							graphics.fillRect(i, j, 1, 1);
+						}
+					}
+				}
+				ImageIO.write(image, fileType, myFile);
+			} catch (WriterException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 }

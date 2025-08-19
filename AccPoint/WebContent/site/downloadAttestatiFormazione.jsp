@@ -14,7 +14,7 @@
   
  
  
-<t:main-header  />
+
   <!-- Content Wrapper. Contains page content -->
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
@@ -33,7 +33,7 @@
 	<div class="row">
       <div class="col-xs-12">
 
- <div class="box box-success box-solid">
+ <div class="box box-primary box-solid">
 <div class="box-header with-border">
 	 Lista Documenti
 	<div class="box-tools pull-right">
@@ -63,71 +63,27 @@
    
        <div class="row">
        
-       	<div class="col-sm-3">
-       		<label>Nome Documento</label>
+       	<div class="col-sm-12">
+       		<label>Inserisci Codice Fiscale</label>
        	</div>
-       	<div class="col-sm-9">      
+       	<div class="col-sm-12">      
        	  	
-        <input id="nome_documento" name="nome_documento" class="form-control" type="text" style="width:100%" required>
+        <input id="cf" name="cf" class="form-control" type="text" style="width:100%">
        			
        	</div>       	
        </div><br>
        
-              <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Numero Documento</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="numero_documento" name="numero_documento" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-       <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Rilasciato</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-        <input id="rilasciato" name="rilasciato" class="form-control" type="text" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-       
-             <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Note</label>
-       	</div>
-       	<div class="col-sm-9">      
-			<textarea id="note" name="note" rows="4" class="form-control" style="width:100%"></textarea>
-       	</div>       	
-       </div><br> 
-                    
-                <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>File</label>
-       	</div>
-       	<div class="col-sm-9">      
-			<span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF,.xls,.xlsx,.XLS,.XLSX,.p7m,.doc,.docX,.DOCX,.DOC,.P7M"  id="fileupload" name="fileupload" type="file" required></span><label id="label_file"></label>
-       	</div>       	
-       </div><br> 
+             
        
 
 
 
 	   <div>
 			
-			<button class="btn btn-primary" id="invia" type="submit"  >Salva</button>
+			<a class="btn btn-primary" id="invia"  href="#" >Download Attestato</a>
 		</div>
 		
 		
-		<input type="hidden" id="id_documento" name ="id_documento" value="${documento}" style="width:200px;" >
-	   
 
 </form>
 
@@ -180,10 +136,9 @@
   
   <!-- /.content-wrapper -->
 
-  <t:dash-footer />
   
 </div>
-  <t:control-sidebar />
+
    
 
 
@@ -212,79 +167,69 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
-    <script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
-<script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
-<script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
-<script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
-<script src="plugins/fileSaver/FileSaver.min.js"></script>
+    
     <script type="text/javascript">
  	
-	$('#fileupload').change(function(){
-	$('#label_file').html($(this).val().split("\\")[2]);
-	 
- });
- 
- 
- $('#uploadDocumento').on('submit', function(e){
-	
-	e.preventDefault();
-	
-	SendCustomerData();
- });
-        function SendCustomerData()
+    $("#invia").on("click", function(e) {
+        e.preventDefault(); // blocca il comportamento predefinito del link
+        var cf = $("#cf").val();
+        var idCorso = "${corso.id}";
+        var url = "downloadAttestatiFormazione.do?action=download&id_corso=" + idCorso + "&cf=" + encodeURIComponent(cf);
+        window.location.href = url;
+    });
+
+
+       /*  function downloadAttestato()
         {
 				
-		  var form = $('#uploadDocumento')[0]; 
-		  var formData = new FormData(form);
-		 
-		  var id_documento = $('#id_documento').val();
-    $.ajax({
-  	  type: "POST",
-  	 // url: "http://portale.ecisrl.it/FormInputDoc/uploadDocumento.do",
-  	  url: "http://localhost:8080/FormInputDoc/uploadDocumento.do",
-  	  data: formData,
-  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
-  	  processData: false, // NEEDED, DON'T OMIT THIS
-  	  success: function( data, textStatus) {
-  	
-  		  	      		  
-  		  if(data.success)
-  		  { 
-				$('#myModalErrorContent').html(data.messaggio);
-  			  	$('#myModalError').removeClass();
-  				$('#myModalError').addClass("modal modal-success");
-  				$('#report_button').hide();
-  				$('#visualizza_report').hide();
-					$('#myModalError').modal('show');	
-					
-  		
-  		  }else{
-  			  $('#myModalErrorContent').html(data.messaggio);
-  			  	$('#myModalError').removeClass();
-  				$('#myModalError').addClass("modal modal-danger");
-  				$('#report_button').hide();
-  				$('#visualizza_report').hide();
-					$('#myModalError').modal('show');	      			 
-  		  }
-  	  },
+	
+        	 pleaseWaitDiv = $('#pleaseWaitDialog');
+       	  pleaseWaitDiv.modal();
+       	  var dataObj = {};
+       	  dataObj.cf = cf;
+       	  $.ajax({
+       	    	  type: "POST",
+       	    	  url: "gestioneFormazione.do?action=check_cf",
+       	    	  data: dataObj,
+       	    	  dataType: "json",
+       	    	  success: function( data, textStatus) {
+       	    		  
+       	    		  pleaseWaitDiv.modal('hide');
+       	    		  $(".ui-tooltip").remove();
+       	    		  if(data.success)
+       	    		  { 
 
-  	  error: function(jqXHR, textStatus, errorThrown){
-  		
-
-  		  $('#myModalErrorContent').html("Errore nell'upload! Timeout connessione!");
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");
-				$('#report_button').hide();
-  				$('#visualizza_report').hide();
-				$('#myModalError').modal('show');
-				
-  
-  	  }
-    });
-				
+       	    			 
+       	    			  	
+       	    		
+       	    		  }else{
+       	    			  $('#myModalErrorContent').html(data.messaggio);
+       	    			  
+       	    			  	$('#myModalError').removeClass();
+       	    				$('#myModalError').addClass("modal modal-danger");
+       	    				$('#report_button').show();
+       	    	  			$('#visualizza_report').show();
+       	    				$('#myModalError').modal('show');
+       	    			 
+       	    		  }
+       	    	  },
+       	
+       	    	  error: function(jqXHR, textStatus, errorThrown){
+       	    		  pleaseWaitDiv.modal('hide');
+       	
+       	    		  $('#myModalErrorContent').html(textStatus);
+       	    		  $('#myModalErrorContent').html(data.messaggio);
+       	    		  	$('#myModalError').removeClass();
+       	    			$('#myModalError').addClass("modal modal-danger");
+       	    			$('#report_button').show();
+           	  			$('#visualizza_report').show();
+       					$('#myModalError').modal('show');
+       						
+       	    	  }
+             });	
 
 
-        } 
+        }  */
 
 
 </script>

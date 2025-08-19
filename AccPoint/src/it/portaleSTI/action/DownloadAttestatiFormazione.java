@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
@@ -20,8 +21,10 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
+import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneFormazioneBO;
 
@@ -75,7 +78,25 @@ public class DownloadAttestatiFormazione extends HttpServlet {
 			
 				
 			}
-			
+			else if(action.equals("download")) {
+				
+				ajax = true;
+				
+				String cf = request.getParameter("cf");
+				ForCorsoDTO corso = (ForCorsoDTO) request.getSession().getAttribute("corso");
+				
+				ForPartecipanteRuoloCorsoDTO partecipante = DirectMySqlDAO.getAttestato(cf, corso.getId());
+				
+				String path = Costanti.PATH_FOLDER+"//Formazione//Attestati//"+corso.getId()+"//"+partecipante.getPartecipante().getId()+"//"+partecipante.getAttestato();
+				response.setContentType("application/octet-stream");	
+				response.setHeader("Content-Disposition","attachment;filename="+cf+".pdf");
+				
+				Utility.downloadFile(path, response.getOutputStream());
+				
+				
+				
+				
+			}
 			
 			
 		}catch(Exception e) {

@@ -3962,6 +3962,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						session.close();
 						
 					}
+					
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -4046,7 +4047,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			byte[] bytesEncoded = Base64.encodeBase64((""+id_corso).getBytes());
 			System.out.println("encoded value is " + new String(bytesEncoded));
 
-			String myCodeText = "http://localhost:8081/AccPoint/downloadAttestati.do?id_str="+Utility.encryptData(id_corso);
+			String myCodeText = "http://localhost:8080/AccPoint/downloadAttestatiFormazione.do?id_corso="+Utility.encryptData(id_corso);
 
 			String filePath =Costanti.PATH_FOLDER+"\\Formazione\\QR\\"+id_corso+"\\";
 			             

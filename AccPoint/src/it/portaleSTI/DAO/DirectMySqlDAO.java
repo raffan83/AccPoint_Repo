@@ -48,6 +48,7 @@ import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
+import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.IngIngressoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
@@ -243,35 +244,6 @@ public class DirectMySqlDAO {
 	}
 
 
-//	public static String getPassword(String pwd) throws Exception
-//	{
-//		String toReturn="";
-//		PreparedStatement pst=null;
-//		ResultSet rs= null;
-//		Connection con=null;
-//		try{
-//			con = getConnection();	
-//			pst=con.prepareStatement(getPassword);
-//			pst.setString(1,pwd);
-//			rs=pst.executeQuery();
-//			rs.next();
-//			toReturn=rs.getString(1);
-//		}catch(Exception ex)
-//		{
-//			ex.printStackTrace();
-//			throw ex;
-//
-//		}finally
-//		{
-//			pst.close();
-//			con.close();
-//		}
-//
-//		return toReturn;
-//	}
-	
-	
-
 	public static String getPassword(String pwd) throws Exception
 	{
 		String toReturn="";
@@ -279,30 +251,12 @@ public class DirectMySqlDAO {
 		ResultSet rs= null;
 		Connection con=null;
 		try{
-//			con = getConnection();	
-//			pst=con.prepareStatement(getPassword);
-//			pst.setString(1,pwd);
-//			rs=pst.executeQuery();
-//			rs.next();
-//			toReturn=rs.getString(1);
-			 MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
-	            
-	            // 1  passaggio SHA1
-	            byte[] stage1 = sha1.digest(pwd.getBytes("UTF-8"));
-	            
-	            // 2  passaggio SHA1 sull'hash del primo passo
-	            byte[] stage2 = sha1.digest(stage1);
-	            
-	            StringBuilder sb = new StringBuilder();
-	            for (byte b : stage2) {
-	                // & 0xFF per trattare byte come unsigned
-	                sb.append(String.format("%02x", b & 0xFF));
-	            }
-	            
-	            // Converti in esadecimale maiuscolo con prefisso *
-	            return "*" + sb.toString().toUpperCase();
-			
-			
+			con = getConnection();	
+			pst=con.prepareStatement(getPassword);
+			pst.setString(1,pwd);
+			rs=pst.executeQuery();
+			rs.next();
+			toReturn=rs.getString(1);
 		}catch(Exception ex)
 		{
 			ex.printStackTrace();
@@ -310,14 +264,61 @@ public class DirectMySqlDAO {
 
 		}finally
 		{
-			//pst.close();
-			//con.close();
+			pst.close();
+			con.close();
 		}
 
-		
-		
-		//return toReturn;
+		return toReturn;
 	}
+	
+	
+
+//	public static String getPassword(String pwd) throws Exception
+//	{
+//		String toReturn="";
+//		PreparedStatement pst=null;
+//		ResultSet rs= null;
+//		Connection con=null;
+//		try{
+////			con = getConnection();	
+////			pst=con.prepareStatement(getPassword);
+////			pst.setString(1,pwd);
+////			rs=pst.executeQuery();
+////			rs.next();
+////			toReturn=rs.getString(1);
+//			 MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
+//	            
+//	            // 1  passaggio SHA1
+//	            byte[] stage1 = sha1.digest(pwd.getBytes("UTF-8"));
+//	            
+//	            // 2  passaggio SHA1 sull'hash del primo passo
+//	            byte[] stage2 = sha1.digest(stage1);
+//	            
+//	            StringBuilder sb = new StringBuilder();
+//	            for (byte b : stage2) {
+//	                // & 0xFF per trattare byte come unsigned
+//	                sb.append(String.format("%02x", b & 0xFF));
+//	            }
+//	            
+//	            // Converti in esadecimale maiuscolo con prefisso *
+//	            return "*" + sb.toString().toUpperCase();
+//			
+//			
+//		}catch(Exception ex)
+//		{
+//			ex.printStackTrace();
+//			throw ex;
+//
+//		}finally
+//		{
+//			//pst.close();
+//			//con.close();
+//		}
+//
+//		
+//		
+//		//return toReturn;
+//	}
 	
 	
 
@@ -4090,27 +4091,48 @@ public static ForCorsoDTO getCorsoFromIdDirect(int id_corso) throws Exception {
             res = new ForCorsoDTO();
 
             res.setId(rs.getInt("id"));
-            res.setIdCorso(rs.getInt("id_corso"));
-            res.setIdDocente(rs.getInt("id_docente"));
-            res.setDataInizio(rs.getDate("data_inizio"));
-            res.setDataScadenza(rs.getDate("data_scadenza"));
-            res.setDocumentoTest(rs.getString("documento_test"));
-            res.setDataCorso(rs.getDate("data_corso"));
+         
             res.setDescrizione(rs.getString("descrizione"));
-            res.setEdizione(rs.getString("edizione"));
-            res.setCommessa(rs.getString("commessa"));
-            res.setIdQuestionario(rs.getInt("id_questionario"));
-            res.setELearning(rs.getInt("e_learning"));
-            res.setVisibile(rs.getInt("visibile"));
-            res.setDisabilitato(rs.getInt("disabilitato"));
-            res.setSchedaConsegnaId(rs.getInt("scheda_consegna_id"));
-            res.setDurata(rs.getInt("durata"));
-            res.setTipologia(rs.getString("tipologia"));
-            res.setEmailInviata(rs.getInt("email_inviata"));
-            res.setEfei(rs.getInt("efei"));
-            res.setNAttestati(rs.getInt("n_attestati"));
-            res.setDataRemind(rs.getDate("data_remind"));
-            res.setFrequenzaRemind(rs.getInt("frequenza_remind"));
+          
+        }
+
+    } catch (Exception e) {
+        throw e;
+    } finally {
+        if (rs != null) rs.close();
+        if (pst != null) pst.close();
+        if (con != null) con.close();
+    }
+
+    return res;
+}
+
+public static ForPartecipanteRuoloCorsoDTO getAttestato(String cf, int id_corso) throws Exception {
+	Connection con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+
+    ForPartecipanteRuoloCorsoDTO res = null;
+
+    try {
+        con = getConnection();
+
+        String query = "SELECT attestato, id_partecipante FROM for_partecipante_ruolo_corso WHERE id_corso = ? and id_partecipante =(SELECT id from for_partecipante where cf = ?)";
+        pst = con.prepareStatement(query);
+        pst.setInt(1, id_corso);
+        pst.setString(2, cf);
+
+        rs = pst.executeQuery();
+
+        if (rs.next()) {
+            res =new ForPartecipanteRuoloCorsoDTO();
+            ForPartecipanteDTO p = new ForPartecipanteDTO();
+            p.setId(rs.getInt("id_partecipante"));
+            res.setPartecipante(p);		
+            res.setAttestato(rs.getString("attestato"));
+
+         
+          
         }
 
     } catch (Exception e) {

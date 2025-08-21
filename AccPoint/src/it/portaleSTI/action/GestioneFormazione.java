@@ -9,8 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -43,11 +41,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -60,10 +56,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
-import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneCommesseDAO;
@@ -91,10 +90,7 @@ import it.portaleSTI.DTO.ForPiaTipoDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
-import it.portaleSTI.DTO.MisuraDTO;
-import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.SedeDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
@@ -102,8 +98,6 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneAssegnazioneAttivitaBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
-import it.portaleSTI.bo.GestioneMisuraBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.SendEmailBO;
 
 /**
@@ -3953,9 +3947,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						
 						id_corso = Utility.decryptData(id_corso);
 						
-						createQR(id_corso);
+						createQRtoPDF(id_corso);
 						
-						downloadFile(Costanti.PATH_FOLDER+"\\Formazione\\QR\\"+id_corso+"\\qr.png", response.getOutputStream());
+						downloadFile(Costanti.PATH_FOLDER+"\\Formazione\\QR\\"+id_corso+"\\qr.pdf", response.getOutputStream());
 						
 						response.setContentType("application/pdf");	
 						
@@ -4042,61 +4036,123 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			    outp.close();
 	 }
 	 
-	 public static void createQR(String id_corso) throws Exception
-		{
-			byte[] bytesEncoded = Base64.encodeBase64((""+id_corso).getBytes());
-			System.out.println("encoded value is " + new String(bytesEncoded));
+//	 public static void createQR(String id_corso) throws Exception
+//		{
+//			byte[] bytesEncoded = Base64.encodeBase64((""+id_corso).getBytes());
+//			System.out.println("encoded value is " + new String(bytesEncoded));
+//
+//			String myCodeText = "http://localhost:8080/AccPoint/downloadAttestatiFormazione.do?id_corso="+Utility.encryptData(id_corso);
+//
+//			String filePath =Costanti.PATH_FOLDER+"\\Formazione\\QR\\"+id_corso+"\\";
+//			             
+//			
+//			int size=80;
+//			
+//
+//			String fileType = "png";
+//			File dir = new File(filePath);
+//			if(!dir.exists()) {
+//				dir.mkdirs();
+//			}
+//			File myFile = new File(filePath+"qr.png");
+//			
+//			try {
+//
+//				Map<EncodeHintType, Object> hintMap = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+//				hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+//
+//				// Now with zxing version 3.2.1 you could change border size (white border size to just 1)
+//				hintMap.put(EncodeHintType.MARGIN, 0); /* default = 4 */
+//				hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+//
+//				QRCodeWriter qrCodeWriter = new QRCodeWriter();
+//				BitMatrix byteMatrix = qrCodeWriter.encode(myCodeText, BarcodeFormat.QR_CODE, size,
+//						size, hintMap);
+//				int CrunchifyWidth = byteMatrix.getWidth();
+//				BufferedImage image = new BufferedImage(CrunchifyWidth, CrunchifyWidth,
+//						BufferedImage.TYPE_INT_RGB);
+//				image.createGraphics();
+//
+//				Graphics2D graphics = (Graphics2D) image.getGraphics();
+//				graphics.setColor(Color.WHITE);
+//				graphics.fillRect(0, 0, CrunchifyWidth, CrunchifyWidth);
+//				graphics.setColor(Color.BLACK);
+//
+//				for (int i = 0; i < CrunchifyWidth; i++) {
+//					for (int j = 0; j < CrunchifyWidth; j++) {
+//						if (byteMatrix.get(i, j)) {
+//							graphics.fillRect(i, j, 1, 1);
+//						}
+//					}
+//				}
+//				ImageIO.write(image, fileType, myFile);
+//			} catch (WriterException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+	 
+	 
+	 
 
-			String myCodeText = "http://localhost:8080/AccPoint/downloadAttestatiFormazione.do?id_corso="+Utility.encryptData(id_corso);
+	    public static void createQRtoPDF(String id_corso) throws Exception {
 
-			String filePath =Costanti.PATH_FOLDER+"\\Formazione\\QR\\"+id_corso+"\\";
-			             
-			
-			int size=80;
-			
+	        // 1. Creo il contenuto del QR
+	        String myCodeText = "http://localhost:8080/AccPoint/downloadAttestatiFormazione.do?id_corso="
+	                + Utility.encryptData(id_corso);
 
-			String fileType = "png";
-			File dir = new File(filePath);
-			if(!dir.exists()) {
-				dir.mkdirs();
-			}
-			File myFile = new File(filePath+"qr.png");
-			
-			try {
+	        // Percorsi
+	        String filePath = Costanti.PATH_FOLDER + "\\Formazione\\QR\\" + id_corso + "\\";
+	        String qrFile = filePath + "qr.png";
+	        String pdfFile = filePath + "qr.pdf";
 
-				Map<EncodeHintType, Object> hintMap = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
-				hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+	        int size = 150;
+	        String fileType = "png";
+	        File dir = new File(filePath);
+	        if (!dir.exists()) {
+	            dir.mkdirs();
+	        }
 
-				// Now with zxing version 3.2.1 you could change border size (white border size to just 1)
-				hintMap.put(EncodeHintType.MARGIN, 0); /* default = 4 */
-				hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+	        // 2. Genero QR code manualmente (senza MatrixToImageWriter)
+	        Map<EncodeHintType, Object> hintMap = new EnumMap<>(EncodeHintType.class);
+	        hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+	        hintMap.put(EncodeHintType.MARGIN, 1);
+	        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
 
-				QRCodeWriter qrCodeWriter = new QRCodeWriter();
-				BitMatrix byteMatrix = qrCodeWriter.encode(myCodeText, BarcodeFormat.QR_CODE, size,
-						size, hintMap);
-				int CrunchifyWidth = byteMatrix.getWidth();
-				BufferedImage image = new BufferedImage(CrunchifyWidth, CrunchifyWidth,
-						BufferedImage.TYPE_INT_RGB);
-				image.createGraphics();
+	        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+	        BitMatrix bitMatrix = qrCodeWriter.encode(myCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
 
-				Graphics2D graphics = (Graphics2D) image.getGraphics();
-				graphics.setColor(Color.WHITE);
-				graphics.fillRect(0, 0, CrunchifyWidth, CrunchifyWidth);
-				graphics.setColor(Color.BLACK);
+	        int width = bitMatrix.getWidth();
+	        BufferedImage image = new BufferedImage(width, width, BufferedImage.TYPE_INT_RGB);
+	        Graphics2D graphics = image.createGraphics();
+	        graphics.setColor(Color.WHITE);
+	        graphics.fillRect(0, 0, width, width);
+	        graphics.setColor(Color.BLACK);
 
-				for (int i = 0; i < CrunchifyWidth; i++) {
-					for (int j = 0; j < CrunchifyWidth; j++) {
-						if (byteMatrix.get(i, j)) {
-							graphics.fillRect(i, j, 1, 1);
-						}
-					}
-				}
-				ImageIO.write(image, fileType, myFile);
-			} catch (WriterException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	        for (int i = 0; i < width; i++) {
+	            for (int j = 0; j < width; j++) {
+	                if (bitMatrix.get(i, j)) {
+	                    graphics.fillRect(i, j, 1, 1);
+	                }
+	            }
+	        }
+	        ImageIO.write(image, fileType, new File(qrFile));
+
+	        // 3. Inserisco QR in un PDF con iText
+	        Document document = new Document(PageSize.A4);
+	        PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
+	        document.open();
+
+	        Image qrImg = Image.getInstance(qrFile);
+	        qrImg.scaleAbsolute(150, 150);  // grandezza nel PDF
+	        qrImg.setAbsolutePosition(200, 600); // posizione nel foglio
+
+	        document.add(qrImg);
+	        document.close();
+
+	        System.out.println("PDF generato: " + pdfFile);
+	    }
+	
 
 }

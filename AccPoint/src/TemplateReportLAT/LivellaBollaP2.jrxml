@@ -10,37 +10,44 @@
 	</background>
 	<title>
 		<band height="167" splitType="Stretch">
+			<staticText>
+				<reportElement positionType="Float" x="0" y="132" width="496" height="18" uuid="1d46a78d-75e0-4f4b-bac3-6685fec05a2d"/>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Certificato di Taratura]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="335" y="132" width="219" height="31" uuid="50d71b2b-11f7-409a-a9c8-292d3a9c5cce"/>
+				<reportElement x="1" y="113" width="554" height="19" uuid="97e9861f-f4f3-44a0-b31e-9390ef6de813"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nota_riemissione}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="225" y="132" width="219" height="31" uuid="50d71b2b-11f7-409a-a9c8-292d3a9c5cce"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numero_certificato}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="0" y="132" width="496" height="18" uuid="1d46a78d-75e0-4f4b-bac3-6685fec05a2d"/>
-				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="12" isBold="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[CERTIFICATO DI TARATURA ]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="0" y="146" width="555" height="18" uuid="7d73a4ca-d202-4714-8a95-7e30270041b1"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Left">
 					<font size="10" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Certificate of Calibration]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="505" y="117" width="50" height="12" uuid="95fff802-549f-4c5b-b7e6-000fe786c925"/>
+				<reportElement x="505" y="134" width="50" height="12" uuid="95fff802-549f-4c5b-b7e6-000fe786c925"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Pagina 2 di 3]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="516" y="130" width="43" height="12" uuid="ecb38ef2-17f2-4aed-9321-6fb4d3712603"/>
+				<reportElement x="516" y="147" width="43" height="12" uuid="ecb38ef2-17f2-4aed-9321-6fb4d3712603"/>
 				<textElement>
 					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -50,13 +57,6 @@
 				<reportElement x="0" y="2" width="561" height="111" uuid="8b3fec0d-88d3-4ec7-816a-7ad61931be3f"/>
 				<imageExpression><![CDATA[$P{immagine_sti}]]></imageExpression>
 			</image>
-			<textField>
-				<reportElement x="1" y="113" width="554" height="19" uuid="97e9861f-f4f3-44a0-b31e-9390ef6de813"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isItalic="true" pdfFontName="Helvetica-Oblique"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{nota_riemissione}]]></textFieldExpression>
-			</textField>
 		</band>
 	</title>
 	<detail>

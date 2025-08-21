@@ -97,7 +97,10 @@
                  </div>
                 </li>
   				 
-                
+                <li class="list-group-item">
+              
+                <b>QR Code</b><a  target="_blank" class="btn btn-primary btn-xs pull-right customTooltip"  href="gestioneFormazione.do?action=crea_qr&id_corso='${utl:encryptData(corso.id)}'"><i class="fa fa-qrcode" aria-hidden="true"></i></a>
+                </li>
                
         </ul>
 

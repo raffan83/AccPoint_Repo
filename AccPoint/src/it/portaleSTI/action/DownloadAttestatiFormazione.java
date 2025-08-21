@@ -78,14 +78,36 @@ public class DownloadAttestatiFormazione extends HttpServlet {
 			
 				
 			}
+			else if(action.equals("check_cf")) {
+				ajax = true;
+				String cf = request.getParameter("cf");
+				
+				ForCorsoDTO corso = (ForCorsoDTO) request.getSession().getAttribute("corso");
+				
+				ForPartecipanteRuoloCorsoDTO partecipante = DirectMySqlDAO.getAttestato(cf, corso.getId());
+				PrintWriter out = response.getWriter();
+				
+				if (partecipante != null) {
+				
+					request.getSession().setAttribute("partecipante", partecipante);
+		        	myObj.addProperty("success", true);
+		        	out.print(myObj);
+				}else {
+					myObj.addProperty("success", false);
+		        	out.print(myObj);
+				}
+			}
+			
 			else if(action.equals("download")) {
 				
-				ajax = true;
+				
 				
 				String cf = request.getParameter("cf");
 				ForCorsoDTO corso = (ForCorsoDTO) request.getSession().getAttribute("corso");
 				
-				ForPartecipanteRuoloCorsoDTO partecipante = DirectMySqlDAO.getAttestato(cf, corso.getId());
+				//ForPartecipanteRuoloCorsoDTO partecipante = DirectMySqlDAO.getAttestato(cf, corso.getId());
+				
+				ForPartecipanteRuoloCorsoDTO partecipante =(ForPartecipanteRuoloCorsoDTO) request.getSession().getAttribute("partecipante");
 				
 				String path = Costanti.PATH_FOLDER+"//Formazione//Attestati//"+corso.getId()+"//"+partecipante.getPartecipante().getId()+"//"+partecipante.getAttestato();
 				response.setContentType("application/octet-stream");	

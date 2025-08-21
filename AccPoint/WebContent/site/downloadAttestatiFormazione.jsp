@@ -35,7 +35,7 @@
 
  <div class="box box-primary box-solid">
 <div class="box-header with-border">
-	 Lista Documenti
+Download Attestato
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -58,34 +58,43 @@
 
 
 
-<form id="uploadDocumento" name="uploadDocumento">
-
    
        <div class="row">
-       
-       	<div class="col-sm-12">
+       <div class="col-sm-4">
+       </div>
+       	<div class="col-sm-4 text-center">
        		<label>Inserisci Codice Fiscale</label>
        	</div>
-       	<div class="col-sm-12">      
-       	  	
+       	       <div class="col-sm-4">
+       </div></div>
+            <div class="row">
+              <div class="col-sm-4">
+       </div>
+       	  	       <div class="col-sm-4 text-center">
+   
         <input id="cf" name="cf" class="form-control" type="text" style="width:100%">
        			
-       	</div>       	
+       	</div>       
+       	       <div class="col-sm-4">
+       </div>	
        </div><br>
        
              
        
 
 
+<div class="row">
+       <div class="col-sm-4">
+       </div>
+       	<div class="col-sm-4 text-center ">
 
-	   <div>
-			
 			<a class="btn btn-primary" id="invia"  href="#" >Download Attestato</a>
 		</div>
-		
-		
+		      <div class="col-sm-4">
+       </div>
+		</div>
 
-</form>
+
 
 
 
@@ -125,7 +134,7 @@
  
         <button  type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
 
-        <button style="display:none" type="button" class="btn btn-outline" id="report_button" data-dismiss="modal" onClick="sendReport($(this).parents('.modal'))">Invia Report</button>
+       <!--  <button style="display:none" type="button" class="btn btn-outline" id="report_button" data-dismiss="modal" onClick="sendReport($(this).parents('.modal'))">Invia Report</button> -->
       </div>
     </div>
   </div>
@@ -169,17 +178,16 @@
     
     
     <script type="text/javascript">
- 	
+
+    
     $("#invia").on("click", function(e) {
         e.preventDefault(); // blocca il comportamento predefinito del link
         var cf = $("#cf").val();
-        var idCorso = "${corso.id}";
-        var url = "downloadAttestatiFormazione.do?action=download&id_corso=" + idCorso + "&cf=" + encodeURIComponent(cf);
-        window.location.href = url;
+        downloadAttestato(cf)
     });
 
 
-       /*  function downloadAttestato()
+         function downloadAttestato(cf)
         {
 				
 	
@@ -187,9 +195,10 @@
        	  pleaseWaitDiv.modal();
        	  var dataObj = {};
        	  dataObj.cf = cf;
+       	dataObj.id_corso = "${corso.id}";
        	  $.ajax({
        	    	  type: "POST",
-       	    	  url: "gestioneFormazione.do?action=check_cf",
+       	    	  url: "downloadAttestatiFormazione.do?action=check_cf",
        	    	  data: dataObj,
        	    	  dataType: "json",
        	    	  success: function( data, textStatus) {
@@ -200,10 +209,11 @@
        	    		  { 
 
        	    			 
-       	    			  	
+       	    			var url = "downloadAttestatiFormazione.do?action=download&id_corso=${corso.id}&cf=" + encodeURIComponent(cf);
+       	    	        window.location.href = url;
        	    		
        	    		  }else{
-       	    			  $('#myModalErrorContent').html(data.messaggio);
+       	    			  $('#myModalErrorContent').html("Codice fiscale errato o attestato non presente!");
        	    			  
        	    			  	$('#myModalError').removeClass();
        	    				$('#myModalError').addClass("modal modal-danger");
@@ -229,7 +239,7 @@
              });	
 
 
-        }  */
+        }  
 
 
 </script>

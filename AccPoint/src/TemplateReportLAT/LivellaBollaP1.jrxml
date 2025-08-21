@@ -10,6 +10,13 @@
 	</background>
 	<detail>
 		<band height="772" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="117" width="554" height="22" uuid="bda45078-96c1-4d79-adc5-e7c9f534a7c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nota_riemissione}]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="0" y="181" width="150" height="15" uuid="680cbf97-70f2-4b83-be8e-7ffe39db315a"/>
 				<textElement verticalAlignment="Bottom">
@@ -260,41 +267,39 @@
 				<textElement textAlignment="Justified">
 					<font size="8" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[Le incertezze di misura dichiarate in questo documento sono state determinate conformemente alla Guida ISO/IEC 98 e al documento EA-4/02. Solitamente sono espresse come incertezza estesa ottenuta moltiplicando l’incertezza tipo per il fattore di copertura   corrispondente ad un livello di fiducia di circa il 95 %. Normalmente tale fattore    vale 2.]]></text>
+				<text><![CDATA[Le incertezze di misura dichiarate in questo documento sono state determinate conformemente alla ISO/IEC Guide 98-3 e al documento EA-4/02. Solitamente sono espresse come incertezza estesa ottenuta moltiplicando l’incertezza tipo per il fattore di copertura   corrispondente ad un livello di fiducia di circa il 95 %. Normalmente tale fattore    vale 2.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="674" width="554" height="35" uuid="f5b6306e-417f-4369-89c5-a9618c59b05a"/>
 				<textElement textAlignment="Justified">
 					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<text><![CDATA[The measurement uncertainties stated in this document have been determined according to the ISO/IEC Guide 98 and to EA-4/02. Usually, they have been estimated as expanded uncertainty obtained multiplying the standard uncertainty by the coverage factor k corresponding to a confidence level of about 95%. Normally, this factor k is 2.]]></text>
+				<text><![CDATA[The measurement uncertainties stated in this document have been determined according to the ISO/IEC Guide 98-3 and to EA-4/02. Usually, they have been estimated as expanded uncertainty obtained multiplying the standard uncertainty by the coverage factor k corresponding to a confidence level of about 95%. Normally, this factor k is 2.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="370" y="327" width="184" height="183" uuid="ffa1e113-5e17-4701-abdd-19b86665caeb"/>
 				<textElement textAlignment="Justified">
 					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<text><![CDATA[This certificate of calibration is issued in compliance with the accreditation LAT N° 172 granted according to decrees connected with Italian law No. 273/1991 which has established the National Calibration System. ACCREDIA attests the calibration and measurement capability, the metrological competence of the Centre and the traceability of calibration results to the national and international standards of the International System of Units (SI).
-This certificate may not be partially reproduced, except with the prior written permission of the issuing Centre.]]></text>
+				<text><![CDATA[This certificate of calibration is issued in compliance with the accreditation n. 00283 Calibration attesting the calibration and measurement capability, the metrological competence of the Centre and the traceability of calibration results to the national and international standards of the International System of Units (SI) in compliance with requirements of ISO/IEC 17025. The accreditation is granted according to decrees connected with Italian law No. 273/1991 which has established the National Calibration System.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="370" y="189" width="183" height="152" uuid="03c67b54-2d71-47b5-b4f7-8d9a27421f4d"/>
 				<textElement textAlignment="Justified">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Il presente certificato di taratura è emesso in base all'accreditamento LAT N° 172 rilasciato in accordo ai decreti attuativi della legge n. 273/1991 che ha istituito il Sistema Nazionale di Taratura (SNT). ACCREDIA attesta le capacità di misura e di taratura, le competenze metrologiche del Centro e la riferibilità delle tarature eseguite ai campioni nazionali e internazionali delle unità di misura del Sistema Internazionale delle Unità (SI).
-Questo certificato non può essere riprodotto in modo parziale, salvo espressa autorizzazione scritta da parte del Centro.]]></text>
+				<text><![CDATA[Il presente certificato di taratura è emesso in base all'accreditamento n. 00283 Calibration che attesta le capacità di misura e di taratura, le competenze metrologiche del Centro e la riferibilità delle tarature eseguite ai campioni nazionali e internazionali delle unità di misura del Sistema Internazionale delle Unità (SI) in conformità ai requisiti della norma UNI CEI EN ISO/IEC 17025. L’accreditamento è rilasciato in accordo ai decreti attuativi della legge n. 273/1991 che ha istituito il Sistema Nazionale di Taratura (SNT).]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="-1" y="140" width="501" height="18" uuid="842b1e30-72e3-42cb-89ff-eec78fbc4853"/>
-				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="12" isBold="true"/>
+				<reportElement positionType="Float" x="2" y="140" width="501" height="18" uuid="842b1e30-72e3-42cb-89ff-eec78fbc4853"/>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[CERTIFICATO DI TARATURA ]]></text>
+				<text><![CDATA[Certificato di Taratura]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="336" y="140" width="217" height="31" uuid="50d682f0-1887-42cd-b4de-d7e2f5b52028"/>
+				<reportElement x="224" y="140" width="217" height="31" uuid="50d682f0-1887-42cd-b4de-d7e2f5b52028"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -302,34 +307,34 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 			</textField>
 			<staticText>
 				<reportElement x="0" y="158" width="555" height="18" uuid="bbe05f0f-0030-49dd-941f-0fc191abd1de"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Left">
 					<font size="10" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Certificate of Calibration]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="505" y="117" width="50" height="12" uuid="284e27b6-28f4-4ebf-ba2e-f750bad50487"/>
+				<reportElement x="505" y="146" width="50" height="12" uuid="284e27b6-28f4-4ebf-ba2e-f750bad50487"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Pagina 1 di ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="512" y="129" width="43" height="12" uuid="93b34a50-53d6-42a2-aec4-3203554f3b24"/>
+				<reportElement x="512" y="158" width="43" height="12" uuid="93b34a50-53d6-42a2-aec4-3203554f3b24"/>
 				<textElement>
 					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Page 1 of ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="651" width="10" height="20" uuid="45693343-8ad0-4d71-abca-0722f430e666"/>
+				<reportElement x="415" y="651" width="10" height="20" uuid="45693343-8ad0-4d71-abca-0722f430e666"/>
 				<textElement>
 					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[k]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="102" y="661" width="10" height="20" uuid="cd80642f-3de8-4e5c-bda5-ffbc00fda0aa"/>
+				<reportElement x="145" y="661" width="10" height="20" uuid="cd80642f-3de8-4e5c-bda5-ffbc00fda0aa"/>
 				<textElement>
 					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -343,14 +348,14 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				<textFieldExpression><![CDATA[$P{oggetto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="547" y="117" width="9" height="12" uuid="9a65aaa7-4505-4ccd-83a4-cd7b77c3bba7"/>
+				<reportElement x="547" y="146" width="9" height="12" uuid="9a65aaa7-4505-4ccd-83a4-cd7b77c3bba7"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numero_pagine}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="544" y="129" width="12" height="12" uuid="914f3145-99ed-4d48-9d57-04f718ffb133"/>
+				<reportElement x="544" y="158" width="12" height="12" uuid="914f3145-99ed-4d48-9d57-04f718ffb133"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -388,13 +393,6 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				<reportElement x="385" y="752" width="151" height="20" uuid="60c01dc2-7b1f-4c08-afa9-f9606f4e8a95"/>
 				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
 			</image>
-			<textField>
-				<reportElement x="1" y="117" width="554" height="22" uuid="bda45078-96c1-4d79-adc5-e7c9f534a7c8"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isItalic="true" pdfFontName="Helvetica-Oblique"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{nota_riemissione}]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 </jasperReport>

@@ -12,6 +12,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" import="java.util.List" %>
 <%@ page language="java" import="java.util.ArrayList" %>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <% 
 JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonElement jsonElem = (JsonElement)json.getAsJsonArray("dataInfo");
@@ -97,9 +98,9 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	
 		<td>
 
-		<a href="scaricaDocumentoEsternoStrumento.do?action=scaricaDocumento&idDoc=${documento.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+		<a href="scaricaDocumentoEsternoStrumento.do?action=scaricaDocumento&idDoc=${utl:encryptData(documento.id)}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
 		<c:if test="${userObj.checkPermesso('LISTA_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}">
-		<a href="#" onClick="modalEliminaDocumentoEsternoStrumento(${documento.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
+		<a href="#" onClick="modalEliminaDocumentoEsternoStrumento('${utl:encryptData(documento.id)}')" class="btn btn-danger"><i class="fa fa-remove"></i></a>
 			</c:if>		
 		</td>
 	

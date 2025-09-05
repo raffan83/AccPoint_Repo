@@ -5,7 +5,7 @@
 <%@page import="com.google.gson.JsonElement"%>
 <%@page import="it.portaleSTI.DTO.StrumentoDTO"%>
 <%@page import="com.google.gson.GsonBuilder"%>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <% 
 JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonElement jsonElem = (JsonElement)json.getAsJsonObject("dataInfo");
@@ -65,6 +65,10 @@ input:checked + .slider:before {
 <% if(user.checkPermesso("CAMBIO_STATO_STRUMENTO_METROLOGIA")){ %>
 <button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%=idSede%>','<%=idCliente%>')">Cambia Stato</button>
 <% } %>
+
+ <c:set var="str" value="<%= strumento %>" scope="request"/>
+ 
+ 
  <form class="form-horizontal">
               
 
@@ -84,7 +88,7 @@ input:checked + .slider:before {
         <label for="inputName" class="col-sm-2 control-label">Denominazione:</label>
         <%if(strumento.getDenominazione()!=null) {%>
         <div class="col-sm-10">
-                      <input class="form-control" id="denominazione" type="text" name="denominazione" disabled="disabled"  value="<%=strumento.getDenominazione() %>"/>
+                      <input class="form-control" id="denominazione" type="text" name="denominazione" disabled="disabled"  value="<c:out value='${str.denominazione}'/>"/>
     </div>
     <%}else{ %>
     <div class="col-sm-10">
@@ -127,7 +131,7 @@ input:checked + .slider:before {
         <label for="inputName" class="col-sm-2 control-label">Modello:</label>
         <%if(strumento.getModello()!=null) {%>
         <div class="col-sm-10">
-                      <input class="form-control" id="modello" type="text" name="modello" disabled="disabled"  value="<%=strumento.getModello() %>"/>
+                      <input class="form-control" id="modello" type="text" name="modello" disabled="disabled"  value="<c:out value='${str.modello}'/>"/>
     </div>
     <%}else{ %>
     <div class="col-sm-10">

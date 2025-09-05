@@ -12,6 +12,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" import="java.util.List" %>
 <%@ page language="java" import="java.util.ArrayList" %>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 
 <%-- <c:if test="${userObj.checkPermesso('CARICAMENTO_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}"> --%>
@@ -93,9 +94,9 @@
 	
 		<td>
 
-		<a href="scaricaDocumentoEsternoCampione.do?action=scaricaDocumento&idDoc=${documento.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+		<a href="scaricaDocumentoEsternoCampione.do?action=scaricaDocumento&idDoc=${utl:encryptData(documento.id)}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
 		<c:if test="${userObj.checkPermesso('LISTA_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}">
-		<a href="#" onClick="modalEliminaDocumentoEsternoCampione(${documento.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
+		<a href="#" onClick="modalEliminaDocumentoEsternoCampione('${utl:encryptData(documento.id)}')" class="btn btn-danger"><i class="fa fa-remove"></i></a>
 			</c:if>		
 		</td>
 	

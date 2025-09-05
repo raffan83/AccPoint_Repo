@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -94,6 +95,7 @@ public class ModificaStrumento extends HttpServlet {
 
 				StrumentoDTO dettaglio = GestioneStrumentoBO.getStrumentoById(idS, session);
 
+			
 				ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)request.getSession().getAttribute("listaTipoRapporto");
 				if(listaTipoRapporto==null) {
 					listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto(session);
@@ -457,6 +459,8 @@ public class ModificaStrumento extends HttpServlet {
 	            }
 
 				String nuova_nota = ret.get("nuova_nota");
+				
+			//	nuova_nota = StringEscapeUtils.escapeHtml4(nuova_nota);
 				
 				StrumentoDTO strumento = (StrumentoDTO) request.getSession().getAttribute("strumento");		
 				

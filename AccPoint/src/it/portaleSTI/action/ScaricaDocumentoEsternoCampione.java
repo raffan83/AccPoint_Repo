@@ -153,7 +153,7 @@ public class ScaricaDocumentoEsternoCampione extends HttpServlet {
 			
 			if(action.equals("scaricaDocumento"))
 			{
-			String idDocumento= request.getParameter("idDoc");
+			String idDocumento= Utility.decryptData(request.getParameter("idDoc"));
 			 	
 			 	DocumentoCampioneDTO documento= GestioneCampioneBO.getDocumentoCampione(idDocumento,session);
 				session.close();	
@@ -189,7 +189,7 @@ public class ScaricaDocumentoEsternoCampione extends HttpServlet {
 				PrintWriter writer = response.getWriter();
 				JsonObject jsono = new JsonObject();
 				
-				String idDocumento= request.getParameter("idDoc");
+				String idDocumento= Utility.decryptData(request.getParameter("idDoc"));
 				
 				DocumentoCampioneDTO documento =  GestioneCampioneBO.getDocumentoCampione(idDocumento, session);
 				session.delete(documento);

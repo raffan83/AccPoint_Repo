@@ -218,10 +218,18 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 					
 					request.getSession().setAttribute("statoStrumentiJson", gson.toJsonTree(statoStrumenti).toString());
 					request.getSession().setAttribute("tipoStrumentiJson", gson.toJsonTree(tipoStrumenti).toString());
-					request.getSession().setAttribute("denominazioneStrumentiJson", gson.toJsonTree(denominazioneStrumenti).toString());
+					
+					String json = gson.toJson(denominazioneStrumenti);  
+					request.getSession().setAttribute("denominazioneStrumentiJson", json);
+					
 					request.getSession().setAttribute("freqStrumentiJson", gson.toJsonTree(freqStrumenti).toString());
-					request.getSession().setAttribute("repartoStrumentiJson", gson.toJsonTree(repartoStrumenti).toString());
-					request.getSession().setAttribute("utilizzatoreStrumentiJson", gson.toJsonTree(utilizzatoreStrumenti).toString());
+					
+					json = gson.toJson(repartoStrumenti);  
+					request.getSession().setAttribute("repartoStrumentiJson", json);
+					
+					json = gson.toJson(utilizzatoreStrumenti);  
+					request.getSession().setAttribute("utilizzatoreStrumentiJson", json);
+					
 					
 					
 					request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);

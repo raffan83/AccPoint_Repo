@@ -62,7 +62,7 @@ public class GestioneMagazzinoDAO {
 private static final String queryControlloStrumento = "SELECT a.commessa,c.id_tipo_proprio ,c.id as idItemPacco from mag_pacco a "
 		+ "left join mag_item_pacco b on a.id=b.id_pacco  "
 		+ "inner join mag_item c on b.id_item=c.id " + 
-		"WHERE c.id_tipo_proprio=? AND a.commessa=?";
+		"WHERE c.id_tipo_proprio=? AND a.commessa=? AND c.stato=1";
 
 	
 	public static ArrayList<MagPaccoDTO> getPacchi(int id_company, Session session){

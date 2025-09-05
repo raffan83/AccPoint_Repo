@@ -67,6 +67,11 @@ public class DettaglioStrumento extends HttpServlet {
 
 		String idS = request.getParameter("id_str");
 
+		if(idS.length()>6) 
+		{
+			idS = Utility.decryptData(request.getParameter("id_str"));
+		}
+		
 		StrumentoDTO dettaglio = GestioneStrumentoBO.getStrumentoById(idS, session);
 
 		 Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();

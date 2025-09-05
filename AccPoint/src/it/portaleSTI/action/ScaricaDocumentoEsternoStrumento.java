@@ -166,7 +166,7 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 			
 			if(action.equals("scaricaDocumento"))
 			{
-			String idDocumento= request.getParameter("idDoc");
+			String idDocumento= Utility.decryptData(request.getParameter("idDoc"));
 			 	
 			 	DocumentiEsterniStrumentoDTO documento= GestioneStrumentoBO.getDocumentoEsterno(idDocumento,session);
 			 	StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(""+documento.getId_strumento(), session);
@@ -204,7 +204,7 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 				PrintWriter writer = response.getWriter();
 				JsonObject jsono = new JsonObject();
 				
-				String idDocumento= request.getParameter("idDoc");
+				String idDocumento= Utility.decryptData(request.getParameter("idDoc"));
 				
 
 				GestioneStrumentoBO.deleteDocumentoEsterno(idDocumento,session);

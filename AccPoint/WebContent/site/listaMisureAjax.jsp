@@ -107,9 +107,9 @@
    <fmt:formatDate pattern="dd/MM/yyyy" 
          value="${misura.dataMisura}" />
 </c:if></td>
-<td>${misura.strumento.denominazione}</td>
-<td>${misura.strumento.codice_interno}</td>
-<td>${misura.statoRicezione.nome}</td>
+<td> <c:out value='${misura.strumento.denominazione}'/></td>
+<td><c:out value='${misura.strumento.codice_interno}'/></td>
+<td><c:out value='${misura.statoRicezione.nome}'/></td>
 <td align="center">			
 	<span class="label bigLabelTable <c:if test="${misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${misura.obsoleto == 'N'}">label-success </c:if>">${misura.obsoleto}</span> </td>
 <td>${misura.note_obsolescenza }</td>

@@ -21,9 +21,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 <jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
 <jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <% 
@@ -259,7 +261,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 }
 	 
 	 %>
-	 	 <tr class="<%=classValue %> customTooltip" title="Doppio Click per aprire il dettaglio dello Strumento" role="row" id="<%=strumento.get__id() %>">
+	 <c:set var="str" value="<%= strumento %>" scope="request"/>
+	 
+	 	 <tr class="<%=classValue %> customTooltip" title="Doppio Click per aprire il dettaglio dello Strumento" role="row" id="<%=strumento.get__id() %>" data-encrypted-id="${utl:encryptData(str.__id)}">
 	 						 <td></td>		
 	 								
 
@@ -313,20 +317,20 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								}
 	 								%>
                        				"><%=strumento.getStato_strumento().getNome() %></span></td>
-	 								  <td><%=strumento.getCodice_interno() %></td>
+	 								  <td><c:out value='${str.codice_interno}'/></td>
                     	            
-                    	             <td><%=strumento.getMatricola()%></td>
-                    	               <td><%=strumento.getDenominazione()%></td>
-                    	             <td><%=strumento.getCostruttore()%></td>
+                    	             <td><c:out value='${str.matricola}'/></td>
+                    	               <td><c:out value='${str.denominazione}'/></td>
+                    	             <td><c:out value='${str.costruttore}'/></td>
                     	           
-                    	             <td><%=strumento.getModello()%></td>
+                    	             <td><c:out value='${str.modello}'/></td>
 	 								
-                       			       <td><%=strumento.getCampo_misura()%></td>
+                       			       <td><c:out value='${str.campo_misura}'/></td>
                     	            
                     	             
-                    	             <td><%=strumento.getReparto()%></td>
+                    	             <td><c:out value='${str.reparto}'/></td>
                     	             
-                    	                <td><%=strumento.getUtilizzatore()%></td>
+                    	                <td><c:out value='${str.utilizzatore}'/></td>
                     	                
                      	                 <td>
                      	                 
@@ -346,10 +350,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	              
                     	             </td> 
                     	            
-                    	           <td><%=strumento.getRisoluzione()%></td>
+                    	           <td><c:out value='${str.risoluzione}'/></td>
                     	             <td>
                     	             <%if(strumento.getAltre_matricole()!=null){ %>
-                    	             <%=strumento.getAltre_matricole() %>
+                    	             <c:out value='${str.altre_matricole}'/>
                     	             <% }else{%>
                     	             <%out.print("");
                     	             } %>
@@ -416,12 +420,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             }
                     	             %></td>
                     	           <td><%
-                    	             if(strumento.getInterpolazione()!=null){
-                    	            	 out.println(strumento.getInterpolazione());
+                    	             if(strumento.getInterpolazione()!=null){%>
+                    	             <c:out value='${str.interpolazione}'/>
+                    	           <% 	
                     	             }
                     	             %></td> 
                     	             <td><%=strumento.getClassificazione().getDescrizione()%></td>
-                    	             <td><%=strumento.getCompany().getDenominazione()%></td>
+                    	             <td><c:out value='${str.company.denominazione}'/></td>
 								 <td><%
                     	            	 if(strumento.getDataModifica() != null){
                     	            		 out.println(sdf.format(strumento.getDataModifica()));
@@ -446,7 +451,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	  							
                     	             
                     	           
-                    	             <td><%=strumento.getNote() %></td>
+                    	             <td><c:out value='${str.note}'/></td>
                     	                <td>
                     	               <button  class="btn btn-primary" onClick="checkMisure('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>')">Misure</button>	 									
 	 									
@@ -1135,13 +1140,17 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
   		var id = $(this).attr('id');
   		
+  		var encryptedId = $(this).data('encrypted-id');
+  		
+  		
   		var row = table.row('#'+id);
   		datax = row.data();
 
 	   if(datax){
 		  // console.log(datax);
  	    	row.child.hide();
- 	    	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
+ 	    	
+ 	    	exploreModal("dettaglioStrumento.do","id_str="+encryptedId,"#dettaglio");
  	    	$( "#myModal" ).modal();
  	    	$('body').addClass('noScroll');
  	    }
@@ -1152,6 +1161,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        	var  contentID = e.target.id;
 
        	if(contentID == "dettaglioTab"){
+       		
        		exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
        	}
        	if(contentID == "misureTab"){
@@ -2098,8 +2108,3 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
  
  </script>
- 
- 
- 
- 
- 

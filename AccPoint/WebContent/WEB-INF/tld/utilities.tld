@@ -92,6 +92,11 @@
         <function-signature> java.lang.String escapeHTML(java.lang.String)</function-signature>
     </function> 
         <function>
+        <name>unescapeHTML</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature> java.lang.String unescapeHTML(java.lang.String)</function-signature>
+    </function> 
+        <function>
         <name>getE</name>
         <function-class>it.portaleSTI.Util.Utility</function-class>
         <function-signature> BigDecimal getE(int,it.portaleSTI.DTO.VerStrumentoDTO, java.math.BigDecimal)</function-signature>

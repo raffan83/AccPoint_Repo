@@ -951,7 +951,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                var larghezzaTesto = getTextWidth(testo, '12px Arial') + 20; // Aggiungi un margine per una migliore presentazione
 
 	 	                var larghezza =  Math.abs(posizioneArrivo.left - posizionePartenza.left + cellaInizio.outerWidth());
-	 	               //var larghezza = 115;
+	 	            //   var larghezza = 115;
 	 	   
 	 	                var altezza = 36;
 	 	                 if(larghezzaTesto>=larghezza){

@@ -1853,6 +1853,10 @@ public class Utility extends HttpServlet {
 		        return StringEscapeUtils.escapeHtml4(value);
 		    }
 		    
+		    public static String unescapeHTML(String value) {
+		        return StringEscapeUtils.unescapeHtml4(value);
+		    }
+		    
 		    public static String escapeJS(String value) {
 		        return StringEscapeUtils.escapeEcmaScript(StringEscapeUtils.escapeHtml4(value));
 		    }

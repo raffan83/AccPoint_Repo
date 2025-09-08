@@ -145,7 +145,7 @@ public class GestioneParcoAutoDAO {
 		
 		ArrayList<PaaPrenotazioneDTO> lista = null;
 		
-		Query query = session.createQuery("FROM PaaPrenotazioneDTO p WHERE p.data_inizio_prenotazione BETWEEN :startDate AND :endDate");
+		Query query = session.createQuery("FROM PaaPrenotazioneDTO p WHERE (p.data_inizio_prenotazione BETWEEN :startDate AND :endDate or p.data_fine_prenotazione BETWEEN :startDate AND :endDate)");
 		
 		query.setParameter("startDate", java.sql.Date.valueOf(startDate));
 		query.setParameter("endDate", java.sql.Date.valueOf(endDate));

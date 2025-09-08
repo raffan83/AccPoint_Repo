@@ -944,11 +944,33 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	                }
 	                
 	                
+	                if(posizionePartenza == null){
+ 	                	var id_cella_inizio = lista_prenotazioni[i].cella_inizio;
+ 	                	var id_cella_fine = lista_prenotazioni[i].cella_fine;
+ 	                	while (posizionePartenza == null && id_cella_fine>=id_cella_inizio){
+ 	                		id_cella_inizio++;
+ 	                	
+ 	                		posizionePartenza = $('#'+id_inizio.split("_")[0]+"_"+id_cella_inizio).offset();
+ 	                		cellaInizio = $('#'+id_inizio.split("_")[0]+"_"+id_cella_inizio)
+ 	                		id_inizio = id_inizio.split("_")[0]+"_"+id_cella_inizio;
+ 	                	}
+ 	                }
+	                
 	                
 	                if(posizionePartenza!=null){
 	                	
 	                	 var testo = text + " (" + lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - " + lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1] + ")";
 	 	                var larghezzaTesto = getTextWidth(testo, '12px Arial') + 20; // Aggiungi un margine per una migliore presentazione
+	 	                
+	 	                if(posizioneArrivo == null){
+	 	                	var id_cella_inizio = lista_prenotazioni[i].cella_inizio;
+	 	                	var id_cella_fine = lista_prenotazioni[i].cella_fine;
+	 	                	while (posizioneArrivo == null && id_cella_fine>=id_cella_inizio){
+	 	                		id_cella_fine--;
+	 	                	
+	 	                		posizioneArrivo = $('#'+id_fine.split("_")[0]+"_"+id_cella_fine).offset();
+	 	                	}
+	 	                }
 
 	 	                var larghezza =  Math.abs(posizioneArrivo.left - posizionePartenza.left + cellaInizio.outerWidth());
 	 	            //   var larghezza = 115;

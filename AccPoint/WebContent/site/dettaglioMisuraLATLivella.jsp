@@ -67,7 +67,7 @@
                   <b>Strumento</b>
                   </div>
                   <div class="col-md-10">
-                   <a href="#" onClick="dettaglioStrumentoFromMisura('${misura.strumento.__id}')" class="pull-right customTooltip" title="Click per aprire il dettaglio dello stumento" >${misura.strumento.denominazione} (${misura.strumento.matricola} | ${misura.strumento.codice_interno})</a>
+                   <a href="#" onClick="dettaglioStrumentoFromMisura('${misura.strumento.__id}')" class="pull-right customTooltip" title="Click per aprire il dettaglio dello stumento" ><c:out value="${misura.strumento.denominazione} (${misura.strumento.matricola} | ${misura.strumento.codice_interno})"/></a>
                   </div>
                   </div>
                 </li>
@@ -938,10 +938,10 @@
 		       	var  contentID = e.target.id;
 
 		     	if(contentID == "dettaglioTab"){
-		       		exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#dettaglio");
+		       		exploreModal("dettaglioStrumento.do","id_str=${utl:encryptData(misura.strumento.__id)}","#dettaglio");
 		       	}
 		       	if(contentID == "misureTab"){
-		       		exploreModal("strumentiMisurati.do?action=ls&id="+${misura.strumento.__id},"","#misure")
+		       		exploreModal("strumentiMisurati.do?action=ls&id=${utl:encryptData(misura.strumento.__id}","","#misure")
 		       	}
 		       	if(contentID == "modificaTab"){
 		       		exploreModal("modificaStrumento.do?action=modifica&id="+${misura.strumento.__id},"","#modifica")

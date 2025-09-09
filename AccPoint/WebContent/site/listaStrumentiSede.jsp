@@ -1135,6 +1135,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    
 	table.buttons().container()
    .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
+	    
+	    
 	   
 		$('#tabPM').on( 'dblclick','tr', function () {
 
@@ -1162,17 +1164,15 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
        	if(contentID == "dettaglioTab"){
        		
-       		exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
        	}
        	if(contentID == "misureTab"){
-       		exploreModal("strumentiMisurati.do?action=ls&id="+datax[1],"","#misure")
+       		exploreModal("strumentiMisurati.do?action=ls&id="+encryptedId,"","#misure")
        	}
        	if(contentID == "modificaTab"){
        		exploreModal("modificaStrumento.do?action=modifica&id="+datax[1],"","#modifica")
        	}
        	if(contentID == "documentiesterniTab"){
        		exploreModal("documentiEsterni.do?id_str="+datax[1],"","#documentiesterni")
-       	//	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
        	}
        	
        	if(contentID == "noteStrumentoTab"){
@@ -2013,18 +2013,18 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 	   if(datax){
  	    	row.child.hide();
-	    //	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
+	  
 	    	$( "#myModal" ).modal();
 	    	$('body').addClass('noScroll');
 	    }
 	   
 	   $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
 
-
+		   var encryptedId = $('#'+id).data('encrypted-id');
     	var  contentID = e.target.id;
 
     	if(contentID == "dettaglioTab"){
-    		exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
+    		exploreModal("dettaglioStrumento.do","id_str="+encryptedId,"#dettaglio");
     	}
     	if(contentID == "misureTab"){
     		exploreModal("strumentiMisurati.do?action=ls&id="+datax[1],"","#misure")

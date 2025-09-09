@@ -17,6 +17,8 @@
 <%@page import="com.google.gson.JsonElement"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="it.portaleSTI.Util.Utility" %>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
+
 <jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
 <jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
 
@@ -90,7 +92,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 }
 	 
 	 %>
-	 	 <tr class="<%=classValue %> customTooltip" title="Doppio Click per aprire il dettaglio dello Strumento" role="row" id="<%=strumento.get__id() %>">
+	 <c:set var="str" value="<%= strumento %>" scope="request"/>
+	 	 <tr class="<%=classValue %> customTooltip" title="Doppio Click per aprire il dettaglio dello Strumento" role="row" id="<%=strumento.get__id() %>" data-encrypted-id="${utl:encryptData(str.__id)}">
 	 						 <td></td>		
 	 								
 
@@ -111,7 +114,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 						<%		}
 	 								%>
                        				  </td>
-                       			     <td><%=strumento.getDenominazione()%></td>
+                       			   <%--   <td><%=strumento.getDenominazione()%></td>
                     	             <td><%=strumento.getCodice_interno() %></td>
                     	            
                     	             
@@ -121,7 +124,22 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	          <td><%=strumento.getCostruttore()%></td>
 	  							
 	  							
-	  							   <td> <%=strumento.getTipo_strumento().getNome() %></td> 
+	  							   --%>
+	  							   
+	  							    <td><c:out value='${str.denominazione}'/></td>
+	  							    <td><c:out value='${str.codice_interno}'/></td>
+                    	            
+                    	             <td><c:out value='${str.matricola}'/></td>
+                    	              <td><c:out value='${str.modello}'/></td>
+                    	             <td><c:out value='${str.costruttore}'/></td>
+                    	           
+                    	             
+	 								
+                       			       <td> <%=strumento.getTipo_strumento().getNome() %></td> 
+                    	                
+                     	             
+	  							   
+	  							   
                     	             <td> <%
 
                     	             if(strumento.getFrequenza() != 0){
@@ -138,10 +156,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             %> </td>
                     	             
                     	           
-                    	             <td><%=strumento.getCampo_misura()%></td>
+                    	   <%--           <td><%=strumento.getCampo_misura()%></td> --%>
                     	             
+                    	             <td><c:out value='${str.campo_misura}'/></td>
+                    	             <td><c:out value='${str.risoluzione}'/></td>
+                    	             <%-- 
                     	                        <td><%=strumento.getRisoluzione()%></td>
-                    	                        
+                    	                         --%>
                     	                        
                     	              
 	
@@ -492,11 +513,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
   		
   		var row = table.row('#'+id);
   		datax = row.data();
-
+  		var encryptedId = $('#'+id).data('encrypted-id');
 	   if(datax){
 		  // console.log(datax);
  	    	row.child.hide();
- 	    	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
+ 	    	exploreModal("dettaglioStrumento.do","id_str="+encryptedId,"#dettaglio");
  	    	$( "#myModal" ).modal();
  	    	$('body').addClass('noScroll');
  	    }
@@ -505,9 +526,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
        	var  contentID = e.target.id;
-
+       	
        	if(contentID == "dettaglioTab"){
-       		exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
+       		exploreModal("dettaglioStrumento.do","id_str="+encryptedId,"#dettaglio");
        	}
        	if(contentID == "misureTab"){
        		exploreModal("strumentiMisurati.do?action=ls&id="+datax[1],"","#misure")
@@ -517,7 +538,6 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        	}
        	if(contentID == "documentiesterniTab"){
        		exploreModal("documentiEsterni.do?id_str="+datax[1],"","#documentiesterni")
-       	//	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
        	}
        	
 if(contentID == "noteStrumentoTab"){
@@ -1336,7 +1356,6 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 	   if(datax){
  	    	row.child.hide();
-	    //	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
 	    	$( "#myModal" ).modal();
 	    	$('body').addClass('noScroll');
 	    }
@@ -1345,9 +1364,10 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 
     	var  contentID = e.target.id;
+    	var encryptedId = $('#'+id).data('encrypted-id');
 
     	if(contentID == "dettaglioTab"){
-    		exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
+    		exploreModal("dettaglioStrumento.do","id_str="+encryptedId,"#dettaglio");
     	}
     	if(contentID == "misureTab"){
     		exploreModal("strumentiMisurati.do?action=ls&id="+datax[1],"","#misure")

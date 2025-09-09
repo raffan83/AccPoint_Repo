@@ -179,14 +179,14 @@
     $('#posTab').on('click', 'tr', function () {
     	 var table = $('#tabPM').DataTable();
          var data = table.row( this ).data();
-        
+         var encryptedId = $(this).data('encrypted-id');
         
         var content="";
         
         $.ajax({
             type: "POST",
             url: "dettaglioStrumento.do",
-            data: "id_str="+data[0],
+            data: "id_str="+encryptedId,
             dataType: "json",
             
             //if received a response from the server

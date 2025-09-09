@@ -216,7 +216,7 @@
 <tr>
 <c:choose>
 <c:when test="${item_pacco.item.tipo_item.id ==1}">
-  <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td></c:when>
+  <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${utl:encryptData(item_pacco.item.id_tipo_proprio)}')">${item_pacco.item.id_tipo_proprio}</a></td></c:when>
   <c:otherwise>
   <td>${item_pacco.item.id_tipo_proprio }</td></c:otherwise> </c:choose>
   <td>

@@ -132,7 +132,7 @@ public class StrumentiMisurati extends HttpServlet {
 			        
 				}else if(action.equals("ls")){
 					
-					
+					id = Utility.decryptData(id);
 					
 					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id), session);
 					if(listaMisure.size() > 0){

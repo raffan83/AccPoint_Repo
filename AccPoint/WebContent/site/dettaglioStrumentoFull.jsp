@@ -8,7 +8,7 @@
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonElement"%>
 <%@page import="it.portaleSTI.DTO.StrumentoDTO"%>
-
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <% 
 JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonElement jsonElem = (JsonElement)json.getAsJsonObject("dataInfo");
@@ -114,7 +114,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
  <script type="text/javascript">
    
     $(document).ready(function() {
-    	exploreModal("dettaglioStrumento.do?id_str=${strumento.__id}","","#dettaglio");
+    	exploreModal("dettaglioStrumento.do?id_str=${utl:encryptData(strumento.__id)}","","#dettaglio");
     	 $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
 
 
@@ -122,11 +122,11 @@ String idCliente = (String)session.getAttribute("id_Cliente");
 
 
     	       	if(contentID == "dettaglioTab"){
-    	       		//callAction("dettaglioStrumentoFull.do","id_str=${strumento.__id}");
-    	       		exploreModal("dettaglioStrumento.do?id_str=${strumento.__id}","","#dettaglio")
+    	       	
+    	       		exploreModal("dettaglioStrumento.do?id_str=${utl:encryptData(strumento.__id)}","","#dettaglio")
     	       	}
     	       	if(contentID == "misureTab"){
-    	       		exploreModal("strumentiMisurati.do?action=ls&id=${strumento.__id}","","#misure")
+    	       		exploreModal("strumentiMisurati.do?action=ls&id=${utl:encryptData(strumento.__id)}","","#misure")
     	       	}
     	     
     	       	if(contentID == "noteStrumentoTab"){

@@ -38,7 +38,7 @@
  		<a  target="_blank"  class="customTooltip customlink"  href="dettaglioMisura.do?idMisura=${utl:encryptData(certificato.misura.id)}" >${certificato.misura.id }</a>
  		</td>
  		<td>
- 		<a href="#" class="customTooltip customlink" onclick="dettaglioStrumento('${certificato.misura.strumento.__id }')">${certificato.misura.strumento.__id }</a>
+ 		<a href="#" class="customTooltip customlink" onclick="dettaglioStrumento('${utl:encryptData(certificato.misura.strumento.__id) }')">${certificato.misura.strumento.__id }</a>
  		</td>
  		<td><a target="_blank" class=" customTooltip customlink" href="gestioneInterventoDati.do?idIntervento=${utl:encryptData(certificato.misura.intervento.id)}"> ${certificato.misura.intervento.id }</a></td>
 		<td>${certificato.misura.strumento.denominazione}</td>

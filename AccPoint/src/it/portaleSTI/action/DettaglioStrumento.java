@@ -67,10 +67,11 @@ public class DettaglioStrumento extends HttpServlet {
 
 		String idS = request.getParameter("id_str");
 
-		if(idS.length()>6) 
-		{
-			idS = Utility.decryptData(request.getParameter("id_str"));
-		}
+//		System.out.println(idS);
+//		if(idS.length()>6) 
+//		{
+			idS = Utility.decryptData(idS);
+//		}
 		
 		StrumentoDTO dettaglio = GestioneStrumentoBO.getStrumentoById(idS, session);
 

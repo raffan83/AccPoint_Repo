@@ -18,6 +18,7 @@
 
 <%@page import="it.portaleSTI.DTO.ClienteDTO"%>
 <%@page import="it.portaleSTI.DTO.StrumentoDTO"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -129,14 +130,14 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
  <tbody>
  
  <c:forEach items="${listaStrumenti}" var="strumento" varStatus="loop">
-
-	 <tr role="row" id="${campione.codice}-${loop.index}" class="customTooltip" title="Doppio Click per aprire il dettaglio del Campione">
+	 <c:set var="str" value="${strumento}" scope="request"/>
+	 <tr role="row" id="${str.__id}" class="customTooltip" title="Doppio Click per aprire il dettaglio del Campione"  data-encrypted-id="${utl:encryptData(str.__id)}">
 
 	<td>${strumento.__id}</td>
 	
 
-   <td>${strumento.denominazione}</td>
-                    	             <td>${strumento.codice_interno}</td>
+   <td><c:out value='${str.denominazione}'/></td>
+                    	             <td><c:out value='${str.codice_interno}'/></td>
 
                     	             <c:set var="idcliente">${strumento.id_cliente}</c:set>
                     	             
@@ -148,9 +149,9 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
                     	             
 
              
-                    	             <td>${strumento.costruttore}</td>
+                    	             <td><c:out value='${str.costruttore}'/></td>
                     	             
-                    	             <td>${strumento.matricola}</td>
+                    	             <td><c:out value='${str.matricola}'/></td>
                     	             
                     	             <td>
 
@@ -170,17 +171,17 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
 </c:if>
 </c:if></td>
                     	             
-                    	             <td>${strumento.risoluzione}</td>
-                    	             <td>${strumento.campo_misura}</td>
+                    	             <td><c:out value='${str.risoluzione}'/></td>
+                    	             <td><c:out value='${str.campo_misura}'/></td>
                     	             <td>${strumento.tipo_strumento.nome}</td>
 
 
 
- <td>${strumento.getReparto() }</td> 
+ <td><c:out value='${str.reparto}'/></td> 
 
  
- <td>${strumento.modello}</td>
- <td>${strumento.utilizzatore}</td>
+ <td><c:out value='${str.modello}'/></td>
+ <td><c:out value='${str.utilizzatore}'/></td>
  
  
                      	             <td>
@@ -491,10 +492,12 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
    		
    		var row = table.row('#'+id);
    		datax = row.data();
+   		
+   		var encryptedId = $('#'+id).data('encrypted-id');
 
  	   if(datax){
   	    	row.child.hide();
-  	    	exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
+  	    	exploreModal("dettaglioStrumento.do","id_str="+encryptedId,"#dettaglio");
   	    	$( "#myModal" ).modal();
   	    	//$('body').addClass('noScroll');
   	    }
@@ -506,7 +509,7 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
 
 
         	if(contentID == "dettaglioTab"){
-        		exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
+        		exploreModal("dettaglioStrumento.do","id_str="+encryptedId,"#dettaglio");
         	}
         	if(contentID == "misureTab"){
         		exploreModal("strumentiMisurati.do?action=ls&id="+datax[0],"","#misure")
@@ -514,7 +517,6 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
       
         	if(contentID == "documentiesterniTab"){
            		exploreModal("documentiEsterni.do?id_str="+datax[0],"","#documentiesterni")
-           	//	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
            	}
         	
         	

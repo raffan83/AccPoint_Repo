@@ -213,7 +213,7 @@ String permesso = "0";
 
   <c:choose>
   <c:when test="${item_pacco.item.tipo_item.descrizione =='Strumento'}">
-  <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td>
+  <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${utl:encryptData(item_pacco.item.id_tipo_proprio)}')">${item_pacco.item.id_tipo_proprio}</a></td>
   </c:when>
   <c:otherwise>
   <td>${item_pacco.item.id_tipo_proprio }</td>

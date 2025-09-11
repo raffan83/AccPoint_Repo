@@ -130,6 +130,8 @@ public class GestioneVerStrumenti extends HttpServlet {
 				
 				request.getSession().setAttribute("listaCl", listaCl.toString().replace("\'", ""));
 				
+				request.getSession().setAttribute("non_associate_encrypt",Utility.encryptData("0"));
+				
 				session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneVerStrumenti.jsp");
@@ -142,7 +144,10 @@ public class GestioneVerStrumenti extends HttpServlet {
 				String id_cliente = request.getParameter("id_cliente");
 				String id_sede = request.getParameter("id_sede");
 				
-				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getStrumentiClienteSede(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]), session);
+				id_cliente = Utility.decryptData(id_cliente);
+				id_sede = Utility.decryptData(id_sede.split("_")[0]);
+				
+				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getStrumentiClienteSede(Integer.parseInt(id_cliente), Integer.parseInt(id_sede), session);
 				ArrayList<VerTipoStrumentoDTO> lista_tipo_strumento = GestioneVerStrumentiBO.getListaTipoStrumento(session);
 				ArrayList<VerTipologiaStrumentoDTO> lista_tipologie_strumento = GestioneVerStrumentiBO.getListaTipologieStrumento(session);
 				ArrayList<VerFamigliaStrumentoDTO> lista_famiglie_strumento = GestioneVerStrumentiBO.getListaFamiglieStrumento(session);
@@ -228,8 +233,11 @@ public class GestioneVerStrumenti extends HttpServlet {
 				
 				VerStrumentoDTO strumento = new VerStrumentoDTO();
 				
+				cliente = Utility.decryptData(cliente);
+				sede = Utility.decryptData(sede.split("_")[0]);
+				
 				strumento.setId_cliente(Integer.parseInt(cliente));
-				strumento.setId_sede(Integer.parseInt(sede.split("_")[0]));
+				strumento.setId_sede(Integer.parseInt(sede));
 				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
 				strumento.setNome_cliente(cl.getNome());
 

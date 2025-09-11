@@ -2,6 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -38,7 +39,7 @@
                 
                       <c:forEach items="${lista_clienti}" var="cliente">
                      
-                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                           <option value="${utl:encryptData(cliente.__id)}">${cliente.nome}</option> 
                          
                      </c:forEach>
 
@@ -59,7 +60,7 @@
        <select id="sede" name="sede" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" disabled>
        <option value=""></option>
       	<c:forEach items="${lista_sedi}" var="sd">
-      	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
+      	<option value="${utl:encryptData(sd.__id)}_${utl:encryptData(sd.id__cliente_)}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
       	</c:forEach>
       
       </select>
@@ -243,7 +244,7 @@
 
 	  var opt=[];
 	
-	  opt.push("<option value = 0 selected>Non Associate</option>");
+	  opt.push("<option value = '${non_associate_encrypt}'>Non Associate</option>");
 
 	   for(var  i=0; i<options.length;i++)
 	   {

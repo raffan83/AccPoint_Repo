@@ -110,6 +110,8 @@ public class GestioneVerCertificati extends HttpServlet {
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
  				
+ 		         
+ 		        request.getSession().setAttribute("encrypt_0",Utility.encryptData("0_0"));
  				session.getTransaction().commit();
 		     	session.close();
 		     	
@@ -129,11 +131,13 @@ public class GestioneVerCertificati extends HttpServlet {
 					idSede = null;
 					company = null;
 				}else {
-
+					idClienteSede =  Utility.decryptData(idClienteSede);
 					String[] cliente = idClienteSede.split("_");
 					
 					 idCliente = cliente[0];
 					 idSede = cliente[1];
+					 
+		
 					 if(cliente.length>2) {
 						 company = cliente[2];
 					 }
@@ -163,10 +167,14 @@ public class GestioneVerCertificati extends HttpServlet {
 					company = null;
 				}else {
 
+					
+					idClienteSede =  Utility.decryptData(idClienteSede);
 					String[] cliente = idClienteSede.split("_");
 					
 					 idCliente = cliente[0];
 					 idSede = cliente[1];
+					 
+				
 					 if(cliente.length>2) {
 						 company = cliente[2];
 					 }
@@ -195,10 +203,13 @@ public class GestioneVerCertificati extends HttpServlet {
 					company = null;
 				}else {
 
+					idClienteSede =  Utility.decryptData(idClienteSede);
 					String[] cliente = idClienteSede.split("_");
 					
 					 idCliente = cliente[0];
 					 idSede = cliente[1];
+					 
+				
 					 if(cliente.length>2) {
 						 company = cliente[2];
 					 }
@@ -227,11 +238,13 @@ public class GestioneVerCertificati extends HttpServlet {
 					idSede = null;
 					company = null;
 				}else {
-
+					idClienteSede =  Utility.decryptData(idClienteSede);
 					String[] cliente = idClienteSede.split("_");
 					
 					 idCliente = cliente[0];
 					 idSede = cliente[1];
+					 
+				
 					 if(cliente.length>2) {
 						 company = cliente[2];
 					 }

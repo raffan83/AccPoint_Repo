@@ -178,7 +178,7 @@
 
                 <li class="list-group-item">
                   <b>N° Strumenti Misurati</b> <a class="pull-right">
-						<%-- <a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${utl:encryptData(intervento.id)}')" class="pull-right customTooltip customlink" title="Click per aprire la lista delle Misure dell'Intervento ${interventover.id}"> ${interventover.nStrumentiMisurati}</a> --%>
+						
 					${interventover.nStrumentiMisurati}
 				</a>
                 </li>

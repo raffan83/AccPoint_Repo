@@ -89,6 +89,7 @@ public class ModificaStrumento extends HttpServlet {
 			if(action.equals("modifica")) {
 				String idS = request.getParameter("id");
 
+				idS = Utility.decryptData(idS);
 
 				//ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>)request.getSession().getAttribute("listaStrumenti");
 

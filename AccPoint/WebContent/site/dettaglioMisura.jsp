@@ -67,7 +67,7 @@
                   <b>Strumento</b>
                   </div>
                   <div class="col-md-10">
-                   <a href="#" onClick="dettaglioStrumentoFromMisura('${misura.strumento.__id}')" class="pull-right customTooltip" title="Click per aprire il dettaglio dello stumento" ><c:out value="${misura.strumento.denominazione} (${misura.strumento.matricola} | ${misura.strumento.codice_interno})"/></a>
+                   <a href="#" onClick="dettaglioStrumentoFromMisura('${utl:encryptData(misura.strumento.__id)}')" class="pull-right customTooltip" title="Click per aprire il dettaglio dello stumento" ><c:out value="${misura.strumento.denominazione} (${misura.strumento.matricola} | ${misura.strumento.codice_interno})"/></a>
                   </div>
                   </div>
                 </li>
@@ -1093,16 +1093,16 @@
     		       		exploreModal("strumentiMisurati.do?action=ls&id=${utl:encryptData(misura.strumento.__id)}","","#misure")
     		       	}
     		       	if(contentID == "modificaTab"){
-    		       		exploreModal("modificaStrumento.do?action=modifica&id="+${misura.strumento.__id},"","#modifica")
+    		       		exploreModal("modificaStrumento.do?action=modifica&id=${utl:encryptData(misura.strumento.__id)}","","#modifica")
     		       	}
     		       	if(contentID == "documentiesterniTab"){
-    		       		exploreModal("documentiEsterni.do?id_str="+${misura.strumento.__id},"","#documentiesterni")
+    		       		exploreModal("documentiEsterni.do?id_str=${utl:encryptData(misura.strumento.__id)}","","#documentiesterni")
     		       	//	exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#documentiesterni");
     		       	}
     		       	
     		       	if(contentID == "noteStrumentoTab"){
     		    		
-    		       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str="+${misura.strumento.__id},"","#notestrumento")
+    		       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str=${utl:encryptData(misura.strumento.__id)}","","#notestrumento")
     		       	 }
     		       	
     		    		

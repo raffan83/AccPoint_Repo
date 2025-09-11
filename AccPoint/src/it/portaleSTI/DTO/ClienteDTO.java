@@ -188,7 +188,7 @@ public class ClienteDTO implements Serializable{
 
 	public void setPec(String pec) {
 		this.pec = pec;
-	};
-	  
+	}
+
 	  
 }

@@ -261,6 +261,8 @@ public class DettaglioMisura extends HttpServlet {
 			else if(action.equals("andamento_temporale")) {
 				
 				String id_strumento = request.getParameter("id_strumento");
+				
+				id_strumento = Utility.decryptData(id_strumento);
 					
 				ArrayList<MisuraDTO> lista_misure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id_strumento), session);
 				

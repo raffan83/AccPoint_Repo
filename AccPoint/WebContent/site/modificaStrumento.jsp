@@ -203,6 +203,7 @@
 $(function(){
   $('#formModificaStrumento').on('submit', function(e){
     e.preventDefault();
+    console.log("modificaStr")
     modificaStrumento('${idSede}', '${idCliente}', '${strumento.__id}');
   });
 });

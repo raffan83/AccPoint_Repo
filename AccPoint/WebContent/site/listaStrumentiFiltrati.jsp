@@ -531,18 +531,18 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        		exploreModal("dettaglioStrumento.do","id_str="+encryptedId,"#dettaglio");
        	}
        	if(contentID == "misureTab"){
-       		exploreModal("strumentiMisurati.do?action=ls&id="+datax[1],"","#misure")
+       		exploreModal("strumentiMisurati.do?action=ls&id="+encryptedId,"","#misure")
        	}
        	if(contentID == "modificaTab"){
-       		exploreModal("modificaStrumento.do?action=modifica&id="+datax[1],"","#modifica")
+       		exploreModal("modificaStrumento.do?action=modifica&id="+encryptedId,"","#modifica")
        	}
        	if(contentID == "documentiesterniTab"){
-       		exploreModal("documentiEsterni.do?id_str="+datax[1],"","#documentiesterni")
+       		exploreModal("documentiEsterni.do?id_str="+encryptedId,"","#documentiesterni")
        	}
        	
 if(contentID == "noteStrumentoTab"){
     		
-       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str="+datax[1],"","#notestrumento")
+       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str="+encryptedId,"","#notestrumento")
        	 }
        		
        	
@@ -1370,13 +1370,13 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
     		exploreModal("dettaglioStrumento.do","id_str="+encryptedId,"#dettaglio");
     	}
     	if(contentID == "misureTab"){
-    		exploreModal("strumentiMisurati.do?action=ls&id="+datax[1],"","#misure")
+    		exploreModal("strumentiMisurati.do?action=ls&id="+encryptedId,"","#misure")
     	}
     	if(contentID == "modificaTab"){
-    		exploreModal("modificaStrumento.do?action=modifica&id="+datax[1],"","#modifica")
+    		exploreModal("modificaStrumento.do?action=modifica&id="+encryptedId,"","#modifica")
     	}
     	if(contentID == "documentiesterniTab"){
-    		exploreModal("documentiEsterni.do?id_str="+datax[1],"","#documentiesterni")
+    		exploreModal("documentiEsterni.do?id_str="+encryptedId,"","#documentiesterni")
      	}
     	
     	

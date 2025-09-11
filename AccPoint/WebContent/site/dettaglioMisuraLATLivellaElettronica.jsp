@@ -727,10 +727,10 @@
 		       		exploreModal("strumentiMisurati.do?action=ls&id=${utl:encryptData(misura.strumento.__id)}","","#misure")
 		       	}
 		       	if(contentID == "modificaTab"){
-		       		exploreModal("modificaStrumento.do?action=modifica&id="+${misura.strumento.__id},"","#modifica")
+		       		exploreModal("modificaStrumento.do?action=modifica&id=${utl:encryptData(misura.strumento.__id)}","","#modifica")
 		       	}
 		       	if(contentID == "documentiesterniTab"){
-		       		exploreModal("documentiEsterni.do?id_str="+${misura.strumento.__id},"","#documentiesterni")
+		       		exploreModal("documentiEsterni.do?id_str=${utl:encryptData(misura.strumento.__id}","","#documentiesterni")
 		       	//	exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#documentiesterni");
 		       	}
 		    		

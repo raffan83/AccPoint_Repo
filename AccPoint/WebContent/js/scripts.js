@@ -104,7 +104,7 @@ function Registrazione() {
 		}
 		else
 		{
-			$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Attenzione! La password deve contenere lettere (maiuscole e minuscole) ,numeri ,avere una lunghezza superiore a 8 caratteri e non contenere caratteri speciali</label>');
+			$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Attenzione! La password deve contenere lettere (maiuscole e minuscole) ,numeri ,avere una lunghezza di almeno 12 caratteri e non contenere caratteri speciali</label>');
 		}
 				
 	}else{
@@ -121,7 +121,7 @@ function Registrazione() {
 
 function validPassword(password) {
 
-    var password_ck =/^[a-z0-9A-Z]{8,}$/;
+    var password_ck =/^[a-z0-9A-Z]{12,}$/;
 	
     var esito = false;
 
@@ -261,7 +261,7 @@ function changePassword(username,token){
 	  	{
 	  		$('#erroMsg').html("Errore inserimento dati " +
 	  				"<br> Le password devono coincidere " +
-	  				"<br> Devono essere almeno di 8 caratteri " +
+	  				"<br> Devono essere almeno di 12 caratteri " +
 	  				"<br> Devono contenere Minuscole " +
 	  				"<br> Devono contenere Maiuscole " +
 	  				"<br> Non devono contenere caratteri speciali"); 

@@ -512,11 +512,11 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
         		exploreModal("dettaglioStrumento.do","id_str="+encryptedId,"#dettaglio");
         	}
         	if(contentID == "misureTab"){
-        		exploreModal("strumentiMisurati.do?action=ls&id="+datax[0],"","#misure")
+        		exploreModal("strumentiMisurati.do?action=ls&id="+encryptedId,"","#misure")
         	}
       
         	if(contentID == "documentiesterniTab"){
-           		exploreModal("documentiEsterni.do?id_str="+datax[0],"","#documentiesterni")
+           		exploreModal("documentiEsterni.do?id_str="+encryptedId,"","#documentiesterni")
            	}
         	
         	

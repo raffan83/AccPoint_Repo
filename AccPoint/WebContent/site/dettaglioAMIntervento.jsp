@@ -303,7 +303,7 @@ NON CONFORME A SPECIFICA
 				<option value="" ></option>
 				<c:forEach items="${lista_strumenti }" var="str">
 				
-				<option value="${str.id }" >${str.descrizione } - ${str.matricola }</option>
+				<option value="${str.id }" >${str.descrizione } - ${str.nFabbrica }</option>
 					
 				</c:forEach>
 				</select>
@@ -473,7 +473,7 @@ NON CONFORME A SPECIFICA
 				<option value="" ></option>
 				<c:forEach items="${lista_strumenti }" var="str">
 				
-				<option value="${str.id }" >${str.descrizione } - ${str.matricola }</option>
+				<option value="${str.id }" >${str.descrizione } - ${str.nFabbrica }</option>
 					
 				</c:forEach>
 				</select>

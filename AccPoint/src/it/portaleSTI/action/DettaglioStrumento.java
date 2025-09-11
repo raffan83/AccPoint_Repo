@@ -105,8 +105,9 @@ public class DettaglioStrumento extends HttpServlet {
 	        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
 	        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
 	        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
-	        request.getSession().setAttribute("id_Sede", String.valueOf(id_Sede));
-	        request.getSession().setAttribute("id_Cliente", String.valueOf(id_cliente));
+	        request.getSession().setAttribute("id_Sede", Utility.encryptData(""+id_Sede));
+	        request.getSession().setAttribute("id_Cliente", Utility.encryptData(""+id_cliente));
+	        
 	   
  	    	session.close();
 	    				

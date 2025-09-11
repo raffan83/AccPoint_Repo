@@ -72,6 +72,7 @@ public class ListaStrumentiNew extends HttpServlet {
 					
 					if(listaClientiConStrumenti.containsKey(clienteDTO.get__id())) 
 					{
+						
 						listaClientiCS.add(clienteDTO);
 					}
 				}
@@ -90,19 +91,14 @@ public class ListaStrumentiNew extends HttpServlet {
 				
 				List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
 				
-	//			ArrayList<Integer> sediIds = GestioneStrumentoBO.getListaSediStrumenti();
-	//			
-	//			List<SedeDTO> listaSedi = new ArrayList<SedeDTO>();
-	//			for (SedeDTO sede : listaSediFull) {
-	// 				if(sediIds.contains(sede.get__id())) {
-	//					listaSedi.add(sede);
-	//				}
-	//			}
+
 				request.getSession().setAttribute("listaSedi",listaSediFull);
 				
 				ArrayList<StrumentoDTO> strumenti= new ArrayList<StrumentoDTO>();
 				request.getSession().setAttribute("listaStrumenti",strumenti);
 				
+				request.getSession().setAttribute("non_associate_encrypt",Utility.encryptData("0"));
+			
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiNEW.jsp");
 		     	dispatcher.forward(request,response);

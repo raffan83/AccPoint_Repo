@@ -131,7 +131,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
     	     
     	       	if(contentID == "noteStrumentoTab"){
     	    		
-    	       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str=${strumento.__id}","","#notestrumento")
+    	       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str=${utl:encryptData(strumento.__id)}","","#notestrumento")
     	       	 }
     	       	
     	       	

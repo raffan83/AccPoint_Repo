@@ -16,10 +16,10 @@ public class DeleteLettureGP implements Job{
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 
 		try {
-			GestioneGreenPassDAO.deleteLettureGP();
+			//GestioneGreenPassDAO.deleteLettureGP();
 			//GestioneMagazzinoDAO.getItemInRitardo();
-			logger.debug("Cancellazione letture Green Pass eseguita con successo dallo scheduler di Quartz!");
-			logger.error("Cancellazione letture Green Pass eseguita con successo dallo scheduler di Quartz!");
+			//logger.debug("Cancellazione letture Green Pass eseguita con successo dallo scheduler di Quartz!");
+			//logger.error("Cancellazione letture Green Pass eseguita con successo dallo scheduler di Quartz!");
 			
 			
 		} catch (Exception e) {

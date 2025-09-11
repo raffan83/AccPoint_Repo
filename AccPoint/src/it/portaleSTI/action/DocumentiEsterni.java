@@ -65,6 +65,8 @@ public class DocumentiEsterni extends HttpServlet {
 			
 			
 			String idS = request.getParameter("id_str");
+			
+			idS = Utility.decryptData(idS);
 						
 			StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(idS, session);
 			

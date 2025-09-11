@@ -8,6 +8,8 @@
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
+
 	<%
  	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
  
@@ -47,25 +49,25 @@
 		          <div class="box-header">
 		                <div class="row">
 		              <div class="col-sm-6">
-		              
+		    
 		                <div class="form-group" id="form_dom">
 		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."   onchange="filtraVerCertificati()" class="form-control select2" data-live-search="true" >
 		                       <option></option>
 		                       <c:choose>
 		                       <c:when test="${userObj.isTras() }">
-		                        <option value="0_0">Tutti i clienti</option>
+		                        <option value="${encrypt_0 }">Tutti i clienti</option>
 		                        </c:when>
 		                        <c:otherwise>
-		                         <option value="0_0_${userObj.company.id }">Tutti i clienti</option>
+		                         <option value="${encrypt_0 }_${userObj.company.id }">Tutti i clienti</option>
 		                        </c:otherwise>
 		                        </c:choose>
 		                      <c:forEach items="${listaClienti}" var="cliente">
 		                        <c:choose>
 		                       <c:when test="${userObj.isTras() }">
-		                       <option value="${cliente.key}">${cliente.value}</option>  
+		                       <option value="${utl:encryptData(cliente.key)}">${cliente.value}</option>  
 		                       </c:when>
 		                        <c:otherwise>
-		                           <option value="${cliente.key}_${userObj.company.id }">${cliente.value}</option>   
+		                           <option value="${utl:encryptData(cliente.key)}_${utl:encryptData(userObj.company.id) }">${cliente.value}</option>   
 		                           </c:otherwise>
 		                        </c:choose>                
 		                     </c:forEach>

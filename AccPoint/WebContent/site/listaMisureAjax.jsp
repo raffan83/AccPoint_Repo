@@ -62,7 +62,7 @@
         <a class="btn btn-primary pull-left" onClick="modalNuovaMisura()">Nuova Misura</a>
         </c:if>
         <c:if test="${listaMisure.size()>1}">
-        <a class="btn btn-primary pull-right" target="_blank" href="dettaglioMisura.do?action=andamento_temporale&id_strumento=${id_strumento}">Vedi andamento temporale </a>
+        <a class="btn btn-primary pull-right" target="_blank" href="dettaglioMisura.do?action=andamento_temporale&id_strumento=${utl:encryptData(id_strumento)}">Vedi andamento temporale </a>
          </c:if>
         </div>
         

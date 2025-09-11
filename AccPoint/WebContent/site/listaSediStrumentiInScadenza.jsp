@@ -360,42 +360,6 @@
  	table.buttons().container()
     .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
  	   
- 		/* $('#tabPM').on( 'dblclick','tr', function () {
-
-   		var id = $(this).attr('id');
-   		
-   		var row = table.row('#'+id);
-   		datax = row.data();
-
- 	   if(datax){
-  	    	row.child.hide();
-  	    	exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
-  	    	$( "#myModal" ).modal();
-  	    	$('body').addClass('noScroll');
-  	    }
- 	   
- 	   $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
-
-
-        	var  contentID = e.target.id;
-
-
-        	if(contentID == "dettaglioTab"){
-        		exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
-        	}
-        	if(contentID == "misureTab"){
-        		exploreModal("strumentiMisurati.do?action=ls&id="+datax[0],"","#misure")
-        	}
-      
-        	
-        	
-        	
-
-  		});
- 	   
- 	   
-   	}); */
-   	    
    	    
  		
 

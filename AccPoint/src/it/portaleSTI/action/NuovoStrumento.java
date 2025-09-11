@@ -123,14 +123,14 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setCampo_misura(campo_misura);
 				strumento.setTipo_strumento(new TipoStrumentoDTO(Integer.parseInt(ref_tipo_strumento),""));
 				
-				if(idSede.equals("0")) {
-					strumento.setId__sede_(Integer.parseInt(idSede));
-				}else {
-					strumento.setId__sede_(Integer.parseInt(idSede.split("_")[0]));
-				}
+				//if(idSede.equals("0")) {
+					strumento.setId__sede_(Integer.parseInt(Utility.decryptData(idSede.split("_")[0])));
+//				}else {
+//					strumento.setId__sede_(Integer.parseInt(idSede.split("_")[0]));
+//				}
 				
 				
-				strumento.setId_cliente(Integer.parseInt(idCliente));
+				strumento.setId_cliente(Integer.parseInt(Utility.decryptData(idCliente)));
 			
 				strumento.setReparto(reparto);
 				strumento.setUtilizzatore(utilizzatore);

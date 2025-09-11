@@ -18,6 +18,8 @@
 <%@page import="com.google.gson.JsonElement"%>
 <%@page import="java.util.Date"%>
 <%@page import="it.portaleSTI.Util.Utility" %>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -78,7 +80,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
 							
                   <option value=""></option>
                       <c:forEach items="${listaClientiGeneral}" var="cliente">
-                           <option value="${cliente.__id}">${cliente.nome} </option> 
+                           <option value="${utl:encryptData(cliente.__id)}">${cliente.nome} </option> 
                      </c:forEach>
                   
              
@@ -100,8 +102,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
 
      <div class="form-group">
                  <label for="inputEmail" class="col-sm-2 control-label">Sede:</label>
-                  
-                     
+             
 
          <div class="col-sm-10">
                   <select name="sede_general" id="sede_general" data-placeholder="Seleziona Sede..."  disabled class="form-control select2 classic_select" aria-hidden="true" data-live-search="true" style="width:100%">
@@ -109,7 +110,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
                     	<option value=""></option>
              			<c:forEach items="${listaSediGeneral}" var="sedi">
              	
-                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
+                          	 		<option value="${utl:encryptData(''+sedi.__id)}_${utl:encryptData(''+sedi.id__cliente_)}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
                           	     
                           
                      	</c:forEach>
@@ -135,7 +136,8 @@ String idCliente = (String)session.getAttribute("id_Cliente");
                                             for(StatoStrumentoDTO str :listaStatoStrumento)
                                             {
                                             	 %> 
-                            	            	 <option value="<%=str.getId() %>"><%=str.getNome() %></option>
+                            	            	 <option value="<%=str.getId() %>"><%=str.getNome() %></option> 
+
                             	            	 <%	 
                                             }
                                             %>
@@ -399,7 +401,8 @@ String idCliente = (String)session.getAttribute("id_Cliente");
 
   	  	  var opt=[];
   	  	
-  	  	  opt.push("<option value = 0>Non Associate</option>");
+  	  	  opt.push("<option value = '${non_associate_encrypt}'>Non Associate</option>");
+  	  	
 
   	  	   for(var  i=0; i<options.length;i++)
   	  	   {

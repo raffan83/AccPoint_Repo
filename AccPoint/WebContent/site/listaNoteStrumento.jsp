@@ -128,7 +128,7 @@ $('#formNuovaNota').on('submit', function (e) {
 
         $('#myModalError').on('hidden.bs.modal', function () {
             $('#modalNuovaAttivita').hide();
-            exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str=${id_strum}", "", "#notestrumento");
+            exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str=${utl:encryptData(id_strum)}", "", "#notestrumento");
         });
     });
 });

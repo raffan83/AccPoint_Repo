@@ -91,10 +91,12 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 					
 					String idSede;
 					String idCliente=tmp[1];
+					idCliente = Utility.decryptData(idCliente);
 					
 					if(tmp[0]!=null && !tmp[0].equalsIgnoreCase("null"))
 					{
 						idSede=tmp[0].split("_")[0];
+						idSede = Utility.decryptData(idSede);
 					}
 					else
 					{
@@ -257,8 +259,8 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			        myObj.add("dataInfo", obj);
 			        
 			        request.getSession().setAttribute("myObj",myObj);
-			        request.getSession().setAttribute("id_Cliente",idCliente);
-			        request.getSession().setAttribute("id_Sede",idSede);
+			        request.getSession().setAttribute("id_Cliente",Utility.encryptData(idCliente));
+			        request.getSession().setAttribute("id_Sede",Utility.encryptData(idSede));
 			        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
 			        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
 			        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
@@ -330,7 +332,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiTemp);
 				
 			}else {
-				ArrayList<StrumentoDTO> listaStrumentiFiltrata=GestioneStrumentoBO.getListaStrumentiInFuoriServizio(id_cliente, id_sede, idCompany.getId(), session,utente, 7226);
+				ArrayList<StrumentoDTO> listaStrumentiFiltrata=GestioneStrumentoBO.getListaStrumentiInFuoriServizio(Utility.decryptData(id_cliente), Utility.decryptData(id_sede), idCompany.getId(), session,utente, 7226);
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiFiltrata);
 				
 			}
@@ -364,7 +366,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				
 			}else {
 				request.getSession().setAttribute("listaStrumentiTemp", listaStrumenti);				
-				ArrayList<StrumentoDTO> listaStrumentiFiltrata=GestioneStrumentoBO.getListaStrumentiInFuoriServizio(id_cliente, id_sede, idCompany.getId(), session,utente, 7225);
+				ArrayList<StrumentoDTO> listaStrumentiFiltrata=GestioneStrumentoBO.getListaStrumentiInFuoriServizio(Utility.decryptData(id_cliente), Utility.decryptData(id_sede), idCompany.getId(), session,utente, 7225);
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiFiltrata);
 				
 			}
@@ -396,7 +398,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 //				
 //			}else {
 				request.getSession().setAttribute("listaStrumentiTemp", listaStrumenti);				
-				ArrayList<StrumentoDTO> listaStrumentiFiltrata=GestioneStrumentoBO.getListaStrumentiInFuoriServizio(id_cliente, id_sede, idCompany.getId(), session,utente, 7227);
+				ArrayList<StrumentoDTO> listaStrumentiFiltrata=GestioneStrumentoBO.getListaStrumentiInFuoriServizio(Utility.decryptData(id_cliente), Utility.decryptData(id_sede), idCompany.getId(), session,utente, 7227);
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiFiltrata);
 				request.getSession().setAttribute("listaStrumentiAnn", listaStrumentiFiltrata);
 				
@@ -414,6 +416,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		else if(action.equals("note_strumento")) {
 			
 			String id = request.getParameter("id_str");
+			id = Utility.decryptData(id);
 			StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(id, session);
 
 			
@@ -439,10 +442,14 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			
 			if(idCliente==null || idCliente.equals("")) {
 				idCliente="0";
+			}else {
+				idCliente = Utility.decryptData(idCliente);
 			}
 			
 			if(idSede==null || idSede.equals("")) {
 				idSede="0";
+			}else {
+				idSede = Utility.decryptData(idSede);
 			}
 			
 			request.getSession().setAttribute("listaSediGeneral",listaSediFull);
@@ -462,8 +469,8 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 	        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
 	        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
 	        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
-	        request.getSession().setAttribute("id_Cliente",idCliente);
-	        request.getSession().setAttribute("id_Sede",idSede);
+	        request.getSession().setAttribute("id_Cliente",Utility.encryptData(idCliente));
+	        request.getSession().setAttribute("id_Sede",Utility.encryptData(idSede));
 			
 			session.getTransaction().commit();
 			session.close();

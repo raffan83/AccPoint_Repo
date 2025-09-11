@@ -11,6 +11,7 @@ public class SedeDTO {
 	private String siglaProvincia;
 	private String descrizione = "";
 	private String n_REA="";
+	private String id_encrypted;
 
 	public String getSiglaProvincia() {
 		return siglaProvincia;
@@ -99,7 +100,15 @@ public class SedeDTO {
 
 	public void setN_REA(String n_REA) {
 		this.n_REA = n_REA;
-	};
-	
-	
+	}
+
+	public String getId_encrypted() {
+		return id_encrypted;
+	}
+
+	public void setId_encrypted(String id_encrypted) {
+		this.id_encrypted = id_encrypted;
+	}
+
+
 }

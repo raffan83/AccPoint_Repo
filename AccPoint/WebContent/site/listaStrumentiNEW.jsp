@@ -1,6 +1,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
+
 
 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
@@ -162,7 +164,7 @@
                   
                       <c:forEach items="${listaClienti}" var="cliente">
                        <c:if test="${userObj.idCliente == cliente.__id}">
-                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                           <option value="${utl:encryptData(cliente.__id)}">${cliente.nome}</option> 
                         </c:if>
                      </c:forEach>
                   
@@ -172,7 +174,7 @@
                   <c:if test="${userObj.idCliente == 0}">
                   <option value=""></option>
                       <c:forEach items="${listaClienti}" var="cliente">
-                           <option value="${cliente.__id}">${cliente.nome} </option> 
+                           <option value="${utl:encryptData(cliente.__id)}">${cliente.nome} </option> 
                      </c:forEach>
                   
                   
@@ -182,7 +184,7 @@
     
                   <label>Cliente</label>
                   <c:if test="${userObj.idCliente != 0}">
-                  <input  name="select1" id="select1"  class="form-control" style="width:100%" value="${userObj.idCliente }">
+                  <input  name="select1" id="select1"  class="form-control" style="width:100%" value="${utl:encryptData(userObj.idCliente) }">
                   </c:if>
                   <c:if test="${userObj.idCliente == 0 }">
                   <input  name="select1" id="select1"  class="form-control" style="width:100%" >
@@ -222,8 +224,8 @@
                    <c:if test="${userObj.idSede != 0}">
                    
              			<c:forEach items="${listaSedi}" var="sedi">
-             			  <c:if test="${userObj.idSede == sedi.__id}">
-                          	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia}) </option>     
+             			  <c:if test="${userObj.idSede == sedi.__id}">             			  
+                          	  <option value="${utl:encryptData(sedi.__id)}_${utl:encryptData(sedi.id__cliente_)}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia}) </option>      
                           </c:if>                       
                      	</c:forEach>
                      </c:if>
@@ -233,11 +235,11 @@
              			<c:forEach items="${listaSedi}" var="sedi">
              			 	<c:if test="${userObj.idCliente != 0}">
              			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
-                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
+                          	 		<option value="${utl:encryptData(sedi.__id)}_${utl:encryptData(sedi.id__cliente_)}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
                           	 	</c:if>      
                           	</c:if>     
                           	<c:if test="${userObj.idCliente == 0}">
-                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
+                           	 		<option value="${utl:encryptData(sedi.__id)}_${utl:encryptData(sedi.id__cliente_)}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
                            	</c:if>                  
                      	</c:forEach>
                      </c:if>
@@ -488,7 +490,7 @@
     </div>
 
 </div>
-
+</div>
  
  
   <div  class="modal"><!-- Place at bottom of page --></div> 
@@ -684,7 +686,7 @@ function spd()
 
   	  var opt=[];
   	
-  	  opt.push("<option value = 0>Non Associate</option>");
+  	  opt.push("<option value = '${non_associate_encrypt}'>Non Associate</option>");
 
   	   for(var  i=0; i<options.length;i++)
   	   {

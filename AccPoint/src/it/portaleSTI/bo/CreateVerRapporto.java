@@ -1529,7 +1529,7 @@ public class CreateVerRapporto {
 			}else {
 				//codifica = "MOD-PDI001-05 Rev. 0 del 21/12/2022";
 				
-				codifica ="MOD-PDI001-05 Rev. A del 15/07/2025";
+				codifica ="MOD-PDI001-04 Rev. A del 15/07/2025";
 			}
 			
 			if(utente.getFile_firma()!=null) {

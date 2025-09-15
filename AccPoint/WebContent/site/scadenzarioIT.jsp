@@ -90,6 +90,10 @@
 	
 	<tr id="row_${loop.index}" style="background-color:#FA8989">
 	</c:when>
+<c:when test="${servizio.data_scadenza.time ge now.time 
+                   and servizio.data_scadenza.time le now.time + (1000*60*60*24*30)}">
+        <tr id="row_${loop.index}" style="background-color:#ffcc80">
+    </c:when>
 	<c:otherwise>
 		<tr id="row_${loop.index}" >
 	</c:otherwise>

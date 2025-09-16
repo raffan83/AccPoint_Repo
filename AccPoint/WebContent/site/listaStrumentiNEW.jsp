@@ -219,7 +219,7 @@
 
 
      <div class="form-group">
-                  <label>Sede</label>
+                  <label>Sede </label>
                   <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
                    <c:if test="${userObj.idSede != 0}">
                    
@@ -233,7 +233,7 @@
                      <c:if test="${userObj.idSede == 0}">
                     	<option value=""></option>
              			<c:forEach items="${listaSedi}" var="sedi">
-             			 	<c:if test="${userObj.idCliente != 0}">
+             			 	<c:if test="${userObj.idCliente != 0}">             			 	
              			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
                           	 		<option value="${utl:encryptData(sedi.__id)}_${utl:encryptData(sedi.id__cliente_)}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
                           	 	</c:if>      
@@ -655,8 +655,8 @@ function filtraStrumentiGenerale(){
   var myChart6 = null;
   
   
-  var idCliente = ${userObj.idCliente};
-  var idSede = ${userObj.idSede};
+  var idCliente = "${utl:encryptData(userObj.idCliente)}";
+  var idSede = "${utl:encryptData(userObj.idSede)}";
 
    $body = $("body");
 

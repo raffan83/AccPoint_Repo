@@ -654,9 +654,19 @@ function filtraStrumentiGenerale(){
   var myChart5 = null;
   var myChart6 = null;
   
-  
-  var idCliente = "${utl:encryptData(userObj.idCliente)}";
-  var idSede = "${utl:encryptData(userObj.idSede)}";
+  if(${userObj.idCliente}!=0){
+	  var idCliente = "${utl:encryptData(userObj.idCliente)}";
+	  
+  }else{
+	  var idCliente = ${userObj.idCliente};
+	
+  }
+ 
+  if(${userObj.idSede}!=0){
+	  var idSede = "${utl:encryptData(userObj.idSede)}";
+  }else{
+	  var idSede = ${userObj.idSede};
+  }
 
    $body = $("body");
 

@@ -106,23 +106,19 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 	 								 <td><%=strumento.get__id()%></td>
 	 							
-                       			     <td><%=strumento.getDenominazione()%></td>
-                    	             <td><%=strumento.getCodice_interno()%></td>
-                    	            
-                    	             
-                    	             <td><%=strumento.getMatricola()%></td>
-                    	             
-                    	             <td><%=strumento.getCostruttore()%></td>
-                    	            
-                    	           
-                       				 
-                       				 
-                       				 <td><c:out value='${str.denominazione}'/></td>
+                       	
+                    	            <td><c:out value='${str.denominazione}'/></td>
 	  							    <td><c:out value='${str.codice_interno}'/></td>
-                    	            
                     	             <td><c:out value='${str.matricola}'/></td>
                     	             
                     	             <td><c:out value='${str.costruttore}'/></td>
+                    	        
+                    	           
+                       				 
+                       				 
+                       				 
+                    	            
+                    	             
                     	           
                     	               <td><%if(strumento.getStato_strumento()!=null){
                        					out.print(strumento.getStato_strumento().getNome());

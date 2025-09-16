@@ -438,6 +438,9 @@ public class GestioneVerStrumenti extends HttpServlet {
 				
 				VerStrumentoDTO strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(id_strumento), session);
 				
+				cliente = Utility.decryptData(cliente);
+				sede = Utility.decryptData(sede.split("_")[0]);
+				
 				strumento.setId_cliente(Integer.parseInt(cliente));
 				strumento.setId_sede(Integer.parseInt(sede.split("_")[0]));
 				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);

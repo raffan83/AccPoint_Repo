@@ -3656,7 +3656,81 @@ function eliminaCompany(){
 //	  		}
 	  }
   }
-  function creaCertificato(idCertificato){
+  
+  
+  
+  function creaCertificato(idCertificato) {
+    let pleaseWaitDiv = $('#pleaseWaitDialog');
+    pleaseWaitDiv.modal();
+
+    let data_emissione = $('#data_emissione').val();
+
+    $.ajax({
+        type: "POST",
+        url: "listaCertificati.do?action=creaCertificato&idCertificato=" + idCertificato + "&data_emissione=" + data_emissione,
+        dataType: "json",
+
+        success: function (data, textStatus) {
+            pleaseWaitDiv.modal('hide');
+
+            // Aggancia evento hidden una sola volta
+            $('#myModalError').one('hidden.bs.modal', function (e) {
+                if ($('#myModalError').hasClass('modal-success')) {
+                    filtraCertificati();
+                }
+                // fix eventuali bug Bootstrap
+                $('body').css('padding-right', '');
+                $('body').removeClass('modal-open');
+                
+               
+            });
+
+            if (data.success) {
+                $('#report_button').hide();
+                $('#visualizza_report').hide();
+
+                $('#myModalErrorContent').html(data.messaggio);
+                $('#myModalError')
+                    .removeClass('modal-danger')
+                    .addClass('modal-success')
+                    .modal('show');
+
+            } else {
+                $('#report_button').show();
+                $('#visualizza_report').show();
+
+                $('#myModalErrorContent').html(data.messaggio);
+                $('#myModalError')
+                    .removeClass('modal-success')
+                    .addClass('modal-danger')
+                    .modal('show');
+            }
+        },
+
+        error: function (jqXHR, textStatus, errorThrown) {
+            pleaseWaitDiv.modal('hide');
+
+            $('#report_button').show();
+            $('#visualizza_report').show();
+
+            $('#myModalErrorContent').html(errorThrown.message || "Errore imprevisto");
+            $('#myModalError')
+                .removeClass('modal-success')
+                .addClass('modal-danger')
+                .modal('show');
+
+            // stessa gestione per il reset body
+            $('#myModalError').one('hidden.bs.modal', function () {
+                $('body').css('padding-right', '');
+                $('body').removeClass('modal-open');
+            });
+        }
+    });
+}
+  
+  
+  
+/*  function creaCertificato(idCertificato){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 	  
@@ -3674,11 +3748,25 @@ function eliminaCompany(){
 
     			  $('#report_button').hide();
     			  $('#visualizza_report').hide();
+    			  
+  
        	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
     				  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
+      				
+   
+     		 
+     		 $('#myModalError').off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
+    if($('#myModalError').hasClass('modal-success')){
+        filtraCertificati();
+     $(document.body).css('padding-right', '0px');
+   
+}
+     		
+       	  	
+       	});
        	         
     		
     		  }else{
@@ -3706,7 +3794,7 @@ function eliminaCompany(){
     	  }
       });
   }
-  
+  */
   
   function creaCertificatoLat(idCertificato, lat_master){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -4017,6 +4105,16 @@ function eliminaCompany(){
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
+      				    $('#myModalError').one('hidden.bs.modal', function (e) {
+        if ($('#myModalError').hasClass('modal-success')) {
+            filtraCertificati();
+        }
+        // fix eventuali bug Bootstrap
+        $('body').css('padding-right', '');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').hide();
+       
+    });
        	         
     		
     		  }else{
@@ -7454,6 +7552,8 @@ function filtraCertificati(anno){
 	          });
 
 	  }
+	  
+	   $(document.body).css('padding-right', '0px');
 }
 
 

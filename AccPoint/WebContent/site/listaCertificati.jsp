@@ -161,6 +161,8 @@
 $(document).ready(function() {
 	$('.select2').select2();
 	filtraCertificati();
+	
+	 $(document.body).css('padding-right', '0px');
 });
 
 
@@ -168,6 +170,10 @@ $(document).ready(function() {
 	 document.getElementById("selectCliente").selectedIndex = -1;
 	 document.getElementById("selectFiltri").selectedIndex = -1;
 	});  
+ 
+ 
+ 
+
 </script>
 </jsp:attribute> 
 </t:layout>

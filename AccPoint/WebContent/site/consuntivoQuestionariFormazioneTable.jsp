@@ -481,9 +481,10 @@
 
  	});
     	
- 	$("#tabCorsi tbody tr").each(function () {
-        let valore = parseFloat($(this).find("td:eq(5)").text()); // Colonna 5
-        let condizione = $(this).find("td:eq(6)").text().trim(); // Colonna 6
+ 	//$("#tabCorsi tbody tr").each(function () {
+ 	t.rows({ filter: 'applied' }).every(function () {
+ 	    let valore = parseFloat(this.data()[5]); // colonna 5
+ 	    let condizione = this.data()[6].trim(); // colonna 6
 
         if (condizione === "SI" && !isNaN(valore)) {
             numero_partecipanti += valore;

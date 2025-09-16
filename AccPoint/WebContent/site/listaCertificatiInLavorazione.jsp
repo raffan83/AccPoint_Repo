@@ -696,10 +696,13 @@ function getListaCertificatiprecedenti(id_strumento, id_certificato, lat_master)
 	} );
  
     $(document).ready(function() {
+    	 $(document.body).css('padding-right', '0px');
         $('.datepicker').datepicker({
    		 format: "dd/mm/yyyy"
    	 });   
-    	
+        
+        var maxSelect = 100;
+        $('body').css('padding-right', '');
     	table = $('#tabPM').DataTable({
     		pageLength: 100,
   	      paging: true, 
@@ -787,14 +790,7 @@ function getListaCertificatiprecedenti(id_strumento, id_certificato, lat_master)
      	 	$('body').removeClass('noScroll');
      	 	
      	});
-     	 $('#myModalError').on('hidden.bs.modal', function (e) {
-     		 if($('#myModalError').hasClass('modal-success')){
-     			filtraCertificati();
-     			
-     		 }
-     		
-       	  	
-       	});
+    
 
   
  
@@ -926,7 +922,17 @@ function getListaCertificatiprecedenti(id_strumento, id_certificato, lat_master)
 /*     }); */
 
   	
-  	
+  	  	table.on( 'select', function ( e, dt, type, ix ) {
+  	   var selected = dt.rows({selected: true});
+  	   if ( selected.count() > maxSelect ) {
+  	      dt.rows(ix).deselect();
+  		$('#myModalErrorContent').html("Non è consentito selezionare più di "+maxSelect+" elementi");
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");
+		$('#myModalError').modal('show');
+
+  	   }
+  	} );
   	
   	
     	
@@ -935,17 +941,57 @@ function getListaCertificatiprecedenti(id_strumento, id_certificato, lat_master)
   	});
     	
 
-  	$('input').on('ifChecked', function(event){  		
+/*   	$('input').on('ifChecked', function(event){  		
   		
     		   //table.rows().select();
     		   table.rows({ filter : 'applied'}).select();
     		      	  
-  	});
-  	$('input').on('ifUnchecked', function(event){
+  	}); */
+  	
+		$('#selectAlltabPM').on('ifChecked', function (ev) {
+
+	
+		
+		$('#myModalErrorContent').html("Verranno selezionati solo i primi "+maxSelect+" elementi");
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-warning");
+		$('#myModalError').modal('show');
+		
+		
+			$("#selectAlltabPM").prop('checked', true);
+			table.rows().deselect();
+			var allData = table.rows({filter: 'applied'});
+			table.rows().deselect();
+			i = 0;
+			table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+			    if(i	<maxSelect){
+					 this.select();
+			    }else{
+			    		exit;
+			    }
+			    i++;
+			    
+			} );
+
+	  	});
+		$('#selectAlltabPM').on('ifUnchecked', function (ev) {
+
+			
+	
+			
+				$("#selectAlltabPM").prop('checked', false);
+				table.rows().deselect();
+				var allData = table.rows({filter: 'applied'});
+				table.rows().deselect();
+
+		  	});
+  	
+  	
+/*   	$('input').on('ifUnchecked', function(event){
   		
     		 table.rows().deselect();
     	  
-  	});
+  	}); */
  
   	$("#approvaSelected").click(function(){
   	  pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -987,11 +1033,18 @@ function getListaCertificatiprecedenti(id_strumento, id_certificato, lat_master)
     });
 
 	
-    $('#myModalError').on('hidden.bs.modal', function(){
-    	 $('.modal-backdrop').hide();
+ 
+    
+    $('#myModalError').on('hidden.bs.modal', function (e) {
+/*         if ($('#myModalError').hasClass('modal-success')) {
+            filtraCertificati();
+        }
+        // fix eventuali bug Bootstrap
+        $('body').css('padding-right', '');
+        $('body').removeClass('modal-open'); */
+        $('.modal-backdrop').hide();
+       
     });
-    
-    
 
   </script>
 

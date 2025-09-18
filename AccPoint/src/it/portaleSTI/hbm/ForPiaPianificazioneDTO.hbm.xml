@@ -93,5 +93,9 @@
         <property name="ore_fatturate" type="int" >
             <column name="ore_fatturate" />
         </property>
+        
+          <property name="id_corso" type="java.lang.Integer" >
+            <column name="id_corso" />
+        </property>
     </class>
 </hibernate-mapping>

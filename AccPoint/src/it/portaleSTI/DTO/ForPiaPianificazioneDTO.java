@@ -29,6 +29,8 @@ public class ForPiaPianificazioneDTO {
 	private int email_inviata;
 	private String durata_pausa_pranzo;
 	private int ore_fatturate;
+	private Integer id_corso;
+	private Integer attestati_presenti;
 	
 	private Set<ForDocenteDTO> listaDocenti = new HashSet<ForDocenteDTO>(0);
 	
@@ -296,6 +298,30 @@ public class ForPiaPianificazioneDTO {
 
 	public void setOre_fatturate(int ore_fatturate) {
 		this.ore_fatturate = ore_fatturate;
+	}
+
+
+
+	public Integer getId_corso() {
+		return id_corso;
+	}
+
+
+
+	public void setId_corso(Integer id_corso) {
+		this.id_corso = id_corso;
+	}
+
+
+
+	public Integer getAttestati_presenti() {
+		return attestati_presenti;
+	}
+
+
+
+	public void setAttestati_presenti(Integer attestati_presenti) {
+		this.attestati_presenti = attestati_presenti;
 	}
 	
 	

@@ -142,8 +142,14 @@
  <tbody>
  
  	<c:forEach items="${lista_pianificazioni }" var="pianificazione" varStatus="loop">
-	<tr id="row_${loop.index}" >
+ 	<c:if test="${pianificazione.attestati_presenti == null ||pianificazione.attestati_presenti == 1 }">
+	<tr id="row_${pianificazione.id}" >
 
+</c:if>
+ 	<c:if test="${pianificazione.id_corso!=null && pianificazione.attestati_presenti == 0 }">
+	<tr id="row_${pianificazione.id}" style="background-color:#D8796F">
+
+</c:if>
 	<td>${pianificazione.id }</td>	
 	
 	<td>${pianificazione.id_commessa }</td>	
@@ -516,42 +522,66 @@ function cambiaStato(id_pianificazione, stato){
 		  dataType: 'json',
 		  success: function(response) {
 		    // Recupera il JSONElement dalla risposta
-		    var pianificazione = response.pianificazione;
 		    
-		    var array = [];
-		    var day = [];
-		    var map = {};
-		    
-		
-		    var t = document.getElementById("tabForPianificazione");
-		    var rows = t.rows;
-		   
-		  //  for (var i = 0; i < lista_pianificazioni.length; i++) {
-			  
-			  table = $('#tabForPianificazione').DataTable();
+		    if(response.success){
 		    	
-				var cell = $("#"+id_pianificazione);
-				cell.text(pianificazione.stato.descrizione);
-				
-				
-			var cell_check= $('#check_'+id_pianificazione)
-				
-				var html = "";
-				if(pianificazione.stato.id == 4 || pianificazione.stato.id == 5){
-					html += '<input type="checkbox" class="iCheck" disabled checked > <label>Fattura</label>';
-				}
-				if(pianificazione.stato.id == 5 || pianificazione.stato.id ==6){
-					html += '<br><input type="checkbox" class="iCheck" disabled checked ><label>Attestato</label>';
-				}
-				
-				cell_check.html(html);
-				
-				$('.iCheck').iCheck({
-				      checkboxClass: 'icheckbox_square-blue',
-				      radioClass: 'iradio_square-blue',
-				      increaseArea: '20%' // optional
-				    }); 
-		  }
+		    	var pianificazione = response.pianificazione;
+			    
+			    var array = [];
+			    var day = [];
+			    var map = {};
+			    
+			
+			    var t = document.getElementById("tabForPianificazione");
+			    var rows = t.rows;
+			   
+			  //  for (var i = 0; i < lista_pianificazioni.length; i++) {
+				  
+				  table = $('#tabForPianificazione').DataTable();
+			    	
+					var cell = $("#"+id_pianificazione);
+					cell.text(pianificazione.stato.descrizione);
+					
+					
+				var cell_check= $('#check_'+id_pianificazione)
+					
+					var html = "";
+					if(pianificazione.stato.id == 4 || pianificazione.stato.id == 5){
+						html += '<input type="checkbox" class="iCheck" disabled checked > <label>Fattura</label>';
+					}
+					if(pianificazione.stato.id == 5 || pianificazione.stato.id ==6){
+						html += '<br><input type="checkbox" class="iCheck" disabled checked ><label>Attestato</label>';
+					}
+					
+					cell_check.html(html);
+					
+					$('.iCheck').iCheck({
+					      checkboxClass: 'icheckbox_square-blue',
+					      radioClass: 'iradio_square-blue',
+					      increaseArea: '20%' // optional
+					    }); 
+					
+					
+					if(pianificazione.stato.id == 5 && pianificazione.attestati_presenti == 0){
+						
+						$('#row_'+id_pianificazione).css("background-color", "#D8796F")
+					}else{
+						$('#row_'+id_pianificazione).css("background-color", "")
+					}
+			  
+		    	
+		    }else{
+		    	
+		    	
+		    	$('#myModalErrorContent').html(response.messaggio);
+    		  	$('#myModalError').removeClass();
+    			$('#myModalError').addClass("modal modal-danger");	  
+    			$('#report_button').hide();
+    			$('#visualizza_report').hide();
+    			$('#myModalError').modal('show');			
+		    }
+		    
+		    }
 	
 	});
 	

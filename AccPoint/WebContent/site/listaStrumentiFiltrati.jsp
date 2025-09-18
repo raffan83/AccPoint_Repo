@@ -596,7 +596,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	
 	$('#formNuovoStrumento').on('submit',function(e){
 	    e.preventDefault();
-		nuovoStrumento(<%= idSede %>,<%= idCliente %>)
+		nuovoStrumento('<%= idSede %>','<%= idCliente %>')
 
 	});
 	

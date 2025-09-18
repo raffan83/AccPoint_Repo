@@ -27,6 +27,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -2943,6 +2944,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);
 					ArrayList<ForPiaStatoDTO> lista_stati = GestioneFormazioneBO.getListaStati(session);
 					ArrayList<ForPiaTipoDTO> lista_tipi = GestioneFormazioneBO.getListaTipi(session);
+					ArrayList<ForCorsoDTO> lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
 					
 					LocalDate dataCorrente = null;
 					 
@@ -3090,7 +3092,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					request.getSession().setAttribute("end_date", end_date);
 					request.getSession().setAttribute("filtro_tipo_pianificazioni", 0);
 					request.getSession().setAttribute("cellCopy", cellCopy);
-					
+					request.getSession().setAttribute("lista_corsi", lista_corsi);
 					
 					session.getTransaction().commit();
 					session.close();
@@ -3147,7 +3149,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String descrizione = ret.get("descrizione");
 					String durata_pausa_pranzo = ret.get("durata_pausa_pranzo");
 					String anno_data = ret.get("anno_data");
-					
+					String check_nuovo_corso = ret.get("check_nuovo_corso");
+					String check_corso_esistente = ret.get("check_corso_esistente");
+					String id_corso_esistente = ret.get("id_corso_esistente");
 					
 					ForPiaPianificazioneDTO pianificazione = null;
 					if(id_pianificazione!=null && !id_pianificazione.equals("")) {
@@ -3284,11 +3288,41 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					}
 					
 					
+					if(check_nuovo_corso!=null && check_nuovo_corso.equals("1")) {
+						
+						ForCorsoDTO corso = new ForCorsoDTO();
+						
+						corso.setCommessa(pianificazione.getId_commessa());
+						corso.setDescrizione(pianificazione.getDescrizione());
+						Set<ForDocenteDTO> docenti = new HashSet<ForDocenteDTO>();
+						docenti.addAll(pianificazione.getListaDocenti());
+						corso.setListaDocenti(docenti);
+						corso.setData_corso(pianificazione.getData());
+						if(pianificazione.getTipo().getId()==3) {
+							corso.setE_learning(1);
+						}
+					
+						session.save(corso);
+						pianificazione.setId_corso(corso.getId());
+						
+						Gson g = new Gson();
+						myObj.add("corso_aggiunto", g.toJsonTree(corso));
+						 
+					}
+					if(check_corso_esistente!=null && check_corso_esistente.equals("1")) {
+						
+						pianificazione.setId_corso(Integer.parseInt(id_corso_esistente));
+						
+					}
+					
+					
 					session.saveOrUpdate(pianificazione);
 					session.getTransaction().commit();
 					session.close();
+					
 					PrintWriter out = response.getWriter();
 					myObj.addProperty("success", true);
+					
 					myObj.addProperty("messaggio", "Pianificazione salvata con successo!");
 		        	out.print(myObj);
 				}
@@ -3369,6 +3403,24 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni = GestioneFormazioneBO.getListaPianificazioniData(dateFrom, dateTo, session);
 					
+					for (ForPiaPianificazioneDTO pianificazione : lista_pianificazioni) {
+						
+						if(pianificazione.getStato().getId() == 5) {
+							pianificazione.setAttestati_presenti(0);
+							if(pianificazione.getId_corso()!=null) {
+								ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(pianificazione.getId_corso(), session);
+								ArrayList<ForPartecipanteRuoloCorsoDTO> lista_partecipanti = GestioneFormazioneBO.getListaPartecipantiCorso(corso.getId(), session);
+								for (ForPartecipanteRuoloCorsoDTO p : lista_partecipanti) {
+									if(p.getAttestato()!=null && !p.getAttestato().equals("")) {
+										pianificazione.setAttestati_presenti(1);
+										break;
+									}
+								}
+							}
+						}
+					}
+					
+					
 					request.getSession().setAttribute("lista_pianificazioni", lista_pianificazioni);
 					
 					request.getSession().setAttribute("dateTo", dateTo);
@@ -3401,26 +3453,54 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					}else if(stato.equals("4")) {
 						descrizione = "FATTURATO SENZA ATTESTATI";
 					}else if(stato.equals("5")) {
-						descrizione = "FATTURATO CON ATTESTATI";
+						descrizione = "COMPLETATO";
 					}else if(stato.equals("6")) {
 						descrizione = "ATTESTATI SENZA FATTURA";
 					}
-					pianificazione.setStato(new ForPiaStatoDTO(Integer.parseInt(stato),descrizione));
 					
-					session.update(pianificazione);
 					
-					session.getTransaction().commit();
-					session.close();
+					pianificazione.setAttestati_presenti(0);
+					if(Integer.parseInt(stato) == 5) {
+						if(pianificazione.getId_corso()!=null) {
+							ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(pianificazione.getId_corso(), session);
+							ArrayList<ForPartecipanteRuoloCorsoDTO> lista_partecipanti = GestioneFormazioneBO.getListaPartecipantiCorso(corso.getId(), session);
+							for (ForPartecipanteRuoloCorsoDTO p : lista_partecipanti) {
+								if(p.getAttestato()!=null && !p.getAttestato().equals("")) {
+									pianificazione.setAttestati_presenti(1);
+									break;
+								}
+							}
+						}
+					}
+					
+					
 					PrintWriter out = response.getWriter();
+//					if(Integer.parseInt(stato) == 5 && !attestati_presenti) {
+//						
+//						
+//						myObj.addProperty("success", false);
+//						myObj.addProperty("messaggio", "Attenzione! Sul corso associato alla pianificazione non risultano attestati presenti!");
+//			        	
+//					}else {
+						pianificazione.setStato(new ForPiaStatoDTO(Integer.parseInt(stato),descrizione));
+						
+						session.update(pianificazione);
+						
+						
+						
+						
+						Gson g = new Gson();
+						
+						myObj.addProperty("success", true);
+						myObj.add("pianificazione", g.toJsonTree(pianificazione));
+			        	
+//					}
 					
-					Gson g = new Gson();
 					
-					myObj.addProperty("success", true);
-					myObj.add("pianificazione", g.toJsonTree(pianificazione));
-		        	out.print(myObj);
+					out.print(myObj);
 					
-					
-					
+		        	session.getTransaction().commit();
+					session.close();
 				}
 			
 				else if(action.equals("gestione_conf_email")) {

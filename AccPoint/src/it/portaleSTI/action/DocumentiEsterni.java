@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -33,6 +34,7 @@ import it.portaleSTI.bo.GestioneStrumentoBO;
 @WebServlet(name="documentiEsterni" , urlPatterns = { "/documentiEsterni.do" })
 public class DocumentiEsterni extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static final Logger logger = Logger.getLogger(DocumentiEsterni.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -65,6 +67,7 @@ public class DocumentiEsterni extends HttpServlet {
 			
 			
 			String idS = request.getParameter("id_str");
+			logger.error("idS documentiEsterni "+idS);
 			
 			idS = Utility.decryptData(idS);
 						

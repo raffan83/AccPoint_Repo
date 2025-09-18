@@ -601,6 +601,12 @@ function modalPianificazione(day, commessa, id){
 			$('#btn_elimina').show()
 		
 			$('#anno_data').val(year);	
+			
+			if(pianificazione.id_corso!=null){
+				$('#corso_esistente').iCheck("check");
+				$('#id_corso_esistente').val(pianificazione.id_corso);
+				$('#id_corso_esistente').change();
+			}
 
 			
 			$('#modalPianificazione').modal()

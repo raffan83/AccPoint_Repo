@@ -265,7 +265,24 @@
 					</div>
 		
 		</div><br>
-        
+         <div class="row">
+        <div class="col-xs-3"><label>Crea nuovo corso</label> <br>
+          <input type='checkbox' id='nuovo_corso' name='nuovo_corso' class='form-control' style='width:100%'>
+          </div>
+          <div class="col-xs-3">
+         <label>Corso esistente</label><br>
+        <input type='checkbox' id='corso_esistente' name='corso_esistente' class='form-control' style='width:100%'>
+        </div>
+        <div class="col-xs-6">
+         <label>Corsi esistenti</label> 
+					<select id="id_corso_esistente" name="id_corso_esistente" disabled class='form-control select2' style="width:100%" data-placeholder="Seleziona corso esistente...">
+					<option value=""></option>
+					<c:forEach items="${lista_corsi }" var="corso">
+					<option value="${corso.id }">${corso.descrizione }</option>
+					</c:forEach>
+					</select>
+        </div>
+        </div><br>
         <div class="row">
         <div class="col-xs-12">
         <label>Testo Note</label>
@@ -285,6 +302,9 @@
       <input type="hidden" id="check_agenda" name="check_agenda">
       <input type="hidden" id="check_pausa_pranzo" name="check_pausa_pranzo">
       <input type="hidden" id="anno_data" name="anno_data">
+      <input type="hidden" id="check_nuovo_corso" name="check_nuovo_corso">
+      <input type="hidden" id="check_corso_esistente" name="check_corso_esistente">
+      
       
       
       
@@ -615,6 +635,12 @@ function nuovaPianificazione(){
 		if(datab.success){
 			fillTable("${anno}", "${filtro_tipo_pianificazioni}", 1);
 		//	controllaColoreCella(table, "#F7BEF6");
+		
+		
+			if(datab.corso_aggiunto!=null){
+				$("#id_corso_esistente").append('<option value="'+datab.corso_aggiunto.id+'">'+datab.corso_aggiunto.descrizione+'</option>');
+
+			}
 			
 			$('#modalPianificazione').modal("hide");
 			
@@ -724,6 +750,33 @@ $('input:checkbox').on('ifToggled', function() {
 		$('#durata_pausa_pranzo').attr("disabled", true);
 		$('#durata_pausa_pranzo').attr("required", false);
 	});
+	
+
+	$('#nuovo_corso').one('ifChecked', function(event){
+		$('#check_nuovo_corso').val("1");
+		$('#corso_esistente').iCheck("uncheck")
+		$('#id_corso_esistente').val("");
+		$('#id_corso_esistente').change();
+	});
+	
+	$('#nuovo_corso').one('ifUnchecked', function(event){
+		$('#check_nuovo_corso').val("0");		
+	});
+	
+	
+	$('#corso_esistente').one('ifChecked', function(event){
+		$('#check_corso_esistente').val("1");
+		$('#nuovo_corso').iCheck("uncheck")
+		$('#id_corso_esistente').attr("disabled", false);
+		$('#id_corso_esistente').attr("required", true);
+	});
+	
+	$('#corso_esistente').one('ifUnchecked', function(event){
+		$('#check_corso_esistente').val("0");		
+		$('#id_corso_esistente').attr("disabled", true);
+		$('#id_corso_esistente').attr("required", false);
+	});
+	
 	
 })
 
@@ -938,7 +991,10 @@ $('#modalPianificazione').on("hidden.bs.modal", function(){
 	 $('#label_email').hide();
 	 $('#label_agenda').hide();
 	 $('#content_fasi').hide()
-		
+	 $('#nuovo_corso').iCheck('uncheck');
+	 $('#corso_esistente').iCheck('uncheck');
+	 $('#id_corso_esistente').prop('selectedIndex', -1);
+		$('#id_corso_esistente').change();	
 });
 
 

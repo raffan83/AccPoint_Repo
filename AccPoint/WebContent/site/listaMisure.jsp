@@ -68,12 +68,15 @@
 <c:if test="${actionParent == 'li'}"> <button id="generaSelected" class="btn btn-success" onClick="callAction('strumentiMisurati.do?action=lc&actionParent=${actionParent}&id=${utl:encryptData(listaMisure[0].interventoDati.id)}')">Visualizza Certificati</button></c:if>
 	      <c:if test="${actionParent == 'lt'}"> <button id="generaSelected" class="btn btn-success" onClick="callAction('strumentiMisurati.do?action=lc&actionParent=${actionParent}&id=${utl:encryptData(listaMisure[0].intervento.id)}')">Visualizza Certificati</button></c:if>
          
+         
+         <button class="btn btn-primary pull-right" onClick="$('#modalRapportoIntervento').modal()">Crea Rapporto Intervento</button>
           </div>
 	  </div>
 </c:if>
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th></th>
+ <th><input id="selectAlltabPM" type="checkbox" /></th>
  <th>ID</th>
  <th>Data Misura</th>
   <th>Strumento</th>
@@ -100,6 +103,7 @@
  <c:forEach items="${listaMisure}" var="misura" varStatus="loop">
 
 	 <tr role="row" id="${misura.id}-${loop.index}">
+<td></td>
 <td></td>
 	<td><a href="#" class="customTooltip" title="Click per aprire il dettaglio della Misura"  onClick="callAction('dettaglioMisura.do?idMisura=${utl:encryptData(misura.id)}')" onClick="">${misura.id}</a></td>
 
@@ -389,6 +393,27 @@
 
 
 
+<div id="modalRapportoIntervento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Crea Rapporto Intervento</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row"></div>
+
+
+  		 </div>
+      <div class="modal-footer">
+       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
+        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </section>
   </div>
   <!-- /.content-wrapper -->
@@ -409,7 +434,7 @@
 
 
 <jsp:attribute name="extra_css">
-
+	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 <style>
 .lamp {
     height: 20px;
@@ -436,11 +461,9 @@
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
-<script type="text/javascript">
 
+<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 
-
-   </script>
 
   <script type="text/javascript">
   
@@ -606,7 +629,7 @@ function openModalStampa(idMisura){
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	        if($(this).index()!= 0 && $(this).index()!= 12){
+	        if($(this).index()!= 0 && $(this).index()!= 1 && $(this).index()!= 12){
 	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	        }
 	        
@@ -649,7 +672,7 @@ function openModalStampa(idMisura){
 	        pageLength: 100,
   	      paging: true, 
   	      ordering: true,
-  	    		order: [[ 1, "desc" ]],
+  	    		order: [[ 2, "desc" ]],
   	      info: true, 
   	      searchable: false, 
   	      targets: 0,
@@ -658,16 +681,21 @@ function openModalStampa(idMisura){
   	      stateSave: true,
   	    stateSaveParams: function (settings, data) {
 	          // Rimuovi i dati relativi alla colonna che vuoi escludere (ad esempio, colonna 2)
-	          var columnIndexToExclude = 12;
+	          var columnIndexToExclude = 13;
 	          data.columns.splice(columnIndexToExclude, 1);
 	      },
-  	    select: 'single',
+  	 
+  	  select: {
+      	style:    'multi+shift',
+      	selector: 'td:nth-child(2)'
+  	},
   	      columnDefs: [
-						   { responsivePriority: 1, targets: 1 },
+  	        { targets: 0,  orderable: false },
+              { className: "select-checkbox", targets: 1,  orderable: false },
   	                   { responsivePriority: 2, targets: 2 },
   	                   { responsivePriority: 3, targets: 3 },
-  	                 { responsivePriority: 4, targets: 13 },
-  	                 { responsivePriority: 5, targets: 10 }
+  	                 { responsivePriority: 4, targets: 14 },
+  	                 { responsivePriority: 5, targets: 11 }
   	               ],
   	     
   	               buttons: [ {
@@ -692,22 +720,7 @@ function openModalStampa(idMisura){
   	                   text: 'Nascondi Colonne'
   	                   
   	               }
-  	              /*  ,
-  	               {
-  	             		text: 'I Miei Strumenti',
-                 		action: function ( e, dt, node, config ) {
-                 			explore('listaCampioni.do?p=mCMP');
-                 		},
-                 		 className: 'btn-info removeDefault'
-    				},
-  	               {
-  	             		text: 'Tutti gli Strumenti',
-                 		action: function ( e, dt, node, config ) {
-                 			explore('listaCampioni.do');
-                 		},
-                 		 className: 'btn-info removeDefault'
-    				} */
-    				
+  	           
   	                         
   	          ]
   	    	
@@ -716,24 +729,7 @@ function openModalStampa(idMisura){
     	
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
  
-/*     $('#tabPM').on( 'dblclick','tr', function () {   
-           	 //$( "#tabPM tr" ).dblclick(function() {
-     		var id = $(this).attr('id');
-   
-     		var indexCampione = id.split('-');
-     		var row = table.row('#'+id);
-     		datax = row.data();
-         
-   	    if(datax){
-   	    	row.child.hide();
-   	    	exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
-   	    	$( "#myModal" ).modal();
-   	    	$('body').addClass('noScroll');
-   	    }
-   	   
-  		
-     	});
-     	     */
+
      	    
      	 $('#myModal').on('hidden.bs.modal', function (e) {
      	  	$('#noteApp').val("");
@@ -776,7 +772,7 @@ function openModalStampa(idMisura){
 	
 	
 	 var uniqueClasses = [];
-	    table.column(12).data().each(function(value, index) {
+	    table.column(13).data().each(function(value, index) {
 	    	if(value!=null && value!=''){
 	    		 var classes = $(value).attr('class').split(' ');
 	 	        for (var i = 0; i < classes.length; i++) {

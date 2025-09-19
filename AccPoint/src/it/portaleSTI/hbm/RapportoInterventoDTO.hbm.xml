@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-feb-2017 16.24.17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.RapportoInterventoDTO" table="rapporto_intervento">
+       
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+  
+
+         <many-to-one name="intervento" class="it.portaleSTI.DTO.InterventoDTO" fetch="join" lazy="false">
+            <column name="id_intervento" />
+        </many-to-one>
+        
+         <many-to-one name="operatore" class="it.portaleSTI.DTO.PRRisorsaDTO" fetch="join" lazy="false">
+            <column name="id_operatore" />
+        </many-to-one>
+        
+        
+       <property name="data_inizio" type="java.sql.Date">
+            <column name="data_inizio" />
+        </property>
+        
+             <property name="data_fine" type="java.sql.Date">
+            <column name="data_fine" />
+        </property>
+         <property name="ora_inizio" type="java.lang.String">
+            <column name="ora_inizio" />
+        </property>
+         <property name="ora_fine" type="java.lang.String">
+            <column name="ora_fine" />
+        </property>
+       
+        
+        <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
+       
+    </class>
+</hibernate-mapping>

@@ -135,6 +135,7 @@
 <th>Computo ore</th>
 <th>Fattura/Attestati</th>
 <th>Ore fatturate</th>
+<th>Corso</th>
 <th style="min-width:250px">Azioni</th>
 
  </tr></thead>
@@ -238,6 +239,12 @@
 	<input type="checkbox" id="checkPianificazione_${pianificazione.id }" name="checkPianificazione_${pianificazione.id }" checked   class="icheckbox">
 	</td>
 	</c:if>
+	
+	<td>
+	<c:if test="${pianificazione.id_corso!=null }">
+	<a class="btn customTooltip customlink" title="Vai al corso" onclick="callAction('gestioneFormazione.do?action=dettaglio_corso&id_corso=${utl:encryptData(pianificazione.id_corso)}')">${pianificazione.id_corso }</a>
+	</c:if>
+	</td>
 	
 		<td>
 
@@ -860,7 +867,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 9 },
+		    	  { responsivePriority: 2, targets: 11 },
 	
 		    	  
 		               ], 	        

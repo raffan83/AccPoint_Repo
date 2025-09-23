@@ -2221,7 +2221,7 @@ public class Utility extends HttpServlet {
 			 
 			 public static String toJson(Object obj) {
 				 
-				 Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy").create(); 	
+				 Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy").create(); 	
 			        
 			        return gson.toJson(obj);
 			    }

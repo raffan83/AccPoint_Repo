@@ -66,13 +66,13 @@
 <th>Sede utilizzatore</th>
 <th>Descrizione</th>
 <th>Matricola</th>
+<th>Numero di fabbrica</th>
 
-<th>Tipo</th>
 <th>Volume</th>
 <th>Velocità sonda</th>
 <th>Pressione</th>
 <th>Costruttore</th>
-<th>Numero di fabbrica</th>
+<th>Tipo</th>
 
 
 <th>Data Verifica</th>
@@ -92,12 +92,13 @@
 	<td>${strumento.nomeSedeUtilizzatore }</td>		
 	<td>${strumento.descrizione }</td>
 	<td>${strumento.matricola }</td>
-	<td>${strumento.tipo }</td>
+	<td>${strumento.nFabbrica }</td>
+	
 	<td>${strumento.volume }</td>
 	<td>${strumento.sondaVelocita }</td>
 	<td>${strumento.pressione }</td>
 	<td>${strumento.costruttore }</td>
-	<td>${strumento.nFabbrica }</td>
+	<td>${strumento.tipo }</td>
 
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.dataVerifica }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.dataProssimaVerifica }" /></td>

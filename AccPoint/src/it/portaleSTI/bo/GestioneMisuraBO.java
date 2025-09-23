@@ -107,7 +107,10 @@ public class GestioneMisuraBO {
 		   {
 			   PuntoMisuraDTO punto = (PuntoMisuraDTO) iterator.next();	   
 			   
+			   if(punto.getDesc_Campione()!=null) {
+				   
 			   if(punto.getNumero_certificato_campione()!=null) {
+				   
 				   String[] array = punto.getDesc_Campione().split("\\|"); 
 				   String[] cert = punto.getNumero_certificato_campione().split("\\|"); 
 		    		for (int i = 0;i<array.length;i++) {
@@ -127,7 +130,7 @@ public class GestioneMisuraBO {
 		    		}
 				   
 			   }
-			  
+			   }
 		    
 		    	
 		    

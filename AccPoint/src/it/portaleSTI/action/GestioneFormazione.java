@@ -2944,7 +2944,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);
 					ArrayList<ForPiaStatoDTO> lista_stati = GestioneFormazioneBO.getListaStati(session);
 					ArrayList<ForPiaTipoDTO> lista_tipi = GestioneFormazioneBO.getListaTipi(session);
-					ArrayList<ForCorsoDTO> lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
+					ArrayList<ForCorsoDTO> lista_corsi = DirectMySqlDAO.getListaCorsiDirect(session);
 					
 					LocalDate dataCorrente = null;
 					 

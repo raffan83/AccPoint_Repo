@@ -11,6 +11,13 @@
 	</background>
 	<pageHeader>
 		<band height="156">
+			<staticText>
+				<reportElement x="0" y="135" width="555" height="20" uuid="33e3ba03-7816-4370-bb9d-16485f7c7771"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="10" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Certificate of Calibration]]></text>
+			</staticText>
 			<textField>
 				<reportElement x="1" y="113" width="554" height="18" uuid="430739d6-2f49-4180-87c4-e5e53d58e28c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -21,7 +28,7 @@
 			<staticText>
 				<reportElement positionType="Float" x="1" y="129" width="519" height="18" uuid="530b905a-ba8c-49fc-829e-068a41299787"/>
 				<textElement textAlignment="Left">
-					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Courier" pdfEncoding=""/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Certificato di Taratura]]></text>
@@ -29,17 +36,10 @@
 			<textField>
 				<reportElement x="225" y="130" width="211" height="16" uuid="67c911c7-488e-4331-890e-7feaa6c9af80"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="Arial" size="12" isBold="true" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numero_certificato}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="135" width="555" height="20" uuid="33e3ba03-7816-4370-bb9d-16485f7c7771"/>
-				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font size="10" isItalic="true" pdfFontName="Helvetica-Oblique"/>
-				</textElement>
-				<text><![CDATA[Certificate of Calibration]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="505" y="133" width="50" height="12" uuid="227e5450-9ccd-4236-9ddf-81cfff385e13"/>
 				<textElement>
@@ -1001,7 +1001,7 @@
 			<staticText>
 				<reportElement x="105" y="21" width="23" height="15" uuid="9e4ddc2c-4f18-4008-92d8-b1a49330b2ad"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="10" isBold="true" isItalic="false" pdfFontName=""/>
 				</textElement>
 				<text><![CDATA["]]></text>
 			</staticText>
@@ -1015,11 +1015,11 @@
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="94">
+		<band height="100">
 			<staticText>
-				<reportElement x="228" y="70" width="102" height="24" uuid="dbf4beb3-96f8-4488-820e-7a375931edd7"/>
-				<textElement>
-					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				<reportElement x="1" y="69" width="554" height="24" uuid="dbf4beb3-96f8-4488-820e-7a375931edd7"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="false" pdfFontName="Helvetica" pdfEncoding=""/>
 				</textElement>
 				<text><![CDATA[Fine del certificato]]></text>
 			</staticText>
@@ -1045,14 +1045,14 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<text><![CDATA[Approving Officier]]></text>
+				<text><![CDATA[Approving Officer]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="387" y="43" width="151" height="13" uuid="6f54bfb3-ac36-4af6-8cac-2a9f06962eb3"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<text><![CDATA[Eliseo Crescenzi]]></text>
+				<text><![CDATA[Ing. Eliseo Crescenzi]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="37" y="0" width="526" height="22" uuid="7d58af59-78a9-4d8e-8143-30abc94a2a16"/>
@@ -1062,22 +1062,29 @@
 				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
 			</textField>
 			<image hAlign="Center">
-				<reportElement x="387" y="52" width="151" height="17" uuid="72e6de1e-b9c1-4d2c-adfe-6d25e2f440f9"/>
+				<reportElement x="387" y="51" width="151" height="17" uuid="72e6de1e-b9c1-4d2c-adfe-6d25e2f440f9"/>
 				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
 			</image>
 			<line>
-				<reportElement x="-3" y="93" width="561" height="1" forecolor="#DE7E00" uuid="2911e704-95d7-45ff-a9d8-66aba3d56f4b"/>
+				<reportElement x="-3" y="92" width="561" height="1" forecolor="#DE7E00" uuid="2911e704-95d7-45ff-a9d8-66aba3d56f4b"/>
 			</line>
 			<staticText>
-				<reportElement x="228" y="81" width="99" height="12" uuid="df997577-cf59-4aea-827b-777d5244df6d"/>
-				<textElement>
+				<reportElement x="1" y="80" width="554" height="12" uuid="df997577-cf59-4aea-827b-777d5244df6d"/>
+				<textElement textAlignment="Center">
 					<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[End of certificate]]></text>
 			</staticText>
 			<line>
-				<reportElement x="-3" y="70" width="561" height="1" forecolor="#DE7E00" uuid="125b599b-4dca-4988-903c-b8ffcbcc1850"/>
+				<reportElement x="-3" y="69" width="561" height="1" forecolor="#DE7E00" uuid="125b599b-4dca-4988-903c-b8ffcbcc1850"/>
 			</line>
+			<textField>
+				<reportElement x="0" y="89" width="130" height="11" uuid="daadb853-7465-467d-94eb-013d9c17355c"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Arial" size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{revisione}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

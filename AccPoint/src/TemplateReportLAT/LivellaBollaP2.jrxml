@@ -13,7 +13,7 @@
 			<staticText>
 				<reportElement positionType="Float" x="0" y="132" width="496" height="18" uuid="1d46a78d-75e0-4f4b-bac3-6685fec05a2d"/>
 				<textElement textAlignment="Left">
-					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="12" isBold="true" pdfFontName=""/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Certificato di Taratura]]></text>
@@ -28,7 +28,7 @@
 			<textField>
 				<reportElement x="225" y="132" width="219" height="31" uuid="50d71b2b-11f7-409a-a9c8-292d3a9c5cce"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numero_certificato}]]></textFieldExpression>
 			</textField>
@@ -454,17 +454,24 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 				<textElement textAlignment="Center">
 					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
-				<text><![CDATA[Approving Officier]]></text>
+				<text><![CDATA[Approving Officer]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="375" y="38" width="151" height="14" uuid="d30af8b3-c7a3-4764-b37e-d55d889b6d73"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Eliseo Crescenzi]]></text>
+				<text><![CDATA[Ing. Eliseo Crescenzi]]></text>
 			</staticText>
 			<image hAlign="Center">
 				<reportElement x="375" y="51" width="151" height="20" uuid="564d9fbb-f8d1-4242-80b1-10567894d867"/>
 				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="0" y="64" width="130" height="11" uuid="d2f726e1-9dbb-4c09-b79d-45f06e1042c6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{revisione}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

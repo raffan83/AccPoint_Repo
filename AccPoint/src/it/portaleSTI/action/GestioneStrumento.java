@@ -166,6 +166,9 @@ public class GestioneStrumento extends HttpServlet {
 				
  				String cliente = request.getParameter("cliente");
 				String sede = request.getParameter("sede");
+				cliente = Utility.decryptData(cliente);
+				sede = Utility.decryptData(sede);
+				
 				String nome_cliente = request.getParameter("nome_cliente");
 				String nome_sede = request.getParameter("nome_sede");
 				

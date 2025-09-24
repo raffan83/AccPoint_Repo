@@ -93,7 +93,7 @@ public class CreaCertificatoLivellaElettronica {
 			n_certificato=misura.getnCertificato();	
 		}else{
 			
-			n_certificato ="00823"+misura.getMisura_lat().getSigla()+paddingZero(misura.getMisura_lat().getSeq())+"/"+Utility.getCurrentYear(2);
+			n_certificato ="00283LAT "+misura.getMisura_lat().getSigla()+paddingZero(misura.getMisura_lat().getSeq())+"/"+Utility.getCurrentYear(2);
 			misura.setnCertificato(n_certificato);
 			misura.getMisura_lat().setSeq(misura.getMisura_lat().getSeq()+1);
 			certificato.getMisura().setnCertificato(n_certificato);
@@ -306,6 +306,8 @@ public class CreaCertificatoLivellaElettronica {
 		
 		report.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
 		
+		report.addParameter("revisione", "MOD-PT008-01 Rev. 0");
+		
 		InputStream is2 =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica_P2.jrxml");
 		
 		JasperReportBuilder reportP2 = DynamicReports.report();
@@ -372,6 +374,8 @@ public class CreaCertificatoLivellaElettronica {
 		}else {
 			reportP2.addParameter("campione_riferimento", "");
 		}
+		
+		reportP2.addParameter("revisione", "MOD-PT008-01 Rev. 0");
 //		if(misura.getRif_campione_lavoro()!=null) {
 //			reportP2.addParameter("campione_lavoro", misura.getRif_campione_lavoro().getCodice());
 //			if(!misura.getRif_campione().getCodice().equals(misura.getRif_campione_lavoro().getCodice())) {

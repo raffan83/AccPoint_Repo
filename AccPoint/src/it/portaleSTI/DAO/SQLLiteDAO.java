@@ -894,22 +894,24 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		
 		misura.setDataMisura(sdf.parse(rs.getString("dataMisura")));
 		
-		if(strumento.getTipoRapporto().getId()==Costanti.ID_TIPO_RAPPORTO_SVT)
+		if(strumento.getTipoRapporto().getId()==Costanti.ID_TIPO_RAPPORTO_SVT || strumento.getTipoRapporto().getId()==7202)
 		{
-			Date date = new Date();
-			java.sql.Date sqlDate = new java.sql.Date(misura.getDataMisura().getTime());
-			
-			strumento.setDataUltimaVerifica(sqlDate);
-			
-			Calendar data = Calendar.getInstance();
-			
-			data.setTime(misura.getDataMisura());
-			data.add(Calendar.MONTH,strumento.getFrequenza());
-			
-			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
+			if(strumento.getFrequenza()!=0) 
+			{
+				Date date = new Date();
+				java.sql.Date sqlDate = new java.sql.Date(misura.getDataMisura().getTime());
 				
-			strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
-			
+				strumento.setDataUltimaVerifica(sqlDate);
+				
+				Calendar data = Calendar.getInstance();
+				
+				data.setTime(misura.getDataMisura());
+				data.add(Calendar.MONTH,strumento.getFrequenza());
+				
+				java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
+					
+				strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
+			}
 		}
 		
 	

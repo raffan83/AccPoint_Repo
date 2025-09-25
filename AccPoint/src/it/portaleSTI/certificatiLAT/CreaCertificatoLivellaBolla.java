@@ -108,7 +108,7 @@ public class CreaCertificatoLivellaBolla {
 		}else{
 			
 			//n_certificato ="LAT172"+misura.getMisura_lat().getSigla()+paddingZero(misura.getMisura_lat().getSeq())+"/"+Utility.getCurrentYear(2);
-			n_certificato ="00283"+misura.getMisura_lat().getSigla()+paddingZero(misura.getMisura_lat().getSeq())+"/"+Utility.getCurrentYear(2);
+			n_certificato ="00283LAT "+misura.getMisura_lat().getSigla()+paddingZero(misura.getMisura_lat().getSeq())+"/"+Utility.getCurrentYear(2);
 			misura.setnCertificato(n_certificato);
 			misura.getMisura_lat().setSeq(misura.getMisura_lat().getSeq()+1);
 			certificato.getMisura().setnCertificato(n_certificato);
@@ -359,7 +359,7 @@ public class CreaCertificatoLivellaBolla {
 		}
 		
 		report.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
-		
+		report.addParameter("revisione", "MOD-PT001-01 Rev. 0");
 		
 		InputStream is2 =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP2.jrxml");
 		
@@ -378,7 +378,7 @@ public class CreaCertificatoLivellaBolla {
 		
 		reportP2.addParameter("numero_certificato", n_certificato);	
 		
-				
+		reportP2.addParameter("revisione", "MOD-PT001-01 Rev. 0");
 		if(misura.getStrumento().getCostruttore()!=null) {
 			reportP2.addParameter("costruttore", misura.getStrumento().getCostruttore());	
 		}else {
@@ -502,7 +502,7 @@ public class CreaCertificatoLivellaBolla {
 		reportP3.addParameter("immagine_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
 		reportP3.addParameter("immagine_sti",PivotTemplateLAT_Image.class.getResourceAsStream("sti.jpg"));	
 		reportP3.addParameter("immagine_ilac",PivotTemplateLAT_Image.class.getResourceAsStream("ilac.jpg"));	
-		
+		reportP3.addParameter("revisione", "MOD-PT001-01 Rev. 0");
 
 		reportP3.setDataSource(new JREmptyDataSource());		
 		reportP3.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);

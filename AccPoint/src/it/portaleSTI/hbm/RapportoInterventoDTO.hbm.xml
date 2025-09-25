@@ -38,6 +38,11 @@
         <property name="note" type="java.lang.String">
             <column name="note" />
         </property>
+        
+          <property name="destinatario_email" type="java.lang.String">
+            <column name="destinatario_email" />
+        </property>
+        
        
     </class>
 </hibernate-mapping>

@@ -14,6 +14,10 @@ public class RapportoInterventoDTO {
 	private String ora_inizio;
 	private String ora_fine;
 	private Set<StrumentoDTO> lista_strumenti = new HashSet<StrumentoDTO>();
+	private String note;
+	private String destinatario_email;
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -56,6 +60,24 @@ public class RapportoInterventoDTO {
 	}
 	public void setIntervento(InterventoDTO intervento) {
 		this.intervento = intervento;
+	}
+	public Set<StrumentoDTO> getLista_strumenti() {
+		return lista_strumenti;
+	}
+	public void setLista_strumenti(Set<StrumentoDTO> lista_strumenti) {
+		this.lista_strumenti = lista_strumenti;
+	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
+	public String getDestinatario_email() {
+		return destinatario_email;
+	}
+	public void setDestinatario_email(String destinatario_email) {
+		this.destinatario_email = destinatario_email;
 	}
 	
 	

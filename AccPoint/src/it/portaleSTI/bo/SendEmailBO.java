@@ -3,7 +3,9 @@ package it.portaleSTI.bo;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,8 +15,10 @@ import java.util.Set;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
+import javax.mail.Authenticator;
 import javax.mail.BodyPart;
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -24,6 +28,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.mail.EmailAttachment;
@@ -1420,82 +1425,292 @@ public static void sendEmailCorsiInScadenza(String messaggio, ForCorsoDTO corso,
 		  email.send();
 	}
 
-public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazione, CommessaDTO commessa, ServletContext ctx) throws EmailException {
+//public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazione, CommessaDTO commessa, ServletContext ctx) throws EmailException, MessagingException, IOException {
+//
+//	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+//	
+//		
+//		 HtmlEmail email = new HtmlEmail();
+//		  email.setHostName("smtps.aruba.it");
+//			 //email.setDebug(true);
+//		  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+//
+//	email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+//	email.getMailSession().getProperties().put("mail.debug", "true");
+//	email.getMailSession().getProperties().put("mail.smtp.port", "465");
+//	email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+//	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+//	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+//	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+//
+//
+//	//email.addTo("giuseppe.gabriele@stisrl.com");
+//	
+//	
+//	for(ForDocenteDTO docente : pianificazione.getListaDocenti()) {
+//		if(docente.getEmail()!=null && !docente.getEmail().equals("")) {
+//			email.addTo(docente.getEmail());
+//		}
+//	}
+//	email.addTo("lisa.lombardozzi@crescosrl.net");
+//	email.addTo("segreteria@crescosrl.net");
+//	String messaggio = null;
+//	
+//	
+//	if(pianificazione.getOra_inizio()!=null && !pianificazione.getOra_inizio().equals("")) {
+//		messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" dalle ore "+pianificazione.getOra_inizio()+" per la commessa "+pianificazione.getId_commessa()+" - Cliente: "+commessa.getID_ANAGEN_NOME()+": <br><br>";
+//		if(pianificazione.getOra_fine()!=null && !pianificazione.getOra_fine().equals("")) {
+//			messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" dalle ore "+pianificazione.getOra_inizio()+ " alle ore " +pianificazione.getOra_fine() +" per la commessa "+pianificazione.getId_commessa()+" - Cliente: "+commessa.getID_ANAGEN_NOME()+": <br><br>";
+//		}
+//	}else {
+//		messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" per la commessa "+pianificazione.getId_commessa()+" - Cliente: "+commessa.getID_ANAGEN_NOME()+": <br><br>";
+//	}
+//	
+//	
+//		  
+//		  email.setFrom("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl");
+//		
+//
+//			  email.setSubject("PIANIFICAZIONE CORSO - DATA "+df.format(pianificazione.getData()));
+//			  
+//		//	  File image = new File(ctx.getRealPath("images/calver_cresco.png"));
+//		//	  String cid = email.embed(image, "Calver logo");
+//			  
+//			  messaggio += pianificazione.getDescrizione().replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;");
+//			  
+//			  
+//			  messaggio += "<br><br><font size='2'>La presente e-mail &egrave; stata generata automaticamente da un indirizzo di posta elettronica di solo invio; si chiede pertanto di non rispondere al messaggio. <br>";
+//			  messaggio += "Per qualsiasi informazione si prega di contattare CRESCO Formazione e Consulenza Srl all'indirizzo </em>segreteria@crescosrl.net o ai numeri 0776/1815104 - 0776/1815115</font><br><br><br>";
+//			  
+//			  messaggio += "<em><b>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
+//					
+//						"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
+//						"Tel int. +39 0776.1815115 - Fax +39 0776.814169</em> <br> "
+//						+ "Web: </em>www.crescosrl.net<br>" 
+//						+ "Mail: </em>segreteria@crescosrl.net<br>" + 
+//				
+//						"<br/></html>"
+//			  	
+//			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'><img width='450' src=\"https:/www.calver.it/images/cresco.jpg\"><a><br>" ;
+//		
+//			
+//			  
+//			  email.setHtmlMsg("<html>"
+//					  	 +messaggio+"</html>");
+//			  
+//			  email.buildMimeMessage();
+//			  MimeMessage message = email.getMimeMessage();
+//
+//			  MimeMultipart multipart = (MimeMultipart) message.getContent();
+//			  
+//			  
+//			  String icsContent =
+//					    "BEGIN:VCALENDAR\n" +
+//					    "METHOD:REQUEST\n" +
+//					    "PRODID: -//CRESCO//Calendario//IT\n" +
+//					    "VERSION:2.0\n" +
+//					    "BEGIN:VEVENT\n" +
+//					    "DTSTAMP:" + new java.text.SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'").format(new Date()) + "\n" +
+//					    "DTSTART:" + new java.text.SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'").format(pianificazione.getData()) + "\n" +
+//					    "DTEND:" + new java.text.SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'").format(pianificazione.getData()) + "\n" +
+//					    "SUMMARY:" + "TEST1234" + "\n" +
+//					    "DESCRIPTION:" + pianificazione.getDescrizione().replaceAll("\n", "\\n") + "\n" +
+//					    "LOCATION:" + commessa.getID_ANAGEN_NOME() + "\n" +
+//					    "ORGANIZER;CN=CRESCO:mailto:calver@accpoint.it\n" +
+//					    "END:VEVENT\n" +
+//					    "END:VCALENDAR";
+//
+//					// Creiamo una parte per l’invito
+//					MimeBodyPart calendarPart = new MimeBodyPart();
+//					calendarPart.setDataHandler(new DataHandler(
+//					    new ByteArrayDataSource(icsContent, "text/calendar;method=REQUEST;charset=UTF-8")));
+//					calendarPart.setFileName("invito.ics");
+//					
+//					email.buildMimeMessage();
+//
+//					// Recuperiamo il contenuto già preparato da HtmlEmail
+////					MimeMultipart multipart = (MimeMultipart) email.getMimeMessage().getContent();
+//					multipart.addBodyPart(calendarPart);
+//
+//					// Reimpostiamo il contenuto sul messaggio
+//					email.getMimeMessage().setContent(multipart);
+//					email.getMimeMessage().saveChanges();
+//			  
+//		  email.send();
+//		  Transport.send(message);
+//}
+//
+
+
+public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazione, CommessaDTO commessa, ServletContext ctx) throws EmailException, MessagingException, IOException, ParseException {
 
 	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 		
-		 HtmlEmail email = new HtmlEmail();
-		  email.setHostName("smtps.aruba.it");
-			 //email.setDebug(true);
-		  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+//		 HtmlEmail email = new HtmlEmail();
+//		  email.setHostName("smtps.aruba.it");
+//			 //email.setDebug(true);
+//		  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+//
+//	email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+//	email.getMailSession().getProperties().put("mail.debug", "true");
+//	email.getMailSession().getProperties().put("mail.smtp.port", "465");
+//	email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+//	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+//	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+//	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
 
-	email.getMailSession().getProperties().put("mail.smtp.auth", "true");
-	email.getMailSession().getProperties().put("mail.debug", "true");
-	email.getMailSession().getProperties().put("mail.smtp.port", "465");
-	email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
-	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
-	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+	 Properties props = new Properties();
+     props.put("mail.smtp.host", "smtps.aruba.it");
+     props.put("mail.smtp.port", "465");
+     props.put("mail.smtp.auth", "true");
+     props.put("mail.smtp.ssl.enable", "true");
+     
+     props.put("mail.smtp.auth", "true");
+     props.put("mail.debug", "true");
+     props.put("mail.smtp.port", "465");
+     props.put("mail.smtp.socketFactory.port", "465");
+     props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+     props.put("mail.smtp.socketFactory.fallback", "false");
+     props.put("mail.smtp.ssl.enable", "true");
 
 
-	//email.addTo("giuseppe.gabriele@stisrl.com");
-	
-	
-	for(ForDocenteDTO docente : pianificazione.getListaDocenti()) {
+     Session session = Session.getInstance(props, new Authenticator() {
+         protected PasswordAuthentication getPasswordAuthentication() {
+            // return new PasswordAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+        	 return new PasswordAuthentication("calver@accpoint.it", "bDBH34GM2!");
+        	 
+         }
+     });
+     
+     String destinatari="";
+ 	for(ForDocenteDTO docente : pianificazione.getListaDocenti()) {
 		if(docente.getEmail()!=null && !docente.getEmail().equals("")) {
-			email.addTo(docente.getEmail());
+			destinatari+=docente.getEmail()+",";
 		}
 	}
-	email.addTo("lisa.lombardozzi@crescosrl.net");
-	email.addTo("segreteria@crescosrl.net");
-	String messaggio = null;
-	
-	
-	if(pianificazione.getOra_inizio()!=null && !pianificazione.getOra_inizio().equals("")) {
-		messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" dalle ore "+pianificazione.getOra_inizio()+" per la commessa "+pianificazione.getId_commessa()+" - Cliente: "+commessa.getID_ANAGEN_NOME()+": <br><br>";
-		if(pianificazione.getOra_fine()!=null && !pianificazione.getOra_fine().equals("")) {
-			messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" dalle ore "+pianificazione.getOra_inizio()+ " alle ore " +pianificazione.getOra_fine() +" per la commessa "+pianificazione.getId_commessa()+" - Cliente: "+commessa.getID_ANAGEN_NOME()+": <br><br>";
-		}
-	}else {
-		messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" per la commessa "+pianificazione.getId_commessa()+" - Cliente: "+commessa.getID_ANAGEN_NOME()+": <br><br>";
-	}
-	
-	
-		  
-		  email.setFrom("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl");
-		
+ //	destinatari+="lisa.lombardozzi@crescosrl.net,";
+ 	//destinatari+="segreteria@crescosrl.net";
+ 
+     MimeMessage message = new MimeMessage(session);
+     message.setFrom(new InternetAddress("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl"));
+     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatari));
+     message.setSubject("PIANIFICAZIONE CORSO - DATA "+df.format(pianificazione.getData()));
+     
+     
+     String messaggio = null;
+ 	
+ 	
+ 	if(pianificazione.getOra_inizio()!=null && !pianificazione.getOra_inizio().equals("")) {
+ 		messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" dalle ore "+pianificazione.getOra_inizio()+" per la commessa "+pianificazione.getId_commessa()+" - Cliente: "+commessa.getID_ANAGEN_NOME()+": <br><br>";
+ 		if(pianificazione.getOra_fine()!=null && !pianificazione.getOra_fine().equals("")) {
+ 			messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" dalle ore "+pianificazione.getOra_inizio()+ " alle ore " +pianificazione.getOra_fine() +" per la commessa "+pianificazione.getId_commessa()+" - Cliente: "+commessa.getID_ANAGEN_NOME()+": <br><br>";
+ 		}
+ 	}else {
+ 		messaggio = "Si comunica che &egrave; stata effettuata la seguente pianificazione corso per il "+df.format(pianificazione.getData())+" per la commessa "+pianificazione.getId_commessa()+" - Cliente: "+commessa.getID_ANAGEN_NOME()+": <br><br>";
+ 	}
+ 	
+ 	
 
-			  email.setSubject("PIANIFICAZIONE CORSO - DATA "+df.format(pianificazione.getData()));
-			  
-		//	  File image = new File(ctx.getRealPath("images/calver_cresco.png"));
-		//	  String cid = email.embed(image, "Calver logo");
-			  
-			  messaggio += pianificazione.getDescrizione().replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;");
-			  
-			  
-			  messaggio += "<br><br><font size='2'>La presente e-mail &egrave; stata generata automaticamente da un indirizzo di posta elettronica di solo invio; si chiede pertanto di non rispondere al messaggio. <br>";
-			  messaggio += "Per qualsiasi informazione si prega di contattare CRESCO Formazione e Consulenza Srl all'indirizzo </em>segreteria@crescosrl.net o ai numeri 0776/1815104 - 0776/1815115</font><br><br><br>";
-			  
-			  messaggio += "<em><b>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
-					
-						"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
-						"Tel int. +39 0776.1815115 - Fax +39 0776.814169</em> <br> "
-						+ "Web: </em>www.crescosrl.net<br>" 
-						+ "Mail: </em>segreteria@crescosrl.net<br>" + 
-				
-						"<br/></html>"
-			  	
-			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'><img width='450' src=\"https:/www.calver.it/images/cresco.jpg\"><a><br>" ;
-		
-			
-			  
-			  email.setHtmlMsg("<html>"
-					  	 +messaggio+"</html>");
-			  
-		  email.send();
-	
+ 			  messaggio += pianificazione.getDescrizione().replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;");
+ 			  
+ 			  
+ 			  messaggio += "<br><br><font size='2'>La presente e-mail &egrave; stata generata automaticamente da un indirizzo di posta elettronica di solo invio; si chiede pertanto di non rispondere al messaggio. <br>";
+ 			  messaggio += "Per qualsiasi informazione si prega di contattare CRESCO Formazione e Consulenza Srl all'indirizzo </em>segreteria@crescosrl.net o ai numeri 0776/1815104 - 0776/1815115</font><br><br><br>";
+ 			  
+ 			  messaggio += "<em><b>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
+ 					
+ 						"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
+ 						"Tel int. +39 0776.1815115 - Fax +39 0776.814169</em> <br> "
+ 						+ "Web: </em>www.crescosrl.net<br>" 
+ 						+ "Mail: </em>segreteria@crescosrl.net<br>" + 
+ 				
+ 						"<br/></html>"
+ 			  	
+ 			  		+" <br /><a href='https://www.crescosrl.net/wp-content/uploads/2020/09/CALVER_SOFTWARE_FORMAZIONE_Rev.0.pdf'><img width='450' src=\"https:/www.calver.it/images/cresco.jpg\"><a><br>" ;
+ 		
+
+
+     // -------- Parte HTML --------
+     MimeBodyPart htmlPart = new MimeBodyPart();
+     htmlPart.setContent("<html>" + messaggio + "</html>", "text/html; charset=UTF-8");
+
+     // -------- Parte ICS --------
+     SimpleDateFormat icsFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+//     String icsContent =
+//             "BEGIN:VCALENDAR\n" +
+//             "METHOD:REQUEST\n" +
+//             "PRODID:-//CRESCO//Calendario//IT\n" +
+//             "VERSION:2.0\n" +
+//             "BEGIN:VEVENT\n" +
+//             "DTSTAMP:" + icsFormat.format(new Date()) + "\n" +
+//             "DTSTART:" + icsFormat.format(pianificazione.getData()) + "\n" +
+//             "DTEND:" + icsFormat.format(pianificazione.getData()) + "\n" +
+//             "SUMMARY:" + "PIANIFICAZIONE CORSO - DATA "+df.format(pianificazione.getData()) + "\n" +
+//             "DESCRIPTION:" + messaggio.replaceAll("\\<.*?\\>", "") + "\n" +
+//             "LOCATION:" + "\n" +
+//             "ORGANIZER;CN=CRESCO:mailto:calver@accpoint.it\n" +
+//             "END:VEVENT\n" +
+//             "END:VCALENDAR";
+     
+     Date data = pianificazione.getData();
+     String oraInizio = pianificazione.getOra_inizio(); // es. "14:00"
+     String oraFine = pianificazione.getOra_fine();
+
+     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+     Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+         .parse(new SimpleDateFormat("yyyy-MM-dd").format(data) + " " + oraInizio);
+
+     String dtStart = icsFormat.format(startDate);
+     
+     Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+             .parse(new SimpleDateFormat("yyyy-MM-dd").format(data) + " " + oraFine);
+
+         String dtEnd = icsFormat.format(endDate);
+     
+     StringBuilder sb = new StringBuilder();
+     sb.append("BEGIN:VCALENDAR\r\n");
+     sb.append("METHOD:REQUEST\r\n");
+     sb.append("PRODID:-//CRESCO//FORMAZIONE//IT\r\n");
+     sb.append("VERSION:2.0\r\n");
+     sb.append("BEGIN:VEVENT\r\n");
+     sb.append("UID:meeting-20250924-001@mycalendar.app\r\n");
+     sb.append("DTSTAMP:" + icsFormat.format(new Date()) + "\n");
+     sb.append("DTSTART:"+dtStart + "\r\n");
+     sb.append("DTEND:" +  dtEnd + "\r\n");
+
+//     sb.append("DTSTAMP:20250924T120000Z\r\n");
+//     sb.append("DTSTART:20251001T140000Z\r\n");
+//     sb.append("DTEND:20251001T150000Z\r\n");
+     sb.append("SUMMARY:PIANIFICAZIONE CORSO - DATA "+df.format(pianificazione.getData())+"\r\n");
+     sb.append("DESCRIPTION:"+pianificazione.getDescrizione()+"\r\n");
+     sb.append("LOCATION:"+pianificazione.getTipo().getDescrizione()+"\r\n");
+     sb.append("ORGANIZER;CN=CRESCO:mailto:calver@accpoint.it\r\n");
+     //sb.append("ATTENDEE;CN=Lisa Lombardozzi;RSVP=TRUE:mailto:lisa.lombardozzi@crescosrl.net\r\n");
+     //sb.append("ATTENDEE;CN=Lisa Lombardozzi;RSVP=TRUE:mailto:"+InternetAddress.parse(destinatari)+"\r\n");
+     sb.append("END:VEVENT\r\n");
+     sb.append("END:VCALENDAR\r\n");
+
+     String icsContent = sb.toString();
+
+     MimeBodyPart calendarPart = new MimeBodyPart();
+     calendarPart.setDataHandler(new DataHandler(
+             new ByteArrayDataSource(icsContent, "text/calendar;method=REQUEST;charset=UTF-8")));
+     calendarPart.setFileName("invito.ics");
+
+     // -------- Multipart finale --------
+     MimeMultipart multipart = new MimeMultipart();
+     multipart.addBodyPart(htmlPart);
+     multipart.addBodyPart(calendarPart);
+
+     message.setContent(multipart);
+
+     // -------- Invio --------
+     Transport.send(message);
+
+     System.out.println("Email inviata con invito calendario!");
 }
+
 
 public static void sendEmailReminderPianificazione(String messaggio, String path) throws EmailException {
 	

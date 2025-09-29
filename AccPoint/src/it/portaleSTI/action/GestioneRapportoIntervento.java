@@ -202,6 +202,13 @@ public class GestioneRapportoIntervento extends HttpServlet {
 				
 			}
 			
+			else if(action.equals("invia_email")) {
+				String destinatario = request.getParameter("destinatario");
+				
+				
+				
+			}
+			
 			
 			session.getTransaction().commit();
 			session.close();

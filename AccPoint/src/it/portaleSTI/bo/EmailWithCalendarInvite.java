@@ -17,6 +17,9 @@ public class EmailWithCalendarInvite {
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.socketFactory.fallback", "false");
+        props.put("mail.smtp.ssl.enable", "true");
+        props.put("https.protocols", "TLSv1.2");
+        props.put("mail.smtp.starttls.enable", "true");
 
         // Autenticazione
         Session session = Session.getInstance(props, new Authenticator() {
@@ -28,7 +31,8 @@ public class EmailWithCalendarInvite {
         // Composizione della mail
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress("calver@accpoint.it"));
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress("segreteria@crescosrl.net"));
+       // message.addRecipient(Message.RecipientType.TO, new InternetAddress("segreteria@crescosrl.net"));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress("antonio.dicivita@ncsnetwork.it"));
         message.setSubject("Corso formazione corso XXX");
 
         // Costruzione del contenuto ICS (con \r\n)

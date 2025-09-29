@@ -387,7 +387,8 @@ Fatturata
 
 			<td>
 			<a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare il rapporto intervento"  href="gestioneRapportoIntervento.do?action=download&id_intervento=${rapporto.intervento.id}"><i class="fa fa-file-pdf-o"></i></a>
-			<%--  <a  class="btn btn-warning customTooltip" title="Cambia Stato"   onClick="cambiaStatoSchedaConsegna('${scheda.id}','0')"><i class="glyphicon glyphicon-refresh"></i></a> --%>  	
+			<%--  <a  class="btn btn-warning customTooltip" title="Cambia Stato"   onClick="cambiaStatoSchedaConsegna('${scheda.id}','0')"><i class="glyphicon glyphicon-refresh"></i></a> --%>
+			<a class="btn bg-olive pull-right" onClick="inviaEmail('${rapporto.id}')" style="margin-right:5px"><i class="fa fa-envelope"></i> </a>  	
 				</tr>
  	
  	
@@ -1356,6 +1357,19 @@ $('#selectAlltabPM').on('ifUnchecked', function(event){
 		 table.rows().deselect();
 	  
 });
+
+
+
+inviaEmail(id_rapporto){
+	
+	val email = $('#destinatario_'+id_rapporto);
+	
+	var dataObj = {};
+	dataObj.destinatario = email;
+	
+	callAjax(dataObj, "gestioneRapportoIntervento.do?action=invia_email")
+	
+}
     	
   </script>
 </jsp:attribute> 

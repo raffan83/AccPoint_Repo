@@ -941,7 +941,7 @@
 		       		exploreModal("dettaglioStrumento.do","id_str=${utl:encryptData(misura.strumento.__id)}","#dettaglio");
 		       	}
 		       	if(contentID == "misureTab"){
-		       		exploreModal("strumentiMisurati.do?action=ls&id=${utl:encryptData(misura.strumento.__id}","","#misure")
+		       		exploreModal("strumentiMisurati.do?action=ls&id=${utl:encryptData(misura.strumento.__id)}","","#misure")
 		       	}
 		       	if(contentID == "modificaTab"){
 		       		exploreModal("modificaStrumento.do?action=modifica&id=${utl:encryptData(misura.strumento.__id)}","","#modifica")

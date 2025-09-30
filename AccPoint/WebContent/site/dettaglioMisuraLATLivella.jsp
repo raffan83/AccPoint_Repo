@@ -67,7 +67,7 @@
                   <b>Strumento</b>
                   </div>
                   <div class="col-md-10">
-                   <a href="#" onClick="dettaglioStrumentoFromMisura('${misura.strumento.__id}')" class="pull-right customTooltip" title="Click per aprire il dettaglio dello stumento" ><c:out value="${misura.strumento.denominazione} (${misura.strumento.matricola} | ${misura.strumento.codice_interno})"/></a>
+                   <a href="#" onClick="dettaglioStrumentoFromMisura('${utl:encryptData(misura.strumento.__id)}')" class="pull-right customTooltip" title="Click per aprire il dettaglio dello stumento" ><c:out value="${misura.strumento.denominazione} (${misura.strumento.matricola} | ${misura.strumento.codice_interno})"/></a>
                   </div>
                   </div>
                 </li>

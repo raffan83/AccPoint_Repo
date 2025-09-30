@@ -365,10 +365,12 @@ $(document).ready(function() {
 	
 	if(${userObj.checkRuolo("F2")}){
 		
-		array_buttons.push(	{
-            extend: 'colvis',
-            text: 'Nascondi Colonne'  	                   
-		  });
+
+		
+		array_buttons.push( {
+	            extend: 'excel',
+	            text: 'Esporta Excel'  	                   
+			  });
 		
 	}else{
 		array_buttons.push(	{
@@ -520,9 +522,9 @@ $(document).ready(function() {
      
      
      
-		if(${!userObj.checkRuolo('F2')}){
+		//if(${!userObj.checkRuolo('F2')}){
 			table.buttons().container().appendTo( '#tabForCorso_wrapper .col-sm-6:eq(1)');	
-		}
+		//}
 		
 		
 		

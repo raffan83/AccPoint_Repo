@@ -617,6 +617,11 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
             	v = v.trim();
                 try {
                     double num = Double.parseDouble(v);
+                    if (num >= 10) {
+                        df = new DecimalFormat("0.0");
+                    } else {
+                    	df = new DecimalFormat("0.00");
+                    }
                     row.add(df.format(num));
                 } catch (NumberFormatException e) {
                     row.add(v); 
@@ -887,10 +892,10 @@ private static void addAllegato(File source, File allegato) throws IOException {
 			new ContextListener().configCostantApplication();
 			Session session =SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
-			AMProvaDTO prova = GestioneAM_BO.getProvaFromID(15, session);
+			AMProvaDTO prova = GestioneAM_BO.getProvaFromID(49, session);
 		
 			AMRapportoDTO r = GestioneAM_BO.getRapportoFromProva(prova.getId(), session);
-			new CreateCertificatoAM(prova, session, r, false);
+			new CreateCertificatoAM(prova, session, r, true);
 			session.getTransaction().commit();
 			session.close();
 		}

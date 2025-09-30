@@ -100,7 +100,10 @@
  
  <tbody>
  
+
+ 
  <c:forEach items="${listaMisure}" var="misura" varStatus="loop">
+ 
 
 	 <tr role="row" id="${misura.id}-${loop.index}">
 <td></td>
@@ -392,7 +395,7 @@
 
 
 
-
+<form id="formRapportoIntervento" name="formRapportoIntervento">
 <div id="modalRapportoIntervento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -401,18 +404,86 @@
         <h4 class="modal-title" id="myModalLabel">Crea Rapporto Intervento</h4>
       </div>
        <div class="modal-body">
-       <div class="row"></div>
+       <div class="row">
+        <div class="col-xs-6">
+        <label>Giornata singola</label><br>
+       <input type="checkbox" id="check_giornata_singola" name="check_giornata_singola" checked>
+       
+       </div>
+       <div class="col-xs-3">
+	<label>Ora inzio</label><div class='input-group'>
+					<input type='text' id='ora_inizio' name='ora_inizio'  class='form-control timepicker' style='width:100%'><span class='input-group-addon'>
+		            <span class='fa fa-clock-o'></span></span></div></div>
+
+<div class='col-xs-3'><label>Ora fine</label><div class='input-group'>
+					<input type='text' id='ora_fine' name='ora_fine'   class='form-control timepicker' style='width:100%'><span class='input-group-addon'>
+		            <span class='fa fa-clock-o'></span></span></div></div>
+
+  		 </div><br>
+  		 
+  		   <div class="row">
+  		    <div class="col-xs-6" id="content_singola_data">
+  		    <label>Seleziona Data</label>
+  		   
+  		    
+  		
+				<div class='input-group date datepicker' id='datepicker_data_intervento'>
+               <input type='text' class="form-control input-small" id="data" name="data" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       	</div>
+  		    
+  		    
+  		         
+
+	<div class="col-xs-6" style="display:none" id="content_multidata">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Seleziona Date</label>
+					<div class="col-md-12 input-group" >
+								                  	
+						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
+								<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>			                     
+  					</div>  								
+			 </div>	
+			 
+			 
+
+	</div>
+	
 
 
-  		 </div>
+  		   
+  		   
+  		   </div><br>
+  		   
+  		   
+  		    <div class="row">
+  		    <div class="col-xs-12">
+  		    <label>Note</label>
+  		    <textarea id="note" name="note" rows="3" style="width:100%" class="form-control"></textarea>
+  		    </div>
+  		   
+  		   </div>
+  		   </div>
       <div class="modal-footer">
+      <input id="dateFrom" name="dateFrom" type="hidden">
+      <input id="dateTo" name="dateTo" type="hidden">
+      <input id="id_misure" name="id_misure" type="hidden">
+      <input id="id_intervento" name="id_intervento" type="hidden" value="${id_intervento }">
+      
+       <button type="submit" class="btn btn-primary"  >Salva</button>
        <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
         <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
       </div>
     </div>
   </div>
 </div>
-
+</form>
 
 </section>
   </div>
@@ -435,6 +506,7 @@
 
 <jsp:attribute name="extra_css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css">
 <style>
 .lamp {
     height: 20px;
@@ -457,12 +529,18 @@
     background-color: #8B0000;
 }
 
+
+
 </style>
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
 
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script type="text/javascript" src="plugins/datejs/date.js"></script>
 
 
   <script type="text/javascript">
@@ -640,10 +718,51 @@ function openModalStampa(idMisura){
 	    } );
 	} );
 
+	
+	function formatDate(data){
+		
+		   var mydate =  Date.parse(data);
+		   
+		   if(!isNaN(mydate.getTime())){
+		   
+			var   str = mydate.toString("dd/MM/yyyy");
+		   }			   
+		   return str;	 		
+	}
+	
     $(document).ready(function() {
     
 
-    	
+ 	   $('.timepicker').timepicker({	    	
+	     	 showMeridian:false,	   
+	     	 minuteStep: 1
+	      }); 
+ 	   
+ 	   $('#ora_inizio').val("");
+ 	  $('#ora_fine').val("");
+ 	  
+ 		$('.datepicker').datepicker({
+ 			 format: "dd/mm/yyyy"
+ 		 });
+ 		
+ 	   	$('input[name="datarange"]').daterangepicker({
+ 	  	    locale: {
+ 	  	      format: 'DD/MM/YYYY'
+ 	  	    
+ 	  	    }
+ 	  	}, 
+ 	  	function(start, end, label) {
+
+ 	  	});
+ 	   	
+ 	   	
+ 	     var start = "${dateFrom}";
+ 	   	var end = "${dateTo}";
+ 	   	if(start!=null && start!=""){
+ 	  	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
+ 	  	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
+ 	  	
+ 	  	 }
 
     	table = $('#tabPM').DataTable({
     		language: {
@@ -771,6 +890,63 @@ function openModalStampa(idMisura){
 
 	
 	
+	
+	
+	
+$('#selectAlltabPM').on('ifChecked', function (ev) {
+
+	
+		
+			$("#selectAlltabPM").prop('checked', true);
+			table.rows().deselect();
+			var allData = table.rows({filter: 'applied'});
+			table.rows().deselect();
+			i = 0;
+			table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+			 
+					 this.select();
+			   
+			    
+			} );
+
+	  	});
+		$('#selectAlltabPM').on('ifUnchecked', function (ev) {
+
+			
+	
+			
+				$("#selectAlltabPM").prop('checked', false);
+				table.rows().deselect();
+				var allData = table.rows({filter: 'applied'});
+				table.rows().deselect();
+
+		  	});
+		
+		
+		$('#check_giornata_singola').on('ifChecked', function (ev) {
+			
+			$("#check_giornata_singola").prop('checked', true);
+			$('#content_singola_data').show();
+			$('#content_multidata').hide();
+			$('#datarange').val("")
+			$('#datarange').attr("required", false);
+			$('#data').attr("required", true);
+
+
+	  	});
+		$('#check_giornata_singola').on('ifUnchecked', function (ev) {
+
+			$("#check_giornata_singola").prop('checked', false);
+			$('#content_singola_data').hide();
+			$('#content_multidata').show()
+			$('#datarange').val("")
+			$('#datarange').attr("required", true);
+			$('#data').attr("required", false);
+			$('#data').val("");
+		  	});
+  	
+	
+	
 	 var uniqueClasses = [];
 	    table.column(13).data().each(function(value, index) {
 	    	if(value!=null && value!=''){
@@ -816,6 +992,49 @@ function openModalStampa(idMisura){
  
     $('#filtro_indice').select2()
 	
+    
+    
+    $('#formRapportoIntervento').on("submit", function(e){
+    	
+    	e.preventDefault();
+    	
+    	if($('#datarange').val()!=null){
+    		var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+    	 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+    	 	$('#dateFrom').val(startDatePicker.format('DD/MM/YYYY'));
+    	 	$('#dateTo').val(endDatePicker.format('DD/MM/YYYY'));
+    	}
+    	
+        	
+    	var id_misura =""
+ 	    table.rows({ selected: true }).every(function () {
+ 	        var $row = $(this.node());
+ 	        var id = $row.find('td').eq(2).text().trim(); // Colonna ID
+ 	        
+ 	     	   
+ 	       id_misura += id + ";";
+ 	    });
+    	
+    	$('#id_misure').val(id_misura)
+    		var newTab = window.open('', '_blank');
+    	
+    	callAjaxForm('#formRapportoIntervento', 'gestioneRapportoIntervento.do?action=nuovo_rapporto', function(data){
+    	
+    		if(data.success){
+    			
+    			
+    			var url =  "gestioneRapportoIntervento.do?action=download&id_intervento=${id_intervento}"
+    
+    					newTab.location.href = url;
+    			
+    			
+    			
+    		}
+    		
+    		
+    	});
+    	
+    });
 	
 });
   </script>

@@ -61,7 +61,7 @@
               <li class="active" id="tab1"><a href="#standard" data-toggle="tab" aria-expanded="true"   id="standardTab">Schede di Consegna</a></li>
               		<li class="" id="tab2"><a href="#rilievi" data-toggle="tab" aria-expanded="false"   id="rilieviTab">Rilievi Dimensionali</a></li>
               		<li class="" id="tab3"><a href="#verificazione" data-toggle="tab" aria-expanded="false"   id="rilieviTab">Verificazione</a></li>
-              
+              <li class="" id="tab4"><a href="#report_interventi" data-toggle="tab" aria-expanded="false"   id="ReportTab">Report Interventi</a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="standard">
@@ -323,6 +323,81 @@ Fatturata
 
 
 
+<div class="tab-pane table-responsive" id="report_interventi">
+              
+              
+              <div class="row">
+<div class="col-sm-12">
+	<div class="col-xs-6">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Ricerca Data:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarangeRap" name="datarangeRap" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraSchedePerDataRap()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
+
+	</div>
+
+</div>
+</div>
+              
+              
+              
+              <table id="tabRap" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+<thead><tr class="active">
+ <th>ID Rapporto</th>
+  <th>Intervento</th>
+  <th>Data Intervento</th>
+ <th>Cliente</th>
+ <th>Sede</th>
+ <th>Commessa</th>
+ <th>Email Destinatario</th>
+ <th>Azioni</th>
+
+ </tr></thead>
+ 
+ <tbody>
+ 
+ <c:forEach items="${lista_rapporti_intervento}" var="rapporto" varStatus="loop">
+
+ 	<tr role="row" id="${scheda.id}-${loop.index}">
+ 	
+ 	<td>${rapporto.id}</td>
+			<td>
+			
+			<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(rapporto.intervento.id)}')">
+					${rapporto.intervento.id}
+				</a>
+			</td>
+			<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rapporto.intervento.dataCreazione }" /></td>
+			<td>${rapporto.intervento.nome_cliente }</td>
+			<td>${rapporto.intervento.nome_sede }</td>			
+			<td>${rapporto.intervento.idCommessa }</td>
+			
+			<td><input type="text" id="destinatario_${rapporto.id }" name="destinatario_${rapporto.id }" style="width:100%" class="form-control"></td>
+
+			<td>
+			<a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare il rapporto intervento"  href="gestioneRapportoIntervento.do?action=download&id_intervento=${rapporto.intervento.id}"><i class="fa fa-file-pdf-o"></i></a>
+			<%--  <a  class="btn btn-warning customTooltip" title="Cambia Stato"   onClick="cambiaStatoSchedaConsegna('${scheda.id}','0')"><i class="glyphicon glyphicon-refresh"></i></a> --%>
+			<a class="btn bg-olive pull-right" onClick="inviaEmail('${rapporto.id}')" style="margin-right:5px"><i class="fa fa-envelope"></i> </a>  	
+				</tr>
+ 	
+ 	
+     </c:forEach>    
+     </tbody>
+     </table>
+			 </div>
+
+
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
@@ -516,6 +591,22 @@ Fatturata
 				 	
 					
 	}
+	  
+	  function filtraSchedePerDataRap(){
+			
+			
+			var startDatePicker = $("#datarangeRap").data('daterangepicker').startDate;
+			var endDatePicker = $("#datarangeRap").data('daterangepicker').endDate;
+			
+			dataString = "?action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&rapporto=1";
+				 	
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+
+			callAction("listaSchedeConsegna.do"+ dataString, false,true);
+				 	
+					
+	}
 	
 	  function cercaRilieviSchede(){
 		  
@@ -641,7 +732,23 @@ Fatturata
 	    } );
 
 	} );
-	
+
+	$("#tabRap").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    		columsDatatables3 = state.columns;
+	    }
+	    $('#tabRap thead th').each( function () {
+	     	if(columsDatatables3.length==0 || columsDatatables3[$(this).index()]==null ){columsDatatables3.push({search:{search:""}});}
+	        var title = $('#tabRap thead th').eq( $(this).index() ).text();
+	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" value="'+columsDatatables3[$(this).index()].search.search+'" /></div>');
+	    } );
+
+	} );
 	
 	function formatDate(data){
 		
@@ -661,11 +768,13 @@ Fatturata
     	 
 		var rilievo_attivo = "${rilievo_attivo}";
 		var verificazione_attivo = "${verificazione_attivo}";
+		var rapporto_attivo = "${rapporto_attivo}";
 		
 		if(rilievo_attivo!=null && rilievo_attivo!=''){
 
 			$('#tab1').removeClass('active');
 			$('#tab3').removeClass('active');
+			$('#tab4').removeClass('active');
 			$('#tab2').addClass('active');
 			
 			
@@ -679,14 +788,25 @@ Fatturata
 			$('#tab1').removeClass('active');
 			$('#tab2').removeClass('active');
 			$('#tab3').addClass('active');
-			
+			$('#tab4').removeClass('active');
 			
 			 //$('.nav-tabs a[href="#rilievi"]').tab('show');
 			 $('a[data-toggle="tab3"]').tab('show');
 			 
 	    
 		}
-    	 
+		if(rapporto_attivo!=null && rapporto_attivo!=''){
+
+			$('#tab1').removeClass('active');
+			$('#tab2').removeClass('active');
+			$('#tab4').addClass('active');
+			$('#tab3').removeClass('active');
+			
+			 //$('.nav-tabs a[href="#rilievi"]').tab('show');
+			 $('a[data-toggle="tab4"]').tab('show');
+			 
+	    
+		}
 	    	
 	 	 $('input[name="datarange"]').daterangepicker({
 			    locale: {
@@ -724,6 +844,16 @@ Fatturata
 
 			});
 	 	 
+	 	 $('input[name="datarangeRap"]').daterangepicker({
+			    locale: {
+			      format: 'DD/MM/YYYY'
+			    
+			    }
+			}, 
+			function(start, end, label) {
+
+			});
+	 	 
 			
 	 	 $('input[name="datarangeSchede"]').daterangepicker({
 			    locale: {
@@ -745,6 +875,9 @@ Fatturata
 	 var startSchedaVer = "${dateFromVer}";
 	 var endSchedaVer = "${dateToVer}";
 	 
+	 var startSchedaRap = "${dateFromRap}";
+	 var endSchedaRap = "${dateToRap}";
+	 
  	 if(startScheda!=null && startScheda!=""){
  		 	$('#datarange').data('daterangepicker').setStartDate(formatDate(startScheda));
  		 	$('#datarange').data('daterangepicker').setEndDate(formatDate(endScheda));
@@ -765,6 +898,14 @@ Fatturata
  	 if(startSchedaVer!=null && endSchedaVer!=""){
 		 	$('#datarangeVer').data('daterangepicker').setStartDate(formatDate(startSchedaVer));
 		 	$('#datarangeVer').data('daterangepicker').setEndDate(formatDate(endSchedaVer));
+		 	
+		 	/* $("#tipo_data option[value='']").remove();
+		 	$('#tipo_data option[value="${tipo_data}"]').attr("selected", true); */
+		 }
+ 	 
+ 	 if(startSchedaRap!=null && endSchedaRap!=""){
+		 	$('#datarangeRap').data('daterangepicker').setStartDate(formatDate(startSchedaRap));
+		 	$('#datarangeRap').data('daterangepicker').setEndDate(formatDate(endSchedaRap));
 		 	
 		 	/* $("#tipo_data option[value='']").remove();
 		 	$('#tipo_data option[value="${tipo_data}"]').attr("selected", true); */
@@ -998,10 +1139,87 @@ $('.removeDefault').each(function() {
 })
 
 
+
+
+
+
+
 });
 	
 	
 	
+tableRap = $('#tabRap').DataTable({
+	language: {
+        	emptyTable : 	"Nessun dato presente nella tabella",
+        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+        	infoPostFix:	"",
+        infoThousands:	".",
+        lengthMenu:	"Visualizza _MENU_ elementi",
+        loadingRecords:	"Caricamento...",
+        	processing:	"Elaborazione...",
+        	search:	"Cerca:",
+        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+        	paginate:	{
+	        	first:	"Inizio",
+	        	previous:	"Precedente",
+	        	next:	"Successivo",
+	        last:	"Fine",
+        	},
+        aria:	{
+	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+        }
+    },
+    pageLength: 100,
+      paging: true, 
+      ordering: true,
+      info: true, 
+      searchable: true, 
+      targets: 0,
+      responsive: true,
+      scrollX: false,
+    stateSave: true,
+      columnDefs: [
+			   { responsivePriority: 1, targets: 0 },
+                   { responsivePriority: 2, targets: 1 },
+                   
+                   { responsivePriority: 4, targets: 5 }
+               ],
+
+    	
+    });
+
+
+
+	    $('.inputsearchtable').on('click', function(e){
+	       e.stopPropagation();    
+	    }); 
+//DataTable
+tableRap = $('#tabRap').DataTable();
+//Apply the search
+tableRap.columns().eq( 0 ).each( function ( colIdx ) {
+$( 'input', tableRap.column( colIdx ).header() ).on( 'keyup', function () {
+	tableRap
+      .column( colIdx )
+      .search( this.value )
+      .draw();
+} );
+} ); 
+tableRap.columns.adjust().draw();
+
+
+$('#tabRap').on( 'page.dt', function () {
+$('.customTooltip').tooltipster({
+    theme: 'tooltipster-light'
+});
+
+$('.removeDefault').each(function() {
+   $(this).removeClass('btn-default');
+})
+	
+});
 	
 table_crea_schede = $('#table_crea_schede').DataTable({
 	language: {
@@ -1139,6 +1357,19 @@ $('#selectAlltabPM').on('ifUnchecked', function(event){
 		 table.rows().deselect();
 	  
 });
+
+
+
+inviaEmail(id_rapporto){
+	
+	val email = $('#destinatario_'+id_rapporto);
+	
+	var dataObj = {};
+	dataObj.destinatario = email;
+	
+	callAjax(dataObj, "gestioneRapportoIntervento.do?action=invia_email")
+	
+}
     	
   </script>
 </jsp:attribute> 

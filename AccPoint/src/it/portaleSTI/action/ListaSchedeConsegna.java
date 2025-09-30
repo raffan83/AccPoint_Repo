@@ -21,11 +21,13 @@ import org.hibernate.Session;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.RapportoInterventoDTO;
 import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneRapportoInterventoBO;
 import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 
 /**
@@ -84,18 +86,20 @@ public class ListaSchedeConsegna extends HttpServlet {
 				
 				ArrayList<SchedaConsegnaDTO> lista_schede_consegna_verificazione = GestioneSchedaConsegnaBO.getListaSchedeConsegnaVerificazioneDate(null, null, session);
 				
-					
+				ArrayList<RapportoInterventoDTO> lista_rapporti_intervento = GestioneRapportoInterventoBO.getListaRapporti(session);
 				
 				session.close();
 				request.getSession().setAttribute("lista_schede_consegna", lista_schede_consegna_all);
 				request.getSession().setAttribute("lista_schede_consegna_rilievi", lista_schede_consegna_rilievi);
 				request.getSession().setAttribute("lista_schede_consegna_verificazione", lista_schede_consegna_verificazione);
+				request.getSession().setAttribute("lista_rapporti_intervento", lista_rapporti_intervento);
 				
 				request.getSession().setAttribute("dateFromScheda",df.format(dateBefore));
 				 request.getSession().setAttribute("dateToScheda",df.format(today));	
 				
 				 request.getSession().setAttribute("rilievo_attivo","");
 				 request.getSession().setAttribute("verificazione_attivo","");
+				 request.getSession().setAttribute("rapporto_attivo","");
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSchedeConsegnaTab.jsp");
 		     	dispatcher.forward(request,response);
 				
@@ -141,16 +145,19 @@ public class ListaSchedeConsegna extends HttpServlet {
 				String dateTo = request.getParameter("dateTo");
 				String rilievo = request.getParameter("rilievo");
 				String verificazione = request.getParameter("verificazione");
+				String rapporti = request.getParameter("rapporti");
 				
 				ArrayList<SchedaConsegnaDTO> lista_schede_consegna = null;
 				ArrayList<SchedaConsegnaDTO> lista_schede_consegna_all = null;
 				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna_rilievi = null;
 				ArrayList<SchedaConsegnaDTO> lista_schede_consegna_verificazione = null;
-				if(rilievo!=null && rilievo.equals("0") && verificazione!=null && verificazione.equals("0") ) {
+				ArrayList<RapportoInterventoDTO> lista_rapporti_intervento = null;
+				if(rilievo!=null && rilievo.equals("0") && verificazione!=null && verificazione.equals("0") && rapporti!= null && rapporti.equals("0")) {
 					
 					 lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaDate(dateFrom, dateTo,session);
 					 lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(0,0,0,session);
 					 lista_schede_consegna_verificazione = (ArrayList<SchedaConsegnaDTO>) request.getSession().getAttribute("lista_schede_consegna_verificazione");
+					 lista_rapporti_intervento = GestioneRapportoInterventoBO.getListaRapporti(session);
 					 request.getSession().setAttribute("dateFromScheda",dateFrom);
 					 request.getSession().setAttribute("dateToScheda",dateTo);	
 					 request.getSession().setAttribute("dateFromRil","");
@@ -159,12 +166,16 @@ public class ListaSchedeConsegna extends HttpServlet {
 					 request.getSession().setAttribute("dateFromVer","");
 					 request.getSession().setAttribute("dateToVer","");
 					 request.getSession().setAttribute("verificazione_attivo","");
+					 request.getSession().setAttribute("dateFromRap","");
+					 request.getSession().setAttribute("dateToRap","");
+					 request.getSession().setAttribute("rapporto_attivo","");
 				}
 				else if(verificazione!=null && verificazione.equals("1")) {
 					// lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaDate(dateFrom, dateTo,session);
 					 lista_schede_consegna = (ArrayList<SchedaConsegnaDTO>) request.getSession().getAttribute("lista_schede_consegna");
 					 lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(0, 0,0,session);
 					 lista_schede_consegna_verificazione = GestioneSchedaConsegnaBO.getListaSchedeConsegnaVerificazioneDate(dateFrom, dateTo, session);
+					 lista_rapporti_intervento = GestioneRapportoInterventoBO.getListaRapporti(session);
 					 request.getSession().setAttribute("dateFromScheda","");
 					 request.getSession().setAttribute("dateToScheda","");	
 					 request.getSession().setAttribute("dateFromRil","");
@@ -173,12 +184,34 @@ public class ListaSchedeConsegna extends HttpServlet {
 					 request.getSession().setAttribute("dateFromVer",dateFrom);
 					 request.getSession().setAttribute("dateToVer",dateTo);
 					 request.getSession().setAttribute("verificazione_attivo",1);
+					 request.getSession().setAttribute("dateFromRap","");
+					 request.getSession().setAttribute("dateToRap","");
+					 request.getSession().setAttribute("rapporto_attivo","");
+				}
+				else if(rapporti!=null && rapporti.equals("1")) {
+					// lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaDate(dateFrom, dateTo,session);
+					 lista_schede_consegna = (ArrayList<SchedaConsegnaDTO>) request.getSession().getAttribute("lista_schede_consegna");
+					 lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(0, 0,0,session);
+					 lista_schede_consegna_verificazione = GestioneSchedaConsegnaBO.getListaSchedeConsegnaVerificazioneDate(dateFrom, dateTo, session);
+					 lista_rapporti_intervento = GestioneRapportoInterventoBO.getListaRapporti(session);
+					 request.getSession().setAttribute("dateFromScheda","");
+					 request.getSession().setAttribute("dateToScheda","");	
+					 request.getSession().setAttribute("dateFromRil","");
+					 request.getSession().setAttribute("dateToRil","");
+					 request.getSession().setAttribute("rilievo_attivo","");
+					 request.getSession().setAttribute("dateFromVer","");
+					 request.getSession().setAttribute("dateToVer","");
+					 request.getSession().setAttribute("verificazione_attivo",1);
+					 request.getSession().setAttribute("dateFromRap",dateFrom);
+					 request.getSession().setAttribute("dateToRap",dateTo);
+					 request.getSession().setAttribute("rapporto_attivo","1");
 				}
 				else {
 					// lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaAll(session);
 					lista_schede_consegna = (ArrayList<SchedaConsegnaDTO>) request.getSession().getAttribute("lista_schede_consegna");
 					 lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilieviDate(dateFrom, dateTo, session);
 					 lista_schede_consegna_verificazione = (ArrayList<SchedaConsegnaDTO>) request.getSession().getAttribute("lista_schede_consegna_verificazione");
+					 lista_rapporti_intervento = GestioneRapportoInterventoBO.getListaRapporti(session);
 					 request.getSession().setAttribute("dateFromRil",dateFrom);
 					 request.getSession().setAttribute("dateToRil",dateTo);
 					 request.getSession().setAttribute("dateFromScheda","");
@@ -187,6 +220,9 @@ public class ListaSchedeConsegna extends HttpServlet {
 					 request.getSession().setAttribute("dateFromVer","");
 					 request.getSession().setAttribute("dateToVer","");
 					 request.getSession().setAttribute("verificazione_attivo","");
+					 request.getSession().setAttribute("dateFromRap","");
+					 request.getSession().setAttribute("dateToRap","");
+					 request.getSession().setAttribute("rapporto_attivo","");
 					 
 				}
 				
@@ -194,6 +230,7 @@ public class ListaSchedeConsegna extends HttpServlet {
 				request.getSession().setAttribute("lista_schede_consegna", lista_schede_consegna);
 				request.getSession().setAttribute("lista_schede_consegna_rilievi", lista_schede_consegna_rilievi);
 				request.getSession().setAttribute("lista_schede_consegna_verificazione", lista_schede_consegna_verificazione);
+				request.getSession().setAttribute("lista_rapporti_intervento", lista_rapporti_intervento);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSchedeConsegnaTab.jsp");
 		     	dispatcher.forward(request,response);

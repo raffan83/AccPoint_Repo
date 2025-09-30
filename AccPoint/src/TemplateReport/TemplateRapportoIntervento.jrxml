@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TemplateRapportoDiSegnalazione1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7839db52-7af2-4374-b92b-6acad2db3bcc">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="140" y="0" width="411" height="71" uuid="3da77517-dec5-4c94-a700-ff036590b949"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="19"/>
+				</textElement>
+				<text><![CDATA[RAPPORTO DI INTERVENTO]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" hAlign="Center" onErrorType="Blank">
+				<reportElement x="0" y="0" width="140" height="71" uuid="66a821f4-1132-4593-8ba2-870b49f73964"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="692" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="11" width="90" height="21" uuid="9a57d24b-f341-4f4b-bd5d-6a535c47fd5c"/>
+				<text><![CDATA[Codice commessa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="124" y="10" width="426" height="21" uuid="8f0aa2ca-5186-4d47-ba31-004f7f24e30f"/>
+				<textFieldExpression><![CDATA[$P{commessa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="32" width="90" height="21" uuid="70ea302f-2453-4e01-b33a-9e307c56a0ee"/>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="53" width="90" height="21" uuid="dadbefc2-9524-486c-a8ff-480d0edf0587"/>
+				<text><![CDATA[Indirizzo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="90" width="90" height="21" uuid="ddfe0291-a078-412b-8b28-b0ec2edb513a"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dati intervento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="111" width="90" height="21" uuid="e0a1960d-dfae-489a-b73b-a81c7fca10ff"/>
+				<text><![CDATA[Eseguito da:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="132" width="90" height="21" uuid="167fb39f-4490-4508-aac1-0ee8a63743ef"/>
+				<text><![CDATA[Data:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="153" width="90" height="21" uuid="7a894e70-3633-45d8-832e-e35735d9fa64"/>
+				<text><![CDATA[Durata:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="153" width="90" height="21" uuid="38880632-d5b2-4f14-a824-eb25a1f1f1cc"/>
+				<text><![CDATA[Ora fine:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="124" y="153" width="90" height="21" uuid="9170ce3a-609e-4d87-b61f-f4e45b4b122d"/>
+				<text><![CDATA[Ora inizio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="190" width="139" height="21" uuid="9e7f1572-3afe-4c23-ab28-868626c6ca85"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipologia intervento:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="454" width="90" height="21" uuid="1b116ad6-a3b4-430d-b69f-8c4e68cfcd83"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Note:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="626" width="90" height="21" uuid="d7fd1144-041a-437b-9000-72d79bd1c384"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Il tecnico]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="657" width="80" height="1" uuid="b855f276-2437-40d5-8829-bacb451d800b"/>
+			</line>
+			<image hAlign="Center" onErrorType="Blank">
+				<reportElement x="0" y="637" width="80" height="20" uuid="89fb744c-4b76-4e48-9989-effd6d4ebefe"/>
+				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="682" width="80" height="10" uuid="d4ede7ae-84d6-4a3f-8206-25a1d86b8960"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{modulo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="682" width="80" height="10" uuid="a68a02fd-1d1d-45b9-83b7-5fa320f66a10"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{revisione}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-1" y="480" width="560" height="120" uuid="f31f491c-08e3-47e6-908a-26ecceae7937"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-1" y="210" width="560" height="120" uuid="b1255c6b-0149-47e3-a7ae-c9007f35e954"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$P{tipologia_intervento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="124" y="31" width="426" height="21" uuid="f1c91f21-2ddf-43e9-9ae3-e270487dae25"/>
+				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="124" y="52" width="426" height="21" uuid="81a5244e-3d8f-485a-b437-b29e3623b36f"/>
+				<textFieldExpression><![CDATA[$P{indirizzo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="124" y="111" width="426" height="21" uuid="7f43c9cb-8c37-4e27-95dc-c08b8a28184e"/>
+				<textFieldExpression><![CDATA[$P{tecnico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="124" y="132" width="426" height="21" uuid="de546765-dda4-4ca1-a837-2152a7ee0911"/>
+				<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="153" width="110" height="21" uuid="95727aed-1997-4748-8732-20fb6700a1cf"/>
+				<textFieldExpression><![CDATA[$P{ora_inizio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="153" width="110" height="21" uuid="fecb8421-af98-4735-90d9-4488452fa73c"/>
+				<textFieldExpression><![CDATA[$P{ora_fine}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="153" width="110" height="21" uuid="d406e3ca-688e-4132-b036-54e70d483070"/>
+				<textFieldExpression><![CDATA[$P{durata}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

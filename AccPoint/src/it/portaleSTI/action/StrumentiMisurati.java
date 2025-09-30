@@ -222,8 +222,8 @@ public class StrumentiMisurati extends HttpServlet {
 						request.getSession().setAttribute("arrCartificati", arrCartificati);
 					}
  						request.getSession().setAttribute("listaMisure", listaMisure);
-
-				 
+ 						
+ 						request.getSession().setAttribute("id_intervento", id);
 					request.getSession().setAttribute("actionParent", "lt");
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
 					dispatcher.forward(request,response);

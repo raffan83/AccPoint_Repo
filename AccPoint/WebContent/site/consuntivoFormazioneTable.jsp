@@ -252,7 +252,12 @@ ${corso.getListaPartecipanti().iterator().next().getNome_sede()}
 	  	          {
 	  	            extend: 'colvis',
 	  	            text: 'Nascondi Colonne'  	                   
-	 			  } ]
+	 			  },
+	 			 {
+		  	            extend: 'excel',
+		  	            text: 'Esporta Excel'  	                   
+		 			  }
+	 			  ]
 		               
 		    });
 		

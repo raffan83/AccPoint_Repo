@@ -278,7 +278,7 @@
 					<select id="id_corso_esistente" name="id_corso_esistente" disabled class='form-control select2' style="width:100%" data-placeholder="Seleziona corso esistente...">
 					<option value=""></option>
 					<c:forEach items="${lista_corsi }" var="corso">
-					<option value="${corso.id }">${corso.descrizione }</option>
+					<option value="${corso.id }">${corso.descrizione } - ${corso.commessa } - <fmt:formatDate pattern="dd/MM/yyyy" value="${corso.data_corso}" /></option>
 					</c:forEach>
 					</select>
         </div>
@@ -342,11 +342,20 @@
       <div class="modal-footer">
       <input type="hidden" id="elimina_partecipante_id">
       <input type="hidden" id="check_email_eliminazione">
+      <input type="hidden" id="check_corso_eliminazione">
       <div class="pull-left">
         <label>Invia Email Eliminazione</label>
-          <input class="form-control "  type="checkbox" id="email_elimina" name="email_elimina" style="width:100%">
-          
+          <input class="form-control "  type="checkbox" id="email_elimina" name="email_elimina" style="width:100%"><br>
+          <div  id="content_elimina_corso">
+            <label>Elimina Corso Associato</label>
+          <input class="form-control "  type="checkbox" id="corso_elimina" name="corso_elimina" style="width:100%">
           </div>
+          </div><br>
+          
+              <!-- <div class="pull-left" id="content_elimina_corso">
+      
+          
+          </div> -->
       <a class="btn btn-primary" onclick="eliminaPianificazione()" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
@@ -736,6 +745,17 @@ $('input:checkbox').on('ifToggled', function() {
 	
 	});
 	
+	$('#corso_elimina').on('ifChecked', function(event){
+		$('#check_corso_eliminazione').val(1);
+	
+	});
+	
+	$('#corso_elimina').on('ifUnchecked', function(event) {
+		
+		$('#check_corso_eliminazione').val(0);
+	
+	});
+	
 	$('#pausa_pranzo').on('ifChecked', function(event){
 		$('#check_pausa_pranzo').val("SI");
 		$('#durata_pausa_pranzo').attr("disabled", false);
@@ -788,6 +808,7 @@ function eliminaPianificazione(){
 	dataObj = {};
 	dataObj.id_pianificazione = $('#id_pianificazione').val();
 	dataObj.check_email_eliminazione = $('#check_email_eliminazione').val();
+	dataObj.check_corso_eliminazione = $('#check_corso_eliminazione').val();
 	
 	 	callAjax(dataObj, 'gestioneFormazione.do?action=elimina_pianificazione')
 
@@ -886,6 +907,8 @@ function initContextMenu(){
              	 cellCopy = selectedDiv[0].id.split("_")[1];
              	 
              	 $('#id_pianificazione').val(cellCopy)
+             	 
+             	
              	 $('#myModalYesOrNo').modal()
           
          } else {
@@ -1002,12 +1025,22 @@ $('#myModalYesOrNo').on("hidden.bs.modal", function(){
 	
 
 	 $('#email_elimina').iCheck('uncheck');
-
+	 $('#corso_elimina').iCheck('uncheck');
 	 
 		
 });
 
+$('#myModalYesOrNo').on("show.bs.modal", function(){
+	
 
+	if( $('#id_corso_esistente').val()!=null && $('#id_corso_esistente').val()!=""){
+ 		$('#content_elimina_corso').show();
+ 	}else{
+ 		$('#content_elimina_corso').hide();
+ 	}
+	 
+		
+});
 
 
 

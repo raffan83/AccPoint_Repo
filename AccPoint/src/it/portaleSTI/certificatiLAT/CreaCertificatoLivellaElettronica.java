@@ -3,6 +3,7 @@ package it.portaleSTI.certificatiLAT;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -422,7 +423,13 @@ public class CreaCertificatoLivellaElettronica {
 		
 		ArrayList<LatPuntoLivellaElettronicaDTO> lista_punti = GestioneLivellaElettronicaBO.getListaPuntiLivella(misura.getId(), session);
 		if(misura.getIncertezza_estesa()!=null) {
-			reportP2.addParameter("incertezza_estesa", misura.getIncertezza_estesa().setScale(1, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
+			 if(misura.getIncertezza_estesa().setScale(1, RoundingMode.HALF_EVEN).compareTo(new BigDecimal(1)) == -1) {
+				 reportP2.addParameter("incertezza_estesa", new BigDecimal(1).setScale(1, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));
+			 }else {
+				 reportP2.addParameter("incertezza_estesa", misura.getIncertezza_estesa().setScale(1, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	 
+			 }
+			
+				
 		}else {
 			reportP2.addParameter("incertezza_estesa", "");
 		}

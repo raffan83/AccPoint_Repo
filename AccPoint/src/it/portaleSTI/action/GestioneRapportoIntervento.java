@@ -46,6 +46,7 @@ import it.portaleSTI.bo.CreateRapportoIntervento;
 import it.portaleSTI.bo.GestioneAM_BO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
+import it.portaleSTI.bo.SendEmailBO;
 
 /**
  * Servlet implementation class GestioneRapportoIntervento
@@ -204,8 +205,29 @@ public class GestioneRapportoIntervento extends HttpServlet {
 			
 			else if(action.equals("invia_email")) {
 				String destinatario = request.getParameter("destinatario");
+				String id_rapporto = request.getParameter("id_rapporto");
+				
+				RapportoInterventoDTO rapporto = (RapportoInterventoDTO) session.get(RapportoInterventoDTO.class, Integer.parseInt(id_rapporto));
+
+				rapporto.setDestinatario_email(destinatario);
+				
+				boolean esito = SendEmailBO.inviaEmailRapportoIntervento(rapporto);
+				
+
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				if(esito) {
+					session.update(rapporto);
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Email inviata con successo!");
+				}else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Errore nell'invio dell'email!");
+				}
+								
 				
 				
+				out.print(myObj);
 				
 			}
 			

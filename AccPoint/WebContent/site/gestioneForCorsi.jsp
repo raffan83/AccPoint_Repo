@@ -754,11 +754,14 @@
 
   
 <jsp:attribute name="extra_js_footer">
+
 <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
 <script type="text/javascript">
 
 
@@ -1291,9 +1294,12 @@ $(document).ready(function() {
 
   	});
    	
-   	if(start!=null && start!=""){
-  	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
-  	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
+   	if(start!=null && start!="" ){
+   		if($('#datarange').data('daterangepicker')!=null){
+   			$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
+   	  	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
+   		}
+  	 	
   	
   	 }
      

@@ -40,7 +40,14 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-body">
-            
+            <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }">
+                        <div class="row">
+<div class="col-md-12">
+<a class="btn btn-warning pull-right" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${utl:escapeJS(corso.getDocentiCorsoJson())}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }', '${corso.durata }','${corso.efei }', '${corso.frequenza_remind }')" title="Click per modificare il corso"><i class="fa fa-edit"></i> Modifica Corso</a>
+
+</div>
+</div><br>
+            </c:if>
             <div class="row">
 <div class="col-md-6">
 <div class="box box-primary box-solid">
@@ -410,7 +417,223 @@
 
 
   
- 
+ <form id="modificaCorsoForm" name="modificaCorsoForm">
+<div id="myModalModificaCorso" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Corso</h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Categoria</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <select id="categoria_mod" name="categoria_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Tipologia Corso..." required>
+        <option value=""></option>
+        <c:forEach items="${lista_corsi_cat }" var="categoria">
+        <option value="${categoria.id }_${categoria.frequenza}">${categoria.descrizione }</option>
+        </c:forEach>
+        </select>
+       			
+       	</div>       	
+       </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Commessa</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <select id="commessa_mod" name="commessa_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Commessa..." >
+        <option value=""></option>
+        <c:forEach items="${lista_commesse }" var="commessa">
+        <option value="${commessa.ID_COMMESSA }">${commessa.ID_COMMESSA }</option>
+        </c:forEach>
+        </select>
+       			
+       	</div>       	
+       </div><br>
+       
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Descrizione</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+      	<textarea class="form-control" rows="3" style="width:100%" id="descrizione_mod" name="descrizione_mod"></textarea>
+       			
+       	</div>       	
+       </div><br>
+      <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Tipologia</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+      	<select id="tipologia_mod" name="tipologia_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona tipologia..." required >
+      	<option value=""></option>
+      	<option value="BASE">BASE</option>
+      	<option value="AGGIORNAMENTO">AGGIORNAMENTO</option>
+      	</select>
+       			
+       	</div>       	
+       </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Corso E-Learning</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="check_e_learning_mod" name="check_e_learning_mod" class="form-control" type="checkbox" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+              <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Docente</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+       	<select id="docente_mod" name="docente_mod" class="form-control select2" style="width:100%"  data-placeholder="Seleziona Docente..." required multiple>
+        <option value=""></option>
+        <c:forEach items="${lista_docenti }" var="docente">
+        <option value="${docente.id }">${docente.nome } ${docente.cognome }</option>
+        </c:forEach>
+        </select>	
+       	  	
+       	  
+
+       			
+       	</div>       	
+       </div><br>
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data Inizio</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+         <div class='input-group date datepicker' id='datepicker_data_inizio'>
+               <input type='text' class="form-control input-small" id="data_corso_mod" name="data_corso_mod" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+        
+       			
+       	</div>       	
+       </div><br>
+       
+         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data Scadenza</label>
+       	</div>
+       	<div class="col-sm-9">             	  	
+        
+       	    <div class='input-group date datepicker' id='datepicker_data_scadenza'>
+               <input type='text' class="form-control input-small" id="data_scadenza_mod" name="data_scadenza_mod" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       	</div>
+       	</div>	<br>	
+       	
+       	         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Durata (Ore)</label>
+       	</div>
+       	<div class="col-sm-9">             	  	
+        
+       	<input id="durata_mod" name="durata_mod" class="form-control" type="number" step="1" min="0" style="width:100%" required>
+       	</div>
+       	</div>	<br>
+       	
+       	
+             <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Documento Test</label>
+       	</div>
+       	<div class="col-sm-9">             	  	
+        
+       	    <span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica File...</span><input accept=".pdf,.PDF"  id="fileupload_mod" name="fileupload_mod" type="file" ></span><label id="label_file_mod"></label>
+       	    </div>
+        
+       	</div>
+       	
+       	
+       	
+       	<br>
+            	         
+            	         
+           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Corso Efei</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="check_efei_mod" name="check_efei_mod" class="form-control" type="checkbox" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       	
+       	
+       	
+       	   	         
+           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Frequenza Remind Efficacia (Giorni)</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="frequenza_remind_mod" name="frequenza_remind_mod" class="form-control" type="number" step="1"  min = "0" style="width:100%" >
+       			
+       	</div>       	
+       </div>
+       	
+       	</div>		
+     
+       
+     
+  		 
+      <div class="modal-footer">
+		
+		<input type="hidden" id="id_corso" name="id_corso">
+		<input type="hidden" id="e_learning_mod" name="e_learning_mod">
+		<input type="hidden" id="efei_mod" name="efei_mod">
+		<input type="hidden" id="id_docenti_mod" name="id_docenti_mod">
+		<input type="hidden" id="id_docenti_dissocia" name="id_docenti_dissocia">
+		
+		<button class="btn btn-primary" type="submit">Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</form>
   
   <!-- /.content-wrapper -->
 
@@ -444,6 +667,8 @@
 
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+ <script type="text/javascript" src="plugins/datejs/date.js"></script>
   
  <script type="text/javascript">
  
@@ -692,7 +917,102 @@ $('input:checkbox').on('ifToggled', function() {
     	
     })
     
+    
+    function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_scadenza, documento_test, descrizione, tipologia, commessa,e_learning, durata, efei, frequenza){
+	
+	var json = JSON.parse(docenti);
+	
 
+	
+	//$('#docente_mod option').attr("selected", false);
+	$('#id_docenti_mod').val("")
+	$('#id_docenti_dissocia').val("")
+	$('#id_corso').val(id_corso);
+	$('#categoria_mod').val(id_categoria);
+	$('#categoria_mod').change();
+	$('#frequenza_remind_mod').val(frequenza)
+	var x = []
+	
+for (var i = 0; i < json.lista_docenti.length; i++) {
+		
+		//$('#docente_mod option[value="'+json.lista_docenti[i].id+'"]').attr("selected", true);
+		x.push(json.lista_docenti[i].id);
+
+		
+		$('#id_docenti_mod').val($('#id_docenti_mod').val()+json.lista_docenti[i].id+";")
+	}
+
+	
+	$('#docente_mod').val(x);	
+$('#docente_mod').change();	
+	$('#commessa_mod').val(commessa);
+	$('#commessa_mod').change();
+	if(data_inizio!=null && data_inizio!=''){
+		$('#data_corso_mod').val(Date.parse(data_inizio).toString("dd/MM/yyyy"));
+	}
+	if(data_scadenza!=null && data_scadenza!=''){
+		$('#data_scadenza_mod').val(Date.parse(data_scadenza).toString("dd/MM/yyyy"));
+	}
+		
+	$('#label_file_mod').html(documento_test);
+	$('#descrizione_mod').val(descrizione);
+	$('#tipologia_mod').val(tipologia);
+	$('#tipologia_mod').change();
+	$('#durata_mod').val(durata);
+	
+	if(e_learning =='1'){	
+
+		$('#check_e_learning_mod').iCheck('check');
+		$('#e_learning_mod').val(1); 
+		$('#docente_mod').attr('disabled', true);
+		$('#docente_mod').attr('required', false);
+	}else{
+		$('#check_e_learning_mod').iCheck('uncheck');
+		$('#e_learning_mod').val(0);
+		$('#docente_mod').attr('disabled', false);
+		$('#docente_mod').attr('required', true);
+	}
+	
+	
+	
+	if(efei =='1'){	
+
+		$('#check_efei_mod').iCheck('check');
+		$('#efei_mod').val(1); 
+
+	}else{
+		$('#check_efei_mod').iCheck('uncheck');
+		$('#efei_mod').val(0);
+
+	}
+	
+	
+	$('#myModalModificaCorso').modal();
+}
+    
+    $('#myModalModificaCorso').on("hidden.bs.modal", function(){
+    	$('#docente_mod option').attr("selected", false);
+    });
+    
+    
+    $('#modificaCorsoForm').on('submit', function(e){
+   	 e.preventDefault();
+   	 
+   if($('#docente_mod').val()!=null && $('#docente_mod').val()!=''){
+   		 
+   		 var values = $('#docente_mod').val();
+   		 var ids = "";
+   		 for(var i = 0;i<values.length;i++){
+   			 ids = ids + values[i]+";";
+   		 }
+   		 
+   		 $('#id_docenti_mod').val(ids);
+   	 }
+   	 
+   	 
+   	 modificaForCorso();
+   });
+    
   </script>
   
 </jsp:attribute> 

@@ -8,9 +8,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -54,6 +56,7 @@ import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.GPDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ItServizioItDTO;
+import it.portaleSTI.DTO.RapportoInterventoDTO;
 import it.portaleSTI.DTO.RilInterventoDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
@@ -1577,8 +1580,8 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
 
      Session session = Session.getInstance(props, new Authenticator() {
          protected PasswordAuthentication getPasswordAuthentication() {
-            // return new PasswordAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
-        	 return new PasswordAuthentication("calver@accpoint.it", "bDBH34GM2!");
+             return new PasswordAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+        	// return new PasswordAuthentication("calver@accpoint.it", "bDBH34GM2!");
         	 
          }
      });
@@ -1633,46 +1636,58 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
 
      // -------- Parte HTML --------
      MimeBodyPart htmlPart = new MimeBodyPart();
-     htmlPart.setContent("<html>" + messaggio + "</html>", "text/html; charset=UTF-8");
+     htmlPart.setContent("<html>" + messaggio +  "<br/><br/>"
+    	        + "<a href=\"cid:AggiungiAlCalendario\">"
+    	        + "<button style='padding:10px 15px; background:#007BFF; color:#fff; border:none; border-radius:5px;'>"
+    	        + "➕ Aggiungi al calendario</button></a></html>", "text/html; charset=UTF-8");
 
      // -------- Parte ICS --------
-     SimpleDateFormat icsFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
-//     String icsContent =
-//             "BEGIN:VCALENDAR\n" +
-//             "METHOD:REQUEST\n" +
-//             "PRODID:-//CRESCO//Calendario//IT\n" +
-//             "VERSION:2.0\n" +
-//             "BEGIN:VEVENT\n" +
-//             "DTSTAMP:" + icsFormat.format(new Date()) + "\n" +
-//             "DTSTART:" + icsFormat.format(pianificazione.getData()) + "\n" +
-//             "DTEND:" + icsFormat.format(pianificazione.getData()) + "\n" +
-//             "SUMMARY:" + "PIANIFICAZIONE CORSO - DATA "+df.format(pianificazione.getData()) + "\n" +
-//             "DESCRIPTION:" + messaggio.replaceAll("\\<.*?\\>", "") + "\n" +
-//             "LOCATION:" + "\n" +
-//             "ORGANIZER;CN=CRESCO:mailto:calver@accpoint.it\n" +
-//             "END:VEVENT\n" +
-//             "END:VCALENDAR";
+     SimpleDateFormat icsFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+     icsFormat.setTimeZone(TimeZone.getTimeZone("Europe/Rome"));
+
      
      Date data = pianificazione.getData();
      String oraInizio = pianificazione.getOra_inizio(); // es. "14:00"
      String oraFine = pianificazione.getOra_fine();
-
-     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-     Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm")
-         .parse(new SimpleDateFormat("yyyy-MM-dd").format(data) + " " + oraInizio);
-
-     String dtStart = icsFormat.format(startDate);
      
-     Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm")
-             .parse(new SimpleDateFormat("yyyy-MM-dd").format(data) + " " + oraFine);
-
-         String dtEnd = icsFormat.format(endDate);
-     
+     Date startDate = null;
+     Date endDate = null;
+     String dtStart = null;
+     String dtEnd = null;
      StringBuilder sb = new StringBuilder();
+     
+     if(oraInizio == null || oraInizio.equals("")) {
+    	 startDate = new SimpleDateFormat("yyyy-MM-dd").parse(new SimpleDateFormat("yyyy-MM-dd").format(data));
+    	 
+    	 Calendar c = Calendar.getInstance();
+    	    c.setTime(startDate);
+    	    c.add(Calendar.DATE, 1); // DTEND deve essere il giorno dopo
+    	    endDate = c.getTime();
+    	    
+    	    // Usa DATE (senza ore) per ICS
+    	    dtStart = new SimpleDateFormat("yyyyMMdd").format(startDate);
+    	    dtEnd   = new SimpleDateFormat("yyyyMMdd").format(endDate);
+     }else {
+    	 startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+    	         .parse(new SimpleDateFormat("yyyy-MM-dd").format(data) +" "+ oraInizio);
+    	 
+    	 endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+    	            .parse(new SimpleDateFormat("yyyy-MM-dd").format(data) +" "+ oraFine);
+
+    	    dtStart = icsFormat.format(startDate);
+    	    dtEnd   = icsFormat.format(endDate);
+    	  
+     }
+
+     
+     
+    
      sb.append("BEGIN:VCALENDAR\r\n");
      sb.append("METHOD:REQUEST\r\n");
      sb.append("PRODID:-//CRESCO//FORMAZIONE//IT\r\n");
      sb.append("VERSION:2.0\r\n");
+
+     
      sb.append("BEGIN:VEVENT\r\n");
      sb.append("UID:meeting-20250924-001@mycalendar.app\r\n");
      sb.append("DTSTAMP:" + icsFormat.format(new Date()) + "\n");
@@ -1696,7 +1711,9 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
      MimeBodyPart calendarPart = new MimeBodyPart();
      calendarPart.setDataHandler(new DataHandler(
              new ByteArrayDataSource(icsContent, "text/calendar;method=REQUEST;charset=UTF-8")));
-     calendarPart.setFileName("invito.ics");
+     calendarPart.setFileName("AggiungiAlCalendario.ics");
+     calendarPart.setHeader("Content-ID", "<AggiungiAlCalendario>");
+     calendarPart.setDisposition(MimeBodyPart.INLINE);
 
      // -------- Multipart finale --------
      MimeMultipart multipart = new MimeMultipart();
@@ -2333,6 +2350,76 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
 		  	email.send();
 		  	
+}
+
+public static boolean inviaEmailRapportoIntervento(RapportoInterventoDTO rapporto) throws Exception {
+	
+try {
+	HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+email.getMailSession().getProperties().put("mail.debug", "true");
+email.getMailSession().getProperties().put("mail.smtp.port", "465");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+Date today = new Date();
+
+
+String nominativo = "";
+
+String[] to = rapporto.getDestinatario_email().replaceAll(" ","").split(";");
+
+
+for (String string : to) {
+	email.addTo(string);
+}
+	
+
+	  email.setFrom("calver@accpoint.it", "Calver");
+	  File image = new File(Costanti.PATH_FOLDER+"LoghiCompany\\logo_calver_v2.png");
+	  String cid = email.embed(image, "Calver logo");
+	 
+	  email.setSubject("Invio Rapporto Intervento");
+	  
+	   
+	  String messaggio = "Si trasmette in allegato il seguente RAPPORTO INTERVENTO: <br><br>"
+	  
+			  + "ID INTERVENTO: "+rapporto.getIntervento().getId()+".<br>"
+			 + "COMMESSA: "+rapporto.getIntervento().getIdCommessa()+".<br>"
+			 + "DATA INTERVENTO: "+df.format(rapporto.getIntervento().getDataCreazione())+"<br>"
+				+"CLIENTE: "+rapporto.getIntervento().getNome_cliente()+".<br>"
+						+"SEDE: "+rapporto.getIntervento().getNome_sede()+".<br>";
+			  ;
+
+
+	  email.setHtmlMsg(messaggio.replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;")
+				  
+			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
+
+	  
+	  File allegato = new File(Costanti.PATH_FOLDER+"\\RapportoIntervento\\"+rapporto.getIntervento().getId()+"\\RAPPORTO_INTERVENTO_"+rapporto.getIntervento().getId()+".pdf"); // <-- qui metti il tuo file
+	    EmailAttachment attachment = new EmailAttachment();
+	    attachment.setPath(allegato.getAbsolutePath());
+	    attachment.setDisposition(EmailAttachment.ATTACHMENT);
+	    attachment.setName("RAPPORTO_INTERVENTO_"+rapporto.getIntervento().getId()+".pdf"); 
+
+	    email.attach(attachment);
+	
+	  email.send();
+	  
+	  return true;
+}catch(Exception e) {
+	e.printStackTrace();
+	return false;
+}
+	
 }
 }
 

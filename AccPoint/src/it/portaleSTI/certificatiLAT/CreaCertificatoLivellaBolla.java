@@ -455,8 +455,18 @@ public class CreaCertificatoLivellaBolla {
 		
 		
 		ArrayList<LatPuntoLivellaDTO> lista_punti = GestioneLivellaBollaBO.getListaPuntiLivella(misura.getId(), session);
+		
+		
+		
 		if(misura.getIncertezza_estesa()!=null) {
-			reportP2.addParameter("incertezza_estesa", misura.getIncertezza_estesa().setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
+			BigDecimal incertezza = (misura.getSensibilita().multiply(new BigDecimal(0.363))).add(new BigDecimal(0.009));
+			
+			if(misura.getIncertezza_estesa().setScale(3, RoundingMode.HALF_EVEN).compareTo(incertezza) == -1) {
+				reportP2.addParameter("incertezza_estesa", incertezza.setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
+			}else {
+				reportP2.addParameter("incertezza_estesa", misura.getIncertezza_estesa().setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
+			}
+			
 		}else {
 			reportP2.addParameter("incertezza_estesa", "");
 		}
@@ -470,7 +480,14 @@ public class CreaCertificatoLivellaBolla {
 		}
 		
 		if(misura.getIncertezza_media()!=null) {
-			reportP2.addParameter("incertezza_ass_media", misura.getIncertezza_media().setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
+			BigDecimal incertezza = (misura.getSensibilita().multiply(new BigDecimal(0.363))).add(new BigDecimal(0.009));
+			
+			if(misura.getIncertezza_media().setScale(3, RoundingMode.HALF_EVEN).compareTo(incertezza) == -1) {
+				reportP2.addParameter("incertezza_ass_media", incertezza.setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
+			}else {
+				reportP2.addParameter("incertezza_ass_media", misura.getIncertezza_media().setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
+			}
+				
 		}else {
 			reportP2.addParameter("incertezza_ass_media", "");
 		}

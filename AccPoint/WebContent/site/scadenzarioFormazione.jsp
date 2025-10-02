@@ -121,6 +121,7 @@
 <th>Sede</th>
 
 <th>Tipologia</th>
+<th>Stato</th>
 <th>Note</th>
 <th>Azioni</th>
  </tr></thead>
@@ -164,6 +165,9 @@
 	<td><c:if test="${corso_part.partecipante.id_sede!=0}">${corso_part.partecipante.nome_sede}</c:if></td>
 
 	<td>${corso_part.corso.tipologia }</td>
+	<td><c:if test="${corso_part.partecipante.stato == 0 }">ATTIVO</c:if>
+	<c:if test="${corso_part.partecipante.stato == 1}">NON ATTIVO</c:if>
+	</td>
 		<td>${corso_part.partecipante.note }</td>
 	<td>
 	 	
@@ -509,7 +513,7 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 13 },
+		    	  { responsivePriority: 1, targets: 14 },
 		    	  { responsivePriority: 2, targets: 9},
 		    	  { responsivePriority: 3, targets: 10 }
 		    	  

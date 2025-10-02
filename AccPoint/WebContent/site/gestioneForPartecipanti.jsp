@@ -100,7 +100,8 @@
 <th>Sede</th>
 <th>Luogo di nascita</th>
 <th>Codice fiscale</th>
-<th>Azioni</th>
+<th>Stato</th>
+<th style="min-width:150px">Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -116,13 +117,17 @@
 	<td><c:if test="${partecipante.id_sede!=0 }">${partecipante.nome_sede }</c:if></td>
 	<td>${partecipante.luogo_nascita }</td>
 	<td>${partecipante.cf }</td>
+	<td><c:if test="${partecipante.stato == 0 }">ATTIVO</c:if>
+	<c:if test="${partecipante.stato == 1}">NON ATTIVO</c:if>
+	</td>
 	<td>
 	
-	<a class="btn btn-info" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
+	<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
-	<a class="btn btn-warning" onClicK="modificaPartecipanteModal('${partecipante.id}','${utl:escapeJS(partecipante.nome) }','${utl:escapeJS(partecipante.cognome)}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }','${utl:escapeJS(partecipante.luogo_nascita) }','${partecipante.cf }', '${partecipante.email }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning customTooltip" onClicK="modificaPartecipanteModal('${partecipante.id}','${utl:escapeJS(partecipante.nome) }','${utl:escapeJS(partecipante.cognome)}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }','${utl:escapeJS(partecipante.luogo_nascita) }','${partecipante.cf }', '${partecipante.email }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a>
 
-	 <a class="btn btn-danger" title="Click per eliminare il partecipante" onClick="modalEliminaPartecipante('${partecipante.id}')"><i class="fa fa-times"></i></a>
+	 <a class="btn btn-danger customTooltip" title="Click per eliminare il partecipante" onClick="modalEliminaPartecipante('${partecipante.id}')"><i class="fa fa-times"></i></a>
+	 <a class="btn btn-default customTooltip" title="Click per attivare/disattivare il partecipante" onClick="cambiaStatoPartecipante('${partecipante.id}')"><i class="glyphicon glyphicon-refresh"></i></a>
 	 	</c:if>
 	</td>
 	</tr>
@@ -1005,6 +1010,15 @@ function modalEliminaPartecipante(id_partecipante){
 }
 
 
+function cambiaStatoPartecipante(id_partecipante){
+	
+	dataObj = {};
+	dataObj.id_partecipante = id_partecipante;
+	callAjax(dataObj, "gestioneFormazione.do?action=cambia_stato_partecipante")
+	
+}
+
+
 function modalReportPartecipanti(){
 	
 	//$('#azienda_report').change();
@@ -1120,7 +1134,7 @@ $(document).ready(function() {
 		           
 		      columnDefs: [
 		    	  
-		    	  { responsivePriority: 1, targets: 8 },
+		    	  { responsivePriority: 1, targets: 9 },
 		    	  
 		    	  
 		               ], 	        

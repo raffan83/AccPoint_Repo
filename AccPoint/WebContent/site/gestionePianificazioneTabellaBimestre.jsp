@@ -668,8 +668,13 @@ function pastePianificazione(day, commessa){
 		$('#n_cella').val(day);
 		$('#n_utenti').val(pianificazione.nUtenti);
 		$('#descrizione').val(pianificazione.descrizione)
-
-
+		if(pianificazione.id_corso!=null){
+			$('#id_corso_esistente').val(pianificazione.id_corso)
+			$('#id_corso_esistente').change();	
+			$('#corso_esistente').iCheck("check");
+		}
+		
+		
 
 
 		nuovaPianificazione();

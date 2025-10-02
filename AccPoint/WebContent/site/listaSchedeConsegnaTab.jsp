@@ -360,7 +360,7 @@ Fatturata
  <th>Cliente</th>
  <th>Sede</th>
  <th>Commessa</th>
- <th>Email Destinatario</th>
+ <th>Email Destinatario (Separatore ;)</th>
  <th>Azioni</th>
 
  </tr></thead>
@@ -383,12 +383,12 @@ Fatturata
 			<td>${rapporto.intervento.nome_sede }</td>			
 			<td>${rapporto.intervento.idCommessa }</td>
 			
-			<td><input type="text" id="destinatario_${rapporto.id }" name="destinatario_${rapporto.id }" style="width:100%" class="form-control"></td>
+			<td><textarea id="destinatario_${rapporto.id }" name="destinatario_${rapporto.id }" style="width:100%" rows="3" class="form-control">${rapporto.destinatario_email } </textarea></td>
 
 			<td>
 			<a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare il rapporto intervento"  href="gestioneRapportoIntervento.do?action=download&id_intervento=${rapporto.intervento.id}"><i class="fa fa-file-pdf-o"></i></a>
 			<%--  <a  class="btn btn-warning customTooltip" title="Cambia Stato"   onClick="cambiaStatoSchedaConsegna('${scheda.id}','0')"><i class="glyphicon glyphicon-refresh"></i></a> --%>
-			<a class="btn bg-olive pull-right" onClick="inviaEmail('${rapporto.id}')" style="margin-right:5px"><i class="fa fa-envelope"></i> </a>  	
+			<a class="btn bg-olive" onClick="inviaEmail('${rapporto.id}')" ><i class="fa fa-paper-plane"></i> </a>  	
 				</tr>
  	
  	
@@ -598,7 +598,7 @@ Fatturata
 			var startDatePicker = $("#datarangeRap").data('daterangepicker').startDate;
 			var endDatePicker = $("#datarangeRap").data('daterangepicker').endDate;
 			
-			dataString = "?action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&rapporto=1";
+			dataString = "?action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&rapporti=1";
 				 	
 			pleaseWaitDiv = $('#pleaseWaitDialog');
 			pleaseWaitDiv.modal();
@@ -1360,14 +1360,27 @@ $('#selectAlltabPM').on('ifUnchecked', function(event){
 
 
 
-inviaEmail(id_rapporto){
+function inviaEmail(id_rapporto){
 	
-	val email = $('#destinatario_'+id_rapporto);
+	var email = $('#destinatario_'+id_rapporto).val();
 	
-	var dataObj = {};
-	dataObj.destinatario = email;
+	if(email==""){
+		
+		$('#myModalErrorContent').html("Inserisci un destinatario!");
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+
+		$('#myModalError').modal('show')
+		
+	}else{
+		var dataObj = {};
+		dataObj.destinatario = email;
+		dataObj.id_rapporto = id_rapporto;
+		
+		callAjax(dataObj, "gestioneRapportoIntervento.do?action=invia_email")
+	}
 	
-	callAjax(dataObj, "gestioneRapportoIntervento.do?action=invia_email")
+
 	
 }
     	

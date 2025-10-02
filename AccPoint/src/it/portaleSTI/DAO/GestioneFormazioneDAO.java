@@ -207,7 +207,7 @@ public class GestioneFormazioneDAO {
 		
 		ArrayList<ForPartecipanteDTO> lista = null;
 		
-		Query query = session.createQuery("from ForPartecipanteDTO");
+		Query query = session.createQuery("from ForPartecipanteDTO where disabilitato = 0");
 				
 		lista = (ArrayList<ForPartecipanteDTO>) query.list();
 					
@@ -381,7 +381,7 @@ public class GestioneFormazioneDAO {
 
 		ArrayList<ForPartecipanteDTO> lista = null;		
 
-		Query query =  session.createQuery("from ForPartecipanteDTO where id_azienda =:_id_cliente and id_sede = :_id_sede"); 
+		Query query =  session.createQuery("from ForPartecipanteDTO where id_azienda =:_id_cliente and id_sede = :_id_sede and disabilitato = 0"); 
 		query.setParameter("_id_cliente", idCliente);	
 		query.setParameter("_id_sede", idSede);
 			
@@ -394,7 +394,7 @@ public class GestioneFormazioneDAO {
 
 		ArrayList<ForCorsoDTO> lista = null;		
 
-		Query query =  session.createQuery("select distinct corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede = :_id_sede and visibile='1' and disabilitato = 0"); 
+		Query query =  session.createQuery("select distinct corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda =:_id_cliente and p.partecipante.id_sede = :_id_sede and p.corso.visibile='1' and p.corso.disabilitato = 0"); 
 		query.setParameter("_id_cliente", idCliente);	
 		query.setParameter("_id_sede", idSede);
 			
@@ -452,7 +452,7 @@ public class GestioneFormazioneDAO {
 		
 		ArrayList<String> lista = null;		
 		
-		Query query = session.createQuery("select cf from ForPartecipanteDTO");
+		Query query = session.createQuery("select cf from ForPartecipanteDTO where disabilitato = 0");
 
 		
 		lista = (ArrayList<String>) query.list();
@@ -511,7 +511,7 @@ public class GestioneFormazioneDAO {
 		ArrayList<Object[]> res = null;
 		ArrayList<String> lista = new ArrayList<String>();
 
-		Query query =  session.createQuery("select distinct id_azienda, nome_azienda,id_sede, nome_sede from ForPartecipanteDTO");	
+		Query query =  session.createQuery("select distinct id_azienda, nome_azienda,id_sede, nome_sede from ForPartecipanteDTO where disabilitato = 0");	
 
 		
 		res = (ArrayList<Object[]>) query.list();
@@ -534,7 +534,7 @@ public class GestioneFormazioneDAO {
 		ForPartecipanteDTO res = null;
 		ArrayList<ForPartecipanteDTO> lista = new ArrayList<ForPartecipanteDTO>();
 
-		Query query =  session.createQuery("from ForPartecipanteDTO where cf = :_cf");	
+		Query query =  session.createQuery("from ForPartecipanteDTO where cf = :_cf and disabilitato = 0");	
 		query.setParameter("_cf", cf);
 		
 		lista = (ArrayList<ForPartecipanteDTO>) query.list();
@@ -656,7 +656,7 @@ public class GestioneFormazioneDAO {
 	public static ArrayList<ForCorsoDTO> getListaCorsiClienteSupervisore(int idCliente, Session session) {
 		ArrayList<ForCorsoDTO> lista = null;		
 
-		Query query =  session.createQuery("select distinct corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda =:_id_cliente and visibile='1' and disabilitato = 0"); 
+		Query query =  session.createQuery("select distinct corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda =:_id_cliente and p.corso.visibile='1' and p.corso.disabilitato = 0"); 
 		query.setParameter("_id_cliente", idCliente);	
 			
 		lista = (ArrayList<ForCorsoDTO>) query.list();		
@@ -683,7 +683,7 @@ public class GestioneFormazioneDAO {
 		
 		ArrayList<ForPartecipanteDTO> lista = null;		
 
-		Query query =  session.createQuery("from ForPartecipanteDTO where id_azienda =:_id_cliente "); 
+		Query query =  session.createQuery("from ForPartecipanteDTO where id_azienda =:_id_cliente and disabilitato = 0"); 
 		query.setParameter("_id_cliente", idCliente);	
 			
 		lista = (ArrayList<ForPartecipanteDTO>) query.list();		
@@ -777,20 +777,34 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		return lista;
 	}
 
-	public static ArrayList<ForCorsoDTO> getListaCorsiDate(String dateFrom, String dateTo, Session session) throws HibernateException, ParseException {
+	public static ArrayList<ForCorsoDTO> getListaCorsiDate(String dateFrom, String dateTo, Integer id_cliente, Integer id_sede,Session session) throws HibernateException, ParseException {
 		
 		ArrayList<ForCorsoDTO> lista = null;
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		Query query = null;
+		String q = "from ForCorsoDTO where data_corso between :_dateFrom and :_dateTo and  disabilitato = 0";
 		
-		query = session.createQuery("from ForCorsoDTO where data_corso between :_dateFrom and :_dateTo and  disabilitato = 0"); 
+			
+		if(id_cliente!=null) {
+			q =  "select distinct corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda =:_id_cliente and p.corso.visibile='1' and p.corso.disabilitato = 0 and p.corso.data_corso between :_dateFrom and :_dateTo";
+		}
+		if(id_sede!=null) {
+			q += " and p.partecipante.id_sede = :_id_sede";
+		}
+	
+		
+		Query query = session.createQuery(q); 
 				
 					
 		query.setParameter("_dateFrom", sdf.parse(dateFrom));
 		query.setParameter("_dateTo", sdf.parse(dateTo));
-			
+		if(id_cliente!=null) {
+			query.setParameter("_id_cliente",id_cliente);	
+		}
+		if(id_sede!=null) {
+			query.setParameter("_id_sede",id_sede);	
+		}
 			
 		lista = (ArrayList<ForCorsoDTO>) query.list();
 		
@@ -1332,11 +1346,26 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		return lista;
 	}
 
-	public static ArrayList<ForCorsoDTO> getListaCorsiCommessa(String commessa, Session session) {
+	public static ArrayList<ForCorsoDTO> getListaCorsiCommessa(String commessa, Integer id_cliente, Integer id_sede,  Session session) {
 		ArrayList<ForCorsoDTO> lista = null;
 		
-		Query query = session.createQuery("from ForCorsoDTO where commessa = :_commessa and disabilitato = 0");
+		String q = "from ForCorsoDTO where commessa = :_commessa and disabilitato = 0";
+		
+		if(id_cliente!=null) {
+			q = q =  "select distinct corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id_azienda =:_id_cliente and p.corso.visibile='1' and p.corso.disabilitato = 0 and p.corso.commessa :_commessa";
+		}
+		if(id_sede!=null) {
+			q += " and p.partecipante.id_sede = :_id_sede";
+		}
+		
+		Query query = session.createQuery(q);
 		query.setParameter("_commessa",commessa);	
+		if(id_cliente!=null) {
+			query.setParameter("_id_cliente",id_cliente);	
+		}
+		if(id_sede!=null) {
+			query.setParameter("_id_sede",id_sede);	
+		}
 
 					
 			lista = (ArrayList<ForCorsoDTO>) query.list();

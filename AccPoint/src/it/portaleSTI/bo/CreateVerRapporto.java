@@ -630,7 +630,8 @@ public class CreateVerRapporto {
 		report.addParameter("registro", misura.getId()+"_"+misura.getVerStrumento().getId()); //MANCA REGISTRO
 		//report.addParameter("procedura", "PT-020 Rev. E"); 
 		//report.addParameter("procedura", "PDI-001 Rev. E");
-		report.addParameter("procedura", "PDI-001 Rev. G");
+		//report.addParameter("procedura", "PDI-001 Rev. G");
+		report.addParameter("procedura", "PDI-001 Rev. H");
 		
 		if(utente.getFile_firma()!=null) {
 			if(firma!=null) {
@@ -668,10 +669,11 @@ public class CreateVerRapporto {
 		
 		if(misura.getTipoRisposta()==0) {
 			//report.addParameter("codifica", "MOD-PDI001-02 Rev. 0 del 21/12/2022");
-			report.addParameter("codifica", "MOD-PDI001-02 Rev. A del 15/07/2025");
+			//report.addParameter("codifica", "MOD-PDI001-02 Rev. A del 15/07/2025");
+			report.addParameter("codifica", "MOD-PDI001-02 Rev. B");
 		}else {
 			//report.addParameter("codifica", "MOD-PDI001-04 Rev. 0 del 21/12/2022");
-			report.addParameter("codifica", "MOD-PDI001-04 Rev. A del 15/07/2025");
+			report.addParameter("codifica", "MOD-PDI001-04 Rev. B");
 		}
 		
 		
@@ -758,10 +760,12 @@ public class CreateVerRapporto {
 		
 		if(misura.getTipoRisposta()==0) {
 			//reportP2.addParameter("codifica", "MOD-PDI001-02 Rev. 0 del 21/12/2022");
-			reportP2.addParameter("codifica", "MOD-PDI001-02 Rev. A del 15/07/2025");
+			//reportP2.addParameter("codifica", "MOD-PDI001-02 Rev. A del 15/07/2025");
+			reportP2.addParameter("codifica", "MOD-PDI001-02 Rev. B");
 		}else {
 			//reportP2.addParameter("codifica", "MOD-PDI001-04 Rev. 0 del 21/12/2022");
-			reportP2.addParameter("codifica", "MOD-PDI001-04 Rev. A del 15/07/2025");
+			//reportP2.addParameter("codifica", "MOD-PDI001-04 Rev. A del 15/07/2025");
+			reportP2.addParameter("codifica", "MOD-PDI001-04 Rev. B");
 		}
 				
 		File logo_accredia = new File(PivotTemplateLAT_Image.class.getResource("accredia.png").getPath());
@@ -1525,11 +1529,13 @@ public class CreateVerRapporto {
 			
 			if(misura.getTipoRisposta()==0) {
 				//codifica = "MOD-PDI001-03 Rev. 0 del 21/12/2022";
-				codifica ="MOD-PDI001-02 Rev. A del 15/07/2025";
+				//codifica ="MOD-PDI001-02 Rev. A del 15/07/2025";
+				codifica ="MOD-PDI001-02 Rev. B";
 			}else {
 				//codifica = "MOD-PDI001-05 Rev. 0 del 21/12/2022";
 				
-				codifica ="MOD-PDI001-04 Rev. A del 15/07/2025";
+				//codifica ="MOD-PDI001-04 Rev. A del 15/07/2025";
+				codifica ="MOD-PDI001-04 Rev. B";
 			}
 			
 			if(utente.getFile_firma()!=null) {

@@ -20,6 +20,8 @@ public class ForPartecipanteDTO {
 	private int duplicato;
 	private String note;
 	private String email;
+	private int disabilitato;
+	private int stato;
 	
 	public String getCf() {
 		return cf;
@@ -141,6 +143,22 @@ public class ForPartecipanteDTO {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public int getDisabilitato() {
+		return disabilitato;
+	}
+
+	public void setDisabilitato(int disabilitato) {
+		this.disabilitato = disabilitato;
+	}
+
+	public int getStato() {
+		return stato;
+	}
+
+	public void setStato(int stato) {
+		this.stato = stato;
 	}
 
 	

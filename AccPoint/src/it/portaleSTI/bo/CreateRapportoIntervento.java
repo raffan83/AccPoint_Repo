@@ -61,7 +61,7 @@ public class CreateRapportoIntervento {
 			report.setDataSource(new JREmptyDataSource());		
 			report.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
 			
-			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti.png");
+			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"sti.jpg");
 			if(imageHeader!=null) {
 				report.addParameter("logo",imageHeader);
 			
@@ -75,7 +75,7 @@ public class CreateRapportoIntervento {
 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 			String data = df.format(rapporto.getData_inizio())+"";
 			
-			if(rapporto.getData_fine()!=null) {
+			if(rapporto.getData_fine()!=null && !rapporto.getData_fine().equals("")) {
 				data += " - "+df.format(rapporto.getData_fine());
 			}
 			
@@ -115,11 +115,16 @@ public class CreateRapportoIntervento {
 			
 			JasperReportBuilder report_table = DynamicReports.report();
 			
+			
 			report_table.setTemplate(Templates.reportTemplate);
 			
 			report_table.setDataSource(new JREmptyDataSource());
 			
 			report_table.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
+			
+			if(listaMisure.size()>0) {
+				report_table.addPageHeader(cmp.text("RAPPORTO INTERVENTO - LISTA STRUMENTI"), cmp.verticalGap(15));
+				}
 			
 			report_table.addDetail(subreport);
 			

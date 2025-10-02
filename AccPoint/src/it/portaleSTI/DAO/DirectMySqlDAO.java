@@ -3127,6 +3127,8 @@ public static ArrayList<ForCorsoDTO> getListaCorsiDirect(Session session) throws
 				corso= new ForCorsoDTO();
 				corso.setId(rs.getInt("id"));
 				corso.setDescrizione(rs.getString("descrizione"));
+				corso.setCommessa(rs.getString("commessa"));
+				corso.setData_corso(rs.getDate("data_corso"));
 
 				
 				lista.add(corso);

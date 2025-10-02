@@ -57,7 +57,14 @@
        <property name="note" type="java.lang.String" >
             <column name="note" />
         </property>
+        
+         <property name="disabilitato" type="int" >
+            <column name="disabilitato" />
+        </property>
      
+      <property name="stato" type="int" >
+            <column name="stato" />
+        </property>
         
     </class>
 </hibernate-mapping>

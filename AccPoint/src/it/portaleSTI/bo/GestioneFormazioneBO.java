@@ -2035,10 +2035,10 @@ public class GestioneFormazioneBO {
 		
 	}
 
-	public static ArrayList<ForCorsoDTO> getListaCorsiDate(String dateFrom, String dateTo, Session session) throws HibernateException, ParseException {
+	public static ArrayList<ForCorsoDTO> getListaCorsiDate(String dateFrom, String dateTo, Integer id_cliente, Integer id_sede,Session session) throws HibernateException, ParseException {
 		
 		
-		return GestioneFormazioneDAO.getListaCorsiDate(dateFrom, dateTo, session);
+		return GestioneFormazioneDAO.getListaCorsiDate(dateFrom, dateTo, id_cliente, id_sede, session);
 	}
 
 	public static ForPiaPianificazioneDTO getPianificazioneFromId(int id, Session session) {
@@ -2293,9 +2293,9 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getMembriGruppoVittoria(id_gruppo, id_corso);
 	}
 
-	public static ArrayList<ForCorsoDTO> getlistaCorsiCommessa(String commessa, Session session) {
+	public static ArrayList<ForCorsoDTO> getlistaCorsiCommessa(String commessa, Integer id_cliente, Integer id_sede, Session session) {
 		// TODO Auto-generated method stub
-		return GestioneFormazioneDAO.getListaCorsiCommessa(commessa, session);
+		return GestioneFormazioneDAO.getListaCorsiCommessa(commessa, id_cliente, id_sede, session);
 	}
 
 	public static ArrayList<ForCorsoDTO> getListaCorsiInCorsoPartecipante(int id, Session session) {

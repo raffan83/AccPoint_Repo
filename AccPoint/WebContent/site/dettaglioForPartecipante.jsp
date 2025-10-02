@@ -87,7 +87,14 @@
                 </div>
                 </div>
                 </li>
-                
+                  <li class="list-group-item">
+                <div class="row">
+                     <div class="col-xs-12"> 
+                <b>Stato</b> <a class="pull-right"><c:if test="${partecipante.stato == 0 }">ATTIVO</c:if>
+	<c:if test="${partecipante.stato == 1}">NON ATTIVO</c:if></a>
+                </div>
+                </div>
+                </li>
                  <li class="list-group-item">
                 <div class="row">
                      <div class="col-xs-12"> 

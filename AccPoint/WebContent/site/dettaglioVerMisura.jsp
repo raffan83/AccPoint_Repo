@@ -2360,8 +2360,11 @@ sottoposto a verificazione</td>
 <c:when test="${lista_decentramento.get(0).tipoRicettore == 3}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_3.png" style="height:70px">
 </c:when>
-<c:otherwise>
+<c:when test="${lista_decentramento.get(0).tipoRicettore == 4}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_4.png" style="height:70px">
+</c:when>
+<c:otherwise>
+<img class="img" src="./images/tipo_ricettori_carico/tipo_5.png" style="height:70px">
 </c:otherwise>
 </c:choose>
 </div>

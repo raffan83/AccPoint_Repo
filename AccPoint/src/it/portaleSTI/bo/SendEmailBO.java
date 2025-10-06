@@ -1636,13 +1636,13 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
 
      // -------- Parte HTML --------
      MimeBodyPart htmlPart = new MimeBodyPart();
-     htmlPart.setContent("<html>" + messaggio +  "<br/><br/>"
-    	        + "<a href=\"cid:AggiungiAlCalendario\">"
-    	        + "<button style='padding:10px 15px; background:#007BFF; color:#fff; border:none; border-radius:5px;'>"
-    	        + "➕ Aggiungi al calendario</button></a></html>", "text/html; charset=UTF-8");
+     htmlPart.setContent("<html>" + messaggio +  "<br/><br/>", "text/html; charset=UTF-8");
+//    	        + "<a href=\"cid:AggiungiAlCalendario\">"
+//    	        + "<button style='padding:10px 15px; background:#007BFF; color:#fff; border:none; border-radius:5px;'>"
+//    	        + "➕ Aggiungi al calendario</button></a></html>", "text/html; charset=UTF-8");
 
      // -------- Parte ICS --------
-     SimpleDateFormat icsFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+     SimpleDateFormat icsFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
      icsFormat.setTimeZone(TimeZone.getTimeZone("Europe/Rome"));
 
      

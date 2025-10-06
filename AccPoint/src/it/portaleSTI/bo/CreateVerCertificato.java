@@ -581,10 +581,10 @@ public class CreateVerCertificato {
 		
 		if(misura.getTipoRisposta()==0) {
 			//report.addParameter("codifica", "MOD-PDI001-03 Rev. 0 del 21/12/2022");
-			report.addParameter("codifica", "MOD-PDI001-03 Rev. A del 15/07/2025 del 15/07/2025");
+			report.addParameter("codifica", "MOD-PDI001-03 Rev. A del 15/07/2025");
 		}else {
 			//report.addParameter("codifica", "MOD-PDI001-05 Rev. 0 del 21/12/2022");
-			report.addParameter("codifica", "MOD-PDI001-05 Rev. A del 15/07/2025 del 15/07/2025");
+			report.addParameter("codifica", "MOD-PDI001-05 Rev. A del 15/07/2025");
 		}
 		
 		

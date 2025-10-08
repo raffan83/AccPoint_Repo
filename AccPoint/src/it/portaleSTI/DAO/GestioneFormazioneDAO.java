@@ -1440,4 +1440,64 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		return lista;
 	}
 
+
+	public static ArrayList<ForCorsoDTO> getLisaCorsiFiltro(String range, String commessa, String categoria,Session session) {
+
+		ArrayList<ForCorsoDTO> lista = null;
+
+		String q = "from ForCorsoDTO where ";
+		
+		if(range!=null) {
+			q += "id between :_min and :_max and disabilitato = 0";
+		}
+		
+		if(commessa!=null) {
+			q += "commessa = :_commessa and disabilitato = 0";
+		}
+		
+		if(categoria!=null) {
+			q += "corso_cat.id = :_categoria and disabilitato = 0";
+		}
+		
+		Query query = session.createQuery(q);
+		if(range !=null) {
+			query.setParameter("_min", Integer.parseInt(range.split(";")[0]));
+			query.setParameter("_max", Integer.parseInt(range.split(";")[1]));
+		}
+		
+		if(commessa !=null) {
+			query.setParameter("_commessa", commessa);
+		}
+		if(categoria !=null) {
+			query.setParameter("_categoria", Integer.parseInt(categoria));
+		}
+		
+		
+		lista = (ArrayList<ForCorsoDTO>) query.list();
+		
+				
+		return lista;
+		
+	}
+
+
+	public static int getMaxIdCorso(Session session) {
+		
+		ArrayList<Integer> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = session.createQuery("select MAX(id) from ForCorsoDTO where disabilitato = 0");
+		
+		lista = (ArrayList<Integer>) query.list();
+		
+		int res = 0;
+		if(lista.size()>0) {
+			res=lista.get(0);	
+		}
+		
+				
+		return res;
+	}
+
 }

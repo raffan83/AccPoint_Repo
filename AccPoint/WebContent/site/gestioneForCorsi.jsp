@@ -43,7 +43,7 @@
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
      <div class="row">
 
-	<div class="col-xs-5">
+	<div class="col-xs-3">
 			 <div class="form-group">
 				 <label for="datarange" class="control-label">Filtra Data:</label>
 					<div class="col-md-10 input-group" >
@@ -53,7 +53,7 @@
 						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
 							 <span class="input-group-btn">
 				               <button type="button" class="btn btn-info btn-flat" onclick="filtraDate()">Cerca</button>
-				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				              
 				             </span>				                     
   					</div>  								
 			 </div>	
@@ -61,6 +61,52 @@
 			 
 
 	</div>
+	<div class="col-xs-3">
+	
+	<div class="form-group">
+  <label>Intervallo ID </label><br>
+  <input id="rangeSlider" type="text" name="range" value=""> <a class="btn btn-primary" onclick="filtraCorsi(1, null, null)">Cerca</a>
+</div>
+</div>
+<div class="col-xs-3">
+	  <label>Categoria </label>
+	    <div class="input-group" style="width:100%">
+ <select id="categoria_filtro" class="form-control select2" data-placeholder="Filtra categoria.." >
+ <option value=""></option>
+ <c:forEach items="${lista_corsi_cat }" var="categoria">
+    <c:if test="${categoria.id == categoria_filtro}">
+    <option value="${categoria.id }" selected>${categoria.descrizione }</option>
+    </c:if>
+        <c:if test="${categoria.id != categoria_filtro}">
+         <option value="${categoria.id }">${categoria.descrizione }</option>
+            </c:if>
+
+ </c:forEach>
+ </select >   <span class="input-group-btn"><a class="btn btn-primary"  onclick="filtraCorsi(null, null, '1')" >Cerca</a></span>
+ </div>
+ </div>
+<div class="col-xs-2">
+  <label>Commessa</label>
+  <div class="input-group" style="width:100%">
+    <select id="commessa_filtro" class="form-control select2" 
+            data-placeholder="Filtra commessa..." >
+      <option value=""></option>
+      <c:forEach items="${lista_commesse}" var="commessa">
+      <c:if test="${commessa.ID_COMMESSA == commessa_filtro}">
+      <option value="${commessa.ID_COMMESSA}" selected>${commessa.ID_COMMESSA}</option></c:if>
+      <c:if test="${commessa.ID_COMMESSA != commessa_filtro}">
+        <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option>
+        </c:if>
+      </c:forEach>
+    </select>
+    <span class="input-group-btn">
+      <a class="btn btn-primary" onclick="filtraCorsi(null, '1', null)">Cerca</a>
+    </span>
+  </div>
+</div>
+<div class="col-xs-1"> <button type="button" style="margin-top:25px" class="btn btn-primary btn-flat pull-right" onclick="resetDate()">Reset Filtri</button></div>
+	
+	
 	
 
 
@@ -743,6 +789,7 @@
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css"/>
 <style>
 
 
@@ -760,6 +807,7 @@
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
 <script type="text/javascript">
@@ -1257,10 +1305,40 @@ callAction("gestioneFormazione.do?action=lista_corsi");
 }
 
 
+function filtraCorsi(range, commessa, categoria){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	
+	var rangeSlider = $('#rangeSlider').bootstrapSlider('getValue');
+	
+	var str = ""
+	var r = null;
+	if(range!=null){
+		r = rangeSlider[0]+";"+rangeSlider[1];
+		str="&range="+r
+	}
+	
+	if(commessa!=null){
+		var commessa = $('#commessa_filtro').val()
+		str="&commessa="+commessa
+	}
+	
+	if(categoria!=null){
+		var categoria = $('#categoria_filtro').val()
+		str="&categoria="+categoria
+	}
+	
+	
+	callAction("gestioneFormazione.do?action=filtra_corsi"+str)
+}
+
 
 
 var admin = "";
 $(document).ready(function() {
+	
+	
  
 	//changeSkin();
 	admin="${admin}";
@@ -1270,6 +1348,19 @@ $(document).ready(function() {
 	if(admin == "1"){
 		col_azioni++;
 	}
+	
+	$('#rangeSlider').bootstrapSlider({
+		  min: 0,
+		  max: ${maxRangeTotal},
+		  step: 1,
+		  value: [${minRange}, ${maxRange}],
+		  tooltip: 'always'
+		});
+	  
+	  $('#rangeSlider').on('slide', function(ev){
+		    $('#minPrice').text(ev.value[0]);
+		    $('#maxPrice').text(ev.value[1]);
+		  });
 	
 	
      $('.dropdown-toggle').dropdown();

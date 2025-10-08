@@ -18,6 +18,8 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.GregorianCalendar;
@@ -531,20 +533,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					}
 					
 					lista_corsi = GestioneFormazioneBO.getListaCorsiDate(dateFrom, dateTo,null, null, session);
-				//	lista_corsi = GestioneFormazioneBO.getListaCorsi(session);
-					
-//					
-//					for (ForCorsoDTO corso : lista_corsi) {
-//						
-//						ForDocenteDTO docente = corso.getDocente();
-//						
-//						if(docente!=null) {
-//						corso.getListaDocenti().add(docente);
-//						
-//						session.update(corso);
-//						}
-//					}
-					
+
 					
 					ArrayList<ForCorsoCatDTO> lista_corsi_cat = GestioneFormazioneBO.getListaCategorieCorsi(session);
 					ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);			
@@ -555,9 +544,45 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					request.getSession().setAttribute("lista_commesse", lista_commesse);
 					request.getSession().setAttribute("dateTo", dateTo);
 					request.getSession().setAttribute("dateFrom", dateFrom);
+					
+					
 				}
-			
+
+				int minId = Collections.min(lista_corsi, Comparator.comparingInt(ForCorsoDTO::getId)).getId();
+				int maxId = Collections.max(lista_corsi, Comparator.comparingInt(ForCorsoDTO::getId)).getId();
+				
+				request.getSession().setAttribute("minRange", minId);
+				request.getSession().setAttribute("maxRange", maxId);	
+				
+				request.getSession().setAttribute("maxRangeTotal", GestioneFormazioneBO.getMaxIdCorso(session));	
+
+				request.getSession().setAttribute("commessa_filtro", null);	
+				request.getSession().setAttribute("categoria_filtro", null);	
 				request.getSession().setAttribute("lista_corsi", lista_corsi);				
+				
+				session.getTransaction().commit();
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneForCorsi.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("filtra_corsi")) {
+				
+				String range = request.getParameter("range");
+				String commessa = request.getParameter("commessa");
+				String categoria = request.getParameter("categoria");
+				
+				ArrayList<ForCorsoDTO> lista_corsi = GestioneFormazioneBO.getLisaCorsiFiltro(range, commessa,categoria, session);
+				
+				request.getSession().setAttribute("lista_corsi", lista_corsi);	
+				request.getSession().setAttribute("commessa_filtro", commessa);	
+				request.getSession().setAttribute("categoria_filtro", categoria);	
+				
+				if(range!=null) {
+					request.getSession().setAttribute("minRange", range.split(";")[0]);
+					request.getSession().setAttribute("maxRange", range.split(";")[1]);	
+				}
+				
 				
 				session.getTransaction().commit();
 				session.close();
@@ -3277,6 +3302,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						
 						pianificazione.setId_corso(Integer.parseInt(id_corso_esistente));
 						
+						ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso_esistente), session);
+						corso.setDescrizione(pianificazione.getDescrizione());
+						session.update(corso);
 					}
 					
 					

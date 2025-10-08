@@ -145,6 +145,7 @@ public class ModificaStrumento extends HttpServlet {
 				request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
 				request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
 				request.getSession().setAttribute("listaClassificazione",listaClassificazione);
+				request.getSession().setAttribute("strumento",dettaglio);
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/modificaStrumento.jsp");
 				dispatcher.forward(request,response);

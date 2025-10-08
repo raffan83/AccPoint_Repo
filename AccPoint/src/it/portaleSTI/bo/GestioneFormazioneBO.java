@@ -2334,5 +2334,15 @@ public class GestioneFormazioneBO {
 		
 	}
 	}
+
+	public static ArrayList<ForCorsoDTO> getLisaCorsiFiltro(String range, String commessa,String categoria, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneFormazioneDAO.getLisaCorsiFiltro(range, commessa, categoria, session);
+	}
+
+	public static int getMaxIdCorso(Session session) {
+		
+		return GestioneFormazioneDAO.getMaxIdCorso(session);
+	}
 	
 }

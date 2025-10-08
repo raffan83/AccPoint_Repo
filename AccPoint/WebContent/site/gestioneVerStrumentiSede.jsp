@@ -535,7 +535,7 @@
        		<select class="form-control select2" data-placeholder="Seleziona Sede..." id="sede_mod" name="sede_mod" style="width:100%" disabled required>
        		<option value=""></option>
        			<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
-       				<option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo }</option>
+       				<option value="${utl:encryptData(sede.__id)}_${utl:encryptData(sede.id__cliente_)}">${sede.descrizione} - ${sede.indirizzo }</option>
        			</c:forEach>
        		</select>
        	</div>

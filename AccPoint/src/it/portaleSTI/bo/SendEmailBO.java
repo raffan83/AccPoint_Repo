@@ -1581,7 +1581,6 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
      Session session = Session.getInstance(props, new Authenticator() {
          protected PasswordAuthentication getPasswordAuthentication() {
              return new PasswordAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
-        	// return new PasswordAuthentication("calver@accpoint.it", "bDBH34GM2!");
         	 
          }
      });
@@ -1592,8 +1591,8 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
 			destinatari+=docente.getEmail()+",";
 		}
 	}
- //	destinatari+="lisa.lombardozzi@crescosrl.net,";
- 	//destinatari+="segreteria@crescosrl.net";
+ 	destinatari+="lisa.lombardozzi@crescosrl.net,";
+ 	destinatari+="segreteria@crescosrl.net";
  
      MimeMessage message = new MimeMessage(session);
      message.setFrom(new InternetAddress("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl"));
@@ -1637,9 +1636,7 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
      // -------- Parte HTML --------
      MimeBodyPart htmlPart = new MimeBodyPart();
      htmlPart.setContent("<html>" + messaggio +  "<br/><br/>", "text/html; charset=UTF-8");
-//    	        + "<a href=\"cid:AggiungiAlCalendario\">"
-//    	        + "<button style='padding:10px 15px; background:#007BFF; color:#fff; border:none; border-radius:5px;'>"
-//    	        + "➕ Aggiungi al calendario</button></a></html>", "text/html; charset=UTF-8");
+
 
      // -------- Parte ICS --------
      SimpleDateFormat icsFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
@@ -1688,21 +1685,38 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
      sb.append("VERSION:2.0\r\n");
 
      
+     sb.append("BEGIN:VTIMEZONE\r\n");
+     sb.append("TZID:Europe/Rome\r\n");
+     sb.append("X-LIC-LOCATION:Europe/Rome\r\n");
+     sb.append("BEGIN:DAYLIGHT\r\n");
+     sb.append("TZOFFSETFROM:+0100\r\n");
+     sb.append("TZOFFSETTO:+0200\r\n");
+     sb.append("TZNAME:CEST\r\n");
+     sb.append("DTSTART:19700329T020000\r\n");
+     sb.append("RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU\r\n");
+     sb.append("END:DAYLIGHT\r\n");
+     sb.append("BEGIN:STANDARD\r\n");
+     sb.append("TZOFFSETFROM:+0200\r\n");
+     sb.append("TZOFFSETTO:+0100\r\n");
+     sb.append("TZNAME:CET\r\n");
+     sb.append("DTSTART:19701025T030000\r\n");
+     sb.append("RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU\r\n");
+     sb.append("END:STANDARD\r\n");
+     sb.append("END:VTIMEZONE\r\n");
+     
+     
      sb.append("BEGIN:VEVENT\r\n");
      sb.append("UID:meeting-20250924-001@mycalendar.app\r\n");
      sb.append("DTSTAMP:" + icsFormat.format(new Date()) + "\n");
-     sb.append("DTSTART:"+dtStart + "\r\n");
-     sb.append("DTEND:" +  dtEnd + "\r\n");
+     sb.append("DTSTART;TZID=Europe/Rome::"+dtStart + "\r\n");
+     sb.append("DTEND;TZID=Europe/Rome::" +  dtEnd + "\r\n");
 
-//     sb.append("DTSTAMP:20250924T120000Z\r\n");
-//     sb.append("DTSTART:20251001T140000Z\r\n");
-//     sb.append("DTEND:20251001T150000Z\r\n");
+
      sb.append("SUMMARY:PIANIFICAZIONE CORSO - DATA "+df.format(pianificazione.getData())+"\r\n");
      sb.append("DESCRIPTION:"+pianificazione.getDescrizione()+"\r\n");
      sb.append("LOCATION:"+pianificazione.getTipo().getDescrizione()+"\r\n");
      sb.append("ORGANIZER;CN=CRESCO:mailto:calver@accpoint.it\r\n");
-     //sb.append("ATTENDEE;CN=Lisa Lombardozzi;RSVP=TRUE:mailto:lisa.lombardozzi@crescosrl.net\r\n");
-     //sb.append("ATTENDEE;CN=Lisa Lombardozzi;RSVP=TRUE:mailto:"+InternetAddress.parse(destinatari)+"\r\n");
+
      sb.append("END:VEVENT\r\n");
      sb.append("END:VCALENDAR\r\n");
 

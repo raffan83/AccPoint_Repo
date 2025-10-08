@@ -581,6 +581,12 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				if(range!=null) {
 					request.getSession().setAttribute("minRange", range.split(";")[0]);
 					request.getSession().setAttribute("maxRange", range.split(";")[1]);	
+				}else {
+					int minId = Collections.min(lista_corsi, Comparator.comparingInt(ForCorsoDTO::getId)).getId();
+					int maxId = Collections.max(lista_corsi, Comparator.comparingInt(ForCorsoDTO::getId)).getId();
+					
+					request.getSession().setAttribute("minRange", minId);
+					request.getSession().setAttribute("maxRange", maxId);	
 				}
 				
 				

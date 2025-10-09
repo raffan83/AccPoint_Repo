@@ -23,8 +23,8 @@ public class SendEmailDeviceScheduler implements Job{
 			GestioneDeviceBO.sendEmailScadenzaSoftware();
 			GestioneScadenzarioItBO.updateStatoServizi();
 			GestioneScadenzarioItBO.sendEmailRemindServizi();
-			//GestioneDeviceBO.sendEmailAttivitaScadute();
-			//GestioneDeviceBO.sendEmailAttivitaScaduteSollecito();
+			GestioneDeviceBO.sendEmailAttivitaScadute();
+			GestioneDeviceBO.sendEmailAttivitaScaduteSollecito();
 			
 			
 			

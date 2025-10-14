@@ -282,6 +282,10 @@
 <mapping class="AmScScadenzarioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AmScScadenzarioDTO.hbm.xml"/>
 
 <mapping class="RapportoInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RapportoInterventoDTO.hbm.xml"/>
+
+<mapping class="OffOffertaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/OffOffertaDTO.hbm.xml"/>
+<mapping class="OffOffertaArticoloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/OffOffertaArticoloDTO.hbm.xml"/>
+<mapping class="OffOffertaFotoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/OffOffertaFotoDTO.hbm.xml"/>
 	
  	
   </session-factory>

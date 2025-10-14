@@ -11,10 +11,12 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portaleSTI.DTO.ArticoloMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ComuneDTO;
 import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 
 public class GestioneAnagraficaRemotaDAO {
 	
@@ -460,6 +462,128 @@ public class GestioneAnagraficaRemotaDAO {
 			lista = (ArrayList<ComuneDTO>) query.list();			
 			
 			return lista;
+		}
+
+		public static ArrayList<ClienteDTO> GestioneAnagraficaRemotaDAO(String codice_agente, Session session) throws Exception {
+			List<ClienteDTO> lista =new ArrayList<ClienteDTO>();
+			
+			Connection con=null;
+			PreparedStatement pst = null;
+			ResultSet rs=null;
+			
+			try {
+				con=ManagerSQLServer.getConnectionSQL();
+				pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN_AGENTI AS a JOIN BWT_ANAGEN AS b ON a.ID_ANAGEN = b.ID_ANAGEN WHERE a.CODAGE = ? ");
+				pst.setString(1, codice_agente);
+				rs=pst.executeQuery();
+				
+				ClienteDTO cliente=null;
+				
+				while(rs.next())
+				{
+					cliente= new ClienteDTO();
+					cliente.set__id(rs.getInt("ID_ANAGEN"));
+					cliente.setNome(rs.getString("NOME"));
+				
+					
+					lista.add(cliente);
+				}
+				
+			} catch (Exception e) {
+				
+				throw e;
+			//	e.printStackTrace();
+				
+			}finally
+			{
+				pst.close();
+				con.close();
+			}
+			
+			return (ArrayList<ClienteDTO>) lista;
+		}
+
+		public static ArrayList<ArticoloMilestoneDTO> getListaArticoliAgente(String codice_agente, Session session) throws Exception {
+
+			List<ArticoloMilestoneDTO> lista =new ArrayList<ArticoloMilestoneDTO>();
+			
+			Connection con=null;
+			PreparedStatement pst = null;
+			ResultSet rs=null;
+			
+			try {
+				con=ManagerSQLServer.getConnectionSQL();
+				pst=con.prepareStatement("SELECT articolo.ID_ANAART, articolo.DESCR, listino.PREZZO FROM BWT_ANAART as articolo JOIN PJT_LISTINO_CLIFOR AS listino ON articolo.ID_ANAART = listino.ID_ANAART  where STATO = 'USO' AND TB_GRUPPO IN \r\n" + 
+						"(SELECT TB_SERVIZIO FROM BWT_AGENTI_SERVIZI WHERE CODAGE = ?) ");
+				pst.setString(1, codice_agente);
+				rs=pst.executeQuery();
+				
+				ArticoloMilestoneDTO articolo=null;
+				
+				while(rs.next())
+				{
+					articolo= new ArticoloMilestoneDTO();
+					articolo.setID_ANAART(rs.getString("ID_ANAART"));
+					articolo.setDESCR(rs.getString("DESCR"));
+					articolo.setImporto(rs.getDouble("PREZZO"));
+				
+					
+					lista.add(articolo);
+				}
+				
+			} catch (Exception e) {
+				
+				throw e;
+			//	e.printStackTrace();
+				
+			}finally
+			{
+				pst.close();
+				con.close();
+			}
+			
+			return (ArrayList<ArticoloMilestoneDTO>) lista;
+			
+			
+		}
+
+		public static ArticoloMilestoneDTO getArticoloAgenteFromId(String id_articolo) throws Exception{
+
+		
+			Connection con=null;
+			PreparedStatement pst = null;
+			ResultSet rs=null;
+			ArticoloMilestoneDTO articolo=null;
+			
+			try {
+				con=ManagerSQLServer.getConnectionSQL();
+				pst=con.prepareStatement("SELECT articolo.ID_ANAART, articolo.DESCR, listino.PREZZO FROM BWT_ANAART as articolo JOIN PJT_LISTINO_CLIFOR AS listino ON articolo.ID_ANAART = listino.ID_ANAART  where articolo.ID_ANAART = ? ");
+				pst.setString(1, id_articolo);
+				rs=pst.executeQuery();
+				
+				
+				
+				while(rs.next())
+				{
+					articolo= new ArticoloMilestoneDTO();
+					articolo.setID_ANAART(rs.getString("ID_ANAART"));
+					articolo.setDESCR(rs.getString("DESCR"));
+					articolo.setImporto(rs.getDouble("PREZZO"));
+				
+									}
+				
+			} catch (Exception e) {
+				
+				throw e;
+			//	e.printStackTrace();
+				
+			}finally
+			{
+				pst.close();
+				con.close();
+			}
+			
+			return articolo;
 		}	
 		
 

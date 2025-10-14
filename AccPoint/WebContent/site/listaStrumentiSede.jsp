@@ -196,7 +196,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  				            
  				                      	<button type="button" class="btn btn-info" onclick="filtraStrumentiInScadenza('ultima')">Filtra Ultima Verifica</button>
 				                     
-				                   		 <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti(7226,<%=idCliente %>,<%=idSede %>)">Reset</button>
+				                   		 <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti(7226,'<%=idCliente %>','<%=idSede %>')">Reset</button>
  				                
  								</div>
   								</div>

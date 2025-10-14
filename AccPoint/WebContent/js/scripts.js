@@ -5620,6 +5620,8 @@ function eliminaCompany(){
 			  action = "annullati"
 		  }
 		  
+		  $('#posTab').html("")
+		  
 		  var dataString = "action="+action+"&id_cliente="+id_cliente+"&id_sede="+id_sede;
 		  exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(data,textStatus){
         	  $('#myModal').on('hidden.bs.modal', function (e) {
@@ -5658,6 +5660,12 @@ function eliminaCompany(){
     	   	 		$('#fuori_servizio').attr('disabled', false);
     	   	 		$('#in_servizio').attr('disabled', false);
     	   	 	}
+        		
+        		 setTimeout(function() {
+        			    if ($.fn.DataTable.isDataTable('#tabPM')) {
+        			      $('#tabPM').DataTable().draw(false);
+        			    }
+        			  }, 200);
         	  
           });
 		  

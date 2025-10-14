@@ -10,10 +10,12 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneAnagraficaRemotaDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
+import it.portaleSTI.DTO.ArticoloMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ComuneDTO;
 import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 
 public class GestioneAnagraficaRemotaBO {
 
@@ -116,6 +118,24 @@ public class GestioneAnagraficaRemotaBO {
 	public static ArrayList<ComuneDTO> getListaComuni(Session session) {
 		
 		return GestioneAnagraficaRemotaDAO.getListaComuni(session);
+	}
+
+
+	public static ArrayList<ClienteDTO> getListaClientiOfferte(String codice_agente, Session session) throws Exception {
+		// TODO Auto-generated method stub
+		return GestioneAnagraficaRemotaDAO.GestioneAnagraficaRemotaDAO( codice_agente,  session);
+	}
+
+
+	public static ArrayList<ArticoloMilestoneDTO> getListaArticoliAgente(String codice_agente, Session session) throws Exception {
+		// TODO Auto-generated method stub
+		return GestioneAnagraficaRemotaDAO.getListaArticoliAgente(codice_agente, session);
+	}
+
+
+	public static ArticoloMilestoneDTO getArticoloAgenteFromId(String string) throws Exception{
+		// TODO Auto-generated method stub
+		return GestioneAnagraficaRemotaDAO.getArticoloAgenteFromId(string);
 	}
 	
 }

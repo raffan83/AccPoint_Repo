@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.mail.EmailException;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -202,13 +203,14 @@ public class GestioneDeviceBO {
 		for (DevRegistroAttivitaDTO attivita : lista_scadenze) {
 			
 			if(attivita.getEmail_inviata()==0) {
-				SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getDescrizione(), testo_email.getReferenti());	
+				SendEmailBO.sendEmailScadenzaAttivitaDevice(attivita, testo_email.getDescrizione(), testo_email.getReferenti());
+				System.out.println("device " +attivita.getDevice().getCodice_interno());
 				attivita.setEmail_inviata(1);
 				cal.setTime(today);
 				cal.add(Calendar.DATE, 45);				
 				attivita.setData_invio_sollecito(cal.getTime());
 				session.update(attivita);
-				
+				TimeUnit.SECONDS.sleep(2);
 			}
 		}
 		session.getTransaction().commit();

@@ -23,6 +23,8 @@ import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
+import it.portaleSTI.DTO.OffOffertaArticoloDTO;
+import it.portaleSTI.DTO.OffOffertaDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -513,7 +515,16 @@ public class GestioneVerInterventoBO {
 		
 		return GestioneVerInterventoDAO.getListaInterventiCommessa(idCommessa,session);
 	}
-	
 
+	public static ArrayList<OffOffertaDTO> getListaOfferte(UtenteDTO utente, Session session) {
+		
+		return GestioneVerInterventoDAO.getListaOfferte( utente,  session) ;
+	}
+	
+	public static ArrayList<OffOffertaArticoloDTO> getListaOfferteArticoli(int id_offerta, Session session) {
+		
+		return GestioneVerInterventoDAO.getListaOfferteArticoli( id_offerta,  session) ;
+	}
+	
 
 }

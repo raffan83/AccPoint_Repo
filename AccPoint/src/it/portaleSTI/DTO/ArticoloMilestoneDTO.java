@@ -7,6 +7,7 @@ public class ArticoloMilestoneDTO {
 
 	private String ID_ANAART="";
 	private String DESCR="";
+	private Double importo;
 	private ArrayList<AccessorioDTO> listaAccessori = new ArrayList<AccessorioDTO>();
 	private ArrayList<TipologiaDotazioniDTO> listaDotazioni = new ArrayList<TipologiaDotazioniDTO>();
 	
@@ -33,6 +34,15 @@ public class ArticoloMilestoneDTO {
 	}
 	public void setListaDotazioni(ArrayList<TipologiaDotazioniDTO> listaDotazioni) {
 		this.listaDotazioni = listaDotazioni;
+	}
+	
+	
+	
+	public Double getImporto() {
+		return importo;
+	}
+	public void setImporto(Double importo) {
+		this.importo = importo;
 	}
 	public int checkAccessorio(String accessorio_id)
 	{

@@ -103,5 +103,9 @@
 		           <property name="area_interesse" type="int">
             <column name="area_interesse" />
         </property> 
+        
+          <property name="codice_agente" type="java.lang.String">
+            <column name="codice_agente" />
+         </property>
     </class>
 </hibernate-mapping>

@@ -45,6 +45,7 @@ public class UtenteDTO implements Serializable {
 	private String codiceTecnicoVerificazione;
 	private String consenso_commerciale;
 	private int area_interesse;
+	private String codice_agente;
 	/*
 	 * Non Abilitato = 0
 	 * Abilitato = 1
@@ -457,6 +458,20 @@ public class UtenteDTO implements Serializable {
 
 	public void setArea_interesse(int area_interesse) {
 		this.area_interesse = area_interesse;
+	}
+
+
+
+
+	public String getCodice_agente() {
+		return codice_agente;
+	}
+
+
+
+
+	public void setCodice_agente(String codice_agente) {
+		this.codice_agente = codice_agente;
 	}
 	
 	

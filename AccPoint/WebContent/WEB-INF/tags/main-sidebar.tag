@@ -309,6 +309,7 @@
             <% if(user.checkRuolo("AM") || !user.checkRuolo("VC")){%>
              <li><a href="#" onclick="callAction('gestioneVerLegalizzazioneBilance.do?action=lista',null,true);">Accertamento conformità</a></li>
              <li><a href="#" onclick="callAction('gestioneVerDocumenti.do?action=lista',null,true);">Documentazione Tecnica</a></li>
+             <li><a href="#" onclick="callAction('gestioneVerOfferte.do?action=lista_offerte',null,true);">Gestione Offerte</a></li>
             <%} %>
         
           </ul>
@@ -621,7 +622,7 @@
 			<li><a href="downloadCalver.do?action=dasmtarLat">DasmTarLAT v1.0.7</a></li>
 
 			<li><a href="downloadCalver.do?action=sicurettaElettrica">DasmTarSE v1.0.2</a></li>
-			<li><a href="downloadCalver.do?action=dasmtarVerificazione">DasmTarVER v3.5.1</a></li>
+			<li><a href="downloadCalver.do?action=dasmtarVerificazione">DasmTarVER v3.6.1</a></li>
 			<li><a href="downloadCalver.do?action=printLabel">PrintLabel v1.2.0</a></li>
 			<li><a href="downloadCalver.do?action=librerie">Librerie</a></li>
 			<li><a href="downloadCalver.do?action=convertitore">Convertitore</a></li>

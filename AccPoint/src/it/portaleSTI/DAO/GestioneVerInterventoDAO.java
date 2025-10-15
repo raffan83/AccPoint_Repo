@@ -10,6 +10,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.OffOffertaArticoloDTO;
+import it.portaleSTI.DTO.OffOffertaDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
@@ -185,4 +187,37 @@ public class GestioneVerInterventoDAO {
 		return lista;
 	}
 
+	public static ArrayList<OffOffertaDTO> getListaOfferte(UtenteDTO utente, Session session) {
+		ArrayList<OffOffertaDTO> lista = null;
+
+		String str = "";
+		if(!utente.isTras()) {
+			str = " where utente = :_utente";
+		}
+
+		Query query = session.createQuery("from OffOffertaDTO" +str);
+		if(!utente.isTras()) {
+			query.setParameter("_utente", utente.getCodice_agente());
+		}
+	    		
+	    lista = (ArrayList<OffOffertaDTO>)query.list();
+	    
+	    
+		return lista;
+	}
+	
+	public static ArrayList<OffOffertaArticoloDTO> getListaOfferteArticoli(int id_offerta, Session session) {
+		ArrayList<OffOffertaArticoloDTO> lista = null;
+
+
+		Query query = session.createQuery("from OffOffertaArticoloDTO where offerta.id = :_id" );
+	
+			query.setParameter("_id", id_offerta);
+	
+	    		
+	    lista = (ArrayList<OffOffertaArticoloDTO>)query.list();
+	    
+	    
+		return lista;
+	}
 }

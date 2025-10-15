@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.OffOffertaArticoloDTO" table="off_offerta_articolo">
+	
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+            <many-to-one name="offerta" class="it.portaleSTI.DTO.OffOffertaDTO" fetch="join" lazy="false">
+            <column name="id_offerta" />
+        </many-to-one>
+
+      
+         <property name="articolo" type="java.lang.String">
+            <column name="id_articolo" />
+        </property> 
+       <property name="quantita" type="java.lang.Double">
+            <column name="quantita" />
+        </property>
+       <property name="sconto" type="java.lang.Double">
+            <column name="sconto" />
+        </property>
+          <property name="importo" type="java.lang.Double">
+            <column name="importo" />
+        </property>
+    
+              
+	</class>
+</hibernate-mapping>

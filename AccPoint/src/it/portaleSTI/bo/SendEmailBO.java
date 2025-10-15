@@ -1160,7 +1160,7 @@ String[] to = referenti.split(";");
 for (String string : to) {
 	email.addTo(string);
 }
-	
+
 
 	  email.setFrom("calver@accpoint.it", "Calver");
 	  File image = new File(Costanti.PATH_FOLDER+"LoghiCompany\\logo_calver_v2.png");

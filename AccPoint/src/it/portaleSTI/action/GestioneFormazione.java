@@ -3828,7 +3828,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						}						
 										
 					}
-					
+					 if(docenti.replaceAll(";", "").length()>0) {
 					
 					HashMap<String,ArrayList<String>> lista_fasi = GestioneAssegnazioneAttivitaBO.getListaFasiCommessa(docenti,id_docenti);
 					
@@ -3846,7 +3846,16 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					myObj.add("lista_fasi", g.toJsonTree(lista_fasi));
 					
 		        	out.print(myObj);
-					
+					 }else 
+					 {
+						 PrintWriter out = response.getWriter();
+							
+						 HashMap<String,ArrayList<String>> lista_fasi= new HashMap<>();
+						 Gson g = new Gson();
+							myObj.addProperty("success", true);
+							myObj.add("lista_fasi", g.toJsonTree(lista_fasi));
+							out.print(myObj);
+					 }
 				}
 			
 				else if(action.equals("ore_fatturate")) {

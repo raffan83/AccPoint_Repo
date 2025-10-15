@@ -221,8 +221,8 @@
               
               
               </div>
-           <div class="col-xs-6 " style="margin-top:25px" id = "content_agenda">
-        <label >Aggiungi evento ad agenda docente</label>
+           <div class="col-xs-6 "  id = "content_agenda">
+        <label >Aggiungi evento ad agenda Milestone</label>
           <input class="form-control "   type="checkbox" id="agenda" name="agenda" style="width:100%">
       
        </div>

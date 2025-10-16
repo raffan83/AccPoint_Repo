@@ -1706,7 +1706,7 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
      
      
      sb.append("BEGIN:VEVENT\r\n");
-     sb.append("UID:meeting-20250924-001@mycalendar.app\r\n");
+     sb.append("UID:meeting-"+pianificazione.getId()+"-001@mycalendar.app\r\n");
      sb.append("DTSTAMP:" + icsFormat.format(new Date()) + "\n");
      sb.append("DTSTART;TZID=Europe/Rome:"+dtStart + "\r\n");
      sb.append("DTEND;TZID=Europe/Rome:" +  dtEnd + "\r\n");

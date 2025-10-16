@@ -3237,10 +3237,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					CommessaDTO commessa = GestioneCommesseDAO.getCommessaById(id_commessa);
 					
-					if(check_mail!=null && check_mail.equals("1")) {
-						SendEmailBO.sendEmailPianificazione(pianificazione, commessa, request.getServletContext());
-						pianificazione.setEmail_inviata(1);
-					}
+				
 					
 					if(check_agenda!=null && check_agenda.equals("1")) {
 						for (ForDocenteDTO docente : pianificazione.getListaDocenti()) {
@@ -3315,6 +3312,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					
 					session.saveOrUpdate(pianificazione);
+					
+					if(check_mail!=null && check_mail.equals("1")) {
+						SendEmailBO.sendEmailPianificazione(pianificazione, commessa, request.getServletContext());
+						pianificazione.setEmail_inviata(1);
+					}
+					
+					
 					session.getTransaction().commit();
 					session.close();
 					

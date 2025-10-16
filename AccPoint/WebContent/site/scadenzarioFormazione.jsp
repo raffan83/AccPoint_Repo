@@ -372,8 +372,66 @@ $(document).ready(function() {
 
 		
 		array_buttons.push( {
-	            extend: 'excel',
-	            text: 'Esporta Excel'  	                   
+	            extend: 'excelHtml5',
+	            text: 'Esporta Excel',
+	            customize: function(xlsx) {
+	  	        	  
+	  	        	table.rows().nodes().each( function ( index ) {
+	  	        	    var row = index;	  	        	 
+	  	        	    
+	  	        	    var color = $(index).css("background-color");
+	  	        	    
+	  	        	    var text = {};
+	  	        	    
+	  	        	    if(color == "rgb(250, 137, 137)" || color == "rgb(248, 242, 109)"){
+	  	        	    	text.corso = table.cell(index, 0).data();
+	  	        	    	
+	  	        	    	
+	  	        	    	text.partecipante = stripHtml(table.cell(index, 2).data()).trim();
+	  	        	    	text.color = color;
+	  	        	    	array_color.push(text);
+	  	        	    }
+	  	        	  	
+	  	        	   
+	  	        	} );
+	  	        	  
+	                  var sheet = xlsx.xl.worksheets['sheet1.xml'];
+	                  
+	                  
+	                  $('row', sheet).each( function (row) {
+	                	  
+	                	  if($('v', this)[0]!=null){
+	                		  
+	                		  var id_corso = $('c[r^="A"]', this).text();
+	                		  var partecipante = $('c[r^="C"]', this).text();
+	                	  
+	                	  for(var i = 0; i<array_color.length; i++){
+	                		 
+	                		  
+	                		  
+		                		
+		                			if(id_corso == array_color[i].corso && partecipante == array_color[i].partecipante){
+		                			
+		                			  
+		                			  if(array_color[i].color == "rgb(250, 137, 137)"){
+		                				  $('c', this).attr('s', '35');
+		                			  }else if(array_color[i].color == "rgb(248, 242, 109)"){
+		                				  $('c', this).attr('s', '45');
+		                			  }
+			                				 
+			                			
+			               
+			                		  }
+		                		  
+	                		  
+	                				                		 
+	                	  }
+		                		  }
+	   
+	    
+	                        });
+	  
+	 			  }
 			  });
 		
 	}else{

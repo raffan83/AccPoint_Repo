@@ -163,7 +163,7 @@ public class ScaricaEtichetta extends HttpServlet {
 			else 
 			{
 				report.addParameter("labDataProVerifica","Pross. Verifica");
-				if(misura.getStrumento().getTipoRapporto().getId() == 7201 && misura.getStrumento().getDataProssimaVerifica()!=null) {
+				if((misura.getStrumento().getTipoRapporto().getId() == 7201 || misura.getStrumento().getTipoRapporto().getId() == 7203) && misura.getStrumento().getDataProssimaVerifica()!=null) {
 					if(conf!=null &&conf.getFmt_data_mese_anno().equals("S")) {
 						LocalDate locDataMisura = misura.getStrumento().getDataProssimaVerifica().toLocalDate();
 

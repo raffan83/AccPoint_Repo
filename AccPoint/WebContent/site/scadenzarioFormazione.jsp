@@ -93,8 +93,21 @@
 </div>
 
 <div class="row">
-<div class="col-xs-12">
-
+<div class="col-sm-12">
+<div class="legend">
+    <div class="legend-item">
+        <div class="legend-color" ></div>
+        <div class="legend-label">IN CORSO</div>
+    </div>
+    <div class="legend-item">
+        <div class="legend-color" style="background-color: #F8F26D;"></div>
+        <div class="legend-label">AGGIORNATO</div>
+    </div>
+    <div class="legend-item">
+        <div class="legend-color" style="background-color: #FA8989;"></div>
+        <div class="legend-label">SCADUTO \ IN SCADENZA</div>
+    </div>
+</div>
 
 
 </div>
@@ -162,9 +175,27 @@
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${corso_part.corso.data_scadenza}" /></td>
 	<td>${corso_part.corso.corso_cat.frequenza }</td>
 	<td>${corso_part.partecipante.nome_azienda}</td>
-	<td><c:if test="${corso_part.partecipante.id_sede!=0}">${corso_part.partecipante.nome_sede}</c:if></td>
+	<td>
+  <c:choose>
+    <c:when test="${corso_part.partecipante.id_sede != 0}">
+      ${corso_part.partecipante.nome_sede}
+    </c:when>
+    <c:otherwise>
+     &nbsp;
+    </c:otherwise>
+  </c:choose>
+</td>
 
-	<td>${corso_part.corso.tipologia }</td>
+	<td>
+  <c:choose>
+    <c:when test="${not empty corso_part.corso.tipologia}">
+      ${corso_part.corso.tipologia}
+    </c:when>
+    <c:otherwise>
+     &nbsp;
+    </c:otherwise>
+  </c:choose>
+</td>
 	<td><c:if test="${corso_part.partecipante.stato == 0 }">ATTIVO</c:if>
 	<c:if test="${corso_part.partecipante.stato == 1}">NON ATTIVO</c:if>
 	</td>
@@ -239,7 +270,35 @@
 
 .table th {
     background-color: #3c8dbc !important;
-  }</style>
+  }
+  
+  .legend {
+  display: flex;
+  
+
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+   border: 1px solid #000; /* bordo nero interno ai quadratini */
+}
+
+.legend-label {
+  margin-left: 5px;
+}
+  
+  
+  
+  
+  
+  </style>
 
 
 </jsp:attribute>
@@ -374,64 +433,73 @@ $(document).ready(function() {
 		array_buttons.push( {
 	            extend: 'excelHtml5',
 	            text: 'Esporta Excel',
-	            customize: function(xlsx) {
-	  	        	  
-	  	        	table.rows().nodes().each( function ( index ) {
-	  	        	    var row = index;	  	        	 
-	  	        	    
-	  	        	    var color = $(index).css("background-color");
-	  	        	    
-	  	        	    var text = {};
-	  	        	    
-	  	        	    if(color == "rgb(250, 137, 137)" || color == "rgb(248, 242, 109)"){
-	  	        	    	text.corso = table.cell(index, 0).data();
-	  	        	    	
-	  	        	    	
-	  	        	    	text.partecipante = stripHtml(table.cell(index, 2).data()).trim();
-	  	        	    	text.color = color;
-	  	        	    	array_color.push(text);
-	  	        	    }
-	  	        	  	
-	  	        	   
-	  	        	} );
-	  	        	  
-	                  var sheet = xlsx.xl.worksheets['sheet1.xml'];
-	                  
-	                  
-	                  $('row', sheet).each( function (row) {
-	                	  
-	                	  if($('v', this)[0]!=null){
-	                		  
-	                		  var id_corso = $('c[r^="A"]', this).text();
-	                		  var partecipante = $('c[r^="C"]', this).text();
-	                	  
-	                	  for(var i = 0; i<array_color.length; i++){
-	                		 
-	                		  
-	                		  
-		                		
-		                			if(id_corso == array_color[i].corso && partecipante == array_color[i].partecipante){
-		                			
-		                			  
-		                			  if(array_color[i].color == "rgb(250, 137, 137)"){
-		                				  $('c', this).attr('s', '35');
-		                			  }else if(array_color[i].color == "rgb(248, 242, 109)"){
-		                				  $('c', this).attr('s', '45');
-		                			  }
-			                				 
-			                			
-			               
-			                		  }
-		                		  
-	                		  
-	                				                		 
-	                	  }
-		                		  }
-	   
-	    
-	                        });
-	  
-	 			  }
+	  	          customize: function (xlsx) {
+	    	            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+	    	            var styles = xlsx.xl['styles.xml'];
+	    	            var array_color = [];
+
+	    	            // STEP 1: Mappa i colori visibili nella tabella (HTML)
+	    	            table.rows({ order: 'applied', search: 'applied' }).every(function (rowIdx, tableLoop, rowLoop) {
+	    	                var rowNode = this.node();
+
+	    	                var color = $(rowNode).css("background-color");
+
+	    	                var text = {};
+
+	    	                if (color == "rgb(250, 137, 137)" || color == "rgb(248, 242, 109)") {
+	    	                    text.corso = table.cell(rowIdx, 0).data();
+	    	                    text.partecipante = stripHtml(table.cell(rowIdx, 2).data()).trim().toUpperCase();
+	    	                    text.color = color;
+	    	                    array_color.push(text);
+	    	                }
+	    	            });
+
+	    	            // STEP 2: Aggiungi colori a <fills>
+	    	            $('fills', styles).append(
+	    	                '<fill><patternFill patternType="solid"><fgColor rgb="FFFA8989"/><bgColor indexed="64"/></patternFill></fill>' +  // rosso
+	    	                '<fill><patternFill patternType="solid"><fgColor rgb="FFF8F26D"/><bgColor indexed="64"/></patternFill></fill>'    // giallo
+	    	            );
+
+	    	            // STEP 3: Aggiungi un bordo semplice a <borders>
+	    	            $('borders', styles).append(
+	    	                '<border>' +
+	    	                    '<left style="thin"><color auto="1"/></left>' +
+	    	                    '<right style="thin"><color auto="1"/></right>' +
+	    	                    '<top style="thin"><color auto="1"/></top>' +
+	    	                    '<bottom style="thin"><color auto="1"/></bottom>' +
+	    	                    '<diagonal/>' +
+	    	                '</border>'
+	    	            );
+
+	    	            // STEP 4: Calcola i nuovi indici di fill e border
+	    	            var totalFills = $('fills fill', styles).length;
+	    	            var totalBorders = $('borders border', styles).length;
+	    	            var redFillId = totalFills - 2;
+	    	            var yellowFillId = totalFills - 1;
+	    	            var borderId = totalBorders - 1;
+
+	    	            // STEP 5: Aggiungi due nuovi stili <xf> con fill + bordi
+	    	            $('cellXfs', styles).append(
+	    	                '<xf xfId="0" applyFill="1" applyBorder="1" fillId="' + redFillId + '" borderId="' + borderId + '" fontId="0" numFmtId="0"/>' +
+	    	                '<xf xfId="0" applyFill="1" applyBorder="1" fillId="' + yellowFillId + '" borderId="' + borderId + '" fontId="0" numFmtId="0"/>'
+	    	            );
+
+	    	            var redStyleIndex = $('cellXfs xf', styles).length - 2;
+	    	            var yellowStyleIndex = $('cellXfs xf', styles).length - 1;
+
+	    	            // STEP 6: Applica lo stile alle righe Excel corrispondenti
+	    	            $('row', sheet).each(function () {
+	    	            	var id_corso = String($('c[r^="A"]', this).text()).trim();
+	    	            	var partecipante = String($('c[r^="C"]', this).text()).trim().toUpperCase();
+
+	    	                array_color.forEach(function (entry) {
+	    	                    if (entry.corso == id_corso && partecipante == entry.partecipante) {
+	    	                        var styleIndex = entry.color === "rgb(250, 137, 137)" ? redStyleIndex : yellowStyleIndex;
+	    	                        $('c', this).attr('s', styleIndex);
+	    	                    }
+	    	                }, this);
+	    	            });
+	    	        }
 			  });
 		
 	}else{
@@ -442,64 +510,74 @@ $(document).ready(function() {
 			 {
   	            extend: 'excelHtml5',
   	            text: 'Esporta Excel',
-  	          customize: function(xlsx) {
-  	        	  
-  	        	table.rows().nodes().each( function ( index ) {
-  	        	    var row = index;	  	        	 
-  	        	    
-  	        	    var color = $(index).css("background-color");
-  	        	    
-  	        	    var text = {};
-  	        	    
-  	        	    if(color == "rgb(250, 137, 137)" || color == "rgb(248, 242, 109)"){
-  	        	    	text.corso = table.cell(index, 0).data();
-  	        	    	
-  	        	    	
-  	        	    	text.partecipante = stripHtml(table.cell(index, 2).data()).trim();
-  	        	    	text.color = color;
-  	        	    	array_color.push(text);
-  	        	    }
-  	        	  	
-  	        	   
-  	        	} );
-  	        	  
-                  var sheet = xlsx.xl.worksheets['sheet1.xml'];
-                  
-                  
-                  $('row', sheet).each( function (row) {
-                	  
-                	  if($('v', this)[0]!=null){
-                		  
-                		  var id_corso = $('c[r^="A"]', this).text();
-                		  var partecipante = $('c[r^="C"]', this).text();
-                	  
-                	  for(var i = 0; i<array_color.length; i++){
-                		 
-                		  
-                		  
-	                		
-	                			if(id_corso == array_color[i].corso && partecipante == array_color[i].partecipante){
-	                			
-	                			  
-	                			  if(array_color[i].color == "rgb(250, 137, 137)"){
-	                				  $('c', this).attr('s', '35');
-	                			  }else if(array_color[i].color == "rgb(248, 242, 109)"){
-	                				  $('c', this).attr('s', '45');
-	                			  }
-		                				 
-		                			
-		               
-		                		  }
-	                		  
-                		  
-                				                		 
-                	  }
-	                		  }
-   
-    
-                        });
-  
- 			  }
+  	          customize: function (xlsx) {
+  	            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+  	            var styles = xlsx.xl['styles.xml'];
+  	            var array_color = [];
+
+  	            // STEP 1: Mappa i colori visibili nella tabella (HTML)
+  	          table.rows({ order: 'applied', search: 'applied' }).every(function (rowIdx, tableLoop, rowLoop) {
+  	            var rowNode = this.node();
+
+  	            var color = $(rowNode).css("background-color");
+
+  	            var text = {};
+
+  	            if (color == "rgb(250, 137, 137)" || color == "rgb(248, 242, 109)") {
+  	                text.corso = table.cell(rowIdx, 0).data();
+  	                text.partecipante = stripHtml(table.cell(rowIdx, 2).data()).trim().toUpperCase();
+  	                text.color = color;
+  	                array_color.push(text);
+  	            }
+  	        });
+
+  	            // STEP 2: Aggiungi colori a <fills>
+  	            $('fills', styles).append(
+  	                '<fill><patternFill patternType="solid"><fgColor rgb="FFFA8989"/><bgColor indexed="64"/></patternFill></fill>' +  // rosso
+  	                '<fill><patternFill patternType="solid"><fgColor rgb="FFF8F26D"/><bgColor indexed="64"/></patternFill></fill>'    // giallo
+  	            );
+
+  	            // STEP 3: Aggiungi un bordo semplice a <borders>
+  	            $('borders', styles).append(
+  	                '<border>' +
+  	                    '<left style="thin"><color auto="1"/></left>' +
+  	                    '<right style="thin"><color auto="1"/></right>' +
+  	                    '<top style="thin"><color auto="1"/></top>' +
+  	                    '<bottom style="thin"><color auto="1"/></bottom>' +
+  	                    '<diagonal/>' +
+  	                '</border>'
+  	            );
+
+  	            // STEP 4: Calcola i nuovi indici di fill e border
+  	            var totalFills = $('fills fill', styles).length;
+  	            var totalBorders = $('borders border', styles).length;
+  	            var redFillId = totalFills - 2;
+  	            var yellowFillId = totalFills - 1;
+  	            var borderId = totalBorders - 1;
+
+  	            // STEP 5: Aggiungi due nuovi stili <xf> con fill + bordi
+  	            $('cellXfs', styles).append(
+  	                '<xf xfId="0" applyFill="1" applyBorder="1" fillId="' + redFillId + '" borderId="' + borderId + '" fontId="0" numFmtId="0"/>' +
+  	                '<xf xfId="0" applyFill="1" applyBorder="1" fillId="' + yellowFillId + '" borderId="' + borderId + '" fontId="0" numFmtId="0"/>'
+  	            );
+
+  	            var redStyleIndex = $('cellXfs xf', styles).length - 2;
+  	            var yellowStyleIndex = $('cellXfs xf', styles).length - 1;
+
+  	            // STEP 6: Applica lo stile alle righe Excel corrispondenti
+  	            $('row', sheet).each(function () {
+  	            	var id_corso = String($('c[r^="A"]', this).text()).trim();
+  	            	var partecipante = String($('c[r^="C"]', this).text()).trim().toUpperCase();
+
+  	                array_color.forEach(function (entry) {
+  	                    if (entry.corso == id_corso && partecipante == entry.partecipante) {
+  	                        var styleIndex = entry.color === "rgb(250, 137, 137)" ? redStyleIndex : yellowStyleIndex;
+  	                        $('c', this).attr('s', styleIndex);
+  	                    }
+  	                }, this);
+  	            });
+  	        }
+
 			 });
 	}
 	

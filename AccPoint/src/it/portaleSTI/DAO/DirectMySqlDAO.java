@@ -46,6 +46,7 @@ import it.portaleSTI.DTO.DevSoftwareDTO;
 import it.portaleSTI.DTO.DevTipoLicenzaDTO;
 import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
+import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
@@ -4146,6 +4147,86 @@ public static ForPartecipanteRuoloCorsoDTO getAttestato(String cf, int id_corso)
     }
 
     return res;
+}
+
+
+
+public static Map<Integer, List<Integer>> getListaCorsiSuccessiviCategoria(String date,
+		int id_categoria, int id_corso, Session session) throws Exception {
+	Connection con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+
+    ArrayList<ForPartecipanteRuoloCorsoDTO> res =  new ArrayList<ForPartecipanteRuoloCorsoDTO>();
+    Map<Integer, List<Integer>> corsoPartecipantiMap = new HashMap<>();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    try {
+        con = getConnection();
+        
+        java.sql.Date sql1 = new java.sql.Date(sdf.parse(date).getTime());
+        //String query = "SELECT * FROM for_partecipante_ruolo_corso JOIN for_corso on for_partecipante_ruolo_corso.id_corso = for_corso.id WHERE for_corso.data_scadenza > ? and for_corso.id_corso = ? and for_corso.disabilitato = 0";
+        
+        
+
+//        String query = "SELECT for_partecipante_ruolo_corso.id_partecipante FROM for_partecipante_ruolo_corso JOIN for_corso ON for_partecipante_ruolo_corso.id_corso = for_corso.id WHERE for_corso.data_scadenza > ?"+
+//			"AND for_corso.disabilitato = 0 "+
+//			"AND for_corso.id_corso = ? "+
+//			"AND id_partecipante IN (SELECT id_partecipante FROM for_partecipante_ruolo_corso WHERE id_corso = ?) "+
+//			"AND for_partecipante_ruolo_corso.id_corso != ?";
+        
+        String query = " SELECT DISTINCT p1.id_partecipante, p1.id_corso "+
+        "FROM for_partecipante_ruolo_corso p1 "+
+       " JOIN for_corso c1 ON p1.id_corso = c1.id "+
+       " JOIN for_partecipante_ruolo_corso p2 ON p1.id_partecipante = p2.id_partecipante "+
+       " JOIN for_corso c2 ON p2.id_corso = c2.id "+
+       " WHERE c1.id_corso = c2.id_corso "+
+       " AND c1.id <> c2.id"+
+       "   AND c2.data_scadenza > c1.data_scadenza "+
+       "   AND c2.data_scadenza > ? "+  
+        "  AND c1.disabilitato = 0 "+
+       "   AND c2.disabilitato = 0 ";
+        
+        pst = con.prepareStatement(query);
+        pst.setDate(1, sql1);
+        //pst.setInt(2, id_categoria);
+      //  pst.setInt(3, id_corso);
+       // pst.setInt(4, id_corso);
+
+        rs = pst.executeQuery();
+
+        while (rs.next()) {
+//        	ForPartecipanteRuoloCorsoDTO prc = new ForPartecipanteRuoloCorsoDTO();
+//            ForPartecipanteDTO p = new ForPartecipanteDTO();
+//        	ForCorsoDTO c = new ForCorsoDTO();
+//            p.setId(rs.getInt("p1.id_partecipante"));
+//           c.setId(rs.getInt("p1.id_corso"));
+//            ForCorsoCatDTO cat = new ForCorsoCatDTO();
+//           cat.setId(rs.getInt("c1.id_corso"));
+//            c.setCorso_cat(cat);
+////            c.setData_scadenza(rs.getDate("data_scadenza"));
+//            prc.setPartecipante(p);		
+//            prc.setCorso(c);
+//            
+//        	//int id = rs.getInt("id_partecipante");
+//            res.add(prc);
+//            
+            int idCorso = rs.getInt("p1.id_corso");
+            int idPartecipante = rs.getInt("p1.id_partecipante");
+            corsoPartecipantiMap
+            .computeIfAbsent(idCorso, k -> new ArrayList<>())
+            .add(idPartecipante);
+          
+        }
+
+    } catch (Exception e) {
+        throw e;
+    } finally {
+        if (rs != null) rs.close();
+        if (pst != null) pst.close();
+        if (con != null) con.close();
+    }
+
+    return corsoPartecipantiMap;
 }
 
 }

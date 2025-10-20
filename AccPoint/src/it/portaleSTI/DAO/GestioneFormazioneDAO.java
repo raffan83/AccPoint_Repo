@@ -614,12 +614,16 @@ public class GestioneFormazioneDAO {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		Query query = session.createQuery("from ForCorsoDTO where data_scadenza > :_date and disabilitato = 0");	
-		query.setParameter("_date", sdf.parse(date));
-			
-			
-		lista = (ArrayList<ForCorsoDTO>) query.list();
+//		Query query = session.createQuery("from ForCorsoDTO where data_scadenza > :_date and disabilitato = 0");	
+//		query.setParameter("_date", sdf.parse(date));
 		
+		Query query = session.createQuery(" select distinct c  from ForCorsoDTO c	left join fetch c.listaPartecipanti p  where c.data_scadenza > :_date and c.disabilitato = 0");
+
+			query.setParameter("_date", sdf.parse(date));
+		lista = (ArrayList<ForCorsoDTO>) query.list();
+			
+			
+	
 				
 		return lista;
 	}
@@ -1498,6 +1502,25 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		
 				
 		return res;
+	}
+
+
+
+
+
+	public static ArrayList<ForPartecipanteRuoloCorsoDTO> getListaCorsiSuccessiviCategoria(String date, int id_categoria,Session session) throws Exception, ParseException {
+ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = session.createQuery("from ForPartecipanteRuoloCorsoDTO where corso.data_scadenza > :_date and corso.corso_cat.id = :_id_categoria and corso.disabilitato = 0");	
+		query.setParameter("_date", sdf.parse(date));
+		query.setParameter("_id_categoria", id_categoria);
+
+			query.setParameter("_date", sdf.parse(date));
+		lista = (ArrayList<ForPartecipanteRuoloCorsoDTO>) query.list();
+			
+		return lista;
 	}
 
 }

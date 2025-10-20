@@ -2344,5 +2344,10 @@ public class GestioneFormazioneBO {
 		
 		return GestioneFormazioneDAO.getMaxIdCorso(session);
 	}
+
+	public static Map<Integer, List<Integer>> getListaCorsiSuccessiviCategoria(String dateFrom, int id_categoria,int id_corso, Session session) throws ParseException, Exception {
+		// TODO Auto-generated method stub
+		return DirectMySqlDAO. getListaCorsiSuccessiviCategoria(dateFrom, id_categoria, id_corso,session);
+	}
 	
 }

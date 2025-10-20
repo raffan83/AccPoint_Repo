@@ -228,7 +228,7 @@ function cambiaStatoIp(idStrumento){
         $('#myModalError').on('hidden.bs.modal', function (e) {
           var sede = $("#select2").val();
           var cliente = $("#select1").val();
-          var dataString ="idSede="+ sede+"&idCliente="+cliente;
+          var dataString ="idSede="+ sede+";"+cliente;
           exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
             $('#myModal').modal('hide');
             $('.modal-backdrop').hide();

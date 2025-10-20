@@ -1645,36 +1645,103 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					lista_corsi = GestioneFormazioneBO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, null, null, session);
 					
 					
-				}				
+				}	
+				
+				
 				if(tipo_data !=null && tipo_data.equals("data_scadenza") &&dateTo!=null) {
-					ArrayList<ForCorsoDTO> lista_corsi_successivi = GestioneFormazioneBO.getListaCorsiSuccessivi(dateFrom, session);
-					
+					//ArrayList<ForCorsoDTO> lista_corsi_successivi = GestioneFormazioneBO.getListaCorsiSuccessivi(dateFrom, session);
+					Map<Integer, List<Integer>> lista_corsi_successivi = GestioneFormazioneBO.getListaCorsiSuccessiviCategoria(dateFrom,0,0, session);
 					Calendar c = Calendar.getInstance();
 					Date scadenza = new Date();
 					c.add(Calendar.DAY_OF_MONTH, 60);
 					scadenza = c.getTime();
 					
 					
-					for (ForCorsoDTO succ : lista_corsi_successivi) {
-						for(ForPartecipanteRuoloCorsoDTO part : lista_corsi) {
-							if(part.getCorso().getData_scadenza().before(scadenza) || part.getCorso().getData_scadenza().equals(scadenza)) {
-								part.getCorso().setIn_scadenza(1);
-							}
-							
-							
-							if(part.getCorso().getId()!=succ.getId() && part.getCorso().getCorso_cat().getId() == succ.getCorso_cat().getId() && part.getCorso().getData_scadenza().before(succ.getData_scadenza())) {
-								List<ForPartecipanteDTO> mainList = new ArrayList<ForPartecipanteDTO>();
-								mainList.addAll(succ.getListaPartecipanti());
-								
-								if(mainList.contains(part.getPartecipante())) {
-									part.setCorso_aggiornato(1);
-								}
-							}
-							
-						}
+					for (ForPartecipanteRuoloCorsoDTO part : lista_corsi) {
+				        ForCorsoDTO corso = part.getCorso();
+
+				        // Segnala se il corso è in scadenza
+				        if (!corso.getData_scadenza().after(scadenza)) {
+				            corso.setIn_scadenza(1);
+				        }
+				        
+				        
+				       
+				        
+				        if(lista_corsi_successivi!=null) {
+				        	List<Integer> partecipanti = lista_corsi_successivi.get(corso.getId());
+				        	
+				        	if(partecipanti!=null && partecipanti.contains(part.getPartecipante().getId())) {
+				        		part.setCorso_aggiornato(1);
+				        	}
+				        	
+				        //	for (ForPartecipanteRuoloCorsoDTO successivo : lista_corsi_successivi) {
+						//		if(part.getCorso().getId()!=successivo.getCorso().getId() && successivo.getCorso().getCorso_cat().getId()== corso.getCorso_cat().getId() && successivo.getPartecipante().getId()==part.getPartecipante().getId()) {
+									 
+						//		}
+					//		}
+				        	
+				        	
+//				        	for (ForPartecipanteRuoloCorsoDTO succ : lista_corsi_successivi) {
+//				        		 if (corso.getId() != succ.getCorso().getId() && part.getPartecipante().getId() == succ.getPartecipante().getId()) {
+//				        			 part.setCorso_aggiornato(1);
+//				        		 }
+				        		 
+				        	
+				        	//	if (corso.getData_scadenza().before(succ.getData_scadenza())) {
+
+					                // Ottieni i partecipanti come Set (più veloce di List.contains)
+					        //        Set<ForPartecipanteDTO> partecipantiSucc = succ.getCorso.getListaPartecipanti();
+
+					           //     if (partecipantiSucc.contains(part.getPartecipante())) {
+					            //        part.setCorso_aggiornato(1);
+					              //      break; // trovato → non serve continuare
+					         //       }
+					         //   }
+				        	//}
+				        }
+				        
+				        // Confronta solo con corsi della stessa categoria
+//				        for (ForCorsoDTO succ : lista_corsi_successivi) {
+//				            if (corso.getId() == succ.getId()) continue; // stesso corso, ignora
+//
+//				            if (corso.getCorso_cat().getId() == succ.getCorso_cat().getId()
+//				                    && corso.getData_scadenza().before(succ.getData_scadenza())) {
+//
+//				                // Ottieni i partecipanti come Set (più veloce di List.contains)
+//				                Set<ForPartecipanteDTO> partecipantiSucc = succ.getListaPartecipanti();
+//
+//				                if (partecipantiSucc.contains(part.getPartecipante())) {
+//				                    part.setCorso_aggiornato(1);
+//				                    break; // trovato → non serve continuare
+//				                }
+//				            }
+//				        }
+				        
 					}
-					
 				}
+					
+//					for (ForCorsoDTO succ : lista_corsi_successivi) {
+//						for(ForPartecipanteRuoloCorsoDTO part : lista_corsi) {
+//						    ForCorsoDTO corso = part.getCorso();
+//						       if (!corso.getData_scadenza().after(scadenza)) {
+//						            corso.setIn_scadenza(1);
+//						        }
+//							
+//							
+//							if(part.getCorso().getId()!=succ.getId() && part.getCorso().getCorso_cat().getId() == succ.getCorso_cat().getId() && part.getCorso().getData_scadenza().before(succ.getData_scadenza())) {
+//								List<ForPartecipanteDTO> mainList = new ArrayList<ForPartecipanteDTO>();
+//								mainList.addAll(succ.getListaPartecipanti());
+//								
+//								if(mainList.contains(part.getPartecipante())) {
+//									part.setCorso_aggiornato(1);
+//								}
+//							}
+//							
+//						}
+//					}
+//					
+//				}
 				
 				request.getSession().setAttribute("lista_corsi", lista_corsi);
 				request.getSession().setAttribute("dateFrom", dateFrom);

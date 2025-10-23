@@ -42,10 +42,13 @@
             <div class="box-body">
               <div class="row">
 
-
+<div class="col-xs-1">
+ <a class="btn btn-primary pull-left btn-xs customTooltip" title="vai al trimestre precedente" style="margin-top:35px" onclick="subTrimestre('${start_date }', '${anno}')" ><i class="fa fa-arrow-left"></i></a> 
+</div>
               
             <div class="col-xs-3"> 
-            <label>Anno</label>
+            <label>Anno</label><br>
+           
          <select class="form-control select2" id="anno" name="anno" style="width:100%" >
 
 		
@@ -64,35 +67,38 @@
 			</select>
              </div>
              <div class="col-xs-3">
-             <a class="btn btn-primary" style="margin-top:25px" onclick="vaiAOggi('${currentYear}')">Vai a Oggi</a>
+             <a class="btn btn-primary" onclick="vaiAOggi('${currentYear}')" style="margin-top:25px" >Vai a Oggi</a>
+             
              </div>
              
-             <div class="col-xs-6">
+             <div class="col-xs-5">
                            <!-- Zoom In -->
 
+
 <!-- Reset -->
-<a href="#" class="btn btn-primary zoom_reset pull-right">Reset Zoom</a>
-<a href="#" class="btn btn-primary zoom_out pull-right" style="margin-right:5px">Zoom Out</a>
-<a href="#" class="btn btn-primary zoom_in pull-right"  style="margin-right:5px">Zoom In</a>
+
+<a class="btn btn-primary pull-right btn-xs customTooltip"  title="vai al trimestre successivo"style="margin-top:35px"  onclick="addTrimestre('${end_date }', '${anno}')" ><i class="fa fa-arrow-right"></i></a>
+<a href="#" class="btn btn-primary zoom_reset pull-right  btn-xs">Reset Zoom</a>
+<a href="#" class="btn btn-primary zoom_out pull-right  btn-xs" style="margin-right:5px">Zoom Out</a>
+<a href="#" class="btn btn-primary zoom_in pull-right  btn-xs"  style="margin-right:5px">Zoom In</a>
+
+
              </div>
             </div><br>
             
 
-
-
-<br><br>
-               <div class="row">
+<!--                <div class="row">
 				 <div class="col-xs-12">
-				 <a class="btn btn-primary pull-left" onclick="subTrimestre('${start_date }', '${anno}')" ><i class="fa fa-arrow-left"></i></a>
 				 
-				 <a class="btn btn-primary pull-right" onclick="addTrimestre('${end_date }', '${anno}')" ><i class="fa fa-arrow-right"></i></a>
+				 
+				 <
 				 </div>
                
                
                
                </div>
             
-            <br>
+            <br> -->
             <div class="row">
             <div class="col-xs-12">
           

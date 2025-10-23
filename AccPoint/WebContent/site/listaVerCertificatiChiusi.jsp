@@ -22,7 +22,10 @@
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
 	    
             <button onClick="inviaSelected()" class="btn btn-info"><i class="fa fa-paper-plane-o"></i> Invia a selezionati</button>
-            
+            <c:if test="${userObj.checkRuolo('AM') }">
+          
+            <a class="btn btn-danger pull-right"  href="gestioneVerCertificati.do?action=crea_report_certificati" >Crea Report Certificati</a>
+            </c:if>
           </div>
 	  </div> 
 	<div class="row" >

@@ -1016,16 +1016,18 @@ $('#selectAlltabPM').on('ifChecked', function (ev) {
  	    });
     	
     	$('#id_misure').val(id_misura)
-    		var newTab = window.open('', '_blank');
+    		
     	
     	callAjaxForm('#formRapportoIntervento', 'gestioneRapportoIntervento.do?action=nuovo_rapporto', function(data){
     	
+    		
+    			
     		if(data.success){
-    			
-    			
+    			var newTab = window.open('', '_blank');
     			var url =  "gestioneRapportoIntervento.do?action=download&id_intervento=${id_intervento}"
+    			newTab.location.href = url;
     
-    					newTab.location.href = url;
+    					
     			
     			
     			

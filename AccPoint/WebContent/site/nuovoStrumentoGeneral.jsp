@@ -108,7 +108,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
                   <select name="sede_general" id="sede_general" data-placeholder="Seleziona Sede..."  disabled class="form-control select2 classic_select" aria-hidden="true" data-live-search="true" style="width:100%">
                
                     	<option value=""></option>
-             			<c:forEach items="${listaSediGeneral}" var="sedi">
+             			 <c:forEach items="${listaSediGeneral}" var="sedi">
              	
                           	 		<option value="${utl:encryptData(''+sedi.__id)}_${utl:encryptData(''+sedi.id__cliente_)}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
                           	     
@@ -443,7 +443,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
     	
     	
     	
-    	$("#sede_general").select2();
+    	//$("#sede_general").select2();
     	
     
 
@@ -453,10 +453,10 @@ String idCliente = (String)session.getAttribute("id_Cliente");
     		 $("#cliente_general").val(id_cliente);
     		 $("#cliente_general").change();
     		 
-    		 if(id_sede==0){
-    			 $("#sede_general").val(0);
+    		 if(id_sede=='${non_associate_encrypt}'){
+    			 $("#sede_general").val('${non_associate_encrypt}');
     		 }else{
-    			 $("#sede_general").val(id_sede);
+    			 $("#sede_general").val(id_sede+"_"+id_cliente);
     		 }
     		 $("#sede_general").change()
     		 

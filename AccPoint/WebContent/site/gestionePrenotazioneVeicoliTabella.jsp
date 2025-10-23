@@ -27,7 +27,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
  <table id="tabPrenotazione" class="table table-primary table-bordered table-hover dataTable table-striped " role="grid" width="100%"  >
         <thead>
             <tr>
-               <th >ID VEICOLO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  id="inputsearchtable_0" /></th>
+               <th >ID VEICOLO <input class="inputsearchtable" style="min-width:80px type="text"  id="inputsearchtable_0" /></th>
                <th>TARGA <input class="inputsearchtable" style="min-width:80px;width=100%" type="text" id="inputsearchtable_1"  /></th>
                 <th>MODELLO <input class="inputsearchtable" style="min-width:80px;width=100%" type="text" id="inputsearchtable_2"  /></th>
            <c:set var ="nuovoAnno" value="${anno + 1}"></c:set>                

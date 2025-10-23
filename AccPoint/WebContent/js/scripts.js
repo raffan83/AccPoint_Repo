@@ -16899,7 +16899,7 @@ success: function( data, textStatus) {
 		  $('#myModalErrorContent').html(data.messaggio);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#report_button').hide();
+			$('#report_button').show();
 			$('#visualizza_report').show();
 				$('#myModalError').modal('show');	      			 
 	  }

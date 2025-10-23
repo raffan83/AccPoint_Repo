@@ -433,9 +433,19 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		else if(action.equals("nuovo_strumento_general")) {
 			
 			CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
-			List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany.getId()+"");
 			
-			List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
+			List<ClienteDTO> listaClientiFull = (List<ClienteDTO>) request.getSession().getAttribute("listaClientiFull");
+			if(listaClientiFull== null) {
+				listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany.getId()+"");
+			}
+		
+			
+			List<SedeDTO> listaSediFull = (List<SedeDTO>) request.getSession().getAttribute("listaSediFull");
+			if(listaSediFull== null) {
+				listaSediFull=GestioneAnagraficaRemotaBO.getListaSedi();
+			}
+			
+			
 			
 			String idCliente = request.getParameter("idCliente");
 			String idSede = request.getParameter("idSede");
@@ -452,10 +462,22 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				idSede = Utility.decryptData(idSede);
 			}
 			
-			request.getSession().setAttribute("listaSediGeneral",listaSediFull);
+			
+			
+			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+			
+			if(user.checkRuolo("CM")) {
+				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(idCliente);
+				listaClientiFull = new ArrayList<ClienteDTO>();
+				listaClientiFull.add(cliente);
+				
+				listaSediFull = GestioneAnagraficaRemotaBO.getSediFromCliente(listaSediFull, cliente.get__id());
+				
+				
+			}
 			
 			request.getSession().setAttribute("listaClientiGeneral", listaClientiFull);
-			
+			request.getSession().setAttribute("listaSediGeneral",listaSediFull);
 			
 			ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento(session);
 			ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto(session);

@@ -1,8 +1,14 @@
 package it.portaleSTI.bo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,6 +23,10 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -44,11 +54,13 @@ import com.itextpdf.text.pdf.parser.TextRenderInfo;
 
 import it.portaleSTI.DAO.GestioneVerCertificatoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.DTO.VerEmailDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.action.ContextListener;
 
 public class GestioneVerCertificatoBO {
 
@@ -382,6 +394,176 @@ public class GestioneVerCertificatoBO {
 	    stamper.setFormFlattening(true);
 	    stamper.close();
 	    pdfReader.close();
+	}
+	
+	
+	public static boolean getReportCertificatiFirma(ArrayList<VerMisuraDTO> lista_misure) throws Exception {
+		
+		XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Dati File Certificati");
+
+        // 📗 Crea l’intestazione
+        String[] headers = {
+            "ID Certificato", "Commessa", "Cliente", "Sede", "Matricola","Data Misura", "Data Creazione"
+        };
+        Row headerRow = sheet.createRow(0);
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+
+        int rowIndex = 1;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		
+		for (VerMisuraDTO m : lista_misure) {
+			
+			VerCertificatoDTO certificato = GestioneVerCertificatoDAO.getCertificatoByMisura(m);
+			if(certificato.getFirmato()==1) {
+				String filename = certificato.getNomeCertificato();
+				
+				String path = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\"+filename+".p7m";
+				Path p = Paths.get(path);
+				
+				Row row = sheet.createRow(rowIndex++);
+	
+	            // Colonne base
+	            row.createCell(0).setCellValue(certificato.getId());
+	            row.createCell(1).setCellValue(certificato.getMisura().getVerIntervento().getCommessa());
+	            row.createCell(2).setCellValue(certificato.getMisura().getVerIntervento().getNome_cliente());
+	            row.createCell(3).setCellValue(certificato.getMisura().getVerIntervento().getNome_sede());
+	            row.createCell(4).setCellValue(certificato.getMisura().getVerStrumento().getMatricola());
+				
+				if (Files.notExists(p)) {
+					
+					System.out.println("File non trovato: " + path);
+				}else {
+					
+				 BasicFileAttributes attr = Files.readAttributes(p, BasicFileAttributes.class);
+	
+		            // Data di creazione
+		            FileTime creationTime = attr.creationTime();
+		            // Ultima modifica
+		            FileTime lastModified = attr.lastModifiedTime();
+		            // Ultimo accesso
+		            FileTime lastAccess = attr.lastAccessTime();
+		            
+		            String dataCreazione = sdf.format(new Date(attr.creationTime().toMillis()));
+		            
+		            String dataMisura = sdf.format(certificato.getMisura().getDataVerificazione());
+		            
+		            row.createCell(5).setCellValue(dataMisura);
+		            row.createCell(6).setCellValue(dataCreazione);
+	
+		            // Stampa in formato leggibile
+		            System.out.println("ID Certificato: "+certificato.getId()+ " - Commessa - "+certificato.getMisura().getVerIntervento().getCommessa()+" Cliente: "+certificato.getMisura().getVerIntervento().getNome_cliente()+" - "+certificato.getMisura().getVerIntervento().getNome_sede()+" - Matricola: "+certificato.getMisura().getVerStrumento().getMatricola()+" - Data creazione: " + new Date(creationTime.toMillis()));
+				}
+			}
+		}
+		
+		 for (int i = 0; i < headers.length; i++) {
+	            sheet.autoSizeColumn(i);
+	        }
+
+	        
+	        //String outputPath = "C:\\Users\\antonio.dicivita\\Desktop\\report_certificati.xlsx";
+	        String outputPath = Costanti.PATH_FOLDER+"\\REPORTCERTIFICATIVERIFICAZIONE\\report_certificati.xlsx";
+	        try (FileOutputStream out = new FileOutputStream(outputPath)) {
+	            workbook.write(out);
+	        }
+	        workbook.close();
+		
+
+		System.out.println("FINE");
+		
+		return true;
+		
+	}
+	
+	public static void main(String[] args) throws Exception {
+		new ContextListener().configCostantApplication();
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+
+		UtenteDTO utente = GestioneUtenteBO.getUtenteById(""+40, session);
+		
+		XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Dati File Certificati");
+
+        // 📗 Crea l’intestazione
+        String[] headers = {
+            "ID Certificato", "Commessa", "Cliente", "Sede", "Matricola","Data Misura", "Data Creazione"
+        };
+        Row headerRow = sheet.createRow(0);
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+
+        int rowIndex = 1;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		ArrayList<VerMisuraDTO> lista_misure = GestioneVerMisuraBO.getListaMisurePerData(utente, "2021-01-01", "2025-10-22", session)		;
+		
+		for (VerMisuraDTO m : lista_misure) {
+			
+			VerCertificatoDTO certificato = GestioneVerCertificatoDAO.getCertificatoByMisura(m);
+			String filename = certificato.getNomeCertificato();
+			
+			String path = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\"+filename+".p7m";
+			Path p = Paths.get(path);
+			
+			Row row = sheet.createRow(rowIndex++);
+
+            // Colonne base
+            row.createCell(0).setCellValue(certificato.getId());
+            row.createCell(1).setCellValue(certificato.getMisura().getVerIntervento().getCommessa());
+            row.createCell(2).setCellValue(certificato.getMisura().getVerIntervento().getNome_cliente());
+            row.createCell(3).setCellValue(certificato.getMisura().getVerIntervento().getNome_sede());
+            row.createCell(4).setCellValue(certificato.getMisura().getVerStrumento().getMatricola());
+			
+			if (Files.notExists(p)) {
+				
+				System.out.println("File non trovato: " + path);
+			}else {
+				
+			 BasicFileAttributes attr = Files.readAttributes(p, BasicFileAttributes.class);
+
+	            // Data di creazione
+	            FileTime creationTime = attr.creationTime();
+	            // Ultima modifica
+	            FileTime lastModified = attr.lastModifiedTime();
+	            // Ultimo accesso
+	            FileTime lastAccess = attr.lastAccessTime();
+	            
+	            String dataCreazione = sdf.format(new Date(attr.creationTime().toMillis()));
+	            
+	            String dataMisura = sdf.format(certificato.getMisura().getDataVerificazione());
+	            
+	            row.createCell(5).setCellValue(dataMisura);
+	            row.createCell(6).setCellValue(dataCreazione);
+
+	            // Stampa in formato leggibile
+	            System.out.println("ID Certificato: "+certificato.getId()+ " - Commessa - "+certificato.getMisura().getVerIntervento().getCommessa()+" Cliente: "+certificato.getMisura().getVerIntervento().getNome_cliente()+" - "+certificato.getMisura().getVerIntervento().getNome_sede()+" - Matricola: "+certificato.getMisura().getVerStrumento().getMatricola()+" - Data creazione: " + new Date(creationTime.toMillis()));
+			}
+		}
+		
+		 for (int i = 0; i < headers.length; i++) {
+	            sheet.autoSizeColumn(i);
+	        }
+
+	        // 📁 Scrive l’Excel su file
+	        String outputPath = "C:\\Users\\antonio.dicivita\\Desktop\\report_certificati.xlsx";
+	       // String outputPath = Costanti.PATH_FOLDER+"\\REPORTCERTIFICATIVERIFICAZIONE\\report_certificati.xlsx";
+	        try (FileOutputStream out = new FileOutputStream(outputPath)) {
+	            workbook.write(out);
+	        }
+	        workbook.close();
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		System.out.println("FINE");
 	}
 
 }

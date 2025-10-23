@@ -86,7 +86,7 @@ public class ListaStrumentiNew extends HttpServlet {
 	//				}
 	//			}
 				request.getSession().setAttribute("listaClienti",listaClientiCS);
-				
+				request.getSession().setAttribute("listaClientiFull",listaClientiFull);
 				
 				
 				List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();

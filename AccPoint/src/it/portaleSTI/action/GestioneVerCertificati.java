@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -763,6 +764,26 @@ public class GestioneVerCertificati extends HttpServlet {
 	        	out.print(myObj);
 				
 				
+			}
+			
+			else if(action.equals("crea_report_certificati")) {
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				
+				ArrayList<VerMisuraDTO> lista = GestioneVerMisuraBO.getListaMisurePerData(utente, "2024-09-01", sdf.format(new Date()), session);
+				boolean esito = GestioneVerCertificatoBO.getReportCertificatiFirma(lista);
+				
+				 response.setContentType("application/octet-stream");
+				
+				
+				 
+					 response.setHeader("Content-Disposition","attachment;filename=report_certificati.xlsx");
+				
+				
+				//Utility.downloadFile("C:\\Users\\antonio.dicivita\\Desktop\\report_certificati.xlsx", response.getOutputStream());
+				Utility.downloadFile(Costanti.PATH_FOLDER+"\\REPORTCERTIFICATIVERIFICAZIONE\\report_certificati.xlsx", response.getOutputStream());
+				session.getTransaction().commit();
+	        	session.close();
 			}
 		}catch (Exception e) {
 			session.getTransaction().rollback();

@@ -90,7 +90,7 @@
 	<td>${offerta.importo }</td>
 	<td>${offerta.utente }</td>
 	<td>
-<a class="btn btn-info customTooltip" onClicK="dettaglioOfferta('${offerta.id }')" title="Dettaglio offerta"><i class="fa fa-search"></i></a>
+<a class="btn btn-info customTooltip" onClicK="dettaglioOfferta('${offerta.id }', '${utl:encryptData(offerta.id_cliente) }','${utl:encryptData(offerta.id_sede) }')" title="Dettaglio offerta"><i class="fa fa-search"></i></a>
 
 	</td>
 	</tr>
@@ -285,7 +285,7 @@
        	
        	<div class="col-sm-9">      
        	  	
-      <input id="cliente_dtl" name="cliente_dtl" class="form-control" style="width:100%" disabled>
+      <input id="cliente_dtl" name="cliente_dtl" class="form-control" style="width:100%" disabled >
        			
        	</div>       	
        </div><br>
@@ -340,16 +340,16 @@
                 <div class="row">
        
 
-       	<div class="col-xs-4">
-			<span class="btn btn-primary fileinput-button">
-		        <i class="glyphicon glyphicon-plus"></i>
-		        <span>Carica Immagini ...</span>
-		
-		   	 </span>
+       	<div class="col-xs-12">
+			<label>Immagini offerta</label><br>
+			<div id="content_immagini"></div>
+
+<!-- Popup di anteprima -->
+<div id="preview_popup" style="display:none; position:absolute; z-index:1000;">
+    <img id="preview_img" src="" style="max-width:300px; max-height:300px; border:2px solid #444; border-radius:6px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,0.3);" />
+</div>
 		   	</div>
-		 <div class="col-xs-8">
-		
-		 </div> 
+		 
        	
        	</div>
    </div>
@@ -399,6 +399,28 @@
     min-width: 45px !important;
 }
 
+
+ #image-popup{
+  position: fixed;
+  display: none;
+  top: 20px;
+  right: 20px;
+  width: 400px;
+   max-height: calc(100vh - 40px);
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+}
+
+#image-popup img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
 </style>
 </jsp:attribute>
 
@@ -541,8 +563,8 @@ $(document).ready(function() {
 
   $('#sede').select2();
   $('#sede_dtl').select2();
-    	initSelect2('#cliente');
-    	initSelect2('#cliente_dtl');
+    	initSelect2('#cliente',null, '#myModalNuovaOfferta');
+    	initSelect2('#cliente_dtl', null, '#myModalDettaglioOfferta');
         $('.dropdown-toggle').dropdown();
 
 
@@ -932,14 +954,14 @@ $('#modificaOffertaForm').on('submit', function(e){
  	
 
 
- function initSelect2(id_input, placeholder) {
+ function initSelect2(id_input, placeholder, dropDownParent) {
 
 	 if(placeholder==null){
 		  placeholder = "Seleziona Cliente...";
 	  }
  	$(id_input).select2({
  	    data: mockData(),
- 	   dropdownParent: $('#myModalNuovaOfferta'),
+ 	   dropdownParent: $(dropDownParent),
  	    placeholder: placeholder,
  	    multiple: false,
  	    // query with pagination
@@ -1033,7 +1055,42 @@ $('#modificaOffertaForm').on('submit', function(e){
  });
 
  
- function dettaglioOfferta(id){
+	$(document).on('mousemove', '.list-group-item', function (e) {
+		 
+		
+		  const popupId ='#image-popup';
+		  const imgId =  '#popup-img';
+
+		  const thumbSpan = $(this).find('.option-with-thumb');
+		  if (thumbSpan.length > 0) {
+		    const largeSrc = thumbSpan.data('large');
+		    $(imgId).attr('src', largeSrc);
+
+		    // Coordinate dell'opzione attiva
+		    const optionOffset = $(this).offset();
+		    const optionHeight = $(this).outerHeight();
+		    const popupHeight = 250; // altezza stimata del popup
+		    const spaceBelow = $(window).height() - (optionOffset.top + optionHeight);
+		    const topPosition = spaceBelow > popupHeight
+		      ? optionOffset.top + optionHeight + 5   // sotto
+		      : optionOffset.top - popupHeight - 5;   // sopra
+
+		    // Posizione laterale: a destra della select
+		    const leftPosition = optionOffset.left + $(this).outerWidth() + 10;
+
+		    $(popupId).css({
+		      top: topPosition,
+		      left: leftPosition,
+		      display: 'block'
+		    });
+		  }
+		});
+
+		$(document).on('mouseleave', '.list-group-item', function () {
+		  $('#image-popup_mod, #image-popup').fadeOut(150);
+		});
+ 
+ function dettaglioOfferta(id, id_cliente, id_sede){
 	 
 	 dataObj = {};
 	 dataObj.id = id;
@@ -1044,16 +1101,18 @@ $('#modificaOffertaForm').on('submit', function(e){
 			 
 			 var offerta = data.offerta
 			 var lista_articoli = data.lista_articoli
-			 $('#cliente_dtl').val('${utl:encryptData(offerta.id_cliente)}');
+			 var lista_immagini = data.lista_immagini
+			 $('#cliente_dtl').val(id_cliente);
 			 $('#cliente_dtl').change();
 			 
 			 if(offerta.id_sede !=0){
-				 $('#sede_dtl').val('${utl:encryptData(offerta.id_sede)}_${utl:encryptData(offerta.id_cliente)}');
+				 $('#sede_dtl').val(id_sede+'_'+id_cliente);
 			 }else{
-				 $('#sede_dtl').val('${utl:encryptData(offerta.id_sede)}');
+				 $('#sede_dtl').val(id_sede);
 			 }
 			 
 			 $('#sede_dtl').change();
+			 $('#sede_dtl').attr("disabled", true);
 			 
 		  	 var table_data = [];
 			  
@@ -1076,6 +1135,35 @@ $('#modificaOffertaForm').on('submit', function(e){
 		 		tabDettaglio.rows.add(table_data).draw();
 		 			
 		 		tabDettaglio.columns.adjust().draw();
+		 		
+		 		 const container = document.getElementById("content_immagini");
+		 	    const popup = document.getElementById("preview_popup");
+		 	    const popupImg = document.getElementById("preview_img");
+
+		 	   lista_immagini.forEach(img => {
+		 	        const thumb = document.createElement("img");
+		 	        thumb.src = img.url;
+		 	        thumb.alt = img.nome_file;
+		 	        thumb.style.width = "100px";
+		 	        thumb.style.height = "100px";
+		 	        thumb.style.objectFit = "cover";
+		 	        thumb.style.margin = "8px";
+		 	        thumb.style.cursor = "pointer";
+		 	        thumb.style.borderRadius = "6px";
+		 	        thumb.style.transition = "transform 0.2s";
+		 	        thumb.onmouseenter = (e) => {
+		 	            popupImg.src = img.url;
+		 	            popup.style.display = "block";
+		 	        };
+		 	        thumb.onmousemove = (e) => {
+		 	            popup.style.left = e.pageX + 15 + "px";
+		 	            popup.style.top = e.pageY + 15 + "px";
+		 	        };
+		 	        thumb.onmouseleave = () => {
+		 	            popup.style.display = "none";
+		 	        };
+		 	        container.appendChild(thumb);
+		 	    });
 		 		
 		 		$('#myModalDettaglioOfferta').modal()
 		 }

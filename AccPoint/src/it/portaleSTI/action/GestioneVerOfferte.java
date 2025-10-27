@@ -1,6 +1,9 @@
 package it.portaleSTI.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -70,8 +73,9 @@ public class GestioneVerOfferte extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	
 		doPost(request, response);
+	
 	}
 
 	/**
@@ -246,14 +250,47 @@ public class GestioneVerOfferte extends HttpServlet {
 				}
 				
 				
+				ArrayList<OffOffertaFotoDTO> lista_immagini = GestioneVerInterventoBO.getListaImmaginiOfferta(offerta.getId(),session);
+				for (OffOffertaFotoDTO img : lista_immagini) {
+					String url =request.getContextPath()+ "/gestioneVerOfferte.do?action=get_immagine&id_immagine="+img.getId();
+					img.setUrl(url);
+				}
 				PrintWriter  out = response.getWriter();
 				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
 				myObj.addProperty("success", true);
 				myObj.add("offerta", g.toJsonTree(offerta));
 				myObj.add("lista_articoli", g.toJsonTree(lista_articoli));
+				myObj.add("lista_immagini", g.toJsonTree(lista_immagini));
 					
 			   out.print(myObj);
 				
+			}
+			
+			else if(action.equals("get_immagine")) {
+			
+				
+				String id_immagine = request.getParameter("id_immagine");
+				OffOffertaFotoDTO immagine = (OffOffertaFotoDTO) session.get(OffOffertaFotoDTO.class, Integer.parseInt(id_immagine));
+				String imagePath =	Costanti.PATH_FOLDER+"\\OfferteCalver\\"+immagine.getId_offerta()+"\\immagini\\"+immagine.getNome_file();
+	        	
+	            File imageFile = new File(imagePath);
+	
+	            if (imageFile.exists()) {
+	                response.setContentType(getServletContext().getMimeType(imageFile.getName()));
+	               
+	
+	                try (FileInputStream fis = new FileInputStream(imageFile);
+	                     OutputStream os = response.getOutputStream()) {
+	
+	                    byte[] buffer = new byte[8192];
+	                    int bytesRead;
+	                    while ((bytesRead = fis.read(buffer)) != -1) {
+	                        os.write(buffer, 0, bytesRead);
+	                    }
+	                }	
+		        }else {
+	                response.sendError(HttpServletResponse.SC_NOT_FOUND, "File immagine non trovato");
+	            }
 			}
 			
 			session.getTransaction().commit();

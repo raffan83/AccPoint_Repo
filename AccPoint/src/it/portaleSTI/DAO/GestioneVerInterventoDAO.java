@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.OffOffertaArticoloDTO;
 import it.portaleSTI.DTO.OffOffertaDTO;
+import it.portaleSTI.DTO.OffOffertaFotoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
@@ -216,6 +217,21 @@ public class GestioneVerInterventoDAO {
 	
 	    		
 	    lista = (ArrayList<OffOffertaArticoloDTO>)query.list();
+	    
+	    
+		return lista;
+	}
+
+	public static ArrayList<OffOffertaFotoDTO> getListaImmaginiOfferta(int id_offerta, Session session) {
+		ArrayList<OffOffertaFotoDTO> lista = null;
+
+
+		Query query = session.createQuery("from OffOffertaFotoDTO where id_offerta = :_id" );
+	
+			query.setParameter("_id", id_offerta);
+	
+	    		
+	    lista = (ArrayList<OffOffertaFotoDTO>)query.list();
 	    
 	    
 		return lista;

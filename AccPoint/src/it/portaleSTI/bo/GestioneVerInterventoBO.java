@@ -25,6 +25,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.OffOffertaArticoloDTO;
 import it.portaleSTI.DTO.OffOffertaDTO;
+import it.portaleSTI.DTO.OffOffertaFotoDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -524,6 +525,11 @@ public class GestioneVerInterventoBO {
 	public static ArrayList<OffOffertaArticoloDTO> getListaOfferteArticoli(int id_offerta, Session session) {
 		
 		return GestioneVerInterventoDAO.getListaOfferteArticoli( id_offerta,  session) ;
+	}
+
+	public static ArrayList<OffOffertaFotoDTO> getListaImmaginiOfferta(int id_offerta, Session session) {
+		
+		return GestioneVerInterventoDAO.getListaImmaginiOfferta( id_offerta,  session) ;
 	}
 	
 

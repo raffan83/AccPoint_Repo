@@ -5,6 +5,7 @@ public class OffOffertaFotoDTO {
 	private int id;
 	private int id_offerta;
 	private String nome_file;
+	private String url;
 	
 	
 
@@ -40,6 +41,18 @@ public class OffOffertaFotoDTO {
 
 	public void setNome_file(String nome_file) {
 		this.nome_file = nome_file;
+	}
+
+
+
+	public String getUrl() {
+		return url;
+	}
+
+
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 

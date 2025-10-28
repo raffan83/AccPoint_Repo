@@ -345,7 +345,7 @@
 			<div id="content_immagini"></div>
 
 <!-- Popup di anteprima -->
-<div id="preview_popup" style="display:none; position:absolute; z-index:1000;">
+<div id="preview_popup" style="display:none; position:absolute; z-index:1000; pointer-events:none;"">
     <img id="preview_img" src="" style="max-width:300px; max-height:300px; border:2px solid #444; border-radius:6px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,0.3);" />
 </div>
 		   	</div>
@@ -1156,11 +1156,12 @@ $('#modificaOffertaForm').on('submit', function(e){
 		 	            popup.style.display = "block";
 		 	        };
 		 	        thumb.onmousemove = (e) => {
-		 	            popup.style.left = e.pageX + 15 + "px";
-		 	            popup.style.top = e.pageY + 15 + "px";
+		 	            popup.style.left = e.offsetX + 15 + "px";
+		 	            popup.style.top = e.offsetY + 15 + "px";
 		 	        };
 		 	        thumb.onmouseleave = () => {
 		 	            popup.style.display = "none";
+		 	         
 		 	        };
 		 	        container.appendChild(thumb);
 		 	    });
@@ -1171,7 +1172,21 @@ $('#modificaOffertaForm').on('submit', function(e){
 	 })
 	 
  }
+ 
+ 
+ $('#myModalDettaglioOfferta').on('hidden.bs.modal', function(){
 
+	 $('#content_immagini').html("");
+	 
+ })
+ 
+ 
+  $('#myModalNuovaOfferta').on("hidden.bs.modal", function(){
+	
+	 var tableArt = $('#tabArticoli').DataTable();
+	 tableArt.rows({ search: 'applied' }).deselect();
+ });
+ 
  
   </script>
   

@@ -22,6 +22,7 @@ public class ClienteDTO implements Serializable{
 	 private String provincia;
 	 private String numeroREA;
 	 private String pec;
+	 private String idEncrypted;
 
 	  public ClienteDTO(){}
 
@@ -188,6 +189,14 @@ public class ClienteDTO implements Serializable{
 
 	public void setPec(String pec) {
 		this.pec = pec;
+	}
+
+	public String getIdEncrypted() {
+		return idEncrypted;
+	}
+
+	public void setIdEncrypted(String idEncrypted) {
+		this.idEncrypted = idEncrypted;
 	}
 
 	  

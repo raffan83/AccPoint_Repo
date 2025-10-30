@@ -52,6 +52,7 @@
 
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovaIntervento()"><i class="fa fa-plus"></i> Nuova Intervento</a> --> 
 <a class="btn btn-primary pull-right" onClick="modalNuovaOfferta()"><i class="fa fa-plus"></i> Nuova Offerta</a> 
+	<a class="btn btn-primary pull-right" onClicK="modalNuovoCliente()" ><i class="fa fa-plus"></i> Nuovo Cliente</a>
 
 
 
@@ -90,7 +91,7 @@
 	<td>${offerta.importo }</td>
 	<td>${offerta.utente }</td>
 	<td>
-<a class="btn btn-info customTooltip" onClicK="dettaglioOfferta('${offerta.id }', '${utl:encryptData(offerta.id_cliente) }','${utl:encryptData(offerta.id_sede) }')" title="Dettaglio offerta"><i class="fa fa-search"></i></a>
+<a class="btn btn-info customTooltip" onClicK="dettaglioOfferta('${offerta.id }')" title="Dettaglio offerta"><i class="fa fa-search"></i></a>
 
 	</td>
 	</tr>
@@ -143,18 +144,20 @@
       </div>
        <div class="modal-body">
 
-        <div class="row">
-       
+       	
+              <div class="row">
+        
        	<div class="col-sm-3">
        		<label>Cliente</label>
        	</div>
        	 <div class="col-md-6" style="display:none">  
                   <label>Cliente</label>
-               <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+               <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required disabled>
                 
                       <c:forEach items="${lista_clienti}" var="cliente">
                      
-                           <option value="${utl:encryptData(cliente.__id)}">${cliente.nome}</option> 
+                           <%-- <option value="${utl:encryptData(cliente.__id)}">${cliente.nome}</option> --%>
+                           <option value="${cliente.idEncrypted}">${cliente.nome}</option>  
                          
                      </c:forEach>
 
@@ -179,7 +182,8 @@
               <select id="sede" name="sede" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" disabled>
        <option value=""></option>
       	<c:forEach items="${lista_sedi}" var="sd">
-      	<option value="${utl:encryptData(sd.__id)}_${utl:encryptData(sd.id__cliente_)}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
+      	<%-- <option value="${utl:encryptData(sd.__id)}_${utl:encryptData(sd.id__cliente_)}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option> --%>
+      	<option value="${sd.id_encrypted}_${sd.id_cliente_encrypted}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
       	</c:forEach>
       
       </select>
@@ -264,7 +268,237 @@
 
 </div>
 
+
+
+
+
+
 </form>
+
+
+
+
+
+<form id="nuovoClienteForm" name="nuovoClienteForm">
+<div id="myModalNuovoCliente" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Cliente</h4>
+      </div>
+       <div class="modal-body">
+
+       
+              <div class="row">
+        
+       	<div class="col-sm-3">
+       		<label>Ragione Sociale</label>
+       	</div>
+
+       	
+       	<div class="col-sm-9">      
+       	  	
+      <input id="ragione_sociale" name="ragione_sociale" class="form-control" style="width:100%" required>
+       			
+       	</div>       	
+       </div><br>
+       
+         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Indirizzo</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="indirizzo" name="indirizzo" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Città</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="citta" name="citta" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Cap</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="cap" name="cap" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+               <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Telefono</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="telefono" name="telefono" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Provincia</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="provincia" name="provincia" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       
+           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Email</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="email" name="email" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Partita iva</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="partita_iva" name="partita_iva" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+              <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Codice fiscale</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="codice_fiscale" name="codice_fiscale" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+      <div class="row">
+  <div class="col-sm-3 d-flex align-items-center">
+    <label class="form-check-label me-2" for="toggleSede">
+      <strong>Aggiungi Sede</strong>
+    </label>
+      <div class="col-sm-9">
+        <label class="switch">
+          <input type="checkbox" id=toggleSede onclick="showHideSede()">
+          <span class="slider round"></span>
+        </label>
+      </div>
+
+  </div>
+</div><br>
+       
+       <div id="content_sede" style="display:none">
+                    <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Denominazione Sede</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="denominazione_sede" name="denominazione_sede" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+
+                           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Indirizzo Sede</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="indirizzo_sede" name="indirizzo_sede" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+                           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Città Sede</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="citta_sede" name="citta_sede" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+                           <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Cap Sede</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="cap_sede" name="cap_sede" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+       
+       
+                                  <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Provincia Sede</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+            <input id="provincia_sede" name="provincia_sede" class="form-control" style="width:100%" >
+       			
+       	</div>       	
+       </div><br>
+               </div>
+   </div>
+  		 
+      <div class="modal-footer">
+
+		<button class="btn btn-primary" type="submit">Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+</form>
+
+
+
+
+
 
 
 <div id="myModalDettaglioOfferta" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
@@ -284,8 +518,8 @@
 
        	
        	<div class="col-sm-9">      
-       	  	
-      <input id="cliente_dtl" name="cliente_dtl" class="form-control" style="width:100%" disabled >
+     
+       <input id="cliente_dtl" name="cliente_dtl" class="form-control"  aria-hidden="true"  style="width:100%" readonly>
        			
        	</div>       	
        </div><br>
@@ -297,14 +531,8 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-              <select id="sede_dtl" name="sede_dtl" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" disabled>
-       <option value=""></option>
-      	<c:forEach items="${lista_sedi}" var="sd">
-      	<option value="${utl:encryptData(sd.__id)}_${utl:encryptData(sd.id__cliente_)}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
-      	</c:forEach>
-      
-      </select>
-       			
+              <input id="sede_dtl" name="sede_dtl" class="form-control"  aria-hidden="true"  style="width:100%" readonly>
+
        	</div>       	
        </div><br>
        
@@ -421,6 +649,51 @@
   display: block;
   border-radius: 6px;
 }
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 28px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
 </style>
 </jsp:attribute>
 
@@ -434,9 +707,95 @@
 <script type="text/javascript">
 
 
-function modalNuovaOfferta(){
+function salvaClienteSede(){
 	
-	$('#myModalNuovaOfferta').modal();
+	
+	var newOption = new Option($('#ragione_sociale').val(), 0, false, false);
+	
+	
+
+	$('#cliente_appoggio').append(newOption).trigger('change');
+	options =  $('#cliente_appoggio option').clone();
+	initSelect2('#cliente',null, '#myModalNuovaOfferta');
+	
+	setTimeout(function() {
+		
+		$('#cliente').val('0');
+		$('#cliente').change()
+		
+		/* $('#cliente option[value="'+0 +'"]').prop("selected", true) */
+		
+		$('#myModalNuovoCliente').modal('hide');
+		}, 200);
+	
+	
+	
+
+	
+	
+}
+
+
+function modalNuovoCliente(){
+	
+	$('#myModalNuovoCliente').modal();
+	
+}
+
+function modalNuovaOfferta(){
+
+	  
+	  if (!$('#cliente').hasClass('select2-hidden-accessible')) {
+	      
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			  pleaseWaitDiv.modal();
+	callAjax(null, "gestioneVerOfferte.do?action=clienti_sedi", function(data){
+	
+		if(data.success){
+			 var opt_clienti=[];
+			 var opt_sedi=[];
+		
+			 var lista_clienti = data.lista_clienti
+			 var lista_sedi = data.lista_sedi
+			
+		
+		
+		     for(var i = 0; i<lista_clienti.length;i++){
+		 			
+			 opt_clienti.push("<option value = '"+lista_clienti[i].idEncrypted+"'>"+lista_clienti[i].nome+"</option>");
+			
+		     }
+		
+			 opt_sedi.push(" <option value=''></option>");
+		     for(var i = 0; i<lista_sedi.length;i++){
+		    	 
+		    	 opt_sedi.push("<option value = '"+lista_sedi[i].id_encrypted+"_"+lista_sedi[i].id_cliente_encrypted+"'>"+lista_sedi[i].descrizione +" - "+ lista_sedi[i].indirizzo+ " - "+ lista_sedi[i].comune +" ("+lista_sedi[i].siglaProvincia+")</option>");
+				
+			     }
+		     
+			 $('#cliente_appoggio').html(opt_clienti);
+			 $('#sede').html(opt_sedi);
+			 
+			 
+			  $('#sede').select2();
+			  options =  $('#cliente_appoggio option').clone();
+		    	initSelect2('#cliente',null, '#myModalNuovaOfferta');
+		    	
+		    	
+		    	 pleaseWaitDiv.hide();
+		    	$('#myModalNuovaOfferta').modal();
+		    	
+		   
+		  	 
+		}
+		
+	});
+	
+	    }else{
+	    	
+	    	$('#myModalNuovaOfferta').modal();
+	    }
+
 	
 }
 
@@ -557,14 +916,25 @@ var columsDatatables = [];
 	} );
  
 
+ 
+ 
+ function showHideSede(){
+	 
+	 const stato = document.getElementById("toggleSede").checked ? "1" : "0";
+	 
+	if(stato == "1"){
+		$('#content_sede').show()
+	}else{
+		$('#content_sede').hide()
+	}
+	 
+ }
+
 
 $(document).ready(function() {
  
-
-  $('#sede').select2();
-  $('#sede_dtl').select2();
-    	initSelect2('#cliente',null, '#myModalNuovaOfferta');
-    	initSelect2('#cliente_dtl', null, '#myModalDettaglioOfferta');
+	$('#toggleSede').iCheck('destroy');
+	
         $('.dropdown-toggle').dropdown();
 
 
@@ -796,8 +1166,6 @@ $('#selectAlltabPM').on('ifChecked', function (ev) {
 $('#selectAlltabPM').on('ifUnchecked', function (ev) {
 
 	
-
-	
 		$("#selectAlltabPM").prop('checked', false);
 		tabArticoli.rows().deselect();
 		var allData = tabArticoli.rows({filter: 'applied'});
@@ -813,7 +1181,12 @@ $('#modificaOffertaForm').on('submit', function(e){
 	 callAjaxForm('#modificaOffertaForm','gestioneParcoAuto.do?action=modifica_offerta');
 });
  
-
+$('#nuovoClienteForm').on('submit', function(e){
+	 e.preventDefault();
+	 
+	 
+	 callAjaxForm('#nuovoClienteForm','gestioneVerOfferte.do?action=nuovo_cliente');
+});
  
  $('#nuovaOffertaForm').on('submit', function(e){
 	 e.preventDefault();
@@ -942,7 +1315,7 @@ $('#modificaOffertaForm').on('submit', function(e){
 
  
  
- var options =  $('#cliente_appoggio option').clone();
+ var options = [];
  function mockData() {
  	  return _.map(options, function(i) {		  
  	    return {
@@ -1090,29 +1463,24 @@ $('#modificaOffertaForm').on('submit', function(e){
 		  $('#image-popup_mod, #image-popup').fadeOut(150);
 		});
  
- function dettaglioOfferta(id, id_cliente, id_sede){
+ function dettaglioOfferta(id){
 	 
 	 dataObj = {};
 	 dataObj.id = id;
-	 
+	
 	 callAjax(dataObj, "gestioneVerOfferte.do?action=dettaglio_offerta",function(data){
 		 
 		 if(data.success){
-			 
+
+	    	 
+			
 			 var offerta = data.offerta
 			 var lista_articoli = data.lista_articoli
 			 var lista_immagini = data.lista_immagini
-			 $('#cliente_dtl').val(id_cliente);
-			 $('#cliente_dtl').change();
-			 
-			 if(offerta.id_sede !=0){
-				 $('#sede_dtl').val(id_sede+'_'+id_cliente);
-			 }else{
-				 $('#sede_dtl').val(id_sede);
-			 }
-			 
-			 $('#sede_dtl').change();
-			 $('#sede_dtl').attr("disabled", true);
+			
+			 $('#cliente_dtl').val(offerta.nome_cliente);
+			$('#sede_dtl').val(offerta.nome_sede);
+		
 			 
 		  	 var table_data = [];
 			  
@@ -1177,11 +1545,13 @@ $('#modificaOffertaForm').on('submit', function(e){
  $('#myModalDettaglioOfferta').on('hidden.bs.modal', function(){
 
 	 $('#content_immagini').html("");
-	 
+
+
  })
  
  
   $('#myModalNuovaOfferta').on("hidden.bs.modal", function(){
+		  
 	
 	 var tableArt = $('#tabArticoli').DataTable();
 	 tableArt.rows({ search: 'applied' }).deselect();

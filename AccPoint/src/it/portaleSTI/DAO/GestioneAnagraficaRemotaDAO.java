@@ -1,9 +1,11 @@
 package it.portaleSTI.DAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +19,7 @@ import it.portaleSTI.DTO.ComuneDTO;
 import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Util.Utility;
 
 public class GestioneAnagraficaRemotaDAO {
 	
@@ -87,6 +90,8 @@ public class GestioneAnagraficaRemotaDAO {
 				sede.setDescrizione(rs.getString("DESCR"));
 				sede.setCap(rs.getString("CAP")); 
 				sede.setN_REA(rs.getString("NREA"));
+				sede.setId_encrypted(Utility.encryptData(""+sede.get__id()));
+				sede.setId_cliente_encrypted(Utility.encryptData(""+sede.getId__cliente_()));
 				
 				lista.add(sede);
 			}
@@ -464,7 +469,7 @@ public class GestioneAnagraficaRemotaDAO {
 			return lista;
 		}
 
-		public static ArrayList<ClienteDTO> GestioneAnagraficaRemotaDAO(String codice_agente, Session session) throws Exception {
+		public static ArrayList<ClienteDTO> GestioneAnagraficaRemotaDAO(UtenteDTO utente, Session session) throws Exception {
 			List<ClienteDTO> lista =new ArrayList<ClienteDTO>();
 			
 			Connection con=null;
@@ -472,9 +477,17 @@ public class GestioneAnagraficaRemotaDAO {
 			ResultSet rs=null;
 			
 			try {
+				
+				String codage = " WHERE a.CODAGE = ? ";
+				if(utente.isTras()) {
+					codage = "";
+				}
+				
 				con=ManagerSQLServer.getConnectionSQL();
-				pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN_AGENTI AS a JOIN BWT_ANAGEN AS b ON a.ID_ANAGEN = b.ID_ANAGEN WHERE a.CODAGE = ? ");
-				pst.setString(1, codice_agente);
+				pst=con.prepareStatement("SELECT distinct b.ID_ANAGEN, b.NOME FROM BWT_ANAGEN_AGENTI AS a JOIN BWT_ANAGEN AS b ON a.ID_ANAGEN = b.ID_ANAGEN" +codage);
+				if(!utente.isTras()) {
+					pst.setString(1, utente.getCodice_agente());
+				}
 				rs=pst.executeQuery();
 				
 				ClienteDTO cliente=null;
@@ -484,7 +497,7 @@ public class GestioneAnagraficaRemotaDAO {
 					cliente= new ClienteDTO();
 					cliente.set__id(rs.getInt("ID_ANAGEN"));
 					cliente.setNome(rs.getString("NOME"));
-				
+					cliente.setIdEncrypted(Utility.encryptData(cliente.get__id()+""));
 					
 					lista.add(cliente);
 				}
@@ -503,7 +516,7 @@ public class GestioneAnagraficaRemotaDAO {
 			return (ArrayList<ClienteDTO>) lista;
 		}
 
-		public static ArrayList<ArticoloMilestoneDTO> getListaArticoliAgente(String codice_agente, Session session) throws Exception {
+		public static ArrayList<ArticoloMilestoneDTO> getListaArticoliAgente(UtenteDTO utente, Session session) throws Exception {
 
 			List<ArticoloMilestoneDTO> lista =new ArrayList<ArticoloMilestoneDTO>();
 			
@@ -512,10 +525,16 @@ public class GestioneAnagraficaRemotaDAO {
 			ResultSet rs=null;
 			
 			try {
+				String tb_gruppo = "AND TB_GRUPPO IN (SELECT TB_SERVIZIO FROM BWT_AGENTI_SERVIZI WHERE CODAGE = ? ) ";
+				
+				if(utente.isTras()) {
+					tb_gruppo = "AND TB_GRUPPO = 'VER_PER'";
+				}
 				con=ManagerSQLServer.getConnectionSQL();
-				pst=con.prepareStatement("SELECT articolo.ID_ANAART, articolo.DESCR, listino.PREZZO FROM BWT_ANAART as articolo JOIN PJT_LISTINO_CLIFOR AS listino ON articolo.ID_ANAART = listino.ID_ANAART  where STATO = 'USO' AND TB_GRUPPO IN \r\n" + 
-						"(SELECT TB_SERVIZIO FROM BWT_AGENTI_SERVIZI WHERE CODAGE = ?) ");
-				pst.setString(1, codice_agente);
+				pst=con.prepareStatement("SELECT distinct articolo.ID_ANAART, articolo.DESCR, listino.PREZZO FROM BWT_ANAART as articolo JOIN PJT_LISTINO_CLIFOR AS listino ON articolo.ID_ANAART = listino.ID_ANAART  where STATO = 'USO'  " + tb_gruppo);
+				if(!utente.isTras()) {
+					pst.setString(1, utente.getCodice_agente());
+				}
 				rs=pst.executeQuery();
 				
 				ArticoloMilestoneDTO articolo=null;
@@ -584,6 +603,130 @@ public class GestioneAnagraficaRemotaDAO {
 			}
 			
 			return articolo;
+		}
+
+		public static boolean checkPartitaIva(String partita_iva) throws Exception {
+			Connection con=null;
+			PreparedStatement pst = null;
+			ResultSet rs=null;
+			boolean esito=false;
+			
+			try {
+				con=ManagerSQLServer.getConnectionSQL();
+				pst=con.prepareStatement("SELECT ID_ANAGEN from BWT_ANAGEN where PIVA = ? ");				
+				pst.setString(1, partita_iva);
+				rs=pst.executeQuery();
+				
+				int result = 0;
+				
+				while(rs.next())
+				{
+					 result = rs.getInt("ID_ANAGEN");
+					
+				}
+				
+				if(result!=0) {
+					esito = true;
+				}
+				
+			} catch (Exception e) {
+				
+				throw e;
+			//	e.printStackTrace();
+				
+			}finally
+			{
+				pst.close();
+				con.close();
+			}
+			
+			return esito;
+		}
+
+		public static void insertCliente(ClienteDTO cl,SedeDTO sede, int idCompany, String codage) throws Exception {
+
+
+			Connection con=null;
+			PreparedStatement pst = null;
+			ResultSet rs=null;
+			boolean esito=false;
+			
+			try {
+				con=ManagerSQLServer.getConnectionSQL();
+				pst=con.prepareStatement("INSERT INTO BWT_ANAGEN (NOME, INDIR, TELEF01, CAP, PIVA, CODPROV, CITTA, EMAIL, CODFIS, TIPO, SYS_DTCREAZ, TOK_COMPANY) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ",Statement.RETURN_GENERATED_KEYS);
+				pst.setString(1, cl.getNome());
+				pst.setString(2, cl.getIndirizzo());
+				pst.setString(3, cl.getTelefono());
+				pst.setString(4, cl.getCap());
+				pst.setString(5, cl.getPartita_iva());
+				pst.setString(6, cl.getProvincia());
+				pst.setString(7, cl.getCitta());
+				pst.setString(8, cl.getEmail());
+				pst.setString(9, cl.getCf());
+				pst.setString(10, "CLI");
+				long today = new java.util.Date().getTime();
+				pst.setDate(11, new java.sql.Date(today));
+				String company = "4132";
+				if(idCompany!=4132) {
+					company+=","+idCompany;
+				}
+				pst.setString(12, company);
+				pst.execute();
+				
+				rs = pst.getGeneratedKeys();
+				int idClienteGenerato = -1;
+				if (rs.next()) {
+					idClienteGenerato = rs.getInt(1);
+				}
+				
+				
+				
+				if(sede!=null) {
+					pst=con.prepareStatement("INSERT INTO BWT_ANAGEN_INDIR (ID_ANAGEN, K2_ANAGEN_INDIR, DESCR, CAP, CODPROV, CITTA, SYS_DTCREAZ, TB_TIPO) VALUES (?,?,?,?,?,?,?,?) ",Statement.RETURN_GENERATED_KEYS);
+					pst.setInt(1, idClienteGenerato);
+					pst.setInt(2, 1);
+					pst.setString(3, sede.getDescrizione());
+					pst.setString(4, sede.getCap());
+					pst.setString(5, sede.getSiglaProvincia());
+					pst.setString(6, sede.getComune());
+					today = new java.util.Date().getTime();
+					pst.setDate(7, new java.sql.Date(today));	
+					pst.setString(8, "ND");
+					pst.execute();
+				}
+				
+				
+				rs = pst.getGeneratedKeys();
+				int idSedeGenerato = 0;
+				if (rs.next()) {
+					idSedeGenerato = rs.getInt(1);
+				}
+				
+				if(idClienteGenerato>-1 && codage!=null) {
+					pst=con.prepareStatement("INSERT INTO BWT_ANAGEN_AGENTI (ID_ANAGEN, ID_COMPANY, K2_ANAGEN_INDIR, CODAGE, SYS_DTCREAZ) VALUES (?,?,?,?,?) ");
+					pst.setInt(1, idClienteGenerato);
+					pst.setInt(2, idCompany);
+					pst.setInt(3, idSedeGenerato);
+					pst.setString(4, codage);
+					today = new java.util.Date().getTime();
+					pst.setDate(5, new java.sql.Date(today));
+					pst.execute();
+					
+				}
+		
+				
+			} catch (Exception e) {
+				
+				throw e;
+			//	e.printStackTrace();
+				
+			}finally
+			{
+				pst.close();
+				con.close();
+			}
+			
+			
 		}	
 		
 

@@ -121,21 +121,33 @@ public class GestioneAnagraficaRemotaBO {
 	}
 
 
-	public static ArrayList<ClienteDTO> getListaClientiOfferte(String codice_agente, Session session) throws Exception {
+	public static ArrayList<ClienteDTO> getListaClientiOfferte(UtenteDTO utente, Session session) throws Exception {
 		// TODO Auto-generated method stub
-		return GestioneAnagraficaRemotaDAO.GestioneAnagraficaRemotaDAO( codice_agente,  session);
+		return GestioneAnagraficaRemotaDAO.GestioneAnagraficaRemotaDAO( utente,  session);
 	}
 
 
-	public static ArrayList<ArticoloMilestoneDTO> getListaArticoliAgente(String codice_agente, Session session) throws Exception {
+	public static ArrayList<ArticoloMilestoneDTO> getListaArticoliAgente(UtenteDTO utente, Session session) throws Exception {
 		// TODO Auto-generated method stub
-		return GestioneAnagraficaRemotaDAO.getListaArticoliAgente(codice_agente, session);
+		return GestioneAnagraficaRemotaDAO.getListaArticoliAgente(utente, session);
 	}
 
 
 	public static ArticoloMilestoneDTO getArticoloAgenteFromId(String string) throws Exception{
 		// TODO Auto-generated method stub
 		return GestioneAnagraficaRemotaDAO.getArticoloAgenteFromId(string);
+	}
+
+
+	public static boolean checkPartitaIva(String partita_iva) throws Exception {
+		// TODO Auto-generated method stub
+		return GestioneAnagraficaRemotaDAO.checkPartitaIva(partita_iva);
+	}
+
+
+	public static void insertCliente(ClienteDTO cl,SedeDTO sede, int company, String codage)throws Exception  {
+		// TODO Auto-generated method stub
+		GestioneAnagraficaRemotaDAO.insertCliente(cl,sede, company, codage);
 	}
 	
 }

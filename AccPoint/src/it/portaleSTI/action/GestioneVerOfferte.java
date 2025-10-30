@@ -104,25 +104,37 @@ public class GestioneVerOfferte extends HttpServlet {
 			if(action!=null && action.equals("lista_offerte")) {
 				
 				ArrayList<OffOffertaDTO> lista_offerte = GestioneVerInterventoBO.getListaOfferte(utente, session);
-				ArrayList<ClienteDTO> lista_clienti = GestioneAnagraficaRemotaBO.getListaClientiOfferte(utente.getCodice_agente(), session);
-				ArrayList<ArticoloMilestoneDTO> lista_articoli = GestioneAnagraficaRemotaBO.getListaArticoliAgente(utente.getCodice_agente(), session);
+				ArrayList<ArticoloMilestoneDTO> lista_articoli = GestioneAnagraficaRemotaBO.getListaArticoliAgente(utente, session);
 				
-				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
-				if(listaSedi== null) {
-					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
-				}
-									
-						
-				request.getSession().setAttribute("lista_sedi", listaSedi);
-				request.getSession().setAttribute("lista_articoli", lista_articoli);
-				request.getSession().setAttribute("non_associate_encrypt", Utility.encryptData("0"));
-				request.getSession().setAttribute("lista_clienti", lista_clienti);
+				
 				request.getSession().setAttribute("lista_offerte", lista_offerte);
+				request.getSession().setAttribute("non_associate_encrypt",  Utility.encryptData("0"));
+				request.getSession().setAttribute("lista_articoli", lista_articoli);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerOfferte.jsp");
 		  	    dispatcher.forward(request,response);
 				
 		  		
 				
+			}
+			else if(action!=null && action.equals("clienti_sedi")) {
+				
+				ArrayList<ClienteDTO> lista_clienti = GestioneAnagraficaRemotaBO.getListaClientiOfferte(utente, session);
+				
+				
+				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
+				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+				myObj.addProperty("success", true);
+				myObj.add("lista_sedi", g.toJsonTree(listaSedi));
+				myObj.add("lista_clienti", g.toJsonTree(lista_clienti));
+				
+				PrintWriter  out = response.getWriter();
+			   out.print(myObj);
+				
+			
 			}
 			else if(action!=null && action.equals("nuova_offerta")) {
 				
@@ -175,23 +187,29 @@ public class GestioneVerOfferte extends HttpServlet {
 				
 				 
 				OffOffertaDTO offerta = new OffOffertaDTO();	
+		
+					id_cliente = Utility.decryptData(id_cliente);
+					id_sede = Utility.decryptData(id_sede.split("_")[0]);
+					ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
+					
+					
+					offerta.setId_cliente(Integer.parseInt(id_cliente));
+					offerta.setId_sede(Integer.parseInt(id_sede));
+					
+					offerta.setNome_cliente(cl.getNome());
+					SedeDTO sd =null;
+					if(!id_sede.equals("0")) {
+						sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), Integer.parseInt(id_cliente));
+						offerta.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo());
+					}else {
+						offerta.setNome_sede("Non associate");
+					}
+					
+			
 				
-				id_cliente = Utility.decryptData(id_cliente);
-				id_sede = Utility.decryptData(id_sede.split("_")[0]);
 				
-				offerta.setId_cliente(Integer.parseInt(id_cliente));
-				offerta.setId_sede(Integer.parseInt(id_sede));
+			
 				
-				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
-				
-				offerta.setNome_cliente(cl.getNome());
-				SedeDTO sd =null;
-				if(!id_sede.equals("0")) {
-					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), Integer.parseInt(id_cliente));
-					offerta.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo());
-				}else {
-					offerta.setNome_sede("Non associate");
-				}
 				
 				offerta.setUtente(utente.getNominativo());
 				offerta.setData_offerta(new Date());
@@ -234,6 +252,112 @@ public class GestioneVerOfferte extends HttpServlet {
 					
 			   out.print(myObj);
 					
+				
+				
+			}
+			else if(action.equals("nuovo_cliente")) {
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+			
+				
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		        
+		        ArrayList<FileItem> listaItems = new ArrayList<FileItem> ();		       
+		        ArrayList<String> filenames = new ArrayList<String> ();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	            		 if(item.getFieldName().equals("fileupload_img")) {
+	            			 listaItems.add(item);
+	            			 filenames.add(item.getName());
+	            			 
+	            		 }
+	                     	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		        
+		        
+		        String ragione_sociale= ret.get("ragione_sociale");
+				String indirizzo= ret.get("indirizzo");
+				String citta= ret.get("citta");
+				String comune= ret.get("comune");
+				String cap= ret.get("cap");
+				String telefono= ret.get("telefono");
+				String provincia= ret.get("provincia");
+				String email= ret.get("email");
+				String partita_iva= ret.get("partita_iva");
+				String codice_fiscale= ret.get("codice_fiscale");
+				String denominazione_sede= ret.get("denominazione_sede");
+				String indirizzo_sede= ret.get("indirizzo_sede");
+				String citta_sede= ret.get("citta_sede");
+				String cap_sede= ret.get("cap_sede");
+				String provincia_sede= ret.get("provincia_sede");
+				
+				
+				boolean esito = GestioneAnagraficaRemotaBO.checkPartitaIva(partita_iva);
+				
+				if(esito){
+					PrintWriter  out = response.getWriter();
+					
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Attenzione! Partita iva esistente, contattare il servizio clienti per l'associazione!");
+						
+				   out.print(myObj);
+						
+					
+				}else {
+					ClienteDTO cl = new ClienteDTO();
+					cl.setCap(cap);
+					cl.setIndirizzo(indirizzo);
+					cl.setTelefono(telefono);
+					cl.setEmail(email);
+					cl.setCitta(citta);
+					cl.setProvincia(provincia);
+					cl.setPartita_iva(partita_iva);
+					cl.setCf(codice_fiscale);
+					cl.setNome(ragione_sociale);
+					
+					
+					
+					SedeDTO sede = null;
+					
+					if(denominazione_sede!=null) {
+						sede = new SedeDTO();
+						
+						sede.setDescrizione(denominazione_sede);
+						sede.setIndirizzo(indirizzo_sede);
+						sede.setComune(citta_sede);
+						sede.setCap(cap_sede);
+						sede.setSiglaProvincia(provincia_sede);
+					}
+					
+					
+										
+					GestioneAnagraficaRemotaBO.insertCliente(cl,sede, utente.getCompany().getId(), utente.getCodice_agente());
+					
+					
+					PrintWriter  out = response.getWriter();
+					
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Cliente salvato con successo!");
+						
+				   out.print(myObj);
+				}
+				
 				
 				
 			}

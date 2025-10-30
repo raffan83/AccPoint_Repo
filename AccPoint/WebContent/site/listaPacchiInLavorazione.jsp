@@ -76,7 +76,7 @@
 						 
 						  <c:forEach items="${lista_pacchi_grafico}" var="origine" varStatus="loop">
                             <c:set var="splitted" value="${origine.split(';')}"/>
-  							<c:if test="${splitted[7] == '0' && splitted[9] == '1'}">
+  							<c:if test="${(splitted[7] == '0' && splitted[9] == '1') || splitted[7] == '3'}">
   							<tr style="position:relative;background-color:#F98989">
   							</c:if>
                             <c:if test="${splitted[7] == '1'}">
@@ -98,10 +98,10 @@
                                <td  id="${splitted[0]}_7" style="position:relative">${splitted[6]}</td>
                                <td  id="${splitted[0]}_8" style="position:relative">${splitted[8]}</td>
                                <td  id="${splitted[0]}_9" style="position:relative">
-                                <c:if test="${splitted[9] == '0'}">
+                                <c:if test="${splitted[9] == '0' && splitted[7]!='3'}">
                                NO
                                </c:if>
-                               <c:if test="${splitted[9] == '1'}">
+                               <c:if test="${splitted[9] == '1' || splitted[7]=='3' }">
                                SI
                                </c:if>
                                
@@ -156,6 +156,7 @@
     <li data-action = "da_fare">Da Fare</li>
   <li data-action = "in_corso">In Corso</li>
   <li data-action = "completato">Completato</li>
+  <li data-action = "urgente">Urgente</li>
   
 </ul>
 
@@ -477,7 +478,18 @@ function initContextMenu(){
                       	
             
              break;
-	     }
+             
+         case 'urgente':
+             
+       		
+       		updateStato(cellIndex.split("_")[0]+"_"+cellIndex.split("_")[1], 3);
+                    	
+          
+           break;
+	     
+	     
+
+  }
 	   
 	     // Hide it AFTER the action was triggered
 	     $(".custom-menu").hide(100);

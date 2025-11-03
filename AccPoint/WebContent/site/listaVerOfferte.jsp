@@ -52,7 +52,7 @@
 
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovaIntervento()"><i class="fa fa-plus"></i> Nuova Intervento</a> --> 
 <a class="btn btn-primary pull-right" onClick="modalNuovaOfferta()"><i class="fa fa-plus"></i> Nuova Offerta</a> 
-	<a class="btn btn-primary pull-right" onClicK="modalNuovoCliente()" ><i class="fa fa-plus"></i> Nuovo Cliente</a>
+	<a class="btn btn-primary pull-right" style="margin-right:5px" onClicK="modalNuovoCliente()" ><i class="fa fa-plus"></i> Nuovo Cliente</a>
 
 
 
@@ -361,7 +361,15 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-            <input id="provincia" name="provincia" class="form-control" style="width:100%" >
+           
+            <input id="provincia" name="provincia"
+       class="form-control"
+       style="width:100%;text-transform: uppercase;"
+       pattern="[A-Za-z]{2}"
+       minlength="2"
+       maxlength="2"
+       title="Inserisci la sigla di due lettere della provincia (es. RM, MI, NA)"
+       >
        			
        	</div>       	
        </div><br>
@@ -386,7 +394,14 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-            <input id="partita_iva" name="partita_iva" class="form-control" style="width:100%" >
+        <input id="partita_iva" name="partita_iva"
+       class="form-control"
+       style="width:100%"
+       pattern="\d{11}"
+       minlength="11"
+       maxlength="11"
+       title="La Partita IVA deve contenere esattamente 11 cifre numeriche"
+       required>
        			
        	</div>       	
        </div><br>
@@ -472,8 +487,16 @@
        		<label>Provincia Sede</label>
        	</div>
        	<div class="col-sm-9">      
-       	  	
-            <input id="provincia_sede" name="provincia_sede" class="form-control" style="width:100%" >
+ 
+            
+<input id="provincia_sede" name="provincia_sede"
+       class="form-control"
+       style="width:100%;text-transform: uppercase;"
+       pattern="[A-Za-z]{2}"
+       minlength="2"
+       maxlength="2"
+       title="Inserisci la sigla di due lettere della provincia (es. RM, MI, NA)"
+       >
        			
        	</div>       	
        </div><br>
@@ -924,8 +947,18 @@ var columsDatatables = [];
 	 
 	if(stato == "1"){
 		$('#content_sede').show()
+		$('#denominazione_sede').attr("required", true);
+		$('#indirizzo_sede').attr("required", true);
+		$('#citta_sede').attr("required", true);
+		$('#cap_sede').attr("required", true);
+		$('#provincia_sede').attr("required", true);
 	}else{
 		$('#content_sede').hide()
+		$('#denominazione_sede').attr("required", false);
+		$('#indirizzo_sede').attr("required", false);
+		$('#citta_sede').attr("required", false);
+		$('#cap_sede').attr("required", false);
+		$('#provincia_sede').attr("required", false);
 	}
 	 
  }

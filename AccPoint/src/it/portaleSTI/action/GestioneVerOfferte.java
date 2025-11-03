@@ -314,7 +314,7 @@ public class GestioneVerOfferte extends HttpServlet {
 					PrintWriter  out = response.getWriter();
 					
 					myObj.addProperty("success", true);
-					myObj.addProperty("messaggio", "Attenzione! Partita iva esistente, contattare il servizio clienti per l'associazione!");
+					myObj.addProperty("messaggio", "Attenzione! Partita iva esistente, contattare l'ufficio commerciale per l'associazione!");
 						
 				   out.print(myObj);
 						

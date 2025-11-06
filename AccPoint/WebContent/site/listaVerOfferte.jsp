@@ -51,6 +51,7 @@
 
 
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovaIntervento()"><i class="fa fa-plus"></i> Nuova Intervento</a> --> 
+<a class="btn btn-primary pull-left" onClick="listaClienti()"><i class="fa fa-plus"></i> Lista Clienti</a> 
 <a class="btn btn-primary pull-right" onClick="modalNuovaOfferta()"><i class="fa fa-plus"></i> Nuova Offerta</a> 
 	<a class="btn btn-primary pull-right" style="margin-right:5px" onClicK="modalNuovoCliente()" ><i class="fa fa-plus"></i> Nuovo Cliente</a>
 
@@ -68,7 +69,7 @@
 
 
 <th style="max-width:40px">ID</th>
-
+<th>Numero Offerta</th>
 <th>Cliente</th>
 <th>Sede</th>
 <th>Data</th>
@@ -83,6 +84,7 @@
 	<tr id="row_${loop.index}" >
 
 	<td>${offerta.id }</td>	
+	<td>${offerta.n_offerta }</td>	
 	
 	<td>${offerta.nome_cliente }</td>
 
@@ -134,6 +136,44 @@
 
 </div>
 
+
+  <div id="modalListaClienti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Lista Clienti</h4>
+      </div>
+       <div class="modal-body"> 
+       
+       <table id="tabClienti" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+
+
+<th>Cliente</th>
+<th>Indirizzo</th>
+ </tr></thead>
+ 
+ <tbody>
+ 
+
+ </tbody>
+ </table>  
+             
+             
+      	
+      	</div>
+      <div class="modal-footer">
+
+		<a class="btn btn-primary" onclick="$('#modalListaClienti').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 <form id="nuovaOffertaForm" name="nuovaOffertaForm">
 <div id="myModalNuovaOfferta" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
     <div class="modal-dialog modal-md" role="document">
@@ -151,6 +191,7 @@
        		<label>Cliente</label>
        	</div>
        	 <div class="col-md-6" style="display:none">  
+       	 
                   <label>Cliente</label>
                <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required disabled>
                 
@@ -324,7 +365,12 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-            <input id="citta" name="citta" class="form-control" style="width:100%" >
+            <select id="citta" name="citta" class="form-control select2" data-placeholder="Seleziona Città..." style="width:100%" >
+            <option value=""></option>
+            <c:forEach items="${lista_comuni }" var="comune">
+            <option value="${comune.cap }_${comune.provincia }_${comune.descrizione }_${comune.regione}">${comune.descrizione }</option>
+            </c:forEach>
+            </select>
        			
        	</div>       	
        </div><br>
@@ -337,22 +383,12 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-            <input id="cap" name="cap" class="form-control" style="width:100%" >
+            <input id="cap" name="cap" class="form-control" style="width:100%" readonly>
        			
        	</div>       	
        </div><br>
        
-               <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Telefono</label>
-       	</div>
-       	<div class="col-sm-9">      
-       	  	
-            <input id="telefono" name="telefono" class="form-control" style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
+     
        
            <div class="row">
        
@@ -368,7 +404,27 @@
        pattern="[A-Za-z]{2}"
        minlength="2"
        maxlength="2"
-       title="Inserisci la sigla di due lettere della provincia (es. RM, MI, NA)"
+       title="Inserisci la sigla di due lettere della provincia (es. RM, MI, NA)" readonly
+       >
+       			
+       	</div>       	
+       </div><br>
+       
+                 <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Telefono</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        
+            <input type="tel"
+       id="telefono"
+       name="telefono"
+       class="form-control"
+       style="width:100%;"
+       pattern="^(\+39)?\d{6,12}$"
+       title="Inserisci un numero di telefono valido (può iniziare con +39 e contenere da 6 a 12 cifre)"
        >
        			
        	</div>       	
@@ -382,7 +438,15 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-            <input id="email" name="email" class="form-control" style="width:100%" >
+   
+            <input type="email" 
+       id="email" 
+       name="email"
+       class="form-control"
+       style="width:100%;"
+       pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+       title="Inserisci un indirizzo email valido (esempio: nome@dominio.it)"
+       >
        			
        	</div>       	
        </div><br>
@@ -412,8 +476,15 @@
        		<label>Codice fiscale</label>
        	</div>
        	<div class="col-sm-9">      
-       	  	
-            <input id="codice_fiscale" name="codice_fiscale" class="form-control" style="width:100%" >
+     
+           <input id="codice_fiscale" name="codice_fiscale"
+       class="form-control"
+       style="width:100%; text-transform: uppercase;"
+       pattern="[A-Za-z0-9]{11,16}"
+       minlength="11"
+       maxlength="16"
+       title="Il Codice Fiscale può contenere solo numeri e lettere (da 11 a 16 caratteri)"
+       >
        			
        	</div>       	
        </div><br>
@@ -433,7 +504,8 @@
   </div>
 </div><br>
        
-       <div id="content_sede" style="display:none">
+       <div id="content_sede" style="display:none"> 
+    
                     <div class="row">
        
        	<div class="col-sm-3">
@@ -464,7 +536,13 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-            <input id="citta_sede" name="citta_sede" class="form-control" style="width:100%" >
+     
+               <select id="citta_sede" name="citta_sede" class="form-control select2" data-placeholder="Seleziona Città..." style="width:100%">
+            <option value=""></option>
+            <c:forEach items="${lista_comuni }" var="comune">
+            <option value="${comune.cap }_${comune.provincia }_${comune.descrizione }_${comune.regione}">${comune.descrizione }</option>
+            </c:forEach>
+            </select>
        			
        	</div>       	
        </div><br>
@@ -475,7 +553,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-            <input id="cap_sede" name="cap_sede" class="form-control" style="width:100%" >
+            <input id="cap_sede" name="cap_sede" class="form-control" style="width:100%" readonly>
        			
        	</div>       	
        </div><br>
@@ -496,6 +574,7 @@
        minlength="2"
        maxlength="2"
        title="Inserisci la sigla di due lettere della provincia (es. RM, MI, NA)"
+       readonly
        >
        			
        	</div>       	
@@ -586,13 +665,25 @@
  </table>  
        			
        	</div>       	
-       </div><br>
+       </div>
+                       <div class="row">
+                       <div class="col-xs-9">
+                       </div>
+       
+
+       	<div class="col-xs-3">
+       	<label>Importo Tot.</label>
+       	<input id="importo_tot" class="form-control pull-right" readonly>
+       	</div>
+       	</div><br>
+       
+       
        
                 <div class="row">
        
 
        	<div class="col-xs-12">
-			<label>Immagini offerta</label><br>
+			<label>Immagini offerta (click per il download)</label><br>
 			<div id="content_immagini"></div>
 
 <!-- Popup di anteprima -->
@@ -608,7 +699,7 @@
       <div class="modal-footer">
       <input type="hidden" id="id_articoli" name="id_articoli">
 
-		<button class="btn btn-primary" type="submit">Salva</button> 
+		
        
       </div>
     </div>
@@ -717,6 +808,10 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(22px);
 }
+#myModalNuovoCliente {
+  transform: none !important;
+}
+
 </style>
 </jsp:attribute>
 
@@ -963,6 +1058,63 @@ var columsDatatables = [];
 	 
  }
 
+ 
+/*  $('#myModalNuovoCliente').on('shown.bs.modal', function () {
+	  $('#citta').select2({
+	    dropdownParent: $('#myModalNuovoCliente'),
+	    width: '100%'
+	  });
+	  
+	  $('#citta_sede').select2({
+		    dropdownParent: $('#myModalNuovoCliente'),
+		    width: '100%'
+		  });
+	});
+ */
+
+ 
+
+
+	
+	
+	$(function() {
+		  // Salva la funzione originale (una volta sola)
+		  var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
+
+		  // Disattiva lenforceFocus di Bootstrap per tutta la durata della modale
+		  $('#myModalNuovoCliente').on('show.bs.modal', function() {
+		    $.fn.modal.Constructor.prototype.enforceFocus = function() {};
+		  });
+
+		  // Ripristina il comportamento originale quando la modale è chiusa
+		  $('#myModalNuovoCliente').on('hidden.bs.modal', function() {
+		    $.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
+		  });
+
+		  // Inizializza le select al momento dellapertura della modale
+		  $('#myModalNuovoCliente').on('shown.bs.modal', function() {
+		    $('#citta').select2({
+		      dropdownParent: $('body'),
+		      width: '100%'
+		    });
+		  });
+
+		  $('#citta_sede').select2({
+		        dropdownParent: $('body'),
+		        width: '100%'
+		      });
+		  
+		  // Mostra la sezione nascosta e inizializza anche quella Select2
+	
+
+		  // Quando si apre un select2, forza il focus sul campo ricerca
+		  $(document).on('select2:open', function() {
+		    let searchField = document.querySelector('.select2-container--open .select2-search__field');
+		    if (searchField) {
+		      setTimeout(() => searchField.focus(), 10);
+		    }
+		  });
+		});
 
 $(document).ready(function() {
  
@@ -970,9 +1122,34 @@ $(document).ready(function() {
 	
         $('.dropdown-toggle').dropdown();
 
+/* 	$('#citta').select2({
+        dropdownParent: $('#myModalNuovoCliente')
+    });	
+	 	$('#citta_sede').select2({
+        dropdownParent: $('#myModalNuovoCliente')
+    });	  */
+  		
+/*     $('#citta', ).select2({
+        dropdownParent: $('#myModalNuovoCliente')
+    }); 
+     */
 
- 		
- 		
+     
+     var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
+
+  // Disattiva enforceFocus di Bootstrap (rende cliccabile la searchbox Select2)
+  $.fn.modal.Constructor.prototype.enforceFocus = function() {};
+
+  // Inizializza Select2 normalmente
+  $('#citta, #citta_sede').select2({
+    dropdownParent: $('body'),
+    width: '100%'
+  });
+
+  // Quando chiudi la modale, puoi ripristinarlo (opzionale)
+  $('#myModalNuovoCliente').on('hidden.bs.modal', function() {
+    $.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
+  });
 
  	     table = $('#tabOfferte').DataTable({
  				language: {
@@ -999,7 +1176,7 @@ $(document).ready(function() {
  			        }
  		        },
  		        pageLength: 25,
- 		        "order": [[ 3, "asc" ]],
+ 		        "order": [[ 0, "desc" ]],
  			      paging: true, 
  			      ordering: true,
  			      info: true, 
@@ -1085,10 +1262,11 @@ $(document).ready(function() {
 	        }
         },
         pageLength: 100,
-	      paging: true, 
+	      paging: false, 
 	      ordering: true,
 	      info: true, 
-	      searchable: false, 
+	      searchable: false,
+	      searching: false,
 	      targets: 0,
 	      responsive: true,
 	      scrollX: false,
@@ -1154,15 +1332,69 @@ $(document).ready(function() {
 	        ordering: true,
 	        info: true,
 	        searchable: false,
+	        searching:false,
 	        targets: 0,
 	        responsive: true,
 	        scrollX: false,
-	        stateSave: true,
+	        stateSave: false,
 	        columns : [
 		    	{"data" : "id_articolo"},  
 		    	{"data" : "descrizione"},  
 		    	{"data" : "importo"},
 		      	{"data" : "quantita"}
+		      
+		       ],	
+	        columnDefs: [
+	            { responsivePriority: 1, targets: 1 }
+	            
+	        ],
+	        buttons: [{
+	            extend: 'colvis',
+	            text: 'Nascondi Colonne'
+	        }]
+	    });
+	    
+	    
+	    
+	    
+	    
+	    
+	    tabClienti = $("#tabClienti").DataTable({
+	        language: {
+	            emptyTable: "Nessun dato presente nella tabella",
+	            info: "Vista da _START_ a _END_ di _TOTAL_ elementi",
+	            infoEmpty: "Vista da 0 a 0 di 0 elementi",
+	            infoFiltered: "(filtrati da _MAX_ elementi totali)",
+	            infoThousands: ".",
+	            lengthMenu: "Visualizza _MENU_ elementi",
+	            loadingRecords: "Caricamento...",
+	            processing: "Elaborazione...",
+	            search: "Cerca:",
+	            zeroRecords: "La ricerca non ha portato alcun risultato.",
+	            paginate: {
+	                first: "Inizio",
+	                previous: "Precedente",
+	                next: "Successivo",
+	                last: "Fine"
+	            },
+	            aria: {
+	                srtAscending: ": attiva per ordinare la colonna in ordine crescente",
+	                sortDescending: ": attiva per ordinare la colonna in ordine decrescente"
+	            }
+	        },
+	        pageLength: 50,
+	        order: [[0, "asc"]],
+	        paging: true,
+	        ordering: true,
+	        info: true,
+	        searchable: false,
+	        targets: 0,
+	        responsive: true,
+	        scrollX: false,
+	        stateSave: true,
+	        columns : [
+		    	{"data" : "cliente"},  
+		    	{"data" : "indirizzo"}
 		      
 		       ],	
 	        columnDefs: [
@@ -1207,12 +1439,6 @@ $('#selectAlltabPM').on('ifUnchecked', function (ev) {
   	});
 
 
-$('#modificaOffertaForm').on('submit', function(e){
-	 e.preventDefault();
-	 
-	 
-	 callAjaxForm('#modificaOffertaForm','gestioneParcoAuto.do?action=modifica_offerta');
-});
  
 $('#nuovoClienteForm').on('submit', function(e){
 	 e.preventDefault();
@@ -1292,57 +1518,28 @@ $('#nuovoClienteForm').on('submit', function(e){
 	});
  
  
- $("#cliente_dtl").change(function() {
-	  
-	  if ($(this).data('options') == undefined) 
-	  {
-	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-	    $(this).data('options', $('#sede_dtl option').clone());
-	  }
-	  
-	  
-	  var selection = $(this).val()	 
-	  var id = selection
-	  var options = $(this).data('options');
-
-	  var opt=[];
-	
-	  opt.push("<option value = '${non_associate_encrypt}'>Non Associate</option>");
-
-	   for(var  i=0; i<options.length;i++)
-	   {
-		var str=options[i].value; 
-	
-		//if(str.substring(str.indexOf("_")+1,str.length)==id)
-		if(str.substring(str.indexOf("_")+1, str.length)==id)
-		{
-
-			opt.push(options[i]);
-		}   
-	   }
-	 $("#sede_dtl").prop("disabled", false);
+ $("#citta").change(function() {
 	 
-	  $('#sede_dtl').html(opt);
-	  
-	  //$("#sede").trigger("chosen:updated");
-	  
+	 
+	 var cap = $(this).val().split("_")[0];
+	 var provincia = $(this).val().split("_")[1];
+	 
+	 if(cap.length==4){
+		 cap = "0"+cap
+	 }
+	$('#cap').val(cap)
+	$('#provincia').val(provincia)
 
-		//$("#sede").change();  
-		
-		  var id_cliente = selection.split("_")[0];
-		  
-
-		  var opt=[];
-			opt.push("");
-		   for(var  i=0; i<options.length;i++)
-		   {
-			   if(str!='' && str.split("_")[1]==id)
-				{
-					opt.push(options[i]);
-				}   
-		   } 
-		   
-		  
+	});
+ 
+ $("#citta_sede").change(function() {
+	 
+	 
+	 var cap = $(this).val().split("_")[0];
+	 var provincia = $(this).val().split("_")[1];
+	 
+	$('#cap_sede').val(cap)
+	$('#provincia_sede').val(provincia)
 
 	});
 
@@ -1404,7 +1601,7 @@ $('#nuovoClienteForm').on('submit', function(e){
 	    }
 
 	    // Mostra tutti i nomi separati da virgola (o su più righe)
-	    $('#label_img').html(fileNames.join(', '));
+	    $('#label_img').html(fileNames.join('<br>'));
 	});
  
  
@@ -1427,7 +1624,7 @@ $('#nuovoClienteForm').on('submit', function(e){
              
                   if(i === 4){
                  	var id = $(row)[0].id;
-                 	 const input = $('<input id="quantita_'+id+'" class="form-control" style="width:100%" type="number" min="0" step="1"/>');
+                 	 const input = $('<input id="quantita_'+id+'" class="form-control" style="width:100%" type="number" min="0" step="1" value="1"/>');
 	                        $cell.html(input);	
                  }
          
@@ -1514,7 +1711,7 @@ $('#nuovoClienteForm').on('submit', function(e){
 			 $('#cliente_dtl').val(offerta.nome_cliente);
 			$('#sede_dtl').val(offerta.nome_sede);
 		
-			 
+			$('#importo_tot').val(offerta.importo);
 		  	 var table_data = [];
 			  
 		     if(lista_articoli!=null){
@@ -1564,6 +1761,11 @@ $('#nuovoClienteForm').on('submit', function(e){
 		 	            popup.style.display = "none";
 		 	         
 		 	        };
+		 	        
+		 	       thumb.onclick = () => {
+		 	    	   callAction("gestioneVerOfferte.do?action=download_immagine&id_immagine="+img.id)
+		 	         
+		 	        };
 		 	        container.appendChild(thumb);
 		 	    });
 		 		
@@ -1573,6 +1775,56 @@ $('#nuovoClienteForm').on('submit', function(e){
 	 })
 	 
  }
+ 
+ 
+ 
+ function listaClienti(){
+
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			  pleaseWaitDiv.modal();
+	callAjax(null, "gestioneVerOfferte.do?action=clienti_sedi&indirizzo=1", function(data){
+	
+		if(data.success){
+			 var opt_clienti=[];
+			 var opt_sedi=[];
+		
+			 var lista_clienti = data.lista_clienti
+			
+			 var table_data = [];
+			  
+		     if(lista_clienti!=null){
+		 		  for(var i = 0; i<lista_clienti.length;i++){
+		 			  var dati = {};
+		 			 
+		 			
+		 			  dati.cliente = lista_clienti[i].nome;
+		 			  dati.indirizzo = lista_clienti[i].indirizzo +", "+lista_clienti[i].cap+", "+lista_clienti[i].citta+" ("+lista_clienti[i].provincia+")";	
+		 			  table_data.push(dati);
+		 			
+		 		  }
+		     }
+		 		  var tabClienti = $('#tabClienti').DataTable();
+		 		  
+		 		 tabClienti.clear().draw();
+		 		   
+		 		tabClienti.rows.add(table_data).draw();
+		 			
+		 		tabClienti.columns.adjust().draw();
+		
+		
+		    	
+		    	 pleaseWaitDiv.hide();
+		    	$('#modalListaClienti').modal();
+		    	
+		   
+		  	 
+		}
+		
+	});
+	
+
+	
+}
  
  
  $('#myModalDettaglioOfferta').on('hidden.bs.modal', function(){

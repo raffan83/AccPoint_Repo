@@ -121,9 +121,9 @@ public class GestioneAnagraficaRemotaBO {
 	}
 
 
-	public static ArrayList<ClienteDTO> getListaClientiOfferte(UtenteDTO utente, Session session) throws Exception {
+	public static ArrayList<ClienteDTO> getListaClientiOfferte(UtenteDTO utente, String indirirzzo,Session session) throws Exception {
 		// TODO Auto-generated method stub
-		return GestioneAnagraficaRemotaDAO.GestioneAnagraficaRemotaDAO( utente,  session);
+		return GestioneAnagraficaRemotaDAO.GestioneAnagraficaRemotaDAO( utente,  indirirzzo, session);
 	}
 
 

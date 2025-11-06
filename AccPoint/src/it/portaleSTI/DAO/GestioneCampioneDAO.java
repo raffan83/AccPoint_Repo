@@ -1124,6 +1124,19 @@ public static ArrayList<CampioneDTO> getListaCampioniVerificazione(Session sessi
 	
 }
 	
+
+
+public static ArrayList<AcAttivitaCampioneDTO> getListaAttivitaAll(Session session) throws HibernateException{
+	
+
+	ArrayList<AcAttivitaCampioneDTO> lista = null;
+	
+	Query query = session.createQuery("from AcAttivitaCampioneDTO ");
+	
+	lista = (ArrayList<AcAttivitaCampioneDTO>) query.list();
+	
+	return lista;
+}
 	
 }
 

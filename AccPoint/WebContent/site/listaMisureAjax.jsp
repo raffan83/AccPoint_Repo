@@ -180,7 +180,8 @@ NON DETERMINATO
 <td>
 <%-- <a class="btn btn-primary customTooltip" title="Aggiorna indice di prestazione" onclick="aggiornaIndicePrestazione('${misura.id}')"><i class="fa fa-refresh"></i></a> --%>
 <c:if test='${userObj.checkRuolo("AM") || userObj.checkRuolo("OP")}'>
-		<select class="form-control indicePrest" id="indice_prestazione_${misura.id}" onchange="aggiornaIndicePrestazione('${misura.id}')" data-placeholder="Aggiorna indice di prestazione" style ="width:80%">
+
+	<select class="form-control indicePrest" id="indice_prestazione_${misura.id}" onchange="aggiornaIndicePrestazione('${misura.id}')" data-placeholder="Aggiorna indice di prestazione" style ="width:80%">
 		<option value=""></option>
 		<c:choose>
 		<c:when test="${misura.indice_prestazione == '0' }">
@@ -539,6 +540,11 @@ NON DETERMINATO
 
 <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
 </jsp:attribute> --%>
+
+
+
+
+
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
@@ -556,7 +562,10 @@ NON DETERMINATO
   <script type="text/javascript">
  
   
-  $(".indicePrest").select2();
+  $('.indicePrest').select2();
+  
+ 
+  
   function aggiornaIndicePrestazione(id_misura){
 	  
 	  
@@ -860,7 +869,7 @@ NON DETERMINATO
   	                   { responsivePriority: 4, targets: 3 },
   	                
   	               
- 	                  { responsivePriority: 4, targets: 9 }
+ 	                  { responsivePriority: 5, targets: 12 }
   	               ],
   	     
   	               buttons: [ {

@@ -11,6 +11,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
@@ -45,10 +46,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
@@ -78,6 +81,8 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
@@ -2016,5 +2021,13 @@ public JasperReportBuilder getTableReportS(List<ReportSVT_DTO> listaReport, Stri
 
 			GestioneCertificatoBO.createCertificato("28896","",session, null, utente);
 			
-		}
+		
+			
+
+	        
+	    }
+
+	  
+			
+		
 }

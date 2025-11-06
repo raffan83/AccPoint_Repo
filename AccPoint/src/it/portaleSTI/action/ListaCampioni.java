@@ -334,6 +334,22 @@ public class ListaCampioni extends HttpServlet {
 				session.getTransaction().commit();
 				session.close();
 			}
+			else if(action.equals("copia_file")) {
+				PrintWriter out = response.getWriter();
+				boolean esito = GestioneCampioneBO.copiaFileCampioni(session);
+				
+				if(esito) {
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Nessun campione in scadenza nel periodo selezionato!");
+				}else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Errore copia!");
+				}
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+			}
+			
 			else if(action.equals("download_scadenzario")) {
 				
 				File file = new File(Costanti.PATH_FOLDER+"//ScadenzarioCampioni//SchedaListacampioni.pdf");

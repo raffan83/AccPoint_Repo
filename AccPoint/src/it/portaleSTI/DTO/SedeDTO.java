@@ -13,6 +13,7 @@ public class SedeDTO {
 	private String n_REA="";
 	private String id_encrypted;
 	private String id_cliente_encrypted;
+	private String regione;
 
 	public String getSiglaProvincia() {
 		return siglaProvincia;
@@ -117,6 +118,14 @@ public class SedeDTO {
 
 	public void setId_cliente_encrypted(String id_cliente_encrypted) {
 		this.id_cliente_encrypted = id_cliente_encrypted;
+	}
+
+	public String getRegione() {
+		return regione;
+	}
+
+	public void setRegione(String regione) {
+		this.regione = regione;
 	}
 
 

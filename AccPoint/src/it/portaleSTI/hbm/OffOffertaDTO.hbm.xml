@@ -29,7 +29,9 @@
           <property name="utente" type="java.lang.String">
             <column name="utente" />
         </property>
-        
+         <property name="n_offerta" type="java.lang.String">
+            <column name="n_offerta" />
+        </property>
             
         <property name="data_offerta" type="java.util.Date">
             <column name="data_offerta" />

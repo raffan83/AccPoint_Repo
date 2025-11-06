@@ -80,6 +80,8 @@
  <c:if test="${utente.checkPermesso('NUOVO_CAMPIONE_METROLOGIA')}"> <button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoCampione')">Nuovo Campione</button></c:if>
 
  <c:if test="${utente.checkPermesso('ESPORTA_LISTA_CAMPIONI_METROLOGIA')}"><a class="btn btn-primary" href="gestioneCampione.do?action=exportLista">ESPORTA Campioni</a></c:if>
+ 
+  <c:if test="${utente.getId()==40}"> <button class="btn btn-primary" onClick="callAjax(null, 'listaCampioni.do?action=copia_file')">Copia File</button></c:if>
 
 <!--     <span class="btn btn-primary fileinput-button pull-right">
 		        <i class="glyphicon glyphicon-plus"></i>

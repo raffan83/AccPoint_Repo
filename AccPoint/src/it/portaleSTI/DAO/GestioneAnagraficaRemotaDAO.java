@@ -20,6 +20,7 @@ import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.action.ContextListener;
 
 public class GestioneAnagraficaRemotaDAO {
 	
@@ -469,7 +470,9 @@ public class GestioneAnagraficaRemotaDAO {
 			return lista;
 		}
 
-		public static ArrayList<ClienteDTO> GestioneAnagraficaRemotaDAO(UtenteDTO utente, Session session) throws Exception {
+		
+		
+		public static ArrayList<ClienteDTO> GestioneAnagraficaRemotaDAO(UtenteDTO utente,String indirizzo, Session session) throws Exception {
 			List<ClienteDTO> lista =new ArrayList<ClienteDTO>();
 			
 			Connection con=null;
@@ -483,8 +486,14 @@ public class GestioneAnagraficaRemotaDAO {
 					codage = "";
 				}
 				
+				String q = "SELECT distinct b.ID_ANAGEN, b.NOME FROM BWT_ANAGEN_AGENTI AS a JOIN BWT_ANAGEN AS b ON a.ID_ANAGEN = b.ID_ANAGEN" +codage;
+				
+				if(indirizzo!=null && indirizzo.equals("1")) {
+					 q = "SELECT distinct b.ID_ANAGEN, b.NOME, b.INDIR, b.CAP, b.CITTA, b.CODPROV FROM BWT_ANAGEN_AGENTI AS a JOIN BWT_ANAGEN AS b ON a.ID_ANAGEN = b.ID_ANAGEN" +codage;
+				}
+				
 				con=ManagerSQLServer.getConnectionSQL();
-				pst=con.prepareStatement("SELECT distinct b.ID_ANAGEN, b.NOME FROM BWT_ANAGEN_AGENTI AS a JOIN BWT_ANAGEN AS b ON a.ID_ANAGEN = b.ID_ANAGEN" +codage);
+				pst=con.prepareStatement(q);
 				if(!utente.isTras()) {
 					pst.setString(1, utente.getCodice_agente());
 				}
@@ -497,7 +506,16 @@ public class GestioneAnagraficaRemotaDAO {
 					cliente= new ClienteDTO();
 					cliente.set__id(rs.getInt("ID_ANAGEN"));
 					cliente.setNome(rs.getString("NOME"));
-					cliente.setIdEncrypted(Utility.encryptData(cliente.get__id()+""));
+					if(indirizzo!=null && indirizzo.equals("1")) {
+						cliente.setIndirizzo(rs.getString("INDIR"));
+						cliente.setCap(rs.getString("CAP"));
+						cliente.setCitta(rs.getString("CITTA"));
+						cliente.setProvincia(rs.getString("CODPROV"));
+					}else {
+						cliente.setIdEncrypted(Utility.encryptData(cliente.get__id()+""));
+					}
+					
+					
 					
 					lista.add(cliente);
 				}
@@ -653,7 +671,16 @@ public class GestioneAnagraficaRemotaDAO {
 			
 			try {
 				con=ManagerSQLServer.getConnectionSQL();
-				pst=con.prepareStatement("INSERT INTO BWT_ANAGEN (NOME, INDIR, TELEF01, CAP, PIVA, CODPROV, CITTA, EMAIL, CODFIS, TIPO, SYS_DTCREAZ, TOK_COMPANY) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ",Statement.RETURN_GENERATED_KEYS);
+				//pst=con.prepareStatement("INSERT INTO BWT_ANAGEN (NOME, INDIR, TELEF01, CAP, PIVA, CODPROV, CITTA, EMAIL, CODFIS, TIPO, SYS_DTCREAZ, TOK_COMPANY, CODREGI, CODNAZI) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ",Statement.RETURN_GENERATED_KEYS);
+				pst = con.prepareStatement(
+					    "INSERT INTO BWT_ANAGEN (" +
+					    "NOME, INDIR, TELEF01, CAP, PIVA, CODPROV, CITTA, EMAIL, CODFIS, TIPO, SYS_DTCREAZ, TOK_COMPANY, CODREGI, CODNAZI, CODCOMUNE" +
+					    ") " +
+					    "SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, c.CODCOMUNE " +
+					    "FROM BWT_COMUNI c " +
+					    "WHERE LOWER(c.COMUNE) = LOWER(?)",
+					    Statement.RETURN_GENERATED_KEYS
+					);
 				pst.setString(1, cl.getNome());
 				pst.setString(2, cl.getIndirizzo());
 				pst.setString(3, cl.getTelefono());
@@ -671,6 +698,9 @@ public class GestioneAnagraficaRemotaDAO {
 					company+=","+idCompany;
 				}
 				pst.setString(12, company);
+				pst.setString(13, cl.getRegione());
+				pst.setString(14, "IT");
+				pst.setString(15, cl.getCitta());
 				pst.execute();
 				
 				rs = pst.getGeneratedKeys();
@@ -682,7 +712,7 @@ public class GestioneAnagraficaRemotaDAO {
 				
 				
 				if(sede!=null) {
-					pst=con.prepareStatement("INSERT INTO BWT_ANAGEN_INDIR (ID_ANAGEN, K2_ANAGEN_INDIR, DESCR, CAP, CODPROV, CITTA, SYS_DTCREAZ, TB_TIPO) VALUES (?,?,?,?,?,?,?,?) ",Statement.RETURN_GENERATED_KEYS);
+					pst=con.prepareStatement("INSERT INTO BWT_ANAGEN_INDIR (ID_ANAGEN, K2_ANAGEN_INDIR, DESCR, CAP, CODPROV, CITTA, SYS_DTCREAZ, TB_TIPO, CODREGI) VALUES (?,?,?,?,?,?,?,?,?) ",Statement.RETURN_GENERATED_KEYS);
 					pst.setInt(1, idClienteGenerato);
 					pst.setInt(2, 1);
 					pst.setString(3, sede.getDescrizione());
@@ -692,6 +722,7 @@ public class GestioneAnagraficaRemotaDAO {
 					today = new java.util.Date().getTime();
 					pst.setDate(7, new java.sql.Date(today));	
 					pst.setString(8, "ND");
+					pst.setString(9, sede.getRegione());
 					pst.execute();
 				}
 				
@@ -728,6 +759,5 @@ public class GestioneAnagraficaRemotaDAO {
 			
 			
 		}	
-		
 
 }

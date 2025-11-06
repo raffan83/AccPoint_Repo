@@ -7,6 +7,7 @@ public class ComuneDTO {
 	private int cap;
 	private String descrizione;
 	private String provincia;
+	private String regione;
 	
 	public int getId() {
 		return id;
@@ -47,4 +48,12 @@ public class ComuneDTO {
 	public ComuneDTO(int id) {
 		this.id = id;
 	}
+	public String getRegione() {
+		return regione;
+	}
+	public void setRegione(String regione) {
+		this.regione = regione;
+	}
+	
+	
 }

@@ -40,6 +40,7 @@ import it.portaleSTI.DTO.AMRapportoDTO;
 import it.portaleSTI.DTO.AMTipoProvaDTO;
 import it.portaleSTI.DTO.ArticoloMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.ComuneDTO;
 import it.portaleSTI.DTO.OffOffertaArticoloDTO;
 import it.portaleSTI.DTO.OffOffertaDTO;
 import it.portaleSTI.DTO.OffOffertaFotoDTO;
@@ -105,8 +106,9 @@ public class GestioneVerOfferte extends HttpServlet {
 				
 				ArrayList<OffOffertaDTO> lista_offerte = GestioneVerInterventoBO.getListaOfferte(utente, session);
 				ArrayList<ArticoloMilestoneDTO> lista_articoli = GestioneAnagraficaRemotaBO.getListaArticoliAgente(utente, session);
+				ArrayList<ComuneDTO> lista_comuni = GestioneAnagraficaRemotaBO.getListaComuni(session);
 				
-				
+				request.getSession().setAttribute("lista_comuni", lista_comuni);
 				request.getSession().setAttribute("lista_offerte", lista_offerte);
 				request.getSession().setAttribute("non_associate_encrypt",  Utility.encryptData("0"));
 				request.getSession().setAttribute("lista_articoli", lista_articoli);
@@ -118,7 +120,9 @@ public class GestioneVerOfferte extends HttpServlet {
 			}
 			else if(action!=null && action.equals("clienti_sedi")) {
 				
-				ArrayList<ClienteDTO> lista_clienti = GestioneAnagraficaRemotaBO.getListaClientiOfferte(utente, session);
+				String indirizzo = request.getParameter("indirizzo");
+				
+				ArrayList<ClienteDTO> lista_clienti = GestioneAnagraficaRemotaBO.getListaClientiOfferte(utente,indirizzo, session);
 				
 				
 				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
@@ -211,7 +215,7 @@ public class GestioneVerOfferte extends HttpServlet {
 			
 				
 				
-				offerta.setUtente(utente.getNominativo());
+				offerta.setUtente(utente.getCodice_agente());
 				offerta.setData_offerta(new Date());
 				
 				session.save(offerta);
@@ -294,7 +298,6 @@ public class GestioneVerOfferte extends HttpServlet {
 		        String ragione_sociale= ret.get("ragione_sociale");
 				String indirizzo= ret.get("indirizzo");
 				String citta= ret.get("citta");
-				String comune= ret.get("comune");
 				String cap= ret.get("cap");
 				String telefono= ret.get("telefono");
 				String provincia= ret.get("provincia");
@@ -325,24 +328,26 @@ public class GestioneVerOfferte extends HttpServlet {
 					cl.setIndirizzo(indirizzo);
 					cl.setTelefono(telefono);
 					cl.setEmail(email);
-					cl.setCitta(citta);
+					cl.setCitta(citta.split("_")[2]);
 					cl.setProvincia(provincia);
 					cl.setPartita_iva(partita_iva);
 					cl.setCf(codice_fiscale);
 					cl.setNome(ragione_sociale);
+					cl.setRegione(citta.split("_")[3]);
 					
 					
 					
 					SedeDTO sede = null;
 					
-					if(denominazione_sede!=null) {
+					if(denominazione_sede!=null && !denominazione_sede.equals("")) {
 						sede = new SedeDTO();
 						
 						sede.setDescrizione(denominazione_sede);
 						sede.setIndirizzo(indirizzo_sede);
-						sede.setComune(citta_sede);
+						sede.setComune(citta_sede.split("_")[2]);
 						sede.setCap(cap_sede);
 						sede.setSiglaProvincia(provincia_sede);
+						sede.setRegione(citta_sede.split("_")[3]);
 					}
 					
 					
@@ -412,6 +417,26 @@ public class GestioneVerOfferte extends HttpServlet {
 	                        os.write(buffer, 0, bytesRead);
 	                    }
 	                }	
+		        }else {
+	                response.sendError(HttpServletResponse.SC_NOT_FOUND, "File immagine non trovato");
+	            }
+			}
+			
+			else if(action.equals("download_immagine")) {
+			
+				
+				String id_immagine = request.getParameter("id_immagine");
+				OffOffertaFotoDTO immagine = (OffOffertaFotoDTO) session.get(OffOffertaFotoDTO.class, Integer.parseInt(id_immagine));
+				String imagePath =	Costanti.PATH_FOLDER+"\\OfferteCalver\\"+immagine.getId_offerta()+"\\immagini\\"+immagine.getNome_file();
+	        	
+	            File imageFile = new File(imagePath);
+	
+	            if (imageFile.exists()) {
+	            	response.setContentType("application/octet-stream");
+	            	response.setHeader("Content-Disposition","attachment;filename="+ immagine.getNome_file());
+	                Utility.downloadFile(imagePath, response.getOutputStream());
+	               
+	                
 		        }else {
 	                response.sendError(HttpServletResponse.SC_NOT_FOUND, "File immagine non trovato");
 	            }

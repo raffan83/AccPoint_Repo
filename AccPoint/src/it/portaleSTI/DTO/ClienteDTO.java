@@ -23,6 +23,7 @@ public class ClienteDTO implements Serializable{
 	 private String numeroREA;
 	 private String pec;
 	 private String idEncrypted;
+	 private String regione;
 
 	  public ClienteDTO(){}
 
@@ -198,6 +199,15 @@ public class ClienteDTO implements Serializable{
 	public void setIdEncrypted(String idEncrypted) {
 		this.idEncrypted = idEncrypted;
 	}
+
+	public String getRegione() {
+		return regione;
+	}
+
+	public void setRegione(String regione) {
+		this.regione = regione;
+	}
+	
 
 	  
 }

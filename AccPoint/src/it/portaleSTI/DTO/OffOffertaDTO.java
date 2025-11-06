@@ -15,6 +15,7 @@ public class OffOffertaDTO {
 	private String nome_sede;
 	private Double importo;
 	private String utente;
+	private String n_offerta;
 	
 	
 	
@@ -128,6 +129,20 @@ public class OffOffertaDTO {
 		this.utente = utente;
 	}
 
+
+
+
+
+	public String getN_offerta() {
+		return n_offerta;
+	}
+
+
+
+
+	public void setN_offerta(String n_offerta) {
+		this.n_offerta = n_offerta;
+	}
 
 
 

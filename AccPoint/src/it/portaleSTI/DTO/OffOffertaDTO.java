@@ -16,6 +16,7 @@ public class OffOffertaDTO {
 	private Double importo;
 	private String utente;
 	private String n_offerta;
+	private int stato;
 	
 	
 	
@@ -149,6 +150,20 @@ public class OffOffertaDTO {
 
 	public OffOffertaDTO() {
 		// TODO Auto-generated constructor stub
+	}
+
+
+
+
+	public int getStato() {
+		return stato;
+	}
+
+
+
+
+	public void setStato(int stato) {
+		this.stato = stato;
 	}
 
 }

@@ -504,12 +504,13 @@ public class Am_gestioneStrumenti extends HttpServlet {
 					strumento.setNumero_porzioni(1);
 				}
 		        
-		        if(immagine_campione!=null && !immagine_campione.equals("")) {
-		        	
+		        if(immagine_campione!=null && !immagine_campione.equals("")) {		        	
+
 		        	AMImmagineCampioneDTO immagine = GestioneAM_BO.getImmagineFromId(Integer.parseInt(immagine_campione), session);
 		        	String sourcePath = Costanti.PATH_FOLDER+"\\AM_interventi\\ImmaginiCampione\\"+immagine.getId()+"\\"+immagine.getNome_file();
-		        	String destinationPath = Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId()+"\\"+immagine.getNome_file();
-		        	Files.copy(Paths.get(sourcePath),Paths.get(destinationPath), StandardCopyOption.REPLACE_EXISTING);
+		        	Path destinationPath =  Paths.get(Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+strumento.getId()+"\\"+immagine.getNome_file());
+		        	Files.createDirectories(destinationPath.getParent());
+		        	Files.copy(Paths.get(sourcePath),destinationPath, StandardCopyOption.REPLACE_EXISTING);
 		        	strumento.setFilename_img(immagine.getNome_file());
 		        }else {
 		        

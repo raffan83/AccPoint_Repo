@@ -1678,7 +1678,12 @@ String permesso = "0";
 		
 			items_json.forEach(function(item, index){
 
-				item.note=$('#note_item_'+item.id_proprio).val();
+		
+				if($('#note_item_'+item.id_proprio).val()!=null){
+					item.note = $('#note_item_'+item.id_proprio).val();
+				}else{
+					item.note="";
+				}
 			
 				if($('#priorita_item_'+item.id_proprio).is( ':checked' ) ){
 					 item.priorita=1;

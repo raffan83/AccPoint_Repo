@@ -75,6 +75,7 @@
 <th>Data</th>
 <th>Importo</th>
 <th>Utente</th>
+<th>Stato</th>
 <th style="">Azioni</th>
  </tr></thead>
  
@@ -92,9 +93,14 @@
 	<td> <fmt:formatDate value="${offerta.data_offerta }" pattern="dd/MM/yyyy" /></td>
 	<td>${offerta.importo }</td>
 	<td>${offerta.utente }</td>
+	<td><c:if test="${offerta.stato==1 }"> <span class="label label-warning">DA APPROVARE</span></c:if>
+	<c:if test="${offerta.stato==2 }"> <span class="label label-success">APPROVATA</span></c:if>
+	</td>
 	<td>
 <a class="btn btn-info customTooltip" onClicK="dettaglioOfferta('${offerta.id }')" title="Dettaglio offerta"><i class="fa fa-search"></i></a>
-
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('VE')}">
+<a class="btn btn-primary customTooltip" onClicK="cambiaStatoOfferta('${offerta.id }')" title="Cambia stato offerta"><i class="glyphicon glyphicon-refresh"></i></a>
+ </c:if> 
 	</td>
 	</tr>
 	</c:forEach>
@@ -1842,6 +1848,15 @@ $('#nuovoClienteForm').on('submit', function(e){
 	 tableArt.rows({ search: 'applied' }).deselect();
  });
  
+ 
+ function cambiaStatoOfferta(id_offerta){
+	 
+	 dataObj = {};
+	 dataObj.id_offerta = id_offerta;
+	 
+	 callAjax(dataObj, "gestioneVerOfferte.do?action=cambia_stato")
+	 
+ }
  
   </script>
   

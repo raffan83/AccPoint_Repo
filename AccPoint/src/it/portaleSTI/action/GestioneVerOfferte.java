@@ -199,7 +199,7 @@ public class GestioneVerOfferte extends HttpServlet {
 					
 					offerta.setId_cliente(Integer.parseInt(id_cliente));
 					offerta.setId_sede(Integer.parseInt(id_sede));
-					
+					offerta.setStato(1);
 					offerta.setNome_cliente(cl.getNome());
 					SedeDTO sd =null;
 					if(!id_sede.equals("0")) {
@@ -219,6 +219,9 @@ public class GestioneVerOfferte extends HttpServlet {
 				offerta.setData_offerta(new Date());
 				
 				session.save(offerta);
+				
+				
+				offerta.setN_offerta(String.format("OFF_STI_25/%04d", offerta.getId()));
 				
 				Double importo_tot = 0.0;
 				
@@ -440,6 +443,28 @@ public class GestioneVerOfferte extends HttpServlet {
 		        }else {
 	                response.sendError(HttpServletResponse.SC_NOT_FOUND, "File immagine non trovato");
 	            }
+			}
+			
+			else if(action.equals("cambia_stato")) {
+				
+				String id_offerta = request.getParameter("id_offerta");
+				
+				OffOffertaDTO offerta = (OffOffertaDTO) session.get(OffOffertaDTO.class, Integer.parseInt(id_offerta));
+				
+				if(offerta.getStato()==1) {
+					offerta.setStato(2);
+				}else {
+					offerta.setStato(1);
+				}
+				
+				session.update(offerta);
+				
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Stato offerta modificato con successo!");
+					
+			   out.print(myObj);
+				
 			}
 			
 			session.getTransaction().commit();

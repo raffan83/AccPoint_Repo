@@ -99,8 +99,9 @@
 	<td>
 <a class="btn btn-info customTooltip" onClicK="dettaglioOfferta('${offerta.id }')" title="Dettaglio offerta"><i class="fa fa-search"></i></a>
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('VE')}">
-<a class="btn btn-primary customTooltip" onClicK="cambiaStatoOfferta('${offerta.id }')" title="Cambia stato offerta"><i class="glyphicon glyphicon-refresh"></i></a>
- </c:if> 
+
+<a class="btn btn-primary customTooltip" onClicK="modalCambioStato('${offerta.id }', '${offerta.stato}')" title="Cambia stato offerta"><i class="glyphicon glyphicon-refresh"></i></a>
+</c:if>
 	</td>
 	</tr>
 	</c:forEach>
@@ -130,17 +131,50 @@
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      	Sei sicuro di voler eliminare l'offerta?
+      	Sei sicuro di voler cambiare lo stato dell'offerta?
       	</div>
       <div class="modal-footer">
-      <input type="hidden" id="id_offerta_elimina">
-      <a class="btn btn-primary" onclick="eliminaOfferta($('#id_offerta_elimina').val())" >SI</a>
+      <a class="btn btn-primary" onclick="cambiaStatoOfferta()" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
     </div>
   </div>
 
 </div>
+
+<form id="formNOfferta" >
+ <div id="modalNOfferta" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+       <div class="modal-body">       
+       <div class="row">
+        <div class="col-xs-12">
+        <LABEL>
+        Inserisci il numero offerta</LABEL>
+        </div></div><br>
+        <div class="row">
+        <div class="col-xs-12">
+        <input class="form-control" id="n_offerta" type="text" pattern="^STI_OFF_\d{2}/\d{4}$" title="Formato richiesto: STI_OFF_25/0001" required>
+        </div>
+       </div>
+      
+       
+      	
+      	</div>
+      <div class="modal-footer">
+      
+      <button class="btn btn-primary" type="submit" >Salva</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</form>
 
 
   <div id="modalListaClienti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
@@ -1848,15 +1882,37 @@ $('#nuovoClienteForm').on('submit', function(e){
 	 tableArt.rows({ search: 'applied' }).deselect();
  });
  
+ var id_off;
+ function modalCambioStato(id_offerta, stato){
+	 
+	 id_off = id_offerta;
+	 
+	 if(stato ==2){
+		 $('#myModalYesOrNo').modal()
+	 }else{
+		 $('#modalNOfferta').modal()
+	 }
+	 
+ }
  
- function cambiaStatoOfferta(id_offerta){
+ function cambiaStatoOfferta(){
 	 
 	 dataObj = {};
-	 dataObj.id_offerta = id_offerta;
+	 dataObj.id_offerta = id_off;
+	 dataObj.n_offerta = $('#n_offerta').val()
 	 
 	 callAjax(dataObj, "gestioneVerOfferte.do?action=cambia_stato")
 	 
  }
+ 
+ $('#formNOfferta').on("submit", function(e){
+
+	 e.preventDefault();
+	 
+	 cambiaStatoOfferta()
+	 
+ })
+ 
  
   </script>
   

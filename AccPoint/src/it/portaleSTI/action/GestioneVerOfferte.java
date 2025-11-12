@@ -221,7 +221,7 @@ public class GestioneVerOfferte extends HttpServlet {
 				session.save(offerta);
 				
 				
-				offerta.setN_offerta(String.format("OFF_STI_25/%04d", offerta.getId()));
+				//offerta.setN_offerta(String.format("OFF_STI_25/%04d", offerta.getId()));
 				
 				Double importo_tot = 0.0;
 				
@@ -448,13 +448,15 @@ public class GestioneVerOfferte extends HttpServlet {
 			else if(action.equals("cambia_stato")) {
 				
 				String id_offerta = request.getParameter("id_offerta");
-				
+				String n_offerta = request.getParameter("n_offerta");
 				OffOffertaDTO offerta = (OffOffertaDTO) session.get(OffOffertaDTO.class, Integer.parseInt(id_offerta));
 				
 				if(offerta.getStato()==1) {
 					offerta.setStato(2);
+					offerta.setN_offerta(n_offerta);
 				}else {
 					offerta.setStato(1);
+					offerta.setN_offerta(null);
 				}
 				
 				session.update(offerta);

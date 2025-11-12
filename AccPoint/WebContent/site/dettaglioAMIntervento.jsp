@@ -168,7 +168,7 @@
   <th>Oggetto Prova</th>
 
   <th>Matricola</th>
-  <th>Campione</th>
+  <th>N. Fabbrica</th>
  <th>Esito</th>	
 
  <th>Numero Rapporto</th>
@@ -190,7 +190,7 @@
 <td> <fmt:formatDate pattern="dd/MM/yyyy"  value="${rapporto.prova.data}" />	</td>
 <td>${rapporto.prova.strumento.descrizione}</td>
 <td>${rapporto.prova.strumento.matricola}</td>
-<td>${rapporto.prova.campione.codiceInterno }</td>
+<td>${rapporto.prova.strumento.nFabbrica}</td>
 <td>
 <c:if test="${rapporto.prova.esito  == 'POSITIVO'}">
 CONFORME A SPECIFICA
@@ -299,14 +299,25 @@ NON CONFORME A SPECIFICA
        		<label>Oggetto Prova</label>
        	</div>
        	<div class="col-sm-9">
-				<select  id="strumento" name="strumento" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona strumento..." style="width:100%" required>
-				<option value="" ></option>
-				<c:forEach items="${lista_strumenti }" var="str">
-				
-				<option value="${str.id }" >${str.descrizione } - ${str.nFabbrica }</option>
-					
-				</c:forEach>
-				</select>
+				<select id="strumento" name="strumento" class="form-control select2"
+        aria-hidden="true" data-live-search="true"
+        data-placeholder="Seleziona strumento..." style="width:100%" required>
+    <option value=""></option>
+    <c:forEach var="str" items="${lista_strumenti}">
+        <c:set var="presente" value="false" />
+        
+        <c:forEach var="rap" items="${lista_rapporti}">
+            <c:if test="${rap.prova.strumento.id == str.id}">
+                <c:set var="presente" value="true" />
+            </c:if>
+        </c:forEach>
+
+        <option value="${str.id}" 
+                <c:if test="${presente}">disabled</c:if>>
+            ${str.descrizione} - ${str.nFabbrica}
+        </option>
+    </c:forEach>
+</select>
        	</div>
        </div><br>
  

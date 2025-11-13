@@ -711,7 +711,7 @@ public class GestioneCertificatoBO {
 									
 								  	BigDecimal bd = punto.getIncertezza();
 									bd.setScale(Utility.getScale(punto.getRisoluzione_campione())+1, RoundingMode.HALF_UP);
-									data.setIncertezza(Utility.changeDotComma(""+punto.getIncertezza().setScale(Utility.getScale(punto.getRisoluzione_campione())+1)));
+									data.setIncertezza(Utility.changeDotComma(""+punto.getIncertezza().setScale(Utility.getScale(punto.getRisoluzione_campione())+1, RoundingMode.HALF_UP)));
 								  	
 								  	data.setEsito(punto.getEsito());
 						  

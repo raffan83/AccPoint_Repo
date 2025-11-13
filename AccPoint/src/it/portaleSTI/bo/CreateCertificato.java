@@ -1701,11 +1701,11 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				
 		
 		
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE).setBorder(stl.penThin()).setFontSize(10).setPadding(0);//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE).setBorder(stl.penThin()).setFontSize(8).setPadding(0).setFontName("Trebuchet MS");//AGG
 		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("MABBA","center",null,null, 10)).setDataSource(new SubreportData("mabba"));
-		SubreportBuilder subreportDiff = cmp.subreport(new SubreportDesign("diff","center",null,null, 10)).setDataSource(new SubreportData("differenzaMabba"));
-		SubreportBuilder subreportUm = cmp.subreport(new SubreportDesign("um","center",null,null, 10)).setDataSource(new SubreportData("unitaDiMisura"));
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("MABBA","center",null,null, 8)).setDataSource(new SubreportData("mabba"));
+		SubreportBuilder subreportDiff = cmp.subreport(new SubreportDesign("diff","center",null,null, 8)).setDataSource(new SubreportData("differenzaMabba"));
+		SubreportBuilder subreportUm = cmp.subreport(new SubreportDesign("um","center",null,null, 8)).setDataSource(new SubreportData("unitaDiMisura"));
 		
 	
 		
@@ -1720,16 +1720,16 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
                     .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
                     .setBackgroundColor(Color.LIGHT_GRAY)
                     .bold()
-                    .setFontSize(10).setMarkup(Markup.HTML);
+                    .setFontSize(8).setMarkup(Markup.HTML);
 			
-			StyleBuilder	componentStyle    = stl.style().setPadding(2).setFontName("Trebuchet MS").setFontSize(10)
+			StyleBuilder	componentStyle    = stl.style().setPadding(2).setFontName("Trebuchet MS").setFontSize(8)
                     .setBorder(stl.penThin())
                     .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)                    
                     .setMarkup(Markup.HTML);
 			
 			
 			StyleBuilder subreportStyle = stl.style()
-				    .setFontSize(10)
+				    .setFontSize(8).setFontName("Trebuchet MS")
 				    .setBorder(stl.penThin())
 				    .setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
 
@@ -1775,10 +1775,10 @@ public JasperReportBuilder getTableReportS(List<ReportSVT_DTO> listaReport, Stri
 				
 		
 		
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE).setBorder(stl.penThin()).setFontSize(10).setPadding(0);//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE).setBorder(stl.penThin()).setFontSize(8).setPadding(0).setFontName("Trebuchet MS");//AGG
 		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("pesata","center",null,null, 10)).setDataSource(new SubreportData("letturaCampione"));
-		SubreportBuilder subreportVc = cmp.subreport(new SubreportDesign("vc","center",null,null, 10)).setDataSource(new SubreportData("valoreCampione"));
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("pesata","center",null,null, 8)).setDataSource(new SubreportData("letturaCampione"));
+		SubreportBuilder subreportVc = cmp.subreport(new SubreportDesign("vc","center",null,null, 8)).setDataSource(new SubreportData("valoreCampione"));
 		
 		
 	
@@ -1794,16 +1794,16 @@ public JasperReportBuilder getTableReportS(List<ReportSVT_DTO> listaReport, Stri
                     .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
                     .setBackgroundColor(Color.LIGHT_GRAY)
                     .bold()
-                    .setFontSize(10).setMarkup(Markup.HTML);
+                    .setFontSize(8).setMarkup(Markup.HTML);
 			
-			StyleBuilder	componentStyle    = stl.style().setPadding(2).setFontName("Trebuchet MS").setFontSize(10)
+			StyleBuilder	componentStyle    = stl.style().setPadding(2).setFontName("Trebuchet MS").setFontSize(8)
                     .setBorder(stl.penThin())
                     .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)                    
                     .setMarkup(Markup.HTML);
 			
 			
 			StyleBuilder subreportStyle = stl.style()
-				    .setFontSize(10)
+				    .setFontSize(8).setFontName("Trebuchet MS")
 				    .setBorder(stl.penThin())
 				    .setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
 
@@ -1816,9 +1816,9 @@ public JasperReportBuilder getTableReportS(List<ReportSVT_DTO> listaReport, Stri
 			report.setColumnStyle(textStyle);
 			report.setColumnTitleStyle(columnTitleStyle);
 	
-			report.addColumn(col.column("Valore nominale<br>"+um, "val_strumento", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			report.addColumn(col.column("Valore nominale<br><br>"+um, "val_strumento", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
 			report.addColumn(col.componentColumn("Valore delle pesate<br>"+um, subreport).setFixedWidth(70));
-			report.addColumn(col.componentColumn("Valore corretto<br>"+um, subreportVc).setFixedWidth(70));
+			report.addColumn(col.componentColumn("Valore corretto<br><br>"+um, subreportVc).setFixedWidth(70));
 			report.addColumn(col.column("Valore convenzionale<br>"+um, "valoreMedioCampione", type.stringType()).setStyle(textStyle).setFixedWidth(75).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
 			report.addColumn(col.column("Scostamento<br/><br>%", "scostamentoPerc", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));;
 			report.addColumn(col.column("Scostamento<br/><br>"+um, "scostamento_correzione", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));

@@ -1175,6 +1175,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(id_azienda));
 					partecipante.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")");
 				}else {
+					partecipante.setId_sede(0);
 					partecipante.setNome_sede("Non associate");
 				}
 
@@ -1255,6 +1256,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(id_azienda));
 					partecipante.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo()+" - "+sd.getCap()+" - "+sd.getComune()+" ("+sd.getSiglaProvincia()+")");
 				}else {
+					partecipante.setId_sede(0);
 					partecipante.setNome_sede("Non associate");
 				}
 				

@@ -1384,7 +1384,7 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		Query query = session.createQuery("select p.corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id = :_id_partecipante and p.corso.data_scadenza > NOW() and p.corso.disabilitato = 0 and p.corso.corso_cat.id IN (SELECT categoria.id from PRRequisitoDocumentaleDTO)");
+		Query query = session.createQuery("select p.corso from ForPartecipanteRuoloCorsoDTO p where p.partecipante.id = :_id_partecipante and (p.corso.data_scadenza > NOW() or p.corso.corso_cat.id = 24  or p.corso.corso_cat.id = 25  or p.corso.corso_cat.id = 59 ) and p.corso.disabilitato = 0 and p.corso.corso_cat.id IN (SELECT categoria.id from PRRequisitoDocumentaleDTO)");
 		query.setParameter("_id_partecipante", id);	
 		
 		lista = (ArrayList<ForCorsoDTO>) query.list();

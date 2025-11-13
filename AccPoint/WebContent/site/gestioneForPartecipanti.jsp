@@ -500,14 +500,13 @@
         
        <select id="sede_report" name="sede_report" class="form-control select2"  data-placeholder="Seleziona Sede..." disabled aria-hidden="true" data-live-search="true" style="width:100%" required >
        <option value=""></option>
-       <c:forEach items="${listaAziendePartecipanti}" var="azienda">
-      	<option value="${azienda.split('!')[2]}_${azienda.split('!')[0]}">${azienda.split('!')[3]}</option>
-      	</c:forEach>
-      	<%-- <c:forEach items="${lista_sedi}" var="sd">
+       	<c:forEach items="${lista_sedi}" var="sd">
       	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
-      	</c:forEach> --%>
+      	</c:forEach>
       
       </select>
+      
+      
         </div>      
        </div> 
       	
@@ -1912,6 +1911,8 @@ function changeSedeTab(cf, value){
 	  var options = $(this).data('options');
 
 	  var opt=[];
+	  
+	  opt.push("<option value = 0 selected>Non Associate</option>");
 	  
 	  if(id!=0){
 	  

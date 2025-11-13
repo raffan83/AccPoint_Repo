@@ -51,7 +51,7 @@
 
 
 <!--  <a class="btn btn-primary pull-right" onClick="modalNuovaIntervento()"><i class="fa fa-plus"></i> Nuova Intervento</a> --> 
-<a class="btn btn-primary pull-left" onClick="listaClienti()"><i class="fa fa-plus"></i> Lista Clienti</a> 
+<a class="btn btn-primary pull-left" onClick="listaClienti()">Lista Clienti</a> 
 <a class="btn btn-primary pull-right" onClick="modalNuovaOfferta()"><i class="fa fa-plus"></i> Nuova Offerta</a> 
 	<a class="btn btn-primary pull-right" style="margin-right:5px" onClicK="modalNuovoCliente()" ><i class="fa fa-plus"></i> Nuovo Cliente</a>
 
@@ -82,7 +82,14 @@
  <tbody>
  
  	<c:forEach items="${lista_offerte }" var="offerta" varStatus="loop">
-	<tr id="row_${loop.index}" >
+ 	
+ 	<c:if test="${offerta.stato == 1 }">
+ 	 	<tr id="row_${offerta.id }" style="background-color:#F7F688">
+</c:if>
+
+ 	<c:if test="${offerta.stato == 2 }">
+ 	 	<tr id="row_${offerta.id }" style="background-color:#90EE90">
+</c:if>
 
 	<td>${offerta.id }</td>	
 	<td>${offerta.n_offerta }</td>	
@@ -93,14 +100,16 @@
 	<td> <fmt:formatDate value="${offerta.data_offerta }" pattern="dd/MM/yyyy" /></td>
 	<td>${offerta.importo }</td>
 	<td>${offerta.utente }</td>
-	<td><c:if test="${offerta.stato==1 }"> <span class="label label-warning">DA APPROVARE</span></c:if>
-	<c:if test="${offerta.stato==2 }"> <span class="label label-success">APPROVATA</span></c:if>
+	<td><c:if test="${offerta.stato==1 }"> <!-- <span class="label label-warning"> -->DA APPROVARE<!-- </span> --></c:if>
+	<c:if test="${offerta.stato==2 }"> <!-- <span class="label label-success"> -->APPROVATA<!-- </span> --></c:if>
 	</td>
 	<td>
 <a class="btn btn-info customTooltip" onClicK="dettaglioOfferta('${offerta.id }')" title="Dettaglio offerta"><i class="fa fa-search"></i></a>
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('VE')}">
 
+<c:if test="${offerta.stato ==1 }">
 <a class="btn btn-primary customTooltip" onClicK="modalCambioStato('${offerta.id }', '${offerta.stato}')" title="Cambia stato offerta"><i class="glyphicon glyphicon-refresh"></i></a>
+</c:if>
 </c:if>
 	</td>
 	</tr>
@@ -283,7 +292,7 @@
         
    <table id="tabArticoli" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <th><input id="selectAlltabPM" type="checkbox" /></th>
+ <th><!-- <input id="selectAlltabPM" type="checkbox" />  --></th>
  <th>ID Articolo</th>
  <th>Descrizione</th>
   <th>Importo</th>
@@ -1422,7 +1431,7 @@ $(document).ready(function() {
 	                sortDescending: ": attiva per ordinare la colonna in ordine decrescente"
 	            }
 	        },
-	        pageLength: 50,
+	        pageLength: 25,
 	        order: [[0, "asc"]],
 	        paging: true,
 	        ordering: true,

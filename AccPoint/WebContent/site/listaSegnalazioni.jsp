@@ -90,13 +90,17 @@
 <th style="max-width:40px">ID</th>
 <th>Targa</th>
 <th>Modello</th>
+<c:if test="${userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN') }">
 <th>Utente</th>
+</c:if>
 <th>Data Segnalazione</th>
 <th>Tipo Segnalazione</th>
 <th>Stato</th>
 <th>Note</th>
 <th>Note Chiusura</th>
+<c:if test="${userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN') }">
 <th style="min-width:150px">Azioni</th>
+</c:if>
  </tr></thead>
  
  <tbody>
@@ -108,7 +112,9 @@
 	
 	<td>${segnalazione.prenotazione.veicolo.targa }</td>
 	<td>${segnalazione.prenotazione.veicolo.modello }</td>
+	<c:if test="${userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN') }">
 	<td>${segnalazione.utente.nominativo }</td>
+	</c:if>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${segnalazione.data_segnalazione }"></fmt:formatDate></td>
 	<td>${segnalazione.tipo.descrizione }</td>
 	<td>
@@ -124,6 +130,7 @@
 
 	<td>${segnalazione.note }</td>
 <td>${segnalazione.note_chiusura }</td>
+<c:if test="${userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN') }">
 	<td>
 <c:if test="${segnalazione.stato == 0 }">
 	
@@ -135,6 +142,7 @@
 	<a class="btn btn-info customTooltip" onClicK="cambiaStatoSegnalazione('${segnalazione.id}')" title="Click per cambiare lo stato della segnalazione"><i class="glyphicon glyphicon-refresh"></i></a>
  </c:if>
 	</td>
+	</c:if>
 	</tr>
 	</c:forEach>
 	 
@@ -403,7 +411,7 @@ $(document).ready(function() {
  			           
  			      columnDefs: [
  			    	  
- 			    	  { responsivePriority: 1, targets: 7 },
+ 			    	  /* { responsivePriority: 1, targets: 7 }, */
  			    	  
  			    	  
  			               ], 	        
@@ -422,10 +430,16 @@ $(document).ready(function() {
  		
  		
  	     
-  
-  		
+     var permesso = "${userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN')}";
      
-		table.buttons().container().appendTo( '#tabSegnalazioni_wrapper .col-sm-6:eq(1)');
+  
+  		if(permesso!="" && permesso=="true"){
+  			table.buttons().container().appendTo( '#tabSegnalazioni_wrapper .col-sm-6:eq(1)');
+  		}
+     
+		
+		
+		
 	 	    $('.inputsearchtable').on('click', function(e){
 	 	       e.stopPropagation();    
 	 	    });

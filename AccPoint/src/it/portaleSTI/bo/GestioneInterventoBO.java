@@ -373,14 +373,17 @@ public class GestioneInterventoBO {
 			return null;
 		}
 		for (PuntoMisuraDTO punto : listaPuntiMisura) {
-			if(!punto.getTipoProva().equals("D") && punto.getApplicabile().equals("S")){
+			if(!punto.getTipoProva().equals("D") && punto.getApplicabile().equals("S") ){
 				BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),3,RoundingMode.HALF_UP);
 				if(indice_prestazione.compareTo(max)==1) {
 					max = indice_prestazione;
 				}
 			}
-			
 					
+		}
+		
+		if(max.doubleValue() == 0) {
+			return null;
 		}
 		
 		if(max.compareTo(new BigDecimal(25))==-1 || max.compareTo(new BigDecimal(25))==0) {

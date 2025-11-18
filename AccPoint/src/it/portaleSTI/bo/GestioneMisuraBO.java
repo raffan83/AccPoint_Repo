@@ -269,41 +269,41 @@ public class GestioneMisuraBO {
 	}
 
 
-	public static String calcolaIndicePrestazione(MisuraDTO misura) {
-		
-		BigDecimal max = BigDecimal.ZERO;
-		String indice = null;
-		
-		if(misura.getListaPunti().size()==0) 
-		{
-			return null;
-		}
-		for (PuntoMisuraDTO punto : misura.getListaPunti()) {
-			if(!punto.getTipoProva().equals("D")) {
-				if(punto.getAccettabilita()!=null && punto.getAccettabilita().compareTo(BigDecimal.ZERO)==1) {
-					BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),5,RoundingMode.HALF_UP);
-					if(indice_prestazione.compareTo(max)==1) {
-						max = indice_prestazione;
-					}
-				}
-			}
-			
-			
-					
-		}
-		
-		if(max.compareTo(new BigDecimal(25))==-1 || max.compareTo(new BigDecimal(25))==0) {
-			indice = "V";
-		}else if(max.compareTo(new BigDecimal(25))==1 && (max.compareTo(new BigDecimal(75))==-1 || max.compareTo(new BigDecimal(75))==0)) {
-			indice = "G";
-		}else if(max.compareTo(new BigDecimal(75))==1 && (max.compareTo(new BigDecimal(100))==-1 || max.compareTo(new BigDecimal(100))==0)) {
-			indice = "R";
-		}else {
-			indice = "X";
-		}
-		
-		return indice;
-	}
+//	public static String calcolaIndicePrestazione(MisuraDTO misura) {
+//		
+//		BigDecimal max = BigDecimal.ZERO;
+//		String indice = null;
+//		
+//		if(misura.getListaPunti().size()==0) 
+//		{
+//			return null;
+//		}
+//		for (PuntoMisuraDTO punto : misura.getListaPunti()) {
+//			if(!punto.getTipoProva().equals("D")) {
+//				if(punto.getAccettabilita()!=null && punto.getAccettabilita().compareTo(BigDecimal.ZERO)==1) {
+//					BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),5,RoundingMode.HALF_UP);
+//					if(indice_prestazione.compareTo(max)==1) {
+//						max = indice_prestazione;
+//					}
+//				}
+//			}
+//			
+//			
+//					
+//		}
+//		
+//		if(max.compareTo(new BigDecimal(25))==-1 || max.compareTo(new BigDecimal(25))==0) {
+//			indice = "V";
+//		}else if(max.compareTo(new BigDecimal(25))==1 && (max.compareTo(new BigDecimal(75))==-1 || max.compareTo(new BigDecimal(75))==0)) {
+//			indice = "G";
+//		}else if(max.compareTo(new BigDecimal(75))==1 && (max.compareTo(new BigDecimal(100))==-1 || max.compareTo(new BigDecimal(100))==0)) {
+//			indice = "R";
+//		}else {
+//			indice = "X";
+//		}
+//		
+//		return indice;
+//	}
 
 	
 	
@@ -381,7 +381,7 @@ public class GestioneMisuraBO {
 			
 			MisuraDTO misura =GestioneMisuraBO.getMiruraByID(89816, session);
 			
-			System.out.println(calcolaIndicePrestazione(misura));
+			//System.out.println(calcolaIndicePrestazione(misura));
 	    }
 	}
 	

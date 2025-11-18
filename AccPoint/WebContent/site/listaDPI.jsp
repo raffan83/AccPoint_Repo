@@ -66,7 +66,7 @@
 
 <th>ID</th>
 <th>Tipologia Dispositivo</th>
-<th>Tipo Accessorio</th>
+
 <th>Tipo DPI</th>
 <th>Collettivo</th>
 <th>Company</th>
@@ -76,12 +76,14 @@
 
 <th>Data scadenza</th>
 <th>Data controllo</th>
+
+
+<th>Note</th>
+<th>Archiviato</th>
 <th>Frequenza</th>
 
 <th>Data scadenza controllo</th>
-<th>Archiviato</th>
-
-<th>Note</th>
+<th>Tipo Accessorio</th>
 <th>Assegnato</th>
 <th>Azioni</th>
  </tr></thead>
@@ -108,12 +110,7 @@
 	Accessorio
 	</c:if>
 	</td>
-	<c:if test="${dpi.tipo_accessorio.id!=null }">
-	<td>${dpi.tipo_accessorio.descrizione }</td>
-	</c:if>
-	<c:if test="${dpi.tipo_accessorio.id==null }">
-	<td></td>
-	</c:if>
+	
 			
 	
 	<td>${dpi.tipo_dpi.descrizione }</td>
@@ -132,9 +129,9 @@
 
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_scadenza }"></fmt:formatDate></td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_controllo }"></fmt:formatDate></td>
-	<td>${dpi.frequenza }</td>
-	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_scadenza_controllo }"></fmt:formatDate></td>
-	<td>
+
+	<td>${utl:escapeJS(dpi.note) }</td>
+			<td>
 	<c:if test="${dpi.disabilitato == 1 }">
 	SI
 	</c:if>
@@ -142,7 +139,17 @@
 	NO
 	</c:if>
 	</td>
-	<td>${utl:escapeJS(dpi.note) }</td>
+	
+	<td>${dpi.frequenza }</td>
+	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_scadenza_controllo }"></fmt:formatDate></td>
+	
+	<c:if test="${dpi.tipo_accessorio.id!=null }">
+	<td>${dpi.tipo_accessorio.descrizione }</td>
+	</c:if>
+	<c:if test="${dpi.tipo_accessorio.id==null }">
+	<td></td>
+	</c:if>
+
 	<td>
 		<c:if test="${dpi.assegnato == 0}">NO</c:if>
 	<c:if test="${dpi.assegnato == 1}">SI</c:if>

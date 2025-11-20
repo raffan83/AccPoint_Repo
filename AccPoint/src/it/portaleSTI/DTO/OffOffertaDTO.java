@@ -14,10 +14,10 @@ public class OffOffertaDTO {
 	private String nome_cliente;
 	private String nome_sede;
 	private Double importo;
-	private String utente;
+	private UtenteDTO utente;
 	private String n_offerta;
 	private int stato;
-	
+	private String note;
 	
 	
 
@@ -119,18 +119,6 @@ public class OffOffertaDTO {
 
 
 
-	public String getUtente() {
-		return utente;
-	}
-
-
-
-
-	public void setUtente(String utente) {
-		this.utente = utente;
-	}
-
-
 
 
 
@@ -165,5 +153,35 @@ public class OffOffertaDTO {
 	public void setStato(int stato) {
 		this.stato = stato;
 	}
+
+
+
+
+	public String getNote() {
+		return note;
+	}
+
+
+
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+
+
+
+	public void setUtente(UtenteDTO utente) {
+		this.utente = utente;
+	}
+
+
+
+
+	public UtenteDTO getUtente() {
+		return utente;
+	}
+	
+	
 
 }

@@ -62,6 +62,40 @@
 </div><br>
 
 <div class="row">
+<div class="col-xs-12">
+
+<!-- <a class="btn btn-primary pull-right" onclick="$('#modalRapporto').modal()">Crea Rapporto</a> -->
+
+ <div class="col-xs-12" id="divFiltroDate" style="">
+
+						<div class="form-group">
+						        <label for="datarange" class="control-label">Filtro Data Offerta:</label>
+								<div class="row">
+						     		<div class="col-md-3">
+						     		<div class="input-group">
+				                    		 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+				                    		<input type="text" class="form-control" id="datarange" name="datarange" value=""/>
+				                  	</div>
+								    </div>
+								     <div class="col-md-9">
+ 				                      	<button type="button" class="btn btn-info" onclick="filtraDataOfferta()">Filtra </button>
+ 				            
+ 				                      	
+				                   		  <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="location.reload()">Reset</button> 
+ 				                
+ 								</div>
+  								</div>
+						   </div> 
+
+
+	</div>
+
+
+</div>
+
+</div><br>
+
+<div class="row">
 <div class="col-sm-12">
 
  <table id="tabOfferte" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -76,6 +110,8 @@
 <th>Importo</th>
 <th>Utente</th>
 <th>Stato</th>
+<th>Commessa</th>
+<th>Note</th>
 <th style="">Azioni</th>
  </tr></thead>
  
@@ -84,11 +120,11 @@
  	<c:forEach items="${lista_offerte }" var="offerta" varStatus="loop">
  	
  	<c:if test="${offerta.stato == 1 }">
- 	 	<tr id="row_${offerta.id }" style="background-color:#F7F688">
+ 	 	<tr id="row_${offerta.id }" style="background-color:#F7F688" class="riga">
 </c:if>
 
  	<c:if test="${offerta.stato == 2 }">
- 	 	<tr id="row_${offerta.id }" style="background-color:#90EE90">
+ 	 	<tr id="row_${offerta.id }" style="background-color:#90EE90" class="riga">
 </c:if>
 
 	<td>${offerta.id }</td>	
@@ -98,11 +134,13 @@
 
 	<td>${offerta.nome_sede }</td>
 	<td> <fmt:formatDate value="${offerta.data_offerta }" pattern="dd/MM/yyyy" /></td>
-	<td>${offerta.importo }</td>
-	<td>${offerta.utente }</td>
-	<td><c:if test="${offerta.stato==1 }"> <!-- <span class="label label-warning"> -->DA APPROVARE<!-- </span> --></c:if>
+	<td class="importo">${offerta.importo }</td>
+	<td>${offerta.utente.nominativo }</td>
+	<td class="stato"><c:if test="${offerta.stato==1 }"> <!-- <span class="label label-warning"> -->DA APPROVARE<!-- </span> --></c:if>
 	<c:if test="${offerta.stato==2 }"> <!-- <span class="label label-success"> -->APPROVATA<!-- </span> --></c:if>
 	</td>
+	<td></td>
+	<td>${offerta.note }</td>
 	<td>
 <a class="btn btn-info customTooltip" onClicK="dettaglioOfferta('${offerta.id }')" title="Dettaglio offerta"><i class="fa fa-search"></i></a>
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('VE')}">
@@ -118,6 +156,16 @@
 
  </tbody>
  </table>  
+ 
+ 
+ <div class="row">
+<div class="col-sm-9">
+</div>
+<div class="col-sm-3">
+<label>Tot. Importi</label>
+<input class="form-control" id="tot_importi" readonly>
+</div>
+</div>
 </div>
 </div>
 
@@ -329,6 +377,17 @@
        	</div>       	
        </div><br>
        
+       <div class="row">
+       
+
+       	<div class="col-xs-3">
+       	<label>Note</label>
+       	</div>
+       	 	<div class="col-xs-9">
+       	<textarea rows="3" style="width:100%" id="note" name="note" class="form-control"></textarea>
+       	</div>
+       	</div><br>
+       
                 <div class="row">
        
 
@@ -371,7 +430,7 @@
 
 <form id="nuovoClienteForm" name="nuovoClienteForm">
 <div id="myModalNuovoCliente" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -653,7 +712,7 @@
 
 
 <div id="myModalDettaglioOfferta" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -723,6 +782,17 @@
        	<div class="col-xs-3">
        	<label>Importo Tot.</label>
        	<input id="importo_tot" class="form-control pull-right" readonly>
+       	</div>
+       	</div><br>
+       	
+       	<div class="row">
+       
+
+       	<div class="col-xs-3">
+       	<label>Note</label>
+       	</div>
+       	 	<div class="col-xs-9">
+       	<textarea rows="3" style="width:100%" id="note_dtl" name="note_dtl" readonly class="form-control"></textarea>
        	</div>
        	</div><br>
        
@@ -967,33 +1037,7 @@ function modalNuovaOfferta(){
 }
 
 
-function modificaOfferta(id_offerta, targa, modello, id_company, km_percorsi, carta_circolazione, portata_max_offerta, immagine_offerta, dispositivo_pedaggio,note, autorizzazione){
-	
-	$('#id_offerta').val(id_offerta);
-	$('#targa_mod').val(targa);
-	$('#modello_mod').val(modello);
-	$('#company_mod').val(id_company);
-	$('#company_mod').change();
-	$('#km_percorsi_mod').val(km_percorsi);
-	$('#label_carta_circolazione_mod').html(carta_circolazione);
-	$('#portata_max_mod').val(portata_max_offerta);
-	$('#label_immagine_offerta_mod').html(immagine_offerta);
-	$('#dispositivo_pedaggio_mod').val(dispositivo_pedaggio);
-	$('#note_mod').val(note)
-	$('#autorizzazione_mod').val(autorizzazione)
 
-	$('#myModalModificaOfferta').modal();
-}
-
-
-
-function modalEliminaOfferta(id_offerta){
-	
-	
-	$('#id_offerta_elimina').val(id_offerta);
-	$('#myModalYesOrNo').modal()
-	
-}
 
 
 $('#fileupload_immagine_offerta').change(function(){
@@ -1456,7 +1500,7 @@ $(document).ready(function() {
 	        }]
 	    });
 	
-	
+	    sommaDati()
 });
 
 
@@ -1759,6 +1803,8 @@ $('#nuovoClienteForm').on('submit', function(e){
 			
 			 $('#cliente_dtl').val(offerta.nome_cliente);
 			$('#sede_dtl').val(offerta.nome_sede);
+			
+			$('#note_dtl').val(offerta.note);
 		
 			$('#importo_tot').val(offerta.importo);
 		  	 var table_data = [];
@@ -1922,6 +1968,122 @@ $('#nuovoClienteForm').on('submit', function(e){
 	 
  })
  
+ 
+ 
+
+	$('input[name="datarange"]').daterangepicker({
+	    locale: {
+	      format: 'DD/MM/YYYY'
+	    }
+	}, 
+	function(start, end, label) {
+
+	});
+
+
+minDateFilter = "";
+maxDateFilter = "";
+dataType = "";
+
+ $.fn.dataTableExt.afnFiltering.push(
+		  
+ 
+  function(oSettings, aData, iDataIndex) {
+	   console.log(aData);
+	   
+		if(oSettings.nTable.getAttribute('id') == "tabOfferte"){
+
+				   if (aData[4]) {
+
+			    	 	var dd = aData[4].split("/");
+
+			       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
+			       console.log("Prossima:"+minDateFilter);
+				   console.log("MIN:"+minDateFilter);
+				   console.log("MAX:"+maxDateFilter);
+				   console.log("VAL:"+aData._date);
+				   console.log( dd);
+
+
+			     }
+				   
+	
+			  
+		     if (minDateFilter && !isNaN(minDateFilter)) {
+		    	 if(isNaN(aData._date)){
+		    		 return false;
+		     
+		     }
+		       if (aData._date < minDateFilter) {
+		          return false;
+		       }
+		   		
+		     }
+
+		     if (maxDateFilter && !isNaN(maxDateFilter)) {
+		    	 if(isNaN(aData._date)){
+		    		 return false;
+		     
+		     }
+		       if (aData._date > maxDateFilter) {
+		    	  
+		         return false;
+		       }
+		      }
+
+		     
+		   }
+		  return true;
+		}	
+	   
+
+); 
+
+ 
+ 
+ function filtraDataOfferta(){
+ 	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+ 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+ 	
+ 	startDatePicker._isUTC =  true;
+ 	endDatePicker._isUTC =  true;
+
+ 		minDateFilter = new Date(startDatePicker.format('YYYY-MM-DD') ).getTime();
+ 
+ 		maxDateFilter = new Date(endDatePicker.format('YYYY-MM-DD') ).getTime();
+ 	
+ 		
+ 		var table = $('#tabOfferte').DataTable();
+      table.draw();
+      
+      sommaDati();
+       
+}
+ 
+ 
+ 
+function sommaDati(){
+	 
+	 var sommaImporti = 0.0;
+
+
+	  $('.riga').each(function() {
+	    var importo = $(this).find('.importo').text().trim(); 
+	
+		var stato = $(this).find('.stato').text().trim();
+		
+
+	      if(stato == "APPROVATA"){
+	    	 	      
+	      sommaImporti += parseFloat(importo);
+	      
+	      }
+	  });
+
+	  $('#tot_importi').val(sommaImporti);
+
+	 
+ }
  
   </script>
   

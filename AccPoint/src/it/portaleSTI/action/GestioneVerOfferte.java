@@ -179,6 +179,7 @@ public class GestioneVerOfferte extends HttpServlet {
 				String id_cliente = ret.get("cliente");
 				String id_sede = ret.get("sede");
 				String id_articoli= ret.get("id_articoli");
+				String note = ret.get("note");
 				
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -214,8 +215,8 @@ public class GestioneVerOfferte extends HttpServlet {
 				
 			
 				
-				
-				offerta.setUtente(utente.getCodice_agente());
+				offerta.setNote(note);
+				offerta.setUtente(utente);
 				offerta.setData_offerta(new Date());
 				
 				session.save(offerta);

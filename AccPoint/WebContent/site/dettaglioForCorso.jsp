@@ -764,10 +764,13 @@ $('input:checkbox').on('ifToggled', function() {
 	
 	var id =$(this)[0].id;
 			
+	if(id.startsWith('check_referente')){
+		
+	
 		id=id.split("_")[2];
 
 		associaDissociaReferente(id, '${corso.id}');
-
+	}
 	
 }) 
    
@@ -989,6 +992,62 @@ $('#docente_mod').change();
 	
 	$('#myModalModificaCorso').modal();
 }
+    
+    
+    
+    
+    $('#check_e_learning').on('ifClicked',function(e){
+    	if($('#check_e_learning').is( ':checked' )){
+    		$('#check_e_learning').iCheck('uncheck');
+    		$('#e_learning').val(0); 
+    		$('#docente').attr('disabled', false);
+    	}else{
+    		$('#check_e_learning').iCheck('check');
+    		$('#e_learning').val(1);
+    		$('#docente').attr('disabled', true);
+    	}
+    });
+    	 
+
+    $('#check_e_learning_mod').on('ifClicked',function(e){
+    	if($('#check_e_learning_mod').is( ':checked' )){
+    		$('#check_e_learning_mod').iCheck('uncheck');
+    		$('#e_learning_mod').val(0); 
+    		$('#docente_mod').attr('disabled', false);
+    	}else{
+    		$('#check_e_learning_mod').iCheck('check');
+    		$('#e_learning_mod').val(1); 
+    		$('#docente_mod').attr('disabled', true);
+    	}
+    });
+
+
+    $('#check_efei').on('ifClicked',function(e){
+    	if($('#check_efei').is( ':checked' )){
+    		$('#check_efei').iCheck('uncheck');
+    		$('#efei').val(0); 
+    	
+    	}else{
+    		$('#check_efei').iCheck('check');
+    		$('#efei').val(1); 
+    	
+    	}
+    });
+    	 
+
+    $('#check_efei_mod').on('ifClicked',function(e){
+    	if($('#check_efei_mod').is( ':checked' )){
+    		$('#check_efei_mod').iCheck('uncheck');
+    		$('#efei_mod').val(0); 
+    	
+    	}else{
+    		$('#check_efei_mod').iCheck('check');
+    		$('#efei_mod').val(1); 
+
+    	}
+    });
+    
+    
     
     $('#myModalModificaCorso').on("hidden.bs.modal", function(){
     	$('#docente_mod option').attr("selected", false);

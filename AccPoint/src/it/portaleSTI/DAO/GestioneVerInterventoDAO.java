@@ -193,12 +193,12 @@ public class GestioneVerInterventoDAO {
 
 		String str = "";
 		if(!utente.isTras()) {
-			str = " where utente = :_utente";
+			str = " where utente.id = :_utente";
 		}
 
 		Query query = session.createQuery("from OffOffertaDTO" +str);
 		if(!utente.isTras()) {
-			query.setParameter("_utente", utente.getCodice_agente());
+			query.setParameter("_utente", utente.getId());
 		}
 	    		
 	    lista = (ArrayList<OffOffertaDTO>)query.list();

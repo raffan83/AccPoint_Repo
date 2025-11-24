@@ -26,8 +26,8 @@
           <property name="importo" type="java.lang.Double">
             <column name="importo" />
         </property>
-          <property name="utente" type="java.lang.String">
-            <column name="utente" />
+          <property name="note" type="java.lang.String">
+            <column name="note" />
         </property>
          <property name="n_offerta" type="java.lang.String">
             <column name="n_offerta" />
@@ -40,6 +40,9 @@
          <property name="stato" type="int">
             <column name="stato" />
         </property>
+         <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_utente" />
+        </many-to-one> 
               
 	</class>
 </hibernate-mapping>

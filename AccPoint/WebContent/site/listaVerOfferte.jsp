@@ -1539,22 +1539,200 @@ $('#nuovoClienteForm').on('submit', function(e){
 	 
 	 callAjaxForm('#nuovoClienteForm','gestioneVerOfferte.do?action=nuovo_cliente');
 });
+
+
+
+var righe =[];
  
  $('#nuovaOffertaForm').on('submit', function(e){
 	 e.preventDefault();
 	 var id_articoli = "";
+	 var index = 1;
 	 tabArticoli.rows({ selected: true }).every(function () {
  	        var $row = $(this.node());
  	        var id = $row.find('td').eq(1).text().trim(); // Colonna ID
+ 	        var descrizione =  $row.find('td').eq(2).text()
  	       var quantita = $('#quantita_'+id).val();
- 	     	   
+ 	       var prezzo =  $row.find('td').eq(3).text()
  	       id_articoli += id +","+quantita+ ";";
+ 	      
+ 	       
+ 	    	righe.push({	
+ 	    	DESCR : descrizione,
+ 	    	ID_ANAART : id,
+ 	    	K2_RIGA : index,
+ 	    	QTA : quantita,
+ 	    	PREZZO_APPLICATO : prezzo,
+ 	    	SCONTO : 15.0,
+ 	    	ID_ORDINE_MOBILE : "ORD-MOBILE-12345"})
+ 	    	
+ 	    	index++;
+ 	    
  	    });
     	
     	$('#id_articoli').val(id_articoli)
-	 callAjaxForm('#nuovaOffertaForm','gestioneVerOfferte.do?action=nuova_offerta');
+    	
+    	 
+
+    	
+    	
+	 /* callAjaxForm('#nuovaOffertaForm','gestioneVerOfferte.do?action=nuova_offerta', function(data){
+		 
+		 inserisciOffertaMilestone()
+	 }); */
 	
+	 inserisciOffertaMilestone()
 });
+ 
+ 
+ 
+ 
+ 
+ 
+ function inserisciOffertaMilestone() {
+
+	 testata = {}
+	 testata.CODAGE =  "${userObj.codice_agente}";
+	 testata.CODPAG= "PAG001",
+	 testata.CODSPED= "SPED001",
+	 testata.COND_PAG= "30 gg Fine Mese",
+	 testata.DT_CONS= "2025-11-20",
+	 testata.DT_FINE_VALIDITA= "2025-12-31",
+	 testata.DT_ORDINE= "2025-11-17",
+	 testata.ID_ANAGEN= 199,
+	 testata.ID_ORDINE_MOBILE= "ORD-MOBILE-12345",
+	 testata.NOTE= $('#note').val(),
+	 testata.NOTE_INTERNE= $('#note').val(),
+	 testata.SCONTO_T= 10.0,
+	 testata.SP_SPEDIZIONE= 8.50,
+	 testata.TIPO= "ORD",
+	 testata.USAEMAILORDINE= 1,
+	 testata.ID_COMPANY= 1
+	  
+	 
+	 
+ 	    const dataObj = {
+	    		
+	    		"item": [
+	    			    					
+	    					{
+	    						"name": "InsertOrdine",
+	    						"request": {
+	    							"auth": {
+	    								"type": "basic",
+	    								"basic": [
+	    									{
+	    										"key": "password",
+	    										"value": "{{NCS_PasswordAgente}}",
+	    										"type": "string"
+	    									},
+	    									{
+	    										"key": "username",
+	    										"value": "{{NCS_UtenteAgente}}",
+	    										"type": "string"
+	    									}
+	    								]
+	    							},
+	    							"method": "POST",
+	    							"header": [],
+	    							"body": {
+	    								"mode": "raw",
+	    								//"raw": "{\r\n  \"righe\": [\r\n    {\r\n      \"DESCR\": \"Prodotto di esempio 1\",\r\n      \"ID_ANAART\": \"ART001\",\r\n      \"ID_ORDINE_MOBILE\": \"ORD-MOBILE-12345\",\r\n      \"K2_RIGA\": 1,\r\n      \"PREZZO_APPLICATO\": 85.00,\r\n      \"PREZZO_LISTINO\": 100.00,\r\n      \"QTA\": 5.0,\r\n      \"SCONTO\": 15.0,\r\n      \"SCONTO1\": 10.0,\r\n      \"SCONTO2\": 5.0,\r\n      \"SCONTO3\": 0.0,\r\n      \"SCONTO4\": 0.0,\r\n      \"SCONTO_MAX\": 20.0,\r\n      \"NOTE\": \"Note riga 1\"\r\n    },\r\n    {\r\n      \"DESCR\": \"Prodotto di esempio 2\",\r\n      \"ID_ANAART\": \"ART002\",\r\n      \"ID_ORDINE_MOBILE\": \"ORD-MOBILE-12345\",\r\n      \"K2_RIGA\": 2,\r\n      \"PREZZO_APPLICATO\": 42.50,\r\n      \"PREZZO_LISTINO\": 50.00,\r\n      \"QTA\": 10.0,\r\n      \"SCONTO\": 15.0,\r\n      \"SCONTO1\": 10.0,\r\n      \"SCONTO2\": 5.0,\r\n      \"SCONTO3\": 0.0,\r\n      \"SCONTO4\": 0.0,\r\n      \"SCONTO_MAX\": 20.0,\r\n      \"NOTE\": \"Note riga 2\"\r\n    }\r\n  ],\r\n  \"allegati\": [\r\n    {\r\n      \"ID_ORDINE_MOBILE\": \"ORD-MOBILE-12345\",\r\n      \"FILE_TYPE\": \"application/pdf\",\r\n      \"FILE_ATTACH\": \"BASE64_ENCODED_FILE_CONTENT_HERE\",\r\n      \"FILE_NAME\": \"documento_ordine\",\r\n      \"FILE_EXT\": \"pdf\"\r\n    },\r\n    {\r\n      \"ID_ORDINE_MOBILE\": \"ORD-MOBILE-12345\",\r\n      \"FILE_TYPE\": \"image/jpeg\",\r\n      \"FILE_ATTACH\": \"BASE64_ENCODED_IMAGE_CONTENT_HERE\",\r\n      \"FILE_NAME\": \"foto_prodotto\",\r\n      \"FILE_EXT\": \"jpg\"\r\n    }\r\n  ],\r\n  \"testata\": {\r\n    \"CODAGE\": \"AGE001\",\r\n    \"CODPAG\": \"PAG001\",\r\n    \"CODSPED\": \"SPED001\",\r\n    \"COND_PAG\": \"30 gg Fine Mese\",\r\n    \"DT_CONS\": \"2025-11-20\",\r\n    \"DT_FINE_VALIDITA\": \"2025-12-31\",\r\n    \"DT_ORDINE\": \"2025-11-17\",\r\n    \"ID_ANAGEN\": 12345,\r\n    \"ID_ORDINE_MOBILE\": \"ORD-MOBILE-12345\",\r\n    \"NOTE\": \"Note esterne per il cliente\",\r\n    \"NOTE_INTERNE\": \"Note interne per uso ufficio\",\r\n    \"SCONTO_T\": 10.0,\r\n    \"SP_SPEDIZIONE\": 8.50,\r\n    \"TIPO\": \"ORD\",\r\n    \"USAEMAILORDINE\": 1,\r\n    \"ID_COMPANY\": 1\r\n  }\r\n}",
+	    								"raw":{"righe": righe, "allegati": allegati, "testata" : testata},
+	    								"options": {
+	    									"raw": {
+	    										"language": "json"
+	    									}
+	    								}
+	    							},
+	    							"url": {
+	    								"raw": "{{NCS_baseUrlTest}}/ordine",
+	    								"host": [
+	    									"{{NCS_baseUrlTest}}"
+	    								],
+	    								"path": [
+	    									"ordine"
+	    								]
+	    							}
+	    						},
+	    						"response": []
+	    					}
+	    				],
+	    	
+	    		"event": [
+	    			{
+	    				"listen": "prerequest",
+	    				"script": {
+	    					"type": "text/javascript",
+	    					"packages": {},
+	    					"requests": {},
+	    					"exec": [
+	    						""
+	    					]
+	    				}
+	    			},
+	    			{
+	    				"listen": "test",
+	    				"script": {
+	    					"type": "text/javascript",
+	    					"packages": {},
+	    					"requests": {},
+	    					"exec": [
+	    						""
+	    					]
+	    				}
+	    			}
+	    		],
+	    		"variable": [
+	    			{
+	    				"key": "NCS_PasswordAgente",
+	    				"value": ""
+	    			},
+	    			{
+	    				"key": "NCS_UtenteAgente",
+	    				"value": ""
+	    			},
+	    			{
+	    				"key": "NCS_baseUrl",
+	    				"value": ""
+	    			},
+	    			{
+	    				"key": "NCS_baseUrlTest",
+	    				"value": ""
+	    			}
+	    		]
+	    	};
+	     
+
+	    var url = "http://localhost:8080/AccPoint/inserisciOfferta.do?action=inserisci";
+	    //var url = "https://api.mathjs.org/v4/";
+	    
+	    fetch(url, {
+	        method: "POST",
+	        headers: {
+	            "Content-Type": "application/json"
+	        },
+	        body: JSON.stringify(dataObj)
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        document.getElementById("risultato").innerText =
+	            "Risultato della somma: " + data.result;
+	    })
+	    .catch(err => {
+	        document.getElementById("risultato").innerText =
+	            "Errore: " + err;
+	    });
+	}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  $("#cliente").change(function() {
 	  
@@ -1684,10 +1862,14 @@ $('#nuovoClienteForm').on('submit', function(e){
  	  });
  }
 
+ 
+ var allegati = [];
+ 
  $('#fileupload_img').change(function(){
 		
 	  const files = this.files; // elenco di File oggetti
 	    let fileNames = [];
+	  
 
 	    for (let i = 0; i < files.length; i++) {
 	        fileNames.push(files[i].name);
@@ -1695,10 +1877,35 @@ $('#nuovoClienteForm').on('submit', function(e){
 
 	    // Mostra tutti i nomi separati da virgola (o su più righe)
 	    $('#label_img').html(fileNames.join('<br>'));
+	    
+	    const base64Array = [];
+	  
+
+	    for (let file of files) {
+	        const base64 =  fileToBase64(file);
+	        base64Array.push(base64);
+	        allegato = {} 
+	        allegato.FILE_TYPE = "image/jpeg";
+	        allegato.FILE_ATTACH = base64;
+	        allegato.FILE_NAME = file.name;
+	        allegato.FILE_EXT = "jpg";
+	        allegato.FILE_TYPE = "ORD-MOBILE-12345";
+	        allegati.push(allegato)
+	    }
+	    
+	    console.log(base64Array);  
+	    
 	});
  
  
- 
+ function fileToBase64(file) {
+	    return new Promise((resolve, reject) => {
+	        const reader = new FileReader();
+	        reader.onload = () => resolve(reader.result.split(",")[1]); 
+	        reader.onerror = reject;
+	        reader.readAsDataURL(file);
+	    });
+	}
  
  $("#tabArticoli").on('select.dt', function (e, dt, type, indexes) {
      if (type === 'row') {

@@ -17,5 +17,7 @@
         <property name="dataProssimaAttivita" column="data_prossima_attivita" type="date"/>
         <property name="esito" column="esito" length="3"/>
         <property name="note" column="note" type="text"/>
+        <property name="tipo" column="tipo" type="int"/>
+         <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" column="id_utente" not-null="true"/>
     </class>
 </hibernate-mapping>

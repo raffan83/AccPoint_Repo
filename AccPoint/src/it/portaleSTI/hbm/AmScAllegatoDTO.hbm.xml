@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.AmScAllegatoDTO" table="am_sc_allegato">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        
+        <property name="nome_file" column="nome_file" />
+         <property name="id_attivita" column="id_attivita" type="int"/>
+          <property name="disabilitato" column="disabilitato" type="int" />
+    </class>
+</hibernate-mapping>

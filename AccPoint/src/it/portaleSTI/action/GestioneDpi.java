@@ -558,7 +558,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.update(consegna);
 				
 				if(consegna.getDpi().getTipologia()==1) {
-					//SendEmailBO.sendEmailRiconsegnaDPI(consegna, request.getServletContext());
+					SendEmailBO.sendEmailRiconsegnaDPI(consegna, request.getServletContext());
 				}else {
 					restituzione.setRiconsegnato(1);
 				}

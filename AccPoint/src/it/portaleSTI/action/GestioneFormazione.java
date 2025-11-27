@@ -643,6 +643,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String durata = ret.get("durata");
 				String efei = ret.get("efei");
 				String frequenza_remind = ret.get("frequenza_remind");
+				String giorni_preavviso = ret.get("giorni_preavviso");
 				
 				ForCorsoDTO corso = new ForCorsoDTO();		
 				
@@ -688,6 +689,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					c.setTime(corso.getData_corso());
 					c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(frequenza_remind));
 					corso.setData_remind(c.getTime());
+				}
+				
+				if(giorni_preavviso!=null && !giorni_preavviso.equals("") && !giorni_preavviso.equals("0")) {
+					corso.setGiorni_preavviso(Integer.parseInt(giorni_preavviso));
+					Calendar c = Calendar.getInstance();
+					c.setTime(corso.getData_corso());
+					c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(giorni_preavviso));
+					corso.setData_preavviso(c.getTime());
 				}
 				
 				myObj = new JsonObject();
@@ -744,6 +753,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String durata = ret.get("durata_mod");
 				String efei = ret.get("efei_mod");
 				String frequenza_remind = ret.get("frequenza_remind_mod");
+				String giorni_preavviso = ret.get("giorni_preavviso_mod");
 				
 				
 				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso),session);		
@@ -788,12 +798,27 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					saveFile(fileItem, "DocumentiTest//"+corso.getId(), filename);
 				}
 				
-				if(frequenza_remind!=null && !frequenza_remind.equals("")) {
+				if(frequenza_remind!=null && !frequenza_remind.equals("") && !frequenza_remind.equals("0")) {
 					corso.setfrequenza_remind(Integer.parseInt(frequenza_remind));
 					Calendar c = Calendar.getInstance();
 					c.setTime(corso.getData_corso());
 					c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(frequenza_remind));
 					corso.setData_remind(c.getTime());
+				}else if(frequenza_remind.equals("0")){
+					corso.setfrequenza_remind(Integer.parseInt(frequenza_remind));
+					corso.setData_remind(null);
+				}
+				
+				
+				if(giorni_preavviso!=null && !giorni_preavviso.equals("") && !giorni_preavviso.equals("0")) {
+					corso.setGiorni_preavviso(Integer.parseInt(giorni_preavviso));
+					Calendar c = Calendar.getInstance();
+					c.setTime(corso.getData_corso());
+					c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(giorni_preavviso));
+					corso.setData_preavviso(c.getTime());
+				}else if(frequenza_remind.equals("0")){
+					corso.setfrequenza_remind(Integer.parseInt(giorni_preavviso));
+					corso.setData_preavviso(null);
 				}
 				
 				corso.setDurata(Integer.parseInt(durata));

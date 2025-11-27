@@ -20,8 +20,11 @@ String[] nomiMesi = {
   <c:set var="currentYear" value="<%= Calendar.getInstance().get(Calendar.YEAR) %>" />
 <div class="row">
 <div class="col-sm-9">
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('S1') }">
+<a class="btn btn-primary" onclick="modalNuovaAttrezzatura()"><i class="fa fa-plus"></i>Nuova Attrezzatura</a>
 <a class="btn btn-primary" onClick="modalNuovaScadenza()"><i class="fa fa-plus"></i> Nuova Scadenza</a>
-
+<a class="btn btn-primary" onClick="modalCreaReport()"><i class="fa fa-plus"></i> Crea Report Annuale</a>
+</c:if>
 
 </div>
 
@@ -97,6 +100,76 @@ String[] nomiMesi = {
 </div>
 
 
+
+
+<form id="reportForm" name="reportForm">
+<div id="myModalCreaReport" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Crea Report Annuale </h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Attrezzatura</label>
+       	</div>
+       	<div class="col-sm-9">       	
+       		<select class="form-control select2" data-placeholder="Seleziona Attrezzatura..." id="attrezzatura_report" name="attrezzatura_report" style="width:100%" required>
+       		<option value=""></option>
+       			<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
+       				<option value="${attrezzatura.id}">${attrezzatura.descrizione } </option>
+       			</c:forEach>
+       		</select>       	
+       	</div>       	
+       </div><br>
+        <div class="row">
+      	<div class="col-sm-3">
+       		<label>Anno</label>
+       	</div>
+       	<div class="col-sm-9">
+       	
+       	      
+         <select class="form-control select2" id="anno_report" name="anno_report" style="width:100%" required>
+
+		
+			  <c:set var="startYear" value="${currentYear - 5}" />
+			  <c:set var="endYear" value="${currentYear + 5}" />
+			
+			  <c:forEach var="year" begin="${startYear}" end="${endYear}">
+			  <c:if test="${year == anno }">
+			  	    <option value="${year}" selected>${year}</option>
+			  </c:if>
+			   <c:if test="${year != anno }">
+			  	    <option value="${year}" >${year}</option>
+			  </c:if>
+		
+			  </c:forEach>
+			</select>
+       	
+
+       	</div>
+       </div><br>
+
+        
+       </div>
+
+  		 
+      <div class="modal-footer">
+
+		 
+		<button class="btn btn-primary" type="submit" >Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+</form>
+
 <form id="nuovaScadenzaForm" name="nuovaScadenzaForm">
 <div id="myModalNuovaScadenza" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
     <div class="modal-dialog modal-md" role="document">
@@ -116,7 +189,7 @@ String[] nomiMesi = {
        		<select class="form-control select2" data-placeholder="Seleziona Attrezzatura..." id="attrezzatura" name="attrezzatura" style="width:100%" required>
        		<option value=""></option>
        			<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
-       				<option value="${attrezzatura.id}">${attrezzatura.descrizione } - ${attrezzatura.matricola }</option>
+       				<option value="${attrezzatura.id}">${attrezzatura.descrizione } </option>
        			</c:forEach>
        		</select>       	
        	</div>       	
@@ -126,7 +199,9 @@ String[] nomiMesi = {
        		<label>Attività </label>
        	</div>
        	<div class="col-sm-9">
+       	
        	<a class="btn btn-primary" onclick="modalAggiungiAttivita()"><i class="fa fa-plus"></i></a>
+       	
 
        	</div>
        </div><br>
@@ -149,7 +224,8 @@ String[] nomiMesi = {
 
 </div>
 
-</form>
+
+
 
 
 
@@ -170,12 +246,14 @@ String[] nomiMesi = {
     <tr class="active">
       <th></th>
       <th style="max-width:20px">ID</th>
-      <th style="min-width:100px">Data Attività </th>
-      <th style="min-width:100px">Esito</th>
-      <th style="max-width:40px">Frequenza</th>
-      <th style="min-width:100px">Data Scadenza</th>
+      <th style="max-width:40px">Tipo Attività</th>
+      <th style="min-width:80px">Data Attività </th>
+      <th style="min-width:60px">Esito</th>
+      <th style="max-width:60px">Frequenza</th>
+      <th style="min-width:80px">Data Scadenza</th>
       <th style="max-width:120px">Note</th>
       <th style="min-width:120px">Descrizione attività </th>
+      <th style="max-width:30px">Allegati</th>
       <th></th>
      
     </tr>
@@ -193,8 +271,10 @@ String[] nomiMesi = {
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
         
         <td>${attivita.descrizione }</td>
+        <td ></td>
    <td></td>
       </tr>
     </c:forEach>
@@ -219,8 +299,75 @@ String[] nomiMesi = {
 
 </div>
 
+</form>
 
 
+
+
+
+
+
+
+
+<form id="nuovaAttrezzaturaForm" name="nuovaAttrezzaturaForm">
+<div id="myModalNuovaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Inserisci Nuova Attrezzatura </h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-sm-3">
+       		<label>Cliente</label>
+       	</div>
+       <div class="col-xs-9">
+       <input id="cliente_attrezzatura" name="cliente_attrezzatura" class="form-control" style="width:100%">
+       
+      </div>
+      </div><br>
+      <div class="row">
+      <div class="col-sm-3">
+       		<label>Sede</label>
+       	</div>
+      <div class="col-xs-9">
+       <select id="sede_attrezzatura" name="sede_attrezzatura" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" disabled>
+       <option value=""></option>
+      	<c:forEach items="${lista_sedi}" var="sd">
+      	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
+      	</c:forEach>
+      
+      </select>
+      </div>
+</div><br>
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Descrizione Attrezzatura</label>
+       	</div>
+       	<div class="col-sm-9">       	
+       		<input id="descrizione_attrezzatura" name="descrizione_attrezzatura" class="form-control">      	
+       	</div>       	
+       </div><br>
+
+
+        
+       </div>
+
+  		 
+      <div class="modal-footer">
+    
+		 
+		<button class="btn btn-primary" type="submit" >Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</form>
 
 
   <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -234,11 +381,12 @@ String[] nomiMesi = {
        <div class="modal-body">
        <div class="row">
         <div class="col-xs-12">
-       <div id="tab_allegati"></div>
 </div>
   		 </div>
   		 </div>
       <div class="modal-footer">
+      
+      
       </div>
    
   </div>
@@ -390,12 +538,14 @@ function addRow(){
 	var newRow = table.row.add([
         '<td class="select-checkbox"></td>',
         '<td >'+id+'</td>',
+        '<td ><select required class="form-control select2" id="tipo_' + id + '" style="width:100%" onchange="valueProssima(' + id + ')"> <option value="0">ORDINARIA</option> <option value="1">STRAORDINARIA</option>  </select></td>',
         '<td ><div class="input-group date datepicker"><input type="text" required onchange="aggiornaDataScadenza(' + id + ')" class="datepicker  form-control" id="data_attivita_' + id + '"/><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div> </td>',
         '<td ><select required class="form-control select2" id="esito_' + id + '" style="width:100%"> <option value="P">POSITIVO</option> <option value="N">NEGATIVO</option>  </select></td>',
-        '<td ><input type="number" step="1" min="0" required class="form-control" onchange="aggiornaDataScadenza(' + id + ')" id="frequenza_' + id + '"/></td>',
+        '<td ><input type="number" step="1" min="0"  class="form-control" onchange="aggiornaDataScadenza(' + id + ')" id="frequenza_' + id + '"  /></td>',
         '<td ><div class="input-group date datepicker"><input type="text" readonly required class="form-control" id="data_scadenza_' + id + '"/><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div></td>',
         '<td ><textarea id="note_' + id + '" class="form-control" style="width:100%"/></textarea></td>',
         '<td ><textarea id="descrizione_attivita_' + id + '" class="form-control" style="width:100%"/></textarea></td>',
+        '<td><span class="btn btn-primary btn-xs fileinput-button" title="click per caricare gli allegati"> <i class="fa fa-arrow-up"></i><input accept=".jpg,.png,.pdf" onchange="changeLabelAllegati('+id+')" id="allegati_attivita_'+id+'" name="allegati_attivita" type="file" multiple></span> <label id="filename_allegati_'+id+'"></label></td>',
          '<a class="btn btn-danger btn-xs remove-btn"><i class="fa fa-minus"></a>' 
     ]).draw(false);
     
@@ -458,6 +608,10 @@ function modalNuovaScadenza(){
 	
 }
 
+function modalCreaReport(){
+	$('#myModalCreaReport').modal();
+}
+
 function modalAggiungiAttivita(){
 	
 
@@ -465,13 +619,73 @@ function modalAggiungiAttivita(){
 	
 }
 
+$("#cliente_attrezzatura").change(function() {
+	  
+	  if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    $(this).data('options', $('#sede_attrezzatura option').clone());
+	  }
+	  
+	  
+	  var selection = $(this).val()	 
+	  var id = selection
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	
+	  opt.push("<option value = 0 selected>Non Associate</option>");
+
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+	
+		//if(str.substring(str.indexOf("_")+1,str.length)==id)
+		if(str.substring(str.indexOf("_")+1, str.length)==id)
+		{
+
+			opt.push(options[i]);
+		}   
+	   }
+	 $("#sede_attrezzatura").prop("disabled", false);
+	 
+	  $('#sede_attrezzatura').html(opt);
+	  
+
+
+	});
+
+
 
 
 
 var columsDatatables = [];
 
 
+function modalNuovaAttrezzatura(){
+	
+	
+	
+	if($("#cliente").val() != 0 ){
+		
+		$('#cliente_attrezzatura').val($("#cliente").val())
+		$('#cliente_attrezzatura').change()
+		$('#sede_attrezzatura').val($("#sede").val())
+		$('#sede_attrezzatura').change()
+	}
+	
+	
+	$('#myModalNuovaAttrezzatura').modal()
+	
+	$('#cliente_attrezzatura option[value="0"]').remove();
+}
 
+function modalAllegati(id){
+	
+	$('#myModalAllegati').modal()
+	
+	
+}
 
 
 $(document).ready(function() {
@@ -480,14 +694,18 @@ $(document).ready(function() {
     $('.dropdown-toggle').dropdown();
    
    $("#attrezzatura").select2()
+    $("#attrezzatura_report").select2()
+     $("#anno").select2()
+      $("#anno_report").select2()
 
      $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
 	 }); 
 
-    
+	$('#sede_attrezzatura').select2();
+	initSelect2('#cliente_attrezzatura', null, true);
      
-  
+	
     
    var table = $('#tabAttivita').DataTable({
 			language: {
@@ -537,7 +755,8 @@ $(document).ready(function() {
 	            { targets: 4, width: "60px" },    // Frequenza
 	            { targets: 5, width: "120px" },   // Data Scadenza
 	            { targets: 6, width: "150px" },   // Note
-	            { targets: 7, width: "200px" }   
+	            { targets: 7, width: "200px" } ,  
+	            { targets: 8, width: "200px" } 
 	        ]	     
 			        
 	  	    
@@ -573,45 +792,6 @@ $(document).ready(function() {
 
 	});  
 	
-	
-/* 	
-	  var t = $('#tabScadenzario').DataTable({
-			language: {
-		        	emptyTable : 	"Nessun dato presente nella tabella",
-		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-		        	infoPostFix:	"",
-		        infoThousands:	".",
-		        lengthMenu:	"Visualizza _MENU_ elementi",
-		        loadingRecords:	"Caricamento...",
-		        	processing:	"Elaborazione...",
-		        	search:	"Cerca:",
-		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-		        	paginate:	{
-	  	        	first:	"Inizio",
-	  	        	previous:	"Precedente",
-	  	        	next:	"Successivo",
-	  	        last:	"Fine",
-		        	},
-		        aria:	{
-	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-		        }
-	        },
-	       
-	      
-	        paging: false,
-	        ordering: false,
-	        info: false,
-	        searchable: false,
-	        searching: false,
-	       
-	        responsive: false,
-	        scrollX: true,
-	        stateSave: false  	    
-		               
-		    }); */
 	
 	
 });
@@ -658,81 +838,72 @@ $('#nuovaScadenzaForm').on('submit', function(e){
 });
 
 
+$('#nuovaAttrezzaturaForm').on('submit', function(e){
+	 e.preventDefault();
+	 
+	 callAjaxForm("#nuovaAttrezzaturaForm", "amScGestioneScadenzario.do?action=nuova_attrezzatura", function(data){
+		 
+		 if(data.success){
+			 $('#report_button').hide();
+				$('#visualizza_report').hide();
+			  $("#myModalNuovaAttrezzatura").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+			 
+			 $('#myModalError').on("hidden.bs.modal", function(){
+					
+				 if($(this).hasClass("modal-success")){
+					 
+					 
+
+					  dataString = "action=lista&id_cliente="+$('#cliente').val()+"&id_sede="+$("#sede").val();
+					   exploreModal('amScGestioneScadenzario.do',dataString,'#posTab');
+					   
+					   $('.modal-backdrop').hide()
+					 }				 
+			 });
+			 
+			
+		 }
+		
+	 })
+	
+});
+
+
+
+
+$('#reportForm').on('submit', function(e){
+	 e.preventDefault();
+	 var newTab = window.open('', '_blank');
+	 var id_attrezzatura = $('#attrezzatura_report').val();
+	 
+	 callAjaxForm("#reportForm", "amScGestioneScadenzario.do?action=crea_report", function(data){
+		 
+		
+				if (data.success) {
+					var url = "amScGestioneScadenzario.do?action=download_report&id_attrezzatura=" + $('#attrezzatura_report').val();
+
+					newTab.location.href = url;
+				} else {
+
+					newTab.close();
+				}
+			 });
+			 
+			
+		
+	
+});
+
+
 function cambiaAnno(){
 	  dataString = "action=lista&id_cliente="+$('#cliente').val()+"&id_sede="+$("#sede").val()+"&anno="+$('#anno').val();
 	   exploreModal('amScGestioneScadenzario.do',dataString,'#posTab');
 	   
 }
-
-/* function assegnaIdAttivita(){
-	
-	var id_attivita_selected = "";
-	var t = $('#tabAttivita').DataTable();
-    t.rows({ selected: true }).every(function () {
-        var $row = $(this.node());
-        var id = $row.find('td').eq(1).text().trim(); // Colonna ID
-        id_attivita_selected += id + ";";
-    });
-    
-    $('#id_attivita').val(id_attivita_selected)
-    
-    $('#myModalNuovaAttivita').modal("hide");
-} */
-
-
-/* function assegnaIdAttivita(){
-	
-	var id_attivita_selected = "";
-	var t = $('#tabAttivita').DataTable();
-    t.rows({ selected: true }).every(function () {
-        var $row = $(this.node());
-        var valori = "";
-
-        $row.find('td').each(function(i, cell) {
-            let testo = "";
-
-            if (i === 0 ) return; // Salta checkbox e descrizione
-
-            if (i === 1) {
-                // ID
-                testo = $(cell).text().trim();
-            } 
-            
-            else if (i === 3) {
-                // SELECT
-                let select = $(cell).find("select");
-                if (select.length) {
-                    testo = select.val();
-                }
-            } 
-            else if(i===6){
-            	
-            	let textarea = $(cell).find("textarea");
-                if (textarea.length) {
-                    testo = textarea.val();
-                }
-            }
-            else {
-                // Datepicker input
-                let input = $(cell).find("input");
-                if (input.length) {
-                    testo = input.val();
-                }
-            }
-
-            valori += testo + ",";
-        });
-
-        id_attivita_selected += valori.slice(0, -1) + ";";
-    });
-
-
-    
-    $('#id_attivita').val(id_attivita_selected)
-    
-    $('#myModalNuovaAttivita').modal("hide");
-} */
-
 
 
 
@@ -744,17 +915,22 @@ function assegnaIdAttivita() {
     t.rows({ selected: true }).every(function () {
         var $row = $(this.node());
         var valori = "";
-
+        var straordinaria = false;
         $row.find('td').each(function(i, cell) {
             let testo = "";
-
-            if (i === 0) return; // Salta checkbox
+			
+            if (i === 0 || i===2) return; // Salta checkbox
 
             if (i === 1) {
                 // ID (solo testo, quindi ammesso anche vuoto)
                 testo = $(cell).text().trim();
+                var value = $('#tipo_'+testo).val();
+                if(value==1){
+                	straordinaria = true;
+                }
             } 
-            else if (i === 3) {
+   
+            else if (i === 4) {
                 // SELECT obbligatoria
                 let select = $(cell).find("select");
                 if (select.length) {
@@ -766,12 +942,12 @@ function assegnaIdAttivita() {
                     }
                 }
             } 
-            else if (i === 6) {
+            else if (i === 7) {
                 // TEXTAREA facoltativa
                 let textarea = $(cell).find("textarea");
                 testo = textarea.length ? textarea.val() || "" : "";
             } 
-            else if (i === 7) {
+            else if (i === 8) {
                 // TEXTAREA obbligatoria solo se presente
                 let textarea = $(cell).find("textarea");
                 if (textarea.length) {
@@ -785,6 +961,11 @@ function assegnaIdAttivita() {
                     testo = "";
                 }
             }
+            else if (i === 9) {
+           
+            }
+            
+
             else {
                 // INPUT obbligatorio (es. datepicker)
                 let input = $(cell).find("input");
@@ -792,19 +973,22 @@ function assegnaIdAttivita() {
                     testo = input.val();
                     if (!testo || testo.trim() === "") {
                     	
-                    	if(i == 2){
+                    	if(i == 3){
                     		var col = "DATA ATTIVITA'"
                     	}
-                    	if(i == 4){
+                    	if(i == 5){
                     		var col = "FREQUENZA"
                     	}
-                    	if(i == 5){
+                    	if(i == 6){
                     		var col = "DATA SCADENZA"
                     	}
                     	
-                        alert("Compila il campo nella colonna " +col);
-                        tuttoValido = false;
-                        return false;
+                    	if(straordinaria == false || (straordinaria == true && (i!=5 && i!=6))){
+                    		alert("Compila il campo nella colonna " +col);
+                            tuttoValido = false;
+                            return false;
+                    	}
+                        
                     }
                 }
             }
@@ -825,6 +1009,22 @@ function assegnaIdAttivita() {
 }
 
 
+function changeLabelAllegati(id){
+	
+	  const files =  $("#allegati_attivita_"+id)[0].files;
+	    let fileNames = [];
+	  
+
+	    for (let i = 0; i < files.length; i++) {
+	        fileNames.push(files[i].name);
+	    }
+
+
+	
+	$('#filename_allegati_'+id).html(fileNames.join('<br>'));
+	
+}
+
 
 
 $('#tabAttivita').on('select.dt', function (e, dt, type, indexes) {
@@ -842,7 +1042,7 @@ $('#tabAttivita').on('select.dt', function (e, dt, type, indexes) {
                 }
 
                 // Salta checkbox (0), ID (1) e ultima colonna (7) per stile/modifica
-                if (i === 0 || i === 1 || i === 7) return;
+                if (i === 0 || i === 1 || i === 8 || i===10) return;
 
                 // Salva bordo originale (per eventuale ripristino)
                 if (!$cell.data('original-border')) {
@@ -853,29 +1053,41 @@ $('#tabAttivita').on('select.dt', function (e, dt, type, indexes) {
                 $cell.css('border', '1px solid red');
 
                 // Inserisci input/select/datepicker a seconda della colonna
-                if (i === 4) {
-                    const input = '<input type="number" step="1" min="0" required class="form-control" onchange="aggiornaDataScadenza(' + id + ')" id="frequenza_' + id + '"/>';
+                if (i === 5) {
+                    const input = '<input type="number" step="1" min="0"  class="form-control" onchange="aggiornaDataScadenza(' + id + ')" id="frequenza_' + id + '"/>';
                     $cell.html(input);
                 }
-                else if (i === 3) {
+                else if (i === 4) {
                     const options = '<select required class="form-control select2" id="esito_' + id + '" style="width:100%"> <option value="P">POSITIVO</option> <option value="N">NEGATIVO</option>  </select>';
                     $cell.html(options);
                     $('#esito_' + id).select2();
                 }
                 else if (i === 2) {
+                    const options = '<select required class="form-control select2" id="tipo_' + id + '" style="width:100%" onchange="valueProssima(' + id + ')"> <option value="0">ORDINARIA</option> <option value="1">STRAORDINARIA</option>  </select>';
+                    $cell.html(options);
+                    $('#tipo_' + id).select2();
+                }
+                else if (i === 3) {
                     const input = $('<div class="input-group date datepicker"><input type="text" required onchange="aggiornaDataScadenza(' + id + ')" class="datepicker  form-control" id="data_attivita_' + id + '"/><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>');
                     $cell.html(input);
                     $('.datepicker').datepicker({
                         format: "dd/mm/yyyy"
                     });
                 }
-                else if (i === 5) {
+                else if (i === 6) {
                     const input = $('<div class="input-group date datepicker"><input type="text" readonly required class="form-control" id="data_scadenza_' + id + '"/><span class="input-group-addon"><span class="fa fa-calendar"></span></span></div>');
                     $cell.html(input);
                 }
-                else if (i === 6) {
+                else if (i === 7) {
                     const input = $('<textarea id="note_' + id + '" class="form-control" style="width:100%"/></textarea>');
                     $cell.html(input);
+                }
+                else if(i=== 9){
+                	
+                	const input = $('<span class="btn btn-primary btn-xs fileinput-button" title="click per caricare gli allegati"> <i class="fa fa-arrow-up"></i><input accept=".jpg,.png,.pdf" onchange="changeLabelAllegati('+id+')" id="allegati_attivita_'+id+'" name="allegati_attivita_'+id+'" type="file" multiple></span> <label id="filename_allegati_'+id+'"></label>')
+
+                	 $cell.html(input);
+                	
                 }
             });
         });
@@ -905,35 +1117,51 @@ $('#tabAttivita').on('deselect.dt', function (e, dt, type, indexes) {
 });
 
 function aggiornaDataScadenza(id) {
-    var frequenza = parseInt($('#frequenza_' + id).val());
-    var data_attivita_str = $('#data_attivita_' + id).val(); // es: "20/11/1991"
+	
+	if($('#tipo_'+id).val() =="0" ){
+		 var frequenza = parseInt($('#frequenza_' + id).val());
+		    var data_attivita_str = $('#data_attivita_' + id).val(); // es: "20/11/1991"
 
-    if (!data_attivita_str || isNaN(frequenza)) {
-        console.warn("Data attivita o frequenza non valida per id:", id);
-        return;
-    }
+		    if (!data_attivita_str || isNaN(frequenza)) {
+		        console.warn("Data attivita o frequenza non valida per id:", id);
+		        return;
+		    }
 
-    // Converte "DD/MM/YYYY" in oggetto Date
-    var [giorno, mese, anno] = data_attivita_str.split('/').map(Number);
-    var data_attivita = new Date(anno, mese - 1, giorno); // mese parte da 0
+		    // Converte "DD/MM/YYYY" in oggetto Date
+		    var [giorno, mese, anno] = data_attivita_str.split('/').map(Number);
+		    var data_attivita = new Date(anno, mese - 1, giorno); // mese parte da 0
 
-    // Calcola la nuova data aggiungendo i mesi
-    var nuovaData = new Date(data_attivita);
-    nuovaData.setMonth(nuovaData.getMonth() + frequenza);
+		    // Calcola la nuova data aggiungendo i mesi
+		    var nuovaData = new Date(data_attivita);
+		    nuovaData.setMonth(nuovaData.getMonth() + frequenza);
 
-    // Corregge l'eventuale overflow di giorni (es. 31 gennaio + 1 mese â†’ 3 marzo)
-    if (nuovaData.getDate() !== giorno) {
-        nuovaData.setDate(0); // imposta all'ultimo giorno del mese precedente
-    }
+		    // Corregge l'eventuale overflow di giorni (es. 31 gennaio + 1 mese â†’ 3 marzo)
+		    if (nuovaData.getDate() !== giorno) {
+		        nuovaData.setDate(0); // imposta all'ultimo giorno del mese precedente
+		    }
 
-    // Formatta in "DD/MM/YYYY"
-    var giornoN = String(nuovaData.getDate()).padStart(2, '0');
-    var meseN = String(nuovaData.getMonth() + 1).padStart(2, '0');
-    var annoN = nuovaData.getFullYear();
+		    // Formatta in "DD/MM/YYYY"
+		    var giornoN = String(nuovaData.getDate()).padStart(2, '0');
+		    var meseN = String(nuovaData.getMonth() + 1).padStart(2, '0');
+		    var annoN = nuovaData.getFullYear();
 
-    var dataFormattata = giornoN+"/"+meseN+"/"+annoN;
+		    var dataFormattata = giornoN+"/"+meseN+"/"+annoN;
 
-    // Aggiorna il campo data_scadenza
-    $('#data_scadenza_' + id).val(dataFormattata);
+		    // Aggiorna il campo data_scadenza
+		    $('#data_scadenza_' + id).val(dataFormattata);
+	}
+	
+	
+   
 }
+
+
+function valueProssima(id){
+	
+	if($('#tipo_'+id).val() =="1" ){
+		 $('#data_scadenza_' + id).val("");
+	}
+	
+}
+
 </script>

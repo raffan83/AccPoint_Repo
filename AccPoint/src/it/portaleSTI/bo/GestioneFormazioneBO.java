@@ -2349,5 +2349,35 @@ public class GestioneFormazioneBO {
 		// TODO Auto-generated method stub
 		return DirectMySqlDAO. getListaCorsiSuccessiviCategoria(dateFrom, id_categoria, id_corso,session);
 	}
+
 	
-}
+	public static void sendEmailPreavviso(String path) throws Exception {
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		try {
+		
+		ArrayList<ForCorsoDTO> lista_corsi_preavviso = GestioneFormazioneDAO.getListaCorsiPreavviso(new Date(),session);
+
+		for (ForCorsoDTO corso : lista_corsi_preavviso) {
+			
+			for (ForReferenteDTO referente : corso.getListaReferenti()) {
+				SendEmailBO.sendEmailPreavvisoCorso(corso, referente);
+			}
+				
+	
+		}
+
+		
+		session.getTransaction().commit();
+		session.close();
+		
+	}catch(Exception e) {
+		
+		throw e;
+		
+	}
+	}
+	
+	
+	}

@@ -522,6 +522,7 @@
           </a>
           <ul class="treeview-menu">
 		   <li><a href="amScGestioneScadenzario.do">Scadenzario Attività</a></li> 
+		    <li><a href="amScGestioneScadenzario.do?action=lista_attivita&tipo_filtro=data">Lista Attività</a></li> 
           </ul>
         </li> 
         
@@ -550,7 +551,7 @@
          <%} %>
         
         
-  <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_MANUTENZIONI AM") || user.checkRuolo("MN")){%>  
+  <%-- <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_MANUTENZIONI AM") || user.checkRuolo("MN")){%>  
            <li class="header">MANUTENZIONE SISTEMI</li>
 
          <li class="treeview">
@@ -567,7 +568,7 @@
 	      	
           </ul>
         </li> 
-           <% }%> 
+           <% }%>  --%>
         
         
            <% if(user.checkRuolo("AM") || user.checkPermesso("ADMIN CONFIG")){%>

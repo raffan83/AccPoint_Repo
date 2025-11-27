@@ -10,7 +10,9 @@ public class AmScScadenzarioDTO {
     private Date dataProssimaAttivita;
     private String esito;
     private String note;
+    private UtenteDTO utente;
 
+    private int tipo;
     // Getter e Setter
     public Integer getId() {
         return id;
@@ -75,4 +77,22 @@ public class AmScScadenzarioDTO {
     public void setNote(String note) {
         this.note = note;
     }
+
+	public UtenteDTO getUtente() {
+		return utente;
+	}
+
+	public void setUtente(UtenteDTO utente) {
+		this.utente = utente;
+	}
+
+	public int getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(int tipo) {
+		this.tipo = tipo;
+	}
+    
+    
 }

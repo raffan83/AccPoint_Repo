@@ -226,7 +226,7 @@
 	<a class="btn btn-info" onClick="dettaglioCorso('${utl:encryptData(corso.id)}')"><i class="fa fa-search"></i></a>
 		 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 	<%-- 	 	<c:if test="${corso.e_learning == 0}"> --%>
-				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${utl:escapeJS(corso.getDocentiCorsoJson())}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }', '${corso.durata }','${corso.efei }', '${corso.frequenza_remind }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
+				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${utl:escapeJS(corso.getDocentiCorsoJson())}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }', '${corso.durata }','${corso.efei }', '${corso.frequenza_remind }', '${corso.giorni_preavviso }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
 	<%-- 	 	</c:if>
 	<c:if test="${corso.e_learning == 1}">
 				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }',0,'${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${corso.descrizione }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
@@ -469,6 +469,18 @@
         <input id="frequenza_remind" name="frequenza_remind" class="form-control" type="number" step="1"  min = "0" style="width:100%" >
        			
        	</div>       	
+       </div><br>
+       
+            <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Giorni Preavviso</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  
+        <input id="giorni_preavviso" name="giorni_preavviso" class="form-control" type="number" step="1"  min = "0" style="width:100%" >
+       			
+       	</div>       	
        </div>
        
        </div>
@@ -683,6 +695,18 @@
         <input id="frequenza_remind_mod" name="frequenza_remind_mod" class="form-control" type="number" step="1"  min = "0" style="width:100%" >
        			
        	</div>       	
+       </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Giorni Preavviso</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+        <input id="giorni_preavviso_mod" name="giorni_preavviso_mod" class="form-control" type="number" step="1"  min = "0" style="width:100%" >
+       			
+       	</div>       	
        </div>
        	
        	</div>		
@@ -857,7 +881,7 @@ $('#docente_mod').on('change', function() {
   });
 
 
-function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_scadenza, documento_test, descrizione, tipologia, commessa,e_learning, durata, efei, frequenza){
+function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_scadenza, documento_test, descrizione, tipologia, commessa,e_learning, durata, efei, frequenza, giorni_preavviso){
 	
 	var json = JSON.parse(docenti);
 	
@@ -870,6 +894,7 @@ function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_sc
 	$('#categoria_mod').val(id_categoria);
 	$('#categoria_mod').change();
 	$('#frequenza_remind_mod').val(frequenza)
+	$('#giorni_preavviso_mod').val(giorni_preavviso)
 	var x = []
 	
 for (var i = 0; i < json.lista_docenti.length; i++) {

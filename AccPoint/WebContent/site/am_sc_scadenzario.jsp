@@ -38,7 +38,7 @@
                  <option value="0">TUTTI</option> 
                       <c:forEach items="${lista_clienti}" var="cliente">
                      
-                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                           <option value="${cliente.__id}"  >${cliente.nome}</option> 
                          
                      </c:forEach>
 
@@ -46,7 +46,7 @@
                 
         </div> 
        <div class="col-xs-6">
-       <input id="cliente" name="cliente" class="form-control" style="width:100%">
+       <input id="cliente" name="cliente" class="form-control" style="width:100%" ${userObj.checkRuolo('S2') ? 'disabled' : ''}>
        <%-- <select id="cliente" name="cliente" class="form-control select2"  data-placeholder="Seleziona Cliente..." aria-hidden="true" data-live-search="true" style="width:100%">
        <option value=""></option>
       	<c:forEach items="${lista_clienti}" var="cl">
@@ -276,34 +276,54 @@
 	});
     
     $(document).ready(function() {
+    	console.log("ready")
     	
     	$('#sede').select2();
-    	initSelect2('#cliente');
+    	initSelect2('#cliente', null, false);
         $('.dropdown-toggle').dropdown();
+        
+        
+       if("${userObj.checkRuolo('S2')}" == "true"){
+    	   
+    	   $('#cliente').val("${userObj.getIdCliente()}")
+    	   $('#cliente').change()
+    	   
+    	   $('#sede').val("${userObj.getIdSede()}")
+    	   $('#sede').change()
+    	   $('#sede').attr("disabled", true)
+       }
     });
     
 
 
     
     var options =  $('#cliente_appoggio option').clone();
-    function mockData() {
-    	  return _.map(options, function(i) {		  
-    	    return {
-    	      id: i.value,
-    	      text: i.text,
-    	    };
-    	  });
-    	}
+    function mockData(attrezzatura) {
+
+
+        if (attrezzatura) {
+        	options = options.filter(function () {
+                return $(this).val() !== "0";
+            });
+        }
+
+        return _.map(options, function(i) {
+            return {
+                id: $(i).val(),
+                text: $(i).text()
+            };
+        });
+    }
     	
 
 
-    function initSelect2(id_input, placeholder) {
+    function initSelect2(id_input, placeholder, attrezzatura) {
 
    	 if(placeholder==null){
   		  placeholder = "Seleziona Cliente...";
   	  }
     	$(id_input).select2({
-    	    data: mockData(),
+    	    data: mockData(attrezzatura),
     	    placeholder: placeholder,
     	    multiple: false,
     	    // query with pagination

@@ -59,6 +59,8 @@
 <th>Data scadenza attività</th>
 <th>Note</th>
 <th>Attività</th>
+<th>Utente</th>
+<th>Allegati</th>
 
  </tr></thead>
  
@@ -81,6 +83,8 @@
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${scadenza.dataProssimaAttivita }" /></td>
 	<td>${scadenza.note }</td>
 	<td style="min-width:200px">${scadenza.attivita.descrizione }</td>
+	<td>${scadenza.utente.nominativo }</td>
+	<td><a class="btn btn-primary customTooltip" title="click per aprire gli allegati" onclick="modalAllegati('${scadenza.id}')"><i class="fa fa-archive"></i></a></td>
 	</tr>
 	</c:forEach> 
 	 
@@ -112,7 +116,7 @@
  <div id="image-popup"><img id="popup-img" src="" /></div> 
  <div id="image-popup_mod"><img id="popup-img_mod" src="" /></div> 
 
-  <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div id="myModalArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
   
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
@@ -123,11 +127,25 @@
        <div class="modal-body">
        <div class="row">
         <div class="col-xs-12">
+
+<!--  <span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Allega uno o più file...</span>
+				<input accept=".pdf,.PDF,.jpg,.gif,.jpeg,.png,.doc,.docx,.xls,.xlsx"  id="fileupload" type="file" name="files[]" multiple>
+		       
+		   	 </span>
+
+		   	 <br><br> -->
+
        <div id="tab_allegati"></div>
 </div>
   		 </div>
   		 </div>
       <div class="modal-footer">
+      <input type="hidden" id="id_documento_allegato" name="id_documento_allegato">
+      
+      <a class="btn btn-primary pull-right"  style="margin-right:5px"  onClick="$('#myModalArchivio').modal('hide')">Chiudi</a>
+      
       </div>
    
   </div>
@@ -135,7 +153,26 @@
 </div>
 
 
+<div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare l'allegato?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_allegato_elimina">
+      <a class="btn btn-primary" onclick="eliminaAllegatoAttivita($('#id_allegato_elimina').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
 
+</div>
 
 
 </div>
@@ -216,135 +253,167 @@
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <script type="text/javascript">
+/* 
 
-
+$('#fileupload').fileupload({
+	 url: "amScGestioneScadenzario.do?action=upload_allegato&id_documento="+$('#id_documento_allegato').val(),
+	 dataType: 'json',	 
+	 getNumberOfFiles: function () {
+	     return this.filesContainer.children()
+	         .not('.processing').length;
+	 }, 
+	 start: function(e){
+	 	pleaseWaitDiv = $('#pleaseWaitDialog');
+	 	pleaseWaitDiv.modal();
+	 	
+	 },
+	 singleFileUploads: false,
+	  add: function(e, data) {
+	     var uploadErrors = [];
+	     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls|xlsx)$/i;
+	   
+	     for(var i =0; i< data.originalFiles.length; i++){
+	    	 if(data.originalFiles[i]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+		         uploadErrors.push('Tipo del File '+data.originalFiles[i]['name']+' non accettato. ');
+		         break;
+		     }	 
+	    	 if(data.originalFiles[i]['size'] > 30000000) {
+		         uploadErrors.push('File '+data.originalFiles[i]['name']+' troppo grande, dimensione massima 30mb');
+		         break;
+		     }
+	     }	     		     
+	     if(uploadErrors.length > 0) {
+	     	$('#myModalErrorContent').html(uploadErrors.join("\n"));
+	 			$('#myModalError').removeClass();
+	 			$('#myModalError').addClass("modal modal-danger");
+	 			$('#myModalError').modal('show');
+	     } 
+	     else {
+	         data.submit();
+	     }  
+	 },
 	
-	function modificaStrumento(strumento) { 
+	 done: function (e, data) {
+	 		
+	 	pleaseWaitDiv.modal('hide');
+	 	
+	 	if(data.result.success){
+	 		//$('#myModalAllegatiArchivio').modal('hide');
+	 		$('#myModalAllegati').hide();
+	 		$('#myModalErrorContent').html(data.result.messaggio);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");
+			$('#myModalError').modal('show');
+			
+			
+			$('#myModalError').on("hidden.bs.modal",function(){
+				
+		 	if($('#cliente').val()==null && $("#sede").val()==null){
+				
+				location.reload();
+			}else{ 
+				dataString = "action=lista&id_cliente="+$('#cliente').val()+"&id_sede="+$("#sede").val();
+				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab', function(){
+						$(document.body).css('padding-right', '0px');
+						$('.modal-backdrop').hide();
+				   });
+				   
+			}
+				  
+				   
+			});
+	 	}else{		 			
+	 			$('#myModalErrorContent').html(data.result.messaggio);
+	 			$('#myModalError').removeClass();
+	 			$('#myModalError').addClass("modal modal-danger");
+	 			$('#report_button').show();
+	 			$('#visualizza_report').show();
+	 			$('#myModalError').modal('show');
+	 		}
+	 },
+	 fail: function (e, data) {
+	 	pleaseWaitDiv.modal('hide');
 
-		$('#id_strumento').val(strumento.id);
+	     $('#myModalErrorContent').html(errorMsg);
+	     
+	 		$('#myModalError').removeClass();
+	 		$('#myModalError').addClass("modal modal-danger");
+	 		$('#report_button').show();
+	 		$('#visualizza_report').show();
+	 		$('#myModalError').modal('show');
+
+	 		$('#progress .progress-bar').css(
+	                'width',
+	                '0%'
+	            );
+	 },
+	 progressall: function (e, data) {
+	     var progress = parseInt(data.loaded / data.total * 100, 10);
+	     $('#progress .progress-bar').css(
+	         'width',
+	         progress + '%'
+	     );
+
+	 }
+});		
+
+$('#myModalArchivio').modal();
+
+} */
+
+
+function modalAllegati(id){
+	
+	var dataObj = {};
+	dataObj.id = id;
+	
+	callAjax(dataObj, "amScGestioneScadenzario.do?action=lista_allegati", function(data){
 		
-
-		  $('#descrizione_mod').val(strumento.descrizione);
-		    $('#matricola_mod').val(strumento.matricola);
-		    $('#tipo_mod').val(strumento.tipo);
-		    $('#volume_mod').val(strumento.volume);
-
-		    $('#pressione_mod').val(strumento.pressione);
-		    $('#costruttore_mod').val(strumento.costruttore);
-		    $('#numero_fabbrica_mod').val(strumento.nFabbrica);
-
-		    $('#data_verifica_mod').val(strumento.dataVerifica);
-		    $('#data_prossima_verifica_mod').val(strumento.dataProssimaVerifica);
-		    $('#frequenza_mod').val(strumento.frequenza);
-		    $('#anno_mod').val(strumento.anno);
-		    $('#sonda_velocita_mod').val(strumento.sondaVelocita);
-
-		    
-		    $('#cliente_general_mod').val(strumento.id_cliente);
-		    $('#cliente_general_mod').change()
-		    
-		    if(strumento.id_sede!=0){
-		    	$('#sede_general_mod').val(strumento.id_sede+"_"+strumento.id_cliente);
-		    }else{
-		    	$('#sede_general_mod').val(strumento.id_sede);
-		    }
-		    
-		    $('#numero_porzioni_mod').val(strumento.numero_porzioni);
-		    $('#label_img_mod').html(strumento.filename_img)
-		    
-		    $('#sede_general_mod').change()
-		    
-		    
-		    	initSelect2Gen('#cliente_general_mod', null, '#modalModificaStrumento');
-		    
-		    
-		    var lista_zone = strumento.listaZoneRiferimento.sort(function(a, b) {
-		    	  return a.id - b.id;
-		    });
+		if(data.success){
+			
+			var lista_allegati = data.lista_allegati;
+			
+				
+				var html = '<ul class="list-group list-group-bordered">';
+	    		if(lista_allegati.length>0){
+	    			for(var i= 0; i<lista_allegati.length;i++){
+	    
+	       			 var nome =  '<li class="list-group-item"><div class="row"><div class="col-xs-10"><b>'+lista_allegati[i].nome_file+'</b></div><div class="col-xs-2 pull-right">'; 	           
+		             var elimina  = '<a class="btn btn-danger btn-xs pull-right" onClick="eliminaAllegatoModal(\''+lista_allegati[i].id+'\')"><i class="fa fa-trash"></i></a>';
+		                
+		    	           var download = '<a class="btn btn-danger btn-xs  pull-right"style="margin-right:5px" href="amScGestioneScadenzario.do?action=download_allegato&id_allegato='+lista_allegati[i].id+'"><i class="fa fa-arrow-down small"></i></a>';
+		    	           
+		    	            if("${userObj.checkRuolo('S2')}" == "true"){
+		    	            	elimina = ""
+		    	            }
+		    	           html=  html +nome + elimina +download+   '</div></div></li>';
+	       		}
+	    		}else{
+	    			 html= html + '<li class="list-group-item"> Nessun file allegato all\'attività! </li>';
+	    		}
+	    		
+	    		$("#tab_allegati").html(html+"</ul>");
 	
-		    
-		    var table = $('#tabZone_mod').DataTable();
-		    table.clear();
-		    lista_zone.forEach(function(zona) {
-		        table.row.add([
-		            zona.zonaRiferimento,
-		            zona.materiale,
-		            zona.spessore,
-		            zona.indicazione,
-		            zona.punto_intervallo_inizio,
-		            zona.punto_intervallo_fine,
-		           '<a class="btn btn-danger btn-xs remove-btn" id="'+zona.id+'"><i class="fa fa-minus"></a>'
-		        ]);
-		    });
-
-		    table.draw();
-		    
-
+			
+			$('#myModalArchivio').modal();
+			
+		}
 		
-		 $('#modalModificaStrumento').modal()
-	}
-
-
-
-$('#myModalModificaStrumento').on('hidden.bs.modal',function(){
-
+		
+	});
 	
-	$(document.body).css('padding-right', '0px');
-});
-
-
-
-function addRow(mod){
-	var table = $('#tabZone'+mod).DataTable();
-    table.row.add([
-        '<td contenteditable="true"></td>',
-        '<td contenteditable="true"></td>',
-        '<td contenteditable="true"></td>',
-        '<td contenteditable="true"></td>',
-        '<td contenteditable="true"></td>',
-        '<td contenteditable="true"></td>',
-        '<a class="btn btn-danger btn-xs remove-btn"><i class="fa fa-minus"></a>'
-    ]).draw(false);
+	
 }
 
 
-
-$('#tabZone  tbody').on('click', '.remove-btn', function() {
-    t.row($(this).parents('tr')).remove().draw();
-});
-
-
-$('#tabZone_mod  tbody').on('click', '.remove-btn', function() {
-    t_mod.row($(this).parents('tr')).remove().draw();
-});
-
-var columsDatatables = [];
-
-$("#tabScadenzeAttivita").on( 'init.dt', function ( e, settings ) {
-    var api = new $.fn.dataTable.Api( settings );
-    var state = api.state.loaded();
- 
-    if(state != null && state.columns!=null){
-    		console.log(state.columns);
-    
-    columsDatatables = state.columns;
-    }
-    $('#tabScadenzeAttivita thead th').each( function () {
-     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-    	  var title = $('#tabScadenzeAttivita thead th').eq( $(this).index() ).text();
-    	
-    	  
-		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
-	    	
+function eliminaAllegatoModal(id_allegato){
 	
+	$('#id_allegato_elimina').val(id_allegato);
 	
-    	} );
-    
-    
+	$('#myModalYesOrNo').modal();
+}
 
-} );
-
-
+	
 
 
 function formatDate(data){
@@ -359,236 +428,41 @@ function formatDate(data){
 }
 
 
-function clona(id_strumento)
-{
-	dataObj={};
-	dataObj.id_strumento = id_strumento;
-	
-	callAjax(dataObj, "amGestioneStrumenti.do?action=clona")
-	
-}
 
-function aggiornaDataProssima(mod) {
-    var frequenza = parseInt($('#frequenza'+mod).val(), 10);
-    var dataVerificaStr = $('#data_verifica'+mod).val(); // formato: dd/MM/yyyy
 
-    if (!isNaN(frequenza) && dataVerificaStr) {
-        var parts = dataVerificaStr.split('/');
-        var giorno = parseInt(parts[0], 10);
-        var mese = parseInt(parts[1], 10) - 1; // JavaScript usa 0-based per i mesi
-        var anno = parseInt(parts[2], 10);
-
-        var data = new Date(anno, mese, giorno);
-        data.setMonth(data.getMonth() + frequenza);
-
-        var nuovoGiorno = ('0' + data.getDate()).slice(-2);
-        var nuovoMese = ('0' + (data.getMonth() + 1)).slice(-2);
-        var nuovoAnno = data.getFullYear();
-
-        $('#data_prossima_verifica'+mod).val(nuovoGiorno + '/' + nuovoMese + '/' + nuovoAnno);
-    } else {
-        $('#data_prossima_verifica'+mod).val('');
+	 
+$("#tabScadenzeAttivita").on( 'init.dt', function ( e, settings ) {
+    var api = new $.fn.dataTable.Api( settings );
+    var state = api.state.loaded();
+ 
+    if(state != null && state.columns!=null){
+    		console.log(state.columns);
+    
+    columsDatatables = state.columns;
     }
-}
+    $('#tabScadenzeAttivita thead th').each( function () {
+     //	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+    	  var title = $('#tabScadenzeAttivita thead th').eq( $(this).index() ).text();
+    	
+    	  
+		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"   type="text" /></div>');	
+	    	
 
-$('#frequenza_mod, #data_verifica_mod').on('change input', function() {
-    aggiornaDataProssima("_mod");
-});
+    	} );
+    
+    
+
+} );
 
 
-$('#frequenza, #data_verifica').on('change input', function() {
-    aggiornaDataProssima("");
-});
-
-
-function formatData (data) {
-	  if (!data.id|| data.id=="Nessuno") { return data.text; }
-	  var id_immagine = data.id.split("_")[0];
-	  
-
-	  var $result= $(
-			
-	  ' <span class="option-with-thumb" data-large="amGestioneInterventi.do?action=immagine&id_immagine='+id_immagine+'">  <span>'+data.text+'</span>   <img class="thumb" src="amGestioneInterventi.do?action=immagine&id_immagine='+id_immagine+'" style="max-height: 20px; margin-left: 10px; border: 1px solid #aaa;" />  </span>'
-	  );
-	  return $result;
-	};
-
-	
-	$('#immagine_campione_mod').on('select2:open', function () {
-		
-		
-		  // Aspetta un attimo che il DOM sia pronto
-		 const $dropdown = $('.select2-dropdown'); // Questo è il menu visibile
-  if ($('#image-popup_mod').length === 0) {
-    $dropdown.append('<div id="image-popup_mod"><img id="popup-img_mod" src="" /></div>');
-  } else {
-    $dropdown.append($('#image-popup_mod')); // sposta se già esiste
-  }
-		});
-	 
-	
-	$('#immagine_campione_mod').change(function(){
-		
-		if($(this).val()!=''){
-			$('#label_img_mod').html("");
-			$('#fileupload_img_mod').val(null);
-		}
-		
-		
-	});
-	
-	
-	$('#immagine_campione').on('select2:open', function () {
-		  // Aspetta un attimo che il DOM sia pronto
-		 const $dropdown = $('.select2-dropdown'); // Questo è il menu visibile
-if ($('#image-popup').length === 0) {
-  $dropdown.append('<div id="image-popup"><img id="popup-img" src="" /></div>');
-} else {
-  $dropdown.append($('#image-popup')); // sposta se già esiste
-}
-		});
-	 
-	
-	$('#immagine_campione').change(function(){
-		
-		if($(this).val()!=''){
-			$('#label_img').html("");
-			$('#fileupload_img').val(null);
-		}
-		
-		
-	});
 	
 
 $(document).ready(function() {
 	
-	$('#immagine_campione_mod').select2({
-		
-		templateResult: formatData,
-		  templateSelection: formatData
-		//  dropdownParent: $('#modalModificaStrumento')
-	});
-	
-	
-	$('#immagine_campione').select2({
-		
-		templateResult: formatData,
-		  templateSelection: formatData
-		//  dropdownParent: $('#modalNuovoStrumento')
-	});  
-	
-	
-	
-	$(document).on('mousemove', '.select2-results__option', function (e) {
-		  const id = $('.select2-container--open').prev('select').attr('id');
-		  const isMod = id === "immagine_campione_mod";
-		  const popupId = isMod ? '#image-popup_mod' : '#image-popup';
-		  const imgId = isMod ? '#popup-img_mod' : '#popup-img';
 
-		  const thumbSpan = $(this).find('.option-with-thumb');
-		  if (thumbSpan.length > 0) {
-		    const largeSrc = thumbSpan.data('large');
-		    $(imgId).attr('src', largeSrc);
 
-		    // Coordinate dell'opzione attiva
-		    const optionOffset = $(this).offset();
-		    const optionHeight = $(this).outerHeight();
-		    const popupHeight = 250; // altezza stimata del popup
-		    const spaceBelow = $(window).height() - (optionOffset.top + optionHeight);
-		    const topPosition = spaceBelow > popupHeight
-		      ? optionOffset.top + optionHeight + 5   // sotto
-		      : optionOffset.top - popupHeight - 5;   // sopra
-
-		    // Posizione laterale: a destra della select
-		    const leftPosition = optionOffset.left + $(this).outerWidth() + 10;
-
-		    $(popupId).css({
-		      top: topPosition,
-		      left: leftPosition,
-		      display: 'block'
-		    });
-		  }
-		});
-
-		$(document).on('mouseleave', '.select2-results__option', function () {
-		  $('#image-popup_mod, #image-popup').fadeOut(150);
-		});
-	
-/* 	$(document).on('mousemove', '.select2-results__option', function (e) {
-		
-		  const id = $('.select2-container--open').prev('select').attr('id');
-		  const isMod = id === "immagine_campione_mod";
-		  const popupId = isMod ? '#image-popup_mod' : '#image-popup';
-		  const imgId = isMod ? '#popup-img_mod' : '#popup-img';
-
-		  const thumbSpan = $(this).find('.option-with-thumb');
-		  if (thumbSpan.length > 0) {
-		    const largeSrc = thumbSpan.data('large');
-		    $(imgId).attr('src', largeSrc);
-		    $(popupId).fadeIn(150);
-		  } */
-
-		/*   // Risali fino al select originale usando l'elemento di focus attivo
-		const id = $('.select2-container--open').prev('select').attr('id');
-		if(id=="immagine_campione_mod"){
-			 const thumbSpan = $(this).find('.option-with-thumb');
-			    if (thumbSpan.length > 0) {
-			      const largeSrc = thumbSpan.data('large');
-			      $('#popup-img_mod').attr('src', largeSrc);
-			      $('#image-popup_mod').css({
-			        display: 'block',
-			        top: e.pageY -450,
-			        left: e.pageX -420
-			      });
-			    }
-		}else{
-			 const thumbSpan = $(this).find('.option-with-thumb');
-			    if (thumbSpan.length > 0) {
-			      const largeSrc = thumbSpan.data('large');
-			      $('#popup-img').attr('src', largeSrc);
-			      $('#image-popup').css({
-			        display: 'block',
-			        top: e.pageY -450,
-			        left: e.pageX -420
-			      });
-			    }
-		} */
-	   
-	/*   });
-
-	  $(document).on('mouseleave', '.select2-results__option', function () {
-		  const id = $('.select2-container--open').prev('select').attr('id');
-			if(id=="immagine_campione_mod"){
-			    $('#image-popup_mod').hide();
-			    $('#popup-img_mod').attr('src', '');
-			}else{
-			    $('#image-popup').hide();
-			    $('#popup-img').attr('src', '');
-			}
-	
-	  }); */
-
-	
-
-	$("#sede_general").select2();
-	$("#sede_general_mod").select2();
-	
-	initSelect2Gen('#cliente_general', null, '#modalNuovoStrumento');
-
-	
-	//initSelect2('#cliente_mod');
-	//$('#cliente_mod').change();
-	$('#sede_mod').select2();
-
-	$('.datepicker').datepicker({
-		 format: "dd/mm/yyyy"
-	 });
-	//$('.datepicker').datepicker('setDate', new Date());
     $('.dropdown-toggle').dropdown();
      
-
-
-
      table = $('#tabScadenzeAttivita').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -668,321 +542,11 @@ $(document).ready(function() {
 	});
 	
 	
-	
-	
-	 t = $('#tabZone').DataTable({
-		language: {
-	        	emptyTable : 	"Nessun dato presente nella tabella",
-	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-	        	infoPostFix:	"",
-	        infoThousands:	".",
-	        lengthMenu:	"Visualizza _MENU_ elementi",
-	        loadingRecords:	"Caricamento...",
-	        	processing:	"Elaborazione...",
-	        	search:	"Cerca:",
-	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-	        	paginate:	{
-  	        	first:	"Inizio",
-  	        	previous:	"Precedente",
-  	        	next:	"Successivo",
-  	        last:	"Fine",
-	        	},
-	        aria:	{
-  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-	        }
-        },
-        pageLength: 25,
-	      paging: false, 
-	      ordering: false,
-	      info: false, 
-	      searchable: false,
-	      searching: false,
-	      targets: 0,
-	      responsive: false,
-	      scrollX: false,
-	      stateSave: false,	
-	     	columns: [{createdCell: editableCell},{createdCell: editableCell},{createdCell: editableCell},{createdCell: editableCell},{createdCell: editableCell},{createdCell: editableCell},{}]
-	               
-	    });
-	 
-	 
-	 
-	 
-	 
-	 
-	 t_mod = $('#tabZone_mod').DataTable({
-			language: {
-		        	emptyTable : 	"Nessun dato presente nella tabella",
-		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-		        	infoPostFix:	"",
-		        infoThousands:	".",
-		        lengthMenu:	"Visualizza _MENU_ elementi",
-		        loadingRecords:	"Caricamento...",
-		        	processing:	"Elaborazione...",
-		        	search:	"Cerca:",
-		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-		        	paginate:	{
-			        	first:	"Inizio",
-			        	previous:	"Precedente",
-			        	next:	"Successivo",
-			        last:	"Fine",
-		        	},
-		        aria:	{
-			        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-			        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-		        }
-		    },
-		    pageLength: 25,
-		      paging: false, 
-		      ordering: false,
-		      info: false, 
-		      searchable: false, 
-		      targets: 0,
-		      responsive: false,
-		      scrollX: false,
-		      stateSave: false,	
-		      columns: [{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell_mod},{createdCell: editableCell_mod},{}]
-		               
-		    });
-		 
-	
+		
 });
 
 
-$('#fileupload_img').change(function(){
-	
-	
-	$('#label_img').html($(this).val().split("\\")[2]);
-});
 
-$('#fileupload_img_mod').change(function(){
-	
-	$('#immagine_campione_mod').val("")
-	$('#immagine_campione_mod').change()
-	$('#label_img_mod').html($(this).val().split("\\")[2]);
-});
-
-const editableCell_mod = function(cell) {
-	
-	
-	  let original
-
-	  cell.setAttribute('contenteditable', true)
-	  cell.setAttribute('spellcheck', false)
-	  var index = cell._DT_CellIndex;
-	  cell.setAttribute('id',""+index.row+""+index.column)	
-	   $(cell).css('text-align', 'center');
-	  
-	  
-	  cell.addEventListener('focus', function(e) {
-	    original = e.target.textContent
-
-	     $(cell).css('border', '2px solid red');
-	    
-	  })
-	
-	   cell.addEventListener('focusout', function(e) {
-	    original = stripHtml(e.target.textContent)
-	
-	    $(cell).css('border', '1px solid #d1d1d1');
-	   $(cell).css('border-bottom-width', '0px');
-	    $(cell).css('border-left-width', '0px');
-	     
-	     
-	    //$(e.currentTarget).html('<input type="text" value="'+original+'" onChange="salvaModificaQuestionario()">');
-	  })
-	  
-	   cell.addEventListener('blur', function(e) {
-	    if (original !== e.target.textContent) {
-	      const row = t_mod.row(e.target.parentElement)
-	      t_mod.cell(row.index(),e.target.cellIndex).data(e.target.textContent).draw();
-	      var x = t_mod.rows().data();
-	      //	salvaModificaQuestionario();
-	      console.log('Row changed: ', row.data())
-	    }
-	  }) 
-	  
-	
-	};
-
-
-
-
-
-	const editableCell = function(cell) {
-		
-		
-		  let original
-
-		  cell.setAttribute('contenteditable', true)
-		  cell.setAttribute('spellcheck', false)
-		  var index = cell._DT_CellIndex;
-		  cell.setAttribute('id',""+index.row+""+index.column)	
-		   $(cell).css('text-align', 'center');
-		  
-		  
-		  cell.addEventListener('focus', function(e) {
-		    original = e.target.textContent
-
-		     $(cell).css('border', '2px solid red');
-		    
-		  })
-		
-		   cell.addEventListener('focusout', function(e) {
-		    original = stripHtml(e.target.textContent)
-		
-		    $(cell).css('border', '1px solid #d1d1d1');
-		   $(cell).css('border-bottom-width', '0px');
-		    $(cell).css('border-left-width', '0px');
-		     
-		     
-		    //$(e.currentTarget).html('<input type="text" value="'+original+'" onChange="salvaModificaQuestionario()">');
-		  })
-		  
-		   cell.addEventListener('blur', function(e) {
-		    if (original !== e.target.textContent) {
-		      const row = t.row(e.target.parentElement)
-		      t.cell(row.index(),e.target.cellIndex).data(e.target.textContent).draw();
-		      var x = t.rows().data();
-		      //	salvaModificaQuestionario();
-		      console.log('Row changed: ', row.data())
-		    }
-		  }) 
-		  
-		
-		};
- 
- 
- $('#modificaStrumentoForm').on("submit", function(e){
-
-	 e.preventDefault();
-	 
-	 var esito = true;
-	 var data = t_mod.rows().data().toArray();
-
-	 data.forEach(function(rowHtml) {
-		    // Crea un elemento temporaneo per lavorare sul contenuto HTML
-		    var temp = document.createElement('div');
-		    temp.innerHTML = rowHtml;
-
-		    var values = temp.innerHTML.split(",");
-
-		    for (var i = 0; i < values.length; i++) {
-		      if(values[i].trim() == ""){
-		            esito = false;
-		            $('#myModalErrorContent').html("Attenzione! Inserisci tutti i dati della zona di riferimento!");
-		            $('#myModalError').removeClass().addClass("modal modal-danger");
-		            $('#myModalError').modal();
-		            return; 
-		        }
-		    }
-		});
-	 
-	if(esito){
-		$('#table_zone_mod').val(JSON.stringify(data))
-		 
-		 
-		 callAjaxForm('#modificaStrumentoForm','amGestioneStrumenti.do?action=modifica');
-	}
-	
-	 
- });
- 
- $('#nuovoStrumentoForm').on("submit", function(e){
-
-	 e.preventDefault();
-	 var esito = true;
-	 var data = t.rows().data().toArray();
-	 
-		
-	  data.forEach(function(rowHtml) {
-		    // Crea un elemento temporaneo per lavorare sul contenuto HTML
-		    var temp = document.createElement('div');
-		    temp.innerHTML = rowHtml;
-
-		    var values = temp.innerHTML.split(",");
-
-		    for (var i = 0; i < values.length; i++) {
-		      if(values[i].trim() == ""){
-		            esito = false;
-		            $('#myModalErrorContent').html("Attenzione! Inserisci tutti i dati della zona di riferimento!");
-		            $('#myModalError').removeClass().addClass("modal modal-danger");
-		            $('#myModalError').modal();
-		            return; 
-		        }
-		    }
-		});
-	 
-	if(esito){
-		
-		$('#table_zone').val(JSON.stringify(data))
-		
-		 callAjaxForm('#nuovoStrumentoForm','amGestioneStrumenti.do?action=nuovo');
-	}
-	
-	 
- });
- 
- 
- 
- $("#cliente_general").change(function() {
-	    
-	  	  if ($(this).data('options') == undefined) 
-	  	  {
-	  	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-	  	    $(this).data('options', $('#sede_general option').clone());
-	  	  }
-	  	  
-	  	  var id = $(this).val();
-	  	 
-	  	  var options = $(this).data('options');
-
-	  	  var opt=[];
-	  	
-	  	  opt.push("<option value = 0>Non Associate</option>");
-
-	  	   for(var  i=0; i<options.length;i++)
-	  	   {
-	  		var str=options[i].value; 
-	  	
-	  		if(str.substring(str.indexOf("_")+1,str.length)==id)
-	  		{
-	  			
-	  			//if(opt.length == 0){
-	  				
-	  			//}
-	  		
-	  			opt.push(options[i]);
-	  		}   
-	  	   }
-	  	 $("#sede_general").prop("disabled", false);
-	  	 
-	  	  $('#sede_general').html(opt);
-	  	  
-	  	  $("#sede_general").trigger("chosen:updated");
-	  	  
-	  	  //if(opt.length<2 )
-	  	  //{ 
-	  		$("#sede_general").change();  
-	  	  //}
-	  	  
-	  	
-	  	});
- 
-function modalAllegati(id_strumento){
-
-   var dataString ="action=allegati&id_strumento="+ id_strumento;
-   exploreModal("amGestioneStrumenti.do",dataString,"#tab_allegati",function(datab,textStatusb){
-	   $('#myModalAllegati').modal();	   
-	   
-   });
-
-}
 
 
 $('#myModalAllegati').on('hidden.bs.modal',function(){
@@ -991,95 +555,16 @@ $('#myModalAllegati').on('hidden.bs.modal',function(){
 });
 
  
- $("#cliente_general_mod").change(function() {
-	    
- 	  if ($(this).data('options') == undefined) 
- 	  {
- 	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
- 	    $(this).data('options', $('#sede_general_mod option').clone());
- 	  }
- 	  
- 	  var id = $(this).val();
- 	 
- 	  var options = $(this).data('options');
-
- 	  var opt=[];
- 	
- 	  opt.push("<option value = 0>Non Associate</option>");
-
- 	   for(var  i=0; i<options.length;i++)
- 	   {
- 		var str=options[i].value; 
- 	
- 		if(str.substring(str.indexOf("_")+1,str.length)==id)
- 		{
- 			
- 			//if(opt.length == 0){
- 				
- 			//}
- 		
- 			opt.push(options[i]);
- 		}   
- 	   }
- 	 $("#sede_general_mod").prop("disabled", false);
- 	 
- 	  $('#sede_general_mod').html(opt);
- 	  
- 	  $("#sede_general_mod").trigger("chosen:updated");
- 	  
- 	  //if(opt.length<2 )
- 	  //{ 
- 		$("#sede_general_mod").change();  
- 	  //}
- 	  
- 	
- 	});
- 
- var options_general =  $('#cliente_appoggio_general option').clone();
- function mockDataGen() {
- 	  return _.map(options_general, function(i) {		  
- 	    return {
- 	      id: i.value,
- 	      text: i.text,
- 	    };
- 	  });
- 	}
  
  
- function initSelect2Gen(id_input, placeholder, modal) {
- 	  if(placeholder==null){
- 		  placeholder = "Seleziona Cliente...";
- 	  }
-
-   	$(id_input).select2({
-   	    data: mockDataGen(),
-   	    dropdownParent: $(modal),
-   	    placeholder: placeholder,
-   	    multiple: false,
-   	    // query with pagination
-   	    query: function(q) {
-   	      var pageSize,
-   	        results,
-   	        that = this;
-   	      pageSize = 20; // or whatever pagesize
-   	      results = [];
-   	      if (q.term && q.term !== '') {
-   	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
-   	        results = _.filter(x, function(e) {
-   	        	
-   	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
-   	        });
-   	      } else if (q.term === '') {
-   	        results = that.data;
-   	      }
-   	      q.callback({
-   	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
-   	        more: results.length >= q.page * pageSize,
-   	      });
-   	    },
-   	  });
-   	  	
-   }
+ function eliminaAllegatoAttivita(id_allegato){
+	 
+	 var dataObj = {}
+	 dataObj.id_allegato = id_allegato;
+	 
+	 callAjax(dataObj, "amScGestioneScadenzario.do?action=elimina_allegato")
+	 
+ }
  
  
   </script>

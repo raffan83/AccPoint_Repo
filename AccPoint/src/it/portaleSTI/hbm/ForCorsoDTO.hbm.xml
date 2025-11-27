@@ -108,5 +108,13 @@
         <property name="data_remind" type="java.sql.Date" >
             <column name="data_remind" />
         </property>
+        
+                <property name="giorni_preavviso" type="int" >
+            <column name="giorni_preavviso" />
+        </property>
+        
+        <property name="data_prevviso" type="java.sql.Date" >
+            <column name="data_prevviso" />
+        </property>
     </class>
 </hibernate-mapping>

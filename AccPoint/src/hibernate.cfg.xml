@@ -280,6 +280,7 @@
 	<mapping class="AmScAttrezzaturaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AmScAttrezzaturaDTO.hbm.xml"/>
 <mapping class="AmScAttivitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AmScAttivitaDTO.hbm.xml"/>
 <mapping class="AmScScadenzarioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AmScScadenzarioDTO.hbm.xml"/>
+<mapping class="AmScAllegatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AmScAllegatoDTO.hbm.xml"/>
 
 <mapping class="RapportoInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RapportoInterventoDTO.hbm.xml"/>
 

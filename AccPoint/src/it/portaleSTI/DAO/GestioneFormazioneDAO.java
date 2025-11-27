@@ -1523,4 +1523,19 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		return lista;
 	}
 
+
+	public static ArrayList<ForCorsoDTO> getListaCorsiPreavviso(Date date, Session session) {
+ArrayList<ForCorsoDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = session.createQuery("from ForCorsoDTO where data_preavviso = :_date");
+		query.setParameter("_date", date);	
+		
+		lista = (ArrayList<ForCorsoDTO>) query.list();
+		
+				
+		return lista;
+	}
+
 }

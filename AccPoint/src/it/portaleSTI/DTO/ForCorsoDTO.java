@@ -36,6 +36,8 @@ public class ForCorsoDTO {
 	private int n_attestati;
 	private int frequenza_remind;
 	private Date data_remind;
+	private  int giorni_preavviso;
+	private Date data_preavviso; 
 	
 	
 	public ForCorsoDTO() {
@@ -216,6 +218,24 @@ public class ForCorsoDTO {
 	}
 	public void setData_remind(Date data_remind) {
 		this.data_remind = data_remind;
+	}
+	public int getFrequenza_remind() {
+		return frequenza_remind;
+	}
+	public void setFrequenza_remind(int frequenza_remind) {
+		this.frequenza_remind = frequenza_remind;
+	}
+	public int getGiorni_preavviso() {
+		return giorni_preavviso;
+	}
+	public void setGiorni_preavviso(int giorni_preavviso) {
+		this.giorni_preavviso = giorni_preavviso;
+	}
+	public Date getData_preavviso() {
+		return data_preavviso;
+	}
+	public void setData_preavviso(Date data_preavviso) {
+		this.data_preavviso = data_preavviso;
 	}
 
 	

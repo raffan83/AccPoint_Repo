@@ -113,8 +113,8 @@
             <column name="giorni_preavviso" />
         </property>
         
-        <property name="data_prevviso" type="java.sql.Date" >
-            <column name="data_prevviso" />
+        <property name="data_preavviso" type="java.sql.Date" >
+            <column name="data_preavviso" />
         </property>
     </class>
 </hibernate-mapping>

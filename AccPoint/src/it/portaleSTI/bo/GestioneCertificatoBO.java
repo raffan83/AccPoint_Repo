@@ -472,7 +472,7 @@ public class GestioneCertificatoBO {
 										String val_comparatore = punto.getMabba_comparatore().split("@")[1];
 										scala = val_comparatore.substring(val_comparatore.indexOf(".")+1).length();
 										
-										values.put("diff", Utility.changeDotComma(""+diff.setScale(scala, RoundingMode.HALF_UP).stripTrailingZeros()));
+										values.put("diff", Utility.changeDotComma(""+diff.setScale(scala, RoundingMode.HALF_UP)));
 										differenzaMabba.add(values);
 								 
 									  	}
@@ -487,7 +487,7 @@ public class GestioneCertificatoBO {
 							}
 						  	
 						  	sc = mediaB.subtract(mediaA);
-									data.setMabbaSC(Utility.changeDotComma(""+sc.setScale(scala + 1, RoundingMode.HALF_UP).stripTrailingZeros()));
+									data.setMabbaSC(Utility.changeDotComma(""+sc.setScale(scala + 1, RoundingMode.HALF_UP)));
 									data.setMabba(mabbaList);
 									data.setDifferenzaMabba(differenzaMabba);
 								

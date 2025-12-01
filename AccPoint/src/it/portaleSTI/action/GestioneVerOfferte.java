@@ -1,17 +1,30 @@
 package it.portaleSTI.action;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -468,7 +481,39 @@ public class GestioneVerOfferte extends HttpServlet {
 					
 			   out.print(myObj);
 				
-			}
+			}else if (action.equals("inserisci_offerta_milestone")){
+				
+				String API_URL = "https://portaletest.ncsnetwork.it/webapi/api/ordine";
+				 String jsonInput = readBody(request);
+
+				 disableSSLValidation();
+			        // PREPARO LA CHIAMATA A NCS
+			        URL url = new URL(API_URL);
+			        HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+			        conn.setDoOutput(true);
+			        conn.setRequestMethod("POST");
+			        conn.setRequestProperty("Content-Type", "application/json");
+
+			        // BASIC AUTH (come Postman)
+			        String auth = "age:Akeron2025!";
+			        String encoded = Base64.getEncoder().encodeToString(auth.getBytes("UTF-8"));
+			        conn.setRequestProperty("Authorization", "Basic " + encoded);
+
+			        // Invio il JSON a NCS
+			        OutputStream os = conn.getOutputStream();
+			        os.write(jsonInput.getBytes("UTF-8"));
+			        os.flush();
+
+			        // Leggo la risposta
+			        int status = conn.getResponseCode();
+			        InputStream is = (status < 400) ? conn.getInputStream() : conn.getErrorStream();
+			        String risposta = readStream(is);
+
+			        // Ritorno al client
+			        response.setContentType("application/json");
+			        response.getWriter().write(risposta);
+			    
+		    }
 			
 			session.getTransaction().commit();
 			session.close();
@@ -493,6 +538,52 @@ public class GestioneVerOfferte extends HttpServlet {
     		     dispatcher.forward(request,response);	
         	}
 		}
+	}
+	
+	
+	private static void disableSSLValidation() {
+	    try {
+	        TrustManager[] trustAllCerts = new TrustManager[]{
+	                new X509TrustManager() {
+	                    public java.security.cert.X509Certificate[] getAcceptedIssuers() { return null; }
+	                    public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) { }
+	                    public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) { }
+	                }
+	        };
+
+	        SSLContext sc = SSLContext.getInstance("SSL");
+	        sc.init(null, trustAllCerts, new java.security.SecureRandom());
+	        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+	        HostnameVerifier allHostsValid = (hostname, session) -> true;
+	        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	
+	 private String readBody(HttpServletRequest request) throws IOException {
+	        return readStream(request.getInputStream());
+	    }
+
+	    private String readStream(InputStream is) throws IOException {
+	        BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+	        StringBuilder sb = new StringBuilder();
+	        String line;
+	        while ((line = br.readLine()) != null) sb.append(line);
+	        return sb.toString();
+	    }
+	
+	private String convertStreamToString(InputStream is) throws IOException {
+	    StringBuilder sb = new StringBuilder();
+	    BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+	    String line;
+	    while ((line = br.readLine()) != null) {
+	        sb.append(line);
+	    }
+	    return sb.toString();
 	}
 
 }

@@ -2362,7 +2362,7 @@ public class GestioneFormazioneBO {
 		for (ForCorsoDTO corso : lista_corsi_preavviso) {
 			
 			for (ForReferenteDTO referente : corso.getListaReferenti()) {
-				SendEmailBO.sendEmailPreavvisoCorso(corso, referente);
+				SendEmailBO.sendEmailPreavvisoCorso(corso, referente, session);
 			}
 				
 	

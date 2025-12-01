@@ -1538,4 +1538,25 @@ ArrayList<ForCorsoDTO> lista = null;
 		return lista;
 	}
 
+
+	public static ForPiaPianificazioneDTO getPianificazioneFromCorso(int id, Session session) {
+		
+		ForPiaPianificazioneDTO res = null;
+		ArrayList<ForPiaPianificazioneDTO> lista = null;
+		
+		
+		Query query = session.createQuery("from ForPiaPianificazioneDTO where id_corso = :_id");
+		query.setParameter("_id", id);	
+		
+		lista = (ArrayList<ForPiaPianificazioneDTO>) query.list();
+		
+		if(lista.size()>0) {
+			res = lista.get(0);
+		}
+				
+	
+		return res;
+		
+	}
+
 }

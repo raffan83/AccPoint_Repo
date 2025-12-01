@@ -38,6 +38,7 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.log4j.Logger;
 
+import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
@@ -2436,7 +2437,7 @@ for (String string : to) {
 	
 }
 
-public static void sendEmailPreavvisoCorso(ForCorsoDTO corso, ForReferenteDTO referente) throws EmailException, AddressException {
+public static void sendEmailPreavvisoCorso(ForCorsoDTO corso, ForReferenteDTO referente, org.hibernate.Session session) throws EmailException, AddressException {
 	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 	
@@ -2457,23 +2458,43 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
 		 email.addTo(referente.getEmail());
 
-		 ArrayList<InternetAddress> lista_cc = new ArrayList<InternetAddress>();
-		 InternetAddress cc1 = new InternetAddress("segreteria@crescosrl.net");
-		 InternetAddress cc2 = new InternetAddress("lisa.lombardozzi@crescosrl.net");
-		 
-		 lista_cc.add(cc1);
-		 lista_cc.add(cc2);
-		 
-		 email.setCc(lista_cc);
+//		 ArrayList<InternetAddress> lista_cc = new ArrayList<InternetAddress>();
+//		 InternetAddress cc1 = new InternetAddress("segreteria@crescosrl.net");
+//		 InternetAddress cc2 = new InternetAddress("lisa.lombardozzi@crescosrl.net");
+//		 
+//		 lista_cc.add(cc1);
+//		 lista_cc.add(cc2);
+//		 
+//		 email.setCc(lista_cc);
 	
 	  email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
-	
+	 
+	  ForPiaPianificazioneDTO p = GestioneFormazioneDAO.getPianificazioneFromCorso(corso.getId(), session);
+	  String ore = "";
+	  if(p!=null && p.getOra_inizio()!=null && !p.getOra_inizio().equals("")) {
+		  ore =" dalle ore: "+p.getOra_inizio()+" alle ore: "+p.getOra_fine();
+	  }
 
-		  email.setSubject("Remind Valutazione Efficacia Corso");
+		  email.setSubject("Remind Pianificazione Corso "+corso.getDescrizione());
+		  
+		  String docenti = "";
+		  if(corso.getListaDocenti().size()>1) {
+			  docenti += "I docenti del corso saranno: ";
+			  for (ForDocenteDTO d : corso.getListaDocenti()) {
+				docenti += d.getNome() +" "+d.getCognome()+", ";
+			}
+			  docenti = docenti.substring(0, docenti.length() - 2)+"<br>";
+		  }else if(corso.getListaDocenti().size()==1){
+			  docenti += "Il docente del corso sar&agrave;: ";
+			  for (ForDocenteDTO d : corso.getListaDocenti()) {
+					docenti += d.getNome() +" "+d.getCognome()+"<br>";
+				}
+		  }
 		  
 		  String messaggio = "Gentile "+referente.getNome()+" "+referente.getCognome()+",<br>";
-		  messaggio+="Le ricordiamo che ha l'obbligo di effettuare la valutazione dell'efficacia del corso "+corso.getDescrizione();
-		  messaggio +=" effettuato in data "+df.format(corso.getData_corso())+".<br>";
+		  messaggio+="Con la presente, vi comunichiamo che in data "+df.format(corso.getData_corso())+ ore+" &egrave; stato pianificato il corso " +corso.getDescrizione()+".<br>";
+		  messaggio +=docenti;
+		  messaggio += "Nel caso in cui siate impossibilitati ad organizzare il corso, vi chiediamo di informaci tempestivamente per evitare inconvenienti.<br>";
 		  messaggio += "Restiamo a disposizione per eventuali chiarimenti<br><br>";
 		  
 		  messaggio += "Segreteria <b>CRESCO Formazione e Consulenza Srl<br>" + 		  		

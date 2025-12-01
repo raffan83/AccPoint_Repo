@@ -509,6 +509,11 @@ public class GestioneParcoAuto extends HttpServlet {
 				LocalDate inizioBimestre = LocalDate.of(Integer.parseInt(anno), mesePrecedente, 1);
 				LocalDate fineBimestre = inizioBimestre.plusMonths(monthsToAdd).minusDays(1);
 
+				LocalDate fineAnno = LocalDate.of(Integer.parseInt(anno), 12, 31);
+				
+				if (fineBimestre.isAfter(fineAnno)) {
+				    fineBimestre = fineAnno;
+				}
 				
 		        
 		        int start_date = 0; 

@@ -153,7 +153,7 @@ public class ScaricaDocumentoEsternoCampione extends HttpServlet {
 			
 			if(action.equals("scaricaDocumento"))
 			{
-			String idDocumento= Utility.decryptData(request.getParameter("idDoc"));
+			String idDocumento= request.getParameter("idDoc");
 			 	
 			 	DocumentoCampioneDTO documento= GestioneCampioneBO.getDocumentoCampione(idDocumento,session);
 				session.close();	

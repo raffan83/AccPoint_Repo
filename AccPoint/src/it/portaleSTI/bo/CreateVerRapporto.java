@@ -1449,8 +1449,8 @@ public class CreateVerRapporto {
 						masse = misura.getVerStrumento().getMasse_corredo();
 					}
 					
-					vl_masse_campioni.add(cmp.text("Masse a corredo: "+masse).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(stl.style().setFontName("Trebuchet MS").setFontSize(12)),
-							cmp.text("Combinazioni masse a corredo utilizzate: "+misura.getNote_combinazioni()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(stl.style().setFontName("Trebuchet MS").setFontSize(12))
+					vl_masse_campioni.add(cmp.text("Masse a corredo: "+masse).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(stl.style().setFontName("Trebuchet MS")),
+							cmp.text("Combinazioni masse a corredo utilizzate: "+misura.getNote_combinazioni()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(stl.style().setFontName("Trebuchet MS"))
 							);
 					
 					if(!caso1 || !caso2) {

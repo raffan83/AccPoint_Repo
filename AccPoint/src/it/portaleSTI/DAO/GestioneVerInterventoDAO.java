@@ -192,12 +192,12 @@ public class GestioneVerInterventoDAO {
 		ArrayList<OffOffertaDTO> lista = null;
 
 		String str = "";
-		if(!utente.isTras()) {
+		if(utente.checkRuolo("VC")) {
 			str = " where utente.id = :_utente";
 		}
 
 		Query query = session.createQuery("from OffOffertaDTO" +str);
-		if(!utente.isTras()) {
+		if(utente.checkRuolo("VC")) {
 			query.setParameter("_utente", utente.getId());
 		}
 	    		

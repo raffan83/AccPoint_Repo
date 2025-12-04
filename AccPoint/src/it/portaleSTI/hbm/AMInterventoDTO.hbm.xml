@@ -55,6 +55,10 @@
          <property name="id_sede_utilizzatore" type="int">
             <column name="id_sede_utilizzatore" />
         </property>
+        
+         <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
       
     </class>
 </hibernate-mapping>

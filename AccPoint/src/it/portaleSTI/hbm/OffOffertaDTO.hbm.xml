@@ -37,9 +37,9 @@
             <column name="data_offerta" />
         </property>
         
-         <property name="stato" type="int">
+       <!--   <property name="stato" type="int">
             <column name="stato" />
-        </property>
+        </property> -->
          <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="id_utente" />
         </many-to-one> 

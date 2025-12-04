@@ -528,6 +528,9 @@ public class Am_gestioneInterventi extends HttpServlet {
 					
 					AMProvaDTO prova = new AMProvaDTO();	
 					
+					if(esito.equals("0")) {
+						esito = "";
+					}
 					prova.setTipoProva(tipo);
 					prova.setCampione(campione);
 					prova.setStrumento(strumento);
@@ -677,7 +680,9 @@ public class Am_gestioneInterventi extends HttpServlet {
 					AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);
 					AMOperatoreDTO operatore = GestioneAM_BO.getOperatoreFromID(Integer.parseInt(id_operatore), session);
 					
-					
+					if(esito.equals("0")) {
+						esito = "";
+					}
 					prova.setTipoProva(tipo);
 					prova.setCampione(campione);
 					prova.setStrumento(strumento);
@@ -910,7 +915,15 @@ public class Am_gestioneInterventi extends HttpServlet {
 				
 					out.print(myObj);
 					
-				}else {
+				}
+				else if(prova.getEsito()==null || prova.getEsito().equals("")) {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Attenzione! Inserisci l'esito della prova!");
+				
+					out.print(myObj);
+				}
+				
+				else {
 					AMRapportoDTO rapporto = GestioneAM_BO.getRapportoFromProva(prova.getId(), session);
 					
 					boolean isAnteprima = false;
@@ -1300,6 +1313,27 @@ public class Am_gestioneInterventi extends HttpServlet {
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Salvato con successo!");
+				out.print(myObj);
+				
+			}
+			
+			else if(action.equals("note_intervento")) {
+				
+				ajax = true;
+				
+				String id_intervento = request.getParameter("id_intervento");
+				String note = request.getParameter("note");
+				
+				AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(Integer.parseInt(id_intervento), session);
+				
+				intervento.setNote(note);
+				
+				session.update(intervento);
+				
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				
 				out.print(myObj);
 				
 			}

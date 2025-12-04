@@ -21,7 +21,7 @@ String[] nomiMesi = {
 <div class="row">
 <div class="col-sm-9">
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('S1') }">
-<a class="btn btn-primary" onclick="modalNuovaAttrezzatura()"><i class="fa fa-plus"></i>Nuova Attrezzatura</a>
+<a class="btn btn-primary" onclick="modalNuovaAttrezzatura()"><i class="fa fa-plus"></i>Nuovo Impianto</a>
 <a class="btn btn-primary" onClick="modalNuovaScadenza()"><i class="fa fa-plus"></i> Nuova Scadenza</a>
 <a class="btn btn-primary" onClick="modalCreaReport()"><i class="fa fa-plus"></i> Crea Report Annuale</a>
 </c:if>
@@ -115,10 +115,10 @@ String[] nomiMesi = {
         <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Attrezzatura</label>
+       		<label>Impianto</label>
        	</div>
        	<div class="col-sm-9">       	
-       		<select class="form-control select2" data-placeholder="Seleziona Attrezzatura..." id="attrezzatura_report" name="attrezzatura_report" style="width:100%" required>
+       		<select class="form-control select2" data-placeholder="Seleziona Impianto..." id="attrezzatura_report" name="attrezzatura_report" style="width:100%" required>
        		<option value=""></option>
        			<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
        				<option value="${attrezzatura.id}">${attrezzatura.descrizione } </option>
@@ -183,10 +183,10 @@ String[] nomiMesi = {
         <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Attrezzatura</label>
+       		<label>Impianto</label>
        	</div>
        	<div class="col-sm-9">       	
-       		<select class="form-control select2" data-placeholder="Seleziona Attrezzatura..." id="attrezzatura" name="attrezzatura" style="width:100%" required>
+       		<select class="form-control select2" data-placeholder="Seleziona Impianto..." id="attrezzatura" name="attrezzatura" style="width:100%" required>
        		<option value=""></option>
        			<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
        				<option value="${attrezzatura.id}">${attrezzatura.descrizione } </option>
@@ -315,7 +315,7 @@ String[] nomiMesi = {
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Inserisci Nuova Attrezzatura </h4>
+        <h4 class="modal-title" id="myModalLabel">Inserisci Nuovo Impianto </h4>
       </div>
        <div class="modal-body">
        <div class="row">
@@ -344,7 +344,7 @@ String[] nomiMesi = {
         <div class="row">
        
        	<div class="col-sm-3">
-       		<label>Descrizione Attrezzatura</label>
+       		<label>Descrizione Impianto</label>
        	</div>
        	<div class="col-sm-9">       	
        		<input id="descrizione_attrezzatura" name="descrizione_attrezzatura" class="form-control">      	

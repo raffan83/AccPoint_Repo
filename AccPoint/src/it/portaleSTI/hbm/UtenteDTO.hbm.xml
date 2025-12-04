@@ -107,5 +107,8 @@
           <property name="codice_agente" type="java.lang.String">
             <column name="codice_agente" />
          </property>
+         <property name="pwd_milestone" type="java.lang.String">
+            <column name="pwd_milestone" />
+         </property>
     </class>
 </hibernate-mapping>

@@ -435,7 +435,7 @@
 					<printWhenExpression><![CDATA[$P{dataEmissione}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dataEmissione}]]></textFieldExpression>
 			</textField>

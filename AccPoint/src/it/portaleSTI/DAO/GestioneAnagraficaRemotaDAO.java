@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -481,9 +482,9 @@ public class GestioneAnagraficaRemotaDAO {
 			
 			try {
 				
-				String codage = " WHERE a.CODAGE = ? ";
-				if(utente.isTras()) {
-					codage = "";
+				String codage = "";
+				if(utente.checkRuolo("VC")) {
+					codage = " WHERE a.CODAGE = ? ";
 				}
 				
 				String q = "SELECT distinct b.ID_ANAGEN, b.NOME FROM BWT_ANAGEN_AGENTI AS a JOIN BWT_ANAGEN AS b ON a.ID_ANAGEN = b.ID_ANAGEN" +codage;
@@ -494,7 +495,7 @@ public class GestioneAnagraficaRemotaDAO {
 				
 				con=ManagerSQLServer.getConnectionSQL();
 				pst=con.prepareStatement(q);
-				if(!utente.isTras()) {
+				if(utente.checkRuolo("VC")) {
 					pst.setString(1, utente.getCodice_agente());
 				}
 				rs=pst.executeQuery();
@@ -545,12 +546,12 @@ public class GestioneAnagraficaRemotaDAO {
 			try {
 				String tb_gruppo = "AND TB_GRUPPO IN (SELECT TB_SERVIZIO FROM BWT_AGENTI_SERVIZI WHERE CODAGE = ? ) ";
 				
-				if(utente.isTras()) {
+				if(utente.checkRuolo("AM") || utente.checkRuolo("VE")) {
 					tb_gruppo = "AND TB_GRUPPO = 'VER_PER'";
 				}
 				con=ManagerSQLServer.getConnectionSQL();
 				pst=con.prepareStatement("SELECT distinct articolo.ID_ANAART, articolo.DESCR, listino.PREZZO FROM BWT_ANAART as articolo JOIN PJT_LISTINO_CLIFOR AS listino ON articolo.ID_ANAART = listino.ID_ANAART  where STATO = 'USO'  " + tb_gruppo);
-				if(!utente.isTras()) {
+				if(utente.checkRuolo("VC")) {
 					pst.setString(1, utente.getCodice_agente());
 				}
 				rs=pst.executeQuery();
@@ -758,6 +759,127 @@ public class GestioneAnagraficaRemotaDAO {
 			}
 			
 			
+		}
+
+		public static String getIdOffertaFromChiaveGlobale(String id_nh) throws Exception {
+			Connection con=null;
+			PreparedStatement pst = null;
+			ResultSet rs=null;
+			String id_offerta= null;
+		
+			try {
+				con=ManagerSQLServer.getConnectionSQL();
+				pst=con.prepareStatement("SELECT ID_OFFERTA from BWT_OFFERTA where GLB_ORIGINE = ? ");				
+				pst.setString(1, "BWT_SFA_ORDINE~|~"+id_nh);
+				rs=pst.executeQuery();
+				
+				int result = 0;
+				
+				while(rs.next())
+				{
+					id_offerta = rs.getString("ID_OFFERTA");
+					
+				}
+			
+				
+			} catch (Exception e) {
+				
+				throw e;
+			//	e.printStackTrace();
+				
+			}finally
+			{
+				pst.close();
+				con.close();
+			}
+			
+			return id_offerta;
+		}
+
+		public static void updateSedeOfferta(String id_offerta, String sede_decrypted, String cliente_decrypted) throws Exception {
+			Connection con=null;
+			PreparedStatement pst = null;
+			ResultSet rs=null;
+			boolean esito=false;
+			
+			try {
+				con=ManagerSQLServer.getConnectionSQL();
+				//pst=con.prepareStatement("INSERT INTO BWT_ANAGEN (NOME, INDIR, TELEF01, CAP, PIVA, CODPROV, CITTA, EMAIL, CODFIS, TIPO, SYS_DTCREAZ, TOK_COMPANY, CODREGI, CODNAZI) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ",Statement.RETURN_GENERATED_KEYS);
+				pst = con.prepareStatement(
+					    "UPDATE BWT_OFFERTA SET GLB_INDIRIZZO_SEDE = ? WHERE ID_OFFERTA = ?"
+					);
+				if(sede_decrypted.equals("0")) {
+					pst.setString(1, "BWT_ANAGEN~|~"+cliente_decrypted);
+				}else {
+					pst.setString(1, "BWT_ANAGEN_INDIR~|~"+cliente_decrypted+"~|~"+sede_decrypted.split("_")[0]);
+				}
+				
+				pst.setString(2, id_offerta);
+				
+				pst.executeUpdate();
+				
+		
+				
+			} catch (Exception e) {
+				
+				throw e;
+			//	e.printStackTrace();
+				
+			}finally
+			{
+				pst.close();
+				con.close();
+			}
+			
+		}
+
+		public static Map<String, String> getStatoCommessaOfferte() throws Exception {
+			Connection con=null;
+			PreparedStatement pst = null;
+			ResultSet rs=null;
+			
+			Map<String,String> map = new HashMap<String,String>();
+			try {
+				con=ManagerSQLServer.getConnectionSQL();
+				pst=con.prepareStatement("SELECT a.ID_OFFERTA, (SELECT ID_COMMESSA from BWT_OFFERTA_ITEMS b WHERE a.ID_OFFERTA=b.ID_OFFERTA AND b.K2_RIGA=1)  AS 'ID COMMESSA' ,a.SYS_STATO"
+						+"  FROM BWT_OFFERTA a");			
+				rs=pst.executeQuery();
+				
+			
+				while(rs.next())
+				{
+					String id_offerta = rs.getString("ID_OFFERTA");
+					String stato = rs.getString("SYS_STATO");
+					String id_commessa = rs.getString("ID COMMESSA");
+					if(id_commessa == null) {
+						id_commessa = "";
+					}
+					if(stato.equals("0INCOMPILAZIONE")) {
+						stato = "IN COMPILAZIONE";
+					}
+					if(stato.equals("1EMESSA")) {
+						stato = "EMESSA";
+					}
+					if(stato.startsWith("1CHIUSA")) {
+						stato = "CHIUSA";
+					}
+					map.put(id_offerta, stato+";"+id_commessa);
+					
+				}
+			
+				
+			} catch (Exception e) {
+				
+				throw e;
+			//	e.printStackTrace();
+				
+			}finally
+			{
+				pst.close();
+				con.close();
+			}
+			
+			return map;
 		}	
 
 }

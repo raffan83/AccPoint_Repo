@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ import org.hibernate.Session;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AMCampioneDTO;
@@ -121,6 +123,17 @@ public class GestioneVerOfferte extends HttpServlet {
 				ArrayList<ArticoloMilestoneDTO> lista_articoli = GestioneAnagraficaRemotaBO.getListaArticoliAgente(utente, session);
 				ArrayList<ComuneDTO> lista_comuni = GestioneAnagraficaRemotaBO.getListaComuni(session);
 				
+				Map<String, String> map = GestioneAnagraficaRemotaBO.getStatoCommessaOfferte();
+				
+				for (OffOffertaDTO offerta : lista_offerte) {
+					String stato_commessa = map.get(offerta.getN_offerta());
+					offerta.setStato(stato_commessa.split(";")[0]);
+					if(stato_commessa.split(";").length>1) {
+						offerta.setCommessa(stato_commessa.split(";")[1]);	
+					}
+					
+				}
+				
 				request.getSession().setAttribute("lista_comuni", lista_comuni);
 				request.getSession().setAttribute("lista_offerte", lista_offerte);
 				request.getSession().setAttribute("non_associate_encrypt",  Utility.encryptData("0"));
@@ -193,7 +206,7 @@ public class GestioneVerOfferte extends HttpServlet {
 				String id_sede = ret.get("sede");
 				String id_articoli= ret.get("id_articoli");
 				String note = ret.get("note");
-				
+				String id_offerta = ret.get("id_offerta");
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -213,8 +226,8 @@ public class GestioneVerOfferte extends HttpServlet {
 					
 					offerta.setId_cliente(Integer.parseInt(id_cliente));
 					offerta.setId_sede(Integer.parseInt(id_sede));
-					offerta.setStato(1);
 					offerta.setNome_cliente(cl.getNome());
+					offerta.setN_offerta(id_offerta);
 					SedeDTO sd =null;
 					if(!id_sede.equals("0")) {
 						sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), Integer.parseInt(id_cliente));
@@ -246,6 +259,10 @@ public class GestioneVerOfferte extends HttpServlet {
 					offerta_articolo.setArticolo(articolo.getID_ANAART());
 					offerta_articolo.setImporto(articolo.getImporto());
 					offerta_articolo.setQuantita(Double.parseDouble(id_articoli.split(";")[i].split(",")[1]));
+					if(id_articoli.split(";")[i].split(",").length>2) {
+						offerta_articolo.setSconto(Double.parseDouble(id_articoli.split(";")[i].split(",")[2]));	
+					}
+					
 					session.save(offerta_articolo);
 					
 					importo_tot += offerta_articolo.getQuantita() * offerta_articolo.getImporto();
@@ -459,32 +476,34 @@ public class GestioneVerOfferte extends HttpServlet {
 	            }
 			}
 			
-			else if(action.equals("cambia_stato")) {
+			else if (action.equals("inserisci_offerta_milestone")){
 				
-				String id_offerta = request.getParameter("id_offerta");
-				String n_offerta = request.getParameter("n_offerta");
-				OffOffertaDTO offerta = (OffOffertaDTO) session.get(OffOffertaDTO.class, Integer.parseInt(id_offerta));
-				
-				if(offerta.getStato()==1) {
-					offerta.setStato(2);
-					offerta.setN_offerta(n_offerta);
-				}else {
-					offerta.setStato(1);
-					offerta.setN_offerta(null);
-				}
-				
-				session.update(offerta);
-				
-				PrintWriter  out = response.getWriter();
-				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Stato offerta modificato con successo!");
-					
-			   out.print(myObj);
-				
-			}else if (action.equals("inserisci_offerta_milestone")){
-				
-				String API_URL = "https://portaletest.ncsnetwork.it/webapi/api/ordine";
+				String API_URL = "https://portale.ncsnetwork.it/webapi/api/ordine";
 				 String jsonInput = readBody(request);
+				 
+				// PARSE JSON
+				 JsonParser parser = new JsonParser();
+				 JsonObject json = parser.parse(jsonInput).getAsJsonObject();
+
+				 // ACCEDI A testata
+				 JsonObject testata = json.getAsJsonObject("testata");
+
+				 // LEGGI ID_ANAGEN (CRIPTATO)
+				 String cliente_encrypted = testata.get("ID_ANAGEN").getAsString();
+
+				 // DECRIPTA
+				 String cliente_decrypted = Utility.decryptData(cliente_encrypted);
+				 
+				 String sede_encrypted = testata.get("ID_SEDE").getAsString();
+
+				 // DECRIPTA
+				 String sede_decrypted = Utility.decryptData(sede_encrypted);
+
+				 // SOSTITUISCI IL VALORE NEL JSON
+				 testata.addProperty("ID_ANAGEN", cliente_decrypted);
+
+				// ottieni di nuovo la stringa (se ti serve)
+				jsonInput = json.toString();
 
 				 disableSSLValidation();
 			        // PREPARO LA CHIAMATA A NCS
@@ -495,7 +514,8 @@ public class GestioneVerOfferte extends HttpServlet {
 			        conn.setRequestProperty("Content-Type", "application/json");
 
 			        // BASIC AUTH (come Postman)
-			        String auth = "age:Akeron2025!";
+			       String auth = utente.getUser()+":"+utente.getPwd_milestone();
+//			        String auth = "age:Akeron2025!";
 			        String encoded = Base64.getEncoder().encodeToString(auth.getBytes("UTF-8"));
 			        conn.setRequestProperty("Authorization", "Basic " + encoded);
 
@@ -508,7 +528,25 @@ public class GestioneVerOfferte extends HttpServlet {
 			        int status = conn.getResponseCode();
 			        InputStream is = (status < 400) ? conn.getInputStream() : conn.getErrorStream();
 			        String risposta = readStream(is);
+			        
+			        json = parser.parse(risposta).getAsJsonObject();
 
+		
+			        String id_nh = json.get("ID_NH").getAsString();
+			        
+			        String id_offerta = GestioneAnagraficaRemotaBO.getIdOffertaFromChiaveGlobale(id_nh);
+			       
+			        
+			        json.addProperty("ID_OFFERTA", id_offerta);
+			        
+			        if(id_offerta!=null) {
+			        	
+			        	GestioneAnagraficaRemotaBO.updateSedeOfferta(id_offerta, sede_decrypted, cliente_decrypted);
+			        }
+			        
+			        
+			        risposta = json.toString();
+			       
 			        // Ritorno al client
 			        response.setContentType("application/json");
 			        response.getWriter().write(risposta);

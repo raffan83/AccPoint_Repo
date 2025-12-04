@@ -120,6 +120,8 @@
                  <li class="list-group-item">
                   <b>Template CAD</b> <a class="customTooltip pull-right  btn btn-danger btn-xs" title="Scarica Template CAD" onclick="callAction('amGestioneInterventi.do?action=scarica_template&isCad=1')"><i class="fa fa-file"></i></a>
                 </li>
+                
+                <b>Note intervento</b><textarea id="note_intervento" class="form-control pull-right" name="note_intervento" rows="2" style="width:100%">${intervento.note }</textarea>
         </ul>
         
    
@@ -405,6 +407,7 @@ NON CONFORME A SPECIFICA
        	<div class="col-sm-9">
 				<select  id="esito" name="esito" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona esito..." style="width:100%" >
 				<option value="" ></option>
+				<option value="0" ></option>
 				<option value="POSITIVO" >CONFORME A SPECIFICA</option>
 				<option value="NEGATIVO" >NON CONFORME A SPECIFICA</option>
 			
@@ -576,6 +579,7 @@ NON CONFORME A SPECIFICA
        	<div class="col-sm-9">
 				<select  id="esito_mod" name="esito_mod" class="form-control select2" aria-hidden="true" data-live-search="true" data-placeholder="Seleziona esito..." style="width:100%" >
 				<option value="" ></option>
+				<option value="0" ></option>
 				<option value="POSITIVO" >CONFORME A SPECIFICA</option>
 				<option value="NEGATIVO" >NON CONFORME A SPECIFICA</option>
 			
@@ -956,6 +960,30 @@ $('#file_firma').change(function(){
 	
 	$('#label_firma').html($(this).val().split("\\")[2]);
 });
+
+
+$('#note_intervento').focusout(function(){
+	
+	
+	 var note = $(this).val();
+	 var dataObj = {}
+	 dataObj.note = note;
+	 dataObj.id_intervento = "${intervento.id}";
+	 callAjax(dataObj,"amGestioneInterventi.do?action=note_intervento", function(data){
+	
+			  if(!data.success){
+	 			  
+		 		  
+	 			  $('#myModalErrorContent').html("Errone nel salvataggio delle note intervento!");
+	 			  	$('#myModalError').removeClass();
+	 				$('#myModalError').addClass("modal modal-danger");
+	 				$('#report_button').show();
+	 				$('#visualizza_report').show();
+						$('#myModalError').modal('show');	      			 
+	 		  }
+		 
+	 })
+});
 	
 function modalModificaProva(id_prova, id_tipo, data, id_strumento, id_campione, id_operatore, esito, filename_excel, filename_img, note, ubicazione){
 	$('#isMod').val(1)
@@ -997,6 +1025,8 @@ $('#esito').change(function(){
 		$('#note').val("NON SI RILEVANO SPESSORI INFERIORI A QUELLI MINIMI AMMISSIBILI / NOMINALI DICHIARATI DAL COSTRUTTORE")
 	}else if($(this).val() == "NEGATIVO"){
 		$('#note').val("SI RILEVANO SPESSORI INFERIORI A QUELLI MINIMI AMMISSIBILI / NOMINALI DICHIARATI DAL COSTRUTTORE");
+	}else if($(this).val() == "0"){
+		$('#note_mod').val("");
 	}
 	
 });
@@ -1007,6 +1037,8 @@ $('#esito_mod').change(function(){
 		$('#note_mod').val("NON SI RILEVANO SPESSORI INFERIORI A QUELLI MINIMI AMMISSIBILI / NOMINALI DICHIARATI DAL COSTRUTTORE")
 	}else if($(this).val() == "NEGATIVO"){
 		$('#note_mod').val("SI RILEVANO SPESSORI INFERIORI A QUELLI MINIMI AMMISSIBILI / NOMINALI DICHIARATI DAL COSTRUTTORE");
+	}else if($(this).val() == "0"){
+		$('#note_mod').val("");
 	}
 	
 });

@@ -17,6 +17,7 @@ public class AMInterventoDTO {
 	private Integer id_sede;
 	private Integer id_cliente_utilizzatore;
 	private Integer id_sede_utilizzatore;
+	private String note;
 	
 	
 	public int getId() {
@@ -100,6 +101,12 @@ public class AMInterventoDTO {
 	}
 	public void setNomeSedeUtilizzatore(String nomeSedeUtilizzatore) {
 		this.nomeSedeUtilizzatore = nomeSedeUtilizzatore;
+	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
 	}
 	
 }

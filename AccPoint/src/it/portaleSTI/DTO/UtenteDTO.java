@@ -46,6 +46,7 @@ public class UtenteDTO implements Serializable {
 	private String consenso_commerciale;
 	private int area_interesse;
 	private String codice_agente;
+	private String pwd_milestone;
 	/*
 	 * Non Abilitato = 0
 	 * Abilitato = 1
@@ -472,6 +473,20 @@ public class UtenteDTO implements Serializable {
 
 	public void setCodice_agente(String codice_agente) {
 		this.codice_agente = codice_agente;
+	}
+
+
+
+
+	public String getPwd_milestone() {
+		return pwd_milestone;
+	}
+
+
+
+
+	public void setPwd_milestone(String pwd_milestone) {
+		this.pwd_milestone = pwd_milestone;
 	}
 	
 	

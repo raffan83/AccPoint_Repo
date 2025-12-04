@@ -76,8 +76,7 @@
 
 <th>Tipo</th>
 <th>ID DPI</th>
-<th>Tipologia</th>
-<th>Tipo Accessorio</th>
+<th>Ricevuto</th>
 <th>Descrizione DPI</th>
 <th>DPI Collettivo</th>
 <th>Modello</th>
@@ -86,8 +85,10 @@
 <th>Data scadenza</th>
 <th>Commessa</th>
 <th>Lavoratore</th>
-<th>Ricevuto</th>
+
 <th>Riconsegnato</th>
+<th>Tipologia</th>
+<th>Tipo Accessorio</th>
 <th>Motivazione</th>
 <th>ID Riconsegna</th>
 <th>Azioni</th>
@@ -104,20 +105,11 @@
 	<c:if test="${consegna.is_restituzione==1 }">RICONSEGNA</c:if>
 	</td>
 	<td>${consegna.dpi.id }</td>
-	<td>
-	<c:if test="${consegna.dpi.tipologia == 1 }">
-	DPI
-	</c:if>
-	<c:if test="${consegna.dpi.tipologia == 2 }">
-	Accessorio
-	</c:if>
+		<td>
+	<c:if test="${consegna.is_restituzione==0 && consegna.ricevuto == 0}">NO</c:if>
+	<c:if test="${consegna.is_restituzione==0 && consegna.ricevuto == 1}">SI</c:if>
+	<c:if test="${consegna.is_restituzione==1}"></c:if>
 	</td>
-	<c:if test="${consegna.dpi.tipo_accessorio.id!=null }">
-	<td>${consegna.dpi.tipo_accessorio.descrizione }</td>
-	</c:if>
-	<c:if test="${consegna.dpi.tipo_accessorio.id==null }">
-	<td></td>
-	</c:if>
 	<td>${consegna.dpi.descrizione }</td>
 	<td>
 	<c:if test="${consegna.dpi.collettivo == 1 }">
@@ -133,15 +125,25 @@
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${consegna.dpi.data_scadenza }"></fmt:formatDate></td>
 	<td>${consegna.commessa}</td>
 	<td>${consegna.lavoratore.nome } ${consegna.lavoratore.cognome }</td>
-	<td>
-	<c:if test="${consegna.is_restituzione==0 && consegna.ricevuto == 0}">NO</c:if>
-	<c:if test="${consegna.is_restituzione==0 && consegna.ricevuto == 1}">SI</c:if>
-	<c:if test="${consegna.is_restituzione==1}"></c:if>
-	</td>
+
 	<td>
 	<c:if test="${consegna.riconsegnato == 0}">NO</c:if>
 	<c:if test="${consegna.riconsegnato == 1}">SI</c:if>
 </td>
+<td>
+	<c:if test="${consegna.dpi.tipologia == 1 }">
+	DPI
+	</c:if>
+	<c:if test="${consegna.dpi.tipologia == 2 }">
+	Accessorio
+	</c:if>
+	</td>
+	<c:if test="${consegna.dpi.tipo_accessorio.id!=null }">
+	<td>${consegna.dpi.tipo_accessorio.descrizione }</td>
+	</c:if>
+	<c:if test="${consegna.dpi.tipo_accessorio.id==null }">
+	<td></td>
+	</c:if>
 <td>${consegna.motivazione }</td>
 	<td>${consegna.restituzione.id }</td>		
 	<td>	

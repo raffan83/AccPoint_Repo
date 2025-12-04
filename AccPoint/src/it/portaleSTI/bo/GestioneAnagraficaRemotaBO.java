@@ -4,9 +4,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
+import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneAnagraficaRemotaDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
@@ -148,6 +151,24 @@ public class GestioneAnagraficaRemotaBO {
 	public static void insertCliente(ClienteDTO cl,SedeDTO sede, int company, String codage)throws Exception  {
 		// TODO Auto-generated method stub
 		GestioneAnagraficaRemotaDAO.insertCliente(cl,sede, company, codage);
+	}
+
+
+	public static String getIdOffertaFromChiaveGlobale(String id_nh) throws Exception {
+		// TODO Auto-generated method stub
+		return GestioneAnagraficaRemotaDAO.getIdOffertaFromChiaveGlobale(id_nh);
+	}
+
+
+	public static void updateSedeOfferta(String id_offerta,String sede_decrypted, String cliente_decrypted) throws Exception {
+		// TODO Auto-generated method stub
+		GestioneAnagraficaRemotaDAO.updateSedeOfferta(id_offerta, sede_decrypted, cliente_decrypted);
+	}
+
+
+	public static Map<String, String> getStatoCommessaOfferte() throws Exception {
+		// TODO Auto-generated method stub
+		return GestioneAnagraficaRemotaDAO.getStatoCommessaOfferte();
 	}
 	
 }

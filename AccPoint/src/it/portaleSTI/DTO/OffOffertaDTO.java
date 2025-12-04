@@ -16,9 +16,9 @@ public class OffOffertaDTO {
 	private Double importo;
 	private UtenteDTO utente;
 	private String n_offerta;
-	private int stato;
+	private String stato;
 	private String note;
-	
+	private String commessa;
 	
 
 	public int getId() {
@@ -143,14 +143,14 @@ public class OffOffertaDTO {
 
 
 
-	public int getStato() {
+	public String getStato() {
 		return stato;
 	}
 
 
 
 
-	public void setStato(int stato) {
+	public void setStato(String stato) {
 		this.stato = stato;
 	}
 
@@ -180,6 +180,20 @@ public class OffOffertaDTO {
 
 	public UtenteDTO getUtente() {
 		return utente;
+	}
+
+
+
+
+	public String getCommessa() {
+		return commessa;
+	}
+
+
+
+
+	public void setCommessa(String commessa) {
+		this.commessa = commessa;
 	}
 	
 	

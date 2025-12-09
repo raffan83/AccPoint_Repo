@@ -473,7 +473,7 @@ public class GestioneAnagraficaRemotaDAO {
 
 		
 		
-		public static ArrayList<ClienteDTO> GestioneAnagraficaRemotaDAO(UtenteDTO utente,String indirizzo, Session session) throws Exception {
+		public static ArrayList<ClienteDTO> GestioneAnagraficaRemotaDAO(UtenteDTO utente,String indirizzo, Session session, boolean test) throws Exception {
 			List<ClienteDTO> lista =new ArrayList<ClienteDTO>();
 			
 			Connection con=null;
@@ -493,7 +493,11 @@ public class GestioneAnagraficaRemotaDAO {
 					 q = "SELECT distinct b.ID_ANAGEN, b.NOME, b.INDIR, b.CAP, b.CITTA, b.CODPROV FROM BWT_ANAGEN_AGENTI AS a JOIN BWT_ANAGEN AS b ON a.ID_ANAGEN = b.ID_ANAGEN" +codage;
 				}
 				
-				con=ManagerSQLServer.getConnectionSQL();
+				if(test) {
+					con=ManagerSQLServer.getConnectionSQLTest();
+				}else {
+					con=ManagerSQLServer.getConnectionSQL();	
+				}
 				pst=con.prepareStatement(q);
 				if(utente.checkRuolo("VC")) {
 					pst.setString(1, utente.getCodice_agente());
@@ -535,7 +539,7 @@ public class GestioneAnagraficaRemotaDAO {
 			return (ArrayList<ClienteDTO>) lista;
 		}
 
-		public static ArrayList<ArticoloMilestoneDTO> getListaArticoliAgente(UtenteDTO utente, Session session) throws Exception {
+		public static ArrayList<ArticoloMilestoneDTO> getListaArticoliAgente(UtenteDTO utente, Session session, boolean test) throws Exception {
 
 			List<ArticoloMilestoneDTO> lista =new ArrayList<ArticoloMilestoneDTO>();
 			
@@ -549,7 +553,11 @@ public class GestioneAnagraficaRemotaDAO {
 				if(utente.checkRuolo("AM") || utente.checkRuolo("VE")) {
 					tb_gruppo = "AND TB_GRUPPO = 'VER_PER'";
 				}
-				con=ManagerSQLServer.getConnectionSQL();
+				if(test) {
+					con=ManagerSQLServer.getConnectionSQLTest();
+				}else {
+					con=ManagerSQLServer.getConnectionSQL();	
+				}
 				pst=con.prepareStatement("SELECT distinct articolo.ID_ANAART, articolo.DESCR, listino.PREZZO FROM BWT_ANAART as articolo JOIN PJT_LISTINO_CLIFOR AS listino ON articolo.ID_ANAART = listino.ID_ANAART  where STATO = 'USO'  " + tb_gruppo);
 				if(utente.checkRuolo("VC")) {
 					pst.setString(1, utente.getCodice_agente());
@@ -585,7 +593,7 @@ public class GestioneAnagraficaRemotaDAO {
 			
 		}
 
-		public static ArticoloMilestoneDTO getArticoloAgenteFromId(String id_articolo) throws Exception{
+		public static ArticoloMilestoneDTO getArticoloAgenteFromId(String id_articolo, boolean test) throws Exception{
 
 		
 			Connection con=null;
@@ -594,7 +602,11 @@ public class GestioneAnagraficaRemotaDAO {
 			ArticoloMilestoneDTO articolo=null;
 			
 			try {
-				con=ManagerSQLServer.getConnectionSQL();
+				if(test) {
+					con=ManagerSQLServer.getConnectionSQLTest();
+				}else {
+					con=ManagerSQLServer.getConnectionSQL();	
+				}
 				pst=con.prepareStatement("SELECT articolo.ID_ANAART, articolo.DESCR, listino.PREZZO FROM BWT_ANAART as articolo JOIN PJT_LISTINO_CLIFOR AS listino ON articolo.ID_ANAART = listino.ID_ANAART  where articolo.ID_ANAART = ? ");
 				pst.setString(1, id_articolo);
 				rs=pst.executeQuery();
@@ -624,14 +636,18 @@ public class GestioneAnagraficaRemotaDAO {
 			return articolo;
 		}
 
-		public static boolean checkPartitaIva(String partita_iva) throws Exception {
+		public static boolean checkPartitaIva(String partita_iva, boolean test) throws Exception {
 			Connection con=null;
 			PreparedStatement pst = null;
 			ResultSet rs=null;
 			boolean esito=false;
 			
 			try {
-				con=ManagerSQLServer.getConnectionSQL();
+				if(test) {
+					con=ManagerSQLServer.getConnectionSQLTest();
+				}else {
+					con=ManagerSQLServer.getConnectionSQL();	
+				}
 				pst=con.prepareStatement("SELECT ID_ANAGEN from BWT_ANAGEN where PIVA = ? ");				
 				pst.setString(1, partita_iva);
 				rs=pst.executeQuery();
@@ -662,7 +678,7 @@ public class GestioneAnagraficaRemotaDAO {
 			return esito;
 		}
 
-		public static void insertCliente(ClienteDTO cl,SedeDTO sede, int idCompany, String codage) throws Exception {
+		public static void insertCliente(ClienteDTO cl,SedeDTO sede, int idCompany, String codage, boolean test) throws Exception {
 
 
 			Connection con=null;
@@ -671,7 +687,11 @@ public class GestioneAnagraficaRemotaDAO {
 			boolean esito=false;
 			
 			try {
-				con=ManagerSQLServer.getConnectionSQL();
+				if(test) {
+					con=ManagerSQLServer.getConnectionSQLTest();
+				}else {
+					con=ManagerSQLServer.getConnectionSQL();	
+				}
 				//pst=con.prepareStatement("INSERT INTO BWT_ANAGEN (NOME, INDIR, TELEF01, CAP, PIVA, CODPROV, CITTA, EMAIL, CODFIS, TIPO, SYS_DTCREAZ, TOK_COMPANY, CODREGI, CODNAZI) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ",Statement.RETURN_GENERATED_KEYS);
 				pst = con.prepareStatement(
 					    "INSERT INTO BWT_ANAGEN (" +
@@ -761,14 +781,19 @@ public class GestioneAnagraficaRemotaDAO {
 			
 		}
 
-		public static String getIdOffertaFromChiaveGlobale(String id_nh) throws Exception {
+		public static String getIdOffertaFromChiaveGlobale(String id_nh, boolean test) throws Exception {
 			Connection con=null;
 			PreparedStatement pst = null;
 			ResultSet rs=null;
 			String id_offerta= null;
 		
 			try {
-				con=ManagerSQLServer.getConnectionSQL();
+				if(test) {
+					con=ManagerSQLServer.getConnectionSQLTest();
+				}else {
+					con=ManagerSQLServer.getConnectionSQL();	
+				}
+				
 				pst=con.prepareStatement("SELECT ID_OFFERTA from BWT_OFFERTA where GLB_ORIGINE = ? ");				
 				pst.setString(1, "BWT_SFA_ORDINE~|~"+id_nh);
 				rs=pst.executeQuery();
@@ -796,14 +821,19 @@ public class GestioneAnagraficaRemotaDAO {
 			return id_offerta;
 		}
 
-		public static void updateSedeOfferta(String id_offerta, String sede_decrypted, String cliente_decrypted) throws Exception {
+		public static void updateSedeOfferta(String id_offerta, String sede_decrypted, String cliente_decrypted, boolean test) throws Exception {
 			Connection con=null;
 			PreparedStatement pst = null;
 			ResultSet rs=null;
 			boolean esito=false;
 			
 			try {
-				con=ManagerSQLServer.getConnectionSQL();
+				if(test) {
+					con=ManagerSQLServer.getConnectionSQLTest();
+				}else {
+					con=ManagerSQLServer.getConnectionSQL();	
+				}
+				
 				//pst=con.prepareStatement("INSERT INTO BWT_ANAGEN (NOME, INDIR, TELEF01, CAP, PIVA, CODPROV, CITTA, EMAIL, CODFIS, TIPO, SYS_DTCREAZ, TOK_COMPANY, CODREGI, CODNAZI) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ",Statement.RETURN_GENERATED_KEYS);
 				pst = con.prepareStatement(
 					    "UPDATE BWT_OFFERTA SET GLB_INDIRIZZO_SEDE = ? WHERE ID_OFFERTA = ?"

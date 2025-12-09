@@ -104,6 +104,8 @@ public class GestioneVerOfferte extends HttpServlet {
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
+		boolean test = false;
+		
 		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 		
 		String action = request.getParameter("action");
@@ -120,7 +122,7 @@ public class GestioneVerOfferte extends HttpServlet {
 			if(action!=null && action.equals("lista_offerte")) {
 				
 				ArrayList<OffOffertaDTO> lista_offerte = GestioneVerInterventoBO.getListaOfferte(utente, session);
-				ArrayList<ArticoloMilestoneDTO> lista_articoli = GestioneAnagraficaRemotaBO.getListaArticoliAgente(utente, session);
+				ArrayList<ArticoloMilestoneDTO> lista_articoli = GestioneAnagraficaRemotaBO.getListaArticoliAgente(utente, session, test);
 				ArrayList<ComuneDTO> lista_comuni = GestioneAnagraficaRemotaBO.getListaComuni(session);
 				
 				Map<String, String> map = GestioneAnagraficaRemotaBO.getStatoCommessaOfferte();
@@ -148,7 +150,7 @@ public class GestioneVerOfferte extends HttpServlet {
 				
 				String indirizzo = request.getParameter("indirizzo");
 				
-				ArrayList<ClienteDTO> lista_clienti = GestioneAnagraficaRemotaBO.getListaClientiOfferte(utente,indirizzo, session);
+				ArrayList<ClienteDTO> lista_clienti = GestioneAnagraficaRemotaBO.getListaClientiOfferte(utente,indirizzo, session, test);
 				
 				
 				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
@@ -255,7 +257,7 @@ public class GestioneVerOfferte extends HttpServlet {
 				for (int i = 0; i < id_articoli.split(";").length; i++) {
 					OffOffertaArticoloDTO offerta_articolo = new OffOffertaArticoloDTO();
 					offerta_articolo.setOfferta(offerta);
-					ArticoloMilestoneDTO articolo = GestioneAnagraficaRemotaBO.getArticoloAgenteFromId(id_articoli.split(";")[i].split(",")[0]);
+					ArticoloMilestoneDTO articolo = GestioneAnagraficaRemotaBO.getArticoloAgenteFromId(id_articoli.split(";")[i].split(",")[0], test);
 					offerta_articolo.setArticolo(articolo.getID_ANAART());
 					offerta_articolo.setImporto(articolo.getImporto());
 					offerta_articolo.setQuantita(Double.parseDouble(id_articoli.split(";")[i].split(",")[1]));
@@ -345,7 +347,7 @@ public class GestioneVerOfferte extends HttpServlet {
 				String provincia_sede= ret.get("provincia_sede");
 				
 				
-				boolean esito = GestioneAnagraficaRemotaBO.checkPartitaIva(partita_iva);
+				boolean esito = GestioneAnagraficaRemotaBO.checkPartitaIva(partita_iva, test);
 				
 				if(esito){
 					PrintWriter  out = response.getWriter();
@@ -386,7 +388,7 @@ public class GestioneVerOfferte extends HttpServlet {
 					
 					
 										
-					GestioneAnagraficaRemotaBO.insertCliente(cl,sede, utente.getCompany().getId(), utente.getCodice_agente());
+					GestioneAnagraficaRemotaBO.insertCliente(cl,sede, utente.getCompany().getId(), utente.getCodice_agente(), test);
 					
 					
 					PrintWriter  out = response.getWriter();
@@ -409,7 +411,7 @@ public class GestioneVerOfferte extends HttpServlet {
 				
 				ArrayList<OffOffertaArticoloDTO> lista_articoli = GestioneVerInterventoBO.getListaOfferteArticoli(offerta.getId(),session);
 				for (OffOffertaArticoloDTO off : lista_articoli) {
-					off.setArticoloObj(GestioneAnagraficaRemotaBO.getArticoloAgenteFromId(off.getArticolo()));
+					off.setArticoloObj(GestioneAnagraficaRemotaBO.getArticoloAgenteFromId(off.getArticolo(), test));
 				}
 				
 				
@@ -478,7 +480,8 @@ public class GestioneVerOfferte extends HttpServlet {
 			
 			else if (action.equals("inserisci_offerta_milestone")){
 				
-				String API_URL = "https://portale.ncsnetwork.it/webapi/api/ordine";
+				
+				
 				 String jsonInput = readBody(request);
 				 
 				// PARSE JSON
@@ -506,6 +509,15 @@ public class GestioneVerOfferte extends HttpServlet {
 				jsonInput = json.toString();
 
 				 disableSSLValidation();
+				 
+				 String API_URL = "https://portale.ncsnetwork.it/webapi/api/ordine";
+				 String auth = utente.getUser()+":"+utente.getPwd_milestone();
+				 
+					if(test) {
+						API_URL= "https://portaletest.ncsnetwork.it/webapi/api/ordine";
+						auth = "age:Akeron2025!";
+					}
+				 
 			        // PREPARO LA CHIAMATA A NCS
 			        URL url = new URL(API_URL);
 			        HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
@@ -514,8 +526,8 @@ public class GestioneVerOfferte extends HttpServlet {
 			        conn.setRequestProperty("Content-Type", "application/json");
 
 			        // BASIC AUTH (come Postman)
-			       String auth = utente.getUser()+":"+utente.getPwd_milestone();
-//			        String auth = "age:Akeron2025!";
+			       
+//			        String auth = 
 			        String encoded = Base64.getEncoder().encodeToString(auth.getBytes("UTF-8"));
 			        conn.setRequestProperty("Authorization", "Basic " + encoded);
 
@@ -534,14 +546,14 @@ public class GestioneVerOfferte extends HttpServlet {
 		
 			        String id_nh = json.get("ID_NH").getAsString();
 			        
-			        String id_offerta = GestioneAnagraficaRemotaBO.getIdOffertaFromChiaveGlobale(id_nh);
+			        String id_offerta = GestioneAnagraficaRemotaBO.getIdOffertaFromChiaveGlobale(id_nh, test);
 			       
 			        
 			        json.addProperty("ID_OFFERTA", id_offerta);
 			        
 			        if(id_offerta!=null) {
 			        	
-			        	GestioneAnagraficaRemotaBO.updateSedeOfferta(id_offerta, sede_decrypted, cliente_decrypted);
+			        	GestioneAnagraficaRemotaBO.updateSedeOfferta(id_offerta, sede_decrypted, cliente_decrypted, test);
 			        }
 			        
 			        

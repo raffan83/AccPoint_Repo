@@ -124,45 +124,45 @@ public class GestioneAnagraficaRemotaBO {
 	}
 
 
-	public static ArrayList<ClienteDTO> getListaClientiOfferte(UtenteDTO utente, String indirirzzo,Session session) throws Exception {
+	public static ArrayList<ClienteDTO> getListaClientiOfferte(UtenteDTO utente, String indirirzzo,Session session, boolean test) throws Exception {
 		// TODO Auto-generated method stub
-		return GestioneAnagraficaRemotaDAO.GestioneAnagraficaRemotaDAO( utente,  indirirzzo, session);
+		return GestioneAnagraficaRemotaDAO.GestioneAnagraficaRemotaDAO( utente,  indirirzzo, session, test);
 	}
 
 
-	public static ArrayList<ArticoloMilestoneDTO> getListaArticoliAgente(UtenteDTO utente, Session session) throws Exception {
+	public static ArrayList<ArticoloMilestoneDTO> getListaArticoliAgente(UtenteDTO utente, Session session, boolean test) throws Exception {
 		// TODO Auto-generated method stub
-		return GestioneAnagraficaRemotaDAO.getListaArticoliAgente(utente, session);
+		return GestioneAnagraficaRemotaDAO.getListaArticoliAgente(utente, session, test);
 	}
 
 
-	public static ArticoloMilestoneDTO getArticoloAgenteFromId(String string) throws Exception{
+	public static ArticoloMilestoneDTO getArticoloAgenteFromId(String string, boolean test) throws Exception{
 		// TODO Auto-generated method stub
-		return GestioneAnagraficaRemotaDAO.getArticoloAgenteFromId(string);
+		return GestioneAnagraficaRemotaDAO.getArticoloAgenteFromId(string, test);
 	}
 
 
-	public static boolean checkPartitaIva(String partita_iva) throws Exception {
+	public static boolean checkPartitaIva(String partita_iva, boolean test) throws Exception {
 		// TODO Auto-generated method stub
-		return GestioneAnagraficaRemotaDAO.checkPartitaIva(partita_iva);
+		return GestioneAnagraficaRemotaDAO.checkPartitaIva(partita_iva, test);
 	}
 
 
-	public static void insertCliente(ClienteDTO cl,SedeDTO sede, int company, String codage)throws Exception  {
+	public static void insertCliente(ClienteDTO cl,SedeDTO sede, int company, String codage, boolean test)throws Exception  {
 		// TODO Auto-generated method stub
-		GestioneAnagraficaRemotaDAO.insertCliente(cl,sede, company, codage);
+		GestioneAnagraficaRemotaDAO.insertCliente(cl,sede, company, codage, test);
 	}
 
 
-	public static String getIdOffertaFromChiaveGlobale(String id_nh) throws Exception {
+	public static String getIdOffertaFromChiaveGlobale(String id_nh, boolean test) throws Exception {
 		// TODO Auto-generated method stub
-		return GestioneAnagraficaRemotaDAO.getIdOffertaFromChiaveGlobale(id_nh);
+		return GestioneAnagraficaRemotaDAO.getIdOffertaFromChiaveGlobale(id_nh, test);
 	}
 
 
-	public static void updateSedeOfferta(String id_offerta,String sede_decrypted, String cliente_decrypted) throws Exception {
+	public static void updateSedeOfferta(String id_offerta,String sede_decrypted, String cliente_decrypted, boolean test) throws Exception {
 		// TODO Auto-generated method stub
-		GestioneAnagraficaRemotaDAO.updateSedeOfferta(id_offerta, sede_decrypted, cliente_decrypted);
+		GestioneAnagraficaRemotaDAO.updateSedeOfferta(id_offerta, sede_decrypted, cliente_decrypted, test);
 	}
 
 

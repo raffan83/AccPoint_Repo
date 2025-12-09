@@ -28,7 +28,7 @@ public class ManagerSQLServer {
 		
 	}
 	
-	public static Connection getConnectionSQLtEST()throws Exception
+	public static Connection getConnectionSQLTest()throws Exception
 	{
 		Connection con=null;
 		

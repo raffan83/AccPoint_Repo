@@ -509,12 +509,20 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     				String anno = ret.get("anno_report");
 
         			ArrayList<AmScScadenzarioDTO> lista_scadenze = GestioneAM_ScadenzarioBO.getListaScadenzeAttrezzatura(Integer.parseInt(id_attrezzatura), 0, Integer.parseInt(anno), true, session);
-    				
-        			CreateRapportoScadenzarioAM cert = new CreateRapportoScadenzarioAM(lista_scadenze, session);
+        			PrintWriter  out = response.getWriter();
+        			if(lista_scadenze.size()>0) {
+        				CreateRapportoScadenzarioAM cert = new CreateRapportoScadenzarioAM(lista_scadenze, session);
+        				myObj = new JsonObject();
+        				myObj.addProperty("success", true);
+        			}else {
+        				myObj = new JsonObject();
+        				
+        				myObj.addProperty("success", false);
+        				myObj.addProperty("messaggio", "Non ci sono scadenze per l'impianto selezionato");
+        			}
         			
-    				myObj = new JsonObject();
-    				PrintWriter  out = response.getWriter();
-    				myObj.addProperty("success", true);
+        			
+        			
     			
     				out.print(myObj);
     				

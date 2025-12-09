@@ -54,6 +54,47 @@ public class SicurezzaElettricaDTO {
 	private String PARTI_APPLICATE;
 	
 	
+	
+	private String IDIFF;
+    private String IDIFF_GW;
+    private String IEA_NC;
+    private String IEA_NC_GW;
+    private String IEA_SFC;
+    private String IEA_SFC_GW;
+    private String IG_NC;
+    private String IG_NC_GW;
+    private String IG_SFC;
+    private String IG_SFC_GW;
+    private String IPAAC_NC;
+    private String IPAAC_NC_GW;
+    private String IPAAC_SFC;
+    private String IPAAC_SFC_GW;
+    private String IPADC_NC;
+    private String IPADC_NC_GW;
+    private String IPADC_SFC;
+    private String IPADC_SFC_GW;
+    private String IPNAT;
+    private String IPNAT_GW;
+    private String IPHAC_NC;
+    private String IPHAC_NC_GW;
+    private String IPHAC_SFC;
+    private String IPHAC_SFC_GW;
+    private String IPHDC_NC;
+    private String IPHDC_NC_GW;
+    private String IPHDC_SFC;
+    private String IPHDC_SFC_GW;
+    
+    private String TIPO_NORMA;
+    
+    private String MAX_POWER_INTAKE_601;
+    private String POWER_FACTOR_LF_601;
+    private String MAX_SUPPLY_CUR_601;
+    private String ENERGY_601;
+    private String DURATION_601;
+    
+    
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -269,6 +310,210 @@ public class SicurezzaElettricaDTO {
 	}
 	public void setPARTI_APPLICATE(String pARTI_APPLICATE) {
 		PARTI_APPLICATE = pARTI_APPLICATE;
+	}
+	public String getIDIFF() {
+		return IDIFF;
+	}
+	public void setIDIFF(String iDIFF) {
+		IDIFF = iDIFF;
+	}
+	public String getIDIFF_GW() {
+		return IDIFF_GW;
+	}
+	public void setIDIFF_GW(String iDIFF_GW) {
+		IDIFF_GW = iDIFF_GW;
+	}
+	public String getIEA_NC() {
+		return IEA_NC;
+	}
+	public void setIEA_NC(String iEA_NC) {
+		IEA_NC = iEA_NC;
+	}
+	public String getIEA_NC_GW() {
+		return IEA_NC_GW;
+	}
+	public void setIEA_NC_GW(String iEA_NC_GW) {
+		IEA_NC_GW = iEA_NC_GW;
+	}
+	public String getIEA_SFC() {
+		return IEA_SFC;
+	}
+	public void setIEA_SFC(String iEA_SFC) {
+		IEA_SFC = iEA_SFC;
+	}
+	public String getIEA_SFC_GW() {
+		return IEA_SFC_GW;
+	}
+	public void setIEA_SFC_GW(String iEA_SFC_GW) {
+		IEA_SFC_GW = iEA_SFC_GW;
+	}
+	public String getIG_NC() {
+		return IG_NC;
+	}
+	public void setIG_NC(String iG_NC) {
+		IG_NC = iG_NC;
+	}
+	public String getIG_NC_GW() {
+		return IG_NC_GW;
+	}
+	public void setIG_NC_GW(String iG_NC_GW) {
+		IG_NC_GW = iG_NC_GW;
+	}
+	public String getIG_SFC() {
+		return IG_SFC;
+	}
+	public void setIG_SFC(String iG_SFC) {
+		IG_SFC = iG_SFC;
+	}
+	public String getIG_SFC_GW() {
+		return IG_SFC_GW;
+	}
+	public void setIG_SFC_GW(String iG_SFC_GW) {
+		IG_SFC_GW = iG_SFC_GW;
+	}
+	public String getIPAAC_NC() {
+		return IPAAC_NC;
+	}
+	public void setIPAAC_NC(String iPAAC_NC) {
+		IPAAC_NC = iPAAC_NC;
+	}
+	public String getIPAAC_NC_GW() {
+		return IPAAC_NC_GW;
+	}
+	public void setIPAAC_NC_GW(String iPAAC_NC_GW) {
+		IPAAC_NC_GW = iPAAC_NC_GW;
+	}
+	public String getIPAAC_SFC() {
+		return IPAAC_SFC;
+	}
+	public void setIPAAC_SFC(String iPAAC_SFC) {
+		IPAAC_SFC = iPAAC_SFC;
+	}
+	public String getIPAAC_SFC_GW() {
+		return IPAAC_SFC_GW;
+	}
+	public void setIPAAC_SFC_GW(String iPAAC_SFC_GW) {
+		IPAAC_SFC_GW = iPAAC_SFC_GW;
+	}
+	public String getIPADC_NC() {
+		return IPADC_NC;
+	}
+	public void setIPADC_NC(String iPADC_NC) {
+		IPADC_NC = iPADC_NC;
+	}
+	public String getIPADC_NC_GW() {
+		return IPADC_NC_GW;
+	}
+	public void setIPADC_NC_GW(String iPADC_NC_GW) {
+		IPADC_NC_GW = iPADC_NC_GW;
+	}
+	public String getIPADC_SFC() {
+		return IPADC_SFC;
+	}
+	public void setIPADC_SFC(String iPADC_SFC) {
+		IPADC_SFC = iPADC_SFC;
+	}
+	public String getIPADC_SFC_GW() {
+		return IPADC_SFC_GW;
+	}
+	public void setIPADC_SFC_GW(String iPADC_SFC_GW) {
+		IPADC_SFC_GW = iPADC_SFC_GW;
+	}
+	public String getIPNAT() {
+		return IPNAT;
+	}
+	public void setIPNAT(String iPNAT) {
+		IPNAT = iPNAT;
+	}
+	public String getIPNAT_GW() {
+		return IPNAT_GW;
+	}
+	public void setIPNAT_GW(String iPNAT_GW) {
+		IPNAT_GW = iPNAT_GW;
+	}
+	public String getIPHAC_NC() {
+		return IPHAC_NC;
+	}
+	public void setIPHAC_NC(String iPHAC_NC) {
+		IPHAC_NC = iPHAC_NC;
+	}
+	public String getIPHAC_NC_GW() {
+		return IPHAC_NC_GW;
+	}
+	public void setIPHAC_NC_GW(String iPHAC_NC_GW) {
+		IPHAC_NC_GW = iPHAC_NC_GW;
+	}
+	public String getIPHAC_SFC() {
+		return IPHAC_SFC;
+	}
+	public void setIPHAC_SFC(String iPHAC_SFC) {
+		IPHAC_SFC = iPHAC_SFC;
+	}
+	public String getIPHAC_SFC_GW() {
+		return IPHAC_SFC_GW;
+	}
+	public void setIPHAC_SFC_GW(String iPHAC_SFC_GW) {
+		IPHAC_SFC_GW = iPHAC_SFC_GW;
+	}
+	public String getIPHDC_NC() {
+		return IPHDC_NC;
+	}
+	public void setIPHDC_NC(String iPHDC_NC) {
+		IPHDC_NC = iPHDC_NC;
+	}
+	public String getIPHDC_NC_GW() {
+		return IPHDC_NC_GW;
+	}
+	public void setIPHDC_NC_GW(String iPHDC_NC_GW) {
+		IPHDC_NC_GW = iPHDC_NC_GW;
+	}
+	public String getIPHDC_SFC() {
+		return IPHDC_SFC;
+	}
+	public void setIPHDC_SFC(String iPHDC_SFC) {
+		IPHDC_SFC = iPHDC_SFC;
+	}
+	public String getIPHDC_SFC_GW() {
+		return IPHDC_SFC_GW;
+	}
+	public void setIPHDC_SFC_GW(String iPHDC_SFC_GW) {
+		IPHDC_SFC_GW = iPHDC_SFC_GW;
+	}
+	public String getTIPO_NORMA() {
+		return TIPO_NORMA;
+	}
+	public void setTIPO_NORMA(String tIPO_NORMA) {
+		TIPO_NORMA = tIPO_NORMA;
+	}
+	public String getMAX_POWER_INTAKE_601() {
+		return MAX_POWER_INTAKE_601;
+	}
+	public void setMAX_POWER_INTAKE_601(String mAX_POWER_INTAKE_601) {
+		MAX_POWER_INTAKE_601 = mAX_POWER_INTAKE_601;
+	}
+	public String getPOWER_FACTOR_LF_601() {
+		return POWER_FACTOR_LF_601;
+	}
+	public void setPOWER_FACTOR_LF_601(String pOWER_FACTOR_LF_601) {
+		POWER_FACTOR_LF_601 = pOWER_FACTOR_LF_601;
+	}
+	public String getMAX_SUPPLY_CUR_601() {
+		return MAX_SUPPLY_CUR_601;
+	}
+	public void setMAX_SUPPLY_CUR_601(String mAX_SUPPLY_CUR_601) {
+		MAX_SUPPLY_CUR_601 = mAX_SUPPLY_CUR_601;
+	}
+	public String getENERGY_601() {
+		return ENERGY_601;
+	}
+	public void setENERGY_601(String eNERGY_601) {
+		ENERGY_601 = eNERGY_601;
+	}
+	public String getDURATION_601() {
+		return DURATION_601;
+	}
+	public void setDURATION_601(String dURATION_601) {
+		DURATION_601 = dURATION_601;
 	}
 	
 	

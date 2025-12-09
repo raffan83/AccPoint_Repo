@@ -1051,6 +1051,51 @@ public static ArrayList<SicurezzaElettricaDTO> getListaMisureElettriche(Connecti
 		sicurezza.setMARCHIATURE(rs.getString("MARCHIATURE"));
 		sicurezza.setALTRO(rs.getString("ALTRO"));
 		sicurezza.setPARTI_APPLICATE(rs.getString("PARTI_APPLICATE"));
+		
+		sicurezza.setIDIFF(rs.getString("IDIFF"));
+		sicurezza.setIDIFF_GW(rs.getString("IDIFF_GW"));
+		sicurezza.setIEA_NC(rs.getString("IEA_NC"));
+		sicurezza.setIEA_NC_GW(rs.getString("IEA_NC_GW"));
+		sicurezza.setIEA_SFC(rs.getString("IEA_SFC"));
+		sicurezza.setIEA_SFC_GW(rs.getString("IEA_SFC_GW"));
+		sicurezza.setIG_NC(rs.getString("IG_NC"));
+		sicurezza.setIG_NC_GW(rs.getString("IG_NC_GW"));
+		sicurezza.setIG_SFC(rs.getString("IG_SFC"));
+		sicurezza.setIG_SFC_GW(rs.getString("IG_SFC_GW"));
+		sicurezza.setIPAAC_NC(rs.getString("IPAAC_NC"));
+		sicurezza.setIPAAC_NC_GW(rs.getString("IPAAC_NC_GW"));
+		sicurezza.setIPAAC_SFC(rs.getString("IPAAC_SFC"));
+		sicurezza.setIPAAC_SFC_GW(rs.getString("IPAAC_SFC_GW"));
+		sicurezza.setIPADC_NC(rs.getString("IPADC_NC"));
+		sicurezza.setIPADC_NC_GW(rs.getString("IPADC_NC_GW"));
+		sicurezza.setIPADC_SFC(rs.getString("IPADC_SFC"));
+		sicurezza.setIPADC_SFC_GW(rs.getString("IPADC_SFC_GW"));
+		sicurezza.setIPNAT(rs.getString("IPNAT"));
+		sicurezza.setIPNAT_GW(rs.getString("IPNAT_GW"));
+		sicurezza.setIPHAC_NC(rs.getString("IPHAC_NC"));
+		sicurezza.setIPHAC_NC_GW(rs.getString("IPHAC_NC_GW"));
+		sicurezza.setIPHAC_SFC(rs.getString("IPHAC_SFC"));
+		sicurezza.setIPHAC_SFC_GW(rs.getString("IPHAC_SFC_GW"));
+		sicurezza.setIPHDC_NC(rs.getString("IPHDC_NC"));
+		sicurezza.setIPHDC_NC_GW(rs.getString("IPHDC_NC_GW"));
+		sicurezza.setIPHDC_SFC(rs.getString("IPHDC_SFC"));
+		sicurezza.setIPHDC_SFC_GW(rs.getString("IPHDC_SFC_GW"));
+
+		if(rs.getString("TIPO_NORMA")==null) {
+			sicurezza.setTIPO_NORMA("62535");
+		}else {
+			sicurezza.setTIPO_NORMA(rs.getString("TIPO_NORMA"));	
+		}
+		
+		
+
+		sicurezza.setMAX_POWER_INTAKE_601(rs.getString("MAX_POWER_INTAKE_601"));
+		sicurezza.setPOWER_FACTOR_LF_601(rs.getString("POWER_FACTOR_LF_601"));
+		sicurezza.setMAX_SUPPLY_CUR_601(rs.getString("MAX_SUPPLY_CUR_601"));
+		sicurezza.setENERGY_601(rs.getString("ENERGY_601"));
+		sicurezza.setDURATION_601(rs.getString("DURATION_601"));
+
+		
 	
 		listaMisure.add(sicurezza);
 	}

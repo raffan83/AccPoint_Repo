@@ -113,5 +113,111 @@
          <property name="PARTI_APPLICATE" type="java.lang.String">
             <column name="PARTI_APPLICATE" />
         </property>
+        
+        <property name="IDIFF" type="java.lang.String">
+    <column name="IDIFF" />
+</property>
+<property name="IDIFF_GW" type="java.lang.String">
+    <column name="IDIFF_GW" />
+</property>
+<property name="IEA_NC" type="java.lang.String">
+    <column name="IEA_NC" />
+</property>
+<property name="IEA_NC_GW" type="java.lang.String">
+    <column name="IEA_NC_GW" />
+</property>
+<property name="IEA_SFC" type="java.lang.String">
+    <column name="IEA_SFC" />
+</property>
+<property name="IEA_SFC_GW" type="java.lang.String">
+    <column name="IEA_SFC_GW" />
+</property>
+<property name="IG_NC" type="java.lang.String">
+    <column name="IG_NC" />
+</property>
+<property name="IG_NC_GW" type="java.lang.String">
+    <column name="IG_NC_GW" />
+</property>
+<property name="IG_SFC" type="java.lang.String">
+    <column name="IG_SFC" />
+</property>
+<property name="IG_SFC_GW" type="java.lang.String">
+    <column name="IG_SFC_GW" />
+</property>
+<property name="IPAAC_NC" type="java.lang.String">
+    <column name="IPAAC_NC" />
+</property>
+<property name="IPAAC_NC_GW" type="java.lang.String">
+    <column name="IPAAC_NC_GW" />
+</property>
+<property name="IPAAC_SFC" type="java.lang.String">
+    <column name="IPAAC_SFC" />
+</property>
+<property name="IPAAC_SFC_GW" type="java.lang.String">
+    <column name="IPAAC_SFC_GW" />
+</property>
+<property name="IPADC_NC" type="java.lang.String">
+    <column name="IPADC_NC" />
+</property>
+<property name="IPADC_NC_GW" type="java.lang.String">
+    <column name="IPADC_NC_GW" />
+</property>
+<property name="IPADC_SFC" type="java.lang.String">
+    <column name="IPADC_SFC" />
+</property>
+<property name="IPADC_SFC_GW" type="java.lang.String">
+    <column name="IPADC_SFC_GW" />
+</property>
+<property name="IPNAT" type="java.lang.String">
+    <column name="IPNAT" />
+</property>
+<property name="IPNAT_GW" type="java.lang.String">
+    <column name="IPNAT_GW" />
+</property>
+<property name="IPHAC_NC" type="java.lang.String">
+    <column name="IPHAC_NC" />
+</property>
+<property name="IPHAC_NC_GW" type="java.lang.String">
+    <column name="IPHAC_NC_GW" />
+</property>
+<property name="IPHAC_SFC" type="java.lang.String">
+    <column name="IPHAC_SFC" />
+</property>
+<property name="IPHAC_SFC_GW" type="java.lang.String">
+    <column name="IPHAC_SFC_GW" />
+</property>
+<property name="IPHDC_NC" type="java.lang.String">
+    <column name="IPHDC_NC" />
+</property>
+<property name="IPHDC_NC_GW" type="java.lang.String">
+    <column name="IPHDC_NC_GW" />
+</property>
+<property name="IPHDC_SFC" type="java.lang.String">
+    <column name="IPHDC_SFC" />
+</property>
+<property name="IPHDC_SFC_GW" type="java.lang.String">
+    <column name="IPHDC_SFC_GW" />
+</property>
+
+<property name="TIPO_NORMA" type="java.lang.String">
+    <column name="TIPO_NORMA" />
+</property>
+
+<property name="MAX_POWER_INTAKE_601" type="java.lang.String">
+    <column name="MAX_POWER_INTAKE_601" />
+</property>
+<property name="POWER_FACTOR_LF_601" type="java.lang.String">
+    <column name="POWER_FACTOR_LF_601" />
+</property>
+<property name="MAX_SUPPLY_CUR_601" type="java.lang.String">
+    <column name="MAX_SUPPLY_CUR_601" />
+</property>
+<property name="ENERGY_601" type="java.lang.String">
+    <column name="ENERGY_601" />
+</property>
+<property name="DURATION_601" type="java.lang.String">
+    <column name="DURATION_601" />
+</property>
+        
     </class>
 </hibernate-mapping>

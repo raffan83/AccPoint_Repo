@@ -121,7 +121,7 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreateCertificatoAM {
 	
-	
+	 static int scala_minimi = 2;
 	public CreateCertificatoAM(AMProvaDTO prova, Session session, AMRapportoDTO rapporto, boolean isAnteprima) throws Exception {
 		build(prova, session, rapporto,isAnteprima);
 	}
@@ -379,7 +379,7 @@ public class CreateCertificatoAM {
 		}catch(Exception e) {
 			 image = null;
 		}
-		String minimi = calcolaMinimi(prova);
+		String minimi = calcolaMinimi(prova, scala_minimi);
 				
 		int max_colonne = calcolaMaxColonne(prova);
 		int max_righe = calcolaMaxRighe(prova);
@@ -609,7 +609,7 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
         Pattern pattern = Pattern.compile("\\{([^}]*)\\}");
         Matcher matcher = pattern.matcher(matrice);
         DecimalFormat df = new DecimalFormat("0.00");
-        
+       
         while (matcher.find()) {
             String[] values = matcher.group(1).split(",");
             List<String> row = new ArrayList<>();
@@ -619,8 +619,10 @@ public static JasperReportBuilder getTableReport(AMProvaDTO prova, int larghezza
                     double num = Double.parseDouble(v);
                     if (num >= 10) {
                         df = new DecimalFormat("0.0");
+                        scala_minimi = 1;
                     } else {
                     	df = new DecimalFormat("0.00");
+                    	 scala_minimi = 2;
                     }
                     row.add(df.format(num));
                 } catch (NumberFormatException e) {
@@ -921,7 +923,7 @@ private static void addAllegato(File source, File allegato) throws IOException {
 		
 
 		
-		private static String calcolaMinimi(AMProvaDTO prova) {
+		private static String calcolaMinimi(AMProvaDTO prova, int scala_minimi) {
 			
 			List<List<Double>> matrice = parseMatrice(prova.getMatrixSpess());
 		
@@ -961,9 +963,9 @@ private static void addAllegato(File source, File allegato) throws IOException {
 		                    }
 		                }
 		            }
-
+		            String minval = String.format("%."+scala_minimi+"f", minimo);
 		            sb.append("Spessore minimo ").append(zona.getZonaRiferimento()).append(": ")
-		              .append(minimo).append(" mm").append("\n");
+		              .append(Utility.changeDotComma(minval)).append(" mm").append("\n");
 		        }
 		    }
 

@@ -644,6 +644,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String efei = ret.get("efei");
 				String frequenza_remind = ret.get("frequenza_remind");
 				String giorni_preavviso = ret.get("giorni_preavviso");
+				String email_preavviso = ret.get("email_preavviso");
 				
 				ForCorsoDTO corso = new ForCorsoDTO();		
 				
@@ -669,6 +670,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				corso.setCommessa(commessa);
 				corso.setDurata(Integer.parseInt(durata));
 				corso.setEfei(Integer.parseInt(efei));
+				corso.setEmail_preavviso(email_preavviso);
 				
 				
 				if(filename!=null && !filename.equals("")) {
@@ -754,6 +756,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String efei = ret.get("efei_mod");
 				String frequenza_remind = ret.get("frequenza_remind_mod");
 				String giorni_preavviso = ret.get("giorni_preavviso_mod");
+
+				String email_preavviso = ret.get("email_preavviso_mod");
 				
 				
 				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso),session);		
@@ -820,7 +824,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					corso.setfrequenza_remind(Integer.parseInt(giorni_preavviso));
 					corso.setData_preavviso(null);
 				}
-				
+				corso.setEmail_preavviso(email_preavviso);
 				corso.setDurata(Integer.parseInt(durata));
 				
 				session.update(corso);

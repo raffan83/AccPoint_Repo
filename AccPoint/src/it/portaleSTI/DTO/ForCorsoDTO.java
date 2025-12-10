@@ -38,7 +38,7 @@ public class ForCorsoDTO {
 	private Date data_remind;
 	private  int giorni_preavviso;
 	private Date data_preavviso; 
-	
+	private String email_preavviso; 
 	
 	public ForCorsoDTO() {
 		super();
@@ -236,6 +236,12 @@ public class ForCorsoDTO {
 	}
 	public void setData_preavviso(Date data_preavviso) {
 		this.data_preavviso = data_preavviso;
+	}
+	public String getEmail_preavviso() {
+		return email_preavviso;
+	}
+	public void setEmail_preavviso(String email_preavviso) {
+		this.email_preavviso = email_preavviso;
 	}
 
 	

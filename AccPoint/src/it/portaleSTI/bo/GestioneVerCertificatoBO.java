@@ -231,7 +231,7 @@ public class GestioneVerCertificatoBO {
 				      }
 				      String str = sb.toString();
 				      
-				      Rectangle rect1 = new Rectangle(20, 665, 600, 630);
+				      Rectangle rect1 = new Rectangle(20, 675, 600, 630);
 				      rect1.setBackgroundColor(BaseColor.WHITE);
 				    
 				      
@@ -270,6 +270,7 @@ public class GestioneVerCertificatoBO {
 						
 						int x = fontPosition[0] ;
 						int y = fontPosition[1] -15;
+						
 						int w = x + 85;
 						int h = y + 31;
 						

@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
@@ -39,6 +40,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.apache.log4j.Logger;
 
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.ConsegnaDpiDTO;
@@ -60,9 +62,12 @@ import it.portaleSTI.DTO.ItServizioItDTO;
 import it.portaleSTI.DTO.RapportoInterventoDTO;
 import it.portaleSTI.DTO.RilInterventoDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
+import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.action.ContextListener;
 
 
 public class SendEmailBO {
@@ -2437,7 +2442,7 @@ for (String string : to) {
 	
 }
 
-public static void sendEmailPreavvisoCorso(ForCorsoDTO corso, ForReferenteDTO referente, org.hibernate.Session session) throws EmailException, AddressException {
+public static void sendEmailPreavvisoCorso(ForCorsoDTO corso, org.hibernate.Session session) throws EmailException, AddressException {
 	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 	
@@ -2456,7 +2461,14 @@ email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "jav
 email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "true");
 email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
-		 email.addTo(referente.getEmail());
+//		 email.addTo(referente.getEmail());
+for (String to : corso.getEmail_preavviso().split(";")) {
+	if(to!=null && !to.equals("")) {
+		email.addTo(to);
+	}
+	
+}
+
 
 //		 ArrayList<InternetAddress> lista_cc = new ArrayList<InternetAddress>();
 //		 InternetAddress cc1 = new InternetAddress("segreteria@crescosrl.net");
@@ -2491,28 +2503,26 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 				}
 		  }
 		  
-		  String messaggio = "Gentile "+referente.getNome()+" "+referente.getCognome()+",<br>";
+		 // String messaggio = "Gentile "+referente.getNome()+" "+referente.getCognome()+",<br>";
+		  String messaggio = "Gentile Utente,<br>";
 		  messaggio+="Con la presente, vi comunichiamo che in data "+df.format(corso.getData_corso())+ ore+" &egrave; stato pianificato il corso " +corso.getDescrizione()+".<br>";
 		  messaggio +=docenti;
 		  messaggio += "Nel caso in cui siate impossibilitati ad organizzare il corso, vi chiediamo di informaci tempestivamente per evitare inconvenienti.<br>";
 		  messaggio += "Restiamo a disposizione per eventuali chiarimenti<br><br>";
 		  
-		  messaggio += "Segreteria <b>CRESCO Formazione e Consulenza Srl<br>" + 		  		
-		  		"Per Assistenza dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:</b><br>" + 
-		  		"Tel. Interno: 0776.1815115-0776.1815104<br>" + 
-		  		"Cell: 392.9318177<br><br>Cordiali saluti<br><br>";
+		
 		  
 		  messaggio += "<em><b>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
 				
 					"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
-					"Tel int. +39 0776.1815115 - Fax +39 0776.814169</em> <br> "
+					"Tel +39 0776.18151 - Int +39 0776.1815104</em> <br> "
 					+ "Web: </em>www.crescosrl.net<br>" 
 					+ "Mail: </em>segreteria@crescosrl.net<br>" + 
 			
 					"<br/></html>"
 		  	
-		  		+" <br /><img width='150' <img width='150' src='https://www.calver.it/images/cresco.jpg'> <img width='150' src='https://www.calver.it/images/regione_lazio.png'><br>" ;
-	
+		  		+" <br /><img width='300' src='https://www.calver.it/images/cresco_dnv.png'><br>" ;
+	messaggio += "Ente Accreditato dalla Regione Lazio<br>con Determinazione N.G10842 del 31.7.2017<br><br>";
 		  messaggio += "<font size='2'>Le informazioni trasmesse sono destinate esclusivamente alla persona o alla societ&agrave; in indirizzo e sono da intendersi confidenziali e riservate. Ogni trasmissione, inoltro, diffusione o altro uso di queste informazioni a persone o societ&agrave; differenti dal destinatario &egrave; proibita ai sensi del D. Lgs. 196/2003. Se Lei ha ricevuto questo messaggio di posta elettronica per errore, &egrave; pregato di avvisarci inviando un messaggio di posta elettronica all'indirizzo del mittente, e quindi cancellare e distruggere il messaggio dal Suo sistema. Grazie per la collaborazione\n </font><br><br><br>";
 		  
 		  email.setHtmlMsg("<html>"
@@ -2520,6 +2530,20 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 		  
 
 		  	email.send();
+}
+
+
+
+public static void main(String[] args) throws Exception {
+	new ContextListener().configCostantApplication();
+	org.hibernate.classic.Session session=SessionFacotryDAO.get().openSession();
+	session.beginTransaction();
+	ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(2017, session);
+
+	sendEmailPreavvisoCorso(corso,  session);
+		session.getTransaction().commit();
+		session.close();
+		System.out.println("FINITO");
 }
 }
 

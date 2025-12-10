@@ -116,5 +116,9 @@
         <property name="data_preavviso" type="java.sql.Date" >
             <column name="data_preavviso" />
         </property>
+        
+        <property name="email_preavviso" type="java.lang.String" >
+            <column name="email_preavviso" />
+        </property>
     </class>
 </hibernate-mapping>

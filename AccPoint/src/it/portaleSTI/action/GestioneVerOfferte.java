@@ -129,10 +129,10 @@ public class GestioneVerOfferte extends HttpServlet {
 				
 				for (OffOffertaDTO offerta : lista_offerte) {
 					String stato_commessa = map.get(offerta.getN_offerta());
-					offerta.setStato(stato_commessa.split(";")[0]);
-					if(stato_commessa.split(";").length>1) {
-						offerta.setCommessa(stato_commessa.split(";")[1]);	
-					}
+					//offerta.setStato(stato_commessa.split(";")[0]);
+					//if(stato_commessa.split(";").length>1) {
+						offerta.setCommessa("1");	
+				//	}
 					
 				}
 				

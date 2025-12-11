@@ -497,41 +497,75 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 	
 	
 	private static String sqlCreateSicurezzaElettrica="CREATE TABLE tblMisuraSicurezzaElettrica(id Integer primary key, "+ 
-													 "  id_strumento int(11),"+
-													 "  stato int(1) default 0, "+
-													 "  ID_PROVA varchar(255) ," + 
-													 "  DATA varchar(255) ," + 
-													 "  ORA varchar(255) ," + 
-													 "  SK varchar(255) ," + 
-													 "  R_SL varchar(255) ," + 
-													 "  R_SL_GW varchar(255) ," + 
-													 "  R_ISO varchar(255) ," + 
-													 "  R_ISO_GW varchar(255) ," + 
-													 "  U_ISO varchar(255) ," + 
-													 "  U_ISO_GW varchar(255) ," + 
-													 "  I_DIFF varchar(255) ," + 
-													 "  I_DIFF_GW varchar(255) ," + 
-													 "  I_EGA varchar(255) ," + 
-													 "  I_EGA_GW varchar(255) ," + 
-													 "  I_EPA varchar(255) ," + 
-													 "  I_EPA_GW varchar(255) ," + 
-													 "  I_GA varchar(255) ," + 
-													 "  I_GA_GW varchar(255) ," + 
-													 "  I_GA_SFC varchar(255) ," + 
-													 "  I_GA_SFC_GW varchar(255) ," + 
-													 "  I_PA_AC varchar(255) ," + 
-													 "  I_PA_AC_GW varchar(255) ," + 
-													 "  I_PA_DC varchar(255) ," + 
-													 "  I_PA_DC_GW varchar(255) ," + 
-													 "  PSPG varchar(255) ," + 
-													 "  UBEZ_GW varchar(255),"
-													 + "COND_PROT varchar(2),"
-													 + "INVOLUCRO varchar(2),"
-													 + "FUSIBILI varchar(2),"
-													 + "CONNETTORI varchar(2),"
-													 + "MARCHIATURE varchar(2),"
-													 + "ALTRO varchar(2),"
-													 + "PARTI_APPLICATE varchar(255))";
+			 "  id_strumento int(11),"+
+			 "  stato int(1) default 0, "+
+			 "  TIPO_NORMA varchar(255) ," +
+			 "  ID_PROVA varchar(255) ," + 
+			 "  DATA varchar(255) ," + 
+			 "  ORA varchar(255) ," + 
+			 "  SK varchar(255) ," + 
+			 "  R_SL varchar(255) ," + 
+			 "  R_SL_GW varchar(255) ," + 
+			 "  R_ISO varchar(255) ," + 
+			 "  R_ISO_GW varchar(255) ," + 
+			 "  U_ISO varchar(255) ," + 
+			 "  U_ISO_GW varchar(255) ," + 
+			 "  I_DIFF varchar(255) ," + 
+			 "  I_DIFF_GW varchar(255) ," + 
+			 "  I_EGA varchar(255) ," + 
+			 "  I_EGA_GW varchar(255) ," + 
+			 "  I_EPA varchar(255) ," + 
+			 "  I_EPA_GW varchar(255) ," + 
+			 "  I_GA varchar(255) ," + 
+			 "  I_GA_GW varchar(255) ," + 
+			 "  I_GA_SFC varchar(255) ," + 
+			 "  I_GA_SFC_GW varchar(255) ," + 
+			 "  I_PA_AC varchar(255) ," + 
+			 "  I_PA_AC_GW varchar(255) ," + 
+			 "  I_PA_DC varchar(255) ," + 
+			 "  I_PA_DC_GW varchar(255) ," + 
+			 "  PSPG varchar(255) ," + 
+			 "  UBEZ_GW varchar(255),"+
+			 " IDIFF varchar(255) ," +
+			 " IDIFF_GW varchar(255) ," +
+			 " IEA_NC varchar(255) ," +
+			 " IEA_NC_GW varchar(255) ," +
+			 " IEA_SFC varchar(255) ," +
+			 " IEA_SFC_GW varchar(255) ," +
+			 " IG_NC varchar(255) ," +
+			 " IG_NC_GW varchar(255) ," +
+			 " IG_SFC varchar(255) ," +
+			 " IG_SFC_GW varchar(255) ," +
+			 " IPAAC_NC varchar(255) ," +
+			 " IPAAC_NC_GW varchar(255) ," +
+			 " IPAAC_SFC varchar(255) ," +
+			 " IPAAC_SFC_GW varchar(255) ," +
+			 " IPADC_NC varchar(255) ," +
+			 " IPADC_NC_GW varchar(255) ," +
+			 " IPADC_SFC varchar(255) ," +
+			 " IPADC_SFC_GW varchar(255) ," +
+			 " IPNAT varchar(255) ," +
+			 " IPNAT_GW varchar(255) ," +
+			 " IPHAC_NC varchar(255) ," +
+			 " IPHAC_NC_GW varchar(255) ," +
+			 " IPHAC_SFC varchar(255) ," +
+			 " IPHAC_SFC_GW varchar(255) ," +
+			 " IPHDC_NC varchar(255) ," +
+			 " IPHDC_NC_GW varchar(255) ," +
+			 " IPHDC_SFC varchar(255) ," +
+			 " IPHDC_SFC_GW varchar(255) ," +
+			 " MAX_POWER_INTAKE_601 varchar(255) ," +
+			 " POWER_FACTOR_LF_601 varchar(255) ," +
+			 " MAX_SUPPLY_CUR_601 varchar(255) ," +
+			 " ENERGY_601 varchar(255) ," +
+			 " DURATION_601 varchar(255) ," +
+			 " COND_PROT varchar(2)," +
+			 " INVOLUCRO varchar(2)," +
+			 " FUSIBILI varchar(2)," +
+			 " CONNETTORI varchar(2)," +
+			 " MARCHIATURE varchar(2)," +
+			 " ALTRO varchar(2)," +
+			 " PARTI_APPLICATE varchar(255))";
 
 	
 	private static String sqlCreateMisuraVER="CREATE TABLE ver_misura (id Integer primary key autoincrement," + 

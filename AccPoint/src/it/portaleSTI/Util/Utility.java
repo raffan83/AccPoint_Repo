@@ -2226,5 +2226,15 @@ public class Utility extends HttpServlet {
 			        return gson.toJson(obj);
 			    }
 			    
-			    
+			 public static Date aggiungiMesi(Date dataIniziale, int mesi) {
+				    if (dataIniziale == null) {
+				        throw new IllegalArgumentException("La data iniziale non può essere null");
+				    }
+
+				    Calendar cal = Calendar.getInstance();
+				    cal.setTime(dataIniziale);
+				    cal.add(Calendar.MONTH, mesi);
+
+				    return cal.getTime();
+				}
 }

@@ -48,6 +48,7 @@ import it.portaleSTI.DTO.VerTipoStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoVerificaDTO;
 import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
 
 
 public class SQLLiteDAO {
@@ -1627,11 +1628,22 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 		{
 		
 			int idMisura=rs.getInt("idMis");
+			int freqMesi=rs.getInt("freq_mesi");
 			
 			misura= new VerMisuraDTO();
 			strumento = new VerStrumentoDTO();
 			misura.setDataVerificazione(sdf.parse(rs.getString("data_verificazione")));
-			misura.setDataScadenza(sdf.parse(rs.getString("data_scadenza")));
+			
+			String dataScadenza=rs.getString("data_scadenza");
+			
+			if(dataScadenza==null || dataScadenza.length()==0) 
+			{
+				misura.setDataScadenza(Utility.aggiungiMesi(misura.getDataVerificazione(), freqMesi));
+			}else 
+			{
+				misura.setDataScadenza(sdf.parse(dataScadenza));
+			}
+			
 			misura.setTipoRisposta(rs.getInt("tipo_risposta"));
 			misura.setTipo_verifica(new VerTipoVerificaDTO(rs.getInt("tipo_verifica"),""));
 			misura.setMotivo_verifica(new VerMotivoVerificaDTO(rs.getInt("motivo_verifica"),""));
@@ -1745,7 +1757,7 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 				strumento.setData_messa_in_servizio(sdf.parse(dataMs));
 			}
 			strumento.setTipologia(new VerTipologiaStrumentoDTO(rs.getInt("id_tipologia"),""));
-			strumento.setFreqMesi(rs.getInt("freq_mesi"));
+			strumento.setFreqMesi(freqMesi);
 			strumento.setCreato(rs.getString("creato"));
 			strumento.setFamiglia_strumento(new VerFamigliaStrumentoDTO(rs.getString("famiglia_strumento"),""));
 			

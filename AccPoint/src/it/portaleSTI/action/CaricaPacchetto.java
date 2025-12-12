@@ -89,6 +89,7 @@ public class CaricaPacchetto extends HttpServlet {
 			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 			
 			if(action==null) {
+				try {
 				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 				List<FileItem> items = uploadHandler.parseRequest(request);
 				for (FileItem item : items) {
@@ -203,7 +204,10 @@ public class CaricaPacchetto extends HttpServlet {
 					GestioneInterventoDati.updateNStrumenti(esito.getInterventoDati().getId(),esito.getInterventoDati().getNumStrMis());
 				}
 				writer.write(jsono.toString());
-				writer.close();
+				writer.close();}catch(Exception ex) 
+				{
+					logger.error(ex);
+				}
 			}
 			else if(action!=null && action.equals("firma_cliente")) {
 				

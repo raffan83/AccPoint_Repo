@@ -105,6 +105,8 @@ public class GestioneVerOfferte extends HttpServlet {
 		session.beginTransaction();
 		
 		boolean test = false;
+		boolean webapi = false; 
+		
 		
 		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 		
@@ -129,10 +131,15 @@ public class GestioneVerOfferte extends HttpServlet {
 				
 				for (OffOffertaDTO offerta : lista_offerte) {
 					String stato_commessa = map.get(offerta.getN_offerta());
-					//offerta.setStato(stato_commessa.split(";")[0]);
-					//if(stato_commessa.split(";").length>1) {
-						offerta.setCommessa("1");	
-				//	}
+					if(stato_commessa == null) {
+						offerta.setStato("ELIMINATA");
+					}else {
+						offerta.setStato(stato_commessa.split(";")[0]);
+						if(stato_commessa.split(";").length>1) {
+							offerta.setCommessa(stato_commessa.split(";")[1]);	
+						}
+					}
+					
 					
 				}
 				
@@ -497,38 +504,52 @@ public class GestioneVerOfferte extends HttpServlet {
 				 // DECRIPTA
 				 String cliente_decrypted = Utility.decryptData(cliente_encrypted);
 				 
-				 String sede_encrypted = testata.get("ID_SEDE").getAsString();
+				 String sede_encrypted = testata.get("CODSPED").getAsString();
 
 				 // DECRIPTA
 				 String sede_decrypted = Utility.decryptData(sede_encrypted);
 
 				 // SOSTITUISCI IL VALORE NEL JSON
 				 testata.addProperty("ID_ANAGEN", cliente_decrypted);
+				 testata.addProperty("CODSPED", sede_decrypted);
 
 				// ottieni di nuovo la stringa (se ti serve)
 				jsonInput = json.toString();
 
 				 disableSSLValidation();
 				 
-				 String API_URL = "https://portale.ncsnetwork.it/webapi/api/ordine";
 				 String auth = utente.getUser()+":"+utente.getPwd_milestone();
 				 
+				 
+				 String API_URL="";
+				 if(webapi) {
+					 API_URL = "https://portale.ncsnetwork.it/webapi/api/ordine";
+				 }else {
+					 API_URL = "http://localhost:8081/webapi/api/ordine";
+				 }
+									 
 					if(test) {
 						API_URL= "https://portaletest.ncsnetwork.it/webapi/api/ordine";
 						auth = "age:Akeron2025!";
 					}
+					
+					String encoded = Base64.getEncoder().encodeToString(auth.getBytes("UTF-8"));
 				 
 			        // PREPARO LA CHIAMATA A NCS
 			        URL url = new URL(API_URL);
-			        HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+			        HttpURLConnection conn;
+			        if(webapi) {
+			        	 conn = (HttpsURLConnection) url.openConnection();
+			        }else {
+			        	conn = (HttpURLConnection) url.openConnection();
+			        }
+			       
+			       
 			        conn.setDoOutput(true);
 			        conn.setRequestMethod("POST");
 			        conn.setRequestProperty("Content-Type", "application/json");
 
-			        // BASIC AUTH (come Postman)
-			       
-//			        String auth = 
-			        String encoded = Base64.getEncoder().encodeToString(auth.getBytes("UTF-8"));
+
 			        conn.setRequestProperty("Authorization", "Basic " + encoded);
 
 			        // Invio il JSON a NCS
@@ -551,10 +572,7 @@ public class GestioneVerOfferte extends HttpServlet {
 			        
 			        json.addProperty("ID_OFFERTA", id_offerta);
 			        
-			        if(id_offerta!=null) {
-			        	
-			        	GestioneAnagraficaRemotaBO.updateSedeOfferta(id_offerta, sede_decrypted, cliente_decrypted, test);
-			        }
+			       
 			        
 			        
 			        risposta = json.toString();

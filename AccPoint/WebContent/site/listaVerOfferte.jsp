@@ -1538,8 +1538,22 @@ $('#selectAlltabPM').on('ifUnchecked', function (ev) {
 $('#nuovoClienteForm').on('submit', function(e){
 	 e.preventDefault();
 	 
+var permesso =false;
 	 
-	 callAjaxForm('#nuovoClienteForm','gestioneVerOfferte.do?action=nuovo_cliente');
+	 if("${userObj.codice_agente}"!=null && "${userObj.codice_agente}"!="" && "${userObj.pwd_milestone}"!=null && "${userObj.pwd_milestone}"!=""){
+		 permesso = true
+	 }
+	 if(!permesso){
+		 $('#myModalErrorContent').html("Utente non abilitato al salvataggio dell'anagrafica!");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			
+			
+				$('#myModalError').modal('show');
+	 }else{
+		 callAjaxForm('#nuovoClienteForm','gestioneVerOfferte.do?action=nuovo_cliente'); 
+	 }
+	 
 });
 
 
@@ -1574,6 +1588,12 @@ var righe =[];
  	    	index++;
  	    
  	    });
+	 
+	 var permesso =false;
+	 
+	 if("${userObj.codice_agente}"!=null && "${userObj.codice_agente}"!="" && "${userObj.pwd_milestone}"!=null && "${userObj.pwd_milestone}"!=""){
+		 permesso = true
+	 }
     	
 	 
 	 if(id_articoli == ''){
@@ -1586,6 +1606,13 @@ var righe =[];
 	 }
 	 else if(allegati.length==0){
 		 $('#myModalErrorContent').html("Allega almeno un'immagine!");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			
+			
+				$('#myModalError').modal('show');
+	 }else if(!permesso){
+		 $('#myModalErrorContent').html("Utente non abilitato al salvataggio dell'offerta!");
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
 			
@@ -2193,6 +2220,8 @@ function sommaDati(){
  
 function inviaOrdine() {
 
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
 	const today = new Date();
 	const formatted = today.toISOString().split('T')[0];
     const payload = {
@@ -2201,10 +2230,10 @@ function inviaOrdine() {
         allegati : allegati,
         testata: {
         	  "CODAGE": "${userObj.codice_agente}",
-        	  
+        	      
         	    "DT_ORDINE": formatted,
         	    "ID_ANAGEN": $('#cliente').val(),
-        	    "ID_SEDE": $('#sede').val(),        	  
+        	    "CODSPED": $('#sede').val(), 
         	    "ID_ORDINE_MOBILE": id_ordine_mobile,
         	    "NOTE_INTERNE": $('#note').val(),
         	    "TIPO": "ORD",
@@ -2214,7 +2243,8 @@ function inviaOrdine() {
         }
     };
 
-    fetch("https://www.calver.it/gestioneVerOfferte.do?action=inserisci_offerta_milestone", {
+
+     fetch("gestioneVerOfferte.do?action=inserisci_offerta_milestone", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(payload)
@@ -2228,6 +2258,8 @@ function inviaOrdine() {
 	        	$('#id_offerta').val(id_offerta); // imposta il valore del campo
 		        callAjaxForm('#nuovaOffertaForm','gestioneVerOfferte.do?action=nuova_offerta');	
 	        }else{
+	        	pleaseWaitDiv.modal('hide');
+	      
 	        	  $('#myModalErrorContent').html("Errore nel salvataggio dell'offerta");
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
@@ -2238,7 +2270,13 @@ function inviaOrdine() {
 	        
 	    }
 	})
-    .catch(e =>  {$('#myModalErrorContent').html("Errore nel salvataggio dell'offerta");
+    .catch(e => 
+    
+    {
+    	pleaseWaitDiv.modal('hide');
+    	
+    	$('#myModalErrorContent').html("Errore nel salvataggio dell'offerta");
+    
 	  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
 			

@@ -2214,7 +2214,7 @@ function inviaOrdine() {
         }
     };
 
-    fetch("http://localhost:8080/AccPoint/gestioneVerOfferte.do?action=inserisci_offerta_milestone", {
+    fetch("https://www.calver.it/gestioneVerOfferte.do?action=inserisci_offerta_milestone", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(payload)

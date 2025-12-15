@@ -26,6 +26,7 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TaraturaEsternaCampioneDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
@@ -875,7 +876,7 @@ public static ArrayList<CampioneDTO> getListaCampioniAffini(String codice, Sessi
 }
 
 
-public static ArrayList<HashMap<String, Integer>> getListaScadenzeCampione(String verificazione, int id_company, String lat, Session session) {
+public static ArrayList<HashMap<String, Integer>> getListaScadenzeCampione(String verificazione, int id_company, String lat, UtenteDTO utente, Session session) {
 	
 	ArrayList<CampioneDTO> lista=null;
 
@@ -896,7 +897,14 @@ public static ArrayList<HashMap<String, Integer>> getListaScadenzeCampione(Strin
 		query.setParameter("_verificazione", Integer.parseInt(verificazione));
 	}else {
 		//query = session.createQuery("from CampioneDTO where codice "+ not+" like '%CDT%' and id_company = :_idCmp and statoCampione != 'F'");
-		query = session.createQuery("from CampioneDTO where codice "+ not+" like '%CDT%' and statoCampione != 'F'");
+		if(!utente.isTras()&& utente.checkRuolo("FR")) {
+			query = session.createQuery("from CampioneDTO where codice "+ not+" like '%CDT%' and statoCampione != 'F' and id_company = :_idCmp");
+			query.setParameter("_idCmp", id_company);
+		}else {
+			query = session.createQuery("from CampioneDTO where codice "+ not+" like '%CDT%' and statoCampione != 'F'");
+		}
+		
+		
 	}
 	
 	

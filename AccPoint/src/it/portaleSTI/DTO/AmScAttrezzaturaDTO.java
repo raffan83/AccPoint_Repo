@@ -11,7 +11,16 @@ public class AmScAttrezzaturaDTO {
     private String costruttore;
     private String matricola;
     private Integer disabilitato;
-    Map<String, Integer> mapScadenze = new HashMap<String, Integer>();
+    private AmScTipoAttrezzaturaDTO tipo_attrezzatura;
+    public AmScTipoAttrezzaturaDTO getTipo_attrezzatura() {
+		return tipo_attrezzatura;
+	}
+
+	public void setTipo_attrezzatura(AmScTipoAttrezzaturaDTO tipo_attrezzatura) {
+		this.tipo_attrezzatura = tipo_attrezzatura;
+	}
+
+	Map<String, Integer> mapScadenze = new HashMap<String, Integer>();
 
     // Getter e Setter
     public Integer getId() {

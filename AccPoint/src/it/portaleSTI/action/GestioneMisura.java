@@ -130,7 +130,7 @@ public class GestioneMisura extends HttpServlet {
 				}
 								
 				//ArrayList<MisuraDTO> lista_misure = GestioneMisuraBO.getListaMisurePerData(start, end, false, session);
-				ArrayList<String> lista_misure = DirectMySqlDAO.getListaMisureFromDate(df.format(start), df.format(end));
+				ArrayList<String> lista_misure = DirectMySqlDAO.getListaMisureFromDate(df.format(start), df.format(end),utente);
 				
 				df = new SimpleDateFormat("dd/MM/yyyy");	
 				request.getSession().setAttribute("lista_misure", lista_misure);

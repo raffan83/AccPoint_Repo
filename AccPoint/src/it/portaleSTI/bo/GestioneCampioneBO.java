@@ -10,6 +10,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DocumentoCampioneDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.SequenceDTO;
 import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
@@ -241,9 +242,9 @@ public class GestioneCampioneBO {
 	}
 
 
-	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end, boolean lat, int id_company, int verificazione, Session session) throws Exception {
+	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end, boolean lat, int id_company, int verificazione,UtenteDTO utente, Session session) throws Exception {
 		
-		return GestioneCampioneDAO.getCampioniScadenzaDate(data_start, data_end, lat,id_company, verificazione, session);
+		return GestioneCampioneDAO.getCampioniScadenzaDate(data_start, data_end, lat,id_company, verificazione, utente, session);
 	}
 
 

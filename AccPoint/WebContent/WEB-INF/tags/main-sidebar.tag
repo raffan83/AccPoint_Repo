@@ -69,7 +69,7 @@
     			<li><a href="#" onclick="callAction('listaInterventi.do',null,true);">Lista Interventi</a></li>
     			
     			<% }%>
-    				<% if(user.checkRuolo("AM") || (user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")&& !user.checkRuolo("PV"))){%>
+    				<% if(user.checkRuolo("AM") || (user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")&& !user.checkRuolo("FR"))){%>
     			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=lista&admin=0',null,true);">Assegnazione Attività</a></li>
     			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=controllo_attivita&admin=0',null,true);">Controllo Attività</a></li>
     				<% }%>
@@ -138,9 +138,11 @@
           </a>
           <ul class="treeview-menu">
 			<li><a href="listaCampioni.do">Campioni  Personali</a></li>
-			 <% if(user.checkRuolo("AM") || (user.checkPermesso("CAMPIONI_MENU_METROLOGIA") && !user.checkRuolo("PV"))){%>
+			 <% if(user.checkRuolo("AM") || (user.checkPermesso("CAMPIONI_MENU_METROLOGIA") && !user.checkRuolo("FR"))){%>
 			<li><a href="listaCampioniPrenotabili.do">Campioni  Prenotabili</a></li>
+			<% }%>
 			<li><a href="scadenziario.do">Scadenziario</a></li>
+			 <% if(user.checkRuolo("AM") || (user.checkPermesso("CAMPIONI_MENU_METROLOGIA") && !user.checkRuolo("FR"))){%>
 			<!-- <li><a href="scadenziario.do?action=campioni&scadenzario_lat_generale=1">Scadenziario LAT</a></li> -->
 			<li><a href="scadenziario.do?lat=CDT">Scadenziario LAT</a></li>
 			<li><a href="gestioneLibrerieElettrici.do?action=lista">Librerie Elettrici</a></li>
@@ -622,7 +624,7 @@
 
 			<li><a href="downloadCalver.do?action=dasmtarLat">DasmTarLAT v1.0.7</a></li>
 
-			<li><a href="downloadCalver.do?action=sicurettaElettrica">DasmTarSE v1.0.2</a></li>
+			<li><a href="downloadCalver.do?action=sicurettaElettrica">DasmTarSE v2.0.1</a></li>
 			<li><a href="downloadCalver.do?action=dasmtarVerificazione">DasmTarVER v3.6.1</a></li>
 			<li><a href="downloadCalver.do?action=printLabel">PrintLabel v1.2.0</a></li>
 			<li><a href="downloadCalver.do?action=librerie">Librerie</a></li>

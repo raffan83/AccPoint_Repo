@@ -40,6 +40,7 @@ import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoEventoRegistroDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
@@ -303,7 +304,8 @@ public class ListaCampioni extends HttpServlet {
 				
 				PrintWriter out = response.getWriter();
 							
-				JsonArray listaCampioni = GestioneCampioneBO.getCampioniScadenzaDate(data_start, data_end, lat, cmp.getId(), Integer.parseInt(verificazione), session);
+				UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+				JsonArray listaCampioni = GestioneCampioneBO.getCampioniScadenzaDate(data_start, data_end, lat, cmp.getId(), Integer.parseInt(verificazione),utente, session);
 			
 				JsonArray campioni = (JsonArray) listaCampioni.get(0);
 				JsonArray descrizioni = (JsonArray)listaCampioni.get(1);

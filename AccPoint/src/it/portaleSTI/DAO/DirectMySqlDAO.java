@@ -192,6 +192,8 @@ public class DirectMySqlDAO {
 	private static String sqlVerMisurePerDate="select a.id , b.id_cliente,b.id_sede from ver_misura a JOIN ver_intervento b on a.id_ver_intervento=b.id where a.data_verificazione BETWEEN ? AND ?";
 
 	private static String sqlMisurePerDate = "SELECT m.id, m.id_intervento, s.denominazione,s.matricola,s.codice_interno, m.dataMisura, i.id_commessa, i.nome_cliente, i.nome_sede, ms.descrizione, m.lat, m.nCertificato, c.id, m.obsoleto, s.__id, s.modello, s.costruttore, (SELECT nominativo FROM users as u where u.id = m.id_user) , c.data_creazione FROM misura m LEFT JOIN strumento s ON s.__id = m.id_strumento LEFT JOIN intervento i ON i.id = m.id_intervento LEFT JOIN lat_misura l ON l.id = m.idMisura LEFT JOIN lat_master ms ON l.id_misura_lat = ms.id LEFT JOIN certificato c on m.id = c.id_misura WHERE m.dataMisura BETWEEN ? AND ?";
+	
+	private static String sqlMisurePerDateOperatore = "SELECT m.id, m.id_intervento, s.denominazione,s.matricola,s.codice_interno, m.dataMisura, i.id_commessa, i.nome_cliente, i.nome_sede, ms.descrizione, m.lat, m.nCertificato, c.id, m.obsoleto, s.__id, s.modello, s.costruttore, (SELECT nominativo FROM users as u where u.id = m.id_user) , c.data_creazione FROM misura m LEFT JOIN strumento s ON s.__id = m.id_strumento LEFT JOIN intervento i ON i.id = m.id_intervento LEFT JOIN lat_misura l ON l.id = m.idMisura LEFT JOIN lat_master ms ON l.id_misura_lat = ms.id LEFT JOIN certificato c on m.id = c.id_misura WHERE m.dataMisura BETWEEN ? AND ? AND m.id_user = ?";
 
 	private static String sqlDataStatoCertificatoMisura = "SELECT c.id_stato_certificato, c.data_creazione FROM certificato c LEFT JOIN misura m ON c.id_misura = m.id WHERE c.id_misura = ?"; 
 	
@@ -273,7 +275,7 @@ public class DirectMySqlDAO {
 	}
 	
 	
-
+//
 //	public static String getPassword(String pwd) throws Exception
 //	{
 //		String toReturn="";
@@ -2704,7 +2706,7 @@ pst=con.prepareStatement(sqlDatiStrumentiPerGrafico);
 
 
 
-	public static ArrayList<String> getListaMisureFromDate(String dateFrom, String dateTo) throws Exception {
+	public static ArrayList<String> getListaMisureFromDate(String dateFrom, String dateTo, UtenteDTO utente) throws Exception {
 		ArrayList<String> lista =new ArrayList<String>();
 
 		Connection con=null;
@@ -2720,11 +2722,19 @@ pst=con.prepareStatement(sqlDatiStrumentiPerGrafico);
 			con=getConnection();
 
 
-			pst=con.prepareStatement(sqlMisurePerDate);		
-
+			if(!utente.isTras() && utente.checkRuolo("FR")) {
+				pst=con.prepareStatement(sqlMisurePerDateOperatore);		
+			}else {
+				pst=con.prepareStatement(sqlMisurePerDate);		
+			}
+			
+			
 
 			pst.setDate(1, sql1);
 			pst.setDate(2, sql2);
+			if(!utente.isTras() && utente.checkRuolo("FR")) {
+				pst.setInt(3, utente.getId());
+			}
 
 
 			rs=pst.executeQuery();

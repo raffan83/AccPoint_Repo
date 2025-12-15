@@ -8,6 +8,7 @@ import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
 import it.portaleSTI.DTO.DocumentoCampioneDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.SequenceDTO;
@@ -573,7 +574,7 @@ public class GestioneCampioneDAO {
 		return lista;
 	}
 
-	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end, boolean lat, int id_company, int verificazione, Session session) throws Exception {
+	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end, boolean lat, int id_company, int verificazione,UtenteDTO utente, Session session) throws Exception {
 
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");		
 
@@ -599,7 +600,14 @@ public class GestioneCampioneDAO {
 			query.setParameter("_verificazione", verificazione);	
 		}else {
 			//query = session.createQuery("from CampioneDTO WHERE (data_scadenza between :_date_start and :_date_end or data_scadenza_verifica_intermedia between :_date_start and :_date_end or data_scadenza_manutenzione between :_date_start and :_date_end) and id_Company=:_id_company and statoCampione != 'F' and codice "+not+" LIKE  '%CDT%'");
-			query = session.createQuery("from CampioneDTO WHERE (data_scadenza between :_date_start and :_date_end or data_scadenza_verifica_intermedia between :_date_start and :_date_end or data_scadenza_manutenzione between :_date_start and :_date_end) and statoCampione != 'F' and codice "+not+" LIKE  '%CDT%'");
+			
+			if(!utente.isTras()&& utente.checkRuolo("FR")) {
+				query = session.createQuery("from CampioneDTO WHERE (data_scadenza between :_date_start and :_date_end or data_scadenza_verifica_intermedia between :_date_start and :_date_end or data_scadenza_manutenzione between :_date_start and :_date_end) and statoCampione != 'F' and codice "+not+" LIKE  '%CDT%' and id_Company=:_id_company");
+				query.setParameter("_id_company", id_company);
+			}else {
+				query = session.createQuery("from CampioneDTO WHERE (data_scadenza between :_date_start and :_date_end or data_scadenza_verifica_intermedia between :_date_start and :_date_end or data_scadenza_manutenzione between :_date_start and :_date_end) and statoCampione != 'F' and codice "+not+" LIKE  '%CDT%'");
+			}
+			
 		}
 		
 			

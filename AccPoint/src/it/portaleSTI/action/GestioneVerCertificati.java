@@ -211,10 +211,12 @@ public class GestioneVerCertificati extends HttpServlet {
 					 idSede = cliente[1];
 					 
 				
-					 if(cliente.length>2) {
-						 company = cliente[2];
-					 }
 					
+					
+				}
+				
+				if(!utente.isTras()) {
+					company = utente.getCompany().getId()+"";
 				}
 								
 				ArrayList<VerCertificatoDTO> listaCertificati =	GestioneVerCertificatoBO.getListaCertificati(2,Integer.parseInt(filtro_emissione),Integer.parseInt(idCliente),Integer.parseInt(idSede),company,false, session);

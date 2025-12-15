@@ -58,7 +58,7 @@
 		                        <option value="${encrypt_0 }">Tutti i clienti</option>
 		                        </c:when>
 		                        <c:otherwise>
-		                         <option value="${encrypt_0 }_${userObj.company.id }">Tutti i clienti</option>
+		                         <option value="${encrypt_0 }_${utl:encryptData(userObj.company.id) }">Tutti i clienti</option>
 		                        </c:otherwise>
 		                        </c:choose>
 		                      <c:forEach items="${listaClienti}" var="cliente">

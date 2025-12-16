@@ -246,7 +246,7 @@ function modalPrenotazione(day, id_veicolo, id_prenotazione){
 
 	if(permesso == "true"){
 		
-		var currentYear = new Date().getFullYear()
+		var currentYear = $('#anno').val()
 		var dayValue = parseInt(day);
 		var localDate = new Date(Date.UTC(currentYear, 0, dayValue));
 		var d = localDate.getUTCDate();

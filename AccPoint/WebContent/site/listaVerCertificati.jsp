@@ -51,25 +51,21 @@
 		              <div class="col-sm-6">
 		    
 		                <div class="form-group" id="form_dom">
-		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."   onchange="filtraVerCertificati()" class="form-control select2" data-live-search="true" >
+		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."   onchange="filtraVerCertificati('${encrypt_0 }')" class="form-control select2" data-live-search="true" >
 		                       <option></option>
-		                       <c:choose>
-		                       <c:when test="${userObj.isTras() }">
+		            
 		                        <option value="${encrypt_0 }">Tutti i clienti</option>
-		                        </c:when>
-		                        <c:otherwise>
-		                         <option value="${encrypt_0 }_${utl:encryptData(userObj.company.id) }">Tutti i clienti</option>
-		                        </c:otherwise>
-		                        </c:choose>
+		                        
 		                      <c:forEach items="${listaClienti}" var="cliente">
-		                        <c:choose>
+		                      <option value="${utl:encryptData(cliente.key)}">${cliente.value}</option>  
+		                       <%--  <c:choose>
 		                       <c:when test="${userObj.isTras() }">
-		                       <option value="${utl:encryptData(cliente.key)}">${cliente.value}</option>  
+		                       
 		                       </c:when>
 		                        <c:otherwise>
 		                           <option value="${utl:encryptData(cliente.key)}_${utl:encryptData(userObj.company.id) }">${cliente.value}</option>   
 		                           </c:otherwise>
-		                        </c:choose>                
+		                        </c:choose>            --%>     
 		                     </c:forEach>
 		                    </select>
 		              </div>
@@ -79,7 +75,7 @@
 		  
 		  <div class="form-group">
 		                
-		 				<select name="selectFiltri" id="selectFiltri" data-placeholder="Seleziona tipologia..."  onchange="filtraVerCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true">
+		 				<select name="selectFiltri" id="selectFiltri" data-placeholder="Seleziona tipologia..."  onchange="filtraVerCertificati('${encrypt_0 }')" class="form-control select2" aria-hidden="true" data-live-search="true">
 		                             <option>
 		                            <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_TUTTI_METROLOGIA')}"> 
 		         					 	<option value="tutti">Tutte le tipologie</option>
@@ -98,7 +94,7 @@
 		</div>
 		<div class="col-sm-2">
 		  <div class="form-group">
-		                      <button type="button" onclick="filtraVerCertificati()" class="btn btn-info btn-flat">Applica</button>
+		                      <button type="button" onclick="filtraVerCertificati('${encrypt_0 }')" class="btn btn-info btn-flat">Applica</button>
 		                    </div>
 		</div>
 		</div>

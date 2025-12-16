@@ -11716,13 +11716,35 @@ function creaEsitoComunicazione(str){
 
 
 
-function filtraVerCertificati(){
+function filtraVerCertificati(encrypt_0){
 	 
 
 	  var cliente=$('#selectCliente').val();
 	  var tipologia=$('#selectFiltri').val();
 		
 	  var filtro = tipologia.split("_");
+	  
+	  
+	  if(cliente == encrypt_0){
+		  $('#selectFiltri option[value=tutti]').prop("disabled", true);
+		  $('#selectFiltri option[value=chiusi_1]').prop("disabled", true);
+		  $('#selectFiltri').select2();
+	  }else{
+		  $('#selectFiltri option[value=tutti]').prop("disabled", false);
+		  $('#selectFiltri option[value=chiusi_1]').prop("disabled", false);
+		  $('#selectFiltri').select2();
+	  }
+	  
+	
+	  
+	  if(tipologia == "tutti" || tipologia == "chiusi_1"){
+		  $('#selectCliente option[value="'+encrypt_0+'"]').prop("disabled", true);
+		
+	  }else{
+		  $('#selectCliente option[value="'+encrypt_0+'"]').prop("disabled", false);
+		 
+	  }
+	
 	  
 	  
 	  if(cliente!=null && tipologia != null && tipologia != "" && cliente != ""){

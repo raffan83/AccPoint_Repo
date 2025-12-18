@@ -44,6 +44,7 @@ import it.portaleSTI.DTO.AmScAllegatoDTO;
 import it.portaleSTI.DTO.AmScAttivitaDTO;
 import it.portaleSTI.DTO.AmScAttrezzaturaDTO;
 import it.portaleSTI.DTO.AmScScadenzarioDTO;
+import it.portaleSTI.DTO.AmScTipoAttrezzaturaDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.OffOffertaFotoDTO;
 import it.portaleSTI.DTO.SedeDTO;
@@ -76,7 +77,83 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	doPost(request, response);
+    	
+    	if(Utility.validateSession(request,response,getServletContext()))return;
+
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+		
+		String action = request.getParameter("action");
+		
+		JsonObject myObj = new JsonObject();
+		boolean ajax = false;
+        response.setContentType("application/json");
+        
+		
+			 
+		try {
+			
+			if(action!=null && action.equals("get_lista_attivita")) {
+				
+				ajax = true;
+				
+				String id_attrezzatura = request.getParameter("id_attrezzatura");
+				
+				AmScAttrezzaturaDTO attrezzatura = (AmScAttrezzaturaDTO) session.get(AmScAttrezzaturaDTO.class, Integer.parseInt(id_attrezzatura));
+				
+				ArrayList<AmScAttivitaDTO> lista_attivita = GestioneAM_ScadenzarioBO.getListaAttivitaTipo(attrezzatura.getTipo_attrezzatura().getId(),session);
+				
+				int max_id = GestioneAM_ScadenzarioBO.getMaxIdAttivita(session);
+				
+				Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+				
+				
+				myObj.addProperty("success",true);
+				myObj.add("lista_attivita",g.toJsonTree(lista_attivita));
+				myObj.addProperty("max_id",""+max_id);
+				PrintWriter out = response.getWriter();
+	        	
+				out.print(myObj);
+				
+				session.getTransaction().commit();
+	        	session.close();
+	        	
+	        	
+			}else {
+				
+				session.getTransaction().commit();
+	        	session.close();
+				doPost(request, response);
+			}
+		
+			} 
+			catch(Exception e)
+	    	{
+				e.printStackTrace();
+				session.getTransaction().rollback();
+	        	session.close();
+				if(ajax) {
+					
+					PrintWriter out = response.getWriter();
+					
+		        	
+		        	request.getSession().setAttribute("exception", e);
+		        	myObj = STIException.getException(e);
+		        	out.print(myObj);
+	        	}else {
+	   			    			
+	    			e.printStackTrace();
+	    			request.setAttribute("error",STIException.callException(e));
+	    	  	     request.getSession().setAttribute("exception", e);
+	    			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	    		     dispatcher.forward(request,response);	
+	        	}
+	    	} 
+    	
+    	
+    	
     	}
 
     	/**
@@ -125,10 +202,11 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     				}
     				
     				
-    				
+    				ArrayList<AmScTipoAttrezzaturaDTO> lista_tipi = GestioneAM_ScadenzarioBO.getListaTipiAttrezzatura(session);
     									
     				request.getSession().setAttribute("lista_clienti", listaClienti);				
     				request.getSession().setAttribute("lista_sedi", listaSedi);
+    				request.getSession().setAttribute("lista_tipi", lista_tipi);
 
     				Gson gson = new GsonBuilder().create();
     				JsonArray listaCl = gson.toJsonTree(listaClienti).getAsJsonArray();
@@ -153,7 +231,7 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     				
     				ArrayList<AmScAttrezzaturaDTO> lista_attrezzature = GestioneAM_ScadenzarioBO.getListaAttrezzature(Integer.parseInt(idCliente), Integer.parseInt(idSede.split("_")[0]),session);
     				ArrayList<AmScScadenzarioDTO> lista_scadenze = GestioneAM_ScadenzarioBO.getListaScadenze(Integer.parseInt(idCliente), Integer.parseInt(idSede.split("_")[0]),Integer.parseInt(anno), session);
-    				ArrayList<AmScAttivitaDTO> lista_attivita = GestioneAM_ScadenzarioBO.getListaAttivita(session);
+    				//ArrayList<AmScAttivitaDTO> lista_attivita = GestioneAM_ScadenzarioBO.getListaAttivita(session);
     				
     				Map<Integer, Map<String, Integer>> conteggiPerAttrezzatura = new HashMap<>();
 
@@ -191,7 +269,7 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     				    }
     				
     				request.getSession().setAttribute("lista_attrezzature", lista_attrezzature);
-    				request.getSession().setAttribute("lista_attivita", lista_attivita);
+    				//request.getSession().setAttribute("lista_attivita", lista_attivita);
     				request.getSession().setAttribute("anno", anno);
     				
     				
@@ -260,8 +338,8 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     				String id_attivita = ret.get("id_attivita");
     				
     				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-    				for (String id : id_attivita.split(";")) {
-    					String[] values = id.split(",");
+    				for (String id : id_attivita.split("§")) {
+    					String[] values = id.split("~");
     					
     					AmScScadenzarioDTO s = new AmScScadenzarioDTO();
         				AmScAttrezzaturaDTO attrezzatura = (AmScAttrezzaturaDTO) session.get(AmScAttrezzaturaDTO.class, Integer.parseInt(id_attrezzatura));        			
@@ -271,6 +349,7 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
         					attivita = new AmScAttivitaDTO();
         					attivita.setId(Integer.parseInt(values[0]));
         					attivita.setDescrizione(values[values.length-1]);
+        					attivita.setTipo_attrezzatura(attrezzatura.getTipo_attrezzatura().getId());
         					session.save(attivita);
         				}
         				s.setAttivita(attivita);
@@ -363,12 +442,14 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     				String descrizione_attrezzatura = ret.get("descrizione_attrezzatura");
     				String cliente = ret.get("cliente_attrezzatura");
     				String sede = ret.get("sede_attrezzatura");
+    				String tipo_attrezzatura = ret.get("tipo_attrezzatura");
 
         				AmScAttrezzaturaDTO attrezzatura = new AmScAttrezzaturaDTO();
         				attrezzatura.setDescrizione(descrizione_attrezzatura);
         				attrezzatura.setIdCliente(Integer.parseInt(cliente));
         				attrezzatura.setIdSede(Integer.parseInt(sede));
-        				
+        				AmScTipoAttrezzaturaDTO tipo = (AmScTipoAttrezzaturaDTO) session.get(AmScTipoAttrezzaturaDTO.class, Integer.parseInt(tipo_attrezzatura));
+        				attrezzatura.setTipo_attrezzatura(tipo);
         				session.save(attrezzatura);
     				
     				myObj = new JsonObject();

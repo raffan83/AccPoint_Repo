@@ -11,6 +11,7 @@ import it.portaleSTI.DTO.AmScAllegatoDTO;
 import it.portaleSTI.DTO.AmScAttivitaDTO;
 import it.portaleSTI.DTO.AmScAttrezzaturaDTO;
 import it.portaleSTI.DTO.AmScScadenzarioDTO;
+import it.portaleSTI.DTO.AmScTipoAttrezzaturaDTO;
 
 public class GestioneAM_ScadenzarioBO {
 
@@ -49,6 +50,21 @@ public class GestioneAM_ScadenzarioBO {
 		// TODO Auto-generated method stub
 		return GestioneAM_ScadenzarioDAO.getListaAttivitaDate( dateFrom,  dateTo,  id_cliente,
 			 id_sede,  session);
+	}
+
+	public static ArrayList<AmScTipoAttrezzaturaDTO> getListaTipiAttrezzatura(Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAM_ScadenzarioDAO.getListaTipiAttrezzatura(session);
+	}
+
+	public static ArrayList<AmScAttivitaDTO> getListaAttivitaTipo(int id_tipo, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAM_ScadenzarioDAO.getListaAttivitaTipo(id_tipo, session);
+	}
+
+	public static int getMaxIdAttivita(Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAM_ScadenzarioDAO.getMaxIdAttivita(session);
 	}
 
 }

@@ -3,7 +3,8 @@ package it.portaleSTI.DTO;
 public class AmScAttivitaDTO {
     private Integer id;
     private String descrizione;
-
+    private Integer tipo_attrezzatura;
+    private Integer frequenza;
     // Getter e Setter
     public Integer getId() {
         return id;
@@ -20,5 +21,14 @@ public class AmScAttivitaDTO {
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
+
+	public Integer getTipo_attrezzatura() {
+		return tipo_attrezzatura;
+	}
+
+	public void setTipo_attrezzatura(Integer tipo_attrezzatura) {
+		this.tipo_attrezzatura = tipo_attrezzatura;
+	}
+    
 }
 

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -14,6 +15,7 @@ import it.portaleSTI.DTO.AmScAllegatoDTO;
 import it.portaleSTI.DTO.AmScAttivitaDTO;
 import it.portaleSTI.DTO.AmScAttrezzaturaDTO;
 import it.portaleSTI.DTO.AmScScadenzarioDTO;
+import it.portaleSTI.DTO.AmScTipoAttrezzaturaDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 
 public class GestioneAM_ScadenzarioDAO {
@@ -180,6 +182,45 @@ ArrayList<AmScScadenzarioDTO> lista = null;
 		
 				
 		return lista;
+	}
+
+	public static ArrayList<AmScTipoAttrezzaturaDTO> getListaTipiAttrezzatura(Session session) {
+ArrayList<AmScTipoAttrezzaturaDTO> lista = null;
+		
+		Query query = session.createQuery("from AmScTipoAttrezzaturaDTO ");
+		
+		lista = (ArrayList<AmScTipoAttrezzaturaDTO>) query.list();
+		
+		
+		return lista;
+	}
+
+	public static ArrayList<AmScAttivitaDTO> getListaAttivitaTipo(int id_tipo, Session session) {
+ArrayList<AmScAttivitaDTO> lista = null;
+		
+		Query query = session.createQuery("from AmScAttivitaDTO  where tipo_attrezzatura = :_tipo");
+		query.setParameter("_tipo", id_tipo);
+		
+		lista = (ArrayList<AmScAttivitaDTO>) query.list();
+		
+		
+		return lista;
+	}
+
+	public static int getMaxIdAttivita(Session session) {
+
+		ArrayList<Integer> result = null;
+		
+		Query query = session.createQuery("select MAX(id) from AmScAttivitaDTO");
+		
+		result =  (ArrayList<Integer>) query.list();
+		
+		if(result.size()>0) {
+			return result.get(0);
+		}else {
+			return 0;
+		}
+		
 	}
 
 }

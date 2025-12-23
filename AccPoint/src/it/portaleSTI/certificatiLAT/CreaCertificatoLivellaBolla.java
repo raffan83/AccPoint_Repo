@@ -675,19 +675,23 @@ public class CreaCertificatoLivellaBolla {
 							arrayPs.add(String.valueOf(punto.getRif_tacca()));	
 						}					
 						if(punto.getValore_nominale_tratto()!=null) {
-							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto().setScale(scala, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+							//arrayPs.add(String.valueOf(punto.getValore_nominale_tratto().setScale(scala, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto().setScale(2, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));
 						}else {
 							arrayPs.add("");
 						}
 						BigDecimal cor_mm = null;
 						if(punto.getMedia_corr_mm()!=null && punto.getValore_nominale_tratto()!=null) {
-							cor_mm = punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto()).setScale((scala+1), RoundingMode.HALF_UP);
-							arrayPs.add(String.valueOf((punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto())).setScale((scala+1), RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+							//cor_mm = punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto()).setScale((scala+1), RoundingMode.HALF_UP);
+							//arrayPs.add(String.valueOf((punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto())).setScale((scala+1), RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+							cor_mm = punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto()).setScale((3), RoundingMode.HALF_UP);
+							arrayPs.add(String.valueOf((punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto())).setScale((3), RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));
 						}else {
 							arrayPs.add("");
 						}
 						if(punto.getValore_nominale_tratto_sec()!=null) {
-							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto_sec().setScale(scala, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
+							//arrayPs.add(String.valueOf(punto.getValore_nominale_tratto_sec().setScale(scala, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));
+							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto_sec().setScale(2, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));
 						}else {
 							arrayPs.add("");
 						}

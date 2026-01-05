@@ -12,7 +12,27 @@ public class AmScAttrezzaturaDTO {
     private String matricola;
     private Integer disabilitato;
     private AmScTipoAttrezzaturaDTO tipo_attrezzatura;
-    public AmScTipoAttrezzaturaDTO getTipo_attrezzatura() {
+    private String nome_cliente;
+    public String getNome_sede() {
+		return nome_sede;
+	}
+
+	public void setNome_sede(String nome_sede) {
+		this.nome_sede = nome_sede;
+	}
+
+	private String nome_sede;
+    public String getNome_cliente() {
+		return nome_cliente;
+	}
+
+	public void setNome_cliente(String nome_cliente) {
+		this.nome_cliente = nome_cliente;
+	}
+
+	
+
+	public AmScTipoAttrezzaturaDTO getTipo_attrezzatura() {
 		return tipo_attrezzatura;
 	}
 

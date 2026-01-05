@@ -64,14 +64,14 @@ public class GestioneCommessa extends HttpServlet {
 			
 			String anno=request.getParameter("year");
 			
-			int year=0;
-			
-			if(anno==null) {
-				year = Calendar.getInstance().get(Calendar.YEAR);
-			}else 
-			{
-				year=Integer.parseInt(anno);
-			}
+			int year=Integer.parseInt(Utility.getCurrentYearFormat(0));
+//			
+//			if(anno==null) {
+//				year = Calendar.getInstance().get(Calendar.YEAR);
+//			}else 
+//			{
+//				year=Integer.parseInt(anno);
+//			}
 			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user,year,false);
 			
 		

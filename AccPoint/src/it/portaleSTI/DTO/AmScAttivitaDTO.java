@@ -1,11 +1,20 @@
 package it.portaleSTI.DTO;
 
 public class AmScAttivitaDTO {
-    private Integer id;
+    public Integer getFrequenza() {
+		return frequenza;
+	}
+
+	public void setFrequenza(Integer frequenza) {
+		this.frequenza = frequenza;
+	}
+
+	private Integer id;
     private String descrizione;
     private Integer tipo_attrezzatura;
     private Integer frequenza;
-    // Getter e Setter
+
+	// Getter e Setter
     public Integer getId() {
         return id;
     }

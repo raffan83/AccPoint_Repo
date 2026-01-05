@@ -6,8 +6,18 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
+<%@ page import="java.util.Calendar" %>
 
+<%
+String[] nomiMesi = {
+	    "GENNAIO", "FEBBRAIO", "MARZO", "APRILE", "MAGGIO", "GIUGNO",
+	    "LUGLIO", "AGOSTO", "SETTEMBRE", "OTTOBRE", "NOVEMBRE", "DICEMBRE"
+	};
+    pageContext.setAttribute("nomiMesi", nomiMesi);
+    
 
+%>
+  <c:set var="currentYear" value="<%= Calendar.getInstance().get(Calendar.YEAR) %>" />
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -97,8 +107,11 @@
 	<br><br>
 	</div>
 	
-
-
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('S1') }">
+	<div class="col-xs-5">
+<a class="btn btn-primary pull-right" onClick="modalCreaReport()" style="margin-top:25px"><i class="fa fa-plus"></i> Crea Report Annuale</a>
+</div>
+</c:if>
 </div><br>
 
 
@@ -110,6 +123,8 @@
  <thead><tr class="active">
 
 <th >ID</th>
+<th >Cliente</th>
+<th >Sede</th>
 <th>Impianto</th>
 <th>Tipo</th>
 <th>Data attività</th>
@@ -119,6 +134,7 @@
 <th>Descrizione attività</th>
 <th>Note</th>
 <th>Utente </th>
+<th>Eseguita da </th>
 <th>Allegati</th>
  </tr></thead>
  
@@ -133,6 +149,8 @@
 	<tr id="row_${loop.index}" >
 
 <td>${attivita.id }</td>
+<td>${attivita.attrezzatura.nome_cliente }</td>
+<td>${attivita.attrezzatura.nome_sede }</td>
 <td>${attivita.attrezzatura.descrizione }</td>
 <td><c:if test="${attivita.tipo == 0 }">ORDINARIA</c:if><c:if test="${attivita.tipo == 1 }">STRAORDINARIA</c:if></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attivita.dataAttivita}" /></td>	
@@ -144,6 +162,7 @@
 	<td>${attivita.attivita.descrizione }</td>
 	<td>${attivita.note }</td>
 	<td>${attivita.utente.nominativo }</td>
+	<td>${attivita.eseguito_da }</td>
 	<td><a class="btn btn-primary customTooltip" title="click per aprire gli allegati" onclick="modalAllegati('${attivita.id}')"><i class="fa fa-archive"></i></a></td>
 	</tr>
 	</c:forEach>
@@ -164,6 +183,74 @@
 
 </section>
 
+
+<form id="reportForm" name="reportForm">
+<div id="myModalCreaReport" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Crea Report Annuale </h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Impianto</label>
+       	</div>
+       	<div class="col-sm-9">       	
+       		<select class="form-control select2" data-placeholder="Seleziona Impianto..." id="attrezzatura_report" name="attrezzatura_report" style="width:100%" required>
+       		<option value=""></option>
+       			<c:forEach items="${lista_attrezzatura}" var="attrezzatura" varStatus="loop">
+       				<option value="${attrezzatura.id}">${attrezzatura.descrizione } </option>
+       			</c:forEach>
+       		</select>       	
+       	</div>       	
+       </div><br>
+        <div class="row">
+      	<div class="col-sm-3">
+       		<label>Anno</label>
+       	</div>
+       	<div class="col-sm-9">
+       	
+       	      
+         <select class="form-control select2" id="anno_report" name="anno_report" style="width:100%" required>
+
+		
+			  <c:set var="startYear" value="${currentYear - 5}" />
+			  <c:set var="endYear" value="${currentYear + 5}" />
+			
+			  <c:forEach var="year" begin="${startYear}" end="${endYear}">
+			  <c:if test="${year == anno }">
+			  	    <option value="${year}" selected>${year}</option>
+			  </c:if>
+			   <c:if test="${year != anno }">
+			  	    <option value="${year}" >${year}</option>
+			  </c:if>
+		
+			  </c:forEach>
+			</select>
+       	
+
+       	</div>
+       </div><br>
+
+        
+       </div>
+
+  		 
+      <div class="modal-footer">
+
+		 
+		<button class="btn btn-primary" type="submit" >Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+</form>
 
   <div id="myModalArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
   
@@ -383,7 +470,9 @@ $("#tabAttivitaEffettuate").on( 'init.dt', function ( e, settings ) {
 
 
 
-
+function modalCreaReport(){
+	$('#myModalCreaReport').modal();
+}
 
 
 	
@@ -561,6 +650,31 @@ $('#tipo_filtro').change(function(){
 	}
 	
 })
+
+
+
+$('#reportForm').on('submit', function(e){
+	 e.preventDefault();
+	 var newTab = window.open('', '_blank');
+	 var id_attrezzatura = $('#attrezzatura_report').val();
+	 
+	 callAjaxForm("#reportForm", "amScGestioneScadenzario.do?action=crea_report", function(data){
+		 
+		
+				if (data.success) {
+					var url = "amScGestioneScadenzario.do?action=download_report&id_attrezzatura=" + $('#attrezzatura_report').val();
+
+					newTab.location.href = url;
+				} else {
+
+					newTab.close();
+				}
+			 });
+			 
+			
+		
+	
+});
 
  
   </script>

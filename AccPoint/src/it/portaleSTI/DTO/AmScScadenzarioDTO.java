@@ -11,6 +11,15 @@ public class AmScScadenzarioDTO {
     private String esito;
     private String note;
     private UtenteDTO utente;
+    private String eseguito_da;
+    public String getEseguito_da() {
+		return eseguito_da;
+	}
+
+	public void setEseguito_da(String eseguito_da) {
+		this.eseguito_da = eseguito_da;
+	}
+
 
     private int tipo;
     // Getter e Setter

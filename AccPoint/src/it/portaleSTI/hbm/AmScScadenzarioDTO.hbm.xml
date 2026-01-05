@@ -19,5 +19,6 @@
         <property name="note" column="note" type="text"/>
         <property name="tipo" column="tipo" type="int"/>
          <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" column="id_utente" not-null="true"/>
+         <property name="eseguito_da" column="eseguito_da" length="765"/>
     </class>
 </hibernate-mapping>

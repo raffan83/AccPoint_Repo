@@ -60,6 +60,7 @@
 <th>Note</th>
 <th>Attività</th>
 <th>Utente</th>
+<th>Eseguito da</th>
 <th>Allegati</th>
 
  </tr></thead>
@@ -83,7 +84,9 @@
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${scadenza.dataProssimaAttivita }" /></td>
 	<td>${scadenza.note }</td>
 	<td style="min-width:200px">${scadenza.attivita.descrizione }</td>
+	
 	<td>${scadenza.utente.nominativo }</td>
+	<td>${scadenza.eseguito_da }</td>
 	<td><a class="btn btn-primary customTooltip" title="click per aprire gli allegati" onclick="modalAllegati('${scadenza.id}')"><i class="fa fa-archive"></i></a></td>
 	</tr>
 	</c:forEach> 

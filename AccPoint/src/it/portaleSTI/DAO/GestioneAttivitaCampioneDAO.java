@@ -897,7 +897,7 @@ public static ArrayList<HashMap<String, Integer>> getListaScadenzeCampione(Strin
 		query.setParameter("_verificazione", Integer.parseInt(verificazione));
 	}else {
 		//query = session.createQuery("from CampioneDTO where codice "+ not+" like '%CDT%' and id_company = :_idCmp and statoCampione != 'F'");
-		if(!utente.isTras()&& utente.checkRuolo("FR")) {
+		if(!utente.isTras()&& (utente.checkRuolo("FR")||utente.checkRuolo("VC"))) {
 			query = session.createQuery("from CampioneDTO where codice "+ not+" like '%CDT%' and statoCampione != 'F' and id_company = :_idCmp");
 			query.setParameter("_idCmp", id_company);
 		}else {

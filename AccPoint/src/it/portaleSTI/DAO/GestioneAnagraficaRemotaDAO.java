@@ -695,9 +695,9 @@ public class GestioneAnagraficaRemotaDAO {
 				//pst=con.prepareStatement("INSERT INTO BWT_ANAGEN (NOME, INDIR, TELEF01, CAP, PIVA, CODPROV, CITTA, EMAIL, CODFIS, TIPO, SYS_DTCREAZ, TOK_COMPANY, CODREGI, CODNAZI) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ",Statement.RETURN_GENERATED_KEYS);
 				pst = con.prepareStatement(
 					    "INSERT INTO BWT_ANAGEN (" +
-					    "NOME, INDIR, TELEF01, CAP, PIVA, CODPROV, CITTA, EMAIL, CODFIS, TIPO, SYS_DTCREAZ, TOK_COMPANY, CODREGI, CODNAZI, CODCOMUNE" +
+					    "NOME, INDIR, TELEF01, CAP, PIVA, CODPROV, CITTA, EMAIL, CODFIS, TIPO, SYS_DTCREAZ, TOK_COMPANY, CODREGI, CODNAZI, EMAIL_PEC, COD_DEST_FATTELE, CODCOMUNE" +
 					    ") " +
-					    "SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, c.CODCOMUNE " +
+					    "SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, c.CODCOMUNE " +
 					    "FROM BWT_COMUNI c " +
 					    "WHERE LOWER(c.COMUNE) = LOWER(?)",
 					    Statement.RETURN_GENERATED_KEYS
@@ -721,7 +721,9 @@ public class GestioneAnagraficaRemotaDAO {
 				pst.setString(12, company);
 				pst.setString(13, cl.getRegione());
 				pst.setString(14, "IT");
-				pst.setString(15, cl.getCitta());
+				pst.setString(15, cl.getPec());
+				pst.setString(16, cl.getCodice());
+				pst.setString(17, cl.getCitta());
 				pst.execute();
 				
 				rs = pst.getGeneratedKeys();

@@ -559,6 +559,27 @@
        	</div>       	
        </div><br>
        
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Pec</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+   
+            <input type="email" 
+       id="pec" 
+       name="pec"
+       class="form-control"
+       style="width:100%;"
+       pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+       title="Inserisci un indirizzo pec valido (esempio: nome@dominio.it)"
+       required
+       >
+       			
+       	</div>       	
+       </div><br>
+       
            <div class="row">
        
        	<div class="col-sm-3">
@@ -596,6 +617,26 @@
        			
        	</div>       	
        </div><br>
+       
+         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Codice univoco</label>
+       	</div>
+       	<div class="col-sm-9">      
+     
+           <input id="codice_univoco" name="codice_univoco"
+       class="form-control"
+       style="width:100%; text-transform: uppercase;"
+       pattern="[A-Za-z0-9]{7}"
+       minlength="7"
+       maxlength="7"
+       title="Il Codice Univoco può contenere solo numeri e lettere (7 caratteri)"
+       >
+       			
+       	</div>       	
+       </div><br>
+       
        
       <div class="row">
   <div class="col-sm-3 d-flex align-items-center">

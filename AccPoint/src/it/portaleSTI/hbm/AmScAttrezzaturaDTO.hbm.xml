@@ -14,6 +14,9 @@
         <property name="idSede" column="id_sede"/>
         <property name="costruttore" column="costruttore" length="33"/>
         <property name="matricola" column="matricola" length="765"/>
+        <property name="nome_cliente" column="nome_cliente" length="765"/>
+        <property name="nome_sede" column="nome_sede" length="765"/>
+        
         <property name="disabilitato" column="disabilitato"/>
                <many-to-one name="tipo_attrezzatura" class="it.portaleSTI.DTO.AmScTipoAttrezzaturaDTO" column="id_tipo_attrezzatura" not-null="true"/>
     </class>

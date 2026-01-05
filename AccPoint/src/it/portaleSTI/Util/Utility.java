@@ -1699,7 +1699,7 @@ public class Utility extends HttpServlet {
 			return result;
 		}
 
-		public static String getCurrentYear(int format) {
+		public static String getCurrentYearFormat(int format) {
 			
 			Date date= new Date(); 
 			Calendar cal = Calendar.getInstance();

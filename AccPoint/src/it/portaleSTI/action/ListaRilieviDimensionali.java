@@ -87,6 +87,9 @@ public class ListaRilieviDimensionali extends HttpServlet {
 		try {
 			
 			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
+			
+			request.getSession().setAttribute("current_year", Utility.getCurrentYearFormat(0));
+			
 			if(action==null) {
 				List<ClienteDTO> listaClientiFull = null;
 				List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();

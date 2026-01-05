@@ -23,6 +23,7 @@ import it.portaleSTI.DTO.AMOggettoProvaZonaRifDTO;
 import it.portaleSTI.DTO.AMProvaDTO;
 import it.portaleSTI.DTO.AMRapportoDTO;
 import it.portaleSTI.DTO.AmScScadenzarioDTO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
@@ -73,8 +74,40 @@ public class CreateRapportoScadenzarioAM {
 		report.addParameter("immagine_am", imageHeader);
 		
 		report.addParameter("descrizione", lista_scadenze.get(0).getAttrezzatura().getDescrizione());
+	
+			
+		if(lista_scadenze.get(0).getAttrezzatura().getNome_cliente()!=null) {
+	
+			if(lista_scadenze.get(0).getAttrezzatura().getIdSede()!=0) {
+				report.addParameter("cliente", lista_scadenze.get(0).getAttrezzatura().getNome_cliente() +" - "+ lista_scadenze.get(0).getAttrezzatura().getNome_sede());	
+			}else {
+				String indirizzo="";
+				String cap="";
+				String citta="";
+				String provincia="";
+				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(lista_scadenze.get(0).getAttrezzatura().getIdCliente()+"");
+						if( cliente.getIndirizzo()!=null) {
+							indirizzo = cliente.getIndirizzo();				
+							}
+							if(cliente.getCap()!=null) {
+								cap = cliente.getCap();
+							}
+							if(cliente.getCitta()!=null) {
+								citta = cliente.getCitta();
+							}
+							if(cliente.getProvincia()!=null) {
+								provincia = cliente.getProvincia();
+							}
+							
+							report.addParameter("cliente", lista_scadenze.get(0).getAttrezzatura().getNome_cliente() +" - "+indirizzo + ", " + cap + ", "+citta +" ("+ provincia+")");
+			}
+			
+		}else {
+			report.addParameter("cliente","");
+		}
 		
-		
+		report.setStartPageNumber(1);
+		report.addPageFooter(cmp.pageXofY());
 		 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_scadenze));
 		 
 		 report.addDetail(subreport);
@@ -158,7 +191,9 @@ public class CreateRapportoScadenzarioAM {
 			report.addColumn(
 	 		        Columns.column("Descrizione attivita", "descrizione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(stl.style().setFontSize(10).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
 	 		    );
-			
+			report.addColumn(
+	 		        Columns.column("Eseguita da", "eseguita_da", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(stl.style().setFontSize(10).setBorder(stl.pen1Point().setLineColor(Color.BLACK)))
+	 		    );
 	
 			
 			
@@ -168,7 +203,7 @@ public class CreateRapportoScadenzarioAM {
 			  
 			  String[] listaCodici = null;
 				
-				listaCodici = new String[8];
+				listaCodici = new String[9];
 				
 				listaCodici[0]="id";
 				listaCodici[1]="tipo";
@@ -178,7 +213,7 @@ public class CreateRapportoScadenzarioAM {
 				listaCodici[5]="esito";
 				listaCodici[6]="note";
 				listaCodici[7]="descrizione";
-				
+				listaCodici[8]="eseguita_da";
 				
 				  DRDataSource ds = new DRDataSource(listaCodici);
 			for (AmScScadenzarioDTO s : lista_scadenze) {
@@ -215,7 +250,11 @@ public class CreateRapportoScadenzarioAM {
 					}
 					
 					arrayPs.add(s.getAttivita().getDescrizione());
-					
+					if(s.getEseguito_da()!=null) {
+						arrayPs.add(s.getEseguito_da());
+					}else{
+						arrayPs.add("");
+					}
 					ds.add(arrayPs.toArray());
 				
 				

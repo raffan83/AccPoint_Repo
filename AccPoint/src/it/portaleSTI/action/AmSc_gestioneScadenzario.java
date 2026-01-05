@@ -350,6 +350,10 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
         					attivita.setId(Integer.parseInt(values[0]));
         					attivita.setDescrizione(values[values.length-1]);
         					attivita.setTipo_attrezzatura(attrezzatura.getTipo_attrezzatura().getId());
+        					if(values.length>3 && values[3]!= null && !values[3].equals(""))	{
+	        					attivita.setFrequenza(Integer.parseInt(values[3]));
+	        					
+	        				}
         					session.save(attivita);
         				}
         				s.setAttivita(attivita);
@@ -375,6 +379,9 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
         				}
         				if(values.length>5) {
         					s.setNote(values[5]);
+        				}
+        				if(values.length>6) {
+        					s.setEseguito_da(values[6]);
         				}
         				s.setUtente(utente);
         				session.save(s);
@@ -443,13 +450,37 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     				String cliente = ret.get("cliente_attrezzatura");
     				String sede = ret.get("sede_attrezzatura");
     				String tipo_attrezzatura = ret.get("tipo_attrezzatura");
+    				String nuovo_tipo_attrezzatura = ret.get("nuovo_tipo_attrezzatura");
 
         				AmScAttrezzaturaDTO attrezzatura = new AmScAttrezzaturaDTO();
         				attrezzatura.setDescrizione(descrizione_attrezzatura);
         				attrezzatura.setIdCliente(Integer.parseInt(cliente));
         				attrezzatura.setIdSede(Integer.parseInt(sede));
-        				AmScTipoAttrezzaturaDTO tipo = (AmScTipoAttrezzaturaDTO) session.get(AmScTipoAttrezzaturaDTO.class, Integer.parseInt(tipo_attrezzatura));
-        				attrezzatura.setTipo_attrezzatura(tipo);
+        				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
+        				attrezzatura.setNome_cliente(cl.getNome());
+
+        				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+        				if(listaSedi== null) {
+        					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+        				}
+        				SedeDTO sd =null;
+        				if(!sede.equals("0")) {
+        					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(cliente));
+        					attrezzatura.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo());
+        				}else {
+        					attrezzatura.setNome_sede("Non associate");
+        				}
+        				
+        				if(nuovo_tipo_attrezzatura!=null && !nuovo_tipo_attrezzatura.equals("")) {
+        					AmScTipoAttrezzaturaDTO nuovo_tipo = new AmScTipoAttrezzaturaDTO();
+        					nuovo_tipo.setDescrizione(nuovo_tipo_attrezzatura);
+        					session.save(nuovo_tipo);
+        					attrezzatura.setTipo_attrezzatura(nuovo_tipo);
+        				}else {
+        					AmScTipoAttrezzaturaDTO tipo = (AmScTipoAttrezzaturaDTO) session.get(AmScTipoAttrezzaturaDTO.class, Integer.parseInt(tipo_attrezzatura));
+            				attrezzatura.setTipo_attrezzatura(tipo);
+        				}
+        				
         				session.save(attrezzatura);
     				
     				myObj = new JsonObject();
@@ -547,12 +578,19 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
 					
 					}
 					
+					String anno = request.getParameter("anno");
+    				
+    				if(anno == null) {
+    					anno = ""+Calendar.getInstance().get(Calendar.YEAR);
+    				}
+					
 					request.getSession().setAttribute("dateFrom", dateFrom); 
 					request.getSession().setAttribute("dateTo", dateTo); 
 					request.getSession().setAttribute("id_attrezzatura", id_attrezzatura); 
 					request.getSession().setAttribute("tipo_filtro", tipo_filtro); 
 					request.getSession().setAttribute("lista_attivita", lista_attivita);    
 					request.getSession().setAttribute("lista_attrezzatura", lista_attrezzatura); 
+					request.getSession().setAttribute("anno", anno);
     				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_sc_lista_attivita.jsp");
     		     	dispatcher.forward(request,response);
     				

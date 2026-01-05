@@ -352,6 +352,8 @@ public class GestioneVerOfferte extends HttpServlet {
 				String citta_sede= ret.get("citta_sede");
 				String cap_sede= ret.get("cap_sede");
 				String provincia_sede= ret.get("provincia_sede");
+				String pec= ret.get("pec");
+				String codice_univoco= ret.get("codice_univoco");
 				
 				
 				boolean esito = GestioneAnagraficaRemotaBO.checkPartitaIva(partita_iva, test);
@@ -377,6 +379,12 @@ public class GestioneVerOfferte extends HttpServlet {
 					cl.setCf(codice_fiscale);
 					cl.setNome(ragione_sociale);
 					cl.setRegione(citta.split("_")[3]);
+					cl.setPec(pec);
+					if(codice_univoco!=null) {
+						cl.setCodice(codice_univoco);
+					}else {
+						cl.setCodice("0000000");
+					}
 					
 					
 					

@@ -11,5 +11,7 @@
         
         <property name="descrizione" column="descrizione" length="765"/>
          <property name="tipo_attrezzatura" column="tipo_attrezzatura" length="765"/>
+         <property name="frequenza" column="frequenza" length="765"/>
+         
     </class>
 </hibernate-mapping>

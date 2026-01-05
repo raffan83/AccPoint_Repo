@@ -23,7 +23,6 @@ String[] nomiMesi = {
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('S1') }">
 <a class="btn btn-primary" onclick="modalNuovaAttrezzatura()"><i class="fa fa-plus"></i>Nuovo Impianto</a>
 <a class="btn btn-primary" onClick="modalNuovaScadenza()"><i class="fa fa-plus"></i> Nuova Scadenza</a>
-<a class="btn btn-primary" onClick="modalCreaReport()"><i class="fa fa-plus"></i> Crea Report Annuale</a>
 </c:if>
 
 </div>
@@ -107,73 +106,7 @@ String[] nomiMesi = {
 
 
 
-<form id="reportForm" name="reportForm">
-<div id="myModalCreaReport" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Crea Report Annuale </h4>
-      </div>
-       <div class="modal-body">
 
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Impianto</label>
-       	</div>
-       	<div class="col-sm-9">       	
-       		<select class="form-control select2" data-placeholder="Seleziona Impianto..." id="attrezzatura_report" name="attrezzatura_report" style="width:100%" required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
-       				<option value="${attrezzatura.id}">${attrezzatura.descrizione } </option>
-       			</c:forEach>
-       		</select>       	
-       	</div>       	
-       </div><br>
-        <div class="row">
-      	<div class="col-sm-3">
-       		<label>Anno</label>
-       	</div>
-       	<div class="col-sm-9">
-       	
-       	      
-         <select class="form-control select2" id="anno_report" name="anno_report" style="width:100%" required>
-
-		
-			  <c:set var="startYear" value="${currentYear - 5}" />
-			  <c:set var="endYear" value="${currentYear + 5}" />
-			
-			  <c:forEach var="year" begin="${startYear}" end="${endYear}">
-			  <c:if test="${year == anno }">
-			  	    <option value="${year}" selected>${year}</option>
-			  </c:if>
-			   <c:if test="${year != anno }">
-			  	    <option value="${year}" >${year}</option>
-			  </c:if>
-		
-			  </c:forEach>
-			</select>
-       	
-
-       	</div>
-       </div><br>
-
-        
-       </div>
-
-  		 
-      <div class="modal-footer">
-
-		 
-		<button class="btn btn-primary" type="submit" >Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-</form>
 
 <form id="nuovaScadenzaForm" name="nuovaScadenzaForm">
 <div id="myModalNuovaScadenza" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
@@ -257,6 +190,7 @@ String[] nomiMesi = {
       <th style="max-width:60px">Frequenza</th>
       <th style="min-width:80px">Data Scadenza</th>
       <th style="max-width:120px">Note</th>
+      <th style="max-width:120px">Eseguito da</th>
       <th style="min-width:120px">Descrizione attività </th>
       <th style="max-width:30px">Allegati</th>
       <th></th>
@@ -266,23 +200,7 @@ String[] nomiMesi = {
 
   <tbody>
   
-<%--     <c:forEach items="${lista_attivita }" var="attivita" varStatus="status">
-      <tr>
-     
-     <td></td>
-        <td>${attivita.id }</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        
-        <td>${attivita.descrizione }</td>
-        <td ></td>
-   <td></td>
-      </tr>
-    </c:forEach> --%>
+
   </tbody>
 </table>
         <a class="btn btn-primary btn-xs pull-right" onclick="addRow()"><i class="fa fa-plus"></i> Aggiungi Attivit&agrave;</a>
@@ -378,7 +296,7 @@ String[] nomiMesi = {
 
   		 
       <div class="modal-footer">
-    
+    <input id="nuovo_tipo_attrezzatura" name="nuovo_tipo_attrezzatura" class="form-control" type="hidden">      
 		 
 		<button class="btn btn-primary" type="submit" >Salva</button> 
        
@@ -415,35 +333,7 @@ String[] nomiMesi = {
 </div>
 
 
- <div id="myModalArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" style="z-index: 9900;">
-  
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Allegati provvedimento legalizzazione bilance</h4>
-      </div>
-       <div class="modal-body">
-       <div class="row">
-        <div class="col-xs-12">
-
  
-
-       <div id="tab_allegati_provvedimento"></div>
-</div>
-  		 </div>
-  		 </div>
-      <div class="modal-footer">
-      <input type="hidden" id="id_provvedimento_allegato" name="id_provvedimento_allegato">
-      
-      <a class="btn btn-primary pull-right"  style="margin-right:5px"  onClick="$('#myModalArchivio').modal('hide')">Chiudi</a>
-      
-      </div>
-   
-  </div>
-  </div>
-</div>
-
 
   <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" style="z-index: 9999;">
    
@@ -466,55 +356,6 @@ String[] nomiMesi = {
 
 </div>
 
-
-  <div id="myModalAssociaLegalizzazione" class="modal modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
-  
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Associazione Legalizzazione Bilance</h4>
-      </div>
-       <div class="modal-body">
-       <div class="row">
-        <div class="col-xs-12">
-      <table id="table_legalizzazione" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
-
-<th></th>
-<th style="max-width:15px"></th>
-<th>ID</th>
-<th>Descrizione Strumento</th>
-<th>Costruttore</th>
-<th>Modello</th>
-<th>Classe</th>
-<th>Tipo approvazione</th>
-<th>Tipo provvedimento</th>
-<th>Numero provvedimento</th>
-<th>Data provvedimento</th>
-<th>Rev.</th>
-<th>Azioni</th>
-
- </tr></thead>
- 
- <tbody>
-</tbody>
-</table>
-</div>
-  		 </div>
-  		 </div>
-      <div class="modal-footer">
-      
-      
-      <input type="hidden" id="id_strumento_legalizzazione" name="id_strumento_legalizzazione">
-      <a class="btn btn-primary" onClick="associaStrumentoLegalizzazione(false)" id="button_salva">Salva</a>
-      <a class="btn btn-primary" style="display:none" onClick="associaStrumentoLegalizzazione(true)" id="button_associa">Salva</a>
-       <a class="btn btn-primary pull-right"  style="margin-right:5px"  onClick="$('#myModalAssociaLegalizzazione').modal('hide')">Chiudi</a>
-      </div>
-   
-  </div>
-  </div>
-</div>
 
 
 
@@ -610,6 +451,7 @@ function addRow(){
 	    frequenza: '',
 	    data_scadenza: '',
 	    note: '',
+	    eseguito_da: '',
 	    descrizione_attivita: ''
 	}).draw(false).select();
     
@@ -672,9 +514,7 @@ function modalNuovaScadenza(){
 	
 }
 
-function modalCreaReport(){
-	$('#myModalCreaReport').modal();
-}
+
 
 $('#attrezzatura').change(function(){
 	
@@ -707,9 +547,10 @@ function modalAggiungiAttivita(){
 							    tipo_attivita: '',
 							    data_attivita: '',
 							    esito: '',
-							    frequenza: '',
+							    frequenza: lista_attivita[i].frequenza,
 							    data_scadenza: '',
 							    note: '',
+							    eseguito_da: '',
 							    descrizione_attivita: lista_attivita[i].descrizione
 							};
 
@@ -810,20 +651,21 @@ function modalAllegati(id){
 
 function assegnaValoreOpzione(){
 	
-
+	var maxId = Math.max(
+			  ...$('#tipo_attrezzatura option')
+			    .map((_, opt) => Number(opt.value))
+			    .get()
+			    .filter(n => !isNaN(n))
+			);
 	
 	var data = {
-		    id: 0,
+		    id: (maxId+1),
 		    text: $('#descrizione_nuovo_tipo').val()
 		};
 
 		var newOption = new Option(data.text, data.id, false, false);
 	
-		var maxId = Math.max(
-				  ...$('#cliente option').map(function () {
-				    return parseInt($(this).val(), 10);
-				  }).get()
-				);
+	
 
 		$('#tipo_attrezzatura').append(newOption).trigger('change');
 		$('#tipo_attrezzatura option[value="'+(maxId+1)+'"]').prop("selected", true)
@@ -845,6 +687,11 @@ function aggiungiOpzione(tag){
 	$('#'+tag).select2('close');
 	modalNuovoTipoAttrezzatura(tag);
 	
+}
+
+function modalNuovoTipoAttrezzatura(){
+	
+	$('#modalNuovoTipoAttrezzatura').modal();
 }
 
 
@@ -875,7 +722,7 @@ $(document).ready(function() {
 	$('#tipo_attrezzatura')
     .select2()
     .on('select2:open', () => {
-        $(".select2-results:not(:has(a))").append('<a href="#" style="padding: 6px;height: 20px;display: inline-table;" onClick="aggiungiOpzione(\'tipo_attrezzatura\')">Crea Nuovo Tipo Attrezzatura</a>');
+        $(".select2-results:not(:has(a))").append('<a href="#" style="padding: 6px;height: 20px;display: inline-table;" onClick="aggiungiOpzione(\'tipo_attrezzatura\')">Crea Nuovo Tipo Impianto</a>');
 });
     
    var table = $('#tabAttivita').DataTable({
@@ -989,7 +836,7 @@ $(document).ready(function() {
 		    	    {
 		    	        data: 'frequenza',
 		    	        render: function (data, type, row) {
-		    	            return ' <input type="number" min="0" step="1"    class="form-control" id="frequenza_'+row.id+'" name="frequenza_'+row.id+'"  onchange="aggiornaDataScadenza('+row.id+')"/>';
+		    	            return ' <input type="number" min="0" step="1"    class="form-control" id="frequenza_'+row.id+'" name="frequenza_'+row.id+'" value="' + data +'" onchange="aggiornaDataScadenza('+row.id+')"/>';
 		    	        }
 		    	    },
 
@@ -1006,6 +853,13 @@ $(document).ready(function() {
 		    	        data: 'note',
 		    	        render: function (data, type, row) {
 		    	            return '   <textarea class="form-control" id="note_'+row.id+'" name="note_'+row.id+'"   style="width:100%"></textarea>';
+		    	        }
+		    	    },
+		    	    
+		    	    {
+		    	        data: 'eseguito_da',
+		    	        render: function (data, type, row) {
+		    	            return '   <textarea class="form-control" id="eseguitoda_'+row.id+'" name="eseguitoda_'+row.id+'"   style="width:100%"></textarea>';
 		    	        }
 		    	    },
 
@@ -1103,35 +957,48 @@ $('#modificaVerStrumentoForm').on('submit', function(e){
 
 $('#nuovaScadenzaForm').on('submit', function(e){
 	 e.preventDefault();
-	 callAjaxForm("#nuovaScadenzaForm", "amScGestioneScadenzario.do?action=nuova_scadenza", function(data){
-		 
-		 if(data.success){
+	if($('#id_attivita').val()!=null && $('#id_attivita').val()!=''){
+	
+		 callAjaxForm("#nuovaScadenzaForm", "amScGestioneScadenzario.do?action=nuova_scadenza", function(data){
 			 
-			 
-			 $('#report_button').hide();
-				$('#visualizza_report').hide();
-			  $("#modalNuovoReferente").modal("hide");
-			  $('#myModalErrorContent').html(data.messaggio);
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-success");
-				$('#myModalError').modal('show');
-			 
-			 $('#myModalError').on("hidden.bs.modal", function(){
-				
-				 if($(this).hasClass("modal-success")){
-					 
-					 
+			 if(data.success){
+				 
+				 
+				 $('#report_button').hide();
+					$('#visualizza_report').hide();
+				  $("#modalNuovoReferente").modal("hide");
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-success");
+					$('#myModalError').modal('show');
+				 
+				 $('#myModalError').on("hidden.bs.modal", function(){
+					
+					 if($(this).hasClass("modal-success")){
+						 
+						 
 
-					  dataString = "action=lista&id_cliente="+$('#cliente').val()+"&id_sede="+$("#sede").val();
-					   exploreModal('amScGestioneScadenzario.do',dataString,'#posTab');
-					   
-					   $('.modal-backdrop').hide()
-					 }				 
-			 });
+						  dataString = "action=lista&id_cliente="+$('#cliente').val()+"&id_sede="+$("#sede").val();
+						   exploreModal('amScGestioneScadenzario.do',dataString,'#posTab');
+						   
+						   $('.modal-backdrop').hide()
+						 }				 
+				 });
+				 
+			 }
 			 
-		 }
-		 
-	 })
+		 })
+	}else{
+		$('#report_button').hide();
+		$('#visualizza_report').hide();
+	  $("#modalNuovoReferente").modal("hide");
+	  $('#myModalErrorContent').html("Seleziona almeno un'attività!");
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-default");
+		$('#myModalError').modal('show');
+	}
+	
+
 });
 
 
@@ -1171,29 +1038,6 @@ $('#nuovaAttrezzaturaForm').on('submit', function(e){
 
 
 
-
-$('#reportForm').on('submit', function(e){
-	 e.preventDefault();
-	 var newTab = window.open('', '_blank');
-	 var id_attrezzatura = $('#attrezzatura_report').val();
-	 
-	 callAjaxForm("#reportForm", "amScGestioneScadenzario.do?action=crea_report", function(data){
-		 
-		
-				if (data.success) {
-					var url = "amScGestioneScadenzario.do?action=download_report&id_attrezzatura=" + $('#attrezzatura_report').val();
-
-					newTab.location.href = url;
-				} else {
-
-					newTab.close();
-				}
-			 });
-			 
-			
-		
-	
-});
 
 
 function cambiaAnno(){
@@ -1245,6 +1089,11 @@ function assegnaIdAttivita() {
                 testo = textarea.length ? textarea.val() || "" : "";
             } 
             else if (i === 8) {
+                // TEXTAREA facoltativa
+                let textarea = $(cell).find("textarea");
+                testo = textarea.length ? textarea.val() || "" : "";
+            } 
+            else if (i === 9) {
                 // TEXTAREA obbligatoria solo se presente
                 let textarea = $(cell).find("textarea");
                 if (textarea.length) {
@@ -1258,7 +1107,7 @@ function assegnaIdAttivita() {
                     testo = "";
                 }
             }
-            else if (i === 9) {
+            else if (i === 10) {
            
             }
             
@@ -1346,7 +1195,7 @@ $('#tabAttivita').on('select.dt', function (e, dt, type, indexes) {
                 }
 
                 // Salta checkbox (0), ID (1) e ultima colonna (7) per stile/modifica
-                if (i === 0 ||i === 1||   i===8 ||  i===10) return;
+                if (i === 0 ||i === 1 ||  i===11) return;
 
                 // Salva bordo originale (per eventuale ripristino)
                 if (!$cell.data('original-border')) {
@@ -1357,11 +1206,11 @@ $('#tabAttivita').on('select.dt', function (e, dt, type, indexes) {
                 $cell.css('border', '1px solid red');
 
                 // Inserisci input/select/datepicker a seconda della colonna
-                if (i === 5) {
+               /*  if (i === 5) {
                     const input = '<input type="number" step="1" min="0"  class="form-control" onchange="aggiornaDataScadenza(' + id + ')" id="frequenza_' + id + '"/>';
                     $cell.html(input);
-                }
-                else if (i === 4) {
+                } */
+                 if (i === 4) {
                     const options = '<select required class="form-control select2" id="esito_' + id + '" style="width:100%"> <option value="P">POSITIVO</option> <option value="N">NEGATIVO</option>  </select>';
                     $cell.html(options);
                     $('#esito_' + id).select2();
@@ -1386,7 +1235,11 @@ $('#tabAttivita').on('select.dt', function (e, dt, type, indexes) {
                     const input = $('<textarea id="note_' + id + '" class="form-control" style="width:100%"/></textarea>');
                     $cell.html(input);
                 }
-                else if(i=== 9){
+                else if (i === 8) {
+                    const input = $('<textarea id="eseguitoda_' + id + '" class="form-control" style="width:100%"/></textarea>');
+                    $cell.html(input);
+                }
+                else if(i=== 10){
                 	
                 	const input = $('<span class="btn btn-primary btn-xs fileinput-button" title="click per caricare gli allegati"> <i class="fa fa-arrow-up"></i><input accept=".jpg,.png,.pdf" onchange="changeLabelAllegati('+id+')" id="allegati_attivita_'+id+'" name="allegati_attivita_'+id+'" type="file" multiple></span> <label id="filename_allegati_'+id+'"></label>')
 
@@ -1406,7 +1259,7 @@ $('#tabAttivita').on('deselect.dt', function (e, dt, type, indexes) {
             var row = dt.row(index).node();
             $(row).find('td').each(function(i, cell) {
                 const $cell = $(cell);
-                if (i === 0 || i === 1 || i === 7) return;
+                if (i === 0 || i === 1 ) return;
 
                 const originalBorder = $cell.data('original-border');
                 if (originalBorder !== undefined) {
@@ -1414,7 +1267,7 @@ $('#tabAttivita').on('deselect.dt', function (e, dt, type, indexes) {
                     $cell.removeData('original-border');
                 }
 
-                $cell.text('');
+                //$cell.text('');
             });
         });
     }

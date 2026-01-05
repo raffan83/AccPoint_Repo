@@ -65,7 +65,7 @@ String[] nomiMesi = {
       <th></th>
       <c:forEach items="${lista_attrezzature}" var="attrezzatura">
       <c:if test="${attrezzatura.tipo_attrezzatura.id!=0 }">
-        <th  class="customTooltip" title="${attrezzatura.tipo_attrezzatura.descrizione}">${attrezzatura.descrizione}</th>
+        <th  class="customTooltip"  title="${attrezzatura.tipo_attrezzatura.descrizione}">${attrezzatura.descrizione}</th>
         </c:if>
               <c:if test="${attrezzatura.tipo_attrezzatura.id==0 }">
          <th>${attrezzatura.descrizione}</th>
@@ -352,7 +352,7 @@ String[] nomiMesi = {
        		<label>Tipo Impianto</label>
        	</div>
       <div class="col-xs-9">
-       <select id="tipo_attrezzatura" name="tipo_attrezzatura" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" >
+       <select id="tipo_attrezzatura" name="tipo_attrezzatura" class="form-control select2"  data-placeholder="Seleziona Tipo Impianto..." aria-hidden="true" data-live-search="true" style="width:100%" >
        <option value=""></option>
       	<c:forEach items="${lista_tipi}" var="tipo">
       	<option value="${tipo.id}">${tipo.descrizione} </option>
@@ -516,6 +516,35 @@ String[] nomiMesi = {
   </div>
 </div>
 
+
+
+<div id="modalNuovoTipoAttrezzatura" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Inserisci descrizione</h4>
+      </div>
+       <div class="modal-body">    
+       <div class="row">
+       <div class="col-xs-12">
+         <label>Descrizione</label>
+      <input class="form-control" type="text" id="descrizione_nuovo_tipo">
+       </div>
+       </div>   <br>
+
+    
+      	</div>
+      <div class="modal-footer">
+<input type="hidden" id=isMod>
+      <a class="btn btn-primary" onclick="assegnaValoreOpzione()" >Salva</a>
+		<a class="btn btn-primary" onclick="$('#modalNuovoTipoAttrezzatura').modal('hide')" >Chiudi</a>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 
  <style>
@@ -779,12 +808,57 @@ function modalAllegati(id){
 }
 
 
+function assegnaValoreOpzione(){
+	
+
+	
+	var data = {
+		    id: 0,
+		    text: $('#descrizione_nuovo_tipo').val()
+		};
+
+		var newOption = new Option(data.text, data.id, false, false);
+	
+		var maxId = Math.max(
+				  ...$('#cliente option').map(function () {
+				    return parseInt($(this).val(), 10);
+				  }).get()
+				);
+
+		$('#tipo_attrezzatura').append(newOption).trigger('change');
+		$('#tipo_attrezzatura option[value="'+(maxId+1)+'"]').prop("selected", true)
+		
+	
+		$('#nuovo_tipo_attrezzatura').val($('#descrizione_nuovo_tipo').val());
+		
+
+		$('#descrizione_nuovo_tipo').val("");
+		$('#modalNuovoTipoAttrezzatura').modal('hide');
+	
+}
+
+
+function aggiungiOpzione(tag){
+
+
+
+	$('#'+tag).select2('close');
+	modalNuovoTipoAttrezzatura(tag);
+	
+}
+
+
 $(document).ready(function() {
 
 	console.log("test");
     $('.dropdown-toggle').dropdown();
+    //$('[data-toggle="tooltip"]').tooltip();
+    	$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
    
    $("#attrezzatura").select2()
+   $("#tipo_attrezzatura").select2()
     $("#attrezzatura_report").select2()
      $("#anno").select2()
       $("#anno_report").select2()
@@ -797,6 +871,12 @@ $(document).ready(function() {
 	initSelect2('#cliente_attrezzatura', null, true);
      
 	
+	
+	$('#tipo_attrezzatura')
+    .select2()
+    .on('select2:open', () => {
+        $(".select2-results:not(:has(a))").append('<a href="#" style="padding: 6px;height: 20px;display: inline-table;" onClick="aggiungiOpzione(\'tipo_attrezzatura\')">Crea Nuovo Tipo Attrezzatura</a>');
+});
     
    var table = $('#tabAttivita').DataTable({
 			language: {
@@ -1244,7 +1324,8 @@ function changeLabelAllegati(id){
 
 
 $('#tabAttivita').on('draw.dt', function () {
-    $('.select2').select2({ width: '100%' });
+	
+   // $('.select2').select2({ width: '100%' });
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy',
         autoclose: true

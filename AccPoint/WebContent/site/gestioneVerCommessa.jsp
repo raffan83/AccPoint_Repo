@@ -71,19 +71,20 @@
 <div class="col-xs-2">
  <label>Anno: </label>
 
-   <select name="select1" id="select1" data-placeholder="Seleziona Anno..." style="width:100%"  class="form-control select2" aria-hidden="true" data-live-search="true">
-	
-	 <c:forEach items="${yearList}" var="year">
-	 	<c:choose>
-                       <c:when test="${year == current_year}">
-                           <option value="${year}" selected="selected">${year}</option> 
-                        </c:when>
-                        <c:otherwise>
-                        <option value="${year}">${year}</option> 
-                        </c:otherwise>
-      	</c:choose>
-      </c:forEach>
-	</select>
+<select name="select1" id="select1"
+        data-placeholder="Seleziona Cliente..."
+        style="width:100%"
+        class="form-control select2"
+        data-live-search="true">
+
+    <c:forEach var="year" begin="2017" end="${current_year}">
+        <option value="${year}"
+            ${year == current_year ? 'selected="selected"' : ''}>
+            ${year}
+        </option>
+    </c:forEach>
+
+</select>
 	
 		</div>
 	</div>

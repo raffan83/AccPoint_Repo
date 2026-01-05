@@ -55,16 +55,15 @@
 <div class="col-sm-3">
     
 <label>Anno di riferimento:</label>
+
 <select id="anno" name="anno" class="form-control select2">
 
-<option value="2019">2019</option>
-<option value="2020">2020</option>
-<option value="2021">2021</option>
-<option value="2022">2022</option>
-<option value="2023">2023</option>
-<option value="2024">2024</option>
-<option value="2025">2025</option>
-
+    <c:forEach var="year" begin="2017" end="${current_year}">
+        <option value="${year}"
+            ${year == current_year ? 'selected="selected"' : ''}>
+            ${year}
+        </option>
+    </c:forEach>
 
 </select>
 

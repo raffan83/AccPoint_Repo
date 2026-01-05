@@ -791,7 +791,7 @@ for (AcAttivitaCampioneDTO attivita : lista) {
 
 
 
-public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String tipo_data,  String verificazione, String lat, Session session) throws Exception, ParseException {
+public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String tipo_data,  String verificazione, String lat, int company,Session session) throws Exception, ParseException {
 	
 	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");			
 
@@ -807,7 +807,13 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 		query = session.createQuery("from CampioneDTO where "+tipo_data+"= :_date and statoCampione!='F' and codice "+ not+" like '%CDT%' and campione_verificazione = :_verificazione");
 		query.setParameter("_verificazione", Integer.parseInt(verificazione));
 	}else {
-		query = session.createQuery("from CampioneDTO where "+tipo_data+"= :_date and statoCampione!='F' and codice "+ not+" like '%CDT%'");
+		if(company!=0) {
+			query = session.createQuery("from CampioneDTO where "+tipo_data+"= :_date and statoCampione!='F' and id_Company=:_idc and codice "+ not+" like '%CDT%'");
+			query.setParameter("_idc", company);
+		}else {
+			query = session.createQuery("from CampioneDTO where "+tipo_data+"= :_date and statoCampione!='F' and codice "+ not+" like '%CDT%'");	
+		}
+		
 	}
 	
 	query.setParameter("_date", df.parse(data));

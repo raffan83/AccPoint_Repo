@@ -79,7 +79,7 @@
 
     <c:forEach var="year" begin="2017" end="${current_year}">
         <option value="${year}"
-            ${year == current_year ? 'selected="selected"' : ''}>
+            ${year == anno ? 'selected="selected"' : ''}>
             ${year}
         </option>
     </c:forEach>

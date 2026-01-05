@@ -64,20 +64,21 @@ public class GestioneCommessa extends HttpServlet {
 			
 			String anno=request.getParameter("year");
 			
-			int year=Integer.parseInt(Utility.getCurrentYearFormat(0));
-//			
-//			if(anno==null) {
-//				year = Calendar.getInstance().get(Calendar.YEAR);
-//			}else 
-//			{
-//				year=Integer.parseInt(anno);
-//			}
+			int year=0;
+			
+			if(anno==null) {
+				year = Integer.parseInt(Utility.getCurrentYearFormat(0));
+				anno = ""+year;
+			}else 
+			{
+				year=Integer.parseInt(anno);
+			}
 			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user,year,false);
 			
 		
 			request.getSession().setAttribute("listaCommesse", listaCommesse);
-			request.getSession().setAttribute("current_year", year);
-			request.getSession().setAttribute("yearList", Utility.getYearList());
+			request.getSession().setAttribute("current_year", Utility.getCurrentYearFormat(0));
+			request.getSession().setAttribute("anno", anno);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneCommessa.jsp");
 	     	dispatcher.forward(request,response);
 			

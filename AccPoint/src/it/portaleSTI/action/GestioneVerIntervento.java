@@ -480,6 +480,7 @@ public class GestioneVerIntervento extends HttpServlet {
 				
 				if(anno==null) {
 					year = Calendar.getInstance().get(Calendar.YEAR);
+					anno = ""+year;
 				}else 
 				{
 					year=Integer.parseInt(anno);
@@ -489,7 +490,7 @@ public class GestioneVerIntervento extends HttpServlet {
 			
 				request.getSession().setAttribute("listaCommesse", listaCommesse);	
 				request.getSession().setAttribute("current_year", year);
-				request.getSession().setAttribute("yearList", Utility.getYearList());
+				request.getSession().setAttribute("anno", anno);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneVerCommessa.jsp");
 		     	dispatcher.forward(request,response);
 		     	

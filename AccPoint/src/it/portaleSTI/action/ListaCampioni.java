@@ -163,7 +163,7 @@ public class ListaCampioni extends HttpServlet {
 								lat = "";
 							}
 							
-							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data , verificazione, lat, session);
+							listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), tipo_data , verificazione, lat, idCompany, session);
 						}
 					}
 //					else if(manutenzione!= null) {

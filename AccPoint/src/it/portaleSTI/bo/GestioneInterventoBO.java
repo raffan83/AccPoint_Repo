@@ -158,7 +158,7 @@ public class GestioneInterventoBO {
 		return SQLLiteDAO.checkFile(file.getPath());
 	}
 
-	public static ObjSavePackDTO saveDataDB(ObjSavePackDTO esito, InterventoDTO intervento,UtenteDTO utente, boolean non_sovrascrivere,Session session) throws Exception {
+	public static ObjSavePackDTO saveDataDB(ArrayList<MisuraDTO> listaMisure,ObjSavePackDTO esito, InterventoDTO intervento,UtenteDTO utente, boolean non_sovrascrivere, boolean da_duplicati,Session session) throws Exception {
 		
 		InterventoDatiDTO interventoDati = new InterventoDatiDTO();
 		
@@ -169,7 +169,7 @@ public class GestioneInterventoBO {
 			
 			Connection con =SQLLiteDAO.getConnection(nomeDB);
 			
-			ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
+			//ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
 			
 			esito.setEsito(1);
 			
@@ -182,22 +182,51 @@ public class GestioneInterventoBO {
 			interventoDati.setUtente(utente);
 			
 			
-			saveInterventoDati(interventoDati,session);
 			
 			
 			
-			int strumentiDuplicati=0;
+			
+//			int strumentiDuplicati=0;
+//			if(da_duplicati==false) {
+//			 for (int i = 0; i < listaMisure.size(); i++) 
+//			    {
+//				 
+//				 MisuraDTO misura = listaMisure.get(i);
+//				    
+//			    	
+//				    boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
+//				    
+//				    if(isPresent )
+//					    
+//				    {
+//				    	esito.getListaStrumentiDuplicati().add(misura.getStrumento());	
+//			    		strumentiDuplicati++;
+//			    		esito.setEsito(1);
+//				    }
+//				 
+//			    }
+//			 
+//			 if(strumentiDuplicati>0) {
+//				 esito.setDuplicati(true);
+//				 esito.setInterventoDati(interventoDati);
+//				 return esito;
+//			 }
+//			}
+			
+			if(listaMisure.size()>0) {
+				saveInterventoDati(interventoDati,session);
+			}
 			
 		    for (int i = 0; i < listaMisure.size(); i++) 
 		    {
 		    	MisuraDTO misura = listaMisure.get(i);
 		    
 		    	
-		    boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
-				
-		    if(isPresent==false || non_sovrascrivere== true)
-		    
-		    {
+//		    boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
+//				
+//		    if(isPresent==false || non_sovrascrivere== true)
+//		    
+//		    {
 		    		
 		   	if(misura.getStrumento().getCreato().equals("S") && misura.getStrumento().getImportato().equals("N"))
 		   		
@@ -261,7 +290,7 @@ public class GestioneInterventoBO {
 	   		GestioneStrumentoBO.update(strumentoAggiormanentoScadenza, session);
 		   	}
 		   	
-		    
+		   	
 		    		misura.setInterventoDati(interventoDati);
 		    		misura.setUser(utente);
 		    		misura.setLat("N");
@@ -321,6 +350,11 @@ public class GestioneInterventoBO {
 		    		
 		    	//	updateInterventoDati(interventoDati,session);
 		    		
+		    		System.out.println(System.identityHashCode(intervento));
+		    		System.out.println(System.identityHashCode(
+		    		    session.get(InterventoDTO.class, intervento.getId())
+		    		));
+		    		
 		    		update(intervento, session);
 		    		
 		    		
@@ -330,24 +364,24 @@ public class GestioneInterventoBO {
 		    		certificato.setUtente(misura.getUser());
 
 		    		saveCertificato(certificato,session);
-		    		GestioneInterventoDAO.update(intervento,session);
+		    		//GestioneInterventoDAO.update(intervento,session);
 
 		    	}
-		    		else
-		    	{
-		    		esito.getListaStrumentiDuplicati().add(misura.getStrumento());	
-		    		strumentiDuplicati++;
-		    		esito.setEsito(1);
-		    	}
+//		    		else
+//		    	{
+//		    		esito.getListaStrumentiDuplicati().add(misura.getStrumento());	
+//		    		strumentiDuplicati++;
+//		    		esito.setEsito(1);
+//		    	}
 
-		    }
+		   // }
 		    esito.setInterventoDati(interventoDati);
 			
 		    
-		    if(strumentiDuplicati!=0)
-		    {
-		    	esito.setDuplicati(true);
-		    }		    
+//		    if(strumentiDuplicati!=0)
+//		    {
+//		    	esito.setDuplicati(true);
+//		    }		    
 			
 		} catch (Exception e) 
 		{
@@ -864,7 +898,7 @@ public class GestioneInterventoBO {
 		
 	}
 
-	public static void updateMisura(String idStr, ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente, String note_obsolescenza, Session session) throws Exception {
+	public static ObjSavePackDTO updateMisura(ArrayList<MisuraDTO> listaMisureDP, String idStr, ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente, String note_obsolescenza, Session session) throws Exception {
 
 		try{
 
@@ -872,6 +906,7 @@ public class GestioneInterventoBO {
 
 			Connection con =SQLLiteDAO.getConnection(nomeDB);
 
+			session.saveOrUpdate(esito.getInterventoDati());
 
 			if(GestioneInterventoBO.isElectric(esito)) {
 
@@ -1012,11 +1047,11 @@ public class GestioneInterventoBO {
 			else 
 			{
 
-				ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
+				//ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
 
-				for (int i = 0; i < listaMisure.size(); i++) 
+				for (int i = 0; i < listaMisureDP.size(); i++) 
 				{
-					MisuraDTO misura = listaMisure.get(i);
+					MisuraDTO misura = listaMisureDP.get(i);
 
 					if(misura.getStrumento().get__id()==Integer.parseInt(idStr)) 
 					{	 
@@ -1071,7 +1106,7 @@ public class GestioneInterventoBO {
 						//	misura.setNote_obsolescenza(note_obsolescenza);
 							if(esito.isLAT())
 							{
-								listaMisure.get(i).setLat("S");
+								listaMisureDP.get(i).setLat("S");
 
 
 								LatMisuraDTO misuraLAT = SQLLiteDAO.getMisuraLAT(con, misura.getStrumento(), misura.getStrumento().get__id());
@@ -1109,11 +1144,11 @@ public class GestioneInterventoBO {
 							}
 							else
 							{
-								listaMisure.get(i).setLat("N");
+								listaMisureDP.get(i).setLat("N");
 							}
 
 							/*Salvo la nuova misura*/
-							session.save(listaMisure.get(i));
+							session.save(listaMisureDP.get(i));
 
 							/*Salvo i nuovi punti*/
 							ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
@@ -1123,16 +1158,24 @@ public class GestioneInterventoBO {
 								session.save(listaPuntiMisura.get(j));
 							}
 
-
+								 
 							/*Rendo obsoleto sia la misura che i punti precedenti*/
-							ArrayList<MisuraDTO> listaMisuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),idStr);
-							for (MisuraDTO misuraObsoleta : listaMisuraObsoleta) 
-							{
-								
-								GestioneInterventoDAO.misuraObsoleta(misuraObsoleta,note_obsolescenza,session);
-								GestioneInterventoDAO.puntoMisuraObsoleto(misuraObsoleta.getId(),session);		
-							}
+								ArrayList<MisuraDTO> listaMisuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),idStr);
+								for (MisuraDTO misuraObsoleta : listaMisuraObsoleta) 
+								{
+									
+									GestioneInterventoDAO.misuraObsoleta(misuraObsoleta,note_obsolescenza,session);
+									GestioneInterventoDAO.puntoMisuraObsoleto(misuraObsoleta.getId(),session);		
+								}
 
+							
+							
+							intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
+		 					esito.getInterventoDati().setNumStrMis(esito.getInterventoDati().getNumStrMis()+1);
+
+							GestioneInterventoBO.updateInterventoDati(esito.getInterventoDati(),session);
+							GestioneInterventoBO.update(intervento, session);
+							
 							CertificatoDTO certificato = new CertificatoDTO();
 							certificato.setMisura(misura);
 							certificato.setStato(new StatoCertificatoDTO(1));
@@ -1147,6 +1190,8 @@ public class GestioneInterventoBO {
 
 			}
 
+			return esito;
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			esito.setEsito(0);

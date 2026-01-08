@@ -107,19 +107,16 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 		boolean isPresent=false;
 		List<MisuraDTO> misura=null;
 		try {
-			Session session1=SessionFacotryDAO.get().openSession();	
-			session1.beginTransaction();
-			
+
 		String s_query = "from MisuraDTO WHERE intervento.id = :_intervento AND strumento.__id =:_strumento";
 						  
-	    query = session1.createQuery(s_query);
+	    query = session.createQuery(s_query);
 	    query.setParameter("_intervento",id);
 	    query.setParameter("_strumento",strumento.get__id());
 		
 	    misura=(List<MisuraDTO>)query.list();
 		
-	    session1.getTransaction().commit();
-		session1.close();
+
 		
 	    if(misura.size()>0)
 	    {

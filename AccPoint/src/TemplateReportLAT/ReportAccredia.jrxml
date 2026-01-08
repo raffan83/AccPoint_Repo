@@ -9,17 +9,17 @@
 	</background>
 	<title>
 		<band height="196">
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="10" width="181" height="70" uuid="474444c1-293d-480b-b232-2906e08b26ce"/>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement x="0" y="10" width="180" height="97" uuid="474444c1-293d-480b-b232-2906e08b26ce"/>
 				<graphicElement fill="Solid"/>
 				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="0" y="100" width="250" height="31" uuid="bf33e73c-64d6-4647-9cf1-dd86435f0d29"/>
-				<textElement>
+				<reportElement x="0" y="107" width="445" height="31" uuid="bf33e73c-64d6-4647-9cf1-dd86435f0d29"/>
+				<textElement verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[Dipartimento Laboratori di Taratura]]></text>
+				<text><![CDATA[Report certificati di taratura accreditata]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="140" width="100" height="31" uuid="ffe9452c-1a5a-4ef5-aa28-2a680be78759"/>

@@ -58,7 +58,7 @@ private void build(ArrayList<MisuraDTO> lista_misure, String dateFrom, String da
 	
 	JasperReportBuilder report = DynamicReports.report();
 	
-	report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia.png"));	
+	report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("logo_accredia_nawi_calver.png"));	
 	//report.addParameter("immagine_ilac",PivotTemplateLAT_Image.class.getResourceAsStream("ilac.jpg"));	
 	
 	report.setTemplateDesign(is);

@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,7 @@ import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -43,7 +45,7 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 
 
-		InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
+		InterventoDTO interv= (InterventoDTO)request.getSession().getAttribute("intervento");
 		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 
 		Session session=SessionFacotryDAO.get().openSession();
@@ -59,13 +61,18 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 			String note_obsolescenza = request.getParameter("note");
 			String non_sovrascrivere = request.getParameter("non_sovrascrivere");
 
+			InterventoDTO intervento= (InterventoDTO) session.get(InterventoDTO.class, interv.getId()); 
+			
 			esito =(ObjSavePackDTO)request.getSession().getAttribute("esito");	
+			ArrayList<MisuraDTO> listaMisureDuplicate =(ArrayList<MisuraDTO>)request.getSession().getAttribute("listaMisureDuplicate");
 			if(non_sovrascrivere!=null && non_sovrascrivere.equals("1")) {
 				
-				esito = GestioneInterventoBO.saveDataDB(esito, intervento, utente, true, session);
+				int strumentiMisurati = esito.getInterventoDati().getNumStrMis();
+				
+				esito = GestioneInterventoBO.saveDataDB(listaMisureDuplicate, esito, intervento, utente, true,true, session);
 				
 				jsono.addProperty("success", true);
-				jsono.addProperty("messaggio", "Sono stati salvati "+esito.getInterventoDati().getNumStrMis()+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
+				jsono.addProperty("messaggio", "Sono stati salvati "+(esito.getInterventoDati().getNumStrMis()+strumentiMisurati)+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
 				GestioneInterventoBO.setControllato(intervento.getId(), utente.getId(), 0, session);
 				
 			}
@@ -77,14 +84,10 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 				for (int i = 0; i < lista.length; i++) 
 				{
 					
-					GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente, note[i], session);	
+					esito = GestioneInterventoBO.updateMisura(listaMisureDuplicate,lista[i],esito,intervento,utente, note[i], session);	
 									
 
-					intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
- 					esito.getInterventoDati().setNumStrMis(esito.getInterventoDati().getNumStrMis()+1);
-
-					GestioneInterventoBO.updateInterventoDati(esito.getInterventoDati(),session);
-					GestioneInterventoBO.update(intervento, session);
+				
 
 				}
 
@@ -98,7 +101,7 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 				if(esito.getInterventoDati().getNumStrMis()==0)
 				{
 					jsono.addProperty("messaggio","Nessun strumento modificato o inserito");
-					GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
+					
 					jsono.addProperty("success", true);
 				}
 				else

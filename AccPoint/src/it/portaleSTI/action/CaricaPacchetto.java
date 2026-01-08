@@ -28,6 +28,7 @@ import org.hibernate.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
@@ -74,19 +75,22 @@ public class CaricaPacchetto extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		
 		ArrayList<ConfigurazioneClienteDTO> configurazioneCliente= null;
-		InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
+		InterventoDTO interv= (InterventoDTO)request.getSession().getAttribute("intervento");
 		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 
-		
+		ArrayList<MisuraDTO> listaMisureNonDuplicate = null;
+		ArrayList<MisuraDTO> listaMisureDuplicate = null;
 		writer = response.getWriter();
 		response.setContentType("application/json");
 		String action = request.getParameter("action");
 		try {
 			
 			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
+			
+			InterventoDTO intervento= (InterventoDTO) session.get(InterventoDTO.class, interv.getId()); 
 			
 			if(action==null) {
 				try {
@@ -114,14 +118,16 @@ public class CaricaPacchetto extends HttpServlet {
 								
 								if(!isElectric)
 								{
-									esito = GestioneInterventoBO.saveDataDB(esito,intervento,utente,false,session);
-									
 									String nomeDB=esito.getPackNameAssigned().getPath();
-									
 									Connection con =SQLLiteDAO.getConnection(nomeDB);
-									
 									ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
+									listaMisureNonDuplicate = getListaMisureNonDuplicate(listaMisure, intervento, session);
+									listaMisureDuplicate = getListaMisureDuplicate(listaMisure, intervento, session);
 									
+									
+									esito = GestioneInterventoBO.saveDataDB(listaMisureNonDuplicate,esito,intervento,utente,false,false,session);
+									
+																	
 									configurazioneCliente=GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromIdCliente_idSede(intervento.getId_cliente(), intervento.getIdSede(), session);
 									
 									for (MisuraDTO mis : listaMisure) 
@@ -148,7 +154,7 @@ public class CaricaPacchetto extends HttpServlet {
 								jsono.addProperty("messaggio", esito.getErrorMsg());
 							}
 
-							if(esito.getEsito()==1 && esito.isDuplicati()==false)
+							if(esito.getEsito()==1 && listaMisureDuplicate.size()==0)
 							{
 
 								jsono.addProperty("success", true);
@@ -158,20 +164,25 @@ public class CaricaPacchetto extends HttpServlet {
 
 							}
 							Gson gson = new Gson();
-							if(esito.getEsito()==1 && esito.isDuplicati()==true)
+							if(esito.getEsito()==1 && listaMisureDuplicate.size()>0)
 							{
-								for (int i = 0; i < esito.getListaStrumentiDuplicati().size(); i++) 
+								
+								ArrayList<StrumentoDTO> listaStrumentiDuplicati = new ArrayList<StrumentoDTO>();
+								for (int i = 0; i < listaMisureDuplicate.size(); i++) 
 								{
-									StrumentoDTO strumento =GestioneStrumentoBO.getStrumentoById(""+esito.getListaStrumentiDuplicati().get(i).get__id(),session);
-									esito.getListaStrumentiDuplicati().set(i,strumento);
-
+									StrumentoDTO strumento =GestioneStrumentoBO.getStrumentoById(""+listaMisureDuplicate.get(i).getStrumento().get__id(),session);
+									//esito.getListaStrumentiDuplicati().set(i,strumento);
+									
+									listaStrumentiDuplicati.add(strumento);
 								}
 								
 								
-								String jsonInString = gson.toJson(esito.getListaStrumentiDuplicati());
+								String jsonInString = gson.toJson(listaStrumentiDuplicati);
 								
 								jsono.addProperty("success", true);                      				
 								jsono.addProperty("duplicate",jsonInString);
+								
+								request.getSession().setAttribute("listaMisureDuplicate", listaMisureDuplicate);
 							}
 							
 							if(esito.getEsito() == 1 && firma_cliente) {
@@ -326,6 +337,31 @@ public class CaricaPacchetto extends HttpServlet {
 
 		} 
 
+	}
+
+	private ArrayList<MisuraDTO> getListaMisureDuplicate(ArrayList<MisuraDTO> listaMisure, InterventoDTO intervento, Session session) {
+
+		ArrayList<MisuraDTO> lista = new ArrayList<MisuraDTO>();
+		for (MisuraDTO misuraDTO : listaMisure) {
+			 boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misuraDTO.getStrumento(),session);
+			 if(isPresent) {
+				 lista.add(misuraDTO);
+			 }
+		}
+		
+		return lista;
+	}
+
+	private ArrayList<MisuraDTO> getListaMisureNonDuplicate(ArrayList<MisuraDTO> listaMisure, InterventoDTO intervento, Session session) {
+		ArrayList<MisuraDTO> lista = new ArrayList<MisuraDTO>();
+		for (MisuraDTO misuraDTO : listaMisure) {
+			 boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misuraDTO.getStrumento(),session);
+			 if(!isPresent) {
+				 lista.add(misuraDTO);
+			 }
+		}
+		
+		return lista;
 	}
 
 }

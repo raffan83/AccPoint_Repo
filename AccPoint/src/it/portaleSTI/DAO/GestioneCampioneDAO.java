@@ -601,7 +601,7 @@ public class GestioneCampioneDAO {
 		}else {
 			//query = session.createQuery("from CampioneDTO WHERE (data_scadenza between :_date_start and :_date_end or data_scadenza_verifica_intermedia between :_date_start and :_date_end or data_scadenza_manutenzione between :_date_start and :_date_end) and id_Company=:_id_company and statoCampione != 'F' and codice "+not+" LIKE  '%CDT%'");
 			
-			if(!utente.isTras()&& utente.checkRuolo("FR")) {
+			if(!utente.isTras()&& (utente.checkRuolo("FR")||utente.checkRuolo("VC")) ) {
 				query = session.createQuery("from CampioneDTO WHERE (data_scadenza between :_date_start and :_date_end or data_scadenza_verifica_intermedia between :_date_start and :_date_end or data_scadenza_manutenzione between :_date_start and :_date_end) and statoCampione != 'F' and codice "+not+" LIKE  '%CDT%' and id_Company=:_id_company");
 				query.setParameter("_id_company", id_company);
 			}else {

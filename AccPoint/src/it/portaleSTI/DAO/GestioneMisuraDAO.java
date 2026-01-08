@@ -181,7 +181,7 @@ public class GestioneMisuraDAO {
 			
 		Query query = null;
 		if(lat) {
-			query = session.createQuery("from MisuraDTO where dataMisura between :dateFrom and :dateTo  and lat = 'S' and nCertificato like '%LAT172%'");	
+			query = session.createQuery("from MisuraDTO where dataMisura between :dateFrom and :dateTo  and lat = 'S' and (nCertificato like '%00283LAT%' or nCertificato like '%LAT172%')");	
 			query.setParameter("dateFrom", start);
 			query.setParameter("dateTo", now);
 		}else {

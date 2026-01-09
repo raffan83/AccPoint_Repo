@@ -169,8 +169,6 @@ public class GestioneInterventoBO {
 			
 			Connection con =SQLLiteDAO.getConnection(nomeDB);
 			
-			//ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
-			
 			esito.setEsito(1);
 			
 			interventoDati.setId_intervento(intervento.getId());
@@ -181,114 +179,78 @@ public class GestioneInterventoBO {
 			interventoDati.setNumStrNuovi(0);
 			interventoDati.setUtente(utente);
 			
-			
-			
-			
-			
-			
-//			int strumentiDuplicati=0;
-//			if(da_duplicati==false) {
-//			 for (int i = 0; i < listaMisure.size(); i++) 
-//			    {
-//				 
-//				 MisuraDTO misura = listaMisure.get(i);
-//				    
-//			    	
-//				    boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
-//				    
-//				    if(isPresent )
-//					    
-//				    {
-//				    	esito.getListaStrumentiDuplicati().add(misura.getStrumento());	
-//			    		strumentiDuplicati++;
-//			    		esito.setEsito(1);
-//				    }
-//				 
-//			    }
-//			 
-//			 if(strumentiDuplicati>0) {
-//				 esito.setDuplicati(true);
-//				 esito.setInterventoDati(interventoDati);
-//				 return esito;
-//			 }
-//			}
-			
-			if(listaMisure.size()>0) {
+			if(listaMisure.size()>0) 
+			{
 				saveInterventoDati(interventoDati,session);
 			}
 			
 		    for (int i = 0; i < listaMisure.size(); i++) 
 		    {
-		    	MisuraDTO misura = listaMisure.get(i);
 		    
-		    	
-//		    boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
-//				
-//		    if(isPresent==false || non_sovrascrivere== true)
-//		    
-//		    {
-		    		
-		   	if(misura.getStrumento().getCreato().equals("S") && misura.getStrumento().getImportato().equals("N"))
-		   		
-		    	{
-		    		nuovoStrumento=GestioneStrumentoBO.createStrumeto(misura.getStrumento(),intervento,session);
+		    	MisuraDTO misura = listaMisure.get(i);
 
-		    		int nuoviStrumenti =intervento.getnStrumentiNuovi()+1;
-		    		intervento.setnStrumentiNuovi(nuoviStrumenti);
 		    		
-		    		int nuoviStrumentiInterventoDati=interventoDati.getNumStrNuovi()+1;
-		    		interventoDati.setNumStrNuovi(nuoviStrumentiInterventoDati);
-		    		
-		    	}
+			   	if(misura.getStrumento().getCreato().equals("S") && misura.getStrumento().getImportato().equals("N"))
+			   		
+			    	{
+			    		nuovoStrumento=GestioneStrumentoBO.createStrumeto(misura.getStrumento(),intervento,session);
+	
+			    		int nuoviStrumenti =intervento.getnStrumentiNuovi()+1;
+			    		intervento.setnStrumentiNuovi(nuoviStrumenti);
+			    		
+			    		int nuoviStrumentiInterventoDati=interventoDati.getNumStrNuovi()+1;
+			    		interventoDati.setNumStrNuovi(nuoviStrumentiInterventoDati);
+			    		
+			    	}
 		    	
-		   	if(misura.getStrumento().getStrumentoModificato()!=null && misura.getStrumento().getStrumentoModificato().equals("S")) {
-		   		System.out.println(misura.getStrumento().get__id());
-		   		StrumentoDTO strumentoModificato=new StrumentoDTO();
-		   		
-		   		strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
-		   		
-		   		StrumentoDTO strumentoDaFile = misura.getStrumento();
-		   		
-		   		strumentoModificato.setUserModifica(utente);
-		   		strumentoModificato.setDataModifica(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
-		   		
-		   		TipoRapportoDTO tipoRapp = new TipoRapportoDTO(strumentoDaFile.getIdTipoRapporto(),"");
-		   		strumentoModificato.setTipoRapporto(tipoRapp);
-		   		
-		   		ClassificazioneDTO classificazione = new ClassificazioneDTO(strumentoDaFile.getIdClassificazione(),"");		   		
-		   		strumentoModificato.setClassificazione(classificazione);
-		   		strumentoModificato.setFrequenza(strumentoDaFile.getFrequenza());
-		   		strumentoModificato.setDenominazione(strumentoDaFile.getDenominazione());   	
-		   		strumentoModificato.setCodice_interno(strumentoDaFile.getCodice_interno());
-		   		strumentoModificato.setCostruttore(strumentoDaFile.getCostruttore());
-		   		strumentoModificato.setModello(strumentoDaFile.getModello());
-		   		strumentoModificato.setReparto(strumentoDaFile.getReparto());
-		   		strumentoModificato.setUtilizzatore(strumentoDaFile.getUtilizzatore());
-		   		strumentoModificato.setMatricola(strumentoDaFile.getMatricola());
-		   		strumentoModificato.setCampo_misura(strumentoDaFile.getCampo_misura());
-		   		strumentoModificato.setRisoluzione(strumentoDaFile.getRisoluzione());
-		   		strumentoModificato.setNote(strumentoDaFile.getNote());
-		   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
-		   		strumentoModificato.setProcedura(strumentoDaFile.getProcedura());
-		   		strumentoModificato.setDataProssimaVerifica(strumentoDaFile.getDataProssimaVerifica());
-		   		strumentoModificato.setDataUltimaVerifica(strumentoDaFile.getDataUltimaVerifica());
-		   		strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
-		   		strumentoModificato.setTipo_strumento(new TipoStrumentoDTO(strumentoDaFile.getTipo_strumento().getId(), ""));
-		   		
-		   		strumentoModificato.setNote_tecniche(strumentoDaFile.getNote_tecniche());
-		   		
-		   		GestioneStrumentoBO.update(strumentoModificato, session);
-		   	}
-		   	
-		   	else 
-		   	{
-		   	StrumentoDTO	strumentoAggiormanentoScadenza = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
-		   	strumentoAggiormanentoScadenza.setDataProssimaVerifica(misura.getStrumento().getDataProssimaVerifica());
-		   	strumentoAggiormanentoScadenza.setDataUltimaVerifica(misura.getStrumento().getDataUltimaVerifica());
-		   	strumentoAggiormanentoScadenza.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
-	   		
-	   		GestioneStrumentoBO.update(strumentoAggiormanentoScadenza, session);
-		   	}
+				   	if(misura.getStrumento().getStrumentoModificato()!=null && misura.getStrumento().getStrumentoModificato().equals("S")) {
+				   		System.out.println(misura.getStrumento().get__id());
+				   		StrumentoDTO strumentoModificato=new StrumentoDTO();
+				   		
+				   		strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
+				   		
+				   		StrumentoDTO strumentoDaFile = misura.getStrumento();
+				   		
+				   		strumentoModificato.setUserModifica(utente);
+				   		strumentoModificato.setDataModifica(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+				   		
+				   		TipoRapportoDTO tipoRapp = new TipoRapportoDTO(strumentoDaFile.getIdTipoRapporto(),"");
+				   		strumentoModificato.setTipoRapporto(tipoRapp);
+				   		
+				   		ClassificazioneDTO classificazione = new ClassificazioneDTO(strumentoDaFile.getIdClassificazione(),"");		   		
+				   		strumentoModificato.setClassificazione(classificazione);
+				   		strumentoModificato.setFrequenza(strumentoDaFile.getFrequenza());
+				   		strumentoModificato.setDenominazione(strumentoDaFile.getDenominazione());   	
+				   		strumentoModificato.setCodice_interno(strumentoDaFile.getCodice_interno());
+				   		strumentoModificato.setCostruttore(strumentoDaFile.getCostruttore());
+				   		strumentoModificato.setModello(strumentoDaFile.getModello());
+				   		strumentoModificato.setReparto(strumentoDaFile.getReparto());
+				   		strumentoModificato.setUtilizzatore(strumentoDaFile.getUtilizzatore());
+				   		strumentoModificato.setMatricola(strumentoDaFile.getMatricola());
+				   		strumentoModificato.setCampo_misura(strumentoDaFile.getCampo_misura());
+				   		strumentoModificato.setRisoluzione(strumentoDaFile.getRisoluzione());
+				   		strumentoModificato.setNote(strumentoDaFile.getNote());
+				   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
+				   		strumentoModificato.setProcedura(strumentoDaFile.getProcedura());
+				   		strumentoModificato.setDataProssimaVerifica(strumentoDaFile.getDataProssimaVerifica());
+				   		strumentoModificato.setDataUltimaVerifica(strumentoDaFile.getDataUltimaVerifica());
+				   		strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
+				   		strumentoModificato.setTipo_strumento(new TipoStrumentoDTO(strumentoDaFile.getTipo_strumento().getId(), ""));
+				   		
+				   		strumentoModificato.setNote_tecniche(strumentoDaFile.getNote_tecniche());
+				   		
+				   		GestioneStrumentoBO.update(strumentoModificato, session);
+				   	}
+				   	
+				   	else 
+				   	{
+				   	StrumentoDTO	strumentoAggiormanentoScadenza = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
+				   	strumentoAggiormanentoScadenza.setDataProssimaVerifica(misura.getStrumento().getDataProssimaVerifica());
+				   	strumentoAggiormanentoScadenza.setDataUltimaVerifica(misura.getStrumento().getDataUltimaVerifica());
+				   	strumentoAggiormanentoScadenza.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
+			   		
+			   		GestioneStrumentoBO.update(strumentoAggiormanentoScadenza, session);
+				   	}
 		   	
 		   	
 		    		misura.setInterventoDati(interventoDati);
@@ -328,7 +290,7 @@ public class GestioneInterventoBO {
 		    			StrumentoDTO strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
 		    			
 		    			strumentoModificato.setIndice_prestazione(indicePrestazione);
-		    			//strumentoModificato
+		    			
 		    			if(idoneo) 
 		    			{
 		    			 	
@@ -340,7 +302,7 @@ public class GestioneInterventoBO {
 		    			{
 		    				strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_NON_IN_SERVIZIO, ""));
 		    		   		GestioneStrumentoBO.update(strumentoModificato, session);
-		    		//   		misura.setObsoleto("S");
+		    		   		//misura.setObsoleto("S");
 		    			}
 		    		}
 		    		
@@ -348,12 +310,13 @@ public class GestioneInterventoBO {
 		    		interventoDati.setNumStrMis(interventoDati.getNumStrMis()+1);
 		    		
 		    		
-		    	//	updateInterventoDati(interventoDati,session);
-		    		
+		   
+		    		/*
+		    		 * Controllo hasCode oggetti utile per confrontare lo stesso oggetto
+		    		 * 
 		    		System.out.println(System.identityHashCode(intervento));
-		    		System.out.println(System.identityHashCode(
-		    		    session.get(InterventoDTO.class, intervento.getId())
-		    		));
+		    		System.out.println(System.identityHashCode(session.get(InterventoDTO.class, intervento.getId())));
+		    		*/
 		    		
 		    		update(intervento, session);
 		    		
@@ -364,25 +327,13 @@ public class GestioneInterventoBO {
 		    		certificato.setUtente(misura.getUser());
 
 		    		saveCertificato(certificato,session);
-		    		//GestioneInterventoDAO.update(intervento,session);
+		    		
 
 		    	}
-//		    		else
-//		    	{
-//		    		esito.getListaStrumentiDuplicati().add(misura.getStrumento());	
-//		    		strumentiDuplicati++;
-//		    		esito.setEsito(1);
-//		    	}
 
-		   // }
 		    esito.setInterventoDati(interventoDati);
 			
 		    
-//		    if(strumentiDuplicati!=0)
-//		    {
-//		    	esito.setDuplicati(true);
-//		    }		    
-			
 		} catch (Exception e) 
 		{
 		
@@ -906,11 +857,17 @@ public class GestioneInterventoBO {
 
 			Connection con =SQLLiteDAO.getConnection(nomeDB);
 
-			session.saveOrUpdate(esito.getInterventoDati());
+			InterventoDatiDTO interDati= (InterventoDatiDTO) session.get(InterventoDatiDTO.class, esito.getInterventoDati().getId()); 
+			
+			if(interDati==null) 
+			{
+				interDati=esito.getInterventoDati();
+			}
+			session.saveOrUpdate(interDati);
 
 			if(GestioneInterventoBO.isElectric(esito)) {
 
-				InterventoDatiDTO interventoDati = esito.getInterventoDati();
+				InterventoDatiDTO interventoDati = interDati;
 				ArrayList<SicurezzaElettricaDTO> listaMisure=SQLLiteDAO.getListaMisureElettriche(con,intervento);
 
 				for (int i = 0; i < listaMisure.size(); i++) 
@@ -1009,15 +966,6 @@ public class GestioneInterventoBO {
 					int idMis =saveMisura(misura,session);
 					sicurezza.setId_misura(idMis);
 
-					/*
-					 * Salvo scadenza 
-					 */
-					//			    		ScadenzaDTO scadenza =sicurezza.getStrumento().getScadenzaDTO();
-					//			    		scadenza.setIdStrumento(misura.getStrumento().get__id());
-					//				    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
-					//			    		GestioneStrumentoBO.saveScadenza(scadenza,session);
-
-
 					saveSicurezza(sicurezza,session);
 
 					intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
@@ -1093,15 +1041,8 @@ public class GestioneInterventoBO {
 							GestioneStrumentoBO.update(strumentoModificato, session);
 						}
 
-						//				ScadenzaDTO scadenza =misura.getStrumento().getScadenzaDTO();
-						//	    		scadenza.setIdStrumento(misura.getStrumento().get__id());
-						//		    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
-						//	    		GestioneStrumentoBO.saveScadenza(scadenza,session);
-						//				
-
-					
 							int idTemp=misura.getId();
-							misura.setInterventoDati(esito.getInterventoDati());
+							misura.setInterventoDati(interDati);
 							misura.setUser(utente);
 						//	misura.setNote_obsolescenza(note_obsolescenza);
 							if(esito.isLAT())
@@ -1110,7 +1051,7 @@ public class GestioneInterventoBO {
 
 
 								LatMisuraDTO misuraLAT = SQLLiteDAO.getMisuraLAT(con, misura.getStrumento(), misura.getStrumento().get__id());
-								misuraLAT.setIntervento_dati(esito.getInterventoDati());
+								misuraLAT.setIntervento_dati(interDati);
 								misuraLAT.setIntervento(intervento);
 								misuraLAT.setUser(utente);
 
@@ -1171,9 +1112,9 @@ public class GestioneInterventoBO {
 							
 							
 							intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
-		 					esito.getInterventoDati().setNumStrMis(esito.getInterventoDati().getNumStrMis()+1);
+		 					interDati.setNumStrMis(interDati.getNumStrMis()+1);
 
-							GestioneInterventoBO.updateInterventoDati(esito.getInterventoDati(),session);
+							GestioneInterventoBO.updateInterventoDati(interDati,session);
 							GestioneInterventoBO.update(intervento, session);
 							
 							CertificatoDTO certificato = new CertificatoDTO();

@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DTO.UtenteDTO;
@@ -61,20 +63,29 @@ public class InviaReport extends HttpServlet {
 		SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		dt.format(data);
 
+
+		String to = Costanti.EMAIL_EXCEPTION_REPORT;
+		
+		 String subject = "Report Eccezione";
+		
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 		e.printStackTrace(pw);
-		
-		 String to = Costanti.EMAIL_EXCEPTION_REPORT;
-		
-		  String subject = "Report Eccezione";
-		
-		  String hmtlMex = "<h3>Attenzione! L'utente "+utente.getNominativo()+"  ha generato la seguente eccezione: </h3><br /><br>Pagina: "+request.getHeader("referer")+"<br><br>Data: "+dt.format(data)+"<br><br>"+sw.toString();
 
-		  
+		String stackTrace = StringEscapeUtils.escapeHtml4(sw.toString());
+
+		String hmtlMex =
+		    "<h3>Attenzione!</h3>" +
+		    "<p>L'utente <b>" + utente.getNominativo() + "</b> ha generato la seguente eccezione:</p>" +
+		    "<p><b>Pagina:</b> " + request.getHeader("referer") + "</p>" +
+		    "<p><b>Data:</b> " + dt.format(data) + "</p>" +
+		    "<pre style='background:#f5f5f5;padding:10px;border:1px solid #ccc;'>" +
+		    stackTrace +
+		    "</pre>";
+		
 			Utility.sendEmail(to,subject,hmtlMex);
 			
-			Utility.sendEmail("antonio.dicivita@ncsnetwork.it",subject,hmtlMex);
+		//	Utility.sendEmail("antonio.dicivita@ncsnetwork.it",subject,hmtlMex);
 			myObj.addProperty("success", true);
 
 			out.print(myObj);

@@ -73,7 +73,7 @@
 
 
 <th>ID</th>
-
+<th>Company</th>
 <th>Tipo</th>
 <th>ID DPI</th>
 <th>Ricevuto</th>
@@ -99,7 +99,8 @@
  	<c:forEach items="${lista_consegne}" var="consegna" varStatus="loop">
 	<tr id="row_${loop.index}" >
 
-	<td>${consegna.id }</td>	
+	<td>${consegna.id }</td>
+	<td>${consegna.lavoratore.fornitore.ragione_sociale }</td>
 	<td>
 	<c:if test="${consegna.is_restituzione==0 }">CONSEGNA</c:if>
 	<c:if test="${consegna.is_restituzione==1 }">RICONSEGNA</c:if>

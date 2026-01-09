@@ -85,9 +85,6 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 				{
 					
 					esito = GestioneInterventoBO.updateMisura(listaMisureDuplicate,lista[i],esito,intervento,utente, note[i], session);	
-									
-
-				
 
 				}
 

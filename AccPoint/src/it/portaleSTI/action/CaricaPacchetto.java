@@ -120,9 +120,13 @@ public class CaricaPacchetto extends HttpServlet {
 								{
 									String nomeDB=esito.getPackNameAssigned().getPath();
 									Connection con =SQLLiteDAO.getConnection(nomeDB);
+									
+									/*Recupero lista misura dal file .db*/
 									ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
+									
 									listaMisureNonDuplicate = getListaMisureNonDuplicate(listaMisure, intervento, session);
 									listaMisureDuplicate = getListaMisureDuplicate(listaMisure, intervento, session);
+									
 									
 									
 									esito = GestioneInterventoBO.saveDataDB(listaMisureNonDuplicate,esito,intervento,utente,false,false,session);
@@ -148,6 +152,7 @@ public class CaricaPacchetto extends HttpServlet {
 							{
 								esito = GestioneInterventoBO.saveDataDB_LAT(esito,intervento,utente,session);
 							}
+							
 							if(esito.getEsito()==0)
 							{
 								jsono.addProperty("success", false);
@@ -164,6 +169,7 @@ public class CaricaPacchetto extends HttpServlet {
 
 							}
 							Gson gson = new Gson();
+							
 							if(esito.getEsito()==1 && listaMisureDuplicate.size()>0)
 							{
 								
@@ -185,7 +191,8 @@ public class CaricaPacchetto extends HttpServlet {
 								request.getSession().setAttribute("listaMisureDuplicate", listaMisureDuplicate);
 							}
 							
-							if(esito.getEsito() == 1 && firma_cliente) {
+							if(esito.getEsito() == 1 && firma_cliente) 
+							{
 								jsono.addProperty("success", true);
 								jsono.addProperty("hasFirmaCliente", true);
 					
@@ -218,6 +225,20 @@ public class CaricaPacchetto extends HttpServlet {
 				writer.close();}catch(Exception ex) 
 				{
 					logger.error(ex);
+					
+					ex.printStackTrace();
+					session.getTransaction().rollback();
+					session.close();
+					
+				    FileOutputStream outFile = new FileOutputStream(esito.getPackNameAssigned());
+				    outFile.flush();
+				    outFile.close();
+					esito.getPackNameAssigned().delete();
+				
+					jsono= STIException.getException(ex);
+					request.getSession().setAttribute("exception", ex);
+					writer.println(jsono.toString());
+					writer.close();
 				}
 			}
 			else if(action!=null && action.equals("firma_cliente")) {

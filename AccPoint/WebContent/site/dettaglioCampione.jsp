@@ -325,8 +325,12 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                         <%} %>
                         <c:set var ="id_campione" value="<%=campione.getId()%>"></c:set>
                    
+                   <% if(utente.checkRuolo("AM") || utente.checkRuolo("OP") || utente.checkRuolo("SR") || utente.checkRuolo("RO")){%>
+                    
                         <a target="_blank"  class="btn btn-primary " href='' onclick="this.href='scaricaEtichetta.do?action=campione&id_campione=${id_campione}'">Stampa Etichetta</a>
-
+					
+					<%} %>
+					
 
 
     </div>

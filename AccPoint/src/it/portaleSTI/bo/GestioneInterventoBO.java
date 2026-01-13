@@ -1101,7 +1101,7 @@ public class GestioneInterventoBO {
 
 								 
 							/*Rendo obsoleto sia la misura che i punti precedenti*/
-								ArrayList<MisuraDTO> listaMisuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),idStr);
+								ArrayList<MisuraDTO> listaMisuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),idStr,session);
 								for (MisuraDTO misuraObsoleta : listaMisuraObsoleta) 
 								{
 									

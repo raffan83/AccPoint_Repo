@@ -1104,6 +1104,13 @@ var listaStrumenti = ${listaCampioniJson};
 	});
 	
 	
+	$('#modalNuovoCampione').on('shown.bs.modal', function () {
+	    $(this).find('.select2').select2({
+	        dropdownParent: $('#modalNuovoCampione'),
+	        minimumResultsForSearch: 0
+	    });
+	});
+	
 	$('#clona_campione').change(function(){
 		
 		$('#clona_valori_campione').iCheck("uncheck");

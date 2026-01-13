@@ -179,15 +179,11 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 
 
 
-	public static ArrayList<MisuraDTO> getMisuraObsoleta(int id, String idStr)throws Exception {
+	public static ArrayList<MisuraDTO> getMisuraObsoleta(int id, String idStr, Session session)throws Exception {
 		
 		Query query=null;
 		ArrayList<MisuraDTO> misura=new ArrayList<MisuraDTO>();
 
-			
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
 		
 		String s_query = "from MisuraDTO WHERE intervento.id = :_idIntervento AND strumento.__id=:_idStrumento AND obsoleto='N'";
 					  //  from MisuraDTO WHERE intervento.id =36              
@@ -196,9 +192,7 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 	    query.setParameter("_idStrumento",Integer.parseInt(idStr));
 		
 	    misura=(ArrayList<MisuraDTO>)query.list();
-		session.getTransaction().commit();
-		session.close();
-
+	
 	     
 		return misura;
 	}

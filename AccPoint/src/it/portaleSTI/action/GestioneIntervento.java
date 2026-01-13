@@ -493,7 +493,7 @@ public class GestioneIntervento extends HttpServlet {
 							session.save(misuraLAT);
 			    		}
 						if(note_obsolescenza!=null && !note_obsolescenza.equals("")) {
-							ArrayList<MisuraDTO> misuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),String.valueOf(strumento.get__id()));
+							ArrayList<MisuraDTO> misuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),String.valueOf(strumento.get__id()),session);
 							
 							for (MisuraDTO mis : misuraObsoleta) 
 							{

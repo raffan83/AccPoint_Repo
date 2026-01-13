@@ -1404,6 +1404,24 @@
 </form>
 
    <div id="myModalDownloadSchedaConsegna" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+   
+   <div id="myModalConfirm" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Conferma</h4>
+      </div>
+      <div class="modal-body">
+        <p id="myModalConfirmContent"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button type="button" id="btnConfirmYes" class="btn btn-primary">Sì</button>
+      </div>
+    </div>
+  </div>
+</div>
+   
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
     
@@ -1520,6 +1538,7 @@
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
   <script type="text/javascript" src="js/customCharts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
   <script type="text/javascript">
       function handleClientLoad() {
         
@@ -1803,7 +1822,10 @@ function reloadDrive()   {
  $('#formNuovaMisura').on('submit',function(e){
 	    e.preventDefault();
 	    if($('#id_strumento').val()!=null && $('#id_strumento').val()!=''){
-	    	submitNuovaMisura();
+	    	
+	    	
+	    	//submitNuovaMisura();
+	    	checkCertificatoVsExcelAndSubmit();
 	    }else{
 	    	  $('#myModalErrorContent').html("Attenzione! Nessuno strumento selezionato!");
  			  	$('#myModalError').removeClass();
@@ -1812,6 +1834,89 @@ function reloadDrive()   {
 	    }
 	});    
  
+ 
+ 	function extractPostLAT(str, lengthToTake = null){
+	    if(!str) return str; // stringa vuota  ritorna così
+	    var cleanStr = str.replace(/\s/g,'').toUpperCase(); // rimuovo spazi e metto maiuscole
+
+	    var latIndex = cleanStr.indexOf("LAT");
+	    if(latIndex === -1) return str.toUpperCase(); // non trova LAT  ritorna originale normalizzata
+
+	    if(lengthToTake === null){
+	        // modalità certificato: calcolo lunghezza tra LAT+3 e primo "/"
+	        var slashIndex = cleanStr.indexOf("/", latIndex);
+	        if(slashIndex === -1) slashIndex = cleanStr.length;
+	        var sub = cleanStr.substring(latIndex + 3, slashIndex);
+	        return sub.toUpperCase(); 
+	    } else {
+	        // modalità file: prendo substring di lunghezza lengthToTake dopo LAT
+	        return cleanStr.substring(latIndex + 3, latIndex + 3 + lengthToTake).toUpperCase();
+	    }
+	}
+ 
+ 	function checkCertificatoVsExcelAndSubmit() {
+ 	    var nCertificato = $.trim($('#nCertificato').val());
+ 	    var labelExcel = $.trim($('#label_excel').text());
+
+ 	    if(!nCertificato || !labelExcel){
+ 	        submitNuovaMisura();
+ 	        return;
+ 	    }
+
+ 	    // Estraggo dal certificato il post-LAT fino a "/"  substring di riferimento
+ 	    var certSub = extractPostLAT(nCertificato); 
+ 	    var lenSub = certSub.length; // numero caratteri da prendere dal file Excel
+
+ 	    // Estraggo dal file Excel lo stesso numero di caratteri dopo LAT
+ 	    var fileSub = extractPostLAT(labelExcel, lenSub);
+
+ 	    // Confronto le due substring
+ 	    if(certSub === fileSub){
+ 	        submitNuovaMisura(); // coincidono
+ 	    } else {
+ 	        // differiscono  conferma Bootbox mostrando le originali
+ 	        bootbox.confirm({
+ 	            title: "Attenzione!",
+ 	            message: "Il numero di certificato (<b>" + nCertificato + "</b>) " +
+ 	                     "è diverso dal nome del file Excel (<b>" + labelExcel + "</b>).<br>" +
+ 	                     "Vuoi proseguire comunque?",
+ 	            buttons: {
+ 	                confirm: { label: 'Sì', className: 'btn-primary' },
+ 	                cancel: { label: 'No', className: 'btn-default' }
+ 	            },
+ 	            callback: function(result){
+ 	                if(result) submitNuovaMisura();
+ 	            }
+ 	        });
+ 	    }
+ 	}
+ 
+ function showConfirm(message, onYes){
+
+	    // chiudo la modale principale
+	    $('#modalNuovaMisura').modal('hide');
+
+	    $('#myModalConfirmContent').html(message);
+
+	    // attendo che sia completamente chiusa
+	    $('#modalNuovaMisura').one('hidden.bs.modal', function () {
+
+	        $('#myModalConfirm').modal({
+	            backdrop: 'static',
+	            keyboard: false
+	        });
+
+	    });
+
+	    $('#btnConfirmYes').off('click').on('click', function(){
+	        $('#myModalConfirm').modal('hide');
+
+	        // riapro la principale solo se serve
+	        if (typeof onYes === 'function') {
+	            onYes();
+	        }
+	    });
+	}
  
  function selezionaStrumentoModal(){
 	 

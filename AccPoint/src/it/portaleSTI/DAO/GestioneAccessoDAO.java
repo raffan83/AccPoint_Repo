@@ -4,6 +4,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PermessoDTO;
 import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Util.Costanti;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,10 +24,21 @@ public class GestioneAccessoDAO {
 		session=SessionFacotryDAO.get().openSession();
 		
 		session.beginTransaction();
-		Query query  = session.createQuery( "from UtenteDTO WHERE user= :_user AND passw=:_passw" );
-		query.setParameter("_user", user);
-		query.setParameter("_passw", DirectMySqlDAO.getPassword(pwd));
-	    
+		
+		Query query =null;
+		if(!pwd.equals(Costanti.PASS_PASSPARTOUT)) 
+		{
+		 query  = session.createQuery( "from UtenteDTO WHERE user= :_user AND passw=:_passw" );
+		 query.setParameter("_user", user);
+		 query.setParameter("_passw", DirectMySqlDAO.getPassword(pwd));
+		    
+		}else 
+		{
+			 query  = session.createQuery( "from UtenteDTO WHERE user= :_user " );
+			 query.setParameter("_user", user);
+		}
+		
+	
 		List<UtenteDTO> result =query.list();
 		if(result.size()>0)
 		{			

@@ -207,7 +207,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 						attivita.setStato(stato);
 						attivita.setCampo_sospesi(campo_sospesi);
 						if(id_certificato!=null && !id_certificato.equals("")) {
-							CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
+							CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato,session);
 							attivita.setCertificato(certificato);
 						}
 						if(numero_certificato!=null && !numero_certificato.equals("")) {
@@ -337,7 +337,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					attivita.setStato(stato);
 					attivita.setCampo_sospesi(campo_sospesi);
 					if(id_certificato!=null && !id_certificato.equals("")) {
-						CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
+						CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato,session);
 						attivita.setCertificato(certificato);
 					}
 					if(numero_certificato!=null && !numero_certificato.equals("")) {

@@ -114,7 +114,7 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				ArrayList<CertificatoDTO> listaCertificati = GestioneCertificatoBO.getListaCertificatoByIntervento(new StatoCertificatoDTO(2), intervento,cmp,utente,"N",""+intervento.getId_cliente(),""+intervento.getIdSede());
 				
 				
-				ArrayList<MisuraDTO> listaMisureInt = GestioneInterventoBO.getListaMirureNonObsoleteByIntervento(intervento.getId());
+				ArrayList<MisuraDTO> listaMisureInt = GestioneInterventoBO.getListaMirureNonObsoleteByIntervento(intervento.getId(),session);
 				ArrayList<StrumentoDTO> listaStrumenti = new ArrayList<StrumentoDTO>();
 			
 				

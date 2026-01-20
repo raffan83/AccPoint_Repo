@@ -458,15 +458,13 @@ public static LinkedHashMap<String, String> getClientiPerCertificato(int id_comp
 		
 	}
 	
-	public static CertificatoDTO getCertificatoById(String id) {
+	public static CertificatoDTO getCertificatoById(String id, Session session) {
 		Query query=null;
 		CertificatoDTO  certificato=null;
 
 		try
 		{	
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+	
 		
 		String s_query ="";
 		
@@ -478,8 +476,7 @@ public static LinkedHashMap<String, String> getClientiPerCertificato(int id_comp
 	
 		          
 	    certificato=(CertificatoDTO)query.list().get(0);
-		session.getTransaction().commit();
-		session.close();
+
 		
 		}
 		catch(Exception ex)

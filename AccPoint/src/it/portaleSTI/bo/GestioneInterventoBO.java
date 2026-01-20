@@ -1144,10 +1144,10 @@ public class GestioneInterventoBO {
 	}
 	
 		
-	public static ArrayList<MisuraDTO> getListaMirureByInterventoDati(int idIntervento)throws Exception
+	public static ArrayList<MisuraDTO> getListaMirureByInterventoDati(int idIntervento, Session session)throws Exception
 	{
 		
-			return GestioneInterventoDAO.getListaMirureByInterventoDati(idIntervento);
+			return GestioneInterventoDAO.getListaMirureByInterventoDati(idIntervento, session);
 			
 		
 	}
@@ -1159,10 +1159,10 @@ public class GestioneInterventoBO {
 		
 	}
 	
-	public static ArrayList<MisuraDTO> getListaMirureNonObsoleteByIntervento(int idIntervento)throws Exception
+	public static ArrayList<MisuraDTO> getListaMirureNonObsoleteByIntervento(int idIntervento,Session session)throws Exception
 	{
 		
-			return GestioneInterventoDAO.getListaMirureNonObsoleteByIntervento(idIntervento);
+			return GestioneInterventoDAO.getListaMirureNonObsoleteByIntervento(idIntervento,session);
 			
 		
 	}
@@ -1178,14 +1178,14 @@ public class GestioneInterventoBO {
 		return GestioneInterventoDAO.getListaInterventiDaSede(idCliente,idSede,idCompany,user, session);
 	}
 
-	public static ArrayList<Integer> getListaClientiInterventi(int id_company) {
+	public static ArrayList<Integer> getListaClientiInterventi(int id_company,Session session) {
 		// TODO Auto-generated method stub
-		return GestioneInterventoDAO.getListaClientiInterventi(id_company);
+		return GestioneInterventoDAO.getListaClientiInterventi(id_company,session);
 	}
 
-	public static ArrayList<Integer> getListaSediInterventi() {
+	public static ArrayList<Integer> getListaSediInterventi(Session session) {
 		// TODO Auto-generated method stub
-		return GestioneInterventoDAO.getListaSediInterventi();
+		return GestioneInterventoDAO.getListaSediInterventi(session);
 	}
 	
 	public static ArrayList<UtenteDTO> getListaUtentiInterventoDati(Session session){

@@ -255,7 +255,7 @@ public class GestioneMisura extends HttpServlet {
 				String data_emissione = ret.get("data_emissione");
 				String note = ret.get("note");
 				
-				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato,session);
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				

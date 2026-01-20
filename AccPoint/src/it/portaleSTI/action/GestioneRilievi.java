@@ -87,7 +87,9 @@ import it.portaleSTI.bo.GestioneUtenteBO;
 public class GestioneRilievi extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	static final Logger logger = Logger.getLogger(GestioneRilievi.class);
+	//static final Logger logger = Logger.getLogger(GestioneRilievi.class);
+	
+	static final Logger logger= Logger.getLogger(GestioneRilievi.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -120,7 +122,7 @@ public class GestioneRilievi extends HttpServlet {
         response.setContentType("application/json");
 		try {
 			
-			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
+			logger.info(" Action: "+action +" - Utente: "+utente.getNominativo());
 			
 			
 			if(action.equals("nuovo")) {
@@ -934,7 +936,18 @@ public class GestioneRilievi extends HttpServlet {
 				
 				if(lista_impronte!=null) {
 				
+					String listaIds="";
+					
+					for (RilParticolareDTO rilParticolareDTO : lista_impronte) {
+						
+						listaIds=listaIds+" - "+rilParticolareDTO.getId();
+					}
+					
+					logger.info(listaIds);
+					
 					max_id_ripetizione = GestioneRilieviBO.getMaxIdRipetizione(lista_impronte, session);
+				
+					logger.info("ID - Ripetizione: "+max_id_ripetizione);
 				}
 				
 				
@@ -998,6 +1011,7 @@ public class GestioneRilievi extends HttpServlet {
 						if(impr.getNome_impronta().equals("")) {
 							quota.setId_ripetizione(0);
 						}else {
+							logger.info("Assegno a :"+quota.toString() +" ID_RIPETIZIONE: "+max_id_ripetizione);
 							quota.setId_ripetizione(max_id_ripetizione+1);
 						}
 	
@@ -1313,6 +1327,7 @@ public class GestioneRilievi extends HttpServlet {
 				int id_quota = json_array.get(0).getAsInt();
 					RilQuotaDTO quota = GestioneRilieviBO.getQuotaFromId(id_quota, session);
 					
+					logJsonArray(logger, json_array);
 						if(json_array.size()>1) {
 							String coordinata = json_array.get(1).getAsString();
 							String val_nominale = json_array.get(3).getAsString();	
@@ -1362,6 +1377,8 @@ public class GestioneRilievi extends HttpServlet {
 							if(quota.getId_ripetizione()==0) {
 								session.update(quota);
 							}else {
+								logger.info(quota.toString());
+								logger.info(impronta.getId());
 								GestioneRilieviBO.updateQuota(quota, impronta.getId(), session);
 							}
 							
@@ -2667,5 +2684,18 @@ public class GestioneRilievi extends HttpServlet {
 			}
 		}
 	}
+	}
+	
+	private void logJsonArray(Logger logger, JsonArray array) {
+	    if (array == null) {
+	        logger.info("JsonArray = null");
+	        return;
+	    }
+
+	    logger.info("JsonArray size = " + array.size());
+
+	    for (int i = 0; i < array.size(); i++) {
+	        logger.info("[" + i + "] " + array.get(i).toString());
+	    }
 	}
 }

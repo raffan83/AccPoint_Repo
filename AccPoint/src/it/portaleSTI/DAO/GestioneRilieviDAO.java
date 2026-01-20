@@ -431,7 +431,7 @@ public class GestioneRilieviDAO {
 	
 		String str = "";
 		int res = 0;
-		
+		/*
 		for (int i = 0; i<lista_impronte.size();i++) {
 			if(i==0) {
 				
@@ -444,7 +444,10 @@ public class GestioneRilieviDAO {
 			}				
 			
 		}
-				
+		
+			*/	
+		
+		str += "impronta.id = "+lista_impronte.get(0).getId();
 			Query query = session.createQuery("select max(id_ripetizione) from RilQuotaDTO where "+str);
 			//query.setParameter("_impronta", impronta.getId());
 		

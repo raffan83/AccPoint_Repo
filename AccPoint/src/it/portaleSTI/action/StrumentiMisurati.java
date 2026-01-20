@@ -85,7 +85,7 @@ public class StrumentiMisurati extends HttpServlet {
 					
 					id=Utility.decryptData(id);
 					
-					listaMisure = GestioneInterventoBO.getListaMirureByInterventoDati(Integer.parseInt(id));
+					listaMisure = GestioneInterventoBO.getListaMirureByInterventoDati(Integer.parseInt(id),session);
 					if(listaMisure.size() > 0){
 						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
 						for (MisuraDTO misura : listaMisure) {
@@ -236,7 +236,7 @@ public class StrumentiMisurati extends HttpServlet {
 					String actionParent = request.getParameter("actionParent");
 					listaMisure = (ArrayList<MisuraDTO>) request.getSession().getAttribute("listaMisure");
 					if(actionParent.equals("li")) {
-						listaMisure = GestioneInterventoBO.getListaMirureByInterventoDati(Integer.parseInt(id));
+						listaMisure = GestioneInterventoBO.getListaMirureByInterventoDati(Integer.parseInt(id),session);
 
 					}else {
 						listaMisure = GestioneInterventoBO.getListaMirureByIntervento(Integer.parseInt(id), session);

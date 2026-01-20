@@ -742,7 +742,7 @@
        <select class="form-control select2" id="lat_master" disabled data-placeholder="Seleziona Lat Master..." name="lat_master" style="width:100%">
        <option value=""></option>
        <c:forEach items="${lista_lat_master }" var="lat_master">
-       <option value="${lat_master.id }">${lat_master.descrizione}</option>
+       <option value="${lat_master.id }" data-sigla="${lat_master.sigla}">${lat_master.descrizione}</option>
        </c:forEach>
        </select>
        </div>
@@ -1819,20 +1819,26 @@ function reloadDrive()   {
 	 });
  fileupload_firma
 
- $('#formNuovaMisura').on('submit',function(e){
+ $('#formNuovaMisura').on('submit', function (e) {
 	    e.preventDefault();
-	    if($('#id_strumento').val()!=null && $('#id_strumento').val()!=''){
-	    	
-	    	
-	    	//submitNuovaMisura();
-	    	checkCertificatoVsExcelAndSubmit();
-	    }else{
-	    	  $('#myModalErrorContent').html("Attenzione! Nessuno strumento selezionato!");
- 			  	$('#myModalError').removeClass();
- 				$('#myModalError').addClass("modal modal-danger");	 
- 				$('#myModalError').modal('show');
+
+	    if ($('#id_strumento').val() != null && $('#id_strumento').val() !== '') {
+
+	        if ($('#check_lat').is(':checked')) {
+	            // Misura LAT eseguo i controlli
+	            checkCertificatoVsExcelAndSubmit();
+	        } else {
+	            // Non LAT  submit diretto
+	            submitNuovaMisura();
+	        }
+
+	    } else {
+	        $('#myModalErrorContent').html("Attenzione! Nessuno strumento selezionato!");
+	        $('#myModalError').removeClass();
+	        $('#myModalError').addClass("modal modal-danger");
+	        $('#myModalError').modal('show');
 	    }
-	});    
+	});
  
  
  	function extractPostLAT(str, lengthToTake = null){
@@ -1855,40 +1861,66 @@ function reloadDrive()   {
 	}
  
  	function checkCertificatoVsExcelAndSubmit() {
- 	    var nCertificato = $.trim($('#nCertificato').val());
- 	    var labelExcel = $.trim($('#label_excel').text());
 
- 	    if(!nCertificato || !labelExcel){
+ 	    var nCertificato = $.trim($('#nCertificato').val());
+ 	    var labelExcel   = $.trim($('#label_excel').text());
+ 	    var siglaLat     = getLatMasterSigla();
+
+ 	    if (!nCertificato || !labelExcel) {
  	        submitNuovaMisura();
  	        return;
  	    }
 
- 	    // Estraggo dal certificato il post-LAT fino a "/"  substring di riferimento
- 	    var certSub = extractPostLAT(nCertificato); 
- 	    var lenSub = certSub.length; // numero caratteri da prendere dal file Excel
-
- 	    // Estraggo dal file Excel lo stesso numero di caratteri dopo LAT
+ 	    // ---- CONFRONTO CERTIFICATO vs FILE ----
+ 	    var certSub = extractPostLAT(nCertificato);
+ 	    var lenSub  = certSub.length;
  	    var fileSub = extractPostLAT(labelExcel, lenSub);
 
- 	    // Confronto le due substring
- 	    if(certSub === fileSub){
- 	        submitNuovaMisura(); // coincidono
- 	    } else {
- 	        // differiscono  conferma Bootbox mostrando le originali
- 	        bootbox.confirm({
- 	            title: "Attenzione!",
- 	            message: "Il numero di certificato (<b>" + nCertificato + "</b>) " +
- 	                     "è diverso dal nome del file Excel (<b>" + labelExcel + "</b>).<br>" +
- 	                     "Vuoi proseguire comunque?",
- 	            buttons: {
- 	                confirm: { label: 'Sì', className: 'btn-primary' },
- 	                cancel: { label: 'No', className: 'btn-default' }
- 	            },
- 	            callback: function(result){
- 	                if(result) submitNuovaMisura();
- 	            }
- 	        });
+ 	    var matchCertVsFile = (certSub === fileSub);
+
+ 	    // ---- CONFRONTO CERTIFICATO vs SIGLA ----
+ 	    var matchCertVsSigla = true;
+ 	    if (siglaLat) {
+ 	        matchCertVsSigla = certSub.indexOf(siglaLat.toUpperCase()) === 0;
  	    }
+
+ 	    // ---- SE TUTTO OK ----
+ 	    if (matchCertVsFile && matchCertVsSigla) {
+ 	        submitNuovaMisura();
+ 	        return;
+ 	    }
+
+ 	    // ---- COSTRUZIONE MESSAGGIO UNICO ----
+ 	    var messages = [];
+
+ 	    if (!matchCertVsFile) {
+ 	        messages.push(
+ 	            "Il numero di certificato (<b>" + nCertificato + "</b>) " +
+ 	            "non corrisponde al nome del file Excel (<b>" + labelExcel + "</b>)"
+ 	        );
+ 	    }
+
+ 	    if (!matchCertVsSigla) {
+ 	        messages.push(
+ 	            "Il numero di certificato (<b>" + certSub + "</b>) " +
+ 	            "non è coerente con la sigla LAT Master selezionata (<b>" + siglaLat + "</b>)"
+ 	        );
+ 	    }
+
+ 	    var finalMessage = messages.join("<br><br>") + "<br><br>Vuoi proseguire comunque?";
+
+ 	    // ---- BOOTBOX ----
+ 	    bootbox.confirm({
+ 	        title: "Attenzione!",
+ 	        message: finalMessage,
+ 	        buttons: {
+ 	            confirm: { label: 'Sì', className: 'btn-primary' },
+ 	            cancel:  { label: 'No', className: 'btn-default' }
+ 	        },
+ 	        callback: function (result) {
+ 	            if (result) submitNuovaMisura();
+ 	        }
+ 	    });
  	}
  
  function showConfirm(message, onYes){
@@ -2036,6 +2068,11 @@ function reloadDrive()   {
 	    }
 	    
 	});    
+	
+	function getLatMasterSigla() {
+	    return $('#lat_master').find(':selected').data('sigla') || null;
+	}
+	
 	
 	   $('#check_lat').on('ifClicked',function(e){
 		

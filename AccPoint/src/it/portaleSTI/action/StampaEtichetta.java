@@ -57,14 +57,19 @@ public class StampaEtichetta extends HttpServlet {
 		try{
 			String idCertificato=request.getParameter("idCertificato");		
 			
-			CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(idCertificato);
+			CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(idCertificato,session);
 			
 			StrumentoDTO str=certificato.getMisura().getStrumento();
 			
 			GestioneStampaBO.stampaEtichetta(str, true, certificato.getMisura().getDataMisura(),certificato.getMisura().getnCertificato(), certificato.getMisura().getIntervento().getNomePack(),certificato.getMisura().getIntervento().getCompany());
 		
+			session.getTransaction().commit();
+	    	session.close();
 			
 		}
+		
+		
+    	
 		catch(Exception ex)
     	{
     		 ex.printStackTrace();

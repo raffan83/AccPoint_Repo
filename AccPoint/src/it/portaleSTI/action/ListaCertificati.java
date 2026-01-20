@@ -343,7 +343,7 @@ public class ListaCertificati extends HttpServlet {
 				String data_emissione = request.getParameter("data_emissione");
 				
 				
-				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato,session);
 				
 				List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(certificato.getMisura().getListaPunti(),certificato.getMisura().getStrumento().getTipoRapporto());
 				
@@ -380,7 +380,7 @@ public class ListaCertificati extends HttpServlet {
 				
 				String idCertificato = request.getParameter("idCertificato");
 				
-				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato,session);
 				
 				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());				
 				response.setContentType("application/json");
@@ -416,7 +416,7 @@ public class ListaCertificati extends HttpServlet {
 				String idCertificato = request.getParameter("idCertificato");
 				String latMaster = request.getParameter("latMaster");
 				
-				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);				
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato,session);				
 				
 				if(latMaster.equals("2")) {
 					new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, null,session);
@@ -433,7 +433,7 @@ public class ListaCertificati extends HttpServlet {
 				String idCertificato = request.getParameter("idCertificato");
 				String data_emissione = request.getParameter("data_emissione");
 							
-				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato,session);
 				
 				CreateCertificatoSE resultFirma = new CreateCertificatoSE(certificato,data_emissione, utente,session);				
 			
@@ -459,7 +459,7 @@ public class ListaCertificati extends HttpServlet {
 				String idCertificato = request.getParameter("idCertificato");
 				String email = request.getParameter("email");
 				
-				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato,session);
 					
 				SendEmailBO.sendEmailCertificato(certificato, email, getServletContext());
 
@@ -477,7 +477,7 @@ public class ListaCertificati extends HttpServlet {
 				
 				boolean esito = GestioneUtenteBO.checkPINFirma(utente_firma.getId(),pin, session);
 				if(esito) {
-					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
+					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato,session);
 					
 					//UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);
 
@@ -505,7 +505,7 @@ public class ListaCertificati extends HttpServlet {
  				
 				String idCertificato = request.getParameter("idCertificato");
 				
-				CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(idCertificato);
+				CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(idCertificato,session);
 				
 				certificato.getStato().setId(3);
 				MisuraDTO misura = certificato.getMisura();
@@ -538,7 +538,7 @@ public class ListaCertificati extends HttpServlet {
 					String id =  jsArr.get(i).toString().replaceAll("\"", "");
 				
 					ServletContext context =getServletContext();
-					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id);
+					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id,session);
 					
 					if(certificato.getMisura().getLat().equals("E")) {
 						new CreateCertificatoSE(certificato,data_emissione,utente,session);
@@ -595,7 +595,7 @@ public class ListaCertificati extends HttpServlet {
 				for(int i=0; i<jsArr.size(); i++){
 					String id =  jsArr.get(i).toString().replaceAll("\"", "");
 					
-					CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(id);
+					CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(id,session);
 					
 					certificato.getStato().setId(3);
 					MisuraDTO misura = certificato.getMisura();
@@ -626,7 +626,7 @@ public class ListaCertificati extends HttpServlet {
 					String id =  jsArr.get(i).toString().replaceAll("\"", "");
 				
 					ServletContext context =getServletContext();
-					CertificatoDTO cert = GestioneCertificatoBO.getCertificatoById(id);
+					CertificatoDTO cert = GestioneCertificatoBO.getCertificatoById(id,session);
 					File certificato = GestioneCertificatoBO.createCertificatoMulti(id,"",session,context, cert.getUtenteApprovazione());	
 
 					ut.addSource(certificato);
@@ -721,8 +721,8 @@ public class ListaCertificati extends HttpServlet {
 				String id_certificato_old = request.getParameter("id_certificato_old");
 				String id_certificato_new = request.getParameter("id_certificato_new");
 				
-				CertificatoDTO certificato_old = GestioneCertificatoBO.getCertificatoById(id_certificato_old);
-				CertificatoDTO certificato_new = GestioneCertificatoBO.getCertificatoById(id_certificato_new);
+				CertificatoDTO certificato_old = GestioneCertificatoBO.getCertificatoById(id_certificato_old,session);
+				CertificatoDTO certificato_new = GestioneCertificatoBO.getCertificatoById(id_certificato_new,session);
 				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());				
 				response.setContentType("application/json");
 				List<FileItem> items = uploadHandler.parseRequest(request);

@@ -81,8 +81,8 @@ public class CaricaPacchetto extends HttpServlet {
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 
-		ArrayList<MisuraDTO> listaMisureNonDuplicate = null;
-		ArrayList<MisuraDTO> listaMisureDuplicate = null;
+		ArrayList<MisuraDTO> listaMisureNonDuplicate = new ArrayList<MisuraDTO>();
+		ArrayList<MisuraDTO> listaMisureDuplicate = new ArrayList<MisuraDTO>();
 		writer = response.getWriter();
 		response.setContentType("application/json");
 		String action = request.getParameter("action");

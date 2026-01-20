@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.SedeDTO;
@@ -53,7 +56,10 @@ public class ListaInterventi extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		response.setContentType("text/html");
-		 
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
 		try {
 			
 			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
@@ -66,9 +72,9 @@ public class ListaInterventi extends HttpServlet {
 			ArrayList<Integer> clientiIds = null;
 			
 			if(utente.isTras()) {
-				clientiIds =	GestioneInterventoBO.getListaClientiInterventi(0);
+				clientiIds =	GestioneInterventoBO.getListaClientiInterventi(0,session);
 			}else {
-				clientiIds = GestioneInterventoBO.getListaClientiInterventi(cmp.getId());
+				clientiIds = GestioneInterventoBO.getListaClientiInterventi(cmp.getId(),session);
 			}
 								
 			List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();
@@ -83,7 +89,7 @@ public class ListaInterventi extends HttpServlet {
 			
 			List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
 			
-			ArrayList<Integer> sediIds = GestioneInterventoBO.getListaSediInterventi();
+			ArrayList<Integer> sediIds = GestioneInterventoBO.getListaSediInterventi(session);
 			
 			List<SedeDTO> listaSedi = new ArrayList<SedeDTO>();
 			for (SedeDTO sede : listaSediFull) {
@@ -97,9 +103,15 @@ public class ListaInterventi extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaInterventi.jsp");
 	     	dispatcher.forward(request,response);
 	     	
+			session.getTransaction().commit();
+			session.close();
+	     	
 		}
 		catch(Exception ex)
     	{
+			
+	     session.getTransaction().rollback();
+	     session.close();	
    		 ex.printStackTrace();
    	     request.setAttribute("error",STIException.callException(ex));
    	     request.getSession().setAttribute("exception", ex);

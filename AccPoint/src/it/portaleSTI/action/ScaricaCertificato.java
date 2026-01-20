@@ -371,7 +371,7 @@ public class ScaricaCertificato extends HttpServlet {
 				String id_certificato = request.getParameter("id_certificato");
 				String pack = request.getParameter("pack_cert");
 				
-				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato,session);
 				
 				List<FileItem> items;
 				

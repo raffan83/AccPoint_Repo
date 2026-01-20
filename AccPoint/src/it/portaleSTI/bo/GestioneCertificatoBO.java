@@ -65,9 +65,9 @@ public class GestioneCertificatoBO {
 			
 		}
 		
-		public static CertificatoDTO getCertificatoById(String id)
+		public static CertificatoDTO getCertificatoById(String id,Session session)
 		{
-			return GestioneCertificatoDAO.getCertificatoById(id);
+			return GestioneCertificatoDAO.getCertificatoById(id,session);
 		}
 
 		
@@ -75,7 +75,7 @@ public class GestioneCertificatoBO {
 			try {
 				
 				
-				CertificatoDTO certificato = getCertificatoById(idCertificato);
+				CertificatoDTO certificato = getCertificatoById(idCertificato,session);
 				
 				MisuraDTO misura = certificato.getMisura();
 			    
@@ -1070,7 +1070,7 @@ public class GestioneCertificatoBO {
 	public static File createCertificatoMulti(String id, String data_emissione, Session session, ServletContext context, UtenteDTO utente) throws Exception {
 		 
 
-			CertificatoDTO certificato = getCertificatoById(id);
+			CertificatoDTO certificato = getCertificatoById(id,session);
 			
 			MisuraDTO misura = certificato.getMisura();
 		    

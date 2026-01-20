@@ -89,7 +89,7 @@ public class GestioneModificheAdmin extends HttpServlet {
 				
 				String id_certificato = request.getParameter("id_certificato");
 				
-				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato,session);
 				certificato.setStato(new StatoCertificatoDTO(1));
 				
 				

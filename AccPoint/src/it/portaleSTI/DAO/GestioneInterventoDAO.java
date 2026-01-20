@@ -46,23 +46,20 @@ public class GestioneInterventoDAO {
 
 
 
-	public static InterventoDTO  getIntervento(String idIntervento) {
+	public static InterventoDTO  getIntervento(String idIntervento,Session session) {
 		
 		Query query=null;
 		InterventoDTO intervento=null;
 		try {
 			
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+		
 		
 		String s_query = "from InterventoDTO WHERE id = :_id";
 	    query = session.createQuery(s_query);
 	    query.setParameter("_id",Integer.parseInt(idIntervento));
 		
 	    intervento=(InterventoDTO)query.list().get(0);
-		session.getTransaction().commit();
-		session.close();
+
 
 	     } catch(Exception e)
 	     {
@@ -72,28 +69,6 @@ public class GestioneInterventoDAO {
 		
 	}
 
-	
-public static InterventoDTO  getIntervento(String idIntervento, Session session) {
-		
-		Query query=null;
-		InterventoDTO intervento=null;
-		try {
-			
-
-		
-		String s_query = "from InterventoDTO WHERE id = :_id";
-	    query = session.createQuery(s_query);
-	    query.setParameter("_id",Integer.parseInt(idIntervento));
-		
-	    intervento=(InterventoDTO)query.list().get(0);
-
-	     } catch(Exception e)
-	     {
-	    	 e.printStackTrace();
-	     }
-		return intervento;
-		
-	}
 
 
 	public static boolean isPresentStrumento(int id, StrumentoDTO strumento, Session session) {
@@ -207,15 +182,12 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 
 
 
-	public static ArrayList<MisuraDTO> getListaMirureByInterventoDati(int idInterventoDati) {
+	public static ArrayList<MisuraDTO> getListaMirureByInterventoDati(int idInterventoDati,Session session) {
 		Query query=null;
 		
 		ArrayList<MisuraDTO> misura=null;
 		try {
-		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
-		
+
 		String s_query = "from MisuraDTO WHERE interventoDati.id = :_interventoDati";
 						  
 	    query = session.createQuery(s_query);
@@ -259,13 +231,12 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 		return misura;
 	}
 	
-	public static ArrayList<MisuraDTO> getListaMirureNonObsoleteByIntervento(int idIntervento) {
+	public static ArrayList<MisuraDTO> getListaMirureNonObsoleteByIntervento(int idIntervento , Session session) {
 		Query query=null;
 		
 		ArrayList<MisuraDTO> misura=null;
 		try {
-		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+		
 		
 		
 		String s_query = "from MisuraDTO WHERE intervento.id = :_idIntervento AND obsoleto='N' ";
@@ -283,18 +254,6 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 	     }
 		
 		return misura;
-	}
-
-
-	public static void update(InterventoDTO intervento) {
-		Session s = SessionFacotryDAO.get().openSession();
-		s.getTransaction().begin();
-		
-		s.update(intervento);
-		
-		s.getTransaction().commit();
-		s.close();
-		
 	}
 
 
@@ -329,13 +288,12 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 
 
 
-	public static ArrayList<Integer> getListaClientiInterventi(int id_company) {
+	public static ArrayList<Integer> getListaClientiInterventi(int id_company,Session session) {
 		Query query=null;
 		
 		ArrayList<Integer> lista=null;
 		try {
-		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+	
 		
 		
 		String s_query ="";
@@ -366,13 +324,12 @@ public static InterventoDTO  getIntervento(String idIntervento, Session session)
 
 
 
-	public static ArrayList<Integer> getListaSediInterventi() {
+	public static ArrayList<Integer> getListaSediInterventi(Session session) {
 		Query query=null;
 		
 		ArrayList<Integer> lista=null;
 		try {
-		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+	
 		
 		
 		String s_query = "select DISTINCT(int.idSede) from InterventoDTO as int";

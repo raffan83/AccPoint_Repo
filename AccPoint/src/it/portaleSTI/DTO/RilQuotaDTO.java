@@ -123,5 +123,25 @@ public class RilQuotaDTO {
 		this.capability = capability;
 	}
 
+	public String toString() {
+	    return "RilQuotaDTO{" +
+	            "id=" + id +
+	            ", id_ripetizione=" + id_ripetizione +
+	            ", val_nominale='" + val_nominale + '\'' +
+	            ", coordinata='" + coordinata + '\'' +
+	            ", tolleranza_positiva='" + tolleranza_positiva + '\'' +
+	            ", tolleranza_negativa='" + tolleranza_negativa + '\'' +
+	            ", sigla_tolleranza='" + sigla_tolleranza + '\'' +
+	            ", um='" + um + '\'' +
+	            ", note='" + note + '\'' +
+	            ", importata=" + importata +
+	            ", riferimento=" + riferimento +
+	            ", capability='" + capability + '\'' +
+	            ", improntaId=" + (impronta != null ? impronta.getId() : "null") +
+	            ", simboloId=" + (simbolo != null ? simbolo.getId() : "null") +
+	            ", quotaFunzionaleId=" + (quota_funzionale != null ? quota_funzionale.getId() : "null") +
+	            ", puntiQuota=" + (listaPuntiQuota != null ? listaPuntiQuota.size() : 0) +
+	            '}';
+	}
 	
 }

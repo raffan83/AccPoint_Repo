@@ -470,7 +470,7 @@
         <label for="inputName" class="col-sm-2 control-label">Tipo Campione:</label>
         <div class="col-sm-10">
                      
-					   <select class="form-control required" id="tipoCampione" data-placeholder="Seleziona un Tipo Campione..."name="tipoCampione" required  style="width:100%">
+					   <select class="form-control required select2" id="tipoCampione" data-placeholder="Seleziona un Tipo Campione..."name="tipoCampione" required  style="width:100%">
                        					<option value=""></option>
                                             <c:forEach items="${listaTipoCampione}" var="cmp" varStatus="loop">
 
@@ -599,7 +599,7 @@
           <label  class="col-sm-2 control-label">Descrizione attività di manutenzione:</label>
 
          <div class="col-sm-5">
-         <select class="form-control select2" id="select_manutenzione" data-placeholder="Seleziona descrizione manutenzione..." name="select_manutenzione" style="width:100%">
+         <select class="form-control " id="select_manutenzione" data-placeholder="Seleziona descrizione manutenzione..." name="select_manutenzione" style="width:100%">
          <option value=""></option>
          <option value="Controllo presenza di ammaccature o malformazioni (visivo)">Controllo presenza di ammaccature o malformazioni (visivo)</option>
          <option value="Controllo presenza di ossidazione / ruggine (visivo)">Controllo presenza di ossidazione / ruggine (visivo)</option>
@@ -1098,8 +1098,6 @@ var listaStrumenti = ${listaCampioniJson};
 	
 	$('#select_manutenzione').change(function(){	
 		var selection = $(this).val();
-		
-		
 		$('#descrizione_manutenzione').append(selection+";\n");
 	});
 	
@@ -1110,6 +1108,9 @@ var listaStrumenti = ${listaCampioniJson};
 	        minimumResultsForSearch: 0
 	    });
 	});
+	
+	
+
 	
 	$('#clona_campione').change(function(){
 		
@@ -1485,12 +1486,12 @@ callAjax(dataObj, 'dettaglioCampione.do', function(data){
     $(document).ready(function() {
     
 
-    	$('#select_manutenzione').select2();
-    	$('#settore').select2();
-    	$('#tipoCampione').select2();
-    	$('#proprietario').select2();
-    	$('#utilizzatore').select2();
-    	$('#clona_campione').select2();
+    //	$('#select_manutenzione').select2();
+    //	$('#settore').select2();
+    //	$('#tipoCampione').select2();
+    //	$('#proprietario').select2();
+    //	$('#utilizzatore').select2();
+    //	$('#clona_campione').select2();
     	
     	var permesso_prop_util = ${userObj.checkPermesso('PROPRIETARIO_UTILIZZATORE_CAMPIONI')}
     	

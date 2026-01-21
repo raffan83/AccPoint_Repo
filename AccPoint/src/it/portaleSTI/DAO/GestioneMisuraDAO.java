@@ -209,5 +209,19 @@ public class GestioneMisuraDAO {
 				
 		return lista;
 	}
+
+	public static ArrayList<MisuraDTO> getListaMisurePerIntervento(InterventoDTO intervento, Session session) throws Exception{
+		
+		ArrayList<MisuraDTO> lista = null;
+			
+		Query query = null;
+			query = session.createQuery("from MisuraDTO where intervento.id = :_id_intervento");	
+			query.setParameter("_id_intervento", intervento.getId());
+
+		lista = (ArrayList<MisuraDTO>) query.list();
+		
+				
+		return lista;
+	}
 	
 }

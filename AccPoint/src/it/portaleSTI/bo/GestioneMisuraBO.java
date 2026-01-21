@@ -2,6 +2,7 @@ package it.portaleSTI.bo;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -269,6 +270,14 @@ public class GestioneMisuraBO {
 	}
 
 
+	public static ArrayList<MisuraDTO> getListaMisurePerIntervento(InterventoDTO intervento, Session session) throws Exception {
+		
+		return GestioneMisuraDAO.getListaMisurePerIntervento(intervento, session);
+	}
+
+
+	
+	
 //	public static String calcolaIndicePrestazione(MisuraDTO misura) {
 //		
 //		BigDecimal max = BigDecimal.ZERO;

@@ -1,7 +1,5 @@
 package it.portaleSTI.action;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -22,19 +20,16 @@ import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ibm.wsdl.util.IOUtils;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
-import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
-import it.portaleSTI.DTO.LatMisuraDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PRInterventoRequisitoDTO;
-import it.portaleSTI.DTO.PRInterventoRisorsaDTO;
 import it.portaleSTI.DTO.PRRequisitoDocumentaleDTO;
 import it.portaleSTI.DTO.PRRequisitoSanitarioDTO;
 import it.portaleSTI.DTO.PRRisorsaDTO;
@@ -90,6 +85,9 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		InterventoDTO intervento=GestioneInterventoBO.getIntervento(idIntervento, session);
 		
+	
+		
+		
 		HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
 		HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();
 		HashMap<String,Integer> tipoStrumenti = new HashMap<String,Integer>();
@@ -100,6 +98,7 @@ public class GestioneInterventoDati extends HttpServlet {
 
 		ArrayList<StrumentoDTO> listaStrumentiPerIntervento =  GestioneStrumentoBO.getListaStrumentiIntervento(intervento, session);
 
+		
 		for(StrumentoDTO strumentoDTO: listaStrumentiPerIntervento) {
 
 			if(statoStrumenti.containsKey(strumentoDTO.getStato_strumento().getNome())) {
@@ -251,6 +250,19 @@ public class GestioneInterventoDati extends HttpServlet {
 		}
 		request.getSession().setAttribute("userCliente", userCliente);
 
+		
+		/*Controllo Numero strumenti misurati*/
+		
+	ArrayList<MisuraDTO> listaMisure=GestioneMisuraBO.getListaMisurePerIntervento(intervento, session);
+		
+		if(listaMisure.size()!=intervento.getnStrumentiMisurati()) 
+		{
+			intervento.setnStrumentiMisurati(listaMisure.size());
+			session.update(intervento);
+		}
+		
+		
+		
 		session.getTransaction().commit();
 		session.close();
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoDati.jsp");

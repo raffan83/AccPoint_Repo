@@ -173,14 +173,38 @@
 </div>
 </div>
 </div>
+   
 
-
-
-
-       
- </div>
     
-        
+<div class="col-md-6">
+<div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Dati Misura LAT
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+        <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>ID LAT</b> <a class="pull-right">${misura.misuraLAT.id}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Tipo Strumento LAT </b> <a class="pull-right">${misura.misuraLAT.misura_lat.descrizione}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Numero Certificato</b> <a class="pull-right">${misura.nCertificato}</a>
+                </li>
+        </ul>
+
+</div>
+</div>
+</div>
+   
+  
         
         
 
@@ -322,7 +346,7 @@
  		       		exploreModal("modificaStrumento.do?action=modifica&id=${utl:encryptData(misura.strumento.__id)}","","#modifica")
  		       	}
  		       	if(contentID == "documentiesterniTab"){
- 		       		exploreModal("documentiEsterni.do?id_str={utl:encryptData(misura.strumento.__id)}","","#documentiesterni")
+ 		       		exploreModal("documentiEsterni.do?id_str=${utl:encryptData(misura.strumento.__id)}","","#documentiesterni")
  		       	//	exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#documentiesterni");
  		       	}
  		       	

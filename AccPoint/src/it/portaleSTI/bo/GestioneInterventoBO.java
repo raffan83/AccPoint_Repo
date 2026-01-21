@@ -1104,9 +1104,11 @@ public class GestioneInterventoBO {
 								ArrayList<MisuraDTO> listaMisuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),idStr,session);
 								for (MisuraDTO misuraObsoleta : listaMisuraObsoleta) 
 								{
-									
-									GestioneInterventoDAO.misuraObsoleta(misuraObsoleta,note_obsolescenza,session);
-									GestioneInterventoDAO.puntoMisuraObsoleto(misuraObsoleta.getId(),session);		
+									if(misura.getId()!=misuraObsoleta.getId()) 
+									{
+										GestioneInterventoDAO.misuraObsoleta(misuraObsoleta,note_obsolescenza,session);
+										GestioneInterventoDAO.puntoMisuraObsoleto(misuraObsoleta.getId(),session);		
+									}
 								}
 
 							

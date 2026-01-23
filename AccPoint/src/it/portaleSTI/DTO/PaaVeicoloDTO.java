@@ -18,6 +18,7 @@ public class PaaVeicoloDTO {
 	private String dispositivo_pedaggio;
 	private int disabilitato;
 	private String autorizzazione;
+	private int evidenza;
 	
 	public int getId() {
 		return id;
@@ -102,6 +103,12 @@ public class PaaVeicoloDTO {
 	}
 	public void setAutorizzazione(String autorizzazione) {
 		this.autorizzazione = autorizzazione;
+	}
+	public int getEvidenza() {
+		return evidenza;
+	}
+	public void setEvidenza(int evidenza) {
+		this.evidenza = evidenza;
 	}
 	
 	

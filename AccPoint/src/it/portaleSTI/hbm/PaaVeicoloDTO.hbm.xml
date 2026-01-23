@@ -49,5 +49,9 @@
         <property name="autorizzazione" type="java.lang.String">
             <column name="autorizzazione" />
         </property>
+        
+                 <property name="evidenza" type="int">
+            <column name="evidenza" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -16,18 +16,18 @@
 
  <div class="row">       
        <div class="col-xs-4">
-			<!-- <span class="btn btn-primary fileinput-button disabled" id="btn_carica">
+			<span class="btn btn-primary fileinput-button" id="btn_carica">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Carica Carta Di Controllo...</span>
 				<input accept=".xls,.xlsx"  id="fileupload_excel" name="fileupload_excel" type="file" >
 		       
-		   	 </span> -->
-		   	 <a class="btn btn-primary fileinput-button" id="btn_carica">
+		   	 </span> 
+		  <!--  	 <a class="btn btn-primary fileinput-button" id="btn_carica">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Carica Carta Di Controllo...</span>
-				<input accept=".xls,.xlsx"  id="fileupload_excel" name="fileupload_excel" type="file" >
-		       
+		     
 		   	 </a>
+		   	 --> 
 		   	 <div id="files" class="files"></div>
 		   	</div> 
 		 <div class="col-xs-8">
@@ -55,7 +55,8 @@
 <td>${carta.utente.nominativo}</td>
 <td>
 <c:if test="${carta.filename!=null && carta.filename!=''}">
-<a class="btn customTooltip btn-success" onClick="gestisciFile('${carta.filename}')" title="Click per scaricare o modificare il file"><i class="fa fa-file-excel-o"></i></a>
+<!--  <a class="btn customTooltip btn-success" onClick="gestisciFile('${carta.filename}')" title="Click per scaricare o modificare il file"><i class="fa fa-file-excel-o"></i></a>-->
+<a class="btn customTooltip btn-success " href="gestioneCartaDiControllo.do?action=download&filename=${carta.filename }&idCamp=${carta.campione.id }" title="Click per scaricare il file"><i class="fa fa-arrow-down small"></i></a>
 <%-- <a class="btn customTooltip btn-danger" onClick="eliminaCartaDiControllo('${carta.id}')" title="Click per eliminare il file"><i class="fa fa-trash"></i></a> --%>
 <a class="btn customTooltip btn-danger" onClick="modalYesOrNo('${carta.id}')" title="Click per eliminare il file"><i class="fa fa-trash"></i></a>
 </c:if>
@@ -224,6 +225,8 @@ function downloadGDriveFile (file) {
 });   
 	
   $(document).ready(function() {
+	  
+	  console.log('carta Controllo')
 	
 	   var id_carta = '${carta.id}';
 	  if(id_carta!=null && id_carta!=''){

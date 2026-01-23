@@ -103,7 +103,17 @@ int anno = (Integer) request.getSession().getAttribute("anno");
          <td id = "col_1_${veicolo.id}" data-toggle='tooltip' title="Disp. Pedaggio: ${veicolo.dispositivo_pedaggio}">
        <b>${veicolo.id}</b>
          </td>
-         <td id = "col_2_${veicolo.id}" data-toggle='tooltip' title="Disp. Pedaggio: ${veicolo.dispositivo_pedaggio}"><b >${veicolo.targa}</b><div></div></td>
+         
+         <c:choose>
+    		<c:when test="${veicolo.evidenza == 1}">
+        		<td id = "col_2_${veicolo.id}" style="background-color:#FAFAD2" data-toggle='tooltip' title="Disp. Pedaggio: ${veicolo.dispositivo_pedaggio}"><b >${veicolo.targa}</b><div></div></td>
+    		</c:when>
+    		<c:otherwise>
+        		<td id = "col_2_${veicolo.id}" data-toggle='tooltip' title="Disp. Pedaggio: ${veicolo.dispositivo_pedaggio}"><b >${veicolo.targa}</b><div></div></td>
+    		</c:otherwise>
+		</c:choose>
+		
+         
          <td id = "col_3_${veicolo.id}" data-toggle='tooltip' title="Disp. Pedaggio: ${veicolo.dispositivo_pedaggio}"><b>${veicolo.modello}</b></td>
 
          <c:forEach var="day" begin="${start_date }" end="${end_date}" step="1">

@@ -83,8 +83,12 @@
  <tbody>
  
  	<c:forEach items="${lista_veicoli }" var="veicolo" varStatus="loop">
-	<tr id="row_${loop.index}" >
-
+<tr id="row_${loop.index}"
+    <c:if test="${veicolo.evidenza==1}">
+        style="background-color:#FAFAD2"
+    </c:if>
+>
+	
 	<td>${veicolo.id }</td>	
 	
 	<td>${veicolo.targa }</td>
@@ -104,6 +108,7 @@
 
 	<a class="btn btn-warning customTooltip" onClicK="modificaVeicolo('${veicolo.id}', '${veicolo.targa }', '${veicolo.modello }', '${veicolo.company.id }','${veicolo.km_percorsi }', '${veicolo.carta_circolazione }','${veicolo.portata_max_veicolo }','${veicolo.immagine_veicolo }','${veicolo.dispositivo_pedaggio }', '${utl:escapeJS(veicolo.note) }', '${utl:escapeJS(veicolo.autorizzazione) }')" title="Click per modificare il veicolo"><i class="fa fa-edit"></i></a>
 	  <a class="btn btn-danger customTooltip" onClicK="modalEliminaVeicolo('${veicolo.id }')" title="Click per eliminare il veicolo"><i class="fa fa-trash"></i></a>
+	   <a class="btn btn-info customTooltip" href="gestioneParcoAuto.do?action=evidenzia&id_veicolo=${veicolo.id}" title="Click per evidenziare il veicolo"><i class="fa fa-sun-o"></i></a>
 	  <c:if test="${veicolo.carta_circolazione!=null }">
 	  <a class="btn btn-info customTooltip" href="gestioneParcoAuto.do?action=download_file&tipo_file=carta_circolazione&id_veicolo=${veicolo.id}" title="Click per scaricare la carta di circolazione"><i class="fa fa-file-text-o"></i></a>
 	  </c:if>

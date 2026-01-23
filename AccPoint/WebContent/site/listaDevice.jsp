@@ -629,7 +629,7 @@
        	</div>
        	<div class="col-sm-9">      
        	  	
-        <select id="company_mod" name="company_mod" disabled data-placeholder="Seleziona company..." class="form-control select2" style="width:100%" required>
+        <select id="company_mod" name="company_mod"  data-placeholder="Seleziona company..." class="form-control select2" style="width:100%" required>
         <option value=""></option>
         <c:forEach items="${lista_company }" var="cmp">
         <option value="${cmp.id }">${cmp.ragione_sociale }</option>
@@ -2172,11 +2172,11 @@ $('#dipendente_mod').change(function(){
 	
 	if(value!=null && value!=''){
 		if(value=="0"){
-			$('#company_mod').attr("disabled", false)
+		//	$('#company_mod').attr("disabled", false)
 		}else{
-			$('#company_mod').attr("disabled", true)
-			$('#company_mod').val(value);
-			$('#company_mod').change();
+	//		$('#company_mod').attr("disabled", true)
+	//		$('#company_mod').val(value);
+	//		$('#company_mod').change();
 		}
 		
 		
@@ -2200,12 +2200,14 @@ $(document).ready(function() {
     	$('#device_dettaglio').val(id);
     	
       	if(content_id == 0){
-      		
+      /*		
       	$('#dettaglio').addClass("active");
       	$('#li_dettaglio').addClass("active");
       	$('#li_registro_attivita').removeClass("active");
       	$('#li_gestione_procedure').removeClass("active");
       	$('#li_lista_allegati').removeClass("active");
+      	*/
+      	$('#mainTabs a#detttaglioTab').tab('show');
       	
 		pleaseWaitDiv.hide(); 
   		pleaseWaitDiv.modal('hide');
@@ -2270,7 +2272,8 @@ $(document).ready(function() {
       	
       	if(content_id == 1){
       		
-    		
+      	$('#mainTabs a#registroAttivitaTab').tab('show');
+      		 
      	   exploreModal("gestioneDevice.do","action=registro_attivita&id_device="+id+"&id_company=${id_company}","#registro_attivita");
      	    $( "#myModal" ).modal();
      	    $('body').addClass('noScroll');
@@ -2278,6 +2281,7 @@ $(document).ready(function() {
       	
       	if(content_id == 2){
       		
+      	  $('#mainTabs a#gestioneProcedureTab').tab('show');
     		
       	   exploreModal("gestioneDevice.do","action=lista_procedure_device&id_device="+id,"#gestione_procedure");
       	    $( "#myModal" ).modal();
@@ -2286,11 +2290,13 @@ $(document).ready(function() {
       	
     	if(content_id == 3){
       		
-    		
+    	$('#mainTabs a#listaAllegatiTab').tab('show');
        	   exploreModal("gestioneDevice.do","action=lista_allegati_device&id_device="+id,"#lista_allegati");
-       	  
+       	
+       	$("#myModal").modal();
+  	  	$('body').addClass('noScroll');
         	}
-		
+    	  
 	});
     
     

@@ -1361,6 +1361,34 @@ public class GestioneParcoAuto extends HttpServlet {
 				Utility.downloadFile(path_folder+filename, response.getOutputStream());
 				
 			}
+			else if(action.equals("evidenzia")) {
+				
+				String id_veicolo = request.getParameter("id_veicolo");
+				
+				PaaVeicoloDTO veicolo = GestioneParcoAutoBO.getVeicoloFromId(Integer.parseInt(id_veicolo), session);
+				
+				if(veicolo.getEvidenza()==1) 
+				{
+					veicolo.setEvidenza(0);
+				}else 
+				{
+					veicolo.setEvidenza(1);
+				}
+				
+				session.update(veicolo);
+				
+				
+				ArrayList<PaaVeicoloDTO> lista_veicoli = GestioneParcoAutoBO.getListaVeicoli(session);
+				ArrayList<DocumCommittenteDTO> lista_committenti = GestioneDocumentaleBO.getListaCommittenti(session);				
+			
+				request.getSession().setAttribute("lista_committenti", lista_committenti);
+				
+				request.getSession().setAttribute("lista_veicoli", lista_veicoli);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVeicoli.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
 			
 			session.getTransaction().commit();
         	session.close();

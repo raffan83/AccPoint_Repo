@@ -337,6 +337,8 @@ public class GestioneIntervento extends HttpServlet {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			
+			
+			
 			List<FileItem> items;
 		
 				items = uploadHandler.parseRequest(request);
@@ -347,6 +349,7 @@ public class GestioneIntervento extends HttpServlet {
 				String filename_cond_amb = null;
 				String id_strumento=null;
 				String nCertificato=null;
+				String frequenza = null;
 				FileItem file_excel = null;
 				FileItem file_pdf = null;
 				FileItem cond_ambientali = null;
@@ -364,10 +367,14 @@ public class GestioneIntervento extends HttpServlet {
 						}	
 						else if(item.getFieldName().equals("id_intervento")) {
 							id_intervento = item.getString();
-						}	
+						}
+						else if (item.getFieldName().equals("freq_sel")) {
+				            frequenza = item.getString("UTF-8");
+				        }
 						else if(item.getFieldName().equals("id_strumento")) {
 							id_strumento = item.getString();
-						}	
+						}
+						
 						else if(item.getFieldName().equals("nCertificato")) {
 							nCertificato = item.getString();
 						}	
@@ -415,6 +422,15 @@ public class GestioneIntervento extends HttpServlet {
 					out.print(myObj);
 				}else {
 					StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(id_strumento, session);
+					
+					/*Controllo se la frequenza deve essere aggiornata*/
+					if(frequenza!=null && frequenza.length()>0)
+					{
+						if (strumento.getFrequenza()!=Integer.parseInt(frequenza)) 
+						{
+							strumento.setFrequenza(Integer.parseInt(frequenza));
+						}
+					}
 					
 					InterventoDTO intervento =  GestioneInterventoBO.getIntervento(id_intervento, session);	
 					

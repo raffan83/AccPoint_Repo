@@ -816,6 +816,14 @@
 		 
 		 </div>
        </div><br>
+      <div class="row">
+       <div class="col-xs-4">
+       <label>Frequenza Strumento:</label>
+       </div>
+       <div class="col-xs-2">
+		 <input type='number' class="form-control input-small" id="freq_sel" name="freq_sel"> 
+	   </div>
+       </div><br>
        <div class="row">
        <!-- <div class="col-xs-12"> -->
        <div class="col-xs-4">
@@ -1961,8 +1969,9 @@ function reloadDrive()   {
  function selezionaStrumento(){
 	 $('#id_strumento').val($('#selected').val());
 	 $('#modalStrumenti').modal('hide');
-	 console.log( $('#id_strumento').val());
-	 $('#label_strumento').html("ID Strumento: "+$('#selected').val());
+	 console.log( $('#selectedFreq').val());
+	 $('#label_strumento').html("ID Strumento: "+$('#selected').val()+ " - Matricola:"+$('#selectedMatricola').val());
+	 $('#freq_sel').val($('#selectedFreq').val());
  }
  
  function inserisciSede(id_intervento){

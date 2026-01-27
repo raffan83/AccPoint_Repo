@@ -236,6 +236,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  
  
  <input type="hidden" id ="selected">
+ <input type="hidden" id ="selectedMatricola">
+ <input type="hidden" id ="selectedFreq">
 </div>
 </div>
 
@@ -379,6 +381,14 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 		        	tabStrumentiCampioni.$('tr.selected').removeClass('selected');
 		            $(this).addClass('selected');
 		            $('#selected').val($(this).find("td").eq(1).text());
+		            
+		            const matricola = $(this).find("td").eq(4).text();
+		            $('#selectedMatricola').val(matricola);
+		            
+		            const frequenza = $(this).find("td").eq(8).text().trim();
+		            $('#selectedFreq').val(frequenza);
+
+		           // console.log(matricola);
 		        }
 		        
 		        

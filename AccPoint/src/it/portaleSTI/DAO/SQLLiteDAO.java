@@ -294,6 +294,8 @@ private static String sqlCreateDataSetCampionamento="CREATE TABLE tbl_dataset_ca
 																						"tipo_campo varchar(100)," +
 																						"codice_campo varchar(100),composite varcaher(255))";
 
+private static String sqlCreateIndicePrestazione="CREATE TABLE tbl_indici_prestazione(id Integer,id_str Integer ,dataMisura Date,ip varchar(10));";
+
 private static String sqlCreatePlayLoadCampionamento="CREATE TABLE tbl_playload_campionamento (id Integer primary key autoincrement," +
 																							"id_dataset_campionamento int(11),id_punto Integer," +
 																							"valore_misurato varchar(50))";
@@ -764,6 +766,9 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement pstAttivita=con.prepareStatement(sqlMassa_tabAttivita);
 	pstAttivita.execute();
+	
+	PreparedStatement pstIp=con.prepareStatement(sqlCreateIndicePrestazione);
+	pstIp.execute();
 	
 	}
 	

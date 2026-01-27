@@ -116,6 +116,8 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertTipoStrumento(con);
 		
+		DirectMySqlDAO.insertIndicePrestazione(con,idCliente,idSede);
+		
 		
 		
 		if(commessa!=null) 
@@ -304,6 +306,8 @@ public class GestioneStrumentoBO {
 		DirectMySqlDAO.insertLuogoVerifica(con);
 		
 		DirectMySqlDAO.insertListaAttivita(con,com);
+		
+		DirectMySqlDAO.insertIndicePrestazione(con, idCliente, idSede);
 		
 		con.close();
 		}catch (Exception e) {

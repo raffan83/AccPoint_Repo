@@ -136,6 +136,8 @@ public class DirectMySqlDAO {
 
 
 	private static final String sqlDatiScheda="SELECT * FROM punto_misura";
+	
+	private static final String sqlIndicePrestazione="SELECT a.id,a.id_strumento,a.dataMisura,a.indice_prestazione FROM misura a JOIN intervento b ON a.id_intervento=b.id WHERE b.id_cliente=? AND id__sede_=?";
 
 	private static final String sqlDatiStrumentiPerGrafico = "SELECT a.reparto,a.frequenza,c.nome as stato_strumento, d.nome as tipo_strumento, a.denominazione,a.utilizzatore "
 			+ "from strumento a " + 
@@ -4237,6 +4239,57 @@ public static Map<Integer, List<Integer>> getListaCorsiSuccessiviCategoria(Strin
     }
 
     return corsoPartecipantiMap;
+}
+
+public static void insertIndicePrestazione(Connection conSQLLite, int idCliente, int idSede) throws Exception {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement(sqlIndicePrestazione);
+		pst.setInt(1,idCliente);
+		pst.setInt(2,idSede);
+
+		rs=pst.executeQuery();
+
+		String sqlInsert = "INSERT INTO tbl_indici_prestazione (id, id_str, dataMisura, ip) VALUES (?, ?, ?, ?)";
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		while(rs.next())
+		{
+
+			int id=rs.getInt(1);
+			int id_strumento=rs.getInt(2);
+			Date dataMisura=rs.getDate(3);
+			String ip=rs.getString(4);
+	
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+			pstINS.setInt(1, id);
+			pstINS.setInt(2, id_strumento);
+			pstINS.setString(3, sdf.format(dataMisura));          
+			pstINS.setString(4, ip);  
+
+			pstINS.execute();	
+		}
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+		throw ex;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+
+	}
+	
 }
 
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaVerifica" language="groovy" pageWidth="595" pageHeight="842" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b3d2a65c-fb25-4fa2-ba1d-efc58406bf05">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
@@ -9,10 +9,10 @@
 	<parameter name="codiceCommessa" class="java.lang.String"/>
 	<parameter name="cliente" class="java.lang.String"/>
 	<title>
-		<band height="81" splitType="Stretch">
+		<band height="116" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<rectangle>
-				<reportElement x="0" y="51" width="555" height="30" backcolor="#A1DB91" uuid="9d18cb95-c088-475c-bed3-3ba6da9049f3">
+				<reportElement x="0" y="86" width="555" height="30" backcolor="#A1DB91" uuid="9d18cb95-c088-475c-bed3-3ba6da9049f3">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
@@ -22,7 +22,7 @@
 				</graphicElement>
 			</rectangle>
 			<frame>
-				<reportElement x="0" y="51" width="280" height="30" backcolor="#7EBD68" uuid="31194ac1-06c8-4c72-82b4-a0e7a1a1c1f8">
+				<reportElement x="0" y="86" width="280" height="30" backcolor="#7EBD68" uuid="31194ac1-06c8-4c72-82b4-a0e7a1a1c1f8">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
@@ -43,7 +43,7 @@
 				</staticText>
 			</frame>
 			<frame>
-				<reportElement x="280" y="51" width="275" height="30" backcolor="#7EBD68" uuid="a06b4e74-6f5a-4c52-92b5-710e0878c43b">
+				<reportElement x="280" y="86" width="275" height="30" backcolor="#7EBD68" uuid="a06b4e74-6f5a-4c52-92b5-710e0878c43b">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -57,7 +57,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<staticText>
-					<reportElement mode="Transparent" x="4" y="15" width="75" height="15" uuid="6db16d96-a35a-4753-83c6-a7ed91e6272b">
+					<reportElement mode="Transparent" x="4" y="17" width="75" height="12" uuid="6db16d96-a35a-4753-83c6-a7ed91e6272b">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -66,7 +66,7 @@
 					<text><![CDATA[Codice Commessa:]]></text>
 				</staticText>
 				<textField>
-					<reportElement mode="Transparent" x="79" y="15" width="184" height="15" uuid="538b2005-9359-4ee6-b0cb-f7028d359357">
+					<reportElement mode="Transparent" x="79" y="17" width="196" height="12" uuid="538b2005-9359-4ee6-b0cb-f7028d359357">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -75,7 +75,7 @@
 					<textFieldExpression><![CDATA[$P{codiceCommessa}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Transparent" x="4" y="0" width="30" height="15" uuid="8a762dde-f282-42a2-b5c5-da91af6cd569">
+					<reportElement mode="Transparent" x="4" y="1" width="30" height="16" uuid="8a762dde-f282-42a2-b5c5-da91af6cd569">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -84,7 +84,7 @@
 					<text><![CDATA[Cliente:]]></text>
 				</staticText>
 				<textField>
-					<reportElement mode="Transparent" x="34" y="0" width="229" height="15" uuid="6bb1f045-8d4d-420b-87c5-6bf6e28c7a8d">
+					<reportElement mode="Transparent" x="34" y="1" width="241" height="16" uuid="6bb1f045-8d4d-420b-87c5-6bf6e28c7a8d">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
@@ -104,6 +104,21 @@
 				</graphicElement>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="0" y="70" width="25" height="15" uuid="af886cb8-2299-4c06-b27f-45235ba0d3b3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph lineSpacing="AtLeast"/>
+				</textElement>
+				<text><![CDATA[DATA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="25" y="70" width="68" height="15" uuid="8ee41557-671a-4b6c-aa94-8c3b0aa7d2ef"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageFooter>
@@ -168,33 +183,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[" di " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="10" width="20" height="10" uuid="af886cb8-2299-4c06-b27f-45235ba0d3b3"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="6"/>
-				</textElement>
-				<text><![CDATA[DATA]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="20" y="10" width="60" height="10" uuid="8ee41557-671a-4b6c-aa94-8c3b0aa7d2ef"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="20" y="20" width="60" height="1" uuid="225f725a-fd34-4005-a977-90a1071e1cb5"/>
-			</line>
-			<line>
-				<reportElement x="430" y="19" width="121" height="1" uuid="f8e39448-ca13-4df0-9b94-763f031f2956"/>
-			</line>
-			<staticText>
-				<reportElement x="430" y="21" width="121" height="10" uuid="dd7cc82d-dae4-4b21-a4f5-ac4a9721b43f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6"/>
-				</textElement>
-				<text><![CDATA[IL RSGI]]></text>
-			</staticText>
 		</band>
 	</lastPageFooter>
 </jasperReport>

@@ -3931,9 +3931,9 @@ Non presente
 </c:if>
 
 <td align="center">${item.massa.stripTrailingZeros().toPlainString() }</td>
-<td align="center">${item.indicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.indicazione.setScale(risoluzioneBilancia, 3)}</td>
 <td align="center">${item.caricoAgg.setScale(risoluzioneBilancia, 3)}</td>
-<td align="center">${item.postIndicazione.setScale(risoluzioneIndicazione, 3)}</td>
+<td align="center">${item.postIndicazione.setScale(risoluzioneBilancia, 3)}</td>
 <td align="center">${item.differenziale.setScale(risoluzioneBilancia, 3)}</td>
 <td align="center">${item.divisione.setScale(risoluzioneBilancia, 3)}</td>
 <td align="center">${item.check_punto}</td>

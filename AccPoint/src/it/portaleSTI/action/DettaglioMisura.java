@@ -4,10 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -33,11 +34,11 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
+import it.portaleSTI.DTO.MabbaBlockView;
+import it.portaleSTI.DTO.MabbaRowView;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
-
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -46,7 +47,6 @@ import it.portaleSTI.bo.GestioneLivellaElettronicaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneSicurezzaElettricaBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
-import it.portaleSTI.bo.GestioneVerCertificatoBO;
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -127,6 +127,66 @@ public class DettaglioMisura extends HttpServlet {
 						}
 					}
 					
+					if(arrayPunti.size()>0 && arrayPunti.get(0).get(0).getTipoProva().startsWith("M")) 
+					{
+						Map<Integer, List<MabbaBlockView>> blocchiPerTabella = new LinkedHashMap<>();
+
+						for (ArrayList<PuntoMisuraDTO> listaPunti : arrayPunti) {
+							
+						
+						for (PuntoMisuraDTO punto : listaPunti) {
+
+						    String[] letture = (punto.getMabba_val() != null) ? punto.getMabba_val().split("@") : new String[0];
+						    if (letture.length < 4) continue; // o gestisci
+
+						    // valore campione
+						    String vc = String.valueOf(punto.getValoreCampione());
+						    BigDecimal valoreCampione = new BigDecimal(vc.replace(",", "."));
+
+						    // scala da mabba_comparatore.split("@")[1]
+						    int scala = 3;
+						    try {
+						        String[] comp = (punto.getMabba_comparatore() != null) ? punto.getMabba_comparatore().split("@") : new String[0];
+						        String valComparatore = (comp.length > 1) ? comp[1] : null;
+						        if (valComparatore != null && valComparatore.contains(".")) {
+						            scala = valComparatore.substring(valComparatore.indexOf(".") + 1).length();
+						        }
+						    } catch (Exception ignore) {}
+
+						    List<MabbaRowView> rows = new ArrayList<>(4);
+
+						    for (int c = 0; c < 4; c++) {
+						        BigDecimal letturaBD = new BigDecimal(letture[c].replace(",", "."));
+
+						        String mabba = (c == 0 || c == 3) ? "A" : "B";
+
+						        BigDecimal diff = letturaBD.subtract(valoreCampione).setScale(scala, RoundingMode.HALF_UP);
+						        String diffFmt = Utility.changeDotComma(diff.stripTrailingZeros().toPlainString());
+
+						        rows.add(new MabbaRowView(mabba, diffFmt, punto.getUm()));
+						    }
+
+						    String scost = (punto.getScostamento() != null) ? punto.getScostamento().stripTrailingZeros().toPlainString() : "";
+
+						    MabbaBlockView block = new MabbaBlockView(punto.getId_tabella(), scost, rows);
+						    
+						    block.setValoreConvenzionale(punto.getMabba_mc().stripTrailingZeros().toPlainString());
+
+						    block.setIncertezza(punto.getIncertezza().stripTrailingZeros().toPlainString());
+						    
+						    blocchiPerTabella.computeIfAbsent(punto.getId_tabella(), k -> new ArrayList<>()).add(block);
+							}
+						}
+						request.setAttribute("blocchiPerTabella", blocchiPerTabella);
+						RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisuraMABBA.jsp");
+				     	dispatcher.forward(request,response);
+					}
+					
+					else 
+					{
+						
+					
+					
 					request.getSession().setAttribute("arrayPunti", arrayPunti);
 	
 					Gson gson = new Gson();
@@ -136,6 +196,8 @@ public class DettaglioMisura extends HttpServlet {
 					
 					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisura.jsp");
 			     	dispatcher.forward(request,response);
+					
+					}
 					
 				}
 				else if(misura.getLat().equals("E")) {

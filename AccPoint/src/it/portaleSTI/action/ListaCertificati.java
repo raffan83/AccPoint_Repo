@@ -283,8 +283,8 @@ public class ListaCertificati extends HttpServlet {
 
 				        // Itera sull'ArrayList per trovare il massimo
 				        for (int i = 1; i < listaAnni.size(); i++) {
-				            int elementoCorrente = listaAnni.get(i);
-				            if (elementoCorrente > massimo) {
+				            Integer elementoCorrente = listaAnni.get(i);
+				            if (elementoCorrente!=null &&elementoCorrente > massimo) {
 				                massimo = elementoCorrente;
 				            }
 				        }

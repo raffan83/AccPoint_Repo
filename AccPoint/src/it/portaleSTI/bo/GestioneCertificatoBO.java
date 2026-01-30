@@ -925,6 +925,15 @@ public class GestioneCertificatoBO {
 					if(dataSource.get(j).get(0).getTipoProva().startsWith("D"))
 					{
 				  	listaTabelle.put("D_R_"+j,dataSource.get(j));
+				  	}
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("M"))
+					{
+				  	listaTabelle.put("M_"+j,dataSource.get(j));
+					}	
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("S"))
+					{
+				  	listaTabelle.put("S_"+j,dataSource.get(j));
+						
 					}	
 				}
 			

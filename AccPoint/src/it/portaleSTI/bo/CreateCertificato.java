@@ -128,12 +128,24 @@ public class CreateCertificato {
 			List<ReportSVT_DTO> listItem = (List<ReportSVT_DTO>) pair.getValue();
 			SubreportBuilder subreport = null;
 			
-			if(pivot.startsWith("R_S") || pivot.startsWith("L_S") || pivot.startsWith("D_S") || pivot.startsWith("M") || pivot.startsWith("S")){
+			if(pivot.startsWith("R_S") || pivot.startsWith("L_S") || pivot.startsWith("D_S") ){
 				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderSvt_EN.jrxml");
 				tipoScheda="SVT";
 			}
 			if(pivot.startsWith("R_R") || pivot.startsWith("L_R") || pivot.startsWith("D_R")){
 				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderRDT_EN.jrxml");
+				tipoScheda="RDT";
+			}
+			if(pivot.startsWith("R_R") || pivot.startsWith("L_R") || pivot.startsWith("D_R")){
+				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderRDT_EN.jrxml");
+				tipoScheda="RDT";
+			}
+			if((pivot.startsWith("M") || pivot.startsWith("S"))&& strumento.getTipoRapporto().getNoneRapporto().equals("RDT")){
+				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderRDT_EN.jrxml");
+				tipoScheda="RDT";
+			}
+			if((pivot.startsWith("M") || pivot.startsWith("S"))&& strumento.getTipoRapporto().getNoneRapporto().equals("SVT")){
+				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderSVT_EN.jrxml");
 				tipoScheda="RDT";
 			}
 			if(pivot.equals("RDP")) 

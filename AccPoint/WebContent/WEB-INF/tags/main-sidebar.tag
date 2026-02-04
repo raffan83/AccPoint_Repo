@@ -257,6 +257,7 @@
            <li><a href="#" onclick="callAction('listaItem.do?action=lista',null,true);">Stato Item Magazzino</a></li>
 		<li><a href="#" onclick="callAction('listaPacchi.do?action=lista_ddt',null,true);">Stato DDT</a></li>
 		<li><a href="#" onclick="callAction('gestionePacco.do?action=pacchi_lavorazione',null,true);">Attivit&agrave; in corso</a></li>
+		<li><a href="#" onclick="callAction('gestionePacco.do?action=presso_fornitore',null,true);">Presso Fornitore</a></li>
           </ul>
         </li>
           <% }%>

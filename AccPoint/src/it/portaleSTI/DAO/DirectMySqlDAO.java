@@ -3531,17 +3531,25 @@ public static ArrayList<ControlloOreDTO> getOrePrevisteOreScaricate() throws Exc
 	return lista;
 }
 
-public static void updateOrigineDashboard(String origine, int stato, String utente) throws Exception {
+public static void updateOrigineDashboard(String origine, int stato, String utente,boolean fornitore) throws Exception {
 
 
 	Connection con=null;
 	PreparedStatement pst = null;
 	 ResultSet rs = null;
 	
+	 String table="";
+	 if(fornitore) 
+	 {
+		 table="mag_pacco_dashboard_for";
+	 }else 
+	 {
+		 table="mag_pacco_dashboard";
+	 }
 	try {
 		con=getConnection();
 
-		  String checkQuery = "SELECT COUNT(*) FROM mag_pacco_dashboard WHERE origine = ?";
+		  String checkQuery = "SELECT COUNT(*) FROM "+table+" WHERE origine = ?";
 	        pst = con.prepareStatement(checkQuery);
 	        pst.setString(1, origine);
 	        rs = pst.executeQuery();
@@ -3552,14 +3560,14 @@ public static void updateOrigineDashboard(String origine, int stato, String uten
 
 	        if (count > 0) {
 	            // Se esiste, esegui un UPDATE
-	            String updateQuery = "UPDATE mag_pacco_dashboard SET stato = ?, utente = ? WHERE origine = ?";
+	            String updateQuery = "UPDATE "+table+" SET stato = ?, utente = ? WHERE origine = ?";
 	            pst = con.prepareStatement(updateQuery);
 	            pst.setInt(1, stato);
 	            pst.setString(2, utente);
 	            pst.setString(3, origine);
 	        } else {
 	            // Se non esiste, esegui un INSERT
-	            String insertQuery = "INSERT INTO mag_pacco_dashboard (origine, stato, utente) VALUES (?, ?, ?)";
+	            String insertQuery = "INSERT INTO "+table+" (origine, stato, utente) VALUES (?, ?, ?)";
 	            pst = con.prepareStatement(insertQuery);
 	            pst.setString(1, origine);
 	            pst.setInt(2, stato);
@@ -3580,10 +3588,10 @@ public static void updateOrigineDashboard(String origine, int stato, String uten
 	}
 }
 
+
 public static ArrayList<String> getItemInRitardoDashboard(Session session) throws Exception {
 
 	ArrayList<String> lista = new ArrayList<String>();
-	ArrayList<MagPaccoDTO> lista_pacchi = new ArrayList<MagPaccoDTO>();
 	 List<Object[]> results = new ArrayList<Object[]>();
 	
 	Connection con=null;
@@ -3728,6 +3736,157 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 						lista.add(toAdd);
 
 					}
+				
+			}
+		
+	       
+	        rs.close();
+	        pst.close();
+	    	
+			return lista;
+			
+
+	     
+	
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+}
+
+public static ArrayList<String> getItemPresso_Fornitori(Session session) throws Exception {
+
+	ArrayList<String> lista = new ArrayList<String>();
+	 List<Object[]> results = new ArrayList<Object[]>();
+	
+	Connection con=null;
+	PreparedStatement pst = null;
+	 ResultSet rs = null;
+	
+	try {
+		con=getConnection();
+
+		//  String query = "SELECT distinct b.commessa,b.data_arrivo, b.data_lavorazione,b.origine,b.nome_cliente, d.stato, d.utente, c.priorita FROM mag_item_pacco a JOIN mag_pacco b ON a.id_pacco = b.id JOIN mag_item c ON a.id_item = c.id LEFT JOIN  mag_pacco_dashboard d ON b.origine = d.origine WHERE b.id_stato_lavorazione = 1 AND c.stato = 1 AND b.chiuso = 0";
+	     String query="SELECT p.id,p.data_spedizione,p.chiuso," + 
+	     		"p.commessa,p.data_arrivo, p.data_lavorazione,p.origine,p.nome_cliente, d.stato,d.utente  "+ 
+	     		"FROM mag_pacco p " + 
+	     		"LEFT JOIN  mag_pacco_dashboard_for d ON p.origine = d.origine " + 
+	     		"WHERE p.id_stato_lavorazione = 4 " + 
+	     		"AND p.chiuso=0 " + 
+	     		"   " + 
+	     		"  AND EXISTS ( " + 
+	     		"    SELECT 1 " + 
+	     		"    FROM mag_item_pacco ip " + 
+	     		"    JOIN mag_item i ON i.id = ip.id_item " + 
+	     		"    WHERE ip.id_pacco = p.id " + 
+	     		"      AND i.stato = 1)";
+		  pst = con.prepareStatement(query);
+	       
+	        rs = pst.executeQuery();
+	        
+	        rs=pst.executeQuery();
+
+			MagPaccoDTO pacco_res= null;
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			while(rs.next()) 
+			{
+				pacco_res = new MagPaccoDTO();
+				pacco_res.setId(rs.getInt("p.id"));
+				pacco_res.setCommessa(rs.getString("p.commessa"));
+				pacco_res.setData_arrivo(rs.getDate("p.data_arrivo"));
+				pacco_res.setData_spedizione(rs.getDate("p.data_spedizione"));
+				pacco_res.setData_lavorazione(rs.getDate("p.data_lavorazione"));
+				pacco_res.setOrigine(rs.getString("p.origine"));
+				pacco_res.setNome_cliente(rs.getString("p.nome_cliente"));
+				Object[] result = new Object[3];
+				result[0] = pacco_res;
+				result[1] = rs.getInt(9);
+				result[2] = rs.getString(10);
+				results.add(result);
+			}
+	        
+	
+			
+			for (Object[] result : results) {
+		        MagPaccoDTO pacco = (MagPaccoDTO) result[0];
+		        Integer stato = (Integer) result[1];
+		        String utente = (String) result[2];
+
+				java.util.Date dataCommessa = null;
+				if(pacco.getCommessa()!=null && !pacco.getCommessa().equals("")) {
+					CommessaDTO commessa = GestioneCommesseDAO.getCommessaById(pacco.getCommessa());
+					if(commessa!=null) {
+						dataCommessa = commessa.getDT_COMMESSA();
+					}
+				}
+		
+						
+						String toAdd = pacco.getOrigine()+";"+pacco.getId()+";"+pacco.getNome_cliente();
+						
+						if(pacco.getCommessa()!=null) {
+							toAdd = toAdd +";"+pacco.getCommessa();
+							if(!pacco.getCommessa().equals("")) {
+								toAdd = toAdd +";"+df.format(dataCommessa);
+							}else {
+								toAdd = toAdd +";";
+							}
+						}
+						
+						MagPaccoDTO origine= GestioneMagazzinoDAO.getPaccoId(Integer.parseInt(pacco.getOrigine().split("_")[1]), session);
+						
+						if(origine.getData_arrivo()!=null) {
+							toAdd = toAdd +";"+df.format(origine.getData_arrivo()); 
+						}
+						if(pacco.getData_spedizione()!=null) {
+							toAdd = toAdd +";"+df.format(pacco.getData_spedizione()); 
+						}
+						
+						LocalDate dateSped = Instant.ofEpochMilli(
+						        pacco.getData_spedizione().getTime()
+						).atZone(ZoneId.systemDefault())
+						 .toLocalDate();
+						
+						long giorniMancanti = Utility.giorniLavorativiTraDate(LocalDate.now(), dateSped);
+						
+						//long giorniMancanti = 10;
+											
+						if(giorniMancanti>0) {
+							toAdd = toAdd +";"+" - "+giorniMancanti;
+						}else {
+							toAdd = toAdd +";"+" + "+Math.abs(giorniMancanti);
+						}
+
+						String note_pacco = "";
+
+						if(utente!=null) {
+							toAdd = toAdd+";"+utente;
+						}else {
+							toAdd = toAdd+";";
+						}
+						
+						if(stato!=null) {
+							toAdd = toAdd+";"+stato;
+						}else {
+							toAdd = toAdd+";";
+						}
+						
+						if(!note_pacco.equals("")) {
+							note_pacco = note_pacco.substring(0, note_pacco.length()-3).replace("\r\n", "").replace("\n", "");
+							toAdd = toAdd+";"+note_pacco;
+						}else {
+							toAdd = toAdd+";";
+						}
+					
+						lista.add(toAdd);
+
+			//		}
 				
 			}
 		

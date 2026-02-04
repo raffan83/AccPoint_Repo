@@ -1876,7 +1876,29 @@ public class GestionePacco extends HttpServlet {
 			String origine = request.getParameter("origine");
 			String stato = request.getParameter("stato");
 			
-			GestioneMagazzinoBO.updateOrigineDashboard(origine, Integer.parseInt(stato), utente.getNominativo());
+			GestioneMagazzinoBO.updateOrigineDashboard(origine, Integer.parseInt(stato), utente.getNominativo(),false);
+			
+			
+			session.getTransaction().commit();
+			session.close();
+			JsonObject myObj = new JsonObject();
+			PrintWriter out = response.getWriter();
+			
+			myObj.addProperty("success", true);
+			
+			out.print(myObj);
+			
+			
+		}
+		else if(action.equals("update_dashboard_for")) {
+			
+			
+			ajax = true;
+			
+			String origine = request.getParameter("origine");
+			String stato = request.getParameter("stato");
+			
+			GestioneMagazzinoBO.updateOrigineDashboard("PC_"+origine, Integer.parseInt(stato), utente.getNominativo(),true);
 			
 			
 			session.getTransaction().commit();
@@ -1965,6 +1987,86 @@ public class GestionePacco extends HttpServlet {
 			session.close();
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPacchiInLavorazione.jsp");
+	     	dispatcher.forward(request,response);
+			
+			
+			
+		}
+		else if(action.equals("presso_fornitore")) {
+			
+			ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemPresso_Fornitori(session);
+			
+//			Collections.sort(lista_pacchi, new Comparator<String>() {
+//			    @Override
+//			    public int compare(String s1, String s2) {
+//			        int giorniMancanti1 = estraiGiorniMancanti(s1);
+//			        int giorniMancanti2 = estraiGiorniMancanti(s2);
+//
+//			        // Ordina in modo decrescente
+//			        return Integer.compare(giorniMancanti2, giorniMancanti1);
+//			    }
+//			});
+			Collections.sort(lista_pacchi, new Comparator<String>() {
+			    @Override
+			    public int compare(String s1, String s2) {
+			        // Ottieni i giorni mancanti dai due elementi della lista
+			        int giorniMancanti1 = 0;
+			        int giorniMancanti2 = 0;
+
+			       // String s1n1 = s1.split(";")[s1.split(";").length - 3].replaceAll("[^\\d-]", "").trim();
+			        String s1n1 = s1.split(";")[s1.split(";").length - 5].replaceAll("[^\\d\\/-]", "").trim();
+			        String s1n2 = s1.split(";")[s1.split(";").length - 4].replaceAll("[^\\d\\/-]", "").trim();
+			        String s1n3 = s1.split(";")[s1.split(";").length - 3].replaceAll("[^\\d\\/-]", "").trim();
+			        String s1n4 = s1.split(";")[s1.split(";").length - 2].replaceAll("[^\\d\\/-]", "").trim();
+			        String s1n5 = s1.split(";")[s1.split(";").length - 1].replaceAll("[^\\d\\/-]", "").trim();
+			        
+			        if(s1n1.matches("-?[0-9]+")) {
+			        	giorniMancanti1 = Integer.parseInt(s1n1);
+			        }else if(s1n2.matches("-?[0-9]+")) {
+			        	giorniMancanti1 = Integer.parseInt(s1n2);
+			        }else if(s1n3.matches("-?[0-9]+")) {
+			        	giorniMancanti1 = Integer.parseInt(s1n3);
+			        }
+			        else if(s1n4.matches("-?[0-9]+")) {
+			        	giorniMancanti1 = Integer.parseInt(s1n4);
+			        }
+			        else if(s1n5.matches("-?[0-9]+")) {
+			        	giorniMancanti1 = Integer.parseInt(s1n5);
+			        }
+			        
+			        String s2n1 = s2.split(";")[s2.split(";").length - 5].replaceAll("[^\\d\\/-]", "").trim();
+			        String s2n2 = s2.split(";")[s2.split(";").length - 4].replaceAll("[^\\d\\/-]", "").trim();
+			        String s2n3 = s2.split(";")[s2.split(";").length - 3].replaceAll("[^\\d\\/-]", "").trim();
+			        String s2n4 = s2.split(";")[s2.split(";").length - 2].replaceAll("[^\\d\\/-]", "").trim();
+			        String s2n5 = s2.split(";")[s2.split(";").length - 1].replaceAll("[^\\d\\/-]", "").trim();
+			        
+			
+			        if(s2n1.matches("-?[0-9]+")) {
+			        	giorniMancanti2 = Integer.parseInt(s2n1);
+			        }else if(s2n2.matches("-?[0-9]+")) {
+			        	giorniMancanti2 = Integer.parseInt(s2n2);
+			        }else if(s2n3.matches("-?[0-9]+")) {
+			        	giorniMancanti2 = Integer.parseInt(s2n3);
+			        }
+			        else if(s2n4.matches("-?[0-9]+")) {
+			        	giorniMancanti2 = Integer.parseInt(s2n4);
+			        }
+			        else if(s2n5.matches("-?[0-9]+")) {
+			        	giorniMancanti2 = Integer.parseInt(s2n5);
+			        }
+			        
+			     			        
+			        // Ordina in modo decrescente
+			        return Integer.compare(giorniMancanti2, giorniMancanti1);
+			    }
+			});
+			
+			
+			request.getSession().setAttribute("lista_pacchi_grafico", lista_pacchi);
+			session.getTransaction().commit();
+			session.close();
+			
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPacchiPressoFornitori.jsp");
 	     	dispatcher.forward(request,response);
 			
 			

@@ -238,14 +238,20 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 						}
 					}
 					
+					
+					Integer idAttivita = (Integer) session.save(attivita);  // oppure Serializable
+					
 					if(fileItem!=null && !filename.equals("")) {
+						
+						
 
-						File f = saveFile(fileItem, campione.getId(),filename);
+						File f = saveFile(fileItem, campione.getId(),getPrefissoTipoAttivita(tipo_attivita)+""+idAttivita+".pdf");
 						if(f == null) {
 							
 							FileUtils.copyFile(new File(Costanti.PATH_FOLDER+"//Campioni//"+id_campioni[i-1]+"//Allegati//AttivitaManutenzione//"+filename), new File(Costanti.PATH_FOLDER+"//Campioni//"+id_campioni[i]+"//Allegati//AttivitaManutenzione//"+filename));
 						}
-						attivita.setAllegato(filename);
+						attivita.setAllegato(getPrefissoTipoAttivita(tipo_attivita)+""+idAttivita+".pdf");
+						session.update(attivita);
 					}
 					
 					if(tipo_attivita.equals("2") || (tipo_attivita.equals("1") && tipo_manutenzione!=null && tipo_manutenzione.equals("1"))) {
@@ -364,8 +370,9 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				
 				if(fileItem!=null && !filename.equals("")) {
 
-					saveFile(fileItem, attivita.getCampione().getId(),filename);
-					attivita.setAllegato(filename);
+					String fn=getPrefissoTipoAttivita(tipo_attivita)+""+attivita.getId()+".pdf";
+					saveFile(fileItem, attivita.getCampione().getId(),fn);
+					attivita.setAllegato(fn);
 				}
 				
 				if(tipo_attivita.equals("2") || (tipo_attivita.equals("1"))) {
@@ -753,7 +760,31 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 	}
 	
 	
-	 private File saveFile(FileItem item, int id_campione, String filename) {
+	 private String getPrefissoTipoAttivita(String tipo_attivita) {
+	
+		 
+		 
+		 	if(tipo_attivita.equals("1")) 
+		 	{
+		 		return "MAN_";
+		 	}
+		 	if(tipo_attivita.equals("2")) 
+		 	{
+		 		return "VINT_";
+		 	}
+		 	if(tipo_attivita.equals("3")) 
+		 	{
+		 		return "TAR_";
+		 	}
+		 	if(tipo_attivita.equals("4")) 
+		 	{
+		 		return "FS_";
+		 	}
+		 
+		return "";
+	}
+
+	private File saveFile(FileItem item, int id_campione, String filename) {
 
 		 	String path_folder = Costanti.PATH_FOLDER+"//Campioni//"+id_campione+"//Allegati//AttivitaManutenzione//";
 			File folder=new File(path_folder);
@@ -761,38 +792,22 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 			if(!folder.exists()) {
 				folder.mkdirs();
 			}
+
+			File file = new File(path_folder+filename);			
+				
 		
-			int index = 1;
-			String ext1 = FilenameUtils.getExtension(item.getName());
-			File file=null;
-			while(true)
-			{
-				
-				
-				
-				file = new File(path_folder+filename);			
-				if(file.exists()) {
-					filename = filename.replace("_"+(index-1), "").replace("."+ext1, "_"+index+"."+ext1);				
-					index++;
-				}
-				else {
 					try {
 						
 						item.write(file);
-						break;
+						
 
 					} catch (Exception e) 
 					{
 
 						e.printStackTrace();
-						break;
+						
 					}
-				}
-				
-				
-			}
-		
-			
+
 			return file;
 		}
 	 

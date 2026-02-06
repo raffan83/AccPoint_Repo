@@ -23,7 +23,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Pacchi in attesa di lavorazione
+        Pacchi presso fornitori
         <!-- <small></small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/"><i class="fa fa-dashboard"></i> Home</a>
@@ -44,7 +44,7 @@
 <div class="col-sm-12 col-xs-12 ">	
 					<div class="box box-primary">
 			            <div class="box-header with-border">
-			              <h3 class="box-title">Pacchi in attesa di lavorazione</h3>
+			              
 		
 			              <div class="box-tools pull-right">
 			                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -61,6 +61,7 @@
 						 <th>Cliente</th>
 						  <th>Commessa</th>
 						  <th>Data Commessa</th>
+						  <th>Fornitore</th>
 						  <th>Data Arrivo (origine)</th>
 						  <th>Data Spedizione</th>
 						  <th>Diff.</th>
@@ -90,11 +91,12 @@
                            </c:if>
                           
                         	  
-                               <td  id="${splitted[0]}_1" style="position:relative"><a href="gestionePacco.do?action=dettaglio&id_pacco=${utl:encryptData(splitted[0].split('_')[0])})" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" >${splitted[0]}</a></td>
+                               <td  id="${splitted[0]}_1" style="position:relative"><a href="gestionePacco.do?action=dettaglio&id_pacco=${utl:encryptData(splitted[0].split('_')[1])})" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" >${splitted[0]}</a></td>
                                 <td  id="${splitted[0]}_2" style="position:relative"><a href="gestionePacco.do?action=dettaglio&id_pacco=${utl:encryptData(splitted[1])})" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" >${splitted[1]}</a></td>
                                <td  id="${splitted[0]}_3" style="position:relative">${splitted[2]}</td>
                                <td  id="${splitted[0]}_4" style="position:relative"><a href="gestioneIntervento.do?idCommessa=${utl:encryptData(splitted[3])}" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" >${splitted[3]}</a></td>
                                <td  id="${splitted[0]}_5" style="position:relative">${splitted[4]}</td>
+                               <td  id="${splitted[0]}_11" style="position:relative">${splitted[11]}</td>
                                <td  id="${splitted[0]}_6" style="position:relative">${splitted[5]}</td>
                                <td  id="${splitted[0]}_7" style="position:relative">${splitted[6]}</td>
                                <td  id="${splitted[0]}_8" style="position:relative">${splitted[7]}</td>

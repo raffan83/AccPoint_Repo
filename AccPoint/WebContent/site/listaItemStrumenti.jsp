@@ -54,6 +54,30 @@ ArrayList<CompanyDTO> lista_company =(ArrayList)session.getAttribute("lista_comp
 
 
 <button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoStrumento')">Nuovo Strumento</button>
+<div class="row" style="margin-top:10px;">
+    <div class="col-md-6">
+        <label>Cerca strumento</label>
+        <div class="input-group">
+            <input type="text"
+                   id="searchStrumento"
+                   class="form-control"
+                   placeholder="ID strumento o QR">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" id="btnSearchStrumento">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+    
+        <div class="col-md-6">
+        <span id="msgSearchStrumento"
+              class="text-danger"
+              style="display:none; margin-top:28px; display:inline-block;">
+            
+        </span>
+    </div>
+</div>
 
 <br><br>
 
@@ -275,7 +299,11 @@ ArrayList<CompanyDTO> lista_company =(ArrayList)session.getAttribute("lista_comp
  </form>
  
  
-
+<style>
+.row-selezionata {
+    background-color: #fff3cd !important;
+}
+</style>
  
 
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
@@ -460,6 +488,7 @@ var tableStr = $('#tabStrumentiItem').DataTable({
 	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
 	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
 	        	infoPostFix:	"",
+	        	
 	        infoThousands:	".",
 	        lengthMenu:	"Visualizza _MENU_ elementi",
 	        loadingRecords:	"Caricamento...",
@@ -488,16 +517,15 @@ var tableStr = $('#tabStrumentiItem').DataTable({
 	      responsive: false,
 	      scrollX: true,
 	      stateSave: true,
+	      searching: false,      // toglie "Cerca:" globale
+	      lengthChange: false,   // toglie "Visualizza ... elementi"
+	      info: false,           // (opzionale) toglie "Vista da ... a ..."
+	      dom: 'rtp',            // r=processing, t=table, p=paginazione
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 5 },
 	                   { responsivePriority: 2, targets: 1 },
 	                   { responsivePriority: 3, targets: 2 }
-	               ], 
-	               buttons: [   
-	      	          {
-	      	            extend: 'colvis',
-	      	            text: 'Nascondi Colonne'  	                   
-	     			  } ]
+	               ]
 
 	    	
 	    });
@@ -532,8 +560,111 @@ $('#tabStrumentiItem').on( 'page.dt', function () {
 
 
 }); 
+function valutaInput(valore) {
 
+    if (!valore) return "0";
 
+    valore = valore.trim();
+
+   
+    if (/^\d+$/.test(valore)) {
+        return valore;
+    }
+
+    
+    try {
+        var match = valore.match(/id_str=([^&]+)/);
+        if (match && match[1]) {
+
+            var base64 = match[1];
+
+            
+            var decoded = atob(base64);
+
+           
+            if (/^\d+$/.test(decoded)) {
+                return decoded;
+            }
+        }
+    } catch (e) {
+        
+        console.warn('Errore decodifica base64:', e);
+    }
+
+   
+    return "0";
+}
+
+$('#btnSearchStrumento').on('click', function () {
+
+	 
+	
+	 var inputRaw = $('#searchStrumento').val().trim();
+	 var idCercato = valutaInput(inputRaw);
+    var $msg = $('#msgSearchStrumento');
+
+    // reset messaggio
+    $msg.hide().text('');
+
+  /*  if (!idCercato) {
+        $msg.text('Inserire un ID').show();
+        setTimeout(focusRicercaQR, 0);
+        return;
+    }*/
+
+    var table = $('#tabStrumentiItem').DataTable();
+    var trovato = false;
+
+    table.rows().every(function () {
+
+        var data = this.data();
+
+        var id          = data[1];
+        var codiceInt   = data[2];
+        var matricola   = data[3];
+        var descrizione = data[4];
+
+        if (id == idCercato) {
+            trovato = true;
+
+            // vai alla pagina corretta
+            table.page(this.index()).draw(false);
+
+            // evidenzia riga (opzionale)
+            $(this.node()).addClass('row-selezionata');
+
+            // chiamata come se avessi cliccato "+"
+            insertItem(id, descrizione, codiceInt, matricola);
+
+            $msg.hide().text('');
+            setTimeout(focusRicercaQR, 0);
+
+            return false; 
+        }
+    });
+
+    if (!trovato) {
+    	$('#listaItemTop').text('');
+        $msg.text('Strumento non trovato').show();
+        setTimeout(focusRicercaQR, 0);
+    }
+});
+
+function focusRicercaQR() {
+    var $in = $('#searchStrumento');
+    $in.focus();
+    $in.select(); // seleziona tutto: il prossimo scan sovrascrive
+}
+
+$('#searchStrumento').on('input', function () {
+    $('#msgSearchStrumento').hide().text('');
+});
+
+$('#searchStrumento').on('keyup', function (e) {
+    if (e.key === 'Enter') {
+        $('#btnSearchStrumento').click();
+    }
+});
 
   });
 

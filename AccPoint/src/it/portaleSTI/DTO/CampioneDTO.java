@@ -86,6 +86,7 @@ public class CampioneDTO implements Serializable {
 	private int settore;
 	private Date data_messa_in_servizio;
 	private int campione_verificazione;
+	private int verifica_se;
 	private String numeroCertificatoPunto;
 	private Date dataScadenzaManutenzione;
 
@@ -522,6 +523,15 @@ public class CampioneDTO implements Serializable {
 		this.dataVerificaIntermedia = dataVerificaIntermedia;
 	}
 
+	public int getVerifica_se() {
+		return verifica_se;
+	}
+
+	public void setVerifica_se(int verifica_se) {
+		this.verifica_se = verifica_se;
+	}
+
+	
 	
 
 }

@@ -130,6 +130,7 @@ public class CreateSchedaScadenzarioCampioni {
 	 		report.addColumn(col.column("Tipo scadenza", "tipo", type.stringType()));
 	 		report.addColumn(col.column("Data scadenza", "data", type.stringType()));
 	 		report.addColumn(col.column("Attività di taratura", "attivita", type.stringType()));
+	 		report.addColumn(col.column("Verifica S.E.", "verifica_se", type.stringType()));
 
 			report.setDetailSplitType(SplitType.PREVENT);
 			
@@ -147,7 +148,7 @@ public class CreateSchedaScadenzarioCampioni {
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");			
 
-		String[] listaCodici = new String[6];
+		String[] listaCodici = new String[7];
 		
 		listaCodici[0]="codInterno";
 		listaCodici[1]="denominazione";
@@ -155,6 +156,7 @@ public class CreateSchedaScadenzarioCampioni {
 		listaCodici[3]="tipo";
 		listaCodici[4]="data";
 		listaCodici[5]="attivita";
+		listaCodici[6]="verifica_se";
 		
 		DRDataSource dataSource = new DRDataSource(listaCodici);
 		
@@ -184,6 +186,14 @@ public class CreateSchedaScadenzarioCampioni {
 	 				}else {
 	 					arrayPs.add("");
 	 				}					
+	 				
+	 				if(campioni.get(i).getVerifica_se()==0) 
+	 				{
+	 					arrayPs.add("N");
+	 				}else 
+	 				{
+	 					arrayPs.add("S");
+	 				}
 	 				
 			         Object[] listaValori = arrayPs.toArray();
 			        

@@ -1922,7 +1922,7 @@ public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descri
 			  messaggio = messaggio.replace("{NOME}", utente.getNome()).replace("{COGNOME}", utente.getCognome()).replace("{USER_NAME}", utente.getUsername()).replace("{DESCRIZIONE_CORSO}", descrizione_corso);
 			  
 			  
-			  messaggio += "<br><br>Segreteria CRESCO Formazione e Consulenza Srl <br>Per Assistenza e Tutoraggio dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:<br>Tel. Interno: 0776.1815115 - 0776.1815104<br>Cell: 392.9318177<br>";
+			  messaggio += "<br><br>Segreteria CRESCO Formazione e Consulenza Srl <br>Per Assistenza e Tutoraggio dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:<br>Tel. Interno: 0776.1815115 - 0776.1815104";
 			  
 						  
 			  messaggio += "<em><b><br><br>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
@@ -2256,7 +2256,7 @@ if(p.getPartecipante().getEmail()!=null && !p.getPartecipante().getEmail().equal
 		  messaggio += "Segreteria <b>CRESCO Formazione e Consulenza Srl<br>" + 		  		
 		  		"Per Assistenza dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:</b><br>" + 
 		  		"Tel. Interno: 0776.1815115-0776.1815104<br>" + 
-		  		"Cell: 392.9318177<br><br>Cordiali saluti<br><br>";
+		  		"<br>Cordiali saluti<br><br>";
 		  
 		  messaggio += "<em><b>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
 				
@@ -2349,7 +2349,7 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 		  messaggio += "Segreteria <b>CRESCO Formazione e Consulenza Srl<br>" + 		  		
 		  		"Per Assistenza dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:</b><br>" + 
 		  		"Tel. Interno: 0776.1815115-0776.1815104<br>" + 
-		  		"Cell: 392.9318177<br><br>Cordiali saluti<br><br>";
+		  		"<br>Cordiali saluti<br><br>";
 		  
 		  messaggio += "<em><b>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
 				

@@ -3578,8 +3578,9 @@ public static void updateOrigineDashboard(String origine, int stato, String uten
 	
 	} catch (Exception e) {
 		
+		e.printStackTrace();
 		throw e;
-	//	e.printStackTrace();
+		
 		
 	}finally
 	{
@@ -3775,9 +3776,9 @@ public static ArrayList<String> getItemPresso_Fornitori(Session session) throws 
 
 		//  String query = "SELECT distinct b.commessa,b.data_arrivo, b.data_lavorazione,b.origine,b.nome_cliente, d.stato, d.utente, c.priorita FROM mag_item_pacco a JOIN mag_pacco b ON a.id_pacco = b.id JOIN mag_item c ON a.id_item = c.id LEFT JOIN  mag_pacco_dashboard d ON b.origine = d.origine WHERE b.id_stato_lavorazione = 1 AND c.stato = 1 AND b.chiuso = 0";
 	     String query="SELECT p.id,p.data_spedizione,p.chiuso," + 
-	     		"p.commessa,p.data_arrivo, p.data_lavorazione,p.origine,p.nome_cliente, d.stato,d.utente,p.fornitore  "+ 
+	     		"p.commessa,p.data_arrivo, p.data_lavorazione,p.origine,p.nome_cliente, d.stato,d.utente,p.fornitore,p.id_ddt  "+ 
 	     		"FROM mag_pacco p " + 
-	     		"LEFT JOIN  mag_pacco_dashboard_for d ON p.origine = d.origine " + 
+	     		"LEFT JOIN  mag_pacco_dashboard_for d ON p.id = d.origine " + 
 	     		"WHERE p.id_stato_lavorazione = 4 " + 
 	     		"AND p.chiuso=0 " + 
 	     		"   " + 
@@ -3806,10 +3807,12 @@ public static ArrayList<String> getItemPresso_Fornitori(Session session) throws 
 				pacco_res.setOrigine(rs.getString("p.origine"));
 				pacco_res.setNome_cliente(rs.getString("p.nome_cliente"));
 				pacco_res.setFornitore(rs.getString("fornitore"));
-				Object[] result = new Object[3];
+				
+				Object[] result = new Object[4];
 				result[0] = pacco_res;
 				result[1] = rs.getInt(9);
 				result[2] = rs.getString(10);
+				result[3] = rs.getInt("id_ddt");
 				results.add(result);
 			}
 	        
@@ -3891,6 +3894,7 @@ public static ArrayList<String> getItemPresso_Fornitori(Session session) throws 
 						{
 							toAdd = toAdd+";";
 						}
+						toAdd=toAdd+";"+result[3];
 					
 						lista.add(toAdd);
 

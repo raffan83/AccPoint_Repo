@@ -218,6 +218,7 @@ public class GestioneCampione extends HttpServlet {
 			  String slash = (String)ret.get("slash");
 			  String proprietario = (String)ret.get("proprietario");
 			  String campione_verificazione = (String) ret.get("campione_verificazione");
+			  String verifica_se = (String) ret.get("verifica_se");
 			  String clona_valori_campione = (String) ret.get("clona_valori_campione");
 			  
 			  if(clona_valori_campione!=null && !clona_valori_campione.equals("") && !clona_valori_campione.equals("0")) {
@@ -284,6 +285,14 @@ public class GestioneCampione extends HttpServlet {
 				}
 				
 				campione.setCampione_verificazione(Integer.parseInt(campione_verificazione));
+				
+				if(verifica_se==null) 
+				{
+					campione.setVerifica_se(0);
+				}else 
+				{
+					campione.setVerifica_se(1);
+				}
 				
 				if(data_messa_in_servizio !=null && !data_messa_in_servizio.equals("")) {
 					Date d = (Date) format.parse(data_messa_in_servizio);
@@ -486,6 +495,7 @@ public class GestioneCampione extends HttpServlet {
 			  String attivita_di_taratura = (String) ret.get("attivita_taratura_text_mod");
 			  String tipo_campione = (String) ret.get("tipoCampione_mod");
 			  String campione_verificazione = (String) ret.get("campione_verificazione_mod");
+			  String verifica_se = (String) ret.get("verifica_se_mod");
 			  
 			 
 				campione.setNome(nome);
@@ -538,6 +548,7 @@ public class GestioneCampione extends HttpServlet {
 				
 				
 				campione.setCampione_verificazione(Integer.parseInt(campione_verificazione));
+				campione.setVerifica_se(Integer.parseInt(verifica_se));
 				
 				DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN);
 				

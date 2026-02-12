@@ -625,7 +625,13 @@
      	<textarea id="descrizione_manutenzione" name ="descrizione_manutenzione" style="width:100%" class="form-control" rows="3"></textarea>
      	</div>
    </div>
-   
+   <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Verificazione Sicurezza Elettrica:</label>
+        <div class="col-sm-10">
+        <input  id="verifica_se" type="checkbox" name="verifica_se" value="0"/>
+    </div>
+     </div>
+     
                  <div class="form-group">
         <label for="frequenza_manutenzione" class="col-sm-2 control-label">Frequenza Manutenzioni:</label>
         <div class="col-sm-10">
@@ -1142,6 +1148,12 @@ callAjax(dataObj, 'dettaglioCampione.do', function(data){
 		 			$('#campione_verificazione').iCheck("uncheck");
 		 		}
 		 		
+		 		if(campione.verifica_se){
+		 			$('#verifica_se').iCheck("check");
+		 		}else{
+		 			$('#verifica_se').iCheck("uncheck");
+		 		}
+		 		
 		 		
 		 		$('#nome').val(campione.nome);
 		 		$('#descrizione').val(campione.descrizione);
@@ -1201,6 +1213,7 @@ callAjax(dataObj, 'dettaglioCampione.do', function(data){
 		 		$('#tipoCampione').change();
 		 	
 		 		$('#campione_verificazione').iCheck("uncheck");
+		 		$('#verifica_se').iCheck("uncheck");
 		 	
 		 		
 		 		
@@ -1429,6 +1442,20 @@ callAjax(dataObj, 'dettaglioCampione.do', function(data){
 			
 			$('#campione_verificazione').iCheck('check');				
 			$('#campione_verificazione').val(1);
+		 }
+
+	});  
+	
+	$('#verifica_se').on('ifClicked',function(e){
+		
+		 if($('#verifica_se').is( ':checked' )){
+			
+			$('#verifica_se').iCheck('uncheck');
+			$('#verifica_se').val(1);
+		 }else{
+			
+			$('#verifica_se').iCheck('check');				
+			$('#verifica_se').val(1);
 		 }
 
 	});  

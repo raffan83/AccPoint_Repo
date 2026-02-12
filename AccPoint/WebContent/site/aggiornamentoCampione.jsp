@@ -178,6 +178,20 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
      	<textarea id="descrizione_manutenzione_mod" name ="descrizione_manutenzione_mod" style="width:100%" class="form-control" rows="3"><%if(campione.getDescrizione_manutenzione()!=null){out.println(campione.getDescrizione_manutenzione());} %></textarea>
      	</div>
    </div>
+   
+      <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Verificazione Sicurezza Elettrica:</label>
+        <div class="col-sm-9">
+        <%if(campione.getVerifica_se()==1){      	%>
+        
+        <input  id="check_verifica_se_mod" type="checkbox" name="check_verifica_se_mod" checked/>
+        
+        <%}else{ %>
+        
+                      <input  id="check_verifica_se_mod" type="checkbox" name="check_verifica_se_mod" />
+                      <%} %>
+    </div>
+     </div>
        
         <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Frequenza Manutenzioni:</label>
@@ -338,6 +352,16 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
        
         <input type="hidden" id="campione_verificazione_mod" name="campione_verificazione_mod" value="0">
        <%} %>
+       
+         <%if(campione.getVerifica_se()==1){      	%>
+        
+       <input type="hidden" id="verifica_se_mod" name="verifica_se_mod" value="1">
+       <%}else{ %>
+       
+        <input type="hidden" id="verifica_se_mod" name="verifica_se_mod" value="0">
+       <%} %>
+       
+       
         <button type="submit" class="btn btn-danger" >Invia Modifica</button>
     <span id="errorModifica"></span>
    </form>
@@ -390,6 +414,20 @@ $('#check_verificazione_mod').on('ifClicked',function(e){
 		
 		$('#check_verificazione_mod').iCheck('check');				
 		$('#campione_verificazione_mod').val(1);
+	 }
+
+});  
+
+$('#check_verifica_se_mod').on('ifClicked',function(e){
+	
+	 if($('#check_verifica_se_mod').is( ':checked' )){
+		
+		$('#check_verifica_se_mod').iCheck('uncheck');
+		$('#verifica_se_mod').val(0);
+	 }else{
+		
+		$('#check_verifica_se_mod').iCheck('check');				
+		$('#verifica_se_mod').val(1);
 	 }
 
 });  

@@ -64,10 +64,11 @@
 						  <th>Fornitore</th>
 						  <th>Data Arrivo (origine)</th>
 						  <th>Data Spedizione</th>
-						  <th>Diff.</th>
+						  <th>DIFF.</th>
+						  <th>DDT</th>
 						  <th>Utente</th>
 						  <th>Stato</th>
-						   <th>Note</th>
+						  <th>Note</th>
 						<%--  <td></td> --%>
 						 						 
 						 </tr>
@@ -100,6 +101,7 @@
                                <td  id="${splitted[0]}_6" style="position:relative">${splitted[5]}</td>
                                <td  id="${splitted[0]}_7" style="position:relative">${splitted[6]}</td>
                                <td  id="${splitted[0]}_8" style="position:relative">${splitted[7]}</td>
+                               <td  id="${splitted[0]}_12" style="position:relative"><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${utl:encryptData(splitted[12]) }')">${ splitted[12]}</a></td>
                                <td  id="${splitted[0]}_9" style="position:relative">${splitted[8]}</td>
                                <td  id="${splitted[0]}_10" style="position:relative">
                                <c:if test="${splitted[9]=='0' }">
@@ -401,6 +403,7 @@ function riorganizzaColonna8(table) {
 
 
 var cellIndex;
+var secondColumnValue
 function initContextMenu(){
 	
 	$("#tabPacchi tbody td").bind("contextmenu", function (event) {
@@ -412,6 +415,10 @@ function initContextMenu(){
 	     var cell = $("#"+event.currentTarget.id).offset();
 	     cellIndex = event.currentTarget.id
 
+	     var $row = $(event.currentTarget).closest("tr");
+	     secondColumnValue = $row.find("td").eq(1).text();
+
+	     
 	 	 var x  = cell.left ;
 	 	var y  = cell.top; 
 
@@ -451,22 +458,23 @@ function initContextMenu(){
 	         
 	         // A case for each action. Your actions here
 	    case 'da_fare':
-                  
-            updateStato(cellIndex.split("_")[1], 0);                     
+            
+	    	
+            updateStato(secondColumnValue, 0);                     
                  
          break;
 	         
 	         
 	     case 'in_corso':
           
-             updateStato(cellIndex.split("_")[1], 1);
+             updateStato(secondColumnValue, 1);
              
              
              break;
          case 'completato':
              
          		
-         		updateStato(cellIndex.split("_")[1], 2);
+         		updateStato(secondColumnValue, 2);
                       	
             
              break;          

@@ -1898,7 +1898,7 @@ public class GestionePacco extends HttpServlet {
 			String origine = request.getParameter("origine");
 			String stato = request.getParameter("stato");
 			
-			GestioneMagazzinoBO.updateOrigineDashboard("PC_"+origine, Integer.parseInt(stato), utente.getNominativo(),true);
+			GestioneMagazzinoBO.updateOrigineDashboard(origine, Integer.parseInt(stato), utente.getNominativo(),true);
 			
 			
 			session.getTransaction().commit();

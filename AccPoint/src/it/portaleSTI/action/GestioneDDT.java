@@ -89,6 +89,8 @@ public class GestioneDDT extends HttpServlet {
 		String action = request.getParameter("action");
 		List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("lista_sedi"); 
 		
+		
+		
 		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 		
 		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
@@ -110,6 +112,13 @@ public class GestioneDDT extends HttpServlet {
 			String sede_destinatario = "";
 			String sede_destinazione = "";
 			String destinazione = "";
+			
+			if(listaSedi== null) {
+				listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();
+				request.getSession().setAttribute("lista_sedi",listaSedi); 
+			}
+			
+			
 			if(ddt.getId_destinatario()!=null && ddt.getId_destinatario()!=0) {
 				ClienteDTO cl_destinatario = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
 			destinatario = cl_destinatario.getNome();

@@ -205,7 +205,19 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      	</div>
    </div>
    
-
+        <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Verificazione Sicurezza Elettrica:</label>
+        <div class="col-sm-9">
+        <%if(campione.getVerifica_se()==1){      	%>
+        
+        <input  id="verifica_se_dtl" type="checkbox" name="verifica_se_dtl" value="1" checked disabled/>
+        
+        <%}else{ %>
+        
+                      <input  id="verifica_se_dtl" type="checkbox" name="verifica_se_dtl" value="0" disabled/>
+                      <%} %>
+    </div>
+     </div>
        
               <div class="form-group">
         <label for="attivita_di_taratura" class="col-sm-3 control-label">Attività Di Taratura:</label>

@@ -844,7 +844,29 @@ ${pacco.id}
 
  <div class="form-group" id="item_gen">
  <label>Item Nel Pacco</label>
+ 
  <div class="table-responsive">
+<div id="assegnaAttivitaBox" class="row" style="margin-bottom:10px; ">
+    <div class="col-md-4">
+<select id="attivitaMassiva" class="form-control">
+    <option value="">Nessuna</option>
+
+    <c:forEach items="${lista_attivita_pacco}" var="att">
+        <option value="${att.id}">
+            ${att.descrizione}
+        </option>
+    </c:forEach>
+</select>
+    </div>
+
+    <div class="col-md-2">
+        <button id="btnAssegnaAttivita"
+                class="btn btn-primary"
+                >
+            Assegna
+        </button>
+    </div>
+</div>
 <table id="tabItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID Item</th>
@@ -1369,6 +1391,31 @@ ${pacco.id}
 
 <script type="text/javascript">
 
+
+$(document).ready(function () {
+
+    const righe = $('#tabellaItemPacco tbody tr').length;
+
+    if (righe > 0) {
+        $('#assegnaAttivitaBox').show();
+    }
+
+});
+
+$('#btnAssegnaAttivita').on('click', function () {
+
+    const attivitaId = $('#attivitaMassiva').val();
+    if (!attivitaId) return;
+
+    $('#tabItem tbody tr').each(function () {
+        $(this).find('select[id^="attivita_item"]').val(attivitaId).trigger('change');
+    });
+
+});
+
+$('#attivitaMassiva').on('change', function () {
+    $('#btnAssegnaAttivita').prop('disabled', $(this).val() === '');
+});
 
 var items_rilievo = [];
 
@@ -3006,14 +3053,19 @@ table_item = $('#tabItem').DataTable({
         }
     },
     pageLength: 10,
-      paging: true, 
-      ordering: true,
-      info: true, 
-      searchable: false, 
-      targets: 0,
-      responsive: false,
-      scrollX: true,
-      stateSave: false,
+    paging: true, 
+    ordering: true,
+    "order": [ 1, "desc" ],  
+    info: true, 
+    searchable: false, 
+    targets: 0,
+    responsive: false,
+    scrollX: true,
+    stateSave: true,
+    searching: true,      // toglie "Cerca:" globale
+    lengthChange: false,   // toglie "Visualizza ... elementi"
+    info: false,           // (opzionale) toglie "Vista da ... a ..."
+    dom: 'rtp',  
      columns : [
      	 {"data" : "id_proprio"},
      	 {"data" : "tipo"},
@@ -3032,12 +3084,7 @@ table_item = $('#tabItem').DataTable({
 			   { responsivePriority: 1, targets: 0 },
                    { responsivePriority: 2, targets: 1 },
                    { responsivePriority: 3, targets: 2 }
-               ],
-               buttons: [   
-       	          {
-       	            extend: 'colvis',
-       	            text: 'Nascondi Colonne'  	                   
-      			  } ]
+               ]
 
     	
     });

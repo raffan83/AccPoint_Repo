@@ -130,6 +130,10 @@
      <property name="campione_verificazione" type="int">
             <column name="campione_verificazione" />
         </property>
+        
+          <property name="verifica_se" type="int">
+            <column name="verifica_se" />
+        </property>
    
    
            <property name="dataManutenzione" type="java.util.Date">

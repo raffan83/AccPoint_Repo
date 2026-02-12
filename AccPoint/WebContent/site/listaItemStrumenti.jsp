@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-    
-    <%@page import="it.portaleSTI.DTO.StrumentoDTO"%>
+	pageEncoding="ISO-8859-1"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<%@page import="it.portaleSTI.DTO.StrumentoDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="it.portaleSTI.DTO.ClassificazioneDTO"%>
 <%@page import="it.portaleSTI.DTO.LuogoVerificaDTO"%>
@@ -12,8 +12,8 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="it.portaleSTI.DTO.StrumentoDTO"%>
 <%@page import="it.portaleSTI.DTO.SedeDTO"%>
-<%@ page language="java" import="java.util.List" %>
-<%@ page language="java" import="java.util.ArrayList" %>
+<%@ page language="java" import="java.util.List"%>
+<%@ page language="java" import="java.util.ArrayList"%>
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="java.lang.reflect.Type"%>
 <%@page import="com.google.gson.reflect.TypeToken"%>
@@ -21,295 +21,382 @@
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonElement"%>
 
-<jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
-<jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>    
-<jsp:directive.page import="it.portaleSTI.DTO.CompanyDTO"/>   
-    <% 
-/* JsonObject json = (JsonObject)session.getAttribute("myObj");
-JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo"); */
-Gson gson = new Gson();
-/* Type listType = new TypeToken<ArrayList<StrumentoDTO>>(){}.getType();
-ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType); */
+<jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO" />
+<jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO" />
+<jsp:directive.page import="it.portaleSTI.DTO.CompanyDTO" />
+<%
+	/* JsonObject json = (JsonObject)session.getAttribute("myObj");
+	JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo"); */
+	Gson gson = new Gson();
+	/* Type listType = new TypeToken<ArrayList<StrumentoDTO>>(){}.getType();
+	ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType); */
 
+	UtenteDTO user = (UtenteDTO) session.getAttribute("userObj");
 
-UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
+	String idSede = (String) session.getAttribute("id_Sede");
+	String idCliente = (String) session.getAttribute("id_Cliente");
 
+	ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList) session.getAttribute("listaTipoRapporto");
+	ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList) session.getAttribute("listaTipoStrumento");
+	ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList) session.getAttribute("listaStatoStrumento");
 
-String idSede = (String)session.getAttribute("id_Sede");
-String idCliente = (String)session.getAttribute("id_Cliente");
-
-
-
-ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)session.getAttribute("listaTipoRapporto");
-ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute("listaTipoStrumento");
-ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribute("listaStatoStrumento");
-
-ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList)session.getAttribute("listaLuogoVerifica");
-ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttribute("listaClassificazione");
-ArrayList<CompanyDTO> lista_company =(ArrayList)session.getAttribute("lista_company");
-
-
+	ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList) session.getAttribute("listaLuogoVerifica");
+	ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList) session
+			.getAttribute("listaClassificazione");
+	ArrayList<CompanyDTO> lista_company = (ArrayList) session.getAttribute("lista_company");
 %>
 
 
 
-<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoStrumento')">Nuovo Strumento</button>
-<div class="row" style="margin-top:10px;">
-    <div class="col-md-6">
-        <label>Cerca strumento</label>
-        <div class="input-group">
-            <input type="text"
-                   id="searchStrumento"
-                   class="form-control"
-                   placeholder="ID strumento o QR">
-            <span class="input-group-btn">
-                <button class="btn btn-primary" id="btnSearchStrumento">
-                    <i class="fa fa-search"></i>
-                </button>
-            </span>
-        </div>
-    </div>
-    
-        <div class="col-md-6">
-        <span id="msgSearchStrumento"
-              class="text-danger"
-              style="display:none; margin-top:28px; display:inline-block;">
-            
-        </span>
-    </div>
+<button class="btn btn-primary"
+	onClick="nuovoInterventoFromModal('#modalNuovoStrumento')">Nuovo
+	Strumento</button>
+<div class="row row-search-flex" style="margin-top: 10px;">
+	<!--  <div class="row" style="margin-top: 10px;">-->
+	<div class="col-md-6">
+		<label>Cerca strumento</label>
+		<div class="input-group">
+			<input type="text" id="searchStrumento" class="form-control"
+				placeholder="ID strumento o QR"> <span
+				class="input-group-btn">
+				<button class="btn btn-primary" id="btnSearchStrumento">
+					<i class="fa fa-search"></i>
+				</button>
+			</span>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div id="semaforoBox" class="semaforo-box">
+			<div id="semaforoLed" class="semaforo-led semaforo-off">
+				<span id="semaforoTxt" class="semaforo-txt"></span>
+			</div>
+		</div>
+	</div>
+	<!--  <div class="col-md-6">
+		<span id="msgSearchStrumento" class="text-danger"
+			style="display: none; margin-top: 28px; display: inline-block;">
+
+		</span>
+	</div>-->
 </div>
 
-<br><br>
+<br>
+<br>
 
- <table id="tabStrumentiItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
- <th></th>
- <th>ID</th>
- <th>Codice Interno</th>
- <th>Matricola</th>
- <th>Descrizione</th>
- <th>Attività</th>
- <th>Destinazione</th> 
- <th>Note</th>
- <td><label>Priorità</label></td>
-
-
- </tr></thead>
- 
- <tbody>
- 
- <c:forEach items="${lista_strumenti}" var="strumento" varStatus="loop">
-<tr>
-
-<td align="center">
-
-<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${strumento.__id}','${strumento.denominazione.replace('\'',' ').replace('\\','/')}', '${strumento.codice_interno.replace('\\','/') }', '${strumento.matricola.replace('\\','/') }')"><i class="fa fa-plus"></i></a>
-
-</td>
-<td>${strumento.__id}</td>
-<td>${strumento.codice_interno}</td>
-<td>${strumento.matricola}</td>
-<td>${strumento.denominazione }</td>
-<%-- <td><input type="text" id="attivita_item${strumento.__id}"  style="width:100%"></td> --%>
-<td>
-<select id="attivita_item${strumento.__id }" style="width:100%" name="attivita_item${strumento.__id }" data-placeholder="Seleziona Attività..." class="form-control select2" style="width:100%"  aria-hidden="true" data-live-search="true">
-	<option value=""></option>
-	<c:forEach items="${lista_attivita_pacco}" var="attivita" varStatus="loop">
-	
-  			<option value="${attivita.id}">${attivita.descrizione}</option>
-  	</c:forEach>
-</select>
-</td>
-<td><input type="text" id="destinazione_item${strumento.__id }" style="width:100%"></td>
-<td><input type="text" id="note_item${strumento.__id}"  style="width:100%"></td> 
-<td style="text-align:center"><input type="checkbox" id="priorita_item${strumento.__id}"/></td> 
-
-	</tr>
-	
-	</c:forEach>
- 
-	
- </tbody>
- </table> 
-
- 
- 
+<table id="tabStrumentiItem"
+	class="table table-bordered table-hover dataTable table-striped"
+	role="grid" width="100%">
+	<thead>
+		<tr class="active">
+			<th></th>
+			<th>ID</th>
+			<th>Codice Interno</th>
+			<th>Matricola</th>
+			<th>Descrizione</th>
+			<th>Attività</th>
+			<th>Destinazione</th>
+			<th>Note</th>
+			<th>Priorità</th>
 
 
- <form class="form-horizontal" id="formNuovoStrumento">
-<div id="modalNuovoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
+		</tr>
+	</thead>
 
-        <button type="button" class="close" id=close_button_modal aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Strumento</h4>
-      </div>
-       <div class="modal-body">
+	<tbody>
 
-       
-              
+		<c:forEach items="${lista_strumenti}" var="strumento" varStatus="loop">
+			<tr>
 
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Company:</label>
-        <div class="col-sm-9">
+				<td align="center"><a class="btn btn-primary pull-center"
+					title="Click per inserire l'item"
+					onClick="insertItem('${strumento.__id}','${strumento.denominazione.replace('\'',' ').replace('\\','/')}', '${strumento.codice_interno.replace('\\','/') }', '${strumento.matricola.replace('\\','/') }')"><i
+						class="fa fa-plus"></i></a></td>
+				<td>${strumento.__id}</td>
+				<td>${strumento.codice_interno}</td>
+				<td>${strumento.matricola}</td>
+				<td>${strumento.denominazione }</td>
+				<%-- <td><input type="text" id="attivita_item${strumento.__id}"  style="width:100%"></td> --%>
+				<td><select id="attivita_item${strumento.__id }"
+					style="width: 100%" name="attivita_item${strumento.__id }"
+					data-placeholder="Seleziona Attività..."
+					class="form-control select2" style="width:100%" aria-hidden="true"
+					data-live-search="true">
+						<option value=""></option>
+						<c:forEach items="${lista_attivita_pacco}" var="attivita"
+							varStatus="loop">
 
-                      
-                      <select name="company" id="company" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
-                        <option></option> 
-                                            <%
-                                            for(CompanyDTO company :lista_company)
-                                            {
-                                            	
-                                            	if(company.getId().equals(user.getCompany().getId())){
-                                            	 %> 
-                            	            		 <option value="<%=company.getId() %>" selected><%=company.getDenominazione() %></option>
-                            	            	 <%	 
-                            	            	 }else{
-                            	            		 %> 
-                                	            	 <option value="<%=company.getId() %>"><%=company.getDenominazione() %></option>
-                                	            	 <%
-                            	            	 }
-                                            }
-                                            %>
-                                            
-                      </select>
-    </div>
-       </div> 
+							<option value="${attivita.id}">${attivita.descrizione}</option>
+						</c:forEach>
+				</select></td>
+				<td><input type="text" id="destinazione_item${strumento.__id }"
+					style="width: 100%"></td>
+				<td><input type="text" id="note_item${strumento.__id}"
+					style="width: 100%"></td>
+				<td style="text-align: center"><input type="checkbox"
+					id="priorita_item${strumento.__id}" /></td>
 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Tipo Strumento:</label>
-        <div class="col-sm-9">
+			</tr>
 
-                      
-                      <select name="ref_tipo_strumento" id="ref_tipo_strumento" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
-                        <option></option> 
-                                            <%
-                                            for(TipoStrumentoDTO str :listaTipoStrumento)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=str.getId()+"_"+str.getNome() %>"><%=str.getNome() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                      </select>
-    </div>
-       </div> 
-       
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Denominazione:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="denominazione" type="text"  name="denominazione"  value=""/>
-    </div>
-       </div>
-                <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Matricola:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="matricola" type="text" name="matricola"  value=""/>
-    </div>
-       </div>
-                <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Codice Interno:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="codice_interno" type="text"  name="codice_interno"  value=""/>
-    </div>
-       </div>
-       
-                       <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Altre Matricole:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="altre_matricole" type="text" name="altre_matricole"  value=""/>
-    </div>
-       </div>
-       
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Tipo Rapporto:</label>
-        <div class="col-sm-9">
-
-                                            <select class="form-control select2" aria-hidden="true" data-live-search="true" id="ref_tipo_rapporto" style="width:100%" required name="ref_tipo_rapporto"  >
-                                             <option></option> 
-                                            <%
-                                            for(TipoRapportoDTO rapp :listaTipoRapporto)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=rapp.getId() %>"><%=rapp.getNoneRapporto() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                                            </select>
-                      
-    </div>
-       </div> 
-
-                      <input class="form-control" id="freq_mesi" type="hidden" max="120" name="freq_mesi"  disabled="disabled" value="12"/>
+		</c:forEach>
 
 
-                      <input class="form-control datepicker" id="dataUltimaVerifica" type="hidden" name="dataUltimaVerifica" disabled="disabled" value="" data-date-format="dd/mm/yyyy"/>
+	</tbody>
+</table>
 
 
-                      <input class="form-control datepicker" id="dataProssimaVerifica" type="hidden" name="dataProssimaVerifica" disabled="disabled" value="" data-date-format="dd/mm/yyyy"/>
- 
 
-				                <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Classificazione:</label>
-        <div class="col-sm-9">
 
-                       
-                       <select class="form-control select2" aria-hidden="true" data-live-search="true" id="classificazione" style="width:100%" required name="classificazione"  >
-                                            <option></option>
-                                            <%
-                                            for(ClassificazioneDTO clas :listaClassificazione)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=clas.getId() %>"><%=clas.getDescrizione() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                                            </select>
-    </div>
-       </div> 
-       
-                <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Quantità:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="quantita_strumento" type="number" min=1 name="quantita_strumento" required value=""/>
-    </div>
-       </div>
-       
-				
-                <button type="submit" class="btn btn-primary" >Salva</button>
-        
-     
-       
-   
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
 
-      </div>
-    </div>
-  </div>
-</div>
- </form>
- 
- 
+<form class="form-horizontal" id="formNuovoStrumento">
+	<div id="modalNuovoStrumento" class="modal fade" role="dialog"
+		aria-labelledby="myLargeModalLabel" data-backdrop="static">
+		<div class="modal-dialog modal-md" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+
+					<button type="button" class="close" id=close_button_modal
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Nuovo Strumento</h4>
+				</div>
+				<div class="modal-body">
+
+
+
+
+					<div class="form-group">
+						<label for="inputName" class="col-sm-3 control-label">Company:</label>
+						<div class="col-sm-9">
+
+
+							<select name="company" id="company" class="form-control select2"
+								aria-hidden="true" data-live-search="true" style="width: 100%"
+								required>
+								<option></option>
+								<%
+									for (CompanyDTO company : lista_company) {
+
+										if (company.getId().equals(user.getCompany().getId())) {
+								%>
+								<option value="<%=company.getId()%>" selected><%=company.getDenominazione()%></option>
+								<%
+									} else {
+								%>
+								<option value="<%=company.getId()%>"><%=company.getDenominazione()%></option>
+								<%
+									}
+									}
+								%>
+
+							</select>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label for="inputName" class="col-sm-3 control-label">Tipo
+							Strumento:</label>
+						<div class="col-sm-9">
+
+
+							<select name="ref_tipo_strumento" id="ref_tipo_strumento"
+								class="form-control select2" aria-hidden="true"
+								data-live-search="true" style="width: 100%" required>
+								<option></option>
+								<%
+									for (TipoStrumentoDTO str : listaTipoStrumento) {
+								%>
+								<option value="<%=str.getId() + "_" + str.getNome()%>"><%=str.getNome()%></option>
+								<%
+									}
+								%>
+
+							</select>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label for="inputName" class="col-sm-3 control-label">Denominazione:</label>
+						<div class="col-sm-9">
+							<input class="form-control" id="denominazione" type="text"
+								name="denominazione" value="" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputName" class="col-sm-3 control-label">Matricola:</label>
+						<div class="col-sm-9">
+							<input class="form-control" id="matricola" type="text"
+								name="matricola" value="" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputName" class="col-sm-3 control-label">Codice
+							Interno:</label>
+						<div class="col-sm-9">
+							<input class="form-control" id="codice_interno" type="text"
+								name="codice_interno" value="" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="inputName" class="col-sm-3 control-label">Altre
+							Matricole:</label>
+						<div class="col-sm-9">
+							<input class="form-control" id="altre_matricole" type="text"
+								name="altre_matricole" value="" />
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label for="inputName" class="col-sm-3 control-label">Tipo
+							Rapporto:</label>
+						<div class="col-sm-9">
+
+							<select class="form-control select2" aria-hidden="true"
+								data-live-search="true" id="ref_tipo_rapporto"
+								style="width: 100%" required name="ref_tipo_rapporto">
+								<option></option>
+								<%
+									for (TipoRapportoDTO rapp : listaTipoRapporto) {
+								%>
+								<option value="<%=rapp.getId()%>"><%=rapp.getNoneRapporto()%></option>
+								<%
+									}
+								%>
+
+							</select>
+
+						</div>
+					</div>
+
+					<input class="form-control" id="freq_mesi" type="hidden" max="120"
+						name="freq_mesi" disabled="disabled" value="12" /> <input
+						class="form-control datepicker" id="dataUltimaVerifica"
+						type="hidden" name="dataUltimaVerifica" disabled="disabled"
+						value="" data-date-format="dd/mm/yyyy" /> <input
+						class="form-control datepicker" id="dataProssimaVerifica"
+						type="hidden" name="dataProssimaVerifica" disabled="disabled"
+						value="" data-date-format="dd/mm/yyyy" />
+
+
+					<div class="form-group">
+						<label for="inputName" class="col-sm-3 control-label">Classificazione:</label>
+						<div class="col-sm-9">
+
+
+							<select class="form-control select2" aria-hidden="true"
+								data-live-search="true" id="classificazione" style="width: 100%"
+								required name="classificazione">
+								<option></option>
+								<%
+									for (ClassificazioneDTO clas : listaClassificazione) {
+								%>
+								<option value="<%=clas.getId()%>"><%=clas.getDescrizione()%></option>
+								<%
+									}
+								%>
+
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="inputName" class="col-sm-3 control-label">Quantità:</label>
+						<div class="col-sm-9">
+							<input class="form-control" id="quantita_strumento" type="number"
+								min=1 name="quantita_strumento" required value="" />
+						</div>
+					</div>
+
+
+					<button type="submit" class="btn btn-primary">Salva</button>
+
+
+
+
+					<div id="empty" class="testo12"></div>
+				</div>
+				<div class="modal-footer"></div>
+			</div>
+		</div>
+	</div>
+</form>
+
+
 <style>
 .row-selezionata {
-    background-color: #fff3cd !important;
+	background-color: #fff3cd !important;
+}
+
+.semaforo-box {
+	height: 10px;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	gap: 18px;
+	padding: 15px 10px;
+	background: #fff;
+}
+
+.semaforo-led{
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid rgba(0,0,0,.12);
+  box-shadow: inset 0 0 10px rgba(0,0,0,.15);
+
+  display: flex;                 
+  align-items: center;          
+  justify-content: center;      
+  text-align: center;
+}
+
+.semaforo-txt{
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.2;
+  color: #fff;                   
+  padding: 0 6px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.4);
+}
+
+/* stati */
+.semaforo-off {
+	background: #e9ecef;
+}
+
+.semaforo-red {
+	background: #dd4b39;
+}
+
+.semaforo-green {
+	background: #00a65a;
+}
+
+.semaforo-amber {
+	background: #f39c12;
+}
+
+.row-search-flex {
+	display: flex;
+	align-items: flex-end;
+	flex-wrap: wrap;
+}
+
+.row-search-flex>[class*="col-"] {
+	float: none !important;
 }
 </style>
- 
-
-<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 
 
- <script type="text/javascript">
+<script
+	src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+
+
+<script type="text/javascript">
  
  //$('.select2').select2();
 
@@ -353,7 +440,7 @@ $('#close_button_modal').on('click', function(){
 	    		idPacco=0;
 	    	}
 
-		nuovoStrumentoFromPacco(<%= idSede %>,<%= idCliente %>,idPacco);
+		nuovoStrumentoFromPacco(<%=idSede%>,<%=idCliente%>,idPacco);
 
 	});
 
@@ -517,7 +604,7 @@ var tableStr = $('#tabStrumentiItem').DataTable({
 	      responsive: false,
 	      scrollX: true,
 	      stateSave: true,
-	      searching: false,      // toglie "Cerca:" globale
+	      searching: true,      // toglie "Cerca:" globale
 	      lengthChange: false,   // toglie "Visualizza ... elementi"
 	      info: false,           // (opzionale) toglie "Vista da ... a ..."
 	      dom: 'rtp',            // r=processing, t=table, p=paginazione
@@ -530,14 +617,12 @@ var tableStr = $('#tabStrumentiItem').DataTable({
 	    	
 	    });
 	
- tableStr.buttons().container().appendTo( '#tabStrumentiItem_wrapper .col-sm-6:eq(1)');
+
 
 	    $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
 	    });
-//DataTable
-//tableStr = $('#tabStrumentiItem').DataTable();
-//Apply the search
+
  tableStr.columns().eq( 0 ).each( function ( colIdx ) {
 $( 'input', tableStr.column( colIdx ).header() ).on( 'keyup', function () {
 	tableStr
@@ -597,15 +682,12 @@ function valutaInput(valore) {
 
 $('#btnSearchStrumento').on('click', function () {
 
-	 
-	
 	 var inputRaw = $('#searchStrumento').val().trim();
 	 var idCercato = valutaInput(inputRaw);
-    var $msg = $('#msgSearchStrumento');
+   	 var $msg = $('#msgSearchStrumento');
 
-    // reset messaggio
-    $msg.hide().text('');
-
+  
+    setSemaforo('off', '');
   /*  if (!idCercato) {
         $msg.text('Inserire un ID').show();
         setTimeout(focusRicercaQR, 0);
@@ -635,8 +717,33 @@ $('#btnSearchStrumento').on('click', function () {
 
             // chiamata come se avessi cliccato "+"
             insertItem(id, descrizione, codiceInt, matricola);
+           
+            setTimeout(function () {
 
-            $msg.hide().text('');
+                var msgTop = $('#listaItemTop').text().trim();
+
+                
+                var msgNorm = msgTop.toLowerCase();
+
+                // frase attesa (accentata, come testo reale)
+                var dupNorm = "attenzione! impossibile aggiungere più volte lo stesso strumento!".toLowerCase();
+
+                if (msgNorm.indexOf(dupNorm) !== -1) {
+                    // duplicato -> giallo
+                    setSemaforo('amber', 'Attenzione! impossibile aggiungere più volte lo stesso strumento!');
+                } else {
+                    // ok -> verde
+                    setSemaforo('green', 'Trovato e aggiunto: ' + id + ' - ' + descrizione);
+                    // se vuoi ancora id+descrizione nel testo del cerchio:
+                    // setSemaforo('green', id);
+                }
+
+                setTimeout(focusRicercaQR, 0);
+
+            }, 50); // 50ms: basta quasi sempre (aumenta a 150 se serve)
+            
+           // setSemaforo('green', 'Trovato e aggiunto: ' + id + ' - ' + descrizione);
+          
             setTimeout(focusRicercaQR, 0);
 
             return false; 
@@ -645,7 +752,8 @@ $('#btnSearchStrumento').on('click', function () {
 
     if (!trovato) {
     	$('#listaItemTop').text('');
-        $msg.text('Strumento non trovato').show();
+    	setSemaforo('red', 'Strumento non trovato');
+     //   $msg.text('Strumento non trovato').show();
         setTimeout(focusRicercaQR, 0);
     }
 });
@@ -665,6 +773,20 @@ $('#searchStrumento').on('keyup', function (e) {
         $('#btnSearchStrumento').click();
     }
 });
+
+function setSemaforo(stato, testo) {
+    var $led = $('#semaforoLed');
+    var $txt = $('#semaforoTxt');
+
+    $led.removeClass('semaforo-off semaforo-red semaforo-green semaforo-amber');
+
+    if (stato === 'green') $led.addClass('semaforo-green');
+    else if (stato === 'red') $led.addClass('semaforo-red');
+    else if (stato === 'amber') $led.addClass('semaforo-amber');
+    else $led.addClass('semaforo-off');
+
+    $txt.text(testo || '');
+}
 
   });
 

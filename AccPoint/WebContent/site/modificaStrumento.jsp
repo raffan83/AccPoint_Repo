@@ -221,19 +221,20 @@ function cambiaStatoIp(idStrumento){
         pleaseWaitDiv.modal('hide');
         $('#report_button').hide();
         $('#visualizza_report').hide();
-        $("#myModalErrorContent").html("Indice prestazione modificato con successo");
+        $("#myModalErrorContent").html("Indice prestazione modificato con successo - Ricaricare lista principale per aggiornare lo stato ");
         $("#myModalError").addClass("modal modal-success");
         $("#myModalError").modal();
 
-        $('#myModalError').on('hidden.bs.modal', function (e) {
+     /*   $('#myModalError').on('hidden.bs.modal', function (e) {
           var sede = $("#select2").val();
           var cliente = $("#select1").val();
           var dataString ="idSede="+ sede+";"+cliente;
+          alert('chiudi button')
           exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
             $('#myModal').modal('hide');
             $('.modal-backdrop').hide();
           });
-        });
+        });*/
       }else{
         pleaseWaitDiv.modal('hide');
         $('#report_button').show();

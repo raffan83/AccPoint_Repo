@@ -132,28 +132,27 @@ public class GestioneRapportoIntervento extends HttpServlet {
 		        String ora_fine = ret.get("ora_fine");
 		        String id_misure = ret.get("id_misure");
 		        String id_intervento = ret.get("id_intervento");
+		        String checkData=ret.get("check_giornata_singola");
 		 
-		        
-				String filename_img=filename;
-				
-				
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				
-				 
 				RapportoInterventoDTO rapporto = new RapportoInterventoDTO();	
-				
-				if(data!=null && !data.equals("")) {
-					Date d = df.parse(data);
-					rapporto.setData_inizio(d);
+			
+				if(checkData!=null) {
+
+					if(data!=null && !data.equals("")) {
+						Date d = df.parse(data);
+						rapporto.setData_inizio(d);
+					}
+				}else 
+				{
+					if(dateFrom!=null && dateTo!=null) {
+						Date dStart = df.parse(dateFrom);
+						Date dEnd = df.parse(dateTo);
+						rapporto.setData_inizio(dStart);
+						rapporto.setData_fine(dEnd);
+					}
 				}
-				
-				if(dateFrom!=null && dateTo!=null) {
-					Date dStart = df.parse(dateFrom);
-					Date dEnd = df.parse(dateTo);
-					rapporto.setData_inizio(dStart);
-					rapporto.setData_fine(dEnd);
-				}
-				
 				rapporto.setNote(note);
 				
 				rapporto.setOra_inizio(ora_inizio);

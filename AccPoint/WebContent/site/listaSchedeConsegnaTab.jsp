@@ -374,7 +374,7 @@ Fatturata
  	<td>${rapporto.id}</td>
 			<td>
 			
-			<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(rapporto.intervento.id)}')">
+			<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(rapporto.intervento.id)}')">
 					${rapporto.intervento.id}
 				</a>
 			</td>

@@ -22,6 +22,7 @@ import org.hibernate.Session;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
@@ -617,6 +618,11 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			
 			success=GestioneStrumentoBO.saveNote(note, session);
 			
+			StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(idStr, session);
+			
+			String indice =strumento.getIndice_prestazione();
+			
+			int ip=strumento.getIp();
 				
 				String message = "";
 				if(success){
@@ -631,6 +637,15 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				JsonObject myObj = new JsonObject();
 				
 				myObj.addProperty("success", success);
+				
+				myObj.addProperty("ip", ip);
+
+				if (indice != null) {
+				    myObj.addProperty("indice", indice);
+				} else {
+				    myObj.add("indice", JsonNull.INSTANCE);
+				}
+				
 				myObj.addProperty("messaggio", message);
 		        out.println(myObj.toString());
 		}

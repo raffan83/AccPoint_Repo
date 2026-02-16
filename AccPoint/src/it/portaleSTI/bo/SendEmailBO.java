@@ -71,6 +71,23 @@ import it.portaleSTI.action.ContextListener;
 
 
 public class SendEmailBO {
+	
+	
+	private final static String FIRMA_CALCE_CRESCO="<br><em><b>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>" +
+											"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
+											"Tel +39 0776.18151 - Int (104) oppure (115)</em> <br>" + 
+											"Web: </em>www.crescosrl.net<br>" + 
+											"Mail: </em>segreteria@crescosrl.net<br><br>" + 
+											"<br /><img width='250' src='https://www.calver.it/images/cresco_dnv.png'><br>" + 
+											"<span style=color:#7C7C7C><font size='2'>Ente Accreditato dalla Regione Lazio<br>con Determinazione N.G10842 del 31.7.2017</font></span><br><br>" + 
+											"<br><font size='2'>Questa e-mail e gli allegati sono destinati esclusivamente al destinatario specificato e contengono dati personali e informazioni riservate. Qualsiasi utilizzo, diffusione, copia o distribuzione non autorizzata &egrave; vietato.<br>" + 
+											"Se avete ricevuto questa comunicazione per errore, vi preghiamo di informare il mittente e di eliminare questa e-mail e gli allegati da tutti i dispositivi. <br>" + 
+											"I dati personali sono trattati in conformit&agrave; al D. Lgs. 196/2003 Codice della privacy e al Regolamento UE 2016/679 e secondo le indicazioni riportate nel documento &quot;Informativa privacy servizi&quot; disponibile nel footer del sito www.crescosrl.net.<br>" + 
+											"Ogni utilizzo improprio sar&agrave; perseguito ai sensi della legge applicabile. Grazie per la collaborazione <br></font><br>";
+	
+	
+	
+	
 	public static void sendEmailCertificato(CertificatoDTO certificato, String mailTo, ServletContext ctx) throws Exception {
 				
 		
@@ -1879,84 +1896,50 @@ public static void sendEmailCorsoMoodle(ForMembriGruppoDTO utente, String descri
 
 	try {
 
-	HtmlEmail email = new HtmlEmail();
+		HtmlEmail email = new HtmlEmail();
 
-	email.setHostName("mail.vianova.it");
-		 //email.setDebug(true);
-	email.setAuthentication("segreteria@crescosrl.net", Costanti.PASS_EMAIL_CRESCO);
+		email.setHostName("mail.vianova.it");
+		//email.setDebug(true);
+		email.setAuthentication("segreteria@crescosrl.net", Costanti.PASS_EMAIL_CRESCO);
 
-    email.getMailSession().getProperties().put("mail.smtp.auth", "true");
-    email.getMailSession().getProperties().put("mail.debug", "true");
-    email.getMailSession().getProperties().put("mail.smtp.port", "587");
-    email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "587");
-    email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-    email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "true");
-    email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
-	
-	
-    email.addTo(utente.getEmail());	
+		email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+		email.getMailSession().getProperties().put("mail.debug", "true");
+		email.getMailSession().getProperties().put("mail.smtp.port", "587");
+		email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "587");
+		email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "true");
+		email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
-    /*Email Test servizio*/
-	
-		  
-		  email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
-		
 
-			  email.setSubject(oggetto);
-			  
-			//  File image = new File(path.replace("WEB-INF/classes", "")+"/images/cresco.jpg");
-			//  String cid = email.embed(image, "Calver logo");
-			  
-//			  String messaggio = "Gentile "+utente.getNome() +" " +utente.getCognome()+",<br>Ci risulta che ad oggi lei non abbia completato il <b>percorso formativo obbligatorio</b> <b>\""+descrizione_corso +"\"</b>. La invitiamo, pertanto, a completarlo quanto prima accedendo al presente <a href='https://formazione.crescosrl.net/login/index.php'>Link</a>, con il seguente <b>USERNAME</b>:<br><br><b>"+utente.getUsername()+"</b>";
-//			  
-//			  
-//			  messaggio += "<br><br>Nel caso in cui non ricordasse la password, pu&ograve; reimpostarla direttamente dalla piattaforma.";
-//			  
-//			  messaggio += "<br><br>Le ricordiamo che la formazione &egrave; un obbligo del lavoratore secondo quanto riportato nell.art. 20, comma 2, lettera h) del D. Lgs. 81/08 e che la mancata esecuzione del corso potrebbe esporla a possibili sanzioni (rif. art. 59 del D. Lgs. 81/08), salvo ulteriori provvedimenti da parte della Direzione del personale.";
-//			  
-//			  messaggio += "<br><br><U>Qualora, nel frattempo,  abbia gi&agrave; provveduto a completare l'intero percorso, le chiediamo di non considerare questa comunicazione.</U>";
-//			  
-//			  messaggio += "<br><br>Restando a sua disposizione per eventuali chiarimenti, salutiamo cordialmente.";
-			  
-			  
-			  messaggio = messaggio.replace("{NOME}", utente.getNome()).replace("{COGNOME}", utente.getCognome()).replace("{USER_NAME}", utente.getUsername()).replace("{DESCRIZIONE_CORSO}", descrizione_corso);
-			  
-			  
-			  messaggio += "<br><br>Segreteria CRESCO Formazione e Consulenza Srl <br>Per Assistenza e Tutoraggio dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:<br>Tel. Interno: 0776.1815115 - 0776.1815104";
-			  
-						  
-			  messaggio += "<em><b><br><br>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
-					
-						"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
-						"Tel int. +39 0776.1815115 - Fax +39 0776.814169</em> <br> "
-						+ "Web: </em>www.crescosrl.net<br>" 
-						+ "Mail: </em>segreteria@crescosrl.net<br>" + 
-				
-						"<br/></html>"
-			  	
-			  		+" <br /><a href='https://formazione.crescosrl.net/login/index.php'> <img width='160' src=\"https://www.calver.it/images/cresco.jpg\"><a><br>" ;
-		
-			
-			  
-			  
-			
-			  
-			  email.setHtmlMsg("<html>"
-					  	 +messaggio+"</html>");
-		
+		email.addTo(utente.getEmail());	
 
-		  email.send();
-		  
-		  System.out.println("Invio completato per :" +utente.getNome()+" "+utente.getCognome()+" "+utente.getEmail());
-		  
+		email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
+
+
+		email.setSubject(oggetto);
+
+
+		messaggio = messaggio.replace("{NOME}", utente.getNome()).replace("{COGNOME}", utente.getCognome()).replace("{USER_NAME}", utente.getUsername()).replace("{DESCRIZIONE_CORSO}", descrizione_corso);
+
+
+		messaggio += "<br><br>Segreteria CRESCO Formazione e Consulenza Srl <br>Per Assistenza e Tutoraggio dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:<br>Tel. Interno: 0776.1815115 - 0776.1815104";
+
+
+		messaggio +="<br><br>"+ FIRMA_CALCE_CRESCO;
+
+		email.setHtmlMsg("<html>"+messaggio+"</html>");
+
+
+		email.send();
+
 		  GestioneFormazioneBO.lista_utenti_inviati.add(utente);
-		  
+
 	}catch (Exception e) 
 	{
 		utente.setDescrizioneErrore(e.getMessage());
 		GestioneFormazioneBO.lista_utenti_mancanti.add(utente);
 	} 
-	
+
 }
 
 public static void sendEmailReportCorsiMoodle(ForConfInvioEmailDTO conf, ArrayList<ForMembriGruppoDTO> lista_utenti) throws EmailException {
@@ -2253,26 +2236,9 @@ if(p.getPartecipante().getEmail()!=null && !p.getPartecipante().getEmail().equal
 		  messaggio +=" in data "+df.format(p.getCorso().getData_corso())+". La preghiamo di conservare con cura questi documenti, in quanto attestano la sua formazione in materia di sicurezza e sono necessari per la sua attivit&agrave; lavorativa. La formazione sulla sicurezza &egrave; fondamentale per garantire un ambiente di lavoro sicuro e prevenire incidenti. <br>";
 		  messaggio += "Restiamo a disposizione per eventuali chiarimenti<br><br>";
 		  
-		  messaggio += "Segreteria <b>CRESCO Formazione e Consulenza Srl<br>" + 		  		
-		  		"Per Assistenza dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:</b><br>" + 
-		  		"Tel. Interno: 0776.1815115-0776.1815104<br>" + 
-		  		"<br>Cordiali saluti<br><br>";
+		  messaggio += FIRMA_CALCE_CRESCO;
 		  
-		  messaggio += "<em><b>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
-				
-					"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
-					"Tel int. +39 0776.1815115 - Fax +39 0776.814169</em> <br> "
-					+ "Web: </em>www.crescosrl.net<br>" 
-					+ "Mail: </em>segreteria@crescosrl.net<br>" + 
-			
-					"<br/></html>"
-		  	
-		  		+" <br /> <img width='150' src='https://www.calver.it/images/cresco.jpg'> <img width='150' src='https://www.calver.it/images/regione_lazio.png'><br>" ;
-	
-		  messaggio += "<font size='2'>Le informazioni trasmesse sono destinate esclusivamente alla persona o alla societ&agrave; in indirizzo e sono da intendersi confidenziali e riservate. Ogni trasmissione, inoltro, diffusione o altro uso di queste informazioni a persone o societ&agrave; differenti dal destinatario &egrave; proibita ai sensi del D. Lgs. 196/2003. Se Lei ha ricevuto questo messaggio di posta elettronica per errore, &egrave; pregato di avvisarci inviando un messaggio di posta elettronica all'indirizzo del mittente, e quindi cancellare e distruggere il messaggio dal Suo sistema. Grazie per la collaborazione\n </font><br><br><br>";
-		  
-		  email.setHtmlMsg("<html>"
-				  	 +messaggio+"</html>");
+		  email.setHtmlMsg("<html>"+messaggio+"</html>");
 		  
 		  
 		  File attestato = new File(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+p.getCorso().getId()+"//"+p.getPartecipante().getId()+"//"+p.getAttestato()); // ← Modifica con il tuo percorso
@@ -2346,29 +2312,11 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 		  messaggio +=" effettuato in data "+df.format(corso.getData_corso())+".<br>";
 		  messaggio += "Restiamo a disposizione per eventuali chiarimenti<br><br>";
 		  
-		  messaggio += "Segreteria <b>CRESCO Formazione e Consulenza Srl<br>" + 		  		
-		  		"Per Assistenza dal luned&igrave; al venerd&igrave; dalle ore 8.30 alle ore 18.00 ai seguenti numeri:</b><br>" + 
-		  		"Tel. Interno: 0776.1815115-0776.1815104<br>" + 
-		  		"<br>Cordiali saluti<br><br>";
+		  messaggio +=FIRMA_CALCE_CRESCO;
 		  
-		  messaggio += "<em><b>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
-				
-					"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
-					"Tel int. +39 0776.1815115 - Fax +39 0776.814169</em> <br> "
-					+ "Web: </em>www.crescosrl.net<br>" 
-					+ "Mail: </em>segreteria@crescosrl.net<br>" + 
-			
-					"<br/></html>"
-		  	
-		  		+" <br /><img width='150' <img width='150' src='https://www.calver.it/images/cresco.jpg'> <img width='150' src='https://www.calver.it/images/regione_lazio.png'><br>" ;
-	
-		  messaggio += "<font size='2'>Le informazioni trasmesse sono destinate esclusivamente alla persona o alla societ&agrave; in indirizzo e sono da intendersi confidenziali e riservate. Ogni trasmissione, inoltro, diffusione o altro uso di queste informazioni a persone o societ&agrave; differenti dal destinatario &egrave; proibita ai sensi del D. Lgs. 196/2003. Se Lei ha ricevuto questo messaggio di posta elettronica per errore, &egrave; pregato di avvisarci inviando un messaggio di posta elettronica all'indirizzo del mittente, e quindi cancellare e distruggere il messaggio dal Suo sistema. Grazie per la collaborazione\n </font><br><br><br>";
+		  email.setHtmlMsg("<html>"+messaggio+"</html>");
 		  
-		  email.setHtmlMsg("<html>"
-				  	 +messaggio+"</html>");
-		  
-
-		  	email.send();
+		  email.send();
 		  	
 }
 
@@ -2461,24 +2409,15 @@ email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "jav
 email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "true");
 email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
-//		 email.addTo(referente.getEmail());
-for (String to : corso.getEmail_preavviso().split(";")) {
-	if(to!=null && !to.equals("")) {
-		email.addTo(to);
-	}
 	
-}
+		for (String to : corso.getEmail_preavviso().split(";")) {
+			if(to!=null && !to.equals("")) {
+				email.addTo(to);
+			}
+			
+		}
+		
 
-
-//		 ArrayList<InternetAddress> lista_cc = new ArrayList<InternetAddress>();
-//		 InternetAddress cc1 = new InternetAddress("segreteria@crescosrl.net");
-//		 InternetAddress cc2 = new InternetAddress("lisa.lombardozzi@crescosrl.net");
-//		 
-//		 lista_cc.add(cc1);
-//		 lista_cc.add(cc2);
-//		 
-//		 email.setCc(lista_cc);
-	
 	  email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
 	 
 	  ForPiaPianificazioneDTO p = GestioneFormazioneDAO.getPianificazioneFromCorso(corso.getId(), session);
@@ -2509,27 +2448,12 @@ for (String to : corso.getEmail_preavviso().split(";")) {
 		  messaggio +=docenti;
 		  messaggio += "Nel caso in cui siate impossibilitati ad organizzare il corso, vi chiediamo di informaci tempestivamente per evitare inconvenienti.<br>";
 		  messaggio += "Restiamo a disposizione per eventuali chiarimenti<br><br>";
-		  
-		
-		  
-		  messaggio += "<em><b>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
-				
-					"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
-					"Tel +39 0776.18151 - Int +39 0776.1815104</em> <br> "
-					+ "Web: </em>www.crescosrl.net<br>" 
-					+ "Mail: </em>segreteria@crescosrl.net<br>" + 
-			
-					"<br/></html>"
-		  	
-		  		+" <br /><img width='300' src='https://www.calver.it/images/cresco_dnv.png'><br>" ;
-	messaggio += "Ente Accreditato dalla Regione Lazio<br>con Determinazione N.G10842 del 31.7.2017<br><br>";
-		  messaggio += "<font size='2'>Le informazioni trasmesse sono destinate esclusivamente alla persona o alla societ&agrave; in indirizzo e sono da intendersi confidenziali e riservate. Ogni trasmissione, inoltro, diffusione o altro uso di queste informazioni a persone o societ&agrave; differenti dal destinatario &egrave; proibita ai sensi del D. Lgs. 196/2003. Se Lei ha ricevuto questo messaggio di posta elettronica per errore, &egrave; pregato di avvisarci inviando un messaggio di posta elettronica all'indirizzo del mittente, e quindi cancellare e distruggere il messaggio dal Suo sistema. Grazie per la collaborazione\n </font><br><br><br>";
-		  
-		  email.setHtmlMsg("<html>"
-				  	 +messaggio+"</html>");
-		  
 
-		  	email.send();
+		  messaggio+=FIRMA_CALCE_CRESCO;
+		  
+		  email.setHtmlMsg("<html>"+messaggio+"</html>");
+		  
+		  email.send();
 }
 
 
@@ -2540,7 +2464,15 @@ public static void main(String[] args) throws Exception {
 	session.beginTransaction();
 	ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(2017, session);
 
-	sendEmailPreavvisoCorso(corso,  session);
+//	sendEmailPreavvisoCorso(corso,  session);
+	
+	
+	ForReferenteDTO utente = new ForReferenteDTO();
+	utente.setNome("Raffaele");
+	utente.setCognome("Fantini");
+	utente.setEmail("raffaele.fantini@ncsnetwork.it");
+	
+	sendEmailEfficaciaCorso(corso,utente);
 		session.getTransaction().commit();
 		session.close();
 		System.out.println("FINITO");

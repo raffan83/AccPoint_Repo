@@ -187,7 +187,7 @@
         <label class="switch">
           <input type="checkbox" id="switchAttivo"
                  <c:if test="${strumento.ip == 1}">checked</c:if>
-                 onClick="cambiaStatoIp('${strumento.__id}')">
+                 onchange="cambiaStatoIp(this, '${strumento.__id}')">
           <span class="slider round"></span>
         </label>
       </div>
@@ -208,48 +208,93 @@ $(function(){
   });
 });
 
-function cambiaStatoIp(idStrumento){
-  const stato = document.getElementById("switchAttivo").checked ? "1" : "0";
-  pleaseWaitDiv = $('#pleaseWaitDialog');
-  pleaseWaitDiv.modal();
-  $.ajax({
-    type: "POST",
-    url: "listaStrumentiSedeNew.do?action=cambiaStatoIp&idStrumento="+idStrumento+"&stato="+stato,
-    dataType: "json",
-    success: function(data, textStatus) {
-      if(data.success){
-        pleaseWaitDiv.modal('hide');
-        $('#report_button').hide();
-        $('#visualizza_report').hide();
-        $("#myModalErrorContent").html("Indice prestazione modificato con successo - Ricaricare lista principale per aggiornare lo stato ");
-        $("#myModalError").addClass("modal modal-success");
-        $("#myModalError").modal();
+function cambiaStatoIp(checkbox, idStrumento){
+	  const stato = checkbox.checked ? "1" : "0";
 
-     /*   $('#myModalError').on('hidden.bs.modal', function (e) {
-          var sede = $("#select2").val();
-          var cliente = $("#select1").val();
-          var dataString ="idSede="+ sede+";"+cliente;
-          alert('chiudi button')
-          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
-            $('#myModal').modal('hide');
-            $('.modal-backdrop').hide();
-          });
-        });*/
-      }else{
-        pleaseWaitDiv.modal('hide');
-        $('#report_button').show();
-        $('#visualizza_report').show();
-        $("#myModalErrorContent").html("Errore modifica cambio stato Indice prestazione");
-        $("#myModalError").modal();
-      }
-    },
-    error: function(jqXHR, textStatus, errorThrown){
-      $("#myModalErrorContent").html(textStatus);
-      $('#report_button').show();
-      $('#visualizza_report').show();
-      $('#myModalError').modal('show');
-    }
-  });
-}
+	  const $pleaseWaitDiv = $('#pleaseWaitDialog');
+	  $pleaseWaitDiv.modal();
+
+	  // opzionale: blocca lo switch mentre salva
+	  checkbox.disabled = true;
+
+	  $.ajax({
+	    type: "POST",
+	    url: "listaStrumentiSedeNew.do",
+	    data: {
+	      action: "cambiaStatoIp",
+	      idStrumento: idStrumento,
+	      stato: stato
+	    },
+	    dataType: "json",
+	    success: function (data) {
+
+	    	  checkbox.disabled = false;
+	    	  $('#pleaseWaitDialog').modal('hide');
+
+	    	  if (data.success) {
+
+	    	    aggiornaIndicePrestazioneInTabella(
+	    	      idStrumento,
+	    	      data.ip,
+	    	      data.indice
+	    	    );
+
+	    	    $("#myModalErrorContent")
+	    	      .html("Indice prestazione aggiornato");
+	    	    $("#myModalError")
+	    	      .addClass("modal modal-success")
+	    	      .modal();
+	    	  } else {
+	    	    checkbox.checked = !checkbox.checked;
+	    	  }
+	    	},
+	    error: function(jqXHR, textStatus){
+	      checkbox.disabled = false;
+	      $pleaseWaitDiv.modal('hide');
+
+	      // rollback UI
+	      checkbox.checked = !checkbox.checked;
+
+	      $("#myModalErrorContent").html(textStatus);
+	      $('#report_button').show();
+	      $('#visualizza_report').show();
+	      $('#myModalError').modal('show');
+	    }
+	  });
+	}
+	
+function aggiornaIndicePrestazioneInTabella(idStrumento, ip, indice) {
+
+	  const $cell = $('#indice_prestazione_str_' + idStrumento);
+	  if ($cell.length === 0) return;
+
+	  let html = '';
+
+	  // SLIDE OFF  NON DETERMINATO
+	  if (ip == 0) {
+	    html = '<div class="lampNP" style="margin:auto">NON DETERMINATO</div>';
+	  }
+	  // SLIDE ON
+	  else {
+
+	    if (!indice) {
+	      html = '<div class="lampNP" style="margin:auto">NON DETERMINATO</div>';
+	    } else {
+
+	      if (indice === 'V')
+	        html = '<div class="lamp lampGreen" style="margin:auto"></div>';
+	      else if (indice === 'G')
+	        html = '<div class="lamp lampYellow" style="margin:auto"></div>';
+	      else if (indice === 'R')
+	        html = '<div class="lamp lampRed" style="margin:auto"></div>';
+	      else if (indice === 'X')
+	        html = '<div class="lamp lampNI" style="margin:auto"></div>';
+	      else
+	        html = '<div class="lampNP" style="margin:auto">NON DETERMINATO</div>';
+	    }
+	  }
+
+	  $cell.html(html);
+	}
 </script>
  

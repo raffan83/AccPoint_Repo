@@ -497,13 +497,18 @@ public class GestioneStrumento extends HttpServlet {
 				ajax=true;
 				PrintWriter out = response.getWriter();
   		        response.setContentType("application/json");
-				strumento = GestioneStrumentoBO.getStrumentoById( request.getParameter("idStrumento"), session);
+  		        
+  		        String idStr=Utility.decryptData(request.getParameter("idStrumento"));
+  		        
+				strumento = GestioneStrumentoBO.getStrumentoById( idStr, session);
 				
 				CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 				UtenteDTO user=(UtenteDTO)request.getSession().getAttribute("userObj");
 				
+				String idCliente=Utility.decryptData(request.getParameter("idCliente"));
+				String idSede=Utility.decryptData(request.getParameter("idSede"));
 				
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(request.getParameter("idCliente"),request.getParameter("idSede"),idCompany.getId(), session,user); 
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId(), session,user); 
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				

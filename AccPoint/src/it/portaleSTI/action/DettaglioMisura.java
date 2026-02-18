@@ -216,7 +216,7 @@ public class DettaglioMisura extends HttpServlet {
 				else {
 					
 					
-					if(misura.getMisuraLAT().getMisura_lat().getId()==1) {
+					if(misura.getMisuraLAT()!=null && misura.getMisuraLAT().getMisura_lat().getId()==1) {
 					
 						LatMisuraDTO misuraLat = GestioneLivellaBollaBO.getMisuraLivellaById(misura.getMisuraLAT().getId(), session);
 						ArrayList<LatPuntoLivellaDTO> lista_pos = new ArrayList<LatPuntoLivellaDTO>();
@@ -241,7 +241,7 @@ public class DettaglioMisura extends HttpServlet {
 				     	dispatcher.forward(request,response);
 				     	
 					}
-					else if(misura.getMisuraLAT().getMisura_lat().getId()==2) {
+					else if(misura.getMisuraLAT()!=null && misura.getMisuraLAT().getMisura_lat().getId()==2) {
 						
 						ArrayList<LatPuntoLivellaElettronicaDTO> lista_punti = GestioneLivellaElettronicaBO.getListaPuntiLivellaTutti(misura.getMisuraLAT().getId(), session);
 						ArrayList<LatPuntoLivellaElettronicaDTO> lista_punti_L = new ArrayList<LatPuntoLivellaElettronicaDTO>();

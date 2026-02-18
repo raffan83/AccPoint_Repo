@@ -468,7 +468,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 									<%} %>
 	 									
 	 									<% if(user.checkRuolo("AM")){ %>
-	 									<button  class="btn btn-danger" onClick="annullaStrumentoModal('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>', 1)">Elimina</button>
+	 									<button  class="btn btn-danger" onClick="annullaStrumentoModal('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>','<%= idSede %>','<%= idCliente %>', 1)">Elimina</button>
 	 									
 	 									<%} %>
 	 									<%}else{ %>

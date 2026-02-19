@@ -463,12 +463,12 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 									<%if(strumento.getStato_strumento().getId() != 7227){ %> 
 	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')">Cambia Stato</button>
 	 									<% if(user.checkRuolo("AM") || user.checkRuolo("OP")){ %>
-	 									<button  class="btn btn-danger" onClick="annullaStrumentoModal('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>', 0)">Annulla</button>
+	 									<button  class="btn btn-danger" onClick="annullaStrumentoModal('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>','<%= idSede %>','<%= idCliente %>', 0,'<%=strumento.get__id()%>')">Annulla</button>
 	 									
 	 									<%} %>
 	 									
 	 									<% if(user.checkRuolo("AM")){ %>
-	 									<button  class="btn btn-danger" onClick="annullaStrumentoModal('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>','<%= idSede %>','<%= idCliente %>', 1)">Elimina</button>
+	 									<button  class="btn btn-danger" onClick="annullaStrumentoModal('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>','<%= idSede %>','<%= idCliente %>', 1,'<%=strumento.get__id()%>')">Elimina</button>
 	 									
 	 									<%} %>
 	 									<%}else{ %>
@@ -500,15 +500,16 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
-       <div class="modal-body">       
-      	Sei sicuro di voler annullare lo strumento?
+       <div class="modal-body" id=txtModal>       
       	</div>
       <div class="modal-footer">
 		<input id="id_strumento" type="hidden">
 		<input id="id_sede" type="hidden">
 		<input id="id_cliente" type="hidden">
 		<input id="elimina" type="hidden">
-        <button  class="btn btn-primary" onClick="annullaStrumento($('#id_strumento').val(),$('#id_sede').val(),$('#id_cliente').val(),$('#elimina').val())">SI</button>
+		<input id="id_strumento_plain" type="hidden">
+		
+        <button  class="btn btn-primary" onClick="annullaStrumento($('#id_strumento').val(),$('#id_sede').val(),$('#id_cliente').val(),$('#elimina').val(),$('#id_strumento_plain').val())">SI</button>
 	               
 	                
 	   
@@ -520,249 +521,6 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
   </div>
 
 </div>
-
-
-<%-- <div id="modalNuovoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Strumento</h4>
-      </div>
-       <div class="modal-body">
-
-        <form class="form-horizontal" id="formNuovoStrumento">
-              
-
-    <div class="form-group">
-          <label for="inputEmail" class="col-sm-2 control-label">Stato Strumento:</label>
-
-         <div class="col-sm-10">
-         
-         <select class="form-control" id="ref_stato_strumento" name="ref_stato_strumento" required>
-                      
-                       <option></option>
-                                            <%
-                                            for(StatoStrumentoDTO str :listaStatoStrumento)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=str.getId() %>"><%=str.getNome() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                      </select>
-         
-
-     	</div>
-   </div>
-
-   <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Denominazione:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="denominazione" type="text" name="denominazione" required value=""/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Codice Interno:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="codice_interno" type="text" name="codice_interno" maxlength="22" required value=""/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Costruttore:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="costruttore" type="text" name="costruttore" required  value=""/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Modello:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="modello" type="text" name="modello" required value=""/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Matricola:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="matricola" type="text" name="matricola" maxlength="22" required  value=""/>
-    </div>
-     </div>
-     
-            <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Altre matricole:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="altre_matricole" type="text" name="altre_matricole" value=""/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Divisione:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="risoluzione" type="text"  name="risoluzione"  required value=""/>
-    </div>
-       </div>
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Campo Misura:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="campo_misura" type="text" name="campo_misura" required value=""/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Tipo Strumento:</label>
-        <div class="col-sm-10">
-
-                      <select class="form-control" id="ref_tipo_strumento" name="ref_tipo_strumento" required>
-                      
-                       <option></option>
-                                            <%
-                                            for(TipoStrumentoDTO str :listaTipoStrumento)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=str.getId() %>"><%=str.getNome() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                      </select>
-    </div>
-       </div> 
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Tipo Rapporto:</label>
-        <div class="col-sm-10">
-
-                                            <select class="form-control" id="ref_tipo_rapporto"  name="ref_tipo_rapporto" required >
-                                            <option></option>
-                                            <%
-                                            for(TipoRapportoDTO rapp :listaTipoRapporto)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=rapp.getId() %>"><%=rapp.getNoneRapporto() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                                            </select>
-                      
-    </div>
-       </div> 
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Freq verifica:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="freq_mesi" type="number" max="120" name="freq_mesi"  disabled="disabled" value=""/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Ultima Verifica:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker" id="dataUltimaVerifica" type="text" name="dataUltimaVerifica" disabled="disabled" value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Prossima Verifica:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker" id="dataProssimaVerifica" type="text" name="dataProssimaVerifica" disabled="disabled" value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-       
-       
-       
-       
-                 <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Reparto:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="reparto" type="text" name="reparto" value=""/>
-    </div>
-       </div> 
-       
-                <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Utilizzatore:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="utilizzatore" type="text" name="utilizzatore"  value=""/>
-    </div>
-       </div> 
-
-	                <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Note:</label>
-        <div class="col-sm-10">
-                      <textarea class="form-control" id="note" type="text" name="note" value=""></textarea>
-    </div>
-       </div> 
-	
-	                <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Luogo Verifica:</label>
-        <div class="col-sm-10">
-                      <select class="form-control" id="luogo_verifica"  name="luogo_verifica" required >
-                                            <option></option>
-                                            <%
-                                            for(LuogoVerificaDTO luogo :listaLuogoVerifica)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=luogo.getId() %>"><%=luogo.getDescrizione() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                                            </select>
-    </div>
-       </div> 
-<!-- 	                <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
-        <div class="col-sm-10">
-
-                          <select class="form-control" id="interpolazione"  name="interpolazione" required >
-                                            <option></option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="10">10</option>
-                                           
-                                            
-                                            </select>
-    </div>
-    </div> -->
-   
-
-				                <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>
-        <div class="col-sm-10">
-
-                       <select class="form-control" id="classificazione"  name="classificazione" required >
-                                            <option></option>
-                                            <%
-                                            for(ClassificazioneDTO clas :listaClassificazione)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=clas.getId() %>"><%=clas.getDescrizione() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                                            </select>
-    </div>
-       </div> 
-
-       
-                <button type="submit" class="btn btn-primary" >Salva</button>
-        
-     
-      </form>
-   
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-
-      </div>
-    </div>
-  </div>
-</div>
- --%>
-
-
 
   <div id="myModalSposta" class="modal fade" role="dialog" aria-labelledby="myModalCertificatiCampione">
    
@@ -809,11 +567,20 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
  <script>
  
- function annullaStrumentoModal(id_strumento, id_sede, id_cliente, elimina){
+ function annullaStrumentoModal(id_strumento, id_sede, id_cliente, elimina,id_strumento_plain){
 	 $('#id_strumento').val(id_strumento);	 
 	 $('#id_sede').val(id_sede);	 
 	 $('#id_cliente').val(id_cliente);
-	 $('#elimina').val(elimina);	 
+	 $('#elimina').val(elimina);
+	 $('#id_strumento_plain').val(id_strumento_plain)
+	 
+	
+	  if (parseInt(elimina, 10) === 0) {
+		    $('#txtModal').text("Sei sicuro di voler ANNULLARE lo strumento?");
+		  } else {
+		    $('#txtModal').text("Sei sicuro di voler ELIMINARE lo strumento?");
+		  }
+	  
 	$('#modalYesOrNo').modal();
  }
  

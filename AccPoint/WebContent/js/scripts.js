@@ -2015,31 +2015,17 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 
     		  if(data.success)
     		  { 
-    			  //callAction("listaStrumentiNew.do");
-    			  
-//    			  stato = $('#stato_'+idStrumento).html();
-//    			  
-//    			  if(stato == "In servizio"){
-//    				  $('#stato_'+idStrumento).html("Fuori servizio");
-//
-//     			  }
-//    			  
-//    			  else{
-//    				  $('#stato_'+idStrumento).html("In servizio");
-//
-//
-//     			  }
-//    			  //exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
-//    			  exploreModal("dettaglioStrumento.do","id_str="+idStrumento,"#dettaglio");
     			  pleaseWaitDiv.modal('hide');  
     			  $('#report_button').hide();
-    				$('#visualizza_report').hide();
+    			  $('#visualizza_report').hide();
     			  $("#myModalErrorContent").html("Stato Strumento salvato con successo");
     			  $("#myModalError").addClass("modal modal-success");
-		 	        $("#myModalError").modal();
+		 	      $("#myModalError").modal();
 		 	        
 		 	        
-		 	       $('#myModalError').on('hidden.bs.modal', function (e) {
+		 	     $('#myModalError')
+		 	    .off('hidden.bs.modal')
+		 	    .one('hidden.bs.modal', function () {
 		 			  
 		 	    	  var sede = $("#select2").val();
 			           var cliente = $("#select1").val();
@@ -2053,29 +2039,6 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 			           table.row(riga).remove().draw();
 			           
 			           
-//			           dataString ="idSede="+ sede+";"+cliente;
-//			           exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(data,textStatus){
-//			         	  $('#myModal').on('hidden.bs.modal', function (e) {
-//			              	  	$('#noteApp').val("");
-//			              	 	$('#empty').html("");
-//			              	 	$('body').removeClass('noScroll');
-//			              	 	$(document.body).css('padding-right', '0px');
-//			              	});
-//			         	  
-//			  			
-////			         	  $('#myModalError').on('hidden.bs.modal', function (e) {
-////			         		  
-////			         		  var input = $("#uploadSuccess").val();
-////			         		  if(input){
-////			         			  $('#myModal').modal("hide");
-////			 						
-////			         		  }
-////
-////			         	   	 	
-////			         	   	 	
-////			         	   	});
-//
-//		 	       });
 			           $(this).off('hidden.bs.modal');
 		 	       });
 		 	        
@@ -2095,16 +2058,14 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
     		 $('#report_button').show();
 				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				
-    		  //callAction('logout.do');
-    
+ 
     	  }
       });
 	  
   }
   
   
-  function annullaStrumento(idStrumento,idSede,idCliente, elimina){
+  function annullaStrumento(idStrumento,idSede,idCliente, elimina,id_strumento_plain){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();  
 	  $.ajax({
@@ -2115,62 +2076,67 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 
     		  if(data.success)
     		  { 
-//    			  //callAction("listaStrumentiNew.do");
-//    			  
-//    			  stato = $('#stato_'+idStrumento).html();
-//    			  
-//    			  if(stato == "In servizio"){
-//    				  $('#stato_'+idStrumento).html("Fuori servizio");
-//
-//     			  }
-//    			  
-//    			  else{
-//    				  $('#stato_'+idStrumento).html("In servizio");
-//
-//
-//     			  }
-//    			  //exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
-    			  if(elimina!= 1){
-    				  exploreModal("dettaglioStrumento.do","id_str="+idStrumento,"#dettaglio");
-    			  }else{
-    				
 
-    		          dataString ="idSede="+ idSede+";"+idCliente;
-    		          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab")
-    			  }
     			  
+
+		 	      
     			  pleaseWaitDiv.modal('hide');  
     			  $('#report_button').hide();
     			  $("#modalYesOrNo").modal('hide');  
-    				$('#visualizza_report').hide();
-    			  $("#myModalErrorContent").html(messaggio);
-		 	        $("#myModalError").modal();
-
+    			  $('#visualizza_report').hide();
+    			  $("#myModalErrorContent").html(data.messaggio);
+    			  $("#myModalError").addClass("modal modal-success");
+		 	      $("#myModalError").modal();
+		 	        
+		 	       $('#myModalError')
+		 	      .off('hidden.bs.modal')
+		 	      .one('hidden.bs.modal', function () {
+				 			  
+				 	    	  var sede = $("#select2").val();
+					           var cliente = $("#select1").val();
+					        
+				         			  $('#myModal').modal("hide");
+				 						
+				         		 
+					           $('.modal-backdrop').hide();
+					           
+					           var riga = $('#row_'+id_strumento_plain); // Ottieni la riga corrente
+					           table.row(riga).remove().draw();
+					           
+					           
+					           $(this).off('hidden.bs.modal');
+				 	       });
 
 
     		  }else{
-    			  $("#myModalError").removeClass("modal-success");
-    			  
+    			  pleaseWaitDiv.modal('hide');  
+    			  $('#report_button').hide();
+    			  $("#modalYesOrNo").modal('hide');  
+    			  $('#visualizza_report').hide();
+    			  $("#myModalErrorContent").html(data.messaggio);
+    			  $("#myModalError").addClass("modal modal-success");
+		 	      $("#myModalError").modal();
+    		  }/*
+    		  else{
     			  $('#modalYesOrNo').hide()
     			  pleaseWaitDiv.modal('hide');  
     			  $('#report_button').show();
-    				$('#visualizza_report').show();
-    			 $("#myModalErrorContent").html(data.messaggio);
-		 	        $("#myModalError").modal();
-		 	       $('.modal-backdrop').hide();
-    		  }
+    			  $('#visualizza_report').show();
+    			  $("#myModalErrorContent").html("Errore Salvataggio Strumento");
+		 	      $("#myModalError").modal();
+    		  }*/
     	  },
 
     	  error: function(jqXHR, textStatus, errorThrown){
     	
     		  $("#myModalError").removeClass();
     		  $("#myModalError").addClass("modal-danger");
-    		 $("#myModalErrorContent").html(textStatus);
-    		 $('#report_button').show();
-				$('#visualizza_report').show();
-				$('#myModalError').modal('show');
+    		  $("#myModalErrorContent").html(textStatus);
+    		  $('#report_button').show();
+			  $('#visualizza_report').show();
+			  $('#myModalError').modal('show');
 				
-    		  //callAction('logout.do');
+    		  
     
     	  }
       });

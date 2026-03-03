@@ -145,8 +145,8 @@ public class CreateCertificato {
 				tipoScheda="RDT";
 			}
 			if((pivot.startsWith("M") || pivot.startsWith("S"))&& strumento.getTipoRapporto().getNoneRapporto().equals("SVT")){
-				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderSVT_EN.jrxml");
-				tipoScheda="RDT";
+				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderSvt_EN.jrxml");
+				tipoScheda="SVT";
 			}
 			if(pivot.equals("RDP")) 
 			{
@@ -549,15 +549,6 @@ public class CreateCertificato {
 				}
 				
 				numberOfRow=numberOfRow - numberOfRowBefore;
-//				if(numberOfRow>11 && isFirtsPage){
-//					report.detail(cmp.pageBreak());
-//					validated=true;
-//					isFirtsPage=false;
-//					
-//				}else if(numberOfRow>28 && !isFirtsPage){
-//					report.detail(cmp.pageBreak());
-//
-//				}
 				
 				StyleBuilder styleTitleTableBold = stl.style(rootStyle).setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setBorder(stl.penThin());
 
@@ -592,6 +583,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			else if(pivot.startsWith("S")) {
 				report.detail(cmp.verticalGap(10));
 				report.detail(subreport).setDetailSplitType(SplitType.IMMEDIATE);
+				report.detail(cmp.verticalGap(10),
+						cmp.horizontalList(cmp.text("* correzioni effettuate in base agli errori indicati nel certificato di taratura LAT della bilancia utilizzata ")),
+						cmp.verticalGap(6),
+						cmp.horizontalList(cmp.text("** valore medio delle pesate corrette").setStyle(stl.style().bold())));
 				report.detail(cmp.verticalGap(10));
 			}
 			else {
@@ -1830,8 +1825,8 @@ public JasperReportBuilder getTableReportS(List<ReportSVT_DTO> listaReport, Stri
 	
 			report.addColumn(col.column("Valore nominale<br><br>"+um, "val_strumento", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
 			report.addColumn(col.componentColumn("Valore delle pesate<br>"+um, subreport).setFixedWidth(70));
-			report.addColumn(col.componentColumn("Valore corretto<br><br>"+um, subreportVc).setFixedWidth(70));
-			report.addColumn(col.column("Valore convenzionale<br>"+um, "valoreMedioCampione", type.stringType()).setStyle(textStyle).setFixedWidth(75).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			report.addColumn(col.componentColumn("Valore corretto*<br><br>"+um, subreportVc).setFixedWidth(70));
+			report.addColumn(col.column("Valore convenzionale**<br>"+um, "valoreMedioCampione", type.stringType()).setStyle(textStyle).setFixedWidth(75).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
 			report.addColumn(col.column("Scostamento<br/><br>%", "scostamentoPerc", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));;
 			report.addColumn(col.column("Scostamento<br/><br>"+um, "scostamento_correzione", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
 			report.addColumn(col.column("Incertezza<br/>(U)<br>%", "incertezzaPerc", type.stringType()).setStyle(textStyle).setFixedWidth(65).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));

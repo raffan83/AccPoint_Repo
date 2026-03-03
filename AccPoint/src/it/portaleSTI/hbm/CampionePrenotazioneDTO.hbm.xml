@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 6-giu-2017 12.16.10 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.CampionePrenotazioneDTO" table="campione_prenotazione">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="native" />
+		</id>
+
+		<property name="stato_prenotazione" type="int">
+			<column name="stato_prenotazione" />
+		</property>
+		<property name="data_inizio_prenotazione" type="java.util.Date">
+			<column name="data_inizio_prenotazione" />
+		</property>
+		<property name="data_fine_prenotazione" type="java.util.Date">
+			<column name="data_fine_prenotazione" />
+		</property>
+		<property name="note" type="java.lang.String">
+			<column name="note" />
+		</property>
+		<many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO"
+			fetch="join" lazy="false">
+			<column name="id_user" />
+		</many-to-one>
+		<property name="data_conferma" type="java.util.Date">
+			<column name="data_conferma" />
+		</property>
+
+		<property name="cella_inizio" type="int">
+			<column name="cella_inizio" />
+		</property>
+		<property name="cella_fine" type="int">
+			<column name="cella_fine" />
+		</property>
+
+		<property name="luogo" type="java.lang.String">
+			<column name="luogo" />
+		</property>
+		
+             <set name="listaCampioni" table="campione_prenotazione_campioni"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id_prenotazione" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portaleSTI.DTO.CampioneDTO">
+                <column name="id_campione" not-null="true" />
+            </many-to-many>
+        </set>
+        
+        <property name="abilitato" type="int">
+			<column name="abilitato" />
+		</property>
+   
+	</class>
+</hibernate-mapping>

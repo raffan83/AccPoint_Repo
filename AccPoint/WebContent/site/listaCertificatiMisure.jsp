@@ -111,6 +111,12 @@
     <c:when test="${certificato.misura.intervento.pressoDestinatario == 2}">
 		<span class="label label-warning">MISTO CLIENTE - SEDE</span>
   </c:when>
+    <c:when test="${certificato.misura.intervento.pressoDestinatario == 3}">
+		<span class="label label-warning">PRESSO LABORATORIO</span>
+  </c:when>
+  <c:when test="${certificato.misura.intervento.pressoDestinatario == 4}">
+		<span class="label label-warning">PRESSO FORNITORE ESTERNO</span>
+  </c:when>
   <c:otherwise>
     <span class="label label-info">-</span>
   </c:otherwise>

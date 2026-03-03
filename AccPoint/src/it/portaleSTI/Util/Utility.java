@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -73,6 +74,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.google.gson.Gson;
@@ -1723,6 +1727,11 @@ public class Utility extends HttpServlet {
 			
 			return toRet;
 		}
+		public static int getDayFromDate(Date date) {
+		    Calendar cal = Calendar.getInstance();
+		    cal.setTime(date);
+		    return cal.get(Calendar.DAY_OF_YEAR);
+		}
 		
 		public static String returnEsit(String r_SL, String r_SL_GW ,int i) {
 			/*
@@ -2238,4 +2247,39 @@ public class Utility extends HttpServlet {
 
 				    return cal.getTime();
 				}
+			 
+			 
+			 public static Hashtable<String, List<String>> getFormByResponse(HttpServletRequest request)
+				        throws FileUploadException, UnsupportedEncodingException {
+
+				    Hashtable<String, List<String>> ret = new Hashtable<String, List<String>>();
+
+				    if (request.getContentType() != null &&
+				        request.getContentType().toLowerCase().contains("multipart/form-data")) {
+
+				        List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+
+				        for (FileItem item : items) {
+				            if (item.isFormField()) {
+
+				                String name  = item.getFieldName();
+				                String value = new String(item.getString("ISO-8859-1").getBytes(), "UTF-8");
+
+				                if (!ret.containsKey(name)) {
+				                    ret.put(name, new ArrayList<String>());
+				                }
+				                ret.get(name).add(value);
+				            }
+				        }
+				    }
+
+				    return ret;
+				}
+
+			public static String getSingleValueFromResponse(Hashtable<String, List<String>> ret, String value) {
+				
+				List<String> list = ret.get(value);
+				String val = (list != null && !list.isEmpty()) ? list.get(0) : null;
+				return val;
+			}
 }

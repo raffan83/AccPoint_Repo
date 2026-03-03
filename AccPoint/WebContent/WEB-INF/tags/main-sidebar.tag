@@ -146,6 +146,7 @@
 			<!-- <li><a href="scadenziario.do?action=campioni&scadenzario_lat_generale=1">Scadenziario LAT</a></li> -->
 			<li><a href="scadenziario.do?lat=CDT">Scadenziario LAT</a></li>
 			<li><a href="gestioneLibrerieElettrici.do?action=lista">Librerie Elettrici</a></li>
+			<li><a href="gestionePrenotazioneCampione.do?action=gestione_prenotazioni">Gestione Prenotazioni</a></li>	
 			  <% }%>
           </ul>
         </li>
@@ -256,8 +257,8 @@
           <li><a href="#" onclick="callAction('listaPacchi.do',null,true);">Stato Magazzino</a></li>
            <li><a href="#" onclick="callAction('listaItem.do?action=lista',null,true);">Stato Item Magazzino</a></li>
 		<li><a href="#" onclick="callAction('listaPacchi.do?action=lista_ddt',null,true);">Stato DDT</a></li>
-		<li><a href="#" onclick="callAction('gestionePacco.do?action=pacchi_lavorazione',null,true);">Attivit&agrave; in corso</a></li>
 		<li><a href="#" onclick="callAction('gestionePacco.do?action=presso_fornitore',null,true);">Presso Fornitore</a></li>
+		<li><a href="#" onclick="callAction('gestionePacco.do?action=pacchi_lavorazione',null,true);">Attivit&agrave; in corso</a></li>
           </ul>
         </li>
           <% }%>

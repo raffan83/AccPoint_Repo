@@ -50,6 +50,7 @@ public class CreateCertificatoSE {
 	
 	public File file;
 	public String messaggio_firma;
+	public boolean norma_601=false;
 	public CreateCertificatoSE(CertificatoDTO certificato,String data_emissione, UtenteDTO utente,  Session session) throws Exception {
 		
 		build(certificato,data_emissione, utente, session);
@@ -58,7 +59,24 @@ public class CreateCertificatoSE {
 	
 	void build(CertificatoDTO certificato,String data_emissione,UtenteDTO utente,  Session session) throws Exception {
 		
-		InputStream is =  PivotTemplate.class.getResourceAsStream("certificatoSE.jrxml");
+		SicurezzaElettricaDTO misura_se = GestioneSicurezzaElettricaBO.getMisuraSeFormIdMisura(certificato.getMisura().getId(), session);
+		
+		if(misura_se.getTIPO_NORMA()!=null && misura_se.getTIPO_NORMA().equals("601")) {
+			
+				norma_601=true;
+				
+		}
+		InputStream is=null;
+		
+		
+		if(norma_601) 
+		{
+			is =  PivotTemplate.class.getResourceAsStream("certificatoSE_601.jrxml");
+		}else 
+		{
+			is =  PivotTemplate.class.getResourceAsStream("certificatoSE.jrxml");
+		}
+	
 		
 		JasperReportBuilder report = DynamicReports.report();
 		
@@ -77,7 +95,7 @@ public class CreateCertificatoSE {
 		report.setDataSource(new JREmptyDataSource());		
 		report.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
 		
-		SicurezzaElettricaDTO misura_se = GestioneSicurezzaElettricaBO.getMisuraSeFormIdMisura(certificato.getMisura().getId(), session);
+		
 		
 		if(imageHeader!=null) {
 			report.addParameter("logo",imageHeader);
@@ -143,16 +161,16 @@ public class CreateCertificatoSE {
 			report.addParameter("parti_applicate", "");	
 		}
 
-		if(misura_se.getTIPO_NORMA()!=null) {
-			if(misura_se.getTIPO_NORMA().equals("601")) {
-				report.addParameter("verifica_conformita", "IEC 601.1");
-			}else {
-				report.addParameter("verifica_conformita", "EN 62353 / CEI 62-148");
-			}
-			
-		}else{
-			report.addParameter("verifica_conformita", "EN 62353 / CEI 62-148");	
+		if(norma_601) 
+		{
+			report.addParameter("verifica_conformita", "IEC 601.1");
 		}
+		else 
+		{
+			report.addParameter("verifica_conformita", "EN 62353 / CEI 62-148");
+		}
+
+		
 				
 		
 		if(misura_se.getCOND_PROT()!=null) {
@@ -326,14 +344,8 @@ public class CreateCertificatoSE {
 	 		report.addColumn(col.column("Esito","esito", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
 	 			 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
-			
-			boolean is601 = false;
-			
-			if(misura_se.getTIPO_NORMA()!=null && misura_se.getTIPO_NORMA().equals("601")) {
-				is601 = true;
-			}
-		
-	 		report.setDataSource(createDataSource(misura_se, is601));
+
+	 		report.setDataSource(createDataSource(misura_se, norma_601));
 	 		
 	 		report.highlightDetailEvenRows();
 			

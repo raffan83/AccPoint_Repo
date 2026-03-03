@@ -38,10 +38,13 @@ import it.portaleSTI.DTO.MabbaBlockView;
 import it.portaleSTI.DTO.MabbaRowView;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
+import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
+import it.portaleSTI.DTO.SvtRowView;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneLivellaElettronicaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
@@ -182,22 +185,71 @@ public class DettaglioMisura extends HttpServlet {
 				     	dispatcher.forward(request,response);
 					}
 					
-					else 
-					{
-						
-					
-					
-					request.getSession().setAttribute("arrayPunti", arrayPunti);
-	
-					Gson gson = new Gson();
-					JsonArray listaPuntJson = gson.toJsonTree(arrayPunti).getAsJsonArray();
-					request.setAttribute("listaPuntJson", listaPuntJson);
-					
-					
-					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisura.jsp");
-			     	dispatcher.forward(request,response);
-					
-					}
+						else if (arrayPunti.size() > 0 && arrayPunti.get(0).get(0).getTipoProva().startsWith("S")) {
+
+							LinkedHashMap<String, List<ReportSVT_DTO>> listaTabelle= GestioneCertificatoBO.getListaTabelle(misura,"SVT");
+							java.util.Map<String, java.util.List<SvtRowView>> righePerTabella = new java.util.LinkedHashMap<>();
+
+							for (java.util.Map.Entry<String, java.util.List<ReportSVT_DTO>> e : listaTabelle.entrySet()) {
+
+							  String nomeTabella = e.getKey();                    // es: "Tabella 1"
+							  java.util.List<ReportSVT_DTO> lista = e.getValue(); // punti della tabella
+
+							  java.util.List<SvtRowView> righe = new java.util.ArrayList<>();
+
+							  if (lista != null) {
+							    for (ReportSVT_DTO rpt : lista) {
+
+							      // UM: prendo dal campo unitaDiMisura (come Jasper) con fallback
+							      String um = firstValue(rpt.getUnitaDiMisura(), "um", "unita", "value", "valore");
+							      if (um == null || um.trim().isEmpty()) um = "g";
+
+							      // Valori singoli (ripetuti su tutte le righe pesate)
+							     
+							      String valoreNominale = firstValue(rpt.getValoreStrumento(), "vs", "value", "valoreCampione");
+							      String valoreConvenzionale = (rpt.getValoreMedioCampione() != null) ? rpt.getValoreMedioCampione() : "";
+
+							      // Valore corretto: nel tuo mondo SVT spesso è valoreCampione (come hai già detto)
+							      String valoreCorretto = firstValue(rpt.getValoreCampione(), "vc", "value", "valoreCampione");
+
+							      String scostPct = (rpt.getScostamentoPerc() != null) ? rpt.getScostamentoPerc() : "";
+							      String scostUm  = (rpt.getScostamento_correzione() != null) ? rpt.getScostamento_correzione() : "";
+
+							      String incPct = (rpt.getIncertezzaPerc() != null) ? rpt.getIncertezzaPerc() : "";
+							      String incUm  = (rpt.getIncertezza() != null) ? rpt.getIncertezza() : "";
+
+							      // Pesate: prima letturaCampione, altrimenti valoreStrumento
+							      java.util.List<String> pesate = allValues(rpt.getLetturaCampione(), "pesata", "value", "lettura", "letturaCampione");
+							    
+
+							      // Se non ho pesate, comunque una riga
+							      if (pesate.isEmpty()) pesate.add("");
+
+							      // Creo N righe (una per pesata) ripetendo i singoli
+							      for (String p : pesate) {
+							        righe.add(new SvtRowView(
+							            valoreNominale,
+							            p,
+							            valoreCorretto,
+							            valoreConvenzionale,
+							            scostPct,
+							            scostUm,
+							            incPct,
+							            incUm,
+							            um
+							        ));
+							      }
+							    }
+							  }
+
+							  righePerTabella.put(nomeTabella, righe);
+							}
+
+							request.setAttribute("righePerTabella", righePerTabella);
+							RequestDispatcher dispatcher =
+							    getServletContext().getRequestDispatcher("/site/dettaglioMisuraM-STD.jsp");
+							dispatcher.forward(request, response);
+							}
 					
 				}
 				else if(misura.getLat().equals("E")) {
@@ -428,4 +480,37 @@ public class DettaglioMisura extends HttpServlet {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	private static String firstValue(java.util.List<java.util.Map<String, Object>> list, String... keys) {
+	  if (list == null || list.isEmpty() || list.get(0) == null) return "";
+	  java.util.Map<String, Object> m = list.get(0);
+
+	  for (String k : keys) {
+	    if (m.containsKey(k) && m.get(k) != null) return String.valueOf(m.get(k));
+	  }
+	  for (Object v : m.values()) {
+	    if (v != null) return String.valueOf(v);
+	  }
+	  return "";
+	}
+
+	@SuppressWarnings("unchecked")
+	private static java.util.List<String> allValues(java.util.List<java.util.Map<String, Object>> list, String... keys) {
+	  java.util.List<String> out = new java.util.ArrayList<>();
+	  if (list == null) return out;
+
+	  for (java.util.Map<String, Object> m : list) {
+	    if (m == null) { out.add(""); continue; }
+
+	    String val = "";
+	    for (String k : keys) {
+	      if (m.containsKey(k) && m.get(k) != null) { val = String.valueOf(m.get(k)); break; }
+	    }
+	    if (val.isEmpty()) {
+	      for (Object v : m.values()) { if (v != null) { val = String.valueOf(v); break; } }
+	    }
+	    out.add(val);
+	  }
+	  return out;
+	}
 }

@@ -149,7 +149,7 @@ public class GestioneCertificatoBO {
 			
 		}
 
-		private static LinkedHashMap<String, List<ReportSVT_DTO>> getListaTabelle(MisuraDTO misura,String tipoRapporto) {
+		public static LinkedHashMap<String, List<ReportSVT_DTO>> getListaTabelle(MisuraDTO misura,String tipoRapporto) {
 			
 			LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();
 			
@@ -653,22 +653,15 @@ public class GestioneCertificatoBO {
 									if(punto.getValoreMedioStrumento()!=null) {
 										data.setValoreMedioStrumento(Utility.changeDotComma(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));
 									}
-									if(tipoRapporto.equals("SVT")) 
-									{
+									
 										data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_campione())+1, RoundingMode.HALF_UP).toPlainString()));
-									}
-									else 
-									{
-										data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_campione())+1, RoundingMode.HALF_UP).toPlainString()));	
-									}
-								  //	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 									
 									
 									BigDecimal scostamentoP = new BigDecimal(100).divide(punto.getValoreStrumento()).multiply(punto.getScostamento());
-									data.setScostamentoPerc(Utility.changeDotComma(""+scostamentoP.setScale(Utility.getScale(punto.getRisoluzione_campione())+1, RoundingMode.HALF_UP)));
+									data.setScostamentoPerc(Utility.changeDotComma(""+scostamentoP.setScale(Utility.getScale(punto.getRisoluzione_campione())+1, RoundingMode.HALF_UP).abs().stripTrailingZeros()));
 
 									BigDecimal incertezzaP = new BigDecimal(100).divide(punto.getValoreStrumento()).multiply(punto.getIncertezza());
-									data.setIncertezzaPerc(Utility.changeDotComma(""+incertezzaP.setScale(Utility.getScale(punto.getRisoluzione_campione())+1, RoundingMode.HALF_UP)));
+									data.setIncertezzaPerc(Utility.changeDotComma(""+incertezzaP.setScale(Utility.getScale(punto.getRisoluzione_campione())+1, RoundingMode.HALF_UP).abs().stripTrailingZeros()));
 									
 									
 									/*

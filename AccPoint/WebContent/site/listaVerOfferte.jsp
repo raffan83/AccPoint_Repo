@@ -1122,7 +1122,6 @@ var columsDatatables = [];
     var state = api.state.loaded();
  
     if(state != null && state.columns!=null){
-    		console.log(state.columns);
     
     columsDatatables = state.columns;
     }
@@ -1257,17 +1256,7 @@ $(document).ready(function() {
 	
         $('.dropdown-toggle').dropdown();
 
-/* 	$('#citta').select2({
-        dropdownParent: $('#myModalNuovoCliente')
-    });	
-	 	$('#citta_sede').select2({
-        dropdownParent: $('#myModalNuovoCliente')
-    });	  */
-  		
-/*     $('#citta', ).select2({
-        dropdownParent: $('#myModalNuovoCliente')
-    }); 
-     */
+
 
      
      var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
@@ -1371,6 +1360,12 @@ $(document).ready(function() {
 
 
 	});
+	
+	 // ricalcola quando cambia qualunque cosa (pagina, filtro, ordinamento, redraw)
+	  table.on('draw.dt', function () {
+	    sommaDati();
+	  });
+
 	
 	tabArticoli = $('#tabArticoli').DataTable({
 		language: {
@@ -2165,7 +2160,6 @@ dataType = "";
 		  
  
   function(oSettings, aData, iDataIndex) {
-	   console.log(aData);
 	   
 		if(oSettings.nTable.getAttribute('id') == "tabOfferte"){
 
@@ -2174,12 +2168,6 @@ dataType = "";
 			    	 	var dd = aData[4].split("/");
 
 			       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
-			       console.log("Prossima:"+minDateFilter);
-				   console.log("MIN:"+minDateFilter);
-				   console.log("MAX:"+maxDateFilter);
-				   console.log("VAL:"+aData._date);
-				   console.log( dd);
-
 
 			     }
 				   
@@ -2238,26 +2226,26 @@ dataType = "";
  
  
  
-function sommaDati(){
-	 
-	 var sommaImporti = 0.0;
 
+ 
+ function sommaDati() {
+	  var table = $('#tabOfferte').DataTable();
 
-	  $('.riga').each(function() {
-	    var importo = $(this).find('.importo').text().trim(); 
-	
-		var stato = $(this).find('.stato').text().trim();
-		
+	  var somma = 0;
 
-	      sommaImporti += parseFloat(importo);
-	    
+	  // prendi i dati SOLO delle righe filtrate (e della pagina corrente)
+	  table.rows({ search: 'applied', page: 'current' }).every(function () {
+	    // colonna Importo: nel tuo HTML è la 6a colonna -> index 5 (0-based)
+	    var txt = $(this.node()).find('td.importo').text().trim();
+	    txt = txt.replace(',', '.'); // se mai ci fosse la virgola
+
+	    var imp = parseFloat(txt);
+	    if (!isNaN(imp)) somma += imp;
 	  });
 
-	  $('#tot_importi').val(sommaImporti);
-
-	 
- }
- 
+	  somma = Math.round((somma + Number.EPSILON) * 100) / 100;
+	  $('#tot_importi').val(somma.toFixed(2));
+	}
  
 function inviaOrdine() {
 

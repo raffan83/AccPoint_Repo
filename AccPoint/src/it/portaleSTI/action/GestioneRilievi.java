@@ -340,6 +340,8 @@ public class GestioneRilievi extends HttpServlet {
 				String note_particolare = request.getParameter("note_particolare");
 				int n =0;	
 				
+				logger.info("Creazione n° "+numero_impronte + " impronte (rip_particolare) per rilievo (misura_rilievo) ID: "+rilievo.getId());
+				
 				if(numero_impronte.equals("")) {
 					numero_impronte = "1";
 				}
@@ -369,17 +371,24 @@ public class GestioneRilievi extends HttpServlet {
 							particolare.setNome_impronta(nomi_impronte.split("%")[i]);
 						}
 						session.save(particolare);
-					
+						
+						logger.info("CREATE [PARTICOLARE]: "+particolare.getNome_impronta() + " - ID: "+particolare.getId());
+						
+						
 							for(int j=0; j<n;j++) {
 								RilQuotaDTO quota = new RilQuotaDTO();
 								quota.setId_ripetizione(j+1);
 								quota.setImpronta(particolare);
 								
 								session.save(quota);
+								
+								logger.info("CREATE [QUOTA]: "+ quota.getId() + " [ID RIPETIZIONE]: "+quota.getId_ripetizione());
+								
 								for(int k = 0; k<Integer.parseInt(n_pezzi);k++) {
 									RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
 									punto.setId_quota(quota.getId());
 									session.save(punto);
+									logger.info("CREATE [PUNTO]: "+ punto.getId() + " [ID QUOTA]: "+quota.getId());
 								}
 							}
 				
@@ -402,6 +411,7 @@ public class GestioneRilievi extends HttpServlet {
 				rilievo.setN_pezzi_tot(pezzi_tot);
 				session.update(rilievo);
 				
+				logger.info("END CREATION [RILIEVO] "+ rilievo.toString());
 				request.getSession().setAttribute("numero_pezzi", n_pezzi);
 				request.getSession().setAttribute("lista_impronte", lista_impronte);
 				request.getSession().setAttribute("quote_pezzo", quote_pezzo);
@@ -598,6 +608,11 @@ public class GestioneRilievi extends HttpServlet {
 					request.getSession().setAttribute("checkRiferimento", "");
 				}
 				request.getSession().setAttribute("numero_pezzi", impronta.getNumero_pezzi());
+				
+				for (RilQuotaDTO quota : lista_quote) {
+				    logger.info("RilQuotaDTO:\n" + quota.toString());
+				}
+				
 				request.getSession().setAttribute("lista_quote", lista_quote);
 				request.getSession().setAttribute("lista_quote_riferimento", jsArray);
 				request.getSession().setAttribute("quote_pezzo", quote_pezzo);
@@ -926,6 +941,8 @@ public class GestioneRilievi extends HttpServlet {
 				ArrayList<RilParticolareDTO> lista_impronte = null;
 				RilParticolareDTO impr = GestioneRilieviBO.getImprontaById(Integer.parseInt(particolare), session);
 				
+				logger.info("CREATE NUOVA QUOTA SU PARTICOLARE + "+impr.getId());
+				
 				if(impr.getNome_impronta()!=null && !impr.getNome_impronta().equals("")) {
 					lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(impr.getMisura().getId(), session); 
 					n = lista_impronte.size();
@@ -943,18 +960,25 @@ public class GestioneRilievi extends HttpServlet {
 						listaIds=listaIds+" - "+rilParticolareDTO.getId();
 					}
 					
-					logger.info(listaIds);
 					
 					max_id_ripetizione = GestioneRilieviBO.getMaxIdRipetizione(lista_impronte, session);
 				
-					logger.info("ID - Ripetizione: "+max_id_ripetizione);
+					logger.info("RECUPERO MAX ID RIPETIZIONE: "+max_id_ripetizione +" SU IMPRONTE");
+					
+					for (RilParticolareDTO rilParticolareDTO : lista_impronte) {
+						
+						logger.info("IMPROTA "+rilParticolareDTO.getId()+ " - NOME IMPRONTA "+rilParticolareDTO.getNome_impronta());
+						
+					}
 				}
 				
 				
 				for(int i = 0; i<n;i++) {
 					for(int t = 0; t<ripetizioni; t++) {
 						if(jsonObj!=null && jsonObj.get(0)!=null && !jsonObj.get(0).getAsString().equals("")) {
-							quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(jsonObj.get(0).getAsString()),session);					
+							quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(jsonObj.get(0).getAsString()),session);
+							logger.info("RECUPERO QUOTA: "+quota.toString());
+							
 						}else {
 							quota = new RilQuotaDTO();
 						}
@@ -1011,8 +1035,9 @@ public class GestioneRilievi extends HttpServlet {
 						if(impr.getNome_impronta().equals("")) {
 							quota.setId_ripetizione(0);
 						}else {
-							logger.info("Assegno a :"+quota.toString() +" ID_RIPETIZIONE: "+max_id_ripetizione);
+							
 							quota.setId_ripetizione(max_id_ripetizione+1);
+							logger.info("ASSEGNO QUOTA  :"+quota.toString());
 						}
 	
 						session.save(quota);					
@@ -1073,6 +1098,8 @@ public class GestioneRilievi extends HttpServlet {
 								}
 									punto.setId_quota(quota.getId());
 									session.save(punto);
+									
+									logger.info("CREAZIONE PUNTO "+punto.getId() + " QUOTA "+punto.getId_quota());
 									quota.getListaPuntiQuota().add(punto);
 								}
 						}else {

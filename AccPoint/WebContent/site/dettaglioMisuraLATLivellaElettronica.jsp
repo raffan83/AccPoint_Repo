@@ -13,8 +13,6 @@
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <%@ page language="java" import="java.util.ArrayList" %>
 <%@page import="it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO"%>
-<%ArrayList<LatPuntoLivellaElettronicaDTO> lista_punti_R = (ArrayList)session.getAttribute("lista_punti_R"); %>
-
 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
@@ -730,7 +728,7 @@
 		       		exploreModal("modificaStrumento.do?action=modifica&id=${utl:encryptData(misura.strumento.__id)}","","#modifica")
 		       	}
 		       	if(contentID == "documentiesterniTab"){
-		       		exploreModal("documentiEsterni.do?id_str=${utl:encryptData(misura.strumento.__id}","","#documentiesterni")
+		       		exploreModal("documentiEsterni.do?id_str=${utl:encryptData(misura.strumento.__id)}","","#documentiesterni")
 		       	//	exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#documentiesterni");
 		       	}
 		    		

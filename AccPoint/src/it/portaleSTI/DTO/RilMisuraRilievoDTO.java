@@ -1,5 +1,6 @@
 package it.portaleSTI.DTO;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class RilMisuraRilievoDTO {
@@ -36,7 +37,6 @@ public class RilMisuraRilievoDTO {
 	private Double tempo_scansione;
 	private int firmato;
 	private int controfirmato;
-	//private int id_intervento;
 	private RilInterventoDTO intervento;
 	private int non_lavorato;
 	private int smaltimento;
@@ -257,5 +257,48 @@ public class RilMisuraRilievoDTO {
 	}
 	public void setSmaltimento(int smaltimento) {
 		this.smaltimento = smaltimento;
+	}
+	@Override
+	public String toString() {
+
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+	    return "\nRilMisuraRilievoDTO (ril_misura_rilievo) {" +
+	            "\n  id=" + id +
+	            "\n  disegno='" + disegno + '\'' +
+	            "\n  variante='" + variante + '\'' +
+	            "\n  fornitore='" + fornitore + '\'' +
+	            "\n  apparecchio='" + apparecchio + '\'' +
+	            "\n  data_inizio_rilievo=" + (data_inizio_rilievo != null ? sdf.format(data_inizio_rilievo) : null) +
+	            "\n  data_consegna=" + (data_consegna != null ? sdf.format(data_consegna) : null) +
+	            "\n  stato_rilievo=" + stato_rilievo.getDescrizione() +
+	            "\n  note='" + note + '\'' +
+	            "\n  id_cliente_util=" + id_cliente_util +
+	            "\n  id_sede_util=" + id_sede_util +
+	            "\n  nome_cliente_util='" + nome_cliente_util + '\'' +
+	            "\n  nome_sede_util='" + nome_sede_util + '\'' +
+	            "\n  commessa='" + commessa + '\'' +
+	            "\n  utente=" + utente.getNominativo() +
+	            "\n  tipo_rilievo=" + tipo_rilievo.getDescrizione() +
+	            "\n  mese_riferimento='" + mese_riferimento + '\'' +
+	            "\n  allegato='" + allegato + '\'' +
+	            "\n  immagine_frontespizio='" + immagine_frontespizio + '\'' +
+	            "\n  cifre_decimali=" + cifre_decimali +
+	            "\n  classe_tolleranza='" + classe_tolleranza + '\'' +
+	            "\n  denominazione='" + denominazione + '\'' +
+	            "\n  materiale='" + materiale + '\'' +
+	            "\n  n_pezzi_tot=" + n_pezzi_tot +
+	            "\n  n_quote=" + n_quote +
+	            "\n  disabilitato=" + disabilitato +
+	            "\n  scheda_consegna=" + scheda_consegna +
+	            "\n  numero_scheda='" + numero_scheda + '\'' +
+	            "\n  pezzi_ingresso=" + pezzi_ingresso +
+	            "\n  tempo_scansione=" + tempo_scansione +
+	            "\n  firmato=" + firmato +
+	            "\n  controfirmato=" + controfirmato +
+	            "\n  intervento=" + intervento.getId() +
+	            "\n  non_lavorato=" + non_lavorato +
+	            "\n  smaltimento=" + smaltimento +
+	            "\n}";
 	}
 }

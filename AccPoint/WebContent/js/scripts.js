@@ -6685,7 +6685,7 @@ function cambiaNotaPacco(id_pacco, nota){
   			else if(id_stato==2){
   				var stato = "Lavorato";
   			}
-  			else if(id_stato=3){
+  			else if(id_stato==3){
   				var stato = "Generico";
   			}
 
@@ -6732,34 +6732,15 @@ function cambiaNotaPacco(id_pacco, nota){
   		
   		
 
-	   var table = $('#tabItem').DataTable();
-	  
-	   table.clear().draw();
-	   
-		table.rows.add(items_json).draw();
-	    
-	    table.columns().eq( 0 ).each( function ( colIdx ) {
-	  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-	  	      table
-	  	          .column( colIdx )
-	  	          .search( this.value )
-	  	          .draw();
-	  	  } );
-	  	} ); 
-	  		table.columns.adjust().draw();
+  		var table = $('#tabItem').DataTable();
 
-	  	  items_json.forEach(function(item){
-			  $('attivita_item_'+item.id_proprio).select2();
-		  });
-	  	  
-	  	  
-	  	$('#tabItem').on('draw.dt', function() {
-	  	    $('input').iCheck({
-	  	        checkboxClass: 'icheckbox_square-blue',
-	  	        radioClass: 'iradio_square-blue',
-	  	        increaseArea: '20%' // optional
-	  	    });
-	  	});
+  		if(!esiste){
+  		    table.row.add(accessorio).draw(false);
+  		} else {
+  		    table.rows().invalidate().draw(false);
+  		}
+
+  		table.columns.adjust();
 	}
   
 function eliminaEntryItem(id, tipo){

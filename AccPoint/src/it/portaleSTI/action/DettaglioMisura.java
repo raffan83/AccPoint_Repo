@@ -251,6 +251,25 @@ public class DettaglioMisura extends HttpServlet {
 							dispatcher.forward(request, response);
 							}
 					
+						else 
+						{
+							
+								
+							
+							
+							request.getSession().setAttribute("arrayPunti", arrayPunti);
+			
+							Gson gson = new Gson();
+							JsonArray listaPuntJson = gson.toJsonTree(arrayPunti).getAsJsonArray();
+							request.setAttribute("listaPuntJson", listaPuntJson);
+							
+							
+							RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisura.jsp");
+					     	dispatcher.forward(request,response);
+							
+							
+						}
+					
 				}
 				else if(misura.getLat().equals("E")) {
 					
@@ -457,9 +476,13 @@ public class DettaglioMisura extends HttpServlet {
 			}     
 		
 		}catch (Exception ex) {
-			session.getTransaction().rollback();
-			session.close();
-			 ex.printStackTrace();
+			
+			if(session!=null && session.isOpen()) 
+			{
+				session.getTransaction().rollback();
+				session.close();
+			} 
+			ex.printStackTrace();
 	   	     request.setAttribute("error",STIException.callException(ex));
 	   	     request.getSession().setAttribute("exception",ex);
 	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

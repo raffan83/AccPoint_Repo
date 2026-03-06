@@ -789,7 +789,7 @@ $(window).on('scroll', function() {
 
 var order = 1;
 
-var permesso = "${userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN')}";
+var permesso = "${userObj.checkPermesso('MODIFICA_CAMPIONE')}";
 
 var cellCopy;
 

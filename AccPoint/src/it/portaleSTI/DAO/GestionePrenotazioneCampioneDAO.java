@@ -90,7 +90,8 @@ public class GestionePrenotazioneCampioneDAO {
 	        "   join p.listaCampioni pc " +
 	        "   where pc.id = c.id " +
 	        "     and p.data_inizio_prenotazione <= :dataFine " +
-	        "     and p.data_fine_prenotazione  >= :dataInizio " +
+	        "     and p.data_fine_prenotazione  >= :dataInizio "+
+	        "     and p.abilitato=0 "+ 	 
 	        ") " +
 	        "order by c.codice";
 

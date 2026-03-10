@@ -509,10 +509,30 @@ public class GestioneStrumentoBO {
 		return arrayStrumenti;
 	}
 
-	public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String marca, String modello, String matricola, String codice_interno, int id_company) throws Exception {
+	public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String marca, String modello, String matricola, String codice_interno, int id_company, HashMap<String, String> listaNominativi_cliente, HashMap<String, String> listaNominativi_sede) throws Exception {
 		
-		//return GestioneStrumentoDAO.getStrumentiFiltrati(nome, marca, modello, matricola, codice_interno, id_company);
-		return DirectMySqlDAO.getStrumentiFiltrati(nome, marca, modello, matricola, codice_interno, id_company);
+		ArrayList<StrumentoDTO> listaStrumenti= new ArrayList<>();
+		
+		listaStrumenti=DirectMySqlDAO.getStrumentiFiltrati(nome, marca, modello, matricola, codice_interno, id_company);
+		
+		for (StrumentoDTO strumento : listaStrumenti) {
+			
+			String cliente=listaNominativi_cliente.get(""+strumento.getId_cliente());
+			String sede =listaNominativi_sede.get(strumento.getId__sede_()+"_"+strumento.getId_cliente());
+			
+			strumento.setNominativoCliente(cliente);
+			
+			if(sede!=null && sede.length()>0) 
+			{
+				strumento.setNominativoSede(sede);
+			}
+			else 
+			{
+				strumento.setNominativoSede("Non Associata");
+			}
+		}
+		
+		return listaStrumenti;
 	}
 
 	public static ArrayList<StrumentoDTO> getlistaStrumentiFromCompany(Integer id_company, Session session) {

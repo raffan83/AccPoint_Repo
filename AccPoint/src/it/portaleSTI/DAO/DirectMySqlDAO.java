@@ -3180,7 +3180,7 @@ public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String m
 
 		
 
-	String query = "select distinct id_strumento, id__stato_strumento_, denominazione, codice_interno, matricola, costruttore, modello, frequenza, campo_misura, risoluzione, tipo.nome from misura mis join strumento str on mis.id_strumento = str.__id join tipo_strumento tipo on tipo.__id = str.id__tipo_strumento_ where str.denominazione like ? "
+	String query = "select distinct id_strumento, id__stato_strumento_, denominazione, codice_interno, matricola, costruttore, modello, frequenza, campo_misura, risoluzione, tipo.nome, str.id_cliente , str.id__sede_new from misura mis join strumento str on mis.id_strumento = str.__id join tipo_strumento tipo on tipo.__id = str.id__tipo_strumento_ where str.denominazione like ? "
 			+ "and str.costruttore like ? "
 			+ "and str.modello like ? "
 			+ "and str.matricola like ? "
@@ -3216,7 +3216,8 @@ public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String m
 		strumento.setCampo_misura(rs.getString(9));
 		strumento.setRisoluzione(rs.getString(10));
 		strumento.setTipo_strumento(new TipoStrumentoDTO(0, rs.getString(11)));
-		
+		strumento.setId_cliente(rs.getInt(12));
+		strumento.setId__sede_(rs.getInt(13));
 		lista.add(strumento);
 
 		

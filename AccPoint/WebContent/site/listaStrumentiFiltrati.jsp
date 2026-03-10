@@ -23,158 +23,81 @@
 <jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<% 
-JsonObject json = (JsonObject)session.getAttribute("myObj");
-JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");
-Gson gson = new Gson();
-Type listType = new TypeToken<ArrayList<StrumentoDTO>>(){}.getType();
-ArrayList<StrumentoDTO> listaStrumentiFiltrati = new Gson().fromJson(jsonElem, listType);
 
+<div class="clearfix"></div>
 
-UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
-
-
-String idSede = (String)session.getAttribute("id_Sede");
-String idCliente = (String)session.getAttribute("id_Cliente");
-
-
-
-ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)session.getAttribute("listaTipoRapporto");
-ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute("listaTipoStrumento");
-ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribute("listaStatoStrumento");
-
-ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList)session.getAttribute("listaLuogoVerifica");
-ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttribute("listaClassificazione");
-
-
-%>
-
- <div class="clearfix"></div>
 <div class="row" style="margin-top:20px;">
-<div class="col-lg-12">
-  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
- 							<th></th>
- 						<th>ID</th>
- 						  
-            	       <th>Stato Strumento</th>		   
-            		   <th>Denominazione</th>
-                       <th>Codice Interno</th>
-                     
-                       <th>Matricola</th>
-            
-                       <th>Modello</th>
-                        
-                         <th>Costruttore</th>
-                         
-                          <th>Tipo Strumento</th> 
-                           
-                       <th>Freq. Verifica</th>
-                       
-                        <th>Campo Misura</th>
-                           <th>Divisione</th>
-                       
+    <div class="col-lg-12">
+        <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+            <thead>
+                <tr class="active">
+                    <th></th>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Sede</th>
+                    <th>Stato Strumento</th>
+                    <th>Denominazione</th>
+                    <th>Codice Interno</th>
+                    <th>Matricola</th>
+                    <th>Modello</th>
+                    <th>Costruttore</th>
+                    <th>Tipo Strumento</th>
+                    <th>Freq. Verifica</th>
+                    <th>Campo Misura</th>
+                    <th>Divisione</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach items="${listaStrumentiFiltrati}" var="str" varStatus="loop">
+                    <tr class="${loop.index % 2 == 0 ? 'odd' : 'even'} customTooltip"
+                        title="Doppio Click per aprire il dettaglio dello Strumento"
+                        role="row"
+                        id="${str.__id}"
+                        data-encrypted-id="${utl:encryptData(str.__id)}">
 
- </tr></thead>
- 
- <tbody>
+                        <td></td>
+                        <td><c:out value="${str.__id}"/></td>
+                        <td><c:out value="${str.nominativoCliente} [${str.id_cliente}]"/></td>
+                        <td><c:out value="${str.nominativoSede} [${str.id__sede_}]"/></td>
 
- <%
- SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
- for(StrumentoDTO strumento :listaStrumentiFiltrati)
- {
-	 String classValue="";
-	 if(listaStrumentiFiltrati.indexOf(strumento)%2 == 0){
-		 
-		 classValue = "odd";
-	 }else{
-		 classValue = "odd";
-	 }
-	 
-	 %>
-	 <c:set var="str" value="<%= strumento %>" scope="request"/>
-	 	 <tr class="<%=classValue %> customTooltip" title="Doppio Click per aprire il dettaglio dello Strumento" role="row" id="<%=strumento.get__id() %>" data-encrypted-id="${utl:encryptData(str.__id)}">
-	 						 <td></td>		
-	 								
+                        <td id="stato_${str.__id}">
+                            <c:choose>
+                                <c:when test="${str.stato_strumento.id == 7225}">
+                                    <span class="label label-warning">Fuori Servizio</span>
+                                </c:when>
+                                <c:when test="${str.stato_strumento.id == 7226}">
+                                    <span class="label label-success">In Servizio</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="label label-default">Annullato</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
 
-	 								 <td><%=strumento.get__id()%></td>
-	 								 <td id="stato_<%=strumento.get__id() %>">  <span class="label
-	 								 <% if(strumento.getStato_strumento().getId()==7225){
-	 									 out.print("label-warning"); %>
-	 									 ">Fuori Servizio</span>
-	 									 
-	 							<%	}else if(strumento.getStato_strumento().getId()==7226){
-	 									 out.print("label-success"); %>
-	 									 
-	 									 ">In Servizio</span>
-	 							<%	}else {
-	 									 out.print("label-default");%>
-	 									 
-	 									  ">Annullato</span>
-	 						<%		}
-	 								%>
-                       				  </td>
-                       			   <%--   <td><%=strumento.getDenominazione()%></td>
-                    	             <td><%=strumento.getCodice_interno() %></td>
-                    	            
-                    	             
-                    	             <td><%=strumento.getMatricola()%></td>
-                    	            
-                    	        <td><%=strumento.getModello()%></td>   
-                    	          <td><%=strumento.getCostruttore()%></td>
-	  							
-	  							
-	  							   --%>
-	  							   
-	  							    <td><c:out value='${str.denominazione}'/></td>
-	  							    <td><c:out value='${str.codice_interno}'/></td>
-                    	            
-                    	             <td><c:out value='${str.matricola}'/></td>
-                    	              <td><c:out value='${str.modello}'/></td>
-                    	             <td><c:out value='${str.costruttore}'/></td>
-                    	           
-                    	             
-	 								
-                       			       <td> <%=strumento.getTipo_strumento().getNome() %></td> 
-                    	                
-                     	             
-	  							   
-	  							   
-                    	             <td> <%
+                        <td><c:out value="${str.denominazione}"/></td>
+                        <td><c:out value="${str.codice_interno}"/></td>
+                        <td><c:out value="${str.matricola}"/></td>
+                        <td><c:out value="${str.modello}"/></td>
+                        <td><c:out value="${str.costruttore}"/></td>
+                        <td><c:out value="${str.tipo_strumento.nome}"/></td>
 
-                    	             if(strumento.getFrequenza() != 0){
-                    	            	
-                    	            		 out.println(strumento.getFrequenza());
-                    	            
-                   	            	 
-                   	            		 }else{
-                   	            	 	%> 
-                   	            	 		-
-                   	            	 	<%	 
-                   	             	  }
-                    	             
-                    	             %> </td>
-                    	             
-                    	           
-                    	   <%--           <td><%=strumento.getCampo_misura()%></td> --%>
-                    	             
-                    	             <td><c:out value='${str.campo_misura}'/></td>
-                    	             <td><c:out value='${str.risoluzione}'/></td>
-                    	             <%-- 
-                    	                        <td><%=strumento.getRisoluzione()%></td>
-                    	                         --%>
-                    	                        
-                    	              
-	
-	</tr>
-<% 	 
- } 
- %>
- </tbody>
- </table>  
+                        <td>
+                            <c:choose>
+                                <c:when test="${str.frequenza != 0}">
+                                    <c:out value="${str.frequenza}"/>
+                                </c:when>
+                                <c:otherwise>-</c:otherwise>
+                            </c:choose>
+                        </td>
+
+                        <td><c:out value="${str.campo_misura}"/></td>
+                        <td><c:out value="${str.risoluzione}"/></td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
 </div>
-</div>
-
 <div id="modalNuovoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -192,19 +115,17 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
          <div class="col-sm-10">
          
-         <select class="form-control" id="ref_stato_strumento" name="ref_stato_strumento" required>
-                      
-                       <option></option>
-                                            <%
-                                            for(StatoStrumentoDTO str :listaStatoStrumento)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=str.getId() %>"><%=str.getNome() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                      </select>
+        <select class="form-control" id="ref_stato_strumento" name="ref_stato_strumento" required>
+
+    <option></option>
+
+    <c:forEach items="${listaStatoStrumento}" var="str">
+        <option value="${str.id}">
+            <c:out value="${str.nome}" />
+        </option>
+    </c:forEach>
+
+</select>
          
 
      	</div>
@@ -258,37 +179,34 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
         <label for="inputName" class="col-sm-2 control-label">Tipo Strumento:</label>
         <div class="col-sm-10">
 
-                      <select class="form-control" id="ref_tipo_strumento" name="ref_tipo_strumento" required>
-                      
-                       <option></option>
-                                            <%
-                                            for(TipoStrumentoDTO str :listaTipoStrumento)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=str.getId() %>"><%=str.getNome() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                      </select>
+			<select class="form-control" id="ref_tipo_strumento" name="ref_tipo_strumento" required>
+			
+			    <option></option>
+			
+			    <c:forEach items="${listaTipoStrumento}" var="str">
+			        <option value="${str.id}">
+			            <c:out value="${str.nome}" />
+			        </option>
+			    </c:forEach>
+			
+			</select>
     </div>
        </div> 
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Tipo Rapporto:</label>
         <div class="col-sm-10">
 
-                                            <select class="form-control" id="ref_tipo_rapporto"  name="ref_tipo_rapporto" required >
-                                            <option></option>
-                                            <%
-                                            for(TipoRapportoDTO rapp :listaTipoRapporto)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=rapp.getId() %>"><%=rapp.getNoneRapporto() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                                            </select>
+                    <select class="form-control" id="ref_tipo_rapporto" name="ref_tipo_rapporto" required>
+
+					    <option></option>
+					
+					    <c:forEach items="${listaTipoRapporto}" var="rapp">
+					        <option value="${rapp.id}">
+					            <c:out value="${rapp.noneRapporto}" />
+					        </option>
+					    </c:forEach>
+					
+					</select>
                       
     </div>
        </div> 
@@ -340,18 +258,17 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Luogo Verifica:</label>
         <div class="col-sm-10">
-                      <select class="form-control" id="luogo_verifica"  name="luogo_verifica" required >
-                                            <option></option>
-                                            <%
-                                            for(LuogoVerificaDTO luogo :listaLuogoVerifica)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=luogo.getId() %>"><%=luogo.getDescrizione() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                                            </select>
+                      <select class="form-control" id="luogo_verifica" name="luogo_verifica" required>
+
+					    <option></option>
+					
+					    <c:forEach items="${listaLuogoVerifica}" var="luogo">
+					        <option value="${luogo.id}">
+					            <c:out value="${luogo.descrizione}" />
+					        </option>
+					    </c:forEach>
+					
+					</select>
     </div>
        </div> 
 <!-- 	                <div class="form-group">
@@ -377,18 +294,17 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
         <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>
         <div class="col-sm-10">
 
-                       <select class="form-control" id="classificazione"  name="classificazione" required >
-                                            <option></option>
-                                            <%
-                                            for(ClassificazioneDTO clas :listaClassificazione)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=clas.getId() %>"><%=clas.getDescrizione() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                                            </select>
+                      <select class="form-control" id="classificazione" name="classificazione" required>
+
+				    <option></option>
+				
+				    <c:forEach items="${listaClassificazione}" var="clas">
+				        <option value="${clas.id}">
+				            <c:out value="${clas.descrizione}" />
+				        </option>
+				    </c:forEach>
+				
+				</select>
     </div>
        </div> 
 
@@ -595,8 +511,12 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	 
 	
 	$('#formNuovoStrumento').on('submit',function(e){
+		
+		var idSede = '${idSede}';
+		var idCliente = '${idCliente}';
+		
 	    e.preventDefault();
-		nuovoStrumento('<%= idSede %>','<%= idCliente %>')
+		nuovoStrumento(idSede,idCliente)
 
 	});
 	

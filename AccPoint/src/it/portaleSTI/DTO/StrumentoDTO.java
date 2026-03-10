@@ -55,7 +55,8 @@ public class StrumentoDTO {
 			 private int ip;
 			 
 			 //------
-			 
+			 private String nominativoCliente;
+			 private String nominativoSede;
 			 
 			 
 //			 private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
@@ -464,5 +465,21 @@ public class StrumentoDTO {
 				this.ip = ip;
 			}
 
+			public String getNominativoCliente() {
+				return nominativoCliente;
+			}
+
+			public void setNominativoCliente(String nominativoCliente) {
+				this.nominativoCliente = nominativoCliente;
+			}
+
+			public String getNominativoSede() {
+				return nominativoSede;
+			}
+
+			public void setNominativoSede(String nominativoSede) {
+				this.nominativoSede = nominativoSede;
+			}
+			
 			
 }

@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -37,10 +38,14 @@ import it.portaleSTI.DTO.RilTipoRilievoDTO;
 import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.action.GestioneRilievi;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.bo.GestioneRilieviBO;
 
 public class GestioneRilieviDAO {
+	
+	static final Logger logger= Logger.getLogger(GestioneRilievi.class);
+	
 
 	public static ArrayList<RilMisuraRilievoDTO> getListaRilievi() {
 		
@@ -396,6 +401,20 @@ public class GestioneRilieviDAO {
 
 	public static void updateQuota(RilQuotaDTO quota, int id_impronta, Session session) {
 		
+		Query q = session.createQuery(
+			    "select id from RilQuotaDTO where id_ripetizione = :_id_ripetizione and id_impronta = :_id_impronta"
+			);
+
+			q.setParameter("_id_ripetizione", quota.getId_ripetizione());
+			q.setParameter("_id_impronta", id_impronta);
+
+			List<Integer> ids = q.list();
+			
+			for (Integer integer : ids) {
+				
+				logger.info("DAO - AGGIORNAMENTO QUOTA: "+integer +" IMPRONTA "+id_impronta+" RIPETIZIONE "+quota.getId_ripetizione());
+			}
+		
 		Query query = session.createQuery("update RilQuotaDTO set val_nominale = :_val_nominale, coordinata = :_coordinata, "
 				+ "tolleranza_positiva = :_tolleranza_positiva, tolleranza_negativa = :_tolleranza_negativa, "
 				+ "id_ril_simbolo = :_simbolo, um = :_um, id_quota_funzionale = :_quota_funzionale where id_ripetizione = :_id_ripetizione "
@@ -706,6 +725,41 @@ public class GestioneRilieviDAO {
 		lista = (ArrayList<RilQuotaDTO>)query.list();
 	
 		return lista;
+	}
+	
+public static ArrayList<RilQuotaDTO> getQuoteFromImprontaAndRipetizione(int id_impronta, int ripetizione) throws Exception {
+		
+		Connection con =null;
+		PreparedStatement pst;
+		ResultSet rs;
+		
+		ArrayList<RilQuotaDTO> lista = new ArrayList<>();
+		
+		try {
+			con=DirectMySqlDAO.getConnection();
+			pst=con.prepareStatement("SELECT * FROM ril_quota WHERE id_impronta=? AND id_ripetizione=?" );
+			
+			pst.setInt(1, id_impronta);
+			pst.setInt(2, ripetizione);
+			
+			rs=pst.executeQuery();
+			
+			RilQuotaDTO quota=null;
+			while(rs.next()) 
+			{
+				quota= new RilQuotaDTO();
+				quota.setId(rs.getInt("id"));
+				quota.setId_ripetizione(ripetizione);
+				
+				lista.add(quota);
+			}
+			
+			return lista;
+			
+		} finally {
+			con.close();
+		}
+		
 	}
 
 

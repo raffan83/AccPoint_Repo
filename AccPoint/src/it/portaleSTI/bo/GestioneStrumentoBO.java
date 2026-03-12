@@ -528,7 +528,7 @@ public class GestioneStrumentoBO {
 			}
 			else 
 			{
-				strumento.setNominativoSede("Non Associata");
+				strumento.setNominativoSede("Non Associata [0]");
 			}
 		}
 		

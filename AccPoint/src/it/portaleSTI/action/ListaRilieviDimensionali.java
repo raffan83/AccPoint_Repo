@@ -51,7 +51,7 @@ import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 @WebServlet("/listaRilieviDimensionali.do")
 public class ListaRilieviDimensionali extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	static final Logger logger = Logger.getLogger(ListaRilieviDimensionali.class);
+	static final Logger logger = Logger.getLogger(GestioneRilievi.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -86,7 +86,7 @@ public class ListaRilieviDimensionali extends HttpServlet {
 		
 		try {
 			
-			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
+			logger.info(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 			
 			request.getSession().setAttribute("current_year", Utility.getCurrentYearFormat(0));
 			

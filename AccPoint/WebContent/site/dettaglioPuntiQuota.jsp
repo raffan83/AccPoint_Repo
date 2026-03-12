@@ -426,6 +426,7 @@
 	 var settings;
 	 var container = document.getElementById('hot');
 	 var tipo_rilievo;
+	 
   $(document).ready(function(){
 	  
 	  max_riferimento = '${max_riferimento}';
@@ -700,12 +701,25 @@
 	    	this.render();
 	    	
 	    },
-	    afterChange: function (change, source) {
+	    afterChange: function (changes, source) {
+	    	
+	    	
+	    	  // Nessuna modifica
+	        if (!changes || changes.length === 0) {
+	            return;
+	        }
+
+	        // Esegui il salvataggio SOLO per modifiche utente reali
+	        // Ignora caricamenti iniziali, set programmati e ricostruzioni tabella
+	        if (source !== 'edit' && source !== 'CopyPaste' && source !== 'Autofill.fill') {
+	            return;
+	        }
+	        
 	    	var send = true;
 	    	
-	    	if(change!=null){
-	    		var row_change = change[0][0];
-	    		var col_change = change[0][1];
+	    	if(changes!=null){
+	    		var row_change = changes[0][0];
+	    		var col_change = changes[0][1];
 	    	}	    
 	    	
 	    	if((col_change > 7 && col_change!=(n+8)) || col_change == 3 || col_change == 6 || col_change == 7){
@@ -852,10 +866,10 @@
 	    	if(col_change == 2){
 	    		var data_cell = this.getDataAtCell(row_change, col_change);
 	    		if(data_cell=="ANGOLO"){
-	    			this.setDataAtCell(row_change, 5, "Â°"); 
+	    			this.setDataAtCell(row_change, 5, "°", "internal"); 
 	     	   	  }
 	    		else{
-	    			this.setDataAtCell(row_change, 5, "mm"); 
+	    			this.setDataAtCell(row_change, 5, "mm", "internal");
 	    		}
 	    		if(data_cell!="Nessuno"){
 	    			hot.getCellMeta(row_change, col_change).renderer = imageRenderer;	
@@ -932,7 +946,7 @@
 	    },
 		  afterSelection: function(row,column){
 			  if(permesso){
-			  selectedRow = hot.getDataAtRow(row);
+			  selectedRow = this.getDataAtRow(row);
 			  $(this).addClass('currentRow');			
 				
 			        var n_pezzi = ${numero_pezzi};
@@ -1078,19 +1092,18 @@
 			var n = endRow - startRow;
 			var ids = [];
 			if(startRow == endRow){
-				ids.push(hot.getDataAtCell(startRow,0));
+			    ids.push(this.getDataAtCell(startRow,0));
 			}else{
-				for(var i = 0;i<=n;i++){
-					if(hot.getDataAtCell((startRow + i),0)!=null){
-						ids.push(hot.getDataAtCell((startRow + i),0));	
-					}					
-				}
+			    for(var i = 0; i <= n; i++){
+			        if(this.getDataAtCell(startRow + i, 0) != null){
+			            ids.push(this.getDataAtCell(startRow + i, 0));
+			        }
+			    }
 			}
 			
 			var str = JSON.stringify(ids);
-			//$('#ids').val(str);
 			$('#id_quota').val(str);
-			console.log("test");
+
 		}
 
 	  }

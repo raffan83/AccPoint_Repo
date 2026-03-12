@@ -431,6 +431,11 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getIntrventoFromPacco(id, session);
 	}
 
+	public static ArrayList<RilQuotaDTO> getQuoteFromImprontaAndRipetizione(int id, int id_ripetizione) throws Exception {
+		// TODO Auto-generated method stub
+		return GestioneRilieviDAO.getQuoteFromImprontaAndRipetizione(id,id_ripetizione);
+	}
+
 
 
 }

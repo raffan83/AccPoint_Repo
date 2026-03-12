@@ -81,6 +81,7 @@
 
  <th>Data Misura</th>
    <th>Obsoleta</th>
+   <th>Utilizzatore</th>
     <th>Operatore</th>
     <th>Numero certificato</th>
  <th style="min-width:280px">Azioni</th>
@@ -131,7 +132,7 @@
 
 	
  		
- 		
+ 	<td>${certificato.misura.strumento.utilizzatore}</td>
 	<td>${certificato.misura.interventoDati.utente.nominativo}</td>
 	<td>${certificato.id}</td>
 		<td class="actionClass" align="center" style="min-width:250px">
@@ -399,7 +400,7 @@
 
 	      	  	$(this).append( '<div><input class="inputsearchtable" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	        }else if( $(this).index() != 0 && $(this).index() != 1){
-	      	  	$(this).append( '<div><input class="inputsearchtable" type="text" disabled /></div>');
+	      	  	$(this).append( '<div><input class="inputsearchtable" type="text"  /></div>');
 	        }else	if($(this).index() == 1){
 	          	  	$(this).append( '<div><input class="" id="checkAll" type="checkbox" /></div>');
 	            }

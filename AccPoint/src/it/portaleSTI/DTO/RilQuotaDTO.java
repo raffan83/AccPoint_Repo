@@ -124,7 +124,7 @@ public class RilQuotaDTO {
 	}
 
 	public String toString() {
-	    return "RilQuotaDTO - ril_quota {" +
+	    return "RilQuotaDTO {" +
 	            "id=" + id +
 	            ", id_ripetizione=" + id_ripetizione +
 	            ", val_nominale='" + val_nominale + '\'' +

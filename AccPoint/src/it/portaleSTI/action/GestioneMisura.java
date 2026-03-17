@@ -90,21 +90,7 @@ public class GestioneMisura extends HttpServlet {
 			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 			
 			if(action.equals("lista")) {
-				
-				
-//				ArrayList<MisuraDTO> lista_misureAll = GestioneMisuraDAO.getListaMisure(session);
-//				
-//				for (MisuraDTO misuraDTO : lista_misureAll) {
-//					if(misuraDTO.getStrumento().getTipoRapporto().getId()==7201) {
-//						String indice = GestioneMisuraBO.calcolaIndicePrestazione(misuraDTO);
-//						misuraDTO.setIndice_prestazione(indice);
-//						misuraDTO.getStrumento().setIndice_prestazione(indice);
-//						session.update(misuraDTO);
-//						session.update(misuraDTO.getStrumento());
-//					}
-//				}
-//				
-				
+							
 				String date_from = request.getParameter("date_from");
 				String date_to = request.getParameter("date_to");
 				
@@ -129,7 +115,6 @@ public class GestioneMisura extends HttpServlet {
 					
 				}
 								
-				//ArrayList<MisuraDTO> lista_misure = GestioneMisuraBO.getListaMisurePerData(start, end, false, session);
 				ArrayList<String> lista_misure = DirectMySqlDAO.getListaMisureFromDate(df.format(start), df.format(end),utente);
 				
 				df = new SimpleDateFormat("dd/MM/yyyy");	

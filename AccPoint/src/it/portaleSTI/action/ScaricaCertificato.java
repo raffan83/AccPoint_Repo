@@ -267,6 +267,8 @@ public class ScaricaCertificato extends HttpServlet {
 			
 			//	String id_pacco = request.getParameter("id_pacco");
 				String id_misura = request.getParameter("id_misura");
+				
+				id_misura= Utility.decryptData(id_misura);
 				String pack = request.getParameter("pack");
 				String note = "";				
 				String filename = "";
@@ -299,7 +301,7 @@ public class ScaricaCertificato extends HttpServlet {
 					
 					ArrayList<MisuraDTO> listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(misura.getStrumento().get__id(), session);
 					request.getSession().setAttribute("listaMisure", listaMisure);
-					myObj.addProperty("id_strumento", misura.getStrumento().get__id());
+					myObj.addProperty("id_strumento", Utility.encryptData(""+misura.getStrumento().get__id()));
 					out.print(myObj);			
 					
 

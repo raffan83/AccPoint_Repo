@@ -1264,4 +1264,21 @@ public class GestioneCertificatoBO {
 		return GestioneCertificatoDAO.getListaAnni(idCliente, idSede, session);
 	}
 
+	public static boolean certificatiValidiAlDownload(String id, Session session) {
+		
+		CertificatoDTO certificato = getCertificatoById(id,session);
+		
+		MisuraDTO misura = certificato.getMisura();
+	    
+		if(misura.getListaPunti().size()==0) 
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+		
+	}
+
 }

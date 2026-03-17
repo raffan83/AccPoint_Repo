@@ -337,7 +337,8 @@ ${pacco.id}
                   <label>Tipologia</label>
                   
                   <select name="tipologia" id="tipologia" data-placeholder="Seleziona Tipologia" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
-                  <option value="1">Cliente</option>
+                    
+                    <option value="1">Cliente</option>
              		<option value="2">Fornitore</option>
                   </select>
         </div>
@@ -1393,6 +1394,14 @@ ${pacco.id}
 
 
 $(document).ready(function () {
+	
+ $.fn.modal.Constructor.prototype.enforceFocus = function() {};
+	 
+	 $('.select2').select2({
+	        dropdownParent: $('#myModalCreaNuovoPacco'),
+	        width: '100%'
+	    });
+	 
 
     const righe = $('#tabellaItemPacco tbody tr').length;
 

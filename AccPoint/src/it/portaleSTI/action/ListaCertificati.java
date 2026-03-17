@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -33,6 +32,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
 import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
@@ -40,35 +40,18 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
-import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.SedeDTO;
-import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.DTO.VerAccuratezzaDTO;
-import it.portaleSTI.DTO.VerCertificatoDTO;
-import it.portaleSTI.DTO.VerDecentramentoDTO;
-import it.portaleSTI.DTO.VerInterventoDTO;
-import it.portaleSTI.DTO.VerLinearitaDTO;
-import it.portaleSTI.DTO.VerMisuraDTO;
-import it.portaleSTI.DTO.VerMobilitaDTO;
-import it.portaleSTI.DTO.VerRipetibilitaDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateCertificatoSE;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCertificatoBO;
-import it.portaleSTI.bo.GestioneInterventoBO;
-import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
-import it.portaleSTI.bo.GestioneRilieviBO;
-import it.portaleSTI.bo.GestioneSicurezzaElettricaBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
-import it.portaleSTI.bo.GestioneVerCertificatoBO;
-import it.portaleSTI.bo.GestioneVerInterventoBO;
 import it.portaleSTI.bo.SendEmailBO;
 import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaBolla;
 import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaElettronica;
@@ -608,7 +591,51 @@ public class ListaCertificati extends HttpServlet {
 					myObj.addProperty("messaggio", "Sono stati annullati "+jsArr.size()+" certificati ");
 			        out.println(myObj.toString());
 			        
-			}else if(action.equals("generaCertificatiMulti")) {
+			}else if(action.equals("validaCertificatiMulti")) {
+
+			    ajax = true;
+			    response.setContentType("application/json");
+			    PrintWriter out = response.getWriter();
+
+			    try {
+			        String selezionati = request.getParameter("dataIn");
+
+			        JsonElement jelement = new JsonParser().parse(selezionati);
+			        JsonObject jsonObj = jelement.getAsJsonObject();
+			        JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
+
+			        JsonArray validi = new JsonArray();
+			        JsonArray nonValidi = new JsonArray();
+
+			        for (int i = 0; i < jsArr.size(); i++) {
+			            String id = jsArr.get(i).toString().replaceAll("\"", "");
+
+			           boolean certificato = GestioneCertificatoBO.certificatiValidiAlDownload(id, session);
+
+			            if (certificato)
+			            {
+			            	 validi.add(new JsonPrimitive(id));
+			            } 
+			            else 
+			            {
+			                nonValidi.add(new JsonPrimitive(id));
+			            }
+			        }
+
+			        myObj.addProperty("success", true);
+			        myObj.add("validi", validi);
+			        myObj.add("nonValidi", nonValidi);
+			        myObj.addProperty("totValidi", validi.size());
+			        myObj.addProperty("totNonValidi", nonValidi.size());
+
+			    } catch (Exception e) {
+			        myObj.addProperty("success", false);
+			        myObj.addProperty("messaggio", "Errore durante la validazione dei certificati");
+			    }
+
+			    out.println(myObj.toString());
+			}
+/*			else if(action.equals("generaCertificatiMulti")) {
  				ajax = false;
 
 				String selezionati = request.getParameter("dataIn");
@@ -679,6 +706,75 @@ public class ListaCertificati extends HttpServlet {
 				    outp.close();
 				    theDir.delete();
 			        
+			}*/
+			else if(action.equals("generaCertificatiMulti")) {
+			    ajax = false;
+
+			    String selezionati = request.getParameter("dataIn");
+
+			    JsonElement jelement = new JsonParser().parse(selezionati);
+			    JsonObject jsonObj = jelement.getAsJsonObject();
+			    JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
+
+			    PDFMergerUtility ut = new PDFMergerUtility();
+			    ArrayList<File> fileAllegati = new ArrayList<File>();
+
+			    ServletContext context = getServletContext();
+
+			    for (int i = 0; i < jsArr.size(); i++) {
+			        String id = jsArr.get(i).toString().replaceAll("\"", "");
+
+			        CertificatoDTO cert = GestioneCertificatoBO.getCertificatoById(id, session);
+			        File certificato = GestioneCertificatoBO.createCertificatoMulti(
+			            id, "", session, context, cert.getUtenteApprovazione()
+			        );
+
+			        if (certificato != null) {
+			            ut.addSource(certificato);
+
+			            if (cert.getMisura().getLat().equals("N")) {
+			                fileAllegati.add(certificato);
+			            }
+			        }
+			    }
+
+			    if (jsArr.size() == 0) {
+			        return;
+			    }
+
+			    File theDir = new File(Costanti.PATH_FOLDER + "//temp//");
+			    if (!theDir.exists()) {
+			        theDir.mkdir();
+			    }
+
+			    String timestamp = String.valueOf(System.currentTimeMillis());
+			    ut.setDestinationFileName(Costanti.PATH_FOLDER + "//temp//" + timestamp + ".pdf");
+			    ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+
+			    File d = new File(Costanti.PATH_FOLDER + "//temp//" + timestamp + ".pdf");
+			    FileInputStream fileIn = new FileInputStream(d);
+
+			    response.setContentType("application/pdf");
+			    response.setHeader("Content-Disposition", "attachment;filename=" + timestamp + ".pdf");
+
+			    ServletOutputStream outp = response.getOutputStream();
+
+			    byte[] buffer = new byte[4096];
+			    int length;
+			    while ((length = fileIn.read(buffer)) != -1) {
+			        outp.write(buffer, 0, length);
+			    }
+
+			    fileIn.close();
+			    d.delete();
+
+			    for (File certificato : fileAllegati) {
+			        certificato.delete();
+			    }
+
+			    outp.flush();
+			    outp.close();
+			    theDir.delete();
 			}
 			
 			else if(action.equals("certificati_misure_campione")) {

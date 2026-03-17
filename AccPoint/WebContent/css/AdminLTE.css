@@ -4407,6 +4407,9 @@ table.text-center th {
 .modal-success .modal-body,
 .modal-success .modal-header,
 .modal-success .modal-footer,
+.modal-success-no-reload .modal-body,
+.modal-success-no-reload .modal-header,
+.modal-success-no-reload .modal-footer,
 .modal-danger .modal-body,
 .modal-danger .modal-header,
 .modal-danger .modal-footer {
@@ -4457,6 +4460,9 @@ table.text-center th {
 .alert-success,
 .label-success,
 .modal-success .modal-body {
+  background-color: #00a65a !important;
+}
+.modal-success-no-reload .modal-body {
   background-color: #00a65a !important;
 }
 .bg-navy {
@@ -4516,6 +4522,10 @@ table.text-center th {
 .bg-green-active,
 .modal-success .modal-header,
 .modal-success .modal-footer {
+  background-color: #008d4c !important;
+}
+.modal-success-no-reload .modal-header,
+.modal-success-no-reload .modal-footer {
   background-color: #008d4c !important;
 }
 .bg-navy-active {

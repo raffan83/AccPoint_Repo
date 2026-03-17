@@ -906,7 +906,12 @@
  $(document).ready(function() {
 	 
 	
-	 $('.select2').select2();
+	 $.fn.modal.Constructor.prototype.enforceFocus = function() {};
+	 
+	 $('.select2').select2({
+	        dropdownParent: $('#myModalModificaDdt'),
+	        width: '100%'
+	    });
 	 
 	  var data_ora_trasporto = $('#data_ora_trasporto').val()
 	   var data_ddt = $('#data_ddt').val();
@@ -1060,37 +1065,31 @@ $("#destinazione").change(function() {
 		  	}
 	 
 		  function initSelect2(id_input) {
-			  
+			    $(id_input).select2({
+			        data: mockData(),
+			        placeholder: "",
+			        multiple: false,
+			        dropdownParent: $('#myModalModificaDdt'),
+			        query: function(q) {
+			            var pageSize = 20;
+			            var results = [];
+			            var that = this;
 
-		  	$(id_input).select2({
-		  	    data: mockData(),
-		  	    placeholder: "",
-		  	    multiple: false,
-		  	    // query with pagination
-		  	    query: function(q) {
-		  	      var pageSize,
-		  	        results,
-		  	        that = this;
-		  	      pageSize = 20; // or whatever pagesize
-		  	      results = [];
-		  	      if (q.term && q.term !== '') {
-		  	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
-		  	        results = _.filter(x, function(e) {
-		  	        	
-		  	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
-		  	        });
-		  	      } else if (q.term === '') {
-		  	        results = that.data;
-		  	      }
-		  	      q.callback({
-		  	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
-		  	        more: results.length >= q.page * pageSize,
-		  	      });
-		  	    },
-		  	  });
-		  	
-		  	
-		  }
+			            if (q.term && q.term !== '') {
+			                results = _.filter(that.data, function(e) {
+			                    return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+			                });
+			            } else if (q.term === '') {
+			                results = that.data;
+			            }
+
+			            q.callback({
+			                results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+			                more: results.length >= q.page * pageSize
+			            });
+			        }
+			    });
+			}
 				
 		
   </script>

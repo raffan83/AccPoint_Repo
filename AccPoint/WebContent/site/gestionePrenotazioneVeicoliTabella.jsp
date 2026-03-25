@@ -200,8 +200,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
 
 #tabPrenotazione tbody tr {
     width: auto !important;
-    height: 100px !important;
-    overflow: hidden;
+ 
 }
 
  .tooltip {
@@ -516,70 +515,56 @@ function initializeTimepicker(start, end) {
 
 
 
-var settings ={
-		language: {
-        	emptyTable : 	"Nessun dato presente nella tabella",
-        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-        	infoPostFix:	"",
-        infoThousands:	".",
-        lengthMenu:	"Visualizza _MENU_ elementi",
-        loadingRecords:	"Caricamento...",
-        	processing:	"Elaborazione...",
-        	search:	"Cerca:",
-        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-        	paginate:	{
-	        	first:	"Inizio",
-	        	previous:	"Precedente",
-	        	next:	"Successivo",
-	        last:	"Fine",
-        	},
-        	
-        aria:	{
-	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-        }
-    },
-    dom: 'rt<"bottom"ip>',
-    pageLength: 100,
-    "order": [[ 2, "asc" ]],
-      paging: false, 
-      ordering: true,
-      info: true, 
-      searchable: false, 
-//      targets: 0,
-      responsive: false,
-      scrollX: "100%",
-      //scrollTo: 'cell',
-      searching: true,      
-     scrollY: "1500px",
-      "autoWidth": false,
-      
-         fixedColumns: {
-          leftColumns: 3,
-          heightMatch: 'auto'// Numero di colonne fisse
-      },    
-      
-      stateSave: true,	
-      columnDefs: [
-    	  {
-    		  targets: '_all',
-    		 createdCell: editableCell
-    	  } 
-    	  
-    	  
-               ], 	
-               fixedHeader: true, 
-
-   
-	      buttons: [   
-	     {
-				 extend: 'excel',
-  	            text: 'Esporta Excel'  
-			  } ]
-               
-    } 
+ var settings = {
+		    language: {
+		        emptyTable: "Nessun dato presente nella tabella",
+		        info: "Vista da _START_ a _END_ di _TOTAL_ elementi",
+		        infoEmpty: "Vista da 0 a 0 di 0 elementi",
+		        infoFiltered: "(filtrati da _MAX_ elementi totali)",
+		        infoPostFix: "",
+		        infoThousands: ".",
+		        lengthMenu: "Visualizza _MENU_ elementi",
+		        loadingRecords: "Caricamento...",
+		        processing: "Elaborazione...",
+		        search: "Cerca:",
+		        zeroRecords: "La ricerca non ha portato alcun risultato.",
+		        paginate: {
+		            first: "Inizio",
+		            previous: "Precedente",
+		            next: "Successivo",
+		            last: "Fine"
+		        },
+		        aria: {
+		            srtAscending: ": attiva per ordinare la colonna in ordine crescente",
+		            sortDescending: ": attiva per ordinare la colonna in ordine decrescente"
+		        }
+		    },
+		    dom: 'rt<"bottom"ip>',
+		    pageLength: 100,
+		    order: [[2, "asc"]],
+		    paging: false,
+		    ordering: true,
+		    info: true,
+		    searchable: false,
+		    responsive: false,
+		    searching: true,
+		    scrollX: true,
+		    scrollY: "1500px",
+		    scrollCollapse: true,
+		    autoWidth: false,
+		    fixedColumns: {
+		        leftColumns: 3,
+		        heightMatch: 'auto'
+		    },
+		    stateSave: true,
+		    columnDefs: [
+		        {
+		            targets: '_all',
+		            createdCell: editableCell
+		        }
+		    ]
+		    // fixedHeader: true  --> meglio toglierlo
+		};
  
  
 
@@ -788,7 +773,7 @@ var visibleHeight = windowHeight - scrollTop;
         $('.dataTables_scrollHead').css('top',windowScrollTop - windowHeight);
   //  }
 }); */
-
+/*
 $(window).on('scroll', function() {
     var windowScrollTop = $(window).scrollTop();
     var tableHeaderHeight = $('.dataTables_scrollHead').outerHeight();
@@ -826,7 +811,7 @@ $(window).on('scroll', function() {
     }
 });
 
-
+*/
 
 
 
@@ -923,7 +908,34 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 					table = $('#tabPrenotazione').DataTable(settings);
 				}
 
+	            $(document).off('keydown.scrollOrizzontaleTabella').on('keydown.scrollOrizzontaleTabella', function(e) {
+
+	                var isEditable = $(document.activeElement).is('input, textarea, select') || $(document.activeElement).attr('contenteditable') === 'true';
+
+	                if (isEditable) {
+	                    return;
+	                }
+
+	                var scrollContainer = $('#tabPrenotazione').closest('.dataTables_wrapper').find('.dataTables_scrollBody');
+
+	                if (!scrollContainer.length) {
+	                    return;
+	                }
+
+	                var passo = 120;
+
+	                if (e.key === 'ArrowRight') {
+	                    e.preventDefault();
+	                    scrollContainer.scrollLeft(scrollContainer.scrollLeft() + passo);
+	                }
+
+	                if (e.key === 'ArrowLeft') {
+	                    e.preventDefault();
+	                    scrollContainer.scrollLeft(scrollContainer.scrollLeft() - passo);
+	                }
+	            });
 	            
+	      setTimeout(function() {    
 	            for (var i = 0; i < lista_prenotazioni.length; i++) {
 	                var id_inizio = lista_prenotazioni[i].veicolo.id + "_" + lista_prenotazioni[i].cella_inizio;
 	                var id_fine = lista_prenotazioni[i].veicolo.id + "_" + lista_prenotazioni[i].cella_fine;
@@ -946,7 +958,8 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 
 	                var posizionePartenza = cellaInizio.offset();
 	                var posizioneArrivo = cellaFine.offset();
-	                
+	               
+	     
 	                if(lista_prenotazioni[i].manutenzione==1){
 	                	var text = "MANUTENZIONE";
 	                }else{
@@ -972,16 +985,23 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	                	 var testo = text + " (" + lista_prenotazioni[i].data_inizio_prenotazione.split(" ")[1] + " - " + lista_prenotazioni[i].data_fine_prenotazione.split(" ")[1] + ")";
 	 	                var larghezzaTesto = getTextWidth(testo, '12px Arial') + 20; // Aggiungi un margine per una migliore presentazione
 	 	                
-	 	                if(posizioneArrivo == null){
-	 	                	var id_cella_inizio = lista_prenotazioni[i].cella_inizio;
-	 	                	var id_cella_fine = lista_prenotazioni[i].cella_fine;
-	 	                	while (posizioneArrivo == null && id_cella_fine>=id_cella_inizio){
-	 	                		id_cella_fine--;
-	 	                	
-	 	                		posizioneArrivo = $('#'+id_fine.split("_")[0]+"_"+id_cella_fine).offset();
-	 	                	}
-	 	                }
+	 	               if (posizioneArrivo == null) {
+	 	            	    var id_cella_inizio = lista_prenotazioni[i].cella_inizio;
+	 	            	    var id_cella_fine = lista_prenotazioni[i].cella_fine;
 
+	 	            	    while (posizioneArrivo == null && id_cella_fine >= id_cella_inizio) {
+	 	            	        posizioneArrivo = $('#' + id_fine.split("_")[0] + "_" + id_cella_fine).offset();
+	 	            	        if (posizioneArrivo == null) {
+	 	            	            id_cella_fine--;
+	 	            	        }
+	 	            	    }
+	 	            	}
+
+	 	              if (posizionePartenza == null || posizioneArrivo == null) {
+	 	            	    console.log("Salto prenotazione per coordinate mancanti:", id_prenotazione, id_inizio, id_fine);
+	 	            	    continue;
+	 	            	}
+	 	              
 	 	                var larghezza =  Math.abs(posizioneArrivo.left - posizionePartenza.left + cellaInizio.outerWidth());
 	 	            //   var larghezza = 115;
 	 	   
@@ -1298,6 +1318,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	          scrollToColumn(today - coltoday) 
 	            
 	         pleaseWaitDiv.modal('hide');
+	      }, 100);
 	        // pleaseWaitDiv.modal('hide');
 	        // $('[data-toggle="tooltip"]').tooltip();
 	        },

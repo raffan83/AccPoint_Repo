@@ -455,7 +455,11 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
         				AmScAttrezzaturaDTO attrezzatura = new AmScAttrezzaturaDTO();
         				attrezzatura.setDescrizione(descrizione_attrezzatura);
         				attrezzatura.setIdCliente(Integer.parseInt(cliente));
-        				attrezzatura.setIdSede(Integer.parseInt(sede));
+        				if(sede!=null && sede.length()>0) 
+        				{
+        					attrezzatura.setIdSede(Integer.parseInt(sede.split("_")[0]));
+        				}
+        				
         				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
         				attrezzatura.setNome_cliente(cl.getNome());
 

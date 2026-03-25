@@ -9,6 +9,10 @@ import java.util.Set;
 public class MagPaccoDTO  implements Serializable{
 
 	private int id;
+	private String  idEncrypt;
+	private double rapportoLavorato;
+	private String stringaLavorazionePacco;
+	private String rowClass;
 	private Date data_lavorazione;
 	private MagStatoLavorazioneDTO stato_lavorazione;
 	private int id_cliente;
@@ -55,8 +59,41 @@ public class MagPaccoDTO  implements Serializable{
 	public int getId() {
 		return id;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public String getStringaLavorazionePacco() {
+		return stringaLavorazionePacco;
+	}
+	public void setStringaLavorazionePacco(String stringaLavorazionePacco) {
+		this.stringaLavorazionePacco = stringaLavorazionePacco;
+	}
+	public double getRapportoLavorato() {
+		return rapportoLavorato;
+	}
+	public void setRapportoLavorato(double rapportoLavorato) {
+		this.rapportoLavorato = rapportoLavorato;
+	}
+	public String getIdEncrypt() {
+		return idEncrypt;
+	}
+	public void setIdEncrypt(String idEncrypt) {
+		this.idEncrypt = idEncrypt;
+	}
+	
+	public String getRowClass() {
+		return rowClass;
+	}
+	public void setRowClass(String rowClass) {
+		this.rowClass = rowClass;
+	}
+	public void setId_cliente_util(Integer id_cliente_util) {
+		this.id_cliente_util = id_cliente_util;
+	}
+	public void setId_sede_util(Integer id_sede_util) {
+		this.id_sede_util = id_sede_util;
 	}
 	public Date getData_lavorazione() {
 		return data_lavorazione;

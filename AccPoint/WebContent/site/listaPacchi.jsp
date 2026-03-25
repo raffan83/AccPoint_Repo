@@ -64,7 +64,7 @@
 <div class="row">
 <div class="col-sm-12">
 
-<button class="btn btn-primary" onClick="creaNuovoPacco()">Nuovo Pacco</button>
+<button class="btn btn-primary" id="btnNuovoPacco">Nuovo Pacco</button>
 <button class="btn btn-primary customTooltip" onClick="pacchiEsterno()" title="Click per visualizzare i pacchi fuori dal magazzino" style="margin-left:5px">Pacchi all'esterno</button>
 <button class="btn btn-primary customTooltip" onClick="pacchiInMagazzino()" title="Click per visualizzare i pacchi in magazzino" style="margin-left:5px">Pacchi in magazzino</button>
 <!--  <button class="btn btn-primary btnFiltri pull-right" id="btnFiltri_APERTO" onClick="filtraPacchi('APERTO')" >APERTI</button>
@@ -1392,24 +1392,412 @@ ${pacco.id}
 
 <script type="text/javascript">
 
+var commessa_options;
 
-$(document).ready(function () {
+$(document).ready(function() {
+
+	$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+		 
+	const righe = $('#tabellaItemPacco tbody tr').length;
+
+	if (righe > 0) 
+	{
+	        $('#assegnaAttivitaBox').show();
+	}
+
+
+commessa_options = $('#commessa option').clone();
+$('.dropdown-toggle').dropdown();
+
+initSelect2('#select1');
+initSelect2('#cliente_utilizzatore');
+initSelect2('#destinatario', 'Seleziona Mittente...');
+initSelect2('#destinazione', 'Seleziona Destinazione...');
+
+var columsDatatables2 = [];
+
+$('#tabItem thead th').each( function () {
 	
- $.fn.modal.Constructor.prototype.enforceFocus = function() {};
-	 
-	 $('.select2').select2({
-	        dropdownParent: $('#myModalCreaNuovoPacco'),
-	        width: '100%'
-	    });
-	 
+	var title = $('#tabItem thead th').eq( $(this).index() ).text();
+	
+	$(this).append( '<div><input class="inputsearchtable" style="width:100%" id="search_item_'+$(this).index()+'" type="text"  value=""/></div>');
+	
+	});
 
-    const righe = $('#tabellaItemPacco tbody tr').length;
 
-    if (righe > 0) {
-        $('#assegnaAttivitaBox').show();
-    }
+
+
+
+$('#tabPM thead th').each( function () {
+if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+ var title = $('#tabPM thead th').eq( $(this).index() ).text();
+
+ $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 
 });
+
+
+
+
+var columsDatatables3 = [];
+
+$('#tabItemRil thead th').each( function () {
+	
+	var title = $('#tabItemRil thead th').eq( $(this).index() ).text();
+	
+	$(this).append( '<div><input class="inputsearchtable" style="width:100%" id="search_item_ril_'+$(this).index()+'" type="text"  value=""/></div>');
+	
+	});
+
+
+
+
+
+
+var stato="${stato}";
+
+ if(stato=='chiusi'){
+	$('#btnFiltri_CHIUSO').attr('disabled', true);
+}
+else if(stato=='tutti'){
+	
+	$('#btnTutti').attr('disabled', true);
+}
+else{
+	$('#btnFiltri_APERTO').attr('disabled', true);
+	
+}
+
+
+
+
+$('#select3').parent().hide();
+
+//selection1= $('#select1').html();
+selection1= $('#cliente_appoggio').html();
+
+/*  	$('#select1').select2({
+	placeholder : "Seleziona Cliente..."
+}); 
+ */
+
+
+/* $('#destinatario').select2({
+		placeholder : "Seleziona Mittente..."
+}); */
+$('#sede_destinatario').select2({
+ placeholder : "Seleziona Sede Mittente..."
+});
+
+
+$('.datepicker').datepicker({
+	format : "dd/mm/yyyy"
+});
+
+$('.datetimepicker').datetimepicker({
+	format : "dd/mm/yyyy hh:ii"
+}); 
+
+var start = "${dateFrom}";
+var end = "${dateTo}";
+
+$('input[name="datarange"]').daterangepicker({
+   locale: {
+     format: 'DD/MM/YYYY'
+   
+   }
+}, 
+function(start, end, label) {
+
+});
+
+if(start!=null && start!=""){
+	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
+	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
+
+	$("#tipo_data option[value='']").remove();
+	$('#tipo_data option[value="${tipo_data}"]').attr("selected", true);
+}
+
+var pacchi_esterno = ${pacchi_esterno};
+if(pacchi_esterno){
+	$('#tornaMagazzino').show();
+}else{
+	$('#tornaMagazzino').hide();
+}
+
+
+table = $('#tabPM').DataTable({
+	language: {
+       	emptyTable : 	"Nessun dato presente nella tabella",
+       	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+       	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+       	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+       	infoPostFix:	"",
+       infoThousands:	".",
+       lengthMenu:	"Visualizza _MENU_ elementi",
+       loadingRecords:	"Caricamento...",
+       	processing:	"Elaborazione...",
+       	search:	"Cerca:",
+       	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+       	paginate:	{
+	        	first:	"Inizio",
+	        	previous:	"Precedente",
+	        	next:	"Successivo",
+	        last:	"Fine",
+       	},
+       aria:	{
+	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+       }
+   },
+   pageLength: 100,
+   "order": [[ 25, "desc" ]],
+     paging: true, 
+     ordering: true,
+     info: true, 
+     searchable: false, 
+     targets: 0,
+     responsive: false,
+     scrollX: true,
+     scrollY: "450px",
+     stateSave: true,
+     columnDefs: [
+   	    /*  { responsivePriority: 1, targets: 7 },
+                 { responsivePriority: 2, targets: 1 },
+                  { responsivePriority: 3, targets: 0 }, 
+                  { responsivePriority: 4, targets: 8 }, */
+                 // { responsivePriority: 5, targets: 16 }
+   //	  { responsivePriority: 1, targets: 9 },
+   //	  { responsivePriority: 2, targets: 8 }
+              ], 	        
+	      buttons: [   
+	    	,{
+           extend: 'excel',
+           text: 'Esporta Excel',
+            exportOptions: {
+               modifier: {
+                   page: 'current'
+               }
+           } 
+       },
+	    	  {
+	            extend: 'colvis',
+	            text: 'Nascondi Colonne'  	                   
+		  } ]
+              
+   });
+	
+table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
+    $('.inputsearchtable').on('click', function(e){
+       e.stopPropagation();    
+    });
+//DataTable
+//table = $('#tabPM').DataTable();
+//Apply the search
+table.columns().eq( 0 ).each( function ( colIdx ) {
+$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+ table
+     .column( colIdx )
+     .search( this.value )
+     .draw();
+} );
+} );  
+table.columns.adjust().draw();
+
+
+$('#tabPM').on( 'page.dt', function () {
+$('.customTooltip').tooltipster({
+   theme: 'tooltipster-light'
+});
+
+$('.removeDefault').each(function() {
+  $(this).removeClass('btn-default');
+})
+
+
+});
+coloraRighe(table);
+
+var val = $('#inputsearchtable_4').val();
+if(val!=""){
+$('#filtro_commessa option[value=""]').remove();
+$('#filtro_commessa option[value="'+val+'"]').attr('selected', true);
+}
+
+table_item = $('#tabItem').DataTable({
+language: {
+   	emptyTable : 	"Nessun dato presente nella tabella",
+   	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+   	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+   	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+   	infoPostFix:	"",
+   infoThousands:	".",
+   lengthMenu:	"Visualizza _MENU_ elementi",
+   loadingRecords:	"Caricamento...",
+   	processing:	"Elaborazione...",
+   	search:	"Cerca:",
+   	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+   	paginate:	{
+       	first:	"Inizio",
+       	previous:	"Precedente",
+       	next:	"Successivo",
+       last:	"Fine",
+   	},
+   aria:	{
+       	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+       sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+   }
+},
+pageLength: 10,
+paging: true, 
+ordering: true,
+"order": [ 1, "desc" ],  
+info: true, 
+searchable: false, 
+targets: 0,
+responsive: false,
+scrollX: true,
+stateSave: true,
+searching: true,      // toglie "Cerca:" globale
+lengthChange: false,   // toglie "Visualizza ... elementi"
+info: false,           // (opzionale) toglie "Vista da ... a ..."
+dom: 'rtp',  
+columns : [
+	 {"data" : "id_proprio"},
+	 {"data" : "tipo"},
+	 {"data" : "denominazione"},
+	 {"data" : "quantita"},
+	 {"data" : "stato"},
+	 {"data" : "matricola"},
+    {"data" : "codice_interno"},
+	 {"data" : "attivita"},
+	 {"data" : "destinazione"},
+	 {"data" : "priorita", "className": "text-center"},
+	 {"data" : "note"},
+	 {"data" : "action"}
+],	
+ columnDefs: [
+		   { responsivePriority: 1, targets: 0 },
+              { responsivePriority: 2, targets: 1 },
+              { responsivePriority: 3, targets: 2 }
+          ]
+
+	
+});
+
+table_item.buttons().container().appendTo( '#tabItem_wrapper .col-sm-6:eq(1)');
+
+
+   $('.inputsearchtable').on('click', function(e){
+      e.stopPropagation();    
+   }); 
+
+
+$('#tabItem').on( 'page.dt', function () {
+$('.customTooltip').tooltipster({
+theme: 'tooltipster-light'
+});
+
+$('.removeDefault').each(function() {
+$(this).removeClass('btn-default');
+})
+
+
+});
+
+
+
+
+
+table_item_ril = $('#tabItemRil').DataTable({
+language: {
+   	emptyTable : 	"Nessun dato presente nella tabella",
+   	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+   	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+   	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+   	infoPostFix:	"",
+   infoThousands:	".",
+   lengthMenu:	"Visualizza _MENU_ elementi",
+   loadingRecords:	"Caricamento...",
+   	processing:	"Elaborazione...",
+   	search:	"Cerca:",
+   	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+   	paginate:	{
+       	first:	"Inizio",
+       	previous:	"Precedente",
+       	next:	"Successivo",
+       last:	"Fine",
+   	},
+   aria:	{
+       	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+       sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+   }
+},
+pageLength: 10,
+ paging: true, 
+ ordering: true,
+ info: true, 
+ searchable: false, 
+ targets: 0,
+ responsive: true,
+ scrollX: false,
+ stateSave: false,
+columns : [
+	 
+	{"data" : "disegno"},
+	{"data" : "variante"},
+	//{"data" : "pezzi_ingresso", createdCell: editableCell},
+
+	{"data" : "note_rilievo"},
+	 {"data" : "action"}
+],	
+ columnDefs: [
+		   { responsivePriority: 1, targets: 0 },
+              { responsivePriority: 2, targets: 1 },
+              { responsivePriority: 3, targets: 2 }
+          ],
+          buttons: [   
+  	          {
+  	            extend: 'colvis',
+  	            text: 'Nascondi Colonne'  	                   
+ 			  } ]
+
+	
+});
+
+table_item_ril.buttons().container().appendTo( '#tabItemRil_wrapper .col-sm-6:eq(1)');
+
+
+   $('.inputsearchtable').on('click', function(e){
+      e.stopPropagation();    
+   }); 
+
+
+$('#tabItemRil').on( 'page.dt', function () {
+$('.customTooltip').tooltipster({
+theme: 'tooltipster-light'
+});
+
+$('.removeDefault').each(function() {
+$(this).removeClass('btn-default');
+})
+
+
+});
+
+
+
+if($('#destinatario').val()==""){
+	$('#sede_destinatario').prop("disabled", true);
+}
+if($('#destinazione').val()==""){
+	$('#sede_destinazione').prop("disabled", true);
+}
+
+}); 
+
+
 
 $('#btnAssegnaAttivita').on('click', function () {
 
@@ -1621,53 +2009,6 @@ function eliminaRilievoTable(disegno){
 }
 
 
-/* const editableCell = function(cell) {
-	
-	
-	  let original
-
-	  cell.setAttribute('contenteditable', true)
-	  cell.setAttribute('spellcheck', false)
-	  var index = cell._DT_CellIndex;
-	  cell.setAttribute('id',""+index.row+""+index.column)	
-	   $(cell).css('text-align', 'center');
-	  
-	  
-	  cell.addEventListener('focus', function(e) {
-	    original = e.target.textContent
-
-	     $(cell).css('border', '2px solid red');
-	    
-	  })
-	
-	   cell.addEventListener('focusout', function(e) {
-	    original = stripHtml(e.target.textContent)
-	
-	    $(cell).css('border', '1px solid #d1d1d1');
-	   $(cell).css('border-bottom-width', '0px');
-	    $(cell).css('border-left-width', '0px');
-	     
-	     
-	    //$(e.currentTarget).html('<input type="text" value="'+original+'" onChange="salvaModificaQuestionario()">');
-	  })
-	  
-   	  cell.addEventListener('blur', function(e) {
-	   	    if (original !== e.target.textContent) {
-	   	      const row = table_item_ril.row(e.target.parentElement)
-	   	      table_item_ril.cell(row.index(),e.target.cellIndex).data(e.target.textContent).draw();
-	   	      var x = tableModRil.rows().data();
-	   	      
-	   	   items_rilievo[row.index()].pezzi_ingresso = e.target.textContent;
-	   	      	//salvaModificaQuestionario();
-	   	      console.log('Row changed: ', row.data())
-	   	    }
-	   	  })
-	   	  
-	  
-	
-} */
-
-
 function pacchiEsterno(){
 	
 	dataString = "?action=pacchi_esterno";
@@ -1714,7 +2055,10 @@ $("#filtro_commessa").on('change', function(){
     .search( comm )
     .draw();
 });
-	
+
+$(document).on('click', '#btnNuovoPacco', function () {
+    $('#myModalCreaNuovoPacco').modal('show');
+});
 
 
 
@@ -1873,6 +2217,8 @@ flag=1;
 	$('#ddt_body').find('#aspetto').each(function(){
 		this.id = 'aspetto_ddt';
 	});
+	
+
 	
 	$('#row_destinatario_ddt').append('<div class="col-md-2"><a class="btn btn-primary" style="margin-top:25px" onClick="importaDaCommessa(\''+commessa+'\')">Importa Da Commessa</a></div>');
 	$('#ddt_body').append('<input type="hidden" class="pull-right" id="configurazione_ddt" name="configurazione_ddt">')	
@@ -2812,402 +3158,9 @@ function modalYesOrNo(id_allegato, id_pacco){
 	$('#myModalYesOrNo').modal();
 }
 
-var commessa_options;
-
-$(document).ready(function() {
-	
-	
-	
-	 commessa_options = $('#commessa option').clone();
-	$('.dropdown-toggle').dropdown();
-	
-	initSelect2('#select1');
-	initSelect2('#cliente_utilizzatore');
-	initSelect2('#destinatario', 'Seleziona Mittente...');
-	initSelect2('#destinazione', 'Seleziona Destinazione...');
-	
-	var columsDatatables2 = [];
-	
-    $('#tabItem thead th').each( function () {
-     	
-    	var title = $('#tabItem thead th').eq( $(this).index() ).text();
-    	
-    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" id="search_item_'+$(this).index()+'" type="text"  value=""/></div>');
-    	
-    	});
-    
-
-	
-
-	
-     $('#tabPM thead th').each( function () {
- 	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-	  var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	
-	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	
-	});
-     
-     
-     
-     
-	var columsDatatables3 = [];
-	
-    $('#tabItemRil thead th').each( function () {
-     	
-    	var title = $('#tabItemRil thead th').eq( $(this).index() ).text();
-    	
-    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" id="search_item_ril_'+$(this).index()+'" type="text"  value=""/></div>');
-    	
-    	});
-	
-	
-
-
-    
-     
-     var stato="${stato}";
-     
-      if(stato=='chiusi'){
-		$('#btnFiltri_CHIUSO').attr('disabled', true);
-	}
-	else if(stato=='tutti'){
-		
-		$('#btnTutti').attr('disabled', true);
-	}
-	else{
-		$('#btnFiltri_APERTO').attr('disabled', true);
-		
-	}
-  
-     
-     
-
-	$('#select3').parent().hide();
-	
-	//selection1= $('#select1').html();
-	selection1= $('#cliente_appoggio').html();
-	
-/*  	$('#select1').select2({
-		placeholder : "Seleziona Cliente..."
-	}); 
- 	 */
- 	
- 	
-	 /* $('#destinatario').select2({
-			placeholder : "Seleziona Mittente..."
-	 }); */
-	$('#sede_destinatario').select2({
-	  placeholder : "Seleziona Sede Mittente..."
-	});
-	
-	
-	$('.datepicker').datepicker({
-		format : "dd/mm/yyyy"
-	});
-	
- 	$('.datetimepicker').datetimepicker({
-		format : "dd/mm/yyyy hh:ii"
-	}); 
-
- 	var start = "${dateFrom}";
- 	var end = "${dateTo}";
-
- 	$('input[name="datarange"]').daterangepicker({
-	    locale: {
-	      format: 'DD/MM/YYYY'
-	    
-	    }
-	}, 
-	function(start, end, label) {
-
-	});
- 	
- 	if(start!=null && start!=""){
-	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
-	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
-	
-	 	$("#tipo_data option[value='']").remove();
-	 	$('#tipo_data option[value="${tipo_data}"]').attr("selected", true);
-	 }
- 	
- 	var pacchi_esterno = ${pacchi_esterno};
- 	if(pacchi_esterno){
- 		$('#tornaMagazzino').show();
- 	}else{
- 		$('#tornaMagazzino').hide();
- 	}
- 	
-	
-	table = $('#tabPM').DataTable({
-		language: {
-	        	emptyTable : 	"Nessun dato presente nella tabella",
-	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-	        	infoPostFix:	"",
-	        infoThousands:	".",
-	        lengthMenu:	"Visualizza _MENU_ elementi",
-	        loadingRecords:	"Caricamento...",
-	        	processing:	"Elaborazione...",
-	        	search:	"Cerca:",
-	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-	        	paginate:	{
-  	        	first:	"Inizio",
-  	        	previous:	"Precedente",
-  	        	next:	"Successivo",
-  	        last:	"Fine",
-	        	},
-	        aria:	{
-  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-	        }
-        },
-        pageLength: 100,
-        "order": [[ 25, "desc" ]],
-	      paging: true, 
-	      ordering: true,
-	      info: true, 
-	      searchable: false, 
-	      targets: 0,
-	      responsive: false,
-	      scrollX: true,
-	      scrollY: "450px",
-	      stateSave: true,
-	      columnDefs: [
-	    	    /*  { responsivePriority: 1, targets: 7 },
-	                  { responsivePriority: 2, targets: 1 },
-	                   { responsivePriority: 3, targets: 0 }, 
-	                   { responsivePriority: 4, targets: 8 }, */
-	                  // { responsivePriority: 5, targets: 16 }
-	    //	  { responsivePriority: 1, targets: 9 },
-	    //	  { responsivePriority: 2, targets: 8 }
-	               ], 	        
-  	      buttons: [   
-  	    	,{
-                extend: 'excel',
-                text: 'Esporta Excel',
-                 exportOptions: {
-                    modifier: {
-                        page: 'current'
-                    }
-                } 
-            },
-  	    	  {
-  	            extend: 'colvis',
-  	            text: 'Nascondi Colonne'  	                   
- 			  } ]
-	               
-	    });
-		
-	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
- 	    $('.inputsearchtable').on('click', function(e){
- 	       e.stopPropagation();    
- 	    });
-// DataTable
-//table = $('#tabPM').DataTable();
-// Apply the search
- table.columns().eq( 0 ).each( function ( colIdx ) {
-  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-      table
-          .column( colIdx )
-          .search( this.value )
-          .draw();
-  } );
-} );  
-	table.columns.adjust().draw();
-	
-
-$('#tabPM').on( 'page.dt', function () {
-	$('.customTooltip').tooltipster({
-        theme: 'tooltipster-light'
-    });
-	
-	$('.removeDefault').each(function() {
-	   $(this).removeClass('btn-default');
-	})
-
-
-});
-	coloraRighe(table);
-
-var val = $('#inputsearchtable_4').val();
-if(val!=""){
-	$('#filtro_commessa option[value=""]').remove();
-	$('#filtro_commessa option[value="'+val+'"]').attr('selected', true);
-}
-
-table_item = $('#tabItem').DataTable({
-	language: {
-        	emptyTable : 	"Nessun dato presente nella tabella",
-        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-        	infoPostFix:	"",
-        infoThousands:	".",
-        lengthMenu:	"Visualizza _MENU_ elementi",
-        loadingRecords:	"Caricamento...",
-        	processing:	"Elaborazione...",
-        	search:	"Cerca:",
-        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-        	paginate:	{
-	        	first:	"Inizio",
-	        	previous:	"Precedente",
-	        	next:	"Successivo",
-	        last:	"Fine",
-        	},
-        aria:	{
-	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-        }
-    },
-    pageLength: 10,
-    paging: true, 
-    ordering: true,
-    "order": [ 1, "desc" ],  
-    info: true, 
-    searchable: false, 
-    targets: 0,
-    responsive: false,
-    scrollX: true,
-    stateSave: true,
-    searching: true,      // toglie "Cerca:" globale
-    lengthChange: false,   // toglie "Visualizza ... elementi"
-    info: false,           // (opzionale) toglie "Vista da ... a ..."
-    dom: 'rtp',  
-     columns : [
-     	 {"data" : "id_proprio"},
-     	 {"data" : "tipo"},
-     	 {"data" : "denominazione"},
-     	 {"data" : "quantita"},
-     	 {"data" : "stato"},
-     	 {"data" : "matricola"},
-         {"data" : "codice_interno"},
-     	 {"data" : "attivita"},
-     	 {"data" : "destinazione"},
-     	 {"data" : "priorita", "className": "text-center"},
-     	 {"data" : "note"},
-     	 {"data" : "action"}
-     ],	
-      columnDefs: [
-			   { responsivePriority: 1, targets: 0 },
-                   { responsivePriority: 2, targets: 1 },
-                   { responsivePriority: 3, targets: 2 }
-               ]
-
-    	
-    });
-
-table_item.buttons().container().appendTo( '#tabItem_wrapper .col-sm-6:eq(1)');
-
-
-	    $('.inputsearchtable').on('click', function(e){
-	       e.stopPropagation();    
-	    }); 
-
-
-$('#tabItem').on( 'page.dt', function () {
-$('.customTooltip').tooltipster({
-    theme: 'tooltipster-light'
-});
-
-$('.removeDefault').each(function() {
-   $(this).removeClass('btn-default');
-})
-
-
-});
 
 
 
-
-
-table_item_ril = $('#tabItemRil').DataTable({
-	language: {
-        	emptyTable : 	"Nessun dato presente nella tabella",
-        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-        	infoPostFix:	"",
-        infoThousands:	".",
-        lengthMenu:	"Visualizza _MENU_ elementi",
-        loadingRecords:	"Caricamento...",
-        	processing:	"Elaborazione...",
-        	search:	"Cerca:",
-        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-        	paginate:	{
-	        	first:	"Inizio",
-	        	previous:	"Precedente",
-	        	next:	"Successivo",
-	        last:	"Fine",
-        	},
-        aria:	{
-	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-        }
-    },
-    pageLength: 10,
-      paging: true, 
-      ordering: true,
-      info: true, 
-      searchable: false, 
-      targets: 0,
-      responsive: true,
-      scrollX: false,
-      stateSave: false,
-     columns : [
-     	 
-     	{"data" : "disegno"},
-     	{"data" : "variante"},
-     	//{"data" : "pezzi_ingresso", createdCell: editableCell},
-     
-     	{"data" : "note_rilievo"},
-     	 {"data" : "action"}
-     ],	
-      columnDefs: [
-			   { responsivePriority: 1, targets: 0 },
-                   { responsivePriority: 2, targets: 1 },
-                   { responsivePriority: 3, targets: 2 }
-               ],
-               buttons: [   
-       	          {
-       	            extend: 'colvis',
-       	            text: 'Nascondi Colonne'  	                   
-      			  } ]
-
-    	
-    });
-
-table_item_ril.buttons().container().appendTo( '#tabItemRil_wrapper .col-sm-6:eq(1)');
-
-
-	    $('.inputsearchtable').on('click', function(e){
-	       e.stopPropagation();    
-	    }); 
-
-
-$('#tabItemRil').on( 'page.dt', function () {
-$('.customTooltip').tooltipster({
-    theme: 'tooltipster-light'
-});
-
-$('.removeDefault').each(function() {
-   $(this).removeClass('btn-default');
-})
-
-
-});
-
-
-
-	if($('#destinatario').val()==""){
-		$('#sede_destinatario').prop("disabled", true);
-	}
-	if($('#destinazione').val()==""){
-		$('#sede_destinazione').prop("disabled", true);
-	}
-
-}); 
 
 function importaConfigurazioneDDT(){
 	

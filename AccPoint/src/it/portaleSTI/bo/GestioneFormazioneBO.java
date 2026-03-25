@@ -153,9 +153,9 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getAllegatoCategoriaFormId(id_allegato, session);
 	}
 
-	public static ArrayList<ForPartecipanteDTO> getListaPartecipanti(Session session) throws Exception {
+	public static ArrayList<ForPartecipanteDTO> getListaPartecipanti() throws Exception {
 		
-		return DirectMySqlDAO.getListaPartecipantiDirect(session);
+		return DirectMySqlDAO.getListaPartecipantiDirect();
 	}
 
 	public static ForPartecipanteDTO getPartecipanteFromId(int id_partecipante, Session session) {
@@ -351,6 +351,8 @@ public class GestioneFormazioneBO {
 		
 		return GestioneFormazioneDAO.getListaPartecipantiCliente(idCliente,idSede,session);
 	}
+	
+
 
 	public static ArrayList<ForCorsoDTO> getListaCorsiCliente(int idCliente, int idSede, Session session) {
 		

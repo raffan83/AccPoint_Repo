@@ -396,7 +396,8 @@ public class GestioneRisorse extends HttpServlet {
 				
 				ArrayList<PRRisorsaDTO> lista_risorse = GestioneRisorseBO.getListaRisorse(session);
 				ArrayList<UtenteDTO> lista_utenti_all = GestioneUtenteBO.getDipendenti(session);				
-				ArrayList<ForPartecipanteDTO> lista_partecipanti_all = GestioneFormazioneBO.getListaPartecipantiCliente(4132, 0, session);
+				//ArrayList<ForPartecipanteDTO> lista_partecipanti_all = GestioneFormazioneBO.getListaPartecipantiCliente(4132, 0, session);
+				ArrayList<ForPartecipanteDTO> lista_partecipanti_all = GestioneFormazioneBO.getListaPartecipanti();
 				ArrayList<PRRequisitoDocumentaleDTO> lista_requisiti_documentali = GestioneRisorseBO.getListaRequisitiDocumentali(session);
 				ArrayList<PRRequisitoSanitarioDTO> lista_requisiti_sanitari = GestioneRisorseBO.getListaRequisitiSanitari(session);
 				
@@ -427,6 +428,21 @@ public class GestioneRisorse extends HttpServlet {
 				    if (!idPartecipantiInRisorse.contains(partecipante.getId())) {
 				        lista_partecipanti_filtrata.add(partecipante);
 				    }
+				}
+				
+				if(utente.checkRuolo("P2")) 
+				{
+					ArrayList<PRRisorsaDTO> listaRisorsePreposto= new ArrayList<>();
+					
+					for (PRRisorsaDTO ris : lista_risorse) {
+						
+						
+						if(ris.getUtente().getCompany().getId().equals(utente.getCompany().getId())) 
+						{
+							listaRisorsePreposto.add(ris);
+						}
+					}
+					lista_risorse=listaRisorsePreposto;
 				}
 				
 				request.getSession().setAttribute("lista_risorse", lista_risorse);

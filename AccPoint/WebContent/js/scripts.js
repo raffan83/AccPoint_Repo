@@ -3862,51 +3862,63 @@ function eliminaCompany(){
   }
   
   
-  function annullaCertificato(idCertificato){
+  function annullaCertificato(btn, idCertificato){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
+
 	  $.ajax({
     	  type: "POST",
-    	  url: "listaCertificati.do?action=annullaCertificato&idCertificato="+idCertificato,
+    	  url: "listaCertificati.do?action=annullaCertificato&idCertificato=" + idCertificato,
     	  dataType: "json",
 
-    	  success: function( data, textStatus) {
+    	  success: function(data, textStatus) {
     		  pleaseWaitDiv.modal('hide');
-    		  if(data.success)
-    		  { 
 
+    		  if(data.success) { 
     			  $('#report_button').hide();
-    				$('#visualizza_report').hide();
-       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
-    				  $('#myModalErrorContent').html(data.messaggio);
-      			  	$('#myModalError').removeClass();
-      				$('#myModalError').addClass("modal modal-success");
-      				$('#myModalError').modal('show');
-       	         
-    		
-    		  }else{
+    			  $('#visualizza_report').hide();
+
+    			  // recupero la DataTable
+    			  var table = $('#tabPM').DataTable();
+
+    			  // trovo la riga del bottone cliccato
+    			  var tr = $(btn).closest('tr');
+
+    			  // gestione caso responsive di DataTables
+    			  if (tr.hasClass('child')) {
+    				  tr = tr.prev();
+    			  }
+
+    			  // rimuovo la riga
+    			  table.row(tr).remove().draw(false);
+
+    			  // messaggio di successo
     			  $('#myModalErrorContent').html(data.messaggio);
-    			  	$('#myModalError').removeClass();
-    				$('#myModalError').addClass("modal modal-danger");
-    				$('#report_button').show();
-      				$('#visualizza_report').show();
-    				$('#myModalError').modal('show');
+    			  $('#myModalError').removeClass();
+    			  $('#myModalError').addClass("modal modal-success");
+    			  $('#myModalError').modal('show');
+
+    		  } else {
+    			  $('#myModalErrorContent').html(data.messaggio);
+    			  $('#myModalError').removeClass();
+    			  $('#myModalError').addClass("modal modal-danger");
+    			  $('#report_button').show();
+    			  $('#visualizza_report').show();
+    			  $('#myModalError').modal('show');
     		  }
     	  },
 
     	  error: function(jqXHR, textStatus, errorThrown){
-    	
     		  pleaseWaitDiv.modal('hide');
-   			$('#myModalErrorContent').html(errorThrown.message);
-		  	$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-danger");
-			$('#report_button').show();
-			$('#visualizza_report').show();
-			$('#myModalError').modal('show');
-			
+    		  $('#myModalErrorContent').html(errorThrown);
+    		  $('#myModalError').removeClass();
+    		  $('#myModalError').addClass("modal modal-danger");
+    		  $('#report_button').show();
+    		  $('#visualizza_report').show();
+    		  $('#myModalError').modal('show');
     	  }
       });
-  }
+}
   function validateEmail(email){ 
 	  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	    return re.test(email.toLowerCase());
@@ -4197,49 +4209,56 @@ function eliminaCompany(){
 	}
   
   function annullaCertificatiMulti(selezionati){
-	
+
 	  $.ajax({
     	  type: "POST",
     	  url: "listaCertificati.do?action=annullaCertificatiMulti",
     	  dataType: "json",
-    	  data: "dataIn="+JSON.stringify(selezionati),
-    	  success: function( data, textStatus) {
+    	  data: "dataIn=" + JSON.stringify(selezionati),
+
+    	  success: function(data, textStatus) {
     		  pleaseWaitDiv.modal('hide');
-    		  if(data.success)
-    		  { 
+
+    		  if(data.success) { 
 
     			  $('#report_button').hide();
-    				$('#visualizza_report').hide();
-       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
-    				  $('#myModalErrorContent').html(data.messaggio);
-      			  	$('#myModalError').removeClass();
-      				$('#myModalError').addClass("modal modal-success");
-      				$('#myModalError').modal('show');
-       	         
-    		
-    		  }else{
+    			  $('#visualizza_report').hide();
+
+    			  var table = $('#tabPM').DataTable();
+
+    			  // rimuove tutte le righe selezionate
+    			  table.rows({ selected: true }).remove().draw(false);
+
+    			  // opzionale: deseleziona checkbox generale
+    			  $("#selectAlltabPM").iCheck('uncheck');
+
     			  $('#myModalErrorContent').html(data.messaggio);
-    			  	$('#myModalError').removeClass();
-    				$('#myModalError').addClass("modal modal-danger");
-    				$('#report_button').show();
-    				$('#visualizza_report').show();
-    				$('#myModalError').modal('show');
+    			  $('#myModalError').removeClass();
+    			  $('#myModalError').addClass("modal modal-success");
+    			  $('#myModalError').modal('show');
+
+    		  } else {
+    			  $('#myModalErrorContent').html(data.messaggio);
+    			  $('#myModalError').removeClass();
+    			  $('#myModalError').addClass("modal modal-danger");
+    			  $('#report_button').show();
+    			  $('#visualizza_report').show();
+    			  $('#myModalError').modal('show');
     		  }
     	  },
 
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
-   
-   			$('#myModalErrorContent').html(errorThrown.message);
-		  	$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-danger");
-			$('#report_button').show();
-			$('#visualizza_report').show();
-			$('#myModalError').modal('show');
-			
+
+    		  $('#myModalErrorContent').html(errorThrown.message);
+    		  $('#myModalError').removeClass();
+    		  $('#myModalError').addClass("modal modal-danger");
+    		  $('#report_button').show();
+    		  $('#visualizza_report').show();
+    		  $('#myModalError').modal('show');
     	  }
       });
-  }
+}
   
   function saveDuplicatiFromModalNuovaMisura(){
 	  
@@ -6030,9 +6049,6 @@ function eliminaCompany(){
   
   function scaricaSchedaConsegnaModal(){
 	  $("#myModalDownloadSchedaConsegna").modal();
-  }
-  function creaNuovoPacco(){
-	  $("#myModalCreaNuovoPacco").modal('show');
   }
   
   function stripHtml(html){

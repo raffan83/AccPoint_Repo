@@ -1034,7 +1034,7 @@ public class GestionePacco extends HttpServlet {
 			String lista_save_stato_json = new Gson().toJson(lista_save_stato);
 			request.getSession().setAttribute("lista_save_stato_json", lista_save_stato_json);
 			session.close();
-	   		 getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+	   		 getServletContext().getRequestDispatcher("/site/listaPacchi.jsp");
 	   		response.sendRedirect(request.getHeader("referer"));
 	   	     //dispatcher.forward(request,response);	
 			

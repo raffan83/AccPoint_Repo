@@ -141,19 +141,22 @@ public class GestioneParcoAutoDAO {
 	}
 
 
-	public static ArrayList<PaaPrenotazioneDTO> getListaPrenotazioniDate(LocalDate startDate, LocalDate endDate,	Session session) {
-		
-		ArrayList<PaaPrenotazioneDTO> lista = null;
-		
-		Query query = session.createQuery("FROM PaaPrenotazioneDTO p WHERE (p.data_inizio_prenotazione BETWEEN :startDate AND :endDate or p.data_fine_prenotazione BETWEEN :startDate AND :endDate)");
-		
-		query.setParameter("startDate", java.sql.Date.valueOf(startDate));
-		query.setParameter("endDate", java.sql.Date.valueOf(endDate));
-
-		        // Esegue la query e restituisce la lista
-	   lista = (ArrayList<PaaPrenotazioneDTO>) query.list();
-
-	   return lista;
+	public static ArrayList<PaaPrenotazioneDTO> getListaPrenotazioniDate(LocalDate startDate, LocalDate endDate, Session session) {
+	    
+	    ArrayList<PaaPrenotazioneDTO> lista = null;
+	    
+	    Query query = session.createQuery(
+	        "FROM PaaPrenotazioneDTO p " +
+	        "WHERE p.data_inizio_prenotazione < :endDate " +
+	        "AND p.data_fine_prenotazione >= :startDate"
+	    );
+	    
+	    query.setParameter("startDate", java.sql.Timestamp.valueOf(startDate.atStartOfDay()));
+	    query.setParameter("endDate", java.sql.Timestamp.valueOf(endDate.plusDays(1).atStartOfDay()));
+	    
+	    lista = (ArrayList<PaaPrenotazioneDTO>) query.list();
+	    
+	    return lista;
 	}
 
 

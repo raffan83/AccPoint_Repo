@@ -490,7 +490,9 @@ public class ListaCertificati extends HttpServlet {
 				
 				CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(idCertificato,session);
 				
-				certificato.getStato().setId(3);
+				StatoCertificatoDTO annullato = new StatoCertificatoDTO(3);
+				certificato.setStato(annullato);
+				certificato.setUtenteApprovazione(utente);
 				MisuraDTO misura = certificato.getMisura();
 				misura.setObsoleto("S");
 				session.update(certificato);
@@ -579,8 +581,10 @@ public class ListaCertificati extends HttpServlet {
 					String id =  jsArr.get(i).toString().replaceAll("\"", "");
 					
 					CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(id,session);
+					certificato.setUtenteApprovazione(utente);
 					
-					certificato.getStato().setId(3);
+					StatoCertificatoDTO annullato = new StatoCertificatoDTO(3);
+					certificato.setStato(annullato);
 					MisuraDTO misura = certificato.getMisura();
 					misura.setObsoleto("S");
 					session.update(misura);

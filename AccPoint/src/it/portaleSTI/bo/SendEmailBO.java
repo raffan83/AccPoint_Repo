@@ -75,7 +75,7 @@ public class SendEmailBO {
 	
 	private final static String FIRMA_CALCE_CRESCO="<br><em><b>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>" +
 											"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
-											"Tel +39 0776.18151 - Int (104) oppure (115)</em> <br>" + 
+											"Interno +39 0776.1815104 oppure +39 0776.1815115</em> <br>" + 
 											"Web: </em>www.crescosrl.net<br>" + 
 											"Mail: </em>segreteria@crescosrl.net<br><br>" + 
 											"<br /><img width='250' src='https://www.calver.it/images/cresco_dnv.png'><br>" + 

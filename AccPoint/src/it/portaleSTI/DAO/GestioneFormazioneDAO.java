@@ -389,6 +389,8 @@ public class GestioneFormazioneDAO {
 				
 		return lista;
 	}
+	
+
 
 	public static ArrayList<ForCorsoDTO> getListaCorsiCliente(int idCliente, int idSede, Session session) {
 

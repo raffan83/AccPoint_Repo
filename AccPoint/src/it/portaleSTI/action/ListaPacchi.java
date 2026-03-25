@@ -154,11 +154,37 @@ public class ListaPacchi extends HttpServlet {
 			else {
 				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 0, session);				
 			}
-		
+/*		
+			for (MagPaccoDTO pacco : lista_pacchi) 
+			{
+				pacco.setRapportoLavorato(Utility.getRapportoLavorati(pacco));
+				pacco.setStringaLavorazionePacco(Utility.getStringaLavorazionePacco(pacco));
+				
+					String rowClass="pacco-bianco";
+					
+					if(pacco.getStato_lavorazione().getId()==1 && pacco.getRapportoLavorato()==1 && pacco.getChiuso()!=1) 
+					{
+						rowClass="pacco-verde";
+					}
+					if(pacco.getRitardo()==1 && pacco.getChiuso()!=1) 
+					{
+						rowClass="pacco-rosso";
+					}
+				 
+					pacco.setRowClass(rowClass);
+			}
 			
-		//	List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
-		//	List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
-		//	List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();			
+			ArrayList<MagPaccoDTO> listaTemp = new ArrayList<>();
+			
+			for (MagPaccoDTO pc : lista_pacchi) {
+				
+				if(pc.getId()>8200) 
+				{
+					listaTemp.add(pc);
+				}
+			}
+			lista_pacchi=listaTemp;
+	*/
 			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
 			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
 			ArrayList<MagTipoTrasportoDTO> tipo_trasporto = GestioneMagazzinoBO.getListaTipoTrasporto(session); 
@@ -166,8 +192,17 @@ public class ListaPacchi extends HttpServlet {
 			ArrayList<MagTipoItemDTO> tipo_item = GestioneMagazzinoBO.getListaTipoItem(session);
 			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
 			ArrayList<MagAttivitaItemDTO> lista_attivita_item = GestioneMagazzinoBO.getListaAttivitaItem(session);
-			ArrayList<CommessaDTO> lista_commesseAperte = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0,true);
+			
 			ArrayList<CommessaDTO> lista_commesseTutte = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0,false);
+			
+			ArrayList<CommessaDTO> lista_commesseAperte = new ArrayList<CommessaDTO>();
+			
+			for (CommessaDTO comm : lista_commesseTutte) {
+				if(comm.getSYS_STATO().equals("1APERTA")) {
+					lista_commesseAperte.add(comm);	
+				}
+			}
+			
 			ArrayList<MagTipoNotaPaccoDTO> lista_tipo_note_pacco = GestioneMagazzinoBO.getListaTipoNotaPacco(session);
 			ArrayList<MagNoteDdtDTO> lista_note_ddt = GestioneMagazzinoBO.getListaNoteDDT(session);
 			ArrayList<MagCausaleDTO> lista_causali = GestioneMagazzinoBO.geListaCausali(session);
@@ -180,11 +215,7 @@ public class ListaPacchi extends HttpServlet {
 			
 			session.close();
 			
-//			for (MagPaccoDTO pacco : lista_pacchi) {
-//				if(lista_pacchi_allegati.contains(pacco.getId())) {
-//					pacco.setHasAllegato(true);
-//				}
-//			}			
+						
 			request.getSession().setAttribute("stato", stato);
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
 			request.getSession().setAttribute("lista_clienti", listaClienti);
@@ -199,25 +230,23 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
 			request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_item);
 			request.getSession().setAttribute("lista_causali", lista_causali);
-			//request.getSession().setAttribute("lista_save_stato", lista_save_stato);
-			String lista_save_stato_json = new Gson().toJson(lista_save_stato);
-			request.getSession().setAttribute("lista_save_stato_json", lista_save_stato_json);
-			
-			String attivita_json = new Gson().toJson(lista_attivita_item);
-			request.getSession().setAttribute("attivita_json", attivita_json);
+			request.getSession().setAttribute("lista_save_stato_json", new Gson().toJson(lista_save_stato));
+			request.getSession().setAttribute("attivita_json", new Gson().toJson(lista_attivita_item));
 			request.getSession().setAttribute("lista_commesse", lista_commesseAperte);
 			request.getSession().setAttribute("lista_commesseTutte", lista_commesseTutte);
 			request.getSession().setAttribute("lista_tipo_note_pacco", lista_tipo_note_pacco);
 			request.getSession().setAttribute("lista_note_ddt", lista_note_ddt);
-			if(!lista_pacchi.isEmpty()) {
-			request.getSession().setAttribute("pacco", lista_pacchi.get(lista_pacchi.size()-1));
-			}
-
 			request.getSession().setAttribute("dateTo",dateTo);
 			request.getSession().setAttribute("dateFrom", dateFrom);
 			request.getSession().setAttribute("commessa", commessa);		
-			request.getSession().setAttribute("pacchi_esterno",false);
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+			request.getSession().setAttribute("pacchi_esterno",false);	
+			
+			if(!lista_pacchi.isEmpty()) {
+			request.getSession().setAttribute("pacco", lista_pacchi.get(lista_pacchi.size()-1));
+			}
+			
+			
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPacchi.jsp");
 	     	dispatcher.forward(request,response);
 	     	
 	     	
@@ -245,7 +274,7 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("dateFrom",dateFrom);
 			request.getSession().setAttribute("dateTo",dateTo);
 			request.getSession().setAttribute("tipo_data", tipo_data);
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPacchi.jsp");
 	     	dispatcher.forward(request,response);
 	     	
 		}
@@ -260,7 +289,7 @@ public class ListaPacchi extends HttpServlet {
 			
 			session.close();
 			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPacchi.jsp");
 	     	dispatcher.forward(request,response);
 	     	
 
@@ -275,7 +304,7 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
 			request.getSession().setAttribute("pacchi_esterno",true);
 		
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPacchi.jsp");
 	     	dispatcher.forward(request,response);
 			
 	     	

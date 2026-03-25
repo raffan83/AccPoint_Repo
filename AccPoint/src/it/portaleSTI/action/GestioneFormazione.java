@@ -1020,7 +1020,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				id_corso = Utility.decryptData(id_corso);
 				
 				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso), session);	
-				ArrayList<ForPartecipanteDTO> lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti(session);
+				ArrayList<ForPartecipanteDTO> lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti();
 				ArrayList<ForRuoloDTO> lista_ruoli = GestioneFormazioneBO.getListaRuoli(session);
 				ArrayList<ForReferenteDTO> lista_referenti = GestioneFormazioneBO.getListaReferenti(session);
 				
@@ -1098,7 +1098,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String id_azienda = request.getParameter("id_azienda");
 					
 					if(id_azienda!=null && id_azienda.equals("0")) {
-						lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti(session);	
+						lista_partecipanti = GestioneFormazioneBO.getListaPartecipanti();	
 					}else if(id_azienda!=null){
 						id_azienda = Utility.decryptData(id_azienda);
 						lista_partecipanti = GestioneFormazioneBO.getListaPartecipantiClienteSupervisore(Integer.parseInt(id_azienda), session);

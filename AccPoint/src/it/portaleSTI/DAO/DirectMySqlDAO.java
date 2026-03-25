@@ -3065,7 +3065,7 @@ pst=con.prepareStatement(sqlDatiStrumentiPerGrafico);
 	
 	
 	
-public static ArrayList<ForPartecipanteDTO> getListaPartecipantiDirect(Session session) throws Exception {
+public static ArrayList<ForPartecipanteDTO> getListaPartecipantiDirect() throws Exception {
 		
 		
 	ArrayList<ForPartecipanteDTO> lista =new ArrayList<ForPartecipanteDTO>();

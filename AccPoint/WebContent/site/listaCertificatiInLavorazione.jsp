@@ -126,7 +126,7 @@
 			</c:otherwise>
 			</c:choose>
 			
-			<button class="btn btn-danger  customTooltip" title="Click per anullare il Certificato" onClick="annullaCertificato(${certificato.id})"><i class="fa fa-close"></i></button>
+			<button class="btn btn-danger  customTooltip" title="Click per anullare il Certificato" onClick="annullaCertificato(this,${certificato.id})"><i class="fa fa-close"></i></button>
  			<c:if test="${certificato.misura.misuraLAT.misura_lat.id==2 }">
 			<button class="btn btn-success  customTooltip" title="Riemetti certificato esistente" onClick="getListaCertificatiprecedenti('${certificato.misura.misuraLAT.strumento.__id}','${certificato.id }')"><i class="fa fa-copy"></i></button>
 			</c:if> 

@@ -362,6 +362,13 @@ public class GestioneCommesseDAO {
 		{
 		throw e;
 		}
+		finally 
+		{
+			if(con!=null) 
+			{
+				con.close();
+			}
+		}
 		return listaCommesse;
 	}
 
@@ -515,6 +522,14 @@ public class GestioneCommesseDAO {
 		{
 		throw e;
 		}
+		finally 
+		{
+			if(con!=null) 
+			{
+				con.close();
+			}
+		}
+		
 		return commessa;
 	}
 
@@ -745,6 +760,13 @@ public class GestioneCommesseDAO {
 		}catch (Exception e) 
 		{
 		throw e;
+		}
+		finally 
+		{
+			if(con!=null) 
+			{
+				con.close();
+			}
 		}
 		return listaCommesse;
 	}

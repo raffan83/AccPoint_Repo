@@ -579,7 +579,7 @@ public class GestioneDDT extends HttpServlet {
 				
 				String lista_save_stato_json = new Gson().toJson(lista_save_stato);
 				request.getSession().setAttribute("lista_save_stato_json", lista_save_stato_json);
-		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPacchi.jsp");
 		   		//dispatcher.forward(request, response);
 		   		response.sendRedirect(request.getHeader("referer"));
 

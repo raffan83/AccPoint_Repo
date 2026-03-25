@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -41,6 +42,7 @@ import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
 
 public class GestioneMagazzinoBO {
 
@@ -301,7 +303,14 @@ public static void accettaItem(JsonArray acc, JsonArray non_acc, JsonArray note_
 
 public static ArrayList<MagPaccoDTO> getListaPacchiPerData(String dateFrom, String dateTo, String tipo_data, int stato, Session session) throws Exception, ParseException {
 	
-	return GestioneMagazzinoDAO.getListPacchiPerData(dateFrom, dateTo, tipo_data, stato, session);
+	ArrayList<MagPaccoDTO> listaPacchi = GestioneMagazzinoDAO.getListPacchiPerData(dateFrom, dateTo, tipo_data, stato, session);
+	
+	for (int i=0;i<listaPacchi.size();i++) 
+	{
+		listaPacchi.get(i).setIdEncrypt(Utility.encryptData(""+listaPacchi.get(i).getId()));
+	}
+	
+	return listaPacchi;
 }
 
 public static MagItemDTO getItemById(int id, Session session) {
@@ -429,9 +438,17 @@ public static ArrayList<Integer> getListaAllegati(Session session) {
 	return GestioneMagazzinoDAO.getListaAllegati(session);
 }
 
-public static ArrayList<MagPaccoDTO> getListaPacchiApertiChiusi(int id_company, int stato, Session session) {
+public static ArrayList<MagPaccoDTO> getListaPacchiApertiChiusi(int id_company, int stato, Session session) throws Exception {
 	
-	return GestioneMagazzinoDAO.getListaPacchiApertiChiusi(id_company,stato,session);
+	
+	ArrayList<MagPaccoDTO> listaPacchi = GestioneMagazzinoDAO.getListaPacchiApertiChiusi(id_company,stato,session);
+	for (int i=0;i<listaPacchi.size();i++) 
+	{
+		listaPacchi.get(i).setIdEncrypt(Utility.encryptData(""+listaPacchi.get(i).getId()));
+	}
+	
+	return listaPacchi;
+
 }
 
 public static ArrayList<Integer> getPaccoFromStrumento(String id_strumento, Session session) {

@@ -582,9 +582,11 @@ function getListaCertificatiprecedenti(id_strumento, id_certificato, lat_master)
   function openModalLoadFile(id_certificato, type){
 	  $('#myModalYesOrNo').hide();
 	  $('#modalLoadFile').modal();
+	 
+	  var data_emissione = $('#data_emissione').val();
 	  
 	  if(type==0){
-		 var url =  "listaCertificati.do?action=livella_bolla&idCertificato="+id_certificato
+		 var url =  "listaCertificati.do?action=livella_bolla&idCertificato="+id_certificato+"&data_emissione="+data_emissione
 	  }else if(type==1){
 		  var id_certificato_old = $('#id_certificato_riemissione').val();
 		  var url =  "listaCertificati.do?action=riemetti_certificato&id_certificato_old="+id_certificato_old+"&id_certificato_new="+id_certificato

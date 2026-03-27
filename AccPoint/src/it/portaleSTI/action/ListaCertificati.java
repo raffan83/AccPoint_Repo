@@ -363,6 +363,8 @@ public class ListaCertificati extends HttpServlet {
 				
 				String idCertificato = request.getParameter("idCertificato");
 				
+				String dt_emissione = request.getParameter("data_emissione");
+				
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato,session);
 				
 				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());				
@@ -379,7 +381,7 @@ public class ListaCertificati extends HttpServlet {
 						if(item.getName()!="") {	
 							InputStream is = item.getInputStream();
 							
-							new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), is, utente,null,listaSedi, session);
+							new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), is, utente,null,listaSedi,dt_emissione,session);
 						}								
 					}
 				}
@@ -820,6 +822,7 @@ public class ListaCertificati extends HttpServlet {
 				
 				String id_certificato_old = request.getParameter("id_certificato_old");
 				String id_certificato_new = request.getParameter("id_certificato_new");
+				String dt_emissione = request.getParameter("data_emissione");
 				
 				CertificatoDTO certificato_old = GestioneCertificatoBO.getCertificatoById(id_certificato_old,session);
 				CertificatoDTO certificato_new = GestioneCertificatoBO.getCertificatoById(id_certificato_new,session);
@@ -841,7 +844,7 @@ public class ListaCertificati extends HttpServlet {
 				}
 				
 				if(certificato_new.getMisura().getMisuraLAT().getMisura_lat().getId()== 1) {
-					new CreaCertificatoLivellaBolla(certificato_new, certificato_new.getMisura().getMisuraLAT(), is, utente, certificato_old, listaSedi,   session);
+					new CreaCertificatoLivellaBolla(certificato_new, certificato_new.getMisura().getMisuraLAT(), is, utente, certificato_old, listaSedi,dt_emissione,session);
 				}
 				
 				if(certificato_new.getMisura().getMisuraLAT().getMisura_lat().getId()== 2) {

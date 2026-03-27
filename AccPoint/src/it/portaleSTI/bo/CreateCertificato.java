@@ -563,23 +563,95 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 	rifTextfield1.setStyle(styleTitleTableBold);
 	report.addDetail(rifTextfield1);
 }
-			if(pivot.startsWith("M")) {
-				isMabba = true;
-				String mc = listItem.get(0).getMabbaMc();
-				incertezzaMabba = listItem.get(0).getIncertezza();		
-				report.detail(cmp.verticalGap(5),
-						cmp.horizontalList(cmp.horizontalGap(135),subreport),
-						cmp.verticalGap(8),
-						cmp.horizontalList(cmp.horizontalGap(165),cmp.text("Valore convenzionale misurato (mc) "+mc+" "+um)),
-						cmp.verticalGap(8),
-						cmp.horizontalList(cmp.horizontalGap(170),cmp.text("Incertezza associata allo strumento = "+Utility.changeDotComma(incertezzaMabba)+" "+um).setStyle(stl.style().bold())),
-						cmp.verticalGap(20),
-						cmp.verticalList(cmp.horizontalGap(15),cmp.text("A = massa campione").setStyle(stl.style().bold()),
-								cmp.horizontalGap(15),cmp.text("B = massa da verificare").setStyle(stl.style().bold()),
-								cmp.horizontalGap(15),cmp.text("*differenze rispetto al valore di massa")
-								)
-						);
-			}
+/*
+if(pivot.startsWith("M")) {
+    isMabba = true;
+    String mc = listItem.get(0).getMabbaMc();
+    incertezzaMabba = listItem.get(0).getIncertezza();
+
+    report.detail(cmp.verticalGap(5));
+
+    report.detail(
+        cmp.horizontalList(
+            cmp.horizontalGap(135),
+            subreport
+        )
+    ).setDetailSplitType(SplitType.IMMEDIATE);
+
+    report.detail(cmp.verticalGap(8));
+
+    report.detail(
+        cmp.horizontalList(
+            cmp.horizontalGap(165),
+            cmp.text("Valore convenzionale misurato (mc) " + mc + " " + um)
+        )
+    );
+
+    report.detail(cmp.verticalGap(8));
+
+    report.detail(
+        cmp.horizontalList(
+            cmp.horizontalGap(170),
+            cmp.text("Incertezza associata allo strumento = "
+                + Utility.changeDotComma(incertezzaMabba) + " " + um)
+                .setStyle(stl.style().bold())
+        )
+    );
+
+    report.detail(cmp.verticalGap(20));
+
+    report.detail(
+        cmp.verticalList(
+            cmp.text("A = massa campione").setStyle(stl.style().bold()),
+            cmp.text("B = massa da verificare").setStyle(stl.style().bold()),
+            cmp.text("*differenze rispetto al valore di massa")
+        )
+    );
+}*/
+if(pivot.startsWith("M")) {
+    isMabba = true;
+    String mc = listItem.get(0).getMabbaMc();
+    incertezzaMabba = listItem.get(0).getIncertezza();
+
+    report.detail(cmp.verticalGap(5));
+
+    report.detail(
+        cmp.horizontalList(
+            cmp.horizontalGap(135),
+            subreport
+        )
+    ).setDetailSplitType(SplitType.IMMEDIATE);
+
+    report.detail(cmp.verticalGap(8));
+
+    report.detail(
+        cmp.horizontalList(
+            cmp.horizontalGap(165),
+            cmp.text("Valore convenzionale misurato (mc) " + mc + " " + um)
+        )
+    );
+
+    report.detail(cmp.verticalGap(8));
+
+    report.detail(
+        cmp.horizontalList(
+            cmp.horizontalGap(170),
+            cmp.text("Incertezza associata allo strumento = "
+                + Utility.changeDotComma(incertezzaMabba) + " " + um)
+                .setStyle(stl.style().bold())
+        )
+    );
+
+    report.detail(cmp.verticalGap(8));
+
+    report.detail(
+        cmp.verticalList(
+            cmp.text("A = massa campione").setStyle(stl.style().bold()),
+            cmp.text("B = massa da verificare").setStyle(stl.style().bold()),
+            cmp.text("*differenze rispetto al valore di massa")
+        )
+    );
+}
 			else if(pivot.startsWith("S")) {
 				report.detail(cmp.verticalGap(10));
 				report.detail(subreport).setDetailSplitType(SplitType.IMMEDIATE);
@@ -638,114 +710,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			if(misura.getNote_allegato()!=null && !misura.getNote_allegato().equals("")) {
 				note_allegato = " - " + misura.getNote_allegato();
 			}
-			
-//	if(isMabba) {//MABBA
-//		
-//		
-//			
-//		String cliente_label = "";
-//		String path = "";
-//		if(conf!=null && conf.getNome_file_firma()!=null && !conf.getNome_file_firma().equals("")) {
-//			cliente_label = conf.getNominativo_firma();
-//			path = Costanti.PATH_FOLDER+"\\FirmeCliente\\" +conf.getId_cliente()+"\\"+conf.getId_sede()+"\\"+conf.getNome_file_firma();
-//		}
-//		else if(misura.getNome_firma()!=null && !misura.getNome_firma().equals("")) {
-//			cliente_label = misura.getNome_firma();
-//			path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\FileFirmaCliente\\" +misura.getFile_firma();
-//		}
-//		
-//		
-//		footer_right = CostantiCertificato.FOOTER_RIGHT;
-//		if(conf!=null && conf.getRevisione_certificato()!=null && !conf.getRevisione_certificato().equals("")) {
-//			footer_right = conf.getRevisione_certificato();
-//		}
-//		
-//		VerticalListBuilder vertList = cmp.verticalList();
-//		if(!cliente_label.equals("") && !path.equals("")) {
-//			
-//			File file = new File(path);
-//			Image image = ImageIO.read(file);
-//			vertList.add(
-//					cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-//					cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-//					//cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
-//			cmp.image(image).setHeight(20).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
-//		}else {
-//			vertList.add(
-//					cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-//					cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-//					cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-//		}
-//		
-//		if(strumento.getNote()==null) {
-//			strumento.setNote("");
-//		}
-//		
-//		File file_incertezza = new File("C:\\Users\\antonio.dicivita\\Desktop\\immagine.png");
-//		Image image_incertezza = ImageIO.read(file_incertezza);
-//		
-//		report.detailFooter(cmp.verticalList(
-//				cmp.line().setFixedHeight(1),	
-//				cmp.verticalGap(1),
-//				cmp.line().setFixedHeight(1),
-//				cmp.horizontalList(
-//						cmp.verticalList(
-//								cmp.text("Incertezza associata allo strumento"),
-//								cmp.horizontalList(cmp.image(image_incertezza).setHeight(20).setHorizontalImageAlignment(HorizontalImageAlignment.LEFT),
-//										cmp.text(" = "+incertezzaMabba+" "+um)
-//										),
-//								cmp.text(CostantiCertificato.DESCRIZIONE_INCERTEZZA).setStyle(footerStyle),
-//								cmp.line().setFixedHeight(1),
-//								cmp.verticalList(
-//										cmp.horizontalList(
-//												cmp.text("Esito della verifica: "), 
-//												cmp.text(idoneo).setStyle(rootStyle)
-//												),
-//										cmp.text("(Sc nom ± U <= Accettabilità)")
-//										)
-//								
-//								),
-//						cmp.line().setFixedWidth(1).setStretchType(StretchType.CONTAINER_BOTTOM),
-//						cmp.verticalList(
-//								cmp.text("Note:"),
-//								cmp.verticalGap(25),
-//								cmp.line().setFixedHeight(1),
-//								cmp.horizontalList(
-//										
-//										cmp.verticalList(
-//												cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-//												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
-//												//cmp.verticalGap(10)
-//												//cmp.image(Costanti.PATH_FOLDER + "FileFirme\\"+misura.getInterventoDati().getUtente().getFile_firma()).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedHeight(25)
-//											),
-//									//	
-//										cmp.line().setFixedWidth(1).setStretchType(StretchType.ELEMENT_GROUP_BOTTOM),
-//										cmp.verticalList(
-//												cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-//												cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
-//												//cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
-//											)
-//										
-//								)
-//						)
-//						
-//				
-//				),
-//				
-//				cmp.line().setFixedHeight(1),
-//				cmp.text(nota_firma).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(footerStyle),
-//				cmp.horizontalList(
-//						cmp.text("MOD-LAB-003").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
-//						cmp.pageXslashY(),
-//						//cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
-//						cmp.text("Rev. A del 01/06/2011").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
-//					)
-//				));
-//		
-//		
-//		
-//	}else {
-		
+					
 			if(tipo_firma == 0){
 				
 				String per ="";
@@ -1710,9 +1675,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE).setBorder(stl.penThin()).setFontSize(8).setPadding(0).setFontName("Trebuchet MS");//AGG
 		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("MABBA","center",null,null, 8)).setDataSource(new SubreportData("mabba"));
-		SubreportBuilder subreportDiff = cmp.subreport(new SubreportDesign("diff","center",null,null, 8)).setDataSource(new SubreportData("differenzaMabba"));
-		SubreportBuilder subreportUm = cmp.subreport(new SubreportDesign("um","center",null,null, 8)).setDataSource(new SubreportData("unitaDiMisura"));
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("MABBA","center",null,11, null)).setDataSource(new SubreportData("mabba"));
+		SubreportBuilder subreportDiff = cmp.subreport(new SubreportDesign("diff","center",null,11, null)).setDataSource(new SubreportData("differenzaMabba"));
+		SubreportBuilder subreportUm = cmp.subreport(new SubreportDesign("um","center",null,11, null)).setDataSource(new SubreportData("unitaDiMisura"));
 		
 	
 		
@@ -1720,7 +1685,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		JasperReportBuilder report = DynamicReports.report();
 
 		try {
-			//report.setTemplate(Templates.reportTemplate);
+			report.setTemplate(Templates.reportTemplate);
 
 			StyleBuilder	columnTitleStyle    = stl.style().setPadding(2).setFontName("Trebuchet MS")
                     .setBorder(stl.penThin())
@@ -1749,11 +1714,14 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			report.setColumnStyle(textStyle);
 			report.setColumnTitleStyle(columnTitleStyle);
 	
-			report.addColumn(col.componentColumn("Massa<br/>", subreport).setFixedWidth(65));
-			report.addColumn(col.componentColumn("UM<br/>", subreportUm).setFixedWidth(65));
+			report.addColumn(col.componentColumn("Massa<br/>", subreport).setFixedWidth(65).setTitleFixedHeight(15));
+			report.addColumn(col.componentColumn("UM<br/>", subreportUm).setFixedWidth(65).setTitleFixedHeight(15));
 			//
-			report.addColumn(col.componentColumn("Differenze rilevate<br>dalla bilancia*", cmp.verticalList(subreportDiff).setStyle(textStyle)).setFixedWidth(100));
-			
+		//	report.addColumn(col.componentColumn("Differenze rilevate<br>dalla bilancia*", cmp.verticalList(subreportDiff).setStyle(textStyle)).setFixedWidth(100));
+			report.addColumn(
+				    col.componentColumn("Differenze rilevate<br/>dalla bilancia*", subreportDiff)
+				       .setFixedWidth(100).setTitleFixedHeight(15)
+				);
 //			report.addColumn(
 //				    col.componentColumn("Massa", cmp.text("TEST").setStyle(textStyle))
 //				        .setFixedWidth(30)
@@ -1763,10 +1731,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 //				    col.componentColumn("Differenze", cmp.text("PROVA").setStyle(textStyle))
 //				        .setFixedWidth(35)
 //				);
-			report.addColumn(col.column("Scostamento<br/>(Sc)", "mabbaSC", type.stringType()).setStyle(textStyle).setFixedWidth(85).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			report.addColumn(col.column("Scostamento<br/>(Sc)", "mabbaSC", type.stringType()).setStyle(textStyle).setFixedWidth(85).setTitleFixedHeight(15).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
 			
 			
-			report.setDetailSplitType(SplitType.PREVENT);
+			report.setDetailSplitType(SplitType.IMMEDIATE);
 			
 			report.setDataSource(new JRBeanCollectionDataSource(listaReport));
 	  

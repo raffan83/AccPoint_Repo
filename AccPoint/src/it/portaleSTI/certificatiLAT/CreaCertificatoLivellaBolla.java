@@ -77,13 +77,13 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 public class CreaCertificatoLivellaBolla {
 
 	public File file;
-	public CreaCertificatoLivellaBolla(CertificatoDTO certificato, LatMisuraDTO misura, InputStream is, UtenteDTO utente,CertificatoDTO certificato_riemesso, List<SedeDTO> listaSedi, Session session) throws Exception {
+	public CreaCertificatoLivellaBolla(CertificatoDTO certificato, LatMisuraDTO misura, InputStream is, UtenteDTO utente,CertificatoDTO certificato_riemesso, List<SedeDTO> listaSedi, String dt_emissione, Session session) throws Exception {
 		
-		build(certificato, misura, is, utente,  certificato_riemesso, listaSedi, session);
+		build(certificato, misura, is, utente,  certificato_riemesso, listaSedi,dt_emissione, session);
 	}
 	
 	
-	private void build(CertificatoDTO certificato, LatMisuraDTO misura, InputStream inputStream, UtenteDTO utente, CertificatoDTO certificato_riemesso, List<SedeDTO> listaSedi, Session session) throws Exception {
+	private void build(CertificatoDTO certificato, LatMisuraDTO misura, InputStream inputStream, UtenteDTO utente, CertificatoDTO certificato_riemesso, List<SedeDTO> listaSedi, String dt_emissione, Session session) throws Exception {
 		
 		InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP1.jrxml");
 		
@@ -129,7 +129,21 @@ public class CreaCertificatoLivellaBolla {
 		
 		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd"); 
 		
-		report.addParameter("data_emissione", dt.format(new Date()));
+		if(dt_emissione!=null && dt_emissione.length()>0) 
+		{
+			  SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
+		      SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		        Date date = inputFormat.parse(dt_emissione);
+		        String output = outputFormat.format(date);
+
+		        
+			report.addParameter("data_emissione", output);
+		}else 
+		{
+			report.addParameter("data_emissione", dt.format(new Date()));
+		}
+		
 		
 		report.addParameter("numero_pagine","3");
 		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(misura.getIntervento().getIdCommessa());

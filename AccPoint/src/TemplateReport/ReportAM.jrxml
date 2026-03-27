@@ -288,7 +288,7 @@ Via Tofaro, 42/d
 				</textElement>
 				<text><![CDATA[RAPPORTO
 “MISURA SPESSIMETRICA”
-(rif. UNI EN ISO 16809:2019)]]></text>
+(rif. UNI EN ISO 16809:2026)]]></text>
 			</staticText>
 			<textField>
 				<reportElement mode="Opaque" x="373" y="18" width="180" height="42" backcolor="#D2D2D2" uuid="802aa63d-1154-4fac-b70e-dade4cc4768a"/>

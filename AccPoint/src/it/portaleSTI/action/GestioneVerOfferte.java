@@ -598,6 +598,7 @@ public class GestioneVerOfferte extends HttpServlet {
 		}catch (Exception e) {
 			session.getTransaction().rollback();
         	session.close();
+        	logger.error(e);
 			if(ajax) {
 				PrintWriter out = response.getWriter();
 				e.printStackTrace();

@@ -172,7 +172,7 @@
         <div class="col-xs-12">
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Risultati della verifica di taratura - Calibration Results
+	 Risultati della verifica di taratura - Calibration Results 
 
 </div>
 <div id="tabPM_container" class="tab-wrapper">
@@ -198,6 +198,9 @@
           <th>Scostamento (${um})</th>
           <th>Incertezza (U) (%)</th>
           <th>Incertezza (U) (${um})</th>
+           <c:if test="${misura.strumento.tipoRapporto.id==7201}">
+          <th>Accetabilità (${um})</th>
+          </c:if>
         </tr>
       </thead>
       <tbody>
@@ -211,6 +214,9 @@
             <td>${r.scostUm}</td>
             <td>${r.incPct}</td>
             <td>${r.incUm}</td>
+             <c:if test="${misura.strumento.tipoRapporto.id==7201}">
+            <td>${r.accetabilita}</td>
+            </c:if>
           </tr>
         </c:forEach>
       </tbody>

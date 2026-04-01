@@ -480,6 +480,7 @@ var flag = false;
 
 function modificaRisorsaModal(id_risorsa, type) {
 
+	pleaseWaitDiv.modal('show');
     var solaLettura = (parseInt(type, 10) === 0);
     var $modal = $('#modalModificaRisorsa');
     var tableSan = $('#tabRequisitiSanitari_mod').DataTable();
@@ -576,6 +577,7 @@ function modificaRisorsaModal(id_risorsa, type) {
                 .prop('readonly', false);
         }
 
+        pleaseWaitDiv.modal('hide');
         $modal.modal();
         flag = false;
     });

@@ -539,13 +539,13 @@ public class CreateCertificato {
 				if(pivot.startsWith("M")) {
 					 um = (String) listItem.get(0).getUnitaDiMisura().get(0).get("um");
 					numberOfRow += 2 + listItem.size();
-					subreport = cmp.subreport(getTableReportMABBA(listItem, um));
+					subreport = cmp.subreport(getTableReportMABBA(listItem, um,tipoScheda));
 				}
 				
 				if(pivot.startsWith("S")) {
 					um = (String) listItem.get(0).getUnitaDiMisura().get(0).get("um");
 					numberOfRow += 2 + listItem.size();
-					subreport = cmp.subreport(getTableReportS(listItem, um));
+					subreport = cmp.subreport(getTableReportS(listItem, um,tipoScheda));
 				}
 				
 				numberOfRow=numberOfRow - numberOfRowBefore;
@@ -563,7 +563,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 	rifTextfield1.setStyle(styleTitleTableBold);
 	report.addDetail(rifTextfield1);
 }
-/*
+
 if(pivot.startsWith("M")) {
     isMabba = true;
     String mc = listItem.get(0).getMabbaMc();
@@ -571,53 +571,16 @@ if(pivot.startsWith("M")) {
 
     report.detail(cmp.verticalGap(5));
 
+    int horizontalGap=120;
+    
+    if(tipoScheda.equals("SVT")) 
+    {
+    	horizontalGap=70;
+    }
+    
     report.detail(
         cmp.horizontalList(
-            cmp.horizontalGap(135),
-            subreport
-        )
-    ).setDetailSplitType(SplitType.IMMEDIATE);
-
-    report.detail(cmp.verticalGap(8));
-
-    report.detail(
-        cmp.horizontalList(
-            cmp.horizontalGap(165),
-            cmp.text("Valore convenzionale misurato (mc) " + mc + " " + um)
-        )
-    );
-
-    report.detail(cmp.verticalGap(8));
-
-    report.detail(
-        cmp.horizontalList(
-            cmp.horizontalGap(170),
-            cmp.text("Incertezza associata allo strumento = "
-                + Utility.changeDotComma(incertezzaMabba) + " " + um)
-                .setStyle(stl.style().bold())
-        )
-    );
-
-    report.detail(cmp.verticalGap(20));
-
-    report.detail(
-        cmp.verticalList(
-            cmp.text("A = massa campione").setStyle(stl.style().bold()),
-            cmp.text("B = massa da verificare").setStyle(stl.style().bold()),
-            cmp.text("*differenze rispetto al valore di massa")
-        )
-    );
-}*/
-if(pivot.startsWith("M")) {
-    isMabba = true;
-    String mc = listItem.get(0).getMabbaMc();
-    incertezzaMabba = listItem.get(0).getIncertezza();
-
-    report.detail(cmp.verticalGap(5));
-
-    report.detail(
-        cmp.horizontalList(
-            cmp.horizontalGap(135),
+            cmp.horizontalGap(horizontalGap),
             subreport
         )
     ).setDetailSplitType(SplitType.IMMEDIATE);
@@ -654,7 +617,23 @@ if(pivot.startsWith("M")) {
 }
 			else if(pivot.startsWith("S")) {
 				report.detail(cmp.verticalGap(10));
-				report.detail(subreport).setDetailSplitType(SplitType.IMMEDIATE);
+				
+				int horizontalGap=35;
+				
+				if(tipoScheda.equals("SVT")) 
+			    {
+			    	horizontalGap=0;
+			    }
+			    
+			    report.detail(
+			        cmp.horizontalList(
+			            cmp.horizontalGap(horizontalGap),
+			            subreport
+			        )
+			    ).setDetailSplitType(SplitType.IMMEDIATE);
+
+			    
+				
 				report.detail(cmp.verticalGap(10),
 						cmp.horizontalList(cmp.text("* correzioni effettuate in base agli errori indicati nel certificato di taratura LAT della bilancia utilizzata ")),
 						cmp.verticalGap(6),
@@ -1669,7 +1648,7 @@ if(pivot.startsWith("M")) {
 	
 	
 	
-	public JasperReportBuilder getTableReportMABBA(List<ReportSVT_DTO> listaReport, String um) throws Exception{
+	public JasperReportBuilder getTableReportMABBA(List<ReportSVT_DTO> listaReport, String um, String tipoScheda) throws Exception{
 				
 		
 		
@@ -1710,29 +1689,22 @@ if(pivot.startsWith("M")) {
 			subreportDiff.setStyle(subreportStyle);
 			report.fields(field("mabba", List.class),field("differenzaMabba", List.class), field("unitaDiMisura", List.class));
 			  
-			//report.setColumnStyle(textStyle); //AGG
 			report.setColumnStyle(textStyle);
 			report.setColumnTitleStyle(columnTitleStyle);
 	
 			report.addColumn(col.componentColumn("Massa<br/>", subreport).setFixedWidth(65).setTitleFixedHeight(15));
 			report.addColumn(col.componentColumn("UM<br/>", subreportUm).setFixedWidth(65).setTitleFixedHeight(15));
-			//
-		//	report.addColumn(col.componentColumn("Differenze rilevate<br>dalla bilancia*", cmp.verticalList(subreportDiff).setStyle(textStyle)).setFixedWidth(100));
 			report.addColumn(
 				    col.componentColumn("Differenze rilevate<br/>dalla bilancia*", subreportDiff)
 				       .setFixedWidth(100).setTitleFixedHeight(15)
 				);
-//			report.addColumn(
-//				    col.componentColumn("Massa", cmp.text("TEST").setStyle(textStyle))
-//				        .setFixedWidth(30)
-//				);
-//
-//				report.addColumn(
-//				    col.componentColumn("Differenze", cmp.text("PROVA").setStyle(textStyle))
-//				        .setFixedWidth(35)
-//				);
+
 			report.addColumn(col.column("Scostamento<br/>(Sc)", "mabbaSC", type.stringType()).setStyle(textStyle).setFixedWidth(85).setTitleFixedHeight(15).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
 			
+			if(tipoScheda.equals("SVT")) 
+			{
+				report.addColumn(col.column("Accetabilità<br/>", "accettabilita", type.stringType()).setStyle(textStyle).setFixedWidth(85).setTitleFixedHeight(15).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			}
 			
 			report.setDetailSplitType(SplitType.IMMEDIATE);
 			
@@ -1746,7 +1718,7 @@ if(pivot.startsWith("M")) {
 		
 	}
 	
-public JasperReportBuilder getTableReportS(List<ReportSVT_DTO> listaReport, String um) throws Exception{
+public JasperReportBuilder getTableReportS(List<ReportSVT_DTO> listaReport, String um, String tipoScheda) throws Exception{
 				
 		
 		
@@ -1791,15 +1763,19 @@ public JasperReportBuilder getTableReportS(List<ReportSVT_DTO> listaReport, Stri
 			report.setColumnStyle(textStyle);
 			report.setColumnTitleStyle(columnTitleStyle);
 	
-			report.addColumn(col.column("Valore nominale<br><br>"+um, "val_strumento", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
-			report.addColumn(col.componentColumn("Valore delle pesate<br>"+um, subreport).setFixedWidth(70));
-			report.addColumn(col.componentColumn("Valore corretto*<br><br>"+um, subreportVc).setFixedWidth(70));
-			report.addColumn(col.column("Valore convenzionale**<br>"+um, "valoreMedioCampione", type.stringType()).setStyle(textStyle).setFixedWidth(75).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
-			report.addColumn(col.column("Scostamento<br/><br>%", "scostamentoPerc", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));;
-			report.addColumn(col.column("Scostamento<br/><br>"+um, "scostamento_correzione", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
-			report.addColumn(col.column("Incertezza<br/>(U)<br>%", "incertezzaPerc", type.stringType()).setStyle(textStyle).setFixedWidth(65).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
-			report.addColumn(col.column("Incertezza<br/>(U)<br>"+um, "incertezza", type.stringType()).setStyle(textStyle).setFixedWidth(65).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
-			//report.addColumn(col.componentColumn("UM<br/>", subreportUm).setFixedWidth(65));
+			report.addColumn(col.column("Valore nominale<br><br>"+um, "val_strumento", type.stringType()).setStyle(textStyle).setFixedWidth(60).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			report.addColumn(col.componentColumn("Valore delle pesate<br>"+um, subreport).setFixedWidth(65));
+			report.addColumn(col.componentColumn("Valore corretto*<br><br>"+um, subreportVc).setFixedWidth(65));
+			report.addColumn(col.column("Valore convenzionale**<br>"+um, "valoreMedioCampione", type.stringType()).setStyle(textStyle).setFixedWidth(65).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			report.addColumn(col.column("Scostamento<br/><br>%", "scostamentoPerc", type.stringType()).setStyle(textStyle).setFixedWidth(60).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));;
+			report.addColumn(col.column("Scostamento<br/><br>"+um, "scostamento_correzione", type.stringType()).setStyle(textStyle).setFixedWidth(60).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			report.addColumn(col.column("Incertezza<br/>(U)<br>%", "incertezzaPerc", type.stringType()).setStyle(textStyle).setFixedWidth(55).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			report.addColumn(col.column("Incertezza<br/>(U)<br>"+um, "incertezza", type.stringType()).setStyle(textStyle).setFixedWidth(55).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			
+			if(tipoScheda.equals("SVT")) 
+			{
+				report.addColumn(col.column("Accettabilità<br>"+um, "accettabilita", type.stringType()).setStyle(textStyle).setFixedWidth(70).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStretchWithOverflow(false));
+			}
 		
 			
 			report.setDetailSplitType(SplitType.PREVENT);
@@ -1987,6 +1963,15 @@ public JasperReportBuilder getTableReportS(List<ReportSVT_DTO> listaReport, Stri
 		  
 		  return "";
 	  }
+	  
+	  private int getCenteredLeftGap(int availableWidth, int... columnWidths) {
+		    int totalWidth = 0;
+		    for (int w : columnWidths) {
+		        totalWidth += w;
+		    }
+		    int gap = (availableWidth - totalWidth) / 2;
+		    return Math.max(gap, 0);
+		}
 		public static void main(String[] args) throws HibernateException, Exception {
 			new ContextListener().configCostantApplication();
 			Session session =SessionFacotryDAO.get().openSession();

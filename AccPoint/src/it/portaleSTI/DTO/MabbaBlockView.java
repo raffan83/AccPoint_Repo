@@ -7,13 +7,15 @@ public class MabbaBlockView {
     private String scostamento;     // già pronto (stringa o number)
     private String valoreConvenzionale;
     private String incertezza;
+    private String accettabilita;
     
     private List<MabbaRowView> rows;
 
-    public MabbaBlockView(int idTabella, String scostamento, List<MabbaRowView> rows) {
+    public MabbaBlockView(int idTabella, String scostamento, List<MabbaRowView> rows,String accettabilita) {
         this.idTabella = idTabella;
         this.scostamento = scostamento;
         this.rows = rows;
+        this.accettabilita=accettabilita;
     }
     public int getIdTabella() { return idTabella; }
     public String getScostamento() { return scostamento; }
@@ -38,6 +40,12 @@ public class MabbaBlockView {
 	}
 	public void setRows(List<MabbaRowView> rows) {
 		this.rows = rows;
+	}
+	public String getAccettabilita() {
+		return accettabilita;
+	}
+	public void setAccettabilita(String accettabilita) {
+		this.accettabilita = accettabilita;
 	}
     
     

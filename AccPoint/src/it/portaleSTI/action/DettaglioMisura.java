@@ -170,8 +170,37 @@ public class DettaglioMisura extends HttpServlet {
 						    }
 
 						    String scost = (punto.getScostamento() != null) ? punto.getScostamento().stripTrailingZeros().toPlainString() : "";
+						    
+						    String accettabilita ="";
+						    
+						    if(misura.getStrumento().getTipoRapporto().getNoneRapporto().equals("SVT")) 
+						    {
+						    	if(punto.getSelTolleranza()==0)
+							  	{
+						    		String um = "";
+							  		if(punto.getUm_calc()!=null && !punto.getUm_calc().equals("")){
+							  			um = punto.getUm_calc();
+							  		}else{
+							  			um = punto.getUm();
+							  		}
+							  		
+							  		accettabilita=(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()));
+							  	}
+								if(punto.getSelTolleranza()==1)
+							  	{
+									String valore_nominale="";
+									if(punto.getFondoScala()!=null) 
+									{
+										valore_nominale=Utility.changeDotComma(punto.getFondoScala().stripTrailingZeros().toPlainString());
+									}
+									
+									String perc = "("+valore_nominale+" - " + Utility.changeDotComma(""+punto.getPer_util())+"% )";
+									accettabilita=Utility.changeDotComma(punto.getAccettabilita().stripTrailingZeros().toPlainString())+" "+perc;
+							  	}
+	
+						    }
 
-						    MabbaBlockView block = new MabbaBlockView(punto.getId_tabella(), scost, rows);
+						    MabbaBlockView block = new MabbaBlockView(punto.getId_tabella(), scost, rows,accettabilita);
 						    
 						    block.setValoreConvenzionale(punto.getMabba_mc().stripTrailingZeros().toPlainString());
 
@@ -217,7 +246,7 @@ public class DettaglioMisura extends HttpServlet {
 
 							      String incPct = (rpt.getIncertezzaPerc() != null) ? rpt.getIncertezzaPerc() : "";
 							      String incUm  = (rpt.getIncertezza() != null) ? rpt.getIncertezza() : "";
-
+							      String acc = (rpt.getAccettabilita() != null) ? rpt.getAccettabilita() : "";
 							      // Pesate: prima letturaCampione, altrimenti valoreStrumento
 							      java.util.List<String> pesate = allValues(rpt.getLetturaCampione(), "pesata", "value", "lettura", "letturaCampione");
 							    
@@ -236,7 +265,8 @@ public class DettaglioMisura extends HttpServlet {
 							            scostUm,
 							            incPct,
 							            incUm,
-							            um
+							            um,
+							            acc
 							        ));
 							      }
 							    }

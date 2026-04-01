@@ -511,6 +511,9 @@ public class GestioneCertificatoBO {
 
 									/*
 								  	 * Accetabilità 
+								  	 * Per le misure MABBA ci sono solo 2 possibili scelte per l'accettabilità degli SVT
+								  	 * 0 = Tolleranza dgt
+								  	 * 1 = Tolleranza %Vn (Vn è stato salvato nel campo fondo_scala)
 								  	 */
 								  	if(punto.getSelTolleranza()==0)
 								  	{
@@ -521,30 +524,19 @@ public class GestioneCertificatoBO {
 								  			um = punto.getUm();
 								  		}
 								  		
-								  		data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()));
+								  		data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().stripTrailingZeros().toPlainString()));
 								  	}
 									if(punto.getSelTolleranza()==1)
 								  	{
-										String perc = " (" + punto.getPer_util()+"%)";	
-									  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
-								  	}
-									if(punto.getSelTolleranza()==2)
-								  	{
-										String perc = " (" +Utility.changeDotComma(punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString())+"])";	
-									  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
-								  	}
-									if(punto.getSelTolleranza()==3)
-								  	{
+										String valore_nominale="";
+										if(punto.getFondoScala()!=null) 
+										{
+											valore_nominale=Utility.changeDotComma(punto.getFondoScala().stripTrailingZeros().toPlainString());
+										}
+										String perc = "("+valore_nominale+" - " + Utility.changeDotComma(""+punto.getPer_util())+"% )";	
+									  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().stripTrailingZeros().toPlainString())+" "+perc);
+								  
 								   
-										BigDecimal valoreMisura = punto.getMisura();
-										Double percentualeUtil = punto.getPer_util();
-										
-										BigDecimal percentuale = valoreMisura.multiply(new BigDecimal(percentualeUtil)).divide(BigDecimal.valueOf(100),RoundingMode.HALF_UP);
-										
-										BigDecimal dgt = punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).subtract(percentuale).stripTrailingZeros();
-										
-										String perc ="("+ dgt +" + "+punto.getPer_util()+"%)";	
-										data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
 								  	}
 									
 								  	BigDecimal bd = punto.getIncertezza();
@@ -666,6 +658,9 @@ public class GestioneCertificatoBO {
 									
 									/*
 								  	 * Accetabilità 
+								  	 * Per le misure M-STD ci sono solo 2 possibili scelte per l'accettabilità degli SVT
+								  	 * 0 = Tolleranza dgt
+								  	 * 1 = Tolleranza %Vn (Vn è stato salvato nel campo fondo_scala)
 								  	 */
 								  	if(punto.getSelTolleranza()==0)
 								  	{
@@ -680,26 +675,15 @@ public class GestioneCertificatoBO {
 								  	}
 									if(punto.getSelTolleranza()==1)
 								  	{
-										String perc = " (" + punto.getPer_util()+"%)";	
-									  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
-								  	}
-									if(punto.getSelTolleranza()==2)
-								  	{
-										String perc = " (" +Utility.changeDotComma(punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString())+"])";	
-									  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
-								  	}
-									if(punto.getSelTolleranza()==3)
-								  	{
-								   
-										BigDecimal valoreMisura = punto.getMisura();
-										Double percentualeUtil = punto.getPer_util();
-										
-										BigDecimal percentuale = valoreMisura.multiply(new BigDecimal(percentualeUtil)).divide(BigDecimal.valueOf(100),RoundingMode.HALF_UP);
-										
-										BigDecimal dgt = punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).subtract(percentuale).stripTrailingZeros();
-										
-										String perc ="("+ dgt +" + "+punto.getPer_util()+"%)";	
-										data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura())+2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString())+perc);
+
+										String valore_nominale="";
+										if(punto.getFondoScala()!=null) 
+										{
+											valore_nominale=Utility.changeDotComma(punto.getFondoScala().stripTrailingZeros().toPlainString());
+										}
+										String perc = "("+valore_nominale+" - " + Utility.changeDotComma(""+punto.getPer_util())+"%)";	
+									  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().stripTrailingZeros().toPlainString())+" "+perc);
+								  	
 								  	}
 									
 								  	BigDecimal bd = punto.getIncertezza();

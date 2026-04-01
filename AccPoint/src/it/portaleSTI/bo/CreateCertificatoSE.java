@@ -50,7 +50,7 @@ public class CreateCertificatoSE {
 	
 	public File file;
 	public String messaggio_firma;
-	public boolean norma_601=false;
+	public String norma="";
 	public CreateCertificatoSE(CertificatoDTO certificato,String data_emissione, UtenteDTO utente,  Session session) throws Exception {
 		
 		build(certificato,data_emissione, utente, session);
@@ -61,21 +61,26 @@ public class CreateCertificatoSE {
 		
 		SicurezzaElettricaDTO misura_se = GestioneSicurezzaElettricaBO.getMisuraSeFormIdMisura(certificato.getMisura().getId(), session);
 		
-		if(misura_se.getTIPO_NORMA()!=null && misura_se.getTIPO_NORMA().equals("601")) {
+		if(misura_se.getTIPO_NORMA()!=null) {
 			
-				norma_601=true;
+				norma=misura_se.getTIPO_NORMA();
 				
 		}
 		InputStream is=null;
 		
 		
-		if(norma_601) 
-		{
-			is =  PivotTemplate.class.getResourceAsStream("certificatoSE_601.jrxml");
-		}else 
-		{
-			is =  PivotTemplate.class.getResourceAsStream("certificatoSE.jrxml");
-		}
+		if(norma.equals("601")) 
+			{
+				is =  PivotTemplate.class.getResourceAsStream("certificatoSE_601.jrxml");
+			}
+		else if(norma.equals("61010"))
+			{
+			is =  PivotTemplate.class.getResourceAsStream("certificatoSE_61010.jrxml");
+			}
+		else
+			{
+				is =  PivotTemplate.class.getResourceAsStream("certificatoSE.jrxml");
+			}
 	
 		
 		JasperReportBuilder report = DynamicReports.report();
@@ -161,14 +166,18 @@ public class CreateCertificatoSE {
 			report.addParameter("parti_applicate", "");	
 		}
 
-		if(norma_601) 
-		{
-			report.addParameter("verifica_conformita", "IEC 601.1");
-		}
+		if(norma.equals("601")) 
+			{
+				report.addParameter("verifica_conformita", "IEC 601.1");
+			}
+		else if(norma.equals("61010")) 
+			{
+			report.addParameter("verifica_conformita", "EN 61010 / IEC 61010");
+			}
 		else 
-		{
-			report.addParameter("verifica_conformita", "EN 62353 / CEI 62-148");
-		}
+			{
+				report.addParameter("verifica_conformita", "EN 62353 / CEI 62-148");
+			}
 
 		
 				
@@ -345,7 +354,7 @@ public class CreateCertificatoSE {
 	 			 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 
-	 		report.setDataSource(createDataSource(misura_se, norma_601));
+	 		report.setDataSource(createDataSource(misura_se, norma));
 	 		
 	 		report.highlightDetailEvenRows();
 			
@@ -357,7 +366,7 @@ public class CreateCertificatoSE {
 		return report;
 	}
 	
-	private JRDataSource createDataSource(SicurezzaElettricaDTO misura_se, boolean is601)throws Exception {
+	private JRDataSource createDataSource(SicurezzaElettricaDTO misura_se, String norma)throws Exception {
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
 			
@@ -369,21 +378,23 @@ public class CreateCertificatoSE {
 			listaCodici[3]="esito";			
 
 			dataSource = new DRDataSource(listaCodici);
-			ArrayList<String> arrayPs = new ArrayList<String>();
-			arrayPs.add("Conduttore di protezione");
-			arrayPs.add(misura_se.getR_SL());
-			arrayPs.add(misura_se.getR_SL_GW());
-			arrayPs.add(Utility.returnEsit(misura_se.getR_SL(), misura_se.getR_SL_GW(), 0));
-			dataSource.add(arrayPs.toArray());
 			
-			ArrayList<String> arrayPs1 = new ArrayList<String>();
-			arrayPs1.add("Resistenza d'isolamento");
-			arrayPs1.add(misura_se.getR_ISO());
-			arrayPs1.add(misura_se.getR_ISO_GW());
-			arrayPs1.add(Utility.returnEsit(misura_se.getR_ISO(), misura_se.getR_ISO_GW(), 1));
-			dataSource.add(arrayPs1.toArray());
 			
-			if(!is601) {
+			if(norma.equals("601")) {
+				ArrayList<String> arrayPs = new ArrayList<String>();
+				arrayPs.add("Conduttore di protezione");
+				arrayPs.add(misura_se.getR_SL());
+				arrayPs.add(misura_se.getR_SL_GW());
+				arrayPs.add(Utility.returnEsit(misura_se.getR_SL(), misura_se.getR_SL_GW(), 0));
+				dataSource.add(arrayPs.toArray());
+				
+				ArrayList<String> arrayPs1 = new ArrayList<String>();
+				arrayPs1.add("Resistenza d'isolamento");
+				arrayPs1.add(misura_se.getR_ISO());
+				arrayPs1.add(misura_se.getR_ISO_GW());
+				arrayPs1.add(Utility.returnEsit(misura_se.getR_ISO(), misura_se.getR_ISO_GW(), 1));
+				dataSource.add(arrayPs1.toArray());
+				
 				ArrayList<String> arrayPs2 = new ArrayList<String>();
 				arrayPs2.add("Tensione di verifica");
 				arrayPs2.add(misura_se.getU_ISO());
@@ -453,7 +464,92 @@ public class CreateCertificatoSE {
 				arrayPs11.add("");
 				arrayPs11.add("-");
 				dataSource.add(arrayPs11.toArray());
-			}else {
+			}
+			else if(norma.equals("61010")) 
+			{
+				ArrayList<String> arrayPs = new ArrayList<String>();
+				arrayPs.add("Conduttore di protezione");
+				arrayPs.add(misura_se.getR_SL());
+				arrayPs.add(misura_se.getR_SL_GW());
+				arrayPs.add(Utility.returnEsit(misura_se.getR_SL(), misura_se.getR_SL_GW(), 0));
+				dataSource.add(arrayPs.toArray());
+				
+				
+				ArrayList<String> arrayPs2 = new ArrayList<String>();
+				arrayPs2.add("Corrente differenziale");
+				
+				arrayPs2.add(misura_se.getI_DIFF() != null ? misura_se.getI_DIFF() : "");
+				arrayPs2.add(misura_se.getI_DIFF_GW() != null ? misura_se.getI_DIFF_GW() : "");
+				arrayPs2.add(Utility.returnEsit(misura_se.getI_DIFF(), misura_se.getI_DIFF_GW(), 0));
+				dataSource.add(arrayPs2.toArray());
+
+				// IEA_NC
+				ArrayList<String> arrayPs3 = new ArrayList<String>();
+				arrayPs3.add("Valore corrente AC dispersione involucro metodo diretto (in funzione)");
+				arrayPs3.add(misura_se.getI_GA() != null ? misura_se.getI_GA() : "");
+				arrayPs3.add(misura_se.getI_GA_GW() != null ? misura_se.getI_GA_GW() : "");
+				arrayPs3.add(Utility.returnEsit(misura_se.getI_GA(), misura_se.getI_GA_GW(), 0));
+				dataSource.add(arrayPs3.toArray());
+
+				// IEA_SFC
+				ArrayList<String> arrayPs4 = new ArrayList<String>();
+				arrayPs4.add("Valore corrente AC dispersione involucro metodo diretto (rete invertita)");
+				arrayPs4.add(misura_se.getI_GA_SFC() != null ? misura_se.getI_GA_SFC() : "");
+				arrayPs4.add(misura_se.getI_GA_SFC_GW() != null ? misura_se.getI_GA_SFC_GW() : "");
+				arrayPs4.add(Utility.returnEsit(misura_se.getI_GA_SFC(), misura_se.getI_GA_SFC_GW(), 0));
+				dataSource.add(arrayPs4.toArray());
+
+				
+				ArrayList<String> arrayPs16 = new ArrayList<String>();
+				arrayPs16.add("Massima potenza assorbita Pmax [W]");
+				arrayPs16.add(misura_se.getMAX_POWER_INTAKE_601() != null ? misura_se.getMAX_POWER_INTAKE_601() : "");
+				arrayPs16.add("");
+				dataSource.add(arrayPs16.toArray());
+				
+				
+				// POWER_FACTOR_LF_601
+				ArrayList<String> arrayPs17 = new ArrayList<String>();
+				arrayPs17.add("Fattore di potenza LF");
+				arrayPs17.add(misura_se.getPOWER_FACTOR_LF_601() != null ? misura_se.getPOWER_FACTOR_LF_601() : "");
+				arrayPs17.add("");
+				dataSource.add(arrayPs17.toArray());
+
+				// MAX_SUPPLY_CUR_601
+				ArrayList<String> arrayPs18 = new ArrayList<String>();
+				arrayPs18.add("Massima corrente di alimentazione Imax [A]");
+				arrayPs18.add(misura_se.getMAX_SUPPLY_CUR_601() != null ? misura_se.getMAX_SUPPLY_CUR_601() : "");
+				arrayPs18.add("");
+				dataSource.add(arrayPs18.toArray());
+
+				// ENERGY_601
+				ArrayList<String> arrayPs19 = new ArrayList<String>();
+				arrayPs19.add("Energia [kWh]");
+				arrayPs19.add(misura_se.getENERGY_601() != null ? misura_se.getENERGY_601() : "");
+				arrayPs19.add("");
+				dataSource.add(arrayPs19.toArray());
+
+				// DURATION_601
+				ArrayList<String> arrayPs20 = new ArrayList<String>();
+				arrayPs20.add("Durata delle misure");
+				arrayPs20.add(misura_se.getDURATION_601() != null ? misura_se.getDURATION_601() : "");
+				arrayPs20.add("");
+				dataSource.add(arrayPs20.toArray());
+			}
+			else {
+				
+				ArrayList<String> arrayPs = new ArrayList<String>();
+				arrayPs.add("Conduttore di protezione");
+				arrayPs.add(misura_se.getR_SL());
+				arrayPs.add(misura_se.getR_SL_GW());
+				arrayPs.add(Utility.returnEsit(misura_se.getR_SL(), misura_se.getR_SL_GW(), 0));
+				dataSource.add(arrayPs.toArray());
+				
+				ArrayList<String> arrayPs1 = new ArrayList<String>();
+				arrayPs1.add("Resistenza d'isolamento");
+				arrayPs1.add(misura_se.getR_ISO());
+				arrayPs1.add(misura_se.getR_ISO_GW());
+				arrayPs1.add(Utility.returnEsit(misura_se.getR_ISO(), misura_se.getR_ISO_GW(), 1));
+				dataSource.add(arrayPs1.toArray());
 				
 				// IDIFF
 				ArrayList<String> arrayPs2 = new ArrayList<String>();

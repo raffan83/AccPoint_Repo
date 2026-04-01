@@ -14,10 +14,11 @@ public class SvtRowView implements Serializable {
   private String incPct;
   private String incUm;
   private String um;
+  private String accetabilita;
 
   public SvtRowView(String valoreNominale, String pesata, String valoreCorretto,
                     String valoreConvenzionale, String scostPct, String scostUm,
-                    String incPct, String incUm, String um) {
+                    String incPct, String incUm, String um, String accetabilita) {
     this.valoreNominale = valoreNominale;
     this.pesata = pesata;
     this.valoreCorretto = valoreCorretto;
@@ -27,6 +28,7 @@ public class SvtRowView implements Serializable {
     this.incPct = incPct;
     this.incUm = incUm;
     this.um = um;
+    this.accetabilita=accetabilita;
   }
 
   public String getValoreNominale() { return valoreNominale; }
@@ -38,4 +40,5 @@ public class SvtRowView implements Serializable {
   public String getIncPct() { return incPct; }
   public String getIncUm() { return incUm; }
   public String getUm() { return um; }
+  public String getAccetabilita() { return accetabilita; }
 }

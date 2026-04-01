@@ -282,10 +282,22 @@
     <label>CLASSE</label>
      <input type="text" class="form-control" readonly value="${misura_se.getSK()}">
     </div>
-     <div class="col-xs-2">
+    
+      <c:choose>
+ <c:when test="${misura_se.TIPO_NORMA == '61010'  }">
+
+  <div class="col-xs-2">
+    <label>PROTECTION TYPE</label>
+     <input type="text" class="form-control" readonly value="${misura_se.getPARTI_APPLICATE()}">
+    </div>
+ </c:when>
+ <c:otherwise>
+  <div class="col-xs-2">
     <label>PARTI APPLICATE</label>
      <input type="text" class="form-control" readonly value="${misura_se.getPARTI_APPLICATE()}">
     </div>
+ </c:otherwise>
+ </c:choose>
 
  </div>
  <br>
@@ -320,6 +332,7 @@
  						</c:choose>
 				 	</td>
 				</tr>
+				 <c:if test="${misura_se.TIPO_NORMA == '62535'  }">
 				 <tr role="row" >
 				 	<td>Valore Resistenza di isolamento</td>
 				 	<td>${misura_se.getR_ISO() }</td>
@@ -337,6 +350,7 @@
  						</c:choose>
 				 	</td>
 				</tr>
+				
 				<tr role="row" >
 				 	<td>Valore Tensione di verifica Resistenza di isolamento</td>
 				 	<td>${misura_se.getU_ISO() }</td>
@@ -354,6 +368,7 @@
  						</c:choose>
 					</td>
 				</tr>
+				</c:if>
 				<tr role="row" >
 				 	<td>Valore corrente differenziale tra L e N</td>
 				 	<td>${misura_se.getI_DIFF() }</td>
@@ -372,7 +387,7 @@
  						</c:choose>
 					</td>
 				</tr>
-				
+				<c:if test="${misura_se.TIPO_NORMA == '62535'  }">
 				<tr role="row" >
 				 	<td>Valore corrente dispersione involucro</td>
 				 	<td>${misura_se.getI_EGA() }</td>
@@ -391,6 +406,8 @@
  						</c:choose>
 				 	</td>
 				</tr>
+				
+				
 				<tr role="row" >
 				 	<td>Valore corrente dispersione parte applicata</td>
 				 	<td>${misura_se.getI_EPA() }</td>
@@ -409,6 +426,7 @@
  						</c:choose>
 				 	</td>
 				</tr>
+				</c:if>
 				<tr role="row" >
 				 	<td>Valore corrente AC dispersione involucro metodo diretto (in funzione)</td>
 				 	<td>${misura_se.getI_GA() }</td>
@@ -445,6 +463,7 @@
  						</c:choose>
 				 	</td>
 				</tr>
+				<c:if test="${misura_se.TIPO_NORMA == '62535'  }">
 				<tr role="row" >
 				 	<td>Valore corrente AC dispersione parte applicata (in funzione)</td>
 				 	<td>${misura_se.getI_PA_AC() }</td>
@@ -493,7 +512,7 @@
 				 	<td></td>
 				 	<td></td>
 				</tr>
-
+</c:if>
 
 					
 				 </tbody>

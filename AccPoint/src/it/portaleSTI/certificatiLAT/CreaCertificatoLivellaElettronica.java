@@ -65,13 +65,13 @@ public class CreaCertificatoLivellaElettronica {
 	
 	public File file;
 	
-	public CreaCertificatoLivellaElettronica(CertificatoDTO certificato, LatMisuraDTO misura, UtenteDTO utente,CertificatoDTO certificato_riemesso, Session session) throws Exception {
+	public CreaCertificatoLivellaElettronica(CertificatoDTO certificato, LatMisuraDTO misura, UtenteDTO utente,CertificatoDTO certificato_riemesso, String dt_emissione, Session session) throws Exception {
 				
-		build(certificato, misura, utente,certificato_riemesso, session);
+		build(certificato, misura, utente,certificato_riemesso,dt_emissione, session);
 	}
 
 	
-	private void build(CertificatoDTO certificato, LatMisuraDTO misura, UtenteDTO utente,CertificatoDTO certificato_riemesso, Session session) throws Exception {
+	private void build(CertificatoDTO certificato, LatMisuraDTO misura, UtenteDTO utente,CertificatoDTO certificato_riemesso,String dt_emissione, Session session) throws Exception {
 		
 		InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica_P1.jrxml");
 		
@@ -115,7 +115,20 @@ public class CreaCertificatoLivellaElettronica {
 		
 		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd"); 
 		
-		report.addParameter("data_emissione", dt.format(new Date()));
+		if(dt_emissione!=null && dt_emissione.length()>0) 
+		{
+			  SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
+		      SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		        Date date = inputFormat.parse(dt_emissione);
+		        String output = outputFormat.format(date);
+
+		        
+			report.addParameter("data_emissione", output);
+		}else 
+		{
+			report.addParameter("data_emissione", dt.format(new Date()));
+		}
 		
 		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(misura.getIntervento().getIdCommessa());
 		

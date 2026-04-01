@@ -116,7 +116,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
          
          <td id = "col_3_${veicolo.id}" data-toggle='tooltip' title="Disp. Pedaggio: ${veicolo.dispositivo_pedaggio}"><b>${veicolo.modello}</b></td>
 
-         <c:forEach var="day" begin="${start_date }" end="${end_date}" step="1">
+        <!--  <c:forEach var="day" begin="${start_date }" end="${end_date}" step="1">
 			<c:if test="${LocalDate.ofYearDay(anno, 1).isLeapYear() && day>366 }">
 			<td  id="${veicolo.id}_${day-366}" style="position:relative"></td> 
 			</c:if>
@@ -132,8 +132,51 @@ int anno = (Integer) request.getSession().getAttribute("anno");
          	<%-- <td id="${veicolo.id}_${day}" ondblclick="modalPrenotazione('${day}', '${commessa.ID_COMMESSA }')"></td> --%>
          	<%-- <td id="${veicolo.id}_${day}"></td> --%>
          </c:forEach>
-         
+         -->
 
+			<c:forEach var="day" begin="${start_date}" end="${end_date}" step="1">
+    <%
+        Integer dayObj = (Integer) pageContext.findAttribute("day");
+        Integer annoObj = (Integer) pageContext.findAttribute("anno");
+
+        int dayInt = dayObj != null ? dayObj.intValue() : 1;
+        int annoInt = annoObj != null ? annoObj.intValue() : java.time.LocalDate.now().getYear();
+
+        boolean leapYear = java.time.LocalDate.ofYearDay(annoInt, 1).isLeapYear();
+
+        int dayOfYearToUse;
+        int yearToUse;
+        int cellDayId;
+
+        if (leapYear) {
+            if (dayInt > 366) {
+                yearToUse = annoInt + 1;
+                dayOfYearToUse = dayInt - 366;
+                cellDayId = dayInt - 366;
+            } else {
+                yearToUse = annoInt;
+                dayOfYearToUse = dayInt;
+                cellDayId = dayInt;
+            }
+        } else {
+            if (dayInt > 365) {
+                yearToUse = annoInt + 1;
+                dayOfYearToUse = dayInt - 365;
+                cellDayId = dayInt - 365;
+            } else {
+                yearToUse = annoInt;
+                dayOfYearToUse = dayInt;
+                cellDayId = dayInt;
+            }
+        }
+
+        String dataTooltip = java.time.LocalDate.ofYearDay(yearToUse, dayOfYearToUse)
+                .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    %>
+    <td id="${veicolo.id}_<%=cellDayId%>"
+        style="position:relative"
+        title="<%=dataTooltip%>"></td>
+</c:forEach>
   <%--   </c:forEach> --%>
          
          </tr>

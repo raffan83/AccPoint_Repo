@@ -186,6 +186,10 @@
           <th>UM</th>
           <th>Differenze rilevate dalla bilancia*</th>
           <th>Scostamento (Sc)</th>
+          
+          <c:if test="${misura.strumento.tipoRapporto.id==7201}">
+           <th>Accettabilità</th>
+          </c:if>
         </tr>
       </thead>
 
@@ -212,10 +216,21 @@
                     class="blocco-cell text-center blocco-right">
                   <c:choose>
                     <c:when test="${empty blocco.scostamento}">-</c:when>
-                    <c:otherwise><c:out value="${blocco.scostamento}" /></c:otherwise>
+                    <c:otherwise><c:out value="${blocco.scostamento} " /></c:otherwise>
                   </c:choose>
                 </td>
               </c:if>
+              <c:if test="${misura.strumento.tipoRapporto.id==7201}">
+                 <c:if test="${st.first}">
+                <td rowspan="${fn:length(blocco.rows)}"
+                    class="blocco-cell text-center blocco-right">
+                  <c:choose>
+                    <c:when test="${empty blocco.accettabilita}">-</c:when>
+                    <c:otherwise><c:out value="${blocco.accettabilita}" /></c:otherwise>
+                  </c:choose>
+                </td>
+              </c:if>
+             </c:if> 
             </tr>
 
           </c:forEach>

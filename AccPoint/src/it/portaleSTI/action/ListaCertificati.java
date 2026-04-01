@@ -400,11 +400,12 @@ public class ListaCertificati extends HttpServlet {
 				
 				String idCertificato = request.getParameter("idCertificato");
 				String latMaster = request.getParameter("latMaster");
+				String dt_emissione = request.getParameter("data_emissione");
 				
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato,session);				
 				
 				if(latMaster.equals("2")) {
-					new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, null,session);
+					new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, null,dt_emissione,session);
 				}
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
@@ -529,15 +530,15 @@ public class ListaCertificati extends HttpServlet {
 					
 					if(certificato.getMisura().getLat().equals("E")) {
 						new CreateCertificatoSE(certificato,data_emissione,utente,session);
-					}
+					}/*
 					else if(certificato.getMisura().getMisuraLAT()!=null && certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
-//						new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), null,utente, session);
+						new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), null,utente, session);
 					}
 					else if(certificato.getMisura().getMisuraLAT()!=null && certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==2) {
-						new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, null,session);
+						new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, null,data_emissione,session);
 					}
-					
-					else {
+					*/
+				else {
 						
 						
 						List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(certificato.getMisura().getListaPunti(),certificato.getMisura().getStrumento().getTipoRapporto());
@@ -848,7 +849,7 @@ public class ListaCertificati extends HttpServlet {
 				}
 				
 				if(certificato_new.getMisura().getMisuraLAT().getMisura_lat().getId()== 2) {
-					new CreaCertificatoLivellaElettronica(certificato_new, certificato_new.getMisura().getMisuraLAT(), utente,certificato_old,  session);
+					new CreaCertificatoLivellaElettronica(certificato_new, certificato_new.getMisura().getMisuraLAT(), utente,certificato_old,dt_emissione,session);
 				}
 				
 				certificato_old.getMisura().setObsoleto("S");

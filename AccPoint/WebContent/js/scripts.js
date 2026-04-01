@@ -3764,10 +3764,11 @@ function eliminaCompany(){
   
   function creaCertificatoLat(idCertificato, lat_master){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  let data_emissione = $('#data_emissione').val();
 	  pleaseWaitDiv.modal();
 	  $.ajax({
     	  type: "POST",
-    	  url: "listaCertificati.do?action=creaCertificatoLat&idCertificato="+idCertificato+"&latMaster="+lat_master,
+    	  url: "listaCertificati.do?action=creaCertificatoLat&idCertificato="+idCertificato+"&latMaster="+lat_master+ "&data_emissione=" + data_emissione,
     	  dataType: "json",
 
     	  success: function( data, textStatus) {

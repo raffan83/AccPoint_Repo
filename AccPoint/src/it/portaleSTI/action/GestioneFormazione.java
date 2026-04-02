@@ -509,6 +509,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					lista_corsi = GestioneFormazioneBO.getListaCorsiClienteSupervisore(utente.getIdCliente(),  session);	
 				}
 				else {
+				
 					
 					String dateFrom = request.getParameter("dateFrom");
 					String dateTo = request.getParameter("dateTo");
@@ -539,6 +540,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);			
 					ArrayList<CommessaDTO> lista_commesse = GestioneCommesseDAO.getListaCommesseFormazione(company, "FES;FCS", utente, 0, false);
 					
+					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = GestioneFormazioneBO.getListaCorsiInvioEmail();
+					
+					request.getSession().setAttribute("lista_corsi_moodle", lista_corsi_moodle);
 					request.getSession().setAttribute("lista_docenti", lista_docenti);
 					request.getSession().setAttribute("lista_corsi_cat", lista_corsi_cat);
 					request.getSession().setAttribute("lista_commesse", lista_commesse);
@@ -547,10 +551,14 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					
 				}
+				int minId=0; 
+				int maxId =0;
 
-				int minId = Collections.min(lista_corsi, Comparator.comparingInt(ForCorsoDTO::getId)).getId();
-				int maxId = Collections.max(lista_corsi, Comparator.comparingInt(ForCorsoDTO::getId)).getId();
-				
+				if(lista_corsi!=null && lista_corsi.size()>0) 
+				{
+					minId = Collections.min(lista_corsi, Comparator.comparingInt(ForCorsoDTO::getId)).getId();
+					maxId = Collections.max(lista_corsi, Comparator.comparingInt(ForCorsoDTO::getId)).getId();
+				}
 				request.getSession().setAttribute("minRange", minId);
 				request.getSession().setAttribute("maxRange", maxId);	
 				
@@ -646,9 +654,16 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String giorni_preavviso = ret.get("giorni_preavviso");
 				String email_preavviso = ret.get("email_preavviso");
 				
+				String corso_moodle=ret.get("corsi");
+				
+				if(corso_moodle.length()==0) {corso_moodle="0";}
+				
 				ForCorsoDTO corso = new ForCorsoDTO();		
 				
 				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria.split("_")[0])));
+				
+				corso.setId_corso_moodle(Integer.parseInt(corso_moodle));
+				
 				if(id_docenti!=null && !id_docenti.equals("")) {
 					for (String id : id_docenti.split(";")) {
 						corso.getListaDocenti().add(new ForDocenteDTO(Integer.parseInt(id)));
@@ -744,6 +759,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		        String id_corso = request.getParameter("id_corso");
 		        String categoria = ret.get("categoria_mod");
+		        String id_corso_moodle = ret.get("corsi_moodle_mod");
 				String id_docenti = ret.get("id_docenti_mod");
 				String id_docenti_dissocia = ret.get("id_docenti_dissocia");
 				String data_corso = ret.get("data_corso_mod");
@@ -763,6 +779,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso),session);		
 				
 				corso.setCorso_cat(new ForCorsoCatDTO(Integer.parseInt(categoria.split("_")[0])));
+				corso.setId_corso_moodle(Integer.parseInt(id_corso_moodle));
 				
 				if(id_docenti_dissocia!=null && !id_docenti_dissocia.equals("")) {
 					for (String id : id_docenti_dissocia.split(";")) {

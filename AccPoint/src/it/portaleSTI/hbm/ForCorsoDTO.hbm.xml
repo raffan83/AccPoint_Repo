@@ -7,7 +7,10 @@
         <id name="id" type="int">
             <column name="id" />
             <generator class="native" />
-        </id>      
+        </id>
+        <property name="id_corso_moodle" type="int" >
+            <column name="id_corso_moodle" />
+        </property>      
        <many-to-one name="corso_cat" class="it.portaleSTI.DTO.ForCorsoCatDTO" fetch="join" lazy="false">
             <column name="id_corso" />
         </many-to-one>

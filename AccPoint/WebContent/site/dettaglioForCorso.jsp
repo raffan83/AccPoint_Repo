@@ -65,6 +65,9 @@
                 <li class="list-group-item">
                   <b>ID</b> <a class="pull-right">${corso.id}</a>
                 </li>
+                 <li class="list-group-item">
+                  <b>ID Corso Moodle</b> <a class="pull-right">${corso.id_corso_moodle}</a>
+                </li>
                 <li class="list-group-item">
                   <b>Commessa</b> <a class="pull-right">${corso.commessa}</a>
                 </li>

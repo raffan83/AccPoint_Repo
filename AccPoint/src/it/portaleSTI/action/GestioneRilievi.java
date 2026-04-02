@@ -975,7 +975,23 @@ public class GestioneRilievi extends HttpServlet {
 					
 					max_id_ripetizione = GestioneRilieviBO.getMaxIdRipetizione(lista_impronte, session);
 				
-					logger.info("RECUPERO MAX ID RIPETIZIONE: "+max_id_ripetizione +" SU IMPRONTE");
+					int safety=0;
+					
+					ArrayList<RilQuotaDTO>  lista_quoteTot = GestioneRilieviBO.getQuoteFromImpronta(lista_impronte.get(0).getId(), session);
+					
+					if(lista_quoteTot!=null && lista_quoteTot.size()>0) 
+					{
+						safety=lista_quoteTot.get(lista_quoteTot.size()-1).getId_ripetizione();
+					}
+					
+					if(safety>max_id_ripetizione) 
+					{
+						logger.info("***SAFETY*** MAX ID RIPETIZIONE: "+max_id_ripetizione +" - [SAFETY]: "+safety);
+						max_id_ripetizione=safety;
+					}
+					
+					logger.info("RECUPERO MAX ID RIPETIZIONE: "+max_id_ripetizione +" SU IMPRONTE - [MAX ID DA QUOTE]: "+safety);
+					
 					
 					for (RilParticolareDTO rilParticolareDTO : lista_impronte) {
 						

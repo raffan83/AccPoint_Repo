@@ -129,7 +129,7 @@ public class CreaCertificatoLivellaBolla {
 		
 		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd"); 
 		
-		if(dt_emissione!=null && dt_emissione.length()>0) 
+		if(dt_emissione!=null && dt_emissione.length()>0 && !dt_emissione.equals("undefined")) 
 		{
 			  SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
 		      SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");

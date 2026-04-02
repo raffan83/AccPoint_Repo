@@ -165,6 +165,7 @@
 <th>Docente</th>
 <th>N. Attestati</th>
 <th>Efei</th>
+<th>ID corso Moodle</th>
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 <th style="min-width:235px">Azioni</th>
 </c:if>
@@ -220,13 +221,16 @@
 <c:if test="${corso.efei==1 }">SI</c:if>
 <c:if test="${corso.efei!=1 }">NO</c:if>
 </td>
+
+	<td>${corso.id_corso_moodle}</td>
+	
 	
 		<td>
 
 	<a class="btn btn-info" onClick="dettaglioCorso('${utl:encryptData(corso.id)}')"><i class="fa fa-search"></i></a>
 		 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 	<%-- 	 	<c:if test="${corso.e_learning == 0}"> --%>
-				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${utl:escapeJS(corso.getDocentiCorsoJson())}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }', '${corso.durata }','${corso.efei }', '${corso.frequenza_remind }', '${corso.giorni_preavviso }','${corso.email_preavviso }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
+				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }','${utl:escapeJS(corso.getDocentiCorsoJson())}','${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${utl:escapeJS(corso.descrizione) }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }', '${corso.durata }','${corso.efei }', '${corso.frequenza_remind }', '${corso.giorni_preavviso }','${corso.email_preavviso }','${corso.id_corso_moodle }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
 	<%-- 	 	</c:if>
 	<c:if test="${corso.e_learning == 1}">
 				<a class="btn btn-warning" onClicK="modificaCorsoModal('${corso.id}','${corso.corso_cat.id }_${corso.corso_cat.frequenza }',0,'${corso.data_corso }','${corso.data_scadenza }','${corso.documento_test }','${corso.descrizione }','${corso.tipologia }','${corso.commessa }','${corso.e_learning }')" title="Click per modificare il corso"><i class="fa fa-edit"></i></a>	 	
@@ -311,6 +315,22 @@
         <option value="${categoria.id }_${categoria.frequenza }">${categoria.descrizione }</option>
         </c:forEach>
         </select>
+       			
+       	</div>       	
+       </div><br>
+             <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Corso Moodle</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+       <select id="corsi" name="corsi" class="form-control select2" style="width:100%" data-placeholder="Seleziona corso Moodle...">
+       <option value="0">Nessun Corso</option>
+       <c:forEach items="${lista_corsi_moodle}" var="corso">
+       <option value="${corso.id}">${corso.descrizione }</option>
+       </c:forEach>
+       </select>
        			
        	</div>       	
        </div><br>
@@ -541,6 +561,24 @@
        			
        	</div>       	
        </div><br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Corso Moodle</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+       <select id="corsi_moodle_mod" name="corsi_moodle_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona corso Moodle...">
+       <option value="0">Nessun Corso</option>
+       <c:forEach items="${lista_corsi_moodle}" var="corso">
+       <option value="${corso.id}">${corso.descrizione }</option>
+       </c:forEach>
+       </select>
+       			
+       	</div>       	
+       </div>
+       <br>
        
         <div class="row">
        
@@ -845,7 +883,34 @@
 
 .table th {
     background-color: #3c8dbc !important;
-  }</style>
+  }
+  
+  #rangeSlider + .slider,
+.slider.slider-horizontal {
+    z-index: 1 !important;
+}
+
+.slider .tooltip,
+.slider .tooltip.top,
+.slider .tooltip.in {
+    z-index: 1 !important;
+}
+
+.slider .slider-handle {
+    z-index: 2 !important;
+}
+
+/* la modale deve stare sopra */
+.modal {
+    z-index: 1050 !important;
+}
+
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+  
+  
+  </style>
 
 </jsp:attribute>
 
@@ -867,6 +932,10 @@ function modalnuovoCorso(){
 	
 	$('#myModalNuovoCorso').modal();
 	
+	$('#myModalNuovoCorso .select2').select2({
+	    dropdownParent: $('#myModalNuovoCorso'),
+	    width: '100%'
+	});
 }
 
 function eliminaCorsoModal(id_corso){
@@ -923,7 +992,7 @@ $('#docente_mod').on('change', function() {
   });
 
 
-function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_scadenza, documento_test, descrizione, tipologia, commessa,e_learning, durata, efei, frequenza, giorni_preavviso, email_preavviso){
+function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_scadenza, documento_test, descrizione, tipologia, commessa,e_learning, durata, efei, frequenza, giorni_preavviso, email_preavviso,id_corso_moodle){
 	
 	var json = JSON.parse(docenti);
 	
@@ -933,6 +1002,8 @@ function modificaCorsoModal(id_corso,id_categoria, docenti, data_inizio, data_sc
 	$('#id_docenti_mod').val("")
 	$('#id_docenti_dissocia').val("")
 	$('#id_corso').val(id_corso);
+	$('#corsi_moodle_mod').val(id_corso_moodle);
+	$('#corsi_moodle_mod').change();
 	$('#categoria_mod').val(id_categoria);
 	$('#categoria_mod').change();
 	$('#frequenza_remind_mod').val(frequenza)
@@ -995,6 +1066,11 @@ $('#docente_mod').change();
 	
 	
 	$('#myModalModificaCorso').modal();
+	
+	$('#myModalModificaCorso .select2').select2({
+	    dropdownParent: $('#myModalModificaCorso'),
+	    width: '100%'
+	});
 }
 
 
@@ -1184,11 +1260,14 @@ var tipologia = $('#categoria_mod').val();
 
 
 if($('#data_corso_mod').val()!=null && $('#data_corso_mod').val()!=''){
+	 if(tipologia!=null && tipologia!='')
+	 {
 	  var frequenza = tipologia.split("_")[1];
 	  var x = formatDate($('#data_corso_mod').val());
 	  var data =  Date.parse(x);	
 	  var data_scadenza = data.addMonths(parseInt(frequenza));
 	  $('#data_scadenza_mod').val(formatDate(data_scadenza));
+	  }
 }
 
 });
@@ -1411,7 +1490,7 @@ $(document).ready(function() {
 	//changeSkin();
 	admin="${admin}";
 	
-	var col_azioni = 12;
+	var col_azioni = 13;
 	
 	if(admin == "1"){
 		col_azioni++;

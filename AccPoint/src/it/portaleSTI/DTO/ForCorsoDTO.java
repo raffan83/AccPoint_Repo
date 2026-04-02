@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 public class ForCorsoDTO {
 
 	private int id;
+	private int id_corso_moodle;
 	private ForCorsoCatDTO corso_cat;
 	private ForDocenteDTO docente;
 	private Date data_corso;
@@ -52,6 +53,13 @@ public class ForCorsoDTO {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public int getId_corso_moodle() {
+		return id_corso_moodle;
+	}
+	public void setId_corso_moodle(int id_corso_moodle) {
+		this.id_corso_moodle = id_corso_moodle;
 	}
 	public ForCorsoCatDTO getCorso_cat() {
 		return corso_cat;

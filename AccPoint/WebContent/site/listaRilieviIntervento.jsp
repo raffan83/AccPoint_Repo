@@ -998,7 +998,12 @@
   <script type="text/javascript" src="js/customCharts.js"></script>
 <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
- 
+ <c:set var="tuttiRilieviApprovati" value="true" />
+<c:forEach items="${lista_rilievi}" var="ril">
+	<c:if test="${ril.stato_rilievo.id != 2 || ril.controfirmato != 1}">
+		<c:set var="tuttiRilieviApprovati" value="false" />
+	</c:if>
+</c:forEach>
 
  <script type="text/javascript">
  
@@ -1034,7 +1039,19 @@
 		if($('#apertura_chiusura').val() == 'apertura'){
 			apriIntervento('${utl:encryptData(intervento.id)}',0,0, comunicazione, 1)
 		}else{
-			chiudiIntervento('${utl:encryptData(intervento.id)}',0,0, comunicazione, 1)
+			var tuttiRilieviApprovati = ${tuttiRilieviApprovati};
+			
+			if(tuttiRilieviApprovati){
+				chiudiIntervento('${utl:encryptData(intervento.id)}',0,0, comunicazione, 1);
+			}else{
+				$('#modalComunicazione').modal('hide');
+				$('#myModalErrorContent').html("E' possibile chiudere l'intervento solo se tutti i rilievi sono stati approvati");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalError').modal('show');
+			}
 		}
 		
 		

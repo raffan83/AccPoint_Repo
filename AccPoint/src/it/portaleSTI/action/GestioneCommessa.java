@@ -34,7 +34,6 @@ public class GestioneCommessa extends HttpServlet {
     public GestioneCommessa() {
         super();
         // TODO Auto-generated constructor stub
-        
     }
 
 	/**

@@ -194,7 +194,7 @@ public class GestioneUtenteBO {
 		      	      
 			  Utility.sendEmail(to2,subject2,hmtlMex2);
 			  
-			  String to = "raffaele.fantini@ncsnetwork.it,luigi.laposta@stisrl.com";
+			  String to = "raffaele.fantini@ncsnetwork.it,luigi.laposta@stisrl.com,edoardo.boccitto@ncsnetwork.it";
 			  String subject = "Calver.it Nuovo Utente";
 			  
 		      String hmtlMex = "<h3><img src=\"https://www.calver.it/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />L'utente "+utente.getNominativo()+"<br /> ha chiesto la registrazione per l'accesso a Calver.it <br /><br/>Dati:<br /><br/>Utente: "+utente.getUser()+"<br  />Email: "+utente.getEMail()+"<br  />Telefono: "+utente.getTelefono()+"<br  />Company: "+utente.getDescrizioneCompany()+"<br  /> Area d'interesse: "+area_interesse+"<br /> \r\n" + 

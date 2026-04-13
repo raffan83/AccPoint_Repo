@@ -697,10 +697,9 @@ function openModalStampa(idMisura){
 	    var api = new $.fn.dataTable.Api( settings );
 	    var state = api.state.loaded();
 	 
-	    if(state != null && state.columns!=null){
-	    		console.log(state.columns);
-	    
-	    columsDatatables = state.columns;
+	    if(state != null && state.columns!=null)
+	    {
+	    	columsDatatables = state.columns;
 	    }
 	    
 	    
@@ -776,7 +775,7 @@ function openModalStampa(idMisura){
   	        loadingRecords:	"Caricamento...",
   	        	processing:	"Elaborazione...",
   	        	search:	"Cerca:",
-  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+  	        	zeroRecords	:"La ricerca non ha portato alcun risultato utile.",
   	        	paginate:	{
 	  	        	first:	"Inizio",
 	  	        	previous:	"Precedente",
@@ -845,7 +844,7 @@ function openModalStampa(idMisura){
   	    	
   	      
   	    });
-    	
+    
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
  
 

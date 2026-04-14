@@ -2198,7 +2198,7 @@ public class GestioneFormazioneBO {
 				}
 				
 				try {
-					Utility.sendEmail("antonio.dicivita@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
+					Utility.sendEmail("edoardo.boccitto@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
 					Utility.sendEmail("raffaele.fantini@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block

@@ -1006,7 +1006,7 @@
         <h4 class="modal-title" id="myModalLabel">Invia Comunicazione Consegna</h4>
       </div>
        <div class="modal-body">       
-      	<label>Indirizzo:</label><input type="text" class="form-control" id="destinatario_consegna" value="antonio.dicivita@ncsnetwork.it" name="destinatario_consegna"/>
+      	<label>Indirizzo:</label><input type="text" class="form-control" id="destinatario_consegna" value="edoardo.boccitto@ncsnetwork.it" name="destinatario_consegna"/>
       	
       	</div>
       <div class="modal-footer">

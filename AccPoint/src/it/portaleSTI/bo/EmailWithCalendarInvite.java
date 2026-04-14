@@ -32,7 +32,7 @@ public class EmailWithCalendarInvite {
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress("calver@accpoint.it"));
        // message.addRecipient(Message.RecipientType.TO, new InternetAddress("segreteria@crescosrl.net"));
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress("antonio.dicivita@ncsnetwork.it"));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress("edoardo.boccitto@ncsnetwork.it"));
         message.setSubject("Corso formazione corso XXX");
 
         // Costruzione del contenuto ICS (con \r\n)

@@ -31,7 +31,6 @@ import java.util.zip.ZipFile;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.apache.pdfbox.multipdf.Splitter;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -89,10 +88,10 @@ import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.SondaggioRLDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
-import it.portaleSTI.action.SendEmailFormazione;
 
 public class GestioneFormazioneBO {
 	static final Logger logger = Logger.getLogger(GestioneFormazioneBO.class);
@@ -227,6 +226,7 @@ public class GestioneFormazioneBO {
 			int id_ruolo = 0;
 			int id_corso = 0;
 			String ore_partecipate = null;
+			String email = null;
 			
 			while (cellIterator.hasNext())   
 			{  
@@ -236,7 +236,7 @@ public class GestioneFormazioneBO {
 					if(row.getCell(0)== null || row.getCell(1) == null || row.getCell(2)==null || row.getCell(3)== null || row.getCell(4)==null
 							|| !row.getCell(0).getStringCellValue().equals("NOME") || !row.getCell(1).getStringCellValue().equals("COGNOME") 
 							|| !row.getCell(2).getStringCellValue().equals("DATA DI NASCITA") || !row.getCell(3).getStringCellValue().equals("LUOGO DI NASCITA") 
-							|| !row.getCell(4).getStringCellValue().equals("CODICE FISCALE") ) {
+							|| !row.getCell(4).getStringCellValue().equals("CODICE FISCALE") || !row.getCell(8).getStringCellValue().equals("EMAIL") ) {
 						esito_generale = 1;
 						break;
 					}
@@ -282,6 +282,8 @@ public class GestioneFormazioneBO {
 								id_ruolo =  Integer.parseInt(cell.getStringCellValue());							
 							}else if(cell.getColumnIndex()==7 ) {
 								ore_partecipate = cell.getStringCellValue();
+							} else if(cell.getColumnIndex()==8) {
+								email = cell.getStringCellValue();
 							}
 							
 						}
@@ -323,6 +325,7 @@ public class GestioneFormazioneBO {
 					partecipante.setData_nascita(data_nascita);
 					partecipante.setLuogo_nascita(luogo_nascita);
 					partecipante.setCf(cf);
+					partecipante.setEmail(email);
 					session.saveOrUpdate(partecipante);	
 					
 					
@@ -1302,10 +1305,283 @@ public class GestioneFormazioneBO {
 		return obj;
 	}
 	
+	public static JsonObject compilaExcelQuestionarioTemp(String filename) throws Exception {
+		
+	JsonObject obj = new JsonObject();
+		
+		String zipPath = Costanti.PATH_FOLDER+"//Formazione//temp//"+filename;
+		
+		ZipFile zipFile = new ZipFile(zipPath);
 
+	    Enumeration<? extends ZipEntry> entries = zipFile.entries();
+	    
+	    InputStream file = new FileInputStream(Costanti.PATH_FOLDER+"//Formazione//Questionari//Template-vma-ente-editabile_Originale - Copia.xlsx");	    
+	    XSSFWorkbook workbook = new XSSFWorkbook(file);   
+	    int sheets = workbook.getNumberOfSheets();
+	//	 XSSFSheet sheet0 = workbook.getSheetAt(1);
+	
+		 List<XSSFSheet> sheetsList = new ArrayList<>();
+		 int row = 1;
+		 
+		 
+		 for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
+			    sheetsList.add(workbook.getSheetAt(i));
+			}
+		  XSSFSheet sheet1 = sheetsList.get(0); // 1° foglio
+		  XSSFSheet sheet2 = sheetsList.get(1); // 2° foglio
+		  XSSFSheet sheet3 = sheetsList.get(2); // 3° foglio
+		  XSSFSheet sheet4 = sheetsList.get(3); // 4° foglio
+		  XSSFSheet sheet5 = sheetsList.get(4); // 5° foglio
+
+		  int countPdfSbagliati =0;
+		  List<String> nomePdfSbagliati = new ArrayList<>();
+		 
+		
+	    while(entries.hasMoreElements()){
+	        ZipEntry zentry = entries.nextElement();
+	        InputStream stream = zipFile.getInputStream(zentry);
+	       
+			
+			SondaggioRLDTO objScanner =(SondaggioRLDTO) LettoreModuliPdfBO.scan(stream,SondaggioRLDTO.class);
+			System.out.println("nome file: " + zentry.getName());
+		
+			if(objScanner==null) {
+				//Restituire messaggio che ilpdf non puo essere letto
+				System.out.println("pdf diverso dal format: " + zentry.getName());
+		
+				countPdfSbagliati++;
+				nomePdfSbagliati.add(zentry.getName());
+				continue;
+			}
+			
+			
+			//trova prima riga libera
+			int count = 1;
+			while (true) {
+			    Row rowObj = sheet1.getRow(count);
+
+			    if (rowObj == null) {
+			        break;
+			    }
+
+			    Cell cell = rowObj.getCell(1);
+
+			    if (cell == null || cell.toString().trim().isEmpty()) {
+			        break;
+			    }
+
+			    count++;
+			}
+
+			row = count;
+			
+
+			getOrCreateCell(sheet1, row, 1).setCellValue(objScanner.getTipo_acc());
+
+		getOrCreateCell(sheet1, row, 2).setCellValue(objScanner.getTitolo()); //COSA?
+
+		// altri campi dell'ente
+		getOrCreateCell(sheet1, row, 3).setCellValue(objScanner.getFonte_fin());  //AGGIUNGERE CODICE
+		
+		
+		/*  PER INSERIRE IL CODICE_SIGEM_FONTE IN PAGINA EXCEL CORSI, MA I CORSI VENGONO MESSI SOLO DOPO IL SALVATAGGIO
+		System.out.println("codice sigem: " + sheet3.getRow(2).getCell(0));
+		int row2 =1;
+		String titolo = null;
+		for(row2=1;row2<10;row2++) {
+			if(sheet3.getRow(row2).getCell(1).equals(objScanner.getFonte_fin()) && sheet3.getRow(row2).getCell(0).equals(objScanner.getFonte_fin_txt_1())) {
+				break;
+			} else if(sheet3.getRow(row2).getCell(1).equals(objScanner.getFonte_fin()) && sheet3.getRow(row2).getCell(0).equals("")) {
+				getOrCreateCell(sheet3, row2, 0).setCellValue(objScanner.getFonte_fin_txt_1());
+			} else if(sheet3.getRow(row2).getCell(1).equals(objScanner.getFonte_fin()) && !sheet3.getRow(row2).getCell(0).equals(objScanner.getFonte_fin_txt_1())) {
+				
+			}
+		}
+		*/
+
+		getOrCreateCell(sheet1, row, 4).setCellValue(objScanner.getDurata());
+
+		getOrCreateCell(sheet1, row, 5).setCellValue(objScanner.getTitolo_ril());
+
+		getOrCreateCell(sheet1, row, 6).setCellValue(objScanner.getTipologie_corso());
+
+
+		//INIZIO QUESTIONARIO
+		if (objScanner.getCount()>17) { //Controllo se il partecipante è rispondente
+
+			if(!objScanner.getEta().equals("")) {
+		    getOrCreateCell(sheet1, row, 7).setCellValue(Integer.parseInt(objScanner.getEta()));
+			}
+
+		    getOrCreateCell(sheet1, row, 8).setCellValue(objScanner.getGenere());
+
+		    getOrCreateCell(sheet1, row, 9).setCellValue(objScanner.getCittadinanza());
+
+		    getOrCreateCell(sheet1, row, 10).setCellValue(objScanner.getOccupazione());
+
+		    getOrCreateCell(sheet1, row, 11).setCellValue(objScanner.getTitolo_studio());
+
+		    getOrCreateCell(sheet1, row, 12).setCellValue(objScanner.getMotivo_freq());
+
+		    // questionario
+		    for (int i = 13; i <= 19; i++) { //max 37
+		    //	System.out.println("i: "+ i);
+		    	if(objScanner.getByIndex(i + 7).equals("")) {
+		    		continue;
+		    	}
+		    	getOrCreateCell(sheet1, row, i).setCellValue(Integer.parseInt(objScanner.getByIndex(i + 7)));
+		    	
+		    }
+		    for(int i=20;i<24;i++ ) {
+		    if(i==20) {
+		    	 getOrCreateCell(sheet1, row, i).setCellValue(objScanner.getByIndex(i + 7));
+		    } else {
+		    	if(objScanner.getDom_4().equals("Sì")) {  //aggiungere || objScanner.getDom_4().equals("")  ?
+		    		getOrCreateCell(sheet1, row, i).setCellValue(Integer.parseInt(objScanner.getByIndex(i + 7)));
+			    } else {
+			    	 getOrCreateCell(sheet1, row, i).setCellValue("");
+		    	}
+		    }
+		    	
+		    }
+
+		    for(int i=24;i<30;i++ ) {
+			    if(i==24) {
+			    	 getOrCreateCell(sheet1, row, i).setCellValue(objScanner.getByIndex(i + 7));
+			    } else {
+			    	if(objScanner.getDom_5().equals("Sì")) { //aggiungere || objScanner.getDom_4().equals("")  ?
+			    		getOrCreateCell(sheet1, row, i).setCellValue(Integer.parseInt(objScanner.getByIndex(i + 7)));
+			    } else {
+			    	 getOrCreateCell(sheet1, row, i).setCellValue("");
+			    }
+			    	
+			    }
+		    }
+		   
+		    getOrCreateCell(sheet1, row, 30).setCellValue(objScanner.getDom_6());
+		    if(objScanner.getDom_6_3().equals("Sì")) { //aggiungere || objScanner.getDom_4().equals("")  ?
+		    	 getOrCreateCell(sheet1, row, 31).setCellValue(Integer.parseInt(objScanner.getDom_6_1()));
+				    getOrCreateCell(sheet1, row, 32).setCellValue(Integer.parseInt(objScanner.getDom_6_2()));
+				    getOrCreateCell(sheet1, row, 33).setCellValue(Integer.parseInt(objScanner.getDom_6_3()));
+		   
+		    }
+		    
+		
+		    for(int i=34;i<38;i++ ) {
+			    if(i==34) {
+			    	 getOrCreateCell(sheet1, row, i).setCellValue(objScanner.getByIndex(i + 7));
+			    } else {
+			    	if(objScanner.getDom_7().equals("Sì")) { //aggiungere || objScanner.getDom_4().equals("")  ?
+			    	getOrCreateCell(sheet1, row, i).setCellValue(Integer.parseInt(objScanner.getByIndex(i + 7)));
+			    } else {
+			    	 getOrCreateCell(sheet1, row, i).setCellValue("");
+			    }
+		    }
+		    }
+
+		    getOrCreateCell(sheet1, row, 38).setCellValue(objScanner.getDom_7_1_1());
+		    
+		
+	    getOrCreateCell(sheet1, row, 39).setCellValue(objScanner.getDom_7_2_1());
+
+		    getOrCreateCell(sheet1, row, 40).setCellValue(objScanner.getDom_8());
+
+		    getOrCreateCell(sheet1, row, 41).setCellValue(objScanner.getDom_8_1());
+		    
+		    if(!objScanner.getDom_9().equals("") || objScanner.getDom_9() == null) {
+		    getOrCreateCell(sheet1, row, 42).setCellValue(Integer.parseInt(objScanner.getDom_9()));
+		    } else {
+		    	continue;
+		    }
+		}
+		
+			        row++;
+	    }
+		
+	    workbook.setForceFormulaRecalculation(true);
+	  //  workbook.getCreationHelper().createFormulaEvaluator().evaluateAll();
+	  //  FileOutputStream fileOut = new FileOutputStream("C:\\Users\\antonio.dicivita\\Desktop\\"+timestamp+"_"+".xlsx");
+	    FileOutputStream fileOut = new FileOutputStream( Costanti.PATH_FOLDER+"//Formazione//Questionari//Template-vma-ente-editabile_Originale - Copia.xlsx");
+        workbook.write(fileOut);
+        fileOut.close();
+        
+        workbook.close();
+		zipFile.close();
+		
+		
+		String script = Costanti.PATH_FOLDER + "\\Formazione\\temp\\funzione_excel.vbs";
+		String fileExcel = Costanti.PATH_FOLDER + "\\Formazione\\Questionari\\Template-vma-ente-editabile_Originale - Copia.xlsx";
+
+		//qui carica le operazioni di excel in automatico
+		// esegue VBS e ASPETTA
+		Process p = Runtime.getRuntime().exec(
+		    "cscript //NoLogo \"" + script + "\" \"" + fileExcel + "\""
+		);
+		p.waitFor(); //  fondamentale
+		
+		
+		//System.out.println("prova: " + sheet2.getSheetName());
+		
+		
+		// opzionale: apre Excel
+		Runtime.getRuntime().exec("cmd /c start \"\" \""  + Costanti.PATH_FOLDER + "\\Formazione\\Questionari\\Template-vma-ente-editabile_Originale - Copia.xlsx\"");
+		
+		File f = new File(zipPath);
+	//	f.delete();
+		/*    		
+		obj.addProperty("success", true);
+		obj.addProperty("messaggio", "Questionari corso caricati con successo!");
+		if(countPdfSbagliati>0) {
+			obj.addProperty("messaggio", "Numero di file non validi: " + countPdfSbagliati);
+			for(int j=0;j<countPdfSbagliati;j++) {
+				obj.addProperty("messaggio", nomePdfSbagliati.get(j));
+			}
+		}
+		*/
+		
+		obj.addProperty("success", true);
+
+		String messaggio = "Questionari corso caricati con successo!";
+
+		if (countPdfSbagliati > 0) {
+		    messaggio += " Numero file non validi: " + countPdfSbagliati + ". ";
+
+		    for (int j = 0; j < countPdfSbagliati; j++) {
+		        messaggio += nomePdfSbagliati.get(j);
+
+		        if (j < countPdfSbagliati - 1) {
+		            messaggio += ", ";
+		        }
+		    }
+		}
+
+		obj.addProperty("messaggio", messaggio);
+		
+		
+		System.out.println("FATTO");
+		return obj;
+	}
+
+	public static Cell getOrCreateCell(XSSFSheet sheet, int row, int col) {
+
+	    Row r = sheet.getRow(row);
+	    if (r == null) {
+	        r = sheet.createRow(row);
+	    }
+
+	    Cell c = r.getCell(col);
+	    if (c == null) {
+	        c = r.createCell(col);
+	    }
+
+	    return c;
+	}
 	
 	public static void main(String[] args) throws Exception{
-		//compilaExcelQuestionario("");
+		
+		new ContextListener().configCostantApplication();
+		
+		compilaExcelQuestionarioTemp("pizzuti Sondaggio_RL_2026_v1- completato_New.zip");
 		
 	}
 

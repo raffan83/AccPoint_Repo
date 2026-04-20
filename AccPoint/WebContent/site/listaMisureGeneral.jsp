@@ -192,6 +192,7 @@ NO
 </c:if>
 <%-- <a  target="_blank" class="btn btn-primary customTooltip" title="Click per scaricare il PDF dell'etichetta" onclick="openModalStampa(${utl:encryptData(misura.split(';;')[0])})" href="scaricaEtichetta.do?action=stampaEtichetta&idMisura=${utl:encryptData(misura.split(';;')[0])}" ><i class="fa fa-print"></i></a> --%>
 <a  class="btn btn-primary customTooltip" title="Click per scaricare il PDF dell'etichetta" onclick="openModalStampa('${utl:encryptData(misura.split(';;')[0])}')"  ><i class="fa fa-print"></i></a>
+<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=scaricaCertificatoById&idmisura=${utl:encryptData(misura.split(';;')[0])}" ><i class="fa fa-file-pdf-o"></i></a>
 </td>
 	</tr>
 	 
@@ -554,8 +555,7 @@ NO
 	    var state = api.state.loaded();
 	 
 	    if(state != null && state.columns!=null){
-	    		console.log(state.columns);
-	    
+	    	
 	    columsDatatables = state.columns;
 	    }
 	    
@@ -729,7 +729,8 @@ NO
   	      stateSave: true,
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 1 },
-						   { responsivePriority: 2, targets: 14 },
+						   { responsivePriority: 3, targets: 14 },
+						   { responsivePriority: 2, targets: 13 },
 						   /* { responsivePriority: 3, targets: 14 }, */
   	                  
   	               ],

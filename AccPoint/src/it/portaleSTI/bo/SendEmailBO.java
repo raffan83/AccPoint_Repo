@@ -1374,7 +1374,7 @@ public static void sendEmailControlli(String messaggio) throws EmailException {
 
 
 	email.addTo("giuseppe.gabriele@stisrl.com");
-	email.addTo("antonio.dicivita@ncsnetwork.it");
+	email.addTo("edoardo.boccitto@ncsnetwork.it");
 
 		  
 		  email.setFrom("calver@accpoint.it", "Calver - Gestione CONTROLLI OPERATIVI");
@@ -1792,7 +1792,7 @@ public static void sendEmailReminderPianificazione(String messaggio, String path
 	
 	email.addTo("lisa.lombardozzi@crescosrl.net");
 	email.addTo("segreteria@crescosrl.net");
-	email.addTo("antonio.dicivita@ncsnetwork.it");
+	email.addTo("edoardo.boccitto@ncsnetwork.it");
 		  
 		  email.setFrom("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl");
 		
@@ -1966,7 +1966,7 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
 email.addTo("lisa.lombardozzi@crescosrl.net");
 email.addTo("raffaele.fantini@ncsnetwork.it");
-email.addTo("antonio.dicivita@ncsnetwork.it");
+email.addTo("edoardo.boccitto@ncsnetwork.it");
 
 
 	  

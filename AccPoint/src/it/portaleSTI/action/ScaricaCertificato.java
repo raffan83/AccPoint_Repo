@@ -166,6 +166,44 @@ public class ScaricaCertificato extends HttpServlet {
 //			        RequestDispatcher dispatcher = request.getRequestDispatcher("/site/visualizzaPdf.jsp");
 //			        dispatcher.forward(request, response);
 			}
+			if(action.equals("scaricaCertificatoById"))
+			{
+				ajax = false;
+				String id_misura= request.getParameter("idmisura");
+			 
+
+				id_misura = Utility.decryptData(id_misura);
+			 	MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura), session);
+			 	
+			 	CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoByIdMisura(id_misura, session);
+			 	
+			     File d = new File(Costanti.PATH_FOLDER+misura.getIntervento().getNomePack()+"/"+certificato.getNomeCertificato());
+				 
+				 FileInputStream fileIn = new FileInputStream(d);
+				 
+				 response.setContentType("application/pdf");
+				 
+			//	 response.setHeader("Content-Disposition","attachment;filename="+filename);
+				 response.setHeader("Content-Disposition", "inline; filename="+certificato.getNomeCertificato());
+
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				     }
+				    
+				    
+				    session.close();
+				    fileIn.close();
+			
+				    outp.flush();
+				    outp.close();
+			     	   
+			}
+			
 			if(action.equals("certificatoStrumentoFirmato"))
 			{
 				

@@ -415,16 +415,32 @@ public class GestioneStrumentoBO {
 				{
 					Date prossimaVerifica=strumento.getDataProssimaVerifica();
 					
-					if(tipo_rapporto == 0) {
-						if(prossimaVerifica!=null && prossimaVerifica.after(sdf.parse(dateFrom))&& (prossimaVerifica.before(sdf.parse(dateTo)) || prossimaVerifica.equals(sdf.parse(dateTo))))
-						{
+					if(tipo_rapporto == 0) 
+					{
+						
+						Date from = sdf.parse(dateFrom);
+						Date to = sdf.parse(dateTo);
+
+						if (prossimaVerifica != null && !prossimaVerifica.before(from) &&  !prossimaVerifica.after(to)) {   
+							
 							if(nonContieneStrumento(listaFiltrata,strumento))
 							{
 								listaFiltrata.add(strumento);
 							}
 						}
+						/*if(prossimaVerifica!=null &&  (prossimaVerifica.after(sdf.parse(dateFrom)))&& (prossimaVerifica.before(sdf.parse(dateTo)) || prossimaVerifica.equals(sdf.parse(dateTo))))
+						{
+							if(nonContieneStrumento(listaFiltrata,strumento))
+							{
+								listaFiltrata.add(strumento);
+							}
+						}*/
 					}else {
-						if(strumento.getTipoRapporto().getId() == tipo_rapporto && prossimaVerifica!=null && prossimaVerifica.after(sdf.parse(dateFrom))&& (prossimaVerifica.before(sdf.parse(dateTo)) || prossimaVerifica.equals(sdf.parse(dateTo))))
+						
+						Date from = sdf.parse(dateFrom);
+						Date to = sdf.parse(dateTo);
+						
+						if(strumento.getTipoRapporto().getId() == tipo_rapporto && prossimaVerifica!=null &&!prossimaVerifica.before(from) &&  !prossimaVerifica.after(to))
 						{
 							if(nonContieneStrumento(listaFiltrata,strumento))
 							{

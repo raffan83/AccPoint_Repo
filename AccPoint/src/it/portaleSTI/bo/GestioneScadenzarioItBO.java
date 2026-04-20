@@ -111,7 +111,7 @@ public class GestioneScadenzarioItBO {
 				}
 				
 			
-					Utility.sendEmail("antonio.dicivita@ncsnetwork.it","Errore invio Remind Servizio IT",messaggio);
+					Utility.sendEmail("edoardo.boccitto@ncsnetwork.it","Errore invio Remind Servizio IT",messaggio);
 			
 		}
 		

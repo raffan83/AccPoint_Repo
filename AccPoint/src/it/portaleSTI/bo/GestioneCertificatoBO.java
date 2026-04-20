@@ -69,6 +69,11 @@ public class GestioneCertificatoBO {
 		{
 			return GestioneCertificatoDAO.getCertificatoById(id,session);
 		}
+		
+		public static CertificatoDTO getCertificatoByIdMisura(String idMisura,Session session)
+		{
+			return GestioneCertificatoDAO.getCertificatoByIdMisura(idMisura,session);
+		}
 
 		
 		public static String createCertificato(String idCertificato,String data_emissione, Session session, ServletContext context, UtenteDTO utente) throws Exception {

@@ -410,7 +410,7 @@ public class CreateCertificatoAM {
 			 SubreportBuilder subreport = cmp.subreport(getTableReport(prova, larghezzaPagina, max_colonne, max_righe));
 			 vl = cmp.verticalList(
 					 cmp.verticalGap(5),
-					 cmp.image(image).setFixedHeight(250).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER),
+					 cmp.image(image).setFixedHeight(350).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER),
 					 cmp.pageBreak(),
 					 cmp.verticalGap(15),
 					 subreport, 
@@ -990,7 +990,10 @@ private static void addAllegato(File source, File allegato) throws IOException {
 		        String[] valori = riga.split(",");
 		        List<Double> rigaNumerica = new ArrayList<>();
 		        for (String val : valori) {
-		            rigaNumerica.add(Double.parseDouble(val.trim()));
+		        	if(!val.equals("NA")) 
+		        	{
+		        		rigaNumerica.add(Double.parseDouble(val.trim()));
+		        	}
 		        }
 		        matrice.add(rigaNumerica);
 		    }

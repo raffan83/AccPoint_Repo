@@ -410,17 +410,15 @@ public static JsonObject signCertificatoPades(UtenteDTO utente,String keyWord, b
 				break;
 			}
 		}
-				
-	
-	    System.out.println(Arrays.toString(fontPosition));
-	
-	    apparence.setImage(Costanti.PATH_FOLDER+"FileFirme\\"+utente.getFile_firma());
-	
+		
+	  apparence.setImage(Costanti.PATH_FOLDER+"FileFirme\\"+utente.getFile_firma());
+	    
+	//	apparence.setImage("\\\\10.10.42.11\\Repository\\FileFirme\\"+utente.getFile_firma());
 	  
-	   apparence.setLeftx(fontPosition[0] - 15 );        	
-	   apparence.setLefty(fontPosition[1] +10);
-	   apparence.setRightx(fontPosition[0] + 70);
-	   apparence.setRighty(fontPosition[1]-25);
+	    apparence.setLeftx(fontPosition[0] - 15 );        	
+	    apparence.setLefty(fontPosition[1] +10);
+	    apparence.setRightx(fontPosition[0] + 70);
+	    apparence.setRighty(fontPosition[1]-25);
 	  
 	    apparence.setImageOnly(true);
 	    apparence.setResizeMode(1);

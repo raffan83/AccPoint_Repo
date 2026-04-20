@@ -159,89 +159,127 @@
  <table class="table table-condensed">
  <tbody>
  <tr>
- <td>Conduttore di protezione (solo per apparecchiature in classe I)</td>
+ <td>Integrità del conduttore di protezione (solo per apparecchiature in classe I)</td>
  <td>
- <c:choose>
- <c:when test="${misura_se.COND_PROT == 'OK'  }">
-
-<div class="lamp lampGreen"></div>
- </c:when>
- <c:otherwise>
- <div class="lamp lampRed"></div> 
- </c:otherwise>
- </c:choose>
+	<c:choose>
+		<c:when test="${misura_se.COND_PROT == 'OK'}">
+			<div class="lamp lampGreen"></div>
+		</c:when>
+		<c:when test="${misura_se.COND_PROT == 'KO'}">
+			<div class="lamp lampRed"></div>
+		</c:when>
+		<c:when test="${misura_se.COND_PROT == 'N/A'}">
+			<div class="lamp lampYellow"></div>
+		</c:when>
+		<c:otherwise>
+			<div class="lamp"></div>
+		</c:otherwise>
+	</c:choose>
 </td>
  </tr>
  <tr>
- <td>Involucro e parti meccaniche</td>
- <td>
- 
-  <c:choose>
- <c:when test="${misura_se.INVOLUCRO == 'OK'  }">
-
-<div class="lamp lampGreen"></div>
- </c:when>
- <c:otherwise>
- <div class="lamp lampRed"></div> 
- </c:otherwise>
- </c:choose>
- </td>
+ <td>Integrità involucro e parti meccaniche</td>
+<td>
+	<c:choose>
+		<c:when test="${misura_se.INVOLUCRO == 'OK'}">
+			<div class="lamp lampGreen"></div>
+		</c:when>
+		<c:when test="${misura_se.INVOLUCRO == 'KO'}">
+			<div class="lamp lampRed"></div>
+		</c:when>
+		<c:when test="${misura_se.INVOLUCRO == 'N/A'}">
+			<div class="lamp lampYellow"></div>
+		</c:when>
+		<c:otherwise>
+			<div class="lamp"></div>
+		</c:otherwise>
+	</c:choose>
+</td>
  </tr>
  <tr>
- <td>Parti isolanti / fusibili</td>
- <td>
-  <c:choose>
- <c:when test="${misura_se.FUSIBILI == 'OK'  }">
-
-<div class="lamp lampGreen"></div>
- </c:when>
- <c:otherwise>
- <div class="lamp lampRed"></div> 
- </c:otherwise>
- </c:choose>
- </td>
+ <td>Integrità parti isolanti</td>
+<td>
+	<c:choose>
+		<c:when test="${misura_se.FUSIBILI == 'OK'}">
+			<div class="lamp lampGreen"></div>
+		</c:when>
+		<c:when test="${misura_se.FUSIBILI == 'KO'}">
+			<div class="lamp lampRed"></div>
+		</c:when>
+		<c:when test="${misura_se.FUSIBILI == 'N/A'}">
+			<div class="lamp lampYellow"></div>
+		</c:when>
+		<c:otherwise>
+			<div class="lamp"></div>
+		</c:otherwise>
+	</c:choose>
+</td>
  </tr>
   <tr>
- <td>Connettori e prese</td>
- <td> 
-  <c:choose>
- <c:when test="${misura_se.CONNETTORI == 'OK'  }">
-
-<div class="lamp lampGreen"></div>
- </c:when>
- <c:otherwise>
- <div class="lamp lampRed"></div> 
- </c:otherwise>
- </c:choose>
- </td>
+ <td>Integrità connettori e prese</td>
+<td>
+	<c:choose>
+		<c:when test="${misura_se.CONNETTORI == 'OK'}">
+			<div class="lamp lampGreen"></div>
+		</c:when>
+		<c:when test="${misura_se.CONNETTORI == 'KO'}">
+			<div class="lamp lampRed"></div>
+		</c:when>
+		<c:when test="${misura_se.CONNETTORI == 'N/A'}">
+			<div class="lamp lampYellow"></div>
+		</c:when>
+		<c:otherwise>
+			<div class="lamp"></div>
+		</c:otherwise>
+	</c:choose>
+</td>
  </tr>
   <tr>
- <td>Marchiature</td>
- <td> 
-  <c:choose>
- <c:when test="${misura_se.MARCHIATURE == 'OK'  }">
-
-<div class="lamp lampGreen"></div>
- </c:when>
- <c:otherwise>
- <div class="lamp lampRed"></div> 
- </c:otherwise>
- </c:choose>
- </td>
+ <td>Leggibilità e completezza delle marcature ed etichette di sicurezza</td>
+<td>
+	<c:choose>
+		<c:when test="${misura_se.MARCHIATURE == 'OK'}">
+			<div class="lamp lampGreen"></div>
+		</c:when>
+		<c:when test="${misura_se.MARCHIATURE == 'KO'}">
+			<div class="lamp lampRed"></div>
+		</c:when>
+		<c:when test="${misura_se.MARCHIATURE == 'N/A'}">
+			<div class="lamp lampYellow"></div>
+		</c:when>
+		<c:otherwise>
+			<div class="lamp"></div>
+		</c:otherwise>
+	</c:choose>
+</td>
  </tr>
-  <tr>
- <td>Altro</td>
- <td> 
-  <c:choose>
- <c:when test="${misura_se.ALTRO == 'OK'  }">
+<c:set var="altroParts" value="${fn:split(misura_se.ALTRO, '@')}" />
+<c:set var="altroEsito" value="${altroParts[0]}" />
 
-<div class="lamp lampGreen"></div>
- </c:when>
- <c:otherwise>
- <div class="lamp lampRed"></div> 
- </c:otherwise>
- </c:choose></td>
- </tr>
+<tr>
+	<td>
+		Altro
+		<c:if test="${fn:length(altroParts) > 1}">
+			<c:out value=" ${altroParts[1]}" />
+		</c:if>
+	</td>
+	<td>
+		<c:choose>
+			<c:when test="${altroEsito == 'OK'}">
+				<div class="lamp lampGreen"></div>
+			</c:when>
+			<c:when test="${altroEsito == 'KO'}">
+				<div class="lamp lampRed"></div>
+			</c:when>
+			<c:when test="${altroEsito == 'N/A'}">
+				<div class="lamp lampYellow"></div>
+			</c:when>
+			<c:otherwise>
+				<div class="lamp lampGray"></div>
+			</c:otherwise>
+		</c:choose>
+	</td>
+</tr>
  </tbody>
  
  </table>
@@ -279,25 +317,19 @@
     <input type="text" class="form-control" readonly value="${misura_se.getDATA()} ${misura_se.getORA()}">
    </div>
     <div class="col-xs-2">
-    <label>CLASSE</label>
+    <label>CLASSE PROTEZIONE</label>
      <input type="text" class="form-control" readonly value="${misura_se.getSK()}">
     </div>
     
-      <c:choose>
- <c:when test="${misura_se.TIPO_NORMA == '61010'  }">
+     
+ <c:if test="${misura_se.TIPO_NORMA == '62353'  }">		
 
-  <div class="col-xs-2">
-    <label>PROTECTION TYPE</label>
-     <input type="text" class="form-control" readonly value="${misura_se.getPARTI_APPLICATE()}">
-    </div>
- </c:when>
- <c:otherwise>
   <div class="col-xs-2">
     <label>PARTI APPLICATE</label>
      <input type="text" class="form-control" readonly value="${misura_se.getPARTI_APPLICATE()}">
     </div>
- </c:otherwise>
- </c:choose>
+ </c:if>
+ 
 
  </div>
  <br>
@@ -314,9 +346,9 @@
 				 </tr></thead>
 				 
 				 <tbody>
-							 
+				 <c:if test="${misura_se.TIPO_NORMA == '62353'  }">			 
 				 <tr role="row" >
-				 	<td>Valore Resistenza Conduttore di protezione</td>
+				 	<td>Continuità conduttore di protezione</td>
 				 	<td>${misura_se.getR_SL()}</td>
 				 	<td>${misura_se.getR_SL_GW() }</td>
 				 	<td><c:choose>
@@ -332,7 +364,7 @@
  						</c:choose>
 				 	</td>
 				</tr>
-				 <c:if test="${misura_se.TIPO_NORMA == '62535'  }">
+				
 				 <tr role="row" >
 				 	<td>Valore Resistenza di isolamento</td>
 				 	<td>${misura_se.getR_ISO() }</td>
@@ -352,7 +384,7 @@
 				</tr>
 				
 				<tr role="row" >
-				 	<td>Valore Tensione di verifica Resistenza di isolamento</td>
+				 	<td>Tensione di verifica </td>
 				 	<td>${misura_se.getU_ISO() }</td>
 				 	<td>${misura_se.getU_ISO_GW() }</td>
 				 	<td><c:choose>
@@ -368,9 +400,9 @@
  						</c:choose>
 					</td>
 				</tr>
-				</c:if>
+				
 				<tr role="row" >
-				 	<td>Valore corrente differenziale tra L e N</td>
+				 	<td>Corrente dispersione nell'apparecchio (Metodo Alternativo)</td>
 				 	<td>${misura_se.getI_DIFF() }</td>
 				 	<td>${misura_se.getI_DIFF_GW() }</td>
 				 	<td>
@@ -387,9 +419,9 @@
  						</c:choose>
 					</td>
 				</tr>
-				<c:if test="${misura_se.TIPO_NORMA == '62535'  }">
+				
 				<tr role="row" >
-				 	<td>Valore corrente dispersione involucro</td>
+				 	<td>Corrente dispersione nell'apparecchio (Metodo Differenziale)</td>
 				 	<td>${misura_se.getI_EGA() }</td>
 				 	<td>${misura_se.getI_EGA_GW() }</td>
 				 	<td>
@@ -409,7 +441,7 @@
 				
 				
 				<tr role="row" >
-				 	<td>Valore corrente dispersione parte applicata</td>
+				 	<td>Corrente dispersione nell'apparecchio (Metodo Diretto)</td>
 				 	<td>${misura_se.getI_EPA() }</td>
 				 	<td>${misura_se.getI_EPA_GW() }</td>
 				 	<td>
@@ -426,9 +458,9 @@
  						</c:choose>
 				 	</td>
 				</tr>
-				</c:if>
+				
 				<tr role="row" >
-				 	<td>Valore corrente AC dispersione involucro metodo diretto (in funzione)</td>
+				 	<td>Corrente di contatto</td>
 				 	<td>${misura_se.getI_GA() }</td>
 				 	<td>${misura_se.getI_GA_GW() }</td>
 				 	<td>
@@ -446,7 +478,7 @@
 				 	</td>
 				</tr>
 				<tr role="row" >
-				 	<td>Valore corrente AC dispersione involucro metodo diretto (rete invertita)</td>
+				 	<td>Corrente di dispersione sulle parti applicate</td>
 				 	<td>${misura_se.getI_GA_SFC() }</td>
 				 	<td>${misura_se.getI_GA_SFC_GW() }</td>
 				 	<td>
@@ -463,9 +495,9 @@
  						</c:choose>
 				 	</td>
 				</tr>
-				<c:if test="${misura_se.TIPO_NORMA == '62535'  }">
+				
 				<tr role="row" >
-				 	<td>Valore corrente AC dispersione parte applicata (in funzione)</td>
+				 	<td>Corrente dispersione paziente AC</td>
 				 	<td>${misura_se.getI_PA_AC() }</td>
 				 	<td>${misura_se.getI_PA_AC_GW() }</td>
 				 	<td>
@@ -483,7 +515,7 @@
 				 	</td>
 				</tr>
 				<tr role="row" >
-				 	<td>Valore corrente DC dispersione parte applicata (in funzione)</td>
+				 	<td>Corrente dispersione paziente DC</td>
 				 	<td>${misura_se.getI_PA_DC() }</td>
 				 	<td>${misura_se.getI_PA_DC_GW() }</td>
 				 	<td>
@@ -500,18 +532,83 @@
  						</c:choose>
 				 	</td>
 				</tr>
+		
+</c:if>
+
+<c:if test="${misura_se.TIPO_NORMA == '61010'  }">
+				 <tr role="row" >
+				 	<td>Continuità conduttore di protezione</td>
+				 	<td>${misura_se.getR_SL()}</td>
+				 	<td>${misura_se.getR_SL_GW() }</td>
+				 	<td><c:choose>
+ 						<c:when test="${utl:returnEsit(misura_se.getR_SL(), misura_se.getR_SL_GW(), 0) =='OK'}">
+							<div class="lamp lampGreen"></div>
+ 						</c:when>
+ 						<c:when test="${utl:returnEsit(misura_se.getR_SL(), misura_se.getR_SL_GW(), 0) =='KO'}">
+							<div class="lamp lampRed"></div>
+ 						</c:when>
+ 						<c:otherwise>
+ 							
+						 </c:otherwise>
+ 						</c:choose>
+				 	</td>
+				</tr>	
 				<tr role="row" >
-				 	<td>Tensione di Verifica</td>
-				 	<td>${misura_se.getPSPG() }</td>
-				 	<td></td>
-				 	<td></td>
+				 	<td>Corrente differenziale</td>
+				 	<td>${misura_se.getI_DIFF() }</td>
+				 	<td>${misura_se.getI_DIFF_GW() }</td>
+				 	<td>
+				 	<c:choose>
+ 						<c:when test="${utl:returnEsit(misura_se.getI_DIFF(), misura_se.getI_DIFF_GW(), 0) == 'OK'}">
+							<div class="lamp lampGreen"></div>
+ 						</c:when>
+ 						<c:when test="${utl:returnEsit(misura_se.getI_DIFF(), misura_se.getI_DIFF_GW(), 0) == 'KO'}">
+							<div class="lamp lampRed"></div>
+ 						</c:when>
+ 						<c:otherwise>
+ 							
+						 </c:otherwise>
+ 						</c:choose>
+					</td>
+				</tr>
+				
+				<tr role="row" >
+				 	<td>Corrente di dispersione sull'involucro</td>
+				 	<td>${misura_se.getI_GA() }</td>
+				 	<td>${misura_se.getI_GA_GW() }</td>
+				 	<td>
+				 	<c:choose>
+ 						<c:when test="${utl:returnEsit(misura_se.getI_GA(), misura_se.getI_GA_GW(), 0)   == 'OK'}">
+							<div class="lamp lampGreen"></div>
+ 						</c:when>
+ 						<c:when test="${utl:returnEsit(misura_se.getI_GA(), misura_se.getI_GA_GW(), 0)   == 'KO'}">
+							<div class="lamp lampRed"></div>
+ 						</c:when>
+ 						<c:otherwise>
+ 						
+						 </c:otherwise>
+ 						</c:choose>
+				 	</td>
 				</tr>
 				<tr role="row" >
-				 	<td>Tensione nominale</td>
-				 	<td>${misura_se.getUBEZ_GW() }</td>
-				 	<td></td>
-				 	<td></td>
+				 	<td>Condizione di guasto singolo della corrente di dispersione sull'involucro</td>
+				 	<td>${misura_se.getI_GA_SFC() }</td>
+				 	<td>${misura_se.getI_GA_SFC_GW() }</td>
+				 	<td>
+				 	<c:choose>
+ 						<c:when test="${utl:returnEsit(misura_se.getI_GA_SFC(), misura_se.getI_GA_SFC_GW(), 0)   == 'OK'}">
+							<div class="lamp lampGreen"></div>
+ 						</c:when>
+ 						<c:when test="${utl:returnEsit(misura_se.getI_GA_SFC(), misura_se.getI_GA_SFC_GW(), 0)   == 'KO'}">
+							<div class="lamp lampRed"></div>
+ 						</c:when>
+ 						<c:otherwise>
+ 					
+						 </c:otherwise>
+ 						</c:choose>
+				 	</td>
 				</tr>
+
 </c:if>
 
 					
@@ -646,6 +743,10 @@
 .lampGreen {
     background-color: green;
 }
+.lampYellow {
+    background-color: yellow;
+}
+
 
 </style>
 </jsp:attribute>

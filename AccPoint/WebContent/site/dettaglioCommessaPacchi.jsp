@@ -10,10 +10,9 @@
  <thead><tr class="active">
  
  <th>Descrizione Attivita</th>
- <th>Note</th>
- <th>Descrizione Articolo</th>
  <th>Quantit&agrave;</th>
-
+ <th>Note</th>
+ 
  </tr></thead>
  
  <tbody>
@@ -25,14 +24,12 @@
 	<td>
   ${attivita.descrizioneAttivita}
 	</td>
-		<td>
-  ${attivita.noteAttivita}
-	</td>	
-	<td>
-  ${attivita.descrizioneArticolo}
-	</td>	
-	<td>
+		<td style="text-align: center; vertical-align: middle;">
   ${attivita.quantita}
+	</td>	
+	<td>
+  
+  ${attivita.noteAttivita}
 	</td>
 	</tr>
  

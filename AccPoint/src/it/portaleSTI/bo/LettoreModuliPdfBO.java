@@ -201,25 +201,13 @@ public class LettoreModuliPdfBO {
             int j=0;
             Map<String, String>map = new LinkedHashMap<String, String>();
             for (PDField f : allFields) {
-            	/*
-            	if(safeValue(f)== null|| safeValue(f).equals("")) {
-            		//System.out.println("è null");
-            		j++;
-            		obj.setByIndex(i, null);
-            	}
-            	obj.setByIndex(i, safeValue(f));
-            	*/
               
-              map.put(f.getFullyQualifiedName(), safeValue(f));
-            
-            	
-            	i++;
-               System.out.println("-- "+i+"  " + f.getFullyQualifiedName() + " = " + safeValue(f));
+              map.put(f.getFullyQualifiedName(), safeValue(f));   	
+              i++;
+          
                
             }
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-                System.out.println(entry.getKey() + " = " + entry.getValue());
-            }
+           
             
             
             //controllare la funzione
@@ -250,8 +238,6 @@ public class LettoreModuliPdfBO {
                 }
             }
     
-            System.out.println("annualita " + obj.getAnnualita());
-            System.out.println("Dom4 " + obj.getDom_4());
             
             obj.setCount(i-j);
        
@@ -409,15 +395,13 @@ public class LettoreModuliPdfBO {
            } else if(obj.getDom_5().equals("2")) {
         	   obj.setDom_5("No");
            }
-           //System.out.println("Dom_6: " + obj.getDom_6());
-           //System.out.println("Dom_6_3: " + obj.getDom_6_3());
+         
            if(obj.getDom_6().equals("1")) {
         	   obj.setDom_6("Sì");
            } else if(obj.getDom_6().equals("2")) {
         	   obj.setDom_6("No");
            }
-         //  System.out.println("Dom_6: " + obj.getDom_6());
-          // System.out.println("Dom_6_3: " + obj.getDom_6_3());
+ 
            if(obj.getDom_7().equals("1")) {
         	   obj.setDom_7("Sì");
            } else if(obj.getDom_7().equals("2")) {
@@ -444,13 +428,7 @@ public class LettoreModuliPdfBO {
            } else if(obj.getDom_8().equals("6")) {
         	   obj.setDom_8("Migliorare le condizioni lavorative e/o avere uno sviluppo di carriera");
            }
-           /*
-           System.out.println("Dom_7_1_1: " + obj.getDom_7_1_1()); //giusta
-           System.out.println("Dom_7_2_1: " + obj.getDom_7_2_1()); //esce 8
-           System.out.println("Dom_8: " + obj.getDom_8()); //esce 8_1
-           System.out.println("Dom_8_1: " + obj.getDom_8_1());   //esce 9
-           System.out.println("Dom_9: " + obj.getDom_9()); //esce 7_2_1
-           */
+         
            
         return obj;
         }

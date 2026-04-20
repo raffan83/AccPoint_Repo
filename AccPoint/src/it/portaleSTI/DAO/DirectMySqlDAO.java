@@ -416,7 +416,7 @@ public class DirectMySqlDAO {
 						tipoStrumento+"\",\""+
 						Utility.getVarchar(strumento.getNote())+"\",\"N\",\"N\"," +
 						"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\",\"\",\"N\",\"" +
-						luogo+"\",\""+Utility.getVarchar(strumento.getNote_tecniche())+"\");";
+						luogo+"\",\""+Utility.getVarchar(strumento.getNote_tecniche())+"\","+strumento.getIp()+");";
 
 
 				pstINS=conSQLite.prepareStatement(sqlInsert);

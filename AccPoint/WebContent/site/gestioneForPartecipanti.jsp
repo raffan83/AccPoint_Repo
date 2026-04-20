@@ -101,6 +101,7 @@
 <th>Luogo di nascita</th>
 <th>Codice fiscale</th>
 <th>Stato</th>
+<th>Email</th>
 <th style="min-width:150px">Azioni</th>
  </tr></thead>
  
@@ -120,6 +121,7 @@
 	<td><c:if test="${partecipante.stato == 0 }">ATTIVO</c:if>
 	<c:if test="${partecipante.stato == 1}">NON ATTIVO</c:if>
 	</td>
+	<td>${partecipante.email }</td>	
 	<td>
 	
 	<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
@@ -1134,6 +1136,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 9 },
+		    	  { responsivePriority: 1, targets: 10 },
 		    	  
 		    	  
 		               ], 	        

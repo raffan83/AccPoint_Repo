@@ -82,7 +82,8 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"nCertificato varchar(255)," +
 																		"strumentoModificato varchar(1)," +
 																		"luogo_verifica varchar(255),"+
-																		"note_tecniche varchar(1024));";
+																		"note_tecniche varchar(1024)," +
+																		 "ip int(1));";
 
 private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id Integer primary key autoincrement," + 
 													" denominazione varchar(255) NOT NULL," + 

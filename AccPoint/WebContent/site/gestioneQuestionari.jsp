@@ -275,6 +275,15 @@ $(document).ready(function() {
 	  				$('#visualizza_report').hide();
 					filename = data.result.filename;
 					  $('#caricato_label').show();
+					  
+					  
+					  //  STAMPA NOME PDF NON LETTI
+				        $('#myModalErrorContent').html(data.result.messaggio);
+				        $('#myModalError').removeClass();
+				        $('#myModalError').addClass("modal modal-success");
+				        $('#myModalError').modal('show');
+				        
+				        
 
 				}else{
 					$('#report_button').hide();

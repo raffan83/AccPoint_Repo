@@ -809,7 +809,7 @@ public class GestioneFormazioneBO {
 	}
 	
 	
-	
+/*	
 	public static JsonObject compilaExcelQuestionario(String filename) throws Exception {
 	
 	JsonObject obj = new JsonObject();
@@ -1304,8 +1304,8 @@ public class GestioneFormazioneBO {
 		obj.addProperty("messaggio", "Questionari corso caricati con successo!");
 		return obj;
 	}
-	
-	public static JsonObject compilaExcelQuestionarioTemp(String filename) throws Exception {
+	*/
+	public static JsonObject compilaExcelQuestionario(String filename) throws Exception {
 		
 	JsonObject obj = new JsonObject();
 		
@@ -1318,7 +1318,6 @@ public class GestioneFormazioneBO {
 	    InputStream file = new FileInputStream(Costanti.PATH_FOLDER+"//Formazione//Questionari//Template-vma-ente-editabile_Originale - Copia.xlsx");	    
 	    XSSFWorkbook workbook = new XSSFWorkbook(file);   
 	    int sheets = workbook.getNumberOfSheets();
-	//	 XSSFSheet sheet0 = workbook.getSheetAt(1);
 	
 		 List<XSSFSheet> sheetsList = new ArrayList<>();
 		 int row = 1;
@@ -1346,7 +1345,7 @@ public class GestioneFormazioneBO {
 			System.out.println("nome file: " + zentry.getName());
 		
 			if(objScanner==null) {
-				//Restituire messaggio che ilpdf non puo essere letto
+				//Restituire messaggio che il pdf non puo essere letto
 				System.out.println("pdf diverso dal format: " + zentry.getName());
 		
 				countPdfSbagliati++;
@@ -1376,29 +1375,13 @@ public class GestioneFormazioneBO {
 			row = count;
 			
 
-			getOrCreateCell(sheet1, row, 1).setCellValue(objScanner.getTipo_acc());
+		getOrCreateCell(sheet1, row, 1).setCellValue(objScanner.getTipo_acc());
 
 		getOrCreateCell(sheet1, row, 2).setCellValue(objScanner.getTitolo()); //COSA?
 
 		// altri campi dell'ente
 		getOrCreateCell(sheet1, row, 3).setCellValue(objScanner.getFonte_fin());  //AGGIUNGERE CODICE
 		
-		
-		/*  PER INSERIRE IL CODICE_SIGEM_FONTE IN PAGINA EXCEL CORSI, MA I CORSI VENGONO MESSI SOLO DOPO IL SALVATAGGIO
-		System.out.println("codice sigem: " + sheet3.getRow(2).getCell(0));
-		int row2 =1;
-		String titolo = null;
-		for(row2=1;row2<10;row2++) {
-			if(sheet3.getRow(row2).getCell(1).equals(objScanner.getFonte_fin()) && sheet3.getRow(row2).getCell(0).equals(objScanner.getFonte_fin_txt_1())) {
-				break;
-			} else if(sheet3.getRow(row2).getCell(1).equals(objScanner.getFonte_fin()) && sheet3.getRow(row2).getCell(0).equals("")) {
-				getOrCreateCell(sheet3, row2, 0).setCellValue(objScanner.getFonte_fin_txt_1());
-			} else if(sheet3.getRow(row2).getCell(1).equals(objScanner.getFonte_fin()) && !sheet3.getRow(row2).getCell(0).equals(objScanner.getFonte_fin_txt_1())) {
-				
-			}
-		}
-		*/
-
 		getOrCreateCell(sheet1, row, 4).setCellValue(objScanner.getDurata());
 
 		getOrCreateCell(sheet1, row, 5).setCellValue(objScanner.getTitolo_ril());
@@ -1425,7 +1408,6 @@ public class GestioneFormazioneBO {
 
 		    // questionario
 		    for (int i = 13; i <= 19; i++) { //max 37
-		    //	System.out.println("i: "+ i);
 		    	if(objScanner.getByIndex(i + 7).equals("")) {
 		    		continue;
 		    	}
@@ -1481,8 +1463,11 @@ public class GestioneFormazioneBO {
 
 		    getOrCreateCell(sheet1, row, 38).setCellValue(objScanner.getDom_7_1_1());
 		    
-		
-	    getOrCreateCell(sheet1, row, 39).setCellValue(objScanner.getDom_7_2_1());
+		    if(!objScanner.getDom_7_2_1().equals("") || objScanner.getDom_7_2_1() == null) {
+	    getOrCreateCell(sheet1, row, 39).setCellValue(Integer.parseInt(objScanner.getDom_7_2_1()));
+		    }else {
+		    	continue;
+		    }
 
 		    getOrCreateCell(sheet1, row, 40).setCellValue(objScanner.getDom_8());
 
@@ -1499,8 +1484,6 @@ public class GestioneFormazioneBO {
 	    }
 		
 	    workbook.setForceFormulaRecalculation(true);
-	  //  workbook.getCreationHelper().createFormulaEvaluator().evaluateAll();
-	  //  FileOutputStream fileOut = new FileOutputStream("C:\\Users\\antonio.dicivita\\Desktop\\"+timestamp+"_"+".xlsx");
 	    FileOutputStream fileOut = new FileOutputStream( Costanti.PATH_FOLDER+"//Formazione//Questionari//Template-vma-ente-editabile_Originale - Copia.xlsx");
         workbook.write(fileOut);
         fileOut.close();
@@ -1520,37 +1503,29 @@ public class GestioneFormazioneBO {
 		p.waitFor(); //  fondamentale
 		
 		
-		//System.out.println("prova: " + sheet2.getSheetName());
+	
 		
 		
 		// opzionale: apre Excel
-		Runtime.getRuntime().exec("cmd /c start \"\" \""  + Costanti.PATH_FOLDER + "\\Formazione\\Questionari\\Template-vma-ente-editabile_Originale - Copia.xlsx\"");
+	//	Runtime.getRuntime().exec("cmd /c start \"\" \""  + Costanti.PATH_FOLDER + "\\Formazione\\Questionari\\Template-vma-ente-editabile_Originale - Copia.xlsx\"");
 		
 		File f = new File(zipPath);
 	//	f.delete();
-		/*    		
-		obj.addProperty("success", true);
-		obj.addProperty("messaggio", "Questionari corso caricati con successo!");
-		if(countPdfSbagliati>0) {
-			obj.addProperty("messaggio", "Numero di file non validi: " + countPdfSbagliati);
-			for(int j=0;j<countPdfSbagliati;j++) {
-				obj.addProperty("messaggio", nomePdfSbagliati.get(j));
-			}
-		}
-		*/
+	
 		
 		obj.addProperty("success", true);
 
 		String messaggio = "Questionari corso caricati con successo!";
 
+		System.out.println("pdf sbaglaiti: " + countPdfSbagliati);
 		if (countPdfSbagliati > 0) {
-		    messaggio += " Numero file non validi: " + countPdfSbagliati + ". ";
+		    messaggio += "<br><br>Numero file non validi: " + countPdfSbagliati + "<br>";
 
 		    for (int j = 0; j < countPdfSbagliati; j++) {
 		        messaggio += nomePdfSbagliati.get(j);
 
 		        if (j < countPdfSbagliati - 1) {
-		            messaggio += ", ";
+		            messaggio += "<br> ";
 		        }
 		    }
 		}
@@ -1581,7 +1556,7 @@ public class GestioneFormazioneBO {
 		
 		new ContextListener().configCostantApplication();
 		
-		compilaExcelQuestionarioTemp("pizzuti Sondaggio_RL_2026_v1- completato_New.zip");
+	//	compilaExcelQuestionarioTemp("pizzuti Sondaggio_RL_2026_v1- completato_New.zip");
 		
 	}
 

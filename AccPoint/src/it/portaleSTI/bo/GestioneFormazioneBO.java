@@ -1414,6 +1414,9 @@ public class GestioneFormazioneBO {
 		    	getOrCreateCell(sheet1, row, i).setCellValue(Integer.parseInt(objScanner.getByIndex(i + 7)));
 		    	
 		    }
+		    
+		    //LE DOMANDE 4,5,6 NON DEVONO ESSERE LETTE
+		    /*
 		    for(int i=20;i<24;i++ ) {
 		    if(i==20) {
 		    	 getOrCreateCell(sheet1, row, i).setCellValue(objScanner.getByIndex(i + 7));
@@ -1431,7 +1434,7 @@ public class GestioneFormazioneBO {
 			    if(i==24) {
 			    	 getOrCreateCell(sheet1, row, i).setCellValue(objScanner.getByIndex(i + 7));
 			    } else {
-			    	if(objScanner.getDom_5().equals("Sì")) { //aggiungere || objScanner.getDom_4().equals("")  ?
+			    	if(objScanner.getDom_5().equals("Sì")) { //aggiungere || objScanner.getDom_5().equals("")  ?
 			    		getOrCreateCell(sheet1, row, i).setCellValue(Integer.parseInt(objScanner.getByIndex(i + 7)));
 			    } else {
 			    	 getOrCreateCell(sheet1, row, i).setCellValue("");
@@ -1441,14 +1444,14 @@ public class GestioneFormazioneBO {
 		    }
 		   
 		    getOrCreateCell(sheet1, row, 30).setCellValue(objScanner.getDom_6());
-		    if(objScanner.getDom_6_3().equals("Sì")) { //aggiungere || objScanner.getDom_4().equals("")  ?
+		    if(objScanner.getDom_6_3().equals("Sì")) { //aggiungere || objScanner.getDom_6().equals("")  ?
 		    	 getOrCreateCell(sheet1, row, 31).setCellValue(Integer.parseInt(objScanner.getDom_6_1()));
 				    getOrCreateCell(sheet1, row, 32).setCellValue(Integer.parseInt(objScanner.getDom_6_2()));
 				    getOrCreateCell(sheet1, row, 33).setCellValue(Integer.parseInt(objScanner.getDom_6_3()));
 		   
 		    }
 		    
-		
+		*/
 		    for(int i=34;i<38;i++ ) {
 			    if(i==34) {
 			    	 getOrCreateCell(sheet1, row, i).setCellValue(objScanner.getByIndex(i + 7));

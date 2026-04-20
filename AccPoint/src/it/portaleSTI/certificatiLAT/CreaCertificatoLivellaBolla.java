@@ -184,54 +184,7 @@ public class CreaCertificatoLivellaBolla {
 		}else {
 			report.addParameter("indirizzo_cliente", "");
 		}
-		
-		
-		
-//		ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(commessa.getID_ANAGEN()));
-//		
-//				
-//		String indirizzo="";
-//		String cap="";
-//		String citta="";
-//		String provincia="";
-//		
-//		if( cliente.getIndirizzo()!=null) {
-//			indirizzo = cliente.getIndirizzo();				
-//			}
-//			if(cliente.getCap()!=null) {
-//				cap = cliente.getCap();
-//			}
-//			if(cliente.getCitta()!=null) {
-//				citta = cliente.getCitta();
-//			}
-//			if(cliente.getProvincia()!=null && !cliente.getProvincia().equals("")) {
-//				provincia = " ("+ cliente.getProvincia()+")";
-//			}
-//		
-//			if(cliente!=null && cliente.getIndirizzo()!=null) {
-//				report.addParameter("indirizzo_cliente", indirizzo + ", " + cap + ", "+citta +provincia);
-//			}else {
-//				report.addParameter("indirizzo_cliente", "");
-//			}
-		
-		
-		
-//		if(commessa!=null && commessa.getINDIRIZZO_PRINCIPALE()!=null) {
-//		report.addParameter("indirizzo_cliente", commessa.getINDIRIZZO_PRINCIPALE());
-//	}else {
-//		report.addParameter("indirizzo_cliente", "");
-//	}
-		
-		
-//		if(commessa!=null && commessa.getINDIRIZZO_PRINCIPALE()!=null) {
-//			ClienteDTO
-//			
-//			indirizzo = indirizzo +commessa.getINDIRIZZO_PRINCIPALE() +", "+commessa.get
-//			
-//			report.addParameter("indirizzo_cliente", commessa.getINDIRIZZO_PRINCIPALE());
-//		}else{
-//			report.addParameter("indirizzo_cliente", "");
-//		}
+
 
 		if(commessa!=null && commessa.getNOME_UTILIZZATORE()!=null) {
 			report.addParameter("destinatario", commessa.getNOME_UTILIZZATORE());	
@@ -248,29 +201,29 @@ public class CreaCertificatoLivellaBolla {
 		String provincia_sd="";
 		
 		if(sede_utilizzatore!=null) {
-			if(sede.getIndirizzo()!=null) {
-				indirizzo_sd = sede.getIndirizzo();				
+			if(sede_utilizzatore.getIndirizzo()!=null) {
+				indirizzo_sd = sede_utilizzatore.getIndirizzo();				
 				}
-				if(sede.getCap()!=null) {
-					cap_sd = sede.getCap();
+				if(sede_utilizzatore.getCap()!=null) {
+					cap_sd = sede_utilizzatore.getCap();
 				}
-				if(sede.getComune()!=null) {
-					citta_sd = sede.getComune();
+				if(sede_utilizzatore.getComune()!=null) {
+					citta_sd = sede_utilizzatore.getComune();
 				}
-				if(sede.getSiglaProvincia()!=null) {
-					provincia_sd = sede.getSiglaProvincia();
+				if(sede_utilizzatore.getSiglaProvincia()!=null) {
+					provincia_sd = sede_utilizzatore.getSiglaProvincia();
 				}
 		}else {
 			if( cliente_utilizzatore.getIndirizzo()!=null) {
 				indirizzo_sd = cliente_utilizzatore.getIndirizzo();				
 				}
-				if(cliente.getCap()!=null) {
+				if(cliente_utilizzatore.getCap()!=null) {
 					cap_sd = cliente_utilizzatore.getCap();
 				}
-				if(cliente.getCitta()!=null) {
+				if(cliente_utilizzatore.getCitta()!=null) {
 					citta_sd = cliente_utilizzatore.getCitta();
 				}
-				if(cliente.getProvincia()!=null) {
+				if(cliente_utilizzatore.getProvincia()!=null) {
 					provincia_sd = cliente_utilizzatore.getProvincia();
 				}
 		}

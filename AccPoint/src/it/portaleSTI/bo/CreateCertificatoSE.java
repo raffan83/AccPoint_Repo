@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,17 +22,20 @@ import com.google.gson.JsonObject;
 
 import TemplateReport.PivotTemplate;
 import it.arubapec.arubasignservice.ArubaSignService;
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.action.ContextListener;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
@@ -51,6 +56,7 @@ public class CreateCertificatoSE {
 	public File file;
 	public String messaggio_firma;
 	public String norma="";
+	public final String CODICE_CAMPIONE="STI244";
 	public CreateCertificatoSE(CertificatoDTO certificato,String data_emissione, UtenteDTO utente,  Session session) throws Exception {
 		
 		build(certificato,data_emissione, utente, session);
@@ -79,11 +85,15 @@ public class CreateCertificatoSE {
 			}
 		else
 			{
-				is =  PivotTemplate.class.getResourceAsStream("certificatoSE.jrxml");
+				is =  PivotTemplate.class.getResourceAsStream("certificatoSE_62353.jrxml");
 			}
 	
 		
 		JasperReportBuilder report = DynamicReports.report();
+		
+		MisuraDTO misura= certificato.getMisura();
+		
+		StrumentoDTO strumento =misura.getStrumento();
 		
 		File imageHeader = null;
 		//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+misura.getIntervento().getCompany());
@@ -105,110 +115,126 @@ public class CreateCertificatoSE {
 		if(imageHeader!=null) {
 			report.addParameter("logo",imageHeader);
 		}
-		report.addParameter("codice_interno", certificato.getMisura().getStrumento().getCodice_interno());
+		
 		if(certificato.getMisura().getnCertificato()!=null) {
-			report.addParameter("numero_scheda", certificato.getMisura().getnCertificato());
+			report.addParameter("nRapporto", misura.getnCertificato());
 		}else {
-			report.addParameter("numero_scheda", "");
+			report.addParameter("nRapporto", "");
 		}
 		
-		report.addParameter("cliente", certificato.getMisura().getIntervento().getNome_cliente());
+		report.addParameter("datiCliente",""+misura.getIntervento().getNome_cliente());
+		report.addParameter("sedeCliente",""+misura.getIntervento().getNome_sede());
 		
-		ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(certificato.getMisura().getIntervento().getId_cliente()));
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		if(cl!=null && cl.getIndirizzo()!=null) {
-			if(cl.getProvincia()!=null) 
-			{
-				report.addParameter("indirizzo_cliente", cl.getIndirizzo() +"\n"+cl.getCap()+" - "+cl.getCitta()+" ("+cl.getProvincia()+")");
-			}
-			else 
-			{
-				report.addParameter("indirizzo_cliente", cl.getIndirizzo() +"\n"+cl.getCap()+" - "+cl.getCitta());
-			}
+		
+		/*
+		 * Aggiornata data Emissione su scadenzaDTO
+		 */
+	
 			
-		}else{
-			report.addParameter("indirizzo_cliente", "");
+		if(misura.getDataMisura()!=null){
+					Calendar c = Calendar.getInstance(); 
+					c.setTime(misura.getDataMisura()); 
+					c.add(Calendar.MONTH,strumento.getFrequenza());
+					c.getTime();
+					
+					strumento.setDataProssimaVerifica(new java.sql.Date(c.getTime().getTime()));
+					
+					GestioneStrumentoBO.update(strumento, session);
+				
+					report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
+										
+					
+				}else {
+					report.addParameter("dataVerifica"," ");			
+				}
+				
+			
+				if(strumento.getDataProssimaVerifica()!=null){
+					if(conf!=null && conf.getFmt_data_mese_anno()!=null && conf.getFmt_data_mese_anno().equals("S")) {
+						LocalDate dataMisura = strumento.getDataProssimaVerifica().toLocalDate();
+						
+						 String formattedDate = dataMisura.format(DateTimeFormatter.ofPattern("MMMM/yyyy"));
+						report.addParameter("dataProssimaVerifica",formattedDate.toUpperCase());
+					}else {
+						report.addParameter("dataProssimaVerifica",""+sdf.format(strumento.getDataProssimaVerifica()));
+					}							
+					
+				}else 
+				{
+					report.addParameter("dataProssimaVerifica","/");			
+				}
+				
+		
+	/* Dati Apparecchio*/	
+		
+		if(strumento.getDenominazione()!=null) {
+			report.addParameter("denominazione", strumento.getDenominazione());	
+		}else {
+			report.addParameter("denominazione", "");
 		}
 		
-		report.addParameter("verificatore", certificato.getMisura().getIntervento().getCompany().getDenominazione());
-		report.addParameter("indirizzo_verificatore", certificato.getMisura().getIntervento().getCompany().getIndirizzo() +"\n"+ certificato.getMisura().getIntervento().getCompany().getCap()
-				+" - " + certificato.getMisura().getIntervento().getCompany().getComune());
+		if(strumento.getModello()!=null) {
+			report.addParameter("modello", strumento.getModello());	
+		}else {
+			report.addParameter("modello", "");
+		}
 		
-		if(certificato.getMisura().getStrumento().getDenominazione()!=null) {
-			report.addParameter("strumento", certificato.getMisura().getStrumento().getDenominazione());	
-		}else {
-			report.addParameter("strumento", "");
-		}
-		if(certificato.getMisura().getStrumento().getModello()!=null) {
-			report.addParameter("tipo", certificato.getMisura().getStrumento().getModello());	
-		}else {
-			report.addParameter("tipo", "");
-		}
-		if( certificato.getMisura().getStrumento().getMatricola()!=null) {
-			report.addParameter("matricola", certificato.getMisura().getStrumento().getMatricola());
+		if( strumento.getMatricola()!=null) {
+			report.addParameter("matricola", strumento.getMatricola());
 		}else {
 			report.addParameter("matricola", "");
 		}
-		if(certificato.getMisura().getStrumento().getCostruttore()!=null) {
-			report.addParameter("produttore", certificato.getMisura().getStrumento().getCostruttore());	
+		
+		if( strumento.getCodice_interno()!=null) {
+			report.addParameter("codice_interno", strumento.getCodice_interno());
 		}else {
-			report.addParameter("produttore","");
+			report.addParameter("codice_interno", "");
+		}
+		
+		if(strumento.getCostruttore()!=null) {
+			report.addParameter("costruttore", strumento.getCostruttore());	
+		}
+		else {
+			report.addParameter("costruttore","");
 		}		
-		
-		if(misura_se.getSK()!=null) {
-			report.addParameter("classe_protezione", misura_se.getSK());
-		}else{
-			report.addParameter("classe_protezione", "");
-		}
-		if(misura_se.getPARTI_APPLICATE()!=null) {
-			report.addParameter("parti_applicate", misura_se.getPARTI_APPLICATE());
-		}else {
-			report.addParameter("parti_applicate", "");	
-		}
 
-		if(norma.equals("601")) 
-			{
-				report.addParameter("verifica_conformita", "IEC 601.1");
-			}
-		else if(norma.equals("61010")) 
-			{
-			report.addParameter("verifica_conformita", "EN 61010 / IEC 61010");
-			}
-		else 
-			{
-				report.addParameter("verifica_conformita", "EN 62353 / CEI 62-148");
-			}
-
-		
-				
-		
+		/*ESAME A VISTA */
 		if(misura_se.getCOND_PROT()!=null) {
-			report.addParameter("cond_prot", "[ "+misura_se.getCOND_PROT()+" ]");
+			report.addParameter("cond_prot",misura_se.getCOND_PROT());
 		}else {
 			report.addParameter("cond_prot", "");
 		}
 		if(misura_se.getINVOLUCRO()!=null) {
-			report.addParameter("involucro", "[ "+misura_se.getINVOLUCRO()+" ]");
+			report.addParameter("involucro", misura_se.getINVOLUCRO());
 		}else {
 			report.addParameter("involucro", "");
 		}
 		if(misura_se.getFUSIBILI()!=null) {
-			report.addParameter("fusibili", "[ "+misura_se.getFUSIBILI()+" ]");
+			report.addParameter("isolamento",misura_se.getFUSIBILI());
 		}else {
-			report.addParameter("fusibili", "");
+			report.addParameter("isolamento", "");
 		}
 		if(misura_se.getCONNETTORI()!=null) {
-			report.addParameter("connettori", "[ "+misura_se.getCONNETTORI()+" ]");
+			report.addParameter("prese", misura_se.getCONNETTORI());
 		}else {
-			report.addParameter("connettori","");
+			report.addParameter("prese","");
 		}
 		if(misura_se.getMARCHIATURE()!=null) {
-			report.addParameter("marchiature", "[ "+misura_se.getMARCHIATURE()+" ]");
+			report.addParameter("leggibilita", misura_se.getMARCHIATURE());
 		}else {
-			report.addParameter("marchiature", "");
+			report.addParameter("leggibilita", "");
 		}
 		if(misura_se.getALTRO()!=null) {
-			report.addParameter("altro", "[ "+misura_se.getALTRO().split("@")[0]+" ]");
+			if(misura_se.getALTRO().split("@")[0].equals("OK")) 
+			{
+				report.addParameter("altro","");
+			}else 
+			{
+				report.addParameter("altro", misura_se.getALTRO().split("@")[0]);
+			}
+			
 		}else {
 			report.addParameter("altro","");
 		}
@@ -219,86 +245,256 @@ public class CreateCertificatoSE {
 			report.addParameter("label_altro","");
 		}
 		
-		boolean esito_negativo = false;
+		boolean esitoMisure=true;
 		
-		if(misura_se.getCOND_PROT()!=null && (misura_se.getCOND_PROT().equals("OK") || misura_se.getCOND_PROT().equals("N/A")) 
-			    && misura_se.getINVOLUCRO()!=null && (misura_se.getINVOLUCRO().equals("OK") || misura_se.getINVOLUCRO().equals("N/A"))
-				&& misura_se.getFUSIBILI()!=null && (misura_se.getFUSIBILI().equals("OK") || misura_se.getFUSIBILI().equals("N/A"))
-				&& misura_se.getCONNETTORI()!=null && (misura_se.getCONNETTORI().equals("OK") || misura_se.getCONNETTORI().equals("N/A"))
-				&& misura_se.getMARCHIATURE()!=null && (misura_se.getMARCHIATURE().equals("OK") || misura_se.getMARCHIATURE().equals("N/A"))
-				&& misura_se.getALTRO()!=null && (misura_se.getALTRO().split("@")[0].equals("OK") || misura_se.getALTRO().split("@")[0].equals("N/A"))) {
+		if(misura_se.getTIPO_NORMA().equals("61010")) 
+		{
+			
+				if(misura_se.getSK()!=null) {
+					report.addParameter("classe_protezione", getClasse(misura_se.getSK()));
+				}else{
+					report.addParameter("classe_protezione", "");
+				}
+	
 				
-				report.addParameter("verifica_sicurezza", "[ OK ]");
-			}else {
-				report.addParameter("altro", "[ KO ]");
-				esito_negativo = true;
-			}
+				if(misura_se.getR_SL()!=null && !misura_se.getR_SL().equals("")) 
+				{	
+					String esitoR_SL=Utility.returnEsit(misura_se.getR_SL(), misura_se.getR_SL_GW(), 0);
+					if(esitoR_SL.equals("KO")) 
+					{
+						esitoMisure=false;
+					}
 				
-		report.addParameter("parti_non_sicure", "");
-		report.addParameter("guasto_l_n", "");
-		
-
-		report.addParameter("periodicita_verifica", certificato.getMisura().getStrumento().getFrequenza() + " mesi");
-		
-		
-		
-		StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(""+certificato.getMisura().getStrumento().get__id(), session);
-		strumento.setDataUltimaVerifica(new java.sql.Date(certificato.getMisura().getDataMisura().getTime()));
-		
-		
-		
-		java.sql.Date sqlDate = new java.sql.Date(strumento.getDataUltimaVerifica().getTime());
-
-		if(esito_negativo==false) {			
-
-			Calendar data = Calendar.getInstance();
 			
-			data.setTime(sqlDate);
-			data.add(Calendar.MONTH,strumento.getFrequenza());
-			
-			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
+					report.addParameter("misurato_1",misura_se.getR_SL());
+					report.addParameter("limite_1",misura_se.getR_SL_GW());
+					report.addParameter("esito_1",esitoR_SL);
+				}else 
+				{
+					report.addParameter("misurato_1","N/A");
+					report.addParameter("limite_1","N/A");
+					report.addParameter("esito_1","N/A");
+				}	
 				
-			strumento.setDataProssimaVerifica(sqlDateProssimaVerifica);
-			
-			session.update(strumento);
-			
-			
-			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-			report.addParameter("prossima_verifica", df.format(sqlDateProssimaVerifica));
-		}else {
-			report.addParameter("prossima_verifica", "/");
+				if(misura_se.getI_DIFF()!=null && !misura_se.getI_DIFF().equals("")) {
+					String esitoR_I_DIFF=Utility.returnEsit(misura_se.getI_DIFF(), misura_se.getI_DIFF_GW(), 0);
+					if(esitoR_I_DIFF.equals("KO")) 
+					{
+						esitoMisure=false;
+					}
+				
+				
+				report.addParameter("misurato_2",misura_se.getI_DIFF());
+				report.addParameter("limite_2",misura_se.getI_DIFF_GW());
+				report.addParameter("esito_2",esitoR_I_DIFF);
+				}else 
+				{
+					report.addParameter("misurato_2","N/A");
+					report.addParameter("limite_2","N/A");
+					report.addParameter("esito_2","N/A");
+				}	
+				
+				
+				if(misura_se.getI_GA_GW()!=null && !misura_se.getI_GA_GW().equals("")) 
+				{		
+					String esitoI_GA=Utility.returnEsit(misura_se.getI_GA(), misura_se.getI_GA_GW(), 0);
+					
+					if(esitoI_GA.equals("KO")) 
+					{
+						esitoMisure=false;
+					}
+					
+					report.addParameter("misurato_3",misura_se.getI_GA());
+					report.addParameter("limite_3",misura_se.getI_GA_GW());
+					report.addParameter("esito_3",esitoI_GA);
+				}
+				else 
+				{
+					report.addParameter("misurato_3","N/A");
+					report.addParameter("limite_3","N/A");
+					report.addParameter("esito_3","N/A");
+				}	
+				
+				if(misura_se.getI_GA_GW()!=null && !misura_se.getI_GA_GW().equals("")) 
+				{	
+					String esitoI_GA_SFC=Utility.returnEsit(misura_se.getI_GA_SFC(), misura_se.getI_GA_SFC_GW(), 0);
+					
+					if(esitoI_GA_SFC.equals("KO")) 
+					{
+						esitoMisure=false;
+					}
+					
+					report.addParameter("misurato_4",misura_se.getI_GA_SFC());
+					report.addParameter("limite_4",misura_se.getI_GA_SFC_GW());
+					report.addParameter("esito_4",esitoI_GA_SFC);
+				}
+				else 
+				{
+					report.addParameter("misurato_4","N/A");
+					report.addParameter("limite_4","N/A");
+					report.addParameter("esito_4","N/A");
+				}	
 		}
+		
+		else if(norma.equals("62353"))
 			
-		report.addParameter("strumento_utilizzato", "STI 244");
-		report.addParameter("tipo_strumento", "SECUTEST 0751/601");
-		report.addParameter("produttore_strumento", "GOSSEN-METRAWATT");
+		{
+			
+			if(misura_se.getSK()!=null) {
+				report.addParameter("classe_protezione", getClasse(misura_se.getSK()));
+			}else{
+				report.addParameter("classe_protezione", "");
+			}
+			
+			
+			if(misura_se.getPARTI_APPLICATE()!=null) {
+				report.addParameter("parti_applicate", misura_se.getPARTI_APPLICATE());
+			}else {
+				report.addParameter("parti_applicate", "");	
+			}
+			
+			String esitoR_SL=Utility.returnEsit(misura_se.getR_SL(), misura_se.getR_SL_GW(), 0);
+			if(esitoR_SL.equals("KO")) 
+			{
+				esitoMisure=false;
+			}
+			report.addParameter("misurato_1",misura_se.getR_SL());
+			report.addParameter("limite_1",misura_se.getR_SL_GW());
+			report.addParameter("esito_1",esitoR_SL);
+			
+			String esitoR_ISO=Utility.returnEsit(misura_se.getR_ISO(), misura_se.getR_ISO_GW(), 0);
+			if(esitoR_ISO.equals("KO")) 
+			{
+				esitoMisure=false;
+			}
+			report.addParameter("misurato_2",misura_se.getR_ISO());
+			report.addParameter("limite_2",misura_se.getR_ISO_GW());
+			report.addParameter("esito_2",esitoR_SL);
+			
+			String esitoU_ISO=Utility.returnEsit(misura_se.getU_ISO(), misura_se.getU_ISO_GW(), 0);
+			if(esitoU_ISO.equals("KO")) 
+			{
+				esitoMisure=false;
+			}
+			report.addParameter("misurato_3",misura_se.getU_ISO());
+			report.addParameter("limite_3",misura_se.getU_ISO_GW());
+			report.addParameter("esito_3",esitoU_ISO);
+			
+			String esitoI_EGA=Utility.returnEsit(misura_se.getI_EGA(), misura_se.getI_EGA_GW(), 0);
+			if(esitoI_EGA.equals("KO")) 
+			{
+				esitoMisure=false;
+			}
+			report.addParameter("misurato_4",misura_se.getI_EGA());
+			report.addParameter("limite_4",misura_se.getI_EGA_GW());
+			report.addParameter("esito_4",esitoI_EGA);
+			
+			String esitoR_I_DIFF=Utility.returnEsit(misura_se.getI_DIFF(), misura_se.getI_DIFF_GW(), 0);
+			if(esitoR_I_DIFF.equals("KO")) 
+			{
+				esitoMisure=false;
+			}
+			
+			report.addParameter("misurato_5",misura_se.getI_DIFF());
+			report.addParameter("limite_5",misura_se.getI_DIFF_GW());
+			report.addParameter("esito_5",esitoR_I_DIFF);
+			
+			String esitoI_EPA=Utility.returnEsit(misura_se.getI_EPA(), misura_se.getI_EPA_GW(), 0);
+			if(esitoI_EPA.equals("KO")) 
+			{
+				esitoMisure=false;
+			}
+			report.addParameter("misurato_6",misura_se.getI_EPA());
+			report.addParameter("limite_6",misura_se.getI_EPA_GW());
+			report.addParameter("esito_6",esitoI_EPA);
+		
+			String esitoI_GA=Utility.returnEsit(misura_se.getI_GA(), misura_se.getI_GA_GW(), 0);
+			
+			if(esitoI_GA.equals("KO")) 
+			{
+				esitoMisure=false;
+			}
+			
+			report.addParameter("misurato_7",misura_se.getI_GA());
+			report.addParameter("limite_7",misura_se.getI_GA_GW());
+			report.addParameter("esito_7",esitoI_GA);
+			
+			String esitoI_GA_SFC=Utility.returnEsit(misura_se.getI_GA_SFC(), misura_se.getI_GA_SFC_GW(), 0);
+			
+			if(esitoI_GA_SFC.equals("KO")) 
+			{
+				esitoMisure=false;
+			}
+			
+			report.addParameter("misurato_8",misura_se.getI_GA_SFC());
+			report.addParameter("limite_8",misura_se.getI_GA_SFC_GW());
+			report.addParameter("esito_8",esitoI_GA_SFC);
+			
+			String esitoI_PA_AC=Utility.returnEsit(misura_se.getI_PA_AC(), misura_se.getI_PA_AC_GW(), 0);
+			
+			if(esitoI_PA_AC.equals("KO")) 
+			{
+				esitoMisure=false;
+			}
+			
+			report.addParameter("misurato_9",misura_se.getI_PA_AC());
+			report.addParameter("limite_9",misura_se.getI_PA_AC_GW());
+			report.addParameter("esito_9",esitoI_PA_AC);
+			
+			String esitoI_PA_DC=Utility.returnEsit(misura_se.getI_PA_DC(), misura_se.getI_PA_DC_GW(), 0);
+			
+			if(esitoI_PA_AC.equals("KO")) 
+			{
+				esitoMisure=false;
+			}
+			
+			report.addParameter("misurato_10",misura_se.getI_PA_DC());
+			report.addParameter("limite_10",misura_se.getI_PA_DC_GW());
+			report.addParameter("esito_10",esitoI_PA_DC);
+	
+	
+			
+		}
+		
+		
+		CampioneDTO campione=GestioneCampioneBO.controllaCodice(CODICE_CAMPIONE);
+		
+		report.addParameter("cmp_costruttore", campione.getCostruttore());
+		report.addParameter("cmp_modello", campione.getModello());
+		report.addParameter("cmp_matricola",campione.getMatricola());
+		report.addParameter("cmp_certificato", campione.getNumeroCertificato());
+		report.addParameter("cmp_data_sc", sdf.format(campione.getDataScadenza()));
+		
+		
+		report.addParameter("str_nota",strumento.getNote());
+		
 		report.addParameter("operatore", certificato.getUtente().getNominativo());
 		report.addParameter("firma_operatore", Costanti.PATH_FOLDER + "FileFirme\\"+certificato.getUtente().getFile_firma());
-		if(data_emissione!=null && !data_emissione.equals("")) {
-			
-			report.addParameter("data", data_emissione);	
-			
-		}else {
-			if(misura_se.getDATA()!=null) {
-				report.addParameter("data", misura_se.getDATA());	
-			}else {
-				report.addParameter("data", "");
+		
+		
+		if(valutaEsito(misura_se) && esitoMisure) 
+			{
+				report.addParameter("ok_cond", "X");
+				report.addParameter("ko_cond", "");
 			}
-		}
+		else 
+			{
+				report.addParameter("ko_cond", "X");
+				report.addParameter("ok_cond", "");
+			}
 		
 		
-		
-		SubreportBuilder subreport; 
+		/*SubreportBuilder subreport; 
 		subreport = cmp.subreport(getTableReport(misura_se));
 		
 		report.detail(subreport);
-		report.ignorePagination();
+		*/report.ignorePagination();
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
 		JasperPrint jasperPrint1 = report.toJasperPrint();
 		jasperPrintList.add(jasperPrint1);
 		
 		
-	//	String path ="C:\\Users\\antonio.dicivita\\Desktop\\TestCeftificatoSE.pdf";
+		//String path ="C:\\Users\\raffaele.fantini\\Desktop\\TestCeftificatoSE.pdf";
 		String path = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getIntervento().getNomePack()+"\\"+certificato.getMisura().getIntervento().getNomePack()+"_"+certificato.getMisura().getInterventoDati().getId()+""+certificato.getMisura().getStrumento().get__id()+".pdf";
 
 		
@@ -317,10 +513,11 @@ public class CreateCertificatoSE {
 		  
 		  this.messaggio_firma ="";
 	
-		
-		certificato.getUtente().setIdFirma(GestioneUtenteBO.getIdFirmaDigitale(utente.getId(), session));
-		  if(certificato.getUtente().getFile_firma()!=null && certificato.getUtente().getIdFirma()!=null) {
-			 jsonOP =  ArubaSignService.signCertificatoPades(utente,null,true, certificato);
+		UtenteDTO operatore=misura.getUser();
+		  
+	
+		  if(operatore.getFile_firma()!=null && operatore.getIdFirma()!=null) {
+			 jsonOP =  ArubaSignService.signCertificatoPades(operatore,"",true, certificato);
 		  }
 		  
 		  
@@ -338,385 +535,81 @@ public class CreateCertificatoSE {
 		
 		
 	}
+
+private String getClasse(String sk) {
+		
+	if(sk!=null && sk.equals("1")) 
+	{
+		return "I";
+	}
+	if(sk!=null && sk.equals("2")) 
+	{
+		return "II";
+	}
+	if(sk!=null && sk.equals("3")) 
+	{
+		return "III";
+	}
+		return null;
+	}
+
+
+private boolean valutaEsito(SicurezzaElettricaDTO misura_se) {
 	
-	@SuppressWarnings("deprecation")
-	public JasperReportBuilder getTableReport(SicurezzaElettricaDTO misura_se) throws Exception{
-
-		JasperReportBuilder report = DynamicReports.report();
-
-		try {			
-
-			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
-			report.addColumn(col.column("Misure","misure", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(335));
-	 		report.addColumn(col.column("Valore","valore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
-	 		report.addColumn(col.column("Limite","limite", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
-	 		report.addColumn(col.column("Esito","esito", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
-	 			 	
-			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
-
-	 		report.setDataSource(createDataSource(misura_se, norma));
-	 		
-	 		report.highlightDetailEvenRows();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+	
+	
+		if(misura_se.getCOND_PROT()!=null && misura_se.getCOND_PROT().equals("KO")) 
+		{
+			return false;
 		}
+		
+		if(misura_se.getINVOLUCRO()!=null && misura_se.getINVOLUCRO().equals("KO")) 
+		{
+			return false;
+		}
+		
+		if(misura_se.getFUSIBILI()!=null && misura_se.getFUSIBILI().equals("KO")) 
+		{
+			return false;
+		}
+		
+		if(misura_se.getCONNETTORI()!=null && misura_se.getCONNETTORI().equals("KO")) 
+		{
+			return false;
+		}
+		
+		if(misura_se.getMARCHIATURE()!=null && misura_se.getMARCHIATURE().equals("KO")) 
+		{
+			return false;
+		}
+		
+		if(misura_se.getALTRO()!=null && misura_se.getALTRO().equals("KO")) 
+		{
+			return false;
+		}
+	
+		return true;
+	}
 
-		return report;
+
+public static void main(String[] args) throws Exception {
+	try 
+	{
+		new ContextListener().configCostantApplication();
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		UtenteDTO u=GestioneUtenteBO.getUtenteById("3", session);
+		
+		CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("28984",session);
+		//String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
+			new CreateCertificatoSE(certificato,"",u,session);
+			session.getTransaction().commit();
+			session.close();
+			System.out.println("FINITO");
+	} catch (Exception e) {
+		e.printStackTrace();
 	}
 	
-	private JRDataSource createDataSource(SicurezzaElettricaDTO misura_se, String norma)throws Exception {
-		DRDataSource dataSource = null;
-		String[] listaCodici = null;
-			
-			listaCodici = new String[4];
-			
-			listaCodici[0]="misure";
-			listaCodici[1]="valore";
-			listaCodici[2]="limite";
-			listaCodici[3]="esito";			
-
-			dataSource = new DRDataSource(listaCodici);
-			
-			
-			if(norma.equals("601")) {
-				ArrayList<String> arrayPs = new ArrayList<String>();
-				arrayPs.add("Conduttore di protezione");
-				arrayPs.add(misura_se.getR_SL());
-				arrayPs.add(misura_se.getR_SL_GW());
-				arrayPs.add(Utility.returnEsit(misura_se.getR_SL(), misura_se.getR_SL_GW(), 0));
-				dataSource.add(arrayPs.toArray());
-				
-				ArrayList<String> arrayPs1 = new ArrayList<String>();
-				arrayPs1.add("Resistenza d'isolamento");
-				arrayPs1.add(misura_se.getR_ISO());
-				arrayPs1.add(misura_se.getR_ISO_GW());
-				arrayPs1.add(Utility.returnEsit(misura_se.getR_ISO(), misura_se.getR_ISO_GW(), 1));
-				dataSource.add(arrayPs1.toArray());
-				
-				ArrayList<String> arrayPs2 = new ArrayList<String>();
-				arrayPs2.add("Tensione di verifica");
-				arrayPs2.add(misura_se.getU_ISO());
-				arrayPs2.add(misura_se.getU_ISO_GW());
-				arrayPs2.add(Utility.returnEsit(misura_se.getU_ISO(), misura_se.getU_ISO_GW(), 1));
-				dataSource.add(arrayPs2.toArray());
-				
-				ArrayList<String> arrayPs3 = new ArrayList<String>();
-				arrayPs3.add("Corrente dispersione equivalente (Metodo Alternativo)");
-				arrayPs3.add(misura_se.getI_EGA());
-				arrayPs3.add(misura_se.getI_EGA_GW());
-				arrayPs3.add(Utility.returnEsit(misura_se.getI_EGA(), misura_se.getI_EGA_GW(), 0));
-				dataSource.add(arrayPs3.toArray());
-				
-				ArrayList<String> arrayPs4 = new ArrayList<String>();
-				arrayPs4.add("Conduttore dispersione apparecchio (Metodo Differenziale)");
-				arrayPs4.add(misura_se.getI_DIFF());
-				arrayPs4.add(misura_se.getI_DIFF_GW());
-				arrayPs4.add(Utility.returnEsit(misura_se.getI_DIFF(), misura_se.getI_DIFF_GW(), 0));
-				dataSource.add(arrayPs4.toArray());
-				
-				ArrayList<String> arrayPs5 = new ArrayList<String>();
-				arrayPs5.add("Conduttore dispersione apparecchio (Metodo Diretto");
-				arrayPs5.add(misura_se.getI_EPA());
-				arrayPs5.add(misura_se.getI_EPA_GW());
-				arrayPs5.add(Utility.returnEsit(misura_se.getI_EPA(), misura_se.getI_EPA_GW(), 0));
-				dataSource.add(arrayPs5.toArray());
-				
-				ArrayList<String> arrayPs6 = new ArrayList<String>();
-				arrayPs6.add("Corrente di contatto");
-				arrayPs6.add(misura_se.getI_GA());
-				arrayPs6.add(misura_se.getI_GA_GW());
-				arrayPs6.add(Utility.returnEsit(misura_se.getI_GA(), misura_se.getI_GA_GW(), 0));
-				dataSource.add(arrayPs6.toArray());
-				
-				ArrayList<String> arrayPs7 = new ArrayList<String>();
-				arrayPs7.add("Corrente di dispersione sulle parti applicate");
-				arrayPs7.add(misura_se.getI_PA_AC());
-				arrayPs7.add(misura_se.getI_PA_AC_GW());
-				arrayPs7.add(Utility.returnEsit(misura_se.getI_PA_AC(), misura_se.getI_PA_AC_GW(), 0));
-				dataSource.add(arrayPs7.toArray());
-				
-				ArrayList<String> arrayPs8 = new ArrayList<String>();
-				arrayPs8.add("Corrente dispersione paziente AC");
-				arrayPs8.add(misura_se.getI_GA_SFC());
-				arrayPs8.add(misura_se.getI_GA_SFC_GW());
-				arrayPs8.add(Utility.returnEsit(misura_se.getI_GA_SFC(), misura_se.getI_GA_SFC_GW(), 0));
-				dataSource.add(arrayPs8.toArray());
-				
-				ArrayList<String> arrayPs9 = new ArrayList<String>();
-				arrayPs9.add("Corrente dispersione paziente DC");
-				arrayPs9.add(misura_se.getI_PA_DC());
-				arrayPs9.add(misura_se.getI_PA_DC_GW());
-				arrayPs9.add(Utility.returnEsit(misura_se.getI_PA_DC(), misura_se.getI_PA_DC_GW(), 0));
-				dataSource.add(arrayPs9.toArray());
-				
-				ArrayList<String> arrayPs10 = new ArrayList<String>();
-				arrayPs10.add("Tensione di verifica");
-				arrayPs10.add(misura_se.getPSPG());
-				arrayPs10.add("");
-				arrayPs10.add("-");
-				dataSource.add(arrayPs10.toArray());
-				
-				ArrayList<String> arrayPs11 = new ArrayList<String>();
-				arrayPs11.add("Tensione nominale");
-				arrayPs11.add(misura_se.getUBEZ_GW());
-				arrayPs11.add("");
-				arrayPs11.add("-");
-				dataSource.add(arrayPs11.toArray());
-			}
-			else if(norma.equals("61010")) 
-			{
-				ArrayList<String> arrayPs = new ArrayList<String>();
-				arrayPs.add("Conduttore di protezione");
-				arrayPs.add(misura_se.getR_SL());
-				arrayPs.add(misura_se.getR_SL_GW());
-				arrayPs.add(Utility.returnEsit(misura_se.getR_SL(), misura_se.getR_SL_GW(), 0));
-				dataSource.add(arrayPs.toArray());
-				
-				
-				ArrayList<String> arrayPs2 = new ArrayList<String>();
-				arrayPs2.add("Corrente differenziale");
-				
-				arrayPs2.add(misura_se.getI_DIFF() != null ? misura_se.getI_DIFF() : "");
-				arrayPs2.add(misura_se.getI_DIFF_GW() != null ? misura_se.getI_DIFF_GW() : "");
-				arrayPs2.add(Utility.returnEsit(misura_se.getI_DIFF(), misura_se.getI_DIFF_GW(), 0));
-				dataSource.add(arrayPs2.toArray());
-
-				// IEA_NC
-				ArrayList<String> arrayPs3 = new ArrayList<String>();
-				arrayPs3.add("Valore corrente AC dispersione involucro metodo diretto (in funzione)");
-				arrayPs3.add(misura_se.getI_GA() != null ? misura_se.getI_GA() : "");
-				arrayPs3.add(misura_se.getI_GA_GW() != null ? misura_se.getI_GA_GW() : "");
-				arrayPs3.add(Utility.returnEsit(misura_se.getI_GA(), misura_se.getI_GA_GW(), 0));
-				dataSource.add(arrayPs3.toArray());
-
-				// IEA_SFC
-				ArrayList<String> arrayPs4 = new ArrayList<String>();
-				arrayPs4.add("Valore corrente AC dispersione involucro metodo diretto (rete invertita)");
-				arrayPs4.add(misura_se.getI_GA_SFC() != null ? misura_se.getI_GA_SFC() : "");
-				arrayPs4.add(misura_se.getI_GA_SFC_GW() != null ? misura_se.getI_GA_SFC_GW() : "");
-				arrayPs4.add(Utility.returnEsit(misura_se.getI_GA_SFC(), misura_se.getI_GA_SFC_GW(), 0));
-				dataSource.add(arrayPs4.toArray());
-
-				
-				ArrayList<String> arrayPs16 = new ArrayList<String>();
-				arrayPs16.add("Massima potenza assorbita Pmax [W]");
-				arrayPs16.add(misura_se.getMAX_POWER_INTAKE_601() != null ? misura_se.getMAX_POWER_INTAKE_601() : "");
-				arrayPs16.add("");
-				dataSource.add(arrayPs16.toArray());
-				
-				
-				// POWER_FACTOR_LF_601
-				ArrayList<String> arrayPs17 = new ArrayList<String>();
-				arrayPs17.add("Fattore di potenza LF");
-				arrayPs17.add(misura_se.getPOWER_FACTOR_LF_601() != null ? misura_se.getPOWER_FACTOR_LF_601() : "");
-				arrayPs17.add("");
-				dataSource.add(arrayPs17.toArray());
-
-				// MAX_SUPPLY_CUR_601
-				ArrayList<String> arrayPs18 = new ArrayList<String>();
-				arrayPs18.add("Massima corrente di alimentazione Imax [A]");
-				arrayPs18.add(misura_se.getMAX_SUPPLY_CUR_601() != null ? misura_se.getMAX_SUPPLY_CUR_601() : "");
-				arrayPs18.add("");
-				dataSource.add(arrayPs18.toArray());
-
-				// ENERGY_601
-				ArrayList<String> arrayPs19 = new ArrayList<String>();
-				arrayPs19.add("Energia [kWh]");
-				arrayPs19.add(misura_se.getENERGY_601() != null ? misura_se.getENERGY_601() : "");
-				arrayPs19.add("");
-				dataSource.add(arrayPs19.toArray());
-
-				// DURATION_601
-				ArrayList<String> arrayPs20 = new ArrayList<String>();
-				arrayPs20.add("Durata delle misure");
-				arrayPs20.add(misura_se.getDURATION_601() != null ? misura_se.getDURATION_601() : "");
-				arrayPs20.add("");
-				dataSource.add(arrayPs20.toArray());
-			}
-			else {
-				
-				ArrayList<String> arrayPs = new ArrayList<String>();
-				arrayPs.add("Conduttore di protezione");
-				arrayPs.add(misura_se.getR_SL());
-				arrayPs.add(misura_se.getR_SL_GW());
-				arrayPs.add(Utility.returnEsit(misura_se.getR_SL(), misura_se.getR_SL_GW(), 0));
-				dataSource.add(arrayPs.toArray());
-				
-				ArrayList<String> arrayPs1 = new ArrayList<String>();
-				arrayPs1.add("Resistenza d'isolamento");
-				arrayPs1.add(misura_se.getR_ISO());
-				arrayPs1.add(misura_se.getR_ISO_GW());
-				arrayPs1.add(Utility.returnEsit(misura_se.getR_ISO(), misura_se.getR_ISO_GW(), 1));
-				dataSource.add(arrayPs1.toArray());
-				
-				// IDIFF
-				ArrayList<String> arrayPs2 = new ArrayList<String>();
-				arrayPs2.add("Corrente differenziale");
-				arrayPs2.add(misura_se.getIDIFF() != null ? misura_se.getIDIFF() : "");
-				arrayPs2.add(misura_se.getIDIFF_GW() != null ? misura_se.getIDIFF_GW() : "");
-				arrayPs2.add(Utility.returnEsit(misura_se.getIDIFF(), misura_se.getIDIFF_GW(), 0));
-				dataSource.add(arrayPs2.toArray());
-
-				// IEA_NC
-				ArrayList<String> arrayPs3 = new ArrayList<String>();
-				arrayPs3.add("Corrente di dispersione verso terra");
-				arrayPs3.add(misura_se.getIEA_NC() != null ? misura_se.getIEA_NC() : "");
-				arrayPs3.add(misura_se.getIEA_NC_GW() != null ? misura_se.getIEA_NC_GW() : "");
-				arrayPs3.add(Utility.returnEsit(misura_se.getIEA_NC(), misura_se.getIEA_NC_GW(), 0));
-				dataSource.add(arrayPs3.toArray());
-
-				// IEA_SFC
-				ArrayList<String> arrayPs4 = new ArrayList<String>();
-				arrayPs4.add("Corrente di dispersione verso terra (singola cond. di errore)");
-				arrayPs4.add(misura_se.getIEA_SFC() != null ? misura_se.getIEA_SFC() : "");
-				arrayPs4.add(misura_se.getIEA_SFC_GW() != null ? misura_se.getIEA_SFC_GW() : "");
-				arrayPs4.add(Utility.returnEsit(misura_se.getIEA_SFC(), misura_se.getIEA_SFC_GW(), 0));
-				dataSource.add(arrayPs4.toArray());
-
-				// IG_NC
-				ArrayList<String> arrayPs5 = new ArrayList<String>();
-				arrayPs5.add("Corrente di dispersione di involucro");
-				arrayPs5.add(misura_se.getIG_NC() != null ? misura_se.getIG_NC() : "");
-				arrayPs5.add(misura_se.getIG_NC_GW() != null ? misura_se.getIG_NC_GW() : "");
-				arrayPs5.add(Utility.returnEsit(misura_se.getIG_NC(), misura_se.getIG_NC_GW(), 0));
-				dataSource.add(arrayPs5.toArray());
-
-				// IG_SFC
-				ArrayList<String> arrayPs6 = new ArrayList<String>();
-				arrayPs6.add("Corrente di dispersione di involucro (singola cond. di errore)");
-				arrayPs6.add(misura_se.getIG_SFC() != null ? misura_se.getIG_SFC() : "");
-				arrayPs6.add(misura_se.getIG_SFC_GW() != null ? misura_se.getIG_SFC_GW() : "");
-				arrayPs6.add(Utility.returnEsit(misura_se.getIG_SFC(), misura_se.getIG_SFC_GW(), 0));
-				dataSource.add(arrayPs6.toArray());
-
-				// IPAAC_NC
-				ArrayList<String> arrayPs7 = new ArrayList<String>();
-				arrayPs7.add("Dispersione di corrente AC su paziente");
-				arrayPs7.add(misura_se.getIPAAC_NC() != null ? misura_se.getIPAAC_NC() : "");
-				arrayPs7.add(misura_se.getIPAAC_NC_GW() != null ? misura_se.getIPAAC_NC_GW() : "");
-				arrayPs7.add(Utility.returnEsit(misura_se.getIPAAC_NC(), misura_se.getIPAAC_NC_GW(), 0));
-				dataSource.add(arrayPs7.toArray());
-
-				// IPAAC_SFC
-				ArrayList<String> arrayPs8 = new ArrayList<String>();
-				arrayPs8.add("Dispersione di corrente AC su paziente (cond. guasto sing.)");
-				arrayPs8.add(misura_se.getIPAAC_SFC() != null ? misura_se.getIPAAC_SFC() : "");
-				arrayPs8.add(misura_se.getIPAAC_SFC_GW() != null ? misura_se.getIPAAC_SFC_GW() : "");
-				arrayPs8.add(Utility.returnEsit(misura_se.getIPAAC_SFC(), misura_se.getIPAAC_SFC_GW(), 0));
-				dataSource.add(arrayPs8.toArray());
-
-				// IPADC_NC
-				ArrayList<String> arrayPs9 = new ArrayList<String>();
-				arrayPs9.add("Corrente DC su paziente");
-				arrayPs9.add(misura_se.getIPADC_NC() != null ? misura_se.getIPADC_NC() : "");
-				arrayPs9.add(misura_se.getIPADC_NC_GW() != null ? misura_se.getIPADC_NC_GW() : "");
-				arrayPs9.add(Utility.returnEsit(misura_se.getIPADC_NC(), misura_se.getIPADC_NC_GW(), 0));
-				dataSource.add(arrayPs9.toArray());
-
-				// IPADC_SFC
-				ArrayList<String> arrayPs10 = new ArrayList<String>();
-				arrayPs10.add("Corrente DC su paziente (cond. guasto sing.)");
-				arrayPs10.add(misura_se.getIPADC_SFC() != null ? misura_se.getIPADC_SFC() : "");
-				arrayPs10.add(misura_se.getIPADC_SFC_GW() != null ? misura_se.getIPADC_SFC_GW() : "");
-				arrayPs10.add(Utility.returnEsit(misura_se.getIPADC_SFC(), misura_se.getIPADC_SFC_GW(), 0));
-				dataSource.add(arrayPs10.toArray());
-
-				// IPNAT
-				ArrayList<String> arrayPs11 = new ArrayList<String>();
-				arrayPs11.add("Corrente di rete su parti applicate a paziente");
-				arrayPs11.add(misura_se.getIPNAT() != null ? misura_se.getIPNAT() : "");
-				arrayPs11.add(misura_se.getIPNAT_GW() != null ? misura_se.getIPNAT_GW() : "");
-				arrayPs11.add(Utility.returnEsit(misura_se.getIPNAT(), misura_se.getIPNAT_GW(), 0));
-				dataSource.add(arrayPs11.toArray());
-
-				// IPHAC_NC
-				ArrayList<String> arrayPs12 = new ArrayList<String>();
-				arrayPs12.add("Corrente ausiliaria AC su paziente");
-				arrayPs12.add(misura_se.getIPHAC_NC() != null ? misura_se.getIPHAC_NC() : "");
-				arrayPs12.add(misura_se.getIPHAC_NC_GW() != null ? misura_se.getIPHAC_NC_GW() : "");
-				arrayPs12.add(Utility.returnEsit(misura_se.getIPHAC_NC(), misura_se.getIPHAC_NC_GW(), 0));
-				dataSource.add(arrayPs12.toArray());
-
-				// IPHAC_SFC
-				ArrayList<String> arrayPs13 = new ArrayList<String>();
-				arrayPs13.add("Corrente ausiliaria AC su paziente (cond. guasto sing.)");
-				arrayPs13.add(misura_se.getIPHAC_SFC() != null ? misura_se.getIPHAC_SFC() : "");
-				arrayPs13.add(misura_se.getIPHAC_SFC_GW() != null ? misura_se.getIPHAC_SFC_GW() : "");
-				arrayPs13.add(Utility.returnEsit(misura_se.getIPHAC_SFC(), misura_se.getIPHAC_SFC_GW(), 0));
-				dataSource.add(arrayPs13.toArray());
-
-				// IPHDC_NC
-				ArrayList<String> arrayPs14 = new ArrayList<String>();
-				arrayPs14.add("Corrente ausiliaria DC su paziente");
-				arrayPs14.add(misura_se.getIPHDC_NC() != null ? misura_se.getIPHDC_NC() : "");
-				arrayPs14.add(misura_se.getIPHDC_NC_GW() != null ? misura_se.getIPHDC_NC_GW() : "");
-				arrayPs14.add(Utility.returnEsit(misura_se.getIPHDC_NC(), misura_se.getIPHDC_NC_GW(), 0));
-				dataSource.add(arrayPs14.toArray());
-
-				// IPHDC_SFC
-				ArrayList<String> arrayPs15 = new ArrayList<String>();
-				arrayPs15.add("Corrente ausiliaria DC su paziente (cond. guasto sing.)");
-				arrayPs15.add(misura_se.getIPHDC_SFC() != null ? misura_se.getIPHDC_SFC() : "");
-				arrayPs15.add(misura_se.getIPHDC_SFC_GW() != null ? misura_se.getIPHDC_SFC_GW() : "");
-				arrayPs15.add(Utility.returnEsit(misura_se.getIPHDC_SFC(), misura_se.getIPHDC_SFC_GW(), 0));
-				dataSource.add(arrayPs15.toArray());
-				
-				
-
-				ArrayList<String> arrayPs16 = new ArrayList<String>();
-				arrayPs16.add("Massima potenza assorbita Pmax [W]");
-				arrayPs16.add(misura_se.getMAX_POWER_INTAKE_601() != null ? misura_se.getMAX_POWER_INTAKE_601() : "");
-				arrayPs16.add("");
-				dataSource.add(arrayPs16.toArray());
-				
-				
-				// POWER_FACTOR_LF_601
-				ArrayList<String> arrayPs17 = new ArrayList<String>();
-				arrayPs17.add("Fattore di potenza LF");
-				arrayPs17.add(misura_se.getPOWER_FACTOR_LF_601() != null ? misura_se.getPOWER_FACTOR_LF_601() : "");
-				arrayPs17.add("");
-				dataSource.add(arrayPs17.toArray());
-
-				// MAX_SUPPLY_CUR_601
-				ArrayList<String> arrayPs18 = new ArrayList<String>();
-				arrayPs18.add("Massima corrente di alimentazione Imax [A]");
-				arrayPs18.add(misura_se.getMAX_SUPPLY_CUR_601() != null ? misura_se.getMAX_SUPPLY_CUR_601() : "");
-				arrayPs18.add("");
-				dataSource.add(arrayPs18.toArray());
-
-				// ENERGY_601
-				ArrayList<String> arrayPs19 = new ArrayList<String>();
-				arrayPs19.add("Energia [kWh]");
-				arrayPs19.add(misura_se.getENERGY_601() != null ? misura_se.getENERGY_601() : "");
-				arrayPs19.add("");
-				dataSource.add(arrayPs19.toArray());
-
-				// DURATION_601
-				ArrayList<String> arrayPs20 = new ArrayList<String>();
-				arrayPs20.add("Durata delle misure");
-				arrayPs20.add(misura_se.getDURATION_601() != null ? misura_se.getDURATION_601() : "");
-				arrayPs20.add("");
-				dataSource.add(arrayPs20.toArray());
-				
-			}
-		
-			
-	 		return dataSource;
-	 	}
-	
-//	public static void main(String[] args) throws Exception {
-//	new ContextListener().configCostantApplication();
-//	Session session=SessionFacotryDAO.get().openSession();
-//	session.beginTransaction();
-//	
-//	
-//	CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("121");
-//	//String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
-//		new CreateCertificatoSE(certificato,session);
-//		session.getTransaction().commit();
-//		session.close();
-//		System.out.println("FINITO");
-//}
+}
 }

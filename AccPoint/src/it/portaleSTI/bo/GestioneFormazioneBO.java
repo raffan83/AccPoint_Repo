@@ -1315,7 +1315,7 @@ public class GestioneFormazioneBO {
 
 	    Enumeration<? extends ZipEntry> entries = zipFile.entries();
 	    
-	    InputStream file = new FileInputStream(Costanti.PATH_FOLDER+"//Formazione//Questionari//Template-vma-ente-editabile_Originale - Copia.xlsx");	    
+	    InputStream file = new FileInputStream(Costanti.PATH_FOLDER+"//Formazione//Questionari//template_questionari_regionali.xlsx");	    
 	    XSSFWorkbook workbook = new XSSFWorkbook(file);   
 	    int sheets = workbook.getNumberOfSheets();
 	
@@ -1484,7 +1484,7 @@ public class GestioneFormazioneBO {
 	    }
 		
 	    workbook.setForceFormulaRecalculation(true);
-	    FileOutputStream fileOut = new FileOutputStream( Costanti.PATH_FOLDER+"//Formazione//Questionari//Template-vma-ente-editabile_Originale - Copia.xlsx");
+	    FileOutputStream fileOut = new FileOutputStream( Costanti.PATH_FOLDER+"//Formazione//Questionari//template_questionari_regionali.xlsx");
         workbook.write(fileOut);
         fileOut.close();
         
@@ -1493,7 +1493,7 @@ public class GestioneFormazioneBO {
 		
 		
 		String script = Costanti.PATH_FOLDER + "\\Formazione\\temp\\funzione_excel.vbs";
-		String fileExcel = Costanti.PATH_FOLDER + "\\Formazione\\Questionari\\Template-vma-ente-editabile_Originale - Copia.xlsx";
+		String fileExcel = Costanti.PATH_FOLDER + "\\Formazione\\Questionari\\template_questionari_regionali.xlsx";
 
 		//qui carica le operazioni di excel in automatico
 		// esegue VBS e ASPETTA

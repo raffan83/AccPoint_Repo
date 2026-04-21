@@ -1392,7 +1392,7 @@ public class GestioneFormazioneBO {
 		//INIZIO QUESTIONARIO
 		if (objScanner.getCount()>17) { //Controllo se il partecipante è rispondente
 
-			if(!objScanner.getEta().equals("")) {
+			if(objScanner.getEta() != null && !objScanner.getEta().equals("")) {
 		    getOrCreateCell(sheet1, row, 7).setCellValue(Integer.parseInt(objScanner.getEta()));
 			}
 
@@ -1465,8 +1465,8 @@ public class GestioneFormazioneBO {
 		    }
 
 		    getOrCreateCell(sheet1, row, 38).setCellValue(objScanner.getDom_7_1_1());
-		    
-		    if(!objScanner.getDom_7_2_1().equals("") || objScanner.getDom_7_2_1() == null) {
+		   
+		    if(objScanner.getDom_7_2_1() != null && !objScanner.getDom_7_2_1().equals("") ) {
 	    getOrCreateCell(sheet1, row, 39).setCellValue(Integer.parseInt(objScanner.getDom_7_2_1()));
 		    }else {
 		    	continue;
@@ -1476,7 +1476,7 @@ public class GestioneFormazioneBO {
 
 		    getOrCreateCell(sheet1, row, 41).setCellValue(objScanner.getDom_8_1());
 		    
-		    if(!objScanner.getDom_9().equals("") || objScanner.getDom_9() == null) {
+		    if(objScanner.getDom_9() != null && !objScanner.getDom_9().equals("")) {
 		    getOrCreateCell(sheet1, row, 42).setCellValue(Integer.parseInt(objScanner.getDom_9()));
 		    } else {
 		    	continue;

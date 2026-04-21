@@ -80,8 +80,8 @@
  <th>ID</th>
  <th>Data Misura</th>
   <th>Strumento</th>
-     <th>Matricola | Codice Interno</th>
-
+     <th>Matricola</th>
+     <th>Codice Interno</th>
 	
 	<th>Costruttore</th>
 	<th>Modello</th>
@@ -116,8 +116,8 @@
          value="${misura.dataMisura}" />
 </c:if></td>
 <td>${misura.strumento.denominazione}</td>
-<td>${misura.strumento.matricola} | ${misura.strumento.codice_interno}</td>
-
+<td>${misura.strumento.matricola}</td> 
+<td>${misura.strumento.codice_interno}</td>
 <td>${misura.strumento.costruttore}</td>
 <td>${misura.strumento.modello}</td>
 <td>${misura.tipoFirma}</td>
@@ -812,8 +812,8 @@ function openModalStampa(idMisura){
               { className: "select-checkbox", targets: 1,  orderable: false },
   	                   { responsivePriority: 2, targets: 2 },
   	                   { responsivePriority: 3, targets: 3 },
-  	                 { responsivePriority: 4, targets: 14 },
-  	                 { responsivePriority: 5, targets: 11 }
+  	                 { responsivePriority: 4, targets: 15 },
+  	                 { responsivePriority: 5, targets: 6 }
   	               ],
   	     
   	               buttons: [ {

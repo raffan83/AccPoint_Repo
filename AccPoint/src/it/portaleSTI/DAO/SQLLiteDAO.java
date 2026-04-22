@@ -970,6 +970,12 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		strumento.setProcedura(rs.getString("procedura"));
 		strumento.setNote_tecniche(rs.getString("note_tecniche"));
 		
+		if(SQLiteColumnCheck(con, "tblStrumenti", "ip")) 
+		{
+		 strumento.setIp(rs.getInt("ip"));	
+		}
+		
+		
 		misura.setStrumento(strumento);
 		
 		misura.setTemperatura(rs.getBigDecimal("temperatura"));

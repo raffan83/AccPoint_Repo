@@ -238,6 +238,7 @@ public class GestioneInterventoBO {
 				   		strumentoModificato.setTipo_strumento(new TipoStrumentoDTO(strumentoDaFile.getTipo_strumento().getId(), ""));
 				   		
 				   		strumentoModificato.setNote_tecniche(strumentoDaFile.getNote_tecniche());
+				   		strumentoModificato.setIp(strumentoDaFile.getIp());
 				   		
 				   		GestioneStrumentoBO.update(strumentoModificato, session);
 				   	}

@@ -1054,7 +1054,7 @@
 			<staticText>
 				<reportElement x="393" y="39" width="161" height="21" uuid="1237b720-52f0-4691-a616-385ac8fe6234"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<text><![CDATA[Rev. 0 del 20/01/2026]]></text>
+				<text><![CDATA[Rev. 0 del 02/04/2026]]></text>
 			</staticText>
 			<image hAlign="Center" vAlign="Middle" onErrorType="Blank">
 				<reportElement x="395" y="0" width="135" height="29" uuid="5cb8c991-fdb8-485f-a717-4d252eb4666a"/>

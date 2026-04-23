@@ -76,7 +76,7 @@
                    <c:if test="${userObj.idSede != 0}">
              			<c:forEach items="${listaSedi}" var="sedi">
              			  <c:if test="${userObj.idSede == sedi.__id}">
-                          	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
+                          	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.indirizzo}</option>     
                           </c:if>                       
                      	</c:forEach>
                      </c:if>
@@ -86,11 +86,11 @@
              			<c:forEach items="${listaSedi}" var="sedi">
              			 	<c:if test="${userObj.idCliente != 0}">
              			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
-                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}"> ${sedi.indirizzo}</option>       
                           	 	</c:if>      
                           	</c:if>     
                           	<c:if test="${userObj.idCliente == 0}">
-                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.indirizzo}</option>       
                            	</c:if>                  
                      	</c:forEach>
                      </c:if>

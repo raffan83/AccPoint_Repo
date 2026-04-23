@@ -514,6 +514,8 @@
     border-style: solid;
     border-width: 2px;
     border-radius: 15px;
+     display: inline-block; 
+     vertical-align: middle;
 }
 .lampRed {
     background-color: #FF8C00;

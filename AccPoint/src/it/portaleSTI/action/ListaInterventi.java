@@ -2,7 +2,10 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -64,40 +67,16 @@ public class ListaInterventi extends HttpServlet {
 			
 			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
-
-			String idCompany=""+cmp.getId();
 			
-			List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);
+			List<ClienteDTO> listaClientiInterventi = GestioneInterventoBO.getListaClientiInterventi(session,utente,cmp);
+		
 			
-			ArrayList<Integer> clientiIds = null;
+			request.getSession().setAttribute("listaClienti",listaClientiInterventi);
+					
 			
-			if(utente.isTras()) {
-				clientiIds =	GestioneInterventoBO.getListaClientiInterventi(0,session);
-			}else {
-				clientiIds = GestioneInterventoBO.getListaClientiInterventi(cmp.getId(),session);
-			}
-								
-			List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();
-			for (ClienteDTO cliente : listaClientiFull) {
- 				if(clientiIds.contains(cliente.get__id())) {
-					listaClienti.add(cliente);
-				}
-			}
-			request.getSession().setAttribute("listaClienti",listaClienti);
+			List<SedeDTO> listaSediInterventi =GestioneInterventoBO.getListaSediInterventi(session); 
 			
-			
-			
-			List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
-			
-			ArrayList<Integer> sediIds = GestioneInterventoBO.getListaSediInterventi(session);
-			
-			List<SedeDTO> listaSedi = new ArrayList<SedeDTO>();
-			for (SedeDTO sede : listaSediFull) {
- 				if(sediIds.contains(sede.get__id())) {
-					listaSedi.add(sede);
-				}
-			}
-			request.getSession().setAttribute("listaSedi",listaSedi);
+			request.getSession().setAttribute("listaSedi",listaSediInterventi);
 
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaInterventi.jsp");

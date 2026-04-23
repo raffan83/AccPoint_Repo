@@ -2,16 +2,17 @@ package it.portaleSTI.DAO;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-
-import java.sql.PreparedStatement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 
 import it.portaleSTI.DTO.ControlloAttivitaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
@@ -288,10 +289,11 @@ public class GestioneInterventoDAO {
 
 
 
-	public static ArrayList<Integer> getListaClientiInterventi(int id_company,Session session) {
+	public static ArrayList<String> getListaClientiInterventi(int id_company,Session session) {
+		
 		Query query=null;
 		
-		ArrayList<Integer> lista=null;
+		ArrayList<String> lista=null;
 		try {
 	
 		
@@ -299,9 +301,10 @@ public class GestioneInterventoDAO {
 		String s_query ="";
 		
 		if(id_company!=0) {
-			s_query = "select DISTINCT(int.id_cliente) from InterventoDTO as int where int.company.id = :_id_company";
+			s_query = "select DISTINCT CONCAT(int.id_cliente, '@', int.nome_cliente) from InterventoDTO as int where int.company.id = :_id_company";
 		}else {
-			s_query = "select DISTINCT(int.id_cliente) from InterventoDTO as int";
+			s_query = "select DISTINCT CONCAT(int.id_cliente, '@', int.nome_cliente) from InterventoDTO as int where int.nome_cliente is not null\r\n" + 
+					"and int.nome_cliente <> ''";
 		}
 				
 						  
@@ -310,7 +313,7 @@ public class GestioneInterventoDAO {
 	    	query.setParameter("_id_company", id_company);
 	    }
  		
-	    lista=(ArrayList<Integer>)query.list();
+	    lista=(ArrayList<String>)query.list();
 
 	     } 
 		catch(Exception e)
@@ -324,28 +327,44 @@ public class GestioneInterventoDAO {
 
 
 
-	public static ArrayList<Integer> getListaSediInterventi(Session session) {
-		Query query=null;
-		
-		ArrayList<Integer> lista=null;
-		try {
+	public static HashMap<String,String> getListaSediInterventi(Session session) throws Exception {
 	
+		HashMap<String,String> listaSedi  =new HashMap<String,String>();
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs;
+		
+		try {
+			
+			con=DirectMySqlDAO.getConnection();
+			
+			pst=con.prepareStatement("SELECT * FROM intervento");
+			
+			rs=pst.executeQuery();
+			
+			while(rs.next()) 
+			{
+				int id_cliente=rs.getInt("id_cliente");
+				int id_sede=rs.getInt("id__sede_");
+				String nome_sede=rs.getString("nome_sede");
+				
+				String key=""+id_cliente+"_"+id_sede;
+			
+					listaSedi.put(key, nome_sede);
+				
+			}
+			
+			
+		} finally {
+			pst.close();
+			con.close();
+		}
 		
 		
-		String s_query = "select DISTINCT(int.idSede) from InterventoDTO as int";
-						  
-	    query = session.createQuery(s_query);
- 		
-	    lista=(ArrayList<Integer>)query.list();
-
-	     } 
-		catch(Exception e)
-	     {
-	    	 e.printStackTrace();
-	    	 throw e;
-	     }
+		return listaSedi;
 		
-		return lista;
+		
+		
 	}
 
 

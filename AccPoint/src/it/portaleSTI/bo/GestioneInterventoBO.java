@@ -10,7 +10,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
@@ -20,6 +23,8 @@ import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
+import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ContatoreUtenteDTO;
 import it.portaleSTI.DTO.ControlloAttivitaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
@@ -30,7 +35,7 @@ import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
-
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
@@ -1181,14 +1186,58 @@ public class GestioneInterventoBO {
 		return GestioneInterventoDAO.getListaInterventiDaSede(idCliente,idSede,idCompany,user, session);
 	}
 
-	public static ArrayList<Integer> getListaClientiInterventi(int id_company,Session session) {
+	public static List<ClienteDTO> getListaClientiInterventi(Session session, UtenteDTO utente,CompanyDTO cmp) {
 		// TODO Auto-generated method stub
-		return GestioneInterventoDAO.getListaClientiInterventi(id_company,session);
+		List<ClienteDTO> listaClientiInterventi =new ArrayList<>();
+		ArrayList<String> clientiString = null;
+					
+		if(utente.isTras()) {
+			clientiString =	GestioneInterventoDAO.getListaClientiInterventi(0,session);
+		}else {
+			clientiString = GestioneInterventoDAO.getListaClientiInterventi(cmp.getId(),session);
+		}
+		
+		for (String clientiS : clientiString) {
+			if(clientiS == null) {
+				continue;
+			} else {
+			//	System.out.println("Strigna: " + clientiS );
+			String[] s = clientiS.split("@");
+			ClienteDTO cliente = new ClienteDTO();
+			
+			
+			cliente.set__id(Integer.parseInt(s[0]));
+			cliente.setNome(s[1]);
+			listaClientiInterventi.add(cliente);
+			}
+		}
+		
+		return listaClientiInterventi;
 	}
 
-	public static ArrayList<Integer> getListaSediInterventi(Session session) {
+	public static List<SedeDTO> getListaSediInterventi(Session session) throws Exception {
 		// TODO Auto-generated method stub
-		return GestioneInterventoDAO.getListaSediInterventi(session);
+		List<SedeDTO> listaSediInterventi =new ArrayList<>();
+		HashMap<String,String> listaSediHashMap  = GestioneInterventoDAO.getListaSediInterventi(session);
+		
+		 Iterator<Map.Entry<String, String>> it = listaSediHashMap.entrySet().iterator();
+        SedeDTO sede=null;
+	        while (it.hasNext()) {
+	            Map.Entry<String, String> entry = it.next();
+	            String chiave = entry.getKey();
+	            String valore = entry.getValue();
+
+	            sede= new SedeDTO();
+	           sede.set__id(Integer.parseInt(chiave.split("_")[1]));
+	           sede.setId__cliente_(Integer.parseInt(chiave.split("_")[0]));
+	           sede.setDescrizione("");
+	           sede.setIndirizzo(valore);
+	            
+	            
+	            listaSediInterventi.add(sede);
+	        }
+		
+		return listaSediInterventi;
 	}
 	
 	public static ArrayList<UtenteDTO> getListaUtentiInterventoDati(Session session){

@@ -289,40 +289,49 @@ public class GestioneInterventoDAO {
 
 
 
-	public static ArrayList<String> getListaClientiInterventi(int id_company,Session session) {
-		
-		Query query=null;
-		
-		ArrayList<String> lista=null;
-		try {
-	
-		
-		
-		String s_query ="";
-		
-		if(id_company!=0) {
-			s_query = "select DISTINCT CONCAT(int.id_cliente, '@', int.nome_cliente) from InterventoDTO as int where int.company.id = :_id_company";
-		}else {
-			s_query = "select DISTINCT CONCAT(int.id_cliente, '@', int.nome_cliente) from InterventoDTO as int where int.nome_cliente is not null\r\n" + 
-					"and int.nome_cliente <> ''";
-		}
-				
-						  
-	    query = session.createQuery(s_query);
-	    if(id_company!=0) {
-	    	query.setParameter("_id_company", id_company);
-	    }
- 		
-	    lista=(ArrayList<String>)query.list();
+	public static ArrayList<String> getListaClientiInterventi(int id_company, Session session) {
 
-	     } 
-		catch(Exception e)
-	     {
-	    	 e.printStackTrace();
-	    	 throw e;
-	     }
-		
-		return lista;
+	    Query query = null;
+	    ArrayList<String> lista = new ArrayList<>();
+
+	    try {
+
+	        String s_query = "";
+
+	        if (id_company != 0) {
+	            s_query = "select DISTINCT int.id_cliente, int.nome_cliente " +
+	                      "from InterventoDTO as int " +
+	                      "where int.company.id = :_id_company " +
+	                      "order by int.nome_cliente asc";
+	        } else {
+	            s_query = "select DISTINCT int.id_cliente, int.nome_cliente " +
+	                      "from InterventoDTO as int " +
+	                      "where int.nome_cliente is not null and int.nome_cliente <> '' " +
+	                      "order by int.nome_cliente asc";
+	        }
+
+	        query = session.createQuery(s_query);
+
+	        if (id_company != 0) {
+	            query.setParameter("_id_company", id_company);
+	        }
+
+	        List<Object[]> results = query.list();
+
+	        for (Object[] row : results) {
+	            Integer id = (Integer) row[0];
+	            String nome = (String) row[1];
+
+	            // concatenazione in Java (safe)
+	            lista.add(id + "@" + nome);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+	    }
+
+	    return lista;
 	}
 
 

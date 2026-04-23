@@ -30,8 +30,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
@@ -74,6 +77,7 @@ import it.portaleSTI.DTO.VerLegalizzazioneBilanceDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.action.ContextListener;
 import it.portaleSTI.action.GestioneUtenti;
 import it.portaleSTI.action.ValoriCampione;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
@@ -4462,6 +4466,54 @@ public static void insertIndicePrestazione(Connection conSQLLite, int idCliente,
 
 	}
 	
+}
+
+public static HashMap<Integer, String> getHashEncrypt() throws SQLException	{
+	
+	HashMap<Integer, String> listaHash = new HashMap<>();
+	Connection con=null;
+	PreparedStatement pst=null;
+	try {
+		 con = getConnection();
+		
+		 pst =con.prepareStatement("SELECT * FROM in_enc");
+		
+		ResultSet rs =pst.executeQuery();
+		
+		while(rs.next()) 
+		{
+			listaHash.put(rs.getInt(1), rs.getString(2));
+		}
+		
+		
+	}catch (Exception e) 
+	{
+		e.printStackTrace();
+	} finally {
+		pst.close();
+		con.close();
+	}	
+	
+	return listaHash;
+	
+
+}
+
+public static void main(String[] args) throws HibernateException, Exception {
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	System.out.println("START: "+sdf.format(new Date(System.currentTimeMillis())));
+	try {
+
+		new ContextListener().configCostantApplication();
+		
+		HashMap<Integer, String> listaHash =getHashEncrypt();
+		System.out.println(listaHash.size());
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	System.out.println("END:"+sdf.format(new Date(System.currentTimeMillis())));
 }
 
 }

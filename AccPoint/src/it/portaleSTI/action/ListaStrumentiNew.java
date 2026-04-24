@@ -1,9 +1,13 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,6 +25,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
+import it.portaleSTI.bo.ServiceBO;
 
 /**
  * Servlet implementation class ListaStrumentiNew
@@ -62,37 +67,29 @@ public class ListaStrumentiNew extends HttpServlet {
 	
 				String idCompany=""+cmp.getId();
 				
-				List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);
+				List<ClienteDTO> listaClientiCS = (List<ClienteDTO>)request.getSession().getAttribute("listaClientiStrumenti");
+				List<ClienteDTO> listaClientiFull = (List<ClienteDTO>)request.getSession().getAttribute("listaClientiFull");
+
+				 HashMap<Integer,String> encrypt = ServiceBO.getHashEncrypt();
+				 
 				
-				List<ClienteDTO> listaClientiCS = new ArrayList<ClienteDTO>();
+				listaClientiFull = GestioneStrumentoBO.getListaClientiFull(listaClientiFull, encrypt, idCompany); 
 				
-				HashMap<Integer,Integer> listaClientiConStrumenti=DirectMySqlDAO.getListaClientiConStrumenti();
-				
-				for (ClienteDTO clienteDTO : listaClientiFull) {
-					
-					if(listaClientiConStrumenti.containsKey(clienteDTO.get__id())) 
-					{
-						
-						listaClientiCS.add(clienteDTO);
-					}
-				}
-				
-	//			ArrayList<Integer> clientiIds = GestioneStrumentoBO.getListaClientiStrumenti();
-	//			
-	//			List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();
-	//			for (ClienteDTO cliente : listaClientiFull) {
-	// 				if(clientiIds.contains(cliente.get__id())) {
-	//					listaClienti.add(cliente);
-	//				}
-	//			}
-				request.getSession().setAttribute("listaClienti",listaClientiCS);
-				request.getSession().setAttribute("listaClientiFull",listaClientiFull);
-				
-				
-				List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
+				listaClientiCS = GestioneStrumentoBO.getClienteWithStrumento(listaClientiFull, listaClientiCS, encrypt);
 				
 
-				request.getSession().setAttribute("listaSedi",listaSediFull);
+				request.getSession().setAttribute("listaClientiFull",listaClientiFull);
+				request.getSession().setAttribute("listaClientiStrumenti",listaClientiCS);
+				
+				
+				
+				
+				List<SedeDTO> listaSediFull = (List<SedeDTO>)request.getSession().getAttribute("listaSediStrumenti");	
+				listaSediFull = GestioneStrumentoBO.getListaSedifull(listaSediFull, encrypt);
+				
+				request.getSession().setAttribute("listaSediStrumenti",listaSediFull);
+				
+				
 				
 				ArrayList<StrumentoDTO> strumenti= new ArrayList<StrumentoDTO>();
 				request.getSession().setAttribute("listaStrumenti",strumenti);

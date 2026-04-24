@@ -4516,6 +4516,39 @@ public static void main(String[] args) throws HibernateException, Exception {
 	System.out.println("END:"+sdf.format(new Date(System.currentTimeMillis())));
 }
 
+
+public static HashMap<String, Integer> getHashDecrypt() throws SQLException {
+	HashMap<String, Integer> listaHash = new HashMap<>();
+	Connection con=null;
+	PreparedStatement pst=null;
+	try {
+		 con = getConnection();
+		
+		 pst =con.prepareStatement("SELECT * FROM in_enc");
+		
+		ResultSet rs =pst.executeQuery();
+		
+		while(rs.next()) 
+		{
+			String key= rs.getString(2);
+			int value=  rs.getInt(1);
+		
+			
+			listaHash.put(key,value);
+		}
+		
+		
+	}catch (Exception e) 
+	{
+		e.printStackTrace();
+	} finally {
+		pst.close();
+		con.close();
+	}	
+	
+	return listaHash;
+}
+
 }
 
 

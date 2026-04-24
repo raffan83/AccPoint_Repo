@@ -80,7 +80,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
 							
                   <option value=""></option>
                       <c:forEach items="${listaClientiGeneral}" var="cliente">
-                           <option value="${utl:encryptData(cliente.__id)}">${cliente.nome} </option> 
+                           <option value="${cliente.idEncrypted}">${cliente.nome} </option> 
                      </c:forEach>
                   
              
@@ -110,7 +110,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
                     	<option value=""></option>
              			 <c:forEach items="${listaSediGeneral}" var="sedi">
              	
-                          	 		<option value="${utl:encryptData(''+sedi.__id)}_${utl:encryptData(''+sedi.id__cliente_)}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
+                          	 		<option value="${sedi.id_encrypted}_${sedi.id_cliente_encrypted}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
                           	     
                           
                      	</c:forEach>

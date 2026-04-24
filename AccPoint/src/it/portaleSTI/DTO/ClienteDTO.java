@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class ClienteDTO implements Serializable{
 	
 	 private int __id=0 ;
+	 private String encryptId;
 	 private String codice=""  ;
 	 private String nome="" ;
 	 private Integer committente_attivo=0;
@@ -206,6 +207,14 @@ public class ClienteDTO implements Serializable{
 
 	public void setRegione(String regione) {
 		this.regione = regione;
+	}
+
+	public String getEncryptId() {
+		return encryptId;
+	}
+
+	public void setEncryptId(String encryptId) {
+		this.encryptId = encryptId;
 	}
 	
 

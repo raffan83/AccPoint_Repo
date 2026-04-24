@@ -162,9 +162,9 @@
     	                  <select name="cliente_appoggio" id="cliente_appoggio"  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
 							<c:if test="${userObj.idCliente != 0}">
                   
-                      <c:forEach items="${listaClienti}" var="cliente">
+                      <c:forEach items="${listaClientiStrumenti}" var="cliente">
                        <c:if test="${userObj.idCliente == cliente.__id}">
-                           <option value="${utl:encryptData(cliente.__id)}">${cliente.nome}</option> 
+                           <option value="${cliente.idEncrypted}">${cliente.nome}</option> 
                         </c:if>
                      </c:forEach>
                   
@@ -173,8 +173,8 @@
                  
                   <c:if test="${userObj.idCliente == 0}">
                   <option value=""></option>
-                      <c:forEach items="${listaClienti}" var="cliente">
-                           <option value="${utl:encryptData(cliente.__id)}">${cliente.nome} </option> 
+                      <c:forEach items="${listaClientiStrumenti}" var="cliente">
+                           <option value="${cliente.idEncrypted}">${cliente.nome} </option> 
                      </c:forEach>
                   
                   
@@ -223,23 +223,23 @@
                   <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
                    <c:if test="${userObj.idSede != 0}">
                    
-             			<c:forEach items="${listaSedi}" var="sedi">
+             			<c:forEach items="${listaSediStrumenti}" var="sedi">
              			  <c:if test="${userObj.idSede == sedi.__id}">             			  
-                          	  <option value="${utl:encryptData(sedi.__id)}_${utl:encryptData(sedi.id__cliente_)}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia}) </option>      
+                          	  <option value="${sedi.id_encrypted}_${sedi.id_cliente_encrypted}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia}) </option>      
                           </c:if>                       
                      	</c:forEach>
                      </c:if>
                      
                      <c:if test="${userObj.idSede == 0}">
                     	<option value=""></option>
-             			<c:forEach items="${listaSedi}" var="sedi">
+             			<c:forEach items="${listaSediStrumenti}" var="sedi">
              			 	<c:if test="${userObj.idCliente != 0}">             			 	
              			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
-                          	 		<option value="${utl:encryptData(sedi.__id)}_${utl:encryptData(sedi.id__cliente_)}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
+                          	 		<option value="${sedi.id_encrypted}_${sedi.id_cliente_encrypted}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
                           	 	</c:if>      
                           	</c:if>     
                           	<c:if test="${userObj.idCliente == 0}">
-                           	 		<option value="${utl:encryptData(sedi.__id)}_${utl:encryptData(sedi.id__cliente_)}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
+                           	 		<option value="${sedi.id_encrypted}_${sedi.id_cliente_encrypted}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
                            	</c:if>                  
                      	</c:forEach>
                      </c:if>
@@ -804,6 +804,7 @@ function spd()
           
     });
     
+
    
     function nuovoStrumentoGeneral(){
     	

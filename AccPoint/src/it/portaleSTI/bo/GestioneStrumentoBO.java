@@ -18,6 +18,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
@@ -25,6 +26,7 @@ import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.StrumentoNoteDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
@@ -588,5 +590,72 @@ public class GestioneStrumentoBO {
 	}
 
 
+	public static List<ClienteDTO> getClienteWithStrumento(List<ClienteDTO> listaClientiFull,List<ClienteDTO> listaClientiCS,HashMap<Integer,String> encrypt) throws Exception {
+		
+		if(listaClientiCS == null ) {
+			
+			
+			listaClientiCS = new ArrayList<ClienteDTO>();
+			
+			HashMap<Integer,Integer> listaClientiConStrumenti=DirectMySqlDAO.getListaClientiConStrumenti();
+			
+			for (ClienteDTO clienteDTO : listaClientiFull) {
+				
+				if(listaClientiConStrumenti.containsKey(clienteDTO.get__id())) 
+				{
+					
+					listaClientiCS.add(clienteDTO);
+				}
+			}
+			
+			for(int i=0; i<listaClientiCS.size();i++) {
+				int idCs = listaClientiCS.get(i).get__id();
+				 listaClientiCS.get(i).setIdEncrypted(encrypt.get(idCs));
+			 }
+
+		} 
+		return listaClientiCS;
+	}
+	
+	
+	
+	public static List<ClienteDTO> getListaClientiFull(List<ClienteDTO> listaClientiFull,HashMap<Integer,String> encrypt, String idCompany) throws HibernateException, Exception{
+		 
+		 if(listaClientiFull== null) {
+				listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);
+				}
+				
+		 for(int i=0; i<listaClientiFull.size();i++) {
+				
+			 int id = listaClientiFull.get(i).get__id();
+			 listaClientiFull.get(i).setIdEncrypted(encrypt.get(id));
+			 
+		 }
+		 
+		 return listaClientiFull;
+	}
+	
+	
+	
+	
+	
+	public static List<SedeDTO> getListaSedifull(List<SedeDTO> listaSediFull, HashMap<Integer,String> encrypt) throws SQLException{
+		if(listaSediFull == null) {
+
+			listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
+			
+			
+			 for(int i=0; i<listaSediFull.size();i++) {
+				
+				 int id = listaSediFull.get(i).get__id();
+				 listaSediFull.get(i).setId_encrypted(encrypt.get(id));
+				
+				 int id_cliente = listaSediFull.get(i).getId__cliente_();
+				 listaSediFull.get(i).setId_cliente_encrypted(encrypt.get(id_cliente));
+				 
+			 }
+			}
+		return listaSediFull;
+	}
 
 }

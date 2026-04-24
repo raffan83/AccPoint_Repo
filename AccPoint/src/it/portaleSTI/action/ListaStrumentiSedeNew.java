@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -46,6 +48,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
+import it.portaleSTI.bo.ServiceBO;
 
 /**
  * Servlet implementation class ListaStrumentiSede
@@ -432,36 +435,54 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		    
 		}
 		else if(action.equals("nuovo_strumento_general")) {
-			
-			CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
-			
-			List<ClienteDTO> listaClientiFull = (List<ClienteDTO>) request.getSession().getAttribute("listaClientiFull");
-			if(listaClientiFull== null) {
-				listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany.getId()+"");
-			}
 		
-			
-			List<SedeDTO> listaSediFull = (List<SedeDTO>) request.getSession().getAttribute("listaSediFull");
-			if(listaSediFull== null) {
-				listaSediFull=GestioneAnagraficaRemotaBO.getListaSedi();
-			}
+			CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			String idC = "" + idCompany.getId();
 			
 			
 			
 			String idCliente = request.getParameter("idCliente");
-			String idSede = request.getParameter("idSede");
+			String idSedeECliente = request.getParameter("idSede");
+			
+			idCliente = idCliente.replaceAll(" ", "+");
+			idSedeECliente =  idSedeECliente.replaceAll(" ", "+");
+		
+			String idSede="";
+			String idSede_Cliente="";
+			
+		
+			if(idSedeECliente.contains("_")) {
+			     idSede = idSedeECliente.substring(0, idSedeECliente.lastIndexOf("_"));
+			    idSede_Cliente = idSedeECliente.substring(1, idSedeECliente.lastIndexOf("_"));
+			}
+			
+			
+			HashMap<Integer,String> encrypt = ServiceBO.getHashEncrypt();	
+			HashMap<String,Integer> dencrypt = ServiceBO.getHashDecrypt();	
+			
+			
+			List<ClienteDTO> listaClientiFull = (List<ClienteDTO>) request.getSession().getAttribute("listaClientiFull");
+			listaClientiFull = GestioneStrumentoBO.getListaClientiFull(listaClientiFull, encrypt, idC);
+			
+			List<SedeDTO> listaSediFull = (List<SedeDTO>) request.getSession().getAttribute("listaSediStrumenti");
+			listaSediFull = GestioneStrumentoBO.getListaSedifull(listaSediFull, encrypt);
+				
+			 
+			
 			
 			if(idCliente==null || idCliente.equals("")) {
 				idCliente="0";
 			}else {
-				idCliente = Utility.decryptData(idCliente);
+				idCliente = ""+dencrypt.get(idCliente);	
 			}
+				
 			
 			if(idSede==null || idSede.equals("")) {
 				idSede="0";
 			}else {
-				idSede = Utility.decryptData(idSede);
+				idSede = ""+dencrypt.get(idSede);	
 			}
+			
 			
 			
 			
@@ -476,6 +497,8 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				
 				
 			}
+	
+			
 			
 			request.getSession().setAttribute("listaClientiGeneral", listaClientiFull);
 			request.getSession().setAttribute("listaSediGeneral",listaSediFull);

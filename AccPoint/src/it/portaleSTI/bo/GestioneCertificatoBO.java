@@ -496,7 +496,7 @@ public class GestioneCertificatoBO {
 									data.setMabba(mabbaList);
 									data.setDifferenzaMabba(differenzaMabba);
 								
-									data.setMabbaMc(Utility.changeDotComma(""+punto.getMabba_mc().setScale(scala + 1, RoundingMode.HALF_UP).stripTrailingZeros()));
+									data.setMabbaMc(Utility.changeDotComma(""+punto.getMabba_mc().setScale(scala + 1, RoundingMode.HALF_UP).toPlainString()));
 									data.setMabbaComparatore(punto.getMabba_comparatore());
 									if(punto.getValoreMedioCampione()!=null) {
 										data.setValoreMedioCampione(Utility.changeDotComma(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));	

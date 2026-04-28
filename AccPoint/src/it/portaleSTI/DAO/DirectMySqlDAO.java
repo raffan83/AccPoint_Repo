@@ -333,11 +333,6 @@ public class DirectMySqlDAO {
 
 	public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, String nomeCliente, Connection conSQLite,String indirizzoSede,UtenteDTO utente, Session session) throws Exception {
 
-
-		//Session session = SessionFacotryDAO.get().openSession();
-
-		//session.beginTransaction();
-
 		PreparedStatement pstINS=null;
 
 		String sqlInsert="";
@@ -401,7 +396,7 @@ public class DirectMySqlDAO {
 				{
 					luogo="";
 				}
-
+/*
 				sqlInsert="INSERT INTO tblStrumenti VALUES(\""+id+"\",\""+indirizzoSede+"\",\""+
 						Utility.getVarchar(strumento.getDenominazione())+"\",\""+
 						Utility.getVarchar(strumento.getCodice_interno())+"\",\""+
@@ -421,10 +416,41 @@ public class DirectMySqlDAO {
 						Utility.getVarchar(strumento.getNote())+"\",\"N\",\"N\"," +
 						"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\",\"\",\"N\",\"" +
 						luogo+"\",\""+Utility.getVarchar(strumento.getNote_tecniche())+"\","+strumento.getIp()+");";
-
+*/
+				sqlInsert="INSERT INTO tblStrumenti VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 				pstINS=conSQLite.prepareStatement(sqlInsert);
-
+				
+				pstINS.setInt(1, id);
+				pstINS.setString(2, indirizzoSede);
+				pstINS.setString(3, Utility.getVarchar(strumento.getDenominazione()));
+				pstINS.setString(4, Utility.getVarchar(strumento.getCodice_interno()));
+				pstINS.setString(5, Utility.getVarchar(strumento.getCostruttore()));
+				pstINS.setString(6, Utility.getVarchar(strumento.getModello()));
+				pstINS.setInt(7, strumento.getClassificazione().getId());
+				pstINS.setString(8, Utility.getVarchar(strumento.getMatricola()));
+				pstINS.setString(9, Utility.getVarchar(strumento.getRisoluzione()));
+				pstINS.setString(10,Utility.getVarchar(strumento.getCampo_misura()));
+				pstINS.setInt(11, strumento.getFrequenza());
+				pstINS.setInt(12, strumento.getTipoRapporto().getId());
+				pstINS.setInt(13, strumento.getStato_strumento().getId());
+				pstINS.setString(14,Utility.getVarchar(strumento.getReparto()));
+				pstINS.setString(15, Utility.getVarchar(strumento.getUtilizzatore()));
+				pstINS.setString(16, Utility.getVarchar(strumento.getProcedura()));
+				pstINS.setInt(17, tipoStrumento);
+				pstINS.setString(18, Utility.getVarchar(strumento.getNote()));
+				pstINS.setString(19, "N");
+				pstINS.setString(20, "N");
+				pstINS.setString(21, dataUltimaVerifica);
+				pstINS.setString(22, dataProssimaVerifica);
+				pstINS.setString(23, "");
+				pstINS.setString(24, "N");
+				pstINS.setString(25, luogo);
+				pstINS.setString(26, Utility.getVarchar(strumento.getNote_tecniche()));
+				pstINS.setInt(27, strumento.getIp());
+				
+				
+				
 				if(strumento.getStato_strumento().getId()!=7227) 
 				{
 					pstINS.execute();
@@ -434,7 +460,7 @@ public class DirectMySqlDAO {
 
 				if(idMisura!=null && idMisura!=0)
 				{
-					System.out.println(idMisura);
+					
 					MisuraDTO misura =GestioneMisuraDAO.getMiruraByID(idMisura, session);
 
 
@@ -527,17 +553,14 @@ public class DirectMySqlDAO {
 
 				i++;
 			}
-			System.out.println("INSERT "+i+" STR");
+			
 			conSQLite.commit();
 
-			//session.close();
+			
 		}
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			//session.getTransaction().rollback();
-			
-			//session.close();
 			throw ex;
 		}
 
@@ -586,8 +609,6 @@ public class DirectMySqlDAO {
 			pst.setInt(1,cmp.getId());
 
 			rs=pst.executeQuery();
-
-			int i=1;
 
 			while(rs.next())
 			{
@@ -642,7 +663,7 @@ public class DirectMySqlDAO {
 				{
 					incertezzaRelativa=BigDecimal.ZERO;
 				}
-
+/*
 				String sqlInsert="INSERT INTO tblCampioni VALUES("+rs.getInt("__id")+",\""+
 						Utility.getVarchar(rs.getString("campione.codice"))+"\",\""+
 						Utility.getVarchar( rs.getString("campione.matricola"))+"\",\""+
@@ -662,13 +683,35 @@ public class DirectMySqlDAO {
 						rs.getInt("valore_campione.id__tipo_grandezza_")+"\',\'"+
 						rs.getInt("valore_campione.interpolato")+"\',\""+
 						Utility.getVarchar(rs.getString("tipoGrandezza"))+"\",\"N\")";
-
+*/
+				
+				String	sqlInsert="INSERT INTO tblCampioni VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				
 				pstINS=conSQLLite.prepareStatement(sqlInsert);
+				
+				pstINS.setInt(1, rs.getInt("__id"));
+				pstINS.setString(2,Utility.getVarchar(rs.getString("campione.codice")));
+				pstINS.setString(3,Utility.getVarchar( rs.getString("campione.matricola")));
+				pstINS.setString(4,Utility.getVarchar(rs.getString("campione.modello")));
+				pstINS.setString(5,Utility.getVarchar(rs.getString("campione.numero_certificato")));
+				pstINS.setString(6,Utility.getStringDateFromDate(rs.getDate("campione.data_verifica"),"yyyy-MM-dd"));
+				pstINS.setString(7,Utility.getStringDateFromDate(rs.getDate("campione.data_scadenza"),"yyyy-MM-dd"));
+				pstINS.setInt(8,rs.getInt("campione.freq_taratura_mesi"));
+				pstINS.setString(9,Utility.getVarchar(rs.getString("valore_campione.parametri_taratura")));
+				pstINS.setString(10,Utility.getVarchar(rs.getString("UM")));
+				pstINS.setString(11,Utility.getVarchar(rs.getString("UM_FOND")));
+				pstINS.setBigDecimal(12,valoreTaratura);
+				pstINS.setBigDecimal(13,valoreNominale);
+				pstINS.setBigDecimal(14,divisione);
+				pstINS.setBigDecimal(15,incertezzaAssoluta);
+				pstINS.setBigDecimal(16,incertezzaRelativa);
+				pstINS.setInt(17,rs.getInt("valore_campione.id__tipo_grandezza_"));
+				pstINS.setInt(18,rs.getInt("valore_campione.interpolato"));
+				pstINS.setString(19,Utility.getVarchar(rs.getString("tipoGrandezza")));
+				pstINS.setString(20,"N");
 
 				pstINS.execute();	
-				i++;
 			}
-			System.out.println("INSERT "+i+" CMP");
 			conSQLLite.commit();
 		}
 		catch(Exception ex)
@@ -879,11 +922,6 @@ public class DirectMySqlDAO {
 	private static BigDecimal getScostamentoPrecedente(ValoreCampioneDTO val, ArrayList<ValoreCampioneDTO> listaValori) {
 
 		BigDecimal scostamentoPrecedente=BigDecimal.ZERO;
-		
-		if(val.getCampione().getCodice().equals("CDT054")) 
-		{
-			System.out.println("stop");
-		}
 		
 		if(val.getObsoleto().equals("N") ) 
 		{

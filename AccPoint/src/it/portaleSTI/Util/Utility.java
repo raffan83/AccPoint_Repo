@@ -2282,4 +2282,18 @@ public class Utility extends HttpServlet {
 				String val = (list != null && !list.isEmpty()) ? list.get(0) : null;
 				return val;
 			}
+
+			public static String getStringDateFromDate(java.sql.Date date, String pattern) {
+				
+				if(date==null) 
+				{
+					return "";
+				}
+				
+				SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+				
+				return sdf.format(date);
+				
+				
+			}
 }

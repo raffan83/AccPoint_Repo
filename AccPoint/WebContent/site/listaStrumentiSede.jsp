@@ -535,7 +535,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        <div class="col-xs-6">
        <select id="cliente" name="cliente" class="form-control select2"  data-placeholder="Seleziona Cliente..." aria-hidden="true" data-live-search="true" style="width:100%">
        <option value=""></option>
-      	<c:forEach items="${listaClienti}" var="cl">
+      	<c:forEach items="${listaClientiStr}" var="cl">
       	<option value="${cl.__id }">${cl.nome }</option>
       	</c:forEach>
       

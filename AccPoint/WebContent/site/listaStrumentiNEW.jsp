@@ -162,9 +162,9 @@
     	                  <select name="cliente_appoggio" id="cliente_appoggio"  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
 							<c:if test="${userObj.idCliente != 0}">
                   
-                      <c:forEach items="${listaClientiStrumenti}" var="cliente">
+                      <c:forEach items="${listaClientiStr}" var="cliente">
                        <c:if test="${userObj.idCliente == cliente.__id}">
-                           <option value="${cliente.idEncrypted}">${cliente.nome}</option> 
+                           <option value="${utl:encryptData(cliente.__id)}">${cliente.nome}</option> 
                         </c:if>
                      </c:forEach>
                   
@@ -173,8 +173,8 @@
                  
                   <c:if test="${userObj.idCliente == 0}">
                   <option value=""></option>
-                      <c:forEach items="${listaClientiStrumenti}" var="cliente">
-                           <option value="${cliente.idEncrypted}">${cliente.nome} </option> 
+                      <c:forEach items="${listaClientiStr}" var="cliente">
+                           <option value="${utl:encryptData(cliente.__id)}">${cliente.nome} </option> 
                      </c:forEach>
                   
                   

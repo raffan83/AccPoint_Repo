@@ -67,7 +67,7 @@ public class ListaStrumentiNew extends HttpServlet {
 	
 				String idCompany=""+cmp.getId();
 				
-				List<ClienteDTO> listaClientiCS = (List<ClienteDTO>)request.getSession().getAttribute("listaClientiStrumenti");
+				List<ClienteDTO> listaClientiCS = (List<ClienteDTO>)request.getSession().getAttribute("listaClientiStr");
 				List<ClienteDTO> listaClientiFull = (List<ClienteDTO>)request.getSession().getAttribute("listaClientiFull");
 
 				 HashMap<Integer,String> encrypt = ServiceBO.getHashEncrypt();
@@ -79,7 +79,7 @@ public class ListaStrumentiNew extends HttpServlet {
 				
 
 				request.getSession().setAttribute("listaClientiFull",listaClientiFull);
-				request.getSession().setAttribute("listaClientiStrumenti",listaClientiCS);
+				request.getSession().setAttribute("listaClientiStr",listaClientiCS);
 				
 				
 				

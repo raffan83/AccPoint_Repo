@@ -70,6 +70,7 @@ public class GestioneInvioReportVittoria implements Job{
 			session.beginTransaction();
 			ArrayList<ForConfInvioEmailDTO> lista_conf = GestioneFormazioneBO.getListaConfigurazioniInvioEmailData(null,session);
 			HashMap<String, String> listaCorsi=new HashMap<>();
+			HashMap<Integer	, Integer> listaCorsiPresenti=new HashMap<>();
 			
 			
 			File fileCorsi=new File(path+"/CorsiCalver.csv");
@@ -85,10 +86,11 @@ public class GestioneInvioReportVittoria implements Job{
 			for (ForConfInvioEmailDTO c : lista_conf) {
 				String value = c.getId_corso()+"|"+0+"|"+0+"|"+c.getDescrizione_corso();
 				
-				if(!listaCorsi.containsKey(value)) 
+				if(!listaCorsiPresenti.containsKey(c.getId_corso())) 
 				{
 					psCorsi.println(value);
 				}
+				listaCorsiPresenti.put(c.getId_corso(), c.getId_corso());
 				listaCorsi.put(value, value);
 				
 			//	if(c.getId_corso()==167 && c.getId_gruppo()==141) {
@@ -111,7 +113,7 @@ public class GestioneInvioReportVittoria implements Job{
 			psCorsi.close();
 			psPartecipanti.close();
 			
-		/*	
+			
 			JSch jsch = new JSch();
 			sessionSftp = jsch.getSession(user, host, port);
 			sessionSftp.setPassword(password);
@@ -133,7 +135,7 @@ public class GestioneInvioReportVittoria implements Job{
                 channelSftp.put(input, "PartecipantiCalver.csv");
             }
             
-*/
+
             System.out.println("File caricato con successo!");
             
 			

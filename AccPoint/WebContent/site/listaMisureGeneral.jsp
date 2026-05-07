@@ -192,7 +192,9 @@ NO
 </c:if>
 <%-- <a  target="_blank" class="btn btn-primary customTooltip" title="Click per scaricare il PDF dell'etichetta" onclick="openModalStampa(${utl:encryptData(misura.split(';;')[0])})" href="scaricaEtichetta.do?action=stampaEtichetta&idMisura=${utl:encryptData(misura.split(';;')[0])}" ><i class="fa fa-print"></i></a> --%>
 <a  class="btn btn-primary customTooltip" title="Click per scaricare il PDF dell'etichetta" onclick="openModalStampa('${utl:encryptData(misura.split(';;')[0])}')"  ><i class="fa fa-print"></i></a>
-<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=scaricaCertificatoById&idmisura=${utl:encryptData(misura.split(';;')[0])}" ><i class="fa fa-file-pdf-o"></i></a>
+<c:if test="${misura.split(';;')[19] == '2' }">
+	<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=scaricaCertificatoById&idmisura=${utl:encryptData(misura.split(';;')[0])}" ><i class="fa fa-file-pdf-o"></i></a>
+</c:if>
 </td>
 	</tr>
 	 

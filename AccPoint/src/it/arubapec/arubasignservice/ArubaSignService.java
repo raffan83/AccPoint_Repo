@@ -411,9 +411,9 @@ public static JsonObject signCertificatoPades(UtenteDTO utente,String keyWord, b
 			}
 		}
 		
-	  apparence.setImage(Costanti.PATH_FOLDER+"FileFirme\\"+utente.getFile_firma());
+	//  apparence.setImage(Costanti.PATH_FOLDER+"FileFirme\\"+utente.getFile_firma());
 	    
-	//	apparence.setImage("\\\\10.10.42.11\\Repository\\FileFirme\\"+utente.getFile_firma());
+		apparence.setImage(utente.getFile_firma());
 	  
 	    apparence.setLeftx(fontPosition[0] - 15 );        	
 	    apparence.setLefty(fontPosition[1] +10);

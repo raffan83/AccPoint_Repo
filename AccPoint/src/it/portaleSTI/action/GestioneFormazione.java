@@ -4019,7 +4019,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 							
 					    	ForPartecipanteDTO partecipante=partecipanteCorso.getPartecipante();
 					    	
-					    	if(partecipante.getEmail()==null) 
+					    	if(partecipante.getEmail()==null || partecipante.getEmail().equals("")) 
 					    	{
 					    		String email= listaEmailPartecipanti.get(partecipante.getCf());
 					    		

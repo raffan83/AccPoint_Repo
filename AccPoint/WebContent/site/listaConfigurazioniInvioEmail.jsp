@@ -69,6 +69,8 @@
 <th>ID</th>
 <th>Corso</th>
 <th>Gruppo</th>
+<th>ID Corso</th>
+<th>ID Gruppo</th>
 <th>Data inizio invio</th>
 <th>Frequenza (Giorni)</th>
 <th>Data prossimo invio</th>
@@ -86,6 +88,8 @@
 	<td>${configurazione.id }</td>	
 	<td>${configurazione.descrizione_corso }</td>
 	<td>${configurazione.descrizione_gruppo }</td>
+	<td>${configurazione.id_corso }</td>
+	<td>${configurazione.id_gruppo }</td>
 
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${configurazione.data_inizio_invio }"></fmt:formatDate></td>
 	<td>${configurazione.frequenza_invio}</td>	

@@ -7,6 +7,8 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <%@ page import="java.util.Calendar" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <%
 String[] nomiMesi = {
@@ -136,6 +138,7 @@ String[] nomiMesi = {
 <th>Utente </th>
 <th>Eseguita da </th>
 <th>Allegati</th>
+<th>Azioni</th>
  </tr></thead>
  
  
@@ -164,6 +167,23 @@ String[] nomiMesi = {
 	<td>${attivita.utente.nominativo }</td>
 	<td>${attivita.eseguito_da }</td>
 	<td><a class="btn btn-primary customTooltip" title="click per aprire gli allegati" onclick="modalAllegati('${attivita.id}')"><i class="fa fa-archive"></i></a></td>
+
+	    
+	<td>
+	<a class="btn btn-warning customTooltip btnModificaAttivita"
+	   title="click per Modificare"
+	   data-id="${attivita.id}"
+	   data-tipo="${attivita.tipo}"
+	   data-data-attivita="<fmt:formatDate pattern='dd/MM/yyyy' value='${attivita.dataAttivita}' />"
+	   data-frequenza="${attivita.frequenza}"
+	   data-data-prossima-attivita="<fmt:formatDate pattern='dd/MM/yyyy' value='${attivita.dataProssimaAttivita}' />"
+	   data-esito="${attivita.esito}"
+	   data-descrizione="${attivita.attivita.id}"
+	   data-note="${fn:escapeXml(attivita.note)}"
+	   data-eseguito-da="${fn:escapeXml(attivita.eseguito_da)}">
+		<i class="fa fa-edit"></i>
+	</a>
+</td>
 	</tr>
 	</c:forEach>
 	 
@@ -251,6 +271,136 @@ String[] nomiMesi = {
 
 </div>
 </form>
+
+<form id="modificaAttivitaForm">
+
+  <div id="modalModificaAttivita" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Attivita</h4>
+      </div>
+       <div class="modal-body">
+       
+        <div class="row">
+    
+
+        <label  class="col-sm-3 control-label">Tipo Attività:</label>
+         <div class="col-sm-9">
+       <select name="tipo_attivita_mod" id="tipo_attivita_mod" data-placeholder="Seleziona Attività..."   class="form-control select2 classic_select" aria-hidden="true" data-live-search="true" style="width:100%">
+               
+                    	<option value="0">ORDINARIA</option>
+             			<option value="1">STRAORDINARIA</option>       
+
+       </select>
+   
+        </div>
+
+  </div><br>
+  
+   <div class="row">
+       	<div class="col-sm-3">
+       		<label>Data attività:</label>
+       	</div>
+       	<div class="col-sm-9">
+				<div class='input-group date datepicker' id='datepicker_data_attivita'>
+               <input type='text' class="form-control input-small" id="data_attivita_mod" name="data_attivita_mod" >
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       	</div>
+       </div>
+       <br>
+
+		<div class="row">
+       	<div class="col-sm-3">
+       		<label>Frequenza:</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input class="form-control" id="frequenza_mod" name="frequenza_mod" style="width:100%" type="number" step="1" min="0" required>  
+       	</div>
+       </div><br>
+       
+         <div class="row">
+       	<div class="col-sm-3">
+       		<label>Data prossima attività:</label>
+       	</div>
+       	<div class="col-sm-9">
+				<div class='input-group date datepicker' id='datepicker_data_prossima_attivita'>
+               <input type='text' class="form-control input-small" id="data_prossima_attivita_mod" name="data_prossima_attivita_mod" >
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       	</div>
+       </div>
+       <br>
+       
+            <div class="row">
+    
+
+        <label class="col-sm-3 control-label">Esito:</label>
+         <div class="col-sm-9">
+       <select name="esito_mod" id="esito_mod" data-placeholder="Seleziona Attività..."   class="form-control select2 classic_select" aria-hidden="true" data-live-search="true" style="width:100%">
+               
+                    	<option value="N">NEGATIVO</option>
+             			<option value="P">POSITIVO</option>       
+
+       </select>
+   
+        </div>
+
+  </div><br>
+       
+         <div class="row">
+       	<div class="col-sm-3">
+       		<label>Descrizione:</label>
+       	</div>
+       	<div class="col-sm-9">
+		<select class="form-control select2" data-placeholder="Seleziona Impianto..." id="descrizione_mod" name="descrizione_mod" style="width:100%" required>
+       			<c:forEach items="${lista_attivitaSC}" var="att" varStatus="loop">
+       				<option value="${att.id}">${att.descrizione } </option>
+       			</c:forEach>
+       		</select>      	
+       	</div>
+       </div><br>
+       
+         <div class="row">
+       	<div class="col-sm-3">
+       		<label>Note:</label>
+       	</div>
+       	<div class="col-sm-9">
+				<input class="form-control" id="note_mod" name="note_mod" style="width:100%" >
+       	</div>
+       </div><br>
+       
+       
+         
+       
+              <div class="row">
+       	<div class="col-sm-3">
+       		<label>Eseguito da:</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="eseguito_mod" name="eseguito_mod" style="width:100%" >
+       	</div>
+       </div><br>
+
+  
+  		 </div>
+      <div class="modal-footer">
+	<input type="hidden" id="id_attivita" name="id_attivita">
+        <button type="submit" class="btn btn-danger"  >Salva</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
 
   <div id="myModalArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
   
@@ -347,8 +497,85 @@ String[] nomiMesi = {
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <script type="text/javascript">
 
+function modificaAttivita(attivita) { 
 
+	
+	$('#id_attivita').val(attivita.id);
+	$('#tipo_attivita_mod').val(attivita.tipo).trigger('change');
+	$('#data_attivita_mod').val(attivita.dataAttivita);
+	$('#frequenza_mod').val(attivita.frequenza);
+	$('#data_prossima_attivita_mod').val(attivita.dataProssimaAttivita);
 
+	$('#esito_mod').val(attivita.esito).trigger('change');
+	$('#descrizione_mod').val(attivita.descrizione).trigger('change');
+	$('#note_mod').val(attivita.note);
+	$('#eseguito_mod').val(attivita.eseguito_da);
+
+	$('#modalModificaAttivita').modal('show');
+}
+
+$('#modificaAttivitaForm').on("submit", function(e){
+
+	e.preventDefault();
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  
+		  var form = $('#modificaAttivitaForm')[0]; 
+		  var formData = new FormData(form);
+		 
+		  var attivita = $('#id_attivita').val();
+	
+  $.ajax({
+	  type: "POST",
+	  url: "amScGestioneScadenzario.do?action=modifica_attivita&id_attivita="+attivita,
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  {
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocente").modal("hide");
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+   			$('#myModalError').on('hidden.bs.modal', function(){	         			
+ 				
+   				 location.reload()
+  			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nella modifica!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+  });
+	
+	 
+});
 
 function modalAllegati(id){
 	
@@ -492,6 +719,25 @@ var array_color = [];
 
 $(document).ready(function() {
  
+	$('.customTooltip').tooltip();
+	
+	
+	$(document).on('click', '.btnModificaAttivita', function(){
+
+		var attivita = {
+			id: $(this).attr('data-id'),
+			tipo: $(this).attr('data-tipo'),
+			dataAttivita: $(this).attr('data-data-attivita'),
+			frequenza: $(this).attr('data-frequenza'),
+			dataProssimaAttivita: $(this).attr('data-data-prossima-attivita'),
+			esito: $(this).attr('data-esito'),
+			descrizione: $(this).attr('data-descrizione'),
+			note: $(this).attr('data-note'),
+			eseguito_da: $(this).attr('data-eseguito-da')
+		};
+
+		modificaAttivita(attivita);
+	});
 	
 	var array_buttons = [];
 	
@@ -563,8 +809,8 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  
 		    	
-		    	  { responsivePriority: 2, targets: 7},
-		    	  { responsivePriority: 3, targets: 10 }
+		    	  { responsivePriority: 2, targets: 8},
+		    	  { responsivePriority: 3, targets: 11 }
 		    	  
 		    	  
 		    	  

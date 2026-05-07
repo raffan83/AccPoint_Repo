@@ -82,8 +82,8 @@
  		<c:set var="name" value="${fn:substringAfter(sedi.key, 's_')}"/>
  		<%-- <td>id Sede: ${name}</td> --%>
 	 
-		<td id="${sedi.key}_${ listaSediStrumenti[name]}"> 
-        <c:out value="${listaSediStrumenti[name]}"/>
+		<td id="${sedi.key}_${ listaSediStrumentiRD[name]}"> 
+        <c:out value="${listaSediStrumentiRD[name]}"/>
         
         	</td>
 		<%-- <td class="centered"><button class="btn btn-success" onClick="listaStrumentiSede(${name})">${fn:length(sedi.value)}</button></td> --%>
@@ -98,7 +98,7 @@
  		<%-- <td>id Cliente: ${name}</td> --%>
 	 
 		<td > 
-        <c:out value="${listaClientiStrumenti[name]}"/>
+        <c:out value="${listaClientiStrumentiRD[name]}"/>
         
         	</td>
 		<%-- <td class="centered"><button class="btn btn-success" onClick="listaStrumentiCliente(${name})">${fn:length(sedi.value)}</button></td> --%>

@@ -109,8 +109,8 @@ public class ListaSediStrumentiInScadenza extends HttpServlet {
 				request.getSession().setAttribute("listaStrumentiPerSede", listaStrumentiPerSede);
 				
 				String sede = listaSediStrumenti.get("1");
-				request.getSession().setAttribute("listaSediStrumenti", listaSediStrumenti);
-				request.getSession().setAttribute("listaClientiStrumenti", listaClientiStrumenti);
+				request.getSession().setAttribute("listaSediStrumentiRD", listaSediStrumenti);
+				request.getSession().setAttribute("listaClientiStrumentiRD", listaClientiStrumenti);
 
 
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSediStrumentiInScadenza.jsp");

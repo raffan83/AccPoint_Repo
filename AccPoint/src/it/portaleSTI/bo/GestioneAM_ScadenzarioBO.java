@@ -23,6 +23,11 @@ public class GestioneAM_ScadenzarioBO {
 		
 		return GestioneAM_ScadenzarioDAO.getListaAttrezzature( id_cliente,  id_sede,session);
 	}
+	
+	public static AmScScadenzarioDTO getScadenzaById(int id, Session session) {
+		
+		return GestioneAM_ScadenzarioDAO.getScadenzaByID(id,session);
+	}
 
 	public static ArrayList<AmScScadenzarioDTO> getListaScadenze(int id_cliente, int id_sede, int anno, Session session) {
 		// TODO Auto-generated method stub

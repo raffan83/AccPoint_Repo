@@ -25,17 +25,11 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
-
 import com.google.gson.JsonObject;
-
 import it.portaleSTI.DAO.DirectMySqlDAO;
-import it.portaleSTI.DAO.GestioneMisuraDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.ForCorsoCatDTO;
-import it.portaleSTI.DTO.ForCorsoDTO;
-import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -43,7 +37,6 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateReportAccredia;
 import it.portaleSTI.bo.GestioneCertificatoBO;
-import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 
 /**
@@ -119,6 +112,9 @@ public class GestioneMisura extends HttpServlet {
 				
 				df = new SimpleDateFormat("dd/MM/yyyy");	
 				request.getSession().setAttribute("lista_misure", lista_misure);
+				
+			
+				
 				request.getSession().setAttribute("date_to", df.format(end));
 				request.getSession().setAttribute("date_from", df.format(start));
 				

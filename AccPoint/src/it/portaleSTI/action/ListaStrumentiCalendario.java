@@ -115,8 +115,8 @@ public class ListaStrumentiCalendario extends HttpServlet {
 				HashMap<String, String> listaClientiStrumenti = GestioneAnagraficaRemotaBO.getListaNominativiClienti();
 				
 
-		        request.getSession().setAttribute("listaSediStrumenti", listaSediStrumenti);
-				request.getSession().setAttribute("listaClientiStrumenti", listaClientiStrumenti);
+		        request.getSession().setAttribute("listaSediStrumentiRD", listaSediStrumenti);
+				request.getSession().setAttribute("listaClientiStrumentiRD", listaClientiStrumenti);
 		        
 		        
 		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -160,13 +160,13 @@ public class ListaStrumentiCalendario extends HttpServlet {
 				if(idSede != null && !idSede.equals("")) {
 					listaStrumenti =GestioneStrumentoBO.getListaStrumentiFromDate(utente, dateFrom, dateTo, 0); 
 					
-					HashMap<String, String> listaSediStrumenti = (HashMap<String, String>) request.getSession().getAttribute("listaSediStrumenti");
+					HashMap<String, String> listaSediStrumenti = (HashMap<String, String>) request.getSession().getAttribute("listaSediStrumentiRD");
 					request.getSession().setAttribute("descrizioneClienteStrumenti", listaSediStrumenti.get(idSede));
 				}
 				else if(idCliente != null && !idCliente.equals("")) {
 					listaStrumenti =GestioneStrumentoBO.getListaStrumentiFromDate(utente, dateFrom, dateTo,0); 
 					
-					HashMap<String, String> listaClientiStrumenti = (HashMap<String, String>) request.getSession().getAttribute("listaClientiStrumenti");
+					HashMap<String, String> listaClientiStrumenti = (HashMap<String, String>) request.getSession().getAttribute("listaClientiStrumentiRD");
 					request.getSession().setAttribute("descrizioneClienteStrumenti", listaClientiStrumenti.get(idCliente));
 
 				}

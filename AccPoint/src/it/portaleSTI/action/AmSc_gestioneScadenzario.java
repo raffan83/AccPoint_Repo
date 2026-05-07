@@ -46,6 +46,7 @@ import it.portaleSTI.DTO.AmScAttrezzaturaDTO;
 import it.portaleSTI.DTO.AmScScadenzarioDTO;
 import it.portaleSTI.DTO.AmScTipoAttrezzaturaDTO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.OffOffertaFotoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -215,6 +216,90 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
     							
     				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_sc_scadenzario.jsp");
     		     	dispatcher.forward(request,response);
+    			}
+    			else if(action.equals("modifica_attivita")) {
+    				
+    				ajax = true;
+    				
+    				response.setContentType("application/json");
+    				 
+    			  	List<FileItem> items = null;
+    		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+    		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+    		        	}
+    		        
+    		       
+    				FileItem fileItem = null;
+    				String filename= null;
+    		        Hashtable<String,String> ret = new Hashtable<String,String>();
+    		      
+    		        for (FileItem item : items) {
+    	            	 if (!item.isFormField()) {
+    	            		
+    	                     fileItem = item;
+    	                     filename = item.getName();
+    	                     
+    	            	 }else
+    	            	 {
+    	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+    	            	 }
+    	            	
+    	            }
+    		
+    		        String id_attivita = request.getParameter("id_attivita");
+    		       
+    				String tipo = ret.get("tipo_attivita_mod");
+    				String data_attivita = ret.get("data_attivita_mod");
+    				String frequenza = ret.get("frequenza_mod");
+    				String data_prossima_verifica = ret.get("data_prossima_attivita_mod");
+    				
+    				String esito = ret.get("esito_mod");
+    				String descrizione = ret.get("descrizione_mod");
+    				String note = ret.get("note_mod");
+    				String eseguito_da = ret.get("eseguito_mod");
+
+    				DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN);
+    				
+    				AmScScadenzarioDTO scadenza=GestioneAM_ScadenzarioBO.getScadenzaById(Integer.parseInt(id_attivita), session);
+    				
+    				scadenza.setTipo(Integer.parseInt(tipo));
+    				
+    				if(Utility.isValidDate(data_attivita, "dd/MM/yyyy")) 
+    				{
+    					scadenza.setDataAttivita(format.parse(data_attivita));
+    				}
+    				
+    				if(Utility.isNumber(frequenza)) 
+    				{
+    					scadenza.setFrequenza(Integer.parseInt(frequenza));
+    				}
+    				
+    				if(Utility.isValidDate(data_prossima_verifica, "dd/MM/yyyy")) 
+    				{
+    					scadenza.setDataProssimaAttivita(format.parse(data_prossima_verifica));
+    				}
+    			
+    				scadenza.setEsito(esito);
+    				
+    				if(Utility.isNumber(descrizione)) 
+    				{
+    					AmScAttivitaDTO att = new AmScAttivitaDTO();
+    					att.setId(Integer.parseInt(descrizione));
+    					scadenza.setAttivita(att);
+    				}
+    				
+    				scadenza.setNote(note);
+    				
+    				scadenza.setEseguito_da(eseguito_da);
+    				
+    			    session.update(scadenza);
+    				
+    				myObj = new JsonObject();
+    				PrintWriter  out = response.getWriter();
+    				myObj.addProperty("success", true);
+    				myObj.addProperty("messaggio", "Attività modificata con successo!");
+    				out.print(myObj);
     			}
 
     			else if(action.equals("lista")) {
@@ -573,6 +658,7 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
 					
 					ArrayList<AmScScadenzarioDTO>lista_attivita = null;
 					ArrayList<AmScAttrezzaturaDTO> lista_attrezzatura = GestioneAM_ScadenzarioBO.getListaAttrezzature(id_cliente, id_sede, session);
+					ArrayList<AmScAttivitaDTO> lista_attivitaSC = GestioneAM_ScadenzarioBO.getListaAttivita(session);
 					
 					if(tipo_filtro.equals("data")) {
 						lista_attivita = GestioneAM_ScadenzarioBO.getListaAttivitaDate(dateFrom, dateTo,id_cliente,id_sede, session);
@@ -592,7 +678,8 @@ public class AmSc_gestioneScadenzario extends HttpServlet {
 					request.getSession().setAttribute("dateTo", dateTo); 
 					request.getSession().setAttribute("id_attrezzatura", id_attrezzatura); 
 					request.getSession().setAttribute("tipo_filtro", tipo_filtro); 
-					request.getSession().setAttribute("lista_attivita", lista_attivita);    
+					request.getSession().setAttribute("lista_attivita", lista_attivita);
+					request.getSession().setAttribute("lista_attivitaSC", lista_attivitaSC);
 					request.getSession().setAttribute("lista_attrezzatura", lista_attrezzatura); 
 					request.getSession().setAttribute("anno", anno);
     				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/am_sc_lista_attivita.jsp");

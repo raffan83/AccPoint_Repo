@@ -141,11 +141,11 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
 
                     	             <c:set var="idcliente">${strumento.id_cliente}</c:set>
                     	             
-                    	             <td><c:out value="${listaClientiStrumenti[idcliente]}" /></td>
+                    	             <td><c:out value="${listaClientiStrumentiRD[idcliente]}" /></td>
 
                     	             <c:set var="idSede">${strumento.id__sede_}_${strumento.id_cliente}</c:set>
                     	              
-                    	             <td><c:out value="${listaSediStrumenti[idSede]}" /> </td>
+                    	             <td><c:out value="${listaSediStrumentiRD[idSede]}" /> </td>
                     	             
 
              

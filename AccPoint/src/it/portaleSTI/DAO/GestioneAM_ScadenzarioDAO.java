@@ -79,6 +79,23 @@ public class GestioneAM_ScadenzarioDAO {
 		
 		return lista;
 	}
+	
+	public static AmScScadenzarioDTO getScadenzaByID(int id,Session session) {
+
+		ArrayList<AmScScadenzarioDTO> lista = null;
+		
+		String q = "from AmScScadenzarioDTO as a where a.id=:_id";		
+		
+		Query query = session.createQuery(q);
+		
+		query.setParameter("_id", id);
+		
+		
+		lista = (ArrayList<AmScScadenzarioDTO>) query.list();
+		
+		
+		return lista.get(0);
+	}
 
 	public static ArrayList<AmScScadenzarioDTO> getListaScadenzeAttrezzatura(int id_attrezzatura, int numeroMese,
 			int anno, boolean interoAnno, Session session) {

@@ -123,6 +123,26 @@ public class Utility extends HttpServlet {
 			return "";
 		}
 	}
+	
+	public static boolean isValidDate(String data, String pattern) {
+
+	    if(data == null || data.trim().isEmpty()) {
+	        return false;
+	    }
+
+	    try {
+
+	        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+	        sdf.setLenient(false);
+
+	        Date date = sdf.parse(data);
+
+	        return date != null;
+
+	    } catch (Exception e) {
+	        return false;
+	    }
+	}
 
 	public static  void copiaFile(String origine, String destinazione)throws Exception
 	{

@@ -39,6 +39,7 @@
   <mapping class="CertificatoCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CertificatoCampioneDTO.hbm.xml"/>
   <mapping class="RuoloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RuoloDTO.hbm.xml"/>
   <mapping class="PermessoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PermessoDTO.hbm.xml"/>
+ <mapping class="it.portaleSTI.DTO.SessioneDTO" resource="it/portaleSTI/hbm/SessioneDTO.hbm.xml"/>
  	
  	<mapping class="AccessorioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AccessorioDTO.hbm.xml"/>
     <mapping class="TipologiaAccessoriDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipologiaAccessoriDTO.hbm.xml"/>

@@ -1,14 +1,22 @@
 package it.portaleSTI.action;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -25,19 +33,42 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import atg.taglib.json.util.JSONObject;
 import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneMisuraDAO;
+import it.portaleSTI.DAO.GestioneSessioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.ForCorsoCatDTO;
+import it.portaleSTI.DTO.ForCorsoDTO;
+import it.portaleSTI.DTO.ForDocenteDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.MisuraWebDTO;
+import it.portaleSTI.DTO.SessioneDTO;
+import it.portaleSTI.DTO.StatoCertificatoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateReportAccredia;
+import it.portaleSTI.bo.CreateSchedaConsegnaMetrologia;
 import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneFormazioneBO;
+import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
+import it.portaleSTI.bo.GestioneSessioneBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneMisura
@@ -112,9 +143,6 @@ public class GestioneMisura extends HttpServlet {
 				
 				df = new SimpleDateFormat("dd/MM/yyyy");	
 				request.getSession().setAttribute("lista_misure", lista_misure);
-				
-			
-				
 				request.getSession().setAttribute("date_to", df.format(end));
 				request.getSession().setAttribute("date_from", df.format(start));
 				
@@ -300,31 +328,396 @@ public class GestioneMisura extends HttpServlet {
 				out.print(myObj);
 				
 				
-			}
-					
-		}catch(Exception e) {
+			}  else if(action.equals("checkInvioPacchettoCliente")){
+				 ajax = true;
+				
+				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
+				
+				String idIntervento= request.getParameter("idIntervento");
+				String email = request.getParameter("emailCliente");
+				
 			
-			session.getTransaction().rollback();
-        	session.close();
-			if(ajax) {
+				
+				
+
+				
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
+				CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+				
+				ArrayList<CertificatoDTO> listaCertificati = GestioneCertificatoBO.getListaCertificatoByIntervento(new StatoCertificatoDTO(2), intervento,cmp,utente,"N",""+intervento.getId_cliente(),""+intervento.getIdSede());
+				
+				
+				ArrayList<MisuraDTO> listaMisureInt = GestioneInterventoBO.getListaMirureNonObsoleteByIntervento(intervento.getId(),session);
+				ArrayList<StrumentoDTO> listaStrumenti = new ArrayList<StrumentoDTO>();
+			
+				
+				for (MisuraDTO misura : listaMisureInt) {
+					listaStrumenti.add(misura.getStrumento());
+				}
 				
 				PrintWriter out = response.getWriter();
-				e.printStackTrace();
-	        	
-	        	request.getSession().setAttribute("exception", e);
-	        	myObj = STIException.getException(e);
-	        	out.print(myObj);
-        	}else {
-   			    			
-    			e.printStackTrace();
-    			request.setAttribute("error",STIException.callException(e));
-    	  	     request.getSession().setAttribute("exception", e);
-    			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-    		     dispatcher.forward(request,response);	
-        	}
+				
+				if(listaStrumenti.size()!=listaCertificati.size()) {
+				
+				
+		        	myObj.addProperty("successo", false);
+		        	
+				}else {
+					myObj.addProperty("successo", true);
+				}
+				myObj.addProperty("success", true);
 			
+	
+				request.getSession().setAttribute("listaStrumentiInt", listaStrumenti);
+				request.getSession().setAttribute("userObj", utente);
+				session.getTransaction().commit();
+				session.close();
+				
+				out.print(myObj);
+				
+				
+				
+			}  else if (action.equals("inviaPacchettoCliente")) {
+			    ajax = true;
+			    response.setContentType("text/event-stream");
+			    response.setCharacterEncoding("UTF-8");
+			    response.setHeader("Cache-Control", "no-cache");
+			    response.setHeader("Connection", "keep-alive");
+			    PrintWriter out = response.getWriter();
+
+			    try {
+			        InterventoDTO intervento = (InterventoDTO) request.getSession().getAttribute("intervento");
+			        String email = request.getParameter("email");
+
+			        if (intervento == null) {
+			            out.write("data: {\"progress\":100, \"testo\":\"Sessione scaduta o intervento non trovato\", \"success\":false}\n\n");
+			            out.flush();
+			            return;
+			        }
+
+			        String notaConsegna = request.getParameter("notaConsegnaCliente");
+			        String corteseAttenzione = request.getParameter("corteseAttenzione");
+			        String stato = request.getParameter("gridRadios");
+
+			        ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumentiInt");
+			        if (listaStrumenti == null) {
+			            listaStrumenti = new ArrayList<>();
+			        }
+
+			        out.write("data: {\"progress\":15, \"testo\":\"Generazione scheda consegna...\"}\n\n");
+			        out.flush();
+			        new CreateSchedaConsegnaMetrologia(intervento, notaConsegna, Integer.parseInt(stato), corteseAttenzione, listaStrumenti, session, getServletContext());
+
+			        File schedaConsegna = new File(Costanti.PATH_FOLDER + "//" + intervento.getNomePack() + "//SchedaDiConsegna.pdf");
+
+			        out.write("data: {\"progress\":35, \"testo\":\"Recupero misure e certificati...\"}\n\n");
+			        out.flush();
+			        ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId(), session);
+
+			        ArrayList<CertificatoDTO> listaCertificati = new ArrayList<>();
+			        for (MisuraDTO mm : listaMisure) {
+			            CertificatoDTO cc = GestioneCertificatoBO.getCertificatoByIdMisura("" + mm.getId(), session);
+			            listaCertificati.add(cc);
+			        }
+
+			        Date today = new Date();
+			        Calendar cal = Calendar.getInstance();
+			        cal.setTime(today);
+			        cal.add(Calendar.DAY_OF_MONTH, 30);
+			        Date scadenza = cal.getTime();
+
+			        out.write("data: {\"progress\":55, \"testo\":\"Creazione sessione...\"}\n\n");
+			        out.flush();
+
+			        String sessionId = Utility.generateCredential(1);
+			        String username = Utility.generateCredential(2);
+			        String password = Utility.generateCredential(3);
+
+			        SessioneDTO sessione = new SessioneDTO();
+			        sessione.setSession_id(sessionId);
+			        sessione.setUsername(username);
+			        sessione.setPassword(password);
+			        sessione.setDataCreazione(today);
+			        sessione.setDataScadenza(scadenza);
+			        sessione.setNome_cliente(intervento.getNome_cliente());
+			        sessione.setId_cliente(intervento.getId_cliente());
+			        sessione.setNome_sede(intervento.getNome_sede());
+			        sessione.setId_sede(intervento.getIdSede());
+			        sessione.setId_intervento(intervento.getId());
+			        sessione.setUser(utente);
+			        sessione.setEmail_cliente(email);
+
+			        ArrayList<MisuraWebDTO> listaMisureWeb = new ArrayList<>();
+			        for (int i = 0; i < listaMisure.size(); i++) {
+			            MisuraDTO misura = listaMisure.get(i);
+			            MisuraWebDTO web = new MisuraWebDTO();
+			            web.setData_misura(misura.getDataMisura());
+			            web.setDenominazione_str(misura.getStrumento().getDenominazione());
+			            web.setMatricola(misura.getStrumento().getMatricola());
+			            web.setCodice_interno(misura.getStrumento().getCodice_interno());
+			            web.setCostruttore(misura.getStrumento().getCostruttore());
+			            web.setId_certificato(misura.getnCertificato());
+			            CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoByIdMisura("" + misura.getId(), session);
+			            web.setNome_certificato(certificato.getNomeCertificato());
+			            listaMisureWeb.add(web);
+			        }
+
+			        sessione.setLista_misure_inviate(new HashSet<>(listaMisure));
+
+			        out.write("data: {\"progress\":70, \"testo\":\"Salvataggio su DB di CALVER...\"}\n\n");
+			        out.flush();
+
+			        //  beginTransaction esplicito
+			        session.beginTransaction();
+			        GestioneSessioneDAO.saveSession(sessione, session);
+			        System.out.println("Salvataggio sessione su Calver effettuato");
+
+			        String pathFileCalver = Costanti.PATH_FOLDER + "\\" + intervento.getNomePack();
+
+			        out.write("data: {\"progress\":85, \"testo\":\"Invio file a DocumentalWeb...\"}\n\n");
+			        out.flush();
+
+			        boolean risp = inviaFile(listaMisureWeb, sessione, listaCertificati, pathFileCalver, schedaConsegna, session);
+			        System.out.println("Risposta DocumentalWEB: " + risp);
+
+			     // Integer.parseInt("ciao");
+			        
+			        if (risp) {
+			            out.write("data: {\"progress\":95, \"testo\":\"Invio email al cliente...\"}\n\n");
+			            out.flush();
+
+			            GestioneSessioneBO.sendEmailClienteDocumentalWeb(schedaConsegna, email, getServletContext(), sessione);
+			            System.out.println("Email inviata");
+
+			            session.getTransaction().commit();
+
+			            //  Unica risposta finale di successo
+			            out.write("data: {\"progress\":100, \"testo\":\"Completato!\", \"success\":true}\n\n");
+			            out.flush();
+
+			        } else {
+			            session.getTransaction().rollback();
+			            //  Unica risposta finale di errore
+			            out.write("data: {\"progress\":100, \"testo\":\"Errore durante l'invio a DocumentalWeb\", \"success\":false}\n\n");
+			            out.flush();
+			        }
+
+			    } catch (Exception e) {
+			        e.printStackTrace();
+			        logger.error(e);
+
+			        if (session != null && session.isOpen()
+			                && session.getTransaction() != null
+			                && session.getTransaction().isActive()) {
+			            session.getTransaction().rollback();
+			        }
+
+			        //  Risposta SSE di errore formattata correttamente
+			        JSONObject obj = new JSONObject();
+			        obj.put("progress", 100);
+			        obj.put("testo", "Errore durante l'invio: " + e.getMessage());
+			        obj.put("success", false);
+			        out.write("data: " + obj.toString() + "\n\n");
+			        out.flush();
+
+			    } finally {
+			        //  Chiusura sessione sempre garantita, nessuna scrittura sullo stream
+			        if (session != null && session.isOpen()) {
+			            session.close();
+			        }
+			    }
+			}
+				
+			
+			
+					
+		}catch(Exception e) {
+		    
+		    try {
+		        if (session != null && session.isOpen() && session.getTransaction().isActive()) {
+		            session.getTransaction().rollback();
+		        }
+		    } catch(Exception re) { re.printStackTrace(); }
+		    
+		    try {
+		        if (session != null && session.isOpen()) {
+		            session.close();
+		        }
+		    } catch(Exception ce) { ce.printStackTrace(); }
+
+		    if(ajax) {
+		        e.printStackTrace();
+		        request.getSession().setAttribute("exception", e);
+		        
+		        // controlla se stiamo usando SSE
+		        String contentType = response.getContentType();
+		        if (contentType != null && contentType.contains("text/event-stream")) {
+		            // manda errore in formato SSE
+		            PrintWriter out = response.getWriter();
+		            out.write("data: {\"progress\":100, \"testo\":\"Errore durante l'invio.\", \"success\":false}\n\n");
+		            out.flush();
+		        } else {
+		            // risposta JSON normale come prima
+		            PrintWriter out = response.getWriter();
+		            myObj = STIException.getException(e);
+		            out.print(myObj);
+		        }
+
+		    } else {
+		        e.printStackTrace();
+		        request.setAttribute("error", STIException.callException(e));
+		        request.getSession().setAttribute("exception", e);
+		        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		        dispatcher.forward(request, response);
+		    }
 		}
 		
 	}
+	
+	
+	
+	public static boolean inviaFile(ArrayList<MisuraWebDTO> listaMisure, SessioneDTO sessione, 
+	        ArrayList<CertificatoDTO> listaCertificati, String pathFileCalver, 
+	        File schedaConsegna, Session session) throws Exception {
+
+	    String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";
+	    String token = "TOKEN_SEGRETO_123456";
+	    String boundary = "----Boundary" + System.currentTimeMillis();
+
+	    List<File> listaCertificatifile = new ArrayList<>();
+	    for (int i = 0; i < listaCertificati.size(); i++) {
+	        File f = new File(pathFileCalver + "\\" + listaCertificati.get(i).getNomeCertificato());
+	        listaCertificatifile.add(f);
+	    }
+	    for (int i = 0; i < listaMisure.size(); i++) {
+	        String nome_certificato_sanato = sanitize(listaMisure.get(i).getId_certificato());
+	        listaMisure.get(i).setNome_certificato(nome_certificato_sanato);
+	    }
+
+	    HttpURLConnection conn = (HttpURLConnection) new URL(urlDestinazione).openConnection();
+	    conn.setDoOutput(true);
+	    conn.setRequestMethod("POST");
+	    conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+	    conn.setRequestProperty("Authorization", "Bearer " + token);
+
+	    Gson gson = new GsonBuilder()
+	            .setDateFormat("dd/MM/yyyy HH:mm")
+	            .create();
+
+	    System.out.println("id cliente (inviaFile): " + sessione.getId_cliente());
+	    String misureJson = gson.toJson(listaMisure);
+	    String sessioneJson = gson.toJson(sessione);
+
+	    //  Try-with-resources SOLO per l'invio
+	    try (OutputStream output = conn.getOutputStream();
+	         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, "UTF-8"), true)) {
+
+	        addFormField(writer, boundary, "misureJson", misureJson);
+	        addFormField(writer, boundary, "sessioneJson", sessioneJson);
+	        addFormField(writer, boundary, "interventoId", "" + sessione.getId_intervento());
+	        addFilePart(writer, output, boundary, "schedaConsegna", schedaConsegna);
+
+	        for (File f : listaCertificatifile) {
+	            addFilePart(writer, output, boundary, "files", f);
+	        }
+
+	        //  Boundary di chiusura scritto PRIMA di chiudere lo stream
+	        writer.append("--").append(boundary).append("--").append("\r\n");
+	        writer.flush();
+
+	    } catch (Exception e) {
+	       
+	        throw e;
+	    }
+
+	    //  Lettura risposta in try-with-resources separato, DOPO aver chiuso l'output
+	    int responseCode = conn.getResponseCode();
+	    System.out.println("Response Code: " + responseCode);
+
+	    try (BufferedReader reader = new BufferedReader(
+	            new InputStreamReader(conn.getInputStream(), "UTF-8"))) {
+	    	
+	        String line;
+	        StringBuilder response = new StringBuilder();
+	        while ((line = reader.readLine()) != null) {
+	            response.append(line);
+	        }
+	        System.out.println("Risposta App B: " + response.toString());
+	    }
+
+	    return responseCode == 200;
+	}
+
+	    private static void addFormField(PrintWriter writer, String boundary, String name, String value) {
+	        writer.append("--").append(boundary).append("\r\n");
+	        writer.append("Content-Disposition: form-data; name=\"").append(name).append("\"").append("\r\n");
+	        writer.append("Content-Type: text/plain; charset=UTF-8").append("\r\n");
+	        writer.append("\r\n");
+	        writer.append(value).append("\r\n");
+	        writer.flush();
+	    }
+	    
+	    private static void addFormSessione(PrintWriter writer, String boundary, String name, SessioneDTO sessione) {
+
+	        writer.append("--").append(boundary).append("\r\n");
+	        writer.append("Content-Disposition: form-data; name=\"").append(name).append("[sessionId]\"\r\n\r\n");
+	        writer.append(String.valueOf(sessione.getSession_id())).append("\r\n");
+
+	        writer.append("--").append(boundary).append("\r\n");
+	        writer.append("Content-Disposition: form-data; name=\"").append(name).append("[user]\"\r\n\r\n");
+	        writer.append(sessione.getUsername()).append("\r\n");
+
+	        writer.append("--").append(boundary).append("\r\n");
+	        writer.append("Content-Disposition: form-data; name=\"").append(name).append("[password]\"\r\n\r\n");
+	        writer.append(sessione.getPassword()).append("\r\n");
+
+	        writer.flush();
+	    }
+	    
+	    
+
+	    private static void addFilePart(PrintWriter writer, OutputStream output, String boundary,
+	                                    String fieldName, File file) throws IOException {
+
+	        writer.append("--").append(boundary).append("\r\n");
+	        writer.append("Content-Disposition: form-data; name=\"")
+	                .append(fieldName)
+	                .append("\"; filename=\"")
+	                .append(file.getName())
+	                .append("\"")
+	                .append("\r\n");
+
+	        writer.append("Content-Type: application/octet-stream").append("\r\n");
+	        writer.append("\r\n");
+	        writer.flush();
+
+	        try (FileInputStream input = new FileInputStream(file)) {
+	            byte[] buffer = new byte[8192];
+	            int bytesRead;
+
+	            while ((bytesRead = input.read(buffer)) != -1) {
+	                output.write(buffer, 0, bytesRead);
+	            }
+
+	            output.flush();
+	        }
+
+	        writer.append("\r\n");
+	        writer.flush();
+	    }
+	    
+	    public static String sanitize(String input) {
+	        if (input == null) {
+	            return "";
+	        }
+
+	        return input
+	                .trim()                          // rimuove spazi iniziali/finali
+	                .replaceAll("\\s+", " ")         // spazi multipli -> singolo spazio
+	                .replaceAll("[^\\p{L}\\p{N} .,_-]", ""); 
+	                // mantiene lettere, numeri, spazio, punto, virgola, underscore, trattino
+	    }
+	
 
 }

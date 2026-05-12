@@ -1,6 +1,7 @@
 package it.portaleSTI.DAO;
 
 
+
 import it.portaleSTI.DTO.UtenteDTO;
 
 import java.sql.Connection;
@@ -30,6 +31,31 @@ public static UtenteDTO getUtenteById(String id, Session session)throws Hibernat
 	return null;
 	
 }
+
+
+
+public static ArrayList<UtenteDTO> getUtenteByIdCliente(int idCliente)throws HibernateException, Exception {
+	
+	Session session=null;
+	UtenteDTO utente = null;
+	
+	session=SessionFacotryDAO.get().openSession();
+		
+	session.beginTransaction();
+	
+	Query query  = session.createQuery( "from UtenteDTO WHERE idCliente= :_idCliente");
+	
+	query.setParameter("_idCliente", idCliente);
+	List<UtenteDTO> result =query.list();
+
+	session.getTransaction().commit();
+	session.close();
+	
+	return (ArrayList<UtenteDTO>) result;
+	
+	
+}
+
 
 public static void save(Session session, UtenteDTO utente)throws Exception {
 	
@@ -121,7 +147,29 @@ public static ArrayList<UtenteDTO> getDipendenti(Session session) {
 	return lista;
 }
 
-
+public static UtenteDTO getUtenteByEmail(String email)throws HibernateException, Exception {
+	Session session=null;
+	UtenteDTO utente = null;
+	
+	session=SessionFacotryDAO.get().openSession();
+		
+	session.beginTransaction();
+	
+	Query query  = session.createQuery( "from UtenteDTO WHERE EMail= :_email");
+	
+	query.setParameter("_email", email);
+	List<UtenteDTO> result =query.list();
+	
+	if(result.size()>0)
+	{			
+		utente= result.get(0);
+	}
+	session.getTransaction().commit();
+	session.close();
+	
+	return utente;
+	
+}
 
 
 }

@@ -24,6 +24,7 @@ import com.google.gson.GsonBuilder;
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
@@ -33,16 +34,20 @@ import it.portaleSTI.DTO.PRInterventoRequisitoDTO;
 import it.portaleSTI.DTO.PRRequisitoDocumentaleDTO;
 import it.portaleSTI.DTO.PRRequisitoSanitarioDTO;
 import it.portaleSTI.DTO.PRRisorsaDTO;
+import it.portaleSTI.DTO.SessioneDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneRisorseBO;
+import it.portaleSTI.bo.GestioneSessioneBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneInterventoDati
@@ -84,9 +89,9 @@ public class GestioneInterventoDati extends HttpServlet {
 	
 		
 		InterventoDTO intervento=GestioneInterventoBO.getIntervento(idIntervento, session);
-		
 	
-		
+		SessioneDTO sessione =GestioneSessioneBO.getSessioneByIdIntervento(intervento.getId());
+		intervento.setSessioneInvio(sessione);
 		
 		HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
 		HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();
@@ -96,6 +101,8 @@ public class GestioneInterventoDati extends HttpServlet {
 		HashMap<String,Integer> utilizzatoreStrumenti = new HashMap<String,Integer>();
 		
 
+		
+		
 		ArrayList<StrumentoDTO> listaStrumentiPerIntervento =  GestioneStrumentoBO.getListaStrumentiIntervento(intervento, session);
 
 		
@@ -165,7 +172,28 @@ public class GestioneInterventoDati extends HttpServlet {
 			lista_lat_master = GestioneMisuraBO.getListaLatMaster();
 		}
 		
-		CommessaDTO comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());		
+		CommessaDTO comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+		
+		ClienteDTO cliente = new ClienteDTO() ;
+		if(comm!=null) {
+		cliente = GestioneAnagraficaRemotaBO.getClienteById(""+comm.getID_ANAGEN_UTIL());
+		}
+		
+		cliente.setEmail("edoardo.boccitto@ncsnetwork.it");
+		
+		//cliente.setEmail("raffaele.fantini@ncsnetwork.it");
+		
+		boolean isPresent = GestioneUtenteBO.getUtenteByIdCliente(intervento.getId_cliente());
+		request.getSession().setAttribute("isPresent", isPresent);
+		
+		
+		
+		//Controllo se il cliente ha email in users
+		//UtenteDTO clienteUsers = GestioneUtenteBO.getUtenteByEmail(cliente.getEmail());
+		//request.getSession().setAttribute("clienteUsers", clienteUsers);
+		
+		
+		
 		
 		request.getSession().setAttribute("commessa", comm);
 		
@@ -178,8 +206,9 @@ public class GestioneInterventoDati extends HttpServlet {
 		request.getSession().setAttribute("repartoStrumentiJson", gson.toJsonTree(repartoStrumenti).toString());
 		request.getSession().setAttribute("utilizzatoreStrumentiJson", gson.toJsonTree(utilizzatoreStrumenti).toString());
 		request.getSession().setAttribute("lista_lat_master", lista_lat_master);
+		request.getSession().setAttribute("cliente_invio_pacchetto", cliente);	
 		
-		
+		request.getSession().setAttribute("sessione", sessione);
 		request.getSession().setAttribute("intervento", intervento);
 		request.getSession().setAttribute("listaRequisitiJson", gson.toJsonTree(intervento.getListaRequisiti()));
 		
@@ -264,7 +293,7 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		
 		session.getTransaction().commit();
-		session.close();
+		//session.close();
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoDati.jsp");
      	dispatcher.forward(request,response);
      	
@@ -277,6 +306,10 @@ public class GestioneInterventoDati extends HttpServlet {
 	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 	   	     dispatcher.forward(request,response);	
 	   	  e.printStackTrace();
+		} finally {
+		    if (session != null) {
+		        session.close(); 
+		    }
 		}
      	
 	}

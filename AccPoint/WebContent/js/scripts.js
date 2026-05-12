@@ -4209,6 +4209,90 @@ function eliminaCompany(){
 	    });
 	}
   
+  
+  function inviaCertificatiMulti(selezionati) {
+
+	    var json = JSON.stringify(selezionati);
+
+	    pleaseWaitDiv.modal();
+
+	    $.ajax({
+	        type: "POST",
+	        url: "gestionMisura.do?action=inviaCertificatiMulti",
+	        data: {
+	            dataIn: json
+	        },
+	        dataType: "json",
+	        success: function(data) {
+
+	            pleaseWaitDiv.modal('hide');
+
+	            if (!data.success) {
+	                $("#myModalErrorContent").html("Errore durante la validazione dei certificati");
+	                $("#myModalError").modal();
+	                return;
+	            }
+
+	            var messaggio = "";
+	            var validi = data.validi || [];
+	            var nonValidi = data.nonValidi || [];
+
+	            if (nonValidi.length > 0) {
+	                messaggio += "I seguenti certificati non sono idonei al download (probabile assenza di punti sulla misura):<br><b>" 
+	                    + nonValidi.join(", ") + "</b><br><br>";
+	            }
+
+	            if (validi.length === 0) {
+	            	
+	                $("#myModalErrorContent").html(messaggio);
+	            	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+	                $("#myModalError").modal();
+	                return;
+	            }
+
+	            if (nonValidi.length > 0) {
+	                messaggio += "Verranno scaricati solo i certificati validi:<br><b>" 
+	                    + validi.join(", ") + "</b>";
+	                $('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-warning");
+    				 $("#myModalErrorContent").html(messaggio);
+   	            $("#myModalError").modal();
+	            } else {
+	                messaggio = "Tutti i certificati selezionati sono validi. Avvio download...";
+	                $('#myModalError').removeClass();
+	                $('#myModalError').addClass("modal modal-success-no-reload");
+	                $("#myModalErrorContent").html(messaggio);
+   	            $("#myModalError").modal();
+	            }
+
+	           
+
+	            var payloadDownload = {
+	                ids: validi
+	            };
+
+	            $('#dataInExport').val(JSON.stringify(payloadDownload));
+	            $('#certificatiMulti')
+	                .attr("action", "gestionMisura.do?action=inviaCertificatiMulti")
+	                .submit();
+	        },
+	        error: function() {
+	            pleaseWaitDiv.modal('hide');
+	            $("#myModalErrorContent").html("Errore durante la richiesta di validazione");
+	            $("#myModalError").modal();
+	        }
+	    });
+	}
+  
+  
+  
+  
+  
+  
+  
+  
+  
   function annullaCertificatiMulti(selezionati){
 
 	  $.ajax({
@@ -6052,6 +6136,10 @@ function eliminaCompany(){
 	  $("#myModalDownloadSchedaConsegna").modal();
   }
   
+  function inviaPacchettoClienteModal(){
+	  $("#myModalInvioPacchetoCliente").modal();
+  }
+  
   function stripHtml(html){
 	    // Create a new div element
 	    var temporalDivElement = document.createElement("div");
@@ -6178,7 +6266,24 @@ function eliminaCompany(){
 	  $("#myModalDownloadSchedaConsegna").modal('hide');
   }
   
+  
 
+  
+  function invioPacchettoCliente(intervento){
+	   let email = $("#emailCliente").val();
+	  
+	    let url = "gestioneMisura.do?action=inviaPacchettoCliente"
+	            + "&idIntervento=" + intervento
+	            + "&email=" +email;
+
+	    callAction(url, "#scaricaSchedaConsegnaClienteForm", true);
+
+	    $("#myModalInvioPacchetoCliente").modal('hide');
+	}
+  
+
+  
+  
   
   function scaricaListaCampioni(idIntervento){
 	  callAction("scaricaListaCampioni.do?idIntervento="+idIntervento,false,false);

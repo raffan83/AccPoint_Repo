@@ -26,6 +26,7 @@ public class InterventoDTO {
 	private Set<PRInterventoRequisitoDTO> listaRequisiti = new HashSet<PRInterventoRequisitoDTO>(0);
 	private Set<PRInterventoRisorsaDTO> listaRisorse = new HashSet<PRInterventoRisorsaDTO>(0);
 	//private Set<SchedaConsegnaDTO> schedaConsegnaDTO = new HashSet<SchedaConsegnaDTO>(0);
+	private SessioneDTO sessioneInvio;
 	
 	public Set<PRInterventoRisorsaDTO> getListaRisorse() {
 		return listaRisorse;
@@ -189,6 +190,17 @@ public class InterventoDTO {
 		this.listaRequisiti = listaRequisiti;
 	}
 
+
+	public SessioneDTO getSessioneInvio() {
+		return sessioneInvio;
+	}
+
+
+	public void setSessioneInvio(SessioneDTO sessioneInvio) {
+		this.sessioneInvio = sessioneInvio;
+	}
+
+	
 
 
 //	public Set<SchedaConsegnaDTO> getSchedaConsegnaDTO() {

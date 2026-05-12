@@ -44,6 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -2302,7 +2303,42 @@ public class Utility extends HttpServlet {
 				String val = (list != null && !list.isEmpty()) ? list.get(0) : null;
 				return val;
 			}
+			
+			
+			public static String generateCredential(int tipo) {
+				
+				String ALPHANUM  = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			   String LETTERS  = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+			   String ALPHANUM_SPECIAL = ALPHANUM + "!@#$%^&*()_+-=";
+				
+				
+			    long seed  = System.currentTimeMillis();
+			    Random rng = new Random(seed);
 
+			    String sessionId = buildString(rng, ALPHANUM,         12);
+			    String username  = buildString(rng, LETTERS,           8);
+			    String password  = buildString(rng, ALPHANUM_SPECIAL, 12);
+			    
+			    if(tipo==1) {
+			    	return sessionId.substring(0,4) + "-" + sessionId.substring(4,8) + "-" + sessionId.substring(8,12);
+			    
+			    } else if(tipo==2){
+			    	return username;
+			    } else if (tipo==3) {
+			    	return password;
+			    } else {
+			    	throw new IllegalArgumentException("Tipo non valido: " + tipo + " (usa 1, 2 o 3)");
+			    }
+			    
+			}
+			
+			public static String buildString(Random rng, String charset, int length) {
+		        StringBuilder sb = new StringBuilder(length);
+		        for (int i = 0; i < length; i++) {
+		            sb.append(charset.charAt(rng.nextInt(charset.length())));
+		        }
+		        return sb.toString();
+		    }
 			public static String getStringDateFromDate(java.sql.Date date, String pattern) {
 				
 				if(date==null) 

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import org.apache.commons.fileupload.FileItem;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -47,6 +48,13 @@ public class GestioneUtenteBO {
 		return GestioneUtenteDAO.getUtenteById(id_str, session);
 	}
 
+	
+	public static UtenteDTO getUtenteByEmail(String email) throws Exception {
+
+
+		return GestioneUtenteDAO.getUtenteByEmail(email);
+	}
+	
 
 	public static void save(UtenteDTO utente, Session session) throws Exception {
 		
@@ -82,6 +90,18 @@ public class GestioneUtenteBO {
 
 	public static UtenteDTO getUtenteByUsername(String to, Session session) {
 		return GestioneUtenteDAO.getUtenteByUsername(to, session);
+	}
+	
+	
+	public static boolean getUtenteByIdCliente(int id_cliente) throws HibernateException, Exception {
+		ArrayList<UtenteDTO> listaUtenti = GestioneUtenteDAO.getUtenteByIdCliente(id_cliente);
+		
+		if(listaUtenti.size()> 0) {
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 
 

@@ -62,7 +62,9 @@ import it.portaleSTI.DTO.ItServizioItDTO;
 import it.portaleSTI.DTO.RapportoInterventoDTO;
 import it.portaleSTI.DTO.RilInterventoDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
+import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.SessioneDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.Util.Costanti;
@@ -2454,6 +2456,106 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 		  email.setHtmlMsg("<html>"+messaggio+"</html>");
 		  
 		  email.send();
+}
+
+
+
+public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mailTo,ServletContext ctx,SessioneDTO sessione) throws EmailException {
+	
+	
+
+	  // Create the email message
+	  HtmlEmail email = new HtmlEmail();
+	  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+       email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+       email.getMailSession().getProperties().put("mail.debug", "true");
+       email.getMailSession().getProperties().put("mail.smtp.port", "465");
+       email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+       email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+       email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+       email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+
+
+      String[] destinatari = mailTo.split(";"); 
+  
+     for (String dest : destinatari) {
+      	email.addTo(dest);
+	    	}
+     
+     List<String> invalidEmails = new ArrayList<>();
+
+     for (String dest : destinatari) {
+         String destTrimmed = dest.trim();
+         if (isValidEmail(destTrimmed)) {
+             email.addTo(destTrimmed);
+         } else {
+             invalidEmails.add(destTrimmed);
+         }
+     }
+
+     if (!invalidEmails.isEmpty()) {
+         throw new EmailException("Indirizzi email non validi: " + String.join(", ", invalidEmails));
+     }
+
+     if (email.getToAddresses().isEmpty()) {
+         throw new EmailException("Nessun destinatario valido trovato.");
+     }
+	  
+	  
+	    email.setFrom("calver@accpoint.it", "Calver");
+	  email.setSubject("Scheda consegna documenti");
+	  
+	  // embed the image and get the content id
+
+	  File image = new File(ctx.getRealPath("images/logo_calver_v2.png"));
+	  String cid = email.embed(image, "Calver logo");
+	  
+	  String lista_doc ="";
+	  
+	  
+	  String tipo_consegna = "CONSEGNA TOTALE";
+	 
+	  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+	  String dataFormattata = sdf.format(sessione.getDataScadenza());
+	  String URL_DOCUMENTALWEB = "http://192.168.1.100:8082/DocumentalWEB";
+
+		  email.setHtmlMsg("<html>Si avvisa che i certificati sono pronti<br>"
+		  		+ " Queste sono le credenziali per entrare nel sito:" + URL_DOCUMENTALWEB
+		  		+ "<br> Username: "+ sessione.getUsername()
+				+ "<br> Password: " + sessione.getPassword() 
+			    + "<br> Scadenza: " + dataFormattata
+			    + "<br><br> in allegato la scheda di consegna<br>"
+		  
+				  +lista_doc
+			  	+"Tipo consegna: "+tipo_consegna
+			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
+			  		//+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.PATH_FOLDER_LOGHI +"\\sito_calver.png"+" \"></html>");
+
+
+		   //  Allegato
+		    EmailAttachment attachment = new EmailAttachment();
+		    attachment.setPath(schedaConsegna.getAbsolutePath());
+		    attachment.setDisposition(EmailAttachment.ATTACHMENT);
+		    attachment.setName(schedaConsegna.getName());
+
+		    email.attach(attachment);
+		  
+		  
+	  email.send();
+	
+}
+
+private static boolean isValidEmail(String email) {
+    if (email == null || email.trim().isEmpty()) {
+        return false;
+    }
+    // Pattern RFC 5322 semplificato
+    String emailRegex = "^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$";
+    return email.trim().matches(emailRegex);
 }
 
 

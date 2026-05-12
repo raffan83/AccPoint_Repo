@@ -3,9 +3,11 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
+
+
+
+
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
-
-
 
 
 <jsp:attribute name="body_area">
@@ -14,6 +16,29 @@
 	
   <t:main-header  />
   <t:main-sidebar />
+  
+  <style>
+  #loader-bar-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; z-index: 9999;
+    height: 4px;
+    background: rgba(0,0,0,0.05);
+    opacity: 0;
+  }
+  #loader-bar {
+    height: 4px; width: 0%;
+    background: #d63031;
+    transition: width 0.2s ease;
+    border-radius: 0 2px 2px 0;
+  }
+</style>
+  
+  
+  
+ <div id="loader-bar-container">
+    <div id="loader-bar"></div>
+  </div>
  
 
   <!-- Content Wrapper. Contains page content -->
@@ -496,17 +521,56 @@
 
  				   <li class="list-group-item">
  				   <h4>Download Schede</h4>
- 				<!-- <button class="btn btn-default " onClick="scaricaSchedaConsegnaModal()"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button> -->
- 				 <button class="btn btn-default " onClick="checkCertificati('${intervento.id}')"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
- 				<button class="btn btn-info customTooltip " title="Click per aprire le schede di consegna" onClick="showSchedeConsegna('${utl:encryptData(intervento.id)}')"><i class="fa fa-file-text-o"></i> Visualizza Scheda Consegna </button>
-   				</li>
- 				   <li class="list-group-item">
- 				<button class="btn btn-default " onClick="scaricaListaCampioni('${intervento.id}')"><i class="glyphicon glyphicon-download"></i> Download Lista Campioni</button>
- 				
+<li class="list-group-item">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
 
+        <div style="display: flex; gap: 8px;">
+            <button class="btn btn-default" style="width: 200px" onClick="checkCertificati('${intervento.id}')">
+                <i class="glyphicon glyphicon-download"></i> Download Scheda Consegna
+            </button>
+            <button class="btn btn-info customTooltip"  style="width: 200px" title="Click per aprire le schede di consegna" onClick="showSchedeConsegna('${utl:encryptData(intervento.id)}')">
+                <i class="fa fa-file-text-o"></i> Visualizza Scheda Consegna
+            </button>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+            <button class="btn btn-default"  style="width: 200px" onClick="scaricaListaCampioni('${intervento.id}')">
+                <i class="glyphicon glyphicon-download"></i> Download Lista Campioni
+            </button>
+            <c:if test="${intervento.statoIntervento.id == 2}">
+                <c:choose>
+                    <c:when test="${intervento.sessioneInvio == null}">
+                        <button class="btn btn-success"  style="width: 200px"
+                              onClick="checkInvioPacchettoCliente('${intervento.id}', '${cliente_invio_pacchetto.email}', ${isPresent})"
+                            <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
+                        </button>
+                    </c:when>
+                   <c:otherwise>
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <button class="btn btn-success" disabled title="Sessione non disponibile" style="width: 200px">
+            <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
+        </button>
+       <b>Sessione ID:</b> ${sessione.session_id}
+
+       <span style="margin-left: 30px;">
+          <b>Scaricata il giorno:</b> ${sessione.dataCreazione}
+         </span>
+
+         <span style="margin-left: 30px;">
+              <b>da Operatore:</b> ${userObj.nominativo}
+         </span>
+    </div>
+</c:otherwise>
+                </c:choose>
+            </c:if>
+        </div>
+
+    </div>
+</li>
+ 				
        </li>
        				
- 				 
+ 
        
            
        
@@ -692,6 +756,30 @@
       </div>
     </div>
   </div>
+</div>
+
+
+
+<div class="modal fade" id="modalClienteEsistente" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cliente già esistente</h4>
+            </div>
+            <div class="modal-body">
+                <p>Questo cliente esiste già in Calver. Vuoi continuare con l'invio del pacchetto?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="btnConfermaInvio">
+                    <i class="glyphicon glyphicon-ok"></i> Sì
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <i class="glyphicon glyphicon-remove"></i> No
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -1480,6 +1568,136 @@
     </div>
 
 </div>
+  
+  
+   <div id="myModalInvioPacchetoCliente" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+   
+   <div id="myModalConfirm" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Conferma</h4>
+      </div>
+      <div class="modal-body">
+        <p id="myModalConfirmContent"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button type="button" id="btnConfirmYes" class="btn btn-primary">Sì</button>
+      </div>
+    </div>
+  </div>
+</div>
+   
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Scheda Consegna Cliente</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="myModalDownloadSchedaConsegnaContent">
+ <form name="scaricaSchedaConsegnaClienteForm" method="post" id="scaricaSchedaConsegnaClienteForm" action="#">
+        <div class="form-group">
+		  <label for="notaConsegna">Consegna di:</label>
+		  <textarea class="form-control" rows="5" name="notaConsegnaCliente" id="notaConsegnaCliente">${defaultNotaConsegna}</textarea>
+		</div>
+		
+		<div class="form-group">
+		  <label for="notaConsegnaCliente">Cortese Attenzione di:</label>
+		  <input class="form-control" id="corteseAttenzione" name="corteseAttenzione" />
+		</div>
+		
+		
+	<div class="form-group">
+    <label>Email Cliente:</label><br>
+    <label><small>Separare più email con ;</small></label>
+
+    <textarea class="form-control"
+              id="emailCliente"
+              name="emailCliente"
+              rows="3">${cliente_invio_pacchetto.email}</textarea>
+</div>
+
+		
+		
+      <fieldset class="form-group">
+		  <label for="gridRadios">Stato Intervento:</label>
+         <div class="form-check">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="0" checked="checked">
+            CONSEGNA DEFINITIVA
+           </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="1">
+            STATO AVANZAMENTO
+          </label>
+       
+
+      </div>
+    </fieldset>	   
+    
+    
+    
+      
+</form>   
+  		 </div>
+      
+    </div>
+     <div class="modal-footer">
+
+     <button class="btn btn-default pull-left" 
+    onclick="if(validaEmailClienti()) avviaEInvia('${intervento.id}')">
+    <i class="glyphicon glyphicon-download"></i> Invio Pacchetto Cliente
+</button>
+   
+    	
+    </div>
+  </div>
+    </div>
+
+</div>
+  
+  <div id="modalCaricamento" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Invio in corso...</h4>
+      </div>
+      <div class="modal-body" style="text-align:center; padding: 50px 40px;">
+        <p id="testoCaricamento" style="margin-bottom: 30px; color: #555; font-size: 16px;">Preparazione pacchetto cliente...</p>
+        <div style="background:#e0e0e0; border-radius:10px; height:28px; width:80%; margin: 0 auto;">
+          <div id="barraInterna" style="height:28px; width:0%; background:#27ae60; border-radius:10px; transition: width 0.2s ease;"></div>
+        </div>
+        <p id="percentualeCaricamento" style="margin-top:16px; font-weight:500; font-size:18px; color:#27ae60;">0%</p>
+       
+      <button id="btnOkCaricamento" 
+        onclick="chiudiModaleCaricamento()" 
+        class="btn" 
+        style="display:none; margin: 20px auto 0; padding: 8px 40px; font-size:16px;">
+  OK
+</button>
+<button id="btnInviaReport"
+        class="btn btn-primary"
+        style="display:none;"
+        title="Click per inviare il report dell'errore"
+        onClick="sendReport()">
+    Invia Report
+</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  
+  
+  
+  
+  
+  
   
 
      <div id="errorMsg"><!-- Place at bottom of page --></div> 
@@ -2357,6 +2575,38 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 		 });
 		 
 	 }
+	 
+	 function checkInvioPacchettoCliente(id_intervento, email, isPresent) {
+		    let dataObj = {};
+		    dataObj.idIntervento = id_intervento;
+		    dataObj.emailCliente = email;
+
+		    function esegui() {
+		        callAjax(dataObj, "gestioneMisura.do?action=checkInvioPacchettoCliente", function(datab, textstatus) {
+		            if (datab.successo) {
+		                inviaPacchettoClienteModal();
+		            } else {
+		                $('#myModalErrorContent').html("Attenzione! Uno o più certificati non sono stati approvati!");
+		                $('#myModalError').removeClass();
+		                $('#myModalError').addClass("modal modal-danger");
+		                $('#myModalError').modal('show');
+		            }
+		        });
+		    }
+
+		    if (isPresent) {
+		        $('#modalClienteEsistente').modal('show');
+		        $('#btnConfermaInvio').off('click').on('click', function() {
+		            $('#modalClienteEsistente').modal('hide');
+		            esegui();
+		        });
+		        return;
+		    }
+
+		    esegui();
+		}
+	 
+	 
 	 
     $(document).ready(function() {
     	
@@ -4083,6 +4333,168 @@ function mostraRequisiti(id_risorsa){
 	$("#content_requisiti_san").html(str_san);
 	
 	$('#modalRequisiti').modal()
+}
+
+
+var _loaderInterval = null;
+var _loaderProgress = 0;
+
+function avviaModaleCaricamento() {
+	  _loaderProgress = 0;
+	  var barra = document.getElementById('barraInterna');
+	  var perc  = document.getElementById('percentualeCaricamento');
+	  var testo = document.getElementById('testoCaricamento');
+
+	  barra.style.transition = 'width 0.5s ease';
+	  barra.style.background = '#27ae60';
+	  barra.style.width = '0%';
+	  perc.innerText = '0%';
+	  perc.style.color = '#27ae60';
+	  testo.innerText = 'Preparazione...';
+	  testo.style.color = '#555';
+
+	  $('#modalCaricamento').modal('show');
+	}
+
+function completaModaleCaricamento(successo) {
+	  clearInterval(_loaderInterval);
+
+	  var barra = document.getElementById('barraInterna');
+	  var perc  = document.getElementById('percentualeCaricamento');
+	  var testo = document.getElementById('testoCaricamento');
+
+	  barra.style.transition = 'width 0.4s ease';
+	  barra.style.width = '100%';
+	  perc.innerText = '100%';
+
+	  if (successo) {
+
+		    testo.innerText = 'Pacchetto inviato con successo!';
+		    testo.style.color = '#27ae60';
+		    perc.style.color = '#27ae60';
+
+		    document.getElementById('btnOkCaricamento').className = 'btn btn-success';
+
+		    // nasconde report
+		    document.getElementById('btnInviaReport').style.display = 'none';
+
+		} else {
+
+		    testo.style.color = '#e74c3c';
+		    barra.style.background = '#e74c3c';
+		    perc.style.color = '#e74c3c';
+
+		    document.getElementById('btnOkCaricamento').className = 'btn btn-danger';
+
+		    // mostra report
+		    document.getElementById('btnInviaReport').style.display = 'inline-block';
+		}
+
+		document.getElementById('btnOkCaricamento').style.display = 'block';
+	  
+
+	  
+	}
+
+	function chiudiModaleCaricamento() {
+	  $('#modalCaricamento').modal('hide');
+	  location.reload();
+	}
+
+function avviaEInvia(idIntervento) {
+
+	  var params = 'action=inviaPacchettoCliente'
+	             + '&email=' + encodeURIComponent($('#emailCliente').val())
+	             + '&notaConsegnaCliente=' + encodeURIComponent($('#notaConsegnaCliente').val())
+	             + '&corteseAttenzione=' + encodeURIComponent($('#corteseAttenzione').val())
+	             + '&gridRadios=' + $('input[name="gridRadios"]:checked').val();
+
+	  $('#myModalInvioPacchetoCliente').modal('hide');
+	  setTimeout(function() {
+	    avviaModaleCaricamento();
+	  }, 400);
+
+	  var xhr = new XMLHttpRequest();
+	  xhr.withCredentials = true;
+	  xhr.open('POST', 'gestioneMisura.do');
+	  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+	  xhr.onprogress = function() {
+	    // legge ogni riga mandata dal server
+	    var lines = xhr.responseText.split('\n');
+	    lines.forEach(function(line) {
+	      if (line.startsWith('data: ')) {
+	        try {
+	          var data = JSON.parse(line.substring(6));
+	          
+	          // aggiorna barra
+	          var barra = document.getElementById('barraInterna');
+	          var perc  = document.getElementById('percentualeCaricamento');
+	          var testo = document.getElementById('testoCaricamento');
+
+	          barra.style.width = data.progress + '%';
+	          perc.innerText = data.progress + '%';
+	          testo.innerText = data.testo;
+
+	          // se ha finito
+	          if (data.progress === 100) {
+	        	  if (data.success === false) {
+	        		    clearInterval(_loaderInterval);
+	        		    barra.style.background = '#e74c3c';
+	        		    perc.style.color = '#e74c3c';
+	        		    testo.style.color = '#e74c3c';
+	        		    testo.innerText = data.testo;   
+	        		    document.getElementById('btnOkCaricamento').style.display = 'block';
+	        		    // mostra report
+	        		    document.getElementById('btnInviaReport').style.display = 'inline-block';
+	        		}else {
+                      completaModaleCaricamento(true);
+                  }
+	          } 
+
+	        } catch(e) {}
+	      }
+	    });
+	  };
+
+	  xhr.onerror = function() {
+	    completaModaleCaricamento(false);
+	  };
+
+	  xhr.send(params);
+	}
+
+
+
+function validaEmail(email) {
+    var pattern = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+    return pattern.test(email.trim());
+}
+
+function validaEmailClienti() {
+    var emailField = document.getElementById("emailCliente");
+    var valore = emailField.value.trim();
+    
+    // Se il campo è vuoto, passa (opzionale: rendilo obbligatorio se vuoi)
+    if (valore === "") return true;
+    
+    var emails = valore.split(";");
+    var nonValide = [];
+    
+    for (var i = 0; i < emails.length; i++) {
+        var email = emails[i].trim();
+        if (email !== "" && !validaEmail(email)) {
+            nonValide.push(email);
+        }
+    }
+    
+    if (nonValide.length > 0) {
+        alert("Le seguenti email non sono valide:\n" + nonValide.join("\n"));
+        emailField.focus();
+        return false;
+    }
+    
+    return true;
 }
 
   </script>

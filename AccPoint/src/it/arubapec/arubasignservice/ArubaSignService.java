@@ -516,16 +516,15 @@ public static JsonObject signRilievoPades(UtenteDTO utente,String keyWord, RilMi
 	    System.out.println(Arrays.toString(fontPosition));
 	
 	    
-	    apparence.setImage(Costanti.PATH_FOLDER+"\\FileFirme\\"+utente.getFile_firma());
+	    apparence.setImage(utente.getFile_firma());
 	  
 	   apparence.setLeftx(fontPosition[0] - 15 );        	
 	   apparence.setLefty(fontPosition[1] - 35);
 	   apparence.setRightx(fontPosition[0] + 70);
 	   apparence.setRighty(fontPosition[1]-5);
-	    apparence.setImageOnly(true);
-	    
-	    apparence.setResizeMode(1);
-	    pkcs.setApparence(apparence);
+	   apparence.setImageOnly(true);
+	   apparence.setResizeMode(1);
+	   pkcs.setApparence(apparence);
 	    reader.close();
 	}
 	

@@ -1555,13 +1555,7 @@ public class GestioneFormazioneBO {
 	    return c;
 	}
 	
-	public static void main(String[] args) throws Exception{
-		
-		new ContextListener().configCostantApplication();
-		
-	//	compilaExcelQuestionarioTemp("pizzuti Sondaggio_RL_2026_v1- completato_New.zip");
-		
-	}
+	
 
 	public static JsonObject importaDaPDF(FileItem fileItem,ClienteDTO cl, SedeDTO sd, Session session) throws Exception {
 		
@@ -2415,7 +2409,7 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getConfigurazioneInvioEmail(id_conf,session);
 	}
 
-	public static void sendEmailCorsiNonCompleti(String path) throws Exception  {
+	public static void sendEmailCorsiNonCompleti(String path1) throws Exception  {
 		
 		
 		Session session=SessionFacotryDAO.get().openSession();
@@ -2504,7 +2498,7 @@ public class GestioneFormazioneBO {
 		
 	}
 		
-
+		
 		
 	}
 
@@ -2633,6 +2627,14 @@ public class GestioneFormazioneBO {
 		throw e;
 		
 	}
+	}
+	
+		public static void main(String[] args) throws Exception{
+		
+		new ContextListener().configCostantApplication();
+		
+		sendEmailCorsiNonCompleti("");
+		
 	}
 	
 	

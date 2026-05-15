@@ -537,14 +537,15 @@
             <button class="btn btn-default"  style="width: 200px" onClick="scaricaListaCampioni('${intervento.id}')">
                 <i class="glyphicon glyphicon-download"></i> Download Lista Campioni
             </button>
+            <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
             <c:if test="${intervento.statoIntervento.id == 2}">
                 <c:choose>
-                    <c:when test="${intervento.sessioneInvio == null}">
-                        <button class="btn btn-success"  style="width: 200px"
-                              onClick="checkInvioPacchettoCliente('${intervento.id}', '${cliente_invio_pacchetto.email}', ${isPresent})"
-                            <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
-                        </button>
-                    </c:when>
+                   <c:when test="${intervento.sessioneInvio == null}">
+            <button class="btn btn-success" style="width: 200px"
+                onClick="checkInvioPacchettoCliente('${intervento.id}', '${cliente_invio_pacchetto.email}', ${isPresent})">
+                <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
+            </button>
+        </c:when>
                    <c:otherwise>
     <div style="display: flex; align-items: center; gap: 8px;">
         <button class="btn btn-success" disabled title="Sessione non disponibile" style="width: 200px">
@@ -562,6 +563,7 @@
     </div>
 </c:otherwise>
                 </c:choose>
+            </c:if>
             </c:if>
         </div>
 

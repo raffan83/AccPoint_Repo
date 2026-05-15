@@ -506,7 +506,7 @@ public class GestioneMisura extends HttpServlet {
 			    } catch (Exception e) {
 			        e.printStackTrace();
 			        logger.error(e);
-
+			        request.getSession().setAttribute("exception", e);
 			        if (session != null && session.isOpen()
 			                && session.getTransaction() != null
 			                && session.getTransaction().isActive()) {

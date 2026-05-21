@@ -4435,7 +4435,7 @@ function avviaEInvia(idIntervento) {
 	          var testo = document.getElementById('testoCaricamento');
 
 	          barra.style.width = data.progress + '%';
-	          perc.innerText = data.progress + '%';
+	          perc.innerText = data.fase !== undefined ? 'Fase ' + data.fase : data.progress + '%';
 	          testo.innerText = data.testo;
 
 	          // se ha finito

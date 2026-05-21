@@ -4,11 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -385,13 +387,15 @@ public class GestioneMisura extends HttpServlet {
 			    response.setHeader("Cache-Control", "no-cache");
 			    response.setHeader("Connection", "keep-alive");
 			    PrintWriter out = response.getWriter();
+			    SessioneDTO sessione = null;
+			    boolean risp = false;
 
 			    try {
 			        InterventoDTO intervento = (InterventoDTO) request.getSession().getAttribute("intervento");
 			        String email = request.getParameter("email");
 
 			        if (intervento == null) {
-			            out.write("data: {\"progress\":100, \"testo\":\"Sessione scaduta o intervento non trovato\", \"success\":false}\n\n");
+			            out.write("data: {\"progress\":100, \"fase\": \"Errore\", \"testo\":\"Sessione scaduta o intervento non trovato\", \"success\":false}\n\n");
 			            out.flush();
 			            return;
 			        }
@@ -405,13 +409,13 @@ public class GestioneMisura extends HttpServlet {
 			            listaStrumenti = new ArrayList<>();
 			        }
 
-			        out.write("data: {\"progress\":15, \"testo\":\"Generazione scheda consegna...\"}\n\n");
+			        out.write("data: {\"progress\":15, \"fase\":1, \"testo\":\"Generazione scheda consegna...\"}\n\n");
 			        out.flush();
 			        new CreateSchedaConsegnaMetrologia(intervento, notaConsegna, Integer.parseInt(stato), corteseAttenzione, listaStrumenti, session, getServletContext());
 
 			        File schedaConsegna = new File(Costanti.PATH_FOLDER + "//" + intervento.getNomePack() + "//SchedaDiConsegna.pdf");
 
-			        out.write("data: {\"progress\":35, \"testo\":\"Recupero misure e certificati...\"}\n\n");
+			        out.write("data: {\"progress\":35, \"fase\":2, \"testo\":\"Recupero misure e certificati...\"}\n\n");
 			        out.flush();
 			        ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId(), session);
 
@@ -427,14 +431,14 @@ public class GestioneMisura extends HttpServlet {
 			        cal.add(Calendar.DAY_OF_MONTH, 30);
 			        Date scadenza = cal.getTime();
 
-			        out.write("data: {\"progress\":55, \"testo\":\"Creazione sessione...\"}\n\n");
+			        out.write("data: {\"progress\":55, \"fase\":3 \"testo\":\"Creazione sessione...\"}\n\n");
 			        out.flush();
 
 			        String sessionId = Utility.generateCredential(1);
 			        String username = Utility.generateCredential(2);
 			        String password = Utility.generateCredential(3);
 
-			        SessioneDTO sessione = new SessioneDTO();
+			        sessione = new SessioneDTO();
 			        sessione.setSession_id(sessionId);
 			        sessione.setUsername(username);
 			        sessione.setPassword(password);
@@ -465,26 +469,28 @@ public class GestioneMisura extends HttpServlet {
 
 			        sessione.setLista_misure_inviate(new HashSet<>(listaMisure));
 
-			        out.write("data: {\"progress\":70, \"testo\":\"Salvataggio su DB di CALVER...\"}\n\n");
+			        out.write("data: {\"progress\":70, \"fase\":4, \"testo\":\"Salvataggio su DB di CALVER...\"}\n\n");
 			        out.flush();
 
 			        //  beginTransaction esplicito
 			        session.beginTransaction();
 			        GestioneSessioneDAO.saveSession(sessione, session);
 			        System.out.println("Salvataggio sessione su Calver effettuato");
+			        
+			      //  Integer.parseInt("ciao");
 
 			        String pathFileCalver = Costanti.PATH_FOLDER + "\\" + intervento.getNomePack();
 
-			        out.write("data: {\"progress\":85, \"testo\":\"Invio file a DocumentalWeb...\"}\n\n");
+			        out.write("data: {\"progress\":85, \"fase\":5, \"testo\":\"Invio file a DocumentalWeb...\"}\n\n");
 			        out.flush();
 
-			        boolean risp = inviaFile(listaMisureWeb, sessione, listaCertificati, pathFileCalver, schedaConsegna, session);
+			        risp = inviaFile(listaMisureWeb, sessione, listaCertificati, pathFileCalver, schedaConsegna, session);
 			        System.out.println("Risposta DocumentalWEB: " + risp);
 
-			     // Integer.parseInt("ciao");
+			       
 			        
 			        if (risp) {
-			            out.write("data: {\"progress\":95, \"testo\":\"Invio email al cliente...\"}\n\n");
+			            out.write("data: {\"progress\":95, \"fase\":6, \"testo\":\"Invio email al cliente...\"}\n\n");
 			            out.flush();
 
 			            GestioneSessioneBO.sendEmailClienteDocumentalWeb(schedaConsegna, email, getServletContext(), sessione);
@@ -493,13 +499,13 @@ public class GestioneMisura extends HttpServlet {
 			            session.getTransaction().commit();
 
 			            //  Unica risposta finale di successo
-			            out.write("data: {\"progress\":100, \"testo\":\"Completato!\", \"success\":true}\n\n");
+			            out.write("data: {\"progress\":100, \"fase\":\"Finita\", \"testo\":\"Completato!\", \"success\":true}\n\n");
 			            out.flush();
 
 			        } else {
 			            session.getTransaction().rollback();
 			            //  Unica risposta finale di errore
-			            out.write("data: {\"progress\":100, \"testo\":\"Errore durante l'invio a DocumentalWeb\", \"success\":false}\n\n");
+			            out.write("data: {\"progress\":100, \"fase\":\"Interrotta\", \"testo\":\"Errore durante l'invio a DocumentalWeb\", \"success\":false}\n\n");
 			            out.flush();
 			        }
 
@@ -507,6 +513,13 @@ public class GestioneMisura extends HttpServlet {
 			        e.printStackTrace();
 			        logger.error(e);
 			        request.getSession().setAttribute("exception", e);
+			        boolean rispElimina = false;
+			        //eliminare file In Docoumentale chimando funzione  eliminaFileService
+			        if(sessione!=null && risp == true) {
+			        rispElimina = eliminaFileService(sessione);
+			        }
+			        System.out.println("risp elimina: " + rispElimina);
+			        
 			        if (session != null && session.isOpen()
 			                && session.getTransaction() != null
 			                && session.getTransaction().isActive()) {
@@ -572,6 +585,81 @@ public class GestioneMisura extends HttpServlet {
 		        dispatcher.forward(request, response);
 		    }
 		}
+		
+	}
+	
+	public static boolean eliminaFileService(SessioneDTO sessione)  throws Exception  {
+
+	    String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";
+	    String token = "TOKEN_SEGRETO_123456";
+	    String boundary = "----Boundary" + System.currentTimeMillis();
+	    
+	    
+	    HttpURLConnection conn = (HttpURLConnection) new URL(urlDestinazione).openConnection();
+	    conn.setDoOutput(true);
+	    conn.setRequestMethod("POST");
+	    conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+	    conn.setRequestProperty("Authorization", "Bearer " + token);
+	    
+	    
+	    Gson gson = new GsonBuilder()
+	            .setDateFormat("dd/MM/yyyy HH:mm")
+	            .create();
+	    String sessioneJson = gson.toJson(sessione);
+	  //  String action = gson.toJson("elimina");
+	    
+	    try (OutputStream output = conn.getOutputStream();
+	            PrintWriter writer = new PrintWriter(
+	                    new OutputStreamWriter(output, "UTF-8"), true)) {
+
+	           // comando operazione
+	           addFormField(writer, boundary, "action", "elimina");
+
+	        
+
+	           // sessione
+	           addFormField(writer, boundary, "sessioneJson", sessioneJson);
+	           
+
+	           // id intervento
+	           addFormField(writer, boundary,
+	                   "interventoId",
+	                   String.valueOf(sessione.getId_intervento()));
+
+	           // chiusura multipart
+	           writer.append("--")
+	                   .append(boundary)
+	                   .append("--")
+	                   .append("\r\n");
+
+	           writer.flush();
+
+	       } catch (Exception e) {
+	           throw e;
+	       }
+
+	    int responseCode = conn.getResponseCode();
+
+	    System.out.println("Response Code: " + responseCode);
+
+	    InputStream stream = (responseCode >= 200 && responseCode < 300)
+	            ? conn.getInputStream()
+	            : conn.getErrorStream();
+
+	    try (BufferedReader reader = new BufferedReader(
+	            new InputStreamReader(stream, "UTF-8"))) {
+
+	        String line;
+	        StringBuilder response = new StringBuilder();
+
+	        while ((line = reader.readLine()) != null) {
+	            response.append(line);
+	        }
+
+	        System.out.println("Risposta App B: " + response);
+	    }
+
+	    return responseCode == 200;
 		
 	}
 	

@@ -13,7 +13,7 @@ public class MisuraWebDTO {
 	private String costruttore;
 	private String id_certificato;
 	private String nome_certificato;
-	
+	private String nome_file;
 	
 	public MisuraWebDTO() {
 		// TODO Auto-generated constructor stub
@@ -124,6 +124,21 @@ public class MisuraWebDTO {
 	            + ", id_certificato=" + id_certificato 
 	            + "]";
 	}
+
+
+
+	public String getNome_file() {
+		return nome_file;
+	}
+
+
+
+	public void setNome_file(String nome_file) {
+		this.nome_file = nome_file;
+	}
+
+
+
 	
 	
 	

@@ -1614,7 +1614,7 @@
 		
 	<div class="form-group">
     <label>Email Cliente:</label><br>
-    <label><small>Separare più email con ;</small></label>
+    <label><small>Per inserire più email, usare il separatore  " ; "</small></label>
 
     <textarea class="form-control"
               id="emailCliente"

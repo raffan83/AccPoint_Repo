@@ -411,12 +411,15 @@ public class GestioneMisura extends HttpServlet {
 
 			        out.write("data: {\"progress\":15, \"fase\":1, \"testo\":\"Generazione scheda consegna...\"}\n\n");
 			        out.flush();
+			        Thread.sleep(1000);
 			        new CreateSchedaConsegnaMetrologia(intervento, notaConsegna, Integer.parseInt(stato), corteseAttenzione, listaStrumenti, session, getServletContext());
 
 			        File schedaConsegna = new File(Costanti.PATH_FOLDER + "//" + intervento.getNomePack() + "//SchedaDiConsegna.pdf");
 
 			        out.write("data: {\"progress\":35, \"fase\":2, \"testo\":\"Recupero misure e certificati...\"}\n\n");
 			        out.flush();
+			        Thread.sleep(1000);
+			        
 			        ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId(), session);
 
 			        ArrayList<CertificatoDTO> listaCertificati = new ArrayList<>();
@@ -431,8 +434,9 @@ public class GestioneMisura extends HttpServlet {
 			        cal.add(Calendar.DAY_OF_MONTH, 30);
 			        Date scadenza = cal.getTime();
 
-			        out.write("data: {\"progress\":55, \"fase\":3 \"testo\":\"Creazione sessione...\"}\n\n");
+			        out.write("data: {\"progress\":55, \"fase\":3, \"testo\":\"Creazione sessione...\"}\n\n");
 			        out.flush();
+			        Thread.sleep(1000);
 
 			        String sessionId = Utility.generateCredential(1);
 			        String username = Utility.generateCredential(2);
@@ -455,6 +459,8 @@ public class GestioneMisura extends HttpServlet {
 			        ArrayList<MisuraWebDTO> listaMisureWeb = new ArrayList<>();
 			        for (int i = 0; i < listaMisure.size(); i++) {
 			            MisuraDTO misura = listaMisure.get(i);
+			           
+			            
 			            MisuraWebDTO web = new MisuraWebDTO();
 			            web.setData_misura(misura.getDataMisura());
 			            web.setDenominazione_str(misura.getStrumento().getDenominazione());
@@ -463,7 +469,9 @@ public class GestioneMisura extends HttpServlet {
 			            web.setCostruttore(misura.getStrumento().getCostruttore());
 			            web.setId_certificato(misura.getnCertificato());
 			            CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoByIdMisura("" + misura.getId(), session);
-			            web.setNome_certificato(certificato.getNomeCertificato());
+			            web.setNome_certificato(misura.getnCertificato()); //LAT....
+			            web.setNome_file(certificato.getNomeCertificato());  //CM23255_241...
+			            
 			            listaMisureWeb.add(web);
 			        }
 
@@ -471,6 +479,7 @@ public class GestioneMisura extends HttpServlet {
 
 			        out.write("data: {\"progress\":70, \"fase\":4, \"testo\":\"Salvataggio su DB di CALVER...\"}\n\n");
 			        out.flush();
+			        Thread.sleep(1000);
 
 			        //  beginTransaction esplicito
 			        session.beginTransaction();
@@ -484,7 +493,7 @@ public class GestioneMisura extends HttpServlet {
 			        out.write("data: {\"progress\":85, \"fase\":5, \"testo\":\"Invio file a DocumentalWeb...\"}\n\n");
 			        out.flush();
 
-			        risp = inviaFile(listaMisureWeb, sessione, listaCertificati, pathFileCalver, schedaConsegna, session);
+			        risp = inviaFile(listaMisureWeb, sessione, pathFileCalver, schedaConsegna, session);
 			        System.out.println("Risposta DocumentalWEB: " + risp);
 
 			       
@@ -665,8 +674,7 @@ public class GestioneMisura extends HttpServlet {
 	
 	
 	
-	public static boolean inviaFile(ArrayList<MisuraWebDTO> listaMisure, SessioneDTO sessione, 
-	        ArrayList<CertificatoDTO> listaCertificati, String pathFileCalver, 
+	public static boolean inviaFile(ArrayList<MisuraWebDTO> listaMisure, SessioneDTO sessione, String pathFileCalver, 
 	        File schedaConsegna, Session session) throws Exception {
 
 	    String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";
@@ -674,14 +682,16 @@ public class GestioneMisura extends HttpServlet {
 	    String boundary = "----Boundary" + System.currentTimeMillis();
 
 	    List<File> listaCertificatifile = new ArrayList<>();
-	    for (int i = 0; i < listaCertificati.size(); i++) {
-	        File f = new File(pathFileCalver + "\\" + listaCertificati.get(i).getNomeCertificato());
+	    for (int i = 0; i < listaMisure.size(); i++) {
+	        File f = new File(pathFileCalver + "\\" + listaMisure.get(i).getNome_file());
 	        listaCertificatifile.add(f);
 	    }
+	    /*
 	    for (int i = 0; i < listaMisure.size(); i++) {
-	        String nome_certificato_sanato = sanitize(listaMisure.get(i).getId_certificato());
-	        listaMisure.get(i).setNome_certificato(nome_certificato_sanato);
+	    	listaMisure.get(i).setNome_certificato(listaMisure.get(i).getId_certificato());
+	        listaMisure.get(i).setNomeFile(listaMisure.get(i).getId_certificato());
 	    }
+	    */
 
 	    HttpURLConnection conn = (HttpURLConnection) new URL(urlDestinazione).openConnection();
 	    conn.setDoOutput(true);
@@ -808,4 +818,8 @@ public class GestioneMisura extends HttpServlet {
 	    }
 	
 
+	    
+	    public static void main(String[] args) {
+			System.out.println(sanitize("LAT172M0245/21"));
+		}
 }

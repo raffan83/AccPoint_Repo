@@ -389,6 +389,12 @@ public class GestioneMisura extends HttpServlet {
 			    PrintWriter out = response.getWriter();
 			    SessioneDTO sessione = null;
 			    boolean risp = false;
+			    
+			    
+			    String urlDestinazione = "http://delivery.stisrl.com/DocumentalWEB/serviceRest.do";
+				  //  String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";
+			    
+			    
 
 			    try {
 			        InterventoDTO intervento = (InterventoDTO) request.getSession().getAttribute("intervento");
@@ -493,7 +499,7 @@ public class GestioneMisura extends HttpServlet {
 			        out.write("data: {\"progress\":85, \"fase\":5, \"testo\":\"Invio file a DocumentalWeb...\"}\n\n");
 			        out.flush();
 
-			        risp = inviaFile(listaMisureWeb, sessione, pathFileCalver, schedaConsegna, session);
+			        risp = inviaFile(listaMisureWeb, sessione, pathFileCalver, schedaConsegna, session, urlDestinazione);
 			        System.out.println("Risposta DocumentalWEB: " + risp);
 
 			     // Integer.parseInt("ciao");
@@ -525,7 +531,7 @@ public class GestioneMisura extends HttpServlet {
 			        boolean rispElimina = false;
 			        //eliminare file In Docoumentale chimando funzione  eliminaFileService
 			        if(sessione!=null && risp == true) {
-			        rispElimina = eliminaFileService(sessione);
+			        rispElimina = eliminaFileService(sessione,urlDestinazione);
 			        }
 			        System.out.println("risp elimina: " + rispElimina);
 			        
@@ -598,9 +604,9 @@ public class GestioneMisura extends HttpServlet {
 		
 	}
 	
-	public static boolean eliminaFileService(SessioneDTO sessione)  throws Exception  {
+	public static boolean eliminaFileService(SessioneDTO sessione, String urlDestinazione)  throws Exception  {
 
-	    String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";
+		
 	    String token = "TOKEN_SEGRETO_123456";
 	    String boundary = "----Boundary" + System.currentTimeMillis();
 	    
@@ -676,9 +682,10 @@ public class GestioneMisura extends HttpServlet {
 	
 	
 	public static boolean inviaFile(ArrayList<MisuraWebDTO> listaMisure, SessioneDTO sessione, String pathFileCalver, 
-	        File schedaConsegna, Session session) throws Exception {
+	        File schedaConsegna, Session session, String urlDestinazione) throws Exception {
 
-	    String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";
+		
+	
 	    String token = "TOKEN_SEGRETO_123456";
 	    String boundary = "----Boundary" + System.currentTimeMillis();
 

@@ -3574,7 +3574,7 @@ public static ArrayList<ControlloOreDTO> getOrePrevisteOreScaricate() throws Exc
 	return lista;
 }
 
-public static void updateOrigineDashboard(String origine, int stato, String utente,boolean fornitore) throws Exception {
+public static void updateOrigineDashboard(String origine, int stato, String utente,boolean fornitore, String utente_assegnato) throws Exception {
 
 
 	Connection con=null;
@@ -3603,18 +3603,21 @@ public static void updateOrigineDashboard(String origine, int stato, String uten
 
 	        if (count > 0) {
 	            // Se esiste, esegui un UPDATE
-	            String updateQuery = "UPDATE "+table+" SET stato = ?, utente = ? WHERE origine = ?";
+	            String updateQuery = "UPDATE "+table+" SET stato = ?, utente = ? ,utente_assegnato=? WHERE origine = ?";
 	            pst = con.prepareStatement(updateQuery);
 	            pst.setInt(1, stato);
 	            pst.setString(2, utente);
-	            pst.setString(3, origine);
+	            pst.setString(3, utente_assegnato);
+	            pst.setString(4, origine);
+	            
 	        } else {
 	            // Se non esiste, esegui un INSERT
-	            String insertQuery = "INSERT INTO "+table+" (origine, stato, utente) VALUES (?, ?, ?)";
+	            String insertQuery = "INSERT INTO "+table+" (origine, stato, utente, utente_assegnato) VALUES (?, ?, ?,?)";
 	            pst = con.prepareStatement(insertQuery);
 	            pst.setString(1, origine);
 	            pst.setInt(2, stato);
 	            pst.setString(3, utente);
+	            pst.setString(4, utente_assegnato);
 	        }
 
 			pst.executeUpdate();
@@ -3645,11 +3648,9 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 	try {
 		con=getConnection();
 
-		  String query = "SELECT distinct b.commessa,b.data_arrivo, b.data_lavorazione,b.origine,b.nome_cliente, d.stato, d.utente, c.priorita FROM mag_item_pacco a JOIN mag_pacco b ON a.id_pacco = b.id JOIN mag_item c ON a.id_item = c.id LEFT JOIN  mag_pacco_dashboard d ON b.origine = d.origine WHERE b.id_stato_lavorazione = 1 AND c.stato = 1 AND b.chiuso = 0";
+		  String query = "SELECT distinct b.commessa,b.data_arrivo, b.data_lavorazione,b.origine,b.nome_cliente, d.stato, d.utente, c.priorita ,d.utente_assegnato FROM mag_item_pacco a JOIN mag_pacco b ON a.id_pacco = b.id JOIN mag_item c ON a.id_item = c.id LEFT JOIN  mag_pacco_dashboard d ON b.origine = d.origine WHERE b.id_stato_lavorazione = 1 AND c.stato = 1 AND b.chiuso = 0";
 	        pst = con.prepareStatement(query);
-	       
-	        rs = pst.executeQuery();
-	        
+	       	        
 	        rs=pst.executeQuery();
 
 			MagPaccoDTO pacco_res= null;
@@ -3662,11 +3663,12 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 				pacco_res.setData_lavorazione(rs.getDate(3));
 				pacco_res.setOrigine(rs.getString(4));
 				pacco_res.setNome_cliente(rs.getString(5));
-				Object[] result = new Object[4];
+				Object[] result = new Object[5];
 				result[0] = pacco_res;
 				result[1] = rs.getInt(6);
 				result[2] = rs.getString(7);
 				result[3] = rs.getInt(8);
+				result[4] = rs.getString(9);
 				results.add(result);
 			}
 	        
@@ -3677,6 +3679,7 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 		        Integer stato = (Integer) result[1];
 		        String utente = (String) result[2];
 		        Integer urgente = (Integer) result[3];
+		        String utente_assegnato = (String) result[4];
 
 				
 				java.util.Date utilDate = null;
@@ -3773,6 +3776,12 @@ public static ArrayList<String> getItemInRitardoDashboard(Session session) throw
 						if(!note_pacco.equals("")) {
 							note_pacco = note_pacco.substring(0, note_pacco.length()-3).replace("\r\n", "").replace("\n", "");
 							toAdd = toAdd+";"+note_pacco;
+						}else {
+							toAdd = toAdd+";";
+						}
+						
+						if(utente_assegnato!=null) {
+							toAdd = toAdd+";"+utente_assegnato;
 						}else {
 							toAdd = toAdd+";";
 						}

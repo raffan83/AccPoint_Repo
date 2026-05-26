@@ -47,5 +47,8 @@
         <property name="report_vittoria" type="int" >
             <column name="report_vittoria" />
         </property>
+         <property name="codiceCorsoVittoria" type="java.lang.String">
+            <column name="codice_corso_vittoria" />
+        </property>
     </class>
 </hibernate-mapping>

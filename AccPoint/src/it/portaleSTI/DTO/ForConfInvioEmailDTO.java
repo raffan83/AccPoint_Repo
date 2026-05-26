@@ -18,6 +18,7 @@ public class ForConfInvioEmailDTO {
 	private String oggetto_email;
 	private String testo_email;
 	private int report_vittoria;
+	private String codiceCorsoVittoria;
 	
 	
 	public int getId() {
@@ -104,6 +105,12 @@ public class ForConfInvioEmailDTO {
 	}
 	public void setReport_vittoria(int report_vittoria) {
 		this.report_vittoria = report_vittoria;
+	}
+	public String getCodiceCorsoVittoria() {
+		return codiceCorsoVittoria;
+	}
+	public void setCodiceCorsoVittoria(String codiceCorsoVittoria) {
+		this.codiceCorsoVittoria = codiceCorsoVittoria;
 	}
 	
 	

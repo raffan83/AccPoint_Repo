@@ -7054,9 +7054,9 @@ function showNoteCommessa(id){
 		  if(data.success)
 		  { 
 			//value = JSON.parse(data.json);
-			
+			  
 			  $('#note_commessa').val(data.json);
-			  $('#note_pacco').val(data.json);
+			 // $('#note_pacco').val(data.json);
 			
 		  }else{
 			  $('#myModalErrorContent').html(data.messaggio);

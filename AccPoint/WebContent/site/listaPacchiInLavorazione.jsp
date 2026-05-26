@@ -65,6 +65,7 @@
 						  <th>Diff.</th>
 						 
 						  <th>Utente</th>
+						  <th>Utente Assegnato</th>
 						  <th>Urgente</th>
 						   <th>Note</th>
 						<%--  <td></td> --%>
@@ -97,6 +98,7 @@
                                <td  id="${splitted[0]}_6" style="position:relative">${splitted[5]}</td>
                                <td  id="${splitted[0]}_7" style="position:relative">${splitted[6]}</td>
                                <td  id="${splitted[0]}_8" style="position:relative">${splitted[8]}</td>
+                               <td  id="${splitted[0]}_11" style="position:relative"><span style="color:red;"> ${splitted[11]}</span></td>
                                <td  id="${splitted[0]}_9" style="position:relative">
                                 <c:if test="${splitted[9] == '0' && splitted[7]!='3'}">
                                NO
@@ -146,7 +148,49 @@
 </div>
 </section>
 
+<form id="assegnaUtenteForm" name="assegnaUtenteForm">
+<div id="myModalAssegnaUtente" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Assegna Utente</h4>
+      </div>
+       <div class="modal-body">
 
+		
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Utente:</label>
+       	</div>
+       	<div class="col-sm-9">      
+       <span id="utente_hidden" 
+     		 style="color:red;font-style:italic;display:none;">
+		</span>
+			  	
+       <select id="lista_utenti" name="lista_utenti" class="form-control select2" style="width:100%" data-placeholder="Seleziona corso...">
+       <option value=""></option>
+       <c:forEach items="${lista_dipendenti_attivita_in_corso}" var="utente">
+       <option value="${utente.nominativo}">${utente.nominativo }</option>
+       </c:forEach>
+       </select>
+       			
+       	</div>       	
+       </div><br>
+       </div>
+  		 
+      <div class="modal-footer">
+		
+		<button class="btn btn-primary" type="submit">Assegna</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</form>
 
 
 </div>
@@ -157,7 +201,9 @@
   <li data-action = "in_corso">In Corso</li>
   <li data-action = "completato">Completato</li>
   <li data-action = "urgente">Urgente</li>
-  
+  <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SE')}">
+  <li data-action = "assegna">Assegna ad utente</li>
+  </c:if>
 </ul>
 
    <t:dash-footer />
@@ -269,6 +315,11 @@ function dettaglioPaccoFromOrigine(origine){
 
 $(document).ready(function() {
 	
+    $("#lista_utenti").select2({
+        dropdownParent: $('#myModalAssegnaUtente')
+    });
+    
+	
 	let initialOrderExecuted = false;
 	   $.fn.dataTable.ext.order['priorita-si'] = function(settings, col) {
 		    return this.api().column(col, { order: 'index' }).nodes().map(function(td, i) {
@@ -325,7 +376,7 @@ $(document).ready(function() {
  	      columnDefs: [
  	         
  	          //{ type: 'num', targets: 6 }, 
- 	          { orderDataType: 'priorita-si', targets: 8}
+ 	          { orderDataType: 'priorita-si', targets: 9}
  	      ],
 
          buttons: [  
@@ -389,6 +440,35 @@ riorganizzaColonna8(tab)
 });
 
 
+$('#assegnaUtenteForm').on('submit', function(e){
+	
+	
+	 e.preventDefault();
+	 
+	    var utente = $("#lista_utenti").val();
+
+	    /*
+	    if(utente == null || utente.trim() == ""){
+
+	        $("#utente_hidden")
+	            .html("Selezionare un utente")
+	            .show();
+
+	        return false;
+	    }
+	    else
+	    {
+		*/
+	 		callAjaxForm("#assegnaUtenteForm", "gestionePacco.do?action=assegna_utente&pacco="+cellIndex);	 
+	
+	 		$('#myModalAssegnaUtente').hide();
+	 		
+	 		$("#utente_hidden").hide();
+	//    }
+	
+	})
+
+/*
 function riorganizzaColonna8(table) {
 
 
@@ -396,8 +476,8 @@ function riorganizzaColonna8(table) {
 
       // Converte le righe in un array per il riordino
       var sortedRows = Array.from(rows).sort(function (rowA, rowB) {
-          var colA = $(rowA).find('td:eq(8)').text().trim(); // Colonna 8 (indice 4)
-          var colB = $(rowB).find('td:eq(8)').text().trim();
+          var colA = $(rowA).find('td:eq(9)').text().trim(); // Colonna 8 (indice 4)
+          var colB = $(rowB).find('td:eq(9)').text().trim();
           return colB.localeCompare(colA); // "SI" prima di "NO"
       });
 
@@ -407,7 +487,42 @@ function riorganizzaColonna8(table) {
       });
 }
 
+*/
 
+function riorganizzaColonna8(table) {
+
+    var rows = table.rows().nodes();
+
+    function getDiff(row) {
+        var text = $(row).find('td:eq(6)').text().trim();
+
+        // Esempi: "+ 64", "+1", "- 1"
+        text = text.replace(/\s+/g, '').replace('+', '');
+
+        var value = parseInt(text, 10);
+        return isNaN(value) ? 0 : value;
+    }
+
+    function getUrgentePriority(row) {
+        var urgente = $(row).find('td:eq(9)').text().trim();
+        return urgente === 'SI' ? 0 : 1;
+    }
+
+    var sortedRows = Array.from(rows).sort(function (rowA, rowB) {
+        var urgenteA = getUrgentePriority(rowA);
+        var urgenteB = getUrgentePriority(rowB);
+
+        if (urgenteA !== urgenteB) {
+            return urgenteA - urgenteB; // prima SI, poi NO
+        }
+
+        return getDiff(rowB) - getDiff(rowA); // Diff più alta in cima
+    });
+
+    $.each(sortedRows, function (index, row) {
+        $('#tabPacchi tbody').append(row);
+    });
+}
 var cellIndex;
 function initContextMenu(){
 	
@@ -483,7 +598,12 @@ function initContextMenu(){
              
        		
        		updateStato(cellIndex.split("_")[0]+"_"+cellIndex.split("_")[1], 3);
-                    	
+        
+         case 'assegna':
+             
+        		
+        		
+        		$('#myModalAssegnaUtente').modal();
           
            break;
 	     

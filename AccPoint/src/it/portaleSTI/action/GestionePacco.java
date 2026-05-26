@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -78,6 +79,7 @@ import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 
 
 
@@ -1876,7 +1878,7 @@ public class GestionePacco extends HttpServlet {
 			String origine = request.getParameter("origine");
 			String stato = request.getParameter("stato");
 			
-			GestioneMagazzinoBO.updateOrigineDashboard(origine, Integer.parseInt(stato), utente.getNominativo(),false);
+			GestioneMagazzinoBO.updateOrigineDashboard(origine, Integer.parseInt(stato), utente.getNominativo(),false,"");
 			
 			
 			session.getTransaction().commit();
@@ -1898,7 +1900,7 @@ public class GestionePacco extends HttpServlet {
 			String origine = request.getParameter("origine");
 			String stato = request.getParameter("stato");
 			
-			GestioneMagazzinoBO.updateOrigineDashboard(origine, Integer.parseInt(stato), utente.getNominativo(),true);
+			GestioneMagazzinoBO.updateOrigineDashboard(origine, Integer.parseInt(stato), utente.getNominativo(),true,"");
 			
 			
 			session.getTransaction().commit();
@@ -1915,17 +1917,9 @@ public class GestionePacco extends HttpServlet {
 		else if(action.equals("pacchi_lavorazione")) {
 		
 			ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemInRitardoDashboard(session);
+		
+			JsonObject myObj = new JsonObject();
 			
-//			Collections.sort(lista_pacchi, new Comparator<String>() {
-//			    @Override
-//			    public int compare(String s1, String s2) {
-//			        int giorniMancanti1 = estraiGiorniMancanti(s1);
-//			        int giorniMancanti2 = estraiGiorniMancanti(s2);
-//
-//			        // Ordina in modo decrescente
-//			        return Integer.compare(giorniMancanti2, giorniMancanti1);
-//			    }
-//			});
 			Collections.sort(lista_pacchi, new Comparator<String>() {
 			    @Override
 			    public int compare(String s1, String s2) {
@@ -1982,7 +1976,12 @@ public class GestionePacco extends HttpServlet {
 			});
 			
 			
+			ArrayList<UtenteDTO> listaUtenti=GestioneUtenteBO.getDipendenti(session);
+			
+			
+			request.getSession().setAttribute("lista_dipendenti_attivita_in_corso", listaUtenti);
 			request.getSession().setAttribute("lista_pacchi_grafico", lista_pacchi);
+			
 			session.getTransaction().commit();
 			session.close();
 			
@@ -1996,16 +1995,7 @@ public class GestionePacco extends HttpServlet {
 			
 			ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemPresso_Fornitori(session);
 			
-//			Collections.sort(lista_pacchi, new Comparator<String>() {
-//			    @Override
-//			    public int compare(String s1, String s2) {
-//			        int giorniMancanti1 = estraiGiorniMancanti(s1);
-//			        int giorniMancanti2 = estraiGiorniMancanti(s2);
-//
-//			        // Ordina in modo decrescente
-//			        return Integer.compare(giorniMancanti2, giorniMancanti1);
-//			    }
-//			});
+
 			Collections.sort(lista_pacchi, new Comparator<String>() {
 			    @Override
 			    public int compare(String s1, String s2) {
@@ -2071,6 +2061,31 @@ public class GestionePacco extends HttpServlet {
 			
 			
 			
+		}
+		else if(action.equals("assegna_utente")) 
+		{
+			JsonObject myObj = new JsonObject();
+			
+			ajax = true;
+		
+			response.setContentType("application/json");
+			
+			 Hashtable<String,List<String>> ret = Utility.getFormByResponse(request);
+			 String user = Utility.getSingleValueFromResponse(ret,"lista_utenti");
+			 String pacco=request.getParameter("pacco");
+	        
+			String[] origine= pacco.split("_");
+			 
+			GestioneMagazzinoBO.updateOrigineDashboard(origine[0]+"_"+origine[1],0, "",false,user);
+			 
+	        	
+	    	session.getTransaction().commit();
+			session.close();
+			
+			PrintWriter out = response.getWriter();
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Utente assegnato con successo!");
+        	out.print(myObj);
 		}
 		
 		}catch(Exception e) {

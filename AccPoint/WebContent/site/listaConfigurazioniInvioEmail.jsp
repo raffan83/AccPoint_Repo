@@ -77,6 +77,7 @@
 <th>Data scadenza</th>
 <th>Stato invio</th>
 <th>Report Vittoria</th>
+<th>Codice corso Vittoria</th>
 <th>Azioni</th>
  </tr></thead>
  
@@ -111,10 +112,13 @@
 	<td align="center">
 	<input type="checkbox" checked class="icheckbox" disabled="disabled">
 	</td>
-	</c:if>	
+	</c:if>
+	
+	<td>${configurazione.codiceCorsoVittoria}</td>
+		
 	<td>
  	
-	<a  class="btn btn-warning" onClicK="modificaConfigurazioneModal('${configurazione.id}','${configurazione.id_corso}','${configurazione.id_gruppo}','${configurazione.data_inizio_invio}','${configurazione.frequenza_invio }','${configurazione.data_prossimo_invio}','${configurazione.stato_invio }','${configurazione.data_scadenza}','${utl:escapeJS(configurazione.oggetto_email) }','${utl:escapeJS(configurazione.testo_email) }','${configurazione.report_vittoria}')" title="Click per modificare la Configurazione"><i class="fa fa-edit"></i></a>
+	<a  class="btn btn-warning" onClicK="modificaConfigurazioneModal('${configurazione.id}','${configurazione.id_corso}','${configurazione.id_gruppo}','${configurazione.data_inizio_invio}','${configurazione.frequenza_invio }','${configurazione.data_prossimo_invio}','${configurazione.stato_invio }','${configurazione.data_scadenza}','${utl:escapeJS(configurazione.oggetto_email) }','${utl:escapeJS(configurazione.testo_email) }','${configurazione.report_vittoria}','${configurazione.codiceCorsoVittoria}')" title="Click per modificare la Configurazione"><i class="fa fa-edit"></i></a>
 	<a  class="btn btn-danger" onClicK="eliminaConfigurazioneModal('${configurazione.id}')" title="Click per eliminare la configurazione"><i class="fa fa-trash"></i></a>
 
 	</td>
@@ -311,6 +315,16 @@
        	</div>       	
        </div><br>
        
+       
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Codice Corso Vittoria</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	<input type='text' class="form-control" id="codice_corso_vittoria" name="codice_corso_vittoria" >
+       	</div>       	
+       </div><br>
        
          <div class="row">
        
@@ -512,6 +526,15 @@
        	</div>       	
        </div><br>
        
+         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Codice Corso Vittoria</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	<input type='text' class="form-control" id="codice_corso_vittoria_mod" name="codice_corso_vittoria_mod" >
+       	</div>       	
+       </div><br>
        
        <div class="row">
        
@@ -643,7 +666,7 @@ function eliminaConfigurazione(){
 var editorInstanceMod = null;
 
 
-function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, data_inizio, frequenza, data_prossimo_invio, stato, data_scadenza, oggetto_email, testo_email,report_vittoria) {
+function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, data_inizio, frequenza, data_prossimo_invio, stato, data_scadenza, oggetto_email, testo_email,report_vittoria,codiceCorsoVittoria) {
     
 	$('#id_gruppo_mod').val(id_gruppo);
 	$('#id_configurazione').val(id_configurazione);
@@ -652,7 +675,7 @@ function modificaConfigurazioneModal(id_configurazione, id_corso, id_gruppo, dat
     //$('#gruppi_mod').val(id_gruppo);
   //  $('#gruppi_mod').change()
     $('#oggetto_email_mod').val(oggetto_email);
-    
+    $('#codice_corso_vittoria_mod').val(codiceCorsoVittoria);
     if(report_vittoria =='1'){	
 
 		$('#check_report_vittoria_mod').iCheck('check');

@@ -1588,6 +1588,7 @@ public class GestioneFormazioneBO {
 			String keyNome3 = "Si Certifica che ";
 			String keyNascita = "Nato/a il";
 			String keyLuogoStart = " in ";
+			String keyLuogoStartOld = ", in ";
 			String keyLuogoEnd = "Profilo";
 			String keyCf = "C.F. : ";
 			String keyCfStart= "Autorizzazione n.";
@@ -1620,25 +1621,30 @@ public class GestioneFormazioneBO {
 					
 				}else {
 					
-					nominativo = pdftext.substring(pdftext.indexOf(keyNome) + keyNome.length(), pdftext.indexOf(keyNascita)).replaceAll("\\n", "");
-					data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyLuogoStart));					
+					nominativo = pdftext.substring(pdftext.indexOf(keyNome) + keyNome.length(), pdftext.indexOf(keyNascita)).replaceAll("\\n", "");			
 					luogo_nascita =  pdftext.substring(pdftext.indexOf(keyLuogoStart) + keyLuogoStart.length(), pdftext.indexOf(keyLuogoEnd));
+					if(pdftext.contains(keyLuogoStartOld)) {
+						data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyLuogoStartOld));		
+					} else {
+						data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyLuogoStart));		
+					}
 					
 					
 				}				
 
 				String cf = "";
-			
-			//	String substring1 = pdftext.substring(pdftext.indexOf(keyCfStart), pdftext.indexOf(keyCfStart) + keyCfStart.length() + 47) ;
-			//	System.out.println("substring1 : " + substring1);
-				
+				if(pdftext.contains(keyCf)) {
+					cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
+				} else {
 				cf = pdftext.substring(pdftext.indexOf(keyCfStart)+ keyCfStart.length() + 22 , pdftext.indexOf(keyCfStart)+ keyCfStart.length() + 39);
-										
+				}
 						
 				
 				if(data_nascita.contains("-")) {
 					df = new SimpleDateFormat("dd-MM-yyyy", locale);
-				}else {
+				} else if(data_nascita.contains("/")) {
+					df = new SimpleDateFormat("dd/MM/yyyy", locale);
+				} else {
 					df = new SimpleDateFormat("dd MMMM yyyy", locale);
 				}
 			

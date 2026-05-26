@@ -616,6 +616,9 @@ public class GestioneMisura extends HttpServlet {
 	    conn.setRequestMethod("POST");
 	    conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 	    conn.setRequestProperty("Authorization", "Bearer " + token);
+	    conn.setConnectTimeout(30000);
+	    conn.setReadTimeout(120000);
+	    conn.setChunkedStreamingMode(8192);
 	    
 	    
 	    Gson gson = new GsonBuilder()
@@ -706,6 +709,9 @@ public class GestioneMisura extends HttpServlet {
 	    conn.setRequestMethod("POST");
 	    conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 	    conn.setRequestProperty("Authorization", "Bearer " + token);
+	    conn.setConnectTimeout(30000);
+	    conn.setReadTimeout(120000);
+	    conn.setChunkedStreamingMode(8192);
 
 	    Gson gson = new GsonBuilder()
 	            .setDateFormat("dd/MM/yyyy HH:mm")

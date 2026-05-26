@@ -547,6 +547,7 @@
             </button>
         </c:when>
                    <c:otherwise>
+     <c:if test="${userObj.checkRuolo('AM')}">              
     <div style="display: flex; align-items: center; gap: 8px;">
         <button class="btn btn-success" disabled title="Sessione non disponibile" style="width: 200px">
             <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
@@ -554,13 +555,14 @@
        <b>Sessione ID:</b> ${sessione.session_id}
 
        <span style="margin-left: 30px;">
-          <b>Scaricata il giorno:</b> ${sessione.dataCreazione}
+          <b>Data invio:</b> ${sessione.dataCreazione}
          </span>
 
          <span style="margin-left: 30px;">
-              <b>da Operatore:</b> ${userObj.nominativo}
+              <b>Operatore:</b> ${userObj.nominativo}
          </span>
     </div>
+    </c:if>
 </c:otherwise>
                 </c:choose>
             </c:if>

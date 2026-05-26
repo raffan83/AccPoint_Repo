@@ -392,7 +392,7 @@ public class GestioneMisura extends HttpServlet {
 			    
 			    
 			    String urlDestinazione = "http://delivery.stisrl.com/DocumentalWEB/serviceRest.do";
-				  //  String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";
+				//   String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";
 			    
 			    
 

@@ -1587,9 +1587,11 @@ public class GestioneFormazioneBO {
 			String keyNome2 = "Si certifica che ";
 			String keyNome3 = "Si Certifica che ";
 			String keyNascita = "Nato/a il";
-			String keyLuogoStart = ", in ";
+			String keyLuogoStart = " in ";
 			String keyLuogoEnd = "Profilo";
 			String keyCf = "C.F. : ";
+			String keyCfStart= "Autorizzazione n.";
+			
 			Locale locale = new Locale("it", "IT");
 			
 			String nominativo = "";				
@@ -1626,25 +1628,16 @@ public class GestioneFormazioneBO {
 				}				
 
 				String cf = "";
+			
+			//	String substring1 = pdftext.substring(pdftext.indexOf(keyCfStart), pdftext.indexOf(keyCfStart) + keyCfStart.length() + 47) ;
+			//	System.out.println("substring1 : " + substring1);
 				
-				if(pdftext.indexOf(keyCf) == -1) {
-					
-					keyCf =  "C.F. ";
-					
-					if(pdftext.indexOf(keyCf) == -1) {
-						cf = pdftext.substring(pdftext.indexOf("opnefeiitalia@flexipec.it") +66, pdftext.indexOf("opnefeiitalia@flexipec.it") +82);
-					}else {
-						cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
-					}
-					
-					
-				}else {
-					cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
-				}						
+				cf = pdftext.substring(pdftext.indexOf(keyCfStart)+ keyCfStart.length() + 22 , pdftext.indexOf(keyCfStart)+ keyCfStart.length() + 39);
+										
 						
 				
-				if(data_nascita.contains("/")) {
-					df = new SimpleDateFormat("dd/MM/yyyy", locale);
+				if(data_nascita.contains("-")) {
+					df = new SimpleDateFormat("dd-MM-yyyy", locale);
 				}else {
 					df = new SimpleDateFormat("dd MMMM yyyy", locale);
 				}

@@ -386,10 +386,22 @@ console.log("init script")
 
 $(function () {
 	  // init select2 dentro modale
-	  $('#campioni').select2({
-	    dropdownParent: $('#modalPrenotazione'),
-	    width: '100%'
-	  });
+$('#campioni').select2({
+    dropdownParent: $('#modalPrenotazione'),
+    width: '100%',
+    placeholder: "Seleziona campioni",
+
+    templateResult: function (item) {
+
+        if (!item.id) {
+            return item.text;
+        }
+
+        var tooltip = $(item.element).attr('data-tooltip');
+
+        return $('<span title="' + tooltip + '">' + item.text + '</span>');
+    }
+});
 	  
 	  // stato iniziale
 	  lockDateTime(false);
@@ -438,11 +450,20 @@ $(function () {
 	    		        var label = c.codice; // SOLO codice
 
 	    		        if (idVal != null && label) {
-	    		          $sel.append(new Option(label, idVal, false, false));
-	    		        }
-	    		      }
 
-	    		      $sel.trigger('change');
+	    		            var opt = new Option(label, idVal, false, false);
+
+	    		            // tooltip
+	    		            var tooltip = c.descrizione || c.codice;
+
+	    		            $(opt).attr('data-tooltip', tooltip);
+
+	    		            $sel.append(opt);
+	    		        }
+	    		    }
+
+
+	    		      $sel.trigger('change.select2');
 	    		      if (lista.length > 0) {
 	    		    	  lockDateTime(true);   //  BLOCCA data/ora dopo controllo OK
 	    		    	} else {

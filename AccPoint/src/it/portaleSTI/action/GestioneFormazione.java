@@ -3737,6 +3737,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String oggetto_email = ret.get("oggetto_email");
 					String testo_email = ret.get("testo_email");
 					String report_vittoria=ret.get("report_vittoria");
+					String codice_corso_vittoria=ret.get("codice_corso_vittoria");
 					
 				
 					
@@ -3794,6 +3795,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						configurazione.setReport_vittoria(0);
 					}
 					
+					configurazione.setCodiceCorsoVittoria(codice_corso_vittoria);
 					session.save(configurazione);
 					session.getTransaction().commit();
 					session.close();
@@ -3847,6 +3849,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String oggetto_email = ret.get("oggetto_email_mod");
 					String testo_email = ret.get("testo_email_mod");
 					String report_vittoria=ret.get("report_vittoria_mod");
+					String codice_corso_vittoria=ret.get("codice_corso_vittoria_mod");
 				
 					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = (ArrayList<ForCorsoMoodleDTO>) request.getSession().getAttribute("lista_corsi_moodle");
 					ArrayList<ForGruppoMoodleDTO> lista_gruppi_moodle = (ArrayList<ForGruppoMoodleDTO>) request.getSession().getAttribute("lista_gruppi_moodle");
@@ -3898,6 +3901,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					}else {
 						configurazione.setData_scadenza(null);
 					}
+					
+					configurazione.setCodiceCorsoVittoria(codice_corso_vittoria);
 					session.update(configurazione);
 					session.getTransaction().commit();
 					session.close();

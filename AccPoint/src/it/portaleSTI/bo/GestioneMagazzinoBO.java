@@ -502,9 +502,9 @@ public static boolean checkStrumentoCliente(String idCliente, String matricola, 
 	return GestioneMagazzinoDAO.checkStrumentoCliente(idCliente, matricola,codice_interno,  session);
 }
 
-public static void updateOrigineDashboard(String origine, int stato, String utente,boolean fornitore) throws Exception{
+public static void updateOrigineDashboard(String origine, int stato, String utente,boolean fornitore, String utente_assegnato) throws Exception{
 	
-	DirectMySqlDAO.updateOrigineDashboard(origine, stato, utente,fornitore);
+	DirectMySqlDAO.updateOrigineDashboard(origine, stato, utente,fornitore,utente_assegnato);
 	
 }
 

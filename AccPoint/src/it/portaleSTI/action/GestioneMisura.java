@@ -486,7 +486,7 @@ public class GestioneMisura extends HttpServlet {
 			        GestioneSessioneDAO.saveSession(sessione, session);
 			        System.out.println("Salvataggio sessione su Calver effettuato");
 			        
-			      //  Integer.parseInt("ciao");
+			      
 
 			        String pathFileCalver = Costanti.PATH_FOLDER + "\\" + intervento.getNomePack();
 
@@ -496,7 +496,7 @@ public class GestioneMisura extends HttpServlet {
 			        risp = inviaFile(listaMisureWeb, sessione, pathFileCalver, schedaConsegna, session);
 			        System.out.println("Risposta DocumentalWEB: " + risp);
 
-			       
+			     // Integer.parseInt("ciao");
 			        
 			        if (risp) {
 			            out.write("data: {\"progress\":95, \"fase\":6, \"testo\":\"Invio email al cliente...\"}\n\n");
@@ -538,8 +538,9 @@ public class GestioneMisura extends HttpServlet {
 			        //  Risposta SSE di errore formattata correttamente
 			        JSONObject obj = new JSONObject();
 			        obj.put("progress", 100);
-			        obj.put("testo", "Errore durante l'invio: " + e.getMessage());
+			        obj.put("testo", "Errore durante l'invio: " + e.getMessage() + "\nEliminazione file binari in DocumentalWEb: " + rispElimina);
 			        obj.put("success", false);
+			      
 			        out.write("data: " + obj.toString() + "\n\n");
 			        out.flush();
 
@@ -711,6 +712,7 @@ public class GestioneMisura extends HttpServlet {
 	    try (OutputStream output = conn.getOutputStream();
 	         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, "UTF-8"), true)) {
 
+	    	System.out.println("misureJson "+ misureJson);
 	        addFormField(writer, boundary, "misureJson", misureJson);
 	        addFormField(writer, boundary, "sessioneJson", sessioneJson);
 	        addFormField(writer, boundary, "interventoId", "" + sessione.getId_intervento());

@@ -585,6 +585,7 @@ function initializeTimepicker(start, end) {
 		    dom: 'rt<"bottom"ip>',
 		    pageLength: 100,
 		    order: [[2, "asc"]],
+		    
 		    paging: false,
 		    ordering: true,
 		    info: true,
@@ -673,7 +674,6 @@ var scrollPos;
 	            var newTop = currentTop + heightDifference ; // Aggiungi la differenza di altezza per mantenere la posizione relativa
 	            $(this).css('top', newTop);
 	        });
-
 	        nextRow = nextRow.next();
 	    }
 	}
@@ -1190,16 +1190,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                       'font-weight': 'bold'
 	 	                    }).appendTo(cellaInizio);
 	 	                    
-	 	                    var rowId = cellaInizio.closest('tr').attr('id');
-	 			            var altezzaRiga = $("#"+rowId).height();
-	 	                    
-	 	                    var nuovaAltezzaRiga = (numeroRiquadri + 1) * (altezza + 42); // +1 per includere il nuovo riquadro
-
-	 		                // Aggiorna l'altezza della riga
-	 		                if(nuovaAltezzaRiga>altezzaRiga){
-	 		                	cellaInizio.closest('tr').children('td').height(nuovaAltezzaRiga);
-	 		                }
-	 		                
+	 	                   
 	 	                    
 
 	 	                
@@ -1279,18 +1270,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	 	                  //var ultimaPosizione = ultimoRiquadro[0].offsetTop +  altezza +3; // Aggiungi 5 pixel di spazio
 	 	               
 	 	  	           
-	 	  	          var rowId = cellaInizio.closest('tr').attr('id');
-	 		            var altezzaRiga = $("#"+rowId).height();
-	 	  	           // var nuovaAltezzaRiga = 35 + numeroRiquadri  * ultimoRiquadro[0].offsetHeight;
-	 	  	         //   var nuovaAltezzaRiga = altezzaRiga +  altezza ;
-	 	  	            var nuovaAltezzaRiga = 42+ (numeroRiquadri +1) * 75 ;
-	 	  	            if(altezzaRiga<=nuovaAltezzaRiga){
-	 	  	           // if(altezzaRiga<=ultimaPosizione){
-	 	  	            	   
-	 	  	            	 updatePosition(cellaInizio.closest('tr'), nuovaAltezzaRiga, altezzaRiga);
-	 	  	            	cellaInizio.closest('tr').children('td').height(nuovaAltezzaRiga);
-	 	  	            	var x = id_prenotazione;
-	 	  	            }
+	 	  	  
 	 	                 
 	 	                 
 	 	                }
@@ -1301,6 +1281,7 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	                }
 	               
 	            console.log("ciao");
+	            recalcolaAltezzeRighe(); 
 
 	            var today = "${today}";
 	            if (parseInt(today) > "${daysNumber}") {
@@ -1439,5 +1420,22 @@ function rgbToHex(rgb) {
 	  return '#' + parts.join('');
 	}
 
+function recalcolaAltezzeRighe() {
+    $('#tabPrenotazione tbody tr').each(function() {
+        var row = $(this);
+        var rowTop = row[0].getBoundingClientRect().top;
+        var maxBottom = 0;
 
+        row.find('.riquadro').each(function() {
+            var rect = this.getBoundingClientRect();
+            var relativeBottom = (rect.top - rowTop) + rect.height;
+            if (relativeBottom > maxBottom) {
+                maxBottom = relativeBottom;
+            }
+        });
+
+        var newHeight = maxBottom > 0 ? maxBottom + 10 : 42;
+        row.children('td').height(newHeight);
+    });
+}
 </script>

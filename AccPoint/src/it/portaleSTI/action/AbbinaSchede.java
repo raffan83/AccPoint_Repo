@@ -61,8 +61,7 @@ public class AbbinaSchede extends HttpServlet {
 			
 			ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList<TipoRapportoDTO>) GestioneStrumentoBO.getListaTipoRapporto();
 			request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
-			
-			System.out.println();
+		
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/abbinaSchede.jsp");
 		    dispatcher.forward(request,response);

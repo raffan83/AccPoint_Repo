@@ -82,6 +82,26 @@
     			<% }%>
     			
     		<% }%>
+    		
+          </ul>
+        </li>
+         <% }%>
+         
+         
+           <% if(user.checkRuolo("AM") || user.checkRuolo("PV") || user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")){%>
+         
+
+          <%if(user.checkRuolo("PV")){ %>
+          <li class="header">METROLOGIA</li>
+           <% }%>
+        <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Misure</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+          
     		<% if(user.checkRuolo("AM") || (user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")&& !user.checkRuolo("PV"))){%>
     			<li><a href="#" onclick="callAction('gestioneMisura.do?action=lista',null,true);">Lista Misure</a></li>
     				<% }%>
@@ -96,6 +116,8 @@
           </ul>
         </li>
          <% }%>
+         
+         
           <% if(user.checkRuolo("AM") || user.checkRuolo("PV") || user.checkPermesso("LISTA_CERTIFICATI_MENU_METROLOGIA")){%>
           
          <li class="treeview">

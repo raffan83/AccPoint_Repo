@@ -951,13 +951,17 @@ $('#selectAlltabPM').on('ifChecked', function (ev) {
 	 var uniqueClasses = [];
 	    table.column(13).data().each(function(value, index) {
 	    	if(value!=null && value!=''){
-	    		 var classes = $(value).attr('class').split(' ');
-	 	        for (var i = 0; i < classes.length; i++) {
-	 	            var className = classes[i];
-	 	            if (uniqueClasses.indexOf(className) === -1) {
-	 	                uniqueClasses.push(className);
-	 	            }
-	 	        }
+	    		var classAttr = $(value).attr('class');
+
+	    		if (classAttr) {
+	    		    var classes = classAttr.split(' ');
+	    		    for (var i = 0; i < classes.length; i++) {
+	    		        var className = classes[i];
+	    		        if (uniqueClasses.indexOf(className) === -1) {
+	    		            uniqueClasses.push(className);
+	    		        }
+	    		    }
+	    		}
 	    	}
 	    
 	       

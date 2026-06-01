@@ -1560,7 +1560,7 @@ table = $('#tabPM').DataTable({
      targets: 0,
      responsive: false,
      scrollX: true,
-     scrollY: "450px",
+     scrollY: "calc(100vh - 430px)",
      stateSave: true,
      columnDefs: [
    	    /*  { responsivePriority: 1, targets: 7 },

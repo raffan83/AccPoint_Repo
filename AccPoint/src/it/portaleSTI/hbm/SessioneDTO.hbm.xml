@@ -45,7 +45,7 @@
             <column name="EMAIL_CLIENTE" />
         </property>
         
-        
+ 
                <set name="lista_misure_inviate" table="sessione_misura"
         	inverse="false" lazy="false" fetch="select" cascade="all" >
             <key>
@@ -56,11 +56,25 @@
             </many-to-many>
         </set>
    
+      
+         <property name="abilitato" type="java.lang.Integer" access="field">
+            <column name="ABILITATO" />
+        </property>
+        
 
   
   <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" lazy="false" fetch="join">
     <column name="id_user" />
 </many-to-one>
+
+  <many-to-one name="user_modifica" class="it.portaleSTI.DTO.UtenteDTO" lazy="false" fetch="join">
+    <column name="id_user_modifica" />
+</many-to-one>
+
+
+  <property name="data_modifica" type="java.util.Date" access="field">
+            <column name="DATA_MODIFICA" />
+        </property>
         
     </class>
 </hibernate-mapping>

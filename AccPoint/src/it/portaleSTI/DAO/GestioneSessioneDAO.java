@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,7 @@ import org.hibernate.Session;
 
 
 import it.portaleSTI.DTO.SessioneDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 
 
 
@@ -81,7 +83,7 @@ public class GestioneSessioneDAO {
 
 public static void saveSession(SessioneDTO sessione,  Session session) {
 	    
-
+/*
 	        SessioneDTO s = new SessioneDTO();
 	       s.setUsername(sessione.getUsername());
 	       s.setPassword(sessione.getPassword());
@@ -96,12 +98,52 @@ public static void saveSession(SessioneDTO sessione,  Session session) {
 	       s.setLista_misure_inviate(sessione.getLista_misure_inviate());
 	       s.setUser(sessione.getUser());
 	       s.setEmail_cliente(sessione.getEmail_cliente());
-	       
-	        session.save(s);
-
-	      
+	       s.setAbilitato(sessione.getAbilitato());
+	 */      
+	        session.save(sessione);
 	   
 	}
 		
+public static void updateAbilitato(SessioneDTO sessione, UtenteDTO utente) {
+	Session session=null;
+	
+	session=SessionFacotryDAO.get().openSession();
+		
+	session.beginTransaction();
+	try {
+		sessione.setData_modifica(new Date());
+		sessione.setUser_modifica(utente);
+		sessione.setAbilitato(0);
+		session.merge(sessione);
+		session.getTransaction().commit();
+	} catch (Exception e) {
+		e.printStackTrace();
+		session.getTransaction().rollback();
+	}  finally {
+		session.close();
+	}
 
+}
+
+
+
+public static ArrayList<SessioneDTO> getListaSessioniScadute(Date today){
+	Session session=null;
+	 session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+	
+	
+    Query query = session.createQuery( "from SessioneDTO s where s.dataScadenza < :today");
+
+    query.setParameter("today", today);
+
+    List<SessioneDTO> result =query.list();
+    session.close();
+	if(result.size()>0)
+	{			
+		return (ArrayList) result;
+	}
+	
+	return null;
+}
 }

@@ -22,6 +22,9 @@ public class SessioneDTO {
 	private Integer id_intervento;
 	private UtenteDTO user;
 	private String email_cliente;
+	private Integer abilitato;
+	private UtenteDTO user_modifica;
+	private Date data_modifica;
 	
 	
 	public SessioneDTO() {
@@ -176,8 +179,35 @@ public class SessioneDTO {
 	public void setEmail_cliente(String email_cliente) {
 		this.email_cliente = email_cliente;
 	}
-	
 
+	
+	
+	
+	public Integer getAbilitato() {
+		return abilitato;
+	}
+
+	public void setAbilitato(Integer abilitato) {
+		this.abilitato = abilitato;
+	}
+
+	public UtenteDTO getUser_modifica() {
+		return user_modifica;
+	}
+
+	public void setUser_modifica(UtenteDTO user_modifica) {
+		this.user_modifica = user_modifica;
+	}
+
+	public Date getData_modifica() {
+		return data_modifica;
+	}
+
+	public void setData_modifica(Date data_modifica) {
+		this.data_modifica = data_modifica;
+	}
+	
+	
 	
 
 }

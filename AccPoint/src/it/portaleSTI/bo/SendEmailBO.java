@@ -2521,10 +2521,13 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
 	  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	  String dataFormattata = sdf.format(sessione.getDataScadenza());
-	  String URL_DOCUMENTALWEB = "http://192.168.1.100:8082/DocumentalWEB";
+	 // String URL_DOCUMENTALWEB = "http://192.168.1.100:8082/DocumentalWEB";
 
 		  email.setHtmlMsg("<html>Si avvisa che i certificati sono pronti<br>"
-		  		+ " Queste sono le credenziali per entrare nel sito:" + URL_DOCUMENTALWEB
+		  		+ " Queste sono le credenziali per entrare nel sito: " 
+		  		+ "<a href=\"http://delivery.stisrl.com/DocumentalWEB/\">"
+		  		+ "Accedi al portale"
+		  		+ "</a>"
 		  		+ "<br> Username: "+ sessione.getUsername()
 				+ "<br> Password: " + sessione.getPassword() 
 			    + "<br> Scadenza: " + dataFormattata

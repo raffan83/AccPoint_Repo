@@ -16,9 +16,11 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
+import it.portaleSTI.DAO.GestioneSessioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ForPiaPianificazioneDTO;
 import it.portaleSTI.DTO.SessioneDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 
 
 public class GestioneSessioneBO {
@@ -44,10 +46,41 @@ public class GestioneSessioneBO {
 		return null;
 	}
 	
+	public static SessioneDTO getSessioneByIdInterventoAndAbilitato(int id, int abilitato) {
+		Session session=SessionFacotryDAO.get().openSession();
+		
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from SessioneDTO WHERE id_intervento= :_id AND abilitato= :_abilitato");
+		
+		query.setParameter("_id", id);
+		query.setParameter("_abilitato", abilitato);
+				
+		List<SessioneDTO> result =query.list();
+		if(result.size()>0)
+		{			
+			return result.get(0);
+		}
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return null;
+	}
+	
+	public static ArrayList<SessioneDTO> getListaSessioniScadute(Date today){
+		 ArrayList<SessioneDTO> sessione = GestioneSessioneDAO.getListaSessioniScadute(today);
+		 return sessione;
+	}
 	
 	
+	public static void updateAbilitato(SessioneDTO sessione, UtenteDTO utente) {
+		GestioneSessioneDAO.updateAbilitato(sessione,utente);
+	}
 	
-	public static void sendEmailClienteDocumentalWeb(File d, String mailTo,ServletContext ctx, SessioneDTO sessione ) throws Exception {
+
+	
+	public static void sendEmailClienteDocumentalWeb(File d, String mailTo,ServletContext ctx, SessioneDTO sessione  ) throws Exception {
 		
 		try {
 	

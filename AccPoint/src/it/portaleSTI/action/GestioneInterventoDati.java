@@ -90,8 +90,13 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		InterventoDTO intervento=GestioneInterventoBO.getIntervento(idIntervento, session);
 	
-		SessioneDTO sessione =GestioneSessioneBO.getSessioneByIdIntervento(intervento.getId());
+		SessioneDTO sessione =GestioneSessioneBO.getSessioneByIdInterventoAndAbilitato(intervento.getId(), 1);
+		if(sessione == null) {
+			sessione =GestioneSessioneBO.getSessioneByIdInterventoAndAbilitato(intervento.getId(), 0);
+		}
+		
 		intervento.setSessioneInvio(sessione);
+		
 		
 		HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
 		HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();
@@ -178,7 +183,7 @@ public class GestioneInterventoDati extends HttpServlet {
 		if(comm!=null) {
 		cliente = GestioneAnagraficaRemotaBO.getClienteById(""+comm.getID_ANAGEN_UTIL());
 		}
-		
+		System.out.println("email cliente vera: "+ cliente.getEmail());
 		cliente.setEmail("edoardo.boccitto@ncsnetwork.it");
 		
 		//cliente.setEmail("raffaele.fantini@ncsnetwork.it");
@@ -278,6 +283,14 @@ public class GestioneInterventoDati extends HttpServlet {
 			userCliente = "1";
 		}
 		request.getSession().setAttribute("userCliente", userCliente);
+		
+		UtenteDTO userModificaInvalidaSessione = null;
+
+		if(sessione!= null && sessione.getUser_modifica()!= null) {
+		userModificaInvalidaSessione = GestioneUtenteBO.getUtenteById(""+sessione.getUser_modifica().getId(), session);
+		}
+		
+		request.getSession().setAttribute("userModificaInvalidaSessione", userModificaInvalidaSessione);
 
 		
 		/*Controllo Numero strumenti misurati*/

@@ -391,8 +391,8 @@ public class GestioneMisura extends HttpServlet {
 			    boolean risp = false;
 			    
 			    
-			    String urlDestinazione = "http://delivery.stisrl.com/DocumentalWEB/serviceRest.do";
-				//   String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";
+			//   String urlDestinazione = "http://delivery.stisrl.com/DocumentalWEB/serviceRest.do";
+				   String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";  //CAMBIARE ANCHE IN ACTION=invalidaSessione
 			    
 			    
 
@@ -420,7 +420,7 @@ public class GestioneMisura extends HttpServlet {
 			        Thread.sleep(1000);
 			        new CreateSchedaConsegnaMetrologia(intervento, notaConsegna, Integer.parseInt(stato), corteseAttenzione, listaStrumenti, session, getServletContext());
 
-			        File schedaConsegna = new File(Costanti.PATH_FOLDER + "//" + intervento.getNomePack() + "//SchedaDiConsegna.pdf");
+			        File schedaConsegna = new File(Costanti.PATH_FOLDER + File.separator + intervento.getNomePack() + "//SchedaDiConsegna.pdf");
 
 			        out.write("data: {\"progress\":35, \"fase\":2, \"testo\":\"Recupero misure e certificati...\"}\n\n");
 			        out.flush();
@@ -461,6 +461,7 @@ public class GestioneMisura extends HttpServlet {
 			        sessione.setId_intervento(intervento.getId());
 			        sessione.setUser(utente);
 			        sessione.setEmail_cliente(email);
+			        sessione.setAbilitato(1);
 
 			        ArrayList<MisuraWebDTO> listaMisureWeb = new ArrayList<>();
 			        for (int i = 0; i < listaMisure.size(); i++) {
@@ -494,7 +495,7 @@ public class GestioneMisura extends HttpServlet {
 			        
 			      
 
-			        String pathFileCalver = Costanti.PATH_FOLDER + "\\" + intervento.getNomePack();
+			        String pathFileCalver = Costanti.PATH_FOLDER + File.separator + intervento.getNomePack();
 
 			        out.write("data: {\"progress\":85, \"fase\":5, \"testo\":\"Invio file a DocumentalWeb...\"}\n\n");
 			        out.flush();
@@ -556,10 +557,26 @@ public class GestioneMisura extends HttpServlet {
 			            session.close();
 			        }
 			    }
-			}
+			} else if(action.equals("invalidaSessione")) {
+			   // String urlDestinazione = "http://delivery.stisrl.com/DocumentalWEB/serviceRest.do";
+				   String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";
 				
-			
-			
+				 ajax = true;
+				int idSessione = Integer.parseInt(request.getParameter("idSessione"));
+				
+				SessioneDTO sessione = GestioneSessioneDAO.getSessioneById(idSessione, session);
+				
+				GestioneSessioneBO.updateAbilitato(sessione,utente); //LATO CALVER
+				
+				//LATO DOCUMENTALWEB
+				 boolean rispUpdate = updateAbilitatoFileService(sessione, urlDestinazione);
+				 System.out.println("rsipUpdate: "+rispUpdate  );
+				 
+				 response.setContentType("application/json");
+				 response.getWriter().write("{\"successo\": " + rispUpdate + "}");
+				
+				return;
+			}
 					
 		}catch(Exception e) {
 		    
@@ -603,6 +620,79 @@ public class GestioneMisura extends HttpServlet {
 		}
 		
 	}
+	
+	public static boolean updateAbilitatoFileService(SessioneDTO sessione, String urlDestinazione)  throws Exception  {
+
+		
+	    String token = "TOKEN_SEGRETO_123456";
+	    String boundary = "----Boundary" + System.currentTimeMillis();
+	    
+	    
+	    HttpURLConnection conn = (HttpURLConnection) new URL(urlDestinazione).openConnection();
+	    conn.setDoOutput(true);
+	    conn.setRequestMethod("POST");
+	    conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+	    conn.setRequestProperty("Authorization", "Bearer " + token);
+	    conn.setConnectTimeout(30000);
+	    conn.setReadTimeout(120000);
+	    conn.setChunkedStreamingMode(8192);
+	    
+	    
+
+	    
+	    String sessionId = sessione.getSession_id();
+	  //  String action = gson.toJson("elimina");
+	    try (OutputStream output = conn.getOutputStream();
+	            PrintWriter writer = new PrintWriter(
+	                    new OutputStreamWriter(output, "UTF-8"), true)) {
+
+	           // comando operazione
+	           addFormField(writer, boundary, "action", "updateAbilitato");
+
+	           // sessione
+	           addFormField(writer, boundary, "sessioneId", sessionId);
+
+
+	           // chiusura multipart
+	           writer.append("--")
+	                   .append(boundary)
+	                   .append("--")
+	                   .append("\r\n");
+
+	           writer.flush();
+
+	       } catch (Exception e) {
+	           throw e;
+	       }
+
+	
+	    int responseCode = conn.getResponseCode();
+
+	    System.out.println("Response Code: " + responseCode);
+
+	    InputStream stream = (responseCode >= 200 && responseCode < 300)
+	            ? conn.getInputStream()
+	            : conn.getErrorStream();
+
+	    try (BufferedReader reader = new BufferedReader(
+	            new InputStreamReader(stream, "UTF-8"))) {
+
+	        String line;
+	        StringBuilder response = new StringBuilder();
+
+	        while ((line = reader.readLine()) != null) {
+	            response.append(line);
+	        }
+
+	        System.out.println("Risposta App B: " + response);
+	    }
+
+	    return responseCode == 200;
+		
+	}
+	
+	
+	
 	
 	public static boolean eliminaFileService(SessioneDTO sessione, String urlDestinazione)  throws Exception  {
 

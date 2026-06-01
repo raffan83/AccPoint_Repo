@@ -6139,6 +6139,9 @@ function eliminaCompany(){
   function inviaPacchettoClienteModal(){
 	  $("#myModalInvioPacchetoCliente").modal();
   }
+  function invalidaSessioneModal(){
+	  $("#myModalInvalidaSessione").modal();
+  }
   
   function stripHtml(html){
 	    // Create a new div element

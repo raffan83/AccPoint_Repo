@@ -531,6 +531,17 @@
             <button class="btn btn-info customTooltip"  style="width: 200px" title="Click per aprire le schede di consegna" onClick="showSchedeConsegna('${utl:encryptData(intervento.id)}')">
                 <i class="fa fa-file-text-o"></i> Visualizza Scheda Consegna
             </button>
+             <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
+            <c:if test="${intervento.statoIntervento.id == 2}">
+            <c:choose>
+                   <c:when test="${sessione != null && sessione.abilitato==1}">
+            <button class="btn btn-default"  style="width: 200px" title="Click per invalidare la sessione" onClick="openModalInvalidaSessione()">
+                <i class="fa fa-file-text-o"></i> Invalida Sessione
+            </button>
+            </c:when>
+            </c:choose>
+            </c:if>
+            </c:if>
         </div>
 
         <div style="display: flex; gap: 8px;">
@@ -540,11 +551,25 @@
             <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
             <c:if test="${intervento.statoIntervento.id == 2}">
                 <c:choose>
-                   <c:when test="${intervento.sessioneInvio == null}">
+                   <c:when test="${sessione == null}">
             <button class="btn btn-success" style="width: 200px"
                 onClick="checkInvioPacchettoCliente('${intervento.id}', '${cliente_invio_pacchetto.email}', ${isPresent})">
                 <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
             </button>
+        </c:when>
+       <c:when test= "${sessione != null && sessione.abilitato==0}">
+ <button class="btn btn-success" style="width: 200px"
+                onClick="checkInvioPacchettoCliente('${intervento.id}', '${cliente_invio_pacchetto.email}', ${isPresent})">
+                <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
+            </button>
+       <div style="display:flex; align-items:center;">
+    <span>
+        <b>Sessione Invalidata da: </b>${userModificaInvalidaSessione.nominativo} 
+    </span>
+     <span style="margin-left: 30px;">
+          <b>Data Modifica:</b> ${sessione.data_modifica}
+         </span>
+</div>
         </c:when>
                    <c:otherwise>
      <c:if test="${userObj.checkRuolo('AM')}">              
@@ -785,6 +810,52 @@
         </div>
     </div>
 </div>
+
+
+  <div class="modal fade" id="myModalConfermaInvalidaSessione" tabindex="-1" role="dialog"
+         data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header" id="esitoModalHeader">
+            <h4 class="modal-title">Conferma Invalida Sessione</h4>
+          </div>
+     
+          <div class="modal-body">
+                <p>Stai per invalidare questa sessione? Procedere con l'operazione?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="btnConfermaInvio" onClick="invalidaSessione(${sessione.id})">
+                    <i class="glyphicon glyphicon-ok"></i> Sì
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"   onClick="chiudiModalInvalidaSessione()" >
+                    <i class="glyphicon glyphicon-remove"></i> No
+                </button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="myModalInvalidaSessione" tabindex="-1" role="dialog"
+         data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header" id="esitoModalHeader">
+            <h4 class="modal-title">Operazione Riuscita</h4>
+          </div>
+     
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" id="btnChiudiEsito">
+              <i class="glyphicon glyphicon-ok"></i> OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
 
 
 
@@ -2609,6 +2680,50 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 
 		    esegui();
 		}
+	 
+	  
+	 function invalidaSessione(idSessione) {
+		    $.ajax({
+		        url: "gestioneMisura.do?action=invalidaSessione",
+		        type: "POST",
+		        data: { idSessione: idSessione },
+		        dataType: "json",
+		        success: function(datab) {
+		            console.log("risposta:", datab);
+		            if (datab.successo) {
+		            	chiudiModalInvalidaSessione();
+		                $('#myModalInvalidaSessione').modal('show');
+		                
+		            } else {
+		                $('#myModalErrorContent').html("Errore durante l'invalidazione della sessione!");
+		                $('#myModalError').removeClass();
+		                $('#myModalError').addClass("modal modal-danger");
+		                $('#myModalError').modal('show');
+		            }
+		        },
+		        error: function(xhr, status, error) {
+		            console.log("Errore AJAX:", xhr.responseText, status, error);
+		        }
+		    });
+		}
+	 $('#btnChiudiEsito').on('click', function() {
+		    $('#myModalInvalidaSessione').modal('hide');
+		    location.reload();
+		});
+	 
+	 
+	  
+		function openModalInvalidaSessione(){
+			$('#myModalConfermaInvalidaSessione').modal('show');
+	}
+	
+		  
+		function chiudiModalInvalidaSessione(){
+			$('#myModalConfermaInvalidaSessione').modal('hide');
+	}
+		
+	 
+	 
 	 
 	 
 	 

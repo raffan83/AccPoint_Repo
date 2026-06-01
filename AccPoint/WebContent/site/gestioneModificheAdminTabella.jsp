@@ -72,7 +72,7 @@
  </table>  
  
  
-  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
+  <div id="myModal" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -84,13 +84,14 @@
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
               <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
-       
+       <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li>
       
         
  		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
                <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
 		</c:if>		
 		 <li class=""><a href="#documentiesterni" data-toggle="tab" aria-expanded="false" onclick="" id="documentiesterniTab">Documenti esterni</a></li>
+		 <li class=""><a href="#notestrumento" data-toggle="tab" aria-expanded="false" onclick="" id="noteStrumentoTab">Note Strumento</a></li>
              </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">
@@ -118,6 +119,10 @@
               		</c:if>		
               		
               		<div class="tab-pane" id="documentiesterni">
+              
+
+              			</div> 
+              			<div class="tab-pane" id="notestrumento">
               
 
               			</div> 
@@ -260,10 +265,10 @@ var columsDatatables = [];
        	}
        	if(contentID == "documentiesterniTab"){
        		exploreModal("documentiEsterni.do?id_str="+id_strumento,"","#documentiesterni")
-       
        	}
-       	
-       	
+       	if(contentID == "noteStrumentoTab"){
+       		exploreModal("listaStrumentiSedeNew.do?action=note_strumento&id_str="+id_strumento,"","#notestrumento")
+       	 }
        	
 
  		});

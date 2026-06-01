@@ -462,6 +462,14 @@
   		   </div><br>
   		   
   		   
+  		   <div class="row">
+  		    <div class="col-xs-12">
+  		    <label>Descrizione Intervento</label>
+  		    <textarea id="desc_intervento" name="desc_intervento" rows="3" style="width:100%" class="form-control"></textarea>
+  		    </div>
+  		   
+  		   </div>
+  		   
   		    <div class="row">
   		    <div class="col-xs-12">
   		    <label>Note</label>

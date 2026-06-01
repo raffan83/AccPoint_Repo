@@ -128,6 +128,7 @@ public class GestioneRapportoIntervento extends HttpServlet {
 		        String dateFrom = ret.get("dateFrom");
 		        String dateTo = ret.get("dateTo");
 		        String note = ret.get("note");
+		        String desc_intevento = ret.get("desc_intervento");
 		        String ora_inizio = ret.get("ora_inizio");
 		        String ora_fine = ret.get("ora_fine");
 		        String id_misure = ret.get("id_misure");
@@ -154,6 +155,7 @@ public class GestioneRapportoIntervento extends HttpServlet {
 					}
 				}
 				rapporto.setNote(note);
+				rapporto.setDescrizione_intervento(desc_intevento);
 				
 				rapporto.setOra_inizio(ora_inizio);
 				rapporto.setOra_fine(ora_fine);

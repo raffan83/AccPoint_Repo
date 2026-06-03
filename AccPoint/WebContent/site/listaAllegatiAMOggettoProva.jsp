@@ -33,7 +33,7 @@
 	                  </div>
 	                <div style="display:inline-flex; gap:5px;">	
 	                  
-	               <c:if test="${fn:endsWith(allegato.filename, '.pdf')}">
+	               <c:if  test="${fn:endsWith(allegato.filename, '.pdf') || fn:endsWith(allegato.filename, '.PDF')}">
     <a class="btn btn-default btn-xs" title="Clicca per visualizzare l'anteprima del PDF"
        onclick="anteprimaAllegato('${allegato.id}','${id_strumento}')">
         <i class="fa fa-eye"></i>

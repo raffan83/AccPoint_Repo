@@ -43,6 +43,10 @@
             <column name="destinatario_email" />
         </property>
         
+        <property name="descrizione_intervento" type="java.lang.String">
+            <column name="descrizione_intervento" />
+        </property>
+        
        
     </class>
 </hibernate-mapping>

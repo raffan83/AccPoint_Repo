@@ -92,12 +92,12 @@ public class CreateRapportoIntervento {
 			report.addParameter("ora_inizio", ora_inizio);
 			report.addParameter("ora_fine", ora_fine);
 			report.addParameter("durata", "");
-			report.addParameter("tipologia_intervento", "");
 			
 			String note = "";
 			if(rapporto.getNote()!=null) {
 				note = " "+rapporto.getNote();
 			}
+			report.addParameter("tipologia_intervento", rapporto.getDescrizione_intervento());
 			report.addParameter("note", note);
 			report.addParameter("modulo", "MOD-PGI016-11");
 			report.addParameter("revisione", "Rev. A del 14/03/2023");

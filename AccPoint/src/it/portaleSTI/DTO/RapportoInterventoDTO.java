@@ -16,6 +16,7 @@ public class RapportoInterventoDTO {
 	private Set<StrumentoDTO> lista_strumenti = new HashSet<StrumentoDTO>();
 	private String note;
 	private String destinatario_email;
+	private String descrizione_intervento;
 	
 	
 	public int getId() {
@@ -78,6 +79,12 @@ public class RapportoInterventoDTO {
 	}
 	public void setDestinatario_email(String destinatario_email) {
 		this.destinatario_email = destinatario_email;
+	}
+	public String getDescrizione_intervento() {
+		return descrizione_intervento;
+	}
+	public void setDescrizione_intervento(String descrizione_intervento) {
+		this.descrizione_intervento = descrizione_intervento;
 	}
 	
 	

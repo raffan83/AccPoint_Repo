@@ -619,6 +619,45 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				out.print(myObj);
 				
 				
+			} 
+			
+			else if(action.equals("anteprima_allegato")) {
+				ajax=false;				
+
+				String id_strumento = request.getParameter("id_strumento");				
+				String id_allegato = request.getParameter("id_allegato");				
+			
+				AMOggettoProvaAllegatoDTO allegato_strumento = GestioneAM_BO.getAllegatoStrumentoFormId(Integer.parseInt(id_allegato), session);
+					
+				String percorso = Costanti.PATH_FOLDER+"\\AM_interventi\\Strumenti\\"+id_strumento+"//"+allegato_strumento.getFilename();
+				
+				//response.setHeader("Content-Disposition","inline;filename="+ allegato_strumento.getFilename());
+		
+				
+				 File file = new File(percorso);
+				
+				 if (!file.exists()) {
+					    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+					    return;
+					}
+				 response.setContentType("application/pdf");
+					response.setHeader(
+					    "Content-Disposition",
+					    "inline; filename=\"" + file.getName() + "\""
+					);
+
+					try (FileInputStream fis = new FileInputStream(file);
+						     ServletOutputStream out = response.getOutputStream()) {
+
+						    byte[] buffer = new byte[8192];
+						    int len;
+
+						    while ((len = fis.read(buffer)) != -1) {
+						        out.write(buffer, 0, len);
+						    }
+
+						    out.flush();
+					}
 			}
 			
 			session.getTransaction().commit();

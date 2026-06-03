@@ -338,10 +338,6 @@ public class GestioneMisura extends HttpServlet {
 				String idIntervento= request.getParameter("idIntervento");
 				String email = request.getParameter("emailCliente");
 				
-			
-				
-				
-
 				
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 				CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
@@ -860,25 +856,7 @@ public class GestioneMisura extends HttpServlet {
 	        writer.append(value).append("\r\n");
 	        writer.flush();
 	    }
-	    
-	    private static void addFormSessione(PrintWriter writer, String boundary, String name, SessioneDTO sessione) {
-
-	        writer.append("--").append(boundary).append("\r\n");
-	        writer.append("Content-Disposition: form-data; name=\"").append(name).append("[sessionId]\"\r\n\r\n");
-	        writer.append(String.valueOf(sessione.getSession_id())).append("\r\n");
-
-	        writer.append("--").append(boundary).append("\r\n");
-	        writer.append("Content-Disposition: form-data; name=\"").append(name).append("[user]\"\r\n\r\n");
-	        writer.append(sessione.getUsername()).append("\r\n");
-
-	        writer.append("--").append(boundary).append("\r\n");
-	        writer.append("Content-Disposition: form-data; name=\"").append(name).append("[password]\"\r\n\r\n");
-	        writer.append(sessione.getPassword()).append("\r\n");
-
-	        writer.flush();
-	    }
-	    
-	    
+	    	    
 
 	    private static void addFilePart(PrintWriter writer, OutputStream output, String boundary,
 	                                    String fieldName, File file) throws IOException {

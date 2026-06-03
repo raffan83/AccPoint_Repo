@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <div class="row">
 <div class="col-sm-12">
@@ -30,11 +31,18 @@
 	                <div class="col-xs-10">
 	                  <b>${allegato.filename }</b>
 	                  </div>
-	                  <div class="col-xs-2 pull-right"> 	           
+	                <div style="display:inline-flex; gap:5px;">	
+	                  
+	               <c:if test="${fn:endsWith(allegato.filename, '.pdf')}">
+    <a class="btn btn-default btn-xs" title="Clicca per visualizzare l'anteprima del PDF"
+       onclick="anteprimaAllegato('${allegato.id}','${id_strumento}')">
+        <i class="fa fa-eye"></i>
+    </a>
+  </c:if>      
 	                   
-	                  <a class="btn btn-danger btn-xs pull-right" onClick="eliminaAllegato('${allegato.id  }','${id_strumento}','0')"><i class="fa fa-trash"></i></a>
+	                  <a class="btn btn-danger btn-xs " title="Clicca per eliminare l'allegato"  onClick="eliminaAllegato('${allegato.id  }','${id_strumento}','0')"><i class="fa fa-trash"></i></a>
 	               
-	                  <a class="btn btn-danger btn-xs  pull-right"style="margin-right:5px" href="amGestioneStrumenti.do?action=download_allegato&id_allegato=${allegato.id }&id_strumento=${id_strumento}"><i class="fa fa-arrow-down small"></i></a>
+	                  <a class="btn btn-danger btn-xs" title="Clicca per scaricare l'allegato"  href="amGestioneStrumenti.do?action=download_allegato&id_allegato=${allegato.id }&id_strumento=${id_strumento}"><i class="fa fa-arrow-down small"></i></a>
 	                   
 	                  </div>
                   </div>
@@ -79,6 +87,29 @@ Nessun file allegato allo strumento!
   </div>
 
 </div>
+
+<div class="modal fade" id="modalAnteprimaAllegato" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document" style="width:90%">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+                <h4 class="modal-title">Anteprima allegato</h4>
+            </div>
+
+            <div class="modal-body" style="height:80vh">
+                <iframe id="iframeAnteprimaAllegato"
+                        width="100%"
+                        height="100%"
+                        frameborder="0">
+                </iframe>
+            </div>
+
+        </div>
+    </div>
+</div>
  
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
@@ -102,6 +133,18 @@ function eliminaAllegato(id_allegato, id_strumento){
     $('#myModalYesOrNo').modal();
 }
 
+function anteprimaAllegato(id_allegato, id_strumento){
+
+    var url = "amGestioneStrumenti.do"
+            + "?action=anteprima_allegato"
+            + "&id_allegato=" + encodeURIComponent(id_allegato)
+            + "&id_strumento=" + encodeURIComponent(id_strumento);
+
+    $("#iframeAnteprimaAllegato").attr("src", url);
+    $('#modalAnteprimaAllegato').appendTo('body');
+    $('#modalAnteprimaAllegato').modal('show');
+
+}
 
 $('#myModalAllegati').on('hidden.bs.modal',function(){
 	

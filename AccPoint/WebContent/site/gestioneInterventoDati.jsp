@@ -548,7 +548,7 @@
             <button class="btn btn-default"  style="width: 200px" onClick="scaricaListaCampioni('${intervento.id}')">
                 <i class="glyphicon glyphicon-download"></i> Download Lista Campioni
             </button>
-            <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
+            <c:if test="${userObj.checkRuolo('AM')}">
             <c:if test="${intervento.statoIntervento.id == 2}">
                 <c:choose>
                    <c:when test="${sessione == null}">

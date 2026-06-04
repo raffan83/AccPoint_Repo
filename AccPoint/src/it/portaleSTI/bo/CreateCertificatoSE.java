@@ -362,16 +362,16 @@ public class CreateCertificatoSE {
 			report.addParameter("limite_1",misura_se.getR_SL_GW());
 			report.addParameter("esito_1",esitoR_SL);
 			
-			String esitoR_ISO=Utility.returnEsit(misura_se.getR_ISO(), misura_se.getR_ISO_GW(), 0);
+			String esitoR_ISO=Utility.returnEsit(misura_se.getR_ISO(), misura_se.getR_ISO_GW(), 1);
 			if(esitoR_ISO.equals("KO")) 
 			{
 				esitoMisure=false;
 			}
 			report.addParameter("misurato_2",misura_se.getR_ISO());
 			report.addParameter("limite_2",misura_se.getR_ISO_GW());
-			report.addParameter("esito_2",esitoR_SL);
+			report.addParameter("esito_2",esitoR_ISO);
 			
-			String esitoU_ISO=Utility.returnEsit(misura_se.getU_ISO(), misura_se.getU_ISO_GW(), 0);
+			String esitoU_ISO=Utility.returnEsit(misura_se.getU_ISO(), misura_se.getU_ISO_GW(), 1);
 			if(esitoU_ISO.equals("KO")) 
 			{
 				esitoMisure=false;

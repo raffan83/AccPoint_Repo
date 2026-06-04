@@ -165,7 +165,16 @@ public class GestioneVerCertificati extends HttpServlet {
 				if(idClienteSede == null) {
 					idCliente = null;
 					idSede = null;
-					company = null;
+					
+					if(utente.isTras()) 
+					{
+						company = null;
+					}
+					else 
+					{
+						company=""+utente.getCompany().getId();
+					}
+						
 				}else {
 
 					
@@ -178,6 +187,16 @@ public class GestioneVerCertificati extends HttpServlet {
 				
 					 if(cliente.length>2) {
 						 company = cliente[2];
+					 }else 
+					 {
+						 if(utente.isTras()) 
+							{
+								company = null;
+							}
+							else 
+							{
+								company=""+utente.getCompany().getId();
+							}
 					 }
 					
 				}

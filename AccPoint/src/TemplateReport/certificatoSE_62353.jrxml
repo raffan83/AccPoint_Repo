@@ -1302,11 +1302,11 @@
 	<columnFooter>
 		<band height="60">
 			<staticText>
-				<reportElement x="365" y="8" width="91" height="21" uuid="09a7beeb-cc0c-46c6-b1d0-a3ad2e30baea"/>
+				<reportElement x="354" y="8" width="91" height="21" uuid="09a7beeb-cc0c-46c6-b1d0-a3ad2e30baea"/>
 				<text><![CDATA[Operatore Tecnico:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="458" y="8" width="95" height="21" uuid="d16ee3ae-87f6-4461-99fe-07e1db12c7d6"/>
+				<reportElement x="443" y="8" width="112" height="21" uuid="d16ee3ae-87f6-4461-99fe-07e1db12c7d6"/>
 				<textElement textAlignment="Left" verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[$P{operatore}]]></textFieldExpression>
 			</textField>
@@ -1321,7 +1321,7 @@
 				<text><![CDATA[Rev. A del 02/04/2026]]></text>
 			</staticText>
 			<image hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="458" y="8" width="77" height="21" uuid="5cb8c991-fdb8-485f-a717-4d252eb4666a"/>
+				<reportElement x="448" y="8" width="106" height="21" uuid="5cb8c991-fdb8-485f-a717-4d252eb4666a"/>
 				<imageExpression><![CDATA[$P{firma_operatore}]]></imageExpression>
 			</image>
 			<staticText>

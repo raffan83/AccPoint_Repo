@@ -1565,8 +1565,30 @@ public class GestioneRilievi extends HttpServlet {
 				
 					
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
-				rilievo.setStato_rilievo(new RilStatoRilievoDTO(Integer.parseInt(stato), ""));
+			
+				boolean confermaChiusura=true;
+				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(rilievo.getId(), session);
+				for(RilParticolareDTO rp: lista_particolari) {
+					ArrayList<RilQuotaDTO> lista_quote_particolare = GestioneRilieviBO.getQuoteFromImpronta(rp.getId(), session);
+					
+					for(RilQuotaDTO rq : lista_quote_particolare) {
+						ArrayList<RilPuntoQuotaDTO> lista_punto_quota = GestioneRilieviBO.getPuntoQuotiFromQuota(rq.getId(), session);
+						 
+						for(RilPuntoQuotaDTO rpq : lista_punto_quota) {
+							if(rpq.getValore_punto()==null || rpq.getValore_punto().equals("")) {
+								confermaChiusura = false;
+								myObj.addProperty("success", false);
+								myObj.addProperty("messaggio", "Impossibile chiudere il rilievo. Ci sono uno o più celle senza misura!");	
+								session.getTransaction().commit(); session.close();
+								out.print(myObj);
+								return;
+							}
+						}
+					}
+				}
 				
+				if(confermaChiusura) {
+				rilievo.setStato_rilievo(new RilStatoRilievoDTO(Integer.parseInt(stato), ""));
 				if(stato.equals("2")) {
 					rilievo.setData_consegna(new Date());
 					
@@ -1580,7 +1602,7 @@ public class GestioneRilievi extends HttpServlet {
 					
 					rilievo.setNumero_scheda("SRD_"+(ultima_scheda));
 					
-					ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(rilievo.getId(), session);
+				//	ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(rilievo.getId(), session);
 				
 					int quote_tot=0;
 					int pezzi_tot=0;
@@ -1639,6 +1661,7 @@ public class GestioneRilievi extends HttpServlet {
 				session.close();
 				
 				out.print(myObj);
+			}
 				
 			}
 			

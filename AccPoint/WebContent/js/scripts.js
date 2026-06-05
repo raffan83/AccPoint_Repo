@@ -9584,18 +9584,16 @@ function chiudiApriRilievo(id_rilievo,stato, smaltimento, non_lavorato){
         			});
 		  
   		  }else{
-  			
+  			 pleaseWaitDiv.modal('hide');
   			$('#myModalErrorContent').html(data.messaggio);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");	  
-			$('#report_button').show();
-			$('#visualizza_report').show();
 			$('#myModalError').modal('show');			
 		
   		  }
       },
       error: function( data, textStatus) {
-
+    	
     	  $('#myModalErrorContent').html(data.messaggio);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");	  

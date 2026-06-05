@@ -1407,11 +1407,19 @@ public class GestioneFormazioneBO {
 		    getOrCreateCell(sheet1, row, 12).setCellValue(objScanner.getMotivo_freq());
 
 		    // questionario
+		  
 		    for (int i = 13; i <= 19; i++) { //max 37
-		    	if(objScanner.getByIndex(i + 7).equals("")) {
+		    	
+		    	if(objScanner.getByIndex(i + 7).equals("1") ||
+		    			objScanner.getByIndex(i + 7).equals("2")||
+		    			objScanner.getByIndex(i + 7).equals("3")||
+		    			objScanner.getByIndex(i + 7).equals("4")||
+		    			objScanner.getByIndex(i + 7).equals("5")) {
+		    		getOrCreateCell(sheet1, row, i).setCellValue(Integer.parseInt(objScanner.getByIndex(i + 7)));
+		    	} else {
 		    		continue;
 		    	}
-		    	getOrCreateCell(sheet1, row, i).setCellValue(Integer.parseInt(objScanner.getByIndex(i + 7)));
+		    	
 		    	
 		    }
 		    
@@ -1457,7 +1465,15 @@ public class GestioneFormazioneBO {
 			    	 getOrCreateCell(sheet1, row, i).setCellValue(objScanner.getByIndex(i + 7));
 			    } else {
 			    	if(objScanner.getDom_7().equals("Sì")) { //aggiungere || objScanner.getDom_4().equals("")  ?
+			    		if(objScanner.getByIndex(i + 7).equals("1") ||
+				    			objScanner.getByIndex(i + 7).equals("2")||
+				    			objScanner.getByIndex(i + 7).equals("3")||
+				    			objScanner.getByIndex(i + 7).equals("4")||
+				    			objScanner.getByIndex(i + 7).equals("5")) {
 			    	getOrCreateCell(sheet1, row, i).setCellValue(Integer.parseInt(objScanner.getByIndex(i + 7)));
+			    		} else {
+			    			continue;
+			    		}
 			    } else {
 			    	 getOrCreateCell(sheet1, row, i).setCellValue("");
 			    }
@@ -1467,7 +1483,13 @@ public class GestioneFormazioneBO {
 		    getOrCreateCell(sheet1, row, 38).setCellValue(objScanner.getDom_7_1_1());
 		   
 		    if(objScanner.getDom_7_2_1() != null && !objScanner.getDom_7_2_1().equals("") ) {
+		    	if(objScanner.getDom_7_2_1().equals("1") ||
+		    			objScanner.getDom_7_2_1().equals("2")||
+		    			objScanner.getDom_7_2_1().equals("3")||
+		    			objScanner.getDom_7_2_1().equals("4")||
+		    			objScanner.getDom_7_2_1().equals("5")) {
 	    getOrCreateCell(sheet1, row, 39).setCellValue(Integer.parseInt(objScanner.getDom_7_2_1()));
+		    	} else {continue;}
 		    }else {
 		    	continue;
 		    }
@@ -1477,7 +1499,13 @@ public class GestioneFormazioneBO {
 		    getOrCreateCell(sheet1, row, 41).setCellValue(objScanner.getDom_8_1());
 		    
 		    if(objScanner.getDom_9() != null && !objScanner.getDom_9().equals("")) {
+		    	if(objScanner.getDom_9().equals("1") ||
+		    			objScanner.getDom_9().equals("2")||
+		    			objScanner.getDom_9().equals("3")||
+		    			objScanner.getDom_9().equals("4")||
+		    			objScanner.getDom_9().equals("5")) {
 		    getOrCreateCell(sheet1, row, 42).setCellValue(Integer.parseInt(objScanner.getDom_9()));
+		    	} else {continue;}
 		    } else {
 		    	continue;
 		    }

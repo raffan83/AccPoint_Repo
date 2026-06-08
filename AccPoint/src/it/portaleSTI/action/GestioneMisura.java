@@ -387,8 +387,8 @@ public class GestioneMisura extends HttpServlet {
 			    boolean risp = false;
 			    
 			    
-			//   String urlDestinazione = "http://delivery.stisrl.com/DocumentalWEB/serviceRest.do";
-				   String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";  //CAMBIARE ANCHE IN ACTION=invalidaSessione
+			 //  String urlDestinazione = "http://delivery.stisrl.com/DocumentalWEB/serviceRest.do";
+			//	   String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";  //CAMBIARE ANCHE IN ACTION=invalidaSessione
 			    
 			    
 
@@ -496,7 +496,7 @@ public class GestioneMisura extends HttpServlet {
 			        out.write("data: {\"progress\":85, \"fase\":5, \"testo\":\"Invio file a DocumentalWeb...\"}\n\n");
 			        out.flush();
 
-			        risp = inviaFile(listaMisureWeb, sessione, pathFileCalver, schedaConsegna, session, urlDestinazione);
+			        risp = inviaFile(listaMisureWeb, sessione, pathFileCalver, schedaConsegna, session, Costanti.URL_DELIVERY);
 			        System.out.println("Risposta DocumentalWEB: " + risp);
 
 			     // Integer.parseInt("ciao");
@@ -528,7 +528,7 @@ public class GestioneMisura extends HttpServlet {
 			        boolean rispElimina = false;
 			        //eliminare file In Docoumentale chimando funzione  eliminaFileService
 			        if(sessione!=null && risp == true) {
-			        rispElimina = eliminaFileService(sessione,urlDestinazione);
+			        rispElimina = eliminaFileService(sessione,Costanti.URL_DELIVERY);
 			        }
 			        System.out.println("risp elimina: " + rispElimina);
 			        

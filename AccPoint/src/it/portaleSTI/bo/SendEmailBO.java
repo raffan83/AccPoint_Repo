@@ -2511,7 +2511,7 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
 	  // embed the image and get the content id
 
 	//  String cid = email.embed(new File("images/Documental_email.png"));
-	  File image = new File(ctx.getRealPath("images/Documental_email.png"));
+	  File image = new File(ctx.getRealPath("images/Documental_email_2.png"));
 	  String cid = email.embed(image, "Calver logo");
 	  
 	  String lista_doc ="";

@@ -179,9 +179,13 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		CommessaDTO comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
 		
+		
 		ClienteDTO cliente = new ClienteDTO() ;
 		if(comm!=null) {
 		cliente = GestioneAnagraficaRemotaBO.getClienteById(""+comm.getID_ANAGEN_UTIL());
+		}
+		if(cliente.getEmail()==null) {
+			cliente.setEmail("");
 		}
 		System.out.println("email cliente vera: "+ cliente.getEmail());
 		cliente.setEmail("edoardo.boccitto@ncsnetwork.it");

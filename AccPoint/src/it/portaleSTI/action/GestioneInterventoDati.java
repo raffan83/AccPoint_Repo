@@ -187,8 +187,8 @@ public class GestioneInterventoDati extends HttpServlet {
 		if(cliente.getEmail()==null) {
 			cliente.setEmail("");
 		}
-		System.out.println("email cliente vera: "+ cliente.getEmail());
-		cliente.setEmail("edoardo.boccitto@ncsnetwork.it");
+		
+	//	cliente.setEmail("edoardo.boccitto@ncsnetwork.it");
 		
 		//cliente.setEmail("raffaele.fantini@ncsnetwork.it");
 		

@@ -555,7 +555,7 @@ public class GestioneMisura extends HttpServlet {
 			    }
 			} else if(action.equals("invalidaSessione")) {
 			   // String urlDestinazione = "http://delivery.stisrl.com/DocumentalWEB/serviceRest.do";
-				   String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";
+				 //  String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";
 				
 				 ajax = true;
 				int idSessione = Integer.parseInt(request.getParameter("idSessione"));
@@ -565,7 +565,7 @@ public class GestioneMisura extends HttpServlet {
 				GestioneSessioneBO.updateAbilitato(sessione,utente); //LATO CALVER
 				
 				//LATO DOCUMENTALWEB
-				 boolean rispUpdate = updateAbilitatoFileService(sessione, urlDestinazione);
+				 boolean rispUpdate = updateAbilitatoFileService(sessione, Costanti.URL_DELIVERY);
 				 System.out.println("rsipUpdate: "+rispUpdate  );
 				 
 				 response.setContentType("application/json");

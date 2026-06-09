@@ -2504,13 +2504,14 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
          throw new EmailException("Nessun destinatario valido trovato.");
      }
 	  
-	  
+     email.setCharset("UTF-8");
 	    email.setFrom("calver@accpoint.it", "Calver");
-	  email.setSubject("Scheda consegna documenti");
+	  email.setSubject("Report taratura strumenti disponibile per il download");
 	  
 	  // embed the image and get the content id
 
-	  File image = new File(ctx.getRealPath("images/logo_calver_v2.png"));
+	//  String cid = email.embed(new File("images/Documental_email.png"));
+	  File image = new File(ctx.getRealPath("images/Documental_email.png"));
 	  String cid = email.embed(image, "Calver logo");
 	  
 	  String lista_doc ="";
@@ -2523,20 +2524,47 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
 	  String dataFormattata = sdf.format(sessione.getDataScadenza());
 	 // String URL_DOCUMENTALWEB = "http://192.168.1.100:8082/DocumentalWEB";
 
-		  email.setHtmlMsg("<html>Si avvisa che i certificati sono pronti<br>"
-		  		+ " Queste sono le credenziali per entrare nel sito: " 
-		  		+ "<a href=\"http://delivery.stisrl.com/DocumentalWEB/\">"
-		  		+ "Accedi al portale"
+		  email.setHtmlMsg("<html><meta charset=\\\"UTF-8\\\">Spett.le Cliente " + sessione.getNome_cliente() +"<br>"
+		  		+ "<br>Le comunichiamo che i rapporti di taratura e la relativa documentazione sono disponibili nella Sua area riservata.<br>"
+		  		+ "<br>Per consultare e scaricare i documenti, acceda al seguente link: " 
+		  		+ "<br><a href=\"http://delivery.stisrl.com/DocumentalWEB/\">"
+		  		+ "http://delivery.stisrl.com/DocumentalWEB"
 		  		+ "</a>"
-		  		+ "<br> Username: "+ sessione.getUsername()
+		  		+ "<br>utilizzando le credenziali riservate riportate di seguito:"
+		  		+ "<br><br> Username: "+ sessione.getUsername()
 				+ "<br> Password: " + sessione.getPassword() 
-			    + "<br> Scadenza: " + dataFormattata
-			    + "<br><br> in allegato la scheda di consegna<br>"
-		  
-				  +lista_doc
-			  	+"Tipo consegna: "+tipo_consegna
-			  		+" <br /> <br /> <img width='250' src=\"cid:"+cid+"\">");
-			  		//+ " <br /> <br /> <img width=\"200\" src=\""+Costanti.PATH_FOLDER_LOGHI +"\\sito_calver.png"+" \"></html>");
+				+ "<br><br><strong>Scadenza del link di accesso: " + dataFormattata + "</strong>"
+			    + "<br>In allegato trova la scheda di consegna.<br>"
+				
+			    
+				+ "<br><strong>Per assistenza, dal lunedì al venerdì dalle ore 8:00 alle ore 17:00, può contattarci ai seguenti recapiti:</strong>"
+				+ "<ul>\n" 
+				+ "  <li>Supporto tecnico/commerciale: : +39 0776 18151 (interno 205, 214 oppure 246)</li>\n"  
+				+ "</ul>"
+				+ "<ul>\n" 
+				+ "  <li>Supporto informatico: +39 0776 18151 (interno 220)</li>\n"
+				+ "</ul>"
+				+ "<br>Restiamo a disposizione per qualsiasi chiarimento."
+				+ "<br><br>Cordiali saluti"
+				+ "<br>S.T.I. Sviluppo Tecnologie Industriali S.r.l."
+				
+				+ "<br><br>Via Tofaro 42/B – 03039 Sora (FR)"
+				+ "<br>Tel. +39 0776 18151"
+				+ "<br>E-mail: <a href=\"mailto:commerciale@stisrl.com\">commerciale@stisrl.com</a>"
+				+ "<br>Sito web: <a href=\"https://www.stisrl.com\" target=\"_blank\">www.stisrl.com</a>"
+				
+				
+				+ "<br><br>"
+				+ "<a href=\"http://delivery.stisrl.com/DocumentalWEB/\" target=\"_blank\">"
+				+ "  <img src=\"cid:" + cid + "\" width=\"95%\" height=\"300\" style=\"display:block;border:0;\">"
+				+ "</a>"
+				
+				+ "<div style=\"font-size:13px;color:#666;line-height:1.3;margin-top:10px;\">"
+				+ "Le informazioni trasmesse sono destinate esclusivamente alla persona o alla società in indirizzo e sono da intendersi confidenziali e riservate. "
+				+ "Qualsiasi utilizzo, diffusione, copia o distribuzione non autorizzata è vietato. "
+				+ "Se Lei ha ricevuto questo messaggio per errore, è pregato di avvisarci rispondendo a questa email e cancellare il messaggio dal Suo sistema. "
+				+ "Grazie per la collaborazione."
+				+ "</div>");
 
 
 		   //  Allegato

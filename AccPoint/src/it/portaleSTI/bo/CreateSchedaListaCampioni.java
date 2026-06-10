@@ -150,7 +150,7 @@ public class CreateSchedaListaCampioni {
 		
 		ArrayList<String> listaString = new ArrayList<String>();
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		
 		String[] listaCodici = new String[5];
 		

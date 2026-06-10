@@ -628,6 +628,13 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		for(int i=0; i<lista_pacchi.size();i++) {
 			lista_pacchi.get(i).setChiuso(1);
 			lista_pacchi.get(i).setTipo_nota_pacco(null);
+			
+			/*Setto lo stato di lavorazione a SPEDITO(6)  solo ai pacchi che si trovavano nello stato di IN SPEDIZIONE(3)*/
+			
+			if(lista_pacchi.get(i).getStato_lavorazione().getId()==3) 
+			{
+				lista_pacchi.get(i).setStato_lavorazione(new MagStatoLavorazioneDTO(6, ""));
+			}
 			session.update(lista_pacchi.get(i));
 		}
 		

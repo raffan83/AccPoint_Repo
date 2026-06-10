@@ -252,6 +252,8 @@
  <span class="label label-warning" >${pacco.stato_lavorazione.descrizione}</span></c:when>
  <c:when test="${pacco.stato_lavorazione.id == 5}">
  <span class="label label-primary">${pacco.stato_lavorazione.descrizione}</span></c:when>
+   <c:when test="${pacco.stato_lavorazione.id == 6}">
+ <span class="label label-danger ">${pacco.stato_lavorazione.descrizione}</span></c:when>
  </c:choose>
 </td>
 <td>${pacco.note_pacco }</td>

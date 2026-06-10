@@ -904,9 +904,14 @@ public class GestionePacco extends HttpServlet {
 			if(!data_spedizione.equals("")&& data_spedizione!=null) {
 				pacco.setData_spedizione(format.parse(data_spedizione));
 			}
+			if(pacco.getTipo_nota_pacco().getId()==7 && commessa!=null && !commessa.equals("") ) 
+			{
+				
+			}
+			
 			if(commessa!=null && !commessa.equals("")) {
 				if(pacco.getTipo_nota_pacco()!=null && pacco.getTipo_nota_pacco().getId()==7) {
-					pacco.setTipo_nota_pacco(null);
+					pacco.setTipo_nota_pacco(new MagTipoNotaPaccoDTO(18,""));
 				}
 			}
 			pacco.setCommessa(commessa);			

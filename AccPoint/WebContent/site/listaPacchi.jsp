@@ -2690,13 +2690,10 @@ function inserisciItem(){
 		dataString ="id_pacco="+ id_pacco
         exploreModal("gestionePacco.do?action=item_uscita",dataString,"#modFornitore",function(datab,textStatusb){
 
-
-          });
-		
-
 		$('#myModalFornitore').modal();
 
   		$('#myModalFornitore').on('shown.bs.modal', function (){
+  	
  	    	table = $('#tabUscita').DataTable();
       		 table.columns().eq( 0 ).each( function ( colIdx ) {
     			 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
@@ -2707,7 +2704,7 @@ function inserisciItem(){
     			 } );
     			 } );     
     		table.columns.adjust().draw();
-		 
+        });
 		});  
 		
     	 
@@ -2724,6 +2721,8 @@ function inserisciItem(){
 	        	$('#myModalUscitaPacco').modal();
 	        	
 	        	 $('#myModalUscitaPacco').on('shown.bs.modal', function (){
+	        		 
+
 	 	 	    	table = $('#tabUscita').DataTable();
 	 	     		 table.columns().eq( 0 ).each( function ( colIdx ) {
 	 	    			 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
@@ -3505,14 +3504,14 @@ if($('#tipo_ddt').val() != 1){
 
 
 		$('#myModalFornitore').on('hidden.bs.modal', function(){
-		
+			  $('#modFornitore').empty();
 			$(document.body).css('padding-right', '0px');
 			$('#tabUscita').remove();
 			
 		});
 		
 		$('#myModalUscitaPacco').on('hidden.bs.modal', function(){
-			
+			  $('#modUscita').empty();
 			$(document.body).css('padding-right', '0px');
 			$('#tabUscita').remove();
 			

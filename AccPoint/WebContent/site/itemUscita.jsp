@@ -241,15 +241,50 @@
 	    
 
 	} ); */
-	
-	
-	$('#btnSearchStrumento').on('click', function () {
+	function valutaInput(valore) {
 
+	    if (!valore) return "0";
+
+	    valore = valore.trim();
+
+	   
+	    if (/^\d+$/.test(valore)) {
+	        return valore;
+	    }
+
+	    
+	    try {
+	        var match = valore.match(/id_str=([^&]+)/);
+	        if (match && match[1]) {
+
+	            var base64 = match[1];
+
+	            
+	            var decoded = atob(base64);
+
+	           
+	            if (/^\d+$/.test(decoded)) {
+	                return decoded;
+	            }
+	        }
+	    } catch (e) {
+	        
+	        console.warn('Errore decodifica base64:', e);
+	    }
+
+	   
+	    return "0";
+	}
+
+	
+	$(document).off('click', '#btnSearchStrumento').on('click', '#btnSearchStrumento', function () {
 		 var inputRaw = $('#searchStrumento').val().trim();
-		 var idCercato = inputRaw;
+		 var idCercato = valutaInput(inputRaw);
 	   	 var $msg = $('#msgSearchStrumento');
-	   	 
-	   	 console.log(idCercato);
+	   	
+	   	 console.log("sono dentro");
+	   	 console.log("inputRaw " + inputRaw);
+	   	console.log("idCercato " + idCercato);
 	   	 
 	   	 setSemaforo('off', '');
 	   	 
@@ -257,7 +292,7 @@
 	   	 var trovato = false;
 	   	 
 	   	 
-	     table.rows().every(function () {
+	     t.rows().every(function () {
 
 	         var data = this.data();
 
@@ -267,17 +302,20 @@
 	         var stato = data[3];
 	         var quantita =data[4];
 	         var note = data[5];
-	        
+	        console.log("id: "+id);
 
 	         if (id == idCercato) {
 	        	 console.log("id_item " + id);
 	             trovato = true;
 
 	             // vai alla pagina corretta
-	             table.page(this.index()).draw(false);
+	             t.page(this.index()).draw(false);
 
 	             // evidenzia riga (opzionale)
 	             $(this.node()).addClass('row-selezionata');
+	             
+	             // CHECK checkbox della riga trovata
+	             $(this.node()).find('input.check_strumenti').prop('checked', true);
 
 	             // chiamata come se avessi cliccato "+"
 	            // insertItem(id, descrizione, codiceInt, matricola);
@@ -287,7 +325,8 @@
 	                     setSemaforo('green', 'Trovato : ' + id + ' - ' + denominazione);
 	                     // se vuoi ancora id+descrizione nel testo del cerchio:
 	                     // setSemaforo('green', id);
-	                 
+	                     console.log("led: " + $('#semaforoLed').length);
+	                     console.log("txt: " + $('#semaforoTxt').length);
 
 	                 setTimeout(focusRicercaQR, 0);
 
@@ -302,6 +341,7 @@
 	     }
 	});
 	     if (!trovato) {
+	    
 	     	$('#listaItemTop').text('');
 	     	setSemaforo('red', 'Strumento non trovato');
 	      //   $msg.text('Strumento non trovato').show();
@@ -319,15 +359,17 @@
 	    $('#msgSearchStrumento').hide().text('');
 	});
 
-	$('#searchStrumento').on('keyup', function (e) {
+	$(document).on('keyup', '#searchStrumento', function (e) {
 	    if (e.key === 'Enter') {
 	        $('#btnSearchStrumento').click();
 	    }
 	});
 
 	function setSemaforo(stato, testo) {
+		 console.log("setSemaforo chiamato: " + stato + " - " + testo);
 	    var $led = $('#semaforoLed');
 	    var $txt = $('#semaforoTxt');
+	    console.log("led classi prima: " + $led.attr('class'));
 
 	    $led.removeClass('semaforo-off semaforo-red semaforo-green semaforo-amber');
 
@@ -335,40 +377,14 @@
 	    else if (stato === 'red') $led.addClass('semaforo-red');
 	    else if (stato === 'amber') $led.addClass('semaforo-amber');
 	    else $led.addClass('semaforo-off');
+	    
+	    console.log("led classi dopo: " + $led.attr('class'));
 
 	    $txt.text(testo || '');
 	}
 	
-	function focusRicercaQR() {
-	    var $in = $('#searchStrumento');
-	    $in.focus();
-	    $in.select(); // seleziona tutto: il prossimo scan sovrascrive
-	}
 
-	$('#searchStrumento').on('input', function () {
-	    $('#msgSearchStrumento').hide().text('');
-	});
 
-	$('#searchStrumento').on('keyup', function (e) {
-	    if (e.key === 'Enter') {
-	        $('#btnSearchStrumento').click();
-	    }
-	});
-
-	function setSemaforo(stato, testo) {
-	    var $led = $('#semaforoLed');
-	    var $txt = $('#semaforoTxt');
-
-	    $led.removeClass('semaforo-off semaforo-red semaforo-green semaforo-amber');
-
-	    if (stato === 'green') $led.addClass('semaforo-green');
-	    else if (stato === 'red') $led.addClass('semaforo-red');
-	    else if (stato === 'amber') $led.addClass('semaforo-amber');
-	    else $led.addClass('semaforo-off');
-
-	    $txt.text(testo || '');
-	}
-	
 
 	 function insertItem(id, descrizione, codice_interno, matricola){
 		 

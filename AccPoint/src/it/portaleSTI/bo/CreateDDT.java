@@ -425,7 +425,12 @@ private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)thr
 	 				}
 	 				arrayPs.add(String.valueOf(item_pacco.getQuantita()));
 	 				arrayPs.add(item_pacco.getNote());
-	 				arrayPs.add(str.getNote());
+	 				if(str.getNote()!=null && !str.getNote().equals("")) {
+	 					arrayPs.add(str.getNote());
+	 				} else {
+	 					arrayPs.add("");
+	 				}
+	 				
 	 				
 	 			
 			         Object[] listaValori = arrayPs.toArray();

@@ -8,7 +8,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="241" splitType="Stretch">
+		<band height="310" splitType="Stretch">
 			<rectangle>
 				<reportElement x="0" y="150" width="281" height="40" uuid="cfc71b2f-419a-4f91-bb66-56da487d3762"/>
 				<graphicElement>
@@ -126,95 +126,111 @@
 				</textElement>
 				<text><![CDATA[DATA ARRIVO:]]></text>
 			</staticText>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="49" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="229" width="556" height="81" uuid="03d13400-df73-4d04-81d5-dca58f3cff7d"/>
+			</rectangle>
 			<staticText>
-				<reportElement x="0" y="0" width="151" height="31" uuid="6966290b-1658-47c3-bb53-b5d1981c6b06"/>
+				<reportElement x="10" y="240" width="70" height="30" uuid="423139b8-7a0a-4909-ac93-5d7c078a171c"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[CONTENUTO DEL PACCO:]]></text>
+				<text><![CDATA[NOTE COMMESSA:]]></text>
 			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="81" y="240" width="455" height="60" uuid="0d379ef7-a4be-4486-95a2-41d8d3577095"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{note_commessa}]]></textFieldExpression>
+			</textField>
 		</band>
+	</title>
+	<pageHeader>
+		<band height="49" splitType="Stretch"/>
 	</pageHeader>
 	<columnFooter>
-		<band height="11" splitType="Stretch"/>
+		<band height="22" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="238" splitType="Stretch">
+		<band height="270" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="556" height="220" uuid="e06e6886-02c1-4edf-b42c-9212aedc83bf"/>
+				<reportElement x="-1" y="10" width="556" height="260" uuid="e06e6886-02c1-4edf-b42c-9212aedc83bf"/>
 			</rectangle>
 			<textField>
-				<reportElement x="10" y="61" width="531" height="159" uuid="77911d1e-a510-4bc7-a1ad-8f4277c91b68"/>
+				<reportElement x="9" y="101" width="531" height="159" uuid="77911d1e-a510-4bc7-a1ad-8f4277c91b68"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{note_pacco}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="10" y="10" width="180" height="31" uuid="52e6417c-3409-4e51-94fb-d9f2fc7b6f7f"/>
+				<reportElement x="9" y="50" width="180" height="31" uuid="52e6417c-3409-4e51-94fb-d9f2fc7b6f7f"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[VERIFICA DDT/CONTENUTO PACCO]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="220" y="12" width="11" height="11" uuid="57b6426f-e266-4e3b-8ab3-c67803a2b5a3"/>
+				<reportElement x="219" y="52" width="11" height="11" uuid="57b6426f-e266-4e3b-8ab3-c67803a2b5a3"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="289" y="12" width="11" height="11" uuid="b9772f83-feb3-4832-ba68-62e2eb68eed6"/>
+				<reportElement x="288" y="52" width="11" height="11" uuid="b9772f83-feb3-4832-ba68-62e2eb68eed6"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="237" y="12" width="38" height="18" uuid="c7e758d3-cdf2-4da6-9dbe-da2c16ec4289"/>
+				<reportElement x="236" y="52" width="38" height="18" uuid="c7e758d3-cdf2-4da6-9dbe-da2c16ec4289"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[OK]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="307" y="12" width="38" height="18" uuid="7f65cabf-9b1f-4c7d-8f8e-da479cc046b3"/>
+				<reportElement x="306" y="52" width="38" height="18" uuid="7f65cabf-9b1f-4c7d-8f8e-da479cc046b3"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOK]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="42" width="38" height="18" uuid="53937286-0f83-46ab-800c-9ca9f6e69993"/>
+				<reportElement x="10" y="82" width="38" height="18" uuid="53937286-0f83-46ab-800c-9ca9f6e69993"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOTE]]></text>
 			</staticText>
 			<line>
-				<reportElement x="10" y="74" width="530" height="1" uuid="45f4bfb2-fecb-453a-852c-8d96bd938e1f"/>
+				<reportElement x="9" y="114" width="530" height="1" uuid="45f4bfb2-fecb-453a-852c-8d96bd938e1f"/>
 			</line>
 			<line>
-				<reportElement x="10" y="90" width="530" height="1" uuid="547f0814-601b-4e9c-9ba9-cf190f1d6f66"/>
+				<reportElement x="9" y="130" width="530" height="1" uuid="547f0814-601b-4e9c-9ba9-cf190f1d6f66"/>
 			</line>
 			<line>
-				<reportElement x="10" y="106" width="530" height="1" uuid="a43b7601-d201-4d0b-8a0e-0fc24fc2f07a"/>
+				<reportElement x="9" y="146" width="530" height="1" uuid="a43b7601-d201-4d0b-8a0e-0fc24fc2f07a"/>
 			</line>
 			<line>
-				<reportElement x="10" y="122" width="530" height="1" uuid="7d7e539e-69c0-4c15-bcb9-f94b14760a58"/>
+				<reportElement x="9" y="162" width="530" height="1" uuid="7d7e539e-69c0-4c15-bcb9-f94b14760a58"/>
 			</line>
 			<line>
-				<reportElement x="10" y="138" width="530" height="1" uuid="3520d1cc-52c4-4f61-8c80-c58a4bd1cead"/>
+				<reportElement x="9" y="178" width="530" height="1" uuid="3520d1cc-52c4-4f61-8c80-c58a4bd1cead"/>
 			</line>
 			<line>
-				<reportElement x="10" y="152" width="530" height="1" uuid="fa274243-ec70-45f5-9248-4cfddd88bf41"/>
+				<reportElement x="9" y="192" width="530" height="1" uuid="fa274243-ec70-45f5-9248-4cfddd88bf41"/>
 			</line>
 			<line>
-				<reportElement x="10" y="168" width="530" height="1" uuid="02e959e6-b1a2-4a23-bcfb-5b44d67de2f3"/>
+				<reportElement x="9" y="208" width="530" height="1" uuid="02e959e6-b1a2-4a23-bcfb-5b44d67de2f3"/>
 			</line>
 			<line>
-				<reportElement x="10" y="183" width="530" height="1" uuid="3a9a9825-3558-4607-9bfe-a50a2abd11d8"/>
+				<reportElement x="9" y="223" width="530" height="1" uuid="3a9a9825-3558-4607-9bfe-a50a2abd11d8"/>
 			</line>
 			<line>
-				<reportElement x="10" y="199" width="530" height="1" uuid="2ef5e5c8-cfc9-46f7-a93d-b3a92eec62b6"/>
+				<reportElement x="9" y="239" width="530" height="1" uuid="2ef5e5c8-cfc9-46f7-a93d-b3a92eec62b6"/>
 			</line>
+			<staticText>
+				<reportElement x="-1" y="-12" width="151" height="31" uuid="6966290b-1658-47c3-bb53-b5d1981c6b06"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTENUTO DEL PACCO:]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>

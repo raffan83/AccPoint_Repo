@@ -16,11 +16,13 @@ import java.util.List;
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -40,7 +42,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 	
 	File file; 
 	private boolean esito; 
-	public CreateDDT(MagDdtDTO ddt, List<SedeDTO> lista_sedi, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception  {
+	public CreateDDT(MagDdtDTO ddt, List<SedeDTO> lista_sedi, List<MagItemPaccoDTO> lista_item_pacco,  Session session) throws Exception  {
 
 			build(ddt,lista_sedi, lista_item_pacco, session);
 			
@@ -346,10 +348,11 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
  	 		
- 	 		report.addColumn(col.column("Codice della merce o servizio","id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(149));
-	 		report.addColumn(col.column("Descrizione della merce o servizio","denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(239));
-	 		report.addColumn(col.column("Q.ta","quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(43));
-	 		report.addColumn(col.column("Note","note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(120));
+ 	 		report.addColumn(col.column("Codice della merce o servizio","id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(49));
+	 		report.addColumn(col.column("Descrizione della merce o servizio","denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(210));
+	 		report.addColumn(col.column("Q.ta","quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(23));
+	 		report.addColumn(col.column("Note","note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(125));
+	 		report.addColumn(col.column("Note Strumento","note_strumento", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(140));
 
 			report.setColumnStyle((Templates.columnStyle).setFontSize(8).setBorder(stl.penThin()));
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()).setBackgroundColor(new Color(204,204,204)));
@@ -390,16 +393,22 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)throws Exception {
 			
 		
-		String[] listaCodici = new String[4];
+		String[] listaCodici = new String[5];
 		
 		listaCodici[0]="id_item";		
 		listaCodici[1]="denominazione";	
 		listaCodici[2]="quantita";
 		listaCodici[3]="note";
+		listaCodici[4]="note_strumento";
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		
 		DRDataSource dataSource = new DRDataSource(listaCodici);
 		
 			for (MagItemPaccoDTO item_pacco : lista_item_pacco) {
+				int id_str = item_pacco.getItem().getId_tipo_proprio();
+				StrumentoDTO str = GestioneStrumentoBO.getStrumentoById(""+id_str, session);
 				
 				if(item_pacco!=null)
 				{
@@ -416,6 +425,8 @@ private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)thr
 	 				}
 	 				arrayPs.add(String.valueOf(item_pacco.getQuantita()));
 	 				arrayPs.add(item_pacco.getNote());
+	 				arrayPs.add(str.getNote());
+	 				
 	 			
 			         Object[] listaValori = arrayPs.toArray();
 			        
@@ -423,7 +434,8 @@ private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)thr
 				}
 			
 			}
-
+			session.getTransaction().commit();
+			session.close();
  		    return dataSource;
  	}
 

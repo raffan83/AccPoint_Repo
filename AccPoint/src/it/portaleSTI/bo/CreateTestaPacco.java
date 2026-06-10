@@ -149,6 +149,23 @@ public class CreateTestaPacco {
 					report.addParameter("corriere", "");
 				}
 				
+				if (pacco.getCommessa() != null && !pacco.getCommessa().isEmpty()) {
+
+				    CommessaDTO commessa = GestioneCommesseBO.getCommessaById(pacco.getCommessa());
+
+				    String note_commessa = "";
+
+				    if (commessa != null && commessa.getNOTE_GEN() != null) {
+				        note_commessa = commessa.getNOTE_GEN();
+				    }
+
+				   // note_commessa = "Prova \n PRova2 \n Porva3 \nPorva 4\n Prova 5";
+				   
+				    report.addParameter("note_commessa", note_commessa);
+				}else {
+					report.addParameter("note_commessa", "");
+				}
+				
 				//File imageHeader = new File("C:\\Users\\antonio.dicivita\\Calver\\logo.png");
 				File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"4133_header.jpg");
 				if(imageHeader!=null) {

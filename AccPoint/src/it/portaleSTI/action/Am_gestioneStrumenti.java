@@ -12,10 +12,12 @@ import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -119,6 +121,8 @@ public class Am_gestioneStrumenti extends HttpServlet {
 				}
 				
 				ArrayList<AMOggettoProvaDTO> lista_strumenti = GestioneAM_BO.getListaStrumenti(session);
+				
+				
 				for (AMOggettoProvaDTO s : lista_strumenti) {
 					ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(""+s.getId_cliente());
 					
@@ -129,10 +133,37 @@ public class Am_gestioneStrumenti extends HttpServlet {
 						s.setNomeSedeUtilizzatore(sd.getDescrizione() + " - "+sd.getIndirizzo());
 					}else {
 						s.setNomeSedeUtilizzatore("Non associate");
-					}
-					
-					
+					}	
 				}
+				
+				
+			
+				/*
+				Set<Integer> idClienti = new HashSet<Integer>();
+				for(AMOggettoProvaDTO s : lista_strumenti) {
+					idClienti.add(s.getId_cliente());
+				}
+				
+				Map<Integer, ClienteDTO> clientiMap = new HashMap<>();
+				Map<Integer, SedeDTO> sediMap = new HashMap<>();
+				for (Integer idCliente : idClienti) {
+				    clientiMap.put(idCliente, GestioneAnagraficaRemotaBO.getClienteById(""+idCliente));
+				    
+				}
+				for (AMOggettoProvaDTO s : lista_strumenti) {
+					 ClienteDTO cliente = clientiMap.get(s.getId_cliente());
+					    if (cliente != null) {
+					        s.setNomeClienteUtilizzatore(cliente.getNome());
+					    }
+					    SedeDTO sd =null;
+						if(s.getId_sede()!=0) {
+							sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, s.getId_sede(), s.getId_cliente());
+							s.setNomeSedeUtilizzatore(sd.getDescrizione() + " - "+sd.getIndirizzo());
+						}else {
+							s.setNomeSedeUtilizzatore("Non associate");
+						}	
+				}
+				*/
 				
 				ArrayList<AMImmagineCampioneDTO> lista_immagini = GestioneAM_BO.getListaImmagineCampione(session);
 				

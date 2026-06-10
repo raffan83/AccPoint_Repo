@@ -39,7 +39,37 @@
 
 </c:when>
 <c:otherwise>
+<div class="row row-search-flex" style="margin-top: 10px;">
+	<!--  <div class="row" style="margin-top: 10px;">-->
+	<div class="col-md-6">
+		<label>Cerca strumento</label>
+		<div class="input-group">
+			<input type="text" id="searchStrumento" class="form-control"
+				placeholder="ID strumento o QR"> <span
+				class="input-group-btn">
+				<button class="btn btn-primary" id="btnSearchStrumento">
+					<i class="fa fa-search"></i>
+				</button>
+			</span>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div id="semaforoBox" class="semaforo-box">
+			<div id="semaforoLed" class="semaforo-led semaforo-off">
+				<span id="semaforoTxt" class="semaforo-txt"></span>
+			</div>
+		</div>
+	</div>
+	<!--  <div class="col-md-6">
+		<span id="msgSearchStrumento" class="text-danger"
+			style="display: none; margin-top: 28px; display: inline-block;">
 
+		</span>
+	</div>-->
+</div>
+
+<br>
+<br>
 <table id="tabUscita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
 <c:set var="rilievi_dimensionali" value="0" ></c:set>
  <thead><tr class="active">
@@ -98,6 +128,70 @@
 
 <input type="hidden" id="totale">
 
+ <style>
+.row-selezionata {
+	background-color: #fff3cd !important;
+}
+
+.semaforo-box {
+	height: 10px;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	margin-top:80px;
+	background: #fff;
+}
+
+.semaforo-led{
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid rgba(0,0,0,.12);
+  box-shadow: inset 0 0 10px rgba(0,0,0,.15);
+
+  display: flex;                 
+  align-items: center;          
+  justify-content: center;      
+  text-align: center;
+}
+
+.semaforo-txt{
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.2;
+  color: #fff;                   
+  padding: 0 6px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.4);
+}
+
+/* stati */
+.semaforo-off {
+	background: #e9ecef;
+}
+
+.semaforo-red {
+	background: #dd4b39;
+}
+
+.semaforo-green {
+	background: #00a65a;
+}
+
+.semaforo-amber {
+	background: #f39c12;
+}
+
+.row-search-flex {
+	display: flex;
+	align-items: flex-end;
+	flex-wrap: wrap;
+}
+
+.row-search-flex>[class*="col-"] {
+	float: none !important;
+}
+</style>
+
  
  
  
@@ -147,6 +241,149 @@
 	    
 
 	} ); */
+	
+	
+	$('#btnSearchStrumento').on('click', function () {
+
+		 var inputRaw = $('#searchStrumento').val().trim();
+		 var idCercato = inputRaw;
+	   	 var $msg = $('#msgSearchStrumento');
+	   	 
+	   	 console.log(idCercato);
+	   	 
+	   	 setSemaforo('off', '');
+	   	 
+	   	 var t = $('#tabUscita').DataTable();
+	   	 var trovato = false;
+	   	 
+	   	 
+	     table.rows().every(function () {
+
+	         var data = this.data();
+
+	         var id          = data[0];
+	         var denominazione   = data[1];
+	         var matricola   = data[2];
+	         var stato = data[3];
+	         var quantita =data[4];
+	         var note = data[5];
+	        
+
+	         if (id == idCercato) {
+	        	 console.log("id_item " + id);
+	             trovato = true;
+
+	             // vai alla pagina corretta
+	             table.page(this.index()).draw(false);
+
+	             // evidenzia riga (opzionale)
+	             $(this.node()).addClass('row-selezionata');
+
+	             // chiamata come se avessi cliccato "+"
+	            // insertItem(id, descrizione, codiceInt, matricola);
+	            
+	             setTimeout(function () {
+	                     // ok -> verde
+	                     setSemaforo('green', 'Trovato : ' + id + ' - ' + denominazione);
+	                     // se vuoi ancora id+descrizione nel testo del cerchio:
+	                     // setSemaforo('green', id);
+	                 
+
+	                 setTimeout(focusRicercaQR, 0);
+
+	             }, 50); // 50ms: basta quasi sempre (aumenta a 150 se serve)
+	             
+	            // setSemaforo('green', 'Trovato e aggiunto: ' + id + ' - ' + descrizione);
+	           
+	             setTimeout(focusRicercaQR, 0);
+
+	             return false; 
+	    
+	     }
+	});
+	     if (!trovato) {
+	     	$('#listaItemTop').text('');
+	     	setSemaforo('red', 'Strumento non trovato');
+	      //   $msg.text('Strumento non trovato').show();
+	         setTimeout(focusRicercaQR, 0);
+	     }
+	 });
+	
+	function focusRicercaQR() {
+	    var $in = $('#searchStrumento');
+	    $in.focus();
+	    $in.select(); // seleziona tutto: il prossimo scan sovrascrive
+	}
+
+	$('#searchStrumento').on('input', function () {
+	    $('#msgSearchStrumento').hide().text('');
+	});
+
+	$('#searchStrumento').on('keyup', function (e) {
+	    if (e.key === 'Enter') {
+	        $('#btnSearchStrumento').click();
+	    }
+	});
+
+	function setSemaforo(stato, testo) {
+	    var $led = $('#semaforoLed');
+	    var $txt = $('#semaforoTxt');
+
+	    $led.removeClass('semaforo-off semaforo-red semaforo-green semaforo-amber');
+
+	    if (stato === 'green') $led.addClass('semaforo-green');
+	    else if (stato === 'red') $led.addClass('semaforo-red');
+	    else if (stato === 'amber') $led.addClass('semaforo-amber');
+	    else $led.addClass('semaforo-off');
+
+	    $txt.text(testo || '');
+	}
+	
+	function focusRicercaQR() {
+	    var $in = $('#searchStrumento');
+	    $in.focus();
+	    $in.select(); // seleziona tutto: il prossimo scan sovrascrive
+	}
+
+	$('#searchStrumento').on('input', function () {
+	    $('#msgSearchStrumento').hide().text('');
+	});
+
+	$('#searchStrumento').on('keyup', function (e) {
+	    if (e.key === 'Enter') {
+	        $('#btnSearchStrumento').click();
+	    }
+	});
+
+	function setSemaforo(stato, testo) {
+	    var $led = $('#semaforoLed');
+	    var $txt = $('#semaforoTxt');
+
+	    $led.removeClass('semaforo-off semaforo-red semaforo-green semaforo-amber');
+
+	    if (stato === 'green') $led.addClass('semaforo-green');
+	    else if (stato === 'red') $led.addClass('semaforo-red');
+	    else if (stato === 'amber') $led.addClass('semaforo-amber');
+	    else $led.addClass('semaforo-off');
+
+	    $txt.text(testo || '');
+	}
+	
+
+	 function insertItem(id, descrizione, codice_interno, matricola){
+		 
+		 var note = $('#note_item'+id).val();
+
+		 var priorita = 0;
+		 if($('#priorita_item'+id).is( ':checked' ) ){			
+		 priorita = 1;
+		 }
+		 
+		 var attivita = $('#attivita_item'+id).val();
+		 var destinazione = $('#destinazione_item'+id).val();
+		 var attivita_json = JSON.parse('${attivita_json}');
+		 insertEntryItem(id,descrizione, 'Strumento', 1, note, priorita, attivita, destinazione, codice_interno, matricola, attivita_json);
+	 }
 
 
  		$('#check_all').change(function(){

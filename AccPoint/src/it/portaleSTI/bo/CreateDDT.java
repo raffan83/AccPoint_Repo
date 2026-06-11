@@ -17,10 +17,13 @@ import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.AccessorioDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
+import it.portaleSTI.DTO.RilInterventoDTO;
+import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
@@ -352,7 +355,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 	 		report.addColumn(col.column("Descrizione della merce o servizio","denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(210));
 	 		report.addColumn(col.column("Q.ta","quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(23));
 	 		report.addColumn(col.column("Note","note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(125));
-	 		report.addColumn(col.column("Note Strumento","note_strumento", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(140));
+	 		report.addColumn(col.column("Note Item","note_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(140));
 
 			report.setColumnStyle((Templates.columnStyle).setFontSize(8).setBorder(stl.penThin()));
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()).setBackgroundColor(new Color(204,204,204)));
@@ -399,7 +402,7 @@ private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)thr
 		listaCodici[1]="denominazione";	
 		listaCodici[2]="quantita";
 		listaCodici[3]="note";
-		listaCodici[4]="note_strumento";
+		listaCodici[4]="note_item";
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
@@ -407,9 +410,27 @@ private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)thr
 		DRDataSource dataSource = new DRDataSource(listaCodici);
 		
 			for (MagItemPaccoDTO item_pacco : lista_item_pacco) {
-				int id_str = item_pacco.getItem().getId_tipo_proprio();
-				StrumentoDTO str = GestioneStrumentoBO.getStrumentoById(""+id_str, session);
 				
+				int id_str = item_pacco.getItem().getId_tipo_proprio();
+				int tipo_item = item_pacco.getItem().getTipo_item().getId();
+				String note_item ="";
+				
+				if(tipo_item==1) {
+				StrumentoDTO str = GestioneStrumentoBO.getStrumentoById(""+id_str, session);
+				if(str!=null) {
+				note_item = str.getNote();
+				}		
+				} else if(tipo_item==2) {
+					AccessorioDTO accessorio = GestioneAccessorioBO.getAccessorioById(""+id_str, session);
+					note_item = "";
+				} else if(tipo_item==3) {
+					note_item="";
+				} else if(tipo_item==4) {
+					RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(id_str, session);
+					if(rilievo!=null) {
+					note_item= rilievo.getNote();
+					}
+				}
 				if(item_pacco!=null)
 				{
 					ArrayList<String> arrayPs = new ArrayList<String>();
@@ -425,11 +446,8 @@ private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)thr
 	 				}
 	 				arrayPs.add(String.valueOf(item_pacco.getQuantita()));
 	 				arrayPs.add(item_pacco.getNote());
-	 				if(str.getNote()!=null && !str.getNote().equals("")) {
-	 					arrayPs.add(str.getNote());
-	 				} else {
-	 					arrayPs.add("");
-	 				}
+	 				arrayPs.add(note_item);
+	 			
 	 				
 	 				
 	 			

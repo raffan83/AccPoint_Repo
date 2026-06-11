@@ -130,6 +130,7 @@ public class GestionePacco extends HttpServlet {
 			
 		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 		
+		int size_json=0;
 		if(action.equals("new")) {
 		ArrayList<MagPaccoDTO> lista_pacchi = (ArrayList<MagPaccoDTO>) request.getSession().getAttribute("lista_pacchi");
 		
@@ -196,7 +197,7 @@ public class GestionePacco extends HttpServlet {
 		 RilMisuraRilievoDTO rilievo = null;  
 		 RilInterventoDTO ril_intervento= null;
 		List<FileItem> items;
-		//try {
+		
 			items = uploadHandler.parseRequest(request);
 			
 			for (FileItem item : items) {
@@ -208,6 +209,7 @@ public class GestionePacco extends HttpServlet {
 					JsonElement jelement = new JsonParser().parse(data_json);
 					JsonArray json_array = jelement.getAsJsonArray();
 					
+					size_json=json_array.size();
 					
 					for(int i = 0 ; i<json_array.size();i++) {
 						
@@ -293,89 +295,7 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("json_rilievi")) {
 						
 						data_json_rilievi = item.getString();
-						//String data_json = item.getString();
-//					    if(data_json!=null && !data_json.equals("")) {
-//						JsonElement jelement = new JsonParser().parse(data_json);
-//						JsonArray json_array = jelement.getAsJsonArray();
-//						
-//						
-//						for(int i = 0 ; i<json_array.size();i++) {
-//							
-//							rilievi=true;
-//							JsonObject json_obj = json_array.get(i).getAsJsonObject();
-//							
-//							String id_proprio = null;
-//							
-//							if(json_obj.get("id_proprio")!=null) {
-//								id_proprio =json_obj.get("id_proprio").getAsString(); 
-//							}									
-//							String disegno = json_obj.get("disegno").getAsString();
-//							String variante = json_obj.get("variante").getAsString();
-//	 						pezzi_ingresso = json_obj.get("pezzi_ingresso").getAsString();
-//	 						String note_rilievo = json_obj.get("note_rilievo").getAsString();
-//						//	String quantita = json_obj.get("quantita").getAsString();
-//	 						String id = null;
-//							if(json_obj.get("id")!=null) {
-//								id = json_obj.get("id").getAsString();
-//							}
-//							
-//							MagItemDTO mag_item = 	null;
-//							
-//	 						if(id!=null) {
-//	 							rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_proprio), session);
-//	 							mag_item = GestioneMagazzinoBO.getItemById(Integer.parseInt(id), session);
-//	 						}else {
-//	 							rilievo = new RilMisuraRilievoDTO();
-//	 							mag_item = 	new MagItemDTO();
-//	 							rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
-//	 						}
-//							rilievo.setDisegno(disegno);
-//							rilievo.setVariante(variante);
-//							rilievo.setCifre_decimali(3);
-//							
-//							if(pezzi_ingresso!= null && !pezzi_ingresso.equals("")) {
-//								rilievo.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));	
-//							}
-//							
-//							
-//							rilievo.setId_cliente_util(Integer.parseInt(cliente_util));
-//							//rilievo.setNome_cliente_util(util.getNome());
-//							rilievo.setId_sede_util(Integer.parseInt(sede_util.split("_")[0]));
-//							rilievo.setData_inizio_rilievo(new Date());
-//							rilievo.setCommessa(commessa);
-//							rilievo.setClasse_tolleranza("m");
-//							
-//						
-//							
-//							if(id!=null) {
-//								session.update(rilievo);
-//							}else {
-//								session.save(rilievo);
-//							}
-//							
-//							mag_item.setId_tipo_proprio(rilievo.getId());							
-//							
-//							mag_item.setTipo_item(new MagTipoItemDTO(4, ""));
-//							mag_item.setDescrizione(disegno+" "+variante);
-//							mag_item.setDisegno(disegno);
-//							mag_item.setVariante(variante);
-//							if(pezzi_ingresso!= null && !pezzi_ingresso.equals("")) {
-//								mag_item.setPezzi_ingresso(Integer.parseInt(pezzi_ingresso));
-//							}
-//							
-//							
-//							map.put(mag_item, "0_"+note_rilievo);
-//							
-//							if(id!=null) {
-//								
-//								session.update(mag_item);
-//							}else {
-//								
-//								GestioneMagazzinoBO.saveItem(mag_item, session);
-//							}
-//						}
-//							
-//						}
+
 						
 					}
 					if(item.getFieldName().equals("select1")) {
@@ -630,35 +550,7 @@ public class GestionePacco extends HttpServlet {
 					
 					session.save(ril_intervento);
 				}
-				
-				
-//				ril_intervento = new RilInterventoDTO();
-//				
-//				if(id_pacco==null || id_pacco.equals("")) {
-//					ril_intervento.setData_apertura(new Date());
-//					ril_intervento.setId_cliente(Integer.parseInt(cliente_util));
-//					ril_intervento.setId_sede(Integer.parseInt(sede_util.split("_")[0]));
-//					ril_intervento.setCommessa(commessa);
-//					ril_intervento.setStato_intervento(1);
-//					ril_intervento.setNome_cliente(util.getNome());
-//					ril_intervento.setId_pacco(pacco.getId());
-//					
-//					if(!sede_util.equals("0")) {
-//						ril_intervento.setNome_sede(sd_util.getDescrizione() + " - "+sd_util.getIndirizzo());
-//					}else {
-//							
-//						ril_intervento.setNome_sede("Non associate");						
-//					}
-//					
-//					session.save(ril_intervento);
-//				}else {
-//					
-//					ril_intervento = GestioneRilieviBO.getIntrventoFromPacco(Integer.parseInt(id_pacco), session);
-//				}
-				
-				//rilievo.setId_intervento(ril_intervento.getId());
-				
-				
+
 				for(int i = 0 ; i<json_array.size();i++) {
 					
 					rilievi=true;
@@ -904,16 +796,24 @@ public class GestionePacco extends HttpServlet {
 			if(!data_spedizione.equals("")&& data_spedizione!=null) {
 				pacco.setData_spedizione(format.parse(data_spedizione));
 			}
-			if(pacco.getTipo_nota_pacco().getId()==7 && commessa!=null && !commessa.equals("") ) 
-			{
-				
-			}
-			
+
 			if(commessa!=null && !commessa.equals("")) {
 				if(pacco.getTipo_nota_pacco()!=null && pacco.getTipo_nota_pacco().getId()==7) {
 					pacco.setTipo_nota_pacco(new MagTipoNotaPaccoDTO(18,""));
 				}
 			}
+			
+			
+			
+			if(pacco.getTipo_nota_pacco()!=null && pacco.getTipo_nota_pacco().getId()==18) 
+			{
+
+				if(size_json>0) 
+				{
+					pacco.setTipo_nota_pacco(null);
+				}
+			}
+			
 			pacco.setCommessa(commessa);			
 		
 			pacco.setNote_pacco(note_pacco);

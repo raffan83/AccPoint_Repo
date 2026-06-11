@@ -342,7 +342,15 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 	
 	@SuppressWarnings("deprecation")
 	public JasperReportBuilder getTableReport(List<MagItemPaccoDTO> lista_item_pacco) throws Exception{
-
+		
+		//controllo se c'è almeno uno strumento in item
+ 		boolean strPresent = false;
+ 		for(MagItemPaccoDTO MagItemPacco : lista_item_pacco) {
+ 			if(MagItemPacco.getItem().getTipo_item().getId() == 1 ) {
+ 				strPresent =true;
+ 				break;
+ 			}
+ 		}
 	
 	 
 		JasperReportBuilder report = DynamicReports.report();
@@ -350,12 +358,18 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 		
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
- 	 		
+			if(strPresent) {
  	 		report.addColumn(col.column("Codice della merce o servizio","id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(49));
 	 		report.addColumn(col.column("Descrizione della merce o servizio","denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(210));
 	 		report.addColumn(col.column("Q.ta","quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(23));
 	 		report.addColumn(col.column("Note","note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(125));
-	 		report.addColumn(col.column("Note Item","note_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(140));
+	 		report.addColumn(col.column("Note Strumento","note_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(140));
+	 		} else {
+	 			report.addColumn(col.column("Codice della merce o servizio","id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(69));
+		 		report.addColumn(col.column("Descrizione della merce o servizio","denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(260));
+		 		report.addColumn(col.column("Q.ta","quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+		 		report.addColumn(col.column("Note","note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(170));
+	 		}
 
 			report.setColumnStyle((Templates.columnStyle).setFontSize(8).setBorder(stl.penThin()));
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()).setBackgroundColor(new Color(204,204,204)));

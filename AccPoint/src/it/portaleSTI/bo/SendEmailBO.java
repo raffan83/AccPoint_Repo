@@ -2527,7 +2527,7 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
 		  email.setHtmlMsg("<html><meta charset=\\\"UTF-8\\\">Spett.le Cliente " + sessione.getNome_cliente() +"<br>"
 		  		+ "<br>Le comunichiamo che i rapporti di taratura e la relativa documentazione sono disponibili nella Sua area riservata.<br>"
 		  		+ "<br>Per consultare e scaricare i documenti, acceda al seguente link: " 
-		  		+ "<br><a href=\"http://delivery.stisrl.com/DocumentalWEB/\">"
+		  		+ "<br><a href=\"https://delivery.stisrl.com/DocumentalWEB/\">"
 		  		+ "https://delivery.stisrl.com/DocumentalWEB"
 		  		+ "</a>"
 		  		+ "<br>utilizzando le credenziali riservate riportate di seguito:"

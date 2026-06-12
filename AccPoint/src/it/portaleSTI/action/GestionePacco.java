@@ -1047,7 +1047,7 @@ public class GestionePacco extends HttpServlet {
 						pacco.getDdt().setId_sede_destinatario(Integer.parseInt(sede_fornitore.split("_")[0]));
 					}
 					
-					int id_ddt = GestioneMagazzinoBO.getProgressivoDDT(session);
+					int id_ddt = GestioneMagazzinoBO.getProgressivoDDT();
 					pacco.getDdt().setNumero_ddt("STI_"+(id_ddt+1));
 					pacco.getDdt().setTipo_ddt(new MagTipoDdtDTO(2,""));
 					pacco.getDdt().setData_ddt(new Date());

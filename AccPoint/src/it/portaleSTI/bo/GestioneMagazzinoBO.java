@@ -423,9 +423,9 @@ public static Object[] getRiferimentoDDT(String origine, Session session) throws
 	return GestioneMagazzinoDAO.getRiferimentoDDT(origine, session);
 }
 
-public static int getProgressivoDDT(Session session) throws Exception {
+public static int getProgressivoDDT() throws Exception {
 	
-	return GestioneMagazzinoDAO.getProgressivoDDT(session);
+	return GestioneMagazzinoDAO.getProgressivoDDT();
 }
 
 public static ArrayList<MagDdtDTO> getListaDDTPerData(String dateFrom, String dateTo, Session session) throws Exception {

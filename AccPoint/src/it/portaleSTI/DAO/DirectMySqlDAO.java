@@ -3860,6 +3860,7 @@ public static ArrayList<String> getItemPresso_Fornitori(Session session) throws 
 				pacco_res.setNome_cliente(rs.getString("p.nome_cliente"));
 				pacco_res.setFornitore(rs.getString("fornitore"));
 				
+				
 				Object[] result = new Object[4];
 				result[0] = pacco_res;
 				result[1] = rs.getInt(9);
@@ -3919,7 +3920,7 @@ public static ArrayList<String> getItemPresso_Fornitori(Session session) throws 
 							toAdd = toAdd +";"+" + "+Math.abs(giorniMancanti);
 						}
 
-						String note_pacco = "";
+					//	String note_pacco = "";
 
 						if(utente!=null) {
 							toAdd = toAdd+";"+utente;
@@ -3933,8 +3934,11 @@ public static ArrayList<String> getItemPresso_Fornitori(Session session) throws 
 							toAdd = toAdd+";";
 						}
 						
-						if(!note_pacco.equals("")) {
-							note_pacco = note_pacco.substring(0, note_pacco.length()-3).replace("\r\n", "").replace("\n", "");
+						MagPaccoDTO p_tipo_nota=GestioneMagazzinoDAO.getPaccoId(pacco.getId(), session);
+						
+						
+						if(p_tipo_nota.getTipo_nota_pacco()!=null) {
+							String note_pacco = p_tipo_nota.getTipo_nota_pacco().getDescrizione();
 							toAdd = toAdd+";"+note_pacco;
 						}else {
 							toAdd = toAdd+";";

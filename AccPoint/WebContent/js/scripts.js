@@ -14389,12 +14389,15 @@ $.ajax({
 	  success: function( data, textStatus) {
 		pleaseWaitDiv.modal('hide');
 		  	      		  
-		  if(data.success)
-		  { 
-			
-			  createTableImport(data.lista_partecipanti_import);
+		if (data.success ) {
+			if(flag_pdf == 1){
+			  createTableImport(data.lista_partecipanti_import,data.tipo);
+			} else {
+				createTableImport(data.lista_partecipanti_import,data.tipo, data.lista_partecipante_ruolo_corso);
+			}
 		
-		  }else{
+		  } 
+		  else{
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");

@@ -22,6 +22,12 @@ public class ForPartecipanteDTO {
 	private String email;
 	private int disabilitato;
 	private int stato;
+	private String nome_azienda_old = "";
+	private String nome_sede_old="";
+	private int id_azienda_old;
+	private int id_sede_old;
+	private UtenteDTO utente;
+	private Date data_inserimento;
 	
 	public String getCf() {
 		return cf;
@@ -161,6 +167,57 @@ public class ForPartecipanteDTO {
 		this.stato = stato;
 	}
 
+	public String getNome_azienda_old() {
+		return nome_azienda_old;
+	}
+
+	public void setNome_azienda_old(String nome_azienda_old) {
+		this.nome_azienda_old = nome_azienda_old;
+	}
+
+	public String getNome_sede_old() {
+		return nome_sede_old;
+	}
+
+	public void setNome_sede_old(String nome_sede_old) {
+		this.nome_sede_old = nome_sede_old;
+	}
+
+	public int getId_azienda_old() {
+		return id_azienda_old;
+	}
+
+	public void setId_azienda_old(int id_azienda_old) {
+		this.id_azienda_old = id_azienda_old;
+	}
+
+	public int getId_sede_old() {
+		return id_sede_old;
+	}
+
+	public void setId_sede_old(int id_sede_old) {
+		this.id_sede_old = id_sede_old;
+	}
+
+	public UtenteDTO getUtente() {
+		return utente;
+	}
+
+	public void setUtente(UtenteDTO utente) {
+		this.utente = utente;
+	}
+
+	public Date getData_inserimento() {
+		return data_inserimento;
+	}
+
+	public void setData_inserimento(Date data_inserimento) {
+		this.data_inserimento = data_inserimento;
+	}
+
+	
+
+	
 	
 
 }

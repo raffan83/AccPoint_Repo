@@ -4546,6 +4546,58 @@ public static HashMap<Integer, String> getHashEncrypt() throws SQLException	{
 
 }
 
+public static ForPartecipanteDTO getPartecipanteByCf(String cf) throws Exception {
+
+    Connection con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+
+    ForPartecipanteDTO res = null;
+
+    try {
+        con = getConnection();
+
+        String query = "SELECT * FROM for_partecipante WHERE cf = ?";
+
+        pst = con.prepareStatement(query);
+        pst.setString(1, cf);
+
+        rs = pst.executeQuery();
+
+        if (rs.next()) {
+            res = new ForPartecipanteDTO();
+
+            res.setId(rs.getInt("id"));
+            res.setNome(rs.getString("nome"));
+            res.setCognome(rs.getString("cognome"));
+            res.setData_nascita(rs.getDate("data_nascita"));
+
+           
+            res.setId_azienda(rs.getInt("id_azienda"));
+            res.setNome_azienda(rs.getString("nome_azienda"));
+
+            res.setId_sede(rs.getInt("id_sede"));
+            res.setNome_sede(rs.getString("nome_sede"));
+
+            res.setCf(rs.getString("cf"));
+            res.setLuogo_nascita(rs.getString("luogo_nascita"));
+      
+
+            res.setDisabilitato(rs.getInt("disabilitato"));
+            res.setStato(rs.getInt("stato"));
+
+        
+        }
+
+    } finally {
+        if (rs != null) rs.close();
+        if (pst != null) pst.close();
+        if (con != null) con.close();
+    }
+
+    return res;
+}
+
 public static void main(String[] args) throws HibernateException, Exception {
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -197,8 +197,12 @@ public class GestioneFormazioneBO {
 		return GestioneFormazioneDAO.getListaPartecipantiRuoloCorso(dateFrom, dateTo, tipo_data, id_azienda, id_sede, session);
 	}
 
-	public static int importaDaExcel(FileItem fileItem, int id_azienda,String nome_azienda, int id_sede, String nome_sede, Session session) throws Exception {
+	public static JsonObject importaDaExcel(FileItem fileItem, int id_azienda,String nome_azienda, int id_sede, String nome_sede, Session session) throws Exception {
 		
+		JsonObject obj = new JsonObject();
+		Gson g = new Gson();
+		boolean esito = true;
+		String messaggio = "Attenzione! Formato codice fiscale errato per ";
 		
 		File file = new File(Costanti.PATH_FOLDER+"temp//tempImportazione.xlsx");
 		fileItem.write(file);
@@ -210,6 +214,8 @@ public class GestioneFormazioneBO {
 		Iterator<Row> itr = sheet.iterator();    //iterating over excel file  
 		
 		ArrayList<String> codiciFiscali = GestioneFormazioneDAO.getListaCodiciFiscali(session);
+		 List<ForPartecipanteDTO> lista_partecipanti_import = new ArrayList<>();
+		 List<ForPartecipanteRuoloCorsoDTO> lista_partecipante_ruolo_corso = new ArrayList<>();
 
 		while (itr.hasNext())                 
 		{  
@@ -306,7 +312,11 @@ public class GestioneFormazioneBO {
 				}
 			
 			}
-			if(row.getRowNum()!=0) {
+		//	System.out.println("row " +row.getRowNum() );
+			if(row.getRowNum()!=0 && cf!=null) {
+				if(cf == null || cf.isEmpty()) {
+			        continue; // riga vuota, skip
+			    }
 				if(!codiciFiscali.contains(cf)) {
 					partecipante= new ForPartecipanteDTO();		
 					partecipante.setId_azienda(id_azienda);
@@ -316,7 +326,20 @@ public class GestioneFormazioneBO {
 					codiciFiscali.add(cf);
 					
 				}else {
-					partecipante = getPartecipanteFromCf(cf, session);
+					ForPartecipanteDTO partecipanteOld = getPartecipanteFromCf(cf, session);
+					partecipante= new ForPartecipanteDTO();		
+					if(partecipanteOld.getId_azienda()!=id_azienda) {
+						partecipante.setId_azienda_old(partecipanteOld.getId_azienda());
+						partecipante.setId_sede_old(partecipanteOld.getId_sede());
+						partecipante.setNome_azienda_old(partecipanteOld.getNome_azienda());
+						partecipante.setNome_sede_old(partecipanteOld.getNome_sede());
+					}
+				
+					partecipante.setId_azienda(id_azienda);
+					partecipante.setId_sede(id_sede);
+					partecipante.setNome_azienda(nome_azienda);
+					partecipante.setNome_sede(nome_sede);	
+    
 				}
 				
 				if(partecipante!=null) {
@@ -326,7 +349,7 @@ public class GestioneFormazioneBO {
 					partecipante.setLuogo_nascita(luogo_nascita);
 					partecipante.setCf(cf);
 					partecipante.setEmail(email);
-					session.saveOrUpdate(partecipante);	
+				//	session.saveOrUpdate(partecipante);	
 					
 					
 					if(id_corso!=0 && id_ruolo!=0 && ore_partecipate!=null) {
@@ -336,18 +359,25 @@ public class GestioneFormazioneBO {
 						p.setPartecipante(partecipante);
 						p.setRuolo(new ForRuoloDTO(id_ruolo));
 						p.setOre_partecipate(Double.parseDouble(ore_partecipate));
-						session.saveOrUpdate(p);
+						lista_partecipante_ruolo_corso.add(p);
+					//	session.saveOrUpdate(p);
 					}
 				}
-				
+				lista_partecipanti_import.add(partecipante);
 			}
+		
+			
 			
 		}
 		
-		
+		obj.addProperty("success", true);
+		obj.addProperty("tipo", "excel");
+	//	obj.addProperty("messaggio", messaggio);
+		obj.add("lista_partecipanti_import", g.toJsonTree(lista_partecipanti_import));
+		obj.add("lista_partecipante_ruolo_corso", g.toJsonTree(lista_partecipante_ruolo_corso));
 		file.delete();
 
-		return esito_generale;
+		return obj;
 	}
 
 	public static ArrayList<ForPartecipanteDTO> getListaPartecipantiCliente(int idCliente, int idSede, Session session) {
@@ -1614,12 +1644,14 @@ public class GestioneFormazioneBO {
 			String keyNome = "SI CERTIFICA CHE ";
 			String keyNome2 = "Si certifica che ";
 			String keyNome3 = "Si Certifica che ";
+			String keyNome4 = "17/04/2025";
 			String keyNascita = "Nato/a il";
 			String keyLuogoStart = " in ";
 			String keyLuogoStartOld = ", in ";
 			String keyLuogoEnd = "Profilo";
 			String keyCf = "C.F. : ";
 			String keyCfStart= "Autorizzazione n.";
+			String keyCf2= "C.F. ";
 			
 			Locale locale = new Locale("it", "IT");
 			
@@ -1628,7 +1660,7 @@ public class GestioneFormazioneBO {
 			String luogo_nascita = "";
 		
 			//if(pdftext.contains(keyNome) || pdftext.contains(keyNome2)) {
-			if(StringUtils.containsIgnoreCase(pdftext, keyNome) || StringUtils.containsIgnoreCase(pdftext, keyNome2) || StringUtils.containsIgnoreCase(pdftext, keyNome3)) {
+			if(StringUtils.containsIgnoreCase(pdftext, keyNome) || StringUtils.containsIgnoreCase(pdftext, keyNome2) || StringUtils.containsIgnoreCase(pdftext, keyNome3) || StringUtils.containsIgnoreCase(pdftext, keyNome4) ) {
 				
 				
 				if(pdftext.contains(keyNome2)) {
@@ -1647,7 +1679,7 @@ public class GestioneFormazioneBO {
 					data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyNascita)+ keyNascita.length()+11);
 					luogo_nascita =  pdftext.substring(pdftext.indexOf(keyLuogoStart) + keyLuogoStart.length(), pdftext.indexOf(keyLuogoEnd)+keyLuogoEnd.length()-3);
 					
-				}else {
+				}else if(pdftext.contains(keyNome)){
 					
 					nominativo = pdftext.substring(pdftext.indexOf(keyNome) + keyNome.length(), pdftext.indexOf(keyNascita)).replaceAll("\\n", "");			
 					luogo_nascita =  pdftext.substring(pdftext.indexOf(keyLuogoStart) + keyLuogoStart.length(), pdftext.indexOf(keyLuogoEnd));
@@ -1658,12 +1690,19 @@ public class GestioneFormazioneBO {
 					}
 					
 					
-				}				
+				} else if(pdftext.contains(keyNome4)) {
+					nominativo = pdftext.substring(pdftext.indexOf(keyNome4) + keyNome4.length(), pdftext.indexOf(keyNascita)).replaceAll("\\n", "");	
+					data_nascita = pdftext.substring(pdftext.indexOf(keyNascita) + keyNascita.length(), pdftext.indexOf(keyNascita)+ keyNascita.length()+11);
+					luogo_nascita =  pdftext.substring(pdftext.indexOf(keyLuogoStartOld) + keyLuogoStartOld.length(), pdftext.indexOf(keyLuogoEnd)+keyLuogoEnd.length()-7);
+				
+				}
 
 				String cf = "";
 				if(pdftext.contains(keyCf)) {
 					cf = pdftext.substring(pdftext.indexOf(keyCf) + keyCf.length(), pdftext.indexOf(keyCf)+(keyCf.length()+16));
-				} else {
+				}else if(pdftext.contains(keyCf2)) {
+					cf = pdftext.substring(pdftext.indexOf(keyCf2) + keyCf2.length(), pdftext.indexOf(keyCf2)+(keyCf2.length()+16));
+				}else {
 				cf = pdftext.substring(pdftext.indexOf(keyCfStart)+ keyCfStart.length() + 22 , pdftext.indexOf(keyCfStart)+ keyCfStart.length() + 39);
 				}
 						
@@ -1686,7 +1725,13 @@ public class GestioneFormazioneBO {
 				
 				if(esito) {
 					
+					ForPartecipanteDTO partecipanteOld = new ForPartecipanteDTO();
+					partecipanteOld = DirectMySqlDAO.getPartecipanteByCf(cf);
+				
+					
 					ForPartecipanteDTO partecipante = new ForPartecipanteDTO();
+					
+			
 					
 					String[] nomeCognome = nominativo.split(" ");
 					
@@ -1747,11 +1792,22 @@ public class GestioneFormazioneBO {
 					partecipante.setData_nascita(df.parse(data_nascita));
 					partecipante.setLuogo_nascita(luogo_nascita);
 					if(cl!=null) {
+						if( partecipanteOld!=null) {
+						if(partecipanteOld.getId_azienda()!=cl.get__id()) {
+					
+							partecipante.setNome_azienda_old(partecipanteOld.getNome_azienda());
+							partecipante.setId_azienda_old(partecipanteOld.getId_azienda());
+							partecipante.setNome_sede_old(partecipanteOld.getNome_sede());	
+							partecipante.setId_sede_old(partecipanteOld.getId_sede());
+						
+						}
+						}
 						partecipante.setId_azienda(cl.get__id());
 						partecipante.setNome_azienda(cl.getNome());
 					}
 					
 					if(sd!=null) {
+				
 						partecipante.setId_sede(sd.get__id());
 						String nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
 						partecipante.setNome_sede(nome_sede);
@@ -1771,6 +1827,7 @@ public class GestioneFormazioneBO {
 		}
 		
 		
+		obj.addProperty("tipo", "pdf");
 		obj.addProperty("success", esito);
 		obj.addProperty("messaggio", messaggio);
 		obj.add("lista_partecipanti_import", g.toJsonTree(lista));
@@ -1869,6 +1926,12 @@ public class GestioneFormazioneBO {
 					String[] text = getText(reader, i); 
 					pdftext = text[0];
 				}
+			else if(pdftext.contains("17/04/2025")) 
+			{
+				String[] text = getText(reader, i); 
+				pdftext = text[0];
+				keyFirstPage = "17/04/2025";
+			}
 				
 				//String[] text = getText(reader, i); 
 				//String pdftext = text[0];

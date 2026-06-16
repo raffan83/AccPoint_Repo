@@ -1852,17 +1852,19 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
 				}
 				int esito = 0;
+				myObj = new JsonObject();
 				if(!fileItem.getName().equals("")) {
 					
-					esito = GestioneFormazioneBO.importaDaExcel(fileItem, Integer.parseInt(id_azienda), cl.getNome(),id_sede,nome_sede, session);
+					myObj = GestioneFormazioneBO.importaDaExcel(fileItem, Integer.parseInt(id_azienda), cl.getNome(),id_sede,nome_sede, session);
 
 				}
 				
 				session.getTransaction().commit();
 				session.close();
 				
-				myObj = new JsonObject();
+	
 				PrintWriter  out = response.getWriter();
+				/*
 				if(esito == 0) {
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio", "Partecipanti importati con successo!");
@@ -1870,6 +1872,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", "Formato file errato!");
 				}
+				*/
 				out.print(myObj);
 
 			}
@@ -1963,6 +1966,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String dataOj = request.getParameter("data");
 				String id_azienda_general = request.getParameter("id_azienda_general");
 				String id_sede_general = request.getParameter("id_sede_general");
+				String tipoImport = request.getParameter("tipoImport");
 				
 				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 				if(listaSedi== null) {
@@ -1983,13 +1987,15 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				}					
 				
 				SedeDTO sd =null;
-				String nome_sede = "Non associate";
-				
+				String nome_sede_general="";
+				String nome_sede = "";
 			
 				if(id_sede_general!=null && !id_sede_general.equals("0") && !id_azienda_general.equals("")) {
 					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_general.split("_")[0]), Integer.parseInt(id_azienda_general));
-					nome_sede = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
-				}		
+					nome_sede_general = sd.getDescrizione() + " - "+sd.getIndirizzo() +" - " + sd.getComune() + " - ("+ sd.getSiglaProvincia()+")";
+				} else {
+					nome_sede_general= "Non Associate";
+				}
 				
 				for (JsonElement json : json_array) {
 					JsonObject json_obj = json.getAsJsonObject();
@@ -2010,12 +2016,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						cliente = cl;
 					}
 					
-					if(json_obj.get("sede")!=null &&json_obj.get("sede")!= JsonNull.INSTANCE && !json_obj.get("sede").getAsString().equals("")) {
-						
-						if(json_obj.get("sede").getAsString().equals("0")) {
+					if(json_obj.get("azienda")!=null && !json_obj.get("azienda").getAsString().equals(""))  {
+						if(json_obj.get("sede")==null || json_obj.get("sede")== JsonNull.INSTANCE || json_obj.get("sede").getAsString().equals("")|| json_obj.get("sede").getAsString().equals("0")) {	
 							id_sede = "0";
 							
-							nome_sede = "Non Associate";
+							 nome_sede = "Non Associate";
 						}else {
 							id_sede = json_obj.get("sede").getAsString();
 							sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), id_azienda);
@@ -2024,7 +2029,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						
 					}else {
 						id_sede = id_sede_general;
+						nome_sede = nome_sede_general;
 					}
+					
 					
 					int id_corso = 0;
 					int id_ruolo = 0;
@@ -2074,6 +2081,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						
 						partecipante.setNome_azienda(cliente.getNome());
 						partecipante.setNome_sede(nome_sede);
+						partecipante.setUtente(utente);
+						partecipante.setData_inserimento(new Date());
 						session.saveOrUpdate(partecipante);
 					
 					
@@ -2140,12 +2149,15 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						lista_partecipanti.add(p);
 						
 					}
+				
 				}
 				
-				if(lista_partecipanti.size()>0) {
+				if(lista_partecipanti.size()>0 && tipoImport.equals("pdf")) {
 					FileItem fileItem = (FileItem) request.getSession().getAttribute("fileItemAttestati");
 					GestioneFormazioneBO.splitPdf(fileItem,lista_partecipanti, session);
-				}				
+				}		
+				
+				
 				
 				
 				

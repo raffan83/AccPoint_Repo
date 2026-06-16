@@ -2480,11 +2480,11 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
 
 
       String[] destinatari = mailTo.split(";"); 
-  
+  /*
      for (String dest : destinatari) {
       	email.addTo(dest);
 	    	}
-     
+     */
      List<String> invalidEmails = new ArrayList<>();
 
      for (String dest : destinatari) {
@@ -2556,10 +2556,10 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
 				
 				+ "<br><br>"
 				+ "<a href=\"https://delivery.stisrl.com/DocumentalWEB/\" target=\"_blank\">"
-				+ "  <img src=\"cid:" + cid + "\" width=\"95%\" height=\"300\" style=\"display:block;border:0;\">"
+				+ "  <img src=\"cid:" + cid + "\" width=\"60%\" height=\"200\" style=\"display:block;border:0;\">"
 				+ "</a>"
 				
-				+ "<div style=\"font-size:13px;color:#666;line-height:1.3;margin-top:10px;\">"
+				+ "<div style=\"font-size:13px;color:#666;line-height:1.3;margin-top:10px;margin-right:10px;\">"
 				+ "Le informazioni trasmesse sono destinate esclusivamente alla persona o alla società in indirizzo e sono da intendersi confidenziali e riservate. "
 				+ "Qualsiasi utilizzo, diffusione, copia o distribuzione non autorizzata è vietato. "
 				+ "Se Lei ha ricevuto questo messaggio per errore, è pregato di avvisarci rispondendo a questa email e cancellare il messaggio dal Suo sistema. "

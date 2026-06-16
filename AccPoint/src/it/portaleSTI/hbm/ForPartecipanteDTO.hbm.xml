@@ -65,6 +65,13 @@
       <property name="stato" type="int" >
             <column name="stato" />
         </property>
-        
+          
+  <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" lazy="false" fetch="join">
+    <column name="id_user" />
+</many-to-one>
+
+  <property name="data_inserimento" type="java.util.Date" access="field">
+            <column name="DATA_INSERIMENTO" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -1972,12 +1972,12 @@ callAjax(dataObj, 'dettaglioCampione.do', function(data){
 	                    // Copy data of `Year` from parent row to new added rows
 	                	
 	                	 modificaValoriCampioneTrigger(umJson, parseInt(addedRowIndex)+1);
-	                 	$('#tblAppendGrid_tipo_grandezza_'+(parseInt(addedRowIndex)+1)).select2();
-	                 	$('#tblAppendGrid_unita_misura_'+(parseInt(addedRowIndex)+1)).select2();
-
+	                	 $('#tblAppendGrid_tipo_grandezza_' + (parseInt(addedRowIndex)+1)).val('0').trigger('change.select2');
+	                 	$('#tblAppendGrid_unita_misura_'+(parseInt(addedRowIndex)+1)).val('0').trigger('change.select2');
 	                }
 	        });
-
+	    	$('#tblAppendGrid_tipo_grandezza_1').val('0').trigger('change');
+	    	$('#tblAppendGrid_unita_misura_1').val('0').trigger('change');
 
 	    	
 	    	//modificaValoriCampioneTrigger(umJson);
